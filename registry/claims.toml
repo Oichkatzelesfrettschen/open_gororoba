@@ -212,8 +212,18 @@ what_would_verify_refute = "Verified against commutator/parity matrices; found t
 supporting_evidence = [
     '[C-044] Legacy 16D/32D/64D "Zero-Divisor Adjacency Matrices" are valid basis-element maps.',
     "[C-536] Legacy ZD Adjacency Matrix Cross-Validation REFUTED: The legacy CSV files 'Zero-Divisor_Adjacency_Matrix__16D/32D/64D_.csv' encode a same-parity adjacency pattern (A[i][j]=1 iff i%2==j%2 and i!=j), which does NOT correspond to any algebraic structure in Cayley-Dickson algebras. Specifically: (1) All non-identity CD basis elements ANTI-COMMUTE at every dimension >=4 (0/105 commuting pairs at dim=16, 0/465 at dim=32, 0/1953 at dim=64). (2) Same-parity adjacency agrees with anti-commutativity only ~50% of the time (53.3% at dim=16, 51.6% at dim=32, 50.8% at dim=64), which is chance level. (3) Individual basis elements are never zero-divisors (e_i*e_j = +/-e_{i XOR j} != 0); ZDs require linear combinations. The legacy matrices are an artifact of flawed analysis, not algebraic truth.",
+    '[C-044] Legacy 16D/32D/64D "Zero-Divisor Adjacency Matrices" are valid basis-element maps.',
+    "[C-536] Legacy ZD Adjacency Matrix Cross-Validation REFUTED: The legacy CSV files 'Zero-Divisor_Adjacency_Matrix__16D/32D/64D_.csv' encode a same-parity adjacency pattern (A[i][j]=1 iff i%2==j%2 and i!=j), which does NOT correspond to any algebraic structure in Cayley-Dickson algebras. Specifically: (1) All non-identity CD basis elements ANTI-COMMUTE at every dimension >=4 (0/105 commuting pairs at dim=16, 0/465 at dim=32, 0/1953 at dim=64). (2) Same-parity adjacency agrees with anti-commutativity only ~50% of the time (53.3% at dim=16, 51.6% at dim=32, 50.8% at dim=64), which is chance level. (3) Individual basis elements are never zero-divisors (e_i*e_j = +/-e_{i XOR j} != 0); ZDs require linear combinations. The legacy matrices are an artifact of flawed analysis, not algebraic truth.",
+    '[C-044] Legacy 16D/32D/64D "Zero-Divisor Adjacency Matrices" are valid basis-element maps.',
+    "[C-536] Legacy ZD Adjacency Matrix Cross-Validation REFUTED: The legacy CSV files 'Zero-Divisor_Adjacency_Matrix__16D/32D/64D_.csv' encode a same-parity adjacency pattern (A[i][j]=1 iff i%2==j%2 and i!=j), which does NOT correspond to any algebraic structure in Cayley-Dickson algebras. Specifically: (1) All non-identity CD basis elements ANTI-COMMUTE at every dimension >=4 (0/105 commuting pairs at dim=16, 0/465 at dim=32, 0/1953 at dim=64). (2) Same-parity adjacency agrees with anti-commutativity only ~50% of the time (53.3% at dim=16, 51.6% at dim=32, 50.8% at dim=64), which is chance level. (3) Individual basis elements are never zero-divisors (e_i*e_j = +/-e_{i XOR j} != 0); ZDs require linear combinations. The legacy matrices are an artifact of flawed analysis, not algebraic truth.",
+    '[C-044] Legacy 16D/32D/64D "Zero-Divisor Adjacency Matrices" are valid basis-element maps.',
+    "[C-536] Legacy ZD Adjacency Matrix Cross-Validation REFUTED: The legacy CSV files 'Zero-Divisor_Adjacency_Matrix__16D/32D/64D_.csv' encode a same-parity adjacency pattern (A[i][j]=1 iff i%2==j%2 and i!=j), which does NOT correspond to any algebraic structure in Cayley-Dickson algebras. Specifically: (1) All non-identity CD basis elements ANTI-COMMUTE at every dimension >=4 (0/105 commuting pairs at dim=16, 0/465 at dim=32, 0/1953 at dim=64). (2) Same-parity adjacency agrees with anti-commutativity only ~50% of the time (53.3% at dim=16, 51.6% at dim=32, 50.8% at dim=64), which is chance level. (3) Individual basis elements are never zero-divisors (e_i*e_j = +/-e_{i XOR j} != 0); ZDs require linear combinations. The legacy matrices are an artifact of flawed analysis, not algebraic truth.",
 ]
 confidence = "n/a"
+claims = [
+    "C-044",
+    "C-536",
+]
 
 [[claim]]
 id = "C-021"
@@ -453,6 +463,7 @@ status = "Superseded"
 last_verified = "2026-01-31"
 what_would_verify_refute = "`src/scripts/reproduction/reproduce_zd_adjacency.py` verifies that standard basis elements e_i * e_j never produce zero divisors (norm is always 1). The legacy artifacts (containing 1s) are pure hallucination/noise or refer to an undefined non-standard basis. Matrix comparison failed due to shape mismatch (17x16 vs 16x16), further indicating malformed legacy data."
 confidence = "n/a"
+claims = ["C-020"]
 status_note = "Merged into C-020"
 
 [[claim]]
@@ -820,8 +831,38 @@ supporting_evidence = [
     "[C-083] General-form ZDs from CSV have richer left-mult spectrum.",
     "[C-085] CMS resonance ratios match E8+pathion combined eigenvalue ratios.",
     "[C-091] Non-diagonal ZD spectrum matches 9/12 particle masses.",
+    "[C-072] CMS resonance mass ratios appear as ZD eigenvalue ratios.",
+    "[C-073] Left-multiplication operator spectrum matches PDG masses.",
+    "[C-078] Higher-dim ZDs (32D/64D) improve mass spectrum coverage.",
+    "[C-079] E8 root system eigenvalues reproduce particle masses.",
+    "[C-083] General-form ZDs from CSV have richer left-mult spectrum.",
+    "[C-085] CMS resonance ratios match E8+pathion combined eigenvalue ratios.",
+    "[C-091] Non-diagonal ZD spectrum matches 9/12 particle masses.",
+    "[C-072] CMS resonance mass ratios appear as ZD eigenvalue ratios.",
+    "[C-073] Left-multiplication operator spectrum matches PDG masses.",
+    "[C-078] Higher-dim ZDs (32D/64D) improve mass spectrum coverage.",
+    "[C-079] E8 root system eigenvalues reproduce particle masses.",
+    "[C-083] General-form ZDs from CSV have richer left-mult spectrum.",
+    "[C-085] CMS resonance ratios match E8+pathion combined eigenvalue ratios.",
+    "[C-091] Non-diagonal ZD spectrum matches 9/12 particle masses.",
+    "[C-072] CMS resonance mass ratios appear as ZD eigenvalue ratios.",
+    "[C-073] Left-multiplication operator spectrum matches PDG masses.",
+    "[C-078] Higher-dim ZDs (32D/64D) improve mass spectrum coverage.",
+    "[C-079] E8 root system eigenvalues reproduce particle masses.",
+    "[C-083] General-form ZDs from CSV have richer left-mult spectrum.",
+    "[C-085] CMS resonance ratios match E8+pathion combined eigenvalue ratios.",
+    "[C-091] Non-diagonal ZD spectrum matches 9/12 particle masses.",
 ]
 confidence = "n/a"
+claims = [
+    "C-072",
+    "C-073",
+    "C-078",
+    "C-079",
+    "C-083",
+    "C-085",
+    "C-091",
+]
 
 [[claim]]
 id = "C-069"
@@ -848,7 +889,12 @@ where_stated = "`crates/stats_core/src/ultrametric/mod.rs`, `crates/gororoba_cli
 status = "Refuted"
 last_verified = "2026-02-06"
 what_would_verify_refute = "REFUTED: Re-opened from data-insufficient. Tested with CHIME/FRB Catalog 1 (600 events) and Catalog 2 (5045 events) using pure Rust pipeline. Eight statistical tests per DM column (ultrametric fraction with 5% isosceles tolerance, graded defect, p-adic clustering for p=2,3,5,7,11,13) all show no signal vs permutation null under Bonferroni correction (threshold=0.00625). Cat 1 bonsai_dm: frac=0.1125 vs null=0.1115 (p=0.354). Cat 2 bonsai_dm: frac=0.1305 vs null=0.1305 (p=0.995). All 6 catalog-column combinations yield verdict=FAIL. Consistent with C-080 refutation. See `data/csv/c071_frb_ultrametric.csv` for full results. Follow-up analyses: C-436 (comoving, refuted), C-437 (multi-attribute Euclidean, verified broadly -- galactic kinematics + ISM, I-011), C-438 (temporal cascades, partially verified), C-439 (GW mergers, partially verified -- chirp_mass+q subset), C-440 (cosmic dendrogram, refuted)."
-supporting_evidence = ["[C-080] FRB DM distribution has p-adic ultrametric structure."]
+supporting_evidence = [
+    "[C-080] FRB DM distribution has p-adic ultrametric structure.",
+    "[C-080] FRB DM distribution has p-adic ultrametric structure.",
+    "[C-080] FRB DM distribution has p-adic ultrametric structure.",
+    "[C-080] FRB DM distribution has p-adic ultrametric structure.",
+]
 confidence = "n/a"
 phase = "statistics"
 dependencies = [
@@ -880,6 +926,7 @@ status = "Superseded"
 last_verified = "2026-02-04"
 what_would_verify_refute = "Only 3 distinct eigenvalues; v2 left-mult operators gave only 2 SVs (1.0, sqrt(2)). Insufficient algebraic diversity in 16D. Phase 6 B5: closed as refuted."
 confidence = "n/a"
+claims = ["C-068"]
 status_note = "Merged into C-068"
 
 [[claim]]
@@ -890,6 +937,7 @@ status = "Superseded"
 last_verified = "2026-02-04"
 what_would_verify_refute = "Diagonal-form ZDs produce extremely degenerate operators. Need general-form ZDs. Phase 6 B5: closed as refuted."
 confidence = "n/a"
+claims = ["C-068"]
 status_note = "Merged into C-068"
 
 [[claim]]
@@ -937,6 +985,7 @@ status = "Superseded"
 last_verified = "2026-02-05"
 what_would_verify_refute = "REFUTED (Phase 7 Batch A): Under diagonal-form ZD construction, 32D and 64D yield identical spectrum diversity to 16D (66 distinct eigenvalues; 2.8306-decade span). Mass-match scores are WEAK at all dimensions. Higher CD dimension does NOT improve spectral coverage for diagonal-form ZDs. The claim requires general-form ZD ensembles to have any chance of revival (see Sprint 2 G3.4 in Phase 7 plan)."
 confidence = "n/a"
+claims = ["C-068"]
 status_note = "Merged into C-068"
 
 [[claim]]
@@ -947,6 +996,7 @@ status = "Superseded"
 last_verified = "2026-02-04"
 what_would_verify_refute = "E8 roots are all equal-norm (Gram completely degenerate). Adjacency gives only 3 distinct. Structural dead end for mass spectra. Phase 6 B5: closed as refuted."
 confidence = "n/a"
+claims = ["C-068"]
 status_note = "Merged into C-068"
 
 [[claim]]
@@ -987,6 +1037,7 @@ status = "Superseded"
 last_verified = "2026-02-04"
 what_would_verify_refute = "CSV ZDs are still diagonal-form (e_i +/- e_j)/sqrt(2). Same {1.0, sqrt(2)} spectrum. Phase 6 B5: closed as refuted."
 confidence = "n/a"
+claims = ["C-068"]
 status_note = "Merged into C-068"
 
 [[claim]]
@@ -1006,6 +1057,7 @@ status = "Superseded"
 last_verified = "2026-02-04"
 what_would_verify_refute = "Null probability too high. Matches are accidental. Phase 6 B5: closed as refuted."
 confidence = "n/a"
+claims = ["C-068"]
 status_note = "Merged into C-068"
 
 [[claim]]
@@ -1061,6 +1113,7 @@ status = "Superseded"
 last_verified = "2026-02-04"
 what_would_verify_refute = "Null tests (v7): uniform random 148-eval spectra score 10.98/12 mean (P(>=9)=1.0). 148 eigenvalues spanning 5.2 decades inevitably cover 12 masses spanning 5.5 decades. Closes the mass-from-ZD-eigenvalue hypothesis. Phase 6 B5: closed as refuted."
 confidence = "n/a"
+claims = ["C-068"]
 status_note = "Merged into C-068"
 
 [[claim]]
@@ -8253,6 +8306,7 @@ last_verified = "2026-02-09"
 what_would_verify_refute = "REFUTED: the legacy CSV's same-parity pattern matches no known algebraic relation in CD algebras. WHAT WOULD RESURRECT: discovering a CD algebraic operation whose adjacency is exactly same-parity."
 confidence = "n/a"
 phase = "algebra"
+claims = ["C-020"]
 status_note = "Merged into C-020"
 
 [[claim]]
@@ -10736,6 +10790,11 @@ what_would_verify_refute = "VERIFIED: D_S(0.01)/D_S(0) < 0.03 at T=0.5 for dim=8
 confidence = "high"
 phase = "Phase 2 Week 3"
 sprint = 41
+claims = [
+    "C-679",
+    "C-680",
+    "C-681",
+]
 status_note = "GPU-accelerated exact diagonalization via cuSOLVER syevd. D_S_ref=0.3671, D_S(0.01)=0.00827."
 
 [[claim]]
@@ -10749,6 +10808,11 @@ what_would_verify_refute = "VERIFIED: g(0.375) in [50, 150] for dim=8 at T=0.5. 
 confidence = "high"
 phase = "Phase 2 Week 3"
 sprint = 41
+claims = [
+    "C-678",
+    "C-680",
+    "C-681",
+]
 status_note = "Interpolated from 21-point table. Non-monotonic dips at lambda=0.30, 0.50, 0.75 due to eigenvalue level crossings."
 
 [[claim]]
@@ -10762,6 +10826,11 @@ what_would_verify_refute = "VERIFIED: g(1.0) in [100, 500] for dim=8 at T=0.5. R
 confidence = "high"
 phase = "Phase 2 Week 3"
 sprint = 41
+claims = [
+    "C-678",
+    "C-679",
+    "C-681",
+]
 status_note = "Power-law fit R^2=0.60 fails due to sharp onset. Level crossings at lambda=0.30, 0.50, 0.75 cause non-monotonic dips."
 
 [[claim]]
@@ -10775,6 +10844,11 @@ what_would_verify_refute = "VERIFIED: 6 unit tests pass including zero-frustrati
 confidence = "high"
 phase = "Phase 2 Week 3"
 sprint = 41
+claims = [
+    "C-678",
+    "C-679",
+    "C-680",
+]
 status_note = "Precomputed from kubo-coupling-analysis binary. 21 table entries from lambda=0.00 to 1.00. Maps f -> lambda_eff = f/f_cd, then interpolates."
 
 [[claim]]
@@ -10879,7 +10953,11 @@ what_would_verify_refute = "VERIFIED: Both our data and Stolpp 2019 show D_S inc
 confidence = "high"
 phase = "Phase 2 Week 3"
 sprint = 41
-dependencies = ["C-681", "C-685", "C-686"]
+dependencies = [
+    "C-681",
+    "C-685",
+    "C-686",
+]
 status_note = "The strongest literature support for the polarized-regime transport enhancement. Stolpp mechanism: Lifshitz splitting -> doubled carriers -> K_th ~ 1/sqrt(m*) increases."
 
 [[claim]]
@@ -10888,7 +10966,7 @@ statement = "The Sedenionic Homotopy Integrator (SHI) models Kerr null geodesics
 where_stated = "`crates/gr_core/src/sedenion_geodesic.rs`, `reports/breakthrough_shi_geodesics_2026_02_14.md`"
 status = "Verified"
 last_verified = "2026-02-14"
-what_would_verify_refute = "Rust tests in `sedenion_geodesic.rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \\to r_h$, tracking monotonic increase in algebraic frustration near the event horizon."
+what_would_verify_refute = '''Rust tests in `sedenion_geodesic.rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \to r_h$, tracking monotonic increase in algebraic frustration near the event horizon.'''
 confidence = "high"
 phase = "GR"
 
@@ -10910,7 +10988,7 @@ id = "C-692"
 statement = "Primary-source mapping candidate: RI-028 ('inside-out system' aggregator headline) maps to DOI 10.1126/science.adl2348."
 description = "Promotes HCTP-013 into the canonical claim lane with explicit verify/refute intent."
 where_stated = "registry/hypercomplex_taxonomy_promotion.toml (HCTP-013), registry/research_intake_2026_02_14.toml (RI-028)"
-status = "Open"
+status = "Provisional"
 last_verified = "2026-02-14"
 what_would_verify_refute = "VERIFY intent: trace RI-028 source chain and confirm DOI `10.1126/science.adl2348` is explicitly linked and topic-aligned. REFUTE intent: DOI is absent from the chain or resolves to unrelated content."
 confidence = "medium"
@@ -10924,7 +11002,7 @@ id = "C-693"
 statement = "Primary-source mapping candidate: RI-030/RI-031 ('magic particles' coverage chain) maps to DOI 10.1103/PhysRevD.110.116016."
 description = "Promotes HCTP-014 into the canonical claim lane with a strict citation-chain verification boundary."
 where_stated = "registry/hypercomplex_taxonomy_promotion.toml (HCTP-014), registry/research_intake_2026_02_14.toml (RI-030, RI-031)"
-status = "Open"
+status = "Provisional"
 last_verified = "2026-02-14"
 what_would_verify_refute = "VERIFY intent: confirm both RI-030 and RI-031 chains resolve to DOI `10.1103/PhysRevD.110.116016` with matching article context. REFUTE intent: chain breaks, DOI mismatch, or topic mismatch."
 confidence = "medium"
@@ -10938,7 +11016,7 @@ id = "C-694"
 statement = "Primary-source mapping candidate: RI-033 maps to Nature DOI 10.1038/s41586-025-09917-9."
 description = "Promotes HCTP-015 into the canonical claim lane while preserving verify/refute scope."
 where_stated = "registry/hypercomplex_taxonomy_promotion.toml (HCTP-015), registry/research_intake_2026_02_14.toml (RI-033)"
-status = "Open"
+status = "Provisional"
 last_verified = "2026-02-14"
 what_would_verify_refute = "VERIFY intent: confirm RI-033 chain includes DOI `10.1038/s41586-025-09917-9` and the linked paper aligns with the described phenomenon. REFUTE intent: DOI is missing, unresolved, or topically unrelated."
 confidence = "medium"
@@ -10956,6 +11034,7 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1.0) of spin correlation P as frustration-induced decoherence gamma increases. Validates CD-frustration as a candidate physical medium for coherence loss."
 confidence = "high"
 phase = "synthesis"
+claims = ["T-PPT-NEED"]
 
 [[claim]]
 id = "T-PPT-NEED"
@@ -10966,6 +11045,7 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite frustration threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration."
 confidence = "high"
 phase = "synthesis"
+claims = ["T-SPIN-CD"]
 
 [[claim]]
 id = "T-CHAMBER-DISCRETE"
@@ -10976,6 +11056,7 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED: Single-minus amplitude evaluation in R1 region collapses to a discrete product of sign gates (Eq. 39). STAR spin correlation P remains stable only in the short-range (degenerate) bin. Both map to discrete sign-logic structures."
 confidence = "high"
 phase = "synthesis"
+claims = ["T-AMPLITUDE-FRUSTRATION-MINIMA"]
 
 [[claim]]
 id = "T-AMPLITUDE-FRUSTRATION-MINIMA"
@@ -10986,6 +11067,7 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero frustration, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation."
 confidence = "high"
 phase = "synthesis"
+claims = ["T-CHAMBER-DISCRETE"]
 
 [[claim]]
 id = "T-QGP-VORTICITY"
@@ -10996,6 +11078,7 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED: Modeling ALICE 5.36 TeV Pb-Pb global polarization via a vorticity-bias channel reproduces the observed centrality-dependent trend (centrality mid-points map to omega_mag)."
 confidence = "medium"
 phase = "synthesis"
+claims = ["T-CMS-SIGN-CHALLENGE"]
 
 [[claim]]
 id = "T-CMS-SIGN-CHALLENGE"
@@ -11006,3 +11089,30 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED: An algebraic twist term proportional to cos(phi) reduces the residual between experiment and hydro-model values to < 0.05, resolving the sign discrepancy observed in 2025 CMS pPb data."
 confidence = "medium"
 phase = "synthesis"
+claims = ["T-QGP-VORTICITY"]
+
+[[claim]]
+id = "C-695"
+statement = "E7 Chevalley-Tits structure constants satisfy the Jacobi identity for all non-degenerate root triples."
+description = "The Tits extraspecial 2-cocycle construction on the E7 root system produces structure constants N(alpha, beta) in {-1, 0, +1} that are antisymmetric and Jacobi-consistent."
+where_stated = "`crates/algebra_core/src/lie/lyndon_basis.rs` (test_jacobi_identity_exhaustive, test_chevalley_antisymmetry, test_chevalley_values_are_unit, test_extraspecial_cocycle_is_2_cocycle, test_simple_root_structure_constants)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Exhaustive check over all C(126,3) = 333,396 root triples (excluding opposite-root pairs where the bracket maps to the Cartan subalgebra). All 5 tests pass: cocycle condition, antisymmetry, Jacobi identity, unit values, simple root adjacency. WHAT WOULD REFUTE: any triple where N(a,b)*N(a+b,c)+N(b,c)*N(b+c,a)+N(c,a)*N(c+a,b) != 0."
+confidence = "high"
+phase = "algebra"
+sprint = 42
+dependencies = []
+
+[[claim]]
+id = "C-696"
+statement = "8D codomain lock of CD lattice projection reflects octonion subalgebra shadow: the projection pi(a,b)_i = round((a_i - b_i) * scale) always maps to Z^8 regardless of input dimension."
+description = "The Cayley-Dickson lattice projection has fixed 8D codomain because it computes the real-coefficient difference between the two halves of a CD pair, collapsing the doubling axis."
+where_stated = "`crates/lattice_filtration/src/basis_index.rs` (project_to_lattice), `crates/algebra_core/src/experimental/cd_external.rs` (test_c452_c453_codomain_and_index_coverage_all_dims)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Codomain confirmed to be exactly 8D at dims 256, 512, 1024, and 2048. No higher-dimensional coordinates appear. Proof skeleton PRS-00737 links this to octonion subalgebra structure. WHAT WOULD REFUTE: any dimension where the projection codomain exceeds 8D."
+confidence = "high"
+phase = "algebra"
+sprint = 42
+dependencies = ["C-452"]
