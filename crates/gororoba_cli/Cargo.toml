@@ -355,6 +355,10 @@ name = "warp-fastpath-suite"
 path = "src/bin/warp_fastpath_suite.rs"
 
 [[bin]]
+name = "warp-fastpath-analyze"
+path = "src/bin/warp_fastpath_analyze.rs"
+
+[[bin]]
 name = "rho-trace-gate"
 path = "src/bin/rho_trace_gate.rs"
 
