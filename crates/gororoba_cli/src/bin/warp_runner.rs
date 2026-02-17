@@ -6,10 +6,9 @@ use data_core::hdf5_export::{
     read_simulation_trace_component, scan_hdf5_numeric_datasets, NumericDatasetScanStatus,
     SimulationTraceBundle, SpectralSummarySeries,
 };
-use data_core::quality::{
-    validate_rho_trace, validate_scalar_trace_signal, RhoQualityThresholds, RhoTraceQuality,
-    ScalarTraceThresholds,
-};
+use data_core::quality::{validate_rho_trace, RhoQualityThresholds, RhoTraceQuality};
+#[cfg(feature = "hdf5-export")]
+use data_core::quality::{validate_scalar_trace_signal, ScalarTraceThresholds};
 #[cfg(feature = "hdf5-export")]
 use gororoba_cli::warp_gate_policy::{
     load_warp_gate_policy, CANONICAL_REQUIRED_SPECTRAL_CHANNELS, CANONICAL_REQUIRED_TRACE_CHANNELS,
@@ -72,6 +71,7 @@ pub enum GateProfile {
     Canonical300sMeasured,
 }
 
+#[allow(dead_code)]
 impl GateProfile {
     pub fn as_str(self) -> &'static str {
         match self {
