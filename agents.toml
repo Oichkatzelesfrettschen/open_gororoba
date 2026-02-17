@@ -264,6 +264,14 @@ checkpoint_push_policy = "Checkpoint pushes may use git.push.checkpoint after fo
 milestone_policy = "Before production claims, artifact publication, or major merges, run rust.smoke (workspace clippy/tests with warnings-as-errors)."
 rationale = "Reduces iteration latency while preserving strict full-workspace quality at milestone boundaries."
 
+[shared.gpu_run_cadence]
+default_run_class = "smoke_or_short_basemark"
+default_duration_seconds = 20
+default_sweep_repeats = 1
+avoid_concurrent_long_gpu_lanes = true
+production_300s_policy = "Run only on explicit request, or when a measured-gate/material fastpath change requires new production evidence."
+rationale = "Prevent unnecessary long GPU runs during iteration while preserving high-fidelity production reruns when truly needed."
+
 [[shared.pitfall]]
 id = "PIT-001"
 issue = "nalgebra is pinned to 0.33"

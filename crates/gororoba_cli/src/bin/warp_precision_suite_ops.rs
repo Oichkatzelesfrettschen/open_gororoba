@@ -204,9 +204,50 @@ fn write_summary(
         out.push_str(&format!("single_output = \"{}\"\n", path.display()));
     }
     out.push('\n');
+    out.push_str("[compatibility]\n");
+    out.push_str("canonical_schema = \"open_gororoba.warp_precision_case.v2\"\n");
+    out.push_str("legacy_entrypoints = [\"warp-bench-precision\", \"warp-precision-matrix\"]\n");
+    out.push_str("canonical_entrypoint = \"warp-precision-suite\"\n");
+    out.push('\n');
 
     for (h5_path, timing_path, report) in cases {
+        let canonical_case_id = format!(
+            "{}_{}_{}_{}s",
+            backend_tag(cfg.backend).to_ascii_lowercase(),
+            report.resolution,
+            precision_tag(report.precision).to_ascii_lowercase(),
+            cfg.duration_secs.round() as u64
+        );
+        let legacy_h5_name = case_h5_name(
+            report.resolution,
+            cfg.backend,
+            report.precision,
+            cfg.duration_secs,
+            false,
+        );
+        let detailed_h5_name = case_h5_name(
+            report.resolution,
+            cfg.backend,
+            report.precision,
+            cfg.duration_secs,
+            true,
+        );
+        let legacy_timing_name = timing_name(
+            report.resolution,
+            cfg.backend,
+            report.precision,
+            cfg.duration_secs,
+            false,
+        );
+        let detailed_timing_name = timing_name(
+            report.resolution,
+            cfg.backend,
+            report.precision,
+            cfg.duration_secs,
+            true,
+        );
         out.push_str("[[case]]\n");
+        out.push_str(&format!("canonical_case_id = \"{}\"\n", canonical_case_id));
         out.push_str(&format!("resolution = {}\n", report.resolution));
         out.push_str(&format!(
             "precision = \"{}\"\n",
@@ -237,6 +278,13 @@ fn write_summary(
         ));
         out.push_str(&format!("h5_output = \"{}\"\n", h5_path.display()));
         out.push_str(&format!("timing_output = \"{}\"\n", timing_path.display()));
+        out.push_str(&format!("legacy_h5_name = \"{}\"\n", legacy_h5_name));
+        out.push_str(&format!("legacy_timing_name = \"{}\"\n", legacy_timing_name));
+        out.push_str(&format!("detailed_h5_name = \"{}\"\n", detailed_h5_name));
+        out.push_str(&format!(
+            "detailed_timing_name = \"{}\"\n",
+            detailed_timing_name
+        ));
         out.push('\n');
     }
 

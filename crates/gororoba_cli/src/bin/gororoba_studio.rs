@@ -2179,7 +2179,7 @@ path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
             .expect("thesis-2 quick profile should execute");
         assert_eq!(result.experiment_id, "thesis-2");
         assert!(result.metric_value.is_finite());
-        assert!(result.duration_ms <= u128::MAX);
+        assert!(result.duration_ms < 300_000);
         assert_eq!(result.api_version, API_VERSION);
         assert_eq!(
             result.config_snapshot["profile"],
