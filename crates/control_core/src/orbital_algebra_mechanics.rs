@@ -429,6 +429,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_quaternion_to_matrix_identity() {
         let q = Quaternion::identity();
         let m = q.to_matrix();

@@ -1215,8 +1215,8 @@ mod tests {
         for mc in &comps {
             for &cp in &mc.nodes {
                 all_nodes.entry(cp).or_insert_with(|| {
-                    let idx = full_graph.add_node(());
-                    idx
+                    
+                    full_graph.add_node(())
                 });
             }
         }
@@ -1258,8 +1258,8 @@ mod tests {
         for mc in &comps {
             for &cp in &mc.nodes {
                 all_nodes.entry(cp).or_insert_with(|| {
-                    let idx = full_graph.add_node(());
-                    idx
+                    
+                    full_graph.add_node(())
                 });
             }
         }

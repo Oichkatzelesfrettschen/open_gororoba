@@ -1466,6 +1466,9 @@ impl std::fmt::Debug for SplitSignTable {
 mod tests {
     use super::*;
 
+    // A blade descriptor: (basis_index, sign, other_basis_index)
+    type BladeDesc = (usize, i32, usize);
+
     #[test]
     fn test_real_multiply() {
         let result = cd_multiply(&[3.0], &[5.0]);
@@ -2583,7 +2586,7 @@ mod tests {
                         let nonzero: Vec<(usize, f64)> = product
                             .iter()
                             .enumerate()
-                            .filter(|(_, &v)| v.abs() > 0.5)
+                            .filter(|&(_, &v)| v.abs() > 0.5)
                             .map(|(i, &v)| (i, v))
                             .collect();
 
@@ -2805,7 +2808,7 @@ mod tests {
         let sig = CdSignature::split(dim);
         // Find all 2-blade zero-product pairs: e_i + s*e_j where s in {-1, +1}
         // that annihilate another 2-blade.
-        let mut zd_pairs: Vec<((usize, i32, usize), (usize, i32, usize))> = Vec::new();
+        let mut zd_pairs: Vec<(BladeDesc, BladeDesc)> = Vec::new();
 
         for i in 0..dim {
             for si in &[-1i32, 1] {
@@ -2921,11 +2924,8 @@ mod tests {
 
         // Standard: [+1, -1, -1, -1, -1, -1, -1, -1] (signature (1,7))
         assert_eq!(std_squares[0], 1);
-        for k in 1..dim {
-            assert_eq!(
-                std_squares[k], -1,
-                "standard octonion: e_{k}^2 should be -1"
-            );
+        for &sq in std_squares.iter().skip(1).take(dim - 1) {
+            assert_eq!(sq, -1, "standard octonion: e_k^2 should be -1");
         }
 
         // Split: should have some +1 entries among k >= 1.
@@ -3298,7 +3298,7 @@ mod tests {
         let all_sigs = all_signatures(5);
 
         // Select 8 representative samples: corners + mixed patterns.
-        let samples = vec![
+        let samples = [
             &all_sigs[0],  // All -1: [-1,-1,-1,-1,-1]
             &all_sigs[31], // All +1: [+1,+1,+1,+1,+1]
             &all_sigs[1],  // First +1: [+1,-1,-1,-1,-1]

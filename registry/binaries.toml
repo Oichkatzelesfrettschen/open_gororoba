@@ -498,3 +498,36 @@ experiment = "E-034"
 name = "warp-acceptance-gate"
 crate = "gororoba_cli"
 description = "Fail-closed HDF5 artifact acceptance gate chaining strict simulation trace checks with recursive numeric dataset NaN/Inf checks and TOML policy-driven canonical_300s_measured thresholds"
+
+[[binary]]
+name = "amplitude-frustration-survey"
+crate = "gororoba_cli"
+description = "Enumerate Bott periodicity chambers and compute frustration amplitude statistics across CD dimensions"
+experiment = "E-037"
+
+[[binary]]
+name = "lhc-2025-qgp-synthesis"
+crate = "gororoba_cli"
+description = "QGP frustration bridge synthesis using LHC 2025 collision data with spin tomography cross-validation"
+experiment = "E-038"
+
+[[binary]]
+name = "qgp-parameter-optimizer"
+crate = "gororoba_cli"
+description = "Grid search parameter optimizer for QGP frustration bridge coupling constants"
+
+[[binary]]
+name = "spin-decoherence-pipeline"
+crate = "gororoba_cli"
+description = "Thesis 5 pipeline: spin decoherence rate prediction from frustration geometry"
+experiment = "E-036"
+
+[[binary]]
+name = "compute-all-lambdas"
+crate = "gororoba_cli"
+description = "Compute lambda coupling strength for all materials in registry, output TOML for materials_viscosity.toml"
+
+[[binary]]
+name = "demo-real-materials"
+crate = "gororoba_cli"
+description = "Demonstration of E-027 frustration-viscosity experiment grounded in real physical materials properties"

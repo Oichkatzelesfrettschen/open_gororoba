@@ -1349,7 +1349,7 @@ mod tests {
         for &r in &corrs {
             assert!(r.is_finite());
             // With variation, correlations should be in [-1, 1]
-            assert!(r >= -1.0 - 1e-10 && r <= 1.0 + 1e-10);
+            assert!((-1.0 - 1e-10..=1.0 + 1e-10).contains(&r));
         }
     }
 }

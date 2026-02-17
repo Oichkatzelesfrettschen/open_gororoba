@@ -420,7 +420,7 @@ pub fn polytropic_stability_sweep(
     let gamma_critical = gammas
         .iter()
         .zip(stable_at_gamma.iter())
-        .find(|(_, &s)| s)
+        .find(|&(_, &s)| s)
         .map(|(&g, _)| g);
 
     let n_stable = stable_at_gamma.iter().filter(|&&s| s).count();

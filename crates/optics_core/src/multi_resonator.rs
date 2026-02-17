@@ -336,7 +336,7 @@ mod tests {
         let cavity = test_base_cavity();
         let channel = ResonatorChannel {
             component_index: 0,
-            cavity: cavity.clone(),
+            cavity,
             n_assessors: 6,
         };
         let system = MultiResonatorSystem::new(vec![channel], vec![vec![0.0]]);
@@ -350,7 +350,7 @@ mod tests {
 
         // Multi-resonator integration
         let initial = system.zero_state();
-        let trace = system.integrate(&initial, &[input.clone()], dt, n_steps);
+        let trace = system.integrate(&initial, &[input], dt, n_steps);
 
         // Single-cavity integration
         let solver = TcmtSolver::new(cavity);

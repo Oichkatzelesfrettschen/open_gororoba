@@ -100,8 +100,8 @@ fn test_optimizer_serializes_after_run() {
 fn test_perturbed_table_preserves_identity() {
     // Even with noise, e_0 * e_i should still be (i, +1) at 0% noise
     let table = perturbed_sedenion_table(0.0, 42);
-    for i in 0..SEDENION_DIM {
-        assert_eq!(table[0][i], (i, 1), "e_0 * e_{} should be identity", i);
+    for (i, &entry) in table[0].iter().enumerate().take(SEDENION_DIM) {
+        assert_eq!(entry, (i, 1), "e_0 * e_{} should be identity", i);
     }
 }
 

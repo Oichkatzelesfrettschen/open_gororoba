@@ -7,7 +7,7 @@
 //! vs CPU: 12 cores (parallel LBM)
 
 use lbm_3d::solver::LbmSolver3D;
-use lbm_3d_cuda::LbmSolver3DCuda;
+use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use std::time::Instant;
 
 /// Benchmark configuration
@@ -115,11 +115,19 @@ fn bench_gpu(config: &BenchConfig) -> Result<f64, String> {
         config.grid_size,
         config.grid_size,
         config.tau,
+        Precision::FP32,
     )
     .map_err(|e| format!("GPU initialization failed: {:?}", e))?;
 
     solver
-        .initialize_uniform(config.rho_init, config.u_init)
+        .initialize_uniform(
+            config.rho_init as f32,
+            [
+                config.u_init[0] as f32,
+                config.u_init[1] as f32,
+                config.u_init[2] as f32,
+            ],
+        )
         .map_err(|e| format!("GPU initialization failed: {:?}", e))?;
 
     solver

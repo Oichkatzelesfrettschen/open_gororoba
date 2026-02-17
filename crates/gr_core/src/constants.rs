@@ -262,19 +262,19 @@ mod tests {
     #[test]
     fn test_planck_length_order_of_magnitude() {
         // l_P ~ 1.616e-33 cm
-        assert!(L_PLANCK_CGS > 1e-34 && L_PLANCK_CGS < 1e-32);
+        const { assert!(L_PLANCK_CGS > 1e-34 && L_PLANCK_CGS < 1e-32) };
     }
 
     #[test]
     fn test_planck_time_order_of_magnitude() {
         // t_P ~ 5.39e-44 s
-        assert!(T_PLANCK_CGS > 1e-45 && T_PLANCK_CGS < 1e-43);
+        const { assert!(T_PLANCK_CGS > 1e-45 && T_PLANCK_CGS < 1e-43) };
     }
 
     #[test]
     fn test_planck_mass_order_of_magnitude() {
         // m_P ~ 2.18e-5 g (about 22 micrograms)
-        assert!(M_PLANCK_CGS > 1e-6 && M_PLANCK_CGS < 1e-4);
+        const { assert!(M_PLANCK_CGS > 1e-6 && M_PLANCK_CGS < 1e-4) };
     }
 
     #[test]

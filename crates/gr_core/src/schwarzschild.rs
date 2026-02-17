@@ -337,6 +337,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_metric_diagonal() {
         let s = bh();
         let x = [0.0, 5.0, 1.0, 0.5];
@@ -431,6 +432,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_christoffel_symmetry() {
         let s = bh();
         let x = [0.0, 7.0, 1.0, 0.5];
@@ -486,6 +488,7 @@ mod tests {
     // -- Vacuum Einstein equation test --
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_vacuum_einstein_equation() {
         // Schwarzschild is a vacuum solution: R_{mu nu} = 0
         let s = bh();

@@ -456,7 +456,7 @@ mod tests {
         let result = quantum_grid_search(vec![(0.0, 1.0, 8), (0.0, 1.0, 8)], &oracle);
 
         // Should find points near center
-        assert!(result.verified_solutions.len() > 0);
+        assert!(!result.verified_solutions.is_empty());
     }
 
     #[test]

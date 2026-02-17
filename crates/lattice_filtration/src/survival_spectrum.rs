@@ -171,11 +171,10 @@ pub fn classify_latency_law(samples: &[(f64, f64)]) -> LatencyLaw {
         .iter()
         .max_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
 
-    if let Some(&(r2, law)) = best {
-        if r2 > threshold {
+    if let Some(&(r2, law)) = best
+        && r2 > threshold {
             return law;
         }
-    }
 
     LatencyLaw::Undetermined
 }

@@ -7,6 +7,7 @@
 //! Reference: Scolnic et al. (2022), ApJ 938, 113; Brout et al. (2022), ApJ 938, 110
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
 /// A Type Ia supernova from Pantheon+.
@@ -32,14 +33,6 @@ pub struct Supernova {
     pub idsurvey: i32,
     /// Whether this SN was used in SH0ES Cepheid calibration.
     pub is_calibrator: bool,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    let s = s.trim();
-    if s.is_empty() || s == "nan" || s == "NaN" {
-        return f64::NAN;
-    }
-    s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
 /// Parse Pantheon+ SH0ES distance file (.dat format).
@@ -87,7 +80,7 @@ pub fn parse_pantheon_dat(path: &Path) -> Result<Vec<Supernova>, FetchError> {
         let get_field = |name: &str| -> f64 {
             get_idx(name)
                 .and_then(|i| fields.get(i))
-                .map(|s| parse_f64(s))
+                .map(|s| parse_f64_or_nan(s))
                 .unwrap_or(f64::NAN)
         };
 
@@ -106,13 +99,13 @@ pub fn parse_pantheon_dat(path: &Path) -> Result<Vec<Supernova>, FetchError> {
             if header_indices.is_none() && fields.len() >= 8 {
                 sne.push(Supernova {
                     cid,
-                    z_cmb: parse_f64(fields[1]),
-                    z_hel: parse_f64(fields[2]),
-                    mu: parse_f64(fields[3]),
-                    mu_err: parse_f64(fields[4]),
-                    host_logmass: parse_f64(fields.get(5).unwrap_or(&"")),
-                    x1: parse_f64(fields.get(6).unwrap_or(&"")),
-                    c: parse_f64(fields.get(7).unwrap_or(&"")),
+                    z_cmb: parse_f64_or_nan(fields[1]),
+                    z_hel: parse_f64_or_nan(fields[2]),
+                    mu: parse_f64_or_nan(fields[3]),
+                    mu_err: parse_f64_or_nan(fields[4]),
+                    host_logmass: parse_f64_or_nan(fields.get(5).unwrap_or(&"")),
+                    x1: parse_f64_or_nan(fields.get(6).unwrap_or(&"")),
+                    c: parse_f64_or_nan(fields.get(7).unwrap_or(&"")),
                     idsurvey: fields.get(8).and_then(|s| s.parse().ok()).unwrap_or(0),
                     is_calibrator: fields.get(9).map(|s| *s == "1").unwrap_or(false),
                 });

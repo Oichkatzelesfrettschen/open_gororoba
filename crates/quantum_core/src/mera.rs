@@ -125,7 +125,7 @@ pub fn mera_entropy_estimate(subsystem_size: usize, d: usize, seed: u64) -> f64 
 
     // Generate random "density matrix" eigenvalues
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
-    let mut eigenvalues: Vec<f64> = (0..dim).map(|_| rng.gen::<f64>()).collect();
+    let mut eigenvalues: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>()).collect();
 
     // Normalize to sum to 1 (valid density matrix)
     let sum: f64 = eigenvalues.iter().sum();

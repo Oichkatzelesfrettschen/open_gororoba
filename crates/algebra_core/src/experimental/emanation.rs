@@ -1546,7 +1546,7 @@ pub fn octonion_subalgebra_constraint_check(lattice: &[Vec<i32>]) -> bool {
         let support: Vec<usize> = v
             .iter()
             .enumerate()
-            .filter(|(_, &x)| x != 0)
+            .filter(|&(_, &x)| x != 0)
             .map(|(i, _)| i)
             .collect();
 
@@ -2391,11 +2391,10 @@ pub fn hide_fill_analysis(n: usize) -> Vec<HideFillResult> {
                 let mut set = BTreeSet::new();
                 for r in 0..k {
                     for c in 0..k {
-                        if let Some(cell) = &et.cells[r][c] {
-                            if cell.is_dmz {
+                        if let Some(cell) = &et.cells[r][c]
+                            && cell.is_dmz {
                                 set.insert((r, c));
                             }
-                        }
                     }
                 }
                 set
@@ -2560,13 +2559,12 @@ pub fn create_skybox(n: usize, s: usize) -> Skybox {
                 // Interior cell: copy from ET
                 let et_row = row - 1;
                 let et_col = col - 1;
-                if let Some(et_cell) = &et.cells[et_row][et_col] {
-                    if et_cell.is_dmz {
+                if let Some(et_cell) = &et.cells[et_row][et_col]
+                    && et_cell.is_dmz {
                         cell.is_dmz = true;
                         cell.emanation_value = et_cell.emanation_value;
                         dmz_count += 1;
                     }
-                }
             }
         }
     }
@@ -4117,8 +4115,8 @@ pub fn extract_signed_graph(et: &StruttedEmanationTable) -> SignedAdjacencyGraph
 
     for r in 0..k {
         for c in (r + 1)..k {
-            if let Some(cell) = &et.cells[r][c] {
-                if cell.is_dmz {
+            if let Some(cell) = &et.cells[r][c]
+                && cell.is_dmz {
                     let sign = cell.edge_sign;
                     edges.push(SignedEdge {
                         lo_a: nodes[r],
@@ -4131,7 +4129,6 @@ pub fn extract_signed_graph(et: &StruttedEmanationTable) -> SignedAdjacencyGraph
                         n_negative += 1;
                     }
                 }
-            }
         }
     }
 
@@ -4846,9 +4843,10 @@ mod tests {
         // At minimum, some ZD pairs from dim=16 should still exist in dim=32
         // (though their graph structure changes).
         // The key claim: the carry-bit creates new structure.
-        assert!(
-            lost.len() + gained.len() > 0 || true,
-            "carry-bit analysis should detect some change (lost={}, gained={})",
+        // Lenient check: document carry-bit change counts without hard assertion.
+        // (The carry-bit may or may not create detectable changes at dim=32.)
+        eprintln!(
+            "carry-bit analysis: lost={}, gained={}",
             lost.len(),
             gained.len()
         );
@@ -4909,10 +4907,10 @@ mod tests {
     fn test_generator_triad_identity_all_dims() {
         for n in 4..=8 {
             let dim = 1 << n; // 16, 32, 64, 128, 256
-            let gen = CdGenerator::new(dim);
-            assert_eq!(gen.g, dim / 2);
+            let cd_gen = CdGenerator::new(dim);
+            assert_eq!(cd_gen.g, dim / 2);
 
-            let valid = gen.valid_struts();
+            let valid = cd_gen.valid_struts();
             assert!(
                 !valid.is_empty(),
                 "dim={} should have valid strut constants",
@@ -4921,12 +4919,12 @@ mod tests {
 
             // For each valid strut, verify G XOR S = X (nonzero, distinct)
             for &s in &valid {
-                let x = gen.g ^ s;
+                let x = cd_gen.g ^ s;
                 assert_ne!(x, 0);
-                assert_ne!(x, gen.g);
+                assert_ne!(x, cd_gen.g);
                 assert_ne!(x, s);
                 // The identity: G XOR S = X <=> S = G XOR X
-                assert_eq!(s, gen.g ^ x);
+                assert_eq!(s, cd_gen.g ^ x);
             }
         }
     }
@@ -5151,9 +5149,9 @@ mod tests {
 
     #[test]
     fn test_cd_generator_dim16() {
-        let gen = CdGenerator::new(16);
-        assert_eq!(gen.g, 8);
-        let struts = gen.valid_struts();
+        let cd_gen = CdGenerator::new(16);
+        assert_eq!(cd_gen.g, 8);
+        let struts = cd_gen.valid_struts();
         assert!(struts.contains(&1));
         assert!(struts.contains(&7));
     }
@@ -5189,6 +5187,7 @@ mod tests {
     // ===================================================================
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_qsigns_base_case_quaternions() {
         // Verify QSIGNS matches de Marrais's table exactly.
         // e0 is real: e0*e_j = +e_j for all j.
@@ -5496,28 +5495,26 @@ mod tests {
         // for all filled cells.
         let et = create_strutted_et(4, 1);
         for row in &et.cells {
-            for cell_opt in row {
-                if let Some(cell) = cell_opt {
-                    // Cross-magnitude check should always pass
-                    assert_eq!(
-                        cell.ul.unsigned_abs() as usize,
-                        cell.lr.unsigned_abs() as usize,
-                        "Cross-mag fail: |UL|={} != |LR|={} at ({},{})",
-                        cell.ul.unsigned_abs(),
-                        cell.lr.unsigned_abs(),
-                        cell.row_pos,
-                        cell.col_pos
-                    );
-                    assert_eq!(
-                        cell.ur.unsigned_abs() as usize,
-                        cell.ll.unsigned_abs() as usize,
-                        "Cross-mag fail: |UR|={} != |LL|={} at ({},{})",
-                        cell.ur.unsigned_abs(),
-                        cell.ll.unsigned_abs(),
-                        cell.row_pos,
-                        cell.col_pos
-                    );
-                }
+            for cell in row.iter().flatten() {
+                // Cross-magnitude check should always pass
+                assert_eq!(
+                    cell.ul.unsigned_abs() as usize,
+                    cell.lr.unsigned_abs() as usize,
+                    "Cross-mag fail: |UL|={} != |LR|={} at ({},{})",
+                    cell.ul.unsigned_abs(),
+                    cell.lr.unsigned_abs(),
+                    cell.row_pos,
+                    cell.col_pos
+                );
+                assert_eq!(
+                    cell.ur.unsigned_abs() as usize,
+                    cell.ll.unsigned_abs() as usize,
+                    "Cross-mag fail: |UR|={} != |LL|={} at ({},{})",
+                    cell.ur.unsigned_abs(),
+                    cell.ll.unsigned_abs(),
+                    cell.row_pos,
+                    cell.col_pos
+                );
             }
         }
     }
@@ -7344,15 +7341,15 @@ mod tests {
         for n in 5..=7 {
             let mandala_addr = regime_address(n, 3);
             for k in 3..n {
-                let gen = 1usize << k; // 8, 16, 32, ...
+                let generator = 1usize << k; // 8, 16, 32, ...
                 let max_s = (1usize << (n - 1)) - 1;
-                if gen <= max_s {
+                if generator <= max_s {
                     assert_eq!(
-                        regime_address(n, gen),
+                        regime_address(n, generator),
                         mandala_addr,
                         "N={}, S={}: generator must map to mandala address",
                         n,
-                        gen
+                        generator
                     );
                 }
             }

@@ -304,7 +304,7 @@ fn test_taxonomy_two_axis_coverage() {
     let mut census = CompositionAlgebraCensus::new();
 
     // Axis 1 construction methods
-    let methods = vec![
+    let methods = [
         ConstructionMethod::TensorProduct,
         ConstructionMethod::RecursiveDoubling,
         ConstructionMethod::Exceptional,

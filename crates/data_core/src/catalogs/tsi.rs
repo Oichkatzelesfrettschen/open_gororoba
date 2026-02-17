@@ -7,6 +7,7 @@
 //! Reference: Kopp (2021), https://doi.org/10.1007/s11207-021-01853-x
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
 /// A single TSI measurement from TSIS-1.
@@ -20,14 +21,6 @@ pub struct TsiMeasurement {
     pub tsi: f64,
     /// TSI measurement uncertainty (W/m^2).
     pub tsi_uncertainty: f64,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    let s = s.trim();
-    if s.is_empty() || s == "NaN" || s == "nan" || s == "-99" || s == "-999" {
-        return f64::NAN;
-    }
-    s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
 /// Parse TSIS-1 TSI CSV data.
@@ -64,10 +57,10 @@ pub fn parse_tsi_csv(path: &Path) -> Result<Vec<TsiMeasurement>, FetchError> {
             continue;
         }
 
-        let jd = parse_f64(fields[0]);
+        let jd = parse_f64_or_nan(fields[0]);
         let date = fields.get(1).unwrap_or(&"").trim().to_string();
-        let tsi = parse_f64(fields.get(2).unwrap_or(&""));
-        let unc = parse_f64(fields.get(3).unwrap_or(&""));
+        let tsi = parse_f64_or_nan(fields.get(2).unwrap_or(&""));
+        let unc = parse_f64_or_nan(fields.get(3).unwrap_or(&""));
 
         if tsi.is_nan() {
             continue;
@@ -129,11 +122,10 @@ pub fn compare_tsis_sorce(
                 best_s = Some(s);
             }
         }
-        if let Some(s) = best_s {
-            if best_dt <= jd_tol {
+        if let Some(s) = best_s
+            && best_dt <= jd_tol {
                 diffs.push(t.tsi - s.tsi);
             }
-        }
     }
 
     if diffs.is_empty() {

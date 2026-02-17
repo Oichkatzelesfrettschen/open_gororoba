@@ -1,9 +1,9 @@
 [package]
 name = "cosmic_scheduler"
 version = "0.1.0"
-edition = "2021"
-license.workspace = true
-repository.workspace = true
+edition = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
 publish = false
 
 [dependencies]
@@ -23,3 +23,6 @@ path = "tests/test_lbm_integration.rs"
 [[test]]
 name = "test_deterministic_evolution"
 path = "tests/test_deterministic_evolution.rs"
+
+[lints]
+workspace = true

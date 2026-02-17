@@ -205,11 +205,10 @@ impl AInfinityAlgebra {
     /// Check if this is a DG-algebra (m_n = 0 for n >= 3).
     pub fn is_dg_algebra(&self) -> bool {
         for n in 3..=self.max_arity {
-            if let Some(op) = self.operations.get(&n) {
-                if !op.is_zero {
+            if let Some(op) = self.operations.get(&n)
+                && !op.is_zero {
                     return false;
                 }
-            }
         }
         true
     }
@@ -217,19 +216,17 @@ impl AInfinityAlgebra {
     /// Check if this is a strictly associative algebra (m_1 = 0, m_n = 0 for n >= 3).
     pub fn is_strictly_associative(&self) -> bool {
         // m_1 must be zero (no differential)
-        if let Some(op) = self.operations.get(&1) {
-            if !op.is_zero {
+        if let Some(op) = self.operations.get(&1)
+            && !op.is_zero {
                 return false;
             }
-        }
 
         // m_n must be zero for n >= 3
         for n in 3..=self.max_arity {
-            if let Some(op) = self.operations.get(&n) {
-                if !op.is_zero {
+            if let Some(op) = self.operations.get(&n)
+                && !op.is_zero {
                     return false;
                 }
-            }
         }
 
         true
@@ -288,29 +285,26 @@ impl LInfinityAlgebra {
     /// Check if this is a DG-Lie algebra (l_n = 0 for n >= 3).
     pub fn is_dg_lie(&self) -> bool {
         for n in 3..=self.max_arity {
-            if let Some(op) = self.operations.get(&n) {
-                if !op.is_zero {
+            if let Some(op) = self.operations.get(&n)
+                && !op.is_zero {
                     return false;
                 }
-            }
         }
         true
     }
 
     /// Check if this is a strictly Lie algebra (l_1 = 0, l_n = 0 for n >= 3).
     pub fn is_strictly_lie(&self) -> bool {
-        if let Some(op) = self.operations.get(&1) {
-            if !op.is_zero {
+        if let Some(op) = self.operations.get(&1)
+            && !op.is_zero {
                 return false;
             }
-        }
 
         for n in 3..=self.max_arity {
-            if let Some(op) = self.operations.get(&n) {
-                if !op.is_zero {
+            if let Some(op) = self.operations.get(&n)
+                && !op.is_zero {
                     return false;
                 }
-            }
         }
 
         true

@@ -49,11 +49,10 @@ fn parse_f64(s: &str) -> f64 {
     // Handle ranges like "3.1-5.5" by taking midpoint
     if s.contains('-') && !s.starts_with('-') {
         let parts: Vec<&str> = s.split('-').collect();
-        if parts.len() == 2 {
-            if let (Ok(lo), Ok(hi)) = (parts[0].parse::<f64>(), parts[1].parse::<f64>()) {
+        if parts.len() == 2
+            && let (Ok(lo), Ok(hi)) = (parts[0].parse::<f64>(), parts[1].parse::<f64>()) {
                 return (lo + hi) / 2.0;
             }
-        }
     }
     s.parse::<f64>().unwrap_or(f64::NAN)
 }

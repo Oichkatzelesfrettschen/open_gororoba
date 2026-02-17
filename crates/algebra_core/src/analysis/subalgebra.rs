@@ -485,8 +485,8 @@ pub fn classify_generations(enumeration: &SubalgebraEnumeration) -> Vec<Subalgeb
     generations.sort_by_key(|g| std::cmp::Reverse(g.standard_overlap));
 
     // Assign generation indices
-    for (idx, gen) in generations.iter_mut().enumerate() {
-        gen.generation = idx;
+    for (idx, generation_info) in generations.iter_mut().enumerate() {
+        generation_info.generation = idx;
     }
 
     generations
@@ -872,13 +872,13 @@ mod tests {
         }
 
         eprintln!("Generation classification:");
-        for gen in &generations {
+        for generation_info in &generations {
             eprintln!(
                 "  gen {}: overlap={}, mean_norm={:.4}, indices={:?}",
-                gen.generation,
-                gen.standard_overlap,
-                gen.mean_associator_norm,
-                gen.subalgebra.indices
+                generation_info.generation,
+                generation_info.standard_overlap,
+                generation_info.mean_associator_norm,
+                generation_info.subalgebra.indices
             );
         }
     }
@@ -907,15 +907,15 @@ mod tests {
         let n = enumeration.subalgebras.len();
 
         // Diagonal should be 8
-        for i in 0..n {
-            assert_eq!(matrix[i][i], 8);
+        for (i, row) in matrix.iter().enumerate().take(n) {
+            assert_eq!(row[i], 8);
         }
 
         // Off-diagonal: report distribution of intersection sizes
         let mut size_counts: HashMap<usize, usize> = HashMap::new();
-        for i in 0..n {
-            for j in (i + 1)..n {
-                *size_counts.entry(matrix[i][j]).or_insert(0) += 1;
+        for (i, row) in matrix.iter().enumerate().take(n) {
+            for &val in row.iter().skip(i + 1).take(n - i - 1) {
+                *size_counts.entry(val).or_insert(0) += 1;
             }
         }
 
@@ -956,14 +956,14 @@ mod tests {
         let triples = algebraic_generation_triples(16);
 
         eprintln!("Algebraic generation triples (dim=16):");
-        for (gen, (i, j, k), norm) in &triples {
-            if *gen < 10 {
+        for (generation, (i, j, k), norm) in &triples {
+            if *generation < 10 {
                 eprintln!(
                     "  generation {}: ({},{},{}) -> norm = {:.6}",
-                    gen, i, j, k, norm
+                    generation, i, j, k, norm
                 );
             } else {
-                eprintln!("  depth {}: mean norm = {:.6}", gen - 10, norm);
+                eprintln!("  depth {}: mean norm = {:.6}", generation - 10, norm);
             }
         }
 

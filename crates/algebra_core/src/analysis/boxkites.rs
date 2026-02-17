@@ -1542,6 +1542,9 @@ pub fn compute_frustration_ratio(dim: usize) -> FrustrationResult {
 mod tests {
     use super::*;
 
+    // Regime accumulator: (n_comps, eta0, eta1, b1, frustrated, fibers[4], pure, mixed)
+    type RegimeAccum = (usize, usize, usize, usize, usize, [usize; 4], usize, usize);
+
     #[test]
     fn test_primitive_assessors_count() {
         let assessors = primitive_assessors();
@@ -1965,8 +1968,8 @@ mod tests {
                 point_counts[p] += 1;
             }
         }
-        for p in 1..=7 {
-            assert_eq!(point_counts[p], 3, "Point {} should appear on 3 lines", p);
+        for (p, &count) in point_counts.iter().enumerate().skip(1) {
+            assert_eq!(count, 3, "Point {} should appear on 3 lines", p);
         }
 
         // Each pair determines exactly 1 line
@@ -2782,7 +2785,7 @@ mod tests {
             let nonzero: Vec<(usize, f64)> = prod
                 .iter()
                 .enumerate()
-                .filter(|(_, &v)| v.abs() > 1e-10)
+                .filter(|&(_, &v)| v.abs() > 1e-10)
                 .map(|(i, &v)| (i, v))
                 .collect();
 
@@ -4947,7 +4950,7 @@ mod tests {
                 let v1_perfect = v1_pp[1] == 0
                     && v1_counts
                         .iter()
-                        .filter(|(&k, _)| k != (1, 1))
+                        .filter(|&(&k, _)| k != (1, 1))
                         .all(|(_, v)| v[0] == 0);
                 eprintln!("  Variant 1 F=(+1,+1) <=> pure: {v1_perfect}");
             }
@@ -5067,9 +5070,9 @@ mod tests {
         let encode = |tri: &TriData| -> u16 {
             let mut bits = 0u16;
             for (e, m) in tri.m.iter().enumerate() {
-                for r in 0..2 {
-                    for c in 0..2 {
-                        bits |= (m[r][c] as u16) << (e * 4 + r * 2 + c);
+                for (r, row) in m.iter().enumerate().take(2) {
+                    for (c, &val) in row.iter().enumerate().take(2) {
+                        bits |= (val as u16) << (e * 4 + r * 2 + c);
                     }
                 }
             }
@@ -5416,7 +5419,7 @@ mod tests {
             );
             let c3_nonzero_pure: usize = c3_counts
                 .iter()
-                .filter(|(&k, _)| k != (0, 0))
+                .filter(|&(&k, _)| k != (0, 0))
                 .map(|(_, v)| v[0])
                 .sum();
             assert_eq!(
@@ -6073,10 +6076,7 @@ mod tests {
 
             // Group components by edge count (regime)
             // Per-regime accumulators: (n_comps, eta0, eta1, b1, frustrated, fibers[4], pure, mixed)
-            let mut regimes: BTreeMap<
-                usize,
-                (usize, usize, usize, usize, usize, [usize; 4], usize, usize),
-            > = BTreeMap::new();
+            let mut regimes: BTreeMap<usize, RegimeAccum> = BTreeMap::new();
 
             for comp in components.iter() {
                 let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
@@ -6299,8 +6299,8 @@ mod tests {
             let mut max_degree = 0usize;
             let mut total_monomials = 0usize;
 
-            for m in 0..n_inputs {
-                if anf[m] != 0 {
+            for (m, &anf_val) in anf.iter().enumerate().take(n_inputs) {
+                if anf_val != 0 {
                     let deg = (m as u32).count_ones() as usize;
                     degree_counts[deg] += 1;
                     if deg > max_degree {
@@ -6347,7 +6347,7 @@ mod tests {
 
             let mut eta_tt: Vec<u8> = vec![0; n_inputs_eta];
 
-            for input in 0..n_inputs_eta {
+            for (input, eta_entry) in eta_tt.iter_mut().enumerate().take(n_inputs_eta) {
                 // Decode: lo_a | hi_a' | lo_b | hi_b' each n_bits_half wide
                 let lo_a = (input >> (3 * n_bits_half)) & (half - 1);
                 let hi_a_prime = (input >> (2 * n_bits_half)) & (half - 1);
@@ -6358,7 +6358,7 @@ mod tests {
                 let hi_b = hi_b_prime + half;
 
                 // eta = psi(lo_a, hi_b) XOR psi(hi_a, lo_b)
-                eta_tt[input] = psi(dim, lo_a, hi_b) ^ psi(dim, hi_a, lo_b);
+                *eta_entry = psi(dim, lo_a, hi_b) ^ psi(dim, hi_a, lo_b);
             }
 
             // Mobius ANF transform
@@ -6376,8 +6376,8 @@ mod tests {
             let mut max_degree = 0usize;
             let mut total_monomials = 0usize;
 
-            for m in 0..n_inputs_eta {
-                if anf_eta[m] != 0 {
+            for (m, &anf_val) in anf_eta.iter().enumerate().take(n_inputs_eta) {
+                if anf_val != 0 {
                     let deg = (m as u32).count_ones() as usize;
                     degree_counts[deg] += 1;
                     if deg > max_degree {
@@ -7106,8 +7106,8 @@ mod tests {
         }
 
         // All diagonal entries should be 1 (e_i^2 = -1 for quaternions)
-        for a in 0..3 {
-            assert_eq!(psi4[a][a], 1, "e_{}^2 should be -1", a + 1);
+        for (a, row) in psi4.iter().enumerate() {
+            assert_eq!(row[a], 1, "e_{}^2 should be -1", a + 1);
         }
 
         // Off-diagonal: quaternion multiplication signs
@@ -7167,8 +7167,8 @@ mod tests {
         }
 
         // All diagonal entries should be 1 (e_i^2 = -1 for octonions)
-        for a in 0..7 {
-            assert_eq!(psi8[a][a], 1, "e_{}^2 should be -1", a + 1);
+        for (a, row) in psi8.iter().enumerate() {
+            assert_eq!(row[a], 1, "e_{}^2 should be -1", a + 1);
         }
 
         // Count psi=1 entries
@@ -7184,9 +7184,9 @@ mod tests {
         // In a non-commutative algebra, psi(a,b) XOR psi(b,a) = 1 for all a != b
         let mut antisymmetric = 0;
         let mut symmetric = 0;
-        for a in 0..7 {
+        for (a, row_a) in psi8.iter().enumerate() {
             for b in (a + 1)..7 {
-                if psi8[a][b] != psi8[b][a] {
+                if row_a[b] != psi8[b][a] {
                     antisymmetric += 1;
                 } else {
                     symmetric += 1;
@@ -7203,9 +7203,9 @@ mod tests {
 
         // Check quaternion antisymmetry too
         let mut q_antisym = 0;
-        for a in 0..3 {
+        for (a, row_a) in psi4.iter().enumerate() {
             for b in (a + 1)..3 {
-                if psi4[a][b] != psi4[b][a] {
+                if row_a[b] != psi4[b][a] {
                     q_antisym += 1;
                 }
             }

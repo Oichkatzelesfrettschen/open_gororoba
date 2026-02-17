@@ -18,6 +18,7 @@ use std::sync::Arc;
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 use tokio::sync::Mutex;
 use tokio::time::{timeout, Duration};
+use stats_core::helpers::{mean, median, std_dev};
 
 const INDEX_HTML: &str = include_str!("../../../../apps/gororoba_studio/ui/index.html");
 const APP_JS: &str = include_str!("../../../../apps/gororoba_studio/ui/app.js");
@@ -1181,41 +1182,6 @@ fn bounded_iterations(value: Option<usize>, default_value: usize, min: usize, ma
     raw.clamp(min, max)
 }
 
-fn median(values: &mut [f64]) -> f64 {
-    if values.is_empty() {
-        return 0.0;
-    }
-    values.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
-    let mid = values.len() / 2;
-    if values.len().is_multiple_of(2) {
-        (values[mid - 1] + values[mid]) * 0.5
-    } else {
-        values[mid]
-    }
-}
-
-fn mean(values: &[f64]) -> f64 {
-    if values.is_empty() {
-        0.0
-    } else {
-        values.iter().sum::<f64>() / values.len() as f64
-    }
-}
-
-fn stddev(values: &[f64], mean_value: f64) -> f64 {
-    if values.len() <= 1 {
-        return 0.0;
-    }
-    let variance = values
-        .iter()
-        .map(|value| {
-            let delta = value - mean_value;
-            delta * delta
-        })
-        .sum::<f64>()
-        / values.len() as f64;
-    variance.sqrt()
-}
 
 fn execute_thesis(experiment_id: &str, profile: RunProfile) -> Result<RunResponse, String> {
     let start = Instant::now();
@@ -1646,7 +1612,7 @@ async fn benchmark_experiment(
 
     let metric_values: Vec<f64> = runs.iter().map(|run| run.metric_value).collect();
     let mean_metric_value = mean(&metric_values);
-    let metric_stddev = stddev(&metric_values, mean_metric_value);
+    let metric_stddev = std_dev(&metric_values, mean_metric_value);
     let pass_count = runs.iter().filter(|run| run.passes_gate).count();
     let fail_count = runs.len().saturating_sub(pass_count);
 

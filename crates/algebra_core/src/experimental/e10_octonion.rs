@@ -364,11 +364,10 @@ pub fn dynkin_fano_correspondence(basis: &CayleyBasis) -> (usize, usize, f64) {
                 let dom_i = dominant_basis_element(&octs[i]);
                 let dom_j = dominant_basis_element(&octs[j]);
 
-                if let (Some(di), Some(dj)) = (dom_i, dom_j) {
-                    if di > 0 && dj > 0 && di != dj && table[di][dj].is_some() {
+                if let (Some(di), Some(dj)) = (dom_i, dom_j)
+                    && di > 0 && dj > 0 && di != dj && table[di][dj].is_some() {
                         adj_fano += 1;
                     }
-                }
             }
         }
     }
@@ -449,11 +448,10 @@ pub fn optimal_cayley_basis() -> (CayleyBasis, usize, usize, Vec<usize>) {
             }
             let di = dominant_basis_element(&oct_i);
             let dj = dominant_basis_element(&oct_j);
-            if let (Some(a), Some(b)) = (di, dj) {
-                if a > 0 && b > 0 && a != b && table[a][b].is_some() {
+            if let (Some(a), Some(b)) = (di, dj)
+                && a > 0 && b > 0 && a != b && table[a][b].is_some() {
                     count += 1;
                 }
-            }
         }
         count
     };
@@ -578,12 +576,11 @@ pub fn build_fano_overlap_graph(basis: &CayleyBasis) -> FanoOverlapGraph {
     let mut n_imag = 0usize;
     for (i, root) in simple.iter().enumerate() {
         let oct = basis.root_to_octonion(root);
-        if let Some(idx) = dominant_basis_element(&oct) {
-            if idx > 0 {
+        if let Some(idx) = dominant_basis_element(&oct)
+            && idx > 0 {
                 wall_oct[i] = Some(idx);
                 n_imag += 1;
             }
-        }
     }
 
     let mut adjacency = [[false; 8]; 8];
@@ -593,8 +590,8 @@ pub fn build_fano_overlap_graph(basis: &CayleyBasis) -> FanoOverlapGraph {
 
     for i in 0..8 {
         for j in (i + 1)..8 {
-            if let (Some(oi), Some(oj)) = (wall_oct[i], wall_oct[j]) {
-                if oi != oj {
+            if let (Some(oi), Some(oj)) = (wall_oct[i], wall_oct[j])
+                && oi != oj {
                     // Both imaginary, distinct -> they share a Fano line
                     adjacency[i][j] = true;
                     adjacency[j][i] = true;
@@ -609,7 +606,6 @@ pub fn build_fano_overlap_graph(basis: &CayleyBasis) -> FanoOverlapGraph {
                         lines_seen.insert(triple);
                     }
                 }
-            }
         }
     }
 
@@ -1020,6 +1016,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_fano_complement_table_consistent() {
         let table = fano_complement_table();
         for i in 1..=7 {
@@ -1148,8 +1145,8 @@ mod tests {
         let oct = basis.root_to_octonion(&simple[0]);
         assert!((oct[0] - 1.0).abs() < 1e-10);
         assert!((oct[1] + 1.0).abs() < 1e-10);
-        for k in 2..8 {
-            assert!(oct[k].abs() < 1e-10);
+        for val in oct.iter().skip(2) {
+            assert!(val.abs() < 1e-10);
         }
     }
 
@@ -1217,6 +1214,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_simple_root_products_norm() {
         // Product of two norm-sqrt(2) octonions should have norm <= 2
         // (since |ab| = |a||b| for octonions)
@@ -1236,6 +1234,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_all_imag_pairs_fano_connected() {
         // In the Fano plane, every pair of distinct imaginary units lies
         // on exactly one line. So ALL pairs are Fano-connected.
@@ -1349,6 +1348,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_e8_dynkin_adjacency_edge_count() {
         let adj = e8_dynkin_adjacency();
         let mut edges = 0;
@@ -1391,6 +1391,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_build_e8_transition_graph() {
         // Sequence: 0->1->2->3->8->4 (walls 0-7 are E8, wall 8 is affine)
         let seq = vec![0, 1, 2, 3, 8, 4];

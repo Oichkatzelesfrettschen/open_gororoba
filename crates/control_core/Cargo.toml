@@ -1,7 +1,7 @@
 [package]
 name = "control_core"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 description = "Control systems: Plant traits, feedback controllers, state estimation"
 license = "MIT"
 
@@ -23,3 +23,6 @@ all-bridges = ["optics", "casimir"]
 
 [dev-dependencies]
 approx = { workspace = true }
+
+[lints]
+workspace = true

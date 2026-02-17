@@ -10,6 +10,7 @@ use crate::fetcher::{
     download_to_string, validate_not_html, DatasetProvider, FetchConfig, FetchError,
 };
 use crate::formats::tap::percent_encode_query;
+use crate::parse::parse_f64_or_nan;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -36,14 +37,6 @@ pub struct SdssQuasar {
     pub mag_i: f64,
     /// PSF magnitude in z band.
     pub mag_z: f64,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    let s = s.trim();
-    if s.is_empty() || s == "null" || s == "NULL" {
-        return f64::NAN;
-    }
-    s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
 /// Parse SDSS quasar CSV data.
@@ -86,7 +79,7 @@ pub fn parse_sdss_quasar_csv(path: &Path) -> Result<Vec<SdssQuasar>, FetchError>
 
     let get_f64 = |record: &csv::StringRecord, idx: Option<usize>| -> f64 {
         idx.and_then(|i| record.get(i))
-            .map(parse_f64)
+            .map(parse_f64_or_nan)
             .unwrap_or(f64::NAN)
     };
 

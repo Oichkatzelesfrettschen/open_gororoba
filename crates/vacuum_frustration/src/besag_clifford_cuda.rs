@@ -495,8 +495,8 @@ mod tests {
         let mut frustration = vec![0.3; n_cells];
 
         // Add small perturbation
-        for i in 0..n_cells {
-            frustration[i] += 0.01 * ((i as f64) / (n_cells as f64) - 0.5);
+        for (i, frust) in frustration.iter_mut().enumerate().take(n_cells) {
+            *frust += 0.01 * ((i as f64) / (n_cells as f64) - 0.5);
         }
 
         let mut tester = GpuBesagCliffordTester::new(grid_size, 16, &frustration).unwrap();

@@ -688,10 +688,11 @@ mod tests {
     #[test]
     fn test_peps_tensor_indexing() {
         let mut tensor = PepsTensor::zeros(2, 2, 2, 2, 2);
-        tensor.set(1, 1, 1, 1, 1, c64::new(3.14, 2.71));
+        let (re_val, im_val) = (3.125, 2.71);
+        tensor.set(1, 1, 1, 1, 1, c64::new(re_val, im_val));
         let val = tensor.get(1, 1, 1, 1, 1);
-        assert!((val.re - 3.14).abs() < 1e-10);
-        assert!((val.im - 2.71).abs() < 1e-10);
+        assert!((val.re - re_val).abs() < 1e-10);
+        assert!((val.im - im_val).abs() < 1e-10);
     }
 
     #[test]

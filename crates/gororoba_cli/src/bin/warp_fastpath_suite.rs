@@ -9,6 +9,7 @@ use std::cmp::Reverse;
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::path::{Path, PathBuf};
+use stats_core::helpers::{mean as arithmetic_mean, std_dev};
 use std::process::Command;
 use std::sync::atomic::Ordering;
 use std::time::Duration;
@@ -134,28 +135,6 @@ fn geometric_mean(values: &[f64]) -> f64 {
     } else {
         (log_sum / n as f64).exp()
     }
-}
-
-fn arithmetic_mean(values: &[f64]) -> f64 {
-    if values.is_empty() {
-        return 0.0;
-    }
-    values.iter().sum::<f64>() / values.len() as f64
-}
-
-fn std_dev(values: &[f64], mean: f64) -> f64 {
-    if values.len() < 2 {
-        return 0.0;
-    }
-    let var = values
-        .iter()
-        .map(|v| {
-            let d = *v - mean;
-            d * d
-        })
-        .sum::<f64>()
-        / values.len() as f64;
-    var.sqrt()
 }
 
 fn ci95_halfwidth(values: &[f64], std: f64) -> f64 {
@@ -507,7 +486,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     for &block_dim in &block_dims {
         let dim_tag = block_dim_tag(block_dim);
-        std::env::set_var("GOROROBA_LBM_BLOCK_DIM", &dim_tag);
+        // SAFETY: Called single-threaded in binary main before spawning work.
+        unsafe { std::env::set_var("GOROROBA_LBM_BLOCK_DIM", &dim_tag); }
         let candidate_dir = sweep_root.join(format!("blockdim_{}", dim_tag.replace('x', "_")));
         std::fs::create_dir_all(&candidate_dir)?;
         println!();
@@ -655,7 +635,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     std::fs::write(&sweep_scores_path, sweep_score_text)?;
     println!("SWEEP_SCORES: {}", sweep_scores_path.display());
 
-    std::env::set_var("GOROROBA_LBM_BLOCK_DIM", &winning_dim_tag);
+    // SAFETY: Called single-threaded in binary main before spawning work.
+    unsafe { std::env::set_var("GOROROBA_LBM_BLOCK_DIM", &winning_dim_tag); }
     let production_dir = PathBuf::from(format!(
         "data/h5/production/{}_{}_{}",
         timestamp,
@@ -727,11 +708,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         let baseline_snapshot = parse_timing_snapshot(&baseline_timing)?;
         baseline_by_res.insert(res, baseline_snapshot);
 
-        if let Ok(path) = find_timing_file(&legacy_dir, res, prod_duration_secs) {
-            if let Ok(snapshot) = parse_timing_snapshot(&path) {
+        if let Ok(path) = find_timing_file(&legacy_dir, res, prod_duration_secs)
+            && let Ok(snapshot) = parse_timing_snapshot(&path) {
                 legacy_by_res.insert(res, snapshot);
             }
-        }
     }
 
     let mut aggregate_untuned_mlups = Vec::new();

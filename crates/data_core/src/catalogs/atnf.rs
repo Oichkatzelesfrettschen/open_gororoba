@@ -7,6 +7,7 @@
 //! HEASARC mirror: https://heasarc.gsfc.nasa.gov/xamin/
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
 /// A pulsar from the ATNF catalogue.
@@ -44,14 +45,6 @@ pub struct Pulsar {
     pub pb: f64,
     /// Pulsar type.
     pub ptype: String,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    let s = s.trim();
-    if s.is_empty() || s == "null" || s == "NULL" || s == "nan" {
-        return f64::NAN;
-    }
-    s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
 /// Parse ATNF pulsar catalog CSV.
@@ -101,7 +94,7 @@ pub fn parse_atnf_csv(path: &Path) -> Result<Vec<Pulsar>, FetchError> {
 
     let get_f64 = |record: &csv::StringRecord, idx: Option<usize>| -> f64 {
         idx.and_then(|i| record.get(i))
-            .map(parse_f64)
+            .map(parse_f64_or_nan)
             .unwrap_or(f64::NAN)
     };
 

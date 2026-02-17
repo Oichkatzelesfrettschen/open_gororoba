@@ -148,8 +148,8 @@ where
         trajectory.push((total_k, p_val));
 
         // Only consider early stopping after minimum permutations
-        if total_k >= config.min_permutations {
-            if let Some(reason) = should_stop(total_r, total_k, config.alpha, config.confidence) {
+        if total_k >= config.min_permutations
+            && let Some(reason) = should_stop(total_r, total_k, config.alpha, config.confidence) {
                 return AdaptiveResult {
                     p_value: p_val,
                     n_permutations_used: total_k,
@@ -158,7 +158,6 @@ where
                     p_trajectory: trajectory,
                 };
             }
-        }
     }
 
     let p_val = (total_r as f64 + 1.0) / (total_k as f64 + 1.0);
@@ -353,13 +352,13 @@ mod tests {
         for _ in 0..n_trials {
             // Under the null: draw a true p-value uniformly from [0,1].
             // Each permutation is extreme with probability p_true.
-            let p_true: f64 = rng.gen();
-            let mut trial_rng = StdRng::seed_from_u64(rng.gen());
+            let p_true: f64 = rng.r#gen();
+            let mut trial_rng = StdRng::seed_from_u64(rng.r#gen());
 
             let result = adaptive_permutation_test(&config, |batch_size| {
                 let mut extreme = 0usize;
                 for _ in 0..batch_size {
-                    if trial_rng.gen::<f64>() < p_true {
+                    if trial_rng.r#gen::<f64>() < p_true {
                         extreme += 1;
                     }
                 }
@@ -408,13 +407,13 @@ mod tests {
 
         for _ in 0..n_trials {
             // Clearly non-significant: true p ~ 0.5 (half of perms are extreme)
-            let p_true = 0.4 + rng.gen::<f64>() * 0.2; // p in [0.4, 0.6]
-            let mut trial_rng = StdRng::seed_from_u64(rng.gen());
+            let p_true = 0.4 + rng.r#gen::<f64>() * 0.2; // p in [0.4, 0.6]
+            let mut trial_rng = StdRng::seed_from_u64(rng.r#gen());
 
             let result = adaptive_permutation_test(&config, |batch_size| {
                 let mut extreme = 0usize;
                 for _ in 0..batch_size {
-                    if trial_rng.gen::<f64>() < p_true {
+                    if trial_rng.r#gen::<f64>() < p_true {
                         extreme += 1;
                     }
                 }

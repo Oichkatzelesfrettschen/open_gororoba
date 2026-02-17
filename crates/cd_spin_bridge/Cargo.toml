@@ -1,11 +1,14 @@
 [package]
 name = "cd_spin_bridge"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 
 [dependencies]
 spin_tomography_core = { path = "../spin_tomography_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
 algebra_core = { path = "../algebra_core" }
-nalgebra.workspace = true
-num-complex.workspace = true
+nalgebra = { workspace = true }
+num-complex = { workspace = true }
+
+[lints]
+workspace = true

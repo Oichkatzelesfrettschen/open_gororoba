@@ -3571,7 +3571,7 @@ mod tests {
 
         // (100) family should have 6 members: (100), (010), (001), (1-00), (0-10), (00-1)
         // Actually more due to permutations and signs
-        assert!(family.len() > 0);
+        assert!(!family.is_empty());
         assert!(family.contains(&plane));
     }
 
@@ -3637,7 +3637,7 @@ mod tests {
         let family = dir.family_cubic();
 
         // [100] family should have members
-        assert!(family.len() > 0);
+        assert!(!family.is_empty());
         assert!(family.contains(&dir));
     }
 
@@ -3847,13 +3847,13 @@ mod tests {
         assert_eq!(modes.len(), 6);
 
         // First 3 should be acoustic
-        for i in 0..3 {
-            assert_eq!(modes[i].mode_type, "acoustic");
+        for mode in modes.iter().take(3) {
+            assert_eq!(mode.mode_type, "acoustic");
         }
 
         // Last 3 should be optical
-        for i in 3..6 {
-            assert_eq!(modes[i].mode_type, "optical");
+        for mode in modes.iter().skip(3).take(3) {
+            assert_eq!(mode.mode_type, "optical");
         }
     }
 
@@ -4075,14 +4075,14 @@ mod tests {
     fn test_space_group_numbers_valid_range() {
         let structures = known_crystal_structures();
         for s in structures {
-            assert!(s.space_group_number >= 1 && s.space_group_number <= 230);
+            assert!((1..=230).contains(&s.space_group_number));
         }
     }
 
     #[test]
     fn test_bravais_centering_valid_symbols() {
         let structures = known_crystal_structures();
-        let valid = vec!['P', 'F', 'I', 'C', 'R'];
+        let valid = ['P', 'F', 'I', 'C', 'R'];
         for s in structures {
             assert!(valid.contains(&s.bravais_centering));
         }
@@ -4245,7 +4245,7 @@ mod tests {
             PointGroup::Oh,
         ] {
             if let Some(ct) = CharacterTable::for_point_group(*pg) {
-                assert!(ct.irreps.len() > 0);
+                assert!(!ct.irreps.is_empty());
                 assert!(ct.irreps.len() <= pg.order());
             }
         }
@@ -4351,8 +4351,8 @@ mod tests {
         let theta1 = plane.bragg_angle_cubic(a, 1.0);
         let theta2 = plane.bragg_angle_cubic(a, 2.0);
         // Both should be valid Bragg angles
-        assert!(theta1 >= 0.0 && theta1 <= std::f64::consts::PI / 2.0);
-        assert!(theta2 >= 0.0 && theta2 <= std::f64::consts::PI / 2.0);
+        assert!((0.0..=std::f64::consts::PI / 2.0).contains(&theta1));
+        assert!((0.0..=std::f64::consts::PI / 2.0).contains(&theta2));
     }
 
     #[test]

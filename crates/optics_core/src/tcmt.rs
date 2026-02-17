@@ -1592,14 +1592,13 @@ impl HysteresisTrace {
         let mut last = None;
 
         for (i, (up, down)) in self.up_sweep.iter().zip(self.down_sweep.iter()).enumerate() {
-            if let (Some(u), Some(d)) = (up, down) {
-                if (u - d).abs() > 1e-10 {
+            if let (Some(u), Some(d)) = (up, down)
+                && (u - d).abs() > 1e-10 {
                     if first.is_none() {
                         first = Some(self.powers[i]);
                     }
                     last = Some(self.powers[i]);
                 }
-            }
         }
 
         match (first, last) {
@@ -1683,7 +1682,7 @@ mod tests {
         // depends on specific geometry...
         let t = result.power_transmissions[0];
         // Just check it's computed
-        assert!(t >= 0.0 && t <= 1.0);
+        assert!((0.0..=1.0).contains(&t));
     }
 
     #[test]
@@ -2356,8 +2355,8 @@ mod tests {
         assert!(p_high > p_low);
 
         // Should be approximately [50/27, 2.0]
-        assert!(p_low >= 1.8 && p_low <= 2.0);
-        assert!(p_high >= 1.9 && p_high <= 2.1);
+        assert!((1.8..=2.0).contains(&p_low));
+        assert!((1.9..=2.1).contains(&p_high));
     }
 
     #[test]

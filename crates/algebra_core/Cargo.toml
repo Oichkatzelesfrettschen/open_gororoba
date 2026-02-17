@@ -1,7 +1,7 @@
 [package]
 name = "algebra_core"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 description = "Cayley-Dickson algebras, Clifford algebras, and algebraic structures for physics"
 license = "MIT"
 
@@ -53,3 +53,6 @@ harness = false
 [[bench]]
 name = "dimensional_bench"
 harness = false
+
+[lints]
+workspace = true

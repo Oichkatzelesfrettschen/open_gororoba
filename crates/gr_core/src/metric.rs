@@ -414,6 +414,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_minkowski_christoffel_zero() {
         let m = Minkowski;
         let x = [0.0, 5.0, 1.0, 0.5];
@@ -435,6 +436,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_minkowski_riemann_zero() {
         let m = Minkowski;
         let x = [0.0, 5.0, 1.0, 0.5];
@@ -459,6 +461,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_minkowski_ricci_zero() {
         let m = Minkowski;
         let x = [0.0, 5.0, 1.0, 0.5];

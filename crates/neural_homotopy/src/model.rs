@@ -424,15 +424,11 @@ mod tests {
         for i in 0..10 {
             losses.push(1.0 - 0.05 * i as f64); // Descent
         }
-        for _ in 0..15 {
-            losses.push(0.5); // Plateau 1
-        }
+        losses.extend(std::iter::repeat_n(0.5, 15)); // Plateau 1
         for i in 0..10 {
             losses.push(0.5 - 0.03 * i as f64); // Descent
         }
-        for _ in 0..15 {
-            losses.push(0.2); // Plateau 2
-        }
+        losses.extend(std::iter::repeat_n(0.2, 15)); // Plateau 2
 
         let result = detect_plateaus(&losses, 1e-4, 3);
         assert!(

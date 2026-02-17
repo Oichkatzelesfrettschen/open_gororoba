@@ -881,11 +881,10 @@ fn sample_gpu_u_rms_proxy(
     last_measured: &mut Option<f64>,
 ) -> f64 {
     if elapsed_secs >= *next_sync_sample_s {
-        if let Ok(v) = state.fluid.try_velocity_rms(state.nx, state.ny, state.nz) {
-            if v.is_finite() && v > 0.0 {
+        if let Ok(v) = state.fluid.try_velocity_rms(state.nx, state.ny, state.nz)
+            && v.is_finite() && v > 0.0 {
                 *last_measured = Some(v);
             }
-        }
         *next_sync_sample_s = elapsed_secs + sync_cadence_secs;
     }
     last_measured.unwrap_or_else(|| kolmogorov_u_rms_model(forcing))
@@ -1088,8 +1087,8 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
         power_injection_proxy_hist.push(0.5 * forcing.body_force_density_amplitude * u_rms);
         dissipation_proxy_hist.push(2.0 * forcing.nu * enstrophy);
     }
-    if case.h5_output.is_some() && spectral_summary.time.is_empty() {
-        if let Some(sig) = compute_midplane_spectral_signature(&mut state)? {
+    if case.h5_output.is_some() && spectral_summary.time.is_empty()
+        && let Some(sig) = compute_midplane_spectral_signature(&mut state)? {
             spectral_summary.time.push(start.elapsed().as_secs_f64());
             spectral_summary.k_peak.push(sig.k_peak);
             spectral_summary.power_peak.push(sig.power_peak);
@@ -1098,7 +1097,6 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
             spectral_summary.triad_count.push(sig.triad_count);
             spectral_summary.triad_clustering.push(sig.triad_clustering);
         }
-    }
 
     let elapsed = start.elapsed().as_secs_f64();
     if step_times_us.is_empty() {

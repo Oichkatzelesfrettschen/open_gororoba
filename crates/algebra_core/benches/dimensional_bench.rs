@@ -180,7 +180,7 @@ fn bench_apt_census_monte_carlo(c: &mut Criterion) {
         group.bench_with_input(
             BenchmarkId::new("dim", dim),
             &(dim, &all_nodes),
-            |bench, &(dim, ref nodes)| {
+            |bench, &(dim, nodes)| {
                 bench.iter(|| {
                     let mut rng_state = 42u64;
                     let next_rng = |state: &mut u64| -> u64 {

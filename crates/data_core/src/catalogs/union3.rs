@@ -7,6 +7,7 @@
 //! https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
 /// One row from a whitespace-delimited chain file.
@@ -14,10 +15,6 @@ use std::path::{Path, PathBuf};
 pub struct Union3ChainRow {
     pub weight: f64,
     pub minus_log_posterior: f64,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    s.trim().parse::<f64>().unwrap_or(f64::NAN)
 }
 
 /// Parse a DESI/Cobaya chain text file for lightweight integrity checks.
@@ -37,8 +34,8 @@ pub fn parse_union3_chain(path: &Path) -> Result<Vec<Union3ChainRow>, FetchError
             continue;
         }
         rows.push(Union3ChainRow {
-            weight: parse_f64(cols[0]),
-            minus_log_posterior: parse_f64(cols[1]),
+            weight: parse_f64_or_nan(cols[0]),
+            minus_log_posterior: parse_f64_or_nan(cols[1]),
         });
     }
     Ok(rows)
@@ -84,7 +81,7 @@ mod tests {
         writeln!(f, "    0.5000   12.345  0.30  71.0").unwrap();
         writeln!(f, "    1.0000   11.200  0.28  70.5").unwrap();
         writeln!(f, "    0.7500   13.100  0.32  72.0").unwrap();
-        writeln!(f, "").unwrap(); // blank line
+        writeln!(f).unwrap(); // blank line
         writeln!(f, "# trailing comment").unwrap();
 
         let rows = parse_union3_chain(&path).unwrap();

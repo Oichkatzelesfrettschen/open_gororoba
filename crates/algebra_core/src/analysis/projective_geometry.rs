@@ -1544,13 +1544,7 @@ mod tests {
             // Verify: evaluate the predicate on all labels
             for (idx, &label) in labels.iter().enumerate() {
                 let val: u8 = monomials.iter().fold(0u8, |acc, &mono| {
-                    let term = if mono == 0 {
-                        1u8
-                    } else if (label & mono) == mono {
-                        1u8
-                    } else {
-                        0u8
-                    };
+                    let term = if (label & mono) == mono { 1u8 } else { 0u8 };
                     acc ^ term
                 });
                 // val should consistently map to the correct class

@@ -9,6 +9,7 @@ use gororoba_cli::warp_gate_policy::load_warp_gate_policy;
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::path::{Path, PathBuf};
+use stats_core::helpers::{mean, std_dev};
 
 #[derive(Debug, Clone)]
 struct CliArgs {
@@ -315,11 +316,10 @@ fn parse_timing_snapshot(path: &Path) -> Result<TimingSnapshot, Box<dyn Error>> 
 fn parse_duration_from_filename(name: &str) -> u64 {
     for token in name.split('_').rev() {
         let digits: String = token.chars().take_while(|c| c.is_ascii_digit()).collect();
-        if !digits.is_empty() && token.contains('s') {
-            if let Ok(value) = digits.parse::<u64>() {
+        if !digits.is_empty() && token.contains('s')
+            && let Ok(value) = digits.parse::<u64>() {
                 return value;
             }
-        }
     }
     0
 }
@@ -391,28 +391,6 @@ fn find_timing_file(dir: &Path, resolution: usize) -> Result<PathBuf, Box<dyn Er
     }
     candidates.sort_by(|a, b| a.0.cmp(&b.0).then_with(|| a.1.cmp(&b.1)));
     Ok(candidates[candidates.len() - 1].1.clone())
-}
-
-fn mean(values: &[f64]) -> f64 {
-    if values.is_empty() {
-        return 0.0;
-    }
-    values.iter().sum::<f64>() / values.len() as f64
-}
-
-fn std_dev(values: &[f64], mean: f64) -> f64 {
-    if values.len() < 2 {
-        return 0.0;
-    }
-    let variance = values
-        .iter()
-        .map(|v| {
-            let d = *v - mean;
-            d * d
-        })
-        .sum::<f64>()
-        / values.len() as f64;
-    variance.sqrt()
 }
 
 fn lag1_autocorr(values: &[f64]) -> f64 {

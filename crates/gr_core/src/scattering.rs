@@ -446,7 +446,7 @@ mod tests {
         // Q_sca should be clamped to [0, 4]
         for &nu in &[1e10_f64, 1e12, 1e14, 1e16] {
             let q = mie_efficiency(nu, 1e-4);
-            assert!(q >= 0.0 && q <= 4.0, "Q({nu}) = {q}");
+            assert!((0.0..=4.0).contains(&q), "Q({nu}) = {q}");
         }
     }
 
@@ -461,7 +461,7 @@ mod tests {
     #[test]
     fn test_albedo_bounds() {
         let omega = single_scattering_albedo(1.0, 1.0);
-        assert!(omega >= 0.0 && omega <= 1.0, "omega = {omega}");
+        assert!((0.0..=1.0).contains(&omega), "omega = {omega}");
     }
 
     #[test]
@@ -501,7 +501,7 @@ mod tests {
     fn test_asymmetry_mie_bounded() {
         for &nu in &[1e10_f64, 1e12, 1e14, 1e16] {
             let g = asymmetry_parameter(ScatteringType::Mie, nu, 1e-4);
-            assert!(g >= 0.0 && g <= 0.95, "g({nu}) = {g}");
+            assert!((0.0..=0.95).contains(&g), "g({nu}) = {g}");
         }
     }
 

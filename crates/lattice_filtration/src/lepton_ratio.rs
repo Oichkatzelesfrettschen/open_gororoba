@@ -202,9 +202,9 @@ mod tests {
 
     #[test]
     fn test_pdg_constants_positive() {
-        assert!(M_ELECTRON > 0.0);
-        assert!(M_MUON > M_ELECTRON);
-        assert!(M_TAU > M_MUON);
+        const { assert!(M_ELECTRON > 0.0) };
+        const { assert!(M_MUON > M_ELECTRON) };
+        const { assert!(M_TAU > M_MUON) };
     }
 
     #[test]

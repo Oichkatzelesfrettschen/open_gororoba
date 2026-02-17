@@ -1,7 +1,7 @@
 [package]
 name = "stats_core"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 description = "Statistical methodology for physics analysis: Frechet distance, bootstrap CI, Haar unitaries"
 license = "MIT"
 
@@ -23,7 +23,10 @@ realfft = { workspace = true }
 hurst = { workspace = true }
 algebra_core = { path = "../algebra_core" }
 cudarc = { workspace = true, optional = true }
-petgraph.workspace = true
+petgraph = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }
+
+[lints]
+workspace = true

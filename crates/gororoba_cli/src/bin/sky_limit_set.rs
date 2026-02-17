@@ -72,15 +72,14 @@ fn main() {
         std::process::exit(1);
     }
 
-    if let Some(parent) = args.output.parent() {
-        if let Err(err) = std::fs::create_dir_all(parent) {
+    if let Some(parent) = args.output.parent()
+        && let Err(err) = std::fs::create_dir_all(parent) {
             eprintln!(
                 "ERROR: failed to create output directory {}: {err}",
                 parent.display()
             );
             std::process::exit(1);
         }
-    }
 
     let results = experiment_c_sky_limit_set(&args.n_levels);
 

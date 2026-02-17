@@ -106,8 +106,8 @@ fn run_turning_point_analysis(args: &Args) {
             let g = cavity.gamma_total() / 2.0;
             let detuning = args.omega * g;
 
-            if let Ok(phys_result) = find_turning_points_physical(&cavity, detuning) {
-                if let (Some(p_low), Some(p_high)) = (
+            if let Ok(phys_result) = find_turning_points_physical(&cavity, detuning)
+                && let (Some(p_low), Some(p_high)) = (
                     phys_result.turning_lower.power,
                     phys_result.turning_upper.power,
                 ) {
@@ -119,7 +119,6 @@ fn run_turning_point_analysis(args: &Args) {
                         phys_result.width_power.unwrap_or(0.0)
                     );
                 }
-            }
 
             // Output to CSV if requested
             if let Some(path) = &args.output {

@@ -1021,9 +1021,9 @@ mod tests {
         assert!((sum_f - rho).abs() < 1e-14);
 
         // Check: each f[i] = rho * w[i]
-        for i in 0..19 {
+        for (i, &fi) in f.iter().enumerate() {
             let expected = rho * lattice.weight(i);
-            assert!((f[i] - expected).abs() < 1e-14);
+            assert!((fi - expected).abs() < 1e-14);
         }
     }
 

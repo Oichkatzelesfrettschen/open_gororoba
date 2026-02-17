@@ -150,8 +150,8 @@ fn sync_project_block(
             continue;
         }
 
-        if in_project {
-            if let Some(caps) = assignment_re.captures(line) {
+        if in_project
+            && let Some(caps) = assignment_re.captures(line) {
                 let indent = caps.get(1).map(|m| m.as_str()).unwrap_or("");
                 let key = caps.get(2).map(|m| m.as_str()).unwrap_or("");
                 let current = caps
@@ -171,7 +171,6 @@ fn sync_project_block(
                 out_lines.push(format!("{indent}{key} = {expected}{suffix}"));
                 continue;
             }
-        }
 
         out_lines.push(line.to_string());
     }

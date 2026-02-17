@@ -1,7 +1,7 @@
 [package]
 name = "neural_homotopy"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 license = "GPL-2.0-only"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
@@ -9,9 +9,9 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 algebra_core = { path = "../algebra_core" }
 quantum_core = { path = "../quantum_core" }
 cosmology_core = { path = "../cosmology_core" }
-burn = { version = "0.16", features = ["train", "autodiff", "ndarray", "openblas"] }
-blas-src = { version = "0.10", features = ["openblas"] }
-openblas-src = { version = "0.10", features = ["cache", "cblas", "static"] }
+burn = { workspace = true, features = ["ndarray", "openblas"] }
+blas-src = { workspace = true }
+openblas-src = { workspace = true }
 burn-wgpu = { version = "0.16", optional = true }
 burn-cuda = { version = "0.16", optional = true }
 ndarray = { workspace = true }
@@ -21,7 +21,7 @@ serde = { workspace = true, features = ["derive"] }
 [dev-dependencies]
 approx = { workspace = true }
 criterion = { workspace = true }
-proptest = "1.5"
+proptest = { workspace = true }
 
 [features]
 default = ["wgpu-backend"]
@@ -31,3 +31,6 @@ cuda-backend = ["burn-cuda"]
 [[bench]]
 name = "training_bench"
 harness = false
+
+[lints]
+workspace = true

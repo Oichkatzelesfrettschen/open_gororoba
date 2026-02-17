@@ -1,7 +1,7 @@
 [package]
 name = "quantum_core"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 description = "Quantum physics: MERA tensor networks, holographic entropy, Ryu-Takayanagi"
 license = "MIT"
 
@@ -14,8 +14,8 @@ ordered-float = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rayon = { workspace = true }
-rustfft = "6.2"
-faer = "0.20"
+rustfft = { workspace = true }
+faer = { workspace = true }
 thiserror = { workspace = true }
 
 # Quantum computing and tensor networks (workspace)
@@ -43,3 +43,6 @@ harness = false
 [[bench]]
 name = "gpu_peps_bench"
 harness = false
+
+[lints]
+workspace = true

@@ -2383,8 +2383,8 @@ mod tests {
         for code in 0..3u32.pow(4) {
             let mut v = [-1i8, -1, -1, -1, 0, 0, 0, 0];
             let mut c = code;
-            for i in 4..8 {
-                v[i] = (c % 3) as i8 - 1;
+            for vi in v[4..8].iter_mut() {
+                *vi = (c % 3) as i8 - 1;
                 c /= 3;
             }
             n_tested += 1;

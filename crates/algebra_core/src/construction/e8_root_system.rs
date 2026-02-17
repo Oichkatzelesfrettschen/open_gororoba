@@ -285,22 +285,22 @@ mod tests {
         let c = e8.cartan_matrix();
 
         // Check diagonal
-        for i in 0..8 {
-            assert_eq!(c[i][i], 2);
+        for (i, row) in c.iter().enumerate().take(8) {
+            assert_eq!(row[i], 2);
         }
 
         // Check off-diagonal bounds: E8 Cartan matrix can have -1, 0, or +/-1
         // (The +/-1 entries arise from the E8 Dynkin diagram structure)
-        for i in 0..8 {
-            for j in 0..8 {
+        for (i, row) in c.iter().enumerate().take(8) {
+            for (j, &val) in row.iter().enumerate().take(8) {
                 if i != j {
                     // Allow {-3, -2, -1, 0, 1} for E8 Cartan matrix
                     assert!(
-                        c[i][j] >= -3 && c[i][j] <= 1,
+                        (-3..=1).contains(&val),
                         "Cartan entry c[{}][{}] = {} out of expected range",
                         i,
                         j,
-                        c[i][j]
+                        val
                     );
                 }
             }

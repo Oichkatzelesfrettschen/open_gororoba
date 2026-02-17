@@ -449,16 +449,16 @@ mod tests {
         // psi(i,j) = 1 if cd_basis_mul_sign(4,i,j) = -1
         let dim = 4;
         let mut psi = [[0u8; 4]; 4];
-        for i in 0..dim {
-            for j in 0..dim {
+        for (i, row) in psi.iter_mut().enumerate().take(dim) {
+            for (j, cell) in row.iter_mut().enumerate().take(dim) {
                 let s = cd_basis_mul_sign(dim, i, j);
-                psi[i][j] = if s == 1 { 0 } else { 1 };
+                *cell = if s == 1 { 0 } else { 1 };
             }
         }
 
         eprintln!("=== Quaternion psi matrix (dim=4) ===");
-        for i in 0..dim {
-            eprintln!("  {:?}", psi[i]);
+        for row in psi.iter().take(dim) {
+            eprintln!("  {:?}", row);
         }
 
         // Verify all imaginary units anti-commute in quaternions
@@ -862,18 +862,18 @@ mod tests {
         // Build the complete multiplication table:
         // table[a][b] = (result_index, sign) where e_a * e_b = sign * e_{result_index}
         let mut table = vec![vec![(0usize, 1i32); dim]; dim];
-        for a in 0..dim {
-            for b in 0..dim {
+        for (a, row) in table.iter_mut().enumerate().take(dim) {
+            for (b, cell) in row.iter_mut().enumerate().take(dim) {
                 if a == 0 {
-                    table[a][b] = (b, 1);
+                    *cell = (b, 1);
                 } else if b == 0 {
-                    table[a][b] = (a, 1);
+                    *cell = (a, 1);
                 } else if a == b {
-                    table[a][b] = (0, -1); // e_i^2 = -1
+                    *cell = (0, -1); // e_i^2 = -1
                 } else {
                     let idx = a ^ b;
                     let sign = cd_basis_mul_sign(dim, a, b);
-                    table[a][b] = (idx, sign);
+                    *cell = (idx, sign);
                 }
             }
         }
@@ -881,14 +881,13 @@ mod tests {
         // Print the complete table
         eprintln!("=== Complete Octonion Multiplication Table ===");
         eprint!("      ");
-        for b in 0..dim {
-            eprint!("{:>5}", names[b]);
+        for name in names.iter().take(dim) {
+            eprint!("{:>5}", name);
         }
         eprintln!();
-        for a in 0..dim {
+        for (a, row) in table.iter().enumerate().take(dim) {
             eprint!("  {:>3}:", names[a]);
-            for b in 0..dim {
-                let (idx, sign) = table[a][b];
+            for &(idx, sign) in row.iter().take(dim) {
                 let prefix = if sign == 1 { " " } else { "-" };
                 eprint!(" {}{:>3}", prefix, names[idx]);
             }
@@ -1071,8 +1070,12 @@ mod tests {
             diag_norms.push(norm_sq.sqrt());
 
             for cj in (ci + 1)..m {
-                let col_j: Vec<f64> = (0..n).map(|r| upper_left[r][cj]).collect();
-                let dot: f64 = col_i.iter().zip(col_j.iter()).map(|(a, b)| a * b).sum();
+                let dot: f64 = upper_left
+                    .iter()
+                    .take(n)
+                    .zip(col_i.iter())
+                    .map(|(row, &a)| a * row[cj])
+                    .sum();
                 max_off_diag = max_off_diag.max(dot.abs());
             }
         }
@@ -1299,13 +1302,13 @@ mod tests {
         ];
 
         eprintln!("=== Spin Foam Amplitude Column Analysis ===");
-        for n in 0..10 {
+        for (n, &amp_val) in legacy_amplitudes.iter().enumerate().take(10) {
             let expected = ((n + 2) as f64).ln() / 1000.0;
-            let diff = (legacy_amplitudes[n] - expected).abs();
+            let diff = (amp_val - expected).abs();
             eprintln!(
                 "  state {:>2}: CSV = {:.16}, ln({})/1000 = {:.16}, diff = {:.2e}",
                 n + 1,
-                legacy_amplitudes[n],
+                amp_val,
                 n + 2,
                 expected,
                 diff
@@ -1591,10 +1594,10 @@ mod tests {
 
             let mut commuting = 0;
             let mut total = 0;
-            for i in 1..dim {
-                for j in (i + 1)..dim {
+            for (i, row) in comm.iter().enumerate().skip(1).take(dim - 1) {
+                for &val in row.iter().skip(i + 1).take(dim - i - 1) {
                     total += 1;
-                    if comm[i][j] {
+                    if val {
                         commuting += 1;
                     }
                 }

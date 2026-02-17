@@ -579,8 +579,8 @@ fn main() {
     // Check n_components = dim/2 - 1
     println!("  Law: n_components = dim/2 - 1 (dim >= 16)");
     for r in &rows {
-        if r.dim >= 16 {
-            if let Some(nc) = r.n_components {
+        if r.dim >= 16
+            && let Some(nc) = r.n_components {
                 let expected = r.dim / 2 - 1;
                 let pass = nc == expected;
                 if !pass {
@@ -594,14 +594,13 @@ fn main() {
                     if pass { "PASS" } else { "FAIL" }
                 );
             }
-        }
     }
 
     // Check motif_classes = dim/16
     println!("  Law: motif_classes = dim/16 (dim >= 16)");
     for r in &rows {
-        if r.dim >= 16 {
-            if let Some(nc) = r.n_motif_classes {
+        if r.dim >= 16
+            && let Some(nc) = r.n_motif_classes {
                 let expected = r.dim / 16;
                 let pass = nc == expected;
                 if !pass {
@@ -615,7 +614,6 @@ fn main() {
                     if pass { "PASS" } else { "FAIL" }
                 );
             }
-        }
     }
 
     // Check psi=1 exact formula
@@ -640,8 +638,8 @@ fn main() {
     if do_census {
         println!("  Law: n_regimes = dim/16 + 1 (dim >= 32, C-485)");
         for r in &rows {
-            if r.dim >= 32 {
-                if let Some(nr) = r.n_regimes {
+            if r.dim >= 32
+                && let Some(nr) = r.n_regimes {
                     let expected = r.dim / 16 + 1;
                     let pass = nr == expected;
                     if !pass {
@@ -655,7 +653,6 @@ fn main() {
                         if pass { "PASS" } else { "FAIL" }
                     );
                 }
-            }
         }
     }
 

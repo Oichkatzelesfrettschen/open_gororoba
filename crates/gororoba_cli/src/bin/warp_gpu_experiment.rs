@@ -259,7 +259,7 @@ fn run_experiment_b(args: &Args) -> Result<(), Box<dyn Error>> {
 
                 if k > 0.0 {
                     let amplitude = k.powf(-5.0 / 3.0 - 1.0); // -1.0 for 3D integration factor adjustment? roughly.
-                    let phase = rng.gen::<f64>() * 2.0 * PI;
+                    let phase = rng.r#gen::<f64>() * 2.0 * PI;
                     field_hat[[x, y, z]] = Complex64::from_polar(amplitude, phase);
                 }
             }
@@ -382,13 +382,13 @@ fn fit_power_law(x: &[f64], y: &[f64]) -> (f64, f64) {
     let ss_tot: f64 = x
         .iter()
         .zip(y.iter())
-        .filter(|(&xi, &yi)| xi > 1.0 && yi > 1e-20)
+        .filter(|&(&xi, &yi)| xi > 1.0 && yi > 1e-20)
         .map(|(_, &yi)| (yi.ln() - mean_y).powi(2))
         .sum();
     let ss_res: f64 = x
         .iter()
         .zip(y.iter())
-        .filter(|(&xi, &yi)| xi > 1.0 && yi > 1e-20)
+        .filter(|&(&xi, &yi)| xi > 1.0 && yi > 1e-20)
         .map(|(&xi, &yi)| {
             let pred = (sy / n) + slope * (xi.ln() - sx / n); // Simplified intercept usage
             (yi.ln() - pred).powi(2)

@@ -431,7 +431,7 @@ fn haar_random_so_d(d: usize, rng: &mut ChaCha8Rng) -> Vec<f64> {
     // Generate d x d Gaussian matrix (row-major)
     let mut z = vec![0.0_f64; d * d];
     for val in z.iter_mut() {
-        *val = normal.inverse_cdf(rng.gen());
+        *val = normal.inverse_cdf(rng.r#gen());
     }
 
     // Modified Gram-Schmidt QR
@@ -797,8 +797,8 @@ mod tests {
 
         // Sort rows for comparison (each row is a unique multiset)
         let row_key = |r: &Vec<f64>| -> Vec<u64> { r.iter().map(|x| x.to_bits()).collect() };
-        orig_rows.sort_by(|a, b| row_key(a).cmp(&row_key(b)));
-        shuf_rows.sort_by(|a, b| row_key(a).cmp(&row_key(b)));
+        orig_rows.sort_by_key(|a| row_key(a));
+        shuf_rows.sort_by_key(|a| row_key(a));
 
         for (orig, shuf) in orig_rows.iter().zip(shuf_rows.iter()) {
             for (a, b) in orig.iter().zip(shuf.iter()) {

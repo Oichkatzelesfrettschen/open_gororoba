@@ -1,7 +1,7 @@
 [package]
 name = "lattice_filtration"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 license = "GPL-2.0-only"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
@@ -13,9 +13,12 @@ serde = { workspace = true, features = ["derive"] }
 
 [dev-dependencies]
 stats_core = { path = "../stats_core" }
-proptest = "1.5"
+proptest = { workspace = true }
 criterion = { workspace = true }
 
 [[bench]]
 name = "filtration_bench"
 harness = false
+
+[lints]
+workspace = true

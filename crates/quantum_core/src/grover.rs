@@ -306,15 +306,15 @@ mod tests {
     fn test_optimal_iterations() {
         // N=16, M=1: optimal ~ pi/4 * sqrt(16) = pi ~ 3
         let k = optimal_iterations(16, 1);
-        assert!(k >= 2 && k <= 4, "k={} for N=16, M=1", k);
+        assert!((2..=4).contains(&k), "k={} for N=16, M=1", k);
 
         // N=256, M=1: optimal ~ pi/4 * sqrt(256) = 4pi ~ 12-13
         let k = optimal_iterations(256, 1);
-        assert!(k >= 11 && k <= 14, "k={} for N=256, M=1", k);
+        assert!((11..=14).contains(&k), "k={} for N=256, M=1", k);
 
         // N=1024, M=4: optimal ~ pi/4 * sqrt(256) ~ 12-13
         let k = optimal_iterations(1024, 4);
-        assert!(k >= 11 && k <= 14, "k={} for N=1024, M=4", k);
+        assert!((11..=14).contains(&k), "k={} for N=1024, M=4", k);
     }
 
     #[test]
