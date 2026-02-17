@@ -143,10 +143,7 @@ fn write_basemark_summary(
             report.step_timing.p99_us
         ));
         out.push_str(&format!("h5_output = \"{}\"\n", h5_path.display()));
-        out.push_str(&format!(
-            "timing_output = \"{}\"\n",
-            timing_path.display()
-        ));
+        out.push_str(&format!("timing_output = \"{}\"\n", timing_path.display()));
         out.push('\n');
     }
 

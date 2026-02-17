@@ -435,7 +435,11 @@ mod tests {
         let a = vec![[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]];
         let b = a.clone();
         let j = point_cloud_overlap(&a, &b, 1e-10);
-        assert!((j - 1.0).abs() < 1e-14, "Identical clouds should have Jaccard=1, got {}", j);
+        assert!(
+            (j - 1.0).abs() < 1e-14,
+            "Identical clouds should have Jaccard=1, got {}",
+            j
+        );
     }
 
     #[test]
@@ -443,7 +447,11 @@ mod tests {
         let a = vec![[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]];
         let b = vec![[10.0, 10.0, 10.0], [20.0, 20.0, 20.0]];
         let j = point_cloud_overlap(&a, &b, 0.1);
-        assert!(j.abs() < 1e-14, "Disjoint clouds should have Jaccard=0, got {}", j);
+        assert!(
+            j.abs() < 1e-14,
+            "Disjoint clouds should have Jaccard=0, got {}",
+            j
+        );
     }
 
     #[test]
@@ -460,7 +468,11 @@ mod tests {
     fn test_coefficient_of_variation_constant() {
         let x = vec![5.0; 100];
         let cv = coefficient_of_variation(&x);
-        assert!(cv.abs() < 1e-14, "Constant data should have CV=0, got {}", cv);
+        assert!(
+            cv.abs() < 1e-14,
+            "Constant data should have CV=0, got {}",
+            cv
+        );
     }
 
     #[test]
@@ -483,7 +495,11 @@ mod tests {
         let x: Vec<f64> = (0..20).map(|i| i as f64).collect();
         let y: Vec<f64> = x.iter().map(|&xi| 3.0 * xi + 7.0).collect();
         let nli = nonlinearity_index(&x, &y);
-        assert!(nli.abs() < 1e-10, "Linear transform should have NLI=0, got {}", nli);
+        assert!(
+            nli.abs() < 1e-10,
+            "Linear transform should have NLI=0, got {}",
+            nli
+        );
     }
 
     #[test]
@@ -503,7 +519,11 @@ mod tests {
     fn test_dynamic_range_ratio_identity() {
         let x: Vec<f64> = (0..50).map(|i| i as f64).collect();
         let ratio = dynamic_range_ratio(&x, &x);
-        assert!((ratio - 1.0).abs() < 1e-12, "Same field should have ratio=1, got {}", ratio);
+        assert!(
+            (ratio - 1.0).abs() < 1e-12,
+            "Same field should have ratio=1, got {}",
+            ratio
+        );
     }
 
     #[test]
@@ -512,6 +532,10 @@ mod tests {
         let f: Vec<f64> = (0..50).map(|i| i as f64).collect();
         let o: Vec<f64> = f.iter().map(|&v| 0.1 * v).collect();
         let ratio = dynamic_range_ratio(&f, &o);
-        assert!((ratio - 0.1).abs() < 1e-12, "Expected ratio=0.1, got {}", ratio);
+        assert!(
+            (ratio - 0.1).abs() < 1e-12,
+            "Expected ratio=0.1, got {}",
+            ratio
+        );
     }
 }

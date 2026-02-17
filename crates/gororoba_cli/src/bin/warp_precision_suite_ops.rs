@@ -118,7 +118,13 @@ fn timing_mode_tag(mode: TimingMode) -> &'static str {
     }
 }
 
-fn case_h5_name(resolution: usize, backend: BackendKind, precision: Precision, duration_secs: f64, detailed: bool) -> String {
+fn case_h5_name(
+    resolution: usize,
+    backend: BackendKind,
+    precision: Precision,
+    duration_secs: f64,
+    detailed: bool,
+) -> String {
     if detailed {
         format!(
             "warp_ring_{}_{}_{}_{}s.h5",
@@ -132,7 +138,13 @@ fn case_h5_name(resolution: usize, backend: BackendKind, precision: Precision, d
     }
 }
 
-fn timing_name(resolution: usize, backend: BackendKind, precision: Precision, duration_secs: f64, detailed: bool) -> String {
+fn timing_name(
+    resolution: usize,
+    backend: BackendKind,
+    precision: Precision,
+    duration_secs: f64,
+    detailed: bool,
+) -> String {
     if detailed {
         format!(
             "timing_{}_{}_{}_{}s.toml",
@@ -196,7 +208,10 @@ fn write_summary(
     for (h5_path, timing_path, report) in cases {
         out.push_str("[[case]]\n");
         out.push_str(&format!("resolution = {}\n", report.resolution));
-        out.push_str(&format!("precision = \"{}\"\n", precision_tag(report.precision)));
+        out.push_str(&format!(
+            "precision = \"{}\"\n",
+            precision_tag(report.precision)
+        ));
         out.push_str(&format!("elapsed_secs = {:.6}\n", report.elapsed_secs));
         out.push_str(&format!("steps = {}\n", report.steps));
         out.push_str(&format!("steps_per_sec = {:.6}\n", report.steps_per_sec));
@@ -221,10 +236,7 @@ fn write_summary(
             report.step_timing.p99_us
         ));
         out.push_str(&format!("h5_output = \"{}\"\n", h5_path.display()));
-        out.push_str(&format!(
-            "timing_output = \"{}\"\n",
-            timing_path.display()
-        ));
+        out.push_str(&format!("timing_output = \"{}\"\n", timing_path.display()));
         out.push('\n');
     }
 
@@ -328,7 +340,9 @@ pub fn run_precision_suite(cfg: PrecisionSuiteConfig) -> Result<(), Box<dyn Erro
                         cfg.detailed_names,
                     ))
                 } else {
-                    let parent = h5_path.parent().map_or_else(|| PathBuf::from("."), PathBuf::from);
+                    let parent = h5_path
+                        .parent()
+                        .map_or_else(|| PathBuf::from("."), PathBuf::from);
                     parent.join(timing_name(
                         size,
                         cfg.backend,
@@ -354,7 +368,9 @@ pub fn run_precision_suite(cfg: PrecisionSuiteConfig) -> Result<(), Box<dyn Erro
     }
 
     if cfg.write_summary && !cases_with_paths.is_empty() {
-        if let Some(path) = default_summary_path(cfg.out_dir.as_deref(), cfg.single_output.as_deref()) {
+        if let Some(path) =
+            default_summary_path(cfg.out_dir.as_deref(), cfg.single_output.as_deref())
+        {
             write_summary(&path, &cfg, &cases_with_paths)?;
             println!("SUMMARY_REPORT: {}", path.display());
         }

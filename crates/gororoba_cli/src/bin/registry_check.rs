@@ -472,7 +472,9 @@ fn collect_missing_ids(ids: &BTreeSet<u32>) -> Vec<u32> {
     let (Some(&first), Some(&last)) = (ids.iter().next(), ids.iter().next_back()) else {
         return Vec::new();
     };
-    (first..=last).filter(|value| !ids.contains(value)).collect()
+    (first..=last)
+        .filter(|value| !ids.contains(value))
+        .collect()
 }
 
 fn compress_gap_ids(prefix: &str, ids: &[u32]) -> Vec<String> {
@@ -516,7 +518,11 @@ fn summarize_gap_ids(prefix: &str, ids: &[u32]) -> String {
     if ranges.len() <= 5 {
         return ranges.join(", ");
     }
-    format!("{}... and {} more", ranges[..5].join(", "), ranges.len() - 5)
+    format!(
+        "{}... and {} more",
+        ranges[..5].join(", "),
+        ranges.len() - 5
+    )
 }
 
 fn parse_governed_gap_token(token: &str, prefix: &str) -> Result<Vec<u32>, String> {
@@ -531,9 +537,7 @@ fn parse_governed_gap_token(token: &str, prefix: &str) -> Result<Vec<u32>, Strin
         let end = parse_numbered_id(end_raw.trim(), prefix)
             .ok_or_else(|| format!("invalid end ID: {end_raw}"))?;
         if end < start {
-            return Err(format!(
-                "range end precedes start: {start_raw}..{end_raw}"
-            ));
+            return Err(format!("range end precedes start: {start_raw}..{end_raw}"));
         }
         Ok((start..=end).collect())
     } else {
@@ -870,7 +874,10 @@ fn main() {
             if let Some(num) = parse_numbered_id(&insight.id, "I-") {
                 nums.insert(num);
             } else {
-                eprintln!("ERROR: insight ID {} does not match I-NNN format", insight.id);
+                eprintln!(
+                    "ERROR: insight ID {} does not match I-NNN format",
+                    insight.id
+                );
                 errors += 1;
             }
         }

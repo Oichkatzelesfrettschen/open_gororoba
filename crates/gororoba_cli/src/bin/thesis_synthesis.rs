@@ -67,7 +67,9 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
     for &alpha in &coupling_values {
         info!("--- Running sweep for alpha = {} ---", alpha);
         let config = SimulationConfig3D {
-            nx: 16, ny: 16, nz: 16,
+            nx: 16,
+            ny: 16,
+            nz: 16,
             tau: 0.8,
             use_gpu: cfg!(feature = "gpu"),
             precision: Precision::FP32,
@@ -75,9 +77,9 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
             coupling_fluid_algebra: alpha,
             coupling_algebra_fluid: alpha,
         };
-        
+
         let mut state = SimulationState3D::new(config)?;
-        
+
         let n_steps = 30;
         let mut rho_means = Vec::new();
         let mut times = Vec::new();
@@ -91,7 +93,7 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
         // Collect final scalar summary (topology pipeline is not wired into SimulationState3D yet).
         let final_rho = rho_means.last().copied().unwrap_or(1.0);
         sweep_results.push((alpha, final_rho));
-        
+
         // Export individual trace to HDF5
         #[cfg(feature = "hdf5-export")]
         {
@@ -100,7 +102,7 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
                 Path::new(&h5_name),
                 &times,
                 &rho_means,
-                &vec![0.0; n_steps], 
+                &vec![0.0; n_steps],
                 &vec![0.0; n_steps],
             );
         }
@@ -108,12 +110,10 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
 
     // 2. Generate TikZ/PGFPlots Visualization
     info!("Generating TikZ visualization...");
-    
+
     let mut plot_rho = Plot2D::new();
     for (alpha, rho) in &sweep_results {
-        plot_rho
-            .coordinates
-            .push(((*alpha as f64), *rho).into());
+        plot_rho.coordinates.push(((*alpha as f64), *rho).into());
     }
 
     let mut axis = Axis::new();
@@ -121,21 +121,23 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
     axis.set_title("Final Mean Density vs Coupling Strength");
     axis.set_x_label("Coupling Strength (\\alpha)");
     axis.set_y_label("rho_mean (final)");
-    
+
     let picture = Picture::from(axis);
     let tikz_path = "thesis_betti_sweep.tex";
     std::fs::write(tikz_path, picture.to_string())?;
     info!("TikZ plot saved to {}", tikz_path);
 
     // 3. Generate Standalone LaTeX Wrapper
-    let latex_content = format!(r#"\documentclass{{standalone}}
+    let latex_content = format!(
+        r#"\documentclass{{standalone}}
 \usepackage{{pgfplots}}
 \pgfplotsset{{compat=1.18}}
 	\begin{{document}}
 	{}
 	\end{{document}}
 	"#,
-        picture);
+        picture
+    );
     std::fs::write("thesis_standalone.tex", latex_content)?;
     info!("Standalone LaTeX wrapper saved to thesis_standalone.tex");
 
@@ -144,11 +146,16 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
 }
 
 fn run_single(grid: usize, alpha: f64, steps: usize) -> Result<(), Box<dyn Error>> {
-    info!("=== Gororoba High-Res Experiment ({}x{}x{}, alpha={}) ===", grid, grid, grid, alpha);
-    
+    info!(
+        "=== Gororoba High-Res Experiment ({}x{}x{}, alpha={}) ===",
+        grid, grid, grid, alpha
+    );
+
     let alpha_f32 = alpha as f32;
     let config = SimulationConfig3D {
-        nx: grid, ny: grid, nz: grid,
+        nx: grid,
+        ny: grid,
+        nz: grid,
         tau: 0.8,
         use_gpu: cfg!(feature = "gpu"),
         precision: Precision::FP32,
@@ -177,7 +184,7 @@ fn run_single(grid: usize, alpha: f64, steps: usize) -> Result<(), Box<dyn Error
             Path::new(&h5_name),
             &times,
             &rho_means,
-            &vec![0.0; steps], 
+            &vec![0.0; steps],
             &vec![0.0; steps],
         );
         info!("Exported trace to {}", h5_name);

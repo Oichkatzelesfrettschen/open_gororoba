@@ -326,10 +326,7 @@ pub fn detect_plateaus_robust(losses: &[f64], config: &PlateauConfig) -> Plateau
 
     // Determine threshold
     let threshold = if config.adaptive {
-        let max_curv = curvatures
-            .iter()
-            .map(|c| c.abs())
-            .fold(0.0_f64, f64::max);
+        let max_curv = curvatures.iter().map(|c| c.abs()).fold(0.0_f64, f64::max);
         (config.adaptive_fraction * max_curv).max(1e-15)
     } else {
         config.curvature_threshold
@@ -468,9 +465,7 @@ mod tests {
     #[test]
     fn test_detect_plateaus_curvature_values() {
         // Parabolic loss: L(t) = (t-25)^2 / 625 => constant positive curvature
-        let losses: Vec<f64> = (0..50)
-            .map(|i| (i as f64 - 25.0).powi(2) / 625.0)
-            .collect();
+        let losses: Vec<f64> = (0..50).map(|i| (i as f64 - 25.0).powi(2) / 625.0).collect();
         let result = detect_plateaus(&losses, 1e-10, 3);
         // Curvature should be approximately constant (2/625 = 0.0032)
         for &c in &result.curvatures[1..result.curvatures.len() - 1] {
@@ -606,10 +601,6 @@ mod tests {
         let a = vec![1.0, 2.0, 3.0, 4.0];
         let b = vec![2.0, 3.0, 4.0, 5.0];
         let w = wasserstein_1d(&a, &b);
-        assert!(
-            (w - 1.0).abs() < 1e-14,
-            "Shift by 1 should give W=1: {}",
-            w
-        );
+        assert!((w - 1.0).abs() < 1e-14, "Shift by 1 should give W=1: {}", w);
     }
 }

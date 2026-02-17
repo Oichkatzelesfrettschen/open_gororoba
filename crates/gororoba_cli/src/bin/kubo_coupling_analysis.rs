@@ -84,21 +84,21 @@ fn compute_point(
     {
         if let Some(ref ctx) = dispatcher.gpu_ctx {
             if let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10) {
-                    transport = t;
-                    return CouplingPoint {
-                        lambda,
-                        temperature,
-                        frustration,
-                        drude_spin: transport.drude_weight_spin,
-                        drude_energy: transport.drude_weight_energy,
-                        thermal_conductivity: transport.thermal_conductivity,
-                        total_weight_spin: transport.total_weight_spin,
-                        total_weight_energy: transport.total_weight_energy,
-                        specific_heat: {
-                            let ed = exact_diagonalize(&model);
-                            thermodynamic_quantities(&ed, temperature).specific_heat
-                        },
-                    };
+                transport = t;
+                return CouplingPoint {
+                    lambda,
+                    temperature,
+                    frustration,
+                    drude_spin: transport.drude_weight_spin,
+                    drude_energy: transport.drude_weight_energy,
+                    thermal_conductivity: transport.thermal_conductivity,
+                    total_weight_spin: transport.total_weight_spin,
+                    total_weight_energy: transport.total_weight_energy,
+                    specific_heat: {
+                        let ed = exact_diagonalize(&model);
+                        thermodynamic_quantities(&ed, temperature).specific_heat
+                    },
+                };
             }
         }
     }
@@ -159,7 +159,11 @@ fn fit_power_law(x: &[f64], y: &[f64]) -> (f64, f64, f64) {
         ss_res += (actual - predicted).powi(2);
         ss_tot += (actual - mean_lny).powi(2);
     }
-    let r2 = if ss_tot > 0.0 { 1.0 - ss_res / ss_tot } else { 0.0 };
+    let r2 = if ss_tot > 0.0 {
+        1.0 - ss_res / ss_tot
+    } else {
+        0.0
+    };
 
     (a, b, r2)
 }
@@ -201,7 +205,11 @@ fn fit_exponential(x: &[f64], y: &[f64]) -> (f64, f64, f64) {
         ss_res += (actual - predicted).powi(2);
         ss_tot += (actual - mean_lny).powi(2);
     }
-    let r2 = if ss_tot > 0.0 { 1.0 - ss_res / ss_tot } else { 0.0 };
+    let r2 = if ss_tot > 0.0 {
+        1.0 - ss_res / ss_tot
+    } else {
+        0.0
+    };
 
     (a, b, r2)
 }
@@ -223,7 +231,12 @@ fn main() -> io::Result<()> {
     // Section 1: Fine lambda sweep at primary temperature (T=0.5)
     // -----------------------------------------------------------------------
     let t_primary = 0.5;
-    println!("[1/4] Fine lambda sweep: dim={}, T={}, {} points", cd_dim, t_primary, n_lambda + 1);
+    println!(
+        "[1/4] Fine lambda sweep: dim={}, T={}, {} points",
+        cd_dim,
+        t_primary,
+        n_lambda + 1
+    );
     println!("------------------------------------------------------");
 
     let mut primary_points: Vec<CouplingPoint> = Vec::with_capacity(n_lambda + 1);
@@ -233,8 +246,11 @@ fn main() -> io::Result<()> {
         if i % 10 == 0 || i == n_lambda {
             println!(
                 "  lambda={:.2}: f={:.4}, D_S={:.6e}, K_th={:.6e}, I0_S={:.6e}",
-                lambda, point.frustration, point.drude_spin,
-                point.thermal_conductivity, point.total_weight_spin
+                lambda,
+                point.frustration,
+                point.drude_spin,
+                point.thermal_conductivity,
+                point.total_weight_spin
             );
         }
         primary_points.push(point);
@@ -246,8 +262,10 @@ fn main() -> io::Result<()> {
     let i0_s_ref = primary_points[0].total_weight_spin;
 
     println!();
-    println!("  Reference (lambda=0): D_S={:.6e}, K_th={:.6e}, I0_S={:.6e}",
-             d_s_ref, k_th_ref, i0_s_ref);
+    println!(
+        "  Reference (lambda=0): D_S={:.6e}, K_th={:.6e}, I0_S={:.6e}",
+        d_s_ref, k_th_ref, i0_s_ref
+    );
 
     // Compute ratios
     println!();
@@ -271,8 +289,11 @@ fn main() -> io::Result<()> {
         if ((p.lambda * 100.0).round() as usize).is_multiple_of(10) {
             println!(
                 "    lambda={:.2}: g_D={:.2}, g_I0S={:.4}, K_th={:.6e}, C_V={:.4}",
-                p.lambda, drude_ratio.min(1e6), i0s_ratio,
-                p.thermal_conductivity, p.specific_heat
+                p.lambda,
+                drude_ratio.min(1e6),
+                i0s_ratio,
+                p.thermal_conductivity,
+                p.specific_heat
             );
         }
 
@@ -317,15 +338,24 @@ fn main() -> io::Result<()> {
 
     // Fit 1: Power law g(lambda) = a * lambda^b
     let (a_pow, b_pow, r2_pow) = fit_power_law(&fit_lambdas, &fit_ratios);
-    println!("  Power law: g(lambda) = {:.4} * lambda^{:.4}, R^2={:.6}", a_pow, b_pow, r2_pow);
+    println!(
+        "  Power law: g(lambda) = {:.4} * lambda^{:.4}, R^2={:.6}",
+        a_pow, b_pow, r2_pow
+    );
 
     // Fit 2: Exponential g(lambda) = a * exp(b * lambda)
     let (a_exp, b_exp, r2_exp) = fit_exponential(&fit_lambdas, &fit_ratios);
-    println!("  Exponential: g(lambda) = {:.4} * exp({:.4} * lambda), R^2={:.6}", a_exp, b_exp, r2_exp);
+    println!(
+        "  Exponential: g(lambda) = {:.4} * exp({:.4} * lambda), R^2={:.6}",
+        a_exp, b_exp, r2_exp
+    );
 
     // Fit 3: I0_S ratio (bounded, well-behaved)
     let (a_i0s, b_i0s, r2_i0s) = fit_power_law(&fit_lambdas, &i0s_ratios[fit_start..]);
-    println!("  I0_S power law: g_I0S(lambda) = {:.4} * lambda^{:.4}, R^2={:.6}", a_i0s, b_i0s, r2_i0s);
+    println!(
+        "  I0_S power law: g_I0S(lambda) = {:.4} * lambda^{:.4}, R^2={:.6}",
+        a_i0s, b_i0s, r2_i0s
+    );
 
     // Compute ballistic fraction B(lambda) = D_S / I0_S
     println!();
@@ -339,7 +369,9 @@ fn main() -> io::Result<()> {
             };
             println!(
                 "    lambda={:.2}: B={:.6} ({}% ballistic)",
-                p.lambda, b_frac, (b_frac * 100.0).round()
+                p.lambda,
+                b_frac,
+                (b_frac * 100.0).round()
             );
         }
     }
@@ -361,14 +393,17 @@ fn main() -> io::Result<()> {
 
     // At f = 0.375 (vacuum attractor):
     let lambda_at_vac = 0.375 / f_cd;
-    println!("  lambda at vacuum attractor (f=0.375): {:.4}", lambda_at_vac);
+    println!(
+        "  lambda at vacuum attractor (f=0.375): {:.4}",
+        lambda_at_vac
+    );
 
     // Get D_S at lambda_at_vac by interpolation from the table
     let idx_f = lambda_at_vac * n_lambda as f64;
     let idx = (idx_f as usize).min(n_lambda - 1);
     let frac = idx_f - idx as f64;
-    let d_s_at_vac = primary_points[idx].drude_spin * (1.0 - frac)
-        + primary_points[idx + 1].drude_spin * frac;
+    let d_s_at_vac =
+        primary_points[idx].drude_spin * (1.0 - frac) + primary_points[idx + 1].drude_spin * frac;
     let g_at_vac = d_s_ref / d_s_at_vac.max(1e-30);
     println!("  D_S at vacuum attractor: {:.6e}", d_s_at_vac);
     println!("  g(0.375) = D_S(0)/D_S(0.375) = {:.2}", g_at_vac);
@@ -381,7 +416,10 @@ fn main() -> io::Result<()> {
     // Option A: Use the Drude ratio directly (lookup table)
     println!("  A) Drude ratio lookup table (101 points):");
     println!("     nu(f) = nu_base * g(f/f_cd) where g comes from D_S(0)/D_S(lambda)");
-    println!("     Range: g(0) = 1.0 to g(1.0) = {:.1}", d_s_ref / primary_points.last().unwrap().drude_spin.max(1e-30));
+    println!(
+        "     Range: g(0) = 1.0 to g(1.0) = {:.1}",
+        d_s_ref / primary_points.last().unwrap().drude_spin.max(1e-30)
+    );
     println!();
 
     // Option B: Exponential fit (if R^2 > 0.9)
@@ -392,9 +430,15 @@ fn main() -> io::Result<()> {
         // For the Exponential ViscosityCouplingModel:
         // nu = nu_base * exp(-lambda * (F - F0)^2) where lambda is the coupling strength
         // This doesn't match our form. We need: nu = nu_base * a * exp(b * f)
-        println!("     g(f) = {:.4} * exp({:.4} * f / {:.4})", a_exp, b_exp, f_cd);
+        println!(
+            "     g(f) = {:.4} * exp({:.4} * f / {:.4})",
+            a_exp, b_exp, f_cd
+        );
         let eff_b = b_exp / f_cd;
-        println!("     Effective: g(f) = {:.4} * exp({:.4} * f)", a_exp, eff_b);
+        println!(
+            "     Effective: g(f) = {:.4} * exp({:.4} * f)",
+            a_exp, eff_b
+        );
     }
     println!();
 
@@ -408,9 +452,18 @@ fn main() -> io::Result<()> {
     // Key physical result: the onset jump
     let d_s_at_001 = primary_points[1].drude_spin; // lambda = 0.01
     let onset_ratio = d_s_ref / d_s_at_001.max(1e-30);
-    println!("  KEY RESULT: Onset ratio D_S(0)/D_S(0.01) = {:.1}", onset_ratio);
-    println!("  ANY amount of CD frustration causes a {:.0}x jump in effective viscosity.", onset_ratio);
-    println!("  After onset, g(lambda) grows slowly as lambda^{:.2}", b_pow);
+    println!(
+        "  KEY RESULT: Onset ratio D_S(0)/D_S(0.01) = {:.1}",
+        onset_ratio
+    );
+    println!(
+        "  ANY amount of CD frustration causes a {:.0}x jump in effective viscosity.",
+        onset_ratio
+    );
+    println!(
+        "  After onset, g(lambda) grows slowly as lambda^{:.2}",
+        b_pow
+    );
     println!();
 
     // -----------------------------------------------------------------------
@@ -428,7 +481,10 @@ fn main() -> io::Result<()> {
     toml.push_str(&format!("primary_temperature = {}\n", t_primary));
     toml.push_str(&format!("frustration_cd = {}\n", f_cd));
     toml.push_str(&format!("d_s_reference = {}\n", d_s_ref));
-    toml.push_str(&format!("backend = \"{}\"\n\n", if dispatcher.use_gpu { "GPU" } else { "CPU" }));
+    toml.push_str(&format!(
+        "backend = \"{}\"\n\n",
+        if dispatcher.use_gpu { "GPU" } else { "CPU" }
+    ));
 
     toml.push_str("[fits]\n");
     toml.push_str(&format!("power_law_a = {}\n", a_pow));
@@ -448,9 +504,15 @@ fn main() -> io::Result<()> {
         toml.push_str(&format!("frustration = {}\n", p.frustration));
         toml.push_str(&format!("drude_spin = {}\n", p.drude_spin));
         toml.push_str(&format!("drude_energy = {}\n", p.drude_energy));
-        toml.push_str(&format!("thermal_conductivity = {}\n", p.thermal_conductivity));
+        toml.push_str(&format!(
+            "thermal_conductivity = {}\n",
+            p.thermal_conductivity
+        ));
         toml.push_str(&format!("total_weight_spin = {}\n", p.total_weight_spin));
-        toml.push_str(&format!("total_weight_energy = {}\n", p.total_weight_energy));
+        toml.push_str(&format!(
+            "total_weight_energy = {}\n",
+            p.total_weight_energy
+        ));
         toml.push_str(&format!("specific_heat = {}\n", p.specific_heat));
         let drude_ratio = if p.drude_spin.abs() > 1e-30 {
             d_s_ref / p.drude_spin
@@ -466,7 +528,10 @@ fn main() -> io::Result<()> {
         toml.push_str(&format!("lambda = {}\n", p.lambda));
         toml.push_str(&format!("temperature = {}\n", p.temperature));
         toml.push_str(&format!("drude_spin = {}\n", p.drude_spin));
-        toml.push_str(&format!("thermal_conductivity = {}\n", p.thermal_conductivity));
+        toml.push_str(&format!(
+            "thermal_conductivity = {}\n",
+            p.thermal_conductivity
+        ));
         toml.push_str(&format!("specific_heat = {}\n\n", p.specific_heat));
     }
 

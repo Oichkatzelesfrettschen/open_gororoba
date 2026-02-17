@@ -55,33 +55,35 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ny = 64;
     let lbm_tau = 0.8;
     let lbm_steps = 2000;
-    
+
     let sim_config = SimulationConfig {
-        nx, ny, tau: lbm_tau,
+        nx,
+        ny,
+        tau: lbm_tau,
         algebra_params: FieldParams::default(),
         coupling_fluid_algebra: 0.1,
         coupling_algebra_fluid: 0.1,
         coupling_metric_algebra: 0.1,
     };
-    
+
     let mut state = SimulationState::new(sim_config);
-    
+
     info!(
         "[1/8] Running Engine LBM ({}x{}, tau={}, {} steps)...",
         nx, ny, lbm_tau, lbm_steps
     );
-    
+
     // Run fluid thermalization
     for _ in 0..lbm_steps {
         state.fluid.collide(0, ny);
         // Apply Kolmogorov forcing inline (engine doesn't have forcing config yet)
         state.fluid.stream();
     }
-    
+
     let (_rho, u_array, v_array) = state.fluid.macroscopic();
     let u = u_array;
     let v = v_array;
-    
+
     // Recompute diagnostics that used to come from `flow` struct
     let (k_axis, power) = power_spectrum(&u);
     // Enstrophy estimate

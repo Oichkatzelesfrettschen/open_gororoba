@@ -101,7 +101,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                 ))
                 .into());
             }
-            if !all_finite(&time) || !all_finite(&rho) || !all_finite(&enstrophy) || !all_finite(&algebra_norm) {
+            if !all_finite(&time)
+                || !all_finite(&rho)
+                || !all_finite(&enstrophy)
+                || !all_finite(&algebra_norm)
+            {
                 return Err(std::io::Error::other(format!(
                     "{}: non-finite value detected in simulation/trace datasets",
                     path.display()
@@ -117,10 +121,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
 
             let rho_quality = validate_rho_trace(&rho, thresholds).map_err(|e| {
-                std::io::Error::other(format!(
-                    "{}: rho quality gate failed: {e}",
-                    path.display()
-                ))
+                std::io::Error::other(format!("{}: rho quality gate failed: {e}", path.display()))
             })?;
 
             ok_count += 1;
@@ -135,9 +136,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         println!(
             "SIM_TRACE_GATE: PASS ({} files checked; rho thresholds drift<= {:.3e}, std<= {:.3e})",
-            ok_count,
-            thresholds.max_abs_drift_final,
-            thresholds.max_std_dev
+            ok_count, thresholds.max_abs_drift_final, thresholds.max_std_dev
         );
         Ok(())
     }

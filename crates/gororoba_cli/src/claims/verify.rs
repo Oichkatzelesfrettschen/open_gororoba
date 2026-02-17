@@ -311,12 +311,14 @@ pub struct DatasetProvidersCheck {
 /// - One-way subset check: every Provider token in the provider-manifest
 ///   narrative must exist in Rust.
 /// - Rust may include extra providers not yet documented; these are warnings.
-pub fn verify_dataset_providers(external_sources_registry: &str, fetch_source: &str) -> DatasetProvidersCheck {
+pub fn verify_dataset_providers(
+    external_sources_registry: &str,
+    fetch_source: &str,
+) -> DatasetProvidersCheck {
     static PROVIDER_TOKEN_RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r"([A-Za-z0-9_]+Provider)").expect("valid regex"));
     static RUST_PROVIDER_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"Box::new\(\s*[A-Za-z0-9_:]*?([A-Za-z0-9_]+Provider)\)")
-            .expect("valid regex")
+        Regex::new(r"Box::new\(\s*[A-Za-z0-9_:]*?([A-Za-z0-9_]+Provider)\)").expect("valid regex")
     });
 
     let mut out = DatasetProvidersCheck::default();
@@ -339,8 +341,9 @@ pub fn verify_dataset_providers(external_sources_registry: &str, fetch_source: &
     let registry: toml::Value = match toml::from_str(external_sources_registry) {
         Ok(v) => v,
         Err(e) => {
-            out.failures
-                .push(format!("Failed to parse registry/external_sources.toml: {e}"));
+            out.failures.push(format!(
+                "Failed to parse registry/external_sources.toml: {e}"
+            ));
             return out;
         }
     };
@@ -349,9 +352,8 @@ pub fn verify_dataset_providers(external_sources_registry: &str, fetch_source: &
     let documents = match registry.get("document").and_then(|v| v.as_array()) {
         Some(arr) => arr,
         None => {
-            out.failures.push(
-                "registry/external_sources.toml: missing [[document]] array".to_string(),
-            );
+            out.failures
+                .push("registry/external_sources.toml: missing [[document]] array".to_string());
             return out;
         }
     };
@@ -392,8 +394,9 @@ pub fn verify_dataset_providers(external_sources_registry: &str, fetch_source: &
 
     // Warn if Rust has providers not yet documented in manifest.
     for p in rust_providers.difference(&manifest_providers) {
-        out.warnings
-            .push(format!("Provider {p} in Rust fetch registry but not documented in provider manifest"));
+        out.warnings.push(format!(
+            "Provider {p} in Rust fetch registry but not documented in provider manifest"
+        ));
     }
 
     out
@@ -484,7 +487,8 @@ pub fn run_all_verifications(repo_root: &Path) -> Result<String, Vec<String>> {
         }
     }
 
-    if let (Some(registry_text), Some(fetch_src)) = (registry_text.as_deref(), fetch_src.as_deref()) {
+    if let (Some(registry_text), Some(fetch_src)) = (registry_text.as_deref(), fetch_src.as_deref())
+    {
         let chk = verify_dataset_providers(registry_text, fetch_src);
         summaries.push(format!(
             "dataset_providers: {} failures ({} warnings)",

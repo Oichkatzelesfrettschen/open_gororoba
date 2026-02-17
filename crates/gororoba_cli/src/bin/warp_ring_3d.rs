@@ -3,18 +3,20 @@
 //! Extends the 2D Warp Ring to a full 3D experiment-emulation-simulation.
 //! Integrating 3D LBM, E7 roots, and SHI warp lensing.
 
-use algebra_core::lie::e7_geometry::{generate_e7_roots};
+use algebra_core::lie::e7_geometry::generate_e7_roots;
 use algebra_core::physics::octonion_field::FieldParams;
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::{
-    export_experiment_contract, export_field_3d, export_rho_quality_metrics, export_simulation_trace,
-    read_rho_mean_trace,
+    export_experiment_contract, export_field_3d, export_rho_quality_metrics,
+    export_simulation_trace, read_rho_mean_trace,
 };
 use data_core::quality::{validate_rho_trace, RhoQualityThresholds};
-use gororoba_engine::simulation::{E7SpectralFilter, LbmBackend3D, SimulationConfig3D, SimulationState3D};
-use lbm_core::turbulence::{extract_dominant_triads_3d};
 #[cfg(feature = "hdf5-export")]
-use gororoba_contracts::{WarpRingExperiment, WarpRingConfig, WarpRingResults};
+use gororoba_contracts::{WarpRingConfig, WarpRingExperiment, WarpRingResults};
+use gororoba_engine::simulation::{
+    E7SpectralFilter, LbmBackend3D, SimulationConfig3D, SimulationState3D,
+};
+use lbm_core::turbulence::extract_dominant_triads_3d;
 use std::error::Error;
 use std::path::Path;
 use tracing::info;
@@ -31,7 +33,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let steps = 32000; // ~60 seconds at 540 steps/s
 
     let config = SimulationConfig3D {
-        nx, ny, nz, tau,
+        nx,
+        ny,
+        nz,
+        tau,
         use_gpu: true,
         precision: lbm_3d_cuda::Precision::BF16,
         algebra_params: FieldParams::default(),
@@ -43,18 +48,21 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Gaussian Projector with sigma=1.5
     state.frustration = Some(Box::new(E7SpectralFilter::new(nx, ny, nz, 0.95)));
 
-    info!("[1/5] Initializing 3D Fluid ({}x{}x{}, tau={})...", nx, ny, nz, tau);
+    info!(
+        "[1/5] Initializing 3D Fluid ({}x{}x{}, tau={})...",
+        nx, ny, nz, tau
+    );
     // Initialize with uniform rest state
     #[cfg(feature = "gpu")]
     if let LbmBackend3D::Gpu(ref mut _solver) = state.fluid {
-        // solver.initialize_uniform(1.0, [0.0, 0.0, 0.0])? is not public, 
+        // solver.initialize_uniform(1.0, [0.0, 0.0, 0.0])? is not public,
         // LbmSolver3DCuda::new already initializes to w_i (rho=1, u=0).
         // Let's verify if initialize_custom is needed.
         // For now, let's just use the default initialized state.
     }
 
     info!("[2/5] Running 3D Simulation ({} steps)...", steps);
-    
+
     // Data collectors
     let mut time_hist = Vec::with_capacity(steps);
     let mut rho_hist = Vec::with_capacity(steps);
@@ -65,18 +73,21 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     for t in 0..steps {
         state.step()?;
-        
+
         // HDF5 Data Collection
         if t % 10 == 0 {
             time_hist.push(t as f64);
             rho_hist.push(state.fluid.try_mean_density()?);
-            enstrophy_hist.push(0.0); 
+            enstrophy_hist.push(0.0);
             alg_norm_hist.push(0.0);
-            
+
             if t % 100 == 0 {
                 let elapsed = start_time.elapsed().as_secs_f64();
                 let steps_per_sec = t as f64 / elapsed.max(0.001);
-                info!("      Step {} completed. Speed: {:.2} steps/s", t, steps_per_sec);
+                info!(
+                    "      Step {} completed. Speed: {:.2} steps/s",
+                    t, steps_per_sec
+                );
             }
         }
 
@@ -87,8 +98,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let snapshot_path = format!("data/h5/warp_field_{}_step_{}.h5", nx, t);
                 if let LbmBackend3D::Gpu(ref mut solver) = state.fluid {
                     solver.sync_to_host()?;
-                    let u_flat: Vec<f64> =
-                        solver.u.iter().flat_map(|v| vec![v[0] as f64, v[1] as f64, v[2] as f64]).collect();
+                    let u_flat: Vec<f64> = solver
+                        .u
+                        .iter()
+                        .flat_map(|v| vec![v[0] as f64, v[1] as f64, v[2] as f64])
+                        .collect();
                     export_field_3d(Path::new(&snapshot_path), "velocity", nx, ny, nz, &u_flat)
                         .unwrap_or_else(|e| info!("Field Snapshot failed: {}", e));
                     info!("      [Snapshot] Saved full field to {}", snapshot_path);
@@ -96,7 +110,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
     }
-    
+
     let total_elapsed = start_time.elapsed().as_secs_f64();
     let steps_per_sec = steps as f64 / total_elapsed;
     let mlups = (steps_per_sec * (nx * ny * nz) as f64) / 1e6;
@@ -104,7 +118,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let rho_quality = validate_rho_trace(&rho_hist, rho_thresholds)
         .map_err(|e| std::io::Error::other(format!("pre-export rho quality gate failed: {e}")))?;
 
-    info!("Simulation completed in {:.2}s ({:.2} steps/s, {:.2} MLUPS)", total_elapsed, steps_per_sec, mlups);
+    info!(
+        "Simulation completed in {:.2}s ({:.2} steps/s, {:.2} MLUPS)",
+        total_elapsed, steps_per_sec, mlups
+    );
     info!(
         "Rho quality pre-export: samples={}, final={:.6}, drift={:.3e}, std={:.3e}",
         rho_quality.sample_count,
@@ -118,7 +135,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     if let LbmBackend3D::Gpu(ref mut solver) = state.fluid {
         solver.sync_to_host()?;
     }
-    
+
     let (ux, uy, uz) = state.fluid.try_velocity(nx, ny, nz)?;
     let triads = extract_dominant_triads_3d(&ux, &uy, &uz, 1e-6);
     info!("      Found {} dominant 3D triads.", triads.len());
@@ -133,11 +150,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     if let Some(parent) = path.parent() {
         std::fs::create_dir_all(parent)?;
     }
-    
+
     #[cfg(feature = "hdf5-export")]
     {
         let contract = WarpRingExperiment {
-            experiment_id: format!("EXP-WARP-{}-{}", nx, chrono::Utc::now().format("%Y%m%d-%H%M%S")),
+            experiment_id: format!(
+                "EXP-WARP-{}-{}",
+                nx,
+                chrono::Utc::now().format("%Y%m%d-%H%M%S")
+            ),
             config: WarpRingConfig {
                 resolution: nx,
                 steps,
@@ -162,15 +183,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         // Fail-closed artifact acceptance: verify rho_mean directly from the written HDF5 dataset.
         let rho_from_file = read_rho_mean_trace(path)?;
-        let file_quality = validate_rho_trace(&rho_from_file, rho_thresholds)
-            .map_err(|e| std::io::Error::other(format!("post-export rho quality gate failed: {e}")))?;
+        let file_quality = validate_rho_trace(&rho_from_file, rho_thresholds).map_err(|e| {
+            std::io::Error::other(format!("post-export rho quality gate failed: {e}"))
+        })?;
         export_rho_quality_metrics(path, &file_quality, rho_thresholds)?;
         info!(
             "      Accepted artifact {:?} with rho gate pass: samples={}, drift={:.3e}, std={:.3e}",
-            path,
-            file_quality.sample_count,
-            file_quality.abs_drift_final,
-            file_quality.std_dev
+            path, file_quality.sample_count, file_quality.abs_drift_final, file_quality.std_dev
         );
     }
     #[cfg(not(feature = "hdf5-export"))]

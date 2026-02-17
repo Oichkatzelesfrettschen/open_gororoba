@@ -1,6 +1,6 @@
-use nalgebra::{Matrix3, Vector3};
 use crate::algebraic_triad::AlgebraicTriad;
 use crate::spin_event::SpinEvent;
+use nalgebra::{Matrix3, Vector3};
 
 /// Accumulator for spin tomography moments.
 #[derive(Debug, Clone, Default)]
@@ -29,7 +29,7 @@ impl TomographyMoments {
     /// Then E[u'] = a, E[v'] = b, E[u'v'] = T + ab^T (if no single-spin correlations leak).
     pub fn add(&mut self, event: &SpinEvent, triad: &AlgebraicTriad) {
         let axes = triad.to_axes_vec();
-        
+
         // Project analyzer directions onto triad axes
         let u_raw = Vector3::new(
             event.n1.dot(&axes[0]),
@@ -68,10 +68,10 @@ impl TomographyMoments {
         }
 
         let inv_w = 1.0 / self.weight_sum;
-        
+
         let a_mean = self.u_sum * inv_w;
         let b_mean = self.v_sum * inv_w;
-        
+
         let uv_mean = self.uv_sum * inv_w;
 
         // Covariance subtraction

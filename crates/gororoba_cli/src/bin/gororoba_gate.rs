@@ -6,7 +6,9 @@
 //! 3. Compares simulation metrics against claim thresholds.
 //! 4. Reports status and suggests registry updates.
 
-use gororoba_engine::thesis_pipelines::{Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline};
+use gororoba_engine::thesis_pipelines::{
+    Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline,
+};
 use gororoba_engine::traits::ThesisPipeline;
 use log::{error, info, warn};
 use std::error::Error;
@@ -28,14 +30,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     for pipeline in pipelines {
         info!("Running pipeline: {}", pipeline.name());
         let evidence = pipeline.execute();
-        
+
         if evidence.passes_gate {
             info!("  [PASS] {}", evidence.label);
         } else {
             error!("  [FAIL] {}", evidence.label);
             all_passed = false;
         }
-        
+
         for msg in &evidence.messages {
             info!("    - {}", msg);
         }

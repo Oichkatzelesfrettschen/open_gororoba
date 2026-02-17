@@ -1,0 +1,83 @@
+schema = "open_gororoba.warp_fastpath_analysis.v2"
+generated_at_utc = "2026-02-16T21:10:00Z"
+
+[status]
+fastpath_report = "reports/warp_bf16_fastpath_comparison_report_2026_02_16_205913.toml"
+production_dir = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2"
+telemetry_csv = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/gpu_telemetry.csv"
+fp32_diag_dir = "data/h5/precision_bench_20260216_fp32_diag"
+fp32_diag_summary = "data/h5/precision_bench_20260216_fp32_diag/warp_precision_suite_summary.toml"
+
+[sweep]
+winning_block_dim = "16x4x2"
+winning_geom_mlups = 344.145062
+runner_up_block_dim = "8x8x2"
+runner_up_geom_mlups = 325.668277
+winner_margin_pct = 5.6734
+
+[comparison.vs_untuned_20260215_211758]
+mlups_128_untuned = 812.078703
+mlups_128_tuned = 718.315758
+delta_128_pct = -11.5460
+mlups_256_untuned = 772.196759
+mlups_256_tuned = 167.204877
+delta_256_pct = -78.3469
+geom_mlups_untuned = 791.886698
+geom_mlups_tuned = 346.562979
+delta_geom_pct = -56.2358
+scaling_exponent_steps_per_sec_untuned = 3.0727
+scaling_exponent_steps_per_sec_tuned = 5.1030
+
+[data_quality]
+legacy_gate_status = "pass"
+legacy_gate_profile = "research"
+canonical_gate_bf16_status = "fail"
+canonical_gate_bf16_reason = "u_rms trace appears trivial (all-zero)"
+canonical_gate_fp32_diag_status = "pass"
+canonical_gate_fp32_diag_profile = "canonical_300s"
+
+[signatures]
+timing_regime_split = "legacy_20260215_200556_launch_like_vs_event_timed_kernel_like"
+trace_periodic_tail_ratio_128 = 1.000000
+trace_periodic_tail_ratio_256 = 1.000000
+rho_invariant = "exact_1.0_zero_drift_zero_std"
+bf16_delta_to_ulp_ratio_128 = 2.374257816e-4
+bf16_delta_to_ulp_ratio_256 = 5.935644539e-5
+fp32_trace_nonzero_example = "u_rms(128^3) starts at 4.374e-6 and increases"
+bf16_trace_zero_example = "u_rms/mach_eff/power_injection_proxy and spectral total_power are zero-filled"
+
+[telemetry]
+overall_samples = 601
+overall_temp_avg_c = 48.15
+overall_power_avg_w = 92.98
+overall_gpu_util_avg_pct = 53.93
+phase1_window = "elapsed_s < 300 (128^3 run)"
+phase1_temp_avg_c = 50.24
+phase1_power_avg_w = 122.33
+phase1_gpu_util_avg_pct = 79.73
+phase2_window = "elapsed_s >= 300 (256^3 run)"
+phase2_temp_avg_c = 46.07
+phase2_power_avg_w = 63.74
+phase2_gpu_util_avg_pct = 28.21
+phase_interpretation = "low utilization during 256^3 indicates host-side synchronization/diagnostic bottleneck rather than thermal throttle"
+
+[[conjecture]]
+id = "WF2-C1"
+statement = "Current BF16 lane is quantization-limited under Mach-capped Kolmogorov forcing at 128^3/256^3, producing near-static diagnostics despite stable density."
+evidence = "bf16_delta_to_ulp_ratio << 1 (2.37e-4, 5.94e-5), canonical gate fail on all-zero u_rms, and matched FP32 run shows non-zero u_rms/enstrophy/spectral power."
+falsifiable_test = "Increase forcing mode (e.g., mode_y=4) or raise Mach cap while staying low-Mach, then rerun BF16; canonical gate should pass with non-zero traces if quantization is the dominant cause."
+run_command = "GOROROBA_KOLMO_MODE_Y=4 GOROROBA_KOLMO_RE_TARGET=128 cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-precision-suite -- matrix 60 10 128,256 BF16 data/h5/precision_bench_bf16_mode4 gpu cuda_events 1 1 1"
+
+[[conjecture]]
+id = "WF2-C2"
+statement = "Throughput collapse at 256^3 is dominated by host synchronization overhead from per-trace diagnostics (not raw kernel limits)."
+evidence = "256^3 tuned MLUPS dropped to 167 with GPU util average 28%, and high-latency tail events track exactly steps/trace_stride."
+falsifiable_test = "Increase trace_stride from 10 to 100 (or disable expensive host-sync diagnostics) and rerun 256^3; if correct, steps/s and GPU utilization should rise significantly."
+run_command = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-fastpath-suite -- 45 120 100 16x4x2 256 data/h5/production/20260215-211758_precision_suite_rerun data/h5/production/20260215-200556 bf16_stride100_check"
+
+[[conjecture]]
+id = "WF2-C3"
+statement = "Block-dim winner depends on instrumentation regime; sweep-optimal dim under heavy diagnostics may differ from physically representative production-optimal dim."
+evidence = "Current sweep winner (16x4x2) still loses heavily to untuned baseline because instrumentation regime changed, not just launch geometry."
+falsifiable_test = "Run interleaved A/B block-dim trials with reduced diagnostic sync pressure and compare geometric-mean MLUPS stability."
+run_command = "for dim in 16x4x2 8x8x2 16x4x2 8x8x2; do GOROROBA_LBM_BLOCK_DIM=$dim cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-precision-suite -- matrix 120 100 128,256 BF16 data/h5/basemarks/interleaved_dim_ab gpu cuda_events 1 1 1; done"

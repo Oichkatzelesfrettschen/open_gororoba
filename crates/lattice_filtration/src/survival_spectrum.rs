@@ -533,9 +533,7 @@ mod tests {
 
     #[test]
     fn test_gamma_ci_zero_bootstrap() {
-        let samples: Vec<(f64, f64)> = (1..20)
-            .map(|r| (r as f64, (r as f64).powf(-1.0)))
-            .collect();
+        let samples: Vec<(f64, f64)> = (1..20).map(|r| (r as f64, (r as f64).powf(-1.0))).collect();
         let ci = power_law_gamma_ci(&samples, 0, 0);
         assert_eq!(ci.n_bootstrap, 0);
         assert_eq!(ci.ci_lower, ci.gamma);

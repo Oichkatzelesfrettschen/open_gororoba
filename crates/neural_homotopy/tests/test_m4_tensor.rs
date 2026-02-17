@@ -1,8 +1,8 @@
 //! Integration tests for CorrectionTensor interactions across modules.
 
 use neural_homotopy::{
-    build_sedenion_table, CorrectionTensor, PentagonOptimizationConfig,
-    optimize_correction_tensor, optimize_with_restarts, SEDENION_DIM,
+    build_sedenion_table, optimize_correction_tensor, optimize_with_restarts, CorrectionTensor,
+    PentagonOptimizationConfig, SEDENION_DIM,
 };
 
 #[test]
@@ -71,10 +71,7 @@ fn test_associator_antisymmetry_count() {
     );
     // But not ALL triples (identity is associative)
     let total = SEDENION_DIM * SEDENION_DIM * SEDENION_DIM;
-    assert!(
-        nonzero_count < total,
-        "Some triples should be associative"
-    );
+    assert!(nonzero_count < total, "Some triples should be associative");
 }
 
 #[test]
@@ -137,7 +134,10 @@ fn test_correction_tensor_to_toml_roundtrip_metadata() {
     // Verify pentagon violation is recorded
     assert!(toml.contains("pentagon_violation"));
     // The recorded value should be positive for the associator
-    let viol_line = toml.lines().find(|l| l.starts_with("pentagon_violation")).unwrap();
+    let viol_line = toml
+        .lines()
+        .find(|l| l.starts_with("pentagon_violation"))
+        .unwrap();
     let viol_val: f64 = viol_line.split('=').nth(1).unwrap().trim().parse().unwrap();
     assert!(viol_val >= 0.0);
 }
@@ -168,10 +168,7 @@ fn test_sedenion_table_consistency() {
     // Verify e_i * e_i = -e_0 for i > 0 (sedenion norm property)
     for i in 1..SEDENION_DIM {
         let (basis, sign) = table[i][i];
-        assert_eq!(
-            basis, 0,
-            "e_{i} * e_{i} should give e_0 (got e_{basis})",
-        );
+        assert_eq!(basis, 0, "e_{i} * e_{i} should give e_0 (got e_{basis})",);
         assert_eq!(
             sign, -1,
             "e_{} * e_{} should have sign -1 (got {})",

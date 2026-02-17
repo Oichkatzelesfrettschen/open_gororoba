@@ -25,7 +25,9 @@
 #![allow(dead_code, unused_variables, unused_imports)]
 
 use anyhow::{Context, Result};
-use cudarc::driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg};
+use cudarc::driver::{
+    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
+};
 use cudarc::nvrtc::compile_ptx;
 use std::sync::Arc;
 
@@ -116,12 +118,9 @@ impl GpuBesagCliffordTester {
             .context("Failed to allocate t-statistics buffer")?;
 
         // Compile CUDA kernels from source
-        let ptx = compile_ptx(BESAG_CLIFFORD_KERNELS)
-            .context("Failed to compile CUDA kernels")?;
+        let ptx = compile_ptx(BESAG_CLIFFORD_KERNELS).context("Failed to compile CUDA kernels")?;
 
-        let module = ctx
-            .load_module(ptx)
-            .context("Failed to load PTX module")?;
+        let module = ctx.load_module(ptx).context("Failed to load PTX module")?;
 
         // Get kernel functions
         let shuffle_kernel = module

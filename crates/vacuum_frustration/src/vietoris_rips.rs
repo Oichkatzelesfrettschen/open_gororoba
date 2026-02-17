@@ -72,7 +72,6 @@ impl Simplex {
         }
         faces
     }
-
 }
 
 /// Distance matrix wrapper
@@ -169,7 +168,9 @@ impl VietorisRipsComplex {
             for s1 in prev_simplices {
                 for s2 in prev_simplices {
                     if s1.vertices != s2.vertices {
-                        let mut union: Vec<usize> = s1.vertices.iter()
+                        let mut union: Vec<usize> = s1
+                            .vertices
+                            .iter()
                             .chain(s2.vertices.iter())
                             .copied()
                             .collect::<HashSet<_>>()
@@ -237,7 +238,9 @@ struct BoundaryColumn {
 
 impl BoundaryColumn {
     fn new() -> Self {
-        Self { indices: Vec::new() }
+        Self {
+            indices: Vec::new(),
+        }
     }
 
     fn from_indices(mut indices: Vec<usize>) -> Self {
@@ -290,7 +293,8 @@ fn build_boundary_matrix(complex: &VietorisRipsComplex) -> Vec<BoundaryColumn> {
 
     // Sort by (birth time, dimension)
     all_simplices.sort_by(|a, b| {
-        a.birth.partial_cmp(&b.birth)
+        a.birth
+            .partial_cmp(&b.birth)
             .unwrap()
             .then_with(|| a.dim.cmp(&b.dim))
     });
@@ -338,16 +342,15 @@ fn build_boundary_matrix(complex: &VietorisRipsComplex) -> Vec<BoundaryColumn> {
 /// # Returns
 ///
 /// Vector of persistence pairs (birth, death) for each homology feature
-pub fn compute_persistent_homology(
-    complex: &VietorisRipsComplex,
-) -> Vec<PersistencePair> {
+pub fn compute_persistent_homology(complex: &VietorisRipsComplex) -> Vec<PersistencePair> {
     // Collect all simplices and sort by birth time
     let mut all_simplices: Vec<&Simplex> = Vec::new();
     for dim_simplices in &complex.simplices {
         all_simplices.extend(dim_simplices.iter());
     }
     all_simplices.sort_by(|a, b| {
-        a.birth.partial_cmp(&b.birth)
+        a.birth
+            .partial_cmp(&b.birth)
             .unwrap()
             .then_with(|| a.dim.cmp(&b.dim))
     });
@@ -425,10 +428,7 @@ pub fn compute_persistent_homology(
 ///
 /// For accurate Betti numbers, typically count only features with infinite
 /// persistence or very long relative to the filtration range.
-pub fn compute_betti_numbers(
-    pairs: &[PersistencePair],
-    min_persistence: f64,
-) -> Vec<usize> {
+pub fn compute_betti_numbers(pairs: &[PersistencePair], min_persistence: f64) -> Vec<usize> {
     let max_dim = pairs.iter().map(|p| p.dim).max().unwrap_or(0);
     let mut betti = vec![0; max_dim + 1];
 
@@ -445,10 +445,7 @@ pub fn compute_betti_numbers(
 /// Compute Betti numbers at a specific filtration time
 ///
 /// Count features that are alive at the given time threshold
-pub fn compute_betti_numbers_at_time(
-    pairs: &[PersistencePair],
-    time: f64,
-) -> Vec<usize> {
+pub fn compute_betti_numbers_at_time(pairs: &[PersistencePair], time: f64) -> Vec<usize> {
     let max_dim = pairs.iter().map(|p| p.dim).max().unwrap_or(0);
     let mut betti = vec![0; max_dim + 1];
 
@@ -495,9 +492,7 @@ impl PersistenceDiagram {
     /// Build separate diagrams for each dimension present.
     pub fn from_pairs_all(pairs: &[PersistencePair]) -> Vec<Self> {
         let max_dim = pairs.iter().map(|p| p.dim).max().unwrap_or(0);
-        (0..=max_dim)
-            .map(|d| Self::from_pairs(pairs, d))
-            .collect()
+        (0..=max_dim).map(|d| Self::from_pairs(pairs, d)).collect()
     }
 
     /// Number of finite persistence points in this diagram.
@@ -532,12 +527,11 @@ impl PersistenceDiagram {
         if self.points.len() <= k {
             return;
         }
-        self.points
-            .sort_by(|a, b| {
-                let pa = a.1 - a.0;
-                let pb = b.1 - b.0;
-                pb.partial_cmp(&pa).unwrap_or(std::cmp::Ordering::Equal)
-            });
+        self.points.sort_by(|a, b| {
+            let pa = a.1 - a.0;
+            let pb = b.1 - b.0;
+            pb.partial_cmp(&pa).unwrap_or(std::cmp::Ordering::Equal)
+        });
         self.points.truncate(k);
     }
 
@@ -767,9 +761,7 @@ fn augment(
     for &v in &adj[u] {
         if !visited[v] {
             visited[v] = true;
-            if match_col[v].is_none()
-                || augment(match_col[v].unwrap(), adj, match_col, visited)
-            {
+            if match_col[v].is_none() || augment(match_col[v].unwrap(), adj, match_col, visited) {
                 match_col[v] = Some(u);
                 return true;
             }
@@ -888,8 +880,8 @@ mod tests {
     fn test_distance_matrix_2d_triangle() {
         // Equilateral triangle in 2D: (0,0), (1,0), (0.5, sqrt(3)/2)
         let points = vec![
-            0.0, 0.0, 0.0,  // vertex 0
-            1.0, 0.0, 0.0,  // vertex 1
+            0.0, 0.0, 0.0, // vertex 0
+            1.0, 0.0, 0.0, // vertex 1
             0.5, 0.866, 0.0, // vertex 2 (approximately equilateral)
         ];
         let dist = DistanceMatrix::from_points_3d(&points);
@@ -902,11 +894,7 @@ mod tests {
     #[test]
     fn test_vietoris_rips_triangle() {
         // Equilateral triangle
-        let points = vec![
-            0.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            0.5, 0.866, 0.0,
-        ];
+        let points = vec![0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.5, 0.866, 0.0];
         let dist = DistanceMatrix::from_points_3d(&points);
         let complex = VietorisRipsComplex::build(&dist, 1.5, 2);
 
@@ -937,7 +925,10 @@ mod tests {
         let betti = compute_betti_numbers_at_time(&pairs, 1.5);
 
         // Circle should have b_0 = 1 (connected), b_1 = 1 (one loop)
-        assert_eq!(betti[0], 1, "Circle should have 1 connected component at t=1.5");
+        assert_eq!(
+            betti[0], 1,
+            "Circle should have 1 connected component at t=1.5"
+        );
         assert_eq!(betti[1], 1, "Circle should have 1 loop at t=1.5");
     }
 
@@ -945,7 +936,7 @@ mod tests {
     fn test_persistent_homology_two_components() {
         // Two separate points (disconnected)
         let points = vec![
-            0.0, 0.0, 0.0,  // point 0
+            0.0, 0.0, 0.0, // point 0
             10.0, 0.0, 0.0, // point 1 (far away)
         ];
 
@@ -962,12 +953,7 @@ mod tests {
     fn test_persistent_homology_tetrahedron() {
         // Regular tetrahedron (0 loops, but fills a 3D region)
         let s = 1.0 / 2.0_f64.sqrt();
-        let points = vec![
-            1.0, 0.0, -s,
-            -1.0, 0.0, -s,
-            0.0, 1.0, s,
-            0.0, -1.0, s,
-        ];
+        let points = vec![1.0, 0.0, -s, -1.0, 0.0, -s, 0.0, 1.0, s, 0.0, -1.0, s];
 
         let dist = DistanceMatrix::from_points_3d(&points);
         let complex = VietorisRipsComplex::build(&dist, 3.0, 2);
@@ -1028,9 +1014,21 @@ mod tests {
     #[test]
     fn test_persistence_diagram_from_pairs() {
         let pairs = vec![
-            PersistencePair { dim: 0, birth: 0.0, death: 1.0 },
-            PersistencePair { dim: 0, birth: 0.0, death: f64::INFINITY },
-            PersistencePair { dim: 1, birth: 0.5, death: 2.0 },
+            PersistencePair {
+                dim: 0,
+                birth: 0.0,
+                death: 1.0,
+            },
+            PersistencePair {
+                dim: 0,
+                birth: 0.0,
+                death: f64::INFINITY,
+            },
+            PersistencePair {
+                dim: 1,
+                birth: 0.5,
+                death: 2.0,
+            },
         ];
         let dgm0 = PersistenceDiagram::from_pairs(&pairs, 0);
         assert_eq!(dgm0.len(), 1); // only finite pair
@@ -1047,9 +1045,21 @@ mod tests {
     #[test]
     fn test_persistence_diagram_all_dimensions() {
         let pairs = vec![
-            PersistencePair { dim: 0, birth: 0.0, death: 1.0 },
-            PersistencePair { dim: 1, birth: 0.3, death: 1.5 },
-            PersistencePair { dim: 2, birth: 0.7, death: 2.0 },
+            PersistencePair {
+                dim: 0,
+                birth: 0.0,
+                death: 1.0,
+            },
+            PersistencePair {
+                dim: 1,
+                birth: 0.3,
+                death: 1.5,
+            },
+            PersistencePair {
+                dim: 2,
+                birth: 0.7,
+                death: 2.0,
+            },
         ];
         let diagrams = PersistenceDiagram::from_pairs_all(&pairs);
         assert_eq!(diagrams.len(), 3);
@@ -1076,7 +1086,10 @@ mod tests {
             points: vec![(0.0, 1.0), (0.0, 1.0)],
         };
         let h = dgm.persistence_entropy();
-        assert!((h - 2.0_f64.ln()).abs() < 1e-12, "Uniform entropy should be ln(2)");
+        assert!(
+            (h - 2.0_f64.ln()).abs() < 1e-12,
+            "Uniform entropy should be ln(2)"
+        );
     }
 
     #[test]
@@ -1091,7 +1104,10 @@ mod tests {
 
     #[test]
     fn test_persistence_entropy_empty() {
-        let dgm = PersistenceDiagram { dim: 0, points: vec![] };
+        let dgm = PersistenceDiagram {
+            dim: 0,
+            points: vec![],
+        };
         assert!((dgm.persistence_entropy() - 0.0).abs() < 1e-12);
     }
 
@@ -1102,12 +1118,18 @@ mod tests {
             points: vec![(0.0, 1.0), (0.5, 2.0)],
         };
         let d = dgm.wasserstein_distance(&dgm, 2.0);
-        assert!(d < 1e-10, "Distance between identical diagrams should be ~0, got {d}");
+        assert!(
+            d < 1e-10,
+            "Distance between identical diagrams should be ~0, got {d}"
+        );
     }
 
     #[test]
     fn test_wasserstein_empty_vs_nonempty() {
-        let empty = PersistenceDiagram { dim: 0, points: vec![] };
+        let empty = PersistenceDiagram {
+            dim: 0,
+            points: vec![],
+        };
         let dgm = PersistenceDiagram {
             dim: 0,
             points: vec![(0.0, 2.0)],
@@ -1154,7 +1176,8 @@ mod tests {
         let dac = a.wasserstein_distance(&c, 1.0);
         assert!(
             dac <= dab + dbc + 1e-10,
-            "Triangle inequality violated: d(a,c)={dac} > d(a,b)+d(b,c)={}", dab + dbc
+            "Triangle inequality violated: d(a,c)={dac} > d(a,b)+d(b,c)={}",
+            dab + dbc
         );
     }
 
@@ -1165,7 +1188,10 @@ mod tests {
             points: vec![(0.0, 1.0), (0.5, 2.0)],
         };
         let d = dgm.bottleneck_distance(&dgm);
-        assert!(d < 1e-10, "Bottleneck between identical diagrams should be ~0, got {d}");
+        assert!(
+            d < 1e-10,
+            "Bottleneck between identical diagrams should be ~0, got {d}"
+        );
     }
 
     #[test]
@@ -1188,7 +1214,10 @@ mod tests {
 
     #[test]
     fn test_bottleneck_empty_vs_nonempty() {
-        let empty = PersistenceDiagram { dim: 0, points: vec![] };
+        let empty = PersistenceDiagram {
+            dim: 0,
+            points: vec![],
+        };
         let dgm = PersistenceDiagram {
             dim: 0,
             points: vec![(0.0, 4.0)],
@@ -1204,10 +1233,7 @@ mod tests {
     #[test]
     fn test_hungarian_algorithm_basic() {
         // 2x2 cost matrix with obvious assignment
-        let cost = vec![
-            vec![1.0, 100.0],
-            vec![100.0, 1.0],
-        ];
+        let cost = vec![vec![1.0, 100.0], vec![100.0, 1.0]];
         let result = hungarian_algorithm(&cost);
         assert_eq!(result[0], 0); // row 0 -> col 0
         assert_eq!(result[1], 1); // row 1 -> col 1
@@ -1224,7 +1250,10 @@ mod tests {
         let result = hungarian_algorithm(&cost);
         // Optimal: row 0->col 1 (5), row 1->col 0 (3), row 2->col 2 (9) = 17
         let total: f64 = result.iter().enumerate().map(|(i, &j)| cost[i][j]).sum();
-        assert!((total - 17.0).abs() < 1e-10, "Optimal cost should be 17, got {total}");
+        assert!(
+            (total - 17.0).abs() < 1e-10,
+            "Optimal cost should be 17, got {total}"
+        );
     }
 
     #[test]

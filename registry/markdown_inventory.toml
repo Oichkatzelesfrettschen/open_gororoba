@@ -23,7 +23,7 @@ path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
 migration_priority = "high"
 migration_action = "port_body_to_toml_and_lock_mirror"
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 272
+line_count = 353
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[migration_queue]]
@@ -423,9 +423,9 @@ migration_action = "port_body_to_toml_and_lock_mirror"
 migration_priority = "high"
 toml_destination = "registry/docs_root_narratives.toml"
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-size_bytes = 8469
-line_count = 272
-sha256 = "437310ab61fa721c56f32f1d7cdbe460ff51e684f4fad84d2332da1a5c42cda7"
+size_bytes = 11371
+line_count = 353
+sha256 = "366fd2ca56c68239db2e46b2e79c217176e36c389cd67613d74d4865ee8661bc"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0

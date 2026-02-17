@@ -454,8 +454,8 @@ fn queue_item_fallback(
 fn parse_gate_runtime_lane(path: &Path) -> Result<OrchestrationLaneHealth, String> {
     let doc = read_toml_document(path)?;
     let source_path = display_path_from_workspace(path);
-    let governance_gate =
-        table_string(&doc, "final_state", "governance_gate").unwrap_or_else(|| "unknown".to_string());
+    let governance_gate = table_string(&doc, "final_state", "governance_gate")
+        .unwrap_or_else(|| "unknown".to_string());
     let registry_gate = table_string(&doc, "final_state", "registry_acceptance_gate")
         .unwrap_or_else(|| "unknown".to_string());
     let open_blockers = table_i64(&doc, "final_state", "open_blockers").unwrap_or(-1);
@@ -470,7 +470,10 @@ fn parse_gate_runtime_lane(path: &Path) -> Result<OrchestrationLaneHealth, Strin
     };
 
     let mut evidence_links = vec![source_path.clone()];
-    if let Some(items) = doc.get("resolved_blocker").and_then(|value| value.as_array()) {
+    if let Some(items) = doc
+        .get("resolved_blocker")
+        .and_then(|value| value.as_array())
+    {
         for item in items {
             evidence_links.extend(array_strings(item, "evidence"));
         }
@@ -500,7 +503,9 @@ fn parse_tranche_ledger_lane(path: &Path) -> Result<OrchestrationLaneHealth, Str
     let in_progress_count = table_i64(&doc, "ledger", "in_progress_count")
         .unwrap_or(0)
         .max(0) as usize;
-    let queued_count = table_i64(&doc, "ledger", "queued_count").unwrap_or(0).max(0) as usize;
+    let queued_count = table_i64(&doc, "ledger", "queued_count")
+        .unwrap_or(0)
+        .max(0) as usize;
     let consistency_status =
         table_string(&doc, "consistency", "status").unwrap_or_else(|| "unknown".to_string());
     let status = if consistency_status == "pass" && queued_count == 0 {
@@ -558,7 +563,9 @@ fn parse_intake_ledger_lane(path: &Path) -> Result<OrchestrationLaneHealth, Stri
         .map(|items| {
             items
                 .iter()
-                .filter(|item| item.get("status").and_then(|status| status.as_str()) == Some("success"))
+                .filter(|item| {
+                    item.get("status").and_then(|status| status.as_str()) == Some("success")
+                })
                 .count()
         })
         .unwrap_or(0);
@@ -594,7 +601,10 @@ fn parse_promotion_registry_queue(path: &Path) -> Result<Vec<OrchestrationQueueI
             let id = promotion
                 .get("id")
                 .and_then(|value| value.as_str())
-                .map_or_else(|| format!("promotion-{:03}", index + 1), |value| value.to_string());
+                .map_or_else(
+                    || format!("promotion-{:03}", index + 1),
+                    |value| value.to_string(),
+                );
             let candidate_kind = promotion
                 .get("candidate_kind")
                 .and_then(|value| value.as_str())
@@ -680,7 +690,10 @@ fn parse_reconciliation_queue(path: &Path) -> Result<Vec<OrchestrationQueueItem>
             let id = entry
                 .get("id")
                 .and_then(|value| value.as_str())
-                .map_or_else(|| format!("resolved-{:03}", index + 1), |value| value.to_string());
+                .map_or_else(
+                    || format!("resolved-{:03}", index + 1),
+                    |value| value.to_string(),
+                );
             let action = entry
                 .get("action")
                 .and_then(|value| value.as_str())
@@ -709,7 +722,10 @@ fn parse_reconciliation_queue(path: &Path) -> Result<Vec<OrchestrationQueueItem>
             let id = entry
                 .get("id")
                 .and_then(|value| value.as_str())
-                .map_or_else(|| format!("unresolved-{:03}", index + 1), |value| value.to_string());
+                .map_or_else(
+                    || format!("unresolved-{:03}", index + 1),
+                    |value| value.to_string(),
+                );
             let reason = entry
                 .get("reason")
                 .and_then(|value| value.as_str())
@@ -742,22 +758,28 @@ fn parse_binary_reconciliation_queue(path: &Path) -> Result<Vec<OrchestrationQue
     let source_path = display_path_from_workspace(path);
     let mut items = Vec::new();
 
-    if let Some(resolutions) = doc.get("binary_resolution").and_then(|value| value.as_array()) {
+    if let Some(resolutions) = doc
+        .get("binary_resolution")
+        .and_then(|value| value.as_array())
+    {
         for (index, resolution) in resolutions.iter().enumerate() {
             let name = resolution
                 .get("name")
                 .and_then(|value| value.as_str())
-                .map_or_else(|| format!("binary-{:03}", index + 1), |value| value.to_string());
+                .map_or_else(
+                    || format!("binary-{:03}", index + 1),
+                    |value| value.to_string(),
+                );
             let raw_status = resolution
                 .get("status")
                 .and_then(|value| value.as_str())
                 .unwrap_or("pending");
-            let normalized_status = if raw_status.contains("added") || raw_status.contains("resolved")
-            {
-                "reconciled"
-            } else {
-                raw_status
-            };
+            let normalized_status =
+                if raw_status.contains("added") || raw_status.contains("resolved") {
+                    "reconciled"
+                } else {
+                    raw_status
+                };
             let mut evidence_links = vec![source_path.clone()];
             if let Some(bin_path) = resolution
                 .get("path")
@@ -815,7 +837,9 @@ fn load_lane_health_feed(
     match parse_tranche_ledger_lane(&paths.tranche_ledger) {
         Ok(item) => lanes.push(item),
         Err(err) => {
-            warnings.push(format!("lane feed unavailable (tracker-synchronization): {err}"));
+            warnings.push(format!(
+                "lane feed unavailable (tracker-synchronization): {err}"
+            ));
             lanes.push(lane_health_fallback(
                 "tracker-synchronization",
                 "Execution tracker synchronization lane",
@@ -878,7 +902,9 @@ fn load_promotion_queue_summary(
     match parse_binary_reconciliation_queue(&paths.binary_reconciliation_report) {
         Ok(mut parsed) => items.append(&mut parsed),
         Err(err) => {
-            warnings.push(format!("binary reconciliation queue feed unavailable: {err}"));
+            warnings.push(format!(
+                "binary reconciliation queue feed unavailable: {err}"
+            ));
             items.push(queue_item_fallback(
                 "binary-project-drift-reconciliation",
                 "reconciliation::binary_drift",
@@ -1117,7 +1143,9 @@ fn registry_backed_catalog(
 
     for id in entries_by_id.keys() {
         if !known_ids.contains(id) {
-            warnings.push(format!("unknown pipeline id in studio catalog ignored: {id}"));
+            warnings.push(format!(
+                "unknown pipeline id in studio catalog ignored: {id}"
+            ));
         }
     }
 
@@ -1479,7 +1507,10 @@ async fn version(State(state): State<AppState>) -> Json<VersionResponse> {
         catalog_warnings: (*state.catalog_warnings).clone(),
         registry_path: state.registry_path.clone(),
         orchestration_lane_count: state.orchestration_surface.lane_health_feed.len(),
-        orchestration_queue_item_count: state.orchestration_surface.promotion_queue_summary.item_count,
+        orchestration_queue_item_count: state
+            .orchestration_surface
+            .promotion_queue_summary
+            .item_count,
         orchestration_warning_count: state.orchestration_surface.warnings.len(),
     })
 }
@@ -1923,7 +1954,10 @@ full_profile = "Full profile"
         );
         assert_eq!(
             payload.orchestration_queue_item_count,
-            state.orchestration_surface.promotion_queue_summary.item_count
+            state
+                .orchestration_surface
+                .promotion_queue_summary
+                .item_count
         );
         assert_eq!(
             payload.orchestration_warning_count,

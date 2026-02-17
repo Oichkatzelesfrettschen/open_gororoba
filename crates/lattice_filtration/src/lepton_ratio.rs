@@ -191,11 +191,7 @@ pub fn pdg_comparison(map: &SurvivalDepthMap) -> PdgComparison {
         predictions,
         mean_relative_error: mean_err,
         best_relative_error: if best.is_finite() { best } else { f64::NAN },
-        worst_relative_error: if worst.is_finite() {
-            worst
-        } else {
-            f64::NAN
-        },
+        worst_relative_error: if worst.is_finite() { worst } else { f64::NAN },
         n_clusters: clusters.len(),
     }
 }

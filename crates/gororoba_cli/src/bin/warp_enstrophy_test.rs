@@ -1,7 +1,7 @@
-use std::error::Error;
+use algebra_core::physics::octonion_field::FieldParams;
 use gororoba_engine::simulation::state_3d::{SimulationConfig3D, SimulationState3D};
 use lbm_3d_cuda::Precision;
-use algebra_core::physics::octonion_field::FieldParams;
+use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
     tracing_subscriber::fmt::init();
@@ -10,7 +10,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     let prec = Precision::FP32;
 
     let config = SimulationConfig3D {
-        nx: res, ny: res, nz: res,
+        nx: res,
+        ny: res,
+        nz: res,
         tau: 0.6,
         use_gpu: true,
         precision: prec,
@@ -28,7 +30,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let enstrophy = match state.fluid {
         gororoba_engine::simulation::state_3d::LbmBackend3D::Gpu(ref mut solver) => {
             solver.calculate_enstrophy()?
-        },
+        }
         _ => panic!("GPU backend not enabled or selected"),
     };
 

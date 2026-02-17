@@ -19,7 +19,10 @@ fn test_model_assembles_correction_tensor() {
 
     // Random init model should produce some non-zero entries
     // (bias terms ensure this even with random weights)
-    assert!(tensor.nnz() > 0, "Assembled tensor should have non-zero entries");
+    assert!(
+        tensor.nnz() > 0,
+        "Assembled tensor should have non-zero entries"
+    );
 }
 
 #[test]

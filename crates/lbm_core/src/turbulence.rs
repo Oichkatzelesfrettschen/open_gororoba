@@ -137,7 +137,8 @@ pub fn fft3d(field: &Array3<f64>) -> SpectralField3D {
     let fft_z = planner.plan_fft_forward(nz);
     for ix in 0..nx {
         for iy in 0..ny {
-            let mut buffer: Vec<Complex<f64>> = (0..nz).map(|iz| transformed[[ix, iy, iz]]).collect();
+            let mut buffer: Vec<Complex<f64>> =
+                (0..nz).map(|iz| transformed[[ix, iy, iz]]).collect();
             fft_z.process(&mut buffer);
             for (iz, val) in buffer.iter().enumerate() {
                 transformed[[ix, iy, iz]] = *val;
@@ -149,7 +150,8 @@ pub fn fft3d(field: &Array3<f64>) -> SpectralField3D {
     let fft_y = planner.plan_fft_forward(ny);
     for ix in 0..nx {
         for iz in 0..nz {
-            let mut buffer: Vec<Complex<f64>> = (0..ny).map(|iy| transformed[[ix, iy, iz]]).collect();
+            let mut buffer: Vec<Complex<f64>> =
+                (0..ny).map(|iy| transformed[[ix, iy, iz]]).collect();
             fft_y.process(&mut buffer);
             for (iy, val) in buffer.iter().enumerate() {
                 transformed[[ix, iy, iz]] = *val;
@@ -161,7 +163,8 @@ pub fn fft3d(field: &Array3<f64>) -> SpectralField3D {
     let fft_x = planner.plan_fft_forward(nx);
     for iy in 0..ny {
         for iz in 0..nz {
-            let mut buffer: Vec<Complex<f64>> = (0..nx).map(|ix| transformed[[ix, iy, iz]]).collect();
+            let mut buffer: Vec<Complex<f64>> =
+                (0..nx).map(|ix| transformed[[ix, iy, iz]]).collect();
             fft_x.process(&mut buffer);
             for (ix, val) in buffer.iter().enumerate() {
                 transformed[[ix, iy, iz]] = *val;
@@ -324,27 +327,41 @@ pub fn extract_dominant_triads_3d(
     for kx1 in -kx_max..=kx_max {
         for ky1 in -ky_max..=ky_max {
             for kz1 in -kz_max..=kz_max {
-                if kx1 == 0 && ky1 == 0 && kz1 == 0 { continue; }
+                if kx1 == 0 && ky1 == 0 && kz1 == 0 {
+                    continue;
+                }
                 let a_k = amplitude(kx1, ky1, kz1);
-                if a_k < threshold * 0.1 { continue; }
+                if a_k < threshold * 0.1 {
+                    continue;
+                }
 
                 for kx2 in -kx_max..=kx_max {
                     for ky2 in -ky_max..=ky_max {
                         for kz2 in -kz_max..=kz_max {
-                            if kx2 == 0 && ky2 == 0 && kz2 == 0 { continue; }
-                            if kx1 == kx2 && ky1 == ky2 && kz1 == kz2 { continue; }
+                            if kx2 == 0 && ky2 == 0 && kz2 == 0 {
+                                continue;
+                            }
+                            if kx1 == kx2 && ky1 == ky2 && kz1 == kz2 {
+                                continue;
+                            }
 
                             let qx = -(kx1 + kx2);
                             let qy = -(ky1 + ky2);
                             let qz = -(kz1 + kz2);
 
-                            if qx.abs() > kx_max || qy.abs() > ky_max || qz.abs() > kz_max { continue; }
-                            if qx == 0 && qy == 0 && qz == 0 { continue; }
+                            if qx.abs() > kx_max || qy.abs() > ky_max || qz.abs() > kz_max {
+                                continue;
+                            }
+                            if qx == 0 && qy == 0 && qz == 0 {
+                                continue;
+                            }
 
                             // Canonical ordering
                             let mut triple = [(kx1, ky1, kz1), (kx2, ky2, kz2), (qx, qy, qz)];
                             triple.sort();
-                            if (kx1, ky1, kz1) != triple[0] || (kx2, ky2, kz2) != triple[1] { continue; }
+                            if (kx1, ky1, kz1) != triple[0] || (kx2, ky2, kz2) != triple[1] {
+                                continue;
+                            }
 
                             let a_p = amplitude(kx2, ky2, kz2);
                             let a_q = amplitude(qx, qy, qz);

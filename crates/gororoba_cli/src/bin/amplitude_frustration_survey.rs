@@ -1,5 +1,5 @@
-use clap::Parser;
 use algebra_core::physics::amplitudes::enumerate_chambers;
+use clap::Parser;
 use std::collections::HashMap;
 
 #[derive(Parser, Debug)]
@@ -19,7 +19,7 @@ fn main() {
     println!("Total potential chambers: {}", stats.len());
 
     let mut frustration_map: HashMap<String, Vec<i8>> = HashMap::new();
-    
+
     let mut nonzero_count = 0;
     let mut min_frustration = 1.0;
     let mut max_frustration = 0.0;
@@ -27,12 +27,16 @@ fn main() {
     for s in &stats {
         let f_str = format!("{:.4}", s.frustration);
         frustration_map.entry(f_str).or_default().push(s.amplitude);
-        
+
         if s.amplitude != 0 {
             nonzero_count += 1;
         }
-        if s.frustration < min_frustration { min_frustration = s.frustration; }
-        if s.frustration > max_frustration { max_frustration = s.frustration; }
+        if s.frustration < min_frustration {
+            min_frustration = s.frustration;
+        }
+        if s.frustration > max_frustration {
+            max_frustration = s.frustration;
+        }
     }
 
     println!("\nFrustration Distribution:");
@@ -43,21 +47,40 @@ fn main() {
         let amps = &frustration_map[key];
         let n_total = amps.len();
         let n_nonzero = amps.iter().filter(|&&a| a != 0).count();
-        println!(" - Frustration {}: {} chambers ({} nonzero)", key, n_total, n_nonzero);
+        println!(
+            " - Frustration {}: {} chambers ({} nonzero)",
+            key, n_total, n_nonzero
+        );
     }
 
     println!("\nSummary:");
-    println!(" - Non-zero Amplitudes: {} ({:.2}%)", nonzero_count, 100.0 * nonzero_count as f64 / stats.len() as f64);
-    println!(" - Frustration Range: [{:.4}, {:.4}]", min_frustration, max_frustration);
+    println!(
+        " - Non-zero Amplitudes: {} ({:.2}%)",
+        nonzero_count,
+        100.0 * nonzero_count as f64 / stats.len() as f64
+    );
+    println!(
+        " - Frustration Range: [{:.4}, {:.4}]",
+        min_frustration, max_frustration
+    );
 
     // Hypothesis Test
-    let zero_frust_chambers = stats.iter().filter(|s| s.frustration < 1e-9).collect::<Vec<_>>();
+    let zero_frust_chambers = stats
+        .iter()
+        .filter(|s| s.frustration < 1e-9)
+        .collect::<Vec<_>>();
     let all_zero_frust_nonzero = zero_frust_chambers.iter().all(|s| s.amplitude != 0);
-    
+
     println!("\nHypothesis Test: 'Nonzero region R1 corresponds to frustration minima'");
-    println!(" - Zero frustration chambers: {}", zero_frust_chambers.len());
-    println!(" - All zero-frustration chambers are non-zero amplitude: {}", all_zero_frust_nonzero);
-    
+    println!(
+        " - Zero frustration chambers: {}",
+        zero_frust_chambers.len()
+    );
+    println!(
+        " - All zero-frustration chambers are non-zero amplitude: {}",
+        all_zero_frust_nonzero
+    );
+
     if all_zero_frust_nonzero && nonzero_count == zero_frust_chambers.len() {
         println!(" ==> HYPOTHESIS STRONGLY SUPPORTED: R1 is exactly the zero-frustration locus.");
     } else if all_zero_frust_nonzero {

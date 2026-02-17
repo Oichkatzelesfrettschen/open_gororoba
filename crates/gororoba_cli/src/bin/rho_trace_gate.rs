@@ -69,10 +69,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         for path in &paths {
             let rho = read_rho_mean_trace(path)?;
             let quality = validate_rho_trace(&rho, thresholds).map_err(|e| {
-                std::io::Error::other(format!(
-                    "rho gate failed for {}: {e}",
-                    path.display()
-                ))
+                std::io::Error::other(format!("rho gate failed for {}: {e}", path.display()))
             })?;
             ok_count += 1;
             println!(
@@ -88,9 +85,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         println!(
             "FINITE_GATE: PASS ({} files checked, thresholds: drift<= {:.3e}, std<= {:.3e})",
-            ok_count,
-            thresholds.max_abs_drift_final,
-            thresholds.max_std_dev
+            ok_count, thresholds.max_abs_drift_final, thresholds.max_std_dev
         );
         Ok(())
     }

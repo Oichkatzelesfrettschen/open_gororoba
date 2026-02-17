@@ -14,9 +14,8 @@ pub mod survival_spectrum;
 pub use basis_index::{project_to_lattice, BasisIndexCodec};
 pub use filtration::{
     simulate_fibonacci_collision_storm, simulate_frustration_modulated_storm,
-    simulate_sedenion_collision_storm, simulate_shell_return_storm,
-    CollisionObservation, CollisionStormStats, FrustrationStormConfig,
-    ShellReturnBin, ShellReturnStats,
+    simulate_sedenion_collision_storm, simulate_shell_return_storm, CollisionObservation,
+    CollisionStormStats, FrustrationStormConfig, ShellReturnBin, ShellReturnStats,
 };
 pub use lbm_coupling::{filtration_from_velocity_field, FiltrationFromVelocity};
 pub use lepton_ratio::{pdg_comparison, predict_mass_ratios, MassRatioPrediction, PdgComparison};

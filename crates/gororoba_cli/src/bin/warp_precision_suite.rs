@@ -1,5 +1,5 @@
-mod warp_runner;
 mod warp_precision_suite_ops;
+mod warp_runner;
 
 use std::error::Error;
 use std::path::PathBuf;
@@ -34,7 +34,9 @@ fn parse_timing_mode_with_default(
     backend: BackendKind,
 ) -> Result<TimingMode, Box<dyn Error>> {
     match input {
-        Some(raw) if raw.eq_ignore_ascii_case("auto") => Ok(default_timing_mode_for_backend(backend)),
+        Some(raw) if raw.eq_ignore_ascii_case("auto") => {
+            Ok(default_timing_mode_for_backend(backend))
+        }
         Some(raw) => parse_timing_mode(raw).ok_or_else(|| {
             std::io::Error::new(
                 std::io::ErrorKind::InvalidInput,
@@ -46,7 +48,11 @@ fn parse_timing_mode_with_default(
     }
 }
 
-fn parse_bool_with_default(input: Option<&String>, field: &str, default: bool) -> Result<bool, Box<dyn Error>> {
+fn parse_bool_with_default(
+    input: Option<&String>,
+    field: &str,
+    default: bool,
+) -> Result<bool, Box<dyn Error>> {
     match input {
         Some(s) => parse_bool01(s)
             .ok_or_else(|| {
@@ -151,9 +157,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     tracing_subscriber::fmt::init();
 
     let args: Vec<String> = std::env::args().collect();
-    let mode = args.get(1).map(|s| s.to_ascii_lowercase()).ok_or_else(|| {
-        std::io::Error::new(std::io::ErrorKind::InvalidInput, usage())
-    })?;
+    let mode = args
+        .get(1)
+        .map(|s| s.to_ascii_lowercase())
+        .ok_or_else(|| std::io::Error::new(std::io::ErrorKind::InvalidInput, usage()))?;
 
     match mode.as_str() {
         "bench" => run_bench_mode(&args),

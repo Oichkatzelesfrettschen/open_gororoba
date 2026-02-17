@@ -195,11 +195,7 @@ mod tests {
     fn test_chi_squared_perfect_fit() {
         let a = [1.0, 2.0, 3.0, 4.0];
         let (chi2, dof, _reduced) = chi_squared_fit(&a, &a, None);
-        assert!(
-            chi2 < 1e-20,
-            "Perfect fit should have chi2 ~ 0: {}",
-            chi2
-        );
+        assert!(chi2 < 1e-20, "Perfect fit should have chi2 ~ 0: {}", chi2);
         assert_eq!(dof, 3);
     }
 
@@ -210,11 +206,7 @@ mod tests {
         let errs = [0.1, 0.1, 0.1];
         let (chi2, dof, reduced) = chi_squared_fit(&pred, &obs, Some(&errs));
         // chi2 = (0.1/0.1)^2 + (0/0.1)^2 + (0.1/0.1)^2 = 1 + 0 + 1 = 2
-        assert!(
-            (chi2 - 2.0).abs() < 1e-10,
-            "Expected chi2=2, got {}",
-            chi2
-        );
+        assert!((chi2 - 2.0).abs() < 1e-10, "Expected chi2=2, got {}", chi2);
         assert_eq!(dof, 2);
         assert!((reduced - 1.0).abs() < 1e-10);
     }

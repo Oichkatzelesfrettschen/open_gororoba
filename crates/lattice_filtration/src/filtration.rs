@@ -338,11 +338,7 @@ pub fn simulate_shell_return_storm(
         let c = cd_multiply(&a, &b);
 
         // Extract 3D step from imaginary components c[1], c[2], c[3]
-        let noise = [
-            c[1] * noise_scale,
-            c[2] * noise_scale,
-            c[3] * noise_scale,
-        ];
+        let noise = [c[1] * noise_scale, c[2] * noise_scale, c[3] * noise_scale];
 
         // Move walker, then wrap to torus [-torus_half, torus_half)
         for i in 0..3 {
@@ -360,10 +356,7 @@ pub fn simulate_shell_return_storm(
 
         // 3D radius in Planck lengths (from the origin of the torus,
         // which is where the walker starts)
-        let radius_sq: f64 = lattice_pos
-            .iter()
-            .map(|&k| (k as f64) * (k as f64))
-            .sum();
+        let radius_sq: f64 = lattice_pos.iter().map(|&k| (k as f64) * (k as f64)).sum();
         let radius = radius_sq.sqrt().max(0.5);
 
         all_radii.push(radius);
@@ -406,8 +399,8 @@ pub fn simulate_shell_return_storm(
     for s in 0..actual_n_shells {
         if shell_visits[s] > 1 && shell_return_times[s].len() >= 3 {
             let mean_r = shell_radii_sum[s] / shell_visits[s] as f64;
-            let mean_rt: f64 = shell_return_times[s].iter().sum::<f64>()
-                / shell_return_times[s].len() as f64;
+            let mean_rt: f64 =
+                shell_return_times[s].iter().sum::<f64>() / shell_return_times[s].len() as f64;
             bins.push(ShellReturnBin {
                 radius: mean_r,
                 mean_return_time: mean_rt,
@@ -419,7 +412,10 @@ pub fn simulate_shell_return_storm(
 
     // Phase 5: Fit power law to shell-aggregated data
     use crate::survival_spectrum::power_law_r2;
-    let samples: Vec<(f64, f64)> = bins.iter().map(|b| (b.radius, b.mean_return_time)).collect();
+    let samples: Vec<(f64, f64)> = bins
+        .iter()
+        .map(|b| (b.radius, b.mean_return_time))
+        .collect();
     let r2_inv = inverse_square_r2(&samples);
     let (r2_pow, gamma) = power_law_r2(&samples);
     let law = classify_latency_law(&samples);
@@ -477,8 +473,14 @@ pub fn simulate_frustration_modulated_storm(
     cfg: &FrustrationStormConfig<'_>,
 ) -> (ShellReturnStats, Vec<ShellReturnBin>) {
     let FrustrationStormConfig {
-        n_steps, seed, n_shells,
-        frustration_field, field_nx, field_ny, field_nz, alpha,
+        n_steps,
+        seed,
+        n_shells,
+        frustration_field,
+        field_nx,
+        field_ny,
+        field_nz,
+        alpha,
     } = *cfg;
     use algebra_core::construction::cayley_dickson::cd_multiply;
 
@@ -544,11 +546,7 @@ pub fn simulate_frustration_modulated_storm(
         let c = cd_multiply(&a, &b);
 
         // Extract 3D step from imaginary components
-        let noise = [
-            c[1] * noise_scale,
-            c[2] * noise_scale,
-            c[3] * noise_scale,
-        ];
+        let noise = [c[1] * noise_scale, c[2] * noise_scale, c[3] * noise_scale];
 
         // Move walker with periodic wrapping
         walker[0] += noise[0];
@@ -565,10 +563,7 @@ pub fn simulate_frustration_modulated_storm(
             walker[2].round() as i32,
         ];
 
-        let radius_sq: f64 = lattice_pos
-            .iter()
-            .map(|&k| (k as f64).powi(2))
-            .sum();
+        let radius_sq: f64 = lattice_pos.iter().map(|&k| (k as f64).powi(2)).sum();
         let radius = radius_sq.sqrt().max(0.5);
 
         all_radii.push(radius);
@@ -607,8 +602,8 @@ pub fn simulate_frustration_modulated_storm(
     for s in 0..actual_n_shells {
         if shell_visits[s] > 1 && shell_return_times[s].len() >= 3 {
             let mean_r = shell_radii_sum[s] / shell_visits[s] as f64;
-            let mean_rt: f64 = shell_return_times[s].iter().sum::<f64>()
-                / shell_return_times[s].len() as f64;
+            let mean_rt: f64 =
+                shell_return_times[s].iter().sum::<f64>() / shell_return_times[s].len() as f64;
             bins.push(ShellReturnBin {
                 radius: mean_r,
                 mean_return_time: mean_rt,
@@ -620,7 +615,10 @@ pub fn simulate_frustration_modulated_storm(
 
     // Fit power law
     use crate::survival_spectrum::power_law_r2;
-    let samples: Vec<(f64, f64)> = bins.iter().map(|b| (b.radius, b.mean_return_time)).collect();
+    let samples: Vec<(f64, f64)> = bins
+        .iter()
+        .map(|b| (b.radius, b.mean_return_time))
+        .collect();
     let r2_inv = inverse_square_r2(&samples);
     let (r2_pow, gamma) = power_law_r2(&samples);
     let law = classify_latency_law(&samples);
@@ -697,14 +695,10 @@ mod tests {
         let (_, sed_obs) = simulate_sedenion_collision_storm(200, 16, 42);
 
         // Count unique radii as proxy for key diversity
-        let fib_radii: std::collections::HashSet<u64> = fib_obs
-            .iter()
-            .map(|o| o.radius.to_bits())
-            .collect();
-        let sed_radii: std::collections::HashSet<u64> = sed_obs
-            .iter()
-            .map(|o| o.radius.to_bits())
-            .collect();
+        let fib_radii: std::collections::HashSet<u64> =
+            fib_obs.iter().map(|o| o.radius.to_bits()).collect();
+        let sed_radii: std::collections::HashSet<u64> =
+            sed_obs.iter().map(|o| o.radius.to_bits()).collect();
 
         assert!(
             sed_radii.len() > fib_radii.len(),
@@ -830,8 +824,13 @@ mod tests {
         let nx = 14;
         let field = make_test_frustration_field(nx, nx, nx);
         let cfg = FrustrationStormConfig {
-            n_steps: 5000, seed: 42, n_shells: 20,
-            frustration_field: &field, field_nx: nx, field_ny: nx, field_nz: nx,
+            n_steps: 5000,
+            seed: 42,
+            n_shells: 20,
+            frustration_field: &field,
+            field_nx: nx,
+            field_ny: nx,
+            field_nz: nx,
             alpha: 1.0,
         };
         let (stats, bins) = simulate_frustration_modulated_storm(&cfg);
@@ -847,8 +846,13 @@ mod tests {
         let nx = 14;
         let field = make_test_frustration_field(nx, nx, nx);
         let cfg = FrustrationStormConfig {
-            n_steps: 2000, seed: 42, n_shells: 20,
-            frustration_field: &field, field_nx: nx, field_ny: nx, field_nz: nx,
+            n_steps: 2000,
+            seed: 42,
+            n_shells: 20,
+            frustration_field: &field,
+            field_nx: nx,
+            field_ny: nx,
+            field_nz: nx,
             alpha: 1.0,
         };
         let (s1, b1) = simulate_frustration_modulated_storm(&cfg);
@@ -866,8 +870,13 @@ mod tests {
         let nx = 14;
         let field = make_test_frustration_field(nx, nx, nx);
         let cfg = FrustrationStormConfig {
-            n_steps: 10000, seed: 42, n_shells: 20,
-            frustration_field: &field, field_nx: nx, field_ny: nx, field_nz: nx,
+            n_steps: 10000,
+            seed: 42,
+            n_shells: 20,
+            frustration_field: &field,
+            field_nx: nx,
+            field_ny: nx,
+            field_nz: nx,
             alpha: 0.0,
         };
         let (stats_mod, _) = simulate_frustration_modulated_storm(&cfg);
@@ -891,12 +900,18 @@ mod tests {
         let nx = 14;
         let field = make_test_frustration_field(nx, nx, nx);
         let cfg_weak = FrustrationStormConfig {
-            n_steps: 30000, seed: 42, n_shells: 20,
-            frustration_field: &field, field_nx: nx, field_ny: nx, field_nz: nx,
+            n_steps: 30000,
+            seed: 42,
+            n_shells: 20,
+            frustration_field: &field,
+            field_nx: nx,
+            field_ny: nx,
+            field_nz: nx,
             alpha: 0.1,
         };
         let cfg_strong = FrustrationStormConfig {
-            alpha: 5.0, ..cfg_weak.clone()
+            alpha: 5.0,
+            ..cfg_weak.clone()
         };
         let (stats_weak, _) = simulate_frustration_modulated_storm(&cfg_weak);
         let (stats_strong, _) = simulate_frustration_modulated_storm(&cfg_strong);
