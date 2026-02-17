@@ -1,0 +1,26 @@
+# Thesis 4 Source Triangulation Registry
+# Maps Thesis 4 claims (C-452, C-453) to primary sources on normed division
+# algebras, Cayley-Dickson subalgebra structure, and lattice filtration.
+# Created: Sprint 42 (2026-02-17).
+
+[meta]
+updated = "2026-02-17"
+thesis = "T4: Latency-law classification via CD subalgebra structure"
+claim_ids = ["C-452", "C-453"]
+primary_sources = ["Baez 2002 (BIB-0061)", "Bott-Milnor 1958 (BIB-0197)", "Adams 1960 (BIB-0198)"]
+
+[[triangulation]]
+claim_id = "C-452"
+theorem = "Only R, C, H, O are normed division algebras (Hurwitz 1898 / Adams 1960)"
+sources = ["Baez 2002 Thm 1.1 (BIB-0061)", "Adams 1960 Main Theorem (BIB-0198)", "Bott-Milnor 1958 Thm 1 (BIB-0197)"]
+our_use = "Subalgebra retention pattern at dims 1, 2, 4, 8 is exactly the normed division algebra ladder. The 8D codomain lock of the lattice projection reflects this: the projection 'sees' only the octonion subalgebra structure."
+gap = "Formal proof requires showing project_to_lattice preserves subalgebra structure. Currently verified empirically at dims 256/512/1024/2048. See proof skeleton PRS-00737."
+proof_skeleton_ref = "PRS-00737"
+
+[[triangulation]]
+claim_id = "C-453"
+theorem = "CD lattice filtration exhibits prefix-chain structure"
+sources = ["Baez 2002 Sec 2.2 -- Cayley-Dickson construction (BIB-0061)", "Moreno 1998 -- Zero-divisor topology in CD algebras"]
+our_use = "The prefix-cut boundaries track the loss of division-algebra properties at each doubling. Lambda_{2n} is a strict lex-prefix of Lambda_{4n}, and the divergence coordinate advances predictably."
+gap = "Formal bridge between lex-prefix structure and algebraic property loss needs proof. See proof skeleton PRS-00736."
+proof_skeleton_ref = "PRS-00736"

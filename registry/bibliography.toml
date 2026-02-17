@@ -7,13 +7,13 @@ updated = "2026-02-09"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
 section_count = 32
-entry_count = 186
+entry_count = 198
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
 section_count = 32
-entry_count = 186
+entry_count = 198
 
 [[section]]
 id = "BSEC-001"
@@ -2356,3 +2356,23 @@ citation_markdown = "**Alvarez, P. D., Izaurieta, F., & Quinzacara, C.** (2026).
 notes = ["*Unification via Clifford-algebraic invariant in a ghost-free quadratic gravity framework.*"]
 urls = ["https://arxiv.org/abs/2601.19734"]
 dois = []
+
+[[entry]]
+id = "BIB-0197"
+order_index = 197
+group = "Primary Research & Data Sources"
+section = "Algebra & Mathematics"
+citation_markdown = "**Bott, R., & Milnor, J.** (1958). *On the parallelizability of the spheres*. Bulletin of the American Mathematical Society 64(3), 87-89. DOI: 10.1090/S0002-9904-1958-10166-4."
+notes = ["*Proves only S^0, S^1, S^3, S^7 are parallelizable; foundational for the normed division algebra classification used in Thesis 4.*"]
+urls = []
+dois = ["10.1090/S0002-9904-1958-10166-4"]
+
+[[entry]]
+id = "BIB-0198"
+order_index = 198
+group = "Primary Research & Data Sources"
+section = "Algebra & Mathematics"
+citation_markdown = "**Adams, J. F.** (1960). *On the non-existence of elements of Hopf invariant one*. Annals of Mathematics 72(1), 20-104. DOI: 10.2307/1970147."
+notes = ["*Proves R, C, H, O are the only normed division algebras over the reals; the algebraic foundation for the Thesis 4 subalgebra retention pattern.*"]
+urls = []
+dois = ["10.2307/1970147"]
