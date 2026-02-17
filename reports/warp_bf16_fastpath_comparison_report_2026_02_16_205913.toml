@@ -1,0 +1,114 @@
+schema = "open_gororoba.warp_bf16_fastpath_comparison.v1"
+generated_at_utc = "2026-02-16T20:59:13.448560403+00:00"
+status = "pass"
+
+[system]
+cpu = "AMD Ryzen 5 5600X3D 6-Core Processor"
+gpu = "NVIDIA GeForce RTX 4070 Ti"
+cuda = "13.1"
+
+[inputs]
+baseline_dir = "data/h5/production/20260215-211758_precision_suite_rerun"
+legacy_dir = "data/h5/production/20260215-200556"
+sweep_root = "data/h5/basemarks/20260216-204128_bf16_blockdim_sweep"
+sweep_scores = "data/h5/basemarks/20260216-204128_bf16_blockdim_sweep/blockdim_sweep_scores.txt"
+production_dir = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2"
+
+[sweep]
+method = "BF16 matrix sweep at selected resolutions with cuda_events; winner by geometric mean MLUPS"
+winning_block_dim = "16x4x2"
+env_key = "GOROROBA_LBM_BLOCK_DIM"
+
+[[sweep.candidate]]
+block_dim = "16x4x2"
+mlups_128 = 727.407125
+mlups_256 = 162.819169
+geom_mlups = 344.145062
+
+[[sweep.candidate]]
+block_dim = "8x8x2"
+mlups_128 = 695.222954
+mlups_256 = 152.555128
+geom_mlups = 325.668277
+
+[[sweep.candidate]]
+block_dim = "8x4x4"
+mlups_128 = 703.115174
+mlups_256 = 150.148914
+geom_mlups = 324.918420
+
+[[sweep.candidate]]
+block_dim = "4x4x4"
+mlups_128 = 656.451332
+mlups_256 = 156.067094
+geom_mlups = 320.078821
+
+[[sweep.candidate]]
+block_dim = "4x4x8"
+mlups_128 = 661.714682
+mlups_256 = 152.573612
+geom_mlups = 317.742347
+
+[comparison]
+untuned_run_dir = "data/h5/production/20260215-211758_precision_suite_rerun"
+tuned_run_dir = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2"
+
+[[comparison.case]]
+resolution = 256
+untuned_steps_per_sec = 46.026514
+untuned_mlups = 772.196759
+untuned_p50_us = 12844.032288
+untuned_p90_us = 27125.376129
+untuned_p99_us = 69732.290039
+tuned_steps_per_sec = 9.966187
+tuned_mlups = 167.204877
+tuned_p50_us = 8656.960011
+tuned_p90_us = 39487.076950
+tuned_p99_us = 86904.810181
+delta_steps_per_sec_pct = -78.3469
+delta_mlups_pct = -78.3469
+delta_p50_us_pct = -32.5994
+delta_p90_us_pct = 45.5725
+delta_p99_us_pct = 24.6264
+
+[[comparison.case]]
+resolution = 128
+untuned_steps_per_sec = 387.229301
+untuned_mlups = 812.078703
+untuned_p50_us = 1175.552011
+untuned_p90_us = 3897.241688
+untuned_p99_us = 6888.448238
+tuned_steps_per_sec = 342.519645
+tuned_mlups = 718.315758
+tuned_p50_us = 979.968011
+tuned_p90_us = 2614.102435
+tuned_p99_us = 5704.808793
+delta_steps_per_sec_pct = -11.5460
+delta_mlups_pct = -11.5460
+delta_p50_us_pct = -16.6376
+delta_p90_us_pct = -32.9243
+delta_p99_us_pct = -17.1830
+
+[comparison.aggregate]
+geom_mlups_untuned = 791.886698
+geom_mlups_tuned = 346.562979
+delta_geom_mlups_pct = -56.2358
+scaling_exponent_steps_per_sec_untuned = 3.0727
+scaling_exponent_steps_per_sec_tuned = 5.1030
+
+[analysis_signatures]
+timing_regime_signature = "Legacy data/h5/production/20260215-200556 appears launch-like (p50 1.700us/1.800us); tuned run data/h5/production/20260216-204128_bf16_fastpath_16_4_2 is kernel-like (p50 979.968us/8656.960us)."
+trace_periodic_tail_signature = "High-latency tail vs trace cadence (trace_stride=10): 128^3: tail_count=10276 expected_trace_events=10276 ratio=1.000; 256^3: tail_count=299 expected_trace_events=299 ratio=1.000"
+invariant_signature = "rho_mean remained exactly 1.0 with zero drift/std across tuned production runs (128^3: rho_final=1.000000000000, drift=0.000e0, std=0.000e0; 256^3: rho_final=1.000000000000, drift=0.000e0, std=0.000e0)"
+trace_content_signature = "enstrophy and algebra_norm traces are zero-filled in current exports; likely BF16 forcing quantization-limited (128^3 delta_f_over_ulp=2.374e-4, 256^3 delta_f_over_ulp=5.936e-5)"
+
+[artifacts]
+telemetry_csv = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/gpu_telemetry.csv"
+run_tuned_128_h5 = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/warp_ring_128_GPU_BF16_300s.h5"
+run_tuned_128_timing = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/timing_128_GPU_BF16_300s.toml"
+run_tuned_256_h5 = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/warp_ring_256_GPU_BF16_300s.h5"
+run_tuned_256_timing = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/timing_256_GPU_BF16_300s.toml"
+
+[gate]
+result = "pass"
+notes = "warp acceptance gate passed for sweep candidates and tuned production outputs"

@@ -14,8 +14,8 @@ use std::io;
 use std::path::Path;
 use vacuum_frustration::kubo_transport::{
     build_cd_heisenberg, build_interpolated, build_j1j2_chain, exact_diagonalize,
-    graph_frustration_index, kubo_transport_optimized, thermodynamic_quantities,
-    HeisenbergModel, KuboTransport,
+    graph_frustration_index, kubo_transport_optimized, thermodynamic_quantities, HeisenbergModel,
+    KuboTransport,
 };
 
 /// Transport computation dispatcher: GPU-first, CPU fallback.
@@ -91,7 +91,10 @@ fn main() -> io::Result<()> {
     for &dim in &cd_dims {
         let n_sites = dim - 1;
         let hilbert = 1usize << n_sites;
-        println!("  dim={} ({} sites, {} Hilbert states)", dim, n_sites, hilbert);
+        println!(
+            "  dim={} ({} sites, {} Hilbert states)",
+            dim, n_sites, hilbert
+        );
 
         let model = build_cd_heisenberg(dim, 0.0);
         let frustration = graph_frustration_index(&model);
@@ -99,20 +102,32 @@ fn main() -> io::Result<()> {
 
         let ed = exact_diagonalize(&model);
         println!("    Ground state energy: {:.6}", ed.eigenvalues[0]);
-        println!("    Energy gap: {:.6}", ed.eigenvalues[1] - ed.eigenvalues[0]);
+        println!(
+            "    Energy gap: {:.6}",
+            ed.eigenvalues[1] - ed.eigenvalues[0]
+        );
 
         for &t in &temperatures {
             let thermo = thermodynamic_quantities(&ed, t);
             let transport = dispatcher.compute(&model, t);
 
-            cd_results.push((dim, t, frustration, thermo.specific_heat,
-                            transport.drude_weight_spin, transport.total_weight_energy,
-                            transport.total_weight_spin));
+            cd_results.push((
+                dim,
+                t,
+                frustration,
+                thermo.specific_heat,
+                transport.drude_weight_spin,
+                transport.total_weight_energy,
+                transport.total_weight_spin,
+            ));
 
             println!(
                 "    T={:.1}: C_V={:.4}, D_S={:.6}, I0_E={:.6}, I0_S={:.6}",
-                t, thermo.specific_heat, transport.drude_weight_spin,
-                transport.total_weight_energy, transport.total_weight_spin
+                t,
+                thermo.specific_heat,
+                transport.drude_weight_spin,
+                transport.total_weight_energy,
+                transport.total_weight_spin
             );
         }
         println!();
@@ -138,14 +153,22 @@ fn main() -> io::Result<()> {
         let transport = dispatcher.compute(&model, temp);
         let thermo = thermodynamic_quantities(&exact_diagonalize(&model), temp);
 
-        j1j2_results.push((alpha, frustration, transport.drude_weight_spin,
-                           transport.total_weight_energy, transport.total_weight_spin,
-                           thermo.specific_heat));
+        j1j2_results.push((
+            alpha,
+            frustration,
+            transport.drude_weight_spin,
+            transport.total_weight_energy,
+            transport.total_weight_spin,
+            thermo.specific_heat,
+        ));
 
         println!(
             "  alpha={:.2}: f={:.3}, D_S={:.6}, I0_S={:.6}, I0_E={:.6}",
-            alpha, frustration, transport.drude_weight_spin,
-            transport.total_weight_spin, transport.total_weight_energy
+            alpha,
+            frustration,
+            transport.drude_weight_spin,
+            transport.total_weight_spin,
+            transport.total_weight_energy
         );
     }
 
@@ -184,13 +207,21 @@ fn main() -> io::Result<()> {
         let frustration = graph_frustration_index(&model);
         let transport = dispatcher.compute(&model, temp_interp);
 
-        interp_results.push((lam, frustration, transport.drude_weight_spin,
-                            transport.total_weight_energy, transport.total_weight_spin));
+        interp_results.push((
+            lam,
+            frustration,
+            transport.drude_weight_spin,
+            transport.total_weight_energy,
+            transport.total_weight_spin,
+        ));
 
         println!(
             "  lambda={:.2}: f={:.4}, D_S={:.6}, I0_S={:.6}, I0_E={:.6}",
-            lam, frustration, transport.drude_weight_spin,
-            transport.total_weight_spin, transport.total_weight_energy
+            lam,
+            frustration,
+            transport.drude_weight_spin,
+            transport.total_weight_spin,
+            transport.total_weight_energy
         );
     }
     println!();
@@ -224,9 +255,22 @@ fn main() -> io::Result<()> {
         let f_matched = graph_frustration_index(&matched_chain);
         let chain_transport = dispatcher.compute(&matched_chain, 0.5);
 
-        println!("  dim={}: CD f={:.4}, matched J1-J2 alpha={:.2} f={:.4}", dim, f_cd, best_alpha, f_matched);
-        println!("    CD:    D_S={:.6}, I0_S={:.6}, I0_E={:.6}", cd_transport.drude_weight_spin, cd_transport.total_weight_spin, cd_transport.total_weight_energy);
-        println!("    Chain: D_S={:.6}, I0_S={:.6}, I0_E={:.6}", chain_transport.drude_weight_spin, chain_transport.total_weight_spin, chain_transport.total_weight_energy);
+        println!(
+            "  dim={}: CD f={:.4}, matched J1-J2 alpha={:.2} f={:.4}",
+            dim, f_cd, best_alpha, f_matched
+        );
+        println!(
+            "    CD:    D_S={:.6}, I0_S={:.6}, I0_E={:.6}",
+            cd_transport.drude_weight_spin,
+            cd_transport.total_weight_spin,
+            cd_transport.total_weight_energy
+        );
+        println!(
+            "    Chain: D_S={:.6}, I0_S={:.6}, I0_E={:.6}",
+            chain_transport.drude_weight_spin,
+            chain_transport.total_weight_spin,
+            chain_transport.total_weight_energy
+        );
         let ratio = cd_transport.total_weight_spin / chain_transport.total_weight_spin.max(1e-20);
         println!("    I0_S ratio (CD/chain): {:.4}", ratio);
         println!();
@@ -247,7 +291,10 @@ fn main() -> io::Result<()> {
     toml.push_str(&format!("j1j2_chain_length = {}\n", n_chain));
     toml.push_str(&format!("j1j2_field_b = {}\n", field_b));
     toml.push_str(&format!("j1j2_temperature = {}\n", temp));
-    toml.push_str(&format!("backend = \"{}\"\n\n", if dispatcher.use_gpu { "GPU" } else { "CPU" }));
+    toml.push_str(&format!(
+        "backend = \"{}\"\n\n",
+        if dispatcher.use_gpu { "GPU" } else { "CPU" }
+    ));
 
     // CD results
     for &(dim, t, f, cv, ds, de, kth) in &cd_results {

@@ -14,41 +14,139 @@
 //! On Arch Linux / CachyOS: `pacman -S hdf5`
 //! On Ubuntu / Debian: `apt install libhdf5-dev`
 
+use std::collections::BTreeMap;
 use std::path::Path;
 
-use hdf5::File as H5File;
-use gororoba_contracts::WarpRingExperiment;
 use crate::quality::{RhoQualityThresholds, RhoTraceQuality};
+use gororoba_contracts::WarpRingExperiment;
+use hdf5::File as H5File;
+
+pub const REQUIRED_TRACE_CHANNELS: [&str; 3] = ["rho_mean", "enstrophy", "algebra_norm"];
+
+#[derive(Debug, Clone, Default)]
+pub struct SimulationTraceBundle {
+    pub time: Vec<f64>,
+    pub channels: BTreeMap<String, Vec<f64>>,
+    pub metadata: BTreeMap<String, String>,
+}
+
+#[derive(Debug, Clone, Default)]
+pub struct SpectralSummarySeries {
+    pub time: Vec<f64>,
+    pub k_peak: Vec<f64>,
+    pub power_peak: Vec<f64>,
+    pub total_power: Vec<f64>,
+    pub slope: Vec<f64>,
+    pub triad_count: Vec<f64>,
+    pub triad_clustering: Vec<f64>,
+}
+
+fn ensure_simulation_group(file: &H5File) -> hdf5::Result<hdf5::Group> {
+    match file.group("simulation") {
+        Ok(g) => Ok(g),
+        Err(_) => file.create_group("simulation"),
+    }
+}
+
+fn ensure_child_group(parent: &hdf5::Group, name: &str) -> hdf5::Result<hdf5::Group> {
+    match parent.group(name) {
+        Ok(g) => Ok(g),
+        Err(_) => parent.create_group(name),
+    }
+}
+
+fn write_or_replace_f64_dataset(group: &hdf5::Group, name: &str, data: &[f64]) -> hdf5::Result<()> {
+    if group.link_exists(name) {
+        group.unlink(name)?;
+    }
+    group
+        .new_dataset::<f64>()
+        .shape([data.len()])
+        .create(name)?
+        .write(data)?;
+    Ok(())
+}
+
+fn write_or_replace_str_dataset(
+    group: &hdf5::Group,
+    name: &str,
+    values: &[String],
+) -> hdf5::Result<()> {
+    if group.link_exists(name) {
+        group.unlink(name)?;
+    }
+    let dataset = group
+        .new_dataset::<hdf5::types::VarLenUnicode>()
+        .shape([values.len()])
+        .create(name)?;
+    let encoded: Vec<hdf5::types::VarLenUnicode> =
+        values.iter().map(|s| s.parse().unwrap()).collect();
+    dataset.write(&encoded)?;
+    Ok(())
+}
 
 /// Export a Warp Ring Experiment contract to HDF5.
 ///
 /// Serializes the contract metadata as attributes and groups.
-pub fn export_experiment_contract(
-    path: &Path,
-    contract: &WarpRingExperiment,
-) -> hdf5::Result<()> {
+pub fn export_experiment_contract(path: &Path, contract: &WarpRingExperiment) -> hdf5::Result<()> {
     let file = H5File::create(path)?; // Overwrite if exists, it's a new artifact
     let group = file.create_group("experiment")?;
 
     // Metadata
-    group.new_attr::<hdf5::types::VarLenUnicode>().create("id")?
-        .write_scalar(&contract.experiment_id.parse::<hdf5::types::VarLenUnicode>().unwrap())?;
-        
+    group
+        .new_attr::<hdf5::types::VarLenUnicode>()
+        .create("id")?
+        .write_scalar(
+            &contract
+                .experiment_id
+                .parse::<hdf5::types::VarLenUnicode>()
+                .unwrap(),
+        )?;
+
     // Config
     let config_grp = group.create_group("config")?;
-    config_grp.new_attr::<usize>().create("resolution")?.write_scalar(&contract.config.resolution)?;
-    config_grp.new_attr::<usize>().create("steps")?.write_scalar(&contract.config.steps)?;
-    config_grp.new_attr::<f64>().create("tau")?.write_scalar(&contract.config.tau)?;
-    config_grp.new_attr::<f64>().create("coupling_lambda")?.write_scalar(&contract.config.coupling_lambda)?;
-    config_grp.new_attr::<hdf5::types::VarLenUnicode>().create("forcing_type")?
-        .write_scalar(&contract.config.forcing_type.parse::<hdf5::types::VarLenUnicode>().unwrap())?;
-        
+    config_grp
+        .new_attr::<usize>()
+        .create("resolution")?
+        .write_scalar(&contract.config.resolution)?;
+    config_grp
+        .new_attr::<usize>()
+        .create("steps")?
+        .write_scalar(&contract.config.steps)?;
+    config_grp
+        .new_attr::<f64>()
+        .create("tau")?
+        .write_scalar(&contract.config.tau)?;
+    config_grp
+        .new_attr::<f64>()
+        .create("coupling_lambda")?
+        .write_scalar(&contract.config.coupling_lambda)?;
+    config_grp
+        .new_attr::<hdf5::types::VarLenUnicode>()
+        .create("forcing_type")?
+        .write_scalar(
+            &contract
+                .config
+                .forcing_type
+                .parse::<hdf5::types::VarLenUnicode>()
+                .unwrap(),
+        )?;
+
     // Results
     let res_grp = group.create_group("results")?;
-    res_grp.new_attr::<f64>().create("final_enstrophy")?.write_scalar(&contract.results.final_enstrophy)?;
-    res_grp.new_attr::<f64>().create("mean_density")?.write_scalar(&contract.results.mean_density)?;
-    res_grp.new_attr::<f64>().create("execution_time_s")?.write_scalar(&contract.results.execution_time_s)?;
-    
+    res_grp
+        .new_attr::<f64>()
+        .create("final_enstrophy")?
+        .write_scalar(&contract.results.final_enstrophy)?;
+    res_grp
+        .new_attr::<f64>()
+        .create("mean_density")?
+        .write_scalar(&contract.results.mean_density)?;
+    res_grp
+        .new_attr::<f64>()
+        .create("execution_time_s")?
+        .write_scalar(&contract.results.execution_time_s)?;
+
     Ok(())
 }
 
@@ -144,15 +242,107 @@ pub fn export_simulation_trace(
     enstrophy: &[f64],
     algebra_norm: &[f64],
 ) -> hdf5::Result<()> {
+    let mut channels = BTreeMap::new();
+    channels.insert("rho_mean".to_string(), rho_mean.to_vec());
+    channels.insert("enstrophy".to_string(), enstrophy.to_vec());
+    channels.insert("algebra_norm".to_string(), algebra_norm.to_vec());
+    let bundle = SimulationTraceBundle {
+        time: time.to_vec(),
+        channels,
+        metadata: BTreeMap::new(),
+    };
+    export_simulation_trace_bundle(path, &bundle)
+}
+
+/// Export a trace bundle with required and optional channels.
+///
+/// Required channels are:
+/// - `rho_mean`
+/// - `enstrophy`
+/// - `algebra_norm`
+///
+/// Additional channels are persisted under `/simulation/trace/<name>`.
+/// Metadata key/value pairs are stored under `/simulation/trace_meta/{keys,values}`.
+pub fn export_simulation_trace_bundle(
+    path: &Path,
+    bundle: &SimulationTraceBundle,
+) -> hdf5::Result<()> {
+    let n = bundle.time.len();
+    for required in REQUIRED_TRACE_CHANNELS {
+        let values = bundle.channels.get(required).ok_or_else(|| {
+            hdf5::Error::from(format!("missing required trace channel '{required}'"))
+        })?;
+        if values.len() != n {
+            return Err(hdf5::Error::from(format!(
+                "trace channel '{required}' length mismatch: expected {n}, got {}",
+                values.len()
+            )));
+        }
+    }
+    for (name, values) in &bundle.channels {
+        if values.len() != n {
+            return Err(hdf5::Error::from(format!(
+                "trace channel '{name}' length mismatch: expected {n}, got {}",
+                values.len()
+            )));
+        }
+    }
+
     let file = H5File::append(path)?;
-    let group = file.create_group("simulation/trace")?;
+    let simulation = ensure_simulation_group(&file)?;
+    let trace_group = ensure_child_group(&simulation, "trace")?;
+    write_or_replace_f64_dataset(&trace_group, "time", &bundle.time)?;
+    for (name, values) in &bundle.channels {
+        write_or_replace_f64_dataset(&trace_group, name, values)?;
+    }
 
-    let n = time.len();
-    group.new_dataset::<f64>().shape([n]).create("time")?.write(time)?;
-    group.new_dataset::<f64>().shape([n]).create("rho_mean")?.write(rho_mean)?;
-    group.new_dataset::<f64>().shape([n]).create("enstrophy")?.write(enstrophy)?;
-    group.new_dataset::<f64>().shape([n]).create("algebra_norm")?.write(algebra_norm)?;
+    let trace_meta_group = ensure_child_group(&simulation, "trace_meta")?;
+    if !bundle.metadata.is_empty() {
+        let mut keys = Vec::with_capacity(bundle.metadata.len());
+        let mut values = Vec::with_capacity(bundle.metadata.len());
+        for (k, v) in &bundle.metadata {
+            keys.push(k.clone());
+            values.push(v.clone());
+        }
+        write_or_replace_str_dataset(&trace_meta_group, "keys", &keys)?;
+        write_or_replace_str_dataset(&trace_meta_group, "values", &values)?;
+    }
 
+    Ok(())
+}
+
+/// Export compact spectral summaries under `/simulation/spectral`.
+pub fn export_simulation_spectral_summary(
+    path: &Path,
+    summary: &SpectralSummarySeries,
+) -> hdf5::Result<()> {
+    let n = summary.time.len();
+    let checks = [
+        ("k_peak", summary.k_peak.len()),
+        ("power_peak", summary.power_peak.len()),
+        ("total_power", summary.total_power.len()),
+        ("slope", summary.slope.len()),
+        ("triad_count", summary.triad_count.len()),
+        ("triad_clustering", summary.triad_clustering.len()),
+    ];
+    for (name, len) in checks {
+        if len != n {
+            return Err(hdf5::Error::from(format!(
+                "spectral channel '{name}' length mismatch: expected {n}, got {len}"
+            )));
+        }
+    }
+
+    let file = H5File::append(path)?;
+    let simulation = ensure_simulation_group(&file)?;
+    let spectral = ensure_child_group(&simulation, "spectral")?;
+    write_or_replace_f64_dataset(&spectral, "time", &summary.time)?;
+    write_or_replace_f64_dataset(&spectral, "k_peak", &summary.k_peak)?;
+    write_or_replace_f64_dataset(&spectral, "power_peak", &summary.power_peak)?;
+    write_or_replace_f64_dataset(&spectral, "total_power", &summary.total_power)?;
+    write_or_replace_f64_dataset(&spectral, "slope", &summary.slope)?;
+    write_or_replace_f64_dataset(&spectral, "triad_count", &summary.triad_count)?;
+    write_or_replace_f64_dataset(&spectral, "triad_clustering", &summary.triad_clustering)?;
     Ok(())
 }
 
@@ -167,6 +357,13 @@ pub fn read_rho_mean_trace(path: &Path) -> hdf5::Result<Vec<f64>> {
 pub fn read_simulation_trace_component(path: &Path, name: &str) -> hdf5::Result<Vec<f64>> {
     let file = H5File::open(path)?;
     let dataset = file.dataset(&format!("simulation/trace/{name}"))?;
+    dataset.read_raw()
+}
+
+/// Read a named `/simulation/spectral/<name>` f64 vector from an HDF5 artifact.
+pub fn read_simulation_spectral_component(path: &Path, name: &str) -> hdf5::Result<Vec<f64>> {
+    let file = H5File::open(path)?;
+    let dataset = file.dataset(&format!("simulation/spectral/{name}"))?;
     dataset.read_raw()
 }
 
@@ -232,17 +429,18 @@ fn analyze_dataset(path: &str, dataset: &hdf5::Dataset) -> hdf5::Result<NumericD
     let descriptor = dataset.dtype()?.to_descriptor()?;
     let dtype = descriptor.to_string();
 
-    let mk_checked = |element_count: usize, finite_count: usize, nan_count: usize, inf_count: usize| {
-        NumericDatasetScanEntry {
-            path: path.to_string(),
-            dtype: dtype.clone(),
-            element_count,
-            finite_count,
-            nan_count,
-            inf_count,
-            status: NumericDatasetScanStatus::Checked,
-        }
-    };
+    let mk_checked =
+        |element_count: usize, finite_count: usize, nan_count: usize, inf_count: usize| {
+            NumericDatasetScanEntry {
+                path: path.to_string(),
+                dtype: dtype.clone(),
+                element_count,
+                finite_count,
+                nan_count,
+                inf_count,
+                status: NumericDatasetScanStatus::Checked,
+            }
+        };
 
     let mk_skipped = |status: NumericDatasetScanStatus| NumericDatasetScanEntry {
         path: path.to_string(),
@@ -347,7 +545,9 @@ fn analyze_dataset(path: &str, dataset: &hdf5::Dataset) -> hdf5::Result<NumericD
         }
         other => {
             if descriptor_is_numeric(&other) {
-                Ok(mk_skipped(NumericDatasetScanStatus::UnsupportedNumericLayout))
+                Ok(mk_skipped(
+                    NumericDatasetScanStatus::UnsupportedNumericLayout,
+                ))
             } else {
                 Ok(mk_skipped(NumericDatasetScanStatus::NonNumericSkipped))
             }

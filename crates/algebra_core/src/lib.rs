@@ -29,8 +29,8 @@ pub mod universal_algebra;
 pub mod gpu;
 
 pub use error::{AlgebraError, AlgebraResult};
-pub use universal_algebra::UniversalAlgebra;
 pub use traits::Hypercomplex;
+pub use universal_algebra::UniversalAlgebra;
 
 // Re-export core algebra functions from construction
 pub use construction::cayley_dickson::{

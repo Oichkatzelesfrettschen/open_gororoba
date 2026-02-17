@@ -55,7 +55,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
 
     info!("=== Warp Turbulence Experiment: {} ===", args.experiment);
-    info!("Grid: {}, Steps: {}, Re: {}", args.size, args.steps, args.re);
+    info!(
+        "Grid: {}, Steps: {}, Re: {}",
+        args.size, args.steps, args.re
+    );
 
     match args.experiment.as_str() {
         "A" => run_experiment_a(&args),
@@ -148,7 +151,10 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
                         .collect();
                     let enstrophy = compute_enstrophy_3d(&u_vec_f64, nx, ny, nz);
                     if enstrophy.is_nan() || enstrophy > 1e6 {
-                        warn!("Blowup detected at step {} (Enstrophy: {:.2e})", t, enstrophy);
+                        warn!(
+                            "Blowup detected at step {} (Enstrophy: {:.2e})",
+                            t, enstrophy
+                        );
                         return Ok(t);
                     }
 
@@ -159,7 +165,7 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
                         let mut ux = Array3::<f64>::zeros((nx, ny, nz));
                         let mut uy = Array3::<f64>::zeros((nx, ny, nz));
                         let mut uz = Array3::<f64>::zeros((nx, ny, nz));
-                        
+
                         for (idx, vel) in u_vec_f64.iter().enumerate() {
                             let z = idx / (nx * ny);
                             let y = (idx % (nx * ny)) / nx;
@@ -184,10 +190,9 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
                             vel[1] = uy[[x, y, z]];
                             vel[2] = uz[[x, y, z]];
                         }
-                        
+
                         // Reset solver with filtered velocity
-                        let rho_clone: Vec<f64> =
-                            solver.rho.iter().map(|v| *v as f64).collect();
+                        let rho_clone: Vec<f64> = solver.rho.iter().map(|v| *v as f64).collect();
                         solver.initialize_custom(&rho_clone, &u_new)?;
                     }
                 }
@@ -201,16 +206,16 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
     // CPU Fallback (2D D2Q9)
     info!("Using CPU LBM Solver (D2Q9 - 2D Approximation)");
     let _flow = simulate_kolmogorov_flow(nx, ny, tau, 1e-4, 1, 1); // Init
-    
+
     // We assume simulate_kolmogorov_flow returns a struct with step() or we run loop manually?
     // lbm_core::simulate_kolmogorov_flow runs the WHOLE simulation.
-    // We need granular control. We'll use D2Q9 struct directly if possible, 
+    // We need granular control. We'll use D2Q9 struct directly if possible,
     // or just run simulate_kolmogorov_flow multiple times? No, that resets state.
     // lbm_core likely doesn't expose a step-by-step public API for external loops easily.
-    // Inspecting lbm_core would be needed. 
+    // Inspecting lbm_core would be needed.
     // Assuming for now we can't easily hook into CPU loop for filtering without modifying lbm_core.
     // We will return dummy value for CPU case to avoid build errors, or panic.
-    
+
     Err("CPU fallback for interactive filtering not implemented in this experiment script. Please enable GPU feature.".into())
 }
 
@@ -225,7 +230,7 @@ fn run_experiment_b(args: &Args) -> Result<(), Box<dyn Error>> {
     let nx = args.size;
     let ny = args.size;
     let nz = args.size;
-    
+
     info!("Generating synthetic turbulence ({}x{}x{})...", nx, ny, nz);
     // Simple synthetic field: sum of random waves with k^-5/3 amplitude
     let mut field_hat = Array3::<Complex64>::zeros((nx, ny, nz));
@@ -235,13 +240,25 @@ fn run_experiment_b(args: &Args) -> Result<(), Box<dyn Error>> {
     for x in 0..nx {
         for y in 0..ny {
             for z in 0..nz {
-                let kx = if x <= nx/2 { x as f64 } else { x as f64 - nx as f64 };
-                let ky = if y <= ny/2 { y as f64 } else { y as f64 - ny as f64 };
-                let kz = if z <= nz/2 { z as f64 } else { z as f64 - nz as f64 };
-                let k = (kx*kx + ky*ky + kz*kz).sqrt();
-                
+                let kx = if x <= nx / 2 {
+                    x as f64
+                } else {
+                    x as f64 - nx as f64
+                };
+                let ky = if y <= ny / 2 {
+                    y as f64
+                } else {
+                    y as f64 - ny as f64
+                };
+                let kz = if z <= nz / 2 {
+                    z as f64
+                } else {
+                    z as f64 - nz as f64
+                };
+                let k = (kx * kx + ky * ky + kz * kz).sqrt();
+
                 if k > 0.0 {
-                    let amplitude = k.powf(-5.0/3.0 - 1.0); // -1.0 for 3D integration factor adjustment? roughly.
+                    let amplitude = k.powf(-5.0 / 3.0 - 1.0); // -1.0 for 3D integration factor adjustment? roughly.
                     let phase = rng.gen::<f64>() * 2.0 * PI;
                     field_hat[[x, y, z]] = Complex64::from_polar(amplitude, phase);
                 }
@@ -251,12 +268,12 @@ fn run_experiment_b(args: &Args) -> Result<(), Box<dyn Error>> {
 
     // Reduce to 2D slice for reuse of existing 2D p-adic functions
     // or implement 3D p-adic spectrum. Let's implement 3D here.
-    
+
     let mut results = Vec::new();
     for p in [2, 3, 5, 7] {
         info!("Analyzing prime p={}", p);
         let (k_bins, power) = compute_padic_spectrum_3d(&field_hat, p);
-        
+
         // Fit slope
         let (slope, r2) = fit_power_law(&k_bins, &power);
         info!("  p={}: Slope = {:.4}, R2 = {:.4}", p, slope, r2);
@@ -297,10 +314,22 @@ fn compute_padic_spectrum_3d(field_hat: &Array3<Complex64>, prime: u64) -> (Vec<
     }
 
     for ((x, y, z), val) in field_hat.indexed_iter() {
-        let kx = if x <= nx/2 { x as f64 } else { x as f64 - nx as f64 };
-        let ky = if y <= ny/2 { y as f64 } else { y as f64 - ny as f64 };
-        let kz = if z <= nz/2 { z as f64 } else { z as f64 - nz as f64 };
-        let k = (kx*kx + ky*ky + kz*kz).sqrt();
+        let kx = if x <= nx / 2 {
+            x as f64
+        } else {
+            x as f64 - nx as f64
+        };
+        let ky = if y <= ny / 2 {
+            y as f64
+        } else {
+            y as f64 - ny as f64
+        };
+        let kz = if z <= nz / 2 {
+            z as f64
+        } else {
+            z as f64 - nz as f64
+        };
+        let k = (kx * kx + ky * ky + kz * kz).sqrt();
         let bin = k.round() as usize;
 
         if bin > 0 && bin < k_max {
@@ -342,24 +371,30 @@ fn fit_power_law(x: &[f64], y: &[f64]) -> (f64, f64) {
         }
     }
 
-    if n < 2.0 { return (0.0, 0.0); }
+    if n < 2.0 {
+        return (0.0, 0.0);
+    }
 
     let slope = (n * sxy - sx * sy) / (n * sxx - sx * sx);
-    
+
     // R2 approximation
     let mean_y = sy / n;
-    let ss_tot: f64 = x.iter().zip(y.iter())
+    let ss_tot: f64 = x
+        .iter()
+        .zip(y.iter())
         .filter(|(&xi, &yi)| xi > 1.0 && yi > 1e-20)
         .map(|(_, &yi)| (yi.ln() - mean_y).powi(2))
         .sum();
-    let ss_res: f64 = x.iter().zip(y.iter())
+    let ss_res: f64 = x
+        .iter()
+        .zip(y.iter())
         .filter(|(&xi, &yi)| xi > 1.0 && yi > 1e-20)
         .map(|(&xi, &yi)| {
-            let pred = (sy/n) + slope * (xi.ln() - sx/n); // Simplified intercept usage
+            let pred = (sy / n) + slope * (xi.ln() - sx / n); // Simplified intercept usage
             (yi.ln() - pred).powi(2)
         })
         .sum();
-    
+
     let r2 = 1.0 - (ss_res / ss_tot);
 
     (slope, r2)
@@ -372,12 +407,12 @@ fn fit_power_law(x: &[f64], y: &[f64]) -> (f64, f64) {
 fn run_experiment_c(args: &Args) -> Result<(), Box<dyn Error>> {
     info!("Starting Experiment C: Topological Precursor");
     // Run LBM, extract triads, measure Betti-1
-    
+
     let nx = args.size;
     let ny = args.size;
     let nz = args.size;
     let steps = args.steps;
-    
+
     // Output file
     let path_str = format!("data/csv/warp_experiment_c_topology_{}.csv", nx);
     let path = Path::new(&path_str);
@@ -388,19 +423,19 @@ fn run_experiment_c(args: &Args) -> Result<(), Box<dyn Error>> {
     {
         let mut solver = LbmSolver3DCuda::new(nx, ny, nz, 0.6, Precision::FP32)?; // Low viscosity
         solver.initialize_uniform(1.0_f32, [0.05_f32, 0.0_f32, 0.0_f32])?; // Shear init handled internally or via noise
-        
+
         // Add random noise
         let mut rng = rand::thread_rng();
         use rand::Rng;
-        let mut u_init = vec![[0.0; 3]; nx*ny*nz];
+        let mut u_init = vec![[0.0; 3]; nx * ny * nz];
         for v in &mut u_init {
             *v = [
                 0.05 + rng.gen_range(-0.01..0.01),
                 rng.gen_range(-0.01..0.01),
-                rng.gen_range(-0.01..0.01)
+                rng.gen_range(-0.01..0.01),
             ];
         }
-        solver.initialize_custom(&vec![1.0; nx*ny*nz], &u_init)?;
+        solver.initialize_custom(&vec![1.0; nx * ny * nz], &u_init)?;
 
         for t in 0..steps {
             solver.step()?;
@@ -413,19 +448,22 @@ fn run_experiment_c(args: &Args) -> Result<(), Box<dyn Error>> {
                     .map(|v| [v[0] as f64, v[1] as f64, v[2] as f64])
                     .collect();
                 let enstrophy = compute_enstrophy_3d(&u_vec_f64, nx, ny, nz);
-                
+
                 // Topological Analysis
                 // 1. FFT
                 // 2. Find triads (k,p,q) such that |u_k||u_p||u_q| > Threshold
                 // 3. Build Hypergraph
                 let (betti_1, triad_count) = compute_topology(&u_vec_f64, nx, ny, nz);
-                
-                info!("Step {}: Enstrophy={:.4e}, Betti-1={}, Triads={}", t, enstrophy, betti_1, triad_count);
+
+                info!(
+                    "Step {}: Enstrophy={:.4e}, Betti-1={}, Triads={}",
+                    t, enstrophy, betti_1, triad_count
+                );
                 writeln!(file, "{},{:.6e},{},{}", t, enstrophy, betti_1, triad_count)?;
             }
         }
     }
-    
+
     info!("Experiment C Complete. Saved to {:?}", path);
     Ok(())
 }
@@ -433,7 +471,7 @@ fn run_experiment_c(args: &Args) -> Result<(), Box<dyn Error>> {
 fn compute_topology(u_vec: &[[f64; 3]], nx: usize, ny: usize, nz: usize) -> (usize, usize) {
     // Simplified 2D analysis on the z=mid slice for speed, or coarse 3D?
     // Let's do full 3D FFT but threshold aggressively.
-    
+
     let mut ux = Array3::zeros((nx, ny, nz));
     for (idx, vel) in u_vec.iter().enumerate() {
         let z = idx / (nx * ny);
@@ -441,53 +479,53 @@ fn compute_topology(u_vec: &[[f64; 3]], nx: usize, ny: usize, nz: usize) -> (usi
         let x = idx % nx;
         ux[[x, y, z]] = vel[0];
     }
-    
+
     let u_hat = fft_3d(&real_to_complex_3d(&ux));
-    
+
     // Extract triads
     let mut hg = TriadHypergraph::new();
     let threshold = 1.0; // Needs tuning based on energy
-    
+
     // Random sampling of triads to keep it fast?
-    // Rigorous way: iterate all k,p. 
+    // Rigorous way: iterate all k,p.
     // Optimization: Only consider Top-N modes.
-    
+
     // Find top 50 modes
     let mut modes: Vec<((usize, usize, usize), f64)> = Vec::new();
     for ((x, y, z), val) in u_hat.indexed_iter() {
         let mag = val.norm_sqr();
         if mag > threshold {
-            modes.push(((x,y,z), mag));
+            modes.push(((x, y, z), mag));
         }
     }
     modes.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
     modes.truncate(50);
-    
+
     // Check triads within top modes
     let mut triad_count = 0;
     for i in 0..modes.len() {
-        for j in i+1..modes.len() {
+        for j in i + 1..modes.len() {
             let (k, _) = modes[i];
             let (p, _) = modes[j];
-            
+
             // q = -(k+p)
             let qx = (nx as i32 - (k.0 as i32 + p.0 as i32).rem_euclid(nx as i32)) as usize % nx;
             let qy = (ny as i32 - (k.1 as i32 + p.1 as i32).rem_euclid(ny as i32)) as usize % ny;
             let qz = (nz as i32 - (k.2 as i32 + p.2 as i32).rem_euclid(nz as i32)) as usize % nz;
-            
+
             // Check if q is in top modes (or just high energy)
             let q_mag = u_hat[[qx, qy, qz]].norm_sqr();
             if q_mag > threshold {
                 hg.add_triad(
                     hash_k(k.0, k.1, k.2),
                     hash_k(p.0, p.1, p.2),
-                    hash_k(qx, qy, qz)
+                    hash_k(qx, qy, qz),
                 );
                 triad_count += 1;
             }
         }
     }
-    
+
     (hg.betti_1(), triad_count)
 }
 
@@ -503,10 +541,10 @@ fn compute_enstrophy_3d(u: &[[f64; 3]], nx: usize, ny: usize, nz: usize) -> f64 
     // Calculate curl (vorticity) and sum squares
     // Finite difference
     let mut enstrophy = 0.0;
-    
+
     // idx = x + y*nx + z*nx*ny
-    let idx = |x: usize, y: usize, z: usize| x + y*nx + z*nx*ny;
-    
+    let idx = |x: usize, y: usize, z: usize| x + y * nx + z * nx * ny;
+
     for z in 0..nz {
         for y in 0..ny {
             for x in 0..nx {
@@ -516,61 +554,61 @@ fn compute_enstrophy_3d(u: &[[f64; 3]], nx: usize, ny: usize, nz: usize) -> f64 
                 let xm = (x + nx - 1) % nx;
                 let ym = (y + ny - 1) % ny;
                 let zm = (z + nz - 1) % nz;
-                
-                let _u_c = u[idx(x,y,z)];
-                
+
+                let _u_c = u[idx(x, y, z)];
+
                 // Partial derivs (central diff)
                 // dy_uz - dz_uy
-                let dy_uz = (u[idx(x,yp,z)][2] - u[idx(x,ym,z)][2]) * 0.5;
-                let dz_uy = (u[idx(x,y,zp)][1] - u[idx(x,y,zm)][1]) * 0.5;
+                let dy_uz = (u[idx(x, yp, z)][2] - u[idx(x, ym, z)][2]) * 0.5;
+                let dz_uy = (u[idx(x, y, zp)][1] - u[idx(x, y, zm)][1]) * 0.5;
                 let wx = dy_uz - dz_uy;
-                
+
                 // dz_ux - dx_uz
-                let dz_ux = (u[idx(x,y,zp)][0] - u[idx(x,y,zm)][0]) * 0.5;
-                let dx_uz = (u[idx(xp,y,z)][2] - u[idx(xm,y,z)][2]) * 0.5;
+                let dz_ux = (u[idx(x, y, zp)][0] - u[idx(x, y, zm)][0]) * 0.5;
+                let dx_uz = (u[idx(xp, y, z)][2] - u[idx(xm, y, z)][2]) * 0.5;
                 let wy = dz_ux - dx_uz;
-                
+
                 // dx_uy - dy_ux
-                let dx_uy = (u[idx(xp,y,z)][1] - u[idx(xm,y,z)][1]) * 0.5;
-                let dy_ux = (u[idx(x,yp,z)][0] - u[idx(x,ym,z)][0]) * 0.5;
+                let dx_uy = (u[idx(xp, y, z)][1] - u[idx(xm, y, z)][1]) * 0.5;
+                let dy_ux = (u[idx(x, yp, z)][0] - u[idx(x, ym, z)][0]) * 0.5;
                 let wz = dx_uy - dy_ux;
-                
-                enstrophy += wx*wx + wy*wy + wz*wz;
+
+                enstrophy += wx * wx + wy * wy + wz * wz;
             }
         }
     }
-    
+
     enstrophy / (nx * ny * nz) as f64
 }
 
 fn generate_e7_spectral_mask(nx: usize, ny: usize, nz: usize) -> Array3<f64> {
     let mut mask = Array3::zeros((nx, ny, nz));
     let roots = generate_e7_roots();
-    
+
     // Project roots to 3D grid
     // E7 is rank 7. We take dimensions 2, 3, 4 to avoid degeneracy (since x0=x1).
     for root in roots {
         let rx = root.root.coords[2];
         let ry = root.root.coords[3];
         let rz = root.root.coords[4];
-        
+
         // Map to grid: centered at nx/2, scale?
         // E7 roots are length sqrt(2). Max coord ~1.
         // We want them to cover low-mid freq.
-        let scale = 8.0; 
-        
+        let scale = 8.0;
+
         let gx = ((rx * scale + nx as f64 / 2.0).round() as isize).rem_euclid(nx as isize) as usize;
         let gy = ((ry * scale + ny as f64 / 2.0).round() as isize).rem_euclid(ny as isize) as usize;
         let gz = ((rz * scale + nz as f64 / 2.0).round() as isize).rem_euclid(nz as isize) as usize;
-        
+
         mask[[gx, gy, gz]] = 1.0;
-        
+
         // Symmetry? Roots are symmetric.
     }
-    
+
     // Ensure DC passes
-    mask[[0,0,0]] = 1.0;
-    
+    mask[[0, 0, 0]] = 1.0;
+
     mask
 }
 
@@ -578,17 +616,17 @@ fn apply_filter_3d(field: &mut Array3<f64>, mask: &Array3<f64>) {
     // Real -> Complex
     let complex_field = real_to_complex_3d(field);
     let mut field_hat = fft_3d(&complex_field);
-    
+
     // Apply Mask
     Zip::from(&mut field_hat).and(mask).for_each(|val, &m| {
         if m < 0.5 {
             *val *= 0.95; // Damping, not full cut (Soft Filter)
         }
     });
-    
+
     // IFFT
     let field_filtered = ifft_3d(&field_hat);
-    
+
     // Update real part
     Zip::from(field).and(&field_filtered).for_each(|out, inp| {
         *out = inp.re;

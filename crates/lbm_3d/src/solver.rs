@@ -788,15 +788,12 @@ impl LbmSolver3D {
         if reference_u.len() != self.u.len() {
             return false;
         }
-        self.u
-            .iter()
-            .zip(reference_u.iter())
-            .all(|(curr, prev)| {
-                let dx = curr[0] - prev[0];
-                let dy = curr[1] - prev[1];
-                let dz = curr[2] - prev[2];
-                (dx * dx + dy * dy + dz * dz).sqrt() < tol
-            })
+        self.u.iter().zip(reference_u.iter()).all(|(curr, prev)| {
+            let dx = curr[0] - prev[0];
+            let dy = curr[1] - prev[1];
+            let dz = curr[2] - prev[2];
+            (dx * dx + dy * dy + dz * dz).sqrt() < tol
+        })
     }
 
     /// Evolve with convergence monitoring.
@@ -828,8 +825,7 @@ impl LbmSolver3D {
 
                 snapshots.push(ConvergenceSnapshot {
                     step: steps_taken,
-                    mass_error: (current_mass - initial_mass).abs()
-                        / initial_mass.abs().max(1e-30),
+                    mass_error: (current_mass - initial_mass).abs() / initial_mass.abs().max(1e-30),
                     max_velocity: v_max,
                     mean_velocity: self.mean_velocity(),
                     cfl_ratio: cfl,
@@ -895,8 +891,7 @@ pub struct ConvergenceReport {
 impl ConvergenceReport {
     /// Check if mass was conserved to the given relative tolerance.
     pub fn mass_conserved(&self, tol: f64) -> bool {
-        let err = (self.final_mass - self.initial_mass).abs()
-            / self.initial_mass.abs().max(1e-30);
+        let err = (self.final_mass - self.initial_mass).abs() / self.initial_mass.abs().max(1e-30);
         err < tol
     }
 
@@ -1156,7 +1151,11 @@ mod tests {
 
         // All cells should be initialized to equilibrium at rho=1, u=0
         for node in 0..64 {
-            assert!((solver.rho[node] - 1.0).abs() < 1e-14, "rho not 1.0 at node {}", node);
+            assert!(
+                (solver.rho[node] - 1.0).abs() < 1e-14,
+                "rho not 1.0 at node {}",
+                node
+            );
             for k in 0..3 {
                 assert!(solver.u[node][k].abs() < 1e-14, "u not 0 at node {}", node);
             }
@@ -1167,7 +1166,11 @@ mod tests {
                 assert!(
                     (solver.f[base + i] - expected).abs() < 1e-14,
                     "f[{}] = {} != w[{}] = {} at node {}",
-                    i, solver.f[base + i], i, expected, node
+                    i,
+                    solver.f[base + i],
+                    i,
+                    expected,
+                    node
                 );
             }
         }
@@ -1187,8 +1190,16 @@ mod tests {
         solver.evolve(50);
 
         let v_max = solver.max_velocity();
-        assert!(v_max > 1e-6, "Force should produce nonzero velocity, got {}", v_max);
-        assert!(v_max < 0.1, "Velocity should be small and stable, got {}", v_max);
+        assert!(
+            v_max > 1e-6,
+            "Force should produce nonzero velocity, got {}",
+            v_max
+        );
+        assert!(
+            v_max < 0.1,
+            "Velocity should be small and stable, got {}",
+            v_max
+        );
 
         // Mass should be conserved
         assert!((solver.total_mass() - n as f64).abs() / (n as f64) < 1e-6);
@@ -1376,11 +1387,7 @@ mod tests {
         solver.evolve(50);
 
         // Velocity should develop in x-direction
-        let max_ux: f64 = solver
-            .u
-            .iter()
-            .map(|u| u[0].abs())
-            .fold(0.0_f64, f64::max);
+        let max_ux: f64 = solver.u.iter().map(|u| u[0].abs()).fold(0.0_f64, f64::max);
         assert!(
             max_ux > 1e-6,
             "Flow should develop with forcing: max |ux| = {:.2e}",
@@ -1465,7 +1472,11 @@ mod tests {
 
         // Mass should be conserved
         let mass = solver.total_mass();
-        assert!((mass - n as f64).abs() / (n as f64) < 1e-4, "Mass not conserved: {}", mass);
+        assert!(
+            (mass - n as f64).abs() / (n as f64) < 1e-4,
+            "Mass not conserved: {}",
+            mass
+        );
 
         // Strain rate should be finite and non-negative
         for &s in &strain {
@@ -1515,7 +1526,8 @@ mod tests {
         assert!(
             v_thick < v_newton * 0.95,
             "Thickening should reduce velocity by >5%: v_thick={} vs v_newton={}",
-            v_thick, v_newton
+            v_thick,
+            v_newton
         );
     }
 
@@ -1549,7 +1561,8 @@ mod tests {
         assert!(
             tau_max - tau_min > 1e-6,
             "Tau should vary spatially: min={}, max={}",
-            tau_min, tau_max
+            tau_min,
+            tau_max
         );
     }
 }

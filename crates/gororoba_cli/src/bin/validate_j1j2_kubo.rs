@@ -199,7 +199,8 @@ fn compare_with_published(
     comparisons.push(BenchmarkComparison {
         label: "Frustration_response_direction",
         reference: "Heidrich-Meisner et al., JMMM 272-276 (2004); Varma & Sanchez, PRB 92 (2015)",
-        regime: "B=0: D_s decreases with alpha. B>>J: D_s increases (polarization competition)".to_string(),
+        regime: "B=0: D_s decreases with alpha. B>>J: D_s increases (polarization competition)"
+            .to_string(),
         published_value: -1.0, // negative = suppression in standard regime
         our_value: ds_enhancement_peak,
         unit: "sign of dD_S/dalpha (-1=suppression, >1=enhancement)",
@@ -240,9 +241,7 @@ fn compare_with_published(
         regime: format!(
             "Near saturation: K_th INCREASES with alpha past Lifshitz point (alpha=1/4). \
              Stolpp ED: ~15x at alpha=1.2. Our B={}, N={}: ~{:.0}x",
-            metadata.j1j2_field_b,
-            metadata.j1j2_chain_length,
-            ds_enhancement_peak
+            metadata.j1j2_field_b, metadata.j1j2_chain_length, ds_enhancement_peak
         ),
         published_value: stolpp_enhancement,
         our_value: ds_enhancement_peak,
@@ -377,7 +376,10 @@ fn compute_j1j2_diagnostics(points: &[J1J2Point]) -> J1J2Diagnostics {
     let ds_ref = points[0].drude_weight_spin;
 
     let alphas: Vec<f64> = points.iter().map(|p| p.alpha).collect();
-    let drude_enhancement: Vec<f64> = points.iter().map(|p| p.drude_weight_spin / ds_ref).collect();
+    let drude_enhancement: Vec<f64> = points
+        .iter()
+        .map(|p| p.drude_weight_spin / ds_ref)
+        .collect();
     let ballistic_fraction: Vec<f64> = points
         .iter()
         .map(|p| {
@@ -499,10 +501,7 @@ fn write_validation_report(
     ));
     out.push_str(&format!("alpha_peak_cv = {:.4}\n", j1j2.alpha_cv_peak));
     out.push_str(&format!("cv_peak = {:.6}\n", j1j2.cv_peak));
-    out.push_str(&format!(
-        "ds_at_majumdar_ghosh = {:.6e}\n",
-        j1j2.ds_mg
-    ));
+    out.push_str(&format!("ds_at_majumdar_ghosh = {:.6e}\n", j1j2.ds_mg));
     out.push_str(&format!(
         "ballistic_fraction_integrable = {:.6}\n",
         j1j2.b_integrable
@@ -520,15 +519,9 @@ fn write_validation_report(
     out.push_str(&format!("g_full_suppression = {:.1}\n", interp.g_full));
 
     // Onset detection: first lambda where g > 2
-    let onset_idx = interp
-        .drude_suppression
-        .iter()
-        .position(|&g| g > 2.0);
+    let onset_idx = interp.drude_suppression.iter().position(|&g| g > 2.0);
     if let Some(idx) = onset_idx {
-        out.push_str(&format!(
-            "onset_lambda = {:.2}\n",
-            interp.lambdas[idx]
-        ));
+        out.push_str(&format!("onset_lambda = {:.2}\n", interp.lambdas[idx]));
         out.push_str(&format!(
             "onset_suppression = {:.1}\n",
             interp.drude_suppression[idx]
@@ -560,17 +553,11 @@ fn write_validation_report(
         .map(|p| p.drude_weight_spin)
         .collect();
     let monotonic = pre_peak.windows(2).all(|w| w[1] >= w[0]);
-    out.push_str(&format!(
-        "monotonic_increase_to_peak = {}\n",
-        monotonic
-    ));
+    out.push_str(&format!("monotonic_increase_to_peak = {}\n", monotonic));
 
     // Check for MG anomaly (alpha=0.5 special behavior)
     let mg_enhancement = j1j2.ds_mg / j1j2_points[0].drude_weight_spin;
-    out.push_str(&format!(
-        "mg_enhancement = {:.1}\n",
-        mg_enhancement
-    ));
+    out.push_str(&format!("mg_enhancement = {:.1}\n", mg_enhancement));
     out.push('\n');
 
     // Per-point J1-J2 diagnostics
@@ -578,9 +565,18 @@ fn write_validation_report(
     for (i, p) in j1j2_points.iter().enumerate() {
         out.push_str("[[j1j2_diagnostic]]\n");
         out.push_str(&format!("alpha = {:.4}\n", p.alpha));
-        out.push_str(&format!("drude_weight_spin = {:.6e}\n", p.drude_weight_spin));
-        out.push_str(&format!("total_weight_spin = {:.6e}\n", p.total_weight_spin));
-        out.push_str(&format!("total_weight_energy = {:.4}\n", p.total_weight_energy));
+        out.push_str(&format!(
+            "drude_weight_spin = {:.6e}\n",
+            p.drude_weight_spin
+        ));
+        out.push_str(&format!(
+            "total_weight_spin = {:.6e}\n",
+            p.total_weight_spin
+        ));
+        out.push_str(&format!(
+            "total_weight_energy = {:.4}\n",
+            p.total_weight_energy
+        ));
         out.push_str(&format!("specific_heat = {:.6}\n", p.specific_heat));
         out.push_str(&format!(
             "drude_enhancement = {:.4}\n",
@@ -602,9 +598,18 @@ fn write_validation_report(
     for (i, p) in interp_points.iter().enumerate() {
         out.push_str("[[interpolation_diagnostic]]\n");
         out.push_str(&format!("lambda = {:.4}\n", p.lambda));
-        out.push_str(&format!("drude_weight_spin = {:.6e}\n", p.drude_weight_spin));
-        out.push_str(&format!("total_weight_spin = {:.6e}\n", p.total_weight_spin));
-        out.push_str(&format!("total_weight_energy = {:.4}\n", p.total_weight_energy));
+        out.push_str(&format!(
+            "drude_weight_spin = {:.6e}\n",
+            p.drude_weight_spin
+        ));
+        out.push_str(&format!(
+            "total_weight_spin = {:.6e}\n",
+            p.total_weight_spin
+        ));
+        out.push_str(&format!(
+            "total_weight_energy = {:.4}\n",
+            p.total_weight_energy
+        ));
         out.push_str(&format!(
             "drude_suppression = {:.4}\n",
             interp.drude_suppression[i]
@@ -683,16 +688,17 @@ fn write_canonical_benchmark_dataset(
     out.push_str("# Exact analytical results (can be used as regression tests)\n");
     out.push_str("[exact_results]\n");
     out.push_str("# Bethe ansatz: D_s(T=0) for isotropic Heisenberg chain (Delta=1, B=0)\n");
-    out.push_str(&format!(
-        "drude_weight_T0_isotropic = {:.10}\n",
-        PI / 4.0
-    ));
+    out.push_str(&format!("drude_weight_T0_isotropic = {:.10}\n", PI / 4.0));
     out.push_str("drude_weight_T0_isotropic_formula = \"pi/4 * J\"\n");
-    out.push_str("drude_weight_T0_isotropic_reference = \"Shastry & Sutherland, PRL 65, 243 (1990)\"\n\n");
+    out.push_str(
+        "drude_weight_T0_isotropic_reference = \"Shastry & Sutherland, PRL 65, 243 (1990)\"\n\n",
+    );
 
     out.push_str("# Integrable chain (alpha=0): ballistic fraction B(0) = 1.0 exactly\n");
     out.push_str("ballistic_fraction_integrable = 1.0\n");
-    out.push_str("ballistic_fraction_reference = \"Castella, Zotos, Prelovsek, PRL 74, 972 (1995)\"\n\n");
+    out.push_str(
+        "ballistic_fraction_reference = \"Castella, Zotos, Prelovsek, PRL 74, 972 (1995)\"\n\n",
+    );
 
     out.push_str("# Okamoto-Nomura critical point for J1-J2 chain\n");
     out.push_str("alpha_c_okamoto_nomura = 0.2411\n");
@@ -913,7 +919,9 @@ fn write_canonical_benchmark_dataset(
     out.push_str("lifshitz_formula = \"cos(Q) = -1/(4*alpha), splits at alpha=1/4\"\n");
     out.push_str("lifshitz_reference = \"Stolpp et al., PRB 99, 134413 (2019), Eq. (4)-(5)\"\n");
     out.push_str("vc_transition_alpha_isotropic = 1.264\n");
-    out.push_str("vc_transition_reference = \"from dilute Fermi gas, agrees with Hikihara et al. (2010)\"\n");
+    out.push_str(
+        "vc_transition_reference = \"from dilute Fermi gas, agrees with Hikihara et al. (2010)\"\n",
+    );
     out.push_str("kth_asymptotic_formula = \"K_th(alpha)/K_th(0) ~ 4*alpha for alpha >> 1/4\"\n");
     out.push_str("high_field_mechanism = \"Lifshitz splitting doubles carrier count; K_th ~ 1/sqrt(m*) diverges at alpha=1/4 then increases\"\n");
     out.push_str("low_field_contrast = \"At B=0: frustration SUPPRESSES transport (gap opening in dimer phase)\"\n\n");
@@ -986,14 +994,8 @@ fn main() {
         "  C_V peak: {:.4} at alpha={:.4}",
         j1j2.cv_peak, j1j2.alpha_cv_peak
     );
-    println!(
-        "  D_S at Majumdar-Ghosh (alpha=0.5): {:.6e}",
-        j1j2.ds_mg
-    );
-    println!(
-        "  Ballistic fraction at alpha=0: {:.6}",
-        j1j2.b_integrable
-    );
+    println!("  D_S at Majumdar-Ghosh (alpha=0.5): {:.6e}", j1j2.ds_mg);
+    println!("  Ballistic fraction at alpha=0: {:.6}", j1j2.b_integrable);
     println!(
         "  Transport regime: {}",
         if j1j2.b_integrable > 0.99 {
@@ -1007,18 +1009,9 @@ fn main() {
     println!();
 
     println!("--- CD Interpolation Diagnostics ---");
-    println!(
-        "  D_S(quaternion, lambda=0): {:.6e}",
-        interp.ds_quat
-    );
-    println!(
-        "  D_S(sedenion, lambda=1):   {:.6e}",
-        interp.ds_sed
-    );
-    println!(
-        "  Full suppression g(1.0): {:.1}x",
-        interp.g_full
-    );
+    println!("  D_S(quaternion, lambda=0): {:.6e}", interp.ds_quat);
+    println!("  D_S(sedenion, lambda=1):   {:.6e}", interp.ds_sed);
+    println!("  Full suppression g(1.0): {:.1}x", interp.g_full);
     println!();
 
     // Validation gates
@@ -1053,12 +1046,7 @@ fn main() {
     println!();
 
     // Published benchmark comparison
-    let comparisons = compare_with_published(
-        &data.j1j2_transport,
-        &j1j2,
-        &interp,
-        &data.metadata,
-    );
+    let comparisons = compare_with_published(&data.j1j2_transport, &j1j2, &interp, &data.metadata);
 
     println!("--- Published Benchmark Comparisons ---");
     for c in &comparisons {
@@ -1114,7 +1102,9 @@ fn main() {
     println!("CSV written to: {}", csv_path.display());
 
     let csv_interp_path = output_dir.join("interpolation_diagnostics.csv");
-    let mut csv_interp = String::from("lambda,drude_weight_spin,total_weight_spin,total_weight_energy,drude_suppression\n");
+    let mut csv_interp = String::from(
+        "lambda,drude_weight_spin,total_weight_spin,total_weight_energy,drude_suppression\n",
+    );
     for (i, p) in data.interpolation.iter().enumerate() {
         csv_interp.push_str(&format!(
             "{:.4},{:.6e},{:.6e},{:.4},{:.4}\n",

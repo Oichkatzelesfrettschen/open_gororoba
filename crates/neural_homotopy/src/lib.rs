@@ -21,8 +21,8 @@ pub mod training_data;
 
 pub use burn_backend::{selected_backend, BackendKind};
 pub use burn_model::{
-    assemble_neural_correction, train_burn_correction, BurnTrainingResult,
-    CorrectionTensorModel, CorrectionTensorModelConfig,
+    assemble_neural_correction, train_burn_correction, BurnTrainingResult, CorrectionTensorModel,
+    CorrectionTensorModelConfig,
 };
 pub use m4_tensor::{CorrectionTensor, M4CorrectionTensor};
 pub use model::{

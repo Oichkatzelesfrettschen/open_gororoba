@@ -1,5 +1,5 @@
-use nalgebra::Vector3;
 use algebra_core::physics::clifford::pauli_matrices;
+use nalgebra::Vector3;
 use num_complex::Complex64;
 
 /// A right-handed orthonormal basis in R^3, defined by three CD basis indices.
@@ -26,15 +26,16 @@ impl AlgebraicTriad {
     /// For now, we assume the canonical (1, 2, 3) maps to (sigma_1, sigma_2, sigma_3).
     pub fn to_pauli_axes(&self) -> [nalgebra::Matrix2<Complex64>; 3] {
         let (s1, s2, s3) = pauli_matrices();
-        
-        let to_m2 = |m: algebra_core::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
-            nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
-        };
+
+        let to_m2 =
+            |m: algebra_core::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
+                nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
+            };
 
         let s1 = to_m2(s1);
         let s2 = to_m2(s2);
         let s3 = to_m2(s3);
-        
+
         let get_sigma = |idx: usize| match idx {
             1 => s1,
             2 => s2,
@@ -48,13 +49,9 @@ impl AlgebraicTriad {
             get_sigma(self.indices[2]),
         ]
     }
-    
+
     /// Returns the axes as standard unit vectors in R^3.
     pub fn to_axes_vec(&self) -> [Vector3<f64>; 3] {
-        [
-            Vector3::x(),
-            Vector3::y(),
-            Vector3::z(),
-        ]
+        [Vector3::x(), Vector3::y(), Vector3::z()]
     }
 }

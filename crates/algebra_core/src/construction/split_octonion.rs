@@ -26,7 +26,9 @@ impl SplitOctonion {
     }
 
     pub fn zero() -> Self {
-        Self { components: [0.0; 8] }
+        Self {
+            components: [0.0; 8],
+        }
     }
 
     /// Basis element e_i where i in {0..7}.
@@ -52,16 +54,40 @@ impl SplitOctonion {
     pub fn norm_squared(&self) -> f64 {
         let c = &self.components;
         // e0^2=1, e1^2=e2^2=e3^2=-1, e4^2=e5^2=e6^2=e7^2=1
-        c[0]*c[0] - c[1]*c[1] - c[2]*c[2] - c[3]*c[3] + c[4]*c[4] + c[5]*c[5] + c[6]*c[6] + c[7]*c[7]
+        c[0] * c[0] - c[1] * c[1] - c[2] * c[2] - c[3] * c[3]
+            + c[4] * c[4]
+            + c[5] * c[5]
+            + c[6] * c[6]
+            + c[7] * c[7]
     }
 
     /// Split-octonion multiplication using the Gazeau mnemonic.
     /// (q1, p1) * (q2, p2) = (q1*q2 + p2*conj(p1), p2*q1 + p1*conj(q2)) for l^2 = +1.
     pub fn multiply(&self, other: &Self) -> Self {
-        let q1 = [self.components[0], self.components[1], self.components[2], self.components[3]];
-        let p1 = [self.components[4], self.components[5], self.components[6], self.components[7]];
-        let q2 = [other.components[0], other.components[1], other.components[2], other.components[3]];
-        let p2 = [other.components[4], other.components[5], other.components[6], other.components[7]];
+        let q1 = [
+            self.components[0],
+            self.components[1],
+            self.components[2],
+            self.components[3],
+        ];
+        let p1 = [
+            self.components[4],
+            self.components[5],
+            self.components[6],
+            self.components[7],
+        ];
+        let q2 = [
+            other.components[0],
+            other.components[1],
+            other.components[2],
+            other.components[3],
+        ];
+        let p2 = [
+            other.components[4],
+            other.components[5],
+            other.components[6],
+            other.components[7],
+        ];
 
         let q1q2 = quat_mul(&q1, &q2);
         let p2cp1 = quat_mul(&quat_conj(&p2), &p1);
@@ -71,7 +97,7 @@ impl SplitOctonion {
         let mut res = [0.0; 8];
         for i in 0..4 {
             res[i] = q1q2[i] + p2cp1[i];
-            res[i+4] = p2q1[i] + p1q2c[i];
+            res[i + 4] = p2q1[i] + p1q2c[i];
         }
         Self { components: res }
     }
@@ -93,10 +119,10 @@ impl SplitOctonion {
 
 fn quat_mul(a: &[f64; 4], b: &[f64; 4]) -> [f64; 4] {
     [
-        a[0]*b[0] - a[1]*b[1] - a[2]*b[2] - a[3]*b[3],
-        a[0]*b[1] + a[1]*b[0] + a[2]*b[3] - a[3]*b[2],
-        a[0]*b[2] - a[1]*b[3] + a[2]*b[0] + a[3]*b[1],
-        a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + a[3]*b[0],
+        a[0] * b[0] - a[1] * b[1] - a[2] * b[2] - a[3] * b[3],
+        a[0] * b[1] + a[1] * b[0] + a[2] * b[3] - a[3] * b[2],
+        a[0] * b[2] - a[1] * b[3] + a[2] * b[0] + a[3] * b[1],
+        a[0] * b[3] + a[1] * b[2] - a[2] * b[1] + a[3] * b[0],
     ]
 }
 

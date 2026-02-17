@@ -9,10 +9,10 @@ use serde::{Deserialize, Serialize};
 pub struct WarpRingExperiment {
     /// Unique Experiment ID (e.g., "EXP-2026-02-14-WR-128")
     pub experiment_id: String,
-    
+
     /// Simulation Configuration
     pub config: WarpRingConfig,
-    
+
     /// Simulation Results (Summary)
     pub results: WarpRingResults,
 }

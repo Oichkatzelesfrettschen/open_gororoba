@@ -1,6 +1,6 @@
-use nalgebra::{Matrix3, Matrix4, Vector3, OMatrix, U8};
-use num_complex::Complex64;
 use algebra_core::physics::clifford::pauli_matrices;
+use nalgebra::{Matrix3, Matrix4, OMatrix, Vector3, U8};
+use num_complex::Complex64;
 
 type Matrix8<T> = OMatrix<T, U8, U8>;
 
@@ -19,13 +19,14 @@ impl TwoQubitState {
     /// rho = 1/4 * (I + a.sigma x I + I x b.sigma + sum T_ij sigma_i x sigma_j)
     pub fn from_ab_t(a: &Vector3<f64>, b: &Vector3<f64>, t: &Matrix3<f64>) -> Self {
         let (d1, d2, d3) = pauli_matrices();
-        
-        let to_m2 = |m: algebra_core::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
-            nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
-        };
-        
+
+        let to_m2 =
+            |m: algebra_core::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
+                nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
+            };
+
         let sigmas = [to_m2(d1), to_m2(d2), to_m2(d3)];
-        
+
         let eye2 = nalgebra::Matrix2::<Complex64>::identity();
 
         let mut rho = Matrix4::<Complex64>::zeros();
@@ -60,30 +61,32 @@ impl TwoQubitState {
         }
 
         // Normalize
-        Self { rho: rho * Complex64::from(0.25) }
+        Self {
+            rho: rho * Complex64::from(0.25),
+        }
     }
-    
+
     /// Computes the partial transpose with respect to system B (second qubit).
     pub fn partial_transpose(&self) -> Self {
         let mut pt = Matrix4::<Complex64>::zeros();
-        
+
         for row in 0..4 {
             for col in 0..4 {
                 let i1 = row / 2;
                 let j1 = row % 2;
                 let i2 = col / 2;
                 let j2 = col % 2;
-                
+
                 // Transpose indices on subsystem B: swap j1 and j2
                 let val = self.rho[(row, col)];
-                
+
                 let dest_row = 2 * i1 + j2;
                 let dest_col = 2 * i2 + j1;
-                
+
                 pt[(dest_row, dest_col)] = val;
             }
         }
-        
+
         Self { rho: pt }
     }
 
@@ -91,13 +94,13 @@ impl TwoQubitState {
     /// N(rho) = sum of absolute values of negative eigenvalues of rho^TB
     pub fn negativity(&self) -> f64 {
         let pt_rho = self.partial_transpose().rho;
-        
+
         // Map 4x4 Complex to 8x8 Real to use SymmetricEigen
         // M = [[A, -B], [B, A]] where pt_rho = A + iB
         // pt_rho is Hermitian => M is Symmetric.
-        
+
         let mut m = Matrix8::<f64>::zeros();
-        
+
         for r in 0..4 {
             for c in 0..4 {
                 let val = pt_rho[(r, c)];
@@ -107,9 +110,9 @@ impl TwoQubitState {
                 m[(r, c + 4)] = -val.im;
             }
         }
-        
+
         let eigen = m.symmetric_eigen();
-        
+
         let mut sum_neg = 0.0;
         // Each eigenvalue appears twice
         for &val in eigen.eigenvalues.iter() {

@@ -33,7 +33,6 @@ pub use bridge::{
     FrustrationViscosityBridge, SedenionField, SedenionField4D, ViscosityCouplingModel,
     VACUUM_ATTRACTOR,
 };
-pub use vietoris_rips::PersistenceDiagram;
 pub use frustration::{
     evaluate_frustration_star, frustration_density_from_edges, omega_eff_from_phi,
     violates_cassini, FrustrationStarConfig, FrustrationStarResult, ScalarFrustrationMap,
@@ -53,3 +52,4 @@ pub use spatial_correlation::{
     pearson_correlation, point_cloud_overlap, regional_means, spatial_correlation,
     spearman_correlation, velocity_magnitude_field, SpatialCorrelationResult,
 };
+pub use vietoris_rips::PersistenceDiagram;

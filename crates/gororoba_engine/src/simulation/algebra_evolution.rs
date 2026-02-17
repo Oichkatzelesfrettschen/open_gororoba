@@ -21,21 +21,21 @@ pub fn evolve_algebra_3d(
     apply_frustration_3d(algebra, fluid, curvature, coupling);
 }
 
-fn advect_sedenion_field(
-    field: &mut Array3<[f64; 16]>,
-    fluid: &LbmBackend3D,
-    coupling: f64,
-) {
+fn advect_sedenion_field(field: &mut Array3<[f64; 16]>, fluid: &LbmBackend3D, coupling: f64) {
     let (nx, ny, nz) = field.dim();
     let old_field = field.clone();
-    
+
     // Get velocities from fluid backend
     let u_field: Vec<[f64; 3]> = match fluid {
         LbmBackend3D::Cpu(solver) => solver.u.clone(),
         #[cfg(feature = "gpu")]
         LbmBackend3D::Gpu(solver) => {
             // Need to ensure solver.u is synced
-            solver.u.iter().map(|&[fx, fy, fz]| [fx as f64, fy as f64, fz as f64]).collect()
+            solver
+                .u
+                .iter()
+                .map(|&[fx, fy, fz]| [fx as f64, fy as f64, fz as f64])
+                .collect()
         }
         #[cfg(not(feature = "gpu"))]
         LbmBackend3D::Gpu(_) => panic!("GPU backend not enabled"),

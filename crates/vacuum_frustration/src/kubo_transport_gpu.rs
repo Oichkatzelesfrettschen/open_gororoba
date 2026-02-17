@@ -74,10 +74,7 @@ impl GpuKuboContext {
     ///
     /// Input: column-major symmetric matrix (dim x dim).
     /// Output: sorted eigenvalues + eigenvectors (ascending).
-    pub fn exact_diagonalize(
-        &self,
-        model: &HeisenbergModel,
-    ) -> anyhow::Result<GpuExactDiagResult> {
+    pub fn exact_diagonalize(&self, model: &HeisenbergModel) -> anyhow::Result<GpuExactDiagResult> {
         let n_sites = model.n_sites;
         let dim = 1usize << n_sites;
 
@@ -151,10 +148,7 @@ impl GpuKuboContext {
         // Check convergence
         let info = self.stream.clone_dtoh(&d_info)?;
         if info[0] != 0 {
-            anyhow::bail!(
-                "cusolverDnDsyevd: info = {} (convergence failure)",
-                info[0]
-            );
+            anyhow::bail!("cusolverDnDsyevd: info = {} (convergence failure)", info[0]);
         }
 
         // cuSOLVER returns eigenvalues in ascending order already

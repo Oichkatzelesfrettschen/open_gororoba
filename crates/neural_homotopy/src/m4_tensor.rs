@@ -487,7 +487,10 @@ mod tests {
     #[test]
     fn test_associator_tensor_nonzero() {
         let t = CorrectionTensor::from_associator();
-        assert!(t.nnz() > 0, "Associator tensor should have non-zero entries");
+        assert!(
+            t.nnz() > 0,
+            "Associator tensor should have non-zero entries"
+        );
         assert!(t.l2_norm_sq() > 0.0, "Associator should have non-zero norm");
     }
 
@@ -528,11 +531,7 @@ mod tests {
         let v = t.pentagon_violation(256);
         // The associator ansatz does NOT automatically satisfy A_4,
         // so pentagon violation should be positive for sedenions.
-        assert!(
-            v >= 0.0,
-            "Pentagon violation must be non-negative: {}",
-            v
-        );
+        assert!(v >= 0.0, "Pentagon violation must be non-negative: {}", v);
     }
 
     #[test]
@@ -617,7 +616,10 @@ mod tests {
         let m4 = M4CorrectionTensor::zero();
         let m3 = CorrectionTensor::zero();
         let v = m4.hexagon_violation(&m3, 100);
-        assert_eq!(v, 0.0, "Zero m3 + zero m4 should have zero hexagon violation");
+        assert_eq!(
+            v, 0.0,
+            "Zero m3 + zero m4 should have zero hexagon violation"
+        );
     }
 
     #[test]

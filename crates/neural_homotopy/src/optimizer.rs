@@ -161,8 +161,8 @@ pub fn optimize_correction_tensor(
     }
 
     let final_violation = current.pentagon_violation(config.n_violation_samples);
-    let converged = loss_trace.last().copied().unwrap_or(f64::MAX)
-        < loss_trace.first().copied().unwrap_or(0.0);
+    let converged =
+        loss_trace.last().copied().unwrap_or(f64::MAX) < loss_trace.first().copied().unwrap_or(0.0);
 
     PentagonOptimizationResult {
         final_l2_norm_sq: current.l2_norm_sq(),
@@ -251,8 +251,7 @@ pub fn optimize_batch_coordinate_descent(
         let mut saved = Vec::with_capacity(batch);
         for _ in 0..batch {
             let idx = next_u64(&mut rng_state) as usize % tensor_len;
-            let delta =
-                (next_u64(&mut rng_state) as f64 / u64::MAX as f64 * 2.0 - 1.0) * step_size;
+            let delta = (next_u64(&mut rng_state) as f64 / u64::MAX as f64 * 2.0 - 1.0) * step_size;
             let old_val = current.data()[idx];
             saved.push((idx, old_val));
             current.data_mut()[idx] = old_val + delta;
@@ -276,8 +275,8 @@ pub fn optimize_batch_coordinate_descent(
     }
 
     let final_violation = current.pentagon_violation(n_violation_samples);
-    let converged = loss_trace.last().copied().unwrap_or(f64::MAX)
-        < loss_trace.first().copied().unwrap_or(0.0);
+    let converged =
+        loss_trace.last().copied().unwrap_or(f64::MAX) < loss_trace.first().copied().unwrap_or(0.0);
 
     PentagonOptimizationResult {
         final_l2_norm_sq: current.l2_norm_sq(),
@@ -489,11 +488,13 @@ mod tests {
 
         assert!(comp.associator_violation.is_finite());
         assert!(comp.optimized_violation.is_finite());
-        assert!(comp.associator_sparsity > 0.9, "Associator should be sparse");
+        assert!(
+            comp.associator_sparsity > 0.9,
+            "Associator should be sparse"
+        );
         // Optimized tensor fills more entries, so less sparse
         assert!(
-            comp.optimized_sparsity < comp.associator_sparsity
-                || comp.optimized_sparsity <= 1.0,
+            comp.optimized_sparsity < comp.associator_sparsity || comp.optimized_sparsity <= 1.0,
             "Optimized should be less sparse or at most equally sparse"
         );
     }

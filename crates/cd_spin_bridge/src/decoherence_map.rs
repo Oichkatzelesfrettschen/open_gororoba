@@ -26,7 +26,12 @@ impl Default for DecoherenceMap {
 
 impl DecoherenceMap {
     pub fn new(c_f: f64, c_a: f64, gamma_0: f64, temperature: f64) -> Self {
-        Self { c_f, c_a, gamma_0, temperature }
+        Self {
+            c_f,
+            c_a,
+            gamma_0,
+            temperature,
+        }
     }
 
     /// Computes gamma from local frustration density and associator norm.
@@ -36,10 +41,10 @@ impl DecoherenceMap {
         // Using squared difference as deviation from vacuum attractor implies higher energy cost/decoherence?
         // Or maybe just linear?
         // The plan suggests: gamma = gamma_0 + c_F * (F - 3/8)^2 + c_A * A
-        
+
         let term_f = self.c_f * f_diff * f_diff;
         let term_a = self.c_a * associator_norm;
-        
+
         self.gamma_0 + term_f + term_a
     }
 

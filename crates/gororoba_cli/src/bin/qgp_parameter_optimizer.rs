@@ -1,12 +1,15 @@
 use clap::Parser;
-use std::fs;
-use std::error::Error;
 use csv::ReaderBuilder;
+use std::error::Error;
+use std::fs;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    #[arg(long, default_value = "data/external/lhc_2025/alice/pb_pb_5.36tev_polarization.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/lhc_2025/alice/pb_pb_5.36tev_polarization.csv"
+    )]
     alice_data: String,
 }
 
@@ -29,7 +32,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             let p_alice = rec.p_h_percent / 100.0;
             total_sq_err += (p_alice - p_pred).powi(2);
         }
-        
+
         if total_sq_err < min_error {
             min_error = total_sq_err;
             best_k_vort = k_vort;
@@ -47,15 +50,18 @@ target_dataset = \"ALICE 2025 Pb-Pb 5.36 TeV\"
 best_k_vorticity = {}
 final_rms_error = {}
 ",
-        best_k_vort,
-        rms_err
+        best_k_vort, rms_err
     );
 
     fs::write("reports/QGP_Parameter_Optimization.toml", report)?;
     Ok(())
 }
 
-struct AliceRecord { centrality_min: i32, centrality_max: i32, p_h_percent: f64 } 
+struct AliceRecord {
+    centrality_min: i32,
+    centrality_max: i32,
+    p_h_percent: f64,
+}
 fn load_alice_data(path: &str) -> Result<Vec<AliceRecord>, Box<dyn Error>> {
     let mut rdr = ReaderBuilder::new().from_path(path)?;
     let mut results = Vec::new();

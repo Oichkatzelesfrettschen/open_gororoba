@@ -12,7 +12,9 @@ fn maybe_solver(precision: Precision) -> Option<LbmSolver3DCuda> {
 
 #[test]
 fn gpu_init_and_step_remain_finite_fp32() {
-    let Some(mut solver) = maybe_solver(Precision::FP32) else { return };
+    let Some(mut solver) = maybe_solver(Precision::FP32) else {
+        return;
+    };
     solver.step().expect("step should succeed");
     let mean = solver
         .calculate_mean_density()
@@ -23,7 +25,9 @@ fn gpu_init_and_step_remain_finite_fp32() {
 
 #[test]
 fn gpu_init_and_step_remain_finite_bf16() {
-    let Some(mut solver) = maybe_solver(Precision::BF16) else { return };
+    let Some(mut solver) = maybe_solver(Precision::BF16) else {
+        return;
+    };
     solver.step().expect("step should succeed");
     let mean = solver
         .calculate_mean_density()

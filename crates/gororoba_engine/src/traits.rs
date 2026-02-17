@@ -1,6 +1,6 @@
 //! Core traits for the six-layer engine pipeline.
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 /// Shared state propagated through pipeline layers.
 #[derive(Debug, Clone, Default)]

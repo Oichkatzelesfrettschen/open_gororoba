@@ -14,10 +14,7 @@ use crate::training_data::{build_sedenion_table, MultiplicationSample, SEDENION_
 /// * `seed` - Random seed for reproducibility
 ///
 /// Returns a modified table where some entries have been randomly changed.
-pub fn perturbed_sedenion_table(
-    noise_level: f64,
-    seed: u64,
-) -> SedenionMulTable {
+pub fn perturbed_sedenion_table(noise_level: f64, seed: u64) -> SedenionMulTable {
     let mut table = build_sedenion_table();
     let mut state = seed.wrapping_add(1);
 
@@ -155,10 +152,7 @@ mod tests {
                 }
             }
         }
-        assert!(
-            diffs > 0,
-            "50% noise should change at least some entries"
-        );
+        assert!(diffs > 0, "50% noise should change at least some entries");
     }
 
     #[test]

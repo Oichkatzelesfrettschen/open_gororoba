@@ -45,9 +45,7 @@ impl ThesisPipeline for Thesis1Pipeline {
     }
 
     fn execute(&self) -> ThesisEvidence {
-        use vacuum_frustration::{
-            FrustrationViscosityBridge, SedenionField, spatial_correlation,
-        };
+        use vacuum_frustration::{spatial_correlation, FrustrationViscosityBridge, SedenionField};
 
         let n = self.grid_size;
 
@@ -71,9 +69,7 @@ impl ThesisPipeline for Thesis1Pipeline {
         let viscosity = bridge.frustration_to_viscosity(&frustration, 1.0 / 3.0, self.lambda);
 
         // Spatial correlation between frustration and viscosity
-        let result = spatial_correlation(
-            &frustration, &viscosity, n, n, n, self.n_sub,
-        );
+        let result = spatial_correlation(&frustration, &viscosity, n, n, n, self.n_sub);
 
         let passes = result.spearman_r.abs() > 0.5;
 
@@ -280,10 +276,7 @@ impl ThesisPipeline for Thesis3Pipeline {
             adaptive: false,
             adaptive_fraction: 0.05,
         };
-        let detection = detect_plateaus_robust(
-            &trace.losses,
-            &plateau_cfg,
-        );
+        let detection = detect_plateaus_robust(&trace.losses, &plateau_cfg);
 
         let mut messages = vec![
             format!("Plateaus detected: {}", detection.n_plateaus),
@@ -295,9 +288,7 @@ impl ThesisPipeline for Thesis3Pipeline {
         // Stream 2: Neural network training (if enabled)
         let mut neural_violation = f64::NAN;
         if self.use_neural {
-            use neural_homotopy::{
-                train_burn_correction, CorrectionTensorModelConfig,
-            };
+            use neural_homotopy::{train_burn_correction, CorrectionTensorModelConfig};
             let model_cfg = CorrectionTensorModelConfig {
                 hidden_size: self.neural_hidden_size,
                 learning_rate: 0.005,
@@ -355,7 +346,8 @@ impl ThesisPipeline for Thesis3Pipeline {
             thesis_id: 3,
             label: format!(
                 "T3 plateau+pentagon ({} epochs, {} opt steps{})",
-                self.epochs, self.optimization_steps,
+                self.epochs,
+                self.optimization_steps,
                 if self.use_neural { ", neural" } else { "" },
             ),
             metric_value: detection.n_plateaus as f64,
@@ -412,20 +404,15 @@ impl ThesisPipeline for Thesis4Pipeline {
     fn execute(&self) -> ThesisEvidence {
         use lattice_filtration::{power_law_gamma_ci, simulate_shell_return_storm};
 
-        let (stats, bins) = simulate_shell_return_storm(
-            self.n_steps,
-            self.dim,
-            self.seed,
-            self.n_shells,
-        );
+        let (stats, bins) =
+            simulate_shell_return_storm(self.n_steps, self.dim, self.seed, self.n_shells);
 
         // Gate: power-law R^2 exceeds threshold with non-zero gamma.
         // For a CD random walk, farther shells have longer return times
         // (positive gamma: return_time ~ r^gamma with gamma > 0),
         // but non-associativity may modify the exponent.
         // Accept either sign as long as the relationship is systematic.
-        let passes = stats.power_law_r2 > self.r2_threshold
-            && stats.power_law_gamma.abs() > 0.1;
+        let passes = stats.power_law_r2 > self.r2_threshold && stats.power_law_gamma.abs() > 0.1;
 
         let best_r2 = stats.power_law_r2.max(stats.inverse_square_r2);
 
@@ -447,15 +434,33 @@ impl ThesisPipeline for Thesis4Pipeline {
             threshold: self.r2_threshold,
             passes_gate: passes,
             messages: vec![
-                format!("Shell power-law R^2 = {:.4}, gamma = {:.4}", stats.power_law_r2, stats.power_law_gamma),
-                format!("Gamma 95% CI: [{:.4}, {:.4}], SE = {:.4}", ci.ci_lower, ci.ci_upper, ci.se),
+                format!(
+                    "Shell power-law R^2 = {:.4}, gamma = {:.4}",
+                    stats.power_law_r2, stats.power_law_gamma
+                ),
+                format!(
+                    "Gamma 95% CI: [{:.4}, {:.4}], SE = {:.4}",
+                    ci.ci_lower, ci.ci_upper, ci.se
+                ),
                 format!("Shell inverse-square R^2 = {:.4}", stats.inverse_square_r2),
                 format!("Latency law: {:?}", stats.latency_law),
-                format!("Shells populated: {}/{}", stats.n_shells_populated, self.n_shells),
-                format!("Unique keys: {} ({:.1}% reuse)", stats.n_unique_keys, stats.key_reuse_fraction * 100.0),
-                format!("Shell return-time range: {:.1} - {:.1}",
-                    bins.iter().map(|b| b.mean_return_time).fold(f64::INFINITY, f64::min),
-                    bins.iter().map(|b| b.mean_return_time).fold(0.0_f64, f64::max),
+                format!(
+                    "Shells populated: {}/{}",
+                    stats.n_shells_populated, self.n_shells
+                ),
+                format!(
+                    "Unique keys: {} ({:.1}% reuse)",
+                    stats.n_unique_keys,
+                    stats.key_reuse_fraction * 100.0
+                ),
+                format!(
+                    "Shell return-time range: {:.1} - {:.1}",
+                    bins.iter()
+                        .map(|b| b.mean_return_time)
+                        .fold(f64::INFINITY, f64::min),
+                    bins.iter()
+                        .map(|b| b.mean_return_time)
+                        .fold(0.0_f64, f64::max),
                 ),
             ],
         }
@@ -506,11 +511,11 @@ impl ThesisPipeline for Thesis5Pipeline {
     }
 
     fn execute(&self) -> ThesisEvidence {
-        use vacuum_frustration::SedenionField;
-        use spin_tomography_core::{AlgebraicTriad, SpinEvent, TomographyMoments, TwoQubitState};
         use cd_spin_bridge::DecoherenceMap;
         use nalgebra::Matrix3;
         use rand::prelude::*;
+        use spin_tomography_core::{AlgebraicTriad, SpinEvent, TomographyMoments, TwoQubitState};
+        use vacuum_frustration::SedenionField;
 
         // 1. Generate CD Medium
         let mut field = SedenionField::uniform(self.grid_size, self.grid_size, self.grid_size);
@@ -522,7 +527,7 @@ impl ThesisPipeline for Thesis5Pipeline {
                     let s = field.get_mut(x, y, z);
                     let phase = std::f64::consts::PI * 4.0 * (x + y + z) as f64 / n as f64;
                     s[1] = 0.5 * phase.sin();
-                    s[5] = 0.3 * (phase * 1.5).cos(); 
+                    s[5] = 0.3 * (phase * 1.5).cos();
                 }
             }
         }
@@ -533,7 +538,7 @@ impl ThesisPipeline for Thesis5Pipeline {
         // 2. Map to Gamma
         let map = DecoherenceMap::new(self.c_f, self.c_a, 0.0, 1.0);
         let mut gamma_values = Vec::new();
-        
+
         let len = frustration_density.len();
         for i in 0..len {
             let f = frustration_density[i];
@@ -543,22 +548,24 @@ impl ThesisPipeline for Thesis5Pipeline {
 
         // 3. Bin by Gamma and Simulate Tomography
         let min_gamma = gamma_values.iter().fold(f64::INFINITY, |a, &b| a.min(b));
-        let max_gamma = gamma_values.iter().fold(f64::NEG_INFINITY, |a, &b| a.max(b));
-        
+        let max_gamma = gamma_values
+            .iter()
+            .fold(f64::NEG_INFINITY, |a, &b| a.max(b));
+
         let n_bins = 10;
         let bin_width = (max_gamma - min_gamma).max(1e-9) / n_bins as f64;
-        
+
         let mut bin_moments = vec![TomographyMoments::new(); n_bins];
         let mut bin_counts = vec![0; n_bins];
         let mut bin_gamma_sums = vec![0.0; n_bins];
 
         // Initial state selection
         let initial_t = match self.initial_state.as_str() {
-            "triplet" => Matrix3::<f64>::identity().scale(1.0/3.0),
+            "triplet" => Matrix3::<f64>::identity().scale(1.0 / 3.0),
             "singlet" => Matrix3::<f64>::identity().scale(-1.0),
             _ => Matrix3::<f64>::zeros(),
         };
-        
+
         let mut rng = rand::thread_rng();
 
         // Simulate statistics across the gamma distribution
@@ -566,20 +573,20 @@ impl ThesisPipeline for Thesis5Pipeline {
             // Pick a random gamma from the field distribution
             let idx = rng.gen_range(0..gamma_values.len());
             let gamma = gamma_values[idx];
-            
+
             let bin_idx = ((gamma - min_gamma) / bin_width).floor() as usize;
             let bin_idx = bin_idx.min(n_bins - 1);
 
             let factor = (-gamma).exp();
             let t_decayed = initial_t * factor;
-            
+
             let n1 = random_direction(&mut rng);
             let n2 = random_direction(&mut rng);
-            
-            let prob = 1.0 + (n1.transpose() * t_decayed * n2)[(0,0)];
+
+            let prob = 1.0 + (n1.transpose() * t_decayed * n2)[(0, 0)];
             let event = SpinEvent::new(n1, n2, 1.0, 1.0).with_weight(prob);
             let triad = AlgebraicTriad::default();
-            
+
             bin_moments[bin_idx].add(&event, &triad);
             bin_counts[bin_idx] += 1;
             bin_gamma_sums[bin_idx] += gamma;
@@ -595,15 +602,15 @@ impl ThesisPipeline for Thesis5Pipeline {
                 let avg_gamma = bin_gamma_sums[i] / bin_counts[i] as f64;
                 let (a, b, t) = bin_moments[i].estimate();
                 let p = t.trace() / 3.0;
-                
+
                 // Reconstruct state to compute negativity
                 let state = TwoQubitState::from_ab_t(&a, &b, &t);
                 let neg = state.negativity();
-                
+
                 bin_gamma.push(avg_gamma);
                 bin_p.push(p);
                 bin_negativity.push(neg);
-                
+
                 // Track anisotropy range or mean? Let's just track mean in message
             }
         }
@@ -616,7 +623,10 @@ impl ThesisPipeline for Thesis5Pipeline {
 
         ThesisEvidence {
             thesis_id: 5,
-            label: format!("T5 Spin Decoherence ({}, c_f={})", self.initial_state, self.c_f),
+            label: format!(
+                "T5 Spin Decoherence ({}, c_f={})",
+                self.initial_state, self.c_f
+            ),
             metric_value: correlation,
             threshold: self.correlation_threshold,
             passes_gate: passes,
@@ -624,16 +634,27 @@ impl ThesisPipeline for Thesis5Pipeline {
                 format!("Initial State: {}", self.initial_state),
                 format!("Spearman r(gamma, P) = {:.4}", correlation),
                 format!("Gamma range: [{:.4}, {:.4}]", min_gamma, max_gamma),
-                format!("P range: [{:.4}, {:.4}]", 
+                format!(
+                    "P range: [{:.4}, {:.4}]",
                     bin_p.iter().cloned().fold(f64::INFINITY, f64::min),
                     bin_p.iter().cloned().fold(f64::NEG_INFINITY, f64::max)
                 ),
-                format!("Negativity range: [{:.4}, {:.4}]",
+                format!(
+                    "Negativity range: [{:.4}, {:.4}]",
                     bin_negativity.iter().cloned().fold(f64::INFINITY, f64::min),
-                    bin_negativity.iter().cloned().fold(f64::NEG_INFINITY, f64::max)
+                    bin_negativity
+                        .iter()
+                        .cloned()
+                        .fold(f64::NEG_INFINITY, f64::max)
                 ),
-                format!("Mean Anisotropy: {:.4}", 
-                    bin_moments.iter().filter(|m| m.weight_sum > 0.0).map(|m| m.anisotropy()).sum::<f64>() / n_bins as f64
+                format!(
+                    "Mean Anisotropy: {:.4}",
+                    bin_moments
+                        .iter()
+                        .filter(|m| m.weight_sum > 0.0)
+                        .map(|m| m.anisotropy())
+                        .sum::<f64>()
+                        / n_bins as f64
                 ),
             ],
         }
@@ -644,12 +665,8 @@ fn random_direction<R: Rng>(rng: &mut R) -> Vector3<f64> {
     let phi = rng.gen::<f64>() * 2.0 * std::f64::consts::PI;
     let z = rng.gen::<f64>() * 2.0 - 1.0;
     let theta = z.acos();
-    
-    Vector3::new(
-        theta.sin() * phi.cos(),
-        theta.sin() * phi.sin(),
-        z
-    )
+
+    Vector3::new(theta.sin() * phi.cos(), theta.sin() * phi.sin(), z)
 }
 
 #[cfg(test)]
@@ -718,11 +735,26 @@ mod tests {
     #[test]
     fn test_all_pipelines_produce_valid_evidence() {
         let pipelines: Vec<Box<dyn ThesisPipeline>> = vec![
-            Box::new(Thesis1Pipeline { grid_size: 8, n_sub: 2, ..Default::default() }),
+            Box::new(Thesis1Pipeline {
+                grid_size: 8,
+                n_sub: 2,
+                ..Default::default()
+            }),
             Box::new(Thesis2Pipeline::default()),
-            Box::new(Thesis3Pipeline { epochs: 32, use_neural: false, ..Default::default() }),
-            Box::new(Thesis4Pipeline { n_steps: 1000, n_shells: 20, ..Default::default() }),
-            Box::new(Thesis5Pipeline { grid_size: 8, ..Default::default() }),
+            Box::new(Thesis3Pipeline {
+                epochs: 32,
+                use_neural: false,
+                ..Default::default()
+            }),
+            Box::new(Thesis4Pipeline {
+                n_steps: 1000,
+                n_shells: 20,
+                ..Default::default()
+            }),
+            Box::new(Thesis5Pipeline {
+                grid_size: 8,
+                ..Default::default()
+            }),
         ];
 
         for pipeline in &pipelines {
@@ -777,11 +809,26 @@ mod tests {
 
     #[test]
     fn test_thesis_pipeline_trait_names() {
-        assert_eq!(Thesis1Pipeline::default().name(), "T1: Viscous Vacuum (Frustration-Topology)");
-        assert_eq!(Thesis2Pipeline::default().name(), "T2: Non-Newtonian Shear Thickening");
-        assert_eq!(Thesis3Pipeline::default().name(), "T3: A-infinity Correction Protocol");
-        assert_eq!(Thesis4Pipeline::default().name(), "T4: Latency Law (Shell Return-Time Scaling)");
-        assert_eq!(Thesis5Pipeline::default().name(), "T5: Spin Decoherence (CD Frustration)");
+        assert_eq!(
+            Thesis1Pipeline::default().name(),
+            "T1: Viscous Vacuum (Frustration-Topology)"
+        );
+        assert_eq!(
+            Thesis2Pipeline::default().name(),
+            "T2: Non-Newtonian Shear Thickening"
+        );
+        assert_eq!(
+            Thesis3Pipeline::default().name(),
+            "T3: A-infinity Correction Protocol"
+        );
+        assert_eq!(
+            Thesis4Pipeline::default().name(),
+            "T4: Latency Law (Shell Return-Time Scaling)"
+        );
+        assert_eq!(
+            Thesis5Pipeline::default().name(),
+            "T5: Spin Decoherence (CD Frustration)"
+        );
     }
 
     #[test]

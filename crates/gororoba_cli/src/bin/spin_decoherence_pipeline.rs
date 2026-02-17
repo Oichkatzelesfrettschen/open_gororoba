@@ -57,7 +57,7 @@ fn main() {
     if let Some(parent) = Path::new(&args.output).parent() {
         fs::create_dir_all(parent).expect("Failed to create output directory");
     }
-    
+
     // Serialize evidence using TOML
     let content = toml::to_string_pretty(&evidence).expect("Failed to serialize evidence");
     fs::write(&args.output, content).expect("Failed to write output file");

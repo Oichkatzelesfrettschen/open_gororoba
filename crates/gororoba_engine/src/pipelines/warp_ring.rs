@@ -56,9 +56,7 @@ impl ThesisPipeline for WarpRingPipeline {
         // Gather Evidence
         // 1. Is the algebra field non-zero? (Coupling check)
         let algebra_energy: f64 = match &state.algebra {
-            crate::simulation::AlgebraicField::Octonion(f) => {
-                f.iter().map(oct_norm_sq).sum()
-            }
+            crate::simulation::AlgebraicField::Octonion(f) => f.iter().map(oct_norm_sq).sum(),
             // For other fields, we can't use oct_norm_sq directly, but they are just arrays of f64s underneath
             // For now, we only support Octonion in this pipeline
             _ => 0.0,

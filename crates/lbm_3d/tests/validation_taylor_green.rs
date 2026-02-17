@@ -58,8 +58,7 @@ fn initialize_taylor_green(solver: &mut LbmSolver3D, u0: f64) {
                 solver.u[idx] = u;
 
                 // Set distribution function to equilibrium at this velocity
-                let f_eq =
-                    lbm_3d::solver::BgkCollision::initialize_with_velocity(1.0, u, &lattice);
+                let f_eq = lbm_3d::solver::BgkCollision::initialize_with_velocity(1.0, u, &lattice);
                 let f_start = idx * 19;
                 solver.f[f_start..f_start + 19].copy_from_slice(&f_eq);
             }

@@ -81,7 +81,10 @@ pub struct KuboTransport {
 /// For standard sedenions (dim=16): 15 sites, 105 couplings (complete graph).
 /// For octonions (dim=8): 7 sites, 21 couplings.
 pub fn build_cd_heisenberg(dim: usize, field_b: f64) -> HeisenbergModel {
-    assert!(dim.is_power_of_two() && dim >= 4, "dim must be power of 2, >= 4");
+    assert!(
+        dim.is_power_of_two() && dim >= 4,
+        "dim must be power of 2, >= 4"
+    );
     let table = SignTable::new(dim);
     let n_sites = dim - 1;
     let mut couplings = Vec::with_capacity(n_sites * (n_sites - 1) / 2);
@@ -142,10 +145,7 @@ pub fn build_j1j2_chain(
 /// H(lambda) = (1 - lambda) * H_ref + lambda * H_cd
 ///
 /// At lambda=0: unfrustrated (all J=+1). At lambda=1: full CD structure.
-pub fn build_interpolated(
-    cd_model: &HeisenbergModel,
-    lambda: f64,
-) -> HeisenbergModel {
+pub fn build_interpolated(cd_model: &HeisenbergModel, lambda: f64) -> HeisenbergModel {
     let mut couplings = Vec::with_capacity(cd_model.couplings.len());
     for &(i, j, j_cd) in &cd_model.couplings {
         // Reference: all couplings = +1 (ferromagnetic, unfrustrated)
@@ -222,7 +222,12 @@ pub fn build_hamiltonian_matrix(model: &HeisenbergModel) -> Vec<f64> {
 pub fn exact_diagonalize(model: &HeisenbergModel) -> ExactDiagResult {
     let n = model.n_sites;
     let dim = 1usize << n;
-    assert!(n <= 15, "N > 15 is infeasible for full diagonalization (2^{} = {})", n, dim);
+    assert!(
+        n <= 15,
+        "N > 15 is infeasible for full diagonalization (2^{} = {})",
+        n,
+        dim
+    );
 
     let h = build_hamiltonian_matrix(model);
 
@@ -270,14 +275,20 @@ pub fn thermodynamic_quantities(ed: &ExactDiagResult, temperature: f64) -> Therm
     let z: f64 = boltzmann.iter().sum();
 
     // Internal energy <H> = (1/Z) * sum_n E_n * exp(-beta * E_n)
-    let u: f64 = boltzmann.iter().zip(ed.eigenvalues.iter())
+    let u: f64 = boltzmann
+        .iter()
+        .zip(ed.eigenvalues.iter())
         .map(|(&b, &e)| b * e)
-        .sum::<f64>() / z;
+        .sum::<f64>()
+        / z;
 
     // <H^2> for specific heat
-    let u2: f64 = boltzmann.iter().zip(ed.eigenvalues.iter())
+    let u2: f64 = boltzmann
+        .iter()
+        .zip(ed.eigenvalues.iter())
         .map(|(&b, &e)| b * e * e)
-        .sum::<f64>() / z;
+        .sum::<f64>()
+        / z;
 
     // Specific heat C_V = beta^2 * (<H^2> - <H>^2)
     let cv = beta * beta * (u2 - u * u);
@@ -718,7 +729,9 @@ pub fn drude_weight(
     let e_min = ed.eigenvalues[0];
 
     // Partition function
-    let z: f64 = ed.eigenvalues.iter()
+    let z: f64 = ed
+        .eigenvalues
+        .iter()
         .map(|&e| (-beta * (e - e_min)).exp())
         .sum();
 
@@ -779,7 +792,9 @@ pub fn integrated_spectral_weight(
     let n = ed.n_sites;
     let e_min = ed.eigenvalues[0];
 
-    let z: f64 = ed.eigenvalues.iter()
+    let z: f64 = ed
+        .eigenvalues
+        .iter()
         .map(|&e| (-beta * (e - e_min)).exp())
         .sum();
 
@@ -901,7 +916,9 @@ fn drude_weight_mixed(
     let n = ed.n_sites;
     let e_min = ed.eigenvalues[0];
 
-    let z: f64 = ed.eigenvalues.iter()
+    let z: f64 = ed
+        .eigenvalues
+        .iter()
         .map(|&e| (-beta * (e - e_min)).exp())
         .sum();
 
@@ -919,10 +936,14 @@ fn drude_weight_mixed(
                 let mut je_mn = 0.0;
                 for a in 0..dim {
                     let c_m_a = ed.eigenvectors[m * dim + a];
-                    if c_m_a.abs() < 1e-15 { continue; }
+                    if c_m_a.abs() < 1e-15 {
+                        continue;
+                    }
                     for b in 0..dim {
                         let j_ab = current_e[a * dim + b];
-                        if j_ab.abs() < 1e-15 { continue; }
+                        if j_ab.abs() < 1e-15 {
+                            continue;
+                        }
                         let c_n_b = ed.eigenvectors[nn * dim + b];
                         je_mn += c_m_a * j_ab * c_n_b;
                     }
@@ -931,10 +952,14 @@ fn drude_weight_mixed(
                 let mut js_nm = 0.0;
                 for a in 0..dim {
                     let c_n_a = ed.eigenvectors[nn * dim + a];
-                    if c_n_a.abs() < 1e-15 { continue; }
+                    if c_n_a.abs() < 1e-15 {
+                        continue;
+                    }
                     for b in 0..dim {
                         let j_ab = current_s[a * dim + b];
-                        if j_ab.abs() < 1e-15 { continue; }
+                        if j_ab.abs() < 1e-15 {
+                            continue;
+                        }
                         let c_m_b = ed.eigenvectors[m * dim + b];
                         js_nm += c_n_a * j_ab * c_m_b;
                     }
@@ -968,10 +993,16 @@ pub fn graph_frustration_index(model: &HeisenbergModel) -> f64 {
 
     for i in 0..n {
         for j in (i + 1)..n {
-            if coupling_map[i][j].abs() < 1e-15 { continue; }
+            if coupling_map[i][j].abs() < 1e-15 {
+                continue;
+            }
             for k in (j + 1)..n {
-                if coupling_map[j][k].abs() < 1e-15 { continue; }
-                if coupling_map[i][k].abs() < 1e-15 { continue; }
+                if coupling_map[j][k].abs() < 1e-15 {
+                    continue;
+                }
+                if coupling_map[i][k].abs() < 1e-15 {
+                    continue;
+                }
                 n_total += 1;
                 let product = coupling_map[i][j] * coupling_map[j][k] * coupling_map[i][k];
                 if product < 0.0 {
@@ -981,7 +1012,9 @@ pub fn graph_frustration_index(model: &HeisenbergModel) -> f64 {
         }
     }
 
-    if n_total == 0 { return 0.0; }
+    if n_total == 0 {
+        return 0.0;
+    }
     n_frustrated as f64 / n_total as f64
 }
 
@@ -1003,7 +1036,13 @@ struct EigThermoCtx {
 }
 
 impl EigThermoCtx {
-    fn new(eigenvalues: &[f64], temperature: f64, degeneracy_tol: f64, dim: usize, n_sites: usize) -> Self {
+    fn new(
+        eigenvalues: &[f64],
+        temperature: f64,
+        degeneracy_tol: f64,
+        dim: usize,
+        n_sites: usize,
+    ) -> Self {
         let beta = 1.0 / temperature;
         let e_min = eigenvalues[0];
         let z: f64 = eigenvalues
@@ -1011,7 +1050,14 @@ impl EigThermoCtx {
             .map(|&e| (-beta * (e - e_min)).exp())
             .sum();
         let groups = group_by_degeneracy(eigenvalues, degeneracy_tol);
-        Self { beta, e_min, z, groups, dim, n_sites }
+        Self {
+            beta,
+            e_min,
+            z,
+            groups,
+            dim,
+            n_sites,
+        }
     }
 }
 
@@ -1064,12 +1110,7 @@ pub fn compute_transport_from_eigenbasis(
 }
 
 /// Drude weight from precomputed eigenbasis matrix elements.
-fn drude_from_eig(
-    eigenvalues: &[f64],
-    j_eig: &[f64],
-    ctx: &EigThermoCtx,
-    power_r: i32,
-) -> f64 {
+fn drude_from_eig(eigenvalues: &[f64], j_eig: &[f64], ctx: &EigThermoCtx, power_r: i32) -> f64 {
     let mut drude = 0.0;
     for group in &ctx.groups {
         let e_group = eigenvalues[group[0]];
@@ -1236,7 +1277,11 @@ mod tests {
 
         let frustration = graph_frustration_index(&model);
         // With mixed-sign couplings, triangles can be frustrated
-        assert!(frustration > 0.0, "frustration = {} should be > 0", frustration);
+        assert!(
+            frustration > 0.0,
+            "frustration = {} should be > 0",
+            frustration
+        );
     }
 
     #[test]
@@ -1285,7 +1330,10 @@ mod tests {
                 assert!(
                     diff.abs() < 1e-12,
                     "Spin current not antisymmetric at ({}, {}): {} vs {}",
-                    a, b, j_s[a * dim + b], j_s[b * dim + a]
+                    a,
+                    b,
+                    j_s[a * dim + b],
+                    j_s[b * dim + a]
                 );
             }
         }

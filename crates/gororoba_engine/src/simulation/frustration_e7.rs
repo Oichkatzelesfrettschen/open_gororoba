@@ -1,10 +1,10 @@
 use crate::simulation::state_3d::{FrustrationField3D, LbmBackend3D};
 use algebra_core::lie::e7_geometry::generate_e7_roots;
-use spectral_core::ndfft::{fft_3d, ifft_3d, real_to_complex_3d};
-use ndarray::{Array3, Zip};
 #[cfg(feature = "gpu")]
 use anyhow::Context;
 use anyhow::Result;
+use ndarray::{Array3, Zip};
+use spectral_core::ndfft::{fft_3d, ifft_3d, real_to_complex_3d};
 
 /// Frustration field derived from E7 Lie algebra roots.
 pub struct E7SpectralFilter {
@@ -43,7 +43,7 @@ impl E7SpectralFilter {
                         let gx = ix.rem_euclid(nx as isize) as usize;
                         let gy = iy.rem_euclid(ny as isize) as usize;
                         let gz = iz.rem_euclid(nz as isize) as usize;
-                        let dist_sq = (dx*dx + dy*dy + dz*dz) as f32;
+                        let dist_sq = (dx * dx + dy * dy + dz * dz) as f32;
                         mask[[gx, gy, gz]] += (-dist_sq * sigma_sq_inv).exp();
                     }
                 }
@@ -90,15 +90,23 @@ impl FrustrationField3D for E7SpectralFilter {
                 let mut uy = Array3::zeros((nx, ny, nz));
                 let mut uz = Array3::zeros((nx, ny, nz));
                 for (idx, vel) in solver.u.iter().enumerate() {
-                    let z = idx / (nx * ny); let y = (idx % (nx * ny)) / nx; let x = idx % nx;
-                    ux[[x, y, z]] = vel[0] as f32; uy[[x, y, z]] = vel[1] as f32; uz[[x, y, z]] = vel[2] as f32;
+                    let z = idx / (nx * ny);
+                    let y = (idx % (nx * ny)) / nx;
+                    let x = idx % nx;
+                    ux[[x, y, z]] = vel[0] as f32;
+                    uy[[x, y, z]] = vel[1] as f32;
+                    uz[[x, y, z]] = vel[2] as f32;
                 }
                 self.filter_component_cpu(&mut ux, self.current_damping);
                 self.filter_component_cpu(&mut uy, self.current_damping);
                 self.filter_component_cpu(&mut uz, self.current_damping);
                 for (idx, vel) in solver.u.iter_mut().enumerate() {
-                    let z = idx / (nx * ny); let y = (idx % (nx * ny)) / nx; let x = idx % nx;
-                    vel[0] = ux[[x, y, z]] as f64; vel[1] = uy[[x, y, z]] as f64; vel[2] = uz[[x, y, z]] as f64;
+                    let z = idx / (nx * ny);
+                    let y = (idx % (nx * ny)) / nx;
+                    let x = idx % nx;
+                    vel[0] = ux[[x, y, z]] as f64;
+                    vel[1] = uy[[x, y, z]] as f64;
+                    vel[2] = uz[[x, y, z]] as f64;
                 }
             }
             #[cfg(feature = "gpu")]
@@ -107,9 +115,9 @@ impl FrustrationField3D for E7SpectralFilter {
                     let mask_flat: Vec<f32> = self.mask.iter().cloned().collect();
                     self.d_mask = Some(solver.stream().clone_htod(&mask_flat)?);
                 }
-                
+
                 let d_mask = self.d_mask.as_ref().unwrap();
-                
+
                 #[cfg(feature = "cufft")]
                 {
                     for comp in 0..3 {
@@ -133,7 +141,11 @@ impl FrustrationField3D for E7SpectralFilter {
                         let res = (|| -> Result<()> {
                             solver.convert_real_to_complex(&mut d_u_hat, comp)?;
                             solver.fft_3d_c2c_into(&d_u_hat, &mut d_u_hat_out, -1)?;
-                            solver.apply_spectral_mask(&mut d_u_hat_out, d_mask, self.current_damping)?;
+                            solver.apply_spectral_mask(
+                                &mut d_u_hat_out,
+                                d_mask,
+                                self.current_damping,
+                            )?;
                             solver.fft_3d_c2c_into(&d_u_hat_out, &mut d_u_hat, 1)?;
 
                             let scale = 1.0f32 / (nx * ny * nz) as f32;
@@ -166,29 +178,48 @@ impl E7SpectralFilter {
         let field_f64 = field.mapv(|x| x as f64);
         let complex_field = real_to_complex_3d(&field_f64);
         let mut field_hat = fft_3d(&complex_field);
-        Zip::from(&mut field_hat).and(&self.mask).for_each(|val, &m| { if m < 0.5 { *val *= damping as f64; } });
+        Zip::from(&mut field_hat)
+            .and(&self.mask)
+            .for_each(|val, &m| {
+                if m < 0.5 {
+                    *val *= damping as f64;
+                }
+            });
         let field_filtered = ifft_3d(&field_hat);
-        Zip::from(field).and(&field_filtered).for_each(|out, inp| { *out = inp.re as f32; });
+        Zip::from(field).and(&field_filtered).for_each(|out, inp| {
+            *out = inp.re as f32;
+        });
     }
 
-    fn calculate_enstrophy_cpu(&self, solver: &lbm_3d::solver::LbmSolver3D, nx: usize, ny: usize, nz: usize) -> f64 {
+    fn calculate_enstrophy_cpu(
+        &self,
+        solver: &lbm_3d::solver::LbmSolver3D,
+        nx: usize,
+        ny: usize,
+        nz: usize,
+    ) -> f64 {
         let mut enstrophy = 0.0;
         let u = &solver.u;
         for z in 0..nz {
             for y in 0..ny {
                 for x in 0..nx {
                     let idx = |xi: usize, yi: usize, zi: usize| xi + nx * (yi + ny * zi);
-                    let xp = (x + 1) % nx; let xm = (x + nx - 1) % nx;
-                    let yp = (y + 1) % ny; let ym = (y + ny - 1) % ny;
-                    let zp = (z + 1) % nz; let zm = (z + nz - 1) % nz;
+                    let xp = (x + 1) % nx;
+                    let xm = (x + nx - 1) % nx;
+                    let yp = (y + 1) % ny;
+                    let ym = (y + ny - 1) % ny;
+                    let zp = (z + 1) % nz;
+                    let zm = (z + nz - 1) % nz;
                     let duz_dy = (u[idx(x, yp, z)][2] - u[idx(x, ym, z)][2]) * 0.5;
                     let duy_dz = (u[idx(x, y, zp)][1] - u[idx(x, y, zm)][1]) * 0.5;
                     let dux_dz = (u[idx(x, y, zp)][0] - u[idx(x, y, zm)][0]) * 0.5;
                     let duz_dx = (u[idx(xp, y, z)][2] - u[idx(xm, y, z)][2]) * 0.5;
                     let duy_dx = (u[idx(xp, y, z)][1] - u[idx(xm, y, z)][1]) * 0.5;
                     let dux_dy = (u[idx(x, yp, z)][0] - u[idx(x, ym, z)][0]) * 0.5;
-                    let wx = duz_dy - duy_dz; let wy = dux_dz - duz_dx; let wz = duy_dx - dux_dy;
-                    enstrophy += wx*wx + wy*wy + wz*wz;
+                    let wx = duz_dy - duy_dz;
+                    let wy = dux_dz - duz_dx;
+                    let wz = duy_dx - dux_dy;
+                    enstrophy += wx * wx + wy * wy + wz * wz;
                 }
             }
         }

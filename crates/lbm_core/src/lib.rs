@@ -232,13 +232,7 @@ pub fn viscosity_with_power_law_associator(
 /// # Returns
 /// Effective viscosity at the given strain rate. Always in [eta_inf, eta_0]
 /// for shear-thinning (n < 1) or [eta_0, eta_inf] for shear-thickening (n > 1).
-pub fn viscosity_cross_model(
-    eta_0: f64,
-    eta_inf: f64,
-    lambda: f64,
-    n: f64,
-    gamma_dot: f64,
-) -> f64 {
+pub fn viscosity_cross_model(eta_0: f64, eta_inf: f64, lambda: f64, n: f64, gamma_dot: f64) -> f64 {
     let lg = lambda * gamma_dot.abs();
     let denominator = 1.0 + lg.powf(n);
     eta_inf + (eta_0 - eta_inf) / denominator

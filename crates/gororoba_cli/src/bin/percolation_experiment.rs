@@ -367,7 +367,10 @@ fn evolve_lbm_gpu(
     solver.set_force_field(&force_field)?;
 
     if verbose {
-        eprintln!("[5/10] Evolving LBM for {} steps on GPU with Guo forcing...", lbm_steps);
+        eprintln!(
+            "[5/10] Evolving LBM for {} steps on GPU with Guo forcing...",
+            lbm_steps
+        );
     }
 
     // Evolve on GPU with continuous forcing (includes automatic sync to host at end)

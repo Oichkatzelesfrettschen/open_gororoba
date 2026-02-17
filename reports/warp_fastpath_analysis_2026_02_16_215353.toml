@@ -1,0 +1,94 @@
+schema = "open_gororoba.warp_fastpath_analysis.v3"
+generated_at_utc = "2026-02-16T21:53:53.180101983+00:00"
+
+[inputs]
+production_dir = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2"
+baseline_dir = "data/h5/production/20260215-211758_precision_suite_rerun"
+legacy_dir = "data/h5/production/20260215-200556"
+trace_stride = 10
+
+[methods]
+timing_tail_method = "count histogram mass with lower_us >= p90_us and compare to steps/trace_stride"
+fidelity_method = "quantify measured-vs-model lock, fallback fractions, and spectral nonzero richness"
+invariant_method = "rho_mean final/drift/std using default rho quality thresholds"
+
+[[case]]
+resolution = 128
+h5_path = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/warp_ring_128_GPU_BF16_300s.h5"
+timing_path = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/timing_128_GPU_BF16_300s.toml"
+steps = 102760
+steps_per_sec = 342.519645
+mlups = 718.315758
+p50_us = 979.968011
+p90_us = 2614.102435
+p99_us = 5704.808793
+baseline_mlups = 812.078703
+delta_mlups_vs_baseline_pct = -11.5460
+tail_count = 10276
+tail_to_trace_ratio = 1.000000
+rho_final = 1.000000000000
+rho_abs_drift_final = 0.000000000e0
+rho_std_dev = 0.000000000e0
+rho_mean = 1.000000000000
+rho_trace_std = 0.000000000e0
+rho_nonzero_fraction = 1.000000
+enstrophy_nonzero_fraction = 0.000000
+algebra_norm_nonzero_fraction = 0.000000
+u_rms_nonzero_fraction = 0.000000
+spectral_total_power_nonzero_fraction = 0.000000
+spectral_total_power_std_dev = 0.000000000e0
+
+[[case]]
+resolution = 256
+h5_path = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/warp_ring_256_GPU_BF16_300s.h5"
+timing_path = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2/timing_256_GPU_BF16_300s.toml"
+steps = 2990
+steps_per_sec = 9.966187
+mlups = 167.204877
+p50_us = 8656.960011
+p90_us = 39487.076950
+p99_us = 86904.810181
+baseline_mlups = 772.196759
+delta_mlups_vs_baseline_pct = -78.3469
+tail_count = 299
+tail_to_trace_ratio = 1.000000
+rho_final = 1.000000000000
+rho_abs_drift_final = 0.000000000e0
+rho_std_dev = 0.000000000e0
+rho_mean = 1.000000000000
+rho_trace_std = 0.000000000e0
+rho_nonzero_fraction = 1.000000
+enstrophy_nonzero_fraction = 0.000000
+algebra_norm_nonzero_fraction = 0.000000
+u_rms_nonzero_fraction = 0.000000
+spectral_total_power_nonzero_fraction = 0.000000
+spectral_total_power_std_dev = 0.000000000e0
+
+[aggregate]
+case_count = 2
+geom_mlups_tuned = 346.562978
+geom_mlups_baseline = 791.886698
+delta_geom_mlups_vs_baseline_pct = -56.2358
+rho_gate_pass = true
+measured_activity_gate_pass = false
+
+[signatures]
+timing_regime_split = "Legacy p50 (1.700us/1.800us) is launch-like while tuned p50 (979.968us/8656.960us) is kernel-like."
+periodic_trace_overhead_fingerprint = "128^3 tail_count=10276 tail_to_trace_ratio=1.000000; 256^3 tail_count=299 tail_to_trace_ratio=1.000000"
+invariant_signature = "rho_mean remained exactly 1.0 with zero drift/std in all analyzed runs."
+measurement_fidelity_signature = "Measured-vs-model fidelity summary: 128^3 enstrophy_measured_nonzero=0.000, fallback_fraction=0.000, both_zero_fraction=0.000, u_rms_model_lock=1.000, spectral_total_power_nonzero=0.000; 256^3 enstrophy_measured_nonzero=0.000, fallback_fraction=0.000, both_zero_fraction=0.000, u_rms_model_lock=1.000, spectral_total_power_nonzero=0.000"
+
+[[conjecture]]
+id = "WFA-C1"
+statement = "High-latency tail mass is primarily deterministic trace cadence overhead, not random jitter."
+falsifiable_test = "Run identical 300s lanes at trace_stride=5,10,20 and test if tail_to_trace_ratio remains approximately 1 while absolute tail count scales with 1/stride."
+
+[[conjecture]]
+id = "WFA-C2"
+statement = "Low measured enstrophy activity in BF16 can be instrumentation/model-lock dominated even when throughput and rho invariants look healthy."
+falsifiable_test = "Run matched FP32/BF16 with identical forcing and compare enstrophy_measured_nonzero_fraction and u_rms_model_lock_fraction under canonical_300s gating."
+
+[[conjecture]]
+id = "WFA-C3"
+statement = "A physically valid fastpath requires both performance gain and measured activity gain (nonzero spectral and enstrophy_measured channels)."
+falsifiable_test = "Adopt measured_activity_gate_pass as a required gate before claiming production-grade physics fidelity."

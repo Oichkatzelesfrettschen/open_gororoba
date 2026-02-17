@@ -1,5 +1,5 @@
-mod warp_runner;
 mod warp_precision_suite_ops;
+mod warp_runner;
 
 use std::error::Error;
 use warp_precision_suite_ops::run_matrix_compat_args;

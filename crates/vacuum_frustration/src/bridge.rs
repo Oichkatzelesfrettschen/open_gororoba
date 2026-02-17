@@ -82,9 +82,8 @@ impl SedenionField {
         for i in 0..dim {
             for j in (i + 1)..dim {
                 for k in (j + 1)..dim {
-                    let product = psi_flat[i * dim + j]
-                        * psi_flat[j * dim + k]
-                        * psi_flat[i * dim + k];
+                    let product =
+                        psi_flat[i * dim + j] * psi_flat[j * dim + k] * psi_flat[i * dim + k];
                     triangles.push((i, j, k, product == -1));
                 }
             }
@@ -99,8 +98,7 @@ impl SedenionField {
                     return 0.375;
                 }
 
-                let weights: Vec<f64> =
-                    sedenion[0..dim].iter().map(|x| x.abs()).collect();
+                let weights: Vec<f64> = sedenion[0..dim].iter().map(|x| x.abs()).collect();
 
                 let mut weighted_frustrated = 0.0f64;
                 let mut weighted_total = 0.0f64;
@@ -148,9 +146,8 @@ impl SedenionField {
             for i in 0..dim {
                 for j in (i + 1)..dim {
                     for k in (j + 1)..dim {
-                        let product = psi_flat[i * dim + j]
-                            * psi_flat[j * dim + k]
-                            * psi_flat[i * dim + k];
+                        let product =
+                            psi_flat[i * dim + j] * psi_flat[j * dim + k] * psi_flat[i * dim + k];
                         tris.push((i, j, k, product == -1));
                     }
                 }
@@ -167,8 +164,7 @@ impl SedenionField {
                     return 0.375;
                 }
 
-                let weights: Vec<f64> =
-                    sedenion[0..dim].iter().map(|x| x.abs()).collect();
+                let weights: Vec<f64> = sedenion[0..dim].iter().map(|x| x.abs()).collect();
 
                 let mut weighted_frustrated = 0.0f64;
                 let mut weighted_total = 0.0f64;
@@ -374,10 +370,7 @@ pub enum ViscosityCouplingModel {
     /// decays symmetrically for deviations. Quadratic sensitivity means
     /// small deviations have little effect, large deviations strongly reduce
     /// viscosity. This is the natural "perturbative" model.
-    Exponential {
-        nu_base: f64,
-        lambda: f64,
-    },
+    Exponential { nu_base: f64, lambda: f64 },
 
     /// Linear coupling: nu = nu_base * (1 + alpha * (F - F0))
     ///
@@ -385,10 +378,7 @@ pub enum ViscosityCouplingModel {
     /// Positive alpha means frustrated regions are more viscous (dissipative).
     /// Negative alpha means frustrated regions flow more freely.
     /// Simplest possible coupling; serves as baseline.
-    Linear {
-        nu_base: f64,
-        alpha: f64,
-    },
+    Linear { nu_base: f64, alpha: f64 },
 
     /// Power-law coupling: nu = nu_base * (|F - F0| + eps)^n
     ///
@@ -396,10 +386,7 @@ pub enum ViscosityCouplingModel {
     /// frustration deviation and viscosity. No preferred scale means the
     /// coupling has self-similar structure across frustration magnitudes.
     /// n > 1 = superlinear sensitivity; n < 1 = sublinear (saturating).
-    PowerLaw {
-        nu_base: f64,
-        n: f64,
-    },
+    PowerLaw { nu_base: f64, n: f64 },
 
     /// Sigmoid (logistic) coupling: nu = nu_low + (nu_high - nu_low) / (1 + exp(-k*(F - F_crit)))
     ///
@@ -420,9 +407,7 @@ pub enum ViscosityCouplingModel {
     /// Any correlation found with this model is spurious (from geometry
     /// alone, not physics). Essential for discriminating real signal
     /// from noise.
-    Constant {
-        nu_base: f64,
-    },
+    Constant { nu_base: f64 },
 
     /// Kubo linear-response coupling: nu(f) = nu_base * g(f/f_cd).
     ///
@@ -503,7 +488,10 @@ impl ViscosityCouplingModel {
     pub fn description(&self) -> String {
         match self {
             Self::Exponential { nu_base, lambda } => {
-                format!("Exponential: nu={:.4}*exp(-{:.2}*(F-3/8)^2)", nu_base, lambda)
+                format!(
+                    "Exponential: nu={:.4}*exp(-{:.2}*(F-3/8)^2)",
+                    nu_base, lambda
+                )
             }
             Self::Linear { nu_base, alpha } => {
                 format!("Linear: nu={:.4}*(1+{:.2}*(F-3/8))", nu_base, alpha)
@@ -533,7 +521,10 @@ impl ViscosityCouplingModel {
                 let g_max = table.last().map_or(1.0, |(_, g)| *g);
                 format!(
                     "KuboResponse: nu_base={:.4}, f_cd={:.4}, g_max={:.1}, {} pts",
-                    nu_base, f_cd, g_max, table.len()
+                    nu_base,
+                    f_cd,
+                    g_max,
+                    table.len()
                 )
             }
         }
@@ -558,10 +549,7 @@ impl ViscosityCouplingModel {
                 nu_base,
                 alpha: 1.0,
             },
-            Self::PowerLaw {
-                nu_base,
-                n: 1.5,
-            },
+            Self::PowerLaw { nu_base, n: 1.5 },
             Self::Sigmoid {
                 nu_low: nu_base * 0.5,
                 nu_high: nu_base * 1.5,
@@ -1197,12 +1185,14 @@ mod tests {
         assert!(
             nu_low < nu_vac,
             "nu should increase toward vacuum: nu(0.30)={} > nu(0.375)={}",
-            nu_low, nu_vac
+            nu_low,
+            nu_vac
         );
         assert!(
             nu_vac < nu_high,
             "nu should increase beyond vacuum: nu(0.375)={} > nu(0.45)={}",
-            nu_vac, nu_high
+            nu_vac,
+            nu_high
         );
     }
 
@@ -1243,7 +1233,8 @@ mod tests {
             assert!(
                 nu.is_finite() && nu > 0.0,
                 "KuboResponse not finite/positive at f={}: nu={}",
-                f, nu
+                f,
+                nu
             );
         }
     }

@@ -49,10 +49,14 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     for &size in &sizes {
         for &precision in &precisions {
-            let out_path = out_dir.join(format!("warp_ring_{}_{}.h5", size, match precision {
-                Precision::FP32 => "FP32",
-                Precision::BF16 => "BF16",
-            }));
+            let out_path = out_dir.join(format!(
+                "warp_ring_{}_{}.h5",
+                size,
+                match precision {
+                    Precision::FP32 => "FP32",
+                    Precision::BF16 => "BF16",
+                }
+            ));
             println!();
             println!(
                 "[RUN] size={}, precision={:?}, out={}",

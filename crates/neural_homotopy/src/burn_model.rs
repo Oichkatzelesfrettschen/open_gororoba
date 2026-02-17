@@ -153,7 +153,9 @@ impl<B: Backend> CorrectionTensorModel<B> {
 /// from downstream binaries.
 ///
 /// Returns `(tensor, n_params)` where `n_params` is the model parameter count.
-pub fn assemble_neural_correction(hidden_size: usize) -> (crate::m4_tensor::CorrectionTensor, usize) {
+pub fn assemble_neural_correction(
+    hidden_size: usize,
+) -> (crate::m4_tensor::CorrectionTensor, usize) {
     use burn::backend::NdArray;
     type B = NdArray<f32>;
 
@@ -248,8 +250,8 @@ pub fn train_burn_correction(config: &CorrectionTensorModelConfig) -> BurnTraini
     let target_td = burn::tensor::TensorData::from(target_data.as_slice());
 
     for _epoch in 0..config.epochs {
-        let input = Tensor::<AutoB, 1>::from_data(input_td.clone(), &device)
-            .reshape([n_pairs, INPUT_DIM]);
+        let input =
+            Tensor::<AutoB, 1>::from_data(input_td.clone(), &device).reshape([n_pairs, INPUT_DIM]);
         let target = Tensor::<AutoB, 1>::from_data(target_td.clone(), &device)
             .reshape([n_pairs, OUTPUT_DIM]);
 

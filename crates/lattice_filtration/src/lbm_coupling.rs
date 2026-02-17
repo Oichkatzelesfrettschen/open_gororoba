@@ -103,7 +103,11 @@ pub fn filtration_from_velocity_field(
 
                 // Encode first lattice component as trie key
                 let trie_key = lattice_key[0] as u64;
-                trie.insert(trie_key.wrapping_mul(31).wrapping_add(lattice_key[1] as u64));
+                trie.insert(
+                    trie_key
+                        .wrapping_mul(31)
+                        .wrapping_add(lattice_key[1] as u64),
+                );
 
                 // (radius, latency=vel_mag) pair for spectrum analysis
                 samples.push((radius, vel_mag));

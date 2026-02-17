@@ -9,13 +9,15 @@
 //! update pipeline and the analysis/visualization layers.
 
 pub mod algebra_evolution;
-pub mod state_3d;
 pub mod frustration_e7;
+pub mod state_3d;
 
-pub use state_3d::{SimulationConfig3D, SimulationState3D, LbmBackend3D, FrustrationField3D, AlgebraicField3D};
-pub use frustration_e7::{E7SpectralFilter};
+pub use frustration_e7::E7SpectralFilter;
+pub use state_3d::{
+    AlgebraicField3D, FrustrationField3D, LbmBackend3D, SimulationConfig3D, SimulationState3D,
+};
 
-use algebra_core::physics::octonion_field::{Octonion, Sedenion, Pathion, FieldParams};
+use algebra_core::physics::octonion_field::{FieldParams, Octonion, Pathion, Sedenion};
 use gr_core::kerr::Kerr;
 use gr_core::sedenion_geodesic::sedenion_homotopy_step;
 use lbm_core::D2Q9;
@@ -103,15 +105,13 @@ impl SimulationState {
     /// Create a new simulation state.
     pub fn new(config: SimulationConfig) -> Self {
         let fluid = D2Q9::new(config.nx, config.ny, config.tau);
-        
+
         // Default to a rotating black hole background
-        let metric = Kerr::new(1.0, 0.9); 
+        let metric = Kerr::new(1.0, 0.9);
 
         // Initialize algebraic field to zero based on requested species (defaulting to Octonion for now)
         // In a real config we would pass the species enum.
-        let algebra = AlgebraicField::Octonion(
-            Array2::from_elem((config.nx, config.ny), [0.0; 8])
-        );
+        let algebra = AlgebraicField::Octonion(Array2::from_elem((config.nx, config.ny), [0.0; 8]));
 
         Self {
             fluid,
@@ -163,7 +163,8 @@ impl SimulationState {
             let th_id = (p.theta * 10.0) as usize;
             hg.add_triad(i, r_id + 1000, th_id + 2000);
         }
-        self.topology_history.push((self.time, hg.betti_0(), hg.betti_1()));
+        self.topology_history
+            .push((self.time, hg.betti_0(), hg.betti_1()));
     }
 
     fn update_particles(&mut self) {
@@ -190,22 +191,22 @@ impl SimulationState {
             AlgebraicField::Octonion(field) => {
                 let (nx, ny) = field.dim();
                 let old_field = field.clone();
-                
+
                 for x in 0..nx {
                     for y in 0..ny {
-                        let vorticity = (uy[[(x + 1) % nx, y]] - uy[[(x + nx - 1) % nx, y]]) - 
-                                        (ux[[x, (y + 1) % ny]] - ux[[x, (y + ny - 1) % ny]]);
-                        
+                        let vorticity = (uy[[(x + 1) % nx, y]] - uy[[(x + nx - 1) % nx, y]])
+                            - (ux[[x, (y + 1) % ny]] - ux[[x, (y + ny - 1) % ny]]);
+
                         let mut phi = old_field[[x, y]];
                         let angle = vorticity * self.config.coupling_fluid_algebra;
                         let c = angle.cos();
                         let s = angle.sin();
-                        
+
                         let e1 = phi[1];
                         let e2 = phi[2];
                         phi[1] = e1 * c - e2 * s;
                         phi[2] = e1 * s + e2 * c;
-                        
+
                         field[[x, y]] = phi;
                     }
                 }
@@ -222,16 +223,16 @@ impl SimulationState {
 
     fn update_fluid(&mut self) {
         let (nx, ny) = (self.fluid.nx, self.fluid.ny);
-        
+
         // Compute viscosity map from self.algebra
         let mut associator_norm = Array2::zeros((nx, ny));
-        
+
         for x in 0..nx {
             for y in 0..ny {
                 let norm_sq: f64 = match &self.algebra {
-                    AlgebraicField::Octonion(f) => f[[x, y]].iter().map(|&v| v*v).sum(),
-                    AlgebraicField::Sedenion(f) => f[[x, y]].iter().map(|&v| v*v).sum(),
-                    AlgebraicField::Pathion(f) => f[[x, y]].iter().map(|&v| v*v).sum(),
+                    AlgebraicField::Octonion(f) => f[[x, y]].iter().map(|&v| v * v).sum(),
+                    AlgebraicField::Sedenion(f) => f[[x, y]].iter().map(|&v| v * v).sum(),
+                    AlgebraicField::Pathion(f) => f[[x, y]].iter().map(|&v| v * v).sum(),
                 };
                 associator_norm[[x, y]] = norm_sq.sqrt() * self.config.coupling_algebra_fluid;
             }
@@ -239,11 +240,12 @@ impl SimulationState {
 
         // Collide with spatially varying viscosity
         self.fluid.collide_with_associator(
-            0, ny, 
-            self.config.coupling_algebra_fluid, 
-            &associator_norm
+            0,
+            ny,
+            self.config.coupling_algebra_fluid,
+            &associator_norm,
         );
-        
+
         self.fluid.stream();
         self.fluid.bounce_back_top_bottom();
     }

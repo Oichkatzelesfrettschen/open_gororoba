@@ -28,17 +28,17 @@ impl Barcode {
 pub fn compute_vietoris_rips(points: &[[f64; 3]], max_radius: f64) -> PersistentHomology {
     let mut barcodes = Vec::new();
     let n = points.len();
-    
+
     // H0: Connected components
     // We can use a simple Union-Find or MST-based approach
     // For this prototype, we'll just report the number of components
     // at various scales.
-    
+
     // H1: Cycles
     // Simple 1-cycle detection: for every triangle (i, j, k),
     // if edges (i,j), (j,k), (k,i) all exist at radius R, a cycle is born.
-    
-    // Toy implementation: 
+
+    // Toy implementation:
     // We return Betti-0 bars for each point starting at birth=0.
     for _ in 0..n {
         barcodes.push(Barcode {
@@ -47,14 +47,14 @@ pub fn compute_vietoris_rips(points: &[[f64; 3]], max_radius: f64) -> Persistent
             death: max_radius,
         });
     }
-    
+
     PersistentHomology { barcodes }
 }
 
 /// Compute persistent homology for a 3-uniform hypergraph.
 pub fn compute_persistence(hg: &TriadHypergraph) -> PersistentHomology {
     let mut barcodes = Vec::new();
-    
+
     // Betti-0 components
     for _ in 0..hg.betti_0() {
         barcodes.push(Barcode {
@@ -63,7 +63,7 @@ pub fn compute_persistence(hg: &TriadHypergraph) -> PersistentHomology {
             death: f64::INFINITY,
         });
     }
-    
+
     // Betti-1 cycles
     for _ in 0..hg.betti_1() {
         barcodes.push(Barcode {
@@ -72,6 +72,6 @@ pub fn compute_persistence(hg: &TriadHypergraph) -> PersistentHomology {
             death: f64::INFINITY,
         });
     }
-    
+
     PersistentHomology { barcodes }
 }
