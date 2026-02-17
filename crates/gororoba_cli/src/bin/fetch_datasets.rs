@@ -337,8 +337,8 @@ fn main() {
     }
 
     // Validate --pillar value
-    if let Some(ref p) = args.pillar {
-        if !VALID_PILLARS.contains(&p.as_str()) {
+    if let Some(ref p) = args.pillar
+        && !VALID_PILLARS.contains(&p.as_str()) {
             eprintln!(
                 "Error: unknown pillar '{}'. Valid pillars: {}",
                 p,
@@ -346,7 +346,6 @@ fn main() {
             );
             std::process::exit(1);
         }
-    }
 
     let targets: Vec<&DatasetEntry> = if args.all {
         registry.iter().collect()

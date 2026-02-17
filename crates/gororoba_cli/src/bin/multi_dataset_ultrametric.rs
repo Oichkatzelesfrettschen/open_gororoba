@@ -445,11 +445,10 @@ fn load_atnf_pulsars(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> 
         let gb = idx_gb
             .and_then(|i| fields.get(i))
             .and_then(|s| s.trim().parse::<f64>().ok());
-        if let (Some(dm), Some(gl), Some(gb)) = (dm, gl, gb) {
-            if dm > 0.0 {
+        if let (Some(dm), Some(gl), Some(gb)) = (dm, gl, gb)
+            && dm > 0.0 {
                 rows.push(vec![dm.log10(), gl, gb]);
             }
-        }
     }
     if rows.len() < 10 {
         return None;
@@ -550,13 +549,12 @@ fn load_gwosc_csv(path: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
         let m2 = parse(idx_m2);
         let chi = parse(idx_chi);
 
-        if let (Some(mc), Some(z), Some(m1), Some(m2)) = (mc, z, m1, m2) {
-            if mc > 0.0 && m1 > 0.0 {
+        if let (Some(mc), Some(z), Some(m1), Some(m2)) = (mc, z, m1, m2)
+            && mc > 0.0 && m1 > 0.0 {
                 let q = m2 / m1;
                 let chi_val = chi.unwrap_or(0.0);
                 rows.push(vec![mc.log10(), z, q, chi_val]);
             }
-        }
     }
     if rows.len() < 10 {
         return None;
@@ -729,11 +727,10 @@ fn load_fermi_gbm(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
             .and_then(|i| fields.get(i))
             .and_then(|s| parse_dec_sexa(s));
 
-        if let (Some(t90), Some(fluence), Some(ra), Some(dec)) = (t90, fluence, ra, dec) {
-            if t90 > 0.0 && fluence > 0.0 {
+        if let (Some(t90), Some(fluence), Some(ra), Some(dec)) = (t90, fluence, ra, dec)
+            && t90 > 0.0 && fluence > 0.0 {
                 rows.push(vec![t90.log10(), fluence.log10(), ra, dec]);
             }
-        }
     }
     if rows.len() < 10 {
         return None;
@@ -803,11 +800,10 @@ fn load_mcgill(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
             s.parse::<f64>().ok()
         });
 
-        if let (Some(ra), Some(dec), Some(period), Some(b)) = (ra, dec, period, b) {
-            if period > 0.0 && b > 0.0 {
+        if let (Some(ra), Some(dec), Some(period), Some(b)) = (ra, dec, period, b)
+            && period > 0.0 && b > 0.0 {
                 rows.push(vec![period.log10(), b.log10(), ra, dec]);
             }
-        }
     }
     if rows.len() < 10 {
         return None;

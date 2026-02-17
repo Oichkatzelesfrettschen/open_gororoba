@@ -386,7 +386,6 @@ pub fn correlate_with_frustration(
 
 /// Approximate standard normal cumulative distribution function.
 /// Uses Abramowitz and Stegun approximation (accurate to ~0.00012).
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -469,9 +468,7 @@ mod tests {
         let mut velocity_field = vec![[0.0, 0.0, 0.0]; 64];
 
         // All cells have velocity 0.5
-        for cell in &mut velocity_field {
-            *cell = [0.5, 0.0, 0.0];
-        }
+        velocity_field.fill([0.5, 0.0, 0.0]);
 
         let channels_above = detector.detect_channels(&velocity_field, 0.4);
         let mut detector2 = PercolationDetector::new(4, 4, 4);

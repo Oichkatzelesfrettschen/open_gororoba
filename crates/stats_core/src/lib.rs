@@ -20,6 +20,7 @@
 
 pub mod claims_gates;
 pub mod dip;
+pub mod helpers;
 pub mod hypergraph;
 pub mod tda_bridge;
 pub mod ultrametric;
@@ -235,7 +236,7 @@ pub fn normalize_spectrum(spectrum: &[f64]) -> Vec<f64> {
 /// Generate random monotonic spectrum for null test.
 pub fn random_monotonic_spectrum(n: usize, seed: u64) -> Vec<f64> {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
-    let mut spectrum: Vec<f64> = (0..n).map(|_| rng.gen::<f64>()).collect();
+    let mut spectrum: Vec<f64> = (0..n).map(|_| rng.r#gen::<f64>()).collect();
     spectrum.sort_by(|a, b| a.partial_cmp(b).unwrap());
     spectrum
 }
@@ -384,8 +385,8 @@ pub fn haar_random_unitary(dim: usize, seed: u64) -> DMatrix<Complex64> {
     let mut z = DMatrix::zeros(dim, dim);
     for i in 0..dim {
         for j in 0..dim {
-            let re = normal.inverse_cdf(rng.gen());
-            let im = normal.inverse_cdf(rng.gen());
+            let re = normal.inverse_cdf(rng.r#gen());
+            let im = normal.inverse_cdf(rng.r#gen());
             z[(i, j)] = Complex64::new(re, im);
         }
     }
@@ -1477,7 +1478,7 @@ mod tests {
         let x: Vec<f64> = (1..=20).map(|i| i as f64).collect();
         let y: Vec<f64> = x
             .iter()
-            .map(|xi| 3.0 * xi.powf(-1.5) * (1.0 + 0.1 * (rng.gen::<f64>() - 0.5)))
+            .map(|xi| 3.0 * xi.powf(-1.5) * (1.0 + 0.1 * (rng.r#gen::<f64>() - 0.5)))
             .collect();
 
         let result = fit_power_law_with_ci(&x, &y, 200, 42);

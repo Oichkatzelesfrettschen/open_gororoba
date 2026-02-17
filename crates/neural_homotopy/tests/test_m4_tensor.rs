@@ -155,19 +155,19 @@ fn test_sedenion_table_consistency() {
     }
 
     // Verify e_0 * e_i = e_i and e_i * e_0 = e_i
-    for i in 0..SEDENION_DIM {
+    for (i, row) in table.iter().enumerate().take(SEDENION_DIM) {
         let (basis, sign) = table[0][i];
         assert_eq!(basis, i, "e_0 * e_{} should give e_{}", i, i);
         assert_eq!(sign, 1, "e_0 * e_{} should have sign +1", i);
 
-        let (basis2, sign2) = table[i][0];
+        let (basis2, sign2) = row[0];
         assert_eq!(basis2, i, "e_{} * e_0 should give e_{}", i, i);
         assert_eq!(sign2, 1, "e_{} * e_0 should have sign +1", i);
     }
 
     // Verify e_i * e_i = -e_0 for i > 0 (sedenion norm property)
-    for i in 1..SEDENION_DIM {
-        let (basis, sign) = table[i][i];
+    for (i, row) in table.iter().enumerate().take(SEDENION_DIM).skip(1) {
+        let (basis, sign) = row[i];
         assert_eq!(basis, 0, "e_{i} * e_{i} should give e_0 (got e_{basis})",);
         assert_eq!(
             sign, -1,

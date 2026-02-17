@@ -7,6 +7,7 @@ use rand::seq::SliceRandom;
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use serde::Serialize;
+use stats_core::helpers::{mean, std_dev};
 
 #[derive(Parser, Debug)]
 #[command(
@@ -93,27 +94,6 @@ struct EquivalenceReport {
     decision: EquivalenceDecision,
 }
 
-fn mean(values: &[f64]) -> f64 {
-    if values.is_empty() {
-        return 0.0;
-    }
-    values.iter().sum::<f64>() / values.len() as f64
-}
-
-fn std_dev(values: &[f64], mu: f64) -> f64 {
-    if values.len() < 2 {
-        return 0.0;
-    }
-    let var = values
-        .iter()
-        .map(|v| {
-            let d = v - mu;
-            d * d
-        })
-        .sum::<f64>()
-        / (values.len() as f64 - 1.0);
-    var.sqrt()
-}
 
 fn zscore(values: &[f64]) -> Vec<f64> {
     let mu = mean(values);

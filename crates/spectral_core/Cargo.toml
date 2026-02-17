@@ -1,7 +1,7 @@
 [package]
 name = "spectral_core"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 description = "Fractional Laplacian and spectral methods for PDEs"
 license = "MIT"
 
@@ -14,3 +14,6 @@ algebra_core = { path = "../algebra_core" }
 
 [dev-dependencies]
 approx = { workspace = true }
+
+[lints]
+workspace = true

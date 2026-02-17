@@ -510,9 +510,9 @@ mod tests {
     #[test]
     fn test_casimir_constants() {
         use casimir::*;
-        assert!(GOLD_PLASMA_EV > 8.0);
-        assert!(SILVER_PLASMA_EV > 9.0);
-        assert!(SILICA_N > 1.4 && SILICA_N < 1.5);
+        const { assert!(GOLD_PLASMA_EV > 8.0) };
+        const { assert!(SILVER_PLASMA_EV > 9.0) };
+        const { assert!(SILICA_N > 1.4 && SILICA_N < 1.5) };
     }
 
     #[test]

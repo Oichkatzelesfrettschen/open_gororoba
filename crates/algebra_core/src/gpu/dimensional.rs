@@ -825,7 +825,7 @@ mod tests {
         let gpu_result =
             GpuDimensionalEngine::compute_apt_gpu(dim, &nodes, 10_000, 42).expect("GPU APT census");
 
-        let expected_pure = 10_000 as f64 * 0.25;
+        let expected_pure = 10_000_f64 * 0.25;
         let actual_pure = gpu_result.pure_count as f64;
         let error = (actual_pure - expected_pure).abs() / expected_pure;
 

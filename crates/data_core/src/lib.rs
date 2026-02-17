@@ -22,6 +22,7 @@
 
 pub mod benchmarks;
 pub mod catalogs;
+pub mod parse;
 pub mod doc_links;
 pub mod fetcher;
 pub mod formats;

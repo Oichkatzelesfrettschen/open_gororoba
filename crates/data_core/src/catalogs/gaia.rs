@@ -8,6 +8,7 @@
 
 use crate::fetcher::{validate_not_html, DatasetProvider, FetchConfig, FetchError};
 use crate::formats::tap;
+use crate::parse::parse_f64_or_nan;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -36,14 +37,6 @@ pub struct GaiaSource {
     pub phot_g_mean_mag: f64,
     /// BP-RP color index.
     pub bp_rp: f64,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    let s = s.trim();
-    if s.is_empty() || s == "null" || s == "NULL" {
-        return f64::NAN;
-    }
-    s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
 /// Parse Gaia DR3 CSV data.
@@ -83,7 +76,7 @@ pub fn parse_gaia_csv(path: &Path) -> Result<Vec<GaiaSource>, FetchError> {
 
     let get_f64 = |record: &csv::StringRecord, idx: Option<usize>| -> f64 {
         idx.and_then(|i| record.get(i))
-            .map(parse_f64)
+            .map(parse_f64_or_nan)
             .unwrap_or(f64::NAN)
     };
 

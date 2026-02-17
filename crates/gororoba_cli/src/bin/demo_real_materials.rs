@@ -115,6 +115,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("  {} LBM steps = {:.2e} seconds", n_timesteps, physical_time);
         println!("  Flow-through time: {:.2e} seconds", flow_time);
         println!("  Steps per flow-through: {:.0}", flow_time / args.time_scale);
+
+        println!("\n========================================");
+        println!("Next Steps:");
+        println!("========================================");
+        println!("1. Run E-027 with these parameters:");
+        println!("   cargo run --bin percolation-experiment --");
+        println!("     --grid-size {} \\", args.grid_size);
+        println!("     --nu-base {:.6e} \\", nu_lattice);
+        println!("     --lambda <derived from theory> \\");
+        println!("     --lbm-steps {} \\", (flow_time / args.time_scale) as usize);
+        println!("     --forcing-mode <appropriate for Re={:.0}>", re);
+        println!();
+        println!("2. Derive lambda from statistical mechanics:");
+        println!("   lambda ~ (structural disorder energy) / (thermal energy)");
+        println!("   For frustration: lambda ~ E_frustration / k_B T");
+        println!();
+        println!("3. Compare to experimental data:");
+        println!("   Validate percolation threshold predictions against");
+        println!("   microfluidic experiments or DNS simulations");
     } else {
         println!("\nNo viscosity data (solid phase)");
         if let Some(creep) = material.creep_viscosity_Pa_s {
@@ -129,25 +148,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if let Some(ref reference) = material.reference {
         println!("Reference: {}", reference);
     }
-
-    println!("\n========================================");
-    println!("Next Steps:");
-    println!("========================================");
-    println!("1. Run E-027 with these parameters:");
-    println!("   cargo run --bin percolation-experiment --");
-    println!("     --grid-size {} \\", args.grid_size);
-    println!("     --nu-base {:.6e} \\", nu_lattice);
-    println!("     --lambda <derived from theory> \\");
-    println!("     --lbm-steps {} \\", (flow_time / args.time_scale) as usize);
-    println!("     --forcing-mode <appropriate for Re={:.0}>", re);
-    println!();
-    println!("2. Derive lambda from statistical mechanics:");
-    println!("   lambda ~ (structural disorder energy) / (thermal energy)");
-    println!("   For frustration: lambda ~ E_frustration / k_B T");
-    println!();
-    println!("3. Compare to experimental data:");
-    println!("   Validate percolation threshold predictions against");
-    println!("   microfluidic experiments or DNS simulations");
 
     Ok(())
 }

@@ -331,8 +331,8 @@ pub fn normalize_all_statuses(claims: &mut [FullClaimEntry]) -> usize {
             claim.status = canonical;
             modified += 1;
         }
-        if let Some(n) = note {
-            if claim.status_note.is_none() {
+        if let Some(n) = note
+            && claim.status_note.is_none() {
                 claim.status_note = Some(n);
                 // The status was already counted as modified above if it changed;
                 // if only the note was added, count that too.
@@ -340,7 +340,6 @@ pub fn normalize_all_statuses(claims: &mut [FullClaimEntry]) -> usize {
                     // Already counted or no status change
                 }
             }
-        }
     }
     modified
 }
@@ -437,14 +436,12 @@ pub fn enrich_metadata(
 
     for claim in claims.iter_mut() {
         // Phase inference
-        if claim.phase.is_none() {
-            if let Some(ref ws) = claim.where_stated {
-                if let Some(phase) = infer_phase(ws) {
+        if claim.phase.is_none()
+            && let Some(ref ws) = claim.where_stated
+                && let Some(phase) = infer_phase(ws) {
                     claim.phase = Some(phase);
                     enriched += 1;
                 }
-            }
-        }
 
         // Confidence derivation
         if claim.confidence.is_none() {
@@ -473,17 +470,16 @@ pub fn enrich_metadata(
         }
 
         // Insight reverse lookup
-        if claim.insights.is_none() || claim.insights.as_ref().is_some_and(|v| v.is_empty()) {
-            if let Some(insight_ids) = insight_reverse.get(&claim.id) {
+        if (claim.insights.is_none() || claim.insights.as_ref().is_some_and(|v| v.is_empty()))
+            && let Some(insight_ids) = insight_reverse.get(&claim.id) {
                 claim.insights = Some(insight_ids.clone());
                 enriched += 1;
             }
-        }
 
         // Description: extract first sentence from long statements
-        if claim.description.is_none() {
-            if let Some(ref stmt) = claim.statement {
-                if stmt.len() > 200 {
+        if claim.description.is_none()
+            && let Some(ref stmt) = claim.statement
+                && stmt.len() > 200 {
                     // Take first sentence (up to first period followed by space or end)
                     let desc = stmt
                         .find(". ")
@@ -493,8 +489,6 @@ pub fn enrich_metadata(
                     claim.description = Some(desc);
                     enriched += 1;
                 }
-            }
-        }
     }
 
     enriched
@@ -927,20 +921,19 @@ pub fn analyze(
             continue;
         }
         for claim_ref in &marker.claim_refs {
-            if let Some(claim) = claim_map.get(claim_ref.as_str()) {
-                if claim.status_note.is_some()
+            if let Some(claim) = claim_map.get(claim_ref.as_str())
+                && (claim.status_note.is_some()
                     || claim.status == "Refuted"
                     || claim.status.starts_with("Closed/")
                     || (claim.status == "Verified"
                         && claim
                             .what_would_verify_refute
                             .as_ref()
-                            .is_some_and(|w| w.len() > 100))
+                            .is_some_and(|w| w.len() > 100)))
                 {
                     report.conflict_markers_resolvable += 1;
                     break;
                 }
-            }
         }
     }
 

@@ -8,6 +8,7 @@
 //! HAPI CSV format: ISO 8601 timestamp, then parameter columns.
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
 const SWARM_URLS: &[&str] = &[
@@ -31,10 +32,6 @@ pub struct SwarmRecord {
     pub radius: f64,
     /// Total field intensity F (nT).
     pub f_total: f64,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    s.trim().parse::<f64>().unwrap_or(f64::NAN)
 }
 
 /// Parse Swarm HAPI CSV data.
@@ -76,10 +73,10 @@ pub fn parse_swarm_csv(path: &Path) -> Result<Vec<SwarmRecord>, FetchError> {
 
         records.push(SwarmRecord {
             timestamp: fields[0].trim().to_string(),
-            latitude: parse_f64(fields[1]),
-            longitude: parse_f64(fields[2]),
-            radius: parse_f64(fields[3]),
-            f_total: parse_f64(fields[4]),
+            latitude: parse_f64_or_nan(fields[1]),
+            longitude: parse_f64_or_nan(fields[2]),
+            radius: parse_f64_or_nan(fields[3]),
+            f_total: parse_f64_or_nan(fields[4]),
         });
     }
 

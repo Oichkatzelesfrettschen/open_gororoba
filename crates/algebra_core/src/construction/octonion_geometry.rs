@@ -577,7 +577,7 @@ mod tests {
     #[test]
     fn test_nucleus_is_reals() {
         // Real scalars are in the nucleus
-        let scalar = Octonion::new([3.14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+        let scalar = Octonion::new([3.125, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
         assert!(
             MoufangLoop::is_in_nucleus(&scalar, 1e-10),
             "Real scalars must be in the nucleus"

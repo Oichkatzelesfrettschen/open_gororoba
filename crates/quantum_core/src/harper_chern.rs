@@ -399,24 +399,24 @@ mod tests {
         let h = harper_hamiltonian(0.5, 0.8, 1, 3);
         let (evals, evecs) = diagonalize(&h);
 
-        for band in 0..3 {
+        for (band, &eigenvalue) in evals.iter().enumerate().take(3) {
             // Compute H*v
             let mut hv = [c64::new(0.0, 0.0); 3];
-            for i in 0..3 {
+            for (i, hv_i) in hv.iter_mut().enumerate() {
                 for j in 0..3 {
                     let h_ij = h.read(i, j);
                     let v_j = evecs.read(j, band);
-                    hv[i] = c64::new(
-                        hv[i].re + h_ij.re * v_j.re - h_ij.im * v_j.im,
-                        hv[i].im + h_ij.re * v_j.im + h_ij.im * v_j.re,
+                    *hv_i = c64::new(
+                        hv_i.re + h_ij.re * v_j.re - h_ij.im * v_j.im,
+                        hv_i.im + h_ij.re * v_j.im + h_ij.im * v_j.re,
                     );
                 }
             }
             // Compare with lambda*v
-            for i in 0..3 {
+            for (i, hv_i) in hv.iter().enumerate() {
                 let v_i = evecs.read(i, band);
-                let lv = c64::new(evals[band] * v_i.re, evals[band] * v_i.im);
-                let err = ((hv[i].re - lv.re).powi(2) + (hv[i].im - lv.im).powi(2)).sqrt();
+                let lv = c64::new(eigenvalue * v_i.re, eigenvalue * v_i.im);
+                let err = ((hv_i.re - lv.re).powi(2) + (hv_i.im - lv.im).powi(2)).sqrt();
                 assert!(
                     err < 1e-10,
                     "Band {} component {}: |H*v - lambda*v| = {}",

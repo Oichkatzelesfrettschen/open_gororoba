@@ -144,7 +144,7 @@ pub fn extract_images(path: &Path) -> Result<Vec<PdfImage>> {
 
             let data = if let Some(obj_id) = obj_id {
                 match doc.get_object(obj_id) {
-                    Ok(lopdf::Object::Stream(ref s)) => s.content.clone(),
+                    Ok(lopdf::Object::Stream(s)) => s.content.clone(),
                     _ => stream.content.clone(),
                 }
             } else {

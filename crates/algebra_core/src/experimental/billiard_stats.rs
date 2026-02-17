@@ -411,7 +411,7 @@ fn cumulative_distribution(freq: &[f64; N_WALLS]) -> [f64; N_WALLS] {
 
 /// Sample from a CDF using inverse-transform sampling.
 fn sample_from_cdf(cdf: &[f64; N_WALLS], rng: &mut impl Rng) -> usize {
-    let u: f64 = rng.gen();
+    let u: f64 = rng.r#gen();
     for (i, &c) in cdf.iter().enumerate() {
         if u <= c {
             return i;
@@ -464,7 +464,7 @@ fn generate_markov_sequence(empirical: &[usize], length: usize, rng: &mut impl R
     seq.push(state);
 
     for _ in 1..length {
-        let u: f64 = rng.gen();
+        let u: f64 = rng.r#gen();
         let mut next = N_WALLS - 1;
         for (j, &c) in row_cdfs[state].iter().enumerate() {
             if u <= c {
@@ -1196,16 +1196,16 @@ mod tests {
 
     #[test]
     fn test_e10_adjacency_symmetric() {
-        for i in 0..N_WALLS {
-            for j in 0..N_WALLS {
+        for (i, row) in E10_ADJACENCY.iter().enumerate().take(N_WALLS) {
+            for (j, &val) in row.iter().enumerate().take(N_WALLS) {
                 assert_eq!(
-                    E10_ADJACENCY[i][j], E10_ADJACENCY[j][i],
+                    val, E10_ADJACENCY[j][i],
                     "Asymmetric at ({}, {})",
                     i, j
                 );
             }
             // No self-loops
-            assert!(!E10_ADJACENCY[i][i], "Self-loop at {}", i);
+            assert!(!row[i], "Self-loop at {}", i);
         }
     }
 
@@ -1557,7 +1557,7 @@ mod tests {
         let diffs: usize = empirical
             .iter()
             .zip(null.iter())
-            .filter(|(&a, &b)| a != b)
+            .filter(|&(&a, &b)| a != b)
             .count();
         assert!(
             diffs > 0,

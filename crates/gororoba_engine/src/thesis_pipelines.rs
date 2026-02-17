@@ -662,8 +662,8 @@ impl ThesisPipeline for Thesis5Pipeline {
 }
 
 fn random_direction<R: Rng>(rng: &mut R) -> Vector3<f64> {
-    let phi = rng.gen::<f64>() * 2.0 * std::f64::consts::PI;
-    let z = rng.gen::<f64>() * 2.0 - 1.0;
+    let phi = rng.r#gen::<f64>() * 2.0 * std::f64::consts::PI;
+    let z = rng.r#gen::<f64>() * 2.0 - 1.0;
     let theta = z.acos();
 
     Vector3::new(theta.sin() * phi.cos(), theta.sin() * phi.sin(), z)

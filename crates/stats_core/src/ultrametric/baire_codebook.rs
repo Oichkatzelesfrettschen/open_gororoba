@@ -342,7 +342,7 @@ mod tests {
         ];
         let filtered = filter_by_predicate(&vecs, is_in_lambda_256);
         // At minimum, the first vector should pass
-        assert!(filtered.len() >= 1);
+        assert!(!filtered.is_empty());
         for v in &filtered {
             assert!(is_in_lambda_256(v));
         }
@@ -368,11 +368,11 @@ mod tests {
         assert_eq!(d, 6);
         assert_eq!(data.len(), 12);
         // Row 0, col 0 (coord 2): 0
-        assert_eq!(data[0 * 2 + 0], 0.0);
+        assert_eq!(data[0], 0.0);             // row=0, col=0
         // Row 0, col 1 (coord 3): 1
-        assert_eq!(data[1 * 2 + 0], 1.0);
+        assert_eq!(data[2], 1.0);              // row=1, col=0
         // Row 1, col 0 (coord 2): 1
-        assert_eq!(data[0 * 2 + 1], 1.0);
+        assert_eq!(data[1], 1.0);             // row=0, col=1
     }
 
     #[test]
@@ -389,7 +389,7 @@ mod tests {
         let subset: Vec<LatticeVector> = lambda_256.into_iter().take(30).collect();
         let prefix = shared_prefix_length(&subset);
         assert!(
-            prefix >= 2 && prefix < 8,
+            (2..8).contains(&prefix),
             "Lambda_256 subset should have at least the fixed 2-prefix and remain non-degenerate, got {prefix}"
         );
 
@@ -537,11 +537,11 @@ mod tests {
 
             // Sanity checks
             assert!(
-                obs_frac >= 0.0 && obs_frac <= 1.0,
+                (0.0..=1.0).contains(&obs_frac),
                 "Fraction must be in [0,1]"
             );
             assert!(
-                null_mean >= 0.0 && null_mean <= 1.0,
+                (0.0..=1.0).contains(&null_mean),
                 "Null mean must be in [0,1]"
             );
         }
@@ -1883,8 +1883,8 @@ mod tests {
     /// within the l_0=-1 population. Classifies each triple as:
     ///   - "same": all 3 vectors have the same l_1 value
     ///   - "mixed": at least one vector has a different l_1 value
-    /// This directly tests whether cross-stratum triples are the source of
-    /// the anti-ultrametricity in C-508/C-509.
+    ///     This directly tests whether cross-stratum triples are the source of
+    ///     the anti-ultrametricity in C-508/C-509.
     #[test]
     fn test_cross_stratum_triple_decomposition() {
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};

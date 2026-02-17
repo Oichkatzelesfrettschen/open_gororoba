@@ -49,7 +49,7 @@ fn main() {
     );
 
     // Hit frequencies
-    let mut wall_hits = vec![0u64; 10];
+    let mut wall_hits = [0u64; 10];
     for &w in &sequence {
         wall_hits[w] += 1;
     }

@@ -1,7 +1,7 @@
 [package]
 name = "gororoba_cli"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 description = "CLI tools for gororoba physics simulation library"
 license = "MIT"
 autobins = false
@@ -402,6 +402,14 @@ path = "src/bin/amplitude_frustration_survey.rs"
 name = "spin-decoherence-pipeline"
 path = "src/bin/spin_decoherence_pipeline.rs"
 
+[[bin]]
+name = "compute-all-lambdas"
+path = "src/bin/compute-all-lambdas.rs"
+
+[[bin]]
+name = "demo-real-materials"
+path = "src/bin/demo_real_materials.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
@@ -453,9 +461,9 @@ env_logger = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
-pgfplots = "0.5.1"
-chrono = "0.4"
-latex = "0.3.1"
+pgfplots = { workspace = true }
+chrono = { workspace = true }
+latex = { workspace = true }
 
 [dev-dependencies]
 tempfile = { workspace = true }
@@ -473,3 +481,6 @@ gpu = [
     "gororoba_engine/gpu",
 ]
 hdf5-export = ["data_core/hdf5-export"]
+
+[lints]
+workspace = true

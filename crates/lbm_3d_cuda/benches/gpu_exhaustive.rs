@@ -5,7 +5,7 @@
 //!
 //! Target hardware: NVIDIA RTX 4070 Ti (7680 CUDA cores, 504 GB/s bandwidth)
 
-use lbm_3d_cuda::LbmSolver3DCuda;
+use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use std::time::Instant;
 
 /// GPU benchmark configuration
@@ -15,8 +15,8 @@ struct GpuBenchConfig {
     grid_size: usize,
     steps: usize,
     tau: f64,
-    rho_init: f64,
-    u_init: [f64; 3],
+    rho_init: f32,
+    u_init: [f32; 3],
 }
 
 impl GpuBenchConfig {
@@ -45,6 +45,7 @@ fn bench_gpu(config: &GpuBenchConfig) -> Result<f64, String> {
         config.grid_size,
         config.grid_size,
         config.tau,
+        Precision::FP32,
     )
     .map_err(|e| format!("GPU initialization failed: {:?}", e))?;
 
@@ -151,8 +152,8 @@ fn generate_gpu_configs() -> Vec<(GpuBenchConfig, usize)> {
                 grid_size: 128,
                 steps,
                 tau: 1.0,
-                rho_init: 1.0,
-                u_init: [0.01, 0.0, 0.0],
+                rho_init: 1.0_f32,
+                u_init: [0.01_f32, 0.0, 0.0],
             },
             1, // Single run for most configs
         ));
@@ -167,8 +168,8 @@ fn generate_gpu_configs() -> Vec<(GpuBenchConfig, usize)> {
                 grid_size: 256,
                 steps,
                 tau: 1.0,
-                rho_init: 1.0,
-                u_init: [0.01, 0.0, 0.0],
+                rho_init: 1.0_f32,
+                u_init: [0.01_f32, 0.0, 0.0],
             },
             n_runs,
         ));
@@ -182,8 +183,8 @@ fn generate_gpu_configs() -> Vec<(GpuBenchConfig, usize)> {
                 grid_size: 384,
                 steps,
                 tau: 1.0,
-                rho_init: 1.0,
-                u_init: [0.01, 0.0, 0.0],
+                rho_init: 1.0_f32,
+                u_init: [0.01_f32, 0.0, 0.0],
             },
             1,
         ));

@@ -53,7 +53,7 @@ impl TwoPhaseSystem for MockLbmSystem {
             // Simple velocity averaging (simplified from D3Q19)
             if self.rho[i] > 0.0 {
                 self.u[i][0] =
-                    (self.f[i * 19 + 1] as f64 - self.f[i * 19 + 2] as f64) / self.rho[i];
+                    (self.f[i * 19 + 1] - self.f[i * 19 + 2]) / self.rho[i];
             }
         }
 

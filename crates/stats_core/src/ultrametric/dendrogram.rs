@@ -91,7 +91,7 @@ fn cophenetic_max_rel_error(original: &[f64], cophenetic: &[f64]) -> f64 {
     original
         .iter()
         .zip(cophenetic.iter())
-        .filter(|(&o, _)| o > 1e-15)
+        .filter(|&(&o, _)| o > 1e-15)
         .map(|(&o, &c)| ((o - c) / o).abs())
         .fold(0.0_f64, f64::max)
 }

@@ -271,7 +271,7 @@ pub fn classify_m3(o_vec: &OVec) -> M3Classification {
             .iter()
             .enumerate()
             .skip(1)
-            .filter(|(_, &v)| v != 0)
+            .filter(|&(_, &v)| v != 0)
             .map(|(idx, &v)| (idx, v))
             .collect();
         if nonzero.len() == 1 {

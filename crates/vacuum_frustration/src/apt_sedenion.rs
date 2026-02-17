@@ -66,7 +66,7 @@ impl AptSedenionField {
                 let current_frustration = self.frustration_cache[cell_idx];
 
                 // Candidate: random basis transformation
-                let candidate_basis = self.rng.gen::<usize>() % 16;
+                let candidate_basis = self.rng.r#gen::<usize>() % 16;
                 let candidate_frustration = self.compute_frustration(candidate_basis);
 
                 // Metropolis-Hastings acceptance criterion
@@ -75,7 +75,7 @@ impl AptSedenionField {
                     true // Always accept downhill moves toward attractor
                 } else {
                     let prob = (-delta_f / temp.max(0.01)).exp(); // Avoid division by zero
-                    self.rng.gen::<f64>() < prob
+                    self.rng.r#gen::<f64>() < prob
                 };
 
                 if accept {
@@ -255,7 +255,7 @@ mod tests {
 
         // All frustration values in valid range
         for &f in &frustration {
-            assert!(f >= 0.0 && f <= 1.0, "Frustration out of range: {}", f);
+            assert!((0.0..=1.0).contains(&f), "Frustration out of range: {}", f);
         }
 
         // All basis indices valid (0-15)

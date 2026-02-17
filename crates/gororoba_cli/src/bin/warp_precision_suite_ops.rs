@@ -167,11 +167,10 @@ fn default_summary_path(out_dir: Option<&Path>, single_output: Option<&Path>) ->
     if let Some(dir) = out_dir {
         return Some(dir.join("warp_precision_suite_summary.toml"));
     }
-    if let Some(path) = single_output {
-        if let Some(parent) = path.parent() {
+    if let Some(path) = single_output
+        && let Some(parent) = path.parent() {
             return Some(parent.join("warp_precision_suite_summary.toml"));
         }
-    }
     None
 }
 
@@ -333,11 +332,10 @@ pub fn run_precision_suite(cfg: PrecisionSuiteConfig) -> Result<(), Box<dyn Erro
     if let Some(dir) = cfg.out_dir.as_deref() {
         std::fs::create_dir_all(dir)?;
     }
-    if let Some(path) = cfg.single_output.as_deref() {
-        if let Some(parent) = path.parent() {
+    if let Some(path) = cfg.single_output.as_deref()
+        && let Some(parent) = path.parent() {
             std::fs::create_dir_all(parent)?;
         }
-    }
 
     let mut artifacts: Vec<PathBuf> = Vec::new();
     let mut cases_with_paths: Vec<(PathBuf, PathBuf, BenchCaseReport)> = Vec::new();
@@ -415,14 +413,13 @@ pub fn run_precision_suite(cfg: PrecisionSuiteConfig) -> Result<(), Box<dyn Erro
         gate_h5_outputs(&artifacts)?;
     }
 
-    if cfg.write_summary && !cases_with_paths.is_empty() {
-        if let Some(path) =
+    if cfg.write_summary && !cases_with_paths.is_empty()
+        && let Some(path) =
             default_summary_path(cfg.out_dir.as_deref(), cfg.single_output.as_deref())
         {
             write_summary(&path, &cfg, &cases_with_paths)?;
             println!("SUMMARY_REPORT: {}", path.display());
         }
-    }
 
     Ok(())
 }

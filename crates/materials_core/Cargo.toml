@@ -1,7 +1,7 @@
 [package]
 name = "materials_core"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 description = "Materials science: metamaterial absorbers, Tang mass predictions, refractive index"
 license = "MIT"
 
@@ -23,3 +23,6 @@ physical_constants = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }
+
+[lints]
+workspace = true

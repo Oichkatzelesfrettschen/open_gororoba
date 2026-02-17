@@ -5,6 +5,7 @@
 
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use faer::complex_native::c64;
+use std::hint::black_box;
 
 /// Benchmark GPU vs CPU for varying tensor sizes (elements).
 fn benchmark_peps_row_contraction(c: &mut Criterion) {

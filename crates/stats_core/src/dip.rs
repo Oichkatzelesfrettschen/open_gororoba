@@ -245,7 +245,7 @@ pub fn hartigan_dip_test(data: &[f64], n_perm: usize, rng: &mut ChaCha8Rng) -> D
     let mut count_ge = 0_usize;
 
     for _ in 0..n_perm {
-        let mut uniform_sample: Vec<f64> = (0..n).map(|_| rng.gen::<f64>()).collect();
+        let mut uniform_sample: Vec<f64> = (0..n).map(|_| rng.r#gen::<f64>()).collect();
         uniform_sample.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
         let perm_dip = dip_statistic(&uniform_sample);
         if perm_dip >= observed_dip {
@@ -274,7 +274,7 @@ mod tests {
         // Uniform data is unimodal -> small dip statistic
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let n = 200;
-        let mut data: Vec<f64> = (0..n).map(|_| rng.gen::<f64>()).collect();
+        let mut data: Vec<f64> = (0..n).map(|_| rng.r#gen::<f64>()).collect();
         data.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
         let dip = dip_statistic(&data);
@@ -295,15 +295,15 @@ mod tests {
 
         for _ in 0..(n / 2) {
             // N(0, 0.5)
-            let u1: f64 = rng.gen::<f64>();
-            let u2: f64 = rng.gen::<f64>();
+            let u1: f64 = rng.r#gen::<f64>();
+            let u2: f64 = rng.r#gen::<f64>();
             let z = (-2.0_f64 * u1.ln()).sqrt() * (2.0_f64 * std::f64::consts::PI * u2).cos();
             data.push(z * 0.5);
         }
         for _ in 0..(n / 2) {
             // N(5, 0.5)
-            let u1: f64 = rng.gen::<f64>();
-            let u2: f64 = rng.gen::<f64>();
+            let u1: f64 = rng.r#gen::<f64>();
+            let u2: f64 = rng.r#gen::<f64>();
             let z = (-2.0_f64 * u1.ln()).sqrt() * (2.0_f64 * std::f64::consts::PI * u2).cos();
             data.push(5.0 + z * 0.5);
         }

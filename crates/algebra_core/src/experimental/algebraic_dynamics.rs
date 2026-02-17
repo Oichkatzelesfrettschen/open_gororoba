@@ -818,11 +818,10 @@ pub fn simulate_et_billiard(n: usize, s: usize, n_steps: usize, seed: u64) -> Et
         };
 
         // Count DMZ transitions
-        if let Some(last) = symbolic.last() {
-            if *last != cell_type {
+        if let Some(last) = symbolic.last()
+            && *last != cell_type {
                 n_dmz_transitions += 1;
             }
-        }
 
         symbolic.push(cell_type);
         visited.insert((row, col));

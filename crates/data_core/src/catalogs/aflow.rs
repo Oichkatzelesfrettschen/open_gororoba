@@ -411,7 +411,7 @@ mod tests {
 
     #[test]
     fn test_parse_f64_field_from_string() {
-        let rec = serde_json::json!({"val": "3.14"});
-        assert!((parse_f64_field(&rec, "val").unwrap() - 3.14).abs() < 1e-6);
+        let rec = serde_json::json!({"val": "3.125"});
+        assert!((parse_f64_field(&rec, "val").unwrap() - 3.125).abs() < 1e-6);
     }
 }

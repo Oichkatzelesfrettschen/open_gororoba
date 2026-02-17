@@ -64,15 +64,14 @@ pub fn verify_matrix_metadata(matrix_text: &str) -> Vec<String> {
         if !line.starts_with("| C-") {
             continue;
         }
-        if let Some(cells) = parse_table_line(line) {
-            if cells.len() != 6 {
+        if let Some(cells) = parse_table_line(line)
+            && cells.len() != 6 {
                 failures.push(format!(
                     "Line {}: expected 6 columns, got {} (escape literal pipes as \\|)",
                     lineno + 1,
                     cells.len()
                 ));
             }
-        }
     }
 
     failures
@@ -112,8 +111,8 @@ pub fn verify_evidence_links(repo_root: &Path) -> Vec<String> {
 
     // Check for duplicate claim IDs in the matrix.
     let matrix_path = repo_root.join("docs/CLAIMS_EVIDENCE_MATRIX.md");
-    if matrix_path.exists() {
-        if let Ok(text) = std::fs::read_to_string(&matrix_path) {
+    if matrix_path.exists()
+        && let Ok(text) = std::fs::read_to_string(&matrix_path) {
             let claims = parse_claim_rows(&text);
             let mut seen = BTreeSet::new();
             for c in &claims {
@@ -122,7 +121,6 @@ pub fn verify_evidence_links(repo_root: &Path) -> Vec<String> {
                 }
             }
         }
-    }
 
     failures
 }
@@ -424,8 +422,8 @@ pub fn run_all_verifications(repo_root: &Path) -> Result<String, Vec<String>> {
 
             // 5. Tasks consistency (needs tasks file).
             let tasks_path = repo_root.join("docs/CLAIMS_TASKS.md");
-            if tasks_path.exists() {
-                if let Ok(tasks_text) = std::fs::read_to_string(&tasks_path) {
+            if tasks_path.exists()
+                && let Ok(tasks_text) = std::fs::read_to_string(&tasks_path) {
                     let f = verify_tasks_consistency(&text, &tasks_text);
                     summaries.push(format!("tasks_consistency: {} issues", f.len()));
                     all_failures.extend(f);
@@ -440,17 +438,15 @@ pub fn run_all_verifications(repo_root: &Path) -> Result<String, Vec<String>> {
                     summaries.push(format!("task_artifacts: {} issues", f.len()));
                     all_failures.extend(f);
                 }
-            }
 
             // 6. Domain mapping.
             let domain_path = repo_root.join("docs/claims/CLAIMS_DOMAIN_MAP.csv");
-            if domain_path.exists() {
-                if let Ok(csv_text) = std::fs::read_to_string(&domain_path) {
+            if domain_path.exists()
+                && let Ok(csv_text) = std::fs::read_to_string(&domain_path) {
                     let f = verify_domain_mapping(&text, &csv_text);
                     summaries.push(format!("domain_mapping: {} issues", f.len()));
                     all_failures.extend(f);
                 }
-            }
         }
     } else {
         all_failures.push("Missing docs/CLAIMS_EVIDENCE_MATRIX.md".to_string());

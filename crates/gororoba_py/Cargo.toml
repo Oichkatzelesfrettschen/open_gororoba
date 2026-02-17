@@ -1,7 +1,7 @@
 [package]
 name = "gororoba_py"
 version = "0.1.0"
-edition = "2021"
+edition = { workspace = true }
 description = "Python bindings for gororoba physics simulation library"
 license = "MIT"
 
@@ -22,3 +22,6 @@ pyo3 = { workspace = true, features = ["extension-module"] }
 numpy = { workspace = true }
 num-complex = { workspace = true }
 sha2 = { workspace = true }
+
+[lints]
+workspace = true

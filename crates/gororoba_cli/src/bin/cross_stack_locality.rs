@@ -72,15 +72,14 @@ fn main() {
 
     let result = cross_stack_comparison(&systems, args.n_bounces, args.n_permutations, args.seed);
 
-    if let Some(parent) = args.output.parent() {
-        if let Err(err) = std::fs::create_dir_all(parent) {
+    if let Some(parent) = args.output.parent()
+        && let Err(err) = std::fs::create_dir_all(parent) {
             eprintln!(
                 "ERROR: failed to create output directory {}: {err}",
                 parent.display()
             );
             std::process::exit(1);
         }
-    }
 
     let mut wtr = match csv::Writer::from_path(&args.output) {
         Ok(writer) => writer,

@@ -6,6 +6,7 @@
 //! Catalog 2: 4539 events, CHIME/FRB Collaboration (2025)
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
 /// A single FRB event from the CHIME catalog.
@@ -52,14 +53,6 @@ pub struct FrbEvent {
     pub peak_freq: f64,
     /// Whether this event is from Catalog 1.
     pub catalog1_flag: bool,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    let s = s.trim();
-    if s.is_empty() || s == "nan" || s == "NaN" || s == "inf" || s == "-inf" {
-        return f64::NAN;
-    }
-    s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
 fn parse_bool(s: &str) -> bool {
@@ -112,7 +105,7 @@ pub fn parse_chime_csv(path: &Path) -> Result<Vec<FrbEvent>, FetchError> {
 
     let get_f64 = |record: &csv::StringRecord, idx: Option<usize>| -> f64 {
         idx.and_then(|i| record.get(i))
-            .map(parse_f64)
+            .map(parse_f64_or_nan)
             .unwrap_or(f64::NAN)
     };
 

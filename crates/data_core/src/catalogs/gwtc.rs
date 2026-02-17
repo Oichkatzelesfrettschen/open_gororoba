@@ -7,6 +7,7 @@
 //! Reference: Abbott et al. (2023), PRX 13, 041039
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::parse::parse_f64_or_zero;
 use std::path::{Path, PathBuf};
 
 /// A gravitational wave event from GWTC-3.
@@ -42,11 +43,6 @@ pub struct GwEvent {
     pub total_mass_source: f64,
     /// Final remnant mass (solar masses).
     pub final_mass_source: f64,
-}
-
-/// Parse a float field, returning 0.0 for empty or unparseable values.
-fn parse_f64(s: &str) -> f64 {
-    s.trim().parse::<f64>().unwrap_or(0.0)
 }
 
 /// Parse any GWOSC event CSV (GWTC-3 confident or combined catalog).
@@ -104,7 +100,7 @@ pub fn parse_gwtc3_csv(path: &Path) -> Result<Vec<GwEvent>, FetchError> {
 
     let get_f64 = |record: &csv::StringRecord, idx: Option<usize>| -> f64 {
         idx.and_then(|i| record.get(i))
-            .map(parse_f64)
+            .map(parse_f64_or_zero)
             .unwrap_or(0.0)
     };
 

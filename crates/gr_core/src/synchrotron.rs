@@ -349,7 +349,7 @@ mod tests {
     fn test_polarization_degree_bounded() {
         for x in [0.01, 0.1, 1.0, 5.0] {
             let pi = polarization_degree(x);
-            assert!(pi >= 0.0 && pi <= 1.0, "Pi({x}) = {pi}");
+            assert!((0.0..=1.0).contains(&pi), "Pi({x}) = {pi}");
         }
     }
 

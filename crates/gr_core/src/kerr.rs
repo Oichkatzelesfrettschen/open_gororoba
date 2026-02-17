@@ -1439,6 +1439,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_kerr_trait_inverse_consistency() {
         // g * g^{-1} = delta (identity) for the (t,phi) block
         let k = kerr_bh();
@@ -1491,6 +1492,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_kerr_trait_christoffel_symmetry() {
         // Christoffel symbols must be symmetric in lower indices
         let k = kerr_bh();
@@ -1601,6 +1603,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_kerr_trait_vacuum_einstein() {
         // Kerr is a vacuum solution: R_{mu nu} = 0
         let k = kerr_bh();

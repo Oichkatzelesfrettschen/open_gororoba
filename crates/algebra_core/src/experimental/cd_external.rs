@@ -818,11 +818,10 @@ pub fn verify_xor_partner_law(dim: usize) -> XorPartnerResult {
                 }
             } else if partner_hi < partner_lo {
                 // Try swapped order
-                if let Some(&j) = pair_index.get(&(partner_hi, partner_lo)) {
-                    if i != j {
+                if let Some(&j) = pair_index.get(&(partner_hi, partner_lo))
+                    && i != j {
                         n_valid += 1;
                     }
-                }
             }
         }
     }
@@ -1263,11 +1262,10 @@ pub fn load_lattice_points(dim: usize) -> Vec<Vec<i32>> {
 
     for line in lines {
         let fields = parse_csv_line_internal(line);
-        if fields.len() >= 2 {
-            if let Some(pt) = parse_lattice_point(&fields[1]) {
+        if fields.len() >= 2
+            && let Some(pt) = parse_lattice_point(&fields[1]) {
                 points.push(pt);
             }
-        }
     }
     points
 }
@@ -1288,16 +1286,14 @@ pub fn load_lattice_map(dim: usize) -> HashMap<usize, Vec<i32>> {
 
     for line in lines {
         let fields = parse_csv_line_internal(line);
-        if fields.len() >= 2 {
-            if let (Some(basis_vec), Some(lattice)) = (
+        if fields.len() >= 2
+            && let (Some(basis_vec), Some(lattice)) = (
                 parse_nested_tuple(&fields[0]),
                 parse_lattice_point(&fields[1]),
-            ) {
-                if let Some(idx) = vec_to_basis_index(&basis_vec) {
+            )
+                && let Some(idx) = vec_to_basis_index(&basis_vec) {
                     map.insert(idx, lattice);
                 }
-            }
-        }
     }
     map
 }
@@ -1487,6 +1483,7 @@ mod tests {
     // === 64D adjacency (Phase 2.2) ===
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_64d_adjacency_basic_properties() {
         // Build our adjacency matrix for dim=64
         let (pairs, matrix) = build_zd_adjacency_matrix(64);
@@ -1845,9 +1842,7 @@ mod tests {
             // Parse lattice point
             let lattice = parse_lattice_point(&fields[1]);
 
-            if basis.is_some() && lattice.is_some() {
-                let b = basis.unwrap();
-                let l = lattice.unwrap();
+            if let (Some(b), Some(l)) = (basis, lattice) {
                 assert_eq!(b.len(), 256, "Basis element should have 256 components");
                 assert_eq!(l.len(), 8, "Lattice point should have 8 coordinates");
                 parsed += 1;
@@ -1883,9 +1878,7 @@ mod tests {
             }
             let basis = parse_nested_tuple(&fields[0]);
             let lattice = parse_lattice_point(&fields[1]);
-            if basis.is_some() && lattice.is_some() {
-                let b = basis.unwrap();
-                let l = lattice.unwrap();
+            if let (Some(b), Some(l)) = (basis, lattice) {
                 assert_eq!(b.len(), 512);
                 assert_eq!(l.len(), 8); // All dims use 8D lattice (octonion sub-algebra)
                 parsed += 1;
@@ -1917,9 +1910,7 @@ mod tests {
             }
             let basis = parse_nested_tuple(&fields[0]);
             let lattice = parse_lattice_point(&fields[1]);
-            if basis.is_some() && lattice.is_some() {
-                let b = basis.unwrap();
-                let l = lattice.unwrap();
+            if let (Some(b), Some(l)) = (basis, lattice) {
                 assert_eq!(b.len(), 1024);
                 assert_eq!(l.len(), 8); // All dims use 8D lattice (octonion sub-algebra)
                 parsed += 1;
@@ -1951,9 +1942,7 @@ mod tests {
             }
             let basis = parse_nested_tuple(&fields[0]);
             let lattice = parse_lattice_point(&fields[1]);
-            if basis.is_some() && lattice.is_some() {
-                let b = basis.unwrap();
-                let l = lattice.unwrap();
+            if let (Some(b), Some(l)) = (basis, lattice) {
                 assert_eq!(b.len(), 2048);
                 assert_eq!(l.len(), 8); // All dims use 8D lattice (octonion sub-algebra)
                 parsed += 1;
@@ -2036,11 +2025,10 @@ mod tests {
             if let (Some(basis_vec), Some(lattice)) = (
                 parse_nested_tuple(&fields[0]),
                 parse_lattice_point(&fields[1]),
-            ) {
-                if let Some(idx) = vec_to_basis_index(&basis_vec) {
+            )
+                && let Some(idx) = vec_to_basis_index(&basis_vec) {
                     lattice_map.insert(idx, lattice);
                 }
-            }
         }
 
         assert_eq!(lattice_map.len(), 256, "Expected 256 lattice points");
@@ -2640,13 +2628,11 @@ mod tests {
         for (i, &(lo, hi)) in pairs.iter().enumerate() {
             let partner_lo = lo ^ xor_mask;
             let partner_hi = hi ^ xor_mask;
-            if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim {
-                if let Some(&j) = pair_index.get(&(partner_lo, partner_hi)) {
-                    if i < j {
+            if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim
+                && let Some(&j) = pair_index.get(&(partner_lo, partner_hi))
+                    && i < j {
                         graph.add_edge(nodes[i], nodes[j], ());
                     }
-                }
-            }
         }
 
         let suite = compute_invariant_suite_from_graph("P_xor_involution_128", &graph);
@@ -2755,13 +2741,11 @@ mod tests {
                     actual_boundary += 1;
                     continue;
                 }
-                if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim {
-                    if let Some(&j) = pair_index.get(&(partner_lo, partner_hi)) {
-                        if i < j {
+                if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim
+                    && let Some(&j) = pair_index.get(&(partner_lo, partner_hi))
+                        && i < j {
                             graph.add_edge(nodes[i], nodes[j], ());
                         }
-                    }
-                }
             }
 
             assert_eq!(
@@ -3060,6 +3044,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)]
     fn test_thesis_g_k4_union_k4_spectrum() {
         // K_4 union K_4: spectrum = {3, 3, -1, -1, -1, -1, -1, -1}
         let mut adj = vec![vec![0u8; 8]; 8];

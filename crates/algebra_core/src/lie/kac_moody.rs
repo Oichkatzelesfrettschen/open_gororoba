@@ -432,11 +432,10 @@ impl GeneralizedCartanMatrix {
         let algebra_type = self.identify_algebra_type();
 
         // Mark affine extension node if applicable
-        if let Some(LieAlgebraType::E9) = algebra_type {
-            if self.rank == 9 {
+        if let Some(LieAlgebraType::E9) = algebra_type
+            && self.rank == 9 {
                 nodes[0].is_affine_extension = true; // Node 0 is traditionally the affine extension
             }
-        }
 
         DynkinDiagram {
             nodes,
@@ -1608,8 +1607,8 @@ mod tests {
 
         // theta should be (1, 0, 0, 0, 0, 0, 0, -1)
         assert!((theta[0] - 1.0).abs() < 1e-10, "theta[0] = {}", theta[0]);
-        for k in 1..7 {
-            assert!(theta[k].abs() < 1e-10, "theta[{k}] = {}", theta[k]);
+        for (k, &val) in theta.iter().enumerate().take(7).skip(1) {
+            assert!(val.abs() < 1e-10, "theta[{k}] = {val}");
         }
         assert!((theta[7] + 1.0).abs() < 1e-10, "theta[7] = {}", theta[7]);
 

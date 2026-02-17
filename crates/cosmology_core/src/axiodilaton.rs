@@ -310,6 +310,6 @@ mod tests {
     #[test]
     fn test_h0_prediction_in_tension_range() {
         // H_0 should be between CMB (67.4) and SH0ES (73.0)
-        assert!(params::H0 > 67.0 && params::H0 < 73.5);
+        const { assert!(params::H0 > 67.0 && params::H0 < 73.5) };
     }
 }

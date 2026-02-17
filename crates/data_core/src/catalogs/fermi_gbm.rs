@@ -6,6 +6,7 @@
 //! Source: https://heasarc.gsfc.nasa.gov/W3Browse/fermi/fermigbrst.html
 
 use crate::fetcher::{download_heasarc_csv, DatasetProvider, FetchConfig, FetchError};
+use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
 /// A gamma-ray burst from the Fermi GBM catalog.
@@ -40,14 +41,6 @@ pub struct GrbEvent {
     /// Best-fit spectral model for peak flux spectrum.
     /// HEASARC column: `pflx_best_fitting_model`.
     pub pflx_best_fitting_model: String,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    let s = s.trim();
-    if s.is_empty() || s == "null" || s == "NULL" || s == "nan" {
-        return f64::NAN;
-    }
-    s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
 /// Parse Fermi GBM burst catalog CSV.
@@ -95,7 +88,7 @@ pub fn parse_fermi_gbm_csv(path: &Path) -> Result<Vec<GrbEvent>, FetchError> {
 
     let get_f64 = |record: &csv::StringRecord, idx: Option<usize>| -> f64 {
         idx.and_then(|i| record.get(i))
-            .map(parse_f64)
+            .map(parse_f64_or_nan)
             .unwrap_or(f64::NAN)
     };
 

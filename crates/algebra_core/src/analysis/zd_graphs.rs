@@ -264,7 +264,7 @@ pub fn analyze_basis_participation(dim: usize, atol: f64) -> BasisParticipationR
     let hub_indices: Vec<usize> = counts
         .iter()
         .enumerate()
-        .filter(|(_, &c)| c as f64 >= 2.0 * mean_count)
+        .filter(|&(_, &c)| c as f64 >= 2.0 * mean_count)
         .map(|(i, _)| i)
         .collect();
 

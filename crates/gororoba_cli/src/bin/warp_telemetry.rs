@@ -22,8 +22,8 @@ fn spawn_gpu_telemetry_sampler_nvidia_smi(
     let stop = Arc::new(AtomicBool::new(false));
     let stop_worker = Arc::clone(&stop);
     let handle = thread::spawn(move || {
-        if let Some(parent) = out_path.parent() {
-            if let Err(err) = std::fs::create_dir_all(parent) {
+        if let Some(parent) = out_path.parent()
+            && let Err(err) = std::fs::create_dir_all(parent) {
                 eprintln!(
                     "[WARN] failed to create telemetry dir {}: {}",
                     parent.display(),
@@ -31,7 +31,6 @@ fn spawn_gpu_telemetry_sampler_nvidia_smi(
                 );
                 return;
             }
-        }
         let mut file = match std::fs::File::create(&out_path) {
             Ok(file) => file,
             Err(err) => {
@@ -134,8 +133,8 @@ fn spawn_gpu_telemetry_sampler_nvml(
             }
         };
 
-        if let Some(parent) = out_path.parent() {
-            if let Err(err) = std::fs::create_dir_all(parent) {
+        if let Some(parent) = out_path.parent()
+            && let Err(err) = std::fs::create_dir_all(parent) {
                 eprintln!(
                     "[WARN] failed to create telemetry dir {}: {}",
                     parent.display(),
@@ -143,7 +142,6 @@ fn spawn_gpu_telemetry_sampler_nvml(
                 );
                 return;
             }
-        }
         let mut file = match std::fs::File::create(&out_path) {
             Ok(file) => file,
             Err(err) => {

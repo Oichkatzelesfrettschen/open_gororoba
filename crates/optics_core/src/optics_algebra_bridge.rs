@@ -479,7 +479,7 @@ mod tests {
     fn test_degree_of_polarization() {
         let stokes = PolarizationState::new(1.0, 1.0, 0.0, 0.0);
         let dop = stokes.degree_of_polarization();
-        assert!(dop <= 1.0 && dop >= 0.0);
+        assert!((0.0..=1.0).contains(&dop));
     }
 
     #[test]
@@ -534,6 +534,6 @@ mod tests {
     fn test_stokes_ellipse_angle() {
         let stokes = PolarizationState::new(1.0, 1.0, 1.0, 0.0);
         let angle = stokes.ellipse_angle();
-        assert!(angle >= -PI / 2.0 && angle <= PI / 2.0);
+        assert!((-PI / 2.0..=PI / 2.0).contains(&angle));
     }
 }

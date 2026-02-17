@@ -191,13 +191,13 @@ impl RTLattice {
             if left_child < n_total {
                 adjacency[i].push(left_child);
                 adjacency[left_child].push(i);
-                let weight = 1.0 + 0.1 * rng.gen::<f64>();
+                let weight = 1.0 + 0.1 * rng.r#gen::<f64>();
                 edge_weights.insert(Edge::new(i, left_child), weight);
             }
             if right_child < n_total {
                 adjacency[i].push(right_child);
                 adjacency[right_child].push(i);
-                let weight = 1.0 + 0.1 * rng.gen::<f64>();
+                let weight = 1.0 + 0.1 * rng.r#gen::<f64>();
                 edge_weights.insert(Edge::new(i, right_child), weight);
             }
         }
@@ -672,7 +672,7 @@ mod tests {
     fn test_rt_lattice_edge_weights_positive() {
         let lattice = RTLattice::build_tree(3, 42);
 
-        for (_, &weight) in &lattice.edge_weights {
+        for &weight in lattice.edge_weights.values() {
             assert!(weight > 0.0);
         }
     }

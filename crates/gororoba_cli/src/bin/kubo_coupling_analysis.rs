@@ -82,8 +82,8 @@ fn compute_point(
     let transport;
     #[cfg(feature = "gpu")]
     {
-        if let Some(ref ctx) = dispatcher.gpu_ctx {
-            if let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10) {
+        if let Some(ref ctx) = dispatcher.gpu_ctx
+            && let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10) {
                 transport = t;
                 return CouplingPoint {
                     lambda,
@@ -100,7 +100,6 @@ fn compute_point(
                     },
                 };
             }
-        }
     }
     let _ = &dispatcher; // suppress unused warning on non-GPU builds
 

@@ -11,6 +11,7 @@
 //! `/data/sorce/tsi_data/daily/`.
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
 /// One SORCE TSI record.
@@ -19,14 +20,6 @@ pub struct SorceMeasurement {
     pub jd: f64,
     pub date: String,
     pub tsi: f64,
-}
-
-fn parse_f64(s: &str) -> f64 {
-    let s = s.trim();
-    if s.is_empty() || s == "nan" || s == "NaN" || s == "-99" {
-        return f64::NAN;
-    }
-    s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
 /// Parse SORCE data from either CSV (LaTiS) or space-delimited TXT (direct).
@@ -59,8 +52,8 @@ pub fn parse_sorce_csv(path: &Path) -> Result<Vec<SorceMeasurement>, FetchError>
             if fields.len() < 2 {
                 continue;
             }
-            let jd = parse_f64(fields[0]);
-            let tsi = parse_f64(fields[1]);
+            let jd = parse_f64_or_nan(fields[0]);
+            let tsi = parse_f64_or_nan(fields[1]);
             if tsi.is_nan() || tsi <= 0.0 {
                 continue;
             }
@@ -75,8 +68,8 @@ pub fn parse_sorce_csv(path: &Path) -> Result<Vec<SorceMeasurement>, FetchError>
             if fields.len() < 5 {
                 continue;
             }
-            let jd = parse_f64(fields[1]);
-            let tsi = parse_f64(fields[4]);
+            let jd = parse_f64_or_nan(fields[1]);
+            let tsi = parse_f64_or_nan(fields[4]);
             if tsi.is_nan() || tsi <= 0.0 {
                 continue;
             }

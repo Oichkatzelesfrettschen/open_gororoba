@@ -331,7 +331,7 @@ mod tests {
 
         let h = estimate_hurst(&series);
         assert!(
-            h >= 0.0 && h <= 1.0,
+            (0.0..=1.0).contains(&h),
             "Hurst exponent should be in [0,1], got {}",
             h
         );

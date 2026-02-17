@@ -646,11 +646,10 @@ pub fn benchmark_landsat_filtering(
     let mut passing = 0;
     for path in &paths {
         crate::catalogs::landsat::validate_stac_schema(path)?;
-        if let Some(cc) = crate::catalogs::landsat::extract_cloud_cover(path)? {
-            if cc <= max_cloud_cover {
+        if let Some(cc) = crate::catalogs::landsat::extract_cloud_cover(path)?
+            && cc <= max_cloud_cover {
                 passing += 1;
             }
-        }
     }
     let elapsed = start.elapsed().as_secs_f64();
 
