@@ -2,10 +2,18 @@ use algebra_core::physics::octonion_field::FieldParams;
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::{
     export_experiment_contract, export_rho_quality_metrics, export_simulation_spectral_summary,
-    export_simulation_trace_bundle, read_simulation_trace_component, scan_hdf5_numeric_datasets,
-    NumericDatasetScanStatus, SimulationTraceBundle, SpectralSummarySeries,
+    export_simulation_trace_bundle, read_simulation_spectral_component,
+    read_simulation_trace_component, scan_hdf5_numeric_datasets, NumericDatasetScanStatus,
+    SimulationTraceBundle, SpectralSummarySeries,
 };
-use data_core::quality::{validate_rho_trace, RhoQualityThresholds, RhoTraceQuality};
+use data_core::quality::{
+    validate_rho_trace, validate_scalar_trace_signal, RhoQualityThresholds, RhoTraceQuality,
+    ScalarTraceThresholds,
+};
+#[cfg(feature = "hdf5-export")]
+use gororoba_cli::warp_gate_policy::{
+    load_warp_gate_policy, CANONICAL_REQUIRED_SPECTRAL_CHANNELS, CANONICAL_REQUIRED_TRACE_CHANNELS,
+};
 #[cfg(feature = "hdf5-export")]
 use gororoba_contracts::{WarpRingConfig, WarpRingExperiment, WarpRingResults};
 use gororoba_engine::simulation::{E7SpectralFilter, SimulationConfig3D, SimulationState3D};
@@ -56,6 +64,24 @@ pub enum TimingMode {
     CudaEvents,
 }
 
+#[allow(dead_code)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum GateProfile {
+    Research,
+    Canonical300s,
+    Canonical300sMeasured,
+}
+
+impl GateProfile {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Research => "research",
+            Self::Canonical300s => "canonical_300s",
+            Self::Canonical300sMeasured => "canonical_300s_measured",
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct BenchCase {
     pub resolution: usize,
@@ -90,6 +116,7 @@ pub struct KolmogorovForcingSpec {
     pub bf16_delta_to_ulp_ratio: f64,
     pub bf16_mode_floor_target_ratio: f64,
     pub bf16_mode_floor_applied: bool,
+    pub mode_floor_all_precisions: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -355,6 +382,7 @@ fn evaluate_kolmogorov_mode(
         bf16_delta_to_ulp_ratio,
         bf16_mode_floor_target_ratio: 0.0,
         bf16_mode_floor_applied: false,
+        mode_floor_all_precisions: false,
     })
 }
 
@@ -476,6 +504,8 @@ fn derive_kolmogorov_forcing_spec(
     let bf16_mode_floor_target_ratio =
         parse_env_f64("GOROROBA_BF16_MIN_DELTA_ULP_RATIO", 1.0e-2)?.max(0.0);
     let bf16_mode_floor_enabled = parse_env_bool("GOROROBA_BF16_ENFORCE_MODE_FLOOR", true)?;
+    let mode_floor_all_precisions =
+        parse_env_bool("GOROROBA_ENFORCE_MODE_FLOOR_ALL_PRECISIONS", false)?;
     if !re_target.is_finite() || re_target <= 0.0 {
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
@@ -502,7 +532,8 @@ fn derive_kolmogorov_forcing_spec(
     let mut mode_floor_applied = false;
     let max_mode = (ny / 2).saturating_sub(1).max(1);
 
-    if matches!(precision, Precision::BF16)
+    let apply_mode_floor = matches!(precision, Precision::BF16) || mode_floor_all_precisions;
+    if apply_mode_floor
         && bf16_mode_floor_enabled
         && bf16_mode_floor_target_ratio > 0.0
         && spec.bf16_delta_to_ulp_ratio < bf16_mode_floor_target_ratio
@@ -522,6 +553,7 @@ fn derive_kolmogorov_forcing_spec(
     spec.mode_y_requested = mode_y_requested;
     spec.bf16_mode_floor_target_ratio = bf16_mode_floor_target_ratio;
     spec.bf16_mode_floor_applied = mode_floor_applied;
+    spec.mode_floor_all_precisions = mode_floor_all_precisions;
     Ok(spec)
 }
 
@@ -646,8 +678,12 @@ pub fn write_step_timing_report(
         "bf16_mode_floor_applied = {}\n",
         report.forcing.bf16_mode_floor_applied
     ));
+    out.push_str(&format!(
+        "mode_floor_all_precisions = {}\n",
+        report.forcing.mode_floor_all_precisions
+    ));
     out.push_str(
-        "notes = \"F0 = nu*k^2*U0; U0=min(Re_target*nu*k, max_mach*cs); BF16 can raise mode_y to meet min delta_f/ulp target; f_x=F0*sin(k*y)\"\n",
+        "notes = \"F0 = nu*k^2*U0; U0=min(Re_target*nu*k, max_mach*cs); mode floor can raise mode_y to meet min delta_f/ulp target (BF16-only by default or all precisions via env); f_x=F0*sin(k*y)\"\n",
     );
     out.push_str("\n[timing]\n");
     out.push_str(&format!(
@@ -1171,6 +1207,11 @@ pub fn print_case_report(report: &BenchCaseReport) {
         report.forcing.re_effective,
         report.forcing.mach_effective
     );
+    if report.forcing.mode_floor_all_precisions {
+        println!(
+            "     forcing_mode_floor_scope: all_precisions (GOROROBA_ENFORCE_MODE_FLOOR_ALL_PRECISIONS=1)"
+        );
+    }
     if matches!(report.backend, BackendKind::Gpu) && matches!(report.precision, Precision::BF16) {
         println!(
             "     bf16_quantization: delta_f_est={:.3e}, ulp_eq={:.3e}, ratio={:.3e}",
@@ -1189,13 +1230,26 @@ pub fn print_case_report(report: &BenchCaseReport) {
                 report.forcing.bf16_mode_floor_target_ratio
             );
         }
+    } else if report.forcing.bf16_mode_floor_applied {
+        println!(
+            "     mode_floor: applied (target_ratio={:.3e}) for cross-precision forcing match.",
+            report.forcing.bf16_mode_floor_target_ratio
+        );
     }
     if let Some(path) = report.h5_output.as_deref() {
         println!("HDF5_TRACE: {}", path.display());
     }
 }
 
+#[allow(dead_code)]
 pub fn gate_h5_outputs(paths: &[PathBuf]) -> Result<(), Box<dyn Error>> {
+    gate_h5_outputs_with_profile(paths, GateProfile::Research)
+}
+
+pub fn gate_h5_outputs_with_profile(
+    paths: &[PathBuf],
+    profile: GateProfile,
+) -> Result<(), Box<dyn Error>> {
     if paths.is_empty() {
         return Ok(());
     }
@@ -1210,7 +1264,70 @@ pub fn gate_h5_outputs(paths: &[PathBuf]) -> Result<(), Box<dyn Error>> {
             values.windows(2).all(|w| w[1] >= w[0])
         }
 
+        fn require_trace_component(
+            path: &Path,
+            name: &str,
+            n: usize,
+        ) -> Result<Vec<f64>, Box<dyn Error>> {
+            let values = read_simulation_trace_component(path, name).map_err(|e| {
+                std::io::Error::other(format!(
+                    "{}: missing required trace component '{name}': {e}",
+                    path.display()
+                ))
+            })?;
+            if values.len() != n {
+                return Err(std::io::Error::other(format!(
+                    "{}: trace length mismatch for '{}': expected {}, got {}",
+                    path.display(),
+                    name,
+                    n,
+                    values.len()
+                ))
+                .into());
+            }
+            if !all_finite(&values) {
+                return Err(std::io::Error::other(format!(
+                    "{}: non-finite values in trace component '{}'",
+                    path.display(),
+                    name
+                ))
+                .into());
+            }
+            Ok(values)
+        }
+
+        fn model_lock_fraction(measured: &[f64], model: &[f64], abs_eps: f64, rel_eps: f64) -> f64 {
+            let n = measured.len().min(model.len());
+            if n == 0 {
+                return 1.0;
+            }
+            let mut locked = 0usize;
+            for i in 0..n {
+                let tol = abs_eps.max(rel_eps * model[i].abs());
+                if (measured[i] - model[i]).abs() <= tol {
+                    locked += 1;
+                }
+            }
+            locked as f64 / n as f64
+        }
+
+        fn nonzero_fraction(values: &[f64], abs_eps: f64) -> f64 {
+            if values.is_empty() {
+                return 0.0;
+            }
+            let nonzero = values.iter().filter(|v| v.abs() > abs_eps).count();
+            nonzero as f64 / values.len() as f64
+        }
+
         let thresholds = RhoQualityThresholds::default();
+        let loaded_policy = if matches!(
+            profile,
+            GateProfile::Canonical300s | GateProfile::Canonical300sMeasured
+        ) {
+            Some(load_warp_gate_policy()?)
+        } else {
+            None
+        };
         for path in paths {
             let report = scan_hdf5_numeric_datasets(path)?;
             for entry in &report.entries {
@@ -1283,20 +1400,235 @@ pub fn gate_h5_outputs(paths: &[PathBuf]) -> Result<(), Box<dyn Error>> {
             let quality = validate_rho_trace(&rho, thresholds).map_err(|e| {
                 std::io::Error::other(format!("{}: rho quality gate failed: {e}", path.display()))
             })?;
+
+            let mut measured_summary = String::new();
+            if matches!(
+                profile,
+                GateProfile::Canonical300s | GateProfile::Canonical300sMeasured
+            ) {
+                let loaded = loaded_policy.as_ref().ok_or_else(|| {
+                    std::io::Error::other("canonical profile requested without loaded policy")
+                })?;
+                let policy = &loaded.policy;
+                let canonical_thresholds = ScalarTraceThresholds {
+                    min_abs_max: policy.canonical_scalar_signal.min_abs_max,
+                    min_std_dev: policy.canonical_scalar_signal.min_std_dev,
+                };
+                for channel in CANONICAL_REQUIRED_TRACE_CHANNELS {
+                    let values = require_trace_component(path, channel, n)?;
+                    validate_scalar_trace_signal(channel, &values, canonical_thresholds).map_err(
+                        |e| {
+                            std::io::Error::other(format!(
+                                "{}: canonical signal gate failed: {e}",
+                                path.display()
+                            ))
+                        },
+                    )?;
+                }
+                let enstrophy_thresholds = ScalarTraceThresholds {
+                    min_abs_max: policy.canonical_enstrophy_signal.min_abs_max,
+                    min_std_dev: policy.canonical_enstrophy_signal.min_std_dev,
+                };
+                validate_scalar_trace_signal("enstrophy", &enstrophy, enstrophy_thresholds)
+                    .map_err(|e| {
+                        std::io::Error::other(format!(
+                            "{}: canonical enstrophy signal gate failed: {e}",
+                            path.display()
+                        ))
+                    })?;
+
+                let spectral_time =
+                    read_simulation_spectral_component(path, "time").map_err(|e| {
+                        std::io::Error::other(format!(
+                            "{}: missing spectral summary time axis: {e}",
+                            path.display()
+                        ))
+                    })?;
+                if spectral_time.is_empty() {
+                    return Err(std::io::Error::other(format!(
+                        "{}: spectral summary is empty for canonical profile",
+                        path.display()
+                    ))
+                    .into());
+                }
+                if !all_finite(&spectral_time) || !nondecreasing(&spectral_time) {
+                    return Err(std::io::Error::other(format!(
+                        "{}: invalid spectral time axis",
+                        path.display()
+                    ))
+                    .into());
+                }
+                for channel in CANONICAL_REQUIRED_SPECTRAL_CHANNELS {
+                    let values =
+                        read_simulation_spectral_component(path, channel).map_err(|e| {
+                            std::io::Error::other(format!(
+                                "{}: missing spectral component '{}': {e}",
+                                path.display(),
+                                channel
+                            ))
+                        })?;
+                    if values.len() != spectral_time.len() {
+                        return Err(std::io::Error::other(format!(
+                            "{}: spectral length mismatch for '{}': expected {}, got {}",
+                            path.display(),
+                            channel,
+                            spectral_time.len(),
+                            values.len()
+                        ))
+                        .into());
+                    }
+                    if !all_finite(&values) {
+                        return Err(std::io::Error::other(format!(
+                            "{}: non-finite values in spectral component '{}'",
+                            path.display(),
+                            channel
+                        ))
+                        .into());
+                    }
+                }
+            }
+            if profile == GateProfile::Canonical300sMeasured {
+                let loaded = loaded_policy.as_ref().ok_or_else(|| {
+                    std::io::Error::other("measured profile requested without loaded policy")
+                })?;
+                let policy = &loaded.policy;
+
+                let enstrophy_measured = require_trace_component(path, "enstrophy_measured", n)?;
+                let enstrophy_measured_thresholds = ScalarTraceThresholds {
+                    min_abs_max: policy.measured_enstrophy_signal.min_abs_max,
+                    min_std_dev: policy.measured_enstrophy_signal.min_std_dev,
+                };
+                validate_scalar_trace_signal(
+                    "enstrophy_measured",
+                    &enstrophy_measured,
+                    enstrophy_measured_thresholds,
+                )
+                .map_err(|e| {
+                    std::io::Error::other(format!(
+                        "{}: measured enstrophy gate failed: {e}",
+                        path.display()
+                    ))
+                })?;
+
+                let algebra_thresholds = ScalarTraceThresholds {
+                    min_abs_max: policy.measured_algebra_norm_signal.min_abs_max,
+                    min_std_dev: policy.measured_algebra_norm_signal.min_std_dev,
+                };
+                validate_scalar_trace_signal("algebra_norm", &algebra_norm, algebra_thresholds)
+                    .map_err(|e| {
+                        std::io::Error::other(format!(
+                            "{}: measured algebra_norm gate failed: {e}",
+                            path.display()
+                        ))
+                    })?;
+
+                let u_rms = require_trace_component(path, "u_rms", n)?;
+                let u_rms_model = require_trace_component(path, "u_rms_model", n)?;
+                let lock_fraction = model_lock_fraction(&u_rms, &u_rms_model, 1.0e-14, 1.0e-6);
+                if lock_fraction >= policy.u_rms_model_lock_max_fraction {
+                    return Err(std::io::Error::other(format!(
+                        "{}: u_rms is model-locked (fraction={:.6} >= {:.6}); measured activity gate failed",
+                        path.display(),
+                        lock_fraction,
+                        policy.u_rms_model_lock_max_fraction
+                    ))
+                    .into());
+                }
+
+                let spectral_total_power = read_simulation_spectral_component(path, "total_power")
+                    .map_err(|e| {
+                        std::io::Error::other(format!(
+                            "{}: missing spectral component 'total_power': {e}",
+                            path.display()
+                        ))
+                    })?;
+                let spectral_thresholds = ScalarTraceThresholds {
+                    min_abs_max: policy.measured_spectral_total_power_signal.min_abs_max,
+                    min_std_dev: policy.measured_spectral_total_power_signal.min_std_dev,
+                };
+                validate_scalar_trace_signal(
+                    "spectral_total_power",
+                    &spectral_total_power,
+                    spectral_thresholds,
+                )
+                .map_err(|e| {
+                    std::io::Error::other(format!(
+                        "{}: measured spectral gate failed: {e}",
+                        path.display()
+                    ))
+                })?;
+
+                let enstrophy_measured_nonzero_fraction = nonzero_fraction(
+                    &enstrophy_measured,
+                    policy.measured_enstrophy_signal.min_abs_max,
+                );
+                if enstrophy_measured_nonzero_fraction
+                    < policy.measured_enstrophy_nonzero_fraction_min
+                {
+                    return Err(std::io::Error::other(format!(
+                        "{}: measured enstrophy nonzero coverage too low ({:.6} < {:.6})",
+                        path.display(),
+                        enstrophy_measured_nonzero_fraction,
+                        policy.measured_enstrophy_nonzero_fraction_min
+                    ))
+                    .into());
+                }
+                let algebra_norm_nonzero_fraction = nonzero_fraction(
+                    &algebra_norm,
+                    policy.measured_algebra_norm_signal.min_abs_max,
+                );
+                if algebra_norm_nonzero_fraction < policy.measured_algebra_norm_nonzero_fraction_min
+                {
+                    return Err(std::io::Error::other(format!(
+                        "{}: algebra_norm nonzero coverage too low ({:.6} < {:.6})",
+                        path.display(),
+                        algebra_norm_nonzero_fraction,
+                        policy.measured_algebra_norm_nonzero_fraction_min
+                    ))
+                    .into());
+                }
+                let spectral_total_power_nonzero_fraction = nonzero_fraction(
+                    &spectral_total_power,
+                    policy.measured_spectral_total_power_signal.min_abs_max,
+                );
+                if spectral_total_power_nonzero_fraction
+                    < policy.measured_spectral_total_power_nonzero_fraction_min
+                {
+                    return Err(std::io::Error::other(format!(
+                        "{}: spectral_total_power nonzero coverage too low ({:.6} < {:.6})",
+                        path.display(),
+                        spectral_total_power_nonzero_fraction,
+                        policy.measured_spectral_total_power_nonzero_fraction_min
+                    ))
+                    .into());
+                }
+                measured_summary = format!(
+                    ", enstrophy_measured_nonzero_fraction={:.4}, algebra_norm_nonzero_fraction={:.4}, spectral_total_power_nonzero_fraction={:.4}, u_rms_model_lock_fraction={:.6}, policy={}",
+                    enstrophy_measured_nonzero_fraction,
+                    algebra_norm_nonzero_fraction,
+                    spectral_total_power_nonzero_fraction,
+                    lock_fraction,
+                    loaded.source_path.display()
+                );
+            }
+
             println!(
-                "[OK]   {}: samples={}, drift={:.3e}, std={:.3e}, datasets_total={}, numeric_checked={}, unsupported={}, non_finite_numeric_datasets={}",
+                "[OK]   {}: profile={}, samples={}, drift={:.3e}, std={:.3e}, datasets_total={}, numeric_checked={}, unsupported={}, non_finite_numeric_datasets={}{}",
                 path.display(),
+                profile.as_str(),
                 quality.sample_count,
                 quality.abs_drift_final,
                 quality.std_dev,
                 report.datasets_total,
                 report.numeric_checked,
                 report.unsupported_numeric_layouts,
-                report.datasets_with_non_finite
+                report.datasets_with_non_finite,
+                measured_summary
             );
         }
         println!(
-            "WARP_ACCEPTANCE_GATE: PASS (files={}, rho_drift<= {:.3e}, rho_std<= {:.3e})",
+            "WARP_ACCEPTANCE_GATE: PASS (profile={}, files={}, rho_drift<= {:.3e}, rho_std<= {:.3e})",
+            profile.as_str(),
             paths.len(),
             thresholds.max_abs_drift_final,
             thresholds.max_std_dev
@@ -1306,6 +1638,7 @@ pub fn gate_h5_outputs(paths: &[PathBuf]) -> Result<(), Box<dyn Error>> {
 
     #[cfg(not(feature = "hdf5-export"))]
     {
+        let _ = profile;
         let _ = paths;
         Err(
             std::io::Error::other("cannot run warp acceptance gate without hdf5-export feature")

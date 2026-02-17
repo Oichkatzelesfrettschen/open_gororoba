@@ -1,0 +1,64 @@
+[meta]
+report_id = "warp_canonical_300s_measured_audit_2026_02_17"
+generated_at_utc = "2026-02-17T00:51:52Z"
+profile = "canonical_300s_measured"
+policy_source = "registry/engineering_standards.toml"
+summary = "Audit of existing 300s BF16 production artifacts under canonical_300s_measured gate."
+
+overall_pass = false
+artifacts_checked = 14
+run_groups_checked = 7
+run_groups_passed = 0
+run_groups_failed = 7
+
+[failure_class_counts]
+missing_required_trace_channel = 5
+canonical_signal_trivial = 1
+measured_enstrophy_trivial = 1
+
+[[run_group]]
+path = "data/h5/production/20260215-194515"
+status = "fail"
+failure_class = "missing_required_trace_channel"
+failure_detail = "warp_ring_128_BF16_300s.h5 missing trace component u_rms"
+
+[[run_group]]
+path = "data/h5/production/20260215-200556"
+status = "fail"
+failure_class = "missing_required_trace_channel"
+failure_detail = "warp_ring_128_BF16_300s.h5 missing trace component u_rms"
+
+[[run_group]]
+path = "data/h5/production/20260215-211758_precision_suite_rerun"
+status = "fail"
+failure_class = "missing_required_trace_channel"
+failure_detail = "warp_ring_128_GPU_BF16_300s.h5 missing trace component u_rms"
+
+[[run_group]]
+path = "data/h5/production/20260215-215445_bf16_fastpath_16x4x2"
+status = "fail"
+failure_class = "missing_required_trace_channel"
+failure_detail = "warp_ring_128_GPU_BF16_300s.h5 missing trace component u_rms"
+
+[[run_group]]
+path = "data/h5/production/20260216-184137_bf16_fastpath_8_4_4"
+status = "fail"
+failure_class = "missing_required_trace_channel"
+failure_detail = "warp_ring_128_GPU_BF16_300s.h5 missing trace component u_rms"
+
+[[run_group]]
+path = "data/h5/production/20260216-204128_bf16_fastpath_16_4_2"
+status = "fail"
+failure_class = "canonical_signal_trivial"
+failure_detail = "warp_ring_128_GPU_BF16_300s.h5 u_rms max_abs_value below canonical threshold"
+
+[[run_group]]
+path = "data/h5/production/20260216-211710_bf16_fastpath_v2_16_4_2"
+status = "fail"
+failure_class = "measured_enstrophy_trivial"
+failure_detail = "warp_ring_128_GPU_BF16_300s.h5 enstrophy_measured max_abs_value below measured threshold"
+
+[next_required_actions]
+item_1 = "Backfill measured channels (u_rms, mach_eff, re_eff, power_injection_proxy, dissipation_proxy) in runner exports for production lanes."
+item_2 = "Re-run matched FP32/BF16 300s with physically grounded forcing to satisfy nonzero measured-activity thresholds."
+item_3 = "Only execute BF16 block-dim sweep for claimable production after canonical_300s_measured gate passes."

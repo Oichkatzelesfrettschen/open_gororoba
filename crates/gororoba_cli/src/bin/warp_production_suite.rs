@@ -7,8 +7,8 @@ use std::path::PathBuf;
 use std::sync::atomic::Ordering;
 use std::time::Duration;
 use warp_runner::{
-    gate_h5_outputs, print_case_report, run_case, write_step_timing_report, BackendKind, BenchCase,
-    TimingMode,
+    gate_h5_outputs_with_profile, print_case_report, run_case, write_step_timing_report,
+    BackendKind, BenchCase, GateProfile, TimingMode,
 };
 
 fn parse_precision(input: &str) -> Option<Precision> {
@@ -32,6 +32,10 @@ fn precision_label(precision: Precision) -> &'static str {
         Precision::FP32 => "FP32",
         Precision::BF16 => "BF16",
     }
+}
+
+fn env_or_default(key: &str, default: &str) -> String {
+    std::env::var(key).unwrap_or_else(|_| format!("<default:{default}>"))
 }
 
 fn run_case_and_collect(
@@ -107,11 +111,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     let telemetry_csv = args.get(6).map(PathBuf::from);
 
     if duration_128_s <= 0.0 || duration_256_s <= 0.0 {
-        return Err(std::io::Error::new(
-            std::io::ErrorKind::InvalidInput,
-            "durations must be > 0",
-        )
-        .into());
+        return Err(
+            std::io::Error::new(std::io::ErrorKind::InvalidInput, "durations must be > 0").into(),
+        );
     }
     if trace_stride == 0 {
         return Err(std::io::Error::new(
@@ -141,6 +143,19 @@ fn main() -> Result<(), Box<dyn Error>> {
         run_fp32_reference,
         out_dir.display(),
         telemetry_path.display()
+    );
+    println!(
+        "forcing_env: GOROROBA_KOLMO_MODE_Y={}, GOROROBA_KOLMO_RE_TARGET={}, GOROROBA_KOLMO_MAX_MACH={}, GOROROBA_KOLMO_RHO0={}",
+        env_or_default("GOROROBA_KOLMO_MODE_Y", "1"),
+        env_or_default("GOROROBA_KOLMO_RE_TARGET", "64.0"),
+        env_or_default("GOROROBA_KOLMO_MAX_MACH", "0.08"),
+        env_or_default("GOROROBA_KOLMO_RHO0", "1.0")
+    );
+    println!(
+        "forcing_env: GOROROBA_BF16_MIN_DELTA_ULP_RATIO={}, GOROROBA_BF16_ENFORCE_MODE_FLOOR={}, GOROROBA_ENFORCE_MODE_FLOOR_ALL_PRECISIONS={}",
+        env_or_default("GOROROBA_BF16_MIN_DELTA_ULP_RATIO", "1.0e-2"),
+        env_or_default("GOROROBA_BF16_ENFORCE_MODE_FLOOR", "true"),
+        env_or_default("GOROROBA_ENFORCE_MODE_FLOOR_ALL_PRECISIONS", "false")
     );
 
     let mut artifacts = Vec::new();
@@ -183,8 +198,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
 
         println!();
-        println!("[GATE] Post-run finite check on /simulation/trace/rho_mean");
-        gate_h5_outputs(&artifacts)?;
+        println!("[GATE] Post-run canonical_300s_measured artifact gate");
+        gate_h5_outputs_with_profile(&artifacts, GateProfile::Canonical300sMeasured)?;
         Ok(())
     })();
 
@@ -197,6 +212,6 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
     run_result?;
-    println!("DONE: production suite complete and finite gate passed");
+    println!("DONE: production suite complete and canonical_300s_measured gate passed");
     Ok(())
 }
