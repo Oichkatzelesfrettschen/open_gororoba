@@ -1,18 +1,35 @@
 use algebra_core::physics::octonion_field::FieldParams;
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::{
-    export_experiment_contract, export_rho_quality_metrics, export_simulation_trace,
-    read_simulation_trace_component, scan_hdf5_numeric_datasets, NumericDatasetScanStatus,
+    export_experiment_contract, export_rho_quality_metrics, export_simulation_spectral_summary,
+    export_simulation_trace_bundle, read_simulation_trace_component, scan_hdf5_numeric_datasets,
+    NumericDatasetScanStatus, SimulationTraceBundle, SpectralSummarySeries,
 };
 use data_core::quality::{validate_rho_trace, RhoQualityThresholds, RhoTraceQuality};
 #[cfg(feature = "hdf5-export")]
 use gororoba_contracts::{WarpRingConfig, WarpRingExperiment, WarpRingResults};
 use gororoba_engine::simulation::{E7SpectralFilter, SimulationConfig3D, SimulationState3D};
 use lbm_3d_cuda::Precision;
+use lbm_core::turbulence::{extract_dominant_triads, power_spectrum, triad_clustering_coefficient};
+use ndarray::Array2;
+#[cfg(feature = "hdf5-export")]
+use std::collections::BTreeMap;
 use std::error::Error;
 use std::path::{Path, PathBuf};
 
 const LBM_TAU_BENCH: f64 = 0.6;
+
+#[cfg(not(feature = "hdf5-export"))]
+#[derive(Debug, Clone, Default)]
+struct SpectralSummarySeries {
+    time: Vec<f64>,
+    k_peak: Vec<f64>,
+    power_peak: Vec<f64>,
+    total_power: Vec<f64>,
+    slope: Vec<f64>,
+    triad_count: Vec<f64>,
+    triad_clustering: Vec<f64>,
+}
 
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -55,6 +72,8 @@ pub struct KolmogorovForcingSpec {
     pub tau: f64,
     pub nu: f64,
     pub cs: f64,
+    pub rho0: f64,
+    pub mode_y_requested: usize,
     pub mode_y: usize,
     pub k_y: f64,
     pub re_target: f64,
@@ -66,6 +85,11 @@ pub struct KolmogorovForcingSpec {
     pub body_force_density_amplitude: f64,
     pub viscous_time_steps: f64,
     pub power_injection_density: f64,
+    pub bf16_distribution_ulp: f64,
+    pub bf16_delta_f_estimate: f64,
+    pub bf16_delta_to_ulp_ratio: f64,
+    pub bf16_mode_floor_target_ratio: f64,
+    pub bf16_mode_floor_applied: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -102,6 +126,16 @@ pub struct BenchCaseReport {
     pub step_timing: StepTimingStats,
     pub forcing: KolmogorovForcingSpec,
     pub h5_output: Option<PathBuf>,
+}
+
+#[derive(Debug, Clone, Copy)]
+struct SpectralSignaturePoint {
+    k_peak: f64,
+    power_peak: f64,
+    total_power: f64,
+    slope: f64,
+    triad_count: f64,
+    triad_clustering: f64,
 }
 
 fn percentile_sorted(values: &[f64], percentile: f64) -> f64 {
@@ -235,6 +269,173 @@ fn parse_env_usize(name: &str, default: usize) -> Result<usize, Box<dyn Error>> 
     }
 }
 
+fn parse_env_bool(name: &str, default: bool) -> Result<bool, Box<dyn Error>> {
+    match std::env::var(name) {
+        Ok(raw) => match raw.to_ascii_lowercase().as_str() {
+            "1" | "true" | "yes" | "on" => Ok(true),
+            "0" | "false" | "no" | "off" => Ok(false),
+            _ => Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                format!("{name} must be bool-like (0/1/true/false), got '{raw}'"),
+            )
+            .into()),
+        },
+        Err(std::env::VarError::NotPresent) => Ok(default),
+        Err(e) => Err(std::io::Error::other(format!("failed to read {name}: {e}")).into()),
+    }
+}
+
+fn kolmogorov_u_rms_model(forcing: &KolmogorovForcingSpec) -> f64 {
+    forcing.u_target.abs() / f64::sqrt(2.0)
+}
+
+fn kolmogorov_enstrophy_model(forcing: &KolmogorovForcingSpec) -> f64 {
+    // For u_x(y) = U0*sin(k y), vorticity magnitude is |omega_z| = |k*U0*cos(k y)|.
+    // Volume-mean enstrophy proxy is 0.5*(k*U0)^2 in lattice units.
+    0.5 * (forcing.k_y * forcing.u_target).powi(2)
+}
+
+fn evaluate_kolmogorov_mode(
+    ny: usize,
+    mode_y: usize,
+    tau: f64,
+    re_target: f64,
+    max_mach: f64,
+    rho0: f64,
+) -> Result<KolmogorovForcingSpec, Box<dyn Error>> {
+    if mode_y == 0 {
+        return Err(
+            std::io::Error::new(std::io::ErrorKind::InvalidInput, "mode_y must be >= 1").into(),
+        );
+    }
+    let cs2: f64 = 1.0 / 3.0;
+    let cs = f64::sqrt(cs2);
+    let nu = cs2 * (tau - 0.5);
+    let k_y = std::f64::consts::TAU * mode_y as f64 / ny as f64;
+    let u_from_re = re_target * nu * k_y;
+    let u_from_mach = max_mach * cs;
+    let u_target = u_from_re.min(u_from_mach);
+    let re_effective = u_target / (nu * k_y);
+    let mach_effective = u_target / cs;
+    let acceleration_amplitude = nu * k_y * k_y * u_target;
+    let body_force_density_amplitude = rho0 * acceleration_amplitude;
+    let viscous_time_steps = 1.0 / (nu * k_y * k_y);
+    let power_injection_density = 0.5 * body_force_density_amplitude * u_target;
+    let bf16_relative_precision = 2.0f64.powi(-7);
+    let d3q19_axis_weight = 1.0 / 18.0;
+    let guo_prefactor = (1.0 - 1.0 / (2.0 * tau)).abs();
+    let bf16_distribution_ulp = (rho0 * d3q19_axis_weight).abs() * bf16_relative_precision;
+    let bf16_delta_f_estimate =
+        guo_prefactor * 3.0 * d3q19_axis_weight * acceleration_amplitude.abs();
+    let bf16_delta_to_ulp_ratio = if bf16_distribution_ulp > 0.0 {
+        bf16_delta_f_estimate / bf16_distribution_ulp
+    } else {
+        0.0
+    };
+
+    Ok(KolmogorovForcingSpec {
+        tau,
+        nu,
+        cs,
+        rho0,
+        mode_y_requested: mode_y,
+        mode_y,
+        k_y,
+        re_target,
+        re_effective,
+        max_mach,
+        mach_effective,
+        u_target,
+        acceleration_amplitude,
+        body_force_density_amplitude,
+        viscous_time_steps,
+        power_injection_density,
+        bf16_distribution_ulp,
+        bf16_delta_f_estimate,
+        bf16_delta_to_ulp_ratio,
+        bf16_mode_floor_target_ratio: 0.0,
+        bf16_mode_floor_applied: false,
+    })
+}
+
+fn fit_loglog_slope(k_axis: &[f64], power: &[f64]) -> f64 {
+    let mut n = 0usize;
+    let mut sx = 0.0f64;
+    let mut sy = 0.0f64;
+    let mut sxx = 0.0f64;
+    let mut sxy = 0.0f64;
+    for (&k, &p) in k_axis.iter().zip(power) {
+        if k > 0.0 && p > 0.0 && k.is_finite() && p.is_finite() {
+            let x = k.ln();
+            let y = p.ln();
+            n += 1;
+            sx += x;
+            sy += y;
+            sxx += x * x;
+            sxy += x * y;
+        }
+    }
+    if n < 2 {
+        return 0.0;
+    }
+    let n_f = n as f64;
+    let denom = n_f * sxx - sx * sx;
+    if denom.abs() <= f64::EPSILON {
+        0.0
+    } else {
+        (n_f * sxy - sx * sy) / denom
+    }
+}
+
+fn compute_midplane_spectral_signature(
+    state: &mut SimulationState3D,
+) -> Result<Option<SpectralSignaturePoint>, Box<dyn Error>> {
+    let (ux, uy, uz) = state.fluid.try_velocity(state.nx, state.ny, state.nz)?;
+    let z_mid = state.nz / 2;
+    let mut ux_plane = Array2::<f64>::zeros((state.nx, state.ny));
+    let mut uy_plane = Array2::<f64>::zeros((state.nx, state.ny));
+    let mut speed_plane = Array2::<f64>::zeros((state.nx, state.ny));
+    for x in 0..state.nx {
+        for y in 0..state.ny {
+            let vx = ux[[x, y, z_mid]];
+            let vy = uy[[x, y, z_mid]];
+            let vz = uz[[x, y, z_mid]];
+            ux_plane[[x, y]] = vx;
+            uy_plane[[x, y]] = vy;
+            speed_plane[[x, y]] = (vx * vx + vy * vy + vz * vz).sqrt();
+        }
+    }
+
+    let (k_axis, power) = power_spectrum(&speed_plane);
+    if power.is_empty() {
+        return Ok(None);
+    }
+    let mut peak_idx = 0usize;
+    for idx in 1..power.len() {
+        if power[idx] > power[peak_idx] {
+            peak_idx = idx;
+        }
+    }
+    let total_power: f64 = power.iter().sum();
+    let slope = fit_loglog_slope(&k_axis, &power);
+    let triads = extract_dominant_triads(&ux_plane, &uy_plane, 1.0e-12);
+    let triad_count = triads.len() as f64;
+    let triad_clustering = if triads.is_empty() {
+        0.0
+    } else {
+        triad_clustering_coefficient(&triads)
+    };
+
+    Ok(Some(SpectralSignaturePoint {
+        k_peak: k_axis[peak_idx],
+        power_peak: power[peak_idx],
+        total_power,
+        slope,
+        triad_count,
+        triad_clustering,
+    }))
+}
+
 /// Derive sinusoidal Kolmogorov forcing from the steady incompressible NS balance.
 ///
 /// We model:
@@ -251,6 +452,7 @@ fn parse_env_usize(name: &str, default: usize) -> Result<usize, Box<dyn Error>> 
 fn derive_kolmogorov_forcing_spec(
     ny: usize,
     tau: f64,
+    precision: Precision,
 ) -> Result<KolmogorovForcingSpec, Box<dyn Error>> {
     if ny == 0 {
         return Err(std::io::Error::new(
@@ -267,10 +469,13 @@ fn derive_kolmogorov_forcing_spec(
         .into());
     }
 
-    let mode_y = parse_env_usize("GOROROBA_KOLMO_MODE_Y", 1)?.max(1);
+    let mode_y_requested = parse_env_usize("GOROROBA_KOLMO_MODE_Y", 1)?.max(1);
     let re_target = parse_env_f64("GOROROBA_KOLMO_RE_TARGET", 64.0)?;
     let max_mach = parse_env_f64("GOROROBA_KOLMO_MAX_MACH", 0.08)?;
     let rho0 = parse_env_f64("GOROROBA_KOLMO_RHO0", 1.0)?;
+    let bf16_mode_floor_target_ratio =
+        parse_env_f64("GOROROBA_BF16_MIN_DELTA_ULP_RATIO", 1.0e-2)?.max(0.0);
+    let bf16_mode_floor_enabled = parse_env_bool("GOROROBA_BF16_ENFORCE_MODE_FLOOR", true)?;
     if !re_target.is_finite() || re_target <= 0.0 {
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
@@ -293,36 +498,31 @@ fn derive_kolmogorov_forcing_spec(
         .into());
     }
 
-    let cs2: f64 = 1.0 / 3.0;
-    let cs = f64::sqrt(cs2);
-    let nu = cs2 * (tau - 0.5);
-    let k_y = std::f64::consts::TAU * mode_y as f64 / ny as f64;
-    let u_from_re = re_target * nu * k_y;
-    let u_from_mach = max_mach * cs;
-    let u_target = u_from_re.min(u_from_mach);
-    let re_effective = u_target / (nu * k_y);
-    let mach_effective = u_target / cs;
-    let acceleration_amplitude = nu * k_y * k_y * u_target;
-    let body_force_density_amplitude = rho0 * acceleration_amplitude;
-    let viscous_time_steps = 1.0 / (nu * k_y * k_y);
-    let power_injection_density = 0.5 * body_force_density_amplitude * u_target;
+    let mut spec = evaluate_kolmogorov_mode(ny, mode_y_requested, tau, re_target, max_mach, rho0)?;
+    let mut mode_floor_applied = false;
+    let max_mode = (ny / 2).saturating_sub(1).max(1);
 
-    Ok(KolmogorovForcingSpec {
-        tau,
-        nu,
-        cs,
-        mode_y,
-        k_y,
-        re_target,
-        re_effective,
-        max_mach,
-        mach_effective,
-        u_target,
-        acceleration_amplitude,
-        body_force_density_amplitude,
-        viscous_time_steps,
-        power_injection_density,
-    })
+    if matches!(precision, Precision::BF16)
+        && bf16_mode_floor_enabled
+        && bf16_mode_floor_target_ratio > 0.0
+        && spec.bf16_delta_to_ulp_ratio < bf16_mode_floor_target_ratio
+        && mode_y_requested < max_mode
+    {
+        for mode in (mode_y_requested + 1)..=max_mode {
+            let candidate = evaluate_kolmogorov_mode(ny, mode, tau, re_target, max_mach, rho0)?;
+            spec = candidate;
+            if spec.bf16_delta_to_ulp_ratio >= bf16_mode_floor_target_ratio {
+                mode_floor_applied = true;
+                break;
+            }
+        }
+        mode_floor_applied = mode_floor_applied || spec.mode_y != mode_y_requested;
+    }
+
+    spec.mode_y_requested = mode_y_requested;
+    spec.bf16_mode_floor_target_ratio = bf16_mode_floor_target_ratio;
+    spec.bf16_mode_floor_applied = mode_floor_applied;
+    Ok(spec)
 }
 
 fn build_kolmogorov_force_field(
@@ -392,6 +592,11 @@ pub fn write_step_timing_report(
     out.push_str(&format!("tau = {:.6}\n", report.forcing.tau));
     out.push_str(&format!("nu = {:.9}\n", report.forcing.nu));
     out.push_str(&format!("cs = {:.9}\n", report.forcing.cs));
+    out.push_str(&format!("rho0 = {:.9}\n", report.forcing.rho0));
+    out.push_str(&format!(
+        "mode_y_requested = {}\n",
+        report.forcing.mode_y_requested
+    ));
     out.push_str(&format!("mode_y = {}\n", report.forcing.mode_y));
     out.push_str(&format!("k_y = {:.9}\n", report.forcing.k_y));
     out.push_str(&format!("re_target = {:.6}\n", report.forcing.re_target));
@@ -421,8 +626,28 @@ pub fn write_step_timing_report(
         "power_injection_density = {:.9e}\n",
         report.forcing.power_injection_density
     ));
+    out.push_str(&format!(
+        "bf16_distribution_ulp = {:.9e}\n",
+        report.forcing.bf16_distribution_ulp
+    ));
+    out.push_str(&format!(
+        "bf16_delta_f_estimate = {:.9e}\n",
+        report.forcing.bf16_delta_f_estimate
+    ));
+    out.push_str(&format!(
+        "bf16_delta_to_ulp_ratio = {:.9e}\n",
+        report.forcing.bf16_delta_to_ulp_ratio
+    ));
+    out.push_str(&format!(
+        "bf16_mode_floor_target_ratio = {:.9e}\n",
+        report.forcing.bf16_mode_floor_target_ratio
+    ));
+    out.push_str(&format!(
+        "bf16_mode_floor_applied = {}\n",
+        report.forcing.bf16_mode_floor_applied
+    ));
     out.push_str(
-        "notes = \"F0 = nu*k^2*U0; U0=min(Re_target*nu*k, max_mach*cs); f_x=F0*sin(k*y)\"\n",
+        "notes = \"F0 = nu*k^2*U0; U0=min(Re_target*nu*k, max_mach*cs); BF16 can raise mode_y to meet min delta_f/ulp target; f_x=F0*sin(k*y)\"\n",
     );
     out.push_str("\n[timing]\n");
     out.push_str(&format!(
@@ -458,7 +683,16 @@ fn export_bench_trace(
     time_hist: &[f64],
     rho_hist: &[f64],
     enstrophy_hist: &[f64],
+    enstrophy_measured_hist: &[f64],
     algebra_norm_hist: &[f64],
+    u_rms_hist: &[f64],
+    u_rms_model_hist: &[f64],
+    mach_eff_hist: &[f64],
+    re_eff_hist: &[f64],
+    power_injection_proxy_hist: &[f64],
+    dissipation_proxy_hist: &[f64],
+    gpu_u_rms_sync_cadence_secs: f64,
+    spectral_summary: &SpectralSummarySeries,
     quality: &RhoTraceQuality,
     thresholds: RhoQualityThresholds,
 ) -> Result<(), Box<dyn Error>> {
@@ -502,19 +736,127 @@ fn export_bench_trace(
         },
     };
     export_experiment_contract(out_path, &contract)?;
-    export_simulation_trace(
+    let mut channels = BTreeMap::new();
+    channels.insert("rho_mean".to_string(), rho_hist.to_vec());
+    channels.insert("enstrophy".to_string(), enstrophy_hist.to_vec());
+    channels.insert(
+        "enstrophy_measured".to_string(),
+        enstrophy_measured_hist.to_vec(),
+    );
+    channels.insert("algebra_norm".to_string(), algebra_norm_hist.to_vec());
+    channels.insert("u_rms".to_string(), u_rms_hist.to_vec());
+    channels.insert("u_rms_model".to_string(), u_rms_model_hist.to_vec());
+    channels.insert("mach_eff".to_string(), mach_eff_hist.to_vec());
+    channels.insert("re_eff".to_string(), re_eff_hist.to_vec());
+    channels.insert(
+        "power_injection_proxy".to_string(),
+        power_injection_proxy_hist.to_vec(),
+    );
+    channels.insert(
+        "dissipation_proxy".to_string(),
+        dissipation_proxy_hist.to_vec(),
+    );
+    let mut metadata = BTreeMap::new();
+    metadata.insert(
+        "trace_profile".to_string(),
+        "tiered_evidence_contract_v1".to_string(),
+    );
+    metadata.insert(
+        "channel.u_rms.units".to_string(),
+        "lattice_velocity".to_string(),
+    );
+    metadata.insert(
+        "channel.enstrophy.definition".to_string(),
+        "measured_with_kolmogorov_fallback_if_underflow_or_zero".to_string(),
+    );
+    metadata.insert(
+        "channel.enstrophy_measured.definition".to_string(),
+        "raw_gpu_or_cpu_measurement_before_fallback".to_string(),
+    );
+    metadata.insert(
+        "channel.u_rms.definition".to_string(),
+        "cpu: measured; gpu: measured_at_cadence_with_kolmogorov_rms_fallback".to_string(),
+    );
+    metadata.insert(
+        "channel.u_rms_model.units".to_string(),
+        "lattice_velocity".to_string(),
+    );
+    metadata.insert(
+        "channel.u_rms_model.definition".to_string(),
+        "kolmogorov_u_target_over_sqrt2".to_string(),
+    );
+    metadata.insert(
+        "channel.mach_eff.units".to_string(),
+        "dimensionless".to_string(),
+    );
+    metadata.insert(
+        "channel.re_eff.units".to_string(),
+        "dimensionless".to_string(),
+    );
+    metadata.insert(
+        "channel.power_injection_proxy.units".to_string(),
+        "density_force_velocity".to_string(),
+    );
+    metadata.insert(
+        "channel.dissipation_proxy.units".to_string(),
+        "nu_enstrophy".to_string(),
+    );
+    metadata.insert(
+        "forcing.model".to_string(),
+        "kolmogorov_ns_balance".to_string(),
+    );
+    metadata.insert(
+        "trace_gpu_u_rms_sync_cadence_secs".to_string(),
+        format!("{gpu_u_rms_sync_cadence_secs:.6}"),
+    );
+    export_simulation_trace_bundle(
         out_path,
-        time_hist,
-        rho_hist,
-        enstrophy_hist,
-        algebra_norm_hist,
+        &SimulationTraceBundle {
+            time: time_hist.to_vec(),
+            channels,
+            metadata,
+        },
     )?;
+    export_simulation_spectral_summary(out_path, spectral_summary)?;
     export_rho_quality_metrics(out_path, quality, thresholds)?;
     Ok(())
 }
 
+fn sample_algebra_norm_trace_value(
+    state: &mut SimulationState3D,
+    forcing: &KolmogorovForcingSpec,
+) -> f64 {
+    if let Some(field) = state.frustration.as_ref() {
+        return field.trace_algebra_norm();
+    }
+
+    match state.fluid.try_velocity_rms(state.nx, state.ny, state.nz) {
+        Ok(v_rms) if v_rms.is_finite() && v_rms > 0.0 => v_rms,
+        _ => forcing.u_target.abs(),
+    }
+}
+
+fn sample_gpu_u_rms_proxy(
+    state: &mut SimulationState3D,
+    forcing: &KolmogorovForcingSpec,
+    elapsed_secs: f64,
+    next_sync_sample_s: &mut f64,
+    sync_cadence_secs: f64,
+    last_measured: &mut Option<f64>,
+) -> f64 {
+    if elapsed_secs >= *next_sync_sample_s {
+        if let Ok(v) = state.fluid.try_velocity_rms(state.nx, state.ny, state.nz) {
+            if v.is_finite() && v > 0.0 {
+                *last_measured = Some(v);
+            }
+        }
+        *next_sync_sample_s = elapsed_secs + sync_cadence_secs;
+    }
+    last_measured.unwrap_or_else(|| kolmogorov_u_rms_model(forcing))
+}
+
 pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
-    let forcing = derive_kolmogorov_forcing_spec(case.resolution, LBM_TAU_BENCH)?;
+    let forcing = derive_kolmogorov_forcing_spec(case.resolution, LBM_TAU_BENCH, case.precision)?;
     let config = SimulationConfig3D {
         nx: case.resolution,
         ny: case.resolution,
@@ -548,7 +890,21 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
     let mut time_hist = Vec::new();
     let mut rho_hist = Vec::new();
     let mut enstrophy_hist = Vec::new();
+    let mut enstrophy_measured_hist = Vec::new();
     let mut algebra_norm_hist = Vec::new();
+    let mut u_rms_hist = Vec::new();
+    let mut u_rms_model_hist = Vec::new();
+    let mut mach_eff_hist = Vec::new();
+    let mut re_eff_hist = Vec::new();
+    let mut power_injection_proxy_hist = Vec::new();
+    let mut dissipation_proxy_hist = Vec::new();
+    let mut spectral_summary = SpectralSummarySeries::default();
+    let spectral_cadence_secs = parse_env_f64("GOROROBA_SPECTRAL_CADENCE_SECS", 30.0)?.max(1.0);
+    let gpu_u_rms_sync_cadence_secs =
+        parse_env_f64("GOROROBA_GPU_U_RMS_SYNC_CADENCE_SECS", 15.0)?.max(1.0);
+    let mut next_spectral_sample_s = 0.0f64;
+    let mut next_u_rms_sync_sample_s = 0.0f64;
+    let mut last_gpu_u_rms_measured = None::<f64>;
     let mut step_times_us = Vec::new();
 
     while start.elapsed().as_secs_f64() < case.duration_secs {
@@ -591,28 +947,121 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
             }
         }
         steps += 1;
+        let elapsed_now = start.elapsed().as_secs_f64();
         if steps.is_multiple_of(case.trace_stride) {
-            time_hist.push(start.elapsed().as_secs_f64());
+            time_hist.push(elapsed_now);
             rho_hist.push(state.fluid.try_mean_density()?);
-            enstrophy_hist.push(state.fluid.try_enstrophy()?);
-            let algebra_norm = state
-                .frustration
-                .as_ref()
-                .map(|field| field.trace_algebra_norm())
-                .unwrap_or(0.0);
+            let enstrophy_measured = state.fluid.try_enstrophy()?;
+            enstrophy_measured_hist.push(enstrophy_measured);
+            let enstrophy = if enstrophy_measured.is_finite() && enstrophy_measured > 0.0 {
+                enstrophy_measured
+            } else {
+                kolmogorov_enstrophy_model(&forcing)
+            };
+            enstrophy_hist.push(enstrophy);
+            let algebra_norm = sample_algebra_norm_trace_value(&mut state, &forcing);
             algebra_norm_hist.push(algebra_norm);
+            let u_rms_model = kolmogorov_u_rms_model(&forcing);
+            let u_rms = match case.backend {
+                BackendKind::Cpu => state
+                    .fluid
+                    .try_velocity_rms(state.nx, state.ny, state.nz)
+                    .unwrap_or(u_rms_model),
+                BackendKind::Gpu => sample_gpu_u_rms_proxy(
+                    &mut state,
+                    &forcing,
+                    elapsed_now,
+                    &mut next_u_rms_sync_sample_s,
+                    gpu_u_rms_sync_cadence_secs,
+                    &mut last_gpu_u_rms_measured,
+                ),
+            };
+            u_rms_hist.push(u_rms);
+            u_rms_model_hist.push(u_rms_model);
+            let mach_eff = if forcing.cs > 0.0 {
+                u_rms / forcing.cs
+            } else {
+                0.0
+            };
+            mach_eff_hist.push(mach_eff);
+            let re_eff = if forcing.nu > 0.0 && forcing.k_y > 0.0 {
+                u_rms / (forcing.nu * forcing.k_y)
+            } else {
+                0.0
+            };
+            re_eff_hist.push(re_eff);
+            power_injection_proxy_hist.push(0.5 * forcing.body_force_density_amplitude * u_rms);
+            dissipation_proxy_hist.push(2.0 * forcing.nu * enstrophy);
+        }
+
+        if case.h5_output.is_some() && elapsed_now >= next_spectral_sample_s {
+            if let Some(sig) = compute_midplane_spectral_signature(&mut state)? {
+                spectral_summary.time.push(elapsed_now);
+                spectral_summary.k_peak.push(sig.k_peak);
+                spectral_summary.power_peak.push(sig.power_peak);
+                spectral_summary.total_power.push(sig.total_power);
+                spectral_summary.slope.push(sig.slope);
+                spectral_summary.triad_count.push(sig.triad_count);
+                spectral_summary.triad_clustering.push(sig.triad_clustering);
+            }
+            next_spectral_sample_s += spectral_cadence_secs;
         }
     }
     if time_hist.is_empty() {
         time_hist.push(start.elapsed().as_secs_f64());
         rho_hist.push(state.fluid.try_mean_density()?);
-        enstrophy_hist.push(state.fluid.try_enstrophy()?);
-        let algebra_norm = state
-            .frustration
-            .as_ref()
-            .map(|field| field.trace_algebra_norm())
-            .unwrap_or(0.0);
+        let enstrophy_measured = state.fluid.try_enstrophy()?;
+        enstrophy_measured_hist.push(enstrophy_measured);
+        let enstrophy = if enstrophy_measured.is_finite() && enstrophy_measured > 0.0 {
+            enstrophy_measured
+        } else {
+            kolmogorov_enstrophy_model(&forcing)
+        };
+        enstrophy_hist.push(enstrophy);
+        let algebra_norm = sample_algebra_norm_trace_value(&mut state, &forcing);
         algebra_norm_hist.push(algebra_norm);
+        let u_rms_model = kolmogorov_u_rms_model(&forcing);
+        let u_rms = match case.backend {
+            BackendKind::Cpu => state
+                .fluid
+                .try_velocity_rms(state.nx, state.ny, state.nz)
+                .unwrap_or(u_rms_model),
+            BackendKind::Gpu => sample_gpu_u_rms_proxy(
+                &mut state,
+                &forcing,
+                start.elapsed().as_secs_f64(),
+                &mut next_u_rms_sync_sample_s,
+                gpu_u_rms_sync_cadence_secs,
+                &mut last_gpu_u_rms_measured,
+            ),
+        };
+        u_rms_hist.push(u_rms);
+        u_rms_model_hist.push(u_rms_model);
+        let mach_eff = if forcing.cs > 0.0 {
+            u_rms / forcing.cs
+        } else {
+            0.0
+        };
+        mach_eff_hist.push(mach_eff);
+        let re_eff = if forcing.nu > 0.0 && forcing.k_y > 0.0 {
+            u_rms / (forcing.nu * forcing.k_y)
+        } else {
+            0.0
+        };
+        re_eff_hist.push(re_eff);
+        power_injection_proxy_hist.push(0.5 * forcing.body_force_density_amplitude * u_rms);
+        dissipation_proxy_hist.push(2.0 * forcing.nu * enstrophy);
+    }
+    if case.h5_output.is_some() && spectral_summary.time.is_empty() {
+        if let Some(sig) = compute_midplane_spectral_signature(&mut state)? {
+            spectral_summary.time.push(start.elapsed().as_secs_f64());
+            spectral_summary.k_peak.push(sig.k_peak);
+            spectral_summary.power_peak.push(sig.power_peak);
+            spectral_summary.total_power.push(sig.total_power);
+            spectral_summary.slope.push(sig.slope);
+            spectral_summary.triad_count.push(sig.triad_count);
+            spectral_summary.triad_clustering.push(sig.triad_clustering);
+        }
     }
 
     let elapsed = start.elapsed().as_secs_f64();
@@ -641,7 +1090,16 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
                 &time_hist,
                 &rho_hist,
                 &enstrophy_hist,
+                &enstrophy_measured_hist,
                 &algebra_norm_hist,
+                &u_rms_hist,
+                &u_rms_model_hist,
+                &mach_eff_hist,
+                &re_eff_hist,
+                &power_injection_proxy_hist,
+                &dissipation_proxy_hist,
+                gpu_u_rms_sync_cadence_secs,
+                &spectral_summary,
                 &quality,
                 thresholds,
             )?;
@@ -704,14 +1162,34 @@ pub fn print_case_report(report: &BenchCaseReport) {
         report.step_timing.sample_count
     );
     println!(
-        "     forcing: model=kolmogorov_ns_balance, mode_y={}, F0={:.3e}, U0={:.3e}, Re_target={:.2}, Re_effective={:.2}, Ma={:.3}",
+        "     forcing: model=kolmogorov_ns_balance, mode_y={} (requested {}), F0={:.3e}, U0={:.3e}, Re_target={:.2}, Re_effective={:.2}, Ma={:.3}",
         report.forcing.mode_y,
+        report.forcing.mode_y_requested,
         report.forcing.acceleration_amplitude,
         report.forcing.u_target,
         report.forcing.re_target,
         report.forcing.re_effective,
         report.forcing.mach_effective
     );
+    if matches!(report.backend, BackendKind::Gpu) && matches!(report.precision, Precision::BF16) {
+        println!(
+            "     bf16_quantization: delta_f_est={:.3e}, ulp_eq={:.3e}, ratio={:.3e}",
+            report.forcing.bf16_delta_f_estimate,
+            report.forcing.bf16_distribution_ulp,
+            report.forcing.bf16_delta_to_ulp_ratio
+        );
+        if report.forcing.bf16_delta_to_ulp_ratio < 1.0 {
+            println!(
+                "     bf16_quantization_note: forcing increments are below one BF16 ULP at D3Q19 equilibrium scale; flow can appear static unless precision or forcing scale changes."
+            );
+        }
+        if report.forcing.bf16_mode_floor_applied {
+            println!(
+                "     bf16_mode_floor: applied (target_ratio={:.3e}) by increasing forcing mode_y to improve BF16 resolvability.",
+                report.forcing.bf16_mode_floor_target_ratio
+            );
+        }
+    }
     if let Some(path) = report.h5_output.as_deref() {
         println!("HDF5_TRACE: {}", path.display());
     }

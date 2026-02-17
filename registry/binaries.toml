@@ -299,6 +299,11 @@ crate = "gororoba_cli"
 description = "Automated BF16 block-dim sweep plus tuned 300s production rerun and fastpath comparison report generation"
 
 [[binary]]
+name = "warp-fastpath-analyze"
+crate = "gororoba_cli"
+description = "Analyze existing BF16 fastpath artifacts (timing regime, periodic tails, measured-vs-model fidelity, spectral richness) and emit TOML report"
+
+[[binary]]
 name = "rho-trace-gate"
 crate = "gororoba_cli"
 description = "Fail-closed gate for /simulation/trace/rho_mean across one or more HDF5 artifacts"

@@ -1,39 +1,105 @@
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::{
-    read_simulation_trace_component, scan_hdf5_numeric_datasets, NumericDatasetScanStatus,
+    read_simulation_spectral_component, read_simulation_trace_component,
+    scan_hdf5_numeric_datasets, NumericDatasetScanStatus,
 };
 #[cfg(feature = "hdf5-export")]
-use data_core::quality::{validate_rho_trace, RhoQualityThresholds};
+use data_core::quality::{
+    validate_rho_trace, validate_scalar_trace_signal, RhoQualityThresholds, ScalarTraceThresholds,
+};
 #[cfg(feature = "hdf5-export")]
 use std::collections::BTreeSet;
 use std::error::Error;
 #[cfg(feature = "hdf5-export")]
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 #[derive(Debug, Clone)]
 #[cfg(feature = "hdf5-export")]
 struct CliArgs {
     allow_empty: bool,
+    profile: GateProfile,
     inputs: Vec<String>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg(feature = "hdf5-export")]
+enum GateProfile {
+    Smoke,
+    Research,
+    Canonical300s,
+    Canonical300sMeasured,
+}
+
+#[cfg(feature = "hdf5-export")]
+impl GateProfile {
+    fn parse(raw: &str) -> Result<Self, Box<dyn Error>> {
+        match raw {
+            "smoke" => Ok(Self::Smoke),
+            "research" => Ok(Self::Research),
+            "canonical_300s" | "canonical-300s" => Ok(Self::Canonical300s),
+            "canonical_300s_measured" | "canonical-300s-measured" | "canonical_300s_strict"
+            | "canonical-300s-strict" => Ok(Self::Canonical300sMeasured),
+            other => Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                format!(
+                    "invalid profile '{other}', expected smoke|research|canonical_300s|canonical_300s_measured"
+                ),
+            )
+            .into()),
+        }
+    }
+
+    fn as_str(self) -> &'static str {
+        match self {
+            Self::Smoke => "smoke",
+            Self::Research => "research",
+            Self::Canonical300s => "canonical_300s",
+            Self::Canonical300sMeasured => "canonical_300s_measured",
+        }
+    }
 }
 
 #[cfg(feature = "hdf5-export")]
 fn parse_args() -> Result<CliArgs, Box<dyn Error>> {
+    let args: Vec<String> = std::env::args().skip(1).collect();
     let mut allow_empty = false;
+    let mut profile = GateProfile::Research;
     let mut inputs = Vec::new();
-    for arg in std::env::args().skip(1) {
+    let mut idx = 0usize;
+    while idx < args.len() {
+        let arg = &args[idx];
         if arg == "--allow-empty" {
             allow_empty = true;
+            idx += 1;
+            continue;
+        }
+        if arg == "--profile" {
+            let value = args.get(idx + 1).ok_or_else(|| {
+                std::io::Error::new(
+                    std::io::ErrorKind::InvalidInput,
+                    "--profile requires a value",
+                )
+            })?;
+            profile = GateProfile::parse(value)?;
+            idx += 2;
+            continue;
+        }
+        if let Some(value) = arg.strip_prefix("--profile=") {
+            profile = GateProfile::parse(value)?;
+            idx += 1;
+            continue;
         } else if arg == "--help" || arg == "-h" {
             println!(
-                "Usage: warp-acceptance-gate [--allow-empty] <h5-path-or-glob> [more paths/globs]"
+                "Usage: warp-acceptance-gate [--allow-empty] [--profile smoke|research|canonical_300s|canonical_300s_measured] <h5-path-or-glob> [more paths/globs]"
             );
             println!(
                 "Runs both simulation-trace checks and recursive numeric HDF5 checks in one fail-closed gate."
             );
             std::process::exit(0);
         } else {
-            inputs.push(arg);
+            inputs.push(arg.clone());
+            idx += 1;
+            continue;
         }
     }
     if inputs.is_empty() {
@@ -45,6 +111,7 @@ fn parse_args() -> Result<CliArgs, Box<dyn Error>> {
     }
     Ok(CliArgs {
         allow_empty,
+        profile,
         inputs,
     })
 }
@@ -95,6 +162,51 @@ fn all_finite(values: &[f64]) -> bool {
 #[cfg(feature = "hdf5-export")]
 fn nondecreasing(values: &[f64]) -> bool {
     values.windows(2).all(|w| w[1] >= w[0])
+}
+
+#[cfg(feature = "hdf5-export")]
+fn require_trace_component(path: &Path, name: &str, n: usize) -> Result<Vec<f64>, Box<dyn Error>> {
+    let values = read_simulation_trace_component(path, name).map_err(|e| {
+        std::io::Error::other(format!(
+            "{}: missing required trace component '{name}': {e}",
+            path.display()
+        ))
+    })?;
+    if values.len() != n {
+        return Err(std::io::Error::other(format!(
+            "{}: trace length mismatch for '{}': expected {}, got {}",
+            path.display(),
+            name,
+            n,
+            values.len()
+        ))
+        .into());
+    }
+    if !all_finite(&values) {
+        return Err(std::io::Error::other(format!(
+            "{}: non-finite values in trace component '{}'",
+            path.display(),
+            name
+        ))
+        .into());
+    }
+    Ok(values)
+}
+
+#[cfg(feature = "hdf5-export")]
+fn model_lock_fraction(measured: &[f64], model: &[f64], abs_eps: f64, rel_eps: f64) -> f64 {
+    let n = measured.len().min(model.len());
+    if n == 0 {
+        return 1.0;
+    }
+    let mut locked = 0usize;
+    for i in 0..n {
+        let tol = abs_eps.max(rel_eps * model[i].abs());
+        if (measured[i] - model[i]).abs() <= tol {
+            locked += 1;
+        }
+    }
+    locked as f64 / n as f64
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -192,11 +304,171 @@ fn main() -> Result<(), Box<dyn Error>> {
                 .into());
             }
             let rho_quality = validate_rho_trace(&rho, thresholds).map_err(|e| {
-                std::io::Error::other(format!(
-                    "{}: rho quality gate failed: {e}",
-                    path.display()
-                ))
+                std::io::Error::other(format!("{}: rho quality gate failed: {e}", path.display()))
             })?;
+
+            if matches!(
+                cli.profile,
+                GateProfile::Canonical300s | GateProfile::Canonical300sMeasured
+            ) {
+                let nonzero_thresholds = ScalarTraceThresholds {
+                    // Canonical traces can be near-steady for some physically valid
+                    // channels (e.g., power injection proxy in quasi-laminar regimes),
+                    // so we require finite + non-zero magnitude and avoid mandatory
+                    // variance for those channels.
+                    min_abs_max: 1.0e-14,
+                    min_std_dev: 0.0,
+                };
+                let required_channels = [
+                    "u_rms",
+                    "mach_eff",
+                    "re_eff",
+                    "power_injection_proxy",
+                    "dissipation_proxy",
+                ];
+                for channel in required_channels {
+                    let values = require_trace_component(path, channel, n)?;
+                    validate_scalar_trace_signal(channel, &values, nonzero_thresholds).map_err(
+                        |e| {
+                            std::io::Error::other(format!(
+                                "{}: canonical signal gate failed: {e}",
+                                path.display()
+                            ))
+                        },
+                    )?;
+                }
+                let enstrophy_thresholds = ScalarTraceThresholds {
+                    min_abs_max: 1.0e-20,
+                    min_std_dev: 0.0,
+                };
+                validate_scalar_trace_signal("enstrophy", &enstrophy, enstrophy_thresholds)
+                    .map_err(|e| {
+                        std::io::Error::other(format!(
+                            "{}: canonical enstrophy signal gate failed: {e}",
+                            path.display()
+                        ))
+                    })?;
+
+                let spectral_time =
+                    read_simulation_spectral_component(path, "time").map_err(|e| {
+                        std::io::Error::other(format!(
+                            "{}: missing spectral summary time axis: {e}",
+                            path.display()
+                        ))
+                    })?;
+                if spectral_time.is_empty() {
+                    return Err(std::io::Error::other(format!(
+                        "{}: spectral summary is empty for canonical profile",
+                        path.display()
+                    ))
+                    .into());
+                }
+                if !all_finite(&spectral_time) || !nondecreasing(&spectral_time) {
+                    return Err(std::io::Error::other(format!(
+                        "{}: invalid spectral time axis",
+                        path.display()
+                    ))
+                    .into());
+                }
+                for channel in [
+                    "k_peak",
+                    "total_power",
+                    "slope",
+                    "triad_count",
+                    "triad_clustering",
+                ] {
+                    let values =
+                        read_simulation_spectral_component(path, channel).map_err(|e| {
+                            std::io::Error::other(format!(
+                                "{}: missing spectral component '{}': {e}",
+                                path.display(),
+                                channel
+                            ))
+                        })?;
+                    if values.len() != spectral_time.len() {
+                        return Err(std::io::Error::other(format!(
+                            "{}: spectral length mismatch for '{}': expected {}, got {}",
+                            path.display(),
+                            channel,
+                            spectral_time.len(),
+                            values.len()
+                        ))
+                        .into());
+                    }
+                    if !all_finite(&values) {
+                        return Err(std::io::Error::other(format!(
+                            "{}: non-finite values in spectral component '{}'",
+                            path.display(),
+                            channel
+                        ))
+                        .into());
+                    }
+                }
+            }
+            if cli.profile == GateProfile::Canonical300sMeasured {
+                let measured_thresholds = ScalarTraceThresholds {
+                    min_abs_max: 1.0e-20,
+                    min_std_dev: 0.0,
+                };
+                let enstrophy_measured = require_trace_component(path, "enstrophy_measured", n)?;
+                validate_scalar_trace_signal(
+                    "enstrophy_measured",
+                    &enstrophy_measured,
+                    measured_thresholds,
+                )
+                .map_err(|e| {
+                    std::io::Error::other(format!(
+                        "{}: measured enstrophy gate failed: {e}",
+                        path.display()
+                    ))
+                })?;
+
+                let algebra_thresholds = ScalarTraceThresholds {
+                    min_abs_max: 1.0e-20,
+                    min_std_dev: 0.0,
+                };
+                validate_scalar_trace_signal("algebra_norm", &algebra_norm, algebra_thresholds)
+                    .map_err(|e| {
+                        std::io::Error::other(format!(
+                            "{}: measured algebra_norm gate failed: {e}",
+                            path.display()
+                        ))
+                    })?;
+
+                let u_rms = require_trace_component(path, "u_rms", n)?;
+                let u_rms_model = require_trace_component(path, "u_rms_model", n)?;
+                let lock_fraction = model_lock_fraction(&u_rms, &u_rms_model, 1.0e-14, 1.0e-6);
+                if lock_fraction >= 0.999 {
+                    return Err(std::io::Error::other(format!(
+                        "{}: u_rms is model-locked (fraction={:.6}); measured activity gate failed",
+                        path.display(),
+                        lock_fraction
+                    ))
+                    .into());
+                }
+
+                let spectral_total_power = read_simulation_spectral_component(path, "total_power")
+                    .map_err(|e| {
+                        std::io::Error::other(format!(
+                            "{}: missing spectral component 'total_power': {e}",
+                            path.display()
+                        ))
+                    })?;
+                validate_scalar_trace_signal(
+                    "spectral_total_power",
+                    &spectral_total_power,
+                    ScalarTraceThresholds {
+                        min_abs_max: 1.0e-24,
+                        min_std_dev: 0.0,
+                    },
+                )
+                .map_err(|e| {
+                    std::io::Error::other(format!(
+                        "{}: measured spectral gate failed: {e}",
+                        path.display()
+                    ))
+                })?;
+            }
 
             file_count += 1;
             datasets_total += report.datasets_total;
@@ -204,8 +476,9 @@ fn main() -> Result<(), Box<dyn Error>> {
             unsupported_layouts += report.unsupported_numeric_layouts;
             non_finite_numeric_datasets += report.datasets_with_non_finite;
             println!(
-                "[OK]   {}: n={}, rho_final={:.6}, rho_drift={:.3e}, rho_std={:.3e}, datasets_total={}, numeric_checked={}, unsupported={}, non_finite_numeric_datasets={}",
+                "[OK]   {}: profile={}, n={}, rho_final={:.6}, rho_drift={:.3e}, rho_std={:.3e}, datasets_total={}, numeric_checked={}, unsupported={}, non_finite_numeric_datasets={}",
                 path.display(),
+                cli.profile.as_str(),
                 n,
                 rho_quality.final_value,
                 rho_quality.abs_drift_final,
@@ -218,7 +491,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
 
         println!(
-            "WARP_ACCEPTANCE_GATE: PASS (files={}, datasets_total={}, numeric_checked={}, unsupported={}, non_finite_numeric_datasets={}, rho_drift<= {:.3e}, rho_std<= {:.3e})",
+            "WARP_ACCEPTANCE_GATE: PASS (profile={}, files={}, datasets_total={}, numeric_checked={}, unsupported={}, non_finite_numeric_datasets={}, rho_drift<= {:.3e}, rho_std<= {:.3e})",
+            cli.profile.as_str(),
             file_count,
             datasets_total,
             numeric_checked,
