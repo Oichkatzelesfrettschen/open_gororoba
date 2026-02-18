@@ -123,7 +123,7 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
     axis.set_y_label("rho_mean (final)");
 
     let picture = Picture::from(axis);
-    let tikz_path = "thesis_betti_sweep.tex";
+    let tikz_path = "docs/latex/thesis_betti_sweep.tex";
     std::fs::write(tikz_path, picture.to_string())?;
     info!("TikZ plot saved to {}", tikz_path);
 
@@ -138,8 +138,9 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
 	"#,
         picture
     );
-    std::fs::write("thesis_standalone.tex", latex_content)?;
-    info!("Standalone LaTeX wrapper saved to thesis_standalone.tex");
+    let standalone_path = "docs/latex/thesis_standalone.tex";
+    std::fs::write(standalone_path, latex_content)?;
+    info!("Standalone LaTeX wrapper saved to {}", standalone_path);
 
     info!("Sweep complete.");
     Ok(())

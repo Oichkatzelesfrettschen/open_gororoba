@@ -753,10 +753,11 @@ fetch-data: install
 
 # ---- Simulation runs ----
 
-run: install
-	PYTHONWARNINGS=error $(PYTHON) src/sedenion_field_sim.py
-	PYTHONWARNINGS=error $(PYTHON) src/modular_classical_sim.py
-	PYTHONWARNINGS=error $(PYTHON) src/entropy_pde_fit.py
+run: rust-smoke
+	cargo run --release --bin thesis_lab -- --steps 100 --seed 42
+	cargo run --release --bin modular_chaos -- --steps 100 --n 256
+	cargo run --release --bin entropy_pde -- --depth 50
+	@echo "OK: All core Rust simulations completed and artifacts generated."
 
 # ---- Coq proofs ----
 
