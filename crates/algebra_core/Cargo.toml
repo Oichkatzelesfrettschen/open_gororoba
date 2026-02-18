@@ -36,6 +36,7 @@ cudarc = { workspace = true, optional = true }
 [features]
 default = []
 gpu = ["cudarc"]
+wedged = []
 
 [dev-dependencies]
 approx = { workspace = true }

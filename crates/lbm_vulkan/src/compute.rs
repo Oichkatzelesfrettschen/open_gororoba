@@ -10,7 +10,7 @@ use std::sync::Mutex;
 #[allow(dead_code)]
 pub struct LbmComputePipeline {
     device: Arc<Device>,
-    allocator: Arc<Mutex<Allocator>>, // Needed for Drop
+    allocator: Arc<Mutex<Allocator>>,
     pipeline: vk::Pipeline,
     pipeline_layout: vk::PipelineLayout,
     descriptor_set_layout: vk::DescriptorSetLayout,
@@ -22,33 +22,34 @@ pub struct LbmComputePipeline {
     f_out_buffer: Option<(vk::Buffer, Allocation)>,
     rho_buffer: Option<(vk::Buffer, Allocation)>,
     u_buffer: Option<(vk::Buffer, Allocation)>,
+    tau_buffer: Option<(vk::Buffer, Allocation)>,
+    force_buffer: Option<(vk::Buffer, Allocation)>,
+    entropy_buffer: Option<(vk::Buffer, Allocation)>,
     
-    grid_dim: (u32, u32, u32),
+    pub grid_dim: (u32, u32, u32),
 }
 
 impl Drop for LbmComputePipeline {
     fn drop(&mut self) {
         unsafe {
             self.device.device_wait_idle().unwrap();
-
             let mut allocator = self.allocator.lock().unwrap();
             
-            if let Some((buffer, allocation)) = self.f_in_buffer.take() {
-                self.device.destroy_buffer(buffer, None);
-                allocator.free(allocation).unwrap();
-            }
-            if let Some((buffer, allocation)) = self.f_out_buffer.take() {
-                self.device.destroy_buffer(buffer, None);
-                allocator.free(allocation).unwrap();
-            }
-            if let Some((buffer, allocation)) = self.rho_buffer.take() {
-                self.device.destroy_buffer(buffer, None);
-                allocator.free(allocation).unwrap();
-            }
-            if let Some((buffer, allocation)) = self.u_buffer.take() {
-                self.device.destroy_buffer(buffer, None);
-                allocator.free(allocation).unwrap();
-            }
+            // Helper to free
+            let mut free = |opt: &mut Option<(vk::Buffer, Allocation)>| {
+                if let Some((b, a)) = opt.take() {
+                    self.device.destroy_buffer(b, None);
+                    allocator.free(a).unwrap();
+                }
+            };
+
+            free(&mut self.f_in_buffer);
+            free(&mut self.f_out_buffer);
+            free(&mut self.rho_buffer);
+            free(&mut self.u_buffer);
+            free(&mut self.tau_buffer);
+            free(&mut self.force_buffer);
+            free(&mut self.entropy_buffer);
 
             self.device.destroy_descriptor_pool(self.descriptor_pool, None);
             self.device.destroy_descriptor_set_layout(self.descriptor_set_layout, None);
@@ -58,6 +59,7 @@ impl Drop for LbmComputePipeline {
     }
 }
 
+#[allow(dead_code)]
 impl LbmComputePipeline {
     pub fn new(ctx: &VulkanContext, grid_dim: (u32, u32, u32)) -> Result<Self, Box<dyn std::error::Error>> {
         let device = ctx.device.clone();
@@ -82,36 +84,17 @@ impl LbmComputePipeline {
         let shader_module = unsafe { device.create_shader_module(&shader_module_create_info, None) }?;
 
         // 2. Descriptor Layout
-        let bindings = [
-            vk::DescriptorSetLayoutBinding {
-                binding: 0,
+        // Bindings 0..6: Storage Buffers
+        let mut bindings = Vec::new();
+        for i in 0..7 {
+            bindings.push(vk::DescriptorSetLayoutBinding {
+                binding: i,
                 descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
                 descriptor_count: 1,
                 stage_flags: vk::ShaderStageFlags::COMPUTE,
                 ..Default::default()
-            },
-            vk::DescriptorSetLayoutBinding {
-                binding: 1,
-                descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
-                descriptor_count: 1,
-                stage_flags: vk::ShaderStageFlags::COMPUTE,
-                ..Default::default()
-            },
-            vk::DescriptorSetLayoutBinding {
-                binding: 2,
-                descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
-                descriptor_count: 1,
-                stage_flags: vk::ShaderStageFlags::COMPUTE,
-                ..Default::default()
-            },
-            vk::DescriptorSetLayoutBinding {
-                binding: 3,
-                descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
-                descriptor_count: 1,
-                stage_flags: vk::ShaderStageFlags::COMPUTE,
-                ..Default::default()
-            },
-        ];
+            });
+        }
 
         let descriptor_layout_info = vk::DescriptorSetLayoutCreateInfo {
             s_type: vk::StructureType::DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
@@ -157,14 +140,13 @@ impl LbmComputePipeline {
         let pipeline = unsafe { device.create_compute_pipelines(vk::PipelineCache::null(), &[pipeline_info], None) }
             .map_err(|e| e.1)?[0];
 
-        // Cleanup shader module
         unsafe { device.destroy_shader_module(shader_module, None) };
 
         // 5. Allocate Buffers
         let n_cells = (grid_dim.0 * grid_dim.1 * grid_dim.2) as u64;
-        let f_size = n_cells * 19 * 4; // float * 19
-        let rho_size = n_cells * 4;    // float
-        let u_size = n_cells * 3 * 4;  // float * 3
+        let f_size = n_cells * 19 * 4;
+        let scalar_size = n_cells * 4;
+        let vec3_size = n_cells * 3 * 4;
 
         let mut allocator = ctx.allocator.lock().unwrap();
         
@@ -181,7 +163,7 @@ impl LbmComputePipeline {
             let allocation = allocator.allocate(&AllocationCreateDesc {
                 name,
                 requirements: reqs,
-                location: MemoryLocation::GpuOnly,
+                location: MemoryLocation::CpuToGpu, // HOST VISIBLE for easy map
                 linear: true, 
                 allocation_scheme: AllocationScheme::GpuAllocatorManaged,
             })?;
@@ -189,15 +171,23 @@ impl LbmComputePipeline {
             Ok((buffer, allocation))
         };
 
-        let f_in = create_buffer(f_size, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_DST, "f_in")?;
-        let f_out = create_buffer(f_size, vk::BufferUsageFlags::STORAGE_BUFFER, "f_out")?;
-        let rho = create_buffer(rho_size, vk::BufferUsageFlags::STORAGE_BUFFER, "rho")?;
-        let u = create_buffer(u_size, vk::BufferUsageFlags::STORAGE_BUFFER, "u")?;
+        // Inputs: CPU writes, GPU reads
+        let usage_in = vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_DST;
+        // Outputs: GPU writes, CPU reads
+        let usage_out = vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC;
+
+        let f_in = create_buffer(f_size, usage_in, "f_in")?;
+        let f_out = create_buffer(f_size, usage_out, "f_out")?;
+        let rho = create_buffer(scalar_size, usage_out, "rho")?;
+        let u = create_buffer(vec3_size, usage_out, "u")?;
+        let tau = create_buffer(scalar_size, usage_in, "tau")?;
+        let force = create_buffer(vec3_size, usage_in, "force")?;
+        let entropy = create_buffer(scalar_size, usage_out, "entropy")?;
 
         // 6. Descriptor Sets
         let pool_size = vk::DescriptorPoolSize {
             ty: vk::DescriptorType::STORAGE_BUFFER,
-            descriptor_count: 4,
+            descriptor_count: 7,
         };
         let pool_info = vk::DescriptorPoolCreateInfo {
             s_type: vk::StructureType::DESCRIPTOR_POOL_CREATE_INFO,
@@ -223,46 +213,23 @@ impl LbmComputePipeline {
             vk::DescriptorBufferInfo { buffer: f_out.0, offset: 0, range: vk::WHOLE_SIZE },
             vk::DescriptorBufferInfo { buffer: rho.0, offset: 0, range: vk::WHOLE_SIZE },
             vk::DescriptorBufferInfo { buffer: u.0, offset: 0, range: vk::WHOLE_SIZE },
+            vk::DescriptorBufferInfo { buffer: tau.0, offset: 0, range: vk::WHOLE_SIZE },
+            vk::DescriptorBufferInfo { buffer: force.0, offset: 0, range: vk::WHOLE_SIZE },
+            vk::DescriptorBufferInfo { buffer: entropy.0, offset: 0, range: vk::WHOLE_SIZE },
         ];
         
-        let writes = [
-            vk::WriteDescriptorSet {
+        let mut writes = Vec::new();
+        for (i, buf_info) in buffer_infos.iter().enumerate() {
+            writes.push(vk::WriteDescriptorSet {
                 s_type: vk::StructureType::WRITE_DESCRIPTOR_SET,
                 dst_set: descriptor_sets[0],
-                dst_binding: 0,
+                dst_binding: i as u32,
                 descriptor_count: 1,
                 descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
-                p_buffer_info: &buffer_infos[0],
+                p_buffer_info: buf_info,
                 ..Default::default()
-            },
-             vk::WriteDescriptorSet {
-                s_type: vk::StructureType::WRITE_DESCRIPTOR_SET,
-                dst_set: descriptor_sets[0],
-                dst_binding: 1,
-                descriptor_count: 1,
-                descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
-                p_buffer_info: &buffer_infos[1],
-                ..Default::default()
-            },
-             vk::WriteDescriptorSet {
-                s_type: vk::StructureType::WRITE_DESCRIPTOR_SET,
-                dst_set: descriptor_sets[0],
-                dst_binding: 2,
-                descriptor_count: 1,
-                descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
-                p_buffer_info: &buffer_infos[2],
-                ..Default::default()
-            },
-             vk::WriteDescriptorSet {
-                s_type: vk::StructureType::WRITE_DESCRIPTOR_SET,
-                dst_set: descriptor_sets[0],
-                dst_binding: 3,
-                descriptor_count: 1,
-                descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
-                p_buffer_info: &buffer_infos[3],
-                ..Default::default()
-            },
-        ];
+            });
+        }
         unsafe { device.update_descriptor_sets(&writes, &[]) };
 
         Ok(Self {
@@ -277,8 +244,36 @@ impl LbmComputePipeline {
             f_out_buffer: Some(f_out),
             rho_buffer: Some(rho),
             u_buffer: Some(u),
+            tau_buffer: Some(tau),
+            force_buffer: Some(force),
+            entropy_buffer: Some(entropy),
             grid_dim,
         })
+    }
+
+    pub fn write_inputs(&mut self, tau: &[f32], force: &[f32]) -> Result<(), Box<dyn std::error::Error>> {
+        // Assume buffers are HostVisible (CpuToGpu)
+        if let Some((_, alloc)) = &self.tau_buffer {
+            let ptr = alloc.mapped_ptr().unwrap().as_ptr() as *mut f32;
+            unsafe { std::ptr::copy_nonoverlapping(tau.as_ptr(), ptr, tau.len()) };
+        }
+        if let Some((_, alloc)) = &self.force_buffer {
+            let ptr = alloc.mapped_ptr().unwrap().as_ptr() as *mut f32;
+            unsafe { std::ptr::copy_nonoverlapping(force.as_ptr(), ptr, force.len()) };
+        }
+        Ok(())
+    }
+
+    pub fn read_entropy(&self) -> Result<Vec<f32>, Box<dyn std::error::Error>> {
+        if let Some((_, alloc)) = &self.entropy_buffer {
+            let n = (self.grid_dim.0 * self.grid_dim.1 * self.grid_dim.2) as usize;
+            let mut out = vec![0.0; n];
+            let ptr = alloc.mapped_ptr().unwrap().as_ptr() as *const f32;
+            unsafe { std::ptr::copy_nonoverlapping(ptr, out.as_mut_ptr(), n) };
+            Ok(out)
+        } else {
+            Ok(vec![])
+        }
     }
 
     pub fn record_command_buffer(&self, cmd: vk::CommandBuffer) {
@@ -298,7 +293,7 @@ impl LbmComputePipeline {
                 nx: self.grid_dim.0,
                 ny: self.grid_dim.1,
                 nz: self.grid_dim.2,
-                tau: 0.6, // Typical relaxation time
+                global_tau_scale: 1.0,
             };
             
             let constants_bytes = std::slice::from_raw_parts(
@@ -314,7 +309,6 @@ impl LbmComputePipeline {
                 constants_bytes,
             );
 
-            // Dispatch
             let group_size_x = 8;
             let group_size_y = 8;
             let group_size_z = 8;
@@ -323,9 +317,7 @@ impl LbmComputePipeline {
             let dispatch_z = self.grid_dim.2.div_ceil(group_size_z);
 
             device.cmd_dispatch(cmd, dispatch_x, dispatch_y, dispatch_z);
-
-            // Memory Barrier for next step (swap buffers logic needed outside or here)
-            // For now, just a barrier to ensure write completion
+            
             let memory_barrier = vk::MemoryBarrier {
                 s_type: vk::StructureType::MEMORY_BARRIER,
                 src_access_mask: vk::AccessFlags::SHADER_WRITE,
@@ -348,9 +340,10 @@ impl LbmComputePipeline {
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]
+#[allow(dead_code)]
 pub struct LbmPushConstants {
     nx: u32,
     ny: u32,
     nz: u32,
-    tau: f32,
+    global_tau_scale: f32,
 }
