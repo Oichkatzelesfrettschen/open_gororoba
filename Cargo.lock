@@ -3130,6 +3130,7 @@ name = "gororoba_cli"
 version = "0.1.0"
 dependencies = [
  "algebra_core",
+ "ash",
  "axum",
  "cd_spin_bridge",
  "chrono",
@@ -3148,6 +3149,7 @@ dependencies = [
  "lbm_3d",
  "lbm_3d_cuda",
  "lbm_core",
+ "lbm_vulkan",
  "log",
  "materials_core",
  "nalgebra 0.33.2",

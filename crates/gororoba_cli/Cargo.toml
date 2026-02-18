@@ -415,6 +415,10 @@ name = "demo-optical-titanates"
 path = "src/bin/demo_optical_titanates.rs"
 
 [[bin]]
+name = "experiment-c756"
+path = "src/bin/experiment_c756.rs"
+
+[[bin]]
 name = "wavelet-bridging-sweep"
 path = "src/bin/wavelet_bridging_sweep.rs"
 
@@ -491,6 +495,8 @@ tracing-subscriber = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
 pgfplots = { workspace = true }
 chrono = { workspace = true }
+ash = { version = "0.38.0", features = ["debug"] }
+lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
 
 [dev-dependencies]
 tempfile = { workspace = true }

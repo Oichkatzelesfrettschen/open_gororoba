@@ -3,6 +3,8 @@ use std::ffi::CStr;
 use std::sync::Arc;
 use gpu_allocator::vulkan::*;
 
+pub mod compute;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum GpuTier {
     Constrained = 0, // < 2GB VRAM
