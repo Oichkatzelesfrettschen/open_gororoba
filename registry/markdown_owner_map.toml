@@ -779,7 +779,16 @@ scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
 requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
+
+[[owner]]
+id = "MOWN-0192"
+path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
 
 [[owner]]
 id = "MOWN-0087"
@@ -1135,6 +1144,15 @@ conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normal
 [[owner]]
 id = "MOWN-0126"
 path = "docs/theory/WARP_RING_PHYSICS.md"
+scope = "docs"
+canonical_toml = "registry/research_narratives.toml"
+owner_group = "research_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+
+[[owner]]
+id = "MOWN-0191"
+path = "docs/theory/THEORY_PHASE_3_HOLO_ALGEBRAIC_VACUUM.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
 owner_group = "research_narratives"
