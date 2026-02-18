@@ -414,6 +414,30 @@ path = "src/bin/demo_real_materials.rs"
 name = "demo-optical-titanates"
 path = "src/bin/demo_optical_titanates.rs"
 
+[[bin]]
+name = "wavelet-bridging-sweep"
+path = "src/bin/wavelet_bridging_sweep.rs"
+
+[[bin]]
+name = "meltdown-gating-sweep"
+path = "src/bin/meltdown_gating_sweep.rs"
+
+[[bin]]
+name = "wavelet-acf-calibration"
+path = "src/bin/wavelet_acf_calibration.rs"
+
+[[bin]]
+name = "chsh-wavelet-compression"
+path = "src/bin/chsh_wavelet_compression.rs"
+
+[[bin]]
+name = "casimir-plate-compare"
+path = "src/bin/casimir_plate_compare.rs"
+
+[[bin]]
+name = "casimir-drude-plasma"
+path = "src/bin/casimir_drude_plasma.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
@@ -443,6 +467,7 @@ nalgebra = { workspace = true }
 ndarray = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
+rand_distr = { workspace = true }
 clap = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
