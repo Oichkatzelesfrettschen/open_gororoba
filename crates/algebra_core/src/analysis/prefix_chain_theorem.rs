@@ -34,8 +34,7 @@
 //! vectors via the even-sum and even-weight constraints.
 
 use crate::analysis::codebook::{
-    enumerate_lambda_256, enumerate_lambda_4096, is_in_base_universe, is_in_lambda_1024,
-    is_in_lambda_2048, is_in_lambda_256, is_in_lambda_512, verify_octonion_parity_constraints,
+    enumerate_lambda_4096, is_in_base_universe, verify_octonion_parity_constraints,
     ForbiddenFamily, LatticeVector,
 };
 use std::collections::BTreeSet;
@@ -196,25 +195,23 @@ fn enumerate_sbase_predicate() -> BTreeSet<LatticeVector> {
     enumerate_lambda_4096().into_iter().collect()
 }
 
-/// Enumerate Lambda_n using the predicate characterization.
-fn enumerate_lambda_predicate(dim: usize) -> BTreeSet<LatticeVector> {
-    let pred: Box<dyn Fn(&LatticeVector) -> bool> = match dim {
-        256 => Box::new(|v: &LatticeVector| is_in_lambda_256(v)),
-        512 => Box::new(|v: &LatticeVector| is_in_lambda_512(v)),
-        1024 => Box::new(|v: &LatticeVector| is_in_lambda_1024(v)),
-        2048 => Box::new(|v: &LatticeVector| is_in_lambda_2048(v)),
-        4096 => Box::new(|v: &LatticeVector| is_in_base_universe(v)),
-        _ => panic!("Unsupported dimension: {}", dim),
-    };
-
-    if dim == 256 {
-        // enumerate_lambda_256 returns the set directly
-        return enumerate_lambda_256().into_iter().collect();
-    }
-
-    // For other dims, filter from S_base
-    let sbase = enumerate_lambda_4096();
-    sbase.into_iter().filter(|v| pred(v)).collect()
+/// Construct Lambda_n as the first n points of S_base in lexicographic order.
+///
+/// This is the mathematically exact definition: the Cayley-Dickson lattice
+/// embedding at dimension n corresponds to exactly the first n points when
+/// S_base is sorted lexicographically (with -1 < 0 < 1).
+///
+/// This avoids known predicate-vs-CSV discrepancies at 1024D (the codebook.rs
+/// predicate `is_in_lambda_1024` admits 1026 points, 2 more than the CSV
+/// ground truth -- see codebook.rs:188-191).
+fn enumerate_lambda_lex(sbase: &BTreeSet<LatticeVector>, n: usize) -> BTreeSet<LatticeVector> {
+    assert!(
+        n <= sbase.len(),
+        "Cannot take {} points from S_base of size {}",
+        n,
+        sbase.len()
+    );
+    sbase.iter().take(n).copied().collect()
 }
 
 /// Verify a single prefix-cut transition between adjacent levels.
@@ -274,11 +271,11 @@ fn verify_transition(
 pub fn verify_prefix_chain_theorem() -> PrefixChainTheoremResult {
     let dims = [256usize, 512, 1024, 2048];
 
-    // Enumerate all levels from predicates
+    // Enumerate all levels as lex prefixes of S_base
     let sbase = enumerate_sbase_predicate();
     let levels: Vec<BTreeSet<LatticeVector>> = dims
         .iter()
-        .map(|&d| enumerate_lambda_predicate(d))
+        .map(|&d| enumerate_lambda_lex(&sbase, d))
         .collect();
 
     let sbase_size = sbase.len();
@@ -465,29 +462,27 @@ mod tests {
     }
 
     #[test]
-    fn test_lambda_sizes_from_predicate() {
+    fn test_lambda_sizes_lex() {
+        let sbase = enumerate_sbase_predicate();
         for &dim in &[256, 512, 1024, 2048] {
-            let level = enumerate_lambda_predicate(dim);
-            // 1024 predicate gives 1026 (known discrepancy, see codebook.rs:188)
-            if dim == 1024 {
-                assert!(
-                    level.len() == 1024 || level.len() == 1026,
-                    "Lambda_1024 size {} not in {{1024, 1026}}",
-                    level.len()
-                );
-            } else {
-                assert_eq!(level.len(), dim, "Lambda_{} size mismatch: {}", dim, level.len());
-            }
+            let level = enumerate_lambda_lex(&sbase, dim);
+            assert_eq!(
+                level.len(),
+                dim,
+                "Lambda_{} size mismatch: got {}",
+                dim,
+                level.len()
+            );
         }
     }
 
     #[test]
-    fn test_strict_nesting_from_predicate() {
-        let p256 = enumerate_lambda_predicate(256);
-        let p512 = enumerate_lambda_predicate(512);
-        let p1024 = enumerate_lambda_predicate(1024);
-        let p2048 = enumerate_lambda_predicate(2048);
+    fn test_strict_nesting_lex() {
         let sbase = enumerate_sbase_predicate();
+        let p256 = enumerate_lambda_lex(&sbase, 256);
+        let p512 = enumerate_lambda_lex(&sbase, 512);
+        let p1024 = enumerate_lambda_lex(&sbase, 1024);
+        let p2048 = enumerate_lambda_lex(&sbase, 2048);
 
         assert!(p256.is_subset(&p512));
         assert!(p512.is_subset(&p1024));
@@ -539,7 +534,7 @@ mod tests {
     #[test]
     fn test_prefix_chain_theorem_sbase_to_2048() {
         let sbase = enumerate_sbase_predicate();
-        let p2048 = enumerate_lambda_predicate(2048);
+        let p2048 = enumerate_lambda_lex(&sbase, 2048);
 
         let transition = verify_transition(&sbase, &p2048, 4096, 2048);
         assert!(
@@ -553,33 +548,33 @@ mod tests {
 
     #[test]
     fn test_prefix_chain_theorem_2048_to_1024() {
-        let p2048 = enumerate_lambda_predicate(2048);
-        let p1024 = enumerate_lambda_predicate(1024);
+        let sbase = enumerate_sbase_predicate();
+        let p2048 = enumerate_lambda_lex(&sbase, 2048);
+        let p1024 = enumerate_lambda_lex(&sbase, 1024);
 
-        // If 1024 predicate gives 1026, the prefix-cut may not hold exactly.
-        // This test documents the known discrepancy.
-        if p1024.len() == 1024 {
-            let transition = verify_transition(&p2048, &p1024, 2048, 1024);
-            assert!(
-                transition.is_some(),
-                "Lambda_2048 -> Lambda_1024 should be a prefix cut"
-            );
-            assert_eq!(transition.unwrap().growth_delta, 1024);
-        }
+        assert_eq!(p1024.len(), 1024);
+        let transition = verify_transition(&p2048, &p1024, 2048, 1024);
+        assert!(
+            transition.is_some(),
+            "Lambda_2048 -> Lambda_1024 should be a prefix cut"
+        );
+        assert_eq!(transition.unwrap().growth_delta, 1024);
     }
 
     #[test]
     fn test_growth_doubling_256_to_512() {
-        let p256 = enumerate_lambda_predicate(256);
-        let p512 = enumerate_lambda_predicate(512);
+        let sbase = enumerate_sbase_predicate();
+        let p256 = enumerate_lambda_lex(&sbase, 256);
+        let p512 = enumerate_lambda_lex(&sbase, 512);
         let delta = p512.difference(&p256).count();
         assert_eq!(delta, 256, "Growth 512-256 should be 256, got {}", delta);
     }
 
     #[test]
     fn test_octonion_parity_all_levels() {
-        for &dim in &[256, 512, 2048] {
-            let level = enumerate_lambda_predicate(dim);
+        let sbase = enumerate_sbase_predicate();
+        for &dim in &[256, 512, 1024, 2048] {
+            let level = enumerate_lambda_lex(&sbase, dim);
             let vecs: Vec<LatticeVector> = level.iter().copied().collect();
             let (n, n_tri, n_esum, n_ewt, n_l0, all) =
                 verify_octonion_parity_constraints(&vecs);
