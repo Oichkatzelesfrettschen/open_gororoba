@@ -21,7 +21,7 @@ fn generate_kerr_newman_force(n: usize) -> Vec<f32> {
                 let r = (dx*dx + dy*dy + dz*dz + 1.0).sqrt();
                 let mag = 1000.0 / (r * r * r); 
                 let idx = (x + n * (y + n * z)) * 3;
-                force[idx + 0] = -mag * dx;
+                force[idx] = -mag * dx;
                 force[idx + 1] = -mag * dy;
                 force[idx + 2] = -mag * dz;
             }
