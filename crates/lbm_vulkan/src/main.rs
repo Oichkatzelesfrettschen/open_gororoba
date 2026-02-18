@@ -1,8 +1,6 @@
 use lbm_vulkan::VulkanContext;
+use lbm_vulkan::compute::LbmComputePipeline;
 use std::time::Instant;
-
-mod compute;
-use compute::LbmComputePipeline;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
