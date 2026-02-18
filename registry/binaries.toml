@@ -590,3 +590,9 @@ name = "gravastar-bypass-compare"
 crate = "gororoba_cli"
 description = "C-011 bypass model comparison: quaternion projection vs restriction closures for gravastar EoS. Tests associative surrogates against obstructed sedenion baseline."
 status = "active"
+
+[[binary]]
+name = "paper-build"
+crate = "gororoba_cli"
+description = "Rust-native paper builder for arXiv submission. Wraps tectonic CLI for multi-pass LaTeX+bibtex compilation. Subcommands: build (compile PDF), arxiv (create submission tarball)."
+status = "active"
