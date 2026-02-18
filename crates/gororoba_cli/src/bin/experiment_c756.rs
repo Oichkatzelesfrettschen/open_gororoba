@@ -30,6 +30,25 @@ fn generate_kerr_newman_force(n: usize) -> Vec<f32> {
     force
 }
 
+fn generate_initial_state(n: usize) -> Vec<f32> {
+    let mut f_init = vec![0.0; n * n * n * 19];
+    let wf = [
+        0.33333333,
+        0.05555556, 0.05555556, 0.05555556, 0.05555556, 0.05555556, 0.05555556,
+        0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778,
+        0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778
+    ];
+    
+    // Initialize with rho = 1.0, u = 0.0 (Equilibrium)
+    // f_i = w_i * rho
+    for i in 0..(n*n*n) {
+        for q in 0..19 {
+            f_init[i * 19 + q] = wf[q] * 1.0; 
+        }
+    }
+    f_init
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
     println!("=== Experiment C-756: Video Export ===");
@@ -54,6 +73,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 4. Init Fields
     println!("Initializing Fields...");
     lbm.write_inputs(&[], &generate_kerr_newman_force(n as usize))?;
+    lbm.write_state(&ctx, &generate_initial_state(n as usize))?;
 
     // 5. Command Infrastructure
     let pool_info = vk::CommandPoolCreateInfo { s_type: vk::StructureType::COMMAND_POOL_CREATE_INFO, queue_family_index: ctx.queue_family_index, flags: vk::CommandPoolCreateFlags::RESET_COMMAND_BUFFER, ..Default::default() };
@@ -89,7 +109,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             ctx.device.wait_for_fences(&[fence], true, u64::MAX)?;
             renderer.save_frame(&format!("data/artifacts/c756_frames/frame_{:04}.png", frame))?;
         }
-        if frame % 10 == 0 { println!("  Frame {}/60", frame); }
+        if frame % 10 == 0 { 
+            let entropy = lbm.read_entropy()?;
+            let max_e = entropy.iter().cloned().fold(f32::NAN, f32::max);
+            let avg_e: f32 = entropy.iter().sum::<f32>() / entropy.len() as f32;
+            println!("  Frame {}/60 | Max Entropy: {:.6e} | Avg Entropy: {:.6e}", frame, max_e, avg_e);
+        }
     }
 
     println!("Export Complete. Total Time: {:.2?}", start.elapsed());
