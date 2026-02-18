@@ -936,3 +936,21 @@ body = """Part 14 provides dimensionless figures of merit that connect the DL mo
 related_claims = ["C-750", "C-751", "C-752"]
 date = "2026-02-17"
 sprint = 44
+
+[[insight]]
+id = "I-086"
+title = "Photovoltaic metrics and selective thermal emission: from material response to energy harvesting"
+body = """Part 15 bridges the DrudeLorentzParams dielectric model to solar energy and thermophotovoltaic (TPV) device metrics:
+
+1. SOLAR ABSORPTANCE AND REFLECTANCE: The AM1.5G solar spectrum peaks near 2.5 eV (500 nm). Solar absorptance alpha_s = integral[A(omega)*S(omega)*d_omega]/integral[S(omega)*d_omega] weights the material absorptance A=1-R by the blackbody solar spectrum (approximated at T_sun=5800K). Metals like gold have alpha_s ~ 0.5 (high visible reflectance), while dielectrics like silica have alpha_s near zero (transparent). The complement solar_reflectance = 1 - alpha_s is the figure of merit for solar mirrors.
+
+2. ANTIREFLECTION COATINGS: Quarter-wave AR coating thickness d = lambda/(4*n) minimizes reflection when the coating refractive index n = sqrt(n_substrate). The antireflection_thickness() method gives this optimal thickness for single-layer coatings. For the Casimir effect, AR coatings on plate surfaces modify the reflection coefficients and hence the Casimir force -- a practical tuning knob explored in Thesis 1 metamaterial stacks.
+
+3. WIEN DISPLACEMENT LAW: The peak of the Planck spectral radiance is at omega_peak = 2.821 * k_B * T / hbar (in rad/s). At T=5800K this gives ~2.5 eV (visible), at T=300K it gives ~62 meV (mid-IR). Wien's law connects equilibrium thermal radiation to the material optical response: a material that absorbs strongly at omega_peak will also emit strongly there (Kirchhoff's law). The static methods wien_peak_omega() and wien_peak_ev() provide this conversion.
+
+4. LUMINOUS REFLECTANCE: The CIE photopic luminosity function V(lambda) peaks at 555 nm (2.23 eV) with approximate Gaussian width sigma ~ 0.34 eV. Luminous reflectance R_v = integral[R(omega)*V(omega)*d_omega]/integral[V(omega)*d_omega] is the photometrically-weighted reflection relevant for architectural glass, display coatings, and laser safety. Metals like gold are highly luminous-reflective; dielectrics like silica are not.
+
+5. SELECTIVE EMITTER EFFICIENCY: TPV devices require selective thermal emitters that radiate strongly above the PV cell bandgap but suppress sub-bandgap emission (which generates heat, not electricity). The selective_emitter_efficiency eta = integral[eps(omega)*B(omega,T)*d_omega for omega>omega_gap] / integral[eps(omega)*B(omega,T)*d_omega] quantifies this selectivity. Tungsten (with its natural emissivity rolloff in the IR) is a classic selective emitter; WO3-x plasmonic oxides (Part 2) are designed to enhance this selectivity through engineered plasma edges."""
+related_claims = ["C-753", "C-754", "C-755"]
+date = "2026-02-17"
+sprint = 44
