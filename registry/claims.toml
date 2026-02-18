@@ -11779,7 +11779,7 @@ phase = "materials"
 sprint = 46
 
 [[claim]]
-id = "C-762"
+id = "C-768"
 statement = "Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sedenion Zero-Divisor topology."
 description = "Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sede"
 where_stated = "`crates/lbm_vulkan/src/compute.rs`, `crates/lbm_vulkan/shaders/lbm.comp.glsl`, `crates/gororoba_cli/src/bin/warp_ring_integration.rs`"
@@ -11902,7 +11902,7 @@ phase = "materials"
 sprint = 44
 
 [[claim]]
-id = "C-763"
+id = "C-767"
 statement = "Three-region tabulated n,k splice (Ordal IR + J&C visible + Henke XUV, 10-30000 eV) for Au, Ag, Cu reduces UV tail systematic error in the KK imaginary-axis dielectric function: at xi_50 (~8.15 eV), the Henke-extended Au dataset produces eps(i*xi) within 50% of J&C+Drude while eliminating the 1/omega^3 UV extrapolation above 6.6 eV that missed all measured core absorption structure."
 status = "Verified"
 confidence = "high"

@@ -6,7 +6,7 @@ version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
 test_count = 3917
-claim_count = 773
+claim_count = 768
 insight_count = 87
 experiment_count = 40
 complete_experiment_count = 0
@@ -18,7 +18,7 @@ scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 number = 46
 date = "2026-02-17"
 test_count = 3917
-claim_count = 773
+claim_count = 768
 insight_count = 87
 summary = "Sprint 46 Objective 1: Ordal far-IR spectral data + spliced TabulatedNK constructors. Au splice: 86 points (37 Ordal IR + 49 J&C). Cu splice: 98 points (49 Ordal IR + 49 J&C). Constructors: gold_ordal_jc_nk(), copper_ordal_jc_nk(). 8 tests. Bug fix: optical_database.rs osc.omega_ev -> osc.omega_0_ev. Bibliography: BIB-0209 (Ordal 1985), BIB-0210 (Ordal 1988). Claim C-756. Sprint 46 Objective 2: Henke 1993 XUV atomic scattering data for Au (506 pts), Ag (508 pts), Cu (504 pts) from henke.lbl.gov. Three-region splice: [Ordal IR] + J&C + 5-pt bridge + Henke. Totals: Au 597 pts (0.004-30000 eV), Ag 562 pts (0.64-30000 eV), Cu 607 pts (0.022-30000 eV). New constructors: gold_ordal_jc_henke_nk(), silver_jc_henke_nk(), copper_ordal_jc_henke_nk(). PFA function: casimir_pfa_tabulated() (sphere-plate proximity force approximation). 42 new tests. Bibliography: BIB-0211 (Henke 1993 At. Data Nucl. Data Tables 54 181). Claim C-763. Sprint 46 Part 17: Advanced Optical Methods. 30 new methods across 5 domains on DrudeLorentzParams: (a) Mie/Rayleigh scattering (Clausius-Mossotti, cross sections, albedo, radiation pressure), (b) Fluctuation electrodynamics (FD spectral density, thermal noise, ZPE, near-field enhancement, photon tunneling, Casimir integrand), (c) Anharmonic phonons (linewidth broadening, multiphonon absorption, two-phonon DOS, combination bands), (d) Photonic band gaps (quarter-wave stack, Bragg wavelength, group velocity, omnidirectional gap), (e) Electrooptic/acoustooptic (Pockels, Kerr, half-wave voltage, Franz-Keldysh, photoelastic, acoustooptic FoM). 41 new tests. Claims C-762..C-766. Insight I-090."
 
