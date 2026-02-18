@@ -3,35 +3,57 @@
 
 [document]
 id = "DOC-0020"
-source_path = "docs/CHANGELOG_AUDIT.md"
-title = "Audit Changelog"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/idris/README.md"
+title = "Idris Implementations of Lambda Calculus"
 kind = "manual_source"
 status = "active"
-migration_priority = "high"
+migration_priority = "medium"
 generated = false
-source_sha256 = "c57ec96ebb0664eddd07f4500ac34edf063483a34129c2b5248f22d13d7d6ade"
-source_line_count = 16
-source_size_bytes = 560
-content_sha256 = "c57ec96ebb0664eddd07f4500ac34edf063483a34129c2b5248f22d13d7d6ade"
+source_sha256 = "e325bba86dedf32b055709a0fa6422e432ea57956736e4a0a17c116f3fffb95a"
+source_line_count = 38
+source_size_bytes = 1687
+content_sha256 = "e325bba86dedf32b055709a0fa6422e432ea57956736e4a0a17c116f3fffb95a"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Audit Changelog
+# Idris Implementations of Lambda Calculus
 
-## 2026-01-27
+This directory contains implementations of lambda calculus concepts in Idris, a dependently typed functional programming language. Idris is particularly well-suited for such implementations due to its powerful type system, which allows for expressing and verifying properties of programs at compile-time.
 
-- Initialized local Git repo (`main`) and committed repository state.
-- Added explicit sedenion zero-divisor identity test and a math validation report:
-  - `tests/test_cayley_dickson_properties.py`
-  - `docs/MATH_VALIDATION_REPORT.md`
-- Added minimal group-theory helper for `|PSL(2,7)|` order:
-  - `src/gemini_physics/group_theory.py`
-  - `tests/test_group_theory.py`
-- Hardened provenance hashing for `data/external/`:
-  - `bin/record_external_hashes.py`
-  - `make provenance` writes `data/external/PROVENANCE.local.json`
+## Untyped Lambda Calculus
 
+An example implementation of an untyped lambda calculus is provided, demonstrating core concepts such as:
+
+*   **Term Representation:** Defining a data type for lambda calculus terms (variables, abstractions, applications).
+*   **Free Variables:** Calculating the free variables within a term.
+*   **Substitution:** Implementing the substitution operation, crucial for beta-reduction, with proper handling of alpha-conversion to prevent variable capture.
+*   **Beta-Reduction:** Performing one-step and full normalization using a call-by-name evaluation strategy.
+
+### Source Code
+
+The implementation details can be found in `Lambda.idr` within this directory.
+
+### Usage
+
+To use this implementation, you would typically load the `Lambda.idr` file into the Idris REPL (e.g., `idris2 Lambda.idr`) and interact with the defined terms and functions.
+
+```idris
+-- Example terms
+-- Identity function: (\\x.x)
+idTerm : Term
+idTerm = Lam \"x\" (Var \"x\")
+
+-- Application of identity to y: ((\\x.x) y)
+appId : Term
+appId = App idTerm (Var \"y\")
+
+-- Normalize the application
+testId : Term
+testId = normalize appId -- Should be Var \"y\"
+```
+
+This implementation serves as a clear example of how to model and execute lambda calculus within a dependently typed setting, leveraging Idris's features for correctness and clarity.
 
 """

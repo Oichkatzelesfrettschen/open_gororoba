@@ -4,7 +4,7 @@
 [knowledge_equation_atoms_v2]
 updated = "deterministic"
 authoritative = true
-atom_count = 145
+atom_count = 179
 
 [[atom]]
 id = "EQA2-00001"
@@ -19,7 +19,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["Octonions", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0227", "SYM-0004"]
+symbol_refs = ["SYM-0270", "SYM-0003"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -41,7 +41,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["By", "computing", "explicitly", "homotopy", "order", "product", "third"]
 numeric_constants = []
-symbol_refs = ["SYM-0122", "SYM-0136", "SYM-0166", "SYM-0069", "SYM-0231", "SYM-0249", "SYM-0286"]
+symbol_refs = ["SYM-0155", "SYM-0170", "SYM-0205", "SYM-0094", "SYM-0274", "SYM-0292", "SYM-0335"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -63,7 +63,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["Cayley", "Dickson", "Inverse", "Sedenions", "contraction", "emerging", "of", "structure"]
 numeric_constants = []
-symbol_refs = ["SYM-0127", "SYM-0146", "SYM-0199", "SYM-0268", "SYM-0139", "SYM-0157", "SYM-0009", "SYM-0087"]
+symbol_refs = ["SYM-0160", "SYM-0183", "SYM-0240", "SYM-0315", "SYM-0173", "SYM-0194", "SYM-0012", "SYM-0114"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -85,7 +85,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["Fano", "automorphism", "group", "of", "plane"]
 numeric_constants = []
-symbol_refs = ["SYM-0171", "SYM-0113", "SYM-0035", "SYM-0009", "SYM-0246"]
+symbol_refs = ["SYM-0210", "SYM-0145", "SYM-0048", "SYM-0012", "SYM-0289"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -107,7 +107,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["HPL", "Homological", "Lemma", "Lie", "Perturbation", "a", "aligns", "associator", "distinct", "distribution", "exactly", "exceptional", "formula", "group", "identify", "in", "level", "non", "of", "splitting", "structure", "tree", "triples", "trivial", "using", "vs", "we"]
 numeric_constants = ["168", "42"]
-symbol_refs = ["SYM-0191", "SYM-0190", "SYM-0209", "SYM-0211", "SYM-0239", "SYM-0018", "SYM-0105", "SYM-0044", "SYM-0151", "SYM-0055", "SYM-0063", "SYM-0165", "SYM-0177", "SYM-0035", "SYM-0192", "SYM-0038", "SYM-0210", "SYM-0075", "SYM-0009", "SYM-0272", "SYM-0087", "SYM-0293", "SYM-0090", "SYM-0294", "SYM-0299", "SYM-0096", "SYM-0307"]
+symbol_refs = ["SYM-0230", "SYM-0229", "SYM-0251", "SYM-0253", "SYM-0282", "SYM-0016", "SYM-0137", "SYM-0061", "SYM-0188", "SYM-0075", "SYM-0082", "SYM-0204", "SYM-0216", "SYM-0048", "SYM-0231", "SYM-0051", "SYM-0252", "SYM-0100", "SYM-0012", "SYM-0320", "SYM-0114", "SYM-0342", "SYM-0120", "SYM-0343", "SYM-0350", "SYM-0127", "SYM-0358"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -129,7 +129,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["n"]
 numeric_constants = ["2"]
-symbol_refs = ["SYM-0040"]
+symbol_refs = ["SYM-0054"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -151,7 +151,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["O", "mathbb", "n"]
 numeric_constants = ["3"]
-symbol_refs = ["SYM-0025", "SYM-0015", "SYM-0040"]
+symbol_refs = ["SYM-0030", "SYM-0020", "SYM-0054"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -173,7 +173,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["C", "H", "R", "mathbb"]
 numeric_constants = []
-symbol_refs = ["SYM-0019", "SYM-0068", "SYM-0041", "SYM-0015"]
+symbol_refs = ["SYM-0021", "SYM-0093", "SYM-0056", "SYM-0020"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -195,7 +195,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["S", "mathbb", "n"]
 numeric_constants = ["4"]
-symbol_refs = ["SYM-0010", "SYM-0015", "SYM-0040"]
+symbol_refs = ["SYM-0013", "SYM-0020", "SYM-0054"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -217,7 +217,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["a", "algebra", "associativity", "by", "hierarchy", "higher", "is", "of", "operations", "replaced"]
 numeric_constants = []
-symbol_refs = ["SYM-0018", "SYM-0026", "SYM-0111", "SYM-0123", "SYM-0187", "SYM-0189", "SYM-0070", "SYM-0009", "SYM-0230", "SYM-0262"]
+symbol_refs = ["SYM-0016", "SYM-0033", "SYM-0143", "SYM-0156", "SYM-0226", "SYM-0228", "SYM-0052", "SYM-0012", "SYM-0273", "SYM-0307"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -239,7 +239,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["h", "i", "p"]
 numeric_constants = []
-symbol_refs = ["SYM-0024", "SYM-0013", "SYM-0003"]
+symbol_refs = ["SYM-0027", "SYM-0018", "SYM-0005"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -261,7 +261,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["to"]
 numeric_constants = []
-symbol_refs = ["SYM-0004"]
+symbol_refs = ["SYM-0003"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -283,7 +283,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["a", "b", "p"]
 numeric_constants = ["2"]
-symbol_refs = ["SYM-0018", "SYM-0047", "SYM-0003"]
+symbol_refs = ["SYM-0016", "SYM-0064", "SYM-0005"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -305,7 +305,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["O", "S", "p", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0025", "SYM-0010", "SYM-0003", "SYM-0004"]
+symbol_refs = ["SYM-0030", "SYM-0013", "SYM-0005", "SYM-0003"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -327,7 +327,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["i", "x"]
 numeric_constants = []
-symbol_refs = ["SYM-0013", "SYM-0006"]
+symbol_refs = ["SYM-0018", "SYM-0006"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -349,7 +349,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["O", "S", "i", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0025", "SYM-0010", "SYM-0013", "SYM-0004"]
+symbol_refs = ["SYM-0030", "SYM-0013", "SYM-0018", "SYM-0003"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -371,7 +371,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["a", "b", "h"]
 numeric_constants = ["2"]
-symbol_refs = ["SYM-0018", "SYM-0047", "SYM-0024"]
+symbol_refs = ["SYM-0016", "SYM-0064", "SYM-0027"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -393,7 +393,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["S", "h", "ker", "p", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0010", "SYM-0024", "SYM-0203", "SYM-0003", "SYM-0004"]
+symbol_refs = ["SYM-0013", "SYM-0027", "SYM-0244", "SYM-0005", "SYM-0003"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -415,7 +415,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["mu"]
 numeric_constants = []
-symbol_refs = ["SYM-0039"]
+symbol_refs = ["SYM-0053"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -437,7 +437,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["m_3"]
 numeric_constants = []
-symbol_refs = ["SYM-0005"]
+symbol_refs = ["SYM-0010"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -459,7 +459,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["circ", "h", "i", "m_3", "mu", "p", "x", "y", "z"]
 numeric_constants = []
-symbol_refs = ["SYM-0050", "SYM-0024", "SYM-0013", "SYM-0005", "SYM-0039", "SYM-0003", "SYM-0006", "SYM-0098", "SYM-0099"]
+symbol_refs = ["SYM-0068", "SYM-0027", "SYM-0018", "SYM-0010", "SYM-0053", "SYM-0005", "SYM-0006", "SYM-0032", "SYM-0130"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -481,7 +481,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["circ", "h", "i", "m_3", "mu", "p", "x", "y", "z"]
 numeric_constants = []
-symbol_refs = ["SYM-0050", "SYM-0024", "SYM-0013", "SYM-0005", "SYM-0039", "SYM-0003", "SYM-0006", "SYM-0098", "SYM-0099"]
+symbol_refs = ["SYM-0068", "SYM-0027", "SYM-0018", "SYM-0010", "SYM-0053", "SYM-0005", "SYM-0006", "SYM-0032", "SYM-0130"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -503,7 +503,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["e_i", "e_j", "e_k"]
 numeric_constants = []
-symbol_refs = ["SYM-0020", "SYM-0022", "SYM-0023"]
+symbol_refs = ["SYM-0022", "SYM-0024", "SYM-0025"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -525,7 +525,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["NUMERIC_LITERAL"]
 numeric_constants = ["3", "343", "7"]
-symbol_refs = ["SYM-0029"]
+symbol_refs = ["SYM-0037"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -547,7 +547,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Octonion", "We", "algebra", "all", "basis", "cd_hpl_example", "classified", "e_i", "e_j", "e_k", "imaginary", "implemented", "in", "iterated", "m3_table_cd", "m_3", "of", "output", "py", "src", "triples", "units"]
 numeric_constants = ["3", "343", "7"]
-symbol_refs = ["SYM-0078", "SYM-0032", "SYM-0026", "SYM-0106", "SYM-0116", "SYM-0128", "SYM-0130", "SYM-0020", "SYM-0022", "SYM-0023", "SYM-0194", "SYM-0195", "SYM-0038", "SYM-0200", "SYM-0218", "SYM-0005", "SYM-0009", "SYM-0232", "SYM-0253", "SYM-0274", "SYM-0090", "SYM-0091"]
+symbol_refs = ["SYM-0104", "SYM-0042", "SYM-0033", "SYM-0138", "SYM-0149", "SYM-0161", "SYM-0163", "SYM-0022", "SYM-0024", "SYM-0025", "SYM-0235", "SYM-0236", "SYM-0051", "SYM-0241", "SYM-0259", "SYM-0010", "SYM-0012", "SYM-0275", "SYM-0296", "SYM-0322", "SYM-0120", "SYM-0122"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -569,7 +569,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["e_i", "e_j", "e_k", "m_3"]
 numeric_constants = []
-symbol_refs = ["SYM-0020", "SYM-0022", "SYM-0023", "SYM-0005"]
+symbol_refs = ["SYM-0022", "SYM-0024", "SYM-0025", "SYM-0010"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -591,7 +591,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["m_3"]
 numeric_constants = []
-symbol_refs = ["SYM-0005"]
+symbol_refs = ["SYM-0010"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -613,7 +613,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["pm"]
 numeric_constants = ["2"]
-symbol_refs = ["SYM-0079"]
+symbol_refs = ["SYM-0105"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -635,7 +635,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["e_l", "pm"]
 numeric_constants = ["2"]
-symbol_refs = ["SYM-0154", "SYM-0079"]
+symbol_refs = ["SYM-0191", "SYM-0105"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -657,7 +657,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["e_i", "e_j", "e_k"]
 numeric_constants = []
-symbol_refs = ["SYM-0020", "SYM-0022", "SYM-0023"]
+symbol_refs = ["SYM-0022", "SYM-0024", "SYM-0025"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -679,7 +679,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["times"]
 numeric_constants = ["42", "6", "7"]
-symbol_refs = ["SYM-0089"]
+symbol_refs = ["SYM-0119"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -701,7 +701,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["PSL"]
 numeric_constants = ["168", "2", "7"]
-symbol_refs = ["SYM-0031"]
+symbol_refs = ["SYM-0039"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -723,7 +723,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["PSL"]
 numeric_constants = ["2", "7"]
-symbol_refs = ["SYM-0031"]
+symbol_refs = ["SYM-0039"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -745,7 +745,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["m_3"]
 numeric_constants = []
-symbol_refs = ["SYM-0005"]
+symbol_refs = ["SYM-0010"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -767,7 +767,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["A_", "env"]
 numeric_constants = []
-symbol_refs = ["SYM-0102", "SYM-0160"]
+symbol_refs = ["SYM-0133", "SYM-0199"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -789,7 +789,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["alpha", "alpha_", "ijk"]
 numeric_constants = []
-symbol_refs = ["SYM-0007", "SYM-0033", "SYM-0037"]
+symbol_refs = ["SYM-0008", "SYM-0043", "SYM-0050"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -811,7 +811,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["e_i"]
 numeric_constants = []
-symbol_refs = ["SYM-0020"]
+symbol_refs = ["SYM-0022"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -833,7 +833,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["alpha", "alpha_", "d", "e_i", "e_j", "e_k", "ijk"]
 numeric_constants = []
-symbol_refs = ["SYM-0007", "SYM-0033", "SYM-0054", "SYM-0020", "SYM-0022", "SYM-0023", "SYM-0037"]
+symbol_refs = ["SYM-0008", "SYM-0043", "SYM-0073", "SYM-0022", "SYM-0024", "SYM-0025", "SYM-0050"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -855,7 +855,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["alpha", "alpha_", "ijk"]
 numeric_constants = []
-symbol_refs = ["SYM-0007", "SYM-0033", "SYM-0037"]
+symbol_refs = ["SYM-0008", "SYM-0043", "SYM-0050"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -877,7 +877,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["m_3"]
 numeric_constants = []
-symbol_refs = ["SYM-0005"]
+symbol_refs = ["SYM-0010"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -899,7 +899,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["G_2"]
 numeric_constants = []
-symbol_refs = ["SYM-0012"]
+symbol_refs = ["SYM-0017"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -921,7 +921,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["PSL"]
 numeric_constants = ["168", "2", "7"]
-symbol_refs = ["SYM-0031"]
+symbol_refs = ["SYM-0039"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -943,7 +943,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["G_2"]
 numeric_constants = []
-symbol_refs = ["SYM-0012"]
+symbol_refs = ["SYM-0017"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -965,7 +965,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["G_2", "PSL", "Sedenion", "We", "algebra", "computational", "derived", "footprint", "group", "have", "homotopy", "of", "purely", "re", "structural", "successfully", "through", "transfer"]
 numeric_constants = ["168", "2", "7"]
-symbol_refs = ["SYM-0012", "SYM-0031", "SYM-0267", "SYM-0032", "SYM-0026", "SYM-0135", "SYM-0145", "SYM-0176", "SYM-0035", "SYM-0186", "SYM-0069", "SYM-0009", "SYM-0252", "SYM-0256", "SYM-0277", "SYM-0278", "SYM-0287", "SYM-0291"]
+symbol_refs = ["SYM-0017", "SYM-0039", "SYM-0314", "SYM-0042", "SYM-0033", "SYM-0168", "SYM-0182", "SYM-0215", "SYM-0048", "SYM-0225", "SYM-0094", "SYM-0012", "SYM-0295", "SYM-0300", "SYM-0326", "SYM-0327", "SYM-0336", "SYM-0340"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -987,7 +987,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["bulk", "is"]
 numeric_constants = []
-symbol_refs = ["SYM-0121", "SYM-0070"]
+symbol_refs = ["SYM-0154", "SYM-0052"]
 claim_refs = []
 source_uid = "ART-001"
 source_group = "data_artifact_narrative"
@@ -1009,7 +1009,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["R", "V_2", "mathbb"]
 numeric_constants = ["8"]
-symbol_refs = ["SYM-0041", "SYM-0093", "SYM-0015"]
+symbol_refs = ["SYM-0056", "SYM-0124", "SYM-0020"]
 claim_refs = []
 source_uid = "ART-002"
 source_group = "data_artifact_narrative"
@@ -1031,7 +1031,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["G_2"]
 numeric_constants = []
-symbol_refs = ["SYM-0012"]
+symbol_refs = ["SYM-0017"]
 claim_refs = []
 source_uid = "ART-002"
 source_group = "data_artifact_narrative"
@@ -1053,7 +1053,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["S", "Z", "mathbb", "mathcal"]
 numeric_constants = []
-symbol_refs = ["SYM-0010", "SYM-0100", "SYM-0015", "SYM-0074"]
+symbol_refs = ["SYM-0013", "SYM-0131", "SYM-0020", "SYM-0099"]
 claim_refs = []
 source_uid = "ART-002"
 source_group = "data_artifact_narrative"
@@ -1075,7 +1075,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["approx", "epsilon"]
 numeric_constants = ["1.1"]
-symbol_refs = ["SYM-0043", "SYM-0161"]
+symbol_refs = ["SYM-0060", "SYM-0200"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1097,7 +1097,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["beta", "beta_0"]
 numeric_constants = ["7"]
-symbol_refs = ["SYM-0002", "SYM-0011"]
+symbol_refs = ["SYM-0004", "SYM-0015"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1119,7 +1119,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["G_2"]
 numeric_constants = []
-symbol_refs = ["SYM-0012"]
+symbol_refs = ["SYM-0017"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1141,7 +1141,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["beta", "beta_1"]
 numeric_constants = ["219"]
-symbol_refs = ["SYM-0002", "SYM-0021"]
+symbol_refs = ["SYM-0004", "SYM-0023"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1163,7 +1163,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["beta", "beta_2"]
 numeric_constants = ["0"]
-symbol_refs = ["SYM-0002", "SYM-0117"]
+symbol_refs = ["SYM-0004", "SYM-0150"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1185,7 +1185,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["beta", "beta_0"]
 numeric_constants = ["1"]
-symbol_refs = ["SYM-0002", "SYM-0011"]
+symbol_refs = ["SYM-0004", "SYM-0015"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1207,7 +1207,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["beta", "beta_1"]
 numeric_constants = []
-symbol_refs = ["SYM-0002", "SYM-0021"]
+symbol_refs = ["SYM-0004", "SYM-0023"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1229,7 +1229,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["G_2"]
 numeric_constants = []
-symbol_refs = ["SYM-0012"]
+symbol_refs = ["SYM-0017"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1251,7 +1251,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["H", "d"]
 numeric_constants = []
-symbol_refs = ["SYM-0068", "SYM-0054"]
+symbol_refs = ["SYM-0093", "SYM-0073"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1273,7 +1273,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["beta", "beta_1"]
 numeric_constants = []
-symbol_refs = ["SYM-0002", "SYM-0021"]
+symbol_refs = ["SYM-0004", "SYM-0023"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1295,7 +1295,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["m_3"]
 numeric_constants = []
-symbol_refs = ["SYM-0005"]
+symbol_refs = ["SYM-0010"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1317,7 +1317,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["D", "alpha", "alpha_3", "gamma"]
 numeric_constants = []
-symbol_refs = ["SYM-0142", "SYM-0007", "SYM-0107", "SYM-0183"]
+symbol_refs = ["SYM-0177", "SYM-0008", "SYM-0139", "SYM-0221"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1339,7 +1339,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["A", "S"]
 numeric_constants = []
-symbol_refs = ["SYM-0101", "SYM-0010"]
+symbol_refs = ["SYM-0132", "SYM-0013"]
 claim_refs = []
 source_uid = "ART-003"
 source_group = "data_artifact_narrative"
@@ -1361,7 +1361,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["F_4"]
 numeric_constants = []
-symbol_refs = ["SYM-0034"]
+symbol_refs = ["SYM-0046"]
 claim_refs = []
 source_uid = "ART-004"
 source_group = "data_artifact_narrative"
@@ -1383,7 +1383,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["angle", "frac", "i", "sqrt", "sum", "sum_"]
 numeric_constants = ["0", "1", "47", "48"]
-symbol_refs = ["SYM-0109", "SYM-0178", "SYM-0013", "SYM-0273", "SYM-0280", "SYM-0281"]
+symbol_refs = ["SYM-0141", "SYM-0217", "SYM-0018", "SYM-0321", "SYM-0329", "SYM-0330"]
 claim_refs = []
 source_uid = "ART-004"
 source_group = "data_artifact_narrative"
@@ -1405,7 +1405,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["Z", "approx", "langle", "rangle"]
 numeric_constants = ["0.0"]
-symbol_refs = ["SYM-0100", "SYM-0043", "SYM-0207", "SYM-0255"]
+symbol_refs = ["SYM-0131", "SYM-0060", "SYM-0248", "SYM-0299"]
 claim_refs = []
 source_uid = "ART-004"
 source_group = "data_artifact_narrative"
@@ -1427,7 +1427,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["CZ"]
 numeric_constants = []
-symbol_refs = ["SYM-0141"]
+symbol_refs = ["SYM-0176"]
 claim_refs = []
 source_uid = "ART-004"
 source_group = "data_artifact_narrative"
@@ -1449,7 +1449,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["F_4"]
 numeric_constants = []
-symbol_refs = ["SYM-0034"]
+symbol_refs = ["SYM-0046"]
 claim_refs = []
 source_uid = "ART-004"
 source_group = "data_artifact_narrative"
@@ -1471,7 +1471,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["F_4"]
 numeric_constants = []
-symbol_refs = ["SYM-0034"]
+symbol_refs = ["SYM-0046"]
 claim_refs = []
 source_uid = "ART-004"
 source_group = "data_artifact_narrative"
@@ -1493,7 +1493,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["i", "j", "sigma", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0013", "SYM-0201", "SYM-0269", "SYM-0004"]
+symbol_refs = ["SYM-0018", "SYM-0242", "SYM-0316", "SYM-0003"]
 claim_refs = []
 source_uid = "ART-004"
 source_group = "data_artifact_narrative"
@@ -1515,7 +1515,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["NUMERIC_LITERAL"]
 numeric_constants = ["3", "8"]
-symbol_refs = ["SYM-0029"]
+symbol_refs = ["SYM-0037"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1537,7 +1537,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["Phi", "t", "x"]
 numeric_constants = []
-symbol_refs = ["SYM-0030", "SYM-0284", "SYM-0006"]
+symbol_refs = ["SYM-0038", "SYM-0116", "SYM-0006"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1559,7 +1559,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["S", "mathbb"]
 numeric_constants = []
-symbol_refs = ["SYM-0010", "SYM-0015"]
+symbol_refs = ["SYM-0013", "SYM-0020"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1581,7 +1581,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["Phi", "Phi_x", "Phi_y", "Phi_z", "lVert", "rVert"]
 numeric_constants = []
-symbol_refs = ["SYM-0030", "SYM-0241", "SYM-0242", "SYM-0243", "SYM-0216", "SYM-0265"]
+symbol_refs = ["SYM-0038", "SYM-0284", "SYM-0285", "SYM-0286", "SYM-0258", "SYM-0312"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1603,7 +1603,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["Phi"]
 numeric_constants = ["2"]
-symbol_refs = ["SYM-0030"]
+symbol_refs = ["SYM-0038"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1625,7 +1625,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["N"]
 numeric_constants = ["256"]
-symbol_refs = ["SYM-0016"]
+symbol_refs = ["SYM-0009"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1647,7 +1647,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["N"]
 numeric_constants = ["257"]
-symbol_refs = ["SYM-0016"]
+symbol_refs = ["SYM-0009"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1669,7 +1669,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Composite", "N", "Power", "Prime", "We", "compared", "entropy", "growth", "of", "vs"]
 numeric_constants = ["2", "256", "257"]
-symbol_refs = ["SYM-0134", "SYM-0016", "SYM-0080", "SYM-0248", "SYM-0032", "SYM-0132", "SYM-0159", "SYM-0185", "SYM-0009", "SYM-0096"]
+symbol_refs = ["SYM-0167", "SYM-0009", "SYM-0106", "SYM-0291", "SYM-0042", "SYM-0165", "SYM-0198", "SYM-0224", "SYM-0012", "SYM-0127"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1691,7 +1691,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["N"]
 numeric_constants = ["256"]
-symbol_refs = ["SYM-0016"]
+symbol_refs = ["SYM-0009"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1713,7 +1713,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["N"]
 numeric_constants = ["257"]
-symbol_refs = ["SYM-0016"]
+symbol_refs = ["SYM-0009"]
 claim_refs = []
 source_uid = "ART-005"
 source_group = "data_artifact_narrative"
@@ -1735,7 +1735,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["R", "V_2", "mathbb"]
 numeric_constants = ["8"]
-symbol_refs = ["SYM-0041", "SYM-0093", "SYM-0015"]
+symbol_refs = ["SYM-0056", "SYM-0124", "SYM-0020"]
 claim_refs = []
 source_uid = "ART-007"
 source_group = "data_artifact_narrative"
@@ -1757,7 +1757,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["G_2"]
 numeric_constants = []
-symbol_refs = ["SYM-0012"]
+symbol_refs = ["SYM-0017"]
 claim_refs = []
 source_uid = "ART-007"
 source_group = "data_artifact_narrative"
@@ -1779,7 +1779,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["O", "S", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0025", "SYM-0010", "SYM-0004"]
+symbol_refs = ["SYM-0030", "SYM-0013", "SYM-0003"]
 claim_refs = []
 source_uid = "ART-007"
 source_group = "data_artifact_narrative"
@@ -1801,7 +1801,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["QFT", "adic", "uses"]
 numeric_constants = []
-symbol_refs = ["SYM-0254", "SYM-0103", "SYM-0298"]
+symbol_refs = ["SYM-0297", "SYM-0135", "SYM-0349"]
 claim_refs = []
 source_uid = "ART-007"
 source_group = "data_artifact_narrative"
@@ -1823,7 +1823,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["O", "P", "S", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0025", "SYM-0233", "SYM-0010", "SYM-0004"]
+symbol_refs = ["SYM-0030", "SYM-0276", "SYM-0013", "SYM-0003"]
 claim_refs = []
 source_uid = "ART-007"
 source_group = "data_artifact_narrative"
@@ -1845,7 +1845,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["dimensions", "lower", "observable", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0147", "SYM-0215", "SYM-0226", "SYM-0004"]
+symbol_refs = ["SYM-0184", "SYM-0257", "SYM-0269", "SYM-0003"]
 claim_refs = []
 source_uid = "ART-007"
 source_group = "data_artifact_narrative"
@@ -1867,7 +1867,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["anomaly", "associator"]
 numeric_constants = []
-symbol_refs = ["SYM-0110", "SYM-0044"]
+symbol_refs = ["SYM-0142", "SYM-0061"]
 claim_refs = []
 source_uid = "ART-007"
 source_group = "data_artifact_narrative"
@@ -1889,7 +1889,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["m_3"]
 numeric_constants = []
-symbol_refs = ["SYM-0005"]
+symbol_refs = ["SYM-0010"]
 claim_refs = []
 source_uid = "ART-007"
 source_group = "data_artifact_narrative"
@@ -1911,7 +1911,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["alpha"]
 numeric_constants = []
-symbol_refs = ["SYM-0007"]
+symbol_refs = ["SYM-0008"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -1933,7 +1933,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["NUMERIC_LITERAL"]
 numeric_constants = ["16", "3"]
-symbol_refs = ["SYM-0029"]
+symbol_refs = ["SYM-0037"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -1955,7 +1955,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["Phi"]
 numeric_constants = []
-symbol_refs = ["SYM-0030"]
+symbol_refs = ["SYM-0038"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -1977,7 +1977,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["F", "mathcal"]
 numeric_constants = []
-symbol_refs = ["SYM-0008", "SYM-0074"]
+symbol_refs = ["SYM-0011", "SYM-0099"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -1999,7 +1999,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["nu"]
 numeric_constants = []
-symbol_refs = ["SYM-0017"]
+symbol_refs = ["SYM-0001"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2021,7 +2021,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["alpha", "in"]
 numeric_constants = ["0.01", "0.05", "0.1", "0.2"]
-symbol_refs = ["SYM-0007", "SYM-0038"]
+symbol_refs = ["SYM-0008", "SYM-0051"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2043,7 +2043,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["beta", "beta_0", "beta_1"]
 numeric_constants = []
-symbol_refs = ["SYM-0002", "SYM-0011", "SYM-0021"]
+symbol_refs = ["SYM-0004", "SYM-0015", "SYM-0023"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2065,7 +2065,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["alpha"]
 numeric_constants = []
-symbol_refs = ["SYM-0007"]
+symbol_refs = ["SYM-0008"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2087,7 +2087,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["beta", "beta_0"]
 numeric_constants = []
-symbol_refs = ["SYM-0002", "SYM-0011"]
+symbol_refs = ["SYM-0004", "SYM-0015"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2109,7 +2109,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["beta", "beta_1"]
 numeric_constants = []
-symbol_refs = ["SYM-0002", "SYM-0021"]
+symbol_refs = ["SYM-0004", "SYM-0023"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2131,7 +2131,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["alpha"]
 numeric_constants = []
-symbol_refs = ["SYM-0007"]
+symbol_refs = ["SYM-0008"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2153,7 +2153,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["beta", "beta_0"]
 numeric_constants = ["1"]
-symbol_refs = ["SYM-0002", "SYM-0011"]
+symbol_refs = ["SYM-0004", "SYM-0015"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2175,7 +2175,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Fluid", "a", "algebraic", "beta", "beta_0", "breaking", "can", "discrete", "distill", "dynamics", "energy", "flows", "gg", "high", "information", "mechanism", "packets", "physical", "provides", "suggests", "symmetries", "to", "topologically", "transition"]
 numeric_constants = ["1"]
-symbol_refs = ["SYM-0175", "SYM-0018", "SYM-0104", "SYM-0002", "SYM-0011", "SYM-0120", "SYM-0126", "SYM-0149", "SYM-0150", "SYM-0153", "SYM-0061", "SYM-0174", "SYM-0067", "SYM-0036", "SYM-0196", "SYM-0219", "SYM-0235", "SYM-0244", "SYM-0250", "SYM-0279", "SYM-0283", "SYM-0004", "SYM-0290", "SYM-0292"]
+symbol_refs = ["SYM-0214", "SYM-0016", "SYM-0136", "SYM-0004", "SYM-0015", "SYM-0153", "SYM-0158", "SYM-0186", "SYM-0187", "SYM-0190", "SYM-0080", "SYM-0213", "SYM-0092", "SYM-0049", "SYM-0237", "SYM-0260", "SYM-0278", "SYM-0287", "SYM-0293", "SYM-0328", "SYM-0333", "SYM-0003", "SYM-0339", "SYM-0341"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2197,7 +2197,7 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["beta", "beta_0", "gg"]
 numeric_constants = ["1"]
-symbol_refs = ["SYM-0002", "SYM-0011", "SYM-0067"]
+symbol_refs = ["SYM-0004", "SYM-0015", "SYM-0092"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2219,7 +2219,7 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["beta", "beta_0"]
 numeric_constants = ["1"]
-symbol_refs = ["SYM-0002", "SYM-0011"]
+symbol_refs = ["SYM-0004", "SYM-0015"]
 claim_refs = []
 source_uid = "ART-009"
 source_group = "data_artifact_narrative"
@@ -2241,14 +2241,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["E_F", "Energy", "Frustration", "Scale", "U", "characteristic", "edge", "energy", "frustrated", "per"]
 numeric_constants = ["0394", "1"]
-symbol_refs = ["SYM-0059", "SYM-0158", "SYM-0181", "SYM-0266", "SYM-0001", "SYM-0129", "SYM-0155", "SYM-0061", "SYM-0180", "SYM-0238"]
+symbol_refs = ["SYM-0078", "SYM-0195", "SYM-0219", "SYM-0313", "SYM-0002", "SYM-0162", "SYM-0192", "SYM-0080", "SYM-0218", "SYM-0281"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.5.1: Analytical Coupling Strength Derivation (PENDING - Task #42)"
-source_line = 112
+source_line = 115
 
 [[atom]]
 id = "EQA2-00103"
@@ -2263,14 +2263,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Derivation", "E_F", "U", "kT_effective", "lambda"]
 numeric_constants = ["0394", "3"]
-symbol_refs = ["SYM-0144", "SYM-0059", "SYM-0001", "SYM-0205", "SYM-0014"]
+symbol_refs = ["SYM-0181", "SYM-0078", "SYM-0002", "SYM-0246", "SYM-0019"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.5.1: Analytical Coupling Strength Derivation (PENDING - Task #42)"
-source_line = 120
+source_line = 123
 
 [[atom]]
 id = "EQA2-00104"
@@ -2285,14 +2285,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Autocorrelation", "C", "F", "Function", "field", "frustration", "r", "x"]
 numeric_constants = ["1"]
-symbol_refs = ["SYM-0112", "SYM-0019", "SYM-0008", "SYM-0182", "SYM-0172", "SYM-0027", "SYM-0081", "SYM-0006"]
+symbol_refs = ["SYM-0144", "SYM-0021", "SYM-0011", "SYM-0220", "SYM-0089", "SYM-0035", "SYM-0107", "SYM-0006"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.5.2: Sedenion Field Spatial Structure Analysis (PENDING - Task #43)"
-source_line = 139
+source_line = 142
 
 [[atom]]
 id = "EQA2-00105"
@@ -2307,14 +2307,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["C", "Correlation", "Length", "integral", "of", "r", "xi"]
 numeric_constants = ["2"]
-symbol_refs = ["SYM-0019", "SYM-0053", "SYM-0073", "SYM-0198", "SYM-0009", "SYM-0081", "SYM-0310"]
+symbol_refs = ["SYM-0021", "SYM-0072", "SYM-0097", "SYM-0239", "SYM-0012", "SYM-0107", "SYM-0361"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.5.2: Sedenion Field Spatial Structure Analysis (PENDING - Task #43)"
-source_line = 140
+source_line = 143
 
 [[atom]]
 id = "EQA2-00106"
@@ -2329,14 +2329,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["F", "exp", "exponential", "form", "lambda", "nu", "nu_base", "x"]
 numeric_constants = ["2", "3", "8"]
-symbol_refs = ["SYM-0008", "SYM-0064", "SYM-0167", "SYM-0066", "SYM-0014", "SYM-0017", "SYM-0028", "SYM-0006"]
+symbol_refs = ["SYM-0011", "SYM-0083", "SYM-0206", "SYM-0090", "SYM-0019", "SYM-0001", "SYM-0036", "SYM-0006"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.5.4: Alternative Viscosity Laws Investigation (PENDING - Task #45)"
-source_line = 199
+source_line = 202
 
 [[atom]]
 id = "EQA2-00107"
@@ -2351,14 +2351,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["F", "Linear", "lambda", "nu", "nu_base", "x"]
 numeric_constants = ["1", "3", "8"]
-symbol_refs = ["SYM-0008", "SYM-0212", "SYM-0014", "SYM-0017", "SYM-0028", "SYM-0006"]
+symbol_refs = ["SYM-0011", "SYM-0254", "SYM-0019", "SYM-0001", "SYM-0036", "SYM-0006"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.5.4: Alternative Viscosity Laws Investigation (PENDING - Task #45)"
-source_line = 202
+source_line = 205
 
 [[atom]]
 id = "EQA2-00108"
@@ -2373,14 +2373,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["F", "Law", "Power", "alpha", "nu", "nu_base", "x"]
 numeric_constants = ["1", "2", "3", "8"]
-symbol_refs = ["SYM-0008", "SYM-0208", "SYM-0080", "SYM-0007", "SYM-0017", "SYM-0028", "SYM-0006"]
+symbol_refs = ["SYM-0011", "SYM-0250", "SYM-0106", "SYM-0008", "SYM-0001", "SYM-0036", "SYM-0006"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.5.4: Alternative Viscosity Laws Investigation (PENDING - Task #45)"
-source_line = 203
+source_line = 206
 
 [[atom]]
 id = "EQA2-00109"
@@ -2395,14 +2395,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["F", "F_c", "Sigmoid", "exp", "lambda", "nu", "nu_base", "x"]
 numeric_constants = ["1", "3"]
-symbol_refs = ["SYM-0008", "SYM-0170", "SYM-0270", "SYM-0064", "SYM-0014", "SYM-0017", "SYM-0028", "SYM-0006"]
+symbol_refs = ["SYM-0011", "SYM-0208", "SYM-0317", "SYM-0083", "SYM-0019", "SYM-0001", "SYM-0036", "SYM-0006"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.5.4: Alternative Viscosity Laws Investigation (PENDING - Task #45)"
-source_line = 204
+source_line = 207
 
 [[atom]]
 id = "EQA2-00110"
@@ -2417,14 +2417,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["F", "Piecewise", "else", "if", "nu", "nu_1", "nu_2", "x"]
 numeric_constants = ["3", "4", "8"]
-symbol_refs = ["SYM-0008", "SYM-0245", "SYM-0156", "SYM-0193", "SYM-0017", "SYM-0224", "SYM-0225", "SYM-0006"]
+symbol_refs = ["SYM-0011", "SYM-0288", "SYM-0193", "SYM-0232", "SYM-0001", "SYM-0267", "SYM-0268", "SYM-0006"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.5.4: Alternative Viscosity Laws Investigation (PENDING - Task #45)"
-source_line = 205
+source_line = 208
 
 [[atom]]
 id = "EQA2-00111"
@@ -2439,14 +2439,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["C", "Claim", "Lambda", "Strong", "U", "Validation"]
 numeric_constants = ["50", "663"]
-symbol_refs = ["SYM-0019", "SYM-0051", "SYM-0071", "SYM-0086", "SYM-0001", "SYM-0094"]
+symbol_refs = ["SYM-0021", "SYM-0069", "SYM-0095", "SYM-0113", "SYM-0002", "SYM-0125"]
 claim_refs = ["C-663"]
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.11.1: <U+03BB>=50 Validation (PENDING - Task #57)"
-source_line = 425
+source_line = 428
 
 [[atom]]
 id = "EQA2-00112"
@@ -2461,14 +2461,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["C", "Claim", "Extreme", "Lambda", "U", "Validation"]
 numeric_constants = ["100", "664"]
-symbol_refs = ["SYM-0019", "SYM-0051", "SYM-0168", "SYM-0071", "SYM-0001", "SYM-0094"]
+symbol_refs = ["SYM-0021", "SYM-0069", "SYM-0207", "SYM-0095", "SYM-0002", "SYM-0125"]
 claim_refs = ["C-664"]
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Phase 1.11.2: <U+03BB>=100 Validation (PENDING - Task #58)"
-source_line = 448
+source_line = 451
 
 [[atom]]
 id = "EQA2-00113"
@@ -2483,14 +2483,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["E", "U", "p", "values"]
 numeric_constants = ["0.0001", "0.001", "0.05", "027", "1", "10", "100", "2208", "50"]
-symbol_refs = ["SYM-0058", "SYM-0001", "SYM-0003", "SYM-0304"]
+symbol_refs = ["SYM-0077", "SYM-0002", "SYM-0005", "SYM-0355"]
 claim_refs = []
 source_uid = "DRN-001"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/PHASE1_REMAINING_ROADMAP.md"
 section_title = "Success Metrics"
-source_line = 517
+source_line = 520
 
 [[atom]]
 id = "EQA2-00114"
@@ -2505,14 +2505,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Length", "dx", "m", "scale", "um"]
 numeric_constants = ["1", "1e-6"]
-symbol_refs = ["SYM-0073", "SYM-0057", "SYM-0217", "SYM-0083", "SYM-0296"]
+symbol_refs = ["SYM-0097", "SYM-0076", "SYM-0028", "SYM-0057", "SYM-0347"]
 claim_refs = []
 source_uid = "DRN-002"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/REAL_MATERIALS_INTEGRATION.md"
 section_title = "LBM Calibration"
-source_line = 61
+source_line = 64
 
 [[atom]]
 id = "EQA2-00115"
@@ -2527,14 +2527,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Time", "dt", "ns", "s", "scale"]
 numeric_constants = ["10", "1e-8"]
-symbol_refs = ["SYM-0288", "SYM-0056", "SYM-0223", "SYM-0082", "SYM-0083"]
+symbol_refs = ["SYM-0337", "SYM-0044", "SYM-0266", "SYM-0110", "SYM-0057"]
 claim_refs = []
 source_uid = "DRN-002"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/REAL_MATERIALS_INTEGRATION.md"
 section_title = "LBM Calibration"
-source_line = 62
+source_line = 65
 
 [[atom]]
 id = "EQA2-00116"
@@ -2549,14 +2549,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Kinematic", "dt", "dx", "lattice", "nu", "nu_lattice", "viscosity"]
 numeric_constants = ["1e-12", "1e-8", "2", "2.18e-4", "2.18e-8"]
-symbol_refs = ["SYM-0204", "SYM-0056", "SYM-0057", "SYM-0072", "SYM-0017", "SYM-0076", "SYM-0095"]
+symbol_refs = ["SYM-0245", "SYM-0044", "SYM-0076", "SYM-0096", "SYM-0001", "SYM-0102", "SYM-0126"]
 claim_refs = []
 source_uid = "DRN-002"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/REAL_MATERIALS_INTEGRATION.md"
 section_title = "LBM Calibration"
-source_line = 66
+source_line = 69
 
 [[atom]]
 id = "EQA2-00117"
@@ -2571,14 +2571,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Relaxation", "nu_lattice", "tau", "time"]
 numeric_constants = ["0.5", "0.500654", "2.18e-4", "3"]
-symbol_refs = ["SYM-0260", "SYM-0076", "SYM-0285", "SYM-0289"]
+symbol_refs = ["SYM-0305", "SYM-0102", "SYM-0040", "SYM-0338"]
 claim_refs = []
 source_uid = "DRN-002"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/REAL_MATERIALS_INTEGRATION.md"
 section_title = "LBM Calibration"
-source_line = 67
+source_line = 70
 
 [[atom]]
 id = "EQA2-00118"
@@ -2593,14 +2593,14 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["LAMINAR", "REGIME", "Re"]
 numeric_constants = ["2000"]
-symbol_refs = ["SYM-0206", "SYM-0258", "SYM-0257"]
+symbol_refs = ["SYM-0247", "SYM-0303", "SYM-0301"]
 claim_refs = []
 source_uid = "DRN-002"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/REAL_MATERIALS_INTEGRATION.md"
 section_title = "LBM Calibration"
-source_line = 77
+source_line = 80
 
 [[atom]]
 id = "EQA2-00119"
@@ -2615,14 +2615,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Complex", "K", "Pa", "at", "borosilicate", "high", "melt", "polymerization", "s", "viscosity"]
 numeric_constants = ["1600", "1e4"]
-symbol_refs = ["SYM-0133", "SYM-0202", "SYM-0234", "SYM-0045", "SYM-0119", "SYM-0036", "SYM-0220", "SYM-0247", "SYM-0082", "SYM-0095"]
+symbol_refs = ["SYM-0166", "SYM-0243", "SYM-0277", "SYM-0062", "SYM-0152", "SYM-0049", "SYM-0261", "SYM-0290", "SYM-0110", "SYM-0126"]
 claim_refs = []
 source_uid = "DRN-002"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/REAL_MATERIALS_INTEGRATION.md"
 section_title = "Application"
-source_line = 147
+source_line = 150
 
 [[atom]]
 id = "EQA2-00120"
@@ -2637,14 +2637,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Low", "effects", "frustration", "high", "lambda", "strong", "temperatures"]
 numeric_constants = []
-symbol_refs = ["SYM-0213", "SYM-0060", "SYM-0027", "SYM-0036", "SYM-0014", "SYM-0276", "SYM-0088"]
+symbol_refs = ["SYM-0255", "SYM-0079", "SYM-0035", "SYM-0049", "SYM-0019", "SYM-0325", "SYM-0118"]
 claim_refs = []
 source_uid = "DRN-002"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/REAL_MATERIALS_INTEGRATION.md"
 section_title = "Water at 293 K:"
-source_line = 237
+source_line = 240
 
 [[atom]]
 id = "EQA2-00121"
@@ -2659,14 +2659,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["High", "effects", "frustration", "lambda", "low", "temperatures", "weak"]
 numeric_constants = []
-symbol_refs = ["SYM-0188", "SYM-0060", "SYM-0027", "SYM-0014", "SYM-0214", "SYM-0088", "SYM-0308"]
+symbol_refs = ["SYM-0227", "SYM-0079", "SYM-0035", "SYM-0019", "SYM-0256", "SYM-0118", "SYM-0359"]
 claim_refs = []
 source_uid = "DRN-002"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/REAL_MATERIALS_INTEGRATION.md"
 section_title = "Water at 293 K:"
-source_line = 238
+source_line = 241
 
 [[atom]]
 id = "EQA2-00122"
@@ -2681,14 +2681,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["F", "Vacuum", "attractor"]
 numeric_constants = ["0.375", "3", "8"]
-symbol_refs = ["SYM-0008", "SYM-0300", "SYM-0046"]
+symbol_refs = ["SYM-0011", "SYM-0351", "SYM-0063"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1 Week 1: Frustration Solver"
-source_line = 96
+source_line = 99
 
 [[atom]]
 id = "EQA2-00123"
@@ -2703,14 +2703,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["U", "frequency", "relaxation"]
 numeric_constants = ["1"]
-symbol_refs = ["SYM-0001", "SYM-0179", "SYM-0261"]
+symbol_refs = ["SYM-0002", "SYM-0091", "SYM-0306"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1 Week 2: LBM 3D Refactoring"
-source_line = 116
+source_line = 119
 
 [[atom]]
 id = "EQA2-00124"
@@ -2725,14 +2725,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Chapman", "Enskog", "U", "relation"]
 numeric_constants = ["0.5", "3"]
-symbol_refs = ["SYM-0049", "SYM-0062", "SYM-0001", "SYM-0259"]
+symbol_refs = ["SYM-0067", "SYM-0081", "SYM-0002", "SYM-0304"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1 Week 2: LBM 3D Refactoring"
-source_line = 117
+source_line = 120
 
 [[atom]]
 id = "EQA2-00125"
@@ -2747,14 +2747,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Equilibrium", "U", "c_i", "distribution", "eq", "f", "w_i"]
 numeric_constants = ["1"]
-symbol_refs = ["SYM-0163", "SYM-0001", "SYM-0125", "SYM-0055", "SYM-0162", "SYM-0169", "SYM-0306"]
+symbol_refs = ["SYM-0202", "SYM-0002", "SYM-0065", "SYM-0075", "SYM-0201", "SYM-0045", "SYM-0129"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1 Week 2: LBM 3D Refactoring"
-source_line = 118
+source_line = 121
 
 [[atom]]
 id = "EQA2-00126"
@@ -2769,14 +2769,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["U", "_base", "lattice", "typical", "units"]
 numeric_constants = ["0.333"]
-symbol_refs = ["SYM-0001", "SYM-0042", "SYM-0072", "SYM-0295", "SYM-0091"]
+symbol_refs = ["SYM-0002", "SYM-0059", "SYM-0096", "SYM-0344", "SYM-0122"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1 Week 3: Frustration-Viscosity Bridge"
-source_line = 139
+source_line = 142
 
 [[atom]]
 id = "EQA2-00127"
@@ -2791,14 +2791,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["U", "coupling", "parameter", "strength", "sweep", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0001", "SYM-0140", "SYM-0237", "SYM-0275", "SYM-0282", "SYM-0004"]
+symbol_refs = ["SYM-0002", "SYM-0175", "SYM-0280", "SYM-0324", "SYM-0332", "SYM-0003"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1 Week 3: Frustration-Viscosity Bridge"
-source_line = 140
+source_line = 143
 
 [[atom]]
 id = "EQA2-00128"
@@ -2813,14 +2813,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["attractor", "equilibrium", "frustration", "vacuum"]
 numeric_constants = ["3", "8"]
-symbol_refs = ["SYM-0046", "SYM-0164", "SYM-0027", "SYM-0301"]
+symbol_refs = ["SYM-0063", "SYM-0203", "SYM-0035", "SYM-0352"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1 Week 3: Frustration-Viscosity Bridge"
-source_line = 141
+source_line = 144
 
 [[atom]]
 id = "EQA2-00129"
@@ -2835,14 +2835,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["F", "U", "_base", "minimal", "perturbation"]
 numeric_constants = ["2192", "3", "8"]
-symbol_refs = ["SYM-0008", "SYM-0001", "SYM-0042", "SYM-0221", "SYM-0240"]
+symbol_refs = ["SYM-0011", "SYM-0002", "SYM-0059", "SYM-0263", "SYM-0283"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1 Week 3: Frustration-Viscosity Bridge"
-source_line = 144
+source_line = 147
 
 [[atom]]
 id = "EQA2-00130"
@@ -2857,14 +2857,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Correlation", "p", "significant"]
 numeric_constants = ["0.05", "0.805"]
-symbol_refs = ["SYM-0053", "SYM-0003", "SYM-0084"]
+symbol_refs = ["SYM-0072", "SYM-0005", "SYM-0111"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1.4.1: Lambda Scaling (Task #39 - IN PROGRESS)"
-source_line = 231
+source_line = 234
 
 [[atom]]
 id = "EQA2-00131"
@@ -2879,14 +2879,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Null", "also", "model", "non", "p", "significant"]
 numeric_constants = ["0.901"]
-symbol_refs = ["SYM-0077", "SYM-0108", "SYM-0222", "SYM-0075", "SYM-0003", "SYM-0084"]
+symbol_refs = ["SYM-0103", "SYM-0140", "SYM-0265", "SYM-0100", "SYM-0005", "SYM-0111"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1.4.1: Lambda Scaling (Task #39 - IN PROGRESS)"
-source_line = 232
+source_line = 235
 
 [[atom]]
 id = "EQA2-00132"
@@ -2901,14 +2901,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Fixed", "U", "based", "on", "results", "update", "will"]
 numeric_constants = ["1", "1.0", "1.4"]
-symbol_refs = ["SYM-0173", "SYM-0001", "SYM-0114", "SYM-0228", "SYM-0263", "SYM-0297", "SYM-0309"]
+symbol_refs = ["SYM-0211", "SYM-0002", "SYM-0147", "SYM-0271", "SYM-0308", "SYM-0348", "SYM-0360"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1.4.3: Grid Resolution (Task #41 - PENDING)"
-source_line = 242
+source_line = 245
 
 [[atom]]
 id = "EQA2-00133"
@@ -2923,14 +2923,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Chapman", "Enskog", "U", "Verify", "exactly"]
 numeric_constants = ["0.5", "3"]
-symbol_refs = ["SYM-0049", "SYM-0062", "SYM-0001", "SYM-0305", "SYM-0063"]
+symbol_refs = ["SYM-0067", "SYM-0081", "SYM-0002", "SYM-0356", "SYM-0082"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1.5.3: LBM-Tau Coupling Verification (Task #44)"
-source_line = 259
+source_line = 262
 
 [[atom]]
 id = "EQA2-00134"
@@ -2945,14 +2945,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Configuration", "U", "steps"]
 numeric_constants = ["256", "50.0"]
-symbol_refs = ["SYM-0052", "SYM-0001", "SYM-0085"]
+symbol_refs = ["SYM-0071", "SYM-0002", "SYM-0112"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1.11.1: <U+03BB>=50 Validation (Task #57)"
-source_line = 335
+source_line = 338
 
 [[atom]]
 id = "EQA2-00135"
@@ -2967,14 +2967,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Configuration", "U", "steps"]
 numeric_constants = ["100.0", "256"]
-symbol_refs = ["SYM-0052", "SYM-0001", "SYM-0085"]
+symbol_refs = ["SYM-0071", "SYM-0002", "SYM-0112"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Phase 1.11.2: <U+03BB>=100 Validation (Task #58)"
-source_line = 340
+source_line = 343
 
 [[atom]]
 id = "EQA2-00136"
@@ -2989,14 +2989,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["Baseline", "FAILED", "p", "run"]
 numeric_constants = ["0.805"]
-symbol_refs = ["SYM-0115", "SYM-0065", "SYM-0003", "SYM-0264"]
+symbol_refs = ["SYM-0148", "SYM-0087", "SYM-0005", "SYM-0311"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Experiments"
-source_line = 389
+source_line = 392
 
 [[atom]]
 id = "EQA2-00137"
@@ -3011,14 +3011,14 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["E", "FAILED", "U", "at", "config", "one", "p", "value"]
 numeric_constants = ["0.05", "0.805", "027", "2610"]
-symbol_refs = ["SYM-0058", "SYM-0065", "SYM-0001", "SYM-0045", "SYM-0137", "SYM-0229", "SYM-0003", "SYM-0303"]
+symbol_refs = ["SYM-0077", "SYM-0087", "SYM-0002", "SYM-0062", "SYM-0171", "SYM-0272", "SYM-0005", "SYM-0354"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Success Metrics (Phase 1 Complete)"
-source_line = 488
+source_line = 491
 
 [[atom]]
 id = "EQA2-00138"
@@ -3033,17 +3033,765 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["BLOCKED", "Strong", "U", "lambda", "p", "validation"]
 numeric_constants = ["0.001", "2610", "50"]
-symbol_refs = ["SYM-0118", "SYM-0086", "SYM-0001", "SYM-0014", "SYM-0003", "SYM-0302"]
+symbol_refs = ["SYM-0151", "SYM-0113", "SYM-0002", "SYM-0019", "SYM-0005", "SYM-0353"]
 claim_refs = []
 source_uid = "DRN-003"
 source_group = "docs_root_narrative"
 source_registry = "registry/docs_root_narratives.toml"
 source_path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 section_title = "Success Metrics (Phase 1 Complete)"
-source_line = 491
+source_line = 494
 
 [[atom]]
 id = "EQA2-00139"
+expression = "rho(x) = sum_i f_i(x)"
+normalized_expression = "rho(x) = sum_i f_i(x)"
+relation_operator = "="
+lhs_expression = "rho(x)"
+rhs_expression = "sum_i f_i(x)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["f_i", "rho", "sum_i", "x"]
+numeric_constants = []
+symbol_refs = ["SYM-0047", "SYM-0031", "SYM-0115", "SYM-0006"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2. Core LBM Update (D3Q19, BGK)"
+source_line = 46
+
+[[atom]]
+id = "EQA2-00140"
+expression = "u(x) = (1/rho(x)) * sum_i c_i * f_i(x)"
+normalized_expression = "u(x) = (1/rho(x)) * sum_i c_i * f_i(x)"
+relation_operator = "="
+lhs_expression = "u(x)"
+rhs_expression = "(1/rho(x)) * sum_i c_i * f_i(x)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["c_i", "f_i", "rho", "sum_i", "u", "x"]
+numeric_constants = ["1"]
+symbol_refs = ["SYM-0065", "SYM-0047", "SYM-0031", "SYM-0115", "SYM-0041", "SYM-0006"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2. Core LBM Update (D3Q19, BGK)"
+source_line = 47
+
+[[atom]]
+id = "EQA2-00141"
+expression = "f_i_eq = w_i * rho * [ 1"
+normalized_expression = "f_i_eq = w_i * rho * [ 1"
+relation_operator = "="
+lhs_expression = "f_i_eq"
+rhs_expression = "w_i * rho * [ 1"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["f_i_eq", "rho", "w_i"]
+numeric_constants = ["1"]
+symbol_refs = ["SYM-0085", "SYM-0031", "SYM-0129"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2. Core LBM Update (D3Q19, BGK)"
+source_line = 51
+
+[[atom]]
+id = "EQA2-00142"
+expression = "f_i_post = f_i - (1/tau) * (f_i - f_i_eq)"
+normalized_expression = "f_i_post = f_i - (1/tau) * (f_i - f_i_eq)"
+relation_operator = "="
+lhs_expression = "f_i_post"
+rhs_expression = "f_i - (1/tau) * (f_i - f_i_eq)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["f_i", "f_i_eq", "f_i_post", "tau"]
+numeric_constants = ["1"]
+symbol_refs = ["SYM-0047", "SYM-0085", "SYM-0209", "SYM-0040"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2. Core LBM Update (D3Q19, BGK)"
+source_line = 58
+
+[[atom]]
+id = "EQA2-00143"
+expression = "nu = (tau - 0.5) / 3"
+normalized_expression = "nu = (tau - 0.5) / 3"
+relation_operator = "="
+lhs_expression = "nu"
+rhs_expression = "(tau - 0.5) / 3"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["nu", "tau"]
+numeric_constants = ["0.5", "3"]
+symbol_refs = ["SYM-0001", "SYM-0040"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2. Core LBM Update (D3Q19, BGK)"
+source_line = 65
+
+[[atom]]
+id = "EQA2-00144"
+expression = "d_t u + (u . grad)u = -(1/rho) grad p + nu laplacian(u) + f"
+normalized_expression = "d_t u + (u . grad)u = -(1/rho) grad p + nu laplacian(u) + f"
+relation_operator = "="
+lhs_expression = "d_t u + (u . grad)u"
+rhs_expression = "-(1/rho) grad p + nu laplacian(u) + f"
+equation_kind = "differential_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["d_t", "f", "grad", "laplacian", "nu", "p", "rho", "u"]
+numeric_constants = ["1"]
+symbol_refs = ["SYM-0178", "SYM-0045", "SYM-0223", "SYM-0249", "SYM-0001", "SYM-0005", "SYM-0031", "SYM-0041"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 81
+
+[[atom]]
+id = "EQA2-00145"
+expression = "f_x(y) = F0 * sin(k y)"
+normalized_expression = "f_x(y) = F0 * sin(k y)"
+relation_operator = "="
+lhs_expression = "f_x(y)"
+rhs_expression = "F0 * sin(k y)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["F0", "f_x", "k", "sin", "y"]
+numeric_constants = []
+symbol_refs = ["SYM-0026", "SYM-0086", "SYM-0007", "SYM-0058", "SYM-0032"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 82
+
+[[atom]]
+id = "EQA2-00146"
+expression = "u_x(y) = U0 * sin(k y)"
+normalized_expression = "u_x(y) = U0 * sin(k y)"
+relation_operator = "="
+lhs_expression = "u_x(y)"
+rhs_expression = "U0 * sin(k y)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["U0", "k", "sin", "u_x", "y"]
+numeric_constants = []
+symbol_refs = ["SYM-0014", "SYM-0007", "SYM-0058", "SYM-0345", "SYM-0032"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 83
+
+[[atom]]
+id = "EQA2-00147"
+expression = "F0 = nu * k^2 * U0"
+normalized_expression = "F0 = nu * k^2 * U0"
+relation_operator = "="
+lhs_expression = "F0"
+rhs_expression = "nu * k^2 * U0"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["F0", "U0", "k", "nu"]
+numeric_constants = ["2"]
+symbol_refs = ["SYM-0026", "SYM-0014", "SYM-0007", "SYM-0001"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 88
+
+[[atom]]
+id = "EQA2-00148"
+expression = "k = 2*pi*m / Ny"
+normalized_expression = "k = 2*pi*m / Ny"
+relation_operator = "="
+lhs_expression = "k"
+rhs_expression = "2*pi*m / Ny"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["Ny", "k", "m", "pi"]
+numeric_constants = ["2"]
+symbol_refs = ["SYM-0029", "SYM-0007", "SYM-0028", "SYM-0055"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 92
+
+[[atom]]
+id = "EQA2-00149"
+expression = "Re_target = U0 / (nu * k)"
+normalized_expression = "Re_target = U0 / (nu * k)"
+relation_operator = "="
+lhs_expression = "Re_target"
+rhs_expression = "U0 / (nu * k)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["Re_target", "U0", "k", "nu"]
+numeric_constants = []
+symbol_refs = ["SYM-0108", "SYM-0014", "SYM-0007", "SYM-0001"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 99
+
+[[atom]]
+id = "EQA2-00150"
+expression = "U0 = min(Re_target * nu * k, Ma_max * c_s)"
+normalized_expression = "U0 = min(Re_target * nu * k, Ma_max * c_s)"
+relation_operator = "="
+lhs_expression = "U0"
+rhs_expression = "min(Re_target * nu * k, Ma_max * c_s)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["Ma_max", "Re_target", "U0", "c_s", "k", "min", "nu"]
+numeric_constants = []
+symbol_refs = ["SYM-0098", "SYM-0108", "SYM-0014", "SYM-0034", "SYM-0007", "SYM-0262", "SYM-0001"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 100
+
+[[atom]]
+id = "EQA2-00151"
+expression = "F0 = nu * k^2 * U0"
+normalized_expression = "F0 = nu * k^2 * U0"
+relation_operator = "="
+lhs_expression = "F0"
+rhs_expression = "nu * k^2 * U0"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["F0", "U0", "k", "nu"]
+numeric_constants = ["2"]
+symbol_refs = ["SYM-0026", "SYM-0014", "SYM-0007", "SYM-0001"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 104
+
+[[atom]]
+id = "EQA2-00152"
+expression = "c_s^2 = 1/3"
+normalized_expression = "c_s^2 = 1/3"
+relation_operator = "="
+lhs_expression = "c_s^2"
+rhs_expression = "1/3"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["c_s"]
+numeric_constants = ["1", "2", "3"]
+symbol_refs = ["SYM-0034"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 108
+
+[[atom]]
+id = "EQA2-00153"
+expression = "nu = c_s^2 * (tau - 0.5)"
+normalized_expression = "nu = c_s^2 * (tau - 0.5)"
+relation_operator = "="
+lhs_expression = "nu"
+rhs_expression = "c_s^2 * (tau - 0.5)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["c_s", "nu", "tau"]
+numeric_constants = ["0.5", "2"]
+symbol_refs = ["SYM-0034", "SYM-0001", "SYM-0040"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.1 Physically Derived Low-Level Forcing (Kolmogorov Flow)"
+source_line = 109
+
+[[atom]]
+id = "EQA2-00154"
+expression = "f_x(y) = F0 * sin(2*pi*m*y/Ny), F0 = nu * k^2 * U0"
+normalized_expression = "f_x(y) = F0 * sin(2*pi*m*y/Ny), F0 = nu * k^2 * U0"
+relation_operator = "="
+lhs_expression = "f_x(y)"
+rhs_expression = "F0 * sin(2*pi*m*y/Ny), F0 = nu * k^2 * U0"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["F0", "Ny", "U0", "f_x", "k", "m", "nu", "pi", "sin", "y"]
+numeric_constants = ["2"]
+symbol_refs = ["SYM-0026", "SYM-0029", "SYM-0014", "SYM-0086", "SYM-0007", "SYM-0028", "SYM-0001", "SYM-0055", "SYM-0058", "SYM-0032"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.2 Source-Grounded LBM Forcing Link (Not Hand-Wavy)"
+source_line = 143
+
+[[atom]]
+id = "EQA2-00155"
+expression = "When the cap is active (`U0 = Ma_max * c_s`), and `m` is fixed:"
+normalized_expression = "When the cap is active (`U0 = Ma_max * c_s`), and `m` is fixed:"
+relation_operator = "="
+lhs_expression = "When the cap is active (`U0"
+rhs_expression = "Ma_max * c_s`), and `m` is fixed:"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["Ma_max", "U0", "active", "c_s", "cap", "fixed", "is", "m"]
+numeric_constants = []
+symbol_refs = ["SYM-0098", "SYM-0014", "SYM-0134", "SYM-0034", "SYM-0159", "SYM-0212", "SYM-0052", "SYM-0028"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.3 Quantitative Consequence Of The Mach Cap"
+source_line = 150
+
+[[atom]]
+id = "EQA2-00156"
+expression = "k = 2*pi*m/Ny"
+normalized_expression = "k = 2*pi*m/Ny"
+relation_operator = "="
+lhs_expression = "k"
+rhs_expression = "2*pi*m/Ny"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["Ny", "k", "m", "pi"]
+numeric_constants = ["2"]
+symbol_refs = ["SYM-0029", "SYM-0007", "SYM-0028", "SYM-0055"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.3 Quantitative Consequence Of The Mach Cap"
+source_line = 152
+
+[[atom]]
+id = "EQA2-00157"
+expression = "Re_effective = U0 / (nu*k) ~ Ny"
+normalized_expression = "Re_effective = U0 / (nu*k) ~ Ny"
+relation_operator = "="
+lhs_expression = "Re_effective"
+rhs_expression = "U0 / (nu*k) ~ Ny"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["Ny", "Re_effective", "U0", "k", "nu"]
+numeric_constants = []
+symbol_refs = ["SYM-0029", "SYM-0302", "SYM-0014", "SYM-0007", "SYM-0001"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.3 Quantitative Consequence Of The Mach Cap"
+source_line = 153
+
+[[atom]]
+id = "EQA2-00158"
+expression = "F0 = nu*k^2*U0 ~ Ny^(-2)"
+normalized_expression = "F0 = nu*k^2*U0 ~ Ny^(-2)"
+relation_operator = "="
+lhs_expression = "F0"
+rhs_expression = "nu*k^2*U0 ~ Ny^(-2)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["F0", "Ny", "U0", "k", "nu"]
+numeric_constants = ["2"]
+symbol_refs = ["SYM-0026", "SYM-0029", "SYM-0014", "SYM-0007", "SYM-0001"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.3 Quantitative Consequence Of The Mach Cap"
+source_line = 154
+
+[[atom]]
+id = "EQA2-00159"
+expression = "f_eq ~ w_axis * rho0, w_axis = 1/18"
+normalized_expression = "f_eq ~ w_axis * rho0, w_axis = 1/18"
+relation_operator = "="
+lhs_expression = "f_eq ~ w_axis * rho0, w_axis"
+rhs_expression = "1/18"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["f_eq", "rho0", "w_axis"]
+numeric_constants = ["1", "18"]
+symbol_refs = ["SYM-0084", "SYM-0309", "SYM-0357"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.4 BF16 Quantization Limit On Low-Mach Forcing Increments"
+source_line = 172
+
+[[atom]]
+id = "EQA2-00160"
+expression = "R_bf16 = Delta f / ulp_bf16(f_eq)"
+normalized_expression = "R_bf16 = Delta f / ulp_bf16(f_eq)"
+relation_operator = "="
+lhs_expression = "R_bf16"
+rhs_expression = "Delta f / ulp_bf16(f_eq)"
+equation_kind = "differential_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["Delta", "R_bf16", "f", "f_eq", "ulp_bf16"]
+numeric_constants = []
+symbol_refs = ["SYM-0179", "SYM-0298", "SYM-0045", "SYM-0084", "SYM-0346"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "2.4 BF16 Quantization Limit On Low-Mach Forcing Increments"
+source_line = 184
+
+[[atom]]
+id = "EQA2-00161"
+expression = "2. Convert the real field to a complex field (imag=0)."
+normalized_expression = "2. Convert the real field to a complex field (imag=0)."
+relation_operator = "="
+lhs_expression = "2. Convert the real field to a complex field (imag"
+rhs_expression = "0)."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["Convert", "a", "complex", "field", "imag", "real", "to"]
+numeric_constants = ["0", "2"]
+symbol_refs = ["SYM-0174", "SYM-0016", "SYM-0070", "SYM-0089", "SYM-0234", "SYM-0109", "SYM-0003"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "3. The E7 Spectral Filter (What It Does Numerically)"
+source_line = 196
+
+[[atom]]
+id = "EQA2-00162"
+expression = "3. Compute 3D FFT to frequency space: `u_hat = FFT(u)`."
+normalized_expression = "3. Compute 3D FFT to frequency space: `u_hat = FFT(u)`."
+relation_operator = "="
+lhs_expression = "3. Compute 3D FFT to frequency space: `u_hat"
+rhs_expression = "FFT(u)`."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["Compute", "FFT", "frequency", "space", "to", "u", "u_hat"]
+numeric_constants = ["3"]
+symbol_refs = ["SYM-0169", "SYM-0088", "SYM-0091", "SYM-0318", "SYM-0003", "SYM-0041", "SYM-0121"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "3. The E7 Spectral Filter (What It Does Numerically)"
+source_line = 197
+
+[[atom]]
+id = "EQA2-00163"
+expression = "u_hat[k] *= damping"
+normalized_expression = "u_hat[k] *= damping"
+relation_operator = "="
+lhs_expression = "u_hat[k] *"
+rhs_expression = "damping"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["damping", "k", "u_hat"]
+numeric_constants = []
+symbol_refs = ["SYM-0074", "SYM-0007", "SYM-0121"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "3. The E7 Spectral Filter (What It Does Numerically)"
+source_line = 201
+
+[[atom]]
+id = "EQA2-00164"
+expression = "alpha = tanh(enstrophy / enstrophy_crit)"
+normalized_expression = "alpha = tanh(enstrophy / enstrophy_crit)"
+relation_operator = "="
+lhs_expression = "alpha"
+rhs_expression = "tanh(enstrophy / enstrophy_crit)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["alpha", "enstrophy", "enstrophy_crit", "tanh"]
+numeric_constants = []
+symbol_refs = ["SYM-0008", "SYM-0196", "SYM-0197", "SYM-0334"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "3. The E7 Spectral Filter (What It Does Numerically)"
+source_line = 206
+
+[[atom]]
+id = "EQA2-00165"
+expression = "damping = 1 - (1 - base_damping) * alpha"
+normalized_expression = "damping = 1 - (1 - base_damping) * alpha"
+relation_operator = "="
+lhs_expression = "damping"
+rhs_expression = "1 - (1 - base_damping) * alpha"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["alpha", "base_damping", "damping"]
+numeric_constants = ["1"]
+symbol_refs = ["SYM-0008", "SYM-0146", "SYM-0074"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "3. The E7 Spectral Filter (What It Does Numerically)"
+source_line = 207
+
+[[atom]]
+id = "EQA2-00166"
+expression = "IFFT(FFT(u)) = (N^3) * u"
+normalized_expression = "IFFT(FFT(u)) = (N^3) * u"
+relation_operator = "="
+lhs_expression = "IFFT(FFT(u))"
+rhs_expression = "(N^3) * u"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["FFT", "IFFT", "N", "u"]
+numeric_constants = ["3"]
+symbol_refs = ["SYM-0088", "SYM-0233", "SYM-0009", "SYM-0041"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "3. The E7 Spectral Filter (What It Does Numerically)"
+source_line = 215
+
+[[atom]]
+id = "EQA2-00167"
+expression = "scale = 1 / (N^3)"
+normalized_expression = "scale = 1 / (N^3)"
+relation_operator = "="
+lhs_expression = "scale"
+rhs_expression = "1 / (N^3)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["N", "scale"]
+numeric_constants = ["1", "3"]
+symbol_refs = ["SYM-0009", "SYM-0057"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "3. The E7 Spectral Filter (What It Does Numerically)"
+source_line = 219
+
+[[atom]]
+id = "EQA2-00168"
+expression = "complex -> real."
+normalized_expression = "complex -> real."
+relation_operator = "->"
+lhs_expression = "complex"
+rhs_expression = "real."
+equation_kind = "mapping_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["complex", "real"]
+numeric_constants = []
+symbol_refs = ["SYM-0070", "SYM-0109"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "3. The E7 Spectral Filter (What It Does Numerically)"
+source_line = 222
+
+[[atom]]
+id = "EQA2-00169"
+expression = "rho_mean(t) = (1 / N^3) * sum_x rho(x, t)"
+normalized_expression = "rho_mean(t) = (1 / N^3) * sum_x rho(x, t)"
+relation_operator = "="
+lhs_expression = "rho_mean(t)"
+rhs_expression = "(1 / N^3) * sum_x rho(x, t)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["N", "rho", "rho_mean", "sum_x", "t", "x"]
+numeric_constants = ["1", "3"]
+symbol_refs = ["SYM-0009", "SYM-0031", "SYM-0310", "SYM-0331", "SYM-0116", "SYM-0006"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "4.1 rho_mean"
+source_line = 230
+
+[[atom]]
+id = "EQA2-00170"
+expression = "MLUPS = (steps_per_sec * N^3) / 1e6"
+normalized_expression = "MLUPS = (steps_per_sec * N^3) / 1e6"
+relation_operator = "="
+lhs_expression = "MLUPS"
+rhs_expression = "(steps_per_sec * N^3) / 1e6"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["MLUPS", "N", "steps_per_sec"]
+numeric_constants = ["1e6", "3"]
+symbol_refs = ["SYM-0264", "SYM-0009", "SYM-0323"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "4.4 MLUPS"
+source_line = 269
+
+[[atom]]
+id = "EQA2-00171"
+expression = "t0 = now()"
+normalized_expression = "t0 = now()"
+relation_operator = "="
+lhs_expression = "t0"
+rhs_expression = "now()"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["now", "t0"]
+numeric_constants = []
+symbol_refs = ["SYM-0101", "SYM-0117"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "6. Why Naive GPU Timers Lie (And What We Do Instead)"
+source_line = 300
+
+[[atom]]
+id = "EQA2-00172"
+expression = "dt = now() - t0"
+normalized_expression = "dt = now() - t0"
+relation_operator = "="
+lhs_expression = "dt"
+rhs_expression = "now() - t0"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+extraction_confidence = "high"
+quality_flags = []
+symbol_names = ["dt", "now", "t0"]
+numeric_constants = []
+symbol_refs = ["SYM-0044", "SYM-0101", "SYM-0117"]
+claim_refs = []
+source_uid = "DRN-004"
+source_group = "docs_root_narrative"
+source_registry = "registry/docs_root_narratives.toml"
+source_path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
+section_title = "6. Why Naive GPU Timers Lie (And What We Do Instead)"
+source_line = 302
+
+[[atom]]
+id = "EQA2-00173"
 expression = "N \\to \\infty"
 normalized_expression = "N \\to \\infty"
 relation_operator = "implicit"
@@ -3055,17 +3803,17 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["N", "infty", "to"]
 numeric_constants = []
-symbol_refs = ["SYM-0016", "SYM-0197", "SYM-0004"]
+symbol_refs = ["SYM-0009", "SYM-0238", "SYM-0003"]
 claim_refs = []
-source_uid = "RN-026"
+source_uid = "RN-002"
 source_group = "research_narrative"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 section_title = "1. The 3/8 Attractor (Statistical Limit)"
-source_line = 12
+source_line = 15
 
 [[atom]]
-id = "EQA2-00140"
+id = "EQA2-00174"
 expression = "\\psi"
 normalized_expression = "\\psi"
 relation_operator = "implicit"
@@ -3077,17 +3825,17 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["psi"]
 numeric_constants = []
-symbol_refs = ["SYM-0251"]
+symbol_refs = ["SYM-0294"]
 claim_refs = []
-source_uid = "RN-026"
+source_uid = "RN-002"
 source_group = "research_narrative"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 section_title = "1. The 3/8 Attractor (Statistical Limit)"
-source_line = 12
+source_line = 15
 
 [[atom]]
-id = "EQA2-00141"
+id = "EQA2-00175"
 expression = "24/64 = 0.375"
 normalized_expression = "24/64 = 0.375"
 relation_operator = "="
@@ -3099,17 +3847,17 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["NUMERIC_LITERAL"]
 numeric_constants = ["0.375", "24", "64"]
-symbol_refs = ["SYM-0029"]
+symbol_refs = ["SYM-0037"]
 claim_refs = []
-source_uid = "RN-026"
+source_uid = "RN-002"
 source_group = "research_narrative"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 section_title = "1. The 3/8 Attractor (Statistical Limit)"
-source_line = 13
+source_line = 16
 
 [[atom]]
-id = "EQA2-00142"
+id = "EQA2-00176"
 expression = "N \\ge 16"
 normalized_expression = "N \\ge 16"
 relation_operator = "implicit"
@@ -3121,17 +3869,17 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["N", "ge"]
 numeric_constants = ["16"]
-symbol_refs = ["SYM-0016", "SYM-0184"]
+symbol_refs = ["SYM-0009", "SYM-0222"]
 claim_refs = []
-source_uid = "RN-026"
+source_uid = "RN-002"
 source_group = "research_narrative"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 section_title = "1. The 3/8 Attractor (Statistical Limit)"
-source_line = 14
+source_line = 17
 
 [[atom]]
-id = "EQA2-00143"
+id = "EQA2-00177"
 expression = "We discovered (C-591) that the Split-Octonion algebra contains a dense 'Null Cloud' of **48 zero-dividing pairs** of the form $v \\cdot w = 0$."
 normalized_expression = "We discovered (C-591) that the Split-Octonion algebra contains a dense 'Null Cloud' of **48 zero-dividing pairs** of the form $v \\cdot w = 0$."
 relation_operator = "="
@@ -3143,17 +3891,17 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["C", "Cloud", "Null", "Octonion", "Split", "We", "a", "algebra", "cdot", "contains", "dense", "discovered", "dividing", "form", "of", "pairs", "v", "w", "zero"]
 numeric_constants = ["0", "48", "591"]
-symbol_refs = ["SYM-0019", "SYM-0131", "SYM-0077", "SYM-0078", "SYM-0271", "SYM-0032", "SYM-0018", "SYM-0026", "SYM-0048", "SYM-0138", "SYM-0143", "SYM-0148", "SYM-0152", "SYM-0066", "SYM-0009", "SYM-0236", "SYM-0092", "SYM-0097", "SYM-0311"]
+symbol_refs = ["SYM-0021", "SYM-0164", "SYM-0103", "SYM-0104", "SYM-0319", "SYM-0042", "SYM-0016", "SYM-0033", "SYM-0066", "SYM-0172", "SYM-0180", "SYM-0185", "SYM-0189", "SYM-0090", "SYM-0012", "SYM-0279", "SYM-0123", "SYM-0128", "SYM-0362"]
 claim_refs = ["C-591"]
-source_uid = "RN-026"
+source_uid = "RN-002"
 source_group = "research_narrative"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 section_title = "2. The 48-Element Null Cloud (Geometric Precursor)"
-source_line = 17
+source_line = 20
 
 [[atom]]
-id = "EQA2-00144"
+id = "EQA2-00178"
 expression = "v \\cdot w = 0"
 normalized_expression = "v \\cdot w = 0"
 relation_operator = "="
@@ -3165,17 +3913,17 @@ extraction_confidence = "high"
 quality_flags = []
 symbol_names = ["cdot", "v", "w"]
 numeric_constants = ["0"]
-symbol_refs = ["SYM-0048", "SYM-0092", "SYM-0097"]
+symbol_refs = ["SYM-0066", "SYM-0123", "SYM-0128"]
 claim_refs = []
-source_uid = "RN-026"
+source_uid = "RN-002"
 source_group = "research_narrative"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 section_title = "2. The 48-Element Null Cloud (Geometric Precursor)"
-source_line = 17
+source_line = 20
 
 [[atom]]
-id = "EQA2-00145"
+id = "EQA2-00179"
 expression = "4 \\times C_6"
 normalized_expression = "4 \\times C_6"
 relation_operator = "implicit"
@@ -3187,11 +3935,11 @@ extraction_confidence = "medium"
 quality_flags = ["implicit_relation"]
 symbol_names = ["C_6", "times"]
 numeric_constants = ["4"]
-symbol_refs = ["SYM-0124", "SYM-0089"]
+symbol_refs = ["SYM-0157", "SYM-0119"]
 claim_refs = []
-source_uid = "RN-026"
+source_uid = "RN-002"
 source_group = "research_narrative"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 section_title = "2. The 48-Element Null Cloud (Geometric Precursor)"
-source_line = 19
+source_line = 22

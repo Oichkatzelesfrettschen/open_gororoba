@@ -41,7 +41,7 @@ def _load(path: Path) -> dict:
 
 
 def _claim_set(claim_rows: list[dict]) -> set[str]:
-    return {str(row.get("id", "")) for row in claim_rows if str(row.get("id", "")).startswith("C-")}
+    return {str(row.get("id", "")) for row in claim_rows if str(row.get("id", ""))}
 
 
 def _nonempty_body_doc_ids(rows: list[dict]) -> set[tuple[str, str]]:

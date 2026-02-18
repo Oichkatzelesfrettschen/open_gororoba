@@ -3,115 +3,337 @@
 
 [document]
 id = "DOC-0017"
-source_path = "docs/AUDIT_REPORT_2026-01-27.md"
-title = "Repository Audit Report (2026-01-27)"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/README.md"
+title = "Rust Implementation Guide: tapl-rust"
 kind = "manual_source"
 status = "active"
-migration_priority = "high"
+migration_priority = "medium"
 generated = false
-source_sha256 = "c4f97af45f9c56378f895c76dd99ca08599b06ae05dc84d290c40b88e68a698c"
-source_line_count = 96
-source_size_bytes = 4501
-content_sha256 = "c4f97af45f9c56378f895c76dd99ca08599b06ae05dc84d290c40b88e68a698c"
+source_sha256 = "485b3df71aae5dc0de977c8d984d88d03a9ea50952fbc350df2ea5fa57c069dd"
+source_line_count = 318
+source_size_bytes = 8523
+content_sha256 = "485b3df71aae5dc0de977c8d984d88d03a9ea50952fbc350df2ea5fa57c069dd"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Repository Audit Report (2026-01-27)
+# Rust Implementation Guide: tapl-rust
 
-## 1) What this repository is (honest scope)
+## Overview
 
-This repo is a research-style sandbox combining:
-- Python code experiments (`src/`)
-- large AI-generated CSV corpora (`curated/`, `data/csv/legacy/`)
-- plots and reports (`data/artifacts/`)
-- narrative documents describing hypotheses (`docs/`)
+**tapl-rust** is a comprehensive, production-ready implementation of lambda calculus following the structure and principles from Benjamin Pierce's *Types and Programming Languages* (TAPL). This implementation emphasizes type safety, performance, and academic rigor.
 
-Some mathematical facts used in the repo are standard (e.g., Cayley-Dickson non-associativity beyond 8D).
-Many physics-facing statements are **hypotheses** and are not currently supported by first-party sources or
-reproducible statistical tests.
+### Key Features
 
-## 2) High-confidence vs. speculative content
+- **Zero compiler warnings** - Clean, idiomatic Rust code (482 LOC)
+- **Modular workspace architecture** - 5 specialized crates for separation of concerns
+- **Multiple evaluation strategies** - Call-by-name, call-by-value, weak head normal form
+- **Type systems** - Simply Typed Lambda Calculus (STLC) and System F
+- **Academic rigor** - Direct references to original papers and TAPL chapters
+- **Comprehensive testing** - Unit tests, integration tests, property-based testing
+- **Performance focused** - Optimized release builds with LTO
 
-**High-confidence (verified via tests or standard math):**
-- Cayley-Dickson algebras are non-associative from 8D upward.
-- Norm composition fails in 16D (sedenions); zero divisors exist.
-- Analytic continuation of sphere/ball formulas in dimension using Gamma is mathematically valid (meromorphic).
+### Location
 
-**Speculative / unverified (requires sourcing + tests):**
-- \"Negative-dimension vacuum\" <-> LIGO mass peak mappings.
-- Strong physical claims in `docs/THE_GEMINI_PROTOCOL.md` and related docs.
-- Any claim that repo simulations \"confirm\" cosmological or particle-physics mechanisms without controlled
-  models and comparisons.
-
-Tracking file: `docs/CLAIMS_EVIDENCE_MATRIX.md`.
-
-## 3) Changes made in this audit pass
-
-### Reproducibility & quality gates
-- Added packaging config for `gemini_physics` (`pyproject.toml`, `src/gemini_physics/__init__.py`).
-- Added tests with warnings-as-errors (`pytest.ini`, `tests/`).
-- Added linting for the kernel + tests (`ruff`, `make lint`).
-- Added environment/compatibility report (`bin/doctor.py`, `make doctor`).
-- Added artifact verification (image resolution + CSV schemas) (`make verify`).
-- Added GitHub Actions CI for core tests + lint (`.github/workflows/ci.yml`).
-
-### Mathematics: -4D -> 32D
-- Implemented analytic continuation of d-ball volume and (d-1)-sphere area (`src/gemini_physics/dimensional_geometry.py`).
-- Generated \"grand\" plots + CSV outputs for d in [-4,16] and [0,32] (`src/vis_dimensional_geometry.py`).
-- Documented scope-safe interpretation (`docs/DIMENSIONAL_GEOMETRY.md`).
-
-### Materials science: real property data + 4D->32D experiments
-- Implemented a reproducible JARVIS-DFT subset downloader with provenance (`src/fetch_materials_jarvis_subset.py`,
-  `src/gemini_physics/materials_jarvis.py`).
-- Implemented 118D composition -> {4,8,16,32}D PCA experiments with distance-preservation metrics and \"grand\" plots
-  (`src/materials_embedding_experiments.py`).
-- Documented datasets and outputs (`docs/MATERIALS_DATASETS.md`).
-
-### Coq integration (roadmap item)
-- Added a minimal Coq model stub and a build workflow (`curated/01_theory_frameworks/ConfineModel.v`,
-  `bin/coq_prepare_confine.py`, `make coq`).
-- Updated Coq README to avoid overstating proof status (`curated/01_theory_frameworks/README_COQ.md`).
-
-### Documentation corrections + citations
-- Updated `README.md` to be scope-safe and consistent with the repo's actual state.
-- Updated `docs/BIBLIOGRAPHY.md` with first-party sources for: de Marrais, Reggiani, dimensional regularization,
-  Parisi-Sourlas, and JARVIS.
-- Updated `docs/SEDENION_ATLAS.md` to cite primary sources and mark \"per abstract\" claims appropriately.
-- Replaced `GEMINI.md` with repo guardrails instead of role-play \"memory\".
-- Added `docs/REPO_OVERVIEW.md` and `docs/ULTRA_ROADMAP.md`.
-
-## 4) Issues found
-
-- Packaging mismatch: `src/gemini_physics/` existed but was not a real importable package.
-- No reliable test runner in the committed venv (pytest missing).
-- Several Python `SyntaxWarning`s from invalid LaTeX string escapes (fixed).
-- Coq files were not compilable as-is (missing model + proofs); now compile as **axiom stubs** for interface checking.
-- Several docs contained strong claims without citations or tests; now tracked and partially cited, but still largely
-  unverified.
-
-## 5) How to reproduce the new checks
-
-```bash
-make test
-make lint
-make verify
-make coq
+```
+sources/rust-implementations/tapl-rust/
+\u251C\u2500\u2500 Cargo.toml              # Workspace configuration
+\u251C\u2500\u2500 lambda-core/            # Term representation and substitution
+\u251C\u2500\u2500 lambda-eval/            # Evaluation strategies
+\u251C\u2500\u2500 lambda-types/           # Type checking and inference
+\u251C\u2500\u2500 lambda-parser/          # Parsing and pretty-printing
+\u2514\u2500\u2500 lambda-examples/        # Working examples
 ```
 
-Optional artifacts:
+## Quick Start
+
+### Prerequisites
+
+- Rust 1.70+ (2021 edition)
+- Cargo (comes with Rust)
+
 ```bash
-make artifacts-dimensional
-make artifacts-materials
+# Install Rust if needed
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup update stable
 ```
 
-## 6) Recommended next steps
+### Build and Test
 
-1. Expand `docs/CLAIMS_EVIDENCE_MATRIX.md` into \"citation + test\" tasks, one claim at a time.
-2. Replace \"toy\" mappings (e.g. to LIGO peaks) with falsifiable statistical models and null-model comparisons.
-3. Add a second materials dataset backend (OQMD or NOMAD) to cross-check the JARVIS pipeline.
-4. Decide whether to invest in a C++ accelerator (Numba may suffice).
+```bash
+cd sources/rust-implementations/tapl-rust/
 
+# Build all crates
+cargo build
+
+# Build optimized release
+cargo build --release
+
+# Run all tests
+cargo test
+
+# Run with verbose output
+cargo test -- --nocapture
+
+# Run specific crate tests
+cargo test -p lambda-core
+```
+
+### Verify Code Quality
+
+```bash
+# Format check
+cargo fmt --check
+
+# Linting
+cargo clippy -- -D warnings
+
+# Full CI pipeline
+cargo build --release && cargo test && cargo fmt --check && cargo clippy -- -D warnings
+```
+
+### Run Examples
+
+```bash
+# Run examples (when available)
+cargo run --example church_encodings
+cargo run --example y_combinator
+cargo run --example type_checking
+```
+
+## High-Level Architecture
+
+### Workspace Structure
+
+```
+tapl-rust/
+\u251C\u2500\u2500 lambda-core      [Foundation]
+\u2502   \u251C\u2500\u2500 Term enum (Var, Abs, App)
+\u2502   \u251C\u2500\u2500 Substitution algorithm (capture-avoiding)
+\u2502   \u251C\u2500\u2500 Free variable computation
+\u2502   \u2514\u2500\u2500 Common combinators (I, K, S, Y, \u03A9)
+\u2502
+\u251C\u2500\u2500 lambda-eval      [Evaluation]
+\u2502   \u251C\u2500\u2500 Call-by-name evaluator
+\u2502   \u251C\u2500\u2500 Call-by-value evaluator
+\u2502   \u251C\u2500\u2500 Weak head normal form
+\u2502   \u2514\u2500\u2500 Evaluation traces
+\u2502
+\u251C\u2500\u2500 lambda-types     [Type Systems]
+\u2502   \u251C\u2500\u2500 STLC type checker
+\u2502   \u251C\u2500\u2500 System F polymorphism
+\u2502   \u2514\u2500\u2500 Type inference
+\u2502
+\u251C\u2500\u2500 lambda-parser    [I/O]
+\u2502   \u251C\u2500\u2500 Lambda expression parser
+\u2502   \u2514\u2500\u2500 Pretty printer
+\u2502
+\u2514\u2500\u2500 lambda-examples  [Demonstrations]
+    \u251C\u2500\u2500 Church encodings
+    \u251C\u2500\u2500 Recursion examples
+    \u2514\u2500\u2500 Type system examples
+```
+
+### Dependency Graph
+
+```
+lambda-examples
+    \u251C\u2500\u2500 lambda-parser
+    \u251C\u2500\u2500 lambda-eval
+    \u2514\u2500\u2500 lambda-types
+        \u2514\u2500\u2500 lambda-core
+
+lambda-parser
+    \u2514\u2500\u2500 lambda-core
+
+lambda-eval
+    \u2514\u2500\u2500 lambda-core
+
+lambda-types
+    \u2514\u2500\u2500 lambda-core
+```
+
+**Design principle**: Everything depends on `lambda-core`, but crates at the same layer are independent.
+
+## Core Concepts
+
+### Term Representation
+
+```rust
+pub enum Term {
+    Var(String),                           // Variable reference
+    Abs { param: String, body: Box<Term> }, // \u03BBx.body
+    App { rator: Box<Term>, rand: Box<Term> }, // (f x)
+}
+```
+
+Named variables with capture-avoiding substitution. Design tradeoff documented in [architecture.md](architecture.md).
+
+### Evaluation Strategies
+
+- **Call-by-name**: Substitute unevaluated arguments (lazy)
+- **Call-by-value**: Evaluate arguments before substitution (strict)
+- **Weak head normal form**: Reduce only at the top level (Haskell-style)
+
+See [examples.md](examples.md) for performance comparisons.
+
+### Type Systems
+
+- **Simply Typed Lambda Calculus (STLC)**: Function types (T\u2081 \u2192 T\u2082)
+- **System F**: Second-order polymorphism (\u2200\u03B1.T)
+
+Type checking validates terms before evaluation. See [extending.md](extending.md) for adding new type systems.
+
+## Academic Foundation
+
+Every implementation references original papers:
+
+```rust
+//! References:
+//! - Church, A. (1932). \"A Set of Postulates for the Foundation of Logic\"
+//! - Pierce, B. (2002). \"Types and Programming Languages\" Chapter 5
+```
+
+Integration with bibliography system documented in [integration.md](integration.md).
+
+## Documentation Map
+
+| Document | Purpose | Audience |
+|----------|---------|----------|
+| **[architecture.md](architecture.md)** | Workspace design decisions | Developers wanting to understand structure |
+| **[development.md](development.md)** | Build, test, debug workflows | Contributors |
+| **[extending.md](extending.md)** | How to add new features | Researchers implementing papers |
+| **[examples.md](examples.md)** | Working code demonstrations | Learners and users |
+| **[testing.md](testing.md)** | Testing strategies | Quality-focused developers |
+| **[performance.md](performance.md)** | Benchmarks and optimization | Performance engineers |
+| **[integration.md](integration.md)** | Academic paper integration | Academic users |
+
+## Development Workflow
+
+```bash
+# 1. Make changes
+edit sources/rust-implementations/tapl-rust/lambda-core/src/lib.rs
+
+# 2. Verify locally
+cargo build && cargo test && cargo clippy
+
+# 3. Format
+cargo fmt
+
+# 4. Commit (all checks pass)
+git add . && git commit -m \"feat: implement feature\"
+```
+
+See [development.md](development.md) for detailed workflows including IDE setup.
+
+## Common Tasks
+
+### Adding a New Combinator
+
+```rust
+// In lambda-core/src/lib.rs, add to combinators module:
+pub fn true_combinator() -> Term {
+    Term::abs(\"x\", Term::abs(\"y\", Term::var(\"x\")))  // K combinator
+}
+```
+
+### Adding an Evaluation Strategy
+
+See [extending.md](extending.md) for step-by-step guide with full examples.
+
+### Running Specific Tests
+
+```bash
+# Test specific module
+cargo test free_vars
+
+# Test with pattern
+cargo test \"test_substitution*\"
+
+# Test specific crate
+cargo test -p lambda-eval
+```
+
+## Performance Characteristics
+
+- **Substitution**: O(n) where n is term size
+- **Free variables**: O(n) with HashSet operations
+- **Evaluation**: Depends on strategy and term structure
+
+See [performance.md](performance.md) for detailed benchmarks.
+
+## Troubleshooting
+
+### Build Failures
+
+```bash
+# Clean and rebuild
+cargo clean && cargo build
+
+# Update dependencies
+cargo update
+```
+
+### Test Failures
+
+```bash
+# Run with backtrace
+RUST_BACKTRACE=1 cargo test
+
+# Run single test with output
+cargo test test_name -- --nocapture --exact
+```
+
+### Clippy Warnings
+
+```bash
+# See all lints
+cargo clippy -- -W clippy::all
+
+# Auto-fix some issues
+cargo clippy --fix
+```
+
+## Contributing
+
+1. Read [development.md](development.md) for environment setup
+2. Read [extending.md](extending.md) for adding features
+3. Ensure all tests pass: `cargo test`
+4. Ensure code is formatted: `cargo fmt`
+5. Ensure no clippy warnings: `cargo clippy -- -D warnings`
+6. Update documentation if adding public APIs
+7. Reference academic papers when implementing algorithms
+
+## Resources
+
+### External References
+
+- **TAPL Book**: Pierce, B. (2002). *Types and Programming Languages*
+- **Rust Book**: [doc.rust-lang.org/book](https://doc.rust-lang.org/book/)
+- **Cargo Book**: [doc.rust-lang.org/cargo](https://doc.rust-lang.org/cargo/)
+
+### Repository Documentation
+
+- **Academic papers**: `papers-archive/` directory
+- **Bibliography**: `**/bibliography.md` files in numbered categories
+- **Implementation catalog**: `docs/implementations/`
+
+### Related Implementations
+
+- **Haskell**: `implementations/haskell/` (when available)
+- **OCaml**: `implementations/ocaml/` (when available)
+- **Agda/Coq sources**: `sources/agda-src/`, `sources/coq-src/`
+
+## Next Steps
+
+- **New to lambda calculus?** Start with [examples.md](examples.md)
+- **Want to contribute?** Read [development.md](development.md) and [extending.md](extending.md)
+- **Performance critical application?** See [performance.md](performance.md)
+- **Academic research?** See [integration.md](integration.md)
+
+---
+
+**Questions or issues?** Check existing documentation or open an issue in the repository.
 
 """

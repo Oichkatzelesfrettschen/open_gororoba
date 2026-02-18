@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 32
-edge_count = 193
+lineage_count = 36
+edge_count = 209
 
 [[lineage]]
 id = "XL-001"
@@ -500,6 +500,70 @@ input_path_refs = []
 output_path_refs = ["data/kubo_transport/coupling_analysis.toml"]
 dataset_refs = []
 replay_steps = ["Confirm required input paths are available.", "cargo run --release --features gpu --bin kubo-coupling-analysis", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-033"
+experiment_id = "E-035"
+binary = "warp-gpu-experiment"
+deterministic = false
+seed = 42
+gpu = true
+run_command = "bash run_reynolds_sweep.sh"
+run_command_sha256 = "6249447c54d606eeb1d8cbd329459e8f5c94da992a3447b5adf25a103eb4aafd"
+claim_refs = ["C-682"]
+input_path_refs = []
+output_path_refs = ["data/csv/warp_experiment_c_topology_{N}.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "bash run_reynolds_sweep.sh", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-034"
+experiment_id = "E-036"
+binary = "spin-decoherence-pipeline"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin spin-decoherence-pipeline"
+run_command_sha256 = "92231e386694f4af364c123f4313b854dda77e723af5b0f1b517d8db08aef1fe"
+claim_refs = ["T-PPT-NEED", "T-SPIN-CD"]
+input_path_refs = ["data/external/lhc_2025/"]
+output_path_refs = ["data/evidence/spin_decoherence.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin spin-decoherence-pipeline", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-035"
+experiment_id = "E-037"
+binary = "amplitude-frustration-survey"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin amplitude-frustration-survey"
+run_command_sha256 = "1b6176592de29440dc2aaeb7f93821bb36354f164a030785ec1451f581571a03"
+claim_refs = ["T-AMPLITUDE-FRUSTRATION-MINIMA", "T-CHAMBER-DISCRETE"]
+input_path_refs = []
+output_path_refs = ["data/evidence/amplitude_frustration.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin amplitude-frustration-survey", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-036"
+experiment_id = "E-038"
+binary = "lhc-2025-qgp-synthesis"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin lhc-2025-qgp-synthesis"
+run_command_sha256 = "afe3f8847be1435cb27a3dd07d3aab22064569248cab0d58bcd7f4c57e217a82"
+claim_refs = ["T-CMS-SIGN-CHALLENGE", "T-QGP-VORTICITY"]
+input_path_refs = ["data/external/lhc_2025/"]
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin lhc-2025-qgp-synthesis", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -2237,5 +2301,149 @@ from_id = "E-034"
 to_ref = "data/kubo_transport/coupling_analysis.toml"
 to_kind = "path"
 edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00194"
+lineage_id = "XL-033"
+from_id = "E-035"
+to_ref = "warp-gpu-experiment"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00195"
+lineage_id = "XL-033"
+from_id = "E-035"
+to_ref = "C-682"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00196"
+lineage_id = "XL-033"
+from_id = "E-035"
+to_ref = "data/csv/warp_experiment_c_topology_{N}.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00197"
+lineage_id = "XL-034"
+from_id = "E-036"
+to_ref = "spin-decoherence-pipeline"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00198"
+lineage_id = "XL-034"
+from_id = "E-036"
+to_ref = "T-PPT-NEED"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00199"
+lineage_id = "XL-034"
+from_id = "E-036"
+to_ref = "T-SPIN-CD"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00200"
+lineage_id = "XL-034"
+from_id = "E-036"
+to_ref = "data/external/lhc_2025/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00201"
+lineage_id = "XL-034"
+from_id = "E-036"
+to_ref = "data/evidence/spin_decoherence.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00202"
+lineage_id = "XL-035"
+from_id = "E-037"
+to_ref = "amplitude-frustration-survey"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00203"
+lineage_id = "XL-035"
+from_id = "E-037"
+to_ref = "T-AMPLITUDE-FRUSTRATION-MINIMA"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00204"
+lineage_id = "XL-035"
+from_id = "E-037"
+to_ref = "T-CHAMBER-DISCRETE"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00205"
+lineage_id = "XL-035"
+from_id = "E-037"
+to_ref = "data/evidence/amplitude_frustration.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00206"
+lineage_id = "XL-036"
+from_id = "E-038"
+to_ref = "lhc-2025-qgp-synthesis"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00207"
+lineage_id = "XL-036"
+from_id = "E-038"
+to_ref = "T-CMS-SIGN-CHALLENGE"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00208"
+lineage_id = "XL-036"
+from_id = "E-038"
+to_ref = "T-QGP-VORTICITY"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00209"
+lineage_id = "XL-036"
+from_id = "E-038"
+to_ref = "data/external/lhc_2025/"
+to_kind = "path"
+edge_kind = "consumes_path"
 verified = true
 

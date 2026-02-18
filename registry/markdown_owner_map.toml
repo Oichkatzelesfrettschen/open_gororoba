@@ -5,7 +5,7 @@
 updated = "deterministic"
 authoritative = true
 scope = "docs reports data_artifacts"
-document_count = 188
+document_count = 174
 
 [[owner]]
 id = "MOWN-0001"
@@ -63,7 +63,7 @@ conversion_hint = "Run: PYTHONWARNINGS=error make registry-artifact-scrolls && P
 
 [[owner]]
 id = "MOWN-0007"
-path = "data/artifacts/WARP_RING_REPORT.md"
+path = "data/artifacts/THESIS_3D_SYNTHESIS.md"
 scope = "data_artifacts"
 canonical_toml = "registry/artifact_scrolls.toml"
 owner_group = "artifact_scrolls"
@@ -72,7 +72,7 @@ conversion_hint = "Run: PYTHONWARNINGS=error make registry-artifact-scrolls && P
 
 [[owner]]
 id = "MOWN-0008"
-path = "data/artifacts/extracted_equations.md"
+path = "data/artifacts/WARP_RING_REPORT.md"
 scope = "data_artifacts"
 canonical_toml = "registry/artifact_scrolls.toml"
 owner_group = "artifact_scrolls"
@@ -81,7 +81,7 @@ conversion_hint = "Run: PYTHONWARNINGS=error make registry-artifact-scrolls && P
 
 [[owner]]
 id = "MOWN-0009"
-path = "data/artifacts/reality_check_and_synthesis.md"
+path = "data/artifacts/extracted_equations.md"
 scope = "data_artifacts"
 canonical_toml = "registry/artifact_scrolls.toml"
 owner_group = "artifact_scrolls"
@@ -90,12 +90,12 @@ conversion_hint = "Run: PYTHONWARNINGS=error make registry-artifact-scrolls && P
 
 [[owner]]
 id = "MOWN-0010"
-path = "docs/ARTIFACT_SOURCE_OF_TRUTH.md"
-scope = "docs"
-canonical_toml = "registry/docs_root_narratives.toml"
-owner_group = "docs_root_narratives"
+path = "data/artifacts/reality_check_and_synthesis.md"
+scope = "data_artifacts"
+canonical_toml = "registry/artifact_scrolls.toml"
+owner_group = "artifact_scrolls"
 requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+conversion_hint = "Run: PYTHONWARNINGS=error make registry-artifact-scrolls && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
 id = "MOWN-0011"
@@ -126,24 +126,6 @@ conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normal
 
 [[owner]]
 id = "MOWN-0014"
-path = "docs/DATASET_MANIFEST.md"
-scope = "docs"
-canonical_toml = "registry/external_sources.toml"
-owner_group = "general"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0015"
-path = "docs/E027_PHASE2_EXECUTION_PLAN.md"
-scope = "docs"
-canonical_toml = "registry/docs_root_narratives.toml"
-owner_group = "docs_root_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0016"
 path = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
 scope = "docs"
 canonical_toml = "registry/experiments.toml"
@@ -152,7 +134,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0017"
+id = "MOWN-0015"
 path = "docs/INSIGHTS.md"
 scope = "docs"
 canonical_toml = "registry/insights.toml"
@@ -161,16 +143,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0018"
-path = "docs/MCP_SERVERS.md"
-scope = "docs"
-canonical_toml = "registry/docs_root_narratives.toml"
-owner_group = "docs_root_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0019"
+id = "MOWN-0016"
 path = "docs/NEXT_ACTIONS.md"
 scope = "docs"
 canonical_toml = "registry/next_actions.toml"
@@ -179,7 +152,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0020"
+id = "MOWN-0017"
 path = "docs/PHASE1_REMAINING_ROADMAP.md"
 scope = "docs"
 canonical_toml = "registry/docs_root_narratives.toml"
@@ -188,7 +161,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0021"
+id = "MOWN-0018"
 path = "docs/REAL_MATERIALS_INTEGRATION.md"
 scope = "docs"
 canonical_toml = "registry/docs_root_narratives.toml"
@@ -197,7 +170,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0022"
+id = "MOWN-0019"
 path = "docs/REQUIREMENTS.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -206,7 +179,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0023"
+id = "MOWN-0020"
 path = "docs/ROADMAP.md"
 scope = "docs"
 canonical_toml = "registry/roadmap.toml"
@@ -215,16 +188,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0024"
-path = "docs/SOURCE_INFRASTRUCTURE_BEST_PRACTICES_2026_02_15.md"
-scope = "docs"
-canonical_toml = "registry/docs_root_narratives.toml"
-owner_group = "docs_root_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0025"
+id = "MOWN-0021"
 path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 scope = "docs"
 canonical_toml = "registry/docs_root_narratives.toml"
@@ -233,7 +197,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0026"
+id = "MOWN-0022"
 path = "docs/TODO.md"
 scope = "docs"
 canonical_toml = "registry/todo.toml"
@@ -242,7 +206,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0027"
+id = "MOWN-0023"
 path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
 scope = "docs"
 canonical_toml = "registry/docs_root_narratives.toml"
@@ -251,7 +215,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0028"
+id = "MOWN-0024"
 path = "docs/book/src/SUMMARY.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -260,7 +224,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0029"
+id = "MOWN-0025"
 path = "docs/book/src/algebra/box-kites.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -269,7 +233,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0030"
+id = "MOWN-0026"
 path = "docs/book/src/algebra/emanation.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -278,7 +242,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0031"
+id = "MOWN-0027"
 path = "docs/book/src/algebra/motif-scaling.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -287,7 +251,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0032"
+id = "MOWN-0028"
 path = "docs/book/src/algebra/zero-divisors.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -296,7 +260,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0033"
+id = "MOWN-0029"
 path = "docs/book/src/architecture/crates.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -305,7 +269,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0034"
+id = "MOWN-0030"
 path = "docs/book/src/architecture/layout.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -314,7 +278,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0035"
+id = "MOWN-0031"
 path = "docs/book/src/architecture/verification.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -323,7 +287,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0036"
+id = "MOWN-0032"
 path = "docs/book/src/cli/catalog.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -332,7 +296,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0037"
+id = "MOWN-0033"
 path = "docs/book/src/experiments/e001.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -341,7 +305,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0038"
+id = "MOWN-0034"
 path = "docs/book/src/experiments/e002.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -350,7 +314,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0039"
+id = "MOWN-0035"
 path = "docs/book/src/experiments/e003.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -359,7 +323,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0040"
+id = "MOWN-0036"
 path = "docs/book/src/glossary.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -368,7 +332,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0041"
+id = "MOWN-0037"
 path = "docs/book/src/introduction.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -377,7 +341,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0042"
+id = "MOWN-0038"
 path = "docs/book/src/papers/collection.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -386,7 +350,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0043"
+id = "MOWN-0039"
 path = "docs/book/src/registry/claims.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -395,7 +359,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0044"
+id = "MOWN-0040"
 path = "docs/book/src/registry/experiments.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -404,7 +368,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0045"
+id = "MOWN-0041"
 path = "docs/book/src/registry/insights.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -413,7 +377,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0046"
+id = "MOWN-0042"
 path = "docs/claims/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -422,7 +386,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0047"
+id = "MOWN-0043"
 path = "docs/claims/by_domain/algebra.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -431,7 +395,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0048"
+id = "MOWN-0044"
 path = "docs/claims/by_domain/coq.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -440,7 +404,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0049"
+id = "MOWN-0045"
 path = "docs/claims/by_domain/cosmology.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -449,7 +413,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0050"
+id = "MOWN-0046"
 path = "docs/claims/by_domain/cpp.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -458,7 +422,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0051"
+id = "MOWN-0047"
 path = "docs/claims/by_domain/datasets.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -467,7 +431,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0052"
+id = "MOWN-0048"
 path = "docs/claims/by_domain/engineering.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -476,7 +440,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0053"
+id = "MOWN-0049"
 path = "docs/claims/by_domain/gravitational-waves.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -485,7 +449,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0054"
+id = "MOWN-0050"
 path = "docs/claims/by_domain/holography.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -494,7 +458,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0055"
+id = "MOWN-0051"
 path = "docs/claims/by_domain/legacy.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -503,7 +467,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0056"
+id = "MOWN-0052"
 path = "docs/claims/by_domain/materials.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -512,7 +476,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0057"
+id = "MOWN-0053"
 path = "docs/claims/by_domain/meta.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -521,7 +485,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0058"
+id = "MOWN-0054"
 path = "docs/claims/by_domain/open-systems.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -530,7 +494,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0059"
+id = "MOWN-0055"
 path = "docs/claims/by_domain/spectral.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -539,7 +503,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0060"
+id = "MOWN-0056"
 path = "docs/claims/by_domain/stellar-cartography.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -548,7 +512,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0061"
+id = "MOWN-0057"
 path = "docs/claims/by_domain/tensor-networks.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -557,7 +521,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0062"
+id = "MOWN-0058"
 path = "docs/claims/by_domain/visualization.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -566,7 +530,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0063"
+id = "MOWN-0059"
 path = "docs/convos/CONVOS_CLAIMS_INBOX.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -575,7 +539,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0064"
+id = "MOWN-0060"
 path = "docs/convos/README.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -584,7 +548,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0065"
+id = "MOWN-0061"
 path = "docs/convos/audit_1_read_nonuser_lines_cont.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -593,7 +557,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0066"
+id = "MOWN-0062"
 path = "docs/convos/implement_next_from_1_read_nonuser_lines_cont.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -602,7 +566,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0067"
+id = "MOWN-0063"
 path = "docs/convos/keywords_1_read_nonuser_lines_cont.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -611,7 +575,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0068"
+id = "MOWN-0064"
 path = "docs/engineering/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -620,34 +584,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0069"
-path = "docs/engineering/RUST_STYLE_GUIDE.md"
-scope = "docs"
-canonical_toml = "registry/research_narratives.toml"
-owner_group = "research_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0070"
-path = "docs/engineering/SCOPE_ULTRA_THROUGHPUT.md"
-scope = "docs"
-canonical_toml = "registry/research_narratives.toml"
-owner_group = "research_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0071"
-path = "docs/engineering/WARP_RING_SPECIFICATION.md"
-scope = "docs"
-canonical_toml = "registry/research_narratives.toml"
-owner_group = "research_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0072"
+id = "MOWN-0065"
 path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -656,7 +593,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0073"
+id = "MOWN-0066"
 path = "docs/external_sources/DATASET_MANIFEST.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -665,7 +602,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0074"
+id = "MOWN-0067"
 path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -674,7 +611,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0075"
+id = "MOWN-0068"
 path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -683,7 +620,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0076"
+id = "MOWN-0069"
 path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -692,7 +629,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0077"
+id = "MOWN-0070"
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -701,7 +638,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0078"
+id = "MOWN-0071"
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -710,7 +647,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0079"
+id = "MOWN-0072"
 path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -719,7 +656,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0080"
+id = "MOWN-0073"
 path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -728,7 +665,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0081"
+id = "MOWN-0074"
 path = "docs/external_sources/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -737,7 +674,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0082"
+id = "MOWN-0075"
 path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -746,7 +683,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0083"
+id = "MOWN-0076"
 path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -755,7 +692,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0084"
+id = "MOWN-0077"
 path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -764,7 +701,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0085"
+id = "MOWN-0078"
 path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -773,7 +710,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0086"
+id = "MOWN-0079"
 path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -782,7 +719,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0087"
+id = "MOWN-0080"
 path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/bibliography.toml"
@@ -791,7 +728,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0088"
+id = "MOWN-0081"
 path = "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -800,7 +737,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0089"
+id = "MOWN-0082"
 path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -809,7 +746,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0090"
+id = "MOWN-0083"
 path = "docs/generated/CLAIMS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/claims.toml"
@@ -818,7 +755,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0091"
+id = "MOWN-0084"
 path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/claims_tasks.toml"
@@ -827,7 +764,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0092"
+id = "MOWN-0085"
 path = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -836,7 +773,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0093"
+id = "MOWN-0086"
 path = "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/artifact_scrolls.toml"
@@ -845,7 +782,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0094"
+id = "MOWN-0087"
 path = "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -854,7 +791,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0095"
+id = "MOWN-0088"
 path = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/docs_root_narratives.toml"
@@ -863,7 +800,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0096"
+id = "MOWN-0089"
 path = "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/entrypoint_docs.toml"
@@ -872,7 +809,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0097"
+id = "MOWN-0090"
 path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/experiments.toml"
@@ -881,7 +818,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0098"
+id = "MOWN-0091"
 path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -890,7 +827,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0099"
+id = "MOWN-0092"
 path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/insights.toml"
@@ -899,7 +836,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0100"
+id = "MOWN-0093"
 path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/knowledge_migration_plan.toml"
@@ -908,7 +845,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0101"
+id = "MOWN-0094"
 path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/markdown_governance.toml"
@@ -917,7 +854,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0102"
+id = "MOWN-0095"
 path = "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/navigator.toml"
@@ -926,7 +863,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0103"
+id = "MOWN-0096"
 path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/next_actions.toml"
@@ -935,7 +872,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0104"
+id = "MOWN-0097"
 path = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/reports_narratives.toml"
@@ -944,7 +881,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0105"
+id = "MOWN-0098"
 path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -953,7 +890,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0106"
+id = "MOWN-0099"
 path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -962,7 +899,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0107"
+id = "MOWN-0100"
 path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/roadmap.toml"
@@ -971,7 +908,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0108"
+id = "MOWN-0101"
 path = "docs/generated/TODO_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/todo.toml"
@@ -980,7 +917,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0109"
+id = "MOWN-0102"
 path = "docs/monograph/01_foundations.md"
 scope = "docs"
 canonical_toml = "registry/monograph.toml"
@@ -989,7 +926,7 @@ requires_generated_header = true
 conversion_hint = "Edit registry/monograph.toml document body_markdown and run: PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0110"
+id = "MOWN-0103"
 path = "docs/monograph/02_turbulence.md"
 scope = "docs"
 canonical_toml = "registry/monograph.toml"
@@ -998,7 +935,7 @@ requires_generated_header = true
 conversion_hint = "Edit registry/monograph.toml document body_markdown and run: PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0111"
+id = "MOWN-0104"
 path = "docs/monograph/03_synthesis.md"
 scope = "docs"
 canonical_toml = "registry/monograph.toml"
@@ -1007,7 +944,7 @@ requires_generated_header = true
 conversion_hint = "Edit registry/monograph.toml document body_markdown and run: PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0112"
+id = "MOWN-0105"
 path = "docs/requirements/algebra.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1016,7 +953,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0113"
+id = "MOWN-0106"
 path = "docs/requirements/analysis.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1025,7 +962,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0114"
+id = "MOWN-0107"
 path = "docs/requirements/astro.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1034,7 +971,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0115"
+id = "MOWN-0108"
 path = "docs/requirements/coq.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1043,7 +980,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0116"
+id = "MOWN-0109"
 path = "docs/requirements/cpp.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1052,7 +989,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0117"
+id = "MOWN-0110"
 path = "docs/requirements/latex.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1061,7 +998,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0118"
+id = "MOWN-0111"
 path = "docs/requirements/materials.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1070,7 +1007,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0119"
+id = "MOWN-0112"
 path = "docs/requirements/particle.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1079,7 +1016,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0120"
+id = "MOWN-0113"
 path = "docs/requirements/quantum-docker.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1088,7 +1025,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0121"
+id = "MOWN-0114"
 path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1097,16 +1034,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0122"
-path = "docs/research/THESIS_2_3_4_NARRATIVE_PACK.md"
-scope = "docs"
-canonical_toml = "registry/research_narratives.toml"
-owner_group = "research_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0123"
+id = "MOWN-0115"
 path = "docs/theory/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1115,34 +1043,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0124"
-path = "docs/theory/OPTIMIZATION_BREAKTHROUGHS.md"
-scope = "docs"
-canonical_toml = "registry/research_narratives.toml"
-owner_group = "research_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0125"
-path = "docs/theory/WARP_COMPRESSIBILITY_DERIVATION.md"
-scope = "docs"
-canonical_toml = "registry/research_narratives.toml"
-owner_group = "research_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0126"
-path = "docs/theory/WARP_RING_PHYSICS.md"
-scope = "docs"
-canonical_toml = "registry/research_narratives.toml"
-owner_group = "research_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0127"
+id = "MOWN-0116"
 path = "docs/tickets/C001_C050_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1151,7 +1052,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0128"
+id = "MOWN-0117"
 path = "docs/tickets/C051_C100_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1160,7 +1061,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0129"
+id = "MOWN-0118"
 path = "docs/tickets/C101_C150_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1169,7 +1070,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0130"
+id = "MOWN-0119"
 path = "docs/tickets/C151_C200_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1178,7 +1079,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0131"
+id = "MOWN-0120"
 path = "docs/tickets/C201_C250_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1187,7 +1088,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0132"
+id = "MOWN-0121"
 path = "docs/tickets/C251_C300_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1196,7 +1097,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0133"
+id = "MOWN-0122"
 path = "docs/tickets/C301_C350_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1205,7 +1106,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0134"
+id = "MOWN-0123"
 path = "docs/tickets/C351_C400_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1214,7 +1115,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0135"
+id = "MOWN-0124"
 path = "docs/tickets/C401_C427_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1223,7 +1124,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0136"
+id = "MOWN-0125"
 path = "docs/tickets/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1232,7 +1133,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0137"
+id = "MOWN-0126"
 path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1241,8 +1142,8 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0138"
-path = "reports/PHASE2_STATUS.md"
+id = "MOWN-0127"
+path = "reports/LHC_2025_QGP_Full_Synthesis.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -1250,7 +1151,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0139"
+id = "MOWN-0128"
 path = "reports/artifacts_phase0_dryrun.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1259,7 +1160,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0140"
+id = "MOWN-0129"
 path = "reports/artifacts_reorg_plan.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1268,7 +1169,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0141"
+id = "MOWN-0130"
 path = "reports/audit_network_gating.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1277,7 +1178,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0142"
+id = "MOWN-0131"
 path = "reports/audit_nonpython_toolchains.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1286,7 +1187,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0143"
+id = "MOWN-0132"
 path = "reports/audit_provenance.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1295,7 +1196,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0144"
+id = "MOWN-0133"
 path = "reports/audit_pythonpath.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1304,16 +1205,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0145"
-path = "reports/breakthrough_shi_geodesics_2026_02_14.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0146"
+id = "MOWN-0134"
 path = "reports/claims_batch_backlog_C001_C050.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1322,7 +1214,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0147"
+id = "MOWN-0135"
 path = "reports/claims_batch_backlog_C001_C200.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1331,7 +1223,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0148"
+id = "MOWN-0136"
 path = "reports/claims_batch_backlog_C011_C025.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1340,7 +1232,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0149"
+id = "MOWN-0137"
 path = "reports/claims_batch_backlog_C027_C045.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1349,7 +1241,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0150"
+id = "MOWN-0138"
 path = "reports/claims_batch_backlog_C046_C060.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1358,7 +1250,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0151"
+id = "MOWN-0139"
 path = "reports/claims_batch_backlog_C046_C066.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1367,7 +1259,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0152"
+id = "MOWN-0140"
 path = "reports/claims_batch_backlog_C051_C100.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1376,7 +1268,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0153"
+id = "MOWN-0141"
 path = "reports/claims_batch_backlog_C101_C150.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1385,7 +1277,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0154"
+id = "MOWN-0142"
 path = "reports/claims_batch_backlog_C151_C200.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1394,7 +1286,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0155"
+id = "MOWN-0143"
 path = "reports/claims_batch_backlog_C201_C250.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1403,7 +1295,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0156"
+id = "MOWN-0144"
 path = "reports/claims_batch_backlog_C201_C408.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1412,7 +1304,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0157"
+id = "MOWN-0145"
 path = "reports/claims_batch_backlog_C201_C427.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1421,7 +1313,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0158"
+id = "MOWN-0146"
 path = "reports/claims_batch_backlog_C201_C430.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1430,7 +1322,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0159"
+id = "MOWN-0147"
 path = "reports/claims_batch_backlog_C201_C432.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1439,7 +1331,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0160"
+id = "MOWN-0148"
 path = "reports/claims_batch_backlog_C251_C300.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1448,7 +1340,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0161"
+id = "MOWN-0149"
 path = "reports/claims_batch_backlog_C301_C350.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1457,7 +1349,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0162"
+id = "MOWN-0150"
 path = "reports/claims_batch_backlog_C351_C400.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1466,7 +1358,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0163"
+id = "MOWN-0151"
 path = "reports/claims_batch_backlog_C401_C427.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1475,7 +1367,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0164"
+id = "MOWN-0152"
 path = "reports/claims_bold_tokens_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1484,7 +1376,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0165"
+id = "MOWN-0153"
 path = "reports/claims_id_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1493,7 +1385,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0166"
+id = "MOWN-0154"
 path = "reports/claims_priority_ranking.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1502,7 +1394,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0167"
+id = "MOWN-0155"
 path = "reports/claims_staleness_report.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1511,7 +1403,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0168"
+id = "MOWN-0156"
 path = "reports/claims_status_contradictions.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1520,7 +1412,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0169"
+id = "MOWN-0157"
 path = "reports/claims_status_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1529,7 +1421,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0170"
+id = "MOWN-0158"
 path = "reports/config_audit.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1538,7 +1430,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0171"
+id = "MOWN-0159"
 path = "reports/convos_claim_candidates.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1547,7 +1439,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0172"
+id = "MOWN-0160"
 path = "reports/convos_claim_candidates_prioritized.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1556,7 +1448,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0173"
+id = "MOWN-0161"
 path = "reports/convos_pdf_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1565,7 +1457,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0174"
+id = "MOWN-0162"
 path = "reports/handoff_algebra_fluid_duality.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1574,16 +1466,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0175"
-path = "reports/manual_override_fetch_summary_2026_02_15.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0176"
+id = "MOWN-0163"
 path = "reports/non_iso_dates_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1592,7 +1475,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0177"
+id = "MOWN-0164"
 path = "reports/open_claims_missing_dedicated_sources.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1601,7 +1484,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0178"
+id = "MOWN-0165"
 path = "reports/open_claims_missing_test_hooks.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1610,7 +1493,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0179"
+id = "MOWN-0166"
 path = "reports/package_index.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1619,7 +1502,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0180"
+id = "MOWN-0167"
 path = "reports/pdf_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1628,7 +1511,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0181"
+id = "MOWN-0168"
 path = "reports/pythonpath_refactor_plan.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1637,7 +1520,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0182"
+id = "MOWN-0169"
 path = "reports/repo_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1646,7 +1529,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0183"
+id = "MOWN-0170"
 path = "reports/repo_structure_audit.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1655,16 +1538,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0184"
-path = "reports/reynolds_scaling_analysis.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0185"
+id = "MOWN-0171"
 path = "reports/script_contracts_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1673,7 +1547,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0186"
+id = "MOWN-0172"
 path = "reports/tickets_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1682,7 +1556,7 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0187"
+id = "MOWN-0173"
 path = "reports/todo_fixme_scan.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1691,20 +1565,10 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
-id = "MOWN-0188"
+id = "MOWN-0174"
 path = "reports/tscp_trial_factor_ledger.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
 requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-
-[[owner]]
-id = "MOWN-0189"
-path = "reports/LHC_2025_QGP_Full_Synthesis.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = true
-conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-

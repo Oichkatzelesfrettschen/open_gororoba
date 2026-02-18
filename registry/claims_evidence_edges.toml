@@ -4,7 +4,7 @@
 [claims_evidence_edges]
 updated = "deterministic"
 authoritative = true
-edge_count = 1933
+edge_count = 1951
 
 [[edge]]
 id = "CED-00001"
@@ -10629,1776 +10629,1776 @@ target_kind = "python_source_path"
 id = "CED-01518"
 claim_id = "C-418"
 edge_role = "where_stated"
-target_ref = "crates/materials_core/src/optical_database.rs"
+target_ref = "crates/gororoba_cli/src/bin/demo_optical_titanates.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01519"
 claim_id = "C-418"
 edge_role = "where_stated"
-target_ref = "data/external/SiO2_refractive_index.csv"
-target_kind = "csv_artifact_path"
+target_ref = "crates/materials_core/src/optical_database.rs"
+target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01520"
-claim_id = "C-418"
-edge_role = "where_stated"
-target_ref = "data/external/TiO2_rutile_refractive_index.csv"
-target_kind = "csv_artifact_path"
-
-[[edge]]
-id = "CED-01521"
 claim_id = "C-419"
 edge_role = "where_stated"
 target_ref = "data/artifacts/manufacturing/sedenion_spaceplate_bom.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01522"
+id = "CED-01521"
 claim_id = "C-419"
 edge_role = "where_stated"
 target_ref = "src/scripts/engineering/generate_digital_matter_bom.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01523"
+id = "CED-01522"
 claim_id = "C-420"
 edge_role = "where_stated"
 target_ref = "crates/materials_core/src/metamaterial.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01524"
+id = "CED-01523"
 claim_id = "C-420"
 edge_role = "where_stated"
 target_ref = "data/artifacts/engineering/spaceplate_geometry.scad"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01525"
+id = "CED-01524"
 claim_id = "C-420"
 edge_role = "where_stated"
 target_ref = "src/scripts/engineering/generate_bom_cad.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01526"
+id = "CED-01525"
 claim_id = "C-421"
 edge_role = "verification_rule"
 target_ref = "src/scripts/engineering/generate_bom_cad.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01527"
+id = "CED-01526"
 claim_id = "C-421"
 edge_role = "where_stated"
 target_ref = "crates/materials_core/src/effective_medium.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01528"
+id = "CED-01527"
 claim_id = "C-421"
 edge_role = "where_stated"
 target_ref = "src/scripts/engineering/generate_bom_cad.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01529"
+id = "CED-01528"
 claim_id = "C-422"
 edge_role = "cross_reference"
 target_ref = "C-011"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01530"
+id = "CED-01529"
 claim_id = "C-422"
 edge_role = "where_stated"
 target_ref = "data/artifacts/images/genesis_simulation_grand.png"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01531"
+id = "CED-01530"
 claim_id = "C-422"
 edge_role = "where_stated"
 target_ref = "docs/GRAND_SYNTHESIS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01532"
+id = "CED-01531"
 claim_id = "C-422"
 edge_role = "where_stated"
 target_ref = "src/scripts/simulation/genesis_simulation_v2.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01533"
+id = "CED-01532"
 claim_id = "C-423"
 edge_role = "where_stated"
 target_ref = "data/artifacts/images/OCULUS_GRAND_DASHBOARD_v4.png"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01534"
+id = "CED-01533"
 claim_id = "C-423"
 edge_role = "where_stated"
 target_ref = "src/scripts/engineering/grand_unified_simulator_v4.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01535"
+id = "CED-01534"
 claim_id = "C-424"
 edge_role = "where_stated"
 target_ref = "data/artifacts/images/holographic_warp_gpu.png"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01536"
+id = "CED-01535"
 claim_id = "C-424"
 edge_role = "where_stated"
 target_ref = "src/scripts/engineering/holographic_warp_gate.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01537"
+id = "CED-01536"
 claim_id = "C-425"
 edge_role = "verification_rule"
 target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01538"
+id = "CED-01537"
 claim_id = "C-425"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/physics/octonion_field.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01539"
+id = "CED-01538"
 claim_id = "C-425"
 edge_role = "where_stated"
 target_ref = "tests/test_octonion_field.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01540"
+id = "CED-01539"
 claim_id = "C-426"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01541"
+id = "CED-01540"
 claim_id = "C-426"
 edge_role = "where_stated"
 target_ref = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01542"
+id = "CED-01541"
 claim_id = "C-427"
 edge_role = "where_stated"
 target_ref = "crates/materials_core/src/effective_medium.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01543"
+id = "CED-01542"
 claim_id = "C-427"
 edge_role = "where_stated"
 target_ref = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01544"
+id = "CED-01543"
 claim_id = "C-428"
 edge_role = "cross_reference"
 target_ref = "C-012"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01545"
+id = "CED-01544"
 claim_id = "C-428"
 edge_role = "cross_reference"
 target_ref = "C-429"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01546"
+id = "CED-01545"
 claim_id = "C-428"
 edge_role = "cross_reference"
 target_ref = "C-430"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01547"
+id = "CED-01546"
 claim_id = "C-428"
 edge_role = "cross_reference"
 target_ref = "C-432"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01548"
+id = "CED-01547"
 claim_id = "C-428"
 edge_role = "where_stated"
 target_ref = "data/artifacts/images/kerr_trace_demo.png"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01549"
+id = "CED-01548"
 claim_id = "C-428"
 edge_role = "where_stated"
 target_ref = "src/scripts/simulation/integrated_warp_geodesic.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01550"
+id = "CED-01549"
 claim_id = "C-429"
 edge_role = "where_stated"
 target_ref = "crates/gr_core/src/kerr.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01551"
+id = "CED-01550"
 claim_id = "C-429"
 edge_role = "where_stated"
 target_ref = "tests/test_kerr_shadow.py::test_high_spin_shadow_asymmetric"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01552"
+id = "CED-01551"
 claim_id = "C-430"
 edge_role = "cross_reference"
 target_ref = "C-012"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01553"
+id = "CED-01552"
 claim_id = "C-430"
 edge_role = "where_stated"
 target_ref = "data/artifacts/images/cosmology_comparison.png"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01554"
+id = "CED-01553"
 claim_id = "C-430"
 edge_role = "where_stated"
 target_ref = "src/scripts/analysis/cosmology_comparison.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01555"
+id = "CED-01554"
 claim_id = "C-431"
 edge_role = "verification_rule"
 target_ref = "sedenion_slice_3d.png"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01556"
+id = "CED-01555"
 claim_id = "C-431"
 edge_role = "verification_rule"
 target_ref = "src/scripts/visualization/vis_8d_slice.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01557"
+id = "CED-01556"
 claim_id = "C-431"
 edge_role = "where_stated"
 target_ref = "data/artifacts/images/sedenion_slice_3d.png"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01558"
+id = "CED-01557"
 claim_id = "C-431"
 edge_role = "where_stated"
 target_ref = "src/scripts/visualization/vis_8d_slice.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01559"
+id = "CED-01558"
 claim_id = "C-432"
 edge_role = "where_stated"
 target_ref = "crates/gr_core/src/kerr.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01560"
+id = "CED-01559"
 claim_id = "C-432"
 edge_role = "where_stated"
 target_ref = "tests/test_kerr_shadow.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01561"
+id = "CED-01560"
 claim_id = "C-433"
 edge_role = "verification_rule"
 target_ref = "crates/optics_core/src/grin.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01562"
+id = "CED-01561"
 claim_id = "C-433"
 edge_role = "verification_rule"
 target_ref = "tests/test_grin_solver.py"
 target_kind = "python_source_path"
+
+[[edge]]
+id = "CED-01562"
+claim_id = "C-433"
+edge_role = "where_stated"
+target_ref = "crates/optics_core/src/grin.rs"
+target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01563"
 claim_id = "C-433"
 edge_role = "where_stated"
-target_ref = "crates/optics_core/src/grin.rs"
-target_kind = "rust_source_path"
-
-[[edge]]
-id = "CED-01564"
-claim_id = "C-433"
-edge_role = "where_stated"
 target_ref = "tests/test_grin_solver.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01565"
+id = "CED-01564"
 claim_id = "C-434"
 edge_role = "verification_rule"
 target_ref = "data/external/PROVENANCE.local.json"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01566"
+id = "CED-01565"
 claim_id = "C-434"
 edge_role = "verification_rule"
 target_ref = "data/external/papers/"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01567"
+id = "CED-01566"
 claim_id = "C-434"
 edge_role = "where_stated"
 target_ref = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01568"
+id = "CED-01567"
 claim_id = "C-434"
 edge_role = "where_stated"
 target_ref = "src/scripts/visualization/animate_warp_v8_rigorous.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01569"
+id = "CED-01568"
 claim_id = "C-435"
 edge_role = "verification_rule"
 target_ref = "animate_warp_v8_rigorous.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01570"
+id = "CED-01569"
 claim_id = "C-435"
 edge_role = "where_stated"
 target_ref = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01571"
+id = "CED-01570"
 claim_id = "C-435"
 edge_role = "where_stated"
 target_ref = "src/scripts/visualization/animate_warp_v8_rigorous.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01572"
+id = "CED-01571"
 claim_id = "C-436"
 edge_role = "cross_reference"
 target_ref = "C-071"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01573"
+id = "CED-01572"
 claim_id = "C-436"
 edge_role = "where_stated"
 target_ref = "crates/cosmology_core/src/distances.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01574"
+id = "CED-01573"
 claim_id = "C-436"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/dm_ultrametric.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01575"
+id = "CED-01574"
 claim_id = "C-436"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/local.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01576"
+id = "CED-01575"
 claim_id = "C-436"
 edge_role = "where_stated"
 target_ref = "data/csv/c071b_dm_comoving_ultrametric.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01577"
+id = "CED-01576"
 claim_id = "C-437"
 edge_role = "cross_reference"
 target_ref = "I-008"
 target_kind = "insight_ref"
 
 [[edge]]
-id = "CED-01578"
+id = "CED-01577"
 claim_id = "C-437"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/multi_dataset_ultrametric.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01578"
+claim_id = "C-437"
+edge_role = "where_stated"
+target_ref = "crates/stats_core/src/ultrametric/baire.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01579"
 claim_id = "C-437"
 edge_role = "where_stated"
-target_ref = "crates/stats_core/src/ultrametric/baire.rs"
+target_ref = "crates/stats_core/src/ultrametric/gpu.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01580"
 claim_id = "C-437"
 edge_role = "where_stated"
-target_ref = "crates/stats_core/src/ultrametric/gpu.rs"
-target_kind = "rust_source_path"
-
-[[edge]]
-id = "CED-01581"
-claim_id = "C-437"
-edge_role = "where_stated"
 target_ref = "data/csv/c071g_exploration_gpu_10M_1000perm.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01582"
+id = "CED-01581"
 claim_id = "C-438"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/frb_cascades.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01583"
+id = "CED-01582"
 claim_id = "C-438"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/temporal.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01584"
+id = "CED-01583"
 claim_id = "C-438"
 edge_role = "where_stated"
 target_ref = "data/csv/c071d_frb_cascades_ultrametric.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01585"
+id = "CED-01584"
 claim_id = "C-439"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/gw_merger_tree.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01586"
+id = "CED-01585"
 claim_id = "C-439"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/multi_dataset_ultrametric.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01587"
+id = "CED-01586"
 claim_id = "C-439"
 edge_role = "where_stated"
 target_ref = "data/csv/c071e_gw_merger_ultrametric.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01588"
+id = "CED-01587"
 claim_id = "C-439"
 edge_role = "where_stated"
 target_ref = "data/csv/c071g_exploration_gpu_10M_1000perm.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01589"
+id = "CED-01588"
 claim_id = "C-440"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/cosmic_dendrogram.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01590"
+id = "CED-01589"
 claim_id = "C-440"
 edge_role = "where_stated"
 target_ref = "data/csv/c071f_cosmic_dendrogram.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01591"
+id = "CED-01590"
 claim_id = "C-441"
 edge_role = "where_stated"
 target_ref = "crates/cosmology_core/src/observational.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01592"
+id = "CED-01591"
 claim_id = "C-441"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/real_cosmo_fit.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01593"
+id = "CED-01592"
 claim_id = "C-441"
 edge_role = "where_stated"
 target_ref = "docs/INSIGHTS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01594"
+id = "CED-01593"
 claim_id = "C-442"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/multi_dataset_ultrametric.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01595"
+id = "CED-01594"
 claim_id = "C-442"
 edge_role = "where_stated"
 target_ref = "data/csv/c071g_exploration_gpu_10M_1000perm.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01596"
+id = "CED-01595"
 claim_id = "C-442"
 edge_role = "where_stated"
 target_ref = "data/csv/c071g_multi_dataset_ultrametric.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01597"
+id = "CED-01596"
 claim_id = "C-442"
 edge_role = "where_stated"
 target_ref = "docs/INSIGHTS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01598"
+id = "CED-01597"
 claim_id = "C-443"
 edge_role = "cross_reference"
 target_ref = "I-006"
 target_kind = "insight_ref"
 
 [[edge]]
-id = "CED-01599"
+id = "CED-01598"
 claim_id = "C-443"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01600"
+id = "CED-01599"
 claim_id = "C-443"
 edge_role = "where_stated"
 target_ref = "docs/INSIGHTS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01601"
+id = "CED-01600"
 claim_id = "C-444"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01602"
+id = "CED-01601"
 claim_id = "C-444"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/projective_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01603"
+id = "CED-01602"
 claim_id = "C-445"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/projective_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01604"
+id = "CED-01603"
 claim_id = "C-446"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01605"
+id = "CED-01604"
 claim_id = "C-446"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/projective_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01606"
+id = "CED-01605"
 claim_id = "C-447"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/adaptive.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01607"
+id = "CED-01606"
 claim_id = "C-448"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/projective_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01608"
+id = "CED-01607"
 claim_id = "C-449"
 edge_role = "cross_reference"
 target_ref = "I-013"
 target_kind = "insight_ref"
 
 [[edge]]
-id = "CED-01609"
+id = "CED-01608"
 claim_id = "C-449"
 edge_role = "where_stated"
 target_ref = "data/csv/c071g_exploration_gpu_10M_1000perm.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01610"
+id = "CED-01609"
 claim_id = "C-449"
 edge_role = "where_stated"
 target_ref = "docs/INSIGHTS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01611"
+id = "CED-01610"
 claim_id = "C-449"
 edge_role = "where_stated"
 target_ref = "src/scripts/analysis/extract_ultrametric_cores.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01612"
+id = "CED-01611"
 claim_id = "C-450"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01613"
+id = "CED-01612"
 claim_id = "C-451"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01614"
+id = "CED-01613"
 claim_id = "C-452"
 edge_role = "verification_rule"
 target_ref = "data/csv/cayley_dickson/256d_lattice_mapping.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01615"
+id = "CED-01614"
 claim_id = "C-452"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01616"
+id = "CED-01615"
 claim_id = "C-453"
 edge_role = "verification_rule"
 target_ref = "2048}d_lattice_mapping.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01617"
+id = "CED-01616"
 claim_id = "C-453"
 edge_role = "verification_rule"
 target_ref = "data/csv/cayley_dickson/{512"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01618"
+id = "CED-01617"
 claim_id = "C-453"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01619"
+id = "CED-01618"
 claim_id = "C-454"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01620"
+id = "CED-01619"
 claim_id = "C-454"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01621"
+id = "CED-01620"
 claim_id = "C-455"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01622"
+id = "CED-01621"
 claim_id = "C-456"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01623"
+id = "CED-01622"
 claim_id = "C-457"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01624"
+id = "CED-01623"
 claim_id = "C-458"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01625"
+id = "CED-01624"
 claim_id = "C-459"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01626"
+id = "CED-01625"
 claim_id = "C-460"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01627"
+id = "CED-01626"
 claim_id = "C-461"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01628"
+id = "CED-01627"
 claim_id = "C-462"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01629"
+id = "CED-01628"
 claim_id = "C-463"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01630"
+id = "CED-01629"
 claim_id = "C-464"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01631"
+id = "CED-01630"
 claim_id = "C-465"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01632"
+id = "CED-01631"
 claim_id = "C-466"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01633"
+id = "CED-01632"
 claim_id = "C-467"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01634"
+id = "CED-01633"
 claim_id = "C-467"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/null_models.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01635"
+id = "CED-01634"
 claim_id = "C-468"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01636"
+id = "CED-01635"
 claim_id = "C-469"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01637"
+id = "CED-01636"
 claim_id = "C-470"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01638"
+id = "CED-01637"
 claim_id = "C-471"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01639"
+id = "CED-01638"
 claim_id = "C-472"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01640"
+id = "CED-01639"
 claim_id = "C-473"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01641"
+id = "CED-01640"
 claim_id = "C-474"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01642"
+id = "CED-01641"
 claim_id = "C-475"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01643"
+id = "CED-01642"
 claim_id = "C-476"
 edge_role = "cross_reference"
 target_ref = "E-011"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01644"
+id = "CED-01643"
 claim_id = "C-476"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/algebraic_dynamics.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01645"
+id = "CED-01644"
 claim_id = "C-476"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/billiard_stats.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01646"
+id = "CED-01645"
 claim_id = "C-476"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/cross_stack_locality.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01647"
+id = "CED-01646"
 claim_id = "C-477"
 edge_role = "cross_reference"
 target_ref = "E-012"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01648"
+id = "CED-01647"
 claim_id = "C-477"
 edge_role = "cross_reference"
 target_ref = "E-013"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01649"
+id = "CED-01648"
 claim_id = "C-477"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/algebraic_dynamics.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01650"
+id = "CED-01649"
 claim_id = "C-477"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/sky_limit_set.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01651"
+id = "CED-01650"
 claim_id = "C-478"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01652"
+id = "CED-01651"
 claim_id = "C-479"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/experimental/emanation.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01653"
+id = "CED-01652"
 claim_id = "C-480"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/projective_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01654"
+id = "CED-01653"
 claim_id = "C-481"
 edge_role = "cross_reference"
 target_ref = "C-479"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01655"
+id = "CED-01654"
 claim_id = "C-481"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01656"
+id = "CED-01655"
 claim_id = "C-482"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01657"
+id = "CED-01656"
 claim_id = "C-483"
 edge_role = "cross_reference"
 target_ref = "C-487"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01658"
+id = "CED-01657"
 claim_id = "C-483"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01658"
+claim_id = "C-484"
+edge_role = "cross_reference"
+target_ref = "C-487"
+target_kind = "claim_ref"
 
 [[edge]]
 id = "CED-01659"
 claim_id = "C-484"
-edge_role = "cross_reference"
-target_ref = "C-487"
-target_kind = "claim_ref"
-
-[[edge]]
-id = "CED-01660"
-claim_id = "C-484"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01661"
+id = "CED-01660"
 claim_id = "C-485"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01662"
+id = "CED-01661"
 claim_id = "C-486"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01663"
+id = "CED-01662"
 claim_id = "C-487"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01664"
+id = "CED-01663"
 claim_id = "C-488"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01665"
+id = "CED-01664"
 claim_id = "C-489"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01666"
+id = "CED-01665"
 claim_id = "C-490"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01667"
+id = "CED-01666"
 claim_id = "C-491"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01668"
+id = "CED-01667"
 claim_id = "C-492"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01669"
+id = "CED-01668"
 claim_id = "C-493"
 edge_role = "cross_reference"
 target_ref = "C-491"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01670"
+id = "CED-01669"
 claim_id = "C-493"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01671"
+id = "CED-01670"
 claim_id = "C-494"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01672"
+id = "CED-01671"
 claim_id = "C-495"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01673"
+id = "CED-01672"
 claim_id = "C-496"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01674"
+id = "CED-01673"
 claim_id = "C-497"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01675"
+id = "CED-01674"
 claim_id = "C-498"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01676"
+id = "CED-01675"
 claim_id = "C-499"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01677"
+id = "CED-01676"
 claim_id = "C-500"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01678"
+id = "CED-01677"
 claim_id = "C-501"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01679"
+id = "CED-01678"
 claim_id = "C-502"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01680"
+id = "CED-01679"
 claim_id = "C-503"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01681"
+id = "CED-01680"
 claim_id = "C-504"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01682"
+id = "CED-01681"
 claim_id = "C-505"
 edge_role = "cross_reference"
 target_ref = "C-500"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01683"
+id = "CED-01682"
 claim_id = "C-505"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01684"
+id = "CED-01683"
 claim_id = "C-506"
 edge_role = "cross_reference"
 target_ref = "C-501"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01685"
+id = "CED-01684"
 claim_id = "C-506"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01686"
+id = "CED-01685"
 claim_id = "C-507"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01687"
+id = "CED-01686"
 claim_id = "C-508"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01688"
+id = "CED-01687"
 claim_id = "C-509"
 edge_role = "cross_reference"
 target_ref = "C-501"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01689"
+id = "CED-01688"
 claim_id = "C-509"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01690"
+id = "CED-01689"
 claim_id = "C-510"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01691"
+id = "CED-01690"
 claim_id = "C-511"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01692"
+id = "CED-01691"
 claim_id = "C-512"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01693"
+id = "CED-01692"
 claim_id = "C-513"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01694"
+id = "CED-01693"
 claim_id = "C-514"
 edge_role = "where_stated"
 target_ref = "crates/stats_core/src/ultrametric/baire_codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01695"
+id = "CED-01694"
 claim_id = "C-515"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01696"
+id = "CED-01695"
 claim_id = "C-516"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01697"
+id = "CED-01696"
 claim_id = "C-517"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01698"
+id = "CED-01697"
 claim_id = "C-518"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01699"
+id = "CED-01698"
 claim_id = "C-519"
 edge_role = "cross_reference"
 target_ref = "C-521"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01700"
+id = "CED-01699"
 claim_id = "C-519"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01700"
+claim_id = "C-520"
+edge_role = "cross_reference"
+target_ref = "C-521"
+target_kind = "claim_ref"
 
 [[edge]]
 id = "CED-01701"
 claim_id = "C-520"
-edge_role = "cross_reference"
-target_ref = "C-521"
-target_kind = "claim_ref"
-
-[[edge]]
-id = "CED-01702"
-claim_id = "C-520"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01703"
+id = "CED-01702"
 claim_id = "C-521"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01704"
+id = "CED-01703"
 claim_id = "C-522"
 edge_role = "cross_reference"
 target_ref = "C-521"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01705"
+id = "CED-01704"
 claim_id = "C-522"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01706"
+id = "CED-01705"
 claim_id = "C-523"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01707"
+id = "CED-01706"
 claim_id = "C-524"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01708"
+id = "CED-01707"
 claim_id = "C-525"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01709"
+id = "CED-01708"
 claim_id = "C-526"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01710"
+id = "CED-01709"
 claim_id = "C-527"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01711"
+id = "CED-01710"
 claim_id = "C-528"
 edge_role = "cross_reference"
 target_ref = "C-520"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01712"
+id = "CED-01711"
 claim_id = "C-528"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01713"
+id = "CED-01712"
 claim_id = "C-529"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01714"
+id = "CED-01713"
 claim_id = "C-530"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01715"
+id = "CED-01714"
 claim_id = "C-531"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01716"
+id = "CED-01715"
 claim_id = "C-532"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01717"
+id = "CED-01716"
 claim_id = "C-533"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01718"
+id = "CED-01717"
 claim_id = "C-534"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01719"
+id = "CED-01718"
 claim_id = "C-535"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01720"
+id = "CED-01719"
 claim_id = "C-536"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/legacy_crossval.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01721"
+id = "CED-01720"
 claim_id = "C-537"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/legacy_crossval.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01722"
+id = "CED-01721"
 claim_id = "C-538"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/legacy_crossval.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01723"
+id = "CED-01722"
 claim_id = "C-539"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/legacy_crossval.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01724"
+id = "CED-01723"
 claim_id = "C-540"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/legacy_crossval.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01725"
+id = "CED-01724"
 claim_id = "C-541"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/legacy_crossval.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01726"
+id = "CED-01725"
 claim_id = "C-542"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/legacy_crossval.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01727"
+id = "CED-01726"
 claim_id = "C-543"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/legacy_crossval.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01728"
+id = "CED-01727"
 claim_id = "C-544"
 edge_role = "cross_reference"
 target_ref = "C-537"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01729"
+id = "CED-01728"
 claim_id = "C-544"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/legacy_crossval.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01730"
+id = "CED-01729"
 claim_id = "C-545"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01731"
+id = "CED-01730"
 claim_id = "C-546"
 edge_role = "cross_reference"
 target_ref = "C-550"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01732"
+id = "CED-01731"
 claim_id = "C-546"
 edge_role = "cross_reference"
 target_ref = "C-552"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01733"
+id = "CED-01732"
 claim_id = "C-546"
 edge_role = "cross_reference"
 target_ref = "C-589"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01734"
+id = "CED-01733"
 claim_id = "C-546"
 edge_role = "cross_reference"
 target_ref = "C-591"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01735"
+id = "CED-01734"
 claim_id = "C-546"
 edge_role = "cross_reference"
 target_ref = "I-040"
 target_kind = "insight_ref"
 
 [[edge]]
-id = "CED-01736"
+id = "CED-01735"
 claim_id = "C-546"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01737"
+id = "CED-01736"
 claim_id = "C-547"
 edge_role = "verification_rule"
 target_ref = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01738"
+id = "CED-01737"
 claim_id = "C-547"
 edge_role = "verification_rule"
 target_ref = "e_i +/- e_j"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01739"
+id = "CED-01738"
 claim_id = "C-547"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01740"
+id = "CED-01739"
 claim_id = "C-548"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01741"
+id = "CED-01740"
 claim_id = "C-549"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01742"
+id = "CED-01741"
 claim_id = "C-550"
 edge_role = "cross_reference"
 target_ref = "C-546"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01743"
+id = "CED-01742"
 claim_id = "C-550"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01744"
+id = "CED-01743"
 claim_id = "C-551"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01745"
+id = "CED-01744"
 claim_id = "C-552"
 edge_role = "cross_reference"
 target_ref = "I-020"
 target_kind = "insight_ref"
 
 [[edge]]
-id = "CED-01746"
+id = "CED-01745"
 claim_id = "C-552"
 edge_role = "cross_reference"
 target_ref = "I-022"
 target_kind = "insight_ref"
 
 [[edge]]
-id = "CED-01747"
+id = "CED-01746"
 claim_id = "C-552"
 edge_role = "where_stated"
 target_ref = "docs/ALGEBRA_FAMILY_TAXONOMY.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01748"
+id = "CED-01747"
 claim_id = "C-553"
 edge_role = "cross_reference"
 target_ref = "C-550"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01749"
+id = "CED-01748"
 claim_id = "C-553"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01750"
+id = "CED-01749"
 claim_id = "C-554"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01751"
+id = "CED-01750"
 claim_id = "C-555"
 edge_role = "cross_reference"
 target_ref = "C-550"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01752"
+id = "CED-01751"
 claim_id = "C-555"
 edge_role = "cross_reference"
 target_ref = "C-553"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01753"
+id = "CED-01752"
 claim_id = "C-555"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01754"
+id = "CED-01753"
 claim_id = "C-556"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01755"
+id = "CED-01754"
 claim_id = "C-557"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01756"
+id = "CED-01755"
 claim_id = "C-558"
 edge_role = "cross_reference"
 target_ref = "C-517"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01757"
+id = "CED-01756"
 claim_id = "C-558"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01758"
+id = "CED-01757"
 claim_id = "C-559"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01759"
+id = "CED-01758"
 claim_id = "C-560"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/clifford.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01760"
+id = "CED-01759"
 claim_id = "C-561"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/clifford.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01761"
+id = "CED-01760"
 claim_id = "C-562"
 edge_role = "where_stated"
 target_ref = "docs/ALGEBRA_CRATES_QUICK_REFERENCE.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01762"
+id = "CED-01761"
 claim_id = "C-562"
 edge_role = "where_stated"
 target_ref = "docs/ALGEBRA_CRATES_SURVEY.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01763"
+id = "CED-01762"
 claim_id = "C-563"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/jordan.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01764"
+id = "CED-01763"
 claim_id = "C-564"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/jordan.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01765"
+id = "CED-01764"
 claim_id = "C-565"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/jordan.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01766"
+id = "CED-01765"
 claim_id = "C-566"
 edge_role = "where_stated"
 target_ref = "docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01767"
+id = "CED-01766"
 claim_id = "C-567"
 edge_role = "where_stated"
 target_ref = "docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01768"
+id = "CED-01767"
 claim_id = "C-568"
 edge_role = "where_stated"
 target_ref = "docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01769"
+id = "CED-01768"
 claim_id = "C-569"
 edge_role = "where_stated"
 target_ref = "docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01770"
+id = "CED-01769"
 claim_id = "C-570"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01771"
+id = "CED-01770"
 claim_id = "C-570"
+edge_role = "where_stated"
+target_ref = "crates/gororoba_cli/src/bin/dimensional_census.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01771"
+claim_id = "C-571"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/dimensional_census.rs"
 target_kind = "rust_source_path"
@@ -12407,740 +12407,740 @@ target_kind = "rust_source_path"
 id = "CED-01772"
 claim_id = "C-571"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli/src/bin/dimensional_census.rs"
-target_kind = "rust_source_path"
+target_ref = "data/csv/apt_dimensional_census_summary.csv"
+target_kind = "csv_artifact_path"
 
 [[edge]]
 id = "CED-01773"
-claim_id = "C-571"
+claim_id = "C-572"
 edge_role = "where_stated"
-target_ref = "data/csv/apt_dimensional_census_summary.csv"
-target_kind = "csv_artifact_path"
+target_ref = "crates/gororoba_cli/src/bin/dimensional_census.rs"
+target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01774"
 claim_id = "C-572"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli/src/bin/dimensional_census.rs"
-target_kind = "rust_source_path"
-
-[[edge]]
-id = "CED-01775"
-claim_id = "C-572"
-edge_role = "where_stated"
 target_ref = "data/csv/apt_dimensional_census_summary.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01776"
+id = "CED-01775"
 claim_id = "C-573"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/gpu/dimensional.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01777"
+id = "CED-01776"
 claim_id = "C-573"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/gpu/eta_matrix.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01778"
+id = "CED-01777"
 claim_id = "C-573"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/gpu/frustration.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01779"
+id = "CED-01778"
 claim_id = "C-573"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/gpu/graph_construction.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01780"
+id = "CED-01779"
 claim_id = "C-574"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/benches/dimensional_bench.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01781"
+id = "CED-01780"
 claim_id = "C-574"
 edge_role = "where_stated"
 target_ref = "target/criterion/"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01782"
+id = "CED-01781"
 claim_id = "C-575"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/octonion.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01783"
+id = "CED-01782"
 claim_id = "C-576"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/g2_automorphisms.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01784"
+id = "CED-01783"
 claim_id = "C-577"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/octonion_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01785"
+id = "CED-01784"
 claim_id = "C-578"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/octonion.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01786"
+id = "CED-01785"
 claim_id = "C-578"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/octonion_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01787"
+id = "CED-01786"
 claim_id = "C-579"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/exceptional_bridge.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01788"
+id = "CED-01787"
 claim_id = "C-580"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/exceptional_bridge.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01789"
+id = "CED-01788"
 claim_id = "C-581"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/subalgebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01790"
+id = "CED-01789"
 claim_id = "C-582"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/subalgebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01791"
+id = "CED-01790"
 claim_id = "C-583"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/subalgebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01792"
+id = "CED-01791"
 claim_id = "C-584"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/albert.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01793"
+id = "CED-01792"
 claim_id = "C-585"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/albert.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01794"
+id = "CED-01793"
 claim_id = "C-586"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/stiefel.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01795"
+id = "CED-01794"
 claim_id = "C-587"
 edge_role = "where_stated"
 target_ref = "crates/materials_core/src/tang_mass.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01796"
+id = "CED-01795"
 claim_id = "C-588"
 edge_role = "cross_reference"
 target_ref = "C-529"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01797"
+id = "CED-01796"
 claim_id = "C-588"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01798"
+id = "CED-01797"
 claim_id = "C-589"
 edge_role = "cross_reference"
 target_ref = "C-453"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01799"
+id = "CED-01798"
 claim_id = "C-589"
 edge_role = "cross_reference"
 target_ref = "C-455"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01800"
+id = "CED-01799"
 claim_id = "C-589"
 edge_role = "cross_reference"
 target_ref = "C-458"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01801"
+id = "CED-01800"
 claim_id = "C-589"
 edge_role = "cross_reference"
 target_ref = "C-546"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01802"
+id = "CED-01801"
 claim_id = "C-589"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01803"
+id = "CED-01802"
 claim_id = "C-590"
 edge_role = "cross_reference"
 target_ref = "I-041"
 target_kind = "insight_ref"
 
 [[edge]]
-id = "CED-01804"
+id = "CED-01803"
 claim_id = "C-590"
 edge_role = "verification_rule"
 target_ref = "data/csv/c590_attractor_ratio_sweep.csv"
+target_kind = "csv_artifact_path"
+
+[[edge]]
+id = "CED-01804"
+claim_id = "C-590"
+edge_role = "verification_rule"
+target_ref = "data/csv/c590_attractor_runtime_baseline.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
 id = "CED-01805"
 claim_id = "C-590"
 edge_role = "verification_rule"
-target_ref = "data/csv/c590_attractor_runtime_baseline.csv"
-target_kind = "csv_artifact_path"
-
-[[edge]]
-id = "CED-01806"
-claim_id = "C-590"
-edge_role = "verification_rule"
 target_ref = "src/scripts/analysis/c590_build_attractor_artifacts.sh"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01807"
+id = "CED-01806"
 claim_id = "C-590"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_split_octonion_attractor.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01808"
+id = "CED-01807"
 claim_id = "C-590"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/c590_attractor_sweep.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01809"
+id = "CED-01808"
 claim_id = "C-590"
 edge_role = "where_stated"
 target_ref = "data/csv/c590_attractor_ratio_sweep.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01810"
+id = "CED-01809"
 claim_id = "C-590"
 edge_role = "where_stated"
 target_ref = "data/csv/c590_attractor_runtime_baseline.csv"
 target_kind = "csv_artifact_path"
 
 [[edge]]
-id = "CED-01811"
+id = "CED-01810"
 claim_id = "C-590"
 edge_role = "where_stated"
 target_ref = "registry/insights.toml"
 target_kind = "registry_path"
 
 [[edge]]
-id = "CED-01812"
+id = "CED-01811"
 claim_id = "C-590"
 edge_role = "where_stated"
 target_ref = "src/scripts/analysis/c590_build_attractor_artifacts.sh"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01813"
+id = "CED-01812"
 claim_id = "C-591"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01814"
+id = "CED-01813"
 claim_id = "C-593"
 edge_role = "cross_reference"
 target_ref = "C-592"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01815"
+id = "CED-01814"
 claim_id = "C-593"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01816"
+id = "CED-01815"
 claim_id = "C-593"
 edge_role = "where_stated"
 target_ref = "registry/phase8_census.toml"
 target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01816"
+claim_id = "C-594"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01817"
 claim_id = "C-594"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
-target_kind = "rust_source_path"
-
-[[edge]]
-id = "CED-01818"
-claim_id = "C-594"
-edge_role = "where_stated"
 target_ref = "registry/phase8_census.toml"
 target_kind = "registry_path"
 
 [[edge]]
-id = "CED-01819"
+id = "CED-01818"
 claim_id = "C-595"
 edge_role = "cross_reference"
 target_ref = "C-593"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01820"
+id = "CED-01819"
 claim_id = "C-595"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01821"
+id = "CED-01820"
 claim_id = "C-595"
 edge_role = "where_stated"
 target_ref = "registry/phase8_census.toml"
 target_kind = "registry_path"
 
 [[edge]]
-id = "CED-01822"
+id = "CED-01821"
 claim_id = "C-596"
 edge_role = "cross_reference"
 target_ref = "C-532"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01823"
+id = "CED-01822"
 claim_id = "C-596"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01824"
+id = "CED-01823"
 claim_id = "C-596"
 edge_role = "where_stated"
 target_ref = "registry/phase8_census.toml"
 target_kind = "registry_path"
 
 [[edge]]
-id = "CED-01825"
+id = "CED-01824"
 claim_id = "C-597"
 edge_role = "cross_reference"
 target_ref = "C-591"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01826"
+id = "CED-01825"
 claim_id = "C-597"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01827"
+id = "CED-01826"
 claim_id = "C-597"
 edge_role = "where_stated"
 target_ref = "registry/phase8_census.toml"
 target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01827"
+claim_id = "C-598"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01828"
 claim_id = "C-598"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
-target_kind = "rust_source_path"
-
-[[edge]]
-id = "CED-01829"
-claim_id = "C-598"
-edge_role = "where_stated"
 target_ref = "registry/phase8_census.toml"
 target_kind = "registry_path"
 
 [[edge]]
-id = "CED-01830"
+id = "CED-01829"
 claim_id = "C-599"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/projective_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01831"
+id = "CED-01830"
 claim_id = "C-600"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/projective_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01832"
+id = "CED-01831"
 claim_id = "C-601"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/gpu/dimensional.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01833"
+id = "CED-01832"
 claim_id = "C-602"
 edge_role = "cross_reference"
 target_ref = "C-524"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01834"
+id = "CED-01833"
 claim_id = "C-602"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/gpu/dimensional.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01835"
+id = "CED-01834"
 claim_id = "C-603"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01836"
+id = "CED-01835"
 claim_id = "C-604"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/codebook.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01837"
+id = "CED-01836"
 claim_id = "C-605"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/gpu/dimensional.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01838"
+id = "CED-01837"
 claim_id = "C-606"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/tessarines.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01839"
+id = "CED-01838"
 claim_id = "C-606"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01839"
+claim_id = "C-607"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/src/construction/tessarines.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01840"
 claim_id = "C-607"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01841"
-claim_id = "C-607"
+claim_id = "C-608"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "crates/algebra_core/src/construction/tessarines.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01842"
 claim_id = "C-608"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01843"
-claim_id = "C-608"
+claim_id = "C-609"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "crates/algebra_core/src/construction/tessarines.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01844"
 claim_id = "C-609"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
-target_kind = "rust_source_path"
-
-[[edge]]
-id = "CED-01845"
-claim_id = "C-609"
-edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01846"
+id = "CED-01845"
 claim_id = "C-610"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01847"
+id = "CED-01846"
 claim_id = "C-611"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/homotopy_algebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01848"
+id = "CED-01847"
 claim_id = "C-612"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/homotopy_algebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01849"
+id = "CED-01848"
 claim_id = "C-613"
 edge_role = "where_stated"
 target_ref = "crates/cosmology_core/src/homotopy_bridge.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01850"
+id = "CED-01849"
 claim_id = "C-614"
 edge_role = "where_stated"
 target_ref = "crates/cosmology_core/src/homotopy_bridge.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01851"
+id = "CED-01850"
 claim_id = "C-615"
 edge_role = "where_stated"
 target_ref = "crates/cosmology_core/src/homotopy_bridge.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01852"
+id = "CED-01851"
 claim_id = "C-616"
 edge_role = "where_stated"
 target_ref = "crates/optics_core/src/entropy_trap.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01853"
+id = "CED-01852"
 claim_id = "C-616"
 edge_role = "where_stated"
 target_ref = "crates/optics_core/src/multi_resonator.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01854"
+id = "CED-01853"
 claim_id = "C-617"
 edge_role = "where_stated"
 target_ref = "crates/optics_core/src/multi_resonator.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01855"
+id = "CED-01854"
 claim_id = "C-618"
 edge_role = "where_stated"
 target_ref = "crates/optics_core/src/entropy_trap.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01856"
+id = "CED-01855"
 claim_id = "C-619"
 edge_role = "where_stated"
 target_ref = "crates/optics_core/src/entropy_trap.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01857"
+id = "CED-01856"
 claim_id = "C-620"
 edge_role = "where_stated"
 target_ref = "crates/optics_core/src/entropy_trap.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01858"
+id = "CED-01857"
 claim_id = "C-621"
 edge_role = "where_stated"
 target_ref = "crates/quantum_core/src/superfluid.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01859"
+id = "CED-01858"
 claim_id = "C-622"
 edge_role = "where_stated"
 target_ref = "crates/quantum_core/src/superfluid.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01860"
+id = "CED-01859"
 claim_id = "C-623"
 edge_role = "where_stated"
 target_ref = "crates/quantum_core/src/superfluid.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01861"
+id = "CED-01860"
 claim_id = "C-624"
 edge_role = "where_stated"
 target_ref = "crates/quantum_core/src/two_fluid.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01862"
+id = "CED-01861"
 claim_id = "C-625"
 edge_role = "where_stated"
 target_ref = "crates/quantum_core/src/two_fluid.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01863"
+id = "CED-01862"
 claim_id = "C-626"
 edge_role = "where_stated"
 target_ref = "crates/quantum_core/src/two_fluid.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01864"
+id = "CED-01863"
 claim_id = "C-627"
 edge_role = "where_stated"
 target_ref = "crates/quantum_core/src/two_fluid.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01865"
+id = "CED-01864"
 claim_id = "C-628"
 edge_role = "where_stated"
 target_ref = "crates/quantum_core/src/gross_pitaevskii.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01866"
+id = "CED-01865"
 claim_id = "C-629"
 edge_role = "where_stated"
 target_ref = "crates/quantum_core/src/gross_pitaevskii.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01867"
+id = "CED-01866"
 claim_id = "C-631"
 edge_role = "cross_reference"
 target_ref = "C-547"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01868"
+id = "CED-01867"
 claim_id = "C-631"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01869"
+id = "CED-01868"
 claim_id = "C-632"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_split_octonion_attractor.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01870"
+id = "CED-01869"
 claim_id = "C-632"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01871"
+id = "CED-01870"
 claim_id = "C-633"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01871"
+claim_id = "C-633"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01872"
 claim_id = "C-633"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
-target_kind = "rust_source_path"
+target_ref = "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"
+target_kind = "markdown_path"
 
 [[edge]]
 id = "CED-01873"
-claim_id = "C-633"
+claim_id = "C-634"
 edge_role = "where_stated"
-target_ref = "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"
-target_kind = "markdown_path"
+target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01874"
 claim_id = "C-634"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
-target_kind = "rust_source_path"
-
-[[edge]]
-id = "CED-01875"
-claim_id = "C-634"
-edge_role = "where_stated"
 target_ref = "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01876"
+id = "CED-01875"
 claim_id = "C-635"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/tessarines.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01877"
+id = "CED-01876"
 claim_id = "C-635"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01877"
+claim_id = "C-636"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
 target_kind = "rust_source_path"
@@ -13149,390 +13149,516 @@ target_kind = "rust_source_path"
 id = "CED-01878"
 claim_id = "C-636"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
-target_kind = "rust_source_path"
-
-[[edge]]
-id = "CED-01879"
-claim_id = "C-636"
-edge_role = "where_stated"
 target_ref = "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01880"
+id = "CED-01879"
 claim_id = "C-637"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_exotic_octonions.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01881"
+id = "CED-01880"
 claim_id = "C-637"
 edge_role = "where_stated"
 target_ref = "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01882"
+id = "CED-01881"
 claim_id = "C-638"
 edge_role = "cross_reference"
 target_ref = "C-630"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01883"
+id = "CED-01882"
 claim_id = "C-638"
 edge_role = "cross_reference"
 target_ref = "C-632"
 target_kind = "claim_ref"
 
 [[edge]]
-id = "CED-01884"
+id = "CED-01883"
 claim_id = "C-638"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_exotic_octonions.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01885"
+id = "CED-01884"
 claim_id = "C-638"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01886"
+id = "CED-01885"
 claim_id = "C-638"
 edge_role = "where_stated"
 target_ref = "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01887"
+id = "CED-01886"
 claim_id = "C-639"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_exotic_octonions.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01888"
+id = "CED-01887"
 claim_id = "C-639"
 edge_role = "where_stated"
 target_ref = "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01889"
+id = "CED-01888"
 claim_id = "C-640"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01890"
+id = "CED-01889"
 claim_id = "C-640"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/tessarines.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01891"
+id = "CED-01890"
 claim_id = "C-640"
 edge_role = "where_stated"
 target_ref = "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01892"
+id = "CED-01891"
 claim_id = "C-641"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/albert.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01893"
+id = "CED-01892"
 claim_id = "C-641"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01894"
+id = "CED-01893"
 claim_id = "C-642"
 edge_role = "cross_reference"
 target_ref = "E-022"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01895"
+id = "CED-01894"
 claim_id = "C-642"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01896"
+id = "CED-01895"
 claim_id = "C-642"
 edge_role = "where_stated"
 target_ref = "docs/PHASE10_EXCEPTIONAL_ALGEBRAS_RESEARCH.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01897"
+id = "CED-01896"
 claim_id = "C-643"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01898"
+id = "CED-01897"
 claim_id = "C-644"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01899"
+id = "CED-01898"
 claim_id = "C-645"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/albert.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01900"
+id = "CED-01899"
 claim_id = "C-645"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01901"
+id = "CED-01900"
 claim_id = "C-646"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/composition_algebra_census.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01902"
+id = "CED-01901"
 claim_id = "C-646"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01903"
+id = "CED-01902"
 claim_id = "C-647"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01904"
+id = "CED-01903"
 claim_id = "C-648"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01905"
+id = "CED-01904"
 claim_id = "C-649"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01906"
+id = "CED-01905"
 claim_id = "C-650"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01907"
+id = "CED-01906"
 claim_id = "C-651"
 edge_role = "where_stated"
 target_ref = "registry/registry_events.toml"
 target_kind = "registry_path"
 
 [[edge]]
-id = "CED-01908"
+id = "CED-01907"
 claim_id = "C-651"
 edge_role = "where_stated"
 target_ref = "src/verification/verify_registry_events.py"
 target_kind = "python_source_path"
+
+[[edge]]
+id = "CED-01908"
+claim_id = "C-652"
+edge_role = "where_stated"
+target_ref = "registry/registry_events.toml"
+target_kind = "registry_path"
 
 [[edge]]
 id = "CED-01909"
 claim_id = "C-652"
 edge_role = "where_stated"
-target_ref = "registry/registry_events.toml"
-target_kind = "registry_path"
-
-[[edge]]
-id = "CED-01910"
-claim_id = "C-652"
-edge_role = "where_stated"
 target_ref = "src/verification/verify_registry_events.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01911"
+id = "CED-01910"
 claim_id = "C-653"
 edge_role = "cross_reference"
 target_ref = "E-001"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01912"
+id = "CED-01911"
 claim_id = "C-653"
 edge_role = "cross_reference"
 target_ref = "E-002"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01913"
+id = "CED-01912"
 claim_id = "C-653"
 edge_role = "cross_reference"
 target_ref = "E-021"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01914"
+id = "CED-01913"
 claim_id = "C-653"
 edge_role = "cross_reference"
 target_ref = "E-023"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01915"
+id = "CED-01914"
 claim_id = "C-653"
 edge_role = "cross_reference"
 target_ref = "E-024"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01916"
+id = "CED-01915"
 claim_id = "C-653"
 edge_role = "where_stated"
 target_ref = "registry/artifact_experiment_links.toml"
 target_kind = "registry_path"
 
 [[edge]]
-id = "CED-01917"
+id = "CED-01916"
 claim_id = "C-653"
 edge_role = "where_stated"
 target_ref = "src/verification/verify_artifact_experiment_links.py"
 target_kind = "python_source_path"
+
+[[edge]]
+id = "CED-01917"
+claim_id = "C-654"
+edge_role = "where_stated"
+target_ref = "registry/artifact_experiment_links.toml"
+target_kind = "registry_path"
 
 [[edge]]
 id = "CED-01918"
 claim_id = "C-654"
 edge_role = "where_stated"
-target_ref = "registry/artifact_experiment_links.toml"
-target_kind = "registry_path"
+target_ref = "src/verification/verify_artifact_experiment_links.py"
+target_kind = "python_source_path"
 
 [[edge]]
 id = "CED-01919"
-claim_id = "C-654"
+claim_id = "C-655"
 edge_role = "where_stated"
-target_ref = "src/verification/verify_artifact_experiment_links.py"
-target_kind = "python_source_path"
+target_ref = "registry/third_party_source_verification.toml"
+target_kind = "registry_path"
 
 [[edge]]
 id = "CED-01920"
 claim_id = "C-655"
 edge_role = "where_stated"
-target_ref = "registry/third_party_source_verification.toml"
-target_kind = "registry_path"
+target_ref = "src/verification/verify_third_party_sources.py"
+target_kind = "python_source_path"
 
 [[edge]]
 id = "CED-01921"
-claim_id = "C-655"
+claim_id = "C-656"
 edge_role = "where_stated"
-target_ref = "src/verification/verify_third_party_sources.py"
-target_kind = "python_source_path"
+target_ref = "registry/third_party_source_verification.toml"
+target_kind = "registry_path"
 
 [[edge]]
 id = "CED-01922"
 claim_id = "C-656"
 edge_role = "where_stated"
-target_ref = "registry/third_party_source_verification.toml"
-target_kind = "registry_path"
-
-[[edge]]
-id = "CED-01923"
-claim_id = "C-656"
-edge_role = "where_stated"
 target_ref = "src/verification/verify_third_party_sources.py"
 target_kind = "python_source_path"
 
 [[edge]]
-id = "CED-01924"
+id = "CED-01923"
 claim_id = "C-657"
 edge_role = "cross_reference"
 target_ref = "E-027"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01925"
+id = "CED-01924"
 claim_id = "C-658"
 edge_role = "cross_reference"
 target_ref = "E-027"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01926"
+id = "CED-01925"
 claim_id = "C-659"
 edge_role = "cross_reference"
 target_ref = "E-027"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01927"
+id = "CED-01926"
 claim_id = "C-690"
 edge_role = "verification_rule"
 target_ref = "sedenion_geodesic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01928"
+id = "CED-01927"
 claim_id = "C-690"
 edge_role = "where_stated"
 target_ref = "crates/gr_core/src/sedenion_geodesic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01929"
+id = "CED-01928"
 claim_id = "C-690"
 edge_role = "where_stated"
 target_ref = "reports/breakthrough_shi_geodesics_2026_02_14.md"
 target_kind = "markdown_path"
 
 [[edge]]
-id = "CED-01930"
+id = "CED-01929"
 claim_id = "C-691"
 edge_role = "verification_rule"
 target_ref = "registry/research_intake_2026_02_14.toml"
 target_kind = "registry_path"
 
 [[edge]]
-id = "CED-01931"
+id = "CED-01930"
 claim_id = "C-692"
 edge_role = "verification_rule"
 target_ref = "10.1126/science.adl2348"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01932"
+id = "CED-01931"
 claim_id = "C-693"
 edge_role = "verification_rule"
 target_ref = "10.1103/PhysRevD.110.116016"
 target_kind = "generic_reference"
 
 [[edge]]
-id = "CED-01933"
+id = "CED-01932"
 claim_id = "C-694"
 edge_role = "verification_rule"
 target_ref = "10.1038/s41586-025-09917-9"
 target_kind = "generic_reference"
+
+[[edge]]
+id = "CED-01933"
+claim_id = "C-695"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/src/lie/lyndon_basis.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01934"
+claim_id = "C-696"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/src/experimental/cd_external.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01935"
+claim_id = "C-696"
+edge_role = "where_stated"
+target_ref = "crates/lattice_filtration/src/basis_index.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01936"
+claim_id = "C-697"
+edge_role = "where_stated"
+target_ref = "crates/materials_core/src/optical_database.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01937"
+claim_id = "C-698"
+edge_role = "where_stated"
+target_ref = "crates/materials_core/src/optical_database.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01938"
+claim_id = "C-699"
+edge_role = "where_stated"
+target_ref = "crates/materials_core/src/optical_database.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01939"
+claim_id = "C-700"
+edge_role = "where_stated"
+target_ref = "crates/materials_core/src/optical_database.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01940"
+claim_id = "C-701"
+edge_role = "where_stated"
+target_ref = "crates/materials_core/src/optical_database.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01941"
+claim_id = "C-702"
+edge_role = "where_stated"
+target_ref = "crates/materials_core/src/optical_database.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01942"
+claim_id = "T-AMPLITUDE-FRUSTRATION-MINIMA"
+edge_role = "where_stated"
+target_ref = "crates/gororoba_cli/src/bin/amplitude_frustration_survey.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01943"
+claim_id = "T-CMS-SIGN-CHALLENGE"
+edge_role = "cross_reference"
+target_ref = "E-038"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01944"
+claim_id = "T-CMS-SIGN-CHALLENGE"
+edge_role = "where_stated"
+target_ref = "crates/gororoba_cli/src/bin/lhc_2025_qgp_synthesis.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01945"
+claim_id = "T-PPT-NEED"
+edge_role = "cross_reference"
+target_ref = "E-036"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01946"
+claim_id = "T-PPT-NEED"
+edge_role = "where_stated"
+target_ref = "crates/gororoba_engine/src/thesis_pipelines.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01947"
+claim_id = "T-QGP-VORTICITY"
+edge_role = "cross_reference"
+target_ref = "E-038"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01948"
+claim_id = "T-QGP-VORTICITY"
+edge_role = "where_stated"
+target_ref = "crates/cd_spin_bridge/src/qgp_model.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01949"
+claim_id = "T-SPIN-CD"
+edge_role = "cross_reference"
+target_ref = "E-036"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01950"
+claim_id = "T-SPIN-CD"
+edge_role = "where_stated"
+target_ref = "crates/gororoba_engine/src/thesis_pipelines.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01951"
+claim_id = "T-SPIN-CD"
+edge_role = "where_stated"
+target_ref = "registry/experiments.toml"
+target_kind = "registry_path"

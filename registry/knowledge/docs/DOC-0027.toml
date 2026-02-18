@@ -3,58 +3,58 @@
 
 [document]
 id = "DOC-0027"
-source_path = "docs/CURATED_ARTIFACTS_AUDIT.md"
-title = "Curated Artifacts Audit (Scope + Provenance)"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/GEMINI.md"
+title = "GEMINI Workspace Logbook"
 kind = "manual_source"
 status = "active"
-migration_priority = "high"
+migration_priority = "medium"
 generated = false
-source_sha256 = "edfd5f23a6dcf0d92085585d00dabdc6d69295e1f92c2e0aa83667fd5d8c5d49"
+source_sha256 = "a350160f88de2e8249fd30226ea3e2833f0dd234afa74d8ab28330cacc5882cb"
 source_line_count = 39
-source_size_bytes = 1525
-content_sha256 = "edfd5f23a6dcf0d92085585d00dabdc6d69295e1f92c2e0aa83667fd5d8c5d49"
+source_size_bytes = 2098
+content_sha256 = "a350160f88de2e8249fd30226ea3e2833f0dd234afa74d8ab28330cacc5882cb"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Curated Artifacts Audit (Scope + Provenance)
+# GEMINI Workspace Logbook
 
-This document is a lightweight, reproducible inventory of `curated/` to support ongoing cleanup and
-conversion from \"black box\" artifacts to generated, validated outputs.
+This file tracks consolidated workspace governance and progress for `lambda_gororoba`.
 
-## Snapshot (as of this audit)
+## Current State
+- Workspace root: `/home/eirikr/Github/lambda_gororoba`
+- Merge staging root: `/home/eirikr/Github/lambda_gororoba/merge_in`
+- Repos are resolved from `merge_in/<repo>` first, with workspace paths as fallback bootstrap:
+  - `lambda-research`
+  - `lambda-synthesis-experiments`
+  - `LambdaLearner`
+- Language integration remains multi-language (Python, TypeScript, docs tooling); no pure Rust consolidation requirement.
 
-- Total files: **601**
-- Total size: ~**28 MB**
-- Dominant type: **CSV** (hundreds), plus a small number of PNGs and Coq build artifacts.
+## Reproducible Operations (in place)
+- `scripts/sync_and_audit_workspace.sh` \u2014 pulls from origin and writes `logs/workspace_sync_audit_<TS>.md`.
+- `scripts/backup_documents_workspace.sh` \u2014 creates `~/Documents/lambda_gororoba_backups/<TS>/` plus `backup_manifest.sha256`.
+- `scripts/audit_repos.sh` \u2014 baseline repository metadata collector.
+- `scripts/discover_original_sources.sh` \u2014 discovers explicit upstream URLs and emits reproducible source manifests in `logs/source_discovery_*`.
 
-Top-level directory breakdown (counts / intent):
-- `curated/01_theory_frameworks/`: theory-adjacent CSVs + Coq files (largest; mixed provenance)
-- `curated/02_simulations_pde_quantum/`: simulation/plot artifacts (mixed provenance)
-- `curated/03_benchmarks_numeric/`: numeric benchmark CSVs (mixed provenance)
-- `curated/04_observational_datasets/`: \"observational\" CSVs (requires first-party cross-checking)
-- `curated/05_summaries_indexes/`: summary/index artifacts (mixed provenance)
+## Consolidation artifacts
+- `TODOWRITE.md` \u2014 task ledger and ownership model.
+- `ROADMAP_SYNTHESIS.md` \u2014 phased program.
+- `MODULE_REQUIREMENTS_MATRIX.md` \u2014 installation and stack mapping by module.
+- `docs/ROADMAP_STATUS.md` \u2014 live completion indicator.
+- `docs/ORIGINAL_SOURCE_MANIFEST.md` \u2014 source discovery process, reproducible commands, and retention rules.
+- `docs/REPRODUCIBLE_BACKUP_MANIFEST.md` \u2014 backup protocol.
+- `agents.md` \u2014 role and operating conventions.
+- `CLAUDE.md` \u2014 execution constraints and coordination rules.
 
-## Provenance hash log
+## Compliance Notes
+- No items were deleted during this pass.
+- `~/Documents` is not modified by deletion; backups are additive.
+- License posture is harmonized to `GPL-2.0-only` for workspace repo-level licensing artifacts in this consolidation stream.
 
-`curated/PROVENANCE.local.json` records SHA256/size/mtime for every file under `curated/`.
-
-To regenerate:
-```bash
-python3 bin/record_external_hashes.py --root curated --output curated/PROVENANCE.local.json
-```
-
-## Current policy
-
-- Treat `curated/` as **non-authoritative** unless:
-  1) a committed script generates the artifact, and
-  2) the artifact is verified by tests or a verifier under `src/verification/`.
-- Prefer new reproducible artifacts under `data/csv/` and `data/artifacts/images/`.
-
-See also:
-- `docs/LACUNAE.md` for the \"black box artifacts\" diagnosis.
-- `curated/README.md` for directory-level caveats.
-
+## Policy
+- Treat audit warnings and TODO/FIXME debt as gating items in roadmap progression.
+- Every action sequence should emit logs under `logs/`.
+- Every claim introduced in planning artifacts should have a source or explicit hypothesis.
 
 """

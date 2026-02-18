@@ -3,64 +3,35 @@
 
 [document]
 id = "DOC-0030"
-source_path = "docs/DIMENSIONAL_GEOMETRY.md"
-title = "Dimensional Geometry: Analytic Continuation (-4D -> 32D)"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/modules/README.md"
+title = "Unified Module Index"
 kind = "manual_source"
 status = "active"
-migration_priority = "high"
+migration_priority = "medium"
 generated = false
-source_sha256 = "be4732b1239eb60ab2793f96ab0c5f4bb3071acdb4318182ce7e1ee7f6fed29a"
-source_line_count = 45
-source_size_bytes = 1313
-content_sha256 = "be4732b1239eb60ab2793f96ab0c5f4bb3071acdb4318182ce7e1ee7f6fed29a"
+source_sha256 = "a88dd550dcf02c20905b193a21a64dbf8608c84ff8eafe640b27537946ffc828"
+source_line_count = 16
+source_size_bytes = 400
+content_sha256 = "a88dd550dcf02c20905b193a21a64dbf8608c84ff8eafe640b27537946ffc828"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Dimensional Geometry: Analytic Continuation (-4D -> 32D)
+# Unified Module Index
 
-This repo includes a **mathematically standard** notion of \"non-integer\" and even \"negative\"
-dimension via **analytic continuation** of the Gamma-function formulas for:
+Each module holds:
+- Canonical module metadata
+- Module-specific source of truth artifacts
+- Seeded project extracts under `seed/`
+- Module contract notes under `contracts/`
 
-- the unit (d-1)-sphere surface area in R^d
-- the d-ball volume
+## Modules
+- `lambda_research`
+- `lambda_synthesis_experiments`
+- `lambdalearner`
 
-These quantities become *meromorphic* in `d` (they have poles where the Gamma function has poles).
-
-## Implemented formulas
-
-Let `d` be the ambient dimension.
-
-- Surface area of the unit (d-1)-sphere:
-  \\[
-  S_{d-1} = \\frac{2\\pi^{d/2}}{\\Gamma(d/2)}
-  \\]
-- Volume of the d-ball of radius `r`:
-  \\[
-  V_d(r) = \\frac{\\pi^{d/2}}{\\Gamma(d/2+1)} r^d
-  \\]
-
-Implementation: `src/gemini_physics/dimensional_geometry.py`.
-
-## Visualizations produced
-
-Run:
-```bash
-PYTHONWARNINGS=error ./venv/bin/python3 src/vis_dimensional_geometry.py
-```
-
-Outputs:
-- `data/artifacts/images/dimensional_geometry_-4_to_16.png`
-- `data/artifacts/images/dimensional_geometry_0_to_32.png`
-- `data/csv/dimensional_geometry_-4_to_16.csv`
-- `data/csv/dimensional_geometry_0_to_32.csv`
-
-## Interpretation (scope-safe)
-
-These plots are **pure geometry**. Any mapping from \"negative dimension\" to a physical
-model (e.g., PDE operators, cosmology, materials) must be treated separately and justified
-with first-party sources and falsifiable experiments.
-
+## Reproducibility
+Run `bash scripts/synthesize_root_layout.sh` after each consolidation pass to refresh this layout.
 
 """

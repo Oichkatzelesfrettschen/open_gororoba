@@ -3,63 +3,40 @@
 
 [document]
 id = "DOC-0010"
-source_path = "docs/convos/README.md"
-title = "Convos audit workspace"
-kind = "markdown_mirror"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/README.md"
+title = "Round-3 Mirror Retry Summary (2026-02-15)"
+kind = "manual_source"
 status = "active"
-migration_priority = "critical"
-generated = true
-source_sha256 = "5ea6a42ba877b03d5922367455fd5ea7d146ead7765deec04eac5260570d137e"
-source_line_count = 44
-source_size_bytes = 1452
-content_sha256 = "5ea6a42ba877b03d5922367455fd5ea7d146ead7765deec04eac5260570d137e"
+migration_priority = "medium"
+generated = false
+source_sha256 = "4f08270d7cf649182dbac13faf738a134fb9d18500cc1de95bca7ab4eddbf010"
+source_line_count = 21
+source_size_bytes = 794
+content_sha256 = "4f08270d7cf649182dbac13faf738a134fb9d18500cc1de95bca7ab4eddbf010"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+# Round-3 Mirror Retry Summary (2026-02-15)
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+This round re-tried CORE, ScienceDirect, DOI, and SciSpace mirrors for the stubborn Eakin-Sathaye paper with stricter provenance capture and hash dedupe.
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+## Outcome
+- `total_attempts = 18`
+- `pdf_ok = 1` (Moreno companion paper, duplicate hash; not copied again)
+- `ok_nonpdf = 12` (functional landing/navigation pages)
+- `http_503 = 3` (CORE direct PDF variants)
+- `http_404 = 1` (ScienceDirect `S002...` article URL variant)
+- `http_405 = 1` (SciSpace endpoint)
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+## Key point
+Functional links exist for Eakin-Sathaye (DOI/landing pages), but direct PDF routes remained gated or non-PDF in this CLI environment.
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
-
-# Convos audit workspace
-
-Policy:
-- Files under `convos/` are treated as immutable inputs (they may contain Unicode).
-- All synthesis produced under `docs/` should be ASCII-only.
-- Every claim extracted from `convos/` is treated as a hypothesis that must be tied to:
-  - a first-party source (paper/book/manual), and
-  - a repo test and/or a reproducible artifact.
-
-Entry points:
-- Main index: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`
-- Primary chunk audit log (file 1): `docs/convos/audit_1_read_nonuser_lines_cont.md`
-
-Chunking convention (default):
-- Chunk size: 800 lines
-- Chunk ids: C1-0001, C1-0002, ...
-- Reference format: `convos/1_read_nonuser_lines_cont.md:L<line>`
-
-Audit entry fields (recommended):
-- Chunk id
-- Line range
-- Extracted concepts (map to CX-xxx)
-- Extracted claims (write as hypotheses)
-- Immediate next actions (tests, docs, code, sources)
-- Source needs (first-party citations to add)
+## Files
+- `mirror_retry_results_round3.tsv`
+- `pdf_success_added.tsv`
+- `meta/status_counts.txt`
+- `raw/`, `meta/` request artifacts
 
 """

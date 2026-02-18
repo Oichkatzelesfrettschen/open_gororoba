@@ -4,10 +4,10 @@
 [structured_corpora]
 updated = "deterministic"
 authoritative = true
-source_count = 10
-claim_atom_count = 408
-equation_atom_count = 785
-proof_atom_count = 41
+source_count = 13
+claim_atom_count = 0
+equation_atom_count = 145
+proof_atom_count = 1
 
 [[source]]
 id = "SCP-0001"
@@ -139,31 +139,79 @@ next_step = "replace long body_markdown with structured summary overlays driven 
 
 [[source]]
 id = "SCP-0009"
-source_uid = "DOC-0023"
-source_group = "doc_claim_matrix"
-source_registry = "registry/knowledge/docs/DOC-0023.toml"
-source_path = "docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md"
-title = "Claims / Evidence Matrix (Work-in-Progress)"
-line_count = 3483
-claim_atom_count = 408
-equation_atom_count = 662
-proof_atom_count = 40
+source_uid = "ART-009"
+source_group = "data_artifact_narrative"
+source_registry = "registry/data_artifact_narratives.toml"
+source_path = "data/artifacts/THESIS_3D_SYNTHESIS.md"
+title = "Thesis 3D Synthesis: Topological Phase Transitions in Hypercomplex Fluids"
+line_count = 50
+claim_atom_count = 0
+equation_atom_count = 16
+proof_atom_count = 0
 narrative_compaction_recommended = true
 reduction_stage = "structured_atoms_extracted"
-target_summary_max_lines = 48
+target_summary_max_lines = 8
 next_step = "replace long body_markdown with structured summary overlays driven by claim/equation/proof atoms"
 
 [[source]]
 id = "SCP-0010"
-source_uid = "RN-026"
+source_uid = "DOC-0023"
+source_group = "doc_claim_matrix"
+source_registry = "registry/knowledge/docs/DOC-0023.toml"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/sml/README.md"
+title = "Standard ML (SML) Implementations of Lambda Calculus"
+line_count = 34
+claim_atom_count = 0
+equation_atom_count = 0
+proof_atom_count = 0
+narrative_compaction_recommended = true
+reduction_stage = "structured_atoms_extracted"
+target_summary_max_lines = 8
+next_step = "replace long body_markdown with structured summary overlays driven by claim/equation/proof atoms"
+
+[[source]]
+id = "SCP-0011"
+source_uid = "RN-001"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/engineering/INDEX.md"
+title = "Engineering Narratives"
+line_count = 7
+claim_atom_count = 0
+equation_atom_count = 2
+proof_atom_count = 1
+narrative_compaction_recommended = true
+reduction_stage = "structured_atoms_extracted"
+target_summary_max_lines = 8
+next_step = "replace long body_markdown with structured summary overlays driven by claim/equation/proof atoms"
+
+[[source]]
+id = "SCP-0012"
+source_uid = "RN-002"
 source_group = "research_narrative"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 title = "The Lost Hexagon and the Split-Octonion Attractor"
-line_count = 0
+line_count = 35
 claim_atom_count = 0
-equation_atom_count = 9
-proof_atom_count = 1
+equation_atom_count = 11
+proof_atom_count = 0
+narrative_compaction_recommended = true
+reduction_stage = "structured_atoms_extracted"
+target_summary_max_lines = 8
+next_step = "replace long body_markdown with structured summary overlays driven by claim/equation/proof atoms"
+
+[[source]]
+id = "SCP-0013"
+source_uid = "RN-003"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/theory/INDEX.md"
+title = "Theory Narratives"
+line_count = 7
+claim_atom_count = 0
+equation_atom_count = 2
+proof_atom_count = 0
 narrative_compaction_recommended = true
 reduction_stage = "structured_atoms_extracted"
 target_summary_max_lines = 8

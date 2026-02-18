@@ -7,11 +7,11 @@ date_token = "2026_02_14"
 status = "completed"
 target = "synthesis-execution-contract"
 rollup_path = "reports/synthesis_execution_contract_2026_02_14.toml"
-overall_outcome = "pass"
-all_commands_passed = true
-success_count = 4
-failure_count = 0
-skipped_count = 0
+overall_outcome = "fail"
+all_commands_passed = false
+success_count = 2
+failure_count = 1
+skipped_count = 1
 
 [commands]
 governance_gate = "make governance-gate"
@@ -20,8 +20,8 @@ typed_policy_strict = "make registry-verify-typed-policy-error"
 project_counter_sync_check = "cargo run --release --bin project-counter-sync -- --check"
 
 [summary]
-first_failure_step = ""
-first_failure_command = ""
+first_failure_step = "typed_policy_strict"
+first_failure_command = "make registry-verify-typed-policy-error"
 
 [[step]]
 order = 1
@@ -30,10 +30,10 @@ label = "governance-gate"
 command = "make governance-gate"
 exit_code = 0
 outcome = "pass"
-started_utc = "2026-02-14T22:56:09Z"
-finished_utc = "2026-02-14T22:56:13Z"
-duration_seconds = 3.509
-stdout_excerpt = "make[1]: Entering directory '/home/eirikr/Github/open_gororoba'\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_integrity_resolution.py\nPYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py\nPYTHONWARNINGS=error venv/bin/python3 src/verification/verify_markdown_governance_removal_policy.py\nPASS: Removal reason validation (all non-active have reason, all active empty)\nPASS: Third-party markdown lock validation\nPASS: Removal status enum validation (all values valid)\n\nMarkdown governance status summary:\n  Total documents: 174\n  Active: 174\n  Candidate for removal: 0\n  Deprecated: 0\n  Locked: 0\nOK: cross-registry references verified. checks claims=5919 insights=33 experiments=265 sources=0 datasets=12\nWrote integrity-resolution registry lane artifacts (canonical registry-integrity-resolution script): conflict_markers=71 lacunae=166 schema_signatures=22\nPYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py\nOK: schema signatures verified for 22 registries.\nWrote /home/eirikr/Github/open_gororoba/registry/markdown_inventory.toml with 214 \n...[truncated]..."
+started_utc = "2026-02-18T03:25:04Z"
+finished_utc = "2026-02-18T03:25:13Z"
+duration_seconds = 9.452
+stdout_excerpt = "PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py\nWrote /home/runner/work/open_gororoba/open_gororoba/registry/markdown_inventory.toml with 232 markdown records.\nPYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py\nOK: markdown inventory is TOML-first with explicit tracked entrypoint exceptions.\nPYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py\nOK: markdown owner map verified. All in-scope markdown has explicit canonical TOML ownership.\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_integrity_resolution.py\nWrote integrity-resolution registry lane artifacts (canonical registry-integrity-resolution script): conflict_markers=72 lacunae=167 schema_signatures=22\nPYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py\nOK: schema signatures verified for 22 registries.\nPYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py\nOK: cross-registry references verified. checks claims=5965 insights=33 experiments=297 sources=0 datasets=12\nPYTHONWARNINGS=error venv/bin/python3 src/verification/verify_markdown_governance_removal_policy.py\nPASS\n...[truncated]..."
 stderr_excerpt = ""
 
 [[step]]
@@ -43,10 +43,10 @@ label = "registry-acceptance-gate"
 command = "make registry-acceptance-gate"
 exit_code = 0
 outcome = "pass"
-started_utc = "2026-02-14T22:56:13Z"
-finished_utc = "2026-02-14T22:56:17Z"
-duration_seconds = 4.242
-stdout_excerpt = "make[1]: Entering directory '/home/eirikr/Github/open_gororoba'\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_semantic_atoms.py\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_integrity_resolution.py\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_execution_planning.py\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py\nWrote execution-planning registry lane artifacts (canonical build_registry_execution_planning.py): experiments=32 lineages=32 lineage_edges=193 roadmap=10 todo=24 next_actions=31 req_modules=12 module_packages=98 module_commands=28\nWrote semantic-atoms registry lane artifacts: claims_atoms=694 claim_edges=1933 equation_atoms_v2=145 equation_symbols=311 proof_skeletons=735\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_payload_registries.py\nWrote integrity-resolution registry lane artifacts (canonical registry-integrity-resolution script): conflict_markers=71 lacunae=166 schema_signatures=22\nPYTHONWARNINGS=error python3 src/verification/verify_registry_integrity_resolution.py\nOK: integrity-resolution registry lane verified (canonical registry-integrity-resolution\n...[truncated]..."
+started_utc = "2026-02-18T03:25:13Z"
+finished_utc = "2026-02-18T03:25:32Z"
+duration_seconds = 18.082
+stdout_excerpt = "PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_semantic_atoms.py\nWrote semantic-atoms registry lane artifacts: claims_atoms=708 claim_edges=1951 equation_atoms_v2=179 equation_symbols=362 proof_skeletons=709\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_payload_registries.py\nWrote structured markdown payload registries: documents=234 chunks=33370 third_party_cache=27\nPYTHONWARNINGS=error python3 src/verification/verify_registry_semantic_atoms.py\nOK: semantic-atoms registry lane verified. claims=708 edges=1951 equations=179 symbols=362 proof_skeletons=709 markdown_docs=234 markdown_chunks=33370\nOK: semantic-atoms registry lane complete (legacy wave5-batch1 compatibility).\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_evidence_provenance.py\nWrote canonical evidence-provenance registries: derivations=2932 bibliography=203 provenance=63 paragraphs=865\nPYTHONWARNINGS=error python3 src/verification/verify_registry_evidence_provenance.py\nOK: canonical evidence-provenance registries verified. derivations=2932 bibliography_normalized=203 provenance_records=63 narrative_paragraphs=865\nOK: evidence-provenance registry lane complete (lega\n...[truncated]..."
 stderr_excerpt = ""
 
 [[step]]
@@ -54,23 +54,24 @@ order = 3
 id = "typed_policy_strict"
 label = "registry-verify-typed-policy-error"
 command = "make registry-verify-typed-policy-error"
-exit_code = 0
-outcome = "pass"
-started_utc = "2026-02-14T22:56:17Z"
-finished_utc = "2026-02-14T22:56:19Z"
-duration_seconds = 2.130
-stdout_excerpt = "make[1]: Entering directory '/home/eirikr/Github/open_gororoba'\ncargo run --release --bin registry-check -- --typed-policy error\nRegistry TOML parse sweep: 1310 files parsed\nTyped schema policy: error (no typed schema drift detected)\nIdentity gap policy: warn (loaded baseline from registry/identity_gap_policy.toml)\nIdentity gap (claims): governed-intent gaps: none\nIdentity gap (claims): drift beyond baseline: none\nClaims: 694 entries, 694 unique IDs, range C-001..C-694\nIdentity gap (insights): governed-intent gaps: 3 (I-061..I-063)\nIdentity gap (insights): drift beyond baseline: none\nInsights: 66 entries, IDs \"I-001\"..\"I-069\"\nExperiments: 32 entries\nBinaries: 79 entries\nProject: found (vopen_gororoba)\n\nRegistry check: PASS (no errors, no warnings)\nmake[1]: Leaving directory '/home/eirikr/Github/open_gororoba'"
-stderr_excerpt = "Finished `release` profile [optimized] target(s) in 0.22s\n     Running `target/release/registry-check --typed-policy error`"
+exit_code = 2
+outcome = "fail"
+started_utc = "2026-02-18T03:25:32Z"
+finished_utc = "2026-02-18T03:25:32Z"
+duration_seconds = 0.062
+stdout_excerpt = "cargo run --release --bin registry-check -- --typed-policy error"
+stderr_excerpt = "error: could not execute process `sccache /home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc -vV` (never executed)\n\nCaused by:\n  No such file or directory (os error 2)\nmake: *** [Makefile:676: registry-verify-typed-policy-error] Error 101"
 
 [[step]]
 order = 4
 id = "project_counter_sync_check"
 label = "project-counter-sync --check"
 command = "cargo run --release --bin project-counter-sync -- --check"
-exit_code = 0
-outcome = "pass"
-started_utc = "2026-02-14T22:56:19Z"
-finished_utc = "2026-02-14T22:56:19Z"
-duration_seconds = 0.269
-stdout_excerpt = "project-counter-sync: already synchronized"
-stderr_excerpt = "Finished `release` profile [optimized] target(s) in 0.22s\n     Running `target/release/project-counter-sync --check`"
+exit_code = -1
+outcome = "skipped"
+started_utc = ""
+finished_utc = ""
+duration_seconds = 0.000
+skip_reason = "previous step failed"
+stdout_excerpt = ""
+stderr_excerpt = ""

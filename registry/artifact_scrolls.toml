@@ -5,12 +5,12 @@
 updated = "deterministic"
 authoritative = true
 source_registry = "registry/data_artifact_narratives.toml"
-scroll_count = 8
-total_section_count = 50
-total_claim_ref_count = 0
-total_equation_ref_count = 114
+scroll_count = 9
+total_section_count = 57
+total_claim_ref_count = 3
+total_equation_ref_count = 130
 total_proof_ref_count = 0
-total_source_ref_count = 52
+total_source_ref_count = 53
 
 [[scroll]]
 id = "ART-001"
@@ -86,6 +86,21 @@ equation_ref_count = 14
 proof_ref_count = 0
 source_ref_count = 1
 dedup_fingerprint = "96f2dfc726abc6498edb513856ecd43cce3df7db72434b1cb6cc72614e7476b1"
+
+[[scroll]]
+id = "ART-009"
+source_uid = "ART-009"
+source_markdown = "data/artifacts/THESIS_3D_SYNTHESIS.md"
+title = "Thesis 3D Synthesis: Topological Phase Transitions in Hypercomplex Fluids"
+content_kind = "simulation_report"
+scroll_path = "registry/knowledge/artifacts/ART-009.toml"
+canonical = true
+section_count = 7
+claim_ref_count = 3
+equation_ref_count = 16
+proof_ref_count = 0
+source_ref_count = 1
+dedup_fingerprint = "6551bd1c2ccb71a58c9faa52a18cb922368fddbf9f1def19be251fb9a2100931"
 
 [[scroll]]
 id = "ART-008"

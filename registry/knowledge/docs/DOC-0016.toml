@@ -3,37 +3,107 @@
 
 [document]
 id = "DOC-0016"
-source_path = "data/csv/README.md"
-title = "Data Index: CSV Datasets"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/agent-tasks/README.md"
+title = "Agent Task Delegation System"
 kind = "manual_source"
 status = "active"
 migration_priority = "medium"
 generated = false
-source_sha256 = "c4a9d1a59cf514b3d2495a084de17d62968b2db8168965adcfc6fa24b087ab16"
-source_line_count = 18
-source_size_bytes = 1347
-content_sha256 = "c4a9d1a59cf514b3d2495a084de17d62968b2db8168965adcfc6fa24b087ab16"
+source_sha256 = "2898287b775f4ad160bc20cf2099d7575c0f64fbbccf532acb71333e9e09ea39"
+source_line_count = 88
+source_size_bytes = 2350
+content_sha256 = "2898287b775f4ad160bc20cf2099d7575c0f64fbbccf532acb71333e9e09ea39"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Data Index: CSV Datasets
+# Agent Task Delegation System
 
-This directory contains raw output from various simulation runs and theoretical models related to the Surreal-Noncommutative Quantum Gravity project.
+This directory contains agent task definitions for automated execution of the IMPLEMENTATION_ROADMAP.md.
 
-## 1. Simulation Outputs (Active)
-*   **`sedenion_field_metrics_3d.csv`**: Time-series data from `src/sedenion_field_sim.py`. Tracks `mean_associator` (non-associativity magnitude) and `mean_energy` over time in a 3D Sedenion field.
-*   **`modular_chaos_N*.csv`**: Entropy evolution data from `src/modular_classical_sim.py` for different Hilbert space sizes $N$.
-*   **`nonlocal_ZZ_slopes.csv`**: (Hypothetical/To-Be-Generated) Slope data from nonlocal spin chain runs.
+## Quick Start
 
-## 2. Legacy/Static Data (Contextual)
-*   **`Zero-Divisor_Adjacency_Matrix__*.csv`**: Adjacency lists for the zero-divisor graphs of Sedenions (16D), Pathions (32D), and Chingons (64D).
-*   **`Spectrum_*.csv`**: Various FFT and spectral analysis dumps from previous \"Gemini\" sessions (e.g., `fft_2d_spectrum.csv`).
-*   **`Refined_*.csv`**: Post-processed datasets from earlier \"Refinement\" phases.
+```bash
+# Show current status
+python3 scripts/orchestrator.py status
 
-## 3. Missing Metadata (Gaps)
-*   **Units**: Most files lack headers specifying physical units (e.g., $t$ in seconds vs steps).
-*   **Parameters**: Filenames often don't capture full parameter sets (e.g., coupling constants $J$, $\\alpha$). Use the corresponding `src/` scripts to trace provenance.
+# Execute next ready task
+python3 scripts/orchestrator.py next
+
+# Auto-execute all ready tasks
+python3 scripts/orchestrator.py auto
+```
+
+## Directory Structure
+
+```
+admin/agent-tasks/
+\u251C\u2500\u2500 README.md                          (this file)
+\u251C\u2500\u2500 tasks/                             (individual agent task specs)
+\u2502   \u251C\u2500\u2500 phase1-task1.2.2-uss-decision.md
+\u2502   \u251C\u2500\u2500 phase1-task1.3-claude-fix.md
+\u2502   \u251C\u2500\u2500 phase2-task2.1.1-impl-audit.md
+\u2502   \u2514\u2500\u2500 ... (all agent tasks)
+\u251C\u2500\u2500 examples/                          (example executions)
+\u2502   \u2514\u2500\u2500 task-execution-example.md
+\u2514\u2500\u2500 agent-integration.md               (how to integrate with agents)
+```
+
+## Task Execution Flow
+
+```
+orchestrator.py
+    \u2193
+  Identify next ready task
+    \u2193
+  Load task definition from tasks/
+    \u2193
+  If manual \u2192 prompt user
+  If agent \u2192 delegate to agent
+    \u2193
+  Execute task
+    \u2193
+  Run validation
+    \u2193
+  Update status in admin/tasks.json
+    \u2193
+  Calculate new health score
+    \u2193
+  Proceed to next task or report
+```
+
+## Agent Tasks by Phase
+
+### Phase 1: Stabilization (Week 1)
+- **Manual**: 1.1 (git migration), 1.2.1 (delete .audit-venv)
+- **consolidation-architect**: 1.2.2 (USS decision)
+- **documentation-architect**: 1.3.1, 1.3.2, 1.4 (docs fixes)
+- **integration-test**: 1.5 (validation)
+
+### Phase 2: Integration (Weeks 2-3)
+- **code-review-specialist**: 2.1.1 (implementation audit)
+- **documentation-architect**: 2.1.2, 2.2, 2.3 (docs + consolidation)
+- **consolidation-architect**: 2.4 (script merge)
+
+### Phase 3: Enhancement (Week 4)
+- **integration-test + bare-metal-runtime**: 3.1 (test coverage)
+- **documentation-architect**: 3.2 (catalog)
+- **chief-architect**: 3.3 (USS integration)
+- **bare-metal-runtime**: 3.4 (benchmarks)
+
+## Status Tracking
+
+All task state stored in `admin/tasks.json`. View with:
+
+```bash
+cat admin/tasks.json | jq '.tasks[] | select(.status != \"complete\")'
+```
+
+## See Documentation
+
+- `IMPLEMENTATION_ROADMAP.md` - Complete roadmap with all tasks
+- `scripts/orchestrator.py` - Task execution engine
+- `tasks/` - Individual agent task specifications
 
 """

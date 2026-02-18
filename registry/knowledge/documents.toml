@@ -4,13 +4,310 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 1
-skipped_generated_count = 9
+raw_capture_count = 28
+skipped_generated_count = 7
 authoritative = false
 normalization_required = true
 
 [[document]]
+id = "DOC-0002"
+source_path = "CLAUDE.md"
+title = "CLAUDE Stub"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0002.toml"
+
+[[document]]
+id = "DOC-0003"
+source_path = "GEMINI.md"
+title = "GEMINI Stub"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0003.toml"
+
+[[document]]
 id = "DOC-0010"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/README.md"
+title = "Round-3 Mirror Retry Summary (2026-02-15)"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0010.toml"
+
+[[document]]
+id = "DOC-0011"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/LambdaLearner/README.md"
+title = "Run and deploy your AI Studio app"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0011.toml"
+
+[[document]]
+id = "DOC-0012"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/CLAUDE.md"
+title = "CLAUDE.md"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0012.toml"
+
+[[document]]
+id = "DOC-0013"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/GEMINI.md"
+title = "Gemini Context: Lambda Calculus Research Repository"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0013.toml"
+
+[[document]]
+id = "DOC-0014"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/README.md"
+title = "Lambda Calculus Learning Journey"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0014.toml"
+
+[[document]]
+id = "DOC-0015"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/README.md"
+title = "Admin: Repository Meta-Documentation"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0015.toml"
+
+[[document]]
+id = "DOC-0016"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/agent-tasks/README.md"
+title = "Agent Task Delegation System"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0016.toml"
+
+[[document]]
+id = "DOC-0017"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/README.md"
+title = "Rust Implementation Guide: tapl-rust"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0017.toml"
+
+[[document]]
+id = "DOC-0018"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/README.md"
+title = "Lambda Research Repository - Index System"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0018.toml"
+
+[[document]]
+id = "DOC-0019"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/experiments/README.md"
+title = "Experiments Directory"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0019.toml"
+
+[[document]]
+id = "DOC-0020"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/idris/README.md"
+title = "Idris Implementations of Lambda Calculus"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0020.toml"
+
+[[document]]
+id = "DOC-0021"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scala/README.md"
+title = "Scala 3 Implementations of Lambda Calculus"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0021.toml"
+
+[[document]]
+id = "DOC-0022"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scheme/README.md"
+title = "Scheme/Racket Implementations of Lambda Calculus"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0022.toml"
+
+[[document]]
+id = "DOC-0023"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/sml/README.md"
+title = "Standard ML (SML) Implementations of Lambda Calculus"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0023.toml"
+
+[[document]]
+id = "DOC-0024"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/README.md"
+title = "Lambda Calculus Papers Archive"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0024.toml"
+
+[[document]]
+id = "DOC-0025"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/README.md"
+title = "Lambda Synthesis Experiments (USS)"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0025.toml"
+
+[[document]]
+id = "DOC-0026"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/CLAUDE.md"
+title = "CLAUDE Workspace Notes"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0026.toml"
+
+[[document]]
+id = "DOC-0027"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/GEMINI.md"
+title = "GEMINI Workspace Logbook"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0027.toml"
+
+[[document]]
+id = "DOC-0028"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/agents.md"
+title = "agents.md"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0028.toml"
+
+[[document]]
+id = "DOC-0029"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/README.md"
+title = "lambda_gororoba Unified Workspace"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0029.toml"
+
+[[document]]
+id = "DOC-0030"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/modules/README.md"
+title = "Unified Module Index"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0030.toml"
+
+[[document]]
+id = "DOC-0031"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/README.md"
+title = "First-Party Documentation Corpus"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0031.toml"
+
+[[document]]
+id = "DOC-0032"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/README.md"
+title = "Lambda Gororoba"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0032.toml"
+
+[[document]]
+id = "DOC-0033"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/README.md"
+title = "First-Party Documentation Corpus"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0033.toml"
+
+[[document]]
+id = "DOC-0034"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/merge_in/README.md"
+title = "merge_in lane retired"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0034.toml"
+
+[[document]]
+id = "DOC-0035"
 source_path = "docs/convos/README.md"
 title = "Convos audit workspace"
 kind = "markdown_mirror"
@@ -18,30 +315,12 @@ migration_priority = "critical"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0010.toml"
+document_toml = "registry/knowledge/docs/DOC-0035.toml"
 
 [[document]]
 id = "DOC-0001"
 source_path = "AGENTS.md"
 title = "Agent and Contributor Operating Manual"
-kind = "markdown_mirror"
-raw_captured = false
-authoritative = false
-skip_reason = "generated_markdown_or_artifact"
-
-[[document]]
-id = "DOC-0002"
-source_path = "CLAUDE.md"
-title = "Claude Overlay for open_gororoba"
-kind = "markdown_mirror"
-raw_captured = false
-authoritative = false
-skip_reason = "generated_markdown_or_artifact"
-
-[[document]]
-id = "DOC-0003"
-source_path = "GEMINI.md"
-title = "Gemini Overlay for open_gororoba"
 kind = "markdown_mirror"
 raw_captured = false
 authoritative = false

@@ -3,57 +3,52 @@
 
 [document]
 id = "DOC-0021"
-source_path = "docs/CLAIMS_DOMAIN_TAXONOMY.md"
-title = "Claims Domain Taxonomy"
+source_path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scala/README.md"
+title = "Scala 3 Implementations of Lambda Calculus"
 kind = "manual_source"
 status = "active"
-migration_priority = "high"
+migration_priority = "medium"
 generated = false
-source_sha256 = "e52b9dde88ee0ac0cb6b7308559447c63a6225bf6af681cc577e10b7ba6edae2"
-source_line_count = 38
-source_size_bytes = 1950
-content_sha256 = "e52b9dde88ee0ac0cb6b7308559447c63a6225bf6af681cc577e10b7ba6edae2"
+source_sha256 = "03649acd0e9f869e5c436e5f6167e22cdfd68157c25ead98bcdd757779b863d9"
+source_line_count = 33
+source_size_bytes = 1788
+content_sha256 = "03649acd0e9f869e5c436e5f6167e22cdfd68157c25ead98bcdd757779b863d9"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Claims Domain Taxonomy
+# Scala 3 Implementations of Lambda Calculus
 
-Goal: make the C-001..C-427 claim audit mechanically tractable by grouping claims into a small
-set of stable domains (plus optional tags), without changing the canonical claim table in
-`docs/CLAIMS_EVIDENCE_MATRIX.md`.
+This directory contains implementations of lambda calculus concepts in Scala 3 (formerly known as Dotty), a powerful multi-paradigm programming language that combines object-oriented and functional programming. Scala 3's advanced type system, including features like union types, intersection types, and dependent function types, makes it an interesting platform for exploring type theory and language design.
 
-Rules:
-- Domains are ASCII-only slugs (lowercase, hyphen-separated).
-- A claim may list multiple domains; the first entry is the \"primary\" domain.
-- Keep the domain list small and stable; prefer tags only when needed.
+## Untyped Lambda Calculus
 
-## Canonical domains
+An example implementation of an untyped lambda calculus is provided, demonstrating core concepts such as:
 
-- `meta`: Methodology, falsifiability, statistics hygiene, repo policy.
-- `algebra`: Cayley-Dickson algebras, sedenions, zero divisors, box-kites, motifs.
-- `spectral`: Spectral geometry, spectral triples, inverse-spectral issues.
-- `holography`: AdS/CFT, RT/HRT, modular Hamiltonians, entanglement wedges, holographic QEC.
-- `open-systems`: Lindblad/GKSL, decoherence, pointer states, Quantum Darwinism.
-- `tensor-networks`: Tensor-network models, entropy scaling, QEC toy codes.
-- `cosmology`: FRW/LCDM comparisons, dark energy models, negative/fractional dimension models.
-- `gravitational-waves`: GWTC catalogs, mass distributions, selection effects, null models.
-- `stellar-cartography`: TSCP alignment, sky mapping, trial factors for sky searches.
-- `materials`: Metamaterials, absorbers, TCMT, JARVIS/NOMAD-derived baselines.
-- `engineering`: Optimization/implementation work, performance, systems-level demos.
-- `datasets`: Fetchers, dataset snapshots, provenance, schema integrity.
-- `visualization`: Plotting standards, dashboards, artifact generation/verification.
-- `cpp`: C++ kernels, bindings, build/test/bench pipelines.
-- `coq`: Rocq/Coq formalization and proof artifacts.
-- `legacy`: Legacy artifacts and reproduction/characterization work.
+*   **Abstract Syntax Tree (AST):** Defining the structure of lambda terms using Scala's `enum` (or `sealed trait` and `case class`) for `Var`, `Abs`, and `App`.
+*   **Free Variables:** A method to compute the set of free variables, crucial for correct substitution.
+*   **Substitution with Alpha-Conversion:** Implementing the substitution operation, ensuring proper handling of variable capture through alpha-conversion.
+*   **Beta-Reduction:** Performing one-step and full normalization using a call-by-name evaluation strategy.
 
-## Mapping location
+### Source Code
 
-The mapping file is:
-- `docs/claims/CLAIMS_DOMAIN_MAP.csv`
+The implementation details can be found in `LambdaCalculus.scala` within this directory.
 
-It is consumed by offline scripts/verifiers and can be used to generate per-domain indexes under
-`docs/claims/by_domain/`.
+### Usage
+
+To use this implementation, compile and run the `LambdaCalculus.scala` file. The file includes example lambda terms and their evaluation.
+
+```scala
+// Example: Identity function (\u03BBx.x)
+val id = Abs(\"x\", Var(\"x\"))
+
+// Example: Application of identity to 'y': (\u03BBx.x)y
+val appId = App(id, Var(\"y\"))
+
+println(s\"(\u03BBx.x)y normalizes to: ${appId.normalize}\") // Expected: y
+```
+
+This implementation showcases how Scala 3's expressive syntax and functional programming features can be used to elegantly model and evaluate lambda calculus expressions.
 
 """

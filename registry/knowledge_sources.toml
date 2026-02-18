@@ -4,8 +4,8 @@
 
 [knowledge_sources]
 generated_at = "deterministic"
-tracked_markdown_count = 10
-manual_source_count = 2
+tracked_markdown_count = 35
+manual_source_count = 27
 markdown_mirror_count = 6
 generated_markdown_count = 2
 artifact_report_count = 0
@@ -32,38 +32,40 @@ link_count = 0
 [[document]]
 id = "DOC-0002"
 path = "CLAUDE.md"
-title = "Claude Overlay for open_gororoba"
+title = "CLAUDE Stub"
 kind = "manual_source"
 authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "226551bdd4e7c30807fc2a2afe180ac5dde118cbde0602a8f90376b3af15ac76"
-size_bytes = 192
-line_count = 7
+sha256 = "66ac8fde1947b69bbb97f54719f3869d7fddddb0a59fff4da28182eb1d638938"
+size_bytes = 273
+line_count = 12
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 0
+link_count = 3
+link_sample = ["agents.claude", "agents.toml"]
 
 [[document]]
 id = "DOC-0003"
 path = "GEMINI.md"
-title = "Gemini Overlay for open_gororoba"
+title = "GEMINI Stub"
 kind = "manual_source"
 authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "aab3880208207c03a55058287c3ca26962fbe48a22a4311dc7a17584049a8460"
-size_bytes = 192
-line_count = 7
+sha256 = "0248904a5a1a8b10b7f8cd003780451374f554906e965000d48efa88d81e7203"
+size_bytes = 273
+line_count = 12
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 0
+link_count = 3
+link_sample = ["agents.gemini", "agents.toml"]
 
 [[document]]
 id = "DOC-0004"
@@ -175,6 +177,454 @@ link_count = 0
 
 [[document]]
 id = "DOC-0010"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/README.md"
+title = "Round-3 Mirror Retry Summary (2026-02-15)"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "4f08270d7cf649182dbac13faf738a134fb9d18500cc1de95bca7ab4eddbf010"
+size_bytes = 794
+line_count = 21
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 12
+link_sample = ["S002...", "meta/", "meta/status_counts.txt", "mirror_retry_results_round3.tsv", "pdf_success_added.tsv", "raw/"]
+
+[[document]]
+id = "DOC-0011"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/LambdaLearner/README.md"
+title = "Run and deploy your AI Studio app"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "8d993ed36f4caeada6f4086fab02c7cc3fe04e2f2659ce85d3d889f2a94e391f"
+size_bytes = 553
+line_count = 21
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 3
+
+[[document]]
+id = "DOC-0012"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/CLAUDE.md"
+title = "CLAUDE.md"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "84c31f2914d5873ed49de0715793b24a93cf004bcb8594854a85c7181b98ebca"
+size_bytes = 16669
+line_count = 450
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 21
+link_sample = ["./validate-repository.py", "COMPREHENSIVE_INDEX.md", "XX-*/bibliography.md", "bibliography.md", "docs/implementations/rust/", "historical/", "implementations/", "implementations/haskell/"]
+
+[[document]]
+id = "DOC-0013"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/GEMINI.md"
+title = "Gemini Context: Lambda Calculus Research Repository"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "121e30ef3bdd592ddb3b1b5c50760f76d0cb091f441b997af22b8059e01dc120"
+size_bytes = 3354
+line_count = 65
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 19
+link_sample = ["CROSS_REFERENCE_SYSTEM.md", "docs/", "historical/", "implementations/", "mkdocs.yml", "papers-archive/", "papers/", "site/"]
+
+[[document]]
+id = "DOC-0014"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/README.md"
+title = "Lambda Calculus Learning Journey"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "65c3a4e9afacf8ad930f098fc3d0628a7c3c655aa38b81b380863f75581bc521"
+size_bytes = 3815
+line_count = 97
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+
+[[document]]
+id = "DOC-0015"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/README.md"
+title = "Admin: Repository Meta-Documentation"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "34cffdad631d2b2801c218d53c5b73b151adb9fa90afc01fda54b94c33189fc5"
+size_bytes = 8547
+line_count = 283
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 2
+link_sample = ["./validate-repository.py"]
+
+[[document]]
+id = "DOC-0016"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/agent-tasks/README.md"
+title = "Agent Task Delegation System"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "2898287b775f4ad160bc20cf2099d7575c0f64fbbccf532acb71333e9e09ea39"
+size_bytes = 2350
+line_count = 88
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 4
+link_sample = ["IMPLEMENTATION_ROADMAP.md", "admin/tasks.json", "scripts/orchestrator.py", "tasks/"]
+
+[[document]]
+id = "DOC-0017"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/README.md"
+title = "Rust Implementation Guide: tapl-rust"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "485b3df71aae5dc0de977c8d984d88d03a9ea50952fbc350df2ea5fa57c069dd"
+size_bytes = 8523
+line_count = 318
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 11
+link_sample = ["**/bibliography.md", "docs/implementations/", "implementations/haskell/", "implementations/ocaml/", "papers-archive/", "sources/agda-src/", "sources/coq-src/"]
+
+[[document]]
+id = "DOC-0018"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/README.md"
+title = "Lambda Research Repository - Index System"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "5f84886cd7dce8f2a6b1154463274796185442a8b5ec05d7d52a47a9347526e9"
+size_bytes = 5388
+line_count = 147
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 3
+link_sample = ["./validate-repository.py", "implementations/"]
+
+[[document]]
+id = "DOC-0019"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/experiments/README.md"
+title = "Experiments Directory"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "025b6fd3eacbe16098399dc9f16f44b5a47aa9b66bbcf083b7028012fa8c4f53"
+size_bytes = 4403
+line_count = 146
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 4
+link_sample = ["../lambda-synthesis-experiments/", "../lambda-synthesis-experiments/README.md", "../lambda-synthesis-experiments/USS_REPORT.md", "experiments/"]
+
+[[document]]
+id = "DOC-0020"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/idris/README.md"
+title = "Idris Implementations of Lambda Calculus"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "e325bba86dedf32b055709a0fa6422e432ea57956736e4a0a17c116f3fffb95a"
+size_bytes = 1687
+line_count = 38
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 2
+link_sample = ["Lambda.idr"]
+
+[[document]]
+id = "DOC-0021"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scala/README.md"
+title = "Scala 3 Implementations of Lambda Calculus"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "03649acd0e9f869e5c436e5f6167e22cdfd68157c25ead98bcdd757779b863d9"
+size_bytes = 1788
+line_count = 33
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 7
+link_sample = ["LambdaCalculus.scala"]
+
+[[document]]
+id = "DOC-0022"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scheme/README.md"
+title = "Scheme/Racket Implementations of Lambda Calculus"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "4240d090a1a4077767a0a5fce617e1504760edf7e30af7f378693e106374b587"
+size_bytes = 2197
+line_count = 43
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 2
+link_sample = ["lambda-racket.rkt"]
+
+[[document]]
+id = "DOC-0023"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/sml/README.md"
+title = "Standard ML (SML) Implementations of Lambda Calculus"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "a3c3f4e84377d7d3ed9b3a0686891eb4f96aeae5bf428a2e72e0d6a5f33f4436"
+size_bytes = 1670
+line_count = 34
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 2
+link_sample = ["lambda.sml"]
+
+[[document]]
+id = "DOC-0024"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/README.md"
+title = "Lambda Calculus Papers Archive"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "84a17e9b1da95c31f7f91363531b598c9579a9693e9e3a833d2db019b0450b42"
+size_bytes = 6268
+line_count = 162
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 4
+link_sample = ["1936_church_lambda_calculus_pd.pdf", "1987_girard_linear_logic_oa.pdf", "2024_author_quantum_lambda_ar.pdf", "{year}_{first_author_surname}_{short_title}_{access_type}.pdf"]
+
+[[document]]
+id = "DOC-0025"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/README.md"
+title = "Lambda Synthesis Experiments (USS)"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "26c1300e77d21d7de5960e0ee372fd21ad3346a461b310f163a0629ccaf47000"
+size_bytes = 6011
+line_count = 181
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 9
+link_sample = ["EXPERIMENTAL_CONFIG.yml", "USS_REPORT.md", "data/", "experiments/", "kernels/", "models/", "requirements_experiments.txt", "src/"]
+
+[[document]]
+id = "DOC-0026"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/CLAUDE.md"
+title = "CLAUDE Workspace Notes"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "e1117cf972faae411b83b31306b452f581620d76b00aa1f351f7a3d476fa21c3"
+size_bytes = 1269
+line_count = 22
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 13
+link_sample = ["/home/eirikr/Github/lambda_gororoba/LambdaLearner", "/home/eirikr/Github/lambda_gororoba/lambda-research", "/home/eirikr/Github/lambda_gororoba/lambda-synthesis-experiments", "TODOWRITE.md", "logs/source_discovery_*", "merge_in/", "merge_in/LambdaLearner", "merge_in/lambda-research"]
+
+[[document]]
+id = "DOC-0027"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/GEMINI.md"
+title = "GEMINI Workspace Logbook"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "a350160f88de2e8249fd30226ea3e2833f0dd234afa74d8ab28330cacc5882cb"
+size_bytes = 2098
+line_count = 39
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 26
+link_sample = ["/home/eirikr/Github/lambda_gororoba", "/home/eirikr/Github/lambda_gororoba/merge_in", "CLAUDE.md", "GPL-2.0-only", "MODULE_REQUIREMENTS_MATRIX.md", "ROADMAP_SYNTHESIS.md", "TODOWRITE.md", "agents.md"]
+
+[[document]]
+id = "DOC-0028"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/agents.md"
+title = "agents.md"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "4d51757c2d4c0eab327e06e0a604e56a5ffbe19783c3f1f1f601009693a1dd05"
+size_bytes = 676
+line_count = 18
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 6
+link_sample = ["GEMINI.md", "ROADMAP_SYNTHESIS.md", "TODOWRITE.md", "logs/", "logs/*.md", "~/Documents"]
+
+[[document]]
+id = "DOC-0029"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/README.md"
+title = "lambda_gororoba Unified Workspace"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "5ca957de2d03bd45952552bbf45f4c847d29af95fb92daf949996cd9d95dca40"
+size_bytes = 989
+line_count = 22
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 14
+link_sample = ["TODOWRITE.md", "docs/CLAIM_REGISTER.md", "docs/CONSOLIDATION_CONFLICT_RESOLUTION.md", "docs/REPO_INTEGRATION_CONTRACT.md", "logs/conflict_matrix_<TS>.tsv", "logs/repo_integration_matrix_<TS>.tsv", "logs/repo_integration_synthesis_<TS>.md", "modules/lambda_research"]
+
+[[document]]
+id = "DOC-0030"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/modules/README.md"
+title = "Unified Module Index"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "a88dd550dcf02c20905b193a21a64dbf8608c84ff8eafe640b27537946ffc828"
+size_bytes = 400
+line_count = 16
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 6
+link_sample = ["bash scripts/synthesize_root_layout.sh", "contracts/", "seed/"]
+
+[[document]]
+id = "DOC-0031"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/README.md"
+title = "First-Party Documentation Corpus"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "1da3468781f924e64ef19f39cf9acd0d01086ffcdd9525d9d4502a633c832ac9"
+size_bytes = 649
+line_count = 17
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 7
+link_sample = ["CONFLICT_RECONCILIATION_LEDGER.md", "FIRST_PARTY_SOURCE_INDEX.md", "INTEGRATION_INTERFACE_CONTRACTS.md", "NOVEL_RESEARCH_PROGRAM.md", "SYNTHESIS_ENGINEERING_SPEC.md", "UNIFIED_REPO_CONSTITUTION.md"]
+
+[[document]]
+id = "DOC-0032"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/README.md"
+title = "Lambda Gororoba"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "81fb8d25df7f5c05ed7fc7e0ae1ce686ed3d101fcf66b25283bd0bbc01678d9e"
+size_bytes = 431
+line_count = 13
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 9
+link_sample = ["README.md", "experiments/", "learner/", "requirements.md", "research/"]
+
+[[document]]
+id = "DOC-0033"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/README.md"
+title = "First-Party Documentation Corpus"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "9ad62bb5e8cb8668a710d90b8385394986880731d8eebaa5e378f5f6722c7832"
+size_bytes = 688
+line_count = 18
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 8
+link_sample = ["CONFLICT_RECONCILIATION_LEDGER.md", "FILETYPE_HARMONIZATION_PLAYBOOK.md", "FIRST_PARTY_SOURCE_INDEX.md", "INTEGRATION_INTERFACE_CONTRACTS.md", "NOVEL_RESEARCH_PROGRAM.md", "SYNTHESIS_ENGINEERING_SPEC.md", "UNIFIED_REPO_CONSTITUTION.md"]
+
+[[document]]
+id = "DOC-0034"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/merge_in/README.md"
+title = "merge_in lane retired"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "7e6d36e0f86097df4af6a8e53754a0710ca023ac17a80eb24708901ba1600069"
+size_bytes = 276
+line_count = 14
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 4
+link_sample = ["archive/intake_lane_retirement/${TS}/merge_in/", "experiments/", "learner/", "research/"]
+
+[[document]]
+id = "DOC-0035"
 path = "docs/convos/README.md"
 title = "Convos audit workspace"
 kind = "markdown_mirror"

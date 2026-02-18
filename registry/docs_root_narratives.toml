@@ -16,8 +16,11 @@ status_token = "NARRATIVE"
 content_kind = "status_note"
 claim_refs = ["C-657", "C-660", "C-661", "C-662", "C-663", "C-664", "C-670"]
 path_refs = ["data/e027/lambda_sweep_results.csv", "registry/experiments.toml", "data/e027/grid_sweep_results.csv", "docs/LAMBDA_DERIVATION.md", "crates/vacuum_frustration/src/analytical.rs", "crates/vacuum_frustration/src/spatial_analysis.rs", "data/e027/spatial_analysis_results.csv", "crates/lbm_3d/tests/test_chapman_enskog_verification.rs", "docs/PARAMETER_SWEEP_SYNTHESIS.md", "docs/ANALYTICAL_SYNTHESIS.md", "docs/STRONG_LAMBDA_VALIDATION.md"]
-line_count = 538
+line_count = 541
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Phase 1 Remaining Work: Comprehensive Roadmap (Phases 1.4-1.9)
 
 **Date**: 2026-02-12
@@ -567,8 +570,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["registry/materials_viscosity.toml", "nu_lattice = nu / (dx^2/dt) = 2.18e-8 / (1e-12 / 1e-8) = 2.18e-4", "tau = 3*nu_lattice + 0.5 = 3*(2.18e-4) + 0.5 = 0.500654", "vacuum_frustration/src/frustration_energy.rs"]
-line_count = 310
+line_count = 313
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Real Materials Integration for E-027
 
 ## Overview
@@ -890,8 +896,11 @@ status_token = "NARRATIVE"
 content_kind = "analysis_note"
 claim_refs = ["C-001", "C-632", "C-657", "C-658", "C-659", "C-660", "C-664", "C-670"]
 path_refs = ["crates/cosmic_scheduler", "crates/vacuum_frustration/src/signed_graph.rs", "crates/vacuum_frustration/src/balance.rs", "crates/lbm_3d", "crates/vacuum_frustration/src/bridge.rs", "crates/lbm_3d_cuda", "src/kernels.cu", "src/lib.rs", "benches/gpu_performance.rs", "benches/gpu_exhaustive.rs", "tests/test_gpu_cpu_equivalence.rs", "tests/test_debug_init.rs", "registry/lbm_gpu_performance.toml"]
-line_count = 509
+line_count = 512
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Physics Synthesis Pipeline: Overall Progress Tracker
 
 **Last Updated**: 2026-02-12
@@ -1412,8 +1421,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["warp_ring_32_...", "warp_ring_128_...", "warp_ring_256_...", "tau > 0.5", "64.0", "0.08", "1.0", "(1 - 1/(2*tau))", "warp_ring_128_BF16_300s.h5", "timing_128_BF16_300s.toml", "gpu_telemetry.csv", "*.h5", "timing_*.toml"]
-line_count = 352
+line_count = 355
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Warp Ring N^3: Physics, Numerics, And What The Data Means
 
 This document is the repo-local, implementation-aligned interpretation for the

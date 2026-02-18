@@ -3,42 +3,63 @@
 
 [document]
 id = "DOC-0035"
-source_path = "docs/GAP_ANALYSIS.md"
-title = "Gap Analysis & Future Expansion"
-kind = "manual_source"
+source_path = "docs/convos/README.md"
+title = "Convos audit workspace"
+kind = "markdown_mirror"
 status = "active"
-migration_priority = "high"
-generated = false
-source_sha256 = "80bb076c41d9e7f8b025918b3ec229324d30a0dd8bd754880127dcfe840b8141"
-source_line_count = 23
-source_size_bytes = 1797
-content_sha256 = "80bb076c41d9e7f8b025918b3ec229324d30a0dd8bd754880127dcfe840b8141"
+migration_priority = "critical"
+generated = true
+source_sha256 = "5ea6a42ba877b03d5922367455fd5ea7d146ead7765deec04eac5260570d137e"
+source_line_count = 44
+source_size_bytes = 1452
+content_sha256 = "5ea6a42ba877b03d5922367455fd5ea7d146ead7765deec04eac5260570d137e"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Gap Analysis & Future Expansion
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
 
-**Date:** January 26, 2026
-**Status:** Audit Complete
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
 
-## 1. Missing / Broken Artifacts
-*   **Hyperquaternion Table:** The legacy CSV was incomplete. **Action:** Re-generated fully rigorous `multiplication_table_8D.csv` and `multiplication_table_16D.csv` using the Python engine.
-*   **LIGO Data:** The `Cleaned_LIGO_O3.csv` mentioned in logs is **missing** from the filesystem. **Action:** We must assume this was a \"Hallucinated Dataset\" in previous sessions. We will simulate a synthetic gravitational wave signal based on Sedenion entropy for future correlation.
-*   **Negative Dimension Physics:** The theoretical notes described specific wave behaviors. **Action:** Implemented `src/neg_dim_pde.py` which successfully simulated the fractional Schrodinger equation ($\\alpha = -1.5$).
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
 
-## 2. New Findings from \"Mining\"
-*   **Toy operator behavior:** In the toy study `src/neg_dim_pde.py` with continuation parameter
-    `alpha = -1.5`, the simulated wavefunction can concentrate rather than disperse under the chosen
-    discretization. This is not evidence of literal \"negative-dimensional physics\"; treat it as a
-    numerical behavior of a specific operator/parameter choice (see `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`).
-*   **Sedenion Table:** The 16D table is now a permanent artifact, allowing us to lookup any product $e_i e_j$ instantly without re-running algebra code.
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
 
-## 3. Expansion Plan
-We are **not** closing the project. We are pivoting to:
-1.  **Synthetic Cosmology:** Since real LIGO data is missing, we generate a \"Sedenion Gravitational Background\" dataset.
-2.  **Surreal-Quantum Bridge:** Map the Surreal Number tree (from `convos/`) to the Qiskit circuit states.
-3.  **Open Endedness:** The repository is now a \"Living Laboratory.\"
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
+# Convos audit workspace
+
+Policy:
+- Files under `convos/` are treated as immutable inputs (they may contain Unicode).
+- All synthesis produced under `docs/` should be ASCII-only.
+- Every claim extracted from `convos/` is treated as a hypothesis that must be tied to:
+  - a first-party source (paper/book/manual), and
+  - a repo test and/or a reproducible artifact.
+
+Entry points:
+- Main index: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`
+- Primary chunk audit log (file 1): `docs/convos/audit_1_read_nonuser_lines_cont.md`
+
+Chunking convention (default):
+- Chunk size: 800 lines
+- Chunk ids: C1-0001, C1-0002, ...
+- Reference format: `convos/1_read_nonuser_lines_cont.md:L<line>`
+
+Audit entry fields (recommended):
+- Chunk id
+- Line range
+- Extracted concepts (map to CX-xxx)
+- Extracted claims (write as hypotheses)
+- Immediate next actions (tests, docs, code, sources)
+- Source needs (first-party citations to add)
 
 """

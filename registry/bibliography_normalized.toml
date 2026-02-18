@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/bibliography.toml"
-entry_count = 190
-parse_warning_count = 50
+entry_count = 203
+parse_warning_count = 54
 
 [[entry]]
 id = "BIBN-0001"
@@ -3476,10 +3476,10 @@ venue = "Journal of Algebra 129(2), 263-278"
 arxiv_id = ""
 doi_list = ["10.1016/0021-8693(90)90221-9"]
 url_list = ["https://doi.org/10.1016/0021-8693(90)90221-9", "https://linkinghub.elsevier.com/retrieve/pii/S0021869390902219", "https://www.sciencedirect.com/science/article/pii/0021869390902219"]
-document_type = "journal_article"
+document_type = "doi_reference"
 evidence_relevance_score = 0
 claim_refs = []
-parse_warnings = ["direct_pdf_gated_in_non_browser_fetch_2026_02_15"]
+parse_warnings = []
 raw_citation = "**Eakin, P. M., & Sathaye, A.** (1990). *On automorphisms and derivations of Cayley-Dickson algebras*. Journal of Algebra 129(2), 263-278."
 raw_notes = ["*Automorphism structure of Cayley-Dickson algebras beyond octonions.*", "*Canonical DOI/landing links are tracked; direct PDF endpoints remained gated in non-browser fetches as of 2026-02-15.*"]
 source_line = 349
@@ -4187,3 +4187,290 @@ parse_warnings = ["missing_venue"]
 raw_citation = "**Will, C. M.** (2018). *Theory and experiment in gravitational physics* (2nd ed.). Cambridge University Press."
 raw_notes = ["*Reference monograph for PPN interpretation and experimental-gravity methodology.*"]
 source_line = 424
+
+[[entry]]
+id = "BIBN-0191"
+source_entry_id = "BIB-0191"
+order_index = 191
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Identities and Structure"
+authors = ["Bremner", "M", "Hentzel", "I"]
+author_count = 4
+publication_year = 2001
+title = "Identities for algebras obtained from the Cayley-Dickson process"
+venue = "Communications in Algebra 29(8), 3523-3544. DOI: 10.1081/AGB-100105036"
+arxiv_id = ""
+doi_list = ["10.1081/AGB-100105036"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Bremner, M., & Hentzel, I.** (2001). *Identities for algebras obtained from the Cayley-Dickson process*. Communications in Algebra 29(8), 3523-3544. DOI: 10.1081/AGB-100105036."
+raw_notes = ["*Determines multilinear identities of degree <= 5 for sedenions; confirms flexible and Jordan identities.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0192"
+source_entry_id = "BIB-0192"
+order_index = 192
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Identities and Structure"
+authors = ["Wilmot", "G. P"]
+author_count = 2
+publication_year = 2025
+title = "Automorphisms of Sedenions"
+venue = ""
+arxiv_id = "2512.07210"
+doi_list = []
+url_list = ["https://arxiv.org/abs/2512.07210"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = ["missing_venue"]
+raw_citation = "**Wilmot, G. P.** (2025). *Automorphisms of Sedenions*. [arXiv:2512.07210](https://arxiv.org/abs/2512.07210)."
+raw_notes = ["*Extends Fano plane to 15D Fano volume; derives Aut(S) ~ G2.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0193"
+source_entry_id = "BIB-0193"
+order_index = 193
+group = "Primary Research & Data Sources"
+section = "QCD and Spin Correlation"
+authors = ["STAR Collaboration"]
+author_count = 1
+publication_year = 2026
+title = "Measuring spin correlation between quarks during QCD confinement"
+venue = "Nature 650, 65-71. DOI: 10.1038/s41586-025-09920-0"
+arxiv_id = ""
+doi_list = ["10.1038/s41586-025-09920-0"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**STAR Collaboration.** (2026). *Measuring spin correlation between quarks during QCD confinement*. Nature 650, 65-71. DOI: 10.1038/s41586-025-09920-0."
+raw_notes = ["*Evidence of spin coherence in Lambda-AntiLambda pairs; observed decoherence trend.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0194"
+source_entry_id = "BIB-0194"
+order_index = 194
+group = "Primary Research & Data Sources"
+section = "Scattering Amplitudes"
+authors = ["Guevara", "A", "et al"]
+author_count = 3
+publication_year = 2026
+title = "Single-minus gluon tree amplitudes are nonzero"
+venue = ""
+arxiv_id = "2602.12176"
+doi_list = []
+url_list = ["https://arxiv.org/abs/2602.12176"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = ["missing_venue"]
+raw_citation = "**Guevara, A., et al.** (2026). *Single-minus gluon tree amplitudes are nonzero*. [arXiv:2602.12176](https://arxiv.org/abs/2602.12176)."
+raw_notes = ["*Derives non-vanishing single-minus amplitudes in half-collinear kinematics; discrete sign-logic closed form.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0195"
+source_entry_id = "BIB-0195"
+order_index = 195
+group = "Primary Research & Data Sources"
+section = "Conformal Space and Inflation"
+authors = ["Gazeau", "J.-P", "Pejhan", "H", "Todorov", "I"]
+author_count = 6
+publication_year = 2026
+title = "Massless Representations in Conformal Space and Their de Sitter (dS) Restrictions"
+venue = ""
+arxiv_id = "2601.18433"
+doi_list = []
+url_list = ["https://arxiv.org/abs/2601.18433"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = ["missing_venue"]
+raw_citation = "**Gazeau, J.-P., Pejhan, H., & Todorov, I.** (2026). *Massless Representations in Conformal Space and Their de Sitter (dS) Restrictions*. [arXiv:2601.18433](https://arxiv.org/abs/2601.18433)."
+raw_notes = ["*Monograph on conformal symmetry and split-octonionic fabric of inflationary dynamics.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0196"
+source_entry_id = "BIB-0196"
+order_index = 196
+group = "Primary Research & Data Sources"
+section = "Unification Theories"
+authors = ["Alvarez", "P. D", "Izaurieta", "F", "Quinzacara", "C"]
+author_count = 6
+publication_year = 2026
+title = "Towards an Action Principle Unifying the Standard Model and Gravity"
+venue = ""
+arxiv_id = "2601.19734"
+doi_list = []
+url_list = ["https://arxiv.org/abs/2601.19734"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = ["missing_venue"]
+raw_citation = "**Alvarez, P. D., Izaurieta, F., & Quinzacara, C.** (2026). *Towards an Action Principle Unifying the Standard Model and Gravity*. [arXiv:2601.19734](https://arxiv.org/abs/2601.19734)."
+raw_notes = ["*Unification via Clifford-algebraic invariant in a ghost-free quadratic gravity framework.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0197"
+source_entry_id = "BIB-0197"
+order_index = 197
+group = "Primary Research & Data Sources"
+section = "Algebra & Mathematics"
+authors = ["Bott", "R", "Milnor", "J"]
+author_count = 4
+publication_year = 1958
+title = "On the parallelizability of the spheres"
+venue = "Bulletin of the American Mathematical Society 64(3), 87-89. DOI: 10.1090/S0002-9904-1958-10166-4"
+arxiv_id = ""
+doi_list = ["10.1090/S0002-9904-1958-10166-4"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Bott, R., & Milnor, J.** (1958). *On the parallelizability of the spheres*. Bulletin of the American Mathematical Society 64(3), 87-89. DOI: 10.1090/S0002-9904-1958-10166-4."
+raw_notes = ["*Proves only S^0, S^1, S^3, S^7 are parallelizable; foundational for the normed division algebra classification used in Thesis 4.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0198"
+source_entry_id = "BIB-0198"
+order_index = 198
+group = "Primary Research & Data Sources"
+section = "Algebra & Mathematics"
+authors = ["Adams", "J. F"]
+author_count = 2
+publication_year = 1960
+title = "On the non-existence of elements of Hopf invariant one"
+venue = "Annals of Mathematics 72(1), 20-104. DOI: 10.2307/1970147"
+arxiv_id = ""
+doi_list = ["10.2307/1970147"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Adams, J. F.** (1960). *On the non-existence of elements of Hopf invariant one*. Annals of Mathematics 72(1), 20-104. DOI: 10.2307/1970147."
+raw_notes = ["*Proves R, C, H, O are the only normed division algebras over the reals; the algebraic foundation for the Thesis 4 subalgebra retention pattern.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0199"
+source_entry_id = "BIB-0199"
+order_index = 199
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Rakic", "A. D", "Djurisic", "A. B", "Elazar", "J. M", "Majewski", "M. L"]
+author_count = 8
+publication_year = 1998
+title = "Optical properties of metallic films for vertical-cavity optoelectronic devices"
+venue = "Applied Optics 37(22), 5271-5283. DOI: 10.1364/AO.37.005271"
+arxiv_id = ""
+doi_list = ["10.1364/AO.37.005271"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Rakic, A. D., Djurisic, A. B., Elazar, J. M., & Majewski, M. L.** (1998). *Optical properties of metallic films for vertical-cavity optoelectronic devices*. Applied Optics 37(22), 5271-5283. DOI: 10.1364/AO.37.005271."
+raw_notes = ["*Canonical 11-metal Drude-Lorentz parameter set; source for Be, Cr, Ni, Pd, Pt, Ti, W optical models in Sprint 43.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0200"
+source_entry_id = "BIB-0200"
+order_index = 200
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Servoin", "J. L", "Luspin", "Y", "Gervais", "F"]
+author_count = 6
+publication_year = 1980
+title = "Infrared dispersion in SrTiO3 at high temperature"
+venue = "Physical Review B 22(11), 5501-5506. DOI: 10.1103/PhysRevB.22.5501"
+arxiv_id = ""
+doi_list = ["10.1103/PhysRevB.22.5501"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Servoin, J. L., Luspin, Y., & Gervais, F.** (1980). *Infrared dispersion in SrTiO3 at high temperature*. Physical Review B 22(11), 5501-5506. DOI: 10.1103/PhysRevB.22.5501."
+raw_notes = ["*IR phonon oscillator parameters for SrTiO3 (3-mode model); source for soft-mode soft-mode frequency near 11 meV.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0201"
+source_entry_id = "BIB-0201"
+order_index = 201
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Okimoto", "Y", "Katsufuji", "T", "Ishikawa", "T", "Urushibara", "A", "Arima", "T", "Tokura", "Y"]
+author_count = 12
+publication_year = 1995
+title = "Anomalous variation of optical spectra with spin polarization in double-exchange ferromagnet: La_{1-x}Sr_xMnO_3"
+venue = "Physical Review Letters 75(1), 109-112. DOI: 10.1103/PhysRevLett.75.109"
+arxiv_id = ""
+doi_list = ["10.1103/PhysRevLett.75.109"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Okimoto, Y., Katsufuji, T., Ishikawa, T., Urushibara, A., Arima, T., & Tokura, Y.** (1995). *Anomalous variation of optical spectra with spin polarization in double-exchange ferromagnet: La_{1-x}Sr_xMnO_3*. Physical Review Letters 75(1), 109-112. DOI: 10.1103/PhysRevLett.75.109."
+raw_notes = ["*Optical conductivity and Mott gap structure in perovskite titanates; informs LaTiO3 absorption model.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0202"
+source_entry_id = "BIB-0202"
+order_index = 202
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Barman", "S. R", "Sarma", "D. D"]
+author_count = 4
+publication_year = 1995
+title = "Electronic structures of TiO and NiO within the density functional theory"
+venue = "Physical Review B 51(19), 13401-13404. DOI: 10.1103/PhysRevB.51.13401"
+arxiv_id = ""
+doi_list = ["10.1103/PhysRevB.51.13401"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Barman, S. R., & Sarma, D. D.** (1995). *Electronic structures of TiO and NiO within the density functional theory*. Physical Review B 51(19), 13401-13404. DOI: 10.1103/PhysRevB.51.13401."
+raw_notes = ["*Band structure and optical properties of TiO (metallic); source for TiO Drude and interband parameters.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0203"
+source_entry_id = "BIB-0203"
+order_index = 203
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["van Mechelen", "J. L. M", "van der Marel", "D", "Grimaldi", "C", "Kuzmenko", "A. B", "Armitage", "N. P", "Reyren", "N", "Hagemann", "H", "Baeriswyl", "I. H"]
+author_count = 16
+publication_year = 2008
+title = "Electron-phonon interaction and charge carrier mass enhancement in SrTiO3"
+venue = "Physical Review Letters 100(22), 226403. DOI: 10.1103/PhysRevLett.100.226403"
+arxiv_id = ""
+doi_list = ["10.1103/PhysRevLett.100.226403"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**van Mechelen, J. L. M., van der Marel, D., Grimaldi, C., Kuzmenko, A. B., Armitage, N. P., Reyren, N., Hagemann, H., & Baeriswyl, I. H.** (2008). *Electron-phonon interaction and charge carrier mass enhancement in SrTiO3*. Physical Review Letters 100(22), 226403. DOI: 10.1103/PhysRevLett.100.226403."
+raw_notes = ["*Extended Drude analysis of doped SrTiO3; demonstrates frequency-dependent scattering and non-Fermi-liquid character.*"]
+source_line = 0
+

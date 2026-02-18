@@ -4,9 +4,9 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 10
+document_count = 35
 toml_generated_mirror_count = 6
-toml_manual_source_count = 4
+toml_manual_source_count = 29
 
 [[document]]
 path = "AGENTS.md"
@@ -14,25 +14,25 @@ id = "MDG-0001"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "CLAUDE.md"
 id = "MDG-0002"
-kind = "markdown_mirror"
+kind = "manual_source"
 mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
 
 [[document]]
 path = "GEMINI.md"
 id = "MDG-0003"
-kind = "markdown_mirror"
+kind = "manual_source"
 mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
 
 [[document]]
@@ -41,7 +41,7 @@ id = "MDG-0004"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
@@ -50,7 +50,7 @@ id = "MDG-0005"
 kind = "generated_markdown"
 mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/module_requirements.toml", "registry/requirements.toml", "registry/requirements_narrative.toml"]
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml", "registry/module_requirements.toml", "registry/requirements.toml", "registry/requirements_narrative.toml"]
 notes = "Manual source consumed by TOML normalizers."
 
 [[document]]
@@ -59,7 +59,7 @@ id = "MDG-0006"
 kind = "generated_markdown"
 mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/module_requirements.toml", "registry/requirements.toml"]
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml", "registry/module_requirements.toml", "registry/requirements.toml"]
 notes = "Manual source consumed by TOML normalizers."
 
 [[document]]
@@ -68,7 +68,7 @@ id = "MDG-0007"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
@@ -77,7 +77,7 @@ id = "MDG-0008"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_owner_map.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_owner_map.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
@@ -86,14 +86,239 @@ id = "MDG-0009"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/convos/README.md"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/README.md"
 id = "MDG-0010"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/LambdaLearner/README.md"
+id = "MDG-0011"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/CLAUDE.md"
+id = "MDG-0012"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/GEMINI.md"
+id = "MDG-0013"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/README.md"
+id = "MDG-0014"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/README.md"
+id = "MDG-0015"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/agent-tasks/README.md"
+id = "MDG-0016"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/README.md"
+id = "MDG-0017"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/README.md"
+id = "MDG-0018"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/experiments/README.md"
+id = "MDG-0019"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/idris/README.md"
+id = "MDG-0020"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scala/README.md"
+id = "MDG-0021"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scheme/README.md"
+id = "MDG-0022"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/sml/README.md"
+id = "MDG-0023"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/README.md"
+id = "MDG-0024"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/README.md"
+id = "MDG-0025"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/CLAUDE.md"
+id = "MDG-0026"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/GEMINI.md"
+id = "MDG-0027"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/agents.md"
+id = "MDG-0028"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/README.md"
+id = "MDG-0029"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/modules/README.md"
+id = "MDG-0030"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/README.md"
+id = "MDG-0031"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/README.md"
+id = "MDG-0032"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/README.md"
+id = "MDG-0033"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/merge_in/README.md"
+id = "MDG-0034"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "docs/convos/README.md"
+id = "MDG-0035"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/docs_convos.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_owner_map.toml"]
+source_toml_refs = ["registry/docs_convos.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_owner_map.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
