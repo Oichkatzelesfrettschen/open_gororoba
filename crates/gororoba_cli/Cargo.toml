@@ -454,6 +454,14 @@ path = "src/bin/absorber-topology-benchmark.rs"
 name = "gravastar-bypass-compare"
 path = "src/bin/gravastar-bypass-compare.rs"
 
+[[bin]]
+name = "prefix-chain-theorem"
+path = "src/bin/prefix_chain_theorem.rs"
+
+[[bin]]
+name = "paper-build"
+path = "src/bin/paper_build.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
