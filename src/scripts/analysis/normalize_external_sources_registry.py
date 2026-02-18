@@ -88,6 +88,13 @@ SOURCE_META = {
         "verification_level": "source_capture",
         "notes": "Slide transcript capture; interpretation remains separate from source capture.",
     },
+    "INDEX.md": {
+        "status_token": "ACTIVE",
+        "content_kind": "generated_index",
+        "authority_level": "auto_generated",
+        "verification_level": "operational",
+        "notes": "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml.",
+    },
     "INVERSE_CD_FORMALISM.md": {
         "status_token": "UNVERIFIED",
         "content_kind": "conversation_extraction",
@@ -122,6 +129,13 @@ SOURCE_META = {
         "authority_level": "derived_conversation_note",
         "verification_level": "unverified_hypothesis",
         "notes": "Conversation-extracted taxonomy with explicit naming-collision warning.",
+    },
+    "WOW_SIGNAL_SOURCES.md": {
+        "status_token": "ACTIVE",
+        "content_kind": "claim_dataset_provenance",
+        "authority_level": "primary_dataset_index",
+        "verification_level": "source_capture",
+        "notes": "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up.",
     },
 }
 

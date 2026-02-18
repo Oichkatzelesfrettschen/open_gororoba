@@ -615,3 +615,15 @@ name = "prefix-chain-theorem"
 crate = "gororoba_cli"
 description = "Validates the prefix-chain theorem for Cayley-Dickson lattice filtrations: strict nesting Lambda_256 < Lambda_512 < Lambda_1024 < Lambda_2048 with predicate-derived prefix exclusion rules."
 status = "active"
+
+[[binary]]
+name = "wow-signal-analysis"
+crate = "gororoba_cli"
+description = "Wow! signal technosignature testbed: transcription validation, drift rate kinematics, and summary"
+experiment = "E-045"
+
+[[binary]]
+name = "wow-topology"
+crate = "gororoba_cli"
+description = "Topological and ultrametric analysis of Wow! signal BL 6EQUJ5 candidates"
+experiment = "E-048"

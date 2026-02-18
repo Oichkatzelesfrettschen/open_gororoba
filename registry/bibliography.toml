@@ -2506,3 +2506,39 @@ citation_markdown = "**Henke, B. L., Gullikson, E. M., & Davis, J. C.** (1993). 
 notes = ["*Foundational XUV/X-ray atomic scattering factors f1, f2 for all 92 elements from 10-30000 eV. Converted to n,k via n=1-delta, k=beta. Used in SPLICED3_AU, SPLICED3_AG, SPLICED3_CU arrays in tabulated_nk.rs to extend J&C+Ordal data through the XUV/soft X-ray region for complete KK integration.*"]
 urls = ["https://henke.lbl.gov/optical_constants/"]
 dois = ["10.1006/adnd.1993.1013"]
+
+[[section]]
+id = "BSEC-033"
+name = "Technosignature & SETI"
+groups = ["Primary Research & Data Sources"]
+entry_count = 3
+
+[[entry]]
+id = "BIB-0212"
+order_index = 212
+group = "Primary Research & Data Sources"
+section = "Technosignature & SETI"
+citation_markdown = "**Ehman, J. R.** (1997). *The Big Ear Wow! Signal: What We Know and Don't Know About It After 20 Years*. Technical report, Ohio State University Radio Observatory."
+notes = ["*Definitive 20th-anniversary analysis of the 1977 Wow! signal by the discoverer. Documents receiver configuration (50-channel, 10 kHz bandwidth), base-36 encoding, beam pattern, and the 6EQUJ5 intensity sequence. Primary reference for transcription verification.*"]
+urls = ["https://www.bigear.org/wow20th.htm"]
+dois = []
+
+[[entry]]
+id = "BIB-0213"
+order_index = 213
+group = "Primary Research & Data Sources"
+section = "Technosignature & SETI"
+citation_markdown = "**Gray, R. H. & Ellingsen, S. P.** (2002). *A Search for Periodic Emissions at the Wow Locale*. The Astrophysical Journal, 578(2), 967-971."
+notes = ["*Targeted 14-month reobservation campaign at the Wow! signal coordinates using the 26m Mount Pleasant telescope and the VLA. No periodic signal detected at 1420 MHz. Establishes drift rate bounds and non-detection context for follow-up studies.*"]
+urls = []
+dois = ["10.1086/342646"]
+
+[[entry]]
+id = "BIB-0214"
+order_index = 214
+group = "Primary Research & Data Sources"
+section = "Technosignature & SETI"
+citation_markdown = "**Perez, K., Zuluaga, J. I., Sheikh, S. Z., Enriquez, J. E., Price, D. C., Isaacson, H., Lebofsky, M., MacMahon, D. H. E., Croft, S., DeBoer, D., Gajjar, V., Howard, A. W., Siemion, A. P. V., & Werthimer, D.** (2022). *Breakthrough Listen Observations of the Wow! Signal Region*. Research Notes of the AAS, 6(9), 197."
+notes = ["*BL GBT observations at 1-12 GHz of the Wow! signal region using ABACAD cadence strategy. No narrowband or wideband signals detected above threshold. Establishes modern non-detection baseline with 2.5e6 channel resolution.*"]
+urls = []
+dois = ["10.3847/2515-5172/ac9631"]

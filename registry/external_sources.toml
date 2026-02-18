@@ -5,7 +5,7 @@
 updated = "2026-02-09"
 authoritative = true
 source_markdown_glob = "docs/external_sources/*.md"
-document_count = 14
+document_count = 16
 
 [[document]]
 id = "XS-001"
@@ -20,9 +20,12 @@ has_full_transcript = false
 claim_refs = ["C-071", "C-080"]
 url_refs = ["https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog1/chimefrbcat1.csv", "https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog2/chimefrbcat2.csv"]
 path_refs = ["data/external/chime_frb_cat1.csv", "data/external/chime_frb_cat2.csv", "crates/stats_core/src/ultrametric.rs", "crates/gororoba_cli/src/bin/frb_ultrametric.rs", "data/csv/c071_frb_ultrametric.csv", "data/csv/c071_frb_ultrametric_cat1.csv", "data/csv/c071_frb_ultrametric_cat2.csv"]
-line_count = 73
+line_count = 76
 notes = "Claim C-071 outcome is explicitly refuted with reproducible dataset hashes."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # C-071: FRB Ultrametric Structure -- Data Provenance
 
 ## Claim
@@ -111,9 +114,12 @@ has_full_transcript = false
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 94
+line_count = 97
 notes = "Operational provider and source manifest for fetch-datasets registry alignment."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Dataset Manifest
 
 All 29 datasets managed by `fetch-datasets` CLI. Fetch with:
@@ -223,9 +229,12 @@ has_full_transcript = true
 claim_refs = []
 url_refs = ["http://arXiv.org/abs/math.GM/0011260", "http://arXiv.org/abs/math.RA/0207003", "http://arxiv.org/abs/hep-th/9501007", "http://arXiv.org/abs/hep-th/9506080", "http://arXiv.org/abs/math.DG/0203158", "http://arXiv.org/abs/q-alg/9710013"]
 path_refs = []
-line_count = 575
+line_count = 578
 notes = "Cached transcript mirror for source auditability; not itself a verification result."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # 2004 Math0403113 Boxkites Iii
 
 **Source:** data/external/papers/de_marrais_2004_math0403113_boxkites_III.pdf
@@ -816,9 +825,12 @@ has_full_transcript = false
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 75
+line_count = 78
 notes = "Structured summary of a primary paper with claims-supporting context."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Voyage by Catamaran
 
 **Full Title:** Voyage by Catamaran: Effecting Semantic Network *Bricolage* via
@@ -909,9 +921,12 @@ has_full_transcript = true
 claim_refs = []
 url_refs = ["http://matu1.math.auckland.ac.nz/~king/Preprints/Chaoq.htm", "http://exo.com/~palmer/ISSS2000ab.html"]
 path_refs = []
-line_count = 4113
+line_count = 4116
 notes = "Contains large transcript and summary notes for downstream claims triage."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Flying Higher Than A Box-Kite
 
 **Full Title:** Flying Higher Than A Box-Kite: Kite-Chain Middens,
@@ -5040,9 +5055,12 @@ has_full_transcript = true
 claim_refs = []
 url_refs = ["http://arXiv.org/abs/q-alg/9710013", "http://arXiv.org/abs/math.GM/0011260", "http://www.innerx.net/~tsmith/Ndalg.html", "http://arXiv.org/abs/math.QA/9802116"]
 path_refs = []
-line_count = 1020
+line_count = 1023
 notes = "Revision-aware source capture for placeholder substructure literature."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Placeholder Substructures I
 
 **Full Title:** The "Placeholder" Substructures of the "Box-Kite Group":
@@ -6078,9 +6096,12 @@ has_full_transcript = false
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 36
+line_count = 39
 notes = "Short-form summary and key-result extraction from placeholder III source."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Placeholder Substructures III
 
 **Full Title:** Placeholder Substructures III: A Bit-String-Driven "Recipe
@@ -6132,9 +6153,12 @@ has_full_transcript = true
 claim_refs = []
 url_refs = ["http://www-groups.dcs.st-and.ac.uk/~history/Quotations/Laplace.html", "http://arXiv.org.abs/q-alg/9710013", "http://arXiv.org/abs/math.RA/0403113", "http://arXiv.org/abs/math.GM/0011260", "http://arXiv.org/abs/math.RA/0207003", "http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf"]
 path_refs = []
-line_count = 1754
+line_count = 1757
 notes = "Primary transcript with explicit rule extraction for Cayley-Dickson references."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Presto! Digitization: Part I
 
 **Full Title:** Presto! Digitization: From NKS Number Theory to "XORbitant"
@@ -7904,9 +7928,12 @@ has_full_transcript = true
 claim_refs = []
 url_refs = ["http://arXiv.org/abs/q-alg/9710013", "http://arXiv.org/abs/math.GM/0011260", "http://arXiv.org/abs/math.RA/0207003", "http://arXiv.org/abs.math.RA/0403113", "http://arxiv.org/abs/astro-ph/9801276"]
 path_refs = []
-line_count = 884
+line_count = 887
 notes = "Slide transcript capture; interpretation remains separate from source capture."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # 2004 Wolfram Science Slides
 
 **Source:** data/external/papers/de_marrais_2004_wolfram_science_slides.pdf
@@ -8795,6 +8822,45 @@ R. de Marrais                              Page 18                "Something Fro
 
 [[document]]
 id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+slug = "index"
+title = "External Sources"
+status_token = "ACTIVE"
+content_kind = "generated_index"
+authority_level = "auto_generated"
+verification_level = "operational"
+has_full_transcript = false
+claim_refs = []
+url_refs = []
+path_refs = ["docs/external_sources/*.md", "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md", "docs/external_sources/DATASET_MANIFEST.md", "docs/external_sources/DE_MARRAIS_BOXKITES_III.md", "docs/external_sources/DE_MARRAIS_CATAMARAN.md", "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md", "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md", "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md", "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md", "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md", "docs/external_sources/INVERSE_CD_FORMALISM.md", "docs/external_sources/OPEN_CLAIMS_SOURCES.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md", "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md", "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"]
+line_count = 21
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+body_markdown = '''
+# External Sources
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
+This index and all files under `docs/external_sources/*.md` are generated from TOML.
+
+- `XS-001` `REFUTED`: `docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md`
+- `XS-002` `ACTIVE`: `docs/external_sources/DATASET_MANIFEST.md`
+- `XS-003` `REFERENCE`: `docs/external_sources/DE_MARRAIS_BOXKITES_III.md`
+- `XS-004` `REFERENCE`: `docs/external_sources/DE_MARRAIS_CATAMARAN.md`
+- `XS-005` `REFERENCE`: `docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md`
+- `XS-006` `REFERENCE`: `docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md`
+- `XS-007` `REFERENCE`: `docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md`
+- `XS-008` `REFERENCE`: `docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md`
+- `XS-009` `REFERENCE`: `docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md`
+- `XS-010` `UNVERIFIED`: `docs/external_sources/INVERSE_CD_FORMALISM.md`
+- `XS-011` `ACTIVE`: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
+- `XS-012` `PARTIALLY_VERIFIED`: `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`
+- `XS-013` `MIXED`: `docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md`
+- `XS-014` `UNVERIFIED`: `docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md`
+'''
+
+[[document]]
+id = "XS-011"
 source_markdown = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 slug = "inverse_cd_formalism"
 title = "Inverse Cayley-Dickson Formalism"
@@ -8806,9 +8872,12 @@ has_full_transcript = false
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 156
+line_count = 159
 notes = "Conversation-derived formalism notes flagged as unverified in-file."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Inverse Cayley-Dickson Formalism
 
 Extracted from conversation logs (convos/1_read_each_nonuser_line.md,
@@ -8968,7 +9037,7 @@ reference; not endorsed as rigorous mathematics.
 '''
 
 [[document]]
-id = "XS-011"
+id = "XS-012"
 source_markdown = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 slug = "open_claims_sources"
 title = "Open Claims Sources (Inbox)"
@@ -8980,9 +9049,12 @@ has_full_transcript = false
 claim_refs = ["C-043", "C-082", "C-087", "C-092", "C-094", "C-096", "C-099", "C-102", "C-103", "C-108", "C-109", "C-120", "C-123", "C-128", "C-129", "C-130", "C-132", "C-135", "C-417", "C-426", "C-427", "C-432"]
 url_refs = []
 path_refs = ["docs/external_sources/", "docs/external_sources/*.md", "docs/CLAIMS_EVIDENCE_MATRIX.md"]
-line_count = 34
+line_count = 37
 notes = "Inbox index for open claims pending dedicated source dossiers."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Open Claims Sources (Inbox)
 
 Purpose: provide a minimal, explicit external-sources anchor for open claims that are not yet
@@ -9020,7 +9092,7 @@ Claims currently routed here (2026-02-03):
 '''
 
 [[document]]
-id = "XS-012"
+id = "XS-013"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 slug = "reggiani_manifold_claims"
 title = "Reggiani 2024 manifold identifications (C-005)"
@@ -9032,9 +9104,12 @@ has_full_transcript = false
 claim_refs = ["C-005"]
 url_refs = ["https://arxiv.org/abs/2411.18881"]
 path_refs = ["data/external/papers/reggiani_2024_2411.18881.pdf", "data/external/papers/reggiani_2024_2411.18881.txt", "docs/SEDENION_ATLAS.md", "tests/test_reggiani_alignment.py", "tests/test_reggiani_standard_zero_divisors.py"]
-line_count = 39
+line_count = 41
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Reggiani 2024 manifold identifications (C-005)
 
 Access date: 2026-01-28
@@ -9076,7 +9151,7 @@ The paper states (paraphrase, see PDF for full proofs):
 '''
 
 [[document]]
-id = "XS-013"
+id = "XS-014"
 source_markdown = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 slug = "sedenion_zd_experimental"
 title = "Sedenion Zero-Divisor Experimental Connections"
@@ -9088,9 +9163,12 @@ has_full_transcript = false
 claim_refs = []
 url_refs = ["https://github.com/silvioreggiani/sedenion-zero-div"]
 path_refs = []
-line_count = 99
+line_count = 102
 notes = "Combines primary-source statements with codebase verification references."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Sedenion Zero-Divisor Experimental Connections
 
 Extracted from conversation logs (compass artifact wf-7f987cff, the
@@ -9193,7 +9271,7 @@ against primary papers and Rust implementations.
 '''
 
 [[document]]
-id = "XS-014"
+id = "XS-015"
 source_markdown = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 slug = "wheel_algebra_taxonomy"
 title = "Wheel Algebra Taxonomy"
@@ -9205,9 +9283,12 @@ has_full_transcript = false
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 124
+line_count = 127
 notes = "Conversation-extracted taxonomy with explicit naming-collision warning."
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Wheel Algebra Taxonomy
 
 Extracted from conversation logs (convos/2_exploration_cont.md,
@@ -9332,4 +9413,104 @@ Compared to the existing WheelQ (Carlstrom wheel of rationals):
 ## Source
 
 Generated by ChatGPT. Extracted for reference; not endorsed as rigorous.
+'''
+
+[[document]]
+id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+slug = "wow_signal_sources"
+title = "Wow! Signal Source Dossier"
+status_token = "ACTIVE"
+content_kind = "claim_dataset_provenance"
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+has_full_transcript = false
+claim_refs = ["C-769", "C-773"]
+url_refs = ["https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/full/full/0/default.jpg`", "https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/manifest.json`", "https://www.bigear.org/6equj5.htm`", "https://seti.berkeley.edu/wow/`", "https://bldata.berkeley.edu/6EQUJ5/`"]
+path_refs = ["di_YYYYMMDD/spliced_blcNN_guppi_MJDTTTTT_TARGET_OBSNUM/", "data/external/wow_1977_printout.jpg", "data/csv/wow1977_transcription.csv", "data/csv/bl_6equj5_gbt_manifest.csv"]
+line_count = 82
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
+body_markdown = '''
+# Wow! Signal Source Dossier
+
+Status: **ACTIVE**
+Content kind: Claim-dataset provenance chain
+Authority level: Primary dataset index
+Verification level: Source capture
+
+## Overview
+
+This dossier documents the provenance chain for the 1977 Wow! signal archival
+data and the Breakthrough Listen (BL) 6EQUJ5 follow-up campaign. It supports
+claims C-769 through C-773 in the open_gororoba registry.
+
+## Primary Sources
+
+### 1. Ohio History Connection -- Archival Printout Scan
+
+- **Collection**: Ohio State University Radio Observatory Records
+- **IIIF Image**: `https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/full/full/0/default.jpg`
+- **IIIF Manifest**: `https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/manifest.json`
+- **Format**: JPEG, full-resolution scan of the 1977-08-15 computer printout
+- **Content**: 50-channel receiver output in base-36 encoding (space=0, 0-9, A-Z=10-35)
+- **Signal**: Channel 2, row sequence 6EQUJ5 = intensities [6, 14, 26, 30, 19, 5]
+- **Access**: Public domain (government records), CC0 equivalent
+- **Verification**: JPEG magic bytes FF D8 FF (passes validate_not_html check)
+
+### 2. Big Ear Memorial Website
+
+- **URL**: `https://www.bigear.org/6equj5.htm`
+- **Content**: Jerry Ehman's annotated explanation of the 6EQUJ5 sequence
+- **Key fact**: The peak intensity U=30 corresponds to ~30 sigma above noise
+- **Note**: Fan-maintained site, not an institutional source. Cross-reference with
+  Ehman (1997) for authoritative details.
+
+### 3. Breakthrough Listen 6EQUJ5 Campaign Hub
+
+- **URL**: `https://seti.berkeley.edu/wow/`
+- **Content**: Campaign overview, observation strategy, data release announcements
+- **Institution**: Berkeley SETI Research Center
+- **Telescope**: Green Bank Telescope (GBT), 100m dish
+- **Strategy**: ABACAD cadence (ON-OFF-ON-OFF-ON-OFF) for RFI discrimination
+
+### 4. BL 6EQUJ5 Data Directory
+
+- **Root**: `https://bldata.berkeley.edu/6EQUJ5/`
+- **Structure**: `di_YYYYMMDD/spliced_blcNN_guppi_MJDTTTTT_TARGET_OBSNUM/`
+- **Products**: Filterbank files (.fil), high-resolution spectrograms
+- **CAUTION**: Directory listings return HTML -- never use as provider URL.
+  Only explicit file paths (ending in .fil or .h5) are valid download targets.
+
+## Key Bibliography
+
+| ID | Citation | DOI/URL |
+|----|----------|---------|
+| BIB-0212 | Ehman, J. R. (1997). "The Big Ear Wow! Signal: What We Know and Don't Know About It After 20 Years." | bigear.org/wow20th.htm |
+| BIB-0213 | Gray, R. H. & Ellingsen, S. P. (2002). "A Search for Periodic Emissions at the Wow Locale." ApJ 578, 967-971. | 10.1086/342646 |
+| BIB-0214 | Perez, K. et al. (2022). "Breakthrough Listen Observations of the Wow! Signal Region." RNAAS 6, 197. | 10.3847/2515-5172/ac9631 |
+
+## Signal Parameters
+
+- **Frequency**: 1420.405751786 MHz (21 cm hydrogen line)
+- **Duration**: 72 seconds (full beam transit time for a point source)
+- **RA (J2000)**: ~19h 25m 31s (reconstructed from beam positions)
+- **Dec (J2000)**: ~-27d 03m (beam 2 of 2-beam feed horn array)
+- **Epoch**: 1977-08-15 22:16:00 UT (Eastern Daylight Time 18:16)
+- **Peak SNR**: ~30 sigma (U = 30 in base-36)
+- **Bandwidth**: < 10 kHz (narrowband, consistent with artificial origin hypothesis)
+
+## Provenance Chain
+
+1. Ohio History Connection IIIF endpoint -> `data/external/wow_1977_printout.jpg`
+2. Manual transcription verified against Ehman (1997) -> `data/csv/wow1977_transcription.csv`
+3. BL 6EQUJ5 GBT manifest (curated from bldata.berkeley.edu) -> `data/csv/bl_6equj5_gbt_manifest.csv`
+4. Claims C-769..C-773 reference these artifacts with SHA-256 checksums
+
+## Falsifiable Theses
+
+- **WT-001**: The 6EQUJ5 transcription matches the archival printout character-for-character.
+- **WT-002**: Earth-motion drift rate at the Wow! locale is bounded by |drift| < 0.37 Hz/s.
+- **WT-003**: BL ABACAD cadence discriminates the Wow! locale from terrestrial RFI.
+- **WT-004**: ON and OFF cadence pointings are topologically indistinguishable (null result).
+- **WT-005**: Candidate feature vectors show non-trivial ultrametric structure vs null.
 '''
