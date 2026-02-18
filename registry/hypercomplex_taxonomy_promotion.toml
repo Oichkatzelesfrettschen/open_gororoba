@@ -272,9 +272,12 @@ where_stated = "reports/sensational_primary_source_mapping_2026_02_14.toml (RI-0
 evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-016)"
 source_refs = ["RI-034"]
 taxonomy_species_refs = []
-evidence_status = "supported"
+evidence_status = "verified"
 verify_intent = "Verify Cornell/arXiv records and linked references cover GW250114 spectroscopy and relativity-test context."
 refute_intent = "Refute if arXiv or linked journal references fail to support the claimed GW250114 mapping."
+hardening_date = "2026-02-17"
+hardening_verdict = "VERIFIED. Independent replay confirmed all three candidate URLs. arXiv:2509.08099 = 'Black Hole Spectroscopy and Tests of GR with GW250114' (LIGO/Virgo/KAGRA). PRL DOI 10.1103/6c61-fm1n = same paper, PRL 136 041403 (2026-01-29). Cornell news confirms GW250114 context with Keefe Mitman quotes. PRL direct access blocked by APS bot challenge (403); verified via search engine cache. Mapping from Live Science -> MSN aggregator to primary sources is correct and complete."
+hardening_evidence = ["arXiv abstract fetch (direct)", "PRL DOI resolve via doi.org (302 to link.aps.org, 403 on final)", "Web search confirms PRL 136 041403 title match", "Cornell news article fetch (direct)"]
 claim_lane_ready = true
-task_lane_ready = false
+task_lane_ready = true
 ticket_lane_ready = true
