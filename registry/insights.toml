@@ -1045,3 +1045,13 @@ claims = ["C-756"]
 confidence = "high"
 phase = "simulation"
 
+
+[[insight]]
+id = "I-092"
+title = "Technosignature Null Results Have Topology"
+date = "2026-02-18"
+status = "Proposed"
+summary = "SETI null results (no signal detected) are not featureless: the RFI environment and cadence-discriminated candidate populations carry topological and ultrametric structure that can be formally analyzed. The Wow! signal follow-up by Breakthrough Listen provides a clean ABACAD cadence testbed where ON/OFF morphological comparison tests whether the RFI candidate landscape differs between target and calibrator pointings."
+claims = ["C-772", "C-773"]
+confidence = "medium"
+phase = "topology"

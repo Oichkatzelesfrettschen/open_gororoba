@@ -286,6 +286,19 @@ fn build_registry() -> Vec<DatasetEntry> {
             pillar: "geophysical",
             size_hint: "~200 KB",
         },
+        // -- Electromagnetic pillar: technosignature research --
+        DatasetEntry {
+            provider: Box::new(wow::WowPrintoutProvider),
+            category: "astro",
+            pillar: "electromagnetic",
+            size_hint: "~500 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(wow::Bl6equj5ManifestProvider),
+            category: "astro",
+            pillar: "electromagnetic",
+            size_hint: "~5 KB",
+        },
         // -- Materials pillar: condensed-matter DFT databases --
         DatasetEntry {
             provider: Box::new(jarvis::JarvisProvider),

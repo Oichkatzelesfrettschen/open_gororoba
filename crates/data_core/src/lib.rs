@@ -62,6 +62,10 @@ pub use catalogs::sdss::{parse_sdss_quasar_csv, SdssQuasar};
 pub use catalogs::sorce::{parse_sorce_csv, SorceMeasurement};
 pub use catalogs::tsi::{parse_tsi_csv, TsiMeasurement};
 pub use catalogs::union3::parse_union3_chain;
+pub use catalogs::wow::{
+    abacad_filter, parse_bl_manifest_csv, parse_wow_printout_csv, wow_char_to_intensity,
+    Bl6equj5Bundle, Bl6equj5ManifestProvider, WowPrintoutProvider, WowPrintoutRow,
+};
 
 /// All dataset provider names that should appear in the manifest.
 ///
@@ -102,11 +106,13 @@ pub fn known_provider_names() -> Vec<&'static str> {
         "JPL Horizons Planetary Ephemeris",
         "JARVIS-DFT 3D",
         "AFLOW Materials Database",
+        "Wow! Signal 1977 Printout Scan",
+        "BL 6EQUJ5 GBT Manifest",
     ]
 }
 
 /// Number of datasets in the canonical inventory.
-pub const DATASET_COUNT: usize = 32;
+pub const DATASET_COUNT: usize = 34;
 
 /// The 8 scientific pillars that organize datasets.
 pub const PILLARS: &[&str] = &[
@@ -127,9 +133,11 @@ pub fn provider_pillar(name: &str) -> &'static str {
         "GWTC-3 confident events"
         | "GWOSC combined GWTC (O1-O4a)"
         | "NANOGrav 15yr Free Spectrum" => "gravitational",
-        "Fermi GBM Burst Catalog" | "EHT M87 2018 Data Bundle" | "EHT SgrA 2022 Data Bundle" => {
-            "electromagnetic"
-        }
+        "Fermi GBM Burst Catalog"
+        | "EHT M87 2018 Data Bundle"
+        | "EHT SgrA 2022 Data Bundle"
+        | "Wow! Signal 1977 Printout Scan"
+        | "BL 6EQUJ5 GBT Manifest" => "electromagnetic",
         "CHIME/FRB Catalog 2"
         | "ATNF Pulsar Catalogue"
         | "McGill Magnetar Catalog"
@@ -161,6 +169,8 @@ pub fn claims_for_provider(name: &str) -> &'static [&'static str] {
         "Pantheon+ SH0ES" => &["C-038", "C-437", "C-441"],
         "DESI DR1 BAO" => &["C-057", "C-441"],
         "Planck 2018 Summary" => &["C-040", "C-058"],
+        "Wow! Signal 1977 Printout Scan" => &["C-769"],
+        "BL 6EQUJ5 GBT Manifest" => &["C-771"],
         _ => &[],
     }
 }
@@ -218,10 +228,10 @@ mod tests {
             .into_iter()
             .filter(|n| !claims_for_provider(n).is_empty())
             .collect();
-        // 12 datasets have claims (DESI is hardcoded, not in provider list)
+        // 14 datasets have claims (DESI is hardcoded, not in provider list)
         assert!(
-            backed.len() >= 11,
-            "Expected at least 11 claim-backed providers, got {}",
+            backed.len() >= 13,
+            "Expected at least 13 claim-backed providers, got {}",
             backed.len()
         );
     }
@@ -244,6 +254,8 @@ mod tests {
             Box::new(geophysical::de_ephemeris::De440Provider),
             Box::new(catalogs::jarvis::JarvisProvider),
             Box::new(catalogs::aflow::AflowProvider),
+            Box::new(catalogs::wow::WowPrintoutProvider),
+            Box::new(catalogs::wow::Bl6equj5ManifestProvider),
         ];
 
         for p in &providers {

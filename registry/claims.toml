@@ -12194,3 +12194,62 @@ last_verified = "2026-02-17"
 what_would_verify_refute = "VERIFIED: test_henke_au_kk_uv_improvement passes (rel < 50%), Henke eps(i*xi_50) > 1, monotone energy grids confirmed for all 3 metals, 548 tests pass. REFUTE: Henke-derived n,k shows eps(i*xi_50) < 1 for Au (non-physical for Drude metal below plasma frequency) or non-monotone energy grid."
 phase = "materials"
 sprint = 46
+
+[[claim]]
+id = "C-769"
+statement = "The 1977 Wow! signal 6EQUJ5 sequence is faithfully transcribed from the archival printout into a 50-channel intensity table with base-36 character-to-integer mapping (0-9 -> 0-9, A-Z -> 10-35)."
+where_stated = "`crates/data_core/src/catalogs/wow.rs` (wow_char_to_intensity, parse_wow_printout_csv), `data/csv/wow1977_transcription.csv`, `docs/external_sources/WOW_SIGNAL_SOURCES.md`"
+status = "Proposed"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: SHA-256 of transcription CSV matches expected value; all 6 Wow! characters decode to [6, 14, 26, 30, 19, 5]; background rows decode to intensity 1. REFUTE: Any character-to-intensity mismatch with Ehman (1997) or the IIIF printout scan."
+confidence = "medium"
+phase = "data"
+sprint = 48
+
+[[claim]]
+id = "C-770"
+statement = "Earth-motion drift rate at the Wow! signal locale (RA~19h25m, Dec~-27d) is bounded by |drift| < 0.37 Hz/s at 1420.405 MHz, combining orbital and rotational contributions analytically."
+where_stated = "`crates/gororoba_cli/src/bin/wow_signal_analysis.rs` (drift-rate subcommand), `docs/external_sources/WOW_SIGNAL_SOURCES.md`"
+status = "Proposed"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Analytical drift rate bound from v_orb=29783 m/s (orbital) and v_rot*cos(lat)=355 m/s (rotational at Big Ear) yields combined bound < 0.37 Hz/s. REFUTE: Full ephemeris calculation (SPK/DE440) produces |drift| > 0.37 Hz/s at epoch 1977-08-15 22:16 UT."
+confidence = "medium"
+phase = "data"
+sprint = 48
+dependencies = ["C-769"]
+
+[[claim]]
+id = "C-771"
+statement = "Breakthrough Listen ABACAD cadence at the Wow! signal locale produced no narrowband or wideband detections above threshold in either cadence group, establishing a modern non-detection baseline at 1-12 GHz with 2.5 million channel resolution."
+where_stated = "`data/csv/bl_6equj5_gbt_manifest.csv`, `docs/external_sources/WOW_SIGNAL_SOURCES.md`, BIB-0214 (Perez et al. 2022)"
+status = "Proposed"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Parse BL 6EQUJ5 filterbank data; run turboSETI with standard thresholds; zero candidates survive ABACAD cadence filter. REFUTE: Any candidate survives the full ON-OFF-ON-OFF-ON-OFF discrimination pipeline."
+confidence = "medium"
+phase = "data"
+sprint = 48
+dependencies = ["C-769"]
+
+[[claim]]
+id = "C-772"
+statement = "ON and OFF cadence pointings from the BL 6EQUJ5 campaign are topologically indistinguishable: the Wasserstein-2 distance between their persistence diagrams is not significantly different from a label-permuted null distribution (p > 0.05)."
+where_stated = "`crates/gororoba_cli/src/bin/wow_topology.rs` (morphology subcommand)"
+status = "Proposed"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Permutation test on persistent homology of candidate point clouds (frequency, drift rate, SNR features) yields p > 0.05. REFUTE: p < 0.05 with Bonferroni correction across homology dimensions."
+confidence = "low"
+phase = "topology"
+sprint = 48
+dependencies = ["C-771"]
+
+[[claim]]
+id = "C-773"
+statement = "BL 6EQUJ5 candidate feature vectors exhibit non-trivial ultrametric structure compared to column-shuffled null: the observed ultrametric fraction exceeds the permutation null mean with p < 0.05 after BH-FDR correction."
+where_stated = "`crates/gororoba_cli/src/bin/wow_topology.rs` (ultrametric subcommand)"
+status = "Proposed"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Ultrametric fraction test with 10000 triples x 1000 permutations yields p < 0.05 and positive effect size. REFUTE: p >= 0.05, or observed fraction <= null mean (no ultrametric excess)."
+confidence = "low"
+phase = "topology"
+sprint = 48
+dependencies = ["C-771"]

@@ -462,6 +462,14 @@ path = "src/bin/prefix_chain_theorem.rs"
 name = "paper-build"
 path = "src/bin/paper_build.rs"
 
+[[bin]]
+name = "wow-signal-analysis"
+path = "src/bin/wow_signal_analysis.rs"
+
+[[bin]]
+name = "wow-topology"
+path = "src/bin/wow_topology.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
