@@ -4,15 +4,15 @@
 [markdown_inventory]
 generated_at = "deterministic"
 authoritative = true
-document_count = 503
+document_count = 497
 tracked_count = 35
 untracked_count = 0
-ignored_count = 468
+ignored_count = 462
 filesystem_only_count = 0
 generated_count = 194
-non_generated_count = 309
+non_generated_count = 303
 archived_count = 0
-third_party_count = 281
+third_party_count = 275
 manual_exception_count = 0
 unbacked_manual_count = 0
 toml_backed_manual_count = 28
@@ -5400,144 +5400,6 @@ experiment_ref_count = 0
 
 [[document]]
 id = "MDI-0224"
-path = ".venv_ingest/lib/python3.14/site-packages/pip-26.0.1.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
-title = "LICENSE"
-git_status = "ignored"
-archived = false
-generated_declared = false
-generated_pattern = false
-generated = false
-manual_exception = false
-third_party = true
-classification = "third_party_markdown"
-migration_action = "ignore_vendor"
-migration_priority = "none"
-toml_destination = "registry/markdown_payloads.toml"
-rationale = "Third-party or tool cache markdown; not a project knowledge source."
-size_bytes = 1541
-line_count = 32
-sha256 = "b7a336abf3b04e180ec065cdd16e705d079e1cc7a14f910aa6e9187f36b9cd87"
-claim_ref_count = 0
-insight_ref_count = 0
-experiment_ref_count = 0
-
-[[document]]
-id = "MDI-0225"
-path = ".venv_ingest/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
-title = "LICENSE"
-git_status = "ignored"
-archived = false
-generated_declared = false
-generated_pattern = false
-generated = false
-manual_exception = false
-third_party = true
-classification = "third_party_markdown"
-migration_action = "ignore_vendor"
-migration_priority = "none"
-toml_destination = "registry/markdown_payloads.toml"
-rationale = "Third-party or tool cache markdown; not a project knowledge source."
-size_bytes = 1541
-line_count = 32
-sha256 = "b7a336abf3b04e180ec065cdd16e705d079e1cc7a14f910aa6e9187f36b9cd87"
-claim_ref_count = 0
-insight_ref_count = 0
-experiment_ref_count = 0
-
-[[document]]
-id = "MDI-0226"
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/LICENSE.md"
-title = "NCSA Open Source License"
-git_status = "ignored"
-archived = false
-generated_declared = false
-generated_pattern = false
-generated = false
-manual_exception = false
-third_party = true
-classification = "third_party_markdown"
-migration_action = "ignore_vendor"
-migration_priority = "none"
-toml_destination = "registry/markdown_payloads.toml"
-rationale = "Third-party or tool cache markdown; not a project knowledge source."
-size_bytes = 3511
-line_count = 72
-sha256 = "103166b62b80443afb9eb3488e052ea06be0cff566b908f199e561fde49af19f"
-claim_ref_count = 0
-insight_ref_count = 0
-experiment_ref_count = 0
-
-[[document]]
-id = "MDI-0227"
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
-title = "LICENSE"
-git_status = "ignored"
-archived = false
-generated_declared = false
-generated_pattern = false
-generated = false
-manual_exception = false
-third_party = true
-classification = "third_party_markdown"
-migration_action = "ignore_vendor"
-migration_priority = "none"
-toml_destination = "registry/markdown_payloads.toml"
-rationale = "Third-party or tool cache markdown; not a project knowledge source."
-size_bytes = 1541
-line_count = 32
-sha256 = "a59f0b0ef3635874109a4461ca44ff7a70d50696e814767bfaf721d4c9b0db0f"
-claim_ref_count = 0
-insight_ref_count = 0
-experiment_ref_count = 0
-
-[[document]]
-id = "MDI-0228"
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
-title = "LICENSE"
-git_status = "ignored"
-archived = false
-generated_declared = false
-generated_pattern = false
-generated = false
-manual_exception = false
-third_party = true
-classification = "third_party_markdown"
-migration_action = "ignore_vendor"
-migration_priority = "none"
-toml_destination = "registry/markdown_payloads.toml"
-rationale = "Third-party or tool cache markdown; not a project knowledge source."
-size_bytes = 1541
-line_count = 32
-sha256 = "a59f0b0ef3635874109a4461ca44ff7a70d50696e814767bfaf721d4c9b0db0f"
-claim_ref_count = 0
-insight_ref_count = 0
-experiment_ref_count = 0
-
-[[document]]
-id = "MDI-0229"
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/scipy/fft/_pocketfft/LICENSE.md"
-title = "LICENSE"
-git_status = "ignored"
-archived = false
-generated_declared = false
-generated_pattern = false
-generated = false
-manual_exception = false
-third_party = true
-classification = "third_party_markdown"
-migration_action = "ignore_vendor"
-migration_priority = "none"
-toml_destination = "registry/markdown_payloads.toml"
-rationale = "Third-party or tool cache markdown; not a project knowledge source."
-size_bytes = 1498
-line_count = 26
-sha256 = "c254b2b5fd30ae3c89d36ba061730563b9760fca04f1b746a1b2c3157da2c789"
-claim_ref_count = 0
-insight_ref_count = 0
-experiment_ref_count = 0
-
-[[document]]
-id = "MDI-0230"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/theory_narrative_next25.md"
 title = "CD Synthesis Narrative: Next 25 Items"
 git_status = "ignored"
@@ -5559,7 +5421,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0231"
+id = "MDI-0225"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md"
 title = "Unresolved Sources (Paper-Level Final)"
 git_status = "ignored"
@@ -5581,7 +5443,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0232"
+id = "MDI-0226"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/sedenions/tang_tang_mdpi_link_search.md"
 title = "Tang-Tang MDPI Link Search (2026-02-15)"
 git_status = "ignored"
@@ -5603,7 +5465,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0233"
+id = "MDI-0227"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/unresolved_direct_sources.md"
 title = "Unresolved Direct Sources (2026-02-15)"
 git_status = "ignored"
@@ -5625,7 +5487,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0234"
+id = "MDI-0228"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/README.md"
 title = "Round-3 Mirror Retry Summary (2026-02-15)"
 git_status = "tracked"
@@ -5647,7 +5509,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0235"
+id = "MDI-0229"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/cd_hypercomplex/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/dpll_cdcl.md"
 title = "Extracted text: dpll_cdcl.pdf"
 git_status = "ignored"
@@ -5669,7 +5531,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0236"
+id = "MDI-0230"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/cd_hypercomplex/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/CI_CD_ARCHITECTURE.md"
 title = "CI/CD Pipeline Architecture"
 git_status = "ignored"
@@ -5691,7 +5553,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0237"
+id = "MDI-0231"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/hott_formal/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-theorem-provers/hott_agda.md"
 title = "Extracted text: hott_agda.pdf"
 git_status = "ignored"
@@ -5713,7 +5575,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0238"
+id = "MDI-0232"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/probabilistic_lambda_intro.md"
 title = "Extracted text: probabilistic_lambda_intro.pdf"
 git_status = "ignored"
@@ -5735,7 +5597,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0239"
+id = "MDI-0233"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/differential_lambda_survey.md"
 title = "Extracted text: differential_lambda_survey.pdf"
 git_status = "ignored"
@@ -5757,7 +5619,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0240"
+id = "MDI-0234"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/taylor_expansion_lambda.md"
 title = "Extracted text: taylor_expansion_lambda.pdf"
 git_status = "ignored"
@@ -5779,7 +5641,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0241"
+id = "MDI-0235"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/LambdaLearner/README.md"
 title = "Run and deploy your AI Studio app"
 git_status = "tracked"
@@ -5801,7 +5663,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0242"
+id = "MDI-0236"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/LambdaLearner/requirements.md"
 title = "Installation Requirements (LambdaLearner)"
 git_status = "ignored"
@@ -5823,7 +5685,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0243"
+id = "MDI-0237"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/1_NEXT_STEPS.md"
 title = "NEXT STEPS - Master Entry Point"
 git_status = "ignored"
@@ -5845,7 +5707,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0244"
+id = "MDI-0238"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/ANALYSIS_SUMMARY.md"
 title = "Repository Analysis: Executive Summary"
 git_status = "ignored"
@@ -5867,7 +5729,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0245"
+id = "MDI-0239"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/BASELINE_EXECUTIVE_SUMMARY.md"
 title = "Executive Summary: Lambda Calculus Repository Baseline Assessment"
 git_status = "ignored"
@@ -5889,7 +5751,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0246"
+id = "MDI-0240"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/BASELINE_METRICS.md"
 title = "Lambda Calculus Research Repository - Baseline Metrics Report"
 git_status = "ignored"
@@ -5911,7 +5773,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0247"
+id = "MDI-0241"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/CLAUDE.md"
 title = "CLAUDE.md"
 git_status = "tracked"
@@ -5933,7 +5795,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0248"
+id = "MDI-0242"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/GEMINI.md"
 title = "Gemini Context: Lambda Calculus Research Repository"
 git_status = "tracked"
@@ -5955,7 +5817,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0249"
+id = "MDI-0243"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/METRICS_CITATION_CORRECTION.md"
 title = "Baseline Metrics - Citation Count Correction"
 git_status = "ignored"
@@ -5977,7 +5839,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0250"
+id = "MDI-0244"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/METRICS_README.md"
 title = "Repository Baseline Metrics - Getting Started"
 git_status = "ignored"
@@ -5999,7 +5861,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0251"
+id = "MDI-0245"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/METRICS_SUMMARY.md"
 title = "Baseline Metrics Quick Reference"
 git_status = "ignored"
@@ -6021,7 +5883,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0252"
+id = "MDI-0246"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/README.md"
 title = "Lambda Calculus Learning Journey"
 git_status = "tracked"
@@ -6043,7 +5905,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0253"
+id = "MDI-0247"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/REPOSITORY_ANALYSIS_REPORT.md"
 title = "Lambda Calculus Research Repository: Comprehensive Analysis Report"
 git_status = "ignored"
@@ -6065,7 +5927,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0254"
+id = "MDI-0248"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/RESEARCH_PLAN.md"
 title = "Unified Spandrel Synthesis: Research & Experimental Plan"
 git_status = "ignored"
@@ -6087,7 +5949,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0255"
+id = "MDI-0249"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/START_HERE.md"
 title = "[TARGET] START HERE: Repository Analysis Results"
 git_status = "ignored"
@@ -6109,7 +5971,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0256"
+id = "MDI-0250"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/BIBLIOGRAPHY_STANDARDIZATION_GUIDE.md"
 title = "Bibliography Standardization Guide for Lambda Calculus Research Repository"
 git_status = "ignored"
@@ -6131,7 +5993,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0257"
+id = "MDI-0251"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/BIBLIOGRAPHY_STANDARDIZATION_STATUS.md"
 title = "Bibliography Standardization Status Report"
 git_status = "ignored"
@@ -6153,7 +6015,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0258"
+id = "MDI-0252"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/BIBLIOGRAPHY_UPDATE_REPORT.md"
 title = "Bibliography Update Report"
 git_status = "ignored"
@@ -6175,7 +6037,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0259"
+id = "MDI-0253"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/CONSOLIDATION_ANALYSIS.md"
 title = "Lambda Calculus Repository - Consolidation Analysis"
 git_status = "ignored"
@@ -6197,7 +6059,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0260"
+id = "MDI-0254"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/DOCUMENTATION_ARCHITECTURE_ANALYSIS.md"
 title = "Documentation Architecture Analysis"
 git_status = "ignored"
@@ -6219,7 +6081,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0261"
+id = "MDI-0255"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/FINAL_REPOSITORY_SUMMARY.md"
 title = "Lambda Calculus Research Repository - Final Achievement Summary"
 git_status = "ignored"
@@ -6241,7 +6103,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0262"
+id = "MDI-0256"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/IMMEDIATE_ACTION_PLAN.md"
 title = "Documentation Architecture: Immediate Action Plan"
 git_status = "ignored"
@@ -6263,7 +6125,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0263"
+id = "MDI-0257"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/IMPLEMENTATION_EXECUTION_REPORT.md"
 title = "Implementation Execution Report"
 git_status = "ignored"
@@ -6285,7 +6147,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0264"
+id = "MDI-0258"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/IMPLEMENTATION_ROADMAP.md"
 title = "Implementation Roadmap: Executing the Analysis"
 git_status = "ignored"
@@ -6307,7 +6169,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0265"
+id = "MDI-0259"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/MKDOCS_SETUP_GUIDE.md"
 title = "MkDocs Setup Guide - Lambda Calculus Research Repository"
 git_status = "ignored"
@@ -6329,7 +6191,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0266"
+id = "MDI-0260"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/MODERNIZATION_ROADMAP.md"
 title = "Lambda Calculus Research Repository - Modernization Roadmap"
 git_status = "ignored"
@@ -6351,7 +6213,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0267"
+id = "MDI-0261"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE1_COMPLETION_REPORT.md"
 title = "Phase 1 Completion Report"
 git_status = "ignored"
@@ -6373,7 +6235,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0268"
+id = "MDI-0262"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE1_VALIDATION_BASELINE.md"
 title = "Phase 1 Validation Baseline Report"
 git_status = "ignored"
@@ -6395,7 +6257,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0269"
+id = "MDI-0263"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE2_COMPLETION_REPORT.md"
 title = "Phase 2 Completion Report"
 git_status = "ignored"
@@ -6417,7 +6279,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0270"
+id = "MDI-0264"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE2_ISSUES_TO_FIX.md"
 title = "Phase 2 Issues to Fix"
 git_status = "ignored"
@@ -6439,7 +6301,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0271"
+id = "MDI-0265"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/QUICK_REFERENCE.md"
 title = "Documentation Architecture: Quick Reference"
 git_status = "ignored"
@@ -6461,7 +6323,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0272"
+id = "MDI-0266"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/README.md"
 title = "Admin: Repository Meta-Documentation"
 git_status = "tracked"
@@ -6483,7 +6345,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0273"
+id = "MDI-0267"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/RUST_AUDIT_REPORT.md"
 title = "Rust Implementation Audit Report"
 git_status = "ignored"
@@ -6505,7 +6367,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0274"
+id = "MDI-0268"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/TASK_2.4_COMPLETION_REPORT.md"
 title = "Task 2.4 Completion Report: Validation Scripts Consolidation"
 git_status = "ignored"
@@ -6527,7 +6389,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0275"
+id = "MDI-0269"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/THEORETICAL_VALIDATION_REPORT.md"
 title = "Lambda Calculus Research Repository - Theoretical Validation Report"
 git_status = "ignored"
@@ -6549,7 +6411,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0276"
+id = "MDI-0270"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/TODO_AUDIT.md"
 title = "Documentation TODO Audit"
 git_status = "ignored"
@@ -6571,7 +6433,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0277"
+id = "MDI-0271"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/VALIDATION_CONSOLIDATION.md"
 title = "Validation Scripts Consolidation - Migration Guide"
 git_status = "ignored"
@@ -6593,7 +6455,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0278"
+id = "MDI-0272"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/agent-tasks/README.md"
 title = "Agent Task Delegation System"
 git_status = "tracked"
@@ -6615,7 +6477,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0279"
+id = "MDI-0273"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/10-concurrent-variants/index.md"
 title = "Concurrent Lambda Calculi and Process Variants"
 git_status = "ignored"
@@ -6637,7 +6499,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0280"
+id = "MDI-0274"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/11-quantum-variants/index.md"
 title = "Quantum Lambda Calculi and Computation"
 git_status = "ignored"
@@ -6659,7 +6521,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0281"
+id = "MDI-0275"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/13-combinatory-logic/implementations.md"
 title = "Implementation Catalog: Combinatory Logic and Related Systems"
 git_status = "ignored"
@@ -6681,7 +6543,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0282"
+id = "MDI-0276"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/13-combinatory-logic/index.md"
 title = "Combinatory Logic"
 git_status = "ignored"
@@ -6703,7 +6565,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0283"
+id = "MDI-0277"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/13-combinatory-logic/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Combinatory Logic and Related Calculi"
 git_status = "ignored"
@@ -6725,7 +6587,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0284"
+id = "MDI-0278"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/18-categorical-semantics/index.md"
 title = "categorical-semantics"
 git_status = "ignored"
@@ -6747,7 +6609,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0285"
+id = "MDI-0279"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/18-categorical-semantics/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Categorical Semantics of Lambda Calculus"
 git_status = "ignored"
@@ -6769,7 +6631,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0286"
+id = "MDI-0280"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/22-quantum-lambda-calculus/index.md"
 title = "quantum-lambda-calculus"
 git_status = "ignored"
@@ -6791,7 +6653,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0287"
+id = "MDI-0281"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/22-quantum-lambda-calculus/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Quantum Lambda Calculus and Quantum Types"
 git_status = "ignored"
@@ -6813,7 +6675,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0288"
+id = "MDI-0282"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/23-advanced-lambda-variants/index.md"
 title = "advanced-lambda-variants"
 git_status = "ignored"
@@ -6835,7 +6697,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0289"
+id = "MDI-0283"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/23-advanced-lambda-variants/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Advanced Lambda Calculus Variants"
 git_status = "ignored"
@@ -6857,7 +6719,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0290"
+id = "MDI-0284"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/24-tensor-lambda-calculus/index.md"
 title = "Tensor Lambda Calculus"
 git_status = "ignored"
@@ -6879,7 +6741,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0291"
+id = "MDI-0285"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/24-tensor-lambda-calculus/papers/bibliography.md"
 title = "Tensor Lambda Calculus - Academic Bibliography"
 git_status = "ignored"
@@ -6901,7 +6763,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0292"
+id = "MDI-0286"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/25-geometric-algebra-lambda-calculus/index.md"
 title = "Geometric Algebra Lambda Calculus"
 git_status = "ignored"
@@ -6923,7 +6785,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0293"
+id = "MDI-0287"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/25-geometric-algebra-lambda-calculus/papers/bibliography.md"
 title = "Geometric Algebra Lambda Calculus - Academic Bibliography"
 git_status = "ignored"
@@ -6945,7 +6807,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0294"
+id = "MDI-0288"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/index.md"
 title = "Advanced Lambda Calculus Topics"
 git_status = "ignored"
@@ -6967,7 +6829,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0295"
+id = "MDI-0289"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/appendices/license.md"
 title = "License"
 git_status = "ignored"
@@ -6989,7 +6851,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0296"
+id = "MDI-0290"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/bibliography/core.md"
 title = "Core Bibliography"
 git_status = "ignored"
@@ -7011,7 +6873,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0297"
+id = "MDI-0291"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/comprehensive-bibliography.md"
 title = "Comprehensive Bibliography - All 700+ Citations"
 git_status = "ignored"
@@ -7033,7 +6895,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0298"
+id = "MDI-0292"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/comprehensive-index.md"
 title = "Lambda Calculus Research Repository - Comprehensive Index"
 git_status = "ignored"
@@ -7055,7 +6917,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0299"
+id = "MDI-0293"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/01-untyped-lambda-calculus/index.md"
 title = "Untyped Lambda Calculus"
 git_status = "ignored"
@@ -7077,7 +6939,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0300"
+id = "MDI-0294"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/01-untyped-lambda-calculus/papers/bibliography.md"
 title = "Untyped Lambda Calculus - Academic Bibliography"
 git_status = "ignored"
@@ -7099,7 +6961,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0301"
+id = "MDI-0295"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/02-simply-typed-lambda-calculus/index.md"
 title = "Simply Typed Lambda Calculus"
 git_status = "ignored"
@@ -7121,7 +6983,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0302"
+id = "MDI-0296"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/02-simply-typed-lambda-calculus/papers/bibliography.md"
 title = "Simply Typed Lambda Calculus - Academic Bibliography"
 git_status = "ignored"
@@ -7143,7 +7005,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0303"
+id = "MDI-0297"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/03-system-f-polymorphic/index.md"
 title = "System F (Polymorphic Lambda Calculus)"
 git_status = "ignored"
@@ -7165,7 +7027,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0304"
+id = "MDI-0298"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/03-system-f-polymorphic/papers/bibliography.md"
 title = "System F (Polymorphic Lambda Calculus) - Academic Bibliography"
 git_status = "ignored"
@@ -7187,7 +7049,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0305"
+id = "MDI-0299"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/04-calculus-of-constructions/index.md"
 title = "Calculus of Constructions"
 git_status = "ignored"
@@ -7209,7 +7071,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0306"
+id = "MDI-0300"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/04-calculus-of-constructions/papers/bibliography.md"
 title = "Calculus of Constructions - Academic Bibliography"
 git_status = "ignored"
@@ -7231,7 +7093,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0307"
+id = "MDI-0301"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/05-martin-lof-type-theory/bibliography.md"
 title = "Comprehensive Academic Bibliography: Martin-L<U+00F6>f Type Theory (MLTT)"
 git_status = "ignored"
@@ -7253,7 +7115,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0308"
+id = "MDI-0302"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/05-martin-lof-type-theory/index.md"
 title = "Martin-L<U+00F6>f Type Theory"
 git_status = "ignored"
@@ -7275,7 +7137,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0309"
+id = "MDI-0303"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/index.md"
 title = "Foundation"
 git_status = "ignored"
@@ -7297,7 +7159,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0310"
+id = "MDI-0304"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/fundamentals/church-1936.md"
 title = "Church (1936): An Unsolvable Problem of Elementary Number Theory"
 git_status = "ignored"
@@ -7319,7 +7181,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0311"
+id = "MDI-0305"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/fundamentals/girard-1989.md"
 title = "Girard (1989): Proofs and Types"
 git_status = "ignored"
@@ -7341,7 +7203,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0312"
+id = "MDI-0306"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/fundamentals/index.md"
 title = "Lambda Calculus Fundamentals"
 git_status = "ignored"
@@ -7363,7 +7225,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0313"
+id = "MDI-0307"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/guides/beginners-guide.md"
 title = "Beginner's Guide to Lambda Calculus"
 git_status = "ignored"
@@ -7385,7 +7247,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0314"
+id = "MDI-0308"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/index.md"
 title = "Lambda Calculus Implementations"
 git_status = "ignored"
@@ -7407,7 +7269,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0315"
+id = "MDI-0309"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/IMPLEMENTATION_SUMMARY.md"
 title = "Rust Implementation Documentation Summary"
 git_status = "ignored"
@@ -7429,7 +7291,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0316"
+id = "MDI-0310"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/QUICK_REFERENCE.md"
 title = "Quick Reference: tapl-rust"
 git_status = "ignored"
@@ -7451,7 +7313,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0317"
+id = "MDI-0311"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/README.md"
 title = "Rust Implementation Guide: tapl-rust"
 git_status = "tracked"
@@ -7473,7 +7335,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0318"
+id = "MDI-0312"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/architecture.md"
 title = "Architecture: Workspace Design and Structure"
 git_status = "ignored"
@@ -7495,7 +7357,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0319"
+id = "MDI-0313"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/development.md"
 title = "Development Guide: Build, Test, and Debug"
 git_status = "ignored"
@@ -7517,7 +7379,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0320"
+id = "MDI-0314"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/examples.md"
 title = "Examples: Working Code Demonstrations"
 git_status = "ignored"
@@ -7539,7 +7401,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0321"
+id = "MDI-0315"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/extending.md"
 title = "Extending the Implementation: Adding New Features"
 git_status = "ignored"
@@ -7561,7 +7423,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0322"
+id = "MDI-0316"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/integration.md"
 title = "Integration: Connecting Code to Academic Papers"
 git_status = "ignored"
@@ -7583,7 +7445,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0323"
+id = "MDI-0317"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/performance.md"
 title = "Performance: Benchmarks and Optimization"
 git_status = "ignored"
@@ -7605,7 +7467,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0324"
+id = "MDI-0318"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/testing.md"
 title = "Testing Strategy and Coverage"
 git_status = "ignored"
@@ -7627,7 +7489,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0325"
+id = "MDI-0319"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/simply-typed-haskell.md"
 title = "Simply Typed Lambda Calculus - Haskell Implementation"
 git_status = "ignored"
@@ -7649,7 +7511,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0326"
+id = "MDI-0320"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/untyped-lambda-python.md"
 title = "Untyped Lambda Calculus - Python Implementation"
 git_status = "ignored"
@@ -7671,7 +7533,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0327"
+id = "MDI-0321"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/includes/abbreviations.md"
 title = "Abbreviations Index"
 git_status = "ignored"
@@ -7693,7 +7555,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0328"
+id = "MDI-0322"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/index.md"
 title = "Lambda Calculus Learning Journey"
 git_status = "ignored"
@@ -7715,7 +7577,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0329"
+id = "MDI-0323"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/README.md"
 title = "Lambda Research Repository - Index System"
 git_status = "tracked"
@@ -7737,7 +7599,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0330"
+id = "MDI-0324"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/access-type.md"
 title = "Access Type Index"
 git_status = "ignored"
@@ -7759,7 +7621,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0331"
+id = "MDI-0325"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/by-author.md"
 title = "Author Index"
 git_status = "ignored"
@@ -7781,7 +7643,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0332"
+id = "MDI-0326"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/by-citation.md"
 title = "Lambda Calculus Papers Archive - Citation Index"
 git_status = "ignored"
@@ -7803,7 +7665,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0333"
+id = "MDI-0327"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/by-topic.md"
 title = "Topic Index"
 git_status = "ignored"
@@ -7825,7 +7687,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0334"
+id = "MDI-0328"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/chronological.md"
 title = "Chronological Index"
 git_status = "ignored"
@@ -7847,7 +7709,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0335"
+id = "MDI-0329"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/comprehensive.md"
 title = "Lambda Calculus Research Repository - Comprehensive Index"
 git_status = "ignored"
@@ -7869,7 +7731,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0336"
+id = "MDI-0330"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/statistics.md"
 title = "Archive Statistics"
 git_status = "ignored"
@@ -7891,7 +7753,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0337"
+id = "MDI-0331"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/introduction/educational-pathways.md"
 title = "Educational Pathways - Lambda Calculus Learning Guide"
 git_status = "ignored"
@@ -7913,7 +7775,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0338"
+id = "MDI-0332"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/introduction/implementation-catalog.md"
 title = "Lambda Calculus Variants Implementation Catalog"
 git_status = "ignored"
@@ -7935,7 +7797,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0339"
+id = "MDI-0333"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/introduction/index.md"
 title = "Introduction to Lambda Calculus Research"
 git_status = "ignored"
@@ -7957,7 +7819,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0340"
+id = "MDI-0334"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/pdf-access-test.md"
 title = "PDF Access Testing"
 git_status = "ignored"
@@ -7979,7 +7841,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0341"
+id = "MDI-0335"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/pdf-library.md"
 title = "PDF Library - Accessible Papers"
 git_status = "ignored"
@@ -8001,7 +7863,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0342"
+id = "MDI-0336"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research-highlights.md"
 title = "Lambda Calculus Research Repository"
 git_status = "ignored"
@@ -8023,7 +7885,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0343"
+id = "MDI-0337"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/BREAKTHROUGH_ANALYSIS.md"
 title = "Breakthrough Analysis: Neuro-Symbolic Tensor Lambda Calculus"
 git_status = "ignored"
@@ -8045,7 +7907,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0344"
+id = "MDI-0338"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/CROSS_REFERENCE_SYSTEM.md"
 title = "Lambda Calculus Research Repository - Cross-Reference System"
 git_status = "ignored"
@@ -8067,7 +7929,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0345"
+id = "MDI-0339"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/EXPERIMENT_PROTOCOLS.md"
 title = "Novel Experiment Protocols: Unified Spandrel Synthesis"
 git_status = "ignored"
@@ -8089,7 +7951,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0346"
+id = "MDI-0340"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/RESEARCH_IMPACT_REPORT.md"
 title = "Research Impact Report"
 git_status = "ignored"
@@ -8111,7 +7973,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0347"
+id = "MDI-0341"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/SYNERGY_MAP.md"
 title = "Synergy Map: Lambda Calculus & Unified Spandrel Synthesis (USS)"
 git_status = "ignored"
@@ -8133,7 +7995,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0348"
+id = "MDI-0342"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/index.md"
 title = "Research Library"
 git_status = "ignored"
@@ -8155,7 +8017,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0349"
+id = "MDI-0343"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/tags.md"
 title = "Research Topic Tags"
 git_status = "ignored"
@@ -8177,7 +8039,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0350"
+id = "MDI-0344"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/test-pdf-access.md"
 title = "Test PDF Access"
 git_status = "ignored"
@@ -8199,7 +8061,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0351"
+id = "MDI-0345"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/26-proof-theory/index.md"
 title = "Proof Theory"
 git_status = "ignored"
@@ -8221,7 +8083,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0352"
+id = "MDI-0346"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/26-proof-theory/papers/bibliography.md"
 title = "Foundational Papers in Proof Theory"
 git_status = "ignored"
@@ -8243,7 +8105,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0353"
+id = "MDI-0347"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/27-domain-theory/index.md"
 title = "Domain Theory"
 git_status = "ignored"
@@ -8265,7 +8127,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0354"
+id = "MDI-0348"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/27-domain-theory/papers/bibliography.md"
 title = "Foundational Papers in Domain Theory"
 git_status = "ignored"
@@ -8287,7 +8149,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0355"
+id = "MDI-0349"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/28-abstract-machines/index.md"
 title = "Abstract Machines for Functional Programming"
 git_status = "ignored"
@@ -8309,7 +8171,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0356"
+id = "MDI-0350"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/28-abstract-machines/papers/bibliography.md"
 title = "Foundational Papers on Abstract Machines"
 git_status = "ignored"
@@ -8331,7 +8193,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0357"
+id = "MDI-0351"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/29-homotopy-type-theory/index.md"
 title = "Homotopy Type Theory"
 git_status = "ignored"
@@ -8353,7 +8215,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0358"
+id = "MDI-0352"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/29-homotopy-type-theory/papers/bibliography.md"
 title = "Foundational Papers and Books on Homotopy Type Theory"
 git_status = "ignored"
@@ -8375,7 +8237,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0359"
+id = "MDI-0353"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/30-cubical-type-theory/index.md"
 title = "Cubical Type Theory"
 git_status = "ignored"
@@ -8397,7 +8259,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0360"
+id = "MDI-0354"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/30-cubical-type-theory/papers/bibliography.md"
 title = "Foundational Papers on Cubical Type Theory"
 git_status = "ignored"
@@ -8419,7 +8281,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0361"
+id = "MDI-0355"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/31-directed-type-theory/index.md"
 title = "Directed Type Theory"
 git_status = "ignored"
@@ -8441,7 +8303,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0362"
+id = "MDI-0356"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/31-directed-type-theory/papers/bibliography.md"
 title = "Foundational Papers on Directed Type Theory"
 git_status = "ignored"
@@ -8463,7 +8325,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0363"
+id = "MDI-0357"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/tools/pdf-index.md"
 title = "PDF Index and Health Check"
 git_status = "ignored"
@@ -8485,7 +8347,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0364"
+id = "MDI-0358"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/06-linear-lambda-calculus/index.md"
 title = "Linear Lambda Calculus"
 git_status = "ignored"
@@ -8507,7 +8369,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0365"
+id = "MDI-0359"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/06-linear-lambda-calculus/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Linear Lambda Calculus and Substructural Type Systems"
 git_status = "ignored"
@@ -8529,7 +8391,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0366"
+id = "MDI-0360"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/07-session-types/index.md"
 title = "Session Types"
 git_status = "ignored"
@@ -8551,7 +8413,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0367"
+id = "MDI-0361"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/07-session-types/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Session Types (1993-2025)"
 git_status = "ignored"
@@ -8573,7 +8435,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0368"
+id = "MDI-0362"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/08-dependent-types/index.md"
 title = "Dependent Types"
 git_status = "ignored"
@@ -8595,7 +8457,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0369"
+id = "MDI-0363"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/08-dependent-types/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Dependent Types"
 git_status = "ignored"
@@ -8617,7 +8479,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0370"
+id = "MDI-0364"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/09-substructural-types/index.md"
 title = "Substructural Types"
 git_status = "ignored"
@@ -8639,7 +8501,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0371"
+id = "MDI-0365"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/09-substructural-types/papers/bibliography.md"
 title = "Comprehensive Bibliography: Substructural Lambda Calculi"
 git_status = "ignored"
@@ -8661,7 +8523,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0372"
+id = "MDI-0366"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/12-pure-type-systems/index.md"
 title = "Pure Type Systems"
 git_status = "ignored"
@@ -8683,7 +8545,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0373"
+id = "MDI-0367"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/12-pure-type-systems/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Pure Type Systems and Lambda Cube"
 git_status = "ignored"
@@ -8705,7 +8567,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0374"
+id = "MDI-0368"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/14-intersection-types/implementations.md"
 title = "Intersection Types: Implementation Catalog"
 git_status = "ignored"
@@ -8727,7 +8589,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0375"
+id = "MDI-0369"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/14-intersection-types/index.md"
 title = "Intersection Types Research"
 git_status = "ignored"
@@ -8749,7 +8611,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0376"
+id = "MDI-0370"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/14-intersection-types/papers/bibliography.md"
 title = "Intersection Types: Comprehensive Academic Bibliography"
 git_status = "ignored"
@@ -8771,7 +8633,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0377"
+id = "MDI-0371"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/15-union-types/index.md"
 title = "Union Types Research"
 git_status = "ignored"
@@ -8793,7 +8655,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0378"
+id = "MDI-0372"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/15-union-types/papers/bibliography.md"
 title = "Union Types: Comprehensive Academic Bibliography"
 git_status = "ignored"
@@ -8815,7 +8677,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0379"
+id = "MDI-0373"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/16-gradual-typing/index.md"
 title = "gradual-typing"
 git_status = "ignored"
@@ -8837,7 +8699,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0380"
+id = "MDI-0374"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/16-gradual-typing/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Gradual Typing"
 git_status = "ignored"
@@ -8859,7 +8721,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0381"
+id = "MDI-0375"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/17-effect-systems/index.md"
 title = "effect-systems"
 git_status = "ignored"
@@ -8881,7 +8743,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0382"
+id = "MDI-0376"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/17-effect-systems/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Effect Systems"
 git_status = "ignored"
@@ -8903,7 +8765,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0383"
+id = "MDI-0377"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/19-modal-types/index.md"
 title = "modal-types"
 git_status = "ignored"
@@ -8925,7 +8787,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0384"
+id = "MDI-0378"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/19-modal-types/papers/bibliography.md"
 title = "Comprehensive Academic Bibliography: Modal Logic/Types"
 git_status = "ignored"
@@ -8947,7 +8809,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0385"
+id = "MDI-0379"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/20-refinement-types/index.md"
 title = "refinement-types"
 git_status = "ignored"
@@ -8969,7 +8831,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0386"
+id = "MDI-0380"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/20-refinement-types/papers/bibliography.md"
 title = "bibliography"
 git_status = "ignored"
@@ -8991,7 +8853,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0387"
+id = "MDI-0381"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/21-probabilistic-types/index.md"
 title = "probabilistic-types"
 git_status = "ignored"
@@ -9013,7 +8875,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0388"
+id = "MDI-0382"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/21-probabilistic-types/papers/bibliography.md"
 title = "bibliography"
 git_status = "ignored"
@@ -9035,7 +8897,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0389"
+id = "MDI-0383"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/experiments/README.md"
 title = "Experiments Directory"
 git_status = "tracked"
@@ -9057,7 +8919,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0390"
+id = "MDI-0384"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/idris/README.md"
 title = "Idris Implementations of Lambda Calculus"
 git_status = "tracked"
@@ -9079,7 +8941,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0391"
+id = "MDI-0385"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scala/README.md"
 title = "Scala 3 Implementations of Lambda Calculus"
 git_status = "tracked"
@@ -9101,7 +8963,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0392"
+id = "MDI-0386"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scheme/README.md"
 title = "Scheme/Racket Implementations of Lambda Calculus"
 git_status = "tracked"
@@ -9123,7 +8985,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0393"
+id = "MDI-0387"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/sml/README.md"
 title = "Standard ML (SML) Implementations of Lambda Calculus"
 git_status = "tracked"
@@ -9145,7 +9007,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0394"
+id = "MDI-0388"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/IMPLEMENTATION_SUMMARY.md"
 title = "Lambda Calculus Papers Archive - Implementation Summary"
 git_status = "ignored"
@@ -9167,7 +9029,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0395"
+id = "MDI-0389"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/README.md"
 title = "Lambda Calculus Papers Archive"
 git_status = "tracked"
@@ -9189,7 +9051,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0396"
+id = "MDI-0390"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/research/advanced_mathematical_lambda_calculus_extensions_2025.md"
 title = "Advanced Mathematical Extensions of Lambda Calculus: A Comprehensive Research Survey (2020-2025)"
 git_status = "ignored"
@@ -9211,7 +9073,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0397"
+id = "MDI-0391"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/requirements.md"
 title = "Installation Requirements (lambda-research)"
 git_status = "ignored"
@@ -9233,7 +9095,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0398"
+id = "MDI-0392"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/tests/TEST_SPECIFICATION.md"
 title = "Lambda Calculus Testing Framework Specification"
 git_status = "ignored"
@@ -9255,7 +9117,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0399"
+id = "MDI-0393"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/ARCHITECTURE_ANALYSIS.md"
 title = "Architecture Analysis and Technical Debt Report"
 git_status = "ignored"
@@ -9277,7 +9139,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0400"
+id = "MDI-0394"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/CI_COMPARISON.md"
 title = "CI/CD Workflow Comparison"
 git_status = "ignored"
@@ -9299,7 +9161,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0401"
+id = "MDI-0395"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/MODERNIZATION_REPORT.md"
 title = "Modernization Summary and Validation Report"
 git_status = "ignored"
@@ -9321,7 +9183,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0402"
+id = "MDI-0396"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/PROJECT_COMPLETION.md"
 title = "<U+1F3AF> Project Completion Summary"
 git_status = "ignored"
@@ -9343,7 +9205,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0403"
+id = "MDI-0397"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/README.md"
 title = "Lambda Synthesis Experiments (USS)"
 git_status = "tracked"
@@ -9365,7 +9227,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0404"
+id = "MDI-0398"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/RESEARCH_ANALYSIS.md"
 title = "Advanced Research and Static Analysis Report"
 git_status = "ignored"
@@ -9387,7 +9249,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0405"
+id = "MDI-0399"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/USS_REPORT.md"
 title = "Unified Spandrel Synthesis (USS) - Experimental Report"
 git_status = "ignored"
@@ -9409,7 +9271,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0406"
+id = "MDI-0400"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/requirements.md"
 title = "Installation Requirements (lambda-synthesis-experiments)"
 git_status = "ignored"
@@ -9431,7 +9293,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0407"
+id = "MDI-0401"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155256/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -9453,7 +9315,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0408"
+id = "MDI-0402"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155256/workspace_root/docs/REPRODUCIBLE_BACKUP_MANIFEST.md"
 title = "Backup Manifest Protocol"
 git_status = "ignored"
@@ -9475,7 +9337,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0409"
+id = "MDI-0403"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155256/workspace_root/docs/ROADMAP_STATUS.md"
 title = "Roadmap Status (Lambda Workspace)"
 git_status = "ignored"
@@ -9497,7 +9359,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0410"
+id = "MDI-0404"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155413/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -9519,7 +9381,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0411"
+id = "MDI-0405"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155413/workspace_root/docs/ROADMAP_STATUS.md"
 title = "Roadmap Status (Lambda Workspace)"
 git_status = "ignored"
@@ -9541,7 +9403,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0412"
+id = "MDI-0406"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/lambda-research/docs/appendices/license.md"
 title = "License"
 git_status = "ignored"
@@ -9563,7 +9425,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0413"
+id = "MDI-0407"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/lambda-research/docs/implementations/rust/architecture.md"
 title = "Architecture: Workspace Design and Structure"
 git_status = "ignored"
@@ -9585,7 +9447,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0414"
+id = "MDI-0408"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/CLAUDE.md"
 title = "CLAUDE Workspace Notes"
 git_status = "tracked"
@@ -9607,7 +9469,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0415"
+id = "MDI-0409"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/GEMINI.md"
 title = "GEMINI Workspace Logbook"
 git_status = "tracked"
@@ -9629,7 +9491,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0416"
+id = "MDI-0410"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/MODULE_REQUIREMENTS_MATRIX.md"
 title = "Lambda Module Requirements Matrix"
 git_status = "ignored"
@@ -9651,7 +9513,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0417"
+id = "MDI-0411"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -9673,7 +9535,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0418"
+id = "MDI-0412"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/agents.md"
 title = "agents.md"
 git_status = "tracked"
@@ -9695,7 +9557,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0419"
+id = "MDI-0413"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/BENCHMARK_PROTOCOL.md"
 title = "Reproducibility and Benchmark Schema"
 git_status = "ignored"
@@ -9717,7 +9579,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0420"
+id = "MDI-0414"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/CLAIM_REGISTER.md"
 title = "Claim Register"
 git_status = "ignored"
@@ -9739,7 +9601,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0421"
+id = "MDI-0415"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/CONSOLIDATION_CONFLICT_RESOLUTION.md"
 title = "Consolidation Conflict Resolution Log"
 git_status = "ignored"
@@ -9761,7 +9623,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0422"
+id = "MDI-0416"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/LICENSES_MATRIX.md"
 title = "License Matrix for the Lambda Workspace"
 git_status = "ignored"
@@ -9783,7 +9645,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0423"
+id = "MDI-0417"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/LICENSE_RECONCILIATION_REPORT.md"
 title = "License Reconciliation Report"
 git_status = "ignored"
@@ -9805,7 +9667,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0424"
+id = "MDI-0418"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/MERGE_IN_WORKFLOW.md"
 title = "Merge-In Staging Workflow"
 git_status = "ignored"
@@ -9827,7 +9689,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0425"
+id = "MDI-0419"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md"
 title = "Module File Consolidation Rules"
 git_status = "ignored"
@@ -9849,7 +9711,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0426"
+id = "MDI-0420"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/ORIGINAL_SOURCE_MANIFEST.md"
 title = "Reproducible Original Source Manifest"
 git_status = "ignored"
@@ -9871,7 +9733,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0427"
+id = "MDI-0421"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/QUALITY_POLICY.md"
 title = "Workspace Quality Policy"
 git_status = "ignored"
@@ -9893,7 +9755,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0428"
+id = "MDI-0422"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/REPO_INTEGRATION_CONTRACT.md"
 title = "Repository Integration Contract (Derived Layout)"
 git_status = "ignored"
@@ -9915,7 +9777,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0429"
+id = "MDI-0423"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/REPRODUCIBLE_BACKUP_MANIFEST.md"
 title = "Backup Manifest Protocol"
 git_status = "ignored"
@@ -9937,7 +9799,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0430"
+id = "MDI-0424"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/ROADMAP_STATUS.md"
 title = "Roadmap Status (Lambda Workspace)"
 git_status = "ignored"
@@ -9959,7 +9821,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0431"
+id = "MDI-0425"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/SEVEN_DAY_EXECUTION_NOTE.md"
 title = "Execution Note (Pass-Oriented)"
 git_status = "ignored"
@@ -9981,7 +9843,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0432"
+id = "MDI-0426"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/requirements_profile.md"
 title = "Workspace Requirements Profile"
 git_status = "ignored"
@@ -10003,7 +9865,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0433"
+id = "MDI-0427"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/README.md"
 title = "lambda_gororoba Unified Workspace"
 git_status = "tracked"
@@ -10025,7 +9887,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0434"
+id = "MDI-0428"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/modules/README.md"
 title = "Unified Module Index"
 git_status = "tracked"
@@ -10047,7 +9909,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0435"
+id = "MDI-0429"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160629/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -10069,7 +9931,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0436"
+id = "MDI-0430"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160629/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md"
 title = "Module File Consolidation Rules"
 git_status = "ignored"
@@ -10091,7 +9953,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0437"
+id = "MDI-0431"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160818/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -10113,7 +9975,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0438"
+id = "MDI-0432"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160829/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -10135,7 +9997,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0439"
+id = "MDI-0433"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160829/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md"
 title = "Module File Consolidation Rules"
 git_status = "ignored"
@@ -10157,7 +10019,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0440"
+id = "MDI-0434"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160829/workspace_root/docs/ROADMAP_STATUS.md"
 title = "Roadmap Status (Lambda Workspace)"
 git_status = "ignored"
@@ -10179,7 +10041,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0441"
+id = "MDI-0435"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160846/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -10201,7 +10063,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0442"
+id = "MDI-0436"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_161721/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -10223,7 +10085,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0443"
+id = "MDI-0437"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_161721/workspace_root/docs/PYTHON_THREADING_POLICY.md"
 title = "Python Multithreading Policy"
 git_status = "ignored"
@@ -10245,7 +10107,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0444"
+id = "MDI-0438"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_161721/workspace_root/docs/ROADMAP_STATUS.md"
 title = "Roadmap Status (Lambda Workspace)"
 git_status = "ignored"
@@ -10267,7 +10129,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0445"
+id = "MDI-0439"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -10289,7 +10151,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0446"
+id = "MDI-0440"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/MERGE_IN_WORKFLOW.md"
 title = "Merge-In Staging Workflow"
 git_status = "ignored"
@@ -10311,7 +10173,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0447"
+id = "MDI-0441"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md"
 title = "Module File Consolidation Rules"
 git_status = "ignored"
@@ -10333,7 +10195,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0448"
+id = "MDI-0442"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/PYTHON_THREADING_POLICY.md"
 title = "Python Multithreading Policy"
 git_status = "ignored"
@@ -10355,7 +10217,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0449"
+id = "MDI-0443"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/QUALITY_POLICY.md"
 title = "Workspace Quality Policy"
 git_status = "ignored"
@@ -10377,7 +10239,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0450"
+id = "MDI-0444"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/ROADMAP_STATUS.md"
 title = "Roadmap Status (Lambda Workspace)"
 git_status = "ignored"
@@ -10399,7 +10261,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0451"
+id = "MDI-0445"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -10421,7 +10283,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0452"
+id = "MDI-0446"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/MERGE_IN_WORKFLOW.md"
 title = "Merge-In Staging Workflow"
 git_status = "ignored"
@@ -10443,7 +10305,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0453"
+id = "MDI-0447"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/ROADMAP_STATUS.md"
 title = "Roadmap Status (Lambda Workspace)"
 git_status = "ignored"
@@ -10465,7 +10327,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0454"
+id = "MDI-0448"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/CONFLICT_RECONCILIATION_LEDGER.md"
 title = "Conflict Reconciliation Ledger"
 git_status = "ignored"
@@ -10487,7 +10349,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0455"
+id = "MDI-0449"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/FIRST_PARTY_SOURCE_INDEX.md"
 title = "First-Party Source Index"
 git_status = "ignored"
@@ -10509,7 +10371,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0456"
+id = "MDI-0450"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/INTEGRATION_INTERFACE_CONTRACTS.md"
 title = "Integration Interface Contracts"
 git_status = "ignored"
@@ -10531,7 +10393,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0457"
+id = "MDI-0451"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/README.md"
 title = "First-Party Documentation Corpus"
 git_status = "tracked"
@@ -10553,7 +10415,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0458"
+id = "MDI-0452"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/UNIFIED_REPO_CONSTITUTION.md"
 title = "Unified Repo Constitution"
 git_status = "ignored"
@@ -10575,7 +10437,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0459"
+id = "MDI-0453"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/README.md"
 title = "Lambda Gororoba"
 git_status = "tracked"
@@ -10597,7 +10459,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0460"
+id = "MDI-0454"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/TODOWRITE.md"
 title = "TODOWRITE <U+2014> Lambda Workspace Consolidation Ledger"
 git_status = "ignored"
@@ -10619,7 +10481,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0461"
+id = "MDI-0455"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/archive/legacy_unified_lane/20260213_220437/src/lambda_unified/modules/indices/CANONICAL_BIBLIOGRAPHY_INDEX.md"
 title = "Canonical Bibliography Index"
 git_status = "ignored"
@@ -10641,7 +10503,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0462"
+id = "MDI-0456"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/archive/legacy_unified_lane/20260213_220437/src/lambda_unified/modules/indices/CANONICAL_DOCS_INDEX.md"
 title = "Canonical Docs Index"
 git_status = "ignored"
@@ -10663,7 +10525,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0463"
+id = "MDI-0457"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/archive/legacy_unified_lane/20260213_220437/src/lambda_unified/modules/indices/MODULE_TOPIC_MAP.md"
 title = "Module Topic Map"
 git_status = "ignored"
@@ -10685,7 +10547,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0464"
+id = "MDI-0458"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/ASCII_COMMUNICATION_STYLE.md"
 title = "ASCII-First Communication Style"
 git_status = "ignored"
@@ -10707,7 +10569,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0465"
+id = "MDI-0459"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/CLAIM_REGISTER.md"
 title = "Claim Register"
 git_status = "ignored"
@@ -10729,7 +10591,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0466"
+id = "MDI-0460"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/CONSOLIDATION_CONFLICT_RESOLUTION.md"
 title = "Archived Legacy Document"
 git_status = "ignored"
@@ -10751,7 +10613,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0467"
+id = "MDI-0461"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/LEGACY_LANE_RETIREMENT.md"
 title = "Legacy Lane Retirement"
 git_status = "ignored"
@@ -10773,7 +10635,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0468"
+id = "MDI-0462"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/LICENSES_MATRIX.md"
 title = "License Matrix for the Lambda Workspace"
 git_status = "ignored"
@@ -10795,7 +10657,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0469"
+id = "MDI-0463"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/MERGE_IN_WORKFLOW.md"
 title = "Singular Workspace Workflow"
 git_status = "ignored"
@@ -10817,7 +10679,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0470"
+id = "MDI-0464"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md"
 title = "Archived Legacy Document"
 git_status = "ignored"
@@ -10839,7 +10701,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0471"
+id = "MDI-0465"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/ORIGINAL_SOURCE_MANIFEST.md"
 title = "Reproducible Original Source Manifest"
 git_status = "ignored"
@@ -10861,7 +10723,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0472"
+id = "MDI-0466"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/PYTHON_THREADING_POLICY.md"
 title = "Python Multithreading Policy"
 git_status = "ignored"
@@ -10883,7 +10745,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0473"
+id = "MDI-0467"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/REPO_INTEGRATION_CONTRACT.md"
 title = "Archived Legacy Document"
 git_status = "ignored"
@@ -10905,7 +10767,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0474"
+id = "MDI-0468"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/REPRODUCIBLE_BACKUP_MANIFEST.md"
 title = "Backup Manifest Protocol"
 git_status = "ignored"
@@ -10927,7 +10789,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0475"
+id = "MDI-0469"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/ROADMAP_STATUS.md"
 title = "Roadmap Status (Lambda Workspace)"
 git_status = "ignored"
@@ -10949,7 +10811,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0476"
+id = "MDI-0470"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/SINGULAR_REPO_LAYOUT.md"
 title = "Singular Repository Layout"
 git_status = "ignored"
@@ -10971,7 +10833,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0477"
+id = "MDI-0471"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/SYNC_SCOPE_FROM_SOURCE_FOLDERS.md"
 title = "Sync Scope From Source Folders"
 git_status = "ignored"
@@ -10993,7 +10855,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0478"
+id = "MDI-0472"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/VISUAL_DOCUMENTATION_STYLE_GUIDE.md"
 title = "Visual Documentation Style Guide (Dark Mode)"
 git_status = "ignored"
@@ -11015,7 +10877,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0479"
+id = "MDI-0473"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/archive/legacy_unified_docs/20260213_221719/docs/MODULE_FILE_CONSOLIDATION_RULES.md"
 title = "Module File Consolidation Rules"
 git_status = "ignored"
@@ -11037,7 +10899,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0480"
+id = "MDI-0474"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/archive/legacy_unified_docs/20260213_221719/docs/REPO_INTEGRATION_CONTRACT.md"
 title = "Repository Integration Contract (Derived Layout)"
 git_status = "ignored"
@@ -11059,7 +10921,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0481"
+id = "MDI-0475"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/archive/legacy_unified_docs/LATEST.md"
 title = "Legacy Unified Docs Archive Pointer"
 git_status = "ignored"
@@ -11081,7 +10943,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0482"
+id = "MDI-0476"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/CONFLICT_RECONCILIATION_LEDGER.md"
 title = "Conflict Reconciliation Ledger"
 git_status = "ignored"
@@ -11103,7 +10965,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0483"
+id = "MDI-0477"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/FILETYPE_HARMONIZATION_PLAYBOOK.md"
 title = "Filetype Harmonization Playbook"
 git_status = "ignored"
@@ -11125,7 +10987,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0484"
+id = "MDI-0478"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/FIRST_PARTY_SOURCE_INDEX.md"
 title = "First-Party Source Index"
 git_status = "ignored"
@@ -11147,7 +11009,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0485"
+id = "MDI-0479"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/INTEGRATION_INTERFACE_CONTRACTS.md"
 title = "Integration Interface Contracts"
 git_status = "ignored"
@@ -11169,7 +11031,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0486"
+id = "MDI-0480"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/NOVEL_RESEARCH_PROGRAM.md"
 title = "Novel Research Program"
 git_status = "ignored"
@@ -11191,7 +11053,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0487"
+id = "MDI-0481"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/README.md"
 title = "First-Party Documentation Corpus"
 git_status = "tracked"
@@ -11213,7 +11075,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0488"
+id = "MDI-0482"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/UNIFIED_REPO_CONSTITUTION.md"
 title = "Unified Repo Constitution"
 git_status = "ignored"
@@ -11235,7 +11097,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0489"
+id = "MDI-0483"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/visuals/20260214_singular_merge_state_v1_dark.md"
 title = "Infographic Spec"
 git_status = "ignored"
@@ -11257,7 +11119,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0490"
+id = "MDI-0484"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/visuals/INFOGRAPHIC_SPEC_TEMPLATE.md"
 title = "Infographic Spec Template"
 git_status = "ignored"
@@ -11279,7 +11141,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0491"
+id = "MDI-0485"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/merge_in/README.md"
 title = "merge_in lane retired"
 git_status = "tracked"
@@ -11301,7 +11163,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0492"
+id = "MDI-0486"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/requirements.md"
 title = "Root Requirements"
 git_status = "ignored"
@@ -11323,7 +11185,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0493"
+id = "MDI-0487"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/linear_constraints.md"
 title = "Extracted text: linear_constraints.pdf"
 git_status = "ignored"
@@ -11345,7 +11207,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0494"
+id = "MDI-0488"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-formal-methods/linear_logic_girard.md"
 title = "Extracted text: linear_logic_girard.pdf"
 git_status = "ignored"
@@ -11367,7 +11229,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0495"
+id = "MDI-0489"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-formal-methods/linear_logic_programming.md"
 title = "Extracted text: linear_logic_programming.pdf"
 git_status = "ignored"
@@ -11389,7 +11251,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0496"
+id = "MDI-0490"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/bounded_linear_logic.md"
 title = "Extracted text: bounded_linear_logic.pdf"
 git_status = "ignored"
@@ -11411,7 +11273,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0497"
+id = "MDI-0491"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/differential_linear_logic.md"
 title = "Extracted text: differential_linear_logic.pdf"
 git_status = "ignored"
@@ -11433,7 +11295,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0498"
+id = "MDI-0492"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/goi_linear_logic.md"
 title = "Extracted text: goi_linear_logic.pdf"
 git_status = "ignored"
@@ -11455,7 +11317,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0499"
+id = "MDI-0493"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-semantics/linear_haskell.md"
 title = "Extracted text: linear_haskell.pdf"
 git_status = "ignored"
@@ -11477,7 +11339,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0500"
+id = "MDI-0494"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-semantics/linear_types_survey.md"
 title = "Extracted text: linear_types_survey.pdf"
 git_status = "ignored"
@@ -11499,7 +11361,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0501"
+id = "MDI-0495"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-theorem-provers/idris2_linear_types.md"
 title = "Extracted text: idris2_linear_types.pdf"
 git_status = "ignored"
@@ -11521,7 +11383,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0502"
+id = "MDI-0496"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md"
 title = "Extracted text: graphical_linear_algebra.pdf"
 git_status = "ignored"
@@ -11543,7 +11405,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0503"
+id = "MDI-0497"
 path = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/supporting_misc/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/synthetic_topology.md"
 title = "Extracted text: synthetic_topology.pdf"
 git_status = "ignored"
