@@ -24,6 +24,7 @@ pub mod featurizer;
 pub mod metamaterial;
 pub mod optical_database;
 pub mod periodic_table;
+pub mod tabulated_nk;
 pub mod tang_mass;
 pub mod viscosity_database;
 
@@ -65,19 +66,20 @@ pub use viscosity_database::{
 
 pub use optical_database::{
     // Constants
-    C, EV_TO_RADS, HBAR_EV_S,
+    C, EPS_0, EV_TO_RADS, HBAR_EV_S, K_B_EV, E_CHARGE, M_E_KG,
     // Conversions
     ev_to_omega, omega_to_ev, wavelength_to_omega,
     // Models
     DrudeLorentzParams, DrudeParams,
     ExtendedDrudeParams, ScatteringModel,
     LorentzOscillator as OpticalLorentzOscillator,
+    UniaxialOptical,
     // Database types
     CasimirModelFlag, MaterialEntry, MaterialType as OpticalMaterialType,
     // Database access
     get_material, list_materials,
     // Pre-defined metals (original)
-    gold_drude, gold_drude_lorentz,
+    gold_drude, gold_drude_lorentz, gold_rakic_ld,
     silver_drude, silver_drude_lorentz,
     copper_drude, copper_drude_lorentz,
     aluminum_drude, aluminum_drude_lorentz,
@@ -90,13 +92,31 @@ pub use optical_database::{
     titanium_drude, titanium_drude_lorentz,
     tungsten_drude, tungsten_drude_lorentz,
     // Semiconductors / dielectrics
-    silicon_optical, germanium_optical, silica_optical, silicon_nitride_optical,
+    silicon_optical, germanium_optical, silica_optical, silica_casimir_optical, silicon_nitride_optical,
     // C-418 gap materials
     alumina_optical, diamond_optical, quartz_optical, tio2_optical,
     // Titanates
     tio_optical, srtio3_optical, srtio3_doped_optical, latio3_optical,
     // TCOs
     azo_optical, doped_silicon_optical,
-    // Casimir utilities
+    // Tungsten oxide family
+    wo3_optical, wo3_x_optical, cs_wo3_optical, cs_wo3_uniaxial,
+    cawo4_optical, pbwo4_optical,
+    // Casimir utilities (legacy)
     lifshitz_integrand_te, reflection_te, reflection_tm,
+    casimir_energy_density, casimir_force_density, casimir_energy_ideal, casimir_eta,
+    // Casimir utilities (correct Lifshitz formula, Sprint 45)
+    casimir_lifshitz_energy, casimir_lifshitz_force, casimir_lifshitz_eta,
+    casimir_drude_plasma_discrepancy,
+};
+
+pub use tabulated_nk::{
+    // Tabulated n,k data structs
+    TabulatedNK, PhysicalProperties,
+    // J&C 1972 datasets
+    gold_jc_nk, silver_jc_nk, copper_jc_nk,
+    // Database access
+    get_tabulated_nk, get_physical_properties,
+    // Casimir utilities using tabulated data + KK transform
+    casimir_lifshitz_energy_tabulated,
 };
