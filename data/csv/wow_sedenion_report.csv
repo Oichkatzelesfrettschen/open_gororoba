@@ -1,0 +1,2 @@
+ghost_detected,ghost_freq,ghost_snr,ghost_fwhm,top_peak_freq,lattice_frac,shallow_frac,deep_frac,ultrametric_frac,ultrametric_p_value
+true,0.213867,69.4598,0.000311,0.213867,0.0000,1.0000,0.0000,0.131000,0.564356

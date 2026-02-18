@@ -10622,7 +10622,7 @@ claims = [
     "C-658",
     "C-659",
 ]
-status_note = "E-027 deferred (p=0.605, inconclusive). PRIMARY validation via STPT-006 (scalar-TOV Cassini gates). E-027 re-parametrization planned for Phase 2."
+status_note = "r_s=-1.0 is tautological (monotone exponential coupling guarantees it). Independent validation via E-027 re-parametrization with KuboResponse model required. E-027 p=0.605 inconclusive. TX-3 overlap=1.0 and Kubo 83x enhancement (C-678..C-681) provide supporting evidence."
 insights = [
     "I-064",
 ]
@@ -10641,7 +10641,7 @@ claims = [
     "C-657",
     "C-659",
 ]
-status_note = "E-027 deferred (p=0.605, inconclusive). Depends on C-657 validation via STPT-006. E-027 re-parametrization planned for Phase 2."
+status_note = "r_s=-1.0 is tautological (monotone coupling). E-027 p=0.605 inconclusive. Independent validation via E-027 re-parametrization with larger grids and KuboResponse model required."
 insights = [
     "I-064",
 ]
@@ -10660,7 +10660,7 @@ claims = [
     "C-657",
     "C-658",
 ]
-status_note = "E-027 deferred (p=0.584 for null model, inconclusive). Depends on C-657/C-658 validation. E-027 re-parametrization planned for Phase 2."
+status_note = "r_s=-1.0 is tautological (monotone coupling). E-027 null model p=0.584 inconclusive. Independent validation via E-027 re-parametrization with KuboResponse model required."
 insights = [
     "I-064",
 ]
@@ -12290,11 +12290,11 @@ dependencies = ["C-774"]
 id = "C-776"
 statement = "A Pathionic heat sink (virtual dim-32 scalar absorber coupled to the Sedenion associator norm) stabilizes the warp ring simulation past the natural instability onset. The instability onset time increases monotonically with coupling strength."
 where_stated = "`crates/gororoba_cli/src/bin/pathion_sink_test.rs`, `crates/gororoba_engine/src/simulation/mod.rs` (PathionSink struct)"
-status = "Proposed"
-status_note = "PathionSink struct and binary created; awaiting simulation execution"
+status = "Falsified"
+status_note = "E-052 executed 2026-02-18. Instability onset unchanged (step 500) for ALL coupling values [0.01, 0.05, 0.1, 0.5, 1.0]. Sink absorbs energy (38..3780 units) but does not delay instability. Both with-sink and without-sink runs reach step 500 with stable energy descent."
 last_verified = "2026-02-18"
 what_would_verify_refute = "VERIFY: Ring survives all max_steps with pathion sink where it destabilized without. Instability onset monotonically increases with coupling [0.01, 0.05, 0.1, 0.5, 1.0]. REFUTE: Ring still destabilizes at same step for ALL coupling values, or onset is non-monotonic."
-confidence = "low"
+confidence = "high"
 phase = "simulation"
 sprint = 49
 dependencies = []
@@ -12303,11 +12303,11 @@ dependencies = []
 id = "C-777"
 statement = "Macroscopic vortex handedness (helicity sign) is locked to the Sedenion Cayley-Dickson multiplication table orientation. Flipping initial vorticity without conjugating the CD table produces an UNSTABLE configuration, while flipping both (double flip) recovers stability."
 where_stated = "`crates/gororoba_cli/src/bin/chirality_lock_test.rs`, `crates/algebra_core/src/construction/cayley_dickson.rs` (cd_multiply_conjugated)"
-status = "Proposed"
-status_note = "ChiralityMode enum, cd_multiply_conjugated, and binary created; awaiting 2x2 matrix experiment"
+status = "Falsified"
+status_note = "E-053 executed 2026-02-18. All 4 configs STABLE (32^3, 300 steps). Config B (Std CD + Flipped vort) produces stable opposite-handed ring (helicity -3.28e-16 vs +3.29e-16). Chirality follows initial conditions, not algebra. CD conjugation affects helicity magnitude (5.5e-15 vs 3.3e-16) and associator norm (0.0557 vs 0.0484) but not stability."
 last_verified = "2026-02-18"
 what_would_verify_refute = "VERIFY: Config B (Standard CD + Flipped vorticity) is UNSTABLE while Config D (Conjugated CD + Flipped vorticity) is STABLE. REFUTE: Config B produces stable opposite-handed ring (chirality follows initial conditions, not algebra)."
-confidence = "low"
+confidence = "high"
 phase = "simulation"
 sprint = 49
 dependencies = []
@@ -12316,11 +12316,11 @@ dependencies = []
 id = "C-778"
 statement = "Signal chunks projected onto the Leech Lattice (Lambda_24) via Babai CVP show statistically different deep hole fractions between structured (ON-source) and noise-only (OFF-source) pointings at p < 0.05 in a two-proportion z-test."
 where_stated = "`crates/gororoba_cli/src/bin/moonshine_filterbank.rs`, `crates/algebra_core/src/experimental/leech_lattice.rs`, `crates/algebra_core/src/experimental/golay_code.rs`"
-status = "Proposed"
-status_note = "Golay code, Leech lattice CVP, and Moonshine filterbank binary created; awaiting synthetic and real data tests"
+status = "Falsified"
+status_note = "E-054 executed 2026-02-18. ON: 15/1000 deep (1.5%), OFF: 16/1000 deep (1.6%). z=-0.181, p=0.856. No significant difference at SNR=0.1. Moonshine Leech Lattice projection adds no discriminating power for structured vs noise signals at this SNR."
 last_verified = "2026-02-18"
 what_would_verify_refute = "VERIFY: Two-proportion z-test on deep hole fraction yields p < 0.05 between ON (structured signal + noise) and OFF (noise only) chunks. REFUTE: p >= 0.05 (Moonshine filter adds no discriminating power)."
-confidence = "low"
+confidence = "high"
 phase = "topology"
 sprint = 49
 dependencies = []
