@@ -9,21 +9,13 @@ license = "MIT"
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
 num-complex = { workspace = true }
-petgraph = { workspace = true }
-ordered-float = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rayon = { workspace = true }
 rustfft = { workspace = true }
 faer = { workspace = true }
 thiserror = { workspace = true }
-
-# Quantum computing and tensor networks (workspace)
-quantum = { workspace = true }
 qua_ten_net = { workspace = true }
-
-# Physics constants
-physical_constants = { workspace = true }
 
 # GPU acceleration (optional)
 cudarc = { workspace = true, optional = true }

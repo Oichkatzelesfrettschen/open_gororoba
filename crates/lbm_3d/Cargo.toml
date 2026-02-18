@@ -7,10 +7,6 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
 cosmic_scheduler = { path = "../cosmic_scheduler" }
-nalgebra = { workspace = true }
-rayon = { workspace = true }
-ndarray = { workspace = true }
-serde = { workspace = true, features = ["derive"] }
 
 [dev-dependencies]
 approx = { workspace = true }

@@ -476,7 +476,6 @@ tokio = { workspace = true }
 csv = { workspace = true }
 num-complex = { workspace = true }
 plotters = { workspace = true }
-plotters-svg = { workspace = true }
 ureq = { workspace = true }
 sha2 = { workspace = true }
 rayon = { workspace = true }
@@ -492,7 +491,6 @@ tracing-subscriber = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
 pgfplots = { workspace = true }
 chrono = { workspace = true }
-latex = { workspace = true }
 
 [dev-dependencies]
 tempfile = { workspace = true }

@@ -15,15 +15,11 @@ num-complex = { workspace = true }
 statrs = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
-thiserror = { workspace = true }
 kodama = { workspace = true }
 kiddo = { workspace = true }
-rustfft = { workspace = true }
-realfft = { workspace = true }
 hurst = { workspace = true }
 algebra_core = { path = "../algebra_core" }
 cudarc = { workspace = true, optional = true }
-petgraph = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

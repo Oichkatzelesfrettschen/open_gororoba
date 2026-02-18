@@ -1,2 +1,0 @@
-Res | Prec | Time | Steps/s | MLUPS
-       128 | FP32 |    26.25 |    3.81 |  7.99

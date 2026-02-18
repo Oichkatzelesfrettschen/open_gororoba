@@ -7,16 +7,9 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
 algebra_core = { path = "../algebra_core" }
-quantum_core = { path = "../quantum_core" }
 cosmology_core = { path = "../cosmology_core" }
 burn = { workspace = true, features = ["ndarray", "openblas"] }
 blas-src = { workspace = true }
-openblas-src = { workspace = true }
-burn-wgpu = { version = "0.16", optional = true }
-burn-cuda = { version = "0.16", optional = true }
-ndarray = { workspace = true }
-rayon = { workspace = true }
-serde = { workspace = true, features = ["derive"] }
 
 [dev-dependencies]
 approx = { workspace = true }
@@ -25,8 +18,8 @@ proptest = { workspace = true }
 
 [features]
 default = ["wgpu-backend"]
-wgpu-backend = ["burn-wgpu"]
-cuda-backend = ["burn-cuda"]
+wgpu-backend = []
+cuda-backend = []
 
 [[bench]]
 name = "training_bench"

@@ -2476,3 +2476,23 @@ citation_markdown = "**Garcia, G., Buonsanti, R., Runnerstrom, E. L., Mendelsber
 notes = ["*Plasmonic response of oxygen-deficient WO3-x nanocrystals; carrier-density to plasma frequency derivation for sub-stoichiometric tungsten oxide.*"]
 urls = []
 dois = ["10.1021/nl202597n"]
+
+[[entry]]
+id = "BIB-0209"
+order_index = 209
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Ordal, M. A., Bell, R. J., Alexander, R. W., Long, L. L., & Querry, M. R.** (1985). *Optical properties of fourteen metals in the infrared and far infrared: Al, Co, Cu, Au, Fe, Pb, Mo, Ni, Pd, Pt, Ag, Ti, V, and W*. Applied Optics, 24(24), 4493-4499."
+notes = ["*Tabulated n,k for 14 metals from 0.667-286 um (far-IR). Au and Cu data used in SPLICED_AU and SPLICED_CU arrays in tabulated_nk.rs to replace the approximate Drude IR tail in the KK transform.*"]
+urls = ["https://opg.optica.org/ao/abstract.cfm?uri=ao-24-24-4493"]
+dois = []
+
+[[entry]]
+id = "BIB-0210"
+order_index = 210
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Ordal, M. A., Bell, R. J., Alexander, R. W., Newquist, L. A., & Querry, M. R.** (1988). *Optical properties of Al, Fe, Ti, Ta, W, and Mo at submillimeter wavelengths*. Applied Optics, 27(6), 1203-1209."
+notes = ["*Extended far-IR optical constants for metals at submillimeter wavelengths. Complementary to Ordal 1985; referenced for completeness of the Ordal measurement series.*"]
+urls = []
+dois = []

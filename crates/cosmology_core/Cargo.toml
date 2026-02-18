@@ -6,15 +6,9 @@ description = "Cosmology simulations: gravastar TOV, spectral dimensions, fracta
 license = "MIT"
 
 [dependencies]
-nalgebra = { workspace = true }
-num-traits = { workspace = true }
-thiserror = { workspace = true }
 
 # Numerical quadrature
 gauss-quad = { workspace = true }
-
-# Physics constants
-physical_constants = { workspace = true }
 
 # Statistical distributions (Gamma function for dimensional geometry)
 statrs = { workspace = true }

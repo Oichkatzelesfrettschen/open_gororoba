@@ -5,13 +5,21 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 3793
-claim_count = 761
+test_count = 3801
+claim_count = 762
 insight_count = 83
 experiment_count = 40
 complete_experiment_count = 0
 paper_count = 19
 binary_count = 108
+
+[sprints.s46]
+number = 46
+date = "2026-02-17"
+test_count = 3801
+claim_count = 762
+insight_count = 83
+summary = "Sprint 46 Objective 1: Ordal far-IR spectral data + spliced TabulatedNK constructors. Fetched M. A. Ordal et al. (1985) IR optical data for Au (52 pts, 0.004-1.86 eV) and Cu (56 pts, 0.022-2.4 eV) from refractiveindex.info. Spliced Ordal IR below 0.64 eV with Johnson & Christy 1972 visible/UV data. Au splice: 86 points (37 Ordal IR + 49 J&C). Cu splice: 98 points (49 Ordal IR + 49 J&C). New constructors: gold_ordal_jc_nk() and copper_ordal_jc_nk(). Updated get_tabulated_nk() dispatcher for 'au_ordal', 'gold_ordal', 'cu_ordal', 'copper_ordal'. 8 new tests: monotone energy grids, coverage bounds, dispatcher, KK IR tail quantification (Drude within 15% of spliced at xi_1), KK monotone, Casimir attractive. Bug fix: optical_database.rs line 2722 osc.omega_ev -> osc.omega_0_ev (LorentzOscillator field name). Bibliography: BIB-0209 (Ordal 1985 Appl. Opt. 24 4493), BIB-0210 (Ordal 1988 Appl. Opt. 27 1203). Claim C-756. 466 materials_core tests total."
 
 [sprints.s45]
 number = 45

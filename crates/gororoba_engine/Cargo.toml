@@ -6,7 +6,6 @@ license = "GPL-2.0-only"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
-rayon = { workspace = true }
 vacuum_frustration = { path = "../vacuum_frustration" }
 lbm_core = { path = "../lbm_core" }
 neural_homotopy = { path = "../neural_homotopy" }
@@ -16,21 +15,15 @@ cd_spin_bridge = { path = "../cd_spin_bridge" }
 algebra_core = { path = "../algebra_core" }
 stats_core = { path = "../stats_core" }
 lbm_3d = { path = "../lbm_3d" }
-quantum_core = { path = "../quantum_core" }
-petgraph = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
-toml = { workspace = true }
 gr_core = { version = "0.1.0", path = "../gr_core" }
 spectral_core = { version = "0.1.0", path = "../spectral_core" }
 ndarray = { workspace = true }
-num-complex = { workspace = true }
 anyhow = { workspace = true }
 lbm_3d_cuda = { path = "../lbm_3d_cuda" }
 cudarc = { workspace = true, optional = true }
 nalgebra = { workspace = true }
-log = { workspace = true }
 rand = { workspace = true }
-statrs = { workspace = true }
 
 [dev-dependencies]
 proptest = { workspace = true }

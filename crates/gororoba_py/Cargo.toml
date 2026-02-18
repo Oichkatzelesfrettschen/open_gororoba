@@ -13,14 +13,12 @@ algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
 lbm_core = { path = "../lbm_core" }
 materials_core = { path = "../materials_core" }
-optics_core = { path = "../optics_core" }
 quantum_core = { path = "../quantum_core" }
 spectral_core = { path = "../spectral_core" }
 stats_core = { path = "../stats_core" }
 gr_core = { path = "../gr_core" }
 pyo3 = { workspace = true, features = ["extension-module"] }
 numpy = { workspace = true }
-num-complex = { workspace = true }
 sha2 = { workspace = true }
 
 [lints]

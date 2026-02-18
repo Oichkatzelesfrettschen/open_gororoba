@@ -10,7 +10,6 @@ nalgebra = { workspace = true }
 num-complex = { workspace = true }
 num-traits = { workspace = true }
 petgraph = { workspace = true }
-ordered-float = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
@@ -25,14 +24,11 @@ csv = { workspace = true }
 # External algebra crates (workspace)
 wheel = { workspace = true }
 padic = { workspace = true }
-adic = { workspace = true }
 atlas-embeddings = { workspace = true }
 num-bigint = { workspace = true }
-wedged = { workspace = true, optional = true }  # Phase 3a validation (dimension-agnostic geometric algebra)
 
 # Stochastic processes and fractal analysis (workspace)
 diffusionx = { workspace = true }
-hurst = { workspace = true }
 
 # GPU acceleration (optional, feature-gated)
 cudarc = { workspace = true, optional = true }

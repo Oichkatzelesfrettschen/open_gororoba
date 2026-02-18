@@ -9,10 +9,7 @@ repository.workspace = true
 ash = "0.38.0"
 env_logger.workspace = true
 gpu-allocator = "0.28.0"
-log.workspace = true
-raw-window-handle = "0.6.2"
 shaderc = "0.10.1"
-winit = "0.30.12"
 
 [lints]
 workspace = true

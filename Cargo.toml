@@ -42,11 +42,9 @@ nalgebra = "0.33"
 ndarray = "0.16"
 num-complex = "0.4"
 num-traits = "0.2"
-num-quaternion = "1.0"
 
 # Graph algorithms
 petgraph = "0.7"
-ordered-float = "4.6"
 
 # Topological Data Analysis
 tda = "0.1.0"
@@ -60,13 +58,8 @@ rand_distr = "0.4"
 # Algebra extensions
 wheel = "0.1.0"              # Wheel algebra (division-by-zero semantics)
 padic = "0.1.6"              # P-adic numbers
-adic = "0.5.0"               # P-adic arithmetic and rootfinding
 atlas-embeddings = "0.1.1"   # Exceptional Lie groups (E6/E7/E8) from resonance classes
 num-bigint = "0.4"           # Arbitrary precision integers (Monster group order)
-wedged = "0.1"               # Dimension-agnostic geometric algebra (Phase 3a validation)
-
-# Stochastic processes and fractal analysis
-mimalloc = "0.1"             # Required by diffusionx
 diffusionx = "0.11.2"        # fBm, Levy, OU processes (requires mimalloc)
 hurst = "0.1.0"              # Hurst exponent estimation (R/S methods)
 
@@ -79,33 +72,17 @@ faer = "0.20"
 
 # FFT and spectral analysis
 rustfft = "6.4.1"            # High-performance FFT (pure Rust, AVX/SSE)
-realfft = "3.5.0"            # Real-to-complex FFT wrapper for rustfft
 ndrustfft = "0.5.0"          # N-dimensional FFT on ndarray (C2C, R2C, DCT)
-rustdct = "0.7"              # Discrete Cosine Transforms (required by ndrustfft)
 
 # Half-precision types
 half = "2.4"
-
-# Astronomical data formats and coordinates
-fitsrs = "0.4.1"             # Pure Rust FITS file reader (CDS Strasbourg)
-votable = "0.7.0"            # VOTable serializer/deserializer (CDS Strasbourg)
-satkit = "0.9.3"             # Satellite toolkit: coordinate frames, Earth gravity models
-
-# Physics constants and materials
-physical_constants = "0.5.0" # CODATA physical constants (GPL-3.0)
 periodic-table-on-an-enum = "0.3.2"  # Element enum with atomic data
 
 # Numerical quadrature
 gauss-quad = "0.2.4"         # Gauss-Legendre quadrature (replaces hand-rolled Simpson)
 
-# Special functions
-ellip = "1.0.4"              # Carlson symmetric (RF,RD,RJ,RC,RG) + Legendre elliptic integrals
-
 # ODE solvers
 ode_solvers = "0.6.1"        # Dormand-Prince 5(4), Dop853, RK4 (nalgebra-based)
-
-# Quantum computing
-quantum = "0.1.2"            # Quantum computer simulator
 qua_ten_net = "0.2.0"        # Tensor networks for quantum computing
 
 # Parallelism
@@ -127,7 +104,6 @@ nvml-wrapper = "0.10"
 # Note: burn backends are optional at crate level, not workspace level
 burn = { version = "0.16", features = ["train", "autodiff"] }
 blas-src = { version = "0.10", features = ["openblas"] }
-openblas-src = { version = "0.10", features = ["cache", "cblas", "static"] }
 
 # Error handling
 thiserror = "2.0"
@@ -162,22 +138,16 @@ strsim = "0.11"                  # String similarity (Jaro-Winkler, Levenshtein)
 # The upstream hdf5 0.8.1 panics on HDF5 2.0 with "Invalid H5_VERSION"
 hdf5 = { package = "hdf5-metno", version = "0.12" }
 
-# Documentation generation
-clap_mangen = "0.2"              # Manpage generation from clap App structs
-
 # Visualization
 plotters = "0.3"
-plotters-svg = "0.3"
 pgfplots = "0.5.1"                   # PGFPlots (LaTeX-quality figures)
 
 # LaTeX generation
 chrono = "0.4"
-latex = "0.3.1"
 
 # Logging and Config
 log = "0.4"
 env_logger = "0.11"
-config = "0.14"
 tracing = "0.1"
 tracing-subscriber = "0.3"
 
