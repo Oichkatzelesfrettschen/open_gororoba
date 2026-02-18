@@ -1,17 +1,18 @@
-//! Warp Ring Integration: Algebra <-> Fluid <-> P-adic Duality.
+//! Warp Ring Integration: Algebra <-> Fluid <-> Optics <-> P-adic Duality.
 //!
 //! Full pipeline connecting spectral turbulence to E7 Lie algebra structure,
 //! modulated by p-adic ultrametric weights, negative-dimension kernels,
-//! and metamaterial spectral filters:
+//! metamaterial spectral filters, and GRIN gravitational lensing:
 //!
 //! 1. Generate Kolmogorov turbulence via D2Q9 LBM solver (Gororoba Engine)
 //! 2. Extract spectral triads (energy transfer) via 2D FFT
 //! 3. Apply p-adic modulation and negative-dimension kernel (warp physics)
 //! 4. Apply metamaterial spectral filter (ZD -> TMM reflectance)
-//! 5. Map triads to E7 Lie algebra roots
-//! 6. Build hypergraph and compute topological invariants
-//! 7. Simulate warp lensing (SHI Integration via Gororoba Engine)
-//! 8. Visualize the composite "Warp Ring"
+//! 5. GRIN ray tracing through warp-ring effective refractive index (NA-001)
+//! 6. Map triads to E7 Lie algebra roots
+//! 7. Build hypergraph and compute topological invariants
+//! 8. Simulate warp lensing (SHI Integration via Gororoba Engine)
+//! 9. Visualize the composite "Warp Ring" + GRIN lensed star field
 
 use algebra_core::lie::e7_geometry::{find_e7_triads, generate_e7_roots, project_to_plane};
 use algebra_core::physics::octonion_field::FieldParams;
@@ -27,6 +28,7 @@ use materials_core::{
 };
 // use ndarray::Array2; // Unused import removed
 use num_complex::Complex64;
+use optics_core::grin::{trace_ray, GrinMedium, Ray, Vec3};
 use optics_core::tcmt::{InputField, KerrCavity, TcmtSolver};
 use plotters::prelude::*;
 use plotters::style::full_palette::GREY;
@@ -37,6 +39,63 @@ use spectral_core::warp_physics::{
 };
 use stats_core::hypergraph::TriadHypergraph;
 use std::f64::consts::PI;
+
+/// GRIN medium modeling the warp ring as a toroidal refractive-index perturbation.
+///
+/// Maps the Kerr metric near a toroidal mass distribution to an effective
+/// refractive index via the transformation optics / Gordon metric analogy:
+///   n_eff(r) ~ 1 + 2*Phi(r)/c^2  (weak field)
+///
+/// The profile is a Gaussian torus: n(x,y,z) = 1 + delta_n * exp(-d^2/sigma^2)
+/// where d is the distance from the ring center circle of radius R in the xy-plane.
+/// The Kerr spin parameter introduces azimuthal frame-dragging asymmetry.
+struct WarpRingGrinMedium {
+    /// Major radius of the warp ring torus.
+    ring_radius: f64,
+    /// Gaussian width of the refractive index perturbation.
+    sigma: f64,
+    /// Peak refractive index perturbation above vacuum (n=1).
+    delta_n: f64,
+    /// Kerr spin parameter: modulates azimuthal asymmetry via frame dragging.
+    a_spin: f64,
+}
+
+impl GrinMedium for WarpRingGrinMedium {
+    fn gradient_and_n(&self, p: Vec3) -> (Vec3, f64) {
+        let rho = (p[0] * p[0] + p[1] * p[1]).sqrt();
+        let z = p[2];
+
+        // Distance squared from the torus center ring
+        let dr = rho - self.ring_radius;
+        let d2 = dr * dr + z * z;
+
+        // Frame-dragging asymmetry: phi-dependent perturbation from Kerr spin
+        // Uses cos(phi) modulation scaled by a_spin (0 = symmetric, 0.95 = strong)
+        let phi = p[1].atan2(p[0]);
+        let drag_factor = 1.0 + 0.1 * self.a_spin * phi.cos();
+
+        let gauss = (-d2 / (self.sigma * self.sigma)).exp();
+        let n = 1.0 + self.delta_n * drag_factor * gauss;
+
+        // Analytic gradient via chain rule
+        let base = -2.0 * self.delta_n * drag_factor * gauss / (self.sigma * self.sigma);
+        let rho_safe = rho.max(1e-10);
+
+        // d(d2)/dx = 2*dr*(x/rho), d(d2)/dy = 2*dr*(y/rho), d(d2)/dz = 2*z
+        let grad_x = base * dr * p[0] / rho_safe;
+        let grad_y = base * dr * p[1] / rho_safe;
+        let grad_z = base * z;
+
+        // Azimuthal gradient contribution from frame dragging
+        // d(drag)/dphi = -0.1*a_spin*sin(phi), dphi/dx = -y/rho^2, dphi/dy = x/rho^2
+        let drag_grad_coeff = self.delta_n * gauss * 0.1 * self.a_spin * (-phi.sin());
+        let rho2_safe = rho_safe * rho_safe;
+        let drag_gx = drag_grad_coeff * (-p[1] / rho2_safe);
+        let drag_gy = drag_grad_coeff * (p[0] / rho2_safe);
+
+        ([grad_x + drag_gx, grad_y + drag_gy, grad_z], n)
+    }
+}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
@@ -69,7 +128,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut state = SimulationState::new(sim_config);
 
     info!(
-        "[1/8] Running Engine LBM ({}x{}, tau={}, {} steps)...",
+        "[1/9] Running Engine LBM ({}x{}, tau={}, {} steps)...",
         nx, ny, lbm_tau, lbm_steps
     );
 
@@ -97,9 +156,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     enstrophy /= (nx * ny) as f64;
 
+    // Map flow enstrophy to a Kerr spin parameter (used in Steps 4b and 7)
+    let a_spin = (enstrophy * 1e2).tanh() * 0.95;
+
     // -- Step 2: Extract Standard Spectral Triads --
     // ... (Remainder of spectral analysis remains similar, using `u` and `v` from engine)
-    info!("[2/8] Extracting spectral triads...");
+    info!("[2/9] Extracting spectral triads...");
     let spectral_triads = extract_dominant_triads(&u, &v, 50.0);
     info!(
         "      Found {} spectral triads (standard).",
@@ -108,7 +170,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // -- Step 3: Warp Physics -- P-adic Modulation + Neg-Dim Kernel --
     info!(
-        "[3/8] Applying warp physics (p={}, alpha={:.1}, eps={:.3})...",
+        "[3/9] Applying warp physics (p={}, alpha={:.1}, eps={:.3})...",
         warp_config.prime, warp_config.alpha, warp_config.epsilon
     );
 
@@ -147,7 +209,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("      Warp spectral density total: {:.6}", warp_total);
 
     // -- Step 4: Materials Bridge -- ZD Metamaterial Spectral Filter --
-    info!("[4/8] Computing metamaterial spectral filter (ZD -> TMM)...");
+    info!("[4/9] Computing metamaterial spectral filter (ZD -> TMM)...");
     let zd_pairs = canonical_sedenion_zd_pairs();
     let stack = build_absorber_stack(&zd_pairs, 6, 1.5);
     let verification = verify_physical_realizability(&stack);
@@ -232,8 +294,82 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     );
 
+    // -- Step 4b: GRIN Ray Tracing Through Warp Ring (NA-001) --
+    info!("[5/9] GRIN ray tracing through warp-ring refractive index (NA-001)...");
+
+    // Map enstrophy to peak refractive index perturbation:
+    // Weak-field GR: delta_n ~ 2*Phi/c^2 ~ r_s/r. For the simulation,
+    // we scale enstrophy (vorticity squared) to a modest perturbation.
+    let delta_n = (enstrophy * 1e3).tanh() * 0.3; // Saturates at 0.3
+    let ring_r = 2.5; // Ring radius in plot coordinates
+    let ring_sigma = 0.8; // Gaussian width
+
+    let warp_medium = WarpRingGrinMedium {
+        ring_radius: ring_r,
+        sigma: ring_sigma,
+        delta_n,
+        a_spin,
+    };
+
+    // Generate a grid of background rays (simulating distant stars)
+    // Rays propagate in the +z direction through the equatorial plane (z=0)
+    let n_rays_side = 12;
+    let ray_extent = 3.8; // Cover most of the [-4, 4] plot range
+    let ray_z_start = -8.0;
+    let ray_step = 0.05;
+    let ray_max_steps = 320; // 320 * 0.05 = 16 units total path
+
+    let mut ray_paths: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut deflections: Vec<f64> = Vec::new();
+
+    for ix in 0..n_rays_side {
+        for iy in 0..n_rays_side {
+            let x0 = -ray_extent + 2.0 * ray_extent * ix as f64 / (n_rays_side - 1) as f64;
+            let y0 = -ray_extent + 2.0 * ray_extent * iy as f64 / (n_rays_side - 1) as f64;
+
+            let initial_ray = Ray {
+                pos: [x0, y0, ray_z_start],
+                dir: [0.0, 0.0, 1.0], // Propagating in +z
+            };
+
+            let result = trace_ray(initial_ray, &warp_medium, ray_step, ray_max_steps);
+
+            // Record the projected (x, y) path for equatorial-plane rendering
+            let path: Vec<(f64, f64)> = result.positions.iter().map(|p| (p[0], p[1])).collect();
+
+            // Deflection angle: angle between final direction and initial +z
+            if let Some(final_dir) = result.directions.last() {
+                let transverse = (final_dir[0] * final_dir[0] + final_dir[1] * final_dir[1]).sqrt();
+                let deflection_rad = transverse.atan2(final_dir[2].abs());
+                deflections.push(deflection_rad);
+            }
+
+            ray_paths.push(path);
+        }
+    }
+
+    let mean_deflection = if deflections.is_empty() {
+        0.0
+    } else {
+        deflections.iter().sum::<f64>() / deflections.len() as f64
+    };
+    let max_deflection = deflections.iter().cloned().fold(0.0_f64, f64::max);
+
+    info!(
+        "      GRIN medium: delta_n={:.4}, ring_R={:.1}, sigma={:.1}, a_spin={:.3}",
+        delta_n, ring_r, ring_sigma, a_spin
+    );
+    info!(
+        "      Traced {} rays: mean_deflection={:.4} rad ({:.2} deg), max={:.4} rad ({:.2} deg)",
+        ray_paths.len(),
+        mean_deflection,
+        mean_deflection.to_degrees(),
+        max_deflection,
+        max_deflection.to_degrees()
+    );
+
     // -- Step 5: Map to E7 Lie Algebra --
-    info!("[5/8] Mapping to E7 geometry...");
+    info!("[6/9] Mapping to E7 geometry...");
     let e7_roots = generate_e7_roots();
     let algebra_triads = find_e7_triads(&e7_roots);
     info!(
@@ -243,7 +379,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     // -- Step 6: Build Hypergraph + Topological Invariants --
-    info!("[6/8] Building hypergraph...");
+    info!("[7/9] Building hypergraph...");
     let mut hg = TriadHypergraph::new();
 
     // Map warp triads to hypergraph vertices via wavevector hash
@@ -280,9 +416,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let active_algebra_triads: Vec<_> = algebra_triads.into_iter().take(active_count).collect();
 
     // -- Step 7: Warp Lensing (SHI Integration) --
-    info!("[7/8] Simulating breakthrough SHI warp lensing...");
-    // Map flow enstrophy to a Kerr spin parameter (dimensionless a = J/M^2)
-    let a_spin = (enstrophy * 1e2).tanh() * 0.95;
+    info!("[8/9] Simulating breakthrough SHI warp lensing...");
     let kerr = Kerr::new(1.0, a_spin);
     let mut lensed_roots = Vec::new();
 
@@ -323,13 +457,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // -- Step 8: Render --
-    info!("[8/8] Rendering warp ring...");
+    info!("[9/9] Rendering warp ring...");
     let root = BitMapBackend::new("warp_ring_integration.png", (1024, 1024)).into_drawing_area();
     root.fill(&BLACK)?;
 
     let mut chart = ChartBuilder::on(&root)
         .caption(
-            "Warp Ring: E7 x Turbulence x P-adic",
+            "Warp Ring: E7 x Turbulence x GRIN Optics",
             ("sans-serif", 36).into_font().color(&WHITE),
         )
         .margin(20)
@@ -387,6 +521,46 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ))?;
     }
 
+    // Layer 5: GRIN-lensed background ray paths (yellow/orange, NA-001)
+    // Each ray is projected to (x, y) from the 3D trace. Rays near the ring
+    // are deflected more strongly, revealing the gravitational lensing pattern.
+    for (i, path) in ray_paths.iter().enumerate() {
+        if path.len() < 2 {
+            continue;
+        }
+        // Color by deflection: low deflection = dim yellow, high = bright orange
+        let defl_frac = if max_deflection > 1e-10 {
+            (deflections[i] / max_deflection).min(1.0)
+        } else {
+            0.0
+        };
+        let hue = 0.12 - 0.06 * defl_frac; // Yellow(0.12) -> Orange(0.06)
+        let color = HSLColor(hue, 1.0, 0.5);
+
+        // Subsample the path to avoid excessive line segments
+        let step = (path.len() / 40).max(1);
+        let subsampled: Vec<(f64, f64)> = path.iter().step_by(step).copied().collect();
+
+        if subsampled.len() >= 2 {
+            chart.draw_series(LineSeries::new(
+                subsampled,
+                &color.mix(0.4 + 0.4 * defl_frac),
+            ))?;
+        }
+    }
+
+    // Layer 6: Warp ring outline (white dashed circle at ring_radius)
+    {
+        let n_ring_pts = 100;
+        let ring_pts: Vec<(f64, f64)> = (0..=n_ring_pts)
+            .map(|i| {
+                let theta = 2.0 * PI * i as f64 / n_ring_pts as f64;
+                (ring_r * theta.cos(), ring_r * theta.sin())
+            })
+            .collect();
+        chart.draw_series(LineSeries::new(ring_pts, &WHITE.mix(0.3)))?;
+    }
+
     root.present()?;
     info!("Done. Output saved to 'warp_ring_integration.png'.");
 
@@ -398,6 +572,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!(
         "  Materials: {} ZD layers, {} physical",
         verification.n_total, verification.n_physical
+    );
+    info!(
+        "  GRIN lensing: delta_n={:.4}, mean_defl={:.4} rad, max_defl={:.4} rad",
+        delta_n, mean_deflection, max_deflection
     );
     info!("  E7 algebraic triads: {}", active_algebra_triads.len());
     info!(

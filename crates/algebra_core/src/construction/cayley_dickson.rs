@@ -66,6 +66,46 @@ pub fn cd_multiply(a: &[f64], b: &[f64]) -> Vec<f64> {
     result
 }
 
+/// Cayley-Dickson multiplication with conjugated doubling (chirality inversion).
+///
+/// Standard CD: (a,b)(c,d) = (ac - d*b, da + bc*)
+/// Conjugated CD: (a,b)(c,d) = (ac - db*, b*c + da)
+///
+/// The conjugated form flips the orientation of the algebra, inverting
+/// the chirality of structures built from the multiplication table. This
+/// is used to test the chirality-algebra lock hypothesis.
+pub fn cd_multiply_conjugated(a: &[f64], b: &[f64]) -> Vec<f64> {
+    let dim = a.len();
+    debug_assert_eq!(a.len(), b.len());
+
+    if dim == 1 {
+        return vec![a[0] * b[0]];
+    }
+
+    let half = dim / 2;
+    let (a_l, a_r) = a.split_at(half);
+    let (c_l, c_r) = b.split_at(half);
+
+    // Conjugated doubling:
+    // L = a_l * c_l - c_r * conj(a_r)    (swap conjugation target)
+    let conj_a_r = cd_conjugate(a_r);
+    let term1 = cd_multiply_conjugated(a_l, c_l);
+    let term2 = cd_multiply_conjugated(c_r, &conj_a_r);
+
+    // R = conj(a_r) * c_l + c_r * a_l    (swap operand order)
+    let term3 = cd_multiply_conjugated(&conj_a_r, c_l);
+    let term4 = cd_multiply_conjugated(c_r, a_l);
+
+    let mut result = Vec::with_capacity(dim);
+    for i in 0..half {
+        result.push(term1[i] - term2[i]);
+    }
+    for i in 0..half {
+        result.push(term3[i] + term4[i]);
+    }
+    result
+}
+
 /// Squared Euclidean norm: sum of squares of all components.
 #[inline]
 pub fn cd_norm_sq(a: &[f64]) -> f64 {

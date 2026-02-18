@@ -231,6 +231,125 @@ pub fn codebook_baire_ultrametric_test(
 }
 
 // ============================================================================
+// N-dimensional lattice Baire functions (arbitrary D via &[i8] slices)
+// ============================================================================
+
+/// Compute the shared prefix length among N-D integer lattice vectors.
+///
+/// Generalizes `shared_prefix_length` from 8D `LatticeVector` to slices
+/// of arbitrary dimensionality. All vectors must have the same length.
+pub fn shared_prefix_length_nd(vectors: &[Vec<i8>]) -> usize {
+    if vectors.is_empty() {
+        return 0;
+    }
+    let dim = vectors[0].len();
+    let first = &vectors[0];
+    for pos in 0..dim {
+        if vectors.iter().any(|v| v[pos] != first[pos]) {
+            return pos;
+        }
+    }
+    dim
+}
+
+/// Compute Baire distance between two N-D integer lattice vectors.
+///
+/// Uses base-3 encoding: -1 -> 0, 0 -> 1, 1 -> 2 (for trinary lattices).
+/// Distance = 3^{-k} where k is the 1-indexed position of the first
+/// differing digit after `skip_prefix` leading coordinates.
+pub fn lattice_baire_distance_nd(a: &[i8], b: &[i8], skip_prefix: usize) -> f64 {
+    debug_assert_eq!(a.len(), b.len(), "dimension mismatch");
+    let dim = a.len();
+    for pos in skip_prefix..dim {
+        if a[pos] != b[pos] {
+            let effective_pos = pos - skip_prefix + 1; // 1-indexed
+            return 3.0_f64.powi(-(effective_pos as i32));
+        }
+    }
+    0.0
+}
+
+/// Compute the full Baire distance matrix for N-D integer lattice vectors.
+///
+/// Returns a flat upper-triangle distance matrix.
+pub fn lattice_baire_distance_matrix_nd(vectors: &[Vec<i8>], skip_prefix: usize) -> Vec<f64> {
+    let n = vectors.len();
+    let n_pairs = n * (n - 1) / 2;
+    let mut dists = Vec::with_capacity(n_pairs);
+    for i in 0..n {
+        for j in (i + 1)..n {
+            dists.push(lattice_baire_distance_nd(&vectors[i], &vectors[j], skip_prefix));
+        }
+    }
+    dists
+}
+
+/// Run a codebook Baire ultrametric test on N-D integer lattice vectors.
+///
+/// Generalizes `codebook_baire_ultrametric_test` from 8D to arbitrary
+/// dimensionality. Auto-detects shared prefix, strips it, and runs the
+/// ultrametric fraction test with column-shuffled null.
+pub fn codebook_baire_ultrametric_test_nd(
+    vectors: &[Vec<i8>],
+    n_triples: usize,
+    n_permutations: usize,
+    seed: u64,
+) -> CodebookBaireResult {
+    assert!(vectors.len() >= 3, "need at least 3 vectors");
+    let dim = vectors[0].len();
+    debug_assert!(vectors.iter().all(|v| v.len() == dim), "dimension mismatch");
+
+    let prefix_len = shared_prefix_length_nd(vectors);
+    let effective_dim = dim - prefix_len;
+
+    let dist_matrix = lattice_baire_distance_matrix_nd(vectors, prefix_len);
+    let n = vectors.len();
+
+    let obs_frac = super::ultrametric_fraction_from_matrix(&dist_matrix, n, n_triples, seed);
+
+    // Null: shuffle each tail coordinate independently
+    let mut rng = ChaCha8Rng::seed_from_u64(seed + 1_000_000);
+    let mut null_fracs = Vec::with_capacity(n_permutations);
+    let mut shuffled: Vec<Vec<i8>> = vectors.to_vec();
+
+    for _ in 0..n_permutations {
+        for coord in prefix_len..dim {
+            let mut col_vals: Vec<i8> = shuffled.iter().map(|v| v[coord]).collect();
+            col_vals.shuffle(&mut rng);
+            for (i, &val) in col_vals.iter().enumerate() {
+                shuffled[i][coord] = val;
+            }
+        }
+
+        let null_dists = lattice_baire_distance_matrix_nd(&shuffled, prefix_len);
+        let null_frac =
+            super::ultrametric_fraction_from_matrix(&null_dists, n, n_triples, seed + 2_000_000);
+        null_fracs.push(null_frac);
+    }
+
+    let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+    let null_var = null_fracs
+        .iter()
+        .map(|f| (f - null_mean).powi(2))
+        .sum::<f64>()
+        / n_permutations as f64;
+    let null_std = null_var.sqrt();
+
+    let n_extreme = null_fracs.iter().filter(|&&f| f >= obs_frac).count();
+    let p_value = (n_extreme as f64 + 1.0) / (n_permutations as f64 + 1.0);
+
+    CodebookBaireResult {
+        n_vectors: n,
+        effective_dim,
+        prefix_stripped: prefix_len,
+        ultrametric_fraction: obs_frac,
+        null_fraction_mean: null_mean,
+        null_fraction_std: null_std,
+        p_value,
+    }
+}
+
+// ============================================================================
 // Tests
 // ============================================================================
 
@@ -579,7 +698,7 @@ mod tests {
     /// one at a time.
     ///
     /// The 6 rules, applied cumulatively:
-    ///   k=0: Lambda_1024                (1026 vectors)
+    ///   k=0: Lambda_1024                (1024 vectors)
     ///   k=1: exclude l_1=1              (largest cut)
     ///   k=2: also exclude l_1=0,l_2=1
     ///   k=3: also exclude l_1=0,l_2=0,l_3=0
@@ -668,8 +787,8 @@ mod tests {
         }
 
         // Structural assertions:
-        // 1. k=0 is Lambda_1024 (1026 vectors)
-        assert_eq!(sizes[0], 1026, "k=0 must be Lambda_1024");
+        // 1. k=0 is Lambda_1024 (1024 vectors, per CSV ground truth)
+        assert_eq!(sizes[0], 1024, "k=0 must be Lambda_1024");
         // 2. k=6 is Lambda_512 (512 vectors)
         assert_eq!(sizes[6], 512, "k=6 must be Lambda_512");
         // 3. Sizes monotonically decrease
@@ -783,12 +902,12 @@ mod tests {
             );
         }
 
-        // k=0 is Lambda_1024 = 1026
-        assert_eq!(sizes[0], 1026);
+        // k=0 is Lambda_1024 = 1024 (per CSV ground truth, 2-point exclusion)
+        assert_eq!(sizes[0], 1024);
         // k=6 is Lambda_512 = 512
         assert_eq!(sizes[6], 512);
         // Total removed
-        assert_eq!(sizes[0] - sizes[6], 514, "Total removed must be 514");
+        assert_eq!(sizes[0] - sizes[6], 512, "Total removed must be 512");
     }
 
     /// Random-removal control: does removing 297 RANDOM vectors from
@@ -807,12 +926,12 @@ mod tests {
 
         let all_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
         let n_full = all_1024.len();
-        assert_eq!(n_full, 1026);
+        assert_eq!(n_full, 1024);
 
         let n_triples = 50_000;
         let n_null_perms = 200;
         let n_random_trials = 20;
-        let n_remove = 297; // Same count as rule 1
+        let n_remove = 295; // Same count as rule 1 (l_1=+1 vectors in Lambda_1024)
 
         eprintln!("\n=== Random Removal Control (C-501 validation) ===");
         eprintln!(
@@ -822,7 +941,7 @@ mod tests {
 
         // First: compute z-score for rule-1 removal (reference)
         let rule1_vectors: Vec<_> = all_1024.iter().copied().filter(|v| v[1] != 1).collect();
-        assert_eq!(rule1_vectors.len(), 729);
+        assert_eq!(rule1_vectors.len(), 729, "l_1!=1 filter: 1024 - 295 = 729");
 
         let prefix = shared_prefix_length(&rule1_vectors);
         let d = 8 - prefix;
@@ -864,8 +983,8 @@ mod tests {
         };
 
         eprintln!(
-            "Rule-1 removal: N=729, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-            rule1_obs, null_mean, null_std, rule1_z
+            "Rule-1 removal: N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+            rule1_vectors.len(), rule1_obs, null_mean, null_std, rule1_z
         );
 
         // Now: 20 random removal trials
@@ -876,7 +995,7 @@ mod tests {
             let mut indices: Vec<usize> = (0..n_full).collect();
             indices.shuffle(&mut rng_sample);
             let keep: Vec<_> = indices[n_remove..].iter().map(|&i| all_1024[i]).collect();
-            assert_eq!(keep.len(), 729);
+            assert_eq!(keep.len(), 729, "1024 - 295 = 729");
 
             let prefix_r = shared_prefix_length(&keep);
             let d_r = 8 - prefix_r;
@@ -1588,11 +1707,11 @@ mod tests {
             );
         }
 
-        // Verify boundary: k=4 should match Lambda_1024
-        let k4_set = enumerate_lattice_by_predicate(|v| is_in_lambda_2048_minus_k(v, 4));
+        // Verify boundary: k=5 should match Lambda_1024 (all 5 rules applied)
+        let k5_set = enumerate_lattice_by_predicate(|v| is_in_lambda_2048_minus_k(v, 5));
         let l1024_set =
             enumerate_lattice_by_predicate(algebra_core::analysis::codebook::is_in_lambda_1024);
-        assert_eq!(k4_set.len(), l1024_set.len(), "k=4 must equal Lambda_1024");
+        assert_eq!(k5_set.len(), l1024_set.len(), "k=5 must equal Lambda_1024");
     }
 
     /// Boundary consistency for is_in_lambda_2048_minus_k.
@@ -1607,9 +1726,9 @@ mod tests {
         let all_2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
         assert_eq!(k0.len(), all_2048.len(), "k=0 must equal Lambda_2048");
 
-        let k4 = enumerate_lattice_by_predicate(|v| is_in_lambda_2048_minus_k(v, 4));
+        let k5 = enumerate_lattice_by_predicate(|v| is_in_lambda_2048_minus_k(v, 5));
         let all_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
-        assert_eq!(k4.len(), all_1024.len(), "k=4 must equal Lambda_1024");
+        assert_eq!(k5.len(), all_1024.len(), "k=5 must equal Lambda_1024");
 
         // Monotone containment
         let mut prev = k0;
@@ -2613,5 +2732,128 @@ mod tests {
 
         // Key assertion: the Herfindahl model should have R^2 > 0.9
         assert!(r * r > 0.9, "Model R^2 = {:.4}, expected > 0.9", r * r);
+    }
+
+    // =====================================================================
+    // N-D lattice Baire tests
+    // =====================================================================
+
+    #[test]
+    fn test_nd_shared_prefix() {
+        let vecs = vec![
+            vec![-1i8, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            vec![-1, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            vec![-1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+        assert_eq!(shared_prefix_length_nd(&vecs), 2);
+    }
+
+    #[test]
+    fn test_nd_shared_prefix_empty() {
+        let vecs: Vec<Vec<i8>> = vec![];
+        assert_eq!(shared_prefix_length_nd(&vecs), 0);
+    }
+
+    #[test]
+    fn test_nd_baire_distance_identical() {
+        let a = vec![-1i8, 0, 1, 0, -1, 1, 0, 0, 1, -1, 0, 1, -1, 0, 1, 0];
+        assert_eq!(lattice_baire_distance_nd(&a, &a, 0), 0.0);
+    }
+
+    #[test]
+    fn test_nd_baire_distance_first_digit_16d() {
+        let a = vec![-1i8; 16];
+        let mut b = vec![-1i8; 16];
+        b[0] = 0; // first position differs
+        let d = lattice_baire_distance_nd(&a, &b, 0);
+        assert!((d - 1.0 / 3.0).abs() < 1e-10, "d = {d}");
+    }
+
+    #[test]
+    fn test_nd_baire_distance_with_prefix_16d() {
+        let a = vec![-1i8, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let mut b = a.clone();
+        b[5] = 1; // position 5 differs (after skip=2 -> effective pos = 4)
+        let d = lattice_baire_distance_nd(&a, &b, 2);
+        // effective_pos = 5 - 2 + 1 = 4 -> d = 3^(-4)
+        let expected = 3.0_f64.powi(-4);
+        assert!((d - expected).abs() < 1e-10, "d={d}, expected={expected}");
+    }
+
+    #[test]
+    fn test_nd_baire_matrix_16d() {
+        let vecs = vec![
+            vec![0i8; 16],
+            {
+                let mut v = vec![0i8; 16];
+                v[0] = 1; // differs at pos 0
+                v
+            },
+            {
+                let mut v = vec![0i8; 16];
+                v[3] = -1; // differs at pos 3
+                v
+            },
+        ];
+        let dists = lattice_baire_distance_matrix_nd(&vecs, 0);
+        // d(0,1) = 3^(-1) = 0.333...  (differ at pos 0)
+        // d(0,2) = 3^(-4) = 0.012...  (differ at pos 3)
+        // d(1,2) = 3^(-1) = 0.333...  (differ at pos 0)
+        assert_eq!(dists.len(), 3);
+        assert!((dists[0] - 1.0 / 3.0).abs() < 1e-10, "d01={}", dists[0]);
+        assert!((dists[1] - 3.0_f64.powi(-4)).abs() < 1e-10, "d02={}", dists[1]);
+        assert!((dists[2] - 1.0 / 3.0).abs() < 1e-10, "d12={}", dists[2]);
+    }
+
+    #[test]
+    fn test_nd_codebook_ultrametric_16d() {
+        // Generate 50 random trinary 16D vectors and test
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        let vectors: Vec<Vec<i8>> = (0..50)
+            .map(|_| {
+                (0..16)
+                    .map(|_| [-1i8, 0, 1][rng.gen_range(0..3)])
+                    .collect()
+            })
+            .collect();
+
+        let result = codebook_baire_ultrametric_test_nd(&vectors, 5_000, 50, 42);
+
+        assert_eq!(result.n_vectors, 50);
+        // No shared prefix expected for random vectors
+        assert_eq!(result.prefix_stripped, 0);
+        assert_eq!(result.effective_dim, 16);
+        assert!(result.ultrametric_fraction >= 0.0);
+        assert!(result.ultrametric_fraction <= 1.0);
+        assert!(result.p_value >= 0.0);
+        assert!(result.p_value <= 1.0);
+
+        eprintln!(
+            "16D random trinary: frac={:.4}, null={:.4}, p={:.4}",
+            result.ultrametric_fraction, result.null_fraction_mean, result.p_value
+        );
+    }
+
+    #[test]
+    fn test_nd_matches_8d_for_lattice_vectors() {
+        // Verify that the N-D version gives the same results as the 8D
+        // version when applied to the same 8D lattice vectors.
+        let lambda_256 = enumerate_lambda_256();
+        let subset: Vec<LatticeVector> = lambda_256.iter().take(30).copied().collect();
+        let subset_nd: Vec<Vec<i8>> = subset.iter().map(|v| v.to_vec()).collect();
+
+        let prefix_8d = shared_prefix_length(&subset);
+        let prefix_nd = shared_prefix_length_nd(&subset_nd);
+        assert_eq!(prefix_8d, prefix_nd, "prefix mismatch");
+
+        let dm_8d = lattice_baire_distance_matrix(&subset, prefix_8d);
+        let dm_nd = lattice_baire_distance_matrix_nd(&subset_nd, prefix_nd);
+        assert_eq!(dm_8d.len(), dm_nd.len());
+        for (i, (&d8, &dn)) in dm_8d.iter().zip(dm_nd.iter()).enumerate() {
+            assert!(
+                (d8 - dn).abs() < 1e-15,
+                "mismatch at index {i}: 8D={d8}, ND={dn}"
+            );
+        }
     }
 }

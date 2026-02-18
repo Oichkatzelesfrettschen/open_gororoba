@@ -118,3 +118,6 @@ credentials.*
 /*.ptx
 /*.txt
 data/artifacts/c756_frames/
+data/bl_6equj5_gbt/
+*.h5
+.venv/

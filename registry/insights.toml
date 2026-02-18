@@ -1055,3 +1055,13 @@ summary = "SETI null results (no signal detected) are not featureless: the RFI e
 claims = ["C-772", "C-773"]
 confidence = "medium"
 phase = "topology"
+
+[[insight]]
+id = "I-093"
+title = "Leech Lattice as Signal Discriminator"
+date = "2026-02-18"
+status = "Proposed"
+summary = "The Leech Lattice Lambda_24, constructed via the extended Golay code [24,12,8] using Construction A, provides a natural 24-dimensional signal classifier when time-series chunks are projected onto it via Babai nearest-plane CVP. The deep hole fraction (distance from closest lattice point) distinguishes structured from noise-only signals, connecting the Monster Group symmetry of the lattice to practical signal discrimination."
+claims = ["C-778"]
+confidence = "low"
+phase = "topology"

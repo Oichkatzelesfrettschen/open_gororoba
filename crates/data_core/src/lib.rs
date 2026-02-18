@@ -32,6 +32,7 @@ pub mod hdf5_export;
 pub mod provenance;
 pub mod quality;
 pub mod registry;
+pub mod seti;
 
 pub use fetcher::{compute_sha256, download_to_file, download_to_string};
 pub use fetcher::{DatasetProvider, FetchConfig, FetchError};

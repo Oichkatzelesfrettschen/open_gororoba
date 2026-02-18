@@ -5,14 +5,30 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
+test_count = 4007
+claim_count = 784
+insight_count = 90
+experiment_count = 53
+complete_experiment_count = 0
+paper_count = 19
+binary_count = 126
+scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s49]
+number = 49
+date = "2026-02-18"
+test_count = 4007
+claim_count = 784
+insight_count = 90
+summary = "Sprint 49: Zero-Divisor Resonance Falsification & Sedenion-Moonshine Synthesis. Infrastructure phase: extracted ghost_spectral shared module from rho_ghost_fft into spectral_core, parameterized zd_gen.wgsl shader (pc.lambda), added step_with_params/read_rho_field to GororobaEngine, implemented extended Golay code [24,12,8] (4096 codewords, 7 tests) and Leech Lattice Lambda_24 via Construction A with Babai CVP (8 tests), added PathionSink struct and ChiralityMode enum to gororoba_engine, added cd_multiply_conjugated for chirality inversion. 6 new binaries: zd-resonance-sweep (GPU tau sweep), pathion-sink-test (sedenion field stability), chirality-lock-test (2x2 CD/vorticity matrix), moonshine-filterbank (Leech Lattice signal discrimination), wow-sedenion-synthesis (integrated pipeline), dataset-fetch-all (bulk provider download). Claims C-774..C-778, Experiments E-051..E-055, Insight I-093. All Proposed, awaiting experiment execution."
+
+[sprints.s48]
+number = 48
+date = "2026-02-18"
 test_count = 3764
 claim_count = 779
 insight_count = 89
-experiment_count = 47
-complete_experiment_count = 0
-paper_count = 19
-binary_count = 116
-scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+summary = "Sprint 48: Wow! Signal Technosignature Testbed + Rust-Native BL Pipeline. Phase 1: Wow! transcription, drift rate, ABACAD, topology, ultrametric (C-769..C-773, E-045..E-049). Phase 2: Rust-native BL filterbank HDF5 reader, Doppler shift-and-add search engine, ABACAD cadence filter, download orchestrator (bl-data-fetch), search pipeline (bl-doppler-search), wow-topology --candidates integration (E-050). 15 new seti tests (8 doppler + 7 cadence)."
 
 [sprints.s47]
 number = 47

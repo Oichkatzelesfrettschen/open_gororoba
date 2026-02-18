@@ -627,3 +627,69 @@ name = "wow-topology"
 crate = "gororoba_cli"
 description = "Topological and ultrametric analysis of Wow! signal BL 6EQUJ5 candidates"
 experiment = "E-048"
+
+[[binary]]
+name = "bl-data-fetch"
+crate = "gororoba_cli"
+description = "BL 6EQUJ5 data download orchestrator with manifest generation, resume, SHA-256 verification, and cleanup"
+status = "active"
+
+[[binary]]
+name = "bl-doppler-search"
+crate = "gororoba_cli"
+description = "Rust-native Doppler drift search pipeline for BL filterbank HDF5 files with ABACAD cadence filter"
+experiment = "E-050"
+status = "active"
+
+[[binary]]
+name = "rho-ghost-fft"
+crate = "gororoba_cli"
+description = "1420 MHz ghost spectral analysis: FFT on rho_mean trace to detect phi^{-1/2} carrier wave from sedenion ZD-modulated viscosity"
+status = "active"
+
+[[binary]]
+name = "cd-ultrametric-scaling"
+crate = "gororoba_cli"
+description = "CD ultrametric scaling law: measures Euclidean, local, and Baire ultrametric fractions across Cayley-Dickson doubling levels D=2^k (k=1..8)"
+status = "active"
+
+[[binary]]
+name = "zd-resonance-sweep"
+crate = "gororoba_cli"
+description = "ZD resonance falsification: GPU LBM tau sweep with/without sedenion zero-divisor viscosity modulation, spectral analysis, ghost frequency detection"
+experiment = "E-051"
+status = "active"
+
+[[binary]]
+name = "pathion-sink-test"
+crate = "gororoba_cli"
+description = "Pathion entropy sink falsification: sedenion field stability comparison with/without virtual dim-32 absorber, coupling parameter sweep"
+experiment = "E-052"
+status = "active"
+
+[[binary]]
+name = "chirality-lock-test"
+crate = "gororoba_cli"
+description = "Chirality holographic checksum: 2x2 matrix of CD multiplication table orientation vs vorticity sign, measures helicity lock to algebra"
+experiment = "E-053"
+status = "active"
+
+[[binary]]
+name = "moonshine-filterbank"
+crate = "gororoba_cli"
+description = "Moonshine signal filterbank: Leech Lattice CVP projection with deep hole classification for ON/OFF source discrimination"
+experiment = "E-054"
+status = "active"
+
+[[binary]]
+name = "wow-sedenion-synthesis"
+crate = "gororoba_cli"
+description = "Integrated Wow! + Sedenion analysis pipeline: spectral analysis, Leech Lattice projection, ultrametric structure, consolidated thesis report"
+experiment = "E-055"
+status = "active"
+
+[[binary]]
+name = "dataset-fetch-all"
+crate = "gororoba_cli"
+description = "Bulk dataset download orchestrator: iterates all DatasetProvider implementations, reports cache status, fetches missing datasets"
+status = "active"

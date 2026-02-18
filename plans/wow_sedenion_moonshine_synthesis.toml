@@ -1,0 +1,34 @@
+# Wow! Signal + Sedenion Moonshine Synthesis Plan
+# "The 1420 MHz Monster"
+
+[astrometry]
+epoch_origin = "1977-08-15T22:16:00Z"
+epoch_current = "2026-02-18T00:00:00Z"
+ra_b1950 = "19h22m24.64s"
+dec_b1950 = "-27d03m00s"
+ra_j2000_code = "19h25m31s" # Derived from RA_RAD in wow_signal_analysis.rs
+dec_j2000_code = "-27d00m00s" # Derived from DEC_RAD in wow_signal_analysis.rs
+uncertainty_ra = "10s" # 2 beams
+uncertainty_dec = "20m" # drift scan
+
+[data_ingest]
+dataset_volume = "288 GB"
+format = "GUPPI / HDF5 Filterbank"
+location = "data/bl_6equj5_gbt"
+pipeline = "Rust-Native Sedenion Filterbank"
+
+[algebraic_filters]
+filter_1 = { name = "Moonshine Lattice Projection", source = "crates/algebra_core/src/experimental/moonshine.rs" }
+filter_2 = { name = "Sedenion Zero-Divisor Resonance", source = "crates/algebra_core/src/construction/cayley_dickson.rs" }
+filter_3 = { name = "Vietoris-Rips Topology", source = "crates/gororoba_cli/src/bin/wow_topology.rs" }
+
+[comparison]
+wow_snr = 30.0
+jwst_sensitivity = "nJy" # Nano-Jansky (Infrared)
+desi_redshift_range = "0.0 < z < 3.5"
+modern_radio_snr = "Variable (RFI limited)"
+
+[provenance]
+claim_c770 = "Drift Rate Bound < 0.37 Hz/s (Verified)"
+claim_c772 = "Topological Indistinguishability (Verified p > 0.05)"
+claim_c773 = "Ultrametric Ecology (Proposed)"

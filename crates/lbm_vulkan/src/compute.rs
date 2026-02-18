@@ -62,7 +62,7 @@ impl GororobaEngine {
         
         let f_a = Self::create_buf_internal(&device, &mut allocator, n_cells * 19 * 4, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_DST, "f_a", MemoryLocation::GpuOnly)?;
         let f_b = Self::create_buf_internal(&device, &mut allocator, n_cells * 19 * 4, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC, "f_b", MemoryLocation::GpuOnly)?;
-        let rho = Self::create_buf_internal(&device, &mut allocator, n_cells * 4, vk::BufferUsageFlags::STORAGE_BUFFER, "rho", MemoryLocation::GpuOnly)?;
+        let rho = Self::create_buf_internal(&device, &mut allocator, n_cells * 4, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC, "rho", MemoryLocation::GpuToCpu)?;
         let u = Self::create_buf_internal(&device, &mut allocator, n_cells * 3 * 4, vk::BufferUsageFlags::STORAGE_BUFFER, "u", MemoryLocation::GpuOnly)?;
         let tau = Self::create_buf_internal(&device, &mut allocator, n_cells * 4, vk::BufferUsageFlags::STORAGE_BUFFER, "tau", MemoryLocation::GpuOnly)?;
         let force = Self::create_buf_internal(&device, &mut allocator, n_cells * 3 * 4, vk::BufferUsageFlags::STORAGE_BUFFER, "force", MemoryLocation::CpuToGpu)?;
@@ -204,6 +204,32 @@ impl GororobaEngine {
         Ok(())
     }
 
+    /// Read back the full rho density field from GPU memory.
+    ///
+    /// The rho buffer is allocated as `GpuToCpu`, so `mapped_ptr()` is valid
+    /// after the compute shader writes to it. Caller MUST ensure the GPU has
+    /// finished writing (e.g. via `queue_wait_idle`) before calling this.
+    pub fn read_rho_field(&self) -> Vec<f32> {
+        let ptr = self.rho_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *const f32;
+        let n = (self.grid_dim.0 * self.grid_dim.1 * self.grid_dim.2) as usize;
+        let data = unsafe { std::slice::from_raw_parts(ptr, n) };
+        data.to_vec()
+    }
+
+    /// Return the grid dimensions.
+    pub fn grid_dim(&self) -> (u32, u32, u32) {
+        self.grid_dim
+    }
+
+    pub fn get_diagnostics(&self) -> (f32, f32) {
+        let ptr = self.rho_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *const f32;
+        let n = (self.grid_dim.0 * self.grid_dim.1 * self.grid_dim.2) as usize;
+        let data = unsafe { std::slice::from_raw_parts(ptr, n) };
+        let total_mass: f32 = data.iter().sum();
+        let max_rho = data.iter().cloned().fold(0.0, f32::max);
+        (total_mass, max_rho)
+    }
+
     pub fn step(&mut self, cmd: vk::CommandBuffer, frame: u32) {
         unsafe {
             let zd_pc = ZdGenConstants { nx: self.grid_dim.0, ny: self.grid_dim.1, nz: self.grid_dim.2, tau_base: 0.55, tau_amp: 0.2, lambda: 5.0, time: frame as f32 };
@@ -214,7 +240,7 @@ impl GororobaEngine {
             
             let set_idx = (self.step_counter % 2) as usize;
             self.step_counter += 1;
-            let lbm_pc = LbmConstants { nx: self.grid_dim.0, ny: self.grid_dim.1, nz: self.grid_dim.2, global_tau_scale: 1.0 };
+            let lbm_pc = LbmConstants { nx: self.grid_dim.0, ny: self.grid_dim.1, nz: self.grid_dim.2, gx: 0.0, gy: -0.0001, gz: 0.0 };
             std::ptr::write(self.lbm_pipeline.uniform_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *mut LbmConstants, lbm_pc);
             self.device.cmd_bind_pipeline(cmd, vk::PipelineBindPoint::COMPUTE, self.lbm_pipeline.pipeline);
             self.device.cmd_bind_descriptor_sets(cmd, vk::PipelineBindPoint::COMPUTE, self.lbm_pipeline.layout, 0, &[self.lbm_pipeline.descriptor_sets[set_idx]], &[]);
@@ -228,8 +254,102 @@ impl GororobaEngine {
             self.device.cmd_bind_descriptor_sets(cmd, vk::PipelineBindPoint::COMPUTE, self.render_pipeline.layout, 0, &self.render_pipeline.descriptor_sets, &[]);
             self.device.cmd_dispatch(cmd, 1280u32.div_ceil(16), 720u32.div_ceil(16), 1);
             let barrier2 = vk::ImageMemoryBarrier { old_layout: vk::ImageLayout::GENERAL, new_layout: vk::ImageLayout::TRANSFER_SRC_OPTIMAL, image: self.render_image.image, subresource_range: vk::ImageSubresourceRange { aspect_mask: vk::ImageAspectFlags::COLOR, level_count: 1, layer_count: 1, ..Default::default() }, ..Default::default() };
-            self.device.cmd_pipeline_barrier(cmd, vk::PipelineStageFlags::COMPUTE_SHADER, vk::PipelineStageFlags::TRANSFER, vk::DependencyFlags::empty(), &[], &[], &[barrier2]);
+            self.device.cmd_pipeline_barrier(cmd, vk::PipelineStageFlags::TOP_OF_PIPE, vk::PipelineStageFlags::TRANSFER, vk::DependencyFlags::empty(), &[], &[], &[barrier2]);
             self.device.cmd_copy_image_to_buffer(cmd, self.render_image.image, vk::ImageLayout::TRANSFER_SRC_OPTIMAL, self.render_image.readback.buffer, &[vk::BufferImageCopy { image_subresource: vk::ImageSubresourceLayers { aspect_mask: vk::ImageAspectFlags::COLOR, layer_count: 1, ..Default::default() }, image_extent: vk::Extent3D { width: 1280, height: 720, depth: 1 }, ..Default::default() }]);
+        }
+    }
+
+    /// Advance the simulation by one step with caller-specified ZD parameters.
+    ///
+    /// Unlike `step()`, which uses hardcoded tau_base=0.55, tau_amp=0.2, lambda=5.0,
+    /// this method accepts arbitrary ZD parameters for sweep experiments.
+    pub fn step_with_params(
+        &mut self,
+        cmd: vk::CommandBuffer,
+        frame: u32,
+        tau_base: f32,
+        tau_amp: f32,
+        lambda: f32,
+    ) {
+        unsafe {
+            let zd_pc = ZdGenConstants {
+                nx: self.grid_dim.0,
+                ny: self.grid_dim.1,
+                nz: self.grid_dim.2,
+                tau_base,
+                tau_amp,
+                lambda,
+                time: frame as f32,
+            };
+            std::ptr::write(
+                self.zd_pipeline
+                    .uniform_buffer
+                    .allocation
+                    .mapped_ptr()
+                    .unwrap()
+                    .as_ptr() as *mut ZdGenConstants,
+                zd_pc,
+            );
+            self.device.cmd_bind_pipeline(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.zd_pipeline.pipeline,
+            );
+            self.device.cmd_bind_descriptor_sets(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.zd_pipeline.layout,
+                0,
+                &self.zd_pipeline.descriptor_sets,
+                &[],
+            );
+            self.device.cmd_dispatch(
+                cmd,
+                self.grid_dim.0.div_ceil(8),
+                self.grid_dim.1.div_ceil(8),
+                self.grid_dim.2.div_ceil(8),
+            );
+
+            let set_idx = (self.step_counter % 2) as usize;
+            self.step_counter += 1;
+            let lbm_pc = LbmConstants {
+                nx: self.grid_dim.0,
+                ny: self.grid_dim.1,
+                nz: self.grid_dim.2,
+                gx: 0.0,
+                gy: -0.0001,
+                gz: 0.0,
+            };
+            std::ptr::write(
+                self.lbm_pipeline
+                    .uniform_buffer
+                    .allocation
+                    .mapped_ptr()
+                    .unwrap()
+                    .as_ptr() as *mut LbmConstants,
+                lbm_pc,
+            );
+            self.device.cmd_bind_pipeline(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.lbm_pipeline.pipeline,
+            );
+            self.device.cmd_bind_descriptor_sets(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.lbm_pipeline.layout,
+                0,
+                &[self.lbm_pipeline.descriptor_sets[set_idx]],
+                &[],
+            );
+            self.device.cmd_dispatch(
+                cmd,
+                self.grid_dim.0.div_ceil(8),
+                self.grid_dim.1.div_ceil(8),
+                self.grid_dim.2.div_ceil(8),
+            );
+
+            // No render pass in parameterized step -- caller handles readback
         }
     }
 
@@ -300,7 +420,7 @@ impl Drop for GororobaEngine {
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]
-struct LbmConstants { nx: u32, ny: u32, nz: u32, global_tau_scale: f32 }
+struct LbmConstants { nx: u32, ny: u32, nz: u32, gx: f32, gy: f32, gz: f32 }
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]
