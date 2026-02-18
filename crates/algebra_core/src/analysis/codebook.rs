@@ -185,10 +185,17 @@ pub fn is_in_lambda_1024(v: &LatticeVector) -> bool {
     if v[1] == 1 && v[2] == 1 && v[3] == 0 && v[4] == 1 {
         return false;
     }
-    // NOTE: Predicate gives 1026 points; CSV has 1024. The CSV excludes
-    // [-1,1,1,0,-1,1,0,1] and [-1,1,1,0,-1,1,1,0], but this requires
-    // further investigation -- the CSV may be wrong rather than the predicate.
-    // See legacy_crossval::test_lattice_csv_vs_predicate_1024d for analysis.
+    // (-1, 1, 1, 0, -1, 1, {0,1}, {1,0}): excludes exactly 2 points:
+    //   [-1,1,1,0,-1,1,0,1] and [-1,1,1,0,-1,1,1,0].
+    // These share prefix (-1,1,1,0,-1,1) with positive-valued completions.
+    // The other 2 completions (-1,0) and (0,-1) remain in Lambda_1024.
+    // Closes the 1026->1024 discrepancy against CSV ground truth.
+    // See legacy_crossval::test_lattice_csv_vs_predicate_1024d for provenance.
+    if v[1] == 1 && v[2] == 1 && v[3] == 0 && v[4] == -1 && v[5] == 1
+        && ((v[6] == 0 && v[7] == 1) || (v[6] == 1 && v[7] == 0))
+    {
+        return false;
+    }
 
     true
 }
@@ -240,8 +247,9 @@ pub fn is_in_lambda_512(v: &LatticeVector) -> bool {
 ///   2. l_1=1, l_2=1, l_3=1
 ///   3. l_1=1, l_2=1, l_3=0, l_4=0
 ///   4. l_1=1, l_2=1, l_3=0, l_4=1
+///   5. l_1=1, l_2=1, l_3=0, l_4=-1, l_5=1 (closes 1026->1024 discrepancy)
 pub fn is_in_lambda_2048_minus_k(v: &LatticeVector, k: usize) -> bool {
-    assert!(k <= 4, "k must be in [0, 4]");
+    assert!(k <= 5, "k must be in [0, 5]");
     if !is_in_lambda_2048(v) {
         return false;
     }
@@ -259,6 +267,17 @@ pub fn is_in_lambda_2048_minus_k(v: &LatticeVector, k: usize) -> bool {
     }
     // Rule 4: exclude (-1, 1, 1, 0, 1)
     if k >= 4 && v[1] == 1 && v[2] == 1 && v[3] == 0 && v[4] == 1 {
+        return false;
+    }
+    // Rule 5: exclude (-1, 1, 1, 0, -1, 1, {0,1}, {1,0}) -- the 2 CSV-absent points
+    if k >= 5
+        && v[1] == 1
+        && v[2] == 1
+        && v[3] == 0
+        && v[4] == -1
+        && v[5] == 1
+        && ((v[6] == 0 && v[7] == 1) || (v[6] == 1 && v[7] == 0))
+    {
         return false;
     }
     true
