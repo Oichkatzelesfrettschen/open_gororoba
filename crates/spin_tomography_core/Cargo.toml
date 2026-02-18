@@ -6,7 +6,6 @@ edition = { workspace = true }
 [dependencies]
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
-thiserror = { workspace = true }
 algebra_core = { path = "../algebra_core" }
 
 [lints]

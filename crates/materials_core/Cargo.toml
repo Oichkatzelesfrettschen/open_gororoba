@@ -15,12 +15,10 @@ rand_chacha = { workspace = true }
 regex = { workspace = true }
 rustfft = { workspace = true }
 serde = { workspace = true }
-thiserror = { workspace = true }
 toml = { workspace = true }
 
 # Periodic table (workspace)
 periodic-table-on-an-enum = { workspace = true }
-physical_constants = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

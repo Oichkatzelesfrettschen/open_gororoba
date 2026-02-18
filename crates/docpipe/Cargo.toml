@@ -20,7 +20,6 @@ lopdf = { workspace = true, optional = true }
 pdf-extract = { workspace = true, optional = true }
 # Always needed
 serde = { workspace = true }
-serde_json = { workspace = true }
 toml = { workspace = true }
 regex = { workspace = true }
 thiserror = { workspace = true }

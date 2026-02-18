@@ -8,7 +8,6 @@ license = "MIT"
 [dependencies]
 ndarray = { workspace = true }
 rustfft = { workspace = true }
-rand = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

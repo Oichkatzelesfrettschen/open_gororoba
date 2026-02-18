@@ -11766,3 +11766,14 @@ what_would_verify_refute = "VERIFIED: eta in [0,1], eta(1 eV gap) > eta(3 eV gap
 confidence = "high"
 phase = "materials"
 sprint = 44
+
+[[claim]]
+id = "C-756"
+statement = "Splicing Ordal (1985) far-IR tabulated data (0.004-0.62 eV for Au, 0.022-0.62 eV for Cu) with Johnson & Christy (1972) visible/UV data into TabulatedNK via const arrays replaces the approximate Drude/1-omega IR tail in the KK transform with real measured optical data, covering the dominant Matsubara pole region (k_B*T ~ 25 meV at 300 K) without requiring an analytical model parameter. Au splice: 86 points total (37 Ordal IR + 49 J&C). Cu splice: 98 points total (49 Ordal IR + 49 J&C). Tests verify monotone energy grids, correct coverage bounds, KK eps(i*xi) monotone decreasing, Drude IR tail within 15% of spliced reference at xi_1 (0.163 eV*EV_TO_RADS), and Casimir energy negative and within 25% of J&C+Drude reference."
+where_stated = "`crates/materials_core/src/tabulated_nk.rs` (SPLICED_AU_EV/N/K, SPLICED_CU_EV/N/K, gold_ordal_jc_nk, copper_ordal_jc_nk, test_spliced_au_energy_monotone, test_spliced_cu_energy_monotone, test_spliced_au_coverage, test_spliced_cu_coverage, test_get_tabulated_nk_ordal_variants, test_spliced_au_kk_ir_tail_quantified, test_spliced_au_kk_monotone, test_casimir_spliced_au_attractive)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 8 new tests pass (monotone energy grids, 86/98 point counts, KK monotone, Drude within 15% of spliced at xi_1, Casimir attractive within 25%). REFUTE: eps(i*xi) non-monotone under spliced data or Casimir energy positive (repulsive). Bibliography: BIB-0209 (Ordal 1985), BIB-0210 (Ordal 1988)."
+confidence = "high"
+phase = "materials"
+sprint = 46

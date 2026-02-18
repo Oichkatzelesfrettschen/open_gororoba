@@ -2327,6 +2327,520 @@ impl DrudeLorentzParams {
         }
         above_gap / total
     }
+
+    // ========================================================================
+    // Part 16a: Photonic Crystal and Waveguide Metrics
+    // ========================================================================
+
+    /// Numerical aperture for a step-index fiber with this material as core.
+    ///
+    /// NA = sqrt(n_core^2 - n_clad^2), where n_core = Re[n(omega)].
+    /// Returns None if n_core < n_cladding (no guiding condition).
+    pub fn numerical_aperture(&self, omega: f64, n_cladding: f64) -> Option<f64> {
+        let n_core = self.refractive_index(omega).re;
+        let diff = n_core * n_core - n_cladding * n_cladding;
+        if diff > 0.0 {
+            Some(diff.sqrt())
+        } else {
+            None
+        }
+    }
+
+    /// V-parameter (normalized frequency) for step-index fiber.
+    ///
+    /// V = (2*pi/lambda) * a * NA. Single-mode cutoff at V = 2.405 (LP11).
+    /// Returns None if no guiding condition exists.
+    pub fn v_parameter(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64> {
+        let na = self.numerical_aperture(omega, n_cladding)?;
+        let lambda = 2.0 * PI * C / omega;
+        Some(2.0 * PI * core_radius_m / lambda * na)
+    }
+
+    /// Confinement factor Gamma: fraction of optical power within the fiber core.
+    ///
+    /// Gaussian approximation: Gamma = 1 - exp(-2*(a/w)^2), where the mode
+    /// field radius w ~ a * (0.65 + 1.619/V^1.5 + 2.879/V^6) (Marcuse formula).
+    /// Returns None if V < 0.8 (formula invalid) or no guiding.
+    pub fn confinement_factor(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64> {
+        let v = self.v_parameter(omega, core_radius_m, n_cladding)?;
+        if v < 0.8 {
+            return None;
+        }
+        let w_over_a = 0.65 + 1.619 / v.powf(1.5) + 2.879 / v.powi(6);
+        let gamma = 1.0 - (-2.0 / (w_over_a * w_over_a)).exp();
+        Some(gamma)
+    }
+
+    /// Effective mode area A_eff for single-mode fiber (Gaussian approximation).
+    ///
+    /// A_eff = pi * w^2 where w = a * (0.65 + 1.619/V^1.5 + 2.879/V^6).
+    /// Returns None if V < 0.8 or no guiding.
+    pub fn effective_mode_area(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64> {
+        let v = self.v_parameter(omega, core_radius_m, n_cladding)?;
+        if v < 0.8 {
+            return None;
+        }
+        let w = core_radius_m * (0.65 + 1.619 / v.powf(1.5) + 2.879 / v.powi(6));
+        Some(PI * w * w)
+    }
+
+    /// Modal birefringence: difference between Re[n] at two polarizations.
+    ///
+    /// For isotropic DL materials this is zero by symmetry, but for materials
+    /// with strong absorption the effective birefringence |n - n*| = 2*Im[n]
+    /// characterizes polarization-dependent loss.
+    pub fn modal_birefringence(&self, omega: f64) -> f64 {
+        let n = self.refractive_index(omega);
+        2.0 * n.im.abs()
+    }
+
+    /// Critical bend radius below which radiation loss dominates in fiber.
+    ///
+    /// R_c ~ (2*pi*n_eff / lambda) * (n_core^2 - n_clad^2)^(-3/2) * exp(const).
+    /// Simplified: R_c = lambda / (pi * NA^3) * n_eff (Unger formula).
+    /// Returns None if no guiding condition.
+    pub fn bend_loss_critical_radius(&self, omega: f64, n_cladding: f64) -> Option<f64> {
+        let na = self.numerical_aperture(omega, n_cladding)?;
+        let n_core = self.refractive_index(omega).re;
+        let lambda = 2.0 * PI * C / omega;
+        Some(lambda * n_core / (PI * na * na * na))
+    }
+
+    /// Chromatic dispersion in fiber-convention units: ps/(nm*km).
+    ///
+    /// D = -(2*pi*c/lambda^2) * beta_2, where beta_2 = d^2(beta)/d(omega)^2.
+    /// Positive D = anomalous dispersion, negative D = normal dispersion.
+    pub fn chromatic_dispersion_ps_nm_km(&self, omega: f64) -> f64 {
+        let beta2 = self.gvd_beta2(omega);
+        let lambda = 2.0 * PI * C / omega;
+        // D = -(2*pi*c/lambda^2) * beta_2
+        // beta_2 in s^2/m, D in s/(m*m) -> convert to ps/(nm*km)
+        // 1 s/(m*m) = 1e12 ps / (1e9 nm * 1e3 km) = 1e12/(1e12) = 1.0 ps/(nm*km)? No.
+        // D [s/m^2] -> ps/(nm*km): multiply by 1e12 * 1e-9 * 1e3 = 1e6
+        // Actually: D has units s/m^2. 1 ps/(nm*km) = 1e-12 s / (1e-9 m * 1e3 m) = 1e-6 s/m^2.
+        // So D [s/m^2] = D * 1e6 [ps/(nm*km)].
+        let d_si = -(2.0 * PI * C / (lambda * lambda)) * beta2;
+        d_si * 1e6
+    }
+
+    // ========================================================================
+    // Part 16b: Plasmonic Sensing and SERS Metrics
+    // ========================================================================
+
+    /// Refractive index sensitivity: shift of LSPR wavelength per RIU change.
+    ///
+    /// Computed as d(lambda_LSPR)/d(n) by finite difference of LSPR condition
+    /// Re[eps(omega)] = -2*eps_d evaluated at eps_d and eps_d + delta.
+    /// Returns None if no LSPR is found. Result in nm/RIU.
+    pub fn refractive_index_sensitivity(&self, eps_dielectric: f64) -> Option<f64> {
+        let dn = 0.01;
+        let n_d = eps_dielectric.sqrt();
+        let omega1 = self.lspr_frequency(eps_dielectric)?;
+        let omega2 = self.lspr_frequency((n_d + dn) * (n_d + dn))?;
+        let lambda1 = 2.0 * PI * C / omega1 * 1e9; // nm
+        let lambda2 = 2.0 * PI * C / omega2 * 1e9;
+        Some((lambda2 - lambda1) / dn)
+    }
+
+    /// Figure of merit for plasmonic sensor: sensitivity / FWHM.
+    ///
+    /// FWHM estimated from the Drude damping rate as delta_lambda ~ gamma * lambda^2 / (2*pi*c).
+    /// Higher FoM means sharper resonances and better detection limits.
+    pub fn figure_of_merit_sensor(&self, eps_dielectric: f64) -> Option<f64> {
+        let sensitivity = self.refractive_index_sensitivity(eps_dielectric)?;
+        let omega_lspr = self.lspr_frequency(eps_dielectric)?;
+        let gamma = self.drude.as_ref()?.gamma_ev * EV_TO_RADS;
+        let lambda_lspr = 2.0 * PI * C / omega_lspr * 1e9;
+        let fwhm_nm = gamma * lambda_lspr * lambda_lspr / (2.0 * PI * C) * 1e9;
+        if fwhm_nm.abs() < 1e-30 {
+            return None;
+        }
+        Some(sensitivity.abs() / fwhm_nm)
+    }
+
+    /// Quasistatic field enhancement factor |E_loc/E_0| at nanoparticle surface.
+    ///
+    /// From Clausius-Mossotti: alpha = 3*V*eps_0*(eps-eps_d)/(eps+2*eps_d),
+    /// giving |E_loc/E_0| = |eps - eps_d| / |eps + 2*eps_d| + 1 at the surface
+    /// (factor 2 from dipole field at equator + incident field).
+    pub fn field_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64 {
+        let eps = self.epsilon(omega);
+        let eps_d = Complex64::new(eps_dielectric, 0.0);
+        let ratio = (eps - eps_d) / (eps + 2.0 * eps_d);
+        // Enhancement = 1 + 2*|alpha/V/(3*eps_0)| = 1 + 2*|ratio| at equator
+        1.0 + 2.0 * ratio.norm()
+    }
+
+    /// SERS electromagnetic enhancement factor: |E_loc/E_0|^4.
+    ///
+    /// The SERS signal scales as the fourth power of local field enhancement
+    /// (two factors each for excitation and emission). This provides the
+    /// EM contribution; the chemical enhancement (typically 10-100x) is separate.
+    pub fn sers_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64 {
+        let fe = self.field_enhancement_factor(omega, eps_dielectric);
+        fe * fe * fe * fe
+    }
+
+    /// Total decay rate enhancement Gamma/Gamma_0 near a planar surface.
+    ///
+    /// Near-field approximation (kd << 1):
+    /// Gamma/Gamma_0 = 1 + 3/(2*(kd)^3) * Im[(eps-1)/(eps+1)]
+    /// Includes both radiative and non-radiative channels.
+    pub fn decay_rate_enhancement(&self, omega: f64, distance_m: f64) -> f64 {
+        let eps = self.epsilon(omega);
+        let k = omega / C;
+        let kd = k * distance_m;
+        let ratio = (eps - 1.0) / (eps + 1.0);
+        1.0 + 1.5 / (kd * kd * kd) * ratio.im
+    }
+
+    /// Quantum efficiency of emitter near a surface.
+    ///
+    /// eta = QY_free * F_rad / (QY_free * F_rad + (1 - QY_free) + F_nr)
+    /// where F_rad ~ 1 (far-field), F_nr ~ 3/(4*(kd)^3)*Im[(eps-1)/(eps+1)].
+    /// qy_free is the free-space quantum yield (0-1).
+    pub fn quantum_efficiency_near_surface(&self, omega: f64, distance_m: f64, qy_free: f64) -> f64 {
+        let eps = self.epsilon(omega);
+        let k = omega / C;
+        let kd = k * distance_m;
+        let ratio = (eps - 1.0) / (eps + 1.0);
+        let f_nr = 0.75 / (kd * kd * kd) * ratio.im;
+        let f_nr_abs = f_nr.abs();
+        let numerator = qy_free;
+        let denominator = qy_free + (1.0 - qy_free) + qy_free * f_nr_abs;
+        if denominator < 1e-30 {
+            return 0.0;
+        }
+        numerator / denominator
+    }
+
+    /// Hot-electron generation rate proxy: proportional to Im[eps] at the given frequency.
+    ///
+    /// Hot electron generation from plasmon decay scales as Im[eps(omega)] * |E|^2.
+    /// This returns Im[eps] as the material-dependent factor; the field enhancement
+    /// must be computed separately from geometry.
+    pub fn hot_electron_generation_proxy(&self, omega: f64) -> f64 {
+        self.epsilon(omega).im.abs()
+    }
+
+    // ========================================================================
+    // Part 16c: Thin-Film Interference and Coating Design
+    // ========================================================================
+
+    /// Single-layer thin-film reflectance on a substrate (Airy formula).
+    ///
+    /// Uses coherent multiple-beam interference for a film of thickness d
+    /// with refractive index n_film on a substrate with index n_sub.
+    /// Normal incidence from air (n=1).
+    pub fn thin_film_reflectance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
+        let n_film = self.refractive_index(omega);
+        let n_i = Complex64::new(1.0, 0.0); // air
+        let n_s = Complex64::new(n_substrate, 0.0);
+
+        // Fresnel coefficients at interfaces
+        let r12 = (n_i - n_film) / (n_i + n_film);
+        let r23 = (n_film - n_s) / (n_film + n_s);
+
+        // Phase accumulated in the film (round trip)
+        let delta = 2.0 * PI * n_film * thickness_m * omega / (2.0 * PI * C);
+        let phase = Complex64::new(0.0, 2.0 * delta.re) * Complex64::new(1.0, 0.0)
+            + Complex64::new(-2.0 * delta.im, 0.0);
+        let exp_phase = Complex64::new(phase.re.cos(), phase.re.sin())
+            * (-phase.im).exp(); // handle absorption
+
+        // Airy formula
+        let r_total = (r12 + r23 * exp_phase) / (1.0 + r12 * r23 * exp_phase);
+        r_total.norm_sqr()
+    }
+
+    /// Single-layer thin-film transmittance on a substrate.
+    ///
+    /// T = 1 - R for non-absorbing films; for absorbing films T < 1 - R
+    /// because some light is absorbed. Uses the coherent Airy formula.
+    pub fn thin_film_transmittance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
+        let n_film = self.refractive_index(omega);
+        let n_i = Complex64::new(1.0, 0.0);
+        let n_s = Complex64::new(n_substrate, 0.0);
+
+        let r12 = (n_i - n_film) / (n_i + n_film);
+        let t12 = 2.0 * n_i / (n_i + n_film);
+        let r23 = (n_film - n_s) / (n_film + n_s);
+        let t23 = 2.0 * n_film / (n_film + n_s);
+
+        let delta = n_film * thickness_m * omega / C;
+        let exp_phase = Complex64::new(0.0, delta.re).exp() * (-delta.im).exp();
+
+        let t_total = (t12 * t23 * exp_phase) / (1.0 + r12 * r23 * exp_phase * exp_phase);
+        // Transmittance accounts for impedance mismatch at exit
+        (n_s.re / n_i.re) * t_total.norm_sqr()
+    }
+
+    /// Phase shift accumulated by light traversing the film once.
+    ///
+    /// phi = Re[n] * omega * d / c (in radians).
+    pub fn thin_film_phase_shift(&self, omega: f64, thickness_m: f64) -> f64 {
+        let n = self.refractive_index(omega);
+        n.re * omega * thickness_m / C
+    }
+
+    /// Constructive interference orders for a thin film.
+    ///
+    /// Returns integer orders m where 2*n*d ~ m*lambda (constructive reflection
+    /// when both interfaces have the same reflection phase).
+    /// Scans from m=1 up to max order that fits in the film.
+    pub fn constructive_interference_orders(&self, omega: f64, thickness_m: f64) -> Vec<u32> {
+        let n = self.refractive_index(omega).re;
+        let lambda = 2.0 * PI * C / omega;
+        let max_order = (2.0 * n * thickness_m / lambda).floor() as u32;
+        (1..=max_order).collect()
+    }
+
+    /// Fabry-Perot finesse for a thin-film etalon.
+    ///
+    /// F = pi*sqrt(R) / (1 - R), where R is the reflectance at each interface
+    /// (assumed symmetric: film between identical media, or computed from
+    /// the air-film interface reflectance).
+    pub fn fabry_perot_finesse(&self, omega: f64) -> f64 {
+        let r = self.reflectivity_normal(omega);
+        if r >= 1.0 - 1e-15 {
+            return f64::INFINITY;
+        }
+        PI * r.sqrt() / (1.0 - r)
+    }
+
+    /// CIE 1931 chromaticity coordinates (x, y) from spectral reflectance.
+    ///
+    /// Integrates R(omega) against CIE color-matching functions approximated
+    /// as Gaussians: X peaks at 1.82 eV (680nm), Y at 2.23 eV (555nm),
+    /// Z at 2.72 eV (455nm). Returns (x, y, Y_luminance).
+    pub fn color_coordinates_cie(&self, n_steps: usize) -> (f64, f64, f64) {
+        let omega_min = ev_to_omega(1.55); // 800 nm
+        let omega_max = ev_to_omega(3.10); // 400 nm
+        let d_omega = (omega_max - omega_min) / n_steps as f64;
+
+        let mut x_sum = 0.0_f64;
+        let mut y_sum = 0.0_f64;
+        let mut z_sum = 0.0_f64;
+
+        for i in 0..n_steps {
+            let omega = omega_min + (i as f64 + 0.5) * d_omega;
+            let ev = omega_to_ev(omega);
+            let r = self.reflectivity_normal(omega);
+
+            // Gaussian approximations for CIE x-bar, y-bar, z-bar
+            let x_bar = 1.056 * (-(ev - 1.82_f64).powi(2) / (2.0 * 0.12)).exp()
+                + 0.362 * (-(ev - 2.24_f64).powi(2) / (2.0 * 0.07)).exp();
+            let y_bar = 0.821 * (-(ev - 2.23_f64).powi(2) / (2.0 * 0.08)).exp()
+                + 0.286 * (-(ev - 2.06_f64).powi(2) / (2.0 * 0.14)).exp();
+            let z_bar = 1.217 * (-(ev - 2.72_f64).powi(2) / (2.0 * 0.08)).exp()
+                + 0.681 * (-(ev - 2.98_f64).powi(2) / (2.0 * 0.12)).exp();
+
+            x_sum += r * x_bar * d_omega;
+            y_sum += r * y_bar * d_omega;
+            z_sum += r * z_bar * d_omega;
+        }
+
+        let total = x_sum + y_sum + z_sum;
+        if total < 1e-30 {
+            return (0.333, 0.333, 0.0);
+        }
+        (x_sum / total, y_sum / total, y_sum)
+    }
+
+    // ========================================================================
+    // Part 16d: Phonon Polaritonics and IR Spectroscopy
+    // ========================================================================
+
+    /// Surface phonon-polariton frequency: where Re[eps(omega)] = -eps_dielectric.
+    ///
+    /// Like the surface plasmon condition but inside the Reststrahlen band.
+    /// Returns None if no crossing is found in the scan range.
+    pub fn surface_phonon_polariton_frequency(&self, eps_dielectric: f64) -> Option<f64> {
+        // Scan within the Reststrahlen band if available, otherwise full range
+        let (scan_min, scan_max) = self.reststrahlen_band().unwrap_or((
+            ev_to_omega(0.01),
+            ev_to_omega(1.0),
+        ));
+        let n_scan = 2000;
+        let d_omega = (scan_max - scan_min) / n_scan as f64;
+
+        for i in 0..n_scan {
+            let omega_a = scan_min + i as f64 * d_omega;
+            let omega_b = omega_a + d_omega;
+            let val_a = self.epsilon(omega_a).re + eps_dielectric;
+            let val_b = self.epsilon(omega_b).re + eps_dielectric;
+
+            if val_a * val_b < 0.0 {
+                // Bisection refinement
+                let mut lo = omega_a;
+                let mut hi = omega_b;
+                for _ in 0..60 {
+                    let mid = 0.5 * (lo + hi);
+                    let val_mid = self.epsilon(mid).re + eps_dielectric;
+                    if val_a * val_mid < 0.0 {
+                        hi = mid;
+                    } else {
+                        lo = mid;
+                    }
+                }
+                return Some(0.5 * (lo + hi));
+            }
+        }
+        None
+    }
+
+    /// Phonon-polariton dispersion: wavevector k_PhP at given frequency.
+    ///
+    /// Same formula as SPP: k_PhP = (omega/c) * sqrt(eps*eps_d/(eps+eps_d)),
+    /// but evaluated in the phonon-polariton (Reststrahlen) band rather than
+    /// the metallic (Drude) region.
+    pub fn phonon_polariton_wavevector(&self, omega: f64, eps_dielectric: f64) -> Complex64 {
+        self.spp_wavevector(omega, eps_dielectric)
+    }
+
+    /// Polariton group velocity from the dispersion relation.
+    ///
+    /// v_g = d(omega)/d(k) estimated by finite difference of the inverse
+    /// dispersion k(omega). In the Reststrahlen band this can be very slow (~c/100).
+    pub fn polariton_group_velocity(&self, omega: f64, eps_dielectric: f64) -> f64 {
+        let dw = omega * 1e-6;
+        let k1 = self.spp_wavevector(omega - dw, eps_dielectric).re;
+        let k2 = self.spp_wavevector(omega + dw, eps_dielectric).re;
+        let dk = k2 - k1;
+        if dk.abs() < 1e-30 {
+            return 0.0;
+        }
+        2.0 * dw / dk
+    }
+
+    /// IR activity proxy for the j-th Lorentz oscillator.
+    ///
+    /// Proportional to S_j * omega_j^2, which relates to the Born effective
+    /// charge squared. Returns None if oscillator index is out of range.
+    pub fn ir_activity_proxy(&self, oscillator_index: usize) -> Option<f64> {
+        let osc = self.oscillators.get(oscillator_index)?;
+        Some(osc.strength * osc.omega_0_ev * osc.omega_0_ev)
+    }
+
+    /// Isotope frequency shift estimate for phonon modes.
+    ///
+    /// delta_omega/omega = -0.5 * (delta_M / M), from harmonic approximation
+    /// where omega ~ 1/sqrt(M). mass_ratio = M_new / M_original.
+    pub fn isotope_shift_estimate(mass_ratio: f64) -> f64 {
+        if mass_ratio <= 0.0 {
+            return 0.0;
+        }
+        1.0 - (1.0 / mass_ratio).sqrt()
+    }
+
+    /// Bose-Einstein phonon occupation number at given frequency and temperature.
+    ///
+    /// n_BE = 1 / (exp(hbar*omega / k_B*T) - 1).
+    /// Returns 0 if T = 0 or omega = 0.
+    pub fn bose_einstein_occupation(omega: f64, temperature_k: f64) -> f64 {
+        if temperature_k < 1e-10 || omega < 1e-10 {
+            return 0.0;
+        }
+        let hbar_omega_ev = omega / EV_TO_RADS;
+        let kt_ev = K_B_EV * temperature_k;
+        let x = hbar_omega_ev / kt_ev;
+        if x > 500.0 {
+            return 0.0;
+        }
+        1.0 / (x.exp() - 1.0)
+    }
+
+    // ========================================================================
+    // Part 16e: Photoconductivity and Carrier Dynamics
+    // ========================================================================
+
+    /// Plasma frequency shift from optically-injected carriers.
+    ///
+    /// delta_omega_p = sqrt(omega_p^2 + n_e * e^2/(eps_0 * m*)) - omega_p,
+    /// where n_e is the injected carrier density.
+    /// Returns None if no Drude component exists.
+    pub fn plasma_frequency_shift(&self, delta_n: f64, m_star_ratio: f64) -> Option<f64> {
+        let drude = self.drude.as_ref()?;
+        let omega_p = drude.omega_p_ev * EV_TO_RADS;
+        let m_star = m_star_ratio * M_E_KG;
+        let delta_wp_sq = delta_n * E_CHARGE * E_CHARGE / (EPS_0 * m_star);
+        let new_omega_p = (omega_p * omega_p + delta_wp_sq).sqrt();
+        Some((new_omega_p - omega_p) / EV_TO_RADS) // in eV
+    }
+
+    /// Photo-induced absorption change from transient carrier density.
+    ///
+    /// Delta_alpha = (omega/c) * Im[delta_eps] / Re[n], where delta_eps
+    /// comes from the Drude response of injected carriers.
+    /// Returns None if no Drude component.
+    pub fn photo_induced_absorption(&self, omega: f64, delta_n: f64, m_star_ratio: f64) -> Option<f64> {
+        let m_star = m_star_ratio * M_E_KG;
+        let delta_wp_sq = delta_n * E_CHARGE * E_CHARGE / (EPS_0 * m_star);
+        let gamma = self.drude.as_ref()?.gamma_ev * EV_TO_RADS;
+        // Drude contribution from injected carriers
+        let denom = Complex64::new(-(omega * omega) + gamma * gamma, omega * gamma);
+        let delta_eps = Complex64::new(-delta_wp_sq, 0.0)
+            / Complex64::new(omega * omega + gamma * gamma, 0.0)
+            * Complex64::new(1.0, gamma / omega);
+
+        let n_re = self.refractive_index(omega).re;
+        if n_re < 1e-10 {
+            return None;
+        }
+        // delta_alpha = omega * Im[delta_eps] / (c * n_re)
+        let _ = denom; // suppress unused warning
+        Some(omega * delta_eps.im.abs() / (C * n_re))
+    }
+
+    /// Transient reflectivity change Delta_R/R from pump-induced carriers.
+    ///
+    /// Computed from the finite difference of reflectivity with modified
+    /// Drude parameters (shifted plasma frequency).
+    /// Returns None if no Drude component.
+    pub fn transient_reflectivity_change(&self, omega: f64, delta_n: f64, m_star_ratio: f64) -> Option<f64> {
+        let r0 = self.reflectivity_normal(omega);
+        if r0 < 1e-15 {
+            return None;
+        }
+
+        // Create a modified copy with shifted plasma frequency
+        let drude = self.drude.as_ref()?;
+        let omega_p = drude.omega_p_ev * EV_TO_RADS;
+        let m_star = m_star_ratio * M_E_KG;
+        let delta_wp_sq = delta_n * E_CHARGE * E_CHARGE / (EPS_0 * m_star);
+        let new_omega_p = (omega_p * omega_p + delta_wp_sq).sqrt();
+
+        let mut modified = self.clone();
+        if let Some(ref mut d) = modified.drude {
+            d.omega_p_ev = new_omega_p / EV_TO_RADS;
+        }
+
+        let r1 = modified.reflectivity_normal(omega);
+        Some((r1 - r0) / r0)
+    }
+
+    /// Drude-Smith mobility with persistence parameter c.
+    ///
+    /// mu_DS = mu_Drude * (1 + c), where c in [-1, 0]:
+    /// c = 0: standard Drude (ballistic), c = -1: complete backscattering.
+    /// Returns None if no Drude component.
+    pub fn drude_smith_mobility(&self, c_parameter: f64, carrier_density: f64) -> Option<f64> {
+        let drude = self.drude.as_ref()?;
+        let tau = 1.0 / (drude.gamma_ev * EV_TO_RADS);
+        let mu_drude = E_CHARGE * tau / (carrier_density * M_E_KG);
+        Some(mu_drude * (1.0 + c_parameter))
+    }
+
+    /// Carrier recombination time from steady-state conditions.
+    ///
+    /// tau_rec = delta_n / G, where G is the generation rate (carriers/m^3/s).
+    /// This is the effective lifetime including all recombination channels.
+    pub fn carrier_recombination_time(delta_n: f64, generation_rate: f64) -> f64 {
+        if generation_rate.abs() < 1e-30 {
+            return f64::INFINITY;
+        }
+        delta_n / generation_rate
+    }
 }
 
 // ============================================================================
@@ -7252,5 +7766,368 @@ mod tests {
         assert!((omega_ev - ev).abs() / ev < 0.01,
             "wien_peak_omega and wien_peak_ev should agree: {:.4} vs {:.4}",
             omega_ev, ev);
+    }
+
+    // ====================================================================
+    // Part 16a Tests: Photonic Crystal and Waveguide Metrics
+    // ====================================================================
+
+    #[test]
+    fn test_numerical_aperture_silica_positive() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(2.0);
+        let n_clad = 1.0; // air cladding
+        let na = silica.numerical_aperture(omega, n_clad);
+        assert!(na.is_some(), "Silica should guide with air cladding");
+        let na_val = na.unwrap();
+        assert!(na_val > 0.0 && na_val < 2.0,
+            "NA should be positive and < 2, got {:.4}", na_val);
+    }
+
+    #[test]
+    fn test_numerical_aperture_no_guiding() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(2.0);
+        // Use a cladding index higher than core
+        let na = silica.numerical_aperture(omega, 100.0);
+        assert!(na.is_none(),
+            "Should return None when cladding index exceeds core");
+    }
+
+    #[test]
+    fn test_v_parameter_single_mode() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(1.0); // IR
+        let core_radius = 4.0e-6; // 4 um
+        let n_clad = 1.0;
+        let v = silica.v_parameter(omega, core_radius, n_clad);
+        assert!(v.is_some(), "V should exist for silica/air");
+        let v_val = v.unwrap();
+        assert!(v_val > 0.0, "V should be positive, got {:.4}", v_val);
+    }
+
+    #[test]
+    fn test_confinement_factor_bounds() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(1.0);
+        let core_radius = 4.0e-6;
+        let n_clad = 1.0;
+        if let Some(gamma) = silica.confinement_factor(omega, core_radius, n_clad) {
+            assert!(gamma > 0.0 && gamma <= 1.0,
+                "Confinement factor should be in (0, 1], got {:.4}", gamma);
+        }
+    }
+
+    #[test]
+    fn test_effective_mode_area_positive() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(1.0);
+        let core_radius = 4.0e-6;
+        let n_clad = 1.0;
+        if let Some(aeff) = silica.effective_mode_area(omega, core_radius, n_clad) {
+            assert!(aeff > 0.0, "Mode area should be positive, got {:.4e}", aeff);
+            // Mode area should be larger than core area for weakly guiding
+            let core_area = std::f64::consts::PI * core_radius * core_radius;
+            assert!(aeff > core_area * 0.1,
+                "Mode area should be comparable to core area");
+        }
+    }
+
+    #[test]
+    fn test_modal_birefringence_gold_nonzero() {
+        let gold = gold_drude_lorentz();
+        let omega = ev_to_omega(2.0);
+        let bire = gold.modal_birefringence(omega);
+        assert!(bire > 0.0,
+            "Gold should have nonzero birefringence (from Im[n]), got {:.4}", bire);
+    }
+
+    #[test]
+    fn test_chromatic_dispersion_units() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(1.0);
+        let d = silica.chromatic_dispersion_ps_nm_km(omega);
+        // Should be finite and nonzero
+        assert!(d.is_finite(), "Dispersion should be finite, got {:.4e}", d);
+    }
+
+    #[test]
+    fn test_bend_loss_critical_radius_positive() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(1.0);
+        let n_clad = 1.0;
+        if let Some(r_c) = silica.bend_loss_critical_radius(omega, n_clad) {
+            assert!(r_c > 0.0, "Critical bend radius should be positive, got {:.4e}", r_c);
+        }
+    }
+
+    // ====================================================================
+    // Part 16b Tests: Plasmonic Sensing and SERS Metrics
+    // ====================================================================
+
+    #[test]
+    fn test_field_enhancement_gold_at_lspr() {
+        let gold = gold_drude_lorentz();
+        let omega = ev_to_omega(2.5); // near LSPR
+        let fe = gold.field_enhancement_factor(omega, 1.0);
+        assert!(fe > 1.0,
+            "Field enhancement should exceed 1 near LSPR, got {:.4}", fe);
+    }
+
+    #[test]
+    fn test_sers_enhancement_fourth_power() {
+        let gold = gold_drude_lorentz();
+        let omega = ev_to_omega(2.5);
+        let fe = gold.field_enhancement_factor(omega, 1.0);
+        let sers = gold.sers_enhancement_factor(omega, 1.0);
+        let expected = fe.powi(4);
+        assert!((sers - expected).abs() / expected < 1e-10,
+            "SERS should be FE^4: {:.4e} vs {:.4e}", sers, expected);
+    }
+
+    #[test]
+    fn test_refractive_index_sensitivity_gold() {
+        let gold = gold_rakic_ld();
+        let sens = gold.refractive_index_sensitivity(1.0);
+        // Gold nanoparticles have sensitivity ~100-500 nm/RIU
+        if let Some(s) = sens {
+            assert!(s.abs() > 1.0,
+                "Sensitivity should be nonzero, got {:.4} nm/RIU", s);
+        }
+    }
+
+    #[test]
+    fn test_decay_rate_enhancement_near_surface() {
+        let gold = gold_drude_lorentz();
+        let omega = ev_to_omega(2.0);
+        let gamma_ratio = gold.decay_rate_enhancement(omega, 10e-9);
+        // Near gold at 10nm, the decay rate should be significantly enhanced
+        assert!(gamma_ratio.abs() > 1.0,
+            "Decay rate should be modified near surface, got {:.4}", gamma_ratio);
+    }
+
+    #[test]
+    fn test_quantum_efficiency_bounds() {
+        let gold = gold_drude_lorentz();
+        let omega = ev_to_omega(2.0);
+        let qe = gold.quantum_efficiency_near_surface(omega, 100e-9, 0.9);
+        assert!(qe >= 0.0 && qe <= 1.0,
+            "Quantum efficiency should be in [0, 1], got {:.4}", qe);
+    }
+
+    #[test]
+    fn test_hot_electron_proxy_gold_visible() {
+        let gold = gold_drude_lorentz();
+        let omega = ev_to_omega(2.5);
+        let he = gold.hot_electron_generation_proxy(omega);
+        assert!(he > 0.0,
+            "Hot electron proxy should be positive for gold at 2.5 eV, got {:.4}", he);
+    }
+
+    // ====================================================================
+    // Part 16c Tests: Thin-Film Interference and Coating Design
+    // ====================================================================
+
+    #[test]
+    fn test_thin_film_reflectance_bounds() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(2.0);
+        let r = silica.thin_film_reflectance(omega, 100e-9, 1.5);
+        assert!(r >= 0.0 && r <= 1.0,
+            "Thin film R should be in [0, 1], got {:.4}", r);
+    }
+
+    #[test]
+    fn test_thin_film_energy_conservation() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(2.0);
+        let thickness = 200e-9;
+        let n_sub = 1.5;
+        let r = silica.thin_film_reflectance(omega, thickness, n_sub);
+        let t = silica.thin_film_transmittance(omega, thickness, n_sub);
+        // For non-absorbing films: R + T ~ 1
+        // For absorbing: R + T <= 1
+        assert!(r + t <= 1.0 + 0.01,
+            "R + T should not exceed 1: R={:.4}, T={:.4}, sum={:.4}",
+            r, t, r + t);
+    }
+
+    #[test]
+    fn test_thin_film_phase_shift_positive() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(2.0);
+        let phi = silica.thin_film_phase_shift(omega, 100e-9);
+        assert!(phi > 0.0, "Phase shift should be positive, got {:.4}", phi);
+    }
+
+    #[test]
+    fn test_constructive_interference_thick_film() {
+        let silica = silica_optical();
+        let omega = ev_to_omega(2.0);
+        let orders = silica.constructive_interference_orders(omega, 10e-6);
+        assert!(!orders.is_empty(),
+            "Thick film should have multiple interference orders");
+        // Orders should be sequential starting from 1
+        assert_eq!(orders[0], 1, "First order should be 1");
+    }
+
+    #[test]
+    fn test_fabry_perot_finesse_positive() {
+        let gold = gold_drude_lorentz();
+        let omega = ev_to_omega(2.0);
+        let f = gold.fabry_perot_finesse(omega);
+        assert!(f > 0.0, "Finesse should be positive, got {:.4}", f);
+    }
+
+    #[test]
+    fn test_color_coordinates_gold_warm() {
+        let gold = gold_drude_lorentz();
+        let (x, y, cap_y) = gold.color_coordinates_cie(200);
+        // CIE coordinates should be in valid range
+        assert!(x >= 0.0 && x <= 1.0, "x should be in [0,1], got {:.4}", x);
+        assert!(y >= 0.0 && y <= 1.0, "y should be in [0,1], got {:.4}", y);
+        assert!(cap_y >= 0.0, "Y luminance should be non-negative, got {:.4e}", cap_y);
+    }
+
+    // ====================================================================
+    // Part 16d Tests: Phonon Polaritonics and IR Spectroscopy
+    // ====================================================================
+
+    #[test]
+    fn test_surface_phonon_polariton_srtio3() {
+        let srtio3 = srtio3_optical();
+        let sphp = srtio3.surface_phonon_polariton_frequency(1.0);
+        if let Some(omega_sphp) = sphp {
+            let ev = omega_sphp / EV_TO_RADS;
+            // SPhP should be in the IR range for SrTiO3
+            assert!(ev > 0.01 && ev < 1.0,
+                "SPhP should be in IR range, got {:.4} eV", ev);
+        }
+    }
+
+    #[test]
+    fn test_polariton_group_velocity_sublight() {
+        let srtio3 = srtio3_optical();
+        let omega = ev_to_omega(0.1); // IR
+        let vg = srtio3.polariton_group_velocity(omega, 1.0);
+        assert!(vg.abs() < C,
+            "Polariton group velocity should be subluminal, got {:.4e} vs c={:.4e}",
+            vg.abs(), C);
+    }
+
+    #[test]
+    fn test_ir_activity_proxy_srtio3() {
+        let srtio3 = srtio3_optical();
+        if !srtio3.oscillators.is_empty() {
+            let activity = srtio3.ir_activity_proxy(0);
+            assert!(activity.is_some(), "Should return activity for valid index");
+            assert!(activity.unwrap() > 0.0,
+                "IR activity should be positive, got {:.4e}", activity.unwrap());
+        }
+    }
+
+    #[test]
+    fn test_ir_activity_proxy_out_of_range() {
+        let gold = gold_drude_lorentz();
+        let activity = gold.ir_activity_proxy(999);
+        assert!(activity.is_none(), "Should return None for out-of-range index");
+    }
+
+    #[test]
+    fn test_isotope_shift_heavier_lowers_frequency() {
+        let shift = DrudeLorentzParams::isotope_shift_estimate(2.0);
+        // Heavier isotope -> lower frequency -> negative shift
+        assert!(shift > 0.0,
+            "Isotope shift for M_new/M_old = 2 should be positive (frequency decreases), got {:.4}", shift);
+        // For mass ratio 2: shift = 1 - 1/sqrt(2) ~ 0.293
+        assert!((shift - 0.293).abs() < 0.01,
+            "Isotope shift should be ~0.293, got {:.4}", shift);
+    }
+
+    #[test]
+    fn test_bose_einstein_occupation_limits() {
+        // At T=0, occupation should be 0
+        let n0 = DrudeLorentzParams::bose_einstein_occupation(ev_to_omega(0.1), 0.0);
+        assert!(n0 < 1e-10, "n_BE should be 0 at T=0, got {:.4e}", n0);
+
+        // At high T, n_BE ~ k_B*T / (hbar*omega) >> 1
+        let n_high = DrudeLorentzParams::bose_einstein_occupation(ev_to_omega(0.025), 3000.0);
+        assert!(n_high > 1.0,
+            "n_BE should be >> 1 at high T for low-energy phonons, got {:.4}", n_high);
+    }
+
+    // ====================================================================
+    // Part 16e Tests: Photoconductivity and Carrier Dynamics
+    // ====================================================================
+
+    #[test]
+    fn test_plasma_frequency_shift_positive_injection() {
+        let gold = gold_drude_lorentz();
+        let shift = gold.plasma_frequency_shift(1e21, 1.0);
+        assert!(shift.is_some(), "Should have shift for metal");
+        let s = shift.unwrap();
+        assert!(s > 0.0,
+            "Injecting carriers should increase plasma frequency, got {:.4e} eV", s);
+    }
+
+    #[test]
+    fn test_transient_reflectivity_change_nonzero() {
+        let gold = gold_drude_lorentz();
+        let omega = ev_to_omega(2.0);
+        let dr = gold.transient_reflectivity_change(omega, 1e22, 1.0);
+        assert!(dr.is_some(), "Should compute Delta R/R for metal");
+        let dr_val = dr.unwrap();
+        assert!(dr_val.abs() > 1e-10,
+            "Delta R/R should be nonzero, got {:.4e}", dr_val);
+    }
+
+    #[test]
+    fn test_drude_smith_mobility_backscatter() {
+        let gold = gold_drude_lorentz();
+        let n = 5.9e28; // gold carrier density
+        let mu_full = gold.drude_smith_mobility(0.0, n);
+        let mu_back = gold.drude_smith_mobility(-1.0, n);
+        assert!(mu_full.is_some() && mu_back.is_some());
+        let mf = mu_full.unwrap();
+        let mb = mu_back.unwrap();
+        assert!(mf > 0.0, "Drude mobility should be positive, got {:.4e}", mf);
+        assert!(mb.abs() < 1e-30,
+            "Complete backscattering (c=-1) should give zero mobility, got {:.4e}", mb);
+    }
+
+    #[test]
+    fn test_carrier_recombination_time_finite() {
+        let tau = DrudeLorentzParams::carrier_recombination_time(1e20, 1e26);
+        assert!(tau > 0.0 && tau.is_finite(),
+            "Recombination time should be finite positive, got {:.4e}", tau);
+        // tau = 1e20 / 1e26 = 1e-6 s = 1 us
+        assert!((tau - 1e-6).abs() < 1e-10,
+            "tau should be 1e-6 s, got {:.4e}", tau);
+    }
+
+    #[test]
+    fn test_carrier_recombination_time_zero_generation() {
+        let tau = DrudeLorentzParams::carrier_recombination_time(1e20, 0.0);
+        assert!(tau.is_infinite(),
+            "Zero generation rate should give infinite lifetime");
+    }
+
+    #[test]
+    fn test_photo_induced_absorption_nonzero() {
+        let gold = gold_drude_lorentz();
+        let omega = ev_to_omega(1.0);
+        let da = gold.photo_induced_absorption(omega, 1e22, 1.0);
+        if let Some(d) = da {
+            assert!(d >= 0.0, "Photo-induced absorption should be non-negative, got {:.4e}", d);
+        }
+    }
+
+    #[test]
+    fn test_figure_of_merit_sensor_gold() {
+        let gold = gold_rakic_ld();
+        let fom = gold.figure_of_merit_sensor(1.0);
+        if let Some(f) = fom {
+            assert!(f > 0.0, "Sensor FoM should be positive, got {:.4}", f);
+        }
     }
 }

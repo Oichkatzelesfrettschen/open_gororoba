@@ -11,8 +11,6 @@ cosmology_core = { path = "../cosmology_core", version = "0.1" }
 nalgebra = { workspace = true }
 petgraph = { workspace = true }
 rayon = { workspace = true }
-serde = { workspace = true, features = ["derive"] }
-toml = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 statrs = { workspace = true }
