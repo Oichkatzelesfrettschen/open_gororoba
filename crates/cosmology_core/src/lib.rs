@@ -28,6 +28,7 @@ use gauss_quad::GaussLegendre;
 
 pub mod axiodilaton;
 pub mod bounce;
+pub mod bypass_models;
 pub mod dimensional_geometry;
 pub mod distances;
 pub mod eos;

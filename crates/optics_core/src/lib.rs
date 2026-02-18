@@ -18,6 +18,7 @@
 //! - Di Leonardo et al., Opt. Express 15, 1913 (2007): WGS algorithm
 //! - Manetsch et al., arXiv:2403.12021 (2025): Large-scale tweezer arrays
 
+pub mod absorber_benchmark;
 pub mod entropy_trap;
 pub mod grin;
 pub mod multi_resonator;

@@ -5,13 +5,13 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 3917
+test_count = 3940
 claim_count = 768
 insight_count = 87
 experiment_count = 40
 complete_experiment_count = 0
 paper_count = 19
-binary_count = 108
+binary_count = 110
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
 [sprints.s46]
