@@ -14,6 +14,14 @@ paper_count = 19
 binary_count = 110
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
+[sprints.s47]
+number = 47
+date = "2026-02-18"
+test_count = 3940
+claim_count = 768
+insight_count = 87
+summary = "Sprint 47: Harden wavelet thesis claims C-703..C-706 from Proposed to Verified with measured binary results. Promote experiments E-039..E-042 from planned to completed. Binary results: wavelet-bridging-sweep 16.74% median improvement (PASS), meltdown-gating-sweep 51-57% p95 reduction (PASS), wavelet-acf-calibration R2>=0.508 at eps>=1e-2 (PASS), chsh-wavelet-compression |S|=2.3424>2.0 (PASS)."
+
 [sprints.s46]
 number = 46
 date = "2026-02-17"
