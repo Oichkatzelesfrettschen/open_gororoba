@@ -11779,7 +11779,7 @@ phase = "materials"
 sprint = 46
 
 [[claim]]
-id = "C-756"
+id = "C-762"
 statement = "Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sedenion Zero-Divisor topology."
 description = "Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sede"
 where_stated = "`crates/lbm_vulkan/src/compute.rs`, `crates/lbm_vulkan/shaders/lbm.comp.glsl`, `crates/gororoba_cli/src/bin/warp_ring_integration.rs`"
