@@ -596,3 +596,22 @@ name = "paper-build"
 crate = "gororoba_cli"
 description = "Rust-native paper builder for arXiv submission. Wraps tectonic CLI for multi-pass LaTeX+bibtex compilation. Subcommands: build (compile PDF), arxiv (create submission tarball)."
 status = "active"
+
+[[binary]]
+name = "dump_assessors"
+crate = "gororoba_cli"
+description = "Dumps primitive box-kite assessor pairs from the sedenion zero-divisor analysis for inspection."
+status = "active"
+
+[[binary]]
+name = "experiment-c756"
+crate = "gororoba_cli"
+description = "Experiment C-756: Topological Entropy Locking video export. GPU-accelerated LBM simulation with sedenion ZD-modulated viscosity in Kerr-Newman potential."
+experiment = "E-038"
+status = "active"
+
+[[binary]]
+name = "prefix-chain-theorem"
+crate = "gororoba_cli"
+description = "Validates the prefix-chain theorem for Cayley-Dickson lattice filtrations: strict nesting Lambda_256 < Lambda_512 < Lambda_1024 < Lambda_2048 with predicate-derived prefix exclusion rules."
+status = "active"

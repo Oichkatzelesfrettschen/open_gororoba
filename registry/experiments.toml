@@ -959,3 +959,51 @@ input_path_refs = []
 output_path_refs = ["data/chsh_wavelet/results.toml"]
 dataset_refs = []
 reproducibility_class = "seeded_stochastic_replay"
+
+[[experiment]]
+id = "E-043"
+title = "Casimir Plate Force Comparison"
+binary = "casimir-plate-compare"
+binary_registered = true
+binary_experiment_declared = "E-043"
+method = "Computes Casimir force for Si/Ge/SiO2 symmetric plate pairs using corrected Lifshitz formula with Gauss-Legendre quadrature over transverse momentum. Verifies Si > Ge > SiO2 force ordering and eta < 1 at T=0."
+input = "None (analytical Drude-Lorentz models from optical database)"
+output = ["stdout (force density and eta values)"]
+run = "cargo run --release --bin casimir-plate-compare"
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = ["C-738", "C-739"]
+claim_refs = ["C-738", "C-739"]
+deterministic = true
+seed = 0
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+lineage_id = "XL-041"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-044"
+title = "Casimir Drude vs Plasma Model Discrepancy"
+binary = "casimir-drude-plasma"
+binary_registered = true
+binary_experiment_declared = "E-044"
+method = "Computes Drude-plasma discrepancy for Au/Ag/Cu metallic plates at separations 100nm-5um. Tests n=0 TE contribution controversy: Drude gives r_TE=0, plasma gives finite r_TE from omega_p. Measures percentage discrepancy growth with distance."
+input = "None (analytical Drude parameters from Rakic 1998)"
+output = ["stdout (discrepancy percentages per material and distance)"]
+run = "cargo run --release --bin casimir-drude-plasma"
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = ["C-740", "C-741"]
+claim_refs = ["C-740", "C-741"]
+deterministic = true
+seed = 0
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+lineage_id = "XL-042"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic_replay"

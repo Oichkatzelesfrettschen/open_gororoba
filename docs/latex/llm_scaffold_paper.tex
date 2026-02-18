@@ -73,8 +73,8 @@ computationally at dimensions 16 through 512 with zero mismatches across
 14.2 million triangles.
 
 All results are reproducible from the TOML evidence registry
-(\texttt{registry/claims.toml}, 768 claims) and accompanying Rust test suite
-(3940 tests, zero warnings).
+(\texttt{registry/claims.toml}, 774 claims) and accompanying Rust test suite
+(3764 tests, zero warnings).
 \end{abstract}
 
 \tableofcontents
@@ -121,7 +121,7 @@ ratio between forcing regimes.  Thesis~3 achieves 78\% pentagon-identity
 violation reduction via neural correction.  Thesis~4 recovers a power-law
 latency spectrum ($R^2 = 0.995$) from sedenion-keyed toroidal walks.  All
 four theses pass simultaneously in a unified synthesis engine, backed by
-768 verifiable claims and 3940 automated tests with zero compiler warnings.
+774 verifiable claims and 3764 automated tests with zero compiler warnings.
 
 Second, we prove the \emph{Anti-Diagonal Parity Theorem} (APT), which
 provides a complete GF(2)-algebraic mechanism for the Double 3:1 Law
@@ -1082,8 +1082,8 @@ structure is not accidental: the 3:1 ratio is a theorem of GF(2) linear
 algebra, holding universally for all CD dimensions $\geq 16$.
 
 All results are fully reproducible from the open-source project repository.
-The evidence base consists of 768 claims in a machine-readable TOML
-registry, verified by 3940 automated tests with zero compiler warnings and
+The evidence base consists of 774 claims in a machine-readable TOML
+registry, verified by 3764 automated tests with zero compiler warnings and
 zero clippy lints.  Every numerical result cited in this paper can be
 reproduced by executing the corresponding binary with the parameters
 recorded in the experiment registry (Appendix~\ref{sec:reproducibility}).
@@ -1102,10 +1102,10 @@ All experiments are reproducible from the project repository.  The
 complete verification pipeline consists of the following steps:
 
 \begin{verbatim}
-# Build all binaries (108 binaries, 26 crates)
+# Build all binaries (114 binaries, 26 crates)
 cargo build --release --workspace -j$(nproc)
 
-# Run full test suite (3940 tests, zero failures)
+# Run full test suite (3764 tests, zero failures)
 cargo test --workspace -j$(nproc)
 
 # Verify zero warnings (clippy lints are errors)
@@ -1127,7 +1127,7 @@ cargo run --release --bin box-kite-census
 make governance-gate
 \end{verbatim}
 
-The TOML evidence registry (\texttt{registry/claims.toml}) contains 768
+The TOML evidence registry (\texttt{registry/claims.toml}) contains 774
 claims with structured metadata including sprint, status, evidence links,
 and cross-references.  Each claim maps to specific test functions in the
 Rust test suite, enabling independent verification of any individual result.
