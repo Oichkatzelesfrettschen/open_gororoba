@@ -11790,3 +11790,58 @@ confidence = "medium"
 phase = "simulation"
 dependencies = ["C-010", "C-011", "C-590"]
 claims = ["C-010", "C-011"]
+
+[[claim]]
+id = "C-757"
+statement = "Photonic waveguide metrics (numerical aperture, V-parameter, confinement factor, effective mode area, modal birefringence, critical bend radius, chromatic dispersion) on DrudeLorentzParams enable fiber/waveguide design from the same dielectric model used for Casimir physics. The Marcuse Gaussian mode field approximation w/a = 0.65 + 1.619/V^1.5 + 2.879/V^6 provides single-mode cutoff at V=2.405. 8 tests verify NA positivity, V-parameter existence, confinement bounds, mode area scaling, birefringence for absorbing materials, and dispersion finiteness."
+where_stated = "`crates/materials_core/src/optical_database.rs` (numerical_aperture, v_parameter, confinement_factor, effective_mode_area, modal_birefringence, bend_loss_critical_radius, chromatic_dispersion_ps_nm_km)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 8 tests pass. NA > 0 for silica/air, V > 0, confinement in (0,1], mode area > 0, birefringence nonzero for metals, dispersion finite. REFUTE: NA or V negative, confinement > 1, mode area divergence."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-758"
+statement = "Plasmonic sensing and SERS metrics (field enhancement, SERS enhancement factor, refractive index sensitivity, figure of merit, decay rate enhancement, quantum efficiency near surface, hot-electron generation proxy) provide quantitative nanoparticle sensor design from the Drude-Lorentz dielectric function. SERS enhancement = |E/E_0|^4 from quasistatic Clausius-Mossotti polarizability. 7 tests verify field enhancement > 1 at LSPR, SERS = FE^4, nonzero RI sensitivity, decay rate modification, QE bounds, and hot-electron proxy positivity."
+where_stated = "`crates/materials_core/src/optical_database.rs` (field_enhancement_factor, sers_enhancement_factor, refractive_index_sensitivity, figure_of_merit_sensor, decay_rate_enhancement, quantum_efficiency_near_surface, hot_electron_generation_proxy)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 7 tests pass. FE > 1 for gold at 2.5 eV, SERS = FE^4, sensor FoM > 0, QE in [0,1]. REFUTE: SERS not equal to FE^4, QE out of bounds, zero enhancement at resonance."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-759"
+statement = "Thin-film interference and coating metrics (Airy-formula reflectance/transmittance, phase shift, constructive interference orders, Fabry-Perot finesse, CIE 1931 chromaticity coordinates) provide coherent thin-film optics from the DL model. The Airy formula handles absorbing films via complex refractive index with proper phase accounting. CIE color coordinates use Gaussian approximations for x-bar, y-bar, z-bar color-matching functions. 6 tests verify R in [0,1], energy conservation R+T <= 1, positive phase, multiple interference orders for thick films, positive finesse, and valid chromaticity coordinates."
+where_stated = "`crates/materials_core/src/optical_database.rs` (thin_film_reflectance, thin_film_transmittance, thin_film_phase_shift, constructive_interference_orders, fabry_perot_finesse, color_coordinates_cie)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 6 tests pass. R+T <= 1, phase > 0, multiple orders for 10um film, finesse > 0, CIE (x,y) in [0,1]. REFUTE: R+T > 1 for non-absorbing film, finesse negative, chromaticity out of gamut."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-760"
+statement = "Phonon-polariton and IR spectroscopy methods (surface phonon-polariton frequency, polariton wavevector, polariton group velocity, IR activity proxy, isotope shift estimate, Bose-Einstein occupation) connect the DL oscillator model to infrared nanophotonics. SPhP frequency found by bisection where Re[eps] = -eps_d in the Reststrahlen band. Isotope shift follows harmonic approximation delta_omega/omega = 1 - 1/sqrt(M_new/M_old). 6 tests verify SPhP in IR range for SrTiO3, subluminal group velocity, positive IR activity, isotope shift ~0.293 for mass ratio 2, and Bose-Einstein occupation limits (0 at T=0, >>1 at high T)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (surface_phonon_polariton_frequency, phonon_polariton_wavevector, polariton_group_velocity, ir_activity_proxy, isotope_shift_estimate, bose_einstein_occupation)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 6 tests pass. SPhP in IR for SrTiO3, v_g < c, isotope shift matches analytical, n_BE -> 0 at T->0. REFUTE: SPhP outside Reststrahlen, superluminal polariton, n_BE negative."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-761"
+statement = "Photoconductivity and carrier dynamics methods (plasma frequency shift, photo-induced absorption, transient reflectivity change, Drude-Smith mobility, carrier recombination time) connect the DL model to ultrafast pump-probe spectroscopy. Drude-Smith model mu_DS = mu_Drude*(1+c) captures carrier localization (c=-1: complete backscattering, c=0: ballistic). Transient reflectivity computed by finite-difference of reflectivity with shifted plasma frequency. 6 tests verify positive plasma shift for carrier injection, nonzero Delta R/R, zero mobility at c=-1, correct recombination time arithmetic, and infinite lifetime at zero generation rate."
+where_stated = "`crates/materials_core/src/optical_database.rs` (plasma_frequency_shift, photo_induced_absorption, transient_reflectivity_change, drude_smith_mobility, carrier_recombination_time)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 6 tests pass. Delta omega_p > 0 for injected carriers, mu = 0 at c=-1, tau_rec = delta_n/G exact, infinite tau at G=0. REFUTE: Negative plasma shift for positive carrier injection, nonzero mobility at complete backscattering."
+confidence = "high"
+phase = "materials"
+sprint = 44
