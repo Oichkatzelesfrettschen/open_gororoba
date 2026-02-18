@@ -45,6 +45,8 @@ IGNORED_PREFIXES = (
     ".venv/",
     ".venv_ingest/",
     "target/",
+    "logs/",
+    "build/",
 )
 
 GENERATED_PATTERNS = (
@@ -225,8 +227,8 @@ def _skip_path(path: str) -> bool:
     if any(path.startswith(prefix) for prefix in IGNORED_PREFIXES):
         return True
     parts = path.split("/")
-    # Skip any directory named venv, .venv, or target at any level
-    if any(p in {"venv", ".venv", "target"} for p in parts):
+    # Skip any directory named venv, .venv, target, logs, or build at any level
+    if any(p in {"venv", ".venv", "target", "logs", "build"} for p in parts):
         return True
     return False
 
