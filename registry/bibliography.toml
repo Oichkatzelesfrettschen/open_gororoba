@@ -2496,3 +2496,13 @@ citation_markdown = "**Ordal, M. A., Bell, R. J., Alexander, R. W., Newquist, L.
 notes = ["*Extended far-IR optical constants for metals at submillimeter wavelengths. Complementary to Ordal 1985; referenced for completeness of the Ordal measurement series.*"]
 urls = []
 dois = []
+
+[[entry]]
+id = "BIB-0211"
+order_index = 211
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Henke, B. L., Gullikson, E. M., & Davis, J. C.** (1993). *X-ray interactions: photoabsorption, scattering, transmission, and reflection at E=50-30000 eV, Z=1-92*. Atomic Data and Nuclear Data Tables, 54(2), 181-342."
+notes = ["*Foundational XUV/X-ray atomic scattering factors f1, f2 for all 92 elements from 10-30000 eV. Converted to n,k via n=1-delta, k=beta. Used in SPLICED3_AU, SPLICED3_AG, SPLICED3_CU arrays in tabulated_nk.rs to extend J&C+Ordal data through the XUV/soft X-ray region for complete KK integration.*"]
+urls = ["https://henke.lbl.gov/optical_constants/"]
+dois = ["10.1006/adnd.1993.1013"]

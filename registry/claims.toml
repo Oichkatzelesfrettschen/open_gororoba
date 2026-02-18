@@ -11845,3 +11845,68 @@ what_would_verify_refute = "VERIFIED: 6 tests pass. Delta omega_p > 0 for inject
 confidence = "high"
 phase = "materials"
 sprint = 44
+
+[[claim]]
+id = "C-762"
+statement = "Mie and Rayleigh scattering methods (Clausius-Mossotti polarizability, Rayleigh cross section, scattering efficiency, Mie extinction efficiency, scattering albedo, absorption cross section, radiation pressure efficiency) derive nanoparticle scattering from the DL dielectric function. The Clausius-Mossotti factor K=(eps-1)/(eps+2) encodes optical contrast with vacuum. Rayleigh cross section scales as a^6 * k^4. In the Rayleigh limit g=0, radiation pressure efficiency equals extinction efficiency. 7 tests verify a^6 scaling, positive cross sections, albedo in [0,1], and Q_pr = Q_ext."
+where_stated = "`crates/materials_core/src/optical_database.rs` (polarizability_clausius_mossotti, rayleigh_cross_section, rayleigh_scattering_efficiency, mie_extinction_efficiency, mie_scattering_albedo, absorption_cross_section_mie, radiation_pressure_efficiency)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 7 tests pass. a^6 scaling ratio = 64.0, albedo in [0,1], Q_pr = Q_ext in Rayleigh limit. REFUTE: Cross section negative, albedo > 1, a^6 scaling broken."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-763"
+statement = "Fluctuation electrodynamics and noise methods (fluctuation-dissipation spectral density, thermal noise power density, zero-point energy, Planck spectral energy density, near-field thermal emission, photon tunneling probability, Casimir-Lifshitz force integrand) connect the DL model to thermal radiation and Casimir physics. The fluctuation-dissipation theorem S(omega,T) = (2*hbar*omega/pi)*Im[eps]*(n_BE+1/2) links material loss to thermal noise. Near-field emission is enhanced by 1/(kd)^2. The Casimir integrand uses epsilon at imaginary frequency. 10 tests verify positivity, temperature dependence, ZPE = hbar*omega/2, near-field enhancement, tunneling bounds, and force decay with distance."
+where_stated = "`crates/materials_core/src/optical_database.rs` (fluctuation_dissipation_spectral, thermal_noise_power_density, zero_point_energy_density, spectral_energy_density, near_field_thermal_emission, photon_tunneling_probability, fluctuation_induced_force_integrand)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 10 tests pass. FD density increases with T, ZPE exact, near-field > far-field, tunneling in [0,1], Casimir decays with d. REFUTE: FD negative, ZPE != hbar*omega/2, tunneling > 1."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-764"
+statement = "Anharmonic and multiphonon methods (anharmonic linewidth, multiphonon absorption, two-phonon density of states, infrared combination bands) extend the harmonic DL model to temperature-dependent and multi-phonon effects. Anharmonic linewidth gamma(T) = gamma_0 + A*(1+2*n_BE(omega/2,T)) captures cubic decay. Multiphonon absorption uses exponential tail above one-phonon cutoff. Oscillator frequencies are in eV (matching omega_0_ev field). 7 tests verify temperature dependence, zero below cutoff, DOS peaks, sorted bands, and None for invalid indices."
+where_stated = "`crates/materials_core/src/optical_database.rs` (anharmonic_linewidth, multiphonon_absorption, two_phonon_density_of_states, infrared_combination_bands)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 7 tests pass. gamma increases with T, zero below cutoff, DOS peaks at sum freqs, bands sorted. REFUTE: Linewidth decreases with T, absorption below cutoff nonzero."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-765"
+statement = "Photonic band gap methods (quarter-wave stack gap, peak reflectivity, band gap ratio, Bragg wavelength, group velocity at band edge, omnidirectional gap condition) derive 1D photonic crystal properties from the DL refractive index. Gap width delta_omega/omega_0 = (4/pi)*arcsin(|n_h-n_l|/(n_h+n_l)). Peak reflectivity increases monotonically with N. Group velocity v_g ~ sqrt(1-R) vanishes at the band edge. 6 tests verify symmetric gap, reflectivity increase, positive gap ratio, Bragg lambda > 2*period, and v_g decrease with pairs."
+where_stated = "`crates/materials_core/src/optical_database.rs` (quarter_wave_stack_gap, quarter_wave_stack_reflectivity, photonic_band_gap_ratio, bragg_wavelength, group_velocity_at_band_edge, omnidirectional_gap_condition)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 6 tests pass. Gap symmetric, R increases with N, lambda_B > 2d for n>1, v_g decreases. REFUTE: Asymmetric gap, R > 1, lambda_B < 2d."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-766"
+statement = "Electrooptic and acoustooptic methods (Pockels delta_n, Kerr electrooptic, half-wave voltage, Franz-Keldysh absorption, photoelastic delta_n, acoustooptic figure of merit) connect the DL model to applied-field phenomena. Pockels effect delta_n = -0.5*n^3*r*E is linear in field. Kerr effect is quadratic. Franz-Keldysh gives sub-gap absorption via tunneling. Acoustooptic M2 = n^6*p^2/(rho*v^3) scales as p^2. 7 tests verify linearity (Pockels), quadratic scaling (Kerr), positive V_pi, FK=0 above gap, strain proportionality, and M2 p^2 scaling."
+where_stated = "`crates/materials_core/src/optical_database.rs` (pockels_delta_n, kerr_electro_optic, half_wave_voltage, franz_keldysh_absorption, photoelastic_delta_n, acoustooptic_figure_of_merit)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 7 tests pass. Pockels ratio=2.0, Kerr ratio=4.0, FK=0 above gap, M2 ratio=4.0 for doubled p. REFUTE: Pockels nonlinear, Kerr non-quadratic, FK nonzero above gap."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-763"
+statement = "Three-region tabulated n,k splice (Ordal IR + J&C visible + Henke XUV, 10-30000 eV) for Au, Ag, Cu reduces UV tail systematic error in the KK imaginary-axis dielectric function: at xi_50 (~8.15 eV), the Henke-extended Au dataset produces eps(i*xi) within 50% of J&C+Drude while eliminating the 1/omega^3 UV extrapolation above 6.6 eV that missed all measured core absorption structure."
+status = "Verified"
+confidence = "high"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: test_henke_au_kk_uv_improvement passes (rel < 50%), Henke eps(i*xi_50) > 1, monotone energy grids confirmed for all 3 metals, 548 tests pass. REFUTE: Henke-derived n,k shows eps(i*xi_50) < 1 for Au (non-physical for Drude metal below plasma frequency) or non-monotone energy grid."
+phase = "materials"
+sprint = 46

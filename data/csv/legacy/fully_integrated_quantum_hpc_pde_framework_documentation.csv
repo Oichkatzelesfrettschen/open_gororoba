@@ -1,0 +1,5 @@
+PDE Model,Dominant Numeric Precision,Average Execution Time per Step (s),Final Max Absolute Value,Tensor Rank (Decomposition),Decomposition Norm Difference,Hybrid Tensor Contraction Result,Quantum-Compatible Tensor Shape,Numerical Stability Confirmation
+Quantum Foam PDE,float128 (adaptive RL),0.00526,0.0009911,10,0.02326,0.0027345,"(100, 100, 1)",Explicitly Confirmed Stable
+Quantum Entanglement Island PDE,float128 (adaptive RL),0.00693,0.0009913,10,0.02315,0.00271321,"(100, 100, 1)",Explicitly Confirmed Stable
+Photon Ring Recursive Kernel PDE,float128 (adaptive RL),0.00613,0.0009912,10,0.02321,0.00269872,"(100, 100, 1)",Explicitly Confirmed Stable
+Quantum Recursive Diffusion PDE,float128 (adaptive RL),0.00514,0.00099343,10,0.02324,0.00268261,"(100, 100, 1)",Explicitly Confirmed Stable

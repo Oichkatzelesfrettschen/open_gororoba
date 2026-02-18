@@ -1,0 +1,76 @@
+# AGENTS
+
+Embedded core contract + overflow extension.
+
+```toml
+[contract]
+authority = "AGENTS.md"
+style = "concise_compact_infodense_imperative"
+policy_mode = "toml_first"
+execution_mode = "rust_first"
+ascii_only = true
+warnings_as_errors = true
+
+[assistant_shims]
+claude = "CLAUDE.md -> AGENTS.md"
+gemini = "GEMINI.md -> AGENTS.md"
+
+[placements]
+workspace = "Cargo.toml"
+tasks = "Makefile"
+canonical_data = "registry/*.toml"
+verification = "src/verification/"
+analysis_scripts = "src/scripts/analysis/"
+generated_docs = "build/docs/generated/"
+
+[markdown]
+default_track_markdown = false
+allowlist = ["AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md", "**/README.md"]
+rule = "Do not add manual markdown outside allowlist."
+
+[workflow]
+startup = [
+  "Capture repo state.",
+  "Load AGENTS.md and task-relevant registry TOML.",
+  "Plan granular steps with dependencies.",
+  "Choose deterministic tools; parallelize independent reads/searches.",
+  "Define validation targets before edits.",
+]
+execution = [
+  "Prefer existing scripts/targets over ad-hoc flow.",
+  "Scope changes to smallest crate/registry surface.",
+  "Update canonical TOML before mirror regeneration.",
+]
+
+[gates]
+required = [
+  "cargo clippy --workspace -j$(nproc) -- -D warnings",
+  "cargo test --workspace -j$(nproc)",
+  "make ascii-check",
+]
+recommended = ["make rust-smoke", "make registry", "make wave6-gate"]
+registry_verifiers = [
+  "make registry-verify-markdown-inventory",
+  "make registry-verify-markdown-owner",
+  "make registry-verify-markdown-governance",
+  "make registry-verify-schema-signatures",
+  "make registry-verify-crossrefs",
+  "make registry-verify-mirrors",
+]
+
+[claims]
+rules = [
+  "Treat narrative as hypothesis until verified.",
+  "Map claims to first-party evidence.",
+  "Attach reproducible artifact/verifier.",
+  "Keep cross-registry references consistent.",
+]
+
+[handoff]
+required_sections = ["what_changed", "why_changed", "validation_run", "open_risks"]
+
+[editor_notice]
+instruction = "Edit this embedded contract for core policy; use overflow file for extended instructions."
+overflow_file = "registry/agents_contract.toml"
+overflow_usage = "Store overflow/extended matrices, keep all entries concise and imperative."
+```

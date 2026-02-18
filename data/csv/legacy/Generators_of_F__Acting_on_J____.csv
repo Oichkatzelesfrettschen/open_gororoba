@@ -1,0 +1,4 @@
+Operator,Definition
+L_x (Linear Action),"X |-> [X, Y] for Y in J_3(O)"
+D_x (Derivation),X |-> X circ Y - Y circ X
+Quadratic Representation,Q(X) = X^2 - tr(X)X

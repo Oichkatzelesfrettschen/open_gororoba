@@ -1,0 +1,2 @@
+PDE Model,Dominant Numeric Precision,Average Execution Time per Step (s),Tensor Rank (Decomposition),Decomposition Execution Time (s),Decomposition Norm Difference
+Exotic Quantum Nonlocal Interaction PDE,float128 (adaptive RL),0.0537,10,0.0365,0.02392

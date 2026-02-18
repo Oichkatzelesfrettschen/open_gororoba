@@ -1008,6 +1008,24 @@ date = "2026-02-17"
 sprint = 44
 
 [[insight]]
+id = "I-090"
+title = "Scattering, fluctuation, and advanced optical methods complete the DL toolkit"
+body = """Part 17 adds 30 methods across 5 physics domains, completing the DrudeLorentzParams toolkit:
+
+1. MIE/RAYLEIGH SCATTERING: The Clausius-Mossotti factor K=(eps-1)/(eps+2) is the central nanoparticle quantity. Rayleigh cross section scales as a^6*k^4 -- the steep frequency dependence explains why the sky is blue. For Casimir physics, nanoparticle scattering corrections become important when particle separation approaches particle size.
+
+2. FLUCTUATION ELECTRODYNAMICS: The fluctuation-dissipation theorem S(omega,T) = (2*hbar*omega/pi)*Im[eps]*(n_BE+1/2) is the fundamental connection between material loss and Casimir forces. Near-field thermal emission enhanced by 1/(kd)^2 explains super-Planckian heat transfer at nanoscale gaps, directly relevant to Casimir measurements.
+
+3. ANHARMONIC PHONONS: Temperature-dependent linewidth gamma(T) = gamma_0 + A*(1+2*n_BE(omega/2)) captures the dominant thermal effect on phonon-mediated Casimir forces. Critical pitfall: oscillator frequencies stored in eV (omega_0_ev field), NOT rad/s. The prior session's code used wrong field names and wrong unit conversions.
+
+4. PHOTONIC BAND GAPS: Quarter-wave stack reflectivity R = [(n_h/n_l)^(2N)-1]^2/[(n_h/n_l)^(2N)+1]^2 connects to Casimir physics through photonic crystal modifications of the vacuum field. Group velocity v_g ~ sqrt(1-R) -> 0 at band edges creates strong dispersion.
+
+5. ELECTROOPTIC EFFECTS: Pockels delta_n = -0.5*n^3*r*E provides active Casimir force modulation via applied electric fields. Franz-Keldysh tunneling gives sub-gap absorption relevant to semiconductor Casimir force measurements near band edges."""
+related_claims = ["C-762", "C-763", "C-764", "C-765", "C-766"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
 id = "I-042"
 title = "Discovery of Topological Entropy Locking (TEL)"
 date = "2026-02-17"

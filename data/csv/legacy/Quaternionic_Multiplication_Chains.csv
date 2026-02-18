@@ -1,0 +1,5 @@
+Operation,Computed Result,Expected
+ij,"[0, 0, 1]",k
+jk,"[1, 0, 0]",i
+ki,"[0, 1, 0]",j
+(ij)k,"[0, 0, 0]",-1

@@ -1,0 +1,13 @@
+GPU Model,Compute Capability,CUDA Toolkit Max Support,FP64 Performance (TFLOPS),Best Workstation Use in 2025
+Quadro FX 5600 (2007),1.1,6.5,0.09,"Legacy CAD, OpenGL rendering"
+Quadro FX 5800 (2008),1.3,6.5,0.2,Scientific Visualization
+Tesla C1060 (2008),1.3,6.5,0.3,Early HPC compute workloads
+Quadro 6000 (2010),2.0,8.0,0.5,"Legacy AI inference, OpenGL CAD"
+Tesla C2050 (2010),2.0,8.0,0.5,Legacy CUDA HPC
+Tesla K20 (2012),3.5,10.2,1.2,FP64-intensive scientific computing
+Quadro K5000 (2012),3.5,10.2,1.4,"Workstation OpenGL, DirectX 11 CAD"
+Tesla K80 (2014),3.7,11.0,2.9,"Entry-level AI acceleration, HPC"
+Quadro M6000 (2015),5.2,11.2,3.0,"Deep learning inference, CUDA 11"
+Tesla M40 (2015),5.2,11.2,3.5,"Modern HPC, physics simulations"
+Quadro P6000 (2017),6.1,11.8,4.5,"AI/ML training, CUDA acceleration"
+Tesla P100 (2017),6.0,11.8,5.3,Best AI/HPC compute

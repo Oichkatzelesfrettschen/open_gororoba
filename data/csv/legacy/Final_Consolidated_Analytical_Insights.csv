@@ -1,0 +1,9 @@
+Insight Category,Description,Value
+Top Feature 1,Interaction: DataType_float32 x Mode_SIMD,25.63%
+Top Feature 2,Interaction: DataType_float32 x Operation_Generic SIMD Operation,24.75%
+Top Feature 3,Interaction: Operation_Generic SIMD Operation x Mode_SIMD,17.86%
+Top Feature 4,Main Effect: Mode_SIMD,12.95%
+Top Feature 5,Main Effect: Operation_Generic SIMD Operation,12.12%
+Final Model Mean Squared Error (MSE),1536.42,1536.4163727705134
+Final Model Mean Absolute Error (MAE),18.34 ms,18.34015670724473
+Final Model R-squared (R^2),-0.0626,-0.06256731006952898

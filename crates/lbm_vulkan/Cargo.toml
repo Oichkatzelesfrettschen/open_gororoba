@@ -7,8 +7,10 @@ repository.workspace = true
 
 [dependencies]
 ash = "0.38.0"
+bytemuck = "1.25.0"
 env_logger.workspace = true
 gpu-allocator = "0.28.0"
+image.workspace = true
 shaderc = "0.10.1"
 
 [lints]
