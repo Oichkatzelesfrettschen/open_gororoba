@@ -4,8 +4,8 @@
 [conflict_markers]
 updated = "2026-02-10"
 authoritative = true
-marker_count = 72
-high_severity_count = 68
+marker_count = 73
+high_severity_count = 69
 medium_severity_count = 4
 low_severity_count = 0
 kind_count = 2
@@ -1100,6 +1100,22 @@ notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
 id = "CM-0069"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-764"]
+source_registry = "registry/claims.toml"
+source_document = "C-764"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["VERIFIED"]
+negative_evidence = ["Anharmonic and multiphonon methods (anharmonic linewidth, multiphonon absorption, two-phonon density of states, infrared combination bands) extend the harmonic DL model to temperature-dependent and multi-phonon effects. Anharmonic linewidth gamma(T) = gamma_0 + A*(1+2*n_BE(omega/2,T)) captures cubic decay. Multiphonon absorption uses exponential tail above one-phonon cutoff. Oscillator frequencies are in eV (matching omega_0_ev field). 7 tests verify temperature dependence, zero below cutoff, DOS peaks, sorted bands, and None for invalid indices."]
+jaccard_overlap = 0.000000
+notes = "Verified status conflicts with negative language in statement."
+
+[[marker]]
+id = "CM-0070"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1115,7 +1131,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0070"
+id = "CM-0071"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1131,7 +1147,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0071"
+id = "CM-0072"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1147,7 +1163,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0072"
+id = "CM-0073"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
