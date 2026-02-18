@@ -1,74 +1,62 @@
 #version 450
 
 layout(local_size_x = 16, local_size_y = 16) in;
-
 layout(std430, set = 0, binding = 0) readonly buffer Field { float data[]; };
 layout(rgba8, set = 0, binding = 1) writeonly uniform image2D out_image;
 
 layout(push_constant) uniform Constants {
-    uint nx;
-    uint ny;
-    uint nz;
-    uint width;
-    uint height;
+    uint nx; uint ny; uint nz;
+    uint width; uint height;
     float time;
 } pc;
 
-void main() {
-    uint x = gl_GlobalInvocationID.x;
-    uint y = gl_GlobalInvocationID.y;
+vec3 fire_palette(float t) {
+    vec3 black = vec3(0.0);
+    vec3 red = vec3(0.5, 0.0, 0.0);
+    vec3 orange = vec3(1.0, 0.5, 0.0);
+    vec3 yellow = vec3(1.0, 1.0, 0.5);
+    vec3 white = vec3(1.0);
+    
+    if (t < 0.25) return mix(black, red, t * 4.0);
+    if (t < 0.5) return mix(red, orange, (t - 0.25) * 4.0);
+    if (t < 0.75) return mix(orange, yellow, (t - 0.5) * 4.0);
+    return mix(yellow, white, (t - 0.75) * 4.0);
+}
 
+void main() {
+    uint x = gl_GlobalInvocationID.x; uint y = gl_GlobalInvocationID.y;
     if (x >= pc.width || y >= pc.height) return;
 
-    // Camera setup
-    vec3 ro = vec3(float(pc.nx) * 1.5, float(pc.ny) * 0.5, float(pc.nz) * 0.5);
-    // Rotate camera over time
-    float angle = pc.time * 0.2;
-    float rx = (ro.x - float(pc.nx)*0.5) * cos(angle) - (ro.z - float(pc.nz)*0.5) * sin(angle) + float(pc.nx)*0.5;
-    float rz = (ro.x - float(pc.nx)*0.5) * sin(angle) + (ro.z - float(pc.nz)*0.5) * cos(angle) + float(pc.nz)*0.5;
-    ro = vec3(rx, ro.y, rz);
-
     vec3 target = vec3(float(pc.nx)*0.5, float(pc.ny)*0.5, float(pc.nz)*0.5);
+    float cam_dist = float(pc.nx) * 1.2;
+    float angle = pc.time * 0.05 + 0.5;
+    vec3 ro = target + vec3(cos(angle)*cam_dist, cam_dist * 0.4, sin(angle)*cam_dist);
+
     vec3 ww = normalize(target - ro);
     vec3 uu = normalize(cross(ww, vec3(0, 1, 0)));
     vec3 vv = normalize(cross(uu, ww));
-    
     vec2 p = (vec2(x, y) - 0.5 * vec2(pc.width, pc.height)) / float(pc.height);
     vec3 rd = normalize(p.x * uu + p.y * vv + 1.5 * ww);
 
-    // Raymarching
-    float t = 0.0;
-    vec3 color = vec3(0.0);
-    float alpha = 0.0;
+    float t = 0.0; vec3 color = vec3(0.0); float opacity = 0.0;
+    float step_size = 0.8; 
     
-    // Step size
-    float step_size = 1.0;
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < 200; i++) {
         vec3 pos = ro + rd * t;
-        
-        // Bounds check
-        if (pos.x < 0 || pos.x >= pc.nx || pos.y < 0 || pos.y >= pc.ny || pos.z < 0 || pos.z >= pc.nz) {
-            t += step_size;
-            if (t > 1000.0) break;
-            continue;
-        }
-        
-        // Sample field
-        uint idx = uint(pos.x) + pc.nx * (uint(pos.y) + pc.ny * uint(pos.z));
-        float val = data[idx];
-        
-        // Accumulate (Heatmap: black -> blue -> magenta -> white)
-        if (val > 0.01) {
-            vec3 c = mix(vec3(0, 0, 1), vec3(1, 0, 1), clamp(val * 5.0, 0.0, 1.0));
-            c = mix(c, vec3(1, 1, 1), clamp(val - 0.5, 0.0, 1.0));
+        if (pos.x >= 0 && pos.x < pc.nx && pos.y >= 0 && pos.y < pc.ny && pos.z >= 0 && pos.z < pc.nz) {
+            uint idx = uint(pos.x) + pc.nx * (uint(pos.y) + pc.ny * uint(pos.z));
+            float val = data[idx];
             
-            float a = val * 0.1; // Opacity
-            color += (1.0 - alpha) * c * a;
-            alpha += (1.0 - alpha) * a;
+            if (val > 0.001) {
+                float intensity = clamp(val * 10.0, 0.0, 1.0);
+                vec3 c = fire_palette(intensity);
+                float a = intensity * 0.05;
+                color += (1.0 - opacity) * c * a;
+                opacity += (1.0 - opacity) * a;
+            }
         }
-        
         t += step_size;
-        if (alpha >= 0.95) break;
+        if (opacity >= 0.98) break;
     }
 
     imageStore(out_image, ivec2(x, y), vec4(color, 1.0));

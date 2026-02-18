@@ -19,7 +19,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  Math Complexity: {:?}", params.math_complexity);
     println!("  Render Scale: {:.2}", params.render_resolution_scale);
 
-    let pipeline = LbmComputePipeline::new(&ctx, params.grid_dim)?;
+    let mut pipeline = LbmComputePipeline::new(&ctx, params.grid_dim)?;
     
     // Command Buffer recording
     let pool_info = ash::vk::CommandPoolCreateInfo {

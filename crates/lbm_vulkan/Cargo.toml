@@ -1,20 +1,22 @@
 [package]
 name = "lbm_vulkan"
 version = "0.1.0"
-edition.workspace = true
-license.workspace = true
-repository.workspace = true
+edition = { workspace = true }
+license = "GPL-2.0-only"
+repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
-ash = "0.38.0"
+ash = { version = "0.38.0", features = ["debug", "libloading", "loaded"] }
+gpu-allocator = { version = "0.28.0", features = ["vulkan"] }
+log = { workspace = true }
 bytemuck = "1.25.0"
-env_logger.workspace = true
-gpu-allocator = "0.28.0"
-image.workspace = true
-shaderc = "0.10.1"
+image = { workspace = true }
+naga = { version = "28.0.0", features = ["wgsl-in", "spv-out"] }
+env_logger = { workspace = true }
+
+[dev-dependencies]
+winit = "0.30.12"
+raw-window-handle = "0.6.2"
 
 [lints]
 workspace = true
-
-[build-dependencies]
-spirv-builder = "0.9.0"
