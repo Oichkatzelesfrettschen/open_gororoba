@@ -1,0 +1,35 @@
+# Meltdown Gating Concurrency results
+# N=128 steps=300 eps0=1e-3 M0=64 Mlow=32
+# verdict = PASS
+
+[[result]]
+rho = 0.5
+p95_fixed = 127.0
+p95_adaptive = 54.0
+reduction_pct = 57.480
+rel_err_adaptive = 6.721822e-1
+pass = true
+
+[[result]]
+rho = 1
+p95_fixed = 126.0
+p95_adaptive = 61.0
+reduction_pct = 51.587
+rel_err_adaptive = 3.439953e-1
+pass = true
+
+[[result]]
+rho = 1.5
+p95_fixed = 127.0
+p95_adaptive = 59.0
+reduction_pct = 53.543
+rel_err_adaptive = 3.861960e-1
+pass = true
+
+[[result]]
+rho = 2
+p95_fixed = 127.0
+p95_adaptive = 56.0
+reduction_pct = 55.906
+rel_err_adaptive = 6.661920e-1
+pass = true

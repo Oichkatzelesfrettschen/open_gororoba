@@ -1,0 +1,10 @@
+# CHSH Wavelet Compression results
+# n_time=512 n_pairs=1000 compression_target=0.05
+# verdict = PASS
+
+[result]
+s_raw = -2.342445
+s_compressed = -2.342445
+delta_s = 0.000000
+compression_ratio = 18.96
+pass = true
