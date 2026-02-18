@@ -3,7 +3,7 @@
 
 \section{Experiments Portfolio}\label{sec:experiments-appendix}
 
-Total experiments: 31.\\[0.5em]
+Total experiments: 40.\\[0.5em]
 
 \subsection{E-001: Cayley-Dickson Motif Census}\label{sec:e001}
 
@@ -14,6 +14,16 @@ Total experiments: 31.\\[0.5em]
 \textbf{Run:} \texttt{cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details}
 
 \textbf{Claims:} C-100, C-101, C-102, C-103, C-104, C-105, C-106, C-107, C-108, C-109, C-110
+
+\subsection{E-035: Reynolds Independence: Decaying Turbulence Scaling (Experiment C)}\label{sec:e035}
+
+\textbf{Binary:} \texttt{warp-gpu-experiment} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
+
+\textbf{Method:} Direct Numerical Simulation of decaying turbulence on cubic grids (8\textasciicircum{}3, 16\textasciicircum{}3, 32\textasciicircum{}3, 64\textasciicircum{}3) using GPU LBM (D3Q19). Measures enstrophy decay exponent alpha and Betti-1 topological persistence. Compares decay normalized by initial enstrophy and eddy turnover time to establish resolution-independence threshold.
+
+\textbf{Run:} \texttt{bash run\_reynolds\_sweep.sh}
+
+\textbf{Claims:} C-682
 
 \subsection{E-002: Multi-Dataset GPU Ultrametric Sweep}\label{sec:e002}
 
@@ -197,7 +207,7 @@ Total experiments: 31.\\[0.5em]
 
 \subsection{E-021: Tessarines vs. Mixed-Quaternions Categorical Distinction Census}\label{sec:e021}
 
-\textbf{Binary:} \texttt{} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+\textbf{Binary:} \texttt{tessarines-mixed-quaternions-census} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
 
 \textbf{Method:} 
 
@@ -207,7 +217,7 @@ Total experiments: 31.\\[0.5em]
 
 \subsection{E-022: Albert Algebra Commutativity and Exceptional Structure Census}\label{sec:e022}
 
-\textbf{Binary:} \texttt{} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+\textbf{Binary:} \texttt{albert-algebra-structure-census} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
 
 \textbf{Method:} 
 
@@ -217,7 +227,7 @@ Total experiments: 31.\\[0.5em]
 
 \subsection{E-023: Composition Algebra Taxonomy: Two-Axis Classification Framework}\label{sec:e023}
 
-\textbf{Binary:} \texttt{} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+\textbf{Binary:} \texttt{composition-algebra-taxonomy} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
 
 \textbf{Method:} 
 
@@ -227,7 +237,7 @@ Total experiments: 31.\\[0.5em]
 
 \subsection{E-024: Registry Event Tracking Infrastructure}\label{sec:e024}
 
-\textbf{Binary:} \texttt{} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+\textbf{Binary:} \texttt{registry-event-tracker} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
 
 \textbf{Method:} 
 
@@ -237,7 +247,7 @@ Total experiments: 31.\\[0.5em]
 
 \subsection{E-026: Third-Party Source Verification Infrastructure}\label{sec:e026}
 
-\textbf{Binary:} \texttt{} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+\textbf{Binary:} \texttt{third-party-source-verifier} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
 
 \textbf{Method:} 
 
@@ -267,7 +277,7 @@ Total experiments: 31.\\[0.5em]
 
 \subsection{E-029: A-infinity Correction Tensor via Neural Homotopy Search (Thesis 3 Validation)}\label{sec:e029}
 
-\textbf{Binary:} \texttt{neural-homotopy-trainer} \quad \textbf{Status:} complete \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+\textbf{Binary:} \texttt{neural-homotopy-trainer} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
 
 \textbf{Method:} Sedenion associator tensor m\_3 construction, Burn MLP training (Autodiff+NdArray+Adam, 256->128->64->16), pentagon-constrained batch coordinate descent, perturbation robustness testing
 
@@ -295,16 +305,6 @@ Total experiments: 31.\\[0.5em]
 
 \textbf{Claims:} none
 
-\subsection{E-033: Grand Synthesis: All Four Theses Pass Gate Simultaneously}\label{sec:e033}
-
-\textbf{Binary:} \texttt{thesis-synthesis-engine} \quad \textbf{Status:} complete \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
-
-\textbf{Method:} Orchestrated execution of T1 (spatial correlation), T2 (power-law viscosity), T3 (plateau detection + pentagon optimization), T4 (shell return-time power law). Each thesis evaluated independently with falsification gate.
-
-\textbf{Run:} \texttt{cargo run --release --bin thesis-synthesis-engine -- --thesis all --output-dir data/evidence/synthesis\_final}
-
-\textbf{Claims:} C-674
-
 \subsection{E-032: Thesis 2: 3D Associator-Coupled Shear Thickening}\label{sec:e032}
 
 \textbf{Binary:} \texttt{thesis2-3d-thickening} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
@@ -314,4 +314,94 @@ Total experiments: 31.\\[0.5em]
 \textbf{Run:} \texttt{cargo run --release --bin thesis2-3d-thickening -- --grid\_size 16 --lbm\_steps 500}
 
 \textbf{Claims:} none
+
+\subsection{E-033: Grand Synthesis: All Four Theses Pass Gate Simultaneously}\label{sec:e033}
+
+\textbf{Binary:} \texttt{thesis-synthesis-engine} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+
+\textbf{Method:} Orchestrated execution of T1 (spatial correlation), T2 (power-law viscosity), T3 (plateau detection + pentagon optimization), T4 (shell return-time power law). Each thesis evaluated independently with falsification gate.
+
+\textbf{Run:} \texttt{cargo run --release --bin thesis-synthesis-engine -- --thesis all --output-dir data/evidence/synthesis\_final}
+
+\textbf{Claims:} C-674
+
+\subsection{E-034: Kubo Linear-Response Frustration-Viscosity Coupling Derivation}\label{sec:e034}
+
+\textbf{Binary:} \texttt{kubo-coupling-analysis} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} yes
+
+\textbf{Method:} GPU-accelerated exact diagonalization of dim=8 Heisenberg chain with CD interpolation. Fine lambda sweep (100 points) at T=0.5: compute spin Drude weight D\_S, thermal Drude weight K\_th, integrated spectral weight I0\_S, and ballistic fraction B=D\_S/I0\_S. Temperature dependence at 6 probe lambdas. Analytical fits (power law, exponential) and recommended coupling parameters.
+
+\textbf{Run:} \texttt{cargo run --release --features gpu --bin kubo-coupling-analysis}
+
+\textbf{Claims:} C-678, C-679, C-680, C-681
+
+\subsection{E-036: STAR Spin Correlation Decoherence Analysis}\label{sec:e036}
+
+\textbf{Binary:} \texttt{spin-decoherence-pipeline} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Mapping of STAR 2026 spin correlation data to CD frustration density. Verifies monotonic decay of entanglement and sudden death threshold in the algebraic vacuum limit.
+
+\textbf{Run:} \texttt{cargo run --release --bin spin-decoherence-pipeline}
+
+\textbf{Claims:} T-SPIN-CD, T-PPT-NEED
+
+\subsection{E-037: Single-Minus Amplitude Frustration Survey}\label{sec:e037}
+
+\textbf{Binary:} \texttt{amplitude-frustration-survey} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Exhaustive search of the single-minus gluon amplitude support region R1. Maps support region to the global minima of the algebraic frustration landscape (zero-frustration chambers).
+
+\textbf{Run:} \texttt{cargo run --release --bin amplitude-frustration-survey}
+
+\textbf{Claims:} T-AMPLITUDE-FRUSTRATION-MINIMA, T-CHAMBER-DISCRETE
+
+\subsection{E-038: LHC 2025 QGP Spin Synthesis}\label{sec:e038}
+
+\textbf{Binary:} \texttt{lhc-2025-qgp-synthesis} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Integration of Run 3 ALICE (Pb-Pb 5.36 TeV) and CMS (pPb 8.16 TeV) results. Predictive modeling using QGPFrustrationBridge to map vorticity and temperature to CD frustration. Validates algebraic twist correction against CMS azimuthal sign challenge.
+
+\textbf{Run:} \texttt{cargo run --release --bin lhc-2025-qgp-synthesis}
+
+\textbf{Claims:} T-QGP-VORTICITY, T-CMS-SIGN-CHALLENGE
+
+\subsection{E-039: Wavelet Bridging Accuracy Sweep}\label{sec:e039}
+
+\textbf{Binary:} \texttt{wavelet-bridging-sweep} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Haar DWT hard-threshold compression vs negative-d reservoir bridging on forced-diffusion surrogate. Sweeps rho in \{0.2, 0.5, 1.0, 1.5, 2.0\} and eps in \{1e-3, 3e-3, 1e-2, 3e-2\}. Reports median RelErr improvement and concurrency.
+
+\textbf{Run:} \texttt{cargo run --release --bin wavelet-bridging-sweep}
+
+\textbf{Claims:} C-703
+
+\subsection{E-040: Meltdown Gating Concurrency}\label{sec:e040}
+
+\textbf{Binary:} \texttt{meltdown-gating-sweep} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Adaptive epsilon meltdown gating on forced-diffusion surrogate. Sweeps rho in \{0.5, 1.0, 1.5, 2.0\}. Compares fixed-eps p95 concurrency vs adaptive gating. Reports p95 reduction and RelErr.
+
+\textbf{Run:} \texttt{cargo run --release --bin meltdown-gating-sweep}
+
+\textbf{Claims:} C-704
+
+\subsection{E-041: Wavelet ACF Exponential Calibration}\label{sec:e041}
+
+\textbf{Binary:} \texttt{wavelet-acf-calibration} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Measures autocorrelation function of unresolved wavelet energy on forced-diffusion surrogate. Sweeps eps in \{1e-3, 3e-3, 1e-2, 3e-2\}. Fits log(R(tau)) \textasciitilde{} -kappa*tau*dt via OLS. Reports R2 and kappa.
+
+\textbf{Run:} \texttt{cargo run --release --bin wavelet-acf-calibration}
+
+\textbf{Claims:} C-705
+
+\subsection{E-042: CHSH Wavelet Compression}\label{sec:e042}
+
+\textbf{Binary:} \texttt{chsh-wavelet-compression} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+
+\textbf{Method:} Software simulation of CHSH Bell-inequality experiment. Generates Binomial-sampled coincidence time series for 4 angle settings. Applies Haar wavelet compression retaining coarsest coefficient. Computes S\_compressed and verifies S > 2.0.
+
+\textbf{Run:} \texttt{cargo run --release --bin chsh-wavelet-compression}
+
+\textbf{Claims:} C-706
 
