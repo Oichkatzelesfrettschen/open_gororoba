@@ -1,0 +1,42 @@
+\begin{thebibliography}{5}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Baez(2002)]{baez2002}
+John~C. Baez.
+\newblock The octonions.
+\newblock \emph{Bulletin of the American Mathematical Society}, 39\penalty0
+  (2):\penalty0 145--205, 2002.
+\newblock URL \url{https://arxiv.org/abs/math/0105155}.
+\newblock arXiv:math/0105155.
+
+\bibitem[de~Marrais(2000)]{demarrais2000}
+Robert P.~C. de~Marrais.
+\newblock The 42 {Assessors} and the {Box-Kites} they fly: Diagonal axis-pair
+  systems of zero-divisors in the {Sedenions}' 16 dimensions.
+\newblock arXiv:math/0011260, 2000.
+\newblock URL \url{https://arxiv.org/abs/math/0011260}.
+
+\bibitem[de~Marrais(2004)]{demarrais2004boxkites}
+Robert P.~C. de~Marrais.
+\newblock Placeholder substructures {III}: A bit-string-driven `recipe theory'
+  for infinite-dimensional zero-divisor spaces.
+\newblock arXiv:math/0403113, 2004.
+\newblock URL \url{https://arxiv.org/abs/math/0403113}.
+
+\bibitem[de~Marrais(2006)]{demarrais2006}
+Robert P.~C. de~Marrais.
+\newblock Presto! {Digitization}: Part {I}.
+\newblock arXiv:math/0603281, 2006.
+\newblock URL \url{https://arxiv.org/abs/math/0603281}.
+
+\bibitem[Reggiani(2024)]{reggiani2024}
+Silvio Reggiani.
+\newblock {Cayley-Dickson} algebras and projective planes.
+\newblock arXiv:2411.18881, 2024.
+\newblock URL \url{https://arxiv.org/abs/2411.18881}.
+
+\end{thebibliography}

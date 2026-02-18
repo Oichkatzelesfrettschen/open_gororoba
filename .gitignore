@@ -1,34 +1,10 @@
-# Python bytecode and caches
-__pycache__/
-*.py[cod]
-*$py.class
-.pytest_cache/
-.ruff_cache/
-*.egg-info/
-src/*.egg-info/
+# ==============================================================================
+# Open Gororoba: Standardized Git Exclusion Policy
+# ==============================================================================
 
-# Virtual environments
-venv/
-.venv/
-.mamba/
-
-# Build and distribution
-build/
-dist/
-*.so
-*.dylib
-
-# Coq build artifacts and generated stubs
-curated/01_theory_frameworks/*.vo
-curated/01_theory_frameworks/*.vos
-curated/01_theory_frameworks/*.vok
-curated/01_theory_frameworks/*.glob
-curated/01_theory_frameworks/confine_theorems_*_axioms.v
-
-# LaTeX build output
-docs/latex/out/
-
-# OS and editor files
+# ------------------------------------------------------------------------------
+# 1. Global / OS / Editor Noise
+# ------------------------------------------------------------------------------
 .DS_Store
 Thumbs.db
 *.swp
@@ -37,103 +13,91 @@ Thumbs.db
 .vscode/
 .idea/
 .claude/
+.gemini/
+.playwright-mcp/
 
-# ----- Generated artifacts (regenerable via make targets) -----
-# HDF5 simulation output (make run)
-data/h5/
+# ------------------------------------------------------------------------------
+# 2. Languages & Build Systems
+# ------------------------------------------------------------------------------
 
-# Generated images (make artifacts-*)
-# NOTE: data/artifacts/images/ is tracked for reference;
-#       add specific patterns here if regenerating via CI.
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+src/*.egg-info/
+venv/
+.venv/
+.venv_ingest/
+.mamba/
 
-# ----- External / downloaded data (fetch via make fetch-data) -----
-data/external/papers/
-data/external/nv_odmr/
-data/external/jarvis_dft/
-data/external/jarvis_dft_3d.json
-data/external/aflow_materials.json
-data/external/TESS_Metadata.csv
+# Rust
+target/
+target_codex_hve/
+rustc-ice-*.txt
 
-# Curated provenance snapshots (regenerable via make provenance)
-curated/PROVENANCE.local.json
+# C++
+cpp/build/
+cpp/.conan/
 
-# Downloaded observational datasets (large, fetchable)
-# NOTE: Cleanified_LIGO.csv is tracked (no generating script exists)
+# Coq
+curated/01_theory_frameworks/*.vo
+curated/01_theory_frameworks/*.vos
+curated/01_theory_frameworks/*.vok
+curated/01_theory_frameworks/*.glob
 
-# ----- Scan and analysis outputs (ephemeral) -----
-reports/trufflehog*.json
-reports/semgrep_results.txt
-reports/repo_tree*.txt
+# ------------------------------------------------------------------------------
+# 3. Project Artifact Infrastructure (Standardized)
+# ------------------------------------------------------------------------------
+
+# Dedicated artifact & log directories
+build/
+dist/
+dist_py/
+logs/
 reports/benchmark_*.txt
 reports/*.csv
 
-# ----- Legacy and archival (not part of active codebase) -----
-data/csv/legacy/
-archive/
+# Temporary / Scratch space
+temp/
+tmp/
+*.tmp
+*.temp
+temp.*
 
-# Finder duplicate artifacts
-*\ 2.csv
-*\ 2.md
-*\ 2.v
+# ------------------------------------------------------------------------------
+# 4. Data & External Resources (Managed via Makefile)
+# ------------------------------------------------------------------------------
 
-# Binaries that should not be versioned
-bin/micromamba
+# Simulation Outputs (Regenerable)
+data/h5/
+data/artifacts/images/
+data/e027/
 
-# SQLite databases (generated)
+# External / Downloaded Datasets (Managed via fetch-data)
+data/external/
+!data/external/README.md
+
+# SQLite databases
 *.db
 *.sqlite3
 
-# Compiler crash dumps
-rustc-ice-*.txt
-
-# Secrets and credentials (never commit)
+# ------------------------------------------------------------------------------
+# 5. Secrets & Credentials (NEVER COMMIT)
+# ------------------------------------------------------------------------------
 *.env
 *.pem
 *.key
 credentials.*
 
-# AI assistant scaffolding (local-only, superseded)
-NAVIGATOR.md
-
-# Large data files (use Git LFS if needed)
-data/h5/*.h5
-data/external/jarvis_dft/
-reports/trufflehog_results.json
-*.h5
-
-# Fetched datasets (large, reproducible via fetch-datasets)
-data/external/*.tar.gz
-data/external/*.tgz
-data/external/*.zip
-data/external/*.gfc
-data/external/*.spk
-data/external/wmap9_chains/
-data/external/planck2018_chains/
-data/external/jpl_planets_*.csv
-data/external/sdss_dr18_*.csv
-data/external/gaia_dr3_*.csv
-data/external/fermi_gbm_*.csv
-data/external/tsis1_*.csv
-data/external/nanograv_*.csv
-data/external/PantheonPlusSH0ES.dat
-data/external/igrf13coeffs.txt
-data/external/GGM05S.gfc
-data/external/GRGM1200B.gfc
-data/external/hip_main.dat
-data/external/sorce_tsi_daily.csv
-data/external/swarm_magnetic_sample.csv
-data/external/planck2018_base_params.txt
-data/external/wmm2025.zip
-data/external/GRACEFO_monthly_sample.gfc
-data/external/nanograv_15yr_kde/
-data/external/eht_*/
-data/external/union3_*/
-data/external/de440.bsp
-data/external/de441.bsp
-data/external/landsat_stac_sample.json
-.playwright-mcp/
+# ------------------------------------------------------------------------------
+# 6. Documentation & Registry Governance
+# ------------------------------------------------------------------------------
 
 # Strict TOML-only policy: markdown files are generated/ephemeral and not tracked.
+# EXCEPTIONS: Mandatory repo entrypoints.
 *.md
 ![Aa][Gg][Ee][Nn][Tt][Ss].md
 ![Cc][Ll][Aa][Uu][Dd][Ee].md
@@ -141,6 +105,15 @@ data/external/landsat_stac_sample.json
 ![Rr][Ee][Aa][Dd][Mm][Ee].md
 !**/[Rr][Ee][Aa][Dd][Mm][Ee].md
 
-# Local excludes
-target/
-.venv_ingest/
+# ------------------------------------------------------------------------------
+# 7. Root Directory Protection (Keep Root Clean)
+# ------------------------------------------------------------------------------
+# Ignore ad-hoc logs, scripts, and results in root to force migration to standardized paths.
+/*.log
+/*.sh
+/*.tex
+/*.bib
+/*.png
+/*.jpg
+/*.ptx
+/*.txt
