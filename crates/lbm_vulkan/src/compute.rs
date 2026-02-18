@@ -2,7 +2,7 @@ use ash::{vk, Device};
 use std::ffi::CString;
 use std::sync::Arc;
 use gpu_allocator::vulkan::*;
-use gpu_allocator::MemoryLocation; 
+use gpu_allocator::MemoryLocation;
 use crate::VulkanContext;
 use std::mem::size_of;
 use std::sync::Mutex;
