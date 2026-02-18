@@ -1,6 +1,6 @@
 # Insights registry -- discoveries and interpretations from the computational census.
 # Each insight cross-references the claims it produced.
-# Sorted by ID (I-001..I-017).
+# Sorted by ID (I-001..I-091, 88 entries).
 
 [[insight]]
 id = "I-001"
@@ -404,38 +404,12 @@ sprint = 32
 [[insight]]
 id = "I-043"
 title = "Exact 3/8 Sign Balance"
-description = "The multiplication table of the Split-Octonions (dim 8) has exactly 24 negative structure constants out of 64 entries (24/64 = 0.375). This provides the exact arithmetic mechanism for the 3/8 frustration limit observed in I-041."
-discovery_date = "2026-02-10"
-verification_status = "verified"
-cross_references = ["I-041"]
-related_files = ["crates/algebra_core/tests/test_split_octonion_geometry.rs"]
-
-[[insight]]
-id = "I-051"
-title = "G2 Root-Unit Correspondence"
-description = "The zero-divisor geometry of the Split-Octonions is governed by exactly 12 Fundamental Units (unique sets of 4 indices). This matches 1:1 with the 12 roots of the G2 Lie algebra (the automorphism group of the octonions). The 'Missing 6' in the Sedenion transition is identified as exactly one SU(3) root hexagon (6 interactions) being shed to satisfy Euclidean signature constraints."
-discovery_date = "2026-02-10"
-verification_status = "verified"
-cross_references = ["I-042", "C-591"]
-related_files = ["crates/algebra_core/tests/test_split_octonion_geometry.rs"]
-
-[[insight]]
-id = "I-052"
-title = "Surface Tension of Frustration"
-description = "A 16-dimensional 'Hybrid' algebra (Split-Octonion core doubled with -1) exhibits a frustration ratio of 0.4375, significantly lower than the standard Sedenion (0.46875) and trending towards the 0.375 attractor. This identifies frustration as a 'surface tension' effect where signature constraints (+/-1) compete with the underlying statistical limit of the Split-Octonion mean-field."
-discovery_date = "2026-02-10"
-verification_status = "verified"
-cross_references = ["I-041", "C-590"]
-related_files = ["crates/algebra_core/tests/test_split_octonion_geometry.rs"]
-
-[[insight]]
-id = "I-053"
-title = "Dual-Octonion Phase Boundary"
-description = "The Dual-Octonions (O x D) exhibit a frustration sign ratio of 0.4375 (14/32), placing them exactly between the Standard Sedenions (0.46875, 15/32) and the Split-Octonion Attractor (0.375, 12/32). This statistically confirms the role of Dual numbers (epsilon^2=0) as the phase boundary between the Elliptic (Standard) and Hyperbolic (Split) geometric regimes of the Cayley-Dickson tower."
-discovery_date = "2026-02-10"
-verification_status = "verified"
-cross_references = ["I-052", "C-630"]
-related_files = ["crates/algebra_core/tests/test_exotic_octonions.rs"]
+date = "2026-02-10"
+status = "verified"
+summary = "The multiplication table of the Split-Octonions (dim 8) has exactly 24 negative structure constants out of 64 entries (24/64 = 0.375). This provides the exact arithmetic mechanism for the 3/8 frustration limit observed in I-041."
+claims = []
+related_insights = ["I-041"]
+sprint = 32
 
 [[insight]]
 id = "I-044"
@@ -501,67 +475,103 @@ claims = ["C-621", "C-622", "C-623", "C-624", "C-625", "C-626", "C-627", "C-628"
 sprint = 35
 
 [[insight]]
+id = "I-051"
+title = "G2 Root-Unit Correspondence"
+date = "2026-02-10"
+status = "verified"
+summary = "The zero-divisor geometry of the Split-Octonions is governed by exactly 12 Fundamental Units (unique sets of 4 indices). This matches 1:1 with the 12 roots of the G2 Lie algebra (the automorphism group of the octonions). The 'Missing 6' in the Sedenion transition is identified as exactly one SU(3) root hexagon (6 interactions) being shed to satisfy Euclidean signature constraints."
+claims = ["C-591"]
+related_insights = ["I-042"]
+sprint = 32
+
+[[insight]]
+id = "I-052"
+title = "Surface Tension of Frustration"
+date = "2026-02-10"
+status = "verified"
+summary = "A 16-dimensional 'Hybrid' algebra (Split-Octonion core doubled with -1) exhibits a frustration ratio of 0.4375, significantly lower than the standard Sedenion (0.46875) and trending towards the 0.375 attractor. This identifies frustration as a 'surface tension' effect where signature constraints (+/-1) compete with the underlying statistical limit of the Split-Octonion mean-field."
+claims = ["C-590"]
+related_insights = ["I-041"]
+sprint = 32
+
+[[insight]]
+id = "I-053"
+title = "Dual-Octonion Phase Boundary"
+date = "2026-02-10"
+status = "verified"
+summary = "The Dual-Octonions (O x D) exhibit a frustration sign ratio of 0.4375 (14/32), placing them exactly between the Standard Sedenions (0.46875, 15/32) and the Split-Octonion Attractor (0.375, 12/32). This statistically confirms the role of Dual numbers (epsilon^2=0) as the phase boundary between the Elliptic (Standard) and Hyperbolic (Split) geometric regimes of the Cayley-Dickson tower."
+claims = ["C-630"]
+related_insights = ["I-052"]
+sprint = 32
+
+[[insight]]
 id = "I-054"
-insight = "Commutativity is not universal across composition algebras. Tensor product constructions (tessarines, dual-octonions, etc.) preserve commutativity from the base field, while recursive doubling (Cayley-Dickson) breaks it universally at dim >= 4. This represents two orthogonal paradigms in algebra design."
-supporting_evidence = ["C-634", "C-640", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md (Section 1.2, 3.2)"]
-related_claims = ["C-633", "C-634", "C-640"]
+title = "Commutativity Depends on Construction Method, Not Dimension"
+date = "2026-02-10"
+status = "verified"
+summary = "Commutativity is not universal across composition algebras. Tensor product constructions (tessarines, dual-octonions, etc.) preserve commutativity from the base field, while recursive doubling (Cayley-Dickson) breaks it universally at dim >= 4. This represents two orthogonal paradigms in algebra design."
+claims = ["C-633", "C-634", "C-640"]
 confidence = "high"
-verified_date = "2026-02-10"
 sprint = 35
 
 [[insight]]
 id = "I-055"
-insight = "Division algebra status depends on BOTH construction method AND signature. Cayley-Dickson algebras have division status fully determined by gamma=-1 vs gamma=+1 (all-division at gamma=+1 up to dim=8, all non-division at gamma=-1). Tessarines are never division algebras regardless of signature, because the zero-divisor structure is inherent to the tensor product. This means 'is this a division algebra?' requires specifying the family, not just the dimension."
-supporting_evidence = ["C-635", "C-636", "C-640", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md (Section 1.2, 3.1)"]
-related_claims = ["C-633", "C-635", "C-636"]
+title = "Division Algebra Status Requires Both Construction Method and Signature"
+date = "2026-02-10"
+status = "verified"
+summary = "Division algebra status depends on BOTH construction method AND signature. Cayley-Dickson algebras have division status fully determined by gamma=-1 vs gamma=+1 (all-division at gamma=+1 up to dim=8, all non-division at gamma=-1). Tessarines are never division algebras regardless of signature, because the zero-divisor structure is inherent to the tensor product. This means 'is this a division algebra?' requires specifying the family, not just the dimension."
+claims = ["C-633", "C-635", "C-636"]
 confidence = "high"
-verified_date = "2026-02-10"
 sprint = 35
 
 [[insight]]
 id = "I-056"
-insight = "Frustration (sign imbalance in multiplication tables) acts as a topological phase boundary marker. The dual-octonion phase boundary 0.4375 lies exactly between elliptic (standard, ~0.375) and hyperbolic (split, ~0.469) regimes, suggesting that algebraic structure is constrained by geometric topology. Tensor product variants (Dual/Bi/Para octonions) exhibit different frustration values (0.4375, 0.4688, 0.6562) predictable from their respective algebraic definitions, independent of Cayley-Dickson theory."
-supporting_evidence = ["C-637", "C-638", "C-639", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md (Section 2.4, 4.2)"]
-related_claims = ["C-637", "C-638", "C-639"]
+title = "Frustration as Topological Phase Boundary Marker"
+date = "2026-02-10"
+status = "verified"
+summary = "Frustration (sign imbalance in multiplication tables) acts as a topological phase boundary marker. The dual-octonion phase boundary 0.4375 lies exactly between elliptic (standard, ~0.375) and hyperbolic (split, ~0.469) regimes, suggesting that algebraic structure is constrained by geometric topology. Tensor product variants (Dual/Bi/Para octonions) exhibit different frustration values (0.4375, 0.4688, 0.6562) predictable from their respective algebraic definitions, independent of Cayley-Dickson theory."
+claims = ["C-637", "C-638", "C-639"]
 confidence = "high"
-verified_date = "2026-02-10"
 sprint = 35
-
 
 [[insight]]
 id = "I-057"
-insight = "Exceptional Jordan algebras (like Albert J_3(O)) preserve the Phase 9 commutativity pattern: 100% commutative under the Jordan product, extending the pattern beyond tensor products and low-dimensional cases. The exceptional structure (27D, irreducible, cannot embed in associative algebras) confirms that commutativity is a family-level property driven by construction method, not dimension or complexity."
-supporting_evidence = ["C-641", "C-642", "crates/algebra_core/tests/test_albert_algebra.rs (test_albert_commutativity_100_percent, test_albert_cross_validation_with_phase9)"]
-related_claims = ["C-641", "C-642"]
+title = "Exceptional Jordan Algebras Preserve Commutativity Pattern"
+date = "2026-02-10"
+status = "verified"
+summary = "Exceptional Jordan algebras (like Albert J_3(O)) preserve the Phase 9 commutativity pattern: 100% commutative under the Jordan product, extending the pattern beyond tensor products and low-dimensional cases. The exceptional structure (27D, irreducible, cannot embed in associative algebras) confirms that commutativity is a family-level property driven by construction method, not dimension or complexity."
+claims = ["C-641", "C-642"]
 confidence = "high"
-verified_date = "2026-02-10"
 sprint = 35
 
 [[insight]]
 id = "I-058"
-insight = "Singh's delta^2 = 3/8 conjecture for Albert algebra is element-dependent, not universal. Empirical survey across trace-free elements shows mean delta^2 approx 3.27 with broad variance (range 2.51--3.75), suggesting delta^2 is a sensitive invariant tied to specific element properties (rank, eigenvalue structure, octonion component distribution) rather than a universal constant. The prediction likely applies to special rank-1 projector bases, not generic elements."
-supporting_evidence = ["C-643", "crates/algebra_core/tests/test_albert_algebra.rs (test_singh_delta_squared_statistics output: mean=3.213, min=2.505, max=3.747)"]
-related_claims = ["C-643"]
+title = "Singh delta^2 = 3/8 Conjecture Is Element-Dependent"
+date = "2026-02-10"
+status = "verified"
+summary = "Singh's delta^2 = 3/8 conjecture for Albert algebra is element-dependent, not universal. Empirical survey across trace-free elements shows mean delta^2 approx 3.27 with broad variance (range 2.51--3.75), suggesting delta^2 is a sensitive invariant tied to specific element properties (rank, eigenvalue structure, octonion component distribution) rather than a universal constant. The prediction likely applies to special rank-1 projector bases, not generic elements."
+claims = ["C-643"]
 confidence = "medium"
-verified_date = "2026-02-10"
 sprint = 35
 
 [[insight]]
 id = "I-059"
-insight = "Composition algebras exhibit a two-axis taxonomy structure: Construction Method (tensor product vs recursive doubling vs exceptional) is primary; Metric Signature (gamma patterns) is secondary, controlling only zero-divisor presence in CD family. This orthogonal decomposition explains why tensor products cannot be represented as CD algebras: they occupy distinct positions in construction-space that no signature variation can bridge. The taxonomy is universal across all dimensions."
-supporting_evidence = ["C-646", "C-647", "C-648", "C-649", "crates/algebra_core/src/construction/composition_algebra_census.rs", "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs (11 test classes)"]
-related_claims = ["C-646", "C-647", "C-648", "C-649", "C-650"]
+title = "Two-Axis Taxonomy of Composition Algebras"
+date = "2026-02-10"
+status = "verified"
+summary = "Composition algebras exhibit a two-axis taxonomy structure: Construction Method (tensor product vs recursive doubling vs exceptional) is primary; Metric Signature (gamma patterns) is secondary, controlling only zero-divisor presence in CD family. This orthogonal decomposition explains why tensor products cannot be represented as CD algebras: they occupy distinct positions in construction-space that no signature variation can bridge. The taxonomy is universal across all dimensions."
+claims = ["C-646", "C-647", "C-648", "C-649", "C-650"]
 confidence = "high"
-verified_date = "2026-02-10"
 sprint = 35
 
 [[insight]]
 id = "I-060"
-insight = "The categorical distinction between tensor products and recursive doubling algebras (Phase 9 tessarines != CD) extends to ALL composition algebra families via the two-axis taxonomy. Construction method universally determines commutativity: tensor products 100% commutative, CD algebras 0% commutative (dim >= 4), exceptional algebras 100% commutative. This is independent of metric signature, dimension, or any other parameter. The universal pattern suggests deep structural principle about how conjugation asymmetry in recursive doubling breaks commutativity at the foundation of the algebra."
-supporting_evidence = ["C-649", "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs (test_taxonomy_phase9_distinction_extended, test_taxonomy_axis1_*, test_taxonomy_categorical_distinction_*)"]
-related_claims = ["C-647", "C-649"]
+title = "Universal Commutativity Pattern Across All Composition Algebra Families"
+date = "2026-02-10"
+status = "verified"
+summary = "The categorical distinction between tensor products and recursive doubling algebras (Phase 9 tessarines != CD) extends to ALL composition algebra families via the two-axis taxonomy. Construction method universally determines commutativity: tensor products 100% commutative, CD algebras 0% commutative (dim >= 4), exceptional algebras 100% commutative. This is independent of metric signature, dimension, or any other parameter. The universal pattern suggests deep structural principle about how conjugation asymmetry in recursive doubling breaks commutativity at the foundation of the algebra."
+claims = ["C-647", "C-649"]
 confidence = "high"
-verified_date = "2026-02-10"
 sprint = 35
 
 [[insight]]
@@ -577,18 +587,6 @@ phase = "Phase 1 Week 4"
 sprint = 36
 
 [[insight]]
-id = "I-066"
-title = "Neural Initialization Escapes Associator Basin in Pentagon Optimization"
-insight = "The algebraic associator tensor m_3 is a local minimum in the 65536-dimensional correction tensor space: coordinate descent from the associator achieves only 0.23% violation reduction (37/2500 accepted steps, converged=true). A Burn-trained MLP (42k params) that learns k-averaged associator targets achieves 78% reduction by filling the dense 65536-entry space, providing a fundamentally different starting point. This demonstrates that the A-infinity correction problem has a rugged landscape where the sparse algebraic ansatz (97.2% zeros) is trapped, but dense neural predictions access lower-violation regions. The correction tensor perturbation robustness (10.5% violation increase at 5% noise) suggests the neural solution is structurally stable, not an artifact of overfitting."
-supporting_evidence = ["C-671", "C-672", "C-673", "C-674", "data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml"]
-related_claims = ["C-671", "C-672", "C-673"]
-experimental_support = ["E-029", "E-033"]
-confidence = "high"
-verified_date = "2026-02-12"
-phase = "Phase 3"
-sprint = 40
-
-[[insight]]
 id = "I-065"
 title = "Cross-Thesis Non-Monotonic Coupling Reveals Optimal Frustration Regime"
 insight = "TX-1 (frustration-modulated collision dynamics) reveals non-monotonic dependence: maximum gamma shift occurs at moderate alpha=0.5 (delta_gamma=0.19), while high alpha values (10-50) produce near-zero shifts. This suggests an optimal frustration coupling regime where microscopic algebraic structure most effectively modulates macroscopic dynamics. The non-monotonicity may arise from noise saturation: beyond a threshold, all sites have high enough noise that relative differences vanish. Combined with TX-2 (viscosity-to-filtration loop showing positive latency-radius correlation) and thesis2-3D (10.88% shear thickening at alpha=100), the cross-thesis experiments establish that algebraic frustration modulates physics through at least three independent channels (collision noise, viscosity field, filtration spectrum) with different optimal coupling strengths."
@@ -599,6 +597,18 @@ confidence = "high"
 verified_date = "2026-02-12"
 phase = "Phase 2 Week 3"
 sprint = 39
+
+[[insight]]
+id = "I-066"
+title = "Neural Initialization Escapes Associator Basin in Pentagon Optimization"
+insight = "The algebraic associator tensor m_3 is a local minimum in the 65536-dimensional correction tensor space: coordinate descent from the associator achieves only 0.23% violation reduction (37/2500 accepted steps, converged=true). A Burn-trained MLP (42k params) that learns k-averaged associator targets achieves 78% reduction by filling the dense 65536-entry space, providing a fundamentally different starting point. This demonstrates that the A-infinity correction problem has a rugged landscape where the sparse algebraic ansatz (97.2% zeros) is trapped, but dense neural predictions access lower-violation regions. The correction tensor perturbation robustness (10.5% violation increase at 5% noise) suggests the neural solution is structurally stable, not an artifact of overfitting."
+supporting_evidence = ["C-671", "C-672", "C-673", "C-674", "data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml"]
+related_claims = ["C-671", "C-672", "C-673"]
+experimental_support = ["E-029", "E-033"]
+confidence = "high"
+verified_date = "2026-02-12"
+phase = "Phase 3"
+sprint = 40
 
 [[insight]]
 id = "I-067"
@@ -743,22 +753,6 @@ date = "2026-02-17"
 sprint = 44
 
 [[insight]]
-id = "I-076"
-title = "Lorentzian vs Urbach tails determine optical gap finder reliability"
-body = """The optical_gap_ev() method finds where the absorption coefficient alpha exceeds a threshold, starting from the transparent-window minimum. This two-pass algorithm correctly handles materials with phonon absorption at low energy.
-
-However, the Lorentz oscillator model has a fundamental limitation: alpha ~ omega^2 far from resonance (Lorentzian tail), while real semiconductors follow alpha ~ exp(-E_0/E) (Urbach tail) below the gap. The Lorentzian tail decays as 1/omega^2 -- much more slowly than the exponential Urbach tail.
-
-Consequence: for broad oscillators (gamma/omega_0 > 0.1), the minimum alpha can be 10^4-10^5 m^-1, meaning no transparent window exists below standard thresholds (100-1000 m^-1). The gap finder correctly returns None in this case.
-
-For materials where the Lorentz model is a poor representation of the absorption edge (WO3 gamma=0.8 eV, CaWO4 gamma=1.0 eV), the threshold must be set above the transparent-window minimum (e.g., 1e5 m^-1). The resulting 'gap' energy corresponds to the onset of significant Lorentz tail absorption, not the true crystallographic band gap.
-
-Takeaway: optical_gap_ev() is reliable for weak oscillators (S < 1) or narrow resonances (gamma/omega_0 < 0.01), and for order-of-magnitude gap estimation at appropriate thresholds for broader models."""
-related_claims = ["C-722", "C-723"]
-date = "2026-02-17"
-sprint = 44
-
-[[insight]]
 id = "I-075"
 title = "Matsubara frequencies bridge optical spectroscopy to Casimir force calculations"
 body = """The Lifshitz formula for Casimir free energy at temperature T is a sum over discrete imaginary frequencies (Matsubara frequencies): xi_n = 2*pi*n*k_B*T/hbar.
@@ -774,6 +768,22 @@ This has profound implications for optical database design:
 
 The Hagen-Rubens relation R ~ 1 - 2*sqrt(2*omega*eps_0/sigma_dc) provides the extrapolation below the first Matsubara frequency, bridging DC conductivity measurements to the n=0 zero-mode. Our test confirms <5% agreement between HR and full model at 5 meV for gold."""
 related_claims = ["C-718", "C-719"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-076"
+title = "Lorentzian vs Urbach tails determine optical gap finder reliability"
+body = """The optical_gap_ev() method finds where the absorption coefficient alpha exceeds a threshold, starting from the transparent-window minimum. This two-pass algorithm correctly handles materials with phonon absorption at low energy.
+
+However, the Lorentz oscillator model has a fundamental limitation: alpha ~ omega^2 far from resonance (Lorentzian tail), while real semiconductors follow alpha ~ exp(-E_0/E) (Urbach tail) below the gap. The Lorentzian tail decays as 1/omega^2 -- much more slowly than the exponential Urbach tail.
+
+Consequence: for broad oscillators (gamma/omega_0 > 0.1), the minimum alpha can be 10^4-10^5 m^-1, meaning no transparent window exists below standard thresholds (100-1000 m^-1). The gap finder correctly returns None in this case.
+
+For materials where the Lorentz model is a poor representation of the absorption edge (WO3 gamma=0.8 eV, CaWO4 gamma=1.0 eV), the threshold must be set above the transparent-window minimum (e.g., 1e5 m^-1). The resulting 'gap' energy corresponds to the onset of significant Lorentz tail absorption, not the true crystallographic band gap.
+
+Takeaway: optical_gap_ev() is reliable for weak oscillators (S < 1) or narrow resonances (gamma/omega_0 < 0.01), and for order-of-magnitude gap estimation at appropriate thresholds for broader models."""
+related_claims = ["C-722", "C-723"]
 date = "2026-02-17"
 sprint = 44
 
@@ -1026,7 +1036,7 @@ date = "2026-02-17"
 sprint = 44
 
 [[insight]]
-id = "I-042"
+id = "I-091"
 title = "Discovery of Topological Entropy Locking (TEL)"
 date = "2026-02-17"
 status = "Verified"
@@ -1034,3 +1044,4 @@ summary = "Fluid flow in non-Newtonian gravitational potentials exhibits station
 claims = ["C-756"]
 confidence = "high"
 phase = "simulation"
+
