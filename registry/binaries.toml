@@ -536,3 +536,45 @@ description = "Demonstration of E-027 frustration-viscosity experiment grounded 
 name = "demo-optical-titanates"
 crate = "gororoba_cli"
 description = "Optical database and titanate material families demo: Rakic metals, C-418 gap materials, titanates, TCOs, extended Drude, falsifiable theses"
+
+[[binary]]
+name = "wavelet-bridging-sweep"
+crate = "gororoba_cli"
+description = "Thesis 1: Haar DWT bridging accuracy sweep comparing plain hard-threshold vs negative-d reservoir on forced-diffusion surrogate"
+experiment = "E-039"
+status = "planned"
+
+[[binary]]
+name = "meltdown-gating-sweep"
+crate = "gororoba_cli"
+description = "Thesis 2: Adaptive meltdown gating p95 concurrency reduction vs fixed-eps baseline on forced-diffusion surrogate"
+experiment = "E-040"
+status = "planned"
+
+[[binary]]
+name = "wavelet-acf-calibration"
+crate = "gororoba_cli"
+description = "Thesis 3: Autocorrelation function of unresolved wavelet energy -- single-exponential fit and kappa calibration"
+experiment = "E-041"
+status = "planned"
+
+[[binary]]
+name = "chsh-wavelet-compression"
+crate = "gororoba_cli"
+description = "Thesis 4: CHSH Bell parameter preservation under Haar wavelet compression of coincidence time series (software simulation)"
+experiment = "E-042"
+status = "planned"
+
+[[binary]]
+name = "casimir-plate-compare"
+crate = "gororoba_cli"
+description = "Casimir force comparison for Si/Ge/SiO2 symmetric plate pairs using correct Lifshitz formula with GL quadrature (Sprint 45)"
+experiment = "E-043"
+status = "active"
+
+[[binary]]
+name = "casimir-drude-plasma"
+crate = "gororoba_cli"
+description = "Casimir Drude vs plasma model discrepancy for Au/Ag/Cu metallic plates: n=0 TE contribution controversy (Sprint 45)"
+experiment = "E-044"
+status = "active"

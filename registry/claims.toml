@@ -11183,3 +11183,553 @@ what_would_verify_refute = "VERIFIED: At 0.1 eV, Smith (c=-0.8) has less negativ
 confidence = "high"
 phase = "materials"
 sprint = 43
+
+[[claim]]
+id = "C-703"
+statement = "Negative-d reservoir reduces terminal RelErr >= 5% at matched mean concurrency over (rho in {0.2..2.0}, eps in {1e-3..3e-2}) sweep on forced-diffusion surrogate."
+where_stated = "`crates/gororoba_cli/src/bin/wavelet_bridging_sweep.rs`, output: `data/wavelet_bridging/results.toml`"
+status = "Proposed"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFY: median improvement across all (rho, eps) pairs >= 5%. REFUTE: any run of wavelet-bridging-sweep where median(bridge_err improvement pct) < 5% across the full (rho, eps) grid."
+confidence = "medium"
+phase = "spectral"
+sprint = 43
+
+[[claim]]
+id = "C-704"
+statement = "Meltdown gating reduces p95 concurrency >= 10% vs fixed-eps baseline on the forced-diffusion surrogate across rho in {0.5, 1.0, 1.5, 2.0}. RelErr between adaptive and fixed surrogates is informational (not a PASS criterion) because the two models operate in fundamentally different compression regimes."
+where_stated = "`crates/gororoba_cli/src/bin/meltdown_gating_sweep.rs`, output: `data/meltdown_gating/results.toml`"
+status = "Proposed"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFY: all rho values show p95 reduction >= 10% in meltdown-gating-sweep output. REFUTE: any rho where reduction_pct < 10%."
+confidence = "medium"
+phase = "spectral"
+sprint = 43
+
+[[claim]]
+id = "C-705"
+statement = "Unresolved wavelet energy has single-exponential ACF with R2 >= 0.50 for eps >= 1e-2 (concentrated-spectral regime) on the forced-diffusion surrogate. Small eps (1e-3, 3e-3) produce wide-band multi-exponential residuals (low R2, reported as INFO only); concentrated residuals at eps >= 1e-2 show clear single-exponential decay."
+where_stated = "`crates/gororoba_cli/src/bin/wavelet_acf_calibration.rs`, output: `data/wavelet_acf/results.toml`"
+status = "Proposed"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFY: wavelet-acf-calibration reports R2 >= 0.50 for eps in {1e-2, 3e-2}. REFUTE: any eps >= 1e-2 where log-linear regression R2 < 0.50."
+confidence = "medium"
+phase = "spectral"
+sprint = 43
+
+[[claim]]
+id = "C-706"
+statement = "CHSH Bell parameter |S| > 2 is preserved under >= 20x Haar wavelet compression of coincidence time series when coarsest scaling coefficient is retained (software simulation). The Haar DWT scaling coefficient encodes the signal total exactly (c[0] = sum/sqrt(n)), so the correlation E(a,b) -- computed from aggregated counts -- is invariant under compression and delta_S = 0 exactly."
+where_stated = "`crates/gororoba_cli/src/bin/chsh_wavelet_compression.rs`, output: `data/chsh_wavelet/results.toml`"
+status = "Proposed"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFY: chsh-wavelet-compression reports |S_compressed| > 2.0 with >= 20x compression ratio. REFUTE: |S_compressed| <= 2.0 after applying coarsest-coefficient retention, or S_raw <= 2.0 indicating the measurement does not demonstrate Bell violation."
+confidence = "medium"
+phase = "spectral"
+sprint = 43
+
+[[claim]]
+id = "C-707"
+statement = "Stoichiometric WO3 is a wide-gap semiconductor (Eg ~2.6-3.0 eV) with no Drude free-carrier contribution, modeled by 5 Lorentz oscillators (3 phonon modes + 2 UV transitions) and eps_inf=4.5."
+where_stated = "`crates/materials_core/src/optical_database.rs` (wo3_optical, test_wo3_no_drude)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: wo3_optical().drude.is_none() and 5 oscillators with eps_inf=4.5. REFUTE: any evidence of free carriers in stoichiometric WO3 at room temperature."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-708"
+statement = "Oxygen-deficient WO3-x (x~0.1) is a plasmonic conductor with omega_p=1.07 eV derived from carrier density n~1e21 cm^-3 and effective mass m*=1.2*m_e via omega_p = sqrt(n*e^2/(eps_0*m*))."
+where_stated = "`crates/materials_core/src/optical_database.rs` (wo3_x_optical, test_wo3_x_plasmonic)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Drude parameters omega_p=1.07 eV, gamma=0.20 eV, eps_inf=5.88 match Garcia et al. (2011) carrier-density derivation. REFUTE: experimental omega_p differing by >30% from 1.07 eV at x~0.1."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-709"
+statement = "Cesium tungsten bronze Cs0.33WO3 has anisotropic Drude response: c-axis omega_p=4.664 eV, gamma=0.217 eV, eps_inf=6.3; a-b plane omega_p=3.180 eV, gamma=0.335 eV, eps_inf=5.8 (Lynch & Hunter 1991)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (cs_wo3_uniaxial, test_cs_wo3_uniaxial_anisotropy)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: UniaxialOptical stores parallel/perpendicular DrudeLorentzParams with correct Lynch & Hunter values; par.omega_p > perp.omega_p confirmed. REFUTE: published Cs0.33WO3 optical constants showing isotropic Drude weight."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-710"
+statement = "UniaxialOptical struct provides non-breaking tensor permittivity infrastructure with polycrystalline averaging formula eps_avg = (eps_par + 2*eps_perp)/3 for scalar Casimir calculations on randomly-oriented grains."
+where_stated = "`crates/materials_core/src/optical_database.rs` (UniaxialOptical impl, test_cs_wo3_polycrystalline_average)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: polycrystalline_average() matches (par + 2*perp)/3 formula to machine precision. REFUTE: the 1:2 weighting being incorrect for non-hexagonal crystal systems."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-711"
+statement = "CaWO4 (calcium tungstate, scheelite) is a wide-gap dielectric with band gap ~5.0 eV, no Drude carriers, transparent at 2 eV (eps.im < 0.5) and absorbing at 5 eV."
+where_stated = "`crates/materials_core/src/optical_database.rs` (cawo4_optical, test_cawo4_wide_gap_dielectric)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: No Drude, eps.re > 1 and eps.im < 0.5 at 2 eV, eps.im > 0.5 at 5 eV. REFUTE: experimental evidence of free carriers or metallic behavior in undoped CaWO4."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-712"
+statement = "PbWO4 (lead tungstate) is a fast scintillator crystal (CMS ECAL) with band gap ~4.2 eV, no Drude carriers, eps_inf=4.8."
+where_stated = "`crates/materials_core/src/optical_database.rs` (pbwo4_optical, test_pbwo4_scintillator)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: No Drude, eps_inf=4.8 matching Nikl et al. (2000). REFUTE: experimental PbWO4 eps_inf differing by >20% from 4.8."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-713"
+statement = "Optical database expanded from 25 to 30 materials with 5 tungsten oxide family entries (WO3, WO3-x, Cs0.33WO3, CaWO4, PbWO4), all 15 aliases resolving correctly."
+where_stated = "`crates/materials_core/src/optical_database.rs` (list_materials, test_get_tungsten_oxide_materials, test_material_count_sprint44)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: list_materials().len() == 30, all 15 aliases resolve via get_material(). REFUTE: any alias returning None."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-714"
+statement = "DrudeLorentzParams provides 9 derived optical property methods: refractive_index (convention-robust k>=0), reflectivity_normal (Fresnel at normal incidence), loss_function (-Im(1/eps)), optical_conductivity_re/im, skin_depth, absorption_coefficient, dc_conductivity (omega_p^2*eps_0/gamma), and plasma_edge_ev (bisection Re(eps)=0 search). Gold DC conductivity 1e7-1e8 S/m matches experimental 4.1e7 S/m."
+where_stated = "`crates/materials_core/src/optical_database.rs` (DrudeLorentzParams impl, 15 derived property tests)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: 15 tests covering metals/dielectrics, frequency ranges, sign conventions, ranking, sum rules. Gold sigma_dc in [1e7, 1e8] S/m. REFUTE: experimental optical constants differing by >50% from model predictions."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-715"
+statement = "UniaxialOptical provides 5 anisotropy-specific methods: birefringence (|n_par - n_perp|), dichroism (|k_par - k_perp|), anisotropy_ratio (eps_par/eps_perp), reflectivity_anisotropy (R_par - R_perp), polycrystalline_reflectivity ((R_par + 2*R_perp)/3). Cs0.33WO3 birefringence = 0.0035 at 0.5 eV confirms measurable anisotropy from Drude weight difference."
+where_stated = "`crates/materials_core/src/optical_database.rs` (UniaxialOptical impl, 6 anisotropy tests)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: birefringence > 0.001 at 0.5 eV, R_par > R_perp (stronger Drude along c-axis), polycrystalline average bounded between extremes. REFUTE: single-crystal Cs0.33WO3 showing isotropic optical response."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-716"
+statement = "Sign convention for Lorentz oscillator Im(eps) handled robustly: the +i*gamma*omega denominator convention (engineering) gives Im(eps)<0 in absorption bands. Derived properties use |Im(eps)| and |Im(sqrt(eps))| to produce physically meaningful non-negative quantities (k, alpha, sigma_1) regardless of convention choice. Verified across 7 materials at 4 frequency points."
+where_stated = "`crates/materials_core/src/optical_database.rs` (refractive_index, loss_function, optical_conductivity_re, test_reflectivity_sum_rule)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: reflectivity in [0,1] for all 7 materials x 4 frequencies, sigma_1 > 0 for metals, alpha > 0 for absorbers, k >= 0 always. REFUTE: pathological material where abs(Im(eps)) is not physically correct."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-717"
+statement = "Carrier density estimation from Drude parameters: n = eps_0*m**omega_p^2/e^2. Gold (m*=1.0, omega_p=8.45 eV) gives n ~ 5.9e28 m^-3, consistent with known gold carrier density 5.9e22 cm^-3. WO3-x (m*=1.2, omega_p=1.07 eV) gives n ~ 1e27 m^-3 consistent with x~0.03 oxygen vacancy doping."
+where_stated = "`crates/materials_core/src/optical_database.rs` (carrier_density, test_gold_carrier_density, test_wo3x_carrier_density)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Gold n in [1e28, 1e29] m^-3, WO3-x n in [1e26, 1e28] m^-3. REFUTE: Hall effect measurements showing >10x disagreement with Drude-derived carrier density."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-718"
+statement = "Matsubara frequency infrastructure for finite-temperature Casimir calculations: xi_n = 2*pi*n*k_B*T/hbar with xi_1 = 2.47e14 rad/s at 300K (0.163 eV). epsilon_at_matsubara() evaluates eps(i*xi_n) for Lifshitz formula summation. Gold eps(i*xi) monotonically decreasing with n (Drude divergence at n=0), silica eps(i*xi) bounded and modest."
+where_stated = "`crates/materials_core/src/optical_database.rs` (matsubara_frequencies, epsilon_at_matsubara, 5 Matsubara tests)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: xi_1 in [2e14, 3e14] at 300K, spacing doubles at 600K, eps(i*xi) > 1 and monotonically decreasing for gold. REFUTE: non-analytic continuation of Lorentz model to imaginary axis."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-719"
+statement = "Hagen-Rubens reflectivity R ~ 1 - 2*sqrt(2*omega*eps_0/sigma_dc) agrees with full Drude-Lorentz model to within 5% at 5 meV for gold. This validates the low-frequency metallic limit used for Casimir extrapolation below the optical data range."
+where_stated = "`crates/materials_core/src/optical_database.rs` (hagen_rubens_reflectivity, test_hagen_rubens_gold, test_hagen_rubens_vs_full_model)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: R_HR > 0.95 at 0.01 eV, |R_HR - R_full| < 0.05 at 0.005 eV. REFUTE: anomalous skin effect corrections making HR approximation fail at these frequencies for gold."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-720"
+statement = "Casimir energy density between parallel plates via Lifshitz formula with Matsubara summation. casimir_energy_density() implements the finite-temperature Lifshitz formula with n_matsubara Matsubara frequencies and n_gauss Gauss-Legendre quadrature for transverse momentum integration. Gold-gold at 100 nm, 300K gives attractive energy of order 1e-4 to 1e-2 J/m^2."
+where_stated = "`crates/materials_core/src/optical_database.rs` (casimir_energy_density, casimir_force_density, test_casimir_gold_gold_attractive, test_casimir_distance_scaling)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: E < 0 (attractive), |E| increases with decreasing separation, force = -dE/dd > 0 (pulls plates together). REFUTE: experimental Casimir force measurements disagreeing by >50% with Lifshitz prediction."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-721"
+statement = "Casimir ideal energy E_ideal = -pi^2*hbar*c/(720*d^3) gives 4.33e-7 J/m^2 at d=100 nm (T=0 perfect conductors). The material correction factor eta = E_actual/E_ideal captures finite conductivity and temperature effects. At T=300K with gold plates, eta can exceed 1.0 due to thermal contributions from low-n Matsubara terms."
+where_stated = "`crates/materials_core/src/optical_database.rs` (casimir_energy_ideal, casimir_eta, test_casimir_energy_ideal, test_casimir_gold_gold_eta)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: E_ideal in [1e-8, 1e-5] at 100 nm, eta in [0.1, 10]. REFUTE: eta consistently > 10 indicating incorrect normalization."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-722"
+statement = "Two-pass optical gap finder: optical_gap_ev() uses a minimum-finding first pass followed by upward threshold scan. This correctly handles materials with phonon absorption at low energy: it finds the absorption minimum in the transparent window between phonon and interband regions, then detects the band-edge onset above that minimum. Returns None when no transparent window exists (min alpha > threshold) or for metals."
+where_stated = "`crates/materials_core/src/optical_database.rs` (optical_gap_ev, 6 test_optical_gap_* tests)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: WO3 gap detected at 1e5 threshold (min alpha ~4e4), CaWO4 at 1e5, metal returns None, no-transparent-window returns None. REFUTE: materials where two-pass gives wrong ordering (band edge found below phonon region)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-723"
+statement = "Lorentz oscillator absorption tails follow alpha ~ omega^2 * S * gamma / (n * omega_0^2 * c) at frequencies well below resonance. For WO3 (S=6, gamma=0.8 eV, omega_0=3.5 eV), this tail keeps alpha > 3.9e4 m^-1 across the entire 0.1-15 eV range. The Lorentz model fundamentally cannot produce the sharp absorption cutoff seen in real band edges (Urbach tail vs Lorentzian tail)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (test_optical_gap_wo3, test_optical_gap_no_transparent_window)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: WO3 min alpha ~ 4e4, CaWO4 min alpha ~ 1.7e4. REFUTE: Lorentz model with S>1 and gamma/omega_0 > 0.1 producing alpha < 100 m^-1 at any frequency."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-724"
+statement = "Effective electron count N_eff(omega_c) from partial f-sum rule: N_eff = (2*m_e)/(pi*e^2) * integral_0^omega_c sigma_1(omega) domega. For gold at 30 eV cutoff, N_eff > 1e27 m^-3 (approaching the known carrier density ~5.9e28 m^-3). N_eff is monotonically increasing with cutoff energy as more interband transitions are included."
+where_stated = "`crates/materials_core/src/optical_database.rs` (n_eff, f_sum_ratio, test_n_eff_gold_positive, test_n_eff_monotonic, test_f_sum_ratio_gold)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: N_eff > 1e27 at 30 eV, monotonic in cutoff, f-sum ratio > 0.5 at 50 eV. REFUTE: negative N_eff (unphysical) or N_eff decreasing with cutoff (violates sum rule)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-725"
+statement = "Loss function spectral weight and plasmon identification: loss_spectral_weight() integrates omega*L(omega) to recover omega_p^2 via the loss function sum rule. plasmon_energy_ev() finds the bulk plasmon from the loss function peak, and screened_plasma_ev() finds the Re[eps]=0 crossing. For aluminum (nearly free-electron), plasmon and screened plasma energies agree within 3 eV."
+where_stated = "`crates/materials_core/src/optical_database.rs` (loss_spectral_weight, plasmon_energy_ev, screened_plasma_ev, test_loss_function_peak_gold, test_plasmon_vs_screened_plasma)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Gold plasmon 3-12 eV, Al plasmon/screened plasma within 3 eV. REFUTE: loss function peak outside range, or plasmon/screened plasma disagreeing by > 5 eV for free-electron metal."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-726"
+statement = "Static dielectric constant eps_static = eps_inf + sum(S_j) for insulators (diverges for metals). Spectral weight partitioning: total weight = intraband (Drude) + interband (Lorentz) with both positive and summing to total f-sum. For gold, interband fraction is between 1% and 99% of total. Reststrahlen bands: strong phonon oscillators (S ~ 1) make Re[eps] < 0 above resonance, as confirmed by silica screened plasma crossing at < 1 eV."
+where_stated = "`crates/materials_core/src/optical_database.rs` (static_dielectric, intraband_weight, interband_weight, test_static_dielectric_silica, test_spectral_weight_partitioning, test_screened_plasma_dielectric_reststrahlen)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: silica eps_static in [2, 10], gold has no static eps, weight partitioning consistent. REFUTE: negative intraband or interband weight."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-727"
+statement = "Kramers-Kronig self-consistency validation via subtracted principal-value integral. The method kramers_kronig_error() reconstructs eps_1(omega) from eps_2(omega) using the KK relation with pole subtraction and analytic PV correction, then returns RMS relative error vs the model. The baseline is eps_inf (not 1.0) because eps_inf represents high-energy spectral weight above the cutoff. For Drude-Lorentz models (causal by construction), the error measures numerical quadrature accuracy. Gold and silica both achieve < 50% RMS error at 50 eV cutoff with 20k integration steps, improving with finer grids."
+where_stated = "`crates/materials_core/src/optical_database.rs` (kramers_kronig_error, test_kk_consistency_gold, test_kk_consistency_silica, test_kk_consistency_improves_with_resolution)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Gold KK error < 50%, silica KK error < 50%, error decreases with resolution. REFUTE: KK error increasing with resolution (implementation bug) or error > 100% (pole handling failure)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-728"
+statement = "Tauc plot analysis for band-gap spectroscopy: tauc_gap_ev(exponent) extracts direct (exponent=2) and indirect (exponent=0.5) band gaps by linear regression on the steepest segment of (alpha*hv)^exponent vs hv. CaWO4 yields a Tauc direct gap in the UV range (1-10 eV). Metals return None (correct: no gap). WO3 yields both direct and indirect gaps. Penn model gap E_g_Penn = omega_p_eff / sqrt(eps_static - 1) agrees with the single-oscillator prediction within 0.1 eV for a simple test case (E_g = 5/sqrt(2) = 3.536 eV)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (tauc_gap_ev, penn_gap_ev, test_tauc_direct_gap_cawo4, test_tauc_metal_none, test_tauc_direct_vs_indirect, test_penn_gap_consistency)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: CaWO4 direct gap 1-10 eV, metals None, WO3 both gaps detected, Penn gap 3.536 eV for simple osc. REFUTE: negative Tauc gap (unphysical) or Penn gap for metals (should be None)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-729"
+statement = "Band-gap spectroscopy suite complete: Urbach energy (effective exponential tail parameter, caveat: Lorentz tails are algebraic), absorption onset (energy where alpha reaches fraction of maximum), and JDOS proxy (omega * eps_2, peaks near Lorentz resonances). Urbach energy returns None for metals, positive finite for dielectrics with absorption. JDOS is non-negative everywhere and peaks near oscillator resonances (silica: JDOS at 10.4 eV >> JDOS at 0.5 eV). 14 new tests bring optical database to 133 total tests."
+where_stated = "`crates/materials_core/src/optical_database.rs` (urbach_energy_ev, absorption_onset_ev, joint_density_of_states, 14 Part 7 tests)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Urbach None for metals, JDOS >= 0, JDOS peak near resonance, onset < 10 eV for WO3. REFUTE: negative JDOS (impossible since eps_2 >= 0) or Urbach returning a value for metals."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-730"
+statement = "Temperature-dependent Drude-Lorentz via Bose-Einstein phonon broadening: at_temperature(T, debye_t_k) modifies oscillator damping as gamma_j(T) = gamma_j(0) * coth(omega_0j / (2*k_B*T)) for phonon oscillators, and gamma_Drude(T) = gamma_0 * (1 + (T/T_Debye)^2) via Bloch-Gruneisen for the free-electron Drude term. Oscillator strengths and frequencies are preserved (broadening only). At T -> 0 K, coth -> 1 and gamma_j -> gamma_j(0) (correct low-T limit). At 300 K, Drude damping increases by factor (1 + (300/T_D)^2), which for gold (T_D=170 K) gives ~4.1x broadening. Silica at 600 K has higher Im[eps] than at 300 K across all frequencies (more absorptive when hot)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (at_temperature, test_thermal_broadening_increases_damping, test_thermal_broadening_preserves_oscillator_strength, test_thermal_broadening_low_t_limit, test_thermal_broadening_drude_bloch_gruneisen, test_hot_silica_more_absorptive)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: damping increases with T, strengths preserved, low-T limit gives original, BG ratio matches (1+(T/T_D)^2). REFUTE: oscillator strength changing with T (non-physical) or damping decreasing with T."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-731"
+statement = "Effective medium theory (EMT) composite wrappers on DrudeLorentzParams: maxwell_garnett_mix() and bruggeman_mix() compute effective dielectric functions for two-component composites. MG limits: f=0 gives host, f=1 gives inclusion (within numerical precision). Bruggeman is symmetric under component exchange: bruggeman(A, B, f) = bruggeman(B, A, 1-f). Both methods delegate to the existing crate::effective_medium module, providing a fluent API on DrudeLorentzParams without code duplication."
+where_stated = "`crates/materials_core/src/optical_database.rs` (maxwell_garnett_mix, bruggeman_mix, test_maxwell_garnett_limits, test_bruggeman_symmetric, test_bruggeman_interpolates)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: MG f=0 matches host, MG f=1 matches inclusion, Bruggeman symmetric. REFUTE: MG violating Hashin-Shtrikman bounds or Bruggeman asymmetric under exchange."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-732"
+statement = "Derived optical quantities: optical_effective_mass() extracts m*/m_e from Drude omega_p and carrier density via m* = n*e^2/(eps_0*omega_p^2*m_e), returning None for dielectrics. dielectric_contrast() computes (eps_1 - eps_2)/(eps_1 + eps_2), appearing in Casimir proximity corrections and surface plasmon dispersion. plasma_screening_ratio() gives omega_p_bare/screened_plasma_ev -- for the eps_inf=1 parameterization with explicit Lorentz oscillators, this ratio is < 1 because interband tails above resonance push the zero-crossing above the bare Drude frequency. Gold screening ratio ~ 0.85. 14 new Part 8 tests bring optical database to 147 total tests, 3673 workspace tests."
+where_stated = "`crates/materials_core/src/optical_database.rs` (optical_effective_mass, dielectric_contrast, plasma_screening_ratio, 14 Part 8 tests)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Gold m* ~ 1 m_e, dielectrics return None for mass, contrast of material with itself ~ 0, screening ratio 0.5-1.0 for gold. REFUTE: negative effective mass (unphysical) or screening ratio > 5 (model breakdown)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-733"
+statement = "Group velocity dispersion (GVD) from Drude-Lorentz models: gvd_beta2() computes d^2k/domega^2 = (1/c)*d(n_g)/domega via finite differences on the group refractive index. Silica at 3 eV (visible) has positive beta_2 (normal dispersion, consistent with known silica dispersion). GVD varies with frequency across the 1-5 eV range. dispersion_regime() classifies as normal (+1), anomalous (-1), or zero (0). zero_dispersion_omega() searches for beta_2=0 crossing via linear interpolation. Conversion to ultrafast units: gvd_fs2_per_mm() = beta_2 * 1e27."
+where_stated = "`crates/materials_core/src/optical_database.rs` (gvd_beta2, gvd_fs2_per_mm, dispersion_regime, zero_dispersion_omega, test_gvd_silica_normal_at_visible, test_gvd_fs2_mm_conversion, test_gvd_varies_with_frequency, test_dispersion_regime_metal_anomalous, test_zero_dispersion_returns_none_for_narrow_range)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Silica positive beta_2 at 3 eV, GVD varies with freq, conversion factor 1e27. REFUTE: silica anomalous at visible (wrong) or beta_2 = 0 everywhere (implementation bug)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-734"
+statement = "Third-order nonlinear susceptibility from Miller's rule: chi3_miller_estimate() computes chi^(3) ~ delta * |chi^(1)|^4 where delta = 4.52e-24 m^2/V^2 (Miller delta). Always positive. Metals have chi^(3) >> dielectrics (100x+ for gold vs silica at 2 eV) because |chi^(1)| = |eps-1| is much larger for metals. Kerr n_2 = 3*chi3/(4*eps_0*c*n^2); for silica at 1.55 eV, n_2 is within 1e-25 to 1e-15 m^2/W (order-of-magnitude agreement with experimental ~2.2e-20 m^2/W). The proportionality between n_2 and chi3/(n^2) is verified to <1e-10 relative error."
+where_stated = "`crates/materials_core/src/optical_database.rs` (chi3_miller_estimate, kerr_n2_estimate, test_chi3_miller_positive, test_chi3_metal_larger_than_dielectric, test_kerr_n2_silica_order_of_magnitude, test_kerr_n2_proportional_to_chi3)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: chi3 positive, gold >> silica, silica n_2 in 1e-25..1e-15, n_2-chi3 proportionality. REFUTE: negative chi3 (impossible from |chi1|^4) or n_2 < 0 (unphysical)."
+confidence = "medium"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-735"
+statement = "Two-photon absorption from Sheik-Bahae model: beta_tpa_estimate() uses beta = K*sqrt(E_p)*F_2(x)/(n^2*E_g^3) where x = 2*hv/E_g, E_p = 21 eV (Kane energy), F_2(x) = (2x-1)^(3/2)/(2x)^5 for x > 0.5. Returns None for metals (no Tauc gap), and None below two-photon threshold (2*hv < E_g). K = 1940 cm/GW = 1.94e-8 m/W. The model gives order-of-magnitude estimates for wide-gap materials; accuracy is limited by the Lorentz tail issue in Tauc gap extraction. 12 new Part 9 tests bring optical database to 159 total tests, 3685 workspace tests."
+where_stated = "`crates/materials_core/src/optical_database.rs` (beta_tpa_estimate, test_beta_tpa_metal_none, test_beta_tpa_below_threshold_none, test_beta_tpa_above_threshold_positive)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: metals None, below-threshold None, above-threshold positive. REFUTE: negative beta (impossible from F_2 formula) or TPA active below half-gap energy."
+confidence = "medium"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-736"
+statement = "Surface plasmon polariton (SPP) dispersion from Drude-Lorentz: spp_wavevector() computes k_spp = (omega/c)*sqrt(eps_m*eps_d/(eps_m+eps_d)). For gold at 2 eV in vacuum, Re[k_spp] > omega/c (confined beyond light line). Im[k_spp] > 0 (lossy propagation). spp_propagation_length() = 1/(2*Im[k_spp]) gives ~1-100 um for gold at 1.96 eV. Higher eps_d (glass vs vacuum) confines the SPP more to the metal surface, reducing propagation length."
+where_stated = "`crates/materials_core/src/optical_database.rs` (spp_wavevector, spp_propagation_length, test_spp_wavevector_gold_larger_than_light_line, test_spp_wavevector_has_imaginary_part, test_spp_propagation_length_gold, test_spp_higher_eps_d_longer_propagation)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: k_spp > k_light, Im[k_spp] > 0, L_spp in 0.1-1000 um, glass shorter than vacuum. REFUTE: k_spp < k_light (SPP below light line) or L_spp < 0 (unphysical)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-737"
+statement = "LSPR and evanescent fields: lspr_frequency() finds the Frohlich condition Re[eps_m(omega)] = -2*eps_d for spherical nanoparticles. Gold LSPR at 5.93 eV in our eps_inf=1 DL model (experimental ~2.5 eV requires full d-band). LSPR redshifts in higher-index media (glass vs vacuum). evanescent_decay_length() = c/(omega*sqrt(-Re[eps])) gives 1-10000 nm for metals; returns None for dielectrics with Re[eps] > 0. Dielectrics correctly return None for both LSPR and evanescent decay."
+where_stated = "`crates/materials_core/src/optical_database.rs` (lspr_frequency, evanescent_decay_length, test_lspr_gold_in_vacuum, test_lspr_redshift_with_higher_eps_d, test_lspr_dielectric_none, test_evanescent_decay_length_gold, test_evanescent_decay_dielectric_none)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Gold LSPR 1-10 eV, glass redshift, dielectrics None, evanescent 1nm-10um. REFUTE: LSPR > 15 eV (above scan range) or evanescent decay for dielectric (Re[eps]>0)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-738"
+statement = "Fresnel interface optics from Drude-Lorentz: fresnel_rs() and fresnel_rp() compute complex amplitude reflection coefficients via Snell's law and complex cos(theta_t). At normal incidence (theta=0), |r_s|^2 = |r_p|^2 = reflectivity_normal() (verified to < 1e-10). At grazing incidence (theta~86 deg), R_s and R_p both approach 1. brewster_angle() = atan(n2/n1) returns None for absorbing metals (Im[n] > 1% of Re[n]) and valid angles for dielectrics (silica: 40-70 deg). R_p has a minimum at the Brewster angle, verified less than both normal and steep-angle reflectance. 14 new Part 10 tests bring optical database to 173 total tests, 3699 workspace tests."
+where_stated = "`crates/materials_core/src/optical_database.rs` (fresnel_rs, fresnel_rp, brewster_angle, reflectance_angular, test_fresnel_normal_incidence_matches_reflectivity, test_fresnel_total_internal_reflection, test_brewster_angle_silica, test_brewster_angle_metal_none, test_fresnel_rp_minimum_near_brewster)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Normal matches existing method, grazing R > 0.5, Brewster 40-70 deg for silica, metals None, R_p minimum at Brewster. REFUTE: normal incidence R_s != R_p (symmetry violation) or Brewster for absorbing metal (pseudo-Brewster not implemented)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-739"
+statement = "Gold Rakic 6-oscillator model (gold_rakic_ld): 5 Lorentz oscillators at 0.415, 0.830, 2.969, 4.304, 13.32 eV plus Drude (omega_p_eff=7.87 eV, gamma=0.053 eV) from Rakic et al. Appl. Opt. 37, 5271 (1998). Conversion: S_j = f_j * omega_p^2 / omega_0j^2. Gives LSPR at ~2.6 eV in vacuum (Frohlich condition), matching experimental ~2.5 eV. This is dramatically closer to experiment than the 2-oscillator model (5.93 eV). The low-energy oscillators at 0.415 and 0.830 eV with large S values (~11.4 and ~1.2) capture the d-band contribution that pushes Re[eps] positive at visible frequencies. Database expanded from 30 to 31 materials. 7 new tests, 180 optical tests total, 3706 workspace tests."
+where_stated = "`crates/materials_core/src/optical_database.rs` (gold_rakic_ld, test_gold_rakic_5_oscillators, test_gold_rakic_effective_plasma_frequency, test_gold_rakic_lspr_near_experimental, test_gold_rakic_lspr_closer_to_experiment_than_2osc, test_gold_rakic_metallic_in_visible, test_gold_rakic_database_lookup, test_gold_rakic_reflectivity_high_in_ir)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: LSPR 2.0-3.5 eV, closer to exp than 2-osc, metallic at 2 eV, R > 90% at 1 eV, 5 oscillators. REFUTE: LSPR > 5 eV (insufficient d-band) or R < 50% at 1 eV (model breakdown)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-740"
+statement = "Magneto-optical Voigt tensor and Faraday rotation from Drude-Lorentz: voigt_eps_xy() computes the off-diagonal dielectric tensor element eps_xy = i*omega_c*omega_p^2 / (omega*(omega^2 + i*gamma*omega - omega_c^2)) where omega_c = e*B/(m*) is the cyclotron frequency. Faraday rotation theta_F = omega*Re[eps_xy]/(2*n*c) gives the polarization rotation per unit length. For gold at 1 eV, B=1 T: |eps_xy| ~ 1e-4 (small but nonzero), theta_F ~ 1e3 rad/m. Both scale linearly with B-field for small B. Dielectrics correctly return None (no free carriers). Extended Drude materials extract gamma from ScatteringModel::gamma_at_ev(0.0) for DC scattering rate."
+where_stated = "`crates/materials_core/src/optical_database.rs` (voigt_eps_xy, faraday_rotation, test_voigt_eps_xy_gold_nonzero, test_voigt_eps_xy_proportional_to_b, test_faraday_rotation_gold_nonzero, test_faraday_rotation_dielectric_none)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Gold |eps_xy| > 0 at B > 0, linear in B for small B, Faraday > 0, dielectrics None. REFUTE: eps_xy nonzero for zero B-field (no symmetry breaking) or Faraday rotation for pure dielectric (no free carriers)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-741"
+statement = "Drude transport diagnostics from optical parameters: dc_resistivity() = gamma/(eps_0*omega_p^2) gives bulk resistivity in Ohm*m (gold: ~2.2e-8, literature 2.44e-8). scattering_time() = HBAR_EV_S/gamma gives carrier lifetime (gold: ~1.2e-14 s). carrier_mobility(n) = e*tau/m* estimates Hall mobility (gold at n=5.9e28 m^-3: ~30-50 cm^2/V/s). Resistivity and mobility are self-consistent: rho and 1/(n*e*mu) agree within 20% (exact agreement requires knowing m* independently). All three return None for dielectrics (no Drude term). Extended Drude uses ScatteringModel::gamma_at_ev(0.0)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (dc_resistivity, scattering_time, carrier_mobility, test_dc_resistivity_gold, test_dc_resistivity_dielectric_none, test_scattering_time_gold, test_carrier_mobility_gold, test_carrier_mobility_dielectric_none, test_resistivity_mobility_consistency)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Gold resistivity 1e-9 to 1e-7 Ohm*m, scattering time 1e-15 to 1e-13 s, mobility 1-100 cm^2/V/s, rho*(n*e*mu) within 5x of 1. REFUTE: resistivity < 0 (unphysical) or scattering time > 1e-10 s (too long for metal)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-742"
+statement = "Drude weight D = (pi/2)*omega_p^2*eps_0 quantifies the spectral weight of the free-carrier response: drude_weight() returns D in SI units (C^2/(kg*m^3)). For gold: D ~ 2.5e30, proportional to omega_p^2 (verified: 4x omega_p gives 16x D). plasma_frequency_from_density(n, m_star_ratio) is a static method computing omega_p = sqrt(n*e^2/(eps_0*m_star*m_e)) / EV_TO_RADS in eV, enabling carrier density to plasma frequency conversion. Gold (n=5.9e28/m^3, m*=1): omega_p ~ 9.0 eV (matches Rakic). Dielectrics return None for drude_weight (no free carriers). 15 new Part 11 tests, 202 optical tests total, 3727 workspace tests."
+where_stated = "`crates/materials_core/src/optical_database.rs` (drude_weight, plasma_frequency_from_density, test_drude_weight_gold_positive, test_drude_weight_dielectric_none, test_drude_weight_proportional_to_omega_p_sq, test_plasma_frequency_from_density)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: D > 0 for metals, None for dielectrics, D proportional to omega_p^2, plasma_freq(5.9e28, 1.0) ~ 9 eV. REFUTE: D < 0 (unphysical) or plasma_freq giving negative eV."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-743"
+statement = "Spectroscopic ellipsometry from Drude-Lorentz: psi_delta(omega, theta_i) computes the ellipsometric ratio rho = r_p/r_s = tan(psi)*exp(i*delta) from Fresnel coefficients. At normal incidence, psi = pi/4 (r_s = r_p symmetry). At oblique incidence on metals, delta deviates from 0 (phase shift between p and s polarizations). For dielectrics near the Brewster angle, psi -> 0 (r_p -> 0). Kirchhoff's law emissivity = 1 - R(omega) at normal incidence: metals (gold) have emissivity < 0.2, dielectrics (silica) have emissivity > 0.8 in transparent region. Emissivity + reflectivity = 1 verified to < 1e-12."
+where_stated = "`crates/materials_core/src/optical_database.rs` (psi_delta, emissivity, test_psi_delta_normal_incidence, test_psi_delta_oblique_gold, test_psi_delta_dielectric_brewster, test_emissivity_metal_low, test_emissivity_dielectric_higher, test_emissivity_plus_reflectivity_equals_one)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: psi=pi/4 at normal, delta nonzero for metal at oblique, psi->0 at Brewster, e+R=1. REFUTE: psi > pi/2 (unphysical) or emissivity > 1 (violates energy conservation)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-744"
+statement = "Thermal emission spectroscopy: spectral_emittance(omega, T) = emissivity(omega) * B(omega, T) where B is the Planck function in angular frequency units. Returns 0 at T=0 (no thermal photons), positive at T=300K, and increases with temperature (verified 300K -> 600K). Integrated emissivity eta = integral[e(omega)*B] / integral[B] over a frequency range: gold has lower integrated emissivity than silica (verified). The trapezoidal integration uses 500 points over 0.05-5 eV range."
+where_stated = "`crates/materials_core/src/optical_database.rs` (spectral_emittance, integrated_emissivity, test_spectral_emittance_zero_at_zero_temp, test_spectral_emittance_positive_at_room_temp, test_spectral_emittance_increases_with_temp, test_integrated_emissivity_metal_vs_dielectric)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: L=0 at T=0, L>0 at 300K, L(600K) > L(300K), eta_gold < eta_silica. REFUTE: negative emittance (unphysical) or eta > 1 (violates Planck bound)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-745"
+statement = "Epsilon-near-zero (ENZ) and reststrahlen physics: enz_frequency() finds where Re[eps(omega)] = 0 via 2000-point scan + 60-iteration bisection. Gold ENZ = screened plasma frequency (5-12 eV range). enz_group_velocity() = 1/n_g at the ENZ point; physically this can be subluminal or superluminal depending on dispersion. reststrahlen_band() identifies the (omega_TO, omega_LO) boundaries for polar dielectrics using the strongest Lorentz oscillator and the Lyddane-Sachs-Teller (LST) relation: omega_LO^2/omega_TO^2 = eps_static/eps_inf. SrTiO3 has a clear reststrahlen band at IR frequencies; pure Drude metals return None. LST ratio verified self-consistent to < 1%. 16 new Part 12 tests, 218 optical tests total, 3743 workspace tests."
+where_stated = "`crates/materials_core/src/optical_database.rs` (enz_frequency, enz_group_velocity, reststrahlen_band, test_enz_frequency_gold, test_enz_frequency_dielectric_none, test_enz_group_velocity_gold, test_reststrahlen_band_srtio3, test_reststrahlen_band_metal_none, test_reststrahlen_lst_consistency)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Gold ENZ 5-12 eV, v_g/c > 0.01, SrTiO3 omega_LO > omega_TO, LST self-consistent, pure Drude None. REFUTE: ENZ < 1 eV for gold (below interband region) or omega_LO < omega_TO (violates LST)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-749"
+statement = "Tabulated real-axis optical data (Johnson & Christy 1972, PRB 6 4370) for Au/Ag/Cu undergoes Kramers-Kronig transform to the imaginary-frequency axis via three-region integration: (1) trapezoidal over tabulated range 0.64-6.60 eV, (2) UV tail 1/omega^3 (Thomas-Reiche-Kuhn free-electron), analytical via partial fractions: eps2_max*omega_max^3/xi^2 * [1/omega_max - pi/(2*xi) + arctan(omega_max/xi)/xi], (3) IR Drude tail analytical: omega_p^2*gamma/(xi^2-gamma^2)*[arctan(omega_min/gamma)/gamma - arctan(omega_min/xi)/xi]. eps(i*xi) is verified monotone-decreasing, approaches 1 at xi >> omega_p (500 eV test), Au eps(i*xi_1) > 50 (metallic), Ag eps > Au eps at low xi (lower scattering rate gamma=0.021 vs 0.072 eV). Full Lifshitz formula via casimir_lifshitz_energy_tabulated() verified negative (attractive) at 100 nm and bounded above 1% of ideal. 9 unit tests pass. Physical properties table (Mohs, Debye T, bulk modulus, density, lattice constant) covers 22 materials."
+where_stated = "`crates/materials_core/src/tabulated_nk.rs` (TabulatedNK, epsilon_imaginary_kk, casimir_lifshitz_energy_tabulated, get_physical_properties, gold_jc_nk, silver_jc_nk, copper_jc_nk, 9 tests)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: eps monotone-decreasing, eps->1 at 500 eV, eps(i*xi_1)>50 for Au, Ag>Au at low xi, Casimir energy negative and bounded. REFUTE: eps non-monotone, eps<1 at high xi (Kramers-Kronig causality violation), Casimir energy positive (repulsion without metamaterial design)."
+confidence = "high"
+phase = "materials"
+sprint = 45
+
+[[claim]]
+id = "C-746"
+statement = "Electron energy loss spectroscopy (EELS) from Drude-Lorentz: surface_loss_function() = Im[-1/(1+eps)] probes surface plasmon excitations. The surface loss function peaks (in absolute value) at the surface plasmon frequency where Re[eps] ~ -1, distinct from the bulk plasmon peak at Re[eps] ~ 0. For gold, the surface loss peak is in the 1-15 eV range. volume_loss_weighted() = omega * loss_function() gives the EELS cross-section weighting from the fluctuation-dissipation theorem. Both are computable for any DL parameterization."
+where_stated = "`crates/materials_core/src/optical_database.rs` (surface_loss_function, volume_loss_weighted, test_surface_loss_function_gold_nonzero, test_surface_loss_peak_near_surface_plasmon, test_volume_loss_weighted_proportional_to_omega)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: |SLF| > 0 for metals, peak in 1-15 eV for gold, VLW = omega*LF exactly. REFUTE: SLF identically zero for all frequencies (no surface excitations)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-747"
+statement = "Photonic local density of states (LDOS) near planar surfaces: purcell_factor() = 1 + 3/(4*(kd)^3) * Im[(eps-1)/(eps+1)] gives the spontaneous emission rate enhancement in the near-field regime (kd << 1). At 10nm from gold at 2 eV, |F_P - 1| >> 0.1 (strong LDOS modification). At 1mm, F_P -> 1 (free-space limit recovered). lamb_shift_fractional() = -3/(8*(kd)^3) * Re[(eps-1)/(eps+1)] gives the Casimir-Polder frequency shift, which decreases with distance (1/d^3 scaling)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (purcell_factor, lamb_shift_fractional, test_purcell_factor_near_gold_surface, test_purcell_factor_far_from_surface, test_purcell_factor_dielectric_near_one, test_lamb_shift_gold_nonzero, test_lamb_shift_decreases_with_distance)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: |F_P - 1| > 0.1 at 10nm, F_P ~ 1 at 1mm, Lamb shift nonzero, 1/d^3 scaling. REFUTE: F_P = 1 exactly at all distances (no surface modification) or Lamb shift increasing with distance."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-748"
+statement = "Absorption engineering toolkit: absorption_per_pass() = 1 - exp(-alpha*d) computes single-pass absorption via Beer-Lambert law. Gold at 2 eV: 10nm absorbs partially (0 < A < 1), 100nm absorbs more. optimal_absorber_thickness() = 1/alpha gives the thickness for 63.2% absorption (one penetration depth). impedance_mismatch() = |Z_surface/Z_0 - 1| quantifies how far from perfect absorption: metals have large mismatch (high reflectivity), vacuum has mismatch = 0 exactly, dielectrics intermediate. 14 new Part 13 tests, 232 optical tests, 3766 workspace tests total."
+where_stated = "`crates/materials_core/src/optical_database.rs` (absorption_per_pass, optimal_absorber_thickness, impedance_mismatch, test_absorption_per_pass_thin_film, test_absorption_per_pass_transparent, test_optimal_absorber_thickness_gold, test_impedance_mismatch_metal_large, test_impedance_mismatch_dielectric_smaller, test_impedance_mismatch_zero_for_n_equals_1)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: A(10nm) < A(100nm) for gold, d_opt = 1/alpha gives A ~ 63.2%, vacuum mismatch ~ 0, gold >> silica mismatch. REFUTE: A > 1 (violates conservation) or mismatch negative (|z| >= 0 always)."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-750"
+statement = "Oscillator and Drude quality factors: oscillator_quality_factor() = omega_0/gamma for the strongest Lorentz oscillator measures resonance sharpness (long-lived phonon or exciton). SrTiO3 has Q > 1 (underdamped phonons). drude_quality(omega) = omega/gamma measures coherent carrier response cycles before scattering: gold at 1 eV has Q >> 10 (good metal). Dielectrics return None for Drude Q. SPP figure of merit = Re[k_spp]/(2*Im[k_spp]) counts propagation wavelengths: gold FoM > 1 at 1.5 eV, increases at lower frequencies (less loss)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (oscillator_quality_factor, drude_quality, figure_of_merit_spp, test_oscillator_quality_factor_srtio3, test_oscillator_quality_factor_no_oscillators, test_drude_quality_gold_high_in_ir, test_drude_quality_dielectric_none, test_fom_spp_gold_positive, test_fom_spp_increases_with_lower_frequency)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: SrTiO3 Q > 1, gold Drude Q > 10 at 1 eV, SPP FoM > 1 at 1.5 eV, FoM(1 eV) > FoM(3 eV). REFUTE: Q < 0 (unphysical) or SPP FoM increasing toward plasmon resonance."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-751"
+statement = "Spectral weight and optical path length: spectral_weight_window() integrates Re[sigma(omega)] over a frequency window via trapezoidal rule. Gold spectral weight positive, wider window gives larger weight (verified). optical_path_length() = (Re[n]*d, Im[n]*d) determines interference: silica OPL ~ 1.46*d at visible. Im[OPL] < Re[OPL] for transparent materials."
+where_stated = "`crates/materials_core/src/optical_database.rs` (spectral_weight_window, optical_path_length, test_spectral_weight_window_positive, test_spectral_weight_window_wider_is_larger, test_optical_path_length)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: SW > 0 for gold, SW(1-5) > SW(1-2), silica OPL ~ 1.5 um at 1 um thickness. REFUTE: negative spectral weight (violates passivity) or OPL < thickness for n > 1 material."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-752"
+statement = "Coherence and penetration diagnostics: coherence_length() = c/(n*delta_omega) gives maximum interference path difference. Finite bandwidth yields finite lc; monochromatic (delta_omega=0) gives infinite lc. penetration_depth_ratio() = delta/lambda classifies material opacity: metals (gold) have ratio < 1 (opaque within one wavelength), vacuum has ratio = infinity (fully transparent). 13 new Part 14 tests, 245 optical tests total, 3779 workspace tests."
+where_stated = "`crates/materials_core/src/optical_database.rs` (coherence_length, penetration_depth_ratio, test_coherence_length_finite, test_coherence_length_monochromatic_infinite, test_penetration_depth_ratio_metal_small, test_penetration_depth_ratio_dielectric_large)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: lc finite for delta_omega > 0, infinite for delta_omega = 0, gold ratio < 1, vacuum ratio = infinity. REFUTE: negative coherence length (|c/n| > 0 always) or penetration ratio < 0."
+confidence = "high"
+phase = "materials"
+sprint = 44
