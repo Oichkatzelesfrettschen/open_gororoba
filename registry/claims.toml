@@ -128,7 +128,9 @@ claims = [
     "C-428",
     "C-430",
 ]
-
+insights = [
+    "I-087",
+]
 [[claim]]
 id = "C-013"
 statement = """de Marrais' GoTo "automorphemes" (from the 7 O-trips + the "8-ball" exclude rule) cover the 42 primitive assessors exactly twice; each assessor lies in exactly two automorphemes (Production Rule #3 uniqueness)."""
@@ -204,7 +206,8 @@ phase = "algebra"
 
 [[claim]]
 id = "C-020"
-statement = 'Legacy 16D "Zero-Divisor Adjacency Matrix" represents valid algebra.'
+statement = 'REFUTED: Legacy 16D "Zero-Divisor Adjacency Matrix" does NOT represent valid algebra. Found to be noise/hallucination when verified against commutator/parity matrices.'
+statement_original = 'Legacy 16D "Zero-Divisor Adjacency Matrix" represents valid algebra.'
 where_stated = "`data/csv/legacy/`"
 status = "Refuted"
 last_verified = "2026-01-28"
@@ -227,7 +230,8 @@ claims = [
 
 [[claim]]
 id = "C-021"
-statement = "1024D Basis-to-Lattice mapping is a consistent function."
+statement = "REFUTED: Hypothesis tested: 1024D Basis-to-Lattice mapping is a consistent function.... Result: This claim was empirically refuted."
+statement_original = "1024D Basis-to-Lattice mapping is a consistent function."
 where_stated = "`data/csv/legacy/`"
 status = "Refuted"
 last_verified = "2026-01-28"
@@ -335,6 +339,7 @@ statement = "By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebra
 description = "By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebras (R,C,H,O)."
 where_stated = "`docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C031_HURWITZ_QUANTIZATION_SOURCES.md`, `src/scripts/analysis/c031_hurwitz_norm_composition_checks.py`, `data/csv/c031_hurwitz_norm_composition_checks.csv`, `tests/test_c031_hurwitz_norm_composition_checks.py`, `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`, `docs/SEDENION_FIELD_THEORY.md`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-03"
 what_would_verify_refute = 'Offline artifact: `data/csv/c031_hurwitz_norm_composition_checks.csv` shows norm multiplicativity holds (within tolerance) for dims 1/2/4/8 and fails at dim=16, and records a concrete dim=16 zero-divisor example (u*v=0). The "QFT consequence" is treated as a model-design constraint: non-associativity/zero divisors force explicit product/representation choices (see DR-C030 in `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`). Any unitarity claim remains model-dependent until a concrete sedenion-valued field model is specified and tested.'
 confidence = "high"
@@ -1048,7 +1053,9 @@ status = "Refuted"
 last_verified = "2026-02-04"
 what_would_verify_refute = "Perturbation barely moves the democratic matrix. S3 symmetry is too rigid for small perturbations. Phase 6 B5: closed as refuted."
 confidence = "n/a"
-
+insights = [
+    "I-087",
+]
 [[claim]]
 id = "C-085"
 statement = "CMS resonance ratios match E8+pathion combined eigenvalue ratios."
@@ -1139,6 +1146,7 @@ id = "C-094"
 statement = "Associator saturation fit fails for non-power-of-2 dimensions."
 where_stated = "`src/scripts/analysis/c094_non_power_two_dims_fit_audit.py`, `data/csv/c094_non_power_two_dims_summary.csv`, `data/csv/c094_non_power_two_dims_by_dim.csv`, `tests/test_c094_non_power_two_dims_fit_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v6.json` (results.R)"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-03"
 what_would_verify_refute = "Notes: The cached v6 expR mixed power-of-two dims with non-2^n truncations (dims=[8,12,16,24,32,48,64,96,128,192,256,384,512]). The non-2^n points have much smaller <|A||^2> (~0.64-0.90), so the mixed-dimension saturation fit degrades: A_inf=1.594845+/-1.031781 with RMS residual 0.540426. This is expected because Cayley-Dickson algebras are defined at dim=2^n; non-2^n truncations are not closed under multiplication and should not be treated as part of the CD tower."
 confidence = "high"
@@ -1395,6 +1403,7 @@ id = "C-109"
 statement = "Random probing fails to find algebraic ZDs; diagonal ZDs lifted via CD doubling exhibit kernel doubling (kernel=8 at dim=32, 16 at dim=64, 32 at dim=128)."
 where_stated = "`src/scripts/analysis/c109_zd_construction_audit.py`, `data/csv/c109_zd_construction_by_dim.csv`, `data/csv/c109_zd_construction_summary.csv`, `tests/test_c109_zd_construction_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v10.json` (AG_zd_construction), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-04"
 what_would_verify_refute = "Offline artifacts encode both parts of the legacy claim: (1) cached v10 probing found 0/2000 (dim=16), 0/1000 (dim=32), 0/500 (dim=64) ZDs (consistent with ZDs being measure-zero); (2) the lifted diagonal-form element u=(e_1+e_10)/sqrt(2) embedded by zero-padding has min_sv=0 and kernel dims 8,16,32 at dims 32,64,128 respectively (see `data/csv/c109_zd_construction_by_dim.csv`)."
 confidence = "high"
@@ -1464,6 +1473,7 @@ id = "C-113"
 statement = "Moufang ratio||M(a,b,c)||^2/||A(a,b,c)||^2 converges to M_inf = 1.561 +/- 0.017, consistent with pi/2 (0.6 sigma), inconsistent with 3/2 (3.6 sigma)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/csv/cd_algebraic_experiments_v11.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-01-31"
 what_would_verify_refute = 'Key metric: 1970-01-01 (unknown). Notes: The Moufang-to-associator ratio converges to a value strikingly close to pi/2 = 1.5708. If confirmed, this would connect CD algebraic structure to circular geometry. The Moufang identity measures a different aspect of non-associativity than the associator itself, and its pi/2 ratio suggests the Moufang deviation is "perpendicular" to the associator in some geometric sense.'
 confidence = "medium"
@@ -1553,6 +1563,7 @@ id = "C-121"
 statement = "Multi-seed bootstrap: Moufang ratio converges to M_inf = 1.519 +/- 0.013, consistent with 3/2 (1.5 sigma), INCONSISTENT with pi/2 (4.1 sigma). Corrects C-113."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v12.py`, `data/csv/cd_algebraic_experiments_v12.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-01-31"
 what_would_verify_refute = "Key metric: 1970-01-01 (unknown). Notes: **SUPERSEDES C-113.** The v11 single-seed result (1.561 +/- 0.017) was biased by seed selection. With 5 seeds and dims to 8192, the limit is clearly 3/2, not pi/2. This is a more natural algebraic constant -- the Moufang deviation is exactly 3/2 times the associator. The 3/2 ratio may arise from the 3 terms in the Moufang identity vs 2 terms in the associator."
 confidence = "medium"
@@ -1604,6 +1615,7 @@ statement = "Artin's theorem (2-generated subalgebras are associative) holds thr
 description = "Artin's theorem (2-generated subalgebras are associative) holds through dim=8 and fails at dim=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v13.py`, `data/csv/cd_algebraic_experiments_v13.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-01-31"
 what_would_verify_refute = """Key metric: 1970-01-01 (unknown). Notes: The key discovery: while Artin's theorem fails at dim=16, the FLEXIBILITY within 2-generated subalgebras is preserved universally. This means x(yx) = (xy)x remains true when restricted to products of just two generators, even though the full flexibility identity (ab)(ca) = a((bc)a) fails. This is a new structural constraint on CD algebras: they are "2-gen flexible" at all dimensions."""
 confidence = "medium"
@@ -1617,7 +1629,10 @@ last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: `test_split_octonion_psi_fraction` establishes exact split target 24/64 = 3/8, while `test_split_octonion_attractor_coincidence` and `test_split_octonion_attractor_regression_dim_128_256_guarded` verify low/high-dimensional trajectories remain above 3/8 and near the attractor with runtime guards (`CD_ATTRACTOR_*`). Artifact script `src/scripts/analysis/c590_build_attractor_artifacts.sh` emits tracked CSV outputs (`data/csv/c590_attractor_runtime_baseline.csv`, `data/csv/c590_attractor_ratio_sweep.csv`) using `c590_attractor_sweep` with script-level guard knobs (`C590_FAST_MODE`, `C590_SWEEP_DIMS`, `C590_INCLUDE_DIM512`, `C590_INCLUDE_DIM1024`, `C590_TIMEOUT_S`) for reproducible ratio/runtime snapshots under bounded runtime. CSV rows include `schema_version=c590_attractor_sweep_v1` to pin artifact format. REFUTE if guarded tests fail or emitted sweeps depart from the documented attractor envelope."
 confidence = "high"
 phase = "algebra"
-insights = ["I-041"]
+insights = [
+    "I-041",
+    "I-052",
+]
 
 [[claim]]
 id = "C-631"
@@ -1897,6 +1912,7 @@ statement = "Inner derivation D(a,b)(x) = [[a,b],x] + [[a,x],b] + [[x,b],a] sati
 description = "Inner derivation D(a,b)(x) = [[a,b],x] + [[a,x],b] + [[x,b],a] satisfies the Leibniz rule D(xy) = D(x)y + xD(y) exactly at dim=4 and dim=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v10.py::TestBRDerivation` (4 tests). Leibniz exact through dim=8; fails at dim=16."
 confidence = "medium"
@@ -1977,6 +1993,7 @@ statement = "Artin's theorem: any 2-generated subalgebra is associative at dim=4
 description = "Artin's theorem: any 2-generated subalgebra is associative at dim=4 and dim=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/csv/cd_algebraic_experiments_v18.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v12.py::TestBZArtin` (5 tests). Exact at dim=4,8; fails at dim=16+."
 confidence = "medium"
@@ -2006,6 +2023,7 @@ statement = "Jacobi identity [[a,b],c] + [[b,c],a] + [[c,a],b] = 0 holds exactly
 description = "Jacobi identity [[a,b],c] + [[b,c],a] + [[c,a],b] = 0 holds exactly at dim=2 (commutative, all commutators zero) and dim=4 (quaternion Lie algebra)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/csv/cd_algebraic_experiments_v18.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v12.py::TestCCJacobiIdentity` (5 tests). Exact at dim=2,4; fails at dim=8+."
 confidence = "medium"
@@ -2261,6 +2279,7 @@ statement = "Inner product preservation <ax,ay> =||a||^2 <x,y> holds EXACTLY at 
 description = "Inner product preservation <ax,ay> =||a||^2 <x,y> holds EXACTLY at composition dimensions (dim <= 8) and FAILS at dim >= 16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v16.py::TestCZIPPreservation` (4 tests). Exact at dim<=8; fails at dim>=16."
 confidence = "medium"
@@ -2271,6 +2290,7 @@ statement = "Quadratic representation U_a(x) = 2a(ax) - (a^2)x is NOT an algebra
 description = "Quadratic representation U_a(x) = 2a(ax) - (a^2)x is NOT an algebra endomorphism at any CD dimension."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v16.py::TestDAQuadraticRepresentation` (4 tests). Not endo; fund identity fails."
 confidence = "medium"
@@ -2281,6 +2301,7 @@ statement = "Associator alternation: A(a,b,c) + A(b,a,c) = 0 (skew-symmetry in f
 description = "Associator alternation: A(a,b,c) + A(b,a,c) = 0 (skew-symmetry in first two slots) holds EXACTLY at dim <= 8 (alternative algebras) and FAILS at dim >= 16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v16.py::TestDBAssociatorAlternation` (5 tests). Exact at dim<=8; fails with equal defects."
 confidence = "medium"
@@ -2291,6 +2312,7 @@ statement = "Iterated commutator:||[[a,b],c]||/||[a,b]||-> 2.0 as dim increases 
 description = "Iterated commutator:||[[a,b],c]||/||[a,b]||-> 2.0 as dim increases (1.34 at dim=4, 1.98 at dim=256)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v16.py::TestDCIteratedCommutator` (4 tests). Ratio -> 2; Jacobi=0 at dim=4 only."
 confidence = "medium"
@@ -2301,6 +2323,7 @@ statement = "Malcev identity [J(a,b,c), a] + J(a, b, [c,a]) = 0 holds EXACTLY at
 description = "Malcev identity [J(a,b,c), a] + J(a, b, [c,a]) = 0 holds EXACTLY at dim=8 (with opposite sign convention: LHS = -RHS)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v17.py::TestDDMalcevIdentity` (5 tests). Holds at dim=8 (sign -); fails at dim>=16."
 confidence = "medium"
@@ -2362,6 +2385,7 @@ statement = "Bol identity a(b(ac)) = (a(ba))c holds EXACTLY at dim <= 8 (alterna
 description = "Bol identity a(b(ac)) = (a(ba))c holds EXACTLY at dim <= 8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v18.py::TestDJBolIdentity` (4 tests). Exact at dim<=8; symmetric failure at dim>=16."
 confidence = "medium"
@@ -2432,6 +2456,7 @@ statement = "Artin's theorem: the subalgebra generated by any two elements {a, b
 description = "Artin's theorem: the subalgebra generated by any two elements {a, b, ab, ba, ...} is associative at dim <= 8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v19.py::TestDPArtinTheorem` (5 tests). Exact at dim<=8; fails at dim>=16."
 confidence = "medium"
@@ -2456,6 +2481,7 @@ statement = "Middle Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim <=
 description = "Middle Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim <= 8 (alternative/Moufang)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v19.py::TestDRMiddleMoufang` (4 tests). Exact at dim<=8; fails at dim>=16."
 confidence = "medium"
@@ -2471,6 +2497,7 @@ statement = "Left/right alternative laws a(ab) = (aa)b and (ba)a = b(aa) hold EX
 description = "Left/right alternative laws a(ab) = (aa)b and (ba)a = b(aa) hold EXACTLY at dim <= 8."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v19.py::TestDSAlternativeLaws` (6 tests). Symmetric; inv tracks alt."
 confidence = "medium"
@@ -2553,6 +2580,7 @@ statement = "Inner derivation D(a,b)(c) = A(a,b,c) - A(b,a,c) is generically NOT
 description = "Inner derivation D(a,b)(c) = A(a,b,c) - A(b,a,c) is generically NOT a derivation."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v20.py::TestDWDerivationLeibniz` (5 tests). Trivial at assoc; fails at dim>=8."
 confidence = "medium"
@@ -2579,6 +2607,7 @@ statement = "Composition algebra test N(xy) = N(x)N(y): exact at dim<=8 (Hurwitz
 description = "Composition algebra test N(xy) = N(x)N(y): exact at dim<=8 (Hurwitz theorem)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v20.py::TestDXCompositionTest` (5 tests). Composition exact at dim<=8."
 confidence = "medium"
@@ -2725,6 +2754,7 @@ statement = "Jordan product {a,b} = (ab+ba)/2: the Jordan identity {a, {b, a^2}}
 description = "Jordan product {a,b} = (ab+ba)/2: the Jordan identity {a, {b, a^2}} = {{a,b}, a^2} holds EXACTLY at ALL CD dims (4-128 tested)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v27.py`, `data/csv/cd_algebraic_experiments_v27.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v21.py::TestEDJordanProduct` (5 tests). Jordan universal; gen assoc fails."
 confidence = "medium"
@@ -3018,6 +3048,7 @@ statement = "Left alternative law x(xy) = (xx)y holds EXACTLY at dim<=8, fails a
 description = "Left alternative law x(xy) = (xx)y holds EXACTLY at dim<=8, fails at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v25.py::TestFALeftAlternative` (4 tests). Exact at dim<=8; fails beyond."
 confidence = "medium"
@@ -3053,6 +3084,7 @@ statement = "Right Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8,
 description = "Right Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8, fails at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v25.py::TestFDRightMoufang` (4 tests). Holds at dim<=8; fails beyond."
 confidence = "medium"
@@ -3082,6 +3114,7 @@ statement = "Right alternative law y(xx) = (yx)x holds EXACTLY at dim<=8, fails 
 description = "Right alternative law y(xx) = (yx)x holds EXACTLY at dim<=8, fails at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v26.py::TestFFRightAlternative` (5 tests). Exact at dim<=8; fails beyond."
 confidence = "medium"
@@ -3162,6 +3195,7 @@ statement = "Artin's theorem: the subalgebra generated by any 2 elements is asso
 description = "Artin's theorem: the subalgebra generated by any 2 elements is associative at dim<=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v27.py::TestFMArtinTheorem` (5 tests). Holds at dim<=8; fails beyond."
 confidence = "medium"
@@ -3216,6 +3250,7 @@ statement = "Left Bol identity ((ab)c)b = a((bc)b) holds EXACTLY at dim<=8, fail
 description = "Left Bol identity ((ab)c)b = a((bc)b) holds EXACTLY at dim<=8, fails at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v28.py::TestFRLeftBol` (4 tests). Holds at dim<=8; fails beyond."
 confidence = "medium"
@@ -3276,6 +3311,7 @@ statement = "Left multiplication operator: L_a^2 = L_{a^2} (as matrices) holds E
 description = "Left multiplication operator: L_a^2 = L_{a^2} (as matrices) holds EXACTLY at dim<=8 and fails at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v28.py::TestFWLaSquared` (5 tests). Equal at dim<=8; diverges beyond."
 confidence = "medium"
@@ -3308,6 +3344,7 @@ statement = "Product norm ratio:||ab||/(||a||*||b||) = 1.0 EXACTLY at dim<=8 (co
 description = "Product norm ratio:||ab||/(||a||*||b||) = 1.0 EXACTLY at dim<=8 (composition property)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v29.py::TestFZProductNormRatio` (5 tests). Exact at dim<=8; spread beyond."
 confidence = "medium"
@@ -3363,6 +3400,7 @@ statement = "Product of inverses: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim
 description = "Product of inverses: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 (composition algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v30.py::TestGEProductOfInverses` (5 tests). Exact at dim<=8; fails beyond."
 confidence = "medium"
@@ -3391,6 +3429,7 @@ statement = "Inner derivation D(a,b)(x) = [[a,b],x] - 3*A(a,b,x) satisfies the L
 description = "Inner derivation D(a,b)(x) = [[a,b],x] - 3*A(a,b,x) satisfies the Leibniz rule D(xy) = D(x)y + xD(y) at dim<=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v30.py::TestGGInnerDerivation` (6 tests). Leibniz at dim<=8; fails beyond."
 confidence = "medium"
@@ -3413,6 +3452,7 @@ statement = "Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufa
 description = "Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufang loop)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v30.py::TestGIMoufangIdentity` (5 tests). Holds at dim<=8; fails beyond."
 confidence = "medium"
@@ -3468,6 +3508,7 @@ statement = "Artin's theorem: subalgebra generated by any two elements is associ
 description = "Artin's theorem: subalgebra generated by any two elements is associative at dim<=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v31.py::TestGMArtinSubalgebra` (4 tests). Associative at dim<=8; fails beyond."
 confidence = "medium"
@@ -3694,6 +3735,7 @@ statement = "Moufang identity a(b(ac)) = (a(ba))c holds EXACTLY at dim<=8 (Moufa
 description = "Moufang identity a(b(ac)) = (a(ba))c holds EXACTLY at dim<=8 (Moufang loop) and FAILS at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v35.py::TestHHMoufangLoopFailure` (4 tests). Moufang iff dim<=8; ratio monotone."
 confidence = "medium"
@@ -3775,6 +3817,7 @@ statement = "Right Bol identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8 and 
 description = "Right Bol identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8 and FAILS at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v36.py::TestHORightBol` (4 tests). Bol iff dim<=8; ratio monotone."
 confidence = "medium"
@@ -3953,6 +3996,7 @@ statement = "Inverse composition: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim
 description = "Inverse composition: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 and FAILS at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v37.py::TestHXInverseComposition` (4 tests). Exact iff dim<=8; ratio decreases at high dim."
 confidence = "medium"
@@ -4018,6 +4062,7 @@ statement = "Associator (2,3)-swap: A(a,b,c) = -A(a,c,b) holds EXACTLY at dim<=8
 description = "Associator (2,3)-swap: A(a,b,c) = -A(a,c,b) holds EXACTLY at dim<=8 and FAILS at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v38.py::TestIAAssociator23Swap` (4 tests). Antisym iff dim<=8."
 confidence = "medium"
@@ -4084,6 +4129,7 @@ statement = "L_a quadratic identity: L_a^2 - 2*Re(a)*L_a + ||a||^2*I = 0 holds a
 description = "L_a quadratic identity: L_a^2 - 2*Re(a)*L_a + ||a||^2*I = 0 holds at dim<=8 (composition algebras) and FAILS at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v39.py::TestIFLaQuadratic` (5 tests). Exact at dim<=8, fails at dim>=16."
 confidence = "medium"
@@ -4153,6 +4199,7 @@ statement = "Left-alternative identity: (aa)b = a(ab) holds EXACTLY at dim<=8 an
 description = "Left-alternative identity: (aa)b = a(ab) holds EXACTLY at dim<=8 and FAILS at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v40.py::TestILLeftAlternative` (5 tests). Exact at dim<=8, fails beyond."
 confidence = "medium"
@@ -4165,6 +4212,7 @@ statement = "Right-alternative identity: (ba)a = b(aa) holds EXACTLY at dim<=8 a
 description = "Right-alternative identity: (ba)a = b(aa) holds EXACTLY at dim<=8 and FAILS at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v40.py::TestINRightAlternative` (4 tests). Exact at dim<=8, fails beyond."
 confidence = "medium"
@@ -4212,6 +4260,7 @@ statement = "Left Moufang identity: a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 
 description = "Left Moufang identity: a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 and FAILS at dim>=16."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v40.py::TestIQLeftMoufang` (4 tests). Exact at dim<=8, fails beyond."
 confidence = "medium"
@@ -4274,6 +4323,7 @@ statement = "Artin's theorem: (a, b, ab) = 0 (the associator of a, b, and their 
 description = "Artin's theorem: (a, b, ab) = 0 (the associator of a, b, and their product vanishes) at dim<=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v41.py::TestIVArtinTheorem` (4 tests). Exact at dim<=8, fails beyond."
 confidence = "medium"
@@ -4356,6 +4406,7 @@ statement = "Norm of product of conjugates: ||conj(a)*conj(b)||= ||a||*||b||iff 
 description = "Norm of product of conjugates: ||conj(a)*conj(b)||= ||a||*||b||iff dim<=8 (norm multiplicativity via conjugates)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v43.py::TestJDConjugateProductNorm` (4 tests). Exact iff composition."
 confidence = "medium"
@@ -4446,6 +4497,7 @@ statement = "Middle Moufang identity: (ab)(ca) = a((bc)a) at ALL CD dims<=8 (alt
 description = "Middle Moufang identity: (ab)(ca) = a((bc)a) at ALL CD dims<=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v44.py::TestJLMiddleMoufang` (5 tests). Holds iff dim<=8."
 confidence = "medium"
@@ -4500,6 +4552,7 @@ statement = "Right Moufang identity: ((ab)c)b = a(b(cb)) at ALL CD dims<=8 (alte
 description = "Right Moufang identity: ((ab)c)b = a(b(cb)) at ALL CD dims<=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v44.py::TestJORightMoufang` (5 tests). Holds iff dim<=8."
 confidence = "medium"
@@ -4530,6 +4583,7 @@ statement = "Malcev identity: J(x,y,xz) = J(x,y,z)*x where J is the Jacobian of 
 description = "Malcev identity: J(x,y,xz) = J(x,y,z)*x where J is the Jacobian of double commutators."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v45.py::TestJPMalcevIdentity` (5 tests). Holds iff dim<=8."
 confidence = "medium"
@@ -4553,6 +4607,7 @@ statement = 'Schafer identity: J(a,b,c) = 6*[a,b,c] in alternative algebras (dim
 description = "Schafer identity: J(a,b,c) = 6*[a,b,c] in alternative algebras (dim<=8)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v45.py::TestJQSchaferIdentity` (5 tests). Holds iff dim<=8."
 confidence = "medium"
@@ -4621,6 +4676,7 @@ statement = "Artin's theorem (2-generated subalgebra associativity): any subalge
 description = "Artin's theorem (2-generated subalgebra associativity): any subalgebra generated by two elements is associative at dim<=8."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v45.py::TestJTArtinSubalgebra` (5 tests). Holds iff dim<=8."
 confidence = "medium"
@@ -4766,6 +4822,7 @@ statement = "Inverse multiplicativity: (ab)^{-1} = b^{-1}*a^{-1} iff dim<=8 (alt
 description = "Inverse multiplicativity: (ab)^{-1} = b^{-1}*a^{-1} iff dim<=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v47.py::TestKBInverseMultiplicativity` (5 tests). Holds iff dim<=8."
 confidence = "medium"
@@ -4776,6 +4833,7 @@ statement = "Left Bol identity: a(b(ac)) = (a(ba))c iff dim<=8. In a Moufang loo
 description = "Left Bol identity: a(b(ac)) = (a(ba))c iff dim<=8."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v47.py::TestKCLeftBol` (4 tests). Holds iff dim<=8."
 confidence = "medium"
@@ -4841,6 +4899,7 @@ statement = "Right Bol identity: ((xy)z)y = x(y(zy)) iff dim<=8 (alternative alg
 description = "Right Bol identity: ((xy)z)y = x(y(zy)) iff dim<=8 (alternative algebras)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v48.py::TestKHRightBol` (4 tests). Holds iff dim<=8."
 confidence = "medium"
@@ -4888,6 +4947,7 @@ statement = "Normed division algebra (Hurwitz theorem):||xy||=||x||*||y||exactly
 description = "Normed division algebra (Hurwitz theorem):||xy||=||x||*||y||exactly iff dim in {1,2,4,8}."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v48.py::TestKLNormedDivision` (4 tests). Exact at dim<=8, fails at dim>=16."
 confidence = "medium"
@@ -5023,6 +5083,7 @@ statement = "Commutator Jacobi identity: J(a,b,c) = [a,[b,c]] + [b,[c,a]] + [c,[
 description = "Commutator Jacobi identity: J(a,b,c) = [a,[b,c]] + [b,[c,a]] + [c,[a,b]] = 0 iff dim<=4 (associative)."
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-01"
 what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v50.py::TestKWJacobiRemainder` (5 tests). Zero iff associative."
 confidence = "medium"
@@ -5593,6 +5654,7 @@ statement = "Octonion-valued (8D) scalar field Hamiltonian with Stormer-Verlet s
 description = "Octonion-valued (8D) scalar field Hamiltonian with Stormer-Verlet symplectic integrator, 7 Noether charges from octonionic U(1) rotations, and free-field dispersion relation omega^2 = k^2 + m^2."
 where_stated = "`crates/algebra_core/src/physics/octonion_field.rs`, `tests/test_octonion_field.py`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-04"
 what_would_verify_refute = "Phase 6 task A10. Fano-plane structure constants for multiplication. Tests: energy conservation < 0.1% (free + quartic), dispersion within 1%, Noether charge Q_1 drift < 0.1%, non-associativity confirmed, alternativity verified, composition property ||a*b|| = ||a||*||b|| to 1e-12. Original 16D transport kernel in `crates/algebra_core/src/construction/hypercomplex.rs` remains as Modeled."
 confidence = "high"
@@ -5673,7 +5735,9 @@ claims = [
     "C-012",
     "C-428",
 ]
-
+insights = [
+    "I-087",
+]
 [[claim]]
 id = "C-431"
 statement = "The Sedenion Zero Divisor manifold, when projected into 3D perturbation space (e2, e5, e14), forms a coherent, non-trivial isosurface, visualizing the 'shadow' of the 16D algebraic singularity."
@@ -5836,7 +5900,10 @@ claims = [
     "C-444",
     "C-449",
 ]
-insights = ["I-013"]
+insights = [
+    "I-013",
+    "I-087",
+]
 
 [[claim]]
 id = "C-442"
@@ -6095,6 +6162,7 @@ statement = "The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=
 description = "The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=32 (8 heptacross + 7 mixed-degree) requires a degree-3 (cubic) GF(2) polynomial for separation in PG(3,2)."
 where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs` (test_determine_exact_degree_dim32)"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-07"
 what_would_verify_refute = "VERIFIED: `find_boolean_class_predicate` brute-force search over all 2^15 subsets of degree-3 GF(2) monomials on 4-bit PG(3,2) labels. Degree 1: no separator among 15 linear forms. Degree 2: no separator among 2^11 subsets of 11 quadratic+linear monomials. Degree 3: separator FOUND among 2^15 subsets of 15 cubic+quadratic+linear monomials. WHAT WOULD REFUTE: finding an error in component_xor_label mapping or the GF(2) monomial evaluation."
 confidence = "high"
@@ -6528,7 +6596,8 @@ insights = ["I-015"]
 
 [[claim]]
 id = "C-466"
-statement = "Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT exist as a linear endomorphism on the lattice subspace for any non-identity basis element. At dim=16 (sedenions), only b=0 (identity) has consistent coupling (1/16); at dim=32 (pathions), also 1/32. The lattice vectors span rank 5 of 8 dimensions (first 16 Lambda_256 vectors), and left-multiplication by e_b for b>=1 produces O(1) residuals in the reduced 5D subspace, not numerical noise. The scalar shadow pi(b) remains the only valid lattice-level multiplicative structure."
+statement = "REFUTED: Hypothesis tested: Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT exist as a ... Result: This claim was empirically refuted."
+statement_original = "Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT exist as a linear endomorphism on the lattice subspace for any non-identity basis element. At dim=16 (sedenions), only b=0 (identity) has consistent coupling (1/16); at dim=32 (pathions), also 1/32. The lattice vectors span rank 5 of 8 dimensions (first 16 Lambda_256 vectors), and left-multiplication by e_b for b>=1 produces O(1) residuals in the reduced 5D subspace, not numerical noise. The scalar shadow pi(b) remains the only valid lattice-level multiplicative structure."
 description = "Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT exist as a linear endomorphism on the lattice subspace for any non-identity basis element."
 where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (compute_multiplication_coupling, test_multiplication_coupling_sedenion_characterize, test_multiplication_coupling_pathion)"
 status = "Refuted"
@@ -7130,6 +7199,7 @@ statement = "Coset Obstruction Theorem: Lambda_n (n <= 1024) has exactly 0% clos
 description = "Coset Obstruction Theorem: Lambda_n (n <= 1024) has exactly 0% closure under both Z-addition and F_3-addition because all lattice vectors have l_0 = -1."
 where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (test_coset_obstruction_and_affine_closure)"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: exhaustive check over all 65536 pairs of Lambda_256 vectors confirms l_0=+1 for every F_3 sum and l_0=-2 for every Z sum. WHAT WOULD REFUTE: existence of any Lambda_n vector with l_0 != -1 (structurally impossible by Lambda_1024 definition)."
 confidence = "high"
@@ -8795,7 +8865,10 @@ claims = [
     "C-564",
     "C-565",
 ]
-insights = ["I-025"]
+insights = [
+    "I-025",
+    "I-030",
+]
 
 [[claim]]
 id = "C-561"
@@ -8815,7 +8888,10 @@ claims = [
     "C-564",
     "C-565",
 ]
-insights = ["I-026"]
+insights = [
+    "I-026",
+    "I-030",
+]
 
 [[claim]]
 id = "C-562"
@@ -9282,6 +9358,7 @@ statement = "Singh's delta^2 = 3/8 is NOT reproduced for arbitrary trace-free re
 description = "Singh's delta^2 = 3/8 is NOT reproduced for arbitrary trace-free real J_3(O) elements."
 where_stated = "`crates/algebra_core/src/construction/albert.rs` (test_singh_delta_squared)"
 status = "Closed/Negative-Result"
+status_note = "verified_constraint"
 last_verified = "2026-02-09"
 what_would_verify_refute = "NEGATIVE RESULT: delta^2 = 3/8 not observed for generic real trace-free elements. WOULD VERIFY IF: specific complexified or idempotent construction yields exactly 3/8."
 confidence = "n/a"
@@ -9379,6 +9456,7 @@ statement = "The 8D lattice dimension in CD codebook is structurally driven by o
 description = "The 8D lattice dimension in CD codebook is structurally driven by octonion algebra (Hurwitz unique 8D normed division algebra), NOT by E8 roots or arbitrary design."
 where_stated = "`crates/algebra_core/src/analysis/codebook.rs`, research findings from Phase 5b octonion/lattice investigation"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: Cross-validated against C-453, C-455, C-458, and existing Lambda_*.csv datasets. All 3840 lattice points across all dimensions satisfy constraints. Injectivity verified through exact filtration deltas. Phase 6 strengthens: C-546 (universal non-commutativity, 99% confidence) confirms the algebraic foundation that makes octonion-driven encoding structurally necessary -- non-commutativity at dim>=4 is the property that forces the 8D octonion base space. WHAT WOULD REFUTE: (1) Finding an alternative lattice embedding that uses non-8D codomain for any CD dimension > 8, OR (2) Discovering E8 root involvement via alternative normalization, OR (3) Showing lattice constraints are NOT octonion-derived but arbitrary."
 confidence = "medium"
@@ -9428,7 +9506,10 @@ claims = [
     "C-591",
     "C-597",
 ]
-insights = ["I-044"]
+insights = [
+    "I-044",
+    "I-051",
+]
 
 [[claim]]
 id = "C-592"
@@ -9461,7 +9542,9 @@ dependencies = [
     "C-592",
 ]
 claims = ["C-638"]
-
+insights = [
+    "I-053",
+]
 [[claim]]
 id = "C-593"
 statement = "Mixed and split-quaternions are non-division algebras with zero-divisors; only standard quaternions (gamma=[-1,-1]) are division algebras."
@@ -9488,6 +9571,7 @@ id = "C-594"
 statement = "Norm multiplicativity property ||ab||=||a||||b|| is preserved only in standard (Euclidean) CD algebras (all gamma=-1); fails universally in split algebras (gamma=+1 at any level)."
 where_stated = "`crates/algebra_core/tests/test_low_dimensional_survey.rs` (norm multiplicative column), `registry/phase8_census.toml`"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED (Phase 8): Tested 50 random element pairs in each of 15 algebras. Standard signatures (R, C, H, O) showed 100% norm multiplicativity. All signatures containing gamma=+1 showed <5% success rate. This explains the geometric difference: Euclidean metrics preserve composition, indefinite metrics do not."
 confidence = "high"
@@ -9849,6 +9933,7 @@ statement = "The sedenion obstruction spectrum has Frobenius norm 8.725, spectra
 description = "The sedenion obstruction spectrum has Frobenius norm 8.725, spectral radius 496.9, and rank fraction 15/16=0.9375."
 where_stated = "`crates/algebra_core/src/analysis/homotopy_algebra.rs` (SedenionAInfinity::obstruction_spectrum, test_sedenion_obstruction_spectrum)"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED (Phase B): Jacobi eigenvalue decomposition of the 16x16 flattened m_3 tensor yields top eigenvalues [496.9, 144.0, -80.0, -80.0, -80.0]. Only 1 of 16 eigenvalues is near-zero (rank fraction = 15/16). The normalized obstruction norm = frobenius / dim^(3/2) = 8.725."
 confidence = "high"
@@ -9868,6 +9953,7 @@ statement = "The homotopy gravastar bridge maps obstruction_norm to Bowers-Liang
 description = "The homotopy gravastar bridge maps obstruction_norm to Bowers-Liang anisotropy parameter lambda via homotopy_lambda(obs, coupling) = coupling * obs."
 where_stated = "`crates/cosmology_core/src/homotopy_bridge.rs` (homotopy_lambda, solve_gravastar_homotopy, test_homotopy_zero_coupling_isotropic)"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED (Phase B): At coupling=0, solve_gravastar_homotopy produces M=5.6468, R2=33.33, compactness=0.3388, matching the zero-anisotropy baseline exactly."
 confidence = "high"
@@ -9887,6 +9973,7 @@ statement = "A stable gravastar solution exists for obstruction_norm=8.725 with 
 description = "A stable gravastar solution exists for obstruction_norm=8.725 with coupling in [0, 0.01]."
 where_stated = "`crates/cosmology_core/src/homotopy_bridge.rs` (sweep_obstruction_coupling, test_homotopy_sweep_stability_window)"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED (Phase B): Sweep with n_steps=20 over coupling [0, 0.5] finds stable solutions for coupling <= 0.01, with causal sound speed (c_s < c). Above coupling ~ 0.05, TOV integration fails or produces acausal solutions."
 confidence = "high"
@@ -9907,6 +9994,7 @@ id = "C-615"
 statement = "The homotopy-corrected gravastar satisfies causality (c_s < c) for coupling < 0.01, where the radial sound speed includes anisotropic pressure contributions from the m_3 obstruction tensor."
 where_stated = "`crates/cosmology_core/src/homotopy_bridge.rs` (test_homotopy_causality_check)"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED (Phase B): At coupling=0.005, the gravastar solution has causal=true (sound speed stays below c throughout the star interior). Verified by checking dp/drho > 0 and dp/drho < 1 at all radial points."
 confidence = "high"
@@ -10220,7 +10308,10 @@ last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED by implementation and exhaustive census tests. Tessarines.rs provides the full data structure and multiplication rule. Test suite (test_tessarines_census.rs) validates all 7 fundamental properties. REFUTE if component-wise multiplication is found to be incorrect or incomplete."
 confidence = "high"
 phase = "algebra"
-
+insights = [
+    "I-054",
+    "I-055",
+]
 [[claim]]
 id = "C-634"
 statement = "Tessarines preserve commutativity from base algebra C: (z1, z2) * (w1, w2) = (w1, w2) * (z1, z2) for all tessarines."
@@ -10230,7 +10321,9 @@ last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: Exhaustive census of basis elements at dim=4 confirms 100% commutativity. Zero non-commutative pairs found across all tested elements. REFUTE if any non-commutative pair is found in component-wise C multiplication."
 confidence = "high"
 phase = "algebra"
-
+insights = [
+    "I-054",
+]
 [[claim]]
 id = "C-635"
 statement = "Tessarines have zero-divisors and are not division algebras. Example: (z, 0) with z != 0 is a zero-divisor when multiplied by (0, w)."
@@ -10240,17 +10333,22 @@ last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: (1, 0) * (0, 1) = (0, 0) while both factors are nonzero. Invertibility test shows <100% invertible elements. REFUTE if all nonzero tessarines have multiplicative inverses."
 confidence = "high"
 phase = "algebra"
-
+insights = [
+    "I-055",
+]
 [[claim]]
 id = "C-636"
 statement = "Tessarines norm multiplicativity fails component-wise: ||t1 * t2|| != ||t1|| * ||t2|| in general, despite C preserving norm multiplicativity."
 where_stated = "`crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarine_norm_multiplicativity), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.3)"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: Norm multiplicativity fails due to zero-divisor structure. This is NOT a failure of component-wise C multiplication (which preserves norms) but rather an artifact of the tensor product having independent norm components that don't compose multiplicatively at the product level. REFUTE if ||t1*t2|| = ||t1||*||t2|| for all tessarines."
 confidence = "high"
 phase = "algebra"
-
+insights = [
+    "I-055",
+]
 [[claim]]
 id = "C-637"
 statement = "Dual-octonions (O x D, with epsilon^2 = 0) exhibit a frustration (sign imbalance) fraction of 14/32 = 0.4375, which marks the phase boundary between elliptic and hyperbolic regimes."
@@ -10260,7 +10358,9 @@ last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: Sign census on 16x16 basis products yields Neg=84, Pos=108, Neg_Fraction=84/192=0.4375 exactly. REFUTE if the sign census differs under the same enumeration rules."
 confidence = "high"
 phase = "algebra"
-
+insights = [
+    "I-056",
+]
 [[claim]]
 id = "C-638"
 statement = "Dual-octonion frustration value 0.4375 confirms the phase boundary prediction: it lies between standard octonion frustration (~0.375, elliptic regime) and split-octonion frustration (~0.469, hyperbolic regime)."
@@ -10279,7 +10379,9 @@ claims = [
     "C-630",
     "C-632",
 ]
-
+insights = [
+    "I-056",
+]
 [[claim]]
 id = "C-639"
 statement = "Exotic octonion parametrization is complete: Dual-Octonions (O x D), Bi-Octonions (O x C, complexified), and Para-Octonions (conjugation variant) are all implemented and validated."
@@ -10289,7 +10391,9 @@ last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: All three exotic variants are implemented with correct multiplication rules, tested, and produce consistent sign census results. Dual: 0.4375, Bi: 0.4688, Para: 0.6562. REFUTE if any variant is found to be mathematically inconsistent or produces wrong results."
 confidence = "high"
 phase = "algebra"
-
+insights = [
+    "I-056",
+]
 [[claim]]
 id = "C-640"
 statement = "Categorical distinction proven: Tessarines (tensor product algebras) are categorically distinct from Cayley-Dickson algebras at all dimensions. The distinction is irreconcilable via signature reinterpretation."
@@ -10300,7 +10404,9 @@ last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED by theoretical argument (Part 3.2: Proof Sketch) and empirical validation (commutativity 100% vs 0%, identity (1,1) vs (1,0), conjugation homomorphic vs anti-homomorphic, division algebra status different). The categorical distinction is established via: (1) Commutativity axiom violation (100% vs 0%), (2) Identity element mismatch ((1,1) vs (1,0)), (3) Conjugation structure difference (homomorphic vs anti-homomorphic), (4) Division algebra status conflict. No isomorphism can exist respecting all five axioms. REFUTE if a mathematical isomorphism is found that respects multiplication, conjugation, identity, and division structure simultaneously."
 confidence = "medium"
 phase = "algebra"
-
+insights = [
+    "I-054",
+]
 [[claim]]
 id = "C-641"
 statement = "Albert algebra J_3(O) (27D exceptional Jordan algebra) is 100% commutative under the Jordan product X . Y = (XY + YX)/2."
@@ -10311,7 +10417,9 @@ what_would_verify_refute = "VERIFIED: Comprehensive commutativity census across 
 confidence = "high"
 phase = "algebra"
 sprint = 35
-
+insights = [
+    "I-057",
+]
 [[claim]]
 id = "C-642"
 statement = "Exceptional Jordan algebras like Albert preserve the Phase 9 pattern: Jordan algebras are uniformly commutative (100%), while CD algebras are uniformly non-commutative (0% for dim >= 4)."
@@ -10322,7 +10430,9 @@ what_would_verify_refute = "VERIFIED by E-022 cross-validation test: Albert (exc
 confidence = "high"
 phase = "algebra"
 sprint = 35
-
+insights = [
+    "I-057",
+]
 [[claim]]
 id = "C-643"
 statement = "Singh's delta^2 prediction (3/8 = 0.375 for trace-free Albert algebra elements) represents a special case, not a universal invariant. Broad survey shows mean delta^2 approx 3.27 with range [2.51, 3.75]."
@@ -10334,7 +10444,9 @@ what_would_verify_refute = "VERIFIED: 21-element survey across trace-free config
 confidence = "high"
 phase = "algebra"
 sprint = 35
-
+insights = [
+    "I-058",
+]
 [[claim]]
 id = "C-644"
 statement = "Albert algebra structure (3x3 Hermitian matrices over octonions) confirms exceptionality: power-associativity (X^2 . X = X . X^2) holds, but the algebra cannot be embedded in any associative algebra."
@@ -10368,7 +10480,9 @@ what_would_verify_refute = "VERIFIED: Axis 1 law confirmed across tensor product
 confidence = "high"
 phase = "algebra"
 sprint = 35
-
+insights = [
+    "I-059",
+]
 [[claim]]
 id = "C-647"
 statement = "Axis 1 Hypothesis (Construction Method): All tensor product algebras are universally 100% commutative; all recursive doubling algebras (dim >= 4) are universally 0% commutative. This distinction is independent of dimension and metric signature."
@@ -10380,7 +10494,10 @@ what_would_verify_refute = "VERIFIED: Tensor products at dims 4, 8 all pass with
 confidence = "high"
 phase = "algebra"
 sprint = 35
-
+insights = [
+    "I-059",
+    "I-060",
+]
 [[claim]]
 id = "C-648"
 statement = "Axis 2 Hypothesis (Metric Signature): In Cayley-Dickson family only, metric signature gamma determines zero-divisor presence: all-gamma=-1 (Hurwitz) -> division algebra; any-gamma=+1 (split/mixed) -> non-division with zero-divisors. Tensor products have ZD independent of signature; exceptional algebras have no ZD by structure."
@@ -10392,7 +10509,9 @@ what_would_verify_refute = "VERIFIED: Quaternions (Hurwitz, gamma=[-1,-1]) divis
 confidence = "high"
 phase = "algebra"
 sprint = 35
-
+insights = [
+    "I-059",
+]
 [[claim]]
 id = "C-649"
 statement = "Categorical Distinction Theorem Extended (Phase 9): Tensor product algebras and recursive doubling algebras are categorically distinct across all dimensions. No tensor product can represent as any mixed-signature CD algebra. Distinction rooted in commutativity: tensor products preserve it, CD doubling breaks it via conjugation asymmetry."
@@ -10404,7 +10523,10 @@ what_would_verify_refute = "VERIFIED: Tessarines (Phase 9, 100% comm tensor) can
 confidence = "high"
 phase = "algebra"
 sprint = 35
-
+insights = [
+    "I-059",
+    "I-060",
+]
 [[claim]]
 id = "C-650"
 statement = "Norm Multiplicativity Correlation: A composition algebra preserves norm multiplicativity (N(xy) = N(x)N(y)) if and only if it is a division algebra. Tensor products fail (ZD present); exceptional algebras fail (non-division); only Hurwitz CD algebras succeed."
@@ -10416,7 +10538,9 @@ what_would_verify_refute = "VERIFIED: Quaternions (division, Hurwitz) preserve n
 confidence = "high"
 phase = "algebra"
 sprint = 35
-
+insights = [
+    "I-059",
+]
 [[claim]]
 id = "C-651"
 statement = "Registry Event Tracking (W7-001): Centralized event log tracks all modifications to canonical registries with commit metadata. Events logged for claims.toml, insights.toml, experiments.toml, artifact_scrolls.toml. Event schema includes: timestamp, commit_sha, author, change_type (add/update/refute/deprecate), registry_file, record_id, description. Validation gates enforce monotonic sequence numbers/timestamps, record ID resolution, change type enumeration, author non-empty, commit SHA format validation."
@@ -10499,7 +10623,9 @@ claims = [
     "C-659",
 ]
 status_note = "E-027 deferred (p=0.605, inconclusive). PRIMARY validation via STPT-006 (scalar-TOV Cassini gates). E-027 re-parametrization planned for Phase 2."
-
+insights = [
+    "I-064",
+]
 [[claim]]
 id = "C-658"
 statement = "Percolation Threshold Frustration Dependence (Thesis 1 Corollary): Percolation channels preferentially form in low-frustration regions. Mean frustration in channels < mean frustration in background, p < 0.05 (Welch's t-test)."
@@ -10516,7 +10642,9 @@ claims = [
     "C-659",
 ]
 status_note = "E-027 deferred (p=0.605, inconclusive). Depends on C-657 validation via STPT-006. E-027 re-parametrization planned for Phase 2."
-
+insights = [
+    "I-064",
+]
 [[claim]]
 id = "C-659"
 statement = "Besag-Clifford Null Model Rejection (Thesis 1 Robustness): Spatially-shuffled viscosity fields produce distinguishable percolation patterns. Adaptive Besag-Clifford test (1000 permutations) yields p < 0.05."
@@ -10533,7 +10661,9 @@ claims = [
     "C-658",
 ]
 status_note = "E-027 deferred (p=0.584 for null model, inconclusive). Depends on C-657/C-658 validation. E-027 re-parametrization planned for Phase 2."
-
+insights = [
+    "I-064",
+]
 [[claim]]
 id = "C-660"
 statement = "TX-3 Topological Overlap Principle: Monotonic viscosity-frustration transforms (linear, power-law, sigmoid) produce Jaccard overlap = 1.0 in top-k point cloud extraction, yielding Wasserstein distance W2 = 0 against frustration topology. Non-monotonic transforms (exponential with negative coupling) produce overlap = 0.0 and W2 > 0. The constant (null) model produces overlap near 0."
@@ -10611,7 +10741,9 @@ confidence = "medium"
 phase = "Phase 2 Week 3"
 sprint = 39
 status_note = "Full sweep completed: 7 alpha values [0,0.5,1,2,5,10,50]. Max delta_gamma=0.19 at alpha=0.5, significant=true. InverseSquare law persists across all alphas. Non-monotonic alpha dependence: moderate coupling (alpha=0.5-2.0) has largest effect."
-
+insights = [
+    "I-065",
+]
 [[claim]]
 id = "C-666"
 statement = "TX-1 Non-Monotonic Alpha Dependence: Frustration-modulated collision dynamics shows maximum gamma shift at moderate coupling (alpha=0.5, delta_gamma=0.19) with decreasing effect at higher alpha (alpha=10: delta=0.0015, alpha=50: delta=0.006). This suggests frustration modulation has optimal coupling strength; excessive coupling saturates the noise landscape."
@@ -10624,7 +10756,9 @@ confidence = "medium"
 phase = "Phase 2 Week 3"
 sprint = 39
 status_note = "Full sweep at 16^3: alpha=[0,0.5,1,2,5,10,50], delta_gamma=[0,0.190,0.093,0.124,0.053,0.002,0.006]. Peak at alpha=0.5."
-
+insights = [
+    "I-065",
+]
 [[claim]]
 id = "C-667"
 statement = "Thesis 2 3D Associator-Coupled Shear Thickening: Associator norm coupling produces measurable velocity reduction in 3D Kolmogorov flow. At alpha=100, power_index=1.2: velocity reduction = 10.88% (v_nn=0.01271 vs v_newton=0.01426). Tau field range 0.116 (0.668 to 0.783). Shear thickening scales monotonically with alpha and inversely with power_index."
@@ -10637,7 +10771,9 @@ confidence = "medium"
 phase = "Phase 2 Week 3"
 sprint = 39
 status_note = "18-point sweep: 6 alphas x 3 power indices. Significant at (100,1.2). Monotonic alpha scaling confirmed."
-
+insights = [
+    "I-065",
+]
 [[claim]]
 id = "C-668"
 statement = "Thesis 2 Power-Index Sensitivity Hierarchy: Velocity reduction from associator-coupled non-Newtonian flow depends strongly on power-law index. At alpha=100: n=1.2 gives 10.88% reduction, n=1.5 gives 3.52%, n=2.0 gives 0.30%. Lower power indices (closer to Newtonian n=1) produce stronger shear thickening, consistent with strain-rate-dependent viscosity enhancement being a first-order effect."
@@ -10650,7 +10786,9 @@ confidence = "medium"
 phase = "Phase 2 Week 3"
 sprint = 39
 status_note = "Confirmed across all 6 alpha values. The n=1.2:n=1.5:n=2.0 reduction ratio is approximately 30:10:1."
-
+insights = [
+    "I-065",
+]
 [[claim]]
 id = "C-669"
 statement = "TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16^3 with frustration-derived viscosity produce filtration spectra where r2_inverse_square is highest (0.90) but power_law_exponent is positive (+0.39), yielding Undetermined classification. The positive exponent indicates latency increases with radius, opposite to collision-dominated inverse-square decay. Lambda coupling modifies exponent monotonically (0.39 at lambda=0.5 to 0.36 at lambda=10)."
@@ -10663,7 +10801,9 @@ confidence = "low"
 phase = "Phase 2 Week 3"
 sprint = 39
 status_note = "Baseline at 16^3. Undetermined classification may resolve at larger grids where velocity field develops more spatial structure. The positive exponent is physically meaningful (diffusion-dominated regime)."
-
+insights = [
+    "I-065",
+]
 [[claim]]
 id = "C-670"
 statement = "SedenionField4D: 4D extension of the SedenionField lattice abstraction treats the w-dimension as independent 3D slices. Each w-slice gets independent frustration computation (Harary-Zaslavsky per cell). Inter-slice Pearson correlations are near-zero for uniform fields and finite for spatially-varied fields. At 16^4 (65,536 cells), computation is feasible in CPU mode."
@@ -10676,7 +10816,9 @@ confidence = "medium"
 phase = "Phase 2 Week 3"
 sprint = 39
 status_note = "6 tests verify creation, linearization, slice isolation, frustration length, inter-slice uniform, and inter-slice varied."
-
+insights = [
+    "I-065",
+]
 [[claim]]
 id = "C-671"
 statement = "Burn Neural Correction Tensor Training: A 3-layer MLP (256->128->64->16) trained with Adam optimizer on associator-derived targets reduces pentagon violation from 2.50 (algebraic associator) to 0.547 in 50 epochs. MSE drops from 0.0121 to 0.0021. The neural model achieves 78% reduction in pentagon violation by learning the k-averaged structure of the 4D associator tensor as a 2D (i,j)->correction mapping."
@@ -10693,7 +10835,9 @@ claims = [
     "C-673",
 ]
 status_note = "E-029 run: neural violation=0.547 vs associator=2.50. 42,432 parameters. Loss decreases monotonically (7 burn_model tests pass)."
-
+insights = [
+    "I-066",
+]
 [[claim]]
 id = "C-672"
 statement = "Algebraic Optimization Trapped by Associator Basin: Without neural initialization, coordinate descent from the algebraic associator achieves only 0.23% violation reduction (2.500->2.494, 37 accepted steps out of 2500). The associator is a local minimum in the 65536-dimensional correction tensor space. Neural initialization escapes this basin, enabling 78% reduction."
@@ -10710,7 +10854,9 @@ claims = [
     "C-673",
 ]
 status_note = "Three-way comparison: algebraic-only (0.23% improvement), neural+opt (78.8%), neural+perturb (77.5%). Coordinate descent cannot escape the sparse associator basin without a dense initialization."
-
+insights = [
+    "I-066",
+]
 [[claim]]
 id = "C-673"
 statement = "Neural Correction Tensor Perturbation Robustness: At 5% noise perturbation of the sedenion multiplication table, the neural model's pentagon violation increases only 10.5% (from 0.547 to 0.604). At 10% noise, only 10.2% of table entries change. The correction tensor is robust to small algebraic perturbations."
@@ -10727,7 +10873,9 @@ claims = [
     "C-672",
 ]
 status_note = "E-029 perturbation run: noise 2.5%->16 entries, 5%->15 entries, 10%->26 entries. Violation 0.604 at 5% noise."
-
+insights = [
+    "I-066",
+]
 [[claim]]
 id = "C-674"
 statement = "Synthesis Engine 4/4 Gate Pass: All four grand synthesis theses pass their falsification gates in the thesis-synthesis-engine orchestrator. T1: Spearman r=-1.0 (threshold 0.5), T2: viscosity ratio 1.254 (threshold 1.05), T3: optimization reduces violation (ratio<1.0), T4: R^2=0.995 gamma=-2.41 (threshold 0.60). The four theses form a coherent physics synthesis connecting CD algebra to continuum observables."
@@ -10797,7 +10945,10 @@ claims = [
     "C-681",
 ]
 status_note = "GPU-accelerated exact diagonalization via cuSOLVER syevd. D_S_ref=0.3671, D_S(0.01)=0.00827."
-
+insights = [
+    "I-067",
+    "I-087",
+]
 [[claim]]
 id = "C-679"
 statement = "Vacuum Attractor Kubo Enhancement: At the Cayley-Dickson vacuum attractor frustration f=3/8=0.375, the Drude weight suppression ratio g(lambda) = D_S(0)/D_S(lambda) equals 83.4x for dim=8 at T=0.5. This provides first-principles physical grounding for the vacuum attractor coupling strength previously derived from algebraic arguments alone."
@@ -10815,7 +10966,10 @@ claims = [
     "C-681",
 ]
 status_note = "Interpolated from 21-point table. Non-monotonic dips at lambda=0.30, 0.50, 0.75 due to eigenvalue level crossings."
-
+insights = [
+    "I-067",
+    "I-087",
+]
 [[claim]]
 id = "C-680"
 statement = "Full CD Kubo Enhancement Upper Bound: At lambda=1.0 (full octonion algebra, f_CD=0.5429), the Drude weight suppression ratio reaches g=216x for dim=8 at T=0.5. This is the maximum first-principles viscosity enhancement achievable from Cayley-Dickson algebraic frustration. Exponential fit R^2=0.89 captures the trend but misses level-crossing oscillations; lookup table interpolation is the correct coupling method."
@@ -10833,7 +10987,10 @@ claims = [
     "C-681",
 ]
 status_note = "Power-law fit R^2=0.60 fails due to sharp onset. Level crossings at lambda=0.30, 0.50, 0.75 cause non-monotonic dips."
-
+insights = [
+    "I-067",
+    "I-087",
+]
 [[claim]]
 id = "C-681"
 statement = "KuboResponse First-Principles Coupling Model: ViscosityCouplingModel::KuboResponse replaces the tautological linear coupling nu=nu_base*(1+lambda*f) with a 21-point lookup table derived from exact diagonalization of the Kubo formula. The table maps frustration to Drude weight suppression ratio via linear interpolation. At f=0, enhancement=1 (no coupling); enhancement grows monotonically on average but with non-monotonic level-crossing dips. This is the first physics-derived (not postulated) viscosity coupling in the synthesis pipeline."
@@ -10851,7 +11008,11 @@ claims = [
     "C-680",
 ]
 status_note = "Precomputed from kubo-coupling-analysis binary. 21 table entries from lambda=0.00 to 1.00. Maps f -> lambda_eff = f/f_cd, then interpolates."
-
+insights = [
+    "I-067",
+    "I-069",
+    "I-087",
+]
 [[claim]]
 id = "C-682"
 statement = "Integrable Heisenberg Chain Fully Ballistic: At alpha=0 (pure nearest-neighbor Heisenberg chain), the ballistic fraction B = D_S / I0_S = 1.000000, confirming fully ballistic spin transport for the integrable model at N=10, B=3.0, T=0.1. All spin spectral weight resides in the Drude peak."
@@ -10877,7 +11038,10 @@ confidence = "high"
 phase = "Phase 2 Week 3"
 sprint = 41
 status_note = "The D_S enhancement is physical for the polarized regime, not a bug. Standard frustration-suppression requires B=0 or thermodynamic limit."
-
+insights = [
+    "I-068",
+    "I-069",
+]
 [[claim]]
 id = "C-684"
 statement = "M4 Hexagon Residual Nonzero: The associator-based m_3 correction tensor produces a nonzero hexagon (A_5) residual when evaluated with m_4=0, confirming that the sedenion A-infinity structure genuinely requires a quaternary correction m_4 beyond the ternary m_3. The M4CorrectionTensor (16^5 = 1,048,576 entries, 8.4 MB) is implemented and passes 8 unit tests."
@@ -10903,7 +11067,10 @@ confidence = "high"
 phase = "Phase 2 Week 3"
 sprint = 41
 status_note = "Published reference: Castella, Zotos, Prelovsek, PRL 74, 972 (1995). Our code reproduces the exact analytical result."
-
+insights = [
+    "I-068",
+    "I-069",
+]
 [[claim]]
 id = "C-686"
 statement = "Published Benchmark: Polarized-Regime Enhancement Consistent with Varma Mechanism. The 30,778x D_S enhancement with frustration at B=3.0 is physically consistent with the interaction-induced Drude weight enhancement mechanism of Varma & Sanchez PRB 92, 195143 (2015), where interactions suppress frustration effects at intermediate coupling, producing non-monotonic transport behavior. At B>>J, field polarization gaps excitations; J2 competes with polarization, reopening low-energy channels."
@@ -10916,7 +11083,10 @@ confidence = "medium"
 phase = "Phase 2 Week 3"
 sprint = 41
 status_note = "The B=0 standard-regime data (Karrasch PRL 108, 227206; Heidrich-Meisner PRB 68, 134436) shows D_s DECREASING with frustration. Our B=3.0 regime is qualitatively different."
-
+insights = [
+    "I-068",
+    "I-069",
+]
 [[claim]]
 id = "C-687"
 statement = "Published Benchmark: C_V Crossover Shifted by Strong Field. The specific heat peak occurs at alpha=0.80 in our B=3.0, T=0.1, N=10 data, compared to the Okamoto-Nomura critical point alpha_c = 0.2411 at B=0 (PLA 169, 433, 1992). The strong magnetic field shifts the frustration crossover to higher alpha, consistent with field-induced modification of the singlet-triplet gap structure."
@@ -10929,7 +11099,9 @@ confidence = "medium"
 phase = "Phase 2 Week 3"
 sprint = 41
 status_note = "Okamoto-Nomura critical point alpha_c = 0.2411 is for B=0, Delta=1. At B>0, the phase diagram shifts."
-
+insights = [
+    "I-068",
+]
 [[claim]]
 id = "C-688"
 statement = "Canonical Transport Benchmark Dataset: 12 published benchmark values, 6 Bethe ansatz D_s(T=0) reference curves, 10 Karrasch DMRG finite-T Drude weights, 12 Heidrich-Meisner finite-size scaling ratios, 8 Stolpp effective mass values, 10 Stolpp K_th ratios at saturation, 9 Stolpp ED high-magnetization points, and 9 Stolpp ED low-magnetization contrast points encoded as machine-readable TOML in published_transport_benchmarks.toml. Covers 8 papers from Shastry-Sutherland PRL 65 (1990) through Stolpp PRB 99 (2019)."
@@ -10960,7 +11132,9 @@ dependencies = [
     "C-686",
 ]
 status_note = "The strongest literature support for the polarized-regime transport enhancement. Stolpp mechanism: Lifshitz splitting -> doubled carriers -> K_th ~ 1/sqrt(m*) increases."
-
+insights = [
+    "I-069",
+]
 [[claim]]
 id = "C-690"
 statement = "The Sedenionic Homotopy Integrator (SHI) models Kerr null geodesics by preserving algebraic coherence, mapping frame-dragging to sedenionic associativity drift via trilinear M3 gradients."
@@ -11042,6 +11216,7 @@ id = "T-PPT-NEED"
 statement = "The scalar relative polarization parameter P is insufficient to distinguish entangled states from classically correlated states in Lambda-pair systems."
 where_stated = "Thesis 5 Pipeline (`crates/gororoba_engine/src/thesis_pipelines.rs`), STAR spin correlation paper (s41586-025-09920-0) Discussion section."
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite frustration threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration."
 confidence = "high"
@@ -11194,7 +11369,9 @@ what_would_verify_refute = "VERIFIED: wavelet-bridging-sweep reports median impr
 confidence = "high"
 phase = "spectral"
 sprint = 43
-
+insights = [
+    "I-070",
+]
 [[claim]]
 id = "C-704"
 statement = "Meltdown gating reduces p95 concurrency >= 10% vs fixed-eps baseline on the forced-diffusion surrogate across rho in {0.5, 1.0, 1.5, 2.0}. RelErr between adaptive and fixed surrogates is informational (not a PASS criterion) because the two models operate in fundamentally different compression regimes."
@@ -11205,7 +11382,9 @@ what_would_verify_refute = "VERIFIED: meltdown-gating-sweep reports p95 reductio
 confidence = "high"
 phase = "spectral"
 sprint = 43
-
+insights = [
+    "I-071",
+]
 [[claim]]
 id = "C-705"
 statement = "Unresolved wavelet energy has single-exponential ACF with R2 >= 0.50 for eps >= 1e-2 (concentrated-spectral regime) on the forced-diffusion surrogate. Small eps (1e-3, 3e-3) produce wide-band multi-exponential residuals (low R2, reported as INFO only); concentrated residuals at eps >= 1e-2 show clear single-exponential decay."
@@ -11216,7 +11395,9 @@ what_would_verify_refute = "VERIFIED: wavelet-acf-calibration reports R2=0.4490 
 confidence = "high"
 phase = "spectral"
 sprint = 43
-
+insights = [
+    "I-070",
+]
 [[claim]]
 id = "C-706"
 statement = "CHSH Bell parameter |S| > 2 is preserved under >= 19x Haar wavelet compression of coincidence time series when coarsest scaling coefficient is retained (software simulation). The Haar DWT scaling coefficient encodes the signal total exactly (c[0] = sum/sqrt(n)), so the correlation E(a,b) -- computed from aggregated counts -- is invariant under compression and delta_S = 0 exactly."
@@ -11238,7 +11419,9 @@ what_would_verify_refute = "VERIFIED: wo3_optical().drude.is_none() and 5 oscill
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-073",
+]
 [[claim]]
 id = "C-708"
 statement = "Oxygen-deficient WO3-x (x~0.1) is a plasmonic conductor with omega_p=1.07 eV derived from carrier density n~1e21 cm^-3 and effective mass m*=1.2*m_e via omega_p = sqrt(n*e^2/(eps_0*m*))."
@@ -11249,7 +11432,9 @@ what_would_verify_refute = "VERIFIED: Drude parameters omega_p=1.07 eV, gamma=0.
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-073",
+]
 [[claim]]
 id = "C-709"
 statement = "Cesium tungsten bronze Cs0.33WO3 has anisotropic Drude response: c-axis omega_p=4.664 eV, gamma=0.217 eV, eps_inf=6.3; a-b plane omega_p=3.180 eV, gamma=0.335 eV, eps_inf=5.8 (Lynch & Hunter 1991)."
@@ -11260,7 +11445,9 @@ what_would_verify_refute = "VERIFIED: UniaxialOptical stores parallel/perpendicu
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-072",
+]
 [[claim]]
 id = "C-710"
 statement = "UniaxialOptical struct provides non-breaking tensor permittivity infrastructure with polycrystalline averaging formula eps_avg = (eps_par + 2*eps_perp)/3 for scalar Casimir calculations on randomly-oriented grains."
@@ -11271,7 +11458,9 @@ what_would_verify_refute = "VERIFIED: polycrystalline_average() matches (par + 2
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-072",
+]
 [[claim]]
 id = "C-711"
 statement = "CaWO4 (calcium tungstate, scheelite) is a wide-gap dielectric with band gap ~5.0 eV, no Drude carriers, transparent at 2 eV (eps.im < 0.5) and absorbing at 5 eV."
@@ -11315,7 +11504,9 @@ what_would_verify_refute = "VERIFIED: 15 tests covering metals/dielectrics, freq
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-074",
+]
 [[claim]]
 id = "C-715"
 statement = "UniaxialOptical provides 5 anisotropy-specific methods: birefringence (|n_par - n_perp|), dichroism (|k_par - k_perp|), anisotropy_ratio (eps_par/eps_perp), reflectivity_anisotropy (R_par - R_perp), polycrystalline_reflectivity ((R_par + 2*R_perp)/3). Cs0.33WO3 birefringence = 0.0035 at 0.5 eV confirms measurable anisotropy from Drude weight difference."
@@ -11337,7 +11528,9 @@ what_would_verify_refute = "VERIFIED: reflectivity in [0,1] for all 7 materials 
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-074",
+]
 [[claim]]
 id = "C-717"
 statement = "Carrier density estimation from Drude parameters: n = eps_0*m**omega_p^2/e^2. Gold (m*=1.0, omega_p=8.45 eV) gives n ~ 5.9e28 m^-3, consistent with known gold carrier density 5.9e22 cm^-3. WO3-x (m*=1.2, omega_p=1.07 eV) gives n ~ 1e27 m^-3 consistent with x~0.03 oxygen vacancy doping."
@@ -11359,7 +11552,9 @@ what_would_verify_refute = "VERIFIED: xi_1 in [2e14, 3e14] at 300K, spacing doub
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-075",
+]
 [[claim]]
 id = "C-719"
 statement = "Hagen-Rubens reflectivity R ~ 1 - 2*sqrt(2*omega*eps_0/sigma_dc) agrees with full Drude-Lorentz model to within 5% at 5 meV for gold. This validates the low-frequency metallic limit used for Casimir extrapolation below the optical data range."
@@ -11370,7 +11565,9 @@ what_would_verify_refute = "VERIFIED: R_HR > 0.95 at 0.01 eV, |R_HR - R_full| < 
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-075",
+]
 [[claim]]
 id = "C-720"
 statement = "Casimir energy density between parallel plates via Lifshitz formula with Matsubara summation. casimir_energy_density() implements the finite-temperature Lifshitz formula with n_matsubara Matsubara frequencies and n_gauss Gauss-Legendre quadrature for transverse momentum integration. Gold-gold at 100 nm, 300K gives attractive energy of order 1e-4 to 1e-2 J/m^2."
@@ -11403,7 +11600,9 @@ what_would_verify_refute = "VERIFIED: WO3 gap detected at 1e5 threshold (min alp
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-076",
+]
 [[claim]]
 id = "C-723"
 statement = "Lorentz oscillator absorption tails follow alpha ~ omega^2 * S * gamma / (n * omega_0^2 * c) at frequencies well below resonance. For WO3 (S=6, gamma=0.8 eV, omega_0=3.5 eV), this tail keeps alpha > 3.9e4 m^-1 across the entire 0.1-15 eV range. The Lorentz model fundamentally cannot produce the sharp absorption cutoff seen in real band edges (Urbach tail vs Lorentzian tail)."
@@ -11414,7 +11613,9 @@ what_would_verify_refute = "VERIFIED: WO3 min alpha ~ 4e4, CaWO4 min alpha ~ 1.7
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-076",
+]
 [[claim]]
 id = "C-724"
 statement = "Effective electron count N_eff(omega_c) from partial f-sum rule: N_eff = (2*m_e)/(pi*e^2) * integral_0^omega_c sigma_1(omega) domega. For gold at 30 eV cutoff, N_eff > 1e27 m^-3 (approaching the known carrier density ~5.9e28 m^-3). N_eff is monotonically increasing with cutoff energy as more interband transitions are included."
@@ -11425,7 +11626,9 @@ what_would_verify_refute = "VERIFIED: N_eff > 1e27 at 30 eV, monotonic in cutoff
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-077",
+]
 [[claim]]
 id = "C-725"
 statement = "Loss function spectral weight and plasmon identification: loss_spectral_weight() integrates omega*L(omega) to recover omega_p^2 via the loss function sum rule. plasmon_energy_ev() finds the bulk plasmon from the loss function peak, and screened_plasma_ev() finds the Re[eps]=0 crossing. For aluminum (nearly free-electron), plasmon and screened plasma energies agree within 3 eV."
@@ -11436,7 +11639,9 @@ what_would_verify_refute = "VERIFIED: Gold plasmon 3-12 eV, Al plasmon/screened 
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-077",
+]
 [[claim]]
 id = "C-726"
 statement = "Static dielectric constant eps_static = eps_inf + sum(S_j) for insulators (diverges for metals). Spectral weight partitioning: total weight = intraband (Drude) + interband (Lorentz) with both positive and summing to total f-sum. For gold, interband fraction is between 1% and 99% of total. Reststrahlen bands: strong phonon oscillators (S ~ 1) make Re[eps] < 0 above resonance, as confirmed by silica screened plasma crossing at < 1 eV."
@@ -11447,7 +11652,9 @@ what_would_verify_refute = "VERIFIED: silica eps_static in [2, 10], gold has no 
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-077",
+]
 [[claim]]
 id = "C-727"
 statement = "Kramers-Kronig self-consistency validation via subtracted principal-value integral. The method kramers_kronig_error() reconstructs eps_1(omega) from eps_2(omega) using the KK relation with pole subtraction and analytic PV correction, then returns RMS relative error vs the model. The baseline is eps_inf (not 1.0) because eps_inf represents high-energy spectral weight above the cutoff. For Drude-Lorentz models (causal by construction), the error measures numerical quadrature accuracy. Gold and silica both achieve < 50% RMS error at 50 eV cutoff with 20k integration steps, improving with finer grids."
@@ -11458,7 +11665,9 @@ what_would_verify_refute = "VERIFIED: Gold KK error < 50%, silica KK error < 50%
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-078",
+]
 [[claim]]
 id = "C-728"
 statement = "Tauc plot analysis for band-gap spectroscopy: tauc_gap_ev(exponent) extracts direct (exponent=2) and indirect (exponent=0.5) band gaps by linear regression on the steepest segment of (alpha*hv)^exponent vs hv. CaWO4 yields a Tauc direct gap in the UV range (1-10 eV). Metals return None (correct: no gap). WO3 yields both direct and indirect gaps. Penn model gap E_g_Penn = omega_p_eff / sqrt(eps_static - 1) agrees with the single-oscillator prediction within 0.1 eV for a simple test case (E_g = 5/sqrt(2) = 3.536 eV)."
@@ -11469,7 +11678,9 @@ what_would_verify_refute = "VERIFIED: CaWO4 direct gap 1-10 eV, metals None, WO3
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-078",
+]
 [[claim]]
 id = "C-729"
 statement = "Band-gap spectroscopy suite complete: Urbach energy (effective exponential tail parameter, caveat: Lorentz tails are algebraic), absorption onset (energy where alpha reaches fraction of maximum), and JDOS proxy (omega * eps_2, peaks near Lorentz resonances). Urbach energy returns None for metals, positive finite for dielectrics with absorption. JDOS is non-negative everywhere and peaks near oscillator resonances (silica: JDOS at 10.4 eV >> JDOS at 0.5 eV). 14 new tests bring optical database to 133 total tests."
@@ -11480,7 +11691,9 @@ what_would_verify_refute = "VERIFIED: Urbach None for metals, JDOS >= 0, JDOS pe
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-078",
+]
 [[claim]]
 id = "C-730"
 statement = "Temperature-dependent Drude-Lorentz via Bose-Einstein phonon broadening: at_temperature(T, debye_t_k) modifies oscillator damping as gamma_j(T) = gamma_j(0) * coth(omega_0j / (2*k_B*T)) for phonon oscillators, and gamma_Drude(T) = gamma_0 * (1 + (T/T_Debye)^2) via Bloch-Gruneisen for the free-electron Drude term. Oscillator strengths and frequencies are preserved (broadening only). At T -> 0 K, coth -> 1 and gamma_j -> gamma_j(0) (correct low-T limit). At 300 K, Drude damping increases by factor (1 + (300/T_D)^2), which for gold (T_D=170 K) gives ~4.1x broadening. Silica at 600 K has higher Im[eps] than at 300 K across all frequencies (more absorptive when hot)."
@@ -11491,7 +11704,9 @@ what_would_verify_refute = "VERIFIED: damping increases with T, strengths preser
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-079",
+]
 [[claim]]
 id = "C-731"
 statement = "Effective medium theory (EMT) composite wrappers on DrudeLorentzParams: maxwell_garnett_mix() and bruggeman_mix() compute effective dielectric functions for two-component composites. MG limits: f=0 gives host, f=1 gives inclusion (within numerical precision). Bruggeman is symmetric under component exchange: bruggeman(A, B, f) = bruggeman(B, A, 1-f). Both methods delegate to the existing crate::effective_medium module, providing a fluent API on DrudeLorentzParams without code duplication."
@@ -11502,7 +11717,9 @@ what_would_verify_refute = "VERIFIED: MG f=0 matches host, MG f=1 matches inclus
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-079",
+]
 [[claim]]
 id = "C-732"
 statement = "Derived optical quantities: optical_effective_mass() extracts m*/m_e from Drude omega_p and carrier density via m* = n*e^2/(eps_0*omega_p^2*m_e), returning None for dielectrics. dielectric_contrast() computes (eps_1 - eps_2)/(eps_1 + eps_2), appearing in Casimir proximity corrections and surface plasmon dispersion. plasma_screening_ratio() gives omega_p_bare/screened_plasma_ev -- for the eps_inf=1 parameterization with explicit Lorentz oscillators, this ratio is < 1 because interband tails above resonance push the zero-crossing above the bare Drude frequency. Gold screening ratio ~ 0.85. 14 new Part 8 tests bring optical database to 147 total tests, 3673 workspace tests."
@@ -11513,7 +11730,9 @@ what_would_verify_refute = "VERIFIED: Gold m* ~ 1 m_e, dielectrics return None f
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-079",
+]
 [[claim]]
 id = "C-733"
 statement = "Group velocity dispersion (GVD) from Drude-Lorentz models: gvd_beta2() computes d^2k/domega^2 = (1/c)*d(n_g)/domega via finite differences on the group refractive index. Silica at 3 eV (visible) has positive beta_2 (normal dispersion, consistent with known silica dispersion). GVD varies with frequency across the 1-5 eV range. dispersion_regime() classifies as normal (+1), anomalous (-1), or zero (0). zero_dispersion_omega() searches for beta_2=0 crossing via linear interpolation. Conversion to ultrafast units: gvd_fs2_per_mm() = beta_2 * 1e27."
@@ -11524,7 +11743,9 @@ what_would_verify_refute = "VERIFIED: Silica positive beta_2 at 3 eV, GVD varies
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-080",
+]
 [[claim]]
 id = "C-734"
 statement = "Third-order nonlinear susceptibility from Miller's rule: chi3_miller_estimate() computes chi^(3) ~ delta * |chi^(1)|^4 where delta = 4.52e-24 m^2/V^2 (Miller delta). Always positive. Metals have chi^(3) >> dielectrics (100x+ for gold vs silica at 2 eV) because |chi^(1)| = |eps-1| is much larger for metals. Kerr n_2 = 3*chi3/(4*eps_0*c*n^2); for silica at 1.55 eV, n_2 is within 1e-25 to 1e-15 m^2/W (order-of-magnitude agreement with experimental ~2.2e-20 m^2/W). The proportionality between n_2 and chi3/(n^2) is verified to <1e-10 relative error."
@@ -11535,7 +11756,9 @@ what_would_verify_refute = "VERIFIED: chi3 positive, gold >> silica, silica n_2 
 confidence = "medium"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-080",
+]
 [[claim]]
 id = "C-735"
 statement = "Two-photon absorption from Sheik-Bahae model: beta_tpa_estimate() uses beta = K*sqrt(E_p)*F_2(x)/(n^2*E_g^3) where x = 2*hv/E_g, E_p = 21 eV (Kane energy), F_2(x) = (2x-1)^(3/2)/(2x)^5 for x > 0.5. Returns None for metals (no Tauc gap), and None below two-photon threshold (2*hv < E_g). K = 1940 cm/GW = 1.94e-8 m/W. The model gives order-of-magnitude estimates for wide-gap materials; accuracy is limited by the Lorentz tail issue in Tauc gap extraction. 12 new Part 9 tests bring optical database to 159 total tests, 3685 workspace tests."
@@ -11546,7 +11769,9 @@ what_would_verify_refute = "VERIFIED: metals None, below-threshold None, above-t
 confidence = "medium"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-080",
+]
 [[claim]]
 id = "C-736"
 statement = "Surface plasmon polariton (SPP) dispersion from Drude-Lorentz: spp_wavevector() computes k_spp = (omega/c)*sqrt(eps_m*eps_d/(eps_m+eps_d)). For gold at 2 eV in vacuum, Re[k_spp] > omega/c (confined beyond light line). Im[k_spp] > 0 (lossy propagation). spp_propagation_length() = 1/(2*Im[k_spp]) gives ~1-100 um for gold at 1.96 eV. Higher eps_d (glass vs vacuum) confines the SPP more to the metal surface, reducing propagation length."
@@ -11557,7 +11782,9 @@ what_would_verify_refute = "VERIFIED: k_spp > k_light, Im[k_spp] > 0, L_spp in 0
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-081",
+]
 [[claim]]
 id = "C-737"
 statement = "LSPR and evanescent fields: lspr_frequency() finds the Frohlich condition Re[eps_m(omega)] = -2*eps_d for spherical nanoparticles. Gold LSPR at 5.93 eV in our eps_inf=1 DL model (experimental ~2.5 eV requires full d-band). LSPR redshifts in higher-index media (glass vs vacuum). evanescent_decay_length() = c/(omega*sqrt(-Re[eps])) gives 1-10000 nm for metals; returns None for dielectrics with Re[eps] > 0. Dielectrics correctly return None for both LSPR and evanescent decay."
@@ -11568,7 +11795,9 @@ what_would_verify_refute = "VERIFIED: Gold LSPR 1-10 eV, glass redshift, dielect
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-081",
+]
 [[claim]]
 id = "C-738"
 statement = "Fresnel interface optics from Drude-Lorentz: fresnel_rs() and fresnel_rp() compute complex amplitude reflection coefficients via Snell's law and complex cos(theta_t). At normal incidence (theta=0), |r_s|^2 = |r_p|^2 = reflectivity_normal() (verified to < 1e-10). At grazing incidence (theta~86 deg), R_s and R_p both approach 1. brewster_angle() = atan(n2/n1) returns None for absorbing metals (Im[n] > 1% of Re[n]) and valid angles for dielectrics (silica: 40-70 deg). R_p has a minimum at the Brewster angle, verified less than both normal and steep-angle reflectance. 14 new Part 10 tests bring optical database to 173 total tests, 3699 workspace tests."
@@ -11579,7 +11808,9 @@ what_would_verify_refute = "VERIFIED: Normal matches existing method, grazing R 
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-081",
+]
 [[claim]]
 id = "C-739"
 statement = "Gold Rakic 6-oscillator model (gold_rakic_ld): 5 Lorentz oscillators at 0.415, 0.830, 2.969, 4.304, 13.32 eV plus Drude (omega_p_eff=7.87 eV, gamma=0.053 eV) from Rakic et al. Appl. Opt. 37, 5271 (1998). Conversion: S_j = f_j * omega_p^2 / omega_0j^2. Gives LSPR at ~2.6 eV in vacuum (Frohlich condition), matching experimental ~2.5 eV. This is dramatically closer to experiment than the 2-oscillator model (5.93 eV). The low-energy oscillators at 0.415 and 0.830 eV with large S values (~11.4 and ~1.2) capture the d-band contribution that pushes Re[eps] positive at visible frequencies. Database expanded from 30 to 31 materials. 7 new tests, 180 optical tests total, 3706 workspace tests."
@@ -11601,7 +11832,9 @@ what_would_verify_refute = "VERIFIED: Gold |eps_xy| > 0 at B > 0, linear in B fo
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-082",
+]
 [[claim]]
 id = "C-741"
 statement = "Drude transport diagnostics from optical parameters: dc_resistivity() = gamma/(eps_0*omega_p^2) gives bulk resistivity in Ohm*m (gold: ~2.2e-8, literature 2.44e-8). scattering_time() = HBAR_EV_S/gamma gives carrier lifetime (gold: ~1.2e-14 s). carrier_mobility(n) = e*tau/m* estimates Hall mobility (gold at n=5.9e28 m^-3: ~30-50 cm^2/V/s). Resistivity and mobility are self-consistent: rho and 1/(n*e*mu) agree within 20% (exact agreement requires knowing m* independently). All three return None for dielectrics (no Drude term). Extended Drude uses ScatteringModel::gamma_at_ev(0.0)."
@@ -11612,7 +11845,9 @@ what_would_verify_refute = "VERIFIED: Gold resistivity 1e-9 to 1e-7 Ohm*m, scatt
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-082",
+]
 [[claim]]
 id = "C-742"
 statement = "Drude weight D = (pi/2)*omega_p^2*eps_0 quantifies the spectral weight of the free-carrier response: drude_weight() returns D in SI units (C^2/(kg*m^3)). For gold: D ~ 2.5e30, proportional to omega_p^2 (verified: 4x omega_p gives 16x D). plasma_frequency_from_density(n, m_star_ratio) is a static method computing omega_p = sqrt(n*e^2/(eps_0*m_star*m_e)) / EV_TO_RADS in eV, enabling carrier density to plasma frequency conversion. Gold (n=5.9e28/m^3, m*=1): omega_p ~ 9.0 eV (matches Rakic). Dielectrics return None for drude_weight (no free carriers). 15 new Part 11 tests, 202 optical tests total, 3727 workspace tests."
@@ -11623,7 +11858,9 @@ what_would_verify_refute = "VERIFIED: D > 0 for metals, None for dielectrics, D 
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-082",
+]
 [[claim]]
 id = "C-743"
 statement = "Spectroscopic ellipsometry from Drude-Lorentz: psi_delta(omega, theta_i) computes the ellipsometric ratio rho = r_p/r_s = tan(psi)*exp(i*delta) from Fresnel coefficients. At normal incidence, psi = pi/4 (r_s = r_p symmetry). At oblique incidence on metals, delta deviates from 0 (phase shift between p and s polarizations). For dielectrics near the Brewster angle, psi -> 0 (r_p -> 0). Kirchhoff's law emissivity = 1 - R(omega) at normal incidence: metals (gold) have emissivity < 0.2, dielectrics (silica) have emissivity > 0.8 in transparent region. Emissivity + reflectivity = 1 verified to < 1e-12."
@@ -11634,7 +11871,9 @@ what_would_verify_refute = "VERIFIED: psi=pi/4 at normal, delta nonzero for meta
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-083",
+]
 [[claim]]
 id = "C-744"
 statement = "Thermal emission spectroscopy: spectral_emittance(omega, T) = emissivity(omega) * B(omega, T) where B is the Planck function in angular frequency units. Returns 0 at T=0 (no thermal photons), positive at T=300K, and increases with temperature (verified 300K -> 600K). Integrated emissivity eta = integral[e(omega)*B] / integral[B] over a frequency range: gold has lower integrated emissivity than silica (verified). The trapezoidal integration uses 500 points over 0.05-5 eV range."
@@ -11645,7 +11884,9 @@ what_would_verify_refute = "VERIFIED: L=0 at T=0, L>0 at 300K, L(600K) > L(300K)
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-083",
+]
 [[claim]]
 id = "C-745"
 statement = "Epsilon-near-zero (ENZ) and reststrahlen physics: enz_frequency() finds where Re[eps(omega)] = 0 via 2000-point scan + 60-iteration bisection. Gold ENZ = screened plasma frequency (5-12 eV range). enz_group_velocity() = 1/n_g at the ENZ point; physically this can be subluminal or superluminal depending on dispersion. reststrahlen_band() identifies the (omega_TO, omega_LO) boundaries for polar dielectrics using the strongest Lorentz oscillator and the Lyddane-Sachs-Teller (LST) relation: omega_LO^2/omega_TO^2 = eps_static/eps_inf. SrTiO3 has a clear reststrahlen band at IR frequencies; pure Drude metals return None. LST ratio verified self-consistent to < 1%. 16 new Part 12 tests, 218 optical tests total, 3743 workspace tests."
@@ -11656,7 +11897,9 @@ what_would_verify_refute = "VERIFIED: Gold ENZ 5-12 eV, v_g/c > 0.01, SrTiO3 ome
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-083",
+]
 [[claim]]
 id = "C-749"
 statement = "Tabulated real-axis optical data (Johnson & Christy 1972, PRB 6 4370) for Au/Ag/Cu undergoes Kramers-Kronig transform to the imaginary-frequency axis via three-region integration: (1) trapezoidal over tabulated range 0.64-6.60 eV, (2) UV tail 1/omega^3 (Thomas-Reiche-Kuhn free-electron), analytical via partial fractions: eps2_max*omega_max^3/xi^2 * [1/omega_max - pi/(2*xi) + arctan(omega_max/xi)/xi], (3) IR Drude tail analytical: omega_p^2*gamma/(xi^2-gamma^2)*[arctan(omega_min/gamma)/gamma - arctan(omega_min/xi)/xi]. eps(i*xi) is verified monotone-decreasing, approaches 1 at xi >> omega_p (500 eV test), Au eps(i*xi_1) > 50 (metallic), Ag eps > Au eps at low xi (lower scattering rate gamma=0.021 vs 0.072 eV). Full Lifshitz formula via casimir_lifshitz_energy_tabulated() verified negative (attractive) at 100 nm and bounded above 1% of ideal. 9 unit tests pass. Physical properties table (Mohs, Debye T, bulk modulus, density, lattice constant) covers 22 materials."
@@ -11678,7 +11921,9 @@ what_would_verify_refute = "VERIFIED: |SLF| > 0 for metals, peak in 1-15 eV for 
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-084",
+]
 [[claim]]
 id = "C-747"
 statement = "Photonic local density of states (LDOS) near planar surfaces: purcell_factor() = 1 + 3/(4*(kd)^3) * Im[(eps-1)/(eps+1)] gives the spontaneous emission rate enhancement in the near-field regime (kd << 1). At 10nm from gold at 2 eV, |F_P - 1| >> 0.1 (strong LDOS modification). At 1mm, F_P -> 1 (free-space limit recovered). lamb_shift_fractional() = -3/(8*(kd)^3) * Re[(eps-1)/(eps+1)] gives the Casimir-Polder frequency shift, which decreases with distance (1/d^3 scaling)."
@@ -11689,7 +11934,9 @@ what_would_verify_refute = "VERIFIED: |F_P - 1| > 0.1 at 10nm, F_P ~ 1 at 1mm, L
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-084",
+]
 [[claim]]
 id = "C-748"
 statement = "Absorption engineering toolkit: absorption_per_pass() = 1 - exp(-alpha*d) computes single-pass absorption via Beer-Lambert law. Gold at 2 eV: 10nm absorbs partially (0 < A < 1), 100nm absorbs more. optimal_absorber_thickness() = 1/alpha gives the thickness for 63.2% absorption (one penetration depth). impedance_mismatch() = |Z_surface/Z_0 - 1| quantifies how far from perfect absorption: metals have large mismatch (high reflectivity), vacuum has mismatch = 0 exactly, dielectrics intermediate. 14 new Part 13 tests, 232 optical tests, 3766 workspace tests total."
@@ -11700,7 +11947,9 @@ what_would_verify_refute = "VERIFIED: A(10nm) < A(100nm) for gold, d_opt = 1/alp
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-084",
+]
 [[claim]]
 id = "C-750"
 statement = "Oscillator and Drude quality factors: oscillator_quality_factor() = omega_0/gamma for the strongest Lorentz oscillator measures resonance sharpness (long-lived phonon or exciton). SrTiO3 has Q > 1 (underdamped phonons). drude_quality(omega) = omega/gamma measures coherent carrier response cycles before scattering: gold at 1 eV has Q >> 10 (good metal). Dielectrics return None for Drude Q. SPP figure of merit = Re[k_spp]/(2*Im[k_spp]) counts propagation wavelengths: gold FoM > 1 at 1.5 eV, increases at lower frequencies (less loss)."
@@ -11711,7 +11960,9 @@ what_would_verify_refute = "VERIFIED: SrTiO3 Q > 1, gold Drude Q > 10 at 1 eV, S
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-085",
+]
 [[claim]]
 id = "C-751"
 statement = "Spectral weight and optical path length: spectral_weight_window() integrates Re[sigma(omega)] over a frequency window via trapezoidal rule. Gold spectral weight positive, wider window gives larger weight (verified). optical_path_length() = (Re[n]*d, Im[n]*d) determines interference: silica OPL ~ 1.46*d at visible. Im[OPL] < Re[OPL] for transparent materials."
@@ -11722,7 +11973,9 @@ what_would_verify_refute = "VERIFIED: SW > 0 for gold, SW(1-5) > SW(1-2), silica
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-085",
+]
 [[claim]]
 id = "C-752"
 statement = "Coherence and penetration diagnostics: coherence_length() = c/(n*delta_omega) gives maximum interference path difference. Finite bandwidth yields finite lc; monochromatic (delta_omega=0) gives infinite lc. penetration_depth_ratio() = delta/lambda classifies material opacity: metals (gold) have ratio < 1 (opaque within one wavelength), vacuum has ratio = infinity (fully transparent). 13 new Part 14 tests, 245 optical tests total, 3779 workspace tests."
@@ -11733,7 +11986,9 @@ what_would_verify_refute = "VERIFIED: lc finite for delta_omega > 0, infinite fo
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-085",
+]
 [[claim]]
 id = "C-753"
 statement = "Solar-weighted optical metrics from Drude-Lorentz: solar_absorptance() integrates emissivity(omega) weighted by a 5800K blackbody envelope over the atmospheric window (0.3-4.0 eV, AM1.5G approximation). Gold has solar absorptance < 0.5 (high reflectivity), silica > 0.5 (low reflectivity). solar_reflectance() = 1 - solar_absorptance() verified to < 1e-10. antireflection_thickness() computes quarter-wave AR coating d = lambda/(4*sqrt(n_sub)) for destructive interference (silica: 50-500 nm at visible)."
@@ -11744,7 +11999,9 @@ what_would_verify_refute = "VERIFIED: Gold A < 0.5, silica A > 0.5, A+R=1, AR th
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-086",
+]
 [[claim]]
 id = "C-754"
 statement = "Wien displacement law and luminous reflectance: wien_peak_ev(T) = 2.821*k_B*T gives the peak thermal emission energy. At 300K: ~0.07 eV (mid-IR), at 5800K: ~1.4 eV (near-IR/visible). Peak energy is exactly proportional to temperature. wien_peak_omega(T) returns the same in rad/s. luminous_reflectance() weights reflectivity by a Gaussian approximation to the CIE photopic luminosity function (center 2.23 eV = 555 nm, sigma 0.34 eV). Gold has high luminous reflectance (> 0.5), silica low (< 0.3)."
@@ -11755,7 +12012,9 @@ what_would_verify_refute = "VERIFIED: Wien 300K ~0.07 eV, 5800K ~1.4 eV, proport
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-086",
+]
 [[claim]]
 id = "C-755"
 statement = "Selective emitter efficiency for thermophotovoltaics: selective_emitter_efficiency() computes the fraction of thermal emission above a photovoltaic gap frequency, weighted by emissivity and Planck function. Efficiency is between 0 and 1 (verified). Lower gap energy gives higher efficiency (more photons above threshold). 13 new Part 15 tests, 258 optical tests total, 3793 workspace tests (excluding lbm_vulkan compile issue from separate work)."
@@ -11766,7 +12025,9 @@ what_would_verify_refute = "VERIFIED: eta in [0,1], eta(1 eV gap) > eta(3 eV gap
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-086",
+]
 [[claim]]
 id = "C-756"
 statement = "Splicing Ordal (1985) far-IR tabulated data (0.004-0.62 eV for Au, 0.022-0.62 eV for Cu) with Johnson & Christy (1972) visible/UV data into TabulatedNK via const arrays replaces the approximate Drude/1-omega IR tail in the KK transform with real measured optical data, covering the dominant Matsubara pole region (k_B*T ~ 25 meV at 300 K) without requiring an analytical model parameter. Au splice: 86 points total (37 Ordal IR + 49 J&C). Cu splice: 98 points total (49 Ordal IR + 49 J&C). Tests verify monotone energy grids, correct coverage bounds, KK eps(i*xi) monotone decreasing, Drude IR tail within 15% of spliced reference at xi_1 (0.163 eV*EV_TO_RADS), and Casimir energy negative and within 25% of J&C+Drude reference."
@@ -11777,7 +12038,9 @@ what_would_verify_refute = "VERIFIED: 8 new tests pass (monotone energy grids, 8
 confidence = "high"
 phase = "materials"
 sprint = 46
-
+insights = [
+    "I-091",
+]
 [[claim]]
 id = "C-768"
 statement = "Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sedenion Zero-Divisor topology."
@@ -11801,7 +12064,9 @@ what_would_verify_refute = "VERIFIED: 8 tests pass. NA > 0 for silica/air, V > 0
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-088",
+]
 [[claim]]
 id = "C-758"
 statement = "Plasmonic sensing and SERS metrics (field enhancement, SERS enhancement factor, refractive index sensitivity, figure of merit, decay rate enhancement, quantum efficiency near surface, hot-electron generation proxy) provide quantitative nanoparticle sensor design from the Drude-Lorentz dielectric function. SERS enhancement = |E/E_0|^4 from quasistatic Clausius-Mossotti polarizability. 7 tests verify field enhancement > 1 at LSPR, SERS = FE^4, nonzero RI sensitivity, decay rate modification, QE bounds, and hot-electron proxy positivity."
@@ -11812,7 +12077,9 @@ what_would_verify_refute = "VERIFIED: 7 tests pass. FE > 1 for gold at 2.5 eV, S
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-088",
+]
 [[claim]]
 id = "C-759"
 statement = "Thin-film interference and coating metrics (Airy-formula reflectance/transmittance, phase shift, constructive interference orders, Fabry-Perot finesse, CIE 1931 chromaticity coordinates) provide coherent thin-film optics from the DL model. The Airy formula handles absorbing films via complex refractive index with proper phase accounting. CIE color coordinates use Gaussian approximations for x-bar, y-bar, z-bar color-matching functions. 6 tests verify R in [0,1], energy conservation R+T <= 1, positive phase, multiple interference orders for thick films, positive finesse, and valid chromaticity coordinates."
@@ -11823,7 +12090,9 @@ what_would_verify_refute = "VERIFIED: 6 tests pass. R+T <= 1, phase > 0, multipl
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-088",
+]
 [[claim]]
 id = "C-760"
 statement = "Phonon-polariton and IR spectroscopy methods (surface phonon-polariton frequency, polariton wavevector, polariton group velocity, IR activity proxy, isotope shift estimate, Bose-Einstein occupation) connect the DL oscillator model to infrared nanophotonics. SPhP frequency found by bisection where Re[eps] = -eps_d in the Reststrahlen band. Isotope shift follows harmonic approximation delta_omega/omega = 1 - 1/sqrt(M_new/M_old). 6 tests verify SPhP in IR range for SrTiO3, subluminal group velocity, positive IR activity, isotope shift ~0.293 for mass ratio 2, and Bose-Einstein occupation limits (0 at T=0, >>1 at high T)."
@@ -11834,7 +12103,9 @@ what_would_verify_refute = "VERIFIED: 6 tests pass. SPhP in IR for SrTiO3, v_g <
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-089",
+]
 [[claim]]
 id = "C-761"
 statement = "Photoconductivity and carrier dynamics methods (plasma frequency shift, photo-induced absorption, transient reflectivity change, Drude-Smith mobility, carrier recombination time) connect the DL model to ultrafast pump-probe spectroscopy. Drude-Smith model mu_DS = mu_Drude*(1+c) captures carrier localization (c=-1: complete backscattering, c=0: ballistic). Transient reflectivity computed by finite-difference of reflectivity with shifted plasma frequency. 6 tests verify positive plasma shift for carrier injection, nonzero Delta R/R, zero mobility at c=-1, correct recombination time arithmetic, and infinite lifetime at zero generation rate."
@@ -11845,7 +12116,9 @@ what_would_verify_refute = "VERIFIED: 6 tests pass. Delta omega_p > 0 for inject
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-089",
+]
 [[claim]]
 id = "C-762"
 statement = "Mie and Rayleigh scattering methods (Clausius-Mossotti polarizability, Rayleigh cross section, scattering efficiency, Mie extinction efficiency, scattering albedo, absorption cross section, radiation pressure efficiency) derive nanoparticle scattering from the DL dielectric function. The Clausius-Mossotti factor K=(eps-1)/(eps+2) encodes optical contrast with vacuum. Rayleigh cross section scales as a^6 * k^4. In the Rayleigh limit g=0, radiation pressure efficiency equals extinction efficiency. 7 tests verify a^6 scaling, positive cross sections, albedo in [0,1], and Q_pr = Q_ext."
@@ -11856,7 +12129,9 @@ what_would_verify_refute = "VERIFIED: 7 tests pass. a^6 scaling ratio = 64.0, al
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-090",
+]
 [[claim]]
 id = "C-763"
 statement = "Fluctuation electrodynamics and noise methods (fluctuation-dissipation spectral density, thermal noise power density, zero-point energy, Planck spectral energy density, near-field thermal emission, photon tunneling probability, Casimir-Lifshitz force integrand) connect the DL model to thermal radiation and Casimir physics. The fluctuation-dissipation theorem S(omega,T) = (2*hbar*omega/pi)*Im[eps]*(n_BE+1/2) links material loss to thermal noise. Near-field emission is enhanced by 1/(kd)^2. The Casimir integrand uses epsilon at imaginary frequency. 10 tests verify positivity, temperature dependence, ZPE = hbar*omega/2, near-field enhancement, tunneling bounds, and force decay with distance."
@@ -11867,18 +12142,23 @@ what_would_verify_refute = "VERIFIED: 10 tests pass. FD density increases with T
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-090",
+]
 [[claim]]
 id = "C-764"
 statement = "Anharmonic and multiphonon methods (anharmonic linewidth, multiphonon absorption, two-phonon density of states, infrared combination bands) extend the harmonic DL model to temperature-dependent and multi-phonon effects. Anharmonic linewidth gamma(T) = gamma_0 + A*(1+2*n_BE(omega/2,T)) captures cubic decay. Multiphonon absorption uses exponential tail above one-phonon cutoff. Oscillator frequencies are in eV (matching omega_0_ev field). 7 tests verify temperature dependence, zero below cutoff, DOS peaks, sorted bands, and None for invalid indices."
 where_stated = "`crates/materials_core/src/optical_database.rs` (anharmonic_linewidth, multiphonon_absorption, two_phonon_density_of_states, infrared_combination_bands)"
 status = "Verified"
+status_note = "verified_constraint"
 last_verified = "2026-02-17"
 what_would_verify_refute = "VERIFIED: 7 tests pass. gamma increases with T, zero below cutoff, DOS peaks at sum freqs, bands sorted. REFUTE: Linewidth decreases with T, absorption below cutoff nonzero."
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-090",
+]
 [[claim]]
 id = "C-765"
 statement = "Photonic band gap methods (quarter-wave stack gap, peak reflectivity, band gap ratio, Bragg wavelength, group velocity at band edge, omnidirectional gap condition) derive 1D photonic crystal properties from the DL refractive index. Gap width delta_omega/omega_0 = (4/pi)*arcsin(|n_h-n_l|/(n_h+n_l)). Peak reflectivity increases monotonically with N. Group velocity v_g ~ sqrt(1-R) vanishes at the band edge. 6 tests verify symmetric gap, reflectivity increase, positive gap ratio, Bragg lambda > 2*period, and v_g decrease with pairs."
@@ -11889,7 +12169,9 @@ what_would_verify_refute = "VERIFIED: 6 tests pass. Gap symmetric, R increases w
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-090",
+]
 [[claim]]
 id = "C-766"
 statement = "Electrooptic and acoustooptic methods (Pockels delta_n, Kerr electrooptic, half-wave voltage, Franz-Keldysh absorption, photoelastic delta_n, acoustooptic figure of merit) connect the DL model to applied-field phenomena. Pockels effect delta_n = -0.5*n^3*r*E is linear in field. Kerr effect is quadratic. Franz-Keldysh gives sub-gap absorption via tunneling. Acoustooptic M2 = n^6*p^2/(rho*v^3) scales as p^2. 7 tests verify linearity (Pockels), quadratic scaling (Kerr), positive V_pi, FK=0 above gap, strain proportionality, and M2 p^2 scaling."
@@ -11900,7 +12182,9 @@ what_would_verify_refute = "VERIFIED: 7 tests pass. Pockels ratio=2.0, Kerr rati
 confidence = "high"
 phase = "materials"
 sprint = 44
-
+insights = [
+    "I-090",
+]
 [[claim]]
 id = "C-767"
 statement = "Three-region tabulated n,k splice (Ordal IR + J&C visible + Henke XUV, 10-30000 eV) for Au, Ag, Cu reduces UV tail systematic error in the KK imaginary-axis dielectric function: at xi_50 (~8.15 eV), the Henke-extended Au dataset produces eps(i*xi) within 50% of J&C+Drude while eliminating the 1/omega^3 UV extrapolation above 6.6 eV that missed all measured core absorption structure."
