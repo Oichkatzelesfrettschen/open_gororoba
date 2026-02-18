@@ -4061,8 +4061,10 @@ name = "lbm_vulkan"
 version = "0.1.0"
 dependencies = [
  "ash",
+ "bytemuck",
  "env_logger",
  "gpu-allocator 0.28.0",
+ "image 0.25.9",
  "shaderc",
 ]
 

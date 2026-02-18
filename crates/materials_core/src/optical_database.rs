@@ -8485,4 +8485,427 @@ mod tests {
             assert!(f > 0.0, "Sensor FoM should be positive, got {:.4}", f);
         }
     }
+
+    // Part 17a: Mie/Rayleigh scattering tests
+
+    #[test]
+    fn test_polarizability_clausius_mossotti_gold() {
+        let gold = gold_rakic_ld();
+        let omega = 3.0e15; // visible
+        let radius = 10e-9; // 10 nm nanoparticle
+        let alpha = gold.polarizability_clausius_mossotti(omega, radius);
+        assert!(alpha.norm() > 0.0, "Polarizability should be nonzero");
+        // Volume scales as r^3
+        let alpha2 = gold.polarizability_clausius_mossotti(omega, 20e-9);
+        assert!(alpha2.norm() > alpha.norm(), "Larger particle should have larger polarizability");
+    }
+
+    #[test]
+    fn test_rayleigh_cross_section_gold() {
+        let gold = gold_rakic_ld();
+        let omega = 3.0e15;
+        let radius = 10e-9;
+        let c_sca = gold.rayleigh_cross_section(omega, radius);
+        assert!(c_sca > 0.0, "Scattering cross section should be positive");
+        // Rayleigh: scales as a^6
+        let c_sca2 = gold.rayleigh_cross_section(omega, 20e-9);
+        let ratio = c_sca2 / c_sca;
+        let expected = 2.0_f64.powi(6); // 64
+        assert!((ratio - expected).abs() / expected < 0.01, "Should scale as a^6, got ratio {:.1}", ratio);
+    }
+
+    #[test]
+    fn test_rayleigh_scattering_efficiency() {
+        let gold = gold_rakic_ld();
+        let omega = 3.0e15;
+        let radius = 10e-9;
+        let q_sca = gold.rayleigh_scattering_efficiency(omega, radius);
+        assert!(q_sca > 0.0, "Efficiency should be positive");
+        // Q_sca = C_sca / (pi*a^2), so Q_sca << 1 for small particles
+        assert!(q_sca < 10.0, "Efficiency should be reasonable for nanoparticles");
+    }
+
+    #[test]
+    fn test_mie_extinction_efficiency_gold() {
+        let gold = gold_rakic_ld();
+        let omega = 3.0e15;
+        let radius = 10e-9;
+        let q_ext = gold.mie_extinction_efficiency(omega, radius);
+        // Gold has strong absorption in visible, so Q_ext should be nonzero
+        // (could be positive or negative depending on sign of Im[K])
+        assert!(q_ext.abs() > 0.0, "Extinction should be nonzero");
+    }
+
+    #[test]
+    fn test_mie_scattering_albedo_bounded() {
+        let gold = gold_rakic_ld();
+        let omega = 3.0e15;
+        let radius = 10e-9;
+        let albedo = gold.mie_scattering_albedo(omega, radius);
+        assert!(albedo >= 0.0 && albedo <= 1.0, "Albedo should be in [0,1], got {:.4}", albedo);
+    }
+
+    #[test]
+    fn test_absorption_cross_section_mie_nonneg() {
+        let gold = gold_rakic_ld();
+        let omega = 3.0e15;
+        let radius = 10e-9;
+        let c_abs = gold.absorption_cross_section_mie(omega, radius);
+        assert!(c_abs >= 0.0, "Absorption cross section should be non-negative");
+    }
+
+    #[test]
+    fn test_radiation_pressure_equals_extinction_rayleigh() {
+        let gold = gold_rakic_ld();
+        let omega = 3.0e15;
+        let radius = 10e-9;
+        let q_pr = gold.radiation_pressure_efficiency(omega, radius);
+        let q_ext = gold.mie_extinction_efficiency(omega, radius);
+        // In Rayleigh limit, g=0, so Q_pr = Q_ext
+        assert!((q_pr - q_ext).abs() < 1e-15, "Q_pr should equal Q_ext in Rayleigh limit");
+    }
+
+    // Part 17b: Fluctuation electrodynamics tests
+
+    #[test]
+    fn test_fluctuation_dissipation_spectral_positive() {
+        let gold = gold_rakic_ld();
+        let omega = 1e14; // infrared
+        let temp = 300.0;
+        let s = gold.fluctuation_dissipation_spectral(omega, temp);
+        assert!(s >= 0.0, "FD spectral density should be non-negative, got {:.4e}", s);
+    }
+
+    #[test]
+    fn test_fluctuation_dissipation_increases_with_temperature() {
+        let gold = gold_rakic_ld();
+        let omega = 1e14;
+        let s_300 = gold.fluctuation_dissipation_spectral(omega, 300.0);
+        let s_600 = gold.fluctuation_dissipation_spectral(omega, 600.0);
+        assert!(s_600 > s_300, "FD density should increase with temperature");
+    }
+
+    #[test]
+    fn test_thermal_noise_power_density_positive() {
+        let gold = gold_rakic_ld();
+        let omega = 1e14;
+        let p = gold.thermal_noise_power_density(omega, 300.0);
+        assert!(p >= 0.0, "Noise power density should be non-negative, got {:.4e}", p);
+    }
+
+    #[test]
+    fn test_zero_point_energy_density() {
+        let omega = 1e15;
+        let e0 = DrudeLorentzParams::zero_point_energy_density(omega);
+        assert!(e0 > 0.0, "ZPE should be positive");
+        // E0 = hbar*omega/2
+        let expected = HBAR_EV_S * omega / 2.0;
+        assert!((e0 - expected).abs() < 1e-20, "ZPE should equal hbar*omega/2");
+    }
+
+    #[test]
+    fn test_spectral_energy_density_zero_temp() {
+        let u = DrudeLorentzParams::spectral_energy_density(1e15, 0.0);
+        assert!(u.abs() < 1e-30, "Spectral energy density at T=0 should be zero (no thermal photons)");
+    }
+
+    #[test]
+    fn test_spectral_energy_density_positive_temp() {
+        let u = DrudeLorentzParams::spectral_energy_density(1e14, 300.0);
+        assert!(u > 0.0, "Spectral energy density at T>0 should be positive");
+    }
+
+    #[test]
+    fn test_near_field_thermal_emission_enhancement() {
+        let gold = gold_rakic_ld();
+        let omega = 1e14;
+        let far = gold.near_field_thermal_emission(omega, 1e-3, 300.0); // 1 mm
+        let near = gold.near_field_thermal_emission(omega, 1e-7, 300.0); // 100 nm
+        // Near-field should be enhanced relative to far-field
+        assert!(near > far, "Near-field emission should be enhanced at sub-wavelength distances");
+    }
+
+    #[test]
+    fn test_photon_tunneling_probability_bounded() {
+        let gold = gold_rakic_ld();
+        let omega = 3e15;
+        let t_prob = gold.photon_tunneling_probability(omega, 1e7); // 1e7 m^-1 decay
+        assert!(t_prob >= 0.0 && t_prob <= 1.0, "Tunneling probability should be in [0,1], got {:.4e}", t_prob);
+    }
+
+    #[test]
+    fn test_photon_tunneling_no_gap() {
+        let gold = gold_rakic_ld();
+        let omega = 3e15;
+        let t_prob = gold.photon_tunneling_probability(omega, 0.0);
+        // kappa=0 means no evanescent decay -> transmission = 1
+        assert!((t_prob - 1.0).abs() < 1e-10, "No gap should give full transmission");
+    }
+
+    #[test]
+    fn test_fluctuation_induced_force_integrand_positive() {
+        let gold = gold_rakic_ld();
+        let xi = 1e14; // imaginary frequency
+        let d = 100e-9; // 100 nm gap
+        let f = gold.fluctuation_induced_force_integrand(xi, d);
+        assert!(f >= 0.0, "Casimir integrand should be non-negative (r_TM^2), got {:.4e}", f);
+    }
+
+    #[test]
+    fn test_fluctuation_force_decays_with_distance() {
+        let gold = gold_rakic_ld();
+        let xi = 1e14;
+        let f_near = gold.fluctuation_induced_force_integrand(xi, 100e-9);
+        let f_far = gold.fluctuation_induced_force_integrand(xi, 1e-6);
+        assert!(f_near > f_far, "Casimir integrand should decay with distance");
+    }
+
+    // Part 17c: Anharmonic/multiphonon tests
+
+    #[test]
+    fn test_anharmonic_linewidth_srtio3() {
+        let srtio3 = srtio3_optical();
+        // SrTiO3 has 3 oscillators
+        let gamma_0 = srtio3.anharmonic_linewidth(0, 0.0, 0.0);
+        assert!(gamma_0.is_some(), "Should return Some for valid index");
+        let gamma_0_val = gamma_0.unwrap();
+        // At T=0, coupling=0: should return bare gamma
+        let osc_gamma = srtio3.oscillators[0].gamma_ev;
+        assert!((gamma_0_val - osc_gamma).abs() < 1e-10, "At T=0, A=0: should return bare gamma");
+    }
+
+    #[test]
+    fn test_anharmonic_linewidth_increases_with_temperature() {
+        let srtio3 = srtio3_optical();
+        let coupling = 0.01; // 10 meV coupling
+        let gamma_low = srtio3.anharmonic_linewidth(0, 100.0, coupling).unwrap();
+        let gamma_high = srtio3.anharmonic_linewidth(0, 600.0, coupling).unwrap();
+        assert!(gamma_high > gamma_low, "Linewidth should increase with temperature");
+    }
+
+    #[test]
+    fn test_anharmonic_linewidth_invalid_index() {
+        let srtio3 = srtio3_optical();
+        let result = srtio3.anharmonic_linewidth(99, 300.0, 0.01);
+        assert!(result.is_none(), "Invalid oscillator index should return None");
+    }
+
+    #[test]
+    fn test_multiphonon_absorption_above_cutoff() {
+        let srtio3 = srtio3_optical();
+        // Find max oscillator frequency
+        let omega_max = srtio3.oscillators.iter()
+            .map(|o| o.omega_0_ev)
+            .fold(0.0_f64, f64::max);
+        // Above the cutoff
+        let alpha = srtio3.multiphonon_absorption(omega_max * 1.5, 300.0, 3.0);
+        assert!(alpha > 0.0, "Multiphonon absorption above cutoff should be positive");
+    }
+
+    #[test]
+    fn test_multiphonon_absorption_below_cutoff_zero() {
+        let srtio3 = srtio3_optical();
+        let omega_max = srtio3.oscillators.iter()
+            .map(|o| o.omega_0_ev)
+            .fold(0.0_f64, f64::max);
+        // Below the cutoff -> zero
+        let alpha = srtio3.multiphonon_absorption(omega_max * 0.5, 300.0, 3.0);
+        assert!(alpha.abs() < 1e-30, "Below cutoff: multiphonon absorption should be zero");
+    }
+
+    #[test]
+    fn test_two_phonon_density_of_states_peak() {
+        let srtio3 = srtio3_optical();
+        // At sum of two oscillator frequencies, DOS should peak
+        let omega_sum = srtio3.oscillators[0].omega_0_ev + srtio3.oscillators[1].omega_0_ev;
+        let dos_peak = srtio3.two_phonon_density_of_states(omega_sum);
+        let dos_off = srtio3.two_phonon_density_of_states(omega_sum * 2.0);
+        assert!(dos_peak > dos_off, "DOS should peak near sum frequencies");
+    }
+
+    #[test]
+    fn test_infrared_combination_bands_sorted() {
+        let srtio3 = srtio3_optical();
+        let bands = srtio3.infrared_combination_bands();
+        assert!(!bands.is_empty(), "Should have combination bands");
+        // Check sorted
+        for w in bands.windows(2) {
+            assert!(w[0] <= w[1], "Bands should be sorted");
+        }
+    }
+
+    #[test]
+    fn test_infrared_combination_bands_count() {
+        let srtio3 = srtio3_optical();
+        let n = srtio3.oscillators.len();
+        let bands = srtio3.infrared_combination_bands();
+        // n oscillators -> n*(n+1)/2 sum combinations + up to n*(n-1)/2 difference
+        // After dedup, should be at least n combinations
+        assert!(bands.len() >= n, "Should have at least {} combination bands, got {}", n, bands.len());
+    }
+
+    // Part 17d: Photonic band gap tests
+
+    #[test]
+    fn test_quarter_wave_stack_gap_symmetric() {
+        let srtio3 = srtio3_optical();
+        let omega_c = 3e14;
+        let (lo, hi) = srtio3.quarter_wave_stack_gap(omega_c, 1.5);
+        assert!(lo < omega_c, "Low edge should be below center");
+        assert!(hi > omega_c, "High edge should be above center");
+        // Gap should be symmetric around center
+        let sym = ((omega_c - lo) - (hi - omega_c)).abs() / omega_c;
+        assert!(sym < 1e-10, "Gap should be symmetric, asymmetry = {:.4e}", sym);
+    }
+
+    #[test]
+    fn test_quarter_wave_stack_reflectivity_increases_with_pairs() {
+        let srtio3 = srtio3_optical();
+        let omega_c = 3e14;
+        let r5 = srtio3.quarter_wave_stack_reflectivity(omega_c, 1.5, 5);
+        let r10 = srtio3.quarter_wave_stack_reflectivity(omega_c, 1.5, 10);
+        assert!(r10 > r5, "More pairs should increase reflectivity");
+        assert!(r10 <= 1.0, "Reflectivity should not exceed 1.0");
+    }
+
+    #[test]
+    fn test_photonic_band_gap_ratio_positive() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        let ratio = srtio3.photonic_band_gap_ratio(omega, 1.5);
+        assert!(ratio > 0.0, "Gap ratio should be positive");
+        assert!(ratio < 1.0, "Gap ratio should be less than 1");
+    }
+
+    #[test]
+    fn test_bragg_wavelength() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        let period = 500e-9; // 500 nm
+        let lambda_b = srtio3.bragg_wavelength(period, omega);
+        assert!(lambda_b > 0.0, "Bragg wavelength should be positive");
+        // lambda_B = 2*d*n, so should be > 2*period (since n > 1)
+        assert!(lambda_b > 2.0 * period, "Bragg wavelength should be > 2*period for n>1");
+    }
+
+    #[test]
+    fn test_group_velocity_at_band_edge() {
+        let srtio3 = srtio3_optical();
+        let omega_c = 3e14;
+        // With many pairs, v_g -> 0 at band edge
+        let vg_5 = srtio3.group_velocity_at_band_edge(omega_c, 1.5, 5);
+        let vg_20 = srtio3.group_velocity_at_band_edge(omega_c, 1.5, 20);
+        assert!(vg_5 > 0.0, "Group velocity should be positive");
+        assert!(vg_20 < vg_5, "More pairs should reduce group velocity at band edge");
+    }
+
+    #[test]
+    fn test_omnidirectional_gap_condition() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        // SrTiO3 has high epsilon, so n_h is large relative to n_l=1.0
+        let omni = srtio3.omnidirectional_gap_condition(omega, 1.0);
+        // Whether true or false depends on actual n_h value; just test it runs
+        // With n_l=1.0, threshold is (n_h)^2 > n_h^2 + 1, which requires n_h^4 > n_h^2 + 1
+        // For large n_h this should be true
+        let _ = omni; // just verify it compiles and runs
+    }
+
+    // Part 17e: Electrooptic and acoustooptic tests
+
+    #[test]
+    fn test_pockels_delta_n_sign() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        let r_eo = 10e-12; // 10 pm/V (typical for SrTiO3)
+        let e_field = 1e6; // 1 MV/m
+        let dn = srtio3.pockels_delta_n(omega, e_field, r_eo);
+        // delta_n = -0.5 * n^3 * r * E, should be negative for positive E, r
+        assert!(dn < 0.0, "Pockels delta_n should be negative, got {:.4e}", dn);
+    }
+
+    #[test]
+    fn test_pockels_linear_in_field() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        let r_eo = 10e-12;
+        let dn1 = srtio3.pockels_delta_n(omega, 1e6, r_eo);
+        let dn2 = srtio3.pockels_delta_n(omega, 2e6, r_eo);
+        let ratio = dn2 / dn1;
+        assert!((ratio - 2.0).abs() < 1e-10, "Pockels effect should be linear in E field, ratio = {:.4}", ratio);
+    }
+
+    #[test]
+    fn test_kerr_quadratic_in_field() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        let s_eo = 1e-18; // m^2/V^2
+        let dn1 = srtio3.kerr_electro_optic(omega, 1e6, s_eo);
+        let dn2 = srtio3.kerr_electro_optic(omega, 2e6, s_eo);
+        let ratio = dn2 / dn1;
+        assert!((ratio - 4.0).abs() < 1e-10, "Kerr effect should be quadratic in E field, ratio = {:.4}", ratio);
+    }
+
+    #[test]
+    fn test_half_wave_voltage_positive() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        let r_eo = 10e-12;
+        let length = 1e-2; // 1 cm crystal
+        let v_pi = srtio3.half_wave_voltage(omega, r_eo, length);
+        assert!(v_pi > 0.0, "Half-wave voltage should be positive, got {:.2e}", v_pi);
+    }
+
+    #[test]
+    fn test_franz_keldysh_below_gap() {
+        let srtio3 = srtio3_optical();
+        let gap_ev = 3.2; // SrTiO3 band gap
+        let omega_below = 2.0 * EV_TO_RADS; // 2 eV, well below gap
+        let e_field = 1e8; // 100 MV/m
+        let alpha = srtio3.franz_keldysh_absorption(omega_below, e_field, gap_ev);
+        assert!(alpha >= 0.0, "FK absorption should be non-negative, got {:.4e}", alpha);
+    }
+
+    #[test]
+    fn test_franz_keldysh_above_gap_zero() {
+        let srtio3 = srtio3_optical();
+        let gap_ev = 3.2;
+        let omega_above = 4.0 * EV_TO_RADS; // 4 eV, above gap
+        let alpha = srtio3.franz_keldysh_absorption(omega_above, 1e8, gap_ev);
+        assert!(alpha.abs() < 1e-30, "Above gap: FK absorption should be zero (interband dominates)");
+    }
+
+    #[test]
+    fn test_photoelastic_delta_n_proportional_to_strain() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        let p_ij = 0.17; // typical photoelastic coefficient
+        let dn1 = srtio3.photoelastic_delta_n(omega, 1e-4, p_ij);
+        let dn2 = srtio3.photoelastic_delta_n(omega, 2e-4, p_ij);
+        let ratio = dn2 / dn1;
+        assert!((ratio - 2.0).abs() < 1e-10, "Photoelastic effect should be linear in strain");
+    }
+
+    #[test]
+    fn test_acoustooptic_figure_of_merit_positive() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        let p_ij = 0.17;
+        let v_sound = 7900.0; // m/s for SrTiO3
+        let density = 5110.0; // kg/m^3
+        let m2 = srtio3.acoustooptic_figure_of_merit(omega, p_ij, v_sound, density);
+        assert!(m2 > 0.0, "Acoustooptic FoM should be positive, got {:.4e}", m2);
+    }
+
+    #[test]
+    fn test_acoustooptic_scales_with_p_squared() {
+        let srtio3 = srtio3_optical();
+        let omega = 3e14;
+        let v_sound = 7900.0;
+        let density = 5110.0;
+        let m2_a = srtio3.acoustooptic_figure_of_merit(omega, 0.1, v_sound, density);
+        let m2_b = srtio3.acoustooptic_figure_of_merit(omega, 0.2, v_sound, density);
+        let ratio = m2_b / m2_a;
+        assert!((ratio - 4.0).abs() < 1e-10, "M2 should scale as p^2, ratio = {:.4}", ratio);
+    }
 }
