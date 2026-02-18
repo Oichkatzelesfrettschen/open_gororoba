@@ -112,11 +112,11 @@ id = "SIG-0010"
 path = "registry/insights.toml"
 top_level_keys = ["insight"]
 schema_version = "v1"
-schema_sha256 = "7866ed83696d05a4da5d88271bb7c734f066eb1d0a5f33eaaa3a6d719e2bd51e"
-content_sha256 = "7db1f1ed4c6ebd118aee3c884df13cf19954f29e95e5252507d26518eee17f48"
+schema_sha256 = "db4861bc7e5849bff3c200f31ffd15bb14c275cdda3d3c64f6c0ba3b575d526b"
+content_sha256 = "c65eb71bd97b20beddbe0762bb75ec9fe58c741c5aec7dbc68779bc904906b77"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/insights.toml\",\"shapes\":{\"insight\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\"],\"row_count\":86,\"type\":\"array\",\"union_keys\":[\"body\",\"claims\",\"confidence\",\"cross_references\",\"date\",\"description\",\"discovery_date\",\"experimental_support\",\"extension_sprint\",\"id\",\"insight\",\"mechanism_sprint\",\"phase\",\"related_claims\",\"related_files\",\"sprint\",\"status\",\"summary\",\"supporting_evidence\",\"title\",\"verification_status\",\"verified_date\"]}},\"top_level_keys\":[\"insight\"]}"
+shape_json = "{\"path\":\"registry/insights.toml\",\"shapes\":{\"insight\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\"],\"row_count\":87,\"type\":\"array\",\"union_keys\":[\"body\",\"claims\",\"confidence\",\"cross_references\",\"date\",\"description\",\"discovery_date\",\"experimental_support\",\"extension_sprint\",\"id\",\"insight\",\"mechanism_sprint\",\"phase\",\"related_claims\",\"related_files\",\"sprint\",\"status\",\"summary\",\"supporting_evidence\",\"title\",\"verification_status\",\"verified_date\"]}},\"top_level_keys\":[\"insight\"]}"
 
 [[signature]]
 id = "SIG-0011"
