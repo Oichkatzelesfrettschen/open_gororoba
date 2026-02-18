@@ -2841,6 +2841,361 @@ impl DrudeLorentzParams {
         }
         delta_n / generation_rate
     }
+
+    // Part 17a: Mie and Rayleigh Scattering
+    // Small-particle light scattering from Clausius-Mossotti polarizability.
+
+    /// Clausius-Mossotti polarizability: alpha = 4*pi*a^3 * (eps - 1)/(eps + 2).
+    /// Returns complex polarizability in m^3 for a sphere of given radius.
+    pub fn polarizability_clausius_mossotti(&self, omega: f64, radius_m: f64) -> Complex64 {
+        let eps = self.epsilon(omega);
+        let ratio = (eps - 1.0) / (eps + 2.0);
+        4.0 * std::f64::consts::PI * radius_m.powi(3) * ratio
+    }
+
+    /// Rayleigh scattering cross section: C_sca = (8*pi/3) * k^4 * a^6 * |K|^2.
+    /// K = (eps - 1)/(eps + 2) is the Clausius-Mossotti factor.
+    pub fn rayleigh_cross_section(&self, omega: f64, radius_m: f64) -> f64 {
+        let k = omega / C;
+        let eps = self.epsilon(omega);
+        let k_factor = (eps - 1.0) / (eps + 2.0);
+        (8.0 * std::f64::consts::PI / 3.0) * k.powi(4) * radius_m.powi(6) * k_factor.norm_sqr()
+    }
+
+    /// Rayleigh scattering efficiency: Q_sca = C_sca / (pi * a^2).
+    pub fn rayleigh_scattering_efficiency(&self, omega: f64, radius_m: f64) -> f64 {
+        let c_sca = self.rayleigh_cross_section(omega, radius_m);
+        c_sca / (std::f64::consts::PI * radius_m * radius_m)
+    }
+
+    /// Mie extinction efficiency (small particle limit, x << 1):
+    /// Q_ext = 4*x * Im[(eps-1)/(eps+2)] where x = k*a.
+    pub fn mie_extinction_efficiency(&self, omega: f64, radius_m: f64) -> f64 {
+        let k = omega / C;
+        let x = k * radius_m;
+        let eps = self.epsilon(omega);
+        let k_factor = (eps - 1.0) / (eps + 2.0);
+        4.0 * x * k_factor.im
+    }
+
+    /// Mie scattering albedo = Q_sca / Q_ext.
+    /// For very absorbing particles this is near 0; for dielectrics near 1.
+    pub fn mie_scattering_albedo(&self, omega: f64, radius_m: f64) -> f64 {
+        let q_ext = self.mie_extinction_efficiency(omega, radius_m);
+        if q_ext.abs() < 1e-30 {
+            return 0.0;
+        }
+        let q_sca = self.rayleigh_scattering_efficiency(omega, radius_m);
+        (q_sca / q_ext).clamp(0.0, 1.0)
+    }
+
+    /// Absorption cross section from Mie theory (small particle):
+    /// C_abs = C_ext - C_sca.
+    pub fn absorption_cross_section_mie(&self, omega: f64, radius_m: f64) -> f64 {
+        let k = omega / C;
+        let x = k * radius_m;
+        let eps = self.epsilon(omega);
+        let k_factor = (eps - 1.0) / (eps + 2.0);
+        let c_ext = 4.0 * std::f64::consts::PI * radius_m * radius_m * x * k_factor.im;
+        let c_sca = self.rayleigh_cross_section(omega, radius_m);
+        (c_ext - c_sca).max(0.0)
+    }
+
+    /// Radiation pressure efficiency: Q_pr = Q_ext - g * Q_sca.
+    /// In the Rayleigh limit g ~ 0 (isotropic scattering), so Q_pr ~ Q_ext.
+    pub fn radiation_pressure_efficiency(&self, omega: f64, radius_m: f64) -> f64 {
+        // Rayleigh limit: asymmetry parameter g ~ 0
+        self.mie_extinction_efficiency(omega, radius_m)
+    }
+
+    // Part 17b: Fluctuation Electrodynamics and Noise
+    // Thermal and quantum fluctuation properties of dielectric functions.
+
+    /// Fluctuation-dissipation spectral density: S(omega,T) = (2*hbar*omega/pi) * Im[eps] * (n_BE + 1/2).
+    /// Returns spectral density in eV^2/(rad/s) units.
+    pub fn fluctuation_dissipation_spectral(&self, omega: f64, temperature_k: f64) -> f64 {
+        let eps_im = self.epsilon(omega).im;
+        let hbar_omega_ev = HBAR_EV_S * omega;
+        let n_be = if temperature_k > 0.0 && hbar_omega_ev > 0.0 {
+            let x = hbar_omega_ev / (K_B_EV * temperature_k);
+            if x > 500.0 { 0.0 } else { 1.0 / (x.exp() - 1.0) }
+        } else {
+            0.0
+        };
+        (2.0 * hbar_omega_ev / std::f64::consts::PI) * eps_im.abs() * (n_be + 0.5)
+    }
+
+    /// Thermal noise power density: P(omega) = hbar*omega * Im[eps] * coth(hbar*omega / 2*k_B*T).
+    pub fn thermal_noise_power_density(&self, omega: f64, temperature_k: f64) -> f64 {
+        let eps_im = self.epsilon(omega).im;
+        let hbar_omega_ev = HBAR_EV_S * omega;
+        let coth = if temperature_k > 0.0 && hbar_omega_ev > 0.0 {
+            let x = hbar_omega_ev / (2.0 * K_B_EV * temperature_k);
+            if x > 500.0 { 1.0 } else { x.cosh() / x.sinh() }
+        } else {
+            1.0
+        };
+        hbar_omega_ev * eps_im.abs() * coth
+    }
+
+    /// Zero-point energy density per mode: E_0 = hbar*omega/2.
+    pub fn zero_point_energy_density(omega: f64) -> f64 {
+        HBAR_EV_S * omega / 2.0
+    }
+
+    /// Planck spectral energy density: u(omega,T) = (hbar*omega/pi^2*c^3) * n_BE(omega,T).
+    pub fn spectral_energy_density(omega: f64, temperature_k: f64) -> f64 {
+        let hbar_omega_ev = HBAR_EV_S * omega;
+        let n_be = if temperature_k > 0.0 && hbar_omega_ev > 0.0 {
+            let x = hbar_omega_ev / (K_B_EV * temperature_k);
+            if x > 500.0 { 0.0 } else { 1.0 / (x.exp() - 1.0) }
+        } else {
+            0.0
+        };
+        hbar_omega_ev * omega * omega * n_be / (std::f64::consts::PI * std::f64::consts::PI * C * C * C)
+    }
+
+    /// Near-field thermal emission enhancement factor relative to far-field blackbody.
+    /// At sub-wavelength distances, evanescent modes contribute: enhancement ~ 1/(k*d)^2.
+    pub fn near_field_thermal_emission(&self, omega: f64, distance_m: f64, temperature_k: f64) -> f64 {
+        let eps_im = self.epsilon(omega).im;
+        let k = omega / C;
+        let kd = k * distance_m;
+        let n_be = if temperature_k > 0.0 {
+            let x = HBAR_EV_S * omega / (K_B_EV * temperature_k);
+            if x > 500.0 { 0.0 } else { 1.0 / (x.exp() - 1.0) }
+        } else {
+            0.0
+        };
+        // Near-field: evanescent contribution scales as 1/(kd)^2 for d << lambda
+        let evanescent = if kd > 1e-10 && kd < 1.0 { 1.0 / (kd * kd) } else { 1.0 };
+        eps_im.abs() * (n_be + 0.5) * evanescent
+    }
+
+    /// Photon tunneling probability through a vacuum gap of width d.
+    /// Uses the evanescent decay: T ~ exp(-2*kappa*d) where kappa is the
+    /// imaginary part of the wavevector in the gap.
+    pub fn photon_tunneling_probability(&self, omega: f64, kappa_m: f64) -> f64 {
+        if kappa_m <= 0.0 {
+            return 1.0;
+        }
+        let eps = self.epsilon(omega);
+        let r_fresnel = ((eps.sqrt() - 1.0) / (eps.sqrt() + 1.0)).norm_sqr();
+        let transmission = 1.0 - r_fresnel;
+        // Tunneling through evanescent gap
+        transmission * (-2.0 * kappa_m).exp()
+    }
+
+    /// Casimir-Lifshitz force integrand at imaginary frequency xi.
+    /// For two identical half-spaces separated by distance d:
+    /// integrand ~ r_TM^2 * exp(-2*xi*d/c).
+    pub fn fluctuation_induced_force_integrand(&self, xi: f64, distance_m: f64) -> f64 {
+        let eps_xi = self.epsilon_imaginary(xi);
+        // TM reflection coefficient at imaginary frequency
+        let r_tm = (eps_xi - 1.0) / (eps_xi + 1.0);
+        let decay = (-2.0 * xi * distance_m / C).exp();
+        r_tm * r_tm * decay
+    }
+
+    // Part 17c: Anharmonic and Multiphonon Effects
+    // Temperature-dependent phonon broadening and multi-phonon processes.
+
+    /// Anharmonic linewidth broadening: gamma(T) = gamma_0 + A * (1 + 2*n_BE(omega/2, T)).
+    /// Three-phonon (cubic anharmonic) process where a phonon at omega decays into
+    /// two phonons at omega/2. A is the anharmonic coupling coefficient.
+    pub fn anharmonic_linewidth(&self, oscillator_index: usize, temperature_k: f64, coupling_a: f64) -> Option<f64> {
+        let osc = self.oscillators.get(oscillator_index)?;
+        // osc.omega_0_ev is already in eV, use directly for Bose-Einstein
+        let half_omega_ev = osc.omega_0_ev / 2.0;
+        let n_be = if temperature_k > 0.0 && half_omega_ev > 0.0 {
+            let x = half_omega_ev / (K_B_EV * temperature_k);
+            if x > 500.0 { 0.0 } else { 1.0 / (x.exp() - 1.0) }
+        } else {
+            0.0
+        };
+        Some(osc.gamma_ev + coupling_a * (1.0 + 2.0 * n_be))
+    }
+
+    /// Multiphonon absorption coefficient for frequencies above the one-phonon cutoff.
+    /// Uses the Urbach-like exponential tail: alpha ~ exp(-beta * (omega - omega_max) / omega_max).
+    /// omega_ev and oscillator frequencies are compared in eV. Returns absorption coefficient in m^-1.
+    pub fn multiphonon_absorption(&self, omega_ev: f64, temperature_k: f64, beta: f64) -> f64 {
+        if self.oscillators.is_empty() {
+            return 0.0;
+        }
+        // Find maximum phonon frequency in eV
+        let omega_max_ev = self.oscillators.iter()
+            .map(|o| o.omega_0_ev)
+            .fold(0.0_f64, f64::max);
+        if omega_ev <= omega_max_ev || omega_max_ev <= 0.0 {
+            return 0.0;
+        }
+        // Temperature factor: stronger absorption at higher T
+        let t_factor = if temperature_k > 0.0 && omega_max_ev > 0.0 {
+            let x = omega_max_ev / (K_B_EV * temperature_k);
+            if x > 500.0 { 1.0 } else { 1.0 + 1.0 / (x.exp() - 1.0) }
+        } else {
+            1.0
+        };
+        let excess = (omega_ev - omega_max_ev) / omega_max_ev;
+        1e4 * t_factor * (-beta * excess).exp()
+    }
+
+    /// Two-phonon density of states: self-convolution of the oscillator spectrum.
+    /// Approximates the combined DOS at frequency omega_ev (in eV) as the sum over all pairs
+    /// (i,j) where omega_i + omega_j ~ omega.
+    pub fn two_phonon_density_of_states(&self, omega_ev: f64) -> f64 {
+        let mut dos = 0.0;
+        for i in &self.oscillators {
+            for j in &self.oscillators {
+                let sum_ev = i.omega_0_ev + j.omega_0_ev;
+                let width = (i.gamma_ev + j.gamma_ev) * 0.5;
+                if width > 0.0 {
+                    let delta = omega_ev - sum_ev;
+                    dos += i.strength * j.strength / (delta * delta + width * width);
+                }
+            }
+        }
+        dos
+    }
+
+    /// Infrared combination band frequencies: all sum and difference frequencies
+    /// of oscillator pairs. Returns sorted unique frequencies in eV.
+    pub fn infrared_combination_bands(&self) -> Vec<f64> {
+        let mut bands: Vec<f64> = Vec::new();
+        for i in 0..self.oscillators.len() {
+            for j in i..self.oscillators.len() {
+                let sum = self.oscillators[i].omega_0_ev + self.oscillators[j].omega_0_ev;
+                bands.push(sum);
+                let diff = (self.oscillators[i].omega_0_ev - self.oscillators[j].omega_0_ev).abs();
+                if diff > 0.0 {
+                    bands.push(diff);
+                }
+            }
+        }
+        bands.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+        bands.dedup_by(|a, b| (*a - *b).abs() < 1e-6);
+        bands
+    }
+
+    // Part 17d: Photonic Band Gap Estimates
+    // 1D quarter-wave stack (Bragg mirror) properties.
+
+    /// Quarter-wave stack stop band edges for this material (high-n) with a low-n partner.
+    /// Returns (omega_low, omega_high) in rad/s for the first-order stop band.
+    /// The gap width: delta_omega/omega_0 = (4/pi)*arcsin(|n_h - n_l|/(n_h + n_l)).
+    pub fn quarter_wave_stack_gap(&self, omega_center: f64, n_low: f64) -> (f64, f64) {
+        let n_h = self.refractive_index(omega_center).re;
+        let n_l = n_low.max(1.0);
+        let ratio = ((n_h - n_l) / (n_h + n_l)).abs();
+        let half_gap = (2.0 / std::f64::consts::PI) * ratio.asin();
+        (omega_center * (1.0 - half_gap), omega_center * (1.0 + half_gap))
+    }
+
+    /// Quarter-wave stack peak reflectivity for N pairs.
+    /// R = [(n_h/n_l)^(2N) - 1]^2 / [(n_h/n_l)^(2N) + 1]^2.
+    pub fn quarter_wave_stack_reflectivity(&self, omega_center: f64, n_low: f64, n_pairs: u32) -> f64 {
+        let n_h = self.refractive_index(omega_center).re;
+        let n_l = n_low.max(1.0);
+        let r = (n_h / n_l).powi(2 * n_pairs as i32);
+        let num = r - 1.0;
+        let den = r + 1.0;
+        (num / den).powi(2)
+    }
+
+    /// Photonic band gap fractional width: delta_omega/omega_0 = (4/pi)*arcsin(|n_h-n_l|/(n_h+n_l)).
+    pub fn photonic_band_gap_ratio(&self, omega: f64, n_low: f64) -> f64 {
+        let n_h = self.refractive_index(omega).re;
+        let n_l = n_low.max(1.0);
+        let ratio = ((n_h - n_l) / (n_h + n_l)).abs();
+        (4.0 / std::f64::consts::PI) * ratio.asin()
+    }
+
+    /// Bragg wavelength for a given period: lambda_B = 2 * d * n_eff.
+    /// Returns wavelength in meters.
+    pub fn bragg_wavelength(&self, period_m: f64, omega: f64) -> f64 {
+        let n = self.refractive_index(omega).re;
+        2.0 * period_m * n
+    }
+
+    /// Group velocity at band edge (fraction of c).
+    /// Near a stop band edge, v_g -> 0 due to Bragg reflection.
+    /// v_g/c ~ sqrt(1 - R_peak) for finite stacks.
+    pub fn group_velocity_at_band_edge(&self, omega_center: f64, n_low: f64, n_pairs: u32) -> f64 {
+        let r = self.quarter_wave_stack_reflectivity(omega_center, n_low, n_pairs);
+        (1.0 - r).sqrt()
+    }
+
+    /// Omnidirectional gap condition: the gap survives at all incidence angles
+    /// when n_h/n_l > (1 + sin^2(theta_B))/(cos^2(theta_B)) for theta_B = Brewster angle.
+    /// Returns true if the contrast is high enough for an omnidirectional gap.
+    pub fn omnidirectional_gap_condition(&self, omega: f64, n_low: f64) -> bool {
+        let n_h = self.refractive_index(omega).re;
+        let n_l = n_low.max(1.0);
+        // For omnidirectional gap: n_h/n_l must exceed the critical ratio
+        // from Fink et al. (1998): n_h/n_l > ~2.3 for typical cases,
+        // or more precisely: (n_h*n_l)^2 > n_h^2 + n_l^2
+        (n_h * n_l).powi(2) > n_h * n_h + n_l * n_l
+    }
+
+    // Part 17e: Electrooptic and Acoustooptic Effects
+    // Linear and quadratic electrooptic, photoelastic, and acoustooptic methods.
+
+    /// Pockels (linear electrooptic) refractive index change:
+    /// delta_n = -0.5 * n^3 * r * E.
+    /// r_eo is the electrooptic coefficient in m/V (typical 1e-12 to 30e-12).
+    pub fn pockels_delta_n(&self, omega: f64, electric_field_v_m: f64, r_eo: f64) -> f64 {
+        let n = self.refractive_index(omega).re;
+        -0.5 * n.powi(3) * r_eo * electric_field_v_m
+    }
+
+    /// Kerr (quadratic electrooptic) refractive index change:
+    /// delta_n = -0.5 * n^3 * s * E^2.
+    /// s_eo is the Kerr coefficient in m^2/V^2 (typical 1e-20 to 1e-18).
+    pub fn kerr_electro_optic(&self, omega: f64, electric_field_v_m: f64, s_eo: f64) -> f64 {
+        let n = self.refractive_index(omega).re;
+        -0.5 * n.powi(3) * s_eo * electric_field_v_m * electric_field_v_m
+    }
+
+    /// Half-wave voltage for Pockels modulator: V_pi = lambda / (2 * n^3 * r * L).
+    /// Returns voltage in Volts.
+    pub fn half_wave_voltage(&self, omega: f64, r_eo: f64, crystal_length_m: f64) -> f64 {
+        let n = self.refractive_index(omega).re;
+        let lambda = 2.0 * std::f64::consts::PI * C / omega;
+        lambda / (2.0 * n.powi(3) * r_eo * crystal_length_m)
+    }
+
+    /// Franz-Keldysh sub-gap absorption: field-enhanced tunneling absorption
+    /// below the band edge. alpha ~ exp(-4*sqrt(2*m*) * (Eg - hbar*omega)^(3/2) / (3*e*E*hbar)).
+    /// gap_ev is the band gap in eV.
+    pub fn franz_keldysh_absorption(&self, omega: f64, electric_field_v_m: f64, gap_ev: f64) -> f64 {
+        let hbar_j_s = HBAR_EV_S * E_CHARGE; // in J*s
+        let hbar_omega_ev = HBAR_EV_S * omega;
+        if hbar_omega_ev >= gap_ev || electric_field_v_m <= 0.0 {
+            return 0.0;
+        }
+        let delta_e_j = (gap_ev - hbar_omega_ev) * E_CHARGE; // in Joules
+        let m_star = 0.1 * M_E_KG; // effective mass estimate
+        let exponent = -4.0_f64 * (2.0_f64 * m_star).sqrt() * delta_e_j.powf(1.5)
+            / (3.0 * E_CHARGE * electric_field_v_m * hbar_j_s);
+        1e6 * exponent.exp()
+    }
+
+    /// Photoelastic refractive index change: delta_n = -0.5 * n^3 * p * S.
+    /// p_ij is the photoelastic coefficient (dimensionless, typical 0.1-0.3).
+    /// strain is the applied strain (dimensionless).
+    pub fn photoelastic_delta_n(&self, omega: f64, strain: f64, p_ij: f64) -> f64 {
+        let n = self.refractive_index(omega).re;
+        -0.5 * n.powi(3) * p_ij * strain
+    }
+
+    /// Acoustooptic figure of merit: M2 = n^6 * p^2 / (rho * v^3).
+    /// p_ij is the photoelastic coefficient, v_sound in m/s, density in kg/m^3.
+    /// Returns M2 in s^3/kg.
+    pub fn acoustooptic_figure_of_merit(&self, omega: f64, p_ij: f64, v_sound: f64, density: f64) -> f64 {
+        let n = self.refractive_index(omega).re;
+        n.powi(6) * p_ij * p_ij / (density * v_sound.powi(3))
+    }
 }
 
 // ============================================================================

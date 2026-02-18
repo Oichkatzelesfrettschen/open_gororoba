@@ -419,6 +419,10 @@ name = "experiment-c756"
 path = "src/bin/experiment_c756.rs"
 
 [[bin]]
+name = "dump_assessors"
+path = "src/bin/dump_assessors.rs"
+
+[[bin]]
 name = "wavelet-bridging-sweep"
 path = "src/bin/wavelet_bridging_sweep.rs"
 
