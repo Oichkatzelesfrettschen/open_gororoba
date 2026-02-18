@@ -43,6 +43,7 @@ THIRD_PARTY_PATTERNS = (
 IGNORED_PREFIXES = (
     "venv/",
     ".venv/",
+    ".venv_ingest/",
     "target/",
 )
 
@@ -214,14 +215,20 @@ def _all_filesystem_markdown(root: Path) -> set[str]:
         rel = path.relative_to(root).as_posix()
         if rel.startswith(".git/"):
             continue
-        if any(rel.startswith(prefix) for prefix in IGNORED_PREFIXES):
+        if _skip_path(rel):
             continue
         out.add(rel)
     return out
 
 
 def _skip_path(path: str) -> bool:
-    return any(path.startswith(prefix) for prefix in IGNORED_PREFIXES)
+    if any(path.startswith(prefix) for prefix in IGNORED_PREFIXES):
+        return True
+    parts = path.split("/")
+    # Skip any directory named venv, .venv, or target at any level
+    if any(p in {"venv", ".venv", "target"} for p in parts):
+        return True
+    return False
 
 
 def _is_archived(path: str) -> bool:
