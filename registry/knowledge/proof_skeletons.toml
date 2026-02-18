@@ -4,7 +4,7 @@
 [knowledge_proof_skeletons]
 updated = "deterministic"
 authoritative = true
-skeleton_count = 709
+skeleton_count = 716
 
 [[skeleton]]
 id = "PRS-00001"
@@ -12663,6 +12663,132 @@ evidence_refs = ["crates/materials_core/src/optical_database.rs"]
 [[skeleton]]
 id = "PRS-00704"
 skeleton_kind = "claim_decision_rule"
+theorem_label = "C-703"
+claim_id = "C-703"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-703."]
+derivation_steps = ["VERIFIED: Delta-chi^2 = 0", "228, P-value = 0", "96 (Feldman-Cousins)", "Two-beam (BNB + NuMI) analysis with full LArTPC event selection", "Combined contour excludes all 3+1 sterile neutrino parameter space explaining LSND and MiniBooNE simultaneously at > 95% CL", "WHAT WOULD REFUTE: a 5-sigma excess in the nu_e appearance channel in the 200-1200 MeV energy range with the expected L/E dependence"]
+decision_rule = "VERIFIED: Delta-chi^2 = 0.228, P-value = 0.96 (Feldman-Cousins). Two-beam (BNB + NuMI) analysis with full LArTPC event selection. Combined contour excludes all 3+1 sterile neutrino parameter space explaining LSND and MiniBooNE simultaneously at > 95% CL. WHAT WOULD REFUTE: a 5-sigma excess in the nu_e appearance channel in the 200-1200 MeV energy range with the expected L/E dependence."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-703"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-703", "E-039"]
+evidence_refs = ["E-039", "registry/claims.toml", "registry/experiments.toml"]
+
+[[skeleton]]
+id = "PRS-00705"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-704"
+claim_id = "C-704"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-704."]
+derivation_steps = ["VERIFIED: Five independent KNM analysis chains agree to < 1% level", "No spectral distortion above threshold in the last 40 eV below the Q-value", "Best-fit sterile from gallium anomaly (m4 ~ 10 eV, sin^2(2 theta_ee) ~ 0", "2) excluded at 96", "6% CL", "WHAT WOULD REFUTE: a statistically significant kink or spectral depletion near E_0 - m4 with m4 in the eV-scale range"]
+decision_rule = "VERIFIED: Five independent KNM analysis chains agree to < 1% level. No spectral distortion above threshold in the last 40 eV below the Q-value. Best-fit sterile from gallium anomaly (m4 ~ 10 eV, sin^2(2 theta_ee) ~ 0.2) excluded at 96.6% CL. WHAT WOULD REFUTE: a statistically significant kink or spectral depletion near E_0 - m4 with m4 in the eV-scale range."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-704"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-704", "E-039"]
+evidence_refs = ["E-039", "registry/claims.toml", "registry/experiments.toml"]
+
+[[skeleton]]
+id = "PRS-00706"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-705"
+claim_id = "C-705"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-705."]
+derivation_steps = ["VERIFIED: Full detector fiducial volume scan shows no spatial oscillation pattern", "New exclusion contour covers Delta_m^2 ~ 1-10 eV^2 at short baseline (6-9 m from core)", "WHAT WOULD REFUTE: a periodic spatial modulation of the anti-nu_e spectrum with the L/E dependence predicted by a sterile with Delta_m^2 in the 1-10 eV^2 range"]
+decision_rule = "VERIFIED: Full detector fiducial volume scan shows no spatial oscillation pattern. New exclusion contour covers Delta_m^2 ~ 1-10 eV^2 at short baseline (6-9 m from core). WHAT WOULD REFUTE: a periodic spatial modulation of the anti-nu_e spectrum with the L/E dependence predicted by a sterile with Delta_m^2 in the 1-10 eV^2 range."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-705"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-705", "E-039"]
+evidence_refs = ["E-039", "registry/claims.toml", "registry/experiments.toml"]
+
+[[skeleton]]
+id = "PRS-00707"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-706"
+claim_id = "C-706"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-706."]
+derivation_steps = ["VERIFIED: Four-sample fit consistent with 3nu standard model", "Additional sterile mixing fractions theta_24, theta_34 constrained to near zero", "WHAT WOULD REFUTE: a deficit in the nu_mu disappearance channel that cannot be explained by standard 3nu mixing with the Delta_m^2_32 already constrained by NOvA/T2K"]
+decision_rule = "VERIFIED: Four-sample fit consistent with 3nu standard model. Additional sterile mixing fractions theta_24, theta_34 constrained to near zero. WHAT WOULD REFUTE: a deficit in the nu_mu disappearance channel that cannot be explained by standard 3nu mixing with the Delta_m^2_32 already constrained by NOvA/T2K."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-706"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-706", "E-039"]
+evidence_refs = ["E-039", "registry/claims.toml", "registry/experiments.toml"]
+
+[[skeleton]]
+id = "PRS-00708"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-707"
+claim_id = "C-707"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-707."]
+derivation_steps = ["VERIFIED: Stacked spectrum of 10 clusters with Resolve micro-calorimeter (7 eV resolution)", "No excess at 3", "5 keV above continuum model", "Constraint on mixing angle sin^2(2 theta) < 10^-11 for m_s ~ 7 keV", "WHAT WOULD REFUTE: a 5-sigma spectral residual at 3", "5 keV in the stacked cluster spectrum consistent with the expected flux from decay of a 7 keV sterile DM candidate"]
+decision_rule = "VERIFIED: Stacked spectrum of 10 clusters with Resolve micro-calorimeter (7 eV resolution). No excess at 3.5 keV above continuum model. Constraint on mixing angle sin^2(2 theta) < 10^-11 for m_s ~ 7 keV. WHAT WOULD REFUTE: a 5-sigma spectral residual at 3.5 keV in the stacked cluster spectrum consistent with the expected flux from decay of a 7 keV sterile DM candidate."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-707"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-707", "E-039"]
+evidence_refs = ["E-039", "registry/claims.toml", "registry/experiments.toml"]
+
+[[skeleton]]
+id = "PRS-00709"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-708"
+claim_id = "C-708"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-708."]
+derivation_steps = ["VERIFIED: Delta-AIC and Bayesian evidence strongly prefer vanilla Lambda-CDM over any N_eff extension including a thermalised sterile", "Effective number of relativistic species N_eff = 3", "04 +/- 0", "05, consistent with three active flavors", "WHAT WOULD REFUTE: a > 3-sigma preference for N_eff > 3", "1 in the joint dataset with a spectral shape matching a fully thermalised eV-scale sterile"]
+decision_rule = "VERIFIED: Delta-AIC and Bayesian evidence strongly prefer vanilla Lambda-CDM over any N_eff extension including a thermalised sterile. Effective number of relativistic species N_eff = 3.04 +/- 0.05, consistent with three active flavors. WHAT WOULD REFUTE: a > 3-sigma preference for N_eff > 3.1 in the joint dataset with a spectral shape matching a fully thermalised eV-scale sterile."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-708"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-708", "E-039"]
+evidence_refs = ["E-039", "registry/claims.toml", "registry/experiments.toml"]
+
+[[skeleton]]
+id = "PRS-00710"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-709"
+claim_id = "C-709"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-709."]
+derivation_steps = ["OPEN: Would be supported by a derivation showing that the effective field theory of the sedenionic sub-associator sector reproduces the seesaw mass matrix structure m_nu ~ m_D^2/M_N, with M_N corresponding to a UV cutoff set by the frustration attractor F = 3/8", "Would be refuted by a proof that no Lorentz-invariant, gauge-singlet field arises from the sedenion zero-divisor sector without violating the existing SM symmetry structure"]
+decision_rule = "OPEN: Would be supported by a derivation showing that the effective field theory of the sedenionic sub-associator sector reproduces the seesaw mass matrix structure m_nu ~ m_D^2/M_N, with M_N corresponding to a UV cutoff set by the frustration attractor F = 3/8. Would be refuted by a proof that no Lorentz-invariant, gauge-singlet field arises from the sedenion zero-divisor sector without violating the existing SM symmetry structure."
+conclusion = "OPEN: Open"
+source_uid = "C-709"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-709", "E-039"]
+evidence_refs = ["E-039", "crates/vacuum_frustration/src/lib.rs", "registry/claims.toml", "registry/experiments.toml"]
+
+[[skeleton]]
+id = "PRS-00711"
+skeleton_kind = "claim_decision_rule"
 theorem_label = "T-AMPLITUDE-FRUSTRATION-MINIMA"
 claim_id = "T-AMPLITUDE-FRUSTRATION-MINIMA"
 assumptions = []
@@ -12679,7 +12805,7 @@ claim_refs = ["T-AMPLITUDE-FRUSTRATION-MINIMA"]
 evidence_refs = ["crates/gororoba_cli/src/bin/amplitude_frustration_survey.rs"]
 
 [[skeleton]]
-id = "PRS-00705"
+id = "PRS-00712"
 skeleton_kind = "claim_decision_rule"
 theorem_label = "T-CHAMBER-DISCRETE"
 claim_id = "T-CHAMBER-DISCRETE"
@@ -12697,7 +12823,7 @@ claim_refs = ["T-CHAMBER-DISCRETE"]
 evidence_refs = []
 
 [[skeleton]]
-id = "PRS-00706"
+id = "PRS-00713"
 skeleton_kind = "claim_decision_rule"
 theorem_label = "T-CMS-SIGN-CHALLENGE"
 claim_id = "T-CMS-SIGN-CHALLENGE"
@@ -12715,7 +12841,7 @@ claim_refs = ["E-038", "T-CMS-SIGN-CHALLENGE"]
 evidence_refs = ["E-038", "crates/gororoba_cli/src/bin/lhc_2025_qgp_synthesis.rs"]
 
 [[skeleton]]
-id = "PRS-00707"
+id = "PRS-00714"
 skeleton_kind = "claim_decision_rule"
 theorem_label = "T-PPT-NEED"
 claim_id = "T-PPT-NEED"
@@ -12733,7 +12859,7 @@ claim_refs = ["E-036", "T-PPT-NEED"]
 evidence_refs = ["E-036", "crates/gororoba_engine/src/thesis_pipelines.rs"]
 
 [[skeleton]]
-id = "PRS-00708"
+id = "PRS-00715"
 skeleton_kind = "claim_decision_rule"
 theorem_label = "T-QGP-VORTICITY"
 claim_id = "T-QGP-VORTICITY"
@@ -12751,7 +12877,7 @@ claim_refs = ["E-038", "T-QGP-VORTICITY"]
 evidence_refs = ["E-038", "crates/cd_spin_bridge/src/qgp_model.rs"]
 
 [[skeleton]]
-id = "PRS-00709"
+id = "PRS-00716"
 skeleton_kind = "claim_decision_rule"
 theorem_label = "T-SPIN-CD"
 claim_id = "T-SPIN-CD"

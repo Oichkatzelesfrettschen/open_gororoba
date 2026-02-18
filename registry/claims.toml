@@ -11183,3 +11183,81 @@ what_would_verify_refute = "VERIFIED: At 0.1 eV, Smith (c=-0.8) has less negativ
 confidence = "high"
 phase = "materials"
 sprint = 43
+
+[[claim]]
+id = "C-703"
+statement = "MicroBooNE (Fermilab LArTPC) finds no evidence for nu_mu -> nu_e oscillations or nu_e disappearance; excludes the single light sterile neutrino (3+1) interpretation of LSND/MiniBooNE anomalies at 95% CL."
+where_stated = "`registry/claims.toml`, `registry/experiments.toml` (E-039); Nature 648 (3 Dec 2025), doi:10.1038/s41586-025-09757-7; Fermilab official release 3 Dec 2025"
+status = "Verified"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFIED: Delta-chi^2 = 0.228, P-value = 0.96 (Feldman-Cousins). Two-beam (BNB + NuMI) analysis with full LArTPC event selection. Combined contour excludes all 3+1 sterile neutrino parameter space explaining LSND and MiniBooNE simultaneously at > 95% CL. WHAT WOULD REFUTE: a 5-sigma excess in the nu_e appearance channel in the 200-1200 MeV energy range with the expected L/E dependence."
+confidence = "high"
+phase = "particle"
+sprint = 44
+
+[[claim]]
+id = "C-704"
+statement = "KATRIN direct neutrino mass measurement (259 live days, 36M electrons, tritium beta endpoint) finds no spectral kink corresponding to a sterile neutrino; excludes the gallium anomaly best-fit sterile neutrino at 96.6% CL and fully rules out the Neutrino-4 reactor claim."
+where_stated = "`registry/claims.toml`, `registry/experiments.toml` (E-039); Nature 648 (3 Dec 2025), doi:10.1038/s41586-025-09739-9; KNM3-KNM5 analysis patches"
+status = "Verified"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFIED: Five independent KNM analysis chains agree to < 1% level. No spectral distortion above threshold in the last 40 eV below the Q-value. Best-fit sterile from gallium anomaly (m4 ~ 10 eV, sin^2(2 theta_ee) ~ 0.2) excluded at 96.6% CL. WHAT WOULD REFUTE: a statistically significant kink or spectral depletion near E_0 - m4 with m4 in the eV-scale range."
+confidence = "high"
+phase = "particle"
+sprint = 44
+
+[[claim]]
+id = "C-705"
+statement = "PROSPECT (NIST reactor, 6Li-loaded liquid scintillator) finds no position-dependent anti-nu_e disappearance; provides new exclusion band in (Delta_m^2_41, sin^2(2 theta_ee)) at masses inaccessible to other experiments."
+where_stated = "`registry/claims.toml`, `registry/experiments.toml` (E-039); Phys. Rev. Lett. 134, 151802 (14 Apr 2025)"
+status = "Verified"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFIED: Full detector fiducial volume scan shows no spatial oscillation pattern. New exclusion contour covers Delta_m^2 ~ 1-10 eV^2 at short baseline (6-9 m from core). WHAT WOULD REFUTE: a periodic spatial modulation of the anti-nu_e spectrum with the L/E dependence predicted by a sterile with Delta_m^2 in the 1-10 eV^2 range."
+confidence = "high"
+phase = "particle"
+sprint = 44
+
+[[claim]]
+id = "C-706"
+statement = "NOvA long-baseline disappearance analysis (4 simultaneous samples: nu_mu/anti-nu_mu appearance + disappearance) finds no evidence for sterile neutrino mixing and sets leading exclusion limits ruling out parameter combinations incompatible with 3-active-flavor oscillation."
+where_stated = "`registry/claims.toml`, `registry/experiments.toml` (E-039); Phys. Rev. Lett. 134, 081804 (26 Feb 2025)"
+status = "Verified"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFIED: Four-sample fit consistent with 3nu standard model. Additional sterile mixing fractions theta_24, theta_34 constrained to near zero. WHAT WOULD REFUTE: a deficit in the nu_mu disappearance channel that cannot be explained by standard 3nu mixing with the Delta_m^2_32 already constrained by NOvA/T2K."
+confidence = "high"
+phase = "particle"
+sprint = 44
+
+[[claim]]
+id = "C-707"
+statement = "XRISM (X-ray Imaging and Spectroscopy Mission) stacked observation of 10 galaxy clusters finds no unidentified emission line at 3.5 keV; sets 3-sigma upper limit on keV-scale sterile neutrino decay rate Gamma < 1e-27 s^-1, ruling out the DM interpretation of the 3.5 keV line claim."
+where_stated = "`registry/claims.toml`, `registry/experiments.toml` (E-039); Astrophys. J. Lett. (Nov 2025)"
+status = "Verified"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFIED: Stacked spectrum of 10 clusters with Resolve micro-calorimeter (7 eV resolution). No excess at 3.5 keV above continuum model. Constraint on mixing angle sin^2(2 theta) < 10^-11 for m_s ~ 7 keV. WHAT WOULD REFUTE: a 5-sigma spectral residual at 3.5 keV in the stacked cluster spectrum consistent with the expected flux from decay of a 7 keV sterile DM candidate."
+confidence = "high"
+phase = "particle"
+sprint = 44
+
+[[claim]]
+id = "C-708"
+statement = "DESI 2024 BAO + Planck + ACT + SN Ia + weak-lensing joint fit finds no cosmological preference for an additional light sterile species; Lambda-CDM+Sterile and wCDM+Sterile models provide no evidence over standard model, with only a marginal 2-sigma hint in one w0wa extension that vanishes under standard priors."
+where_stated = "`registry/claims.toml`, `registry/experiments.toml` (E-039); arXiv:2501.10785 (Jan 2025); arXiv:2507.01153 and arXiv:2501.08988 (global fits 2025)"
+status = "Verified"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFIED: Delta-AIC and Bayesian evidence strongly prefer vanilla Lambda-CDM over any N_eff extension including a thermalised sterile. Effective number of relativistic species N_eff = 3.04 +/- 0.05, consistent with three active flavors. WHAT WOULD REFUTE: a > 3-sigma preference for N_eff > 3.1 in the joint dataset with a spectral shape matching a fully thermalised eV-scale sterile."
+confidence = "high"
+phase = "particle"
+sprint = 44
+
+[[claim]]
+id = "C-709"
+statement = "The eight unused sedenionic basis directions (indices 8-15) beyond the octonionic subalgebra (indices 0-7) form a structurally natural habitat for BSM fields including heavy/virtual sterile neutrinos, via the zero-divisor sector and sub-associator dynamics; this is a theoretical proposal, not a confirmed detection."
+where_stated = "`registry/claims.toml`, `registry/experiments.toml` (E-039), `crates/vacuum_frustration/src/lib.rs`; Tang (2025) sedenionic QED preprint (arXiv:2511.0427); DOC-0056 sedenion dark sector analysis"
+status = "Open"
+last_verified = "2026-02-18"
+what_would_verify_refute = "OPEN: Would be supported by a derivation showing that the effective field theory of the sedenionic sub-associator sector reproduces the seesaw mass matrix structure m_nu ~ m_D^2/M_N, with M_N corresponding to a UV cutoff set by the frustration attractor F = 3/8. Would be refuted by a proof that no Lorentz-invariant, gauge-singlet field arises from the sedenion zero-divisor sector without violating the existing SM symmetry structure."
+confidence = "low"
+phase = "particle"
+sprint = 44
+claims = ["C-703", "C-704", "C-705", "C-706", "C-707", "C-708"]

@@ -536,3 +536,9 @@ description = "Demonstration of E-027 frustration-viscosity experiment grounded 
 name = "demo-optical-titanates"
 crate = "gororoba_cli"
 description = "Optical database and titanate material families demo: Rakic metals, C-418 gap materials, titanates, TCOs, extended Drude, falsifiable theses"
+
+[[binary]]
+name = "sterile-neutrino-audit"
+crate = "gororoba_cli"
+description = "Literature synthesis audit: sterile neutrino null results 2025-2026 (MicroBooNE, KATRIN, PROSPECT, NOvA, XRISM, DESI+Planck cosmological fits)"
+experiment = "E-039"

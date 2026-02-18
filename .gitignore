@@ -83,6 +83,9 @@ bin/micromamba
 *.db
 *.sqlite3
 
+# Rust build artifacts
+target/
+
 # Compiler crash dumps
 rustc-ice-*.txt
 

@@ -4,10 +4,10 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 36
+experiment_count = 37
 deterministic_count = 19
 gpu_count = 3
-seeded_count = 18
+seeded_count = 19
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
 
 [[experiment]]
@@ -855,4 +855,28 @@ input_path_refs = ["data/external/lhc_2025/"]
 output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-039"
+title = "Sterile Neutrino Null Result Audit (2025-2026)"
+binary = "sterile-neutrino-audit"
+binary_registered = true
+binary_experiment_declared = "E-039"
+method = "Clean-system audit of all primary experimental data streams relevant to light eV-scale sterile neutrinos (2025-2026 dataset stack): accelerator beams (MicroBooNE), tritium beta-decay spectra (KATRIN), reactor cores (PROSPECT), long-baseline oscillations (NOvA), cosmological fits (DESI+Planck+ACT), and X-ray astrophysics (XRISM). Null hypothesis: no sterile neutrino at eV or keV scale detectable at current sensitivity."
+input = "Published experimental results (Nature 2025, PRL 2025, ApJL 2025, arXiv 2025-2026)"
+output = ["reports/sterile_neutrino_audit_2026_02_18.md"]
+run = "N/A (literature synthesis)"
+run_command_sha256 = "a5e0d66484bb7f6f8991742a2bca14ff64996c91e4ebb5717e7befb8feb7ddaf"
+claims = ["C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709"]
+claim_refs = ["C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709"]
+deterministic = false
+seed = 0
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-037"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "seeded_stochastic_replay"
 

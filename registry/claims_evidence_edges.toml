@@ -4,7 +4,7 @@
 [claims_evidence_edges]
 updated = "deterministic"
 authoritative = true
-edge_count = 1951
+edge_count = 1973
 
 [[edge]]
 id = "CED-00001"
@@ -13595,69 +13595,223 @@ target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01942"
+claim_id = "C-703"
+edge_role = "cross_reference"
+target_ref = "E-039"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01943"
+claim_id = "C-703"
+edge_role = "where_stated"
+target_ref = "registry/claims.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01944"
+claim_id = "C-703"
+edge_role = "where_stated"
+target_ref = "registry/experiments.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01945"
+claim_id = "C-704"
+edge_role = "cross_reference"
+target_ref = "E-039"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01946"
+claim_id = "C-704"
+edge_role = "where_stated"
+target_ref = "registry/claims.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01947"
+claim_id = "C-704"
+edge_role = "where_stated"
+target_ref = "registry/experiments.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01948"
+claim_id = "C-705"
+edge_role = "cross_reference"
+target_ref = "E-039"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01949"
+claim_id = "C-705"
+edge_role = "where_stated"
+target_ref = "registry/claims.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01950"
+claim_id = "C-705"
+edge_role = "where_stated"
+target_ref = "registry/experiments.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01951"
+claim_id = "C-706"
+edge_role = "cross_reference"
+target_ref = "E-039"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01952"
+claim_id = "C-706"
+edge_role = "where_stated"
+target_ref = "registry/claims.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01953"
+claim_id = "C-706"
+edge_role = "where_stated"
+target_ref = "registry/experiments.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01954"
+claim_id = "C-707"
+edge_role = "cross_reference"
+target_ref = "E-039"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01955"
+claim_id = "C-707"
+edge_role = "where_stated"
+target_ref = "registry/claims.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01956"
+claim_id = "C-707"
+edge_role = "where_stated"
+target_ref = "registry/experiments.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01957"
+claim_id = "C-708"
+edge_role = "cross_reference"
+target_ref = "E-039"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01958"
+claim_id = "C-708"
+edge_role = "where_stated"
+target_ref = "registry/claims.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01959"
+claim_id = "C-708"
+edge_role = "where_stated"
+target_ref = "registry/experiments.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01960"
+claim_id = "C-709"
+edge_role = "cross_reference"
+target_ref = "E-039"
+target_kind = "experiment_ref"
+
+[[edge]]
+id = "CED-01961"
+claim_id = "C-709"
+edge_role = "where_stated"
+target_ref = "crates/vacuum_frustration/src/lib.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01962"
+claim_id = "C-709"
+edge_role = "where_stated"
+target_ref = "registry/claims.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01963"
+claim_id = "C-709"
+edge_role = "where_stated"
+target_ref = "registry/experiments.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01964"
 claim_id = "T-AMPLITUDE-FRUSTRATION-MINIMA"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/amplitude_frustration_survey.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01943"
+id = "CED-01965"
 claim_id = "T-CMS-SIGN-CHALLENGE"
 edge_role = "cross_reference"
 target_ref = "E-038"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01944"
+id = "CED-01966"
 claim_id = "T-CMS-SIGN-CHALLENGE"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_cli/src/bin/lhc_2025_qgp_synthesis.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01945"
+id = "CED-01967"
 claim_id = "T-PPT-NEED"
 edge_role = "cross_reference"
 target_ref = "E-036"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01946"
+id = "CED-01968"
 claim_id = "T-PPT-NEED"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_engine/src/thesis_pipelines.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01947"
+id = "CED-01969"
 claim_id = "T-QGP-VORTICITY"
 edge_role = "cross_reference"
 target_ref = "E-038"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01948"
+id = "CED-01970"
 claim_id = "T-QGP-VORTICITY"
 edge_role = "where_stated"
 target_ref = "crates/cd_spin_bridge/src/qgp_model.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01949"
+id = "CED-01971"
 claim_id = "T-SPIN-CD"
 edge_role = "cross_reference"
 target_ref = "E-036"
 target_kind = "experiment_ref"
 
 [[edge]]
-id = "CED-01950"
+id = "CED-01972"
 claim_id = "T-SPIN-CD"
 edge_role = "where_stated"
 target_ref = "crates/gororoba_engine/src/thesis_pipelines.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
-id = "CED-01951"
+id = "CED-01973"
 claim_id = "T-SPIN-CD"
 edge_role = "where_stated"
 target_ref = "registry/experiments.toml"

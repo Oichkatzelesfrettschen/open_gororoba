@@ -5,10 +5,10 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/knowledge/proof_skeletons.toml"
-step_count = 2932
-skeleton_count = 709
-skeleton_with_steps_count = 709
-claim_linked_step_count = 2916
+step_count = 2964
+skeleton_count = 716
+skeleton_with_steps_count = 716
+claim_linked_step_count = 2948
 max_steps_per_skeleton = 8
 
 [[step]]
@@ -58396,6 +58396,646 @@ id = "DS-002920"
 skeleton_id = "PRS-00704"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
+source_uid = "C-703"
+claim_id = "C-703"
+claim_refs = ["C-703"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: Delta-chi^2 = 0"
+text_sha256 = "e8ebd50c235abce4a58d3935eda136199727e7712e6ed8902682e114952ba630"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "2"]
+key_tokens = ["Delta", "VERIFIED", "chi"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002921"
+skeleton_id = "PRS-00704"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-703"
+claim_id = "C-703"
+claim_refs = ["C-703"]
+step_index = 2
+step_kind = "derivation_step"
+text = "228, P-value = 0"
+text_sha256 = "cd3e510b334a417da710ff18e25e4c8ebb19d36b76cf413d06b53369328b50a5"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "228"]
+key_tokens = ["value"]
+depends_on_step_ids = ["DS-002920"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002922"
+skeleton_id = "PRS-00704"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-703"
+claim_id = "C-703"
+claim_refs = ["C-703"]
+step_index = 3
+step_kind = "derivation_step"
+text = "96 (Feldman-Cousins)"
+text_sha256 = "7375d259de615144001e823108f944f6d1f232ca7771bd0119b3df5020942f54"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["96"]
+key_tokens = ["Cousins", "Feldman"]
+depends_on_step_ids = ["DS-002921"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002923"
+skeleton_id = "PRS-00704"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-703"
+claim_id = "C-703"
+claim_refs = ["C-703"]
+step_index = 4
+step_kind = "derivation_step"
+text = "Two-beam (BNB + NuMI) analysis with full LArTPC event selection"
+text_sha256 = "4231524e9f4f35fa42dc2b1cc1342ff782494848db43f6cf418fd0e26b9d1451"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["BNB", "LArTPC", "NuMI", "Two", "analysis", "beam", "event", "full", "selection"]
+depends_on_step_ids = ["DS-002922"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002924"
+skeleton_id = "PRS-00704"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-703"
+claim_id = "C-703"
+claim_refs = ["C-703"]
+step_index = 5
+step_kind = "derivation_step"
+text = "Combined contour excludes all 3+1 sterile neutrino parameter space explaining LSND and MiniBooNE simultaneously at > 95% CL"
+text_sha256 = "121526d86babfb504abc3be58d0ef7ea5640a147330acc7f148501605a9849ef"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "3", "95"]
+key_tokens = ["CL", "Combined", "LSND", "MiniBooNE", "all", "contour", "excludes", "explaining", "neutrino", "parameter", "simultaneously", "space", "sterile"]
+depends_on_step_ids = ["DS-002923"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002925"
+skeleton_id = "PRS-00704"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-703"
+claim_id = "C-703"
+claim_refs = ["C-703"]
+step_index = 6
+step_kind = "derivation_step"
+text = "WHAT WOULD REFUTE: a 5-sigma excess in the nu_e appearance channel in the 200-1200 MeV energy range with the expected L/E dependence"
+text_sha256 = "026ea29b7dfbdb32f4c408af85c582f16caa1cbaad9b35308c30510a0e78a9a4"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1200", "200", "5"]
+key_tokens = ["MeV", "REFUTE", "WHAT", "WOULD", "appearance", "channel", "dependence", "energy", "excess", "expected", "nu_e", "range", "sigma"]
+depends_on_step_ids = ["DS-002924"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002926"
+skeleton_id = "PRS-00705"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-704"
+claim_id = "C-704"
+claim_refs = ["C-704"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: Five independent KNM analysis chains agree to < 1% level"
+text_sha256 = "044b808aa4b734500520f10fadb22e51f95cc6c81261c6b4932bd90319c277bc"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["Five", "KNM", "VERIFIED", "agree", "analysis", "chains", "independent", "level"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002927"
+skeleton_id = "PRS-00705"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-704"
+claim_id = "C-704"
+claim_refs = ["C-704"]
+step_index = 2
+step_kind = "derivation_step"
+text = "No spectral distortion above threshold in the last 40 eV below the Q-value"
+text_sha256 = "fcab18c75d3bf8279ce78fd19a0489be5af04336925e93678d0bbe4d36def3c7"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["40"]
+key_tokens = ["No", "above", "below", "distortion", "eV", "last", "spectral", "threshold", "value"]
+depends_on_step_ids = ["DS-002926"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002928"
+skeleton_id = "PRS-00705"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-704"
+claim_id = "C-704"
+claim_refs = ["C-704"]
+step_index = 3
+step_kind = "derivation_step"
+text = "Best-fit sterile from gallium anomaly (m4 ~ 10 eV, sin^2(2 theta_ee) ~ 0"
+text_sha256 = "5b438acd26728d4e7dbf824eb6f703d7fb923d089cee4da146ed1d41076f61a9"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "10", "2"]
+key_tokens = ["Best", "anomaly", "eV", "fit", "gallium", "m4", "sin", "sterile", "theta_ee"]
+depends_on_step_ids = ["DS-002927"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002929"
+skeleton_id = "PRS-00705"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-704"
+claim_id = "C-704"
+claim_refs = ["C-704"]
+step_index = 4
+step_kind = "derivation_step"
+text = "2) excluded at 96"
+text_sha256 = "12a99dc2e00d06f8d31ef12fb7bc585e24c26ffb41cc30d45af298b9f20b7edc"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2", "96"]
+key_tokens = ["excluded"]
+depends_on_step_ids = ["DS-002928"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002930"
+skeleton_id = "PRS-00705"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-704"
+claim_id = "C-704"
+claim_refs = ["C-704"]
+step_index = 5
+step_kind = "derivation_step"
+text = "6% CL"
+text_sha256 = "e3095463f26cf9cf64d407c14341f06431aea3c25828824b0db2a02c50f01648"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["6"]
+key_tokens = ["CL"]
+depends_on_step_ids = ["DS-002929"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002931"
+skeleton_id = "PRS-00705"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-704"
+claim_id = "C-704"
+claim_refs = ["C-704"]
+step_index = 6
+step_kind = "derivation_step"
+text = "WHAT WOULD REFUTE: a statistically significant kink or spectral depletion near E_0 - m4 with m4 in the eV-scale range"
+text_sha256 = "bb06460a8468ca61a4f612c842dbee0c0bf2019ae8e57b5b9a1784c5e5a2b848"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["E_0", "REFUTE", "WHAT", "WOULD", "depletion", "eV", "kink", "m4", "near", "range", "scale", "significant", "spectral", "statistically"]
+depends_on_step_ids = ["DS-002930"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002932"
+skeleton_id = "PRS-00706"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-705"
+claim_id = "C-705"
+claim_refs = ["C-705"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: Full detector fiducial volume scan shows no spatial oscillation pattern"
+text_sha256 = "7d25888e071f80f7687582662887793eaf8f4e020a295c186a0c753377dde545"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Full", "VERIFIED", "detector", "fiducial", "no", "oscillation", "pattern", "scan", "shows", "spatial", "volume"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002933"
+skeleton_id = "PRS-00706"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-705"
+claim_id = "C-705"
+claim_refs = ["C-705"]
+step_index = 2
+step_kind = "derivation_step"
+text = "New exclusion contour covers Delta_m^2 ~ 1-10 eV^2 at short baseline (6-9 m from core)"
+text_sha256 = "59d9a91543069bdc637ffd06c56e941cde518767ab29a047b2f15006197071d0"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "10", "2", "6", "9"]
+key_tokens = ["Delta_m", "New", "baseline", "contour", "core", "covers", "eV", "exclusion", "short"]
+depends_on_step_ids = ["DS-002932"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002934"
+skeleton_id = "PRS-00706"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-705"
+claim_id = "C-705"
+claim_refs = ["C-705"]
+step_index = 3
+step_kind = "derivation_step"
+text = "WHAT WOULD REFUTE: a periodic spatial modulation of the anti-nu_e spectrum with the L/E dependence predicted by a sterile with Delta_m^2 in the 1-10 eV^2 range"
+text_sha256 = "34877a03b7cf2786af84dd76d48166fb1a90a5f1b0f0bc495938fb23979bdc25"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "10", "2"]
+key_tokens = ["Delta_m", "REFUTE", "WHAT", "WOULD", "anti", "dependence", "eV", "modulation", "nu_e", "periodic", "predicted", "range", "spatial", "spectrum", "sterile"]
+depends_on_step_ids = ["DS-002933"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002935"
+skeleton_id = "PRS-00707"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-706"
+claim_id = "C-706"
+claim_refs = ["C-706"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: Four-sample fit consistent with 3nu standard model"
+text_sha256 = "c7719fc6bc4388e327867017d4518f4b502409cfb40e91e64bd5701f47c26f27"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Four", "VERIFIED", "consistent", "fit", "model", "sample", "standard"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002936"
+skeleton_id = "PRS-00707"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-706"
+claim_id = "C-706"
+claim_refs = ["C-706"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Additional sterile mixing fractions theta_24, theta_34 constrained to near zero"
+text_sha256 = "959c00676424f87fa444c5fa9ebe85a230fc877abf5db9e40d64f85bc327d0b9"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Additional", "constrained", "fractions", "mixing", "near", "sterile", "theta_24", "theta_34", "zero"]
+depends_on_step_ids = ["DS-002935"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002937"
+skeleton_id = "PRS-00707"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-706"
+claim_id = "C-706"
+claim_refs = ["C-706"]
+step_index = 3
+step_kind = "derivation_step"
+text = "WHAT WOULD REFUTE: a deficit in the nu_mu disappearance channel that cannot be explained by standard 3nu mixing with the Delta_m^2_32 already constrained by NOvA/T2K"
+text_sha256 = "b4c9b464aee7f436da165b02610450cbbf1927c4e22cbb9ea86ef2ef9df7ab2f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Delta_m", "NOvA", "REFUTE", "T2K", "WHAT", "WOULD", "already", "cannot", "channel", "constrained", "deficit", "disappearance", "explained", "mixing", "nu_mu", "standard"]
+depends_on_step_ids = ["DS-002936"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002938"
+skeleton_id = "PRS-00708"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-707"
+claim_id = "C-707"
+claim_refs = ["C-707"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: Stacked spectrum of 10 clusters with Resolve micro-calorimeter (7 eV resolution)"
+text_sha256 = "f1b6e099c5807573ce9a16e3349023bd2524af52504a522c0c3bc6a1c2ad350b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["10", "7"]
+key_tokens = ["Resolve", "Stacked", "VERIFIED", "calorimeter", "clusters", "eV", "micro", "resolution", "spectrum"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002939"
+skeleton_id = "PRS-00708"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-707"
+claim_id = "C-707"
+claim_refs = ["C-707"]
+step_index = 2
+step_kind = "derivation_step"
+text = "No excess at 3"
+text_sha256 = "72fa178499abe1b9303ed48a616db3139f8336b9e0f11a45fdb4e91718f675f8"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["3"]
+key_tokens = ["No", "excess"]
+depends_on_step_ids = ["DS-002938"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002940"
+skeleton_id = "PRS-00708"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-707"
+claim_id = "C-707"
+claim_refs = ["C-707"]
+step_index = 3
+step_kind = "derivation_step"
+text = "5 keV above continuum model"
+text_sha256 = "40e77926c3cad1d669cf8fd640bc2bf1b0ceff4b4a08b2797e892309a0adb205"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["5"]
+key_tokens = ["above", "continuum", "keV", "model"]
+depends_on_step_ids = ["DS-002939"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002941"
+skeleton_id = "PRS-00708"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-707"
+claim_id = "C-707"
+claim_refs = ["C-707"]
+step_index = 4
+step_kind = "derivation_step"
+text = "Constraint on mixing angle sin^2(2 theta) < 10^-11 for m_s ~ 7 keV"
+text_sha256 = "1bcd87d4dfd56ad2543490538f4e20dc0849e3a6bc8129b0a8efb549c59e106c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["10", "11", "2", "7"]
+key_tokens = ["Constraint", "angle", "keV", "m_s", "mixing", "sin", "theta"]
+depends_on_step_ids = ["DS-002940"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002942"
+skeleton_id = "PRS-00708"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-707"
+claim_id = "C-707"
+claim_refs = ["C-707"]
+step_index = 5
+step_kind = "derivation_step"
+text = "WHAT WOULD REFUTE: a 5-sigma spectral residual at 3"
+text_sha256 = "15fb0dbc8115a6b650d13281785751dc0bc1784a865772ba1ab19fc5a192df40"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["3", "5"]
+key_tokens = ["REFUTE", "WHAT", "WOULD", "residual", "sigma", "spectral"]
+depends_on_step_ids = ["DS-002941"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002943"
+skeleton_id = "PRS-00708"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-707"
+claim_id = "C-707"
+claim_refs = ["C-707"]
+step_index = 6
+step_kind = "derivation_step"
+text = "5 keV in the stacked cluster spectrum consistent with the expected flux from decay of a 7 keV sterile DM candidate"
+text_sha256 = "11b983ec6209fe0a360c9d33efb49b1094ae074fa0d33f1a5df22fd0b16283e5"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["5", "7"]
+key_tokens = ["DM", "candidate", "cluster", "consistent", "decay", "expected", "flux", "keV", "spectrum", "stacked", "sterile"]
+depends_on_step_ids = ["DS-002942"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002944"
+skeleton_id = "PRS-00709"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-708"
+claim_id = "C-708"
+claim_refs = ["C-708"]
+step_index = 1
+step_kind = "evidence_requirement"
+text = "VERIFIED: Delta-AIC and Bayesian evidence strongly prefer vanilla Lambda-CDM over any N_eff extension including a thermalised sterile"
+text_sha256 = "6768abaaa2969324d0c8384b73221fbb33b175dfcd669a94c6d7afa988fbcc9c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["AIC", "Bayesian", "CDM", "Delta", "Lambda", "N_eff", "VERIFIED", "any", "evidence", "extension", "including", "over", "prefer", "sterile", "strongly", "thermalised", "vanilla"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002945"
+skeleton_id = "PRS-00709"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-708"
+claim_id = "C-708"
+claim_refs = ["C-708"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Effective number of relativistic species N_eff = 3"
+text_sha256 = "04476bd7a3fff6ec2ef5e5b63fd773766eca18a2c9e9e46dab01ba536add5aa0"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["3"]
+key_tokens = ["Effective", "N_eff", "number", "relativistic", "species"]
+depends_on_step_ids = ["DS-002944"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002946"
+skeleton_id = "PRS-00709"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-708"
+claim_id = "C-708"
+claim_refs = ["C-708"]
+step_index = 3
+step_kind = "derivation_step"
+text = "04 +/- 0"
+text_sha256 = "c3ad538289aff6dde62ae5ff9189dacf0b7a871d7d658e40841296427dd4bfa0"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "04"]
+key_tokens = []
+depends_on_step_ids = ["DS-002945"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002947"
+skeleton_id = "PRS-00709"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-708"
+claim_id = "C-708"
+claim_refs = ["C-708"]
+step_index = 4
+step_kind = "derivation_step"
+text = "05, consistent with three active flavors"
+text_sha256 = "63126a2683020a55845f26dd01123a90406d989f2ec5f1c60699cf8998b616c8"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["05"]
+key_tokens = ["active", "consistent", "flavors", "three"]
+depends_on_step_ids = ["DS-002946"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002948"
+skeleton_id = "PRS-00709"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-708"
+claim_id = "C-708"
+claim_refs = ["C-708"]
+step_index = 5
+step_kind = "derivation_step"
+text = "WHAT WOULD REFUTE: a > 3-sigma preference for N_eff > 3"
+text_sha256 = "f73811b0f23dfad2c9811a7484e0bf6e32b57a849b8e8c06960da5c9c67c8b89"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["3"]
+key_tokens = ["N_eff", "REFUTE", "WHAT", "WOULD", "preference", "sigma"]
+depends_on_step_ids = ["DS-002947"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002949"
+skeleton_id = "PRS-00709"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-708"
+claim_id = "C-708"
+claim_refs = ["C-708"]
+step_index = 6
+step_kind = "derivation_step"
+text = "1 in the joint dataset with a spectral shape matching a fully thermalised eV-scale sterile"
+text_sha256 = "badd8e42d0942ffbdd12a472e1bad515d9a7359056c80e786de0bd0a2e76d08b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["dataset", "eV", "fully", "joint", "matching", "scale", "shape", "spectral", "sterile", "thermalised"]
+depends_on_step_ids = ["DS-002948"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002950"
+skeleton_id = "PRS-00710"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-709"
+claim_id = "C-709"
+claim_refs = ["C-709"]
+step_index = 1
+step_kind = "derivation_step"
+text = "OPEN: Would be supported by a derivation showing that the effective field theory of the sedenionic sub-associator sector reproduces the seesaw mass matrix structure m_nu ~ m_D^2/M_N, with M_N corresponding to a UV cutoff set by the frustration attractor F = 3/8"
+text_sha256 = "e4fc7aeda9055fc5626f12a0f287dc58ded882e71fbe83488e812fcb6e2d3f2d"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2", "3", "8"]
+key_tokens = ["M_N", "OPEN", "UV", "Would", "associator", "attractor", "corresponding", "cutoff", "derivation", "effective", "field", "frustration", "m_D", "m_nu", "mass", "matrix", "reproduces", "sector", "sedenionic", "seesaw"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002951"
+skeleton_id = "PRS-00710"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-709"
+claim_id = "C-709"
+claim_refs = ["C-709"]
+step_index = 2
+step_kind = "status_update"
+text = "Would be refuted by a proof that no Lorentz-invariant, gauge-singlet field arises from the sedenion zero-divisor sector without violating the existing SM symmetry structure"
+text_sha256 = "f7dfe2952598177142883516eb07631adacf4ceea9b94ed9c356fb5c701f39dd"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Lorentz", "SM", "Would", "arises", "divisor", "existing", "field", "gauge", "invariant", "no", "proof", "refuted", "sector", "sedenion", "singlet", "structure", "symmetry", "violating", "without", "zero"]
+depends_on_step_ids = ["DS-002950"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002952"
+skeleton_id = "PRS-00711"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
 source_uid = "T-AMPLITUDE-FRUSTRATION-MINIMA"
 claim_id = "T-AMPLITUDE-FRUSTRATION-MINIMA"
 claim_refs = []
@@ -58412,8 +59052,8 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002921"
-skeleton_id = "PRS-00705"
+id = "DS-002953"
+skeleton_id = "PRS-00712"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-CHAMBER-DISCRETE"
@@ -58432,8 +59072,8 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002922"
-skeleton_id = "PRS-00705"
+id = "DS-002954"
+skeleton_id = "PRS-00712"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-CHAMBER-DISCRETE"
@@ -58447,13 +59087,13 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["39"]
 key_tokens = []
-depends_on_step_ids = ["DS-002921"]
+depends_on_step_ids = ["DS-002953"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002923"
-skeleton_id = "PRS-00705"
+id = "DS-002955"
+skeleton_id = "PRS-00712"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-CHAMBER-DISCRETE"
@@ -58467,13 +59107,13 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["STAR", "bin", "correlation", "degenerate", "only", "range", "remains", "short", "spin", "stable"]
-depends_on_step_ids = ["DS-002922"]
+depends_on_step_ids = ["DS-002954"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002924"
-skeleton_id = "PRS-00705"
+id = "DS-002956"
+skeleton_id = "PRS-00712"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-CHAMBER-DISCRETE"
@@ -58487,13 +59127,13 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Both", "discrete", "logic", "map", "sign", "structures"]
-depends_on_step_ids = ["DS-002923"]
+depends_on_step_ids = ["DS-002955"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002925"
-skeleton_id = "PRS-00706"
+id = "DS-002957"
+skeleton_id = "PRS-00713"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-CMS-SIGN-CHALLENGE"
@@ -58512,8 +59152,8 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002926"
-skeleton_id = "PRS-00706"
+id = "DS-002958"
+skeleton_id = "PRS-00713"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-CMS-SIGN-CHALLENGE"
@@ -58527,13 +59167,13 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["05", "2025"]
 key_tokens = ["CMS", "data", "discrepancy", "observed", "pPb", "resolving", "sign"]
-depends_on_step_ids = ["DS-002925"]
+depends_on_step_ids = ["DS-002957"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002927"
-skeleton_id = "PRS-00707"
+id = "DS-002959"
+skeleton_id = "PRS-00714"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-PPT-NEED"
@@ -58552,8 +59192,8 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002928"
-skeleton_id = "PRS-00708"
+id = "DS-002960"
+skeleton_id = "PRS-00715"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-QGP-VORTICITY"
@@ -58572,8 +59212,8 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002929"
-skeleton_id = "PRS-00708"
+id = "DS-002961"
+skeleton_id = "PRS-00715"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-QGP-VORTICITY"
@@ -58587,13 +59227,13 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["36"]
 key_tokens = ["Pb", "TeV", "bias", "centrality", "channel", "dependent", "global", "map", "mid", "observed", "omega_mag", "points", "polarization", "reproduces", "trend", "via", "vorticity"]
-depends_on_step_ids = ["DS-002928"]
+depends_on_step_ids = ["DS-002960"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002930"
-skeleton_id = "PRS-00709"
+id = "DS-002962"
+skeleton_id = "PRS-00716"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-SPIN-CD"
@@ -58612,8 +59252,8 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002931"
-skeleton_id = "PRS-00709"
+id = "DS-002963"
+skeleton_id = "PRS-00716"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-SPIN-CD"
@@ -58627,13 +59267,13 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = ["correlation", "decoherence", "frustration", "gamma", "increases", "induced", "spin"]
-depends_on_step_ids = ["DS-002930"]
+depends_on_step_ids = ["DS-002962"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002932"
-skeleton_id = "PRS-00709"
+id = "DS-002964"
+skeleton_id = "PRS-00716"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
 source_uid = "T-SPIN-CD"
@@ -58647,7 +59287,7 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["CD", "Validates", "candidate", "coherence", "frustration", "loss", "medium", "physical"]
-depends_on_step_ids = ["DS-002931"]
+depends_on_step_ids = ["DS-002963"]
 line_start = 0
 line_end = 0
 

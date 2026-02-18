@@ -6,12 +6,20 @@ version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
 test_count = 3559
-claim_count = 708
+claim_count = 715
 insight_count = 66
-experiment_count = 36
+experiment_count = 37
 complete_experiment_count = 0
 paper_count = 19
-binary_count = 102
+binary_count = 103
+
+[sprints.s44]
+number = 44
+date = "2026-02-18"
+test_count = 3559
+claim_count = 715
+insight_count = 66
+summary = "Sterile Neutrino Null Result Audit (E-039): Literature synthesis of 2025-2026 experimental null results across all primary data streams (MicroBooNE, KATRIN, PROSPECT, NOvA, XRISM, DESI+Planck). Claims C-703..C-709. sterile-neutrino-audit CLI binary. Fixed registry: stale markdown owner mappings resolved, T-prefix claim verification in evidence provenance."
 
 [sprints.s43]
 number = 43

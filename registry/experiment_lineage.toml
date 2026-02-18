@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 36
-edge_count = 209
+lineage_count = 37
+edge_count = 217
 
 [[lineage]]
 id = "XL-001"
@@ -564,6 +564,22 @@ input_path_refs = ["data/external/lhc_2025/"]
 output_path_refs = []
 dataset_refs = []
 replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin lhc-2025-qgp-synthesis", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-037"
+experiment_id = "E-039"
+binary = "sterile-neutrino-audit"
+deterministic = false
+seed = 0
+gpu = false
+run_command = "N/A (literature synthesis)"
+run_command_sha256 = "a5e0d66484bb7f6f8991742a2bca14ff64996c91e4ebb5717e7befb8feb7ddaf"
+claim_refs = ["C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "N/A (literature synthesis)", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -2445,5 +2461,77 @@ from_id = "E-038"
 to_ref = "data/external/lhc_2025/"
 to_kind = "path"
 edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00210"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "sterile-neutrino-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00211"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "C-703"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00212"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "C-704"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00213"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "C-705"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00214"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "C-706"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00215"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "C-707"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00216"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "C-708"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00217"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "C-709"
+to_kind = "claim"
+edge_kind = "supports_claim"
 verified = true
 

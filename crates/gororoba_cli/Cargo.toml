@@ -414,6 +414,10 @@ path = "src/bin/demo_real_materials.rs"
 name = "demo-optical-titanates"
 path = "src/bin/demo_optical_titanates.rs"
 
+[[bin]]
+name = "sterile-neutrino-audit"
+path = "src/bin/sterile_neutrino_audit.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
