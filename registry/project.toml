@@ -5,13 +5,29 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 3559
-claim_count = 708
-insight_count = 66
-experiment_count = 36
+test_count = 3779
+claim_count = 757
+insight_count = 82
+experiment_count = 40
 complete_experiment_count = 0
 paper_count = 19
-binary_count = 102
+binary_count = 108
+
+[sprints.s45]
+number = 45
+date = "2026-02-17"
+test_count = 3743
+claim_count = 746
+insight_count = 78
+summary = "Casimir-Lifshitz hardening (Sprint 45). Part 1: Correct Lifshitz formula with GL quadrature. Two bugs in casimir_energy_density fixed: (1) s_i = sqrt(p^2+eps_i-1) not sqrt(eps_i*p^2+eps_i-1); (2) integration measure p dp not p^2 dp. New functions: casimir_lifshitz_energy, casimir_lifshitz_force, casimir_lifshitz_eta, casimir_drude_plasma_discrepancy. Improved SiO2 model silica_casimir_optical() with 3 IR phonon oscillators (0.057/0.099/0.133 eV, S=1.700 total, eps_static=3.80) from Lambrecht+Reynaud 2000 / Parsegian 2006. Two binaries: casimir-plate-compare (Si/Ge/SiO2 ordering: Si > Ge > SiO2), casimir-drude-plasma (Drude-plasma controversy: 2.2% at 100nm -> 97% at 5um). Part 2: Tabulated real-axis n,k KK transform infrastructure (tabulated_nk.rs). Johnson & Christy 1972 (PRB 6 4370) data for Au/Ag/Cu (49 points, 0.64-6.60 eV). Kramers-Kronig three-region integration: tabulated trapezoidal + UV tail (1/omega^3 free-electron, analytical partial-fractions) + IR Drude tail (analytical). casimir_lifshitz_energy_tabulated() mirrors Lifshitz formula using KK-transformed real data. PhysicalProperties struct with Mohs hardness, Debye temperature, bulk modulus, density, lattice constant for 22 materials. 9 new tests (KK monotone, approach to 1, Au>Ag ordering, Casimir sign). 432 materials_core tests total. Claim C-749."
+
+[sprints.s44]
+number = 44
+date = "2026-02-17"
+test_count = 3779
+claim_count = 757
+insight_count = 82
+summary = "Wavelet framework + Tungsten oxide family + Derived optical properties + Casimir infrastructure + Sum rules + KK validation + Band-gap spectroscopy + Temperature-dependent DL + EMT composites (Sprint 44). Part 1 (Wavelet): Four-thesis wavelet framework. Claims C-703..C-706, experiments E-039..E-042, insights I-070..I-071. Core infrastructure: spectral_core wavelet.rs (Haar DWT/IDWT, hard_threshold, concurrency, WaveletBridge), pde_surrogates.rs (ForcedDiffusion RK4). 4 binaries. Part 2 (Tungsten oxides): UniaxialOptical tensor permittivity infrastructure. 5 new materials (WO3, WO3-x, Cs0.33WO3, CaWO4, PbWO4) expanding database from 25 to 30. Claims C-707..C-713, insights I-072..I-073, BIB-0204..BIB-0208. Part 3 (Derived properties): 9 methods on DrudeLorentzParams + 5 on UniaxialOptical for reflectivity, loss function, optical conductivity, skin depth, etc. Convention-robust sign handling. Claims C-714..C-716, insight I-074. Part 4 (Casimir infrastructure): Carrier density from Drude params, Drude spectral weight, electron mean free path, Matsubara frequencies at arbitrary T, epsilon_at_matsubara() for Lifshitz summation, Hagen-Rubens low-freq limit, group refractive index. UniaxialOptical: polycrystalline_imaginary, polycrystalline_carrier_density, anisotropic epsilon_at_matsubara. Constants: K_B_EV, E_CHARGE, M_E_KG. Claims C-717..C-719, insight I-075. Part 5 (Casimir calculator): Lifshitz formula with Matsubara summation (casimir_energy_density, casimir_force_density, casimir_energy_ideal, casimir_eta). Two-pass optical gap finder with transparent-window minimum detection. Surface impedance Z_s. Lorentzian vs Urbach tail analysis. Claims C-720..C-723, insight I-076. Part 6 (Sum rules): f-sum rule N_eff, partial spectral weight, loss function spectral weight, plasmon energy, screened plasma frequency, static dielectric, intra/interband weight partitioning, reststrahlen band detection. Claims C-724..C-726, insight I-077. Part 7 (KK validation + Band-gap spectroscopy): Subtracted KK principal-value integral with eps_inf baseline and analytic PV correction. Tauc plot analysis (direct/indirect gap via sliding-window regression). Urbach energy (effective exponential tail parameter). Penn model gap (single-oscillator approximation from eps_static). Absorption onset energy. JDOS proxy. Claims C-727..C-729, insight I-078. Part 8 (Temperature + EMT): Bose-Einstein phonon broadening (coth formula), Bloch-Gruneisen Drude broadening, optical effective mass from Drude params, Maxwell-Garnett and Bruggeman EMT wrappers, dielectric contrast, plasma screening ratio. Claims C-730..C-732, insight I-079. Part 9 (Nonlinear + Dispersion): GVD beta_2 and fs^2/mm conversion, dispersion regime classifier, zero-dispersion frequency finder, chi^(3) from Miller's rule, Kerr n_2, two-photon absorption (Sheik-Bahae model). Claims C-733..C-735, insight I-080. Part 10 (Surface + Interface): SPP wavevector and propagation length, evanescent decay length, LSPR (Frohlich condition), Fresnel r_s/r_p, Brewster angle, angular reflectance. Claims C-736..C-738, insight I-081. Gold Rakic 6-oscillator model: gold_rakic_ld() with 5 Lorentz oscillators from Rakic 1998 Table I, LSPR ~2.6 eV matching experiment. Claim C-739. Part 11 (Magneto-optical + Drude diagnostics): Voigt off-diagonal tensor eps_xy and Faraday rotation from cyclotron motion. DC resistivity, scattering time, carrier mobility, Drude spectral weight. plasma_frequency_from_density() static method. Claims C-740..C-742, insight I-082. Part 12 (Ellipsometry + Thermal Emission + ENZ): Spectroscopic ellipsometry psi/delta angles, Kirchhoff emissivity, spectral emittance (emissivity*Planck), integrated emissivity, ENZ frequency finder, ENZ group velocity, reststrahlen band detection with LST relation. Claims C-743..C-745, insight I-083. Part 13 (EELS + PDOS + Absorption Engineering): Surface and volume EELS loss functions, Purcell factor (LDOS enhancement near surfaces), Lamb shift (Casimir-Polder frequency shift), single-pass absorption, optimal absorber thickness, impedance mismatch metric. Claims C-746..C-748, insight I-084. Part 14 (Coherence + Quality Metrics): Oscillator and Drude quality factors, SPP figure of merit, partial spectral weight, optical path length, coherence length, penetration depth ratio. Claims C-750..C-752, insight I-085. 245 optical tests, 3779 workspace tests total."
 
 [sprints.s43]
 number = 43

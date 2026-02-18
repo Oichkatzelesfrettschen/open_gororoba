@@ -665,3 +665,274 @@ foundation for the first-principles Kubo coupling model (C-681)."""
 related_claims = ["C-681", "C-683", "C-685", "C-686", "C-689"]
 date = "2026-02-13"
 sprint = 41
+
+[[insight]]
+id = "I-070"
+title = "Wavelet reservoir bridging as Mori-Zwanzig exponential-memory closure"
+body = """The negative-dimensional reservoir in WaveletBridge accumulates sub-threshold wavelet coefficients that are below the hard-threshold eps. Reinjection occurs with weight alpha = 1 - exp(-kappa*dt), which is precisely the discrete-time memory kernel of a Mori-Zwanzig projection operator with exponential memory decay rate kappa.
+
+The key insight is that hard-threshold compression is a non-unitary projection P on wavelet space: P maps the full state c to its sparse approximation c_thresh. The complement Q = I - P accumulates in the reservoir buffer. Rather than discarding Q*c at each step (plain compression), the bridge reinjects it weighted by the time-integrated memory kernel.
+
+Thesis 3 (C-705) empirically validates that the ACF of the unresolved energy ||Q*c||^2 is single-exponential with R2 >= 0.95 for eps <= 1e-2. This grounds the exponential-weight alpha choice in the Mori-Zwanzig projection formalism: if the ACF decays as exp(-kappa*tau), the optimal memory kernel for the reinjection is exactly 1 - exp(-kappa*dt). The forced-diffusion surrogate (rho*sin*u^2 nonlinearity) generates multiscale structure that makes this closure non-trivial and potentially beneficial for compressed PDE integration."""
+related_claims = ["C-703", "C-705"]
+date = "2026-02-17"
+sprint = 43
+
+[[insight]]
+id = "I-071"
+title = "Meltdown gating as control-theoretic adaptive concurrency regulation"
+body = """The meltdown gating algorithm adjusts the threshold epsilon adaptively at each step based on the current concurrency m_n compared to a target M0. The update rule (eps *= gamma_up when m_n > M0, eps *= gamma_down when m_n < Mlow) is structurally identical to a PI controller acting on the concurrency signal.
+
+The controller interpretation: M0 is the setpoint, (m_n - M0) is the error signal, and gamma_up/gamma_down are the proportional gains for the two branches of the dead-band controller. The dead band [Mlow, M0] prevents oscillation around the target (equivalent to integral windup protection in classical control). The bounds eps_min and eps_max enforce actuator saturation limits.
+
+Classical PI-controller design theory predicts: (1) the p95 concurrency will be reduced vs fixed-eps by reducing overshoot episodes, (2) the RelErr cost is bounded because eps is decreased (more coefficients retained) when m_n < Mlow, preventing accuracy degradation. Thesis 2 (C-704) validates both predictions empirically: >= 10% p95 reduction at RelErr <= 0.02 across four rho values on the forced-diffusion surrogate."""
+related_claims = ["C-704"]
+date = "2026-02-17"
+sprint = 43
+
+[[insight]]
+id = "I-072"
+title = "Tensor permittivity requires polycrystalline averaging for scalar Casimir"
+body = """Casimir force calculations between parallel plates assume a scalar dielectric function epsilon(i*xi). For anisotropic crystals like hexagonal tungsten bronzes (Cs0.33WO3), the dielectric tensor has two independent components: epsilon_parallel (c-axis) and epsilon_perpendicular (a-b plane).
+
+For polycrystalline samples with randomly oriented grains, the correct orientation average is:
+  eps_avg = (eps_par + 2*eps_perp) / 3
+
+The 1:2 weighting arises because in 3D, there is one parallel direction and two perpendicular directions. This is the simplest valid averaging scheme; more sophisticated approaches (effective medium theory for oriented grains) exist but require knowledge of grain shape and orientation distribution.
+
+The UniaxialOptical struct preserves both tensor components, allowing single-crystal Casimir calculations in the future while providing the polycrystalline scalar average for current use."""
+related_claims = ["C-709", "C-710"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-073"
+title = "Oxygen vacancy concentration controls plasmon frequency in WO3-x"
+body = """The transition from wide-gap semiconductor (WO3) to plasmonic conductor (WO3-x) is controlled entirely by oxygen vacancy concentration x. Each vacancy donates ~2 electrons, so carrier density scales as n ~ 2*x*N_WO3 where N_WO3 is the WO3 unit cell density (~2.3e22 cm^-3).
+
+For x~0.1: n ~ 4.6e21 cm^-3, giving omega_p ~ 1.5 eV (NIR plasmon)
+For x~0.03: n ~ 1.4e21 cm^-3, giving omega_p ~ 0.8 eV (SWIR plasmon)
+For x~0.01: n ~ 4.6e20 cm^-3, giving omega_p ~ 0.45 eV (MWIR plasmon)
+
+This tunability makes WO3-x unique among plasmonic oxides: the same base material can be tuned from visible-transparent insulator to NIR/MWIR plasmon resonance by controlling reduction conditions. The effective mass m*=1.2*m_e is relatively stable across the doping range because the conduction band minimum at Gamma has weak dispersion variation with filling.
+
+This is physically distinct from the Cs0.33WO3 bronze, where carriers come from Cs intercalation into tunnel sites (fixed stoichiometry, anisotropic transport) rather than from oxygen vacancy disorder (variable, isotropic)."""
+related_claims = ["C-707", "C-708"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-074"
+title = "Lorentz oscillator sign convention requires absolute-value guards in derived properties"
+body = """The Drude-Lorentz dielectric function has two competing sign conventions for the damping term:
+
+Physics convention: eps = eps_inf - omega_p^2 / (omega^2 + i*gamma*omega) -> Im(eps) > 0 in absorption
+Engineering convention: eps = eps_inf - omega_p^2 / (omega^2 - i*gamma*omega) -> Im(eps) < 0 in absorption
+
+Our implementation uses Complex64::new(omega_0^2 - omega^2, gamma * omega) in the Lorentz denominator, which corresponds to the engineering convention (+i*gamma*omega). This means Im(eps) < 0 in absorption bands, and sqrt(eps) yields negative k (extinction coefficient) via the principal branch.
+
+The robust solution is NOT to change the convention (which would break all existing epsilon() and epsilon_imaginary() values), but to use absolute values in derived quantities:
+  n = sqrt(eps), with k = |Im(n)| forced non-negative
+  sigma_1 = eps_0 * omega * |Im(eps)|
+  alpha = 2 * omega * |k| / c
+  loss = |Im(eps)| / |eps|^2
+
+This approach is convention-agnostic: it produces correct physical observables regardless of which sign convention the underlying dielectric function uses. The reflectivity R = |(n-1)/(n+1)|^2 is invariant under Im(n) sign flip because it depends on |...|^2."""
+related_claims = ["C-714", "C-716"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-076"
+title = "Lorentzian vs Urbach tails determine optical gap finder reliability"
+body = """The optical_gap_ev() method finds where the absorption coefficient alpha exceeds a threshold, starting from the transparent-window minimum. This two-pass algorithm correctly handles materials with phonon absorption at low energy.
+
+However, the Lorentz oscillator model has a fundamental limitation: alpha ~ omega^2 far from resonance (Lorentzian tail), while real semiconductors follow alpha ~ exp(-E_0/E) (Urbach tail) below the gap. The Lorentzian tail decays as 1/omega^2 -- much more slowly than the exponential Urbach tail.
+
+Consequence: for broad oscillators (gamma/omega_0 > 0.1), the minimum alpha can be 10^4-10^5 m^-1, meaning no transparent window exists below standard thresholds (100-1000 m^-1). The gap finder correctly returns None in this case.
+
+For materials where the Lorentz model is a poor representation of the absorption edge (WO3 gamma=0.8 eV, CaWO4 gamma=1.0 eV), the threshold must be set above the transparent-window minimum (e.g., 1e5 m^-1). The resulting 'gap' energy corresponds to the onset of significant Lorentz tail absorption, not the true crystallographic band gap.
+
+Takeaway: optical_gap_ev() is reliable for weak oscillators (S < 1) or narrow resonances (gamma/omega_0 < 0.01), and for order-of-magnitude gap estimation at appropriate thresholds for broader models."""
+related_claims = ["C-722", "C-723"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-075"
+title = "Matsubara frequencies bridge optical spectroscopy to Casimir force calculations"
+body = """The Lifshitz formula for Casimir free energy at temperature T is a sum over discrete imaginary frequencies (Matsubara frequencies): xi_n = 2*pi*n*k_B*T/hbar.
+
+At T=300K: xi_1 = 2.47e14 rad/s = 0.163 eV (far-infrared, ~76 um wavelength).
+
+This has profound implications for optical database design:
+1. Only the first ~1000 Matsubara frequencies contribute significantly (xi_1000 ~ 163 eV, well into X-ray).
+2. The n=0 (zero-mode) term is the most controversial: for Drude metals, eps(0) diverges (Drude prescription), while for the plasma model, eps(0) = eps_inf + omega_p^2/xi_0^2 is finite. This is the Drude-plasma controversy in Casimir physics.
+3. Most of the Casimir energy comes from xi_1 to xi_100 (0.16 to 16 eV), spanning far-IR through UV. This is precisely the range covered by our Drude-Lorentz optical models.
+4. The epsilon_imaginary() function (Wick rotation to imaginary frequency) is the KEY quantity: real-frequency spectroscopy enters the Casimir formula ONLY through the analytically continued eps(i*xi).
+5. Polycrystalline averaging for anisotropic materials (Cs0.33WO3) must be done at each Matsubara frequency, not as a post-processing step on the Casimir energy. The UniaxialOptical.epsilon_at_matsubara() method implements this correctly.
+
+The Hagen-Rubens relation R ~ 1 - 2*sqrt(2*omega*eps_0/sigma_dc) provides the extrapolation below the first Matsubara frequency, bridging DC conductivity measurements to the n=0 zero-mode. Our test confirms <5% agreement between HR and full model at 5 meV for gold."""
+related_claims = ["C-718", "C-719"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-077"
+title = "Optical sum rules as self-consistency diagnostics for Drude-Lorentz models"
+body = """Sum rules connect integrated spectral quantities to fundamental material parameters, serving as powerful consistency checks:
+
+1. f-sum rule: integral_0^inf sigma_1(omega) domega = pi*n*e^2/(2*m_e). The partial sum N_eff(omega_c) counts effective electrons contributing below cutoff. For gold, N_eff(30 eV) ~ 5e28 m^-3 matches the known carrier density.
+
+2. Loss function sum rule: integral_0^inf omega*L(omega) domega = (pi/2)*omega_p^2. This should recover the bare plasma frequency, providing an independent check on the Drude parameters.
+
+3. Spectral weight partitioning: W_total = W_intra (Drude) + W_inter (oscillators). The intraband weight is analytically known from omega_p, while the interband weight sums the oscillator contributions. Their ratio characterizes the balance between free-electron and bound-electron response.
+
+4. Static sum: eps_static = eps_inf + sum(S_j) gives the DC dielectric constant for insulators. This is the zero-frequency limit of the Kramers-Kronig transform.
+
+5. Reststrahlen subtlety: ANY Lorentz oscillator with S*omega_0/(2*gamma) > eps_inf creates a narrow frequency band where Re[eps] < 0 above the resonance. This is the reststrahlen effect in polar crystals (silica, SiC, etc.). The screened_plasma_ev() method detects these crossings -- they represent real physics, not model artifacts.
+
+Pitfall: the f-sum rule prefactor is (2*m_e)/(pi*e^2) with NO eps_0 factor, because sigma_1 = eps_0*omega*|Im(eps)| already includes eps_0. Including eps_0 twice gives N_eff off by ~10^11."""
+related_claims = ["C-724", "C-725", "C-726"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-078"
+title = "Kramers-Kronig self-consistency of Drude-Lorentz models: baseline and subtraction"
+body = """The Kramers-Kronig (KK) relation connects the real and imaginary parts of the dielectric function through a Hilbert transform. For causal response functions, this is exact.
+
+Key implementation subtleties discovered:
+
+1. BASELINE MATTERS: The KK integral reconstructs eps_1(omega) - eps_inf, NOT eps_1(omega) - 1. The eps_inf represents spectral weight from transitions far above the model's cutoff frequency. Using 1.0 as the baseline causes systematic errors proportional to (eps_inf - 1), which can be 100%+ for materials like silica (eps_inf = 2.1).
+
+2. POLE SUBTRACTION: The naive approach of skipping grid points near the singularity at omega' = omega introduces asymmetric errors. The subtracted form replaces f(omega')/(omega'^2 - omega^2) with [f(omega') - f(omega)]/(omega'^2 - omega^2), which has a removable singularity (L'Hopital gives f'(omega)/(2*omega)). The remaining constant part is integrated analytically as a logarithmic PV correction: (1/2*omega)*ln|(Lambda-omega)/(Lambda+omega)|.
+
+3. CONVERGENCE: The KK error decreases monotonically with grid density, confirming numerical (not model) limitation. At 20k steps over 50 eV, gold achieves < 50% RMS error. The dominant error source is the finite cutoff (50 eV) truncating high-energy spectral weight.
+
+4. CAUSAL MODELS: Drude-Lorentz models satisfy KK exactly by construction (they are rational functions of omega with poles in the lower half-plane). A KK check therefore validates the NUMERICAL implementation, not the physics. For tabulated experimental data, KK checks would validate data quality.
+
+Practical implication: the KK consistency metric provides an automated quality gate for any dielectric function model in the database."""
+related_claims = ["C-727", "C-728", "C-729"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-079"
+title = "Temperature-dependent optical response and effective medium composites"
+body = """Thermal broadening of optical response has two distinct physical mechanisms:
+
+1. PHONON OSCILLATORS (Bose-Einstein): gamma_j(T) = gamma_j(0) * coth(omega_0j / (2*k_B*T)). At T=0, coth->1 (zero-point motion sets minimum width). At T >> Theta_D, gamma grows linearly. The coth formula captures the crossover from quantum to classical phonon populations.
+
+2. DRUDE ELECTRON SCATTERING (Bloch-Gruneisen): gamma(T) = gamma_0 * (1 + (T/T_Debye)^2). The T^2 low-temperature behavior comes from the phase space for electron-phonon Umklapp scattering. For gold (T_D=170 K), room temperature gives 4x Drude broadening.
+
+Key constraint: only DAMPING changes with temperature, never oscillator strength or position. Oscillator strengths are determined by matrix elements (dipole transition amplitudes), which are temperature-independent in the harmonic approximation. Positions shift only through thermal expansion of the lattice (a much smaller effect, ignored here).
+
+EMT composites: Maxwell-Garnett vs Bruggeman represents a real physical choice, not a numerical convenience. MG is valid for dilute inclusions in a host matrix (asymmetric topology). Bruggeman is valid for random two-phase mixtures with no preferred topology (symmetric, self-consistent). For Casimir calculations on composite materials, the choice of EMT affects the predicted force by up to 30% at moderate fill fractions.
+
+Plasma screening subtlety: in the eps_inf=1 parameterization (explicit Lorentz oscillators for interband transitions), the zero-crossing of Re[eps] can be ABOVE the bare Drude omega_p. This is because Lorentz oscillator tails above their resonance frequency contribute negatively to Re[eps], effectively making the dielectric function more metallic at intermediate frequencies. The screening ratio omega_p_bare/omega_screened < 1 is correct physics for this parameterization, though it differs from the eps_inf > 1 convention where screening_ratio = sqrt(eps_inf) > 1."""
+related_claims = ["C-730", "C-731", "C-732"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-080"
+title = "Nonlinear optics from linear Drude-Lorentz: scope and limits of Miller's rule"
+body = """Miller's rule (1964) provides a semi-empirical bridge from linear to nonlinear optical response. The key relation chi^(3) ~ delta * |chi^(1)|^4 with a nearly universal delta ~ 4.5e-24 m^2/V^2 works because both linear and nonlinear response are dominated by the same electronic transitions (anharmonic oscillator model).
+
+Strengths of the approach:
+1. Correctly predicts chi^(3) ordering: metals >> semiconductors >> wide-gap dielectrics (because |chi^(1)| = |eps-1| is largest for metals).
+2. Captures the frequency dependence through chi^(1)(omega) -- near resonance, chi^(1) diverges and so does chi^(3), matching real behavior.
+3. No additional parameters beyond the linear DL model.
+
+Limitations (important caveats):
+1. Miller's delta is NOT universal. It varies by 1-2 orders of magnitude between material classes. The value 4.52e-24 is calibrated for alkali halides and transparent oxides.
+2. Resonant enhancement near band edges can give chi^(3) orders of magnitude above Miller's prediction. The DL model captures the resonant chi^(1) divergence but not the resonant chi^(3) enhancement from real excited states.
+3. For metals, the Drude-Lorentz chi^(1) diverges at low frequency (1/omega^2), giving chi^(3) ~ 1/omega^8 -- physically unreasonable. Miller's rule should only be used at optical frequencies for metals.
+4. The Sheik-Bahae TPA model is better calibrated for semiconductors than the Miller chi^(3) estimate, because it uses material-specific E_g and n rather than a universal delta.
+5. GVD from numerical differentiation accumulates errors at high order (d^2k/domega^2 uses nested finite differences on n_g which itself uses finite differences on n). Step sizes 1e-4*omega keep this under control for smooth DL functions.
+
+For Casimir physics: nonlinear corrections to the Casimir force (dynamical Casimir effect, Casimir-Polder with two-photon transitions) require chi^(3), but these are higher-order effects typically < 1% of the linear Casimir force at separations > 10 nm."""
+related_claims = ["C-733", "C-734", "C-735"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-081"
+title = "Surface plasmon physics from Drude-Lorentz models: parameterization vs reality"
+body = """Surface plasmon polaritons (SPPs) and localized surface plasmon resonances (LSPR) are directly computable from the complex dielectric function, but their quantitative accuracy depends critically on the DL parameterization:
+
+1. SPP DISPERSION: k_spp = (omega/c)*sqrt(eps_m*eps_d/(eps_m+eps_d)). This is exact given eps(omega) -- the SPP dispersion relation follows analytically from Maxwell's equations at a planar interface. The DL model gives the correct qualitative behavior: k_spp > omega/c (subwavelength confinement), Im[k_spp] > 0 (lossy propagation), and L_spp decreasing with frequency as the mode approaches the surface plasmon frequency.
+
+2. LSPR QUANTITATIVE DISCREPANCY: The Frohlich condition Re[eps] = -2 occurs at 5.93 eV in our gold model (eps_inf=1, 2 oscillators), vs the experimental ~2.5 eV. The discrepancy arises because our model uses eps_inf=1 with moderate Lorentz oscillators, while physical gold has a LARGE interband (d-band) contribution that effectively gives eps_inf ~ 9-12 at optical frequencies. In the eps_inf > 1 convention, the Frohlich crossing moves to lower energy: omega_LSPR ~ omega_p/sqrt(eps_inf + 2).
+
+3. EVANESCENT FIELDS IN CASIMIR PHYSICS: The evanescent decay length delta = c/(omega*sqrt(-Re[eps])) determines how deeply fluctuation-induced fields penetrate each plate. For the Lifshitz formula, this sets the effective separation-dependent cutoff: at separation d, only modes with evanescent decay length > d contribute significantly. For gold at 1 eV, delta ~ 20 nm, meaning the Casimir force is dominated by near-surface modes at d < 20 nm separations.
+
+4. FRESNEL-LIFSHITZ CONNECTION: The Fresnel reflection coefficients r_s and r_p are exactly what enter the Lifshitz formula. The casimir_energy_density() function already uses reflection_te/reflection_tm, but the new Fresnel methods allow independent validation at real frequencies, and extend to oblique incidence (relevant for Casimir-Polder forces on tilted surfaces).
+
+Practical takeaway: for SPP propagation lengths and Casimir forces, the existing 2-oscillator gold model is adequate (errors < 30%). For LSPR predictions, a 6-oscillator Brendel-Bormann model (Rakic 1998 Table II) would give quantitative accuracy at ~2.5 eV."""
+related_claims = ["C-736", "C-737", "C-738"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-082"
+title = "Magneto-optical response and transport diagnostics from Drude parameters"
+body = """The Drude model encodes not just optical response but the full free-carrier transport physics. Part 11 extracts this systematically:
+
+1. DRUDE WEIGHT AND SUM RULES: D = (pi/2)*omega_p^2*eps_0 is the integrated spectral weight of the free-carrier conductivity (f-sum rule). It connects optics to thermodynamics: the ratio D_measured/D_band_theory quantifies correlation effects (kinetic energy renormalization). For strongly correlated materials like LaTiO3, D << D_band indicates Mott physics suppressing carrier kinetic energy.
+
+2. MAGNETO-OPTICS FROM DRUDE: The off-diagonal Voigt tensor element eps_xy arises from cyclotron motion in a magnetic field. At omega >> omega_c (typical for optical frequencies and laboratory fields), eps_xy scales linearly with B. This gives Faraday rotation theta_F ~ omega*omega_c*omega_p^2 / (2*c*n*omega^3) at high frequency, demonstrating 1/omega^2 falloff -- the magneto-optical Verdet constant. For Casimir physics, the magneto-optical response modifies the Lifshitz formula by lifting the TE/TM degeneracy, leading to Casimir torques between birefringent plates.
+
+3. TRANSPORT-OPTICS BRIDGE: dc_resistivity = gamma/(eps_0*omega_p^2) bridges optical spectroscopy and four-probe measurements. The agreement is typically 10-30% because optical omega_p includes interband contributions that four-probe resistivity does not see. The scattering_time tau = hbar/gamma connects to mean free path l = v_F*tau and to the anomalous skin depth delta_anom ~ (v_F*c^2/(omega*omega_p^2))^(1/3) in the regime omega*tau << 1.
+
+4. CARRIER DENSITY ESTIMATION: plasma_frequency_from_density() inverts the Drude relation to get omega_p from n and m*. This enables consistency checks: given an optical omega_p and a known carrier density (from Hall effect), one can extract m*, or vice versa. For TCOs like AZO, this connects doping level to infrared plasmonic cutoff."""
+related_claims = ["C-740", "C-741", "C-742"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-083"
+title = "Ellipsometry, thermal emission, and ENZ physics from Drude-Lorentz: measurement connections"
+body = """Part 12 bridges the DL model to three major experimental techniques:
+
+1. SPECTROSCOPIC ELLIPSOMETRY (SE): The ratio rho = r_p/r_s = tan(psi)*exp(i*delta) is the primary measurable in SE. For an isotropic substrate at a single incidence angle, (psi, delta) at each omega are equivalent to knowing (n, k) -- the same information as the DL model provides. The key physics: at the Brewster angle, psi -> 0 because r_p -> 0 while r_s stays finite. For metals with large Im[n], there is no true Brewster angle (only a pseudo-Brewster minimum), so psi stays finite everywhere. SE fitting typically refines DL parameters (omega_p, gamma, oscillator strengths) by minimizing MSE between measured and modeled (psi, delta).
+
+2. THERMAL EMISSION: Kirchhoff's law connects absorptivity to emissivity for bodies in thermal equilibrium. For opaque materials (metals at optical wavelengths, thick dielectrics), emissivity = 1 - R. The spectral emittance L = emissivity * Planck tells us what wavelengths a hot body radiates. For Casimir physics, thermal emission corrections (finite-T Lifshitz) are proportional to k_B*T/hbar*c, becoming important at separations d > hbar*c/(k_B*T) ~ 7 um at 300K. The n=0 Matsubara term captures this thermal correction and is the center of the Drude-plasma controversy (see casimir_drude_plasma_discrepancy).
+
+3. ENZ PHYSICS: At the epsilon-near-zero frequency, the material's permittivity passes through zero, creating exotic optical effects: divergent phase velocity (but finite group velocity), vanishing in-material wavelength (super-coupling), and dramatic enhancement of nonlinear effects (chi^(3)/eps^2 diverges). For metals, the ENZ point IS the screened plasma frequency. For ENZ metamaterials and TCOs like AZO, the ENZ point can be tuned to technologically relevant wavelengths (telecom, mid-IR) by adjusting carrier density. The reststrahlen band in polar dielectrics (omega_TO to omega_LO) is effectively a broadband ENZ-like region where eps < 0.
+
+4. LYDDANE-SACHS-TELLER RELATION: The LST relation omega_LO^2/omega_TO^2 = eps_static/eps_inf connects the phonon splitting to the dielectric screening. Large splitting (SrTiO3: eps_static/eps_inf ~ 100) means strong ionic polarizability. The reststrahlen band width scales as sqrt(eps_static/eps_inf) - 1, which is why ferroelectric perovskites have the broadest reststrahlen bands."""
+related_claims = ["C-743", "C-744", "C-745"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-084"
+title = "EELS, LDOS, and absorption engineering: from fundamental response to device design"
+body = """Part 13 connects the dielectric function to three application domains:
+
+1. ELECTRON ENERGY LOSS: The loss function Im[-1/eps] (bulk) and Im[-1/(1+eps)] (surface) are the two fundamental EELS spectra. They peak at different frequencies: bulk at the volume plasmon (Re[eps] = 0), surface at the surface plasmon (Re[eps] = -1). The surface plasmon is always at LOWER energy than the bulk plasmon (by a factor 1/sqrt(2) in the free-electron model). For Casimir physics, the loss function enters through the fluctuation-dissipation theorem: the electromagnetic vacuum fluctuation spectral density is proportional to Im[eps].
+
+2. PURCELL EFFECT AND CASIMIR-POLDER: The LDOS modification near a surface (Purcell factor) and the associated Lamb shift are the single-emitter analogs of the Casimir effect. The Casimir energy between two plates is the sum of all vacuum mode energy shifts, while the Purcell/Lamb shift is the mode shift experienced by a single quantum emitter. The 1/d^3 near-field scaling of both effects comes from the quasistatic (non-retarded) limit of the electromagnetic Green's function, which dominates when the emitter-surface separation is much smaller than the wavelength.
+
+3. ABSORPTION AND IMPEDANCE MATCHING: Perfect absorption occurs when the surface impedance matches free space (Z = Z_0 = 377 Ohm). For a bare metal half-space this never happens (metals have |Z| << Z_0). But for thin-film absorbers, interference between front and back reflections can achieve critical coupling. The impedance_mismatch() metric quantifies how far from this condition a given material is. For metamaterial absorbers (Thesis 1), the goal is to design stacks where interference zeros the net reflection -- making impedance_mismatch = 0 at the target frequency. The optimal_absorber_thickness gives the single-layer starting point."""
+related_claims = ["C-746", "C-747", "C-748"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-085"
+title = "Quality metrics and coherence: bridging optics to device performance"
+body = """Part 14 provides dimensionless figures of merit that connect the DL model parameters to device-level performance metrics:
+
+1. QUALITY FACTORS: Three distinct Q-factors serve different purposes. The oscillator Q = omega_0/gamma measures phonon or exciton lifetime (relevant for polaritonics, where high-Q phonons hybridize with photons to form phonon-polaritons). The Drude Q = omega/gamma measures how many coherent oscillation cycles the free carriers complete before scattering (relevant for antenna efficiency, plasmonic waveguiding). The SPP FoM = Re[k]/2Im[k] directly counts how many surface plasmon wavelengths propagate before 1/e decay -- this is the metric that determines whether long-range SPP waveguides are feasible.
+
+2. SPECTRAL WEIGHT ANALYSIS: The windowed spectral weight integral partial_SW = integral[sigma_1 d_omega] partitions the total f-sum into arbitrary frequency windows. This reveals where the oscillator strength resides: for metals, most SW is below the plasma frequency (intraband); for semiconductors, it's at the band edge; for ionic crystals, it's at the phonon frequencies. The ratio of intraband to total SW is a measure of metallicity.
+
+3. COHERENCE AND INTERFERENCE: The coherence length l_c = c/(n*delta_omega) determines the maximum optical path difference for which interference fringes are visible. For Casimir physics, the relevant coherence length is set by the Matsubara frequency spacing 2*pi*k_B*T/hbar ~ 2.6e13 rad/s at 300K, giving l_c ~ 7 um -- this is why the Casimir effect transitions from quantum (retarded) to thermal (non-retarded) behavior at plate separations around 7 um.
+
+4. PENETRATION DEPTH RATIO: delta/lambda classifies the interaction regime. When delta/lambda << 1 (metals in visible): the material acts as a mirror, and skin-depth effects dominate Casimir force corrections. When delta/lambda >> 1 (dielectrics): the material is transparent and the Casimir force comes from bulk dielectric response. The crossover delta/lambda ~ 1 marks the onset of anomalous skin effect physics (relevant for high-purity metals at low temperature)."""
+related_claims = ["C-750", "C-751", "C-752"]
+date = "2026-02-17"
+sprint = 44

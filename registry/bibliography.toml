@@ -2426,3 +2426,53 @@ citation_markdown = "**van Mechelen, J. L. M., van der Marel, D., Grimaldi, C., 
 notes = ["*Extended Drude analysis of doped SrTiO3; demonstrates frequency-dependent scattering and non-Fermi-liquid character.*"]
 urls = []
 dois = ["10.1103/PhysRevLett.100.226403"]
+
+[[entry]]
+id = "BIB-0204"
+order_index = 204
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Granqvist, C. G.** (2000). *Electrochromic tungsten oxide films: Review of progress 1993-1998*. Solar Energy Materials and Solar Cells 60(3), 201-262. DOI: 10.1016/S0927-0248(99)00088-4."
+notes = ["*Comprehensive review of WO3 electrochromic properties and optical constants; source for stoichiometric WO3 oscillator parameters.*"]
+urls = []
+dois = ["10.1016/S0927-0248(99)00088-4"]
+
+[[entry]]
+id = "BIB-0205"
+order_index = 205
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Niklasson, G. A., & Granqvist, C. G.** (2007). *Electrochromics for smart windows: thin films of tungsten oxide and nickel oxide, and devices based on these*. Journal of Materials Chemistry 17(2), 127-156. DOI: 10.1039/B612174H."
+notes = ["*Updated optical model for WO3 family including sub-stoichiometric and doped variants; phonon mode assignments.*"]
+urls = []
+dois = ["10.1039/B612174H"]
+
+[[entry]]
+id = "BIB-0206"
+order_index = 206
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Lynch, D. W., & Hunter, W. R.** (1991). *Comments on the Optical Constants of Metals and an Introduction to the Data for Several Metals*. In E. D. Palik (Ed.), Handbook of Optical Constants of Solids II, 341-419. Academic Press."
+notes = ["*Anisotropic Drude parameters for hexagonal tungsten bronzes (Cs0.33WO3); source for uniaxial parallel/perpendicular optical constants.*"]
+urls = []
+dois = []
+
+[[entry]]
+id = "BIB-0207"
+order_index = 207
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Nikl, M., Bohacek, P., Mihokova, E., Kobayashi, M., Ishii, M., Usuki, Y., Babin, V., Stolovich, A., Zazubovich, S., & Baccaro, S.** (2000). *Excitonic emission of scheelite tungstates AWO4 (A = Pb, Ca, Ba, Sr)*. Radiation Measurements 33(5), 683-689. DOI: 10.1016/S1350-4487(01)00076-1."
+notes = ["*Optical properties and scintillation characteristics of CaWO4 and PbWO4 scheelite crystals; band gap and refractive index data.*"]
+urls = []
+dois = ["10.1016/S1350-4487(01)00076-1"]
+
+[[entry]]
+id = "BIB-0208"
+order_index = 208
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Garcia, G., Buonsanti, R., Runnerstrom, E. L., Mendelsberg, R. J., Llordes, A., Anders, A., Richardson, T. J., & Milliron, D. J.** (2011). *Dynamically Modulating the Surface Plasmon Resonance of Doped Semiconductor Nanocrystals*. Nano Letters 11(10), 4415-4420. DOI: 10.1021/nl202597n."
+notes = ["*Plasmonic response of oxygen-deficient WO3-x nanocrystals; carrier-density to plasma frequency derivation for sub-stoichiometric tungsten oxide.*"]
+urls = []
+dois = ["10.1021/nl202597n"]
