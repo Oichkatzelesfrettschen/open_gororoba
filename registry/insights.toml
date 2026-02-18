@@ -954,3 +954,55 @@ body = """Part 15 bridges the DrudeLorentzParams dielectric model to solar energ
 related_claims = ["C-753", "C-754", "C-755"]
 date = "2026-02-17"
 sprint = 44
+
+[[insight]]
+id = "I-087"
+title = "Sensor-fusion audit: cosmological constant claims vs codebase reality"
+body = """An external LLM-generated answer attributed several false physics claims to this repository. A three-layer audit (registry, code, ingest) found all overclaims originated externally:
+
+1. VACUUM ATTRACTOR IS TRANSPORT, NOT LAMBDA: bridge.rs outputs kinematic viscosity (m^2/s) via six coupling models. No vacuum energy density, no cosmological constant, no stress-energy tensor from frustration. Claims C-678..C-681 record transport parameters only.
+
+2. YUKAWA POTENTIALS DO NOT EXIST: Zero implementations of spatial potentials (Yukawa, soft-core, form factor). Only occurrence is C-084 (Refuted). The word 'screened' appears only in optical context (screened plasma frequency).
+
+3. DARK ENERGY MODELS TESTED AND REFUTED: C-012 (neg-dim DE, dAIC=+11.6) REFUTED. C-430 (NegDim expansion) CLOSED/REFUTED. C-441 (bounce cosmology, dBIC=+6.37) VERIFIED as disfavored. Cosmology modules (cosmology_algebra_bridge.rs, flrw.rs) have zero frustration coupling.
+
+4. QED RENORMALIZATION NOT CLAIMED: 'renormalization' in codebase means null geodesic constraint fixing, billiard normalization, or wavefunction normalization. tang_mass computes algebraic mass ratios, not QED loops. No running couplings, no counterterms.
+
+5. PROVENANCE ARCHITECTURE SELF-CORRECTS: Three-layer truth table (TOML registry, typed Rust code, ingested papers) with pre-registered claims, preserved negative results, and status normalization prevents internal overclaiming. The repo is more epistemically disciplined than the external answer.
+
+Anti-hallucination guardrail document created: docs/SCOPE_GUARDRAILS.md"""
+related_claims = ["C-012", "C-084", "C-430", "C-441", "C-678", "C-679", "C-680", "C-681"]
+date = "2026-02-17"
+sprint = 46
+
+[[insight]]
+id = "I-088"
+title = "From bulk dielectric to photonic devices: waveguide, sensing, and thin-film design from a single DL model"
+body = """Part 16 (a-c) demonstrates that the same Drude-Lorentz parameterization used for Casimir physics provides quantitative device design metrics:
+
+1. WAVEGUIDE OPTICS: The Marcuse Gaussian mode field approximation gives confinement factor and effective mode area from just core/cladding refractive indices. The single-mode cutoff V=2.405 sets the maximum core diameter. For Casimir physics, waveguide mode density near a surface modifies the Casimir-Polder interaction.
+
+2. PLASMONIC SENSING: The SERS enhancement |E/E_0|^4 from quasistatic Clausius-Mossotti polarizability makes the SERS enhancement proportional to 1/gamma^4, explaining why low-loss metals (Ag > Au > Cu) give stronger SERS. RI sensitivity ~100-500 nm/RIU for noble metal nanoparticles.
+
+3. THIN-FILM INTERFERENCE: The Airy formula handles absorbing films via complex phase. Fabry-Perot finesse determines cavity Q-factor. For Casimir physics, thin-film etalons create discrete cavity modes modifying the force.
+
+4. COLOR FROM STRUCTURE: CIE chromaticity explains structural color. Gold appears yellow due to interband transition at ~2.4 eV. This connects to Matsubara frequency weighting in the visible range."""
+related_claims = ["C-757", "C-758", "C-759"]
+date = "2026-02-17"
+sprint = 44
+
+[[insight]]
+id = "I-089"
+title = "Phonon polaritonics and carrier dynamics: infrared nanophotonics and ultrafast response"
+body = """Part 16 (d-e) extends into domains connecting strongly to Casimir physics:
+
+1. PHONON POLARITONICS: Surface phonon polaritons exist in the Reststrahlen band where Re[eps] < 0 from phonon oscillators. For SrTiO3, the SPhP group velocity can be ~c/100, creating strong light-matter coupling. Phonon polaritons dominate Casimir forces at 1-10 um separations.
+
+2. ISOTOPE ENGINEERING: The harmonic shift delta_omega/omega = 1 - 1/sqrt(M_new/M_old) provides a Casimir tuning knob. Isotopically-enriched SrTiO3 with 18O shifts phonon frequencies by ~5.7%, measurably changing the Casimir force in the phonon-dominated regime.
+
+3. DRUDE-SMITH MODEL: mu_DS = mu_Drude*(1+c) captures carrier localization in nanostructured materials. c in [-1, 0] quantifies backscattering. Relevant for photo-induced Casimir force modulation via carrier injection.
+
+4. PUMP-PROBE CASIMIR: Transient reflectivity change from optical pumping connects to the Casimir switch concept where laser pulses dynamically tune forces between plates."""
+related_claims = ["C-760", "C-761"]
+date = "2026-02-17"
+sprint = 44
