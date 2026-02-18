@@ -578,3 +578,15 @@ crate = "gororoba_cli"
 description = "Casimir Drude vs plasma model discrepancy for Au/Ag/Cu metallic plates: n=0 TE contribution controversy (Sprint 45)"
 experiment = "E-044"
 status = "active"
+
+[[binary]]
+name = "absorber-topology-benchmark"
+crate = "gororoba_cli"
+description = "C-010 absorber topology benchmark: scores ZD clique vs local (ring/chain/complete) coupling topologies on mode-suppression isolation. Confirms CLOSED_NEGATIVE_RESULT."
+status = "active"
+
+[[binary]]
+name = "gravastar-bypass-compare"
+crate = "gororoba_cli"
+description = "C-011 bypass model comparison: quaternion projection vs restriction closures for gravastar EoS. Tests associative surrogates against obstructed sedenion baseline."
+status = "active"

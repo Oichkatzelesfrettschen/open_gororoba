@@ -446,6 +446,14 @@ path = "src/bin/casimir_plate_compare.rs"
 name = "casimir-drude-plasma"
 path = "src/bin/casimir_drude_plasma.rs"
 
+[[bin]]
+name = "absorber-topology-benchmark"
+path = "src/bin/absorber-topology-benchmark.rs"
+
+[[bin]]
+name = "gravastar-bypass-compare"
+path = "src/bin/gravastar-bypass-compare.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
