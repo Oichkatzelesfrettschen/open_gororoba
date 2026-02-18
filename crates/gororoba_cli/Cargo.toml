@@ -431,6 +431,10 @@ name = "meltdown-gating-sweep"
 path = "src/bin/meltdown_gating_sweep.rs"
 
 [[bin]]
+name = "meltdown-pulsed-gate"
+path = "src/bin/meltdown_pulsed_gate.rs"
+
+[[bin]]
 name = "wavelet-acf-calibration"
 path = "src/bin/wavelet_acf_calibration.rs"
 
@@ -509,6 +513,14 @@ path = "src/bin/wow_sedenion_synthesis.rs"
 [[bin]]
 name = "dataset-fetch-all"
 path = "src/bin/dataset_fetch_all.rs"
+
+[[bin]]
+name = "algebra-entropy-census"
+path = "src/bin/algebra_entropy_census.rs"
+
+[[bin]]
+name = "chsh-betti-sweep"
+path = "src/bin/chsh_betti_sweep.rs"
 
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
