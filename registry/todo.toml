@@ -293,11 +293,11 @@ evidence_refs = []
 id = "T-024"
 area = "provenance"
 title = "RI-034 GW250114 Mapping Hardening"
-description = "Independently replay RI-034 citation-chain evidence and decide whether the current GW250114 mapping remains supportable at canonical quality."
+description = "Independently replay RI-034 citation-chain evidence and decide whether the current GW250114 mapping remains supportable at canonical quality. DONE: All three candidate URLs verified (arXiv:2509.08099, PRL 10.1103/6c61-fm1n, Cornell news). Mapping is correct and complete. PRL short DOI verified via search cache (direct 403 from APS bot challenge). HCTP-016 evidence_status upgraded to verified."
 priority = "high"
-status = "open"
-status_token = "OPEN"
+status = "done"
+status_token = "DONE"
 dependencies = []
 acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+evidence_refs = ["registry/hypercomplex_taxonomy_promotion.toml (HCTP-016)"]
 
