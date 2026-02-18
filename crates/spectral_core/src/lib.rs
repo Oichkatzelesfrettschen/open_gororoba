@@ -13,6 +13,8 @@
 
 pub mod ndfft;
 pub mod neg_dim;
+pub mod pde_surrogates;
+pub mod wavelet;
 pub mod warp_physics;
 
 pub use neg_dim::{

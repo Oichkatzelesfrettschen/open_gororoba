@@ -1,0 +1,27 @@
+# Wavelet ACF Calibration results
+# N=128 steps=300 dt=0.002 nu=0.01 rho=1.5
+# verdict = PASS
+
+[[result]]
+eps = 1e-3
+kappa_fit = 12.734801
+r_squared = 0.448967
+pass = true
+
+[[result]]
+eps = 3e-3
+kappa_fit = 13.453085
+r_squared = 0.478886
+pass = true
+
+[[result]]
+eps = 1e-2
+kappa_fit = 13.638296
+r_squared = 0.507920
+pass = true
+
+[[result]]
+eps = 3e-2
+kappa_fit = 13.911005
+r_squared = 0.809914
+pass = true
