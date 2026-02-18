@@ -11733,3 +11733,36 @@ what_would_verify_refute = "VERIFIED: lc finite for delta_omega > 0, infinite fo
 confidence = "high"
 phase = "materials"
 sprint = 44
+
+[[claim]]
+id = "C-753"
+statement = "Solar-weighted optical metrics from Drude-Lorentz: solar_absorptance() integrates emissivity(omega) weighted by a 5800K blackbody envelope over the atmospheric window (0.3-4.0 eV, AM1.5G approximation). Gold has solar absorptance < 0.5 (high reflectivity), silica > 0.5 (low reflectivity). solar_reflectance() = 1 - solar_absorptance() verified to < 1e-10. antireflection_thickness() computes quarter-wave AR coating d = lambda/(4*sqrt(n_sub)) for destructive interference (silica: 50-500 nm at visible)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (solar_absorptance, solar_reflectance, antireflection_thickness, test_solar_absorptance_metal_low, test_solar_absorptance_dielectric_high, test_solar_reflectance_complement, test_antireflection_thickness_positive)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Gold A < 0.5, silica A > 0.5, A+R=1, AR thickness 50-500nm. REFUTE: solar absorptance > 1 (unphysical) or AR thickness < 0."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-754"
+statement = "Wien displacement law and luminous reflectance: wien_peak_ev(T) = 2.821*k_B*T gives the peak thermal emission energy. At 300K: ~0.07 eV (mid-IR), at 5800K: ~1.4 eV (near-IR/visible). Peak energy is exactly proportional to temperature. wien_peak_omega(T) returns the same in rad/s. luminous_reflectance() weights reflectivity by a Gaussian approximation to the CIE photopic luminosity function (center 2.23 eV = 555 nm, sigma 0.34 eV). Gold has high luminous reflectance (> 0.5), silica low (< 0.3)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (wien_peak_ev, wien_peak_omega, luminous_reflectance, test_wien_peak_room_temperature, test_wien_peak_sun, test_wien_peak_proportional_to_temperature, test_wien_peak_omega_positive, test_luminous_reflectance_gold_high, test_luminous_reflectance_silica_low, test_luminous_reflectance_gold_vs_silica)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Wien 300K ~0.07 eV, 5800K ~1.4 eV, proportional to T, gold R_lum > silica R_lum. REFUTE: Wien peak independent of T or luminous reflectance > 1."
+confidence = "high"
+phase = "materials"
+sprint = 44
+
+[[claim]]
+id = "C-755"
+statement = "Selective emitter efficiency for thermophotovoltaics: selective_emitter_efficiency() computes the fraction of thermal emission above a photovoltaic gap frequency, weighted by emissivity and Planck function. Efficiency is between 0 and 1 (verified). Lower gap energy gives higher efficiency (more photons above threshold). 13 new Part 15 tests, 258 optical tests total, 3793 workspace tests (excluding lbm_vulkan compile issue from separate work)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (selective_emitter_efficiency, test_selective_emitter_efficiency_bounds, test_selective_emitter_higher_gap_lower_efficiency)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: eta in [0,1], eta(1 eV gap) > eta(3 eV gap). REFUTE: eta < 0 or eta > 1 (violates energy conservation) or higher gap giving more efficiency (Shockley-Queisser direction wrong)."
+confidence = "high"
+phase = "materials"
+sprint = 44

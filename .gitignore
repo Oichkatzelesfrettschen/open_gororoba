@@ -140,3 +140,7 @@ data/external/landsat_stac_sample.json
 ![Gg][Ee][Mm][Ii][Nn][Ii].md
 ![Rr][Ee][Aa][Dd][Mm][Ee].md
 !**/[Rr][Ee][Aa][Dd][Mm][Ee].md
+
+# Local excludes
+target/
+.venv_ingest/
