@@ -5,10 +5,12 @@ use gpu_allocator::vulkan::*;
 use gpu_allocator::MemoryLocation; 
 use crate::VulkanContext;
 use std::mem::size_of;
+use std::sync::Mutex;
 
 #[allow(dead_code)]
 pub struct LbmComputePipeline {
     device: Arc<Device>,
+    allocator: Arc<Mutex<Allocator>>, // Needed for Drop
     pipeline: vk::Pipeline,
     pipeline_layout: vk::PipelineLayout,
     descriptor_set_layout: vk::DescriptorSetLayout,
@@ -22,6 +24,38 @@ pub struct LbmComputePipeline {
     u_buffer: Option<(vk::Buffer, Allocation)>,
     
     grid_dim: (u32, u32, u32),
+}
+
+impl Drop for LbmComputePipeline {
+    fn drop(&mut self) {
+        unsafe {
+            self.device.device_wait_idle().unwrap();
+
+            let mut allocator = self.allocator.lock().unwrap();
+            
+            if let Some((buffer, allocation)) = self.f_in_buffer.take() {
+                self.device.destroy_buffer(buffer, None);
+                allocator.free(allocation).unwrap();
+            }
+            if let Some((buffer, allocation)) = self.f_out_buffer.take() {
+                self.device.destroy_buffer(buffer, None);
+                allocator.free(allocation).unwrap();
+            }
+            if let Some((buffer, allocation)) = self.rho_buffer.take() {
+                self.device.destroy_buffer(buffer, None);
+                allocator.free(allocation).unwrap();
+            }
+            if let Some((buffer, allocation)) = self.u_buffer.take() {
+                self.device.destroy_buffer(buffer, None);
+                allocator.free(allocation).unwrap();
+            }
+
+            self.device.destroy_descriptor_pool(self.descriptor_pool, None);
+            self.device.destroy_descriptor_set_layout(self.descriptor_set_layout, None);
+            self.device.destroy_pipeline_layout(self.pipeline_layout, None);
+            self.device.destroy_pipeline(self.pipeline, None);
+        }
+    }
 }
 
 impl LbmComputePipeline {
@@ -233,6 +267,7 @@ impl LbmComputePipeline {
 
         Ok(Self {
             device,
+            allocator: ctx.allocator.clone(),
             pipeline,
             pipeline_layout,
             descriptor_set_layout,
@@ -288,7 +323,7 @@ impl LbmComputePipeline {
             let dispatch_z = self.grid_dim.2.div_ceil(group_size_z);
 
             device.cmd_dispatch(cmd, dispatch_x, dispatch_y, dispatch_z);
-            
+
             // Memory Barrier for next step (swap buffers logic needed outside or here)
             // For now, just a barrier to ensure write completion
             let memory_barrier = vk::MemoryBarrier {
