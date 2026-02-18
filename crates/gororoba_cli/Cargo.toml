@@ -470,6 +470,46 @@ path = "src/bin/wow_signal_analysis.rs"
 name = "wow-topology"
 path = "src/bin/wow_topology.rs"
 
+[[bin]]
+name = "bl-data-fetch"
+path = "src/bin/bl_data_fetch.rs"
+
+[[bin]]
+name = "bl-doppler-search"
+path = "src/bin/bl_doppler_search.rs"
+
+[[bin]]
+name = "rho-ghost-fft"
+path = "src/bin/rho_ghost_fft.rs"
+
+[[bin]]
+name = "cd-ultrametric-scaling"
+path = "src/bin/cd_ultrametric_scaling.rs"
+
+[[bin]]
+name = "zd-resonance-sweep"
+path = "src/bin/zd_resonance_sweep.rs"
+
+[[bin]]
+name = "pathion-sink-test"
+path = "src/bin/pathion_sink_test.rs"
+
+[[bin]]
+name = "chirality-lock-test"
+path = "src/bin/chirality_lock_test.rs"
+
+[[bin]]
+name = "moonshine-filterbank"
+path = "src/bin/moonshine_filterbank.rs"
+
+[[bin]]
+name = "wow-sedenion-synthesis"
+path = "src/bin/wow_sedenion_synthesis.rs"
+
+[[bin]]
+name = "dataset-fetch-all"
+path = "src/bin/dataset_fetch_all.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
@@ -525,6 +565,7 @@ pgfplots = { workspace = true }
 chrono = { workspace = true }
 ash = { version = "0.38.0", features = ["debug"] }
 lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
+rustfft = { workspace = true }
 
 [dev-dependencies]
 tempfile = { workspace = true }

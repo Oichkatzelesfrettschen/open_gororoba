@@ -11201,7 +11201,7 @@ dependencies = ["C-691"]
 status_note = "Promoted conservatively as a mapping claim pending independent replay of the citation chain."
 
 [[claim]]
-id = "T-SPIN-CD"
+id = "C-774"
 statement = "Non-associative algebraic frustration induces monotonic spin decoherence in Lambda-pair systems."
 where_stated = "Thesis 5 Pipeline (`crates/gororoba_engine/src/thesis_pipelines.rs`), Experiment E-036 (`registry/experiments.toml`), STAR spin correlation synthesis."
 status = "Verified"
@@ -11209,10 +11209,10 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1.0) of spin correlation P as frustration-induced decoherence gamma increases. Validates CD-frustration as a candidate physical medium for coherence loss."
 confidence = "high"
 phase = "synthesis"
-claims = ["T-PPT-NEED"]
+claims = ["C-775"]
 
 [[claim]]
-id = "T-PPT-NEED"
+id = "C-775"
 statement = "The scalar relative polarization parameter P is insufficient to distinguish entangled states from classically correlated states in Lambda-pair systems."
 where_stated = "Thesis 5 Pipeline (`crates/gororoba_engine/src/thesis_pipelines.rs`), STAR spin correlation paper (s41586-025-09920-0) Discussion section."
 status = "Verified"
@@ -11221,10 +11221,10 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite frustration threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration."
 confidence = "high"
 phase = "synthesis"
-claims = ["T-SPIN-CD"]
+claims = ["C-774"]
 
 [[claim]]
-id = "T-CHAMBER-DISCRETE"
+id = "C-776"
 statement = "Degenerate kinematic slices in QFT (short-range selection in spin correlation, half-collinear locus in gluon scattering) expose discrete, piecewise-constant algebraic invariants."
 where_stated = "STAR spin correlation paper (s41586-025-09920-0), Single-minus gluon preprint (2602.12176)."
 status = "Verified"
@@ -11232,10 +11232,10 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED: Single-minus amplitude evaluation in R1 region collapses to a discrete product of sign gates (Eq. 39). STAR spin correlation P remains stable only in the short-range (degenerate) bin. Both map to discrete sign-logic structures."
 confidence = "high"
 phase = "synthesis"
-claims = ["T-AMPLITUDE-FRUSTRATION-MINIMA"]
+claims = ["C-777"]
 
 [[claim]]
-id = "T-AMPLITUDE-FRUSTRATION-MINIMA"
+id = "C-777"
 statement = "The nonzero region R1 for single-minus gluon amplitudes corresponds to the zero-frustration locus of the associated sign-graph logic."
 where_stated = "Amplitude Frustration Survey CLI (`crates/gororoba_cli/src/bin/amplitude_frustration_survey.rs`), Single-minus gluon preprint (2602.12176)."
 status = "Verified"
@@ -11243,10 +11243,10 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero frustration, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation."
 confidence = "high"
 phase = "synthesis"
-claims = ["T-CHAMBER-DISCRETE"]
+claims = ["C-776"]
 
 [[claim]]
-id = "T-QGP-VORTICITY"
+id = "C-778"
 statement = "QGP vorticity induces a global spin polarization that can be modeled as a biased decoherence channel in the Cayley-Dickson algebraic space."
 where_stated = "QGP Frustration Bridge (`crates/cd_spin_bridge/src/qgp_model.rs`), Experiment E-038."
 status = "Verified"
@@ -11254,10 +11254,10 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED: Modeling ALICE 5.36 TeV Pb-Pb global polarization via a vorticity-bias channel reproduces the observed centrality-dependent trend (centrality mid-points map to omega_mag)."
 confidence = "medium"
 phase = "synthesis"
-claims = ["T-CMS-SIGN-CHALLENGE"]
+claims = ["C-779"]
 
 [[claim]]
-id = "T-CMS-SIGN-CHALLENGE"
+id = "C-779"
 statement = "The CMS azimuthal polarization sign challenge can be resolved by introducing an algebraic twist correction to hydrodynamic model predictions."
 where_stated = "LHC 2025 QGP Synthesis CLI (`crates/gororoba_cli/src/bin/lhc_2025_qgp_synthesis.rs`), Experiment E-038."
 status = "Verified"
@@ -11265,7 +11265,7 @@ last_verified = "2026-02-15"
 what_would_verify_refute = "VERIFIED: An algebraic twist term proportional to cos(phi) reduces the residual between experiment and hydro-model values to < 0.05, resolving the sign discrepancy observed in 2025 CMS pPb data."
 confidence = "medium"
 phase = "synthesis"
-claims = ["T-QGP-VORTICITY"]
+claims = ["C-778"]
 
 [[claim]]
 id = "C-695"
@@ -12239,7 +12239,7 @@ id = "C-772"
 statement = "ON and OFF cadence pointings from the BL 6EQUJ5 campaign are topologically indistinguishable: the Wasserstein-2 distance between their persistence diagrams is not significantly different from a label-permuted null distribution (p > 0.05)."
 where_stated = "`crates/gororoba_cli/src/bin/wow_topology.rs` (morphology subcommand)"
 status = "Proposed"
-status_note = "wow_topology morphology subcommand implemented; requires execution with BL filterbank candidate data to produce p-value"
+status_note = "wow_topology morphology supports --candidates flag for real data. E-050 (bl-doppler-search) provides Rust-native Doppler search + ABACAD pipeline. Awaiting BL filterbank download and scan execution."
 last_verified = "2026-02-18"
 what_would_verify_refute = "VERIFY: Permutation test on persistent homology of candidate point clouds (frequency, drift rate, SNR features) yields p > 0.05. REFUTE: p < 0.05 with Bonferroni correction across homology dimensions."
 confidence = "low"
@@ -12252,10 +12252,75 @@ id = "C-773"
 statement = "BL 6EQUJ5 candidate feature vectors exhibit non-trivial ultrametric structure compared to column-shuffled null: the observed ultrametric fraction exceeds the permutation null mean with p < 0.05 after BH-FDR correction."
 where_stated = "`crates/gororoba_cli/src/bin/wow_topology.rs` (ultrametric subcommand)"
 status = "Proposed"
-status_note = "wow_topology ultrametric subcommand implemented; requires execution with BL filterbank candidate data to produce p-value and effect size"
+status_note = "wow_topology ultrametric supports --candidates flag for real data. E-050 (bl-doppler-search) provides Rust-native Doppler search + ABACAD pipeline. Awaiting BL filterbank download and scan execution."
 last_verified = "2026-02-18"
 what_would_verify_refute = "VERIFY: Ultrametric fraction test with 10000 triples x 1000 permutations yields p < 0.05 and positive effect size. REFUTE: p >= 0.05, or observed fraction <= null mean (no ultrametric excess)."
 confidence = "low"
 phase = "topology"
 sprint = 48
 dependencies = ["C-771"]
+
+[[claim]]
+id = "C-774"
+statement = "Sedenion zero-divisor modulated viscosity in a 3D LBM simulation produces a spectral peak that locks to the grid Nyquist frequency independently of the relaxation parameter tau. The peak frequency does NOT drift with Reynolds number (|slope| < 0.01 in peak_freq vs tau regression) and vanishes when ZD modulation amplitude is set to zero."
+where_stated = "`crates/gororoba_cli/src/bin/zd_resonance_sweep.rs`, `crates/lbm_vulkan/shaders/zd_gen.wgsl`, `crates/spectral_core/src/ghost_spectral.rs`"
+status = "Proposed"
+status_note = "Binary created; awaiting execution of tau sweep + control + seeding sweep"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Peak appears ONLY with tau_amp > 0, frequency constant across tau sweep (|slope| < 0.01), does NOT track pc.lambda seeding parameter. REFUTE: Peak shifts with tau (fluid artifact), OR appears without ZD modulation (lattice artifact), OR tracks seeding frequency."
+confidence = "low"
+phase = "simulation"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-775"
+statement = "The ghost frequency at phi^{-1/2} ~ 0.786 cycles/sample is detectable at rank <= 3 with SNR > 5.0 in production warp field HDF5 snapshots without synthetic signal injection."
+where_stated = "`crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `crates/spectral_core/src/ghost_spectral.rs`"
+status = "Proposed"
+status_note = "Ghost spectral module extracted; awaiting h5-sweep subcommand on production data"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: FFT of rho_mean time series from warp_field_128_step_*.h5 shows phi^{-1/2} peak at rank <= 3 with SNR > 5.0. REFUTE: No peak near phi^{-1/2} above noise floor, or peak exists but at rank > 3 or SNR < 5.0."
+confidence = "low"
+phase = "simulation"
+sprint = 49
+dependencies = ["C-774"]
+
+[[claim]]
+id = "C-776"
+statement = "A Pathionic heat sink (virtual dim-32 scalar absorber coupled to the Sedenion associator norm) stabilizes the warp ring simulation past the natural instability onset. The instability onset time increases monotonically with coupling strength."
+where_stated = "`crates/gororoba_cli/src/bin/pathion_sink_test.rs`, `crates/gororoba_engine/src/simulation/mod.rs` (PathionSink struct)"
+status = "Proposed"
+status_note = "PathionSink struct and binary created; awaiting simulation execution"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Ring survives all max_steps with pathion sink where it destabilized without. Instability onset monotonically increases with coupling [0.01, 0.05, 0.1, 0.5, 1.0]. REFUTE: Ring still destabilizes at same step for ALL coupling values, or onset is non-monotonic."
+confidence = "low"
+phase = "simulation"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-777"
+statement = "Macroscopic vortex handedness (helicity sign) is locked to the Sedenion Cayley-Dickson multiplication table orientation. Flipping initial vorticity without conjugating the CD table produces an UNSTABLE configuration, while flipping both (double flip) recovers stability."
+where_stated = "`crates/gororoba_cli/src/bin/chirality_lock_test.rs`, `crates/algebra_core/src/construction/cayley_dickson.rs` (cd_multiply_conjugated)"
+status = "Proposed"
+status_note = "ChiralityMode enum, cd_multiply_conjugated, and binary created; awaiting 2x2 matrix experiment"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Config B (Standard CD + Flipped vorticity) is UNSTABLE while Config D (Conjugated CD + Flipped vorticity) is STABLE. REFUTE: Config B produces stable opposite-handed ring (chirality follows initial conditions, not algebra)."
+confidence = "low"
+phase = "simulation"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-778"
+statement = "Signal chunks projected onto the Leech Lattice (Lambda_24) via Babai CVP show statistically different deep hole fractions between structured (ON-source) and noise-only (OFF-source) pointings at p < 0.05 in a two-proportion z-test."
+where_stated = "`crates/gororoba_cli/src/bin/moonshine_filterbank.rs`, `crates/algebra_core/src/experimental/leech_lattice.rs`, `crates/algebra_core/src/experimental/golay_code.rs`"
+status = "Proposed"
+status_note = "Golay code, Leech lattice CVP, and Moonshine filterbank binary created; awaiting synthetic and real data tests"
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Two-proportion z-test on deep hole fraction yields p < 0.05 between ON (structured signal + noise) and OFF (noise only) chunks. REFUTE: p >= 0.05 (Moonshine filter adds no discriminating power)."
+confidence = "low"
+phase = "topology"
+sprint = 49
+dependencies = []

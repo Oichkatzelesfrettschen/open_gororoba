@@ -18,6 +18,92 @@ pub use state_3d::{
 };
 
 use algebra_core::physics::octonion_field::{FieldParams, Octonion, Pathion, Sedenion};
+
+/// Pathionic heat sink for absorbing energy from truncated dimensions.
+///
+/// When the simulation uses Sedenions (dim=16), the full Cayley-Dickson
+/// hierarchy continues to Pathions (dim=32). This sink models the energy
+/// that would leak into dimensions 16..31 as a scalar damping term,
+/// analogous to subgrid-scale dissipation in LES turbulence modeling.
+#[derive(Debug, Clone)]
+pub struct PathionSink {
+    /// Whether the sink is active.
+    pub enabled: bool,
+    /// How strongly Sedenion associator overflow couples to the sink.
+    pub coupling: f64,
+    /// Dissipation rate in the virtual Pathion dimensions.
+    pub damping: f64,
+    /// Total energy absorbed by the sink (diagnostic).
+    pub accumulated: f64,
+}
+
+impl PathionSink {
+    /// Create a new Pathion sink with given coupling and damping parameters.
+    pub fn new(coupling: f64, damping: f64) -> Self {
+        Self {
+            enabled: true,
+            coupling,
+            damping,
+            accumulated: 0.0,
+        }
+    }
+
+    /// Disabled (no-op) sink.
+    pub fn disabled() -> Self {
+        Self {
+            enabled: false,
+            coupling: 0.0,
+            damping: 0.0,
+            accumulated: 0.0,
+        }
+    }
+
+    /// Absorb energy proportional to the associator norm squared.
+    ///
+    /// Returns the feedback term (negative = damping) to apply to the
+    /// Sedenion field's viscosity modulation.
+    pub fn absorb(&mut self, associator_norm: f64, dt: f64) -> f64 {
+        if !self.enabled {
+            return 0.0;
+        }
+        // Energy that would go into dimensions 16..31
+        let overflow = self.coupling * associator_norm.powi(2);
+        self.accumulated += overflow * dt;
+        // Return damped feedback to Sedenion space
+        -self.damping * overflow * dt
+    }
+
+    /// Reset accumulated energy counter.
+    pub fn reset(&mut self) {
+        self.accumulated = 0.0;
+    }
+}
+
+impl Default for PathionSink {
+    fn default() -> Self {
+        Self::disabled()
+    }
+}
+
+/// Chirality mode for testing the holographic chirality lock hypothesis.
+///
+/// The hypothesis: macroscopic vortex handedness is locked to the Sedenion
+/// multiplication table orientation. Testing requires a 2x2 matrix of
+/// (algebra orientation) x (initial vorticity) configurations.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ChiralityMode {
+    /// Normal CD multiplication, normal vorticity (control baseline).
+    Standard,
+    /// Normal CD multiplication, INVERTED initial vorticity (u -> -u).
+    /// Tests if vorticity can be flipped without changing algebra.
+    Flipped,
+    /// CONJUGATED CD table (all imaginary signs negated), normal vorticity.
+    /// Tests if algebra alone determines handedness.
+    Conjugate,
+    /// Conjugated CD table + inverted vorticity.
+    /// Double-flip: tests if two inversions cancel.
+    DoubleFlip,
+}
 use gr_core::kerr::Kerr;
 use gr_core::sedenion_geodesic::sedenion_homotopy_step;
 use lbm_core::D2Q9;

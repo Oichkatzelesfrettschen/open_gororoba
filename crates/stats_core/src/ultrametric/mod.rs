@@ -69,9 +69,10 @@ pub use baire::{
     normalize_data_column_major, AttributeSpec, BaireEncoder, BaireTestResult,
 };
 pub use baire_codebook::{
-    codebook_baire_ultrametric_test, filter_by_predicate, lattice_attribute_specs,
-    lattice_baire_distance, lattice_baire_distance_matrix, lattice_to_column_major,
-    shared_prefix_length, CodebookBaireResult,
+    codebook_baire_ultrametric_test, codebook_baire_ultrametric_test_nd, filter_by_predicate,
+    lattice_attribute_specs, lattice_baire_distance, lattice_baire_distance_matrix,
+    lattice_baire_distance_matrix_nd, lattice_baire_distance_nd, lattice_to_column_major,
+    shared_prefix_length, shared_prefix_length_nd, CodebookBaireResult,
 };
 pub use codebook_null::{
     codebook_null_test_from_dim, dictionary_to_column_major, extract_zd_basis_pairs,
@@ -83,7 +84,10 @@ pub use dendrogram::{
     hierarchical_ultrametric_test_with_method, multi_linkage_test, DendrogramResult,
     MultiLinkageResult,
 };
-pub use local::{local_ultrametricity_test, LocalUltrametricResult};
+pub use local::{
+    euclidean_distance_matrix_nd, local_ultrametricity_test, local_ultrametricity_test_nd,
+    LocalUltrametricResult,
+};
 pub use null_models::{
     all_strategies, apply_null_column_major, multi_null_comparison, run_adaptive_null_test,
     ColumnIndependentNull, MultiNullResult, NullModel, NullModelStrategy, NullTestConfig,

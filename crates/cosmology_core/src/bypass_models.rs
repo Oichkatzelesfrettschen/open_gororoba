@@ -458,14 +458,11 @@ mod tests {
 
         // Bypass models should have nonzero deviations (different K -> different profile)
         for (model, dev) in &devs {
-            if *model != BypassModel::Baseline {
-                if let Some((md, _cd)) = dev {
-                    // Mass should differ due to different K
-                    assert!(
-                        *md > 0.0 || true, // Some configs may match; not asserting > 0
-                        "bypass model should generally differ from baseline"
-                    );
-                }
+            if *model != BypassModel::Baseline
+                && let Some((_md, _cd)) = dev
+            {
+                // Mass should differ due to different K, but some configs may match.
+                // Deviation >= 0 by construction; no strict assertion needed.
             }
         }
     }
