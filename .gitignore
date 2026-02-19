@@ -76,19 +76,35 @@ temp.*
 # 4. Data & External Resources (Managed via Makefile)
 # ------------------------------------------------------------------------------
 
-# Simulation Outputs (Regenerable)
+# Simulation Outputs (Regenerable via binary re-execution)
 data/h5/
 data/artifacts/images/
 data/artifacts/*.mp4
+data/artifacts/*.png
+data/artifacts/c756_frames/
 data/e027/
+data/test-e027/
 data/csv/ghost_audit/
 data/csv/wow_followup_*.csv
+data/csv/zd_resonance_*.csv
 data/test_zd/
 data/test_zd_1k/
 data/chsh_betti/
+data/chsh_wavelet/
 data/entropy_census/
 data/lattice_hawking/
 data/meltdown_pulsed/
+data/meltdown_gating/
+data/apt-test/
+data/wavelet_bridging/
+data/wavelet_acf/
+data/thesis_lab/
+data/thesis_lab_kolmogorov/
+data/thesis_lab_non_newtonian/
+data/kubo_transport/
+data/equivalence/
+data/papers/
+data/evidence/
 
 # External / Downloaded Datasets (Managed via fetch-data)
 data/external/
@@ -131,7 +147,6 @@ credentials.*
 /*.jpg
 /*.ptx
 /*.txt
-data/artifacts/c756_frames/
 data/bl_6equj5_gbt/
 *.h5
 .venv/

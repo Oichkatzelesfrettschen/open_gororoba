@@ -8,11 +8,19 @@ license = "GPL-2.0-only"
 test_count = 4084
 claim_count = 818
 insight_count = 95
-experiment_count = 69
-complete_experiment_count = 67
+experiment_count = 70
+complete_experiment_count = 68
 paper_count = 19
 binary_count = 136
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s55]
+number = 55
+date = "2026-02-19"
+test_count = 4084
+claim_count = 818
+insight_count = 95
+summary = "Sprint 55: Taxonomy Verification + Repo Hygiene + Publication Hardening. Promoted 11 HCTP taxonomy claims (C-808..C-818) from Proposed to Verified with codebase test cross-references. Zero Proposed claims remaining. Data restructuring: 23,061 files removed from git tracking (98.5% reduction in data/); regenerable artifacts now gitignored. Closed 3 workstreams (WS-ALGEBRA-FLUID-001, WS-THESIS-002, WS-REGISTRY-001). Updated project counters. Resolved E-050/E-064 status. Resolved L-768 lacuna. Bibliography audit for WS-PUB-001. README project tree walkthrough."
 
 [sprints.s54]
 number = 54

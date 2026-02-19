@@ -4,8 +4,9 @@
 [experiments]
 updated = "2026-02-19"
 authoritative = true
-experiment_count = 69
-planned_count = 4
+experiment_count = 70
+planned_count = 0
+deferred_count = 2
 deterministic_count = 18
 gpu_count = 8
 seeded_count = 15
@@ -1152,9 +1153,9 @@ claims = ["C-771", "C-772", "C-773"]
 claim_refs = ["C-771", "C-772", "C-773"]
 deterministic = false
 gpu = false
-status = "planned"
-status_token = "PLANNED"
-status_note = "Blocked on BL filterbank HDF5 data download (~100 GB). Rust-native Doppler search + ABACAD pipeline implemented but awaits data."
+status = "deferred"
+status_token = "DEFERRED"
+status_note = "Sprint 55: Deferred. Blocked on BL filterbank HDF5 data download (~100 GB). Binary implemented but external data dependency prevents execution. Post-publication."
 lineage_id = "XL-048"
 input_path_refs = ["data/bl_6equj5_gbt/"]
 output_path_refs = ["data/csv/bl_6equj5_doppler_results.csv", "data/csv/bl_6equj5_cadence_events.csv", "registry/bl_6equj5_analysis.toml"]
@@ -1512,9 +1513,9 @@ claims = ["C-792", "C-793", "C-789"]
 claim_refs = ["C-792", "C-793", "C-789"]
 deterministic = false
 gpu = true
-status = "planned"
-status_token = "PLANNED"
-status_note = "Blocked on GPU memory (256^3 = 16.7M cells requires >16GB VRAM for BF16 D3Q19). C-792 already Falsified at 128^3. Would confirm null at higher resolution."
+status = "deferred"
+status_token = "DEFERRED"
+status_note = "Sprint 55: Deferred. Blocked on GPU VRAM (256^3 = 16.7M cells requires >16GB). C-792 already Falsified at 128^3. Null confirmation at higher resolution is low priority."
 result_summary = ""
 lineage_id = "XL-062"
 input_path_refs = []
@@ -1667,3 +1668,29 @@ output_path_refs = ["data/evidence/MANIFEST.toml"]
 dataset_refs = []
 reproducibility_class = "deterministic"
 sprint = 51
+
+[[experiment]]
+id = "E-072"
+title = "TX-2 Viscosity-to-Filtration Loop at 128^3 CPU FP64 (C-669 Refutation)"
+binary = "thesis-cross-tx2"
+binary_registered = true
+binary_experiment_declared = "E-072"
+method = "TX-2 cross-experiment at 128^3 (2M cells) CPU FP64, 500 LBM steps, lambda sweep [0.5, 1.0, 2.0, 5.0, 10.0]. Tests whether turbulent regime at higher resolution resolves Undetermined classification from original 16^3 (E-031)."
+input = "None (synthetic SedenionField initialization)"
+output = ["data/thesis_lab/tx2_128/tx2_report.toml"]
+run = "cargo run --release --bin thesis-cross-tx2 -- --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128"
+run_command_sha256 = ""
+claims = ["C-669"]
+claim_refs = ["C-669"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+status_note = "Sprint 54: All 5 lambda values remain Undetermined. Power-law exponent positive (+0.184 to +0.139). C-669 REFUTED."
+result_summary = "0/5 lambdas resolve. Positive exponent persists (+0.18 to +0.14) across 512x more cells than 16^3."
+lineage_id = "XL-031"
+input_path_refs = []
+output_path_refs = ["data/thesis_lab/tx2_128/tx2_report.toml"]
+dataset_refs = []
+reproducibility_class = "exact"
+sprint = 54
