@@ -21,8 +21,8 @@ rust_tooling_note = "Rust package and tool inventory lives in docs/rust-tooling-
 name = "open_gororoba"
 kind = "computational_physics_research_platform"
 summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, and cosmological observables."
-workspace_crates = 26
-cli_binaries = 101
+workspace_crates = 27
+cli_binaries = 139
 registry_model = "toml_first"
 
 [[shared.path]]
@@ -163,13 +163,13 @@ crates = ["algebra_core", "stats_core", "spectral_core", "lbm_core", "data_core"
 order = 2
 name = "domain_physics"
 description = "Physics and domain models built on foundation crates."
-crates = ["gr_core", "cosmology_core", "materials_core", "quantum_core", "snia_core"]
+crates = ["gr_core", "cosmology_core", "materials_core", "quantum_core", "snia_core", "spin_tomography_core", "qgp_scaling"]
 
 [[shared.architecture_tier]]
 order = 3
 name = "synthesis"
 description = "Cross-domain synthesis and high-fidelity simulation lanes."
-crates = ["vacuum_frustration", "lattice_filtration", "neural_homotopy", "lbm_3d", "lbm_3d_cuda", "cosmic_scheduler"]
+crates = ["vacuum_frustration", "lattice_filtration", "neural_homotopy", "lbm_3d", "lbm_3d_cuda", "lbm_vulkan", "cosmic_scheduler", "cd_spin_bridge"]
 
 [[shared.architecture_tier]]
 order = 4

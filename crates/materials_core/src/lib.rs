@@ -21,6 +21,7 @@ pub mod baselines;
 pub mod crystal_symmetry;
 pub mod effective_medium;
 pub mod featurizer;
+pub mod landy_absorber;
 pub mod metamaterial;
 pub mod optical_database;
 pub mod periodic_table;
@@ -56,6 +57,12 @@ pub use featurizer::{
 };
 
 pub use baselines::{ols_fit, run_baseline, train_test_split, RegressionResult};
+
+pub use landy_absorber::{
+    absorption_spectrum as landy_absorption_spectrum, absorber_at_frequency,
+    effective_n as landy_effective_n, impedance as landy_impedance, landy_2008_params,
+    landy_n_layers, lorentz_epsilon, lorentz_mu, LandyParams, MagneticSlabResult,
+};
 
 pub use viscosity_database::{
     from_tau, get_coupling_regime, get_lambda, get_material as get_viscosity_material,
@@ -108,6 +115,9 @@ pub use optical_database::{
     // Casimir utilities (correct Lifshitz formula, Sprint 45)
     casimir_lifshitz_energy, casimir_lifshitz_force, casimir_lifshitz_eta,
     casimir_drude_plasma_discrepancy,
+    // Sellmeier dispersion (Son & Chekhova 2026)
+    SellmeierParams,
+    linbo3_ordinary_sellmeier, linbo3_extraordinary_sellmeier, fused_silica_sellmeier,
 };
 
 pub use tabulated_nk::{

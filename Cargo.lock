@@ -3319,6 +3319,7 @@ dependencies = [
  "optics_core",
  "pgfplots",
  "plotters",
+ "qgp_scaling",
  "quantum_core",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
@@ -3470,9 +3471,12 @@ version = "0.1.0"
 dependencies = [
  "algebra_core",
  "approx",
+ "gauss-quad",
  "nalgebra 0.33.2",
+ "num-complex",
  "ode_solvers",
  "rayon",
+ "statrs",
 ]
 
 [[package]]
@@ -6273,6 +6277,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "qgp_scaling"
+version = "0.1.0"
+dependencies = [
+ "approx",
+ "csv",
+ "data_core",
+ "gauss-quad",
+ "nalgebra 0.33.2",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "serde",
+ "statrs",
+ "stats_core",
+ "thiserror 2.0.18",
+]
+
+[[package]]
 name = "qoi"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8306,6 +8327,7 @@ dependencies = [
  "cosmology_core",
  "criterion",
  "cudarc 0.19.2",
+ "gr_core",
  "nalgebra 0.33.2",
  "petgraph 0.7.1",
  "rand 0.8.5",

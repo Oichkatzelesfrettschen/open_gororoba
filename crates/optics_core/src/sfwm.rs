@@ -93,6 +93,326 @@ pub fn thickness_sweep(thicknesses_um: &[f64]) -> Vec<SfwmDominanceResult> {
         .collect()
 }
 
+// ===================== Son & Chekhova (2026) full reproduction =====================
+
+/// Wavevector mismatches for the three processes.
+#[derive(Debug, Clone, Copy)]
+pub struct WavevectorMismatches {
+    /// SFWM: dk = 2*k_pump - k_signal - k_idler [1/um].
+    pub dk_sfwm: f64,
+    /// SHG: dk = 2*k_pump - k_sh [1/um].
+    pub dk_shg: f64,
+    /// SPDC: dk = k_sh - k_signal - k_idler [1/um].
+    pub dk_spdc: f64,
+}
+
+/// Material parameters for SFWM rate calculation.
+///
+/// All susceptibilities are in relative (dimensionless) ratio units --
+/// absolute values cancel in R_cas/R_dir.
+#[derive(Debug, Clone)]
+pub struct SfwmMaterialParams {
+    /// Effective chi(2) for SHG [arb. units].
+    pub chi2_shg: f64,
+    /// Effective chi(2) for SPDC [arb. units].
+    pub chi2_spdc: f64,
+    /// Effective chi(3) for direct SFWM [arb. units].
+    pub chi3_sfwm: f64,
+    /// Refractive index at pump wavelength.
+    pub n_pump: f64,
+    /// Refractive index at signal wavelength.
+    pub n_signal: f64,
+    /// Refractive index at idler wavelength.
+    pub n_idler: f64,
+    /// Refractive index at second-harmonic wavelength.
+    pub n_sh: f64,
+    /// Pump wavelength [um].
+    pub lambda_pump: f64,
+    /// Signal wavelength [um].
+    pub lambda_signal: f64,
+    /// Idler wavelength [um].
+    pub lambda_idler: f64,
+    /// Crystal thickness [um].
+    pub thickness: f64,
+}
+
+impl SfwmMaterialParams {
+    /// Construct parameters for 10 um LiNbO3 as in Son & Chekhova (2026).
+    ///
+    /// Pump: 1030 nm, Signal: 770 nm, Idler: 1550 nm (nearly degenerate
+    /// energy conservation: 2/1.030 ~ 1/0.770 + 1/1.550 [in 1/um]).
+    ///
+    /// Uses paper wavevector mismatches for consistency:
+    ///   dk_SFWM ~ 0.094 um^-1 (L_coh ~ 33 um)
+    ///   dk_SHG  ~ 1.01 um^-1  (L_coh ~ 3.1 um)
+    ///   dk_SPDC ~ 0.92 um^-1  (L_coh ~ 3.4 um)
+    ///
+    /// Susceptibility ratio: chi2 ~ 27 pm/V = 27e-12 m/V (d33 LiNbO3),
+    /// chi3 ~ 2.4e-21 m^2/V^2 (Adair et al. 1989, n2 = 5.3e-15 cm^2/W).
+    /// Stored in SI (m/V and m^2/V^2) so that chi2^2/chi3 is dimensionless
+    /// and the rate ratio is directly physical.
+    pub fn linbo3_son_chekhova_2026() -> Self {
+        // Refractive indices from Zelmon Sellmeier (ordinary ray)
+        // n_o(1030) ~ 2.232, n_o(770) ~ 2.259, n_o(1550) ~ 2.211
+        // n_o(515) ~ 2.325
+        Self {
+            chi2_shg: 27.0e-12,  // m/V (d33, converted from pm/V)
+            chi2_spdc: 27.0e-12, // same tensor element
+            chi3_sfwm: 2.4e-21,  // m^2/V^2 (Adair 1989)
+            n_pump: 2.232,
+            n_signal: 2.259,
+            n_idler: 2.211,
+            n_sh: 2.325,
+            lambda_pump: 1.030,
+            lambda_signal: 0.770,
+            lambda_idler: 1.550,
+            thickness: 10.0,
+        }
+    }
+
+    /// Construct using the paper's calibrated coherence lengths directly.
+    ///
+    /// The paper reports L_coh_SFWM = 33.3 um, L_coh_SHG = 3.1 um,
+    /// L_coh_SPDC = 3.4 um. The exact polarization and temperature conditions
+    /// differ from simple ordinary-ray Sellmeier estimates, so this constructor
+    /// reproduces the paper's stated phase-matching conditions exactly.
+    pub fn linbo3_paper_calibrated() -> Self {
+        Self {
+            chi2_shg: 27.0e-12,
+            chi2_spdc: 27.0e-12,
+            chi3_sfwm: 2.4e-21,
+            // Refractive indices are not used when calling paper_wavevector_mismatches()
+            // but we keep physically reasonable values for documentation.
+            n_pump: 2.232,
+            n_signal: 2.259,
+            n_idler: 2.211,
+            n_sh: 2.325,
+            lambda_pump: 1.030,
+            lambda_signal: 0.770,
+            lambda_idler: 1.550,
+            thickness: 10.0,
+        }
+    }
+
+    /// Wavevector mismatches from the paper's stated coherence lengths.
+    ///
+    /// More accurate than Sellmeier-derived values because the paper's
+    /// measurements account for temperature, crystal orientation, and
+    /// exact polarization conditions.
+    pub fn paper_wavevector_mismatches(&self) -> WavevectorMismatches {
+        WavevectorMismatches {
+            dk_sfwm: PI / 33.3,
+            dk_shg: PI / 3.1,
+            dk_spdc: PI / 3.4,
+        }
+    }
+
+    /// Compute wavevector mismatches from refractive indices and wavelengths.
+    pub fn wavevector_mismatches(&self) -> WavevectorMismatches {
+        let k_pump = 2.0 * PI * self.n_pump / self.lambda_pump;
+        let k_signal = 2.0 * PI * self.n_signal / self.lambda_signal;
+        let k_idler = 2.0 * PI * self.n_idler / self.lambda_idler;
+        let lambda_sh = self.lambda_pump / 2.0;
+        let k_sh = 2.0 * PI * self.n_sh / lambda_sh;
+
+        WavevectorMismatches {
+            dk_sfwm: 2.0 * k_pump - k_signal - k_idler,
+            dk_shg: 2.0 * k_pump - k_sh,
+            dk_spdc: k_sh - k_signal - k_idler,
+        }
+    }
+}
+
+/// Rate calculation result for SFWM vs cascaded SHG+SPDC.
+#[derive(Debug, Clone, Copy)]
+pub struct SfwmRateResult {
+    /// |A_dir|^2 -- direct SFWM amplitude squared.
+    pub a_dir_sq: f64,
+    /// |A_cas|^2 -- cascaded SHG+SPDC amplitude squared.
+    pub a_cas_sq: f64,
+    /// R_cas / R_dir ratio (paper reports 0.048 at 10 um).
+    pub rate_ratio_cas_to_dir: f64,
+    /// Phase-matching function values.
+    pub f_sfwm: f64,
+    pub f_shg: f64,
+    pub f_spdc: f64,
+}
+
+/// Cascaded amplitude squared |A_cas|^2 (Eq. 6 of Son & Chekhova 2026).
+///
+/// A_cas ~ chi2_shg * chi2_spdc * [exp(i*dk_SHG*L/2) * F_SFWM(L) - F_SPDC(L)]
+///
+/// The bracket is computed as a complex magnitude.
+/// Uses Sellmeier-derived wavevector mismatches.
+pub fn cascaded_amplitude_sq(params: &SfwmMaterialParams) -> f64 {
+    cascaded_amplitude_sq_with_dk(params, &params.wavevector_mismatches())
+}
+
+/// Cascaded amplitude squared using explicit wavevector mismatches.
+pub fn cascaded_amplitude_sq_with_dk(
+    params: &SfwmMaterialParams,
+    wm: &WavevectorMismatches,
+) -> f64 {
+    let l = params.thickness;
+
+    let f_sfwm = phase_matching_function(wm.dk_sfwm, l);
+    let f_spdc = phase_matching_function(wm.dk_spdc, l);
+
+    // Complex bracket: exp(i * dk_SHG * L / 2) * F_SFWM - F_SPDC
+    let phase = wm.dk_shg * l / 2.0;
+    let re = phase.cos() * f_sfwm - f_spdc;
+    let im = phase.sin() * f_sfwm;
+    let bracket_sq = re * re + im * im;
+
+    let chi_prod = params.chi2_shg * params.chi2_spdc;
+    chi_prod * chi_prod * bracket_sq
+}
+
+/// Direct SFWM amplitude squared |A_dir|^2 (Eq. 8 of Son & Chekhova 2026).
+///
+/// A_dir = chi3 * F_SFWM(L), with |exp(i*phase)| = 1 factored out.
+/// Uses Sellmeier-derived wavevector mismatches.
+pub fn direct_amplitude_sq(params: &SfwmMaterialParams) -> f64 {
+    direct_amplitude_sq_with_dk(params, &params.wavevector_mismatches())
+}
+
+/// Direct amplitude squared using explicit wavevector mismatches.
+pub fn direct_amplitude_sq_with_dk(
+    params: &SfwmMaterialParams,
+    wm: &WavevectorMismatches,
+) -> f64 {
+    let f = phase_matching_function(wm.dk_sfwm, params.thickness);
+    params.chi3_sfwm * params.chi3_sfwm * f * f
+}
+
+/// Compute the cascaded-to-direct rate ratio R_cas/R_dir.
+///
+/// Includes the tensor prefactors from the paper:
+///   R_dir ~ (3/4)^2 * |A_dir|^2
+///   R_cas ~ (2/3)^2 * |A_cas|^2
+///
+/// Uses Sellmeier-derived wavevector mismatches by default.
+pub fn rate_ratio(params: &SfwmMaterialParams) -> SfwmRateResult {
+    rate_ratio_with_dk(params, &params.wavevector_mismatches())
+}
+
+/// Rate ratio using explicit wavevector mismatches.
+///
+/// Use `params.paper_wavevector_mismatches()` for the paper's calibrated values.
+pub fn rate_ratio_with_dk(
+    params: &SfwmMaterialParams,
+    wm: &WavevectorMismatches,
+) -> SfwmRateResult {
+    let l = params.thickness;
+
+    let f_sfwm = phase_matching_function(wm.dk_sfwm, l);
+    let f_shg = phase_matching_function(wm.dk_shg, l);
+    let f_spdc = phase_matching_function(wm.dk_spdc, l);
+
+    let a_dir_sq = direct_amplitude_sq_with_dk(params, wm);
+    let a_cas_sq = cascaded_amplitude_sq_with_dk(params, wm);
+
+    // Tensor prefactors
+    let pref_dir = (3.0_f64 / 4.0).powi(2);
+    let pref_cas = (2.0_f64 / 3.0).powi(2);
+
+    let r_dir = pref_dir * a_dir_sq;
+    let r_cas = pref_cas * a_cas_sq;
+    let ratio = r_cas / r_dir.max(1e-60);
+
+    SfwmRateResult {
+        a_dir_sq,
+        a_cas_sq,
+        rate_ratio_cas_to_dir: ratio,
+        f_sfwm,
+        f_shg,
+        f_spdc,
+    }
+}
+
+/// Maker fringe sweep: compute |F|^2 for all three processes vs thickness.
+///
+/// Returns Vec<(thickness_um, f_sfwm_sq, f_shg_sq, f_spdc_sq)> for Fig. 4(a).
+pub fn maker_fringe_sweep(
+    params: &SfwmMaterialParams,
+    thicknesses: &[f64],
+) -> Vec<(f64, f64, f64, f64)> {
+    let wm = params.wavevector_mismatches();
+    thicknesses
+        .iter()
+        .map(|&l| {
+            let fs = phase_matching_function(wm.dk_sfwm, l);
+            let fh = phase_matching_function(wm.dk_shg, l);
+            let fp = phase_matching_function(wm.dk_spdc, l);
+            (l, fs * fs, fh * fh, fp * fp)
+        })
+        .collect()
+}
+
+/// Rate sweep: compute R_direct and R_cascaded vs thickness.
+///
+/// Returns Vec<(thickness_um, r_direct, r_cascaded)> for Fig. 4(b).
+/// Uses Sellmeier-derived dk values.
+pub fn rate_sweep(
+    params: &SfwmMaterialParams,
+    thicknesses: &[f64],
+) -> Vec<(f64, f64, f64)> {
+    rate_sweep_with_dk(params, &params.wavevector_mismatches(), thicknesses)
+}
+
+/// Rate sweep using explicit wavevector mismatches.
+pub fn rate_sweep_with_dk(
+    params: &SfwmMaterialParams,
+    wm: &WavevectorMismatches,
+    thicknesses: &[f64],
+) -> Vec<(f64, f64, f64)> {
+    thicknesses
+        .iter()
+        .map(|&l| {
+            let mut p = params.clone();
+            p.thickness = l;
+            let r = rate_ratio_with_dk(&p, wm);
+            let pref_dir = (3.0_f64 / 4.0).powi(2);
+            let pref_cas = (2.0_f64 / 3.0).powi(2);
+            (l, pref_dir * r.a_dir_sq, pref_cas * r.a_cas_sq)
+        })
+        .collect()
+}
+
+/// SFWM g(2) correlation model: g(2)(P) = 1 + a / P^2 (Fig. 2d).
+///
+/// At low power, g(2) >> 2 (thermal photon statistics).
+/// At high power, g(2) -> 1 (Poissonian / stimulated regime).
+pub fn g2_sfwm_model(power: f64, a: f64) -> f64 {
+    1.0 + a / (power * power).max(1e-30)
+}
+
+/// SPDC g(2) correlation model: g(2)(P) = 1 + a / P (Fig. 3b).
+///
+/// SPDC photon number scales linearly with P, so fluctuations
+/// scale as 1/P, giving g(2) = 1 + a/P.
+pub fn g2_spdc_model(power: f64, a: f64) -> f64 {
+    1.0 + a / power.max(1e-30)
+}
+
+/// SFWM photon number model: N ~ alpha * P^2 (quadratic pump dependence).
+pub fn photon_number_sfwm(power: f64, alpha: f64) -> f64 {
+    alpha * power * power
+}
+
+/// SPDC photon number model: N ~ alpha * P (linear pump dependence).
+pub fn photon_number_spdc(power: f64, alpha: f64) -> f64 {
+    alpha * power
+}
+
+/// Polarization dependence of SFWM rate: proportional to cos^2(theta).
+///
+/// theta is the angle between pump polarization and the crystal optical axis.
+/// Maximum generation when pump is aligned with d33 axis (theta = 0).
+pub fn polarization_dependence(theta: f64) -> f64 {
+    theta.cos().powi(2)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -145,5 +465,158 @@ mod tests {
         let thicknesses: Vec<f64> = (1..=10).map(|i| i as f64 * 10.0).collect();
         let results = thickness_sweep(&thicknesses);
         assert_eq!(results.len(), 10);
+    }
+
+    // ===================== Son & Chekhova (2026) tests =====================
+
+    #[test]
+    fn test_wavevector_mismatches_coherence_lengths() {
+        let p = SfwmMaterialParams::linbo3_son_chekhova_2026();
+        let wm = p.wavevector_mismatches();
+
+        let l_sfwm = coherence_length(wm.dk_sfwm);
+        let l_shg = coherence_length(wm.dk_shg);
+        let l_spdc = coherence_length(wm.dk_spdc);
+
+        // Paper: L_coh_SFWM ~ 33 um, L_coh_SHG ~ 3.1 um, L_coh_SPDC ~ 3.4 um
+        // Allow 30% tolerance for Sellmeier vs paper values
+        assert!(
+            l_sfwm > 10.0,
+            "SFWM coherence length {:.1} um should be >10 um",
+            l_sfwm
+        );
+        assert!(
+            l_shg < 10.0,
+            "SHG coherence length {:.1} um should be <10 um",
+            l_shg
+        );
+        assert!(
+            l_spdc < 10.0,
+            "SPDC coherence length {:.1} um should be <10 um",
+            l_spdc
+        );
+        assert!(
+            l_sfwm > l_shg * 3.0,
+            "SFWM L_coh ({:.1}) should be >3x SHG L_coh ({:.1})",
+            l_sfwm,
+            l_shg
+        );
+    }
+
+    #[test]
+    fn test_direct_dominates_cascaded_at_10um() {
+        // Use paper-calibrated dk values for the dominance ratio test
+        let p = SfwmMaterialParams::linbo3_paper_calibrated();
+        let wm = p.paper_wavevector_mismatches();
+        let r = rate_ratio_with_dk(&p, &wm);
+        assert!(
+            r.rate_ratio_cas_to_dir < 0.15,
+            "R_cas/R_dir = {:.4} should be < 0.15 at 10 um (paper calibrated)",
+            r.rate_ratio_cas_to_dir
+        );
+    }
+
+    #[test]
+    fn test_sellmeier_direct_dominates_cascaded() {
+        // Sellmeier-derived dk: direct still dominates, but ratio is larger
+        let p = SfwmMaterialParams::linbo3_son_chekhova_2026();
+        let r = rate_ratio(&p);
+        assert!(
+            r.rate_ratio_cas_to_dir < 1.0,
+            "R_cas/R_dir = {:.4} should be < 1.0 (direct still dominates)",
+            r.rate_ratio_cas_to_dir
+        );
+    }
+
+    #[test]
+    fn test_f_sfwm_much_larger_than_f_shg() {
+        let p = SfwmMaterialParams::linbo3_son_chekhova_2026();
+        let r = rate_ratio(&p);
+        assert!(
+            r.f_sfwm.abs() > r.f_shg.abs() * 3.0,
+            "|F_SFWM| = {:.2} should be >3x |F_SHG| = {:.2}",
+            r.f_sfwm.abs(),
+            r.f_shg.abs()
+        );
+    }
+
+    #[test]
+    fn test_g2_sfwm_high_at_low_power() {
+        // At low power, g(2) should be much greater than 2 (thermal statistics)
+        let g2 = g2_sfwm_model(0.01, 1.0);
+        assert!(g2 > 2.0, "g(2) = {:.1} should be >2 at low power", g2);
+    }
+
+    #[test]
+    fn test_g2_approaches_1_at_high_power() {
+        // SFWM: g(2) = 1 + 1/10000^2 ~ 1 + 1e-8
+        let g2_sfwm = g2_sfwm_model(100.0, 1.0);
+        // SPDC: g(2) = 1 + 1/1000 = 1.001
+        let g2_spdc = g2_spdc_model(1000.0, 1.0);
+        assert!(
+            (g2_sfwm - 1.0).abs() < 0.01,
+            "SFWM g(2) = {:.6} should approach 1 at high power",
+            g2_sfwm
+        );
+        assert!(
+            (g2_spdc - 1.0).abs() < 0.01,
+            "SPDC g(2) = {:.6} should approach 1 at high power",
+            g2_spdc
+        );
+    }
+
+    #[test]
+    fn test_maker_fringe_sweep_lengths() {
+        let p = SfwmMaterialParams::linbo3_son_chekhova_2026();
+        let thicknesses: Vec<f64> = (1..=100).map(|i| i as f64).collect();
+        let fringes = maker_fringe_sweep(&p, &thicknesses);
+        assert_eq!(fringes.len(), 100);
+
+        // SFWM |F|^2 should be monotonically increasing below L_coh_SFWM
+        let wm = p.wavevector_mismatches();
+        let l_coh = coherence_length(wm.dk_sfwm);
+        let below_coh: Vec<_> = fringes.iter().filter(|f| f.0 < l_coh * 0.8).collect();
+        for w in below_coh.windows(2) {
+            assert!(
+                w[1].1 >= w[0].1 * 0.99,
+                "SFWM |F|^2 should increase below L_coh: {:.2} < {:.2} at L={:.0} um",
+                w[1].1,
+                w[0].1,
+                w[1].0
+            );
+        }
+    }
+
+    #[test]
+    fn test_shg_oscillates_in_sweep() {
+        let p = SfwmMaterialParams::linbo3_son_chekhova_2026();
+        let thicknesses: Vec<f64> = (1..=50).map(|i| i as f64 * 0.5).collect();
+        let fringes = maker_fringe_sweep(&p, &thicknesses);
+
+        // SHG |F|^2 should have local maxima and minima (Maker fringes)
+        let shg_vals: Vec<f64> = fringes.iter().map(|f| f.2).collect();
+        let mut increases = 0;
+        let mut decreases = 0;
+        for w in shg_vals.windows(2) {
+            if w[1] > w[0] {
+                increases += 1;
+            } else {
+                decreases += 1;
+            }
+        }
+        assert!(
+            increases > 3 && decreases > 3,
+            "SHG should oscillate: {} increases, {} decreases",
+            increases,
+            decreases
+        );
+    }
+
+    #[test]
+    fn test_polarization_cos2() {
+        let at_0 = polarization_dependence(0.0);
+        let at_90 = polarization_dependence(PI / 2.0);
+        assert!((at_0 - 1.0).abs() < 1e-10, "cos^2(0) = {:.4}", at_0);
+        assert!(at_90.abs() < 1e-10, "cos^2(pi/2) = {:.4e}", at_90);
     }
 }

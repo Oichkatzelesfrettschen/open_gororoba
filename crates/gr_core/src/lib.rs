@@ -31,6 +31,10 @@
 //! - `null_constraint` -- Null geodesic constraint preservation and renormalization
 //! - `energy_conserving` -- Energy-conserving geodesic integration (RK4 + Hamiltonian correction)
 //! - `constants` -- Astrophysical constants (CGS, natural units, conversions)
+//! - `ppn_constraints` -- PPN parameters, experimental bounds, falsification gates (Rodal 2025)
+//! - `scalar_tensor` -- Brans-Dicke field equations, junction conditions, frame transformations
+//! - `area_quantization` -- LQG area spectrum, Barbero-Immirzi parameter (Barbero 1995, Immirzi 1997)
+//! - `quantum_inequalities` -- Ford-Roman QI bounds, Pfenning-Ford warp analysis, energy conditions
 //!
 //! # Literature
 //! - Bardeen (1973): Black Holes, Les Houches
@@ -52,9 +56,17 @@
 //! - Carter (1973): Black hole equilibrium states with Lambda
 //! - Griffiths & Podolsky (2009): Exact Space-Times in Einstein's GR
 //! - Chan et al. (2013): GRay -- GPU ray tracing in relativistic spacetimes
+//! - Rodal (2025): arXiv:2507.09724v2 -- Metamaterial gravitational coupling
+//! - Will (2014): Living Rev. Relativity 17, 4 -- PPN formalism
+//! - Brans & Dicke (1961): Phys. Rev. 124, 925 -- Scalar-tensor gravity
+//! - Barbero (1995): Phys. Rev. D 51, 5507 -- Real Ashtekar variables
+//! - Immirzi (1997): Class. Quantum Grav. 14, L177 -- Quantum gravity and Regge calculus
+//! - Ford & Roman (1996): Phys. Rev. D 53, 5496 -- Quantum inequalities
+//! - Pfenning & Ford (1997): Class. Quantum Grav. 14, 1743 -- Warp drive energy
 
 pub mod absorption;
 pub mod acoustic_metric;
+pub mod area_quantization;
 pub mod constants;
 pub mod coordinates;
 pub mod cosmology_algebra_bridge;
@@ -71,6 +83,9 @@ pub mod novikov_thorne;
 pub mod null_constraint;
 pub mod penrose;
 pub mod photon_graviton;
+pub mod ppn_constraints;
+pub mod quantum_inequalities;
+pub mod scalar_tensor;
 pub mod scattering;
 pub mod schwarzschild;
 pub mod sedenion_geodesic;
@@ -107,4 +122,31 @@ pub use null_constraint::{
 pub use cosmology_algebra_bridge::{
     ConservationLaw, CosmologicalParameters, DarkEnergyModel, EnergyMomentumTensor, FLRWMetric,
     FriedmannSolver, Redshift,
+};
+
+pub use ppn_constraints::{
+    check_all_ppn_constraints, dipole_radiation_power, graviton_compton_wavelength,
+    massive_graviton_velocity_ratio, nordtvedt_parameter_bd, perihelion_precession_per_orbit,
+    ppn_gamma_bd, satisfies_cassini_gamma, satisfies_gpb_geodetic,
+    satisfies_alpha1_bd, satisfies_alpha2_bd, satisfies_alpha3_bd, satisfies_xi_bd,
+    satisfies_microscope_wep_bd,
+    PPNConstraintReport, CASSINI_GAMMA_DEVIATION_BOUND,
+    CASSINI_OMEGA_BD_LOWER, LIGO_O3_GRAVITON_MASS_EV, NANOGRAV_GRAVITON_MASS_EV,
+    ALPHA1_BOUND, ALPHA2_BOUND, ALPHA3_BOUND, XI_BOUND,
+    GPB_GEODETIC_PRECISION, MICROSCOPE_EOTVOS_BOUND,
+};
+
+pub use scalar_tensor::{fifth_force_alpha, BransDickeParams, JunctionCondition};
+
+pub use area_quantization::{
+    area_gap_ratio, area_quantum, area_spectrum, entropy_correction_factor, entropy_lqg,
+    immirzi_parameter_bg, immirzi_parameter_nzj, minimum_area, GAMMA_BG, GAMMA_NZJ,
+};
+
+pub use quantum_inequalities::{
+    alcubierre_energy_density, check_qi_satisfied, dominant_energy_condition,
+    lorentzian_sampling, null_energy_condition, pfenning_ford_energy_ratio,
+    quantum_inequality_bound_4d, strong_energy_condition, warp_bubble_total_energy,
+    warp_wall_thickness_bound, weak_energy_condition, NegativeEnergyBudget,
+    M_OBSERVABLE_UNIVERSE_G,
 };

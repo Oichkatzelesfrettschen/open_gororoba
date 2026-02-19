@@ -220,6 +220,37 @@ fn py_trace_geodesic(
 }
 
 // ============================================================================
+// PPN Constraints Module (Rodal 2025)
+// ============================================================================
+
+/// Compute PPN gamma parameter for Brans-Dicke theory.
+/// gamma = (1 + omega) / (2 + omega). GR limit (omega -> inf): gamma -> 1.
+#[pyfunction]
+fn py_ppn_gamma_bd(omega: f64) -> f64 {
+    gr_core::ppn_constraints::ppn_gamma_bd(omega)
+}
+
+/// Compute Nordtvedt parameter for Brans-Dicke theory.
+/// eta_N = 1 / (2 + omega). Measures SEP violation strength.
+#[pyfunction]
+fn py_nordtvedt_parameter_bd(omega: f64) -> f64 {
+    gr_core::ppn_constraints::nordtvedt_parameter_bd(omega)
+}
+
+/// Check all PPN constraints simultaneously for a given BD omega.
+/// Returns list of (constraint_name, passes) tuples.
+#[pyfunction]
+fn py_check_ppn_constraints(omega: f64) -> Vec<(String, bool)> {
+    let report = gr_core::ppn_constraints::check_all_ppn_constraints(omega);
+    vec![
+        ("cassini_gamma".to_string(), report.cassini),
+        ("llr_nordtvedt".to_string(), report.llr),
+        ("pulsar_nordtvedt".to_string(), report.pulsar),
+        ("gw_speed".to_string(), report.gw_speed),
+    ]
+}
+
+// ============================================================================
 // Statistics Module
 // ============================================================================
 
@@ -584,6 +615,11 @@ fn gororoba_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(py_impact_parameters, m)?)?;
     m.add_function(wrap_pyfunction!(py_shadow_boundary, m)?)?;
     m.add_function(wrap_pyfunction!(py_trace_geodesic, m)?)?;
+
+    // PPN constraint functions (Rodal 2025)
+    m.add_function(wrap_pyfunction!(py_ppn_gamma_bd, m)?)?;
+    m.add_function(wrap_pyfunction!(py_nordtvedt_parameter_bd, m)?)?;
+    m.add_function(wrap_pyfunction!(py_check_ppn_constraints, m)?)?;
 
     // Statistics functions
     m.add_function(wrap_pyfunction!(py_frechet_distance, m)?)?;

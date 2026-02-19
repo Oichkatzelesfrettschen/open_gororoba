@@ -320,8 +320,10 @@ pub fn kramers_kronig_check(
 
 /// Transfer Matrix Method for a multilayer thin-film stack.
 ///
-/// Computes the complex reflection coefficient for a stack of layers
-/// bounded by semi-infinite incidence and substrate media.
+/// Uses the amplitude transfer matrix approach (Byrnes, arXiv:1603.02720)
+/// which correctly handles absorbing layers. Each layer contributes a
+/// propagation matrix and an interface matrix, composed into a system
+/// transfer matrix relating forward/backward wave amplitudes.
 ///
 /// # Arguments
 /// * `n_layers` - Refractive indices [n_incidence, n_1, n_2, ..., n_substrate]
@@ -337,15 +339,16 @@ pub fn tmm_reflection(
     s_polarized: bool,
 ) -> TmmResult {
     let n_inc = n_layers[0];
-    let _n_sub = n_layers[n_layers.len() - 1];
+    let num_layers = n_layers.len();
 
-    // Snell's law for each layer
+    // Snell's law: compute cos(theta) for each layer
     let sin_theta_i = theta_i.sin();
     let cos_theta: Vec<Complex64> = n_layers
         .iter()
         .map(|&n| {
             let sin_t = n_inc * sin_theta_i / n;
             let cos_t = (Complex64::new(1.0, 0.0) - sin_t * sin_t).sqrt();
+            // Choose branch with positive imaginary part (forward-propagating)
             if cos_t.im < 0.0 {
                 -cos_t
             } else {
@@ -354,78 +357,115 @@ pub fn tmm_reflection(
         })
         .collect();
 
-    // Admittance depends on polarization
-    let eta: Vec<Complex64> = if s_polarized {
-        n_layers
-            .iter()
-            .zip(cos_theta.iter())
-            .map(|(&n, &ct)| n * ct)
-            .collect()
-    } else {
-        n_layers
-            .iter()
-            .zip(cos_theta.iter())
-            .map(|(&n, &ct)| {
-                if ct.norm() > 1e-30 {
-                    n / ct
-                } else {
-                    n * Complex64::new(1e30, 0.0)
-                }
-            })
-            .collect()
+    // Fresnel interface coefficients for each adjacent pair
+    let fresnel = |i: usize, j: usize| -> (Complex64, Complex64) {
+        let (ni, nj) = (n_layers[i], n_layers[j]);
+        let (ci, cj) = (cos_theta[i], cos_theta[j]);
+        if s_polarized {
+            let eta_i = ni * ci;
+            let eta_j = nj * cj;
+            let r = (eta_i - eta_j) / (eta_i + eta_j);
+            let t = 2.0 * eta_i / (eta_i + eta_j);
+            (r, t)
+        } else {
+            // p-pol: use n/cos(theta)
+            let eta_i = ni / ci;
+            let eta_j = nj / cj;
+            let r = (eta_i - eta_j) / (eta_i + eta_j);
+            let t = 2.0 * eta_i / (eta_i + eta_j);
+            (r, t)
+        }
     };
 
-    // Build transfer matrix M = M_1 * M_2 * ... * M_N
-    let mut m = [
-        [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
-        [Complex64::new(0.0, 0.0), Complex64::new(1.0, 0.0)],
-    ];
+    // Phase accumulated traversing each layer
+    let delta: Vec<Complex64> = (0..num_layers)
+        .map(|j| {
+            if j == 0 || j == num_layers - 1 {
+                Complex64::new(0.0, 0.0)
+            } else {
+                let d_j = d_layers[j - 1];
+                2.0 * PI * n_layers[j] * cos_theta[j] * d_j / wavelength
+            }
+        })
+        .collect();
 
-    for j in 1..(n_layers.len() - 1) {
-        let n_j = n_layers[j];
-        let d_j = d_layers[j - 1];
-        let ct_j = cos_theta[j];
-        let delta_j = 2.0 * PI * n_j * ct_j * d_j / wavelength;
+    // Build system transfer matrix Mtilde (amplitude-based).
+    // For each intermediate layer j (1..N-1):
+    //   M_j = (1/t_{j,j+1}) * P_j * I_{j,j+1}
+    // where P_j = [[exp(-i*delta_j), 0], [0, exp(i*delta_j)]]
+    //       I_{j,j+1} = [[1, r_{j,j+1}], [r_{j,j+1}, 1]]
+    //
+    // Mtilde = (1/t_{0,1}) * I_{0,1} * M_1 * M_2 * ... * M_{N-2}
+    let one = Complex64::new(1.0, 0.0);
+    let i_unit = Complex64::new(0.0, 1.0);
 
-        let cos_d = delta_j.cos();
-        let sin_d = delta_j.sin();
-        let eta_j = eta[j];
+    // Start with the first interface (incidence -> layer 1)
+    let (r01, t01) = fresnel(0, 1);
+    let mut mtilde = [[one / t01, r01 / t01], [r01 / t01, one / t01]];
 
-        // Layer matrix
+    // Multiply in each intermediate layer + next interface
+    #[allow(clippy::needless_range_loop)] // j indexes delta[] AND feeds fresnel(j, j+1)
+    for j in 1..(num_layers - 1) {
+        let (r_jk, t_jk) = fresnel(j, j + 1);
+        let exp_neg = (-i_unit * delta[j]).exp();
+        let exp_pos = (i_unit * delta[j]).exp();
+
+        // M_j = (1/t_{j,j+1}) * P_j * I_{j,j+1}
+        // = (1/t) * [[exp(-id)*1 + 0*r, exp(-id)*r + 0*1],
+        //            [0*1 + exp(id)*r,   0*r + exp(id)*1 ]]
+        // = (1/t) * [[exp(-id),   exp(-id)*r],
+        //            [exp(id)*r,  exp(id)   ]]
+        let inv_t = one / t_jk;
         let layer = [
-            [cos_d, Complex64::new(0.0, 1.0) * sin_d / eta_j],
-            [Complex64::new(0.0, 1.0) * eta_j * sin_d, cos_d],
+            [inv_t * exp_neg, inv_t * exp_neg * r_jk],
+            [inv_t * exp_pos * r_jk, inv_t * exp_pos],
         ];
 
-        // Matrix multiplication
+        // Matrix multiply: mtilde = mtilde * layer
         let new_m = [
             [
-                m[0][0] * layer[0][0] + m[0][1] * layer[1][0],
-                m[0][0] * layer[0][1] + m[0][1] * layer[1][1],
+                mtilde[0][0] * layer[0][0] + mtilde[0][1] * layer[1][0],
+                mtilde[0][0] * layer[0][1] + mtilde[0][1] * layer[1][1],
             ],
             [
-                m[1][0] * layer[0][0] + m[1][1] * layer[1][0],
-                m[1][0] * layer[0][1] + m[1][1] * layer[1][1],
+                mtilde[1][0] * layer[0][0] + mtilde[1][1] * layer[1][0],
+                mtilde[1][0] * layer[0][1] + mtilde[1][1] * layer[1][1],
             ],
         ];
-        m = new_m;
+        mtilde = new_m;
     }
 
-    // Reflection coefficient
-    let eta_inc = eta[0];
-    let eta_sub = eta[eta.len() - 1];
+    // If there are no intermediate layers (bare interface), mtilde is already
+    // the interface matrix for (0,1) which in that case is (0, substrate).
 
-    let num = (m[0][0] + m[0][1] * eta_sub) * eta_inc - (m[1][0] + m[1][1] * eta_sub);
-    let den = (m[0][0] + m[0][1] * eta_sub) * eta_inc + (m[1][0] + m[1][1] * eta_sub);
-
-    let r = num / den;
+    // Extract r and t from the system matrix
+    let r = mtilde[1][0] / mtilde[0][0];
     let reflectance = r.norm_sqr();
+
+    let t = one / mtilde[0][0];
+
+    // Transmittance: T = |t|^2 * Re(n_sub*cos_sub) / Re(n_inc*cos_inc)
+    let flux_inc = if s_polarized {
+        (n_layers[0] * cos_theta[0]).re
+    } else {
+        (n_layers[0] * cos_theta[0].conj()).re
+    };
+    let flux_sub = if s_polarized {
+        (n_layers[num_layers - 1] * cos_theta[num_layers - 1]).re
+    } else {
+        (n_layers[num_layers - 1] * cos_theta[num_layers - 1].conj()).re
+    };
+    let transmittance = if flux_inc.abs() < 1e-30 {
+        0.0
+    } else {
+        (t.norm_sqr() * flux_sub / flux_inc).max(0.0)
+    };
 
     TmmResult {
         r,
         reflectance,
-        t: None,
-        transmittance: None,
+        t: Some(t),
+        transmittance: Some(transmittance),
     }
 }
 
@@ -556,6 +596,106 @@ mod tests {
         // Quarter-wave AR should reduce reflectance significantly
         // For perfect AR: n_ar = sqrt(n_inc * n_sub) ~ 1.22, so 1.38 is close
         assert!(result.reflectance < 0.02);
+    }
+
+    #[test]
+    fn test_tmm_energy_conservation_lossless() {
+        // Air/glass: lossless, so R + T must equal 1.0
+        let n_inc = Complex64::new(1.0, 0.0);
+        let n_glass = Complex64::new(1.5, 0.0);
+        let n_sub = Complex64::new(1.0, 0.0);
+        let wavelength = 550.0;
+        let d = wavelength / (4.0 * n_glass.re);
+        let result = tmm_reflection(
+            &[n_inc, n_glass, n_sub],
+            &[d],
+            wavelength,
+            0.0,
+            true,
+        );
+        let t = result.transmittance.unwrap();
+        let sum = result.reflectance + t;
+        assert_relative_eq!(sum, 1.0, epsilon = 1e-10);
+    }
+
+    #[test]
+    fn test_tmm_energy_conservation_lossy() {
+        // Lossy slab: R + T < 1.0, absorptance A > 0
+        let n_inc = Complex64::new(1.0, 0.0);
+        let n_lossy = Complex64::new(2.0, 0.5); // absorbing medium
+        let n_sub = Complex64::new(1.0, 0.0);
+        let wavelength = 550.0;
+        let d = 100.0; // 100 nm slab
+        let result = tmm_reflection(
+            &[n_inc, n_lossy, n_sub],
+            &[d],
+            wavelength,
+            0.0,
+            true,
+        );
+        // Cross-check via Fresnel-Airy formula with exponentials (correct for lossy media).
+        // For n1=n3=1, n2 complex, normal incidence, s-pol:
+        //   r12 = (n1 - n2) / (n1 + n2), t12 = 2*n1/(n1+n2)
+        //   r23 = (n2 - n3) / (n2 + n3), t23 = 2*n2/(n2+n3)
+        //   delta = 2*pi*n2*d/lambda
+        //   r = (r12 + r23 * exp(2i*delta)) / (1 + r12*r23*exp(2i*delta))
+        //   t = (t12 * t23 * exp(i*delta)) / (1 + r12*r23*exp(2i*delta))
+        let n1 = Complex64::new(1.0, 0.0);
+        let n2 = Complex64::new(2.0, 0.5);
+        let n3 = Complex64::new(1.0, 0.0);
+        let i_unit = Complex64::new(0.0, 1.0);
+        let delta = 2.0 * std::f64::consts::PI * n2 * 100.0 / 550.0;
+        let r12 = (n1 - n2) / (n1 + n2);
+        let r23 = (n2 - n3) / (n2 + n3);
+        let t12 = 2.0 * n1 / (n1 + n2);
+        let t23 = 2.0 * n2 / (n2 + n3);
+        let exp2d = (2.0 * i_unit * delta).exp();
+        let exp1d = (i_unit * delta).exp();
+        let r_check = (r12 + r23 * exp2d) / (Complex64::new(1.0, 0.0) + r12 * r23 * exp2d);
+        let t_check = (t12 * t23 * exp1d) / (Complex64::new(1.0, 0.0) + r12 * r23 * exp2d);
+        let r_check_sq = r_check.norm_sqr();
+        let t_check_sq = t_check.norm_sqr() * (n3.re / n1.re);
+        assert_relative_eq!(result.reflectance, r_check_sq, epsilon = 1e-10);
+        assert_relative_eq!(result.transmittance.unwrap(), t_check_sq, epsilon = 1e-10);
+
+        let t_val = result.transmittance.unwrap();
+        let a = 1.0 - result.reflectance - t_val;
+        assert!(a > 0.0, "absorptance should be positive, got {}", a);
+        assert!(a < 1.0, "absorptance should be < 1, got {}", a);
+        assert!(result.reflectance + t_val < 1.0);
+    }
+
+    #[test]
+    fn test_tmm_quarter_wave_transmittance() {
+        // Quarter-wave AR coating: T should be high (> 0.95)
+        let n_inc = Complex64::new(1.0, 0.0);
+        let n_ar = Complex64::new(1.38, 0.0);
+        let n_sub = Complex64::new(1.5, 0.0);
+        let wavelength = 550.0;
+        let d_ar = wavelength / (4.0 * n_ar.re);
+        let result = tmm_reflection(
+            &[n_inc, n_ar, n_sub],
+            &[d_ar],
+            wavelength,
+            0.0,
+            true,
+        );
+        let t = result.transmittance.unwrap();
+        assert!(t > 0.95, "T should be > 0.95, got {}", t);
+        // Energy conservation
+        let sum = result.reflectance + t;
+        assert_relative_eq!(sum, 1.0, epsilon = 1e-10);
+    }
+
+    #[test]
+    fn test_tmm_no_layers_fresnel_transmittance() {
+        // Bare air/glass interface: T = 1 - R
+        let n_layers = vec![Complex64::new(1.0, 0.0), Complex64::new(1.5, 0.0)];
+        let result = tmm_reflection(&n_layers, &[], 500.0, 0.0, true);
+        let t = result.transmittance.unwrap();
+        assert_relative_eq!(result.reflectance + t, 1.0, epsilon = 1e-10);
+        // Fresnel T = 4*n1*n2/(n1+n2)^2 = 4*1.5/6.25 = 0.96
+        assert_relative_eq!(t, 0.96, epsilon = 0.01);
     }
 
     #[test]

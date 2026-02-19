@@ -1,6 +1,7 @@
 //! Verification layer for falsifiability checks.
 
 use crate::traits::{PipelineState, VerificationLayer, VerificationReport};
+use gr_core::ppn_constraints::check_all_ppn_constraints;
 use vacuum_frustration::{omega_eff_from_phi, ScalarFrustrationMap, CASSINI_OMEGA_BD_LOWER_BOUND};
 
 /// Default verification policy for thesis execution.
@@ -40,6 +41,18 @@ impl VerificationLayer for ThesisVerifier {
             } else {
                 messages.push(format!("Cassini bound satisfied: omega_eff={omega_eff:.2}"));
             }
+
+            // Full PPN constraint suite (Rodal 2025)
+            let ppn = check_all_ppn_constraints(omega_eff);
+            messages.push(format!(
+                "PPN constraints: {}/{} satisfied (Cassini={}, LLR={}, Pulsar={}, GW={})",
+                ppn.n_satisfied,
+                ppn.n_total,
+                if ppn.cassini { "pass" } else { "FAIL" },
+                if ppn.llr { "pass" } else { "FAIL" },
+                if ppn.pulsar { "pass" } else { "FAIL" },
+                if ppn.gw_speed { "pass" } else { "FAIL" },
+            ));
         }
 
         if !state.viscosity.iter().all(|v| *v > 0.0 && v.is_finite()) {

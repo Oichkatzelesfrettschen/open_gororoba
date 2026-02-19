@@ -1311,10 +1311,10 @@ All experiments are reproducible from the project repository.  The
 complete verification pipeline consists of the following steps:
 
 \begin{verbatim}
-# Build all binaries (136 binaries, 26 crates)
+# Build all binaries (139 binaries, 27 crates)
 cargo build --release --workspace -j$(nproc)
 
-# Run full test suite (4110 tests, zero failures)
+# Run full test suite (4084 tests, zero failures)
 cargo test --workspace -j$(nproc)
 
 # Verify zero warnings (clippy lints are errors)
@@ -1336,10 +1336,10 @@ cargo run --release --bin box-kite-census
 make governance-gate
 \end{verbatim}
 
-The TOML evidence registry (\texttt{registry/claims.toml}) contains 804
+The TOML evidence registry (\texttt{registry/claims.toml}) contains 818
 claims with structured metadata including sprint, status, evidence links,
 and cross-references.  Each claim maps to specific test functions in the
-Rust test suite (4110 tests, zero warnings), enabling independent
+Rust test suite (4084 tests, zero warnings), enabling independent
 verification of any individual result.
 
 \textbf{Hardware:} AMD Ryzen 5 5600X3D (12 threads, 96\,MB V-Cache), 32\,GB RAM,

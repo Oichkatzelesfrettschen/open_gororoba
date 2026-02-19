@@ -298,8 +298,8 @@ impl SimulationState {
                 }
             }
             AlgebraicField::Sedenion(_field) => {
-                // Sedenion update logic (similar but 16 components)
-                // TODO: Implement full sedenion advection
+                // Sedenion/Pathion 2D advection deferred (L-789).
+                // No current claim requires full 16-component 2D advection.
             }
             AlgebraicField::Pathion(_field) => {
                 // Pathion update logic

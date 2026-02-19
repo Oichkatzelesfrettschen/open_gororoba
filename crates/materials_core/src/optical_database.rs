@@ -4917,6 +4917,93 @@ pub fn list_materials() -> Vec<&'static str> {
     ]
 }
 
+// ===================== Sellmeier dispersion model =====================
+
+/// Sellmeier dispersion equation parameters for transparent optical materials.
+///
+/// The Sellmeier equation gives the refractive index as:
+///   n^2(lambda) = 1 + sum_i B_i * lambda^2 / (lambda^2 - C_i)
+///
+/// where lambda is in micrometers and C_i are in um^2.
+///
+/// # References
+/// - Zelmon et al., JOSA B 14, 3319 (1997) -- LiNbO3
+/// - Malitson, JOSA 55, 1205 (1965) -- fused silica
+#[derive(Debug, Clone)]
+pub struct SellmeierParams {
+    /// Oscillator strengths B_i (dimensionless).
+    pub b_coeffs: Vec<f64>,
+    /// Resonance wavelengths squared C_i [um^2].
+    pub c_coeffs: Vec<f64>,
+    /// Validity range in micrometers (min, max).
+    pub validity_range_um: (f64, f64),
+}
+
+impl SellmeierParams {
+    /// Refractive index at wavelength lambda_um [micrometers].
+    ///
+    /// Returns n(lambda) from the Sellmeier equation.
+    pub fn refractive_index(&self, lambda_um: f64) -> f64 {
+        let l2 = lambda_um * lambda_um;
+        let mut n2 = 1.0;
+        for (b, c) in self.b_coeffs.iter().zip(self.c_coeffs.iter()) {
+            n2 += b * l2 / (l2 - c);
+        }
+        n2.sqrt()
+    }
+
+    /// Refractive index at angular frequency omega [rad/s].
+    pub fn refractive_index_at_omega(&self, omega: f64) -> f64 {
+        // lambda [m] = 2*pi*c / omega, convert to um
+        let lambda_um = 2.0 * PI * C / omega * 1e6;
+        self.refractive_index(lambda_um)
+    }
+
+    /// Group refractive index n_g = n - lambda * dn/dlambda.
+    ///
+    /// Computed via central finite difference with h = 0.001 um.
+    pub fn group_index(&self, lambda_um: f64) -> f64 {
+        let h = 0.001;
+        let n_plus = self.refractive_index(lambda_um + h);
+        let n_minus = self.refractive_index(lambda_um - h);
+        let n = self.refractive_index(lambda_um);
+        let dn_dl = (n_plus - n_minus) / (2.0 * h);
+        n - lambda_um * dn_dl
+    }
+}
+
+/// LiNbO3 ordinary ray Sellmeier coefficients (Zelmon et al. 1997, Table 2).
+pub fn linbo3_ordinary_sellmeier() -> SellmeierParams {
+    SellmeierParams {
+        b_coeffs: vec![2.6734, 1.2290, 12.614],
+        c_coeffs: vec![0.01764, 0.05914, 474.60],
+        validity_range_um: (0.4, 5.0),
+    }
+}
+
+/// LiNbO3 extraordinary ray Sellmeier coefficients (Zelmon et al. 1997, Table 2).
+pub fn linbo3_extraordinary_sellmeier() -> SellmeierParams {
+    SellmeierParams {
+        b_coeffs: vec![2.9804, 0.5981, 8.9543],
+        c_coeffs: vec![0.02047, 0.06660, 416.08],
+        validity_range_um: (0.4, 5.0),
+    }
+}
+
+/// Fused silica Sellmeier coefficients (Malitson 1965).
+pub fn fused_silica_sellmeier() -> SellmeierParams {
+    SellmeierParams {
+        b_coeffs: vec![0.6961663, 0.4079426, 0.8974794],
+        // Malitson gives lambda_i in um, so C_i = lambda_i^2
+        c_coeffs: vec![
+            0.0684043_f64.powi(2),
+            0.1162414_f64.powi(2),
+            9.896161_f64.powi(2),
+        ],
+        validity_range_um: (0.21, 3.71),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -8907,5 +8994,87 @@ mod tests {
         let m2_b = srtio3.acoustooptic_figure_of_merit(omega, 0.2, v_sound, density);
         let ratio = m2_b / m2_a;
         assert!((ratio - 4.0).abs() < 1e-10, "M2 should scale as p^2, ratio = {:.4}", ratio);
+    }
+
+    // ===================== Sellmeier dispersion tests =====================
+
+    #[test]
+    fn test_linbo3_ordinary_at_1030nm() {
+        let s = linbo3_ordinary_sellmeier();
+        let n = s.refractive_index(1.030);
+        // Zelmon Table 2: n_o(1030 nm) ~ 2.232
+        assert!(
+            (n - 2.232).abs() < 0.01,
+            "LiNbO3 n_o at 1030 nm: got {:.4}, expected ~2.232",
+            n
+        );
+    }
+
+    #[test]
+    fn test_linbo3_extraordinary_at_1030nm() {
+        let s = linbo3_extraordinary_sellmeier();
+        let n = s.refractive_index(1.030);
+        // Zelmon Table 2: n_e(1030 nm) ~ 2.156
+        assert!(
+            (n - 2.156).abs() < 0.01,
+            "LiNbO3 n_e at 1030 nm: got {:.4}, expected ~2.156",
+            n
+        );
+    }
+
+    #[test]
+    fn test_linbo3_negative_uniaxial() {
+        // LiNbO3 is negative uniaxial: n_o > n_e at all wavelengths
+        let o = linbo3_ordinary_sellmeier();
+        let e = linbo3_extraordinary_sellmeier();
+        for &lam in &[0.515, 0.770, 1.030, 1.550] {
+            let no = o.refractive_index(lam);
+            let ne = e.refractive_index(lam);
+            assert!(
+                no > ne,
+                "LiNbO3 should be negative uniaxial at {} um: n_o={:.4} <= n_e={:.4}",
+                lam,
+                no,
+                ne
+            );
+        }
+    }
+
+    #[test]
+    fn test_linbo3_ordinary_at_515nm() {
+        let s = linbo3_ordinary_sellmeier();
+        let n = s.refractive_index(0.515);
+        // Zelmon Table 2: n_o(515 nm) ~ 2.325
+        assert!(
+            (n - 2.325).abs() < 0.01,
+            "LiNbO3 n_o at 515 nm: got {:.4}, expected ~2.325",
+            n
+        );
+    }
+
+    #[test]
+    fn test_fused_silica_at_1030nm() {
+        let s = fused_silica_sellmeier();
+        let n = s.refractive_index(1.030);
+        // Malitson: n(1030 nm) ~ 1.450
+        assert!(
+            (n - 1.450).abs() < 0.005,
+            "Fused silica n at 1030 nm: got {:.4}, expected ~1.450",
+            n
+        );
+    }
+
+    #[test]
+    fn test_sellmeier_group_index_greater_than_phase() {
+        // In normal dispersion regime, n_g > n (dn/dlambda < 0)
+        let s = linbo3_ordinary_sellmeier();
+        let n = s.refractive_index(1.030);
+        let ng = s.group_index(1.030);
+        assert!(
+            ng > n,
+            "Group index {:.4} should exceed phase index {:.4} in normal dispersion",
+            ng,
+            n
+        );
     }
 }

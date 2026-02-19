@@ -11,7 +11,11 @@ use cosmology_core::gravastar::{GravastarSolution, PolytropicEos};
 use cosmology_core::homotopy_bridge::solve_gravastar_homotopy;
 
 /// Cassini lower bound used as thesis falsifier.
-pub const CASSINI_OMEGA_BD_LOWER_BOUND: f64 = 40_000.0;
+///
+/// Re-exported from `gr_core::ppn_constraints` for backward compatibility.
+/// The canonical value (43,000) is derived from |gamma-1| < 2.3e-5
+/// per Rodal (2025), arXiv:2507.09724v2.
+pub use gr_core::ppn_constraints::CASSINI_OMEGA_BD_LOWER as CASSINI_OMEGA_BD_LOWER_BOUND;
 
 /// Scalar map phi = exp(-lambda * F).
 #[derive(Clone, Copy, Debug)]

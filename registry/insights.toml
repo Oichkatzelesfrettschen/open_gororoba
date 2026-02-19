@@ -1117,3 +1117,36 @@ claims = ["C-782"]
 confidence = "high"
 phase = "topology"
 sprint = 51
+
+[[insight]]
+id = "I-099"
+title = "TMM Effective-Medium Metamaterial Absorbers: Independent eps/mu Tuning Enables R->0 and T->0 Simultaneously"
+date = "2026-02-19"
+status = "Verified"
+summary = "The Landy 2008 perfect absorber achieves A -> 1 by simultaneously driving R -> 0 (impedance matching Z = sqrt(mu/eps) = Z_0) and T -> 0 (resonant absorption over a lambda/35 slab). Independent Lorentz oscillators for epsilon and mu, with matched parameters (S_e = S_m, gamma_e = gamma_m, omega_0e = omega_0m), give eps(omega) = mu(omega) identically, so Z = 1 at ALL frequencies. The absorption then comes entirely from the imaginary part of n_eff = sqrt(eps*mu). This is the Born & Wolf effective-medium regime where homogenization is valid: unit cell << lambda (0.72 mm vs 26 mm). The Byrnes amplitude transfer matrix correctly handles lossy media where the original Born & Wolf characteristic matrix fails (cos/sin oscillate for Im(delta) != 0, while exp(+/-i*delta) properly decays). The key calibration insight: oscillator strength S = 0.40 balances impedance mismatch vs absorption depth for the 0.72 mm geometry."
+claims = ["C-852", "C-853", "C-854", "C-855", "C-856"]
+confidence = "high"
+phase = "materials"
+sprint = 56
+
+[[insight]]
+id = "I-100"
+title = "Frustration-Entropy Bridge Connects Vacuum Attractor phi=3/8 to Immirzi Parameter gamma_NZJ"
+date = "2026-02-19"
+status = "Verified"
+summary = "The binary entropy H(phi) = -phi*ln(phi) - (1-phi)*ln(1-phi) as a degeneracy factor in the Immirzi formula gamma = H/(pi*sqrt(3)) maps the CD frustration attractor phi = 3/8 to gamma = 0.1216, within 1.6% of gamma_NZJ = 0.1236 (Domagala-Lewandowski 2004). The mathematical structure: (1) H(1/2) = ln(2) recovers gamma_BG exactly (maximum frustration = maximum entropy); (2) H(3/8) = 0.6616 < ln(2) gives a smaller gamma corresponding to the NZJ counting. Physically, the BG counting (j_min=1/2) maximizes spin degeneracy, while the NZJ counting (j_min=1) reduces it. The frustration attractor at phi = 3/8 < 1/2 sits in the reduced-degeneracy regime, naturally matching the NZJ branch. However, no natural mapping to gamma_BG exists at phi = 3/8 (all non-calibrated bridges deviate > 10%). This is an honest negative result for the BG branch."
+claims = ["C-859", "C-860", "C-861"]
+confidence = "medium"
+phase = "lqg-frustration"
+sprint = 56
+
+[[insight]]
+id = "I-101"
+title = "PPN Constraint Hierarchy: 13 Gates from 4 Physical Sectors"
+date = "2026-02-19"
+status = "Verified"
+summary = "The expanded PPN constraint report with 13 gates covers 4 independent physical sectors: (1) METRIC: Cassini gamma, VLBI gamma, Mercury beta, GP-B geodetic -- test how mass curves spacetime; (2) NORDTVEDT/SEP: LLR, PSR J0337+1715 -- test whether gravitational binding energy gravitates; (3) PREFERRED-FRAME: alpha_1/2/3, xi -- test Lorentz invariance of gravity; (4) PROPAGATION: GW speed, dipole radiation, MICROSCOPE WEP -- test wave properties and equivalence principles. For Brans-Dicke theory, the omega thresholds form a strict hierarchy: GP-B (omega > 177) < VLBI (omega > 8333) < LLR (omega > 2000) < Cassini (omega > 43478) < Pulsar Nordtvedt (omega > 500000). All preferred-frame and conservation-law parameters vanish identically in BD, so those gates always pass. The most stringent overall constraint comes from PSR J0337+1715."
+claims = ["C-857", "C-858"]
+confidence = "high"
+phase = "gr"
+sprint = 56

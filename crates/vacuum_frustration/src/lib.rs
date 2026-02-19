@@ -14,6 +14,7 @@ pub mod balance;
 pub mod bridge;
 pub mod frustration;
 pub mod frustration_energy;
+pub mod immirzi_bridge;
 pub mod kubo_transport;
 pub mod percolation;
 pub mod signed_graph;
@@ -45,6 +46,13 @@ pub use frustration_energy::{
 pub use percolation::{
     auto_velocity_threshold, correlate_with_frustration, CorrelationResult, PercolationChannel,
     PercolationDetector,
+};
+pub use immirzi_bridge::{
+    best_bg_match, best_nzj_match, entropy_bridge, evaluate_all_mappings,
+    frustration_entropy_bridge, invert_entropy_bridge, invert_entropy_bridge_bg,
+    invert_entropy_bridge_nzj, linear_bridge_bg, log_bridge_bg, power_bridge_bg,
+    ImmirziMappingResult, BRIDGE_MAX,
+    GAMMA_BG as IMMIRZI_GAMMA_BG, GAMMA_NZJ as IMMIRZI_GAMMA_NZJ, VACUUM_PHI,
 };
 pub use signed_graph::SignedGraph;
 pub use spatial_correlation::{
