@@ -59,6 +59,11 @@ dist_py/
 logs/
 reports/benchmark_*.txt
 reports/*.csv
+reports/*.txt
+reports/*.json
+
+# LaTeX build outputs
+docs/latex/out/
 
 # Temporary / Scratch space
 temp/
@@ -74,7 +79,16 @@ temp.*
 # Simulation Outputs (Regenerable)
 data/h5/
 data/artifacts/images/
+data/artifacts/*.mp4
 data/e027/
+data/csv/ghost_audit/
+data/csv/wow_followup_*.csv
+data/test_zd/
+data/test_zd_1k/
+data/chsh_betti/
+data/entropy_census/
+data/lattice_hawking/
+data/meltdown_pulsed/
 
 # External / Downloaded Datasets (Managed via fetch-data)
 data/external/
