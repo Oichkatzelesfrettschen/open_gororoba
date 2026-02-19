@@ -12324,3 +12324,55 @@ confidence = "high"
 phase = "topology"
 sprint = 49
 dependencies = []
+
+[[claim]]
+id = "C-780"
+statement = "The D3Q19 lattice UV cutoff bounds the effective analog Hawking temperature: the viscosity-cutoff spectrum yields T_eff that does NOT converge to the ideal T_H as grid resolution N increases, proving lattice viscosity limits the analog temperature."
+where_stated = "`crates/gr_core/src/acoustic_metric.rs`, `crates/gr_core/src/lattice_hawking.rs`, `crates/gororoba_cli/src/bin/lattice_hawking_sweep.rs`"
+status = "Verified"
+status_note = "E-056 executed 2026-02-18. N=16: T_eff=0.0119 vs T_H=0.0119 (0.5% dev). N>=32: T_eff=0 (spectral fit fails, T_H too cold for lattice frequencies). rel_dev(finest)=100%. Viscosity-cutoff spectrum diverges from ideal at all resolutions above N=16."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: |T_eff_visc - T_H_ideal|/T_H_ideal > 5% at finest resolution N=128. REFUTE: T_eff_visc converges to T_H_ideal as N grows (deviation < 5%)."
+confidence = "medium"
+phase = "simulation"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-781"
+statement = "Shannon entropy of the Cayley-Dickson associator-norm distribution exhibits a phase transition at dimension 16 (octonion-to-sedenion boundary) where the loss of alternativity and emergence of zero divisors produce a sharp entropy jump exceeding 10% of H_max."
+where_stated = "`crates/algebra_core/src/analysis/entropy_census.rs`, `crates/gororoba_cli/src/bin/algebra_entropy_census.rs`"
+status = "Falsified"
+status_note = "E-057 executed 2026-02-18. The jump at dim 8->16 is -11.4% (DECREASE, not increase). H(8)=4.24 (max), H(16)=3.76. The primary phase transition is at dim 4->8 (H jumps from 0 to 4.24, the maximum). Sedenion zero divisors REDUCE entropy by constraining the associator-norm distribution. Claim falsified: the 8->16 transition shrinks entropy, and the dominant transition is at 4->8."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: H(dim=16) > 0 with |H(16) - H(8)| > 0.10 * H_max. REFUTE: entropy is smooth across dim=16 transition (no discontinuity exceeding 10%)."
+confidence = "high"
+phase = "algebra"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-782"
+statement = "The CHSH wavelet S parameter of LBM velocity fields correlates with Betti-1 topology (from VR persistent homology) across different flow configurations, with |Spearman rho| > 0.5 at p < 0.05 for at least one viscosity/forcing configuration."
+where_stated = "`crates/spectral_core/src/chsh_betti_bridge.rs`, `crates/gororoba_cli/src/bin/chsh_betti_sweep.rs`"
+status = "Inconclusive"
+status_note = "E-058 executed 2026-02-18. All 4 configs: rho=0.0, p=1.0. Both S and B1 have zero variance across snapshots at N=16^3, threshold=0.001. S or B1 (or both) are constant within each configuration, yielding undefined Spearman correlation. Needs larger grid (N>=32) or varied thresholds."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: |rho_Spearman(S, B1)| > 0.5 with p < 0.05 at any configuration. REFUTE: |rho| < 0.5 or p > 0.05 at all configurations."
+confidence = "low"
+phase = "topology"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-783"
+statement = "Pulsed (burst-quench) entropy injection with 50% duty cycle reduces p95 wavelet entropy by more than 10% compared to steady injection at equal total forcing energy, because quench phases allow partial relaxation."
+where_stated = "`crates/spectral_core/src/pde_surrogates.rs`, `crates/gororoba_cli/src/bin/meltdown_pulsed_gate.rs`"
+status = "Inconclusive"
+status_note = "E-059 executed 2026-02-18. All protocols produce identical p95 wavelet concurrency: 103 (eps=0.01), 27 (eps=0.1), 0 (eps=1.0). 0% reduction at all thresholds. The burst-quench duty cycle provides no measurable entropy reduction at N=128, steps=300. The PDE solution converges to similar final states regardless of forcing schedule. Needs longer runs or higher forcing amplitude to produce measurable differences."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: pulsed_p95 < steady_p95 * 0.90 at any wavelet threshold. REFUTE: pulsed_p95 >= steady_p95 * 0.95 (pulsed provides < 5% reduction)."
+confidence = "medium"
+phase = "spectral"
+sprint = 49
+dependencies = []

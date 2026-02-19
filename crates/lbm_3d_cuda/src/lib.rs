@@ -49,6 +49,7 @@ pub struct LbmSolver3DCuda {
     initialize_uniform_kernel: CudaFunction,
     initialize_custom_kernel: CudaFunction,
     lbm_step_fused_kernel: CudaFunction,
+    lbm_step_fused_4d_kernel: Option<CudaFunction>,
     enstrophy_cell_kernel: CudaFunction,
     reduce_sum_rho_kernel: CudaFunction,
     reduce_sum_f32_kernel: CudaFunction,
@@ -121,6 +122,11 @@ impl LbmSolver3DCuda {
         } else {
             "lbm_step_fused_kernel"
         })?;
+        let lbm_step_fused_4d_kernel = if precision == Precision::BF16 {
+            Some(module.load_function("lbm_step_fused_bf16_4d_batch_kernel")?)
+        } else {
+            None
+        };
         let initialize_uniform_kernel = module.load_function(if precision == Precision::BF16 {
             "initialize_uniform_bf16_kernel"
         } else {
@@ -216,6 +222,7 @@ impl LbmSolver3DCuda {
             initialize_uniform_kernel,
             initialize_custom_kernel,
             lbm_step_fused_kernel,
+            lbm_step_fused_4d_kernel,
             enstrophy_cell_kernel,
             reduce_sum_rho_kernel,
             reduce_sum_f32_kernel,
@@ -248,6 +255,50 @@ impl LbmSolver3DCuda {
             .map(|v| half::bf16::from_f32(*v).to_bits())
             .flat_map(|bits| bits.to_le_bytes())
             .collect::<Vec<u8>>()
+    }
+
+    pub fn step_4d(&mut self, nw: usize) -> Result<()> {
+        let (nx, ny, nz_total) = (self.nx as i32, self.ny as i32, self.nz as i32);
+        let nw_i = nw as i32;
+        ensure!(nw > 0, "nw must be > 0");
+        let nz_sub = nz_total / nw_i;
+        ensure!(
+            nz_total % nw_i == 0,
+            "Total Z dimension {} must be divisible by nw {}",
+            nz_total,
+            nw
+        );
+
+        let kernel = self
+            .lbm_step_fused_4d_kernel
+            .as_ref()
+            .context("4D kernel not available (requires BF16)")?;
+
+        let (bx, by, bz) = self.lbm_block_dim;
+        let config = LaunchConfig {
+            grid_dim: (
+                self.nx.div_ceil(bx as usize) as u32,
+                self.ny.div_ceil(by as usize) as u32,
+                self.nz.div_ceil(bz as usize) as u32,
+            ),
+            block_dim: (bx, by, bz),
+            shared_mem_bytes: 0,
+        };
+
+        let mut b = self.stream.launch_builder(kernel);
+        b.arg(&self.d_f)
+            .arg(&mut self.d_f_tmp)
+            .arg(&mut self.d_rho)
+            .arg(&mut self.d_u)
+            .arg(&self.d_force)
+            .arg(&self.d_tau)
+            .arg(&nx)
+            .arg(&ny)
+            .arg(&nz_sub)
+            .arg(&nw_i);
+        unsafe { b.launch(config) }?;
+        std::mem::swap(&mut self.d_f, &mut self.d_f_tmp);
+        Ok(())
     }
 
     pub fn initialize_uniform(&mut self, rho: f32, u: [f32; 3]) -> Result<()> {

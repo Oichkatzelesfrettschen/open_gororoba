@@ -3279,6 +3279,7 @@ name = "gororoba_cli"
 version = "0.1.0"
 dependencies = [
  "algebra_core",
+ "anyhow",
  "ash",
  "axum",
  "cd_spin_bridge",
@@ -7337,6 +7338,7 @@ dependencies = [
  "ndrustfft",
  "num-complex",
  "rustfft",
+ "vacuum_frustration",
 ]
 
 [[package]]

@@ -5,9 +5,9 @@
 updated = "2026-02-10"
 authoritative = true
 status = "active"
-lacuna_count = 167
-open_count = 166
-high_priority_count = 69
+lacuna_count = 169
+open_count = 168
+high_priority_count = 71
 medium_priority_count = 97
 low_priority_count = 1
 origin_kind_count = 1
@@ -153,6 +153,30 @@ description = "C-477 remains unresolved with status token PARTIAL: Sky-Limit-Set
 priority = "high"
 status = "open"
 claim_refs = ["C-477"]
+source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-782"
+origin = "legacy_manual"
+area = "claims"
+title = "Unresolved claim status for C-782"
+description = "C-782 remains unresolved with status token INCONCLUSIVE: The CHSH wavelet S parameter of LBM velocity fields correlates with Betti-1 topology (from VR persistent homology) across different flow configurations, with |Spearman rho| > 0.5 at p < 0.05 for at least one viscosity/forcing configuration."
+priority = "high"
+status = "open"
+claim_refs = ["C-782"]
+source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-783"
+origin = "legacy_manual"
+area = "claims"
+title = "Unresolved claim status for C-783"
+description = "C-783 remains unresolved with status token INCONCLUSIVE: Pulsed (burst-quench) entropy injection with 50% duty cycle reduces p95 wavelet entropy by more than 10% compared to steady injection at equal total forcing energy, because quench phases allow partial relaxation."
+priority = "high"
+status = "open"
+claim_refs = ["C-783"]
 source_refs = []
 related_marker_ids = []
 
@@ -2012,7 +2036,7 @@ title = "Dangling claim references in experiments entry E-036"
 description = "Entry E-036 references claims: C-776, C-775, C-774 (migrated from T-NNN format)"
 priority = "high"
 status = "open"
-claim_refs = []
+claim_refs = ["C-774", "C-775", "C-776"]
 source_refs = []
 related_marker_ids = []
 
