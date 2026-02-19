@@ -6,13 +6,21 @@ version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
 test_count = 4079
-claim_count = 805
-insight_count = 94
+claim_count = 806
+insight_count = 95
 experiment_count = 69
 complete_experiment_count = 24
 paper_count = 19
 binary_count = 136
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s51]
+number = 51
+date = "2026-02-18"
+test_count = 4033
+claim_count = 806
+insight_count = 95
+summary = "Sprint 51: Thesis Resolution and Multi-Precision LBM. Falsified C-782 (CHSH-Betti: S=2.0 structural invariant for sinusoidal profiles, I-098) and C-783 (Meltdown gate: 0% reduction with hardened params rho=5.0, nu=0.001, steps=1000 + Shannon entropy metric). Derived C-806 corrected entropy claim from C-781 falsification. Multi-Precision LBM (E-069, Sprint 50B): GPU FP64 kernel, CPU FP64 rayon optimization, precision sampler binary. E-036 crossref fix. Registry hygiene. Lattice filtration zero-divisor census."
 
 [sprints.s50]
 number = 50

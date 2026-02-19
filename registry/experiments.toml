@@ -1325,7 +1325,7 @@ title = "CHSH-Betti Correlation Sweep"
 binary = "chsh-betti-sweep"
 binary_registered = true
 binary_experiment_declared = "E-058"
-method = "Run LBM at 4 configurations (varying tau and forcing amplitude). For each: 200 steps, snapshot every 10 steps. Compute CHSH wavelet S and VR Betti-1 at each snapshot. Spearman correlation between S and B1 across snapshots."
+method = "Run GPU FP64 LBM at 4 configurations (varying tau and forcing amplitude). For each: 500 steps at 32^3, snapshot every 10 steps. Extract y-profile (flow variation direction) for CHSH wavelet S. Adaptive p75 threshold for VR Betti-1. Spearman correlation between S and B1 across snapshots."
 input = "Parametric sweep (no external data)"
 output = ["data/chsh_betti/results.toml"]
 run = "cargo run --release --bin chsh-betti-sweep"
@@ -1333,10 +1333,10 @@ run_command_sha256 = ""
 claims = ["C-782"]
 claim_refs = ["C-782"]
 deterministic = true
-gpu = false
+gpu = true
 status = "completed"
 status_token = "COMPLETED"
-result_summary = "INCONCLUSIVE. All 4 configs: rho=0.0, p=1.0. Both S and B1 have zero variance across snapshots at N=16^3, threshold=0.001. Needs larger grid or varied thresholds."
+result_summary = "FALSIFIED. Sprint 51 rerun at 32^3 GPU FP64 with y-profile and adaptive threshold. S=2.0000 (structural invariant for sinusoidal profiles) and B1=110 (topological invariant for laminar band structure) at ALL snapshots. Neither metric varies, correlation undefined (rho=0, p=1). CHSH S is invariant for shape-preserving flows."
 lineage_id = "XL-056"
 input_path_refs = []
 output_path_refs = ["data/chsh_betti/results.toml"]
@@ -1349,7 +1349,7 @@ title = "Pulsed vs Steady Entropy Injection"
 binary = "meltdown-pulsed-gate"
 binary_registered = true
 binary_experiment_declared = "E-059"
-method = "Compare 3 protocols at equal total forcing energy: (A) steady, (B) pulsed 50% duty cycle (2x amplitude), (C) pulsed 25% duty cycle (4x amplitude). Measure p95 wavelet entropy at each level after N steps with Haar hard-threshold gating at eps=0.01,0.1,1.0."
+method = "Compare 3 protocols at equal total forcing energy: (A) steady rho=5.0, (B) pulsed 50% duty cycle (rho=10.0), (C) pulsed 25% duty cycle (rho=20.0). Measure p95 wavelet concurrency AND Shannon entropy at each level after 1000 steps with nu=0.001, dt=1e-3, Haar hard-threshold gating at eps=0.01,0.1,1.0."
 input = "Parametric sweep (no external data)"
 output = ["data/meltdown_pulsed/results.toml"]
 run = "cargo run --release --bin meltdown-pulsed-gate"
@@ -1360,7 +1360,7 @@ deterministic = true
 gpu = false
 status = "completed"
 status_token = "COMPLETED"
-result_summary = "INCONCLUSIVE. All protocols produce identical p95 wavelet concurrency (103/27/0 at eps=0.01/0.1/1.0). 0% reduction for both pulsed protocols. PDE solutions converge to similar final states regardless of forcing schedule at N=128, steps=300."
+result_summary = "FALSIFIED. Sprint 51 rerun with hardened parameters (rho=5.0, nu=0.001, steps=1000) and wavelet entropy metric. Concurrency: 107/65/0 identical across all three protocols. Entropy: 5.2527/5.0136/0.0 (steady) vs 5.2538/5.0158/0.0 (pulsed 50%) -- <0.05% difference. Per-step wavelet compression makes equilibrium independent of temporal duty cycle."
 lineage_id = "XL-057"
 input_path_refs = []
 output_path_refs = ["data/meltdown_pulsed/results.toml"]
