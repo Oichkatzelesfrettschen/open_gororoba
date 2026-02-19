@@ -207,7 +207,7 @@ name = "dimensional-census"
 path = "src/bin/dimensional_census.rs"
 
 [[bin]]
-name = "c590_attractor_sweep"
+name = "c590-attractor-sweep"
 path = "src/bin/c590_attractor_sweep.rs"
 
 [[bin]]
@@ -423,7 +423,7 @@ name = "experiment-c756"
 path = "src/bin/experiment_c756.rs"
 
 [[bin]]
-name = "dump_assessors"
+name = "dump-assessors"
 path = "src/bin/dump_assessors.rs"
 
 [[bin]]
@@ -550,6 +550,34 @@ path = "src/bin/zd_resonance_4d.rs"
 name = "lbm-precision-sampler"
 path = "src/bin/lbm_precision_sampler.rs"
 
+[[bin]]
+name = "entropy-pde"
+path = "src/bin/entropy_pde.rs"
+
+[[bin]]
+name = "modular-chaos"
+path = "src/bin/modular_chaos.rs"
+
+[[bin]]
+name = "arleo-falmagne-scaling"
+path = "src/bin/arleo_falmagne_scaling.rs"
+
+[[bin]]
+name = "sfwm-figure-repro"
+path = "src/bin/sfwm_figure_repro.rs"
+
+[[bin]]
+name = "ppn-bound-sweep"
+path = "src/bin/ppn_bound_sweep.rs"
+
+[[bin]]
+name = "fano-scattering"
+path = "src/bin/fano_scattering.rs"
+
+[[bin]]
+name = "landy-absorber-tmm"
+path = "src/bin/landy_absorber_tmm.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
@@ -607,6 +635,7 @@ chrono = { workspace = true }
 ash = { version = "0.38.0", features = ["debug"] }
 lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
 rustfft = { workspace = true }
+qgp_scaling = { path = "../qgp_scaling" }
 
 [dev-dependencies]
 tempfile = { workspace = true }

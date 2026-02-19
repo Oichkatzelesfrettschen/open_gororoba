@@ -5,14 +5,22 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 4084
-claim_count = 818
-insight_count = 95
-experiment_count = 70
-complete_experiment_count = 68
+test_count = 4307
+claim_count = 863
+insight_count = 101
+experiment_count = 78
+complete_experiment_count = 76
 paper_count = 19
-binary_count = 136
+binary_count = 143
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s56]
+number = 56
+date = "2026-02-19"
+test_count = 4307
+claim_count = 863
+insight_count = 101
+summary = "Sprint 56: Optics + GR Infrastructure Expansion. Byrnes amplitude transfer matrix replaces Born & Wolf characteristic matrix for lossy TMM (energy-conserving R+T). Landy 2008 metamaterial absorber reproduced via Lorentz effective-medium model (A>=0.96 at 11.48 GHz, impedance matched, multilayer A>0.999). PPN constraint framework expanded from 7 to 13 gates (GP-B geodetic, preferred-frame alpha_1/2/3, Whitehead xi, MICROSCOPE WEP). Immirzi bridge maps CD frustration phi=3/8 to gamma within 2% of gamma_NZJ via entropy mapping. Complex Bessel J_n/Y_n fixed (DLMF-compliant). Fano TCMT tests hardened. Claims C-819..C-863, Experiments E-071..E-078, Insights I-099..I-101. WS-OPTICS-GR-001 workstream created."
 
 [sprints.s55]
 number = 55
