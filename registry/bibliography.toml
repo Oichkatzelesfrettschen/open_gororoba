@@ -3,17 +3,17 @@
 
 [bibliography]
 authoritative = true
-updated = "2026-02-09"
+updated = "2026-02-19"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
-section_count = 32
-entry_count = 198
+section_count = 34
+entry_count = 217
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
-section_count = 32
-entry_count = 198
+section_count = 34
+entry_count = 217
 
 [[section]]
 id = "BSEC-001"
@@ -31,7 +31,7 @@ entry_count = 6
 id = "BSEC-003"
 name = "Warp Drive & Exotic Spacetimes"
 groups = ["Primary Research & Data Sources"]
-entry_count = 6
+entry_count = 7
 
 [[section]]
 id = "BSEC-004"
@@ -410,11 +410,21 @@ id = "BIB-0019"
 order_index = 19
 group = "Primary Research & Data Sources"
 section = "Warp Drive & Exotic Spacetimes"
-citation_markdown = "**Pfenning, M. J., & Ford, L. H.** (1997). *The unphysical nature of \"Warp Drive\"*. CQG 14, 1743-1751."
+citation_markdown = "**Pfenning, M. J., & Ford, L. H.** (1997). *The unphysical nature of \"Warp Drive\"*. CQG 14, 1743-1751. [arXiv:gr-qc/9702026](https://arxiv.org/abs/gr-qc/9702026)."
 notes = ["*Quantum inequality constraints: 10c bubble requires ~ visible-universe energy.*"]
-urls = []
-dois = []
+urls = ["https://arxiv.org/abs/gr-qc/9702026"]
+dois = ["10.1088/0264-9381/14/7/015"]
 source_line = 53
+
+[[entry]]
+id = "BIB-0215"
+order_index = 215
+group = "Primary Research & Data Sources"
+section = "Warp Drive & Exotic Spacetimes"
+citation_markdown = "**Ford, L. H., & Roman, T. A.** (1996). *Quantum field theory constrains traversable wormhole geometries*. Phys. Rev. D 53, 5496-5507. [arXiv:gr-qc/9510071](https://arxiv.org/abs/gr-qc/9510071)."
+notes = ["*Quantum inequality bounds on negative energy; basis for Pfenning-Ford warp constraint.*"]
+urls = ["https://arxiv.org/abs/gr-qc/9510071"]
+dois = ["10.1103/PhysRevD.53.5496"]
 
 [[entry]]
 id = "BIB-0020"
@@ -2542,3 +2552,29 @@ citation_markdown = "**Perez, K., Zuluaga, J. I., Sheikh, S. Z., Enriquez, J. E.
 notes = ["*BL GBT observations at 1-12 GHz of the Wow! signal region using ABACAD cadence strategy. No narrowband or wideband signals detected above threshold. Establishes modern non-detection baseline with 2.5e6 channel resolution.*"]
 urls = []
 dois = ["10.3847/2515-5172/ac9631"]
+
+[[section]]
+id = "BSEC-034"
+name = "Loop Quantum Gravity (Barbero-Immirzi Parameter)"
+groups = ["Primary Research & Data Sources"]
+entry_count = 2
+
+[[entry]]
+id = "BIB-0216"
+order_index = 216
+group = "Primary Research & Data Sources"
+section = "Loop Quantum Gravity (Barbero-Immirzi Parameter)"
+citation_markdown = "**Barbero G., J. F.** (1995). *Real Ashtekar variables for Lorentzian signature space-times*. Phys. Rev. D 51, 5507-5510. [arXiv:gr-qc/9410014](https://arxiv.org/abs/gr-qc/9410014)."
+notes = ["*Introduces real-valued SU(2) connection with free parameter beta.*"]
+urls = ["https://arxiv.org/abs/gr-qc/9410014"]
+dois = ["10.1103/PhysRevD.51.5507"]
+
+[[entry]]
+id = "BIB-0217"
+order_index = 217
+group = "Primary Research & Data Sources"
+section = "Loop Quantum Gravity (Barbero-Immirzi Parameter)"
+citation_markdown = "**Immirzi, G.** (1997). *Real and complex connections for canonical gravity*. CQG 14, L177-L181. [arXiv:gr-qc/9612030](https://arxiv.org/abs/gr-qc/9612030)."
+notes = ["*Shows beta is free parameter; area spectrum scales as beta*hbar*kappa.*"]
+urls = ["https://arxiv.org/abs/gr-qc/9612030"]
+dois = ["10.1088/0264-9381/14/10/002"]

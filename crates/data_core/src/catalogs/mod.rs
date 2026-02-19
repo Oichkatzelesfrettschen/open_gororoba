@@ -26,6 +26,7 @@ pub mod tsi;
 pub mod union3;
 pub mod wow;
 pub mod bl_filterbank;
+pub mod hic_raa;
 
 pub use eht::{list_tgz_members, tgz_member_count, validate_eht_archive};
 pub use hipparcos::{

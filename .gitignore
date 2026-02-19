@@ -15,6 +15,7 @@ Thumbs.db
 .claude/
 .gemini/
 .playwright-mcp/
+*.pdf
 
 # ------------------------------------------------------------------------------
 # 2. Languages & Build Systems

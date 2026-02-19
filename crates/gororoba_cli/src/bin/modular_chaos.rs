@@ -51,23 +51,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for _ in 0..args.steps {
         // Apply T (Quadratic Phase)
-        for i in 0..n {
-            psi[i] *= t_op[i];
+        for (p, t) in psi.iter_mut().zip(t_op.iter()) {
+            *p *= t;
         }
 
         // Apply S (FFT)
         fft.process(&mut psi);
-        for i in 0..n {
-            psi[i] /= sqrt_n;
+        for c in psi.iter_mut() {
+            *c /= sqrt_n;
         }
 
         // Measure Entropy
         let mut h = 0.0;
-        let mut total_prob = 0.0;
         for p in psi.iter().map(|c| c.norm_sqr()) {
             let p_clamped = p.max(1e-15);
             h -= p_clamped * p_clamped.log2();
-            total_prob += p;
         }
         entropy_history.push(h);
     }

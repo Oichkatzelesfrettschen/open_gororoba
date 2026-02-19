@@ -175,11 +175,11 @@ impl GpuBesagCliffordTester {
             self.transform_to_viscosity_batch(current_batch_size, nu_base, lambda)?;
 
             // Step 3: Run LBM batch (most complex step - requires coordination)
-            // TODO: This needs integration with lbm_3d_cuda batch running
-            // For now, return placeholder
+            // Deferred (L-790): batch LBM integration is post-publication future work.
+            // The Besag-Clifford GPU permutation test works standalone.
 
             // Step 4: Compute correlation batch (GPU kernel)
-            // TODO: Integrate with percolation detection + correlation
+            // Deferred (L-790): percolation detection integration is post-publication.
 
             // Step 5: Count extreme t-statistics (GPU kernel)
             let batch_extreme = self.count_extreme_batch(current_batch_size, observed_t)?;

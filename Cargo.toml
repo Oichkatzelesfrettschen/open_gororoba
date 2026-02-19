@@ -33,6 +33,7 @@ members = [
     "crates/lattice_filtration",
     "crates/neural_homotopy",
     "crates/gororoba_engine", "crates/gororoba_contracts", "crates/spin_tomography_core", "crates/cd_spin_bridge", "crates/lbm_vulkan",
+    "crates/qgp_scaling",
 ]
 
 # Shared dependencies across workspace

@@ -3,7 +3,7 @@
 
 \section{Experiments Portfolio}\label{sec:experiments-appendix}
 
-Total experiments: 69.\\[0.5em]
+Total experiments: 70.\\[0.5em]
 
 \subsection{E-001: Cayley-Dickson Motif Census}\label{sec:e001}
 
@@ -477,7 +477,7 @@ Total experiments: 69.\\[0.5em]
 
 \subsection{E-050: Rust-Native BL 6EQUJ5 Doppler Drift Search and ABACAD Pipeline}\label{sec:e050}
 
-\textbf{Binary:} \texttt{bl-doppler-search} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+\textbf{Binary:} \texttt{bl-doppler-search} \quad \textbf{Status:} deferred \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
 
 \textbf{Method:} Pure Rust de-Doppler shift-and-add narrowband signal search on BL 6EQUJ5 GBT filterbank HDF5 files (medium-res 0002). Per-coarse-channel SNR detection with MAD normalization, followed by ABACAD cadence discrimination (signal in ALL ON, NONE of OFF). Replaces turboSETI Python dependency.
 
@@ -627,7 +627,7 @@ Total experiments: 69.\\[0.5em]
 
 \subsection{E-064: CUDA BF16 ZD Resonance 256\textasciicircum{}3 Tau Sweep}\label{sec:e064}
 
-\textbf{Binary:} \texttt{zd-resonance-cuda} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
+\textbf{Binary:} \texttt{zd-resonance-cuda} \quad \textbf{Status:} deferred \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
 
 \textbf{Method:} D3Q19 LBM at 256\textasciicircum{}3 with BF16 precision. Same tau sweep protocol as E-063 but at 4x higher resolution (16.7M cells). Tests whether ghost peak narrows and converges toward 0.2138 with increasing resolution, paralleling real-data Cat1->Cat2 convergence (C-789).
 
@@ -694,4 +694,14 @@ Total experiments: 69.\\[0.5em]
 \textbf{Run:} \texttt{cargo run --release --bin evidence-package -- bundle --skip-missing}
 
 \textbf{Claims:} none
+
+\subsection{E-072: TX-2 Viscosity-to-Filtration Loop at 128\textasciicircum{}3 CPU FP64 (C-669 Refutation)}\label{sec:e072}
+
+\textbf{Binary:} \texttt{thesis-cross-tx2} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} TX-2 cross-experiment at 128\textasciicircum{}3 (2M cells) CPU FP64, 500 LBM steps, lambda sweep [0.5, 1.0, 2.0, 5.0, 10.0]. Tests whether turbulent regime at higher resolution resolves Undetermined classification from original 16\textasciicircum{}3 (E-031).
+
+\textbf{Run:} \texttt{cargo run --release --bin thesis-cross-tx2 -- --grid-size 128 --lbm-steps 500 --output-dir data/thesis\_lab/tx2\_128}
+
+\textbf{Claims:} C-669
 

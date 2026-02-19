@@ -917,7 +917,7 @@ source_document = "C-476"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = ["ESTABLISHED"]
+positive_evidence = ["VERIFIED"]
 negative_evidence = ["Algebraic Locality Principle (ALP): In sparse constraint graphs (edge density < 0.5), generator sequences in algebraic constraint systems concentrate on locally adjacent moves in the constraint graph Gamma, because nonlocal moves are either dynamically suppressed (long collision times, low measure) or annihilated (zero product, absorption). This produces geometric locality in the observed chaos. Evidence across two sparse stacks: (A) E10 billiard r=1.0 vs r_null=0.20, p=0.000; (B) ET DMZ r=1.0 vs r_null=0.01, p=0.000. FAILS for dense graphs (sedenion ZD at 86.7% edge density: r_null=0.87, p=1.0)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
@@ -1077,7 +1077,7 @@ source_document = "C-677"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = ["ESTABLISHED"]
+positive_evidence = ["VERIFIED"]
 negative_evidence = ["TX-2 Null Result at All Grid Scales: The viscosity-to-filtration cross-thesis (T2 x T4) produces 'Undetermined' latency law classification at 16^3, 32^3, and 64^3 grids. Gamma values range 0.10-0.14, insufficient for power-law or exponential classification. Kolmogorov shear produces smooth velocity gradients incompatible with sharp return-time structures. Documented negative result."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
