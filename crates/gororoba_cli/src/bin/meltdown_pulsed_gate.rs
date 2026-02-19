@@ -30,16 +30,16 @@ struct Args {
     #[arg(long, default_value_t = 128)]
     n: usize,
     /// Number of time steps
-    #[arg(long, default_value_t = 300)]
+    #[arg(long, default_value_t = 1000)]
     steps: usize,
     /// Time step size
-    #[arg(long, default_value_t = 2e-3)]
+    #[arg(long, default_value_t = 1e-3)]
     dt: f64,
-    /// Diffusion coefficient
-    #[arg(long, default_value_t = 0.01)]
+    /// Diffusion coefficient (lower = longer relaxation in quench phases)
+    #[arg(long, default_value_t = 0.001)]
     nu: f64,
-    /// Base forcing amplitude (steady protocol)
-    #[arg(long, default_value_t = 1.0)]
+    /// Base forcing amplitude (steady protocol; higher = more nonlinear)
+    #[arg(long, default_value_t = 5.0)]
     rho_base: f64,
     /// Wavelet threshold levels to test
     #[arg(long, default_values_t = vec![0.01, 0.1, 1.0])]
@@ -67,25 +67,44 @@ fn make_initial(n: usize, seed: u64) -> Vec<f64> {
     (0..n).map(|_| normal.sample(&mut rng)).collect()
 }
 
-/// Run a simulation and collect wavelet concurrency at each step.
-/// Returns vector of concurrency values at each step.
+/// Shannon entropy of wavelet coefficient energy distribution.
+/// H = -sum(p_i * log2(p_i)) where p_i = c_i^2 / sum(c_j^2).
+/// Continuous-valued metric that captures energy spread across scales.
+fn wavelet_entropy(coeffs: &[f64]) -> f64 {
+    let total_energy: f64 = coeffs.iter().map(|c| c * c).sum();
+    if total_energy < 1e-30 {
+        return 0.0;
+    }
+    let mut h = 0.0;
+    for c in coeffs {
+        let p = (c * c) / total_energy;
+        if p > 1e-30 {
+            h -= p * p.log2();
+        }
+    }
+    h
+}
+
+/// Run a simulation and collect wavelet concurrency and entropy at each step.
+/// Returns (concurrency_trace, entropy_trace).
 fn run_protocol(
     pde: &ForcedDiffusion,
     u0: &[f64],
     schedule: &[bool],
     eps: f64,
-) -> Vec<f64> {
+) -> (Vec<f64>, Vec<f64>) {
     let mut u = u0.to_vec();
     let mut conc_trace = Vec::with_capacity(schedule.len());
+    let mut entropy_trace = Vec::with_capacity(schedule.len());
     for &active in schedule {
         u = pde.step_pulsed(&u, active);
         let c = haar_dwt(&u);
         conc_trace.push(concurrency(&c, eps) as f64);
+        entropy_trace.push(wavelet_entropy(&c));
         let ct = hard_threshold(&c, eps);
-        // Reconstruct from compressed representation
         u = spectral_core::wavelet::haar_idwt(&ct);
     }
-    conc_trace
+    (conc_trace, entropy_trace)
 }
 
 struct ProtocolResult {
@@ -93,6 +112,7 @@ struct ProtocolResult {
     duty_cycle: f64,
     rho_effective: f64,
     p95_by_eps: Vec<(f64, f64)>,
+    entropy_p95_by_eps: Vec<(f64, f64)>,
 }
 
 fn main() {
@@ -136,10 +156,13 @@ fn main() {
         let pde = ForcedDiffusion::new(args.n, args.dt, args.nu, *rho_eff, 1);
 
         let mut p95_by_eps = Vec::new();
+        let mut entropy_p95_by_eps = Vec::new();
         for &eps in &args.eps {
-            let mut conc = run_protocol(&pde, &u0, &schedule, eps);
-            let p95 = percentile95(&mut conc);
-            p95_by_eps.push((eps, p95));
+            let (mut conc, mut ent) = run_protocol(&pde, &u0, &schedule, eps);
+            let p95_c = percentile95(&mut conc);
+            let p95_e = percentile95(&mut ent);
+            p95_by_eps.push((eps, p95_c));
+            entropy_p95_by_eps.push((eps, p95_e));
         }
 
         results.push(ProtocolResult {
@@ -147,23 +170,26 @@ fn main() {
             duty_cycle: *duty,
             rho_effective: *rho_eff,
             p95_by_eps,
+            entropy_p95_by_eps,
         });
     }
 
     // Print results table
-    println!("  {:>12}  {:>6}  {:>10}", "protocol", "eps", "p95_conc");
-    println!("  {:->12}  {:->6}  {:->10}", "", "", "");
+    println!("  {:>12}  {:>6}  {:>10}  {:>10}", "protocol", "eps", "p95_conc", "p95_entropy");
+    println!("  {:->12}  {:->6}  {:->10}  {:->10}", "", "", "", "");
     for r in &results {
-        for (eps, p95) in &r.p95_by_eps {
-            println!("  {:>12}  {:>6.0e}  {:>10.1}", r.name, eps, p95);
+        for (i, (eps, p95)) in r.p95_by_eps.iter().enumerate() {
+            let p95_e = r.entropy_p95_by_eps[i].1;
+            println!("  {:>12}  {:>6.0e}  {:>10.1}  {:>10.4}", r.name, eps, p95, p95_e);
         }
     }
 
     // Compute reduction percentages: pulsed vs steady
+    // Gate on EITHER concurrency OR entropy showing >10% reduction
     println!();
     println!("  Reduction vs Steady:");
-    println!("  {:>12}  {:>6}  {:>10}  {:>8}", "protocol", "eps", "reduc_%", "status");
-    println!("  {:->12}  {:->6}  {:->10}  {:->8}", "", "", "", "");
+    println!("  {:>12}  {:>6}  {:>10}  {:>10}  {:>8}", "protocol", "eps", "conc_%", "entr_%", "status");
+    println!("  {:->12}  {:->6}  {:->10}  {:->10}  {:->8}", "", "", "", "", "");
 
     let steady = &results[0];
     let mut any_pass = false;
@@ -173,28 +199,36 @@ fn main() {
     for pulsed in &results[1..] {
         for (i, (eps, p95_pulsed)) in pulsed.p95_by_eps.iter().enumerate() {
             let p95_steady = steady.p95_by_eps[i].1;
-            let reduction = if p95_steady > 0.0 {
+            let conc_reduc = if p95_steady > 0.0 {
                 (p95_steady - p95_pulsed) / p95_steady * 100.0
             } else {
                 0.0
             };
-            // PASS if reduction > 10%, FAIL if reduction < -5% (pulsed is worse)
-            let status = if reduction > 10.0 {
+            let ent_steady = steady.entropy_p95_by_eps[i].1;
+            let ent_pulsed = pulsed.entropy_p95_by_eps[i].1;
+            let ent_reduc = if ent_steady > 0.0 {
+                (ent_steady - ent_pulsed) / ent_steady * 100.0
+            } else {
+                0.0
+            };
+            // PASS if EITHER metric shows >10% reduction
+            let status = if conc_reduc > 10.0 || ent_reduc > 10.0 {
                 any_pass = true;
                 "PASS"
-            } else if reduction < -5.0 {
+            } else if conc_reduc < -5.0 && ent_reduc < -5.0 {
                 any_fail = true;
                 "FAIL"
             } else {
                 "INCONC"
             };
             println!(
-                "  {:>12}  {:>6.0e}  {:>10.2}  {:>8}",
-                pulsed.name, eps, reduction, status
+                "  {:>12}  {:>6.0e}  {:>10.2}  {:>10.2}  {:>8}",
+                pulsed.name, eps, conc_reduc, ent_reduc, status
             );
             gate_rows.push(format!(
-                "[[gate]]\nprotocol = \"{}\"\neps = {:.0e}\np95_steady = {:.1}\np95_pulsed = {:.1}\nreduction_pct = {:.3}\nstatus = \"{}\"",
-                pulsed.name, eps, p95_steady, p95_pulsed, reduction, status
+                "[[gate]]\nprotocol = \"{}\"\neps = {:.0e}\np95_conc_steady = {:.1}\np95_conc_pulsed = {:.1}\nconc_reduction_pct = {:.3}\np95_ent_steady = {:.4}\np95_ent_pulsed = {:.4}\nent_reduction_pct = {:.3}\nstatus = \"{}\"",
+                pulsed.name, eps, p95_steady, p95_pulsed, conc_reduc,
+                ent_steady, ent_pulsed, ent_reduc, status
             ));
         }
     }
@@ -220,9 +254,12 @@ fn main() {
     let body: String = results
         .iter()
         .map(|r| {
-            let eps_str: Vec<String> = r.p95_by_eps.iter().map(|(e, p)| format!("  {{ eps = {:.0e}, p95 = {:.1} }}", e, p)).collect();
+            let eps_str: Vec<String> = r.p95_by_eps.iter().enumerate().map(|(i, (e, p))| {
+                let ent = r.entropy_p95_by_eps[i].1;
+                format!("  {{ eps = {:.0e}, p95_conc = {:.1}, p95_entropy = {:.4} }}", e, p, ent)
+            }).collect();
             format!(
-                "[[protocol]]\nname = \"{}\"\nduty_cycle = {}\nrho_effective = {}\np95 = [\n{}\n]",
+                "[[protocol]]\nname = \"{}\"\nduty_cycle = {}\nrho_effective = {}\nmetrics = [\n{}\n]",
                 r.name, r.duty_cycle, r.rho_effective, eps_str.join(",\n")
             )
         })

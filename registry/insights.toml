@@ -1,6 +1,6 @@
 # Insights registry -- discoveries and interpretations from the computational census.
 # Each insight cross-references the claims it produced.
-# Sorted by ID (I-001..I-091, 88 entries).
+# Sorted by ID (I-001..I-098, 90+ entries).
 
 [[insight]]
 id = "I-001"
@@ -1105,4 +1105,15 @@ summary = "Computing Betti numbers via Z_2 Gaussian elimination on boundary matr
 claims = ["C-802"]
 confidence = "high"
 phase = "formalization"
+sprint = 51
+
+[[insight]]
+id = "I-098"
+title = "CHSH Wavelet S Parameter is a Structural Invariant for Sinusoidal Velocity Profiles"
+date = "2026-02-18"
+status = "Verified"
+summary = "The CHSH-like S parameter computed from Haar DWT of a sinusoidal velocity profile u_x(y) = A*sin(2*pi*y/N) equals exactly S=2.0, independent of amplitude A. The normalized correlators E(i,j) = c_i*c_j/sqrt(c_i^2*c_j^2) cancel amplitude scaling, leaving S determined solely by the wavelet coefficient SHAPE (ratio of scale energies), not their magnitude. For sinusoidal profiles, this shape is fixed. This extends C-706 (CHSH invariance under Haar compression of a single signal) to temporal invariance: as Kolmogorov flow develops (amplitude grows while shape is preserved), S remains constant at every timestep. Combined with Betti-1 topological invariance of laminar band structure, the CHSH-Betti correlation hypothesis (C-782) is structurally unfalsifiable for laminar flows -- it requires turbulent flow regimes where the velocity profile shape itself evolves."
+claims = ["C-782"]
+confidence = "high"
+phase = "topology"
 sprint = 51

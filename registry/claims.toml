@@ -12356,26 +12356,26 @@ dependencies = []
 id = "C-782"
 statement = "The CHSH wavelet S parameter of LBM velocity fields correlates with Betti-1 topology (from VR persistent homology) across different flow configurations, with |Spearman rho| > 0.5 at p < 0.05 for at least one viscosity/forcing configuration."
 where_stated = "`crates/spectral_core/src/chsh_betti_bridge.rs`, `crates/gororoba_cli/src/bin/chsh_betti_sweep.rs`"
-status = "Inconclusive"
-status_note = "E-058 executed 2026-02-18. All 4 configs: rho=0.0, p=1.0. Both S and B1 have zero variance across snapshots at N=16^3, threshold=0.001. S or B1 (or both) are constant within each configuration, yielding undefined Spearman correlation. Needs larger grid (N>=32) or varied thresholds."
+status = "Falsified"
+status_note = "E-058 rerun Sprint 51 (2026-02-18). Upgraded to GPU FP64 at 32^3 (and diagnostic at 16^3). Extracted y-profile (flow direction) with adaptive p75 threshold. Result: S=2.0000 +/-0.01 at ALL snapshots, B1=110 at ALL snapshots. Root cause: (1) The CHSH S parameter is a structural invariant for sinusoidal profiles -- normalized correlators cancel amplitude growth, leaving S=2.0 regardless of flow speed. This extends C-706 invariance theorem to temporal invariance for shape-preserving flows. (2) Betti-1 of the superthreshold point cloud is fixed by the laminar band structure. Neither metric varies within any configuration, making correlation undefined (rho=0, p=1)."
 last_verified = "2026-02-18"
 what_would_verify_refute = "VERIFY: |rho_Spearman(S, B1)| > 0.5 with p < 0.05 at any configuration. REFUTE: |rho| < 0.5 or p > 0.05 at all configurations."
-confidence = "low"
+confidence = "high"
 phase = "topology"
-sprint = 49
+sprint = 51
 dependencies = []
 
 [[claim]]
 id = "C-783"
 statement = "Pulsed (burst-quench) entropy injection with 50% duty cycle reduces p95 wavelet entropy by more than 10% compared to steady injection at equal total forcing energy, because quench phases allow partial relaxation."
 where_stated = "`crates/spectral_core/src/pde_surrogates.rs`, `crates/gororoba_cli/src/bin/meltdown_pulsed_gate.rs`"
-status = "Inconclusive"
-status_note = "E-059 executed 2026-02-18. All protocols produce identical p95 wavelet concurrency: 103 (eps=0.01), 27 (eps=0.1), 0 (eps=1.0). 0% reduction at all thresholds. The burst-quench duty cycle provides no measurable entropy reduction at N=128, steps=300. The PDE solution converges to similar final states regardless of forcing schedule. Needs longer runs or higher forcing amplitude to produce measurable differences."
+status = "Falsified"
+status_note = "E-059 rerun Sprint 51 (2026-02-18). Parameters hardened: rho_base=5.0 (5x), nu=0.001 (10x lower), steps=1000 (3.3x), plus wavelet Shannon entropy metric. Concurrency: 107/65/0 identical across all three protocols. Entropy: 5.2527/5.0136/0.0 (steady) vs 5.2538/5.0158/0.0 (pulsed 50%) -- <0.05% difference. Per-step wavelet compression makes equilibrium between forcing-injection and compression-removal independent of temporal duty cycle."
 last_verified = "2026-02-18"
 what_would_verify_refute = "VERIFY: pulsed_p95 < steady_p95 * 0.90 at any wavelet threshold. REFUTE: pulsed_p95 >= steady_p95 * 0.95 (pulsed provides < 5% reduction)."
-confidence = "medium"
+confidence = "high"
 phase = "spectral"
-sprint = 49
+sprint = 51
 dependencies = []
 
 [[claim]]
@@ -12596,3 +12596,16 @@ confidence = "high"
 phase = "spectral"
 sprint = 51
 dependencies = ["C-784", "C-785", "C-786", "C-797", "C-798"]
+
+[[claim]]
+id = "C-806"
+statement = "The primary Shannon entropy phase transition in CD associator-norm distributions occurs at dimension 4->8 (quaternion-to-octonion boundary), not at 8->16 as originally hypothesized. H(4)=0 -> H(8)=4.24 bits (maximum). The octonion-to-sedenion transition at dim 8->16 REDUCES entropy by 11.4% (H(16)=3.76), because zero-divisor constraints reduce the effective degrees of freedom in the associator-norm distribution. Norm-composition entropy separately jumps 0->3.17 at dim=16, marking the loss of ||ab||=||a||*||b||."
+where_stated = "`crates/algebra_core/src/analysis/entropy_census.rs`, E-057 output"
+status = "Verified"
+status_note = "Derived from C-781 falsification. E-057 executed 2026-02-18. The entropy decrease at dim 16 is robust and reproducible. The norm-composition entropy jump at dim=16 provides an independent signature of the sedenion phase transition."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: H(8) > H(16), H(4) = 0, norm_comp_H(16) > 0. REFUTE: H(16) > H(8) or norm_comp_H(16) = 0."
+confidence = "high"
+phase = "algebra"
+sprint = 51
+dependencies = ["C-781"]
