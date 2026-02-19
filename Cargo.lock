@@ -19,6 +19,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "366ffbaa4442f4684d91e2cd7c5ea7c4ed8add41959a31447066e279e432b618"
 
 [[package]]
+name = "adjustp"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0e02cfdd4ee28c4fff044e993a514fd3856b5e1b561a3e882338bcdc55966df"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
 name = "adler2"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3361,6 +3370,7 @@ dependencies = [
  "nalgebra 0.33.2",
  "ndarray 0.16.1",
  "neural_homotopy",
+ "optics_core",
  "proptest",
  "rand 0.8.5",
  "serde",
@@ -4204,6 +4214,7 @@ dependencies = [
  "approx",
  "cosmic_scheduler",
  "criterion",
+ "rayon",
 ]
 
 [[package]]
@@ -7332,12 +7343,17 @@ checksum = "19f58d7b0190c7f12df7e8be6b79767a0836059159811b869d5ab55721fe14d0"
 name = "spectral_core"
 version = "0.1.0"
 dependencies = [
+ "adjustp",
  "algebra_core",
  "approx",
  "ndarray 0.16.1",
  "ndrustfft",
  "num-complex",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_distr 0.4.3",
  "rustfft",
+ "statrs",
  "vacuum_frustration",
 ]
 

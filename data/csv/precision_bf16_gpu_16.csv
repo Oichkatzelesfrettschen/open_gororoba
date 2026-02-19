@@ -1,0 +1,4 @@
+precision,step,ke,wall_ms_per_step,ke_rel_error_vs_ref
+bf16_gpu,0,0.000000000000e0,0.0000,1.000000e0
+bf16_gpu,50,0.000000000000e0,0.0017,1.000000e0
+bf16_gpu,100,0.000000000000e0,0.0017,1.000000e0

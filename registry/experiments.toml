@@ -4,10 +4,10 @@
 [experiments]
 updated = "2026-02-18"
 authoritative = true
-experiment_count = 48
-planned_count = 0
-deterministic_count = 16
-gpu_count = 3
+experiment_count = 66
+planned_count = 5
+deterministic_count = 18
+gpu_count = 8
 seeded_count = 15
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
 
@@ -803,8 +803,9 @@ input = "data/external/lhc_2025/ (STAR-like synthetic chains)"
 output = ["data/evidence/spin_decoherence.toml"]
 run = "cargo run --release --bin spin-decoherence-pipeline"
 run_command_sha256 = ""
-claims = ["C-774", "C-775"]
-claim_refs = ["C-774", "C-775"]
+claims = ["C-PENDING-SPIN-1", "C-PENDING-SPIN-2"]
+claim_refs = ["C-PENDING-SPIN-1", "C-PENDING-SPIN-2"]
+status_note = "Sprint 49B: Original claim_refs C-774/C-775 collided with Sprint 41 STAR claims. Sprint 49 ZD resonance claims renumbered to C-792/C-793. Spin decoherence claims need new IDs when this experiment is activated."
 deterministic = true
 seed = 42
 gpu = false
@@ -1162,8 +1163,8 @@ input = "GPU-generated LBM density field (no external data)"
 output = ["data/csv/zd_resonance_sweep.csv", "data/csv/zd_resonance_control.csv"]
 run = "cargo run --release --bin zd-resonance-sweep -- sweep && cargo run --release --bin zd-resonance-sweep -- control && cargo run --release --bin zd-resonance-sweep -- analyze"
 run_command_sha256 = ""
-claims = ["C-774"]
-claim_refs = ["C-774"]
+claims = ["C-792"]
+claim_refs = ["C-792"]
 deterministic = false
 gpu = true
 status = "planned"
@@ -1185,13 +1186,13 @@ input = "Procedurally generated initial conditions (no external data)"
 output = ["data/csv/pathion_sink_compare.csv", "data/csv/pathion_coupling_sweep.csv"]
 run = "cargo run --release --bin pathion-sink-test -- compare && cargo run --release --bin pathion-sink-test -- sweep"
 run_command_sha256 = ""
-claims = ["C-776"]
-claim_refs = ["C-776"]
+claims = ["C-794"]
+claim_refs = ["C-794"]
 deterministic = true
 gpu = false
 status = "completed"
 status_token = "COMPLETED"
-result_summary = "C-776 FALSIFIED. Instability onset unchanged (step 500) across all coupling values. Sink absorbs energy linearly (38 at c=0.01, 3780 at c=1.0) but provides no stabilization."
+result_summary = "C-794 FALSIFIED. Instability onset unchanged (step 500) across all coupling values. Sink absorbs energy linearly (38 at c=0.01, 3780 at c=1.0) but provides no stabilization."
 lineage_id = "XL-050"
 input_path_refs = []
 output_path_refs = ["data/csv/pathion_sink_compare.csv", "data/csv/pathion_coupling_sweep.csv"]
@@ -1209,13 +1210,13 @@ input = "Procedurally generated initial conditions (no external data)"
 output = ["data/csv/chirality_matrix.csv"]
 run = "cargo run --release --bin chirality-lock-test -- matrix"
 run_command_sha256 = ""
-claims = ["C-777"]
-claim_refs = ["C-777"]
+claims = ["C-795"]
+claim_refs = ["C-795"]
 deterministic = true
 gpu = false
 status = "completed"
 status_token = "COMPLETED"
-result_summary = "C-777 FALSIFIED. All 4 configs stable. Config B (Std CD + Flipped vort) produces stable opposite-handed ring. Chirality follows IC, not algebra. CD conjugation raises associator norm 15% but does not affect stability."
+result_summary = "C-795 FALSIFIED. All 4 configs stable. Config B (Std CD + Flipped vort) produces stable opposite-handed ring. Chirality follows IC, not algebra. CD conjugation raises associator norm 15% but does not affect stability."
 lineage_id = "XL-051"
 input_path_refs = []
 output_path_refs = ["data/csv/chirality_matrix.csv"]
@@ -1233,13 +1234,13 @@ input = "Synthetically generated signal chunks (no external data)"
 output = ["data/csv/moonshine_synth.csv"]
 run = "cargo run --release --bin moonshine-filterbank -- synth"
 run_command_sha256 = ""
-claims = ["C-778"]
-claim_refs = ["C-778"]
+claims = ["C-796"]
+claim_refs = ["C-796"]
 deterministic = true
 gpu = false
 status = "completed"
 status_token = "COMPLETED"
-result_summary = "C-778 FALSIFIED. ON: 15/1000 deep (1.5%), OFF: 16/1000 deep (1.6%). z=-0.181, p=0.856. No significant ON/OFF discrimination at SNR=0.1."
+result_summary = "C-796 FALSIFIED. ON: 15/1000 deep (1.5%), OFF: 16/1000 deep (1.6%). z=-0.181, p=0.856. No significant ON/OFF discrimination at SNR=0.1."
 lineage_id = "XL-052"
 input_path_refs = []
 output_path_refs = ["data/csv/moonshine_synth.csv"]
@@ -1257,13 +1258,13 @@ input = "Synthetically generated time series (optional: rho trace CSV from zd-re
 output = ["data/csv/wow_sedenion_report.csv"]
 run = "cargo run --release --bin wow-sedenion-synthesis -- synth"
 run_command_sha256 = ""
-claims = ["C-774", "C-778"]
-claim_refs = ["C-774", "C-778"]
+claims = ["C-792", "C-796"]
+claim_refs = ["C-792", "C-796"]
 deterministic = true
 gpu = false
 status = "completed"
 status_token = "COMPLETED"
-result_summary = "Ghost frequency detected at 0.2139 (aliased phi^{-1/2}), SNR=69.46, FWHM=0.0003. Moonshine: 100% shallow holes, 0% deep. Ultrametric: fraction=0.131, p=0.564. Pipeline functional but Moonshine/ultrametric modules non-discriminating (consistent with C-778 falsification)."
+result_summary = "Ghost frequency detected at 0.2139 (aliased phi^{-1/2}), SNR=69.46, FWHM=0.0003. Moonshine: 100% shallow holes, 0% deep. Ultrametric: fraction=0.131, p=0.564. Pipeline functional but Moonshine/ultrametric modules non-discriminating (consistent with C-796 falsification)."
 lineage_id = "XL-053"
 input_path_refs = []
 output_path_refs = ["data/csv/wow_sedenion_report.csv"]
@@ -1365,3 +1366,268 @@ input_path_refs = []
 output_path_refs = ["data/meltdown_pulsed/results.toml"]
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-069"
+title = "LBM Multi-Precision Comparison (BF16/FP32/FP64-GPU/FP64-CPU)"
+binary = "lbm-precision-sampler"
+binary_registered = true
+binary_experiment_declared = "E-069"
+method = "D3Q19 LBM with Kolmogorov sinusoidal forcing at identical ICs across four precision modes (GPU BF16, GPU FP32, GPU FP64, CPU FP64). Kinetic energy trace sampled periodically. FP64 GPU is reference. Tested at 16^3 and 32^3 grids."
+input = "Parametric sweep (no external data)"
+output = ["data/csv/precision_combined_16.csv", "data/csv/precision_combined_32.csv"]
+run = "cargo run --bin lbm-precision-sampler -- sample --res 32 --steps 200"
+run_command_sha256 = ""
+claims = ["C-799", "C-800"]
+claim_refs = ["C-799", "C-800"]
+deterministic = true
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "32^3, 200 steps, tau=0.505, F=0.01: FP32 vs FP64 GPU rel_error=3.2e-5 (float precision). BF16 KE=0 (quantization floor). FP64 CPU vs GPU=1.0% (algorithmic: Guo vs simple forcing). At F=0.1: BF16 rel_error=40%. C-799 VERIFIED (FP32 faithful). C-800 CONTESTED (CPU-GPU gap is algorithmic, not numerical)."
+lineage_id = "XL-058"
+input_path_refs = []
+output_path_refs = ["data/csv/precision_combined_32.csv", "data/csv/precision_combined_128.csv"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-060"
+title = "Cross-Catalog rho-ghost-fft Spectral Analysis"
+binary = "rho-ghost-fft"
+binary_registered = true
+binary_experiment_declared = "E-060"
+method = "Apply rho-ghost-fft power spectrum analysis to 10+ catalogs across 5 messengers (FRB, pulsar, SNIa, SETI, null controls). Detect phi^{-1/2} ghost frequency at 0.2138 normalized. Compare peak frequency, SNR, and FWHM across catalog sizes and wavebands."
+input = "data/external/ (CHIME Cat1/Cat2, ATNF, Pantheon+, SDSS, Gaia, ALICE, Swarm, SORCE, Wow GBT)"
+output = ["data/csv/zd_resonance_real_distribution.csv"]
+run = "cargo run --release --bin rho-ghost-fft -- <catalog>"
+run_command_sha256 = ""
+claims = ["C-784", "C-785", "C-786", "C-789"]
+claim_refs = ["C-784", "C-785", "C-786", "C-789"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "5 positive detections (CHIME Cat2 DM SNR=6.11 at 0.218, ATNF DM SNR=5.93 at 0.206, ATNF Period SNR=5.14 at 0.221, Pantheon+ MU SNR=4.43 at 0.211, CHIME Cat1 DM SNR=4.72 at 0.227). 8 null controls (BH entropy, Gaia, SDSS, McGill, Wow GBT S-band, ALICE, Swarm, SORCE). Ghost converges toward 0.2138 and FWHM narrows 0.016->0.0008 as catalog volume grows."
+lineage_id = "XL-058"
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_real_distribution.csv"]
+dataset_refs = ["CHIME_FRB_CAT2", "ATNF_PULSAR", "PANTHEON_PLUS", "SDSS_DR18", "GAIA_DR3"]
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-061"
+title = "Wow! GBT S-Band Deep Spectral Stack"
+binary = "rho-ghost-fft"
+binary_registered = true
+binary_experiment_declared = "E-061"
+method = "Deep spectral analysis of 12 Breakthrough Listen GBT S-band (2.25 GHz) filterbank files from 6EQUJ5 follow-up observations. Stacked power spectrum after Doppler correction. Test for phi^{-1/2} ghost at S-band frequencies."
+input = "data/external/bl_6equj5/ (12 filterbank files, 288 GB total)"
+output = ["data/csv/wow_followup_snr.csv"]
+run = "cargo run --release --bin rho-ghost-fft -- --catalog wow-gbt"
+run_command_sha256 = ""
+claims = ["C-787"]
+claim_refs = ["C-787"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "NULL. Stacked SNR=0.38 across 12 filterbank files at S-band (2.25 GHz). Ghost frequency absent at S-band. Spectrally clean -- no algebraic signatures at 2.25 GHz."
+lineage_id = "XL-059"
+input_path_refs = []
+output_path_refs = ["data/csv/wow_followup_snr.csv"]
+dataset_refs = ["BL_6EQUJ5_GBT"]
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-062"
+title = "Multiscale CWT Ricker Wavelet Ghost Analysis"
+binary = "rho-ghost-fft"
+binary_registered = true
+binary_experiment_declared = "E-062"
+method = "Apply Continuous Wavelet Transform with Ricker wavelet to null-control datasets (Wow! S-band stacked, Swarm magnetic field). Test whether phi^{-1/2} ghost is a delocalized scale-invariant feature hidden from standard FFT. Compute ghost-band power fraction at width~24 (f~0.214)."
+input = "data/csv/wow_followup_snr.csv, data/external/swarm/"
+output = ["data/csv/cwt_ghost_validation.csv"]
+run = "python src/scripts/analysis/cwt_ghost_analysis.py"
+run_command_sha256 = ""
+claims = ["C-787", "C-790"]
+claim_refs = ["C-787", "C-790"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "CWT confirms FFT null results. Wow! S-band: ghost band power 4% (top scale width=50, f~0.0074, low-freq drift dominates). Swarm: ghost band power 0%. Ghost is physically absent, not hidden in scale-space. Methodological complement to E-061 FFT analysis."
+lineage_id = "XL-060"
+input_path_refs = []
+output_path_refs = ["data/csv/cwt_ghost_validation.csv"]
+dataset_refs = ["BL_6EQUJ5_GBT", "SWARM_MAG"]
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-063"
+title = "CUDA BF16 ZD Resonance 128^3 Tau Sweep"
+binary = "zd-resonance-cuda"
+binary_registered = true
+binary_experiment_declared = "E-063"
+method = "D3Q19 LBM at 128^3 with BF16 precision and per-cell Sedenion frustration viscosity (Exponential model, lambda=3.0). Sweep tau from 0.55 to 1.00 (10 values). For each tau: nu_base=(tau-0.5)/3.0, compute per-cell viscosity field, 1000 steps, extract KE every 10 steps, FFT + ghost peak detection. Control run at matching resolution with constant tau (no ZD modulation). Tests C-792 (frequency locking: |slope| < 0.01 in peak_freq vs tau) and C-793 (production ghost detection: SNR > 3 at phi^{-1/2})."
+input = "None (synthetic Sedenion field initialization)"
+output = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
+run = "cargo run --release --bin zd-resonance-cuda -- sweep --res 128 && cargo run --release --bin zd-resonance-cuda -- control --res 128"
+run_command_sha256 = ""
+claims = ["C-792", "C-793"]
+claim_refs = ["C-792", "C-793"]
+deterministic = false
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "C-792 FALSIFIED, C-793 FALSIFIED. Sweep: KE varies across tau (9.075e-5 to 9.161e-5) but temporal variance=0 at F=0.001 (laminar). Spatial ghost detected in control at SNR=0.00 (BF16 quantization noise). All 'ghost' detections appear in both ZD-modulated and control runs, failing the specificity test. Coupling sweep: all coupling strengths produce identical laminar results at F=0.001."
+lineage_id = "XL-061"
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
+dataset_refs = []
+reproducibility_class = "environment_dependent"
+
+[[experiment]]
+id = "E-064"
+title = "CUDA BF16 ZD Resonance 256^3 Tau Sweep"
+binary = "zd-resonance-cuda"
+binary_registered = true
+binary_experiment_declared = "E-064"
+method = "D3Q19 LBM at 256^3 with BF16 precision. Same tau sweep protocol as E-063 but at 4x higher resolution (16.7M cells). Tests whether ghost peak narrows and converges toward 0.2138 with increasing resolution, paralleling real-data Cat1->Cat2 convergence (C-789)."
+input = "None (synthetic Sedenion field initialization)"
+output = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
+run = "cargo run --release --bin zd-resonance-cuda -- sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance-cuda -- control --res 256 --steps 500"
+run_command_sha256 = ""
+claims = ["C-792", "C-793", "C-789"]
+claim_refs = ["C-792", "C-793", "C-789"]
+deterministic = false
+gpu = true
+status = "planned"
+status_token = "PLANNED"
+result_summary = ""
+lineage_id = "XL-062"
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
+dataset_refs = []
+reproducibility_class = "environment_dependent"
+
+[[experiment]]
+id = "E-065"
+title = "CUDA BF16 Reynolds Number Threshold Sweep 128^3"
+binary = "zd-resonance-cuda"
+binary_registered = true
+binary_experiment_declared = "E-065"
+method = "Fix Sedenion coupling, sweep Reynolds number from laminar to turbulent by varying both tau (0.501-0.70) and forcing amplitude (0.001-0.5). Kolmogorov sinusoidal forcing F_x = A*sin(2*pi*k*z/N). Motivated by real-data finding: Re_eff=0.16 (laminar) did not produce sharp Ghost resonance. Tests whether Ghost onset requires specific turbulence intensity (L-787)."
+input = "None (synthetic forcing + Sedenion field)"
+output = ["data/csv/zd_resonance_cuda_reynolds_128.csv"]
+run = "cargo run --release --bin zd-resonance-cuda -- reynolds-sweep --res 128"
+run_command_sha256 = ""
+claims = ["C-792"]
+claim_refs = ["C-792"]
+deterministic = false
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "Narrow BF16 stability window discovered: tau=0.501-0.520 with F=0.01-0.1 are stable; higher tau or higher forcing diverge to infinity. At tau=0.501/F=0.1: spatial ghost hint at f=0.2031, SNR=1.52. At tau=0.520/F=0.1: spatial ghost at f=0.2188, SNR=1.39. Both below SNR>3 threshold. No matched-Reynolds control available for attribution. Ghost onset NOT confirmed at any Reynolds number tested."
+lineage_id = "XL-063"
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_cuda_reynolds_128.csv"]
+dataset_refs = []
+reproducibility_class = "environment_dependent"
+
+[[experiment]]
+id = "E-066"
+title = "4D ZD Resonance 32^3 x 32 Batch Sweep"
+binary = "zd-resonance-4d"
+binary_registered = true
+binary_experiment_declared = "E-066"
+method = "D3Q19 batch LBM at 32^3 x 32 (1.05M cells) with BF16 precision. 4th dimension (w) parametrizes Sedenion field phase offsets. Tests whether 4D spatial embedding (16 = 4^2) reveals coupling symmetries invisible in 3D. Control run with constant tau for null hypothesis."
+input = "None (synthetic 4D Sedenion field)"
+output = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
+run = "cargo run --release --bin zd-resonance-4d -- sweep-32 && cargo run --release --bin zd-resonance-4d -- control --res 32"
+run_command_sha256 = ""
+claims = ["C-792", "C-793"]
+claim_refs = ["C-792", "C-793"]
+deterministic = false
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "4D batch sweep 32^3 x 32 (1.05M cells): Ghost NOT DETECTED. KE trace shows transient from 9.07e-5 settling to 9.07e-5 by step 120. Temporal spectrum dominated by DC component. Control run: clean (no ghost). 4D spatial embedding at this resolution provides no additional ghost signatures beyond 3D."
+lineage_id = "XL-064"
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
+dataset_refs = []
+reproducibility_class = "environment_dependent"
+
+[[experiment]]
+id = "E-067"
+title = "4D ZD Resonance 64^3 x 16 Batch Sweep"
+binary = "zd-resonance-4d"
+binary_registered = true
+binary_experiment_declared = "E-067"
+method = "D3Q19 batch LBM at 64^3 x 16 (4.2M cells, ~1.4 GB GPU) with BF16 precision. Higher per-slice resolution than E-066, fewer w-slices. Tests resolution dependence of 4D ghost signatures."
+input = "None (synthetic 4D Sedenion field)"
+output = ["data/csv/zd_resonance_4d_64x16.csv"]
+run = "cargo run --release --bin zd-resonance-4d -- sweep-64"
+run_command_sha256 = ""
+claims = ["C-792", "C-793"]
+claim_refs = ["C-792", "C-793"]
+deterministic = false
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "4D batch sweep 64^3 x 16 (4.2M cells): Ghost NOT DETECTED. KE=9.12e-5, settled quickly to steady state. Higher per-slice resolution (64^3 vs 32^3) with fewer w-slices (16 vs 32) shows no qualitative change from E-066. 4D embedding does not unlock ghost signatures at either resolution."
+lineage_id = "XL-065"
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_4d_64x16.csv"]
+dataset_refs = []
+reproducibility_class = "environment_dependent"
+
+[[experiment]]
+id = "E-068"
+title = "Ghost Frequency Multidimensional Statistical Hardening"
+binary = "ghost-spectral-audit"
+binary_registered = true
+binary_experiment_declared = "E-068"
+method = "7-method falsification sweep: (1) MAD robust noise floor with peak exclusion, (2) BH-FDR across all frequency bins, (3) Bonferroni correction for multiple testing, (4) permutation test (10000 shuffles), (5) sorted-distribution bootstrap null (5000 resamples, sorted data only), (6) Lomb-Scargle periodogram with Baluev analytic FAP, (7) multitaper Thomson PSD with F-test. Applied to 17 synthetic datasets (4 null controls, 5 sorted distributions, 4 signal injections, 4 mock catalogs). Combined meta-analysis via Fisher and Stouffer weighted Z."
+input = "data/csv/ghost_audit/*.csv (17 synthetic datasets)"
+output = ["data/csv/ghost_audit/batch_results.csv"]
+run = "cargo run --release --bin rho-ghost-fft -- batch --datasets data/csv/ghost_audit/ --column value --permutations 1000 --bootstrap 5000"
+run_command_sha256 = ""
+claims = ["C-784", "C-785", "C-786", "C-789", "C-797", "C-798"]
+claim_refs = ["C-784", "C-785", "C-786", "C-789", "C-797", "C-798"]
+deterministic = false
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+result_summary = "All 17 datasets produce correct verdicts. 3 injected signals: DETECTED (p_bonf=0, p_perm=9.99e-4). 14 null/sorted/mock: NULL. Combined Fisher p=0.96 (bootstrap, not significant). Pipeline correctly calibrated: FPR<5%, TPR=100%."
+lineage_id = "XL-068"
+input_path_refs = ["data/csv/ghost_audit/"]
+output_path_refs = ["data/csv/ghost_audit/batch_results.csv"]
+dataset_refs = []
+reproducibility_class = "stochastic_seeded"
+
+[[experiment]]
+id = "E-070"
+title = "Evidence Artifact Packaging and Checksum Verification"
+binary = "evidence-package"
+binary_registered = true
+binary_experiment_declared = "E-070"
+method = "Walk data/evidence/ directory, compute SHA-256 checksums for all TOML/CSV/JSON artifacts, produce MANIFEST.toml with checksums and file sizes for reproducibility appendix."
+input = "data/evidence/ directory tree"
+output = ["data/evidence/MANIFEST.toml"]
+run = "cargo run --release --bin evidence-package -- bundle --skip-missing"
+run_command_sha256 = ""
+claims = []
+claim_refs = []
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "Sprint 51 NA-029. evidence-package binary with check/bundle/verify subcommands. 3 unit tests pass."
+lineage_id = "XL-059"
+input_path_refs = []
+output_path_refs = ["data/evidence/MANIFEST.toml"]
+dataset_refs = []
+reproducibility_class = "deterministic"
+sprint = 51

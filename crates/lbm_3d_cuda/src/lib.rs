@@ -24,11 +24,13 @@ use cudarc::cufft::result as cufft;
 
 const KERNEL_SRC: &str = include_str!("kernels.cu");
 const KERNEL_BF16_SRC: &str = include_str!("kernels_bf16.cu");
+const KERNEL_FP64_SRC: &str = include_str!("kernels_fp64.cu");
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Precision {
     FP32,
     BF16,
+    FP64,
 }
 
 /// GPU-accelerated D3Q19 LBM solver with mixed-precision support (FP32/BF16)
@@ -61,7 +63,9 @@ pub struct LbmSolver3DCuda {
     #[cfg(feature = "cufft")]
     fft_plan: Option<cudarc::cufft::sys::cufftHandle>,
     d_reduction_out: CudaSlice<f32>,
+    d_reduction_out_f64: Option<CudaSlice<f64>>,
     d_reduction_buffer_f32: Option<CudaSlice<f32>>,
+    d_reduction_buffer_f64: Option<CudaSlice<f64>>,
     pub d_u_hat: Option<CudaSlice<ComplexDevice>>,
     pub d_u_hat_out: Option<CudaSlice<ComplexDevice>>,
     pub rho: Vec<f32>,
@@ -92,6 +96,20 @@ impl LbmSolver3DCuda {
         Some((bx, by, bz))
     }
 
+    /// LaunchConfig safe for FP64 kernels: uses 128 threads/block instead of
+    /// cudarc's default 1024. D3Q19 FP64 kernels need ~48+ 32-bit registers
+    /// per thread (19 doubles + macroscopic vars); 1024 threads exceeds the
+    /// 65536 registers/SM limit on Ada Lovelace.
+    fn launch_config_1d(n_elems: u32, precision: Precision) -> LaunchConfig {
+        let threads = if precision == Precision::FP64 { 128u32 } else { 1024u32 };
+        let blocks = n_elems.div_ceil(threads).max(1);
+        LaunchConfig {
+            grid_dim: (blocks, 1, 1),
+            block_dim: (threads, 1, 1),
+            shared_mem_bytes: 0,
+        }
+    }
+
     pub fn new(nx: usize, ny: usize, nz: usize, tau: f64, precision: Precision) -> Result<Self> {
         let n_cells = nx * ny * nz;
         let ctx = CudaContext::new(0).context("CUDA Init Failed")?;
@@ -99,6 +117,7 @@ impl LbmSolver3DCuda {
         let src = match precision {
             Precision::FP32 => KERNEL_SRC,
             Precision::BF16 => KERNEL_BF16_SRC,
+            Precision::FP64 => KERNEL_FP64_SRC,
         };
 
         use cudarc::nvrtc::CompileOptions;
@@ -117,88 +136,140 @@ impl LbmSolver3DCuda {
         let ptx = cudarc::nvrtc::compile_ptx_with_opts(src, opts)?;
         let module = ctx.load_module(ptx)?;
 
-        let lbm_step_fused_kernel = module.load_function(if precision == Precision::BF16 {
-            "lbm_step_fused_bf16_kernel"
-        } else {
-            "lbm_step_fused_kernel"
+        let lbm_step_fused_kernel = module.load_function(match precision {
+            Precision::BF16 => "lbm_step_fused_bf16_kernel",
+            Precision::FP64 => "lbm_step_fused_fp64_kernel",
+            Precision::FP32 => "lbm_step_fused_kernel",
         })?;
         let lbm_step_fused_4d_kernel = if precision == Precision::BF16 {
             Some(module.load_function("lbm_step_fused_bf16_4d_batch_kernel")?)
         } else {
             None
         };
-        let initialize_uniform_kernel = module.load_function(if precision == Precision::BF16 {
-            "initialize_uniform_bf16_kernel"
-        } else {
-            "initialize_uniform_kernel"
+        let initialize_uniform_kernel = module.load_function(match precision {
+            Precision::BF16 => "initialize_uniform_bf16_kernel",
+            Precision::FP64 => "initialize_uniform_fp64_kernel",
+            Precision::FP32 => "initialize_uniform_kernel",
         })?;
-        let initialize_custom_kernel = module.load_function(if precision == Precision::BF16 {
-            "initialize_custom_bf16_kernel"
-        } else {
-            "initialize_custom_kernel"
+        let initialize_custom_kernel = module.load_function(match precision {
+            Precision::BF16 => "initialize_custom_bf16_kernel",
+            Precision::FP64 => "initialize_custom_fp64_kernel",
+            Precision::FP32 => "initialize_custom_kernel",
         })?;
-        let enstrophy_cell_kernel = module.load_function("compute_enstrophy_cell_kernel")?;
-        let reduce_sum_rho_kernel = module.load_function(if precision == Precision::BF16 {
-            "reduce_sum_bf16_to_f32_kernel"
+        let enstrophy_cell_kernel = module.load_function(if precision == Precision::FP64 {
+            "compute_enstrophy_cell_fp64_kernel"
         } else {
-            "reduce_sum_kernel"
+            "compute_enstrophy_cell_kernel"
         })?;
-        let reduce_sum_f32_kernel = module.load_function("reduce_sum_kernel")?;
-        let zero_kernel = module.load_function(if precision == Precision::BF16 {
-            "zero_f32_kernel"
+        // FP64: reduce_sum operates on double*, uses reduce_sum_fp64_kernel
+        let reduce_sum_rho_kernel = module.load_function(match precision {
+            Precision::BF16 => "reduce_sum_bf16_to_f32_kernel",
+            Precision::FP64 => "reduce_sum_fp64_kernel",
+            Precision::FP32 => "reduce_sum_kernel",
+        })?;
+        // FP32 reduction kernel -- FP64 module has no reduce_sum_kernel, use fp64 variant
+        let reduce_sum_f32_kernel = if precision == Precision::FP64 {
+            module.load_function("reduce_sum_fp64_kernel")?
         } else {
-            "zero_kernel"
+            module.load_function("reduce_sum_kernel")?
+        };
+        let zero_kernel = module.load_function(match precision {
+            Precision::BF16 => "zero_f32_kernel",
+            Precision::FP64 => "zero_fp64_kernel",
+            Precision::FP32 => "zero_kernel",
         })?;
-        let apply_mask_kernel = module.load_function("apply_spectral_mask_kernel")?;
-        let convert_real_to_complex_kernel =
-            module.load_function(if precision == Precision::BF16 {
-                "convert_real_bf16_to_complex_f32_kernel"
-            } else {
-                "convert_real_to_complex_kernel"
-            })?;
-        let convert_complex_to_real_kernel =
-            module.load_function(if precision == Precision::BF16 {
-                "convert_complex_f32_to_real_bf16_kernel"
-            } else {
-                "convert_complex_to_real_kernel"
-            })?;
+        let apply_mask_kernel = module.load_function(if precision == Precision::FP64 {
+            "apply_spectral_mask_fp64_kernel"
+        } else {
+            "apply_spectral_mask_kernel"
+        })?;
+        let convert_real_to_complex_kernel = module.load_function(match precision {
+            Precision::BF16 => "convert_real_bf16_to_complex_f32_kernel",
+            Precision::FP64 => "convert_real_fp64_to_complex_f32_kernel",
+            Precision::FP32 => "convert_real_to_complex_kernel",
+        })?;
+        let convert_complex_to_real_kernel = module.load_function(match precision {
+            Precision::BF16 => "convert_complex_f32_to_real_bf16_kernel",
+            Precision::FP64 => "convert_complex_f32_to_real_fp64_kernel",
+            Precision::FP32 => "convert_complex_to_real_kernel",
+        })?;
 
-        let es = if precision == Precision::FP32 { 4 } else { 2 };
+        let es = match precision {
+            Precision::FP32 => 4,
+            Precision::BF16 => 2,
+            Precision::FP64 => 8,
+        };
         let mut d_f = stream.alloc_zeros::<u8>(19 * n_cells * es)?;
         let d_f_tmp = stream.alloc_zeros::<u8>(19 * n_cells * es)?;
         let mut d_rho = stream.alloc_zeros::<u8>(n_cells * es)?;
         let mut d_u = stream.alloc_zeros::<u8>(3 * n_cells * es)?;
         let d_force = stream.alloc_zeros::<u8>(3 * n_cells * es)?;
-        let d_tau = if precision == Precision::FP32 {
-            let v = vec![tau as f32; n_cells];
-            let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
-            stream.clone_htod(&b)?
-        } else {
-            let v = vec![half::bf16::from_f32(tau as f32).to_bits(); n_cells];
-            let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
-            stream.clone_htod(&b)?
+        let d_tau = match precision {
+            Precision::FP32 => {
+                let v = vec![tau as f32; n_cells];
+                let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
+                stream.clone_htod(&b)?
+            }
+            Precision::BF16 => {
+                let v = vec![half::bf16::from_f32(tau as f32).to_bits(); n_cells];
+                let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
+                stream.clone_htod(&b)?
+            }
+            Precision::FP64 => {
+                let v = vec![tau; n_cells];
+                let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
+                stream.clone_htod(&b)?
+            }
         };
 
         let d_reduction_out = stream.alloc_zeros::<f32>(1)?;
+        let d_reduction_out_f64 = if precision == Precision::FP64 {
+            Some(stream.alloc_zeros::<f64>(1)?)
+        } else {
+            None
+        };
         let d_reduction_buffer_f32 = Some(stream.alloc_zeros::<f32>(n_cells)?);
+        let d_reduction_buffer_f64 = if precision == Precision::FP64 {
+            Some(stream.alloc_zeros::<f64>(n_cells)?)
+        } else {
+            None
+        };
         let d_u_hat = Some(stream.alloc_zeros::<ComplexDevice>(n_cells)?);
         let d_u_hat_out = Some(stream.alloc_zeros::<ComplexDevice>(n_cells)?);
 
+        // Initialize: FP64 kernel takes double args, FP32/BF16 take float args
         let (nx_i, ny_i, nz_i) = (nx as i32, ny as i32, nz as i32);
-        let rho_init = 1.0f32;
-        let u_init = 0.0f32;
-        let mut init = stream.launch_builder(&initialize_uniform_kernel);
-        init.arg(&mut d_f)
-            .arg(&mut d_rho)
-            .arg(&mut d_u)
-            .arg(&rho_init)
-            .arg(&u_init)
-            .arg(&u_init)
-            .arg(&u_init)
-            .arg(&nx_i)
-            .arg(&ny_i)
-            .arg(&nz_i);
-        unsafe { init.launch(LaunchConfig::for_num_elems(n_cells as u32)) }?;
+        if precision == Precision::FP64 {
+            let rho_init = 1.0_f64;
+            let u_init = 0.0_f64;
+            let mut init = stream.launch_builder(&initialize_uniform_kernel);
+            init.arg(&mut d_f)
+                .arg(&mut d_rho)
+                .arg(&mut d_u)
+                .arg(&rho_init)
+                .arg(&u_init)
+                .arg(&u_init)
+                .arg(&u_init)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { init.launch(Self::launch_config_1d(n_cells as u32, precision)) }?;
+        } else {
+            let rho_init = 1.0_f32;
+            let u_init = 0.0_f32;
+            let mut init = stream.launch_builder(&initialize_uniform_kernel);
+            init.arg(&mut d_f)
+                .arg(&mut d_rho)
+                .arg(&mut d_u)
+                .arg(&rho_init)
+                .arg(&u_init)
+                .arg(&u_init)
+                .arg(&u_init)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { init.launch(Self::launch_config_1d(n_cells as u32, precision)) }?;
+        }
 
         // Default kernel geometry. Override with:
         //   GOROROBA_LBM_BLOCK_DIM=8x4x4 (or 8,4,4)
@@ -234,7 +305,9 @@ impl LbmSolver3DCuda {
             #[cfg(feature = "cufft")]
             fft_plan: None,
             d_reduction_out,
+            d_reduction_out_f64,
             d_reduction_buffer_f32,
+            d_reduction_buffer_f64,
             d_u_hat,
             d_u_hat_out,
             rho: vec![1.0; n_cells],
@@ -254,6 +327,13 @@ impl LbmSolver3DCuda {
             .iter()
             .map(|v| half::bf16::from_f32(*v).to_bits())
             .flat_map(|bits| bits.to_le_bytes())
+            .collect::<Vec<u8>>()
+    }
+
+    fn encode_f64_to_bytes(values: &[f64]) -> Vec<u8> {
+        values
+            .iter()
+            .flat_map(|v| v.to_le_bytes())
             .collect::<Vec<u8>>()
     }
 
@@ -303,20 +383,38 @@ impl LbmSolver3DCuda {
 
     pub fn initialize_uniform(&mut self, rho: f32, u: [f32; 3]) -> Result<()> {
         let (nx_i, ny_i, nz_i) = (self.nx as i32, self.ny as i32, self.nz as i32);
-        let rho_init = rho;
-        let (ux, uy, uz) = (u[0], u[1], u[2]);
-        let mut init = self.stream.launch_builder(&self.initialize_uniform_kernel);
-        init.arg(&mut self.d_f)
-            .arg(&mut self.d_rho)
-            .arg(&mut self.d_u)
-            .arg(&rho_init)
-            .arg(&ux)
-            .arg(&uy)
-            .arg(&uz)
-            .arg(&nx_i)
-            .arg(&ny_i)
-            .arg(&nz_i);
-        unsafe { init.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
+        if self.precision == Precision::FP64 {
+            // FP64 kernel expects double args -- widen f32 to f64
+            let rho_d = rho as f64;
+            let (ux_d, uy_d, uz_d) = (u[0] as f64, u[1] as f64, u[2] as f64);
+            let mut init = self.stream.launch_builder(&self.initialize_uniform_kernel);
+            init.arg(&mut self.d_f)
+                .arg(&mut self.d_rho)
+                .arg(&mut self.d_u)
+                .arg(&rho_d)
+                .arg(&ux_d)
+                .arg(&uy_d)
+                .arg(&uz_d)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+        } else {
+            let rho_init = rho;
+            let (ux, uy, uz) = (u[0], u[1], u[2]);
+            let mut init = self.stream.launch_builder(&self.initialize_uniform_kernel);
+            init.arg(&mut self.d_f)
+                .arg(&mut self.d_rho)
+                .arg(&mut self.d_u)
+                .arg(&rho_init)
+                .arg(&ux)
+                .arg(&uy)
+                .arg(&uz)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+        }
         Ok(())
     }
 
@@ -334,40 +432,66 @@ impl LbmSolver3DCuda {
             self.n_cells
         );
 
-        let mut rho_flat = Vec::with_capacity(self.n_cells);
-        for &v in rho {
-            rho_flat.push(v as f32);
+        if self.precision == Precision::FP64 {
+            // FP64: store doubles directly
+            let mut u_flat = Vec::with_capacity(self.n_cells * 3);
+            for v in u {
+                u_flat.push(v[0]);
+                u_flat.push(v[1]);
+                u_flat.push(v[2]);
+            }
+            let rho_bytes = Self::encode_f64_to_bytes(rho);
+            let u_bytes = Self::encode_f64_to_bytes(&u_flat);
+            let d_rho_in = self.stream.clone_htod(&rho_bytes)?;
+            let d_u_in = self.stream.clone_htod(&u_bytes)?;
+
+            let (nx_i, ny_i, nz_i) = (self.nx as i32, self.ny as i32, self.nz as i32);
+            let mut init = self.stream.launch_builder(&self.initialize_custom_kernel);
+            init.arg(&mut self.d_f)
+                .arg(&mut self.d_rho)
+                .arg(&mut self.d_u)
+                .arg(&d_rho_in)
+                .arg(&d_u_in)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+        } else {
+            let mut rho_flat = Vec::with_capacity(self.n_cells);
+            for &v in rho {
+                rho_flat.push(v as f32);
+            }
+            let mut u_flat = Vec::with_capacity(self.n_cells * 3);
+            for v in u {
+                u_flat.push(v[0] as f32);
+                u_flat.push(v[1] as f32);
+                u_flat.push(v[2] as f32);
+            }
+            let rho_bytes = match self.precision {
+                Precision::FP32 => Self::encode_f32_to_bytes(&rho_flat),
+                Precision::BF16 => Self::encode_bf16_to_bytes(&rho_flat),
+                Precision::FP64 => unreachable!(),
+            };
+            let u_bytes = match self.precision {
+                Precision::FP32 => Self::encode_f32_to_bytes(&u_flat),
+                Precision::BF16 => Self::encode_bf16_to_bytes(&u_flat),
+                Precision::FP64 => unreachable!(),
+            };
+            let d_rho_in = self.stream.clone_htod(&rho_bytes)?;
+            let d_u_in = self.stream.clone_htod(&u_bytes)?;
+
+            let (nx_i, ny_i, nz_i) = (self.nx as i32, self.ny as i32, self.nz as i32);
+            let mut init = self.stream.launch_builder(&self.initialize_custom_kernel);
+            init.arg(&mut self.d_f)
+                .arg(&mut self.d_rho)
+                .arg(&mut self.d_u)
+                .arg(&d_rho_in)
+                .arg(&d_u_in)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
         }
-        let mut u_flat = Vec::with_capacity(self.n_cells * 3);
-        for v in u {
-            u_flat.push(v[0] as f32);
-            u_flat.push(v[1] as f32);
-            u_flat.push(v[2] as f32);
-        }
-
-        let rho_bytes = match self.precision {
-            Precision::FP32 => Self::encode_f32_to_bytes(&rho_flat),
-            Precision::BF16 => Self::encode_bf16_to_bytes(&rho_flat),
-        };
-        let u_bytes = match self.precision {
-            Precision::FP32 => Self::encode_f32_to_bytes(&u_flat),
-            Precision::BF16 => Self::encode_bf16_to_bytes(&u_flat),
-        };
-
-        let d_rho_in = self.stream.clone_htod(&rho_bytes)?;
-        let d_u_in = self.stream.clone_htod(&u_bytes)?;
-
-        let (nx_i, ny_i, nz_i) = (self.nx as i32, self.ny as i32, self.nz as i32);
-        let mut init = self.stream.launch_builder(&self.initialize_custom_kernel);
-        init.arg(&mut self.d_f)
-            .arg(&mut self.d_rho)
-            .arg(&mut self.d_u)
-            .arg(&d_rho_in)
-            .arg(&d_u_in)
-            .arg(&nx_i)
-            .arg(&ny_i)
-            .arg(&nz_i);
-        unsafe { init.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
         Ok(())
     }
 
@@ -379,18 +503,29 @@ impl LbmSolver3DCuda {
             self.n_cells
         );
 
-        let mut force_flat = Vec::with_capacity(self.n_cells * 3);
-        for v in force_field {
-            force_flat.push(v[0] as f32);
-            force_flat.push(v[1] as f32);
-            force_flat.push(v[2] as f32);
+        if self.precision == Precision::FP64 {
+            let mut force_flat = Vec::with_capacity(self.n_cells * 3);
+            for v in force_field {
+                force_flat.push(v[0]);
+                force_flat.push(v[1]);
+                force_flat.push(v[2]);
+            }
+            let bytes = Self::encode_f64_to_bytes(&force_flat);
+            self.d_force = self.stream.clone_htod(&bytes)?;
+        } else {
+            let mut force_flat = Vec::with_capacity(self.n_cells * 3);
+            for v in force_field {
+                force_flat.push(v[0] as f32);
+                force_flat.push(v[1] as f32);
+                force_flat.push(v[2] as f32);
+            }
+            let bytes = match self.precision {
+                Precision::FP32 => Self::encode_f32_to_bytes(&force_flat),
+                Precision::BF16 => Self::encode_bf16_to_bytes(&force_flat),
+                Precision::FP64 => unreachable!(),
+            };
+            self.d_force = self.stream.clone_htod(&bytes)?;
         }
-
-        let bytes = match self.precision {
-            Precision::FP32 => Self::encode_f32_to_bytes(&force_flat),
-            Precision::BF16 => Self::encode_bf16_to_bytes(&force_flat),
-        };
-        self.d_force = self.stream.clone_htod(&bytes)?;
         Ok(())
     }
 
@@ -403,16 +538,22 @@ impl LbmSolver3DCuda {
         );
 
         // LBM lattice units (D3Q19 BGK): nu = (tau - 0.5) / 3  =>  tau = 0.5 + 3*nu
-        let mut tau_flat = Vec::with_capacity(self.n_cells);
-        for &nu in viscosity_field {
-            tau_flat.push((0.5 + 3.0 * nu) as f32);
+        if self.precision == Precision::FP64 {
+            let tau_flat: Vec<f64> = viscosity_field.iter().map(|&nu| 0.5 + 3.0 * nu).collect();
+            let bytes = Self::encode_f64_to_bytes(&tau_flat);
+            self.d_tau = self.stream.clone_htod(&bytes)?;
+        } else {
+            let mut tau_flat = Vec::with_capacity(self.n_cells);
+            for &nu in viscosity_field {
+                tau_flat.push((0.5 + 3.0 * nu) as f32);
+            }
+            let bytes = match self.precision {
+                Precision::FP32 => Self::encode_f32_to_bytes(&tau_flat),
+                Precision::BF16 => Self::encode_bf16_to_bytes(&tau_flat),
+                Precision::FP64 => unreachable!(),
+            };
+            self.d_tau = self.stream.clone_htod(&bytes)?;
         }
-
-        let bytes = match self.precision {
-            Precision::FP32 => Self::encode_f32_to_bytes(&tau_flat),
-            Precision::BF16 => Self::encode_bf16_to_bytes(&tau_flat),
-        };
-        self.d_tau = self.stream.clone_htod(&bytes)?;
         Ok(())
     }
 
@@ -451,6 +592,22 @@ impl LbmSolver3DCuda {
         Ok(())
     }
 
+    /// Decode FP64 GPU bytes into f32 host buffers (narrowing for API compat).
+    fn decode_f64_from_bytes_to_f32(bytes: &[u8], out: &mut [f32]) -> Result<()> {
+        ensure!(
+            bytes.len() == out.len() * 8,
+            "unexpected f64 byte length: got {}, expected {}",
+            bytes.len(),
+            out.len() * 8
+        );
+        for (dst, chunk) in out.iter_mut().zip(bytes.chunks_exact(8)) {
+            let mut arr = [0u8; 8];
+            arr.copy_from_slice(chunk);
+            *dst = f64::from_le_bytes(arr) as f32;
+        }
+        Ok(())
+    }
+
     pub fn step(&mut self) -> Result<()> {
         let (nx, ny, nz) = (self.nx as i32, self.ny as i32, self.nz as i32);
         let (bx, by, bz) = self.lbm_block_dim;
@@ -485,77 +642,141 @@ impl LbmSolver3DCuda {
             self.nz as i32,
             self.n_cells as i32,
         );
-
-        let (out_ptr, _) = self.d_reduction_out.device_ptr(&self.stream);
-        let mut bz = self.stream.launch_builder(&self.zero_kernel);
-        bz.arg(&out_ptr);
-        unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
-
-        let mut b = self.stream.launch_builder(&self.enstrophy_cell_kernel);
-        let d_u_ptr = self.d_u.device_ptr(&self.stream).0;
-        let d_enstrophy_buffer_ptr = self
-            .d_reduction_buffer_f32
-            .as_ref()
-            .unwrap()
-            .device_ptr(&self.stream)
-            .0;
-
-        b.arg(&d_u_ptr)
-            .arg(&d_enstrophy_buffer_ptr)
-            .arg(&nx)
-            .arg(&ny)
-            .arg(&nz);
-        unsafe {
-            b.launch(LaunchConfig {
-                grid_dim: (
-                    self.nx.div_ceil(2) as u32,
-                    self.ny.div_ceil(2) as u32,
-                    self.nz.div_ceil(2) as u32,
-                ),
-                block_dim: (2, 2, 2),
-                shared_mem_bytes: 0,
-            })
-        }?;
-
+        let enstrophy_config = LaunchConfig {
+            grid_dim: (
+                self.nx.div_ceil(2) as u32,
+                self.ny.div_ceil(2) as u32,
+                self.nz.div_ceil(2) as u32,
+            ),
+            block_dim: (2, 2, 2),
+            shared_mem_bytes: 0,
+        };
         let grid_size = self.n_cells.div_ceil(256) as u32;
-        let mut b_reduce = self.stream.launch_builder(&self.reduce_sum_f32_kernel);
-        b_reduce
-            .arg(self.d_reduction_buffer_f32.as_ref().unwrap())
-            .arg(&mut self.d_reduction_out)
-            .arg(&n);
-        unsafe {
-            b_reduce.launch(LaunchConfig {
-                grid_dim: (grid_size, 1, 1),
-                block_dim: (256, 1, 1),
-                shared_mem_bytes: 0,
-            })
-        }?;
+        let reduce_config = LaunchConfig {
+            grid_dim: (grid_size, 1, 1),
+            block_dim: (256, 1, 1),
+            shared_mem_bytes: 0,
+        };
 
-        let res = self.stream.clone_dtoh(&self.d_reduction_out)?;
-        Ok(res[0] / self.n_cells as f32)
+        if self.precision == Precision::FP64 {
+            // FP64: enstrophy kernel writes double*, reduce uses double buffers
+            let d_out = self
+                .d_reduction_out_f64
+                .as_mut()
+                .context("FP64 reduction output not allocated")?;
+            let (out_ptr, _) = d_out.device_ptr(&self.stream);
+            let mut bz = self.stream.launch_builder(&self.zero_kernel);
+            bz.arg(&out_ptr);
+            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+
+            let d_u_ptr = self.d_u.device_ptr(&self.stream).0;
+            let d_buf = self
+                .d_reduction_buffer_f64
+                .as_ref()
+                .context("FP64 reduction buffer not allocated")?;
+            let d_enstrophy_buffer_ptr = d_buf.device_ptr(&self.stream).0;
+
+            let mut b = self.stream.launch_builder(&self.enstrophy_cell_kernel);
+            b.arg(&d_u_ptr)
+                .arg(&d_enstrophy_buffer_ptr)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&nz);
+            unsafe { b.launch(enstrophy_config) }?;
+
+            let d_buf = self.d_reduction_buffer_f64.as_ref().unwrap();
+            let d_out = self.d_reduction_out_f64.as_mut().unwrap();
+            let mut b_reduce = self.stream.launch_builder(&self.reduce_sum_f32_kernel);
+            b_reduce.arg(d_buf).arg(d_out).arg(&n);
+            unsafe { b_reduce.launch(reduce_config) }?;
+
+            let res = self
+                .stream
+                .clone_dtoh(self.d_reduction_out_f64.as_ref().unwrap())?;
+            Ok((res[0] / self.n_cells as f64) as f32)
+        } else {
+            let (out_ptr, _) = self.d_reduction_out.device_ptr(&self.stream);
+            let mut bz = self.stream.launch_builder(&self.zero_kernel);
+            bz.arg(&out_ptr);
+            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+
+            let d_u_ptr = self.d_u.device_ptr(&self.stream).0;
+            let d_enstrophy_buffer_ptr = self
+                .d_reduction_buffer_f32
+                .as_ref()
+                .unwrap()
+                .device_ptr(&self.stream)
+                .0;
+
+            let mut b = self.stream.launch_builder(&self.enstrophy_cell_kernel);
+            b.arg(&d_u_ptr)
+                .arg(&d_enstrophy_buffer_ptr)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&nz);
+            unsafe { b.launch(enstrophy_config) }?;
+
+            let mut b_reduce = self.stream.launch_builder(&self.reduce_sum_f32_kernel);
+            b_reduce
+                .arg(self.d_reduction_buffer_f32.as_ref().unwrap())
+                .arg(&mut self.d_reduction_out)
+                .arg(&n);
+            unsafe { b_reduce.launch(reduce_config) }?;
+
+            let res = self.stream.clone_dtoh(&self.d_reduction_out)?;
+            Ok(res[0] / self.n_cells as f32)
+        }
     }
 
     pub fn calculate_mean_density(&mut self) -> Result<f32> {
         let n = self.n_cells as i32;
-        let (out_ptr, _) = self.d_reduction_out.device_ptr(&self.stream);
-        let mut bz = self.stream.launch_builder(&self.zero_kernel);
-        bz.arg(&out_ptr);
-        unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
-        let mut b = self.stream.launch_builder(&self.reduce_sum_rho_kernel);
-
-        // Correctly passing &self.d_rho instead of &self.d_rho.device_ptr
-        b.arg(&self.d_rho).arg(&mut self.d_reduction_out).arg(&n);
-
         let grid_size = self.n_cells.div_ceil(256) as u32;
-        unsafe {
-            b.launch(LaunchConfig {
-                grid_dim: (grid_size, 1, 1),
-                block_dim: (256, 1, 1),
-                shared_mem_bytes: 0,
-            })
-        }?;
-        let res = self.stream.clone_dtoh(&self.d_reduction_out)?;
-        Ok(res[0] / self.n_cells as f32)
+
+        if self.precision == Precision::FP64 {
+            // FP64: zero/reduce/read use double buffers
+            let d_out = self
+                .d_reduction_out_f64
+                .as_mut()
+                .context("FP64 reduction buffer not allocated")?;
+            let (out_ptr, _) = d_out.device_ptr(&self.stream);
+            let mut bz = self.stream.launch_builder(&self.zero_kernel);
+            bz.arg(&out_ptr);
+            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+
+            let d_out = self.d_reduction_out_f64.as_mut().unwrap();
+            let mut b = self.stream.launch_builder(&self.reduce_sum_rho_kernel);
+            b.arg(&self.d_rho).arg(d_out).arg(&n);
+            unsafe {
+                b.launch(LaunchConfig {
+                    grid_dim: (grid_size, 1, 1),
+                    block_dim: (256, 1, 1),
+                    shared_mem_bytes: 0,
+                })
+            }?;
+
+            let res = self
+                .stream
+                .clone_dtoh(self.d_reduction_out_f64.as_ref().unwrap())?;
+            Ok((res[0] / self.n_cells as f64) as f32)
+        } else {
+            let (out_ptr, _) = self.d_reduction_out.device_ptr(&self.stream);
+            let mut bz = self.stream.launch_builder(&self.zero_kernel);
+            bz.arg(&out_ptr);
+            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+
+            let mut b = self.stream.launch_builder(&self.reduce_sum_rho_kernel);
+            b.arg(&self.d_rho).arg(&mut self.d_reduction_out).arg(&n);
+            unsafe {
+                b.launch(LaunchConfig {
+                    grid_dim: (grid_size, 1, 1),
+                    block_dim: (256, 1, 1),
+                    shared_mem_bytes: 0,
+                })
+            }?;
+
+            let res = self.stream.clone_dtoh(&self.d_reduction_out)?;
+            Ok(res[0] / self.n_cells as f32)
+        }
     }
 
     pub fn sync_to_host(&mut self) -> Result<()> {
@@ -576,6 +797,15 @@ impl LbmSolver3DCuda {
                 Self::decode_bf16_from_bytes(&rho_bytes, &mut self.rho)?;
                 let mut u_flat = vec![0.0f32; self.n_cells * 3];
                 Self::decode_bf16_from_bytes(&u_bytes, &mut u_flat)?;
+                for idx in 0..self.n_cells {
+                    let base = idx * 3;
+                    self.u[idx] = [u_flat[base], u_flat[base + 1], u_flat[base + 2]];
+                }
+            }
+            Precision::FP64 => {
+                Self::decode_f64_from_bytes_to_f32(&rho_bytes, &mut self.rho)?;
+                let mut u_flat = vec![0.0f32; self.n_cells * 3];
+                Self::decode_f64_from_bytes_to_f32(&u_bytes, &mut u_flat)?;
                 for idx in 0..self.n_cells {
                     let base = idx * 3;
                     self.u[idx] = [u_flat[base], u_flat[base + 1], u_flat[base + 2]];
@@ -635,7 +865,7 @@ impl LbmSolver3DCuda {
         let n = self.n_cells as i32;
         let mut b = self.stream.launch_builder(&self.apply_mask_kernel);
         b.arg(u_hat).arg(mask).arg(&damping).arg(&n);
-        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
+        unsafe { b.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
         Ok(())
     }
 
@@ -649,7 +879,7 @@ impl LbmSolver3DCuda {
             .stream
             .launch_builder(&self.convert_real_to_complex_kernel);
         b.arg(&self.d_u).arg(d_u_hat).arg(&c).arg(&n);
-        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
+        unsafe { b.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
         Ok(())
     }
 
@@ -668,7 +898,7 @@ impl LbmSolver3DCuda {
             .arg(&c)
             .arg(&scale)
             .arg(&n);
-        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
+        unsafe { b.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
         Ok(())
     }
 
@@ -702,6 +932,13 @@ impl LbmSolver3DCuda {
             Precision::BF16 => {
                 let bf = half::bf16::from_f32(value).to_bits();
                 let values = vec![bf; count];
+                values
+                    .iter()
+                    .flat_map(|v| v.to_le_bytes())
+                    .collect::<Vec<u8>>()
+            }
+            Precision::FP64 => {
+                let values = vec![value as f64; count];
                 values
                     .iter()
                     .flat_map(|v| v.to_le_bytes())
@@ -778,6 +1015,32 @@ mod tests {
 
         assert_eq!(solver.rho.len(), solver.n_cells);
         assert_eq!(solver.u.len(), solver.n_cells);
+        assert!(solver.rho.iter().all(|v| v.is_finite()));
+        assert!(solver
+            .u
+            .iter()
+            .all(|v| v[0].is_finite() && v[1].is_finite() && v[2].is_finite()));
+    }
+
+    #[test]
+    fn init_and_first_step_are_finite_fp64() {
+        let Some(mut solver) = maybe_solver(Precision::FP64) else {
+            return;
+        };
+        let mean0 = solver
+            .calculate_mean_density()
+            .expect("mean density should compute");
+        assert!(mean0.is_finite());
+        assert_abs_diff_eq!(mean0, 1.0, epsilon = 1.0e-5);
+
+        solver.step().expect("first step should succeed");
+        let mean1 = solver
+            .calculate_mean_density()
+            .expect("mean density after first step");
+        assert!(mean1.is_finite());
+        assert_abs_diff_eq!(mean1, 1.0, epsilon = 1.0e-4);
+
+        solver.sync_to_host().expect("sync_to_host should succeed");
         assert!(solver.rho.iter().all(|v| v.is_finite()));
         assert!(solver
             .u

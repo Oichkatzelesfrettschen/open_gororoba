@@ -1,0 +1,81 @@
+# Meltdown Pulsed Gate results
+# N=128 steps=300 rho_base=1 nu=0.01
+# verdict = INCONCLUSIVE
+
+[[protocol]]
+name = "Steady"
+duty_cycle = 1
+rho_effective = 1
+p95 = [
+  { eps = 1e-2, p95 = 103.0 },
+  { eps = 1e-1, p95 = 27.0 },
+  { eps = 1e0, p95 = 0.0 }
+]
+
+[[protocol]]
+name = "Pulsed_50"
+duty_cycle = 0.5
+rho_effective = 2
+p95 = [
+  { eps = 1e-2, p95 = 103.0 },
+  { eps = 1e-1, p95 = 27.0 },
+  { eps = 1e0, p95 = 0.0 }
+]
+
+[[protocol]]
+name = "Pulsed_25"
+duty_cycle = 0.25
+rho_effective = 4
+p95 = [
+  { eps = 1e-2, p95 = 103.0 },
+  { eps = 1e-1, p95 = 27.0 },
+  { eps = 1e0, p95 = 0.0 }
+]
+
+[[gate]]
+protocol = "Pulsed_50"
+eps = 1e-2
+p95_steady = 103.0
+p95_pulsed = 103.0
+reduction_pct = 0.000
+status = "INCONC"
+
+[[gate]]
+protocol = "Pulsed_50"
+eps = 1e-1
+p95_steady = 27.0
+p95_pulsed = 27.0
+reduction_pct = 0.000
+status = "INCONC"
+
+[[gate]]
+protocol = "Pulsed_50"
+eps = 1e0
+p95_steady = 0.0
+p95_pulsed = 0.0
+reduction_pct = 0.000
+status = "INCONC"
+
+[[gate]]
+protocol = "Pulsed_25"
+eps = 1e-2
+p95_steady = 103.0
+p95_pulsed = 103.0
+reduction_pct = 0.000
+status = "INCONC"
+
+[[gate]]
+protocol = "Pulsed_25"
+eps = 1e-1
+p95_steady = 27.0
+p95_pulsed = 27.0
+reduction_pct = 0.000
+status = "INCONC"
+
+[[gate]]
+protocol = "Pulsed_25"
+eps = 1e0
+p95_steady = 0.0
+p95_pulsed = 0.0
+reduction_pct = 0.000
+status = "INCONC"

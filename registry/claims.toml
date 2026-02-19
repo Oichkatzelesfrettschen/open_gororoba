@@ -358,7 +358,8 @@ id = "C-033"
 statement = "Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023)."
 where_stated = "`data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)"
 status = "Closed/Source-Insufficient"
-last_verified = "2026-02-06"
+status_note = "Physical consequence (algebraic phase transition at dim=16) verified via C-096 entropy jump: alternativity 0->4.11 bits, norm composition 0->3.17 bits. SU(5) generator mapping claim itself remains source-insufficient pending primary paper access. See L-033 resolution."
+last_verified = "2026-02-18"
 what_would_verify_refute = "CLOSED (Phase 7 Batch B): Repo verifies a canonical SU(5) generator basis in the 5D defining rep: traceless/Hermitian/normalized and Lie bracket closed (summary: `data/csv/c033_su5_generator_summary.csv`). Tang & Tang (2023, Sec. 2.6) describe a construction of 24 generalized lambda matrices via five creation/annihilation operators, but do NOT enumerate a unique coefficient mapping from sedenion basis elements to a normalized SU(5) generator basis. The source provides the algebraic framework but not the explicit mapping table (basis conventions + normalization) needed for verification. Closed as source-insufficient."
 confidence = "n/a"
 phase = "algebra"
@@ -12261,33 +12262,33 @@ sprint = 48
 dependencies = ["C-771"]
 
 [[claim]]
-id = "C-774"
+id = "C-792"
 statement = "Sedenion zero-divisor modulated viscosity in a 3D LBM simulation produces a spectral peak that locks to the grid Nyquist frequency independently of the relaxation parameter tau. The peak frequency does NOT drift with Reynolds number (|slope| < 0.01 in peak_freq vs tau regression) and vanishes when ZD modulation amplitude is set to zero."
-where_stated = "`crates/gororoba_cli/src/bin/zd_resonance_sweep.rs`, `crates/lbm_vulkan/shaders/zd_gen.wgsl`, `crates/spectral_core/src/ghost_spectral.rs`"
-status = "Proposed"
-status_note = "Binary created; awaiting execution of tau sweep + control + seeding sweep"
+where_stated = "`crates/gororoba_cli/src/bin/zd_resonance_cuda.rs`, `crates/spectral_core/src/ghost_spectral.rs`"
+status = "Falsified"
+status_note = "E-063 executed 2026-02-18. CUDA BF16 128^3 tau sweep: KE ghost detections at SNR=0.00 (noise floor) appear in BOTH ZD-modulated sweep and control (no modulation). Ghost is a BF16 rounding artifact, not ZD resonance. Reynolds sweep: stable only in narrow window (tau=0.501-0.520, F=0.01-0.1). Spatial ghost hints at f=0.2031-0.2188 with max SNR=1.52 (below threshold of 3). 4D batch (32^3x32, 64^3x16) also null."
 last_verified = "2026-02-18"
 what_would_verify_refute = "VERIFY: Peak appears ONLY with tau_amp > 0, frequency constant across tau sweep (|slope| < 0.01), does NOT track pc.lambda seeding parameter. REFUTE: Peak shifts with tau (fluid artifact), OR appears without ZD modulation (lattice artifact), OR tracks seeding frequency."
-confidence = "low"
+confidence = "high"
 phase = "simulation"
 sprint = 49
 dependencies = []
 
 [[claim]]
-id = "C-775"
+id = "C-793"
 statement = "The ghost frequency at phi^{-1/2} ~ 0.786 cycles/sample is detectable at rank <= 3 with SNR > 5.0 in production warp field HDF5 snapshots without synthetic signal injection."
 where_stated = "`crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `crates/spectral_core/src/ghost_spectral.rs`"
-status = "Proposed"
-status_note = "Ghost spectral module extracted; awaiting h5-sweep subcommand on production data"
+status = "Falsified"
+status_note = "E-063 executed 2026-02-18. No ghost peak with SNR > 3 detected in any CUDA BF16 128^3 experiment. Maximum spatial ghost SNR=1.52 at f=0.2031 (tau=0.501, F=0.1), but this is not specific to ZD modulation -- requires control at matching Reynolds number for definitive attribution."
 last_verified = "2026-02-18"
 what_would_verify_refute = "VERIFY: FFT of rho_mean time series from warp_field_128_step_*.h5 shows phi^{-1/2} peak at rank <= 3 with SNR > 5.0. REFUTE: No peak near phi^{-1/2} above noise floor, or peak exists but at rank > 3 or SNR < 5.0."
-confidence = "low"
+confidence = "high"
 phase = "simulation"
 sprint = 49
-dependencies = ["C-774"]
+dependencies = ["C-792"]
 
 [[claim]]
-id = "C-776"
+id = "C-794"
 statement = "A Pathionic heat sink (virtual dim-32 scalar absorber coupled to the Sedenion associator norm) stabilizes the warp ring simulation past the natural instability onset. The instability onset time increases monotonically with coupling strength."
 where_stated = "`crates/gororoba_cli/src/bin/pathion_sink_test.rs`, `crates/gororoba_engine/src/simulation/mod.rs` (PathionSink struct)"
 status = "Falsified"
@@ -12300,7 +12301,7 @@ sprint = 49
 dependencies = []
 
 [[claim]]
-id = "C-777"
+id = "C-795"
 statement = "Macroscopic vortex handedness (helicity sign) is locked to the Sedenion Cayley-Dickson multiplication table orientation. Flipping initial vorticity without conjugating the CD table produces an UNSTABLE configuration, while flipping both (double flip) recovers stability."
 where_stated = "`crates/gororoba_cli/src/bin/chirality_lock_test.rs`, `crates/algebra_core/src/construction/cayley_dickson.rs` (cd_multiply_conjugated)"
 status = "Falsified"
@@ -12313,7 +12314,7 @@ sprint = 49
 dependencies = []
 
 [[claim]]
-id = "C-778"
+id = "C-796"
 statement = "Signal chunks projected onto the Leech Lattice (Lambda_24) via Babai CVP show statistically different deep hole fractions between structured (ON-source) and noise-only (OFF-source) pointings at p < 0.05 in a two-proportion z-test."
 where_stated = "`crates/gororoba_cli/src/bin/moonshine_filterbank.rs`, `crates/algebra_core/src/experimental/leech_lattice.rs`, `crates/algebra_core/src/experimental/golay_code.rs`"
 status = "Falsified"
@@ -12375,4 +12376,210 @@ what_would_verify_refute = "VERIFY: pulsed_p95 < steady_p95 * 0.90 at any wavele
 confidence = "medium"
 phase = "spectral"
 sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-784"
+statement = "Ghost frequency phi^{-1/2} detected in CHIME FRB Catalog 2 dispersion measures at f=0.218 normalized, SNR=6.11, FWHM=0.0008. Strongest detection across all catalogs."
+where_stated = "`crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+status = "Contested"
+status_note = "Sprint 50 statistical hardening: Legacy SNR=6.11 used mean noise floor (inflated). Corrected MAD noise floor, BH-FDR, and Bonferroni correction reduce significance. FWHM=0.0008 below FFT resolution limit 1/N=0.0002 (interpolation artifact, see C-789). Requires re-verification with full multi-method pipeline on real CHIME data. Synthetic sorted distributions of similar shape do NOT reproduce ghost peak (bootstrap null p>0.05)."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: peak within 0.02 of 0.2138 with SNR > 3. REFUTE: no peak within tolerance, or peak present in null controls."
+confidence = "high"
+phase = "spectral"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-785"
+statement = "Ghost frequency phi^{-1/2} detected in ATNF Pulsar Catalog dispersion measures at f=0.206 normalized, SNR=5.93, and in pulsar periods at f=0.221, SNR=5.14. Two independent columns from the same catalog yield consistent detections."
+where_stated = "`crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+status = "Contested"
+status_note = "Sprint 50 statistical hardening: Legacy SNR used mean noise floor (inflated). Corrected MAD noise floor and BH-FDR correction may reduce significance. Cross-column consistency is suggestive but both columns are from sorted catalog data. Requires re-verification with full multi-method pipeline."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: peak within 0.02 of 0.2138 with SNR > 3 in at least one column. REFUTE: no peak within tolerance."
+confidence = "low"
+phase = "spectral"
+sprint = 50
+dependencies = []
+
+[[claim]]
+id = "C-786"
+statement = "Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection."
+where_stated = "`crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+status = "Contested"
+status_note = "Sprint 50 statistical hardening: Legacy SNR used mean noise floor. Sorted catalog FFT tests distributional shape, not physical periodicity. SNR 4.43 was already marginal before correction. Synthetic mock SN data (N=1700, Gaussian mu~38) shows NULL at ghost frequency."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: peak within 0.02 of 0.2138 with SNR > 3. REFUTE: no peak within tolerance."
+confidence = "medium"
+phase = "spectral"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-787"
+statement = "Ghost frequency phi^{-1/2} absent in S-band (2.25 GHz) Wow! GBT follow-up data. Stacked SNR=0.38 across 12 filterbank files. Spectral analysis is clean with no algebraic signatures at S-band."
+where_stated = "`crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `data/csv/wow_followup_snr.csv`"
+status = "Verified"
+status_note = "E-061 completed. Null result at S-band (2.25 GHz). Ghost is L-band/large-scale specific."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY (null): SNR < 2 at ghost frequency in S-band data. REFUTE (null): SNR > 3 would indicate S-band ghost presence."
+confidence = "high"
+phase = "spectral"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-788"
+statement = "Ghost frequency phi^{-1/2} absent in BH entropy, Gaia DR3 parallax, SDSS DR18 quasar redshift, ALICE Pb-Pb R_AA, Swarm magnetic field, and SORCE TSI datasets. Eight independent null controls confirm ghost is not a processing artifact."
+where_stated = "`crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+status = "Verified"
+status_note = "E-060 completed. All control datasets yield ghost SNR < 1.0. Controls span scalar (BH entropy), stellar (Gaia), quasar (SDSS), hadronic (ALICE), geomagnetic (Swarm), and solar (SORCE) regimes."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY (null): SNR < 2 at ghost frequency in all control datasets. REFUTE (null): any control dataset shows SNR > 3."
+confidence = "high"
+phase = "spectral"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-789"
+statement = "FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N. The claimed convergence (0.016 to 0.0008) represents interpolation precision, not physical sharpening. Detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) have std dev ~0.008, consistent with sampling variability, not convergence toward 0.2138."
+where_stated = "`crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+status = "Falsified"
+status_note = "Sprint 50 statistical hardening FALSIFIED this claim. (1) FWHM=0.0008 is below FFT resolution limit 1/5045=0.0002; the reported value is a cubic interpolation artifact. peak_fwhm_clamped() now floors at 1/N. (2) Frequency scatter: std dev of detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) is 0.008, consistent with random sampling from a flat distribution near 0.214, not monotonic convergence. (3) Follows C-071 precedent: honest self-falsification."
+last_verified = "2026-02-18"
+what_would_verify_refute = "FALSIFIED. Sub-bin FWHM is physically meaningless; frequency scatter is sampling variability."
+confidence = "high"
+phase = "spectral"
+sprint = 50
+dependencies = []
+
+[[claim]]
+id = "C-790"
+statement = "CWT Ricker wavelet analysis confirms Ghost absence in Wow! S-band (ghost-band power 4%) and Swarm magnetic field (ghost-band power 0%). The phi^{-1/2} signal is physically absent in these datasets, not hidden as a delocalized scale-invariant feature below FFT resolution."
+where_stated = "`src/scripts/analysis/cwt_ghost_analysis.py`, `data/csv/cwt_ghost_validation.csv`"
+status = "Verified"
+status_note = "E-062 completed. Ricker CWT at widths 2-100. Wow! S-band top scale width=50 (f~0.0074), low-frequency drift dominates. Ghost band (width~24, f~0.214) power fraction: 4% Wow!, 0% Swarm. Methodological complement ruling out scale-hidden resonance."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY (null): ghost-band CWT power < 10% in null-control datasets. REFUTE (null): ghost-band CWT power > 20% would indicate scale-hidden resonance."
+confidence = "high"
+phase = "spectral"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-791"
+statement = "ALICE Pb-Pb R_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed with higher statistics (LHC Run 3), this would indicate the Sedenion ZD lattice operates at the QGP deconfinement scale, not only at cosmological path lengths."
+where_stated = "`crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+status = "Proposed"
+status_note = "Marginal peak at 0.2105 in ALICE Pb-Pb R_AA. Below 3-sigma detection threshold. Needs Run 3 data with 10x more statistics. If confirmed, extends Ghost mechanism from vacuum (Gpc) to QGP (fm) scale."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: ALICE Run 3 R_AA shows peak within 0.02 of 0.2138 with SNR > 3. REFUTE: Run 3 data shows no peak (SNR < 2)."
+confidence = "low"
+phase = "spectral"
+sprint = 49
+dependencies = []
+
+[[claim]]
+id = "C-797"
+statement = "Statistical hardening of ghost frequency analysis via 7 independent methods (MAD robust noise floor, BH-FDR correction, Bonferroni correction, permutation test, sorted-distribution bootstrap null, Lomb-Scargle with Baluev FAP, multitaper F-test) demonstrates that sorted synthetic distributions do NOT produce significant ghost peaks. All 17 synthetic datasets (4 null controls, 5 sorted distributions, 4 signal injections, 4 mock catalogs) produce correct verdicts: injected signals detected, all null/sorted/mock datasets NULL."
+where_stated = "`crates/spectral_core/src/ghost_spectral.rs`, `crates/gororoba_cli/src/bin/rho_ghost_fft.rs`, `crates/gororoba_cli/src/bin/ghost_spectral_audit.rs`, `src/ghost_stats/`"
+status = "Verified"
+status_note = "E-068 completed. 17 datasets tested. 3 injected signals all DETECTED (p_bonf=0, p_perm=9.99e-4). 14 null/sorted/mock datasets all NULL. Bootstrap null correctly scoped to sorted data only. Combined Fisher p=0.96 for sorted bootstrap (not significant). Pipeline is correctly calibrated: false positive rate <5%, true positive rate 100%."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: All null controls remain NULL, all injected signals remain DETECTED across all methods. REFUTE: Any null control shows DETECTED, or any injected signal shows NULL."
+confidence = "high"
+phase = "spectral"
+sprint = 50
+dependencies = []
+
+[[claim]]
+id = "C-798"
+statement = "FFT of sorted catalog values tests distributional shape (quantile function regularity), not physical periodicity. The frequency f~0.214 in sorted data describes the inverse CDF's curvature structure, analogous to debunked redshift periodicity claims (Karlsson 1971, falsified by Tang & Zhang 2005 and Hawkins et al. 2002 as survey selection effects). The correct spectral method for sorted distributional data is the quantile periodogram (Li 2012), not standard FFT."
+where_stated = "`crates/spectral_core/src/ghost_spectral.rs` (methodology_note), `src/ghost_stats/quantile_periodogram.py`, Sprint 50 plan"
+status = "Verified"
+status_note = "Sprint 50 audit. No published precedent for FFT of sorted catalog values as a detection method. Historical analog (Karlsson 1971 redshift periodicity) debunked as selection effect. Quantile periodogram is the theoretically justified approach for distributional data."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Literature search confirms no published use of sorted-catalog FFT for signal detection. REFUTE: Published paper successfully uses sorted-catalog FFT with proper significance testing."
+confidence = "high"
+phase = "spectral"
+sprint = 50
+dependencies = []
+
+[[claim]]
+id = "C-799"
+statement = "FP32 GPU converges to FP64 GPU reference within 3.5e-5 relative KE error at 32^3. BF16 is quantization-limited: KE=0 at F=0.01 (below representable precision), 40% error at F=0.1. No ghost spectral signal appears in FP32 or FP64 that is absent in BF16, confirming ZD resonance ghost peaks (C-792, C-793) are BF16 quantization noise."
+where_stated = "`crates/gororoba_cli/src/bin/lbm_precision_sampler.rs`, E-069, `data/csv/precision_combined_32.csv`"
+status = "Verified"
+status_note = "Sprint 50B. FP32/FP64 match to float precision (3.2e-5). BF16 KE=0 at default forcing confirms quantization dominance. 128^3 deferred (release build blocked by pre-existing optics_core/algebra_core Edition 2024 issues)."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY (done): FP32 rel_error < 1e-3 confirmed (3.2e-5). REFUTE: Ghost signal in FP32/FP64 absent in BF16 would indicate BF16 suppresses physics."
+confidence = "high"
+phase = "spectral"
+sprint = 50
+dependencies = ["C-792", "C-793"]
+
+[[claim]]
+id = "C-800"
+statement = "GPU FP64 and CPU FP64 D3Q19 LBM KE traces diverge by ~1% at 32^3 due to different forcing schemes (GPU: simple body force, CPU: Guo forcing, 2nd-order). FP32 vs FP64 GPU relative error < 3.5e-5, confirming GPU FP32/FP64 kernels are numerically faithful within their precision."
+where_stated = "`crates/gororoba_cli/src/bin/lbm_precision_sampler.rs`, E-069"
+status = "Contested"
+status_note = "Sprint 50B. Original claim (machine-epsilon match) REFUTED: CPU-GPU divergence ~1% is algorithmic (Guo vs simple forcing), not numerical. FP32-FP64 GPU agreement confirmed to float precision."
+last_verified = "2026-02-18"
+what_would_verify_refute = "VERIFY: Implement Guo forcing in GPU kernel and re-test; error should drop to ~1e-13. REFUTE: Algorithmic unification still shows >1e-8 error, indicating GPU kernel bug."
+confidence = "high"
+phase = "spectral"
+sprint = 50
+dependencies = []
+
+# Sprint 51 claims
+
+[[claim]]
+id = "C-801"
+statement = "Cayley-Dickson projection invariance: for each Lambda level (256..2048), the CD difference projection lands in the 8-dimensional imaginary octonion span, and Fano plane automorphisms (PSL(2,7)) permute boundary vectors consistently."
+where_stated = "crates/algebra_core/src/analysis/prefix_chain_theorem.rs"
+status = "Verified"
+status_note = "Sprint 51, T-011. CdProjectionInvariance verifies 8D codomain lock and Fano symmetry."
+last_verified = "2026-02-18"
+confidence = "high"
+phase = "formalization"
+sprint = 51
+dependencies = ["C-696"]
+
+[[claim]]
+id = "C-802"
+statement = "Simplicial Betti numbers computed via Z_2 Gaussian elimination match known values for standard complexes: point (b0=1), triangle boundary (b0=1,b1=1), filled triangle (b0=1,b1=0,b2=0), torus (b0=1,b1=2,b2=1). Euler-Poincare theorem verified for all cases."
+where_stated = "crates/stats_core/src/homology.rs"
+status = "Verified"
+status_note = "Sprint 51, T-002. 7-vertex minimal torus triangulation (Z/7Z orbit) validates b1=2."
+last_verified = "2026-02-18"
+confidence = "high"
+phase = "formalization"
+sprint = 51
+dependencies = []
+
+[[claim]]
+id = "C-803"
+statement = "Sedenion ZD box-kite topology (de Marrais 2000) and generic adjacency constructor enable systematic comparison of C-010 non-local coupling topologies beyond the standard suite."
+where_stated = "crates/optics_core/src/absorber_benchmark.rs"
+status = "Proposed"
+status_note = "Sprint 51, T-007. Box-kite and cross-cluster bridges added. Full falsification suite pending."
+last_verified = "2026-02-18"
+confidence = "medium"
+phase = "optics"
+sprint = 51
+dependencies = ["C-010"]
+
+[[claim]]
+id = "C-804"
+statement = "Bridge contrast ratio (rho_shell / rho_interior at R1 boundary) is positive and finite for all three bypass models (MatchedInterior, VacuumCore, GradedTransition). Gamma invariant varies less than 5% across models at default configuration."
+where_stated = "crates/cosmology_core/src/bypass_models.rs"
+status = "Proposed"
+status_note = "Sprint 51, NA-007. Bridge contrast and gamma-invariant computed from GravastarSolution profiles."
+last_verified = "2026-02-18"
+confidence = "medium"
+phase = "cosmology"
+sprint = 51
 dependencies = []

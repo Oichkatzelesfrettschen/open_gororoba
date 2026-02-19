@@ -18,6 +18,7 @@ lbm_3d = { path = "../lbm_3d" }
 serde = { workspace = true, features = ["derive"] }
 gr_core = { version = "0.1.0", path = "../gr_core" }
 spectral_core = { version = "0.1.0", path = "../spectral_core" }
+optics_core = { path = "../optics_core" }
 ndarray = { workspace = true }
 anyhow = { workspace = true }
 lbm_3d_cuda = { path = "../lbm_3d_cuda" }

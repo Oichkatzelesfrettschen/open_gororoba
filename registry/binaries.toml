@@ -717,3 +717,36 @@ name = "meltdown-pulsed-gate"
 crate = "gororoba_cli"
 description = "Reframed T4: Compare pulsed (burst-quench) vs steady entropy injection in forced-diffusion PDE surrogates, measuring wavelet p95 entropy reduction"
 status = "active"
+
+[[binary]]
+name = "zd-resonance-cuda"
+crate = "gororoba_cli"
+description = "CUDA BF16 ZD Resonance experiments: tau sweep, control, coupling sweep, Reynolds sweep, and verdict analysis at 128^3/256^3 resolution"
+status = "active"
+
+[[binary]]
+name = "zd-resonance-4d"
+crate = "gororoba_cli"
+description = "4D ZD Resonance via D3Q19 batch kernel: sweep w-axis Sedenion field configurations at 32^3 x nw and 64^3 x nw grids"
+status = "active"
+
+[[binary]]
+name = "ghost-spectral-audit"
+crate = "gororoba_cli"
+description = "Multi-method ghost frequency falsification audit: rigorous check, permutation test, bootstrap null, Lomb-Scargle, IAAFT surrogates, multitaper. Single and batch modes."
+experiment = "E-068"
+status = "active"
+
+[[binary]]
+name = "lbm-precision-sampler"
+crate = "gororoba_cli"
+description = "Multi-precision LBM comparison (BF16/FP32/FP64-GPU/FP64-CPU): runs identical D3Q19 with Kolmogorov forcing at all precision modes and produces unified comparison CSV with KE traces and convergence metrics."
+experiment = "E-069"
+status = "active"
+
+[[binary]]
+name = "evidence-package"
+crate = "gororoba_cli"
+description = "Evidence artifact packaging and checksum verification. Subcommands: check (list+flag missing), bundle (SHA-256 manifest), verify (re-check)."
+experiment = "E-070"
+status = "active"

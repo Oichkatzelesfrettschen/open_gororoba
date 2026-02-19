@@ -100,6 +100,7 @@ fn precision_tag(precision: Precision) -> &'static str {
     match precision {
         Precision::FP32 => "FP32",
         Precision::BF16 => "BF16",
+        Precision::FP64 => "FP64",
     }
 }
 

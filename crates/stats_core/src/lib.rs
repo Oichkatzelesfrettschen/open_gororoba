@@ -21,6 +21,7 @@
 pub mod claims_gates;
 pub mod dip;
 pub mod helpers;
+pub mod homology;
 pub mod hypergraph;
 pub mod tda_bridge;
 pub mod ultrametric;
