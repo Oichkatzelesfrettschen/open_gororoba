@@ -34,6 +34,7 @@
 //! - `ppn_constraints` -- PPN parameters, experimental bounds, falsification gates (Rodal 2025)
 //! - `scalar_tensor` -- Brans-Dicke field equations, junction conditions, frame transformations
 //! - `area_quantization` -- LQG area spectrum, Barbero-Immirzi parameter (Barbero 1995, Immirzi 1997)
+//! - `photon_graviton_tcmt` -- Photon-graviton TCMT: maps worldline QFT amplitude to resonant scattering (Ruan-Fan 2009, Ahmadiniaz et al. 2026, Maksimov 2025)
 //! - `quantum_inequalities` -- Ford-Roman QI bounds, Pfenning-Ford warp analysis, energy conditions
 //!
 //! # Literature
@@ -83,6 +84,7 @@ pub mod novikov_thorne;
 pub mod null_constraint;
 pub mod penrose;
 pub mod photon_graviton;
+pub mod photon_graviton_tcmt;
 pub mod ppn_constraints;
 pub mod quantum_inequalities;
 pub mod scalar_tensor;
