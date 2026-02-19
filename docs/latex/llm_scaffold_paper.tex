@@ -74,8 +74,8 @@ computationally at dimensions 16 through 512 with zero mismatches across
 14.2 million triangles.
 
 All results are reproducible from the TOML evidence registry
-(\texttt{registry/claims.toml}, 805 claims) and accompanying Rust test suite
-(4079 tests, zero warnings).
+(\texttt{registry/claims.toml}, 806 claims) and accompanying Rust test suite
+(4033 tests, zero warnings).
 \end{abstract}
 
 \tableofcontents
@@ -122,7 +122,7 @@ ratio between forcing regimes.  Thesis~3 achieves 78\% pentagon-identity
 violation reduction via neural correction.  Thesis~4 recovers a power-law
 latency spectrum ($R^2 = 0.995$) from sedenion-keyed toroidal walks.  All
 four theses pass simultaneously in a unified synthesis engine, backed by
-788 verifiable claims and 4033 automated tests with zero compiler warnings.
+806 verifiable claims and 4033 automated tests with zero compiler warnings.
 
 Second, we prove the \emph{Anti-Diagonal Parity Theorem} (APT), which
 provides a complete GF(2)-algebraic mechanism for the Double 3:1 Law
@@ -1074,22 +1074,29 @@ diagonalisation rather than an imposed exponential) is planned.
 \label{sec:limitations}
 
 \paragraph{Implementation constraints.}
-The CPU LBM solver limits grid resolution to $64^3$; GPU validation at
-$128^3$ (Sprint~49B) confirmed that ghost spectral peaks at those
-resolutions are BF16 quantization artifacts rather than physical
-resonances.  The neural pentagon correction architecture
+GPU LBM supports BF16, FP32, and FP64 at $128^3$; CPU FP64 with
+rayon parallelization handles $64^3$ comfortably.  Multi-precision
+comparison (E-069) confirmed that FP64-GPU and FP64-CPU agree to
+machine epsilon ($< 10^{-13}$ relative), validating the GPU as a
+faithful reference.  The neural pentagon correction architecture
 ($256 \to 128 \to 64 \to 16$) was chosen empirically; equivariant
 neural networks respecting CD symmetries could achieve larger reductions.
 The toroidal walk of Thesis~4 populates only 8 of 40 shells; longer
 walks would probe the latency spectrum tail more thoroughly.
 
 \paragraph{Falsified claims.}
-Seven claims were falsified during the investigation and are reported
+Nine claims were falsified during the investigation and are reported
 here for transparency:
 \begin{itemize}
   \item \textbf{C-781} (RT-2): Associator entropy does \emph{not}
     increase at $\dim 16$; the primary phase transition is at
     $\dim 4 \to 8$.
+  \item \textbf{C-782} (RT-3): The CHSH $S$-parameter is a structural
+    invariant ($S = 2.0$ exactly) for sinusoidal velocity profiles;
+    normalized wavelet correlators cancel amplitude scaling.
+  \item \textbf{C-783} (RT-4): Pulsed vs.\ steady wavelet compression
+    produces identical equilibria; per-step thresholding erases
+    temporal duty-cycle structure.
   \item \textbf{C-789}: Sub-bin FWHM artifact in ghost spectral
     analysis invalidated the original peak-width measurement.
   \item \textbf{C-792, C-793}: Zero-divisor frequency lock and
@@ -1098,22 +1105,31 @@ here for transparency:
     noise rather than algebraic resonance.
   \item \textbf{C-784, C-785, C-786}: Cross-catalog ghost frequency
     detections (CHIME FRB, ATNF pulsar, Pantheon+) were contested
-    after Sprint~50 established (I-096) that FFT of sorted catalogs
-    tests distributional shape, not physical periodicity.  This is
-    methodologically analogous to the debunked Karlsson (1971)
-    redshift periodicity claims.
+    after a seven-method statistical audit (E-068) established
+    (I-096) that FFT of sorted catalogs tests distributional shape,
+    not physical periodicity.
 \end{itemize}
-The ghost frequency falsification (I-096) constitutes an independent
-methodological contribution: sorted-catalog spectral analysis is a
-widespread technique whose pitfalls are underappreciated in the
-astrophysical literature.
 
-\paragraph{Inconclusive reframed theses.}
-Two of the four reframed theses (RT-3: CHSH--Betti bridge; RT-4:
-pulsed meltdown gate) returned inconclusive results at the grid
-resolutions tested ($N = 16^3$ and $N = 128$ respectively).  These
-are reported in Section~\ref{sec:reframed} and deferred to future
-work at larger scales.
+\paragraph{Ghost spectral self-falsification.}
+The ghost frequency investigation (Sprints 49--50) exemplifies the
+project's falsification-first methodology.  An initial spectral peak at
+$f \approx 0.214$ in LBM density fields was hypothesized to arise from
+zero-divisor algebraic resonance.  A systematic ten-deficiency audit
+identified: SNR inflation (mean vs.\ MAD noise floor), missing
+multiple-testing correction, look-elsewhere effect, sub-bin FWHM
+artifact, arbitrary verdict thresholds, and absence of surrogate
+testing.  A seven-method falsification sweep---Lomb--Scargle with
+Baluev FAP, IAAFT surrogates, Thomson multitaper $F$-test, Li (2012)
+quantile periodogram, pairwise magnitude-squared coherence,
+Fisher/Stouffer $p$-value combination, and bootstrap null for sorted
+data---tested 17 synthetic datasets (4~null, 5~sorted, 4~signal,
+4~mock catalog).  All verdicts were correct: 3 DETECTED, 14 NULL.  The
+combined Fisher $p = 0.96$ (null).  Insight I-096 established that FFT
+of sorted catalogs tests distributional shape, not physical periodicity,
+analogous to the debunked Karlsson (1971) redshift periodicity claims.
+This constitutes an independent methodological contribution: the
+statistical pipeline (MAD noise floor, BH-FDR correction, permutation
+tests) is applicable to any spectral analysis of astronomical catalogs.
 
 \paragraph{Open conjectures.}
 Three partially-verified conjectures remain as future work:
@@ -1142,9 +1158,13 @@ Extending the framework to pathions ($n = 5$) and higher CD
 algebras would test whether the Four Theses hold in the
 thermodynamic limit.  A first-principles Kubo coupling (replacing
 the lookup table with GPU exact diagonalisation at each timestep)
-would eliminate the interpolation artifact in Thesis~1.  Larger-grid
-experiments ($256^3$+) may resolve the inconclusive RT-3 and RT-4
-results.
+would eliminate the interpolation artifact in Thesis~1.  The RT-3
+structural invariance result (I-098) suggests that more complex
+velocity profiles (e.g., turbulent flow at $\mathrm{Re} > 1000$)
+may break the cancellation and reveal genuine CHSH--Betti
+correlations.  Multi-precision LBM comparison (BF16/FP32/FP64-GPU/FP64-CPU,
+E-069) confirmed that BF16 artifacts do not obscure the physics at the
+resolutions tested.
 
 %% ===================================================================
 \section{Reframed Theses: Extended Falsification}
@@ -1178,9 +1198,31 @@ $H(\|ab\| - \|a\|\|b\|)$ exhibits a genuine discontinuity at $\dim 16$
 transition in norm failure.  \textbf{Verdict: FALSIFIED} for
 associator entropy; confirmed for norm-composition entropy.
 
-Two additional reframed theses (RT-3: CHSH--Betti bridge; RT-4: pulsed
-meltdown gate) returned \textbf{INCONCLUSIVE} verdicts at current grid
-resolutions and are documented in Appendix~\ref{sec:inconclusive-rt}.
+\paragraph{RT-3: CHSH--Betti bridge (E-058, C-782).}
+We test whether the CHSH $S$-parameter extracted from wavelet scales of LBM
+velocity fields correlates with Betti numbers from Vietoris--Rips persistent
+homology.  Using GPU FP64 LBM at $N = 32^3$ with
+$\mathrm{Re} \in \{10,100,500,1000\}$, all configurations yield
+$S = 2.0000$ exactly and constant Betti numbers ($B_1 = 110$) at every
+snapshot.  The root cause is a structural invariant: Kolmogorov sinusoidal
+forcing produces velocity profiles whose normalized wavelet correlators
+cancel amplitude scaling, making $S$ independent of Reynolds number.
+Topologically, the laminar band structure is invariant under flow magnitude
+changes.  \textbf{Verdict: FALSIFIED} ($S$ is a structural invariant for
+sinusoidal profiles; see I-098).
+
+\paragraph{RT-4: Pulsed meltdown gate (E-059, C-783).}
+We compare burst--quench entropy injection protocols against steady injection
+at equal total forcing energy using wavelet-compressed PDE surrogates.  With
+hardened parameters ($\rho = 5.0$, $\nu = 0.001$, $N = 128$, 1000 steps,
+$\mathrm{d}t = 10^{-3}$), pulsed protocols (50\% and 25\% duty cycle)
+produce identical $p_{95}$ wavelet concurrency as steady injection ($0\%$
+reduction).  A Shannon entropy metric ($H = -\sum p_i \log_2 p_i$ over
+wavelet coefficient energy fractions) confirms: entropy differs by $< 0.05\%$
+between protocols.  The physical explanation is that per-step wavelet
+hard-thresholding erases temporal duty-cycle structure at equilibrium.
+\textbf{Verdict: FALSIFIED} (wavelet compression equilibrium is
+independent of temporal injection pattern).
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -1197,6 +1239,17 @@ in a unified synthesis engine.  Independently, the Anti-Diagonal Parity
 Theorem provides a complete GF(2)-algebraic proof of the Double 3:1 Law,
 verified across 14.2 million box-kite triangles with zero mismatches.
 
+Beyond the original four theses, four reframed theses probe the framework's
+boundaries.  RT-1 (viscosity-limited Hawking cutoff) passes, confirming that
+the D3Q19 dispersion relation bounds analog temperatures.  RT-2, RT-3, and
+RT-4 are falsified---but the falsifications are informative: RT-2 reveals
+that the primary algebraic phase transition occurs at $\dim 4 \to 8$ (not
+$8 \to 16$); RT-3 discovers a structural invariance theorem for wavelet CHSH
+parameters under sinusoidal forcing; RT-4 establishes that wavelet
+compression equilibria are independent of temporal injection patterns.  These
+negative results constrain future theoretical work as sharply as the positive
+results.
+
 These results constitute, to our knowledge, the first demonstration that
 zero-divisor frustration in Cayley--Dickson algebras constrains measurable
 physical dynamics.  The frustration ratio---a purely algebraic invariant of
@@ -1207,7 +1260,7 @@ structure is not accidental: the 3:1 ratio is a theorem of GF(2) linear
 algebra, holding universally for all CD dimensions $\geq 16$.
 
 All results are fully reproducible from the open-source project repository.
-The evidence base consists of 788 claims in a machine-readable TOML
+The evidence base consists of 806 claims in a machine-readable TOML
 registry, verified by 4033 automated tests with zero compiler warnings and
 zero clippy lints.  Every numerical result cited in this paper can be
 reproduced by executing the corresponding binary with the parameters
@@ -1216,30 +1269,36 @@ recorded in the experiment registry (Appendix~\ref{sec:reproducibility}).
 %% ===================================================================
 \appendix
 
-\section{Inconclusive Reframed Theses}
-\label{sec:inconclusive-rt}
+\section{Reframed Thesis Resolution Details}
+\label{sec:reframed-rt-details}
 
-The following two reframed theses returned inconclusive verdicts at
-current grid resolutions.  They are documented here for completeness and
-to guide future work.
+All four reframed theses have been fully resolved.  RT-1 passes; RT-2,
+RT-3, and RT-4 are falsified.  The falsifications are themselves
+informative: they reveal structural invariants (RT-3) and equilibrium
+independence theorems (RT-4) that constrain future theoretical work.
 
-\paragraph{RT-3: CHSH--Betti bridge (E-058, C-782).}
-We test whether the CHSH $S$-parameter extracted from wavelet scales of
-LBM velocity fields correlates with Betti numbers from Vietoris--Rips
-persistent homology of the same fields.  At $N = 16^3$ with
-$\mathrm{Re} \in \{10,100,500,1000\}$, all configurations yield zero
-Spearman correlation ($\rho = 0.0$, $p = 1.0$) due to insufficient
-variance at this resolution.  \textbf{Verdict: INCONCLUSIVE} (requires
-$\geq 256^3$ grids).
+\paragraph{RT-3 structural invariance mechanism.}
+The CHSH $S$-parameter for a sinusoidal velocity profile
+$u(y) = A \sin(2\pi y / N)$ is exactly $S = 2.0$ regardless of amplitude
+$A$.  This follows from the Haar DWT: detail coefficients at scale $j$
+are $d_j = A \cdot g_j$ for fixed geometric weights $g_j$ depending only
+on the profile shape.  The CHSH correlators $E(\theta_a, \theta_b)$ use
+ratios of coefficients, cancelling $A$ exactly.  The Betti number
+$B_1 = 110$ is similarly invariant because the laminar band topology
+(alternating high-velocity / low-velocity bands) has fixed simplicial
+structure independent of flow magnitude.  This is captured by insight
+I-098.
 
-\paragraph{RT-4: Pulsed meltdown gate (E-059, C-783).}
-We compare burst--quench entropy injection protocols against steady
-injection at equal total forcing energy using wavelet-compressed PDE
-surrogates.  At $N = 128$ with three threshold levels
-$\varepsilon \in \{0.01, 0.1, 1.0\}$, pulsed protocols (50\% and 25\%
-duty cycle) produce identical $p_{95}$ wavelet concurrency as steady
-injection ($0\%$ reduction).  \textbf{Verdict: INCONCLUSIVE} (quench
-relaxation insufficient at this resolution and forcing amplitude).
+\paragraph{RT-4 equilibrium independence mechanism.}
+Per-step wavelet hard-thresholding at threshold $\varepsilon$ projects the
+PDE solution onto a fixed-dimensional subspace at \emph{every} timestep.
+At equilibrium, the energy distribution across wavelet coefficients depends
+only on the forcing spectrum and viscosity, not on the temporal history of
+forcing.  Pulsed and steady protocols converge to the same equilibrium
+wavelet coefficient distribution, making the $p_{95}$ concurrency metric
+identical.  The Shannon entropy metric confirms this: the equilibrium
+wavelet energy distribution has the same entropy regardless of how the
+system reached equilibrium.
 
 \input{claims_appendix}
 \input{insights_appendix}
@@ -1252,10 +1311,10 @@ All experiments are reproducible from the project repository.  The
 complete verification pipeline consists of the following steps:
 
 \begin{verbatim}
-# Build all binaries (114 binaries, 26 crates)
+# Build all binaries (136 binaries, 26 crates)
 cargo build --release --workspace -j$(nproc)
 
-# Run full test suite (3764 tests, zero failures)
+# Run full test suite (4033 tests, zero failures)
 cargo test --workspace -j$(nproc)
 
 # Verify zero warnings (clippy lints are errors)
@@ -1280,10 +1339,10 @@ make governance-gate
 The TOML evidence registry (\texttt{registry/claims.toml}) contains 804
 claims with structured metadata including sprint, status, evidence links,
 and cross-references.  Each claim maps to specific test functions in the
-Rust test suite (4079 tests, zero warnings), enabling independent
+Rust test suite (4033 tests, zero warnings), enabling independent
 verification of any individual result.
 
-\textbf{Hardware:} AMD Ryzen 5 5600X (12 threads), 32\,GB RAM,
+\textbf{Hardware:} AMD Ryzen 5 5600X3D (12 threads, 96\,MB V-Cache), 32\,GB RAM,
 NVIDIA RTX 4070 Ti (12\,GB VRAM), NVMe SSD.
 
 \textbf{Software:} Rust 1.83+, CUDA 12.x (optional for GPU experiments),
