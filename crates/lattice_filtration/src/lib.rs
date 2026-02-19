@@ -10,6 +10,7 @@ pub mod lepton_ratio;
 pub mod mass_spectrum;
 pub mod patricia_trie;
 pub mod survival_spectrum;
+pub mod zero_divisor_census;
 
 pub use basis_index::{project_to_lattice, BasisIndexCodec};
 pub use filtration::{
@@ -25,4 +26,7 @@ pub use survival_spectrum::{
     classify_latency_law, classify_latency_law_detailed, exponential_r2, inverse_square_r2,
     power_law_gamma_ci, power_law_r2, radial_bins, GammaCI, LatencyLaw, LatencyLawDetail,
     SpectrumBin,
+};
+pub use zero_divisor_census::{
+    simulate_collapse_manifold, CollapseManifold, ContinuousVacuum, ZeroDivisorWalker,
 };

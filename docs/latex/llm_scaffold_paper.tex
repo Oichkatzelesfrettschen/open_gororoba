@@ -74,8 +74,8 @@ computationally at dimensions 16 through 512 with zero mismatches across
 14.2 million triangles.
 
 All results are reproducible from the TOML evidence registry
-(\texttt{registry/claims.toml}, 788 claims) and accompanying Rust test suite
-(4033 tests, zero warnings).
+(\texttt{registry/claims.toml}, 804 claims) and accompanying Rust test suite
+(4079 tests, zero warnings).
 \end{abstract}
 
 \tableofcontents
@@ -1070,18 +1070,81 @@ reach significance, and re-parametrisation with the KuboResponse model
 (which derives coupling strength from first-principles exact
 diagonalisation rather than an imposed exponential) is planned.
 
-\paragraph{Limitations and future work.}
-The current implementation is CPU-only, limiting grid resolution to $64^3$.
-GPU validation at $128^3$ and $256^3$ would strengthen the convergence
-claims, particularly for the sigmoid model.  The neural pentagon correction
-architecture ($256 \to 128 \to 64 \to 16$) was chosen empirically;
-architecture search or equivariant neural networks respecting the CD
-symmetries could achieve larger reductions.  The toroidal walk of Thesis~4
-populates only 8 of 40 shells, and longer walks (or higher-dimensional
-tori) would probe the tail of the latency spectrum more thoroughly.
-Finally, extending the framework beyond sedenions to pathions ($n = 5$)
-and higher-dimensional CD algebras would test whether the Four Theses
-hold in the thermodynamic limit of infinite-dimensional CD towers.
+\subsection{Limitations and Honest Disclosure}
+\label{sec:limitations}
+
+\paragraph{Implementation constraints.}
+The CPU LBM solver limits grid resolution to $64^3$; GPU validation at
+$128^3$ (Sprint~49B) confirmed that ghost spectral peaks at those
+resolutions are BF16 quantization artifacts rather than physical
+resonances.  The neural pentagon correction architecture
+($256 \to 128 \to 64 \to 16$) was chosen empirically; equivariant
+neural networks respecting CD symmetries could achieve larger reductions.
+The toroidal walk of Thesis~4 populates only 8 of 40 shells; longer
+walks would probe the latency spectrum tail more thoroughly.
+
+\paragraph{Falsified claims.}
+Seven claims were falsified during the investigation and are reported
+here for transparency:
+\begin{itemize}
+  \item \textbf{C-781} (RT-2): Associator entropy does \emph{not}
+    increase at $\dim 16$; the primary phase transition is at
+    $\dim 4 \to 8$.
+  \item \textbf{C-789}: Sub-bin FWHM artifact in ghost spectral
+    analysis invalidated the original peak-width measurement.
+  \item \textbf{C-792, C-793}: Zero-divisor frequency lock and
+    production ghost peaks were falsified---ghost peaks appear in
+    both ZD-modulated and control runs, confirming BF16 quantization
+    noise rather than algebraic resonance.
+  \item \textbf{C-784, C-785, C-786}: Cross-catalog ghost frequency
+    detections (CHIME FRB, ATNF pulsar, Pantheon+) were contested
+    after Sprint~50 established (I-096) that FFT of sorted catalogs
+    tests distributional shape, not physical periodicity.  This is
+    methodologically analogous to the debunked Karlsson (1971)
+    redshift periodicity claims.
+\end{itemize}
+The ghost frequency falsification (I-096) constitutes an independent
+methodological contribution: sorted-catalog spectral analysis is a
+widespread technique whose pitfalls are underappreciated in the
+astrophysical literature.
+
+\paragraph{Inconclusive reframed theses.}
+Two of the four reframed theses (RT-3: CHSH--Betti bridge; RT-4:
+pulsed meltdown gate) returned inconclusive results at the grid
+resolutions tested ($N = 16^3$ and $N = 128$ respectively).  These
+are reported in Section~\ref{sec:reframed} and deferred to future
+work at larger scales.
+
+\paragraph{Open conjectures.}
+Three partially-verified conjectures remain as future work:
+\begin{itemize}
+  \item \textbf{L-450} (C-450): The 64D chingon adjacency matrix
+    uses basis-element-level labeling incompatible with our
+    cross-assessor-pair representation.  Resolving this requires
+    an explicit mapping between the two graph encodings.
+  \item \textbf{L-476} (C-476): The Algebraic Locality Principle
+    (ALP) has partial evidence across three algebraic stacks but
+    lacks a complete proof.
+  \item \textbf{L-477} (C-477): The Sky-Limit-Set hypothesis
+    connecting ET patterns to Coxeter limit sets remains a
+    conjecture with suggestive numerical support.
+\end{itemize}
+
+\paragraph{Data limitations.}
+L-band (1.42\,GHz) raw data from GBT follow-up observations of the
+Wow!\ signal (6EQUJ5) are not available in the public Breakthrough
+Listen archive; only S-band (2.25\,GHz) data exist.  This prevents
+a direct ghost frequency test at the original Wow!\ observation
+frequency.
+
+\paragraph{Future directions.}
+Extending the framework to pathions ($n = 5$) and higher CD
+algebras would test whether the Four Theses hold in the
+thermodynamic limit.  A first-principles Kubo coupling (replacing
+the lookup table with GPU exact diagonalisation at each timestep)
+would eliminate the interpolation artifact in Thesis~1.  Larger-grid
+experiments ($256^3$+) may resolve the inconclusive RT-3 and RT-4
+results.
 
 %% ===================================================================
 \section{Reframed Theses: Extended Falsification}
@@ -1203,10 +1266,11 @@ cargo run --release --bin box-kite-census
 make governance-gate
 \end{verbatim}
 
-The TOML evidence registry (\texttt{registry/claims.toml}) contains 774
+The TOML evidence registry (\texttt{registry/claims.toml}) contains 804
 claims with structured metadata including sprint, status, evidence links,
 and cross-references.  Each claim maps to specific test functions in the
-Rust test suite, enabling independent verification of any individual result.
+Rust test suite (4079 tests, zero warnings), enabling independent
+verification of any individual result.
 
 \textbf{Hardware:} AMD Ryzen 5 5600X (12 threads), 32\,GB RAM,
 NVIDIA RTX 4070 Ti (12\,GB VRAM), NVMe SSD.
@@ -1216,6 +1280,6 @@ Python 3.14 (visualization only).
 
 %% ===================================================================
 \bibliographystyle{plainnat}
-\bibliography{cayley_dickson}
+\bibliography{refs}
 
 \end{document}
