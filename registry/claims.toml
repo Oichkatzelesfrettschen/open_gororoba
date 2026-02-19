@@ -13354,3 +13354,55 @@ confidence = "very_high"
 phase = "optics"
 sprint = 56
 dependencies = ["C-862"]
+
+[[claim]]
+id = "C-864"
+statement = "Photon-graviton TCMT equations map three-diagram worldline amplitude (irreducible, tadpole, external-leg from E-073) to Ruan-Fan framework with weak-field parameter epsilon < 0.1."
+where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (three_diagram_amplitude_to_tcmt, validate_weak_field)"
+status = "Proposed"
+status_note = "Sprint 56: Bridge from gr-qc/0412095, 0710.5572, 2601.23279 (worldline QFT) to 0909.3323 (TCMT). Maps irreducible → κ_coupling, tadpole → γ_rad, external-leg → φ."
+last_verified = "2026-02-19"
+what_would_verify_refute = "VERIFY: Extract E-073 amplitudes, compute coupling via bridge, confirm weak_field_parameter < 0.1. REFUTE: coupling violates weak-field or fails to match amplitude energy scale."
+confidence = "high"
+phase = "optics"
+sprint = 56
+dependencies = ["E-073", "C-823"]
+
+[[claim]]
+id = "C-865"
+statement = "Asymmetry parameter q_grav from gravitational coupling satisfies Maksimov constraint: kappa_1 - kappa_2 = gamma_l to machine precision (relative error < 1e-10)."
+where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (validate_energy_conservation), tcmt_equations.rs (energy conservation test)"
+status = "Proposed"
+status_note = "Sprint 56: Generic TCMT constraint from 2505.00396. Energy conservation is fundamental: validates that TCMT respects quantum field theory energy balance."
+last_verified = "2026-02-19"
+what_would_verify_refute = "VERIFY: compute kappa_1 - kappa_2 for range of gravitational couplings, verify = gamma_l within 1e-10. REFUTE: systematic deviation > 1e-8."
+confidence = "very_high"
+phase = "optics"
+sprint = 56
+dependencies = ["C-864"]
+
+[[claim]]
+id = "C-866"
+statement = "Time-reversal symmetry of photon-graviton TCMT guarantees transmission S-matrix satisfies unitarity |T|^2 + |R|^2 = 1 to numerical precision (error < 1e-10)."
+where_stated = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (scattering_coefficient), amplitude_bridge.rs (validate_unitarity)"
+status = "Proposed"
+status_note = "Sprint 56: Consequence of reciprocity and time-reversal from Maksimov 2505.00396. Validates that extracted TCMT respects fundamental symmetries."
+last_verified = "2026-02-19"
+what_would_verify_refute = "VERIFY: Compute |T|^2 + |R|^2 for sampled frequencies, verify = 1 to 1e-10. REFUTE: deviation > 1e-8 at any frequency."
+confidence = "very_high"
+phase = "optics"
+sprint = 56
+dependencies = ["C-865"]
+
+[[claim]]
+id = "C-867"
+statement = "Fano lineshape from photon-graviton TCMT reproduces resonance peak and asymmetry observed in E-073 worldline amplitude weak-field limit (agreement > 99%)."
+where_stated = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (fano_lineshape, compute_cross_sections), tcmt_equations.rs (integration tests)"
+status = "Proposed"
+status_note = "Sprint 56: Ultimate validation: TCMT lineshape must match original amplitude in weak-field regime. Tests at resonance (x=0) and wings (|x| > 5)."
+last_verified = "2026-02-19"
+what_would_verify_refute = "VERIFY: Compare TCMT lineshape to E-073 amplitude at 10+ frequency points, verify max relative error < 0.01. REFUTE: deviation > 5% at any point."
+confidence = "high"
+phase = "optics"
+sprint = 56
+dependencies = ["C-866", "E-073"]
