@@ -82,11 +82,13 @@ data/artifacts/images/
 data/artifacts/*.mp4
 data/artifacts/*.png
 data/artifacts/c756_frames/
+data/artifacts/*.json
+data/artifacts/*.txt
+data/artifacts/frames_*/
 data/e027/
 data/test-e027/
-data/csv/ghost_audit/
-data/csv/wow_followup_*.csv
-data/csv/zd_resonance_*.csv
+data/csv/
+!data/csv/README.md
 data/test_zd/
 data/test_zd_1k/
 data/chsh_betti/
@@ -105,6 +107,7 @@ data/kubo_transport/
 data/equivalence/
 data/papers/
 data/evidence/
+data/sfwm_repro/
 
 # External / Downloaded Datasets (Managed via fetch-data)
 data/external/
@@ -127,13 +130,17 @@ credentials.*
 # ------------------------------------------------------------------------------
 
 # Strict TOML-only policy: markdown files are generated/ephemeral and not tracked.
-# EXCEPTIONS: Mandatory repo entrypoints.
+# EXCEPTIONS: Mandatory repo entrypoints and authoritative research syntheses.
 *.md
 ![Aa][Gg][Ee][Nn][Tt][Ss].md
 ![Cc][Ll][Aa][Uu][Dd][Ee].md
 ![Gg][Ee][Mm][Ii][Nn][Ii].md
 ![Rr][Ee][Aa][Dd][Mm][Ee].md
 !**/[Rr][Ee][Aa][Dd][Mm][Ee].md
+!TCMT_SYNTHESIS_README.md
+!docs/TCMT_PHOTON_GRAVITON_SYNTHESIS.md
+!docs/TCMT_QUICK_REFERENCE.md
+!docs/TCMT_SYNTHESIS_INDEX.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)
