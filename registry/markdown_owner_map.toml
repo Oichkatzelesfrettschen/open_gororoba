@@ -233,6 +233,33 @@ requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
 
 [[owner]]
+id = "MOWN-0191"
+path = "docs/TCMT_PHOTON_GRAVITON_SYNTHESIS.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
+
+[[owner]]
+id = "MOWN-0192"
+path = "docs/TCMT_QUICK_REFERENCE.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
+
+[[owner]]
+id = "MOWN-0193"
+path = "docs/TCMT_SYNTHESIS_INDEX.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
+
+[[owner]]
 id = "MOWN-0026"
 path = "docs/TODO.md"
 scope = "docs"
