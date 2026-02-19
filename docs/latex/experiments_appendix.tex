@@ -3,7 +3,7 @@
 
 \section{Experiments Portfolio}\label{sec:experiments-appendix}
 
-Total experiments: 40.\\[0.5em]
+Total experiments: 69.\\[0.5em]
 
 \subsection{E-001: Cayley-Dickson Motif Census}\label{sec:e001}
 
@@ -343,7 +343,7 @@ Total experiments: 40.\\[0.5em]
 
 \textbf{Run:} \texttt{cargo run --release --bin spin-decoherence-pipeline}
 
-\textbf{Claims:} T-SPIN-CD, T-PPT-NEED
+\textbf{Claims:} none
 
 \subsection{E-037: Single-Minus Amplitude Frustration Survey}\label{sec:e037}
 
@@ -353,7 +353,7 @@ Total experiments: 40.\\[0.5em]
 
 \textbf{Run:} \texttt{cargo run --release --bin amplitude-frustration-survey}
 
-\textbf{Claims:} T-AMPLITUDE-FRUSTRATION-MINIMA, T-CHAMBER-DISCRETE
+\textbf{Claims:} C-777, C-776
 
 \subsection{E-038: LHC 2025 QGP Spin Synthesis}\label{sec:e038}
 
@@ -363,7 +363,7 @@ Total experiments: 40.\\[0.5em]
 
 \textbf{Run:} \texttt{cargo run --release --bin lhc-2025-qgp-synthesis}
 
-\textbf{Claims:} T-QGP-VORTICITY, T-CMS-SIGN-CHALLENGE
+\textbf{Claims:} C-778, C-779
 
 \subsection{E-039: Wavelet Bridging Accuracy Sweep}\label{sec:e039}
 
@@ -404,4 +404,294 @@ Total experiments: 40.\\[0.5em]
 \textbf{Run:} \texttt{cargo run --release --bin chsh-wavelet-compression}
 
 \textbf{Claims:} C-706
+
+\subsection{E-043: Casimir Plate Force Comparison}\label{sec:e043}
+
+\textbf{Binary:} \texttt{casimir-plate-compare} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Computes Casimir force for Si/Ge/SiO2 symmetric plate pairs using corrected Lifshitz formula with Gauss-Legendre quadrature over transverse momentum. Verifies Si > Ge > SiO2 force ordering and eta < 1 at T=0.
+
+\textbf{Run:} \texttt{cargo run --release --bin casimir-plate-compare}
+
+\textbf{Claims:} C-738, C-739
+
+\subsection{E-044: Casimir Drude vs Plasma Model Discrepancy}\label{sec:e044}
+
+\textbf{Binary:} \texttt{casimir-drude-plasma} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Computes Drude-plasma discrepancy for Au/Ag/Cu metallic plates at separations 100nm-5um. Tests n=0 TE contribution controversy: Drude gives r\_TE=0, plasma gives finite r\_TE from omega\_p. Measures percentage discrepancy growth with distance.
+
+\textbf{Run:} \texttt{cargo run --release --bin casimir-drude-plasma}
+
+\textbf{Claims:} C-740, C-741
+
+\subsection{E-045: Wow! Signal Transcription Integrity}\label{sec:e045}
+
+\textbf{Binary:} \texttt{wow-signal-analysis} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Validates wow1977\_transcription.csv by SHA-256 checksum and character-to-intensity mapping. Verifies all 6 characters of 6EQUJ5 decode to [6, 14, 26, 30, 19, 5] via base-36. Checks background intensity levels.
+
+\textbf{Run:} \texttt{cargo run --release --bin wow-signal-analysis -- transcribe}
+
+\textbf{Claims:} C-769
+
+\subsection{E-046: Wow! Signal Drift Rate Kinematics}\label{sec:e046}
+
+\textbf{Binary:} \texttt{wow-signal-analysis} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Computes analytical Earth-motion drift rate bounds at the Wow! signal locale. Uses orbital velocity (29783 m/s) and Big Ear rotational velocity (355 m/s at lat 40.2N) to derive worst-case |drift| < 0.37 Hz/s at 1420.405 MHz.
+
+\textbf{Run:} \texttt{cargo run --release --bin wow-signal-analysis -- drift-rate}
+
+\textbf{Claims:} C-770
+
+\subsection{E-047: BL 6EQUJ5 ABACAD Cadence Falsification}\label{sec:e047}
+
+\textbf{Binary:} \texttt{wow-signal-analysis} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Parses BL 6EQUJ5 GBT manifest, applies ABACAD cadence filter (ON-OFF-ON-OFF-ON-OFF), and verifies zero candidates survive discrimination. Requires filterbank data download for full execution.
+
+\textbf{Run:} \texttt{cargo run --release --bin wow-signal-analysis -- summary}
+
+\textbf{Claims:} C-771
+
+\subsection{E-048: BL 6EQUJ5 Persistent Homology Comparison}\label{sec:e048}
+
+\textbf{Binary:} \texttt{wow-topology} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Computes persistent homology of ON and OFF cadence point clouds from BL 6EQUJ5 candidate features. Compares via Wasserstein-2 and bottleneck distances. Permutation test with 100 shuffles for topological indistinguishability.
+
+\textbf{Run:} \texttt{cargo run --release --bin wow-topology -- morphology}
+
+\textbf{Claims:} C-772
+
+\subsection{E-049: BL 6EQUJ5 Ultrametric Ecology}\label{sec:e049}
+
+\textbf{Binary:} \texttt{wow-topology} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Ultrametric fraction test on BL 6EQUJ5 candidate feature vectors. 10000 triples, 1000 permutations for null distribution. Tests whether RFI candidate structure shows non-trivial ultrametric organization vs column-shuffled null.
+
+\textbf{Run:} \texttt{cargo run --release --bin wow-topology -- ultrametric}
+
+\textbf{Claims:} C-773
+
+\subsection{E-050: Rust-Native BL 6EQUJ5 Doppler Drift Search and ABACAD Pipeline}\label{sec:e050}
+
+\textbf{Binary:} \texttt{bl-doppler-search} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+
+\textbf{Method:} Pure Rust de-Doppler shift-and-add narrowband signal search on BL 6EQUJ5 GBT filterbank HDF5 files (medium-res 0002). Per-coarse-channel SNR detection with MAD normalization, followed by ABACAD cadence discrimination (signal in ALL ON, NONE of OFF). Replaces turboSETI Python dependency.
+
+\textbf{Run:} \texttt{cargo run --release --bin bl-doppler-search --features hdf5-export -- scan --res 0002 \&\& cargo run --release --bin bl-doppler-search -- cadence \&\& cargo run --release --bin bl-doppler-search -- export}
+
+\textbf{Claims:} C-771, C-772, C-773
+
+\subsection{E-051: ZD Resonance Tau Sweep with Control}\label{sec:e051}
+
+\textbf{Binary:} \texttt{zd-resonance-sweep} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
+
+\textbf{Method:} GPU LBM tau sweep at 10 values [0.55..1.00] with ZD modulation amplitude 0.2 (sweep) and 0.0 (control). Each run: 500 steps on 64\textasciicircum{}3 grid, rho\_mean extraction, Hann-windowed FFT, top-5 peak detection with ghost frequency check. Seeding sweep varies pc.lambda at fixed tau. Linear regression of peak\_freq vs tau tests Re-dependence.
+
+\textbf{Run:} \texttt{cargo run --release --bin zd-resonance-sweep -- sweep \&\& cargo run --release --bin zd-resonance-sweep -- control \&\& cargo run --release --bin zd-resonance-sweep -- analyze}
+
+\textbf{Claims:} C-792
+
+\subsection{E-052: Pathion Sink Stability Comparison and Coupling Sweep}\label{sec:e052}
+
+\textbf{Binary:} \texttt{pathion-sink-test} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Sedenion field on 32\textasciicircum{}3 grid with toroidal vortex IC. Compare stability (instability onset step) with and without PathionSink (coupling=0.1, damping=0.01). Sweep coupling [0.01, 0.05, 0.1, 0.5, 1.0] to test monotonic stabilization.
+
+\textbf{Run:} \texttt{cargo run --release --bin pathion-sink-test -- compare \&\& cargo run --release --bin pathion-sink-test -- sweep}
+
+\textbf{Claims:} C-794
+
+\subsection{E-053: Chirality-Algebra Lock 2x2 Matrix Test}\label{sec:e053}
+
+\textbf{Binary:} \texttt{chirality-lock-test} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Run 4 configurations on 32\textasciicircum{}3 sedenion grid: (A) Standard CD + Standard vorticity, (B) Standard CD + Flipped, (C) Conjugated CD + Standard, (D) Conjugated CD + Flipped. 300 steps each. Measure helicity sign, enstrophy, energy, associator norm, stability.
+
+\textbf{Run:} \texttt{cargo run --release --bin chirality-lock-test -- matrix}
+
+\textbf{Claims:} C-795
+
+\subsection{E-054: Moonshine Filterbank ON/OFF Discrimination}\label{sec:e054}
+
+\textbf{Binary:} \texttt{moonshine-filterbank} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Project 1000 synthetic ON-source chunks (Gaussian noise + harmonic signal at SNR=0.1) and 1000 OFF-source chunks (pure noise) onto Leech Lattice via Babai CVP. Classify hole types, compute deep hole fractions. Two-proportion z-test for statistical significance.
+
+\textbf{Run:} \texttt{cargo run --release --bin moonshine-filterbank -- synth}
+
+\textbf{Claims:} C-796
+
+\subsection{E-055: Integrated Wow! + Sedenion Synthesis Pipeline}\label{sec:e055}
+
+\textbf{Binary:} \texttt{wow-sedenion-synthesis} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} End-to-end pipeline: synthetic signal generation (4096 samples with ghost frequency injection), FFT spectral analysis, Leech Lattice projection with deep hole classification, ultrametric fraction test on peak frequencies. Consolidated report with all metrics.
+
+\textbf{Run:} \texttt{cargo run --release --bin wow-sedenion-synthesis -- synth}
+
+\textbf{Claims:} C-792, C-796
+
+\subsection{E-056: Lattice-Hawking Spectrum Sweep}\label{sec:e056}
+
+\textbf{Binary:} \texttt{lattice-hawking-sweep} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Sweep grid resolutions N=16,32,64,128 with radial inflow analog black hole. For each N: find acoustic horizon, compute surface gravity and Hawking temperature, compare ideal/lattice-cutoff/viscosity-cutoff spectra, fit effective temperatures.
+
+\textbf{Run:} \texttt{cargo run --release --bin lattice-hawking-sweep}
+
+\textbf{Claims:} C-780
+
+\subsection{E-057: CD Associator Entropy Phase Census}\label{sec:e057}
+
+\textbf{Binary:} \texttt{algebra-entropy-census} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Sweep Cayley-Dickson dimensions 2,4,8,16,32,64,128,256. For each: sample 10000 random unit triples, compute associator norms, histogram into 100 bins, compute Shannon entropy H. Report delta\_H at each transition, zero divisor density.
+
+\textbf{Run:} \texttt{cargo run --release --bin algebra-entropy-census}
+
+\textbf{Claims:} C-781
+
+\subsection{E-058: CHSH-Betti Correlation Sweep}\label{sec:e058}
+
+\textbf{Binary:} \texttt{chsh-betti-sweep} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Run LBM at 4 configurations (varying tau and forcing amplitude). For each: 200 steps, snapshot every 10 steps. Compute CHSH wavelet S and VR Betti-1 at each snapshot. Spearman correlation between S and B1 across snapshots.
+
+\textbf{Run:} \texttt{cargo run --release --bin chsh-betti-sweep}
+
+\textbf{Claims:} C-782
+
+\subsection{E-059: Pulsed vs Steady Entropy Injection}\label{sec:e059}
+
+\textbf{Binary:} \texttt{meltdown-pulsed-gate} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Compare 3 protocols at equal total forcing energy: (A) steady, (B) pulsed 50\% duty cycle (2x amplitude), (C) pulsed 25\% duty cycle (4x amplitude). Measure p95 wavelet entropy at each level after N steps with Haar hard-threshold gating at eps=0.01,0.1,1.0.
+
+\textbf{Run:} \texttt{cargo run --release --bin meltdown-pulsed-gate}
+
+\textbf{Claims:} C-783
+
+\subsection{E-069: LBM Multi-Precision Comparison (BF16/FP32/FP64-GPU/FP64-CPU)}\label{sec:e069}
+
+\textbf{Binary:} \texttt{lbm-precision-sampler} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} yes
+
+\textbf{Method:} D3Q19 LBM with Kolmogorov sinusoidal forcing at identical ICs across four precision modes (GPU BF16, GPU FP32, GPU FP64, CPU FP64). Kinetic energy trace sampled periodically. FP64 GPU is reference. Tested at 16\textasciicircum{}3 and 32\textasciicircum{}3 grids.
+
+\textbf{Run:} \texttt{cargo run --bin lbm-precision-sampler -- sample --res 32 --steps 200}
+
+\textbf{Claims:} C-799, C-800
+
+\subsection{E-060: Cross-Catalog rho-ghost-fft Spectral Analysis}\label{sec:e060}
+
+\textbf{Binary:} \texttt{rho-ghost-fft} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Apply rho-ghost-fft power spectrum analysis to 10+ catalogs across 5 messengers (FRB, pulsar, SNIa, SETI, null controls). Detect phi\textasciicircum{}\{-1/2\} ghost frequency at 0.2138 normalized. Compare peak frequency, SNR, and FWHM across catalog sizes and wavebands.
+
+\textbf{Run:} \texttt{cargo run --release --bin rho-ghost-fft -- <catalog>}
+
+\textbf{Claims:} C-784, C-785, C-786, C-789
+
+\subsection{E-061: Wow! GBT S-Band Deep Spectral Stack}\label{sec:e061}
+
+\textbf{Binary:} \texttt{rho-ghost-fft} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Deep spectral analysis of 12 Breakthrough Listen GBT S-band (2.25 GHz) filterbank files from 6EQUJ5 follow-up observations. Stacked power spectrum after Doppler correction. Test for phi\textasciicircum{}\{-1/2\} ghost at S-band frequencies.
+
+\textbf{Run:} \texttt{cargo run --release --bin rho-ghost-fft -- --catalog wow-gbt}
+
+\textbf{Claims:} C-787
+
+\subsection{E-062: Multiscale CWT Ricker Wavelet Ghost Analysis}\label{sec:e062}
+
+\textbf{Binary:} \texttt{rho-ghost-fft} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Apply Continuous Wavelet Transform with Ricker wavelet to null-control datasets (Wow! S-band stacked, Swarm magnetic field). Test whether phi\textasciicircum{}\{-1/2\} ghost is a delocalized scale-invariant feature hidden from standard FFT. Compute ghost-band power fraction at width\textasciitilde{}24 (f\textasciitilde{}0.214).
+
+\textbf{Run:} \texttt{python src/scripts/analysis/cwt\_ghost\_analysis.py}
+
+\textbf{Claims:} C-787, C-790
+
+\subsection{E-063: CUDA BF16 ZD Resonance 128\textasciicircum{}3 Tau Sweep}\label{sec:e063}
+
+\textbf{Binary:} \texttt{zd-resonance-cuda} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
+
+\textbf{Method:} D3Q19 LBM at 128\textasciicircum{}3 with BF16 precision and per-cell Sedenion frustration viscosity (Exponential model, lambda=3.0). Sweep tau from 0.55 to 1.00 (10 values). For each tau: nu\_base=(tau-0.5)/3.0, compute per-cell viscosity field, 1000 steps, extract KE every 10 steps, FFT + ghost peak detection. Control run at matching resolution with constant tau (no ZD modulation). Tests C-792 (frequency locking: |slope| < 0.01 in peak\_freq vs tau) and C-793 (production ghost detection: SNR > 3 at phi\textasciicircum{}\{-1/2\}).
+
+\textbf{Run:} \texttt{cargo run --release --bin zd-resonance-cuda -- sweep --res 128 \&\& cargo run --release --bin zd-resonance-cuda -- control --res 128}
+
+\textbf{Claims:} C-792, C-793
+
+\subsection{E-064: CUDA BF16 ZD Resonance 256\textasciicircum{}3 Tau Sweep}\label{sec:e064}
+
+\textbf{Binary:} \texttt{zd-resonance-cuda} \quad \textbf{Status:} planned \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
+
+\textbf{Method:} D3Q19 LBM at 256\textasciicircum{}3 with BF16 precision. Same tau sweep protocol as E-063 but at 4x higher resolution (16.7M cells). Tests whether ghost peak narrows and converges toward 0.2138 with increasing resolution, paralleling real-data Cat1->Cat2 convergence (C-789).
+
+\textbf{Run:} \texttt{cargo run --release --bin zd-resonance-cuda -- sweep --res 256 --steps 500 \&\& cargo run --release --bin zd-resonance-cuda -- control --res 256 --steps 500}
+
+\textbf{Claims:} C-792, C-793, C-789
+
+\subsection{E-065: CUDA BF16 Reynolds Number Threshold Sweep 128\textasciicircum{}3}\label{sec:e065}
+
+\textbf{Binary:} \texttt{zd-resonance-cuda} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
+
+\textbf{Method:} Fix Sedenion coupling, sweep Reynolds number from laminar to turbulent by varying both tau (0.501-0.70) and forcing amplitude (0.001-0.5). Kolmogorov sinusoidal forcing F\_x = A*sin(2*pi*k*z/N). Motivated by real-data finding: Re\_eff=0.16 (laminar) did not produce sharp Ghost resonance. Tests whether Ghost onset requires specific turbulence intensity (L-787).
+
+\textbf{Run:} \texttt{cargo run --release --bin zd-resonance-cuda -- reynolds-sweep --res 128}
+
+\textbf{Claims:} C-792
+
+\subsection{E-066: 4D ZD Resonance 32\textasciicircum{}3 x 32 Batch Sweep}\label{sec:e066}
+
+\textbf{Binary:} \texttt{zd-resonance-4d} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
+
+\textbf{Method:} D3Q19 batch LBM at 32\textasciicircum{}3 x 32 (1.05M cells) with BF16 precision. 4th dimension (w) parametrizes Sedenion field phase offsets. Tests whether 4D spatial embedding (16 = 4\textasciicircum{}2) reveals coupling symmetries invisible in 3D. Control run with constant tau for null hypothesis.
+
+\textbf{Run:} \texttt{cargo run --release --bin zd-resonance-4d -- sweep-32 \&\& cargo run --release --bin zd-resonance-4d -- control --res 32}
+
+\textbf{Claims:} C-792, C-793
+
+\subsection{E-067: 4D ZD Resonance 64\textasciicircum{}3 x 16 Batch Sweep}\label{sec:e067}
+
+\textbf{Binary:} \texttt{zd-resonance-4d} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
+
+\textbf{Method:} D3Q19 batch LBM at 64\textasciicircum{}3 x 16 (4.2M cells, \textasciitilde{}1.4 GB GPU) with BF16 precision. Higher per-slice resolution than E-066, fewer w-slices. Tests resolution dependence of 4D ghost signatures.
+
+\textbf{Run:} \texttt{cargo run --release --bin zd-resonance-4d -- sweep-64}
+
+\textbf{Claims:} C-792, C-793
+
+\subsection{E-068: Ghost Frequency Multidimensional Statistical Hardening}\label{sec:e068}
+
+\textbf{Binary:} \texttt{ghost-spectral-audit} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
+
+\textbf{Method:} 7-method falsification sweep: (1) MAD robust noise floor with peak exclusion, (2) BH-FDR across all frequency bins, (3) Bonferroni correction for multiple testing, (4) permutation test (10000 shuffles), (5) sorted-distribution bootstrap null (5000 resamples, sorted data only), (6) Lomb-Scargle periodogram with Baluev analytic FAP, (7) multitaper Thomson PSD with F-test. Applied to 17 synthetic datasets (4 null controls, 5 sorted distributions, 4 signal injections, 4 mock catalogs). Combined meta-analysis via Fisher and Stouffer weighted Z.
+
+\textbf{Run:} \texttt{cargo run --release --bin rho-ghost-fft -- batch --datasets data/csv/ghost\_audit/ --column value --permutations 1000 --bootstrap 5000}
+
+\textbf{Claims:} C-784, C-785, C-786, C-789, C-797, C-798
+
+\subsection{E-071: Real-Data Ghost Frequency Re-Verification (Phase 5)}\label{sec:e071}
+
+\textbf{Binary:} \texttt{ghost-spectral-audit} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} 5-method falsification audit (Rigorous+Bonferroni MAD, Permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test) on 4 real astronomical catalog datasets: CHIME FRB Cat2 bonsai\_dm (N=5045), ATNF pulsar DM (N=4233), ATNF pulsar period (N=4286), Pantheon+ MU\_SH0ES (N=1701). Tests whether phi\textasciicircum{}\{-1/2\} ghost frequency is detectable under rigorous statistical framework.
+
+\textbf{Run:} \texttt{ghost-spectral-audit single --dataset <csv> --column value --permutations 10000 --bootstrap 10000 --seed 42}
+
+\textbf{Claims:} C-805
+
+\subsection{E-070: Evidence Artifact Packaging and Checksum Verification}\label{sec:e070}
+
+\textbf{Binary:} \texttt{evidence-package} \quad \textbf{Status:} completed \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+
+\textbf{Method:} Walk data/evidence/ directory, compute SHA-256 checksums for all TOML/CSV/JSON artifacts, produce MANIFEST.toml with checksums and file sizes for reproducibility appendix.
+
+\textbf{Run:} \texttt{cargo run --release --bin evidence-package -- bundle --skip-missing}
+
+\textbf{Claims:} none
 

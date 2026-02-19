@@ -6,12 +6,12 @@ version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
 test_count = 4079
-claim_count = 804
+claim_count = 805
 insight_count = 94
-experiment_count = 68
-complete_experiment_count = 23
+experiment_count = 69
+complete_experiment_count = 24
 paper_count = 19
-binary_count = 135
+binary_count = 136
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
 [sprints.s50]

@@ -1608,6 +1608,31 @@ dataset_refs = []
 reproducibility_class = "stochastic_seeded"
 
 [[experiment]]
+id = "E-071"
+title = "Real-Data Ghost Frequency Re-Verification (Phase 5)"
+binary = "ghost-spectral-audit"
+binary_registered = true
+binary_experiment_declared = "E-071"
+method = "5-method falsification audit (Rigorous+Bonferroni MAD, Permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test) on 4 real astronomical catalog datasets: CHIME FRB Cat2 bonsai_dm (N=5045), ATNF pulsar DM (N=4233), ATNF pulsar period (N=4286), Pantheon+ MU_SH0ES (N=1701). Tests whether phi^{-1/2} ghost frequency is detectable under rigorous statistical framework."
+input = "data/external/chime_frb_cat2.csv, data/external/atnf_pulsars.csv, data/external/PantheonPlusSH0ES.dat"
+output = ["data/csv/ghost_audit/real_chime_dm.csv", "data/csv/ghost_audit/real_atnf_dm.csv", "data/csv/ghost_audit/real_atnf_period.csv", "data/csv/ghost_audit/real_pantheon_mu.csv"]
+run = "ghost-spectral-audit single --dataset <csv> --column value --permutations 10000 --bootstrap 10000 --seed 42"
+run_command_sha256 = ""
+claims = ["C-805"]
+claim_refs = ["C-784", "C-785", "C-786"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "All 4 datasets: 0/20 methods reject H0. CHIME: SNR=1.99, Fisher p=0.65. ATNF DM: SNR=1.19, Fisher p=0.76. ATNF period: SNR=1.12, Fisher p=0.85. Pantheon+: SNR=0.21, Fisher p=1.0. Ghost frequency is NOT significant in any real catalog. Falsifies C-784, C-785, C-786. Confirms I-096."
+lineage_id = "XL-060"
+input_path_refs = ["data/external/chime_frb_cat2.csv", "data/external/atnf_pulsars.csv", "data/external/PantheonPlusSH0ES.dat"]
+output_path_refs = ["data/csv/ghost_audit/real_chime_dm.csv", "data/csv/ghost_audit/real_atnf_dm.csv", "data/csv/ghost_audit/real_atnf_period.csv", "data/csv/ghost_audit/real_pantheon_mu.csv"]
+dataset_refs = ["CHIME FRB Cat2", "ATNF Pulsar Catalogue", "Pantheon+ SH0ES"]
+reproducibility_class = "deterministic"
+sprint = 51
+
+[[experiment]]
 id = "E-070"
 title = "Evidence Artifact Packaging and Checksum Verification"
 binary = "evidence-package"

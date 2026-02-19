@@ -725,6 +725,12 @@ description = "CUDA BF16 ZD Resonance experiments: tau sweep, control, coupling 
 status = "active"
 
 [[binary]]
+name = "zd-resonance-bf16"
+crate = "gororoba_cli"
+description = "BF16 ZD Resonance sweep: temporal KE spectral analysis at varying tau with ghost frequency detection"
+status = "active"
+
+[[binary]]
 name = "zd-resonance-4d"
 crate = "gororoba_cli"
 description = "4D ZD Resonance via D3Q19 batch kernel: sweep w-axis Sedenion field configurations at 32^3 x nw and 64^3 x nw grids"
