@@ -3,7 +3,7 @@
 
 \section{Claims Evidence Matrix}\label{sec:claims-appendix}
 
-Total claims: 806.  Statuses: Closed/Analogy (1), Closed/Methodology-Insufficient (2), Closed/Negative-Result (3), Closed/Obstructed (1), Closed/Refuted (1), Closed/Research-Program (3), Closed/Source-Insufficient (1), Closed/Toy (2), Established (33), Falsified (12), Inconclusive (1), Partial (3), Proposed (4), Refuted (31), Superseded (10), Theoretical (1), Verified (697).
+Total claims: 818.  Statuses: Closed/Analogy (1), Closed/Methodology-Insufficient (1), Closed/Methodology-Mismatch (1), Closed/Negative-Result (3), Closed/Obstructed (1), Closed/Refuted (1), Closed/Research-Program (3), Closed/Source-Insufficient (1), Closed/Toy (2), Deferred (1), Established (35), Falsified (13), Proposed (12), Refuted (34), Superseded (10), Theoretical (1), Verified (698).
 
 \begin{longtable}{|l|p{7cm}|l|l|l|}
 \hline
@@ -918,7 +918,7 @@ C-448 & The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=32 (8
 \hline
 C-449 & Ultrametric Core Mining Hypothesis (UCMH): for multi-attribute astronomical catalogs, the minimal... & Verified & medium & `src/scripts/analysis/extract\_ultra... \\
 \hline
-C-450 & The external 64D chingon adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a... & Inconclusive & low & `crates/algebra\_core/src/experiment... \\
+C-450 & The external 64D chingon adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a... & Closed/Methodology-Mismatch & n/a & `crates/algebra\_core/src/experiment... \\
 \hline
 C-451 & 128D Cayley-Dickson cross-validation: 4032 cross-pairs confirmed, XOR partner law universal... & Verified & high & `crates/algebra\_core/src/experiment... \\
 \hline
@@ -944,7 +944,7 @@ C-461 & Lambda\_32 (the 32-row alignment) is a "pinned corner" of Lambda\_256: a
 \hline
 C-462 & XOR partner law (Thesis E): In cross-assessor pairs at dim=64, each pair index i has unique partner... & Verified & high & `crates/algebra\_core/src/experiment... \\
 \hline
-C-463 & Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K\_4 union K\_4 by parity of the... & Partial & low & `crates/algebra\_core/src/experiment... \\
+C-463 & Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K\_4 union K\_4 by parity of the... & Refuted & n/a & `crates/algebra\_core/src/experiment... \\
 \hline
 C-464 & Spectral fingerprints (Thesis G): Adjacency graph motif classes are distinguishable by spectral... & Verified & high & `crates/algebra\_core/src/experiment... \\
 \hline
@@ -970,9 +970,9 @@ C-474 & Brocade normalization: Each BK has exactly 4 brocade relabelings (one pe
 \hline
 C-475 & Sail-loop partition (automorpheme duality): The 28 O-trip sails across all 7 BKs partition into... & Verified & high & `crates/algebra\_core/src/experiment... \\
 \hline
-C-476 & Algebraic Locality Principle (ALP): In physically realized or numerically stable regimes, generator... & Partial & low & `crates/algebra\_core/src/experiment... \\
+C-476 & Algebraic Locality Principle (ALP): In sparse constraint graphs (edge density < 0.5), generator... & Established & low & `crates/algebra\_core/src/experiment... \\
 \hline
-C-477 & Sky-Limit-Set Hypothesis: For appropriate encoding of ET (Emanation Table) rules as... & Partial & low & `crates/algebra\_core/src/experiment... \\
+C-477 & Sky-Limit-Set Hypothesis: For appropriate encoding of ET (Emanation Table) rules as... & Established & low & `crates/algebra\_core/src/experiment... \\
 \hline
 C-478 & Fano Line Pairing Theorem: For any sedenion box-kite with strut constant S and any tray-rack... & Verified & medium & `crates/algebra\_core/src/experiment... \\
 \hline
@@ -1350,7 +1350,7 @@ C-667 & Thesis 2 3D Associator-Coupled Shear Thickening: Associator norm couplin
 \hline
 C-668 & Thesis 2 Power-Index Sensitivity Hierarchy: Velocity reduction from associator-coupled... & Established & medium & data/thesis\_lab/thesis2\_3d/thesis2\_... \\
 \hline
-C-669 & TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16\textasciicircum{}3 with frustration-derived... & Closed/Methodology-Insufficient & low & data/thesis\_lab/tx2/tx2\_report.toml... \\
+C-669 & TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16\textasciicircum{}3 with frustration-derived... & Refuted & high & data/thesis\_lab/tx2/tx2\_report.toml... \\
 \hline
 C-670 & SedenionField4D: 4D extension of the SedenionField lattice abstraction treats the w-dimension as... & Established & medium & crates/vacuum\_frustration/src/bridg... \\
 \hline
@@ -1538,7 +1538,7 @@ C-755 & Selective emitter efficiency for thermophotovoltaics: selective\_emitter
 \hline
 C-756 & Splicing Ordal (1985) far-IR tabulated data (0.004-0.62 eV for Au, 0.022-0.62 eV for Cu) with... & Verified & high & `crates/materials\_core/src/tabulate... \\
 \hline
-C-768 & Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial... & Proposed & medium & `crates/lbm\_vulkan/src/compute.rs`,... \\
+C-768 & Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial... & Deferred & medium & `crates/lbm\_vulkan/src/compute.rs`,... \\
 \hline
 C-757 & Photonic waveguide metrics (numerical aperture, V-parameter, confinement factor, effective mode... & Verified & high & `crates/materials\_core/src/optical\_... \\
 \hline
@@ -1568,9 +1568,9 @@ C-770 & Earth-motion drift rate at the Wow! signal locale (RA\textasciitilde{}19
 \hline
 C-771 & Breakthrough Listen ABACAD cadence at the Wow! signal locale produced no narrowband or wideband... & Verified & medium & `data/csv/bl\_6equj5\_gbt\_manifest.cs... \\
 \hline
-C-772 & ON and OFF cadence pointings from the BL 6EQUJ5 campaign are topologically indistinguishable: the... & Proposed & low & `crates/gororoba\_cli/src/bin/wow\_to... \\
+C-772 & ON and OFF cadence pointings from the BL 6EQUJ5 campaign are topologically indistinguishable: the... & Verified & medium & `crates/gororoba\_cli/src/bin/wow\_to... \\
 \hline
-C-773 & BL 6EQUJ5 candidate feature vectors exhibit non-trivial ultrametric structure compared to... & Proposed & low & `crates/gororoba\_cli/src/bin/wow\_to... \\
+C-773 & BL 6EQUJ5 candidate feature vectors exhibit non-trivial ultrametric structure compared to... & Refuted & high & `crates/gororoba\_cli/src/bin/wow\_to... \\
 \hline
 C-792 & Sedenion zero-divisor modulated viscosity in a 3D LBM simulation produces a spectral peak that... & Falsified & high & `crates/gororoba\_cli/src/bin/zd\_res... \\
 \hline
@@ -1604,7 +1604,7 @@ C-789 & FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below th
 \hline
 C-790 & CWT Ricker wavelet analysis confirms Ghost absence in Wow! S-band (ghost-band power 4\%) and Swarm... & Verified & high & `src/scripts/analysis/cwt\_ghost\_ana... \\
 \hline
-C-791 & ALICE Pb-Pb R\_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed... & Proposed & low & `crates/gororoba\_cli/src/bin/rho\_gh... \\
+C-791 & ALICE Pb-Pb R\_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed... & Falsified & high & `crates/gororoba\_cli/src/bin/rho\_gh... \\
 \hline
 C-797 & Statistical hardening of ghost frequency analysis via 7 independent methods (MAD robust noise... & Verified & high & `crates/spectral\_core/src/ghost\_spe... \\
 \hline
@@ -1625,5 +1625,29 @@ C-804 & Bridge contrast ratio (rho\_shell / rho\_interior at R1 boundary) is pos
 C-805 & Ghost frequency phi\textasciicircum{}\{-1/2\} is NOT detectable in any of four real astronomical catalog datasets... & Verified & high & `crates/gororoba\_cli/src/bin/ghost\_... \\
 \hline
 C-806 & The primary Shannon entropy phase transition in CD associator-norm distributions occurs at... & Verified & high & `crates/algebra\_core/src/analysis/e... \\
+\hline
+C-807 & Hamilton quaternions over R are associative, alternative, and division. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-808 & Split quaternions contain zero divisors and are not division algebras. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-809 & Biquaternions H tensor C are associative but lose division over real embedding due to zero divisors. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-810 & Dual quaternions inherit zero divisors from dual-number coefficients. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-811 & Real octonions O are alternative but non-associative and division. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-812 & Split octonions are alternative but not division and possess zero divisors. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-813 & Sedenions from Cayley-Dickson doubling are non-associative, non-alternative, and have zero divisors. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-814 & Complexified and dual sedenions remain non-division with zero-divisor structure. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-815 & Pathions correspond to the 32-dimensional Cayley-Dickson stage after sedenions. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-816 & Chingon, routon, and voudon labels map to 64, 128, and 256 dimensions in the same ladder. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-817 & For n>=4 Cayley-Dickson stages, algebras are not division and generally have zero divisors. & Proposed & high & registry/hypercomplex\_taxonomy.toml... \\
+\hline
+C-818 & Cayley-Dickson parameterized variants form a genuine species axis independent of naming. & Proposed & medium & registry/hypercomplex\_taxonomy.toml... \\
 \hline
 \end{longtable}
