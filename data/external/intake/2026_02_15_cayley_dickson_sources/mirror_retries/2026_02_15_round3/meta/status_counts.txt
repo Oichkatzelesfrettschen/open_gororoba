@@ -1,5 +1,0 @@
-http_404	1
-http_405	1
-http_503	3
-ok_nonpdf	12
-pdf_ok	1
