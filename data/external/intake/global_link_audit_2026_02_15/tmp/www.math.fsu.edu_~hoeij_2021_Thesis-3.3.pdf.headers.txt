@@ -1,9 +1,0 @@
-HTTP/1.1 200 OK
-Date: Sun, 15 Feb 2026 23:17:37 GMT
-Server: Apache/2.4.66 (FreeBSD) OpenSSL/3.0.16 PHP/8.4.17
-Last-Modified: Fri, 07 Jan 2022 13:45:25 GMT
-ETag: "82372-5d4fe32f12740"
-Accept-Ranges: bytes
-Content-Length: 533362
-Content-Type: application/pdf
-
