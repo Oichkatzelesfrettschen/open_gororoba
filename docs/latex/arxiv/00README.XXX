@@ -1,0 +1,3 @@
+llm_scaffold_paper.tex is the main LaTeX file.
+Compilation: pdflatex (3 passes) + bibtex.
+The .bbl file is included for convenience.
