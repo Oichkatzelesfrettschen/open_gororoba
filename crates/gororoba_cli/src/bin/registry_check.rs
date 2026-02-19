@@ -959,7 +959,7 @@ fn main() {
             .iter()
             .filter(|entry| {
                 let status = entry.status.as_deref().unwrap_or("").trim().to_lowercase();
-                status == "complete" || status == "done"
+                status == "complete" || status == "completed" || status == "done"
             })
             .count();
         binary_names_from_experiments = registry

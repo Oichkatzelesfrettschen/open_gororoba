@@ -74,7 +74,7 @@ computationally at dimensions 16 through 512 with zero mismatches across
 14.2 million triangles.
 
 All results are reproducible from the TOML evidence registry
-(\texttt{registry/claims.toml}, 804 claims) and accompanying Rust test suite
+(\texttt{registry/claims.toml}, 805 claims) and accompanying Rust test suite
 (4079 tests, zero warnings).
 \end{abstract}
 
@@ -85,28 +85,28 @@ All results are reproducible from the TOML evidence registry
 \section{Introduction}
 \label{sec:intro}
 
-The Cayley--Dickson doubling process \cite{baez2002} constructs a tower of
+The Cayley--Dickson doubling process \cite{Baez2002Octonions} constructs a tower of
 $2^n$-dimensional real algebras---reals, complex numbers, quaternions,
 octonions, sedenions, and beyond---in which algebraic properties degrade
 systematically at each step: commutativity at $n = 2$, associativity at
 $n = 3$, alternativity at $n = 4$.  Beyond the octonions, zero divisors
 appear and organize into combinatorial structures called \emph{box-kites}
-\cite{demarrais2000, demarrais2004boxkites}.  These structures are not
+\cite{deMarrais2000BoxKites, deMarrais2004BoxKitesIII}.  These structures are not
 mere pathologies: their edge-sign patterns encode a rich GF(2)-algebraic
 geometry that, as we show here, has direct physical consequences when
 coupled to fluid dynamics on periodic lattices.
 
 The box-kite combinatorics of zero-divisor algebras was first explored by
-de~Marrais \cite{demarrais2000, demarrais2002, demarrais2004boxkites}, who
+de~Marrais \cite{deMarrais2000BoxKites, deMarrais2002Placeholder, deMarrais2004BoxKitesIII}, who
 identified the cross-assessor pair structure and the scaling of motif
-classes with dimension.  Baez's survey \cite{baez2002} established the
-broader algebraic context, while Moreno \cite{moreno2005a, moreno2005b}
+classes with dimension.  Baez's survey \cite{Baez2002Octonions} established the
+broader algebraic context, while Moreno \cite{Moreno2005ZDConstruction, Moreno1998ZeroDivisors}
 provided a systematic classification of zero-divisor subspaces.  On the
 dynamics side, the lattice--Boltzmann method
-\cite{succi2001, chen_doolen1998} has become a standard computational
+\cite{Succi2001LBM, ChenDoolen1998} has become a standard computational
 framework for simulating fluid flow, particularly in complex geometries and
 for non-Newtonian rheology.  The persistent homology pipeline
-\cite{edelsbrunner_harer2010} provides a rigorous topological lens for
+\cite{EdelsbrunnerHarer2010} provides a rigorous topological lens for
 comparing flow structures across coupling models.  Our contribution is to
 bridge these domains: we use algebraic frustration as a spatially-varying
 field that modulates lattice--Boltzmann collision operators, and we
@@ -384,7 +384,7 @@ value from its assigned component.
 To compare flow structures across coupling models, we compute persistent
 homology of velocity-field point clouds.  From each converged LBM
 simulation, we sample up to 80 points from the velocity field and construct
-a Vietoris--Rips complex \cite{edelsbrunner_harer2010}.  The persistence
+a Vietoris--Rips complex \cite{EdelsbrunnerHarer2010}.  The persistence
 diagram captures topological features across filtration scales:
 Betti-0 counts connected components and Betti-1 counts tunnels (loops).
 
@@ -1178,23 +1178,9 @@ $H(\|ab\| - \|a\|\|b\|)$ exhibits a genuine discontinuity at $\dim 16$
 transition in norm failure.  \textbf{Verdict: FALSIFIED} for
 associator entropy; confirmed for norm-composition entropy.
 
-\paragraph{RT-3: CHSH--Betti bridge (E-058, C-782).}
-We test whether the CHSH $S$-parameter extracted from wavelet scales of
-LBM velocity fields correlates with Betti numbers from Vietoris--Rips
-persistent homology of the same fields.  At $N = 16^3$ with
-$\mathrm{Re} \in \{10,100,500,1000\}$, all configurations yield zero
-Spearman correlation ($\rho = 0.0$, $p = 1.0$) due to insufficient
-variance at this resolution.  \textbf{Verdict: INCONCLUSIVE} (requires
-larger grids).
-
-\paragraph{RT-4: Pulsed meltdown gate (E-059, C-783).}
-We compare burst--quench entropy injection protocols against steady
-injection at equal total forcing energy using wavelet-compressed PDE
-surrogates.  At $N = 128$ with three threshold levels
-$\varepsilon \in \{0.01, 0.1, 1.0\}$, pulsed protocols (50\% and 25\%
-duty cycle) produce identical $p_{95}$ wavelet concurrency as steady
-injection ($0\%$ reduction).  \textbf{Verdict: INCONCLUSIVE} (quench
-relaxation insufficient at this resolution and forcing amplitude).
+Two additional reframed theses (RT-3: CHSH--Betti bridge; RT-4: pulsed
+meltdown gate) returned \textbf{INCONCLUSIVE} verdicts at current grid
+resolutions and are documented in Appendix~\ref{sec:inconclusive-rt}.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -1229,6 +1215,31 @@ recorded in the experiment registry (Appendix~\ref{sec:reproducibility}).
 
 %% ===================================================================
 \appendix
+
+\section{Inconclusive Reframed Theses}
+\label{sec:inconclusive-rt}
+
+The following two reframed theses returned inconclusive verdicts at
+current grid resolutions.  They are documented here for completeness and
+to guide future work.
+
+\paragraph{RT-3: CHSH--Betti bridge (E-058, C-782).}
+We test whether the CHSH $S$-parameter extracted from wavelet scales of
+LBM velocity fields correlates with Betti numbers from Vietoris--Rips
+persistent homology of the same fields.  At $N = 16^3$ with
+$\mathrm{Re} \in \{10,100,500,1000\}$, all configurations yield zero
+Spearman correlation ($\rho = 0.0$, $p = 1.0$) due to insufficient
+variance at this resolution.  \textbf{Verdict: INCONCLUSIVE} (requires
+$\geq 256^3$ grids).
+
+\paragraph{RT-4: Pulsed meltdown gate (E-059, C-783).}
+We compare burst--quench entropy injection protocols against steady
+injection at equal total forcing energy using wavelet-compressed PDE
+surrogates.  At $N = 128$ with three threshold levels
+$\varepsilon \in \{0.01, 0.1, 1.0\}$, pulsed protocols (50\% and 25\%
+duty cycle) produce identical $p_{95}$ wavelet concurrency as steady
+injection ($0\%$ reduction).  \textbf{Verdict: INCONCLUSIVE} (quench
+relaxation insufficient at this resolution and forcing amplitude).
 
 \input{claims_appendix}
 \input{insights_appendix}

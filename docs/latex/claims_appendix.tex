@@ -3,7 +3,7 @@
 
 \section{Claims Evidence Matrix}\label{sec:claims-appendix}
 
-Total claims: 774.  Statuses: Closed/Analogy (1), Closed/Methodology-Insufficient (1), Closed/Negative-Result (3), Closed/Obstructed (1), Closed/Refuted (1), Closed/Research-Program (3), Closed/Source-Insufficient (1), Closed/Toy (2), Established (30), Inconclusive (1), Partial (3), Proposed (1), Provisional (7), Refuted (31), Superseded (10), Theoretical (1), Verified (677).
+Total claims: 805.  Statuses: Closed/Analogy (1), Closed/Methodology-Insufficient (1), Closed/Negative-Result (3), Closed/Obstructed (1), Closed/Refuted (1), Closed/Research-Program (3), Closed/Source-Insufficient (1), Closed/Toy (2), Established (30), Falsified (10), Inconclusive (3), Partial (3), Proposed (6), Provisional (7), Refuted (31), Superseded (10), Theoretical (1), Verified (691).
 
 \begin{longtable}{|l|p{7cm}|l|l|l|}
 \hline
@@ -52,9 +52,9 @@ C-018 & "Wheels" (Carlstrom) are commutative monoid-based structures <H,0,1,+,*,
 \hline
 C-019 & Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson... & Refuted & n/a & convos narrative,... \\
 \hline
-C-020 & Legacy 16D "Zero-Divisor Adjacency Matrix" represents valid algebra. & Refuted & n/a & `data/csv/legacy/` \\
+C-020 & REFUTED: Legacy 16D "Zero-Divisor Adjacency Matrix" does NOT represent valid algebra. Found to be... & Refuted & n/a & `data/csv/legacy/` \\
 \hline
-C-021 & 1024D Basis-to-Lattice mapping is a consistent function. & Refuted & n/a & `data/csv/legacy/` \\
+C-021 & REFUTED: Hypothesis tested: 1024D Basis-to-Lattice mapping is a consistent function.... Result:... & Refuted & n/a & `data/csv/legacy/` \\
 \hline
 C-022 & Toy model: map Cayley-Dickson doubling level n to surreal birthday n and test the CD property-loss... & Closed/Analogy & n/a & `docs/theory/unified\_tensor\_wheel\_c... \\
 \hline
@@ -950,7 +950,7 @@ C-464 & Spectral fingerprints (Thesis G): Adjacency graph motif classes are dist
 \hline
 C-465 & Scalar shadow action (Thesis D): For each lattice point, the scalar shadow pi(b) =... & Verified & high & `crates/algebra\_core/src/experiment... \\
 \hline
-C-466 & Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT exist as a linear endomorphism... & Refuted & n/a & `crates/algebra\_core/src/analysis/c... \\
+C-466 & REFUTED: Hypothesis tested: Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT... & Refuted & n/a & `crates/algebra\_core/src/analysis/c... \\
 \hline
 C-467 & Null-model identity (Thesis H): For Euclidean-distance ultrametric fraction, RowPermutation and... & Verified & high & `crates/stats\_core/src/ultrametric/... \\
 \hline
@@ -1402,17 +1402,17 @@ C-693 & Primary-source mapping candidate: RI-030/RI-031 ('magic particles' cover
 \hline
 C-694 & Primary-source mapping candidate: RI-033 maps to Nature DOI 10.1038/s41586-025-09917-9. & Provisional & medium & registry/hypercomplex\_taxonomy\_prom... \\
 \hline
-T-SPIN-CD & Non-associative algebraic frustration induces monotonic spin decoherence in Lambda-pair systems. & Verified & high & Thesis 5 Pipeline... \\
+C-774 & Non-associative algebraic frustration induces monotonic spin decoherence in Lambda-pair systems. & Verified & high & Thesis 5 Pipeline... \\
 \hline
-T-PPT-NEED & The scalar relative polarization parameter P is insufficient to distinguish entangled states from... & Verified & high & Thesis 5 Pipeline... \\
+C-775 & The scalar relative polarization parameter P is insufficient to distinguish entangled states from... & Verified & high & Thesis 5 Pipeline... \\
 \hline
-T-CHAMBER-DISCRETE & Degenerate kinematic slices in QFT (short-range selection in spin correlation, half-collinear locus... & Verified & high & STAR spin correlation paper... \\
+C-776 & Degenerate kinematic slices in QFT (short-range selection in spin correlation, half-collinear locus... & Verified & high & STAR spin correlation paper... \\
 \hline
-T-AMPLITUDE-FRUSTRATION-MINIMA & The nonzero region R1 for single-minus gluon amplitudes corresponds to the zero-frustration locus... & Verified & high & Amplitude Frustration Survey CLI... \\
+C-777 & The nonzero region R1 for single-minus gluon amplitudes corresponds to the zero-frustration locus... & Verified & high & Amplitude Frustration Survey CLI... \\
 \hline
-T-QGP-VORTICITY & QGP vorticity induces a global spin polarization that can be modeled as a biased decoherence... & Verified & medium & QGP Frustration Bridge... \\
+C-778 & QGP vorticity induces a global spin polarization that can be modeled as a biased decoherence... & Verified & medium & QGP Frustration Bridge... \\
 \hline
-T-CMS-SIGN-CHALLENGE & The CMS azimuthal polarization sign challenge can be resolved by introducing an algebraic twist... & Verified & medium & LHC 2025 QGP Synthesis CLI... \\
+C-779 & The CMS azimuthal polarization sign challenge can be resolved by introducing an algebraic twist... & Verified & medium & LHC 2025 QGP Synthesis CLI... \\
 \hline
 C-695 & E7 Chevalley-Tits structure constants satisfy the Jacobi identity for all non-degenerate root... & Verified & high & `crates/algebra\_core/src/lie/lyndon... \\
 \hline
@@ -1561,5 +1561,67 @@ C-765 & Photonic band gap methods (quarter-wave stack gap, peak reflectivity, ba
 C-766 & Electrooptic and acoustooptic methods (Pockels delta\_n, Kerr electrooptic, half-wave voltage,... & Verified & high & `crates/materials\_core/src/optical\_... \\
 \hline
 C-767 & Three-region tabulated n,k splice (Ordal IR + J\&C visible + Henke XUV, 10-30000 eV) for Au, Ag, Cu... & Verified & high & -- \\
+\hline
+C-769 & The 1977 Wow! signal 6EQUJ5 sequence is faithfully transcribed from the archival printout into a... & Verified & medium & `crates/data\_core/src/catalogs/wow.... \\
+\hline
+C-770 & Earth-motion drift rate at the Wow! signal locale (RA\textasciitilde{}19h25m, Dec\textasciitilde{}-27d) is bounded by |drift| <... & Verified & medium & `crates/gororoba\_cli/src/bin/wow\_si... \\
+\hline
+C-771 & Breakthrough Listen ABACAD cadence at the Wow! signal locale produced no narrowband or wideband... & Verified & medium & `data/csv/bl\_6equj5\_gbt\_manifest.cs... \\
+\hline
+C-772 & ON and OFF cadence pointings from the BL 6EQUJ5 campaign are topologically indistinguishable: the... & Proposed & low & `crates/gororoba\_cli/src/bin/wow\_to... \\
+\hline
+C-773 & BL 6EQUJ5 candidate feature vectors exhibit non-trivial ultrametric structure compared to... & Proposed & low & `crates/gororoba\_cli/src/bin/wow\_to... \\
+\hline
+C-792 & Sedenion zero-divisor modulated viscosity in a 3D LBM simulation produces a spectral peak that... & Falsified & high & `crates/gororoba\_cli/src/bin/zd\_res... \\
+\hline
+C-793 & The ghost frequency at phi\textasciicircum{}\{-1/2\} \textasciitilde{} 0.786 cycles/sample is detectable at rank <= 3 with SNR > 5.0... & Falsified & high & `crates/gororoba\_cli/src/bin/rho\_gh... \\
+\hline
+C-794 & A Pathionic heat sink (virtual dim-32 scalar absorber coupled to the Sedenion associator norm)... & Falsified & high & `crates/gororoba\_cli/src/bin/pathio... \\
+\hline
+C-795 & Macroscopic vortex handedness (helicity sign) is locked to the Sedenion Cayley-Dickson... & Falsified & high & `crates/gororoba\_cli/src/bin/chiral... \\
+\hline
+C-796 & Signal chunks projected onto the Leech Lattice (Lambda\_24) via Babai CVP show statistically... & Falsified & high & `crates/gororoba\_cli/src/bin/moonsh... \\
+\hline
+C-780 & The D3Q19 lattice UV cutoff bounds the effective analog Hawking temperature: the viscosity-cutoff... & Verified & medium & `crates/gr\_core/src/acoustic\_metric... \\
+\hline
+C-781 & Shannon entropy of the Cayley-Dickson associator-norm distribution exhibits a phase transition at... & Falsified & high & `crates/algebra\_core/src/analysis/e... \\
+\hline
+C-782 & The CHSH wavelet S parameter of LBM velocity fields correlates with Betti-1 topology (from VR... & Inconclusive & low & `crates/spectral\_core/src/chsh\_bett... \\
+\hline
+C-783 & Pulsed (burst-quench) entropy injection with 50\% duty cycle reduces p95 wavelet entropy by more... & Inconclusive & medium & `crates/spectral\_core/src/pde\_surro... \\
+\hline
+C-784 & Ghost frequency phi\textasciicircum{}\{-1/2\} detected in CHIME FRB Catalog 2 dispersion measures at f=0.218... & Falsified & high & `crates/gororoba\_cli/src/bin/rho\_gh... \\
+\hline
+C-785 & Ghost frequency phi\textasciicircum{}\{-1/2\} detected in ATNF Pulsar Catalog dispersion measures at f=0.206... & Falsified & low & `crates/gororoba\_cli/src/bin/rho\_gh... \\
+\hline
+C-786 & Ghost frequency phi\textasciicircum{}\{-1/2\} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized,... & Falsified & medium & `crates/gororoba\_cli/src/bin/rho\_gh... \\
+\hline
+C-787 & Ghost frequency phi\textasciicircum{}\{-1/2\} absent in S-band (2.25 GHz) Wow! GBT follow-up data. Stacked SNR=0.38... & Verified & high & `crates/gororoba\_cli/src/bin/rho\_gh... \\
+\hline
+C-788 & Ghost frequency phi\textasciicircum{}\{-1/2\} absent in BH entropy, Gaia DR3 parallax, SDSS DR18 quasar redshift,... & Verified & high & `crates/gororoba\_cli/src/bin/rho\_gh... \\
+\hline
+C-789 & FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N.... & Falsified & high & `crates/gororoba\_cli/src/bin/rho\_gh... \\
+\hline
+C-790 & CWT Ricker wavelet analysis confirms Ghost absence in Wow! S-band (ghost-band power 4\%) and Swarm... & Verified & high & `src/scripts/analysis/cwt\_ghost\_ana... \\
+\hline
+C-791 & ALICE Pb-Pb R\_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed... & Proposed & low & `crates/gororoba\_cli/src/bin/rho\_gh... \\
+\hline
+C-797 & Statistical hardening of ghost frequency analysis via 7 independent methods (MAD robust noise... & Verified & high & `crates/spectral\_core/src/ghost\_spe... \\
+\hline
+C-798 & FFT of sorted catalog values tests distributional shape (quantile function regularity), not... & Verified & high & `crates/spectral\_core/src/ghost\_spe... \\
+\hline
+C-799 & FP32 GPU converges to FP64 GPU reference within 3.5e-5 relative KE error at 32\textasciicircum{}3. BF16 is... & Verified & high & `crates/gororoba\_cli/src/bin/lbm\_pr... \\
+\hline
+C-800 & GPU FP64 and CPU FP64 D3Q19 LBM KE traces diverge by \textasciitilde{}1\% at 32\textasciicircum{}3. Both GPU (kernels\_fp64.cu) and... & Verified & high & `crates/gororoba\_cli/src/bin/lbm\_pr... \\
+\hline
+C-801 & Cayley-Dickson projection invariance: for each Lambda level (256..2048), the CD difference... & Verified & high & crates/algebra\_core/src/analysis/pr... \\
+\hline
+C-802 & Simplicial Betti numbers computed via Z\_2 Gaussian elimination match known values for standard... & Verified & high & crates/stats\_core/src/homology.rs \\
+\hline
+C-803 & Sedenion ZD box-kite topology (de Marrais 2000) and generic adjacency constructor enable systematic... & Proposed & medium & crates/optics\_core/src/absorber\_ben... \\
+\hline
+C-804 & Bridge contrast ratio (rho\_shell / rho\_interior at R1 boundary) is positive and finite for all... & Proposed & medium & crates/cosmology\_core/src/bypass\_mo... \\
+\hline
+C-805 & Ghost frequency phi\textasciicircum{}\{-1/2\} is NOT detectable in any of four real astronomical catalog datasets... & Verified & high & `crates/gororoba\_cli/src/bin/ghost\_... \\
 \hline
 \end{longtable}
