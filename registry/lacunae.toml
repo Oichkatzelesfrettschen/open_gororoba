@@ -161,9 +161,9 @@ id = "L-782"
 origin = "legacy_manual"
 area = "claims"
 title = "Unresolved claim status for C-782"
-description = "C-782 remains INCONCLUSIVE (E-058: rho=0.0, p=1.0 at N=16^3). Needs larger grid (64^3+) to produce meaningful topology. Research frontier, not a blocker. DISCLOSED: Documented as inconclusive reframed thesis in paper; moved to supplementary appendix."
+description = "RESOLVED: C-782 FALSIFIED in Sprint 51 (E-058 upgraded to GPU FP64 at 32^3). CHSH S parameter is a structural invariant (S=2.0 exactly) for sinusoidal velocity profiles -- normalized wavelet correlators cancel amplitude scaling. Betti numbers also invariant (laminar band topology). See I-098."
 priority = "medium"
-status = "disclosed"
+status = "resolved"
 claim_refs = ["C-782"]
 source_refs = []
 related_marker_ids = []
@@ -173,9 +173,9 @@ id = "L-783"
 origin = "legacy_manual"
 area = "claims"
 title = "Unresolved claim status for C-783"
-description = "C-783 remains INCONCLUSIVE (E-059: 0% reduction at N=128). Pulsed = steady at current grid size. Needs larger N or different duty cycle. Research frontier, not a blocker. DISCLOSED: Documented as inconclusive reframed thesis in paper; moved to supplementary appendix."
+description = "RESOLVED: C-783 FALSIFIED in Sprint 51 (E-059 rerun with hardened params: rho=5.0, nu=0.001, steps=1000, dt=1e-3). Per-step wavelet hard-thresholding erases temporal duty-cycle structure, making pulsed and steady protocols indistinguishable. Shannon entropy confirms: <0.05% difference."
 priority = "medium"
-status = "disclosed"
+status = "resolved"
 claim_refs = ["C-783"]
 source_refs = []
 related_marker_ids = []
