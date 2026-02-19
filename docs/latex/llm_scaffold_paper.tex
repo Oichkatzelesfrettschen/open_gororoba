@@ -74,8 +74,8 @@ computationally at dimensions 16 through 512 with zero mismatches across
 14.2 million triangles.
 
 All results are reproducible from the TOML evidence registry
-(\texttt{registry/claims.toml}, 806 claims) and accompanying Rust test suite
-(4084 tests, zero warnings).
+(\texttt{registry/claims.toml}, 818 claims) and accompanying Rust test suite
+(4110 tests, zero warnings).
 \end{abstract}
 
 \tableofcontents
@@ -122,7 +122,7 @@ ratio between forcing regimes.  Thesis~3 achieves 78\% pentagon-identity
 violation reduction via neural correction.  Thesis~4 recovers a power-law
 latency spectrum ($R^2 = 0.995$) from sedenion-keyed toroidal walks.  All
 four theses pass simultaneously in a unified synthesis engine, backed by
-806 verifiable claims and 4084 automated tests with zero compiler warnings.
+818 verifiable claims and 4110 automated tests with zero compiler warnings.
 
 Second, we prove the \emph{Anti-Diagonal Parity Theorem} (APT), which
 provides a complete GF(2)-algebraic mechanism for the Double 3:1 Law
@@ -1260,7 +1260,7 @@ structure is not accidental: the 3:1 ratio is a theorem of GF(2) linear
 algebra, holding universally for all CD dimensions $\geq 16$.
 
 All results are fully reproducible from the open-source project repository.
-The evidence base consists of 806 claims in a machine-readable TOML
+The evidence base consists of 818 claims in a machine-readable TOML
 registry, verified by 4084 automated tests with zero compiler warnings and
 zero clippy lints.  Every numerical result cited in this paper can be
 reproduced by executing the corresponding binary with the parameters
@@ -1314,7 +1314,7 @@ complete verification pipeline consists of the following steps:
 # Build all binaries (136 binaries, 26 crates)
 cargo build --release --workspace -j$(nproc)
 
-# Run full test suite (4084 tests, zero failures)
+# Run full test suite (4110 tests, zero failures)
 cargo test --workspace -j$(nproc)
 
 # Verify zero warnings (clippy lints are errors)
@@ -1339,7 +1339,7 @@ make governance-gate
 The TOML evidence registry (\texttt{registry/claims.toml}) contains 804
 claims with structured metadata including sprint, status, evidence links,
 and cross-references.  Each claim maps to specific test functions in the
-Rust test suite (4084 tests, zero warnings), enabling independent
+Rust test suite (4110 tests, zero warnings), enabling independent
 verification of any individual result.
 
 \textbf{Hardware:} AMD Ryzen 5 5600X3D (12 threads, 96\,MB V-Cache), 32\,GB RAM,
