@@ -161,7 +161,7 @@ id = "L-669"
 origin = "legacy_manual"
 area = "claims"
 title = "Unresolved claim status for C-669"
-description = "C-669 Closed/Methodology-Insufficient (Sprint 53). 16^3 grid inadequate for turbulent regime. Higher-resolution re-run at 128^3 was considered but C-669 terminal status stands -- the methodology insight (positive exponent = anti-correlation) is recorded. Sprint 54B: resolved."
+description = "Sprint 54: C-669 reopened and re-executed at 128^3 CPU FP64 (E-070). Result: REFUTED. 0/5 lambda values resolve from Undetermined. Positive power-law exponent persists (+0.18 to +0.14) across 512x more cells than original 16^3. The viscosity-to-filtration loop genuinely fails to produce a determinable latency law."
 priority = "medium"
 status = "resolved"
 claim_refs = ["C-669"]
