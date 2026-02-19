@@ -571,3 +571,9 @@ FFT of sorted catalog values (the quantile function) measures regularity of the 
 
 Computing Betti numbers via Z\_2 Gaussian elimination on boundary matrices generalizes the graph-based betti\_0/betti\_1 in hypergraph.rs to arbitrary simplicial dimension. The key implementation insight is that Gaussian elimination over GF(2) requires a while-loop (not for-loop) because the row index must advance only on successful pivot, not on column skip. Validated on point, triangle boundary, filled triangle, disconnected components, and the 7-vertex minimal torus triangulation (Z/7Z orbit construction giving b0=1, b1=2, b2=1).
 
+\subsection{I-098: CHSH Wavelet S Parameter is a Structural Invariant for Sinusoidal Velocity Profiles}\label{sec:i098}
+
+\textbf{Date:} 2026-02-18 \quad \textbf{Status:} Verified \quad \textbf{Claims:} C-782
+
+The CHSH-like S parameter computed from Haar DWT of a sinusoidal velocity profile u\_x(y) = A*sin(2*pi*y/N) equals exactly S=2.0, independent of amplitude A. The normalized correlators E(i,j) = c\_i*c\_j/sqrt(c\_i\textasciicircum{}2*c\_j\textasciicircum{}2) cancel amplitude scaling, leaving S determined solely by the wavelet coefficient SHAPE (ratio of scale energies), not their magnitude. For sinusoidal profiles, this shape is fixed. This extends C-706 (CHSH invariance under Haar compression of a single signal) to temporal invariance: as Kolmogorov flow develops (amplitude grows while shape is preserved), S remains constant at every timestep. Combined with Betti-1 topological invariance of laminar band structure, the CHSH-Betti correlation hypothesis (C-782) is structurally unfalsifiable for laminar flows -- it requires turbulent flow regimes where the velocity profile shape itself evolves.
+
