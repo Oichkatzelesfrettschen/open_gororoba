@@ -9,7 +9,7 @@ companion_docs = ["docs/TODO.md", "docs/NEXT_ACTIONS.md"]
 status = "active"
 status_token = "ACTIVE"
 authoritative = true
-workstream_count = 10
+workstream_count = 11
 status_allowlist = ["planned", "active", "in_progress", "done", "paused", "blocked"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -156,4 +156,17 @@ claims = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 dependencies = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
+
+[[workstream]]
+id = "WS-PUB-001"
+name = "Phase 5: Publication Preparation"
+priority = "high"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+description = "Prepare the LLM-Scaffold monograph for submission. Paper compilation clean (118pp, 0 errors). Appendices auto-generated. Remaining: bibliography audit (all BIB-* entries cite primary sources), citation density review (sections 4-6 under-cited), reviewer evidence package, abstract/title refinement."
+primary_outputs = ["docs/latex/llm_scaffold_paper.tex", "docs/latex/out/llm_scaffold_paper.pdf", "docs/latex/claims_appendix.tex", "docs/latex/experiments_appendix.tex", "docs/latex/insights_appendix.tex", "docs/latex/reproducibility_appendix.tex"]
+claims = []
+dependencies = []
+acceptance_criteria = ["Paper compiles with zero errors and zero undefined references.", "All 806 claims appear in claims appendix.", "All experiment binaries listed in reproducibility appendix.", "Bibliography entries resolve to primary sources.", "workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["docs/latex/llm_scaffold_paper.tex", "docs/latex/out/llm_scaffold_paper.pdf"]
 
