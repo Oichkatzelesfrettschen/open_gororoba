@@ -138,7 +138,7 @@ SKIP_EXTS = {
 
 
 def _is_skipped_dirname(name: str) -> bool:
-    return name in SKIP_DIRS or name.startswith("target")
+    return name in SKIP_DIRS or name.startswith("target") or name.endswith("_venv")
 
 
 def iter_files(repo_root: Path) -> list[Path]:

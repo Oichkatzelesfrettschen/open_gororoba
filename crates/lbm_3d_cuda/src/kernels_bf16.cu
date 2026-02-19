@@ -132,6 +132,99 @@ extern "C" __global__ void lbm_step_fused_bf16_kernel(
     }
 }
 
+// 4D Kernel: Treats 4th dim (w) as independent 3D worlds.
+// Allows massive batch simulation of 32^4 or 64^4 grids in one launch.
+// Indexing: idx = x + nx*(y + ny*(z + nz*w))
+// Streaming: periodic in x, y, z; isolated in w.
+extern "C" __global__ void lbm_step_fused_bf16_4d_batch_kernel(
+    const __nv_bfloat16* f_in,      // Input distributions
+    __nv_bfloat16* f_out,           // Output distributions
+    __nv_bfloat16* rho_out,         // Density output
+    __nv_bfloat16* u_out,           // Velocity output
+    const __nv_bfloat16* force,     // Force field
+    const __nv_bfloat16* tau,       // Relaxation time
+    int nx, int ny, int nz, int nw
+) {
+    // 4D grid mapping strategy:
+    // We map CUDA 3D grid (gx, gy, gz) to 4D problem space.
+    // Standard mapping: x=thread.x, y=thread.y, zw=thread.z.
+    // zw = z + nz*w.
+    
+    int x = blockIdx.x * blockDim.x + threadIdx.x;
+    int y = blockIdx.y * blockDim.y + threadIdx.y;
+    int zw_global = blockIdx.z * blockDim.z + threadIdx.z;
+    
+    int z = zw_global % nz;
+    int w = zw_global / nz;
+
+    if (x >= nx || y >= ny || w >= nw) return;
+
+    // Linear index in 4D array
+    int vol_3d = nx * ny * nz;
+    int idx_3d = x + nx * (y + ny * z);
+    long long idx_4d = (long long)w * vol_3d + idx_3d;
+
+    // 1. Load macroscopic (convert BF16 -> FP32)
+    float rho_local = 0.0f;
+    float mx = 0.0f, my = 0.0f, mz = 0.0f;
+    float f_local[19];
+
+    for (int i = 0; i < 19; i++) {
+        float val = __bfloat162float(f_in[idx_4d * 19 + i]);
+        if (!finite_f32(val)) val = 0.0f;
+        f_local[i] = val;
+        rho_local += val;
+        mx += D3Q19_CX[i] * val;
+        my += D3Q19_CY[i] * val;
+        mz += D3Q19_CZ[i] * val;
+    }
+
+    float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+    if (finite_f32(rho_local) && rho_local > 1.0e-20f) {
+        float inv_rho = 1.0f / rho_local;
+        ux = mx * inv_rho;
+        uy = my * inv_rho;
+        uz = mz * inv_rho;
+    } else {
+        rho_local = 1.0f;
+    }
+
+    rho_out[idx_4d] = __float2bfloat16(rho_local);
+    u_out[idx_4d * 3 + 0] = __float2bfloat16(ux);
+    u_out[idx_4d * 3 + 1] = __float2bfloat16(uy);
+    u_out[idx_4d * 3 + 2] = __float2bfloat16(uz);
+
+    // 2. Collision
+    float f_eq[19];
+    float u_vec[3] = {ux, uy, uz};
+    compute_equilibrium_bf16(f_eq, rho_local, u_vec);
+
+    float tau_local = __bfloat162float(tau[idx_4d]);
+    float inv_tau = 1.0f / tau_local;
+    float prefactor = 1.0f - 0.5f * inv_tau;
+
+    float fx = __bfloat162float(force[idx_4d * 3 + 0]);
+    float fy = __bfloat162float(force[idx_4d * 3 + 1]);
+    float fz = __bfloat162float(force[idx_4d * 3 + 2]);
+
+    for (int i = 0; i < 19; i++) {
+        float fi = f_local[i] - (f_local[i] - f_eq[i]) * inv_tau;
+        float eix = (float)D3Q19_CX[i]; float eiy = (float)D3Q19_CY[i]; float eiz = (float)D3Q19_CZ[i];
+        float s_i = ( (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz ) * 3.0f 
+                  + ( eix * ux + eiy * uy + eiz * uz ) * ( eix * fx + eiy * fy + eiz * fz ) * 9.0f;
+        fi += prefactor * D3Q19_WF[i] * s_i;
+
+        // 3. Streaming (3D periodic within w-slice)
+        int x_next = (x + D3Q19_CX[i] + nx) % nx;
+        int y_next = (y + D3Q19_CY[i] + ny) % ny;
+        int z_next = (z + D3Q19_CZ[i] + nz) % nz;
+        
+        long long idx_next_4d = (long long)w * vol_3d + (x_next + nx * (y_next + ny * z_next));
+        
+        f_out[idx_next_4d * 19 + i] = __float2bfloat16(fi);
+    }
+}
+
 extern "C" __global__ void initialize_uniform_bf16_kernel(
     __nv_bfloat16* f,
     __nv_bfloat16* rho,

@@ -5,22 +5,22 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 4007
-claim_count = 784
+test_count = 4033
+claim_count = 788
 insight_count = 90
-experiment_count = 53
+experiment_count = 57
 complete_experiment_count = 0
 paper_count = 19
-binary_count = 126
+binary_count = 130
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
 [sprints.s49]
 number = 49
 date = "2026-02-18"
-test_count = 4007
-claim_count = 784
+test_count = 4033
+claim_count = 788
 insight_count = 90
-summary = "Sprint 49: Zero-Divisor Resonance Falsification & Sedenion-Moonshine Synthesis. Infrastructure phase: extracted ghost_spectral shared module from rho_ghost_fft into spectral_core, parameterized zd_gen.wgsl shader (pc.lambda), added step_with_params/read_rho_field to GororobaEngine, implemented extended Golay code [24,12,8] (4096 codewords, 7 tests) and Leech Lattice Lambda_24 via Construction A with Babai CVP (8 tests), added PathionSink struct and ChiralityMode enum to gororoba_engine, added cd_multiply_conjugated for chirality inversion. 6 new binaries: zd-resonance-sweep (GPU tau sweep), pathion-sink-test (sedenion field stability), chirality-lock-test (2x2 CD/vorticity matrix), moonshine-filterbank (Leech Lattice signal discrimination), wow-sedenion-synthesis (integrated pipeline), dataset-fetch-all (bulk provider download). Claims C-774..C-778, Experiments E-051..E-055, Insight I-093. All Proposed, awaiting experiment execution."
+summary = "Sprint 49: Zero-Divisor Resonance Falsification, Sedenion-Moonshine Synthesis, and Four Reframed Theses. Infrastructure: extracted ghost_spectral, parameterized zd_gen.wgsl, Golay [24,12,8], Leech Lambda_24 CVP, PathionSink, ChiralityMode, cd_multiply_conjugated. Reframed Theses: (T1) acoustic metric + lattice-Hawking UV cutoff (C-780 Verified), (T2) CD associator entropy census (C-781 Falsified: entropy DECREASES at dim=16), (T3) CHSH-Betti bridge (C-782 Inconclusive: zero variance at N=16), (T4) pulsed meltdown gate (C-783 Inconclusive: 0% reduction). 10 binaries, Claims C-774..C-783, Experiments E-051..E-059."
 
 [sprints.s48]
 number = 48

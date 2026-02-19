@@ -54,6 +54,7 @@
 //! - Chan et al. (2013): GRay -- GPU ray tracing in relativistic spacetimes
 
 pub mod absorption;
+pub mod acoustic_metric;
 pub mod constants;
 pub mod coordinates;
 pub mod cosmology_algebra_bridge;
@@ -63,6 +64,7 @@ pub mod gravitational_waves;
 pub mod hawking;
 pub mod kerr;
 pub mod kerr_de_sitter;
+pub mod lattice_hawking;
 pub mod kerr_newman;
 pub mod metric;
 pub mod novikov_thorne;

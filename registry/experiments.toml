@@ -1269,3 +1269,99 @@ input_path_refs = []
 output_path_refs = ["data/csv/wow_sedenion_report.csv"]
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-056"
+title = "Lattice-Hawking Spectrum Sweep"
+binary = "lattice-hawking-sweep"
+binary_registered = true
+binary_experiment_declared = "E-056"
+method = "Sweep grid resolutions N=16,32,64,128 with radial inflow analog black hole. For each N: find acoustic horizon, compute surface gravity and Hawking temperature, compare ideal/lattice-cutoff/viscosity-cutoff spectra, fit effective temperatures."
+input = "Parametric sweep (no external data)"
+output = ["data/lattice_hawking/results.toml"]
+run = "cargo run --release --bin lattice-hawking-sweep"
+run_command_sha256 = ""
+claims = ["C-780"]
+claim_refs = ["C-780"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "PASS. N=16: T_eff=0.0119 (0.5% dev from ideal). N>=32: T_eff=0.0 (spectrum too cold for lattice frequencies). Viscosity-cutoff T diverges from ideal at all resolutions, confirming lattice UV cutoff bounds analog Hawking temperature."
+lineage_id = "XL-054"
+input_path_refs = []
+output_path_refs = ["data/lattice_hawking/results.toml"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-057"
+title = "CD Associator Entropy Phase Census"
+binary = "algebra-entropy-census"
+binary_registered = true
+binary_experiment_declared = "E-057"
+method = "Sweep Cayley-Dickson dimensions 2,4,8,16,32,64,128,256. For each: sample 10000 random unit triples, compute associator norms, histogram into 100 bins, compute Shannon entropy H. Report delta_H at each transition, zero divisor density."
+input = "Parametric sweep (no external data)"
+output = ["data/algebra_entropy/results.toml"]
+run = "cargo run --release --bin algebra-entropy-census"
+run_command_sha256 = ""
+claims = ["C-781"]
+claim_refs = ["C-781"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "FALSIFIED. H(8)=4.24 (max), H(16)=3.76 (jump=-0.49, -11.4%). Primary phase transition is at dim=4->8 (H: 0->4.24), not 8->16. Sedenion zero divisors REDUCE entropy by constraining associator-norm distribution. ZD density(16)=0.006."
+lineage_id = "XL-055"
+input_path_refs = []
+output_path_refs = ["data/algebra_entropy/results.toml"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-058"
+title = "CHSH-Betti Correlation Sweep"
+binary = "chsh-betti-sweep"
+binary_registered = true
+binary_experiment_declared = "E-058"
+method = "Run LBM at 4 configurations (varying tau and forcing amplitude). For each: 200 steps, snapshot every 10 steps. Compute CHSH wavelet S and VR Betti-1 at each snapshot. Spearman correlation between S and B1 across snapshots."
+input = "Parametric sweep (no external data)"
+output = ["data/chsh_betti/results.toml"]
+run = "cargo run --release --bin chsh-betti-sweep"
+run_command_sha256 = ""
+claims = ["C-782"]
+claim_refs = ["C-782"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "INCONCLUSIVE. All 4 configs: rho=0.0, p=1.0. Both S and B1 have zero variance across snapshots at N=16^3, threshold=0.001. Needs larger grid or varied thresholds."
+lineage_id = "XL-056"
+input_path_refs = []
+output_path_refs = ["data/chsh_betti/results.toml"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-059"
+title = "Pulsed vs Steady Entropy Injection"
+binary = "meltdown-pulsed-gate"
+binary_registered = true
+binary_experiment_declared = "E-059"
+method = "Compare 3 protocols at equal total forcing energy: (A) steady, (B) pulsed 50% duty cycle (2x amplitude), (C) pulsed 25% duty cycle (4x amplitude). Measure p95 wavelet entropy at each level after N steps with Haar hard-threshold gating at eps=0.01,0.1,1.0."
+input = "Parametric sweep (no external data)"
+output = ["data/meltdown_pulsed/results.toml"]
+run = "cargo run --release --bin meltdown-pulsed-gate"
+run_command_sha256 = ""
+claims = ["C-783"]
+claim_refs = ["C-783"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "INCONCLUSIVE. All protocols produce identical p95 wavelet concurrency (103/27/0 at eps=0.01/0.1/1.0). 0% reduction for both pulsed protocols. PDE solutions converge to similar final states regardless of forcing schedule at N=128, steps=300."
+lineage_id = "XL-057"
+input_path_refs = []
+output_path_refs = ["data/meltdown_pulsed/results.toml"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"

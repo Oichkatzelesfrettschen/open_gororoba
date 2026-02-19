@@ -693,3 +693,27 @@ name = "dataset-fetch-all"
 crate = "gororoba_cli"
 description = "Bulk dataset download orchestrator: iterates all DatasetProvider implementations, reports cache status, fetches missing datasets"
 status = "active"
+
+[[binary]]
+name = "lattice-hawking-sweep"
+crate = "gororoba_cli"
+description = "Reframed T1: Sweep grid resolutions to test whether D3Q19 lattice UV cutoff bounds analog Hawking temperature via acoustic metric and viscosity-limited spectrum"
+status = "active"
+
+[[binary]]
+name = "algebra-entropy-census"
+crate = "gororoba_cli"
+description = "Reframed T2: Shannon entropy of CD associator-norm distribution across dimensions 2..256, detecting phase transitions at dim=8 (non-associative) and dim=16 (zero divisors)"
+status = "active"
+
+[[binary]]
+name = "chsh-betti-sweep"
+crate = "gororoba_cli"
+description = "Reframed T3: Spearman correlation between CHSH wavelet S parameter and Betti-1 topology of LBM velocity fields across flow configurations"
+status = "active"
+
+[[binary]]
+name = "meltdown-pulsed-gate"
+crate = "gororoba_cli"
+description = "Reframed T4: Compare pulsed (burst-quench) vs steady entropy injection in forced-diffusion PDE surrogates, measuring wavelet p95 entropy reduction"
+status = "active"
