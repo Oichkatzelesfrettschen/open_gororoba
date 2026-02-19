@@ -1,0 +1,61 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Baez(2002)]{Baez2002Octonions}
+John~C. Baez.
+\newblock The octonions.
+\newblock \emph{Bulletin of the American Mathematical Society}, 39:\penalty0
+  145--205, 2002.
+
+\bibitem[Chen and Doolen(1998)]{ChenDoolen1998}
+Shiyi Chen and Gary~D. Doolen.
+\newblock Lattice {Boltzmann} method for fluid flows.
+\newblock \emph{Annual Review of Fluid Mechanics}, 30\penalty0 (1):\penalty0
+  329--364, 1998.
+\newblock \doi{10.1146/annurev.fluid.30.1.329}.
+
+\bibitem[de~Marrais(2000)]{deMarrais2000BoxKites}
+Robert P.~C. de~Marrais.
+\newblock The 42 assessors and the box-kites they fly: Diagonal axis-pair
+  systems of zero-divisors in the sedenions' 16 dimensions, 2000.
+\newblock Source of Box-Kite zero-divisor structure.
+
+\bibitem[de~Marrais(2002)]{deMarrais2002Placeholder}
+Robert P.~C. de~Marrais.
+\newblock Placeholder substructures {I}: The road from {NKS} to scale-free
+  networks is paved with zero-divisors, 2002.
+
+\bibitem[de~Marrais(2004)]{deMarrais2004BoxKitesIII}
+Robert P.~C. de~Marrais.
+\newblock Box-kites {III}: Quizzical quaternions, mock octonions, and other
+  zero-divisor-suppressing sleeper cell structures, 2004.
+
+\bibitem[Edelsbrunner and Harer(2010)]{EdelsbrunnerHarer2010}
+Herbert Edelsbrunner and John~L. Harer.
+\newblock \emph{Computational Topology: An Introduction}.
+\newblock American Mathematical Society, 2010.
+\newblock ISBN 978-0-8218-4925-5.
+
+\bibitem[Moreno(1998)]{Moreno1998ZeroDivisors}
+Guillermo Moreno.
+\newblock The zero divisors of the {Cayley-Dickson} algebras over the real
+  numbers, 1998.
+\newblock Classification theorem for CD zero-divisors.
+
+\bibitem[Moreno(2005)]{Moreno2005ZDConstruction}
+Guillermo Moreno.
+\newblock Constructing zero divisors in the higher dimensional {Cayley-Dickson}
+  algebras, 2005.
+
+\bibitem[Succi(2001)]{Succi2001LBM}
+Sauro Succi.
+\newblock \emph{The Lattice {Boltzmann} Equation for Fluid Dynamics and
+  Beyond}.
+\newblock Oxford University Press, 2001.
+\newblock ISBN 978-0-19-850398-9.
+
+\end{thebibliography}
