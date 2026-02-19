@@ -19,8 +19,11 @@
 //! - Manetsch et al., arXiv:2403.12021 (2025): Large-scale tweezer arrays
 
 pub mod absorber_benchmark;
+pub mod bessel;
 pub mod entropy_trap;
+pub mod fano_tcmt;
 pub mod grin;
+pub mod mie_cylinder;
 pub mod multi_resonator;
 pub mod optics_algebra_bridge;
 pub mod phase_retrieval;
@@ -80,4 +83,37 @@ pub use phase_retrieval::{
 
 pub use optics_algebra_bridge::{
     JonesVector, MaxwellField, MuellerMatrix, OpticalElement, OpticalSystem, PolarizationState,
+};
+
+pub use sfwm::{
+    // Original API
+    coherence_length, phase_matching_function, sfwm_dominance_check, thickness_sweep,
+    SfwmDominanceResult,
+    // Son & Chekhova (2026) full reproduction
+    cascaded_amplitude_sq, cascaded_amplitude_sq_with_dk,
+    direct_amplitude_sq, direct_amplitude_sq_with_dk,
+    g2_sfwm_model, g2_spdc_model,
+    maker_fringe_sweep, photon_number_sfwm, photon_number_spdc,
+    polarization_dependence,
+    rate_ratio, rate_ratio_with_dk,
+    rate_sweep, rate_sweep_with_dk,
+    SfwmMaterialParams, SfwmRateResult, WavevectorMismatches,
+};
+
+pub use bessel::{
+    bessel_j, bessel_j_prime, bessel_y, bessel_y_prime,
+    hankel_1, hankel_1_prime, hankel_2, hankel_2_prime,
+};
+
+pub use fano_tcmt::{
+    fano_reflection, scattering_coefficient, fano_cross_sections_normalized,
+    multi_channel_cross_sections, normalized_fano_c_sct, normalized_fano_c_abs,
+    normalized_fano_c_ext, drude_epsilon, fano_q,
+    FanoChannel, FanoDrudeParams, CrossSections,
+};
+
+pub use mie_cylinder::{
+    scattering_coefficient_l, mie_scattering, mie_sweep, extract_fano_params,
+    ruan_fan_mdm_fig4, ruan_fan_mdm_fig5, update_metal_epsilon, mie_mdm_sweep,
+    CylinderLayer, ConcentricCylinder, ChannelResult, MieResult,
 };

@@ -377,7 +377,7 @@ crate = "gororoba_cli"
 description = "Generate deterministic STPT-006..009 thesis evidence artifacts across core validation lanes"
 
 [[binary]]
-name = "c590_attractor_sweep"
+name = "c590-attractor-sweep"
 crate = "gororoba_cli"
 description = "Compute C-590 attractor frustration ratios across CD dimensions and emit regression CSV"
 
@@ -598,7 +598,7 @@ description = "Rust-native paper builder for arXiv submission. Wraps tectonic CL
 status = "active"
 
 [[binary]]
-name = "dump_assessors"
+name = "dump-assessors"
 crate = "gororoba_cli"
 description = "Dumps primitive box-kite assessor pairs from the sedenion zero-divisor analysis for inspection."
 status = "active"
@@ -755,4 +755,49 @@ name = "evidence-package"
 crate = "gororoba_cli"
 description = "Evidence artifact packaging and checksum verification. Subcommands: check (list+flag missing), bundle (SHA-256 manifest), verify (re-check)."
 experiment = "E-070"
+status = "active"
+
+[[binary]]
+name = "entropy-pde"
+crate = "gororoba_cli"
+description = "Entropy PDE simulation (N-dimensional): dS/dt = D*Lap(S) - gamma*S - alpha*S^3 + J, ported from Python"
+status = "active"
+
+[[binary]]
+name = "modular-chaos"
+crate = "gororoba_cli"
+description = "Modular chaos simulation: discrete phase scrambling and Fourier resonance, ported from Python"
+status = "active"
+
+[[binary]]
+name = "arleo-falmagne-scaling"
+crate = "gororoba_cli"
+description = "QGP path-length scaling reproduction (Arleo & Falmagne arXiv:2411.13258): Optical Glauber geometry, R_AA epsilon extraction, multi-system density scaling fit"
+status = "active"
+
+[[binary]]
+name = "ppn-bound-sweep"
+crate = "gororoba_cli"
+description = "Sweep Brans-Dicke omega parameter space and report PPN constraint satisfaction (Rodal 2025). Outputs CSV with gamma, Nordtvedt eta, kappa_eff, and pass/fail for Cassini/LLR/Pulsar/GW bounds."
+status = "active"
+
+[[binary]]
+name = "sfwm-figure-repro"
+crate = "gororoba_cli"
+description = "Reproduce all 4 figures from Son & Chekhova (2026) arXiv:2601.23137v1: SFWM vs cascaded SHG+SPDC in thin LiNbO3. Outputs 8 CSV files (fig2a-d, fig3a-b, fig4a-b) covering power scaling, polarization, g(2), Maker fringes, and rate dominance."
+experiment = "E-074"
+status = "active"
+
+[[binary]]
+name = "fano-scattering"
+crate = "gororoba_cli"
+description = "Ruan & Fan (2009) Fano TCMT reproduction: Bessel function solver for complex arguments, cylindrical Lorentz-Mie transfer-matrix solver, analytical Fano lineshapes. Outputs 5 figures (12 panels): lossless/lossy analytical Fano (phi=0,pi/2,pi), single/multi-channel MDM validation."
+experiment = "E-076"
+status = "active"
+
+[[binary]]
+name = "landy-absorber-tmm"
+crate = "gororoba_cli"
+description = "Landy 2008 (PRL 100, 207402) perfect metamaterial absorber TMM reproduction. Lorentz effective-medium model with matched eps/mu oscillators, 9-14 GHz sweep, peak A >= 0.96, impedance matching, two-layer convergence."
+experiment = "E-077"
 status = "active"
