@@ -5,7 +5,7 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 4070
+test_count = 4084
 claim_count = 806
 insight_count = 95
 experiment_count = 69
@@ -17,7 +17,7 @@ scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 [sprints.s53]
 number = 53
 date = "2026-02-18"
-test_count = 4070
+test_count = 4084
 claim_count = 806
 insight_count = 95
 summary = "Sprint 53: Registry Reconciliation and Claim Adjudication. Promoted 34 experiments active->completed (58/69 now completed). Adjudicated 9 non-terminal claims: C-657..C-659 Provisional->Established (Kubo coupling replaces tautological model), C-669 Provisional->Closed/Methodology-Insufficient (16^3 inadequate), C-692..C-694 Provisional->Verified (DOI mappings confirmed), C-803/C-804 Proposed->Verified (tests pass). Closed T-019/T-020 (provenance work done Sprint 41-42). Deduplicated T-003/NA-004 (Kerr lens). Fixed experiments.toml header (missing [[experiment]] tag, stale counts). 0 open lacunae, 4 Proposed claims remaining (C-768, C-772, C-773, C-791 -- all blocked on external data)."

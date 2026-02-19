@@ -5,12 +5,12 @@
 updated = "2026-02-10"
 authoritative = true
 status = "active"
-lacuna_count = 173
-open_count = 0
+lacuna_count = 174
+open_count = 1
 high_priority_count = 69
-medium_priority_count = 101
+medium_priority_count = 102
 low_priority_count = 3
-origin_kind_count = 1
+origin_kind_count = 2
 
 [[lacuna]]
 id = "L-001"
@@ -154,6 +154,18 @@ priority = "high"
 status = "disclosed"
 claim_refs = ["C-477"]
 source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-669"
+origin = "claims_status_scan"
+area = "claims"
+title = "Unresolved claim status for C-669"
+description = "C-669 remains unresolved with status token CLOSED_METHODOLOGY_INSUFFICIENT: TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16^3 with frustration-derived viscosity produce filtration spectra where r2_inverse_square is highest (0.90) but power_law_exponent is positive (+0.39), yielding Undetermined classification. The positive exponent indicates latency increases with radius, opposite to collision-dominated inverse-square decay. Lambda coupling modifies exponent monotonically (0.39 at lambda=0.5 to 0.36 at lambda=10)."
+priority = "medium"
+status = "open"
+claim_refs = ["C-669"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
