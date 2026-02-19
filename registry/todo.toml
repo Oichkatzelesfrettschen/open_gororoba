@@ -42,13 +42,14 @@ evidence_refs = ["crates/stats_core/src/homology.rs"]
 id = "T-003"
 area = "optics"
 title = "Kerr Lens Effect"
-description = "Integrate `optics_core::tcmt` to simulate non-linear Kerr lensing based on the local energy density of the fluid."
+description = "Integrate `optics_core::tcmt` to simulate non-linear Kerr lensing based on the local energy density of the fluid. DONE: algebraic_lensing.rs implements GRIN medium from ZD density via optics_core::grin, wired into vacuum_frustration crate. Supersedes original TCMT approach with full GrinMedium trait impl + ray tracing. Sprint 54."
 priority = "low"
-status = "open"
-status_token = "OPEN"
+status = "done"
+status_token = "DONE"
+completed = "2026-02-19"
 dependencies = []
 acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+evidence_refs = ["crates/vacuum_frustration/src/algebraic_lensing.rs"]
 
 [[item]]
 id = "T-004"
@@ -255,7 +256,7 @@ evidence_refs = []
 id = "T-020"
 area = "taxonomy"
 title = "Hypercomplex Taxonomy Registry Integration"
-description = "Promote report-level taxonomy and claim candidates into canonical claim/task/ticket lanes with explicit verify-refute criteria and source anchors. DONE: hypercomplex_taxonomy_promotion.toml with 16 entries, all promoted to claim lane (Sprint 41-42)."
+description = "Promote report-level taxonomy and claim candidates into canonical claim/task/ticket lanes with explicit verify-refute criteria and source anchors. DONE: hypercomplex_taxonomy_promotion.toml with 16 entries. Sprint 52: 12 claim-ready HCTP entries promoted to C-807..C-818 (Proposed). 4 ticket-ready entries (HCTP-013..016) noted in ledger for multi-source provenance closure."
 priority = "high"
 status = "done"
 status_token = "DONE"
