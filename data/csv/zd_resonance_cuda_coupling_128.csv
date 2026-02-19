@@ -1,0 +1,9 @@
+tau,ke_ghost_detected,ke_ghost_freq,ke_ghost_snr,ke_ghost_fwhm,ke_dominant_freq,ke_dominant_power,var_ghost_detected,var_ghost_freq,var_ghost_snr,spatial_ghost_detected,spatial_ghost_freq,spatial_ghost_snr,final_ke,final_var,label
+0.000,true,0.200000,0.0000,0.017635,0.410000,2.743519e-50,false,NaN,0.0000,false,NaN,0.0000,9.117834e-5,0.000000e0,lambda=0.000
+0.100,false,NaN,0.0000,NaN,0.060000,2.625159e-23,false,NaN,0.0000,false,NaN,0.0000,9.117825e-5,0.000000e0,lambda=0.100
+0.200,false,NaN,0.0000,NaN,0.380000,9.540192e-23,false,NaN,0.0000,false,NaN,0.0000,9.117894e-5,0.000000e0,lambda=0.200
+0.300,false,NaN,0.0000,NaN,0.380000,9.155830e-23,false,NaN,0.0000,false,NaN,0.0000,9.117905e-5,0.000000e0,lambda=0.300
+0.375,false,NaN,0.0000,NaN,0.310000,1.629033e-22,false,NaN,0.0000,false,NaN,0.0000,9.117885e-5,0.000000e0,lambda=0.375
+0.500,false,NaN,0.0000,NaN,0.060000,1.520415e-22,false,NaN,0.0000,false,NaN,0.0000,9.117925e-5,0.000000e0,lambda=0.500
+0.750,false,NaN,0.0000,NaN,0.190000,4.229584e-23,false,NaN,0.0000,false,NaN,0.0000,9.118037e-5,0.000000e0,lambda=0.750
+1.000,false,NaN,0.0000,NaN,0.120000,2.875451e-23,false,NaN,0.0000,false,NaN,0.0000,9.118004e-5,0.000000e0,lambda=1.000

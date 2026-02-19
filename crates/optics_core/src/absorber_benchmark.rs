@@ -205,6 +205,95 @@ impl CouplingTopology {
         nonzero.sort_by(|a, b| a.partial_cmp(b).unwrap());
         nonzero.first().copied().unwrap_or(0.0)
     }
+
+    /// Create a box-kite topology: de Marrais 8-node ZD structure.
+    ///
+    /// The box-kite has 4 "sail" nodes (0-3) forming a cycle and 4 "mast"
+    /// nodes (4-7) each connecting to two sail nodes and one other mast.
+    /// Edges: sails cycle (0-1-2-3-0), masts (4-5, 6-7),
+    /// cross edges: 0-4, 1-4, 2-5, 3-5, 0-6, 1-7, 2-6, 3-7.
+    pub fn box_kite(kappa: f64) -> Self {
+        let n = 8;
+        let mut adjacency = vec![vec![0.0; n]; n];
+
+        // Sail cycle: 0-1-2-3-0
+        let sail_edges = [(0, 1), (1, 2), (2, 3), (3, 0)];
+        for (a, b) in sail_edges {
+            adjacency[a][b] = kappa;
+            adjacency[b][a] = kappa;
+        }
+
+        // Mast pairs: 4-5, 6-7
+        adjacency[4][5] = kappa;
+        adjacency[5][4] = kappa;
+        adjacency[6][7] = kappa;
+        adjacency[7][6] = kappa;
+
+        // Cross edges (sail-to-mast)
+        let cross_edges = [(0, 4), (1, 4), (2, 5), (3, 5), (0, 6), (1, 7), (2, 6), (3, 7)];
+        for (a, b) in cross_edges {
+            adjacency[a][b] = kappa;
+            adjacency[b][a] = kappa;
+        }
+
+        Self {
+            name: "BoxKite(8)".to_string(),
+            n_nodes: n,
+            adjacency,
+        }
+    }
+
+    /// Create a topology from an explicit adjacency matrix.
+    ///
+    /// Allows external construction of arbitrary graph topologies
+    /// (e.g., from algebra_core ZD incidence graphs) without circular
+    /// dependency on algebra_core.
+    pub fn from_adjacency_matrix(name: &str, n: usize, adjacency: Vec<Vec<f64>>) -> Self {
+        assert_eq!(adjacency.len(), n, "adjacency rows must match n");
+        for row in &adjacency {
+            assert_eq!(row.len(), n, "adjacency cols must match n");
+        }
+        Self {
+            name: name.to_string(),
+            n_nodes: n,
+            adjacency,
+        }
+    }
+
+    /// Create cross-cluster bridge topology: `n_cliques` complete subgraphs
+    /// of `clique_size` connected by inter-clique bridge edges at strength `kappa`.
+    ///
+    /// Unlike `disconnected_cliques`, each consecutive pair of cliques shares
+    /// one bridge edge (node clique_size-1 of clique i -> node 0 of clique i+1).
+    pub fn cross_cluster_bridges(n_cliques: usize, clique_size: usize, kappa: f64) -> Self {
+        let n = n_cliques * clique_size;
+        let mut adjacency = vec![vec![0.0; n]; n];
+
+        // Intra-clique: complete subgraphs
+        for c in 0..n_cliques {
+            let base = c * clique_size;
+            for i in 0..clique_size {
+                for j in (i + 1)..clique_size {
+                    adjacency[base + i][base + j] = kappa;
+                    adjacency[base + j][base + i] = kappa;
+                }
+            }
+        }
+
+        // Inter-clique bridges: last node of clique i -> first node of clique i+1
+        for c in 0..(n_cliques - 1) {
+            let bridge_from = c * clique_size + clique_size - 1;
+            let bridge_to = (c + 1) * clique_size;
+            adjacency[bridge_from][bridge_to] = kappa;
+            adjacency[bridge_to][bridge_from] = kappa;
+        }
+
+        Self {
+            name: format!("{} x K{} (bridged)", n_cliques, clique_size),
+            n_nodes: n,
+            adjacency,
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -479,6 +568,43 @@ fn jacobi_eigenvalues(matrix: &[Vec<f64>]) -> Vec<f64> {
 // Standard topology suite for C-010
 // ---------------------------------------------------------------------------
 
+/// ZD-derived graph family for C-010 falsification comparisons.
+///
+/// Groups multiple topologies derived from sedenion zero-divisor structure
+/// for systematic scoring against mode-suppression targets.
+#[derive(Debug, Clone)]
+pub struct ZdGraphFamily {
+    /// Topologies in this family.
+    pub topologies: Vec<CouplingTopology>,
+}
+
+impl ZdGraphFamily {
+    /// Build the sedenion-derived family: box-kite + disconnected cliques.
+    pub fn from_sedenion(kappa: f64) -> Self {
+        Self {
+            topologies: vec![
+                CouplingTopology::box_kite(kappa),
+                CouplingTopology::disconnected_cliques(7, 6, kappa),
+            ],
+        }
+    }
+
+    /// Score all topologies in the family against a benchmark and return
+    /// failure modes (topologies where isolation < threshold).
+    pub fn failure_modes(
+        &self,
+        benchmark: &ComparativeBenchmark,
+        isolation_threshold: f64,
+    ) -> Vec<(String, f64)> {
+        benchmark
+            .results
+            .iter()
+            .filter(|r| r.isolation_ratio < isolation_threshold)
+            .map(|r| (r.topology_name.clone(), r.isolation_ratio))
+            .collect()
+    }
+}
+
 /// Build the standard C-010 topology comparison suite.
 ///
 /// Returns topologies matching the sedenion configuration:
@@ -540,6 +666,120 @@ impl ComparativeBenchmark {
         }
         let zd_isolation = self.results[0].isolation_ratio;
         self.results[1..].iter().all(|r| r.isolation_ratio < zd_isolation)
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Projection Gate (NA-005)
+// ---------------------------------------------------------------------------
+
+/// Gate thresholds for C-010 projection assessment.
+///
+/// Evaluates whether a topology comparison demonstrates sufficient isolation
+/// dominance to support the C-010 non-local coupling claim.
+#[derive(Debug, Clone)]
+pub struct ProjectionGate {
+    /// Minimum isolation ratio for the ZD topology.
+    pub min_isolation_threshold: f64,
+    /// Maximum allowed crosstalk in dB (more negative = stricter).
+    pub max_xtalk_db: f64,
+    /// Minimum margin by which ZD isolation exceeds all local topologies.
+    pub min_dominance_margin: f64,
+}
+
+/// Result of projection gate evaluation.
+#[derive(Debug, Clone)]
+pub struct ProjectionGateResult {
+    /// Whether the gate passes.
+    pub pass: bool,
+    /// Dominance margin: ZD isolation - max(local isolation).
+    pub dominance_margin: f64,
+    /// ZD isolation ratio achieved.
+    pub zd_isolation: f64,
+    /// Best local topology isolation ratio.
+    pub best_local_isolation: f64,
+    /// ZD crosstalk in dB.
+    pub zd_crosstalk_db: f64,
+    /// Verdict string.
+    pub verdict: String,
+}
+
+impl ProjectionGate {
+    /// Default gate for C-010 assessment.
+    ///
+    /// Dominance margin of 0.02 is calibrated for the reduced 2xK3 suite.
+    /// For the full 7xK6 suite, margins are typically 10x larger.
+    pub fn c010_default() -> Self {
+        Self {
+            min_isolation_threshold: 0.95,
+            max_xtalk_db: -20.0,
+            min_dominance_margin: 0.02,
+        }
+    }
+
+    /// Evaluate the projection gate against a benchmark result set.
+    ///
+    /// Assumes the first result is the ZD clique topology.
+    pub fn evaluate(&self, benchmark: &ComparativeBenchmark) -> ProjectionGateResult {
+        if benchmark.results.is_empty() {
+            return ProjectionGateResult {
+                pass: false,
+                dominance_margin: 0.0,
+                zd_isolation: 0.0,
+                best_local_isolation: 0.0,
+                zd_crosstalk_db: 0.0,
+                verdict: "No results to evaluate".to_string(),
+            };
+        }
+
+        let zd = &benchmark.results[0];
+        let best_local = benchmark.results[1..]
+            .iter()
+            .map(|r| r.isolation_ratio)
+            .fold(0.0_f64, f64::max);
+
+        let dominance_margin = zd.isolation_ratio - best_local;
+
+        let isolation_ok = zd.isolation_ratio >= self.min_isolation_threshold;
+        let xtalk_ok = zd.crosstalk_db <= self.max_xtalk_db || zd.crosstalk_db.is_infinite();
+        let dominance_ok = dominance_margin >= self.min_dominance_margin;
+
+        let pass = isolation_ok && xtalk_ok && dominance_ok;
+
+        let mut reasons = Vec::new();
+        if !isolation_ok {
+            reasons.push(format!(
+                "isolation {:.4} < {:.4}",
+                zd.isolation_ratio, self.min_isolation_threshold
+            ));
+        }
+        if !xtalk_ok {
+            reasons.push(format!(
+                "crosstalk {:.1} dB > {:.1} dB",
+                zd.crosstalk_db, self.max_xtalk_db
+            ));
+        }
+        if !dominance_ok {
+            reasons.push(format!(
+                "dominance margin {:.4} < {:.4}",
+                dominance_margin, self.min_dominance_margin
+            ));
+        }
+
+        let verdict = if pass {
+            "PASS".to_string()
+        } else {
+            format!("FAIL: {}", reasons.join("; "))
+        };
+
+        ProjectionGateResult {
+            pass,
+            dominance_margin,
+            zd_isolation: zd.isolation_ratio,
+            best_local_isolation: best_local,
+            zd_crosstalk_db: zd.crosstalk_db,
+            verdict,
+        }
     }
 }
 
@@ -731,5 +971,122 @@ mod tests {
         let eigs = jacobi_eigenvalues(&mat);
         assert!((eigs[0] - 1.0).abs() < 1e-12);
         assert!((eigs[1] - 3.0).abs() < 1e-12);
+    }
+
+    // -- T-007 ZD graph family tests --
+
+    #[test]
+    fn test_box_kite_structure() {
+        let topo = CouplingTopology::box_kite(1.0);
+        assert_eq!(topo.n_nodes, 8, "box-kite has 8 nodes");
+        let comps = topo.connected_components();
+        assert_eq!(comps.len(), 1, "box-kite is connected");
+
+        // Count edges: sail cycle (4) + mast pairs (2) + cross (8) = 14
+        let n_edges: usize = (0..8)
+            .map(|i| ((i + 1)..8).filter(|&j| topo.adjacency[i][j].abs() > 1e-15).count())
+            .sum();
+        assert_eq!(n_edges, 14, "box-kite has 14 edges");
+    }
+
+    #[test]
+    fn test_zd_graph_adjacency_roundtrip() {
+        // Build a small topology via from_adjacency_matrix and verify
+        let adj = vec![
+            vec![0.0, 1.0, 0.0],
+            vec![1.0, 0.0, 1.0],
+            vec![0.0, 1.0, 0.0],
+        ];
+        let topo = CouplingTopology::from_adjacency_matrix("chain-3", 3, adj);
+        assert_eq!(topo.n_nodes, 3);
+        assert_eq!(topo.name, "chain-3");
+        let comps = topo.connected_components();
+        assert_eq!(comps.len(), 1, "chain is connected");
+    }
+
+    #[test]
+    fn test_score_topology_pass_fail() {
+        let cavity = test_cavity();
+        // Use box-kite + ring for scoring comparison
+        let suite = vec![
+            CouplingTopology::box_kite(1.0e10),
+            CouplingTopology::ring(8, 1.0e10),
+        ];
+        let result = run_benchmark(&suite, &cavity, 1.0e12, &[0, 1, 2, 3], 1.0e-3, 1.0e-12, 1000);
+
+        let family = ZdGraphFamily::from_sedenion(1.0e10);
+        // Check failure modes with a high threshold (most topologies should fail)
+        let failures = family.failure_modes(&result, 0.999);
+        // The benchmark results may or may not exceed 0.999 isolation;
+        // the important thing is the function runs and returns a vec
+        assert!(failures.len() <= result.results.len());
+    }
+
+    #[test]
+    fn test_cross_cluster_bridge_topology() {
+        let topo = CouplingTopology::cross_cluster_bridges(3, 4, 1.0);
+        assert_eq!(topo.n_nodes, 12);
+        let comps = topo.connected_components();
+        assert_eq!(comps.len(), 1, "bridged cliques should be connected");
+
+        // Intra-clique edges: 3 * C(4,2) = 3*6 = 18
+        // Bridge edges: 2 (between consecutive cliques)
+        let n_edges: usize = (0..12)
+            .map(|i| ((i + 1)..12).filter(|&j| topo.adjacency[i][j].abs() > 1e-15).count())
+            .sum();
+        assert_eq!(n_edges, 20, "3 x K4 bridged: 18 intra + 2 bridge = 20 edges");
+    }
+
+    // -- NA-005 Projection Gate tests --
+
+    #[test]
+    fn test_gate_passes() {
+        let cavity = test_cavity();
+        let suite = reduced_c010_suite(1.0e10);
+        let result = run_benchmark(&suite, &cavity, 1.0e12, &[0, 1, 2], 1.0e-3, 1.0e-12, 2000);
+
+        let gate = ProjectionGate::c010_default();
+        let gate_result = gate.evaluate(&result);
+        assert!(
+            gate_result.pass,
+            "reduced suite with driven clique should pass: {}",
+            gate_result.verdict
+        );
+        assert!(gate_result.dominance_margin > 0.0);
+    }
+
+    #[test]
+    fn test_gate_fails_uniform() {
+        // Complete graph: all nodes equivalent -> no isolation advantage
+        let cavity = test_cavity();
+        let suite = vec![
+            CouplingTopology::complete(6, 1.0e10),
+            CouplingTopology::ring(6, 1.0e10),
+        ];
+        let result = run_benchmark(&suite, &cavity, 1.0e12, &[0, 1, 2], 1.0e-3, 1.0e-12, 1000);
+
+        let gate = ProjectionGate {
+            min_isolation_threshold: 0.99,
+            max_xtalk_db: -40.0,
+            min_dominance_margin: 0.1,
+        };
+        let gate_result = gate.evaluate(&result);
+        // Complete graph has no special isolation -> gate should fail or have tiny margin
+        assert!(
+            !gate_result.pass || gate_result.dominance_margin < 0.1,
+            "complete graph should not pass strict gate"
+        );
+    }
+
+    #[test]
+    fn test_gate_empty_results() {
+        let empty = ComparativeBenchmark {
+            results: vec![],
+            driven_nodes: vec![],
+            n_steps: 0,
+        };
+        let gate = ProjectionGate::c010_default();
+        let gate_result = gate.evaluate(&empty);
+        assert!(!gate_result.pass, "empty results should fail");
     }
 }

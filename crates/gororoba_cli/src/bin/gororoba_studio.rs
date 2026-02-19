@@ -1695,6 +1695,75 @@ async fn reproducibility_experiment(
     (StatusCode::OK, Json(response)).into_response()
 }
 
+/// Serve artifact files from the workspace root with path traversal protection.
+///
+/// The workspace root is determined by walking up from the binary's working
+/// directory until a Cargo.toml with [workspace] is found, or falling back
+/// to the current directory.
+async fn serve_artifact(
+    AxumPath(requested): AxumPath<String>,
+) -> impl IntoResponse {
+    // Determine workspace root (directory containing workspace Cargo.toml)
+    let workspace_root = find_workspace_root().unwrap_or_else(|| PathBuf::from("."));
+    let candidate = workspace_root.join(&requested);
+
+    // Canonicalize both paths for traversal check
+    let canon_root = match workspace_root.canonicalize() {
+        Ok(p) => p,
+        Err(_) => return (StatusCode::INTERNAL_SERVER_ERROR, "workspace root not found").into_response(),
+    };
+    let canon_candidate = match candidate.canonicalize() {
+        Ok(p) => p,
+        Err(_) => return (StatusCode::NOT_FOUND, "artifact not found").into_response(),
+    };
+
+    // SECURITY: Verify the resolved path is inside the workspace
+    if !canon_candidate.starts_with(&canon_root) {
+        return (StatusCode::FORBIDDEN, "path traversal denied").into_response();
+    }
+
+    // Read file contents
+    let content = match fs::read(&canon_candidate) {
+        Ok(c) => c,
+        Err(_) => return (StatusCode::NOT_FOUND, "artifact not found").into_response(),
+    };
+
+    // Infer MIME type from extension
+    let mime = match canon_candidate.extension().and_then(|e| e.to_str()) {
+        Some("toml") => "text/plain; charset=utf-8",
+        Some("csv") => "text/csv; charset=utf-8",
+        Some("json") => "application/json",
+        Some("txt") | Some("md") => "text/plain; charset=utf-8",
+        Some("png") => "image/png",
+        Some("jpg") | Some("jpeg") => "image/jpeg",
+        Some("pdf") => "application/pdf",
+        _ => "application/octet-stream",
+    };
+
+    (
+        StatusCode::OK,
+        [("content-type", mime)],
+        content,
+    ).into_response()
+}
+
+/// Walk up from CWD to find workspace root (directory with Cargo.toml containing [workspace]).
+fn find_workspace_root() -> Option<PathBuf> {
+    let mut dir = std::env::current_dir().ok()?;
+    loop {
+        let manifest = dir.join("Cargo.toml");
+        if manifest.is_file()
+            && let Ok(content) = fs::read_to_string(&manifest)
+            && content.contains("[workspace]")
+        {
+            return Some(dir);
+        }
+        if !dir.pop() {
+            return None;
+        }
+    }
+}
+
 fn build_router(state: AppState) -> Router {
     Router::new()
         .route("/", get(index))
@@ -1712,6 +1781,7 @@ fn build_router(state: AppState) -> Router {
             "/api/reproducibility/{experiment_id}",
             post(reproducibility_experiment),
         )
+        .route("/api/artifacts/{*path}", get(serve_artifact))
         .with_state(state)
 }
 
@@ -1739,7 +1809,6 @@ mod tests {
     use axum::response::Response;
     use serde_json::Value as JsonValue;
     use std::path::Path;
-
     fn write_temp_catalog(contents: &str) -> PathBuf {
         let nanos = SystemTime::now()
             .duration_since(UNIX_EPOCH)
@@ -2324,5 +2393,43 @@ path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
             .expect("css body should be readable");
         let css_text = String::from_utf8(css_body.to_vec()).expect("css should be utf8");
         assert!(css_text.contains(".pipeline-status"));
+    }
+
+    #[tokio::test]
+    async fn test_artifact_route_serves_toml() {
+        // Call serve_artifact directly with a path that exists at workspace root
+        let response = serve_artifact(AxumPath("Cargo.toml".to_string()))
+            .await
+            .into_response();
+        assert_eq!(response.status(), StatusCode::OK);
+        let ct = response
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("");
+        assert!(
+            ct.contains("text/plain"),
+            "TOML files should get text/plain, got: {ct}"
+        );
+        let body = to_bytes(response.into_body(), usize::MAX)
+            .await
+            .expect("body should be readable");
+        let text = String::from_utf8(body.to_vec()).expect("Cargo.toml should be utf8");
+        assert!(text.contains("[workspace]"), "should serve the workspace Cargo.toml");
+    }
+
+    #[tokio::test]
+    async fn test_artifact_route_prevents_traversal() {
+        // Attempt to traverse outside workspace
+        let response = serve_artifact(AxumPath("../../../etc/passwd".to_string()))
+            .await
+            .into_response();
+        // Should be 403 (traversal denied) or 404 (path doesn't resolve)
+        assert!(
+            response.status() == StatusCode::FORBIDDEN
+                || response.status() == StatusCode::NOT_FOUND,
+            "traversal attempt should not succeed, got: {}",
+            response.status()
+        );
     }
 }

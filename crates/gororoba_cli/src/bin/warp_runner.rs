@@ -590,6 +590,7 @@ pub fn write_step_timing_report(
         BackendKind::Gpu => match report.precision {
             Precision::FP32 => "FP32",
             Precision::BF16 => "BF16",
+            Precision::FP64 => "FP64",
         },
     };
     let mut out = String::new();
@@ -744,6 +745,7 @@ fn export_bench_trace(
                 BackendKind::Gpu => match precision {
                     Precision::FP32 => "gpu_fp32",
                     Precision::BF16 => "gpu_bf16",
+                    Precision::FP64 => "gpu_fp64",
                 },
             },
             chrono::Utc::now().format("%Y%m%d-%H%M%S"),

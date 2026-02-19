@@ -120,6 +120,28 @@ function addCell(row, content, className = "") {
   row.appendChild(cell);
 }
 
+function addArtifactCell(row, links) {
+  const cell = document.createElement("td");
+  if (!links || links.length === 0) {
+    cell.textContent = "-";
+  } else {
+    links.forEach((link, i) => {
+      if (i > 0) {
+        cell.appendChild(document.createTextNode(" "));
+      }
+      const a = document.createElement("a");
+      a.href = "/api/artifacts/" + link;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = link.split("/").pop() || link;
+      a.title = link;
+      cell.appendChild(a);
+    });
+  }
+  cell.className = "mono";
+  row.appendChild(cell);
+}
+
 function renderHistory() {
   timelineBody.innerHTML = "";
   state.history.forEach((entry) => {
@@ -133,6 +155,7 @@ function renderHistory() {
     addCell(row, Number(entry.threshold ?? 0).toFixed(6), "mono");
     addCell(row, entry.passes_gate ? "PASS" : "FAIL", gateClass);
     addCell(row, String(entry.duration_ms ?? "-"), "mono");
+    addArtifactCell(row, entry.artifact_links);
     timelineBody.appendChild(row);
   });
 }

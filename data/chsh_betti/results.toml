@@ -1,0 +1,32 @@
+# CHSH-Betti Correlation Sweep
+# grid=16^3 steps=200 threshold=0.001
+# verdict = INCONCLUSIVE
+
+[[config]]
+name = "low_visc"
+spearman_rho = 0.000000
+p_value = 1.000000
+n_snapshots = 20
+pass = false
+
+[[config]]
+name = "med_visc"
+spearman_rho = 0.000000
+p_value = 1.000000
+n_snapshots = 20
+pass = false
+
+[[config]]
+name = "high_visc"
+spearman_rho = 0.000000
+p_value = 1.000000
+n_snapshots = 20
+pass = false
+
+[[config]]
+name = "strong_f"
+spearman_rho = 0.000000
+p_value = 1.000000
+n_snapshots = 20
+pass = false
+

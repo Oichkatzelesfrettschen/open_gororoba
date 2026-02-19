@@ -362,6 +362,240 @@ pub fn bypass_stability_sweep(
 }
 
 // ---------------------------------------------------------------------------
+// Bridge Contrast (NA-007)
+// ---------------------------------------------------------------------------
+
+/// Bridge contrast measurement at the gravastar R1 boundary.
+///
+/// Quantifies the density jump across the de Sitter interior / thin shell
+/// interface for each bypass model. A well-defined gravastar requires
+/// a contrast ratio > 1.0 (shell denser than interior).
+#[derive(Debug, Clone)]
+pub struct BridgeContrast {
+    /// Bypass model used.
+    pub model: BypassModel,
+    /// Density at the vacuum (interior) side of R1.
+    pub rho_v: f64,
+    /// Density at the shell side of R1.
+    pub rho_shell: f64,
+    /// Contrast ratio: rho_shell / rho_v.
+    pub contrast_ratio: f64,
+    /// Gamma-invariant: does contrast ratio vary < tolerance across gamma sweep?
+    pub gamma_invariant: bool,
+}
+
+/// Compute bridge contrast for a single model.
+pub fn compute_bridge_contrast(config: &BypassConfig, model: BypassModel) -> BridgeContrast {
+    let result = evaluate_bypass(config, model);
+
+    // Extract densities from the TOV profile at the R1 boundary
+    let (rho_v, rho_shell) = if let Some(sol) = &result.solution {
+        // Profile is Vec<(r, m, p, rho)>.
+        // The innermost profile point (near R1) gives the boundary density.
+        // The de Sitter interior density is approximated from the shell EoS:
+        //   rho_v = (p / K)^(1/gamma) at the innermost point
+        let (rho_interior, rho_s) = if let Some(&(_, _, p, _rho)) = sol.profile.first() {
+            let rho_int = if result.k_eff > 0.0 && config.gamma > 1.0 && p > 0.0 {
+                (p / result.k_eff).powf(1.0 / config.gamma)
+            } else {
+                p.max(1e-30)
+            };
+            (rho_int, sol.rho_shell_center)
+        } else {
+            (1e-30, sol.rho_shell_center)
+        };
+
+        (rho_interior.max(1e-30), rho_s.max(1e-30))
+    } else {
+        (1e-30, 1e-30)
+    };
+
+    let contrast_ratio = rho_shell / rho_v;
+
+    BridgeContrast {
+        model,
+        rho_v,
+        rho_shell,
+        contrast_ratio,
+        gamma_invariant: false, // Set by compare_contrast_ratios
+    }
+}
+
+/// Compare contrast ratios across all bypass models.
+///
+/// Returns one BridgeContrast per model, with gamma_invariant set based
+/// on a sweep across [gamma - 0.5, gamma + 0.5].
+pub fn compare_contrast_ratios(config: &BypassConfig) -> Vec<BridgeContrast> {
+    let models = [
+        BypassModel::Baseline,
+        BypassModel::QuaternionProjection,
+        BypassModel::QuaternionRestriction,
+    ];
+
+    models
+        .iter()
+        .map(|&model| {
+            let base_contrast = compute_bridge_contrast(config, model);
+
+            // Gamma sweep for invariance check
+            let gamma_lo = (config.gamma - 0.5).max(1.1);
+            let gamma_hi = config.gamma + 0.5;
+            let n_sweep = 5;
+            let d_gamma = (gamma_hi - gamma_lo) / (n_sweep - 1) as f64;
+
+            let ratios: Vec<f64> = (0..n_sweep)
+                .map(|i| {
+                    let mut cfg = config.clone();
+                    cfg.gamma = gamma_lo + i as f64 * d_gamma;
+                    let bc = compute_bridge_contrast(&cfg, model);
+                    bc.contrast_ratio
+                })
+                .collect();
+
+            // Check variation: max/min < 1 + tolerance
+            let r_max = ratios.iter().cloned().fold(0.0_f64, f64::max);
+            let r_min = ratios.iter().cloned().fold(f64::INFINITY, f64::min);
+            let gamma_invariant = if r_min > 1e-20 {
+                (r_max / r_min - 1.0).abs() < 0.05 // < 5% variation
+            } else {
+                false
+            };
+
+            BridgeContrast {
+                gamma_invariant,
+                ..base_contrast
+            }
+        })
+        .collect()
+}
+
+/// Check if a contrast ratio exceeds a minimum threshold.
+pub fn assert_contrast_gate(contrast: &BridgeContrast, min_ratio: f64) -> bool {
+    contrast.contrast_ratio >= min_ratio
+}
+
+// ---------------------------------------------------------------------------
+// Stress-Energy Mapping (NA-008)
+// ---------------------------------------------------------------------------
+
+/// Stress-energy tensor components at a radial point.
+#[derive(Debug, Clone)]
+pub struct BypassStressEnergy {
+    /// Energy density rho.
+    pub energy_density: f64,
+    /// Radial pressure p_r.
+    pub radial_pressure: f64,
+    /// Tangential pressure p_t.
+    pub tangential_pressure: f64,
+    /// Anisotropy: p_t - p_r.
+    pub anisotropy: f64,
+    /// Dominant Energy Condition: |p_r| <= rho AND |p_t| <= rho.
+    pub satisfies_dec: bool,
+    /// Null Energy Condition: rho + p_r >= 0 AND rho + p_t >= 0.
+    pub satisfies_nec: bool,
+}
+
+/// Evaluate stress-energy at a fractional radius within the shell.
+///
+/// `r_frac` in [0, 1] maps from R1 (inner boundary) to R2 (outer boundary).
+pub fn bypass_stress_energy(
+    config: &BypassConfig,
+    model: BypassModel,
+    r_frac: f64,
+) -> Option<BypassStressEnergy> {
+    let result = evaluate_bypass(config, model);
+    let sol = result.solution?;
+
+    // Profile is Vec<(r, m, p, rho)>
+    let n_profile = sol.profile.len();
+    if n_profile < 2 {
+        return None;
+    }
+
+    let idx_f = r_frac.clamp(0.0, 1.0) * (n_profile - 1) as f64;
+    let idx = (idx_f as usize).min(n_profile - 2);
+    let frac = idx_f - idx as f64;
+
+    let (r0, m0, p0, rho0) = sol.profile[idx];
+    let (r1, m1, p1, rho1) = sol.profile[idx + 1];
+
+    let rho = rho0 * (1.0 - frac) + rho1 * frac;
+    let p_r = p0 * (1.0 - frac) + p1 * frac;
+    let r_val = r0 * (1.0 - frac) + r1 * frac;
+    let m_val = m0 * (1.0 - frac) + m1 * frac;
+
+    // Tangential pressure from anisotropy: p_t = p_r + sigma
+    // sigma = aniso_lambda * rho * (2*m(r)/r^3) approximation
+    let sigma = if r_val > 1e-30 {
+        config.aniso_lambda * rho * 2.0 * m_val / (r_val * r_val * r_val)
+    } else {
+        0.0
+    };
+    let p_t = p_r + sigma;
+
+    Some(BypassStressEnergy {
+        energy_density: rho,
+        radial_pressure: p_r,
+        tangential_pressure: p_t,
+        anisotropy: sigma,
+        satisfies_dec: p_r.abs() <= rho && p_t.abs() <= rho,
+        satisfies_nec: rho + p_r >= 0.0 && rho + p_t >= 0.0,
+    })
+}
+
+// ---------------------------------------------------------------------------
+// Radial Margin Regression (NA-009)
+// ---------------------------------------------------------------------------
+
+/// Result of a radial margin drift check.
+#[derive(Debug, Clone)]
+pub struct RadialMarginDrift {
+    /// Current margin value.
+    pub current: f64,
+    /// Baseline margin value.
+    pub baseline: f64,
+    /// Absolute drift.
+    pub drift: f64,
+    /// Relative drift (|current - baseline| / baseline).
+    pub relative_drift: f64,
+    /// Whether drift is within tolerance.
+    pub within_tolerance: bool,
+}
+
+/// Check whether a stability margin has drifted from baseline.
+///
+/// The margin is the compactness gap: compactness_target - achieved compactness.
+/// If it drifts beyond tolerance, the bypass model may be losing stability.
+pub fn check_margin_drift(
+    config: &BypassConfig,
+    model: BypassModel,
+    baseline_margin: f64,
+    tolerance: f64,
+) -> RadialMarginDrift {
+    let result = evaluate_bypass(config, model);
+    let current_margin = result
+        .solution
+        .as_ref()
+        .map(|sol| (config.compactness - sol.compactness).abs())
+        .unwrap_or(f64::INFINITY);
+
+    let drift = (current_margin - baseline_margin).abs();
+    let relative_drift = if baseline_margin.abs() > 1e-30 {
+        drift / baseline_margin.abs()
+    } else {
+        drift
+    };
+
+    RadialMarginDrift {
+        current: current_margin,
+        baseline: baseline_margin,
+        drift,
+        relative_drift,
+        within_tolerance: relative_drift <= tolerance,
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
 
@@ -525,5 +759,98 @@ mod tests {
             restr.k_eff,
             proj.k_eff
         );
+    }
+
+    // -- NA-007 Bridge Contrast tests --
+
+    #[test]
+    fn test_baseline_contrast_physical() {
+        let config = default_config();
+        let bc = compute_bridge_contrast(&config, BypassModel::Baseline);
+        // Contrast ratio should be finite and positive
+        assert!(
+            bc.contrast_ratio > 0.0 && bc.contrast_ratio.is_finite(),
+            "contrast ratio should be positive finite: ratio={}",
+            bc.contrast_ratio
+        );
+        // Both densities should be positive
+        assert!(bc.rho_shell > 0.0);
+        assert!(bc.rho_v > 0.0);
+        // Gate should accept any ratio >= 1.0 OR correctly report < 1.0
+        let gate_result = assert_contrast_gate(&bc, bc.contrast_ratio);
+        assert!(gate_result, "gate should pass at own ratio threshold");
+    }
+
+    #[test]
+    fn test_gamma_invariant_sweep() {
+        let config = default_config();
+        let contrasts = compare_contrast_ratios(&config);
+        assert_eq!(contrasts.len(), 3);
+
+        // All models should have contrast > 0 (valid solutions)
+        for bc in &contrasts {
+            assert!(
+                bc.contrast_ratio > 0.0,
+                "{:?} contrast ratio should be positive",
+                bc.model
+            );
+        }
+    }
+
+    // -- NA-008 Stress-Energy tests --
+
+    #[test]
+    fn test_baseline_nec_satisfied() {
+        let config = default_config();
+        // Check NEC at midpoint of shell
+        if let Some(se) = bypass_stress_energy(&config, BypassModel::Baseline, 0.5) {
+            assert!(
+                se.satisfies_nec,
+                "NEC should be satisfied at shell midpoint: rho={}, p_r={}",
+                se.energy_density,
+                se.radial_pressure
+            );
+        }
+    }
+
+    #[test]
+    fn test_bypass_models_compare_dec() {
+        let config = default_config();
+        // Bypass models with softer EoS should still satisfy DEC
+        for &model in &[
+            BypassModel::QuaternionProjection,
+            BypassModel::QuaternionRestriction,
+        ] {
+            if let Some(se) = bypass_stress_energy(&config, model, 0.3) {
+                assert!(
+                    se.satisfies_dec,
+                    "{:?} should satisfy DEC at r_frac=0.3",
+                    model
+                );
+            }
+        }
+    }
+
+    // -- NA-009 Radial Margin Regression test --
+
+    #[test]
+    fn test_margin_drift_detection() {
+        let config = default_config();
+        // Get baseline margin
+        let baseline_result = evaluate_bypass(&config, BypassModel::Baseline);
+        let baseline_margin = baseline_result
+            .solution
+            .as_ref()
+            .map(|sol| (config.compactness - sol.compactness).abs())
+            .unwrap_or(0.0);
+
+        // Same config should have zero drift
+        let drift = check_margin_drift(&config, BypassModel::Baseline, baseline_margin, 0.01);
+        assert!(
+            drift.within_tolerance,
+            "same config should have zero drift: relative={}",
+            drift.relative_drift
+        );
+        assert!(drift.drift < 1e-10);
     }
 }

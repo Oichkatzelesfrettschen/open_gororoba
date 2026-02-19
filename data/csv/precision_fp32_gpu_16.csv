@@ -1,0 +1,4 @@
+precision,step,ke,wall_ms_per_step,ke_rel_error_vs_ref
+fp32_gpu,0,0.000000000000e0,0.0000,1.000000e0
+fp32_gpu,50,1.131370941155e-5,0.0017,7.518383e-1
+fp32_gpu,100,4.558899151842e-5,0.0017,2.365996e-5

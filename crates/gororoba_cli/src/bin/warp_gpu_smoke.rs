@@ -55,6 +55,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 match precision {
                     Precision::FP32 => "FP32",
                     Precision::BF16 => "BF16",
+                    Precision::FP64 => "FP64",
                 }
             ));
             println!();
@@ -77,6 +78,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             let precision_tag = match precision {
                 Precision::FP32 => "FP32",
                 Precision::BF16 => "BF16",
+                Precision::FP64 => "FP64",
             };
             let timing_out = out_dir.join(format!(
                 "timing_{}_{}_{}s.toml",

@@ -295,6 +295,10 @@ name = "entropy-trap"
 path = "src/bin/entropy_trap.rs"
 
 [[bin]]
+name = "evidence-package"
+path = "src/bin/evidence_package.rs"
+
+[[bin]]
 name = "he4-superfluid"
 path = "src/bin/he4_superfluid.rs"
 
@@ -487,6 +491,10 @@ name = "rho-ghost-fft"
 path = "src/bin/rho_ghost_fft.rs"
 
 [[bin]]
+name = "ghost-spectral-audit"
+path = "src/bin/ghost_spectral_audit.rs"
+
+[[bin]]
 name = "cd-ultrametric-scaling"
 path = "src/bin/cd_ultrametric_scaling.rs"
 
@@ -529,6 +537,18 @@ path = "src/bin/chsh_betti_sweep.rs"
 [[bin]]
 name = "lattice-hawking-sweep"
 path = "src/bin/lattice_hawking_sweep.rs"
+
+[[bin]]
+name = "zd-resonance-cuda"
+path = "src/bin/zd_resonance_cuda.rs"
+
+[[bin]]
+name = "zd-resonance-4d"
+path = "src/bin/zd_resonance_4d.rs"
+
+[[bin]]
+name = "lbm-precision-sampler"
+path = "src/bin/lbm_precision_sampler.rs"
 
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
