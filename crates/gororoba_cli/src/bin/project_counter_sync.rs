@@ -111,7 +111,7 @@ fn compute_counts(args: &Args) -> Result<ProjectCounts, String> {
         .iter()
         .filter(|entry| {
             let status = entry.status.as_deref().unwrap_or("").trim().to_lowercase();
-            status == "complete" || status == "done"
+            status == "completed" || status == "complete" || status == "done"
         })
         .count();
 

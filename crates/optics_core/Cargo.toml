@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = { workspace = true }
 description = "GRIN ray tracing: gradient-index optics, Beer-Lambert absorption, RK4 integration"
 license = "MIT"
+autobins = false
 
 [dependencies]
 num-complex = { workspace = true }
