@@ -4185,7 +4185,9 @@ dependencies = [
  "algebra_core",
  "criterion",
  "proptest",
+ "rand 0.8.5",
  "stats_core",
+ "vacuum_frustration",
 ]
 
 [[package]]
