@@ -619,9 +619,9 @@ T4 & Power-law $R^2$ & $\geq 0.95$ & $0.995$ \\
     enlarge x limits=1.0,
   ]
   \addplot[fill=green!60!black] coordinates {(Result,1.254)};
-  \draw[red, thick, dashed] (axis cs:Result,1.1) -- ++(axis direction cs:0.6,0)
+  \draw[red, thick, dashed] (axis cs:Result,1.1) -- ([xshift=0.6cm]axis cs:Result,1.1)
     node[right, font=\sffamily\tiny, red!70!black] {$R_{\min}=1.1$};
-  \draw[red, thick, dashed] (axis cs:Result,1.5) -- ++(axis direction cs:0.6,0)
+  \draw[red, thick, dashed] (axis cs:Result,1.5) -- ([xshift=0.6cm]axis cs:Result,1.5)
     node[right, font=\sffamily\tiny, red!70!black] {$R_{\max}=1.5$};
   \node[font=\sffamily\footnotesize, green!40!black] at (axis cs:Result,1.5)
     {$R = 1.254$};
