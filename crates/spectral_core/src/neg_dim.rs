@@ -39,11 +39,27 @@ pub struct ConvergenceResult {
 ///
 /// T(k) = (|k| + epsilon)^alpha
 ///
+/// This is the Fourier symbol of the regularized pseudo-differential operator
+/// used as the kinetic term in H = T + V. For `alpha < 0`, T(k) is **largest
+/// near k = 0** and decays with |k|, so the kinetic energy is dominated by
+/// long-wavelength modes — "inverted" relative to the standard fractional
+/// Laplacian (`alpha > 0`).
+///
+/// The imaginary-time propagator is `exp(-dt * T(k))`, which damps each
+/// k-mode proportionally to T(k). With the harmonic potential V(x) = x²/2,
+/// the full PDE being approximated is the imaginary-time Schrödinger equation:
+///
+/// ```text
+/// -∂_τ ψ = H ψ = [T(-i∂_x) + V(x)] ψ
+/// ```
+///
+/// where τ = i·t is imaginary time and T acts as a Fourier multiplier.
+///
 /// # Arguments
 /// * `n` - Number of grid points
 /// * `l` - Domain size [-L/2, L/2]
-/// * `alpha` - Fractional exponent (alpha < 0 for negative-dimension)
-/// * `epsilon` - Regularization parameter (epsilon > 0)
+/// * `alpha` - Fractional exponent (`alpha < 0` for negative-dimension regime)
+/// * `epsilon` - Regularization parameter (epsilon > 0, prevents |k|=0 singularity for alpha < 0)
 pub fn build_kinetic_operator(n: usize, l: f64, alpha: f64, epsilon: f64) -> (Vec<f64>, Vec<f64>) {
     let _dx = l / n as f64;
     let k: Vec<f64> = (0..n)
@@ -69,6 +85,28 @@ pub fn build_kinetic_operator(n: usize, l: f64, alpha: f64, epsilon: f64) -> (Ve
 ///
 /// Uses Strang splitting with Gram-Schmidt orthogonalization for
 /// successive eigenstate computation.
+///
+/// ## PDE and sign conventions
+///
+/// The algorithm solves the imaginary-time Schrödinger equation:
+///
+/// ```text
+/// -∂_τ ψ = H ψ,   H = T(-i∂_x) + V(x)
+/// ```
+///
+/// with harmonic potential V(x) = x²/2 and kinetic symbol
+/// T(k) = (|k| + ε)^α (see [`build_kinetic_operator`]).
+///
+/// Each split step is:
+/// 1. Half-step V: multiply ψ(x) by exp(-dt/2 · V(x))
+/// 2. Full-step T: multiply ψ̂(k) by exp(-dt · T(k))  (Fourier space)
+/// 3. Half-step V: multiply ψ(x) by exp(-dt/2 · V(x))
+///
+/// followed by Gram-Schmidt orthogonalization against already-found states.
+/// The lowest-energy state dominates in imaginary time, so running this
+/// sequentially extracts eigenvalues in ascending energy order (for α > 0).
+/// For α < 0 the kinetic ordering is inverted and the "ground state" of H
+/// depends on the interplay between the inverted kinetic term and V.
 ///
 /// # Arguments
 /// * `alpha` - Fractional exponent
