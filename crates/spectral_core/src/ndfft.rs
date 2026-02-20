@@ -1,11 +1,16 @@
 //! N-dimensional FFT via ndrustfft.
 //!
-//! Provides generic complex-to-complex and real-to-complex N-D FFT operations
-//! built on ndrustfft (which composes rustfft + realfft under the hood).
+//! Provides generic complex-to-complex (C2C) N-D FFT operations built on
+//! ndrustfft (which composes rustfft + realfft under the hood).
+//!
+//! **Note**: all transforms here are C2C (complex-to-complex), not R2C.
+//! The `real_to_complex_*` helpers simply zero-pad the imaginary part so
+//! that real fields can be passed into C2C routines.  True R2C (half-spectrum
+//! storage, ~2× memory/time savings) is left for a future optimisation pass.
 //!
 //! This module exposes:
 //! - Forward/inverse C2C transforms for 1D through 4D
-//! - Forward R2C transforms for 1D through 4D
+//! - `real_to_complex_*` convenience casts for real inputs
 //! - Radially-binned isotropic power spectrum for arbitrary dimension
 //! - N-D frequency grid construction
 //!
@@ -303,22 +308,25 @@ pub fn power_spectrum_3d(
     (k_bins, power)
 }
 
-/// Convert a real-valued N-D array to complex for FFT input.
+/// Convert a real-valued N-D array to complex for C2C FFT input.
+///
+/// Sets the imaginary part to zero; this is a type cast, not a true R2C
+/// transform (no half-spectrum storage).
 pub fn real_to_complex_1d(input: &Array1<f64>) -> Array1<Complex64> {
     input.mapv(|x| Complex64::new(x, 0.0))
 }
 
-/// Convert a real-valued 2D array to complex for FFT input.
+/// Convert a real-valued 2D array to complex for C2C FFT input.
 pub fn real_to_complex_2d(input: &Array2<f64>) -> Array2<Complex64> {
     input.mapv(|x| Complex64::new(x, 0.0))
 }
 
-/// Convert a real-valued 3D array to complex for FFT input.
+/// Convert a real-valued 3D array to complex for C2C FFT input.
 pub fn real_to_complex_3d(input: &Array3<f64>) -> Array3<Complex64> {
     input.mapv(|x| Complex64::new(x, 0.0))
 }
 
-/// Convert a real-valued 4D array to complex for FFT input.
+/// Convert a real-valued 4D array to complex for C2C FFT input.
 pub fn real_to_complex_4d(input: &Array4<f64>) -> Array4<Complex64> {
     input.mapv(|x| Complex64::new(x, 0.0))
 }
