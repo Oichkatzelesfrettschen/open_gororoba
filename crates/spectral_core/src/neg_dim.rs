@@ -102,7 +102,7 @@ pub fn build_kinetic_operator(n: usize, l: f64, alpha: f64, epsilon: f64) -> (Ve
 /// 2. Full-step T: multiply ψ̂(k) by exp(-dt · T(k))  (Fourier space)
 /// 3. Half-step V: multiply ψ(x) by exp(-dt/2 · V(x))
 ///
-/// followed by Gram-Schmidt orthogonalisation against already-found states.
+/// followed by Gram-Schmidt orthogonalization against already-found states.
 /// The lowest-energy state dominates in imaginary time, so running this
 /// sequentially extracts eigenvalues in ascending energy order (for α > 0).
 /// For α < 0 the kinetic ordering is inverted and the "ground state" of H
