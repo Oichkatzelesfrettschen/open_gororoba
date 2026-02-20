@@ -123,6 +123,12 @@ pub fn fractional_laplacian_dirichlet_1d(u_interior: &[f64], s: f64, length: f64
 ///
 /// Computes DST-I using the FFT relationship:
 /// DST-I of length N can be computed via FFT of length 2(N+1).
+///
+/// This implements the **orthonormalized** DST-I. The extraction step uses
+/// `scale = sqrt(2/(N+1)) / 2` — i.e., the square root of `2/(N+1)` divided
+/// by 2, equivalent to `sqrt(1/(2*(N+1)))`. The inverse is identical to the
+/// forward transform (`idst_i(dst_i(x)) ≈ x`) without any extra `(N+1)/2`
+/// factors, because the orthonormal basis is self-dual.
 fn dst_i(x: &[f64]) -> Vec<f64> {
     let n = x.len();
     if n == 0 {
@@ -151,7 +157,10 @@ fn dst_i(x: &[f64]) -> Vec<f64> {
 
 /// Inverse Discrete Sine Transform Type I (orthonormal).
 ///
-/// For orthonormal DST-I, the inverse is the same as forward up to scaling.
+/// For orthonormal DST-I the inverse equals the forward transform, so this
+/// is identical to [`dst_i`]. Round-trips hold exactly (up to floating-point
+/// error) because the orthonormal scale `sqrt(2/(N+1)) / 2` makes the
+/// transform matrix unitary.
 fn idst_i(x: &[f64]) -> Vec<f64> {
     let n = x.len();
     if n == 0 {
@@ -184,7 +193,9 @@ pub fn fractional_laplacian_periodic_2d(u: &Array2<f64>, s: f64, lx: f64, ly: f6
 
     let mut planner = FftPlanner::new();
 
-    // 2D FFT via row-column decomposition
+    // 2D FFT via row-column decomposition.
+    // In ndarray row-major layout, rows have length ny and columns have length nx,
+    // so fft_y (planned for ny) is applied to rows and fft_x (planned for nx) to columns.
     let fft_x = planner.plan_fft_forward(nx);
     let fft_y = planner.plan_fft_forward(ny);
     let ifft_x = planner.plan_fft_inverse(nx);
@@ -193,19 +204,19 @@ pub fn fractional_laplacian_periodic_2d(u: &Array2<f64>, s: f64, lx: f64, ly: f6
     // Convert to complex
     let mut buffer: Array2<Complex64> = u.mapv(|x| Complex64::new(x, 0.0));
 
-    // FFT along rows
+    // FFT along rows (each row has ny elements → use fft_y)
     for mut row in buffer.rows_mut() {
         let mut row_vec: Vec<Complex64> = row.to_vec();
-        fft_x.process(&mut row_vec);
+        fft_y.process(&mut row_vec);
         for (i, val) in row_vec.into_iter().enumerate() {
             row[i] = val;
         }
     }
 
-    // FFT along columns
+    // FFT along columns (each column has nx elements → use fft_x)
     for mut col in buffer.columns_mut() {
         let mut col_vec: Vec<Complex64> = col.to_vec();
-        fft_y.process(&mut col_vec);
+        fft_x.process(&mut col_vec);
         for (i, val) in col_vec.into_iter().enumerate() {
             col[i] = val;
         }
@@ -230,19 +241,19 @@ pub fn fractional_laplacian_periodic_2d(u: &Array2<f64>, s: f64, lx: f64, ly: f6
         *val *= mult;
     }
 
-    // IFFT along columns
+    // IFFT along columns (each column has nx elements → use ifft_x)
     for mut col in buffer.columns_mut() {
         let mut col_vec: Vec<Complex64> = col.to_vec();
-        ifft_y.process(&mut col_vec);
+        ifft_x.process(&mut col_vec);
         for (i, val) in col_vec.into_iter().enumerate() {
             col[i] = val;
         }
     }
 
-    // IFFT along rows
+    // IFFT along rows (each row has ny elements → use ifft_y)
     for mut row in buffer.rows_mut() {
         let mut row_vec: Vec<Complex64> = row.to_vec();
-        ifft_x.process(&mut row_vec);
+        ifft_y.process(&mut row_vec);
         for (i, val) in row_vec.into_iter().enumerate() {
             row[i] = val;
         }
@@ -556,6 +567,31 @@ mod tests {
 
         for &val in result.iter() {
             assert_relative_eq!(val, 0.0, epsilon = 1e-12);
+        }
+    }
+
+    #[test]
+    fn test_periodic_2d_nonsquare_wave() {
+        // Non-square grid (nx ≠ ny) catches the row/column planner swap bug.
+        // u = sin(2*pi*x) * sin(2*pi*y), (-Delta)^1 u = [(2*pi/Lx)^2 + (2*pi/Ly)^2] * u
+        let nx = 12;
+        let ny = 16;
+        let lx = 1.0;
+        let ly = 2.0;
+        let u = Array2::from_shape_fn((nx, ny), |(i, j)| {
+            let x = i as f64 / nx as f64;
+            let y = j as f64 / ny as f64;
+            (2.0 * PI * x).sin() * (2.0 * PI * y).sin()
+        });
+
+        let result = fractional_laplacian_periodic_2d(&u, 1.0, lx, ly);
+
+        let kx = 2.0 * PI / lx;
+        let ky = 2.0 * PI / ly;
+        let expected_mult = kx * kx + ky * ky;
+        for ((i, j), &r) in result.indexed_iter() {
+            let expected = expected_mult * u[[i, j]];
+            assert_relative_eq!(r, expected, epsilon = 1e-7, max_relative = 1e-7);
         }
     }
 
