@@ -177,7 +177,13 @@ pub fn compute_power_spectrum(signal: &[f64]) -> (Vec<f64>, Vec<f64>) {
     let mean = signal.iter().sum::<f64>() / n as f64;
     let centered: Vec<f64> = signal.iter().map(|&x| x - mean).collect();
 
-    // Apply Hann window to reduce spectral leakage
+    // Apply Hann window to reduce spectral leakage.
+    // Convention: w(n) = 0.5 * (1 - cos(2π n / N)), denominator N (not N-1).
+    // This keeps both endpoints of the window non-zero (w(0)=0, w(N)=0 conceptually
+    // but N is never reached), which is a common engineering choice.  Note that
+    // some references use (N-1) in the denominator; the two differ only at the
+    // boundary samples and have negligible effect on long signals, but should be
+    // noted when comparing leakage bounds against external references.
     let windowed: Vec<Complex<f64>> = centered
         .iter()
         .enumerate()
@@ -549,7 +555,13 @@ pub fn check_ghost_rigorous(
             (0.0, false)
         };
 
-    // Determine verdict
+    // Determine verdict using an AND rule that is deliberately conservative:
+    // "Detected" requires BOTH the global BH-FDR q-value AND the
+    // Bonferroni-windowed p-value to fall below alpha, so a peak must survive
+    // two independent multiple-comparison corrections simultaneously.
+    // "Marginal" is declared when only one of the two corrections is passed.
+    // This AND rule is stronger than most pipelines; it reduces false positives
+    // at the cost of reduced power, which is intentional for "hardened" mode.
     let verdict = if p_fdr < alpha && p_bonferroni < alpha {
         GhostVerdict::Detected
     } else if p_fdr < alpha || p_bonferroni < alpha {
