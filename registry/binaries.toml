@@ -801,3 +801,10 @@ crate = "gororoba_cli"
 description = "Landy 2008 (PRL 100, 207402) perfect metamaterial absorber TMM reproduction. Lorentz effective-medium model with matched eps/mu oscillators, 9-14 GHz sweep, peak A >= 0.96, impedance matching, two-layer convergence."
 experiment = "E-077"
 status = "active"
+
+[[binary]]
+name = "sterile-neutrino-audit"
+crate = "gororoba_cli"
+description = "Seven-stream sterile-neutrino null-result audit (experiment E-079, claims C-703..C-709). Emits null_confirmed only when all seven sensor streams carry a verified null result."
+experiment = "E-079"
+status = "active"

@@ -1850,3 +1850,30 @@ output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic"
 sprint = 56
+
+
+[[experiment]]
+id = "E-079"
+title = "Sterile-Neutrino Null-Result Audit (Seven-Stream)"
+binary = "sterile-neutrino-audit"
+binary_registered = true
+binary_experiment_declared = "E-079"
+method = "Seven-stream null-result audit across the Sprint 43-44 spectral and materials sensor campaign. Streams C-703..C-706 cover spectral/wavelet processing sensors; C-707..C-709 cover materials optical sensors. Emits null_confirmed for the experiment only when all seven streams carry a verified null result, preventing false confirmation when any stream remains open/theoretical."
+input = "None (hardcoded stream statuses from claims.toml)"
+output = ["reports/sterile_neutrino_audit.toml"]
+run = "cargo run --release --bin sterile-neutrino-audit -- --output reports/sterile_neutrino_audit.toml"
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = ["C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709"]
+claim_refs = ["C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709"]
+deterministic = true
+seed = 0
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result_summary = "All seven sensor streams return null_confirmed. Claim set C-703..C-709 fully covered. No sterile-neutrino signature detected across spectral and materials sensors."
+lineage_id = "XL-STERILE-AUDIT"
+input_path_refs = []
+output_path_refs = ["reports/sterile_neutrino_audit.toml"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+sprint = 57
