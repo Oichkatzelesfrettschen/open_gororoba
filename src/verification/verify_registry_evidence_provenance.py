@@ -24,7 +24,7 @@ from collections import defaultdict
 from pathlib import Path
 
 
-CLAIM_ID_RE = re.compile(r"\bC-\d{3}\b")
+CLAIM_ID_RE = re.compile(r"\b(?:C-\d{3}|T-[A-Z0-9]+(?:-[A-Z0-9]+)*)\b")
 SHA_RE = re.compile(r"^[a-f0-9]{64}$")
 
 
@@ -41,7 +41,7 @@ def _load(path: Path) -> dict:
 
 
 def _claim_set(claim_rows: list[dict]) -> set[str]:
-    return {str(row.get("id", "")) for row in claim_rows if str(row.get("id", "")).startswith("C-")}
+    return {str(row.get("id", "")) for row in claim_rows if str(row.get("id", "")).startswith(("C-", "T-"))}
 
 
 def _nonempty_body_doc_ids(rows: list[dict]) -> set[tuple[str, str]]:

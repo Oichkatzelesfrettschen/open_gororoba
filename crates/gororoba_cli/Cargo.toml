@@ -578,6 +578,10 @@ path = "src/bin/fano_scattering.rs"
 name = "landy-absorber-tmm"
 path = "src/bin/landy_absorber_tmm.rs"
 
+[[bin]]
+name = "sterile-neutrino-audit"
+path = "src/bin/sterile_neutrino_audit.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
