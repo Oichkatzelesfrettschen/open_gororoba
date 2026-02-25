@@ -1,7 +1,7 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
-.PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
+.PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
@@ -47,7 +47,7 @@
 .PHONY: verify-python-core-algorithms
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
-.PHONY: fetch-data run coq latex
+.PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run coq latex
 .PHONY: cpp-deps cpp-build cpp-test cpp-bench cpp-clean
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-artifacts clean-all
@@ -135,8 +135,8 @@ pre-push-gate: rust-smoke governance-gate ascii-check
 	@echo "OK: pre-push gate passed (rust-smoke + governance + ASCII)."
 
 # Optional stricter pre-push lane: include dep-audit + cargo-deny + MCP smoke every push
-pre-push-gate-strict: dep-audit cargo-deny-check mcp-smoke pre-push-gate
-	@echo "OK: strict pre-push gate passed (dep-audit + cargo-deny + mcp-smoke + pre-push-gate)."
+pre-push-gate-strict: dep-audit cargo-deny-check mcp-smoke pre-push-gate ascii-check-strict
+	@echo "OK: strict pre-push gate passed (dep-audit + cargo-deny + mcp-smoke + pre-push-gate + ascii-check-strict)."
 
 hooks-install:
 	@mkdir -p "$(HOOKS_DIR)"
@@ -686,6 +686,9 @@ docs-publish: registry-verify-mirrors
 ascii-check:
 	python3 bin/ascii_check.py --check
 
+ascii-check-strict:
+	python3 bin/ascii_check.py --check --strict-placeholders --placeholder-scope-prefix crates/ --placeholder-scope-prefix tests/
+
 verify: install
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
 
@@ -702,7 +705,20 @@ doctor: install
 	$(PYTHON) bin/doctor.py
 
 provenance: install
-	PYTHONWARNINGS=error $(PYTHON) bin/record_external_hashes.py
+	cargo run --release -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+	cargo run --release -p gororoba_cli --bin data-origin-audit -- --out reports/data_origin_audit_$$(date +%F).toml --fail-on-strict-unknown
+
+provenance-audit: install
+	cargo run --release -p gororoba_cli --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true
+
+external-redownload-audit: install
+	cargo run --release -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_$$(date +%F).toml --backend-order wget,curl,fetch
+
+semantic-data-validate: install
+	cargo run --release -p gororoba_cli --bin data-semantic-validate -- --out reports/data_semantic_validate_$$(date +%F).toml
+
+semantic-data-validate-strict: install
+	cargo run --release -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true --out reports/data_semantic_validate_$$(date +%F)_strict.toml
 
 patch-pyfilesystem2: install
 	$(PYTHON) bin/patch_pyfilesystem_pkg_resources.py
@@ -748,8 +764,17 @@ artifacts-motifs-big:
 
 fetch-data: install
 	@echo "Fetching external datasets..."
-	PYTHONWARNINGS=error $(PYTHON) src/fetch_materials_jarvis_subset.py --n 200 --seed 0
-	@echo "Run 'make provenance' to update hash registry after fetching."
+	cargo run --release -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+	@echo "Refreshing external provenance and source governance..."
+	cargo run --release -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+	cargo run --release -p gororoba_cli --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
+
+fetch-data-redownload: install
+	@echo "Force re-downloading external datasets from origin fetchers..."
+	cargo run --release -p gororoba_cli --bin fetch-datasets -- --all --skip-existing false --output-dir data/external
+	@echo "Refreshing external provenance and source governance..."
+	cargo run --release -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+	cargo run --release -p gororoba_cli --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
 
 # ---- Simulation runs ----
 
@@ -820,26 +845,8 @@ cpp-clean:
 # ---- Cleanup ----
 
 clean-artifacts:
-	@echo "Removing generated CSV artifacts..."
-	rm -f data/csv/cd_motif_*.csv
-	rm -f data/csv/de_marrais_*.csv
-	rm -f data/csv/reggiani_*.csv
-	rm -f data/csv/m3_table.csv
-	rm -f data/csv/dimensional_geometry_*.csv
-	rm -f data/csv/materials_jarvis_subset.csv
-	rm -f data/csv/materials_embedding_benchmarks.csv
-	rm -f data/csv/modular_chaos_*.csv
-	rm -f data/csv/sedenion_field_metrics_*.csv
-	rm -f data/csv/spectral_flow.csv
-	@echo "Removing generated images..."
-	rm -f data/artifacts/images/cd_motif_summary_*.png
-	rm -f data/artifacts/images/dimensional_geometry_*.png
-	rm -f data/artifacts/images/materials_pca_*.png
-	@echo "Removing HDF5 outputs..."
-	rm -rf data/h5/
-	@echo "Removing LaTeX build output..."
-	rm -rf docs/latex/out/
-	@echo "Done. Regenerate with: make artifacts"
+	cargo run --release -p gororoba_cli --bin data-clean -- --scope reproducible --apply
+	@echo "Done. Regenerate and verify with cargo-native data governance commands."
 
 clean:
 	rm -rf $(VENV)
@@ -869,6 +876,7 @@ help:
 	@echo "    make smoke                Compileall + lint stats + artifact verifiers"
 	@echo "    make check                test + lint + smoke (CI entry point)"
 	@echo "    make ascii-check          Verify ASCII-only policy"
+	@echo "    make ascii-check-strict   Verify ASCII-only policy + fail on <U+....> placeholders in crates/tests"
 	@echo "    make verify-pantheon-physicsforge-mapping Verify migration matrix/todo mapping completeness"
 	@echo "    make verify-pantheon-physicsforge-license-headers Verify GPL-2.0-only header consistency in migrated files"
 	@echo "    make verify-pantheon-physicsforge-overflow Verify overflow tracker max-5-active policy"
@@ -915,7 +923,7 @@ help:
 	@echo "    make registry-verify-typed-policy-error Supplemental strict typed-policy contract lane"
 	@echo "    make synthesis-execution-contract governance-gate + registry-acceptance-gate + strict typed-policy + project-counter-sync --check"
 	@echo "    make pre-push-gate        rust-smoke + governance-gate + ascii-check"
-	@echo "    make pre-push-gate-strict dep-audit + cargo-deny + mcp-smoke + pre-push-gate"
+	@echo "    make pre-push-gate-strict dep-audit + cargo-deny + mcp-smoke + pre-push-gate + ascii-check-strict"
 	@echo ""
 	@echo "  Artifacts:"
 	@echo "    make artifacts            Regenerate all core artifact sets"
@@ -928,8 +936,15 @@ help:
 	@echo "    make artifacts-materials  JARVIS subset + embeddings"
 	@echo ""
 	@echo "  Data:"
-	@echo "    make fetch-data           Download external datasets"
-	@echo "    make provenance           Hash data/external/* into PROVENANCE.local.json"
+	@echo "    make fetch-data           Re-download external datasets via Rust fetchers + strict governance checks"
+	@echo "    make fetch-data-redownload Force re-download all fetch-datasets providers (skip-existing=false)"
+	@echo "    make provenance           Hash data/external/* + emit data-origin audit report"
+	@echo "    make provenance-audit     Enforce strict origin + semantic + blocked-deadline governance gate"
+	@echo "    make external-redownload-audit  Run external source coverage/re-download audit (wget->curl->fetch)"
+	@echo "    make semantic-data-validate Run lane semantic validators from registry/data_semantic_validators.toml"
+	@echo "    make semantic-data-validate-strict Fail on any semantic unverifiable status"
+	@echo "    cargo run -p gororoba_cli --bin data-governance-gate --     Run fail-closed data governance gate"
+	@echo "    cargo run -p gororoba_cli --bin data-clean -- --scope reproducible --apply  Rust-native reproducible-data cleanup"
 	@echo ""
 	@echo "  Verification:"
 	@echo "    make verify               Verify artifact schemas"
