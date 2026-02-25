@@ -1,12 +1,12 @@
 //! Physical and mathematical constants for photon-graviton TCMT
 
-/// Reduced Planck constant (ℏ = h / 2π)
-/// Units: eV·s
+/// Reduced Planck constant (hbar = h / 2\pi)
+/// Units: eV*s
 /// Reference: CODATA 2018
 pub const REDUCED_PLANCK: f64 = 6.582119569509676e-16;
 
 /// Planck constant
-/// Units: eV·s
+/// Units: eV*s
 pub const PLANCK_CONSTANT: f64 = 2.0 * std::f64::consts::PI * REDUCED_PLANCK;
 
 /// Speed of light in vacuum
@@ -14,27 +14,27 @@ pub const PLANCK_CONSTANT: f64 = 2.0 * std::f64::consts::PI * REDUCED_PLANCK;
 pub const SPEED_OF_LIGHT: f64 = 299792458.0;
 
 /// Gravitational constant (Newton's G)
-/// Units: m³ kg⁻¹ s⁻²
+/// Units: m^3 kg^-1 s^-2
 pub const GRAVITATIONAL_CONSTANT: f64 = 6.67430e-11;
 
-/// Planck mass (m_p = sqrt(ℏc/G))
+/// Planck mass (m_p = sqrt(hbarc/G))
 /// Units: kg
 pub const PLANCK_MASS: f64 = 2.176434e-8;
 
-/// Planck length (l_p = sqrt(ℏG/c³))
+/// Planck length (l_p = sqrt(hbarG/c^3))
 /// Units: m
 pub const PLANCK_LENGTH: f64 = 1.616255e-35;
 
-/// Planck frequency (f_p = c / l_p = sqrt(c^5 / (ℏ G)))
+/// Planck frequency (f_p = c / l_p = sqrt(c^5 / (hbar G)))
 /// Units: Hz
 pub const PLANCK_FREQUENCY: f64 = 1.854858e43;
 
-/// Fine structure constant (α = e² / (4πε₀ℏc))
+/// Fine structure constant (\alpha = e^2 / (4\pi\epsilon_0hbarc))
 /// Dimensionless
 pub const FINE_STRUCTURE_CONSTANT: f64 = 7.2973525693e-3;
 
 /// Gravitational coupling constant (relates graviton to Planck mass)
-/// α_grav ≈ (m_electron / m_planck)²
+/// \alpha_grav ~= (m_electron / m_planck)^2
 /// Dimensionless, extremely small
 pub const GRAVITATIONAL_COUPLING_CONSTANT: f64 = 1.76859e-45;
 
@@ -46,7 +46,7 @@ pub const ELEMENTARY_CHARGE: f64 = 1.602176634e-19;
 /// Units: kg
 pub const ELECTRON_MASS: f64 = 9.1093837015e-31;
 
-/// Electron mass in natural units (eV/c²)
+/// Electron mass in natural units (eV/c^2)
 pub const ELECTRON_MASS_EV: f64 = 0.51099895e6;
 
 /// Weak-field approximation validity threshold

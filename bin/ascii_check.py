@@ -9,6 +9,7 @@ Policy:
 Usage:
   python3 bin/ascii_check.py --check
   python3 bin/ascii_check.py --fix
+  python3 bin/ascii_check.py --check --strict-placeholders --placeholder-scope-prefix crates/
 """
 
 from __future__ import annotations
@@ -27,7 +28,10 @@ REPLACEMENTS: dict[str, str] = {
     "\u2013": "-",
     "\u2014": "--",
     "\u2212": "-",
+    "\u207b": "-",
     "\u2011": "-",
+    "\u00b7": "*",
+    "\u2202": "\\partial",
     "\u2192": "->",
     "\u21d2": "=>",
     "\u2026": "...",
@@ -191,6 +195,29 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--fix", action="store_true")
+    parser.add_argument(
+        "--strict-placeholders",
+        action="store_true",
+        help="Fail when '<U+....>' placeholder tokens are present in checked files.",
+    )
+    parser.add_argument(
+        "--placeholder-scope-prefix",
+        action="append",
+        default=[],
+        help=(
+            "Restrict strict placeholder checks to these repo-relative path prefixes. "
+            "Repeatable. If omitted, strict checks all scanned files."
+        ),
+    )
+    parser.add_argument(
+        "--placeholder-allowlist",
+        action="append",
+        default=["bin/ascii_check.py", "bin/ascii_placeholder_cleanup.py"],
+        help=(
+            "Repo-relative file path allowed to contain placeholder literals under "
+            "strict placeholder mode. Repeatable."
+        ),
+    )
     args = parser.parse_args()
 
     if args.check == args.fix:
@@ -198,6 +225,9 @@ def main() -> int:
 
     repo_root = Path(__file__).resolve().parents[1]
     failures: list[str] = []
+    placeholder_failures: list[str] = []
+    placeholder_scope_prefixes = [p.strip("/") for p in args.placeholder_scope_prefix if p.strip()]
+    placeholder_allowlist = set(args.placeholder_allowlist)
 
     for path in iter_files(repo_root):
         if path.suffix.lower() in SKIP_EXTS:
@@ -226,12 +256,30 @@ def main() -> int:
             failures.append(str(path.relative_to(repo_root)))
             continue
 
+        if args.strict_placeholders:
+            in_scope = (
+                not placeholder_scope_prefixes
+                or any(
+                    rel_posix == prefix or rel_posix.startswith(prefix + "/")
+                    for prefix in placeholder_scope_prefixes
+                )
+            )
+            if in_scope and rel_posix not in placeholder_allowlist and "<U+" in new_text:
+                placeholder_failures.append(rel_posix)
+                continue
+
         if args.fix and new_text != text:
             path.write_text(new_text, encoding="utf-8")
 
     if failures:
         print("Non-ASCII files (first 10 chars per file not shown):")
         for fp in failures[:50]:
+            print(f"  - {fp}")
+        raise SystemExit(2)
+
+    if placeholder_failures:
+        print("ASCII placeholder tokens detected in strict mode:")
+        for fp in placeholder_failures[:50]:
             print(f"  - {fp}")
         raise SystemExit(2)
 

@@ -42,18 +42,18 @@ pub struct ConvergenceResult {
 /// This is the Fourier symbol of the regularized pseudo-differential operator
 /// used as the kinetic term in H = T + V. For `alpha < 0`, T(k) is **largest
 /// near k = 0** and decays with |k|, so the kinetic energy is dominated by
-/// long-wavelength modes — "inverted" relative to the standard fractional
+/// long-wavelength modes -- "inverted" relative to the standard fractional
 /// Laplacian (`alpha > 0`).
 ///
 /// The imaginary-time propagator is `exp(-dt * T(k))`, which damps each
-/// k-mode proportionally to T(k). With the harmonic potential V(x) = x²/2,
-/// the full PDE being approximated is the imaginary-time Schrödinger equation:
+/// k-mode proportionally to T(k). With the harmonic potential V(x) = x^2/2,
+/// the full PDE being approximated is the imaginary-time Schrodinger equation:
 ///
 /// ```text
-/// -∂_τ ψ = H ψ = [T(-i∂_x) + V(x)] ψ
+/// -\partial_\tau \psi = H \psi = [T(-i\partial_x) + V(x)] \psi
 /// ```
 ///
-/// where τ = i·t is imaginary time and T acts as a Fourier multiplier.
+/// where \tau = i*t is imaginary time and T acts as a Fourier multiplier.
 ///
 /// # Arguments
 /// * `n` - Number of grid points
@@ -88,24 +88,24 @@ pub fn build_kinetic_operator(n: usize, l: f64, alpha: f64, epsilon: f64) -> (Ve
 ///
 /// ## PDE and sign conventions
 ///
-/// The algorithm solves the imaginary-time Schrödinger equation:
+/// The algorithm solves the imaginary-time Schrodinger equation:
 ///
 /// ```text
-/// -∂_τ ψ = H ψ,   H = T(-i∂_x) + V(x)
+/// -\partial_\tau \psi = H \psi,   H = T(-i\partial_x) + V(x)
 /// ```
 ///
-/// with harmonic potential V(x) = x²/2 and kinetic symbol
-/// T(k) = (|k| + ε)^α (see [`build_kinetic_operator`]).
+/// with harmonic potential V(x) = x^2/2 and kinetic symbol
+/// T(k) = (|k| + \epsilon)^\alpha (see [`build_kinetic_operator`]).
 ///
 /// Each split step is:
-/// 1. Half-step V: multiply ψ(x) by exp(-dt/2 · V(x))
-/// 2. Full-step T: multiply ψ̂(k) by exp(-dt · T(k))  (Fourier space)
-/// 3. Half-step V: multiply ψ(x) by exp(-dt/2 · V(x))
+/// 1. Half-step V: multiply \psi(x) by exp(-dt/2 * V(x))
+/// 2. Full-step T: multiply \psi(k) by exp(-dt * T(k))  (Fourier space)
+/// 3. Half-step V: multiply \psi(x) by exp(-dt/2 * V(x))
 ///
 /// followed by Gram-Schmidt orthogonalization against already-found states.
 /// The lowest-energy state dominates in imaginary time, so running this
-/// sequentially extracts eigenvalues in ascending energy order (for α > 0).
-/// For α < 0 the kinetic ordering is inverted and the "ground state" of H
+/// sequentially extracts eigenvalues in ascending energy order (for \alpha > 0).
+/// For \alpha < 0 the kinetic ordering is inverted and the "ground state" of H
 /// depends on the interplay between the inverted kinetic term and V.
 ///
 /// # Arguments
@@ -528,7 +528,7 @@ mod tests {
         // Later epsilon values should have smaller relative change
         let first_change = results[2].rel_change; // index 0, eps=0.1
         let second_change = results[4].rel_change; // index 0, eps=0.05
-                                                   // Convergence should improve or stay similar
+        // Convergence should improve or stay similar
         assert!(second_change <= first_change + 0.1);
     }
 
