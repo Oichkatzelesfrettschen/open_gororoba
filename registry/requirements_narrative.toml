@@ -2,7 +2,7 @@
 
 [requirements_narrative]
 authoritative = true
-updated = "2026-02-12"
+updated = "2026-02-25"
 source_markdown_glob = "docs/requirements/*.md (+ selected app README overlays)"
 document_count = 12
 
@@ -62,6 +62,32 @@ make artifacts-motifs
 make artifacts-motifs-big
 make verify
 ```
+
+## 4) Data provenance and cleanup (Rust-native)
+
+```bash
+cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli --bin data-governance-gate --
+cargo run -p gororoba_cli --bin data-semantic-validate --
+cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
+cargo run -p gororoba_cli --bin data-clean -- --scope reproducible --apply
+```
+
+Notes:
+- Reproducible generated data is treated as build output and should stay gitignored.
+- External datasets must carry reproducible provenance metadata (hash + timestamp + path) and source contract coverage via `data/external/SOURCES.toml`.
+- The governance gate is fail-closed for strict lanes (`data/external`, `data/artifacts`, `data/evidence`).
+- Use `external-redownload-audit` to distinguish reproducible active sources from explicitly blocked sources with deadlines/evidence.
+- Active source rules must use explicit scientific validator refs (no `structure_only` on active entries).
+- `data-semantic-validate` reports pass/fail/unverifiable status for schema and scientific checks (strict mode: `--fail-on-unverifiable true`), while `data-clean` is the Rust-native clean lane for reproducible outputs.
+- Validation snapshot (`2026-02-25`): strict semantic gate passed `29/29` validators with `failed=0` and `unverifiable=0` (`reports/data_semantic_validate_2026-02-25_burndown_step2_postretire.toml`).
+- Origin snapshot (`2026-02-25`): data-origin-audit reports `unknown_count=0`, `strict_unknown_count=0`, and `unclassified_count=0` (`reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml`).
 """
 
 [[document]]
@@ -107,6 +133,37 @@ If you need module-specific details, see:
    ```bash
    make studio-check
    ```
+
+5. Run Rust-native data governance checks:
+   ```bash
+   cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+   cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+   cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --replay-mode staging --fail-on-replay-side-effects true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+   cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
+   cargo run -p gororoba_cli --bin data-governance-gate --
+   cargo run -p gororoba_cli --bin data-semantic-validate --
+cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
+   cargo run -p gororoba_cli --bin data-clean -- --scope reproducible --apply
+   ```
+
+   Why each command exists:
+   - `fetch-datasets` replays approved origin fetchers into `data/external/`.
+   - `record-external-hashes` refreshes machine-readable provenance (`PROVENANCE.local.json`).
+   - `external-redownload-audit` verifies replayability and checksum stability against source rules, and in staging mode prevents execute-time mutation of live `data/external` by failing on out-of-scope replay side effects.
+- `external-blocked-burndown` quantifies blocked-source debt by source/file-count/bytes and supports threshold-based burn-down gates.
+- `external-blocked-retry-ledger` appends blocked-source action-plan retries into a shared ledger artifact used by governance and semantic validators.
+   - `data-origin-audit` enforces strict-lane origin coverage (no unknown provenance in strict lanes).
+   - `data-governance-gate` enforces fail-closed policy checks (origin, naming, gitignore, blocked deadlines, unclassified-lane zero).
+   - `data-semantic-validate` reports lane-level status as pass/fail/unverifiable for structural plus scientific checks; use `--fail-on-unverifiable true` for strict governance passes.
+   - `data-clean` removes reproducible build outputs so regeneration remains deterministic.
+- Cargo workflow policy: run compile-heavy Cargo commands serially; parallelize only non-Cargo analysis/edit tasks to avoid lock contention.
+- Lane boundary: keep only replayable dataset payloads in `data/external`; move manual intake/document corpora to `data/papers` (manual import exception lane).
+   - Active source rules must use explicit scientific validator refs (no `structure_only` on active entries).
+   - Validation snapshot (`2026-02-25`): strict semantic gate passed `29/29` validators with `failed=0` and `unverifiable=0` (`reports/data_semantic_validate_2026-02-25_burndown_step2_postretire.toml`).
+   - Origin snapshot (`2026-02-25`): data-origin-audit reports `unknown_count=0`, `strict_unknown_count=0`, and `unclassified_count=0` (`reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml`).
 
 The canonical Python dependency sets live in `pyproject.toml`. Prefer using the `make install-*`
 targets (they match the extras).
@@ -307,6 +364,26 @@ Notes:
   - `src/vis_advanced_projections.py` (scikit-learn, networkx)
   - `src/holo_tensor_net.py`, `src/vis_hyper_mera*.py` (networkx)
 - Some scientific wheels may not exist for very new Python versions; if installs fail, use a container (or a Python 3.11/3.12 env) for this module.
+
+## Data governance and provenance
+
+Analysis outputs are treated as reproducible build artifacts and must pass Rust-native governance checks:
+
+```bash
+cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli --bin data-governance-gate --
+cargo run -p gororoba_cli --bin data-semantic-validate --
+cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
+cargo run -p gororoba_cli --bin data-clean -- --scope reproducible --apply
+```
+
+This sequence verifies origin contracts, replayability, semantic integrity, and clean rebuild behavior for analysis lanes.
 """
 
 [[document]]
@@ -332,6 +409,23 @@ If a dataset is missing, fetch it explicitly and record provenance in:
 - `data/external/PROVENANCE.local.json` (`make provenance`)
 - `docs/BIBLIOGRAPHY.md`
 - `docs/external_sources/DATASET_MANIFEST.md`
+
+## Provenance governance checklist
+
+```bash
+cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli --bin data-governance-gate --
+cargo run -p gororoba_cli --bin data-semantic-validate --
+cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
+```
+
+Run this checklist whenever astro datasets are refreshed so provenance and semantic contracts remain reproducible.
 
 Common entrypoints:
 - `src/fetch_observatory_data.py` (MAST, SDSS)
@@ -439,6 +533,23 @@ make install
 make artifacts-materials
 ```
 
+## Provenance governance checklist
+
+```bash
+cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli --bin data-governance-gate --
+cargo run -p gororoba_cli --bin data-semantic-validate --
+cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
+```
+
+Use this lane after materials refreshes to verify source-of-origin, replayability, and schema validity.
+
 References:
 - JARVIS paper: https://www.nature.com/articles/s41524-020-00440-1
 - JARVIS-DFT data (Figshare): https://figshare.com/articles/dataset/JARVIS-DFT_Database/6815699
@@ -464,6 +575,23 @@ This installs:
 Use this module only for offline analyses against cached/open data snapshots.
 Do not add network calls to tests. Record provenance for any imported snapshots
 under `data/external/` and update `docs/BIBLIOGRAPHY.md`.
+
+## Provenance governance checklist
+
+```bash
+cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli --bin data-governance-gate --
+cargo run -p gororoba_cli --bin data-semantic-validate --
+cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
+```
+
+Run this checklist for particle snapshots to keep external datasets reproducible and policy-compliant.
 """
 
 [[document]]

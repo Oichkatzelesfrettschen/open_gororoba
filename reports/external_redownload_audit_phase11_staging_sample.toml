@@ -1,0 +1,105 @@
+generated_at_utc = "2026-02-25T08:11:49.416Z"
+execute = true
+replay_mode = "staging"
+replay_staging_root = "target/external_replay_staging"
+backend_order = [
+    "wget",
+    "curl",
+    "fetch",
+]
+total_files = 3
+matched_source_files = 3
+unmatched_source_files = 0
+blocked_pending = 0
+generator_replay_required = 0
+replay_command_successes = 0
+replay_command_failures = 3
+replay_side_effects_count = 0
+blocked_overdue = 0
+blocked_missing_action_plan = 0
+blocked_missing_action_plan_refs = 0
+checksum_mismatch = 0
+download_failures = 0
+pass_count = 3
+
+[[records]]
+path = "data/external/GGM05S.gfc"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "23992d55c4837be9d4e31410035d44740f484115eb02f89f9829d66817badb7f"
+actual_sha256 = "23992d55c4837be9d4e31410035d44740f484115eb02f89f9829d66817badb7f"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+replay command timed out after 20s
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+replay_command=cargo run -p gororoba_cli --bin fetch-datasets -- --all --output-dir 'target/external_replay_staging/src-external-fetch-root' --skip-existing=false"""
+staging_dir = "target/external_replay_staging/src-external-fetch-root"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/GRACEFO_monthly_sample.gfc"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "c52abd36a974ba46001073d0e018b9546c7b2abe42bd4c8fa27f5f97637dd8db"
+actual_sha256 = "c52abd36a974ba46001073d0e018b9546c7b2abe42bd4c8fa27f5f97637dd8db"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+replay command timed out after 20s
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+replay_command=cargo run -p gororoba_cli --bin fetch-datasets -- --all --output-dir 'target/external_replay_staging/src-external-fetch-root' --skip-existing=false"""
+staging_dir = "target/external_replay_staging/src-external-fetch-root"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/PantheonPlusSH0ES.dat"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8"
+actual_sha256 = "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+replay command timed out after 20s
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+replay_command=cargo run -p gororoba_cli --bin fetch-datasets -- --all --output-dir 'target/external_replay_staging/src-external-fetch-root' --skip-existing=false"""
+staging_dir = "target/external_replay_staging/src-external-fetch-root"
+side_effect_detected = false
+
