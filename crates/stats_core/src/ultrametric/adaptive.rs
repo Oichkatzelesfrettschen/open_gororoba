@@ -149,15 +149,16 @@ where
 
         // Only consider early stopping after minimum permutations
         if total_k >= config.min_permutations
-            && let Some(reason) = should_stop(total_r, total_k, config.alpha, config.confidence) {
-                return AdaptiveResult {
-                    p_value: p_val,
-                    n_permutations_used: total_k,
-                    stopped_early: true,
-                    stop_reason: reason,
-                    p_trajectory: trajectory,
-                };
-            }
+            && let Some(reason) = should_stop(total_r, total_k, config.alpha, config.confidence)
+        {
+            return AdaptiveResult {
+                p_value: p_val,
+                n_permutations_used: total_k,
+                stopped_early: true,
+                stop_reason: reason,
+                p_trajectory: trajectory,
+            };
+        }
     }
 
     let p_val = (total_r as f64 + 1.0) / (total_k as f64 + 1.0);

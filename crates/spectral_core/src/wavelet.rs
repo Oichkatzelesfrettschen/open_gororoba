@@ -18,7 +18,11 @@ use std::f64::consts::SQRT_2;
 /// Energy is preserved: `||output||_2 == ||input||_2`.
 pub fn haar_dwt(signal: &[f64]) -> Vec<f64> {
     let n = signal.len();
-    assert!(n.is_power_of_two(), "haar_dwt: length must be a power of 2, got {}", n);
+    assert!(
+        n.is_power_of_two(),
+        "haar_dwt: length must be a power of 2, got {}",
+        n
+    );
     let mut buf = signal.to_vec();
     let inv_sqrt2 = 1.0 / SQRT_2;
     let mut len = n;
@@ -42,7 +46,11 @@ pub fn haar_dwt(signal: &[f64]) -> Vec<f64> {
 /// Recovers the original signal from coefficients produced by `haar_dwt`.
 pub fn haar_idwt(coeffs: &[f64]) -> Vec<f64> {
     let n = coeffs.len();
-    assert!(n.is_power_of_two(), "haar_idwt: length must be a power of 2, got {}", n);
+    assert!(
+        n.is_power_of_two(),
+        "haar_idwt: length must be a power of 2, got {}",
+        n
+    );
     let mut buf = coeffs.to_vec();
     let inv_sqrt2 = 1.0 / SQRT_2;
     let mut len = 2;
@@ -75,7 +83,10 @@ pub fn hard_threshold(coeffs: &[f64], eps: f64) -> Vec<f64> {
         return vec![0.0; coeffs.len()];
     }
     let cutoff = eps * c_inf;
-    coeffs.iter().map(|&c| if c.abs() <= cutoff { 0.0 } else { c }).collect()
+    coeffs
+        .iter()
+        .map(|&c| if c.abs() <= cutoff { 0.0 } else { c })
+        .collect()
 }
 
 /// Count of surviving (nonzero) coefficients after `hard_threshold`.
@@ -96,7 +107,9 @@ pub struct WaveletBridge {
 impl WaveletBridge {
     /// Create a new bridge reservoir of length `n`, initialized to zero.
     pub fn new(n: usize) -> Self {
-        Self { buffer: vec![0.0; n] }
+        Self {
+            buffer: vec![0.0; n],
+        }
     }
 
     /// Accumulate a residual vector into the reservoir (`buffer += residual`).

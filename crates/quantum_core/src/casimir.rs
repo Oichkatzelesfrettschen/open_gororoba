@@ -1442,7 +1442,9 @@ pub fn thermal_wavelength(temperature: f64) -> f64 {
 #[derive(Debug, Clone, Error)]
 pub enum CasimirError {
     /// PFA validity violated: geometry outside approximation regime.
-    #[error("PFA validity violated: d/R = {d_over_r:.6} exceeds {accuracy:?} threshold of {threshold:.6}")]
+    #[error(
+        "PFA validity violated: d/R = {d_over_r:.6} exceeds {accuracy:?} threshold of {threshold:.6}"
+    )]
     PfaViolation {
         /// Actual d/R ratio in the geometry
         d_over_r: f64,

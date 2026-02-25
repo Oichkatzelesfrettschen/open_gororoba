@@ -60,8 +60,7 @@ pub fn ab12(z: f64, u: f64) -> f64 {
         // = z/2 * (v^2 - 1/3) + z^3/24 * (v^4 - 10*v^2/3 + 7/15) + ...
         let z2 = z * z;
         let v2 = v * v;
-        z * (v2 - 1.0 / 3.0) / 2.0
-            + z * z2 * (v2 * v2 - 10.0 * v2 / 3.0 + 7.0 / 15.0) / 24.0
+        z * (v2 - 1.0 / 3.0) / 2.0 + z * z2 * (v2 * v2 - 10.0 * v2 / 3.0 + 7.0 / 15.0) / 24.0
     } else {
         (z * v).cosh() / z.sinh() - 1.0 / z
     }
@@ -90,8 +89,7 @@ pub fn sf12(z: f64, u: f64) -> f64 {
         let z2 = z * z;
         let v2 = v * v;
         // cosh(zv)/cosh(z) = 1 + z^2*(v^2-1)/2 + O(z^4)
-        1.0 + z2 * (v2 - 1.0) / 2.0
-            + z2 * z2 * (v2 * v2 - 6.0 * v2 + 5.0) / 24.0
+        1.0 + z2 * (v2 - 1.0) / 2.0 + z2 * z2 * (v2 * v2 - 6.0 * v2 + 5.0) / 24.0
     } else {
         (z * v).cosh() / z.cosh()
     }
@@ -229,10 +227,7 @@ mod tests {
         // At z=0, AB12 = 0
         for &u in &[0.0, 0.25, 0.5, 0.75, 1.0] {
             let result = ab12(0.0, u);
-            assert!(
-                result.abs() < 1e-14,
-                "AB12(0, {u}) = {result}, expected 0"
-            );
+            assert!(result.abs() < 1e-14, "AB12(0, {u}) = {result}, expected 0");
         }
     }
 
@@ -283,10 +278,7 @@ mod tests {
     fn test_sb12_midpoint() {
         // At u=0.5, v=0, so SB12 = sinh(0)/sinh(z) = 0
         let result = sb12(2.0, 0.5);
-        assert!(
-            result.abs() < 1e-14,
-            "SB12(2, 0.5) = {result}, expected 0"
-        );
+        assert!(result.abs() < 1e-14, "SB12(2, 0.5) = {result}, expected 0");
     }
 
     // -- Weak-field cross-validation --

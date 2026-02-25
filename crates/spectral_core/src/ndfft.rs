@@ -6,7 +6,7 @@
 //! **Note**: all transforms here are C2C (complex-to-complex), not R2C.
 //! The `real_to_complex_*` helpers simply zero-pad the imaginary part so
 //! that real fields can be passed into C2C routines.  True R2C (half-spectrum
-//! storage, ~2× memory/time savings) is left for a future optimisation pass.
+//! storage, ~2x memory/time savings) is left for a future optimisation pass.
 //!
 //! This module exposes:
 //! - Forward/inverse C2C transforms for 1D through 4D
@@ -19,7 +19,7 @@
 //! general-purpose N-D FFT for spectral analysis workflows.
 
 use ndarray::{Array1, Array2, Array3, Array4, ArrayD, IxDyn};
-use ndrustfft::{ndfft, ndifft, FftHandler};
+use ndrustfft::{FftHandler, ndfft, ndifft};
 use num_complex::Complex64;
 use std::f64::consts::PI;
 
@@ -180,11 +180,7 @@ pub fn fft_nd(input: &ArrayD<Complex64>) -> ArrayD<Complex64> {
     // axis=0: a->b, axis=1: b->a, axis=2: a->b, axis=3: b->a, ...
     // Even ndim: last axis is odd, last write to `a`.
     // Odd ndim: last axis is even, last write to `b`.
-    if ndim.is_multiple_of(2) {
-        a
-    } else {
-        b
-    }
+    if ndim.is_multiple_of(2) { a } else { b }
 }
 
 /// Inverse N-D FFT on a dynamic-dimension array (normalized).
@@ -205,11 +201,7 @@ pub fn ifft_nd(input: &ArrayD<Complex64>) -> ArrayD<Complex64> {
         }
     }
 
-    if ndim.is_multiple_of(2) {
-        a
-    } else {
-        b
-    }
+    if ndim.is_multiple_of(2) { a } else { b }
 }
 
 // ---------------------------------------------------------------------------

@@ -13,10 +13,9 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 fn project_root() -> PathBuf {
-    let manifest = std::env::var("CARGO_MANIFEST_DIR")
-        .unwrap_or_else(|_| ".".to_string());
+    let manifest = std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".to_string());
     Path::new(&manifest)
-        .parent()     // crates/
+        .parent() // crates/
         .and_then(|p| p.parent()) // root
         .unwrap_or(Path::new("."))
         .to_path_buf()
@@ -71,9 +70,11 @@ fn build_pdf(root: &Path) -> Result<PathBuf, Box<dyn std::error::Error>> {
 
     let pdf = out_dir.join("llm_scaffold_paper.pdf");
     if pdf.exists() {
-        println!("PDF written: {} ({:.1} MB)",
+        println!(
+            "PDF written: {} ({:.1} MB)",
             pdf.display(),
-            std::fs::metadata(&pdf)?.len() as f64 / 1_048_576.0);
+            std::fs::metadata(&pdf)?.len() as f64 / 1_048_576.0
+        );
     }
 
     Ok(pdf)
@@ -112,7 +113,8 @@ fn build_arxiv_tarball(root: &Path) -> Result<PathBuf, Box<dyn std::error::Error
         let entry = entry?;
         let path = entry.path();
         if let Some(name) = path.file_name().and_then(|n| n.to_str())
-            && name.ends_with("_appendix.tex") {
+            && name.ends_with("_appendix.tex")
+        {
             files.push((path.clone(), name.to_string()));
         }
     }
@@ -132,7 +134,8 @@ fn build_arxiv_tarball(root: &Path) -> Result<PathBuf, Box<dyn std::error::Error
     let mut cmd = Command::new("tar");
     cmd.arg("czf").arg(&tarball);
     for arg in &file_args {
-        cmd.arg("--transform").arg(format!("s|.*|{}|", arg.split('=').next().unwrap()));
+        cmd.arg("--transform")
+            .arg(format!("s|.*|{}|", arg.split('=').next().unwrap()));
     }
     // Simpler: just add files with full paths, arXiv accepts flat archives
     let mut cmd = Command::new("tar");
@@ -169,9 +172,11 @@ fn build_arxiv_tarball(root: &Path) -> Result<PathBuf, Box<dyn std::error::Error
         return Err("tar failed".into());
     }
 
-    println!("arXiv tarball: {} ({:.1} KB)",
+    println!(
+        "arXiv tarball: {} ({:.1} KB)",
         tarball.display(),
-        std::fs::metadata(&tarball)?.len() as f64 / 1024.0);
+        std::fs::metadata(&tarball)?.len() as f64 / 1024.0
+    );
 
     Ok(tarball)
 }

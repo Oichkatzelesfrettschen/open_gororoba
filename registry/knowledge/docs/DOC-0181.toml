@@ -28,7 +28,7 @@ Status: TODO
 Elevate the \"Silicon-Gold-Ice VIII\" Warp Ring simulation from cinematic pseudo-physics to a rigorously defended Analogue Optics experiment (Phase 6.5 -> Phase 7.0).
 
 ## 1. Provenance & Bibliography (The \"Spine\")
-- [ ] **Fetch Sources**: Download the 4 key citations to `data/external/papers/` (or `references/` if pdfs).
+- [ ] **Fetch Sources**: Download the 4 key citations to `data/papers/corpus/` (or `references/` if pdfs).
     - CSC KTH (Ray Theory)
     - Babar & Weaver (Gold n/k)
     - Pan et al (Ice Pressure)

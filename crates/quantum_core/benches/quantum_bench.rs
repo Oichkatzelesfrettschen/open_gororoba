@@ -5,8 +5,8 @@
 //! - Harper-Hofstadter eigenspectrum
 //! - FHS Chern number calculation
 
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
-use quantum_core::{fhs_chern_numbers, harper_hamiltonian, MatrixProductState};
+use criterion::{BenchmarkId, Criterion, black_box, criterion_group, criterion_main};
+use quantum_core::{MatrixProductState, fhs_chern_numbers, harper_hamiltonian};
 
 /// Benchmark MPS single-qubit gate application.
 fn bench_mps_single_gate(c: &mut Criterion) {

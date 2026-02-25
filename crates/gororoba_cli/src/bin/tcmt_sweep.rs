@@ -4,8 +4,8 @@
 
 use clap::Parser;
 use optics_core::{
-    find_turning_points, find_turning_points_physical, solve_normalized_cubic,
-    trace_hysteresis_loop, KerrCavity,
+    KerrCavity, find_turning_points, find_turning_points_physical, solve_normalized_cubic,
+    trace_hysteresis_loop,
 };
 
 #[derive(Parser)]
@@ -110,15 +110,16 @@ fn run_turning_point_analysis(args: &Args) {
                 && let (Some(p_low), Some(p_high)) = (
                     phys_result.turning_lower.power,
                     phys_result.turning_upper.power,
-                ) {
-                    eprintln!("\nPhysical units (Q_total = {}):", args.q_total);
-                    eprintln!("  Lower threshold power: {:.4e} W", p_low);
-                    eprintln!("  Upper threshold power: {:.4e} W", p_high);
-                    eprintln!(
-                        "  Hysteresis width: {:.4e} W",
-                        phys_result.width_power.unwrap_or(0.0)
-                    );
-                }
+                )
+            {
+                eprintln!("\nPhysical units (Q_total = {}):", args.q_total);
+                eprintln!("  Lower threshold power: {:.4e} W", p_low);
+                eprintln!("  Upper threshold power: {:.4e} W", p_high);
+                eprintln!(
+                    "  Hysteresis width: {:.4e} W",
+                    phys_result.width_power.unwrap_or(0.0)
+                );
+            }
 
             // Output to CSV if requested
             if let Some(path) = &args.output {

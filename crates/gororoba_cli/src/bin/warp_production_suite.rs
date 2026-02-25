@@ -8,8 +8,8 @@ use std::path::PathBuf;
 use std::sync::atomic::Ordering;
 use std::time::Duration;
 use warp_runner::{
-    gate_h5_outputs_with_profile, print_case_report, run_case, write_step_timing_report,
-    BackendKind, BenchCase, GateProfile, TimingMode,
+    BackendKind, BenchCase, GateProfile, TimingMode, gate_h5_outputs_with_profile,
+    print_case_report, run_case, write_step_timing_report,
 };
 
 fn parse_precision(input: &str) -> Option<Precision> {

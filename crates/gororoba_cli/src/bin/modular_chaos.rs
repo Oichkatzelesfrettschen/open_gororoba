@@ -5,9 +5,9 @@
 
 use clap::Parser;
 use rustfft::{FftPlanner, num_complex::Complex64};
-use std::path::PathBuf;
 use std::fs::File;
 use std::io::Write;
+use std::path::PathBuf;
 
 #[derive(Parser)]
 struct Args {

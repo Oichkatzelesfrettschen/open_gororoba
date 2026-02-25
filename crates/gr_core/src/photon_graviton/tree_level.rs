@@ -20,7 +20,7 @@
 use num_complex::Complex64;
 
 use super::constants::KAPPA_NATURAL;
-use super::types::{FieldConfig, HelicityChannel, PhotonPolarization, GravitonPolarization};
+use super::types::{FieldConfig, GravitonPolarization, HelicityChannel, PhotonPolarization};
 
 /// Compute the tree-level amplitude for a given helicity channel.
 ///
@@ -78,9 +78,7 @@ pub fn tree_level_amplitude(config: &FieldConfig, channel: HelicityChannel) -> C
             KAPPA_NATURAL * eb * omega * omega * sin_t * cos_t
         }
         // Perp-Cross:
-        HelicityChannel::PerpCross => {
-            KAPPA_NATURAL * eb * omega * omega * sin_t
-        }
+        HelicityChannel::PerpCross => KAPPA_NATURAL * eb * omega * omega * sin_t,
     };
 
     Complex64::new(amp, 0.0)
@@ -92,9 +90,10 @@ pub fn tree_level_amplitude(config: &FieldConfig, channel: HelicityChannel) -> C
 /// This is |M_tree|^2 = sum_{h=+,x} |M_tree(pol, h)|^2.
 pub fn tree_level_rate(config: &FieldConfig, photon_pol: PhotonPolarization) -> f64 {
     let (ch1, ch2) = match photon_pol {
-        PhotonPolarization::Parallel => {
-            (HelicityChannel::ParallelPlus, HelicityChannel::ParallelCross)
-        }
+        PhotonPolarization::Parallel => (
+            HelicityChannel::ParallelPlus,
+            HelicityChannel::ParallelCross,
+        ),
         PhotonPolarization::Perpendicular => {
             (HelicityChannel::PerpPlus, HelicityChannel::PerpCross)
         }
@@ -110,11 +109,7 @@ pub fn tree_level_rate(config: &FieldConfig, photon_pol: PhotonPolarization) -> 
 pub fn tree_level_dichroism(config: &FieldConfig) -> f64 {
     let r_par = tree_level_rate(config, PhotonPolarization::Parallel);
     let r_perp = tree_level_rate(config, PhotonPolarization::Perpendicular);
-    if r_perp > 0.0 {
-        r_par / r_perp
-    } else {
-        1.0
-    }
+    if r_perp > 0.0 { r_par / r_perp } else { 1.0 }
 }
 
 /// Verify the gauge Ward identity: k_alpha * C^{mn,alpha} = 0.

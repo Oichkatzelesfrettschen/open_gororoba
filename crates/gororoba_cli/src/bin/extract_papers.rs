@@ -5,8 +5,8 @@ use std::path::{Path, PathBuf};
 
 use clap::Parser;
 use docpipe::equation_catalog::{
-    build_catalog, convert_historical_csv_path, index_module_files, write_catalog_toml,
-    EquationCatalogInputRow, EquationSourceStream,
+    EquationCatalogInputRow, EquationSourceStream, build_catalog, convert_historical_csv_path,
+    index_module_files, write_catalog_toml,
 };
 
 /// Extract all papers listed in MANIFEST.toml to structured TOML output.

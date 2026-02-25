@@ -14,10 +14,8 @@
 
 use clap::Parser;
 use materials_core::{
-    get_material, list_materials, EV_TO_RADS, C, HBAR_EV_S,
-    ExtendedDrudeParams, ScatteringModel,
-    DrudeLorentzParams, DrudeParams,
-    tmm_reflection, kramers_kronig_check,
+    C, DrudeLorentzParams, DrudeParams, EV_TO_RADS, ExtendedDrudeParams, HBAR_EV_S,
+    ScatteringModel, get_material, kramers_kronig_check, list_materials, tmm_reflection,
 };
 use num_complex::Complex64;
 use std::f64::consts::PI;
@@ -77,7 +75,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn run_list() {
     println!("========================================");
-    println!("Optical Materials Database ({} entries)", list_materials().len());
+    println!(
+        "Optical Materials Database ({} entries)",
+        list_materials().len()
+    );
     println!("========================================");
     for (i, name) in list_materials().iter().enumerate() {
         let mat = get_material_by_display_name(name);
@@ -123,8 +124,12 @@ fn get_material_by_display_name(display: &str) -> Option<materials_core::Materia
 }
 
 fn run_material(name: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let mat = get_material(name)
-        .ok_or_else(|| format!("Material '{}' not found. Use --list to see available.", name))?;
+    let mat = get_material(name).ok_or_else(|| {
+        format!(
+            "Material '{}' not found. Use --list to see available.",
+            name
+        )
+    })?;
 
     println!("========================================");
     println!("{} ({})", mat.name, mat.formula);
@@ -143,7 +148,10 @@ fn run_material(name: &str) -> Result<(), Box<dyn std::error::Error>> {
     println!("Casimir model: {:?}", mat.casimir_model);
 
     println!("\nDielectric function epsilon(omega):");
-    println!("{:>10}  {:>14}  {:>14}  {:>14}", "E (eV)", "Re[eps]", "Im[eps]", "|eps|");
+    println!(
+        "{:>10}  {:>14}  {:>14}  {:>14}",
+        "E (eV)", "Re[eps]", "Im[eps]", "|eps|"
+    );
     println!("{:-<56}", "");
 
     let freqs_ev = [0.01, 0.05, 0.1, 0.5, 1.0, 2.0, 3.0, 5.0, 8.0, 10.0];
@@ -152,7 +160,10 @@ fn run_material(name: &str) -> Result<(), Box<dyn std::error::Error>> {
         let eps = mat.optical.epsilon(omega);
         println!(
             "{:>10.3}  {:>14.4}  {:>14.4}  {:>14.4}",
-            e, eps.re, eps.im, eps.norm()
+            e,
+            eps.re,
+            eps.im,
+            eps.norm()
         );
     }
 
@@ -164,7 +175,10 @@ fn run_material(name: &str) -> Result<(), Box<dyn std::error::Error>> {
         })
         .collect();
     let kk = kramers_kronig_check(&eps_vals, true, None);
-    println!("\nKramers-Kronig consistency: max_rel_error = {:.4e}", kk.max_rel_error);
+    println!(
+        "\nKramers-Kronig consistency: max_rel_error = {:.4e}",
+        kk.max_rel_error
+    );
 
     Ok(())
 }
@@ -173,10 +187,7 @@ fn run_compare(names: &str) -> Result<(), Box<dyn std::error::Error>> {
     let material_names: Vec<&str> = names.split(',').map(|s| s.trim()).collect();
     let materials: Vec<_> = material_names
         .iter()
-        .map(|n| {
-            get_material(n)
-                .ok_or_else(|| format!("Material '{}' not found", n))
-        })
+        .map(|n| get_material(n).ok_or_else(|| format!("Material '{}' not found", n)))
         .collect::<Result<Vec<_>, _>>()?;
 
     println!("========================================");
@@ -240,7 +251,10 @@ fn thesis_1_tio_srtio3_interface() -> Result<(), Box<dyn std::error::Error>> {
     let thicknesses_nm = [5.0, 10.0, 20.0, 50.0, 100.0];
     let freqs_ev = [0.1, 0.5, 1.0, 2.0, 3.0, 5.0, 8.0];
 
-    println!("{:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}", "E (eV)", "5 nm", "10 nm", "20 nm", "50 nm", "100 nm");
+    println!(
+        "{:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}",
+        "E (eV)", "5 nm", "10 nm", "20 nm", "50 nm", "100 nm"
+    );
     println!("{:-<66}", "");
 
     for &e in &freqs_ev {
@@ -307,7 +321,10 @@ fn thesis_2_extended_drude_residual() -> Result<(), Box<dyn std::error::Error>> 
         }),
     };
 
-    println!("{:>10}  {:>12}  {:>12}  {:>12}", "E (eV)", "Const Re", "Ext Re", "Residual");
+    println!(
+        "{:>10}  {:>12}  {:>12}  {:>12}",
+        "E (eV)", "Const Re", "Ext Re", "Residual"
+    );
     println!("{:-<50}", "");
 
     let freqs_ev = [0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0];
@@ -341,7 +358,10 @@ fn thesis_3_spectral_weight_transfer() -> Result<(), Box<dyn std::error::Error>>
     let mats = ["tio", "srtio3", "latio3"];
     let mat_entries: Vec<_> = mats.iter().map(|n| get_material(n).unwrap()).collect();
 
-    println!("{:>10}  {:>14}  {:>14}  {:>14}", "E (eV)", "TiO Im[eps]", "SrTiO3 Im", "LaTiO3 Im");
+    println!(
+        "{:>10}  {:>14}  {:>14}  {:>14}",
+        "E (eV)", "TiO Im[eps]", "SrTiO3 Im", "LaTiO3 Im"
+    );
     println!("{:-<56}", "");
 
     let freqs_ev = [0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0, 2.0, 5.0];
@@ -387,12 +407,19 @@ fn thesis_4_azo_sensitivity() -> Result<(), Box<dyn std::error::Error>> {
     println!("Predicts: systematic edge shift with carrier concentration.\n");
 
     let base = get_material("azo").unwrap();
-    let omega_p_base = base.optical.drude.as_ref().map(|d| d.omega_p_ev).unwrap_or(1.75);
+    let omega_p_base = base
+        .optical
+        .drude
+        .as_ref()
+        .map(|d| d.omega_p_ev)
+        .unwrap_or(1.75);
 
     let variations = [0.8, 0.9, 1.0, 1.1, 1.2];
 
-    println!("{:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}",
-        "E (eV)", "0.8x", "0.9x", "1.0x", "1.1x", "1.2x");
+    println!(
+        "{:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}",
+        "E (eV)", "0.8x", "0.9x", "1.0x", "1.1x", "1.2x"
+    );
     println!("{:-<66}", "");
 
     let freqs_ev = [0.1, 0.2, 0.5, 0.8, 1.0, 1.2, 1.5, 2.0, 3.0];

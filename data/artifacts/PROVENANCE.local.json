@@ -1,0 +1,170 @@
+{
+  "generated_at_utc": "2026-02-04T04:24:27.114976+00:00",
+  "hashes": [
+    {
+      "mtime_utc": "2026-01-31T21:18:30.078106+00:00",
+      "path": "engineering/spaceplate_geometry.scad",
+      "sha256": "5ee2c73d692adf7d55163fbb68f6c620a944263a5549e757d458d1563e12de8f",
+      "size_bytes": 1120
+    },
+    {
+      "mtime_utc": "2026-02-02T00:32:39.372962+00:00",
+      "path": "images/OCULUS_GRAND_DASHBOARD_v4.png",
+      "sha256": "1d9f3bca42ee3d1e7f832cff650c099b021f821cceb997c446ce7243b3e03c64",
+      "size_bytes": 538072
+    },
+    {
+      "mtime_utc": "2026-01-29T06:49:45.701497+00:00",
+      "path": "images/associator_stats_3160x2820.png",
+      "sha256": "0934f5c499726506dad5c794944cd83138f9bd4d48fd37a9d61f2bad2058c796",
+      "size_bytes": 135306
+    },
+    {
+      "mtime_utc": "2026-02-02T17:47:27.826601+00:00",
+      "path": "images/cd_motif_max_component_nodes_3160x2820.png",
+      "sha256": "de141f13bf6cba7164937d85a27ef3e573a77f5df10f157ea7eaa5bc2f1efa8e",
+      "size_bytes": 147308
+    },
+    {
+      "mtime_utc": "2026-01-29T17:17:08.294811+00:00",
+      "path": "images/cd_motif_scaling_laws_3160x2820.png",
+      "sha256": "b935eac4e2fc030dc519a367904495cadc6ad42506d491f764051868f644cdf3",
+      "size_bytes": 310615
+    },
+    {
+      "mtime_utc": "2026-02-03T06:00:06.290981+00:00",
+      "path": "images/cosmology_comparison.png",
+      "sha256": "f10463ff51ab62e9c2a838f7a0b2bd1326bf99c298632e06e149260a05fe03a1",
+      "size_bytes": 53869
+    },
+    {
+      "mtime_utc": "2026-01-27T06:18:28.172124+00:00",
+      "path": "images/dimensional_geometry_-4_to_16.png",
+      "sha256": "a49fe081837e2dd4db6d6bc2962e7ee9e97cc7069d87eb7bf133eec8151b4326",
+      "size_bytes": 340197
+    },
+    {
+      "mtime_utc": "2026-01-27T06:18:28.700125+00:00",
+      "path": "images/dimensional_geometry_0_to_32.png",
+      "sha256": "3e1e1aa49f4d14988b9244b5a0d3f6fe935da8069808749dbb3ecabf7ea51c76",
+      "size_bytes": 328741
+    },
+    {
+      "mtime_utc": "2026-02-02T07:52:07.034306+00:00",
+      "path": "images/genesis_simulation_grand.png",
+      "sha256": "190946cd373e6103fe6cfc11051a7f1c82ae1ddca589f699d3ff371f522370be",
+      "size_bytes": 836776
+    },
+    {
+      "mtime_utc": "2026-02-02T00:01:06.174695+00:00",
+      "path": "images/holographic_warp_gpu.png",
+      "sha256": "ee478b5bd9f0ed7dc222f03fb1db82c44a1f9a55bbab599ba0bd82c7109f62e2",
+      "size_bytes": 258426
+    },
+    {
+      "mtime_utc": "2026-02-03T06:00:05.484979+00:00",
+      "path": "images/kerr_shadow_asymmetry.png",
+      "sha256": "4bb89b7b567ed2a86a026f4a910b9294c225a7cf8a5fcfc60f5de4b876e4a66b",
+      "size_bytes": 35899
+    },
+    {
+      "mtime_utc": "2026-02-03T05:56:06.890486+00:00",
+      "path": "images/kerr_trace_demo.png",
+      "sha256": "05b3a97c61adf1de896962aeeeaa4d9e73c132b02b6d4e831368be5e0385dd16",
+      "size_bytes": 36185
+    },
+    {
+      "mtime_utc": "2026-01-28T19:20:49.907488+00:00",
+      "path": "images/materials_nomad_pca_16d.png",
+      "sha256": "1e77d89cdf6e56e58efd904a2081a0c875f58ae0a459772e48e66b74a2a168b5",
+      "size_bytes": 203125
+    },
+    {
+      "mtime_utc": "2026-01-28T19:20:50.484488+00:00",
+      "path": "images/materials_nomad_pca_32d.png",
+      "sha256": "ffef92bf0c92b2c90545975129fcc58336eef47cb466aa5bf0d4893859e6cd8e",
+      "size_bytes": 204015
+    },
+    {
+      "mtime_utc": "2026-01-28T19:20:48.985487+00:00",
+      "path": "images/materials_nomad_pca_4d.png",
+      "sha256": "f451610818b2d0ce00136038798f6fde4b122fdf0556e78a0b26f181b97f00a9",
+      "size_bytes": 201900
+    },
+    {
+      "mtime_utc": "2026-01-28T19:20:49.409487+00:00",
+      "path": "images/materials_nomad_pca_8d.png",
+      "sha256": "e1312e3cd1d1b2e54f81fdbd67bde82999fd7fbfb930ef695be3ff11c0409190",
+      "size_bytes": 202907
+    },
+    {
+      "mtime_utc": "2026-01-30T13:50:31.238955+00:00",
+      "path": "images/materials_pca_16d.png",
+      "sha256": "84434b14bbd586e2fe2c40a4b495ba88530ff8f5306fa32dbdd0a25ec8503114",
+      "size_bytes": 174480
+    },
+    {
+      "mtime_utc": "2026-01-30T13:50:31.238955+00:00",
+      "path": "images/materials_pca_32d.png",
+      "sha256": "5c3bba0c863098758a36a7b885ff4225bc27968d245d78fe0cf270b3e45a365d",
+      "size_bytes": 175126
+    },
+    {
+      "mtime_utc": "2026-01-30T13:50:31.238955+00:00",
+      "path": "images/materials_pca_4d.png",
+      "sha256": "ee6dd67ac79e59525c4c95151018e0fb7d31f343cad9142f278d0b483393f30a",
+      "size_bytes": 173716
+    },
+    {
+      "mtime_utc": "2026-01-30T13:50:31.239144+00:00",
+      "path": "images/materials_pca_8d.png",
+      "sha256": "3dbd6b14a10c22b9286f9a899865f86485f86876f8f1adf33391bd8b15caf207",
+      "size_bytes": 174496
+    },
+    {
+      "mtime_utc": "2026-02-02T17:48:03.894589+00:00",
+      "path": "images/reggiani_annihilator_nullity_3160x2820.png",
+      "sha256": "1c566811c73f241bdcb10c9443b4c21a00c24acb4c96512d57502e4612e3ab59",
+      "size_bytes": 112467
+    },
+    {
+      "mtime_utc": "2026-02-02T00:05:14.253806+00:00",
+      "path": "images/sedenion_capture_scaling.png",
+      "sha256": "d6ece371474ae02dca824380ec5d4722b9937d682b128c6df918d936b023f13e",
+      "size_bytes": 9396
+    },
+    {
+      "mtime_utc": "2026-02-03T06:22:38.916622+00:00",
+      "path": "images/sedenion_slice_3d.png",
+      "sha256": "37d81dca312e7a2d95fa0facdd6e2a0dcddeefbbbd021b8400a270244b19ee9c",
+      "size_bytes": 539516
+    },
+    {
+      "mtime_utc": "2026-01-29T06:49:44.484495+00:00",
+      "path": "images/tensor_network_entropy_scaling_3160x2820.png",
+      "sha256": "4983afb5c98a7ecd2d35093c6354d697c06303bb122ba37ac4ca61c76ccea4ef",
+      "size_bytes": 115502
+    },
+    {
+      "mtime_utc": "2026-02-02T08:00:01.195076+00:00",
+      "path": "images/warp_pulse_animation_directors_cut.mp4",
+      "sha256": "926a71926d5e023166968bc8a398a9cf4c0a99e84e2da63e75efec6b578c300c",
+      "size_bytes": 23579442
+    },
+    {
+      "mtime_utc": "2026-02-03T06:44:46.581161+00:00",
+      "path": "images/warp_ring_annotated.png",
+      "sha256": "b5e2fe84c603ea0d9b56d90c2472d859925e7b123a0326e46a9816b70245bf58",
+      "size_bytes": 1556151
+    },
+    {
+      "mtime_utc": "2026-02-02T04:16:44.001106+00:00",
+      "path": "manufacturing/sedenion_spaceplate_bom.csv",
+      "sha256": "168e29af157ea378d89f990f0b406cea724e834e994531b1bfa73e974c452998",
+      "size_bytes": 5914
+    }
+  ],
+  "manifest": "data/artifacts/ARTIFACTS_MANIFEST.csv",
+  "missing_manifest_paths": [],
+  "root": "data/artifacts"
+}

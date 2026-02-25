@@ -8,7 +8,7 @@
 //! into a reusable library function.
 
 use super::baire::{
-    matrix_free_ultrametric_test_with_null, AttributeSpec, BaireEncoder, BaireTestResult,
+    AttributeSpec, BaireEncoder, BaireTestResult, matrix_free_ultrametric_test_with_null,
 };
 use super::null_models::NullModel;
 

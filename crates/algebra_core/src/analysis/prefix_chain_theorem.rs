@@ -34,8 +34,8 @@
 //! vectors via the even-sum and even-weight constraints.
 
 use crate::analysis::codebook::{
-    enumerate_lambda_4096, is_in_base_universe, verify_octonion_parity_constraints,
-    ForbiddenFamily, LatticeVector,
+    ForbiddenFamily, LatticeVector, enumerate_lambda_4096, is_in_base_universe,
+    verify_octonion_parity_constraints,
 };
 use std::collections::BTreeSet;
 
@@ -148,9 +148,7 @@ impl OctonionSkeletonMap {
 
     /// Verify that all imaginary directions satisfy base universe constraints.
     pub fn verify_directions_in_sbase(&self) -> bool {
-        self.imaginary_directions
-            .iter()
-            .all(is_in_base_universe)
+        self.imaginary_directions.iter().all(is_in_base_universe)
     }
 
     /// Verify the Fano plane structure: for each triple (i,j,k), the
@@ -175,9 +173,7 @@ impl OctonionSkeletonMap {
                 let sum_in_sbase = is_in_base_universe(&sum);
 
                 // Also check that the sum vector's nonzero pattern overlaps with d_k
-                let overlap = (0..8)
-                    .filter(|&c| sum[c] != 0 && d_k[c] != 0)
-                    .count();
+                let overlap = (0..8).filter(|&c| sum[c] != 0 && d_k[c] != 0).count();
 
                 (i, j, k, sum_in_sbase || overlap > 0)
             })
@@ -229,11 +225,8 @@ fn verify_transition(
     let n_child = child.len();
 
     // Verify: first n_child elements of parent (lex order) == child
-    let lex_first: BTreeSet<LatticeVector> = parent_sorted[..n_child]
-        .iter()
-        .copied()
-        .copied()
-        .collect();
+    let lex_first: BTreeSet<LatticeVector> =
+        parent_sorted[..n_child].iter().copied().copied().collect();
 
     if lex_first != *child {
         return None;
@@ -390,40 +383,83 @@ pub fn format_theorem_summary(result: &PrefixChainTheoremResult) -> String {
     s.push_str("  is a strict chain of lexicographic prefix-cuts.\n\n");
 
     s.push_str("VERIFICATION:\n");
-    s.push_str(&format!("  |S_base| = {} (expected 2187): {}\n",
+    s.push_str(&format!(
+        "  |S_base| = {} (expected 2187): {}\n",
         result.sbase_size,
-        if result.sbase_size == 2187 { "PASS" } else { "FAIL" }
+        if result.sbase_size == 2187 {
+            "PASS"
+        } else {
+            "FAIL"
+        }
     ));
 
     for (dim, size) in &result.level_sizes {
-        s.push_str(&format!("  |Lambda_{}| = {} (expected {}): {}\n",
-            dim, size, dim,
+        s.push_str(&format!(
+            "  |Lambda_{}| = {} (expected {}): {}\n",
+            dim,
+            size,
+            dim,
             if *size == *dim { "PASS" } else { "FAIL" }
         ));
     }
 
-    s.push_str(&format!("\n  Strict chain: {}\n",
-        if result.is_strict_chain { "PASS" } else { "FAIL" }
+    s.push_str(&format!(
+        "\n  Strict chain: {}\n",
+        if result.is_strict_chain {
+            "PASS"
+        } else {
+            "FAIL"
+        }
     ));
-    s.push_str(&format!("  All prefix-cuts: {}\n",
-        if result.all_prefix_cuts { "PASS" } else { "FAIL" }
+    s.push_str(&format!(
+        "  All prefix-cuts: {}\n",
+        if result.all_prefix_cuts {
+            "PASS"
+        } else {
+            "FAIL"
+        }
     ));
-    s.push_str(&format!("  Growth doubling: {}\n",
-        if result.growth_doubling_holds { "PASS" } else { "FAIL" }
+    s.push_str(&format!(
+        "  Growth doubling: {}\n",
+        if result.growth_doubling_holds {
+            "PASS"
+        } else {
+            "FAIL"
+        }
     ));
-    s.push_str(&format!("  Forbidden count = {} (expected 139): {}\n",
+    s.push_str(&format!(
+        "  Forbidden count = {} (expected 139): {}\n",
         result.forbidden_count,
-        if result.forbidden_count == 139 { "PASS" } else { "FAIL" }
+        if result.forbidden_count == 139 {
+            "PASS"
+        } else {
+            "FAIL"
+        }
     ));
-    s.push_str(&format!("  Octonion parity: {}\n",
-        if result.octonion_parity_holds { "PASS" } else { "FAIL" }
+    s.push_str(&format!(
+        "  Octonion parity: {}\n",
+        if result.octonion_parity_holds {
+            "PASS"
+        } else {
+            "FAIL"
+        }
     ));
-    s.push_str(&format!("  8D codomain lock: {}\n",
-        if result.codomain_8d_verified { "PASS" } else { "FAIL" }
+    s.push_str(&format!(
+        "  8D codomain lock: {}\n",
+        if result.codomain_8d_verified {
+            "PASS"
+        } else {
+            "FAIL"
+        }
     ));
 
-    s.push_str(&format!("\n  THEOREM STATUS: {}\n",
-        if result.theorem_verified() { "VERIFIED" } else { "FAILED" }
+    s.push_str(&format!(
+        "\n  THEOREM STATUS: {}\n",
+        if result.theorem_verified() {
+            "VERIFIED"
+        } else {
+            "FAILED"
+        }
     ));
 
     if !result.transitions.is_empty() {
@@ -432,8 +468,14 @@ pub fn format_theorem_summary(result: &PrefixChainTheoremResult) -> String {
             s.push_str(&format!("  {}D -> {}D:\n", t.parent_dim, t.child_dim));
             s.push_str(&format!("    boundary    = {:?}\n", t.boundary));
             s.push_str(&format!("    1st_excl    = {:?}\n", t.first_excluded));
-            s.push_str(&format!("    diverge@    = coord[{}]\n", t.divergence_coord));
-            s.push_str(&format!("    growth      = {} new points\n", t.growth_delta));
+            s.push_str(&format!(
+                "    diverge@    = coord[{}]\n",
+                t.divergence_coord
+            ));
+            s.push_str(&format!(
+                "    growth      = {} new points\n",
+                t.growth_delta
+            ));
         }
     }
 
@@ -680,10 +722,12 @@ mod tests {
         for &dim in &[256, 512, 1024, 2048] {
             let level = enumerate_lambda_lex(&sbase, dim);
             let vecs: Vec<LatticeVector> = level.iter().copied().collect();
-            let (n, n_tri, n_esum, n_ewt, n_l0, all) =
-                verify_octonion_parity_constraints(&vecs);
-            assert!(all, "Octonion parity failed at dim={}: n={}, tri={}, esum={}, ewt={}, l0={}",
-                dim, n, n_tri, n_esum, n_ewt, n_l0);
+            let (n, n_tri, n_esum, n_ewt, n_l0, all) = verify_octonion_parity_constraints(&vecs);
+            assert!(
+                all,
+                "Octonion parity failed at dim={}: n={}, tri={}, esum={}, ewt={}, l0={}",
+                dim, n, n_tri, n_esum, n_ewt, n_l0
+            );
         }
     }
 

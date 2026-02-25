@@ -1,7 +1,7 @@
-use ash::{vk, Entry, Instance, Device};
+use ash::{Device, Entry, Instance, vk};
+use gpu_allocator::vulkan::*;
 use std::ffi::CStr;
 use std::sync::Arc;
-use gpu_allocator::vulkan::*;
 
 pub mod compute;
 
@@ -41,7 +41,7 @@ impl VulkanContext {
     pub fn new(enable_validation: bool) -> Result<Self, Box<dyn std::error::Error>> {
         let entry = unsafe { Entry::load() }?;
         let app_name = c"Gororoba Vulkan LBM";
-        
+
         let app_info = vk::ApplicationInfo {
             s_type: vk::StructureType::APPLICATION_INFO,
             p_application_name: app_name.as_ptr(),
@@ -55,7 +55,7 @@ impl VulkanContext {
             vec![]
         };
         let layers_raw: Vec<*const i8> = layer_names.iter().map(|name| name.as_ptr()).collect();
-        let _extensions: Vec<*const i8> = vec![]; 
+        let _extensions: Vec<*const i8> = vec![];
 
         let create_info = vk::InstanceCreateInfo {
             s_type: vk::StructureType::INSTANCE_CREATE_INFO,
@@ -76,7 +76,10 @@ impl VulkanContext {
                     .iter()
                     .enumerate()
                     .find_map(|(index, info)| {
-                        if info.queue_flags.contains(vk::QueueFlags::COMPUTE | vk::QueueFlags::GRAPHICS) {
+                        if info
+                            .queue_flags
+                            .contains(vk::QueueFlags::COMPUTE | vk::QueueFlags::GRAPHICS)
+                        {
                             Some((*pdevice, index as u32))
                         } else {
                             None
@@ -124,7 +127,11 @@ impl VulkanContext {
             vram_mb,
             vendor_id: props.vendor_id,
             device_id: props.device_id,
-            device_name: unsafe { CStr::from_ptr(props.device_name.as_ptr()).to_string_lossy().into_owned() },
+            device_name: unsafe {
+                CStr::from_ptr(props.device_name.as_ptr())
+                    .to_string_lossy()
+                    .into_owned()
+            },
             supports_fp16: features16.shader_float16 == vk::TRUE,
             supports_fp64: features2.features.shader_float64 == vk::TRUE,
             max_compute_shared_memory_size: props.limits.max_compute_shared_memory_size,
@@ -162,7 +169,7 @@ impl VulkanContext {
             device: (*device).clone(),
             physical_device: pdevice,
             debug_settings: Default::default(),
-            buffer_device_address: false, 
+            buffer_device_address: false,
             allocation_sizes: Default::default(),
         })?;
         let allocator = Arc::new(std::sync::Mutex::new(allocator));
@@ -204,13 +211,13 @@ impl VulkanContext {
 
     fn optimal_grid_dim(&self) -> u32 {
         let vram_bytes = self.caps.vram_mb as u64 * 1024 * 1024;
-        let target_bytes = (vram_bytes as f64 * 0.7) as u64; 
-        
+        let target_bytes = (vram_bytes as f64 * 0.7) as u64;
+
         let bytes_per_cell = match self.caps.tier {
-            GpuTier::Constrained => 128, 
+            GpuTier::Constrained => 128,
             _ => 256,
         };
-        
+
         let max_cells = target_bytes / bytes_per_cell;
         let n = (max_cells as f64).cbrt() as u32;
         let n = (n / 8) * 8;
@@ -248,11 +255,19 @@ mod tests {
     #[test]
     fn test_tiering_logic() {
         let vram_1gb = 1024;
-        let tier = if vram_1gb < 2048 { GpuTier::Constrained } else { GpuTier::Standard };
+        let tier = if vram_1gb < 2048 {
+            GpuTier::Constrained
+        } else {
+            GpuTier::Standard
+        };
         assert_eq!(tier, GpuTier::Constrained);
 
         let vram_12gb = 12 * 1024;
-        let tier = if vram_12gb < 8192 { GpuTier::High } else { GpuTier::Ultra };
+        let tier = if vram_12gb < 8192 {
+            GpuTier::High
+        } else {
+            GpuTier::Ultra
+        };
         assert_eq!(tier, GpuTier::Ultra);
     }
 }

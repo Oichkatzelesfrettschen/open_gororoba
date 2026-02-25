@@ -57,8 +57,8 @@ Scope: method-level multiple-testing accounting for TSCP alignment (C-407).
 
 ## Source anchors (cached)
 
-- Bonferroni/Sidak background: `data/external/papers/abdi_2007_bonferroni_sidak_corrections.pdf`
-- Holm procedure: `data/external/papers/holm_1979_sequentially_rejective_multiple_test_procedure.pdf`
+- Bonferroni/Sidak background: `data/papers/corpus/abdi_2007_bonferroni_sidak_corrections.pdf`
+- Holm procedure: `data/papers/corpus/holm_1979_sequentially_rejective_multiple_test_procedure.pdf`
 
 ## Notes
 

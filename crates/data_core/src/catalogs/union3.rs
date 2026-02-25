@@ -6,7 +6,7 @@
 //! Source: DESI Y3 BAO cosmology data release
 //! https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 

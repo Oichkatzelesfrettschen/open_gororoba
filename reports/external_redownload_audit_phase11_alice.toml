@@ -1,0 +1,1824 @@
+generated_at_utc = "2026-02-25T08:03:47.806Z"
+execute = true
+replay_mode = "staging"
+replay_staging_root = "target/external_replay_staging"
+backend_order = [
+    "wget",
+    "curl",
+    "fetch",
+]
+total_files = 45
+matched_source_files = 45
+unmatched_source_files = 0
+blocked_pending = 0
+generator_replay_required = 0
+replay_command_successes = 0
+replay_command_failures = 45
+replay_side_effects_count = 0
+blocked_overdue = 0
+blocked_missing_action_plan = 0
+blocked_missing_action_plan_refs = 0
+checksum_mismatch = 0
+download_failures = 45
+pass_count = 0
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_1.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "6c892ea7dd988220ecde94074eff6a48c04d470ca15f3a28312d61386b484624"
+actual_sha256 = "6c892ea7dd988220ecde94074eff6a48c04d470ca15f3a28312d61386b484624"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_10.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "7356946ab28a35e6284efcb222299dc574bafbaf83c13c631d044d127a99d82b"
+actual_sha256 = "7356946ab28a35e6284efcb222299dc574bafbaf83c13c631d044d127a99d82b"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_11.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "86b96dc071447b9ef998fcc8964e9cb8c988ac6329d9ac83e38051b70a7bbd3e"
+actual_sha256 = "86b96dc071447b9ef998fcc8964e9cb8c988ac6329d9ac83e38051b70a7bbd3e"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_12.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "eeb5a442d8700cc3e72b49fded5430345091fb8406bad8785c5c3459c0eeaa13"
+actual_sha256 = "eeb5a442d8700cc3e72b49fded5430345091fb8406bad8785c5c3459c0eeaa13"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_13.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "f34595383847acc2437711a545f156c34ad4bcc2799ca2d07f02aecdd39edf8d"
+actual_sha256 = "f34595383847acc2437711a545f156c34ad4bcc2799ca2d07f02aecdd39edf8d"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_14.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "3c66fadcdb6154f4b859a91186293e8e26ea6b2486495e26d9282e6b0fd5b994"
+actual_sha256 = "3c66fadcdb6154f4b859a91186293e8e26ea6b2486495e26d9282e6b0fd5b994"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_15.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "3b95e2ebd4a28766e77e24358bf2a982f6f12af729a74048085559c144b36b36"
+actual_sha256 = "3b95e2ebd4a28766e77e24358bf2a982f6f12af729a74048085559c144b36b36"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_16.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "1557cc586cd2a1533ec03e4c84bd71372ef1128b9e6a1f5f0a05f9b8da4709b6"
+actual_sha256 = "1557cc586cd2a1533ec03e4c84bd71372ef1128b9e6a1f5f0a05f9b8da4709b6"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_17.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "83a59c9fa18177707e59a7f292997b6598483ae5af8054ff437833a525502a98"
+actual_sha256 = "83a59c9fa18177707e59a7f292997b6598483ae5af8054ff437833a525502a98"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_18.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "f90ab6f73e09ec155790b0dda19b4f52809a88b9dfda6065716201279ab1fdc9"
+actual_sha256 = "f90ab6f73e09ec155790b0dda19b4f52809a88b9dfda6065716201279ab1fdc9"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_19.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "92b64c2e8fbcdee9e3798e209f7a79f4b86a5b1c50f33c27a42adb5f1a970361"
+actual_sha256 = "92b64c2e8fbcdee9e3798e209f7a79f4b86a5b1c50f33c27a42adb5f1a970361"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_2.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "0a3f67df65be2949579a9041893ba935b18a8f82be96ce46a3a56593f0829671"
+actual_sha256 = "0a3f67df65be2949579a9041893ba935b18a8f82be96ce46a3a56593f0829671"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_20.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "335838717049346d2ca8412711d0446b81f5736132857bc6ec6ab6e21952fa55"
+actual_sha256 = "335838717049346d2ca8412711d0446b81f5736132857bc6ec6ab6e21952fa55"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_21.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "89edefec28eaf0d8e6263b4ccdaba50971e0ad6817d28929591d4a41c05fce19"
+actual_sha256 = "89edefec28eaf0d8e6263b4ccdaba50971e0ad6817d28929591d4a41c05fce19"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_22.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "54a6c0ae3e43b84cc1c38178e3c61713e5896d827d2f7e081b9de916aa057ed2"
+actual_sha256 = "54a6c0ae3e43b84cc1c38178e3c61713e5896d827d2f7e081b9de916aa057ed2"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_23.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "61e33556ecc6ecda3620234375fa2e32eae089898c6a79c3425f7cac3f02989d"
+actual_sha256 = "61e33556ecc6ecda3620234375fa2e32eae089898c6a79c3425f7cac3f02989d"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_24.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "e534e1f4e76fdaef73aff83c57f592ac620c8b7715f2ffb8eae7f6614e15fe6e"
+actual_sha256 = "e534e1f4e76fdaef73aff83c57f592ac620c8b7715f2ffb8eae7f6614e15fe6e"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_25.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "836e8993d7b21ccdd955b8007a4b667a419a526a1220c417299d1ed6186187ce"
+actual_sha256 = "836e8993d7b21ccdd955b8007a4b667a419a526a1220c417299d1ed6186187ce"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_26.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "559b1eedffb45ac46e3adffa3bd15fc7559c5f8f2982e2824f241c115c9823ea"
+actual_sha256 = "559b1eedffb45ac46e3adffa3bd15fc7559c5f8f2982e2824f241c115c9823ea"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_27.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "1a8639b5de080b60460da759a170f2891b729e0805c33c8fb6fdefc6eed0c5d1"
+actual_sha256 = "1a8639b5de080b60460da759a170f2891b729e0805c33c8fb6fdefc6eed0c5d1"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_28.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "b3e29327677ecfc6ec28f6a05eaefbf2b5e543b373d56b9a8b4a63b776e2fd15"
+actual_sha256 = "b3e29327677ecfc6ec28f6a05eaefbf2b5e543b373d56b9a8b4a63b776e2fd15"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_29.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "838329c9242ccda29227a28ab0b8609ab5c81858d2fccb2c47f6f373bdc8eb47"
+actual_sha256 = "838329c9242ccda29227a28ab0b8609ab5c81858d2fccb2c47f6f373bdc8eb47"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_3.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "90cf893990b873474a45a2adb7e0fe95fd70ab4f18ba4978eb14b1eb4779d76c"
+actual_sha256 = "90cf893990b873474a45a2adb7e0fe95fd70ab4f18ba4978eb14b1eb4779d76c"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_30.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "b494a48aef906ad91bc87ca9a977bd12f00761e04c2da80dbc2dece17db200e2"
+actual_sha256 = "b494a48aef906ad91bc87ca9a977bd12f00761e04c2da80dbc2dece17db200e2"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_31.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "a783b82eddbce207afa05f3cf3279993835d0603c3b8293194ce5d3149f0dc14"
+actual_sha256 = "a783b82eddbce207afa05f3cf3279993835d0603c3b8293194ce5d3149f0dc14"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_32.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "86fae2b4873a3aaa6aad7d111fe89208a969805baee1fea2338e6e74a948d851"
+actual_sha256 = "86fae2b4873a3aaa6aad7d111fe89208a969805baee1fea2338e6e74a948d851"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_33.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "0da2aed7e8929ccea35ffbea9628b4ab5b96504488298f271b659825e482f7a3"
+actual_sha256 = "0da2aed7e8929ccea35ffbea9628b4ab5b96504488298f271b659825e482f7a3"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_34.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "2a5deffca8b8d463c549059908f37f92b36e5a372abf36eb4e93b1d7fc3f07ef"
+actual_sha256 = "2a5deffca8b8d463c549059908f37f92b36e5a372abf36eb4e93b1d7fc3f07ef"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_35.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "6ff4a6bcfde424d231248c6365f9269edebd71c0ec22e0418715957e266e307e"
+actual_sha256 = "6ff4a6bcfde424d231248c6365f9269edebd71c0ec22e0418715957e266e307e"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_36.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "729d2bf76a40404d6d4a80470f5713df42fb4a16ed240dc9b37fa876c60b170b"
+actual_sha256 = "729d2bf76a40404d6d4a80470f5713df42fb4a16ed240dc9b37fa876c60b170b"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_37.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "d9d111c589ced1c4f5df376c6492ad0449891497bf2b6b470c97ee53e870fe4d"
+actual_sha256 = "d9d111c589ced1c4f5df376c6492ad0449891497bf2b6b470c97ee53e870fe4d"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_38.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "cfeec7ecea89ead85bb5671a530f1a8e08974456f4d5c2578db7b8dbc77cf365"
+actual_sha256 = "cfeec7ecea89ead85bb5671a530f1a8e08974456f4d5c2578db7b8dbc77cf365"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_39.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "bcfbc09d03322ad1c66309c1255aa201de828a060371880bb1ab158d2facfd4f"
+actual_sha256 = "bcfbc09d03322ad1c66309c1255aa201de828a060371880bb1ab158d2facfd4f"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_4.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "de2ef6aab895b103f46d7138ca440175f1c9edf594f83aa47640c60a14896901"
+actual_sha256 = "de2ef6aab895b103f46d7138ca440175f1c9edf594f83aa47640c60a14896901"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_40.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "5c7f4ef35fb070438c695a09f7065f2c6e843b1c71914367323ae21a81274d8c"
+actual_sha256 = "5c7f4ef35fb070438c695a09f7065f2c6e843b1c71914367323ae21a81274d8c"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_41.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "2c0ef12ca82c5148f1ea62de48d2c375ddf20d9bed595279db227eca8289ae1d"
+actual_sha256 = "2c0ef12ca82c5148f1ea62de48d2c375ddf20d9bed595279db227eca8289ae1d"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_42.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "8e3d101ef3996a10f4f1065a5ba1f8991a9e89e004171324d18dfa40eb8edf0d"
+actual_sha256 = "8e3d101ef3996a10f4f1065a5ba1f8991a9e89e004171324d18dfa40eb8edf0d"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_43.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "1cfa90c0d793d9274065d83d537186dff1595af396bcbec8fd8adbfa12415809"
+actual_sha256 = "1cfa90c0d793d9274065d83d537186dff1595af396bcbec8fd8adbfa12415809"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_44.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "3a35f43b3f75b620834e5cfa827cc7e41ec801839ac079991656c480b865f8be"
+actual_sha256 = "3a35f43b3f75b620834e5cfa827cc7e41ec801839ac079991656c480b865f8be"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_45.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "7a066512183f86686a59c9f5bb1f172274fbdbdf1d1d6eafef40b17710e05194"
+actual_sha256 = "7a066512183f86686a59c9f5bb1f172274fbdbdf1d1d6eafef40b17710e05194"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_5.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "72a9b0fb9a8db665790b6b7f56b47dff250ecd027faa002910cd397db1126656"
+actual_sha256 = "72a9b0fb9a8db665790b6b7f56b47dff250ecd027faa002910cd397db1126656"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_6.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "b945b3cac3e4c4992b7d5f6d5a5e68f8e94a1bfad51275fef6ab053904faf1c5"
+actual_sha256 = "b945b3cac3e4c4992b7d5f6d5a5e68f8e94a1bfad51275fef6ab053904faf1c5"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_7.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "4590307ebbb5b0f43eca2177e459fe804f3c707e1575a7b413b1c1ae690fbffc"
+actual_sha256 = "4590307ebbb5b0f43eca2177e459fe804f3c707e1575a7b413b1c1ae690fbffc"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_8.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "4e1729f659eb34a3153f5470b113194985f85356bc0a18e0deac12f81b9556a0"
+actual_sha256 = "4e1729f659eb34a3153f5470b113194985f85356bc0a18e0deac12f81b9556a0"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_9.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+blocked_action_plan = []
+expected_sha256 = "07e33d44b7ca8c54dde78b90aac01a0e902b53f163a22ac9a5e78f93947ee770"
+actual_sha256 = "07e33d44b7ca8c54dde78b90aac01a0e902b53f163a22ac9a5e78f93947ee770"
+status = "download_failed"
+detail = """
+generator replay command failed with require_replay_success=true; Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'; local hash verification passed"""
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+status = "error"
+detail = """
+Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 24.85s
+     Running `target/debug/hepdata-refresh --dirs alice_pbpb_raa --root target/external_replay_staging/src-alice-pbpb-raa`
+Error: no CSV files found for requested directories
+replay_command=cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa --root 'target/external_replay_staging/src-alice-pbpb-raa'"""
+staging_dir = "target/external_replay_staging/src-alice-pbpb-raa"
+side_effect_detected = false
+

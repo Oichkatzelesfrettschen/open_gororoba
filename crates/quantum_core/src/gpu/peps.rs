@@ -202,9 +202,10 @@ pub fn gpu_contract_rows_peps(upper: &[c64], lower: &[c64]) -> Vec<c64> {
     // Try GPU path first
     if let Ok(Some(ctx)) =
         std::panic::catch_unwind(std::panic::AssertUnwindSafe(PepsGpuContext::init))
-        && let Some(result) = ctx.contract_rows(upper, lower) {
-            return result;
-        }
+        && let Some(result) = ctx.contract_rows(upper, lower)
+    {
+        return result;
+    }
 
     // Fallback to CPU: element-wise complex multiplication
     upper

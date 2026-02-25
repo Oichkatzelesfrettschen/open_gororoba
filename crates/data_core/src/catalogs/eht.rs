@@ -14,7 +14,7 @@
 //!
 //! Reference: https://eventhorizontelescope.org/for-astronomers/data
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use flate2::read::GzDecoder;
 use std::path::{Path, PathBuf};
 use tar::Archive;

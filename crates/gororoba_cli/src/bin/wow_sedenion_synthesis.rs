@@ -7,14 +7,12 @@
 //! 4. Compute ultrametric structure on candidate feature vectors
 //! 5. Consolidated report with pass/fail for each thesis
 
-use algebra_core::experimental::leech_lattice::{
-    HoleStatistics, LeechBasis, project_signal_chunk,
-};
+use algebra_core::experimental::leech_lattice::{HoleStatistics, LeechBasis, project_signal_chunk};
 use clap::{Parser, Subcommand};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use spectral_core::ghost_spectral::{
-    check_ghost, compute_power_spectrum, find_peaks, noise_floor, peak_fwhm, peak_snr, GHOST_FREQ,
+    GHOST_FREQ, check_ghost, compute_power_spectrum, find_peaks, noise_floor, peak_fwhm, peak_snr,
 };
 use stats_core::ultrametric::ultrametric_fraction_test;
 use std::io::Write;
@@ -191,7 +189,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("\n--- Pipeline Results ---");
             println!(
                 "Ghost: {} (freq={:.4}, SNR={:.2}, FWHM={:.4})",
-                if result.ghost_detected { "DETECTED" } else { "NOT DETECTED" },
+                if result.ghost_detected {
+                    "DETECTED"
+                } else {
+                    "NOT DETECTED"
+                },
                 result.ghost_freq,
                 result.ghost_snr,
                 result.ghost_fwhm
@@ -227,7 +229,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("Read {} samples", signal.len());
 
             if signal.len() < 48 {
-                eprintln!("ERROR: Need at least 48 samples for pipeline (got {})", signal.len());
+                eprintln!(
+                    "ERROR: Need at least 48 samples for pipeline (got {})",
+                    signal.len()
+                );
                 std::process::exit(1);
             }
 
@@ -236,7 +241,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("\n--- Pipeline Results ---");
             println!(
                 "Ghost: {} (freq={:.4}, SNR={:.2})",
-                if result.ghost_detected { "DETECTED" } else { "NOT DETECTED" },
+                if result.ghost_detected {
+                    "DETECTED"
+                } else {
+                    "NOT DETECTED"
+                },
                 result.ghost_freq,
                 result.ghost_snr
             );

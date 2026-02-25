@@ -9,16 +9,16 @@ use gororoba_engine::{
     ThesisPipeline,
 };
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+use serde_json::{Value, json};
+use stats_core::helpers::{mean, median, std_dev};
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 use tokio::sync::Mutex;
-use tokio::time::{timeout, Duration};
-use stats_core::helpers::{mean, median, std_dev};
+use tokio::time::{Duration, timeout};
 
 const INDEX_HTML: &str = include_str!("../../../../apps/gororoba_studio/ui/index.html");
 const APP_JS: &str = include_str!("../../../../apps/gororoba_studio/ui/app.js");
@@ -1182,7 +1182,6 @@ fn bounded_iterations(value: Option<usize>, default_value: usize, min: usize, ma
     raw.clamp(min, max)
 }
 
-
 fn execute_thesis(experiment_id: &str, profile: RunProfile) -> Result<RunResponse, String> {
     let start = Instant::now();
     let (evidence, parameters): (ThesisEvidence, Value) = match (experiment_id, profile) {
@@ -1700,9 +1699,7 @@ async fn reproducibility_experiment(
 /// The workspace root is determined by walking up from the binary's working
 /// directory until a Cargo.toml with [workspace] is found, or falling back
 /// to the current directory.
-async fn serve_artifact(
-    AxumPath(requested): AxumPath<String>,
-) -> impl IntoResponse {
+async fn serve_artifact(AxumPath(requested): AxumPath<String>) -> impl IntoResponse {
     // Determine workspace root (directory containing workspace Cargo.toml)
     let workspace_root = find_workspace_root().unwrap_or_else(|| PathBuf::from("."));
     let candidate = workspace_root.join(&requested);
@@ -1710,7 +1707,13 @@ async fn serve_artifact(
     // Canonicalize both paths for traversal check
     let canon_root = match workspace_root.canonicalize() {
         Ok(p) => p,
-        Err(_) => return (StatusCode::INTERNAL_SERVER_ERROR, "workspace root not found").into_response(),
+        Err(_) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                "workspace root not found",
+            )
+                .into_response();
+        }
     };
     let canon_candidate = match candidate.canonicalize() {
         Ok(p) => p,
@@ -1740,11 +1743,7 @@ async fn serve_artifact(
         _ => "application/octet-stream",
     };
 
-    (
-        StatusCode::OK,
-        [("content-type", mime)],
-        content,
-    ).into_response()
+    (StatusCode::OK, [("content-type", mime)], content).into_response()
 }
 
 /// Walk up from CWD to find workspace root (directory with Cargo.toml containing [workspace]).
@@ -1950,9 +1949,11 @@ full_profile = "Full profile"
             registry_backed_catalog(&path).expect("catalog should parse and load");
         remove_temp_catalog(&path);
 
-        assert!(warnings
-            .iter()
-            .any(|warning| warning.contains("thesis-1 missing required catalog fields: title")));
+        assert!(
+            warnings
+                .iter()
+                .any(|warning| warning.contains("thesis-1 missing required catalog fields: title"))
+        );
         let thesis_one = catalog
             .iter()
             .find(|pipeline| pipeline.id == "thesis-1")
@@ -2017,16 +2018,20 @@ full_profile = "Full profile"
 
         assert_eq!(payload.api_version, API_VERSION);
         assert_eq!(payload.lane_health_feed.len(), 3);
-        assert!(payload
-            .lane_health_feed
-            .iter()
-            .all(|lane| lane.status == "missing"));
+        assert!(
+            payload
+                .lane_health_feed
+                .iter()
+                .all(|lane| lane.status == "missing")
+        );
         assert_eq!(payload.promotion_queue_summary.item_count, 3);
-        assert!(payload
-            .promotion_queue_summary
-            .items
-            .iter()
-            .all(|item| item.status == "missing"));
+        assert!(
+            payload
+                .promotion_queue_summary
+                .items
+                .iter()
+                .all(|item| item.status == "missing")
+        );
         assert!(payload.warnings.len() >= 6);
     }
 
@@ -2152,9 +2157,11 @@ path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
             .find(|lane| lane.lane_id == "runtime-gates")
             .expect("runtime lane should exist");
         assert_eq!(runtime_lane.status, "healthy");
-        assert!(runtime_lane
-            .evidence_links
-            .contains(&"reports/gate_fix.toml".to_string()));
+        assert!(
+            runtime_lane
+                .evidence_links
+                .contains(&"reports/gate_fix.toml".to_string())
+        );
 
         let queue_item = payload
             .promotion_queue_summary
@@ -2163,9 +2170,11 @@ path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
             .find(|item| item.queue_item_id == "PROM-1")
             .expect("promotion queue item should exist");
         assert_eq!(queue_item.status, "ready");
-        assert!(queue_item
-            .evidence_links
-            .contains(&"reports/promotion_evidence.toml".to_string()));
+        assert!(
+            queue_item
+                .evidence_links
+                .contains(&"reports/promotion_evidence.toml".to_string())
+        );
         assert_eq!(payload.promotion_queue_summary.item_count, 4);
         assert_eq!(
             payload.promotion_queue_summary.status_counts.get("ready"),
@@ -2197,15 +2206,19 @@ path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
             payload.promotion_queue_summary.item_count,
             payload.promotion_queue_summary.items.len()
         );
-        assert!(payload
-            .lane_health_feed
-            .iter()
-            .all(|lane| !lane.evidence_links.is_empty()));
-        assert!(payload
-            .promotion_queue_summary
-            .items
-            .iter()
-            .all(|item| !item.evidence_links.is_empty()));
+        assert!(
+            payload
+                .lane_health_feed
+                .iter()
+                .all(|lane| !lane.evidence_links.is_empty())
+        );
+        assert!(
+            payload
+                .promotion_queue_summary
+                .items
+                .iter()
+                .all(|item| !item.evidence_links.is_empty())
+        );
     }
 
     #[test]
@@ -2220,9 +2233,11 @@ path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
             result.config_snapshot["profile"],
             JsonValue::String("quick".to_string())
         );
-        assert!(result.config_snapshot["parameters"]
-            .as_object()
-            .is_some_and(|obj| !obj.is_empty()));
+        assert!(
+            result.config_snapshot["parameters"]
+                .as_object()
+                .is_some_and(|obj| !obj.is_empty())
+        );
     }
 
     #[test]
@@ -2415,7 +2430,10 @@ path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
             .await
             .expect("body should be readable");
         let text = String::from_utf8(body.to_vec()).expect("Cargo.toml should be utf8");
-        assert!(text.contains("[workspace]"), "should serve the workspace Cargo.toml");
+        assert!(
+            text.contains("[workspace]"),
+            "should serve the workspace Cargo.toml"
+        );
     }
 
     #[tokio::test]

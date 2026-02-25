@@ -6,7 +6,7 @@
 //! Source: LASP Interactive Solar Irradiance Datacenter (LISIRD)
 //! Reference: Kopp (2021), https://doi.org/10.1007/s11207-021-01853-x
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
@@ -123,9 +123,10 @@ pub fn compare_tsis_sorce(
             }
         }
         if let Some(s) = best_s
-            && best_dt <= jd_tol {
-                diffs.push(t.tsi - s.tsi);
-            }
+            && best_dt <= jd_tol
+        {
+            diffs.push(t.tsi - s.tsi);
+        }
     }
 
     if diffs.is_empty() {

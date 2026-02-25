@@ -9,7 +9,7 @@
 //! The CDS FTP layout changed (2025): `/ftp/cats/I/239/` -> `/ftp/I/239/`.
 //! The `.gz` variant is no longer served; we download the uncompressed `.dat`.
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 
@@ -151,7 +151,7 @@ mod tests {
         fields.push("+01 05 20.4".to_string()); // Dec
         fields.push(" 9.10".to_string()); // Vmag
         fields.push(" ".to_string()); // var flag
-                                      // Fill remaining 71 fields: need to reach exact width
+        // Fill remaining 71 fields: need to reach exact width
         let partial = fields.join("|");
         let partial_len = partial.len();
         // We need 71 more fields with 71 pipes.

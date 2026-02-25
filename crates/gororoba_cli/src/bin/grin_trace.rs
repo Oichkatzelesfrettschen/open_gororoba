@@ -4,7 +4,7 @@
 
 use clap::Parser;
 use num_complex::Complex64;
-use optics_core::{trace_ray, trace_ray_absorbing, AbsorbingGrinMedium, GrinFiber, Ray};
+use optics_core::{AbsorbingGrinMedium, GrinFiber, Ray, trace_ray, trace_ray_absorbing};
 
 #[derive(Parser)]
 #[command(name = "grin-trace")]

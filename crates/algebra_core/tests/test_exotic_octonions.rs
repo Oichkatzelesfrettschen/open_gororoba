@@ -1,4 +1,4 @@
-use algebra_core::construction::cayley_dickson::{cd_multiply, CdSignature};
+use algebra_core::construction::cayley_dickson::{CdSignature, cd_multiply};
 
 // Helper: Standard Octonion Multiply (dim 8)
 fn oct_multiply(a: &[f64], b: &[f64]) -> Vec<f64> {

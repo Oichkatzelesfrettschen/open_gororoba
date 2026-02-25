@@ -1,0 +1,84 @@
+generated_at_utc = "2026-02-25T06:44:08.086Z"
+total_external_files = 91
+blocked_files = 5
+blocked_sources = 4
+blocked_overdue_sources = 0
+blocked_missing_deadline_sources = 0
+blocked_missing_action_plan_sources = 0
+blocked_missing_action_plan_ref_count = 0
+blocked_total_size_bytes = 5158013
+
+[[top_blocked_sources]]
+source_id = "SRC-LHC-ALICE-CMS"
+access_class = "public"
+path_glob = "data/external/lhc_2025/**"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 2
+total_size_bytes = 575
+sample_paths = [
+    "data/external/lhc_2025/alice/pb_pb_5.36tev_polarization.csv",
+    "data/external/lhc_2025/cms/p_pb_8.16tev_azimuthal.csv",
+]
+blocker_note = "LHC 2025 lane stores synthetic fixture tables in data/external/lhc_2025 and does not yet have a canonical external download pipeline."
+evidence_refs = ["reports/LHC_2025_QGP_Full_Synthesis.md"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-NV-ODMR"
+access_class = "public"
+path_glob = "data/external/nv_odmr/**"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 16654
+sample_paths = ["data/external/nv_odmr/NV_ODMR_OPU_BOM_Jan2026.xlsx"]
+blocker_note = "NV ODMR external dataset retrieval endpoint is not yet wired into Rust fetch-datasets; current lane requires manual DOI supplement resolution."
+evidence_refs = ["registry/source_lanes/datasets.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-SDSS-DR18-QUASARS"
+access_class = "public"
+path_glob = "data/external/sdss_dr18_quasars.csv"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 4921394
+sample_paths = ["data/external/sdss_dr18_quasars.csv"]
+blocker_note = "SkyServer SQL endpoint is mutable; checksum replay drift detected even with identical query and Rust fetch backend."
+evidence_refs = [
+    "reports/external_redownload_audit_sdss_2026-02-24.toml",
+    "reports/external_redownload_audit_sdss_fetch_backend_2026-02-24.toml",
+]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-SWARM-L1B-MAGNETIC-SAMPLE"
+access_class = "public"
+path_glob = "data/external/swarm_magnetic_sample.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 219390
+sample_paths = ["data/external/swarm_magnetic_sample.csv"]
+blocker_note = "Source endpoint replay is mutable across downloads and produced checksum drift during execute-mode external-redownload-audit."
+evidence_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+

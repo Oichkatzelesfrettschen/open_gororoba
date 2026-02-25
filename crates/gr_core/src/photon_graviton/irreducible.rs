@@ -180,9 +180,7 @@ pub fn irreducible_amplitude(
                     // At z=0, J_1_par -> 1 (from v^2 normalization), J_2->0, J_3->0
                     v * v * sin2 * omega * omega * t
                 }
-                PhotonPolarization::Perpendicular => {
-                    v * v * sin2 * omega * omega * t
-                }
+                PhotonPolarization::Perpendicular => v * v * sin2 * omega * omega * t,
             };
             let exp_free = worldline_greens::exp_factor(0.0, u, omega, theta, t);
 
@@ -212,9 +210,10 @@ pub fn irreducible_rate(
     quad_config: &QuadratureConfig,
 ) -> f64 {
     let (ch1, ch2) = match photon_pol {
-        PhotonPolarization::Parallel => {
-            (HelicityChannel::ParallelPlus, HelicityChannel::ParallelCross)
-        }
+        PhotonPolarization::Parallel => (
+            HelicityChannel::ParallelPlus,
+            HelicityChannel::ParallelCross,
+        ),
         PhotonPolarization::Perpendicular => {
             (HelicityChannel::PerpPlus, HelicityChannel::PerpCross)
         }
@@ -364,10 +363,7 @@ mod tests {
             LoopType::Spinor,
             &quad,
         );
-        assert!(
-            amp.norm() > 0.0,
-            "Irreducible should be nonzero at B > 0"
-        );
+        assert!(amp.norm() > 0.0, "Irreducible should be nonzero at B > 0");
     }
 
     #[test]
@@ -386,16 +382,9 @@ mod tests {
         // The classic prediction: parallel:perpendicular = 4:7 for spinor QED
         // This comes from the Euler-Heisenberg coefficients 8:14 = 4:7
         let config = weak_config();
-        let par = irreducible_weak_field(
-            &config,
-            PhotonPolarization::Parallel,
-            LoopType::Spinor,
-        );
-        let perp = irreducible_weak_field(
-            &config,
-            PhotonPolarization::Perpendicular,
-            LoopType::Spinor,
-        );
+        let par = irreducible_weak_field(&config, PhotonPolarization::Parallel, LoopType::Spinor);
+        let perp =
+            irreducible_weak_field(&config, PhotonPolarization::Perpendicular, LoopType::Spinor);
 
         let ratio = par.norm_sqr() / perp.norm_sqr();
         let expected = (4.0_f64 / 7.0).powi(2); // squared amplitude ratio = (4/7)^2

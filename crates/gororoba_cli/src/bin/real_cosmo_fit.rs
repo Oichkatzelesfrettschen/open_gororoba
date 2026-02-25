@@ -11,9 +11,9 @@
 //!   real-cosmo-fit --json             # JSON output
 
 use clap::Parser;
-use cosmology_core::{compare_models, desi_to_real_bao, filter_pantheon_data, RealBaoData};
+use cosmology_core::{RealBaoData, compare_models, desi_to_real_bao, filter_pantheon_data};
 use data_core::catalogs::desi_bao::desi_dr1_bao;
-use data_core::catalogs::pantheon::{parse_pantheon_dat, PantheonProvider};
+use data_core::catalogs::pantheon::{PantheonProvider, parse_pantheon_dat};
 use data_core::fetcher::{DatasetProvider, FetchConfig};
 use std::path::PathBuf;
 

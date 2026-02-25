@@ -13,7 +13,7 @@
 //! Reference: Arleo & Falmagne arXiv:2411.13258, Sec. II;
 //!            Miller, Reygers, Sanders, Steinberg, Ann. Rev. Nucl. Part. Sci. 57 (2007) 205.
 
-use crate::nucleus::{thickness_function, NucleusParams};
+use crate::nucleus::{NucleusParams, thickness_function};
 use gauss_quad::GaussLegendre;
 use std::f64::consts::PI;
 
@@ -31,25 +31,37 @@ impl SigmaNN {
     /// sigma_NN for sqrt(s) = 200 GeV (RHIC).
     #[must_use]
     pub fn rhic_200() -> Self {
-        Self { sqrt_s_gev: 200.0, sigma_mb: 42.0 }
+        Self {
+            sqrt_s_gev: 200.0,
+            sigma_mb: 42.0,
+        }
     }
 
     /// sigma_NN for sqrt(s) = 2.76 TeV (LHC Run 1).
     #[must_use]
     pub fn lhc_2760() -> Self {
-        Self { sqrt_s_gev: 2760.0, sigma_mb: 64.0 }
+        Self {
+            sqrt_s_gev: 2760.0,
+            sigma_mb: 64.0,
+        }
     }
 
     /// sigma_NN for sqrt(s) = 5.02 TeV (LHC Run 2).
     #[must_use]
     pub fn lhc_5020() -> Self {
-        Self { sqrt_s_gev: 5020.0, sigma_mb: 67.6 }
+        Self {
+            sqrt_s_gev: 5020.0,
+            sigma_mb: 67.6,
+        }
     }
 
     /// sigma_NN for sqrt(s) = 5.44 TeV (Xe-Xe).
     #[must_use]
     pub fn lhc_5440() -> Self {
-        Self { sqrt_s_gev: 5440.0, sigma_mb: 68.0 }
+        Self {
+            sqrt_s_gev: 5440.0,
+            sigma_mb: 68.0,
+        }
     }
 
     /// Convert sigma from mb to fm^2.
@@ -128,7 +140,13 @@ pub fn overlap_function(b: f64, nuc_a: &NucleusParams, nuc_b: &NucleusParams, n_
 ///
 /// where T_AB is built from unnormalized (physical) thickness functions.
 #[must_use]
-pub fn inelastic_probability(b: f64, sigma: &SigmaNN, nuc_a: &NucleusParams, nuc_b: &NucleusParams, n_gl: usize) -> f64 {
+pub fn inelastic_probability(
+    b: f64,
+    sigma: &SigmaNN,
+    nuc_a: &NucleusParams,
+    nuc_b: &NucleusParams,
+    n_gl: usize,
+) -> f64 {
     let tab = overlap_function(b, nuc_a, nuc_b, n_gl);
     let exponent = sigma.sigma_fm2() * tab;
     1.0 - (-exponent).exp()
@@ -190,7 +208,8 @@ fn build_sigma_cdf(
         if i > 0 {
             // Trapezoidal step
             let b_prev = (i - 1) as f64 * db;
-            let f_prev = 2.0 * PI * b_prev * inelastic_probability(b_prev, sigma, nuc_a, nuc_b, n_gl);
+            let f_prev =
+                2.0 * PI * b_prev * inelastic_probability(b_prev, sigma, nuc_a, nuc_b, n_gl);
             let f_curr = 2.0 * PI * b * inelastic_probability(b, sigma, nuc_a, nuc_b, n_gl);
             running += 0.5 * (f_prev + f_curr) * db;
         }
@@ -457,7 +476,9 @@ pub fn compute_centrality_bins(
 /// Returns edges for 0-5%, 5-10%, 10-20%, 20-30%, ..., 70-80%, 80-90%.
 #[must_use]
 pub fn standard_centrality_edges() -> Vec<f64> {
-    vec![0.0, 0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90]
+    vec![
+        0.0, 0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90,
+    ]
 }
 
 #[cfg(test)]
@@ -475,8 +496,11 @@ mod tests {
         // For Pb-Pb (A=208): T_AB(0) ~ 350 fm^{-2}
         // (equivalent to ~35 mb^{-1} in the standard convention where 1 mb = 0.1 fm^2)
         assert!(tab_0 > 0.0, "T_AB(0) should be positive, got {}", tab_0);
-        assert!(tab_0 > 200.0 && tab_0 < 500.0,
-            "T_AB(0) = {} fm^-2 (expected ~350)", tab_0);
+        assert!(
+            tab_0 > 200.0 && tab_0 < 500.0,
+            "T_AB(0) = {} fm^-2 (expected ~350)",
+            tab_0
+        );
     }
 
     #[test]
@@ -485,8 +509,18 @@ mod tests {
         let tab_0 = overlap_function(0.0, &pb, &pb, 40);
         let tab_5 = overlap_function(5.0, &pb, &pb, 40);
         let tab_10 = overlap_function(10.0, &pb, &pb, 40);
-        assert!(tab_0 > tab_5, "T_AB should decrease: T_AB(0)={} > T_AB(5)={}", tab_0, tab_5);
-        assert!(tab_5 > tab_10, "T_AB should decrease: T_AB(5)={} > T_AB(10)={}", tab_5, tab_10);
+        assert!(
+            tab_0 > tab_5,
+            "T_AB should decrease: T_AB(0)={} > T_AB(5)={}",
+            tab_0,
+            tab_5
+        );
+        assert!(
+            tab_5 > tab_10,
+            "T_AB should decrease: T_AB(5)={} > T_AB(10)={}",
+            tab_5,
+            tab_10
+        );
     }
 
     #[test]
@@ -502,15 +536,23 @@ mod tests {
         let r = 6.639;
         let area = overlap_area(0.0, r, r);
         let expected = PI * r * r;
-        assert!((area - expected).abs() / expected < 1e-10,
-            "A_perp(b=0) = {} (expected {})", area, expected);
+        assert!(
+            (area - expected).abs() / expected < 1e-10,
+            "A_perp(b=0) = {} (expected {})",
+            area,
+            expected
+        );
     }
 
     #[test]
     fn test_overlap_area_no_overlap() {
         let r = 6.639;
         let area = overlap_area(2.0 * r + 1.0, r, r);
-        assert!(area.abs() < 1e-10, "A_perp at large b = {} (expected 0)", area);
+        assert!(
+            area.abs() < 1e-10,
+            "A_perp at large b = {} (expected 0)",
+            area
+        );
     }
 
     #[test]
@@ -518,7 +560,11 @@ mod tests {
         // At b=0, eccentricity should be ~0 by symmetry
         let pb = NucleusParams::pb208();
         let ecc = eccentricity(0.0, &pb, &pb, 40);
-        assert!(ecc.abs() < 0.05, "eccentricity(b=0) = {} (expected ~0)", ecc);
+        assert!(
+            ecc.abs() < 0.05,
+            "eccentricity(b=0) = {} (expected ~0)",
+            ecc
+        );
     }
 
     #[test]
@@ -537,8 +583,11 @@ mod tests {
         let sigma = SigmaNN::lhc_5020();
         let npart = n_part_at_b(0.0, &sigma, &pb, 48);
         // At b=0 nearly all nucleons participate: Npart ~ 400-416
-        assert!(npart > 380.0 && npart < 420.0,
-            "Npart(b=0) = {} (expected ~400-416)", npart);
+        assert!(
+            npart > 380.0 && npart < 420.0,
+            "Npart(b=0) = {} (expected ~400-416)",
+            npart
+        );
     }
 
     #[test]

@@ -130,10 +130,7 @@ pub fn abacad_event_filter(
 
         let snr_values: Vec<f64> = on_matches.iter().map(|h| h.snr).collect();
         let snr_mean = snr_values.iter().sum::<f64>() / snr_values.len() as f64;
-        let snr_max = snr_values
-            .iter()
-            .cloned()
-            .fold(f64::NEG_INFINITY, f64::max);
+        let snr_max = snr_values.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
 
         events.push(CadenceEvent {
             freq_mhz: ref_hit.freq_mhz,
@@ -151,11 +148,7 @@ pub fn abacad_event_filter(
 }
 
 /// De-duplicate events by keeping the highest-SNR event within each cluster.
-fn dedup_events(
-    events: &mut [CadenceEvent],
-    freq_tol: f64,
-    drift_tol: f64,
-) -> Vec<CadenceEvent> {
+fn dedup_events(events: &mut [CadenceEvent], freq_tol: f64, drift_tol: f64) -> Vec<CadenceEvent> {
     if events.is_empty() {
         return Vec::new();
     }
@@ -205,7 +198,13 @@ mod tests {
         }
     }
 
-    fn make_obs(name: &str, pointing: &str, pos: u32, obs_id: &str, hits: Vec<DopplerHit>) -> ObservationHits {
+    fn make_obs(
+        name: &str,
+        pointing: &str,
+        pos: u32,
+        obs_id: &str,
+        hits: Vec<DopplerHit>,
+    ) -> ObservationHits {
         ObservationHits {
             source_name: name.to_string(),
             pointing_type: pointing.to_string(),
@@ -220,12 +219,12 @@ mod tests {
         // Signal at 1420 MHz, 0.5 Hz/s drift, present in all 3 ON, absent in all 3 OFF
         let signal = make_hit(1420.0, 0.5, 20.0);
         let observations = vec![
-            make_obs("TARGET", "ON",  1, "0016", vec![signal.clone()]),
-            make_obs("CAL_A",  "OFF", 2, "0017", vec![]),
-            make_obs("TARGET", "ON",  3, "0018", vec![signal.clone()]),
-            make_obs("CAL_B",  "OFF", 4, "0019", vec![]),
-            make_obs("TARGET", "ON",  5, "0020", vec![signal.clone()]),
-            make_obs("CAL_C",  "OFF", 6, "0021", vec![]),
+            make_obs("TARGET", "ON", 1, "0016", vec![signal.clone()]),
+            make_obs("CAL_A", "OFF", 2, "0017", vec![]),
+            make_obs("TARGET", "ON", 3, "0018", vec![signal.clone()]),
+            make_obs("CAL_B", "OFF", 4, "0019", vec![]),
+            make_obs("TARGET", "ON", 5, "0020", vec![signal.clone()]),
+            make_obs("CAL_C", "OFF", 6, "0021", vec![]),
         ];
 
         let events = abacad_event_filter(&observations, 0.01, 1.0);
@@ -240,12 +239,12 @@ mod tests {
         // Signal in ON + OFF = RFI -> rejected
         let signal = make_hit(1420.0, 0.0, 25.0);
         let observations = vec![
-            make_obs("TARGET", "ON",  1, "0016", vec![signal.clone()]),
-            make_obs("CAL_A",  "OFF", 2, "0017", vec![signal.clone()]), // RFI also here
-            make_obs("TARGET", "ON",  3, "0018", vec![signal.clone()]),
-            make_obs("CAL_B",  "OFF", 4, "0019", vec![]),
-            make_obs("TARGET", "ON",  5, "0020", vec![signal.clone()]),
-            make_obs("CAL_C",  "OFF", 6, "0021", vec![]),
+            make_obs("TARGET", "ON", 1, "0016", vec![signal.clone()]),
+            make_obs("CAL_A", "OFF", 2, "0017", vec![signal.clone()]), // RFI also here
+            make_obs("TARGET", "ON", 3, "0018", vec![signal.clone()]),
+            make_obs("CAL_B", "OFF", 4, "0019", vec![]),
+            make_obs("TARGET", "ON", 5, "0020", vec![signal.clone()]),
+            make_obs("CAL_C", "OFF", 6, "0021", vec![]),
         ];
 
         let events = abacad_event_filter(&observations, 0.01, 1.0);
@@ -257,12 +256,12 @@ mod tests {
         // Signal in only 2/3 ON -> rejected (requires ALL ON)
         let signal = make_hit(1420.0, 0.5, 20.0);
         let observations = vec![
-            make_obs("TARGET", "ON",  1, "0016", vec![signal.clone()]),
-            make_obs("CAL_A",  "OFF", 2, "0017", vec![]),
-            make_obs("TARGET", "ON",  3, "0018", vec![signal.clone()]),
-            make_obs("CAL_B",  "OFF", 4, "0019", vec![]),
-            make_obs("TARGET", "ON",  5, "0020", vec![]),  // Missing!
-            make_obs("CAL_C",  "OFF", 6, "0021", vec![]),
+            make_obs("TARGET", "ON", 1, "0016", vec![signal.clone()]),
+            make_obs("CAL_A", "OFF", 2, "0017", vec![]),
+            make_obs("TARGET", "ON", 3, "0018", vec![signal.clone()]),
+            make_obs("CAL_B", "OFF", 4, "0019", vec![]),
+            make_obs("TARGET", "ON", 5, "0020", vec![]), // Missing!
+            make_obs("CAL_C", "OFF", 6, "0021", vec![]),
         ];
 
         let events = abacad_event_filter(&observations, 0.01, 1.0);
@@ -273,31 +272,57 @@ mod tests {
     fn test_abacad_freq_tolerance() {
         // Signal drifts slightly between observations but within tolerance
         let observations = vec![
-            make_obs("TARGET", "ON",  1, "0016", vec![make_hit(1420.000, 0.5, 20.0)]),
-            make_obs("CAL_A",  "OFF", 2, "0017", vec![]),
-            make_obs("TARGET", "ON",  3, "0018", vec![make_hit(1420.003, 0.5, 18.0)]),
-            make_obs("CAL_B",  "OFF", 4, "0019", vec![]),
-            make_obs("TARGET", "ON",  5, "0020", vec![make_hit(1420.006, 0.5, 19.0)]),
-            make_obs("CAL_C",  "OFF", 6, "0021", vec![]),
+            make_obs(
+                "TARGET",
+                "ON",
+                1,
+                "0016",
+                vec![make_hit(1420.000, 0.5, 20.0)],
+            ),
+            make_obs("CAL_A", "OFF", 2, "0017", vec![]),
+            make_obs(
+                "TARGET",
+                "ON",
+                3,
+                "0018",
+                vec![make_hit(1420.003, 0.5, 18.0)],
+            ),
+            make_obs("CAL_B", "OFF", 4, "0019", vec![]),
+            make_obs(
+                "TARGET",
+                "ON",
+                5,
+                "0020",
+                vec![make_hit(1420.006, 0.5, 19.0)],
+            ),
+            make_obs("CAL_C", "OFF", 6, "0021", vec![]),
         ];
 
         let events = abacad_event_filter(&observations, 0.01, 1.0);
-        assert_eq!(events.len(), 1, "Drifted signal within tolerance should pass");
+        assert_eq!(
+            events.len(),
+            1,
+            "Drifted signal within tolerance should pass"
+        );
 
         // Same test with tight tolerance -> should fail
         let events_tight = abacad_event_filter(&observations, 0.001, 1.0);
-        assert_eq!(events_tight.len(), 0, "Drifted signal outside tight tolerance should fail");
+        assert_eq!(
+            events_tight.len(),
+            0,
+            "Drifted signal outside tight tolerance should fail"
+        );
     }
 
     #[test]
     fn test_abacad_empty_cadence() {
         let observations = vec![
-            make_obs("TARGET", "ON",  1, "0016", vec![]),
-            make_obs("CAL_A",  "OFF", 2, "0017", vec![]),
-            make_obs("TARGET", "ON",  3, "0018", vec![]),
-            make_obs("CAL_B",  "OFF", 4, "0019", vec![]),
-            make_obs("TARGET", "ON",  5, "0020", vec![]),
-            make_obs("CAL_C",  "OFF", 6, "0021", vec![]),
+            make_obs("TARGET", "ON", 1, "0016", vec![]),
+            make_obs("CAL_A", "OFF", 2, "0017", vec![]),
+            make_obs("TARGET", "ON", 3, "0018", vec![]),
+            make_obs("CAL_B", "OFF", 4, "0019", vec![]),
+            make_obs("TARGET", "ON", 5, "0020", vec![]),
+            make_obs("CAL_C", "OFF", 6, "0021", vec![]),
         ];
 
         let events = abacad_event_filter(&observations, 0.01, 1.0);

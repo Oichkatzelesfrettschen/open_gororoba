@@ -1,0 +1,327 @@
+# Canonical data governance contract for data-origin auditing and cleanup lanes.
+
+[data_governance]
+updated = "2026-02-24"
+authoritative = true
+default_gitignore_required = true
+
+[[lane]]
+id = "artifacts"
+root = "data/artifacts"
+class = "generated_reproducible"
+strict = true
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["data/artifacts/ARTIFACTS_MANIFEST.csv", "data/artifacts/PROVENANCE.local.json"]
+gitignore_allowlist = ["data/artifacts/ARTIFACTS_MANIFEST.csv", "data/artifacts/README.md", "data/artifacts/PROVENANCE.local.json"]
+
+[[lane]]
+id = "external"
+root = "data/external"
+class = "external_reproducible_fetch"
+strict = true
+cleanable = false
+gitignore_required = true
+naming_policy = "mixed_vendor_allowed"
+required_manifests = ["data/external/PROVENANCE.local.json", "data/external/SOURCES.toml"]
+gitignore_allowlist = ["data/external/PROVENANCE.local.json", "data/external/README.md", "data/external/SOURCES.toml"]
+
+[[lane]]
+id = "evidence"
+root = "data/evidence"
+class = "generated_reproducible"
+strict = true
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["data/evidence/MANIFEST.toml"]
+gitignore_allowlist = ["data/evidence/MANIFEST.toml"]
+
+[[lane]]
+id = "csv"
+root = "data/csv"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["data/csv/README.md", "registry/project_csv_generated_artifacts.toml", "registry/external_csv_holding_datasets.toml", "registry/data_generated_patterns.toml"]
+gitignore_allowlist = ["data/csv/README.md", "data/csv/bl_6equj5_gbt_manifest.csv"]
+
+[[lane]]
+id = "csv_legacy"
+root = "data/csv/legacy"
+class = "legacy_frozen"
+strict = false
+cleanable = false
+gitignore_required = true
+naming_policy = "legacy_allow_any"
+required_manifests = []
+gitignore_allowlist = []
+
+[[lane]]
+id = "h5"
+root = "data/h5"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "thesis_lab"
+root = "data/thesis_lab"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "thesis_lab_kolmogorov"
+root = "data/thesis_lab_kolmogorov"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "thesis_lab_non_newtonian"
+root = "data/thesis_lab_non_newtonian"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "kubo_transport"
+root = "data/kubo_transport"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "wavelet_bridging"
+root = "data/wavelet_bridging"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "wavelet_acf"
+root = "data/wavelet_acf"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "chsh_wavelet"
+root = "data/chsh_wavelet"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "chsh_betti"
+root = "data/chsh_betti"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "meltdown_gating"
+root = "data/meltdown_gating"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "meltdown_pulsed"
+root = "data/meltdown_pulsed"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "e027"
+root = "data/e027"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "apt_test"
+root = "data/apt-test"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "equivalence"
+root = "data/equivalence"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "papers"
+root = "data/papers"
+class = "manual_import_exception"
+strict = false
+cleanable = false
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = []
+gitignore_allowlist = []
+
+[[lane]]
+id = "sfwm_repro"
+root = "data/sfwm_repro"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "bl_6equj5_ata"
+root = "data/bl_6equj5_ata"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+forbidden_globs = ["data/bl_6equj5_ata/*.py", "data/bl_6equj5_ata/**/*.py"]
+
+[[lane]]
+id = "bl_6equj5_gbt"
+root = "data/bl_6equj5_gbt"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["registry/data_generated_patterns.toml", "data/csv/bl_6equj5_gbt_manifest.csv"]
+gitignore_allowlist = []
+forbidden_globs = ["data/bl_6equj5_gbt/*.py", "data/bl_6equj5_gbt/**/*.py"]
+
+[[lane]]
+id = "entropy_census"
+root = "data/entropy_census"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "fano_scattering"
+root = "data/fano_scattering"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "lattice_hawking"
+root = "data/lattice_hawking"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "test_e027"
+root = "data/test-e027"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "test_zd"
+root = "data/test_zd"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []
+
+[[lane]]
+id = "test_zd_1k"
+root = "data/test_zd_1k"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["registry/data_generated_patterns.toml"]
+gitignore_allowlist = []

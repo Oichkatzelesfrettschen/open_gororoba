@@ -11,7 +11,10 @@ use sha2::{Digest, Sha256};
 use std::path::PathBuf;
 
 #[derive(Parser)]
-#[command(name = "wow-signal-analysis", about = "Wow! signal technosignature testbed")]
+#[command(
+    name = "wow-signal-analysis",
+    about = "Wow! signal technosignature testbed"
+)]
 struct Args {
     #[command(subcommand)]
     command: Command,
@@ -135,7 +138,11 @@ fn run_transcribe(csv_path: &PathBuf) {
         bg_min,
         bg_max
     );
-    println!("Peak Wow! intensity: {} ({}x above background max)", 30, 30.0 / bg_max as f64);
+    println!(
+        "Peak Wow! intensity: {} ({}x above background max)",
+        30,
+        30.0 / bg_max as f64
+    );
 }
 
 fn run_drift_rate(output_path: &PathBuf) {
@@ -152,8 +159,7 @@ fn run_drift_rate(output_path: &PathBuf) {
 
     // Ecliptic latitude of the source (approximate)
     // sin(beta) = sin(dec)*cos(obliquity) - cos(dec)*sin(obliquity)*sin(ra)
-    let sin_beta = DEC_RAD.sin() * OBLIQUITY.cos()
-        - DEC_RAD.cos() * OBLIQUITY.sin() * RA_RAD.sin();
+    let sin_beta = DEC_RAD.sin() * OBLIQUITY.cos() - DEC_RAD.cos() * OBLIQUITY.sin() * RA_RAD.sin();
     let beta = sin_beta.asin();
     let cos_beta = beta.cos();
 
@@ -169,7 +175,8 @@ fn run_drift_rate(output_path: &PathBuf) {
     // At Big Ear latitude ~40.2N, v_rot = V_ROT_EQ * cos(40.2deg) ~ 355 m/s
     let lat_big_ear = 40.2_f64.to_radians();
     let v_rot_local = V_ROT_EQ * lat_big_ear.cos();
-    let drift_rot_max = F0_HZ * v_rot_local * DEC_RAD.cos() * (2.0 * std::f64::consts::PI / T_ROT) / C;
+    let drift_rot_max =
+        F0_HZ * v_rot_local * DEC_RAD.cos() * (2.0 * std::f64::consts::PI / T_ROT) / C;
 
     // Combined worst-case bound
     let drift_total_max = drift_orb_max + drift_rot_max;
@@ -181,7 +188,9 @@ fn run_drift_rate(output_path: &PathBuf) {
     );
     println!(
         "  Rotational: max |df/dt| = {:.4} Hz/s  (v_rot={:.1} m/s at lat {:.1}deg)",
-        drift_rot_max, v_rot_local, lat_big_ear.to_degrees()
+        drift_rot_max,
+        v_rot_local,
+        lat_big_ear.to_degrees()
     );
     println!("  Combined:   max |df/dt| = {:.4} Hz/s", drift_total_max);
     println!();
@@ -231,7 +240,10 @@ fn run_drift_rate(output_path: &PathBuf) {
     if drift_total_max < 0.37 {
         println!("PASS: Combined drift rate bound < 0.37 Hz/s (C-770)");
     } else {
-        println!("INFO: Combined drift rate bound = {:.4} Hz/s", drift_total_max);
+        println!(
+            "INFO: Combined drift rate bound = {:.4} Hz/s",
+            drift_total_max
+        );
     }
 }
 
@@ -241,10 +253,16 @@ fn run_summary() {
 
     // Check for artifacts
     let artifacts = [
-        ("data/csv/wow1977_transcription.csv", "Printout transcription"),
+        (
+            "data/csv/wow1977_transcription.csv",
+            "Printout transcription",
+        ),
         ("data/csv/bl_6equj5_gbt_manifest.csv", "BL GBT manifest"),
         ("data/csv/wow_drift_rate_bounds.csv", "Drift rate bounds"),
-        ("data/external/wow_1977_printout.jpg", "Archival printout scan"),
+        (
+            "data/external/wow_1977_printout.jpg",
+            "Archival printout scan",
+        ),
         (
             "data/external/bl_6equj5_gbt_manifest.csv",
             "BL manifest (fetched)",
@@ -292,7 +310,11 @@ fn run_summary() {
             Ok(rows) => {
                 let wow_count = rows.iter().filter(|r| r.in_wow_sequence).count();
                 println!();
-                println!("Transcription: {} total rows, {} in Wow! sequence", rows.len(), wow_count);
+                println!(
+                    "Transcription: {} total rows, {} in Wow! sequence",
+                    rows.len(),
+                    wow_count
+                );
             }
             Err(e) => {
                 println!();

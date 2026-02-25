@@ -6,7 +6,7 @@
 //! Source: https://www.atnf.csiro.au/research/pulsar/psrcat/
 //! HEASARC mirror: https://heasarc.gsfc.nasa.gov/xamin/
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
@@ -49,12 +49,26 @@ pub struct Pulsar {
 
 /// Parse ATNF pulsar catalog CSV.
 pub fn parse_atnf_csv(path: &Path) -> Result<Vec<Pulsar>, FetchError> {
+    let content = std::fs::read_to_string(path)
+        .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;
+    let delimiter = content
+        .lines()
+        .map(str::trim)
+        .find(|line| !line.is_empty() && !line.starts_with('#'))
+        .map_or(b',', |line| {
+            if line.matches('|').count() > line.matches(',').count() {
+                b'|'
+            } else {
+                b','
+            }
+        });
+
     let mut reader = csv::ReaderBuilder::new()
+        .delimiter(delimiter)
         .flexible(true)
         .has_headers(true)
         .comment(Some(b'#'))
-        .from_path(path)
-        .map_err(|e| FetchError::Validation(format!("CSV read error: {}", e)))?;
+        .from_reader(content.as_bytes());
 
     let headers = reader
         .headers()
@@ -62,7 +76,7 @@ pub fn parse_atnf_csv(path: &Path) -> Result<Vec<Pulsar>, FetchError> {
         .clone();
 
     let col = |name: &str| -> Option<usize> {
-        headers.iter().position(|h| {
+        headers.iter().position(|h: &str| {
             let h_lower = h.to_lowercase();
             h_lower == name.to_lowercase() || h_lower.contains(&name.to_lowercase())
         })
@@ -73,8 +87,8 @@ pub fn parse_atnf_csv(path: &Path) -> Result<Vec<Pulsar>, FetchError> {
     let idx_dec = col("decjd").or_else(|| col("dec"));
     let idx_gl = col("gl");
     let idx_gb = col("gb");
-    let idx_p0 = col("p0");
-    let idx_p1 = col("p1");
+    let idx_p0 = col("p0").or_else(|| col("period"));
+    let idx_p1 = col("p1").or_else(|| col("period_dot"));
     let idx_dm = col("dm");
     let idx_rm = col("rm");
     let idx_age = col("age");

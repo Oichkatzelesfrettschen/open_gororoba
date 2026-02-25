@@ -6,7 +6,7 @@
 //!
 //! Reference: IVOA TAP 1.1 (2019), https://www.ivoa.net/documents/TAP/
 
-use crate::fetcher::{download_to_string, FetchError};
+use crate::fetcher::{FetchError, download_to_string};
 
 /// Percent-encode a query string value for use in a URL parameter.
 ///

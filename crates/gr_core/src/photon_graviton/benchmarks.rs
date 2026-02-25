@@ -362,10 +362,7 @@ mod tests {
         if a_scalar > 1e-100 {
             let ratio = a_spinor / a_scalar;
             // Spinor dominates over scalar
-            assert!(
-                ratio > 1.0,
-                "Spinor should dominate: ratio = {ratio}"
-            );
+            assert!(ratio > 1.0, "Spinor should dominate: ratio = {ratio}");
         }
     }
 
@@ -419,11 +416,7 @@ mod tests {
             let amp = one_loop_amplitude(&config, LoopType::Spinor, ch, &quad);
             let sum = amp.irreducible + amp.tadpole + amp.external;
             let diff = (amp.total - sum).norm();
-            assert!(
-                diff < 1e-25,
-                "Channel {:?}: total - sum = {diff:.3e}",
-                ch
-            );
+            assert!(diff < 1e-25, "Channel {:?}: total - sum = {diff:.3e}", ch);
         }
     }
 
@@ -433,12 +426,7 @@ mod tests {
         let config = FieldConfig::pure_magnetic(0.01, 0.5, PI / 4.0);
         let quad = QuadratureConfig::default();
 
-        let amp = one_loop_amplitude(
-            &config,
-            LoopType::Spinor,
-            HelicityChannel::PerpCross,
-            &quad,
-        );
+        let amp = one_loop_amplitude(&config, LoopType::Spinor, HelicityChannel::PerpCross, &quad);
 
         // The irreducible should be the largest contribution
         let irr_norm = amp.irreducible.norm();
@@ -463,10 +451,7 @@ mod tests {
         let quad = QuadratureConfig::default();
         let dich = magnetic_dichroism(&config, LoopType::Spinor, &quad);
 
-        assert!(
-            dich.ratio.is_finite(),
-            "Dichroism ratio should be finite"
-        );
+        assert!(dich.ratio.is_finite(), "Dichroism ratio should be finite");
         // Weak-field: ratio = (4/7)^2 ~ 0.327
         // Allow a range because numerical integration introduces some error
         if dich.rate_perp > 1e-100 {
@@ -534,10 +519,7 @@ mod tests {
         // B_3 = B_5 = B_7 = ... = 0 (except B_1)
         for n in [3, 5, 7, 9, 11, 13, 15, 17, 19] {
             let b = special_functions::bernoulli(n);
-            assert!(
-                b.abs() < 1e-15,
-                "B_{n} = {b}, expected 0"
-            );
+            assert!(b.abs() < 1e-15, "B_{n} = {b}, expected 0");
         }
     }
 
@@ -591,11 +573,7 @@ mod tests {
         let quad = QuadratureConfig::default();
         for eb in [0.001, 0.01, 0.1, 0.5] {
             let config = FieldConfig::pure_magnetic(eb, 0.5, PI / 4.0);
-            let residual = irreducible::irreducible_ward_check(
-                &config,
-                LoopType::Spinor,
-                &quad,
-            );
+            let residual = irreducible::irreducible_ward_check(&config, LoopType::Spinor, &quad);
             assert!(
                 residual < 1e-10,
                 "Ward identity fails at eB = {eb}: residual = {residual}"
@@ -629,9 +607,6 @@ mod tests {
         // L_c should be astronomically large (lab fields are too weak)
         let l_si = gertsenshtein::decoherence_length_si(10.0, 1.0);
         // L_c >> 1 m for lab fields
-        assert!(
-            l_si > 1.0,
-            "Decoherence length at 10 T, 1 eV: {l_si:.3e} m"
-        );
+        assert!(l_si > 1.0, "Decoherence length at 10 T, 1 eV: {l_si:.3e} m");
     }
 }

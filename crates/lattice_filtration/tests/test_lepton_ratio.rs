@@ -1,6 +1,6 @@
 use lattice_filtration::{
-    classify_latency_law_detailed, filtration_from_velocity_field, pdg_comparison,
-    predict_mass_ratios, LatencyLaw, SurvivalDepthMap,
+    LatencyLaw, SurvivalDepthMap, classify_latency_law_detailed, filtration_from_velocity_field,
+    pdg_comparison, predict_mass_ratios,
 };
 
 #[test]

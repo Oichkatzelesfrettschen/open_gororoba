@@ -49,7 +49,7 @@ fn main() {
     let n_samples = 10000;
     let n_bins = 100;
     let seed = 42;
-    
+
     println!("Computing Norm Composition Entropy (H_norm) across dimensions...");
     println!("Dim | Entropy (H_norm) | Mean ||ab|| | StdDev ||ab||");
     println!("----|------------------|-------------|--------------");
@@ -60,20 +60,20 @@ fn main() {
         let mut sum_v2 = 0.0;
         let mut values = Vec::new();
         for _ in 0..n_samples {
-             let a_raw: Vec<f64> = (0..dim).map(|_| normal.sample(&mut rng)).collect();
-             let b_raw: Vec<f64> = (0..dim).map(|_| normal.sample(&mut rng)).collect();
-             let a_norm = a_raw.iter().map(|x| x * x).sum::<f64>().sqrt();
-             let b_norm = b_raw.iter().map(|x| x * x).sum::<f64>().sqrt();
-             let a: Vec<f64> = a_raw.iter().map(|x| x / a_norm).collect();
-             let b: Vec<f64> = b_raw.iter().map(|x| x / b_norm).collect();
-             let ab = cd_multiply(&a, &b);
-             let v = cd_norm_sq(&ab).sqrt();
-             sum_v += v;
-             sum_v2 += v*v;
-             values.push(v);
+            let a_raw: Vec<f64> = (0..dim).map(|_| normal.sample(&mut rng)).collect();
+            let b_raw: Vec<f64> = (0..dim).map(|_| normal.sample(&mut rng)).collect();
+            let a_norm = a_raw.iter().map(|x| x * x).sum::<f64>().sqrt();
+            let b_norm = b_raw.iter().map(|x| x * x).sum::<f64>().sqrt();
+            let a: Vec<f64> = a_raw.iter().map(|x| x / a_norm).collect();
+            let b: Vec<f64> = b_raw.iter().map(|x| x / b_norm).collect();
+            let ab = cd_multiply(&a, &b);
+            let v = cd_norm_sq(&ab).sqrt();
+            sum_v += v;
+            sum_v2 += v * v;
+            values.push(v);
         }
         let mean = sum_v / n_samples as f64;
-        let stddev = (sum_v2 / n_samples as f64 - mean*mean).sqrt();
+        let stddev = (sum_v2 / n_samples as f64 - mean * mean).sqrt();
 
         let h = norm_composition_entropy(dim, n_samples, n_bins, seed);
         println!("{:3} | {:16.6} | {:11.6} | {:12.6e}", dim, h, mean, stddev);

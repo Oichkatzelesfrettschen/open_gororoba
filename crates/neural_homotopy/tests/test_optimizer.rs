@@ -1,8 +1,8 @@
 //! Integration tests for pentagon-constrained optimization pipeline.
 
 use neural_homotopy::{
-    optimize_correction_tensor, optimize_with_restarts, perturbed_sedenion_table, CorrectionTensor,
-    PentagonOptimizationConfig, PerturbationDataset, SEDENION_DIM,
+    CorrectionTensor, PentagonOptimizationConfig, PerturbationDataset, SEDENION_DIM,
+    optimize_correction_tensor, optimize_with_restarts, perturbed_sedenion_table,
 };
 
 #[test]

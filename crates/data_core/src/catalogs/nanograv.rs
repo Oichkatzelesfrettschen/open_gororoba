@@ -14,7 +14,7 @@
 //! KDE method: Lamb, Taylor & van Haasteren (2023), PhysRevD 108, 103019
 
 use crate::fetcher::{
-    download_to_file, validate_not_html, DatasetProvider, FetchConfig, FetchError,
+    DatasetProvider, FetchConfig, FetchError, download_to_file, validate_not_html,
 };
 use std::fs;
 use std::io::Read as IoRead;
@@ -361,11 +361,7 @@ fn parse_npy_shape(header: &str) -> Result<Vec<usize>, FetchError> {
         .split(',')
         .filter_map(|s| {
             let t = s.trim();
-            if t.is_empty() {
-                None
-            } else {
-                t.parse().ok()
-            }
+            if t.is_empty() { None } else { t.parse().ok() }
         })
         .collect();
 

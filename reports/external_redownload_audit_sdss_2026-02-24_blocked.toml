@@ -1,0 +1,26 @@
+generated_at_utc = "2026-02-24T07:49:25.655Z"
+execute = true
+backend_order = [
+    "wget",
+    "curl",
+    "fetch",
+]
+total_files = 1
+matched_source_files = 1
+unmatched_source_files = 0
+blocked_pending = 1
+blocked_overdue = 0
+checksum_mismatch = 0
+download_failures = 0
+pass_count = 0
+
+[[records]]
+path = "data/external/sdss_dr18_quasars.csv"
+source_id = "SRC-SDSS-DR18-QUASARS"
+source_status = "blocked"
+expected_sha256 = "3ad1528c16f1617a28ff24b8cf13d0947f9a9d1517ac45654d188c866d585cd6"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+

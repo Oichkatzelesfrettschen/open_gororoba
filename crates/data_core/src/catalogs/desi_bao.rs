@@ -6,7 +6,7 @@
 //! Source: https://github.com/CobayaSampler/bao_data
 //! Reference: DESI Collaboration (2024), arXiv:2404.03002
 
-use crate::fetcher::{download_to_string, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
 use std::path::{Path, PathBuf};
 
 /// A BAO distance measurement from DESI.

@@ -461,11 +461,7 @@ pub fn find_boolean_class_predicate(
                         1u8
                     } else {
                         // Product of selected bits: 1 iff all selected bits are set
-                        if (label & mono) == mono {
-                            1u8
-                        } else {
-                            0u8
-                        }
+                        if (label & mono) == mono { 1u8 } else { 0u8 }
                     }
                 })
                 .collect()
@@ -1051,10 +1047,15 @@ pub fn pg_correspondence_summary(r: &PGCorrespondenceResult) -> String {
     let status = if r.verified { "VERIFIED" } else { "FAILED" };
     format!(
         "C-444 PG({},{}) at dim={}: {} | components={}/{} | bijection={} | lines={}/{} | line_structure={}",
-        r.proj_dim, 2, r.dim, status,
-        r.n_components, r.n_pg_points,
+        r.proj_dim,
+        2,
+        r.dim,
+        status,
+        r.n_components,
+        r.n_pg_points,
         r.bijection_holds,
-        r.n_lines_verified, r.n_lines_total,
+        r.n_lines_verified,
+        r.n_lines_total,
         r.line_structure_holds,
     )
 }

@@ -31,24 +31,12 @@ pub mod sfwm;
 pub mod tcmt;
 
 pub use grin::{
-    central_difference_gradient, rk4_step, rk4_step_absorbing, trace_ray, trace_ray_absorbing,
     AbsorbingGrinMedium, GrinFiber, GrinMedium, HomogeneousMedium, Ray, RayState, RayTraceResult,
-    Vec3,
+    Vec3, central_difference_gradient, rk4_step, rk4_step_absorbing, trace_ray,
+    trace_ray_absorbing,
 };
 
 pub use tcmt::{
-    bistability_bounds,
-    denormalize_energy,
-    find_turning_points,
-    find_turning_points_physical,
-    hysteresis_width,
-    linear_transmission,
-    normalize_parameters,
-    solve_normalized_cubic,
-    solve_normalized_cubic_batch,
-    thermal_regime,
-    trace_hysteresis_loop,
-    validate_cavity,
     CavityState,
     CouplingRegime,
     HysteresisResult,
@@ -69,16 +57,28 @@ pub use tcmt::{
     ThermalTcmtSolver,
     TurningPoint,
     TurningPointBranch,
+    bistability_bounds,
+    denormalize_energy,
+    find_turning_points,
+    find_turning_points_physical,
+    hysteresis_width,
+    linear_transmission,
+    normalize_parameters,
+    solve_normalized_cubic,
+    solve_normalized_cubic_batch,
+    thermal_regime,
+    trace_hysteresis_loop,
+    validate_cavity,
 };
 
 pub use multi_resonator::{
     MultiResonatorState, MultiResonatorSystem, MultiResonatorTrace, ResonatorChannel,
 };
 
-pub use entropy_trap::{absorption_spectrum, detect_entropy_trap, EntropyTrapResult};
+pub use entropy_trap::{EntropyTrapResult, absorption_spectrum, detect_entropy_trap};
 
 pub use phase_retrieval::{
-    gs_continuous, wgs_discrete, zernike_phase, InitialPhase, TargetSpot, WgsConfig, WgsResult,
+    InitialPhase, TargetSpot, WgsConfig, WgsResult, gs_continuous, wgs_discrete, zernike_phase,
 };
 
 pub use optics_algebra_bridge::{
@@ -86,34 +86,45 @@ pub use optics_algebra_bridge::{
 };
 
 pub use sfwm::{
-    // Original API
-    coherence_length, phase_matching_function, sfwm_dominance_check, thickness_sweep,
     SfwmDominanceResult,
+    SfwmMaterialParams,
+    SfwmRateResult,
+    WavevectorMismatches,
     // Son & Chekhova (2026) full reproduction
-    cascaded_amplitude_sq, cascaded_amplitude_sq_with_dk,
-    direct_amplitude_sq, direct_amplitude_sq_with_dk,
-    g2_sfwm_model, g2_spdc_model,
-    maker_fringe_sweep, photon_number_sfwm, photon_number_spdc,
+    cascaded_amplitude_sq,
+    cascaded_amplitude_sq_with_dk,
+    // Original API
+    coherence_length,
+    direct_amplitude_sq,
+    direct_amplitude_sq_with_dk,
+    g2_sfwm_model,
+    g2_spdc_model,
+    maker_fringe_sweep,
+    phase_matching_function,
+    photon_number_sfwm,
+    photon_number_spdc,
     polarization_dependence,
-    rate_ratio, rate_ratio_with_dk,
-    rate_sweep, rate_sweep_with_dk,
-    SfwmMaterialParams, SfwmRateResult, WavevectorMismatches,
+    rate_ratio,
+    rate_ratio_with_dk,
+    rate_sweep,
+    rate_sweep_with_dk,
+    sfwm_dominance_check,
+    thickness_sweep,
 };
 
 pub use bessel::{
-    bessel_j, bessel_j_prime, bessel_y, bessel_y_prime,
-    hankel_1, hankel_1_prime, hankel_2, hankel_2_prime,
+    bessel_j, bessel_j_prime, bessel_y, bessel_y_prime, hankel_1, hankel_1_prime, hankel_2,
+    hankel_2_prime,
 };
 
 pub use fano_tcmt::{
-    fano_reflection, scattering_coefficient, fano_cross_sections_normalized,
-    multi_channel_cross_sections, normalized_fano_c_sct, normalized_fano_c_abs,
-    normalized_fano_c_ext, drude_epsilon, fano_q,
-    FanoChannel, FanoDrudeParams, CrossSections,
+    CrossSections, FanoChannel, FanoDrudeParams, drude_epsilon, fano_cross_sections_normalized,
+    fano_q, fano_reflection, multi_channel_cross_sections, normalized_fano_c_abs,
+    normalized_fano_c_ext, normalized_fano_c_sct, scattering_coefficient,
 };
 
 pub use mie_cylinder::{
-    scattering_coefficient_l, mie_scattering, mie_sweep, extract_fano_params,
-    ruan_fan_mdm_fig4, ruan_fan_mdm_fig5, update_metal_epsilon, mie_mdm_sweep,
-    CylinderLayer, ConcentricCylinder, ChannelResult, MieResult,
+    ChannelResult, ConcentricCylinder, CylinderLayer, MieResult, extract_fano_params,
+    mie_mdm_sweep, mie_scattering, mie_sweep, ruan_fan_mdm_fig4, ruan_fan_mdm_fig5,
+    scattering_coefficient_l, update_metal_epsilon,
 };

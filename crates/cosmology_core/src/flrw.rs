@@ -22,7 +22,7 @@
 //! - Hogg (1999), arXiv:astro-ph/9905116 (distance measures)
 //! - Etherington (1933), Phil. Mag. 15, 761 (distance duality)
 
-use crate::bounce::{hubble_e_lcdm, C_KM_S};
+use crate::bounce::{C_KM_S, hubble_e_lcdm};
 use crate::gl_integrate;
 
 /// Conversion factor: 1 Mpc/(km/s) in Gyr.

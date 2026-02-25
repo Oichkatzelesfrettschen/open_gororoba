@@ -1,17 +1,17 @@
 use clap::Parser;
 use lattice_filtration::{
-    classify_latency_law_detailed, simulate_fibonacci_collision_storm,
-    simulate_sedenion_collision_storm, LatencyLaw,
+    LatencyLaw, classify_latency_law_detailed, simulate_fibonacci_collision_storm,
+    simulate_sedenion_collision_storm,
 };
 use lbm_core::viscosity_with_power_law_associator;
-use neural_homotopy::{reference_hubble_curve, train_homotopy_surrogate, HomotopyTrainingConfig};
+use neural_homotopy::{HomotopyTrainingConfig, reference_hubble_curve, train_homotopy_surrogate};
 use std::error::Error;
 use std::fmt::Write as _;
 use std::fs;
 use std::path::{Path, PathBuf};
 use vacuum_frustration::{
-    evaluate_frustration_star, FrustrationStarConfig, ScalarFrustrationMap,
-    CASSINI_OMEGA_BD_LOWER_BOUND,
+    CASSINI_OMEGA_BD_LOWER_BOUND, FrustrationStarConfig, ScalarFrustrationMap,
+    evaluate_frustration_star,
 };
 
 #[derive(Debug, Parser)]

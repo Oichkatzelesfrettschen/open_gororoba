@@ -1,0 +1,14 @@
+generated_at_utc = "2026-02-24T07:36:58.475Z"
+total_validators = 1
+passed = 0
+failed = 1
+
+[[results]]
+lane_id = "external"
+validator_id = "SV-002"
+validator_kind = "external_dataset_semantics"
+status = "fail"
+checked_files = 23520
+error_count = 1
+errors = ["JSON parse failed data/external/jarvis_dft_3d.json: expected value at line 1 column 3890897"]
+

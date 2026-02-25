@@ -89,8 +89,8 @@ pub fn tadpole_proper_time(
             let integrand = det * trace_combo - subtraction;
             Complex64::new(integrand, 0.0)
         },
-        1.0,  // mass_sq = m_e^2 = 1
-        2.0,  // power = 2 (dT/T^2)
+        1.0, // mass_sq = m_e^2 = 1
+        2.0, // power = 2 (dT/T^2)
         quad_config,
     );
 
@@ -177,11 +177,7 @@ pub fn tadpole_hurwitz(config: &FieldConfig, loop_type: LoopType) -> Complex64 {
 ///
 /// # Arguments
 /// * `n_terms` -- number of terms in the Bernoulli series (2..15)
-pub fn tadpole_bernoulli(
-    config: &FieldConfig,
-    loop_type: LoopType,
-    n_terms: usize,
-) -> Complex64 {
+pub fn tadpole_bernoulli(config: &FieldConfig, loop_type: LoopType, n_terms: usize) -> Complex64 {
     let eb = config.a;
     if eb.abs() < 1e-30 {
         return Complex64::new(0.0, 0.0);

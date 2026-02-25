@@ -1,0 +1,31 @@
+generated_at_utc = "2026-02-24T07:49:29.181Z"
+execute = true
+backend_order = [
+    "wget",
+    "curl",
+    "fetch",
+]
+total_files = 1
+matched_source_files = 1
+unmatched_source_files = 0
+blocked_pending = 0
+blocked_overdue = 0
+checksum_mismatch = 0
+download_failures = 0
+pass_count = 1
+
+[[records]]
+path = "data/external/jarvis_dft_3d.json"
+source_id = "SRC-JARVIS-DFT-3D-JSON"
+source_status = "active"
+expected_sha256 = "8802ab30a024d5392609d80720ec303ec5a0557efdd93f2cd025977a7c7f6123"
+actual_sha256 = "8802ab30a024d5392609d80720ec303ec5a0557efdd93f2cd025977a7c7f6123"
+status = "pass"
+detail = "hash verification passed"
+
+[[records.attempts]]
+backend = "wget"
+url = "https://ndownloader.figshare.com/files/15475826"
+status = "ok"
+detail = "download succeeded"
+

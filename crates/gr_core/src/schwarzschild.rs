@@ -17,7 +17,7 @@
 //! - Chandrasekhar (1983): The Mathematical Theory of Black Holes, Ch. 3
 
 use crate::metric::{
-    ChristoffelComponents, MetricComponents, SpacetimeMetric, DIM, PHI, R, T, THETA,
+    ChristoffelComponents, DIM, MetricComponents, PHI, R, SpacetimeMetric, T, THETA,
 };
 
 /// Schwarzschild black hole spacetime.

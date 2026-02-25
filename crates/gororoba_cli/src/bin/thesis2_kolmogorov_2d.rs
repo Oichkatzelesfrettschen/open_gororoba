@@ -10,7 +10,7 @@
 //! from 1.0 by more than 5% for at least one parameter combination.
 
 use clap::Parser;
-use lbm_core::{equilibrium, macroscopic, stream, viscosity_with_power_law_associator, CX, W};
+use lbm_core::{CX, W, equilibrium, macroscopic, stream, viscosity_with_power_law_associator};
 use ndarray::Array2;
 use std::f64::consts::PI;
 use std::fmt::Write as _;
@@ -302,8 +302,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
             println!(
                 "  coupling={:6.1}: enstrophy={:.6e}, v_max={:.6}, <gamma_dot>={:.6}, <tau_eff>={:.4}, mass_drift={:.2e} [{}]",
-                coupling, result.enstrophy, result.max_velocity,
-                result.mean_strain_rate, result.mean_tau_eff, result.mass_drift, label,
+                coupling,
+                result.enstrophy,
+                result.max_velocity,
+                result.mean_strain_rate,
+                result.mean_tau_eff,
+                result.mass_drift,
+                label,
             );
 
             let _ = writeln!(report, "[[result]]");

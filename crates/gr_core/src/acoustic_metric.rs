@@ -52,11 +52,7 @@ pub fn acoustic_horizon_1d(velocity_magnitude: &[f64], c_s: f64) -> Vec<f64> {
 /// * `velocity_magnitude` - 1D array of |v| at each grid point
 /// * `dx` - Grid spacing
 /// * `horizon_pos` - Position of the horizon (fractional index)
-pub fn acoustic_surface_gravity(
-    velocity_magnitude: &[f64],
-    dx: f64,
-    horizon_pos: f64,
-) -> f64 {
+pub fn acoustic_surface_gravity(velocity_magnitude: &[f64], dx: f64, horizon_pos: f64) -> f64 {
     let n = velocity_magnitude.len();
     let i = horizon_pos.floor() as usize;
 
@@ -105,13 +101,7 @@ pub fn acoustic_hawking_temperature_physical(kappa: f64, hbar: f64, k_b: f64) ->
 /// * `c_s` - Speed of sound
 ///
 /// Returns (velocity_magnitudes, dx) where dx = 1.0 for unit grid spacing.
-pub fn radial_inflow_profile(
-    n: usize,
-    v0: f64,
-    r0: f64,
-    alpha: f64,
-    c_s: f64,
-) -> (Vec<f64>, f64) {
+pub fn radial_inflow_profile(n: usize, v0: f64, r0: f64, alpha: f64, c_s: f64) -> (Vec<f64>, f64) {
     let dx = 1.0;
     let center = n as f64 / 2.0;
 
@@ -157,14 +147,15 @@ mod tests {
             .collect();
         let crossings = acoustic_horizon_1d(&velocities, c_s);
         assert_eq!(crossings.len(), 1, "should have exactly one crossing");
-        assert!((crossings[0] - 50.5).abs() < 1.0, "crossing near index 50.5");
+        assert!(
+            (crossings[0] - 50.5).abs() < 1.0,
+            "crossing near index 50.5"
+        );
     }
 
     #[test]
     fn test_surface_gravity_positive() {
-        let velocities: Vec<f64> = (0..100)
-            .map(|i| i as f64 / 100.0)
-            .collect();
+        let velocities: Vec<f64> = (0..100).map(|i| i as f64 / 100.0).collect();
         let kappa = acoustic_surface_gravity(&velocities, 1.0, 50.0);
         assert!(kappa > 0.0, "kappa should be positive for inflow");
     }
@@ -173,13 +164,19 @@ mod tests {
     fn test_hawking_temperature_proportional_to_kappa() {
         let t1 = acoustic_hawking_temperature(1.0);
         let t2 = acoustic_hawking_temperature(2.0);
-        assert!((t2 / t1 - 2.0).abs() < 1e-10, "T should be proportional to kappa");
+        assert!(
+            (t2 / t1 - 2.0).abs() < 1e-10,
+            "T should be proportional to kappa"
+        );
     }
 
     #[test]
     fn test_radial_inflow_has_horizon() {
         let (v, _dx) = radial_inflow_profile(128, 0.3, 20.0, 1.0, LBM_CS);
         let crossings = acoustic_horizon_1d(&v, LBM_CS);
-        assert!(!crossings.is_empty(), "radial inflow should have at least one horizon");
+        assert!(
+            !crossings.is_empty(),
+            "radial inflow should have at least one horizon"
+        );
     }
 }

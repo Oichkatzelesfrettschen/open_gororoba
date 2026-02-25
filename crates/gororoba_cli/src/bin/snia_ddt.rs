@@ -1,9 +1,9 @@
 use clap::{Parser, ValueEnum};
 use csv::Writer;
 use snia_core::{
-    best_parameter_set, scan_parameter_sets, write_snapshot_toml, BurnState, CalibrationResult,
-    CarbonBurnModel, DdtParameterSet, HllcFlux1D, HydroState1D, NickelYieldModel, SimulationResult,
-    SimulationSnapshot, SniaCoreSolver, SolverConfig, WhiteDwarfEos,
+    BurnState, CalibrationResult, CarbonBurnModel, DdtParameterSet, HllcFlux1D, HydroState1D,
+    NickelYieldModel, SimulationResult, SimulationSnapshot, SniaCoreSolver, SolverConfig,
+    WhiteDwarfEos, best_parameter_set, scan_parameter_sets, write_snapshot_toml,
 };
 use std::error::Error;
 use std::fs;

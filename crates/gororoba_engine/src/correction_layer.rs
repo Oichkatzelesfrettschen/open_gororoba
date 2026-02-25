@@ -1,7 +1,7 @@
 //! Correction layer driven by neural-homotopy surrogate alignment.
 
 use crate::traits::CorrectionLayer;
-use neural_homotopy::{train_homotopy_surrogate, HomotopyTrainingConfig};
+use neural_homotopy::{HomotopyTrainingConfig, train_homotopy_surrogate};
 
 /// Correction layer computing a gain from algebraic frustration and model traces.
 #[derive(Debug, Clone, Copy)]

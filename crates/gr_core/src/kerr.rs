@@ -20,7 +20,7 @@
 //!   Teo, E. (2003), Gen. Relativ. Gravit. 35, 1909.
 
 use crate::metric::{
-    ChristoffelComponents, MetricComponents, SpacetimeMetric, DIM, PHI, R, T, THETA,
+    ChristoffelComponents, DIM, MetricComponents, PHI, R, SpacetimeMetric, T, THETA,
 };
 use ode_solvers::dopri5::Dopri5;
 use ode_solvers::{SVector, System};
@@ -380,11 +380,7 @@ pub fn trace_null_geodesic(
         .iter()
         .map(|y| {
             let u = y[0];
-            if u.abs() > 1e-15 {
-                1.0 / u
-            } else {
-                1e15
-            }
+            if u.abs() > 1e-15 { 1.0 / u } else { 1e15 }
         })
         .collect();
     let theta_vec: Vec<f64> = y_out.iter().map(|y| y[1]).collect();

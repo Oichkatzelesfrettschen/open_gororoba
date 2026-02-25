@@ -1,0 +1,288 @@
+generated_at_utc = "2026-02-24T19:51:30.670Z"
+execute = true
+backend_order = [
+    "wget",
+    "curl",
+    "fetch",
+]
+total_files = 10
+matched_source_files = 10
+unmatched_source_files = 0
+blocked_pending = 1
+generator_replay_required = 0
+blocked_overdue = 0
+checksum_mismatch = 0
+download_failures = 0
+pass_count = 9
+
+[[records]]
+path = "data/external/DESI_QSO.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58"
+actual_sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+Blocking waiting for file lock on artifact directory
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 41.73s
+     Running `target/debug/fetch-datasets --all --skip-existing`
+error: a value is required for '--skip-existing <SKIP_EXISTING>' but none was supplied
+  [possible values: true, false]
+
+For more information, try '--help'."""
+
+[[records]]
+path = "data/external/GGM05S.gfc"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "23992d55c4837be9d4e31410035d44740f484115eb02f89f9829d66817badb7f"
+actual_sha256 = "23992d55c4837be9d4e31410035d44740f484115eb02f89f9829d66817badb7f"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+Blocking waiting for file lock on artifact directory
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 41.73s
+     Running `target/debug/fetch-datasets --all --skip-existing`
+error: a value is required for '--skip-existing <SKIP_EXISTING>' but none was supplied
+  [possible values: true, false]
+
+For more information, try '--help'."""
+
+[[records]]
+path = "data/external/GRACEFO_monthly_sample.gfc"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "c52abd36a974ba46001073d0e018b9546c7b2abe42bd4c8fa27f5f97637dd8db"
+actual_sha256 = "c52abd36a974ba46001073d0e018b9546c7b2abe42bd4c8fa27f5f97637dd8db"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+Blocking waiting for file lock on artifact directory
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 41.73s
+     Running `target/debug/fetch-datasets --all --skip-existing`
+error: a value is required for '--skip-existing <SKIP_EXISTING>' but none was supplied
+  [possible values: true, false]
+
+For more information, try '--help'."""
+
+[[records]]
+path = "data/external/GWTC-3.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "b6ee03773b806a3eb25c26f9fd5f2487c382cdcaf5af4bdc9f0a9ef82664ddb3"
+actual_sha256 = "b6ee03773b806a3eb25c26f9fd5f2487c382cdcaf5af4bdc9f0a9ef82664ddb3"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+Blocking waiting for file lock on artifact directory
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 41.73s
+     Running `target/debug/fetch-datasets --all --skip-existing`
+error: a value is required for '--skip-existing <SKIP_EXISTING>' but none was supplied
+  [possible values: true, false]
+
+For more information, try '--help'."""
+
+[[records]]
+path = "data/external/GWTC-3_GWpy_Official.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "bb5ab708f5d9ef68639dd5a7a09f05e5191af8fc04211c40b55c0715ef727080"
+actual_sha256 = "bb5ab708f5d9ef68639dd5a7a09f05e5191af8fc04211c40b55c0715ef727080"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+Blocking waiting for file lock on artifact directory
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 41.73s
+     Running `target/debug/fetch-datasets --all --skip-existing`
+error: a value is required for '--skip-existing <SKIP_EXISTING>' but none was supplied
+  [possible values: true, false]
+
+For more information, try '--help'."""
+
+[[records]]
+path = "data/external/GWTC-3_confident.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "6e154917fa65b4f0c41e5bc57123aa1e8fa09a3ff027bd7f0c00a7ca82f7766b"
+actual_sha256 = "6e154917fa65b4f0c41e5bc57123aa1e8fa09a3ff027bd7f0c00a7ca82f7766b"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+Blocking waiting for file lock on artifact directory
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 41.73s
+     Running `target/debug/fetch-datasets --all --skip-existing`
+error: a value is required for '--skip-existing <SKIP_EXISTING>' but none was supplied
+  [possible values: true, false]
+
+For more information, try '--help'."""
+
+[[records]]
+path = "data/external/GWTC-3_synthetic.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "8ffe88c10b50e491792f76b6eba45f19dfbed0497dd69b0568afb7bbd096ed94"
+actual_sha256 = "8ffe88c10b50e491792f76b6eba45f19dfbed0497dd69b0568afb7bbd096ed94"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+Blocking waiting for file lock on artifact directory
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 41.73s
+     Running `target/debug/fetch-datasets --all --skip-existing`
+error: a value is required for '--skip-existing <SKIP_EXISTING>' but none was supplied
+  [possible values: true, false]
+
+For more information, try '--help'."""
+
+[[records]]
+path = "data/external/HST_UDF_Metadata.csv"
+source_id = "SRC-HST-UDF-METADATA"
+source_status = "blocked"
+expected_sha256 = "e0aca08526d149b25ce2c0ddfd4e914f6b0c0d9f7c0cf183f015173bd9bfddac"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/PantheonPlusSH0ES.dat"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8"
+actual_sha256 = "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+Blocking waiting for file lock on artifact directory
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 41.73s
+     Running `target/debug/fetch-datasets --all --skip-existing`
+error: a value is required for '--skip-existing <SKIP_EXISTING>' but none was supplied
+  [possible values: true, false]
+
+For more information, try '--help'."""
+
+[[records]]
+path = "data/external/SDSS_DR16Q.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+actual_sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+status = "pass"
+detail = "generator replay command failed; using local hash fallback; local hash verification passed"
+
+[[records.attempts]]
+backend = "replay_command"
+url = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+status = "error"
+detail = """
+Blocking waiting for file lock on artifact directory
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.36
+   Compiling rustls-webpki v0.103.9
+   Compiling ureq v3.2.0
+   Compiling data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 41.73s
+     Running `target/debug/fetch-datasets --all --skip-existing`
+error: a value is required for '--skip-existing <SKIP_EXISTING>' but none was supplied
+  [possible values: true, false]
+
+For more information, try '--help'."""
+

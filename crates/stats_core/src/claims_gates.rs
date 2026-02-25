@@ -23,8 +23,8 @@
 //! Gates output structured JSON for CI parsing.
 
 use crate::{
-    bootstrap_ci, frechet_null_test, two_sample_test, BootstrapCIResult, FrechetNullTestResult,
-    TwoSampleTestResult,
+    BootstrapCIResult, FrechetNullTestResult, TwoSampleTestResult, bootstrap_ci, frechet_null_test,
+    two_sample_test,
 };
 use std::fmt;
 

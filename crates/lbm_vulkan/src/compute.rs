@@ -1,9 +1,9 @@
-use ash::{vk, Device};
+use crate::VulkanContext;
+use ash::{Device, vk};
+use gpu_allocator::MemoryLocation;
+use gpu_allocator::vulkan::*;
 use std::ffi::CString;
 use std::sync::Arc;
-use gpu_allocator::vulkan::*;
-use gpu_allocator::MemoryLocation; 
-use crate::VulkanContext;
 use std::sync::Mutex;
 
 /// Unified Engine for Sedenion-LBM Simulations
@@ -47,155 +47,849 @@ struct ImageSet {
 
 fn compile_wgsl(source: &str) -> Result<Vec<u32>, Box<dyn std::error::Error>> {
     let module = naga::front::wgsl::parse_str(source)?;
-    let info = naga::valid::Validator::new(naga::valid::ValidationFlags::all(), naga::valid::Capabilities::all()).validate(&module)?;
+    let info = naga::valid::Validator::new(
+        naga::valid::ValidationFlags::all(),
+        naga::valid::Capabilities::all(),
+    )
+    .validate(&module)?;
     let mut words = Vec::new();
-    let mut writer = naga::back::spv::Writer::new(&naga::back::spv::Options { lang_version: (1, 3), ..Default::default() })?;
+    let mut writer = naga::back::spv::Writer::new(&naga::back::spv::Options {
+        lang_version: (1, 3),
+        ..Default::default()
+    })?;
     writer.write(&module, &info, None, &None, &mut words)?;
     Ok(words)
 }
 
 impl GororobaEngine {
-    pub fn new(ctx: &VulkanContext, grid_dim: (u32, u32, u32), screen_dim: (u32, u32)) -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn new(
+        ctx: &VulkanContext,
+        grid_dim: (u32, u32, u32),
+        screen_dim: (u32, u32),
+    ) -> Result<Self, Box<dyn std::error::Error>> {
         let device = ctx.device.clone();
         let n_cells = (grid_dim.0 * grid_dim.1 * grid_dim.2) as u64;
         let mut allocator = ctx.allocator.lock().unwrap();
-        
-        let f_a = Self::create_buf_internal(&device, &mut allocator, n_cells * 19 * 4, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_DST, "f_a", MemoryLocation::GpuOnly)?;
-        let f_b = Self::create_buf_internal(&device, &mut allocator, n_cells * 19 * 4, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC, "f_b", MemoryLocation::GpuOnly)?;
-        let rho = Self::create_buf_internal(&device, &mut allocator, n_cells * 4, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC, "rho", MemoryLocation::GpuToCpu)?;
-        let u = Self::create_buf_internal(&device, &mut allocator, n_cells * 3 * 4, vk::BufferUsageFlags::STORAGE_BUFFER, "u", MemoryLocation::GpuOnly)?;
-        let tau = Self::create_buf_internal(&device, &mut allocator, n_cells * 4, vk::BufferUsageFlags::STORAGE_BUFFER, "tau", MemoryLocation::GpuOnly)?;
-        let force = Self::create_buf_internal(&device, &mut allocator, n_cells * 3 * 4, vk::BufferUsageFlags::STORAGE_BUFFER, "force", MemoryLocation::CpuToGpu)?;
-        let entropy = Self::create_buf_internal(&device, &mut allocator, n_cells * 4, vk::BufferUsageFlags::STORAGE_BUFFER, "entropy", MemoryLocation::GpuOnly)?;
 
-        let image_info = vk::ImageCreateInfo { image_type: vk::ImageType::TYPE_2D, format: vk::Format::R8G8B8A8_UNORM, extent: vk::Extent3D { width: screen_dim.0, height: screen_dim.1, depth: 1 }, mip_levels: 1, array_layers: 1, samples: vk::SampleCountFlags::TYPE_1, tiling: vk::ImageTiling::OPTIMAL, usage: vk::ImageUsageFlags::STORAGE | vk::ImageUsageFlags::TRANSFER_SRC, ..Default::default() };
+        let f_a = Self::create_buf_internal(
+            &device,
+            &mut allocator,
+            n_cells * 19 * 4,
+            vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_DST,
+            "f_a",
+            MemoryLocation::GpuOnly,
+        )?;
+        let f_b = Self::create_buf_internal(
+            &device,
+            &mut allocator,
+            n_cells * 19 * 4,
+            vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC,
+            "f_b",
+            MemoryLocation::GpuOnly,
+        )?;
+        let rho = Self::create_buf_internal(
+            &device,
+            &mut allocator,
+            n_cells * 4,
+            vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC,
+            "rho",
+            MemoryLocation::GpuToCpu,
+        )?;
+        let u = Self::create_buf_internal(
+            &device,
+            &mut allocator,
+            n_cells * 3 * 4,
+            vk::BufferUsageFlags::STORAGE_BUFFER,
+            "u",
+            MemoryLocation::GpuOnly,
+        )?;
+        let tau = Self::create_buf_internal(
+            &device,
+            &mut allocator,
+            n_cells * 4,
+            vk::BufferUsageFlags::STORAGE_BUFFER,
+            "tau",
+            MemoryLocation::GpuOnly,
+        )?;
+        let force = Self::create_buf_internal(
+            &device,
+            &mut allocator,
+            n_cells * 3 * 4,
+            vk::BufferUsageFlags::STORAGE_BUFFER,
+            "force",
+            MemoryLocation::CpuToGpu,
+        )?;
+        let entropy = Self::create_buf_internal(
+            &device,
+            &mut allocator,
+            n_cells * 4,
+            vk::BufferUsageFlags::STORAGE_BUFFER,
+            "entropy",
+            MemoryLocation::GpuOnly,
+        )?;
+
+        let image_info = vk::ImageCreateInfo {
+            image_type: vk::ImageType::TYPE_2D,
+            format: vk::Format::R8G8B8A8_UNORM,
+            extent: vk::Extent3D {
+                width: screen_dim.0,
+                height: screen_dim.1,
+                depth: 1,
+            },
+            mip_levels: 1,
+            array_layers: 1,
+            samples: vk::SampleCountFlags::TYPE_1,
+            tiling: vk::ImageTiling::OPTIMAL,
+            usage: vk::ImageUsageFlags::STORAGE | vk::ImageUsageFlags::TRANSFER_SRC,
+            ..Default::default()
+        };
         let render_image = unsafe { device.create_image(&image_info, None) }?;
-        let img_alloc = allocator.allocate(&AllocationCreateDesc { name: "r_img", requirements: unsafe { device.get_image_memory_requirements(render_image) }, location: MemoryLocation::GpuOnly, linear: false, allocation_scheme: AllocationScheme::GpuAllocatorManaged })?;
+        let img_alloc = allocator.allocate(&AllocationCreateDesc {
+            name: "r_img",
+            requirements: unsafe { device.get_image_memory_requirements(render_image) },
+            location: MemoryLocation::GpuOnly,
+            linear: false,
+            allocation_scheme: AllocationScheme::GpuAllocatorManaged,
+        })?;
         unsafe { device.bind_image_memory(render_image, img_alloc.memory(), img_alloc.offset()) }?;
-        let render_view = unsafe { device.create_image_view(&vk::ImageViewCreateInfo { image: render_image, view_type: vk::ImageViewType::TYPE_2D, format: vk::Format::R8G8B8A8_UNORM, subresource_range: vk::ImageSubresourceRange { aspect_mask: vk::ImageAspectFlags::COLOR, level_count: 1, layer_count: 1, ..Default::default() }, ..Default::default() }, None) }?;
-        let readback = Self::create_buf_internal(&device, &mut allocator, (screen_dim.0 * screen_dim.1 * 4) as u64, vk::BufferUsageFlags::TRANSFER_DST, "read", MemoryLocation::GpuToCpu)?;
+        let render_view = unsafe {
+            device.create_image_view(
+                &vk::ImageViewCreateInfo {
+                    image: render_image,
+                    view_type: vk::ImageViewType::TYPE_2D,
+                    format: vk::Format::R8G8B8A8_UNORM,
+                    subresource_range: vk::ImageSubresourceRange {
+                        aspect_mask: vk::ImageAspectFlags::COLOR,
+                        level_count: 1,
+                        layer_count: 1,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let readback = Self::create_buf_internal(
+            &device,
+            &mut allocator,
+            (screen_dim.0 * screen_dim.1 * 4) as u64,
+            vk::BufferUsageFlags::TRANSFER_DST,
+            "read",
+            MemoryLocation::GpuToCpu,
+        )?;
         drop(allocator);
 
-        let lbm_pipeline = Self::create_lbm_pipeline(&device, ctx, &f_a, &f_b, &rho, &u, &tau, &force, &entropy)?;
+        let lbm_pipeline =
+            Self::create_lbm_pipeline(&device, ctx, &f_a, &f_b, &rho, &u, &tau, &force, &entropy)?;
         let zd_pipeline = Self::create_zd_pipeline(&device, ctx, &tau)?;
-        let render_pipeline = Self::create_render_pipeline(&device, ctx, &entropy, &tau, render_view, screen_dim)?;
+        let render_pipeline =
+            Self::create_render_pipeline(&device, ctx, &entropy, &tau, render_view, screen_dim)?;
 
         Ok(Self {
-            device, allocator: ctx.allocator.clone(), lbm_pipeline, zd_pipeline, render_pipeline,
-            f_buffers: [f_a, f_b], rho_buffer: rho, u_buffer: u, tau_buffer: tau, force_buffer: force, entropy_buffer: entropy,
-            render_image: ImageSet { image: render_image, view: render_view, allocation: img_alloc, readback },
-            grid_dim, step_counter: 0,
+            device,
+            allocator: ctx.allocator.clone(),
+            lbm_pipeline,
+            zd_pipeline,
+            render_pipeline,
+            f_buffers: [f_a, f_b],
+            rho_buffer: rho,
+            u_buffer: u,
+            tau_buffer: tau,
+            force_buffer: force,
+            entropy_buffer: entropy,
+            render_image: ImageSet {
+                image: render_image,
+                view: render_view,
+                allocation: img_alloc,
+                readback,
+            },
+            grid_dim,
+            step_counter: 0,
         })
     }
 
     // 8-buffer LBM descriptor set requires individual buffer refs for binding.
     #[allow(clippy::too_many_arguments)]
-    fn create_lbm_pipeline(device: &Arc<Device>, ctx: &VulkanContext, f_a: &BufferSet, f_b: &BufferSet, rho: &BufferSet, u: &BufferSet, tau: &BufferSet, force: &BufferSet, entropy: &BufferSet) -> Result<ComputePipeline, Box<dyn std::error::Error>> {
+    fn create_lbm_pipeline(
+        device: &Arc<Device>,
+        ctx: &VulkanContext,
+        f_a: &BufferSet,
+        f_b: &BufferSet,
+        rho: &BufferSet,
+        u: &BufferSet,
+        tau: &BufferSet,
+        force: &BufferSet,
+        entropy: &BufferSet,
+    ) -> Result<ComputePipeline, Box<dyn std::error::Error>> {
         let code = compile_wgsl(include_str!("../shaders/lbm.wgsl"))?;
-        let module = unsafe { device.create_shader_module(&vk::ShaderModuleCreateInfo { code_size: code.len()*4, p_code: code.as_ptr(), ..Default::default() }, None) }?;
-        let dsl = unsafe { device.create_descriptor_set_layout(&vk::DescriptorSetLayoutCreateInfo { binding_count: 8, p_bindings: [
-            vk::DescriptorSetLayoutBinding { binding: 0, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 1, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 2, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 3, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 4, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 5, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 6, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 7, descriptor_type: vk::DescriptorType::UNIFORM_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-        ].as_ptr(), ..Default::default() }, None) }?;
-        let layout = unsafe { device.create_pipeline_layout(&vk::PipelineLayoutCreateInfo { set_layout_count: 1, p_set_layouts: &dsl, ..Default::default() }, None) }?;
-        let pipeline = unsafe { device.create_compute_pipelines(vk::PipelineCache::null(), &[vk::ComputePipelineCreateInfo { stage: vk::PipelineShaderStageCreateInfo { stage: vk::ShaderStageFlags::COMPUTE, module, p_name: CString::new("main")?.as_ptr(), ..Default::default() }, layout, ..Default::default() }], None) }.map_err(|e| e.1)?[0];
+        let module = unsafe {
+            device.create_shader_module(
+                &vk::ShaderModuleCreateInfo {
+                    code_size: code.len() * 4,
+                    p_code: code.as_ptr(),
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let dsl = unsafe {
+            device.create_descriptor_set_layout(
+                &vk::DescriptorSetLayoutCreateInfo {
+                    binding_count: 8,
+                    p_bindings: [
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 0,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 1,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 2,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 3,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 4,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 5,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 6,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 7,
+                            descriptor_type: vk::DescriptorType::UNIFORM_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                    ]
+                    .as_ptr(),
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let layout = unsafe {
+            device.create_pipeline_layout(
+                &vk::PipelineLayoutCreateInfo {
+                    set_layout_count: 1,
+                    p_set_layouts: &dsl,
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let pipeline = unsafe {
+            device.create_compute_pipelines(
+                vk::PipelineCache::null(),
+                &[vk::ComputePipelineCreateInfo {
+                    stage: vk::PipelineShaderStageCreateInfo {
+                        stage: vk::ShaderStageFlags::COMPUTE,
+                        module,
+                        p_name: CString::new("main")?.as_ptr(),
+                        ..Default::default()
+                    },
+                    layout,
+                    ..Default::default()
+                }],
+                None,
+            )
+        }
+        .map_err(|e| e.1)?[0];
         let mut allocator = ctx.allocator.lock().unwrap();
-        let uniform = Self::create_buf_internal(device, &mut allocator, 256, vk::BufferUsageFlags::UNIFORM_BUFFER, "l_u", MemoryLocation::CpuToGpu)?;
-        let pool = unsafe { device.create_descriptor_pool(&vk::DescriptorPoolCreateInfo { max_sets: 2, pool_size_count: 2, p_pool_sizes: [vk::DescriptorPoolSize { ty: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 14 }, vk::DescriptorPoolSize { ty: vk::DescriptorType::UNIFORM_BUFFER, descriptor_count: 2 }].as_ptr(), ..Default::default() }, None) }?;
-        let sets = unsafe { device.allocate_descriptor_sets(&vk::DescriptorSetAllocateInfo { descriptor_pool: pool, descriptor_set_count: 2, p_set_layouts: [dsl, dsl].as_ptr(), ..Default::default() }) }?;
+        let uniform = Self::create_buf_internal(
+            device,
+            &mut allocator,
+            256,
+            vk::BufferUsageFlags::UNIFORM_BUFFER,
+            "l_u",
+            MemoryLocation::CpuToGpu,
+        )?;
+        let pool = unsafe {
+            device.create_descriptor_pool(
+                &vk::DescriptorPoolCreateInfo {
+                    max_sets: 2,
+                    pool_size_count: 2,
+                    p_pool_sizes: [
+                        vk::DescriptorPoolSize {
+                            ty: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 14,
+                        },
+                        vk::DescriptorPoolSize {
+                            ty: vk::DescriptorType::UNIFORM_BUFFER,
+                            descriptor_count: 2,
+                        },
+                    ]
+                    .as_ptr(),
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let sets = unsafe {
+            device.allocate_descriptor_sets(&vk::DescriptorSetAllocateInfo {
+                descriptor_pool: pool,
+                descriptor_set_count: 2,
+                p_set_layouts: [dsl, dsl].as_ptr(),
+                ..Default::default()
+            })
+        }?;
         for (i, &set) in sets.iter().enumerate() {
-            let (fin, fout) = if i == 0 { (f_a.buffer, f_b.buffer) } else { (f_b.buffer, f_a.buffer) };
+            let (fin, fout) = if i == 0 {
+                (f_a.buffer, f_b.buffer)
+            } else {
+                (f_b.buffer, f_a.buffer)
+            };
             let infos = [
-                vk::DescriptorBufferInfo { buffer: fin, offset: 0, range: vk::WHOLE_SIZE },
-                vk::DescriptorBufferInfo { buffer: fout, offset: 0, range: vk::WHOLE_SIZE },
-                vk::DescriptorBufferInfo { buffer: rho.buffer, offset: 0, range: vk::WHOLE_SIZE },
-                vk::DescriptorBufferInfo { buffer: u.buffer, offset: 0, range: vk::WHOLE_SIZE },
-                vk::DescriptorBufferInfo { buffer: tau.buffer, offset: 0, range: vk::WHOLE_SIZE },
-                vk::DescriptorBufferInfo { buffer: force.buffer, offset: 0, range: vk::WHOLE_SIZE },
-                vk::DescriptorBufferInfo { buffer: entropy.buffer, offset: 0, range: vk::WHOLE_SIZE },
-                vk::DescriptorBufferInfo { buffer: uniform.buffer, offset: 0, range: vk::WHOLE_SIZE },
+                vk::DescriptorBufferInfo {
+                    buffer: fin,
+                    offset: 0,
+                    range: vk::WHOLE_SIZE,
+                },
+                vk::DescriptorBufferInfo {
+                    buffer: fout,
+                    offset: 0,
+                    range: vk::WHOLE_SIZE,
+                },
+                vk::DescriptorBufferInfo {
+                    buffer: rho.buffer,
+                    offset: 0,
+                    range: vk::WHOLE_SIZE,
+                },
+                vk::DescriptorBufferInfo {
+                    buffer: u.buffer,
+                    offset: 0,
+                    range: vk::WHOLE_SIZE,
+                },
+                vk::DescriptorBufferInfo {
+                    buffer: tau.buffer,
+                    offset: 0,
+                    range: vk::WHOLE_SIZE,
+                },
+                vk::DescriptorBufferInfo {
+                    buffer: force.buffer,
+                    offset: 0,
+                    range: vk::WHOLE_SIZE,
+                },
+                vk::DescriptorBufferInfo {
+                    buffer: entropy.buffer,
+                    offset: 0,
+                    range: vk::WHOLE_SIZE,
+                },
+                vk::DescriptorBufferInfo {
+                    buffer: uniform.buffer,
+                    offset: 0,
+                    range: vk::WHOLE_SIZE,
+                },
             ];
-            let writes = infos.iter().enumerate().map(|(b, info)| vk::WriteDescriptorSet { dst_set: set, dst_binding: b as u32, descriptor_count: 1, descriptor_type: if b == 7 { vk::DescriptorType::UNIFORM_BUFFER } else { vk::DescriptorType::STORAGE_BUFFER }, p_buffer_info: info, ..Default::default() }).collect::<Vec<_>>();
+            let writes = infos
+                .iter()
+                .enumerate()
+                .map(|(b, info)| vk::WriteDescriptorSet {
+                    dst_set: set,
+                    dst_binding: b as u32,
+                    descriptor_count: 1,
+                    descriptor_type: if b == 7 {
+                        vk::DescriptorType::UNIFORM_BUFFER
+                    } else {
+                        vk::DescriptorType::STORAGE_BUFFER
+                    },
+                    p_buffer_info: info,
+                    ..Default::default()
+                })
+                .collect::<Vec<_>>();
             unsafe { device.update_descriptor_sets(&writes, &[]) };
         }
-        unsafe { device.destroy_shader_module(module, None); }
-        Ok(ComputePipeline { pipeline, layout, descriptor_layout: dsl, descriptor_pool: pool, descriptor_sets: sets, uniform_buffer: uniform })
+        unsafe {
+            device.destroy_shader_module(module, None);
+        }
+        Ok(ComputePipeline {
+            pipeline,
+            layout,
+            descriptor_layout: dsl,
+            descriptor_pool: pool,
+            descriptor_sets: sets,
+            uniform_buffer: uniform,
+        })
     }
 
-    fn create_zd_pipeline(device: &Arc<Device>, ctx: &VulkanContext, tau: &BufferSet) -> Result<ComputePipeline, Box<dyn std::error::Error>> {
+    fn create_zd_pipeline(
+        device: &Arc<Device>,
+        ctx: &VulkanContext,
+        tau: &BufferSet,
+    ) -> Result<ComputePipeline, Box<dyn std::error::Error>> {
         let code = compile_wgsl(include_str!("../shaders/zd_gen.wgsl"))?;
-        let module = unsafe { device.create_shader_module(&vk::ShaderModuleCreateInfo { code_size: code.len()*4, p_code: code.as_ptr(), ..Default::default() }, None) }?;
-        let dsl = unsafe { device.create_descriptor_set_layout(&vk::DescriptorSetLayoutCreateInfo { binding_count: 2, p_bindings: [
-            vk::DescriptorSetLayoutBinding { binding: 0, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 1, descriptor_type: vk::DescriptorType::UNIFORM_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-        ].as_ptr(), ..Default::default() }, None) }?;
-        let layout = unsafe { device.create_pipeline_layout(&vk::PipelineLayoutCreateInfo { set_layout_count: 1, p_set_layouts: &dsl, ..Default::default() }, None) }?;
-        let pipeline = unsafe { device.create_compute_pipelines(vk::PipelineCache::null(), &[vk::ComputePipelineCreateInfo { stage: vk::PipelineShaderStageCreateInfo { stage: vk::ShaderStageFlags::COMPUTE, module, p_name: CString::new("main")?.as_ptr(), ..Default::default() }, layout, ..Default::default() }], None) }.map_err(|e| e.1)?[0];
+        let module = unsafe {
+            device.create_shader_module(
+                &vk::ShaderModuleCreateInfo {
+                    code_size: code.len() * 4,
+                    p_code: code.as_ptr(),
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let dsl = unsafe {
+            device.create_descriptor_set_layout(
+                &vk::DescriptorSetLayoutCreateInfo {
+                    binding_count: 2,
+                    p_bindings: [
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 0,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 1,
+                            descriptor_type: vk::DescriptorType::UNIFORM_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                    ]
+                    .as_ptr(),
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let layout = unsafe {
+            device.create_pipeline_layout(
+                &vk::PipelineLayoutCreateInfo {
+                    set_layout_count: 1,
+                    p_set_layouts: &dsl,
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let pipeline = unsafe {
+            device.create_compute_pipelines(
+                vk::PipelineCache::null(),
+                &[vk::ComputePipelineCreateInfo {
+                    stage: vk::PipelineShaderStageCreateInfo {
+                        stage: vk::ShaderStageFlags::COMPUTE,
+                        module,
+                        p_name: CString::new("main")?.as_ptr(),
+                        ..Default::default()
+                    },
+                    layout,
+                    ..Default::default()
+                }],
+                None,
+            )
+        }
+        .map_err(|e| e.1)?[0];
         let mut allocator = ctx.allocator.lock().unwrap();
-        let uniform = Self::create_buf_internal(device, &mut allocator, 256, vk::BufferUsageFlags::UNIFORM_BUFFER, "z_u", MemoryLocation::CpuToGpu)?;
-        let pool = unsafe { device.create_descriptor_pool(&vk::DescriptorPoolCreateInfo { max_sets: 1, pool_size_count: 2, p_pool_sizes: [vk::DescriptorPoolSize { ty: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1 }, vk::DescriptorPoolSize { ty: vk::DescriptorType::UNIFORM_BUFFER, descriptor_count: 1 }].as_ptr(), ..Default::default() }, None) }?;
-        let sets = unsafe { device.allocate_descriptor_sets(&vk::DescriptorSetAllocateInfo { descriptor_pool: pool, descriptor_set_count: 1, p_set_layouts: &dsl, ..Default::default() }) }?;
-        unsafe { device.update_descriptor_sets(&[
-            vk::WriteDescriptorSet { dst_set: sets[0], dst_binding: 0, descriptor_count: 1, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, p_buffer_info: &vk::DescriptorBufferInfo { buffer: tau.buffer, offset: 0, range: vk::WHOLE_SIZE }, ..Default::default() },
-            vk::WriteDescriptorSet { dst_set: sets[0], dst_binding: 1, descriptor_count: 1, descriptor_type: vk::DescriptorType::UNIFORM_BUFFER, p_buffer_info: &vk::DescriptorBufferInfo { buffer: uniform.buffer, offset: 0, range: vk::WHOLE_SIZE }, ..Default::default() },
-        ], &[]) };
-        unsafe { device.destroy_shader_module(module, None); }
-        Ok(ComputePipeline { pipeline, layout, descriptor_layout: dsl, descriptor_pool: pool, descriptor_sets: sets, uniform_buffer: uniform })
+        let uniform = Self::create_buf_internal(
+            device,
+            &mut allocator,
+            256,
+            vk::BufferUsageFlags::UNIFORM_BUFFER,
+            "z_u",
+            MemoryLocation::CpuToGpu,
+        )?;
+        let pool = unsafe {
+            device.create_descriptor_pool(
+                &vk::DescriptorPoolCreateInfo {
+                    max_sets: 1,
+                    pool_size_count: 2,
+                    p_pool_sizes: [
+                        vk::DescriptorPoolSize {
+                            ty: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                        },
+                        vk::DescriptorPoolSize {
+                            ty: vk::DescriptorType::UNIFORM_BUFFER,
+                            descriptor_count: 1,
+                        },
+                    ]
+                    .as_ptr(),
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let sets = unsafe {
+            device.allocate_descriptor_sets(&vk::DescriptorSetAllocateInfo {
+                descriptor_pool: pool,
+                descriptor_set_count: 1,
+                p_set_layouts: &dsl,
+                ..Default::default()
+            })
+        }?;
+        unsafe {
+            device.update_descriptor_sets(
+                &[
+                    vk::WriteDescriptorSet {
+                        dst_set: sets[0],
+                        dst_binding: 0,
+                        descriptor_count: 1,
+                        descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                        p_buffer_info: &vk::DescriptorBufferInfo {
+                            buffer: tau.buffer,
+                            offset: 0,
+                            range: vk::WHOLE_SIZE,
+                        },
+                        ..Default::default()
+                    },
+                    vk::WriteDescriptorSet {
+                        dst_set: sets[0],
+                        dst_binding: 1,
+                        descriptor_count: 1,
+                        descriptor_type: vk::DescriptorType::UNIFORM_BUFFER,
+                        p_buffer_info: &vk::DescriptorBufferInfo {
+                            buffer: uniform.buffer,
+                            offset: 0,
+                            range: vk::WHOLE_SIZE,
+                        },
+                        ..Default::default()
+                    },
+                ],
+                &[],
+            )
+        };
+        unsafe {
+            device.destroy_shader_module(module, None);
+        }
+        Ok(ComputePipeline {
+            pipeline,
+            layout,
+            descriptor_layout: dsl,
+            descriptor_pool: pool,
+            descriptor_sets: sets,
+            uniform_buffer: uniform,
+        })
     }
 
-    fn create_render_pipeline(device: &Arc<Device>, ctx: &VulkanContext, entropy: &BufferSet, tau: &BufferSet, view: vk::ImageView, _dim: (u32, u32)) -> Result<ComputePipeline, Box<dyn std::error::Error>> {
+    fn create_render_pipeline(
+        device: &Arc<Device>,
+        ctx: &VulkanContext,
+        entropy: &BufferSet,
+        tau: &BufferSet,
+        view: vk::ImageView,
+        _dim: (u32, u32),
+    ) -> Result<ComputePipeline, Box<dyn std::error::Error>> {
         let code = compile_wgsl(include_str!("../shaders/render.wgsl"))?;
-        let module = unsafe { device.create_shader_module(&vk::ShaderModuleCreateInfo { code_size: code.len()*4, p_code: code.as_ptr(), ..Default::default() }, None) }?;
-        let dsl = unsafe { device.create_descriptor_set_layout(&vk::DescriptorSetLayoutCreateInfo { binding_count: 4, p_bindings: [
-            vk::DescriptorSetLayoutBinding { binding: 0, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 1, descriptor_type: vk::DescriptorType::STORAGE_IMAGE, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 2, descriptor_type: vk::DescriptorType::UNIFORM_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-            vk::DescriptorSetLayoutBinding { binding: 3, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 1, stage_flags: vk::ShaderStageFlags::COMPUTE, ..Default::default() },
-        ].as_ptr(), ..Default::default() }, None) }?;
-        let layout = unsafe { device.create_pipeline_layout(&vk::PipelineLayoutCreateInfo { set_layout_count: 1, p_set_layouts: &dsl, ..Default::default() }, None) }?;
-        let pipeline = unsafe { device.create_compute_pipelines(vk::PipelineCache::null(), &[vk::ComputePipelineCreateInfo { stage: vk::PipelineShaderStageCreateInfo { stage: vk::ShaderStageFlags::COMPUTE, module, p_name: CString::new("main")?.as_ptr(), ..Default::default() }, layout, ..Default::default() }], None) }.map_err(|e| e.1)?[0];
+        let module = unsafe {
+            device.create_shader_module(
+                &vk::ShaderModuleCreateInfo {
+                    code_size: code.len() * 4,
+                    p_code: code.as_ptr(),
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let dsl = unsafe {
+            device.create_descriptor_set_layout(
+                &vk::DescriptorSetLayoutCreateInfo {
+                    binding_count: 4,
+                    p_bindings: [
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 0,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 1,
+                            descriptor_type: vk::DescriptorType::STORAGE_IMAGE,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 2,
+                            descriptor_type: vk::DescriptorType::UNIFORM_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                        vk::DescriptorSetLayoutBinding {
+                            binding: 3,
+                            descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 1,
+                            stage_flags: vk::ShaderStageFlags::COMPUTE,
+                            ..Default::default()
+                        },
+                    ]
+                    .as_ptr(),
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let layout = unsafe {
+            device.create_pipeline_layout(
+                &vk::PipelineLayoutCreateInfo {
+                    set_layout_count: 1,
+                    p_set_layouts: &dsl,
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let pipeline = unsafe {
+            device.create_compute_pipelines(
+                vk::PipelineCache::null(),
+                &[vk::ComputePipelineCreateInfo {
+                    stage: vk::PipelineShaderStageCreateInfo {
+                        stage: vk::ShaderStageFlags::COMPUTE,
+                        module,
+                        p_name: CString::new("main")?.as_ptr(),
+                        ..Default::default()
+                    },
+                    layout,
+                    ..Default::default()
+                }],
+                None,
+            )
+        }
+        .map_err(|e| e.1)?[0];
         let mut allocator = ctx.allocator.lock().unwrap();
-        let uniform = Self::create_buf_internal(device, &mut allocator, 256, vk::BufferUsageFlags::UNIFORM_BUFFER, "r_u", MemoryLocation::CpuToGpu)?;
-        let pool = unsafe { device.create_descriptor_pool(&vk::DescriptorPoolCreateInfo { max_sets: 1, pool_size_count: 3, p_pool_sizes: [vk::DescriptorPoolSize { ty: vk::DescriptorType::STORAGE_BUFFER, descriptor_count: 2 }, vk::DescriptorPoolSize { ty: vk::DescriptorType::STORAGE_IMAGE, descriptor_count: 1 }, vk::DescriptorPoolSize { ty: vk::DescriptorType::UNIFORM_BUFFER, descriptor_count: 1 }].as_ptr(), ..Default::default() }, None) }?;
-        let sets = unsafe { device.allocate_descriptor_sets(&vk::DescriptorSetAllocateInfo { descriptor_pool: pool, descriptor_set_count: 1, p_set_layouts: &dsl, ..Default::default() }) }?;
-        unsafe { device.update_descriptor_sets(&[
-            vk::WriteDescriptorSet { dst_set: sets[0], dst_binding: 0, descriptor_count: 1, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, p_buffer_info: &vk::DescriptorBufferInfo { buffer: entropy.buffer, offset: 0, range: vk::WHOLE_SIZE }, ..Default::default() },
-            vk::WriteDescriptorSet { dst_set: sets[0], dst_binding: 1, descriptor_count: 1, descriptor_type: vk::DescriptorType::STORAGE_IMAGE, p_image_info: &vk::DescriptorImageInfo { image_view: view, image_layout: vk::ImageLayout::GENERAL, ..Default::default() }, ..Default::default() },
-            vk::WriteDescriptorSet { dst_set: sets[0], dst_binding: 2, descriptor_count: 1, descriptor_type: vk::DescriptorType::UNIFORM_BUFFER, p_buffer_info: &vk::DescriptorBufferInfo { buffer: uniform.buffer, offset: 0, range: vk::WHOLE_SIZE }, ..Default::default() },
-            vk::WriteDescriptorSet { dst_set: sets[0], dst_binding: 3, descriptor_count: 1, descriptor_type: vk::DescriptorType::STORAGE_BUFFER, p_buffer_info: &vk::DescriptorBufferInfo { buffer: tau.buffer, offset: 0, range: vk::WHOLE_SIZE }, ..Default::default() },
-        ], &[]) };
-        unsafe { device.destroy_shader_module(module, None); }
-        Ok(ComputePipeline { pipeline, layout, descriptor_layout: dsl, descriptor_pool: pool, descriptor_sets: sets, uniform_buffer: uniform })
+        let uniform = Self::create_buf_internal(
+            device,
+            &mut allocator,
+            256,
+            vk::BufferUsageFlags::UNIFORM_BUFFER,
+            "r_u",
+            MemoryLocation::CpuToGpu,
+        )?;
+        let pool = unsafe {
+            device.create_descriptor_pool(
+                &vk::DescriptorPoolCreateInfo {
+                    max_sets: 1,
+                    pool_size_count: 3,
+                    p_pool_sizes: [
+                        vk::DescriptorPoolSize {
+                            ty: vk::DescriptorType::STORAGE_BUFFER,
+                            descriptor_count: 2,
+                        },
+                        vk::DescriptorPoolSize {
+                            ty: vk::DescriptorType::STORAGE_IMAGE,
+                            descriptor_count: 1,
+                        },
+                        vk::DescriptorPoolSize {
+                            ty: vk::DescriptorType::UNIFORM_BUFFER,
+                            descriptor_count: 1,
+                        },
+                    ]
+                    .as_ptr(),
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
+        let sets = unsafe {
+            device.allocate_descriptor_sets(&vk::DescriptorSetAllocateInfo {
+                descriptor_pool: pool,
+                descriptor_set_count: 1,
+                p_set_layouts: &dsl,
+                ..Default::default()
+            })
+        }?;
+        unsafe {
+            device.update_descriptor_sets(
+                &[
+                    vk::WriteDescriptorSet {
+                        dst_set: sets[0],
+                        dst_binding: 0,
+                        descriptor_count: 1,
+                        descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                        p_buffer_info: &vk::DescriptorBufferInfo {
+                            buffer: entropy.buffer,
+                            offset: 0,
+                            range: vk::WHOLE_SIZE,
+                        },
+                        ..Default::default()
+                    },
+                    vk::WriteDescriptorSet {
+                        dst_set: sets[0],
+                        dst_binding: 1,
+                        descriptor_count: 1,
+                        descriptor_type: vk::DescriptorType::STORAGE_IMAGE,
+                        p_image_info: &vk::DescriptorImageInfo {
+                            image_view: view,
+                            image_layout: vk::ImageLayout::GENERAL,
+                            ..Default::default()
+                        },
+                        ..Default::default()
+                    },
+                    vk::WriteDescriptorSet {
+                        dst_set: sets[0],
+                        dst_binding: 2,
+                        descriptor_count: 1,
+                        descriptor_type: vk::DescriptorType::UNIFORM_BUFFER,
+                        p_buffer_info: &vk::DescriptorBufferInfo {
+                            buffer: uniform.buffer,
+                            offset: 0,
+                            range: vk::WHOLE_SIZE,
+                        },
+                        ..Default::default()
+                    },
+                    vk::WriteDescriptorSet {
+                        dst_set: sets[0],
+                        dst_binding: 3,
+                        descriptor_count: 1,
+                        descriptor_type: vk::DescriptorType::STORAGE_BUFFER,
+                        p_buffer_info: &vk::DescriptorBufferInfo {
+                            buffer: tau.buffer,
+                            offset: 0,
+                            range: vk::WHOLE_SIZE,
+                        },
+                        ..Default::default()
+                    },
+                ],
+                &[],
+            )
+        };
+        unsafe {
+            device.destroy_shader_module(module, None);
+        }
+        Ok(ComputePipeline {
+            pipeline,
+            layout,
+            descriptor_layout: dsl,
+            descriptor_pool: pool,
+            descriptor_sets: sets,
+            uniform_buffer: uniform,
+        })
     }
 
-    fn create_buf_internal(device: &Device, allocator: &mut Allocator, size: u64, usage: vk::BufferUsageFlags, name: &str, loc: MemoryLocation) -> Result<BufferSet, Box<dyn std::error::Error>> {
-        let buffer = unsafe { device.create_buffer(&vk::BufferCreateInfo { size, usage, ..Default::default() }, None) }?;
+    fn create_buf_internal(
+        device: &Device,
+        allocator: &mut Allocator,
+        size: u64,
+        usage: vk::BufferUsageFlags,
+        name: &str,
+        loc: MemoryLocation,
+    ) -> Result<BufferSet, Box<dyn std::error::Error>> {
+        let buffer = unsafe {
+            device.create_buffer(
+                &vk::BufferCreateInfo {
+                    size,
+                    usage,
+                    ..Default::default()
+                },
+                None,
+            )
+        }?;
         let reqs = unsafe { device.get_buffer_memory_requirements(buffer) };
-        let allocation = allocator.allocate(&AllocationCreateDesc { name, requirements: reqs, location: loc, linear: true, allocation_scheme: AllocationScheme::GpuAllocatorManaged })?;
+        let allocation = allocator.allocate(&AllocationCreateDesc {
+            name,
+            requirements: reqs,
+            location: loc,
+            linear: true,
+            allocation_scheme: AllocationScheme::GpuAllocatorManaged,
+        })?;
         unsafe { device.bind_buffer_memory(buffer, allocation.memory(), allocation.offset()) }?;
         Ok(BufferSet { buffer, allocation })
     }
 
-    pub fn upload_initial_state(&mut self, ctx: &VulkanContext, f_init: &[f32], force: &[f32]) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn upload_initial_state(
+        &mut self,
+        ctx: &VulkanContext,
+        f_init: &[f32],
+        force: &[f32],
+    ) -> Result<(), Box<dyn std::error::Error>> {
         let f_size = (f_init.len() * 4) as u64;
         let mut allocator = self.allocator.lock().unwrap();
-        let staging = Self::create_buf_internal(&self.device, &mut allocator, f_size, vk::BufferUsageFlags::TRANSFER_SRC, "stg", MemoryLocation::CpuToGpu)?;
-        unsafe { std::ptr::copy_nonoverlapping(f_init.as_ptr(), staging.allocation.mapped_ptr().unwrap().as_ptr() as *mut f32, f_init.len()); }
-        let f_ptr = self.force_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *mut f32;
-        unsafe { std::ptr::copy_nonoverlapping(force.as_ptr(), f_ptr, force.len()); }
+        let staging = Self::create_buf_internal(
+            &self.device,
+            &mut allocator,
+            f_size,
+            vk::BufferUsageFlags::TRANSFER_SRC,
+            "stg",
+            MemoryLocation::CpuToGpu,
+        )?;
         unsafe {
-            let pool = self.device.create_command_pool(&vk::CommandPoolCreateInfo { flags: vk::CommandPoolCreateFlags::TRANSIENT, ..Default::default() }, None)?;
-            let cmd = self.device.allocate_command_buffers(&vk::CommandBufferAllocateInfo { command_pool: pool, level: vk::CommandBufferLevel::PRIMARY, command_buffer_count: 1, ..Default::default() })?[0];
-            self.device.begin_command_buffer(cmd, &vk::CommandBufferBeginInfo { flags: vk::CommandBufferUsageFlags::ONE_TIME_SUBMIT, ..Default::default() })?;
-            self.device.cmd_copy_buffer(cmd, staging.buffer, self.f_buffers[0].buffer, &[vk::BufferCopy { size: f_size, ..Default::default() }]);
+            std::ptr::copy_nonoverlapping(
+                f_init.as_ptr(),
+                staging.allocation.mapped_ptr().unwrap().as_ptr() as *mut f32,
+                f_init.len(),
+            );
+        }
+        let f_ptr = self.force_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *mut f32;
+        unsafe {
+            std::ptr::copy_nonoverlapping(force.as_ptr(), f_ptr, force.len());
+        }
+        unsafe {
+            let pool = self.device.create_command_pool(
+                &vk::CommandPoolCreateInfo {
+                    flags: vk::CommandPoolCreateFlags::TRANSIENT,
+                    ..Default::default()
+                },
+                None,
+            )?;
+            let cmd = self
+                .device
+                .allocate_command_buffers(&vk::CommandBufferAllocateInfo {
+                    command_pool: pool,
+                    level: vk::CommandBufferLevel::PRIMARY,
+                    command_buffer_count: 1,
+                    ..Default::default()
+                })?[0];
+            self.device.begin_command_buffer(
+                cmd,
+                &vk::CommandBufferBeginInfo {
+                    flags: vk::CommandBufferUsageFlags::ONE_TIME_SUBMIT,
+                    ..Default::default()
+                },
+            )?;
+            self.device.cmd_copy_buffer(
+                cmd,
+                staging.buffer,
+                self.f_buffers[0].buffer,
+                &[vk::BufferCopy {
+                    size: f_size,
+                    ..Default::default()
+                }],
+            );
             self.device.end_command_buffer(cmd)?;
-            self.device.queue_submit(ctx.queue, &[vk::SubmitInfo { command_buffer_count: 1, p_command_buffers: &cmd, ..Default::default() }], vk::Fence::null())?;
+            self.device.queue_submit(
+                ctx.queue,
+                &[vk::SubmitInfo {
+                    command_buffer_count: 1,
+                    p_command_buffers: &cmd,
+                    ..Default::default()
+                }],
+                vk::Fence::null(),
+            )?;
             self.device.queue_wait_idle(ctx.queue)?;
             self.device.destroy_command_pool(pool, None);
             self.device.destroy_buffer(staging.buffer, None);
@@ -232,30 +926,176 @@ impl GororobaEngine {
 
     pub fn step(&mut self, cmd: vk::CommandBuffer, frame: u32) {
         unsafe {
-            let zd_pc = ZdGenConstants { nx: self.grid_dim.0, ny: self.grid_dim.1, nz: self.grid_dim.2, tau_base: 0.55, tau_amp: 0.2, lambda: 5.0, time: frame as f32 };
-            std::ptr::write(self.zd_pipeline.uniform_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *mut ZdGenConstants, zd_pc);
-            self.device.cmd_bind_pipeline(cmd, vk::PipelineBindPoint::COMPUTE, self.zd_pipeline.pipeline);
-            self.device.cmd_bind_descriptor_sets(cmd, vk::PipelineBindPoint::COMPUTE, self.zd_pipeline.layout, 0, &self.zd_pipeline.descriptor_sets, &[]);
-            self.device.cmd_dispatch(cmd, self.grid_dim.0.div_ceil(8), self.grid_dim.1.div_ceil(8), self.grid_dim.2.div_ceil(8));
-            
+            let zd_pc = ZdGenConstants {
+                nx: self.grid_dim.0,
+                ny: self.grid_dim.1,
+                nz: self.grid_dim.2,
+                tau_base: 0.55,
+                tau_amp: 0.2,
+                lambda: 5.0,
+                time: frame as f32,
+            };
+            std::ptr::write(
+                self.zd_pipeline
+                    .uniform_buffer
+                    .allocation
+                    .mapped_ptr()
+                    .unwrap()
+                    .as_ptr() as *mut ZdGenConstants,
+                zd_pc,
+            );
+            self.device.cmd_bind_pipeline(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.zd_pipeline.pipeline,
+            );
+            self.device.cmd_bind_descriptor_sets(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.zd_pipeline.layout,
+                0,
+                &self.zd_pipeline.descriptor_sets,
+                &[],
+            );
+            self.device.cmd_dispatch(
+                cmd,
+                self.grid_dim.0.div_ceil(8),
+                self.grid_dim.1.div_ceil(8),
+                self.grid_dim.2.div_ceil(8),
+            );
+
             let set_idx = (self.step_counter % 2) as usize;
             self.step_counter += 1;
-            let lbm_pc = LbmConstants { nx: self.grid_dim.0, ny: self.grid_dim.1, nz: self.grid_dim.2, gx: 0.0, gy: -0.0001, gz: 0.0 };
-            std::ptr::write(self.lbm_pipeline.uniform_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *mut LbmConstants, lbm_pc);
-            self.device.cmd_bind_pipeline(cmd, vk::PipelineBindPoint::COMPUTE, self.lbm_pipeline.pipeline);
-            self.device.cmd_bind_descriptor_sets(cmd, vk::PipelineBindPoint::COMPUTE, self.lbm_pipeline.layout, 0, &[self.lbm_pipeline.descriptor_sets[set_idx]], &[]);
-            self.device.cmd_dispatch(cmd, self.grid_dim.0.div_ceil(8), self.grid_dim.1.div_ceil(8), self.grid_dim.2.div_ceil(8));
+            let lbm_pc = LbmConstants {
+                nx: self.grid_dim.0,
+                ny: self.grid_dim.1,
+                nz: self.grid_dim.2,
+                gx: 0.0,
+                gy: -0.0001,
+                gz: 0.0,
+            };
+            std::ptr::write(
+                self.lbm_pipeline
+                    .uniform_buffer
+                    .allocation
+                    .mapped_ptr()
+                    .unwrap()
+                    .as_ptr() as *mut LbmConstants,
+                lbm_pc,
+            );
+            self.device.cmd_bind_pipeline(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.lbm_pipeline.pipeline,
+            );
+            self.device.cmd_bind_descriptor_sets(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.lbm_pipeline.layout,
+                0,
+                &[self.lbm_pipeline.descriptor_sets[set_idx]],
+                &[],
+            );
+            self.device.cmd_dispatch(
+                cmd,
+                self.grid_dim.0.div_ceil(8),
+                self.grid_dim.1.div_ceil(8),
+                self.grid_dim.2.div_ceil(8),
+            );
 
-            let render_pc = RenderConstants { nx: self.grid_dim.0, ny: self.grid_dim.1, nz: self.grid_dim.2, width: 1280, height: 720, time: frame as f32 };
-            std::ptr::write(self.render_pipeline.uniform_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *mut RenderConstants, render_pc);
-            let barrier = vk::ImageMemoryBarrier { old_layout: vk::ImageLayout::UNDEFINED, new_layout: vk::ImageLayout::GENERAL, image: self.render_image.image, subresource_range: vk::ImageSubresourceRange { aspect_mask: vk::ImageAspectFlags::COLOR, level_count: 1, layer_count: 1, ..Default::default() }, ..Default::default() };
-            self.device.cmd_pipeline_barrier(cmd, vk::PipelineStageFlags::TOP_OF_PIPE, vk::PipelineStageFlags::COMPUTE_SHADER, vk::DependencyFlags::empty(), &[], &[], &[barrier]);
-            self.device.cmd_bind_pipeline(cmd, vk::PipelineBindPoint::COMPUTE, self.render_pipeline.pipeline);
-            self.device.cmd_bind_descriptor_sets(cmd, vk::PipelineBindPoint::COMPUTE, self.render_pipeline.layout, 0, &self.render_pipeline.descriptor_sets, &[]);
-            self.device.cmd_dispatch(cmd, 1280u32.div_ceil(16), 720u32.div_ceil(16), 1);
-            let barrier2 = vk::ImageMemoryBarrier { old_layout: vk::ImageLayout::GENERAL, new_layout: vk::ImageLayout::TRANSFER_SRC_OPTIMAL, image: self.render_image.image, subresource_range: vk::ImageSubresourceRange { aspect_mask: vk::ImageAspectFlags::COLOR, level_count: 1, layer_count: 1, ..Default::default() }, ..Default::default() };
-            self.device.cmd_pipeline_barrier(cmd, vk::PipelineStageFlags::TOP_OF_PIPE, vk::PipelineStageFlags::TRANSFER, vk::DependencyFlags::empty(), &[], &[], &[barrier2]);
-            self.device.cmd_copy_image_to_buffer(cmd, self.render_image.image, vk::ImageLayout::TRANSFER_SRC_OPTIMAL, self.render_image.readback.buffer, &[vk::BufferImageCopy { image_subresource: vk::ImageSubresourceLayers { aspect_mask: vk::ImageAspectFlags::COLOR, layer_count: 1, ..Default::default() }, image_extent: vk::Extent3D { width: 1280, height: 720, depth: 1 }, ..Default::default() }]);
+            let render_pc = RenderConstants {
+                nx: self.grid_dim.0,
+                ny: self.grid_dim.1,
+                nz: self.grid_dim.2,
+                width: 1280,
+                height: 720,
+                time: frame as f32,
+            };
+            std::ptr::write(
+                self.render_pipeline
+                    .uniform_buffer
+                    .allocation
+                    .mapped_ptr()
+                    .unwrap()
+                    .as_ptr() as *mut RenderConstants,
+                render_pc,
+            );
+            let barrier = vk::ImageMemoryBarrier {
+                old_layout: vk::ImageLayout::UNDEFINED,
+                new_layout: vk::ImageLayout::GENERAL,
+                image: self.render_image.image,
+                subresource_range: vk::ImageSubresourceRange {
+                    aspect_mask: vk::ImageAspectFlags::COLOR,
+                    level_count: 1,
+                    layer_count: 1,
+                    ..Default::default()
+                },
+                ..Default::default()
+            };
+            self.device.cmd_pipeline_barrier(
+                cmd,
+                vk::PipelineStageFlags::TOP_OF_PIPE,
+                vk::PipelineStageFlags::COMPUTE_SHADER,
+                vk::DependencyFlags::empty(),
+                &[],
+                &[],
+                &[barrier],
+            );
+            self.device.cmd_bind_pipeline(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.render_pipeline.pipeline,
+            );
+            self.device.cmd_bind_descriptor_sets(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.render_pipeline.layout,
+                0,
+                &self.render_pipeline.descriptor_sets,
+                &[],
+            );
+            self.device
+                .cmd_dispatch(cmd, 1280u32.div_ceil(16), 720u32.div_ceil(16), 1);
+            let barrier2 = vk::ImageMemoryBarrier {
+                old_layout: vk::ImageLayout::GENERAL,
+                new_layout: vk::ImageLayout::TRANSFER_SRC_OPTIMAL,
+                image: self.render_image.image,
+                subresource_range: vk::ImageSubresourceRange {
+                    aspect_mask: vk::ImageAspectFlags::COLOR,
+                    level_count: 1,
+                    layer_count: 1,
+                    ..Default::default()
+                },
+                ..Default::default()
+            };
+            self.device.cmd_pipeline_barrier(
+                cmd,
+                vk::PipelineStageFlags::TOP_OF_PIPE,
+                vk::PipelineStageFlags::TRANSFER,
+                vk::DependencyFlags::empty(),
+                &[],
+                &[],
+                &[barrier2],
+            );
+            self.device.cmd_copy_image_to_buffer(
+                cmd,
+                self.render_image.image,
+                vk::ImageLayout::TRANSFER_SRC_OPTIMAL,
+                self.render_image.readback.buffer,
+                &[vk::BufferImageCopy {
+                    image_subresource: vk::ImageSubresourceLayers {
+                        aspect_mask: vk::ImageAspectFlags::COLOR,
+                        layer_count: 1,
+                        ..Default::default()
+                    },
+                    image_extent: vk::Extent3D {
+                        width: 1280,
+                        height: 720,
+                        depth: 1,
+                    },
+                    ..Default::default()
+                }],
+            );
         }
     }
 
@@ -354,9 +1194,17 @@ impl GororobaEngine {
     }
 
     pub fn save_frame(&self, path: &str) -> Result<(), Box<dyn std::error::Error>> {
-        let ptr = self.render_image.readback.allocation.mapped_ptr().unwrap().as_ptr() as *const u8;
+        let ptr = self
+            .render_image
+            .readback
+            .allocation
+            .mapped_ptr()
+            .unwrap()
+            .as_ptr() as *const u8;
         let mut pixels = vec![0u8; 1280 * 720 * 4];
-        unsafe { std::ptr::copy_nonoverlapping(ptr, pixels.as_mut_ptr(), pixels.len()); }
+        unsafe {
+            std::ptr::copy_nonoverlapping(ptr, pixels.as_mut_ptr(), pixels.len());
+        }
         image::save_buffer(path, &pixels, 1280, 720, image::ColorType::Rgba8)?;
         Ok(())
     }
@@ -371,61 +1219,159 @@ impl Drop for GororobaEngine {
         unsafe {
             let _ = self.device.device_wait_idle();
             let mut allocator = self.allocator.lock().unwrap();
-            
+
             // Shared destroy logic
-            self.device.destroy_pipeline(self.lbm_pipeline.pipeline, None);
-            self.device.destroy_pipeline_layout(self.lbm_pipeline.layout, None);
-            self.device.destroy_descriptor_set_layout(self.lbm_pipeline.descriptor_layout, None);
-            self.device.destroy_descriptor_pool(self.lbm_pipeline.descriptor_pool, None);
-            self.device.destroy_buffer(self.lbm_pipeline.uniform_buffer.buffer, None);
-            allocator.free(std::mem::replace(&mut self.lbm_pipeline.uniform_buffer.allocation, std::mem::zeroed())).unwrap();
+            self.device
+                .destroy_pipeline(self.lbm_pipeline.pipeline, None);
+            self.device
+                .destroy_pipeline_layout(self.lbm_pipeline.layout, None);
+            self.device
+                .destroy_descriptor_set_layout(self.lbm_pipeline.descriptor_layout, None);
+            self.device
+                .destroy_descriptor_pool(self.lbm_pipeline.descriptor_pool, None);
+            self.device
+                .destroy_buffer(self.lbm_pipeline.uniform_buffer.buffer, None);
+            allocator
+                .free(std::mem::replace(
+                    &mut self.lbm_pipeline.uniform_buffer.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
 
-            self.device.destroy_pipeline(self.zd_pipeline.pipeline, None);
-            self.device.destroy_pipeline_layout(self.zd_pipeline.layout, None);
-            self.device.destroy_descriptor_set_layout(self.zd_pipeline.descriptor_layout, None);
-            self.device.destroy_descriptor_pool(self.zd_pipeline.descriptor_pool, None);
-            self.device.destroy_buffer(self.zd_pipeline.uniform_buffer.buffer, None);
-            allocator.free(std::mem::replace(&mut self.zd_pipeline.uniform_buffer.allocation, std::mem::zeroed())).unwrap();
+            self.device
+                .destroy_pipeline(self.zd_pipeline.pipeline, None);
+            self.device
+                .destroy_pipeline_layout(self.zd_pipeline.layout, None);
+            self.device
+                .destroy_descriptor_set_layout(self.zd_pipeline.descriptor_layout, None);
+            self.device
+                .destroy_descriptor_pool(self.zd_pipeline.descriptor_pool, None);
+            self.device
+                .destroy_buffer(self.zd_pipeline.uniform_buffer.buffer, None);
+            allocator
+                .free(std::mem::replace(
+                    &mut self.zd_pipeline.uniform_buffer.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
 
-            self.device.destroy_pipeline(self.render_pipeline.pipeline, None);
-            self.device.destroy_pipeline_layout(self.render_pipeline.layout, None);
-            self.device.destroy_descriptor_set_layout(self.render_pipeline.descriptor_layout, None);
-            self.device.destroy_descriptor_pool(self.render_pipeline.descriptor_pool, None);
-            self.device.destroy_buffer(self.render_pipeline.uniform_buffer.buffer, None);
-            allocator.free(std::mem::replace(&mut self.render_pipeline.uniform_buffer.allocation, std::mem::zeroed())).unwrap();
+            self.device
+                .destroy_pipeline(self.render_pipeline.pipeline, None);
+            self.device
+                .destroy_pipeline_layout(self.render_pipeline.layout, None);
+            self.device
+                .destroy_descriptor_set_layout(self.render_pipeline.descriptor_layout, None);
+            self.device
+                .destroy_descriptor_pool(self.render_pipeline.descriptor_pool, None);
+            self.device
+                .destroy_buffer(self.render_pipeline.uniform_buffer.buffer, None);
+            allocator
+                .free(std::mem::replace(
+                    &mut self.render_pipeline.uniform_buffer.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
 
             self.device.destroy_image_view(self.render_image.view, None);
             self.device.destroy_image(self.render_image.image, None);
-            allocator.free(std::mem::replace(&mut self.render_image.allocation, std::mem::zeroed())).unwrap();
-            self.device.destroy_buffer(self.render_image.readback.buffer, None);
-            allocator.free(std::mem::replace(&mut self.render_image.readback.allocation, std::mem::zeroed())).unwrap();
+            allocator
+                .free(std::mem::replace(
+                    &mut self.render_image.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
+            self.device
+                .destroy_buffer(self.render_image.readback.buffer, None);
+            allocator
+                .free(std::mem::replace(
+                    &mut self.render_image.readback.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
 
             self.device.destroy_buffer(self.f_buffers[0].buffer, None);
-            allocator.free(std::mem::replace(&mut self.f_buffers[0].allocation, std::mem::zeroed())).unwrap();
+            allocator
+                .free(std::mem::replace(
+                    &mut self.f_buffers[0].allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
             self.device.destroy_buffer(self.f_buffers[1].buffer, None);
-            allocator.free(std::mem::replace(&mut self.f_buffers[1].allocation, std::mem::zeroed())).unwrap();
+            allocator
+                .free(std::mem::replace(
+                    &mut self.f_buffers[1].allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
             self.device.destroy_buffer(self.rho_buffer.buffer, None);
-            allocator.free(std::mem::replace(&mut self.rho_buffer.allocation, std::mem::zeroed())).unwrap();
+            allocator
+                .free(std::mem::replace(
+                    &mut self.rho_buffer.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
             self.device.destroy_buffer(self.u_buffer.buffer, None);
-            allocator.free(std::mem::replace(&mut self.u_buffer.allocation, std::mem::zeroed())).unwrap();
+            allocator
+                .free(std::mem::replace(
+                    &mut self.u_buffer.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
             self.device.destroy_buffer(self.tau_buffer.buffer, None);
-            allocator.free(std::mem::replace(&mut self.tau_buffer.allocation, std::mem::zeroed())).unwrap();
+            allocator
+                .free(std::mem::replace(
+                    &mut self.tau_buffer.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
             self.device.destroy_buffer(self.force_buffer.buffer, None);
-            allocator.free(std::mem::replace(&mut self.force_buffer.allocation, std::mem::zeroed())).unwrap();
+            allocator
+                .free(std::mem::replace(
+                    &mut self.force_buffer.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
             self.device.destroy_buffer(self.entropy_buffer.buffer, None);
-            allocator.free(std::mem::replace(&mut self.entropy_buffer.allocation, std::mem::zeroed())).unwrap();
+            allocator
+                .free(std::mem::replace(
+                    &mut self.entropy_buffer.allocation,
+                    std::mem::zeroed(),
+                ))
+                .unwrap();
         }
     }
 }
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]
-struct LbmConstants { nx: u32, ny: u32, nz: u32, gx: f32, gy: f32, gz: f32 }
+struct LbmConstants {
+    nx: u32,
+    ny: u32,
+    nz: u32,
+    gx: f32,
+    gy: f32,
+    gz: f32,
+}
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]
-struct RenderConstants { nx: u32, ny: u32, nz: u32, width: u32, height: u32, time: f32 }
+struct RenderConstants {
+    nx: u32,
+    ny: u32,
+    nz: u32,
+    width: u32,
+    height: u32,
+    time: f32,
+}
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]
-struct ZdGenConstants { nx: u32, ny: u32, nz: u32, tau_base: f32, tau_amp: f32, lambda: f32, time: f32 }
+struct ZdGenConstants {
+    nx: u32,
+    ny: u32,
+    nz: u32,
+    tau_base: f32,
+    tau_amp: f32,
+    lambda: f32,
+    time: f32,
+}

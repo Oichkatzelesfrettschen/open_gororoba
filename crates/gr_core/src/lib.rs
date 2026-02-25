@@ -77,8 +77,8 @@ pub mod gravitational_waves;
 pub mod hawking;
 pub mod kerr;
 pub mod kerr_de_sitter;
-pub mod lattice_hawking;
 pub mod kerr_newman;
+pub mod lattice_hawking;
 pub mod metric;
 pub mod novikov_thorne;
 pub mod null_constraint;
@@ -97,28 +97,29 @@ pub mod synchrotron;
 
 // Re-export primary types from each module
 pub use kerr::{
-    geodesic_rhs, impact_parameters, kerr_metric_quantities, photon_orbit_radius, shadow_boundary,
-    shadow_ray_traced, trace_null_geodesic, GeodesicResult, GeodesicState, Kerr, ShadowResult,
+    GeodesicResult, GeodesicState, Kerr, ShadowResult, geodesic_rhs, impact_parameters,
+    kerr_metric_quantities, photon_orbit_radius, shadow_boundary, shadow_ray_traced,
+    trace_null_geodesic,
 };
 
 pub use metric::{
-    full_curvature, ChristoffelComponents, CurvatureResult, MetricComponents, Minkowski,
-    SpacetimeMetric,
+    ChristoffelComponents, CurvatureResult, MetricComponents, Minkowski, SpacetimeMetric,
+    full_curvature,
 };
 
 pub use schwarzschild::Schwarzschild;
 
 pub use energy_conserving::{
-    apply_constraint_correction, compute_angular_momentum, compute_carter_constant, compute_energy,
-    energy_conserving_step, extract_conserved_quantities, geodesic_acceleration,
-    integrate_energy_conserving, relative_angular_momentum_drift, relative_energy_drift,
-    rk4_geodesic_step, ConservedQuantities, FullGeodesicState,
+    ConservedQuantities, FullGeodesicState, apply_constraint_correction, compute_angular_momentum,
+    compute_carter_constant, compute_energy, energy_conserving_step, extract_conserved_quantities,
+    geodesic_acceleration, integrate_energy_conserving, relative_angular_momentum_drift,
+    relative_energy_drift, rk4_geodesic_step,
 };
 
 pub use null_constraint::{
-    adaptive_tolerance, constraint_drift_bound, global_drift_bound, is_null, is_timelike,
-    mass_shell_constraint, needs_renormalization, null_constraint, renormalize_massive,
-    renormalize_null, renormalize_null_diagonal, renormalize_null_kerr, ConstraintStats,
+    ConstraintStats, adaptive_tolerance, constraint_drift_bound, global_drift_bound, is_null,
+    is_timelike, mass_shell_constraint, needs_renormalization, null_constraint,
+    renormalize_massive, renormalize_null, renormalize_null_diagonal, renormalize_null_kerr,
 };
 
 pub use cosmology_algebra_bridge::{
@@ -127,28 +128,25 @@ pub use cosmology_algebra_bridge::{
 };
 
 pub use ppn_constraints::{
+    ALPHA1_BOUND, ALPHA2_BOUND, ALPHA3_BOUND, CASSINI_GAMMA_DEVIATION_BOUND,
+    CASSINI_OMEGA_BD_LOWER, GPB_GEODETIC_PRECISION, LIGO_O3_GRAVITON_MASS_EV,
+    MICROSCOPE_EOTVOS_BOUND, NANOGRAV_GRAVITON_MASS_EV, PPNConstraintReport, XI_BOUND,
     check_all_ppn_constraints, dipole_radiation_power, graviton_compton_wavelength,
     massive_graviton_velocity_ratio, nordtvedt_parameter_bd, perihelion_precession_per_orbit,
-    ppn_gamma_bd, satisfies_cassini_gamma, satisfies_gpb_geodetic,
-    satisfies_alpha1_bd, satisfies_alpha2_bd, satisfies_alpha3_bd, satisfies_xi_bd,
-    satisfies_microscope_wep_bd,
-    PPNConstraintReport, CASSINI_GAMMA_DEVIATION_BOUND,
-    CASSINI_OMEGA_BD_LOWER, LIGO_O3_GRAVITON_MASS_EV, NANOGRAV_GRAVITON_MASS_EV,
-    ALPHA1_BOUND, ALPHA2_BOUND, ALPHA3_BOUND, XI_BOUND,
-    GPB_GEODETIC_PRECISION, MICROSCOPE_EOTVOS_BOUND,
+    ppn_gamma_bd, satisfies_alpha1_bd, satisfies_alpha2_bd, satisfies_alpha3_bd,
+    satisfies_cassini_gamma, satisfies_gpb_geodetic, satisfies_microscope_wep_bd, satisfies_xi_bd,
 };
 
-pub use scalar_tensor::{fifth_force_alpha, BransDickeParams, JunctionCondition};
+pub use scalar_tensor::{BransDickeParams, JunctionCondition, fifth_force_alpha};
 
 pub use area_quantization::{
-    area_gap_ratio, area_quantum, area_spectrum, entropy_correction_factor, entropy_lqg,
-    immirzi_parameter_bg, immirzi_parameter_nzj, minimum_area, GAMMA_BG, GAMMA_NZJ,
+    GAMMA_BG, GAMMA_NZJ, area_gap_ratio, area_quantum, area_spectrum, entropy_correction_factor,
+    entropy_lqg, immirzi_parameter_bg, immirzi_parameter_nzj, minimum_area,
 };
 
 pub use quantum_inequalities::{
-    alcubierre_energy_density, check_qi_satisfied, dominant_energy_condition,
-    lorentzian_sampling, null_energy_condition, pfenning_ford_energy_ratio,
-    quantum_inequality_bound_4d, strong_energy_condition, warp_bubble_total_energy,
-    warp_wall_thickness_bound, weak_energy_condition, NegativeEnergyBudget,
-    M_OBSERVABLE_UNIVERSE_G,
+    M_OBSERVABLE_UNIVERSE_G, NegativeEnergyBudget, alcubierre_energy_density, check_qi_satisfied,
+    dominant_energy_condition, lorentzian_sampling, null_energy_condition,
+    pfenning_ford_energy_ratio, quantum_inequality_bound_4d, strong_energy_condition,
+    warp_bubble_total_energy, warp_wall_thickness_bound, weak_energy_condition,
 };

@@ -34,10 +34,10 @@
 //! - Greimas (1966): Structural Semantics (semiotic square)
 
 use crate::analysis::boxkites::{
+    Assessor, BoxKite, CrossPair, EdgeSignType, FaceSignPattern, O_TRIPS,
     all_diagonal_zero_products, automorpheme_assessors, canonical_strut_table,
     classify_face_pattern, cross_assessors, edge_sign_type, find_box_kites,
-    motif_components_for_cross_assessors, Assessor, BoxKite, CrossPair, EdgeSignType,
-    FaceSignPattern, O_TRIPS,
+    motif_components_for_cross_assessors,
 };
 use crate::construction::cayley_dickson::cd_basis_mul_sign;
 use std::collections::{HashMap, HashSet};
@@ -2392,9 +2392,10 @@ pub fn hide_fill_analysis(n: usize) -> Vec<HideFillResult> {
                 for r in 0..k {
                     for c in 0..k {
                         if let Some(cell) = &et.cells[r][c]
-                            && cell.is_dmz {
-                                set.insert((r, c));
-                            }
+                            && cell.is_dmz
+                        {
+                            set.insert((r, c));
+                        }
                     }
                 }
                 set
@@ -2560,11 +2561,12 @@ pub fn create_skybox(n: usize, s: usize) -> Skybox {
                 let et_row = row - 1;
                 let et_col = col - 1;
                 if let Some(et_cell) = &et.cells[et_row][et_col]
-                    && et_cell.is_dmz {
-                        cell.is_dmz = true;
-                        cell.emanation_value = et_cell.emanation_value;
-                        dmz_count += 1;
-                    }
+                    && et_cell.is_dmz
+                {
+                    cell.is_dmz = true;
+                    cell.emanation_value = et_cell.emanation_value;
+                    dmz_count += 1;
+                }
             }
         }
     }
@@ -4116,19 +4118,20 @@ pub fn extract_signed_graph(et: &StruttedEmanationTable) -> SignedAdjacencyGraph
     for r in 0..k {
         for c in (r + 1)..k {
             if let Some(cell) = &et.cells[r][c]
-                && cell.is_dmz {
-                    let sign = cell.edge_sign;
-                    edges.push(SignedEdge {
-                        lo_a: nodes[r],
-                        lo_b: nodes[c],
-                        sign,
-                    });
-                    if sign > 0 {
-                        n_positive += 1;
-                    } else {
-                        n_negative += 1;
-                    }
+                && cell.is_dmz
+            {
+                let sign = cell.edge_sign;
+                edges.push(SignedEdge {
+                    lo_a: nodes[r],
+                    lo_b: nodes[c],
+                    sign,
+                });
+                if sign > 0 {
+                    n_positive += 1;
+                } else {
+                    n_negative += 1;
                 }
+            }
         }
     }
 
@@ -4526,7 +4529,7 @@ pub fn vent_pairing_analysis() -> Vec<VentPairingAnalysis> {
             // That value is one of {S, perp[0], perp[1]}.
             let fano_line = [s, perp[0], perp[1]];
             let pairing_roles: [usize; 3] = std::array::from_fn(|i| {
-                let xor_val = pairings[i].0 .2;
+                let xor_val = pairings[i].0.2;
                 if xor_val == fano_line[0] {
                     0
                 } else if xor_val == fano_line[1] {
@@ -4553,8 +4556,8 @@ pub fn vent_pairing_analysis() -> Vec<VentPairingAnalysis> {
                 current_targets.0.max(current_targets.1),
             );
             let current_idx = pairings.iter().position(|p| {
-                let s1 = (p.0 .0.min(p.0 .1), p.0 .0.max(p.0 .1));
-                let s2 = (p.1 .0.min(p.1 .1), p.1 .0.max(p.1 .1));
+                let s1 = (p.0.0.min(p.0.1), p.0.0.max(p.0.1));
+                let s2 = (p.1.0.min(p.1.1), p.1.0.max(p.1.1));
                 target_set == s1 || target_set == s2
             });
 
@@ -5172,7 +5175,7 @@ mod tests {
     fn test_octonion_subalgebra_with_non_fano_vector() {
         // A lattice vector with non-Fano support
         let v = vec![1, 1, 1, 0, 1, 0, 0, 0]; // support {0,1,2,4}, non-real {1,2,4}
-                                              // [1,2,4] is not a Fano triple -- check if it's reported correctly
+        // [1,2,4] is not a Fano triple -- check if it's reported correctly
         let is_fano = O_TRIPS.iter().any(|t| t == &[1, 2, 4]);
         if is_fano {
             assert!(octonion_subalgebra_constraint_check(&[v]));
@@ -8889,8 +8892,8 @@ mod tests {
         for a in &analyses {
             // Verify both sub-pairs in each pairing have the same XOR
             for (i, p) in a.pairings.iter().enumerate() {
-                let xor1 = p.0 .2;
-                let xor2 = p.1 .2;
+                let xor1 = p.0.2;
+                let xor2 = p.1.2;
                 if xor1 != xor2 {
                     eprintln!(
                         "INCONSISTENT: S={} perp=[{},{}] pairing {}: xor1={} != xor2={}",
@@ -9031,12 +9034,12 @@ mod tests {
                 eprintln!(
                     "  P{}: {{{},{}}}(^{}) + {{{},{}}}(^{}) -> {} {}",
                     i,
-                    p.0 .0,
-                    p.0 .1,
-                    p.0 .2,
-                    p.1 .0,
-                    p.1 .1,
-                    p.1 .2,
+                    p.0.0,
+                    p.0.1,
+                    p.0.2,
+                    p.1.0,
+                    p.1.1,
+                    p.1.2,
                     role_name,
                     if selected { "<-- SELECTED" } else { "" }
                 );

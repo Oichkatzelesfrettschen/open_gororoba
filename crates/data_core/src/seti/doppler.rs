@@ -254,7 +254,11 @@ fn deduplicate_hits(
     }
 
     // Sort by SNR descending so we greedily keep the best
-    hits.sort_by(|a, b| b.snr.partial_cmp(&a.snr).unwrap_or(std::cmp::Ordering::Equal));
+    hits.sort_by(|a, b| {
+        b.snr
+            .partial_cmp(&a.snr)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
 
     let mut kept: Vec<DopplerHit> = Vec::new();
     let mut suppressed = vec![false; hits.len()];
@@ -309,12 +313,14 @@ pub fn inject_signal(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rand::rngs::StdRng;
     use rand::SeedableRng;
+    use rand::rngs::StdRng;
     use rand_distr::{Distribution, Normal};
 
     fn make_test_freqs(n_fine: usize, fch1_mhz: f64, foff_mhz: f64) -> Vec<f64> {
-        (0..n_fine).map(|i| fch1_mhz + i as f64 * foff_mhz).collect()
+        (0..n_fine)
+            .map(|i| fch1_mhz + i as f64 * foff_mhz)
+            .collect()
     }
 
     fn make_noise_data(n_time: usize, n_fine: usize, mean: f32, sigma: f32, seed: u64) -> Vec<f32> {
@@ -335,11 +341,7 @@ mod tests {
         let channel_width_hz = 2861.0229;
         let total_time = (n_time - 1) as f64 * tsamp;
         let dr = channel_width_hz / total_time;
-        assert!(
-            (dr - 9.58).abs() < 0.1,
-            "Expected ~9.58 Hz/s, got {}",
-            dr
-        );
+        assert!((dr - 9.58).abs() < 0.1, "Expected ~9.58 Hz/s, got {}", dr);
     }
 
     #[test]
@@ -356,7 +358,16 @@ mod tests {
         let mut data = make_noise_data(n_time, n_fine, 100.0, 5.0, 42);
 
         // Inject a bright signal at channel 128, zero drift, amplitude = 200
-        inject_signal(&mut data, n_time, n_fine, 128, 0.0, tsamp, channel_width_hz, 200.0);
+        inject_signal(
+            &mut data,
+            n_time,
+            n_fine,
+            128,
+            0.0,
+            tsamp,
+            channel_width_hz,
+            200.0,
+        );
 
         let params = DopplerSearchParams {
             max_drift: 4.0,
@@ -365,7 +376,14 @@ mod tests {
         };
 
         let result = search_coarse_channel(
-            &data, n_time, n_fine, &freqs, tsamp, channel_width_hz, 0, &params,
+            &data,
+            n_time,
+            n_fine,
+            &freqs,
+            tsamp,
+            channel_width_hz,
+            0,
+            &params,
         );
 
         assert!(
@@ -405,7 +423,14 @@ mod tests {
         // Inject signal at channel 128 with drift rate = 1.0 Hz/s
         let inject_drift = 1.0;
         inject_signal(
-            &mut data, n_time, n_fine, 128, inject_drift, tsamp, channel_width_hz, 200.0,
+            &mut data,
+            n_time,
+            n_fine,
+            128,
+            inject_drift,
+            tsamp,
+            channel_width_hz,
+            200.0,
         );
 
         let params = DopplerSearchParams {
@@ -415,13 +440,17 @@ mod tests {
         };
 
         let result = search_coarse_channel(
-            &data, n_time, n_fine, &freqs, tsamp, channel_width_hz, 0, &params,
+            &data,
+            n_time,
+            n_fine,
+            &freqs,
+            tsamp,
+            channel_width_hz,
+            0,
+            &params,
         );
 
-        assert!(
-            result.n_hits > 0,
-            "Should detect injected drifting signal"
-        );
+        assert!(result.n_hits > 0, "Should detect injected drifting signal");
 
         // Find the hit closest to the injected drift rate
         let best_drift_match = result
@@ -466,7 +495,14 @@ mod tests {
         };
 
         let result = search_coarse_channel(
-            &data, n_time, n_fine, &freqs, tsamp, channel_width_hz, 0, &params,
+            &data,
+            n_time,
+            n_fine,
+            &freqs,
+            tsamp,
+            channel_width_hz,
+            0,
+            &params,
         );
 
         // With SNR >= 15 and only 256 channels, false positive rate should be ~0
@@ -525,7 +561,10 @@ mod tests {
         let kept = deduplicate_hits(&mut hits, 0.005, 2.0);
         // First two are within tolerance, third is separate
         assert_eq!(kept.len(), 2, "Should keep 2 clusters");
-        assert!((kept[0].snr - 20.0).abs() < 1e-10, "Best SNR should be first");
+        assert!(
+            (kept[0].snr - 20.0).abs() < 1e-10,
+            "Best SNR should be first"
+        );
     }
 
     #[test]

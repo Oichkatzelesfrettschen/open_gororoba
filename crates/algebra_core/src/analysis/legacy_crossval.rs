@@ -1617,8 +1617,8 @@ mod tests {
     // ========================================================================
 
     use crate::analysis::codebook::{
-        enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_2048, is_in_lambda_256,
-        is_in_lambda_512, LatticeVector,
+        LatticeVector, enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
+        is_in_lambda_1024, is_in_lambda_2048,
     };
     use crate::experimental::cd_external::{load_lattice_map, load_lattice_points};
 

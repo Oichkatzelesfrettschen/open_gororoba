@@ -6,7 +6,7 @@
 //! Source: JPL Horizons, https://ssd.jpl.nasa.gov/horizons/
 //! Reference: Giorgini et al. (1996), Bull. AAS 28, 1158
 
-use crate::fetcher::{download_to_string, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -42,6 +42,8 @@ pub fn horizons_query_url(body_id: &str, start: &str, stop: &str, step: &str) ->
          START_TIME='{}'&\
          STOP_TIME='{}'&\
          STEP_SIZE='{}'&\
+         CAL_FORMAT='JD'&\
+         ANG_FORMAT='DEG'&\
          QUANTITIES='1,20'&\
          CSV_FORMAT='YES'",
         body_id, start, stop, step
@@ -69,16 +71,36 @@ pub fn parse_horizons_csv(content: &str, body_name: &str) -> Vec<EphemerisPoint>
             continue;
         }
 
-        let fields: Vec<&str> = trimmed.split(',').collect();
-        if fields.len() < 5 {
+        let fields: Vec<&str> = trimmed
+            .split(',')
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .collect();
+        if fields.len() < 4 {
             continue;
         }
 
-        let jd = fields[0].trim().parse::<f64>().unwrap_or(f64::NAN);
-        let date = fields[1].trim().to_string();
-        let ra = fields[2].trim().parse::<f64>().unwrap_or(f64::NAN);
-        let dec = fields[3].trim().parse::<f64>().unwrap_or(f64::NAN);
-        let delta = fields[4].trim().parse::<f64>().unwrap_or(f64::NAN);
+        // With CAL_FORMAT='JD' and ANG_FORMAT='DEG' we expect:
+        // [jd, ra_deg, dec_deg, delta_au, deldot_km_s]
+        let jd = fields[0].parse::<f64>().unwrap_or(f64::NAN);
+        let (date, ra, dec, delta) = if jd.is_finite() && fields.len() >= 4 {
+            (
+                String::new(),
+                fields[1].parse::<f64>().unwrap_or(f64::NAN),
+                fields[2].parse::<f64>().unwrap_or(f64::NAN),
+                fields[3].parse::<f64>().unwrap_or(f64::NAN),
+            )
+        } else if fields.len() >= 4 {
+            // Fallback for legacy output where first field is calendar date.
+            (
+                fields[0].to_string(),
+                fields[1].parse::<f64>().unwrap_or(f64::NAN),
+                fields[2].parse::<f64>().unwrap_or(f64::NAN),
+                fields[3].parse::<f64>().unwrap_or(f64::NAN),
+            )
+        } else {
+            continue;
+        };
 
         points.push(EphemerisPoint {
             jd,

@@ -16,7 +16,10 @@ use gororoba_engine::simulation::ChiralityMode;
 use std::io::Write;
 
 #[derive(Parser)]
-#[command(name = "chirality-lock-test", about = "Chirality-algebra lock falsification")]
+#[command(
+    name = "chirality-lock-test",
+    about = "Chirality-algebra lock falsification"
+)]
 struct Cli {
     #[command(subcommand)]
     cmd: Cmd,
@@ -112,9 +115,7 @@ impl ChiralField {
     fn multiply(&self, a: &[f64; 16], b: &[f64; 16]) -> Vec<f64> {
         match self.mode {
             ChiralityMode::Standard | ChiralityMode::Flipped => cd_multiply(a, b),
-            ChiralityMode::Conjugate | ChiralityMode::DoubleFlip => {
-                cd_multiply_conjugated(a, b)
-            }
+            ChiralityMode::Conjugate | ChiralityMode::DoubleFlip => cd_multiply_conjugated(a, b),
         }
     }
 
@@ -215,11 +216,7 @@ impl ChiralField {
                 }
             }
         }
-        if count > 0 {
-            total / count as f64
-        } else {
-            0.0
-        }
+        if count > 0 { total / count as f64 } else { 0.0 }
     }
 
     /// Evolution step: diffusion + sedenion self-interaction.
@@ -241,8 +238,12 @@ impl ChiralField {
                     let zm = self.idx(x, y, (z + nz - 1) % nz);
 
                     for c in 0..16 {
-                        let laplacian = old[xp][c] + old[xm][c] + old[yp][c] + old[ym][c]
-                            + old[zp][c] + old[zm][c]
+                        let laplacian = old[xp][c]
+                            + old[xm][c]
+                            + old[yp][c]
+                            + old[ym][c]
+                            + old[zp][c]
+                            + old[zm][c]
                             - 6.0 * old[idx][c];
                         self.data[idx][c] = old[idx][c] + dt * diffusion * laplacian;
                     }
@@ -272,11 +273,7 @@ fn parse_mode(s: &str) -> ChiralityMode {
     }
 }
 
-fn run_config(
-    mode: ChiralityMode,
-    grid: usize,
-    steps: usize,
-) -> (f64, f64, f64, f64, bool) {
+fn run_config(mode: ChiralityMode, grid: usize, steps: usize) -> (f64, f64, f64, f64, bool) {
     let mut field = ChiralField::new(grid, grid, grid, mode);
     let dt = 0.005;
     let initial_energy = field.energy();

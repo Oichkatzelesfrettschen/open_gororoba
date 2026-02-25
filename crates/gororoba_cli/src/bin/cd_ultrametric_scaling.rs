@@ -17,9 +17,7 @@ use clap::Parser;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use stats_core::ultrametric::baire_codebook::codebook_baire_ultrametric_test_nd;
-use stats_core::ultrametric::local::{
-    euclidean_distance_matrix_nd, local_ultrametricity_test_nd,
-};
+use stats_core::ultrametric::local::{euclidean_distance_matrix_nd, local_ultrametricity_test_nd};
 use stats_core::ultrametric::ultrametric_fraction_from_matrix;
 
 #[derive(Parser)]
@@ -168,7 +166,10 @@ fn main() {
 
         // 3. Baire ultrametric fraction (trinary quantization)
         let threshold = 0.3; // Components > 0.3 -> 1, < -0.3 -> -1, else 0
-        let trinary: Vec<Vec<i8>> = elements.iter().map(|v| quantize_trinary(v, threshold)).collect();
+        let trinary: Vec<Vec<i8>> = elements
+            .iter()
+            .map(|v| quantize_trinary(v, threshold))
+            .collect();
 
         let baire_result = codebook_baire_ultrametric_test_nd(
             &trinary,
@@ -179,7 +180,11 @@ fn main() {
 
         println!(
             "{:<8} {:<12.6} {:<12.6} {:<12.6} {:<12.6} {:<12.6}",
-            dim, euclid_frac, euclid_null, local_mean, baire_result.ultrametric_fraction,
+            dim,
+            euclid_frac,
+            euclid_null,
+            local_mean,
+            baire_result.ultrametric_fraction,
             baire_result.null_fraction_mean,
         );
 
@@ -225,7 +230,11 @@ fn main() {
                 .map(|(&x, &y)| (y - (slope * x + intercept)).powi(2))
                 .sum();
             let ss_tot: f64 = euclid_excesses.iter().map(|&y| (y - mean_y).powi(2)).sum();
-            let r_squared = if ss_tot > 1e-15 { 1.0 - ss_res / ss_tot } else { 0.0 };
+            let r_squared = if ss_tot > 1e-15 {
+                1.0 - ss_res / ss_tot
+            } else {
+                0.0
+            };
 
             println!(
                 "Euclidean excess vs log(dim): slope={:.6}, intercept={:.6}, R^2={:.4}",
@@ -235,7 +244,10 @@ fn main() {
             if slope > 0.0 && r_squared > 0.5 {
                 println!("PASS: Ultrametric fraction increases with CD doubling level (C-780)");
             } else if slope > 0.0 {
-                println!("INFO: Positive trend (slope={:.4}) but weak fit (R^2={:.4})", slope, r_squared);
+                println!(
+                    "INFO: Positive trend (slope={:.4}) but weak fit (R^2={:.4})",
+                    slope, r_squared
+                );
             } else {
                 println!("INFO: No increasing trend (slope={:.4})", slope);
             }
@@ -246,9 +258,22 @@ fn main() {
     let csv_path = "data/csv/cd_ultrametric_scaling.csv";
     if let Ok(mut f) = std::fs::File::create(csv_path) {
         use std::io::Write;
-        let _ = writeln!(f, "dim,euclid_frac,euclid_null,euclid_excess,local_mean,baire_frac,baire_null");
+        let _ = writeln!(
+            f,
+            "dim,euclid_frac,euclid_null,euclid_excess,local_mean,baire_frac,baire_null"
+        );
         for &(dim, ef, en, lm, bf, bn) in &results {
-            let _ = writeln!(f, "{},{:.6},{:.6},{:.6},{:.6},{:.6},{:.6}", dim, ef, en, ef - en, lm, bf, bn);
+            let _ = writeln!(
+                f,
+                "{},{:.6},{:.6},{:.6},{:.6},{:.6},{:.6}",
+                dim,
+                ef,
+                en,
+                ef - en,
+                lm,
+                bf,
+                bn
+            );
         }
         println!();
         println!("Results written to {}", csv_path);

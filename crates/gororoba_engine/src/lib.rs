@@ -16,7 +16,7 @@ pub mod topology_geometry;
 pub mod traits;
 pub mod verification_layer;
 
-pub use adaptive_gpu::{choose_backend, ComputeBackend};
+pub use adaptive_gpu::{ComputeBackend, choose_backend};
 pub use pipeline::GororobaEngine;
 pub use pipelines::warp_ring::WarpRingPipeline;
 pub use simulation::{SimulationConfig, SimulationConfig3D, SimulationState, SimulationState3D};

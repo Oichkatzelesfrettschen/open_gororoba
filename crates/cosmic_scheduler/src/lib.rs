@@ -43,5 +43,5 @@ pub use phase_scheduler::{
     Phase, ScheduleError, ScheduleResult, TwoPhaseClockScheduler, TwoPhaseSystem,
 };
 pub use timing_constants::{
-    clock_spec, format_time, gate_delay, Time, MICROSECOND, MILLISECOND, NANOSECOND, PICOSECOND,
+    MICROSECOND, MILLISECOND, NANOSECOND, PICOSECOND, Time, clock_spec, format_time, gate_delay,
 };

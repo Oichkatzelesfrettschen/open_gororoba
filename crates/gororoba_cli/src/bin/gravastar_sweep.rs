@@ -3,7 +3,7 @@
 //! Usage: gravastar-sweep --gamma-min 1.0 --gamma-max 2.5 --output sweep.csv
 
 use clap::Parser;
-use cosmology_core::{solve_gravastar, AnisotropicParams, GravastarConfig, PolytropicEos};
+use cosmology_core::{AnisotropicParams, GravastarConfig, PolytropicEos, solve_gravastar};
 
 #[derive(Parser)]
 #[command(name = "gravastar-sweep")]

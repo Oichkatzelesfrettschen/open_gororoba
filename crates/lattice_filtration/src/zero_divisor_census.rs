@@ -33,7 +33,7 @@ impl ContinuousVacuum {
         for v in onehot_vecs {
             data.extend(v);
         }
-        
+
         // Infer grid size from total cells (assuming cube)
         let total_cells = apt.n_cells();
         let grid_size = (total_cells as f64).cbrt().round() as usize;
@@ -46,7 +46,7 @@ impl ContinuousVacuum {
     /// Handles periodic boundary conditions.
     pub fn sample(&self, x: f64, y: f64, z: f64) -> Vec<f64> {
         let size = self.grid_size as f64;
-        
+
         // Wrap coordinates
         let x = x.rem_euclid(size);
         let y = y.rem_euclid(size);
@@ -106,7 +106,11 @@ pub struct ZeroDivisorWalker {
 
 impl ZeroDivisorWalker {
     pub fn new(position: [f64; 3], velocity: [f64; 3], state: Vec<f64>) -> Self {
-        Self { position, velocity, state }
+        Self {
+            position,
+            velocity,
+            state,
+        }
     }
 
     /// Step the walker and check for collapse.
@@ -123,9 +127,9 @@ impl ZeroDivisorWalker {
         // Interact: Check Zero Divisor Metric
         // metric = |state * field| / (|state| * |field|)
         // Ideally should be 1.0. If 0.0, we hit a zero divisor.
-        
+
         let prod = cd_multiply(&self.state, &field_val);
-        
+
         // We assume 16D
         let norm_sq_state = cd_norm_sq(&self.state);
         let norm_sq_field = cd_norm_sq(&field_val);
@@ -215,9 +219,9 @@ pub fn simulate_collapse_manifold(
                     collapse_points.push(walker.position);
                     // Respawn walker to continue sampling
                     walker.position = [
-                         rng.r#gen::<f64>() * size,
-                         rng.r#gen::<f64>() * size,
-                         rng.r#gen::<f64>() * size,
+                        rng.r#gen::<f64>() * size,
+                        rng.r#gen::<f64>() * size,
+                        rng.r#gen::<f64>() * size,
                     ];
                 }
             }
@@ -239,7 +243,7 @@ mod tests {
     fn test_continuous_vacuum_creation() {
         let apt = AptSedenionField::new(4, 42); // 4x4x4 grid
         let vacuum = ContinuousVacuum::from_apt(&apt);
-        
+
         // 4^3 * 16 = 64 * 16 = 1024
         assert_eq!(vacuum.data.len(), 1024);
         assert_eq!(vacuum.grid_size, 4);
@@ -254,10 +258,10 @@ mod tests {
         let s1 = vacuum.sample(0.0, 0.0, 0.0);
         assert_eq!(s1.len(), 16);
         // Norm should be approx 1.0 (interpolation of unit vectors)
-        // Note: linear interpolation of unit vectors is not necessarily unit norm, 
+        // Note: linear interpolation of unit vectors is not necessarily unit norm,
         // but close if vectors are aligned. If they are orthogonal, norm decreases.
         // E.g. (e1 + e2)/2 has norm 1/sqrt(2).
-        
+
         // Sample off-grid
         let s2 = vacuum.sample(0.5, 0.5, 0.5);
         assert_eq!(s2.len(), 16);
@@ -268,14 +272,14 @@ mod tests {
         let apt = AptSedenionField::new(4, 12345);
         let vacuum = ContinuousVacuum::from_apt(&apt);
 
-        // Run simulation with high threshold to force some "collapses" 
+        // Run simulation with high threshold to force some "collapses"
         // (technically just proximity to zero divisor)
         let result = simulate_collapse_manifold(&vacuum, 10, 50, 0.5);
-        
+
         // We expect it to run. We don't guarantee collapses with random seed,
         // but min_metric should be <= 1.0.
         assert!(result.min_metric <= 1.0000001);
-        
+
         println!("Min metric found: {}", result.min_metric);
         println!("Collapse points: {}", result.points.len());
     }

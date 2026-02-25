@@ -18,10 +18,10 @@ use std::collections::VecDeque;
 use std::time::Instant;
 
 use algebra_core::analysis::boxkites::{
-    generic_face_sign_census, motif_components_for_cross_assessors, CrossPair,
+    CrossPair, generic_face_sign_census, motif_components_for_cross_assessors,
 };
 use algebra_core::construction::cayley_dickson::{
-    cd_basis_mul_sign_iter, cd_norm_sq, find_zero_divisors, CdSignature,
+    CdSignature, cd_basis_mul_sign_iter, cd_norm_sq, find_zero_divisors,
 };
 
 use clap::Parser;
@@ -580,40 +580,42 @@ fn main() {
     println!("  Law: n_components = dim/2 - 1 (dim >= 16)");
     for r in &rows {
         if r.dim >= 16
-            && let Some(nc) = r.n_components {
-                let expected = r.dim / 2 - 1;
-                let pass = nc == expected;
-                if !pass {
-                    all_pass = false;
-                }
-                println!(
-                    "    dim={:>5}: computed={}, expected={} [{}]",
-                    r.dim,
-                    nc,
-                    expected,
-                    if pass { "PASS" } else { "FAIL" }
-                );
+            && let Some(nc) = r.n_components
+        {
+            let expected = r.dim / 2 - 1;
+            let pass = nc == expected;
+            if !pass {
+                all_pass = false;
             }
+            println!(
+                "    dim={:>5}: computed={}, expected={} [{}]",
+                r.dim,
+                nc,
+                expected,
+                if pass { "PASS" } else { "FAIL" }
+            );
+        }
     }
 
     // Check motif_classes = dim/16
     println!("  Law: motif_classes = dim/16 (dim >= 16)");
     for r in &rows {
         if r.dim >= 16
-            && let Some(nc) = r.n_motif_classes {
-                let expected = r.dim / 16;
-                let pass = nc == expected;
-                if !pass {
-                    all_pass = false;
-                }
-                println!(
-                    "    dim={:>5}: computed={}, expected={} [{}]",
-                    r.dim,
-                    nc,
-                    expected,
-                    if pass { "PASS" } else { "FAIL" }
-                );
+            && let Some(nc) = r.n_motif_classes
+        {
+            let expected = r.dim / 16;
+            let pass = nc == expected;
+            if !pass {
+                all_pass = false;
             }
+            println!(
+                "    dim={:>5}: computed={}, expected={} [{}]",
+                r.dim,
+                nc,
+                expected,
+                if pass { "PASS" } else { "FAIL" }
+            );
+        }
     }
 
     // Check psi=1 exact formula
@@ -639,20 +641,21 @@ fn main() {
         println!("  Law: n_regimes = dim/16 + 1 (dim >= 32, C-485)");
         for r in &rows {
             if r.dim >= 32
-                && let Some(nr) = r.n_regimes {
-                    let expected = r.dim / 16 + 1;
-                    let pass = nr == expected;
-                    if !pass {
-                        all_pass = false;
-                    }
-                    println!(
-                        "    dim={:>5}: computed={}, expected={} [{}]",
-                        r.dim,
-                        nr,
-                        expected,
-                        if pass { "PASS" } else { "FAIL" }
-                    );
+                && let Some(nr) = r.n_regimes
+            {
+                let expected = r.dim / 16 + 1;
+                let pass = nr == expected;
+                if !pass {
+                    all_pass = false;
                 }
+                println!(
+                    "    dim={:>5}: computed={}, expected={} [{}]",
+                    r.dim,
+                    nr,
+                    expected,
+                    if pass { "PASS" } else { "FAIL" }
+                );
+            }
         }
     }
 

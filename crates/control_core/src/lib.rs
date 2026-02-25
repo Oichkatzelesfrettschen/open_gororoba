@@ -48,11 +48,11 @@ pub use filtering::{
     ExtendedKalmanFilter, FilterState, KalmanFilter, PredictionResult, StateEstimator, UpdateResult,
 };
 
-pub use pid::{anti_windup_clamp, derivative_filter, PidController, PidGains, PidState};
+pub use pid::{PidController, PidGains, PidState, anti_windup_clamp, derivative_filter};
 
 pub use state_space::{
-    controllability_matrix, is_controllable, is_observable, observability_matrix, StateSpaceModel,
-    TransferFunction,
+    StateSpaceModel, TransferFunction, controllability_matrix, is_controllable, is_observable,
+    observability_matrix,
 };
 
 pub use orbital_algebra_mechanics::{

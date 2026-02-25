@@ -7,7 +7,7 @@
 //! Source: ICGEM, http://icgem.gfz-potsdam.de/
 //! Reference: Ries et al. (2016), GFZ Data Services
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::PathBuf;
 
 /// ICGEM .gfc download URLs for GGM05S.

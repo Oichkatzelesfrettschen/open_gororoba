@@ -15,5 +15,5 @@ pub mod swarm;
 pub mod wmm;
 
 pub use swarm::{
-    check_timestamp_monotonicity, parse_swarm_csv, SwarmRecord, SWARM_EXPECTED_COLUMNS,
+    SWARM_EXPECTED_COLUMNS, SwarmRecord, check_timestamp_monotonicity, parse_swarm_csv,
 };

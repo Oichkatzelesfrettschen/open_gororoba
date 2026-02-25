@@ -29,35 +29,34 @@ pub mod kubo_transport_gpu;
 
 // Re-export key types for ergonomics
 pub use apt_sedenion::{AptSedenionField, FrustrationStats};
-pub use balance::{compute_frustration_index, FrustrationResult, SolverMethod};
+pub use balance::{FrustrationResult, SolverMethod, compute_frustration_index};
 pub use bridge::{
-    FrustrationViscosityBridge, SedenionField, SedenionField4D, ViscosityCouplingModel,
-    VACUUM_ATTRACTOR,
+    FrustrationViscosityBridge, SedenionField, SedenionField4D, VACUUM_ATTRACTOR,
+    ViscosityCouplingModel,
 };
 pub use frustration::{
-    evaluate_frustration_star, frustration_density_from_edges, omega_eff_from_phi,
-    violates_cassini, FrustrationStarConfig, FrustrationStarResult, ScalarFrustrationMap,
-    CASSINI_OMEGA_BD_LOWER_BOUND,
+    CASSINI_OMEGA_BD_LOWER_BOUND, FrustrationStarConfig, FrustrationStarResult,
+    ScalarFrustrationMap, evaluate_frustration_star, frustration_density_from_edges,
+    omega_eff_from_phi, violates_cassini,
 };
 pub use frustration_energy::{
-    compute_frustration_energy, compute_lambda, estimate_e0_from_associators,
-    predict_lambda_sedenion, FrustrationEnergy,
-};
-pub use percolation::{
-    auto_velocity_threshold, correlate_with_frustration, CorrelationResult, PercolationChannel,
-    PercolationDetector,
+    FrustrationEnergy, compute_frustration_energy, compute_lambda, estimate_e0_from_associators,
+    predict_lambda_sedenion,
 };
 pub use immirzi_bridge::{
-    best_bg_match, best_nzj_match, entropy_bridge, evaluate_all_mappings,
+    BRIDGE_MAX, GAMMA_BG as IMMIRZI_GAMMA_BG, GAMMA_NZJ as IMMIRZI_GAMMA_NZJ, ImmirziMappingResult,
+    VACUUM_PHI, best_bg_match, best_nzj_match, entropy_bridge, evaluate_all_mappings,
     frustration_entropy_bridge, invert_entropy_bridge, invert_entropy_bridge_bg,
     invert_entropy_bridge_nzj, linear_bridge_bg, log_bridge_bg, power_bridge_bg,
-    ImmirziMappingResult, BRIDGE_MAX,
-    GAMMA_BG as IMMIRZI_GAMMA_BG, GAMMA_NZJ as IMMIRZI_GAMMA_NZJ, VACUUM_PHI,
+};
+pub use percolation::{
+    CorrelationResult, PercolationChannel, PercolationDetector, auto_velocity_threshold,
+    correlate_with_frustration,
 };
 pub use signed_graph::SignedGraph;
 pub use spatial_correlation::{
-    coefficient_of_variation, dynamic_range_ratio, grid_partition_3d, nonlinearity_index,
-    pearson_correlation, point_cloud_overlap, regional_means, spatial_correlation,
-    spearman_correlation, velocity_magnitude_field, SpatialCorrelationResult,
+    SpatialCorrelationResult, coefficient_of_variation, dynamic_range_ratio, grid_partition_3d,
+    nonlinearity_index, pearson_correlation, point_cloud_overlap, regional_means,
+    spatial_correlation, spearman_correlation, velocity_magnitude_field,
 };
 pub use vietoris_rips::PersistenceDiagram;

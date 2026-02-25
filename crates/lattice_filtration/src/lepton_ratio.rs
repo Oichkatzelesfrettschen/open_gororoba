@@ -10,7 +10,7 @@
 //! - m_mu  = 105.6583755 MeV
 //! - m_tau = 1776.86     MeV
 
-use crate::mass_spectrum::{depth_clusters, SurvivalDepthMap, SurvivalEntry};
+use crate::mass_spectrum::{SurvivalDepthMap, SurvivalEntry, depth_clusters};
 
 /// PDG 2024 charged lepton masses in MeV.
 pub const M_ELECTRON: f64 = 0.510_998_95;

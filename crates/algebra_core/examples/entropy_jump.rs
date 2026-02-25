@@ -5,10 +5,10 @@ fn main() {
     let n_samples = 5000;
     let n_bins = 100;
     let seed = 42;
-    
+
     println!("Computing entropy across dimensions...");
     let results = phase_transition_analysis(&dims, n_samples, n_bins, seed);
-    
+
     println!("Dim | Entropy (H) | ZD Density | Delta H");
     println!("----|-------------|------------|---------");
     for (dim, h, zd, delta_h) in results {

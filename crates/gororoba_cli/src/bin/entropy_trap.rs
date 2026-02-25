@@ -10,7 +10,7 @@
 
 use clap::{Parser, Subcommand};
 use optics_core::absorber_benchmark::{
-    run_benchmark, reduced_c010_suite, standard_c010_suite, ProjectionGate,
+    ProjectionGate, reduced_c010_suite, run_benchmark, standard_c010_suite,
 };
 use optics_core::tcmt::{InputField, KerrCavity};
 use std::fs;
@@ -92,11 +92,11 @@ enum Command {
 fn default_cavity() -> KerrCavity {
     KerrCavity::new(
         2.0 * std::f64::consts::PI * 193.0e12, // 193 THz (telecom C-band)
-        1e6,                                     // Q_intrinsic
-        5e5,                                     // Q_external
-        1.45,                                    // n_linear (silica)
-        2.6e-20,                                 // n2 (silica Kerr, m^2/W)
-        1e-18,                                   // V_eff (cubic micron)
+        1e6,                                   // Q_intrinsic
+        5e5,                                   // Q_external
+        1.45,                                  // n_linear (silica)
+        2.6e-20,                               // n2 (silica Kerr, m^2/W)
+        1e-18,                                 // V_eff (cubic micron)
     )
 }
 
@@ -118,10 +118,7 @@ fn build_suite(kappa: f64, full: bool) -> Vec<optics_core::absorber_benchmark::C
 }
 
 /// Run a single benchmark at given kappa.
-fn run_at_kappa(
-    kappa: f64,
-    full: bool,
-) -> optics_core::absorber_benchmark::ComparativeBenchmark {
+fn run_at_kappa(kappa: f64, full: bool) -> optics_core::absorber_benchmark::ComparativeBenchmark {
     let topos = build_suite(kappa, full);
     let cavity = default_cavity();
     let _drive = default_drive();
@@ -131,11 +128,8 @@ fn run_at_kappa(
     let driven: Vec<usize> = (0..clique_size).collect();
 
     run_benchmark(
-        &topos,
-        &cavity,
-        1e9,  // frequency spacing (1 GHz)
-        &driven,
-        1e-3, // drive amplitude
+        &topos, &cavity, 1e9, // frequency spacing (1 GHz)
+        &driven, 1e-3,  // drive amplitude
         1e-12, // dt (1 ps)
         2000,  // steps
     )
@@ -209,26 +203,13 @@ fn main() {
             let gate = ProjectionGate::c010_default();
             let result = gate.evaluate(&benchmark);
             println!("Projection Gate: {}", result.verdict);
-            println!(
-                "  ZD isolation:      {:.6}",
-                result.zd_isolation
-            );
-            println!(
-                "  Best local:        {:.6}",
-                result.best_local_isolation
-            );
-            println!(
-                "  Dominance margin:  {:.6}",
-                result.dominance_margin
-            );
-            println!(
-                "  ZD crosstalk:      {:.1} dB",
-                result.zd_crosstalk_db
-            );
+            println!("  ZD isolation:      {:.6}", result.zd_isolation);
+            println!("  Best local:        {:.6}", result.best_local_isolation);
+            println!("  Dominance margin:  {:.6}", result.dominance_margin);
+            println!("  ZD crosstalk:      {:.1} dB", result.zd_crosstalk_db);
 
             if let Some(dir) = output {
-                write_results_toml(&dir, &benchmark, kappa)
-                    .expect("failed to write results TOML");
+                write_results_toml(&dir, &benchmark, kappa).expect("failed to write results TOML");
             }
         }
 
@@ -302,14 +283,8 @@ fn main() {
             let result = gate.evaluate(&benchmark);
 
             println!("Projection Gate: {}", result.verdict);
-            println!(
-                "  ZD isolation:      {:.6}",
-                result.zd_isolation
-            );
-            println!(
-                "  Dominance margin:  {:.6}",
-                result.dominance_margin
-            );
+            println!("  ZD isolation:      {:.6}", result.zd_isolation);
+            println!("  Dominance margin:  {:.6}", result.dominance_margin);
 
             if result.pass {
                 std::process::exit(0);

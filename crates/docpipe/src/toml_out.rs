@@ -5,7 +5,7 @@
 
 use std::path::Path;
 
-use crate::{pdf, table, text, DocpipeError, ExtractedPaper, Figure, PaperMetadata, Result};
+use crate::{DocpipeError, ExtractedPaper, Figure, PaperMetadata, Result, pdf, table, text};
 
 /// Extract a paper from a PDF and produce the full ExtractedPaper struct.
 ///
@@ -156,11 +156,7 @@ mod tests {
 
     fn test_pdf_path() -> Option<PathBuf> {
         let path = PathBuf::from("../../papers/pdf/de_marrais_2000_math0011260.pdf");
-        if path.exists() {
-            Some(path)
-        } else {
-            None
-        }
+        if path.exists() { Some(path) } else { None }
     }
 
     #[test]

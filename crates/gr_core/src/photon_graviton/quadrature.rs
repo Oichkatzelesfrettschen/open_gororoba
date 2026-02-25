@@ -175,14 +175,9 @@ mod tests {
     #[test]
     fn test_gl_integrate_complex_exp() {
         // integral_0^1 exp(i*x) dx = (exp(i) - 1) / i
-        let result = gl_integrate_complex(
-            |x| Complex64::new(0.0, x).exp(),
-            0.0,
-            1.0,
-            64,
-        );
-        let expected = (Complex64::new(0.0, 1.0).exp() - Complex64::new(1.0, 0.0))
-            / Complex64::new(0.0, 1.0);
+        let result = gl_integrate_complex(|x| Complex64::new(0.0, x).exp(), 0.0, 1.0, 64);
+        let expected =
+            (Complex64::new(0.0, 1.0).exp() - Complex64::new(1.0, 0.0)) / Complex64::new(0.0, 1.0);
         assert!(
             (result - expected).norm() < 1e-12,
             "integral exp(ix) = {result}, expected {expected}"
@@ -195,8 +190,8 @@ mod tests {
         let config = QuadratureConfig::default();
         let result = proper_time_integral(
             |_t| Complex64::new(1.0, 0.0),
-            1.0,  // m^2 = 1
-            0.0,  // power = 0 (no 1/T factor)
+            1.0, // m^2 = 1
+            0.0, // power = 0 (no 1/T factor)
             &config,
         );
         // Should be close to 1 - exp(-30) - (1 - exp(-t_min)) ~ 1
@@ -212,12 +207,7 @@ mod tests {
     fn test_double_integral_product() {
         // integral dT exp(-T) * integral_0^1 du * u = (1/2) * 1 = 0.5
         let config = QuadratureConfig::default();
-        let result = double_integral(
-            |_t, u| Complex64::new(u, 0.0),
-            1.0,
-            0.0,
-            &config,
-        );
+        let result = double_integral(|_t, u| Complex64::new(u, 0.0), 1.0, 0.0, &config);
         assert!(
             (result.re - 0.5).abs() < 1e-5,
             "double integral = {}, expected ~0.5",
@@ -227,12 +217,7 @@ mod tests {
 
     #[test]
     fn test_estimate_error_convergence() {
-        let (val, err) = estimate_error(
-            |x| Complex64::new(x.sin(), 0.0),
-            0.0,
-            PI,
-            64,
-        );
+        let (val, err) = estimate_error(|x| Complex64::new(x.sin(), 0.0), 0.0, PI, 64);
         assert!((val.re - 2.0).abs() < 1e-12);
         assert!(err < 1e-10, "error estimate = {err}");
     }

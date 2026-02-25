@@ -21,20 +21,20 @@
 //!   multi-dataset-ultrametric --json              # JSON output
 
 use clap::Parser;
-use rand::prelude::*;
 use rand::SeedableRng;
+use rand::prelude::*;
 use rayon::prelude::*;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 use stats_core::ultrametric::baire::{
-    euclidean_distance_matrix, euclidean_ultrametric_test, matrix_free_tolerance_curve,
-    matrix_free_ultrametric_test, normalize_data_column_major, AttributeSpec, BaireEncoder,
-    BaireTestResult,
+    AttributeSpec, BaireEncoder, BaireTestResult, euclidean_distance_matrix,
+    euclidean_ultrametric_test, matrix_free_tolerance_curve, matrix_free_ultrametric_test,
+    normalize_data_column_major,
 };
 use stats_core::ultrametric::benjamini_hochberg;
 use stats_core::ultrametric::dendrogram::multi_linkage_test;
-use stats_core::ultrametric::gpu::{to_f32_column_major, GpuUltrametricEngine};
+use stats_core::ultrametric::gpu::{GpuUltrametricEngine, to_f32_column_major};
 
 #[derive(Parser)]
 #[command(name = "multi-dataset-ultrametric")]
@@ -446,9 +446,10 @@ fn load_atnf_pulsars(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> 
             .and_then(|i| fields.get(i))
             .and_then(|s| s.trim().parse::<f64>().ok());
         if let (Some(dm), Some(gl), Some(gb)) = (dm, gl, gb)
-            && dm > 0.0 {
-                rows.push(vec![dm.log10(), gl, gb]);
-            }
+            && dm > 0.0
+        {
+            rows.push(vec![dm.log10(), gl, gb]);
+        }
     }
     if rows.len() < 10 {
         return None;
@@ -550,11 +551,13 @@ fn load_gwosc_csv(path: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
         let chi = parse(idx_chi);
 
         if let (Some(mc), Some(z), Some(m1), Some(m2)) = (mc, z, m1, m2)
-            && mc > 0.0 && m1 > 0.0 {
-                let q = m2 / m1;
-                let chi_val = chi.unwrap_or(0.0);
-                rows.push(vec![mc.log10(), z, q, chi_val]);
-            }
+            && mc > 0.0
+            && m1 > 0.0
+        {
+            let q = m2 / m1;
+            let chi_val = chi.unwrap_or(0.0);
+            rows.push(vec![mc.log10(), z, q, chi_val]);
+        }
     }
     if rows.len() < 10 {
         return None;
@@ -728,9 +731,11 @@ fn load_fermi_gbm(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
             .and_then(|s| parse_dec_sexa(s));
 
         if let (Some(t90), Some(fluence), Some(ra), Some(dec)) = (t90, fluence, ra, dec)
-            && t90 > 0.0 && fluence > 0.0 {
-                rows.push(vec![t90.log10(), fluence.log10(), ra, dec]);
-            }
+            && t90 > 0.0
+            && fluence > 0.0
+        {
+            rows.push(vec![t90.log10(), fluence.log10(), ra, dec]);
+        }
     }
     if rows.len() < 10 {
         return None;
@@ -801,9 +806,11 @@ fn load_mcgill(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
         });
 
         if let (Some(ra), Some(dec), Some(period), Some(b)) = (ra, dec, period, b)
-            && period > 0.0 && b > 0.0 {
-                rows.push(vec![period.log10(), b.log10(), ra, dec]);
-            }
+            && period > 0.0
+            && b > 0.0
+        {
+            rows.push(vec![period.log10(), b.log10(), ra, dec]);
+        }
     }
     if rows.len() < 10 {
         return None;
@@ -870,11 +877,7 @@ fn load_hipparcos(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
         }
         let parse = |s: &str| -> Option<f64> {
             let s = s.trim();
-            if s.is_empty() {
-                None
-            } else {
-                s.parse().ok()
-            }
+            if s.is_empty() { None } else { s.parse().ok() }
         };
         let (Some(plx), Some(pmra), Some(pmdec), Some(vmag), Some(ra), Some(dec)) = (
             parse(fields[11]),

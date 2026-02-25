@@ -53,30 +53,37 @@ fn main() {
     let n = args.n;
 
     println!("CHSH-Betti Correlation Sweep");
-    println!("  grid={}^3 steps={} snap_every={} threshold={}",
-        n, args.steps, args.snap_interval, args.threshold);
+    println!(
+        "  grid={}^3 steps={} snap_every={} threshold={}",
+        n, args.steps, args.snap_interval, args.threshold
+    );
     println!();
 
     // Configurations: vary tau (viscosity) and forcing amplitude
     // tau = 0.5 + nu/c_s^2, so tau=0.6 -> nu=0.033, tau=1.0 -> nu=0.167, etc.
     let configs: Vec<(&str, f64, f64)> = vec![
-        ("low_visc",  0.55, 0.001),
-        ("med_visc",  0.70, 0.005),
+        ("low_visc", 0.55, 0.001),
+        ("med_visc", 0.70, 0.005),
         ("high_visc", 1.00, 0.010),
-        ("strong_f",  0.60, 0.020),
+        ("strong_f", 0.60, 0.020),
     ];
 
     let n_total = n * n * n;
     let mut all_results: Vec<(String, f64, f64, usize)> = Vec::new();
     let mut any_pass = false;
 
-    println!("  {:>12}  {:>8}  {:>8}  {:>8}  {:>8}",
-        "config", "rho_S", "p_val", "n_snaps", "status");
-    println!("  {:->12}  {:->8}  {:->8}  {:->8}  {:->8}", "", "", "", "", "");
+    println!(
+        "  {:>12}  {:>8}  {:>8}  {:>8}  {:>8}",
+        "config", "rho_S", "p_val", "n_snaps", "status"
+    );
+    println!(
+        "  {:->12}  {:->8}  {:->8}  {:->8}  {:->8}",
+        "", "", "", "", ""
+    );
 
     for (name, tau, force_amp) in &configs {
-        let mut solver = LbmSolver3DCuda::new(n, n, n, *tau, Precision::FP64)
-            .expect("GPU solver init failed");
+        let mut solver =
+            LbmSolver3DCuda::new(n, n, n, *tau, Precision::FP64).expect("GPU solver init failed");
 
         // Apply Kolmogorov-like sinusoidal forcing
         let force_field: Vec<[f64; 3]> = (0..n_total)
@@ -86,7 +93,9 @@ fn main() {
                 [fx, 0.0, 0.0]
             })
             .collect();
-        solver.set_force_field(&force_field).expect("set force field");
+        solver
+            .set_force_field(&force_field)
+            .expect("set force field");
 
         let mut s_values: Vec<f64> = Vec::new();
         let mut b1_values: Vec<f64> = Vec::new();
@@ -120,7 +129,9 @@ fn main() {
                 let s = velocity_to_chsh(&padded);
 
                 // Convert f32 GPU velocities to f64 for Betti computation
-                let u_f64: Vec<[f64; 3]> = solver.u.iter()
+                let u_f64: Vec<[f64; 3]> = solver
+                    .u
+                    .iter()
                     .map(|v| [v[0] as f64, v[1] as f64, v[2] as f64])
                     .collect();
 
@@ -129,7 +140,8 @@ fn main() {
                 let threshold = if args.threshold > 0.0 {
                     args.threshold
                 } else {
-                    let mut mags: Vec<f64> = u_f64.iter()
+                    let mut mags: Vec<f64> = u_f64
+                        .iter()
                         .map(|v| (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt())
                         .collect();
                     mags.sort_by(|a, b| a.partial_cmp(b).unwrap());
@@ -137,13 +149,13 @@ fn main() {
                     mags[p75_idx.min(mags.len() - 1)]
                 };
 
-                let (_, b1) = velocity_to_betti(
-                    &u_f64, n, n, n, threshold, args.max_points
-                );
+                let (_, b1) = velocity_to_betti(&u_f64, n, n, n, threshold, args.max_points);
 
                 if args.verbose {
-                    println!("    step={:>4}  S={:>8.4}  B1={:>4}  thr={:.6}",
-                        step, s, b1, threshold);
+                    println!(
+                        "    step={:>4}  S={:>8.4}  B1={:>4}  thr={:.6}",
+                        step, s, b1, threshold
+                    );
                 }
 
                 s_values.push(s);
@@ -167,8 +179,10 @@ fn main() {
             "FAIL"
         };
 
-        println!("  {:>12}  {:>8.4}  {:>8.4}  {:>8}  {:>8}",
-            name, rho, p, n_snaps, status);
+        println!(
+            "  {:>12}  {:>8.4}  {:>8.4}  {:>8}  {:>8}",
+            name, rho, p, n_snaps, status
+        );
 
         all_results.push((name.to_string(), rho, p, n_snaps));
     }

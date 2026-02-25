@@ -1,0 +1,15 @@
+# Provenance contract for migrated paper corpus artifacts.
+# This corpus is manual/licensed literature support material and is not part of
+# reproducible external dataset replay under data/external.
+
+[corpus]
+id = "SRC-PAPERS-CORPUS"
+status = "migrated"
+path_glob = "data/papers/corpus/**"
+migrated_from = "data/external/papers/**"
+migrated_on_utc = "2026-02-25T00:00:00Z"
+source_index_ref = "registry/source_lanes/papers_pdf.toml"
+manual_override_ref = "registry/manual_mirror_overrides_2026_02_15.toml"
+fetch_attempts_ref = "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv"
+notes = "Artifacts retained for provenance and literature traceability; reproducible external data replay is enforced only in data/external."
+file_count = 323

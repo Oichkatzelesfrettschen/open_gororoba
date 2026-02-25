@@ -1593,12 +1593,13 @@ impl HysteresisTrace {
 
         for (i, (up, down)) in self.up_sweep.iter().zip(self.down_sweep.iter()).enumerate() {
             if let (Some(u), Some(d)) = (up, down)
-                && (u - d).abs() > 1e-10 {
-                    if first.is_none() {
-                        first = Some(self.powers[i]);
-                    }
-                    last = Some(self.powers[i]);
+                && (u - d).abs() > 1e-10
+            {
+                if first.is_none() {
+                    first = Some(self.powers[i]);
                 }
+                last = Some(self.powers[i]);
+            }
         }
 
         match (first, last) {

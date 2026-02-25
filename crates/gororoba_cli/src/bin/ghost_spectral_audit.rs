@@ -16,8 +16,8 @@ use std::process::Command;
 use clap::{Parser, Subcommand};
 
 use spectral_core::ghost_spectral::{
-    check_ghost_rigorous, combine_p_values, permutation_test, sorted_distribution_null,
-    GhostVerdict, ALIASED_GHOST_FREQ, FREQ_TOL,
+    ALIASED_GHOST_FREQ, FREQ_TOL, GhostVerdict, check_ghost_rigorous, combine_p_values,
+    permutation_test, sorted_distribution_null,
 };
 
 /// Ghost Spectral Audit -- multi-method falsification
@@ -109,11 +109,7 @@ fn load_csv_values(path: &Path, column: &str) -> Vec<f64> {
     values
 }
 
-fn run_python_script(
-    python: &str,
-    script_path: &Path,
-    args: &[&str],
-) -> Option<serde_json::Value> {
+fn run_python_script(python: &str, script_path: &Path, args: &[&str]) -> Option<serde_json::Value> {
     let output = Command::new(python)
         .arg(script_path)
         .args(args)
@@ -197,15 +193,7 @@ fn run_iaaft_surrogates(
         python,
         &script,
         &[
-            "--input",
-            &ds,
-            "--column",
-            column,
-            "--method",
-            "iaaft",
-            "--n",
-            &n_str,
-            "--seed",
+            "--input", &ds, "--column", column, "--method", "iaaft", "--n", &n_str, "--seed",
             &seed_str,
         ],
     )?;
@@ -349,9 +337,7 @@ fn audit_single(
 
     // 5. IAAFT Surrogates
     print!("5. IAAFT Surrogates (N={surrogates})... ");
-    if let Some(r) =
-        run_iaaft_surrogates(python, &module_dir, dataset, column, surrogates, seed)
-    {
+    if let Some(r) = run_iaaft_surrogates(python, &module_dir, dataset, column, surrogates, seed) {
         println!("p={:.6e}  [{}]", r.p_value, r.detail);
         python_p_values.push((r.method, r.p_value));
     } else {
@@ -373,10 +359,7 @@ fn audit_single(
     println!("=== SUMMARY ===");
     println!();
 
-    let mut all_p_values: Vec<f64> = vec![
-        rigorous.p_bonferroni,
-        perm.p_empirical,
-    ];
+    let mut all_p_values: Vec<f64> = vec![rigorous.p_bonferroni, perm.p_empirical];
     let mut method_names: Vec<String> = vec![
         "Rigorous (Bonferroni)".to_string(),
         "Permutation".to_string(),
@@ -391,7 +374,11 @@ fn audit_single(
     println!("Method                      | p-value      | Verdict");
     println!("----------------------------|--------------|----------");
     for (name, p) in method_names.iter().zip(all_p_values.iter()) {
-        let verdict = if *p < 0.05 { "REJECT H0" } else { "FAIL TO REJECT" };
+        let verdict = if *p < 0.05 {
+            "REJECT H0"
+        } else {
+            "FAIL TO REJECT"
+        };
         println!("{name:<28}| {p:<13.6e}| {verdict}");
     }
     println!();
@@ -408,7 +395,10 @@ fn audit_single(
     let rust_n: Vec<f64> = vec![n as f64; rust_p.len()];
     let combined = combine_p_values(&rust_p, &rust_n);
     println!();
-    println!("Combined (Rust-native, Fisher): p = {:.6e}", combined.fisher_p);
+    println!(
+        "Combined (Rust-native, Fisher): p = {:.6e}",
+        combined.fisher_p
+    );
     println!(
         "Combined (Rust-native, Stouffer): Z = {:.4}, p = {:.6e}",
         combined.stouffer_z, combined.stouffer_p
@@ -425,13 +415,7 @@ fn audit_single(
     println!("FINAL VERDICT: {final_verdict}");
 }
 
-fn audit_batch(
-    dir: &Path,
-    column: &str,
-    python: &str,
-    python_module: &Option<PathBuf>,
-    seed: u64,
-) {
+fn audit_batch(dir: &Path, column: &str, python: &str, python_module: &Option<PathBuf>, seed: u64) {
     println!("=== Ghost Spectral Audit -- Batch Mode ===");
     println!("Directory: {}", dir.display());
     println!();

@@ -21,7 +21,11 @@ use std::fs;
 use std::path::Path;
 
 #[derive(Parser, Debug)]
-#[command(author, version, about = "Thesis 3: wavelet ACF exponential calibration")]
+#[command(
+    author,
+    version,
+    about = "Thesis 3: wavelet ACF exponential calibration"
+)]
 struct Args {
     /// Grid size (power of 2)
     #[arg(long, default_value_t = 128)]
@@ -82,7 +86,11 @@ fn fit_exponential_decay(tau_vals: &[f64], acf_vals: &[f64]) -> (f64, f64) {
     let mean_y = sum_y / n;
     let ss_tot: f64 = pairs.iter().map(|(_, y)| (y - mean_y).powi(2)).sum();
     let ss_res: f64 = pairs.iter().map(|(t, y)| (y - (a + b * t)).powi(2)).sum();
-    let r_squared = if ss_tot > 1e-300 { 1.0 - ss_res / ss_tot } else { 0.0 };
+    let r_squared = if ss_tot > 1e-300 {
+        1.0 - ss_res / ss_tot
+    } else {
+        0.0
+    };
 
     (-b, r_squared.max(0.0))
 }
@@ -110,7 +118,10 @@ fn main() {
     }
 
     println!("Wavelet ACF Exponential Calibration");
-    println!("  N={} steps={} dt={} nu={} rho={}", args.n, args.steps, args.dt, args.nu, args.rho);
+    println!(
+        "  N={} steps={} dt={} nu={} rho={}",
+        args.n, args.steps, args.dt, args.nu, args.rho
+    );
     println!();
     println!("  {:>8}  {:>12}  {:>8}  status", "eps", "kappa", "R2");
 
@@ -136,8 +147,13 @@ fn main() {
         let var_e: f64 = e_tilde.iter().map(|x| x * x).sum::<f64>() / n_steps as f64;
 
         if var_e < 1e-300 {
-            println!("  {:>8.0e}  {:>12.4}  {:>8.4}  SKIP (zero variance)", eps, 0.0, 0.0);
-            rows.push(format!("[[result]]\neps = {eps:.0e}\nkappa_fit = 0.0\nr_squared = 0.0\npass = false"));
+            println!(
+                "  {:>8.0e}  {:>12.4}  {:>8.4}  SKIP (zero variance)",
+                eps, 0.0, 0.0
+            );
+            rows.push(format!(
+                "[[result]]\neps = {eps:.0e}\nkappa_fit = 0.0\nr_squared = 0.0\npass = false"
+            ));
             all_pass = false;
             continue;
         }
@@ -166,10 +182,17 @@ fn main() {
             all_pass = false;
         }
 
-        println!("  {:>8.0e}  {:>12.4}  {:>8.4}  {}",
-            eps, kappa, r_squared, if needs_pass {
+        println!(
+            "  {:>8.0e}  {:>12.4}  {:>8.4}  {}",
+            eps,
+            kappa,
+            r_squared,
+            if needs_pass {
                 if pass_row { "PASS" } else { "FAIL" }
-            } else { "INFO" });
+            } else {
+                "INFO"
+            }
+        );
 
         rows.push(format!(
             "[[result]]\neps = {eps:.0e}\nkappa_fit = {kappa:.6}\nr_squared = {r_squared:.6}\npass = {pass_row}"
@@ -184,7 +207,11 @@ fn main() {
     let toml_path = dir.join("results.toml");
     let header = format!(
         "# Wavelet ACF Calibration results\n# N={} steps={} dt={} nu={} rho={}\n# verdict = {}\n\n",
-        args.n, args.steps, args.dt, args.nu, args.rho,
+        args.n,
+        args.steps,
+        args.dt,
+        args.nu,
+        args.rho,
         if all_pass { "PASS" } else { "FAIL" }
     );
     fs::write(&toml_path, format!("{}{}\n", header, rows.join("\n\n")))

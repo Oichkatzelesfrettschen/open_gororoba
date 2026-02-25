@@ -337,9 +337,10 @@ fn emit_artifact_markdown(args: ArtifactMarkdownArgs) -> Result<(), String> {
 
     for row in index.scroll {
         if let Some(filter_id) = &args.id
-            && row.id != *filter_id {
-                continue;
-            }
+            && row.id != *filter_id
+        {
+            continue;
+        }
         let scroll_path = args.repo_root.join(&row.scroll_path);
         let scroll: ArtifactScrollDoc = read_toml(&scroll_path)?;
         let out_path = args.out_dir.join(&row.source_markdown);
@@ -636,9 +637,10 @@ fn emit_dataset_pgfplots(args: DatasetPgfplotsArgs) -> Result<(), String> {
     let mut points: Vec<(f64, f64)> = Vec::new();
     for row in rows {
         if let (Some(x), Some(y)) = (row.get(x_idx), row.get(y_idx))
-            && let (Ok(xn), Ok(yn)) = (x.trim().parse::<f64>(), y.trim().parse::<f64>()) {
-                points.push((xn, yn));
-            }
+            && let (Ok(xn), Ok(yn)) = (x.trim().parse::<f64>(), y.trim().parse::<f64>())
+        {
+            points.push((xn, yn));
+        }
         if points.len() >= args.max_points {
             break;
         }

@@ -1,5 +1,5 @@
 use algebra_core::analysis::boxkites::compute_frustration_ratio;
-use algebra_core::construction::cayley_dickson::{cd_basis_mul_sign_split_iter, CdSignature};
+use algebra_core::construction::cayley_dickson::{CdSignature, cd_basis_mul_sign_split_iter};
 use std::time::Instant;
 
 fn env_f64(name: &str, default: f64) -> f64 {
@@ -190,7 +190,9 @@ fn test_split_octonion_attractor_delta_shrink_128_256_512_guarded() {
         .map(|v| v == "1")
         .unwrap_or(false);
     if !include_512 {
-        eprintln!("Skipping dim 128/256/512 attractor delta-shrink regression (set CD_ATTRACTOR_INCLUDE_512=1 to enable).");
+        eprintln!(
+            "Skipping dim 128/256/512 attractor delta-shrink regression (set CD_ATTRACTOR_INCLUDE_512=1 to enable)."
+        );
         return;
     }
 

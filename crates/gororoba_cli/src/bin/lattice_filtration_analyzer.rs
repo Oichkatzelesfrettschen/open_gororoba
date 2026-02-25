@@ -11,8 +11,8 @@
 
 use clap::Parser;
 use lattice_filtration::{
-    classify_latency_law_detailed, depth_histogram, pdg_comparison,
-    simulate_fibonacci_collision_storm, simulate_sedenion_collision_storm, SurvivalDepthMap,
+    SurvivalDepthMap, classify_latency_law_detailed, depth_histogram, pdg_comparison,
+    simulate_fibonacci_collision_storm, simulate_sedenion_collision_storm,
 };
 use std::io::Write;
 

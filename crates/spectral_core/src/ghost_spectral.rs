@@ -20,12 +20,12 @@
 //! imprints a spectral peak at phi^{-1/2} ~ 0.786 cycles/sample. Nyquist
 //! folding maps this to 1 - phi^{-1/2} ~ 0.214 for unit-rate sampled data.
 
-use adjustp::{adjust, Procedure};
+use adjustp::{Procedure, adjust};
+use rand::SeedableRng;
 use rand::rngs::StdRng;
 use rand::seq::SliceRandom;
-use rand::SeedableRng;
-use rustfft::num_complex::Complex;
 use rustfft::FftPlanner;
+use rustfft::num_complex::Complex;
 use statrs::distribution::{ChiSquared, ContinuousCDF};
 
 /// Golden ratio.
@@ -178,7 +178,7 @@ pub fn compute_power_spectrum(signal: &[f64]) -> (Vec<f64>, Vec<f64>) {
     let centered: Vec<f64> = signal.iter().map(|&x| x - mean).collect();
 
     // Apply Hann window to reduce spectral leakage.
-    // Convention: w(n) = 0.5 * (1 - cos(2π n / N)), denominator N (not N-1).
+    // Convention: w(n) = 0.5 * (1 - cos(2\pi n / N)), denominator N (not N-1).
     // This keeps both endpoints of the window non-zero (w(0)=0, w(N)=0 conceptually
     // but N is never reached), which is a common engineering choice.  Note that
     // some references use (N-1) in the denominator; the two differ only at the
@@ -271,9 +271,7 @@ pub fn check_ghost(peaks: &[SpectralPeak]) -> Option<&SpectralPeak> {
 /// Returns true if freq is near the ghost frequency or its alias (stride=1).
 pub fn is_ghost_freq(freq: f64) -> bool {
     let aliases = ghost_aliases(1);
-    aliases
-        .iter()
-        .any(|&alias| (freq - alias).abs() < FREQ_TOL)
+    aliases.iter().any(|&alias| (freq - alias).abs() < FREQ_TOL)
 }
 
 // ---- FWHM (Item 5: clamp to resolution limit) ----
@@ -402,11 +400,7 @@ pub fn robust_noise_floor(power: &[f64], exclude_indices: &[usize], exclude_radi
 
 /// Compute signal-to-noise ratio for a peak given the noise floor.
 pub fn peak_snr(peak: &SpectralPeak, noise: f64) -> f64 {
-    if noise > 0.0 {
-        peak.power / noise
-    } else {
-        0.0
-    }
+    if noise > 0.0 { peak.power / noise } else { 0.0 }
 }
 
 // ---- Trials Factor and False Alarm Probability (Items 2-3) ----
@@ -797,10 +791,7 @@ pub fn combine_p_values(p_values: &[f64], sample_sizes: &[f64]) -> CombinedPValu
 
     // Phi^{-1}(1 - p_i) using the probit function
     // For small p, 1-p ~ 1, so z ~ 0. For very small p, z is large positive.
-    let z_scores: Vec<f64> = clamped_p
-        .iter()
-        .map(|&p| probit(1.0 - p))
-        .collect();
+    let z_scores: Vec<f64> = clamped_p.iter().map(|&p| probit(1.0 - p)).collect();
 
     let stouffer_z = if sum_w2 > 0.0 {
         let weighted_sum: f64 = weights
@@ -1015,11 +1006,7 @@ mod tests {
         assert!(
             ghost.is_some(),
             "Should detect ghost at stride=2 alias. Top peak: {:.4}",
-            if peaks.is_empty() {
-                0.0
-            } else {
-                peaks[0].freq
-            }
+            if peaks.is_empty() { 0.0 } else { peaks[0].freq }
         );
     }
 
@@ -1126,9 +1113,7 @@ mod tests {
             .collect();
 
         let (freqs, power) = compute_power_spectrum(&signal);
-        if let Some((_fwhm_cps, fwhm_bins, _clamped)) =
-            peak_fwhm_clamped(&freqs, &power, freq)
-        {
+        if let Some((_fwhm_cps, fwhm_bins, _clamped)) = peak_fwhm_clamped(&freqs, &power, freq) {
             assert!(
                 fwhm_bins >= 1.0,
                 "FWHM must be >= 1 bin (got {:.4})",
@@ -1179,9 +1164,7 @@ mod tests {
     #[test]
     fn test_fdr_correction_basic() {
         // 10 p-values, 2 very small (real signals), 8 large (noise)
-        let p_values = vec![
-            0.001, 0.002, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80,
-        ];
+        let p_values = vec![0.001, 0.002, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80];
         let (adjusted, surviving) = fdr_correction(&p_values, 0.05);
         assert_eq!(adjusted.len(), 10);
         // The two small p-values should survive
@@ -1198,10 +1181,9 @@ mod tests {
         let n = 512;
         let signal: Vec<f64> = (0..n)
             .map(|i| {
-                let hash =
-                    ((i as u64).wrapping_mul(2654435761).wrapping_add(12345) >> 16) as f64
-                        / 65536.0
-                        - 0.5;
+                let hash = ((i as u64).wrapping_mul(2654435761).wrapping_add(12345) >> 16) as f64
+                    / 65536.0
+                    - 0.5;
                 hash
             })
             .collect();
@@ -1340,7 +1322,10 @@ mod tests {
         assert!((normal_cdf(0.0) - 0.5).abs() < 1e-6);
         let cdf_pos = normal_cdf(1.96);
         let cdf_neg = normal_cdf(-1.96);
-        assert!((cdf_pos + cdf_neg - 1.0).abs() < 1e-5, "CDF should be symmetric");
+        assert!(
+            (cdf_pos + cdf_neg - 1.0).abs() < 1e-5,
+            "CDF should be symmetric"
+        );
         assert!((cdf_pos - 0.975).abs() < 0.002, "CDF(1.96) ~ 0.975");
     }
 

@@ -14,7 +14,7 @@ use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, Normal};
 use spectral_core::{
     pde_surrogates::ForcedDiffusion,
-    wavelet::{concurrency, haar_dwt, haar_idwt, hard_threshold, WaveletBridge},
+    wavelet::{WaveletBridge, concurrency, haar_dwt, haar_idwt, hard_threshold},
 };
 use stats_core::helpers::median;
 use std::fs;
@@ -53,7 +53,12 @@ struct Args {
 }
 
 fn l2_rel_err(u: &[f64], u_ref: &[f64]) -> f64 {
-    let num: f64 = u.iter().zip(u_ref.iter()).map(|(&a, &b)| (a - b).powi(2)).sum::<f64>().sqrt();
+    let num: f64 = u
+        .iter()
+        .zip(u_ref.iter())
+        .map(|(&a, &b)| (a - b).powi(2))
+        .sum::<f64>()
+        .sqrt();
     let den: f64 = u_ref.iter().map(|x| x * x).sum::<f64>().sqrt();
     if den < 1e-300 { 0.0 } else { num / den }
 }
@@ -72,11 +77,15 @@ fn main() {
     let alpha = 1.0 - (-args.kappa * args.dt).exp();
 
     println!("Wavelet Bridging Accuracy Sweep");
-    println!("  N={} steps={} dt={} nu={} kappa={} alpha={:.4} R={}",
-        args.n, args.steps, args.dt, args.nu, args.kappa, alpha, args.recovery_window);
+    println!(
+        "  N={} steps={} dt={} nu={} kappa={} alpha={:.4} R={}",
+        args.n, args.steps, args.dt, args.nu, args.kappa, alpha, args.recovery_window
+    );
     println!();
-    println!("  {:>6}  {:>8}  {:>12}  {:>12}  {:>12}  {:>8}",
-        "rho", "eps", "plain_err", "bridge_err", "improve_%", "conc");
+    println!(
+        "  {:>6}  {:>8}  {:>12}  {:>12}  {:>12}  {:>8}",
+        "rho", "eps", "plain_err", "bridge_err", "improve_%", "conc"
+    );
 
     let mut improvements: Vec<f64> = Vec::with_capacity(rho_vals.len() * eps_vals.len());
     let mut rows: Vec<String> = Vec::new();
@@ -85,7 +94,8 @@ fn main() {
         let pde = ForcedDiffusion::new(args.n, args.dt, args.nu, rho, 1);
         for (ei, &eps) in eps_vals.iter().enumerate() {
             // Unique per-cell seed: XOR seed with hash of (ri, ei)
-            let cell_seed = args.seed ^ ((ri as u64).wrapping_mul(0xDEAD_BEEF))
+            let cell_seed = args.seed
+                ^ ((ri as u64).wrapping_mul(0xDEAD_BEEF))
                 ^ ((ei as u64).wrapping_mul(0xCAFE_BABE));
             let u0 = make_initial(args.n, cell_seed);
 
@@ -114,8 +124,11 @@ fn main() {
                 let c = haar_dwt(&u_bridge);
                 let c_thresh = hard_threshold(&c, eps);
                 // residual = c - c_thresh
-                let residual: Vec<f64> =
-                    c.iter().zip(c_thresh.iter()).map(|(&a, &b)| a - b).collect();
+                let residual: Vec<f64> = c
+                    .iter()
+                    .zip(c_thresh.iter())
+                    .map(|(&a, &b)| a - b)
+                    .collect();
                 bridge.accumulate(&residual);
 
                 let m = concurrency(&c_thresh, eps);
@@ -139,8 +152,10 @@ fn main() {
             };
             improvements.push(improve_pct);
 
-            println!("  {:>6.2}  {:>8.0e}  {:>12.5e}  {:>12.5e}  {:>12.2}  {:>8.1}",
-                rho, eps, plain_err, bridge_err, improve_pct, mean_conc);
+            println!(
+                "  {:>6.2}  {:>8.0e}  {:>12.5e}  {:>12.5e}  {:>12.2}  {:>8.1}",
+                rho, eps, plain_err, bridge_err, improve_pct, mean_conc
+            );
 
             rows.push(format!(
                 "[[result]]\nrho = {rho}\neps = {eps:.0e}\nplain_err = {plain_err:.6e}\nbridge_err = {bridge_err:.6e}\nimprovement_pct = {improve_pct:.3}\nmean_conc = {mean_conc:.1}"
@@ -162,7 +177,13 @@ fn main() {
     let toml_path = dir.join("results.toml");
     let header = format!(
         "# Wavelet Bridging Accuracy Sweep results\n# N={} steps={} dt={} nu={} kappa={} alpha={:.4} R={}\n# median_improvement_pct = {med_improvement:.3}\n# verdict = {}\n\n",
-        args.n, args.steps, args.dt, args.nu, args.kappa, alpha, args.recovery_window,
+        args.n,
+        args.steps,
+        args.dt,
+        args.nu,
+        args.kappa,
+        alpha,
+        args.recovery_window,
         if pass { "PASS" } else { "FAIL" }
     );
     let body = rows.join("\n\n");

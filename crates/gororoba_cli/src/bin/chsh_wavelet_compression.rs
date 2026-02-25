@@ -24,7 +24,11 @@ use std::fs;
 use std::path::Path;
 
 #[derive(Parser, Debug)]
-#[command(author, version, about = "Thesis 4: CHSH Bell parameter wavelet compression")]
+#[command(
+    author,
+    version,
+    about = "Thesis 4: CHSH Bell parameter wavelet compression"
+)]
 struct Args {
     /// Number of time steps (must be power of 2 for wavelet)
     #[arg(long, default_value_t = 512)]
@@ -59,7 +63,9 @@ fn chsh_correlation(n_pp: &[f64], n_mm: &[f64], n_pm: &[f64], n_mp: &[f64]) -> f
     let total_pm: f64 = n_pm.iter().sum();
     let total_mp: f64 = n_mp.iter().sum();
     let total = total_pp + total_mm + total_pm + total_mp;
-    if total < 1.0 { return 0.0; }
+    if total < 1.0 {
+        return 0.0;
+    }
     (total_pp + total_mm - total_pm - total_mp) / total
 }
 
@@ -67,7 +73,10 @@ fn chsh_correlation(n_pp: &[f64], n_mm: &[f64], n_pm: &[f64], n_mp: &[f64]) -> f
 /// Retains top-k detail coefficients by magnitude where k = floor(compression_target * (n-1)).
 fn wavelet_compress(series: &[f64], compression_target: f64) -> Vec<f64> {
     let n = series.len();
-    assert!(n.is_power_of_two(), "wavelet_compress: length must be power of 2");
+    assert!(
+        n.is_power_of_two(),
+        "wavelet_compress: length must be power of 2"
+    );
     let mut c = haar_dwt(series);
 
     // Index 0 is the single global scaling coefficient -- always retain.
@@ -129,8 +138,13 @@ fn main() {
 
     let ratio = compression_ratio(args.n_time, args.compression_target);
     println!("CHSH Wavelet Compression");
-    println!("  n_time={} n_pairs={} compression_target={:.1}% retention -> {:.1}x ratio",
-        args.n_time, args.n_pairs, args.compression_target * 100.0, ratio);
+    println!(
+        "  n_time={} n_pairs={} compression_target={:.1}% retention -> {:.1}x ratio",
+        args.n_time,
+        args.n_pairs,
+        args.compression_target * 100.0,
+        ratio
+    );
     println!();
 
     // Generate all count series
@@ -169,40 +183,67 @@ fn main() {
 
         // Compress each series and clamp negatives
         let c0: Vec<f64> = wavelet_compress(&ser0, args.compression_target)
-            .into_iter().map(|x| x.max(0.0)).collect();
+            .into_iter()
+            .map(|x| x.max(0.0))
+            .collect();
         let c1: Vec<f64> = wavelet_compress(&ser1, args.compression_target)
-            .into_iter().map(|x| x.max(0.0)).collect();
+            .into_iter()
+            .map(|x| x.max(0.0))
+            .collect();
         let c2: Vec<f64> = wavelet_compress(&ser2, args.compression_target)
-            .into_iter().map(|x| x.max(0.0)).collect();
+            .into_iter()
+            .map(|x| x.max(0.0))
+            .collect();
         let c3: Vec<f64> = wavelet_compress(&ser3, args.compression_target)
-            .into_iter().map(|x| x.max(0.0)).collect();
+            .into_iter()
+            .map(|x| x.max(0.0))
+            .collect();
 
         e_compressed[si] = chsh_correlation(&c0, &c1, &c2, &c3);
 
-        println!("  Setting ({:.4}, {:.4}): E_raw={:.4}  E_compressed={:.4}",
-            a, b, e_raw[si], e_compressed[si]);
+        println!(
+            "  Setting ({:.4}, {:.4}): E_raw={:.4}  E_compressed={:.4}",
+            a, b, e_raw[si], e_compressed[si]
+        );
     }
 
-    let s_raw: f64 = chsh_signs.iter().zip(e_raw.iter()).map(|(s, e)| s * e).sum();
-    let s_compressed: f64 = chsh_signs.iter().zip(e_compressed.iter()).map(|(s, e)| s * e).sum();
+    let s_raw: f64 = chsh_signs
+        .iter()
+        .zip(e_raw.iter())
+        .map(|(s, e)| s * e)
+        .sum();
+    let s_compressed: f64 = chsh_signs
+        .iter()
+        .zip(e_compressed.iter())
+        .map(|(s, e)| s * e)
+        .sum();
     let delta_s = s_raw - s_compressed;
 
     println!();
-    println!("  S_raw       = {s_raw:.4}  (ideal 2*sqrt(2) = {:.4})", 2.0_f64.sqrt() * 2.0);
+    println!(
+        "  S_raw       = {s_raw:.4}  (ideal 2*sqrt(2) = {:.4})",
+        2.0_f64.sqrt() * 2.0
+    );
     println!("  S_compressed = {s_compressed:.4}");
     println!("  delta_S     = {delta_s:.4}");
     println!("  Compression ratio: {ratio:.1}x");
 
     let pass = s_compressed.abs() > 2.0;
     println!();
-    println!("  Verdict: {} (|S|={:.4} > 2.0 required)", if pass { "PASS" } else { "FAIL" }, s_compressed.abs());
+    println!(
+        "  Verdict: {} (|S|={:.4} > 2.0 required)",
+        if pass { "PASS" } else { "FAIL" },
+        s_compressed.abs()
+    );
 
     let dir = Path::new(&args.output_dir);
     fs::create_dir_all(dir).expect("failed to create output dir");
     let toml_path = dir.join("results.toml");
     let content = format!(
         "# CHSH Wavelet Compression results\n# n_time={} n_pairs={} compression_target={:.2}\n# verdict = {}\n\n[result]\ns_raw = {s_raw:.6}\ns_compressed = {s_compressed:.6}\ndelta_s = {delta_s:.6}\ncompression_ratio = {ratio:.2}\npass = {pass}\n",
-        args.n_time, args.n_pairs, args.compression_target,
+        args.n_time,
+        args.n_pairs,
+        args.compression_target,
         if pass { "PASS" } else { "FAIL" }
     );
     fs::write(&toml_path, content).expect("failed to write results.toml");

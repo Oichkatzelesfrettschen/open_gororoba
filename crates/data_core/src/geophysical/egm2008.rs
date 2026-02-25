@@ -2,7 +2,7 @@
 //!
 //! Source: NGA Earth Gravity Model 2008 distribution.
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::PathBuf;
 
 const EGM2008_URLS: &[&str] = &[

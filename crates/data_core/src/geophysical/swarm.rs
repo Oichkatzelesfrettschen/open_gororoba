@@ -7,7 +7,7 @@
 //!
 //! HAPI CSV format: ISO 8601 timestamp, then parameter columns.
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
@@ -44,26 +44,37 @@ pub fn parse_swarm_csv(path: &Path) -> Result<Vec<SwarmRecord>, FetchError> {
 
     let mut records = Vec::new();
     let mut header_validated = false;
+    let mut inferred_header_names: Vec<String> = Vec::new();
 
     for line in content.lines() {
         let trimmed = line.trim();
-        if trimmed.is_empty() || trimmed.starts_with('#') {
+        if trimmed.is_empty() {
+            continue;
+        }
+        if trimmed.starts_with('#') {
+            if !header_validated && let Some(name) = extract_hapi_name_from_comment(trimmed) {
+                inferred_header_names.push(name);
+            }
             continue;
         }
 
-        // First non-comment line should be the header
         if !header_validated {
-            let lower = trimmed.to_lowercase();
-            for col in SWARM_EXPECTED_COLUMNS {
-                if !lower.contains(&col.to_lowercase()) {
-                    return Err(FetchError::Validation(format!(
-                        "Swarm CSV header missing expected column '{}': {}",
-                        col, trimmed
-                    )));
+            // Accept either an explicit CSV header row or inferred metadata
+            // from HAPI comment preamble.
+            if header_line_contains_expected_columns(trimmed)
+                || inferred_header_contains_expected_columns(&inferred_header_names)
+                || looks_like_swarm_data_row(trimmed)
+            {
+                header_validated = true;
+                if header_line_contains_expected_columns(trimmed) {
+                    continue;
                 }
+            } else {
+                return Err(FetchError::Validation(format!(
+                    "Swarm CSV header missing expected columns: {}",
+                    trimmed
+                )));
             }
-            header_validated = true;
-            continue;
         }
 
         let fields: Vec<&str> = trimmed.split(',').collect();
@@ -81,6 +92,43 @@ pub fn parse_swarm_csv(path: &Path) -> Result<Vec<SwarmRecord>, FetchError> {
     }
 
     Ok(records)
+}
+
+fn extract_hapi_name_from_comment(line: &str) -> Option<String> {
+    let stripped = line.trim_start_matches('#').trim();
+    if !stripped.starts_with("\"name\"") {
+        return None;
+    }
+    let mut parts = stripped.split('"');
+    let _ = parts.next();
+    let _ = parts.next();
+    let _ = parts.next();
+    parts.next().map(ToString::to_string)
+}
+
+fn header_line_contains_expected_columns(line: &str) -> bool {
+    let lower = line.to_lowercase();
+    SWARM_EXPECTED_COLUMNS
+        .iter()
+        .all(|col| lower.contains(&col.to_lowercase()))
+}
+
+fn inferred_header_contains_expected_columns(names: &[String]) -> bool {
+    if names.is_empty() {
+        return false;
+    }
+    SWARM_EXPECTED_COLUMNS
+        .iter()
+        .all(|expected| names.iter().any(|name| name.eq_ignore_ascii_case(expected)))
+}
+
+fn looks_like_swarm_data_row(line: &str) -> bool {
+    let fields: Vec<&str> = line.split(',').collect();
+    if fields.len() < 5 {
+        return false;
+    }
+    let ts = fields[0].trim();
+    ts.contains('T') && ts.contains('-') && ts.contains(':')
 }
 
 /// Check that timestamps are strictly monotonically increasing.

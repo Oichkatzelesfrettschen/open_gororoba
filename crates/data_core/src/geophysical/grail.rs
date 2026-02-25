@@ -7,7 +7,7 @@
 //! Source: ICGEM, http://icgem.gfz-potsdam.de/
 //! Reference: Lemoine et al. (2014), JGR Planets 119, 1698
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::PathBuf;
 
 /// ICGEM URL for GRGM1200B truncated to degree 360 (~3 MB).

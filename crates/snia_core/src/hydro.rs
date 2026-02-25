@@ -247,11 +247,7 @@ impl HllcFlux1D {
     ) -> ConservativeState {
         let safe = |x: f64| {
             if x.abs() < 1.0e-12 {
-                if x < 0.0 {
-                    -1.0e-12
-                } else {
-                    1.0e-12
-                }
+                if x < 0.0 { -1.0e-12 } else { 1.0e-12 }
             } else {
                 x
             }
@@ -320,11 +316,7 @@ impl HllcFlux1D {
             - u_r.momentum * (s_r - right.velocity);
         let denominator = u_l.mass * (s_l - left.velocity) - u_r.mass * (s_r - right.velocity);
         let denom = if denominator.abs() < 1.0e-12 {
-            if denominator < 0.0 {
-                -1.0e-12
-            } else {
-                1.0e-12
-            }
+            if denominator < 0.0 { -1.0e-12 } else { 1.0e-12 }
         } else {
             denominator
         };
@@ -608,9 +600,10 @@ mod tests {
         ] {
             let rec = h.reconstruct_muscl(&cells, limiter, BoundaryCondition::Outflow);
             assert_eq!(rec.len(), cells.len() + 1);
-            assert!(rec
-                .iter()
-                .all(|(l, r)| l.density.is_finite() && r.density.is_finite()));
+            assert!(
+                rec.iter()
+                    .all(|(l, r)| l.density.is_finite() && r.density.is_finite())
+            );
         }
     }
 

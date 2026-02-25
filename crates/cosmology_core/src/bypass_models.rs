@@ -21,7 +21,7 @@
 //! - Mazur & Mottola (2004): Gravastar proposal
 
 use crate::gravastar::{
-    solve_gravastar, AnisotropicParams, GravastarConfig, GravastarSolution, PolytropicEos,
+    AnisotropicParams, GravastarConfig, GravastarSolution, PolytropicEos, solve_gravastar,
 };
 use std::f64::consts::PI;
 
@@ -163,9 +163,7 @@ pub fn evaluate_bypass(config: &BypassConfig, model: BypassModel) -> BypassResul
 
     let (k_eff, dim_factor) = match model {
         BypassModel::Baseline => (k_base, 1.0),
-        BypassModel::QuaternionProjection => {
-            (quaternion_projection_k(k_base), 4.0 / 16.0)
-        }
+        BypassModel::QuaternionProjection => (quaternion_projection_k(k_base), 4.0 / 16.0),
         BypassModel::QuaternionRestriction => {
             (quaternion_restriction_k(k_base, config.gamma), 4.0 / 16.0)
         }
@@ -227,7 +225,10 @@ impl BypassComparison {
     /// Compares mass and compactness of bypass models against baseline.
     /// Returns (mass_deviation, compactness_deviation) for each bypass model.
     pub fn boundary_deviations(&self) -> Vec<(BypassModel, Option<(f64, f64)>)> {
-        let baseline = self.results.iter().find(|r| r.model == BypassModel::Baseline);
+        let baseline = self
+            .results
+            .iter()
+            .find(|r| r.model == BypassModel::Baseline);
 
         self.results
             .iter()
@@ -252,8 +253,7 @@ impl BypassComparison {
     /// Check if any bypass model produces a stable gravastar.
     pub fn has_stable_bypass(&self) -> bool {
         self.results.iter().any(|r| {
-            r.model != BypassModel::Baseline
-                && r.solution.as_ref().is_some_and(|s| s.is_stable)
+            r.model != BypassModel::Baseline && r.solution.as_ref().is_some_and(|s| s.is_stable)
         })
     }
 
@@ -733,11 +733,7 @@ mod tests {
             if let Some(sol) = &r.solution {
                 // Bypass models have smaller K -> softer EoS -> more likely causal
                 if r.model != BypassModel::Baseline {
-                    assert!(
-                        sol.is_causal,
-                        "{:?} should be causal (softer EoS)",
-                        r.model
-                    );
+                    assert!(sol.is_causal, "{:?} should be causal (softer EoS)", r.model);
                 }
             }
         }
@@ -807,8 +803,7 @@ mod tests {
             assert!(
                 se.satisfies_nec,
                 "NEC should be satisfied at shell midpoint: rho={}, p_r={}",
-                se.energy_density,
-                se.radial_pressure
+                se.energy_density, se.radial_pressure
             );
         }
     }

@@ -8,8 +8,9 @@
 //!   fetch-datasets --category geophysical       Fetch geophysical datasets
 //!   fetch-datasets --dataset "CHIME FRB Cat 2"  Fetch a specific dataset
 //!   fetch-datasets --skip-existing              Honor cache (default: true)
+//!   fetch-datasets --skip-existing=false        Force refresh existing files
 
-use clap::Parser;
+use clap::{ArgAction, Parser};
 use data_core::fetcher::{DatasetProvider, FetchConfig};
 
 #[derive(Parser, Debug)]
@@ -48,7 +49,14 @@ struct Args {
     output_dir: String,
 
     /// Skip download if file already exists (default: true).
-    #[arg(long, default_value_t = true)]
+    /// Accepts either `--skip-existing` or `--skip-existing=<true|false>`.
+    #[arg(
+        long,
+        default_value_t = true,
+        action = ArgAction::Set,
+        num_args = 0..=1,
+        default_missing_value = "true"
+    )]
     skip_existing: bool,
 }
 
@@ -351,29 +359,40 @@ fn main() {
 
     // Validate --pillar value
     if let Some(ref p) = args.pillar
-        && !VALID_PILLARS.contains(&p.as_str()) {
-            eprintln!(
-                "Error: unknown pillar '{}'. Valid pillars: {}",
-                p,
-                VALID_PILLARS.join(", ")
-            );
-            std::process::exit(1);
-        }
+        && !VALID_PILLARS.contains(&p.as_str())
+    {
+        eprintln!(
+            "Error: unknown pillar '{}'. Valid pillars: {}",
+            p,
+            VALID_PILLARS.join(", ")
+        );
+        std::process::exit(1);
+    }
 
     let targets: Vec<&DatasetEntry> = if args.all {
         registry.iter().collect()
-    } else if let Some(ref p) = args.pillar {
-        registry.iter().filter(|e| e.pillar == p.as_str()).collect()
-    } else if let Some(ref cat) = args.category {
+    } else if args.pillar.is_some() || args.category.is_some() || args.dataset.is_some() {
+        let dataset_name_filter = args.dataset.as_ref().map(|s| s.to_lowercase());
         registry
             .iter()
-            .filter(|e| e.category == cat.as_str())
-            .collect()
-    } else if let Some(ref name) = args.dataset {
-        let lower = name.to_lowercase();
-        registry
-            .iter()
-            .filter(|e| e.provider.name().to_lowercase().contains(&lower))
+            .filter(|entry| {
+                if let Some(ref p) = args.pillar
+                    && entry.pillar != p
+                {
+                    return false;
+                }
+                if let Some(ref cat) = args.category
+                    && entry.category != cat
+                {
+                    return false;
+                }
+                if let Some(ref name_filter) = dataset_name_filter
+                    && !entry.provider.name().to_lowercase().contains(name_filter)
+                {
+                    return false;
+                }
+                true
+            })
             .collect()
     } else {
         eprintln!("No action specified. Use --list, --all, --category, --pillar, or --dataset.");

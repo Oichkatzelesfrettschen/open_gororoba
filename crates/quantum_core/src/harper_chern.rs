@@ -48,9 +48,9 @@
 //! - Thouless, Kohmoto, Nightingale, den Nijs (TKNN) (1982): Quantized Hall
 //!   Conductance in a Two-Dimensional Periodic Potential, PRL 49, 405
 
-use faer::complex_native::c64;
 use faer::Mat;
 use faer::Side;
+use faer::complex_native::c64;
 use std::f64::consts::PI;
 
 /// Result of Chern number calculation for a single flux value.

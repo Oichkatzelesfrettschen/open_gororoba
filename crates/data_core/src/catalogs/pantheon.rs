@@ -6,7 +6,7 @@
 //! Source: https://github.com/PantheonPlusSH0ES/DataRelease
 //! Reference: Scolnic et al. (2022), ApJ 938, 113; Brout et al. (2022), ApJ 938, 110
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
@@ -118,11 +118,7 @@ pub fn parse_pantheon_dat(path: &Path) -> Result<Vec<Supernova>, FetchError> {
         // marginalization. Fall back to MU if m_b_corr is not present.
         let mu_val = {
             let mb = get_field("M_B_CORR");
-            if mb.is_nan() {
-                get_field("MU")
-            } else {
-                mb
-            }
+            if mb.is_nan() { get_field("MU") } else { mb }
         };
         let mu_err_val = {
             let mbe = get_field("M_B_CORR_ERR_DIAG");
@@ -142,11 +138,7 @@ pub fn parse_pantheon_dat(path: &Path) -> Result<Vec<Supernova>, FetchError> {
             cid,
             z_cmb: {
                 let v = get_field("ZCMB");
-                if v.is_nan() {
-                    get_field("ZHD")
-                } else {
-                    v
-                }
+                if v.is_nan() { get_field("ZHD") } else { v }
             },
             z_hel: get_field("ZHEL"),
             mu: mu_val,

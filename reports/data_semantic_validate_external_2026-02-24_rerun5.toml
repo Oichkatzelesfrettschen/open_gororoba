@@ -1,0 +1,14 @@
+generated_at_utc = "2026-02-24T07:43:55.470Z"
+total_validators = 1
+passed = 1
+failed = 0
+
+[[results]]
+lane_id = "external"
+validator_id = "SV-002"
+validator_kind = "external_dataset_semantics"
+status = "pass"
+checked_files = 23520
+error_count = 0
+errors = []
+

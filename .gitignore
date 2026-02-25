@@ -37,6 +37,7 @@ venv/
 # Rust
 target/
 target_codex_hve/
+target_codex_hve2/
 rustc-ice-*.txt
 
 # C++
@@ -85,6 +86,7 @@ data/artifacts/*.png
 data/artifacts/c756_frames/
 data/artifacts/*.json
 data/artifacts/*.txt
+!data/artifacts/PROVENANCE.local.json
 data/artifacts/frames_*/
 data/e027/
 data/test-e027/
@@ -95,6 +97,7 @@ data/test_zd_1k/
 data/chsh_betti/
 data/chsh_wavelet/
 data/entropy_census/
+data/fano_scattering/
 data/lattice_hawking/
 data/meltdown_pulsed/
 data/meltdown_gating/
@@ -107,12 +110,40 @@ data/thesis_lab_non_newtonian/
 data/kubo_transport/
 data/equivalence/
 data/papers/
-data/evidence/
+!data/papers/
+data/papers/**
+!data/papers/corpus/
+data/papers/corpus/**
+!data/papers/corpus/MANIFEST.toml
+!data/papers/documents_ingest/
+data/papers/documents_ingest/**
+!data/papers/documents_ingest/MANIFEST.toml
+!data/papers/intake/
+data/papers/intake/**
+!data/papers/intake/traces/
+data/papers/intake/traces/**
+!data/papers/intake/traces/hypothesis_runtime_hott_downloads.json
+data/evidence/**
+!data/evidence/
+!data/evidence/MANIFEST.toml
 data/sfwm_repro/
+data/bl_6equj5_ata/
+data/bl_6equj5_gbt/
 
 # External / Downloaded Datasets (Managed via fetch-data)
-data/external/
+data/external/**
+!data/external/
 !data/external/README.md
+!data/external/PROVENANCE.local.json
+!data/external/SOURCES.toml
+
+# Archived non-replayable payloads (track only retirement manifests)
+archive/external_legacy_placeholders/**
+!archive/external_legacy_placeholders/
+!archive/external_legacy_placeholders/RETIREMENT_MANIFEST.toml
+archive/external_nonreproducible_snapshots/**
+!archive/external_nonreproducible_snapshots/
+!archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml
 
 # SQLite databases
 *.db
@@ -151,6 +182,5 @@ credentials.*
 /*.jpg
 /*.ptx
 /*.txt
-data/bl_6equj5_gbt/
 *.h5
 .venv/

@@ -80,10 +80,7 @@ pub fn extract_epsilon(
     tol: f64,
 ) -> EpsilonFitResult {
     // Brent's method for 1D minimization
-    let (best_eps, best_chi2) = brent_minimize(
-        |eps| chi2(data, eps, n),
-        eps_lo, eps_hi, tol,
-    );
+    let (best_eps, best_chi2) = brent_minimize(|eps| chi2(data, eps, n), eps_lo, eps_hi, tol);
 
     let ndf = if data.len() > 1 { data.len() - 1 } else { 1 };
 
@@ -91,16 +88,12 @@ pub fn extract_epsilon(
     let target = best_chi2 + 1.0;
 
     // Upper error: find eps > best_eps where chi2 = target
-    let err_up = find_delta_chi2_crossing(
-        |eps| chi2(data, eps, n),
-        best_eps, eps_hi, target, tol,
-    ) - best_eps;
+    let err_up = find_delta_chi2_crossing(|eps| chi2(data, eps, n), best_eps, eps_hi, target, tol)
+        - best_eps;
 
     // Lower error: find eps < best_eps where chi2 = target
-    let err_down = best_eps - find_delta_chi2_crossing(
-        |eps| chi2(data, eps, n),
-        eps_lo, best_eps, target, tol,
-    );
+    let err_down = best_eps
+        - find_delta_chi2_crossing(|eps| chi2(data, eps, n), eps_lo, best_eps, target, tol);
 
     EpsilonFitResult {
         epsilon_bar: best_eps,
@@ -144,7 +137,11 @@ fn brent_minimize<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, tol: f64) -> (f64, f6
             let q = (x - v) * (fx - fw);
             let mut p = (x - v) * q - (x - w) * r;
             let mut q = 2.0 * (q - r);
-            if q > 0.0 { p = -p; } else { q = -q; }
+            if q > 0.0 {
+                p = -p;
+            } else {
+                q = -q;
+            }
             let prev_e = e;
 
             if p.abs() < (0.5 * q * prev_e).abs() && p > q * (a - x) && p < q * (b - x) {
@@ -172,17 +169,31 @@ fn brent_minimize<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, tol: f64) -> (f64, f6
         let fu = f(u);
 
         if fu <= fx {
-            if u < x { b = x; } else { a = x; }
-            v = w; fv = fw;
-            w = x; fw = fx;
-            x = u; fx = fu;
+            if u < x {
+                b = x;
+            } else {
+                a = x;
+            }
+            v = w;
+            fv = fw;
+            w = x;
+            fw = fx;
+            x = u;
+            fx = fu;
         } else {
-            if u < x { a = u; } else { b = u; }
+            if u < x {
+                a = u;
+            } else {
+                b = u;
+            }
             if fu <= fw || (w - x).abs() < 1e-30 {
-                v = w; fv = fw;
-                w = u; fw = fu;
+                v = w;
+                fv = fw;
+                w = u;
+                fw = fu;
             } else if fu <= fv || (v - x).abs() < 1e-30 || (v - w).abs() < 1e-30 {
-                v = u; fv = fu;
+                v = u;
+                fv = fu;
             }
         }
     }
@@ -192,13 +203,7 @@ fn brent_minimize<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, tol: f64) -> (f64, f6
 
 /// Find the x in [a, b] where f(x) = target using bisection.
 /// Assumes f(a) and f(b) bracket the target (one above, one below).
-fn find_delta_chi2_crossing<F: Fn(f64) -> f64>(
-    f: F,
-    a: f64,
-    b: f64,
-    target: f64,
-    tol: f64,
-) -> f64 {
+fn find_delta_chi2_crossing<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, target: f64, tol: f64) -> f64 {
     let fa = f(a) - target;
     let fb = f(b) - target;
 
@@ -233,18 +238,26 @@ mod tests {
     use super::*;
 
     /// Generate synthetic R_AA data from the model with known epsilon_bar.
-    fn synthetic_raa_data(epsilon_bar: f64, n: f64, pt_min: f64, pt_max: f64, n_pts: usize) -> Vec<RaaDataPoint> {
+    fn synthetic_raa_data(
+        epsilon_bar: f64,
+        n: f64,
+        pt_min: f64,
+        pt_max: f64,
+        n_pts: usize,
+    ) -> Vec<RaaDataPoint> {
         let dpt = (pt_max - pt_min) / (n_pts - 1) as f64;
-        (0..n_pts).map(|i| {
-            let pt = pt_min + i as f64 * dpt;
-            let raa = r_aa_model(pt, epsilon_bar, n);
-            RaaDataPoint {
-                pt,
-                raa,
-                stat_err: 0.02,
-                syst_err: 0.03,
-            }
-        }).collect()
+        (0..n_pts)
+            .map(|i| {
+                let pt = pt_min + i as f64 * dpt;
+                let raa = r_aa_model(pt, epsilon_bar, n);
+                RaaDataPoint {
+                    pt,
+                    raa,
+                    stat_err: 0.02,
+                    syst_err: 0.03,
+                }
+            })
+            .collect()
     }
 
     #[test]
@@ -255,10 +268,17 @@ mod tests {
 
         let result = extract_epsilon(&data, n, 0.1, 20.0, 1e-6);
 
-        assert!((result.epsilon_bar - true_eps).abs() < 0.1,
-            "extracted epsilon = {} (expected {})", result.epsilon_bar, true_eps);
-        assert!(result.chi2_min < 0.01,
-            "chi2_min = {} (expected ~0 for perfect data)", result.chi2_min);
+        assert!(
+            (result.epsilon_bar - true_eps).abs() < 0.1,
+            "extracted epsilon = {} (expected {})",
+            result.epsilon_bar,
+            true_eps
+        );
+        assert!(
+            result.chi2_min < 0.01,
+            "chi2_min = {} (expected ~0 for perfect data)",
+            result.chi2_min
+        );
     }
 
     #[test]
@@ -280,8 +300,12 @@ mod tests {
         let result = extract_epsilon(&data, n, 0.1, 15.0, 1e-6);
 
         // Should still recover epsilon within error bars
-        assert!((result.epsilon_bar - true_eps).abs() < 0.5,
-            "extracted epsilon = {} (expected {} +/- 0.5)", result.epsilon_bar, true_eps);
+        assert!(
+            (result.epsilon_bar - true_eps).abs() < 0.5,
+            "extracted epsilon = {} (expected {} +/- 0.5)",
+            result.epsilon_bar,
+            true_eps
+        );
         assert!(result.err_up > 0.0, "err_up should be positive");
         assert!(result.err_down > 0.0, "err_down should be positive");
     }
@@ -297,11 +321,12 @@ mod tests {
     #[test]
     fn test_delta_chi2_crossing() {
         // f(x) = (x-5)^2 + 10, target = 11 => crossing at x=4 and x=6
-        let crossing = find_delta_chi2_crossing(
-            |x| (x - 5.0) * (x - 5.0) + 10.0,
-            5.0, 10.0, 11.0, 1e-8,
+        let crossing =
+            find_delta_chi2_crossing(|x| (x - 5.0) * (x - 5.0) + 10.0, 5.0, 10.0, 11.0, 1e-8);
+        assert!(
+            (crossing - 6.0).abs() < 1e-6,
+            "crossing = {} (expected 6)",
+            crossing
         );
-        assert!((crossing - 6.0).abs() < 1e-6,
-            "crossing = {} (expected 6)", crossing);
     }
 }

@@ -200,8 +200,7 @@ pub fn invert_entropy_bridge(target: f64) -> Option<f64> {
 /// Returns the phi value in (0, 0.5) where frustration_entropy_bridge(phi) = gamma_NZJ.
 /// This should be near the vacuum attractor 3/8 = 0.375.
 pub fn invert_entropy_bridge_nzj() -> f64 {
-    invert_entropy_bridge(GAMMA_NZJ)
-        .expect("gamma_NZJ is within bridge range")
+    invert_entropy_bridge(GAMMA_NZJ).expect("gamma_NZJ is within bridge range")
 }
 
 /// Attempt to invert the bridge for gamma_BG.
@@ -285,14 +284,8 @@ mod tests {
 
     #[test]
     fn frustration_entropy_zero_at_extremes() {
-        assert!(
-            frustration_entropy_bridge(0.0).abs() < 1e-15,
-            "H(0) = 0"
-        );
-        assert!(
-            frustration_entropy_bridge(1.0).abs() < 1e-15,
-            "H(1) = 0"
-        );
+        assert!(frustration_entropy_bridge(0.0).abs() < 1e-15, "H(0) = 0");
+        assert!(frustration_entropy_bridge(1.0).abs() < 1e-15, "H(1) = 0");
     }
 
     #[test]

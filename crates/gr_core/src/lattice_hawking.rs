@@ -86,11 +86,7 @@ pub fn viscosity_cutoff_spectrum(t_h: f64, omega: f64, dx: f64, nu: f64) -> f64 
 /// Compute the spectral chi-squared between two spectra.
 ///
 /// chi2 = sum_i [(n1(omega_i) - n2(omega_i))^2 / (n1(omega_i) + eps)]
-pub fn spectral_chi_squared(
-    n1: &[f64],
-    n2: &[f64],
-    eps: f64,
-) -> f64 {
+pub fn spectral_chi_squared(n1: &[f64], n2: &[f64], eps: f64) -> f64 {
     assert_eq!(n1.len(), n2.len());
     n1.iter()
         .zip(n2.iter())
@@ -144,8 +140,14 @@ pub fn compute_spectra(
         .map(|i| omega_max * i as f64 / (n_omega as f64 + 1.0))
         .collect();
 
-    let ideal: Vec<f64> = omegas.iter().map(|&w| ideal_hawking_spectrum(t_h, w)).collect();
-    let lattice: Vec<f64> = omegas.iter().map(|&w| lattice_cutoff_spectrum(t_h, w, dx)).collect();
+    let ideal: Vec<f64> = omegas
+        .iter()
+        .map(|&w| ideal_hawking_spectrum(t_h, w))
+        .collect();
+    let lattice: Vec<f64> = omegas
+        .iter()
+        .map(|&w| lattice_cutoff_spectrum(t_h, w, dx))
+        .collect();
     let viscous: Vec<f64> = omegas
         .iter()
         .map(|&w| viscosity_cutoff_spectrum(t_h, w, dx, nu))
@@ -202,9 +204,7 @@ mod tests {
         // Generate ideal spectrum and recover T
         let t_true = 0.5;
         let n_omega = 50;
-        let omegas: Vec<f64> = (1..=n_omega)
-            .map(|i| 0.1 * i as f64)
-            .collect();
+        let omegas: Vec<f64> = (1..=n_omega).map(|i| 0.1 * i as f64).collect();
         let spectrum: Vec<f64> = omegas
             .iter()
             .map(|&w| ideal_hawking_spectrum(t_true, w))
@@ -213,7 +213,8 @@ mod tests {
         assert!(
             (t_fit - t_true).abs() / t_true < 0.05,
             "recovered T={:.3} vs true T={:.3}",
-            t_fit, t_true
+            t_fit,
+            t_true
         );
     }
 

@@ -84,7 +84,9 @@ fn main() {
     if all_zero_frust_nonzero && nonzero_count == zero_frust_chambers.len() {
         println!(" ==> HYPOTHESIS STRONGLY SUPPORTED: R1 is exactly the zero-frustration locus.");
     } else if all_zero_frust_nonzero {
-        println!(" ==> HYPOTHESIS PARTIALLY SUPPORTED: All zero-frustration chambers are non-zero, but some non-zero amplitudes have higher frustration?");
+        println!(
+            " ==> HYPOTHESIS PARTIALLY SUPPORTED: All zero-frustration chambers are non-zero, but some non-zero amplitudes have higher frustration?"
+        );
         // Actually, if frustration is fraction of zeros, and any zero factor makes amplitude zero,
         // then non-zero amplitude MUST have zero frustration.
     }

@@ -192,11 +192,7 @@ mod tests {
 
     fn test_pdf_path() -> Option<PathBuf> {
         let path = PathBuf::from("../../papers/pdf/de_marrais_2000_math0011260.pdf");
-        if path.exists() {
-            Some(path)
-        } else {
-            None
-        }
+        if path.exists() { Some(path) } else { None }
     }
 
     #[test]

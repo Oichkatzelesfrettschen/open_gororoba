@@ -6,7 +6,7 @@
 //! Source: Figshare article 6815699
 //! https://figshare.com/articles/dataset/jdft_3d-7-7-2018_json/6815699
 
-use crate::fetcher::{download_to_file, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
@@ -89,11 +89,15 @@ pub fn fetch_jarvis_json(config: &FetchConfig) -> Result<PathBuf, FetchError> {
 
     let files = list_figshare_files(FIGSHARE_ARTICLE_ID)?;
 
-    // Find the JSON file (prefer smallest match containing "json")
-    let mut json_files: Vec<&FigshareFile> = files
-        .iter()
-        .filter(|f| f.name.contains("json") || f.name.ends_with(".json"))
-        .collect();
+    // Prefer direct JSON assets over ZIP wrappers when available.
+    let mut json_files: Vec<&FigshareFile> =
+        files.iter().filter(|f| f.name.ends_with(".json")).collect();
+    if json_files.is_empty() {
+        json_files = files
+            .iter()
+            .filter(|f| f.name.contains("json") || f.name.ends_with(".json"))
+            .collect();
+    }
     json_files.sort_by_key(|f| f.size);
 
     let target = json_files
@@ -139,8 +143,19 @@ pub fn parse_jarvis_json(path: &Path) -> Result<Vec<JarvisMaterial>, FetchError>
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("Read error: {e}")))?;
 
-    let records: Vec<serde_json::Value> = serde_json::from_str(&content)
-        .map_err(|e| FetchError::Validation(format!("JSON parse error: {e}")))?;
+    let records: Vec<serde_json::Value> = match serde_json::from_str(&content) {
+        Ok(records) => records,
+        Err(primary_err) => {
+            // Upstream JARVIS snapshots may contain non-finite numeric literals
+            // (NaN/Infinity), which are not valid strict JSON.
+            let sanitized = normalize_non_finite_json_literals(&content);
+            serde_json::from_str(&sanitized).map_err(|secondary_err| {
+                FetchError::Validation(format!(
+                    "JSON parse error: {primary_err}; fallback parse error: {secondary_err}"
+                ))
+            })?
+        }
+    };
 
     let mut materials = Vec::with_capacity(records.len());
     for rec in &records {
@@ -153,20 +168,67 @@ pub fn parse_jarvis_json(path: &Path) -> Result<Vec<JarvisMaterial>, FetchError>
     Ok(materials)
 }
 
+fn normalize_non_finite_json_literals(raw: &str) -> String {
+    let bytes = raw.as_bytes();
+    let mut i = 0usize;
+    let mut out = String::with_capacity(raw.len());
+    let mut in_string = false;
+    let mut escaped = false;
+
+    while i < bytes.len() {
+        let ch = bytes[i] as char;
+        if in_string {
+            out.push(ch);
+            if escaped {
+                escaped = false;
+            } else if ch == '\\' {
+                escaped = true;
+            } else if ch == '"' {
+                in_string = false;
+            }
+            i += 1;
+            continue;
+        }
+
+        if ch == '"' {
+            in_string = true;
+            out.push(ch);
+            i += 1;
+            continue;
+        }
+
+        if bytes[i..].starts_with(b"-Infinity") {
+            out.push_str("null");
+            i += "-Infinity".len();
+            continue;
+        }
+        if bytes[i..].starts_with(b"Infinity") {
+            out.push_str("null");
+            i += "Infinity".len();
+            continue;
+        }
+        if bytes[i..].starts_with(b"NaN") {
+            out.push_str("null");
+            i += "NaN".len();
+            continue;
+        }
+
+        out.push(ch);
+        i += 1;
+    }
+
+    out
+}
+
 /// Parse one JSON record into a JarvisMaterial.
 fn parse_one_record(rec: &serde_json::Value) -> Option<JarvisMaterial> {
     let jid = rec.get("jid")?.as_str()?.to_string();
 
-    // Extract atoms structure
-    let atoms = rec.get("atoms");
-    let atom_elements: Vec<String> = atoms
-        .and_then(|a| a.get("elements"))
-        .and_then(|e| e.as_array())
-        .map(|arr| {
-            arr.iter()
-                .filter_map(|v| v.as_str().map(String::from))
-                .collect()
-        })
+    // JARVIS snapshots have evolved: older payloads expose `atoms.elements`,
+    // newer payloads often expose `final_str.sites[*].species[*].element`.
+    let structure = rec.get("atoms").or_else(|| rec.get("final_str"));
+    let atom_elements: Vec<String> = structure
+        .map(extract_elements_from_structure)
         .unwrap_or_default();
 
     // Derive formula from elements if not present
@@ -200,7 +262,7 @@ fn parse_one_record(rec: &serde_json::Value) -> Option<JarvisMaterial> {
     let volume = rec
         .get("volume")
         .and_then(|v| v.as_f64())
-        .or_else(|| compute_volume_from_lattice(atoms?));
+        .or_else(|| structure.and_then(compute_volume_from_lattice));
 
     Some(JarvisMaterial {
         jid,
@@ -224,6 +286,29 @@ fn parse_one_record(rec: &serde_json::Value) -> Option<JarvisMaterial> {
     })
 }
 
+fn extract_elements_from_structure(structure: &serde_json::Value) -> Vec<String> {
+    if let Some(elements) = structure.get("elements").and_then(|e| e.as_array()) {
+        return elements
+            .iter()
+            .filter_map(|v| v.as_str().map(String::from))
+            .collect();
+    }
+
+    let mut out = Vec::new();
+    if let Some(sites) = structure.get("sites").and_then(|s| s.as_array()) {
+        for site in sites {
+            if let Some(species) = site.get("species").and_then(|s| s.as_array()) {
+                for sp in species {
+                    if let Some(el) = sp.get("element").and_then(|v| v.as_str()) {
+                        out.push(el.to_string());
+                    }
+                }
+            }
+        }
+    }
+    out
+}
+
 /// Derive a formula string from a list of element symbols.
 fn derive_formula(elements: &[String]) -> String {
     let mut counts: BTreeMap<&str, usize> = BTreeMap::new();
@@ -242,7 +327,10 @@ fn derive_formula(elements: &[String]) -> String {
 
 /// Compute volume as |det(lattice_mat)| from the atoms JSON.
 fn compute_volume_from_lattice(atoms: &serde_json::Value) -> Option<f64> {
-    let mat = atoms.get("lattice_mat")?.as_array()?;
+    let mat = atoms
+        .get("lattice_mat")
+        .or_else(|| atoms.get("lattice").and_then(|l| l.get("matrix")))?
+        .as_array()?;
     if mat.len() != 3 {
         return None;
     }
@@ -330,5 +418,26 @@ mod tests {
         assert_eq!(mat.formula, "AgTe2Tl");
         assert_eq!(mat.nelements, 3);
         assert!((mat.volume.unwrap() - 1.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_parse_jarvis_json_tolerates_non_finite_literals() {
+        let mut temp = tempfile::NamedTempFile::new().expect("temp file");
+        let body = r#"
+[
+  {
+    "jid": "JVASP-TEST",
+    "formation_energy_peratom": NaN,
+    "atoms": {
+      "lattice_mat": [[1.0, 0.0, 0.0], [0.0, Infinity, 0.0], [0.0, 0.0, 1.0]],
+      "elements": ["Li", "Mg"]
+    }
+  }
+]
+"#;
+        std::io::Write::write_all(&mut temp, body.as_bytes()).expect("write");
+        let mats = parse_jarvis_json(temp.path()).expect("lenient parse");
+        assert_eq!(mats.len(), 1);
+        assert_eq!(mats[0].jid, "JVASP-TEST");
     }
 }

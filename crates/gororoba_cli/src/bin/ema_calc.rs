@@ -14,7 +14,7 @@
 
 use clap::{Parser, Subcommand};
 use materials_core::{
-    bruggeman, drude, drude_lorentz, maxwell_garnett, tmm_reflection, LorentzOscillator,
+    LorentzOscillator, bruggeman, drude, drude_lorentz, maxwell_garnett, tmm_reflection,
 };
 use num_complex::Complex64;
 

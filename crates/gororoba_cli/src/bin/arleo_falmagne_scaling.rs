@@ -15,10 +15,10 @@ use clap::{Parser, Subcommand};
 use data_core::catalogs::hic_raa;
 use data_core::fetcher::FetchConfig;
 use qgp_scaling::data_tables;
-use qgp_scaling::density_scaling::{fit_density_scaling, DensityScalingPoint};
-use qgp_scaling::epsilon_fit::{extract_epsilon, RaaDataPoint};
+use qgp_scaling::density_scaling::{DensityScalingPoint, fit_density_scaling};
+use qgp_scaling::epsilon_fit::{RaaDataPoint, extract_epsilon};
 use qgp_scaling::glauber::{
-    compute_centrality_bins, standard_centrality_edges, CentralityBinGeometry, SigmaNN,
+    CentralityBinGeometry, SigmaNN, compute_centrality_bins, standard_centrality_edges,
 };
 use qgp_scaling::multiplicity;
 use qgp_scaling::nucleus::NucleusParams;
@@ -76,7 +76,12 @@ fn main() {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Full { data_dir, skip_download, pt_min, n_gl } => {
+        Commands::Full {
+            data_dir,
+            skip_download,
+            pt_min,
+            n_gl,
+        } => {
             run_full(&data_dir, skip_download, pt_min, n_gl);
         }
         Commands::Alice { data_dir, pt_min } => {
@@ -93,28 +98,52 @@ fn run_glauber_only(n_gl: usize) {
     eprintln!();
 
     let systems: Vec<(&str, NucleusParams, SigmaNN)> = vec![
-        ("Pb-Pb 5.02 TeV", NucleusParams::pb208(), SigmaNN::lhc_5020()),
-        ("Pb-Pb 2.76 TeV", NucleusParams::pb208(), SigmaNN::lhc_2760()),
+        (
+            "Pb-Pb 5.02 TeV",
+            NucleusParams::pb208(),
+            SigmaNN::lhc_5020(),
+        ),
+        (
+            "Pb-Pb 2.76 TeV",
+            NucleusParams::pb208(),
+            SigmaNN::lhc_2760(),
+        ),
         ("Au-Au 200 GeV", NucleusParams::au197(), SigmaNN::rhic_200()),
-        ("Xe-Xe 5.44 TeV", NucleusParams::xe129(), SigmaNN::lhc_5440()),
+        (
+            "Xe-Xe 5.44 TeV",
+            NucleusParams::xe129(),
+            SigmaNN::lhc_5440(),
+        ),
     ];
 
     let edges = standard_centrality_edges();
 
     for (label, nuc, sigma) in &systems {
         eprintln!("--- {} ---", label);
-        eprintln!("  R_A = {:.3} fm, sigma_NN = {:.1} mb", nuc.r_a, sigma.sigma_mb);
+        eprintln!(
+            "  R_A = {:.3} fm, sigma_NN = {:.1} mb",
+            nuc.r_a, sigma.sigma_mb
+        );
 
         let bins = compute_centrality_bins(&edges, sigma, nuc, n_gl, 300);
 
-        eprintln!("  {:>10} {:>8} {:>8} {:>8} {:>8} {:>8} {:>8}",
-            "Centrality", "b_lo", "b_hi", "Npart", "A_perp", "L_avg", "ecc");
+        eprintln!(
+            "  {:>10} {:>8} {:>8} {:>8} {:>8} {:>8} {:>8}",
+            "Centrality", "b_lo", "b_hi", "Npart", "A_perp", "L_avg", "ecc"
+        );
 
         for bin in &bins {
-            eprintln!("  {:>4.0}-{:<5.0}% {:>8.2} {:>8.2} {:>8.1} {:>8.1} {:>8.2} {:>8.4}",
-                bin.cent_lo * 100.0, bin.cent_hi * 100.0,
-                bin.b_lo, bin.b_hi,
-                bin.n_part, bin.a_perp, bin.l_avg, bin.eccentricity);
+            eprintln!(
+                "  {:>4.0}-{:<5.0}% {:>8.2} {:>8.2} {:>8.1} {:>8.1} {:>8.2} {:>8.4}",
+                bin.cent_lo * 100.0,
+                bin.cent_hi * 100.0,
+                bin.b_lo,
+                bin.b_hi,
+                bin.n_part,
+                bin.a_perp,
+                bin.l_avg,
+                bin.eccentricity
+            );
         }
 
         // Validate against published Npart
@@ -130,19 +159,27 @@ fn validate_npart_pbpb(bins: &[CentralityBinGeometry]) {
     let refs = data_tables::alice_pbpb_5020_npart();
     eprintln!();
     eprintln!("  Npart validation (ALICE PLB 772, 2017):");
-    eprintln!("  {:>10} {:>10} {:>10} {:>10} {:>6}",
-        "Centrality", "Computed", "Published", "Diff%", "Pass?");
+    eprintln!(
+        "  {:>10} {:>10} {:>10} {:>10} {:>6}",
+        "Centrality", "Computed", "Published", "Diff%", "Pass?"
+    );
 
     for r in &refs {
         // Find matching centrality bin
-        if let Some(bin) = bins.iter().find(|b|
+        if let Some(bin) = bins.iter().find(|b| {
             (b.cent_lo - r.cent_lo).abs() < 0.001 && (b.cent_hi - r.cent_hi).abs() < 0.001
-        ) {
+        }) {
             let diff_pct = 100.0 * (bin.n_part - r.n_part).abs() / r.n_part;
             let pass = if diff_pct < 5.0 { "OK" } else { "FAIL" };
-            eprintln!("  {:>4.0}-{:<5.0}% {:>10.1} {:>10.1} {:>9.1}% {:>6}",
-                r.cent_lo * 100.0, r.cent_hi * 100.0,
-                bin.n_part, r.n_part, diff_pct, pass);
+            eprintln!(
+                "  {:>4.0}-{:<5.0}% {:>10.1} {:>10.1} {:>9.1}% {:>6}",
+                r.cent_lo * 100.0,
+                r.cent_hi * 100.0,
+                bin.n_part,
+                r.n_part,
+                diff_pct,
+                pass
+            );
         }
     }
 }
@@ -165,23 +202,28 @@ fn run_alice(data_dir: &str, pt_min: f64) {
 
     // Use broad centrality bins matching our Glauber edges
     let broad_cents = [
-        (0.00, 0.05, vec![1]),       // 0-5% = Table 1
-        (0.05, 0.10, vec![2]),       // 5-10% = Table 2
-        (0.10, 0.20, vec![3, 4]),    // 10-20% = Tables 3,4 (10-15% + 15-20%)
-        (0.20, 0.30, vec![5, 6]),    // 20-30% = Tables 5,6
-        (0.30, 0.40, vec![7, 8]),    // 30-40% = Tables 7,8
-        (0.40, 0.50, vec![9, 10]),   // 40-50% = Tables 9,10
-        (0.50, 0.60, vec![11, 12]),  // 50-60% = Tables 11,12
-        (0.60, 0.70, vec![13, 14]),  // 60-70% = Tables 13,14
+        (0.00, 0.05, vec![1]),      // 0-5% = Table 1
+        (0.05, 0.10, vec![2]),      // 5-10% = Table 2
+        (0.10, 0.20, vec![3, 4]),   // 10-20% = Tables 3,4 (10-15% + 15-20%)
+        (0.20, 0.30, vec![5, 6]),   // 20-30% = Tables 5,6
+        (0.30, 0.40, vec![7, 8]),   // 30-40% = Tables 7,8
+        (0.40, 0.50, vec![9, 10]),  // 40-50% = Tables 9,10
+        (0.50, 0.60, vec![11, 12]), // 50-60% = Tables 11,12
+        (0.60, 0.70, vec![13, 14]), // 60-70% = Tables 13,14
     ];
 
     let n_spectral = 6.1; // Spectral index for 5.02 TeV pp spectrum
 
     let mut epsilon_results = Vec::new();
 
-    eprintln!("[3/4] Extracting epsilon_bar per centrality (n = {:.1})...", n_spectral);
-    eprintln!("  {:>10} {:>8} {:>8} {:>8} {:>8} {:>8}",
-        "Centrality", "eps_bar", "+err", "-err", "chi2/ndf", "N_pts");
+    eprintln!(
+        "[3/4] Extracting epsilon_bar per centrality (n = {:.1})...",
+        n_spectral
+    );
+    eprintln!(
+        "  {:>10} {:>8} {:>8} {:>8} {:>8} {:>8}",
+        "Centrality", "eps_bar", "+err", "-err", "chi2/ndf", "N_pts"
+    );
 
     for (c_lo, c_hi, tables) in &broad_cents {
         // Load and merge data from relevant tables
@@ -217,10 +259,16 @@ fn run_alice(data_dir: &str, pt_min: f64) {
         // Average if multiple tables (take the first table's points for simplicity)
         let result = extract_epsilon(&all_data, n_spectral, 0.1, 20.0, 1e-6);
 
-        eprintln!("  {:>4.0}-{:<5.0}% {:>8.2} {:>8.2} {:>8.2} {:>8.2} {:>8}",
-            c_lo * 100.0, c_hi * 100.0,
-            result.epsilon_bar, result.err_up, result.err_down,
-            result.chi2_min / result.ndf as f64, all_data.len());
+        eprintln!(
+            "  {:>4.0}-{:<5.0}% {:>8.2} {:>8.2} {:>8.2} {:>8.2} {:>8}",
+            c_lo * 100.0,
+            c_hi * 100.0,
+            result.epsilon_bar,
+            result.err_up,
+            result.err_down,
+            result.chi2_min / result.ndf as f64,
+            all_data.len()
+        );
 
         epsilon_results.push((*c_lo, *c_hi, result));
     }
@@ -234,12 +282,12 @@ fn run_alice(data_dir: &str, pt_min: f64) {
 
     for (c_lo, c_hi, eps_result) in &epsilon_results {
         // Find matching Glauber bin
-        let glauber = bins.iter().find(|b|
-            (b.cent_lo - c_lo).abs() < 0.001 && (b.cent_hi - c_hi).abs() < 0.001
-        );
-        let mult_bin = mult.iter().find(|m|
-            (m.cent_lo - c_lo).abs() < 0.001 && (m.cent_hi - c_hi).abs() < 0.001
-        );
+        let glauber = bins
+            .iter()
+            .find(|b| (b.cent_lo - c_lo).abs() < 0.001 && (b.cent_hi - c_hi).abs() < 0.001);
+        let mult_bin = mult
+            .iter()
+            .find(|m| (m.cent_lo - c_lo).abs() < 0.001 && (m.cent_hi - c_hi).abs() < 0.001);
 
         if let (Some(g), Some(m)) = (glauber, mult_bin) {
             scaling_data.push(DensityScalingPoint {
@@ -259,17 +307,32 @@ fn run_alice(data_dir: &str, pt_min: f64) {
 
         eprintln!();
         eprintln!("  === Density Scaling Result (Pb-Pb 5.02 TeV only) ===");
-        eprintln!("  beta     = {:.3} +{:.3} -{:.3}", result.beta, result.beta_err_up, result.beta_err_down);
-        eprintln!("  K        = {:.4} +/- {:.4} fm^(1-beta)", result.k_constant, result.k_err);
-        eprintln!("  chi2/ndf = {:.3} ({:.1} / {})", result.chi2_per_ndf, result.chi2_min, result.ndf);
+        eprintln!(
+            "  beta     = {:.3} +{:.3} -{:.3}",
+            result.beta, result.beta_err_up, result.beta_err_down
+        );
+        eprintln!(
+            "  K        = {:.4} +/- {:.4} fm^(1-beta)",
+            result.k_constant, result.k_err
+        );
+        eprintln!(
+            "  chi2/ndf = {:.3} ({:.1} / {})",
+            result.chi2_per_ndf, result.chi2_min, result.ndf
+        );
         eprintln!();
 
         // Check against Arleo-Falmagne expected values
         let beta_ok = (result.beta - 1.02).abs() < 0.5;
         eprintln!("  Comparison with Arleo-Falmagne (beta = 1.02 +0.09/-0.06):");
-        eprintln!("  beta within 0.5 of reference: {}", if beta_ok { "PASS" } else { "MARGINAL" });
+        eprintln!(
+            "  beta within 0.5 of reference: {}",
+            if beta_ok { "PASS" } else { "MARGINAL" }
+        );
     } else {
-        eprintln!("  WARNING: Only {} data points, need >= 3 for fit", scaling_data.len());
+        eprintln!(
+            "  WARNING: Only {} data points, need >= 3 for fit",
+            scaling_data.len()
+        );
     }
 }
 
@@ -328,8 +391,14 @@ mod tests {
             let raa = r_aa_model(pt, eps, n);
             let u = pt / eps;
             let sf = scaling_function(u, n);
-            assert!((raa - sf).abs() < 1e-12,
-                "Scaling collapse: R_AA({}) = {}, f({}) = {}", pt, raa, u, sf);
+            assert!(
+                (raa - sf).abs() < 1e-12,
+                "Scaling collapse: R_AA({}) = {}, f({}) = {}",
+                pt,
+                raa,
+                u,
+                sf
+            );
         }
     }
 }

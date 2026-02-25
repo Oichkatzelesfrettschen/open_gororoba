@@ -7,7 +7,7 @@
 
 use crate::basis_index::project_to_lattice;
 use crate::patricia_trie::PatriciaIndex;
-use crate::survival_spectrum::{classify_latency_law, radial_bins, LatencyLaw, SpectrumBin};
+use crate::survival_spectrum::{LatencyLaw, SpectrumBin, classify_latency_law, radial_bins};
 
 /// Summary of a velocity-field-to-filtration conversion.
 #[derive(Debug, Clone)]

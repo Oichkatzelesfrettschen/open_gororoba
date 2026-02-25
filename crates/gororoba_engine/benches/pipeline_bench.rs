@@ -1,4 +1,4 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, black_box, criterion_group, criterion_main};
 
 fn bench_placeholder(c: &mut Criterion) {
     c.bench_function("placeholder", |b| b.iter(|| black_box(2 + 2)));

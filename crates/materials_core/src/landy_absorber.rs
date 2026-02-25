@@ -168,16 +168,18 @@ fn magnetic_slab_airy(omega: f64, params: &LandyParams) -> MagneticSlabResult {
 ///
 /// Uses impedance-aware Fresnel-Airy (not standard n-based TMM) because
 /// the metamaterial has mu != 1. Standard TMM would give incorrect results.
-pub fn absorption_spectrum(
-    params: &LandyParams,
-    freqs_hz: &[f64],
-) -> Vec<(f64, f64, f64, f64)> {
+pub fn absorption_spectrum(params: &LandyParams, freqs_hz: &[f64]) -> Vec<(f64, f64, f64, f64)> {
     freqs_hz
         .iter()
         .map(|&f| {
             let omega = 2.0 * PI * f;
             let result = magnetic_slab_airy(omega, params);
-            (f, result.reflectance, result.transmittance, result.absorptance)
+            (
+                f,
+                result.reflectance,
+                result.transmittance,
+                result.absorptance,
+            )
         })
         .collect()
 }

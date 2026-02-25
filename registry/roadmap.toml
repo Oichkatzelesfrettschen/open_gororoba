@@ -163,8 +163,8 @@ evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs", "registr
 id = "WS-PUB-001"
 name = "Phase 5: Publication Preparation"
 priority = "high"
-status = "completed"
-status_token = "COMPLETED"
+status = "done"
+status_token = "DONE"
 description = "LLM-Scaffold monograph prepared for arXiv submission. Paper compiles clean (120pp, 0 errors). 818 claims in appendix. arXiv package in docs/latex/arxiv/. Evidence package verified. All 4 theses PASS. 742 Verified, 3 Established, 34 Refuted, 13 Falsified, 10 Superseded claims."
 primary_outputs = ["docs/latex/llm_scaffold_paper.tex", "docs/latex/out/llm_scaffold_paper.pdf", "docs/latex/claims_appendix.tex", "docs/latex/experiments_appendix.tex", "docs/latex/insights_appendix.tex", "docs/latex/reproducibility_appendix.tex", "docs/latex/arxiv/"]
 claims = []
@@ -185,4 +185,3 @@ claims = ["C-852", "C-853", "C-854", "C-855", "C-856", "C-857", "C-858", "C-859"
 dependencies = ["WS-PUB-001"]
 acceptance_criteria = ["TMM returns both R and T with energy conservation R+T<=1 for lossy media.", "Landy absorber A(11.48 GHz) >= 0.96 via Lorentz effective-medium TMM.", "PPN framework passes 13 constraint gates for omega_BD >= 40000.", "Immirzi bridge maps phi=3/8 to within 2% of gamma_NZJ.", "Complex Bessel J_n and Y_n match DLMF/scipy to 1e-10.", "All new code passes clippy -D warnings.", "workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/materials_core/src/landy_absorber.rs", "crates/materials_core/src/effective_medium.rs", "crates/gr_core/src/ppn_constraints.rs", "crates/vacuum_frustration/src/immirzi_bridge.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs", "registry/claims.toml"]
-

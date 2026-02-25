@@ -5,8 +5,8 @@
 
 use clap::{Parser, Subcommand};
 use cosmology_core::{
-    bao_sound_horizon, cmb_shift_parameter, distance_modulus, hubble_e_bounce, hubble_e_lcdm,
-    luminosity_distance, simulate_bounce, spectral_index_bounce, BounceParams, Z_STAR,
+    BounceParams, Z_STAR, bao_sound_horizon, cmb_shift_parameter, distance_modulus,
+    hubble_e_bounce, hubble_e_lcdm, luminosity_distance, simulate_bounce, spectral_index_bounce,
 };
 
 #[derive(Parser)]

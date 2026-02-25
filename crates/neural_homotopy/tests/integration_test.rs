@@ -1,5 +1,5 @@
 use neural_homotopy::{
-    alignment_score, reference_hubble_curve, train_homotopy_surrogate, HomotopyTrainingConfig,
+    HomotopyTrainingConfig, alignment_score, reference_hubble_curve, train_homotopy_surrogate,
 };
 
 #[test]

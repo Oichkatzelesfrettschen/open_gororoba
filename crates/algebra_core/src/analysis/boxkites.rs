@@ -4275,11 +4275,7 @@ mod tests {
                 .iter()
                 .map(|&lo| {
                     let residue = lo & 7;
-                    if residue == 0 {
-                        8
-                    } else {
-                        residue
-                    } // Map 0 -> 8 to distinguish
+                    if residue == 0 { 8 } else { residue } // Map 0 -> 8 to distinguish
                 })
                 .collect();
 

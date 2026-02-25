@@ -1,8 +1,8 @@
 //! Integration tests for CorrectionTensor interactions across modules.
 
 use neural_homotopy::{
-    build_sedenion_table, optimize_correction_tensor, optimize_with_restarts, CorrectionTensor,
-    PentagonOptimizationConfig, SEDENION_DIM,
+    CorrectionTensor, PentagonOptimizationConfig, SEDENION_DIM, build_sedenion_table,
+    optimize_correction_tensor, optimize_with_restarts,
 };
 
 #[test]

@@ -37,9 +37,9 @@
 //! - Vidal (2003): Efficient classical simulation of slightly entangled
 //!   quantum computations, PRL 91, 147902
 
-use faer::complex_native::c64;
 use faer::Mat;
 use faer::Side;
+use faer::complex_native::c64;
 use rayon::prelude::*;
 
 /// Maximum bond dimension before truncation.

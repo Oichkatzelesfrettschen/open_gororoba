@@ -1,0 +1,17 @@
+generated_at_utc = "2026-02-24T07:34:58.244Z"
+total_validators = 1
+passed = 0
+failed = 1
+
+[[results]]
+lane_id = "external"
+validator_id = "SV-002"
+validator_kind = "external_dataset_semantics"
+status = "fail"
+checked_files = 23519
+error_count = 2
+errors = [
+    "CSV has no data rows: data/external/HST_UDF_Metadata.csv",
+    "JSON parse failed data/external/jarvis_dft/jdft_3d-4-26-2020/jdft_3d-4-26-2020.json: expected value at line 1 column 3132802",
+]
+

@@ -11,9 +11,7 @@
 
 use clap::{Parser, ValueEnum};
 use optics_core::{
-    normalized_fano_c_sct,
-    FanoDrudeParams, mie_scattering,
-    ruan_fan_mdm_fig4, ruan_fan_mdm_fig5,
+    FanoDrudeParams, mie_scattering, normalized_fano_c_sct, ruan_fan_mdm_fig4, ruan_fan_mdm_fig5,
 };
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -199,7 +197,9 @@ fn generate_fig4(out_dir: &Path) {
         gamma_d: 0.001,
     };
     let geom_lossy = ruan_fan_mdm_fig4(&drude_lossy);
-    let mut csv_lines_lossy = vec!["omega_norm,c_sct_mie,c_sct_tcmt,c_ext_mie,c_ext_tcmt,c_abs_mie,c_abs_tcmt".to_string()];
+    let mut csv_lines_lossy = vec![
+        "omega_norm,c_sct_mie,c_sct_tcmt,c_ext_mie,c_ext_tcmt,c_abs_mie,c_abs_tcmt".to_string(),
+    ];
 
     for i in 0..n_points {
         let omega = omega_min + (omega_max - omega_min) * (i as f64) / ((n_points - 1) as f64);
@@ -257,7 +257,8 @@ fn generate_fig5(out_dir: &Path) {
     let geom = ruan_fan_mdm_fig5(&drude);
     let l_max = 2;
 
-    let mut csv_header = "omega_norm,c_sct_total_mie,c_sct_total_tcmt,c_abs_total_mie,c_abs_total_tcmt".to_string();
+    let mut csv_header =
+        "omega_norm,c_sct_total_mie,c_sct_total_tcmt,c_abs_total_mie,c_abs_total_tcmt".to_string();
     for l in -l_max..=l_max {
         csv_header.push_str(&format!(",c_sct_l{}_mie", l));
     }
@@ -282,7 +283,9 @@ fn generate_fig5(out_dir: &Path) {
 
         // Per-channel contributions (l=0, +/-1, +/-2)
         for l in -l_max..=l_max {
-            let c_sct_l = mie.channels.iter()
+            let c_sct_l = mie
+                .channels
+                .iter()
                 .find(|ch| ch.l == l)
                 .map(|ch| ch.s_l.norm_sqr())
                 .unwrap_or(0.0);

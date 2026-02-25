@@ -6,7 +6,7 @@
 //! Source: https://gea.esac.esa.int/archive/
 //! Reference: Gaia Collaboration, Vallenari et al. (2023), A&A 674, A1
 
-use crate::fetcher::{validate_not_html, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, validate_not_html};
 use crate::formats::tap;
 use crate::parse::parse_f64_or_nan;
 use std::fs;

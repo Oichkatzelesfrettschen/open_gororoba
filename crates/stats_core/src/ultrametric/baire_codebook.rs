@@ -278,7 +278,11 @@ pub fn lattice_baire_distance_matrix_nd(vectors: &[Vec<i8>], skip_prefix: usize)
     let mut dists = Vec::with_capacity(n_pairs);
     for i in 0..n {
         for j in (i + 1)..n {
-            dists.push(lattice_baire_distance_nd(&vectors[i], &vectors[j], skip_prefix));
+            dists.push(lattice_baire_distance_nd(
+                &vectors[i],
+                &vectors[j],
+                skip_prefix,
+            ));
         }
     }
     dists
@@ -487,11 +491,11 @@ mod tests {
         assert_eq!(d, 6);
         assert_eq!(data.len(), 12);
         // Row 0, col 0 (coord 2): 0
-        assert_eq!(data[0], 0.0);             // row=0, col=0
+        assert_eq!(data[0], 0.0); // row=0, col=0
         // Row 0, col 1 (coord 3): 1
-        assert_eq!(data[2], 1.0);              // row=1, col=0
+        assert_eq!(data[2], 1.0); // row=1, col=0
         // Row 1, col 0 (coord 2): 1
-        assert_eq!(data[1], 1.0);             // row=0, col=1
+        assert_eq!(data[1], 1.0); // row=0, col=1
     }
 
     #[test]
@@ -568,9 +572,9 @@ mod tests {
     #[test]
     fn test_euclidean_ultrametricity_across_filtration_levels() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_2048, is_in_lambda_512,
+            enumerate_lattice_by_predicate, is_in_lambda_512, is_in_lambda_1024, is_in_lambda_2048,
         };
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -655,10 +659,7 @@ mod tests {
             );
 
             // Sanity checks
-            assert!(
-                (0.0..=1.0).contains(&obs_frac),
-                "Fraction must be in [0,1]"
-            );
+            assert!((0.0..=1.0).contains(&obs_frac), "Fraction must be in [0,1]");
             assert!(
                 (0.0..=1.0).contains(&null_mean),
                 "Null mean must be in [0,1]"
@@ -708,7 +709,7 @@ mod tests {
     #[test]
     fn test_intermediate_filtration_gradient() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_1024_minus_k,
         };
@@ -836,8 +837,8 @@ mod tests {
     #[test]
     fn test_intermediate_filtration_consistency() {
         use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_1024_minus_k,
-            is_in_lambda_512,
+            enumerate_lattice_by_predicate, is_in_lambda_512, is_in_lambda_1024,
+            is_in_lambda_1024_minus_k,
         };
 
         let all_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
@@ -918,10 +919,10 @@ mod tests {
     #[test]
     fn test_random_removal_control() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_1024};
-        use rand::prelude::*;
         use rand::SeedableRng;
+        use rand::prelude::*;
         use rand_chacha::ChaCha8Rng;
 
         let all_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
@@ -984,7 +985,11 @@ mod tests {
 
         eprintln!(
             "Rule-1 removal: N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-            rule1_vectors.len(), rule1_obs, null_mean, null_std, rule1_z
+            rule1_vectors.len(),
+            rule1_obs,
+            null_mean,
+            null_std,
+            rule1_z
         );
 
         // Now: 20 random removal trials
@@ -1086,7 +1091,7 @@ mod tests {
     #[test]
     fn test_lambda512_to_256_intermediate_gradient() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_512_minus_k,
         };
@@ -1209,10 +1214,10 @@ mod tests {
     #[test]
     fn test_lambda512_to_256_random_removal_control() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_512};
-        use rand::prelude::*;
         use rand::SeedableRng;
+        use rand::prelude::*;
         use rand_chacha::ChaCha8Rng;
 
         let all_512 = enumerate_lattice_by_predicate(is_in_lambda_512);
@@ -1391,7 +1396,7 @@ mod tests {
     #[test]
     fn test_sbase_to_lambda2048_gradient() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_sbase_minus_k,
         };
@@ -1519,7 +1524,7 @@ mod tests {
     #[test]
     fn test_l0_subpopulation_ultrametricity() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -1613,7 +1618,7 @@ mod tests {
     #[test]
     fn test_lambda2048_to_1024_intermediate_gradient() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_2048_minus_k,
         };
@@ -1760,7 +1765,7 @@ mod tests {
     #[test]
     fn test_l1_filter_on_l0_neg1_subset() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -1870,7 +1875,7 @@ mod tests {
     #[test]
     fn test_recursive_simpsons_paradox_l2() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -2007,8 +2012,8 @@ mod tests {
     #[test]
     fn test_cross_stratum_triple_decomposition() {
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
-        use rand::seq::SliceRandom;
         use rand::SeedableRng;
+        use rand::seq::SliceRandom;
         use rand_chacha::ChaCha8Rng;
 
         let n_triples = 200_000;
@@ -2134,7 +2139,7 @@ mod tests {
     #[test]
     fn test_l0_zero_simpsons_paradox() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -2246,7 +2251,7 @@ mod tests {
     #[test]
     fn test_dimensional_universality_simpsons_paradox() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
         };
@@ -2402,10 +2407,10 @@ mod tests {
     #[test]
     fn test_lambda1024_stratum_paradox_and_summary() {
         use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
+        use super::super::null_models::{NullModel, apply_null_column_major};
         use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_2048, is_in_lambda_256,
-            is_in_lambda_512,
+            enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512, is_in_lambda_1024,
+            is_in_lambda_2048,
         };
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -2623,8 +2628,8 @@ mod tests {
     #[test]
     fn test_stratum_count_analytical_model() {
         use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_2048, is_in_lambda_256,
-            is_in_lambda_512,
+            enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512, is_in_lambda_1024,
+            is_in_lambda_2048,
         };
 
         // For each filtration level, compute actual stratum sizes and Herfindahl index
@@ -2801,7 +2806,11 @@ mod tests {
         // d(1,2) = 3^(-1) = 0.333...  (differ at pos 0)
         assert_eq!(dists.len(), 3);
         assert!((dists[0] - 1.0 / 3.0).abs() < 1e-10, "d01={}", dists[0]);
-        assert!((dists[1] - 3.0_f64.powi(-4)).abs() < 1e-10, "d02={}", dists[1]);
+        assert!(
+            (dists[1] - 3.0_f64.powi(-4)).abs() < 1e-10,
+            "d02={}",
+            dists[1]
+        );
         assert!((dists[2] - 1.0 / 3.0).abs() < 1e-10, "d12={}", dists[2]);
     }
 
@@ -2810,11 +2819,7 @@ mod tests {
         // Generate 50 random trinary 16D vectors and test
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let vectors: Vec<Vec<i8>> = (0..50)
-            .map(|_| {
-                (0..16)
-                    .map(|_| [-1i8, 0, 1][rng.gen_range(0..3)])
-                    .collect()
-            })
+            .map(|_| (0..16).map(|_| [-1i8, 0, 1][rng.gen_range(0..3)]).collect())
             .collect();
 
         let result = codebook_baire_ultrametric_test_nd(&vectors, 5_000, 50, 42);

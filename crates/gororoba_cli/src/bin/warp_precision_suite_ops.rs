@@ -3,8 +3,8 @@ use std::error::Error;
 use std::path::{Path, PathBuf};
 
 use crate::warp_runner::{
-    gate_h5_outputs, print_case_report, run_case, write_step_timing_report, BackendKind, BenchCase,
-    BenchCaseReport, TimingMode,
+    BackendKind, BenchCase, BenchCaseReport, TimingMode, gate_h5_outputs, print_case_report,
+    run_case, write_step_timing_report,
 };
 
 #[derive(Debug, Clone)]
@@ -169,9 +169,10 @@ fn default_summary_path(out_dir: Option<&Path>, single_output: Option<&Path>) ->
         return Some(dir.join("warp_precision_suite_summary.toml"));
     }
     if let Some(path) = single_output
-        && let Some(parent) = path.parent() {
-            return Some(parent.join("warp_precision_suite_summary.toml"));
-        }
+        && let Some(parent) = path.parent()
+    {
+        return Some(parent.join("warp_precision_suite_summary.toml"));
+    }
     None
 }
 
@@ -279,7 +280,10 @@ fn write_summary(
         out.push_str(&format!("h5_output = \"{}\"\n", h5_path.display()));
         out.push_str(&format!("timing_output = \"{}\"\n", timing_path.display()));
         out.push_str(&format!("legacy_h5_name = \"{}\"\n", legacy_h5_name));
-        out.push_str(&format!("legacy_timing_name = \"{}\"\n", legacy_timing_name));
+        out.push_str(&format!(
+            "legacy_timing_name = \"{}\"\n",
+            legacy_timing_name
+        ));
         out.push_str(&format!("detailed_h5_name = \"{}\"\n", detailed_h5_name));
         out.push_str(&format!(
             "detailed_timing_name = \"{}\"\n",
@@ -334,9 +338,10 @@ pub fn run_precision_suite(cfg: PrecisionSuiteConfig) -> Result<(), Box<dyn Erro
         std::fs::create_dir_all(dir)?;
     }
     if let Some(path) = cfg.single_output.as_deref()
-        && let Some(parent) = path.parent() {
-            std::fs::create_dir_all(parent)?;
-        }
+        && let Some(parent) = path.parent()
+    {
+        std::fs::create_dir_all(parent)?;
+    }
 
     let mut artifacts: Vec<PathBuf> = Vec::new();
     let mut cases_with_paths: Vec<(PathBuf, PathBuf, BenchCaseReport)> = Vec::new();
@@ -414,13 +419,14 @@ pub fn run_precision_suite(cfg: PrecisionSuiteConfig) -> Result<(), Box<dyn Erro
         gate_h5_outputs(&artifacts)?;
     }
 
-    if cfg.write_summary && !cases_with_paths.is_empty()
+    if cfg.write_summary
+        && !cases_with_paths.is_empty()
         && let Some(path) =
             default_summary_path(cfg.out_dir.as_deref(), cfg.single_output.as_deref())
-        {
-            write_summary(&path, &cfg, &cases_with_paths)?;
-            println!("SUMMARY_REPORT: {}", path.display());
-        }
+    {
+        write_summary(&path, &cfg, &cases_with_paths)?;
+        println!("SUMMARY_REPORT: {}", path.display());
+    }
 
     Ok(())
 }

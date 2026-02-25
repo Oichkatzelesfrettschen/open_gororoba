@@ -277,10 +277,7 @@ pub fn direct_amplitude_sq(params: &SfwmMaterialParams) -> f64 {
 }
 
 /// Direct amplitude squared using explicit wavevector mismatches.
-pub fn direct_amplitude_sq_with_dk(
-    params: &SfwmMaterialParams,
-    wm: &WavevectorMismatches,
-) -> f64 {
+pub fn direct_amplitude_sq_with_dk(params: &SfwmMaterialParams, wm: &WavevectorMismatches) -> f64 {
     let f = phase_matching_function(wm.dk_sfwm, params.thickness);
     params.chi3_sfwm * params.chi3_sfwm * f * f
 }
@@ -353,10 +350,7 @@ pub fn maker_fringe_sweep(
 ///
 /// Returns Vec<(thickness_um, r_direct, r_cascaded)> for Fig. 4(b).
 /// Uses Sellmeier-derived dk values.
-pub fn rate_sweep(
-    params: &SfwmMaterialParams,
-    thicknesses: &[f64],
-) -> Vec<(f64, f64, f64)> {
+pub fn rate_sweep(params: &SfwmMaterialParams, thicknesses: &[f64]) -> Vec<(f64, f64, f64)> {
     rate_sweep_with_dk(params, &params.wavevector_mismatches(), thicknesses)
 }
 

@@ -625,8 +625,19 @@ pub fn check_all_ppn_constraints(omega: f64) -> PPNConstraintReport {
     let microscope_wep = satisfies_microscope_wep_bd();
 
     let gates = [
-        cassini, llr, pulsar, gw_speed, vlbi, mercury_beta, dipole,
-        gpb_geodetic, alpha1, alpha2, alpha3, xi, microscope_wep,
+        cassini,
+        llr,
+        pulsar,
+        gw_speed,
+        vlbi,
+        mercury_beta,
+        dipole,
+        gpb_geodetic,
+        alpha1,
+        alpha2,
+        alpha3,
+        xi,
+        microscope_wep,
     ];
     let n_satisfied = gates.iter().filter(|&&b| b).count();
 
@@ -734,13 +745,22 @@ mod tests {
         assert!(report.vlbi, "VLBI should pass at omega=1e6");
         assert!(report.mercury_beta, "Mercury beta should pass (BD: beta=1)");
         assert!(report.dipole, "Dipole should pass (BD: equal bodies)");
-        assert!(report.gpb_geodetic, "GP-B geodetic should pass at omega=1e6");
+        assert!(
+            report.gpb_geodetic,
+            "GP-B geodetic should pass at omega=1e6"
+        );
         assert!(report.alpha1, "alpha_1 should pass (BD: alpha_1=0)");
         assert!(report.alpha2, "alpha_2 should pass (BD: alpha_2=0)");
         assert!(report.alpha3, "alpha_3 should pass (BD: alpha_3=0)");
         assert!(report.xi, "xi should pass (BD: xi=0)");
-        assert!(report.microscope_wep, "MICROSCOPE WEP should pass (BD: no WEP violation)");
-        assert!(report.all_pass(), "All 13 constraints should pass at omega=1e6");
+        assert!(
+            report.microscope_wep,
+            "MICROSCOPE WEP should pass (BD: no WEP violation)"
+        );
+        assert!(
+            report.all_pass(),
+            "All 13 constraints should pass at omega=1e6"
+        );
         assert_eq!(report.n_satisfied, 13);
     }
 
@@ -780,13 +800,34 @@ mod tests {
     fn test_bd_preferred_frame_params_vanish() {
         // All preferred-frame and conservation-law parameters are zero in BD
         assert!(ppn_xi_bd().abs() < f64::EPSILON, "xi must be 0 in BD");
-        assert!(ppn_alpha1_bd().abs() < f64::EPSILON, "alpha_1 must be 0 in BD");
-        assert!(ppn_alpha2_bd().abs() < f64::EPSILON, "alpha_2 must be 0 in BD");
-        assert!(ppn_alpha3_bd().abs() < f64::EPSILON, "alpha_3 must be 0 in BD");
-        assert!(ppn_zeta1_bd().abs() < f64::EPSILON, "zeta_1 must be 0 in BD");
-        assert!(ppn_zeta2_bd().abs() < f64::EPSILON, "zeta_2 must be 0 in BD");
-        assert!(ppn_zeta3_bd().abs() < f64::EPSILON, "zeta_3 must be 0 in BD");
-        assert!(ppn_zeta4_bd().abs() < f64::EPSILON, "zeta_4 must be 0 in BD");
+        assert!(
+            ppn_alpha1_bd().abs() < f64::EPSILON,
+            "alpha_1 must be 0 in BD"
+        );
+        assert!(
+            ppn_alpha2_bd().abs() < f64::EPSILON,
+            "alpha_2 must be 0 in BD"
+        );
+        assert!(
+            ppn_alpha3_bd().abs() < f64::EPSILON,
+            "alpha_3 must be 0 in BD"
+        );
+        assert!(
+            ppn_zeta1_bd().abs() < f64::EPSILON,
+            "zeta_1 must be 0 in BD"
+        );
+        assert!(
+            ppn_zeta2_bd().abs() < f64::EPSILON,
+            "zeta_2 must be 0 in BD"
+        );
+        assert!(
+            ppn_zeta3_bd().abs() < f64::EPSILON,
+            "zeta_3 must be 0 in BD"
+        );
+        assert!(
+            ppn_zeta4_bd().abs() < f64::EPSILON,
+            "zeta_4 must be 0 in BD"
+        );
     }
 
     #[test]
@@ -826,10 +867,7 @@ mod tests {
         // BD with gamma=0.999: (2+2*0.999-1)/3 = (2.998)/3 = 0.99933
         let bd = perihelion_precession_per_orbit(a, e, m, 0.999, 1.0);
         let ratio = bd / gr;
-        assert!(
-            (ratio - 0.999_33).abs() < 1e-4,
-            "PPN factor ratio: {ratio}"
-        );
+        assert!((ratio - 0.999_33).abs() < 1e-4, "PPN factor ratio: {ratio}");
     }
 
     // -- Dipole radiation tests --
@@ -846,7 +884,10 @@ mod tests {
     #[test]
     fn test_dipole_radiation_nonzero_for_different_sensitivities() {
         let p = dipole_radiation_power(0.01, 1e-4, 1e30, 3e30, 1e9, 0.1);
-        assert!(p < 0.0, "Dipole radiation power should be negative (energy loss)");
+        assert!(
+            p < 0.0,
+            "Dipole radiation power should be negative (energy loss)"
+        );
     }
 
     #[test]

@@ -7,7 +7,7 @@
 //!   cargo run --release --bin landy-absorber-tmm
 
 use materials_core::landy_absorber::{
-    absorption_spectrum, effective_n, impedance, landy_2008_params, LandyParams,
+    LandyParams, absorption_spectrum, effective_n, impedance, landy_2008_params,
 };
 use std::f64::consts::PI;
 
@@ -21,11 +21,20 @@ fn main() {
     let f0_ghz = params.omega_0e / (2.0 * PI) / 1e9;
 
     println!("Parameters:");
-    println!("  omega_0  = {:.4e} rad/s ({:.3} GHz)", params.omega_0e, f0_ghz);
+    println!(
+        "  omega_0  = {:.4e} rad/s ({:.3} GHz)",
+        params.omega_0e, f0_ghz
+    );
     println!("  S_e = S_m = {:.3}", params.strength_e);
-    println!("  gamma/omega_0 = {:.2}%", params.gamma_e / params.omega_0e * 100.0);
-    println!("  thickness = {:.2} mm (lambda/{})", params.thickness * 1e3,
-             (2.998e8 / (f0_ghz * 1e9) / params.thickness) as u32);
+    println!(
+        "  gamma/omega_0 = {:.2}%",
+        params.gamma_e / params.omega_0e * 100.0
+    );
+    println!(
+        "  thickness = {:.2} mm (lambda/{})",
+        params.thickness * 1e3,
+        (2.998e8 / (f0_ghz * 1e9) / params.thickness) as u32
+    );
     println!();
 
     // Sweep 9-14 GHz, 500 points
@@ -44,18 +53,28 @@ fn main() {
         .unwrap();
 
     println!("--- Single-layer results ---");
-    println!("  Peak absorption:  A = {:.4} ({:.1}%)", peak_a, peak_a * 100.0);
+    println!(
+        "  Peak absorption:  A = {:.4} ({:.1}%)",
+        peak_a,
+        peak_a * 100.0
+    );
     println!("  Peak frequency:   f = {:.4} GHz", peak_f / 1e9);
     println!("  At peak: R = {:.4}, T = {:.6}", peak_r, peak_t);
 
     // Impedance at peak
     let omega_peak = 2.0 * PI * peak_f;
     let z = impedance(omega_peak, &params);
-    println!("  Impedance:        |Z/Z_0 - 1| = {:.2e}", (z - num_complex::Complex64::new(1.0, 0.0)).norm());
+    println!(
+        "  Impedance:        |Z/Z_0 - 1| = {:.2e}",
+        (z - num_complex::Complex64::new(1.0, 0.0)).norm()
+    );
 
     // Effective n at peak
     let n_eff = effective_n(omega_peak, &params);
-    println!("  Effective index:  n_eff = {:.4} + {:.4}i", n_eff.re, n_eff.im);
+    println!(
+        "  Effective index:  n_eff = {:.4} + {:.4}i",
+        n_eff.re, n_eff.im
+    );
     println!();
 
     // FWHM
@@ -69,7 +88,11 @@ fn main() {
     if above_half.len() >= 2 {
         let fwhm_hz = above_half.last().unwrap() - above_half.first().unwrap();
         let fwhm_pct = fwhm_hz / peak_f * 100.0;
-        println!("  FWHM:             {:.2} GHz ({:.1}%)", fwhm_hz / 1e9, fwhm_pct);
+        println!(
+            "  FWHM:             {:.2} GHz ({:.1}%)",
+            fwhm_hz / 1e9,
+            fwhm_pct
+        );
     }
     println!();
 
@@ -102,10 +125,25 @@ fn main() {
     };
     let pass_multilayer = a2 > 0.999;
 
-    println!("  [{}] Peak A >= 0.96 (got {:.4})", if pass_peak { "PASS" } else { "FAIL" }, peak_a);
-    println!("  [{}] Peak near 11.48 GHz (got {:.3} GHz)", if pass_freq { "PASS" } else { "FAIL" }, peak_f / 1e9);
-    println!("  [{}] FWHM in [2%, 10%]", if pass_fwhm { "PASS" } else { "FAIL" });
-    println!("  [{}] Two-layer A > 0.999 (got {:.6})", if pass_multilayer { "PASS" } else { "FAIL" }, a2);
+    println!(
+        "  [{}] Peak A >= 0.96 (got {:.4})",
+        if pass_peak { "PASS" } else { "FAIL" },
+        peak_a
+    );
+    println!(
+        "  [{}] Peak near 11.48 GHz (got {:.3} GHz)",
+        if pass_freq { "PASS" } else { "FAIL" },
+        peak_f / 1e9
+    );
+    println!(
+        "  [{}] FWHM in [2%, 10%]",
+        if pass_fwhm { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "  [{}] Two-layer A > 0.999 (got {:.6})",
+        if pass_multilayer { "PASS" } else { "FAIL" },
+        a2
+    );
 
     let all_pass = pass_peak && pass_freq && pass_fwhm && pass_multilayer;
     println!();

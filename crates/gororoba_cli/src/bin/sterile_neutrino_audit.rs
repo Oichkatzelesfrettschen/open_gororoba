@@ -51,7 +51,7 @@ struct Stream {
 /// The seven registered streams for experiment E-079.
 ///
 /// Each stream corresponds to one independent null-result measurement in the
-/// Sprint 43–44 spectral and materials sensor campaign.  All seven must be
+/// Sprint 43-44 spectral and materials sensor campaign.  All seven must be
 /// `NullConfirmed` before the overall experiment can declare `null_confirmed`.
 ///
 /// C-703..C-706  Spectral / wavelet processing sensors (Sprint 43)

@@ -258,10 +258,12 @@ impl HyperbolicBilliard {
 
         for (i, wall) in self.config.walls.iter().enumerate() {
             if let Some(t) = self.collision_time(wall)
-                && t > self.config.time_epsilon && t < min_t {
-                    min_t = t;
-                    hit_wall = Some(i);
-                }
+                && t > self.config.time_epsilon
+                && t < min_t
+            {
+                min_t = t;
+                hit_wall = Some(i);
+            }
         }
 
         let wall_idx = hit_wall?;

@@ -150,27 +150,26 @@ fn sync_project_block(
             continue;
         }
 
-        if in_project
-            && let Some(caps) = assignment_re.captures(line) {
-                let indent = caps.get(1).map(|m| m.as_str()).unwrap_or("");
-                let key = caps.get(2).map(|m| m.as_str()).unwrap_or("");
-                let current = caps
-                    .get(3)
-                    .and_then(|m| m.as_str().parse::<usize>().ok())
-                    .unwrap_or(usize::MAX);
-                let suffix = caps.get(4).map(|m| m.as_str()).unwrap_or("");
+        if in_project && let Some(caps) = assignment_re.captures(line) {
+            let indent = caps.get(1).map(|m| m.as_str()).unwrap_or("");
+            let key = caps.get(2).map(|m| m.as_str()).unwrap_or("");
+            let current = caps
+                .get(3)
+                .and_then(|m| m.as_str().parse::<usize>().ok())
+                .unwrap_or(usize::MAX);
+            let suffix = caps.get(4).map(|m| m.as_str()).unwrap_or("");
 
-                seen_keys.insert(key.to_string());
+            seen_keys.insert(key.to_string());
 
-                let expected = counts
-                    .get(key)
-                    .ok_or_else(|| format!("internal error: unexpected key {key}"))?;
-                if current != expected {
-                    changes.push(format!("{key}: {current} -> {expected}"));
-                }
-                out_lines.push(format!("{indent}{key} = {expected}{suffix}"));
-                continue;
+            let expected = counts
+                .get(key)
+                .ok_or_else(|| format!("internal error: unexpected key {key}"))?;
+            if current != expected {
+                changes.push(format!("{key}: {current} -> {expected}"));
             }
+            out_lines.push(format!("{indent}{key} = {expected}{suffix}"));
+            continue;
+        }
 
         out_lines.push(line.to_string());
     }

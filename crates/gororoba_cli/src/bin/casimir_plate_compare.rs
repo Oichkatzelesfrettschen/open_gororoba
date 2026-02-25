@@ -17,8 +17,8 @@
 
 use clap::Parser;
 use materials_core::{
-    casimir_energy_ideal, casimir_lifshitz_energy, casimir_lifshitz_force,
-    germanium_optical, silica_casimir_optical, silicon_optical,
+    casimir_energy_ideal, casimir_lifshitz_energy, casimir_lifshitz_force, germanium_optical,
+    silica_casimir_optical, silicon_optical,
 };
 use std::f64::consts::PI;
 use std::io::Write;
@@ -63,17 +63,41 @@ fn main() {
     let stdout = std::io::stdout();
     let mut out = stdout.lock();
 
-    writeln!(out, "# Casimir plate comparison (correct Lifshitz formula, Sprint 45)").unwrap();
-    writeln!(out, "# T={:.1} K, N_Matsubara={}, N_GL={}", args.temperature_k, args.n_matsubara, args.n_gauss).unwrap();
-    writeln!(out, "# {:>12} {:>8} {:>14} {:>14} {:>8}", "d_nm", "pair", "E_J_m2", "F_N_m2", "eta").unwrap();
+    writeln!(
+        out,
+        "# Casimir plate comparison (correct Lifshitz formula, Sprint 45)"
+    )
+    .unwrap();
+    writeln!(
+        out,
+        "# T={:.1} K, N_Matsubara={}, N_GL={}",
+        args.temperature_k, args.n_matsubara, args.n_gauss
+    )
+    .unwrap();
+    writeln!(
+        out,
+        "# {:>12} {:>8} {:>14} {:>14} {:>8}",
+        "d_nm", "pair", "E_J_m2", "F_N_m2", "eta"
+    )
+    .unwrap();
 
     for (name, mat) in materials {
         for &d in &separations {
             let e = casimir_lifshitz_energy(
-                mat, mat, d, args.temperature_k, args.n_matsubara, args.n_gauss,
+                mat,
+                mat,
+                d,
+                args.temperature_k,
+                args.n_matsubara,
+                args.n_gauss,
             );
             let f = casimir_lifshitz_force(
-                mat, mat, d, args.temperature_k, args.n_matsubara, args.n_gauss,
+                mat,
+                mat,
+                d,
+                args.temperature_k,
+                args.n_matsubara,
+                args.n_gauss,
             );
             let e_ideal = casimir_energy_ideal(d);
             let eta = e / e_ideal;
@@ -93,11 +117,23 @@ fn main() {
 
     // Summary: ordering check at d=100nm
     let d_test = 100e-9_f64;
-    writeln!(out, "# Ordering at d={:.0} nm (larger |F| = stronger Casimir force):", d_test * 1e9).unwrap();
+    writeln!(
+        out,
+        "# Ordering at d={:.0} nm (larger |F| = stronger Casimir force):",
+        d_test * 1e9
+    )
+    .unwrap();
     let mut ranked: Vec<(String, f64)> = materials
         .iter()
         .map(|(name, mat)| {
-            let f = casimir_lifshitz_force(mat, mat, d_test, args.temperature_k, args.n_matsubara, args.n_gauss);
+            let f = casimir_lifshitz_force(
+                mat,
+                mat,
+                d_test,
+                args.temperature_k,
+                args.n_matsubara,
+                args.n_gauss,
+            );
             (name.to_string(), f.abs())
         })
         .collect();
@@ -111,23 +147,44 @@ fn main() {
     writeln!(out, "# eta at d=100nm and d=1um:").unwrap();
     for (name, mat) in materials {
         let eta_100 = {
-            let e = casimir_lifshitz_energy(mat, mat, 100e-9, args.temperature_k, args.n_matsubara, args.n_gauss);
+            let e = casimir_lifshitz_energy(
+                mat,
+                mat,
+                100e-9,
+                args.temperature_k,
+                args.n_matsubara,
+                args.n_gauss,
+            );
             let e_id = casimir_energy_ideal(100e-9);
             e / e_id
         };
         let eta_1000 = {
-            let e = casimir_lifshitz_energy(mat, mat, 1000e-9, args.temperature_k, args.n_matsubara, args.n_gauss);
+            let e = casimir_lifshitz_energy(
+                mat,
+                mat,
+                1000e-9,
+                args.temperature_k,
+                args.n_matsubara,
+                args.n_gauss,
+            );
             let e_id = casimir_energy_ideal(1000e-9);
             e / e_id
         };
-        writeln!(out, "#  {} eta(100nm)={:.4} eta(1um)={:.4}", name, eta_100, eta_1000).unwrap();
+        writeln!(
+            out,
+            "#  {} eta(100nm)={:.4} eta(1um)={:.4}",
+            name, eta_100, eta_1000
+        )
+        .unwrap();
     }
 
     eprintln!("Lifshitz formula using dimensionless variable p = kappa*c/xi_n.");
     eprintln!("s_i = sqrt(p^2 + eps_i - 1)  [corrected from old sqrt(eps_i*p^2+eps_i-1)]");
     eprintln!("Integration measure: p dp  [corrected from old p^2 dp]");
     eprintln!("n=0 quasi-static: Drude convention, r_TE=0, r_TM=(eps_s-1)/(eps_s+1).");
-    eprintln!("Physics note: 2*PI*kT/hbar = {:.3e} rad/s at {:.0} K (thermal coherence).",
+    eprintln!(
+        "Physics note: 2*PI*kT/hbar = {:.3e} rad/s at {:.0} K (thermal coherence).",
         2.0 * PI * 8.617_333_262e-5 * args.temperature_k * 1.519_267_447e15,
-        args.temperature_k);
+        args.temperature_k
+    );
 }

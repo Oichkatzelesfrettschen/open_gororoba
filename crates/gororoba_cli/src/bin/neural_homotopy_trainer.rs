@@ -12,8 +12,8 @@
 
 use clap::Parser;
 use neural_homotopy::{
-    optimize_with_restarts, train_burn_correction, CorrectionTensor, CorrectionTensorModelConfig,
-    PentagonOptimizationConfig, PerturbationDataset,
+    CorrectionTensor, CorrectionTensorModelConfig, PentagonOptimizationConfig, PerturbationDataset,
+    optimize_with_restarts, train_burn_correction,
 };
 use std::io::Write;
 

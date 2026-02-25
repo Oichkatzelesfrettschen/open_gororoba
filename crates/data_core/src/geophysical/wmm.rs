@@ -7,7 +7,7 @@
 //! Source: NOAA/NCEI, https://www.ncei.noaa.gov/products/world-magnetic-model
 //! Reference: Chulliat et al. (2024), NOAA Technical Report
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::PathBuf;
 
 /// WMM 2025 coefficient file URLs.

@@ -314,7 +314,9 @@ pub fn generate_synthetic_sn_data(
     let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
 
     // Uniform redshifts in [0.01, 2.3], then sorted
-    let mut z: Vec<f64> = (0..n_sn).map(|_| rng.r#gen::<f64>() * 2.29 + 0.01).collect();
+    let mut z: Vec<f64> = (0..n_sn)
+        .map(|_| rng.r#gen::<f64>() * 2.29 + 0.01)
+        .collect();
     z.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
 
     let mu_true: Vec<f64> = z
@@ -323,7 +325,9 @@ pub fn generate_synthetic_sn_data(
         .collect();
 
     // Errors uniform in [0.10, 0.15]
-    let mu_err: Vec<f64> = (0..n_sn).map(|_| rng.r#gen::<f64>() * 0.05 + 0.10).collect();
+    let mu_err: Vec<f64> = (0..n_sn)
+        .map(|_| rng.r#gen::<f64>() * 0.05 + 0.10)
+        .collect();
 
     let mu_obs: Vec<f64> = mu_true
         .iter()

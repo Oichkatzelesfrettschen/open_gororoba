@@ -16,7 +16,7 @@
 
 use clap::Parser;
 use lattice_filtration::{
-    classify_latency_law_detailed, filtration_from_velocity_field, LatencyLawDetail,
+    LatencyLawDetail, classify_latency_law_detailed, filtration_from_velocity_field,
 };
 use lbm_3d::solver::LbmSolver3D;
 use std::fmt::Write as _;

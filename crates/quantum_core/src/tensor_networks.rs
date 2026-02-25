@@ -38,8 +38,8 @@
 
 // Re-export all tensor network types
 pub use crate::tensor_network_classical::{
-    bell_state_entropy, ghz_state_entropy, prepare_bell_state, prepare_ghz_state,
-    simulate_random_circuit, CircuitEvolutionResult, EntropyResult, TensorNetworkState,
+    CircuitEvolutionResult, EntropyResult, TensorNetworkState, bell_state_entropy,
+    ghz_state_entropy, prepare_bell_state, prepare_ghz_state, simulate_random_circuit,
 };
 
 pub use crate::mps::{MatrixProductState, MpsTensor};

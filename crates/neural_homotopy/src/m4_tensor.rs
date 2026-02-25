@@ -10,7 +10,7 @@
 //! The pentagon violation measures the A-infinity A_4 relation,
 //! which determines whether a higher correction m_4 is needed.
 
-use crate::training_data::{build_sedenion_table, SEDENION_DIM};
+use crate::training_data::{SEDENION_DIM, build_sedenion_table};
 
 const DIM: usize = SEDENION_DIM;
 const TENSOR_SIZE: usize = DIM * DIM * DIM * DIM;

@@ -96,9 +96,10 @@ fn requested_profile_name(
         return name.to_string();
     }
     if let Ok(name) = std::env::var("GOROROBA_WARP_FORCING_PROFILE")
-        && !name.trim().is_empty() {
-            return name;
-        }
+        && !name.trim().is_empty()
+    {
+        return name;
+    }
     profile_table
         .default
         .clone()
@@ -286,7 +287,10 @@ pub fn apply_warp_forcing_env(values: &WarpForcingProfile) {
     // SAFETY: Called single-threaded at binary startup before any parallel work.
     unsafe {
         std::env::set_var("GOROROBA_KOLMO_MODE_Y", values.mode_y_requested.to_string());
-        std::env::set_var("GOROROBA_KOLMO_RE_TARGET", format!("{:.9}", values.re_target));
+        std::env::set_var(
+            "GOROROBA_KOLMO_RE_TARGET",
+            format!("{:.9}", values.re_target),
+        );
         std::env::set_var("GOROROBA_KOLMO_MAX_MACH", format!("{:.9}", values.max_mach));
         std::env::set_var("GOROROBA_KOLMO_RHO0", format!("{:.9}", values.rho0));
         std::env::set_var(

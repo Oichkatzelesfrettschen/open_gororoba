@@ -14,7 +14,7 @@ title = "Measuring spin correlation between quarks during QCD confinement"
 author = "STAR Collaboration"
 year = 2026
 doi = "10.1038/s41586-025-09920-0"
-local_path = "data/external/papers/star_spin_correlation/star_spin_correlation.pdf"
+local_path = "data/papers/corpus/star_spin_correlation/star_spin_correlation.pdf"
 tags = ["QCD", "Spin", "Confinement", "Lambda-Hyperon", "Decoherence"]
 abstract = "Report evidence of spin correlations in Lambda-AntiLambda hyperon pairs inherited from spin-correlated strange quark-antiquark virtual pairs. Correlation vanishes at large separation, consistent with decoherence."
 
@@ -25,7 +25,7 @@ title = "Single-minus gluon tree amplitudes are nonzero"
 author = "Alfredo Guevara, Alexandru Lupsasca, David Skinner, Andrew Strominger, Kevin Weil"
 year = 2026
 arxiv = "2602.12176"
-local_path = "data/external/papers/single_minus_gluons/single_minus_gluons.pdf"
+local_path = "data/papers/corpus/single_minus_gluons/single_minus_gluons.pdf"
 tags = ["Scattering-Amplitudes", "Gluons", "Half-Collinear", "Discrete-Logic"]
 abstract = "Single-minus tree-level gluon scattering amplitudes are non-vanishing for half-collinear configurations. Derive a piecewise-constant closed-form expression for the decay of a single-minus gluon into n-1 plus-helicity gluons."
 
@@ -36,7 +36,7 @@ title = "Automorphisms of Sedenions"
 author = "G. P. Wilmot"
 year = 2025
 arxiv = "2512.07210"
-local_path = "data/external/papers/arxiv_2512.07210v1_automorphisms_sedenions.pdf"
+local_path = "data/papers/corpus/arxiv_2512.07210v1_automorphisms_sedenions.pdf"
 tags = ["Sedenions", "Automorphisms", "Fano-Volume", "Subalgebras"]
 abstract = "Extends the seven-dimensional Fano plane to a 15-dimensional Fano volume for sedenions. Derives automorphisms of sedenions matching Schafer's result (Aut(S) ~ G2)."
 
@@ -47,7 +47,7 @@ title = "Massless Representations in Conformal Space and Their de Sitter (dS) Re
 author = "Jean-Pierre Gazeau, Hamed Pejhan, Ivan Todorov"
 year = 2026
 arxiv = "2601.18433"
-local_path = "data/external/papers/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf"
+local_path = "data/papers/corpus/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf"
 tags = ["Conformal-Space", "de-Sitter", "Split-Octonions", "Majorana-Spinors", "Inflation"]
 abstract = "Monograph on massless representations in conformal space. Uses split-octonions to realize 8-component Majorana spinors. Connects conformal symmetry to inflationary dynamics."
 
@@ -58,7 +58,7 @@ title = "Towards an Action Principle Unifying the Standard Model and Gravity"
 author = "Pedro D. Alvarez, Fernando Izaurieta, Cristian Quinzacara"
 year = 2026
 arxiv = "2601.19734"
-local_path = "data/external/papers/arxiv_2601.19734v1_clifford_invariant_unification.pdf"
+local_path = "data/papers/corpus/arxiv_2601.19734v1_clifford_invariant_unification.pdf"
 tags = ["Unification", "Gravity", "Standard-Model", "Clifford-Algebra", "Action-Principle"]
 abstract = "A single Clifford-algebraic invariant fixes relative normalization and structure of gravity, Yang-Mills theory, and fermion kinetic terms."
 

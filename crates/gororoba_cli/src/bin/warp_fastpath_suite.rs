@@ -1,21 +1,21 @@
 mod warp_runner;
 mod warp_telemetry;
 
-use gororoba_cli::warp_forcing_policy::{apply_warp_forcing_env, load_warp_forcing_profile};
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::read_simulation_trace_component;
+use gororoba_cli::warp_forcing_policy::{apply_warp_forcing_env, load_warp_forcing_profile};
 use lbm_3d_cuda::Precision;
+use stats_core::helpers::{mean as arithmetic_mean, std_dev};
 use std::cmp::Reverse;
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::path::{Path, PathBuf};
-use stats_core::helpers::{mean as arithmetic_mean, std_dev};
 use std::process::Command;
 use std::sync::atomic::Ordering;
 use std::time::Duration;
 use warp_runner::{
-    gate_h5_outputs_with_profile, print_case_report, run_case, write_step_timing_report,
-    BackendKind, BenchCase, BenchCaseReport, GateProfile, TimingMode,
+    BackendKind, BenchCase, BenchCaseReport, GateProfile, TimingMode, gate_h5_outputs_with_profile,
+    print_case_report, run_case, write_step_timing_report,
 };
 
 #[derive(Debug, Clone)]
@@ -478,8 +478,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!(
         "forcing_profile_selector: cli_arg={:?}, env_GOROROBA_WARP_FORCING_PROFILE={}",
         forcing_profile_name,
-        std::env::var("GOROROBA_WARP_FORCING_PROFILE")
-            .unwrap_or_else(|_| "<unset>".to_string())
+        std::env::var("GOROROBA_WARP_FORCING_PROFILE").unwrap_or_else(|_| "<unset>".to_string())
     );
 
     let mut candidate_scores = Vec::new();
@@ -487,7 +486,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     for &block_dim in &block_dims {
         let dim_tag = block_dim_tag(block_dim);
         // SAFETY: Called single-threaded in binary main before spawning work.
-        unsafe { std::env::set_var("GOROROBA_LBM_BLOCK_DIM", &dim_tag); }
+        unsafe {
+            std::env::set_var("GOROROBA_LBM_BLOCK_DIM", &dim_tag);
+        }
         let candidate_dir = sweep_root.join(format!("blockdim_{}", dim_tag.replace('x', "_")));
         std::fs::create_dir_all(&candidate_dir)?;
         println!();
@@ -636,7 +637,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("SWEEP_SCORES: {}", sweep_scores_path.display());
 
     // SAFETY: Called single-threaded in binary main before spawning work.
-    unsafe { std::env::set_var("GOROROBA_LBM_BLOCK_DIM", &winning_dim_tag); }
+    unsafe {
+        std::env::set_var("GOROROBA_LBM_BLOCK_DIM", &winning_dim_tag);
+    }
     let production_dir = PathBuf::from(format!(
         "data/h5/production/{}_{}_{}",
         timestamp,
@@ -709,9 +712,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         baseline_by_res.insert(res, baseline_snapshot);
 
         if let Ok(path) = find_timing_file(&legacy_dir, res, prod_duration_secs)
-            && let Ok(snapshot) = parse_timing_snapshot(&path) {
-                legacy_by_res.insert(res, snapshot);
-            }
+            && let Ok(snapshot) = parse_timing_snapshot(&path)
+        {
+            legacy_by_res.insert(res, snapshot);
+        }
     }
 
     let mut aggregate_untuned_mlups = Vec::new();
@@ -957,8 +961,14 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
         out.push_str(&format!("geom_mlups_mean = {:.6}\n", score.geom_mlups_mean));
-        out.push_str(&format!("geom_mlups_lcb95 = {:.6}\n", score.geom_mlups_lcb95));
-        out.push_str(&format!("geom_mlups_ucb95 = {:.6}\n\n", score.geom_mlups_ucb95));
+        out.push_str(&format!(
+            "geom_mlups_lcb95 = {:.6}\n",
+            score.geom_mlups_lcb95
+        ));
+        out.push_str(&format!(
+            "geom_mlups_ucb95 = {:.6}\n\n",
+            score.geom_mlups_ucb95
+        ));
     }
 
     out.push_str("[comparison]\n");

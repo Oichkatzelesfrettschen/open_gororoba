@@ -1,0 +1,107 @@
+[audit]
+date = "2026-02-24"
+repo_root = "/home/eirikr/Github/open_gororoba"
+input_report = "reports/data_origin_audit_2026-02-24.toml"
+
+[structure]
+total_data_files = 25108
+top_level_external = 23518
+top_level_artifacts = 680
+top_level_h5 = 431
+top_level_csv = 349
+
+[origin]
+external_reproducible_fetch = 23517
+generated_reproducible = 87
+legacy_frozen = 200
+unknown_origin = 1304
+strict_unknown_origin = 667
+
+[origin_unknown_by_lane]
+artifacts = 667
+h5 = 431
+csv = 119
+unclassified = 20
+e027 = 18
+papers = 18
+thesis_lab = 14
+equivalence = 9
+kubo_transport = 5
+apt_test = 1
+thesis_lab_non_newtonian = 1
+thesis_lab_kolmogorov = 1
+
+[naming]
+violations_total = 1192
+external = 856
+h5 = 317
+artifacts = 11
+csv = 8
+
+[gate_baseline]
+command = "target/debug/data-governance-gate --enforce-gitignore false --enforce-naming false"
+status = "fail"
+failure_count = 1
+primary_failure = "strict unknown origins: 667"
+
+[artifacts_manifest_coverage]
+artifact_files = 680
+manifest_rows = 27
+missing_manifest_rows = 668
+dominant_missing_group = "data/artifacts/c756_frames/*"
+
+[external_provenance]
+command = "target/debug/record-external-hashes --root data/external --output data/external/PROVENANCE.local.json"
+hash_rows = 23518
+hash_backend = "rust"
+url_fields_present_in_main_provenance = false
+
+[[hypothesis]]
+id = "H1"
+claim = "Strict-lane unknown origins are primarily caused by incomplete data/artifacts manifest coverage."
+status = "supported"
+evidence = "Unknown strict origins are 667 and all are in lane artifacts; artifacts manifest has 27 rows for 679 files."
+
+[[hypothesis]]
+id = "H2"
+claim = "External provenance currently guarantees integrity (hashes) but not full source reproducibility (URLs persisted per file)."
+status = "supported"
+evidence = "data/external/PROVENANCE.local.json stores path, size, mtime, sha256, but no source_url field."
+
+[[hypothesis]]
+id = "H3"
+claim = "Naming policy violations are concentrated in legacy/vendor-heavy external/document lanes and generated H5 outputs."
+status = "supported"
+evidence = "1191 violations: external 856, h5 317, artifacts 10, csv 8."
+
+[[lacuna]]
+id = "L-001"
+severity = "high"
+area = "artifacts_manifest"
+summary = "Strict lane artifacts has major manifest undercoverage."
+recommended_action = "Backfill ARTIFACTS_MANIFEST.csv and/or move non-generated narrative files out of strict lane."
+tracked_todo = "T-029"
+
+[[lacuna]]
+id = "L-002"
+severity = "high"
+area = "external_origin_metadata"
+summary = "Hash-only provenance is insufficient to reconstruct source-of-origin without code/script archaeology."
+recommended_action = "Extend provenance schema to persist source URLs (or add companion source index keyed by relative path)."
+tracked_todo = "T-030"
+
+[[lacuna]]
+id = "L-003"
+severity = "medium"
+area = "lane_registration"
+summary = "Some script-produced outputs are not registered in experiment output patterns/manifests."
+recommended_action = "Register script outputs in registry/experiments.toml and governance manifests."
+tracked_todo = "T-031"
+
+[[lacuna]]
+id = "L-004"
+severity = "medium"
+area = "build_entrypoints"
+summary = "Makefile fetch-data references src/fetch_materials_jarvis_subset.py, which is currently missing."
+recommended_action = "Migrate missing fetch step to a Rust binary or restore the script with documented provenance behavior."
+tracked_todo = "T-032"

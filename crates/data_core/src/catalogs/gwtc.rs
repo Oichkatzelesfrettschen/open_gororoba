@@ -6,7 +6,7 @@
 //! Source: https://gwosc.org/eventapi/json/GWTC-3-confident/
 //! Reference: Abbott et al. (2023), PRX 13, 041039
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use crate::parse::parse_f64_or_zero;
 use std::path::{Path, PathBuf};
 

@@ -6,16 +6,17 @@
 //! OFF-source pointings.
 
 use algebra_core::experimental::golay_code::{golay_codewords, weight_enumerator};
-use algebra_core::experimental::leech_lattice::{
-    HoleStatistics, LeechBasis, project_signal_chunk,
-};
+use algebra_core::experimental::leech_lattice::{HoleStatistics, LeechBasis, project_signal_chunk};
 use clap::{Parser, Subcommand};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use std::io::Write;
 
 #[derive(Parser)]
-#[command(name = "moonshine-filterbank", about = "Leech Lattice signal filterbank")]
+#[command(
+    name = "moonshine-filterbank",
+    about = "Leech Lattice signal filterbank"
+)]
 struct Cli {
     #[command(subcommand)]
     cmd: Cmd,
@@ -59,7 +60,8 @@ fn generate_on_chunks(n: usize, snr: f64, rng: &mut ChaCha8Rng) -> Vec<Vec<f64>>
         for j in 0..48 {
             let noise: f64 = rng.r#gen::<f64>() * 2.0 - 1.0;
             // Injected signal: harmonic structure at Leech lattice scale
-            let signal = snr * (2.0 * std::f64::consts::PI * j as f64 / 24.0).sin()
+            let signal = snr
+                * (2.0 * std::f64::consts::PI * j as f64 / 24.0).sin()
                 * (1.0 + 0.5 * (i as f64 * 0.01).sin());
             chunk.push(noise + signal);
         }
@@ -140,9 +142,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let test_signal: Vec<f64> = (0..48).map(|i| (i as f64 * 0.1).sin()).collect();
             let point = project_signal_chunk(&test_signal);
             let norm: f64 = point.iter().map(|v| v * v).sum::<f64>();
-            println!(
-                "Projection of 48-sample sine: |p|^2 = {norm:.6} (should be ~1.0)"
-            );
+            println!("Projection of 48-sample sine: |p|^2 = {norm:.6} (should be ~1.0)");
 
             println!("\n[VALIDATION PASSED]");
         }
@@ -190,11 +190,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let p2 = off_stats.deep_fraction();
             let p_pooled = (p1 * n1 + p2 * n2) / (n1 + n2);
             let se = (p_pooled * (1.0 - p_pooled) * (1.0 / n1 + 1.0 / n2)).sqrt();
-            let z = if se > 0.0 {
-                (p1 - p2) / se
-            } else {
-                0.0
-            };
+            let z = if se > 0.0 { (p1 - p2) / se } else { 0.0 };
             // Two-tailed p-value (approximation)
             let p_value = 2.0 * (1.0 - normal_cdf(z.abs()));
 
@@ -209,7 +205,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             writeln!(
                 file,
                 "ON,{},{},{},{}",
-                on_stats.lattice_points, on_stats.shallow_holes, on_stats.deep_holes, on_stats.total
+                on_stats.lattice_points,
+                on_stats.shallow_holes,
+                on_stats.deep_holes,
+                on_stats.total
             )?;
             writeln!(
                 file,
@@ -294,10 +293,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 fn normal_cdf(x: f64) -> f64 {
     let t = 1.0 / (1.0 + 0.2316419 * x.abs());
     let d = 0.3989423 * (-x * x / 2.0).exp();
-    let p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
-    if x > 0.0 {
-        1.0 - p
-    } else {
-        p
-    }
+    let p =
+        d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    if x > 0.0 { 1.0 - p } else { p }
 }

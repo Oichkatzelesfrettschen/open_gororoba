@@ -17,6 +17,18 @@ canonical_file = "agents.toml"
 rust_tooling_catalog = "docs/rust-tooling-packages.toml"
 rust_tooling_note = "Rust package and tool inventory lives in docs/rust-tooling-packages.toml."
 
+[shared.cargo_execution_policy]
+single_compile_heavy_command_at_a_time = true
+parallelize_non_cargo_tasks_only = true
+reuse_existing_build_artifacts = true
+deterministic_reproducibility_required = true
+contention_avoidance_note = "Avoid concurrent cargo build/run/clippy/test invocations that contend on package/artifact locks. Serialize compile-heavy cargo tasks and parallelize only non-cargo work."
+
+[shared.cargo_execution_policy.recommended_sequence]
+step_1 = "Run one compile-heavy cargo command at a time."
+step_2 = "Parallelize only non-cargo tasks (file scans, report parsing, documentation edits)."
+step_3 = "Reuse one built binary set for follow-on runs."
+
 [shared.project]
 name = "open_gororoba"
 kind = "computational_physics_research_platform"

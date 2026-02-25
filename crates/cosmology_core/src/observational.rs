@@ -18,7 +18,7 @@
 //! - DESI Collaboration (2024), arXiv:2404.03002 [DESI DR1 BAO]
 //! - Conley et al. (2011), ApJS 192, 1 [analytic marginalization]
 
-use crate::bounce::{bao_sound_horizon, hubble_e_bounce, hubble_e_lcdm, C_KM_S};
+use crate::bounce::{C_KM_S, bao_sound_horizon, hubble_e_bounce, hubble_e_lcdm};
 use crate::gl_integrate;
 
 // ---------------------------------------------------------------------------

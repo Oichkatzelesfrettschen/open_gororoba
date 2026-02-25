@@ -58,7 +58,7 @@ Claims progress through verification levels (Roy 2003 framework adapted):
 - Action: Add primary sources and define test
 
 ### Level 2: Sourced
-- Primary literature citations cached in `data/external/papers/`
+- Primary literature citations cached in `data/papers/corpus/`
 - Sources indexed in `docs/external_sources/`
 - Action: Implement validation test
 

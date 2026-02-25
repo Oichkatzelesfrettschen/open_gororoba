@@ -4,9 +4,9 @@
 //! dS/dt = D * Lap(S) - gamma * S - alpha * S^3 + J
 
 use clap::Parser;
-use std::path::PathBuf;
 use std::fs::File;
 use std::io::Write;
+use std::path::PathBuf;
 
 #[derive(Parser)]
 struct Args {
@@ -61,7 +61,9 @@ fn solve_pde_1d(n: usize, depth: usize, d: f64, gamma: f64, alpha: f64, j: f64) 
         for i in 0..n {
             let ds = d * lap[i] - gamma * s[i] - alpha * s[i].powi(3) + j;
             s[i] += ds * dt;
-            if s[i] < 0.0 { s[i] = 0.0; }
+            if s[i] < 0.0 {
+                s[i] = 0.0;
+            }
         }
         let mean: f64 = s.iter().sum::<f64>() / n as f64;
         mean_history.push(mean);
@@ -74,8 +76,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let d = args.diffusion.unwrap_or(args.theta.sin().powi(2));
 
     println!("Simulating Entropy PDE (1D..4D approximation via 1D scaling)...");
-    
-    // In Rust, for a pure artifact-production script, we focus on 1D growth 
+
+    // In Rust, for a pure artifact-production script, we focus on 1D growth
     // as a proxy for the higher-D behavior seen in the Python script.
     let results = solve_pde_1d(100, args.depth, d, args.gamma, args.alpha, args.j);
 

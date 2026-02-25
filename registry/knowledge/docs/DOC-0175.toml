@@ -54,9 +54,9 @@ Instead of stochastic state changes, we implement a field-based energy bookkeepi
 3. **Vacuum Decay (Parton)**: The $P$ field drives a secondary, fast-decaying jitter field $Q$. $Q$ is rendered as the high-entropy red \"Parton\" shower, representing the breakdown of the analogue vacuum.
 
 ## References
-- [CSC KTH (Ray Theory)](../../data/external/papers/CSC_KTH_Ray_Tracing.pdf)
-- [Babar & Weaver (Gold n/k)](../../data/external/papers/Babar_Weaver_Gold_Optical.pdf)
-- [NIST (Silicon n)](../../data/external/papers/NIST_Silicon.pdf)
-- [Malitson (Sapphire)](../../data/external/papers/refractiveindex_info_sapphire.html)
+- [CSC KTH (Ray Theory)](../../data/papers/corpus/CSC_KTH_Ray_Tracing.pdf)
+- [Babar & Weaver (Gold n/k)](../../data/papers/corpus/Babar_Weaver_Gold_Optical.pdf)
+- [NIST (Silicon n)](../../data/papers/corpus/NIST_Silicon.pdf)
+- [Malitson (Sapphire)](../../data/papers/corpus/refractiveindex_info_sapphire.html)
 
 """

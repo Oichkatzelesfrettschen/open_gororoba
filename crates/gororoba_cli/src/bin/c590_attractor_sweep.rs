@@ -13,8 +13,7 @@ use algebra_core::analysis::boxkites::compute_frustration_ratio;
 use clap::Parser;
 
 const SCHEMA_VERSION: &str = "c590_attractor_sweep_v1";
-const CSV_HEADER: &str =
-    "schema_version,profile_tag,dim,frustration_ratio,delta_to_three_eighths,elapsed_seconds,run_unix_seconds\n";
+const CSV_HEADER: &str = "schema_version,profile_tag,dim,frustration_ratio,delta_to_three_eighths,elapsed_seconds,run_unix_seconds\n";
 
 #[derive(Parser, Debug)]
 #[command(name = "c590-attractor-sweep")]

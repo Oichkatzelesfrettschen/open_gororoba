@@ -81,26 +81,44 @@ fn fit_through_origin(data: &[V2SlopePoint]) -> V2RelationResult {
         sum_w += w;
     }
 
-    let slope = if sum_wx2 > 0.0 { sum_wxy / sum_wx2 } else { 0.0 };
-    let slope_err = if sum_wx2 > 0.0 { 1.0 / sum_wx2.sqrt() } else { f64::INFINITY };
+    let slope = if sum_wx2 > 0.0 {
+        sum_wxy / sum_wx2
+    } else {
+        0.0
+    };
+    let slope_err = if sum_wx2 > 0.0 {
+        1.0 / sum_wx2.sqrt()
+    } else {
+        f64::INFINITY
+    };
 
     let beta = 2.0 * slope;
     let beta_err = 2.0 * slope_err;
 
     // Chi2
-    let chi2: f64 = data.iter().map(|d| {
-        let model = slope * d.dln_raa_dln_pt;
-        let diff = d.v2_over_ecc - model;
-        diff * diff / (d.v2_over_ecc_err * d.v2_over_ecc_err)
-    }).sum();
+    let chi2: f64 = data
+        .iter()
+        .map(|d| {
+            let model = slope * d.dln_raa_dln_pt;
+            let diff = d.v2_over_ecc - model;
+            diff * diff / (d.v2_over_ecc_err * d.v2_over_ecc_err)
+        })
+        .sum();
 
     // R^2
     let y_mean = if sum_w > 0.0 { sum_wy / sum_w } else { 0.0 };
-    let ss_tot: f64 = data.iter().map(|d| {
-        let w = 1.0 / (d.v2_over_ecc_err * d.v2_over_ecc_err);
-        w * (d.v2_over_ecc - y_mean).powi(2)
-    }).sum();
-    let r_squared = if ss_tot > 0.0 { 1.0 - chi2 / ss_tot } else { 0.0 };
+    let ss_tot: f64 = data
+        .iter()
+        .map(|d| {
+            let w = 1.0 / (d.v2_over_ecc_err * d.v2_over_ecc_err);
+            w * (d.v2_over_ecc - y_mean).powi(2)
+        })
+        .sum();
+    let r_squared = if ss_tot > 0.0 {
+        1.0 - chi2 / ss_tot
+    } else {
+        0.0
+    };
 
     let ndf = if data.len() > 1 { data.len() - 1 } else { 1 };
 
@@ -141,26 +159,44 @@ fn fit_with_intercept(data: &[V2SlopePoint]) -> V2RelationResult {
         (0.0, 0.0)
     };
 
-    let slope_err = if det.abs() > 1e-30 { (sum_w / det).sqrt() } else { f64::INFINITY };
-    let intercept_err = if det.abs() > 1e-30 { (sum_wxx / det).sqrt() } else { f64::INFINITY };
+    let slope_err = if det.abs() > 1e-30 {
+        (sum_w / det).sqrt()
+    } else {
+        f64::INFINITY
+    };
+    let intercept_err = if det.abs() > 1e-30 {
+        (sum_wxx / det).sqrt()
+    } else {
+        f64::INFINITY
+    };
 
     let beta = 2.0 * slope;
     let beta_err = 2.0 * slope_err;
 
     // Chi2
-    let chi2: f64 = data.iter().map(|d| {
-        let model = slope * d.dln_raa_dln_pt + intercept;
-        let diff = d.v2_over_ecc - model;
-        diff * diff / (d.v2_over_ecc_err * d.v2_over_ecc_err)
-    }).sum();
+    let chi2: f64 = data
+        .iter()
+        .map(|d| {
+            let model = slope * d.dln_raa_dln_pt + intercept;
+            let diff = d.v2_over_ecc - model;
+            diff * diff / (d.v2_over_ecc_err * d.v2_over_ecc_err)
+        })
+        .sum();
 
     // R^2
     let y_mean = if sum_w > 0.0 { sum_wy / sum_w } else { 0.0 };
-    let ss_tot: f64 = data.iter().map(|d| {
-        let w = 1.0 / (d.v2_over_ecc_err * d.v2_over_ecc_err);
-        w * (d.v2_over_ecc - y_mean).powi(2)
-    }).sum();
-    let r_squared = if ss_tot > 0.0 { 1.0 - chi2 / ss_tot } else { 0.0 };
+    let ss_tot: f64 = data
+        .iter()
+        .map(|d| {
+            let w = 1.0 / (d.v2_over_ecc_err * d.v2_over_ecc_err);
+            w * (d.v2_over_ecc - y_mean).powi(2)
+        })
+        .sum();
+    let r_squared = if ss_tot > 0.0 {
+        1.0 - chi2 / ss_tot
+    } else {
+        0.0
+    };
 
     let ndf = if data.len() > 2 { data.len() - 2 } else { 1 };
 
@@ -182,18 +218,20 @@ mod tests {
     fn make_linear_data(beta_true: f64, n_pts: usize) -> Vec<V2SlopePoint> {
         // v2/e = (beta/2) * slope
         let slope_coeff = beta_true / 2.0;
-        (0..n_pts).map(|i| {
-            let x = 0.1 + i as f64 * 0.05; // d(ln R_AA)/d(ln pT) values
-            let y = slope_coeff * x;
-            V2SlopePoint {
-                pt: 5.0 + i as f64 * 2.0,
-                v2_over_ecc: y,
-                v2_over_ecc_err: 0.01,
-                dln_raa_dln_pt: x,
-                slope_err: 0.005,
-                centrality: format!("{}-{}%", i * 10, (i + 1) * 10),
-            }
-        }).collect()
+        (0..n_pts)
+            .map(|i| {
+                let x = 0.1 + i as f64 * 0.05; // d(ln R_AA)/d(ln pT) values
+                let y = slope_coeff * x;
+                V2SlopePoint {
+                    pt: 5.0 + i as f64 * 2.0,
+                    v2_over_ecc: y,
+                    v2_over_ecc_err: 0.01,
+                    dln_raa_dln_pt: x,
+                    slope_err: 0.005,
+                    centrality: format!("{}-{}%", i * 10, (i + 1) * 10),
+                }
+            })
+            .collect()
     }
 
     #[test]
@@ -202,10 +240,18 @@ mod tests {
         let data = make_linear_data(beta_true, 10);
         let result = fit_v2_relation(&data, true);
 
-        assert!((result.beta - beta_true).abs() < 0.01,
-            "beta = {} +/- {} (expected {})", result.beta, result.beta_err, beta_true);
-        assert!(result.r_squared > 0.99,
-            "R^2 = {} (expected ~1)", result.r_squared);
+        assert!(
+            (result.beta - beta_true).abs() < 0.01,
+            "beta = {} +/- {} (expected {})",
+            result.beta,
+            result.beta_err,
+            beta_true
+        );
+        assert!(
+            result.r_squared > 0.99,
+            "R^2 = {} (expected ~1)",
+            result.r_squared
+        );
     }
 
     #[test]
@@ -214,10 +260,18 @@ mod tests {
         let data = make_linear_data(beta_true, 10);
         let result = fit_v2_relation(&data, false);
 
-        assert!((result.beta - beta_true).abs() < 0.02,
-            "beta = {} +/- {} (expected {})", result.beta, result.beta_err, beta_true);
-        assert!(result.intercept.abs() < 0.01,
-            "intercept = {} (expected ~0)", result.intercept);
+        assert!(
+            (result.beta - beta_true).abs() < 0.02,
+            "beta = {} +/- {} (expected {})",
+            result.beta,
+            result.beta_err,
+            beta_true
+        );
+        assert!(
+            result.intercept.abs() < 0.01,
+            "intercept = {} (expected ~0)",
+            result.intercept
+        );
     }
 
     #[test]
@@ -225,7 +279,10 @@ mod tests {
         // Check that chi2/ndf is small for perfect linear data
         let data = make_linear_data(1.0, 20);
         let result = fit_v2_relation(&data, false);
-        assert!(result.chi2 / (result.ndf as f64) < 0.01,
-            "chi2/ndf = {} (expected ~0 for perfect data)", result.chi2 / (result.ndf as f64));
+        assert!(
+            result.chi2 / (result.ndf as f64) < 0.01,
+            "chi2/ndf = {} (expected ~0 for perfect data)",
+            result.chi2 / (result.ndf as f64)
+        );
     }
 }

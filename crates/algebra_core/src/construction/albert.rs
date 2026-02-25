@@ -493,10 +493,17 @@ mod tests {
 
                 eprintln!(
                     "  diag=({:.2},{:.2},{:.2}), oct=[{},{},{}]: eigs=[{:.4},{:.4},{:.4}], d2={:.6}, tr={:.2e}",
-                    a, b, c,
-                    oct_idx, (oct_idx + 1) % 7 + 1, (oct_idx + 2) % 7 + 1,
-                    eigs_z[0], eigs_z[1], eigs_z[2],
-                    d2_z, tr
+                    a,
+                    b,
+                    c,
+                    oct_idx,
+                    (oct_idx + 1) % 7 + 1,
+                    (oct_idx + 2) % 7 + 1,
+                    eigs_z[0],
+                    eigs_z[1],
+                    eigs_z[2],
+                    d2_z,
+                    tr
                 );
 
                 delta_sq_values.push(d2_z);

@@ -54,11 +54,11 @@ pub use construction::cayley_dickson::{
 
 pub use construction::albert::AlbertElement;
 
-pub use construction::wheels::{canonical_test_set, verify_carlstrom_axioms, WheelQ};
+pub use construction::wheels::{WheelQ, canonical_test_set, verify_carlstrom_axioms};
 
 pub use construction::padic::{
-    abs_p, cantor_function_on_cantor, check_ultrametric, is_dyadic, is_power_of_two,
-    padic_distance, ternary_digits_power3, vp, vp_int, CantorDigits, Rational,
+    CantorDigits, Rational, abs_p, cantor_function_on_cantor, check_ultrametric, is_dyadic,
+    is_power_of_two, padic_distance, ternary_digits_power3, vp, vp_int,
 };
 
 pub use construction::hypercomplex::{
@@ -68,16 +68,17 @@ pub use construction::hypercomplex::{
 
 // Re-export from physics
 pub use physics::clifford::{
-    gamma_matrices_cl8, pauli_matrices, verify_clifford_relation, CliffordAlgebra, GammaMatrix,
+    CliffordAlgebra, GammaMatrix, gamma_matrices_cl8, pauli_matrices, verify_clifford_relation,
 };
 
 pub use physics::octonion_field::{
+    DispersionResult, EvolutionResult, FANO_TRIPLES, FieldParams, Octonion,
     build_structure_constants, evolve, force, gaussian_wave_packet, hamiltonian,
     measure_dispersion, noether_charges, oct_conjugate, oct_multiply, oct_norm_sq, standing_wave,
-    stormer_verlet_step, DispersionResult, EvolutionResult, FieldParams, Octonion, FANO_TRIPLES,
+    stormer_verlet_step,
 };
 
-pub use physics::m3::{classify_m3, compute_m3_octonion_basis, M3Classification, OctonionTable};
+pub use physics::m3::{M3Classification, OctonionTable, classify_m3, compute_m3_octonion_basis};
 
 pub use physics::billiard_sim::{
     BilliardConfig, BilliardState, BounceResult, ConstraintDiagnostics, HyperbolicBilliard,
@@ -86,6 +87,13 @@ pub use physics::billiard_sim::{
 
 // Re-export from analysis
 pub use analysis::zd_graphs::{
+    AssociatorGraphResult,
+    BasisParticipationResult,
+    BladeNode,
+    FourBladeSpec,
+    MixedBladeGraphResult,
+    TwoBladeSpec,
+    ZdGraphAnalysis,
     analyze_associator_graph,
     analyze_basis_participation,
     analyze_zd_graph,
@@ -105,16 +113,19 @@ pub use analysis::zd_graphs::{
     zd_graph_diameter,
     zd_shortest_path,
     zero_product_2blade_x_4blade,
-    AssociatorGraphResult,
-    BasisParticipationResult,
-    BladeNode,
-    FourBladeSpec,
-    MixedBladeGraphResult,
-    TwoBladeSpec,
-    ZdGraphAnalysis,
 };
 
 pub use analysis::boxkites::{
+    Assessor,
+    BoxKite,
+    BoxKiteSymmetryResult,
+    // Generalized motif census (cd_motif_census port)
+    CrossPair,
+    EdgeSignType,
+    FrustrationResult,
+    MotifComponent,
+    O_TRIPS,
+    StrutTable,
     // Production rules and automorphemes (de Marrais 2000, 2004)
     all_diagonal_zero_products,
     analyze_box_kite_symmetry,
@@ -138,52 +149,36 @@ pub use analysis::boxkites::{
     production_rule_1,
     production_rule_2,
     production_rule_3,
-    Assessor,
-    BoxKite,
-    BoxKiteSymmetryResult,
-    // Generalized motif census (cd_motif_census port)
-    CrossPair,
-    EdgeSignType,
-    FrustrationResult,
-    MotifComponent,
-    StrutTable,
-    O_TRIPS,
 };
 
 pub use analysis::annihilator::{
-    annihilator_info, find_left_annihilator_vector, is_reggiani_zd, is_zero_divisor,
-    left_multiplication_matrix, nullspace_basis, right_multiplication_matrix, AnnihilatorInfo,
+    AnnihilatorInfo, annihilator_info, find_left_annihilator_vector, is_reggiani_zd,
+    is_zero_divisor, left_multiplication_matrix, nullspace_basis, right_multiplication_matrix,
 };
 
 pub use analysis::reggiani::{
-    assert_standard_zero_divisor_annihilators, standard_zero_divisor_partners,
-    standard_zero_divisors, StandardZeroDivisor,
+    StandardZeroDivisor, assert_standard_zero_divisor_annihilators, standard_zero_divisor_partners,
+    standard_zero_divisors,
 };
 
 pub use analysis::subalgebra::{
-    classify_generations, cross_reference_boxkites, enumerate_octonion_subalgebras,
-    subalgebra_associator_spectrum, OctonionSubalgebra, SubalgebraEnumeration,
-    SubalgebraGeneration,
+    OctonionSubalgebra, SubalgebraEnumeration, SubalgebraGeneration, classify_generations,
+    cross_reference_boxkites, enumerate_octonion_subalgebras, subalgebra_associator_spectrum,
 };
 
 pub use analysis::grassmannian::{
-    chordal_distance, count_distinct_distances, geodesic_distance, orthonormality_error,
+    Subspace, chordal_distance, count_distinct_distances, geodesic_distance, orthonormality_error,
     pairwise_geodesic_distances, principal_angles, subspace_from_orthonormal,
-    subspace_from_vectors, Subspace,
+    subspace_from_vectors,
 };
 
 pub use analysis::fractal_analysis::{
+    DfaResult, HurstClassification, HurstResult, MultiSeriesHurstResult, RescaledRangeResult,
     analyze_multiple_series, calculate_hurst, classify_hurst, dfa_analysis, generate_fbm,
-    generate_fgn, hurst_rs_analysis, DfaResult, HurstClassification, HurstResult,
-    MultiSeriesHurstResult, RescaledRangeResult,
+    generate_fgn, hurst_rs_analysis,
 };
 
 pub use analysis::stochastic::{
-    analyze_anomalous_diffusion,
-    fit_ou_parameters,
-    generate_gbm,
-    generate_levy_flight,
-    generate_ou_process,
     // Anomalous diffusion analysis
     AnomalousDiffusionResult,
     DiffusionType,
@@ -194,15 +189,14 @@ pub use analysis::stochastic::{
     MeanReversionResult,
     // Ornstein-Uhlenbeck process
     OUParams,
+    analyze_anomalous_diffusion,
+    fit_ou_parameters,
+    generate_gbm,
+    generate_levy_flight,
+    generate_ou_process,
 };
 
 pub use analysis::homotopy_algebra::{
-    a_infinity_sign,
-    catalan_number,
-    cyclohedron_vertices,
-    // Sign computations
-    koszul_sign,
-    l_infinity_sign,
     // A-infinity structures
     AInfinityAlgebra,
     // Combinatorics
@@ -221,9 +215,20 @@ pub use analysis::homotopy_algebra::{
     // String field theory
     StringFieldTheory,
     StringType,
+    a_infinity_sign,
+    catalan_number,
+    cyclohedron_vertices,
+    // Sign computations
+    koszul_sign,
+    l_infinity_sign,
 };
 
 pub use analysis::projective_geometry::{
+    // C-444 correspondence verification
+    PGCorrespondenceResult,
+    PGLine,
+    PGPoint,
+    ProjectiveGeometry,
     component_xor_label,
     find_affine_class_predicate,
     find_boolean_class_predicate,
@@ -237,24 +242,10 @@ pub use analysis::projective_geometry::{
     verify_pg_correspondence,
     verify_pg_line_structure,
     verify_signature_determines_solutions,
-    // C-444 correspondence verification
-    PGCorrespondenceResult,
-    PGLine,
-    PGPoint,
-    ProjectiveGeometry,
 };
 
 // Re-export from lie
 pub use lie::e8_lattice::{
-    compute_e8_inner_products,
-    cross_validate_with_atlas,
-    e8_cartan_matrix,
-    e8_weyl_group_order,
-    exceptional_groups_from_atlas,
-    generate_e8_roots,
-    get_atlas_embedding_info,
-    magic_square_entry,
-    verify_cartan_matrix_with_atlas,
     // Atlas-E8 integration
     AtlasE8CrossValidation,
     AtlasEmbeddingInfo,
@@ -265,35 +256,36 @@ pub use lie::e8_lattice::{
     ExceptionalGroupsFromAtlas,
     FreudenthalTitsMagicSquare,
     MagicSquareLieAlgebra,
+    compute_e8_inner_products,
+    cross_validate_with_atlas,
+    e8_cartan_matrix,
+    e8_weyl_group_order,
+    exceptional_groups_from_atlas,
+    generate_e8_roots,
+    get_atlas_embedding_info,
+    magic_square_entry,
+    verify_cartan_matrix_with_atlas,
 };
 
 pub use lie::group_theory::{
-    exceptional, is_prime, order_alternating, order_gl, order_psl2_q, order_sl, order_symmetric,
-    prime_power, PSL_2_7_ORDER,
+    PSL_2_7_ORDER, exceptional, is_prime, order_alternating, order_gl, order_psl2_q, order_sl,
+    order_symmetric, prime_power,
 };
 
 pub use lie::nilpotent_orbits::{
-    dominance_order, enumerate_partitions, jordan_block, jordan_type_nilpotent,
-    matrix_from_jordan_type, nilpotency_index, partition_count, JordanType, NilpotentAnalysis,
+    JordanType, NilpotentAnalysis, dominance_order, enumerate_partitions, jordan_block,
+    jordan_type_nilpotent, matrix_from_jordan_type, nilpotency_index, partition_count,
 };
 
 pub use lie::kac_moody::{
-    // Classical series
-    a_n_cartan,
-    d_n_cartan,
-    e10_cartan,
-    e11_cartan,
-    // E-series Cartan matrices
-    e8_cartan,
-    e9_cartan,
     CartanEntry,
     // Dynkin diagrams
     DynkinDiagram,
     DynkinEdge,
     DynkinNode,
+    E9RootSystem,
     E10RootSystem,
     E11RootSystem,
-    E9RootSystem,
     ESeriesRootSystem,
     // Core types
     GeneralizedCartanMatrix,
@@ -305,19 +297,35 @@ pub use lie::kac_moody::{
     RootType,
     // Weyl groups and root systems
     WeylGroupInfo,
+    // Classical series
+    a_n_cartan,
+    d_n_cartan,
+    // E-series Cartan matrices
+    e8_cartan,
+    e9_cartan,
+    e10_cartan,
+    e11_cartan,
 };
 
 // Re-export from experimental
 pub use experimental::moonshine::{
-    compute_j_coefficients, j_as_hauptmodul, j_constant_term_e8_relation,
-    known_moonshine_decompositions, mckay_e8_observation, monster_group_order,
-    moonshine_dimensions, verify_monster_order_factorization, verify_moonshine_c1,
-    verify_moonshine_c2, HauptmodulProperty, MoonshineDecomposition, MoonshineDimensions,
-    J_COEFFICIENTS, J_COEFFICIENTS_VALID, LEECH_LATTICE_DIMENSION, MONSTER_CONJUGACY_CLASSES,
-    MONSTER_REPS_VALID, MONSTER_REP_DIMENSIONS, NIEMEIER_LATTICE_COUNT,
+    HauptmodulProperty, J_COEFFICIENTS, J_COEFFICIENTS_VALID, LEECH_LATTICE_DIMENSION,
+    MONSTER_CONJUGACY_CLASSES, MONSTER_REP_DIMENSIONS, MONSTER_REPS_VALID, MoonshineDecomposition,
+    MoonshineDimensions, NIEMEIER_LATTICE_COUNT, compute_j_coefficients, j_as_hauptmodul,
+    j_constant_term_e8_relation, known_moonshine_decompositions, mckay_e8_observation,
+    monster_group_order, moonshine_dimensions, verify_monster_order_factorization,
+    verify_moonshine_c1, verify_moonshine_c2,
 };
 
 pub use experimental::e10_octonion::{
+    // Cayley integer bridge
+    CayleyBasis,
+    // Claim 4 verification (Engine B)
+    Claim4Result,
+    // Fano overlap graph (Engine B)
+    FanoOverlapGraph,
+    GraphEdgeComparison,
+    NULL_FANO_RATE_UNIFORM,
     build_e8_transition_graph,
     build_fano_overlap_graph,
     claim4_summary,
@@ -342,17 +350,27 @@ pub use experimental::e10_octonion::{
     symmetrize_transition_graph,
     verify_cayley_integer_norms,
     verify_claim4,
-    // Cayley integer bridge
-    CayleyBasis,
-    // Claim 4 verification (Engine B)
-    Claim4Result,
-    // Fano overlap graph (Engine B)
-    FanoOverlapGraph,
-    GraphEdgeComparison,
-    NULL_FANO_RATE_UNIFORM,
 };
 
 pub use experimental::billiard_stats::{
+    // Chi-squared test
+    ChiSquaredResult,
+    // Claim 1 verification
+    Claim1Result,
+    // Constants
+    E10_ADJACENCY,
+    // Fano structure analysis
+    FanoStructureAnalysis,
+    // Locality metrics
+    LocalityMetrics,
+    N_E8,
+    N_WALLS,
+    NULL_R_E8_UNIFORM,
+    // Null models
+    NullModel,
+    // Permutation tests
+    PermutationTestResult,
+    SectorMetrics,
     chi_squared_e8_transitions,
     claim1_summary,
     compute_locality_metrics,
@@ -367,56 +385,9 @@ pub use experimental::billiard_stats::{
     // Transition matrix analysis
     transition_matrix,
     verify_claim1,
-    // Chi-squared test
-    ChiSquaredResult,
-    // Claim 1 verification
-    Claim1Result,
-    // Fano structure analysis
-    FanoStructureAnalysis,
-    // Locality metrics
-    LocalityMetrics,
-    // Null models
-    NullModel,
-    // Permutation tests
-    PermutationTestResult,
-    SectorMetrics,
-    // Constants
-    E10_ADJACENCY,
-    NULL_R_E8_UNIFORM,
-    N_E8,
-    N_WALLS,
 };
 
 pub use experimental::emanation::{
-    balloon_ride,
-    // CDP signed product (integer-exact)
-    cdp_signed_product,
-    classify_strut,
-    create_skybox,
-    create_strutted_et,
-    et_regimes,
-    // Regime spectroscopy
-    et_sparsity_spectroscopy,
-    // ET construction
-    generate_tone_row,
-    hide_fill_analysis,
-    is_inherited_full_fill_strut,
-    // Sky classification (de Marrais erratum resolved)
-    is_sky_strut,
-    min_level_for_strut,
-    // (s,g)-Modularity -- recursive regime address
-    regime_address,
-    regime_count,
-    row_degree_distribution,
-    sail_decomposition,
-    spectroscopy_bands,
-    strut_spectroscopy,
-    // Trip-Count Two-Step
-    trip_count,
-    trip_count_two_step,
-    verify_theorem11,
-    verify_three_viziers,
-    vizier_xor_audit,
     BalloonRide,
     // Balloon ride -- fixed-S, increasing-N sequence
     BalloonRideStep,
@@ -448,6 +419,35 @@ pub use experimental::emanation::{
     // Core ET types
     ToneRow,
     VizierXorAudit,
+    balloon_ride,
+    // CDP signed product (integer-exact)
+    cdp_signed_product,
+    classify_strut,
+    create_skybox,
+    create_strutted_et,
+    et_regimes,
+    // Regime spectroscopy
+    et_sparsity_spectroscopy,
+    // ET construction
+    generate_tone_row,
+    hide_fill_analysis,
+    is_inherited_full_fill_strut,
+    // Sky classification (de Marrais erratum resolved)
+    is_sky_strut,
+    min_level_for_strut,
+    // (s,g)-Modularity -- recursive regime address
+    regime_address,
+    regime_count,
+    row_degree_distribution,
+    sail_decomposition,
+    spectroscopy_bands,
+    strut_spectroscopy,
+    // Trip-Count Two-Step
+    trip_count,
+    trip_count_two_step,
+    verify_theorem11,
+    verify_three_viziers,
+    vizier_xor_audit,
 };
 
 pub use experimental::cd_external;

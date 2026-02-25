@@ -52,7 +52,7 @@ fn main() {
     let n_samples = 5000;
     let n_bins = 100;
     let seed = 42;
-    
+
     println!("Computing Alternativity Violation Entropy (H_alt) across dimensions...");
     println!("Dim | Entropy (H_alt) | Max Violation");
     println!("----|-----------------|--------------");
@@ -62,14 +62,16 @@ fn main() {
         let normal = Normal::new(0.0, 1.0).unwrap();
         let mut max_v = 0.0;
         for _ in 0..100 {
-             let a_raw: Vec<f64> = (0..dim).map(|_| normal.sample(&mut rng)).collect();
-             let b_raw: Vec<f64> = (0..dim).map(|_| normal.sample(&mut rng)).collect();
-             let a_norm = a_raw.iter().map(|x| x * x).sum::<f64>().sqrt();
-             let b_norm = b_raw.iter().map(|x| x * x).sum::<f64>().sqrt();
-             let a: Vec<f64> = a_raw.iter().map(|x| x / a_norm).collect();
-             let b: Vec<f64> = b_raw.iter().map(|x| x / b_norm).collect();
-             let v = cd_associator_norm(&a, &a, &b);
-             if v > max_v { max_v = v; }
+            let a_raw: Vec<f64> = (0..dim).map(|_| normal.sample(&mut rng)).collect();
+            let b_raw: Vec<f64> = (0..dim).map(|_| normal.sample(&mut rng)).collect();
+            let a_norm = a_raw.iter().map(|x| x * x).sum::<f64>().sqrt();
+            let b_norm = b_raw.iter().map(|x| x * x).sum::<f64>().sqrt();
+            let a: Vec<f64> = a_raw.iter().map(|x| x / a_norm).collect();
+            let b: Vec<f64> = b_raw.iter().map(|x| x / b_norm).collect();
+            let v = cd_associator_norm(&a, &a, &b);
+            if v > max_v {
+                max_v = v;
+            }
         }
 
         let h = alternativity_entropy(dim, n_samples, n_bins, seed);

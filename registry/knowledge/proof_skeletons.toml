@@ -1174,7 +1174,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-033"]
-evidence_refs = ["crates/algebra_core/src/lie/group_theory.rs", "data/csv/c033_su5_generator_summary.csv", "data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/BIBLIOGRAPHY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "docs/SEDENION_FIELD_THEORY.md", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "src/scripts/analysis/c033_su5_generator_summary.py", "tests/test_su5_generators.py"]
+evidence_refs = ["crates/algebra_core/src/lie/group_theory.rs", "data/csv/c033_su5_generator_summary.csv", "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/BIBLIOGRAPHY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "docs/SEDENION_FIELD_THEORY.md", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "src/scripts/analysis/c033_su5_generator_summary.py", "tests/test_su5_generators.py"]
 
 [[skeleton]]
 id = "PRS-00066"
@@ -1192,7 +1192,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-034"]
-evidence_refs = ["data/csv/c034_sedenion_doubling_identity_check.csv", "data/external/traces/chanyal_2014_springer_abstract.txt", "docs/BIBLIOGRAPHY.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "docs/SEDENION_FIELD_THEORY.md", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "tests/test_c034_sedenion_doubling_identity.py"]
+evidence_refs = ["data/csv/c034_sedenion_doubling_identity_check.csv", "data/papers/intake/traces/chanyal_2014_springer_abstract.txt", "docs/BIBLIOGRAPHY.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "docs/SEDENION_FIELD_THEORY.md", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "tests/test_c034_sedenion_doubling_identity.py"]
 
 [[skeleton]]
 id = "PRS-00067"
@@ -1246,7 +1246,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-035", "C-037"]
-evidence_refs = ["C-035", "data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf", "data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf", "data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf", "docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md"]
+evidence_refs = ["C-035", "data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf", "data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf", "data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf", "docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00070"
@@ -1318,7 +1318,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-041"]
-evidence_refs = ["data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md"]
+evidence_refs = ["data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00074"
@@ -1417,8 +1417,8 @@ theorem_label = "C-047"
 claim_id = "C-047"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-047."]
-derivation_steps = ["The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8", "Offline hook: `tests/test_c047_e_series_cartan_signature", "py`", "Sources cached under `data/external/papers/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES", "md`)"]
-decision_rule = "The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/external/papers/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`)."
+derivation_steps = ["The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8", "Offline hook: `tests/test_c047_e_series_cartan_signature", "py`", "Sources cached under `data/papers/corpus/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES", "md`)"]
+decision_rule = "The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/papers/corpus/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`)."
 conclusion = "REFUTED: Refuted"
 source_uid = "C-047"
 source_registry = "registry/claims.toml"
@@ -1426,7 +1426,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-047"]
-evidence_refs = ["archive/legacy_conjectures/", "data/external/papers/", "docs/C047_E_SERIES_KAC_MOODY_AUDIT.md", "docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md", "tests/test_c047_e_series_cartan_signature.py"]
+evidence_refs = ["archive/legacy_conjectures/", "data/papers/corpus/", "docs/C047_E_SERIES_KAC_MOODY_AUDIT.md", "docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md", "tests/test_c047_e_series_cartan_signature.py"]
 
 [[skeleton]]
 id = "PRS-00080"
@@ -7924,7 +7924,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-400"]
-evidence_refs = ["data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf", "docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md"]
+evidence_refs = ["data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf", "docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00441"
@@ -7942,7 +7942,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-401"]
-evidence_refs = ["data/external/papers/White_2021_Casimir_Warp.pdf", "docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md"]
+evidence_refs = ["data/papers/corpus/White_2021_Casimir_Warp.pdf", "docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00442"
@@ -7960,7 +7960,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-402"]
-evidence_refs = ["data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf", "docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md"]
+evidence_refs = ["data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf", "docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00443"
@@ -8122,7 +8122,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-402", "C-410"]
-evidence_refs = ["C-402", "data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf", "docs/BIBLIOGRAPHY.md", "src/scripts/analysis/c410_photon_graviton_scope.py", "tests/test_c410_photon_graviton_scope.py"]
+evidence_refs = ["C-402", "data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf", "docs/BIBLIOGRAPHY.md", "src/scripts/analysis/c410_photon_graviton_scope.py", "tests/test_c410_photon_graviton_scope.py"]
 
 [[skeleton]]
 id = "PRS-00452"
@@ -8140,7 +8140,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-411"]
-evidence_refs = ["data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf", "docs/BIBLIOGRAPHY.md", "src/scripts/analysis/c411_sfwm_thin_layer_check.py", "tests/test_c411_sfwm_thin_layer.py"]
+evidence_refs = ["data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf", "docs/BIBLIOGRAPHY.md", "src/scripts/analysis/c411_sfwm_thin_layer_check.py", "tests/test_c411_sfwm_thin_layer.py"]
 
 [[skeleton]]
 id = "PRS-00453"
@@ -8545,8 +8545,8 @@ theorem_label = "C-434"
 claim_id = "C-434"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-434."]
-derivation_steps = ["Sources cached in `data/external/papers/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE", "local", "json`", "The \"Cinematic n=2", "5\" for Ice VIII is explicitly labeled as a fictional host proxy where used"]
-decision_rule = "Sources cached in `data/external/papers/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used."
+derivation_steps = ["Sources cached in `data/papers/corpus/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE", "local", "json`", "The \"Cinematic n=2", "5\" for Ice VIII is explicitly labeled as a fictional host proxy where used"]
+decision_rule = "Sources cached in `data/papers/corpus/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-434"
 source_registry = "registry/claims.toml"
@@ -8554,7 +8554,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-434"]
-evidence_refs = ["data/external/PROVENANCE.local.json", "data/external/papers/", "docs/theory/WARP_PHYSICS_RECONCILIATION.md", "src/scripts/visualization/animate_warp_v8_rigorous.py"]
+evidence_refs = ["data/external/PROVENANCE.local.json", "data/papers/corpus/", "docs/theory/WARP_PHYSICS_RECONCILIATION.md", "src/scripts/visualization/animate_warp_v8_rigorous.py"]
 
 [[skeleton]]
 id = "PRS-00476"

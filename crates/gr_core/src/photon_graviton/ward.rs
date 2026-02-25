@@ -41,10 +41,7 @@ pub fn check_gauge_ward_irreducible(
 /// The tadpole is proportional to the tree-level tensor C^{mn,a}, for which
 /// k_alpha * C^{mn,alpha} = 0 by the tree-level Ward identity.
 /// So the tadpole automatically satisfies the gauge Ward identity.
-pub fn check_gauge_ward_tadpole(
-    config: &FieldConfig,
-    tolerance: f64,
-) -> WardCheckResult {
+pub fn check_gauge_ward_tadpole(config: &FieldConfig, tolerance: f64) -> WardCheckResult {
     // The tadpole is proportional to C^{mn,a}, and k.C = 0.
     // This is exact (not numerical), so residual is identically zero.
     let _ = config; // used for consistency of API
@@ -63,10 +60,7 @@ pub fn check_gauge_ward_tadpole(
 /// k_a * Pi^{ba}(k;F) = 0 (QED gauge invariance is preserved in the
 /// constant field background). So the external diagram automatically
 /// satisfies the gauge Ward identity.
-pub fn check_gauge_ward_external(
-    config: &FieldConfig,
-    tolerance: f64,
-) -> WardCheckResult {
+pub fn check_gauge_ward_external(config: &FieldConfig, tolerance: f64) -> WardCheckResult {
     let _ = config;
     WardCheckResult {
         identity: WardIdentity::Gauge,

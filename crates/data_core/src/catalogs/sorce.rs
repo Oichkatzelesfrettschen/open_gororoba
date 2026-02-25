@@ -10,7 +10,7 @@
 //! (Level 3 suffix). The most stable URL is the direct file link at
 //! `/data/sorce/tsi_data/daily/`.
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
@@ -31,22 +31,26 @@ pub fn parse_sorce_csv(path: &Path) -> Result<Vec<SorceMeasurement>, FetchError>
         .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;
 
     let mut rows = Vec::new();
-    let is_csv = content
-        .lines()
-        .any(|l| l.contains("tsi_1au") && l.contains(','));
+    let mut is_csv = false;
+    for line in content.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() || trimmed.starts_with('#') || trimmed.starts_with(';') {
+            continue;
+        }
+        is_csv = trimmed.contains(',');
+        break;
+    }
 
     for line in content.lines() {
         let trimmed = line.trim();
-        if trimmed.is_empty()
-            || trimmed.starts_with('#')
-            || trimmed.starts_with(';')
-            || trimmed.contains("date")
-            || trimmed.contains("tsi_1au")
-        {
+        if trimmed.is_empty() || trimmed.starts_with('#') || trimmed.starts_with(';') {
             continue;
         }
 
         if is_csv {
+            if trimmed.contains("time") || trimmed.contains("tsi_1au") {
+                continue;
+            }
             // LaTiS CSV: col 0 = JD, col 1 = TSI
             let fields: Vec<&str> = trimmed.split(',').collect();
             if fields.len() < 2 {
@@ -63,6 +67,9 @@ pub fn parse_sorce_csv(path: &Path) -> Result<Vec<SorceMeasurement>, FetchError>
                 tsi,
             });
         } else {
+            if !trimmed.chars().next().is_some_and(|c| c.is_ascii_digit()) {
+                continue;
+            }
             // Direct TXT: col 1 = JDN, col 4 = tsi_1au (space-separated)
             let fields: Vec<&str> = trimmed.split_whitespace().collect();
             if fields.len() < 5 {

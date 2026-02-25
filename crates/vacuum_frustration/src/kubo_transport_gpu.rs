@@ -16,8 +16,8 @@ use cudarc::cusolver::sys::{
 use cudarc::driver::{CudaContext, CudaStream, DevicePtr, DevicePtrMut};
 
 use super::kubo_transport::{
-    build_energy_current_operator, build_hamiltonian_matrix, build_spin_current_operator,
-    compute_transport_from_eigenbasis, HeisenbergModel, KuboTransport,
+    HeisenbergModel, KuboTransport, build_energy_current_operator, build_hamiltonian_matrix,
+    build_spin_current_operator, compute_transport_from_eigenbasis,
 };
 
 /// GPU-accelerated exact diagonalization result.

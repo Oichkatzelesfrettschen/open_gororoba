@@ -1198,11 +1198,7 @@ mod tests {
     fn test_e10_adjacency_symmetric() {
         for (i, row) in E10_ADJACENCY.iter().enumerate().take(N_WALLS) {
             for (j, &val) in row.iter().enumerate().take(N_WALLS) {
-                assert_eq!(
-                    val, E10_ADJACENCY[j][i],
-                    "Asymmetric at ({}, {})",
-                    i, j
-                );
+                assert_eq!(val, E10_ADJACENCY[j][i], "Asymmetric at ({}, {})", i, j);
             }
             // No self-loops
             assert!(!row[i], "Self-loop at {}", i);
@@ -1416,11 +1412,7 @@ mod tests {
             .map(|i| {
                 // Traverse E8 spine back and forth
                 let phase = i % 10;
-                if phase < 6 {
-                    phase
-                } else {
-                    10 - phase
-                }
+                if phase < 6 { phase } else { 10 - phase }
             })
             .collect();
         let result = permutation_test_r_e8(&seq, &NullModel::Uniform, 100, 42);
@@ -1600,7 +1592,7 @@ mod tests {
         let sm = compute_sector_metrics(&seq);
         assert_eq!(sm.mixed_fraction, 0.5); // 0->8 is mixed
         assert_eq!(sm.hyp_fraction, 0.5); // 8->9 is hyp
-                                          // r_mixed: 0->8 is adjacent (0-8 edge), so r_mixed = 1.0
+        // r_mixed: 0->8 is adjacent (0-8 edge), so r_mixed = 1.0
         assert!((sm.r_mixed - 1.0).abs() < 1e-10);
         // r_hyp: 8->9 is adjacent, so r_hyp = 1.0
         assert!((sm.r_hyp - 1.0).abs() < 1e-10);

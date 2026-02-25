@@ -1,6 +1,6 @@
 use snia_core::{
-    write_snapshot_toml, BurnState, CarbonBurnModel, HllcFlux1D, HydroState1D, NickelYieldModel,
-    SimulationSnapshot, SniaCoreSolver, SolverConfig, WhiteDwarfEos,
+    BurnState, CarbonBurnModel, HllcFlux1D, HydroState1D, NickelYieldModel, SimulationSnapshot,
+    SniaCoreSolver, SolverConfig, WhiteDwarfEos, write_snapshot_toml,
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

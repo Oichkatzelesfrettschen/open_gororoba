@@ -12,7 +12,7 @@
 //!                   --output data/csv/c071_frb_ultrametric.csv
 
 use clap::Parser;
-use stats_core::ultrametric::{run_ultrametric_analysis, ultrametric_gate, UltrametricConfig};
+use stats_core::ultrametric::{UltrametricConfig, run_ultrametric_analysis, ultrametric_gate};
 
 #[derive(Parser)]
 #[command(name = "frb-ultrametric")]

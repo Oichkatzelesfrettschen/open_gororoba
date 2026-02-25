@@ -6,7 +6,7 @@
 //! Source: NAIF/JPL
 //! https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::{Path, PathBuf};
 
 /// DAF/SPK magic bytes at the start of a binary SPK kernel.

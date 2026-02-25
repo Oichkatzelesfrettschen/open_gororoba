@@ -18,8 +18,8 @@
 //! - Strut table cross-validation against de Marrais (unpublished)
 
 use crate::analysis::boxkites::{
-    canonical_strut_table, cross_assessors, diagonal_zero_products_exact, find_box_kites, Assessor,
-    CrossPair,
+    Assessor, CrossPair, canonical_strut_table, cross_assessors, diagonal_zero_products_exact,
+    find_box_kites,
 };
 use crate::construction::cayley_dickson::cd_multiply;
 use std::collections::{BTreeSet, HashMap, HashSet};
@@ -819,9 +819,10 @@ pub fn verify_xor_partner_law(dim: usize) -> XorPartnerResult {
             } else if partner_hi < partner_lo {
                 // Try swapped order
                 if let Some(&j) = pair_index.get(&(partner_hi, partner_lo))
-                    && i != j {
-                        n_valid += 1;
-                    }
+                    && i != j
+                {
+                    n_valid += 1;
+                }
             }
         }
     }
@@ -1263,9 +1264,10 @@ pub fn load_lattice_points(dim: usize) -> Vec<Vec<i32>> {
     for line in lines {
         let fields = parse_csv_line_internal(line);
         if fields.len() >= 2
-            && let Some(pt) = parse_lattice_point(&fields[1]) {
-                points.push(pt);
-            }
+            && let Some(pt) = parse_lattice_point(&fields[1])
+        {
+            points.push(pt);
+        }
     }
     points
 }
@@ -1291,9 +1293,10 @@ pub fn load_lattice_map(dim: usize) -> HashMap<usize, Vec<i32>> {
                 parse_nested_tuple(&fields[0]),
                 parse_lattice_point(&fields[1]),
             )
-                && let Some(idx) = vec_to_basis_index(&basis_vec) {
-                    map.insert(idx, lattice);
-                }
+            && let Some(idx) = vec_to_basis_index(&basis_vec)
+        {
+            map.insert(idx, lattice);
+        }
     }
     map
 }
@@ -1462,11 +1465,12 @@ mod tests {
         let v = parse_nested_tuple(s).unwrap();
         assert_eq!(v.len(), 8);
         assert_eq!(v[4], 1.0);
-        assert!(v
-            .iter()
-            .enumerate()
-            .filter(|&(i, _)| i != 4)
-            .all(|(_, &x)| x == 0.0));
+        assert!(
+            v.iter()
+                .enumerate()
+                .filter(|&(i, _)| i != 4)
+                .all(|(_, &x)| x == 0.0)
+        );
     }
 
     #[test]
@@ -2025,10 +2029,10 @@ mod tests {
             if let (Some(basis_vec), Some(lattice)) = (
                 parse_nested_tuple(&fields[0]),
                 parse_lattice_point(&fields[1]),
-            )
-                && let Some(idx) = vec_to_basis_index(&basis_vec) {
-                    lattice_map.insert(idx, lattice);
-                }
+            ) && let Some(idx) = vec_to_basis_index(&basis_vec)
+            {
+                lattice_map.insert(idx, lattice);
+            }
         }
 
         assert_eq!(lattice_map.len(), 256, "Expected 256 lattice points");
@@ -2427,7 +2431,7 @@ mod tests {
     fn test_lambda_256_csv_vs_predicates() {
         // Cross-validate CSV-loaded Lambda_256 against predicate-based enumeration.
         // The predicate chain gives exactly 256 points (verified in codebook tests).
-        use crate::analysis::codebook::{enumerate_lambda_256, LatticeVector};
+        use crate::analysis::codebook::{LatticeVector, enumerate_lambda_256};
 
         let csv_points: Vec<Vec<i32>> = load_lattice_points(256);
         let pred_points: Vec<LatticeVector> = enumerate_lambda_256();
@@ -2628,11 +2632,15 @@ mod tests {
         for (i, &(lo, hi)) in pairs.iter().enumerate() {
             let partner_lo = lo ^ xor_mask;
             let partner_hi = hi ^ xor_mask;
-            if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim
+            if partner_lo >= 1
+                && partner_lo < half
+                && partner_hi >= half
+                && partner_hi < dim
                 && let Some(&j) = pair_index.get(&(partner_lo, partner_hi))
-                    && i < j {
-                        graph.add_edge(nodes[i], nodes[j], ());
-                    }
+                && i < j
+            {
+                graph.add_edge(nodes[i], nodes[j], ());
+            }
         }
 
         let suite = compute_invariant_suite_from_graph("P_xor_involution_128", &graph);
@@ -2741,11 +2749,15 @@ mod tests {
                     actual_boundary += 1;
                     continue;
                 }
-                if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim
+                if partner_lo >= 1
+                    && partner_lo < half
+                    && partner_hi >= half
+                    && partner_hi < dim
                     && let Some(&j) = pair_index.get(&(partner_lo, partner_hi))
-                        && i < j {
-                            graph.add_edge(nodes[i], nodes[j], ());
-                        }
+                    && i < j
+                {
+                    graph.add_edge(nodes[i], nodes[j], ());
+                }
             }
 
             assert_eq!(

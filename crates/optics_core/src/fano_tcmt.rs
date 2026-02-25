@@ -293,10 +293,6 @@ mod tests {
 
         // phi=pi: q = -cos(pi/2)/sin(pi/2) = 0
         let q_pi = fano_q(PI);
-        assert!(
-            q_pi.abs() < 1e-12,
-            "q for phi=pi should be 0, got {}",
-            q_pi
-        );
+        assert!(q_pi.abs() < 1e-12, "q for phi=pi should be 0, got {}", q_pi);
     }
 }

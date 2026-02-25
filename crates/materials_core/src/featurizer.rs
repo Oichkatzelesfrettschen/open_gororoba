@@ -10,7 +10,7 @@
 //! 3. Computes composition-weighted mean, std, min, max, range for each property
 //! 4. Returns a fixed-length feature vector (54 elements)
 
-use crate::periodic_table::{get_element, Element};
+use crate::periodic_table::{Element, get_element};
 use regex::Regex;
 
 /// Statistics for one elemental property across a composition.

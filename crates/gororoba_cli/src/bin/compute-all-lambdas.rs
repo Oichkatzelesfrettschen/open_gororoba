@@ -25,8 +25,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     for id in material_ids {
-        let material = materials_core::get_viscosity_material(&id)
-            .expect("Material should exist");
+        let material = materials_core::get_viscosity_material(&id).expect("Material should exist");
 
         // Only compute lambda for materials with temperature
         let lambda = predict_lambda_sedenion(frustration, material.temperature_K);

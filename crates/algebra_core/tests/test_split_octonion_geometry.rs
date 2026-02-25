@@ -1,4 +1,4 @@
-use algebra_core::construction::cayley_dickson::{cd_multiply, cd_multiply_split, CdSignature};
+use algebra_core::construction::cayley_dickson::{CdSignature, cd_multiply, cd_multiply_split};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 struct SimpleBlade {

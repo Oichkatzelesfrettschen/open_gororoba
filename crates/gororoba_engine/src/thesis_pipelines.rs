@@ -45,7 +45,7 @@ impl ThesisPipeline for Thesis1Pipeline {
     }
 
     fn execute(&self) -> ThesisEvidence {
-        use vacuum_frustration::{spatial_correlation, FrustrationViscosityBridge, SedenionField};
+        use vacuum_frustration::{FrustrationViscosityBridge, SedenionField, spatial_correlation};
 
         let n = self.grid_size;
 
@@ -258,8 +258,8 @@ impl ThesisPipeline for Thesis3Pipeline {
 
     fn execute(&self) -> ThesisEvidence {
         use neural_homotopy::{
-            compare_ansatz_vs_optimized, detect_plateaus_robust, train_homotopy_surrogate,
             HomotopyTrainingConfig, PentagonOptimizationConfig, PlateauConfig,
+            compare_ansatz_vs_optimized, detect_plateaus_robust, train_homotopy_surrogate,
         };
 
         // Stream 1: Surrogate training + robust plateau detection
@@ -288,7 +288,7 @@ impl ThesisPipeline for Thesis3Pipeline {
         // Stream 2: Neural network training (if enabled)
         let mut neural_violation = f64::NAN;
         if self.use_neural {
-            use neural_homotopy::{train_burn_correction, CorrectionTensorModelConfig};
+            use neural_homotopy::{CorrectionTensorModelConfig, train_burn_correction};
             let model_cfg = CorrectionTensorModelConfig {
                 hidden_size: self.neural_hidden_size,
                 learning_rate: 0.005,

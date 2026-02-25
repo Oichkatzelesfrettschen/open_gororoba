@@ -10,7 +10,7 @@
 //!   --sweep   Run gamma stability sweep (slower, more data)
 
 use cosmology_core::bypass_models::{
-    bypass_stability_sweep, compare_bypass_models, BypassConfig, BypassModel,
+    BypassConfig, BypassModel, bypass_stability_sweep, compare_bypass_models,
 };
 
 fn main() {
@@ -29,8 +29,14 @@ fn main() {
     };
 
     println!("Configuration:");
-    println!("  R1 = {}, M_target = {}, C = {}", config.r1, config.m_target, config.compactness);
-    println!("  gamma = {}, lambda = {}", config.gamma, config.aniso_lambda);
+    println!(
+        "  R1 = {}, M_target = {}, C = {}",
+        config.r1, config.m_target, config.compactness
+    );
+    println!(
+        "  gamma = {}, lambda = {}",
+        config.gamma, config.aniso_lambda
+    );
     println!("  associator_norm = {}", config.associator_norm);
     println!();
 

@@ -1,17 +1,17 @@
 use algebra_core::physics::octonion_field::FieldParams;
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::{
+    NumericDatasetScanStatus, SimulationTraceBundle, SpectralSummarySeries,
     export_experiment_contract, export_rho_quality_metrics, export_simulation_spectral_summary,
     export_simulation_trace_bundle, read_simulation_spectral_component,
-    read_simulation_trace_component, scan_hdf5_numeric_datasets, NumericDatasetScanStatus,
-    SimulationTraceBundle, SpectralSummarySeries,
+    read_simulation_trace_component, scan_hdf5_numeric_datasets,
 };
-use data_core::quality::{validate_rho_trace, RhoQualityThresholds, RhoTraceQuality};
+use data_core::quality::{RhoQualityThresholds, RhoTraceQuality, validate_rho_trace};
 #[cfg(feature = "hdf5-export")]
-use data_core::quality::{validate_scalar_trace_signal, ScalarTraceThresholds};
+use data_core::quality::{ScalarTraceThresholds, validate_scalar_trace_signal};
 #[cfg(feature = "hdf5-export")]
 use gororoba_cli::warp_gate_policy::{
-    load_warp_gate_policy, CANONICAL_REQUIRED_SPECTRAL_CHANNELS, CANONICAL_REQUIRED_TRACE_CHANNELS,
+    CANONICAL_REQUIRED_SPECTRAL_CHANNELS, CANONICAL_REQUIRED_TRACE_CHANNELS, load_warp_gate_policy,
 };
 #[cfg(feature = "hdf5-export")]
 use gororoba_contracts::{WarpRingConfig, WarpRingExperiment, WarpRingResults};
@@ -884,9 +884,11 @@ fn sample_gpu_u_rms_proxy(
 ) -> f64 {
     if elapsed_secs >= *next_sync_sample_s {
         if let Ok(v) = state.fluid.try_velocity_rms(state.nx, state.ny, state.nz)
-            && v.is_finite() && v > 0.0 {
-                *last_measured = Some(v);
-            }
+            && v.is_finite()
+            && v > 0.0
+        {
+            *last_measured = Some(v);
+        }
         *next_sync_sample_s = elapsed_secs + sync_cadence_secs;
     }
     last_measured.unwrap_or_else(|| kolmogorov_u_rms_model(forcing))
@@ -1089,16 +1091,18 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
         power_injection_proxy_hist.push(0.5 * forcing.body_force_density_amplitude * u_rms);
         dissipation_proxy_hist.push(2.0 * forcing.nu * enstrophy);
     }
-    if case.h5_output.is_some() && spectral_summary.time.is_empty()
-        && let Some(sig) = compute_midplane_spectral_signature(&mut state)? {
-            spectral_summary.time.push(start.elapsed().as_secs_f64());
-            spectral_summary.k_peak.push(sig.k_peak);
-            spectral_summary.power_peak.push(sig.power_peak);
-            spectral_summary.total_power.push(sig.total_power);
-            spectral_summary.slope.push(sig.slope);
-            spectral_summary.triad_count.push(sig.triad_count);
-            spectral_summary.triad_clustering.push(sig.triad_clustering);
-        }
+    if case.h5_output.is_some()
+        && spectral_summary.time.is_empty()
+        && let Some(sig) = compute_midplane_spectral_signature(&mut state)?
+    {
+        spectral_summary.time.push(start.elapsed().as_secs_f64());
+        spectral_summary.k_peak.push(sig.k_peak);
+        spectral_summary.power_peak.push(sig.power_peak);
+        spectral_summary.total_power.push(sig.total_power);
+        spectral_summary.slope.push(sig.slope);
+        spectral_summary.triad_count.push(sig.triad_count);
+        spectral_summary.triad_clustering.push(sig.triad_clustering);
+    }
 
     let elapsed = start.elapsed().as_secs_f64();
     if step_times_us.is_empty() {

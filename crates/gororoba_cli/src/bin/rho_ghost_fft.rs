@@ -14,11 +14,10 @@
 
 use clap::{Parser, Subcommand};
 use spectral_core::ghost_spectral::{
-    check_ghost, check_ghost_at_stride, check_ghost_rigorous, combine_p_values,
-    compute_power_spectrum, find_peaks, ghost_aliases, is_ghost_freq, is_monotonically_sorted,
-    noise_floor, peak_fwhm, peak_fwhm_clamped, peak_snr, permutation_test,
-    robust_noise_floor, sorted_distribution_null, GhostVerdict, ALIASED_GHOST_FREQ, FREQ_TOL,
-    GHOST_FREQ, PHI,
+    ALIASED_GHOST_FREQ, FREQ_TOL, GHOST_FREQ, GhostVerdict, PHI, check_ghost,
+    check_ghost_at_stride, check_ghost_rigorous, combine_p_values, compute_power_spectrum,
+    find_peaks, ghost_aliases, is_ghost_freq, is_monotonically_sorted, noise_floor, peak_fwhm,
+    peak_fwhm_clamped, peak_snr, permutation_test, robust_noise_floor, sorted_distribution_null,
 };
 use std::path::PathBuf;
 
@@ -217,10 +216,7 @@ fn print_analysis_legacy(signal: &[f64], top_k: usize, source: &str) {
         let freq_res = 1.0 / signal.len() as f64;
         let fwhm_bins = fwhm / freq_res;
         println!("Spectral width at ghost alias ({:.4}):", alias_target);
-        println!(
-            "  FWHM = {:.6} cycles/sample ({:.1} bins)",
-            fwhm, fwhm_bins
-        );
+        println!("  FWHM = {:.6} cycles/sample ({:.1} bins)", fwhm, fwhm_bins);
         if fwhm_bins < 3.0 {
             println!("  -> SHARP: algebraic origin (resolution-limited)");
         } else if fwhm_bins < 10.0 {
@@ -294,7 +290,12 @@ fn print_analysis_rigorous(
     let var = signal.iter().map(|x| (x - mean).powi(2)).sum::<f64>() / (n - 1.0);
     let std_dev = var.sqrt();
     println!("Signal statistics:");
-    println!("  mean={:.6e}  std={:.6e}  N={}", mean, std_dev, signal.len());
+    println!(
+        "  mean={:.6e}  std={:.6e}  N={}",
+        mean,
+        std_dev,
+        signal.len()
+    );
     println!();
 
     // Rigorous hypothesis test
@@ -324,7 +325,10 @@ fn print_analysis_rigorous(
     );
     println!("  Noise floor (legacy mean):  {:.6e}", legacy_nf);
     println!("  Noise floor (robust MAD):   {:.6e}", robust_nf);
-    println!("  Correction factor:          {:.2}x", legacy_nf / robust_nf.max(1e-300));
+    println!(
+        "  Correction factor:          {:.2}x",
+        legacy_nf / robust_nf.max(1e-300)
+    );
     println!();
 
     println!("Top {} spectral peaks:", peaks.len().min(top_k));
@@ -334,9 +338,8 @@ fn print_analysis_rigorous(
     );
     for peak in peaks.iter().take(top_k) {
         let snr = peak_snr(peak, robust_nf);
-        let p_raw = spectral_core::ghost_spectral::false_alarm_probability_single(
-            peak.power, robust_nf,
-        );
+        let p_raw =
+            spectral_core::ghost_spectral::false_alarm_probability_single(peak.power, robust_nf);
         let ghost_marker = if is_ghost_freq(peak.freq) {
             " <-- TARGET"
         } else {
@@ -351,9 +354,7 @@ fn print_analysis_rigorous(
 
     // FWHM with clamping
     let alias_target = ghost_aliases(1)[0];
-    if let Some((fwhm_cps, fwhm_bins, clamped)) =
-        peak_fwhm_clamped(&freqs, &power, alias_target)
-    {
+    if let Some((fwhm_cps, fwhm_bins, clamped)) = peak_fwhm_clamped(&freqs, &power, alias_target) {
         println!("FWHM at ghost alias ({:.4}):", alias_target);
         println!("  {:.6} cycles/sample ({:.1} bins)", fwhm_cps, fwhm_bins);
         if clamped {
@@ -374,10 +375,7 @@ fn print_analysis_rigorous(
     println!("  p_raw (single bin):   {:.4e}", result.p_raw);
     println!("  p_bonferroni:         {:.4e}", result.p_bonferroni);
     println!("  p_fdr (BH):           {:.4e}", result.p_fdr);
-    println!(
-        "  VERDICT:              {}",
-        result.verdict
-    );
+    println!("  VERDICT:              {}", result.verdict);
     if !result.methodology_note.is_empty() {
         println!("  Note: {}", result.methodology_note);
     }
@@ -394,15 +392,9 @@ fn print_analysis_rigorous(
 
     // Permutation test
     if n_permutations > 0 {
-        println!(
-            "--- Permutation Test ({} iterations) ---",
-            n_permutations
-        );
+        println!("--- Permutation Test ({} iterations) ---", n_permutations);
         let perm = permutation_test(signal, ALIASED_GHOST_FREQ, n_permutations, seed);
-        println!(
-            "  Observed power:    {:.6e}",
-            perm.observed_power
-        );
+        println!("  Observed power:    {:.6e}", perm.observed_power);
         println!(
             "  Null mean +/- std: {:.6e} +/- {:.6e}",
             perm.null_mean, perm.null_std
@@ -424,10 +416,7 @@ fn print_analysis_rigorous(
             n_bootstrap
         );
         let boot = sorted_distribution_null(signal, ALIASED_GHOST_FREQ, n_bootstrap, seed);
-        println!(
-            "  Observed power:    {:.6e}",
-            boot.observed_power
-        );
+        println!("  Observed power:    {:.6e}", boot.observed_power);
         println!(
             "  Null mean +/- std: {:.6e} +/- {:.6e}",
             boot.null_mean, boot.null_std
@@ -446,7 +435,9 @@ fn print_analysis_rigorous(
     println!("=== FINAL VERDICT ===");
     match result.verdict {
         GhostVerdict::Detected => {
-            println!("DETECTED: Ghost peak survives all corrections (p_fdr < 0.05 AND p_bonf < 0.05).");
+            println!(
+                "DETECTED: Ghost peak survives all corrections (p_fdr < 0.05 AND p_bonf < 0.05)."
+            );
             println!("Proceed to Tier 2 tests (Lomb-Scargle, multitaper, quantile periodogram).");
         }
         GhostVerdict::Marginal => {
@@ -535,11 +526,7 @@ fn run_analyze(hdf5_path: &std::path::Path, top_k: usize) {
         std::process::exit(1);
     }
 
-    print_analysis_legacy(
-        &signal,
-        top_k,
-        &format!("HDF5: {}", hdf5_path.display()),
-    );
+    print_analysis_legacy(&signal, top_k, &format!("HDF5: {}", hdf5_path.display()));
 }
 
 #[cfg(not(feature = "hdf5-export"))]
@@ -585,16 +572,14 @@ fn run_csv(
 }
 
 fn run_synth(n: usize, inject_ghost: bool, amplitude: f64, noise_std: f64, seed: u64) {
-    use rand::rngs::StdRng;
     use rand::SeedableRng;
+    use rand::rngs::StdRng;
     use rand_distr::{Distribution, Normal};
 
     let mut rng = StdRng::seed_from_u64(seed);
     let normal = Normal::new(0.0, noise_std).expect("Invalid noise std");
 
-    let mut signal: Vec<f64> = (0..n)
-        .map(|_| 1.0 + normal.sample(&mut rng))
-        .collect();
+    let mut signal: Vec<f64> = (0..n).map(|_| 1.0 + normal.sample(&mut rng)).collect();
 
     if inject_ghost {
         for (i, val) in signal.iter_mut().enumerate() {
@@ -730,10 +715,7 @@ fn run_batch(
             }
         }
     } else {
-        eprintln!(
-            "ERROR: Cannot read directory {}",
-            datasets_dir.display()
-        );
+        eprintln!("ERROR: Cannot read directory {}", datasets_dir.display());
         std::process::exit(1);
     }
 
@@ -793,8 +775,7 @@ fn run_batch(
         // For unsorted data, it compares apples to oranges (unsorted vs sorted spectra).
         let data_is_sorted = is_monotonically_sorted(&signal);
         let p_boot = if n_bootstrap > 0 && data_is_sorted {
-            let boot =
-                sorted_distribution_null(&signal, ALIASED_GHOST_FREQ, n_bootstrap, seed);
+            let boot = sorted_distribution_null(&signal, ALIASED_GHOST_FREQ, n_bootstrap, seed);
             boot.p_empirical
         } else {
             f64::NAN
@@ -807,13 +788,7 @@ fn run_batch(
         };
         println!(
             "{:<30}  {:>6}  {:>10.4e}  {:>10.4e}  {:>10.4e}  {}  {:>8}",
-            name,
-            n_samples,
-            result.p_fdr,
-            result.p_bonferroni,
-            p_perm,
-            p_boot_str,
-            result.verdict
+            name, n_samples, result.p_fdr, result.p_bonferroni, p_perm, p_boot_str, result.verdict
         );
 
         all_p_rigorous.push(result.p_fdr);
@@ -867,20 +842,14 @@ fn run_batch(
         println!();
 
         // Overall verdict
-        let all_null = all_p_rigorous
-            .iter()
-            .all(|&p| p >= 0.05);
-        let any_detected = all_p_rigorous
-            .iter()
-            .any(|&p| p < 0.01);
+        let all_null = all_p_rigorous.iter().all(|&p| p >= 0.05);
+        let any_detected = all_p_rigorous.iter().any(|&p| p < 0.01);
         let combined_sig = combined_rig.stouffer_p < 0.05;
 
         println!("=== BATCH VERDICT ===");
         if all_null && !combined_sig {
             println!("NULL across all datasets. No evidence for ghost frequency.");
-            println!(
-                "The phi^{{-1/2}} spectral line does NOT survive corrected statistics."
-            );
+            println!("The phi^{{-1/2}} spectral line does NOT survive corrected statistics.");
         } else if any_detected && combined_sig {
             println!("DETECTED in at least one dataset with combined significance.");
             println!("Proceed to Tier 2 testing (Lomb-Scargle, multitaper, quantile).");
@@ -943,8 +912,8 @@ mod tests {
 
     #[test]
     fn test_no_ghost_in_noise() {
-        use rand::rngs::StdRng;
         use rand::SeedableRng;
+        use rand::rngs::StdRng;
         use rand_distr::{Distribution, Normal};
 
         let mut rng = StdRng::seed_from_u64(12345);
@@ -965,8 +934,8 @@ mod tests {
         // The old verdict was rank<=3 && SNR>5.0. The new verdict uses
         // p_fdr < alpha AND p_bonferroni < alpha. These are NOT equivalent:
         // many peaks with SNR > 5 fail FDR correction.
-        use rand::rngs::StdRng;
         use rand::SeedableRng;
+        use rand::rngs::StdRng;
         use rand_distr::{Distribution, Normal};
 
         let mut rng = StdRng::seed_from_u64(99999);

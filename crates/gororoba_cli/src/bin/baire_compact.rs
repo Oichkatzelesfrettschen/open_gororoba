@@ -30,7 +30,7 @@ use clap::Parser;
 use std::path::PathBuf;
 
 use data_core::catalogs::chime::parse_chime_csv;
-use stats_core::ultrametric::baire::{euclidean_ultrametric_test, AttributeSpec, BaireEncoder};
+use stats_core::ultrametric::baire::{AttributeSpec, BaireEncoder, euclidean_ultrametric_test};
 
 #[derive(Parser)]
 #[command(name = "baire-compact")]

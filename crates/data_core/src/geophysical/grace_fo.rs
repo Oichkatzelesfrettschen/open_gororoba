@@ -5,7 +5,7 @@
 //!
 //! Source: ICGEM GFZ model services
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::PathBuf;
 
 const GRACE_FO_URLS: &[&str] = &[

@@ -28,7 +28,7 @@ pub struct GravitationalCoupling {
     pub resonance_frequency: f64,
 
     /// Coupling phase (from E-073 external-leg diagram)
-    /// Units: radians, range [0, 2π]
+    /// Units: radians, range [0, 2\pi]
     pub coupling_phase: f64,
 }
 
@@ -101,8 +101,8 @@ impl fmt::Display for GravitationalCoupling {
 #[derive(Clone, Copy, Debug)]
 pub struct AsymmetryParameter {
     /// Asymmetry parameter value q_grav
-    /// - q → 0: Perfect resonance (Lorentzian, C_max = 1 in normalized units)
-    /// - q → ∞: Perfect anti-resonance (dip, C_min = 0)
+    /// - q -> 0: Perfect resonance (Lorentzian, C_max = 1 in normalized units)
+    /// - q -> infty: Perfect anti-resonance (dip, C_min = 0)
     /// - q ~ 1: Typical Fano asymmetry intermediate regime
     pub q: f64,
 
@@ -119,12 +119,12 @@ impl AsymmetryParameter {
     /// Create asymmetry parameter from q value
     pub fn from_q(q: f64) -> Self {
         let phase_factor = if q.abs() > 1e-10 {
-            -1.0 / q.atan()  // cot(phi/2) = -1/arctan(q)
+            -1.0 / q.atan() // cot(phi/2) = -1/arctan(q)
         } else {
             f64::INFINITY
         };
 
-        let gravitational_factor = q.abs();  // Magnitude indicates strength
+        let gravitational_factor = q.abs(); // Magnitude indicates strength
 
         AsymmetryParameter {
             q,
@@ -143,10 +143,12 @@ impl AsymmetryParameter {
     /// Based on Ruan-Fan Eq. 14-23
     pub fn from_coupling(coupling: &GravitationalCoupling) -> Self {
         // q = (direct_coupling / (i * coupling_decay))
-        // In real units: q ≈ coupling_strength / (gamma_coupling * resonance_frequency)
+        // In real units: q ~= coupling_strength / (gamma_coupling * resonance_frequency)
         // Adjusted for gravitational contribution
-        let base_q = coupling.coupling_strength / (coupling.total_decay_rate() * coupling.resonance_frequency);
-        let gravitational_correction = (coupling.gamma_gravitational / coupling.total_decay_rate()).abs();
+        let base_q = coupling.coupling_strength
+            / (coupling.total_decay_rate() * coupling.resonance_frequency);
+        let gravitational_correction =
+            (coupling.gamma_gravitational / coupling.total_decay_rate()).abs();
 
         let q = base_q * (1.0 + gravitational_correction * coupling.coupling_phase.cos());
 
@@ -156,7 +158,11 @@ impl AsymmetryParameter {
 
 impl fmt::Display for AsymmetryParameter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "AsymmetryParameter {{ q={:.4}, phase={:.4} }}", self.q, self.phase_factor)
+        write!(
+            f,
+            "AsymmetryParameter {{ q={:.4}, phase={:.4} }}",
+            self.q, self.phase_factor
+        )
     }
 }
 
@@ -177,7 +183,11 @@ pub struct TCMTState {
 
 impl TCMTState {
     /// Create new TCMT state
-    pub fn new(a_photon: num_complex::Complex64, a_graviton: num_complex::Complex64, time: f64) -> Self {
+    pub fn new(
+        a_photon: num_complex::Complex64,
+        a_graviton: num_complex::Complex64,
+        time: f64,
+    ) -> Self {
         TCMTState {
             a_photon,
             a_graviton,
