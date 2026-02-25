@@ -7,7 +7,7 @@
 //! Reference: Almeida et al. (2023), ApJS 267, 44
 
 use crate::fetcher::{
-    download_to_string, validate_not_html, DatasetProvider, FetchConfig, FetchError,
+    DatasetProvider, FetchConfig, FetchError, download_to_string, validate_not_html,
 };
 use crate::formats::tap::percent_encode_query;
 use crate::parse::parse_f64_or_nan;

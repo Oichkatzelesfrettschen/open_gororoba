@@ -1,7 +1,7 @@
 // GPU-accelerated Lattice Boltzmann Method (D3Q19) with CUDA
 // Runtime kernel compilation via cudarc NVRTC
 
-use anyhow::{ensure, Context, Result};
+use anyhow::{Context, Result, ensure};
 use cudarc::driver::{
     CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtr, LaunchConfig, PushKernelArg,
 };
@@ -101,7 +101,11 @@ impl LbmSolver3DCuda {
     /// per thread (19 doubles + macroscopic vars); 1024 threads exceeds the
     /// 65536 registers/SM limit on Ada Lovelace.
     fn launch_config_1d(n_elems: u32, precision: Precision) -> LaunchConfig {
-        let threads = if precision == Precision::FP64 { 128u32 } else { 1024u32 };
+        let threads = if precision == Precision::FP64 {
+            128u32
+        } else {
+            1024u32
+        };
         let blocks = n_elems.div_ceil(threads).max(1);
         LaunchConfig {
             grid_dim: (blocks, 1, 1),
@@ -1016,10 +1020,12 @@ mod tests {
         assert_eq!(solver.rho.len(), solver.n_cells);
         assert_eq!(solver.u.len(), solver.n_cells);
         assert!(solver.rho.iter().all(|v| v.is_finite()));
-        assert!(solver
-            .u
-            .iter()
-            .all(|v| v[0].is_finite() && v[1].is_finite() && v[2].is_finite()));
+        assert!(
+            solver
+                .u
+                .iter()
+                .all(|v| v[0].is_finite() && v[1].is_finite() && v[2].is_finite())
+        );
     }
 
     #[test]
@@ -1042,10 +1048,12 @@ mod tests {
 
         solver.sync_to_host().expect("sync_to_host should succeed");
         assert!(solver.rho.iter().all(|v| v.is_finite()));
-        assert!(solver
-            .u
-            .iter()
-            .all(|v| v[0].is_finite() && v[1].is_finite() && v[2].is_finite()));
+        assert!(
+            solver
+                .u
+                .iter()
+                .all(|v| v[0].is_finite() && v[1].is_finite() && v[2].is_finite())
+        );
     }
 
     #[test]

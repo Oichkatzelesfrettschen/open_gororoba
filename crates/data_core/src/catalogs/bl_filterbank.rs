@@ -107,20 +107,26 @@ impl FilterbankFile {
 pub fn open_filterbank(path: &Path) -> Result<FilterbankFile, FetchError> {
     use hdf5::File as H5File;
 
-    let file = H5File::open(path).map_err(|e| FetchError::Validation(format!(
-        "Failed to open HDF5 file {}: {}", path.display(), e
-    )))?;
+    let file = H5File::open(path).map_err(|e| {
+        FetchError::Validation(format!(
+            "Failed to open HDF5 file {}: {}",
+            path.display(),
+            e
+        ))
+    })?;
 
     let header = read_header_from_file(&file, path)?;
 
     // Read data shape: [n_time, n_ifs, n_chans]
-    let data = file.dataset("data").map_err(|e| FetchError::Validation(format!(
-        "No 'data' dataset in {}: {}", path.display(), e
-    )))?;
+    let data = file.dataset("data").map_err(|e| {
+        FetchError::Validation(format!("No 'data' dataset in {}: {}", path.display(), e))
+    })?;
     let shape = data.shape();
     if shape.len() != 3 {
         return Err(FetchError::Validation(format!(
-            "Expected 3D data array, got {}D in {}", shape.len(), path.display()
+            "Expected 3D data array, got {}D in {}",
+            shape.len(),
+            path.display()
         )));
     }
     let n_time = shape[0];
@@ -137,32 +143,43 @@ pub fn open_filterbank(path: &Path) -> Result<FilterbankFile, FetchError> {
 pub fn read_filterbank_header(path: &Path) -> Result<FilterbankHeader, FetchError> {
     use hdf5::File as H5File;
 
-    let file = H5File::open(path).map_err(|e| FetchError::Validation(format!(
-        "Failed to open HDF5 file {}: {}", path.display(), e
-    )))?;
+    let file = H5File::open(path).map_err(|e| {
+        FetchError::Validation(format!(
+            "Failed to open HDF5 file {}: {}",
+            path.display(),
+            e
+        ))
+    })?;
 
     read_header_from_file(&file, path)
 }
 
 /// Internal: extract header attributes from an open HDF5 file.
 #[cfg(feature = "hdf5-export")]
-fn read_header_from_file(
-    file: &hdf5::File,
-    path: &Path,
-) -> Result<FilterbankHeader, FetchError> {
+fn read_header_from_file(file: &hdf5::File, path: &Path) -> Result<FilterbankHeader, FetchError> {
     let read_f64 = |name: &str| -> Result<f64, FetchError> {
         file.attr(name)
             .and_then(|a| a.read_scalar::<f64>())
-            .map_err(|e| FetchError::Validation(format!(
-                "Missing/invalid attr '{}' in {}: {}", name, path.display(), e
-            )))
+            .map_err(|e| {
+                FetchError::Validation(format!(
+                    "Missing/invalid attr '{}' in {}: {}",
+                    name,
+                    path.display(),
+                    e
+                ))
+            })
     };
     let read_i32 = |name: &str| -> Result<i32, FetchError> {
         file.attr(name)
             .and_then(|a| a.read_scalar::<i32>())
-            .map_err(|e| FetchError::Validation(format!(
-                "Missing/invalid attr '{}' in {}: {}", name, path.display(), e
-            )))
+            .map_err(|e| {
+                FetchError::Validation(format!(
+                    "Missing/invalid attr '{}' in {}: {}",
+                    name,
+                    path.display(),
+                    e
+                ))
+            })
     };
     let read_string = |name: &str| -> Result<String, FetchError> {
         // BL filterbank stores source_name as fixed-length ASCII string
@@ -171,20 +188,30 @@ fn read_header_from_file(
             .map(|s| s.to_string())
             .or_else(|_| {
                 // Fallback: try reading as fixed-length byte string
-                file.attr(name)
-                    .and_then(|a| {
-                        let raw = a.read_raw()?;
-                        let bytes: Vec<u8> = raw.iter().copied().collect();
-                        Ok(String::from_utf8_lossy(&bytes).trim_end_matches('\0').to_string())
-                    })
+                file.attr(name).and_then(|a| {
+                    let raw = a.read_raw()?;
+                    let bytes: Vec<u8> = raw.to_vec();
+                    Ok(String::from_utf8_lossy(&bytes)
+                        .trim_end_matches('\0')
+                        .to_string())
+                })
             })
-            .map_err(|e| FetchError::Validation(format!(
-                "Missing/invalid string attr '{}' in {}: {}", name, path.display(), e
-            )))
+            .map_err(|e| {
+                FetchError::Validation(format!(
+                    "Missing/invalid string attr '{}' in {}: {}",
+                    name,
+                    path.display(),
+                    e
+                ))
+            })
     };
 
+    let source_name = read_string("source_name").unwrap_or_else(|_| {
+        infer_source_name_from_path(path).unwrap_or_else(|| "UNKNOWN".to_string())
+    });
+
     Ok(FilterbankHeader {
-        source_name: read_string("source_name")?,
+        source_name,
         fch1: read_f64("fch1")?,
         foff: read_f64("foff")?,
         nchans: read_i32("nchans")? as u32,
@@ -200,22 +227,30 @@ fn read_header_from_file(
     })
 }
 
+#[cfg(feature = "hdf5-export")]
+fn infer_source_name_from_path(path: &Path) -> Option<String> {
+    let file_name = path.file_name()?.to_str()?;
+    let pre_rawspec = file_name.split(".rawspec").next()?;
+    let parts: Vec<&str> = pre_rawspec.split('_').collect();
+    if parts.len() <= 5 {
+        return None;
+    }
+    Some(parts[4..parts.len() - 1].join("_"))
+}
+
 /// Read a single coarse channel's data as a flat f32 array.
 ///
 /// Returns `[n_time][nfpc]` row-major data (time-major ordering).
 /// Coarse channel index 0 = highest frequency channels (since foff < 0).
 #[cfg(feature = "hdf5-export")]
-pub fn read_coarse_channel(
-    fb: &FilterbankFile,
-    coarse_idx: usize,
-) -> Result<Vec<f32>, FetchError> {
+pub fn read_coarse_channel(fb: &FilterbankFile, coarse_idx: usize) -> Result<Vec<f32>, FetchError> {
     use hdf5::File as H5File;
-    use ndarray::s;
 
     let n_coarse = fb.header.n_coarse_channels() as usize;
     if coarse_idx >= n_coarse {
         return Err(FetchError::Validation(format!(
-            "Coarse channel {} out of range (0..{})", coarse_idx, n_coarse
+            "Coarse channel {} out of range (0..{})",
+            coarse_idx, n_coarse
         )));
     }
 
@@ -223,23 +258,60 @@ pub fn read_coarse_channel(
     let chan_start = coarse_idx * nfpc;
     let chan_end = chan_start + nfpc;
 
-    let file = H5File::open(&fb.path).map_err(|e| FetchError::Validation(format!(
-        "Failed to reopen HDF5 file {}: {}", fb.path.display(), e
-    )))?;
-    let dataset = file.dataset("data").map_err(|e| FetchError::Validation(format!(
-        "No 'data' dataset in {}: {}", fb.path.display(), e
-    )))?;
+    let file = H5File::open(&fb.path).map_err(|e| {
+        FetchError::Validation(format!(
+            "Failed to reopen HDF5 file {}: {}",
+            fb.path.display(),
+            e
+        ))
+    })?;
+    let dataset = file.dataset("data").map_err(|e| {
+        FetchError::Validation(format!("No 'data' dataset in {}: {}", fb.path.display(), e))
+    })?;
 
-    // Read slice [0..n_time, 0..1, chan_start..chan_end] as f32
-    // The BL data is float32 (nbits=32), stored as the native type.
-    let arr = dataset
-        .read_slice_2d::<f32, _>(s![.., 0, chan_start..chan_end])
-        .map_err(|e| FetchError::Validation(format!(
-            "Failed to read coarse channel {} from {}: {}",
-            coarse_idx, fb.path.display(), e
-        )))?;
-
-    Ok(arr.into_raw_vec())
+    // Read the full 3D tensor and project [time, pol=0, chan_start..chan_end].
+    // This avoids feature/version-specific ndarray slice conversion issues.
+    let shape = dataset.shape();
+    if shape.len() != 3 {
+        return Err(FetchError::Validation(format!(
+            "Expected 3D 'data' dataset in {}, got shape {:?}",
+            fb.path.display(),
+            shape
+        )));
+    }
+    let n_time = shape[0];
+    let n_pol = shape[1];
+    let n_chan = shape[2];
+    if n_pol == 0 {
+        return Err(FetchError::Validation(format!(
+            "Invalid polarization dimension (0) in {}",
+            fb.path.display()
+        )));
+    }
+    if chan_end > n_chan {
+        return Err(FetchError::Validation(format!(
+            "Coarse channel {} exceeds available channels in {} (chan_end={}, n_chan={})",
+            coarse_idx,
+            fb.path.display(),
+            chan_end,
+            n_chan
+        )));
+    }
+    let raw = dataset.read_raw::<f32>().map_err(|e| {
+        FetchError::Validation(format!(
+            "Failed to read BL tensor from {}: {}",
+            fb.path.display(),
+            e
+        ))
+    })?;
+    let mut out = Vec::with_capacity(n_time * nfpc);
+    for t in 0..n_time {
+        let base = (t * n_pol) * n_chan;
+        for c in chan_start..chan_end {
+            out.push(raw[base + c]);
+        }
+    }
+    Ok(out)
 }
 
 /// Compute frequency array for a coarse channel (MHz).
@@ -283,7 +355,7 @@ impl BlObservation {
     /// Construct the BL data archive filename.
     pub fn filename(&self) -> String {
         format!(
-            "{}_guppi_{}_{}_{}_{}_.rawspec.{}.h5",
+            "{}_guppi_{}_{}_{}_{}.rawspec.{}.h5",
             self.node, self.mjd, self.seconds, self.source, self.obs_id, self.res_level
         )
     }
@@ -402,7 +474,10 @@ mod tests {
         let freqs = coarse_channel_freqs(&header, 0);
         assert_eq!(freqs.len(), 1024);
         // foff < 0 means descending frequency
-        assert!(freqs[0] > freqs[1], "Frequency should descend with channel index");
+        assert!(
+            freqs[0] > freqs[1],
+            "Frequency should descend with channel index"
+        );
         let diff = (freqs[1] - freqs[0]).abs();
         assert!((diff - 0.00286102294921875).abs() < 1e-12);
     }
@@ -483,11 +558,7 @@ mod tests {
         };
         let dr = fb.drift_resolution_hz_s();
         // turboSETI computed 9.584659205397045 Hz/s
-        assert!(
-            (dr - 9.58).abs() < 0.1,
-            "Expected ~9.58 Hz/s, got {}",
-            dr
-        );
+        assert!((dr - 9.58).abs() < 0.1, "Expected ~9.58 Hz/s, got {}", dr);
     }
 
     // --- Tests that require real HDF5 files (skipped if absent) ---
@@ -537,7 +608,8 @@ mod tests {
             data.iter().all(|v| v.is_finite()),
             "Data should contain no NaN or Inf"
         );
-        eprintln!("Coarse channel 0: {} values, range [{:.1}, {:.1}]",
+        eprintln!(
+            "Coarse channel 0: {} values, range [{:.1}, {:.1}]",
             data.len(),
             data.iter().cloned().fold(f32::INFINITY, f32::min),
             data.iter().cloned().fold(f32::NEG_INFINITY, f32::max),

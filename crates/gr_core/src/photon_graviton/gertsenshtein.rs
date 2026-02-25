@@ -761,9 +761,6 @@ mod tests {
             p < 1e-3,
             "NS conversion should be much less than 1: {p:.3e}"
         );
-        assert!(
-            p > 0.0,
-            "NS conversion should be positive"
-        );
+        assert!(p > 0.0, "NS conversion should be positive");
     }
 }

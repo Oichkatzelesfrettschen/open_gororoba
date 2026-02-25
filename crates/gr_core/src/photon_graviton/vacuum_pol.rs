@@ -185,10 +185,7 @@ mod tests {
             LoopType::Spinor,
             &quad,
         );
-        assert!(
-            result.norm() < 1e-10,
-            "Pi(B=0) = {result}, expected ~0"
-        );
+        assert!(result.norm() < 1e-10, "Pi(B=0) = {result}, expected ~0");
     }
 
     #[test]
@@ -214,18 +211,8 @@ mod tests {
         let quad = QuadratureConfig::default();
         let cfg1 = FieldConfig::pure_magnetic(0.01, 0.1, PI / 4.0);
         let cfg2 = FieldConfig::pure_magnetic(0.02, 0.1, PI / 4.0);
-        let pi1 = vacuum_polarization(
-            &cfg1,
-            PhotonPolarization::Parallel,
-            LoopType::Spinor,
-            &quad,
-        );
-        let pi2 = vacuum_polarization(
-            &cfg2,
-            PhotonPolarization::Parallel,
-            LoopType::Spinor,
-            &quad,
-        );
+        let pi1 = vacuum_polarization(&cfg1, PhotonPolarization::Parallel, LoopType::Spinor, &quad);
+        let pi2 = vacuum_polarization(&cfg2, PhotonPolarization::Parallel, LoopType::Spinor, &quad);
         // At weak field, Pi ~ (eB)^2, so doubling B should give ~4x
         if pi1.norm() > 1e-30 {
             let ratio = pi2.norm() / pi1.norm();

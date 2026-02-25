@@ -71,7 +71,9 @@ fn git_rev() -> String {
         .ok()
         .and_then(|out| {
             if out.status.success() {
-                String::from_utf8(out.stdout).ok().map(|s| s.trim().to_string())
+                String::from_utf8(out.stdout)
+                    .ok()
+                    .map(|s| s.trim().to_string())
             } else {
                 None
             }
@@ -91,9 +93,7 @@ fn collect_evidence_files(dir: &Path) -> Vec<PathBuf> {
         })
         .filter(|e| {
             // Exclude the manifest itself
-            e.path()
-                .file_name()
-                .is_none_or(|n| n != "MANIFEST.toml")
+            e.path().file_name().is_none_or(|n| n != "MANIFEST.toml")
         })
         .map(|e| e.into_path())
         .collect();
@@ -223,11 +223,10 @@ fn main() {
             if let Some(parent) = output.parent() {
                 fs::create_dir_all(parent).ok();
             }
-            fs::write(&output, manifest_lines.join("\n") + "\n")
-                .unwrap_or_else(|e| {
-                    eprintln!("ERROR writing manifest: {e}");
-                    std::process::exit(1);
-                });
+            fs::write(&output, manifest_lines.join("\n") + "\n").unwrap_or_else(|e| {
+                eprintln!("ERROR writing manifest: {e}");
+                std::process::exit(1);
+            });
 
             println!("Wrote manifest to {}", output.display());
             println!(
@@ -277,10 +276,7 @@ fn main() {
             println!();
 
             for artifact in &artifacts {
-                let path_str = artifact
-                    .get("path")
-                    .and_then(|v| v.as_str())
-                    .unwrap_or("");
+                let path_str = artifact.get("path").and_then(|v| v.as_str()).unwrap_or("");
                 let expected_hash = artifact
                     .get("sha256")
                     .and_then(|v| v.as_str())
@@ -365,7 +361,7 @@ mod tests {
         let dir = make_temp_dir("sha256");
         let test_file = dir.join("test.toml");
         let mut f = fs::File::create(&test_file).unwrap();
-        write!(f, "hello = \"world\"\n").unwrap();
+        writeln!(f, "hello = \"world\"").unwrap();
         drop(f);
 
         let hash = sha256_file(&test_file).unwrap();

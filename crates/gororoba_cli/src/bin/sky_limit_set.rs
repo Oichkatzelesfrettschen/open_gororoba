@@ -6,7 +6,7 @@
 use std::collections::BTreeSet;
 use std::path::PathBuf;
 
-use algebra_core::experimental::algebraic_dynamics::{experiment_c_sky_limit_set, CoxeterType};
+use algebra_core::experimental::algebraic_dynamics::{CoxeterType, experiment_c_sky_limit_set};
 use clap::Parser;
 
 #[derive(Parser)]
@@ -73,13 +73,14 @@ fn main() {
     }
 
     if let Some(parent) = args.output.parent()
-        && let Err(err) = std::fs::create_dir_all(parent) {
-            eprintln!(
-                "ERROR: failed to create output directory {}: {err}",
-                parent.display()
-            );
-            std::process::exit(1);
-        }
+        && let Err(err) = std::fs::create_dir_all(parent)
+    {
+        eprintln!(
+            "ERROR: failed to create output directory {}: {err}",
+            parent.display()
+        );
+        std::process::exit(1);
+    }
 
     let results = experiment_c_sky_limit_set(&args.n_levels);
 

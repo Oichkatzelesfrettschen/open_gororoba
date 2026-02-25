@@ -22,7 +22,7 @@
 
 use std::collections::{HashMap, HashSet};
 
-use super::e7_geometry::{generate_e7_roots, E7Root};
+use super::e7_geometry::{E7Root, generate_e7_roots};
 use super::e8_lattice::E8Root;
 
 /// Discretize coordinates to integer keys for hash-based lookup.
@@ -96,13 +96,11 @@ impl ChevalleyBasis {
             .collect();
         assert_eq!(positive_indices.len(), 63, "E7 has 63 positive roots");
 
-        let simple_root_indices =
-            find_simple_roots(&roots, &positive_indices, &root_lookup);
+        let simple_root_indices = find_simple_roots(&roots, &positive_indices, &root_lookup);
         let cartan = compute_cartan_matrix(&roots, &simple_root_indices);
         let cartan_inv = invert_7x7(cartan);
         let tits_form = build_tits_form(&cartan);
-        let root_decomposition =
-            decompose_all_roots(&roots, &simple_root_indices, &cartan_inv);
+        let root_decomposition = decompose_all_roots(&roots, &simple_root_indices, &cartan_inv);
 
         Self {
             roots,
@@ -159,11 +157,7 @@ impl ChevalleyBasis {
             })
             .sum();
 
-        if f_val.rem_euclid(2) == 0 {
-            1.0
-        } else {
-            -1.0
-        }
+        if f_val.rem_euclid(2) == 0 { 1.0 } else { -1.0 }
     }
 
     /// Exhaustive Jacobi identity verification over all root triples.
@@ -211,9 +205,15 @@ impl ChevalleyBasis {
             return true;
         }
 
-        let ab_root = E7Root { root: E8Root::new(ab) };
-        let bc_root = E7Root { root: E8Root::new(bc) };
-        let ca_root = E7Root { root: E8Root::new(ca) };
+        let ab_root = E7Root {
+            root: E8Root::new(ab),
+        };
+        let bc_root = E7Root {
+            root: E8Root::new(bc),
+        };
+        let ca_root = E7Root {
+            root: E8Root::new(ca),
+        };
 
         let term1 = nab * self.structure_constant(&ab_root, c);
         let term2 = nbc * self.structure_constant(&bc_root, a);
@@ -284,8 +284,7 @@ fn find_simple_roots(
     );
     simple.sort_by(|&a, &b| lex_cmp_f64(&roots[a].root.coords, &roots[b].root.coords));
     [
-        simple[0], simple[1], simple[2], simple[3], simple[4], simple[5],
-        simple[6],
+        simple[0], simple[1], simple[2], simple[3], simple[4], simple[5], simple[6],
     ]
 }
 
@@ -433,7 +432,8 @@ mod tests {
                     let sum = (i32::from(f[i][j]) + i32::from(f[j][i])).rem_euclid(2);
                     let expected = cartan[i][j].rem_euclid(2);
                     assert_eq!(
-                        sum, expected,
+                        sum,
+                        expected,
                         "Cocycle violated for ({i}, {j}): f+f'={sum}, C={c}",
                         c = cartan[i][j]
                     );
@@ -461,7 +461,10 @@ mod tests {
                 }
             }
         }
-        assert!(nonzero_count > 0, "Should find non-zero structure constants");
+        assert!(
+            nonzero_count > 0,
+            "Should find non-zero structure constants"
+        );
     }
 
     #[test]

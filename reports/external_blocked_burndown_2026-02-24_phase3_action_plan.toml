@@ -1,0 +1,465 @@
+generated_at_utc = "2026-02-24T23:11:29.913Z"
+total_external_files = 23538
+blocked_files = 23451
+blocked_sources = 22
+blocked_overdue_sources = 0
+blocked_missing_deadline_sources = 0
+blocked_missing_action_plan_sources = 0
+blocked_missing_action_plan_ref_count = 0
+blocked_total_size_bytes = 1606204292
+
+[[top_blocked_sources]]
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+access_class = "manual_or_licensed"
+path_glob = "data/external/documents_extracted/**"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 20463
+total_size_bytes = 466686354
+sample_paths = [
+    "data/external/documents_extracted/0703745v3/images/image_p12_4.png",
+    "data/external/documents_extracted/0703745v3/images/image_p14_5.png",
+    "data/external/documents_extracted/0703745v3/images/image_p14_6.png",
+    "data/external/documents_extracted/0703745v3/images/image_p1_1.png",
+    "data/external/documents_extracted/0703745v3/images/image_p4_2.png",
+]
+blocker_note = "Many extracted transcripts originate from manual PDFs and mirrors; reproducible replay requires source normalization and authenticated retrieval where applicable."
+evidence_refs = [
+    "data/external/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+    "registry/external_sources.toml",
+]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-INTAKE-TRACE"
+access_class = "manual_or_licensed"
+path_glob = "data/external/intake/**"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 2331
+total_size_bytes = 349378679
+sample_paths = [
+    "data/external/intake/2026_02_14_hypercomplex_news/index.tsv",
+    "data/external/intake/2026_02_14_hypercomplex_news/index_resolved.tsv",
+    "data/external/intake/2026_02_14_hypercomplex_news/index_retry_firefox.tsv",
+    "data/external/intake/2026_02_14_hypercomplex_news/index_retry_firefox_profile.tsv",
+    "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018.tsv",
+]
+blocker_note = "Intake lane stores troubleshooting and mirror traces; regeneration requires source-lane normalization and replay tooling uplift."
+evidence_refs = [
+    "data/external/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+    "registry/artifact_source_of_truth.toml",
+]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-PAPERS-CORPUS"
+access_class = "manual_or_licensed"
+path_glob = "data/external/papers/**"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 322
+total_size_bytes = 367044574
+sample_paths = [
+    "data/external/papers/1_sedenionsxor_convo.txt",
+    "data/external/papers/Babar_Weaver_Gold_Optical.pdf",
+    "data/external/papers/CMS_TOP-22-007.pdf",
+    "data/external/papers/CMS_TOP-22-007.txt",
+    "data/external/papers/CSC_KTH_Ray_Tracing.pdf",
+]
+blocker_note = "Mixed public + licensed + mirror-only paper corpus; requires mirror escalation and source-by-source retries before hard failure."
+evidence_refs = [
+    "data/external/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+    "registry/source_lanes/papers_pdf.toml",
+]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-DOCUMENTS-INGEST"
+access_class = "manual_or_licensed"
+path_glob = "data/external/documents_ingest/**"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 299
+total_size_bytes = 345848256
+sample_paths = [
+    "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/0703745v3.pdf",
+    "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/0704.0112v3.pdf",
+    "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/0804.3416v2.pdf",
+    "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Babar_Weaver_Gold_Optical.pdf",
+    "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/CMS_TOP-22-007.pdf",
+]
+blocker_note = "Ingest lane contains manual and potentially licensed assets; requires manual replay protocol per manifest before gate can clear."
+evidence_refs = [
+    "data/external/documents_ingest/MANIFEST.toml",
+    "data/external/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-CSV-TXT"
+access_class = "public"
+path_glob = "data/external/eht_*_csv.tgz"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 5
+total_size_bytes = 13831492
+sample_paths = [
+    "data/external/eht_3c279_2017_csv.tgz",
+    "data/external/eht_cena_2017_csv.tgz",
+    "data/external/eht_m87_2017_csv.tgz",
+    "data/external/eht_m87_2018_csv.tgz",
+    "data/external/eht_sgra_2017_csv.tgz",
+]
+blocker_note = "EHT CSV/TXT tarball variants are legacy derivative bundles and are not emitted by current Rust fetch-datasets outputs."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-TXT"
+access_class = "public"
+path_glob = "data/external/eht_*_txt.tgz"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 5
+total_size_bytes = 14564882
+sample_paths = [
+    "data/external/eht_3c279_2017_txt.tgz",
+    "data/external/eht_cena_2017_txt.tgz",
+    "data/external/eht_m87_2017_txt.tgz",
+    "data/external/eht_m87_2018_txt.tgz",
+    "data/external/eht_sgra_2017_txt.tgz",
+]
+blocker_note = "EHT TXT tarball variants are legacy derivative bundles and are not emitted by current Rust fetch-datasets outputs."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-GWTC"
+access_class = "public"
+path_glob = "data/external/GWTC-3*.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 4
+total_size_bytes = 20067
+sample_paths = [
+    "data/external/GWTC-3.csv",
+    "data/external/GWTC-3_GWpy_Official.csv",
+    "data/external/GWTC-3_confident.csv",
+    "data/external/GWTC-3_synthetic.csv",
+]
+blocker_note = "Legacy GWTC derivative variants are present under data/external root but are not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SWARM"
+access_class = "public"
+path_glob = "data/external/swarm_*.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 3
+total_size_bytes = 265579
+sample_paths = [
+    "data/external/swarm_clean.csv",
+    "data/external/swarm_f.csv",
+    "data/external/swarm_f_header.csv",
+]
+blocker_note = "Legacy Swarm cleaned/header CSV derivatives are not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-HIPPARCOS"
+access_class = "public"
+path_glob = "data/external/hipparcos_parallax*.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 2
+total_size_bytes = 472881
+sample_paths = [
+    "data/external/hipparcos_parallax.csv",
+    "data/external/hipparcos_parallax_header.csv",
+]
+blocker_note = "Hipparcos root-level derivative extracts are not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-PANTHEON"
+access_class = "public"
+path_glob = "data/external/pantheon_mu*.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 2
+total_size_bytes = 51635
+sample_paths = [
+    "data/external/pantheon_mu.csv",
+    "data/external/pantheon_mu_header.csv",
+]
+blocker_note = "Legacy Pantheon root-level CSV extracts are not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SDSS"
+access_class = "public"
+path_glob = "data/external/SDSS_*.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 2
+total_size_bytes = 25171
+sample_paths = [
+    "data/external/SDSS_DR16Q.csv",
+    "data/external/SDSS_Quasars_Astroquery.csv",
+]
+blocker_note = "Legacy SDSS derivative snapshots under data/external root are not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SORCE"
+access_class = "public"
+path_glob = "data/external/sorce_tsi_*.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 2
+total_size_bytes = 122236
+sample_paths = [
+    "data/external/sorce_tsi_clean.csv",
+    "data/external/sorce_tsi_header.csv",
+]
+blocker_note = "Legacy SORCE cleaned/header CSV derivatives are not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-LHC-ALICE-CMS"
+access_class = "public"
+path_glob = "data/external/lhc_2025/**"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 2
+total_size_bytes = 575
+sample_paths = [
+    "data/external/lhc_2025/alice/pb_pb_5.36tev_polarization.csv",
+    "data/external/lhc_2025/cms/p_pb_8.16tev_azimuthal.csv",
+]
+blocker_note = "LHC 2025 lane stores synthetic fixture tables in data/external/lhc_2025 and does not yet have a canonical external download pipeline."
+evidence_refs = ["reports/LHC_2025_QGP_Full_Synthesis.md"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-CHIME"
+access_class = "public"
+path_glob = "data/external/chime_frb_cat1.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 221007
+sample_paths = ["data/external/chime_frb_cat1.csv"]
+blocker_note = "Legacy CHIME catalog v1 snapshot under data/external root is not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-DESI-QSO"
+access_class = "public"
+path_glob = "data/external/DESI_QSO.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 153
+sample_paths = ["data/external/DESI_QSO.csv"]
+blocker_note = "Legacy DESI QSO root-level derivative snapshot is not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-JARVIS-ZIP"
+access_class = "public"
+path_glob = "data/external/jdft_3d-8-18-2021.json.zip"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 31911815
+sample_paths = ["data/external/jdft_3d-8-18-2021.json.zip"]
+blocker_note = "Legacy JARVIS zip snapshot is not emitted by the canonical Rust fetch pipeline (JSON canonical lane is active)."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-METADATA"
+access_class = "public"
+path_glob = "data/external/TESS_Metadata.csv"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 5483734
+sample_paths = ["data/external/TESS_Metadata.csv"]
+blocker_note = "Legacy TESS metadata snapshot under data/external root is not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-NANOGRAV-KDE"
+access_class = "public"
+path_glob = "data/external/nanograv_15yr_kde.zip"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 5334077
+sample_paths = ["data/external/nanograv_15yr_kde.zip"]
+blocker_note = "Legacy NANOGrav KDE zip is not emitted by the canonical Rust fetch pipeline."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-HST-UDF-METADATA"
+access_class = "manual_or_licensed"
+path_glob = "data/external/HST_UDF_Metadata.csv"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-03"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 365
+sample_paths = ["data/external/HST_UDF_Metadata.csv"]
+blocker_note = "Current repository copy is header-only (row_count=0). Canonical machine endpoint is not yet stabilized in Rust fetch-datasets registry."
+evidence_refs = [
+    "registry/data/external_csv_holding/EH-0006_hst_udf_metadata.toml",
+    "registry/external_csv_holding.toml",
+]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-NV-ODMR"
+access_class = "public"
+path_glob = "data/external/nv_odmr/**"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 16654
+sample_paths = ["data/external/nv_odmr/NV_ODMR_OPU_BOM_Jan2026.xlsx"]
+blocker_note = "NV ODMR external dataset retrieval endpoint is not yet wired into Rust fetch-datasets; current lane requires manual DOI supplement resolution."
+evidence_refs = ["registry/source_lanes/datasets.toml"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-SDSS-DR18-QUASARS"
+access_class = "public"
+path_glob = "data/external/sdss_dr18_quasars.csv"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 4921394
+sample_paths = ["data/external/sdss_dr18_quasars.csv"]
+blocker_note = "SkyServer SQL endpoint is mutable; checksum replay drift detected even with identical query and Rust fetch backend."
+evidence_refs = [
+    "reports/external_redownload_audit_sdss_2026-02-24.toml",
+    "reports/external_redownload_audit_sdss_fetch_backend_2026-02-24.toml",
+]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[top_blocked_sources]]
+source_id = "SRC-TRACE-LOGS"
+access_class = "manual_or_licensed"
+path_glob = "data/external/traces/**"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+is_overdue = false
+missing_deadlines = false
+missing_action_plan = false
+missing_action_plan_refs = 0
+file_count = 1
+total_size_bytes = 2712
+sample_paths = ["data/external/traces/hypothesis_runtime_hott_downloads.json"]
+blocker_note = "Trace lane is generated from mixed web fetch attempts and requires stabilized replay orchestration."
+evidence_refs = [
+    "data/external/traces/hypothesis_runtime_hott_downloads.json",
+    "registry/hypothesis_runtime_hott_sources.toml",
+]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+

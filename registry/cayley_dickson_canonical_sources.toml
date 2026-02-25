@@ -35,7 +35,7 @@ title = "Structure of zero divisors, and other algebraic structures, in higher d
 status = "meets_minimum"
 minimum_requirement_met = true
 canonical_functional_url = "https://core.ac.uk/download/229066012.pdf"
-canonical_pdf_path = "data/external/papers/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf"
+canonical_pdf_path = "data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf"
 canonical_pdf_sha256 = "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68"
 working_mirrors = [
   "https://core.ac.uk/download/229066012.pdf",

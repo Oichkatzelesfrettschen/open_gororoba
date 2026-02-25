@@ -229,12 +229,7 @@ mod tests {
         // We need special handling: the series gives 1.0 for n=0
         // For n=0, prefix=(z/2)^0=1, sum starts at 1, n!=1 => J_0(0)=1
         // But z=0 means all k>0 terms are 0
-        assert_complex_approx(
-            bessel_j(0, z),
-            Complex64::new(1.0, 0.0),
-            1e-14,
-            "J_0(0)=1",
-        );
+        assert_complex_approx(bessel_j(0, z), Complex64::new(1.0, 0.0), 1e-14, "J_0(0)=1");
         // J_n(0) = 0 for n > 0
         for n in 1..=5 {
             assert_complex_approx(
@@ -320,12 +315,7 @@ mod tests {
             let ynp = bessel_y_prime(n, z);
             let wronskian = jn * ynp - jnp * yn;
             let expected = Complex64::new(2.0, 0.0) / (PI * z);
-            assert_complex_approx(
-                wronskian,
-                expected,
-                1e-8,
-                &format!("Wronskian for n={}", n),
-            );
+            assert_complex_approx(wronskian, expected, 1e-8, &format!("Wronskian for n={}", n));
         }
     }
 
@@ -335,8 +325,7 @@ mod tests {
         for n in 1..=4 {
             let z = Complex64::new(3.0, 1.0);
             let lhs = z * bessel_j_prime(n, z);
-            let rhs = Complex64::new(n as f64, 0.0) * bessel_j(n, z)
-                - z * bessel_j(n + 1, z);
+            let rhs = Complex64::new(n as f64, 0.0) * bessel_j(n, z) - z * bessel_j(n + 1, z);
             assert_complex_approx(lhs, rhs, 1e-10, &format!("recurrence for n={}", n));
         }
     }

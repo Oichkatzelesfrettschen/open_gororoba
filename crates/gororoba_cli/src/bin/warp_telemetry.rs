@@ -2,8 +2,8 @@ use std::io::Write;
 use std::path::PathBuf;
 use std::process::Command;
 use std::sync::{
-    atomic::{AtomicBool, Ordering},
     Arc,
+    atomic::{AtomicBool, Ordering},
 };
 use std::thread;
 use std::time::{Duration, Instant};
@@ -23,14 +23,15 @@ fn spawn_gpu_telemetry_sampler_nvidia_smi(
     let stop_worker = Arc::clone(&stop);
     let handle = thread::spawn(move || {
         if let Some(parent) = out_path.parent()
-            && let Err(err) = std::fs::create_dir_all(parent) {
-                eprintln!(
-                    "[WARN] failed to create telemetry dir {}: {}",
-                    parent.display(),
-                    err
-                );
-                return;
-            }
+            && let Err(err) = std::fs::create_dir_all(parent)
+        {
+            eprintln!(
+                "[WARN] failed to create telemetry dir {}: {}",
+                parent.display(),
+                err
+            );
+            return;
+        }
         let mut file = match std::fs::File::create(&out_path) {
             Ok(file) => file,
             Err(err) => {
@@ -108,8 +109,8 @@ fn spawn_gpu_telemetry_sampler_nvml(
     out_path: PathBuf,
     interval: Duration,
 ) -> Option<(Arc<AtomicBool>, thread::JoinHandle<()>)> {
-    use nvml_wrapper::enum_wrappers::device::{Clock, TemperatureSensor};
     use nvml_wrapper::Nvml;
+    use nvml_wrapper::enum_wrappers::device::{Clock, TemperatureSensor};
 
     // Validate NVML availability up front so callers can fall back cleanly.
     let nvml = Nvml::init().ok()?;
@@ -134,14 +135,15 @@ fn spawn_gpu_telemetry_sampler_nvml(
         };
 
         if let Some(parent) = out_path.parent()
-            && let Err(err) = std::fs::create_dir_all(parent) {
-                eprintln!(
-                    "[WARN] failed to create telemetry dir {}: {}",
-                    parent.display(),
-                    err
-                );
-                return;
-            }
+            && let Err(err) = std::fs::create_dir_all(parent)
+        {
+            eprintln!(
+                "[WARN] failed to create telemetry dir {}: {}",
+                parent.display(),
+                err
+            );
+            return;
+        }
         let mut file = match std::fs::File::create(&out_path) {
             Ok(file) => file,
             Err(err) => {

@@ -349,7 +349,7 @@ fn handle_gr(cmd: GrCmd) {
 }
 
 fn handle_optics(cmd: OpticsCmd) {
-    use optics_core::{trace_ray, GrinFiber, Ray};
+    use optics_core::{GrinFiber, Ray, trace_ray};
 
     match cmd {
         OpticsCmd::Fiber {
@@ -406,7 +406,7 @@ fn handle_optics(cmd: OpticsCmd) {
 }
 
 fn handle_cosmology(cmd: CosmologyCmd) {
-    use cosmology_core::{solve_gravastar, AnisotropicParams, GravastarConfig, PolytropicEos};
+    use cosmology_core::{AnisotropicParams, GravastarConfig, PolytropicEos, solve_gravastar};
 
     match cmd {
         CosmologyCmd::Gravastar {
@@ -481,7 +481,7 @@ fn handle_plot(cmd: PlotCmd) {
     use gr_core::shadow_boundary;
     use std::f64::consts::FRAC_PI_2;
     use std::io::BufRead;
-    use viz::{colors, heatmap_svg, line_plot_svg, scatter_plot_svg, Colormap};
+    use viz::{Colormap, colors, heatmap_svg, line_plot_svg, scatter_plot_svg};
 
     match cmd {
         PlotCmd::E8 { output } => {

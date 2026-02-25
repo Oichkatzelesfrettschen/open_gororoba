@@ -2,14 +2,14 @@
 
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::{read_simulation_spectral_component, read_simulation_trace_component};
-use data_core::quality::{validate_rho_trace, RhoQualityThresholds, RhoTraceQuality};
+use data_core::quality::{RhoQualityThresholds, RhoTraceQuality, validate_rho_trace};
 #[cfg(feature = "hdf5-export")]
 use gororoba_cli::warp_gate_policy::load_warp_gate_policy;
+use stats_core::helpers::{mean, std_dev};
 #[cfg(feature = "hdf5-export")]
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::path::{Path, PathBuf};
-use stats_core::helpers::{mean, std_dev};
 
 #[derive(Debug, Clone)]
 struct CliArgs {
@@ -316,10 +316,12 @@ fn parse_timing_snapshot(path: &Path) -> Result<TimingSnapshot, Box<dyn Error>> 
 fn parse_duration_from_filename(name: &str) -> u64 {
     for token in name.split('_').rev() {
         let digits: String = token.chars().take_while(|c| c.is_ascii_digit()).collect();
-        if !digits.is_empty() && token.contains('s')
-            && let Ok(value) = digits.parse::<u64>() {
-                return value;
-            }
+        if !digits.is_empty()
+            && token.contains('s')
+            && let Ok(value) = digits.parse::<u64>()
+        {
+            return value;
+        }
     }
     0
 }
@@ -947,8 +949,12 @@ fn run() -> Result<(), Box<dyn Error>> {
         .find(|c| c.resolution == 256)
         .map(|c| c.timing.p50_us);
 
-    let timing_regime_signature = match (legacy_128_p50, legacy_256_p50, tuned_128_p50, tuned_256_p50)
-    {
+    let timing_regime_signature = match (
+        legacy_128_p50,
+        legacy_256_p50,
+        tuned_128_p50,
+        tuned_256_p50,
+    ) {
         (Some(l128), Some(l256), Some(t128), Some(t256)) => format!(
             "Legacy p50 ({l128:.3}us/{l256:.3}us) is launch-like while tuned p50 ({t128:.3}us/{t256:.3}us) is kernel-like."
         ),
@@ -1037,12 +1043,16 @@ fn run() -> Result<(), Box<dyn Error>> {
         format!("Measured-vs-model fidelity summary: {fidelity_lines}");
 
     let measured_activity_gate_pass = cases.iter().all(|c| {
-        c.fidelity.enstrophy_measured_nonzero_fraction.unwrap_or(0.0)
+        c.fidelity
+            .enstrophy_measured_nonzero_fraction
+            .unwrap_or(0.0)
             >= gate_policy.measured_enstrophy_nonzero_fraction_min
             && c.fidelity.u_rms_nonzero_fraction >= gate_policy.measured_u_rms_nonzero_fraction_min
             && c.fidelity.algebra_nonzero_fraction
                 >= gate_policy.measured_algebra_norm_nonzero_fraction_min
-            && c.fidelity.spectral_total_power_nonzero_fraction.unwrap_or(0.0)
+            && c.fidelity
+                .spectral_total_power_nonzero_fraction
+                .unwrap_or(0.0)
                 >= gate_policy.measured_spectral_total_power_nonzero_fraction_min
             && c.fidelity.u_rms_model_lock_fraction.unwrap_or(1.0)
                 < gate_policy.u_rms_model_lock_max_fraction
@@ -1452,7 +1462,10 @@ fn run() -> Result<(), Box<dyn Error>> {
     };
     out.push_str(&format!("launch_like_case_count = {}\n", launch_like_count));
     out.push_str(&format!("kernel_like_case_count = {}\n", kernel_like_count));
-    out.push_str(&format!("transitional_case_count = {}\n", transitional_count));
+    out.push_str(&format!(
+        "transitional_case_count = {}\n",
+        transitional_count
+    ));
     out.push_str(&format!(
         "mean_tail_to_trace_ratio = {:.6}\n",
         mean_tail_to_trace_ratio

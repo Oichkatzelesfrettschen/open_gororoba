@@ -143,11 +143,7 @@ fn gcd(mut a: u64, mut b: u64) -> u64 {
         b = a % b;
         a = t;
     }
-    if a == 0 {
-        1
-    } else {
-        a
-    }
+    if a == 0 { 1 } else { a }
 }
 
 /// P-adic valuation of a rational.

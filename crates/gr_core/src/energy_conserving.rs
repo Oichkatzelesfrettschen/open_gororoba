@@ -23,7 +23,7 @@
 //! - Misner, Thorne, Wheeler (1973): Gravitation, Ch. 25, 33
 //! - Carter (1968): Phys. Rev. 174, 1559 (constants of motion)
 
-use crate::metric::{ChristoffelComponents, MetricComponents, DIM, PHI, R, T, THETA};
+use crate::metric::{ChristoffelComponents, DIM, MetricComponents, PHI, R, T, THETA};
 use crate::null_constraint;
 
 // ============================================================================

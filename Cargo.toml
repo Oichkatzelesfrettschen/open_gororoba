@@ -36,6 +36,18 @@ members = [
     "crates/qgp_scaling",
 ]
 
+[workspace.metadata.execution_policy]
+single_compile_heavy_command_at_a_time = true
+parallelize_non_cargo_tasks_only = true
+reuse_existing_build_artifacts = true
+deterministic_reproducibility_required = true
+contention_avoidance_note = "Serialize compile-heavy cargo commands to avoid package/artifact lock contention."
+
+[workspace.metadata.execution_policy.recommended_sequence]
+step_1 = "Run one compile-heavy cargo command at a time."
+step_2 = "Parallelize only non-cargo tasks (file scans, report parsing, documentation edits)."
+step_3 = "Reuse one built binary set for follow-on runs."
+
 # Shared dependencies across workspace
 [workspace.dependencies]
 # Core numerics

@@ -913,13 +913,14 @@ fn main() {
                 }
             }
             if let Some(ref status) = insight.status
-                && !VALID_INSIGHT_STATUSES.contains(&status.as_str()) {
-                    eprintln!(
-                        "WARNING: insight {} has unusual status: \"{}\"",
-                        insight.id, status
-                    );
-                    warnings += 1;
-                }
+                && !VALID_INSIGHT_STATUSES.contains(&status.as_str())
+            {
+                eprintln!(
+                    "WARNING: insight {} has unusual status: \"{}\"",
+                    insight.id, status
+                );
+                warnings += 1;
+            }
         }
 
         println!(
@@ -1004,13 +1005,14 @@ fn main() {
         // Check experiment cross-references
         for bin in &registry.binary {
             if let Some(ref exp_ref) = bin.experiment
-                && !experiment_ids.contains(exp_ref) {
-                    eprintln!(
-                        "ERROR: binary {} references non-existent experiment {}",
-                        bin.name, exp_ref
-                    );
-                    errors += 1;
-                }
+                && !experiment_ids.contains(exp_ref)
+            {
+                eprintln!(
+                    "ERROR: binary {} references non-existent experiment {}",
+                    bin.name, exp_ref
+                );
+                errors += 1;
+            }
         }
 
         // Check experiment->binary cross-references
@@ -1081,46 +1083,51 @@ fn main() {
 
         // Cross-check counts
         if let Some(expected_claims) = project.project.claim_count
-            && expected_claims as usize != claim_count {
-                eprintln!(
-                    "ERROR: project.toml claim_count={} but claims.toml has {} entries",
-                    expected_claims, claim_count
-                );
-                errors += 1;
-            }
+            && expected_claims as usize != claim_count
+        {
+            eprintln!(
+                "ERROR: project.toml claim_count={} but claims.toml has {} entries",
+                expected_claims, claim_count
+            );
+            errors += 1;
+        }
         if let Some(expected_insights) = project.project.insight_count
-            && expected_insights as usize != insight_count {
-                eprintln!(
-                    "ERROR: project.toml insight_count={} but insights.toml has {} entries",
-                    expected_insights, insight_count
-                );
-                errors += 1;
-            }
+            && expected_insights as usize != insight_count
+        {
+            eprintln!(
+                "ERROR: project.toml insight_count={} but insights.toml has {} entries",
+                expected_insights, insight_count
+            );
+            errors += 1;
+        }
         if let Some(expected_experiments) = project.project.experiment_count
-            && expected_experiments as usize != experiment_count {
-                eprintln!(
-                    "ERROR: project.toml experiment_count={} but experiments.toml has {} entries",
-                    expected_experiments, experiment_count
-                );
-                errors += 1;
-            }
+            && expected_experiments as usize != experiment_count
+        {
+            eprintln!(
+                "ERROR: project.toml experiment_count={} but experiments.toml has {} entries",
+                expected_experiments, experiment_count
+            );
+            errors += 1;
+        }
         if let Some(expected_complete) = project.project.complete_experiment_count
-            && expected_complete as usize != complete_experiment_count {
-                eprintln!(
-                    "ERROR: project.toml complete_experiment_count={} but experiments.toml has {} complete/done entries",
-                    expected_complete, complete_experiment_count
-                );
-                errors += 1;
-            }
+            && expected_complete as usize != complete_experiment_count
+        {
+            eprintln!(
+                "ERROR: project.toml complete_experiment_count={} but experiments.toml has {} complete/done entries",
+                expected_complete, complete_experiment_count
+            );
+            errors += 1;
+        }
         if let Some(expected_binaries) = project.project.binary_count
-            && expected_binaries as usize != registry_binary_names.len() {
-                eprintln!(
-                    "ERROR: project.toml binary_count={} but binaries.toml has {} entries",
-                    expected_binaries,
-                    registry_binary_names.len()
-                );
-                errors += 1;
-            }
+            && expected_binaries as usize != registry_binary_names.len()
+        {
+            eprintln!(
+                "ERROR: project.toml binary_count={} but binaries.toml has {} entries",
+                expected_binaries,
+                registry_binary_names.len()
+            );
+            errors += 1;
+        }
 
         println!("Project: found (v{})", project.project.name);
     } else {

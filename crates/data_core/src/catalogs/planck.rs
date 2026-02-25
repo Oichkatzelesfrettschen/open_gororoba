@@ -8,7 +8,7 @@
 //! Chains: https://pla.esac.esa.int/
 
 use crate::fetcher::{
-    download_with_fallbacks, extract_tar_gz, DatasetProvider, FetchConfig, FetchError,
+    DatasetProvider, FetchConfig, FetchError, download_with_fallbacks, extract_tar_gz,
 };
 use std::path::PathBuf;
 

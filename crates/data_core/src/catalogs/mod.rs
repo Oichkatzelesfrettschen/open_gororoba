@@ -7,12 +7,14 @@
 
 pub mod aflow;
 pub mod atnf;
+pub mod bl_filterbank;
 pub mod chime;
 pub mod desi_bao;
 pub mod eht;
 pub mod fermi_gbm;
 pub mod gaia;
 pub mod gwtc;
+pub mod hic_raa;
 pub mod hipparcos;
 pub mod jarvis;
 pub mod landsat;
@@ -25,13 +27,11 @@ pub mod sorce;
 pub mod tsi;
 pub mod union3;
 pub mod wow;
-pub mod bl_filterbank;
-pub mod hic_raa;
 
 pub use eht::{list_tgz_members, tgz_member_count, validate_eht_archive};
 pub use hipparcos::{
-    parse_hip_number, validate_hipparcos_format, HIPPARCOS_EXPECTED_ROWS, HIPPARCOS_LINE_WIDTH,
-    HIPPARCOS_PIPE_COUNT,
+    HIPPARCOS_EXPECTED_ROWS, HIPPARCOS_LINE_WIDTH, HIPPARCOS_PIPE_COUNT, parse_hip_number,
+    validate_hipparcos_format,
 };
 pub use landsat::{count_stac_assets, extract_cloud_cover, validate_stac_schema};
-pub use tsi::{compare_tsis_sorce, TsiOverlapResult};
+pub use tsi::{TsiOverlapResult, compare_tsis_sorce};

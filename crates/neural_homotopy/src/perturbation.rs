@@ -4,7 +4,7 @@
 //! whether the A-infinity correction is robust to small perturbations
 //! in the algebraic structure.
 
-use crate::training_data::{build_sedenion_table, MultiplicationSample, SEDENION_DIM};
+use crate::training_data::{MultiplicationSample, SEDENION_DIM, build_sedenion_table};
 
 /// Perturb the sedenion multiplication table by randomly flipping
 /// product signs and/or changing product basis indices.

@@ -20,17 +20,23 @@ use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use spectral_core::ghost_spectral::{
-    check_ghost, compute_power_spectrum, find_peaks, noise_floor, peak_fwhm, peak_snr,
-    ALIASED_GHOST_FREQ,
+    ALIASED_GHOST_FREQ, check_ghost, compute_power_spectrum, find_peaks, noise_floor, peak_fwhm,
+    peak_snr,
 };
 use std::io::Write;
 use std::path::PathBuf;
 use std::time::Instant;
-use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField, ViscosityCouplingModel};
+use vacuum_frustration::bridge::{
+    FrustrationViscosityBridge, SedenionField, ViscosityCouplingModel,
+};
 
 /// CUDA BF16 ZD Resonance Experiments
 #[derive(Parser, Debug)]
-#[command(author, version, about = "CUDA BF16 Zero-Divisor Resonance Experiments")]
+#[command(
+    author,
+    version,
+    about = "CUDA BF16 Zero-Divisor Resonance Experiments"
+)]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -156,17 +162,12 @@ fn compute_viscosity_field(
 }
 
 /// Apply Kolmogorov sinusoidal forcing: F_x = A * sin(2*pi*k*z/N)
-fn apply_kolmogorov_forcing(
-    solver: &mut LbmSolver3DCuda,
-    nx: usize,
-    force_amp: f64,
-) -> Result<()> {
+fn apply_kolmogorov_forcing(solver: &mut LbmSolver3DCuda, nx: usize, force_amp: f64) -> Result<()> {
     let n_cells = nx * nx * nx;
     let mut force_field = vec![[0.0_f64; 3]; n_cells];
     let k_force = 2.0;
     for z in 0..nx {
-        let fz =
-            force_amp * (2.0 * std::f64::consts::PI * k_force * z as f64 / nx as f64).sin();
+        let fz = force_amp * (2.0 * std::f64::consts::PI * k_force * z as f64 / nx as f64).sin();
         for y in 0..nx {
             for x in 0..nx {
                 let idx = x + nx * (y + nx * z);
@@ -494,7 +495,11 @@ fn result_to_record(tau_or_param: &str, result: &TraceResult, label: &str) -> Ve
 }
 
 fn run_sweep(res: usize, steps: usize, fp32: bool, out_dir: &std::path::Path) -> Result<()> {
-    let precision = if fp32 { Precision::FP32 } else { Precision::BF16 };
+    let precision = if fp32 {
+        Precision::FP32
+    } else {
+        Precision::BF16
+    };
     let prec_str = if fp32 { "fp32" } else { "bf16" };
     println!("=== ZD Resonance Tau Sweep ({prec_str}, {res}^3, {steps} steps) ===");
     println!("Observable: kinetic energy + density variance + spatial spectrum");
@@ -571,7 +576,11 @@ fn run_sweep(res: usize, steps: usize, fp32: bool, out_dir: &std::path::Path) ->
 }
 
 fn run_control(res: usize, steps: usize, fp32: bool, out_dir: &std::path::Path) -> Result<()> {
-    let precision = if fp32 { Precision::FP32 } else { Precision::BF16 };
+    let precision = if fp32 {
+        Precision::FP32
+    } else {
+        Precision::BF16
+    };
     let prec_str = if fp32 { "fp32" } else { "bf16" };
     println!("=== ZD Resonance Control (NO ZD modulation, {prec_str}, {res}^3, {steps} steps) ===");
     println!("Observable: kinetic energy + density variance + spatial spectrum");
@@ -622,7 +631,11 @@ fn run_coupling_sweep(
     fp32: bool,
     out_dir: &std::path::Path,
 ) -> Result<()> {
-    let precision = if fp32 { Precision::FP32 } else { Precision::BF16 };
+    let precision = if fp32 {
+        Precision::FP32
+    } else {
+        Precision::BF16
+    };
     let prec_str = if fp32 { "fp32" } else { "bf16" };
     println!("=== ZD Resonance Coupling Sweep ({prec_str}, tau=0.55, {res}^3, {steps} steps) ===");
     std::fs::create_dir_all(out_dir)?;
@@ -692,7 +705,11 @@ fn run_reynolds_sweep(
     fp32: bool,
     out_dir: &std::path::Path,
 ) -> Result<()> {
-    let precision = if fp32 { Precision::FP32 } else { Precision::BF16 };
+    let precision = if fp32 {
+        Precision::FP32
+    } else {
+        Precision::BF16
+    };
     let prec_str = if fp32 { "fp32" } else { "bf16" };
     println!("=== ZD Resonance Reynolds Sweep ({prec_str}, {res}^3, {steps} steps) ===");
     println!("Motivated by real-data finding: Re_eff=0.16 (laminar) insufficient for Ghost onset.");
@@ -839,7 +856,10 @@ fn run_analyze(data_dir: &std::path::Path) -> Result<()> {
             }
         }
     } else {
-        println!("WARNING: Control CSV not found at {}", control_path.display());
+        println!(
+            "WARNING: Control CSV not found at {}",
+            control_path.display()
+        );
     }
 
     // Verdict

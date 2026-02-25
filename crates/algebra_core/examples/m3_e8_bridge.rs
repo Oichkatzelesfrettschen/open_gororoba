@@ -4,8 +4,8 @@
 //! when restricted to Octonionic basis elements, preserves the E8 root lattice
 //! structure or reveals specific "scalar" (Fano) vs "vector" (Non-Fano) modes.
 
-use algebra_core::{generate_e8_roots, E8Root};
-use algebra_core::{oct_conjugate, oct_multiply, oct_norm_sq, Octonion};
+use algebra_core::{E8Root, generate_e8_roots};
+use algebra_core::{Octonion, oct_conjugate, oct_multiply, oct_norm_sq};
 
 fn main() {
     println!("=== M3-E8 Bridge: Algebraic Topology Probe ===");

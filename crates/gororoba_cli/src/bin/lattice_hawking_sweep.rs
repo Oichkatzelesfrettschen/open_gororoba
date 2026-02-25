@@ -21,12 +21,11 @@
 
 use clap::Parser;
 use gr_core::acoustic_metric::{
-    acoustic_hawking_temperature, acoustic_horizon_1d, acoustic_surface_gravity,
-    radial_inflow_profile, LBM_CS,
+    LBM_CS, acoustic_hawking_temperature, acoustic_horizon_1d, acoustic_surface_gravity,
+    radial_inflow_profile,
 };
 use gr_core::lattice_hawking::{
-    compute_spectra, effective_temperature, spectral_chi_squared,
-    viscosity_cutoff,
+    compute_spectra, effective_temperature, spectral_chi_squared, viscosity_cutoff,
 };
 use std::fs;
 use std::path::Path;
@@ -67,15 +66,17 @@ fn main() {
         .collect();
 
     println!("Lattice-Hawking Spectrum Sweep");
-    println!("  grids={:?} nu={} n_omega={}", grids, args.nu, args.n_omega);
+    println!(
+        "  grids={:?} nu={} n_omega={}",
+        grids, args.nu, args.n_omega
+    );
     println!("  v0={} r0={} alpha={}", args.v0, args.r0, args.alpha);
     println!();
 
     // Header
     println!(
         "  {:>5}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}",
-        "N", "dx", "kappa", "T_H_ideal", "T_eff_lat", "T_eff_visc",
-        "chi2_lat", "chi2_visc"
+        "N", "dx", "kappa", "T_H_ideal", "T_eff_lat", "T_eff_visc", "chi2_lat", "chi2_visc"
     );
     println!(
         "  {:->5}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}",
@@ -88,7 +89,8 @@ fn main() {
         let dx = 1.0 / n as f64;
 
         // Generate radial inflow profile (1D analog black hole)
-        let (velocity_mag, grid_dx) = radial_inflow_profile(n, args.v0, args.r0, args.alpha, LBM_CS);
+        let (velocity_mag, grid_dx) =
+            radial_inflow_profile(n, args.v0, args.r0, args.alpha, LBM_CS);
 
         // Find acoustic horizon
         let horizons = acoustic_horizon_1d(&velocity_mag, LBM_CS);
@@ -194,8 +196,15 @@ fn main() {
             "[[sweep]]\nN = {}\ndx = {:.8}\nkappa = {:.8}\nT_H_ideal = {:.8}\n\
              T_eff_lattice = {:.8}\nT_eff_viscous = {:.8}\n\
              chi2_lattice = {:.6}\nchi2_viscous = {:.6}\nomega_visc = {:.4}\n\n",
-            row.n, row.dx, row.kappa, row.t_h_ideal, row.t_eff_lattice,
-            row.t_eff_viscous, row.chi2_lattice, row.chi2_viscous, row.omega_visc
+            row.n,
+            row.dx,
+            row.kappa,
+            row.t_h_ideal,
+            row.t_eff_lattice,
+            row.t_eff_viscous,
+            row.chi2_lattice,
+            row.chi2_viscous,
+            row.omega_visc
         ));
     }
 

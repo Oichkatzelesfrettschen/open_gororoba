@@ -40,18 +40,28 @@ pub mod spectral;
 pub mod tov;
 
 pub use gravastar::{
-    anisotropic_stability_test, polytropic_stability_sweep, solve_gravastar, AnisotropicParams,
-    AnisotropicStabilityResult, GravastarConfig, GravastarSolution, PolytropicEos, StabilityResult,
-    TovState,
+    AnisotropicParams, AnisotropicStabilityResult, GravastarConfig, GravastarSolution,
+    PolytropicEos, StabilityResult, TovState, anisotropic_stability_test,
+    polytropic_stability_sweep, solve_gravastar,
 };
 
 pub use spectral::{
-    analyze_k_minus_3_origin, calcagni_spectral_dimension, cdt_spectral_dimension,
-    k_minus_3_spectrum, kolmogorov_spectrum, kraichnan_enstrophy_spectrum,
-    parisi_sourlas_effective_dimension, parisi_sourlas_spectrum_exponent, SpectralAnalysisResult,
+    SpectralAnalysisResult, analyze_k_minus_3_origin, calcagni_spectral_dimension,
+    cdt_spectral_dimension, k_minus_3_spectrum, kolmogorov_spectrum, kraichnan_enstrophy_spectrum,
+    parisi_sourlas_effective_dimension, parisi_sourlas_spectrum_exponent,
 };
 
 pub use bounce::{
+    BounceParams,
+    BounceResult,
+    BounceState,
+    C_KM_S,
+    FitResult,
+    OMEGA_B_H2,
+    SyntheticBaoData,
+    // Synthetic data and fitting pipeline
+    SyntheticSnData,
+    Z_STAR,
     bao_sound_horizon,
     chi2_bao,
     chi2_distance_modulus,
@@ -67,23 +77,13 @@ pub use bounce::{
     run_observational_fit,
     simulate_bounce,
     spectral_index_bounce,
-    BounceParams,
-    BounceResult,
-    BounceState,
-    FitResult,
-    SyntheticBaoData,
-    // Synthetic data and fitting pipeline
-    SyntheticSnData,
-    C_KM_S,
-    OMEGA_B_H2,
-    Z_STAR,
 };
 
 pub use dimensional_geometry::{ball_volume, sample_dimensional_range, unit_sphere_surface_area};
 
 pub use observational::{
-    bao_data_point_count, chi2_bao_real, chi2_sn_real, compare_models, desi_to_real_bao,
-    filter_pantheon_data, fit_real_data, ModelComparison, ObsFitResult, RealBaoData, RealSnData,
+    ModelComparison, ObsFitResult, RealBaoData, RealSnData, bao_data_point_count, chi2_bao_real,
+    chi2_sn_real, compare_models, desi_to_real_bao, filter_pantheon_data, fit_real_data,
 };
 
 pub use distances::{
@@ -92,26 +92,25 @@ pub use distances::{
 };
 
 pub use eos::{
-    gamma_from_index, polytropic_index, Polytrope, GAMMA_NONREL_DEGENERATE, GAMMA_RADIATION,
-    GAMMA_STIFF, GAMMA_ULTRAREL_DEGENERATE,
+    GAMMA_NONREL_DEGENERATE, GAMMA_RADIATION, GAMMA_STIFF, GAMMA_ULTRAREL_DEGENERATE, Polytrope,
+    gamma_from_index, polytropic_index,
 };
 
 pub use tov::{
-    combined_tidal_deformability, integrate_neutron_star, mass_radius_relation,
-    tidal_deformability, tidal_love_number_k2, tov_maximum_mass, MassRadiusPoint,
-    NeutronStarProfile,
+    MassRadiusPoint, NeutronStarProfile, combined_tidal_deformability, integrate_neutron_star,
+    mass_radius_relation, tidal_deformability, tidal_love_number_k2, tov_maximum_mass,
 };
 
 pub use homotopy_bridge::{
-    homotopy_lambda, homotopy_stress_energy, solve_gravastar_homotopy, sweep_obstruction_coupling,
-    HomotopyStressEnergy, ObstructionSweepResult, SweepConfig,
+    HomotopyStressEnergy, ObstructionSweepResult, SweepConfig, homotopy_lambda,
+    homotopy_stress_energy, solve_gravastar_homotopy, sweep_obstruction_coupling,
 };
 
 pub use flrw::{
-    age_at_z, apply_redshift_to_wavelength, deceleration_parameter, distance_duality_deviation,
-    lookback_time, redshift_flux_dimming, universe_age, verify_distance_duality,
-    wavelength_to_redshift, z_equality, FlatLCDM, PLANCK18_H0, PLANCK18_OMEGA_B, PLANCK18_OMEGA_M,
-    PLANCK18_SOUND_HORIZON, PLANCK18_T_CMB,
+    FlatLCDM, PLANCK18_H0, PLANCK18_OMEGA_B, PLANCK18_OMEGA_M, PLANCK18_SOUND_HORIZON,
+    PLANCK18_T_CMB, age_at_z, apply_redshift_to_wavelength, deceleration_parameter,
+    distance_duality_deviation, lookback_time, redshift_flux_dimming, universe_age,
+    verify_distance_duality, wavelength_to_redshift, z_equality,
 };
 
 /// Gauss-Legendre quadrature over [a, b].

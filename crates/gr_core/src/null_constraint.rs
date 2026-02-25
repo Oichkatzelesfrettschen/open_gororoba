@@ -18,7 +18,7 @@
 //! - Misner, Thorne, Wheeler (1973): Gravitation, Ch. 25 (geodesic integration)
 //! - Press (2007): Numerical Recipes 3rd ed., Ch. 17 (ODE error control)
 
-use crate::metric::{MetricComponents, DIM, PHI, R, T, THETA};
+use crate::metric::{DIM, MetricComponents, PHI, R, T, THETA};
 
 // ============================================================================
 // Constraint evaluation

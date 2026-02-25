@@ -30,7 +30,7 @@
 
 use std::collections::HashSet;
 
-use crate::grover::{grover_search_indices, optimal_iterations, GroverConfig, GroverResult};
+use crate::grover::{GroverConfig, GroverResult, grover_search_indices, optimal_iterations};
 
 /// A hypothesis in the search space.
 #[derive(Debug, Clone)]
@@ -70,11 +70,7 @@ pub trait OraclePredicate: Send + Sync {
 
     /// Optional: provide a score for the hypothesis (higher is better).
     fn score(&self, hypothesis: &Hypothesis) -> f64 {
-        if self.evaluate(hypothesis) {
-            1.0
-        } else {
-            0.0
-        }
+        if self.evaluate(hypothesis) { 1.0 } else { 0.0 }
     }
 }
 
@@ -428,11 +424,7 @@ mod tests {
         // Mark 4 hypotheses (6.25% of space)
         let oracle = ThresholdOracle::new(
             |p: &[f64]| {
-                if p[0] >= 60.0 {
-                    1.0
-                } else {
-                    0.0
-                }
+                if p[0] >= 60.0 { 1.0 } else { 0.0 }
             },
             0.5,
         );

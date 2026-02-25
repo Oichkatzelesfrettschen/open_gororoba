@@ -4,8 +4,8 @@ use lbm_3d_cuda::Precision;
 use std::error::Error;
 use std::path::PathBuf;
 use warp_runner::{
-    gate_h5_outputs, print_case_report, run_case, write_step_timing_report, BackendKind, BenchCase,
-    TimingMode,
+    BackendKind, BenchCase, TimingMode, gate_h5_outputs, print_case_report, run_case,
+    write_step_timing_report,
 };
 
 fn main() -> Result<(), Box<dyn Error>> {

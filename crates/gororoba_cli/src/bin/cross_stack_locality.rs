@@ -6,8 +6,8 @@
 use std::path::PathBuf;
 
 use algebra_core::experimental::algebraic_dynamics::{
-    cross_stack_comparison, ConstraintSystem, E10DynkinSystem, EtDmzSystem, SedenionZdSystem,
-    TwistNavigationSystem,
+    ConstraintSystem, E10DynkinSystem, EtDmzSystem, SedenionZdSystem, TwistNavigationSystem,
+    cross_stack_comparison,
 };
 use clap::Parser;
 
@@ -73,13 +73,14 @@ fn main() {
     let result = cross_stack_comparison(&systems, args.n_bounces, args.n_permutations, args.seed);
 
     if let Some(parent) = args.output.parent()
-        && let Err(err) = std::fs::create_dir_all(parent) {
-            eprintln!(
-                "ERROR: failed to create output directory {}: {err}",
-                parent.display()
-            );
-            std::process::exit(1);
-        }
+        && let Err(err) = std::fs::create_dir_all(parent)
+    {
+        eprintln!(
+            "ERROR: failed to create output directory {}: {err}",
+            parent.display()
+        );
+        std::process::exit(1);
+    }
 
     let mut wtr = match csv::Writer::from_path(&args.output) {
         Ok(writer) => writer,

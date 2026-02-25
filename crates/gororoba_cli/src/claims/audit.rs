@@ -14,8 +14,8 @@ use std::collections::{BTreeMap, BTreeSet, HashMap};
 use std::path::Path;
 use std::sync::LazyLock;
 
-use super::parser::{parse_claim_rows, shorten, ClaimRow};
-use super::schema::{is_canonical_status, is_open_status, CANONICAL_CLAIMS_STATUS_TOKENS};
+use super::parser::{ClaimRow, parse_claim_rows, shorten};
+use super::schema::{CANONICAL_CLAIMS_STATUS_TOKENS, is_canonical_status, is_open_status};
 
 // --- ID Inventory Report ---
 

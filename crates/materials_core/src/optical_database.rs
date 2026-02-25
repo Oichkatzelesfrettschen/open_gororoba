@@ -373,9 +373,7 @@ impl ExtendedDrudeParams {
         let gamma = self.scattering.gamma_at_ev(xi_ev) * EV_TO_RADS;
 
         match &self.scattering {
-            ScatteringModel::DrudeSmith {
-                backscatter_c, ..
-            } => {
+            ScatteringModel::DrudeSmith { backscatter_c, .. } => {
                 let base = omega_p * omega_p / (xi * xi + gamma * xi);
                 // At imaginary freq: correction = (1 + c*gamma/(gamma+xi))
                 base * (1.0 + backscatter_c * gamma / (gamma + xi))
@@ -932,8 +930,16 @@ impl DrudeLorentzParams {
                     // At the pole: use L'Hopital limit
                     // [f(omega') - f(omega)] / (omega'^2 - omega^2) -> f'(omega)/(2*omega)
                     // Approximate f' by finite difference
-                    let f_plus = if j < n_steps { f_table[j] } else { f_table[j - 1] };
-                    let f_minus = if j > 1 { f_table[j - 2] } else { f_table[j - 1] };
+                    let f_plus = if j < n_steps {
+                        f_table[j]
+                    } else {
+                        f_table[j - 1]
+                    };
+                    let f_minus = if j > 1 {
+                        f_table[j - 2]
+                    } else {
+                        f_table[j - 1]
+                    };
                     let f_prime = (f_plus - f_minus) / (2.0 * domega);
                     integral_sub += f_prime / (2.0 * omega) * domega;
                 } else {
@@ -1270,21 +1276,25 @@ impl DrudeLorentzParams {
     /// Here we use the simpler Bloch-Gruneisen T^2 correction with
     /// a user-supplied Debye temperature.
     pub fn at_temperature(&self, temperature_k: f64, debye_t_k: Option<f64>) -> Self {
-        let broadened_oscs: Vec<LorentzOscillator> = self.oscillators.iter().map(|osc| {
-            let x = osc.omega_0_ev / (2.0 * K_B_EV * temperature_k);
-            let coth = if x > 20.0 {
-                1.0 // coth(x) -> 1 for large x
-            } else if x < 0.01 {
-                1.0 / x // coth(x) -> 1/x for small x (high T limit)
-            } else {
-                (x.exp() + (-x).exp()) / (x.exp() - (-x).exp())
-            };
-            LorentzOscillator {
-                strength: osc.strength,
-                omega_0_ev: osc.omega_0_ev,
-                gamma_ev: osc.gamma_ev * coth,
-            }
-        }).collect();
+        let broadened_oscs: Vec<LorentzOscillator> = self
+            .oscillators
+            .iter()
+            .map(|osc| {
+                let x = osc.omega_0_ev / (2.0 * K_B_EV * temperature_k);
+                let coth = if x > 20.0 {
+                    1.0 // coth(x) -> 1 for large x
+                } else if x < 0.01 {
+                    1.0 / x // coth(x) -> 1/x for small x (high T limit)
+                } else {
+                    (x.exp() + (-x).exp()) / (x.exp() - (-x).exp())
+                };
+                LorentzOscillator {
+                    strength: osc.strength,
+                    omega_0_ev: osc.omega_0_ev,
+                    gamma_ev: osc.gamma_ev * coth,
+                }
+            })
+            .collect();
 
         let broadened_drude = self.drude.map(|d| {
             let t_ratio_sq = if let Some(t_d) = debye_t_k {
@@ -1332,7 +1342,10 @@ impl DrudeLorentzParams {
     /// inclusions with volume fraction `f`. Returns the effective
     /// dielectric function of the composite.
     pub fn maxwell_garnett_mix(
-        &self, inclusion: &DrudeLorentzParams, fill_fraction: f64, omega: f64
+        &self,
+        inclusion: &DrudeLorentzParams,
+        fill_fraction: f64,
+        omega: f64,
     ) -> Complex64 {
         let eps_host = self.epsilon(omega);
         let eps_inc = inclusion.epsilon(omega);
@@ -1344,7 +1357,10 @@ impl DrudeLorentzParams {
     /// Treats the two materials symmetrically (no host/inclusion distinction).
     /// Volume fraction `f` refers to `self`; `other` occupies (1-f).
     pub fn bruggeman_mix(
-        &self, other: &DrudeLorentzParams, fill_fraction: f64, omega: f64
+        &self,
+        other: &DrudeLorentzParams,
+        fill_fraction: f64,
+        omega: f64,
     ) -> Complex64 {
         let eps_1 = self.epsilon(omega);
         let eps_2 = other.epsilon(omega);
@@ -1427,11 +1443,7 @@ impl DrudeLorentzParams {
     /// Scans the range [omega_min, omega_max] for where beta_2 crosses zero.
     /// Returns None if no crossing found. For silica, this is around 1.27 um
     /// wavelength (1.49e15 rad/s).
-    pub fn zero_dispersion_omega(
-        &self,
-        omega_min: f64,
-        omega_max: f64,
-    ) -> Option<f64> {
+    pub fn zero_dispersion_omega(&self, omega_min: f64, omega_max: f64) -> Option<f64> {
         let steps: usize = 2000;
         let domega = (omega_max - omega_min) / steps as f64;
         let mut prev_beta2 = self.gvd_beta2(omega_min);
@@ -1588,8 +1600,7 @@ impl DrudeLorentzParams {
         let cos_i = theta_i.cos();
         let sin_i = theta_i.sin();
         // Snell: n1*sin(theta_i) = n2*sin(theta_t) => cos_t = sqrt(1 - (n1/n2*sin_i)^2)
-        let sin_t_sq = Complex64::new(n_incident * n_incident * sin_i * sin_i, 0.0)
-            / (n2 * n2);
+        let sin_t_sq = Complex64::new(n_incident * n_incident * sin_i * sin_i, 0.0) / (n2 * n2);
         let cos_t = (Complex64::new(1.0, 0.0) - sin_t_sq).sqrt();
         let n1_cos_i = Complex64::new(n_incident * cos_i, 0.0);
         let n2_cos_t = n2 * cos_t;
@@ -1603,8 +1614,7 @@ impl DrudeLorentzParams {
         let n2 = self.refractive_index(omega);
         let cos_i = theta_i.cos();
         let sin_i = theta_i.sin();
-        let sin_t_sq = Complex64::new(n_incident * n_incident * sin_i * sin_i, 0.0)
-            / (n2 * n2);
+        let sin_t_sq = Complex64::new(n_incident * n_incident * sin_i * sin_i, 0.0) / (n2 * n2);
         let cos_t = (Complex64::new(1.0, 0.0) - sin_t_sq).sqrt();
         let n2_cos_i = n2 * cos_i;
         let n1_cos_t = Complex64::new(n_incident, 0.0) * cos_t;
@@ -1630,12 +1640,7 @@ impl DrudeLorentzParams {
     /// Reflectance at arbitrary angle (intensity, not amplitude).
     ///
     /// R_s = |r_s|^2, R_p = |r_p|^2. Returns (R_s, R_p).
-    pub fn reflectance_angular(
-        &self,
-        omega: f64,
-        theta_i: f64,
-        n_incident: f64,
-    ) -> (f64, f64) {
+    pub fn reflectance_angular(&self, omega: f64, theta_i: f64, n_incident: f64) -> (f64, f64) {
         let rs = self.fresnel_rs(omega, theta_i, n_incident);
         let rp = self.fresnel_rp(omega, theta_i, n_incident);
         (rs.norm_sqr(), rp.norm_sqr())
@@ -1729,12 +1734,7 @@ impl DrudeLorentzParams {
     /// theta_F = omega * Re[eps_xy] / (2 * n * c) where n is the real
     /// refractive index and eps_xy is the off-diagonal Voigt element.
     /// Returns None if no Drude term.
-    pub fn faraday_rotation(
-        &self,
-        omega: f64,
-        b_field: f64,
-        carrier_density: f64,
-    ) -> Option<f64> {
+    pub fn faraday_rotation(&self, omega: f64, b_field: f64, carrier_density: f64) -> Option<f64> {
         let eps_xy = self.voigt_eps_xy(omega, b_field, carrier_density)?;
         let n = self.refractive_index(omega).re;
         if n < 1e-10 {
@@ -1830,8 +1830,8 @@ impl DrudeLorentzParams {
         if x > 500.0 {
             return 0.0;
         }
-        let planck = hbar * omega.powi(3)
-            / (4.0 * std::f64::consts::PI.powi(3) * C * C * (x.exp() - 1.0));
+        let planck =
+            hbar * omega.powi(3) / (4.0 * std::f64::consts::PI.powi(3) * C * C * (x.exp() - 1.0));
         self.emissivity(omega) * planck
     }
 
@@ -1936,7 +1936,9 @@ impl DrudeLorentzParams {
         }
         // Find the strongest oscillator (largest S parameter)
         let strongest = self.oscillators.iter().max_by(|a, b| {
-            a.strength.partial_cmp(&b.strength).unwrap_or(std::cmp::Ordering::Equal)
+            a.strength
+                .partial_cmp(&b.strength)
+                .unwrap_or(std::cmp::Ordering::Equal)
         })?;
 
         let omega_to = strongest.omega_0_ev * EV_TO_RADS;
@@ -1997,8 +1999,7 @@ impl DrudeLorentzParams {
         if kd < 1e-30 {
             return 1.0;
         }
-        let reflection_factor = (eps - Complex64::new(1.0, 0.0))
-            / (eps + Complex64::new(1.0, 0.0));
+        let reflection_factor = (eps - Complex64::new(1.0, 0.0)) / (eps + Complex64::new(1.0, 0.0));
         1.0 + 3.0 / (4.0 * kd.powi(3)) * reflection_factor.im
     }
 
@@ -2014,8 +2015,7 @@ impl DrudeLorentzParams {
         if kd < 1e-30 {
             return 0.0;
         }
-        let reflection_factor = (eps - Complex64::new(1.0, 0.0))
-            / (eps + Complex64::new(1.0, 0.0));
+        let reflection_factor = (eps - Complex64::new(1.0, 0.0)) / (eps + Complex64::new(1.0, 0.0));
         -3.0 / (8.0 * kd.powi(3)) * reflection_factor.re
     }
 
@@ -2065,7 +2065,9 @@ impl DrudeLorentzParams {
     /// Returns None if no oscillators.
     pub fn oscillator_quality_factor(&self) -> Option<f64> {
         let strongest = self.oscillators.iter().max_by(|a, b| {
-            a.strength.partial_cmp(&b.strength).unwrap_or(std::cmp::Ordering::Equal)
+            a.strength
+                .partial_cmp(&b.strength)
+                .unwrap_or(std::cmp::Ordering::Equal)
         })?;
         if strongest.gamma_ev < 1e-30 {
             return None;
@@ -2112,12 +2114,7 @@ impl DrudeLorentzParams {
     /// SW = integral[sigma_1(omega) d_omega] from omega_min to omega_max
     /// where sigma_1 = Re[sigma] = omega * Im[eps] * eps_0.
     /// This is the partial oscillator strength sum rule.
-    pub fn spectral_weight_window(
-        &self,
-        omega_min: f64,
-        omega_max: f64,
-        n_steps: usize,
-    ) -> f64 {
+    pub fn spectral_weight_window(&self, omega_min: f64, omega_max: f64, n_steps: usize) -> f64 {
         if n_steps < 2 || omega_max <= omega_min {
             return 0.0;
         }
@@ -2339,11 +2336,7 @@ impl DrudeLorentzParams {
     pub fn numerical_aperture(&self, omega: f64, n_cladding: f64) -> Option<f64> {
         let n_core = self.refractive_index(omega).re;
         let diff = n_core * n_core - n_cladding * n_cladding;
-        if diff > 0.0 {
-            Some(diff.sqrt())
-        } else {
-            None
-        }
+        if diff > 0.0 { Some(diff.sqrt()) } else { None }
     }
 
     /// V-parameter (normalized frequency) for step-index fiber.
@@ -2361,7 +2354,12 @@ impl DrudeLorentzParams {
     /// Gaussian approximation: Gamma = 1 - exp(-2*(a/w)^2), where the mode
     /// field radius w ~ a * (0.65 + 1.619/V^1.5 + 2.879/V^6) (Marcuse formula).
     /// Returns None if V < 0.8 (formula invalid) or no guiding.
-    pub fn confinement_factor(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64> {
+    pub fn confinement_factor(
+        &self,
+        omega: f64,
+        core_radius_m: f64,
+        n_cladding: f64,
+    ) -> Option<f64> {
         let v = self.v_parameter(omega, core_radius_m, n_cladding)?;
         if v < 0.8 {
             return None;
@@ -2375,7 +2373,12 @@ impl DrudeLorentzParams {
     ///
     /// A_eff = pi * w^2 where w = a * (0.65 + 1.619/V^1.5 + 2.879/V^6).
     /// Returns None if V < 0.8 or no guiding.
-    pub fn effective_mode_area(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64> {
+    pub fn effective_mode_area(
+        &self,
+        omega: f64,
+        core_radius_m: f64,
+        n_cladding: f64,
+    ) -> Option<f64> {
         let v = self.v_parameter(omega, core_radius_m, n_cladding)?;
         if v < 0.8 {
             return None;
@@ -2499,7 +2502,12 @@ impl DrudeLorentzParams {
     /// eta = QY_free * F_rad / (QY_free * F_rad + (1 - QY_free) + F_nr)
     /// where F_rad ~ 1 (far-field), F_nr ~ 3/(4*(kd)^3)*Im[(eps-1)/(eps+1)].
     /// qy_free is the free-space quantum yield (0-1).
-    pub fn quantum_efficiency_near_surface(&self, omega: f64, distance_m: f64, qy_free: f64) -> f64 {
+    pub fn quantum_efficiency_near_surface(
+        &self,
+        omega: f64,
+        distance_m: f64,
+        qy_free: f64,
+    ) -> f64 {
         let eps = self.epsilon(omega);
         let k = omega / C;
         let kd = k * distance_m;
@@ -2545,8 +2553,7 @@ impl DrudeLorentzParams {
         let delta = 2.0 * PI * n_film * thickness_m * omega / (2.0 * PI * C);
         let phase = Complex64::new(0.0, 2.0 * delta.re) * Complex64::new(1.0, 0.0)
             + Complex64::new(-2.0 * delta.im, 0.0);
-        let exp_phase = Complex64::new(phase.re.cos(), phase.re.sin())
-            * (-phase.im).exp(); // handle absorption
+        let exp_phase = Complex64::new(phase.re.cos(), phase.re.sin()) * (-phase.im).exp(); // handle absorption
 
         // Airy formula
         let r_total = (r12 + r23 * exp_phase) / (1.0 + r12 * r23 * exp_phase);
@@ -2657,10 +2664,9 @@ impl DrudeLorentzParams {
     /// Returns None if no crossing is found in the scan range.
     pub fn surface_phonon_polariton_frequency(&self, eps_dielectric: f64) -> Option<f64> {
         // Scan within the Reststrahlen band if available, otherwise full range
-        let (scan_min, scan_max) = self.reststrahlen_band().unwrap_or((
-            ev_to_omega(0.01),
-            ev_to_omega(1.0),
-        ));
+        let (scan_min, scan_max) = self
+            .reststrahlen_band()
+            .unwrap_or((ev_to_omega(0.01), ev_to_omega(1.0)));
         let n_scan = 2000;
         let d_omega = (scan_max - scan_min) / n_scan as f64;
 
@@ -2773,7 +2779,12 @@ impl DrudeLorentzParams {
     /// Delta_alpha = (omega/c) * Im[delta_eps] / Re[n], where delta_eps
     /// comes from the Drude response of injected carriers.
     /// Returns None if no Drude component.
-    pub fn photo_induced_absorption(&self, omega: f64, delta_n: f64, m_star_ratio: f64) -> Option<f64> {
+    pub fn photo_induced_absorption(
+        &self,
+        omega: f64,
+        delta_n: f64,
+        m_star_ratio: f64,
+    ) -> Option<f64> {
         let m_star = m_star_ratio * M_E_KG;
         let delta_wp_sq = delta_n * E_CHARGE * E_CHARGE / (EPS_0 * m_star);
         let gamma = self.drude.as_ref()?.gamma_ev * EV_TO_RADS;
@@ -2797,7 +2808,12 @@ impl DrudeLorentzParams {
     /// Computed from the finite difference of reflectivity with modified
     /// Drude parameters (shifted plasma frequency).
     /// Returns None if no Drude component.
-    pub fn transient_reflectivity_change(&self, omega: f64, delta_n: f64, m_star_ratio: f64) -> Option<f64> {
+    pub fn transient_reflectivity_change(
+        &self,
+        omega: f64,
+        delta_n: f64,
+        m_star_ratio: f64,
+    ) -> Option<f64> {
         let r0 = self.reflectivity_normal(omega);
         if r0 < 1e-15 {
             return None;
@@ -2918,7 +2934,11 @@ impl DrudeLorentzParams {
         let hbar_omega_ev = HBAR_EV_S * omega;
         let n_be = if temperature_k > 0.0 && hbar_omega_ev > 0.0 {
             let x = hbar_omega_ev / (K_B_EV * temperature_k);
-            if x > 500.0 { 0.0 } else { 1.0 / (x.exp() - 1.0) }
+            if x > 500.0 {
+                0.0
+            } else {
+                1.0 / (x.exp() - 1.0)
+            }
         } else {
             0.0
         };
@@ -2948,27 +2968,45 @@ impl DrudeLorentzParams {
         let hbar_omega_ev = HBAR_EV_S * omega;
         let n_be = if temperature_k > 0.0 && hbar_omega_ev > 0.0 {
             let x = hbar_omega_ev / (K_B_EV * temperature_k);
-            if x > 500.0 { 0.0 } else { 1.0 / (x.exp() - 1.0) }
+            if x > 500.0 {
+                0.0
+            } else {
+                1.0 / (x.exp() - 1.0)
+            }
         } else {
             0.0
         };
-        hbar_omega_ev * omega * omega * n_be / (std::f64::consts::PI * std::f64::consts::PI * C * C * C)
+        hbar_omega_ev * omega * omega * n_be
+            / (std::f64::consts::PI * std::f64::consts::PI * C * C * C)
     }
 
     /// Near-field thermal emission enhancement factor relative to far-field blackbody.
     /// At sub-wavelength distances, evanescent modes contribute: enhancement ~ 1/(k*d)^2.
-    pub fn near_field_thermal_emission(&self, omega: f64, distance_m: f64, temperature_k: f64) -> f64 {
+    pub fn near_field_thermal_emission(
+        &self,
+        omega: f64,
+        distance_m: f64,
+        temperature_k: f64,
+    ) -> f64 {
         let eps_im = self.epsilon(omega).im;
         let k = omega / C;
         let kd = k * distance_m;
         let n_be = if temperature_k > 0.0 {
             let x = HBAR_EV_S * omega / (K_B_EV * temperature_k);
-            if x > 500.0 { 0.0 } else { 1.0 / (x.exp() - 1.0) }
+            if x > 500.0 {
+                0.0
+            } else {
+                1.0 / (x.exp() - 1.0)
+            }
         } else {
             0.0
         };
         // Near-field: evanescent contribution scales as 1/(kd)^2 for d << lambda
-        let evanescent = if kd > 1e-10 && kd < 1.0 { 1.0 / (kd * kd) } else { 1.0 };
+        let evanescent = if kd > 1e-10 && kd < 1.0 {
+            1.0 / (kd * kd)
+        } else {
+            1.0
+        };
         eps_im.abs() * (n_be + 0.5) * evanescent
     }
 
@@ -3003,13 +3041,22 @@ impl DrudeLorentzParams {
     /// Anharmonic linewidth broadening: gamma(T) = gamma_0 + A * (1 + 2*n_BE(omega/2, T)).
     /// Three-phonon (cubic anharmonic) process where a phonon at omega decays into
     /// two phonons at omega/2. A is the anharmonic coupling coefficient.
-    pub fn anharmonic_linewidth(&self, oscillator_index: usize, temperature_k: f64, coupling_a: f64) -> Option<f64> {
+    pub fn anharmonic_linewidth(
+        &self,
+        oscillator_index: usize,
+        temperature_k: f64,
+        coupling_a: f64,
+    ) -> Option<f64> {
         let osc = self.oscillators.get(oscillator_index)?;
         // osc.omega_0_ev is already in eV, use directly for Bose-Einstein
         let half_omega_ev = osc.omega_0_ev / 2.0;
         let n_be = if temperature_k > 0.0 && half_omega_ev > 0.0 {
             let x = half_omega_ev / (K_B_EV * temperature_k);
-            if x > 500.0 { 0.0 } else { 1.0 / (x.exp() - 1.0) }
+            if x > 500.0 {
+                0.0
+            } else {
+                1.0 / (x.exp() - 1.0)
+            }
         } else {
             0.0
         };
@@ -3024,7 +3071,9 @@ impl DrudeLorentzParams {
             return 0.0;
         }
         // Find maximum phonon frequency in eV
-        let omega_max_ev = self.oscillators.iter()
+        let omega_max_ev = self
+            .oscillators
+            .iter()
             .map(|o| o.omega_0_ev)
             .fold(0.0_f64, f64::max);
         if omega_ev <= omega_max_ev || omega_max_ev <= 0.0 {
@@ -3033,7 +3082,11 @@ impl DrudeLorentzParams {
         // Temperature factor: stronger absorption at higher T
         let t_factor = if temperature_k > 0.0 && omega_max_ev > 0.0 {
             let x = omega_max_ev / (K_B_EV * temperature_k);
-            if x > 500.0 { 1.0 } else { 1.0 + 1.0 / (x.exp() - 1.0) }
+            if x > 500.0 {
+                1.0
+            } else {
+                1.0 + 1.0 / (x.exp() - 1.0)
+            }
         } else {
             1.0
         };
@@ -3089,12 +3142,20 @@ impl DrudeLorentzParams {
         let n_l = n_low.max(1.0);
         let ratio = ((n_h - n_l) / (n_h + n_l)).abs();
         let half_gap = (2.0 / std::f64::consts::PI) * ratio.asin();
-        (omega_center * (1.0 - half_gap), omega_center * (1.0 + half_gap))
+        (
+            omega_center * (1.0 - half_gap),
+            omega_center * (1.0 + half_gap),
+        )
     }
 
     /// Quarter-wave stack peak reflectivity for N pairs.
     /// R = [(n_h/n_l)^(2N) - 1]^2 / [(n_h/n_l)^(2N) + 1]^2.
-    pub fn quarter_wave_stack_reflectivity(&self, omega_center: f64, n_low: f64, n_pairs: u32) -> f64 {
+    pub fn quarter_wave_stack_reflectivity(
+        &self,
+        omega_center: f64,
+        n_low: f64,
+        n_pairs: u32,
+    ) -> f64 {
         let n_h = self.refractive_index(omega_center).re;
         let n_l = n_low.max(1.0);
         let r = (n_h / n_l).powi(2 * n_pairs as i32);
@@ -3168,7 +3229,12 @@ impl DrudeLorentzParams {
     /// Franz-Keldysh sub-gap absorption: field-enhanced tunneling absorption
     /// below the band edge. alpha ~ exp(-4*sqrt(2*m*) * (Eg - hbar*omega)^(3/2) / (3*e*E*hbar)).
     /// gap_ev is the band gap in eV.
-    pub fn franz_keldysh_absorption(&self, omega: f64, electric_field_v_m: f64, gap_ev: f64) -> f64 {
+    pub fn franz_keldysh_absorption(
+        &self,
+        omega: f64,
+        electric_field_v_m: f64,
+        gap_ev: f64,
+    ) -> f64 {
         let hbar_j_s = HBAR_EV_S * E_CHARGE; // in J*s
         let hbar_omega_ev = HBAR_EV_S * omega;
         if hbar_omega_ev >= gap_ev || electric_field_v_m <= 0.0 {
@@ -3192,7 +3258,13 @@ impl DrudeLorentzParams {
     /// Acoustooptic figure of merit: M2 = n^6 * p^2 / (rho * v^3).
     /// p_ij is the photoelastic coefficient, v_sound in m/s, density in kg/m^3.
     /// Returns M2 in s^3/kg.
-    pub fn acoustooptic_figure_of_merit(&self, omega: f64, p_ij: f64, v_sound: f64, density: f64) -> f64 {
+    pub fn acoustooptic_figure_of_merit(
+        &self,
+        omega: f64,
+        p_ij: f64,
+        v_sound: f64,
+        density: f64,
+    ) -> f64 {
         let n = self.refractive_index(omega).re;
         n.powi(6) * p_ij * p_ij / (density * v_sound.powi(3))
     }
@@ -3543,16 +3615,32 @@ pub fn aluminum_drude_lorentz() -> DrudeLorentzParams {
 
 /// Beryllium (Be) Drude parameters (Rakic 1998).
 pub fn beryllium_drude() -> DrudeParams {
-    DrudeParams { omega_p_ev: 18.51, gamma_ev: 0.035, eps_inf: 1.0 }
+    DrudeParams {
+        omega_p_ev: 18.51,
+        gamma_ev: 0.035,
+        eps_inf: 1.0,
+    }
 }
 
 /// Beryllium (Be) Drude-Lorentz (Rakic 1998 LD model).
 pub fn beryllium_drude_lorentz() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 5.37, gamma_ev: 0.035, eps_inf: 1.0 }),
+        drude: Some(DrudeParams {
+            omega_p_ev: 5.37,
+            gamma_ev: 0.035,
+            eps_inf: 1.0,
+        }),
         oscillators: vec![
-            LorentzOscillator { strength: 17.93, omega_0_ev: 3.183, gamma_ev: 4.454 },
-            LorentzOscillator { strength: 2.10, omega_0_ev: 4.604, gamma_ev: 1.802 },
+            LorentzOscillator {
+                strength: 17.93,
+                omega_0_ev: 3.183,
+                gamma_ev: 4.454,
+            },
+            LorentzOscillator {
+                strength: 2.10,
+                omega_0_ev: 4.604,
+                gamma_ev: 1.802,
+            },
         ],
         eps_inf: 1.0,
         extended_drude: None,
@@ -3561,16 +3649,32 @@ pub fn beryllium_drude_lorentz() -> DrudeLorentzParams {
 
 /// Chromium (Cr) Drude parameters (Rakic 1998).
 pub fn chromium_drude() -> DrudeParams {
-    DrudeParams { omega_p_ev: 10.75, gamma_ev: 0.047, eps_inf: 1.0 }
+    DrudeParams {
+        omega_p_ev: 10.75,
+        gamma_ev: 0.047,
+        eps_inf: 1.0,
+    }
 }
 
 /// Chromium (Cr) Drude-Lorentz (Rakic 1998 LD model).
 pub fn chromium_drude_lorentz() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 4.41, gamma_ev: 0.047, eps_inf: 1.0 }),
+        drude: Some(DrudeParams {
+            omega_p_ev: 4.41,
+            gamma_ev: 0.047,
+            eps_inf: 1.0,
+        }),
         oscillators: vec![
-            LorentzOscillator { strength: 34.24, omega_0_ev: 1.970, gamma_ev: 2.676 },
-            LorentzOscillator { strength: 1.24, omega_0_ev: 8.775, gamma_ev: 1.335 },
+            LorentzOscillator {
+                strength: 34.24,
+                omega_0_ev: 1.970,
+                gamma_ev: 2.676,
+            },
+            LorentzOscillator {
+                strength: 1.24,
+                omega_0_ev: 8.775,
+                gamma_ev: 1.335,
+            },
         ],
         eps_inf: 1.0,
         extended_drude: None,
@@ -3579,16 +3683,32 @@ pub fn chromium_drude_lorentz() -> DrudeLorentzParams {
 
 /// Nickel (Ni) Drude parameters (Rakic 1998).
 pub fn nickel_drude() -> DrudeParams {
-    DrudeParams { omega_p_ev: 15.92, gamma_ev: 0.048, eps_inf: 1.0 }
+    DrudeParams {
+        omega_p_ev: 15.92,
+        gamma_ev: 0.048,
+        eps_inf: 1.0,
+    }
 }
 
 /// Nickel (Ni) Drude-Lorentz (Rakic 1998 LD model).
 pub fn nickel_drude_lorentz() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 4.93, gamma_ev: 0.048, eps_inf: 1.0 }),
+        drude: Some(DrudeParams {
+            omega_p_ev: 4.93,
+            gamma_ev: 0.048,
+            eps_inf: 1.0,
+        }),
         oscillators: vec![
-            LorentzOscillator { strength: 10.53, omega_0_ev: 1.597, gamma_ev: 2.178 },
-            LorentzOscillator { strength: 4.98, omega_0_ev: 6.089, gamma_ev: 6.292 },
+            LorentzOscillator {
+                strength: 10.53,
+                omega_0_ev: 1.597,
+                gamma_ev: 2.178,
+            },
+            LorentzOscillator {
+                strength: 4.98,
+                omega_0_ev: 6.089,
+                gamma_ev: 6.292,
+            },
         ],
         eps_inf: 1.0,
         extended_drude: None,
@@ -3597,16 +3717,32 @@ pub fn nickel_drude_lorentz() -> DrudeLorentzParams {
 
 /// Palladium (Pd) Drude parameters (Rakic 1998).
 pub fn palladium_drude() -> DrudeParams {
-    DrudeParams { omega_p_ev: 9.72, gamma_ev: 0.009, eps_inf: 1.0 }
+    DrudeParams {
+        omega_p_ev: 9.72,
+        gamma_ev: 0.009,
+        eps_inf: 1.0,
+    }
 }
 
 /// Palladium (Pd) Drude-Lorentz (Rakic 1998 LD model).
 pub fn palladium_drude_lorentz() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 5.58, gamma_ev: 0.009, eps_inf: 1.0 }),
+        drude: Some(DrudeParams {
+            omega_p_ev: 5.58,
+            gamma_ev: 0.009,
+            eps_inf: 1.0,
+        }),
         oscillators: vec![
-            LorentzOscillator { strength: 3.58, omega_0_ev: 2.855, gamma_ev: 2.022 },
-            LorentzOscillator { strength: 1.36, omega_0_ev: 5.331, gamma_ev: 5.285 },
+            LorentzOscillator {
+                strength: 3.58,
+                omega_0_ev: 2.855,
+                gamma_ev: 2.022,
+            },
+            LorentzOscillator {
+                strength: 1.36,
+                omega_0_ev: 5.331,
+                gamma_ev: 5.285,
+            },
         ],
         eps_inf: 1.0,
         extended_drude: None,
@@ -3615,16 +3751,32 @@ pub fn palladium_drude_lorentz() -> DrudeLorentzParams {
 
 /// Platinum (Pt) Drude parameters (Rakic 1998).
 pub fn platinum_drude() -> DrudeParams {
-    DrudeParams { omega_p_ev: 9.59, gamma_ev: 0.080, eps_inf: 1.0 }
+    DrudeParams {
+        omega_p_ev: 9.59,
+        gamma_ev: 0.080,
+        eps_inf: 1.0,
+    }
 }
 
 /// Platinum (Pt) Drude-Lorentz (Rakic 1998 LD model).
 pub fn platinum_drude_lorentz() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 5.54, gamma_ev: 0.080, eps_inf: 1.0 }),
+        drude: Some(DrudeParams {
+            omega_p_ev: 5.54,
+            gamma_ev: 0.080,
+            eps_inf: 1.0,
+        }),
         oscillators: vec![
-            LorentzOscillator { strength: 35.12, omega_0_ev: 1.314, gamma_ev: 1.838 },
-            LorentzOscillator { strength: 5.10, omega_0_ev: 3.145, gamma_ev: 3.668 },
+            LorentzOscillator {
+                strength: 35.12,
+                omega_0_ev: 1.314,
+                gamma_ev: 1.838,
+            },
+            LorentzOscillator {
+                strength: 5.10,
+                omega_0_ev: 3.145,
+                gamma_ev: 3.668,
+            },
         ],
         eps_inf: 1.0,
         extended_drude: None,
@@ -3633,16 +3785,32 @@ pub fn platinum_drude_lorentz() -> DrudeLorentzParams {
 
 /// Titanium (Ti) Drude parameters (Rakic 1998).
 pub fn titanium_drude() -> DrudeParams {
-    DrudeParams { omega_p_ev: 7.29, gamma_ev: 0.082, eps_inf: 1.0 }
+    DrudeParams {
+        omega_p_ev: 7.29,
+        gamma_ev: 0.082,
+        eps_inf: 1.0,
+    }
 }
 
 /// Titanium (Ti) Drude-Lorentz (Rakic 1998 LD model).
 pub fn titanium_drude_lorentz() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 2.81, gamma_ev: 0.082, eps_inf: 1.0 }),
+        drude: Some(DrudeParams {
+            omega_p_ev: 2.81,
+            gamma_ev: 0.082,
+            eps_inf: 1.0,
+        }),
         oscillators: vec![
-            LorentzOscillator { strength: 8.75, omega_0_ev: 1.545, gamma_ev: 2.518 },
-            LorentzOscillator { strength: 1.58, omega_0_ev: 2.509, gamma_ev: 1.663 },
+            LorentzOscillator {
+                strength: 8.75,
+                omega_0_ev: 1.545,
+                gamma_ev: 2.518,
+            },
+            LorentzOscillator {
+                strength: 1.58,
+                omega_0_ev: 2.509,
+                gamma_ev: 1.663,
+            },
         ],
         eps_inf: 1.0,
         extended_drude: None,
@@ -3651,16 +3819,32 @@ pub fn titanium_drude_lorentz() -> DrudeLorentzParams {
 
 /// Tungsten (W) Drude parameters (Rakic 1998).
 pub fn tungsten_drude() -> DrudeParams {
-    DrudeParams { omega_p_ev: 13.22, gamma_ev: 0.064, eps_inf: 1.0 }
+    DrudeParams {
+        omega_p_ev: 13.22,
+        gamma_ev: 0.064,
+        eps_inf: 1.0,
+    }
 }
 
 /// Tungsten (W) Drude-Lorentz (Rakic 1998 LD model).
 pub fn tungsten_drude_lorentz() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 6.00, gamma_ev: 0.064, eps_inf: 1.0 }),
+        drude: Some(DrudeParams {
+            omega_p_ev: 6.00,
+            gamma_ev: 0.064,
+            eps_inf: 1.0,
+        }),
         oscillators: vec![
-            LorentzOscillator { strength: 7.90, omega_0_ev: 1.917, gamma_ev: 1.281 },
-            LorentzOscillator { strength: 9.63, omega_0_ev: 3.580, gamma_ev: 3.332 },
+            LorentzOscillator {
+                strength: 7.90,
+                omega_0_ev: 1.917,
+                gamma_ev: 1.281,
+            },
+            LorentzOscillator {
+                strength: 9.63,
+                omega_0_ev: 3.580,
+                gamma_ev: 3.332,
+            },
         ],
         eps_inf: 1.0,
         extended_drude: None,
@@ -3676,9 +3860,21 @@ pub fn alumina_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
         drude: None,
         oscillators: vec![
-            LorentzOscillator { strength: 0.8, omega_0_ev: 0.048, gamma_ev: 0.003 },
-            LorentzOscillator { strength: 1.2, omega_0_ev: 0.071, gamma_ev: 0.005 },
-            LorentzOscillator { strength: 1.5, omega_0_ev: 10.0, gamma_ev: 2.0 },
+            LorentzOscillator {
+                strength: 0.8,
+                omega_0_ev: 0.048,
+                gamma_ev: 0.003,
+            },
+            LorentzOscillator {
+                strength: 1.2,
+                omega_0_ev: 0.071,
+                gamma_ev: 0.005,
+            },
+            LorentzOscillator {
+                strength: 1.5,
+                omega_0_ev: 10.0,
+                gamma_ev: 2.0,
+            },
         ],
         eps_inf: 3.07,
         extended_drude: None,
@@ -3690,8 +3886,16 @@ pub fn diamond_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
         drude: None,
         oscillators: vec![
-            LorentzOscillator { strength: 0.3, omega_0_ev: 0.165, gamma_ev: 0.005 },
-            LorentzOscillator { strength: 2.5, omega_0_ev: 7.0, gamma_ev: 1.0 },
+            LorentzOscillator {
+                strength: 0.3,
+                omega_0_ev: 0.165,
+                gamma_ev: 0.005,
+            },
+            LorentzOscillator {
+                strength: 2.5,
+                omega_0_ev: 7.0,
+                gamma_ev: 1.0,
+            },
         ],
         eps_inf: 5.7,
         extended_drude: None,
@@ -3705,9 +3909,21 @@ pub fn quartz_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
         drude: None,
         oscillators: vec![
-            LorentzOscillator { strength: 0.9, omega_0_ev: 0.056, gamma_ev: 0.002 },
-            LorentzOscillator { strength: 0.5, omega_0_ev: 0.137, gamma_ev: 0.004 },
-            LorentzOscillator { strength: 1.2, omega_0_ev: 11.0, gamma_ev: 2.0 },
+            LorentzOscillator {
+                strength: 0.9,
+                omega_0_ev: 0.056,
+                gamma_ev: 0.002,
+            },
+            LorentzOscillator {
+                strength: 0.5,
+                omega_0_ev: 0.137,
+                gamma_ev: 0.004,
+            },
+            LorentzOscillator {
+                strength: 1.2,
+                omega_0_ev: 11.0,
+                gamma_ev: 2.0,
+            },
         ],
         eps_inf: 2.38,
         extended_drude: None,
@@ -3719,9 +3935,21 @@ pub fn tio2_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
         drude: None,
         oscillators: vec![
-            LorentzOscillator { strength: 3.0, omega_0_ev: 0.050, gamma_ev: 0.008 },
-            LorentzOscillator { strength: 1.5, omega_0_ev: 0.099, gamma_ev: 0.010 },
-            LorentzOscillator { strength: 8.0, omega_0_ev: 3.0, gamma_ev: 0.3 },
+            LorentzOscillator {
+                strength: 3.0,
+                omega_0_ev: 0.050,
+                gamma_ev: 0.008,
+            },
+            LorentzOscillator {
+                strength: 1.5,
+                omega_0_ev: 0.099,
+                gamma_ev: 0.010,
+            },
+            LorentzOscillator {
+                strength: 8.0,
+                omega_0_ev: 3.0,
+                gamma_ev: 0.3,
+            },
         ],
         eps_inf: 5.9,
         extended_drude: None,
@@ -3735,10 +3963,16 @@ pub fn tio2_optical() -> DrudeLorentzParams {
 /// Titanium Monoxide (TiO) "bad metal" optical model (Barman & Sarma PRB 51, 1995).
 pub fn tio_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 2.50, gamma_ev: 0.50, eps_inf: 1.0 }),
-        oscillators: vec![
-            LorentzOscillator { strength: 3.0, omega_0_ev: 3.0, gamma_ev: 1.5 },
-        ],
+        drude: Some(DrudeParams {
+            omega_p_ev: 2.50,
+            gamma_ev: 0.50,
+            eps_inf: 1.0,
+        }),
+        oscillators: vec![LorentzOscillator {
+            strength: 3.0,
+            omega_0_ev: 3.0,
+            gamma_ev: 1.5,
+        }],
         eps_inf: 4.0,
         extended_drude: None,
     }
@@ -3752,13 +3986,29 @@ pub fn srtio3_optical() -> DrudeLorentzParams {
         drude: None,
         oscillators: vec![
             // Soft mode TO1 at 11 meV with enormous oscillator strength
-            LorentzOscillator { strength: 280.0, omega_0_ev: 0.011, gamma_ev: 0.003 },
+            LorentzOscillator {
+                strength: 280.0,
+                omega_0_ev: 0.011,
+                gamma_ev: 0.003,
+            },
             // TO2 mode
-            LorentzOscillator { strength: 2.5, omega_0_ev: 0.022, gamma_ev: 0.002 },
+            LorentzOscillator {
+                strength: 2.5,
+                omega_0_ev: 0.022,
+                gamma_ev: 0.002,
+            },
             // TO4 mode
-            LorentzOscillator { strength: 0.6, omega_0_ev: 0.067, gamma_ev: 0.005 },
+            LorentzOscillator {
+                strength: 0.6,
+                omega_0_ev: 0.067,
+                gamma_ev: 0.005,
+            },
             // UV absorption edge
-            LorentzOscillator { strength: 3.5, omega_0_ev: 3.2, gamma_ev: 0.5 },
+            LorentzOscillator {
+                strength: 3.5,
+                omega_0_ev: 3.2,
+                gamma_ev: 0.5,
+            },
         ],
         eps_inf: 5.2,
         extended_drude: None,
@@ -3770,12 +4020,32 @@ pub fn srtio3_optical() -> DrudeLorentzParams {
 /// Metallic via electron doping: phonon modes plus Drude tail.
 pub fn srtio3_doped_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 0.15, gamma_ev: 0.020, eps_inf: 1.0 }),
+        drude: Some(DrudeParams {
+            omega_p_ev: 0.15,
+            gamma_ev: 0.020,
+            eps_inf: 1.0,
+        }),
         oscillators: vec![
-            LorentzOscillator { strength: 280.0, omega_0_ev: 0.011, gamma_ev: 0.003 },
-            LorentzOscillator { strength: 2.5, omega_0_ev: 0.022, gamma_ev: 0.002 },
-            LorentzOscillator { strength: 0.6, omega_0_ev: 0.067, gamma_ev: 0.005 },
-            LorentzOscillator { strength: 3.5, omega_0_ev: 3.2, gamma_ev: 0.5 },
+            LorentzOscillator {
+                strength: 280.0,
+                omega_0_ev: 0.011,
+                gamma_ev: 0.003,
+            },
+            LorentzOscillator {
+                strength: 2.5,
+                omega_0_ev: 0.022,
+                gamma_ev: 0.002,
+            },
+            LorentzOscillator {
+                strength: 0.6,
+                omega_0_ev: 0.067,
+                gamma_ev: 0.005,
+            },
+            LorentzOscillator {
+                strength: 3.5,
+                omega_0_ev: 3.2,
+                gamma_ev: 0.5,
+            },
         ],
         eps_inf: 5.2,
         extended_drude: None,
@@ -3790,11 +4060,23 @@ pub fn latio3_optical() -> DrudeLorentzParams {
         drude: None,
         oscillators: vec![
             // Mid-IR d-d transition (Mott gap excitation)
-            LorentzOscillator { strength: 5.0, omega_0_ev: 0.50, gamma_ev: 0.30 },
+            LorentzOscillator {
+                strength: 5.0,
+                omega_0_ev: 0.50,
+                gamma_ev: 0.30,
+            },
             // IR phonon modes
-            LorentzOscillator { strength: 1.5, omega_0_ev: 0.065, gamma_ev: 0.008 },
+            LorentzOscillator {
+                strength: 1.5,
+                omega_0_ev: 0.065,
+                gamma_ev: 0.008,
+            },
             // Charge-transfer UV
-            LorentzOscillator { strength: 4.0, omega_0_ev: 3.5, gamma_ev: 1.0 },
+            LorentzOscillator {
+                strength: 4.0,
+                omega_0_ev: 3.5,
+                gamma_ev: 1.0,
+            },
         ],
         eps_inf: 4.5,
         extended_drude: None,
@@ -3810,10 +4092,16 @@ pub fn latio3_optical() -> DrudeLorentzParams {
 /// Metallic in IR, transparent in visible. Crossover near 1 eV.
 pub fn azo_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 1.75, gamma_ev: 0.12, eps_inf: 1.0 }),
-        oscillators: vec![
-            LorentzOscillator { strength: 2.0, omega_0_ev: 3.3, gamma_ev: 0.2 },
-        ],
+        drude: Some(DrudeParams {
+            omega_p_ev: 1.75,
+            gamma_ev: 0.12,
+            eps_inf: 1.0,
+        }),
+        oscillators: vec![LorentzOscillator {
+            strength: 2.0,
+            omega_0_ev: 3.3,
+            gamma_ev: 0.2,
+        }],
         eps_inf: 3.7,
         extended_drude: None,
     }
@@ -3822,11 +4110,27 @@ pub fn azo_optical() -> DrudeLorentzParams {
 /// Doped Silicon (Si:n, ~1e18 cm-3) with THz Drude tail.
 pub fn doped_silicon_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: Some(DrudeParams { omega_p_ev: 0.12, gamma_ev: 0.010, eps_inf: 1.0 }),
+        drude: Some(DrudeParams {
+            omega_p_ev: 0.12,
+            gamma_ev: 0.010,
+            eps_inf: 1.0,
+        }),
         oscillators: vec![
-            LorentzOscillator { strength: 29.0, omega_0_ev: 3.40, gamma_ev: 0.1 },
-            LorentzOscillator { strength: 6.0, omega_0_ev: 3.74, gamma_ev: 0.25 },
-            LorentzOscillator { strength: 3.0, omega_0_ev: 4.40, gamma_ev: 0.2 },
+            LorentzOscillator {
+                strength: 29.0,
+                omega_0_ev: 3.40,
+                gamma_ev: 0.1,
+            },
+            LorentzOscillator {
+                strength: 6.0,
+                omega_0_ev: 3.74,
+                gamma_ev: 0.25,
+            },
+            LorentzOscillator {
+                strength: 3.0,
+                omega_0_ev: 4.40,
+                gamma_ev: 0.2,
+            },
         ],
         eps_inf: 1.0,
         extended_drude: None,
@@ -3847,15 +4151,35 @@ pub fn wo3_optical() -> DrudeLorentzParams {
         drude: None,
         oscillators: vec![
             // W-O stretching mode
-            LorentzOscillator { strength: 1.5, omega_0_ev: 0.085, gamma_ev: 0.008 },
+            LorentzOscillator {
+                strength: 1.5,
+                omega_0_ev: 0.085,
+                gamma_ev: 0.008,
+            },
             // W-O-W bending mode
-            LorentzOscillator { strength: 0.8, omega_0_ev: 0.042, gamma_ev: 0.005 },
+            LorentzOscillator {
+                strength: 0.8,
+                omega_0_ev: 0.042,
+                gamma_ev: 0.005,
+            },
             // Higher phonon
-            LorentzOscillator { strength: 0.4, omega_0_ev: 0.120, gamma_ev: 0.010 },
+            LorentzOscillator {
+                strength: 0.4,
+                omega_0_ev: 0.120,
+                gamma_ev: 0.010,
+            },
             // Band-edge absorption
-            LorentzOscillator { strength: 6.0, omega_0_ev: 3.5, gamma_ev: 0.8 },
+            LorentzOscillator {
+                strength: 6.0,
+                omega_0_ev: 3.5,
+                gamma_ev: 0.8,
+            },
             // Higher UV transition
-            LorentzOscillator { strength: 3.0, omega_0_ev: 5.5, gamma_ev: 1.5 },
+            LorentzOscillator {
+                strength: 3.0,
+                omega_0_ev: 5.5,
+                gamma_ev: 1.5,
+            },
         ],
         eps_inf: 4.5,
         extended_drude: None,
@@ -3877,9 +4201,17 @@ pub fn wo3_x_optical() -> DrudeLorentzParams {
         }),
         oscillators: vec![
             // Residual phonon (reduced by vacancy disorder)
-            LorentzOscillator { strength: 0.8, omega_0_ev: 0.085, gamma_ev: 0.015 },
+            LorentzOscillator {
+                strength: 0.8,
+                omega_0_ev: 0.085,
+                gamma_ev: 0.015,
+            },
             // Band-edge (blue-shifted by Burstein-Moss effect)
-            LorentzOscillator { strength: 5.0, omega_0_ev: 3.8, gamma_ev: 1.0 },
+            LorentzOscillator {
+                strength: 5.0,
+                omega_0_ev: 3.8,
+                gamma_ev: 1.0,
+            },
         ],
         eps_inf: 5.88,
         extended_drude: None,
@@ -3907,7 +4239,11 @@ pub fn cs_wo3_optical() -> DrudeLorentzParams {
         }),
         oscillators: vec![
             // Interband transition
-            LorentzOscillator { strength: 2.0, omega_0_ev: 4.0, gamma_ev: 1.5 },
+            LorentzOscillator {
+                strength: 2.0,
+                omega_0_ev: 4.0,
+                gamma_ev: 1.5,
+            },
         ],
         eps_inf: 5.97,
         extended_drude: None,
@@ -3927,9 +4263,11 @@ pub fn cs_wo3_uniaxial() -> UniaxialOptical {
                 gamma_ev: 0.217,
                 eps_inf: 1.0,
             }),
-            oscillators: vec![
-                LorentzOscillator { strength: 2.0, omega_0_ev: 4.0, gamma_ev: 1.5 },
-            ],
+            oscillators: vec![LorentzOscillator {
+                strength: 2.0,
+                omega_0_ev: 4.0,
+                gamma_ev: 1.5,
+            }],
             eps_inf: 6.3,
             extended_drude: None,
         },
@@ -3939,9 +4277,11 @@ pub fn cs_wo3_uniaxial() -> UniaxialOptical {
                 gamma_ev: 0.335,
                 eps_inf: 1.0,
             }),
-            oscillators: vec![
-                LorentzOscillator { strength: 2.0, omega_0_ev: 4.0, gamma_ev: 1.5 },
-            ],
+            oscillators: vec![LorentzOscillator {
+                strength: 2.0,
+                omega_0_ev: 4.0,
+                gamma_ev: 1.5,
+            }],
             eps_inf: 5.8,
             extended_drude: None,
         },
@@ -3959,11 +4299,23 @@ pub fn cawo4_optical() -> DrudeLorentzParams {
         drude: None,
         oscillators: vec![
             // WO4 internal stretching modes
-            LorentzOscillator { strength: 1.0, omega_0_ev: 0.110, gamma_ev: 0.006 },
+            LorentzOscillator {
+                strength: 1.0,
+                omega_0_ev: 0.110,
+                gamma_ev: 0.006,
+            },
             // Lattice phonon
-            LorentzOscillator { strength: 0.6, omega_0_ev: 0.045, gamma_ev: 0.004 },
+            LorentzOscillator {
+                strength: 0.6,
+                omega_0_ev: 0.045,
+                gamma_ev: 0.004,
+            },
             // UV absorption edge
-            LorentzOscillator { strength: 4.0, omega_0_ev: 5.5, gamma_ev: 1.0 },
+            LorentzOscillator {
+                strength: 4.0,
+                omega_0_ev: 5.5,
+                gamma_ev: 1.0,
+            },
         ],
         eps_inf: 3.7,
         extended_drude: None,
@@ -3980,11 +4332,23 @@ pub fn pbwo4_optical() -> DrudeLorentzParams {
         drude: None,
         oscillators: vec![
             // WO4 internal modes
-            LorentzOscillator { strength: 1.2, omega_0_ev: 0.100, gamma_ev: 0.008 },
+            LorentzOscillator {
+                strength: 1.2,
+                omega_0_ev: 0.100,
+                gamma_ev: 0.008,
+            },
             // Pb-O lattice mode
-            LorentzOscillator { strength: 0.8, omega_0_ev: 0.035, gamma_ev: 0.005 },
+            LorentzOscillator {
+                strength: 0.8,
+                omega_0_ev: 0.035,
+                gamma_ev: 0.005,
+            },
             // UV absorption edge (lower than CaWO4 due to Pb 6s states)
-            LorentzOscillator { strength: 5.0, omega_0_ev: 4.5, gamma_ev: 1.2 },
+            LorentzOscillator {
+                strength: 5.0,
+                omega_0_ev: 4.5,
+                gamma_ev: 1.2,
+            },
         ],
         eps_inf: 4.8,
         extended_drude: None,
@@ -4196,8 +4560,22 @@ pub fn casimir_force_density(
     n_gauss: usize,
 ) -> f64 {
     let delta = separation_m * 1e-4;
-    let e_plus = casimir_energy_density(mat1, mat2, separation_m + delta, temperature_k, n_matsubara, n_gauss);
-    let e_minus = casimir_energy_density(mat1, mat2, separation_m - delta, temperature_k, n_matsubara, n_gauss);
+    let e_plus = casimir_energy_density(
+        mat1,
+        mat2,
+        separation_m + delta,
+        temperature_k,
+        n_matsubara,
+        n_gauss,
+    );
+    let e_minus = casimir_energy_density(
+        mat1,
+        mat2,
+        separation_m - delta,
+        temperature_k,
+        n_matsubara,
+        n_gauss,
+    );
     -(e_plus - e_minus) / (2.0 * delta)
 }
 
@@ -4221,7 +4599,14 @@ pub fn casimir_eta(
     n_matsubara: usize,
     n_gauss: usize,
 ) -> f64 {
-    let e_actual = casimir_energy_density(mat1, mat2, separation_m, temperature_k, n_matsubara, n_gauss);
+    let e_actual = casimir_energy_density(
+        mat1,
+        mat2,
+        separation_m,
+        temperature_k,
+        n_matsubara,
+        n_gauss,
+    );
     let e_ideal = casimir_energy_ideal(separation_m);
     e_actual / e_ideal
 }
@@ -4370,10 +4755,20 @@ pub fn casimir_lifshitz_force(
 ) -> f64 {
     let delta = separation_m * 1e-4;
     let e_plus = casimir_lifshitz_energy(
-        mat1, mat2, separation_m + delta, temperature_k, n_matsubara, n_gauss,
+        mat1,
+        mat2,
+        separation_m + delta,
+        temperature_k,
+        n_matsubara,
+        n_gauss,
     );
     let e_minus = casimir_lifshitz_energy(
-        mat1, mat2, separation_m - delta, temperature_k, n_matsubara, n_gauss,
+        mat1,
+        mat2,
+        separation_m - delta,
+        temperature_k,
+        n_matsubara,
+        n_gauss,
     );
     -(e_plus - e_minus) / (2.0 * delta)
 }
@@ -4391,7 +4786,12 @@ pub fn casimir_lifshitz_eta(
     n_gauss: usize,
 ) -> f64 {
     let e_actual = casimir_lifshitz_energy(
-        mat1, mat2, separation_m, temperature_k, n_matsubara, n_gauss,
+        mat1,
+        mat2,
+        separation_m,
+        temperature_k,
+        n_matsubara,
+        n_gauss,
     );
     let e_ideal = casimir_energy_ideal(separation_m);
     e_actual / e_ideal
@@ -4417,9 +4817,8 @@ pub fn casimir_drude_plasma_discrepancy(
     n_matsubara: usize,
     n_gauss: usize,
 ) -> (f64, f64, f64) {
-    let e_drude = casimir_lifshitz_energy(
-        mat, mat, separation_m, temperature_k, n_matsubara, n_gauss,
-    );
+    let e_drude =
+        casimir_lifshitz_energy(mat, mat, separation_m, temperature_k, n_matsubara, n_gauss);
     let k_b_t_si = K_B_EV * temperature_k * E_CHARGE;
     let global_pref = k_b_t_si / (4.0 * PI * PI);
     let d = separation_m;
@@ -5093,7 +5492,10 @@ mod tests {
         assert!(eps_low.im > 100.0, "Strong dissipation at low frequency");
         let omega_high = 100.0 * EV_TO_RADS;
         let eps_high = gold.epsilon(omega_high);
-        assert!((eps_high.re - 1.0).abs() < 0.1, "eps -> 1 at high frequency");
+        assert!(
+            (eps_high.re - 1.0).abs() < 0.1,
+            "eps -> 1 at high frequency"
+        );
     }
 
     // ===================== Phase 1: Provenance + C-418 gap materials =====================
@@ -5114,7 +5516,11 @@ mod tests {
         // Transparency window: eps.re > 1 in visible
         let omega = 2.0 * EV_TO_RADS;
         let eps = mat.optical.epsilon(omega);
-        assert!(eps.re > 1.0, "Alumina eps.re={} should be > 1 at 2 eV", eps.re);
+        assert!(
+            eps.re > 1.0,
+            "Alumina eps.re={} should be > 1 at 2 eV",
+            eps.re
+        );
     }
 
     #[test]
@@ -5130,7 +5536,11 @@ mod tests {
         // Diamond has very high eps_inf (~5.7)
         let omega = 2.0 * EV_TO_RADS;
         let eps = mat.optical.epsilon(omega);
-        assert!(eps.re > 5.0, "Diamond eps.re={} should be > 5 at 2 eV", eps.re);
+        assert!(
+            eps.re > 5.0,
+            "Diamond eps.re={} should be > 5 at 2 eV",
+            eps.re
+        );
     }
 
     #[test]
@@ -5139,7 +5549,11 @@ mod tests {
         assert_eq!(mat.material_type, MaterialType::Dielectric);
         let omega = 2.0 * EV_TO_RADS;
         let eps = mat.optical.epsilon(omega);
-        assert!(eps.re > 2.0, "Quartz eps.re={} should be > 2 at 2 eV", eps.re);
+        assert!(
+            eps.re > 2.0,
+            "Quartz eps.re={} should be > 2 at 2 eV",
+            eps.re
+        );
     }
 
     #[test]
@@ -5185,13 +5599,16 @@ mod tests {
     fn test_rakic_metals_metallic_sign() {
         // At 0.5 eV, all metals should have eps.re < 0 (Drude dominates)
         let omega = 0.5 * EV_TO_RADS;
-        for name in &["au", "ag", "cu", "al", "be", "cr", "ni", "pd", "pt", "ti", "w"] {
+        for name in &[
+            "au", "ag", "cu", "al", "be", "cr", "ni", "pd", "pt", "ti", "w",
+        ] {
             let mat = get_material(name).unwrap();
             let eps = mat.optical.epsilon(omega);
             assert!(
                 eps.re < 0.0,
                 "{}: eps.re={} should be < 0 at 0.5 eV",
-                name, eps.re
+                name,
+                eps.re
             );
         }
     }
@@ -5208,7 +5625,9 @@ mod tests {
             assert!(
                 eps_low > eps_high,
                 "{}: eps(i*xi_low)={} should > eps(i*xi_high)={}",
-                name, eps_low, eps_high
+                name,
+                eps_low,
+                eps_high
             );
         }
     }
@@ -5219,9 +5638,16 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let eps = cu_dl.epsilon(omega);
         // Copper with interband should still be metallic at 2 eV
-        assert!(eps.re < 0.0, "Cu DL eps.re={} should be < 0 at 2 eV", eps.re);
+        assert!(
+            eps.re < 0.0,
+            "Cu DL eps.re={} should be < 0 at 2 eV",
+            eps.re
+        );
         // Should have interband absorption
-        assert!(eps.im.abs() > 0.1, "Cu DL should have imaginary part from interband");
+        assert!(
+            eps.im.abs() > 0.1,
+            "Cu DL should have imaginary part from interband"
+        );
     }
 
     #[test]
@@ -5241,7 +5667,11 @@ mod tests {
         // TiO is a bad metal: eps.re < 0 at low freq
         let omega = 0.5 * EV_TO_RADS;
         let eps = mat.optical.epsilon(omega);
-        assert!(eps.re < 0.0, "TiO eps.re={} should be < 0 at 0.5 eV", eps.re);
+        assert!(
+            eps.re < 0.0,
+            "TiO eps.re={} should be < 0 at 0.5 eV",
+            eps.re
+        );
     }
 
     #[test]
@@ -5267,7 +5697,10 @@ mod tests {
         let eps = mat.optical.epsilon(omega);
         // The phonon modes dominate at this frequency so eps may be positive;
         // test that Drude contribution exists via imaginary part
-        assert!(eps.im.abs() > 1.0, "Doped SrTiO3 should have significant Im(eps) at THz");
+        assert!(
+            eps.im.abs() > 1.0,
+            "Doped SrTiO3 should have significant Im(eps) at THz"
+        );
     }
 
     #[test]
@@ -5291,8 +5724,16 @@ mod tests {
         let omega_vis = 3.0 * EV_TO_RADS;
         let eps_ir = mat.optical.epsilon(omega_ir);
         let eps_vis = mat.optical.epsilon(omega_vis);
-        assert!(eps_ir.re < 0.0, "AZO should be metallic in IR, eps.re={}", eps_ir.re);
-        assert!(eps_vis.re > 0.0, "AZO should be dielectric in visible, eps.re={}", eps_vis.re);
+        assert!(
+            eps_ir.re < 0.0,
+            "AZO should be metallic in IR, eps.re={}",
+            eps_ir.re
+        );
+        assert!(
+            eps_vis.re > 0.0,
+            "AZO should be dielectric in visible, eps.re={}",
+            eps_vis.re
+        );
     }
 
     #[test]
@@ -5302,7 +5743,10 @@ mod tests {
         // Has both interband (Si) and Drude (doping) contributions
         let omega = 3.5 * EV_TO_RADS;
         let eps = mat.optical.epsilon(omega);
-        assert!(eps.re.abs() > 1.0, "Doped Si should have significant eps near Si critical points");
+        assert!(
+            eps.re.abs() > 1.0,
+            "Doped Si should have significant eps near Si critical points"
+        );
     }
 
     #[test]
@@ -5349,12 +5793,16 @@ mod tests {
             assert!(
                 (eps_r.re - eps_e.re).abs() < 1e-10,
                 "Re mismatch at {} eV: regular={}, extended={}",
-                freq_ev, eps_r.re, eps_e.re
+                freq_ev,
+                eps_r.re,
+                eps_e.re
             );
             assert!(
                 (eps_r.im - eps_e.im).abs() < 1e-10,
                 "Im mismatch at {} eV: regular={}, extended={}",
-                freq_ev, eps_r.im, eps_e.im
+                freq_ev,
+                eps_r.im,
+                eps_e.im
             );
         }
     }
@@ -5390,7 +5838,9 @@ mod tests {
             assert!(
                 (eps_r - eps_e).abs() < 1e-10,
                 "Imaginary freq mismatch at {} eV: regular={}, extended={}",
-                freq_ev, eps_r, eps_e
+                freq_ev,
+                eps_r,
+                eps_e
             );
         }
     }
@@ -5420,12 +5870,16 @@ mod tests {
             assert!(
                 (eps_r.re - eps_s.re).abs() < 1e-8,
                 "Re mismatch at {} eV: regular={}, smith={}",
-                freq_ev, eps_r.re, eps_s.re
+                freq_ev,
+                eps_r.re,
+                eps_s.re
             );
             assert!(
                 (eps_r.im - eps_s.im).abs() < 1e-8,
                 "Im mismatch at {} eV: regular={}, smith={}",
-                freq_ev, eps_r.im, eps_s.im
+                freq_ev,
+                eps_r.im,
+                eps_s.im
             );
         }
     }
@@ -5455,7 +5909,8 @@ mod tests {
         assert!(
             eps_s.re > eps_r.re,
             "Smith (c<0) should suppress metallic response: smith.re={}, regular.re={}",
-            eps_s.re, eps_r.re
+            eps_s.re,
+            eps_r.re
         );
     }
 
@@ -5493,7 +5948,12 @@ mod tests {
         };
         let g = model.gamma_at_ev(2.0);
         let expected = 0.01 + 0.05 * 2.0;
-        assert!((g - expected).abs() < 1e-12, "Linear: gamma(2)={}, expected={}", g, expected);
+        assert!(
+            (g - expected).abs() < 1e-12,
+            "Linear: gamma(2)={}, expected={}",
+            g,
+            expected
+        );
     }
 
     #[test]
@@ -5505,7 +5965,12 @@ mod tests {
         // At 1.5 eV: linear interpolation between (1.0, 0.02) and (2.0, 0.05)
         let g = model.gamma_at_ev(1.5);
         let expected = 0.02 + 0.5 * (0.05 - 0.02);
-        assert!((g - expected).abs() < 1e-12, "Tabulated interp: gamma(1.5)={}, expected={}", g, expected);
+        assert!(
+            (g - expected).abs() < 1e-12,
+            "Tabulated interp: gamma(1.5)={}, expected={}",
+            g,
+            expected
+        );
     }
 
     #[test]
@@ -5520,7 +5985,12 @@ mod tests {
         for freq_ev in [0.01, 0.1, 1.0, 5.0, 10.0] {
             let xi = freq_ev * EV_TO_RADS;
             let eps = ext.epsilon_imaginary(xi);
-            assert!(eps > 1.0, "eps(i*xi) should be > 1 for metals at {} eV, got {}", freq_ev, eps);
+            assert!(
+                eps > 1.0,
+                "eps(i*xi) should be > 1 for metals at {} eV, got {}",
+                freq_ev,
+                eps
+            );
         }
     }
 
@@ -5545,9 +6015,19 @@ mod tests {
     #[test]
     fn test_wo3_no_drude() {
         let wo3 = wo3_optical();
-        assert!(wo3.drude.is_none(), "Stoichiometric WO3 has no free carriers");
-        assert_eq!(wo3.oscillators.len(), 5, "WO3 should have 5 Lorentz oscillators");
-        assert!((wo3.eps_inf - 4.5).abs() < 1e-10, "WO3 eps_inf should be 4.5");
+        assert!(
+            wo3.drude.is_none(),
+            "Stoichiometric WO3 has no free carriers"
+        );
+        assert_eq!(
+            wo3.oscillators.len(),
+            5,
+            "WO3 should have 5 Lorentz oscillators"
+        );
+        assert!(
+            (wo3.eps_inf - 4.5).abs() < 1e-10,
+            "WO3 eps_inf should be 4.5"
+        );
     }
 
     #[test]
@@ -5555,9 +6035,18 @@ mod tests {
         let wo3x = wo3_x_optical();
         assert!(wo3x.drude.is_some(), "WO3-x should have Drude carriers");
         let drude = wo3x.drude.unwrap();
-        assert!((drude.omega_p_ev - 1.07).abs() < 1e-10, "omega_p should be 1.07 eV");
-        assert!((drude.gamma_ev - 0.20).abs() < 1e-10, "gamma should be 0.20 eV");
-        assert!((wo3x.eps_inf - 5.88).abs() < 1e-10, "eps_inf should be 5.88");
+        assert!(
+            (drude.omega_p_ev - 1.07).abs() < 1e-10,
+            "omega_p should be 1.07 eV"
+        );
+        assert!(
+            (drude.gamma_ev - 0.20).abs() < 1e-10,
+            "gamma should be 0.20 eV"
+        );
+        assert!(
+            (wo3x.eps_inf - 5.88).abs() < 1e-10,
+            "eps_inf should be 5.88"
+        );
     }
 
     #[test]
@@ -5569,7 +6058,8 @@ mod tests {
         assert!(
             par_drude.omega_p_ev > perp_drude.omega_p_ev,
             "par omega_p={} should > perp omega_p={}",
-            par_drude.omega_p_ev, perp_drude.omega_p_ev
+            par_drude.omega_p_ev,
+            perp_drude.omega_p_ev
         );
         assert!((par_drude.omega_p_ev - 4.664).abs() < 1e-10);
         assert!((perp_drude.omega_p_ev - 3.180).abs() < 1e-10);
@@ -5588,12 +6078,14 @@ mod tests {
         assert!(
             (avg.re - expected.re).abs() < 1e-10,
             "Polycrystalline avg re: got {}, expected {}",
-            avg.re, expected.re
+            avg.re,
+            expected.re
         );
         assert!(
             (avg.im - expected.im).abs() < 1e-10,
             "Polycrystalline avg im: got {}, expected {}",
-            avg.im, expected.im
+            avg.im,
+            expected.im
         );
     }
 
@@ -5605,28 +6097,50 @@ mod tests {
         let omega_vis = 2.0 * EV_TO_RADS;
         let eps_vis = mat.optical.epsilon(omega_vis);
         assert!(eps_vis.re > 1.0, "CaWO4 should be transparent at 2 eV");
-        assert!(eps_vis.im.abs() < 0.5, "CaWO4 should have low absorption at 2 eV");
+        assert!(
+            eps_vis.im.abs() < 0.5,
+            "CaWO4 should have low absorption at 2 eV"
+        );
         // Strong absorption at 5 eV (near band edge)
         let omega_uv = 5.0 * EV_TO_RADS;
         let eps_uv = mat.optical.epsilon(omega_uv);
-        assert!(eps_uv.im.abs() > 0.5, "CaWO4 should absorb at 5 eV, im={}", eps_uv.im);
+        assert!(
+            eps_uv.im.abs() > 0.5,
+            "CaWO4 should absorb at 5 eV, im={}",
+            eps_uv.im
+        );
     }
 
     #[test]
     fn test_pbwo4_scintillator() {
         let pbwo4 = pbwo4_optical();
         assert!(pbwo4.drude.is_none(), "PbWO4 has no free carriers");
-        assert!((pbwo4.eps_inf - 4.8).abs() < 1e-10, "PbWO4 eps_inf should be 4.8");
+        assert!(
+            (pbwo4.eps_inf - 4.8).abs() < 1e-10,
+            "PbWO4 eps_inf should be 4.8"
+        );
     }
 
     #[test]
     fn test_get_tungsten_oxide_materials() {
         // All aliases should resolve
-        for name in &["wo3", "tungsten_trioxide", "tungsten_oxide",
-                       "wo3_x", "wo3x", "oxygen_deficient_wo3",
-                       "cs_wo3", "cswo3", "cesium_tungsten_bronze",
-                       "cawo4", "calcium_tungstate", "scheelite_ca",
-                       "pbwo4", "lead_tungstate", "scheelite_pb"] {
+        for name in &[
+            "wo3",
+            "tungsten_trioxide",
+            "tungsten_oxide",
+            "wo3_x",
+            "wo3x",
+            "oxygen_deficient_wo3",
+            "cs_wo3",
+            "cswo3",
+            "cesium_tungsten_bronze",
+            "cawo4",
+            "calcium_tungstate",
+            "scheelite_ca",
+            "pbwo4",
+            "lead_tungstate",
+            "scheelite_pb",
+        ] {
             assert!(
                 get_material(name).is_some(),
                 "Material '{}' should exist in database",
@@ -5638,7 +6152,10 @@ mod tests {
     #[test]
     fn test_cs_wo3_has_uniaxial() {
         let mat = get_material("cs_wo3").unwrap();
-        assert!(mat.uniaxial.is_some(), "Cs0.33WO3 should have uniaxial data");
+        assert!(
+            mat.uniaxial.is_some(),
+            "Cs0.33WO3 should have uniaxial data"
+        );
         let uni = mat.uniaxial.unwrap();
         assert!(
             uni.axis_description.contains("hexagonal"),
@@ -5659,15 +6176,24 @@ mod tests {
         // At imaginary frequency, eps should be real and > 1 for metals
         let eps_par = uni.epsilon_imaginary_parallel(xi);
         let eps_perp = uni.epsilon_imaginary_perpendicular(xi);
-        assert!(eps_par > 1.0, "Parallel eps(i*xi)={} should be > 1", eps_par);
-        assert!(eps_perp > 1.0, "Perpendicular eps(i*xi)={} should be > 1", eps_perp);
+        assert!(
+            eps_par > 1.0,
+            "Parallel eps(i*xi)={} should be > 1",
+            eps_par
+        );
+        assert!(
+            eps_perp > 1.0,
+            "Perpendicular eps(i*xi)={} should be > 1",
+            eps_perp
+        );
         // Polycrystalline average should match formula
         let avg = uni.polycrystalline_average_imaginary(xi);
         let expected = (eps_par + 2.0 * eps_perp) / 3.0;
         assert!(
             (avg - expected).abs() < 1e-10,
             "Polycrystalline avg at imaginary freq: got {}, expected {}",
-            avg, expected
+            avg,
+            expected
         );
     }
 
@@ -5675,7 +6201,8 @@ mod tests {
     fn test_material_count_sprint44() {
         let materials = list_materials();
         assert_eq!(
-            materials.len(), 31,
+            materials.len(),
+            31,
             "Database should have exactly 31 materials, got {}",
             materials.len()
         );
@@ -5689,8 +6216,16 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let n_complex = gold.refractive_index(omega);
         // Gold at 2 eV: n ~ 0.2-0.5, k ~ 2-3 (highly absorbing)
-        assert!(n_complex.re > 0.0, "n must be positive, got {}", n_complex.re);
-        assert!(n_complex.im > 1.0, "Gold k should be > 1 at 2 eV, got {}", n_complex.im);
+        assert!(
+            n_complex.re > 0.0,
+            "n must be positive, got {}",
+            n_complex.re
+        );
+        assert!(
+            n_complex.im > 1.0,
+            "Gold k should be > 1 at 2 eV, got {}",
+            n_complex.im
+        );
     }
 
     #[test]
@@ -5724,7 +6259,8 @@ mod tests {
         assert!(
             loss_plasma > loss_low,
             "Loss function should peak near plasma freq: at 7 eV = {}, at 1 eV = {}",
-            loss_plasma, loss_low
+            loss_plasma,
+            loss_low
         );
     }
 
@@ -5734,8 +6270,16 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let delta = gold.skin_depth(omega).unwrap();
         // Gold skin depth at visible frequencies: ~25-40 nm
-        assert!(delta > 10e-9, "Gold skin depth should be > 10 nm, got {} m", delta);
-        assert!(delta < 100e-9, "Gold skin depth should be < 100 nm, got {} m", delta);
+        assert!(
+            delta > 10e-9,
+            "Gold skin depth should be > 10 nm, got {} m",
+            delta
+        );
+        assert!(
+            delta < 100e-9,
+            "Gold skin depth should be < 100 nm, got {} m",
+            delta
+        );
     }
 
     #[test]
@@ -5745,7 +6289,11 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let n_complex = silica.refractive_index(omega);
         // k should be very small in the transparent window
-        assert!(n_complex.im < 0.1, "Silica k at 2 eV should be near 0, got {}", n_complex.im);
+        assert!(
+            n_complex.im < 0.1,
+            "Silica k at 2 eV should be near 0, got {}",
+            n_complex.im
+        );
     }
 
     #[test]
@@ -5753,9 +6301,17 @@ mod tests {
         let wo3x = wo3_x_optical();
         let omega = 1.0 * EV_TO_RADS;
         let alpha = wo3x.absorption_coefficient(omega);
-        assert!(alpha > 0.0, "Absorption coefficient must be non-negative, got {}", alpha);
+        assert!(
+            alpha > 0.0,
+            "Absorption coefficient must be non-negative, got {}",
+            alpha
+        );
         // Metallic material should have significant absorption
-        assert!(alpha > 1e4, "WO3-x should have alpha > 1e4 m^-1 at 1 eV, got {}", alpha);
+        assert!(
+            alpha > 1e4,
+            "WO3-x should have alpha > 1e4 m^-1 at 1 eV, got {}",
+            alpha
+        );
     }
 
     #[test]
@@ -5764,9 +6320,17 @@ mod tests {
         let omega = 1.0 * EV_TO_RADS;
         let sigma_1 = gold.optical_conductivity_re(omega);
         // sigma_1 > 0 for absorbing materials (dissipative)
-        assert!(sigma_1 > 0.0, "sigma_1 should be > 0 for metals, got {}", sigma_1);
+        assert!(
+            sigma_1 > 0.0,
+            "sigma_1 should be > 0 for metals, got {}",
+            sigma_1
+        );
         // Gold sigma_1 at 1 eV should be large (order 1e4-1e6 S/m)
-        assert!(sigma_1 > 1e3, "Gold sigma_1 at 1 eV should be > 1e3 S/m, got {}", sigma_1);
+        assert!(
+            sigma_1 > 1e3,
+            "Gold sigma_1 at 1 eV should be > 1e3 S/m, got {}",
+            sigma_1
+        );
     }
 
     #[test]
@@ -5776,14 +6340,25 @@ mod tests {
         // Gold: omega_p=8.45 eV, gamma=0.069 eV
         // sigma_dc = eps_0 * omega_p^2 / gamma (in rad/s units)
         // Should be ~4e7 S/m (experimental gold: 4.1e7 S/m)
-        assert!(sigma_dc > 1e7, "Gold sigma_dc should be > 1e7 S/m, got {}", sigma_dc);
-        assert!(sigma_dc < 1e8, "Gold sigma_dc should be < 1e8 S/m, got {}", sigma_dc);
+        assert!(
+            sigma_dc > 1e7,
+            "Gold sigma_dc should be > 1e7 S/m, got {}",
+            sigma_dc
+        );
+        assert!(
+            sigma_dc < 1e8,
+            "Gold sigma_dc should be < 1e8 S/m, got {}",
+            sigma_dc
+        );
     }
 
     #[test]
     fn test_dc_conductivity_dielectric_none() {
         let silica = silica_optical();
-        assert!(silica.dc_conductivity().is_none(), "Dielectrics have no DC conductivity");
+        assert!(
+            silica.dc_conductivity().is_none(),
+            "Dielectrics have no DC conductivity"
+        );
     }
 
     #[test]
@@ -5794,14 +6369,25 @@ mod tests {
         let edge_ev = edge.unwrap();
         // WO3-x with omega_p=1.07 eV: screened plasma near 0.4-0.8 eV
         // (screened by eps_inf=5.88, so lower than bare omega_p)
-        assert!(edge_ev > 0.2, "Plasma edge should be > 0.2 eV, got {}", edge_ev);
-        assert!(edge_ev < 2.0, "Plasma edge should be < 2.0 eV, got {}", edge_ev);
+        assert!(
+            edge_ev > 0.2,
+            "Plasma edge should be > 0.2 eV, got {}",
+            edge_ev
+        );
+        assert!(
+            edge_ev < 2.0,
+            "Plasma edge should be < 2.0 eV, got {}",
+            edge_ev
+        );
     }
 
     #[test]
     fn test_wo3_no_plasma_edge() {
         let wo3 = wo3_optical();
-        assert!(wo3.plasma_edge_ev().is_none(), "Stoichiometric WO3 has no plasma edge");
+        assert!(
+            wo3.plasma_edge_ev().is_none(),
+            "Stoichiometric WO3 has no plasma edge"
+        );
     }
 
     #[test]
@@ -5811,8 +6397,16 @@ mod tests {
         assert!(edge.is_some(), "Gold should have a plasma edge");
         let edge_ev = edge.unwrap();
         // Gold screened plasma edge: ~6-8 eV (interband pushes it up)
-        assert!(edge_ev > 3.0, "Gold plasma edge should be > 3 eV, got {}", edge_ev);
-        assert!(edge_ev < 12.0, "Gold plasma edge should be < 12 eV, got {}", edge_ev);
+        assert!(
+            edge_ev > 3.0,
+            "Gold plasma edge should be > 3 eV, got {}",
+            edge_ev
+        );
+        assert!(
+            edge_ev < 12.0,
+            "Gold plasma edge should be < 12 eV, got {}",
+            edge_ev
+        );
     }
 
     #[test]
@@ -5820,9 +6414,17 @@ mod tests {
         let uni = cs_wo3_uniaxial();
         let omega = 0.5 * EV_TO_RADS; // IR: anisotropy is strong
         let delta_n = uni.birefringence(omega);
-        assert!(delta_n > 0.0, "Birefringence must be non-negative, got {}", delta_n);
+        assert!(
+            delta_n > 0.0,
+            "Birefringence must be non-negative, got {}",
+            delta_n
+        );
         // With different Drude weights, birefringence should be measurable
-        assert!(delta_n > 0.001, "Cs0.33WO3 should have measurable birefringence, got {}", delta_n);
+        assert!(
+            delta_n > 0.001,
+            "Cs0.33WO3 should have measurable birefringence, got {}",
+            delta_n
+        );
     }
 
     #[test]
@@ -5830,7 +6432,11 @@ mod tests {
         let uni = cs_wo3_uniaxial();
         let omega = 0.5 * EV_TO_RADS;
         let delta_k = uni.dichroism(omega);
-        assert!(delta_k > 0.0, "Dichroism must be non-negative, got {}", delta_k);
+        assert!(
+            delta_k > 0.0,
+            "Dichroism must be non-negative, got {}",
+            delta_k
+        );
     }
 
     #[test]
@@ -5839,7 +6445,11 @@ mod tests {
         let omega = 0.5 * EV_TO_RADS;
         let ratio = uni.anisotropy_ratio(omega);
         // With stronger Drude along c-axis, |eps_par| > |eps_perp| at low freq
-        assert!(ratio.norm() > 0.5, "Anisotropy ratio should be finite, got {}", ratio.norm());
+        assert!(
+            ratio.norm() > 0.5,
+            "Anisotropy ratio should be finite, got {}",
+            ratio.norm()
+        );
     }
 
     #[test]
@@ -5848,7 +6458,11 @@ mod tests {
         let omega = 0.5 * EV_TO_RADS;
         let delta_r = uni.reflectivity_anisotropy(omega);
         // Higher Drude weight along c-axis means higher reflectivity for that polarization
-        assert!(delta_r > 0.0, "R_par should > R_perp at 0.5 eV (stronger Drude), got {}", delta_r);
+        assert!(
+            delta_r > 0.0,
+            "R_par should > R_perp at 0.5 eV (stronger Drude), got {}",
+            delta_r
+        );
     }
 
     #[test]
@@ -5876,7 +6490,9 @@ mod tests {
                 assert!(
                     (0.0..=1.0).contains(&r),
                     "{} at {} eV: R={} out of [0,1]",
-                    name, freq_ev, r
+                    name,
+                    freq_ev,
+                    r
                 );
             }
         }
@@ -5891,7 +6507,8 @@ mod tests {
         assert!(
             delta_low > delta_high,
             "Skin depth should decrease with frequency: low={}, high={}",
-            delta_low, delta_high
+            delta_low,
+            delta_high
         );
     }
 
@@ -5905,7 +6522,8 @@ mod tests {
         assert!(
             sigma_au > sigma_wo3x,
             "Gold sigma_dc={} should exceed WO3-x sigma_dc={}",
-            sigma_au, sigma_wo3x
+            sigma_au,
+            sigma_wo3x
         );
     }
 
@@ -5919,8 +6537,16 @@ mod tests {
         // Gold: m*=1.0*m_e, omega_p=8.45 eV
         // Expected: n ~ 5.9e28 m^-3 (= 5.9e22 cm^-3)
         let n = gold.carrier_density(1.0).unwrap();
-        assert!(n > 1e28, "Gold carrier density should be > 1e28 m^-3, got {}", n);
-        assert!(n < 1e29, "Gold carrier density should be < 1e29 m^-3, got {}", n);
+        assert!(
+            n > 1e28,
+            "Gold carrier density should be > 1e28 m^-3, got {}",
+            n
+        );
+        assert!(
+            n < 1e29,
+            "Gold carrier density should be < 1e29 m^-3, got {}",
+            n
+        );
     }
 
     #[test]
@@ -5929,14 +6555,25 @@ mod tests {
         // WO3-x: m*=1.2*m_e, omega_p=1.07 eV
         // Expected: n ~ 1e21 cm^-3 = 1e27 m^-3
         let n = wo3x.carrier_density(1.2).unwrap();
-        assert!(n > 1e26, "WO3-x carrier density should be > 1e26 m^-3, got {}", n);
-        assert!(n < 1e28, "WO3-x carrier density should be < 1e28 m^-3, got {}", n);
+        assert!(
+            n > 1e26,
+            "WO3-x carrier density should be > 1e26 m^-3, got {}",
+            n
+        );
+        assert!(
+            n < 1e28,
+            "WO3-x carrier density should be < 1e28 m^-3, got {}",
+            n
+        );
     }
 
     #[test]
     fn test_dielectric_no_carrier_density() {
         let silica = silica_optical();
-        assert!(silica.carrier_density(1.0).is_none(), "Dielectrics have no carrier density");
+        assert!(
+            silica.carrier_density(1.0).is_none(),
+            "Dielectrics have no carrier density"
+        );
     }
 
     #[test]
@@ -5957,7 +6594,8 @@ mod tests {
         assert!(
             w_au > w_wo3x,
             "Gold W_D={} should exceed WO3-x W_D={}",
-            w_au, w_wo3x
+            w_au,
+            w_wo3x
         );
     }
 
@@ -5977,7 +6615,11 @@ mod tests {
         let freqs = DrudeLorentzParams::matsubara_frequencies(300.0, 5);
         assert_eq!(freqs.len(), 5);
         // xi_0 = 0
-        assert!((freqs[0]).abs() < 1e-10, "xi_0 should be 0, got {}", freqs[0]);
+        assert!(
+            (freqs[0]).abs() < 1e-10,
+            "xi_0 should be 0, got {}",
+            freqs[0]
+        );
         // xi_1 = 2*pi*k_B*T/hbar ~ 2.47e14 rad/s at 300 K
         assert!(freqs[1] > 2e14, "xi_1 should be > 2e14, got {}", freqs[1]);
         assert!(freqs[1] < 3e14, "xi_1 should be < 3e14, got {}", freqs[1]);
@@ -5988,7 +6630,9 @@ mod tests {
             assert!(
                 (freqs[i] - expected).abs() < 1e6,
                 "xi_{} = {} should be {} (uniform spacing)",
-                i, freqs[i], expected
+                i,
+                freqs[i],
+                expected
             );
         }
     }
@@ -6016,7 +6660,8 @@ mod tests {
             assert!(
                 e > 1.0,
                 "Gold eps(i*xi_{}) = {} should be > 1 (metallic)",
-                i, e
+                i,
+                e
             );
         }
         // Monotonically decreasing (Drude: eps ~ 1 + omega_p^2/xi^2, decreasing in xi)
@@ -6024,7 +6669,10 @@ mod tests {
             assert!(
                 eps_mat[i] >= eps_mat[i + 1],
                 "eps should decrease: eps[{}]={} < eps[{}]={}",
-                i, eps_mat[i], i + 1, eps_mat[i + 1]
+                i,
+                eps_mat[i],
+                i + 1,
+                eps_mat[i + 1]
             );
         }
     }
@@ -6048,7 +6696,11 @@ mod tests {
         // At very low frequency (far-IR), R should be close to 1
         let omega_low = 0.01 * EV_TO_RADS; // 0.01 eV ~ 80 cm^-1
         let r_hr = gold.hagen_rubens_reflectivity(omega_low).unwrap();
-        assert!(r_hr > 0.95, "Gold HR reflectivity at 0.01 eV should be > 0.95, got {}", r_hr);
+        assert!(
+            r_hr > 0.95,
+            "Gold HR reflectivity at 0.01 eV should be > 0.95, got {}",
+            r_hr
+        );
         assert!(r_hr <= 1.0, "Reflectivity must be <= 1.0, got {}", r_hr);
     }
 
@@ -6064,7 +6716,9 @@ mod tests {
         assert!(
             diff < 0.05,
             "HR ({}) and full ({}) should agree within 5% at 5 meV, diff={}",
-            r_hr, r_full, diff
+            r_hr,
+            r_full,
+            diff
         );
     }
 
@@ -6090,7 +6744,8 @@ mod tests {
         assert!(
             n_g > n * 0.9,
             "Group index {} should be comparable to or larger than n={}",
-            n_g, n
+            n_g,
+            n
         );
     }
 
@@ -6106,7 +6761,8 @@ mod tests {
         assert!(
             (eps_avg - expected).abs() < 1e-10,
             "Polycrystalline imaginary: {} != expected {}",
-            eps_avg, expected
+            eps_avg,
+            expected
         );
     }
 
@@ -6119,7 +6775,10 @@ mod tests {
             assert!(
                 eps_mat[i] >= eps_mat[i + 1],
                 "Uniaxial eps should decrease: eps[{}]={} < eps[{}]={}",
-                i, eps_mat[i], i + 1, eps_mat[i + 1]
+                i,
+                eps_mat[i],
+                i + 1,
+                eps_mat[i + 1]
             );
         }
     }
@@ -6135,7 +6794,8 @@ mod tests {
         assert!(
             (n_avg - expected).abs() / expected < 1e-10,
             "Polycrystalline carrier density mismatch: {} vs {}",
-            n_avg, expected
+            n_avg,
+            expected
         );
     }
 
@@ -6150,22 +6810,36 @@ mod tests {
         // Min alpha ~ 4e4 m^-1 at ~0.19 eV. The two-pass algorithm detects the
         // onset of band-edge tail absorption above the transparent-window minimum.
         let gap = wo3.optical_gap_ev(1e5);
-        assert!(gap.is_some(), "WO3 should have detectable gap at 1e5 threshold");
+        assert!(
+            gap.is_some(),
+            "WO3 should have detectable gap at 1e5 threshold"
+        );
         let gap_ev = gap.unwrap();
         // Lorentz tail crosses 1e5 well below the 3.5 eV resonance center
         assert!(gap_ev > 0.1, "WO3 gap should be > 0.1 eV, got {}", gap_ev);
-        assert!(gap_ev < 2.0, "WO3 Lorentz-tail onset should be < 2 eV, got {}", gap_ev);
+        assert!(
+            gap_ev < 2.0,
+            "WO3 Lorentz-tail onset should be < 2 eV, got {}",
+            gap_ev
+        );
         // Verify threshold monotonicity: higher threshold -> higher gap energy
         let gap_hi = wo3.optical_gap_ev(1e6);
         assert!(gap_hi.is_some());
-        assert!(gap_hi.unwrap() > gap_ev,
-            "Higher threshold should give higher gap: {} vs {}", gap_hi.unwrap(), gap_ev);
+        assert!(
+            gap_hi.unwrap() > gap_ev,
+            "Higher threshold should give higher gap: {} vs {}",
+            gap_hi.unwrap(),
+            gap_ev
+        );
     }
 
     #[test]
     fn test_optical_gap_metal_none() {
         let gold = gold_drude_lorentz();
-        assert!(gold.optical_gap_ev(1e2).is_none(), "Metals have no optical gap");
+        assert!(
+            gold.optical_gap_ev(1e2).is_none(),
+            "Metals have no optical gap"
+        );
     }
 
     #[test]
@@ -6174,7 +6848,10 @@ mod tests {
         // CaWO4 UV oscillator (gamma=1.0 eV) has broad tails, min alpha ~ 1.7e4 m^-1.
         // Two-pass detects the absorption onset above the transparent window.
         let gap = cawo4.optical_gap_ev(1e5);
-        assert!(gap.is_some(), "CaWO4 should have detectable gap at 1e5 threshold");
+        assert!(
+            gap.is_some(),
+            "CaWO4 should have detectable gap at 1e5 threshold"
+        );
         let gap_ev = gap.unwrap();
         assert!(gap_ev > 0.1, "CaWO4 gap should be > 0.1 eV, got {}", gap_ev);
         assert!(gap_ev < 3.0, "CaWO4 gap should be < 3 eV, got {}", gap_ev);
@@ -6185,8 +6862,10 @@ mod tests {
         // With a threshold below the transparent-window minimum, returns None
         // because the material never becomes transparent at that level.
         let wo3 = wo3_optical();
-        assert!(wo3.optical_gap_ev(1e2).is_none(),
-            "WO3 has no transparent window below 1e2 m^-1");
+        assert!(
+            wo3.optical_gap_ev(1e2).is_none(),
+            "WO3 has no transparent window below 1e2 m^-1"
+        );
     }
 
     #[test]
@@ -6195,9 +6874,11 @@ mod tests {
         // detects the actual resonance region.
         let weak = DrudeLorentzParams {
             drude: None,
-            oscillators: vec![
-                LorentzOscillator { strength: 0.1, omega_0_ev: 3.0, gamma_ev: 0.05 },
-            ],
+            oscillators: vec![LorentzOscillator {
+                strength: 0.1,
+                omega_0_ev: 3.0,
+                gamma_ev: 0.05,
+            }],
             eps_inf: 2.5,
             extended_drude: None,
         };
@@ -6206,7 +6887,11 @@ mod tests {
         let gap_ev = gap.unwrap();
         // Even S=0.1 produces Lorentz tails reaching 1e4 at ~1.7 eV (alpha ~ omega^2*S*gamma/omega_0^2)
         assert!(gap_ev > 1.0, "Gap should be > 1 eV, got {:.3}", gap_ev);
-        assert!(gap_ev < 3.5, "Gap should be below resonance center, got {:.3}", gap_ev);
+        assert!(
+            gap_ev < 3.5,
+            "Gap should be below resonance center, got {:.3}",
+            gap_ev
+        );
     }
 
     #[test]
@@ -6218,18 +6903,33 @@ mod tests {
             drude: None,
             oscillators: vec![
                 // Strong phonon at 0.05 eV (narrow)
-                LorentzOscillator { strength: 2.0, omega_0_ev: 0.05, gamma_ev: 0.003 },
+                LorentzOscillator {
+                    strength: 2.0,
+                    omega_0_ev: 0.05,
+                    gamma_ev: 0.003,
+                },
                 // Weak band edge at 4.0 eV (so Lorentz tail is small)
-                LorentzOscillator { strength: 0.2, omega_0_ev: 4.0, gamma_ev: 0.05 },
+                LorentzOscillator {
+                    strength: 0.2,
+                    omega_0_ev: 4.0,
+                    gamma_ev: 0.05,
+                },
             ],
             eps_inf: 3.0,
             extended_drude: None,
         };
         let gap = phonon_plus_edge.optical_gap_ev(1e4);
-        assert!(gap.is_some(), "Should find band edge despite phonon absorption");
+        assert!(
+            gap.is_some(),
+            "Should find band edge despite phonon absorption"
+        );
         let gap_ev = gap.unwrap();
         // Two-pass correctly skips phonon region (0.05 eV); crossing found well above it
-        assert!(gap_ev > 0.5, "Gap should be well above phonon region (0.05 eV), got {:.3}", gap_ev);
+        assert!(
+            gap_ev > 0.5,
+            "Gap should be well above phonon region (0.05 eV), got {:.3}",
+            gap_ev
+        );
         assert!(gap_ev < 5.0, "Gap should be below UV, got {:.3}", gap_ev);
     }
 
@@ -6239,10 +6939,17 @@ mod tests {
         let omega = 1.0 * EV_TO_RADS;
         let z_s = gold.surface_impedance(omega);
         // For metals, |Z_s| << Z_0 (376.73 Ohm)
-        assert!(z_s.norm() < 100.0,
-            "Gold Z_s at 1 eV should be << 376 Ohm, got {} Ohm", z_s.norm());
+        assert!(
+            z_s.norm() < 100.0,
+            "Gold Z_s at 1 eV should be << 376 Ohm, got {} Ohm",
+            z_s.norm()
+        );
         // Real part (surface resistance) should be positive
-        assert!(z_s.re > 0.0, "Surface resistance should be positive, got {}", z_s.re);
+        assert!(
+            z_s.re > 0.0,
+            "Surface resistance should be positive, got {}",
+            z_s.re
+        );
     }
 
     #[test]
@@ -6251,10 +6958,16 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let z_s = silica.surface_impedance(omega);
         // For transparent dielectrics, Z_s ~ Z_0/n ~ 376/1.45 ~ 260 Ohm
-        assert!(z_s.norm() > 100.0,
-            "Silica Z_s should be comparable to Z_0/n, got {} Ohm", z_s.norm());
-        assert!(z_s.norm() < 400.0,
-            "Silica Z_s should be < Z_0, got {} Ohm", z_s.norm());
+        assert!(
+            z_s.norm() > 100.0,
+            "Silica Z_s should be comparable to Z_0/n, got {} Ohm",
+            z_s.norm()
+        );
+        assert!(
+            z_s.norm() < 400.0,
+            "Silica Z_s should be < Z_0, got {} Ohm",
+            z_s.norm()
+        );
     }
 
     #[test]
@@ -6262,10 +6975,21 @@ mod tests {
         // E_ideal = -pi^2 * hbar * c / (720 * d^3)
         let d = 100e-9; // 100 nm
         let e_ideal = casimir_energy_ideal(d);
-        assert!(e_ideal < 0.0, "Casimir energy should be negative (attractive)");
+        assert!(
+            e_ideal < 0.0,
+            "Casimir energy should be negative (attractive)"
+        );
         // At 100 nm: E = -pi^2*hbar*c/(720*d^3) ~ -4.33e-7 J/m^2
-        assert!(e_ideal.abs() > 1e-8, "E_ideal at 100nm should be > 1e-8 J/m^2, got {}", e_ideal);
-        assert!(e_ideal.abs() < 1e-5, "E_ideal at 100nm should be < 1e-5 J/m^2, got {}", e_ideal);
+        assert!(
+            e_ideal.abs() > 1e-8,
+            "E_ideal at 100nm should be > 1e-8 J/m^2, got {}",
+            e_ideal
+        );
+        assert!(
+            e_ideal.abs() < 1e-5,
+            "E_ideal at 100nm should be < 1e-5 J/m^2, got {}",
+            e_ideal
+        );
     }
 
     #[test]
@@ -6288,8 +7012,11 @@ mod tests {
         let d = 100e-9;
         let energy = casimir_energy_density(&gold, &gold, d, 300.0, 200, 32);
         // Casimir energy should be negative (attractive)
-        assert!(energy < 0.0,
-            "Gold-gold Casimir should be attractive, got {}", energy);
+        assert!(
+            energy < 0.0,
+            "Gold-gold Casimir should be attractive, got {}",
+            energy
+        );
     }
 
     #[test]
@@ -6300,10 +7027,12 @@ mod tests {
         // For gold at 100 nm, eta should be positive and of order 1.
         // At finite T, eta can exceed 1.0 because the ideal formula is T=0
         // while Lifshitz includes thermal corrections (n=0 Matsubara term).
-        assert!(eta > 0.1,
-            "Gold-gold eta should be > 0.1, got {}", eta);
-        assert!(eta < 10.0,
-            "Gold-gold eta should be < 10 (reasonable magnitude), got {}", eta);
+        assert!(eta > 0.1, "Gold-gold eta should be > 0.1, got {}", eta);
+        assert!(
+            eta < 10.0,
+            "Gold-gold eta should be < 10 (reasonable magnitude), got {}",
+            eta
+        );
     }
 
     #[test]
@@ -6317,7 +7046,8 @@ mod tests {
         assert!(
             eta_sio2 < eta_au,
             "Dielectric eta={} should be < metal eta={}",
-            eta_sio2, eta_au
+            eta_sio2,
+            eta_au
         );
     }
 
@@ -6328,8 +7058,11 @@ mod tests {
         let force = casimir_force_density(&gold, &gold, d, 300.0, 200, 32);
         // Force should be negative (attractive, pulling plates together)
         // For gold at 100 nm: F ~ -1.3e4 N/m^2 range (order of magnitude)
-        assert!(force < 0.0,
-            "Gold-gold Casimir force should be attractive, got {} N/m^2", force);
+        assert!(
+            force < 0.0,
+            "Gold-gold Casimir force should be attractive, got {} N/m^2",
+            force
+        );
     }
 
     #[test]
@@ -6341,8 +7074,12 @@ mod tests {
         let e_au_au = casimir_energy_density(&gold, &gold, d, 300.0, 200, 32);
         let e_au_sio2 = casimir_energy_density(&gold, &silica, d, 300.0, 200, 32);
         assert!(e_au_sio2 < 0.0, "Au-SiO2 should be attractive");
-        assert!(e_au_sio2.abs() < e_au_au.abs(),
-            "Au-SiO2 ({}) should be weaker than Au-Au ({})", e_au_sio2, e_au_au);
+        assert!(
+            e_au_sio2.abs() < e_au_au.abs(),
+            "Au-SiO2 ({}) should be weaker than Au-Au ({})",
+            e_au_sio2,
+            e_au_au
+        );
     }
 
     #[test]
@@ -6352,10 +7089,18 @@ mod tests {
         let e_100 = casimir_energy_density(&gold, &gold, 100e-9, 300.0, 200, 32);
         let e_200 = casimir_energy_density(&gold, &gold, 200e-9, 300.0, 200, 32);
         // |E| should decrease with distance (less negative)
-        assert!(e_50.abs() > e_100.abs(),
-            "|E(50nm)|={} should > |E(100nm)|={}", e_50.abs(), e_100.abs());
-        assert!(e_100.abs() > e_200.abs(),
-            "|E(100nm)|={} should > |E(200nm)|={}", e_100.abs(), e_200.abs());
+        assert!(
+            e_50.abs() > e_100.abs(),
+            "|E(50nm)|={} should > |E(100nm)|={}",
+            e_50.abs(),
+            e_100.abs()
+        );
+        assert!(
+            e_100.abs() > e_200.abs(),
+            "|E(100nm)|={} should > |E(200nm)|={}",
+            e_100.abs(),
+            e_200.abs()
+        );
     }
 
     // ========================================================================
@@ -6369,7 +7114,11 @@ mod tests {
         // Gold should have a positive effective electron count
         assert!(n_eff > 0.0, "N_eff should be positive, got {}", n_eff);
         // For a metal with omega_p ~ 8.45 eV, N_eff at 30 eV should be substantial
-        assert!(n_eff > 1e27, "N_eff should be > 1e27 m^-3, got {:.2e}", n_eff);
+        assert!(
+            n_eff > 1e27,
+            "N_eff should be > 1e27 m^-3, got {:.2e}",
+            n_eff
+        );
     }
 
     #[test]
@@ -6379,8 +7128,18 @@ mod tests {
         let n_10 = gold.n_eff(10.0, 10000);
         let n_30 = gold.n_eff(30.0, 10000);
         // N_eff should increase monotonically with cutoff (more electrons counted)
-        assert!(n_10 > n_5, "N_eff(10) should > N_eff(5): {} vs {}", n_10, n_5);
-        assert!(n_30 > n_10, "N_eff(30) should > N_eff(10): {} vs {}", n_30, n_10);
+        assert!(
+            n_10 > n_5,
+            "N_eff(10) should > N_eff(5): {} vs {}",
+            n_10,
+            n_5
+        );
+        assert!(
+            n_30 > n_10,
+            "N_eff(30) should > N_eff(10): {} vs {}",
+            n_30,
+            n_10
+        );
     }
 
     #[test]
@@ -6391,9 +7150,13 @@ mod tests {
         let ratio = n_eff / n_drude;
         // With interband oscillators, N_eff > N_drude (interband adds electrons)
         // The ratio should be > 0.5 at 50 eV cutoff
-        assert!(ratio > 0.5,
+        assert!(
+            ratio > 0.5,
             "f-sum ratio at 50 eV should be > 0.5, got {:.3} (N_eff={:.2e}, N_drude={:.2e})",
-            ratio, n_eff, n_drude);
+            ratio,
+            n_eff,
+            n_drude
+        );
     }
 
     #[test]
@@ -6402,7 +7165,11 @@ mod tests {
         let omega = 1.0 * EV_TO_RADS;
         let loss = gold.loss_function(omega);
         // Loss function should be positive (absorption of energy by material)
-        assert!(loss > 0.0, "Loss function should be > 0 for metals at 1 eV, got {}", loss);
+        assert!(
+            loss > 0.0,
+            "Loss function should be > 0 for metals at 1 eV, got {}",
+            loss
+        );
     }
 
     #[test]
@@ -6411,8 +7178,16 @@ mod tests {
         // Loss function peak should be near the screened plasma frequency
         // For gold (omega_p=8.45, with interband), peak is typically around 6-9 eV
         let peak_ev = gold.plasmon_energy_ev(1.0, 15.0);
-        assert!(peak_ev > 3.0, "Gold plasmon peak should be > 3 eV, got {}", peak_ev);
-        assert!(peak_ev < 12.0, "Gold plasmon peak should be < 12 eV, got {}", peak_ev);
+        assert!(
+            peak_ev > 3.0,
+            "Gold plasmon peak should be > 3 eV, got {}",
+            peak_ev
+        );
+        assert!(
+            peak_ev < 12.0,
+            "Gold plasmon peak should be < 12 eV, got {}",
+            peak_ev
+        );
     }
 
     #[test]
@@ -6422,22 +7197,39 @@ mod tests {
         let omega_p_eff = omega_p_sq.sqrt() / EV_TO_RADS; // in eV
         // Should be in the right ballpark of the Drude omega_p (8.45 eV)
         // but shifted by interband contributions
-        assert!(omega_p_eff > 3.0,
-            "Effective omega_p from loss sum rule should be > 3 eV, got {:.2}", omega_p_eff);
-        assert!(omega_p_eff < 20.0,
-            "Effective omega_p should be < 20 eV, got {:.2}", omega_p_eff);
+        assert!(
+            omega_p_eff > 3.0,
+            "Effective omega_p from loss sum rule should be > 3 eV, got {:.2}",
+            omega_p_eff
+        );
+        assert!(
+            omega_p_eff < 20.0,
+            "Effective omega_p should be < 20 eV, got {:.2}",
+            omega_p_eff
+        );
     }
 
     #[test]
     fn test_screened_plasma_gold() {
         let gold = gold_drude_lorentz();
         let plasma = gold.screened_plasma_ev(1.0, 15.0);
-        assert!(plasma.is_some(), "Gold should have a screened plasma frequency");
+        assert!(
+            plasma.is_some(),
+            "Gold should have a screened plasma frequency"
+        );
         let plasma_ev = plasma.unwrap();
         // Screened plasma frequency is below bare omega_p (8.45 eV) due to
         // positive interband eps contribution below the plasma edge
-        assert!(plasma_ev > 3.0, "Screened plasma should be > 3 eV, got {}", plasma_ev);
-        assert!(plasma_ev < 12.0, "Screened plasma should be < 12 eV, got {}", plasma_ev);
+        assert!(
+            plasma_ev > 3.0,
+            "Screened plasma should be > 3 eV, got {}",
+            plasma_ev
+        );
+        assert!(
+            plasma_ev < 12.0,
+            "Screened plasma should be < 12 eV, got {}",
+            plasma_ev
+        );
     }
 
     #[test]
@@ -6449,23 +7241,30 @@ mod tests {
         let plasma = silica.screened_plasma_ev(0.01, 15.0);
         // The crossing should exist in the phonon region, not in the UV
         if let Some(ev) = plasma {
-            assert!(ev < 1.0,
-                "Silica reststrahlen crossing should be < 1 eV, got {:.3}", ev);
+            assert!(
+                ev < 1.0,
+                "Silica reststrahlen crossing should be < 1 eV, got {:.3}",
+                ev
+            );
         }
         // A weak electronic oscillator (S << eps_inf) has no Re[eps] < 0 region.
         // Any Lorentz oscillator creates Re[eps] < 0 above resonance if
         // S*omega_0/(2*gamma) > eps_inf, so use S=0.1, eps_inf=5.0 to stay positive.
         let weak_dielectric = DrudeLorentzParams {
             drude: None,
-            oscillators: vec![
-                LorentzOscillator { strength: 0.1, omega_0_ev: 10.0, gamma_ev: 1.0 },
-            ],
+            oscillators: vec![LorentzOscillator {
+                strength: 0.1,
+                omega_0_ev: 10.0,
+                gamma_ev: 1.0,
+            }],
             eps_inf: 5.0,
             extended_drude: None,
         };
         let plasma_w = weak_dielectric.screened_plasma_ev(0.1, 15.0);
-        assert!(plasma_w.is_none(),
-            "Weak dielectric should have no plasma crossing");
+        assert!(
+            plasma_w.is_none(),
+            "Weak dielectric should have no plasma crossing"
+        );
     }
 
     #[test]
@@ -6482,7 +7281,10 @@ mod tests {
     #[test]
     fn test_static_dielectric_metal_none() {
         let gold = gold_drude_lorentz();
-        assert!(gold.static_dielectric().is_none(), "Metals diverge at omega=0");
+        assert!(
+            gold.static_dielectric().is_none(),
+            "Metals diverge at omega=0"
+        );
     }
 
     #[test]
@@ -6491,10 +7293,18 @@ mod tests {
         let w = gold.intraband_weight();
         assert!(w.is_some(), "Gold should have intraband weight");
         let w_val = w.unwrap();
-        assert!(w_val > 0.0, "Intraband weight should be positive, got {}", w_val);
+        assert!(
+            w_val > 0.0,
+            "Intraband weight should be positive, got {}",
+            w_val
+        );
         // W = (pi/2) * omega_p^2 * eps_0, omega_p ~ 8.45 eV
         // = 1.571 * (8.45*1.519e15)^2 * 8.854e-12 ~ 2.29e21
-        assert!(w_val > 1e20, "Intraband weight seems too small: {:.2e}", w_val);
+        assert!(
+            w_val > 1e20,
+            "Intraband weight seems too small: {:.2e}",
+            w_val
+        );
     }
 
     #[test]
@@ -6507,7 +7317,10 @@ mod tests {
     #[test]
     fn test_intraband_dielectric_none() {
         let silica = silica_optical();
-        assert!(silica.intraband_weight().is_none(), "Dielectrics have no intraband");
+        assert!(
+            silica.intraband_weight().is_none(),
+            "Dielectrics have no intraband"
+        );
     }
 
     #[test]
@@ -6522,10 +7335,16 @@ mod tests {
         assert!(w_inter > 0.0);
         assert!(w_intra > 0.0);
         let inter_fraction = w_inter / w_total;
-        assert!(inter_fraction > 0.01,
-            "Interband fraction should be > 1%, got {:.1}%", inter_fraction * 100.0);
-        assert!(inter_fraction < 0.99,
-            "Interband fraction should be < 99%, got {:.1}%", inter_fraction * 100.0);
+        assert!(
+            inter_fraction > 0.01,
+            "Interband fraction should be > 1%, got {:.1}%",
+            inter_fraction * 100.0
+        );
+        assert!(
+            inter_fraction < 0.99,
+            "Interband fraction should be < 99%, got {:.1}%",
+            inter_fraction * 100.0
+        );
     }
 
     #[test]
@@ -6538,9 +7357,12 @@ mod tests {
         assert!(plasma.is_some(), "Aluminum should have screened plasma");
         let plasma_ev = plasma.unwrap();
         // For aluminum (nearly free-electron), these should be within ~2 eV
-        assert!((plasmon - plasma_ev).abs() < 3.0,
+        assert!(
+            (plasmon - plasma_ev).abs() < 3.0,
             "Plasmon ({:.2}) and screened plasma ({:.2}) should be close for Al",
-            plasmon, plasma_ev);
+            plasmon,
+            plasma_ev
+        );
     }
 
     // ========================================================================
@@ -6555,8 +7377,11 @@ mod tests {
         let err = gold.kramers_kronig_error(50.0, 20000);
         // With 20k steps over 50 eV, RMS relative error should be < 30%
         // (finite-cutoff and pole-skipping limit absolute accuracy)
-        assert!(err < 0.5,
-            "Gold KK RMS error should be < 50%, got {:.1}%", err * 100.0);
+        assert!(
+            err < 0.5,
+            "Gold KK RMS error should be < 50%, got {:.1}%",
+            err * 100.0
+        );
     }
 
     #[test]
@@ -6564,8 +7389,11 @@ mod tests {
         // Silica (no Drude) should also pass KK consistency check.
         let silica = silica_optical();
         let err = silica.kramers_kronig_error(50.0, 20000);
-        assert!(err < 0.5,
-            "Silica KK RMS error should be < 50%, got {:.1}%", err * 100.0);
+        assert!(
+            err < 0.5,
+            "Silica KK RMS error should be < 50%, got {:.1}%",
+            err * 100.0
+        );
     }
 
     #[test]
@@ -6574,9 +7402,12 @@ mod tests {
         let gold = gold_drude_lorentz();
         let err_coarse = gold.kramers_kronig_error(50.0, 5000);
         let err_fine = gold.kramers_kronig_error(50.0, 20000);
-        assert!(err_fine < err_coarse,
+        assert!(
+            err_fine < err_coarse,
             "Finer grid ({:.3}) should have less KK error than coarse ({:.3})",
-            err_fine, err_coarse);
+            err_fine,
+            err_coarse
+        );
     }
 
     #[test]
@@ -6589,17 +7420,26 @@ mod tests {
         let gap_ev = gap.unwrap();
         // The Lorentz oscillator approximation shifts the gap somewhat,
         // but it should be in the UV range (3-7 eV).
-        assert!(gap_ev > 1.0,
-            "CaWO4 direct gap should be > 1 eV, got {:.2}", gap_ev);
-        assert!(gap_ev < 10.0,
-            "CaWO4 direct gap should be < 10 eV, got {:.2}", gap_ev);
+        assert!(
+            gap_ev > 1.0,
+            "CaWO4 direct gap should be > 1 eV, got {:.2}",
+            gap_ev
+        );
+        assert!(
+            gap_ev < 10.0,
+            "CaWO4 direct gap should be < 10 eV, got {:.2}",
+            gap_ev
+        );
     }
 
     #[test]
     fn test_tauc_metal_none() {
         // Metals have no Tauc gap.
         let gold = gold_drude_lorentz();
-        assert!(gold.tauc_gap_ev(2.0).is_none(), "Metals should have no Tauc gap");
+        assert!(
+            gold.tauc_gap_ev(2.0).is_none(),
+            "Metals should have no Tauc gap"
+        );
     }
 
     #[test]
@@ -6624,7 +7464,11 @@ mod tests {
         // physically meaningful, but should be a positive finite number
         // if the fit succeeded.
         if let Some(val) = e_u {
-            assert!(val > 0.0, "Urbach energy should be positive, got {:.3}", val);
+            assert!(
+                val > 0.0,
+                "Urbach energy should be positive, got {:.3}",
+                val
+            );
             assert!(val < 5.0, "Urbach energy should be < 5 eV, got {:.3}", val);
         }
     }
@@ -6632,7 +7476,10 @@ mod tests {
     #[test]
     fn test_urbach_metal_none() {
         let gold = gold_drude_lorentz();
-        assert!(gold.urbach_energy_ev().is_none(), "Metals have no Urbach energy");
+        assert!(
+            gold.urbach_energy_ev().is_none(),
+            "Metals have no Urbach energy"
+        );
     }
 
     #[test]
@@ -6644,10 +7491,16 @@ mod tests {
         assert!(gap.is_some(), "Silica should have a Penn gap");
         let gap_ev = gap.unwrap();
         // Penn gap for silica should be in the UV range (5-15 eV for SiO2)
-        assert!(gap_ev > 0.01,
-            "Penn gap should be > 0.01 eV, got {:.2}", gap_ev);
-        assert!(gap_ev < 30.0,
-            "Penn gap should be < 30 eV, got {:.2}", gap_ev);
+        assert!(
+            gap_ev > 0.01,
+            "Penn gap should be > 0.01 eV, got {:.2}",
+            gap_ev
+        );
+        assert!(
+            gap_ev < 30.0,
+            "Penn gap should be < 30 eV, got {:.2}",
+            gap_ev
+        );
     }
 
     #[test]
@@ -6664,17 +7517,25 @@ mod tests {
         let onset = wo3.absorption_onset_ev(0.1);
         assert!(onset.is_some(), "WO3 should have an absorption onset");
         let onset_ev = onset.unwrap();
-        assert!(onset_ev > 0.1,
-            "Onset should be > 0.1 eV, got {:.2}", onset_ev);
-        assert!(onset_ev < 10.0,
-            "Onset should be < 10 eV, got {:.2}", onset_ev);
+        assert!(
+            onset_ev > 0.1,
+            "Onset should be > 0.1 eV, got {:.2}",
+            onset_ev
+        );
+        assert!(
+            onset_ev < 10.0,
+            "Onset should be < 10 eV, got {:.2}",
+            onset_ev
+        );
     }
 
     #[test]
     fn test_absorption_onset_metal_none() {
         let gold = gold_drude_lorentz();
-        assert!(gold.absorption_onset_ev(0.1).is_none(),
-            "Metals should have no absorption onset (continuous spectrum)");
+        assert!(
+            gold.absorption_onset_ev(0.1).is_none(),
+            "Metals should have no absorption onset (continuous spectrum)"
+        );
     }
 
     #[test]
@@ -6685,8 +7546,12 @@ mod tests {
             let ev = i as f64 * 0.5;
             let omega = ev * EV_TO_RADS;
             let jdos = silica.joint_density_of_states(omega);
-            assert!(jdos >= 0.0,
-                "JDOS should be >= 0 at {} eV, got {:.4}", ev, jdos);
+            assert!(
+                jdos >= 0.0,
+                "JDOS should be >= 0 at {} eV, got {:.4}",
+                ev,
+                jdos
+            );
         }
     }
 
@@ -6700,9 +7565,12 @@ mod tests {
         let jdos_low = silica.joint_density_of_states(omega_low);
         let jdos_res = silica.joint_density_of_states(omega_res);
         // Near-resonance JDOS should dominate off-resonance
-        assert!(jdos_res > jdos_low,
+        assert!(
+            jdos_res > jdos_low,
             "JDOS near resonance ({:.2e}) should > off-resonance ({:.2e})",
-            jdos_res, jdos_low);
+            jdos_res,
+            jdos_low
+        );
     }
 
     #[test]
@@ -6711,9 +7579,11 @@ mod tests {
         // to the oscillator frequency.
         let simple = DrudeLorentzParams {
             drude: None,
-            oscillators: vec![
-                LorentzOscillator { strength: 1.0, omega_0_ev: 5.0, gamma_ev: 0.5 },
-            ],
+            oscillators: vec![LorentzOscillator {
+                strength: 1.0,
+                omega_0_ev: 5.0,
+                gamma_ev: 0.5,
+            }],
             eps_inf: 2.0,
             extended_drude: None,
         };
@@ -6723,8 +7593,11 @@ mod tests {
         // eps_s = eps_inf + S = 2.0 + 1.0 = 3.0
         // omega_p_eff = sqrt(S * omega_0^2) = sqrt(1*25) = 5.0 eV (in rad/s units)
         // E_g = omega_p_eff / sqrt(eps_s - 1) = 5.0/sqrt(2) = 3.54 eV
-        assert!((gap_ev - 3.536).abs() < 0.1,
-            "Penn gap should be ~3.54 eV for simple osc, got {:.3}", gap_ev);
+        assert!(
+            (gap_ev - 3.536).abs() < 0.1,
+            "Penn gap should be ~3.54 eV for simple osc, got {:.3}",
+            gap_ev
+        );
     }
 
     // ========================================================================
@@ -6741,9 +7614,13 @@ mod tests {
 
         // Every oscillator in the hot version should have gamma >= cold version
         for (h, c) in hot.oscillators.iter().zip(cold.oscillators.iter()) {
-            assert!(h.gamma_ev >= c.gamma_ev,
+            assert!(
+                h.gamma_ev >= c.gamma_ev,
                 "Hot gamma ({:.4}) should >= cold gamma ({:.4}) for omega_0={:.3} eV",
-                h.gamma_ev, c.gamma_ev, h.omega_0_ev);
+                h.gamma_ev,
+                c.gamma_ev,
+                h.omega_0_ev
+            );
         }
     }
 
@@ -6754,10 +7631,14 @@ mod tests {
         let hot = silica.at_temperature(500.0, None);
 
         for (h, c) in hot.oscillators.iter().zip(silica.oscillators.iter()) {
-            assert!((h.strength - c.strength).abs() < 1e-15,
-                "Strength should be preserved");
-            assert!((h.omega_0_ev - c.omega_0_ev).abs() < 1e-15,
-                "Frequency should be preserved");
+            assert!(
+                (h.strength - c.strength).abs() < 1e-15,
+                "Strength should be preserved"
+            );
+            assert!(
+                (h.omega_0_ev - c.omega_0_ev).abs() < 1e-15,
+                "Frequency should be preserved"
+            );
         }
     }
 
@@ -6771,8 +7652,11 @@ mod tests {
             // At 1K, kT = 8.6e-5 eV, omega_0 >> kT for all oscillators
             // so coth -> 1 and gamma should be essentially unchanged
             let ratio = h.gamma_ev / c.gamma_ev;
-            assert!((ratio - 1.0).abs() < 0.01,
-                "At 1K, gamma ratio should be ~1.0, got {:.4}", ratio);
+            assert!(
+                (ratio - 1.0).abs() < 0.01,
+                "At 1K, gamma ratio should be ~1.0, got {:.4}",
+                ratio
+            );
         }
     }
 
@@ -6785,17 +7669,23 @@ mod tests {
 
         let hot_gamma = hot.drude.unwrap().gamma_ev;
         let cold_gamma = cold.drude.unwrap().gamma_ev;
-        assert!(hot_gamma > cold_gamma,
+        assert!(
+            hot_gamma > cold_gamma,
             "Hot Drude gamma ({:.4}) should > cold ({:.4})",
-            hot_gamma, cold_gamma);
+            hot_gamma,
+            cold_gamma
+        );
 
         // At 300K: T/T_D = 1.76, (T/T_D)^2 = 3.11
         // gamma(300) = gamma_0 * (1 + 3.11) = 4.11 * gamma_0
         let expected_ratio = 1.0 + (300.0 / 170.0_f64).powi(2);
         let actual_ratio = hot_gamma / gold.drude.unwrap().gamma_ev;
-        assert!((actual_ratio - expected_ratio).abs() < 0.1,
+        assert!(
+            (actual_ratio - expected_ratio).abs() < 0.1,
             "Drude broadening ratio should be {:.2}, got {:.2}",
-            expected_ratio, actual_ratio);
+            expected_ratio,
+            actual_ratio
+        );
     }
 
     #[test]
@@ -6808,9 +7698,12 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let eps_cold = silica.epsilon(omega).im.abs();
         let eps_hot = hot.epsilon(omega).im.abs();
-        assert!(eps_hot >= eps_cold,
+        assert!(
+            eps_hot >= eps_cold,
             "Hot silica should be more absorptive: eps2_hot={:.4e} vs eps2_cold={:.4e}",
-            eps_hot, eps_cold);
+            eps_hot,
+            eps_cold
+        );
     }
 
     #[test]
@@ -6830,8 +7723,10 @@ mod tests {
     #[test]
     fn test_optical_effective_mass_dielectric_none() {
         let silica = silica_optical();
-        assert!(silica.optical_effective_mass(1e28).is_none(),
-            "Dielectrics should have no optical effective mass");
+        assert!(
+            silica.optical_effective_mass(1e28).is_none(),
+            "Dielectrics should have no optical effective mass"
+        );
     }
 
     #[test]
@@ -6843,8 +7738,12 @@ mod tests {
         // f=0: should give pure host (silica)
         let eps_f0 = silica.maxwell_garnett_mix(&gold, 0.0, omega);
         let eps_silica = silica.epsilon(omega);
-        assert!((eps_f0.re - eps_silica.re).abs() < 1e-10,
-            "f=0 MG should be pure host: {:.4} vs {:.4}", eps_f0.re, eps_silica.re);
+        assert!(
+            (eps_f0.re - eps_silica.re).abs() < 1e-10,
+            "f=0 MG should be pure host: {:.4} vs {:.4}",
+            eps_f0.re,
+            eps_silica.re
+        );
 
         // f=1: should give pure inclusion (gold) -- MG at f=1 recovers inclusion
         // (1 + 2*beta)/(1 - beta) * eps_host where beta = (eps_inc-eps_host)/(eps_inc+2*eps_host)
@@ -6852,8 +7751,12 @@ mod tests {
         //                = eps_host*(3*eps_inc)/(3*eps_host) = eps_inc
         let eps_f1 = silica.maxwell_garnett_mix(&gold, 1.0, omega);
         let eps_gold = gold.epsilon(omega);
-        assert!((eps_f1.re - eps_gold.re).abs() < 1e-6,
-            "f=1 MG should be pure inclusion: {:.4} vs {:.4}", eps_f1.re, eps_gold.re);
+        assert!(
+            (eps_f1.re - eps_gold.re).abs() < 1e-6,
+            "f=1 MG should be pure inclusion: {:.4} vs {:.4}",
+            eps_f1.re,
+            eps_gold.re
+        );
     }
 
     #[test]
@@ -6867,8 +7770,12 @@ mod tests {
         let eps_1 = gold.bruggeman_mix(&silica, 0.3, omega);
         let eps_2 = silica.bruggeman_mix(&gold, 0.7, omega);
 
-        assert!((eps_1.re - eps_2.re).abs() < 0.1,
-            "Bruggeman should be symmetric: {:.4} vs {:.4}", eps_1.re, eps_2.re);
+        assert!(
+            (eps_1.re - eps_2.re).abs() < 0.1,
+            "Bruggeman should be symmetric: {:.4} vs {:.4}",
+            eps_1.re,
+            eps_2.re
+        );
     }
 
     #[test]
@@ -6885,9 +7792,13 @@ mod tests {
         // Composite eps should be between the two pure values
         let min_re = eps_gold.min(eps_silica);
         let max_re = eps_gold.max(eps_silica);
-        assert!(eps_mix.re >= min_re && eps_mix.re <= max_re,
+        assert!(
+            eps_mix.re >= min_re && eps_mix.re <= max_re,
             "Bruggeman eps ({:.2}) should be between gold ({:.2}) and silica ({:.2})",
-            eps_mix.re, eps_gold, eps_silica);
+            eps_mix.re,
+            eps_gold,
+            eps_silica
+        );
     }
 
     #[test]
@@ -6903,8 +7814,11 @@ mod tests {
         let omega = 1.0 * EV_TO_RADS;
         let delta = gold.dielectric_contrast(&vacuum, omega);
         // For metals with |eps| >> 1, delta -> (eps-1)/(eps+1) -> 1
-        assert!(delta.norm() > 0.9,
-            "Gold-vacuum contrast should be ~1, got {:.3}", delta.norm());
+        assert!(
+            delta.norm() > 0.9,
+            "Gold-vacuum contrast should be ~1, got {:.3}",
+            delta.norm()
+        );
     }
 
     #[test]
@@ -6913,8 +7827,11 @@ mod tests {
         let silica = silica_optical();
         let omega = 2.0 * EV_TO_RADS;
         let delta = silica.dielectric_contrast(&silica, omega);
-        assert!(delta.norm() < 1e-10,
-            "Self-contrast should be 0, got {:.2e}", delta.norm());
+        assert!(
+            delta.norm() < 1e-10,
+            "Self-contrast should be 0, got {:.2e}",
+            delta.norm()
+        );
     }
 
     #[test]
@@ -6925,17 +7842,25 @@ mod tests {
         let ratio = gold.plasma_screening_ratio();
         assert!(ratio.is_some(), "Gold should have screening ratio");
         let r = ratio.unwrap();
-        assert!(r > 0.5,
-            "Gold screening ratio should be > 0.5, got {:.2}", r);
-        assert!(r < 1.0,
-            "Gold screening ratio should be < 1 (interband tails raise zero-crossing), got {:.2}", r);
+        assert!(
+            r > 0.5,
+            "Gold screening ratio should be > 0.5, got {:.2}",
+            r
+        );
+        assert!(
+            r < 1.0,
+            "Gold screening ratio should be < 1 (interband tails raise zero-crossing), got {:.2}",
+            r
+        );
     }
 
     #[test]
     fn test_plasma_screening_ratio_dielectric_none() {
         let silica = silica_optical();
-        assert!(silica.plasma_screening_ratio().is_none(),
-            "Dielectrics should have no screening ratio");
+        assert!(
+            silica.plasma_screening_ratio().is_none(),
+            "Dielectrics should have no screening ratio"
+        );
     }
 
     // ---- Part 9: Dispersion engineering + Nonlinear optics tests ----
@@ -6946,8 +7871,11 @@ mod tests {
         let silica = silica_optical();
         let omega_vis = 3.0 * EV_TO_RADS; // ~413 nm
         let beta2 = silica.gvd_beta2(omega_vis);
-        assert!(beta2 > 0.0,
-            "Silica should have normal dispersion at 3 eV, got beta2={:.3e}", beta2);
+        assert!(
+            beta2 > 0.0,
+            "Silica should have normal dispersion at 3 eV, got beta2={:.3e}",
+            beta2
+        );
     }
 
     #[test]
@@ -6958,8 +7886,11 @@ mod tests {
         let beta2_si = silica.gvd_beta2(omega);
         let beta2_fs = silica.gvd_fs2_per_mm(omega);
         let ratio = beta2_fs / beta2_si;
-        assert!((ratio - 1e27).abs() / 1e27 < 1e-6,
-            "Conversion factor should be 1e27, got {:.3e}", ratio);
+        assert!(
+            (ratio - 1e27).abs() / 1e27 < 1e-6,
+            "Conversion factor should be 1e27, got {:.3e}",
+            ratio
+        );
     }
 
     #[test]
@@ -6970,8 +7901,10 @@ mod tests {
         let omega = 1.5 * EV_TO_RADS; // infrared, well below plasma freq
         let regime = gold.dispersion_regime(omega);
         // Just verify it returns a valid classification
-        assert!(regime == 1 || regime == -1 || regime == 0,
-            "Dispersion regime should be -1, 0, or 1");
+        assert!(
+            regime == 1 || regime == -1 || regime == 0,
+            "Dispersion regime should be -1, 0, or 1"
+        );
     }
 
     #[test]
@@ -6980,8 +7913,10 @@ mod tests {
         let silica = silica_optical();
         let beta2_low = silica.gvd_beta2(1.0 * EV_TO_RADS);
         let beta2_high = silica.gvd_beta2(5.0 * EV_TO_RADS);
-        assert!((beta2_low - beta2_high).abs() > 1e-40,
-            "GVD should vary between 1 and 5 eV");
+        assert!(
+            (beta2_low - beta2_high).abs() > 1e-40,
+            "GVD should vary between 1 and 5 eV"
+        );
     }
 
     #[test]
@@ -7002,8 +7937,12 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let chi3_gold = gold.chi3_miller_estimate(omega);
         let chi3_silica = silica.chi3_miller_estimate(omega);
-        assert!(chi3_gold > chi3_silica * 100.0,
-            "Gold chi3 ({:.3e}) should be >> silica ({:.3e})", chi3_gold, chi3_silica);
+        assert!(
+            chi3_gold > chi3_silica * 100.0,
+            "Gold chi3 ({:.3e}) should be >> silica ({:.3e})",
+            chi3_gold,
+            chi3_silica
+        );
     }
 
     #[test]
@@ -7015,8 +7954,11 @@ mod tests {
         let n2 = silica.kerr_n2_estimate(omega);
         assert!(n2 > 0.0, "Kerr n_2 should be positive");
         // Within a few orders of magnitude of 1e-20
-        assert!(n2 > 1e-25 && n2 < 1e-15,
-            "Silica n_2 should be ~1e-20 m^2/W (order of magnitude), got {:.3e}", n2);
+        assert!(
+            n2 > 1e-25 && n2 < 1e-15,
+            "Silica n_2 should be ~1e-20 m^2/W (order of magnitude), got {:.3e}",
+            n2
+        );
     }
 
     #[test]
@@ -7028,8 +7970,10 @@ mod tests {
         let chi3 = silica.chi3_miller_estimate(omega);
         let n = silica.refractive_index(omega).re;
         let expected_n2 = 3.0 * chi3 / (4.0 * EPS_0 * C * n * n);
-        assert!((n2 - expected_n2).abs() / expected_n2 < 1e-10,
-            "n_2 and chi3 should be related by 3/(4*eps0*c*n^2)");
+        assert!(
+            (n2 - expected_n2).abs() / expected_n2 < 1e-10,
+            "n_2 and chi3 should be related by 3/(4*eps0*c*n^2)"
+        );
     }
 
     #[test]
@@ -7037,8 +7981,10 @@ mod tests {
         // Metals have no Tauc gap, so TPA should return None
         let gold = gold_drude_lorentz();
         let omega = 2.0 * EV_TO_RADS;
-        assert!(gold.beta_tpa_estimate(omega).is_none(),
-            "Metals should have no TPA coefficient");
+        assert!(
+            gold.beta_tpa_estimate(omega).is_none(),
+            "Metals should have no TPA coefficient"
+        );
     }
 
     #[test]
@@ -7047,8 +7993,10 @@ mod tests {
         let cawo4 = cawo4_optical();
         // CaWO4 gap ~ 5 eV, so we need hv > 2.5 eV for TPA
         let omega_low = 0.5 * EV_TO_RADS; // 0.5 eV << 2.5 eV threshold
-        assert!(cawo4.beta_tpa_estimate(omega_low).is_none(),
-            "TPA below threshold should return None");
+        assert!(
+            cawo4.beta_tpa_estimate(omega_low).is_none(),
+            "TPA below threshold should return None"
+        );
     }
 
     #[test]
@@ -7057,7 +8005,11 @@ mod tests {
         let cawo4 = cawo4_optical();
         let omega = 4.0 * EV_TO_RADS;
         if let Some(beta) = cawo4.beta_tpa_estimate(omega) {
-            assert!(beta > 0.0, "TPA coefficient should be positive, got {:.3e}", beta);
+            assert!(
+                beta > 0.0,
+                "TPA coefficient should be positive, got {:.3e}",
+                beta
+            );
         }
         // Note: may return None if Tauc gap finder doesn't find a gap,
         // which is acceptable (Lorentz tail issue)
@@ -7084,8 +8036,12 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS; // below screened plasma freq
         let k_spp = gold.spp_wavevector(omega, 1.0);
         let k_light = omega / C;
-        assert!(k_spp.re > k_light,
-            "SPP k_spp ({:.3e}) should exceed light line ({:.3e})", k_spp.re, k_light);
+        assert!(
+            k_spp.re > k_light,
+            "SPP k_spp ({:.3e}) should exceed light line ({:.3e})",
+            k_spp.re,
+            k_light
+        );
     }
 
     #[test]
@@ -7094,8 +8050,10 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = 2.0 * EV_TO_RADS;
         let k_spp = gold.spp_wavevector(omega, 1.0);
-        assert!(k_spp.im.abs() > 0.0,
-            "SPP should have nonzero imaginary wavevector (damping)");
+        assert!(
+            k_spp.im.abs() > 0.0,
+            "SPP should have nonzero imaginary wavevector (damping)"
+        );
     }
 
     #[test]
@@ -7106,8 +8064,11 @@ mod tests {
         let l_spp = gold.spp_propagation_length(omega, 1.0);
         assert!(l_spp.is_some(), "Gold should have SPP propagation length");
         let l = l_spp.unwrap();
-        assert!(l > 1e-7 && l < 1e-3,
-            "Gold SPP propagation length should be 0.1-1000 um, got {:.3e} m", l);
+        assert!(
+            l > 1e-7 && l < 1e-3,
+            "Gold SPP propagation length should be 0.1-1000 um, got {:.3e} m",
+            l
+        );
     }
 
     #[test]
@@ -7119,8 +8080,12 @@ mod tests {
         let l_glass = gold.spp_propagation_length(omega, 2.25).unwrap();
         // SPP in glass has shorter propagation than in vacuum because
         // higher eps_d confines the mode more to the metal
-        assert!(l_glass < l_vacuum,
-            "Glass SPP ({:.3e}) should propagate less than vacuum ({:.3e})", l_glass, l_vacuum);
+        assert!(
+            l_glass < l_vacuum,
+            "Glass SPP ({:.3e}) should propagate less than vacuum ({:.3e})",
+            l_glass,
+            l_vacuum
+        );
     }
 
     #[test]
@@ -7131,8 +8096,11 @@ mod tests {
         let delta = gold.evanescent_decay_length(omega);
         assert!(delta.is_some(), "Gold should have evanescent decay at 1 eV");
         let d = delta.unwrap();
-        assert!(d > 1e-9 && d < 1e-5,
-            "Gold evanescent decay should be 1-10000 nm, got {:.3e} m", d);
+        assert!(
+            d > 1e-9 && d < 1e-5,
+            "Gold evanescent decay should be 1-10000 nm, got {:.3e} m",
+            d
+        );
     }
 
     #[test]
@@ -7140,8 +8108,10 @@ mod tests {
         // Dielectrics with Re[eps] > 0 should return None
         let silica = silica_optical();
         let omega = 2.0 * EV_TO_RADS;
-        assert!(silica.evanescent_decay_length(omega).is_none(),
-            "Dielectrics should have no evanescent decay length");
+        assert!(
+            silica.evanescent_decay_length(omega).is_none(),
+            "Dielectrics should have no evanescent decay length"
+        );
     }
 
     #[test]
@@ -7151,8 +8121,11 @@ mod tests {
         let omega_lspr = gold.lspr_frequency(1.0);
         assert!(omega_lspr.is_some(), "Gold should have LSPR in vacuum");
         let ev = omega_lspr.unwrap() / EV_TO_RADS;
-        assert!(ev > 1.0 && ev < 10.0,
-            "Gold LSPR should be 1-10 eV, got {:.3} eV", ev);
+        assert!(
+            ev > 1.0 && ev < 10.0,
+            "Gold LSPR should be 1-10 eV, got {:.3} eV",
+            ev
+        );
     }
 
     #[test]
@@ -7161,17 +8134,22 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega_vac = gold.lspr_frequency(1.0).unwrap();
         let omega_glass = gold.lspr_frequency(2.25).unwrap();
-        assert!(omega_glass < omega_vac,
+        assert!(
+            omega_glass < omega_vac,
             "LSPR should redshift in glass ({:.3e}) vs vacuum ({:.3e})",
-            omega_glass / EV_TO_RADS, omega_vac / EV_TO_RADS);
+            omega_glass / EV_TO_RADS,
+            omega_vac / EV_TO_RADS
+        );
     }
 
     #[test]
     fn test_lspr_dielectric_none() {
         // Dielectrics never reach Re[eps] = -2, so no LSPR
         let silica = silica_optical();
-        assert!(silica.lspr_frequency(1.0).is_none(),
-            "Dielectrics should have no LSPR");
+        assert!(
+            silica.lspr_frequency(1.0).is_none(),
+            "Dielectrics should have no LSPR"
+        );
     }
 
     // ---- Correct Lifshitz formula tests (Sprint 45) ----
@@ -7183,7 +8161,8 @@ mod tests {
         let eps_static = sio2.epsilon_imaginary(1.0); // xi=1 rad/s ~ dc limit
         assert!(
             (eps_static - 3.8).abs() < 0.01,
-            "SiO2 static eps should be ~3.80, got {:.4}", eps_static
+            "SiO2 static eps should be ~3.80, got {:.4}",
+            eps_static
         );
     }
 
@@ -7192,7 +8171,11 @@ mod tests {
         // Casimir energy between identical dielectric plates must be attractive (negative)
         let sio2 = silica_casimir_optical();
         let e = casimir_lifshitz_energy(&sio2, &sio2, 100e-9, 300.0, 500, 32);
-        assert!(e < 0.0, "Casimir energy must be negative (attractive), got {:.4e}", e);
+        assert!(
+            e < 0.0,
+            "Casimir energy must be negative (attractive), got {:.4e}",
+            e
+        );
     }
 
     #[test]
@@ -7204,7 +8187,8 @@ mod tests {
         assert!(
             e100 < e200,
             "Energy at 100nm ({:.3e}) should be more negative than at 200nm ({:.3e})",
-            e100, e200
+            e100,
+            e200
         );
     }
 
@@ -7217,7 +8201,8 @@ mod tests {
         let rel_diff = (e32 - e64).abs() / e64.abs();
         assert!(
             rel_diff < 1e-3,
-            "GL 32 vs 64 should agree to 0.1%, rel diff = {:.2e}", rel_diff
+            "GL 32 vs 64 should agree to 0.1%, rel diff = {:.2e}",
+            rel_diff
         );
     }
 
@@ -7231,7 +8216,8 @@ mod tests {
         assert!(
             f_si > f_sio2,
             "Si force ({:.3e}) should exceed SiO2 force ({:.3e}) due to higher eps",
-            f_si, f_sio2
+            f_si,
+            f_sio2
         );
     }
 
@@ -7244,11 +8230,14 @@ mod tests {
             casimir_drude_plasma_discrepancy(&gold, omega_p_ev, 100e-9, 300.0, 300, 32);
         assert!(
             discrepancy > 0.1,
-            "Drude-plasma discrepancy for Au should be > 0.1%, got {:.3}%", discrepancy
+            "Drude-plasma discrepancy for Au should be > 0.1%, got {:.3}%",
+            discrepancy
         );
         assert!(
             e_plasma < e_drude, // plasma is more attractive (more negative)
-            "Plasma model ({:.3e}) should be more attractive than Drude ({:.3e})", e_plasma, e_drude
+            "Plasma model ({:.3e}) should be more attractive than Drude ({:.3e})",
+            e_plasma,
+            e_drude
         );
     }
 
@@ -7262,7 +8251,8 @@ mod tests {
         assert!(
             e_lifshitz > e_ideal,
             "Lifshitz energy ({:.3e}) should be less attractive than ideal ({:.3e})",
-            e_lifshitz, e_ideal
+            e_lifshitz,
+            e_ideal
         );
     }
 
@@ -7273,10 +8263,14 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let r_normal = gold.reflectivity_normal(omega);
         let (rs_sq, rp_sq) = gold.reflectance_angular(omega, 0.0, 1.0);
-        assert!((rs_sq - r_normal).abs() < 1e-10,
-            "R_s at normal should match reflectivity_normal()");
-        assert!((rp_sq - r_normal).abs() < 1e-10,
-            "R_p at normal should match reflectivity_normal()");
+        assert!(
+            (rs_sq - r_normal).abs() < 1e-10,
+            "R_s at normal should match reflectivity_normal()"
+        );
+        assert!(
+            (rp_sq - r_normal).abs() < 1e-10,
+            "R_p at normal should match reflectivity_normal()"
+        );
     }
 
     #[test]
@@ -7286,8 +8280,7 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let theta_graze = 1.5; // ~86 degrees, close to grazing
         let (rs, rp) = silica.reflectance_angular(omega, theta_graze, 1.0);
-        assert!(rs > 0.5,
-            "R_s at grazing should approach 1, got {:.4}", rs);
+        assert!(rs > 0.5, "R_s at grazing should approach 1, got {:.4}", rs);
         assert!(rp > 0.0, "R_p should be non-negative at grazing");
     }
 
@@ -7299,8 +8292,11 @@ mod tests {
         let theta_b = silica.brewster_angle(omega, 1.0);
         assert!(theta_b.is_some(), "Silica should have a Brewster angle");
         let deg = theta_b.unwrap() * 180.0 / std::f64::consts::PI;
-        assert!(deg > 40.0 && deg < 70.0,
-            "Silica Brewster angle should be 40-70 deg, got {:.1} deg", deg);
+        assert!(
+            deg > 40.0 && deg < 70.0,
+            "Silica Brewster angle should be 40-70 deg, got {:.1} deg",
+            deg
+        );
     }
 
     #[test]
@@ -7308,8 +8304,10 @@ mod tests {
         // Metals are absorbing, so Brewster angle should return None
         let gold = gold_drude_lorentz();
         let omega = 2.0 * EV_TO_RADS;
-        assert!(gold.brewster_angle(omega, 1.0).is_none(),
-            "Metals should have no Brewster angle (absorbing)");
+        assert!(
+            gold.brewster_angle(omega, 1.0).is_none(),
+            "Metals should have no Brewster angle (absorbing)"
+        );
     }
 
     #[test]
@@ -7321,10 +8319,18 @@ mod tests {
         let (_, rp_brewster) = silica.reflectance_angular(omega, theta_b, 1.0);
         let (_, rp_normal) = silica.reflectance_angular(omega, 0.0, 1.0);
         let (_, rp_steep) = silica.reflectance_angular(omega, 1.2, 1.0);
-        assert!(rp_brewster < rp_normal,
-            "R_p at Brewster ({:.6}) should be less than at normal ({:.6})", rp_brewster, rp_normal);
-        assert!(rp_brewster < rp_steep,
-            "R_p at Brewster ({:.6}) should be less than at steep angle ({:.6})", rp_brewster, rp_steep);
+        assert!(
+            rp_brewster < rp_normal,
+            "R_p at Brewster ({:.6}) should be less than at normal ({:.6})",
+            rp_brewster,
+            rp_normal
+        );
+        assert!(
+            rp_brewster < rp_steep,
+            "R_p at Brewster ({:.6}) should be less than at steep angle ({:.6})",
+            rp_brewster,
+            rp_steep
+        );
     }
 
     // ---- Gold Rakic 6-oscillator model tests ----
@@ -7332,8 +8338,11 @@ mod tests {
     #[test]
     fn test_gold_rakic_5_oscillators() {
         let gold = gold_rakic_ld();
-        assert_eq!(gold.oscillators.len(), 5,
-            "Rakic gold should have 5 Lorentz oscillators");
+        assert_eq!(
+            gold.oscillators.len(),
+            5,
+            "Rakic gold should have 5 Lorentz oscillators"
+        );
         assert!(gold.drude.is_some(), "Rakic gold should have Drude term");
     }
 
@@ -7342,8 +8351,11 @@ mod tests {
         // omega_p_eff = sqrt(0.76) * 9.03 ~ 7.87 eV
         let gold = gold_rakic_ld();
         let omega_p = gold.drude.as_ref().unwrap().omega_p_ev;
-        assert!((omega_p - 7.87).abs() < 0.1,
-            "Rakic gold omega_p_eff should be ~7.87 eV, got {:.3}", omega_p);
+        assert!(
+            (omega_p - 7.87).abs() < 0.1,
+            "Rakic gold omega_p_eff should be ~7.87 eV, got {:.3}",
+            omega_p
+        );
     }
 
     #[test]
@@ -7354,8 +8366,11 @@ mod tests {
         let omega_lspr = gold.lspr_frequency(1.0);
         assert!(omega_lspr.is_some(), "Rakic gold should have LSPR");
         let ev = omega_lspr.unwrap() / EV_TO_RADS;
-        assert!(ev > 2.0 && ev < 3.5,
-            "Rakic gold LSPR should be 2.0-3.5 eV, got {:.3} eV", ev);
+        assert!(
+            ev > 2.0 && ev < 3.5,
+            "Rakic gold LSPR should be 2.0-3.5 eV, got {:.3} eV",
+            ev
+        );
     }
 
     #[test]
@@ -7366,9 +8381,13 @@ mod tests {
         let lspr_2osc = gold_2osc.lspr_frequency(1.0).unwrap() / EV_TO_RADS;
         let lspr_6osc = gold_6osc.lspr_frequency(1.0).unwrap() / EV_TO_RADS;
         let exp_lspr = 2.5; // eV, experimental
-        assert!((lspr_6osc - exp_lspr).abs() < (lspr_2osc - exp_lspr).abs(),
+        assert!(
+            (lspr_6osc - exp_lspr).abs() < (lspr_2osc - exp_lspr).abs(),
             "6-osc LSPR ({:.3} eV) should be closer to exp ({:.1} eV) than 2-osc ({:.3} eV)",
-            lspr_6osc, exp_lspr, lspr_2osc);
+            lspr_6osc,
+            exp_lspr,
+            lspr_2osc
+        );
     }
 
     #[test]
@@ -7376,8 +8395,11 @@ mod tests {
         // Re[eps] should be strongly negative at visible frequencies (2 eV)
         let gold = gold_rakic_ld();
         let eps = gold.epsilon(2.0 * EV_TO_RADS);
-        assert!(eps.re < -1.0,
-            "Rakic gold should be metallic at 2 eV, Re[eps]={:.3}", eps.re);
+        assert!(
+            eps.re < -1.0,
+            "Rakic gold should be metallic at 2 eV, Re[eps]={:.3}",
+            eps.re
+        );
     }
 
     #[test]
@@ -7393,8 +8415,11 @@ mod tests {
         // Gold reflectivity should be > 95% at 1 eV (IR) for both models
         let gold = gold_rakic_ld();
         let r = gold.reflectivity_normal(1.0 * EV_TO_RADS);
-        assert!(r > 0.90,
-            "Rakic gold reflectivity at 1 eV should be > 90%, got {:.3}", r);
+        assert!(
+            r > 0.90,
+            "Rakic gold reflectivity at 1 eV should be > 90%, got {:.3}",
+            r
+        );
     }
 
     // ---- Part 11: Magneto-optical + Drude diagnostic tests ----
@@ -7410,8 +8435,10 @@ mod tests {
     #[test]
     fn test_drude_weight_dielectric_none() {
         let silica = silica_optical();
-        assert!(silica.drude_weight().is_none(),
-            "Dielectrics should have no Drude weight");
+        assert!(
+            silica.drude_weight().is_none(),
+            "Dielectrics should have no Drude weight"
+        );
     }
 
     #[test]
@@ -7425,8 +8452,10 @@ mod tests {
         let omega_p_silver = silver.drude.as_ref().unwrap().omega_p_ev;
         let ratio_dw = dw_gold / dw_silver;
         let ratio_wp2 = (omega_p_gold / omega_p_silver).powi(2);
-        assert!((ratio_dw - ratio_wp2).abs() / ratio_wp2 < 1e-6,
-            "Drude weight ratio should match omega_p^2 ratio");
+        assert!(
+            (ratio_dw - ratio_wp2).abs() / ratio_wp2 < 1e-6,
+            "Drude weight ratio should match omega_p^2 ratio"
+        );
     }
 
     #[test]
@@ -7436,15 +8465,20 @@ mod tests {
         let rho = gold.dc_resistivity();
         assert!(rho.is_some(), "Gold should have DC resistivity");
         let r = rho.unwrap();
-        assert!(r > 1e-10 && r < 1e-5,
-            "Gold DC resistivity should be ~1e-8 Ohm*m, got {:.3e}", r);
+        assert!(
+            r > 1e-10 && r < 1e-5,
+            "Gold DC resistivity should be ~1e-8 Ohm*m, got {:.3e}",
+            r
+        );
     }
 
     #[test]
     fn test_dc_resistivity_dielectric_none() {
         let silica = silica_optical();
-        assert!(silica.dc_resistivity().is_none(),
-            "Dielectrics should have no DC resistivity from Drude");
+        assert!(
+            silica.dc_resistivity().is_none(),
+            "Dielectrics should have no DC resistivity from Drude"
+        );
     }
 
     #[test]
@@ -7454,8 +8488,11 @@ mod tests {
         let tau = gold.scattering_time();
         assert!(tau.is_some(), "Gold should have scattering time");
         let t = tau.unwrap();
-        assert!(t > 1e-16 && t < 1e-12,
-            "Gold tau should be ~10 fs, got {:.3e} s", t);
+        assert!(
+            t > 1e-16 && t < 1e-12,
+            "Gold tau should be ~10 fs, got {:.3e} s",
+            t
+        );
     }
 
     #[test]
@@ -7466,15 +8503,20 @@ mod tests {
         let mu = gold.carrier_mobility(n);
         assert!(mu.is_some(), "Gold should have carrier mobility");
         let m = mu.unwrap();
-        assert!(m > 1e-5 && m < 1.0,
-            "Gold mobility should be ~0.004 m^2/(V*s), got {:.3e}", m);
+        assert!(
+            m > 1e-5 && m < 1.0,
+            "Gold mobility should be ~0.004 m^2/(V*s), got {:.3e}",
+            m
+        );
     }
 
     #[test]
     fn test_carrier_mobility_dielectric_none() {
         let silica = silica_optical();
-        assert!(silica.carrier_mobility(1e20).is_none(),
-            "Dielectrics should have no carrier mobility");
+        assert!(
+            silica.carrier_mobility(1e20).is_none(),
+            "Dielectrics should have no carrier mobility"
+        );
     }
 
     #[test]
@@ -7484,9 +8526,16 @@ mod tests {
         let omega = 2.0 * EV_TO_RADS;
         let n = 5.9e28;
         let eps_xy = gold.voigt_eps_xy(omega, 1.0, n);
-        assert!(eps_xy.is_some(), "Gold should have Voigt element in B field");
+        assert!(
+            eps_xy.is_some(),
+            "Gold should have Voigt element in B field"
+        );
         let e = eps_xy.unwrap();
-        assert!(e.norm() > 0.0, "Voigt eps_xy should be nonzero, got {:.3e}", e.norm());
+        assert!(
+            e.norm() > 0.0,
+            "Voigt eps_xy should be nonzero, got {:.3e}",
+            e.norm()
+        );
     }
 
     #[test]
@@ -7498,8 +8547,11 @@ mod tests {
         let eps_1t = gold.voigt_eps_xy(omega, 1.0, n).unwrap();
         let eps_2t = gold.voigt_eps_xy(omega, 2.0, n).unwrap();
         let ratio = eps_2t.norm() / eps_1t.norm();
-        assert!((ratio - 2.0).abs() < 0.01,
-            "Voigt eps_xy should scale linearly with B, got ratio {:.4}", ratio);
+        assert!(
+            (ratio - 2.0).abs() < 0.01,
+            "Voigt eps_xy should scale linearly with B, got ratio {:.4}",
+            ratio
+        );
     }
 
     #[test]
@@ -7509,15 +8561,21 @@ mod tests {
         let n = 5.9e28;
         let theta = gold.faraday_rotation(omega, 1.0, n);
         assert!(theta.is_some(), "Gold should have Faraday rotation");
-        assert!(theta.unwrap().abs() > 0.0,
-            "Faraday rotation should be nonzero in B field");
+        assert!(
+            theta.unwrap().abs() > 0.0,
+            "Faraday rotation should be nonzero in B field"
+        );
     }
 
     #[test]
     fn test_faraday_rotation_dielectric_none() {
         let silica = silica_optical();
-        assert!(silica.faraday_rotation(2.0 * EV_TO_RADS, 1.0, 1e20).is_none(),
-            "Dielectrics should have no Faraday rotation from Drude");
+        assert!(
+            silica
+                .faraday_rotation(2.0 * EV_TO_RADS, 1.0, 1e20)
+                .is_none(),
+            "Dielectrics should have no Faraday rotation from Drude"
+        );
     }
 
     #[test]
@@ -7525,8 +8583,11 @@ mod tests {
         // For gold: n=5.9e28, m*=1 -> omega_p ~ 1.4e16 rad/s ~ 9.2 eV
         let omega_p = DrudeLorentzParams::plasma_frequency_from_density(5.9e28, 1.0);
         let ev = omega_p / EV_TO_RADS;
-        assert!(ev > 5.0 && ev < 15.0,
-            "Gold plasma frequency should be ~9 eV, got {:.2} eV", ev);
+        assert!(
+            ev > 5.0 && ev < 15.0,
+            "Gold plasma frequency should be ~9 eV, got {:.2} eV",
+            ev
+        );
     }
 
     #[test]
@@ -7538,8 +8599,11 @@ mod tests {
         let mu = gold.carrier_mobility(n).unwrap();
         let rho_from_mu = 1.0 / (n * E_CHARGE * mu);
         let ratio = rho / rho_from_mu;
-        assert!((ratio - 1.0).abs() < 0.2,
-            "rho and 1/(n*e*mu) should agree within 20%, ratio={:.4}", ratio);
+        assert!(
+            (ratio - 1.0).abs() < 0.2,
+            "rho and 1/(n*e*mu) should agree within 20%, ratio={:.4}",
+            ratio
+        );
     }
 
     // ====================================================================
@@ -7554,8 +8618,11 @@ mod tests {
         let omega = ev_to_omega(1.0);
         let (psi, _delta) = gold.psi_delta(omega, 0.001); // near-normal
         // psi should be close to pi/4 = 0.785 rad
-        assert!((psi - std::f64::consts::FRAC_PI_4).abs() < 0.05,
-            "psi at near-normal should be ~pi/4, got {:.4}", psi);
+        assert!(
+            (psi - std::f64::consts::FRAC_PI_4).abs() < 0.05,
+            "psi at near-normal should be ~pi/4, got {:.4}",
+            psi
+        );
     }
 
     #[test]
@@ -7565,11 +8632,17 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let (psi, delta) = gold.psi_delta(omega, 70.0_f64.to_radians());
         // psi should be between 0 and pi/2
-        assert!(psi > 0.0 && psi < std::f64::consts::FRAC_PI_2,
-            "psi should be in (0, pi/2), got {:.4}", psi);
+        assert!(
+            psi > 0.0 && psi < std::f64::consts::FRAC_PI_2,
+            "psi should be in (0, pi/2), got {:.4}",
+            psi
+        );
         // delta should be nonzero for a metal
-        assert!(delta.abs() > 0.01,
-            "delta should be nonzero for metal, got {:.4}", delta);
+        assert!(
+            delta.abs() > 0.01,
+            "delta should be nonzero for metal, got {:.4}",
+            delta
+        );
     }
 
     #[test]
@@ -7579,8 +8652,11 @@ mod tests {
         let omega = ev_to_omega(2.0);
         if let Some(theta_b) = silica.brewster_angle(omega, 1.0) {
             let (psi, _delta) = silica.psi_delta(omega, theta_b);
-            assert!(psi < 0.1,
-                "psi near Brewster should be small, got {:.4}", psi);
+            assert!(
+                psi < 0.1,
+                "psi near Brewster should be small, got {:.4}",
+                psi
+            );
         }
     }
 
@@ -7590,8 +8666,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(1.0); // IR
         let e = gold.emissivity(omega);
-        assert!(e > 0.0 && e < 0.2,
-            "Gold emissivity at 1 eV should be < 0.2, got {:.4}", e);
+        assert!(
+            e > 0.0 && e < 0.2,
+            "Gold emissivity at 1 eV should be < 0.2, got {:.4}",
+            e
+        );
     }
 
     #[test]
@@ -7600,8 +8679,11 @@ mod tests {
         let silica = silica_optical();
         let omega = ev_to_omega(2.0);
         let e = silica.emissivity(omega);
-        assert!(e > 0.8,
-            "Silica emissivity should be > 0.8 in transparent region, got {:.4}", e);
+        assert!(
+            e > 0.8,
+            "Silica emissivity should be > 0.8 in transparent region, got {:.4}",
+            e
+        );
     }
 
     #[test]
@@ -7611,8 +8693,11 @@ mod tests {
         let omega = ev_to_omega(1.5);
         let e = gold.emissivity(omega);
         let r = gold.reflectivity_normal(omega);
-        assert!((e + r - 1.0).abs() < 1e-12,
-            "emissivity + reflectivity should be 1, got {:.10}", e + r);
+        assert!(
+            (e + r - 1.0).abs() < 1e-12,
+            "emissivity + reflectivity should be 1, got {:.10}",
+            e + r
+        );
     }
 
     #[test]
@@ -7629,8 +8714,11 @@ mod tests {
         // Room temperature, mid-infrared (0.1 eV ~ 12 um ~ 25 THz)
         let omega = ev_to_omega(0.1);
         let l = gold.spectral_emittance(omega, 300.0);
-        assert!(l > 0.0,
-            "Spectral emittance at 300K should be positive, got {:.6e}", l);
+        assert!(
+            l > 0.0,
+            "Spectral emittance at 300K should be positive, got {:.6e}",
+            l
+        );
     }
 
     #[test]
@@ -7639,8 +8727,12 @@ mod tests {
         let omega = ev_to_omega(0.1);
         let l300 = silica.spectral_emittance(omega, 300.0);
         let l600 = silica.spectral_emittance(omega, 600.0);
-        assert!(l600 > l300,
-            "Emittance should increase with T: {:.6e} vs {:.6e}", l300, l600);
+        assert!(
+            l600 > l300,
+            "Emittance should increase with T: {:.6e} vs {:.6e}",
+            l300,
+            l600
+        );
     }
 
     #[test]
@@ -7651,9 +8743,12 @@ mod tests {
         let omega_max = ev_to_omega(5.0);
         let e_gold = gold.integrated_emissivity(300.0, omega_min, omega_max, 500);
         let e_silica = silica.integrated_emissivity(300.0, omega_min, omega_max, 500);
-        assert!(e_gold < e_silica,
+        assert!(
+            e_gold < e_silica,
             "Gold should have lower integrated emissivity than silica: {:.4} vs {:.4}",
-            e_gold, e_silica);
+            e_gold,
+            e_silica
+        );
     }
 
     #[test]
@@ -7666,8 +8761,11 @@ mod tests {
         assert!(enz.is_some(), "Gold should have an ENZ crossing");
         let enz_ev = enz.unwrap() / EV_TO_RADS;
         // Should be between 5 and 12 eV (screened plasma frequency)
-        assert!(enz_ev > 5.0 && enz_ev < 12.0,
-            "Gold ENZ should be 5-12 eV, got {:.2}", enz_ev);
+        assert!(
+            enz_ev > 5.0 && enz_ev < 12.0,
+            "Gold ENZ should be 5-12 eV, got {:.2}",
+            enz_ev
+        );
     }
 
     #[test]
@@ -7695,8 +8793,11 @@ mod tests {
         assert!(v_g.is_some(), "Gold should have ENZ group velocity");
         let v = v_g.unwrap();
         // Group velocity at ENZ is typically 0.1-10 * c
-        assert!(v.abs() > 0.01,
-            "ENZ group velocity should be > 0.01c, got {:.4}", v);
+        assert!(
+            v.abs() > 0.01,
+            "ENZ group velocity should be > 0.01c, got {:.4}",
+            v
+        );
     }
 
     #[test]
@@ -7707,12 +8808,19 @@ mod tests {
         assert!(band.is_some(), "SrTiO3 should have a reststrahlen band");
         let (omega_to, omega_lo) = band.unwrap();
         // omega_LO > omega_TO (Lyddane-Sachs-Teller)
-        assert!(omega_lo > omega_to,
-            "omega_LO should exceed omega_TO: {:.4e} vs {:.4e}", omega_lo, omega_to);
+        assert!(
+            omega_lo > omega_to,
+            "omega_LO should exceed omega_TO: {:.4e} vs {:.4e}",
+            omega_lo,
+            omega_to
+        );
         // Strongest phonon in SrTiO3 is ~0.022 eV (soft mode)
         let to_ev = omega_to / EV_TO_RADS;
-        assert!(to_ev > 0.01 && to_ev < 0.2,
-            "SrTiO3 TO frequency should be 0.01-0.2 eV, got {:.4}", to_ev);
+        assert!(
+            to_ev > 0.01 && to_ev < 0.2,
+            "SrTiO3 TO frequency should be 0.01-0.2 eV, got {:.4}",
+            to_ev
+        );
     }
 
     #[test]
@@ -7724,8 +8832,10 @@ mod tests {
             eps_inf: 1.0,
             extended_drude: None,
         };
-        assert!(al.reststrahlen_band().is_none(),
-            "Pure Drude metal should have no reststrahlen band");
+        assert!(
+            al.reststrahlen_band().is_none(),
+            "Pure Drude metal should have no reststrahlen band"
+        );
     }
 
     #[test]
@@ -7736,13 +8846,19 @@ mod tests {
         let (omega_to, omega_lo) = band;
         let lst_ratio = (omega_lo / omega_to).powi(2);
         // Get eps_static from strongest oscillator
-        let strongest = srtio3.oscillators.iter()
+        let strongest = srtio3
+            .oscillators
+            .iter()
             .max_by(|a, b| a.strength.partial_cmp(&b.strength).unwrap())
             .unwrap();
         let eps_s = srtio3.eps_inf + strongest.strength;
         let expected_ratio = eps_s / srtio3.eps_inf;
-        assert!((lst_ratio - expected_ratio).abs() / expected_ratio < 0.01,
-            "LST ratio should match: {:.4} vs {:.4}", lst_ratio, expected_ratio);
+        assert!(
+            (lst_ratio - expected_ratio).abs() / expected_ratio < 0.01,
+            "LST ratio should match: {:.4} vs {:.4}",
+            lst_ratio,
+            expected_ratio
+        );
     }
 
     // ====================================================================
@@ -7757,8 +8873,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(1.0); // IR, well below interband
         let slf = gold.surface_loss_function(omega);
-        assert!(slf.abs() > 1e-6,
-            "Surface loss function should be nonzero, got {:.6e}", slf);
+        assert!(
+            slf.abs() > 1e-6,
+            "Surface loss function should be nonzero, got {:.6e}",
+            slf
+        );
     }
 
     #[test]
@@ -7778,8 +8897,11 @@ mod tests {
             }
         }
         // Surface plasmon should be between 1 and 15 eV for gold
-        assert!(max_ev > 1.0 && max_ev < 15.0,
-            "Surface loss peak should be 1-15 eV, got {:.2} eV", max_ev);
+        assert!(
+            max_ev > 1.0 && max_ev < 15.0,
+            "Surface loss peak should be 1-15 eV, got {:.2} eV",
+            max_ev
+        );
     }
 
     #[test]
@@ -7789,8 +8911,10 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let vlw = gold.volume_loss_weighted(omega);
         let lf = gold.loss_function(omega);
-        assert!((vlw - omega * lf).abs() < 1e-20,
-            "volume_loss_weighted should be omega * loss_function");
+        assert!(
+            (vlw - omega * lf).abs() < 1e-20,
+            "volume_loss_weighted should be omega * loss_function"
+        );
     }
 
     #[test]
@@ -7802,8 +8926,11 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let fp = gold.purcell_factor(omega, 10e-9); // 10 nm
         // Should differ significantly from free-space value of 1
-        assert!((fp - 1.0).abs() > 0.1,
-            "Purcell factor at 10nm from gold should differ from 1, got {:.2}", fp);
+        assert!(
+            (fp - 1.0).abs() > 0.1,
+            "Purcell factor at 10nm from gold should differ from 1, got {:.2}",
+            fp
+        );
     }
 
     #[test]
@@ -7812,8 +8939,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(2.0);
         let fp = gold.purcell_factor(omega, 1e-3); // 1 mm
-        assert!((fp - 1.0).abs() < 0.01,
-            "Purcell factor 1mm from gold should be ~1, got {:.6}", fp);
+        assert!(
+            (fp - 1.0).abs() < 0.01,
+            "Purcell factor 1mm from gold should be ~1, got {:.6}",
+            fp
+        );
     }
 
     #[test]
@@ -7823,8 +8953,11 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let fp = silica.purcell_factor(omega, 100e-9); // 100 nm
         // Should be close to 1 for a dielectric (small reflection coefficient)
-        assert!(fp > 0.5 && fp < 5.0,
-            "Purcell factor near dielectric should be ~1, got {:.4}", fp);
+        assert!(
+            fp > 0.5 && fp < 5.0,
+            "Purcell factor near dielectric should be ~1, got {:.4}",
+            fp
+        );
     }
 
     #[test]
@@ -7832,8 +8965,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(2.0);
         let shift = gold.lamb_shift_fractional(omega, 50e-9); // 50 nm
-        assert!(shift.abs() > 1e-10,
-            "Lamb shift near gold surface should be nonzero, got {:.6e}", shift);
+        assert!(
+            shift.abs() > 1e-10,
+            "Lamb shift near gold surface should be nonzero, got {:.6e}",
+            shift
+        );
     }
 
     #[test]
@@ -7842,9 +8978,12 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let shift_close = gold.lamb_shift_fractional(omega, 20e-9).abs();
         let shift_far = gold.lamb_shift_fractional(omega, 200e-9).abs();
-        assert!(shift_close > shift_far,
+        assert!(
+            shift_close > shift_far,
             "Lamb shift should decrease with distance: {:.6e} vs {:.6e}",
-            shift_close, shift_far);
+            shift_close,
+            shift_far
+        );
     }
 
     #[test]
@@ -7854,10 +8993,17 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let a_10nm = gold.absorption_per_pass(omega, 10e-9);
         let a_100nm = gold.absorption_per_pass(omega, 100e-9);
-        assert!(a_10nm > 0.0 && a_10nm < 1.0,
-            "10nm gold absorption should be 0-1, got {:.4}", a_10nm);
-        assert!(a_100nm > a_10nm,
-            "Thicker film should absorb more: {:.4} vs {:.4}", a_100nm, a_10nm);
+        assert!(
+            a_10nm > 0.0 && a_10nm < 1.0,
+            "10nm gold absorption should be 0-1, got {:.4}",
+            a_10nm
+        );
+        assert!(
+            a_100nm > a_10nm,
+            "Thicker film should absorb more: {:.4} vs {:.4}",
+            a_100nm,
+            a_10nm
+        );
     }
 
     #[test]
@@ -7872,8 +9018,12 @@ mod tests {
         // Silica at 100nm should have significantly less absorption than gold at 100nm.
         let gold = gold_drude_lorentz();
         let a_gold = gold.absorption_per_pass(omega, 100e-9);
-        assert!(a < a_gold,
-            "Silica should absorb less than gold at 100nm: {:.4} vs {:.4}", a, a_gold);
+        assert!(
+            a < a_gold,
+            "Silica should absorb less than gold at 100nm: {:.4} vs {:.4}",
+            a,
+            a_gold
+        );
     }
 
     #[test]
@@ -7884,12 +9034,18 @@ mod tests {
         assert!(d_opt.is_some(), "Gold should have finite optimal thickness");
         let d = d_opt.unwrap();
         // Skin depth for gold at visible frequencies: ~10-50 nm
-        assert!(d > 1e-9 && d < 1e-6,
-            "Optimal gold thickness should be 1nm-1um, got {:.2e} m", d);
+        assert!(
+            d > 1e-9 && d < 1e-6,
+            "Optimal gold thickness should be 1nm-1um, got {:.2e} m",
+            d
+        );
         // At d_opt, absorption should be ~63.2%
         let a = gold.absorption_per_pass(omega, d);
-        assert!((a - (1.0 - 1.0_f64 / std::f64::consts::E)).abs() < 0.01,
-            "Absorption at d_opt should be ~63.2%, got {:.2}%", a * 100.0);
+        assert!(
+            (a - (1.0 - 1.0_f64 / std::f64::consts::E)).abs() < 0.01,
+            "Absorption at d_opt should be ~63.2%, got {:.2}%",
+            a * 100.0
+        );
     }
 
     #[test]
@@ -7898,8 +9054,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(1.0);
         let mismatch = gold.impedance_mismatch(omega);
-        assert!(mismatch > 0.5,
-            "Gold impedance mismatch should be large, got {:.4}", mismatch);
+        assert!(
+            mismatch > 0.5,
+            "Gold impedance mismatch should be large, got {:.4}",
+            mismatch
+        );
     }
 
     #[test]
@@ -7910,9 +9069,12 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let m_silica = silica.impedance_mismatch(omega);
         let m_gold = gold.impedance_mismatch(omega);
-        assert!(m_silica < m_gold,
+        assert!(
+            m_silica < m_gold,
             "Silica mismatch should be less than gold: {:.4} vs {:.4}",
-            m_silica, m_gold);
+            m_silica,
+            m_gold
+        );
     }
 
     #[test]
@@ -7926,8 +9088,11 @@ mod tests {
         };
         let omega = ev_to_omega(2.0);
         let m = vacuum.impedance_mismatch(omega);
-        assert!(m < 1e-10,
-            "Vacuum impedance mismatch should be ~0, got {:.6e}", m);
+        assert!(
+            m < 1e-10,
+            "Vacuum impedance mismatch should be ~0, got {:.6e}",
+            m
+        );
     }
 
     // ====================================================================
@@ -7941,8 +9106,11 @@ mod tests {
         let q = srtio3.oscillator_quality_factor();
         assert!(q.is_some(), "SrTiO3 should have oscillator Q");
         let q_val = q.unwrap();
-        assert!(q_val > 1.0,
-            "SrTiO3 oscillator Q should be > 1, got {:.2}", q_val);
+        assert!(
+            q_val > 1.0,
+            "SrTiO3 oscillator Q should be > 1, got {:.2}",
+            q_val
+        );
     }
 
     #[test]
@@ -7953,8 +9121,10 @@ mod tests {
             eps_inf: 1.0,
             extended_drude: None,
         };
-        assert!(pure_drude.oscillator_quality_factor().is_none(),
-            "Pure Drude should have no oscillator Q");
+        assert!(
+            pure_drude.oscillator_quality_factor().is_none(),
+            "Pure Drude should have no oscillator Q"
+        );
     }
 
     #[test]
@@ -7965,16 +9135,21 @@ mod tests {
         let q = gold.drude_quality(omega);
         assert!(q.is_some(), "Gold should have Drude quality");
         let q_val = q.unwrap();
-        assert!(q_val > 10.0,
-            "Gold Drude Q at 1 eV should be > 10, got {:.2}", q_val);
+        assert!(
+            q_val > 10.0,
+            "Gold Drude Q at 1 eV should be > 10, got {:.2}",
+            q_val
+        );
     }
 
     #[test]
     fn test_drude_quality_dielectric_none() {
         let silica = silica_optical();
         let omega = ev_to_omega(2.0);
-        assert!(silica.drude_quality(omega).is_none(),
-            "Silica should have no Drude quality");
+        assert!(
+            silica.drude_quality(omega).is_none(),
+            "Silica should have no Drude quality"
+        );
     }
 
     #[test]
@@ -7984,8 +9159,11 @@ mod tests {
         let fom = gold.figure_of_merit_spp(omega, 1.0);
         assert!(fom.is_some(), "Gold should have SPP FoM");
         let f = fom.unwrap();
-        assert!(f > 1.0,
-            "Gold SPP FoM at 1.5 eV should be > 1, got {:.2}", f);
+        assert!(
+            f > 1.0,
+            "Gold SPP FoM at 1.5 eV should be > 1, got {:.2}",
+            f
+        );
     }
 
     #[test]
@@ -7995,8 +9173,12 @@ mod tests {
         let fom_1ev = gold.figure_of_merit_spp(ev_to_omega(1.0), 1.0);
         let fom_3ev = gold.figure_of_merit_spp(ev_to_omega(3.0), 1.0);
         if let (Some(f1), Some(f3)) = (fom_1ev, fom_3ev) {
-            assert!(f1 > f3,
-                "SPP FoM should be higher at lower freq: {:.2} vs {:.2}", f1, f3);
+            assert!(
+                f1 > f3,
+                "SPP FoM should be higher at lower freq: {:.2} vs {:.2}",
+                f1,
+                f3
+            );
         }
     }
 
@@ -8004,8 +9186,11 @@ mod tests {
     fn test_spectral_weight_window_positive() {
         let gold = gold_drude_lorentz();
         let sw = gold.spectral_weight_window(ev_to_omega(0.5), ev_to_omega(5.0), 200);
-        assert!(sw > 0.0,
-            "Spectral weight should be positive, got {:.6e}", sw);
+        assert!(
+            sw > 0.0,
+            "Spectral weight should be positive, got {:.6e}",
+            sw
+        );
     }
 
     #[test]
@@ -8013,9 +9198,12 @@ mod tests {
         let gold = gold_drude_lorentz();
         let sw_narrow = gold.spectral_weight_window(ev_to_omega(1.0), ev_to_omega(2.0), 100);
         let sw_wide = gold.spectral_weight_window(ev_to_omega(1.0), ev_to_omega(5.0), 200);
-        assert!(sw_wide > sw_narrow,
+        assert!(
+            sw_wide > sw_narrow,
             "Wider window should have more spectral weight: {:.6e} vs {:.6e}",
-            sw_wide, sw_narrow);
+            sw_wide,
+            sw_narrow
+        );
     }
 
     #[test]
@@ -8025,11 +9213,16 @@ mod tests {
         let thickness = 1e-6; // 1 um
         let (opl_re, opl_im) = silica.optical_path_length(omega, thickness);
         // n_silica ~ 1.46 at visible, so OPL ~ 1.46 um
-        assert!(opl_re > 1e-6 && opl_re < 3e-6,
-            "Silica OPL should be ~1.5 um, got {:.4e}", opl_re);
+        assert!(
+            opl_re > 1e-6 && opl_re < 3e-6,
+            "Silica OPL should be ~1.5 um, got {:.4e}",
+            opl_re
+        );
         // Imaginary OPL should be small for transparent material
-        assert!(opl_im.abs() < opl_re,
-            "Im[OPL] should be less than Re[OPL] for silica");
+        assert!(
+            opl_im.abs() < opl_re,
+            "Im[OPL] should be less than Re[OPL] for silica"
+        );
     }
 
     #[test]
@@ -8038,8 +9231,11 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let bandwidth = ev_to_omega(0.01); // 10 meV bandwidth
         let lc = silica.coherence_length(omega, bandwidth);
-        assert!(lc > 0.0 && lc < 1.0,
-            "Coherence length should be finite, got {:.4e} m", lc);
+        assert!(
+            lc > 0.0 && lc < 1.0,
+            "Coherence length should be finite, got {:.4e} m",
+            lc
+        );
     }
 
     #[test]
@@ -8047,8 +9243,10 @@ mod tests {
         let silica = silica_optical();
         let omega = ev_to_omega(2.0);
         let lc = silica.coherence_length(omega, 0.0);
-        assert!(lc.is_infinite(),
-            "Monochromatic coherence length should be infinite");
+        assert!(
+            lc.is_infinite(),
+            "Monochromatic coherence length should be infinite"
+        );
     }
 
     #[test]
@@ -8057,8 +9255,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(1.0);
         let r = gold.penetration_depth_ratio(omega);
-        assert!(r < 1.0,
-            "Gold penetration ratio should be < 1 (opaque), got {:.4}", r);
+        assert!(
+            r < 1.0,
+            "Gold penetration ratio should be < 1 (opaque), got {:.4}",
+            r
+        );
     }
 
     #[test]
@@ -8072,8 +9273,10 @@ mod tests {
         };
         let omega = ev_to_omega(2.0);
         let r = vacuum.penetration_depth_ratio(omega);
-        assert!(r.is_infinite(),
-            "Vacuum penetration ratio should be infinite");
+        assert!(
+            r.is_infinite(),
+            "Vacuum penetration ratio should be infinite"
+        );
     }
 
     // ====================================================================
@@ -8085,8 +9288,11 @@ mod tests {
         // Metals have high reflectivity => low solar absorptance
         let gold = gold_drude_lorentz();
         let a = gold.solar_absorptance(200);
-        assert!(a > 0.0 && a < 0.5,
-            "Gold solar absorptance should be < 0.5, got {:.4}", a);
+        assert!(
+            a > 0.0 && a < 0.5,
+            "Gold solar absorptance should be < 0.5, got {:.4}",
+            a
+        );
     }
 
     #[test]
@@ -8094,8 +9300,11 @@ mod tests {
         // Dielectrics have low reflectivity => high absorptance
         let silica = silica_optical();
         let a = silica.solar_absorptance(200);
-        assert!(a > 0.5,
-            "Silica solar absorptance should be > 0.5, got {:.4}", a);
+        assert!(
+            a > 0.5,
+            "Silica solar absorptance should be > 0.5, got {:.4}",
+            a
+        );
     }
 
     #[test]
@@ -8104,8 +9313,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let a = gold.solar_absorptance(200);
         let r = gold.solar_reflectance(200);
-        assert!((a + r - 1.0).abs() < 1e-10,
-            "A_solar + R_solar should be 1, got {:.10}", a + r);
+        assert!(
+            (a + r - 1.0).abs() < 1e-10,
+            "A_solar + R_solar should be 1, got {:.10}",
+            a + r
+        );
     }
 
     #[test]
@@ -8115,32 +9327,44 @@ mod tests {
         let d = silica.antireflection_thickness(omega);
         // Quarter-wave: d = lambda/(4*n_coating), lambda ~ 620 nm, n ~ sqrt(1.46) ~ 1.21
         // d ~ 620/(4*1.21) ~ 128 nm
-        assert!(d > 50e-9 && d < 500e-9,
-            "AR thickness should be 50-500 nm, got {:.2e}", d);
+        assert!(
+            d > 50e-9 && d < 500e-9,
+            "AR thickness should be 50-500 nm, got {:.2e}",
+            d
+        );
     }
 
     #[test]
     fn test_wien_peak_room_temperature() {
         // Wien peak at 300K: lambda_max ~ 9.66 um => E ~ 0.128 eV
         let e = DrudeLorentzParams::wien_peak_ev(300.0);
-        assert!(e > 0.05 && e < 0.3,
-            "Wien peak at 300K should be ~0.07 eV, got {:.4} eV", e);
+        assert!(
+            e > 0.05 && e < 0.3,
+            "Wien peak at 300K should be ~0.07 eV, got {:.4} eV",
+            e
+        );
     }
 
     #[test]
     fn test_wien_peak_sun() {
         // Wien peak at 5800K: lambda_max ~ 500 nm => E ~ 2.48 eV
         let e = DrudeLorentzParams::wien_peak_ev(5800.0);
-        assert!(e > 1.0 && e < 3.5,
-            "Wien peak at 5800K should be ~1.4 eV, got {:.4} eV", e);
+        assert!(
+            e > 1.0 && e < 3.5,
+            "Wien peak at 5800K should be ~1.4 eV, got {:.4} eV",
+            e
+        );
     }
 
     #[test]
     fn test_wien_peak_proportional_to_temperature() {
         let e300 = DrudeLorentzParams::wien_peak_ev(300.0);
         let e600 = DrudeLorentzParams::wien_peak_ev(600.0);
-        assert!((e600 / e300 - 2.0).abs() < 0.01,
-            "Wien peak should double with doubled T: ratio={:.4}", e600 / e300);
+        assert!(
+            (e600 / e300 - 2.0).abs() < 0.01,
+            "Wien peak should double with doubled T: ratio={:.4}",
+            e600 / e300
+        );
     }
 
     #[test]
@@ -8148,8 +9372,11 @@ mod tests {
         // Gold is highly reflective in visible
         let gold = gold_drude_lorentz();
         let r = gold.luminous_reflectance(200);
-        assert!(r > 0.5,
-            "Gold luminous reflectance should be > 0.5, got {:.4}", r);
+        assert!(
+            r > 0.5,
+            "Gold luminous reflectance should be > 0.5, got {:.4}",
+            r
+        );
     }
 
     #[test]
@@ -8157,8 +9384,11 @@ mod tests {
         // Silica has low visible reflectance (~4%)
         let silica = silica_optical();
         let r = silica.luminous_reflectance(200);
-        assert!(r < 0.3,
-            "Silica luminous reflectance should be < 0.3, got {:.4}", r);
+        assert!(
+            r < 0.3,
+            "Silica luminous reflectance should be < 0.3, got {:.4}",
+            r
+        );
     }
 
     #[test]
@@ -8167,9 +9397,12 @@ mod tests {
         let silica = silica_optical();
         let r_gold = gold.luminous_reflectance(200);
         let r_silica = silica.luminous_reflectance(200);
-        assert!(r_gold > r_silica,
+        assert!(
+            r_gold > r_silica,
             "Gold should be more reflective than silica: {:.4} vs {:.4}",
-            r_gold, r_silica);
+            r_gold,
+            r_silica
+        );
     }
 
     #[test]
@@ -8179,8 +9412,11 @@ mod tests {
         let omega_min = ev_to_omega(0.1);
         let omega_max = ev_to_omega(5.0);
         let eta = gold.selective_emitter_efficiency(1500.0, omega_gap, omega_min, omega_max, 300);
-        assert!(eta >= 0.0 && eta <= 1.0,
-            "Selective emitter efficiency should be 0-1, got {:.4}", eta);
+        assert!(
+            eta >= 0.0 && eta <= 1.0,
+            "Selective emitter efficiency should be 0-1, got {:.4}",
+            eta
+        );
     }
 
     #[test]
@@ -8190,24 +9426,43 @@ mod tests {
         let omega_min = ev_to_omega(0.1);
         let omega_max = ev_to_omega(5.0);
         let eta_1ev = silica.selective_emitter_efficiency(
-            2000.0, ev_to_omega(1.0), omega_min, omega_max, 300);
+            2000.0,
+            ev_to_omega(1.0),
+            omega_min,
+            omega_max,
+            300,
+        );
         let eta_3ev = silica.selective_emitter_efficiency(
-            2000.0, ev_to_omega(3.0), omega_min, omega_max, 300);
-        assert!(eta_1ev > eta_3ev,
+            2000.0,
+            ev_to_omega(3.0),
+            omega_min,
+            omega_max,
+            300,
+        );
+        assert!(
+            eta_1ev > eta_3ev,
             "Lower gap should give higher efficiency: {:.4} vs {:.4}",
-            eta_1ev, eta_3ev);
+            eta_1ev,
+            eta_3ev
+        );
     }
 
     #[test]
     fn test_wien_peak_omega_positive() {
         let omega = DrudeLorentzParams::wien_peak_omega(300.0);
-        assert!(omega > 0.0,
-            "Wien peak omega should be positive, got {:.4e}", omega);
+        assert!(
+            omega > 0.0,
+            "Wien peak omega should be positive, got {:.4e}",
+            omega
+        );
         let omega_ev = omega / EV_TO_RADS;
         let ev = DrudeLorentzParams::wien_peak_ev(300.0);
-        assert!((omega_ev - ev).abs() / ev < 0.01,
+        assert!(
+            (omega_ev - ev).abs() / ev < 0.01,
             "wien_peak_omega and wien_peak_ev should agree: {:.4} vs {:.4}",
-            omega_ev, ev);
+            omega_ev,
+            ev
+        );
     }
 
     // ====================================================================
@@ -8222,8 +9477,11 @@ mod tests {
         let na = silica.numerical_aperture(omega, n_clad);
         assert!(na.is_some(), "Silica should guide with air cladding");
         let na_val = na.unwrap();
-        assert!(na_val > 0.0 && na_val < 2.0,
-            "NA should be positive and < 2, got {:.4}", na_val);
+        assert!(
+            na_val > 0.0 && na_val < 2.0,
+            "NA should be positive and < 2, got {:.4}",
+            na_val
+        );
     }
 
     #[test]
@@ -8232,8 +9490,10 @@ mod tests {
         let omega = ev_to_omega(2.0);
         // Use a cladding index higher than core
         let na = silica.numerical_aperture(omega, 100.0);
-        assert!(na.is_none(),
-            "Should return None when cladding index exceeds core");
+        assert!(
+            na.is_none(),
+            "Should return None when cladding index exceeds core"
+        );
     }
 
     #[test]
@@ -8255,8 +9515,11 @@ mod tests {
         let core_radius = 4.0e-6;
         let n_clad = 1.0;
         if let Some(gamma) = silica.confinement_factor(omega, core_radius, n_clad) {
-            assert!(gamma > 0.0 && gamma <= 1.0,
-                "Confinement factor should be in (0, 1], got {:.4}", gamma);
+            assert!(
+                gamma > 0.0 && gamma <= 1.0,
+                "Confinement factor should be in (0, 1], got {:.4}",
+                gamma
+            );
         }
     }
 
@@ -8270,8 +9533,10 @@ mod tests {
             assert!(aeff > 0.0, "Mode area should be positive, got {:.4e}", aeff);
             // Mode area should be larger than core area for weakly guiding
             let core_area = std::f64::consts::PI * core_radius * core_radius;
-            assert!(aeff > core_area * 0.1,
-                "Mode area should be comparable to core area");
+            assert!(
+                aeff > core_area * 0.1,
+                "Mode area should be comparable to core area"
+            );
         }
     }
 
@@ -8280,8 +9545,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(2.0);
         let bire = gold.modal_birefringence(omega);
-        assert!(bire > 0.0,
-            "Gold should have nonzero birefringence (from Im[n]), got {:.4}", bire);
+        assert!(
+            bire > 0.0,
+            "Gold should have nonzero birefringence (from Im[n]), got {:.4}",
+            bire
+        );
     }
 
     #[test]
@@ -8299,7 +9567,11 @@ mod tests {
         let omega = ev_to_omega(1.0);
         let n_clad = 1.0;
         if let Some(r_c) = silica.bend_loss_critical_radius(omega, n_clad) {
-            assert!(r_c > 0.0, "Critical bend radius should be positive, got {:.4e}", r_c);
+            assert!(
+                r_c > 0.0,
+                "Critical bend radius should be positive, got {:.4e}",
+                r_c
+            );
         }
     }
 
@@ -8312,8 +9584,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(2.5); // near LSPR
         let fe = gold.field_enhancement_factor(omega, 1.0);
-        assert!(fe > 1.0,
-            "Field enhancement should exceed 1 near LSPR, got {:.4}", fe);
+        assert!(
+            fe > 1.0,
+            "Field enhancement should exceed 1 near LSPR, got {:.4}",
+            fe
+        );
     }
 
     #[test]
@@ -8323,8 +9598,12 @@ mod tests {
         let fe = gold.field_enhancement_factor(omega, 1.0);
         let sers = gold.sers_enhancement_factor(omega, 1.0);
         let expected = fe.powi(4);
-        assert!((sers - expected).abs() / expected < 1e-10,
-            "SERS should be FE^4: {:.4e} vs {:.4e}", sers, expected);
+        assert!(
+            (sers - expected).abs() / expected < 1e-10,
+            "SERS should be FE^4: {:.4e} vs {:.4e}",
+            sers,
+            expected
+        );
     }
 
     #[test]
@@ -8333,8 +9612,11 @@ mod tests {
         let sens = gold.refractive_index_sensitivity(1.0);
         // Gold nanoparticles have sensitivity ~100-500 nm/RIU
         if let Some(s) = sens {
-            assert!(s.abs() > 1.0,
-                "Sensitivity should be nonzero, got {:.4} nm/RIU", s);
+            assert!(
+                s.abs() > 1.0,
+                "Sensitivity should be nonzero, got {:.4} nm/RIU",
+                s
+            );
         }
     }
 
@@ -8344,8 +9626,11 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let gamma_ratio = gold.decay_rate_enhancement(omega, 10e-9);
         // Near gold at 10nm, the decay rate should be significantly enhanced
-        assert!(gamma_ratio.abs() > 1.0,
-            "Decay rate should be modified near surface, got {:.4}", gamma_ratio);
+        assert!(
+            gamma_ratio.abs() > 1.0,
+            "Decay rate should be modified near surface, got {:.4}",
+            gamma_ratio
+        );
     }
 
     #[test]
@@ -8353,8 +9638,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(2.0);
         let qe = gold.quantum_efficiency_near_surface(omega, 100e-9, 0.9);
-        assert!(qe >= 0.0 && qe <= 1.0,
-            "Quantum efficiency should be in [0, 1], got {:.4}", qe);
+        assert!(
+            qe >= 0.0 && qe <= 1.0,
+            "Quantum efficiency should be in [0, 1], got {:.4}",
+            qe
+        );
     }
 
     #[test]
@@ -8362,8 +9650,11 @@ mod tests {
         let gold = gold_drude_lorentz();
         let omega = ev_to_omega(2.5);
         let he = gold.hot_electron_generation_proxy(omega);
-        assert!(he > 0.0,
-            "Hot electron proxy should be positive for gold at 2.5 eV, got {:.4}", he);
+        assert!(
+            he > 0.0,
+            "Hot electron proxy should be positive for gold at 2.5 eV, got {:.4}",
+            he
+        );
     }
 
     // ====================================================================
@@ -8375,8 +9666,11 @@ mod tests {
         let silica = silica_optical();
         let omega = ev_to_omega(2.0);
         let r = silica.thin_film_reflectance(omega, 100e-9, 1.5);
-        assert!(r >= 0.0 && r <= 1.0,
-            "Thin film R should be in [0, 1], got {:.4}", r);
+        assert!(
+            r >= 0.0 && r <= 1.0,
+            "Thin film R should be in [0, 1], got {:.4}",
+            r
+        );
     }
 
     #[test]
@@ -8389,9 +9683,13 @@ mod tests {
         let t = silica.thin_film_transmittance(omega, thickness, n_sub);
         // For non-absorbing films: R + T ~ 1
         // For absorbing: R + T <= 1
-        assert!(r + t <= 1.0 + 0.01,
+        assert!(
+            r + t <= 1.0 + 0.01,
             "R + T should not exceed 1: R={:.4}, T={:.4}, sum={:.4}",
-            r, t, r + t);
+            r,
+            t,
+            r + t
+        );
     }
 
     #[test]
@@ -8407,8 +9705,10 @@ mod tests {
         let silica = silica_optical();
         let omega = ev_to_omega(2.0);
         let orders = silica.constructive_interference_orders(omega, 10e-6);
-        assert!(!orders.is_empty(),
-            "Thick film should have multiple interference orders");
+        assert!(
+            !orders.is_empty(),
+            "Thick film should have multiple interference orders"
+        );
         // Orders should be sequential starting from 1
         assert_eq!(orders[0], 1, "First order should be 1");
     }
@@ -8428,7 +9728,11 @@ mod tests {
         // CIE coordinates should be in valid range
         assert!(x >= 0.0 && x <= 1.0, "x should be in [0,1], got {:.4}", x);
         assert!(y >= 0.0 && y <= 1.0, "y should be in [0,1], got {:.4}", y);
-        assert!(cap_y >= 0.0, "Y luminance should be non-negative, got {:.4e}", cap_y);
+        assert!(
+            cap_y >= 0.0,
+            "Y luminance should be non-negative, got {:.4e}",
+            cap_y
+        );
     }
 
     // ====================================================================
@@ -8442,8 +9746,11 @@ mod tests {
         if let Some(omega_sphp) = sphp {
             let ev = omega_sphp / EV_TO_RADS;
             // SPhP should be in the IR range for SrTiO3
-            assert!(ev > 0.01 && ev < 1.0,
-                "SPhP should be in IR range, got {:.4} eV", ev);
+            assert!(
+                ev > 0.01 && ev < 1.0,
+                "SPhP should be in IR range, got {:.4} eV",
+                ev
+            );
         }
     }
 
@@ -8452,9 +9759,12 @@ mod tests {
         let srtio3 = srtio3_optical();
         let omega = ev_to_omega(0.1); // IR
         let vg = srtio3.polariton_group_velocity(omega, 1.0);
-        assert!(vg.abs() < C,
+        assert!(
+            vg.abs() < C,
             "Polariton group velocity should be subluminal, got {:.4e} vs c={:.4e}",
-            vg.abs(), C);
+            vg.abs(),
+            C
+        );
     }
 
     #[test]
@@ -8463,8 +9773,11 @@ mod tests {
         if !srtio3.oscillators.is_empty() {
             let activity = srtio3.ir_activity_proxy(0);
             assert!(activity.is_some(), "Should return activity for valid index");
-            assert!(activity.unwrap() > 0.0,
-                "IR activity should be positive, got {:.4e}", activity.unwrap());
+            assert!(
+                activity.unwrap() > 0.0,
+                "IR activity should be positive, got {:.4e}",
+                activity.unwrap()
+            );
         }
     }
 
@@ -8472,18 +9785,27 @@ mod tests {
     fn test_ir_activity_proxy_out_of_range() {
         let gold = gold_drude_lorentz();
         let activity = gold.ir_activity_proxy(999);
-        assert!(activity.is_none(), "Should return None for out-of-range index");
+        assert!(
+            activity.is_none(),
+            "Should return None for out-of-range index"
+        );
     }
 
     #[test]
     fn test_isotope_shift_heavier_lowers_frequency() {
         let shift = DrudeLorentzParams::isotope_shift_estimate(2.0);
         // Heavier isotope -> lower frequency -> negative shift
-        assert!(shift > 0.0,
-            "Isotope shift for M_new/M_old = 2 should be positive (frequency decreases), got {:.4}", shift);
+        assert!(
+            shift > 0.0,
+            "Isotope shift for M_new/M_old = 2 should be positive (frequency decreases), got {:.4}",
+            shift
+        );
         // For mass ratio 2: shift = 1 - 1/sqrt(2) ~ 0.293
-        assert!((shift - 0.293).abs() < 0.01,
-            "Isotope shift should be ~0.293, got {:.4}", shift);
+        assert!(
+            (shift - 0.293).abs() < 0.01,
+            "Isotope shift should be ~0.293, got {:.4}",
+            shift
+        );
     }
 
     #[test]
@@ -8494,8 +9816,11 @@ mod tests {
 
         // At high T, n_BE ~ k_B*T / (hbar*omega) >> 1
         let n_high = DrudeLorentzParams::bose_einstein_occupation(ev_to_omega(0.025), 3000.0);
-        assert!(n_high > 1.0,
-            "n_BE should be >> 1 at high T for low-energy phonons, got {:.4}", n_high);
+        assert!(
+            n_high > 1.0,
+            "n_BE should be >> 1 at high T for low-energy phonons, got {:.4}",
+            n_high
+        );
     }
 
     // ====================================================================
@@ -8508,8 +9833,11 @@ mod tests {
         let shift = gold.plasma_frequency_shift(1e21, 1.0);
         assert!(shift.is_some(), "Should have shift for metal");
         let s = shift.unwrap();
-        assert!(s > 0.0,
-            "Injecting carriers should increase plasma frequency, got {:.4e} eV", s);
+        assert!(
+            s > 0.0,
+            "Injecting carriers should increase plasma frequency, got {:.4e} eV",
+            s
+        );
     }
 
     #[test]
@@ -8519,8 +9847,11 @@ mod tests {
         let dr = gold.transient_reflectivity_change(omega, 1e22, 1.0);
         assert!(dr.is_some(), "Should compute Delta R/R for metal");
         let dr_val = dr.unwrap();
-        assert!(dr_val.abs() > 1e-10,
-            "Delta R/R should be nonzero, got {:.4e}", dr_val);
+        assert!(
+            dr_val.abs() > 1e-10,
+            "Delta R/R should be nonzero, got {:.4e}",
+            dr_val
+        );
     }
 
     #[test]
@@ -8532,26 +9863,41 @@ mod tests {
         assert!(mu_full.is_some() && mu_back.is_some());
         let mf = mu_full.unwrap();
         let mb = mu_back.unwrap();
-        assert!(mf > 0.0, "Drude mobility should be positive, got {:.4e}", mf);
-        assert!(mb.abs() < 1e-30,
-            "Complete backscattering (c=-1) should give zero mobility, got {:.4e}", mb);
+        assert!(
+            mf > 0.0,
+            "Drude mobility should be positive, got {:.4e}",
+            mf
+        );
+        assert!(
+            mb.abs() < 1e-30,
+            "Complete backscattering (c=-1) should give zero mobility, got {:.4e}",
+            mb
+        );
     }
 
     #[test]
     fn test_carrier_recombination_time_finite() {
         let tau = DrudeLorentzParams::carrier_recombination_time(1e20, 1e26);
-        assert!(tau > 0.0 && tau.is_finite(),
-            "Recombination time should be finite positive, got {:.4e}", tau);
+        assert!(
+            tau > 0.0 && tau.is_finite(),
+            "Recombination time should be finite positive, got {:.4e}",
+            tau
+        );
         // tau = 1e20 / 1e26 = 1e-6 s = 1 us
-        assert!((tau - 1e-6).abs() < 1e-10,
-            "tau should be 1e-6 s, got {:.4e}", tau);
+        assert!(
+            (tau - 1e-6).abs() < 1e-10,
+            "tau should be 1e-6 s, got {:.4e}",
+            tau
+        );
     }
 
     #[test]
     fn test_carrier_recombination_time_zero_generation() {
         let tau = DrudeLorentzParams::carrier_recombination_time(1e20, 0.0);
-        assert!(tau.is_infinite(),
-            "Zero generation rate should give infinite lifetime");
+        assert!(
+            tau.is_infinite(),
+            "Zero generation rate should give infinite lifetime"
+        );
     }
 
     #[test]
@@ -8560,7 +9906,11 @@ mod tests {
         let omega = ev_to_omega(1.0);
         let da = gold.photo_induced_absorption(omega, 1e22, 1.0);
         if let Some(d) = da {
-            assert!(d >= 0.0, "Photo-induced absorption should be non-negative, got {:.4e}", d);
+            assert!(
+                d >= 0.0,
+                "Photo-induced absorption should be non-negative, got {:.4e}",
+                d
+            );
         }
     }
 
@@ -8584,7 +9934,10 @@ mod tests {
         assert!(alpha.norm() > 0.0, "Polarizability should be nonzero");
         // Volume scales as r^3
         let alpha2 = gold.polarizability_clausius_mossotti(omega, 20e-9);
-        assert!(alpha2.norm() > alpha.norm(), "Larger particle should have larger polarizability");
+        assert!(
+            alpha2.norm() > alpha.norm(),
+            "Larger particle should have larger polarizability"
+        );
     }
 
     #[test]
@@ -8598,7 +9951,11 @@ mod tests {
         let c_sca2 = gold.rayleigh_cross_section(omega, 20e-9);
         let ratio = c_sca2 / c_sca;
         let expected = 2.0_f64.powi(6); // 64
-        assert!((ratio - expected).abs() / expected < 0.01, "Should scale as a^6, got ratio {:.1}", ratio);
+        assert!(
+            (ratio - expected).abs() / expected < 0.01,
+            "Should scale as a^6, got ratio {:.1}",
+            ratio
+        );
     }
 
     #[test]
@@ -8609,7 +9966,10 @@ mod tests {
         let q_sca = gold.rayleigh_scattering_efficiency(omega, radius);
         assert!(q_sca > 0.0, "Efficiency should be positive");
         // Q_sca = C_sca / (pi*a^2), so Q_sca << 1 for small particles
-        assert!(q_sca < 10.0, "Efficiency should be reasonable for nanoparticles");
+        assert!(
+            q_sca < 10.0,
+            "Efficiency should be reasonable for nanoparticles"
+        );
     }
 
     #[test]
@@ -8629,7 +9989,11 @@ mod tests {
         let omega = 3.0e15;
         let radius = 10e-9;
         let albedo = gold.mie_scattering_albedo(omega, radius);
-        assert!(albedo >= 0.0 && albedo <= 1.0, "Albedo should be in [0,1], got {:.4}", albedo);
+        assert!(
+            albedo >= 0.0 && albedo <= 1.0,
+            "Albedo should be in [0,1], got {:.4}",
+            albedo
+        );
     }
 
     #[test]
@@ -8638,7 +10002,10 @@ mod tests {
         let omega = 3.0e15;
         let radius = 10e-9;
         let c_abs = gold.absorption_cross_section_mie(omega, radius);
-        assert!(c_abs >= 0.0, "Absorption cross section should be non-negative");
+        assert!(
+            c_abs >= 0.0,
+            "Absorption cross section should be non-negative"
+        );
     }
 
     #[test]
@@ -8649,7 +10016,10 @@ mod tests {
         let q_pr = gold.radiation_pressure_efficiency(omega, radius);
         let q_ext = gold.mie_extinction_efficiency(omega, radius);
         // In Rayleigh limit, g=0, so Q_pr = Q_ext
-        assert!((q_pr - q_ext).abs() < 1e-15, "Q_pr should equal Q_ext in Rayleigh limit");
+        assert!(
+            (q_pr - q_ext).abs() < 1e-15,
+            "Q_pr should equal Q_ext in Rayleigh limit"
+        );
     }
 
     // Part 17b: Fluctuation electrodynamics tests
@@ -8660,7 +10030,11 @@ mod tests {
         let omega = 1e14; // infrared
         let temp = 300.0;
         let s = gold.fluctuation_dissipation_spectral(omega, temp);
-        assert!(s >= 0.0, "FD spectral density should be non-negative, got {:.4e}", s);
+        assert!(
+            s >= 0.0,
+            "FD spectral density should be non-negative, got {:.4e}",
+            s
+        );
     }
 
     #[test]
@@ -8677,7 +10051,11 @@ mod tests {
         let gold = gold_rakic_ld();
         let omega = 1e14;
         let p = gold.thermal_noise_power_density(omega, 300.0);
-        assert!(p >= 0.0, "Noise power density should be non-negative, got {:.4e}", p);
+        assert!(
+            p >= 0.0,
+            "Noise power density should be non-negative, got {:.4e}",
+            p
+        );
     }
 
     #[test]
@@ -8687,13 +10065,19 @@ mod tests {
         assert!(e0 > 0.0, "ZPE should be positive");
         // E0 = hbar*omega/2
         let expected = HBAR_EV_S * omega / 2.0;
-        assert!((e0 - expected).abs() < 1e-20, "ZPE should equal hbar*omega/2");
+        assert!(
+            (e0 - expected).abs() < 1e-20,
+            "ZPE should equal hbar*omega/2"
+        );
     }
 
     #[test]
     fn test_spectral_energy_density_zero_temp() {
         let u = DrudeLorentzParams::spectral_energy_density(1e15, 0.0);
-        assert!(u.abs() < 1e-30, "Spectral energy density at T=0 should be zero (no thermal photons)");
+        assert!(
+            u.abs() < 1e-30,
+            "Spectral energy density at T=0 should be zero (no thermal photons)"
+        );
     }
 
     #[test]
@@ -8709,7 +10093,10 @@ mod tests {
         let far = gold.near_field_thermal_emission(omega, 1e-3, 300.0); // 1 mm
         let near = gold.near_field_thermal_emission(omega, 1e-7, 300.0); // 100 nm
         // Near-field should be enhanced relative to far-field
-        assert!(near > far, "Near-field emission should be enhanced at sub-wavelength distances");
+        assert!(
+            near > far,
+            "Near-field emission should be enhanced at sub-wavelength distances"
+        );
     }
 
     #[test]
@@ -8717,7 +10104,11 @@ mod tests {
         let gold = gold_rakic_ld();
         let omega = 3e15;
         let t_prob = gold.photon_tunneling_probability(omega, 1e7); // 1e7 m^-1 decay
-        assert!(t_prob >= 0.0 && t_prob <= 1.0, "Tunneling probability should be in [0,1], got {:.4e}", t_prob);
+        assert!(
+            t_prob >= 0.0 && t_prob <= 1.0,
+            "Tunneling probability should be in [0,1], got {:.4e}",
+            t_prob
+        );
     }
 
     #[test]
@@ -8726,7 +10117,10 @@ mod tests {
         let omega = 3e15;
         let t_prob = gold.photon_tunneling_probability(omega, 0.0);
         // kappa=0 means no evanescent decay -> transmission = 1
-        assert!((t_prob - 1.0).abs() < 1e-10, "No gap should give full transmission");
+        assert!(
+            (t_prob - 1.0).abs() < 1e-10,
+            "No gap should give full transmission"
+        );
     }
 
     #[test]
@@ -8735,7 +10129,11 @@ mod tests {
         let xi = 1e14; // imaginary frequency
         let d = 100e-9; // 100 nm gap
         let f = gold.fluctuation_induced_force_integrand(xi, d);
-        assert!(f >= 0.0, "Casimir integrand should be non-negative (r_TM^2), got {:.4e}", f);
+        assert!(
+            f >= 0.0,
+            "Casimir integrand should be non-negative (r_TM^2), got {:.4e}",
+            f
+        );
     }
 
     #[test]
@@ -8744,7 +10142,10 @@ mod tests {
         let xi = 1e14;
         let f_near = gold.fluctuation_induced_force_integrand(xi, 100e-9);
         let f_far = gold.fluctuation_induced_force_integrand(xi, 1e-6);
-        assert!(f_near > f_far, "Casimir integrand should decay with distance");
+        assert!(
+            f_near > f_far,
+            "Casimir integrand should decay with distance"
+        );
     }
 
     // Part 17c: Anharmonic/multiphonon tests
@@ -8758,7 +10159,10 @@ mod tests {
         let gamma_0_val = gamma_0.unwrap();
         // At T=0, coupling=0: should return bare gamma
         let osc_gamma = srtio3.oscillators[0].gamma_ev;
-        assert!((gamma_0_val - osc_gamma).abs() < 1e-10, "At T=0, A=0: should return bare gamma");
+        assert!(
+            (gamma_0_val - osc_gamma).abs() < 1e-10,
+            "At T=0, A=0: should return bare gamma"
+        );
     }
 
     #[test]
@@ -8767,37 +10171,53 @@ mod tests {
         let coupling = 0.01; // 10 meV coupling
         let gamma_low = srtio3.anharmonic_linewidth(0, 100.0, coupling).unwrap();
         let gamma_high = srtio3.anharmonic_linewidth(0, 600.0, coupling).unwrap();
-        assert!(gamma_high > gamma_low, "Linewidth should increase with temperature");
+        assert!(
+            gamma_high > gamma_low,
+            "Linewidth should increase with temperature"
+        );
     }
 
     #[test]
     fn test_anharmonic_linewidth_invalid_index() {
         let srtio3 = srtio3_optical();
         let result = srtio3.anharmonic_linewidth(99, 300.0, 0.01);
-        assert!(result.is_none(), "Invalid oscillator index should return None");
+        assert!(
+            result.is_none(),
+            "Invalid oscillator index should return None"
+        );
     }
 
     #[test]
     fn test_multiphonon_absorption_above_cutoff() {
         let srtio3 = srtio3_optical();
         // Find max oscillator frequency
-        let omega_max = srtio3.oscillators.iter()
+        let omega_max = srtio3
+            .oscillators
+            .iter()
             .map(|o| o.omega_0_ev)
             .fold(0.0_f64, f64::max);
         // Above the cutoff
         let alpha = srtio3.multiphonon_absorption(omega_max * 1.5, 300.0, 3.0);
-        assert!(alpha > 0.0, "Multiphonon absorption above cutoff should be positive");
+        assert!(
+            alpha > 0.0,
+            "Multiphonon absorption above cutoff should be positive"
+        );
     }
 
     #[test]
     fn test_multiphonon_absorption_below_cutoff_zero() {
         let srtio3 = srtio3_optical();
-        let omega_max = srtio3.oscillators.iter()
+        let omega_max = srtio3
+            .oscillators
+            .iter()
             .map(|o| o.omega_0_ev)
             .fold(0.0_f64, f64::max);
         // Below the cutoff -> zero
         let alpha = srtio3.multiphonon_absorption(omega_max * 0.5, 300.0, 3.0);
-        assert!(alpha.abs() < 1e-30, "Below cutoff: multiphonon absorption should be zero");
+        assert!(
+            alpha.abs() < 1e-30,
+            "Below cutoff: multiphonon absorption should be zero"
+        );
     }
 
     #[test]
@@ -8828,7 +10248,12 @@ mod tests {
         let bands = srtio3.infrared_combination_bands();
         // n oscillators -> n*(n+1)/2 sum combinations + up to n*(n-1)/2 difference
         // After dedup, should be at least n combinations
-        assert!(bands.len() >= n, "Should have at least {} combination bands, got {}", n, bands.len());
+        assert!(
+            bands.len() >= n,
+            "Should have at least {} combination bands, got {}",
+            n,
+            bands.len()
+        );
     }
 
     // Part 17d: Photonic band gap tests
@@ -8842,7 +10267,11 @@ mod tests {
         assert!(hi > omega_c, "High edge should be above center");
         // Gap should be symmetric around center
         let sym = ((omega_c - lo) - (hi - omega_c)).abs() / omega_c;
-        assert!(sym < 1e-10, "Gap should be symmetric, asymmetry = {:.4e}", sym);
+        assert!(
+            sym < 1e-10,
+            "Gap should be symmetric, asymmetry = {:.4e}",
+            sym
+        );
     }
 
     #[test]
@@ -8872,7 +10301,10 @@ mod tests {
         let lambda_b = srtio3.bragg_wavelength(period, omega);
         assert!(lambda_b > 0.0, "Bragg wavelength should be positive");
         // lambda_B = 2*d*n, so should be > 2*period (since n > 1)
-        assert!(lambda_b > 2.0 * period, "Bragg wavelength should be > 2*period for n>1");
+        assert!(
+            lambda_b > 2.0 * period,
+            "Bragg wavelength should be > 2*period for n>1"
+        );
     }
 
     #[test]
@@ -8883,7 +10315,10 @@ mod tests {
         let vg_5 = srtio3.group_velocity_at_band_edge(omega_c, 1.5, 5);
         let vg_20 = srtio3.group_velocity_at_band_edge(omega_c, 1.5, 20);
         assert!(vg_5 > 0.0, "Group velocity should be positive");
-        assert!(vg_20 < vg_5, "More pairs should reduce group velocity at band edge");
+        assert!(
+            vg_20 < vg_5,
+            "More pairs should reduce group velocity at band edge"
+        );
     }
 
     #[test]
@@ -8908,7 +10343,11 @@ mod tests {
         let e_field = 1e6; // 1 MV/m
         let dn = srtio3.pockels_delta_n(omega, e_field, r_eo);
         // delta_n = -0.5 * n^3 * r * E, should be negative for positive E, r
-        assert!(dn < 0.0, "Pockels delta_n should be negative, got {:.4e}", dn);
+        assert!(
+            dn < 0.0,
+            "Pockels delta_n should be negative, got {:.4e}",
+            dn
+        );
     }
 
     #[test]
@@ -8919,7 +10358,11 @@ mod tests {
         let dn1 = srtio3.pockels_delta_n(omega, 1e6, r_eo);
         let dn2 = srtio3.pockels_delta_n(omega, 2e6, r_eo);
         let ratio = dn2 / dn1;
-        assert!((ratio - 2.0).abs() < 1e-10, "Pockels effect should be linear in E field, ratio = {:.4}", ratio);
+        assert!(
+            (ratio - 2.0).abs() < 1e-10,
+            "Pockels effect should be linear in E field, ratio = {:.4}",
+            ratio
+        );
     }
 
     #[test]
@@ -8930,7 +10373,11 @@ mod tests {
         let dn1 = srtio3.kerr_electro_optic(omega, 1e6, s_eo);
         let dn2 = srtio3.kerr_electro_optic(omega, 2e6, s_eo);
         let ratio = dn2 / dn1;
-        assert!((ratio - 4.0).abs() < 1e-10, "Kerr effect should be quadratic in E field, ratio = {:.4}", ratio);
+        assert!(
+            (ratio - 4.0).abs() < 1e-10,
+            "Kerr effect should be quadratic in E field, ratio = {:.4}",
+            ratio
+        );
     }
 
     #[test]
@@ -8940,7 +10387,11 @@ mod tests {
         let r_eo = 10e-12;
         let length = 1e-2; // 1 cm crystal
         let v_pi = srtio3.half_wave_voltage(omega, r_eo, length);
-        assert!(v_pi > 0.0, "Half-wave voltage should be positive, got {:.2e}", v_pi);
+        assert!(
+            v_pi > 0.0,
+            "Half-wave voltage should be positive, got {:.2e}",
+            v_pi
+        );
     }
 
     #[test]
@@ -8950,7 +10401,11 @@ mod tests {
         let omega_below = 2.0 * EV_TO_RADS; // 2 eV, well below gap
         let e_field = 1e8; // 100 MV/m
         let alpha = srtio3.franz_keldysh_absorption(omega_below, e_field, gap_ev);
-        assert!(alpha >= 0.0, "FK absorption should be non-negative, got {:.4e}", alpha);
+        assert!(
+            alpha >= 0.0,
+            "FK absorption should be non-negative, got {:.4e}",
+            alpha
+        );
     }
 
     #[test]
@@ -8959,7 +10414,10 @@ mod tests {
         let gap_ev = 3.2;
         let omega_above = 4.0 * EV_TO_RADS; // 4 eV, above gap
         let alpha = srtio3.franz_keldysh_absorption(omega_above, 1e8, gap_ev);
-        assert!(alpha.abs() < 1e-30, "Above gap: FK absorption should be zero (interband dominates)");
+        assert!(
+            alpha.abs() < 1e-30,
+            "Above gap: FK absorption should be zero (interband dominates)"
+        );
     }
 
     #[test]
@@ -8970,7 +10428,10 @@ mod tests {
         let dn1 = srtio3.photoelastic_delta_n(omega, 1e-4, p_ij);
         let dn2 = srtio3.photoelastic_delta_n(omega, 2e-4, p_ij);
         let ratio = dn2 / dn1;
-        assert!((ratio - 2.0).abs() < 1e-10, "Photoelastic effect should be linear in strain");
+        assert!(
+            (ratio - 2.0).abs() < 1e-10,
+            "Photoelastic effect should be linear in strain"
+        );
     }
 
     #[test]
@@ -8981,7 +10442,11 @@ mod tests {
         let v_sound = 7900.0; // m/s for SrTiO3
         let density = 5110.0; // kg/m^3
         let m2 = srtio3.acoustooptic_figure_of_merit(omega, p_ij, v_sound, density);
-        assert!(m2 > 0.0, "Acoustooptic FoM should be positive, got {:.4e}", m2);
+        assert!(
+            m2 > 0.0,
+            "Acoustooptic FoM should be positive, got {:.4e}",
+            m2
+        );
     }
 
     #[test]
@@ -8993,7 +10458,11 @@ mod tests {
         let m2_a = srtio3.acoustooptic_figure_of_merit(omega, 0.1, v_sound, density);
         let m2_b = srtio3.acoustooptic_figure_of_merit(omega, 0.2, v_sound, density);
         let ratio = m2_b / m2_a;
-        assert!((ratio - 4.0).abs() < 1e-10, "M2 should scale as p^2, ratio = {:.4}", ratio);
+        assert!(
+            (ratio - 4.0).abs() < 1e-10,
+            "M2 should scale as p^2, ratio = {:.4}",
+            ratio
+        );
     }
 
     // ===================== Sellmeier dispersion tests =====================

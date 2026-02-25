@@ -28,10 +28,10 @@
 use rand::SeedableRng;
 
 use crate::experimental::billiard_stats::{
-    generate_null_sequence, summarize_permutation_test, NullModel, PermutationTestResult,
+    NullModel, PermutationTestResult, generate_null_sequence, summarize_permutation_test,
 };
-use crate::lie::e8_lattice::{e8_simple_roots, generate_e8_roots, E8Root};
-use crate::physics::octonion_field::{oct_multiply, oct_norm_sq, Octonion, FANO_TRIPLES};
+use crate::lie::e8_lattice::{E8Root, e8_simple_roots, generate_e8_roots};
+use crate::physics::octonion_field::{FANO_TRIPLES, Octonion, oct_multiply, oct_norm_sq};
 
 /// Given two distinct imaginary octonion indices (1..=7), return the third
 /// index that completes their unique Fano line, or None if the input is
@@ -365,9 +365,13 @@ pub fn dynkin_fano_correspondence(basis: &CayleyBasis) -> (usize, usize, f64) {
                 let dom_j = dominant_basis_element(&octs[j]);
 
                 if let (Some(di), Some(dj)) = (dom_i, dom_j)
-                    && di > 0 && dj > 0 && di != dj && table[di][dj].is_some() {
-                        adj_fano += 1;
-                    }
+                    && di > 0
+                    && dj > 0
+                    && di != dj
+                    && table[di][dj].is_some()
+                {
+                    adj_fano += 1;
+                }
             }
         }
     }
@@ -449,9 +453,13 @@ pub fn optimal_cayley_basis() -> (CayleyBasis, usize, usize, Vec<usize>) {
             let di = dominant_basis_element(&oct_i);
             let dj = dominant_basis_element(&oct_j);
             if let (Some(a), Some(b)) = (di, dj)
-                && a > 0 && b > 0 && a != b && table[a][b].is_some() {
-                    count += 1;
-                }
+                && a > 0
+                && b > 0
+                && a != b
+                && table[a][b].is_some()
+            {
+                count += 1;
+            }
         }
         count
     };
@@ -577,10 +585,11 @@ pub fn build_fano_overlap_graph(basis: &CayleyBasis) -> FanoOverlapGraph {
     for (i, root) in simple.iter().enumerate() {
         let oct = basis.root_to_octonion(root);
         if let Some(idx) = dominant_basis_element(&oct)
-            && idx > 0 {
-                wall_oct[i] = Some(idx);
-                n_imag += 1;
-            }
+            && idx > 0
+        {
+            wall_oct[i] = Some(idx);
+            n_imag += 1;
+        }
     }
 
     let mut adjacency = [[false; 8]; 8];
@@ -591,21 +600,22 @@ pub fn build_fano_overlap_graph(basis: &CayleyBasis) -> FanoOverlapGraph {
     for i in 0..8 {
         for j in (i + 1)..8 {
             if let (Some(oi), Some(oj)) = (wall_oct[i], wall_oct[j])
-                && oi != oj {
-                    // Both imaginary, distinct -> they share a Fano line
-                    adjacency[i][j] = true;
-                    adjacency[j][i] = true;
-                    n_edges += 1;
+                && oi != oj
+            {
+                // Both imaginary, distinct -> they share a Fano line
+                adjacency[i][j] = true;
+                adjacency[j][i] = true;
+                n_edges += 1;
 
-                    // Find the Fano line
-                    if let Some(ok) = table[oi][oj] {
-                        let mut triple = [oi, oj, ok];
-                        triple.sort();
-                        fano_line[i][j] = Some(triple);
-                        fano_line[j][i] = Some(triple);
-                        lines_seen.insert(triple);
-                    }
+                // Find the Fano line
+                if let Some(ok) = table[oi][oj] {
+                    let mut triple = [oi, oj, ok];
+                    triple.sort();
+                    fano_line[i][j] = Some(triple);
+                    fano_line[j][i] = Some(triple);
+                    lines_seen.insert(triple);
                 }
+            }
         }
     }
 

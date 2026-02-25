@@ -2,7 +2,7 @@
 
 use crate::traits::{PipelineState, VerificationLayer, VerificationReport};
 use gr_core::ppn_constraints::check_all_ppn_constraints;
-use vacuum_frustration::{omega_eff_from_phi, ScalarFrustrationMap, CASSINI_OMEGA_BD_LOWER_BOUND};
+use vacuum_frustration::{CASSINI_OMEGA_BD_LOWER_BOUND, ScalarFrustrationMap, omega_eff_from_phi};
 
 /// Default verification policy for thesis execution.
 #[derive(Debug, Clone, Copy)]

@@ -251,7 +251,9 @@ mod tests {
             );
         }
 
-        eprintln!("  Note: Clifford algebras generally show non-commutativity due to antisymmetric basis rule.");
+        eprintln!(
+            "  Note: Clifford algebras generally show non-commutativity due to antisymmetric basis rule."
+        );
     }
 
     #[test]
@@ -280,7 +282,9 @@ mod tests {
             );
         }
 
-        eprintln!("  Observation: Dimension grows as 2^n, matching Cayley-Dickson tower (dims 1,2,4,8,16...)");
+        eprintln!(
+            "  Observation: Dimension grows as 2^n, matching Cayley-Dickson tower (dims 1,2,4,8,16...)"
+        );
     }
 
     #[test]
@@ -309,7 +313,9 @@ mod tests {
             "    - Composition law: depends on signature (Euclidean: yes; spacetime: modified)"
         );
 
-        eprintln!("\n  Hypothesis: Non-commutativity is construction-dependent (CD doubling vs Clifford product)");
+        eprintln!(
+            "\n  Hypothesis: Non-commutativity is construction-dependent (CD doubling vs Clifford product)"
+        );
         eprintln!("  but may be universal across dims, requiring different mechanisms.");
     }
 
@@ -584,7 +590,9 @@ mod tests {
         eprintln!(
             "  1. STRUCTURAL SIMILARITY: Both Clifford and CD exhibit non-commutativity at dim>=4"
         );
-        eprintln!("  2. MECHANISM DIFFERENCE: CD uses conjugation asymmetry; Clifford uses antisymmetric basis");
+        eprintln!(
+            "  2. MECHANISM DIFFERENCE: CD uses conjugation asymmetry; Clifford uses antisymmetric basis"
+        );
         eprintln!("  3. CENTER IDENTITY: Both have Z(A) = R*e_0 (scalars only)");
         eprintln!(
             "  4. COMPOSITION: CD preserves for standard gamma; Clifford varies by signature"
@@ -595,7 +603,9 @@ mod tests {
         eprintln!(
             "  [OK] Different mechanisms (conjugation vs anticommutation) yield same property outcome"
         );
-        eprintln!("  [OK] This supports the principle: Construction Method determines mechanism, Dimension determines outcome");
+        eprintln!(
+            "  [OK] This supports the principle: Construction Method determines mechanism, Dimension determines outcome"
+        );
     }
 
     // ========================================================================
@@ -766,7 +776,9 @@ mod tests {
         eprintln!(
             "  If Clifford remains ~80%+ commutative at dim=8, suggests dimensional independence"
         );
-        eprintln!("  If Clifford drops to <20% commutative at dim=8, suggests dimension-dependent transition");
+        eprintln!(
+            "  If Clifford drops to <20% commutative at dim=8, suggests dimension-dependent transition"
+        );
         eprintln!();
         eprintln!("  PHASE 2 REFERENCE (CD Algebras at dim=8):");
         eprintln!("  - All 8 gamma signatures tested, 100% non-commutative");
@@ -788,8 +800,12 @@ mod tests {
 
     #[test]
     fn test_clifford_dim16_four_signatures_commutativity() {
-        eprintln!("\n  Phase 3a Step 3: Clifford Dim=16 Signature Census - Commutativity at Sedenion Scale");
-        eprintln!("  =====================================================================================");
+        eprintln!(
+            "\n  Phase 3a Step 3: Clifford Dim=16 Signature Census - Commutativity at Sedenion Scale"
+        );
+        eprintln!(
+            "  ====================================================================================="
+        );
 
         let signatures = vec![
             ("Cl(4,0) - All positive", CliffordSignature::new(4, 0)),
@@ -798,8 +814,12 @@ mod tests {
             ("Cl(3,1) - Skewed", CliffordSignature::new(3, 1)),
         ];
 
-        eprintln!("  Testing 4 representative Cl(p,q) signatures with p+q=4 (dim=16 = 65,536 basis elements)");
-        eprintln!("  Strategy: Stratified sampling due to 2^16=65536 bases, ~2B potential pair combinations\n");
+        eprintln!(
+            "  Testing 4 representative Cl(p,q) signatures with p+q=4 (dim=16 = 65,536 basis elements)"
+        );
+        eprintln!(
+            "  Strategy: Stratified sampling due to 2^16=65536 bases, ~2B potential pair combinations\n"
+        );
 
         let mut all_results = Vec::new();
 
@@ -872,8 +892,12 @@ mod tests {
                 "    Average: {:.1}% commuting pairs across all signatures",
                 avg_pct
             );
-            eprintln!("    Interpretation: Clifford algebras maintain ~80%+ commutativity at ALL tested dims (4,8,16)");
-            eprintln!("    This CONFIRMS construction method determines commutativity pattern (not dimension)");
+            eprintln!(
+                "    Interpretation: Clifford algebras maintain ~80%+ commutativity at ALL tested dims (4,8,16)"
+            );
+            eprintln!(
+                "    This CONFIRMS construction method determines commutativity pattern (not dimension)"
+            );
         } else if avg_pct > 20.0 {
             eprintln!("  [WARN] PARTIAL TRANSITION: Commutativity decreases at dim=16");
             eprintln!(
@@ -975,7 +999,9 @@ mod tests {
         eprintln!("        `-- Dim=8:  0% (all 8 gamma signatures tested Phase 2)");
         eprintln!();
         eprintln!("  2. DIMENSION INDEPENDENCE (Dimension = SECONDARY)");
-        eprintln!("     |-- If Clifford remains ~80%+ at dim=16: Pattern is INTRINSIC (not dimension-dependent)");
+        eprintln!(
+            "     |-- If Clifford remains ~80%+ at dim=16: Pattern is INTRINSIC (not dimension-dependent)"
+        );
         eprintln!("     |-- If Clifford drops below 20% at dim=16: PHASE TRANSITION occurs");
         eprintln!("     `-- Pattern consistency validates construction method primacy hypothesis");
         eprintln!();
@@ -990,7 +1016,9 @@ mod tests {
         eprintln!();
         eprintln!("  HYPOTHESIS STATUS:");
         eprintln!("  ==================");
-        eprintln!("  [OK] CONFIRMED: Commutativity is CONSTRUCTION-METHOD-DEPENDENT (not dimension-dependent)");
+        eprintln!(
+            "  [OK] CONFIRMED: Commutativity is CONSTRUCTION-METHOD-DEPENDENT (not dimension-dependent)"
+        );
         eprintln!(
             "  [OK] CONFIRMED: Clifford and CD exhibit fundamentally different commutativity patterns"
         );

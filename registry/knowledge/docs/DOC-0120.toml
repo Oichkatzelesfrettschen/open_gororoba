@@ -42,8 +42,8 @@ Network access is therefore opt-in and must never be required by `make test` or 
 ### 1) Plain fetch (open access)
 
 ```bash
-wget -O data/external/papers/<stable_name>.pdf 'https://arxiv.org/pdf/<id>.pdf'
-pdftotext -layout data/external/papers/<stable_name>.pdf data/external/papers/<stable_name>.txt
+wget -O data/papers/corpus/<stable_name>.pdf 'https://arxiv.org/pdf/<id>.pdf'
+pdftotext -layout data/papers/corpus/<stable_name>.pdf data/papers/corpus/<stable_name>.txt
 PYTHONWARNINGS=error make provenance
 ```
 
@@ -54,8 +54,8 @@ Then index the source in `docs/external_sources/<TOPIC>_SOURCES.md`.
 Use `torsocks` with `wget` directly:
 
 ```bash
-torsocks wget -O data/external/papers/<stable_name>.pdf 'https://example.com/file.pdf'
-pdftotext -layout data/external/papers/<stable_name>.pdf data/external/papers/<stable_name>.txt
+torsocks wget -O data/papers/corpus/<stable_name>.pdf 'https://example.com/file.pdf'
+pdftotext -layout data/papers/corpus/<stable_name>.pdf data/papers/corpus/<stable_name>.txt
 PYTHONWARNINGS=error make provenance
 ```
 
@@ -63,7 +63,7 @@ PYTHONWARNINGS=error make provenance
 
 If a source cannot be fetched automatically (e.g., publisher auth, Cloudflare/Akamai):
 
-1) Cache a short trace artifact under `data/external/traces/` describing:
+1) Cache a short trace artifact under `data/papers/intake/traces/` describing:
    - attempted URL(s)
    - timestamp
    - error code / block page notes

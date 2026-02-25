@@ -52,13 +52,14 @@ fn main() {
     }
 
     if let Some(parent) = args.output.parent()
-        && let Err(err) = std::fs::create_dir_all(parent) {
-            eprintln!(
-                "ERROR: failed to create output directory {}: {err}",
-                parent.display()
-            );
-            std::process::exit(1);
-        }
+        && let Err(err) = std::fs::create_dir_all(parent)
+    {
+        eprintln!(
+            "ERROR: failed to create output directory {}: {err}",
+            parent.display()
+        );
+        std::process::exit(1);
+    }
 
     let mut summary_wtr = match csv::Writer::from_path(&args.output) {
         Ok(writer) => writer,
@@ -95,13 +96,14 @@ fn main() {
     let mut details_wtr = match &args.details {
         Some(path) => {
             if let Some(parent) = path.parent()
-                && let Err(err) = std::fs::create_dir_all(parent) {
-                    eprintln!(
-                        "ERROR: failed to create details directory {}: {err}",
-                        parent.display()
-                    );
-                    std::process::exit(1);
-                }
+                && let Err(err) = std::fs::create_dir_all(parent)
+            {
+                eprintln!(
+                    "ERROR: failed to create details directory {}: {err}",
+                    parent.display()
+                );
+                std::process::exit(1);
+            }
             match csv::Writer::from_path(path) {
                 Ok(mut writer) => {
                     if let Err(err) = writer.write_record([
@@ -198,10 +200,11 @@ fn main() {
     }
 
     if let Some(writer) = details_wtr.as_mut()
-        && let Err(err) = writer.flush() {
-            eprintln!("ERROR: failed to flush details CSV: {err}");
-            std::process::exit(1);
-        }
+        && let Err(err) = writer.flush()
+    {
+        eprintln!("ERROR: failed to flush details CSV: {err}");
+        std::process::exit(1);
+    }
 
     eprintln!("Wrote ET billiard summary to {}", args.output.display());
     if let Some(details_path) = &args.details {

@@ -6,7 +6,7 @@
 
 use crate::simulation::{SimulationConfig, SimulationState};
 use crate::traits::{ThesisEvidence, ThesisPipeline};
-use algebra_core::physics::octonion_field::{oct_norm_sq, FieldParams};
+use algebra_core::physics::octonion_field::{FieldParams, oct_norm_sq};
 use optics_core::grin::{GrinMedium, Ray, Vec3};
 
 /// GRIN medium derived from algebra field energy density.
@@ -148,9 +148,7 @@ impl ThesisPipeline for WarpRingPipeline {
 
         // 3. GRIN ray trace through the algebra energy field
         let energy_flat: Vec<f64> = match &state.algebra {
-            crate::simulation::AlgebraicField::Octonion(f) => {
-                f.iter().map(oct_norm_sq).collect()
-            }
+            crate::simulation::AlgebraicField::Octonion(f) => f.iter().map(oct_norm_sq).collect(),
             _ => vec![0.0; self.config.nx * self.config.ny],
         };
 
@@ -201,7 +199,10 @@ mod tests {
         let evidence = pipeline.execute();
         // Ray deviation message should be present
         assert!(
-            evidence.messages.iter().any(|m| m.contains("Ray Deviation")),
+            evidence
+                .messages
+                .iter()
+                .any(|m| m.contains("Ray Deviation")),
             "evidence should contain ray deviation metric"
         );
     }

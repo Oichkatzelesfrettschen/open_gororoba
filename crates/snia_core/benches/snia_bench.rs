@@ -1,4 +1,4 @@
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use snia_core::{
     BurnState, CarbonBurnModel, HllcFlux1D, HydroState1D, NickelYieldModel, SniaCoreSolver,
     SolverConfig, WhiteDwarfEos,

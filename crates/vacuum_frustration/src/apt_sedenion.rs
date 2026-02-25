@@ -434,11 +434,8 @@ mod tests {
         // distinct basis elements and 0 between same basis.
         // Use epsilon slightly above sqrt(2) to capture all non-self neighbors.
         let result = local_ultrametricity_test_nd(
-            &onehot,
-            1.5, // epsilon: sqrt(2) ~ 1.414, so 1.5 captures nearest neighbors
-            200,
-            10,
-            42,
+            &onehot, 1.5, // epsilon: sqrt(2) ~ 1.414, so 1.5 captures nearest neighbors
+            200, 10, 42,
         );
 
         assert_eq!(result.n_points, 64);

@@ -19,9 +19,8 @@
 
 use clap::Parser;
 use materials_core::{
-    casimir_drude_plasma_discrepancy,
-    gold_drude_lorentz, silver_drude_lorentz, copper_drude_lorentz,
-    DrudeLorentzParams,
+    DrudeLorentzParams, casimir_drude_plasma_discrepancy, copper_drude_lorentz, gold_drude_lorentz,
+    silver_drude_lorentz,
 };
 use std::io::Write;
 
@@ -57,9 +56,21 @@ fn main() {
     let args = Args::parse();
 
     let metals: Vec<MetalSpec> = vec![
-        MetalSpec { name: "Au", omega_p_ev: 9.0,  model: gold_drude_lorentz() },
-        MetalSpec { name: "Ag", omega_p_ev: 9.01, model: silver_drude_lorentz() },
-        MetalSpec { name: "Cu", omega_p_ev: 8.71, model: copper_drude_lorentz() },
+        MetalSpec {
+            name: "Au",
+            omega_p_ev: 9.0,
+            model: gold_drude_lorentz(),
+        },
+        MetalSpec {
+            name: "Ag",
+            omega_p_ev: 9.01,
+            model: silver_drude_lorentz(),
+        },
+        MetalSpec {
+            name: "Cu",
+            omega_p_ev: 8.71,
+            model: copper_drude_lorentz(),
+        },
     ];
 
     // Log-spaced separations: 100 nm to 5 um
@@ -74,21 +85,39 @@ fn main() {
     let mut out = stdout.lock();
 
     writeln!(out, "# Casimir Drude vs plasma model (Sprint 45)").unwrap();
-    writeln!(out, "# T={:.1} K, N_Matsubara={}, N_GL={}", args.temperature_k, args.n_matsubara, args.n_gauss).unwrap();
-    writeln!(out, "# {:>8} {:>12} {:>14} {:>14} {:>12}",
-        "metal", "d_nm", "E_Drude", "E_Plasma", "disc_%").unwrap();
+    writeln!(
+        out,
+        "# T={:.1} K, N_Matsubara={}, N_GL={}",
+        args.temperature_k, args.n_matsubara, args.n_gauss
+    )
+    .unwrap();
+    writeln!(
+        out,
+        "# {:>8} {:>12} {:>14} {:>14} {:>12}",
+        "metal", "d_nm", "E_Drude", "E_Plasma", "disc_%"
+    )
+    .unwrap();
 
     for spec in &metals {
         for &d in &separations {
             let (e_drude, e_plasma, disc_pct) = casimir_drude_plasma_discrepancy(
-                &spec.model, spec.omega_p_ev, d,
-                args.temperature_k, args.n_matsubara, args.n_gauss,
+                &spec.model,
+                spec.omega_p_ev,
+                d,
+                args.temperature_k,
+                args.n_matsubara,
+                args.n_gauss,
             );
             writeln!(
                 out,
                 "  {:>8} {:>12.1} {:>14.4e} {:>14.4e} {:>12.4}",
-                spec.name, d * 1e9, e_drude, e_plasma, disc_pct
-            ).unwrap();
+                spec.name,
+                d * 1e9,
+                e_drude,
+                e_plasma,
+                disc_pct
+            )
+            .unwrap();
         }
         writeln!(out).unwrap();
     }
@@ -96,18 +125,33 @@ fn main() {
     // Summary: discrepancy at key separations
     let key_seps = [100e-9, 200e-9, 500e-9, 1000e-9, 2000e-9];
     writeln!(out, "# Summary: discrepancy % at selected separations").unwrap();
-    writeln!(out, "# {:>8} {:>10} {:>10} {:>10} {:>10} {:>10}",
-        "metal", "d=100nm", "d=200nm", "d=500nm", "d=1um", "d=2um").unwrap();
+    writeln!(
+        out,
+        "# {:>8} {:>10} {:>10} {:>10} {:>10} {:>10}",
+        "metal", "d=100nm", "d=200nm", "d=500nm", "d=1um", "d=2um"
+    )
+    .unwrap();
     for spec in &metals {
-        let discs: Vec<String> = key_seps.iter().map(|&d| {
-            let (_, _, pct) = casimir_drude_plasma_discrepancy(
-                &spec.model, spec.omega_p_ev, d,
-                args.temperature_k, args.n_matsubara, args.n_gauss,
-            );
-            format!("{:.3}%", pct)
-        }).collect();
-        writeln!(out, "  {:>8} {:>10} {:>10} {:>10} {:>10} {:>10}",
-            spec.name, discs[0], discs[1], discs[2], discs[3], discs[4]).unwrap();
+        let discs: Vec<String> = key_seps
+            .iter()
+            .map(|&d| {
+                let (_, _, pct) = casimir_drude_plasma_discrepancy(
+                    &spec.model,
+                    spec.omega_p_ev,
+                    d,
+                    args.temperature_k,
+                    args.n_matsubara,
+                    args.n_gauss,
+                );
+                format!("{:.3}%", pct)
+            })
+            .collect();
+        writeln!(
+            out,
+            "  {:>8} {:>10} {:>10} {:>10} {:>10} {:>10}",
+            spec.name, discs[0], discs[1], discs[2], discs[3], discs[4]
+        )
+        .unwrap();
     }
 
     eprintln!("Drude-plasma controversy explanation:");

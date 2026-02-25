@@ -1,6 +1,6 @@
 use snia_core::{
-    read_snapshot_toml, write_snapshot_toml, BurnState, CarbonBurnModel, HllcFlux1D, HydroState1D,
-    SimulationSnapshot, SniaCoreSolver, SolverConfig, WhiteDwarfEos,
+    BurnState, CarbonBurnModel, HllcFlux1D, HydroState1D, SimulationSnapshot, SniaCoreSolver,
+    SolverConfig, WhiteDwarfEos, read_snapshot_toml, write_snapshot_toml,
 };
 
 #[test]

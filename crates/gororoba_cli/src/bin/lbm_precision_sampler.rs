@@ -371,8 +371,8 @@ fn run_sample(
             if let Some(last) = samples.last() {
                 let rel_err = (last.ke - ref_ke).abs() / ref_ke.abs().max(1e-30);
                 let threshold = match label.as_str() {
-                    "bf16_gpu" => 1e-1, // BF16: 8-bit mantissa, generous threshold
-                    "fp32_gpu" => 1e-3, // FP32: 23-bit mantissa
+                    "bf16_gpu" => 1e-1,  // BF16: 8-bit mantissa, generous threshold
+                    "fp32_gpu" => 1e-3,  // FP32: 23-bit mantissa
                     "fp64_cpu" => 1e-10, // FP64 CPU vs GPU: near-identical
                     _ => 1e-3,
                 };
@@ -412,10 +412,7 @@ fn run_compare(dir: &Path) -> Result<()> {
     println!();
 
     // Read each file and extract last row
-    println!(
-        "{:<40} {:>14} {:>12}",
-        "File", "Final KE", "ms/step"
-    );
+    println!("{:<40} {:>14} {:>12}", "File", "Final KE", "ms/step");
     println!("{}", "-".repeat(70));
     for p in &paths {
         let content = std::fs::read_to_string(p)?;
@@ -424,7 +421,12 @@ fn run_compare(dir: &Path) -> Result<()> {
             if parts.len() >= 4 {
                 let ke = parts[2];
                 let ms = parts[3];
-                println!("{:<40} {:>14} {:>12}", p.file_name().unwrap().to_string_lossy(), ke, ms);
+                println!(
+                    "{:<40} {:>14} {:>12}",
+                    p.file_name().unwrap().to_string_lossy(),
+                    ke,
+                    ms
+                );
             }
         }
     }

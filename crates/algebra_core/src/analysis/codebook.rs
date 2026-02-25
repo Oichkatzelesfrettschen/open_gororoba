@@ -191,7 +191,11 @@ pub fn is_in_lambda_1024(v: &LatticeVector) -> bool {
     // The other 2 completions (-1,0) and (0,-1) remain in Lambda_1024.
     // Closes the 1026->1024 discrepancy against CSV ground truth.
     // See legacy_crossval::test_lattice_csv_vs_predicate_1024d for provenance.
-    if v[1] == 1 && v[2] == 1 && v[3] == 0 && v[4] == -1 && v[5] == 1
+    if v[1] == 1
+        && v[2] == 1
+        && v[3] == 0
+        && v[4] == -1
+        && v[5] == 1
         && ((v[6] == 0 && v[7] == 1) || (v[6] == 1 && v[7] == 0))
     {
         return false;

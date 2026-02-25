@@ -523,7 +523,7 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-030 | algebra | Verified (math + artifact) | 2026-02-03 | Any sedenion-valued action/Lagrangian with products of 3+ fields must specify... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | Offline artifact: data/csv/c030_sedenion_lagrangian_bypass_checks.csv shows (... |
 | C-031 | holography, algebra | Verified (math + artifact... | 2026-02-03 | By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebras (R,C,H,O... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | Offline artifact: data/csv/c031_hurwitz_norm_composition_checks.csv shows nor... |
 | C-032 | algebra | Literature (preprint; min... | 2026-02-03 | Literature claim (Tang 2025 preprint): non-associative (octonionic/sedenionic... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | Minimal reproduction: Table 2 values were extracted to data/csv/c032_tang_202... |
-| C-033 | algebra | Partially verified (struc... | 2026-02-03 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace... |
+| C-033 | algebra | Partially verified (struc... | 2026-02-03 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace... |
 | C-034 | spectral, datasets, algebra | Literature (closed-access... | 2026-02-03 | Literature claim (Chanyal 2014): a "sedenion unified theory of gravi-electrom... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | The Springer PDF is not cached (requires authentication); only metadata and a... |
 | C-035 | cosmology | Verified (pure group theo... | 2026-01-31 | F4 Casimir ratio epsilon = C2(26)/\|Delta+(F4)\|= 6/24 = 1/4 exactly. | docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synth... | src/gemini_physics/algebra/f4_casimir.py verifies ratio is 1/4 under 'unit-lo... |
 | C-036 | cosmology | Refuted (simulation misma... | 2026-01-31 | Triality-governed bigraph attachment stabilizes clustering coefficient C -> 0... | docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synth... | src/gemini_physics/cosmology/bigraph_cosmogenesis.py simulation at N=5000 sho... |
@@ -639,7 +639,7 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-030 | algebra | Verified (math + artifact) | 2026-02-03 | Any sedenion-valued action/Lagrangian with products of 3+ fields must specify... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | Offline artifact: data/csv/c030_sedenion_lagrangian_bypass_checks.csv shows (... |
 | C-031 | holography, algebra | Verified (math + artifact... | 2026-02-03 | By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebras (R,C,H,O... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | Offline artifact: data/csv/c031_hurwitz_norm_composition_checks.csv shows nor... |
 | C-032 | algebra | Literature (preprint; min... | 2026-02-03 | Literature claim (Tang 2025 preprint): non-associative (octonionic/sedenionic... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | Minimal reproduction: Table 2 values were extracted to data/csv/c032_tang_202... |
-| C-033 | algebra | Partially verified (struc... | 2026-02-03 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace... |
+| C-033 | algebra | Partially verified (struc... | 2026-02-03 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace... |
 | C-034 | spectral, datasets, algebra | Literature (closed-access... | 2026-02-03 | Literature claim (Chanyal 2014): a "sedenion unified theory of gravi-electrom... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | The Springer PDF is not cached (requires authentication); only metadata and a... |
 | C-035 | cosmology | Verified (pure group theo... | 2026-01-31 | F4 Casimir ratio epsilon = C2(26)/\|Delta+(F4)\|= 6/24 = 1/4 exactly. | docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synth... | src/gemini_physics/algebra/f4_casimir.py verifies ratio is 1/4 under 'unit-lo... |
 | C-036 | cosmology | Refuted (simulation misma... | 2026-01-31 | Triality-governed bigraph attachment stabilizes clustering coefficient C -> 0... | docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synth... | src/gemini_physics/cosmology/bigraph_cosmogenesis.py simulation at N=5000 sho... |
@@ -924,7 +924,7 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-030 | algebra | Verified (math + artifact) | 2026-02-03 | Any sedenion-valued action/Lagrangian with products of 3+ fields must specify... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | Offline artifact: data/csv/c030_sedenion_lagrangian_bypass_checks.csv shows (... |
 | C-031 | holography, algebra | Verified (math + artifact... | 2026-02-03 | By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebras (R,C,H,O... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | Offline artifact: data/csv/c031_hurwitz_norm_composition_checks.csv shows nor... |
 | C-032 | algebra | Verified (source + numeri... | 2026-02-04 | Tang (2025 preprint): non-associative (octonionic/sedenionic) QED uses associ... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | Minimal reproduction: Table 2 values were extracted to data/csv/c032_tang_202... |
-| C-033 | datasets, algebra | Not supported (mapping un... | 2026-02-04 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace... |
+| C-033 | datasets, algebra | Not supported (mapping un... | 2026-02-04 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace... |
 | C-034 | spectral, datasets, algebra | Verified (metadata+abstra... | 2026-02-04 | Chanyal (2014): a "sedenion unified theory of gravi-electromagnetism" express... | docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_pr... | The Springer PDF is not cached (requires authentication); only metadata and a... |
 | C-035 | cosmology | Verified (pure group theo... | 2026-01-31 | F4 Casimir ratio epsilon = C2(26)/\|Delta+(F4)\|= 6/24 = 1/4 exactly. | docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synth... | src/gemini_physics/algebra/f4_casimir.py verifies ratio is 1/4 under 'unit-lo... |
 | C-036 | cosmology | Refuted (simulation misma... | 2026-01-31 | Triality-governed bigraph attachment stabilizes clustering coefficient C -> 0... | docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synth... | src/gemini_physics/cosmology/bigraph_cosmogenesis.py simulation at N=5000 sho... |
@@ -1997,8 +1997,8 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-407 | stellar-cartography, holography, algebra | Partially verified (method) | 2026-02-02 | Reported sky-alignment p-values must include explicit trial-factor accounting... | docs/convos/CONVOS_CLAIMS_INBOX.md, docs/external_sources/TSCP_METHOD_SOURCES... | Verify by maintaining an explicit "tuned vs fixed" parameter ledger and compu... |
 | C-408 | stellar-cartography, meta | Partially verified (method) | 2026-02-02 | Every thesis-level hypothesis must have symmetric falsification boundaries: a... | docs/convos/CONVOS_CLAIMS_INBOX.md, docs/external_sources/TSCP_METHOD_SOURCES... | Verify by extending explicit acceptance/rejection decision rules (including N... |
 | C-409 | materials | Modeled (Simulation) | 2026-02-02 | "Interleaved I-Beam" spaceplate design targets high refractive index via capa... | src/gemini_physics/metamaterials/designs.py, src/gemini_physics/async_warp.py | Implemented design_interleaved_ibeam using 5-cell Au/Si stack with Drude disp... |
-| C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/external/papers/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr... |
-| C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/external/papers/arxiv_2601.2... | Validates "flat platform" source hypothesis for integrated quantum optics. Re... |
+| C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/papers/corpus/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr... |
+| C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/papers/corpus/arxiv_2601.2... | Validates "flat platform" source hypothesis for integrated quantum optics. Re... |
 | C-412 | holography, visualization, algebra | Modeled (Visualization) | 2026-02-02 | "Holographic Entropy Trap" 5-phase mechanism (Injection -> Lensing -> Sedenio... | data/artifacts/images/warp_pulse_animation_directors_cut.mp4, src/scripts/vis... | Rendered 45s/120fps physics-driven animation. Visualizes ray-tracing (Optics)... |
 | C-413 | meta | Verified (Math) | 2026-02-02 | Determinant of left-multiplication operator det(L_a) equals ||a||^dim exactly... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LF), data/csv/cd_al... | Verifies that L_a is a scaled isometry only for composition algebras. The "vo... |
 | C-414 | algebra | Verified (Math) | 2026-02-02 | Adjoint identity L_a^T = L_{conj(a)} holds universally at all Cayley-Dickson... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LG), data/csv/cd_al... | Universal structural identity connecting the transpose of the multiplication... |
@@ -2295,8 +2295,8 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-407 | stellar-cartography, holography, algebra | Partially verified (method) | 2026-02-02 | Reported sky-alignment p-values must include explicit trial-factor accounting... | docs/convos/CONVOS_CLAIMS_INBOX.md, docs/external_sources/TSCP_METHOD_SOURCES... | Verify by maintaining an explicit "tuned vs fixed" parameter ledger and compu... |
 | C-408 | stellar-cartography, meta | Partially verified (method) | 2026-02-02 | Every thesis-level hypothesis must have symmetric falsification boundaries: a... | docs/convos/CONVOS_CLAIMS_INBOX.md, docs/external_sources/TSCP_METHOD_SOURCES... | Verify by extending explicit acceptance/rejection decision rules (including N... |
 | C-409 | materials | Modeled (Simulation) | 2026-02-02 | "Interleaved I-Beam" spaceplate design targets high refractive index via capa... | src/gemini_physics/metamaterials/designs.py, src/gemini_physics/async_warp.py | Implemented design_interleaved_ibeam using 5-cell Au/Si stack with Drude disp... |
-| C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/external/papers/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr... |
-| C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/external/papers/arxiv_2601.2... | Validates "flat platform" source hypothesis for integrated quantum optics. Re... |
+| C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/papers/corpus/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr... |
+| C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/papers/corpus/arxiv_2601.2... | Validates "flat platform" source hypothesis for integrated quantum optics. Re... |
 | C-412 | holography, visualization, algebra | Modeled (Visualization) | 2026-02-02 | "Holographic Entropy Trap" 5-phase mechanism (Injection -> Lensing -> Sedenio... | data/artifacts/images/warp_pulse_animation_directors_cut.mp4, src/scripts/vis... | Rendered 45s/120fps physics-driven animation. Visualizes ray-tracing (Optics)... |
 | C-413 | meta | Verified (Math) | 2026-02-02 | Determinant of left-multiplication operator det(L_a) equals ||a||^dim exactly... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LF), data/csv/cd_al... | Verifies that L_a is a scaled isometry only for composition algebras. The "vo... |
 | C-414 | algebra | Verified (Math) | 2026-02-02 | Adjoint identity L_a^T = L_{conj(a)} holds universally at all Cayley-Dickson... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LG), data/csv/cd_al... | Universal structural identity connecting the transpose of the multiplication... |
@@ -2598,8 +2598,8 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-407 | stellar-cartography, holography, algebra | Partially verified (method) | 2026-02-02 | Reported sky-alignment p-values must include explicit trial-factor accounting... | docs/convos/CONVOS_CLAIMS_INBOX.md, docs/external_sources/TSCP_METHOD_SOURCES... | Verify by maintaining an explicit "tuned vs fixed" parameter ledger and compu... |
 | C-408 | stellar-cartography, meta | Partially verified (method) | 2026-02-02 | Every thesis-level hypothesis must have symmetric falsification boundaries: a... | docs/convos/CONVOS_CLAIMS_INBOX.md, docs/external_sources/TSCP_METHOD_SOURCES... | Verify by extending explicit acceptance/rejection decision rules (including N... |
 | C-409 | materials | Modeled (Simulation) | 2026-02-02 | "Interleaved I-Beam" spaceplate design targets high refractive index via capa... | src/gemini_physics/metamaterials/designs.py, src/gemini_physics/async_warp.py | Implemented design_interleaved_ibeam using 5-cell Au/Si stack with Drude disp... |
-| C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/external/papers/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr... |
-| C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/external/papers/arxiv_2601.2... | Validates "flat platform" source hypothesis for integrated quantum optics. Re... |
+| C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/papers/corpus/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr... |
+| C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/papers/corpus/arxiv_2601.2... | Validates "flat platform" source hypothesis for integrated quantum optics. Re... |
 | C-412 | holography, visualization, algebra | Modeled (Visualization) | 2026-02-02 | "Holographic Entropy Trap" 5-phase mechanism (Injection -> Lensing -> Sedenio... | data/artifacts/images/warp_pulse_animation_directors_cut.mp4, src/scripts/vis... | Rendered 45s/120fps physics-driven animation. Visualizes ray-tracing (Optics)... |
 | C-413 | meta | Verified (Math) | 2026-02-02 | Determinant of left-multiplication operator det(L_a) equals \|\|a\|\|^dim exa... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LF), data/csv/cd_al... | Verifies that L_a is a scaled isometry only for composition algebras. The "vo... |
 | C-414 | algebra | Verified (Math) | 2026-02-02 | Adjoint identity L_a^T = L_{conj(a)} holds universally at all Cayley-Dickson... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LG), data/csv/cd_al... | Universal structural identity connecting the transpose of the multiplication... |
@@ -2989,8 +2989,8 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-407 | stellar-cartography, holography, algebra | Partially verified (method) | 2026-02-02 | Reported sky-alignment p-values must include explicit trial-factor accounting... | docs/convos/CONVOS_CLAIMS_INBOX.md, docs/external_sources/TSCP_METHOD_SOURCES... | Verify by maintaining an explicit "tuned vs fixed" parameter ledger and compu... |
 | C-408 | stellar-cartography, meta | Partially verified (method) | 2026-02-02 | Every thesis-level hypothesis must have symmetric falsification boundaries: a... | docs/convos/CONVOS_CLAIMS_INBOX.md, docs/external_sources/TSCP_METHOD_SOURCES... | Verify by extending explicit acceptance/rejection decision rules (including N... |
 | C-409 | materials | Modeled (Simulation) | 2026-02-02 | "Interleaved I-Beam" spaceplate design targets high refractive index via capa... | src/gemini_physics/metamaterials/designs.py, src/gemini_physics/async_warp.py | Implemented design_interleaved_ibeam using 5-cell Au/Si stack with Drude disp... |
-| C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/external/papers/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr... |
-| C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/external/papers/arxiv_2601.2... | Validates "flat platform" source hypothesis for integrated quantum optics. Re... |
+| C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/papers/corpus/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr... |
+| C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/papers/corpus/arxiv_2601.2... | Validates "flat platform" source hypothesis for integrated quantum optics. Re... |
 | C-412 | holography, visualization, algebra | Modeled (Visualization) | 2026-02-02 | "Holographic Entropy Trap" 5-phase mechanism (Injection -> Lensing -> Sedenio... | data/artifacts/images/warp_pulse_animation_directors_cut.mp4, src/scripts/vis... | Rendered 45s/120fps physics-driven animation. Visualizes ray-tracing (Optics)... |
 | C-413 | meta | Verified (Math) | 2026-02-02 | Determinant of left-multiplication operator det(L_a) equals \|\|a\|\|^dim exa... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LF), data/csv/cd_al... | Verifies that L_a is a scaled isometry only for composition algebras. The "vo... |
 | C-414 | algebra | Verified (Math) | 2026-02-02 | Adjoint identity L_a^T = L_{conj(a)} holds universally at all Cayley-Dickson... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LG), data/csv/cd_al... | Universal structural identity connecting the transpose of the multiplication... |
@@ -4829,7 +4829,7 @@ slug = "pdf_inventory"
 title = "PDF Inventory"
 category = "inventory"
 claim_refs = []
-path_refs = ["/home/eirikr/Playground/ChatGPT Experiments", "convos/A Unified Framework from Foundations to Advanced Structures.pdf", "convos/A Unified Framework of Recursive Algebras, Entropy Dynamics, and Holography.pdf", "convos/Heterogeneous Classical-Quantum-Wetware Computing Architecture.pdf", "convos/Hypercomplex Algebra, Directed Graphs, and Fusion Propulsion_ An Interdisciplinary Synthesis.pdf", "convos/Predecessors of Real Numbers.pdf", "convos/Quantum Paraelectrics and Fractal Noise in Qubit Coherence Systems.pdf", "convos/Sedenion-Valued Field Theories_ Action Principles and Challenges.pdf", "convos/Tensor Fields, Surreal Dynamics, and Negative-Dimensional Geometries_ A Speculative Synthesis.pdf", "convos/The Multiverse and Metamaterials_ Theoretical Frontiers and Speculative Propulsion.pdf", "convos/Unified Synthesis of High-Dimensional Algebraic Structures (64D-2048D) with Emphasis on 1024D.pdf", "convos/__Exceptional Cosmological Framework Synthesis__.pdf", "data/addtl_sources/papers/caffarelli_silvestre_fractional_laplacian_0608640.pdf", "data/addtl_sources/papers/de_marrais_boxkites_0011260.pdf", "data/addtl_sources/papers/des_y6_cosmology_2601.14559.pdf", "data/addtl_sources/papers/desi_dr2_bao_cosmology_2503.14738.pdf", "data/addtl_sources/papers/desi_dr2_dynamical_de_2504.06118.pdf", "data/addtl_sources/papers/desi_dr2_lya_bao_2503.14739.pdf", "data/addtl_sources/papers/dragovich_padic_math_physics_review_1705.04758.pdf", "data/addtl_sources/papers/entanglement_scaling_continuous_TN_2410.23624.pdf", "data/addtl_sources/papers/evenbly_vidal_tnr_1412.0732.pdf", "data/addtl_sources/papers/evenbly_vidal_tnr_mera_1502.05385.pdf", "data/addtl_sources/papers/ising_ads_tensor_networks_2512.20838.pdf", "data/addtl_sources/papers/kozyrev_padic_multidim_wavelets_0612049.pdf", "data/addtl_sources/papers/kozyrev_padic_pseudodiff_0303045.pdf", "data/addtl_sources/papers/kozyrev_padic_wavelet_spectral_0012019.pdf", "data/addtl_sources/papers/mera_quantum_computer_entanglement_2412.18602.pdf", "data/addtl_sources/papers/universal_entanglement_correction_2405.10230.pdf", "data/external/papers/CMS_TOP-22-007.pdf", "data/external/papers/JHEP_01_2025_025.pdf", "data/external/papers/JHEP_10_2025_079.pdf", "data/external/papers/Landy_2008_Thermal_Metamaterials.pdf", "data/external/papers/Lorentzian_Threads_2025.pdf", "data/external/papers/Pozar_2005_Microwave_Engineering_Transitions.pdf", "data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf", "data/external/papers/White_2021_Casimir_Warp.pdf", "data/external/papers/abdi_2007_bonferroni_sidak_corrections.pdf", "data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf", "data/external/papers/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.pdf", "data/external/papers/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.pdf", "data/external/papers/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.pdf", "data/external/papers/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.pdf", "data/external/papers/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.pdf", "data/external/papers/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.pdf", "data/external/papers/arxiv_0903.5082_zurek_2009_quantum_darwinism.pdf", "data/external/papers/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf", "data/external/papers/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.pdf", "data/external/papers/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.pdf", "data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf", "data/external/papers/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.pdf", "data/external/papers/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.pdf", "data/external/papers/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.pdf", "data/external/papers/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf", "data/external/papers/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.pdf", "data/external/papers/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.pdf", "data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf", "data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf", "data/external/papers/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.pdf", "data/external/papers/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.pdf", "data/external/papers/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.pdf", "data/external/papers/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf", "data/external/papers/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.pdf", "data/external/papers/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.pdf", "data/external/papers/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.pdf", "data/external/papers/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf", "data/external/papers/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf", "data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/external/papers/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf", "data/external/papers/arxiv_2505.11747v2_structure_cayley_dickson.pdf", "data/external/papers/arxiv_2512.07210v1_automorphisms_sedenions.pdf", "data/external/papers/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf", "data/external/papers/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf", "data/external/papers/arxiv_2601.19734v1_clifford_invariant_unification.pdf", "data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf", "data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf", "data/external/papers/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.pdf", "data/external/papers/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.pdf", "data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf", "data/external/papers/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.pdf", "data/external/papers/arxiv_hep-th9409089_susskind_1994_world_as_hologram.pdf", "data/external/papers/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.pdf", "data/external/papers/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.pdf", "data/external/papers/arxiv_hep-th9711200_maldacena_1997_ads_cft.pdf", "data/external/papers/arxiv_math0105155_baez_2002_octonions.pdf", "data/external/papers/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.pdf", "data/external/papers/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.pdf", "data/external/papers/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf", "data/external/papers/arxiv_quant-ph0301032_mirror.pdf", "data/external/papers/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.pdf", "data/external/papers/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf", "data/external/papers/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.pdf", "data/external/papers/carlstrom_2001_wheels_report.pdf", "data/external/papers/chong_2010_cpa_arxiv_1003.4968.pdf", "data/external/papers/de_marrais_2000_math0011260.pdf", "data/external/papers/de_marrais_2002_math0207003_placeholder_substructures_I.pdf", "data/external/papers/de_marrais_2004_math0403113_boxkites_III.pdf", "data/external/papers/de_marrais_2004_wolfram_science_slides.pdf", "data/external/papers/de_marrais_2006_math0603281_presto_digitization_I.pdf", "data/external/papers/de_marrais_math0011260.pdf", "data/external/papers/des_y6_cosmology_2601.14559.pdf", "data/external/papers/desi_dr2_bao_cosmology_2503.14738.pdf", "data/external/papers/desi_dr2_dynamical_de_2504.06118.pdf", "data/external/papers/desi_dr2_lya_bao_2503.14739.pdf", "data/external/papers/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.pdf", "data/external/papers/dragovich_padic_math_physics_review_1705.04758.pdf", "data/external/papers/entanglement_scaling_continuous_TN_2410.23624.pdf", "data/external/papers/evenbly_vidal_tnr_1412.0732.pdf", "data/external/papers/evenbly_vidal_tnr_mera_1502.05385.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/back.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/filesave.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/forward.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/hand.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/help.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/home.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/matplotlib.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/move.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/qt4_editor_options.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/subplots.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/zoom_to_rect.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/back.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/filesave.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/forward.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/hand.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/help.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/home.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/matplotlib.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/move.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/qt4_editor_options.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/subplots.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/zoom_to_rect.pdf", "archive/_trash_external/preprints202511.0427_v1_tang_2025_non_associative_sedenionic_qed.pdf"]
+path_refs = ["/home/eirikr/Playground/ChatGPT Experiments", "convos/A Unified Framework from Foundations to Advanced Structures.pdf", "convos/A Unified Framework of Recursive Algebras, Entropy Dynamics, and Holography.pdf", "convos/Heterogeneous Classical-Quantum-Wetware Computing Architecture.pdf", "convos/Hypercomplex Algebra, Directed Graphs, and Fusion Propulsion_ An Interdisciplinary Synthesis.pdf", "convos/Predecessors of Real Numbers.pdf", "convos/Quantum Paraelectrics and Fractal Noise in Qubit Coherence Systems.pdf", "convos/Sedenion-Valued Field Theories_ Action Principles and Challenges.pdf", "convos/Tensor Fields, Surreal Dynamics, and Negative-Dimensional Geometries_ A Speculative Synthesis.pdf", "convos/The Multiverse and Metamaterials_ Theoretical Frontiers and Speculative Propulsion.pdf", "convos/Unified Synthesis of High-Dimensional Algebraic Structures (64D-2048D) with Emphasis on 1024D.pdf", "convos/__Exceptional Cosmological Framework Synthesis__.pdf", "data/addtl_sources/papers/caffarelli_silvestre_fractional_laplacian_0608640.pdf", "data/addtl_sources/papers/de_marrais_boxkites_0011260.pdf", "data/addtl_sources/papers/des_y6_cosmology_2601.14559.pdf", "data/addtl_sources/papers/desi_dr2_bao_cosmology_2503.14738.pdf", "data/addtl_sources/papers/desi_dr2_dynamical_de_2504.06118.pdf", "data/addtl_sources/papers/desi_dr2_lya_bao_2503.14739.pdf", "data/addtl_sources/papers/dragovich_padic_math_physics_review_1705.04758.pdf", "data/addtl_sources/papers/entanglement_scaling_continuous_TN_2410.23624.pdf", "data/addtl_sources/papers/evenbly_vidal_tnr_1412.0732.pdf", "data/addtl_sources/papers/evenbly_vidal_tnr_mera_1502.05385.pdf", "data/addtl_sources/papers/ising_ads_tensor_networks_2512.20838.pdf", "data/addtl_sources/papers/kozyrev_padic_multidim_wavelets_0612049.pdf", "data/addtl_sources/papers/kozyrev_padic_pseudodiff_0303045.pdf", "data/addtl_sources/papers/kozyrev_padic_wavelet_spectral_0012019.pdf", "data/addtl_sources/papers/mera_quantum_computer_entanglement_2412.18602.pdf", "data/addtl_sources/papers/universal_entanglement_correction_2405.10230.pdf", "data/papers/corpus/CMS_TOP-22-007.pdf", "data/papers/corpus/JHEP_01_2025_025.pdf", "data/papers/corpus/JHEP_10_2025_079.pdf", "data/papers/corpus/Landy_2008_Thermal_Metamaterials.pdf", "data/papers/corpus/Lorentzian_Threads_2025.pdf", "data/papers/corpus/Pozar_2005_Microwave_Engineering_Transitions.pdf", "data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf", "data/papers/corpus/White_2021_Casimir_Warp.pdf", "data/papers/corpus/abdi_2007_bonferroni_sidak_corrections.pdf", "data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf", "data/papers/corpus/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.pdf", "data/papers/corpus/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.pdf", "data/papers/corpus/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.pdf", "data/papers/corpus/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.pdf", "data/papers/corpus/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.pdf", "data/papers/corpus/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.pdf", "data/papers/corpus/arxiv_0903.5082_zurek_2009_quantum_darwinism.pdf", "data/papers/corpus/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf", "data/papers/corpus/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.pdf", "data/papers/corpus/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.pdf", "data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf", "data/papers/corpus/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.pdf", "data/papers/corpus/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.pdf", "data/papers/corpus/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.pdf", "data/papers/corpus/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf", "data/papers/corpus/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.pdf", "data/papers/corpus/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.pdf", "data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf", "data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf", "data/papers/corpus/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.pdf", "data/papers/corpus/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.pdf", "data/papers/corpus/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.pdf", "data/papers/corpus/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf", "data/papers/corpus/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.pdf", "data/papers/corpus/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.pdf", "data/papers/corpus/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.pdf", "data/papers/corpus/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf", "data/papers/corpus/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf", "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/papers/corpus/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf", "data/papers/corpus/arxiv_2505.11747v2_structure_cayley_dickson.pdf", "data/papers/corpus/arxiv_2512.07210v1_automorphisms_sedenions.pdf", "data/papers/corpus/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf", "data/papers/corpus/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf", "data/papers/corpus/arxiv_2601.19734v1_clifford_invariant_unification.pdf", "data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf", "data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf", "data/papers/corpus/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.pdf", "data/papers/corpus/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.pdf", "data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf", "data/papers/corpus/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.pdf", "data/papers/corpus/arxiv_hep-th9409089_susskind_1994_world_as_hologram.pdf", "data/papers/corpus/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.pdf", "data/papers/corpus/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.pdf", "data/papers/corpus/arxiv_hep-th9711200_maldacena_1997_ads_cft.pdf", "data/papers/corpus/arxiv_math0105155_baez_2002_octonions.pdf", "data/papers/corpus/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.pdf", "data/papers/corpus/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.pdf", "data/papers/corpus/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf", "data/papers/corpus/arxiv_quant-ph0301032_mirror.pdf", "data/papers/corpus/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.pdf", "data/papers/corpus/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf", "data/papers/corpus/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.pdf", "data/papers/corpus/carlstrom_2001_wheels_report.pdf", "data/papers/corpus/chong_2010_cpa_arxiv_1003.4968.pdf", "data/papers/corpus/de_marrais_2000_math0011260.pdf", "data/papers/corpus/de_marrais_2002_math0207003_placeholder_substructures_I.pdf", "data/papers/corpus/de_marrais_2004_math0403113_boxkites_III.pdf", "data/papers/corpus/de_marrais_2004_wolfram_science_slides.pdf", "data/papers/corpus/de_marrais_2006_math0603281_presto_digitization_I.pdf", "data/papers/corpus/de_marrais_math0011260.pdf", "data/papers/corpus/des_y6_cosmology_2601.14559.pdf", "data/papers/corpus/desi_dr2_bao_cosmology_2503.14738.pdf", "data/papers/corpus/desi_dr2_dynamical_de_2504.06118.pdf", "data/papers/corpus/desi_dr2_lya_bao_2503.14739.pdf", "data/papers/corpus/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.pdf", "data/papers/corpus/dragovich_padic_math_physics_review_1705.04758.pdf", "data/papers/corpus/entanglement_scaling_continuous_TN_2410.23624.pdf", "data/papers/corpus/evenbly_vidal_tnr_1412.0732.pdf", "data/papers/corpus/evenbly_vidal_tnr_mera_1502.05385.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/back.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/filesave.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/forward.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/hand.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/help.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/home.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/matplotlib.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/move.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/qt4_editor_options.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/subplots.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/zoom_to_rect.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/back.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/filesave.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/forward.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/hand.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/help.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/home.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/matplotlib.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/move.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/qt4_editor_options.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/subplots.pdf", "venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/zoom_to_rect.pdf", "archive/_trash_external/preprints202511.0427_v1_tang_2025_non_associative_sedenionic_qed.pdf"]
 line_count = 238
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -4898,86 +4898,86 @@ Total PDFs found (all): 165
 
 ## data/external (cached sources)
 
-- `data/external/papers/CMS_TOP-22-007.pdf`
-- `data/external/papers/JHEP_01_2025_025.pdf`
-- `data/external/papers/JHEP_10_2025_079.pdf`
-- `data/external/papers/Landy_2008_Thermal_Metamaterials.pdf`
-- `data/external/papers/Lorentzian_Threads_2025.pdf`
-- `data/external/papers/Pozar_2005_Microwave_Engineering_Transitions.pdf`
-- `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`
-- `data/external/papers/White_2021_Casimir_Warp.pdf`
-- `data/external/papers/abdi_2007_bonferroni_sidak_corrections.pdf`
-- `data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`
-- `data/external/papers/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.pdf`
-- `data/external/papers/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.pdf`
-- `data/external/papers/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.pdf`
-- `data/external/papers/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.pdf`
-- `data/external/papers/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.pdf`
-- `data/external/papers/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.pdf`
-- `data/external/papers/arxiv_0903.5082_zurek_2009_quantum_darwinism.pdf`
-- `data/external/papers/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf`
-- `data/external/papers/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.pdf`
-- `data/external/papers/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.pdf`
-- `data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`
-- `data/external/papers/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.pdf`
-- `data/external/papers/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.pdf`
-- `data/external/papers/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.pdf`
-- `data/external/papers/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf`
-- `data/external/papers/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.pdf`
-- `data/external/papers/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.pdf`
-- `data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`
-- `data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`
-- `data/external/papers/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.pdf`
-- `data/external/papers/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.pdf`
-- `data/external/papers/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.pdf`
-- `data/external/papers/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf`
-- `data/external/papers/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.pdf`
-- `data/external/papers/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.pdf`
-- `data/external/papers/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.pdf`
-- `data/external/papers/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf`
-- `data/external/papers/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf`
-- `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`
-- `data/external/papers/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf`
-- `data/external/papers/arxiv_2505.11747v2_structure_cayley_dickson.pdf`
-- `data/external/papers/arxiv_2512.07210v1_automorphisms_sedenions.pdf`
-- `data/external/papers/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf`
-- `data/external/papers/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf`
-- `data/external/papers/arxiv_2601.19734v1_clifford_invariant_unification.pdf`
-- `data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`
-- `data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`
-- `data/external/papers/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.pdf`
-- `data/external/papers/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.pdf`
-- `data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`
-- `data/external/papers/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.pdf`
-- `data/external/papers/arxiv_hep-th9409089_susskind_1994_world_as_hologram.pdf`
-- `data/external/papers/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.pdf`
-- `data/external/papers/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.pdf`
-- `data/external/papers/arxiv_hep-th9711200_maldacena_1997_ads_cft.pdf`
-- `data/external/papers/arxiv_math0105155_baez_2002_octonions.pdf`
-- `data/external/papers/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.pdf`
-- `data/external/papers/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.pdf`
-- `data/external/papers/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf`
-- `data/external/papers/arxiv_quant-ph0301032_mirror.pdf`
-- `data/external/papers/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.pdf`
-- `data/external/papers/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf`
-- `data/external/papers/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.pdf`
-- `data/external/papers/carlstrom_2001_wheels_report.pdf`
-- `data/external/papers/chong_2010_cpa_arxiv_1003.4968.pdf`
-- `data/external/papers/de_marrais_2000_math0011260.pdf`
-- `data/external/papers/de_marrais_2002_math0207003_placeholder_substructures_I.pdf`
-- `data/external/papers/de_marrais_2004_math0403113_boxkites_III.pdf`
-- `data/external/papers/de_marrais_2004_wolfram_science_slides.pdf`
-- `data/external/papers/de_marrais_2006_math0603281_presto_digitization_I.pdf`
-- `data/external/papers/de_marrais_math0011260.pdf`
-- `data/external/papers/des_y6_cosmology_2601.14559.pdf`
-- `data/external/papers/desi_dr2_bao_cosmology_2503.14738.pdf`
-- `data/external/papers/desi_dr2_dynamical_de_2504.06118.pdf`
-- `data/external/papers/desi_dr2_lya_bao_2503.14739.pdf`
-- `data/external/papers/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.pdf`
-- `data/external/papers/dragovich_padic_math_physics_review_1705.04758.pdf`
-- `data/external/papers/entanglement_scaling_continuous_TN_2410.23624.pdf`
-- `data/external/papers/evenbly_vidal_tnr_1412.0732.pdf`
-- `data/external/papers/evenbly_vidal_tnr_mera_1502.05385.pdf`
+- `data/papers/corpus/CMS_TOP-22-007.pdf`
+- `data/papers/corpus/JHEP_01_2025_025.pdf`
+- `data/papers/corpus/JHEP_10_2025_079.pdf`
+- `data/papers/corpus/Landy_2008_Thermal_Metamaterials.pdf`
+- `data/papers/corpus/Lorentzian_Threads_2025.pdf`
+- `data/papers/corpus/Pozar_2005_Microwave_Engineering_Transitions.pdf`
+- `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`
+- `data/papers/corpus/White_2021_Casimir_Warp.pdf`
+- `data/papers/corpus/abdi_2007_bonferroni_sidak_corrections.pdf`
+- `data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`
+- `data/papers/corpus/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.pdf`
+- `data/papers/corpus/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.pdf`
+- `data/papers/corpus/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.pdf`
+- `data/papers/corpus/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.pdf`
+- `data/papers/corpus/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.pdf`
+- `data/papers/corpus/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.pdf`
+- `data/papers/corpus/arxiv_0903.5082_zurek_2009_quantum_darwinism.pdf`
+- `data/papers/corpus/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf`
+- `data/papers/corpus/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.pdf`
+- `data/papers/corpus/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.pdf`
+- `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`
+- `data/papers/corpus/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.pdf`
+- `data/papers/corpus/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.pdf`
+- `data/papers/corpus/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.pdf`
+- `data/papers/corpus/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf`
+- `data/papers/corpus/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.pdf`
+- `data/papers/corpus/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.pdf`
+- `data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`
+- `data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`
+- `data/papers/corpus/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.pdf`
+- `data/papers/corpus/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.pdf`
+- `data/papers/corpus/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.pdf`
+- `data/papers/corpus/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf`
+- `data/papers/corpus/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.pdf`
+- `data/papers/corpus/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.pdf`
+- `data/papers/corpus/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.pdf`
+- `data/papers/corpus/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf`
+- `data/papers/corpus/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf`
+- `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`
+- `data/papers/corpus/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf`
+- `data/papers/corpus/arxiv_2505.11747v2_structure_cayley_dickson.pdf`
+- `data/papers/corpus/arxiv_2512.07210v1_automorphisms_sedenions.pdf`
+- `data/papers/corpus/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf`
+- `data/papers/corpus/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf`
+- `data/papers/corpus/arxiv_2601.19734v1_clifford_invariant_unification.pdf`
+- `data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`
+- `data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`
+- `data/papers/corpus/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.pdf`
+- `data/papers/corpus/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.pdf`
+- `data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`
+- `data/papers/corpus/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.pdf`
+- `data/papers/corpus/arxiv_hep-th9409089_susskind_1994_world_as_hologram.pdf`
+- `data/papers/corpus/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.pdf`
+- `data/papers/corpus/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.pdf`
+- `data/papers/corpus/arxiv_hep-th9711200_maldacena_1997_ads_cft.pdf`
+- `data/papers/corpus/arxiv_math0105155_baez_2002_octonions.pdf`
+- `data/papers/corpus/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.pdf`
+- `data/papers/corpus/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.pdf`
+- `data/papers/corpus/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf`
+- `data/papers/corpus/arxiv_quant-ph0301032_mirror.pdf`
+- `data/papers/corpus/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.pdf`
+- `data/papers/corpus/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf`
+- `data/papers/corpus/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.pdf`
+- `data/papers/corpus/carlstrom_2001_wheels_report.pdf`
+- `data/papers/corpus/chong_2010_cpa_arxiv_1003.4968.pdf`
+- `data/papers/corpus/de_marrais_2000_math0011260.pdf`
+- `data/papers/corpus/de_marrais_2002_math0207003_placeholder_substructures_I.pdf`
+- `data/papers/corpus/de_marrais_2004_math0403113_boxkites_III.pdf`
+- `data/papers/corpus/de_marrais_2004_wolfram_science_slides.pdf`
+- `data/papers/corpus/de_marrais_2006_math0603281_presto_digitization_I.pdf`
+- `data/papers/corpus/de_marrais_math0011260.pdf`
+- `data/papers/corpus/des_y6_cosmology_2601.14559.pdf`
+- `data/papers/corpus/desi_dr2_bao_cosmology_2503.14738.pdf`
+- `data/papers/corpus/desi_dr2_dynamical_de_2504.06118.pdf`
+- `data/papers/corpus/desi_dr2_lya_bao_2503.14739.pdf`
+- `data/papers/corpus/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.pdf`
+- `data/papers/corpus/dragovich_padic_math_physics_review_1705.04758.pdf`
+- `data/papers/corpus/entanglement_scaling_continuous_TN_2410.23624.pdf`
+- `data/papers/corpus/evenbly_vidal_tnr_1412.0732.pdf`
+- `data/papers/corpus/evenbly_vidal_tnr_mera_1502.05385.pdf`
 
 ... plus 35 more.
 
@@ -5014,62 +5014,62 @@ Total PDFs found (all): 165
 
 - sha256 group (n=3):
   - data/addtl_sources/papers/de_marrais_boxkites_0011260.pdf
-  - data/external/papers/de_marrais_2000_math0011260.pdf
-  - data/external/papers/de_marrais_math0011260.pdf
+  - data/papers/corpus/de_marrais_2000_math0011260.pdf
+  - data/papers/corpus/de_marrais_math0011260.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/caffarelli_silvestre_fractional_laplacian_0608640.pdf
-  - data/external/papers/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf
+  - data/papers/corpus/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/des_y6_cosmology_2601.14559.pdf
-  - data/external/papers/des_y6_cosmology_2601.14559.pdf
+  - data/papers/corpus/des_y6_cosmology_2601.14559.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/desi_dr2_bao_cosmology_2503.14738.pdf
-  - data/external/papers/desi_dr2_bao_cosmology_2503.14738.pdf
+  - data/papers/corpus/desi_dr2_bao_cosmology_2503.14738.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/desi_dr2_dynamical_de_2504.06118.pdf
-  - data/external/papers/desi_dr2_dynamical_de_2504.06118.pdf
+  - data/papers/corpus/desi_dr2_dynamical_de_2504.06118.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/desi_dr2_lya_bao_2503.14739.pdf
-  - data/external/papers/desi_dr2_lya_bao_2503.14739.pdf
+  - data/papers/corpus/desi_dr2_lya_bao_2503.14739.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/dragovich_padic_math_physics_review_1705.04758.pdf
-  - data/external/papers/dragovich_padic_math_physics_review_1705.04758.pdf
+  - data/papers/corpus/dragovich_padic_math_physics_review_1705.04758.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/entanglement_scaling_continuous_TN_2410.23624.pdf
-  - data/external/papers/entanglement_scaling_continuous_TN_2410.23624.pdf
+  - data/papers/corpus/entanglement_scaling_continuous_TN_2410.23624.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/evenbly_vidal_tnr_1412.0732.pdf
-  - data/external/papers/evenbly_vidal_tnr_1412.0732.pdf
+  - data/papers/corpus/evenbly_vidal_tnr_1412.0732.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/evenbly_vidal_tnr_mera_1502.05385.pdf
-  - data/external/papers/evenbly_vidal_tnr_mera_1502.05385.pdf
+  - data/papers/corpus/evenbly_vidal_tnr_mera_1502.05385.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/ising_ads_tensor_networks_2512.20838.pdf
-  - data/external/papers/ising_ads_tensor_networks_2512.20838.pdf
+  - data/papers/corpus/ising_ads_tensor_networks_2512.20838.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/kozyrev_padic_multidim_wavelets_0612049.pdf
-  - data/external/papers/kozyrev_padic_multidim_wavelets_0612049.pdf
+  - data/papers/corpus/kozyrev_padic_multidim_wavelets_0612049.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/kozyrev_padic_pseudodiff_0303045.pdf
-  - data/external/papers/kozyrev_padic_pseudodiff_0303045.pdf
+  - data/papers/corpus/kozyrev_padic_pseudodiff_0303045.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/kozyrev_padic_wavelet_spectral_0012019.pdf
-  - data/external/papers/kozyrev_padic_wavelet_spectral_0012019.pdf
+  - data/papers/corpus/kozyrev_padic_wavelet_spectral_0012019.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/mera_quantum_computer_entanglement_2412.18602.pdf
-  - data/external/papers/mera_quantum_computer_entanglement_2412.18602.pdf
+  - data/papers/corpus/mera_quantum_computer_entanglement_2412.18602.pdf
 - sha256 group (n=2):
   - data/addtl_sources/papers/universal_entanglement_correction_2405.10230.pdf
-  - data/external/papers/universal_entanglement_correction_2405.10230.pdf
+  - data/papers/corpus/universal_entanglement_correction_2405.10230.pdf
 - sha256 group (n=2):
-  - data/external/papers/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf
-  - data/external/papers/gwtc3_2021_arxiv2111.03606.pdf
+  - data/papers/corpus/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf
+  - data/papers/corpus/gwtc3_2021_arxiv2111.03606.pdf
 - sha256 group (n=2):
-  - data/external/papers/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf
-  - data/external/papers/lvc_2021_2111.03634_population_properties_gwtc3.pdf
+  - data/papers/corpus/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf
+  - data/papers/corpus/lvc_2021_2111.03634_population_properties_gwtc3.pdf
 - sha256 group (n=2):
-  - data/external/papers/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf
-  - data/external/papers/arxiv_quant-ph0301032_mirror.pdf
+  - data/papers/corpus/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf
+  - data/papers/corpus/arxiv_quant-ph0301032_mirror.pdf
 '''
 
 [[document]]
@@ -5548,7 +5548,7 @@ slug = "tscp_trial_factor_ledger"
 title = "TSCP Trial-Factor Ledger (2026-02-04)"
 category = "report"
 claim_refs = ["C-407"]
-path_refs = ["data/external/papers/abdi_2007_bonferroni_sidak_corrections.pdf", "data/external/papers/holm_1979_sequentially_rejective_multiple_test_procedure.pdf"]
+path_refs = ["data/papers/corpus/abdi_2007_bonferroni_sidak_corrections.pdf", "data/papers/corpus/holm_1979_sequentially_rejective_multiple_test_procedure.pdf"]
 line_count = 50
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -5593,8 +5593,8 @@ Scope: method-level multiple-testing accounting for TSCP alignment (C-407).
 
 ## Source anchors (cached)
 
-- Bonferroni/Sidak background: `data/external/papers/abdi_2007_bonferroni_sidak_corrections.pdf`
-- Holm procedure: `data/external/papers/holm_1979_sequentially_rejective_multiple_test_procedure.pdf`
+- Bonferroni/Sidak background: `data/papers/corpus/abdi_2007_bonferroni_sidak_corrections.pdf`
+- Holm procedure: `data/papers/corpus/holm_1979_sequentially_rejective_multiple_test_procedure.pdf`
 
 ## Notes
 

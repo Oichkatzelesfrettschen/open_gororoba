@@ -1,7 +1,7 @@
 pub mod annihilator;
-pub mod entropy_census;
 pub mod boxkites;
 pub mod codebook;
+pub mod entropy_census;
 pub mod fractal_analysis;
 pub mod graph_projections;
 pub mod grassmannian;

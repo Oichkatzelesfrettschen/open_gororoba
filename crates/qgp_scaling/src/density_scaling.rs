@@ -86,12 +86,8 @@ pub fn fit_density_scaling(
     // Refine with golden-section search around the minimum
     let refine_lo = (best_beta - 2.0 * beta_step).max(beta_lo);
     let refine_hi = (best_beta + 2.0 * beta_step).min(beta_hi);
-    let (refined_beta, refined_chi2) = golden_section_minimize(
-        |b| chi2_at_beta(data, b).1,
-        refine_lo,
-        refine_hi,
-        1e-6,
-    );
+    let (refined_beta, refined_chi2) =
+        golden_section_minimize(|b| chi2_at_beta(data, b).1, refine_lo, refine_hi, 1e-6);
     if refined_chi2 < best_chi2 {
         best_beta = refined_beta;
         best_chi2 = refined_chi2;
@@ -144,25 +140,35 @@ fn chi2_at_beta(data: &[DensityScalingPoint], beta: f64) -> (f64, f64) {
     let k = sum_wx_eps / sum_wx2;
 
     // Chi2
-    let chi2: f64 = data.iter().map(|d| {
-        let x = (d.dnch_dy / d.a_perp) * d.l_avg.powf(beta);
-        let model = k * x;
-        let diff = d.epsilon_bar - model;
-        diff * diff / (d.epsilon_bar_err * d.epsilon_bar_err)
-    }).sum();
+    let chi2: f64 = data
+        .iter()
+        .map(|d| {
+            let x = (d.dnch_dy / d.a_perp) * d.l_avg.powf(beta);
+            let model = k * x;
+            let diff = d.epsilon_bar - model;
+            diff * diff / (d.epsilon_bar_err * d.epsilon_bar_err)
+        })
+        .sum();
 
     (k, chi2)
 }
 
 /// Error on K from the weighted fit: sigma_K = 1/sqrt(sum(w_i * X_i^2)).
 fn k_error(data: &[DensityScalingPoint], beta: f64) -> f64 {
-    let sum_wx2: f64 = data.iter().map(|d| {
-        let x = (d.dnch_dy / d.a_perp) * d.l_avg.powf(beta);
-        let w = 1.0 / (d.epsilon_bar_err * d.epsilon_bar_err);
-        w * x * x
-    }).sum();
+    let sum_wx2: f64 = data
+        .iter()
+        .map(|d| {
+            let x = (d.dnch_dy / d.a_perp) * d.l_avg.powf(beta);
+            let w = 1.0 / (d.epsilon_bar_err * d.epsilon_bar_err);
+            w * x * x
+        })
+        .sum();
 
-    if sum_wx2 > 0.0 { 1.0 / sum_wx2.sqrt() } else { f64::INFINITY }
+    if sum_wx2 > 0.0 {
+        1.0 / sum_wx2.sqrt()
+    } else {
+        f64::INFINITY
+    }
 }
 
 /// Scan chi2 profile to find where chi2 crosses the target value.
@@ -235,19 +241,22 @@ mod tests {
             (260.0, 48.0, 3.3, "40-50%"),
         ];
 
-        centralities.iter().map(|&(dnch_dy, a_perp, l_avg, cent): &(f64, f64, f64, &str)| {
-            let x = (dnch_dy / a_perp) * l_avg.powf(beta_true);
-            let eps = k_true * x;
-            DensityScalingPoint {
-                epsilon_bar: eps,
-                epsilon_bar_err: eps * 0.1, // 10% relative error
-                dnch_dy,
-                a_perp,
-                l_avg,
-                system: "Pb-Pb 5.02 TeV".to_string(),
-                centrality: cent.to_string(),
-            }
-        }).collect()
+        centralities
+            .iter()
+            .map(|&(dnch_dy, a_perp, l_avg, cent): &(f64, f64, f64, &str)| {
+                let x = (dnch_dy / a_perp) * l_avg.powf(beta_true);
+                let eps = k_true * x;
+                DensityScalingPoint {
+                    epsilon_bar: eps,
+                    epsilon_bar_err: eps * 0.1, // 10% relative error
+                    dnch_dy,
+                    a_perp,
+                    l_avg,
+                    system: "Pb-Pb 5.02 TeV".to_string(),
+                    centrality: cent.to_string(),
+                }
+            })
+            .collect()
     }
 
     #[test]
@@ -258,13 +267,25 @@ mod tests {
 
         let result = fit_density_scaling(&data, 0.0, 3.0, 0.01);
 
-        assert!((result.beta - beta_true).abs() < 0.05,
+        assert!(
+            (result.beta - beta_true).abs() < 0.05,
             "beta = {} +{}/- {} (expected {})",
-            result.beta, result.beta_err_up, result.beta_err_down, beta_true);
-        assert!((result.k_constant - k_true).abs() < 0.05,
-            "K = {} (expected {})", result.k_constant, k_true);
-        assert!(result.chi2_per_ndf < 0.01,
-            "chi2/ndf = {} (expected ~0 for perfect data)", result.chi2_per_ndf);
+            result.beta,
+            result.beta_err_up,
+            result.beta_err_down,
+            beta_true
+        );
+        assert!(
+            (result.k_constant - k_true).abs() < 0.05,
+            "K = {} (expected {})",
+            result.k_constant,
+            k_true
+        );
+        assert!(
+            result.chi2_per_ndf < 0.01,
+            "chi2/ndf = {} (expected ~0 for perfect data)",
+            result.chi2_per_ndf
+        );
     }
 
     #[test]

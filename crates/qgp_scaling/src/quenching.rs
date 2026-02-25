@@ -63,9 +63,10 @@ pub fn log_derivative_raa(pt: &[f64], raa: &[f64]) -> Vec<f64> {
 
     // Work in log space
     let log_pt: Vec<f64> = pt.iter().map(|&x| x.ln()).collect();
-    let log_raa: Vec<f64> = raa.iter().map(|&r| {
-        if r > 0.0 { r.ln() } else { f64::NEG_INFINITY }
-    }).collect();
+    let log_raa: Vec<f64> = raa
+        .iter()
+        .map(|&r| if r > 0.0 { r.ln() } else { f64::NEG_INFINITY })
+        .collect();
 
     let mut deriv = vec![0.0; n];
 
@@ -83,8 +84,10 @@ pub fn log_derivative_raa(pt: &[f64], raa: &[f64]) -> Vec<f64> {
                 continue;
             }
             // Check all points are finite
-            if log_raa[i - 2].is_infinite() || log_raa[i - 1].is_infinite()
-                || log_raa[i + 1].is_infinite() || log_raa[i + 2].is_infinite()
+            if log_raa[i - 2].is_infinite()
+                || log_raa[i - 1].is_infinite()
+                || log_raa[i + 1].is_infinite()
+                || log_raa[i + 2].is_infinite()
             {
                 // Fall back to central difference
                 let h2 = log_pt[i + 1] - log_pt[i - 1];
@@ -93,9 +96,9 @@ pub fn log_derivative_raa(pt: &[f64], raa: &[f64]) -> Vec<f64> {
                 }
                 continue;
             }
-            deriv[i] = (-2.0 * log_raa[i - 2] - log_raa[i - 1]
-                + log_raa[i + 1] + 2.0 * log_raa[i + 2])
-                / (10.0 * h);
+            deriv[i] =
+                (-2.0 * log_raa[i - 2] - log_raa[i - 1] + log_raa[i + 1] + 2.0 * log_raa[i + 2])
+                    / (10.0 * h);
         } else if i > 0 && i + 1 < n {
             // Central difference for boundary-adjacent points
             let h = log_pt[i + 1] - log_pt[i - 1];
@@ -162,8 +165,12 @@ mod tests {
         let u = pt / eps;
         let raa = r_aa_model(pt, eps, n);
         let sf = scaling_function(u, n);
-        assert!((raa - sf).abs() < 1e-12,
-            "R_AA = {}, f(u) = {} (should match)", raa, sf);
+        assert!(
+            (raa - sf).abs() < 1e-12,
+            "R_AA = {}, f(u) = {} (should match)",
+            raa,
+            sf
+        );
     }
 
     #[test]
@@ -177,8 +184,13 @@ mod tests {
 
         // Check interior points (skip boundary; widen tolerance near edges)
         for i in 5..45 {
-            assert!((deriv[i] - alpha).abs() < 0.2,
-                "d(ln R_AA)/d(ln pT)[{}] = {} (expected {})", i, deriv[i], alpha);
+            assert!(
+                (deriv[i] - alpha).abs() < 0.2,
+                "d(ln R_AA)/d(ln pT)[{}] = {} (expected {})",
+                i,
+                deriv[i],
+                alpha
+            );
         }
     }
 
@@ -189,8 +201,12 @@ mod tests {
         let pt = 20.0;
         let expected = (n - 1.0) * eps / (pt - eps); // 5*4/16 = 1.25
         let actual = analytic_log_derivative(pt, eps, n);
-        assert!((actual - expected).abs() < 1e-10,
-            "analytic deriv = {} (expected {})", actual, expected);
+        assert!(
+            (actual - expected).abs() < 1e-10,
+            "analytic deriv = {} (expected {})",
+            actual,
+            expected
+        );
     }
 
     #[test]
@@ -209,9 +225,14 @@ mod tests {
             let expected = analytic_log_derivative(pt[i], eps, n);
             if expected > 0.01 {
                 let rel_err = (num_deriv[i] - expected).abs() / expected;
-                assert!(rel_err < 0.05,
+                assert!(
+                    rel_err < 0.05,
                     "pT={}: numerical={}, analytic={}, rel_err={}",
-                    pt[i], num_deriv[i], expected, rel_err);
+                    pt[i],
+                    num_deriv[i],
+                    expected,
+                    rel_err
+                );
             }
         }
     }

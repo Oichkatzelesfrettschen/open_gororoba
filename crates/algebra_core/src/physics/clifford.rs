@@ -321,11 +321,7 @@ mod tests {
             for j in 0..6 {
                 let anticomm = &generators[i] * &generators[j] + &generators[j] * &generators[i];
                 let expected_diag = if i == j {
-                    if i < 3 {
-                        -2.0
-                    } else {
-                        2.0
-                    }
+                    if i < 3 { -2.0 } else { 2.0 }
                 } else {
                     0.0
                 };

@@ -1,5 +1,5 @@
 use lattice_filtration::{
-    depth_clusters, depth_histogram, pdg_comparison, predict_mass_ratios, SurvivalDepthMap,
+    SurvivalDepthMap, depth_clusters, depth_histogram, pdg_comparison, predict_mass_ratios,
 };
 
 #[test]

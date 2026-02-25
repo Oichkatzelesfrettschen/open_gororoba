@@ -1,0 +1,31 @@
+generated_at_utc = "2026-02-24T07:48:36.987Z"
+execute = true
+backend_order = [
+    "wget",
+    "curl",
+    "fetch",
+]
+total_files = 1
+matched_source_files = 1
+unmatched_source_files = 0
+blocked_pending = 0
+blocked_overdue = 0
+checksum_mismatch = 0
+download_failures = 0
+pass_count = 1
+
+[[records]]
+path = "data/external/swarm_magnetic_sample.csv"
+source_id = "SRC-SWARM-L1B-MAGNETIC-SAMPLE"
+source_status = "active"
+expected_sha256 = "a1693458a28e2bb2ae5817f13af6ea470357ca6b9fc5d1ae03440dd7d0a30926"
+actual_sha256 = "a1693458a28e2bb2ae5817f13af6ea470357ca6b9fc5d1ae03440dd7d0a30926"
+status = "pass"
+detail = "hash verification passed"
+
+[[records.attempts]]
+backend = "wget"
+url = "https://vires.services/hapi/data?dataset=SW_OPER_MAGA_LR_1B&parameters=Latitude,Longitude,Radius,F,B_NEC&start=2014-01-01T00:00:00Z&stop=2014-01-01T00:30:00Z&format=csv&include=header"
+status = "ok"
+detail = "download succeeded"
+

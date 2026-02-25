@@ -18,13 +18,13 @@ fn main() {
     println!("STEP 1: Extract TCMT parameters from worldline amplitude (E-073)");
 
     // Example values from a typical photon-graviton interaction
-    let photon_freq = 1e15;  // Hz (infrared)
-    let grav_coupling = 1e-45;  // Dimensionless (gravitational constant scaled)
+    let photon_freq = 1e15; // Hz (infrared)
+    let grav_coupling = 1e-45; // Dimensionless (gravitational constant scaled)
 
     // Amplitude contributions from three diagrams
-    let irreducible = 1e-10;  // Irreducible diagram magnitude
-    let tadpole_real = 0.1;   // Tadpole self-energy (real part)
-    let tadpole_imag = 1e-6;  // Tadpole decay contribution
+    let irreducible = 1e-10; // Irreducible diagram magnitude
+    let tadpole_real = 0.1; // Tadpole self-energy (real part)
+    let tadpole_imag = 1e-6; // Tadpole decay contribution
     let external_phase = 0.5; // External-leg phase shift
 
     let coupling = amplitude_bridge::three_diagram_amplitude_to_tcmt(
@@ -60,7 +60,8 @@ fn main() {
     println!("  Computed {} frequency points", frequencies.len());
 
     // Find peak scattering
-    let max_cs = cross_sections.iter()
+    let max_cs = cross_sections
+        .iter()
         .max_by(|a, b| a.c_scattering.partial_cmp(&b.c_scattering).unwrap())
         .unwrap();
     println!("  Peak C_sct = {:.6e}\n", max_cs.c_scattering);
@@ -72,24 +73,40 @@ fn main() {
 
     let tcmt_system = tcmt_equations::TCMTSystem::new(coupling);
     let initial_state = TCMTState::new(
-        C64::new(1.0, 0.0),      // Initial photon amplitude
-        C64::new(0.0, 0.0),      // No initial graviton
-        0.0                       // Start at t=0
+        C64::new(1.0, 0.0), // Initial photon amplitude
+        C64::new(0.0, 0.0), // No initial graviton
+        0.0,                // Start at t=0
     );
 
-    println!("  Initial photon population: {:.6}", initial_state.photon_population());
-    println!("  Initial graviton population: {:.6}", initial_state.graviton_population());
-    println!("  Initial total energy: {:.6}", initial_state.total_energy());
+    println!(
+        "  Initial photon population: {:.6}",
+        initial_state.photon_population()
+    );
+    println!(
+        "  Initial graviton population: {:.6}",
+        initial_state.graviton_population()
+    );
+    println!(
+        "  Initial total energy: {:.6}",
+        initial_state.total_energy()
+    );
 
     // Integrate for time corresponding to several decay periods
     let decay_time = 1.0 / coupling.total_decay_rate();
-    let final_time = decay_time * 10.0;  // 10 decay times
+    let final_time = decay_time * 10.0; // 10 decay times
 
-    let final_state = tcmt_equations::integrate_to_time(&tcmt_system, initial_state, final_time, 1000);
+    let final_state =
+        tcmt_equations::integrate_to_time(&tcmt_system, initial_state, final_time, 1000);
 
     println!("\n  After integration to t = {:.3e}:", final_time);
-    println!("  Final photon population: {:.6e}", final_state.photon_population());
-    println!("  Final graviton population: {:.6e}", final_state.graviton_population());
+    println!(
+        "  Final photon population: {:.6e}",
+        final_state.photon_population()
+    );
+    println!(
+        "  Final graviton population: {:.6e}",
+        final_state.graviton_population()
+    );
     println!("  Final total energy: {:.6e}", final_state.total_energy());
 
     // ============================================================
@@ -100,18 +117,23 @@ fn main() {
     // Energy conservation in lossless case
     let coupling_lossless = GravitationalCoupling::new(
         coupling.coupling_strength,
-        0.0,  // No radiative loss
-        0.0,  // No non-radiative loss
+        0.0, // No radiative loss
+        0.0, // No non-radiative loss
         coupling.gamma_gravitational,
         coupling.resonance_frequency,
         coupling.coupling_phase,
     );
 
     let tcmt_lossless = tcmt_equations::TCMTSystem::new(coupling_lossless);
-    let final_lossless = tcmt_equations::integrate_to_time(&tcmt_lossless, initial_state, 1e-12, 500);
-    let energy_error = tcmt_equations::energy_conservation_error(initial_state, final_lossless, &tcmt_lossless);
+    let final_lossless =
+        tcmt_equations::integrate_to_time(&tcmt_lossless, initial_state, 1e-12, 500);
+    let energy_error =
+        tcmt_equations::energy_conservation_error(initial_state, final_lossless, &tcmt_lossless);
 
-    println!("  Energy conservation error (lossless): {:.2e}", energy_error);
+    println!(
+        "  Energy conservation error (lossless): {:.2e}",
+        energy_error
+    );
     println!("  Constraint satisfied: {}", energy_error < 0.01);
 
     // Optical theorem verification
@@ -124,9 +146,9 @@ fn main() {
         coupling.coupling_strength * 1.0,
         coupling.coupling_strength * 0.5,
         coupling.total_decay_rate(),
-        0.2
+        0.2,
     );
-    println!("  Maksimov κ₁ - κ₂ = γ_l constraint: {}\n", check_maksimov);
+    println!("  Maksimov \kappa_1 - \kappa_2 = \gamma_l constraint: {}\n", check_maksimov);
 
     // ============================================================
     // STEP 5: Quality factor and resonance properties
@@ -136,7 +158,10 @@ fn main() {
     let computer = cross_sections::CrossSectionComputer::new(coupling);
     println!("  Quality factor Q = {:.3e}", computer.quality_factor());
     println!("  Resonance linewidth = {:.3e} Hz", computer.linewidth());
-    println!("  Peak scattering cross-section = {:.3e}", computer.peak_scattering());
+    println!(
+        "  Peak scattering cross-section = {:.3e}",
+        computer.peak_scattering()
+    );
 
     println!("\n=== Demonstration Complete ===");
 }

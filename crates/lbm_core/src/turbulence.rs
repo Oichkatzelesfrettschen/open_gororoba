@@ -14,7 +14,7 @@
 //! - Pope, "Turbulent Flows", Cambridge University Press (2000)
 
 use ndarray::{Array2, Array3, Axis};
-use rustfft::{num_complex::Complex, FftPlanner};
+use rustfft::{FftPlanner, num_complex::Complex};
 use std::collections::{HashMap, HashSet};
 
 /// Triad interaction in spectral space (k, p, q) with k + p + q = 0.

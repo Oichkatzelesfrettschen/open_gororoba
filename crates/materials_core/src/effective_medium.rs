@@ -349,11 +349,7 @@ pub fn tmm_reflection(
             let sin_t = n_inc * sin_theta_i / n;
             let cos_t = (Complex64::new(1.0, 0.0) - sin_t * sin_t).sqrt();
             // Choose branch with positive imaginary part (forward-propagating)
-            if cos_t.im < 0.0 {
-                -cos_t
-            } else {
-                cos_t
-            }
+            if cos_t.im < 0.0 { -cos_t } else { cos_t }
         })
         .collect();
 
@@ -542,7 +538,7 @@ mod tests {
     fn test_drude_low_frequency_negative() {
         let omega = vec![0.1, 0.2, 0.3];
         let eps = drude(&omega, 1.0, 10.0, 0.1); // Large omega_p
-                                                 // At low frequency, Drude gives negative eps
+        // At low frequency, Drude gives negative eps
         assert!(eps[0].re < 0.0);
     }
 
@@ -606,13 +602,7 @@ mod tests {
         let n_sub = Complex64::new(1.0, 0.0);
         let wavelength = 550.0;
         let d = wavelength / (4.0 * n_glass.re);
-        let result = tmm_reflection(
-            &[n_inc, n_glass, n_sub],
-            &[d],
-            wavelength,
-            0.0,
-            true,
-        );
+        let result = tmm_reflection(&[n_inc, n_glass, n_sub], &[d], wavelength, 0.0, true);
         let t = result.transmittance.unwrap();
         let sum = result.reflectance + t;
         assert_relative_eq!(sum, 1.0, epsilon = 1e-10);
@@ -626,13 +616,7 @@ mod tests {
         let n_sub = Complex64::new(1.0, 0.0);
         let wavelength = 550.0;
         let d = 100.0; // 100 nm slab
-        let result = tmm_reflection(
-            &[n_inc, n_lossy, n_sub],
-            &[d],
-            wavelength,
-            0.0,
-            true,
-        );
+        let result = tmm_reflection(&[n_inc, n_lossy, n_sub], &[d], wavelength, 0.0, true);
         // Cross-check via Fresnel-Airy formula with exponentials (correct for lossy media).
         // For n1=n3=1, n2 complex, normal incidence, s-pol:
         //   r12 = (n1 - n2) / (n1 + n2), t12 = 2*n1/(n1+n2)
@@ -673,13 +657,7 @@ mod tests {
         let n_sub = Complex64::new(1.5, 0.0);
         let wavelength = 550.0;
         let d_ar = wavelength / (4.0 * n_ar.re);
-        let result = tmm_reflection(
-            &[n_inc, n_ar, n_sub],
-            &[d_ar],
-            wavelength,
-            0.0,
-            true,
-        );
+        let result = tmm_reflection(&[n_inc, n_ar, n_sub], &[d_ar], wavelength, 0.0, true);
         let t = result.transmittance.unwrap();
         assert!(t > 0.95, "T should be > 0.95, got {}", t);
         // Energy conservation

@@ -11,7 +11,9 @@
 //! ```
 
 use clap::Parser;
-use materials_core::{get_viscosity_material, list_viscosity_materials, reynolds_number, to_lattice_units};
+use materials_core::{
+    get_viscosity_material, list_viscosity_materials, reynolds_number, to_lattice_units,
+};
 
 #[derive(Parser)]
 #[command(name = "demo-real-materials")]
@@ -53,7 +55,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
 
-    let material_id = args.material.as_ref().ok_or("Must specify --material or use --list")?;
+    let material_id = args
+        .material
+        .as_ref()
+        .ok_or("Must specify --material or use --list")?;
     let material = get_viscosity_material(material_id)
         .ok_or_else(|| format!("Material '{}' not found", material_id))?;
 
@@ -81,7 +86,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("  Length scale (dx): {:.2e} m", args.length_scale);
         println!("  Time scale (dt): {:.2e} s", args.time_scale);
         println!("  Grid size: {}", args.grid_size);
-        println!("  Physical domain: {:.2e} m", args.grid_size as f64 * args.length_scale);
+        println!(
+            "  Physical domain: {:.2e} m",
+            args.grid_size as f64 * args.length_scale
+        );
         println!("  Kinematic viscosity (lattice): {:.6e}", nu_lattice);
         println!("  Relaxation time (tau): {:.6}", tau);
 
@@ -112,9 +120,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let flow_time = length_physical / args.velocity;
 
         println!("\nTiming Estimates:");
-        println!("  {} LBM steps = {:.2e} seconds", n_timesteps, physical_time);
+        println!(
+            "  {} LBM steps = {:.2e} seconds",
+            n_timesteps, physical_time
+        );
         println!("  Flow-through time: {:.2e} seconds", flow_time);
-        println!("  Steps per flow-through: {:.0}", flow_time / args.time_scale);
+        println!(
+            "  Steps per flow-through: {:.0}",
+            flow_time / args.time_scale
+        );
 
         println!("\n========================================");
         println!("Next Steps:");
@@ -124,7 +138,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("     --grid-size {} \\", args.grid_size);
         println!("     --nu-base {:.6e} \\", nu_lattice);
         println!("     --lambda <derived from theory> \\");
-        println!("     --lbm-steps {} \\", (flow_time / args.time_scale) as usize);
+        println!(
+            "     --lbm-steps {} \\",
+            (flow_time / args.time_scale) as usize
+        );
         println!("     --forcing-mode <appropriate for Re={:.0}>", re);
         println!();
         println!("2. Derive lambda from statistical mechanics:");

@@ -15,7 +15,7 @@
 //! - PHENIX Au-Au 200 GeV pi0 R_AA (INSPIRE ins1127262)
 //! - ALICE dNch/deta Pb-Pb 5.02 TeV (INSPIRE ins1507090)
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 
@@ -81,9 +81,8 @@ pub const ALICE_PBPB_RAA_N_CENT: usize = 20;
 
 /// ALICE centrality bin labels matching table order.
 pub const ALICE_PBPB_RAA_CENTRALITIES: &[&str] = &[
-    "0-5%", "5-10%", "10-15%", "15-20%", "20-25%", "25-30%",
-    "30-35%", "35-40%", "40-45%", "45-50%", "50-55%", "55-60%",
-    "60-65%", "65-70%", "70-75%", "75-80%", "80-85%", "85-90%",
+    "0-5%", "5-10%", "10-15%", "15-20%", "20-25%", "25-30%", "30-35%", "35-40%", "40-45%",
+    "45-50%", "50-55%", "55-60%", "60-65%", "65-70%", "70-75%", "75-80%", "80-85%", "85-90%",
     "90-95%", "95-100%",
 ];
 
@@ -93,29 +92,39 @@ pub const ALICE_PBPB_RAA_CENTRALITIES: &[&str] = &[
 
 /// CMS 5.02 TeV R_AA HEPData tables (Tables 8-15 = R_AA per centrality).
 pub fn cms_pbpb_5020_raa_tables() -> Vec<HepDataTable> {
-    (8..=15).map(|t| {
-        let cent = match t {
-            8 => "0-5%",
-            9 => "5-10%",
-            10 => "10-30%",
-            11 => "30-50%",
-            12 => "50-70%",
-            13 => "70-90%",
-            14 => "0-10%",
-            15 => "0-100%",
-            _ => "unknown",
-        };
-        HepDataTable {
-            name: Box::leak(format!("CMS PbPb 5.02 TeV R_AA {}", cent).into_boxed_str()),
-            url_primary: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1496050/Table{}/csv", t
-            ).into_boxed_str()),
-            url_fallback: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1496050/Table%20{}/csv", t
-            ).into_boxed_str()),
-            filename: Box::leak(format!("cms_pbpb_5020_raa_table{}.csv", t).into_boxed_str()),
-        }
-    }).collect()
+    (8..=15)
+        .map(|t| {
+            let cent = match t {
+                8 => "0-5%",
+                9 => "5-10%",
+                10 => "10-30%",
+                11 => "30-50%",
+                12 => "50-70%",
+                13 => "70-90%",
+                14 => "0-10%",
+                15 => "0-100%",
+                _ => "unknown",
+            };
+            HepDataTable {
+                name: Box::leak(format!("CMS PbPb 5.02 TeV R_AA {}", cent).into_boxed_str()),
+                url_primary: Box::leak(
+                    format!(
+                        "https://www.hepdata.net/download/table/ins1496050/Table{}/csv",
+                        t
+                    )
+                    .into_boxed_str(),
+                ),
+                url_fallback: Box::leak(
+                    format!(
+                        "https://www.hepdata.net/download/table/ins1496050/Table%20{}/csv",
+                        t
+                    )
+                    .into_boxed_str(),
+                ),
+                filename: Box::leak(format!("cms_pbpb_5020_raa_table{}.csv", t).into_boxed_str()),
+            }
+        })
+        .collect()
 }
 
 /// CMS 5.02 TeV pp reference spectrum (Table 7).
@@ -135,18 +144,26 @@ pub fn cms_pp_5020_spectrum_table() -> HepDataTable {
 /// CMS v2 HEPData tables.
 pub fn cms_pbpb_5020_v2_tables() -> Vec<HepDataTable> {
     // Tables vary by centrality; these are the most relevant for the analysis
-    (1..=6).map(|t| {
-        HepDataTable {
+    (1..=6)
+        .map(|t| HepDataTable {
             name: Box::leak(format!("CMS PbPb 5.02 TeV v2 Table{}", t).into_boxed_str()),
-            url_primary: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1511868/Table{}/csv", t
-            ).into_boxed_str()),
-            url_fallback: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1511868/Table%20{}/csv", t
-            ).into_boxed_str()),
+            url_primary: Box::leak(
+                format!(
+                    "https://www.hepdata.net/download/table/ins1511868/Table{}/csv",
+                    t
+                )
+                .into_boxed_str(),
+            ),
+            url_fallback: Box::leak(
+                format!(
+                    "https://www.hepdata.net/download/table/ins1511868/Table%20{}/csv",
+                    t
+                )
+                .into_boxed_str(),
+            ),
             filename: Box::leak(format!("cms_pbpb_5020_v2_table{}.csv", t).into_boxed_str()),
-        }
-    }).collect()
+        })
+        .collect()
 }
 
 // ============================================================================
@@ -156,18 +173,26 @@ pub fn cms_pbpb_5020_v2_tables() -> Vec<HepDataTable> {
 /// ATLAS jet R_AA tables (subset: centrality-dependent).
 pub fn atlas_jet_raa_tables() -> Vec<HepDataTable> {
     // Tables 1-10 cover different centralities and jet radii
-    (1..=10).map(|t| {
-        HepDataTable {
+    (1..=10)
+        .map(|t| HepDataTable {
             name: Box::leak(format!("ATLAS PbPb 5.02 TeV jet R_AA Table{}", t).into_boxed_str()),
-            url_primary: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1673184/Table{}/csv", t
-            ).into_boxed_str()),
-            url_fallback: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1673184/Table%20{}/csv", t
-            ).into_boxed_str()),
+            url_primary: Box::leak(
+                format!(
+                    "https://www.hepdata.net/download/table/ins1673184/Table{}/csv",
+                    t
+                )
+                .into_boxed_str(),
+            ),
+            url_fallback: Box::leak(
+                format!(
+                    "https://www.hepdata.net/download/table/ins1673184/Table%20{}/csv",
+                    t
+                )
+                .into_boxed_str(),
+            ),
             filename: Box::leak(format!("atlas_jet_raa_table{}.csv", t).into_boxed_str()),
-        }
-    }).collect()
+        })
+        .collect()
 }
 
 // ============================================================================
@@ -176,18 +201,26 @@ pub fn atlas_jet_raa_tables() -> Vec<HepDataTable> {
 
 /// ATLAS jet v2 tables.
 pub fn atlas_jet_v2_tables() -> Vec<HepDataTable> {
-    (1..=6).map(|t| {
-        HepDataTable {
+    (1..=6)
+        .map(|t| HepDataTable {
             name: Box::leak(format!("ATLAS PbPb 5.02 TeV jet v2 Table{}", t).into_boxed_str()),
-            url_primary: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1967021/Table{}/csv", t
-            ).into_boxed_str()),
-            url_fallback: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1967021/Table%20{}/csv", t
-            ).into_boxed_str()),
+            url_primary: Box::leak(
+                format!(
+                    "https://www.hepdata.net/download/table/ins1967021/Table{}/csv",
+                    t
+                )
+                .into_boxed_str(),
+            ),
+            url_fallback: Box::leak(
+                format!(
+                    "https://www.hepdata.net/download/table/ins1967021/Table%20{}/csv",
+                    t
+                )
+                .into_boxed_str(),
+            ),
             filename: Box::leak(format!("atlas_jet_v2_table{}.csv", t).into_boxed_str()),
-        }
-    }).collect()
+        })
+        .collect()
 }
 
 // ============================================================================
@@ -196,18 +229,26 @@ pub fn atlas_jet_v2_tables() -> Vec<HepDataTable> {
 
 /// PHENIX pi0 R_AA tables.
 pub fn phenix_auau_raa_tables() -> Vec<HepDataTable> {
-    (1..=8).map(|t| {
-        HepDataTable {
+    (1..=8)
+        .map(|t| HepDataTable {
             name: Box::leak(format!("PHENIX AuAu 200 GeV pi0 R_AA Table{}", t).into_boxed_str()),
-            url_primary: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1127262/Table{}/csv", t
-            ).into_boxed_str()),
-            url_fallback: Box::leak(format!(
-                "https://www.hepdata.net/download/table/ins1127262/Table%20{}/csv", t
-            ).into_boxed_str()),
+            url_primary: Box::leak(
+                format!(
+                    "https://www.hepdata.net/download/table/ins1127262/Table{}/csv",
+                    t
+                )
+                .into_boxed_str(),
+            ),
+            url_fallback: Box::leak(
+                format!(
+                    "https://www.hepdata.net/download/table/ins1127262/Table%20{}/csv",
+                    t
+                )
+                .into_boxed_str(),
+            ),
             filename: Box::leak(format!("phenix_auau_raa_table{}.csv", t).into_boxed_str()),
-        }
-    }).collect()
+        })
+        .collect()
 }
 
 // ============================================================================
@@ -233,7 +274,9 @@ pub fn parse_raa_csv(path: &Path) -> Result<Vec<RaaPoint>, String> {
         // Skip empty lines and comments
         if line.is_empty() || line.starts_with('#') || line.starts_with('*') {
             // Detect data section start (after header lines)
-            if line.contains("PT") || line.contains("pT") || line.contains("RAA")
+            if line.contains("PT")
+                || line.contains("pT")
+                || line.contains("RAA")
                 || line.contains("R_AA")
             {
                 in_data = true;
@@ -469,10 +512,16 @@ mod tests {
     fn test_url_format() {
         let tables = cms_pbpb_5020_raa_tables();
         for table in &tables {
-            assert!(table.url_primary.starts_with("https://"),
-                "URL should start with https://: {}", table.url_primary);
-            assert!(table.url_primary.ends_with("/csv"),
-                "URL should end with /csv: {}", table.url_primary);
+            assert!(
+                table.url_primary.starts_with("https://"),
+                "URL should start with https://: {}",
+                table.url_primary
+            );
+            assert!(
+                table.url_primary.ends_with("/csv"),
+                "URL should end with /csv: {}",
+                table.url_primary
+            );
         }
     }
 

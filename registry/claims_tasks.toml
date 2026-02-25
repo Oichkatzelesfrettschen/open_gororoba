@@ -213,8 +213,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Correct legacy E9/E10/E11 statement; cache primary open-access Kac-Moody anchors."
-output_artifacts = ["docs/C047_E_SERIES_KAC_MOODY_AUDIT.md", "docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md", "data/external/papers/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf", "data/external/papers/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf"]
-output_artifacts_raw = "`docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `data/external/papers/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`, `data/external/papers/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf`"
+output_artifacts = ["docs/C047_E_SERIES_KAC_MOODY_AUDIT.md", "docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md", "data/papers/corpus/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf", "data/papers/corpus/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf"]
+output_artifacts_raw = "`docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `data/papers/corpus/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`, `data/papers/corpus/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf`"
 source_line = 26
 
 [[task]]
@@ -243,8 +243,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Add motivic tower anchor sources (analogy only) and cache at least one open-access reference."
-output_artifacts = ["docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md", "data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf"]
-output_artifacts_raw = "`docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md`, `data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`"
+output_artifacts = ["docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md", "data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf"]
+output_artifacts_raw = "`docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md`, `data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`"
 source_line = 28
 
 [[task]]
@@ -2763,8 +2763,8 @@ status_token = "PARTIAL"
 status_raw = "PARTIAL"
 status_canonical = true
 task = "Triage: primary sources cached; still needs a concrete, offline validation check (or keep as blueprint-only)."
-output_artifacts = ["docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/White_2021_Casimir_Warp.pdf"]
-output_artifacts_raw = "`docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf`"
+output_artifacts = ["docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/White_2021_Casimir_Warp.pdf"]
+output_artifacts_raw = "`docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 source_line = 201
 
 [[task]]
@@ -2793,8 +2793,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Source-index + define offline check for modular-data/entanglement-wedge program claims."
-output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/scripts/data/fetch_emergence_layers_sources.py", "data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf", "data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf", "data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf", "data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf", "src/holography/maxflow.py", "tests/test_holography_bit_threads.py"]
-output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/scripts/data/fetch_emergence_layers_sources.py`, `data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`, `data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`, `data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`, `data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py`"
+output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/scripts/data/fetch_emergence_layers_sources.py", "data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf", "data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf", "data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf", "data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf", "src/holography/maxflow.py", "tests/test_holography_bit_threads.py"]
+output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/scripts/data/fetch_emergence_layers_sources.py`, `data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`, `data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`, `data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`, `data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py`"
 source_line = 203
 
 [[task]]
@@ -3063,8 +3063,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Tang (2025) non-associative QED: minimal offline reproduction (Table 2 extraction + subalgebra associator stats)."
-output_artifacts = ["docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "data/external/traces/tang_2025_preprints_org_landing.txt", "data/external/papers/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt", "src/scripts/analysis/c032_tang_2025_min_reproduction.py", "data/csv/c032_tang_2025_table2_lepton_masses.csv", "data/csv/c032_tang_2025_associator_subalgebra_summary.csv", "data/csv/c032_tang_2025_associator_basis_triples.csv", "tests/test_c032_tang_2025_min_reproduction.py"]
-output_artifacts_raw = "`docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/external/traces/tang_2025_preprints_org_landing.txt`, `data/external/papers/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py`"
+output_artifacts = ["docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "data/papers/intake/traces/tang_2025_preprints_org_landing.txt", "data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt", "src/scripts/analysis/c032_tang_2025_min_reproduction.py", "data/csv/c032_tang_2025_table2_lepton_masses.csv", "data/csv/c032_tang_2025_associator_subalgebra_summary.csv", "data/csv/c032_tang_2025_associator_basis_triples.csv", "tests/test_c032_tang_2025_min_reproduction.py"]
+output_artifacts_raw = "`docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/papers/intake/traces/tang_2025_preprints_org_landing.txt`, `data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py`"
 source_line = 226
 
 [[task]]
@@ -3078,8 +3078,8 @@ status_token = "BLOCKED"
 status_raw = "BLOCKED"
 status_canonical = true
 task = "Tang (2025) non-associative QED: mechanize the associator->mass mapping (BLOCKED until the source provides a complete, convention-fixed mapping and scale choice)."
-output_artifacts = ["docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "data/external/traces/tang_2025_preprints_org_landing.txt"]
-output_artifacts_raw = "`docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/external/traces/tang_2025_preprints_org_landing.txt`"
+output_artifacts = ["docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "data/papers/intake/traces/tang_2025_preprints_org_landing.txt"]
+output_artifacts_raw = "`docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/papers/intake/traces/tang_2025_preprints_org_landing.txt`"
 source_line = 227
 
 [[task]]
@@ -3093,8 +3093,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "SU(5) generator basis verification complete; source does not specify a unique coefficient mapping from sedenion basis to a normalized SU(5) basis (claim demoted accordingly)."
-output_artifacts = ["data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "crates/algebra_core/src/group_theory.rs", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
-output_artifacts_raw = "`data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
+output_artifacts = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "crates/algebra_core/src/group_theory.rs", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
+output_artifacts_raw = "`data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
 source_line = 228
 
 [[task]]
@@ -3108,8 +3108,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Chanyal (2014) sedenion gravi-electromagnetism: minimal structural reproduction (two 8D sectors via CD doubling)."
-output_artifacts = ["docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/external/traces/chanyal_2014_springer_landing.txt", "data/external/traces/chanyal_2014_springer_abstract.txt", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py"]
-output_artifacts_raw = "`docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/external/traces/chanyal_2014_springer_landing.txt`, `data/external/traces/chanyal_2014_springer_abstract.txt`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`"
+output_artifacts = ["docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/papers/intake/traces/chanyal_2014_springer_landing.txt", "data/papers/intake/traces/chanyal_2014_springer_abstract.txt", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py"]
+output_artifacts_raw = "`docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/papers/intake/traces/chanyal_2014_springer_landing.txt`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`"
 source_line = 229
 
 [[task]]
@@ -3123,8 +3123,8 @@ status_token = "BLOCKED"
 status_raw = "BLOCKED"
 status_canonical = true
 task = "Chanyal (2014) sedenion gravi-electromagnetism: equation-level reproduction checks (BLOCKED until a legal full-text source is cached)."
-output_artifacts = ["docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/external/traces/chanyal_2014_springer_landing.txt", "data/external/traces/chanyal_2014_springer_abstract.txt"]
-output_artifacts_raw = "`docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/external/traces/chanyal_2014_springer_landing.txt`, `data/external/traces/chanyal_2014_springer_abstract.txt`"
+output_artifacts = ["docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/papers/intake/traces/chanyal_2014_springer_landing.txt", "data/papers/intake/traces/chanyal_2014_springer_abstract.txt"]
+output_artifacts_raw = "`docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/papers/intake/traces/chanyal_2014_springer_landing.txt`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 source_line = 230
 
 [[task]]

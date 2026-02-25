@@ -4,8 +4,8 @@ mod warp_runner;
 use std::error::Error;
 use std::path::PathBuf;
 use warp_precision_suite_ops::{
-    default_timing_mode_for_backend, parse_backend, parse_bool01, parse_csv, parse_precision,
-    parse_timing_mode, run_precision_suite, PrecisionSuiteConfig,
+    PrecisionSuiteConfig, default_timing_mode_for_backend, parse_backend, parse_bool01, parse_csv,
+    parse_precision, parse_timing_mode, run_precision_suite,
 };
 use warp_runner::{BackendKind, TimingMode};
 

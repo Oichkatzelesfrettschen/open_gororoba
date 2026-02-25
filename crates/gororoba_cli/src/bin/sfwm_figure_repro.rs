@@ -14,13 +14,10 @@ use clap::Parser;
 use std::fs;
 use std::io::Write;
 
-use materials_core::{
-    fused_silica_sellmeier, linbo3_ordinary_sellmeier, SellmeierParams,
-};
+use materials_core::{SellmeierParams, fused_silica_sellmeier, linbo3_ordinary_sellmeier};
 use optics_core::{
-    g2_sfwm_model, g2_spdc_model, maker_fringe_sweep, photon_number_sfwm,
+    SfwmMaterialParams, g2_sfwm_model, g2_spdc_model, maker_fringe_sweep, photon_number_sfwm,
     photon_number_spdc, polarization_dependence, rate_sweep_with_dk,
-    SfwmMaterialParams,
 };
 
 #[derive(Parser)]
@@ -85,8 +82,8 @@ fn main() -> Result<()> {
     // These set the absolute scale of the curves; the power-law exponent
     // (2 for SFWM, 1 for SPDC) is the testable prediction.
     let alpha_sfwm = 1e3; // N_vis ~ alpha * P^2
-    let alpha_ir = 1e3;   // N_ir includes both P and P^2 terms
-    let alpha_cc = 1e3;   // coincidence counts
+    let alpha_ir = 1e3; // N_ir includes both P and P^2 terms
+    let alpha_cc = 1e3; // coincidence counts
     let alpha_spdc = 1e4; // SPDC linear scaling
 
     // Power sweep points
@@ -224,7 +221,10 @@ fn main() -> Result<()> {
     let wm_sellmeier = params.wavevector_mismatches();
     let wm_paper = paper_params.paper_wavevector_mismatches();
     println!("Son & Chekhova (2026) SFWM figure reproduction complete.");
-    println!("Output: {}/fig{{2a,2b,2c,2d,3a,3b,4a,4b}}.csv", args.output_dir);
+    println!(
+        "Output: {}/fig{{2a,2b,2c,2d,3a,3b,4a,4b}}.csv",
+        args.output_dir
+    );
     println!();
     println!("Sellmeier-derived refractive indices:");
     println!("  n_pump(1030 nm) = {:.4}", params.n_pump);
@@ -233,12 +233,27 @@ fn main() -> Result<()> {
     println!("  n_sh(515 nm)    = {:.4}", params.n_sh);
     println!();
     println!("Wavevector mismatches (Sellmeier):");
-    println!("  dk_SFWM = {:.4} 1/um  (L_coh = {:.1} um)", wm_sellmeier.dk_sfwm, std::f64::consts::PI / wm_sellmeier.dk_sfwm.abs());
-    println!("  dk_SHG  = {:.4} 1/um  (L_coh = {:.1} um)", wm_sellmeier.dk_shg, std::f64::consts::PI / wm_sellmeier.dk_shg.abs());
-    println!("  dk_SPDC = {:.4} 1/um  (L_coh = {:.1} um)", wm_sellmeier.dk_spdc, std::f64::consts::PI / wm_sellmeier.dk_spdc.abs());
+    println!(
+        "  dk_SFWM = {:.4} 1/um  (L_coh = {:.1} um)",
+        wm_sellmeier.dk_sfwm,
+        std::f64::consts::PI / wm_sellmeier.dk_sfwm.abs()
+    );
+    println!(
+        "  dk_SHG  = {:.4} 1/um  (L_coh = {:.1} um)",
+        wm_sellmeier.dk_shg,
+        std::f64::consts::PI / wm_sellmeier.dk_shg.abs()
+    );
+    println!(
+        "  dk_SPDC = {:.4} 1/um  (L_coh = {:.1} um)",
+        wm_sellmeier.dk_spdc,
+        std::f64::consts::PI / wm_sellmeier.dk_spdc.abs()
+    );
     println!();
     println!("Wavevector mismatches (paper calibrated):");
-    println!("  dk_SFWM = {:.4} 1/um  (L_coh = 33.3 um)", wm_paper.dk_sfwm);
+    println!(
+        "  dk_SFWM = {:.4} 1/um  (L_coh = 33.3 um)",
+        wm_paper.dk_sfwm
+    );
     println!("  dk_SHG  = {:.4} 1/um  (L_coh = 3.1 um)", wm_paper.dk_shg);
     println!("  dk_SPDC = {:.4} 1/um  (L_coh = 3.4 um)", wm_paper.dk_spdc);
 

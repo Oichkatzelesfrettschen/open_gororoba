@@ -10,7 +10,7 @@
 //! - Gray & Kourtis (2021): Hyper-optimized tensor network contraction
 //! - Schollwoeck (2011): DMRG review with SVD-based truncation
 
-use ndarray::{s, Array2, ArrayD};
+use ndarray::{Array2, ArrayD, s};
 use qua_ten_net::tencon::contract;
 use qua_ten_net::tendot::tensor_dot;
 use qua_ten_net::tensor::svd;

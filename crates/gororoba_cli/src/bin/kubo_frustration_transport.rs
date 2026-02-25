@@ -13,9 +13,8 @@ use std::fs;
 use std::io;
 use std::path::Path;
 use vacuum_frustration::kubo_transport::{
-    build_cd_heisenberg, build_interpolated, build_j1j2_chain, exact_diagonalize,
-    graph_frustration_index, kubo_transport_optimized, thermodynamic_quantities, HeisenbergModel,
-    KuboTransport,
+    HeisenbergModel, KuboTransport, build_cd_heisenberg, build_interpolated, build_j1j2_chain,
+    exact_diagonalize, graph_frustration_index, kubo_transport_optimized, thermodynamic_quantities,
 };
 
 /// Transport computation dispatcher: GPU-first, CPU fallback.

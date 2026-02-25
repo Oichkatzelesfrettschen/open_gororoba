@@ -24,11 +24,7 @@ impl PatriciaIndex {
     /// Longest shared prefix (MSB-first) in bits.
     pub fn shared_prefix_bits(a: u64, b: u64) -> u32 {
         let x = a ^ b;
-        if x == 0 {
-            64
-        } else {
-            x.leading_zeros()
-        }
+        if x == 0 { 64 } else { x.leading_zeros() }
     }
 
     /// Aggregate multiplicities by prefix length.

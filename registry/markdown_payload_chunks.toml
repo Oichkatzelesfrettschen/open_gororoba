@@ -15185,7 +15185,7 @@ kind = "list_item"
 line_start = 271
 line_end = 271
 heading_level = 0
-text_ascii = "Where stated: `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)"
+text_ascii = "Where stated: `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)"
 text_sha256 = "9e961faba3d23cb4b9a358ba5c16453386c9c31788a235cb97796ef268026a0b"
 
 [[chunk]]
@@ -15251,7 +15251,7 @@ kind = "list_item"
 line_start = 279
 line_end = 279
 heading_level = 0
-text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt`"
+text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 text_sha256 = "9633b263d817e47a993bca181ec48fa0401ddf3cbb09c0f2a3cc3dade841cce2"
 
 [[chunk]]
@@ -15449,7 +15449,7 @@ kind = "list_item"
 line_start = 303
 line_end = 303
 heading_level = 0
-text_ascii = "Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+text_ascii = "Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
 text_sha256 = "e9d541e7884f889ff688e61ede3ed221a7628693c8eae0cda853d02d47078681"
 
 [[chunk]]
@@ -15713,7 +15713,7 @@ kind = "list_item"
 line_start = 335
 line_end = 335
 heading_level = 0
-text_ascii = "Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
+text_ascii = "Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
 text_sha256 = "6ee192c36c0474b22612fe30f16a27d35b899c5c5560f0097b7e08a7ecf170ec"
 
 [[chunk]]
@@ -16120,7 +16120,7 @@ kind = "list_item"
 line_start = 384
 line_end = 384
 heading_level = 0
-text_ascii = "What would verify/refute it: The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/external/papers/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`)."
+text_ascii = "What would verify/refute it: The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/papers/corpus/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`)."
 text_sha256 = "d3b02bace9df86bd3b981fe42c119eaabc40fc96c480b1c87ce6cc4e2d0f15e6"
 
 [[chunk]]
@@ -39407,7 +39407,7 @@ kind = "list_item"
 line_start = 3207
 line_end = 3207
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
 text_sha256 = "342364e04cbf95ae86ea69a1bbed91a4c30c75a9b948b742e91e0415f0c96b7f"
 
 [[chunk]]
@@ -39473,7 +39473,7 @@ kind = "list_item"
 line_start = 3215
 line_end = 3215
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 text_sha256 = "6e72234989da113ea4f4279cf81f5cdc8f4e6da18fa1647cfe23445d6a5c68e9"
 
 [[chunk]]
@@ -39539,7 +39539,7 @@ kind = "list_item"
 line_start = 3223
 line_end = 3223
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`"
 text_sha256 = "c009b62c56f6d399f4ffe81a701a0f5462aaa3d01869f3024a7d967e53d741de"
 
 [[chunk]]
@@ -40067,7 +40067,7 @@ kind = "list_item"
 line_start = 3287
 line_end = 3287
 heading_level = 0
-text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py`"
+text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py`"
 text_sha256 = "d41af68bc200b0011a0d6461ab05a28cee1672588a8f5b7be13d91f26bd4900d"
 
 [[chunk]]
@@ -40133,7 +40133,7 @@ kind = "list_item"
 line_start = 3295
 line_end = 3295
 heading_level = 0
-text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`"
+text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`"
 text_sha256 = "507d862d92a53ad32505cf9c4cefa2c77cb3fa50ff7e917c7c393b41986a6e41"
 
 [[chunk]]
@@ -41662,7 +41662,7 @@ kind = "list_item"
 line_start = 3480
 line_end = 3480
 heading_level = 0
-text_ascii = "What would verify/refute it: Sources cached in `data/external/papers/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used."
+text_ascii = "What would verify/refute it: Sources cached in `data/papers/corpus/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used."
 text_sha256 = "7b555373c79d23b5aa7529f1627ee66f7e16777bbf92e525fdaa1672080a6ccb"
 
 [[chunk]]
@@ -58624,7 +58624,7 @@ kind = "list_item"
 line_start = 137
 line_end = 137
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`"
 text_sha256 = "58fd094d7bb602f81b0208171e417dbc3e73f8bc9e65ff1977e39d3493533d44"
 
 [[chunk]]
@@ -58635,7 +58635,7 @@ kind = "list_item"
 line_start = 138
 line_end = 138
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf`"
 text_sha256 = "2cfbf97bc5c1147226ee3ca6ee16d651021fdb5511df77fee03e240b454f22e6"
 
 [[chunk]]
@@ -58822,7 +58822,7 @@ kind = "list_item"
 line_start = 163
 line_end = 163
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`"
 text_sha256 = "2ef965c0e7c59d249cd0d5cbd35ed4955d80e9d7a886039834d38167ea7178cf"
 
 [[chunk]]
@@ -75322,7 +75322,7 @@ kind = "list_item"
 line_start = 2335
 line_end = 2335
 heading_level = 0
-text_ascii = "`data/external/papers/White_2021_Casimir_Warp.pdf`"
+text_ascii = "`data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 text_sha256 = "e3dcef902390a0aea7255fb099c95fe158a3f41b1378258f8b24320350b2c128"
 
 [[chunk]]
@@ -75564,7 +75564,7 @@ kind = "list_item"
 line_start = 2365
 line_end = 2365
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`"
 text_sha256 = "5930e6bd12edf2e8a2cfac3de702dabb8bf188384751efafae2b32a0a7d06c22"
 
 [[chunk]]
@@ -75575,7 +75575,7 @@ kind = "list_item"
 line_start = 2366
 line_end = 2366
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`"
 text_sha256 = "8903130099eb6ff754d7e5d24d4e8293f9945b00c0157acef9dcaf51b8addea3"
 
 [[chunk]]
@@ -75586,7 +75586,7 @@ kind = "list_item"
 line_start = 2367
 line_end = 2367
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`"
 text_sha256 = "bbded66f42e035bfac5cac53b75eb72700d380c961980a60b64beacacc5d1d2a"
 
 [[chunk]]
@@ -75597,7 +75597,7 @@ kind = "list_item"
 line_start = 2368
 line_end = 2368
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`"
 text_sha256 = "e565830a47c3c9e453e7c616eb024ec9b4c27c763b122de956601faf864c1569"
 
 [[chunk]]
@@ -77544,7 +77544,7 @@ kind = "list_item"
 line_start = 2617
 line_end = 2617
 heading_level = 0
-text_ascii = "`data/external/traces/tang_2025_preprints_org_landing.txt`"
+text_ascii = "`data/papers/intake/traces/tang_2025_preprints_org_landing.txt`"
 text_sha256 = "9f1be535e7567034c3c5b05b0e4b5933fc3ea587bec15110c6ed87eacce7899d"
 
 [[chunk]]
@@ -77555,7 +77555,7 @@ kind = "list_item"
 line_start = 2618
 line_end = 2618
 heading_level = 0
-text_ascii = "`data/external/papers/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`"
+text_ascii = "`data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`"
 text_sha256 = "796f34a728b5fad33a59c3d25b37c16d5f60b7b7a6624b3854cf99e1a8b63b50"
 
 [[chunk]]
@@ -77709,7 +77709,7 @@ kind = "list_item"
 line_start = 2636
 line_end = 2636
 heading_level = 0
-text_ascii = "`data/external/traces/tang_2025_preprints_org_landing.txt`"
+text_ascii = "`data/papers/intake/traces/tang_2025_preprints_org_landing.txt`"
 text_sha256 = "9f1be535e7567034c3c5b05b0e4b5933fc3ea587bec15110c6ed87eacce7899d"
 
 [[chunk]]
@@ -77797,7 +77797,7 @@ kind = "list_item"
 line_start = 2648
 line_end = 2648
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`"
 text_sha256 = "af946653b259ecb12fcb6db7c388e6d36ae3f1c380938e986f10d54612ea12d0"
 
 [[chunk]]
@@ -77962,7 +77962,7 @@ kind = "list_item"
 line_start = 2667
 line_end = 2667
 heading_level = 0
-text_ascii = "`data/external/traces/chanyal_2014_springer_landing.txt`"
+text_ascii = "`data/papers/intake/traces/chanyal_2014_springer_landing.txt`"
 text_sha256 = "7de450e6632fb10258ab72519f9fa5ba41111be9d2f0c0c0f7ec3fdeada73bf0"
 
 [[chunk]]
@@ -77973,7 +77973,7 @@ kind = "list_item"
 line_start = 2668
 line_end = 2668
 heading_level = 0
-text_ascii = "`data/external/traces/chanyal_2014_springer_abstract.txt`"
+text_ascii = "`data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 text_sha256 = "dd1f22a7f85a4feddf3f204f109d466d89a04d29ac1f7c743e1f59b6f36f89bb"
 
 [[chunk]]
@@ -78116,7 +78116,7 @@ kind = "list_item"
 line_start = 2685
 line_end = 2685
 heading_level = 0
-text_ascii = "`data/external/traces/chanyal_2014_springer_landing.txt`"
+text_ascii = "`data/papers/intake/traces/chanyal_2014_springer_landing.txt`"
 text_sha256 = "7de450e6632fb10258ab72519f9fa5ba41111be9d2f0c0c0f7ec3fdeada73bf0"
 
 [[chunk]]
@@ -78127,7 +78127,7 @@ kind = "list_item"
 line_start = 2686
 line_end = 2686
 heading_level = 0
-text_ascii = "`data/external/traces/chanyal_2014_springer_abstract.txt`"
+text_ascii = "`data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 text_sha256 = "dd1f22a7f85a4feddf3f204f109d466d89a04d29ac1f7c743e1f59b6f36f89bb"
 
 [[chunk]]
@@ -112876,7 +112876,7 @@ kind = "table_row"
 line_start = 42
 line_end = 42
 heading_level = 0
-text_ascii = "C-033 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests) | **Closed/Source-Insufficient** | 2026-02-06 | CLOSED (Phase 7 Batch B): Repo verifies a canonical SU(5) generator basis in the 5D defining rep: traceless/Hermitian/normalized and Lie bracket closed (summary: `data/csv/c033_su5_generator_summary.csv`). Tang & Tang (2023, Sec. 2.6) describe a construction of 24 generalized lambda matrices via five creation/annihilation operators, but do NOT enumerate a unique coefficient mapping from sedenion basis elements to a normalized SU(5) generator basis. The source provides the algebraic framework but not the explicit mapping table (basis conventions + normalization) needed for verification. Closed as source-insufficient."
+text_ascii = "C-033 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests) | **Closed/Source-Insufficient** | 2026-02-06 | CLOSED (Phase 7 Batch B): Repo verifies a canonical SU(5) generator basis in the 5D defining rep: traceless/Hermitian/normalized and Lie bracket closed (summary: `data/csv/c033_su5_generator_summary.csv`). Tang & Tang (2023, Sec. 2.6) describe a construction of 24 generalized lambda matrices via five creation/annihilation operators, but do NOT enumerate a unique coefficient mapping from sedenion basis elements to a normalized SU(5) generator basis. The source provides the algebraic framework but not the explicit mapping table (basis conventions + normalization) needed for verification. Closed as source-insufficient."
 text_sha256 = "f53a03e425bfe266b96472d70160378e366dc8bdbd2c7ecf689fd1160d29bf94"
 
 [[chunk]]
@@ -112887,7 +112887,7 @@ kind = "table_row"
 line_start = 43
 line_end = 43
 heading_level = 0
-text_ascii = "C-034 | Chanyal (2014): a \"sedenion unified theory of gravi-electromagnetism\" expresses unified potentials/fields/currents of dyons and \"gravito-dyons\" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo). | `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt` | **Verified** | 2026-02-04 | The Springer PDF is not cached (requires authentication); only metadata and an abstract extract are stored. Minimal offline check: `data/csv/c034_sedenion_doubling_identity_check.csv` verifies that the repo's S_16 multiplication exactly matches a Cayley-Dickson doubling formula over two octonionic halves, which is the algebraic prerequisite for a \"two eight-potentials\" formulation. The paper's explicit field equations and claimed sector symmetry remain unverified until a legal full-text source is available."
+text_ascii = "C-034 | Chanyal (2014): a \"sedenion unified theory of gravi-electromagnetism\" expresses unified potentials/fields/currents of dyons and \"gravito-dyons\" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo). | `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt` | **Verified** | 2026-02-04 | The Springer PDF is not cached (requires authentication); only metadata and an abstract extract are stored. Minimal offline check: `data/csv/c034_sedenion_doubling_identity_check.csv` verifies that the repo's S_16 multiplication exactly matches a Cayley-Dickson doubling formula over two octonionic halves, which is the algebraic prerequisite for a \"two eight-potentials\" formulation. The paper's explicit field equations and claimed sector symmetry remain unverified until a legal full-text source is available."
 text_sha256 = "b1784ea46eb4853fd07f1421235da3aa6b69bbcf2782f814fa1c93cc3545023d"
 
 [[chunk]]
@@ -112920,7 +112920,7 @@ kind = "table_row"
 line_start = 46
 line_end = 46
 heading_level = 0
-text_ascii = "C-037 | Numerical correspondence gamma ~ epsilon ~ 4*lambda_GB ~ 1/4, relating Barbero-Immirzi parameter, network clustering, and Gauss-Bonnet coupling. | `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md` | **Refuted** | 2026-02-03 | epsilon=1/4 is verified as a group-theory ratio (C-035). gamma and lambda_GB are model- and convention-dependent; the claim does not define a mapping that puts these numbers into a shared normalization, and the cited gamma values are not equal to 1/4. Per `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, treat this as an annotated coincidence note unless and until an explicit derivation supplies definitions, tolerances, and symmetric falsification boundaries."
+text_ascii = "C-037 | Numerical correspondence gamma ~ epsilon ~ 4*lambda_GB ~ 1/4, relating Barbero-Immirzi parameter, network clustering, and Gauss-Bonnet coupling. | `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md` | **Refuted** | 2026-02-03 | epsilon=1/4 is verified as a group-theory ratio (C-035). gamma and lambda_GB are model- and convention-dependent; the claim does not define a mapping that puts these numbers into a shared normalization, and the cited gamma values are not equal to 1/4. Per `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, treat this as an annotated coincidence note unless and until an explicit derivation supplies definitions, tolerances, and symmetric falsification boundaries."
 text_sha256 = "3ccc264130d21e769508e187fdaa5bcec35b7acde07dc24e2446f4eca2f2f8e8"
 
 [[chunk]]
@@ -112964,7 +112964,7 @@ kind = "table_row"
 line_start = 50
 line_end = 50
 heading_level = 0
-text_ascii = "C-041 | F4 26D representation connects to bosonic string critical dimension (D=26). | `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf` | **Refuted** | 2026-02-03 | A shared number (26) does not define a derivation. The repo currently has no explicit mapping from an F4 26D sector to the worldsheet anomaly-cancellation argument that fixes the bosonic-string critical dimension. Per `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, keep as an annotated coincidence note unless and until a concrete mechanism (model class + mapping + falsifiable consequence) is provided."
+text_ascii = "C-041 | F4 26D representation connects to bosonic string critical dimension (D=26). | `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf` | **Refuted** | 2026-02-03 | A shared number (26) does not define a derivation. The repo currently has no explicit mapping from an F4 26D sector to the worldsheet anomaly-cancellation argument that fixes the bosonic-string critical dimension. Per `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, keep as an annotated coincidence note unless and until a concrete mechanism (model class + mapping + falsifiable consequence) is provided."
 text_sha256 = "4cf1eb4ddcc0a075e38e267663d22fbb3529839cfa557173a5720050fa456ab8"
 
 [[chunk]]
@@ -113030,7 +113030,7 @@ kind = "table_row"
 line_start = 56
 line_end = 56
 heading_level = 0
-text_ascii = "C-047 | E9, E10, E11 are Euclidean sphere-packing lattices. | `archive/legacy_conjectures/`, `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `tests/test_c047_e_series_cartan_signature.py` | **Refuted** | 2026-02-04 | The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/external/papers/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`)."
+text_ascii = "C-047 | E9, E10, E11 are Euclidean sphere-packing lattices. | `archive/legacy_conjectures/`, `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `tests/test_c047_e_series_cartan_signature.py` | **Refuted** | 2026-02-04 | The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/papers/corpus/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`)."
 text_sha256 = "a838a2a56466deeb5ad6a2f8c1f5deaca94b29d356ecbe6e12332b277753d723"
 
 [[chunk]]
@@ -116913,7 +116913,7 @@ kind = "table_row"
 line_start = 409
 line_end = 409
 heading_level = 0
-text_ascii = "C-400 | Metamaterials can emulate Alcubierre warp drive metrics for electromagnetic waves (Analog Gravity). | `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf` | **Verified** | 2026-02-02 | Smolyaninov (2011) demonstrated bi-anisotropic metamaterials mimicking a warp bubble metric, allowing signal propagation at ~0.25c effectively within the medium. This is a kinematic analog, not a dynamical spacetime warping."
+text_ascii = "C-400 | Metamaterials can emulate Alcubierre warp drive metrics for electromagnetic waves (Analog Gravity). | `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf` | **Verified** | 2026-02-02 | Smolyaninov (2011) demonstrated bi-anisotropic metamaterials mimicking a warp bubble metric, allowing signal propagation at ~0.25c effectively within the medium. This is a kinematic analog, not a dynamical spacetime warping."
 text_sha256 = "0133e9fb5c2f0941761b435558e82b0b6cf84a58c09312c6eb58b3f47a0f499f"
 
 [[chunk]]
@@ -116924,7 +116924,7 @@ kind = "table_row"
 line_start = 410
 line_end = 410
 heading_level = 0
-text_ascii = "C-401 | A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble. | `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf` | **Theoretical** | 2026-02-02 | White et al. (2021) computed the vacuum energy density for this geometry and found a match to the Alcubierre requirement. Status: Blueprint exists, but device is unbuilt/untested as of Jan 2026."
+text_ascii = "C-401 | A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble. | `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf` | **Theoretical** | 2026-02-02 | White et al. (2021) computed the vacuum energy density for this geometry and found a match to the Alcubierre requirement. Status: Blueprint exists, but device is unbuilt/untested as of Jan 2026."
 text_sha256 = "c240f954fdb884d132dc955d5d99709d581c9e282f112f70c33a936c6768e913"
 
 [[chunk]]
@@ -116935,7 +116935,7 @@ kind = "table_row"
 line_start = 411
 line_end = 411
 heading_level = 0
-text_ascii = "C-402 | Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels. | `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf` | **Refuted** | 2026-02-02 | Rodal (2025) proved that modifying G via metamaterials violates energy-momentum conservation or implies scalar forces excluded by experiment (Lunar Laser Ranging). \"Cheap\" warp drives via EM-gravity coupling are physically impossible under standard GR+SM."
+text_ascii = "C-402 | Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels. | `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf` | **Refuted** | 2026-02-02 | Rodal (2025) proved that modifying G via metamaterials violates energy-momentum conservation or implies scalar forces excluded by experiment (Lunar Laser Ranging). \"Cheap\" warp drives via EM-gravity coupling are physically impossible under standard GR+SM."
 text_sha256 = "3bb5fe930c28fb5a04b643bf5eb18e83b6d6d9c5969e52450b329679b823ce3b"
 
 [[chunk]]
@@ -117023,7 +117023,7 @@ kind = "table_row"
 line_start = 419
 line_end = 419
 heading_level = 0
-text_ascii = "C-410 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpole contributions (Ahmadiniaz et al. 2026), relevant to semiclassical EM-gravity coupling limits. | `docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py` | **Verified** | 2026-02-04 | Phase 6 B6: Paper establishes 3rd diagram (tadpole) relevance. Does NOT overturn C-402 (Rodal 2025) refutation: mixing amplitude ratio ~(alpha/pi)*(B/B_cr)^2 is negligible for lab fields. Schwinger B_cr=4.41e9 T verified. 4 passing tests."
+text_ascii = "C-410 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpole contributions (Ahmadiniaz et al. 2026), relevant to semiclassical EM-gravity coupling limits. | `docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py` | **Verified** | 2026-02-04 | Phase 6 B6: Paper establishes 3rd diagram (tadpole) relevance. Does NOT overturn C-402 (Rodal 2025) refutation: mixing amplitude ratio ~(alpha/pi)*(B/B_cr)^2 is negligible for lab fields. Schwinger B_cr=4.41e9 T verified. 4 passing tests."
 text_sha256 = "2d1d8cc5423b32c5f5e75be1e2cb8d3ec596cbbcb7031c9b74c9f7e30679d657"
 
 [[chunk]]
@@ -117034,7 +117034,7 @@ kind = "table_row"
 line_start = 420
 line_end = 420
 heading_level = 0
-text_ascii = "C-411 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxed phase matching, enabling flat entangled photon sources. | `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py` | **Verified** | 2026-02-04 | Phase 6 B6: Phase-matching function comparison confirms SFWM dominance (5.8x ratio from phase matching alone; paper quotes 19x including chi coefficients). Coherence lengths match: L_coh_SFWM=33.3 um >> L_coh_SHG=3.1 um, L_coh_SPDC=3.4 um. 4 passing tests."
+text_ascii = "C-411 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxed phase matching, enabling flat entangled photon sources. | `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py` | **Verified** | 2026-02-04 | Phase 6 B6: Phase-matching function comparison confirms SFWM dominance (5.8x ratio from phase matching alone; paper quotes 19x including chi coefficients). Coherence lengths match: L_coh_SFWM=33.3 um >> L_coh_SHG=3.1 um, L_coh_SPDC=3.4 um. 4 passing tests."
 text_sha256 = "7e20e9020a28e5e0629e0779e094d110f65ba934e1dfaa37b32fd85cc165e94a"
 
 [[chunk]]
@@ -117287,7 +117287,7 @@ kind = "table_row"
 line_start = 443
 line_end = 443
 heading_level = 0
-text_ascii = "C-434 | Material stack Silicon-Gold-Ice VIII reconciled with literature-supported optical constants (Si n=3.48, Au complex eps, Ice VIII n=1.73 @ 30 GPa) for 1550nm Analogue Optics experiments. | `docs/theory/WARP_PHYSICS_RECONCILIATION.md`, `src/scripts/visualization/animate_warp_v8_rigorous.py` | **Verified** | 2026-02-03 | Sources cached in `data/external/papers/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used."
+text_ascii = "C-434 | Material stack Silicon-Gold-Ice VIII reconciled with literature-supported optical constants (Si n=3.48, Au complex eps, Ice VIII n=1.73 @ 30 GPa) for 1550nm Analogue Optics experiments. | `docs/theory/WARP_PHYSICS_RECONCILIATION.md`, `src/scripts/visualization/animate_warp_v8_rigorous.py` | **Verified** | 2026-02-03 | Sources cached in `data/papers/corpus/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used."
 text_sha256 = "6b364607d207720773598e4dd151ebbae2babb25f04e027292668a1db1615989"
 
 [[chunk]]
@@ -120279,7 +120279,7 @@ kind = "table_row"
 line_start = 26
 line_end = 26
 heading_level = 0
-text_ascii = "C-047 | Correct legacy E9/E10/E11 statement; cache primary open-access Kac-Moody anchors. | `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `data/external/papers/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`, `data/external/papers/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf` | DONE"
+text_ascii = "C-047 | Correct legacy E9/E10/E11 statement; cache primary open-access Kac-Moody anchors. | `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `data/papers/corpus/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`, `data/papers/corpus/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf` | DONE"
 text_sha256 = "280ad6fb6e1e3c4ecf131cb9d4b287b0292cab263604bc879ac13b6dbc20802b"
 
 [[chunk]]
@@ -120301,7 +120301,7 @@ kind = "table_row"
 line_start = 28
 line_end = 28
 heading_level = 0
-text_ascii = "C-048 | Add motivic tower anchor sources (analogy only) and cache at least one open-access reference. | `docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md`, `data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf` | DONE"
+text_ascii = "C-048 | Add motivic tower anchor sources (analogy only) and cache at least one open-access reference. | `docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md`, `data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf` | DONE"
 text_sha256 = "3c65aaf61ebb13079f476038495a1de74040f563ae4b26fc17591c3ae059e9b6"
 
 [[chunk]]
@@ -122182,7 +122182,7 @@ kind = "table_row"
 line_start = 201
 line_end = 201
 heading_level = 0
-text_ascii = "C-401 | Triage: primary sources cached; still needs a concrete, offline validation check (or keep as blueprint-only). | `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf` | PARTIAL"
+text_ascii = "C-401 | Triage: primary sources cached; still needs a concrete, offline validation check (or keep as blueprint-only). | `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf` | PARTIAL"
 text_sha256 = "61df785779467b9e394b865ff460864cafd7d798d106a5a1c7b9bfe26ac898d1"
 
 [[chunk]]
@@ -122204,7 +122204,7 @@ kind = "table_row"
 line_start = 203
 line_end = 203
 heading_level = 0
-text_ascii = "C-404 | Source-index + define offline check for modular-data/entanglement-wedge program claims. | `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/scripts/data/fetch_emergence_layers_sources.py`, `data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`, `data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`, `data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`, `data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py` | DONE"
+text_ascii = "C-404 | Source-index + define offline check for modular-data/entanglement-wedge program claims. | `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/scripts/data/fetch_emergence_layers_sources.py`, `data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`, `data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`, `data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`, `data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py` | DONE"
 text_sha256 = "ce8ecb6fc68318a0fd93c4aa9894dd08a126b2b2e7d102ae33b3cfe6789ba2f7"
 
 [[chunk]]
@@ -122435,7 +122435,7 @@ kind = "table_row"
 line_start = 226
 line_end = 226
 heading_level = 0
-text_ascii = "C-032 | Tang (2025) non-associative QED: minimal offline reproduction (Table 2 extraction + subalgebra associator stats). | `docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/external/traces/tang_2025_preprints_org_landing.txt`, `data/external/papers/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py` | DONE"
+text_ascii = "C-032 | Tang (2025) non-associative QED: minimal offline reproduction (Table 2 extraction + subalgebra associator stats). | `docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/papers/intake/traces/tang_2025_preprints_org_landing.txt`, `data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py` | DONE"
 text_sha256 = "43fac0eb718ded2621df258cf29cc7ce0c4d95f5f73e9372e75f5bfd719554a9"
 
 [[chunk]]
@@ -122446,7 +122446,7 @@ kind = "table_row"
 line_start = 227
 line_end = 227
 heading_level = 0
-text_ascii = "C-032 | Tang (2025) non-associative QED: mechanize the associator->mass mapping (BLOCKED until the source provides a complete, convention-fixed mapping and scale choice). | `docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/external/traces/tang_2025_preprints_org_landing.txt` | BLOCKED"
+text_ascii = "C-032 | Tang (2025) non-associative QED: mechanize the associator->mass mapping (BLOCKED until the source provides a complete, convention-fixed mapping and scale choice). | `docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/papers/intake/traces/tang_2025_preprints_org_landing.txt` | BLOCKED"
 text_sha256 = "afc88c02f3acbc534c54851343363c0fb129535c4a145511c868f323d1461127"
 
 [[chunk]]
@@ -122457,7 +122457,7 @@ kind = "table_row"
 line_start = 228
 line_end = 228
 heading_level = 0
-text_ascii = "C-033 | SU(5) generator basis verification complete; source does not specify a unique coefficient mapping from sedenion basis to a normalized SU(5) basis (claim demoted accordingly). | `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` | DONE"
+text_ascii = "C-033 | SU(5) generator basis verification complete; source does not specify a unique coefficient mapping from sedenion basis to a normalized SU(5) basis (claim demoted accordingly). | `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` | DONE"
 text_sha256 = "bd6f093f73d7d2d325bf99da5a0ec2bf4a90b6f0de996f387f7d22397f902d5d"
 
 [[chunk]]
@@ -122468,7 +122468,7 @@ kind = "table_row"
 line_start = 229
 line_end = 229
 heading_level = 0
-text_ascii = "C-034 | Chanyal (2014) sedenion gravi-electromagnetism: minimal structural reproduction (two 8D sectors via CD doubling). | `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/external/traces/chanyal_2014_springer_landing.txt`, `data/external/traces/chanyal_2014_springer_abstract.txt`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py` | DONE"
+text_ascii = "C-034 | Chanyal (2014) sedenion gravi-electromagnetism: minimal structural reproduction (two 8D sectors via CD doubling). | `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/papers/intake/traces/chanyal_2014_springer_landing.txt`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py` | DONE"
 text_sha256 = "c547b5d013d9831d1514624d74f81743db033797818e43a43f1a74ddfe0a3981"
 
 [[chunk]]
@@ -122479,7 +122479,7 @@ kind = "table_row"
 line_start = 230
 line_end = 230
 heading_level = 0
-text_ascii = "C-034 | Chanyal (2014) sedenion gravi-electromagnetism: equation-level reproduction checks (BLOCKED until a legal full-text source is cached). | `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/external/traces/chanyal_2014_springer_landing.txt`, `data/external/traces/chanyal_2014_springer_abstract.txt` | BLOCKED"
+text_ascii = "C-034 | Chanyal (2014) sedenion gravi-electromagnetism: equation-level reproduction checks (BLOCKED until a legal full-text source is cached). | `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/papers/intake/traces/chanyal_2014_springer_landing.txt`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt` | BLOCKED"
 text_sha256 = "db147e28ddedf0f198ca376591517a92cd15fa138d5d91a2268dd46f9000e6a7"
 
 [[chunk]]
@@ -151761,7 +151761,7 @@ kind = "list_item"
 line_start = 21
 line_end = 21
 heading_level = 0
-text_ascii = "Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `data/external/papers/reggiani_2024_2411.18881.pdf`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`"
+text_ascii = "Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `data/papers/corpus/reggiani_2024_2411.18881.pdf`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`"
 text_sha256 = "7d7d0cb570eca77c9cf7298d2c937937b94acdc878f29bf890cab29b1f83b8cc"
 
 [[chunk]]
@@ -152113,7 +152113,7 @@ kind = "list_item"
 line_start = 69
 line_end = 69
 heading_level = 0
-text_ascii = "Where stated: `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
+text_ascii = "Where stated: `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
 text_sha256 = "7af07b1e0a88c4296b803d062c33aa9e52f0c933b9458aea5c13abd806d596a4"
 
 [[chunk]]
@@ -152135,7 +152135,7 @@ kind = "list_item"
 line_start = 72
 line_end = 72
 heading_level = 0
-text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt`"
+text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 text_sha256 = "7d965700db18f9c766544f551ff99338466fad0d5ee63e1fdfdbfe21f8c4a4bf"
 
 [[chunk]]
@@ -153301,7 +153301,7 @@ kind = "list_item"
 line_start = 21
 line_end = 21
 heading_level = 0
-text_ascii = "Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+text_ascii = "Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
 text_sha256 = "e9d541e7884f889ff688e61ede3ed221a7628693c8eae0cda853d02d47078681"
 
 [[chunk]]
@@ -153389,7 +153389,7 @@ kind = "list_item"
 line_start = 33
 line_end = 33
 heading_level = 0
-text_ascii = "Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
+text_ascii = "Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
 text_sha256 = "6ee192c36c0474b22612fe30f16a27d35b899c5c5560f0097b7e08a7ecf170ec"
 
 [[chunk]]
@@ -153631,7 +153631,7 @@ kind = "list_item"
 line_start = 9
 line_end = 9
 heading_level = 0
-text_ascii = "Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `data/external/papers/reggiani_2024_2411.18881.pdf`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`"
+text_ascii = "Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `data/papers/corpus/reggiani_2024_2411.18881.pdf`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`"
 text_sha256 = "7d7d0cb570eca77c9cf7298d2c937937b94acdc878f29bf890cab29b1f83b8cc"
 
 [[chunk]]
@@ -153697,7 +153697,7 @@ kind = "list_item"
 line_start = 18
 line_end = 18
 heading_level = 0
-text_ascii = "Where stated: `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
+text_ascii = "Where stated: `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
 text_sha256 = "7af07b1e0a88c4296b803d062c33aa9e52f0c933b9458aea5c13abd806d596a4"
 
 [[chunk]]
@@ -153719,7 +153719,7 @@ kind = "list_item"
 line_start = 21
 line_end = 21
 heading_level = 0
-text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt`"
+text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 text_sha256 = "7d965700db18f9c766544f551ff99338466fad0d5ee63e1fdfdbfe21f8c4a4bf"
 
 [[chunk]]
@@ -153741,7 +153741,7 @@ kind = "list_item"
 line_start = 24
 line_end = 24
 heading_level = 0
-text_ascii = "Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+text_ascii = "Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
 text_sha256 = "e9d541e7884f889ff688e61ede3ed221a7628693c8eae0cda853d02d47078681"
 
 [[chunk]]
@@ -153763,7 +153763,7 @@ kind = "list_item"
 line_start = 27
 line_end = 27
 heading_level = 0
-text_ascii = "Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
+text_ascii = "Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
 text_sha256 = "6ee192c36c0474b22612fe30f16a27d35b899c5c5560f0097b7e08a7ecf170ec"
 
 [[chunk]]
@@ -154071,7 +154071,7 @@ kind = "list_item"
 line_start = 69
 line_end = 69
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
 text_sha256 = "342364e04cbf95ae86ea69a1bbed91a4c30c75a9b948b742e91e0415f0c96b7f"
 
 [[chunk]]
@@ -154093,7 +154093,7 @@ kind = "list_item"
 line_start = 72
 line_end = 72
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 text_sha256 = "6e72234989da113ea4f4279cf81f5cdc8f4e6da18fa1647cfe23445d6a5c68e9"
 
 [[chunk]]
@@ -154115,7 +154115,7 @@ kind = "list_item"
 line_start = 75
 line_end = 75
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`"
 text_sha256 = "c009b62c56f6d399f4ffe81a701a0f5462aaa3d01869f3024a7d967e53d741de"
 
 [[chunk]]
@@ -154137,7 +154137,7 @@ kind = "list_item"
 line_start = 78
 line_end = 78
 heading_level = 0
-text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md`, `data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`"
+text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md`, `data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`"
 text_sha256 = "316f8f592f91203cfe82aaa5cfcf009d7f5662a0ce38c38f263e82a68d3870ee"
 
 [[chunk]]
@@ -154159,7 +154159,7 @@ kind = "list_item"
 line_start = 81
 line_end = 81
 heading_level = 0
-text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md`, `data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`"
+text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md`, `data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`"
 text_sha256 = "f6ce2b29cc69ed2abadeea0a0912c5cc843bd47ad4cf1c671713eef32513b7f4"
 
 [[chunk]]
@@ -157118,7 +157118,7 @@ kind = "list_item"
 line_start = 345
 line_end = 345
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
 text_sha256 = "342364e04cbf95ae86ea69a1bbed91a4c30c75a9b948b742e91e0415f0c96b7f"
 
 [[chunk]]
@@ -157140,7 +157140,7 @@ kind = "list_item"
 line_start = 348
 line_end = 348
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 text_sha256 = "6e72234989da113ea4f4279cf81f5cdc8f4e6da18fa1647cfe23445d6a5c68e9"
 
 [[chunk]]
@@ -157162,7 +157162,7 @@ kind = "list_item"
 line_start = 351
 line_end = 351
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`"
 text_sha256 = "c009b62c56f6d399f4ffe81a701a0f5462aaa3d01869f3024a7d967e53d741de"
 
 [[chunk]]
@@ -158042,7 +158042,7 @@ kind = "list_item"
 line_start = 18
 line_end = 18
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
 text_sha256 = "342364e04cbf95ae86ea69a1bbed91a4c30c75a9b948b742e91e0415f0c96b7f"
 
 [[chunk]]
@@ -158064,7 +158064,7 @@ kind = "list_item"
 line_start = 21
 line_end = 21
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 text_sha256 = "6e72234989da113ea4f4279cf81f5cdc8f4e6da18fa1647cfe23445d6a5c68e9"
 
 [[chunk]]
@@ -158086,7 +158086,7 @@ kind = "list_item"
 line_start = 24
 line_end = 24
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`"
 text_sha256 = "c009b62c56f6d399f4ffe81a701a0f5462aaa3d01869f3024a7d967e53d741de"
 
 [[chunk]]
@@ -163113,7 +163113,7 @@ kind = "list_item"
 line_start = 15
 line_end = 15
 heading_level = 0
-text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt`"
+text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 text_sha256 = "7d965700db18f9c766544f551ff99338466fad0d5ee63e1fdfdbfe21f8c4a4bf"
 
 [[chunk]]
@@ -180009,7 +180009,7 @@ kind = "paragraph"
 line_start = 6
 line_end = 6
 heading_level = 0
-text_ascii = "**Source:** data/external/papers/de_marrais_2004_math0403113_boxkites_III.pdf"
+text_ascii = "**Source:** data/papers/corpus/de_marrais_2004_math0403113_boxkites_III.pdf"
 text_sha256 = "962958632327af9a62f449ade8081b3d47f5905888b5afd0ecc1d875266732b6"
 
 [[chunk]]
@@ -182000,7 +182000,7 @@ kind = "paragraph"
 line_start = 6
 line_end = 6
 heading_level = 0
-text_ascii = "**Source:** data/external/papers/de_marrais_2004_wolfram_science_slides.pdf"
+text_ascii = "**Source:** data/papers/corpus/de_marrais_2004_wolfram_science_slides.pdf"
 text_sha256 = "059fdb0ecddf3e4b164b79e125d8f8fdb966a529fa3f41eba79cb6f6584ab845"
 
 [[chunk]]
@@ -183606,7 +183606,7 @@ kind = "list_item"
 line_start = 15
 line_end = 15
 heading_level = 0
-text_ascii = "Cached PDF: `data/external/papers/reggiani_2024_2411.18881.pdf`"
+text_ascii = "Cached PDF: `data/papers/corpus/reggiani_2024_2411.18881.pdf`"
 text_sha256 = "fbbaaf2e8fe507373abdbca2873025e10368d4b6dff5a29990b2d7384b3b75be"
 
 [[chunk]]
@@ -183617,7 +183617,7 @@ kind = "list_item"
 line_start = 16
 line_end = 16
 heading_level = 0
-text_ascii = "Cached text: `data/external/papers/reggiani_2024_2411.18881.txt`"
+text_ascii = "Cached text: `data/papers/corpus/reggiani_2024_2411.18881.txt`"
 text_sha256 = "7ef5f09334d682d0050ba41fe3cb32ed160a16cdfeb348b639c4b7f0899d41d7"
 
 [[chunk]]
@@ -198775,7 +198775,7 @@ kind = "list_item"
 line_start = 271
 line_end = 271
 heading_level = 0
-text_ascii = "Where stated: `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)"
+text_ascii = "Where stated: `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)"
 text_sha256 = "9e961faba3d23cb4b9a358ba5c16453386c9c31788a235cb97796ef268026a0b"
 
 [[chunk]]
@@ -198841,7 +198841,7 @@ kind = "list_item"
 line_start = 279
 line_end = 279
 heading_level = 0
-text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt`"
+text_ascii = "Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 text_sha256 = "9633b263d817e47a993bca181ec48fa0401ddf3cbb09c0f2a3cc3dade841cce2"
 
 [[chunk]]
@@ -199039,7 +199039,7 @@ kind = "list_item"
 line_start = 303
 line_end = 303
 heading_level = 0
-text_ascii = "Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+text_ascii = "Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
 text_sha256 = "e9d541e7884f889ff688e61ede3ed221a7628693c8eae0cda853d02d47078681"
 
 [[chunk]]
@@ -199303,7 +199303,7 @@ kind = "list_item"
 line_start = 335
 line_end = 335
 heading_level = 0
-text_ascii = "Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
+text_ascii = "Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
 text_sha256 = "6ee192c36c0474b22612fe30f16a27d35b899c5c5560f0097b7e08a7ecf170ec"
 
 [[chunk]]
@@ -199710,7 +199710,7 @@ kind = "list_item"
 line_start = 384
 line_end = 384
 heading_level = 0
-text_ascii = "What would verify/refute it: The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/external/papers/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`)."
+text_ascii = "What would verify/refute it: The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/papers/corpus/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`)."
 text_sha256 = "d3b02bace9df86bd3b981fe42c119eaabc40fc96c480b1c87ce6cc4e2d0f15e6"
 
 [[chunk]]
@@ -222997,7 +222997,7 @@ kind = "list_item"
 line_start = 3207
 line_end = 3207
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
 text_sha256 = "342364e04cbf95ae86ea69a1bbed91a4c30c75a9b948b742e91e0415f0c96b7f"
 
 [[chunk]]
@@ -223063,7 +223063,7 @@ kind = "list_item"
 line_start = 3215
 line_end = 3215
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 text_sha256 = "6e72234989da113ea4f4279cf81f5cdc8f4e6da18fa1647cfe23445d6a5c68e9"
 
 [[chunk]]
@@ -223129,7 +223129,7 @@ kind = "list_item"
 line_start = 3223
 line_end = 3223
 heading_level = 0
-text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`"
+text_ascii = "Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`"
 text_sha256 = "c009b62c56f6d399f4ffe81a701a0f5462aaa3d01869f3024a7d967e53d741de"
 
 [[chunk]]
@@ -223657,7 +223657,7 @@ kind = "list_item"
 line_start = 3287
 line_end = 3287
 heading_level = 0
-text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py`"
+text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py`"
 text_sha256 = "d41af68bc200b0011a0d6461ab05a28cee1672588a8f5b7be13d91f26bd4900d"
 
 [[chunk]]
@@ -223723,7 +223723,7 @@ kind = "list_item"
 line_start = 3295
 line_end = 3295
 heading_level = 0
-text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`"
+text_ascii = "Where stated: `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`"
 text_sha256 = "507d862d92a53ad32505cf9c4cefa2c77cb3fa50ff7e917c7c393b41986a6e41"
 
 [[chunk]]
@@ -225252,7 +225252,7 @@ kind = "list_item"
 line_start = 3480
 line_end = 3480
 heading_level = 0
-text_ascii = "What would verify/refute it: Sources cached in `data/external/papers/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used."
+text_ascii = "What would verify/refute it: Sources cached in `data/papers/corpus/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used."
 text_sha256 = "7b555373c79d23b5aa7529f1627ee66f7e16777bbf92e525fdaa1672080a6ccb"
 
 [[chunk]]
@@ -243204,7 +243204,7 @@ kind = "list_item"
 line_start = 137
 line_end = 137
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`"
 text_sha256 = "58fd094d7bb602f81b0208171e417dbc3e73f8bc9e65ff1977e39d3493533d44"
 
 [[chunk]]
@@ -243215,7 +243215,7 @@ kind = "list_item"
 line_start = 138
 line_end = 138
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf`"
 text_sha256 = "2cfbf97bc5c1147226ee3ca6ee16d651021fdb5511df77fee03e240b454f22e6"
 
 [[chunk]]
@@ -243402,7 +243402,7 @@ kind = "list_item"
 line_start = 163
 line_end = 163
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`"
 text_sha256 = "2ef965c0e7c59d249cd0d5cbd35ed4955d80e9d7a886039834d38167ea7178cf"
 
 [[chunk]]
@@ -259902,7 +259902,7 @@ kind = "list_item"
 line_start = 2335
 line_end = 2335
 heading_level = 0
-text_ascii = "`data/external/papers/White_2021_Casimir_Warp.pdf`"
+text_ascii = "`data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 text_sha256 = "e3dcef902390a0aea7255fb099c95fe158a3f41b1378258f8b24320350b2c128"
 
 [[chunk]]
@@ -260144,7 +260144,7 @@ kind = "list_item"
 line_start = 2365
 line_end = 2365
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`"
 text_sha256 = "5930e6bd12edf2e8a2cfac3de702dabb8bf188384751efafae2b32a0a7d06c22"
 
 [[chunk]]
@@ -260155,7 +260155,7 @@ kind = "list_item"
 line_start = 2366
 line_end = 2366
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`"
 text_sha256 = "8903130099eb6ff754d7e5d24d4e8293f9945b00c0157acef9dcaf51b8addea3"
 
 [[chunk]]
@@ -260166,7 +260166,7 @@ kind = "list_item"
 line_start = 2367
 line_end = 2367
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`"
 text_sha256 = "bbded66f42e035bfac5cac53b75eb72700d380c961980a60b64beacacc5d1d2a"
 
 [[chunk]]
@@ -260177,7 +260177,7 @@ kind = "list_item"
 line_start = 2368
 line_end = 2368
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`"
 text_sha256 = "e565830a47c3c9e453e7c616eb024ec9b4c27c763b122de956601faf864c1569"
 
 [[chunk]]
@@ -262124,7 +262124,7 @@ kind = "list_item"
 line_start = 2617
 line_end = 2617
 heading_level = 0
-text_ascii = "`data/external/traces/tang_2025_preprints_org_landing.txt`"
+text_ascii = "`data/papers/intake/traces/tang_2025_preprints_org_landing.txt`"
 text_sha256 = "9f1be535e7567034c3c5b05b0e4b5933fc3ea587bec15110c6ed87eacce7899d"
 
 [[chunk]]
@@ -262135,7 +262135,7 @@ kind = "list_item"
 line_start = 2618
 line_end = 2618
 heading_level = 0
-text_ascii = "`data/external/papers/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`"
+text_ascii = "`data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`"
 text_sha256 = "796f34a728b5fad33a59c3d25b37c16d5f60b7b7a6624b3854cf99e1a8b63b50"
 
 [[chunk]]
@@ -262289,7 +262289,7 @@ kind = "list_item"
 line_start = 2636
 line_end = 2636
 heading_level = 0
-text_ascii = "`data/external/traces/tang_2025_preprints_org_landing.txt`"
+text_ascii = "`data/papers/intake/traces/tang_2025_preprints_org_landing.txt`"
 text_sha256 = "9f1be535e7567034c3c5b05b0e4b5933fc3ea587bec15110c6ed87eacce7899d"
 
 [[chunk]]
@@ -262377,7 +262377,7 @@ kind = "list_item"
 line_start = 2648
 line_end = 2648
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`"
 text_sha256 = "af946653b259ecb12fcb6db7c388e6d36ae3f1c380938e986f10d54612ea12d0"
 
 [[chunk]]
@@ -262542,7 +262542,7 @@ kind = "list_item"
 line_start = 2667
 line_end = 2667
 heading_level = 0
-text_ascii = "`data/external/traces/chanyal_2014_springer_landing.txt`"
+text_ascii = "`data/papers/intake/traces/chanyal_2014_springer_landing.txt`"
 text_sha256 = "7de450e6632fb10258ab72519f9fa5ba41111be9d2f0c0c0f7ec3fdeada73bf0"
 
 [[chunk]]
@@ -262553,7 +262553,7 @@ kind = "list_item"
 line_start = 2668
 line_end = 2668
 heading_level = 0
-text_ascii = "`data/external/traces/chanyal_2014_springer_abstract.txt`"
+text_ascii = "`data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 text_sha256 = "dd1f22a7f85a4feddf3f204f109d466d89a04d29ac1f7c743e1f59b6f36f89bb"
 
 [[chunk]]
@@ -262696,7 +262696,7 @@ kind = "list_item"
 line_start = 2685
 line_end = 2685
 heading_level = 0
-text_ascii = "`data/external/traces/chanyal_2014_springer_landing.txt`"
+text_ascii = "`data/papers/intake/traces/chanyal_2014_springer_landing.txt`"
 text_sha256 = "7de450e6632fb10258ab72519f9fa5ba41111be9d2f0c0c0f7ec3fdeada73bf0"
 
 [[chunk]]
@@ -262707,7 +262707,7 @@ kind = "list_item"
 line_start = 2686
 line_end = 2686
 heading_level = 0
-text_ascii = "`data/external/traces/chanyal_2014_springer_abstract.txt`"
+text_ascii = "`data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 text_sha256 = "dd1f22a7f85a4feddf3f204f109d466d89a04d29ac1f7c743e1f59b6f36f89bb"
 
 [[chunk]]
@@ -292979,7 +292979,7 @@ kind = "list_item"
 line_start = 34
 line_end = 34
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf`"
 text_sha256 = "823bd5c7a70b504b894deba7b40e6183dba9a47d26570fdca894ca3d65c9cb98"
 
 [[chunk]]
@@ -292990,7 +292990,7 @@ kind = "list_item"
 line_start = 35
 line_end = 35
 heading_level = 0
-text_ascii = "`data/external/papers/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf`"
+text_ascii = "`data/papers/corpus/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf`"
 text_sha256 = "c9a6896b1c38c61dbb0cda9a7ff967a10a475208732fd8f6d6073de1bd4decff"
 
 [[chunk]]
@@ -293012,7 +293012,7 @@ kind = "list_item"
 line_start = 37
 line_end = 37
 heading_level = 0
-text_ascii = "`data/external/traces/chanyal_2014_academia_requires_login.txt`"
+text_ascii = "`data/papers/intake/traces/chanyal_2014_academia_requires_login.txt`"
 text_sha256 = "c9570f111431629e99f2940e47c75e9282cb8f39546699a8335de13834d8da8e"
 
 [[chunk]]
@@ -293166,7 +293166,7 @@ kind = "list_item"
 line_start = 51
 line_end = 51
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`"
 text_sha256 = "2ef965c0e7c59d249cd0d5cbd35ed4955d80e9d7a886039834d38167ea7178cf"
 
 [[chunk]]
@@ -295949,7 +295949,7 @@ kind = "list_item"
 line_start = 24
 line_end = 24
 heading_level = 0
-text_ascii = "`data/external/papers/`"
+text_ascii = "`data/papers/corpus/`"
 text_sha256 = "18097116d44d031644ac446253a59ac4611dca36924f7eac95b9c5354427be2b"
 
 [[chunk]]
@@ -299634,7 +299634,7 @@ kind = "table_row"
 line_start = 86
 line_end = 86
 heading_level = 0
-text_ascii = "C-033 | algebra | Partially verified (struc... | 2026-02-03 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace..."
+text_ascii = "C-033 | algebra | Partially verified (struc... | 2026-02-03 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace..."
 text_sha256 = "67c03355a08a25bc5b8018d8fef84a13da6e2278748b621fc71d6f8f91773deb"
 
 [[chunk]]
@@ -300591,7 +300591,7 @@ kind = "table_row"
 line_start = 90
 line_end = 90
 heading_level = 0
-text_ascii = "C-033 | algebra | Partially verified (struc... | 2026-02-03 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace..."
+text_ascii = "C-033 | algebra | Partially verified (struc... | 2026-02-03 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace..."
 text_sha256 = "67c03355a08a25bc5b8018d8fef84a13da6e2278748b621fc71d6f8f91773deb"
 
 [[chunk]]
@@ -303088,7 +303088,7 @@ kind = "table_row"
 line_start = 45
 line_end = 45
 heading_level = 0
-text_ascii = "C-033 | datasets, algebra | Not supported (mapping un... | 2026-02-04 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace..."
+text_ascii = "C-033 | datasets, algebra | Not supported (mapping un... | 2026-02-04 | Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023). | data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations... | Repo verifies a canonical SU(5) generator basis in the 5D defining rep: trace..."
 text_sha256 = "e94072406b122f9e834362df334bced1d11fa76e8fa7b246b8563df1c8111dc7"
 
 [[chunk]]
@@ -312339,7 +312339,7 @@ kind = "table_row"
 line_start = 269
 line_end = 269
 heading_level = 0
-text_ascii = "C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/external/papers/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr..."
+text_ascii = "C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/papers/corpus/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr..."
 text_sha256 = "a017c0c6531cf2d374e37e3df91843fc492b160551e05985ab979d5a0b8a8c1a"
 
 [[chunk]]
@@ -312350,7 +312350,7 @@ kind = "table_row"
 line_start = 270
 line_end = 270
 heading_level = 0
-text_ascii = "C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/external/papers/arxiv_2601.2... | Validates \"flat platform\" source hypothesis for integrated quantum optics. Re..."
+text_ascii = "C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/papers/corpus/arxiv_2601.2... | Validates \"flat platform\" source hypothesis for integrated quantum optics. Re..."
 text_sha256 = "9e25ce630b73734e02692cf99101eb281a41cc4cd3a0399dc781c31af0c85180"
 
 [[chunk]]
@@ -315298,7 +315298,7 @@ kind = "table_row"
 line_start = 272
 line_end = 272
 heading_level = 0
-text_ascii = "C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/external/papers/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr..."
+text_ascii = "C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/papers/corpus/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr..."
 text_sha256 = "a017c0c6531cf2d374e37e3df91843fc492b160551e05985ab979d5a0b8a8c1a"
 
 [[chunk]]
@@ -315309,7 +315309,7 @@ kind = "table_row"
 line_start = 273
 line_end = 273
 heading_level = 0
-text_ascii = "C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/external/papers/arxiv_2601.2... | Validates \"flat platform\" source hypothesis for integrated quantum optics. Re..."
+text_ascii = "C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/papers/corpus/arxiv_2601.2... | Validates \"flat platform\" source hypothesis for integrated quantum optics. Re..."
 text_sha256 = "9e25ce630b73734e02692cf99101eb281a41cc4cd3a0399dc781c31af0c85180"
 
 [[chunk]]
@@ -318312,7 +318312,7 @@ kind = "table_row"
 line_start = 274
 line_end = 274
 heading_level = 0
-text_ascii = "C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/external/papers/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr..."
+text_ascii = "C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/papers/corpus/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr..."
 text_sha256 = "a017c0c6531cf2d374e37e3df91843fc492b160551e05985ab979d5a0b8a8c1a"
 
 [[chunk]]
@@ -318323,7 +318323,7 @@ kind = "table_row"
 line_start = 275
 line_end = 275
 heading_level = 0
-text_ascii = "C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/external/papers/arxiv_2601.2... | Validates \"flat platform\" source hypothesis for integrated quantum optics. Re..."
+text_ascii = "C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/papers/corpus/arxiv_2601.2... | Validates \"flat platform\" source hypothesis for integrated quantum optics. Re..."
 text_sha256 = "9e25ce630b73734e02692cf99101eb281a41cc4cd3a0399dc781c31af0c85180"
 
 [[chunk]]
@@ -321337,7 +321337,7 @@ kind = "table_row"
 line_start = 69
 line_end = 69
 heading_level = 0
-text_ascii = "C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/external/papers/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr..."
+text_ascii = "C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/papers/corpus/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr..."
 text_sha256 = "a017c0c6531cf2d374e37e3df91843fc492b160551e05985ab979d5a0b8a8c1a"
 
 [[chunk]]
@@ -321348,7 +321348,7 @@ kind = "table_row"
 line_start = 70
 line_end = 70
 heading_level = 0
-text_ascii = "C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/external/papers/arxiv_2601.2... | Validates \"flat platform\" source hypothesis for integrated quantum optics. Re..."
+text_ascii = "C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/papers/corpus/arxiv_2601.2... | Validates \"flat platform\" source hypothesis for integrated quantum optics. Re..."
 text_sha256 = "9e25ce630b73734e02692cf99101eb281a41cc4cd3a0399dc781c31af0c85180"
 
 [[chunk]]
@@ -336946,7 +336946,7 @@ kind = "list_item"
 line_start = 70
 line_end = 70
 heading_level = 0
-text_ascii = "`data/external/papers/CMS_TOP-22-007.pdf`"
+text_ascii = "`data/papers/corpus/CMS_TOP-22-007.pdf`"
 text_sha256 = "1f62e44d332bc77b08c2a36e912f22258b3d458282994f32cea2e9cdb9e9759a"
 
 [[chunk]]
@@ -336957,7 +336957,7 @@ kind = "list_item"
 line_start = 71
 line_end = 71
 heading_level = 0
-text_ascii = "`data/external/papers/JHEP_01_2025_025.pdf`"
+text_ascii = "`data/papers/corpus/JHEP_01_2025_025.pdf`"
 text_sha256 = "ff89d13d1a2821fb58cb908d20140d9c877db5e5b604d1ec9ec95e03d0cf4ee9"
 
 [[chunk]]
@@ -336968,7 +336968,7 @@ kind = "list_item"
 line_start = 72
 line_end = 72
 heading_level = 0
-text_ascii = "`data/external/papers/JHEP_10_2025_079.pdf`"
+text_ascii = "`data/papers/corpus/JHEP_10_2025_079.pdf`"
 text_sha256 = "a85fbd76e9300702c874a1e99c1bc2c97f461c81ad2da830095ea7eee4e0b08b"
 
 [[chunk]]
@@ -336979,7 +336979,7 @@ kind = "list_item"
 line_start = 73
 line_end = 73
 heading_level = 0
-text_ascii = "`data/external/papers/Landy_2008_Thermal_Metamaterials.pdf`"
+text_ascii = "`data/papers/corpus/Landy_2008_Thermal_Metamaterials.pdf`"
 text_sha256 = "a1eb822c77ed2930a8741c2fb9ee29ceeb8e934ad50f174b70e2ea379f1d0fd1"
 
 [[chunk]]
@@ -336990,7 +336990,7 @@ kind = "list_item"
 line_start = 74
 line_end = 74
 heading_level = 0
-text_ascii = "`data/external/papers/Lorentzian_Threads_2025.pdf`"
+text_ascii = "`data/papers/corpus/Lorentzian_Threads_2025.pdf`"
 text_sha256 = "3347cddc7c31f8025392bd9596132117674df012d7c157b6bfec526e9f8482c9"
 
 [[chunk]]
@@ -337001,7 +337001,7 @@ kind = "list_item"
 line_start = 75
 line_end = 75
 heading_level = 0
-text_ascii = "`data/external/papers/Pozar_2005_Microwave_Engineering_Transitions.pdf`"
+text_ascii = "`data/papers/corpus/Pozar_2005_Microwave_Engineering_Transitions.pdf`"
 text_sha256 = "b17672e531b74429a32bdb8585a65fb30a2abc45f1e21374d3a01a3b2aba6f19"
 
 [[chunk]]
@@ -337012,7 +337012,7 @@ kind = "list_item"
 line_start = 76
 line_end = 76
 heading_level = 0
-text_ascii = "`data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`"
+text_ascii = "`data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`"
 text_sha256 = "b8066a2da752521d60adfab92ed2ca4dd2c14756bf9802d03a82486b72555acf"
 
 [[chunk]]
@@ -337023,7 +337023,7 @@ kind = "list_item"
 line_start = 77
 line_end = 77
 heading_level = 0
-text_ascii = "`data/external/papers/White_2021_Casimir_Warp.pdf`"
+text_ascii = "`data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 text_sha256 = "e3dcef902390a0aea7255fb099c95fe158a3f41b1378258f8b24320350b2c128"
 
 [[chunk]]
@@ -337034,7 +337034,7 @@ kind = "list_item"
 line_start = 78
 line_end = 78
 heading_level = 0
-text_ascii = "`data/external/papers/abdi_2007_bonferroni_sidak_corrections.pdf`"
+text_ascii = "`data/papers/corpus/abdi_2007_bonferroni_sidak_corrections.pdf`"
 text_sha256 = "54a280e838a0e5314b919828f29ec07ebc0e76b4b224b09ff4d6b8b179acd1b3"
 
 [[chunk]]
@@ -337045,7 +337045,7 @@ kind = "list_item"
 line_start = 79
 line_end = 79
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`"
 text_sha256 = "8903130099eb6ff754d7e5d24d4e8293f9945b00c0157acef9dcaf51b8addea3"
 
 [[chunk]]
@@ -337056,7 +337056,7 @@ kind = "list_item"
 line_start = 80
 line_end = 80
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.pdf`"
 text_sha256 = "8bfd49e8be48ac0de11d24f6887828eaa670fc00f8cb4dd652a3d82482b31ee9"
 
 [[chunk]]
@@ -337067,7 +337067,7 @@ kind = "list_item"
 line_start = 81
 line_end = 81
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.pdf`"
 text_sha256 = "2c6a3974001425de7a9843f7331a7cca8d8acfae5b74acd2d0b22de827360978"
 
 [[chunk]]
@@ -337078,7 +337078,7 @@ kind = "list_item"
 line_start = 82
 line_end = 82
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.pdf`"
 text_sha256 = "45ef4e886b2ae3d939c8239081878a91a7cde28cb65eb9f0f333a952265e1413"
 
 [[chunk]]
@@ -337089,7 +337089,7 @@ kind = "list_item"
 line_start = 83
 line_end = 83
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.pdf`"
 text_sha256 = "697a466180b2ae75c5f905790d73efe7fb46fc3cfa843a59db8bf4d91c9f8a49"
 
 [[chunk]]
@@ -337100,7 +337100,7 @@ kind = "list_item"
 line_start = 84
 line_end = 84
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.pdf`"
 text_sha256 = "aae4769e552fe52a66a5f5763fb70269686361297819925236f624ebff1f83f1"
 
 [[chunk]]
@@ -337111,7 +337111,7 @@ kind = "list_item"
 line_start = 85
 line_end = 85
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.pdf`"
 text_sha256 = "8eac2709bd750730e94ef4b46aac6a59fcf300fb700d82d9eb5aae4b50aec2b5"
 
 [[chunk]]
@@ -337122,7 +337122,7 @@ kind = "list_item"
 line_start = 86
 line_end = 86
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0903.5082_zurek_2009_quantum_darwinism.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0903.5082_zurek_2009_quantum_darwinism.pdf`"
 text_sha256 = "326793c0c77d7a60cf3c82e3389d324aae038a1eac3adfb44d2b9f2e57087f00"
 
 [[chunk]]
@@ -337133,7 +337133,7 @@ kind = "list_item"
 line_start = 87
 line_end = 87
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf`"
 text_sha256 = "f706374ab7d1df48eaf2fa4147d3b24e780b1c55fd101131f9b66efe5bff58f6"
 
 [[chunk]]
@@ -337144,7 +337144,7 @@ kind = "list_item"
 line_start = 88
 line_end = 88
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.pdf`"
 text_sha256 = "bbce0b5b11cfd78daca5f8cd7ca45e745809c0f894cb23633bdbad38c76e5723"
 
 [[chunk]]
@@ -337155,7 +337155,7 @@ kind = "list_item"
 line_start = 89
 line_end = 89
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.pdf`"
 text_sha256 = "eef1546e61a3f9dd2393e874d3d763db9dd822083d4a0f34dbaf1ced5d2064fb"
 
 [[chunk]]
@@ -337166,7 +337166,7 @@ kind = "list_item"
 line_start = 90
 line_end = 90
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
 text_sha256 = "093228a17c519a9aa4eac70534691e0885d09aab1afaef73c6be2b754865e650"
 
 [[chunk]]
@@ -337177,7 +337177,7 @@ kind = "list_item"
 line_start = 91
 line_end = 91
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.pdf`"
 text_sha256 = "b2768b4078d67b9d9e2baa6e70b608013d618071bbbe60612eb29da4c3da2371"
 
 [[chunk]]
@@ -337188,7 +337188,7 @@ kind = "list_item"
 line_start = 92
 line_end = 92
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.pdf`"
 text_sha256 = "54f0a0084e4cc09c1f229eee808c01ae6c7d9d4b3960a402442b18253861e8c3"
 
 [[chunk]]
@@ -337199,7 +337199,7 @@ kind = "list_item"
 line_start = 93
 line_end = 93
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.pdf`"
 text_sha256 = "05003fd4dfaf13c9628f8357c47d83b04a57b13af2743393c9cf7721dca35054"
 
 [[chunk]]
@@ -337210,7 +337210,7 @@ kind = "list_item"
 line_start = 94
 line_end = 94
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf`"
 text_sha256 = "519ffb3cb32e2e330a0d8e03db329924e270333dbe1de1e993fb9b3555c5276f"
 
 [[chunk]]
@@ -337221,7 +337221,7 @@ kind = "list_item"
 line_start = 95
 line_end = 95
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.pdf`"
 text_sha256 = "680ea7d0dab950f91ac458337a73ef3026f90f6c98bbfc185afbbf04a82934bf"
 
 [[chunk]]
@@ -337232,7 +337232,7 @@ kind = "list_item"
 line_start = 96
 line_end = 96
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.pdf`"
 text_sha256 = "4832a94f9495aae5c27f3ecf4867ee6b7b94f682013ab9cc486220fc236ff988"
 
 [[chunk]]
@@ -337243,7 +337243,7 @@ kind = "list_item"
 line_start = 97
 line_end = 97
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`"
 text_sha256 = "bbded66f42e035bfac5cac53b75eb72700d380c961980a60b64beacacc5d1d2a"
 
 [[chunk]]
@@ -337254,7 +337254,7 @@ kind = "list_item"
 line_start = 98
 line_end = 98
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`"
 text_sha256 = "e565830a47c3c9e453e7c616eb024ec9b4c27c763b122de956601faf864c1569"
 
 [[chunk]]
@@ -337265,7 +337265,7 @@ kind = "list_item"
 line_start = 99
 line_end = 99
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.pdf`"
 text_sha256 = "d34940549235e66ddab4fe7befd6993de8cf8f0482c38443319239699b9012f9"
 
 [[chunk]]
@@ -337276,7 +337276,7 @@ kind = "list_item"
 line_start = 100
 line_end = 100
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.pdf`"
 text_sha256 = "60ea3f9ce10c64261669263eb2d8f6d59e31bca54ead84c481bf5e2ca9b4c66a"
 
 [[chunk]]
@@ -337287,7 +337287,7 @@ kind = "list_item"
 line_start = 101
 line_end = 101
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.pdf`"
 text_sha256 = "459ed3b78dbde0889ca3a8435625184c27439150d16c983a61b55ff35241a327"
 
 [[chunk]]
@@ -337298,7 +337298,7 @@ kind = "list_item"
 line_start = 102
 line_end = 102
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf`"
 text_sha256 = "abfa73cc74dec5c5b42e188c9e6299f98681d1231e49c1fcaade4811fa232724"
 
 [[chunk]]
@@ -337309,7 +337309,7 @@ kind = "list_item"
 line_start = 103
 line_end = 103
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.pdf`"
 text_sha256 = "3ab5170ef0048a34cb78a6518a4677d42e7fb394d1d09af8753bd79e1bda81b1"
 
 [[chunk]]
@@ -337320,7 +337320,7 @@ kind = "list_item"
 line_start = 104
 line_end = 104
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.pdf`"
 text_sha256 = "1b122f57636528423b5ccaba8b796d4c5591e7fec8b6f291384a3bdedc271ce3"
 
 [[chunk]]
@@ -337331,7 +337331,7 @@ kind = "list_item"
 line_start = 105
 line_end = 105
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.pdf`"
 text_sha256 = "1a3eeb77310db79717138edfce9925cb0ca79079b94f7144941c8fa197dbbb3c"
 
 [[chunk]]
@@ -337342,7 +337342,7 @@ kind = "list_item"
 line_start = 106
 line_end = 106
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf`"
 text_sha256 = "f9abe73d59193497b0282e0143dcfd979d2113eecddf2e124e2098936fb106e4"
 
 [[chunk]]
@@ -337353,7 +337353,7 @@ kind = "list_item"
 line_start = 107
 line_end = 107
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf`"
 text_sha256 = "e2fd1a5ac5a92492b126e7c901d3ad643ecab531c10cfc96059cc4375ac67228"
 
 [[chunk]]
@@ -337364,7 +337364,7 @@ kind = "list_item"
 line_start = 108
 line_end = 108
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`"
 text_sha256 = "af946653b259ecb12fcb6db7c388e6d36ae3f1c380938e986f10d54612ea12d0"
 
 [[chunk]]
@@ -337375,7 +337375,7 @@ kind = "list_item"
 line_start = 109
 line_end = 109
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf`"
 text_sha256 = "5c21c22de2f243f27e72308ac76c35f6ef6cec6c71fbc50a8ffe9ed792ccbd1e"
 
 [[chunk]]
@@ -337386,7 +337386,7 @@ kind = "list_item"
 line_start = 110
 line_end = 110
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2505.11747v2_structure_cayley_dickson.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2505.11747v2_structure_cayley_dickson.pdf`"
 text_sha256 = "40cd469486ff7e9099c0463e5cb74c14acf879242e7090b2591a27af08bb40de"
 
 [[chunk]]
@@ -337397,7 +337397,7 @@ kind = "list_item"
 line_start = 111
 line_end = 111
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2512.07210v1_automorphisms_sedenions.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2512.07210v1_automorphisms_sedenions.pdf`"
 text_sha256 = "1d4724827039fcbad6e481f6fd6706b3f36406cbbbf0709b0d7ab88ae5477a02"
 
 [[chunk]]
@@ -337408,7 +337408,7 @@ kind = "list_item"
 line_start = 112
 line_end = 112
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf`"
 text_sha256 = "08b74a825ad6c98fef3ff82242219bf821bab5e3cd6f5eb21687d846e618586a"
 
 [[chunk]]
@@ -337419,7 +337419,7 @@ kind = "list_item"
 line_start = 113
 line_end = 113
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf`"
 text_sha256 = "41470cd062b5ec9b95030f8b82663996a81e907a43dc3134bb34378d11fa007b"
 
 [[chunk]]
@@ -337430,7 +337430,7 @@ kind = "list_item"
 line_start = 114
 line_end = 114
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2601.19734v1_clifford_invariant_unification.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2601.19734v1_clifford_invariant_unification.pdf`"
 text_sha256 = "ff3f9c9177b63fda4b8aaec50e7fbfdc4c1a1df731eb8e0dc3217b48e4040a35"
 
 [[chunk]]
@@ -337441,7 +337441,7 @@ kind = "list_item"
 line_start = 115
 line_end = 115
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`"
 text_sha256 = "bc50eab9397862d1035007923fbac33d0a91a4fd619ad1fa9ab69a382ece5b32"
 
 [[chunk]]
@@ -337452,7 +337452,7 @@ kind = "list_item"
 line_start = 116
 line_end = 116
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`"
 text_sha256 = "23304ffff055e7d553c829532139caf23378e1e44defb8cffa3ba991fc33ff3a"
 
 [[chunk]]
@@ -337463,7 +337463,7 @@ kind = "list_item"
 line_start = 117
 line_end = 117
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.pdf`"
 text_sha256 = "5a00b84f2c961621c1aecfb700a1da1e3c256ab6a1f979208bfad4a3eeefd83f"
 
 [[chunk]]
@@ -337474,7 +337474,7 @@ kind = "list_item"
 line_start = 118
 line_end = 118
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.pdf`"
 text_sha256 = "7cf41a74dfc7c105d0668b06fd96aede591b4795b9aa3f09d08957f16ff18967"
 
 [[chunk]]
@@ -337485,7 +337485,7 @@ kind = "list_item"
 line_start = 119
 line_end = 119
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`"
 text_sha256 = "5930e6bd12edf2e8a2cfac3de702dabb8bf188384751efafae2b32a0a7d06c22"
 
 [[chunk]]
@@ -337496,7 +337496,7 @@ kind = "list_item"
 line_start = 120
 line_end = 120
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.pdf`"
 text_sha256 = "c2d1fd9c2f91246587bc3bc008e8e727a129bfcc95db00d0d4d7ce79f6dbc188"
 
 [[chunk]]
@@ -337507,7 +337507,7 @@ kind = "list_item"
 line_start = 121
 line_end = 121
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th9409089_susskind_1994_world_as_hologram.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th9409089_susskind_1994_world_as_hologram.pdf`"
 text_sha256 = "66b0189d4649d8960aa3fc85e6760e3b33d27aa16567391dfd3a7024ad2cc5a5"
 
 [[chunk]]
@@ -337518,7 +337518,7 @@ kind = "list_item"
 line_start = 122
 line_end = 122
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.pdf`"
 text_sha256 = "ebaa1f6041efc1fefe9f3ffdef6ce99b234773b63d1f3cc64af5fc320de3c72e"
 
 [[chunk]]
@@ -337529,7 +337529,7 @@ kind = "list_item"
 line_start = 123
 line_end = 123
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.pdf`"
 text_sha256 = "b5fef658eab8beb666ba982b82329c94b239ca1bb7553e4d5256a332e657dcf7"
 
 [[chunk]]
@@ -337540,7 +337540,7 @@ kind = "list_item"
 line_start = 124
 line_end = 124
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_hep-th9711200_maldacena_1997_ads_cft.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_hep-th9711200_maldacena_1997_ads_cft.pdf`"
 text_sha256 = "813ed7f35f10f208f1670e08141ae9814cd015618fe50c9b371ffa066408f8ef"
 
 [[chunk]]
@@ -337551,7 +337551,7 @@ kind = "list_item"
 line_start = 125
 line_end = 125
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_math0105155_baez_2002_octonions.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_math0105155_baez_2002_octonions.pdf`"
 text_sha256 = "ff3801422b7c6afab556c02100c4f156f0bc36182aaef4cc6ea9b82361090e5b"
 
 [[chunk]]
@@ -337562,7 +337562,7 @@ kind = "list_item"
 line_start = 126
 line_end = 126
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.pdf`"
 text_sha256 = "04bf363759b974005541bec772dab63f478ca1631c021de2a6faf8a4a2a2bfeb"
 
 [[chunk]]
@@ -337573,7 +337573,7 @@ kind = "list_item"
 line_start = 127
 line_end = 127
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.pdf`"
 text_sha256 = "4c4d8299dd4996de314706dbfb6ddf4881be020a3ff73f6c8afc6481870f470f"
 
 [[chunk]]
@@ -337584,7 +337584,7 @@ kind = "list_item"
 line_start = 128
 line_end = 128
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf`"
 text_sha256 = "970ab8700d2d1bb54a7672643d3db43406d59e6054ee27b83e7e928033805cca"
 
 [[chunk]]
@@ -337595,7 +337595,7 @@ kind = "list_item"
 line_start = 129
 line_end = 129
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_quant-ph0301032_mirror.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_quant-ph0301032_mirror.pdf`"
 text_sha256 = "0801c5823fd70db124ad60bc05e9635943180f1a2e13b2b41f58f2fa36379485"
 
 [[chunk]]
@@ -337606,7 +337606,7 @@ kind = "list_item"
 line_start = 130
 line_end = 130
 heading_level = 0
-text_ascii = "`data/external/papers/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.pdf`"
+text_ascii = "`data/papers/corpus/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.pdf`"
 text_sha256 = "c362d99cb94840f0e224a9a228de9ea5952d34a94d095b47bbc3b4e205a0876d"
 
 [[chunk]]
@@ -337617,7 +337617,7 @@ kind = "list_item"
 line_start = 131
 line_end = 131
 heading_level = 0
-text_ascii = "`data/external/papers/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf`"
+text_ascii = "`data/papers/corpus/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf`"
 text_sha256 = "edaf565deaa755bfa9accb9c6b06b20a66605a5089d754448f7b563216975e03"
 
 [[chunk]]
@@ -337628,7 +337628,7 @@ kind = "list_item"
 line_start = 132
 line_end = 132
 heading_level = 0
-text_ascii = "`data/external/papers/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.pdf`"
+text_ascii = "`data/papers/corpus/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.pdf`"
 text_sha256 = "3976f8e20081c320f0ff0b818e26c2f12aa5dc6906e8d0d6f8ce45d35d05cd6c"
 
 [[chunk]]
@@ -337639,7 +337639,7 @@ kind = "list_item"
 line_start = 133
 line_end = 133
 heading_level = 0
-text_ascii = "`data/external/papers/carlstrom_2001_wheels_report.pdf`"
+text_ascii = "`data/papers/corpus/carlstrom_2001_wheels_report.pdf`"
 text_sha256 = "6947bc34d941ec5dac139dec3e74a3dcb97385be12c607ecf615c40fa1a0d0ec"
 
 [[chunk]]
@@ -337650,7 +337650,7 @@ kind = "list_item"
 line_start = 134
 line_end = 134
 heading_level = 0
-text_ascii = "`data/external/papers/chong_2010_cpa_arxiv_1003.4968.pdf`"
+text_ascii = "`data/papers/corpus/chong_2010_cpa_arxiv_1003.4968.pdf`"
 text_sha256 = "bf07e237e886cc0e60eb7680f9e7f2df4cdeaaca90d4ec60e2f6f7c8c7d36577"
 
 [[chunk]]
@@ -337661,7 +337661,7 @@ kind = "list_item"
 line_start = 135
 line_end = 135
 heading_level = 0
-text_ascii = "`data/external/papers/de_marrais_2000_math0011260.pdf`"
+text_ascii = "`data/papers/corpus/de_marrais_2000_math0011260.pdf`"
 text_sha256 = "3f0bd96f60bf43054939580e55bddce76ae781348a1d2212467264998cb301a6"
 
 [[chunk]]
@@ -337672,7 +337672,7 @@ kind = "list_item"
 line_start = 136
 line_end = 136
 heading_level = 0
-text_ascii = "`data/external/papers/de_marrais_2002_math0207003_placeholder_substructures_I.pdf`"
+text_ascii = "`data/papers/corpus/de_marrais_2002_math0207003_placeholder_substructures_I.pdf`"
 text_sha256 = "c6d62e71dcdfb1eca305ed50de80e1b49a938c1d105502607dbf4d7352c39e78"
 
 [[chunk]]
@@ -337683,7 +337683,7 @@ kind = "list_item"
 line_start = 137
 line_end = 137
 heading_level = 0
-text_ascii = "`data/external/papers/de_marrais_2004_math0403113_boxkites_III.pdf`"
+text_ascii = "`data/papers/corpus/de_marrais_2004_math0403113_boxkites_III.pdf`"
 text_sha256 = "1f9c1593f376862598c28bc065681592e2772352e5eda715ac1f11978da826b2"
 
 [[chunk]]
@@ -337694,7 +337694,7 @@ kind = "list_item"
 line_start = 138
 line_end = 138
 heading_level = 0
-text_ascii = "`data/external/papers/de_marrais_2004_wolfram_science_slides.pdf`"
+text_ascii = "`data/papers/corpus/de_marrais_2004_wolfram_science_slides.pdf`"
 text_sha256 = "708a4f4a62900de8d8baa2aa4f1584cfe04d4b8588d469566354d304a82ef454"
 
 [[chunk]]
@@ -337705,7 +337705,7 @@ kind = "list_item"
 line_start = 139
 line_end = 139
 heading_level = 0
-text_ascii = "`data/external/papers/de_marrais_2006_math0603281_presto_digitization_I.pdf`"
+text_ascii = "`data/papers/corpus/de_marrais_2006_math0603281_presto_digitization_I.pdf`"
 text_sha256 = "48c93dacea749b14be355652575c0434118b2ca93324490f3d6273897fe83eb6"
 
 [[chunk]]
@@ -337716,7 +337716,7 @@ kind = "list_item"
 line_start = 140
 line_end = 140
 heading_level = 0
-text_ascii = "`data/external/papers/de_marrais_math0011260.pdf`"
+text_ascii = "`data/papers/corpus/de_marrais_math0011260.pdf`"
 text_sha256 = "a13192c65df0c101a4d2b9f9e95a5c432b5afa4239076323a7334cd660cd60bf"
 
 [[chunk]]
@@ -337727,7 +337727,7 @@ kind = "list_item"
 line_start = 141
 line_end = 141
 heading_level = 0
-text_ascii = "`data/external/papers/des_y6_cosmology_2601.14559.pdf`"
+text_ascii = "`data/papers/corpus/des_y6_cosmology_2601.14559.pdf`"
 text_sha256 = "b8f9f964d1bb3385f96872c1c8a99ff17e84b4c4c60154f31d607c5bb3f118e6"
 
 [[chunk]]
@@ -337738,7 +337738,7 @@ kind = "list_item"
 line_start = 142
 line_end = 142
 heading_level = 0
-text_ascii = "`data/external/papers/desi_dr2_bao_cosmology_2503.14738.pdf`"
+text_ascii = "`data/papers/corpus/desi_dr2_bao_cosmology_2503.14738.pdf`"
 text_sha256 = "4455f6ab3c2ea51fad39e6f2a83e5e5d213397e0644151f9ca311bd6488f7772"
 
 [[chunk]]
@@ -337749,7 +337749,7 @@ kind = "list_item"
 line_start = 143
 line_end = 143
 heading_level = 0
-text_ascii = "`data/external/papers/desi_dr2_dynamical_de_2504.06118.pdf`"
+text_ascii = "`data/papers/corpus/desi_dr2_dynamical_de_2504.06118.pdf`"
 text_sha256 = "3d1380df662a304eddefec35726f9342487813a3ef8468b6da6de5019fe0f3b6"
 
 [[chunk]]
@@ -337760,7 +337760,7 @@ kind = "list_item"
 line_start = 144
 line_end = 144
 heading_level = 0
-text_ascii = "`data/external/papers/desi_dr2_lya_bao_2503.14739.pdf`"
+text_ascii = "`data/papers/corpus/desi_dr2_lya_bao_2503.14739.pdf`"
 text_sha256 = "06e09f1c7654e2aeb7dd64d15e31ec5a36e61924facff966d9433bdf14fa261d"
 
 [[chunk]]
@@ -337771,7 +337771,7 @@ kind = "list_item"
 line_start = 145
 line_end = 145
 heading_level = 0
-text_ascii = "`data/external/papers/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.pdf`"
+text_ascii = "`data/papers/corpus/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.pdf`"
 text_sha256 = "77d0ec9be3648f8aa4d88b1d591a42ca16ad41858c617d6abc0f831175a660c3"
 
 [[chunk]]
@@ -337782,7 +337782,7 @@ kind = "list_item"
 line_start = 146
 line_end = 146
 heading_level = 0
-text_ascii = "`data/external/papers/dragovich_padic_math_physics_review_1705.04758.pdf`"
+text_ascii = "`data/papers/corpus/dragovich_padic_math_physics_review_1705.04758.pdf`"
 text_sha256 = "c005ce759095165df74c021703e9386b2e388dc9e260a4774b8628354bd871be"
 
 [[chunk]]
@@ -337793,7 +337793,7 @@ kind = "list_item"
 line_start = 147
 line_end = 147
 heading_level = 0
-text_ascii = "`data/external/papers/entanglement_scaling_continuous_TN_2410.23624.pdf`"
+text_ascii = "`data/papers/corpus/entanglement_scaling_continuous_TN_2410.23624.pdf`"
 text_sha256 = "34a740950689b0481ac1986fd5dc7f518d2ba875793fe98abe5049b90f7a9644"
 
 [[chunk]]
@@ -337804,7 +337804,7 @@ kind = "list_item"
 line_start = 148
 line_end = 148
 heading_level = 0
-text_ascii = "`data/external/papers/evenbly_vidal_tnr_1412.0732.pdf`"
+text_ascii = "`data/papers/corpus/evenbly_vidal_tnr_1412.0732.pdf`"
 text_sha256 = "94df79dc634328a99076cb6e9c4973b7a4b15f9200b520c95702615de1583e75"
 
 [[chunk]]
@@ -337815,7 +337815,7 @@ kind = "list_item"
 line_start = 149
 line_end = 149
 heading_level = 0
-text_ascii = "`data/external/papers/evenbly_vidal_tnr_mera_1502.05385.pdf`"
+text_ascii = "`data/papers/corpus/evenbly_vidal_tnr_mera_1502.05385.pdf`"
 text_sha256 = "cf9f3314bf429da445f4275f6c524e9e824bb17bd272a0d5564186dbff3c9930"
 
 [[chunk]]
@@ -338145,7 +338145,7 @@ kind = "list_item"
 line_start = 186
 line_end = 186
 heading_level = 0
-text_ascii = "data/external/papers/de_marrais_2000_math0011260.pdf"
+text_ascii = "data/papers/corpus/de_marrais_2000_math0011260.pdf"
 text_sha256 = "b662aec35c7a8ecd42096dce89a9b74f14fc0dfb122b970b01a235bba4536b8b"
 
 [[chunk]]
@@ -338156,7 +338156,7 @@ kind = "list_item"
 line_start = 187
 line_end = 187
 heading_level = 0
-text_ascii = "data/external/papers/de_marrais_math0011260.pdf"
+text_ascii = "data/papers/corpus/de_marrais_math0011260.pdf"
 text_sha256 = "e2fa7731a8cad7fbbda9606e5340836a199330dd092bfc40f4d39ac47cffe805"
 
 [[chunk]]
@@ -338189,7 +338189,7 @@ kind = "list_item"
 line_start = 190
 line_end = 190
 heading_level = 0
-text_ascii = "data/external/papers/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf"
+text_ascii = "data/papers/corpus/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf"
 text_sha256 = "9b0c44f40f6debb478e649e20661f3c8a863c7a9ab8c609beaaf6b0e6f4231e3"
 
 [[chunk]]
@@ -338222,7 +338222,7 @@ kind = "list_item"
 line_start = 193
 line_end = 193
 heading_level = 0
-text_ascii = "data/external/papers/des_y6_cosmology_2601.14559.pdf"
+text_ascii = "data/papers/corpus/des_y6_cosmology_2601.14559.pdf"
 text_sha256 = "0d5e12a052370cab52d19aefb495aac19c5a08fba6d23895795beb0d91d33f88"
 
 [[chunk]]
@@ -338255,7 +338255,7 @@ kind = "list_item"
 line_start = 196
 line_end = 196
 heading_level = 0
-text_ascii = "data/external/papers/desi_dr2_bao_cosmology_2503.14738.pdf"
+text_ascii = "data/papers/corpus/desi_dr2_bao_cosmology_2503.14738.pdf"
 text_sha256 = "5194fa04b9f285a6420e8331f117180330e2c5d7016ea7429a3f7ac15e494d1f"
 
 [[chunk]]
@@ -338288,7 +338288,7 @@ kind = "list_item"
 line_start = 199
 line_end = 199
 heading_level = 0
-text_ascii = "data/external/papers/desi_dr2_dynamical_de_2504.06118.pdf"
+text_ascii = "data/papers/corpus/desi_dr2_dynamical_de_2504.06118.pdf"
 text_sha256 = "01141aaf4b0a9350b08804c08b321a40022348c949086a9e1555cb8f86eb048c"
 
 [[chunk]]
@@ -338321,7 +338321,7 @@ kind = "list_item"
 line_start = 202
 line_end = 202
 heading_level = 0
-text_ascii = "data/external/papers/desi_dr2_lya_bao_2503.14739.pdf"
+text_ascii = "data/papers/corpus/desi_dr2_lya_bao_2503.14739.pdf"
 text_sha256 = "41f28680d93626a941348f3db2af0080034de04ab9984843bdbb064593c03eea"
 
 [[chunk]]
@@ -338354,7 +338354,7 @@ kind = "list_item"
 line_start = 205
 line_end = 205
 heading_level = 0
-text_ascii = "data/external/papers/dragovich_padic_math_physics_review_1705.04758.pdf"
+text_ascii = "data/papers/corpus/dragovich_padic_math_physics_review_1705.04758.pdf"
 text_sha256 = "15c837a94c34277886e777f11c0db17bbbdebef5aaaebd1fa510c7ce6dff40a5"
 
 [[chunk]]
@@ -338387,7 +338387,7 @@ kind = "list_item"
 line_start = 208
 line_end = 208
 heading_level = 0
-text_ascii = "data/external/papers/entanglement_scaling_continuous_TN_2410.23624.pdf"
+text_ascii = "data/papers/corpus/entanglement_scaling_continuous_TN_2410.23624.pdf"
 text_sha256 = "4b3f827603ebb96540344a3fea43d9b201430af094b0e8519b98abfdad822353"
 
 [[chunk]]
@@ -338420,7 +338420,7 @@ kind = "list_item"
 line_start = 211
 line_end = 211
 heading_level = 0
-text_ascii = "data/external/papers/evenbly_vidal_tnr_1412.0732.pdf"
+text_ascii = "data/papers/corpus/evenbly_vidal_tnr_1412.0732.pdf"
 text_sha256 = "b9deb8636cd109aac04633dcf3128380da2630c2f3b00f72414b6d864d677cc6"
 
 [[chunk]]
@@ -338453,7 +338453,7 @@ kind = "list_item"
 line_start = 214
 line_end = 214
 heading_level = 0
-text_ascii = "data/external/papers/evenbly_vidal_tnr_mera_1502.05385.pdf"
+text_ascii = "data/papers/corpus/evenbly_vidal_tnr_mera_1502.05385.pdf"
 text_sha256 = "65f5ab533709f167e9a73797a5d12b9f46d9a3ca7d7352024866ecaa4ed97457"
 
 [[chunk]]
@@ -338486,7 +338486,7 @@ kind = "list_item"
 line_start = 217
 line_end = 217
 heading_level = 0
-text_ascii = "data/external/papers/ising_ads_tensor_networks_2512.20838.pdf"
+text_ascii = "data/papers/corpus/ising_ads_tensor_networks_2512.20838.pdf"
 text_sha256 = "77171eddab6fe358852045204a8f664a5f225dc82752ea4c5fc7f2222a8044dc"
 
 [[chunk]]
@@ -338519,7 +338519,7 @@ kind = "list_item"
 line_start = 220
 line_end = 220
 heading_level = 0
-text_ascii = "data/external/papers/kozyrev_padic_multidim_wavelets_0612049.pdf"
+text_ascii = "data/papers/corpus/kozyrev_padic_multidim_wavelets_0612049.pdf"
 text_sha256 = "36d123f273fc4570222cd065a77c22811eff9fd2c72c5e1682692a276680df39"
 
 [[chunk]]
@@ -338552,7 +338552,7 @@ kind = "list_item"
 line_start = 223
 line_end = 223
 heading_level = 0
-text_ascii = "data/external/papers/kozyrev_padic_pseudodiff_0303045.pdf"
+text_ascii = "data/papers/corpus/kozyrev_padic_pseudodiff_0303045.pdf"
 text_sha256 = "45bdb594f73185bafc328bac1d1824d5cc99b9865e4704a479ff70232f783a6d"
 
 [[chunk]]
@@ -338585,7 +338585,7 @@ kind = "list_item"
 line_start = 226
 line_end = 226
 heading_level = 0
-text_ascii = "data/external/papers/kozyrev_padic_wavelet_spectral_0012019.pdf"
+text_ascii = "data/papers/corpus/kozyrev_padic_wavelet_spectral_0012019.pdf"
 text_sha256 = "85fee92654c2d719dc2295ae9a349b779627be2220ae1035dac7583c1f0416d0"
 
 [[chunk]]
@@ -338618,7 +338618,7 @@ kind = "list_item"
 line_start = 229
 line_end = 229
 heading_level = 0
-text_ascii = "data/external/papers/mera_quantum_computer_entanglement_2412.18602.pdf"
+text_ascii = "data/papers/corpus/mera_quantum_computer_entanglement_2412.18602.pdf"
 text_sha256 = "81d09bb286357a04ff4a46eac290aff82734ef72007a987580611dab578677aa"
 
 [[chunk]]
@@ -338651,7 +338651,7 @@ kind = "list_item"
 line_start = 232
 line_end = 232
 heading_level = 0
-text_ascii = "data/external/papers/universal_entanglement_correction_2405.10230.pdf"
+text_ascii = "data/papers/corpus/universal_entanglement_correction_2405.10230.pdf"
 text_sha256 = "09d02e765dfc8a5705889fd6ff3ccafba712869326daaabf88deb1ce372b1970"
 
 [[chunk]]
@@ -338673,7 +338673,7 @@ kind = "list_item"
 line_start = 234
 line_end = 234
 heading_level = 0
-text_ascii = "data/external/papers/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf"
+text_ascii = "data/papers/corpus/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf"
 text_sha256 = "04cddcfd63ffac4b0c8ee454ecd6a2a6c13e4dc1214c0167698604c043f67f9d"
 
 [[chunk]]
@@ -338684,7 +338684,7 @@ kind = "list_item"
 line_start = 235
 line_end = 235
 heading_level = 0
-text_ascii = "data/external/papers/gwtc3_2021_arxiv2111.03606.pdf"
+text_ascii = "data/papers/corpus/gwtc3_2021_arxiv2111.03606.pdf"
 text_sha256 = "f0366c3009ba15ec813baf91d6088a0d3382bec814754978a8ab86c900bc3fe4"
 
 [[chunk]]
@@ -338706,7 +338706,7 @@ kind = "list_item"
 line_start = 237
 line_end = 237
 heading_level = 0
-text_ascii = "data/external/papers/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf"
+text_ascii = "data/papers/corpus/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf"
 text_sha256 = "ebe7883cb46453a2c56df9a8d61c09a41c8e4160eb5d28e2bd59713a8b3bf095"
 
 [[chunk]]
@@ -338717,7 +338717,7 @@ kind = "list_item"
 line_start = 238
 line_end = 238
 heading_level = 0
-text_ascii = "data/external/papers/lvc_2021_2111.03634_population_properties_gwtc3.pdf"
+text_ascii = "data/papers/corpus/lvc_2021_2111.03634_population_properties_gwtc3.pdf"
 text_sha256 = "358703a457e71401ae83785a43fa3e81eed80ebccc6db46759f2fd1a291dfd69"
 
 [[chunk]]
@@ -338739,7 +338739,7 @@ kind = "list_item"
 line_start = 240
 line_end = 240
 heading_level = 0
-text_ascii = "data/external/papers/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf"
+text_ascii = "data/papers/corpus/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf"
 text_sha256 = "e6d472b238abe5f6180d625c2b7e365a3218fb390ec7c19dfc7a29e856d4c5bc"
 
 [[chunk]]
@@ -338750,7 +338750,7 @@ kind = "list_item"
 line_start = 241
 line_end = 241
 heading_level = 0
-text_ascii = "data/external/papers/arxiv_quant-ph0301032_mirror.pdf"
+text_ascii = "data/papers/corpus/arxiv_quant-ph0301032_mirror.pdf"
 text_sha256 = "7cb1d0960623b1f50dbb4521fc1106dd3dbfff59dc69264649cb53fc8e44fc3d"
 
 [[chunk]]
@@ -342039,7 +342039,7 @@ kind = "list_item"
 line_start = 46
 line_end = 46
 heading_level = 0
-text_ascii = "Bonferroni/Sidak background: `data/external/papers/abdi_2007_bonferroni_sidak_corrections.pdf`"
+text_ascii = "Bonferroni/Sidak background: `data/papers/corpus/abdi_2007_bonferroni_sidak_corrections.pdf`"
 text_sha256 = "bd9eb6042cfb4e462a87b478acd6732653b32f4f6468620d4877da65360a24ed"
 
 [[chunk]]
@@ -342050,7 +342050,7 @@ kind = "list_item"
 line_start = 47
 line_end = 47
 heading_level = 0
-text_ascii = "Holm procedure: `data/external/papers/holm_1979_sequentially_rejective_multiple_test_procedure.pdf`"
+text_ascii = "Holm procedure: `data/papers/corpus/holm_1979_sequentially_rejective_multiple_test_procedure.pdf`"
 text_sha256 = "35888b1d9c6016e4a2c66d31c2e5e748b4d32478ab56a56aa81ecc04e932a964"
 
 [[chunk]]

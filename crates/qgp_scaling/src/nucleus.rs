@@ -67,11 +67,7 @@ impl NucleusParams {
 /// Normalized so that integral rho(r) d^3r = 1 (probability density).
 #[must_use]
 pub fn hard_sphere_density(r: f64, nuc: &NucleusParams) -> f64 {
-    if r <= nuc.r_a {
-        nuc.rho0()
-    } else {
-        0.0
-    }
+    if r <= nuc.r_a { nuc.rho0() } else { 0.0 }
 }
 
 /// Nuclear thickness function T_A(s) for a hard-sphere nucleus.

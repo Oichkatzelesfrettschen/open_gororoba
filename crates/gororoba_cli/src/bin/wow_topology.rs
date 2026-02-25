@@ -13,7 +13,10 @@ use clap::{Parser, Subcommand};
 use std::path::{Path, PathBuf};
 
 #[derive(Parser)]
-#[command(name = "wow-topology", about = "Topological analysis of Wow! signal candidates")]
+#[command(
+    name = "wow-topology",
+    about = "Topological analysis of Wow! signal candidates"
+)]
 struct Args {
     #[command(subcommand)]
     command: Command,
@@ -124,12 +127,12 @@ fn run_morphology(
     seed: u64,
 ) {
     use data_core::catalogs::wow::{abacad_filter, parse_bl_manifest_csv};
+    use rand::SeedableRng;
     use rand::rngs::StdRng;
     use rand::seq::SliceRandom;
-    use rand::SeedableRng;
     use vacuum_frustration::vietoris_rips::{
-        compute_betti_numbers, compute_persistent_homology, DistanceMatrix,
-        PersistenceDiagram, VietorisRipsComplex,
+        DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers,
+        compute_persistent_homology,
     };
 
     println!("=== Persistent Homology: ON vs OFF Cadence Morphology ===");
@@ -194,7 +197,10 @@ fn run_morphology(
     let n_off = off_features.len() / 3;
 
     if n_on < 3 || n_off < 3 {
-        eprintln!("ERROR: Need at least 3 points per cloud, got ON={}, OFF={}", n_on, n_off);
+        eprintln!(
+            "ERROR: Need at least 3 points per cloud, got ON={}, OFF={}",
+            n_on, n_off
+        );
         std::process::exit(1);
     }
 
@@ -240,7 +246,10 @@ fn run_morphology(
 
     // Permutation test
     println!();
-    println!("Permutation test ({} permutations, seed={}):", n_perms, seed);
+    println!(
+        "Permutation test ({} permutations, seed={}):",
+        n_perms, seed
+    );
 
     let mut combined_features: Vec<f64> = Vec::new();
     combined_features.extend_from_slice(&on_features);
@@ -316,7 +325,11 @@ fn run_morphology(
     println!("P-value: {:.4}", p_value);
     println!();
 
-    let source = if candidates.is_some() { "real candidates" } else { "synthetic proxies" };
+    let source = if candidates.is_some() {
+        "real candidates"
+    } else {
+        "synthetic proxies"
+    };
     if p_value > 0.05 {
         println!(
             "PASS: ON and OFF morphologically indistinguishable (p={:.3} > 0.05, C-772, {})",
@@ -390,14 +403,16 @@ fn run_ultrametric(
 
     println!("N points: {}", n_points);
     println!("Dimension: {}", dim);
-    println!("N triples: {}, N permutations: {}, seed: {}", n_triples, n_perms, seed);
+    println!(
+        "N triples: {}, N permutations: {}, seed: {}",
+        n_triples, n_perms, seed
+    );
     println!();
 
     // --- Global N-D ultrametric fraction via distance matrix ---
     println!("--- Global Ultrametric Fraction ({}D Euclidean) ---", dim);
     let dist_matrix = euclidean_distance_matrix_nd(&points);
-    let global_frac =
-        ultrametric_fraction_from_matrix(&dist_matrix, n_points, n_triples, seed);
+    let global_frac = ultrametric_fraction_from_matrix(&dist_matrix, n_points, n_triples, seed);
 
     // Null: shuffle rows and recompute
     let mut null_fracs = Vec::with_capacity(n_perms);
@@ -441,17 +456,18 @@ fn run_ultrametric(
         sorted_dists[sorted_dists.len() / 2]
     };
     let epsilon = median_dist * 0.5;
-    println!("Auto epsilon: {:.4} (median_dist/2 = {:.4}/2)", epsilon, median_dist);
-
-    let local_result = local_ultrametricity_test_nd(
-        &points,
-        epsilon,
-        n_triples.min(500),
-        n_perms.min(50),
-        seed,
+    println!(
+        "Auto epsilon: {:.4} (median_dist/2 = {:.4}/2)",
+        epsilon, median_dist
     );
 
-    println!("Testable neighborhoods: {}/{}", local_result.n_testable, n_points);
+    let local_result =
+        local_ultrametricity_test_nd(&points, epsilon, n_triples.min(500), n_perms.min(50), seed);
+
+    println!(
+        "Testable neighborhoods: {}/{}",
+        local_result.n_testable, n_points
+    );
     println!(
         "Mean local index: {:.6} (median={:.6}, std={:.6})",
         local_result.mean_local_index,
@@ -480,10 +496,7 @@ fn run_ultrametric(
     if local_result.p_value < 0.05 {
         println!(
             "PASS: Local {}D ultrametric signal (p={:.4}, mean_idx={:.4} > null={:.4})",
-            dim,
-            local_result.p_value,
-            local_result.mean_local_index,
-            local_result.null_mean_index,
+            dim, local_result.p_value, local_result.mean_local_index, local_result.null_mean_index,
         );
     } else {
         println!(

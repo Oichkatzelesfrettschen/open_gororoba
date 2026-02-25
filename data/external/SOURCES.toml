@@ -1,0 +1,586 @@
+# Canonical external source contract for reproducible download governance.
+
+[external_sources]
+updated = "2026-02-25"
+authoritative = true
+policy_version = "v1"
+
+[[source]]
+id = "SRC-EXTERNAL-FETCH-ROOT"
+path_glob = "data/external/*"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/external_sources.toml",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+scientific_validator_refs = ["replay_contract_hash"]
+
+[[source]]
+id = "SRC-SDSS-DR18-QUASARS"
+path_glob = "archive/external_nonreproducible_snapshots/sdss_dr18_quasars.csv"
+canonical_url = "https://skyserver.sdss.org/dr18/SkyServerWS/SearchTools/SqlSearch?cmd=SELECT%20TOP%2050000%20%20s.specObjID%20as%20objid%2C%20s.ra%2C%20s.dec%2C%20s.z%2C%20s.zErr%20as%20zerr%2C%20%20p.psfMag_u%20as%20u%2C%20p.psfMag_g%20as%20g%2C%20p.psfMag_r%20as%20r%2C%20%20p.psfMag_i%20as%20i%20FROM%20SpecObj%20s%20JOIN%20PhotoObj%20p%20ON%20s.bestObjID%20%3D%20p.objID%20WHERE%20s.class%20%3D%20%27QSO%27%20AND%20s.zWarning%20%3D%200%20AND%20s.z%20%3E%200.1%20ORDER%20BY%20s.z&format=csv"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/catalogs/sdss.rs",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'SDSS DR18 Quasars' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+blocker_note = "Retired mutable SDSS DR18 snapshot from data/external pending deterministic archive-grade fetch contract."
+evidence_refs = [
+  "reports/external_redownload_audit_sdss_2026-02-24.toml",
+  "reports/external_redownload_audit_sdss_fetch_backend_2026-02-24.toml",
+]
+manual_manifest_refs = [
+  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
+  "reports/external_redownload_audit_sdss_2026-02-24.toml",
+  "reports/external_redownload_audit_sdss_fetch_backend_2026-02-24.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-GWTC"
+path_glob = "archive/external_legacy_placeholders/GWTC-3*.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy GWTC derivative placeholders from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-SDSS"
+path_glob = "archive/external_legacy_placeholders/SDSS_*.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy SDSS derivative placeholders from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-METADATA"
+path_glob = "archive/external_legacy_placeholders/TESS_Metadata.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy TESS metadata placeholder from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-DESI-QSO"
+path_glob = "archive/external_legacy_placeholders/DESI_QSO.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy DESI-QSO placeholder from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-CHIME"
+path_glob = "archive/external_legacy_placeholders/chime_frb_cat1.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy CHIME placeholder from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-CSV-TXT"
+path_glob = "archive/external_legacy_placeholders/eht_*_csv.tgz"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy EHT CSV tarball placeholders from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-TXT"
+path_glob = "archive/external_legacy_placeholders/eht_*_txt.tgz"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy EHT TXT tarball placeholders from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-HIPPARCOS"
+path_glob = "archive/external_legacy_placeholders/hipparcos_parallax*.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy Hipparcos derivative placeholders from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-JARVIS-ZIP"
+path_glob = "archive/external_legacy_placeholders/jdft_3d-8-18-2021.json.zip"
+canonical_url = "https://figshare.com/articles/dataset/JARVIS-DFT_3D_dataset/6815699"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --pillar materials --dataset JARVIS --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy JARVIS ZIP placeholder from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-NANOGRAV-KDE"
+path_glob = "archive/external_legacy_placeholders/nanograv_15yr_kde.zip"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy NANOGrav KDE placeholder from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-PANTHEON"
+path_glob = "archive/external_legacy_placeholders/pantheon_mu*.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy Pantheon placeholder extracts from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-SORCE"
+path_glob = "archive/external_legacy_placeholders/sorce_tsi_*.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'SORCE TSI Daily' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy SORCE derivative placeholders from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-SWARM"
+path_glob = "archive/external_legacy_placeholders/swarm_*.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'Swarm L1B Magnetic Sample' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy Swarm derivative placeholders from data/external; archived for provenance-only retention."
+evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-SWARM-L1B-MAGNETIC-SAMPLE"
+path_glob = "archive/external_nonreproducible_snapshots/swarm_magnetic_sample.csv"
+canonical_url = "https://vires.services/hapi/data?dataset=SW_OPER_MAGA_LR_1B&parameters=Latitude,Longitude,Radius,F,B_NEC&start=2014-01-01T00:00:00Z&stop=2014-01-01T00:30:00Z&format=csv&include=header"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/geophysical/swarm.rs",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'Swarm L1B Magnetic Sample' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired mutable Swarm L1B sample snapshot from data/external pending deterministic replay/freeze contract."
+evidence_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml"]
+manual_manifest_refs = [
+  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
+  "reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml",
+  "crates/data_core/src/geophysical/swarm.rs",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-SORCE-TSI-DAILY"
+path_glob = "data/external/sorce_tsi_daily.csv"
+canonical_url = "https://lasp.colorado.edu/data/sorce/tsi_data/daily/sorce_tsi_L3_c24h_latest.txt"
+mirror_urls = [
+  "https://lasp.colorado.edu/lisird/latis/dap/sorce_tsi_24hr_l3.csv",
+  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/catalogs/sorce.rs",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'SORCE TSI Daily' --output-dir data/external --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+scientific_validator_refs = ["tsi_physics_invariants"]
+
+[[source]]
+id = "SRC-JARVIS-DFT-3D-JSON"
+path_glob = "data/external/jarvis_dft_3d.json"
+canonical_url = "https://ndownloader.figshare.com/files/15475826"
+mirror_urls = [
+  "https://api.figshare.com/v2/articles/6815699",
+  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/catalogs/jarvis.rs",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'JARVIS-DFT 3D' --output-dir data/external --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+scientific_validator_refs = ["materials_json_invariants"]
+
+[[source]]
+id = "SRC-LHC-ALICE-CMS"
+path_glob = "archive/external_nonreproducible_snapshots/lhc_2025/**"
+canonical_url = "https://arxiv.org/abs/2509.07008"
+mirror_urls = [
+  "https://arxiv.org/abs/2510.09864",
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis --"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+blocker_note = "Retired synthetic LHC fixture snapshots from data/external until canonical external download pipeline is implemented."
+evidence_refs = ["reports/LHC_2025_QGP_Full_Synthesis.md"]
+manual_manifest_refs = [
+  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
+  "reports/LHC_2025_QGP_Full_Synthesis.md",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-ALICE-PBPB-RAA"
+path_glob = "data/external/alice_pbpb_raa/**"
+canonical_url = "https://arxiv.org/abs/2509.07008"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+scientific_validator_refs = ["heavy_ion_raa_invariants"]
+
+[[source]]
+id = "SRC-CMS-OO-RAA"
+path_glob = "data/external/cms_oo_raa/**"
+canonical_url = "https://arxiv.org/abs/2510.09864"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs cms_oo_raa"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+scientific_validator_refs = ["heavy_ion_raa_invariants"]
+
+[[source]]
+id = "SRC-JARVIS-DFT"
+path_glob = "data/external/jarvis_dft/**"
+canonical_url = "https://figshare.com/articles/dataset/JARVIS-DFT_3D_dataset/6815699"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --pillar materials --dataset JARVIS"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+scientific_validator_refs = ["materials_json_invariants"]
+
+[[source]]
+id = "SRC-HST-UDF-METADATA"
+path_glob = "archive/external_legacy_placeholders/HST_UDF_Metadata.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/data/external_csv_holding/EH-0006_hst_udf_metadata.toml"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/external_csv_holding.toml",
+]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --pillar survey --dataset HST"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Retired legacy HST-UDF metadata placeholder from data/external; archived for provenance-only retention."
+evidence_refs = [
+  "registry/data/external_csv_holding/EH-0006_hst_udf_metadata.toml",
+  "registry/external_csv_holding.toml",
+]
+manual_manifest_refs = [
+  "registry/data/external_csv_holding/EH-0006_hst_udf_metadata.toml",
+  "registry/external_csv_holding.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-NV-ODMR"
+path_glob = "archive/external_nonreproducible_snapshots/nv_odmr/**"
+canonical_url = "https://doi.org/10.1103/PhysRevResearch.5.013087"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin spin-decoherence-pipeline --"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+blocker_note = "Retired NV ODMR manual supplement snapshot from data/external pending deterministic downloader wiring."
+evidence_refs = ["registry/source_lanes/datasets.toml"]
+manual_manifest_refs = [
+  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-RADIO-SURVEYS"
+path_glob = "data/external/radio_surveys/**"
+canonical_url = "https://sundog.stsci.edu/first/catalogs/readme.html"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --pillar survey"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+scientific_validator_refs = ["radio_catalog_numeric_invariants"]
+
+[[source]]
+id = "SRC-PAPERS-CORPUS"
+path_glob = "data/papers/corpus/**"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/external_papers_index.toml"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/papers_pdf.toml"]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin extract-papers -- --refresh-index"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Migrated paper corpus from data/external to data/papers/corpus so manual/licensed literature artifacts are outside external replay debt."
+evidence_refs = [
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+  "registry/source_lanes/papers_pdf.toml",
+]
+manual_manifest_refs = [
+  "data/papers/corpus/MANIFEST.toml",
+  "registry/source_lanes/papers_pdf.toml",
+  "registry/manual_mirror_overrides_2026_02_15.toml",
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-DOCUMENTS-EXTRACTED"
+path_glob = "data/papers/documents_extracted/**"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/external_sources.toml"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/artifact_source_of_truth.toml"]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin extract-papers -- --refresh-index"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Migrated to data/papers/documents_extracted to remove non-dataset evidence corpora from external replay debt."
+evidence_refs = [
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+  "registry/external_sources.toml",
+]
+manual_manifest_refs = [
+  "registry/external_sources.toml",
+  "registry/manual_mirror_overrides_2026_02_15.toml",
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-DOCUMENTS-INGEST"
+path_glob = "data/papers/documents_ingest/**"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/data/papers/documents_ingest/MANIFEST.toml"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/papers_pdf.toml"]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin extract-papers -- --refresh-index"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Migrated to data/papers/documents_ingest to keep manual ingest corpora outside external dataset replay debt."
+evidence_refs = [
+  "data/papers/documents_ingest/MANIFEST.toml",
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+]
+manual_manifest_refs = [
+  "data/papers/documents_ingest/MANIFEST.toml",
+  "registry/manual_mirror_overrides_2026_02_15.toml",
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-INTAKE-TRACE"
+path_glob = "data/papers/intake/**"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/artifact_source_of_truth.toml"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/web_references.toml"]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin claims-audit -- --update-source-lanes"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Migrated to data/papers/intake so troubleshooting traces are governed as manual evidence instead of external replay debt."
+evidence_refs = [
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+  "registry/artifact_source_of_truth.toml",
+]
+manual_manifest_refs = [
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+  "registry/artifact_source_of_truth.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-TRACE-LOGS"
+path_glob = "data/papers/intake/traces/**"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/hypothesis_runtime_hott_sources.toml"
+mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/web_references.toml"]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin claims-audit -- --update-source-lanes"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Migrated trace logs from data/external to data/papers/intake/traces to keep troubleshooting artifacts outside external replay debt."
+evidence_refs = [
+  "data/papers/intake/traces/hypothesis_runtime_hott_downloads.json",
+  "registry/hypothesis_runtime_hott_sources.toml",
+]
+manual_manifest_refs = [
+  "data/papers/intake/traces/hypothesis_runtime_hott_downloads.json",
+  "registry/hypothesis_runtime_hott_sources.toml",
+]
+scientific_validator_refs = ["blocked_manifest_only"]
+blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]

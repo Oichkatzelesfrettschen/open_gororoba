@@ -16,7 +16,7 @@
 //! - Bohren & Huffman, Absorption and Scattering of Light by Small Particles
 
 use crate::bessel::{bessel_j, bessel_j_prime, bessel_y, bessel_y_prime};
-use crate::fano_tcmt::{drude_epsilon, CrossSections, FanoChannel, FanoDrudeParams};
+use crate::fano_tcmt::{CrossSections, FanoChannel, FanoDrudeParams, drude_epsilon};
 use num_complex::Complex64;
 use std::f64::consts::PI;
 
@@ -119,10 +119,7 @@ fn interface_matrix(l: i32, k_in: Complex64, k_out: Complex64, rho: f64) -> Mat2
     // RHS matrix (inner side): maps [A_in, B_in] to [E_z, dE_z/drho]
     // [J(x_in),       Y(x_in)      ]
     // [k_in*J'(x_in), k_in*Y'(x_in)]
-    let rhs = [
-        [j_in, y_in],
-        [k_in * jp_in, k_in * yp_in],
-    ];
+    let rhs = [[j_in, y_in], [k_in * jp_in, k_in * yp_in]];
 
     // LHS matrix (outer side): maps [A_out, B_out] to [E_z, dE_z/drho]
     // [J(x_out),        Y(x_out)       ]
@@ -239,11 +236,7 @@ pub fn scattering_coefficient_l(geom: &ConcentricCylinder, l: i32, omega: f64) -
 }
 
 /// Full Mie scattering for all channels |l| <= l_max.
-pub fn mie_scattering(
-    geom: &ConcentricCylinder,
-    omega: f64,
-    l_max: i32,
-) -> MieResult {
+pub fn mie_scattering(geom: &ConcentricCylinder, omega: f64, l_max: i32) -> MieResult {
     let mut channels = Vec::new();
     let mut c_sct = 0.0;
     let mut c_abs = 0.0;
@@ -268,11 +261,7 @@ pub fn mie_scattering(
 }
 
 /// Frequency sweep: compute Mie scattering at multiple frequencies.
-pub fn mie_sweep(
-    geom: &ConcentricCylinder,
-    omegas: &[f64],
-    l_max: i32,
-) -> Vec<MieResult> {
+pub fn mie_sweep(geom: &ConcentricCylinder, omegas: &[f64], l_max: i32) -> Vec<MieResult> {
     omegas
         .iter()
         .map(|&omega| mie_scattering(geom, omega, l_max))
@@ -363,11 +352,7 @@ pub fn mie_mdm_sweep(
 ///
 /// Finds the resonance frequency (peak of |S_l|^2), width (HWHM), and
 /// background phase from the sweep data. Returns a FanoChannel.
-pub fn extract_fano_params(
-    omegas: &[f64],
-    results: &[MieResult],
-    l: i32,
-) -> Option<FanoChannel> {
+pub fn extract_fano_params(omegas: &[f64], results: &[MieResult], l: i32) -> Option<FanoChannel> {
     if omegas.len() != results.len() || omegas.is_empty() {
         return None;
     }
@@ -414,7 +399,11 @@ pub fn extract_fano_params(
     }
 
     // Extract background phase from R_l far from resonance
-    let far_idx = if peak_idx > omegas.len() / 2 { 0 } else { omegas.len() - 1 };
+    let far_idx = if peak_idx > omegas.len() / 2 {
+        0
+    } else {
+        omegas.len() - 1
+    };
     let phi = results[far_idx]
         .channels
         .iter()
@@ -599,13 +588,7 @@ mod tests {
             let s_pos = scattering_coefficient_l(&geom, l, 2.0);
             let s_neg = scattering_coefficient_l(&geom, -l, 2.0);
             let diff = (s_pos - s_neg).norm();
-            assert!(
-                diff < 1e-10,
-                "S_{} != S_{}: diff={}",
-                l,
-                -l,
-                diff
-            );
+            assert!(diff < 1e-10, "S_{} != S_{}: diff={}", l, -l, diff);
         }
     }
 

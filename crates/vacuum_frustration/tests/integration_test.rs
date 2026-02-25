@@ -1,4 +1,4 @@
-use vacuum_frustration::{evaluate_frustration_star, FrustrationStarConfig, ScalarFrustrationMap};
+use vacuum_frustration::{FrustrationStarConfig, ScalarFrustrationMap, evaluate_frustration_star};
 
 #[test]
 fn test_scalar_frustration_bridge_integration() {

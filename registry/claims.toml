@@ -356,7 +356,7 @@ confidence = "high"
 [[claim]]
 id = "C-033"
 statement = "Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023)."
-where_stated = "`data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)"
+where_stated = "`data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)"
 status = "Closed/Source-Insufficient"
 status_note = "Physical consequence (algebraic phase transition at dim=16) verified via C-096 entropy jump: alternativity 0->4.11 bits, norm composition 0->3.17 bits. SU(5) generator mapping claim itself remains source-insufficient pending primary paper access. See L-033 resolution."
 last_verified = "2026-02-18"
@@ -368,7 +368,7 @@ phase = "algebra"
 id = "C-034"
 statement = 'Chanyal (2014): a "sedenion unified theory of gravi-electromagnetism" expresses unified potentials/fields/currents of dyons and "gravito-dyons" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo).'
 description = 'Chanyal (2014): a "sedenion unified theory of gravi-electromagnetism" expresses unified potentials/fields/currents of dyons and "gravito-dyons" using two 8D sectors (two eight-potentials), yielding co'
-where_stated = "`docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt`"
+where_stated = "`docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
 status = "Verified"
 last_verified = "2026-02-04"
 what_would_verify_refute = """The Springer PDF is not cached (requires authentication); only metadata and an abstract extract are stored. Minimal offline check: `data/csv/c034_sedenion_doubling_identity_check.csv` verifies that the repo's S_16 multiplication exactly matches a Cayley-Dickson doubling formula over two octonionic halves, which is the algebraic prerequisite for a "two eight-potentials" formulation. The paper's explicit field equations and claimed sector symmetry remain unverified until a legal full-text source is available."""
@@ -396,7 +396,7 @@ confidence = "n/a"
 [[claim]]
 id = "C-037"
 statement = "Numerical correspondence gamma ~ epsilon ~ 4*lambda_GB ~ 1/4, relating Barbero-Immirzi parameter, network clustering, and Gauss-Bonnet coupling."
-where_stated = "`docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+where_stated = "`docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
 status = "Refuted"
 last_verified = "2026-02-03"
 what_would_verify_refute = "epsilon=1/4 is verified as a group-theory ratio (C-035). gamma and lambda_GB are model- and convention-dependent; the claim does not define a mapping that puts these numbers into a shared normalization, and the cited gamma values are not equal to 1/4. Per `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, treat this as an annotated coincidence note unless and until an explicit derivation supplies definitions, tolerances, and symmetric falsification boundaries."
@@ -436,7 +436,7 @@ phase = "cosmology"
 [[claim]]
 id = "C-041"
 statement = "F4 26D representation connects to bosonic string critical dimension (D=26)."
-where_stated = "`docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
+where_stated = "`docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
 status = "Refuted"
 last_verified = "2026-02-03"
 what_would_verify_refute = "A shared number (26) does not define a derivation. The repo currently has no explicit mapping from an F4 26D sector to the worldsheet anomaly-cancellation argument that fixes the bosonic-string critical dimension. Per `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, keep as an annotated coincidence note unless and until a concrete mechanism (model class + mapping + falsifiable consequence) is provided."
@@ -496,7 +496,7 @@ statement = "E9, E10, E11 are Euclidean sphere-packing lattices."
 where_stated = "`archive/legacy_conjectures/`, `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `tests/test_c047_e_series_cartan_signature.py`"
 status = "Refuted"
 last_verified = "2026-02-04"
-what_would_verify_refute = 'The legacy "Euclidean lattice" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/external/papers/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`).'
+what_would_verify_refute = 'The legacy "Euclidean lattice" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/papers/corpus/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`).'
 confidence = "n/a"
 
 [[claim]]
@@ -5248,7 +5248,7 @@ confidence = "medium"
 [[claim]]
 id = "C-400"
 statement = "Metamaterials can emulate Alcubierre warp drive metrics for electromagnetic waves (Analog Gravity)."
-where_stated = "`docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
+where_stated = "`docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`"
 status = "Verified"
 last_verified = "2026-02-02"
 what_would_verify_refute = "Smolyaninov (2011) demonstrated bi-anisotropic metamaterials mimicking a warp bubble metric, allowing signal propagation at ~0.25c effectively within the medium. This is a kinematic analog, not a dynamical spacetime warping."
@@ -5269,7 +5269,7 @@ claims = [
 [[claim]]
 id = "C-401"
 statement = "A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble."
-where_stated = "`docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf`"
+where_stated = "`docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`"
 status = "Theoretical"
 last_verified = "2026-02-02"
 what_would_verify_refute = "White et al. (2021) computed the vacuum energy density for this geometry and found a match to the Alcubierre requirement. Status: Blueprint exists, but device is unbuilt/untested as of Jan 2026."
@@ -5290,7 +5290,7 @@ claims = [
 [[claim]]
 id = "C-402"
 statement = "Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels."
-where_stated = "`docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`"
+where_stated = "`docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`"
 status = "Refuted"
 last_verified = "2026-02-02"
 what_would_verify_refute = 'Rodal (2025) proved that modifying G via metamaterials violates energy-momentum conservation or implies scalar forces excluded by experiment (Lunar Laser Ranging). "Cheap" warp drives via EM-gravity coupling are physically impossible under standard GR+SM.'
@@ -5461,7 +5461,7 @@ claims = [
 [[claim]]
 id = "C-410"
 statement = "One-loop photon-graviton mixing in constant EM fields includes non-zero tadpole contributions (Ahmadiniaz et al. 2026), relevant to semiclassical EM-gravity coupling limits."
-where_stated = "`docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `crates/gr_core/src/photon_graviton/` (12 module files)"
+where_stated = "`docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `crates/gr_core/src/photon_graviton/` (12 module files)"
 status = "Verified"
 last_verified = "2026-02-19"
 what_would_verify_refute = "Phase 6 B6 -> Sprint 56: Full numerical implementation of all 3 diagrams (irreducible, tadpole, external) via worldline formalism. 100 tests verify: tadpole nonzero, Ward identities pass, weak-field limits match Euler-Heisenberg. Does NOT overturn C-402: mixing ratio ~(alpha/pi)*(B/B_cr)^2 is negligible for lab fields."
@@ -5483,7 +5483,7 @@ claims = [
 [[claim]]
 id = "C-411"
 statement = "Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxed phase matching, enabling flat entangled photon sources."
-where_stated = "`docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`"
+where_stated = "`docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`"
 status = "Verified"
 last_verified = "2026-02-04"
 what_would_verify_refute = "Phase 6 B6: Phase-matching function comparison confirms SFWM dominance (5.8x ratio from phase matching alone; paper quotes 19x including chi coefficients). Coherence lengths match: L_coh_SFWM=33.3 um >> L_coh_SHG=3.1 um, L_coh_SPDC=3.4 um. 4 passing tests."
@@ -5776,7 +5776,7 @@ statement = "Material stack Silicon-Gold-Ice VIII reconciled with literature-sup
 where_stated = "`docs/theory/WARP_PHYSICS_RECONCILIATION.md`, `src/scripts/visualization/animate_warp_v8_rigorous.py`"
 status = "Verified"
 last_verified = "2026-02-03"
-what_would_verify_refute = 'Sources cached in `data/external/papers/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The "Cinematic n=2.5" for Ice VIII is explicitly labeled as a fictional host proxy where used.'
+what_would_verify_refute = 'Sources cached in `data/papers/corpus/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The "Cinematic n=2.5" for Ice VIII is explicitly labeled as a fictional host proxy where used.'
 confidence = "medium"
 
 [[claim]]
@@ -13360,7 +13360,7 @@ id = "C-864"
 statement = "Photon-graviton TCMT equations map three-diagram worldline amplitude (irreducible, tadpole, external-leg from E-073) to Ruan-Fan framework with weak-field parameter epsilon < 0.1."
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (three_diagram_amplitude_to_tcmt, validate_weak_field)"
 status = "Proposed"
-status_note = "Sprint 56: Bridge from gr-qc/0412095, 0710.5572, 2601.23279 (worldline QFT) to 0909.3323 (TCMT). Maps irreducible → κ_coupling, tadpole → γ_rad, external-leg → φ."
+status_note = "Sprint 56: Bridge from gr-qc/0412095, 0710.5572, 2601.23279 (worldline QFT) to 0909.3323 (TCMT). Maps irreducible -> \kappa_coupling, tadpole -> \gamma_rad, external-leg -> \phi."
 last_verified = "2026-02-19"
 what_would_verify_refute = "VERIFY: Extract E-073 amplitudes, compute coupling via bridge, confirm weak_field_parameter < 0.1. REFUTE: coupling violates weak-field or fails to match amplitude energy scale."
 confidence = "high"

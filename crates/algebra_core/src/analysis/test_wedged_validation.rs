@@ -10,7 +10,7 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::construction::clifford::{clifford_basis_product, CliffordSignature};
+    use crate::construction::clifford::{CliffordSignature, clifford_basis_product};
 
     /// Test: Wedged Dim=4 Quaternion Validation
     ///
@@ -186,7 +186,9 @@ mod tests {
 
         // Placeholder: test passes once wedged feature is enabled
         // and above integration is complete
-        eprintln!("test_wedged_vs_clifford_commutativity_validation: placeholder (awaiting wedged integration)");
+        eprintln!(
+            "test_wedged_vs_clifford_commutativity_validation: placeholder (awaiting wedged integration)"
+        );
     }
 
     /// Test: Wedged Optional Feature Compilation Check

@@ -14,7 +14,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let params = ctx.get_scaling_parameters();
     println!("Dynamic Scaling Parameters:");
-    println!("  Grid: {}x{}x{}", params.grid_dim.0, params.grid_dim.1, params.grid_dim.2);
+    println!(
+        "  Grid: {}x{}x{}",
+        params.grid_dim.0, params.grid_dim.1, params.grid_dim.2
+    );
     println!("  Precision: {:?}", params.precision);
     println!("  Math Complexity: {:?}", params.math_complexity);
     println!("  Render Scale: {:.2}", params.render_resolution_scale);
@@ -27,10 +30,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let n = (grid.0 * grid.1 * grid.2) as usize;
     let weights: [f32; 19] = [
         1.0 / 3.0,
-        1.0 / 18.0, 1.0 / 18.0, 1.0 / 18.0, 1.0 / 18.0, 1.0 / 18.0, 1.0 / 18.0,
-        1.0 / 36.0, 1.0 / 36.0, 1.0 / 36.0, 1.0 / 36.0,
-        1.0 / 36.0, 1.0 / 36.0, 1.0 / 36.0, 1.0 / 36.0,
-        1.0 / 36.0, 1.0 / 36.0, 1.0 / 36.0, 1.0 / 36.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
     ];
     let mut f_init = vec![0.0f32; n * 19];
     for cell in 0..n {
@@ -43,25 +60,32 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Command buffer for simulation loop
     let pool = unsafe {
-        ctx.device.create_command_pool(&ash::vk::CommandPoolCreateInfo {
-            queue_family_index: ctx.queue_family_index,
-            flags: ash::vk::CommandPoolCreateFlags::RESET_COMMAND_BUFFER,
-            ..Default::default()
-        }, None)
+        ctx.device.create_command_pool(
+            &ash::vk::CommandPoolCreateInfo {
+                queue_family_index: ctx.queue_family_index,
+                flags: ash::vk::CommandPoolCreateFlags::RESET_COMMAND_BUFFER,
+                ..Default::default()
+            },
+            None,
+        )
     }?;
     let cmd = unsafe {
-        ctx.device.allocate_command_buffers(&ash::vk::CommandBufferAllocateInfo {
-            command_pool: pool,
-            level: ash::vk::CommandBufferLevel::PRIMARY,
-            command_buffer_count: 1,
-            ..Default::default()
-        })
+        ctx.device
+            .allocate_command_buffers(&ash::vk::CommandBufferAllocateInfo {
+                command_pool: pool,
+                level: ash::vk::CommandBufferLevel::PRIMARY,
+                command_buffer_count: 1,
+                ..Default::default()
+            })
     }?[0];
     let fence = unsafe {
-        ctx.device.create_fence(&ash::vk::FenceCreateInfo {
-            flags: ash::vk::FenceCreateFlags::SIGNALED,
-            ..Default::default()
-        }, None)
+        ctx.device.create_fence(
+            &ash::vk::FenceCreateInfo {
+                flags: ash::vk::FenceCreateFlags::SIGNALED,
+                ..Default::default()
+            },
+            None,
+        )
     }?;
 
     let steps = 1000u32;
@@ -72,18 +96,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         unsafe {
             ctx.device.wait_for_fences(&[fence], true, u64::MAX)?;
             ctx.device.reset_fences(&[fence])?;
-            ctx.device.reset_command_buffer(cmd, ash::vk::CommandBufferResetFlags::empty())?;
-            ctx.device.begin_command_buffer(cmd, &ash::vk::CommandBufferBeginInfo {
-                flags: ash::vk::CommandBufferUsageFlags::ONE_TIME_SUBMIT,
-                ..Default::default()
-            })?;
+            ctx.device
+                .reset_command_buffer(cmd, ash::vk::CommandBufferResetFlags::empty())?;
+            ctx.device.begin_command_buffer(
+                cmd,
+                &ash::vk::CommandBufferBeginInfo {
+                    flags: ash::vk::CommandBufferUsageFlags::ONE_TIME_SUBMIT,
+                    ..Default::default()
+                },
+            )?;
             engine.step(cmd, frame);
             ctx.device.end_command_buffer(cmd)?;
-            ctx.device.queue_submit(ctx.queue, &[ash::vk::SubmitInfo {
-                command_buffer_count: 1,
-                p_command_buffers: &cmd,
-                ..Default::default()
-            }], fence)?;
+            ctx.device.queue_submit(
+                ctx.queue,
+                &[ash::vk::SubmitInfo {
+                    command_buffer_count: 1,
+                    p_command_buffers: &cmd,
+                    ..Default::default()
+                }],
+                fence,
+            )?;
         }
     }
 

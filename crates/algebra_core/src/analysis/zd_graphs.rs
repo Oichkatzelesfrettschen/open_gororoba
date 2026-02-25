@@ -963,7 +963,7 @@ mod tests {
         assert!(xor_bucket_necessary_2v4(1, 2, a, b, c, d)); // bucket 3
         assert!(xor_bucket_necessary_2v4(1, 4, a, b, c, d)); // bucket 5
         assert!(xor_bucket_necessary_2v4(1, 7, a, b, c, d)); // bucket 6
-                                                             // Non-matching bucket
+        // Non-matching bucket
         assert!(!xor_bucket_necessary_2v4(1, 3, a, b, c, d)); // bucket 2
     }
 
@@ -1193,7 +1193,10 @@ mod tests {
                                     assert!(
                                         xor_bucket_necessary_for_two_blade(i, j, k, l),
                                         "False negative! ({},{}) x ({},{}) is zero but XOR filter rejects",
-                                        i, j, k, l
+                                        i,
+                                        j,
+                                        k,
+                                        l
                                     );
                                 }
                             }

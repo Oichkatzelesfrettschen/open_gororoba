@@ -23,9 +23,9 @@ use lbm_3d::solver::LbmSolver3D;
 use lbm_3d_cuda::Precision;
 use std::fmt::Write as _;
 use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField};
-use vacuum_frustration::spatial_correlation::{spatial_correlation, SpatialCorrelationResult};
+use vacuum_frustration::spatial_correlation::{SpatialCorrelationResult, spatial_correlation};
 use vacuum_frustration::vietoris_rips::{
-    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix, VietorisRipsComplex,
+    DistanceMatrix, VietorisRipsComplex, compute_betti_numbers_at_time, compute_persistent_homology,
 };
 
 #[derive(Parser, Debug)]
@@ -266,7 +266,9 @@ fn dispatch_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> Lambd
     }
     #[cfg(not(feature = "gpu"))]
     if cfg.gpu {
-        eprintln!("WARNING: --gpu requested but binary compiled without gpu feature. Falling back to CPU.");
+        eprintln!(
+            "WARNING: --gpu requested but binary compiled without gpu feature. Falling back to CPU."
+        );
     }
     run_single_lambda(frustration, lambda, cfg)
 }

@@ -3,7 +3,7 @@
 //! Maps TCMT parameters to observable scattering, absorption, and extinction
 //! cross-sections using Ruan-Fan Eqs. 14, 21, 23 extended to gravitational system.
 
-use crate::photon_graviton_tcmt::{CrossSections, GravitationalCoupling, AsymmetryParameter};
+use crate::photon_graviton_tcmt::{AsymmetryParameter, CrossSections, GravitationalCoupling};
 
 /// Compute total cross-section tensor from coupling and frequency sweep
 ///
@@ -17,21 +17,24 @@ impl CrossSectionComputer {
     /// Create new cross-section computer
     pub fn new(coupling: GravitationalCoupling) -> Self {
         let asymmetry = AsymmetryParameter::from_coupling(&coupling);
-        CrossSectionComputer { coupling, asymmetry }
+        CrossSectionComputer {
+            coupling,
+            asymmetry,
+        }
     }
 
     /// Compute cross-sections at specific frequency
     ///
     /// # Arguments
     /// * `frequency` - Probe frequency (units: same as resonance_frequency)
-    /// * `loss_ratio` - γ_nr / γ_total (non-radiative loss fraction)
+    /// * `loss_ratio` - \gamma_nr / \gamma_total (non-radiative loss fraction)
     ///
     /// # Returns
     /// CrossSections struct with C_sct, C_abs, C_ext
     pub fn at_frequency(&self, frequency: f64, loss_ratio: f64) -> CrossSections {
         let detuning = frequency - self.coupling.resonance_frequency;
         let gamma_total = self.coupling.total_decay_rate();
-        let x = detuning / gamma_total;  // Normalized detuning
+        let x = detuning / gamma_total; // Normalized detuning
 
         // Scattering: Fano lineshape
         let x_sq = x * x;
@@ -39,20 +42,22 @@ impl CrossSectionComputer {
         let c_sct = (x_sq + q_sq) / (x_sq + 1.0);
 
         // Absorption: Loss-dependent
-        let c_abs = loss_ratio * (1.0 / (x_sq + 1.0)) * (1.0 + 2.0 * self.asymmetry.q * x / (x_sq + 1.0)).max(0.0);
+        let c_abs = loss_ratio
+            * (1.0 / (x_sq + 1.0))
+            * (1.0 + 2.0 * self.asymmetry.q * x / (x_sq + 1.0)).max(0.0);
 
         CrossSections::new(c_sct, c_abs)
     }
 
     /// Compute peak cross-section (at resonance)
     pub fn peak_scattering(&self) -> f64 {
-        let c_sct = (self.asymmetry.q * self.asymmetry.q) / 1.0;  // x=0: (q²) / 1
+        let c_sct = (self.asymmetry.q * self.asymmetry.q) / 1.0; // x=0: (q^2) / 1
         c_sct
     }
 
     /// Compute quality factor Q from FWHM
     ///
-    /// Q = ω₀ / Δω_FWHM where Δω_FWHM is full width at half maximum
+    /// Q = \omega_0 / \Delta\omega_FWHM where \Delta\omega_FWHM is full width at half maximum
     /// For Fano resonance: Q = 1 / (2 * gamma / omega_0)
     pub fn quality_factor(&self) -> f64 {
         let gamma_total = self.coupling.total_decay_rate();
@@ -78,7 +83,10 @@ pub fn sweep_cross_sections(
     loss_ratio: f64,
 ) -> Vec<CrossSections> {
     let computer = CrossSectionComputer::new(*coupling);
-    frequencies.iter().map(|&f| computer.at_frequency(f, loss_ratio)).collect()
+    frequencies
+        .iter()
+        .map(|&f| computer.at_frequency(f, loss_ratio))
+        .collect()
 }
 
 /// Check if resonance is in valid range (weak-field approximation)

@@ -32,10 +32,10 @@
 //! ## Validation
 //!
 //! All results validated against:
-//! 1. Weak-field limit → must match E-073 worldline amplitude
-//! 2. Energy conservation → kappa_1 - kappa_2 = gamma_l (Maksimov constraint)
-//! 3. Time-reversal symmetry → pairs of real zeros in transmission
-//! 4. Optical theorem → C_ext = C_sct + C_abs
+//! 1. Weak-field limit -> must match E-073 worldline amplitude
+//! 2. Energy conservation -> kappa_1 - kappa_2 = gamma_l (Maksimov constraint)
+//! 3. Time-reversal symmetry -> pairs of real zeros in transmission
+//! 4. Optical theorem -> C_ext = C_sct + C_abs
 //!
 //! ## References
 //!
@@ -44,19 +44,19 @@
 //! - Ahmadiniaz et al. (2026) arXiv:2601.23279 - Complete photon-graviton amplitude
 //! - Maksimov et al. (2025) arXiv:2505.00396 - TCMT symmetry constraints
 
+pub mod amplitude_bridge;
 pub mod constants;
-pub mod types;
+pub mod cross_sections;
 pub mod fano_lineshape;
 pub mod tcmt_equations;
-pub mod cross_sections;
-pub mod amplitude_bridge;
+pub mod types;
 
+pub use amplitude_bridge::*;
 pub use constants::*;
-pub use types::*;
+pub use cross_sections::*;
 pub use fano_lineshape::*;
 pub use tcmt_equations::*;
-pub use cross_sections::*;
-pub use amplitude_bridge::*;
+pub use types::*;
 
 #[cfg(test)]
 mod tests {

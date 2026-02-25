@@ -13,7 +13,10 @@ use gororoba_engine::simulation::PathionSink;
 use std::io::Write;
 
 #[derive(Parser)]
-#[command(name = "pathion-sink-test", about = "Pathion entropy sink falsification")]
+#[command(
+    name = "pathion-sink-test",
+    about = "Pathion entropy sink falsification"
+)]
 struct Cli {
     #[command(subcommand)]
     cmd: Cmd,
@@ -119,8 +122,12 @@ impl SedenionField {
                     let zm = self.idx(x, y, (z + nz - 1) % nz);
 
                     for c in 0..16 {
-                        let laplacian = old[xp][c] + old[xm][c] + old[yp][c] + old[ym][c]
-                            + old[zp][c] + old[zm][c]
+                        let laplacian = old[xp][c]
+                            + old[xm][c]
+                            + old[yp][c]
+                            + old[ym][c]
+                            + old[zp][c]
+                            + old[zm][c]
                             - 6.0 * old[idx][c];
                         self.data[idx][c] = old[idx][c] + dt * diffusion * laplacian;
                     }

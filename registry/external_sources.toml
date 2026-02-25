@@ -237,7 +237,7 @@ body_markdown = '''
 
 # 2004 Math0403113 Boxkites Iii
 
-**Source:** data/external/papers/de_marrais_2004_math0403113_boxkites_III.pdf
+**Source:** data/papers/corpus/de_marrais_2004_math0403113_boxkites_III.pdf
 
 
 
@@ -7936,7 +7936,7 @@ body_markdown = '''
 
 # 2004 Wolfram Science Slides
 
-**Source:** data/external/papers/de_marrais_2004_wolfram_science_slides.pdf
+**Source:** data/papers/corpus/de_marrais_2004_wolfram_science_slides.pdf
 
 
 
@@ -9103,7 +9103,7 @@ verification_level = "partial_replication"
 has_full_transcript = false
 claim_refs = ["C-005"]
 url_refs = ["https://arxiv.org/abs/2411.18881"]
-path_refs = ["data/external/papers/reggiani_2024_2411.18881.pdf", "data/external/papers/reggiani_2024_2411.18881.txt", "docs/SEDENION_ATLAS.md", "tests/test_reggiani_alignment.py", "tests/test_reggiani_standard_zero_divisors.py"]
+path_refs = ["data/papers/corpus/reggiani_2024_2411.18881.pdf", "data/papers/corpus/reggiani_2024_2411.18881.txt", "docs/SEDENION_ATLAS.md", "tests/test_reggiani_alignment.py", "tests/test_reggiani_standard_zero_divisors.py"]
 line_count = 41
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 body_markdown = '''
@@ -9121,8 +9121,8 @@ and validates algebraic invariants.
 
 ## Cached primary source
 
-- Cached PDF: `data/external/papers/reggiani_2024_2411.18881.pdf`
-- Cached text: `data/external/papers/reggiani_2024_2411.18881.txt`
+- Cached PDF: `data/papers/corpus/reggiani_2024_2411.18881.pdf`
+- Cached text: `data/papers/corpus/reggiani_2024_2411.18881.txt`
 - URL: https://arxiv.org/abs/2411.18881
 
 ## Key claims (paper-asserted)

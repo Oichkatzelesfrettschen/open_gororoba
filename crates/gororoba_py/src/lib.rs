@@ -23,7 +23,7 @@ use algebra_core::{
     e8_cartan_matrix, e8_weyl_group_order, find_box_kites, find_zero_divisors, generate_e8_roots,
 };
 use cosmology_core::bounce::{
-    chi2_distance_modulus, luminosity_distance, simulate_bounce, BounceParams,
+    BounceParams, chi2_distance_modulus, luminosity_distance, simulate_bounce,
 };
 use gr_core::{
     impact_parameters, kerr_metric_quantities, photon_orbit_radius, shadow_boundary,
@@ -32,9 +32,9 @@ use gr_core::{
 use lbm_core::simulate_poiseuille;
 use materials_core::{build_absorber_stack, canonical_sedenion_zd_pairs};
 use quantum_core::{
-    grover_search_indices, optimal_iterations, GroverConfig, HardwareProfile, MatrixProductState,
-    NeutralAtomProfile, QuantumHypothesisSearch, SuperconductingProfile, ThresholdOracle,
-    TrappedIonProfile,
+    GroverConfig, HardwareProfile, MatrixProductState, NeutralAtomProfile, QuantumHypothesisSearch,
+    SuperconductingProfile, ThresholdOracle, TrappedIonProfile, grover_search_indices,
+    optimal_iterations,
 };
 use spectral_core::fractional_laplacian_periodic_1d;
 use stats_core::frechet_distance;
@@ -496,7 +496,7 @@ fn py_quantum_grid_search(
         _ => {
             return Err(PyValueError::new_err(
                 "score_fn must be 'sum', 'norm', 'max', or 'min'",
-            ))
+            ));
         }
     };
 

@@ -20,7 +20,7 @@
 //! - Sokal & Rohlf (1962): Cophenetic correlation coefficient
 //! - Murtagh & Contreras (2012): Algorithms for hierarchical clustering
 
-use kodama::{linkage, Method};
+use kodama::{Method, linkage};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 

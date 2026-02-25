@@ -20,7 +20,7 @@ use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField};
 use vacuum_frustration::vietoris_rips::{
-    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix, VietorisRipsComplex,
+    DistanceMatrix, VietorisRipsComplex, compute_betti_numbers_at_time, compute_persistent_homology,
 };
 
 #[derive(Parser, Debug)]
@@ -186,11 +186,7 @@ fn pearson_correlation(x: &[f64], y: &[f64]) -> f64 {
     }
 
     let denom = (var_x * var_y).sqrt();
-    if denom < 1e-14 {
-        0.0
-    } else {
-        cov / denom
-    }
+    if denom < 1e-14 { 0.0 } else { cov / denom }
 }
 
 /// Permutation null model: shuffle frustration, recompute correlation.

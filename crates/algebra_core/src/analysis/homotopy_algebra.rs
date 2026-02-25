@@ -206,9 +206,10 @@ impl AInfinityAlgebra {
     pub fn is_dg_algebra(&self) -> bool {
         for n in 3..=self.max_arity {
             if let Some(op) = self.operations.get(&n)
-                && !op.is_zero {
-                    return false;
-                }
+                && !op.is_zero
+            {
+                return false;
+            }
         }
         true
     }
@@ -217,16 +218,18 @@ impl AInfinityAlgebra {
     pub fn is_strictly_associative(&self) -> bool {
         // m_1 must be zero (no differential)
         if let Some(op) = self.operations.get(&1)
-            && !op.is_zero {
-                return false;
-            }
+            && !op.is_zero
+        {
+            return false;
+        }
 
         // m_n must be zero for n >= 3
         for n in 3..=self.max_arity {
             if let Some(op) = self.operations.get(&n)
-                && !op.is_zero {
-                    return false;
-                }
+                && !op.is_zero
+            {
+                return false;
+            }
         }
 
         true
@@ -286,9 +289,10 @@ impl LInfinityAlgebra {
     pub fn is_dg_lie(&self) -> bool {
         for n in 3..=self.max_arity {
             if let Some(op) = self.operations.get(&n)
-                && !op.is_zero {
-                    return false;
-                }
+                && !op.is_zero
+            {
+                return false;
+            }
         }
         true
     }
@@ -296,15 +300,17 @@ impl LInfinityAlgebra {
     /// Check if this is a strictly Lie algebra (l_1 = 0, l_n = 0 for n >= 3).
     pub fn is_strictly_lie(&self) -> bool {
         if let Some(op) = self.operations.get(&1)
-            && !op.is_zero {
-                return false;
-            }
+            && !op.is_zero
+        {
+            return false;
+        }
 
         for n in 3..=self.max_arity {
             if let Some(op) = self.operations.get(&n)
-                && !op.is_zero {
-                    return false;
-                }
+                && !op.is_zero
+            {
+                return false;
+            }
         }
 
         true
@@ -383,11 +389,7 @@ pub fn cyclohedron_vertices(n: usize) -> usize {
 pub fn a_infinity_sign(i: usize, j: usize, k: usize) -> i32 {
     // Sign is (-1)^{ij + k}
     let exp = (i * j + k) % 2;
-    if exp == 0 {
-        1
-    } else {
-        -1
-    }
+    if exp == 0 { 1 } else { -1 }
 }
 
 /// L-infinity relation verification.
@@ -412,11 +414,7 @@ fn shuffle_sign(shuffle: &[usize]) -> i32 {
             }
         }
     }
-    if inversions % 2 == 0 {
-        1
-    } else {
-        -1
-    }
+    if inversions % 2 == 0 { 1 } else { -1 }
 }
 
 /// Minimal model of an A-infinity algebra.

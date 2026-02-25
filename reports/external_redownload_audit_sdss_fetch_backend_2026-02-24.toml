@@ -1,0 +1,27 @@
+generated_at_utc = "2026-02-24T07:48:51.294Z"
+execute = true
+backend_order = ["fetch"]
+total_files = 1
+matched_source_files = 1
+unmatched_source_files = 0
+blocked_pending = 0
+blocked_overdue = 0
+checksum_mismatch = 1
+download_failures = 0
+pass_count = 0
+
+[[records]]
+path = "data/external/sdss_dr18_quasars.csv"
+source_id = "SRC-SDSS-DR18-QUASARS"
+source_status = "active"
+expected_sha256 = "3ad1528c16f1617a28ff24b8cf13d0947f9a9d1517ac45654d188c866d585cd6"
+actual_sha256 = "a4d0e2bb8476240984035d8653ebaf72886787e2fb1ba394304577962b2b3b63"
+status = "checksum_mismatch"
+detail = "expected 3ad1528c16f1617a28ff24b8cf13d0947f9a9d1517ac45654d188c866d585cd6, got a4d0e2bb8476240984035d8653ebaf72886787e2fb1ba394304577962b2b3b63"
+
+[[records.attempts]]
+backend = "fetch"
+url = "https://skyserver.sdss.org/dr18/SkyServerWS/SearchTools/SqlSearch?cmd=SELECT%20TOP%2050000%20%20s.specObjID%20as%20objid%2C%20s.ra%2C%20s.dec%2C%20s.z%2C%20s.zErr%20as%20zerr%2C%20%20p.psfMag_u%20as%20u%2C%20p.psfMag_g%20as%20g%2C%20p.psfMag_r%20as%20r%2C%20%20p.psfMag_i%20as%20i%20FROM%20SpecObj%20s%20JOIN%20PhotoObj%20p%20ON%20s.bestObjID%20%3D%20p.objID%20WHERE%20s.class%20%3D%20%27QSO%27%20AND%20s.zWarning%20%3D%200%20AND%20s.z%20%3E%200.1%20ORDER%20BY%20s.z&format=csv"
+status = "ok"
+detail = "download succeeded"
+

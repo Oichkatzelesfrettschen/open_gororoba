@@ -10,7 +10,7 @@
 //! Options:
 //!   --full    Run with 7 x K6 (42 nodes) instead of 2 x K3 (6 nodes)
 
-use optics_core::absorber_benchmark::{run_benchmark, standard_c010_suite, reduced_c010_suite};
+use optics_core::absorber_benchmark::{reduced_c010_suite, run_benchmark, standard_c010_suite};
 use optics_core::tcmt::KerrCavity;
 
 fn main() {
@@ -46,7 +46,15 @@ fn main() {
     println!("Steps: {}, dt: {:.0e} s", n_steps, dt);
     println!();
 
-    let result = run_benchmark(&suite, &cavity, freq_spacing, &driven, drive_amp, dt, n_steps);
+    let result = run_benchmark(
+        &suite,
+        &cavity,
+        freq_spacing,
+        &driven,
+        drive_amp,
+        dt,
+        n_steps,
+    );
 
     println!("{}", result.summary_table());
     println!();
@@ -62,7 +70,9 @@ fn main() {
     println!();
     println!("Per-topology details:");
     for r in &result.results {
-        println!("  {}: {} components, isolation={:.6}, xtalk={:.1} dB, gap={:.4}",
-            r.topology_name, r.n_components, r.isolation_ratio, r.crosstalk_db, r.spectral_gap);
+        println!(
+            "  {}: {} components, isolation={:.6}, xtalk={:.1} dB, gap={:.4}",
+            r.topology_name, r.n_components, r.isolation_ratio, r.crosstalk_db, r.spectral_gap
+        );
     }
 }

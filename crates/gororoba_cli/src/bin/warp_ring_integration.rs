@@ -28,14 +28,14 @@ use materials_core::{
 };
 // use ndarray::Array2; // Unused import removed
 use num_complex::Complex64;
-use optics_core::grin::{trace_ray, GrinMedium, Ray, Vec3};
+use optics_core::grin::{GrinMedium, Ray, Vec3, trace_ray};
 use optics_core::tcmt::{InputField, KerrCavity, TcmtSolver};
 use plotters::prelude::*;
 use plotters::style::full_palette::GREY;
 use spectral_core::ndfft::{fft_2d, real_to_complex_2d};
 use spectral_core::warp_physics::{
-    apply_neg_dim_kernel, extract_warp_triads, padic_power_spectrum, warp_spectral_density,
-    WarpRingConfig,
+    WarpRingConfig, apply_neg_dim_kernel, extract_warp_triads, padic_power_spectrum,
+    warp_spectral_density,
 };
 use stats_core::hypergraph::TriadHypergraph;
 use std::f64::consts::PI;

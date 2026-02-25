@@ -49,7 +49,7 @@ phase = "P0"
 status = "completed"
 title = "Primary-source corpus acquisition"
 objective = "Download paper corpus for non-associative algebra and neural theorem proving."
-outputs = ["data/external/papers/hypothesis_runtime_hott/*.pdf", "registry/hypothesis_runtime_hott_sources.toml"]
+outputs = ["data/papers/corpus/hypothesis_runtime_hott/*.pdf", "registry/hypothesis_runtime_hott_sources.toml"]
 blocking = false
 
 [[record]]

@@ -4220,7 +4220,9 @@ mod tests {
         eprintln!(
             "  Note: Sample covers only low-index basis vectors to keep computation tractable."
         );
-        eprintln!("  Mathematic note: Standard sedenions are conjectured to have zero-divisors (not verified yet).");
+        eprintln!(
+            "  Mathematic note: Standard sedenions are conjectured to have zero-divisors (not verified yet)."
+        );
 
         // At minimum, split sedenions should show more ZD than standard (if standard has any)
         // For now, just verify that split has >= standard (monotonic property)

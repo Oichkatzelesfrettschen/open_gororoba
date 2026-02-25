@@ -20,7 +20,7 @@ content_format = "markdown"
 content_markdown = """
 # 2004 Wolfram Science Slides
 
-**Source:** data/external/papers/de_marrais_2004_wolfram_science_slides.pdf
+**Source:** data/papers/corpus/de_marrais_2004_wolfram_science_slides.pdf
 
 
 

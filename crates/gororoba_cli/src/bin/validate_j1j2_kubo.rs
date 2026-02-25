@@ -1085,7 +1085,9 @@ fn main() {
 
     // Write CSV for plotting
     let csv_path = output_dir.join("j1j2_diagnostics.csv");
-    let mut csv_out = String::from("alpha,drude_weight_spin,total_weight_spin,specific_heat,drude_enhancement,ballistic_fraction,transport_frustration\n");
+    let mut csv_out = String::from(
+        "alpha,drude_weight_spin,total_weight_spin,specific_heat,drude_enhancement,ballistic_fraction,transport_frustration\n",
+    );
     for (i, p) in data.j1j2_transport.iter().enumerate() {
         csv_out.push_str(&format!(
             "{:.4},{:.6e},{:.6e},{:.6},{:.4},{:.6},{:.6}\n",

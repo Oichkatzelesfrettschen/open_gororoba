@@ -9,8 +9,8 @@
 //!   cargo run --release --bin prefix-chain-theorem -- --forbidden
 
 use algebra_core::analysis::prefix_chain_theorem::{
-    count_forbidden_by_family, format_theorem_summary, verify_prefix_chain_theorem,
-    OctonionSkeletonMap,
+    OctonionSkeletonMap, count_forbidden_by_family, format_theorem_summary,
+    verify_prefix_chain_theorem,
 };
 
 fn main() {

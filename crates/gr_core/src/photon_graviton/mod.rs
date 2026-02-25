@@ -146,17 +146,13 @@ pub fn one_loop_amplitude(
     let tad = tree * tad_coeff;
 
     // External leg (uses vacuum polarization)
-    let ext = external::external_amplitude(
-        config,
-        channel.photon_pol(),
-        loop_type,
-        quad_config,
-    );
+    let ext = external::external_amplitude(config, channel.photon_pol(), loop_type, quad_config);
     // External has the same polarization structure as tree level
-    let ext_with_grav = ext * match channel.graviton_pol() {
-        GravitonPolarization::Plus => Complex64::new(config.theta.cos(), 0.0),
-        GravitonPolarization::Cross => Complex64::new(1.0, 0.0),
-    };
+    let ext_with_grav = ext
+        * match channel.graviton_pol() {
+            GravitonPolarization::Plus => Complex64::new(config.theta.cos(), 0.0),
+            GravitonPolarization::Cross => Complex64::new(1.0, 0.0),
+        };
 
     let total = irr + tad + ext_with_grav;
 
@@ -310,10 +306,7 @@ mod tests {
             HelicityChannel::ParallelCross,
             &quad,
         );
-        assert!(
-            amp.total.norm() < 1e-25,
-            "Amplitude should vanish at B=0"
-        );
+        assert!(amp.total.norm() < 1e-25, "Amplitude should vanish at B=0");
         assert!(
             amp.conversion_probability < 1e-50,
             "Conversion probability should vanish at B=0"
@@ -326,11 +319,7 @@ mod tests {
         let quad = QuadratureConfig::fast();
         for ch in HelicityChannel::ALL {
             let amp = one_loop_amplitude(&config, LoopType::Spinor, ch, &quad);
-            assert!(
-                amp.total.is_finite(),
-                "Amplitude not finite for {:?}",
-                ch
-            );
+            assert!(amp.total.is_finite(), "Amplitude not finite for {:?}", ch);
         }
     }
 

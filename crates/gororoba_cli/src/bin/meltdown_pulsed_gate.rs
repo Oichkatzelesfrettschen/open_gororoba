@@ -24,7 +24,11 @@ use std::fs;
 use std::path::Path;
 
 #[derive(Parser, Debug)]
-#[command(author, version, about = "Reframed T4: pulsed vs steady entropy injection")]
+#[command(
+    author,
+    version,
+    about = "Reframed T4: pulsed vs steady entropy injection"
+)]
 struct Args {
     /// Grid size (power of 2, must satisfy CFL: nu*dt*N^2 <= 0.695)
     #[arg(long, default_value_t = 128)]
@@ -127,7 +131,10 @@ fn main() {
     );
 
     println!("Meltdown Pulsed Gate Experiment");
-    println!("  N={} steps={} dt={} nu={} rho_base={}", args.n, args.steps, args.dt, args.nu, args.rho_base);
+    println!(
+        "  N={} steps={} dt={} nu={} rho_base={}",
+        args.n, args.steps, args.dt, args.nu, args.rho_base
+    );
     println!("  CFL parameter r = {:.3}", r);
     println!();
 
@@ -175,12 +182,18 @@ fn main() {
     }
 
     // Print results table
-    println!("  {:>12}  {:>6}  {:>10}  {:>10}", "protocol", "eps", "p95_conc", "p95_entropy");
+    println!(
+        "  {:>12}  {:>6}  {:>10}  {:>10}",
+        "protocol", "eps", "p95_conc", "p95_entropy"
+    );
     println!("  {:->12}  {:->6}  {:->10}  {:->10}", "", "", "", "");
     for r in &results {
         for (i, (eps, p95)) in r.p95_by_eps.iter().enumerate() {
             let p95_e = r.entropy_p95_by_eps[i].1;
-            println!("  {:>12}  {:>6.0e}  {:>10.1}  {:>10.4}", r.name, eps, p95, p95_e);
+            println!(
+                "  {:>12}  {:>6.0e}  {:>10.1}  {:>10.4}",
+                r.name, eps, p95, p95_e
+            );
         }
     }
 
@@ -188,8 +201,14 @@ fn main() {
     // Gate on EITHER concurrency OR entropy showing >10% reduction
     println!();
     println!("  Reduction vs Steady:");
-    println!("  {:>12}  {:>6}  {:>10}  {:>10}  {:>8}", "protocol", "eps", "conc_%", "entr_%", "status");
-    println!("  {:->12}  {:->6}  {:->10}  {:->10}  {:->8}", "", "", "", "", "");
+    println!(
+        "  {:>12}  {:>6}  {:>10}  {:>10}  {:>8}",
+        "protocol", "eps", "conc_%", "entr_%", "status"
+    );
+    println!(
+        "  {:->12}  {:->6}  {:->10}  {:->10}  {:->8}",
+        "", "", "", "", ""
+    );
 
     let steady = &results[0];
     let mut any_pass = false;

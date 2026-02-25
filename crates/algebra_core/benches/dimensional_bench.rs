@@ -10,7 +10,7 @@
 
 use algebra_core::analysis::boxkites::{cross_assessors, motif_components_for_cross_assessors};
 use algebra_core::cd_basis_mul_sign;
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{BenchmarkId, Criterion, black_box, criterion_group, criterion_main};
 use std::time::Duration;
 
 /// Benchmark component extraction at various dimensions.

@@ -14,11 +14,11 @@
 use clap::Parser;
 use lbm_3d::solver::LbmSolver3D;
 use std::fmt::Write as _;
-use vacuum_frustration::bridge::{SedenionField, ViscosityCouplingModel, VACUUM_ATTRACTOR};
-use vacuum_frustration::spatial_correlation::{spatial_correlation, SpatialCorrelationResult};
+use vacuum_frustration::bridge::{SedenionField, VACUUM_ATTRACTOR, ViscosityCouplingModel};
+use vacuum_frustration::spatial_correlation::{SpatialCorrelationResult, spatial_correlation};
 use vacuum_frustration::vietoris_rips::{
-    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix, PersistenceDiagram,
-    VietorisRipsComplex,
+    DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers_at_time,
+    compute_persistent_homology,
 };
 
 #[derive(Parser, Debug)]

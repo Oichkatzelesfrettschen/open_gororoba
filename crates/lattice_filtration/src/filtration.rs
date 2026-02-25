@@ -1,8 +1,8 @@
 //! Collision-storm filtration simulator for thesis falsification.
 
-use crate::basis_index::{project_to_lattice, BasisIndexCodec};
+use crate::basis_index::{BasisIndexCodec, project_to_lattice};
 use crate::patricia_trie::PatriciaIndex;
-use crate::survival_spectrum::{classify_latency_law, inverse_square_r2, LatencyLaw};
+use crate::survival_spectrum::{LatencyLaw, classify_latency_law, inverse_square_r2};
 use std::collections::HashMap;
 
 /// Per-step collision observation.

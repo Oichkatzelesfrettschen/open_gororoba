@@ -1,7 +1,6 @@
 use docpipe::equation_catalog::{
-    build_catalog, catalog_to_toml, classify_category, classify_domain,
-    convert_historical_csv_reader, write_catalog_toml, EquationCategory, EquationDomain,
-    EquationSourceStream,
+    EquationCategory, EquationDomain, EquationSourceStream, build_catalog, catalog_to_toml,
+    classify_category, classify_domain, convert_historical_csv_reader, write_catalog_toml,
 };
 
 #[test]

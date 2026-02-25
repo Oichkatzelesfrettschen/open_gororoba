@@ -3,20 +3,20 @@
 //! Implements the Fano lineshape formalism from Ruan & Fan (2009) Eqs. 14-23,
 //! extended to include gravitational coupling effects.
 
-use crate::photon_graviton_tcmt::{AsymmetryParameter, GravitationalCoupling, CrossSections};
+use crate::photon_graviton_tcmt::{AsymmetryParameter, CrossSections, GravitationalCoupling};
 use num_complex::Complex64 as C64;
 
 /// Compute the Fano lineshape for normalized detuning parameter
 ///
 /// Based on Ruan-Fan Eq. 23:
 /// ```
-/// sigma = |S|² = |(x + iq) / (x + i)|²
-///       = (x² + q²) / (x² + 1) * correction_factor
+/// sigma = |S|^2 = |(x + iq) / (x + i)|^2
+///       = (x^2 + q^2) / (x^2 + 1) * correction_factor
 /// ```
 ///
 /// where:
-/// - x = (ω - ω₀) / γ (normalized detuning)
-/// - q = asymmetry parameter (cot(φ/2))
+/// - x = (\omega - \omega_0) / \gamma (normalized detuning)
+/// - q = asymmetry parameter (cot(\phi/2))
 /// - correction_factor accounts for gravitational coupling
 ///
 /// # Arguments
@@ -32,28 +32,29 @@ pub fn fano_lineshape(x: f64, asymmetry: &AsymmetryParameter, _weak_field_param:
 
     // Base Fano formula (Ruan-Fan Eq. 23)
     let numerator = x_squared + asymmetry.q * asymmetry.q;
-    let denominator = (x_squared + 1.0).max(1e-15);  // Avoid division by zero
+    let denominator = (x_squared + 1.0).max(1e-15); // Avoid division by zero
     let base_lineshape = numerator / denominator;
 
     // Gravitational correction factor
     // In weak-field limit, gravitational contribution is O(epsilon)
-    let grav_correction = 1.0 + _weak_field_param * asymmetry.gravitational_factor * (x / (x_squared + 1.0));
+    let grav_correction =
+        1.0 + _weak_field_param * asymmetry.gravitational_factor * (x / (x_squared + 1.0));
 
-    (base_lineshape * grav_correction).max(0.0)  // Ensure non-negative
+    (base_lineshape * grav_correction).max(0.0) // Ensure non-negative
 }
 
 /// Compute scattering cross-section from Fano lineshape
 ///
 /// Based on Ruan-Fan Eq. 14:
 /// ```
-/// σ_sct = σ₀ * |S_l|² = σ₀ * fano_lineshape(x, q, epsilon)
+/// \sigma_sct = \sigma_0 * |S_l|^2 = \sigma_0 * fano_lineshape(x, q, epsilon)
 /// ```
 ///
 /// # Arguments
 /// * `x` - Normalized detuning
 /// * `asymmetry` - Asymmetry parameter
 /// * `weak_field_param` - Weak-field parameter
-/// * `cross_section_amplitude` - σ₀ normalization factor
+/// * `cross_section_amplitude` - \sigma_0 normalization factor
 pub fn scattering_cross_section(
     x: f64,
     asymmetry: &AsymmetryParameter,
@@ -69,15 +70,15 @@ pub fn scattering_cross_section(
 /// In lossless scattering (gamma_0 = 0), absorption vanishes.
 /// With loss (gamma_0 > 0), absorption follows:
 /// ```
-/// σ_abs = σ₀ * (gamma_0 / gamma) * lineshape_asymmetric(x, q)
+/// \sigma_abs = \sigma_0 * (gamma_0 / gamma) * lineshape_asymmetric(x, q)
 /// ```
 ///
 /// # Arguments
 /// * `x` - Normalized detuning
 /// * `asymmetry` - Asymmetry parameter
 /// * `weak_field_param` - Weak-field parameter
-/// * `cross_section_amplitude` - σ₀
-/// * `loss_ratio` - γ₀ / γ (loss / decay ratio)
+/// * `cross_section_amplitude` - \sigma_0
+/// * `loss_ratio` - \gamma_0 / \gamma (loss / decay ratio)
 pub fn absorption_cross_section(
     x: f64,
     asymmetry: &AsymmetryParameter,
@@ -105,7 +106,13 @@ pub fn extinction_cross_section(
     loss_ratio: f64,
 ) -> f64 {
     let c_sct = scattering_cross_section(x, asymmetry, weak_field_param, cross_section_amplitude);
-    let c_abs = absorption_cross_section(x, asymmetry, weak_field_param, cross_section_amplitude, loss_ratio);
+    let c_abs = absorption_cross_section(
+        x,
+        asymmetry,
+        weak_field_param,
+        cross_section_amplitude,
+        loss_ratio,
+    );
     c_sct + c_abs
 }
 
@@ -118,7 +125,13 @@ pub fn compute_cross_sections(
     loss_ratio: f64,
 ) -> CrossSections {
     let c_sct = scattering_cross_section(x, asymmetry, weak_field_param, cross_section_amplitude);
-    let c_abs = absorption_cross_section(x, asymmetry, weak_field_param, cross_section_amplitude, loss_ratio);
+    let c_abs = absorption_cross_section(
+        x,
+        asymmetry,
+        weak_field_param,
+        cross_section_amplitude,
+        loss_ratio,
+    );
     CrossSections::new(c_sct, c_abs)
 }
 
@@ -134,12 +147,14 @@ pub fn compute_asymmetry_from_coupling(coupling: &GravitationalCoupling) -> Asym
 ///
 /// Ruan-Fan Eq. 21:
 /// ```
-/// R = e^{i*phi} * [i*(ω₀ - ω) + γ₀ - γ] / [i*(ω₀ - ω) + γ₀ + γ]
+/// R = e^{i*phi} * [i*(\omega_0 - \omega) + \gamma_0 - \gamma] / [i*(\omega_0 - \omega) + \gamma_0 + \gamma]
 /// ```
 pub fn reflection_coefficient(frequency: f64, coupling: &GravitationalCoupling) -> C64 {
     let detuning = C64::new(0.0, coupling.resonance_frequency - frequency);
-    let numerator = detuning + C64::new(coupling.gamma_nonradiative - coupling.gamma_radiative, 0.0);
-    let denominator = detuning + C64::new(coupling.gamma_nonradiative + coupling.gamma_radiative, 0.0);
+    let numerator =
+        detuning + C64::new(coupling.gamma_nonradiative - coupling.gamma_radiative, 0.0);
+    let denominator =
+        detuning + C64::new(coupling.gamma_nonradiative + coupling.gamma_radiative, 0.0);
 
     let phase = C64::from_polar(1.0, coupling.coupling_phase);
     // Avoid division by zero with explicit check
@@ -170,12 +185,12 @@ mod tests {
         let asym = AsymmetryParameter::from_q(1.0);
         let lineshape_at_resonance = fano_lineshape(0.0, &asym, 0.01);
         // At resonance (x=0) with q=1: lineshape = 1 / 1 = 1
-        assert!((lineshape_at_resonance - 1.0).abs() < 0.05);  // Allow gravitational correction
+        assert!((lineshape_at_resonance - 1.0).abs() < 0.05); // Allow gravitational correction
     }
 
     #[test]
     fn fano_lineshape_symmetry_limit() {
-        // As q → 0, Fano becomes symmetric Lorentzian
+        // As q -> 0, Fano becomes symmetric Lorentzian
         let asym = AsymmetryParameter::from_q(0.1);
         let shape_pos = fano_lineshape(1.0, &asym, 0.0);
         let shape_neg = fano_lineshape(-1.0, &asym, 0.0);
@@ -187,7 +202,7 @@ mod tests {
     fn absorption_zero_loss_ratio() {
         let asym = AsymmetryParameter::from_q(1.0);
         let absorption = absorption_cross_section(0.0, &asym, 0.01, 1.0, 0.0);
-        assert!(absorption.abs() < 1e-10);  // Zero with zero loss
+        assert!(absorption.abs() < 1e-10); // Zero with zero loss
     }
 
     #[test]

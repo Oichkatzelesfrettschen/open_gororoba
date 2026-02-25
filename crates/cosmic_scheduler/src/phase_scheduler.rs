@@ -6,7 +6,7 @@
 ///
 /// This trait enables any system to use deterministic, coordinated two-phase evolution
 /// with well-defined timing guarantees.
-use crate::timing_constants::{clock_spec, Time};
+use crate::timing_constants::{Time, clock_spec};
 use serde::{Deserialize, Serialize};
 
 /// Result type for scheduler operations

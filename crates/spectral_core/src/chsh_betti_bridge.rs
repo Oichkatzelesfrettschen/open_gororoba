@@ -82,8 +82,7 @@ pub fn velocity_to_betti(
     max_points: usize,
 ) -> (usize, usize) {
     use vacuum_frustration::vietoris_rips::{
-        compute_betti_numbers, compute_persistent_homology, DistanceMatrix,
-        VietorisRipsComplex,
+        DistanceMatrix, VietorisRipsComplex, compute_betti_numbers, compute_persistent_homology,
     };
 
     // Compute velocity magnitudes and find superthreshold points
@@ -199,11 +198,10 @@ pub fn spearman_correlation(x: &[f64], y: &[f64]) -> (f64, f64) {
 fn normal_cdf_complement(x: f64) -> f64 {
     // Abramowitz & Stegun approximation 26.2.17
     let t = 1.0 / (1.0 + 0.2316419 * x);
-    let poly = t * (0.319_381_530
-        + t * (-0.356_563_782
-            + t * (1.781_477_937
-                + t * (-1.821_255_978
-                    + t * 1.330_274_429))));
+    let poly = t
+        * (0.319_381_530
+            + t * (-0.356_563_782
+                + t * (1.781_477_937 + t * (-1.821_255_978 + t * 1.330_274_429))));
     let pdf = (-x * x / 2.0).exp() / (2.0 * std::f64::consts::PI).sqrt();
     pdf * poly
 }
@@ -238,8 +236,16 @@ mod tests {
         let x: Vec<f64> = (0..20).map(|i| i as f64).collect();
         let y: Vec<f64> = (0..20).map(|i| i as f64 * 2.0 + 1.0).collect();
         let (rho, p) = spearman_correlation(&x, &y);
-        assert!((rho - 1.0).abs() < 1e-10, "perfect correlation should give rho=1, got {}", rho);
-        assert!(p < 0.01, "p-value should be small for perfect correlation, got {}", p);
+        assert!(
+            (rho - 1.0).abs() < 1e-10,
+            "perfect correlation should give rho=1, got {}",
+            rho
+        );
+        assert!(
+            p < 0.01,
+            "p-value should be small for perfect correlation, got {}",
+            p
+        );
     }
 
     #[test]
@@ -247,13 +253,21 @@ mod tests {
         let x: Vec<f64> = (0..20).map(|i| i as f64).collect();
         let y: Vec<f64> = (0..20).map(|i| -(i as f64)).collect();
         let (rho, _) = spearman_correlation(&x, &y);
-        assert!((rho + 1.0).abs() < 1e-10, "anticorrelation should give rho=-1, got {}", rho);
+        assert!(
+            (rho + 1.0).abs() < 1e-10,
+            "anticorrelation should give rho=-1, got {}",
+            rho
+        );
     }
 
     #[test]
     fn test_normal_cdf_complement_symmetry() {
         // Phi(-x) should give large value (close to 1 for x=0)
         let c0 = normal_cdf_complement(0.0);
-        assert!((c0 - 0.5).abs() < 0.01, "Phi_c(0) should be ~0.5, got {}", c0);
+        assert!(
+            (c0 - 0.5).abs() < 0.01,
+            "Phi_c(0) should be ~0.5, got {}",
+            c0
+        );
     }
 }

@@ -25,7 +25,7 @@
 
 use super::adaptive::{AdaptiveConfig, AdaptiveResult};
 use super::null_models::{
-    run_adaptive_null_test, NullModelStrategy, NullTestConfig, RowPermutationNull,
+    NullModelStrategy, NullTestConfig, RowPermutationNull, run_adaptive_null_test,
 };
 use algebra_core::analysis::codebook::EncodingDictionary;
 use algebra_core::construction::cayley_dickson::find_zero_divisors;
@@ -206,7 +206,7 @@ mod tests {
     use super::super::adaptive::StopReason;
     use super::super::null_models::ColumnIndependentNull;
     use super::*;
-    use algebra_core::analysis::codebook::{enumerate_lambda_256, LatticeVector};
+    use algebra_core::analysis::codebook::{LatticeVector, enumerate_lambda_256};
 
     /// Build a small (dim=4) dictionary with known lattice vectors.
     fn sample_dictionary_4() -> EncodingDictionary {
@@ -225,11 +225,11 @@ mod tests {
         let data = dictionary_to_column_major(&dict);
         assert_eq!(data.len(), 4 * 8);
         // Row 0, col 0: lattice_vec[0] of basis 0 = -1
-        assert_eq!(data[0], -1.0);             // row=0, col=0
+        assert_eq!(data[0], -1.0); // row=0, col=0
         // Row 0, col 4: lattice_vec[4] of basis 0 = 0
-        assert_eq!(data[4 * 4], 0.0);          // row=4, col=0
+        assert_eq!(data[4 * 4], 0.0); // row=4, col=0
         // Row 1, col 0: lattice_vec[0] of basis 1 = -1
-        assert_eq!(data[1], -1.0);             // row=0, col=1
+        assert_eq!(data[1], -1.0); // row=0, col=1
         // Row 3, col 2: lattice_vec[2] of basis 3 = -1
         assert_eq!(data[2 * 4 + 3], -1.0);
     }

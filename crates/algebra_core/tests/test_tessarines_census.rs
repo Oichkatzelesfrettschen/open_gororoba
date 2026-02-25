@@ -5,8 +5,8 @@
 //! doubling constructions.
 
 use algebra_core::construction::tessarines::{
-    compute_invertibility_fraction, count_associativity_violations, count_commutativity_violations,
-    test_norm_multiplicativity, Tessarine,
+    Tessarine, compute_invertibility_fraction, count_associativity_violations,
+    count_commutativity_violations, test_norm_multiplicativity,
 };
 
 #[test]

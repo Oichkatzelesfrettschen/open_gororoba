@@ -10,7 +10,7 @@ use data_core::hdf5_export::{
     export_experiment_contract, export_field_3d, export_rho_quality_metrics,
     export_simulation_trace, read_rho_mean_trace,
 };
-use data_core::quality::{validate_rho_trace, RhoQualityThresholds};
+use data_core::quality::{RhoQualityThresholds, validate_rho_trace};
 #[cfg(feature = "hdf5-export")]
 use gororoba_contracts::{WarpRingConfig, WarpRingExperiment, WarpRingResults};
 use gororoba_engine::simulation::{

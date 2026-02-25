@@ -10,9 +10,9 @@ use clap::{Parser, Subcommand};
 use gororoba_engine::{SimulationConfig3D, SimulationState3D};
 use lbm_3d_cuda::Precision;
 use log::info;
-use pgfplots::axis::plot::Plot2D;
-use pgfplots::axis::Axis;
 use pgfplots::Picture;
+use pgfplots::axis::Axis;
+use pgfplots::axis::plot::Plot2D;
 use std::error::Error;
 #[cfg(feature = "hdf5-export")]
 use std::path::Path;

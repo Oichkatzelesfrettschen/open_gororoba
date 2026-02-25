@@ -16,12 +16,12 @@ pub mod ghost_spectral;
 pub mod ndfft;
 pub mod neg_dim;
 pub mod pde_surrogates;
-pub mod wavelet;
 pub mod warp_physics;
+pub mod wavelet;
 
 pub use neg_dim::{
-    build_kinetic_operator, caffarelli_silvestre_eigenvalues, eigenvalues_imaginary_time,
-    epsilon_convergence_sweep, ConvergenceResult, EigenResult,
+    ConvergenceResult, EigenResult, build_kinetic_operator, caffarelli_silvestre_eigenvalues,
+    eigenvalues_imaginary_time, epsilon_convergence_sweep,
 };
 
 use ndarray::{Array2, Array3, Axis};
@@ -125,9 +125,9 @@ pub fn fractional_laplacian_dirichlet_1d(u_interior: &[f64], s: f64, length: f64
 /// DST-I of length N can be computed via FFT of length 2(N+1).
 ///
 /// This implements the **orthonormalized** DST-I. The extraction step uses
-/// `scale = sqrt(2/(N+1)) / 2` — i.e., the square root of `2/(N+1)` divided
+/// `scale = sqrt(2/(N+1)) / 2` -- i.e., the square root of `2/(N+1)` divided
 /// by 2, equivalent to `sqrt(1/(2*(N+1)))`. The inverse is identical to the
-/// forward transform (`idst_i(dst_i(x)) ≈ x`) without any extra `(N+1)/2`
+/// forward transform (`idst_i(dst_i(x)) ~= x`) without any extra `(N+1)/2`
 /// factors, because the orthonormal basis is self-dual.
 fn dst_i(x: &[f64]) -> Vec<f64> {
     let n = x.len();
@@ -204,7 +204,7 @@ pub fn fractional_laplacian_periodic_2d(u: &Array2<f64>, s: f64, lx: f64, ly: f6
     // Convert to complex
     let mut buffer: Array2<Complex64> = u.mapv(|x| Complex64::new(x, 0.0));
 
-    // FFT along rows (each row has ny elements → use fft_y)
+    // FFT along rows (each row has ny elements -> use fft_y)
     for mut row in buffer.rows_mut() {
         let mut row_vec: Vec<Complex64> = row.to_vec();
         fft_y.process(&mut row_vec);
@@ -213,7 +213,7 @@ pub fn fractional_laplacian_periodic_2d(u: &Array2<f64>, s: f64, lx: f64, ly: f6
         }
     }
 
-    // FFT along columns (each column has nx elements → use fft_x)
+    // FFT along columns (each column has nx elements -> use fft_x)
     for mut col in buffer.columns_mut() {
         let mut col_vec: Vec<Complex64> = col.to_vec();
         fft_x.process(&mut col_vec);
@@ -241,7 +241,7 @@ pub fn fractional_laplacian_periodic_2d(u: &Array2<f64>, s: f64, lx: f64, ly: f6
         *val *= mult;
     }
 
-    // IFFT along columns (each column has nx elements → use ifft_x)
+    // IFFT along columns (each column has nx elements -> use ifft_x)
     for mut col in buffer.columns_mut() {
         let mut col_vec: Vec<Complex64> = col.to_vec();
         ifft_x.process(&mut col_vec);
@@ -250,7 +250,7 @@ pub fn fractional_laplacian_periodic_2d(u: &Array2<f64>, s: f64, lx: f64, ly: f6
         }
     }
 
-    // IFFT along rows (each row has ny elements → use ifft_y)
+    // IFFT along rows (each row has ny elements -> use ifft_y)
     for mut row in buffer.rows_mut() {
         let mut row_vec: Vec<Complex64> = row.to_vec();
         ifft_y.process(&mut row_vec);
@@ -572,7 +572,7 @@ mod tests {
 
     #[test]
     fn test_periodic_2d_nonsquare_wave() {
-        // Non-square grid (nx ≠ ny) catches the row/column planner swap bug.
+        // Non-square grid (nx = ny) catches the row/column planner swap bug.
         // u = sin(2*pi*x) * sin(2*pi*y), (-Delta)^1 u = [(2*pi/Lx)^2 + (2*pi/Ly)^2] * u
         let nx = 12;
         let ny = 16;

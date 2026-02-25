@@ -177,11 +177,7 @@ mod tests {
         let dim = 4;
         let graph = SignedGraph::from_psi_matrix(dim, |i, j| {
             // Dummy psi: alternating +1/-1
-            if (i + j) % 2 == 0 {
-                1
-            } else {
-                -1
-            }
+            if (i + j) % 2 == 0 { 1 } else { -1 }
         });
 
         assert_eq!(graph.node_count(), 4);

@@ -9,7 +9,7 @@
 //! - Hogg (1999), arXiv:astro-ph/9905116 (distance measures review)
 //! - Planck Collaboration VI (2020), A&A 641, A6 (cosmological parameters)
 
-use crate::bounce::{hubble_e_lcdm, C_KM_S};
+use crate::bounce::{C_KM_S, hubble_e_lcdm};
 use crate::gl_integrate;
 
 /// Planck 2018 TT,TE,EE+lowE+lensing best-fit parameters.

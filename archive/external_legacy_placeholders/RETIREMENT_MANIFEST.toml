@@ -1,0 +1,166 @@
+# Retirement contract for legacy derived placeholders moved out of data/external.
+# These files are retained for provenance-only history and are not considered
+# reproducible external dataset artifacts.
+
+[retirement]
+status = "migrated"
+retired_on_utc = "2026-02-25T00:00:00Z"
+retired_from = "data/external"
+retained_under = "archive/external_legacy_placeholders"
+source_contract_ref = "data/external/SOURCES.toml"
+reason = "Retire non-canonical transitional placeholders from external replay lane."
+
+[[file]]
+path = "archive/external_legacy_placeholders/DESI_QSO.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-DESI-QSO"
+sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58"
+
+[[file]]
+path = "archive/external_legacy_placeholders/GWTC-3.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-GWTC"
+sha256 = "b6ee03773b806a3eb25c26f9fd5f2487c382cdcaf5af4bdc9f0a9ef82664ddb3"
+
+[[file]]
+path = "archive/external_legacy_placeholders/GWTC-3_GWpy_Official.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-GWTC"
+sha256 = "bb5ab708f5d9ef68639dd5a7a09f05e5191af8fc04211c40b55c0715ef727080"
+
+[[file]]
+path = "archive/external_legacy_placeholders/GWTC-3_confident.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-GWTC"
+sha256 = "6e154917fa65b4f0c41e5bc57123aa1e8fa09a3ff027bd7f0c00a7ca82f7766b"
+
+[[file]]
+path = "archive/external_legacy_placeholders/GWTC-3_synthetic.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-GWTC"
+sha256 = "8ffe88c10b50e491792f76b6eba45f19dfbed0497dd69b0568afb7bbd096ed94"
+
+[[file]]
+path = "archive/external_legacy_placeholders/HST_UDF_Metadata.csv"
+source_id = "SRC-HST-UDF-METADATA"
+sha256 = "e0aca08526d149b25ce2c0ddfd4e914f6b0c0d9f7c0cf183f015173bd9bfddac"
+
+[[file]]
+path = "archive/external_legacy_placeholders/SDSS_DR16Q.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SDSS"
+sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+
+[[file]]
+path = "archive/external_legacy_placeholders/SDSS_Quasars_Astroquery.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SDSS"
+sha256 = "d18266f5dd06970c9678c1639e0771d1ba90c8a98e05dea1ee7f4b989f881428"
+
+[[file]]
+path = "archive/external_legacy_placeholders/TESS_Metadata.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-METADATA"
+sha256 = "392072233e722cc1c0b31c2cbfedfbc8c77480514f8a42e28b4a15173685da79"
+
+[[file]]
+path = "archive/external_legacy_placeholders/chime_frb_cat1.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-CHIME"
+sha256 = "affd86573fee8fe94be9d0d85e73cc787fa260b2497ccec5d9d93e1d26610ed5"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_3c279_2017_csv.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-CSV-TXT"
+sha256 = "6f87866b8df2afef6f67c44007a4489652480784d2da08ea8fd163f70843ba46"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_3c279_2017_txt.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-TXT"
+sha256 = "59b308d0152d8855c70c80c8ecb165da9215a14403abb9353fc02643010c676d"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_cena_2017_csv.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-CSV-TXT"
+sha256 = "d5cd2a93675062d62b32e77dae1bd0d82b7d16db700df50528b5d2e7ad6fd71d"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_cena_2017_txt.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-TXT"
+sha256 = "8d997995a39ee2cb9fda00e5cc2bbda815f5757506d65a84a93d47259ac6d386"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_m87_2017_csv.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-CSV-TXT"
+sha256 = "8fa8964ad5b1c80dd78bc3e023f849bb33312b2d8af95d6718439f529f361911"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_m87_2017_txt.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-TXT"
+sha256 = "2e3edeb06826bfe3686930d6c677d68985ed2f655bd8d303cb9ae4638ed5c0ab"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_m87_2018_csv.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-CSV-TXT"
+sha256 = "6d94c99dcd636235b518d594e5991f5472012c16d8b9126df00ff5b3f9a338cc"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_m87_2018_txt.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-TXT"
+sha256 = "19d0d5fdf063be376f48dd86b3ffe751d5d2d116f0f1f4c2a43a65b7a557b6b2"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_sgra_2017_csv.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-CSV-TXT"
+sha256 = "709f322cd825669e1b30dacb3c9093f016ae3c931a19366b7b29f536ed0baebb"
+
+[[file]]
+path = "archive/external_legacy_placeholders/eht_sgra_2017_txt.tgz"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-TXT"
+sha256 = "9e7e40354fb587b74475359982cacbb5c9b144037708275194f635cf1bd3a82b"
+
+[[file]]
+path = "archive/external_legacy_placeholders/hipparcos_parallax.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-HIPPARCOS"
+sha256 = "9d59f7b13f8ac033b59f41b6d194e8edd24324fea5764cc7f839087aef67706d"
+
+[[file]]
+path = "archive/external_legacy_placeholders/hipparcos_parallax_header.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-HIPPARCOS"
+sha256 = "ea0d5f499a587e71699c5d4fbe2a036f5070c6c087193c833efae8f2abbb8676"
+
+[[file]]
+path = "archive/external_legacy_placeholders/jdft_3d-8-18-2021.json.zip"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-JARVIS-ZIP"
+sha256 = "03e5af365067117d97c73b83fc74b86f79cdba4cc592b346f5aa2209a24c3925"
+
+[[file]]
+path = "archive/external_legacy_placeholders/nanograv_15yr_kde.zip"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-NANOGRAV-KDE"
+sha256 = "feed174024e6ad4cf1a17cf9c110f46a4760868aceb9bba539c78270ed7599a1"
+
+[[file]]
+path = "archive/external_legacy_placeholders/pantheon_mu.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-PANTHEON"
+sha256 = "d3771815287104fe04c8ec7785f7ccd69e6a19d450c64f83377e0a5a1898e678"
+
+[[file]]
+path = "archive/external_legacy_placeholders/pantheon_mu_header.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-PANTHEON"
+sha256 = "9425e330543c937ced5ef7e72093ac4af5ceb768ad2db5761edee33630899204"
+
+[[file]]
+path = "archive/external_legacy_placeholders/sorce_tsi_clean.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SORCE"
+sha256 = "e5f336318fc78344d5daff39332772b6e2003242bee1248c309bc40cf698e85d"
+
+[[file]]
+path = "archive/external_legacy_placeholders/sorce_tsi_header.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SORCE"
+sha256 = "4d88e0a182bcc6caa6c65e95a5801600a791776f5e74d6ae24fe5a529f866cc8"
+
+[[file]]
+path = "archive/external_legacy_placeholders/swarm_clean.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SWARM"
+sha256 = "60b5e36da5c7df2eb3e35bf1022bdb1bc9c5afd4b7a1e1bf45d1e5fb9aae4ea4"
+
+[[file]]
+path = "archive/external_legacy_placeholders/swarm_f.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SWARM"
+sha256 = "a6bd98922f6634683fe133fad4371080baf2930452441455931f55c6f3e28a3f"
+
+[[file]]
+path = "archive/external_legacy_placeholders/swarm_f_header.csv"
+source_id = "SRC-EXTERNAL-LEGACY-DERIVED-SWARM"
+sha256 = "f09f387803421c20cbe81cfbf7dd207d5e729eb509c2574a9113ef5a46e03c9c"

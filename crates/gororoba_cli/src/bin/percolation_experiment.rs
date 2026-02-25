@@ -539,8 +539,8 @@ struct BesagCliffordParams<'a> {
 fn run_besag_clifford_null(
     params: BesagCliffordParams,
 ) -> Result<NullModelResult, Box<dyn std::error::Error>> {
-    use rand::seq::SliceRandom;
     use rand::SeedableRng;
+    use rand::seq::SliceRandom;
 
     let mut rng = rand::rngs::StdRng::seed_from_u64(params.seed);
 

@@ -1,0 +1,35 @@
+# Retirement contract for nonreproducible/mutable external snapshots removed
+# from data/external replay enforcement.
+
+[retirement]
+status = "migrated"
+retired_on_utc = "2026-02-25T00:00:00Z"
+retired_from = "data/external"
+retained_under = "archive/external_nonreproducible_snapshots"
+source_contract_ref = "data/external/SOURCES.toml"
+reason = "External lane now restricted to deterministic replayable datasets only."
+
+[[file]]
+path = "archive/external_nonreproducible_snapshots/lhc_2025/alice/pb_pb_5.36tev_polarization.csv"
+source_id = "SRC-LHC-ALICE-CMS"
+sha256 = "972289ffbcba08fce18ef49f875e1fb6a9da42cf98b0b042d51879bfc9c008ec"
+
+[[file]]
+path = "archive/external_nonreproducible_snapshots/lhc_2025/cms/p_pb_8.16tev_azimuthal.csv"
+source_id = "SRC-LHC-ALICE-CMS"
+sha256 = "fd89ebaf366c2bf9e9e1f5aca1f058adaddc6ebbb90caf8d3a5a5a84ab49030f"
+
+[[file]]
+path = "archive/external_nonreproducible_snapshots/nv_odmr/NV_ODMR_OPU_BOM_Jan2026.xlsx"
+source_id = "SRC-NV-ODMR"
+sha256 = "9d8f5f40d0646f6160f6d9b48c49113e8e00612b3f833dfc2e19ceb40b01f56a"
+
+[[file]]
+path = "archive/external_nonreproducible_snapshots/sdss_dr18_quasars.csv"
+source_id = "SRC-SDSS-DR18-QUASARS"
+sha256 = "305b3cb7f7cdcc44bb996f4fe08799aa0a480c4ca2900ef802401f032a83dd9a"
+
+[[file]]
+path = "archive/external_nonreproducible_snapshots/swarm_magnetic_sample.csv"
+source_id = "SRC-SWARM-L1B-MAGNETIC-SAMPLE"
+sha256 = "316bec0dab70b2878fdd794938e264b54d3024e47c970741f5dda149db65b343"

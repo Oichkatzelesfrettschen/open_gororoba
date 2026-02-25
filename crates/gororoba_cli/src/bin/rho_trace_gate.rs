@@ -1,7 +1,7 @@
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::read_rho_mean_trace;
 #[cfg(feature = "hdf5-export")]
-use data_core::quality::{validate_rho_trace, RhoQualityThresholds};
+use data_core::quality::{RhoQualityThresholds, validate_rho_trace};
 use std::collections::BTreeSet;
 use std::error::Error;
 use std::path::PathBuf;

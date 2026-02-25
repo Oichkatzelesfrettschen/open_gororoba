@@ -11,11 +11,11 @@
 //! - `export`:  Export compact results to repo (CSV + TOML)
 
 use clap::{Parser, Subcommand};
+use data_core::catalogs::bl_filterbank::BlObservation;
 use data_core::catalogs::bl_filterbank::bl_6equj5_observations;
 #[cfg(feature = "hdf5-export")]
 use data_core::catalogs::bl_filterbank::observation_file_path;
-use data_core::catalogs::bl_filterbank::BlObservation;
-use data_core::seti::cadence::{abacad_event_filter, CadenceEvent, ObservationHits};
+use data_core::seti::cadence::{CadenceEvent, ObservationHits, abacad_event_filter};
 use data_core::seti::doppler::DopplerHit;
 #[cfg(feature = "hdf5-export")]
 use data_core::seti::doppler::DopplerSearchParams;
@@ -117,7 +117,9 @@ fn write_hits_csv(hits: &[DopplerHit], path: &Path, obs: &BlObservation) -> std:
         obs.pointing_type,
         obs.cadence
     ));
-    out.push_str("freq_mhz,drift_rate_hz_s,snr,coarse_channel,uncorrected_freq,total_power,n_time_samples\n");
+    out.push_str(
+        "freq_mhz,drift_rate_hz_s,snr,coarse_channel,uncorrected_freq,total_power,n_time_samples\n",
+    );
     for h in hits {
         out.push_str(&format!(
             "{:.6},{:.6},{:.2},{},{:.6},{:.2},{}\n",
@@ -314,8 +316,10 @@ fn run_cadence(hits_dir: &Path, output: &Path, freq_tol: f64, drift_tol: f64) {
     for cadence_id in [1u32, 2] {
         println!("--- Cadence {} ---", cadence_id);
 
-        let cadence_obs: Vec<&BlObservation> =
-            obs_list.iter().filter(|o| o.cadence == cadence_id).collect();
+        let cadence_obs: Vec<&BlObservation> = obs_list
+            .iter()
+            .filter(|o| o.cadence == cadence_id)
+            .collect();
 
         let mut observation_hits: Vec<ObservationHits> = Vec::new();
 
@@ -378,10 +382,7 @@ fn write_cadence_events_csv(events: &[CadenceEvent], cadence_id: u32, path: &Pat
     }
 
     let mut out = String::new();
-    out.push_str(&format!(
-        "# ABACAD cadence {} events\n",
-        cadence_id
-    ));
+    out.push_str(&format!("# ABACAD cadence {} events\n", cadence_id));
     out.push_str(
         "cadence,freq_mhz,drift_rate_hz_s,snr_on_mean,snr_on_max,n_on_detections,n_off_detections\n",
     );
@@ -464,9 +465,7 @@ fn run_export(hits_dir: &Path, output: &Path, analysis_toml: &Path) {
 
     let mut all_out = String::new();
     all_out.push_str("# Consolidated BL 6EQUJ5 Doppler search results\n");
-    all_out.push_str(
-        "obs_id,pointing_type,cadence,freq_mhz,drift_rate_hz_s,snr,coarse_channel\n",
-    );
+    all_out.push_str("obs_id,pointing_type,cadence,freq_mhz,drift_rate_hz_s,snr,coarse_channel\n");
 
     let mut total = 0usize;
     for obs in &obs_list {
@@ -509,10 +508,7 @@ fn run_export(hits_dir: &Path, output: &Path, analysis_toml: &Path) {
     toml_out.push_str(&format!("total_hits = {}\n", total));
     toml_out.push_str("max_drift_hz_s = 4.0\n");
     toml_out.push_str("snr_threshold = 10.0\n");
-    toml_out.push_str(&format!(
-        "results_csv = \"{}\"\n",
-        output.display()
-    ));
+    toml_out.push_str(&format!("results_csv = \"{}\"\n", output.display()));
     toml_out.push_str("\n[claims]\n");
     toml_out.push_str("C-771 = \"ABACAD non-detection confirmed by Rust-native pipeline\"\n");
     toml_out.push_str("C-772 = \"Pending topology analysis with real candidate features\"\n");
@@ -532,7 +528,14 @@ fn main() {
             max_drift,
             snr_threshold,
             channels,
-        } => run_scan(&data_dir, &res, &output_dir, max_drift, snr_threshold, &channels),
+        } => run_scan(
+            &data_dir,
+            &res,
+            &output_dir,
+            max_drift,
+            snr_threshold,
+            &channels,
+        ),
         Command::Cadence {
             hits_dir,
             output,

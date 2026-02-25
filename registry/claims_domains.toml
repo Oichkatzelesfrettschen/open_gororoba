@@ -2895,7 +2895,7 @@ status_token = "PARTIALLY_VERIFIED"
 status_text = "Partially verified (source-aligned; geometric invariants computed; Phase 3A)"
 status_date = "2026-01-30"
 summary = "\"The geometry of sedenion zero divisors\" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`)."
-where_stated = ["docs/SEDENION_ATLAS.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md", "data/external/papers/reggiani_2024_2411.18881.pdf", "docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md"]
+where_stated = ["docs/SEDENION_ATLAS.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md", "data/papers/corpus/reggiani_2024_2411.18881.pdf", "docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 20
 
@@ -3071,7 +3071,7 @@ status_token = "NOT_SUPPORTED"
 status_text = "Not supported (mapping under-specified in source)"
 status_date = "2026-02-04"
 summary = "Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023)."
-where_stated = ["data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "crates/algebra_core/src/group_theory.rs", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
+where_stated = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "crates/algebra_core/src/group_theory.rs", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 68
 
@@ -3082,7 +3082,7 @@ status_token = "VERIFIED"
 status_text = "Verified (metadata+abstract; structural prerequisite reproduced)"
 status_date = "2026-02-04"
 summary = "Chanyal (2014): a \"sedenion unified theory of gravi-electromagnetism\" expresses unified potentials/fields/currents of dyons and \"gravito-dyons\" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo)."
-where_stated = ["docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py", "data/external/traces/chanyal_2014_springer_abstract.txt"]
+where_stated = ["docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py", "data/papers/intake/traces/chanyal_2014_springer_abstract.txt"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 71
 
@@ -3632,7 +3632,7 @@ status_token = "NOT_SUPPORTED"
 status_text = "Not supported (numerology; no mechanism)"
 status_date = "2026-02-03"
 summary = "Numerical correspondence gamma ~ epsilon ~ 4*lambda_GB ~ 1/4, relating Barbero-Immirzi parameter, network clustering, and Gauss-Bonnet coupling."
-where_stated = ["docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md", "data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf", "data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf", "data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf", "docs/EXCEPTIONAL_COSMOLOGY.md"]
+where_stated = ["docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md", "data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf", "data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf", "data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf", "docs/EXCEPTIONAL_COSMOLOGY.md"]
 source_markdown = "docs/claims/by_domain/cosmology.md"
 source_line = 20
 
@@ -3676,7 +3676,7 @@ status_token = "NOT_SUPPORTED"
 status_text = "Not supported (dimensional coincidence; no mechanism)"
 status_date = "2026-02-03"
 summary = "F4 26D representation connects to bosonic string critical dimension (D=26)."
-where_stated = ["docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf"]
+where_stated = ["docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf"]
 source_markdown = "docs/claims/by_domain/cosmology.md"
 source_line = 32
 
@@ -3764,7 +3764,7 @@ status_token = "PARTIALLY_VERIFIED"
 status_text = "Partially verified (source-aligned; geometric invariants computed; Phase 3A)"
 status_date = "2026-01-30"
 summary = "\"The geometry of sedenion zero divisors\" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`)."
-where_stated = ["docs/SEDENION_ATLAS.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md", "data/external/papers/reggiani_2024_2411.18881.pdf", "docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md"]
+where_stated = ["docs/SEDENION_ATLAS.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md", "data/papers/corpus/reggiani_2024_2411.18881.pdf", "docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 8
 
@@ -3797,7 +3797,7 @@ status_token = "NOT_SUPPORTED"
 status_text = "Not supported (mapping under-specified in source)"
 status_date = "2026-02-04"
 summary = "Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023)."
-where_stated = ["data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "crates/algebra_core/src/group_theory.rs", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
+where_stated = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "crates/algebra_core/src/group_theory.rs", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 17
 
@@ -3808,7 +3808,7 @@ status_token = "VERIFIED"
 status_text = "Verified (metadata+abstract; structural prerequisite reproduced)"
 status_date = "2026-02-04"
 summary = "Chanyal (2014): a \"sedenion unified theory of gravi-electromagnetism\" expresses unified potentials/fields/currents of dyons and \"gravito-dyons\" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo)."
-where_stated = ["docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py", "data/external/traces/chanyal_2014_springer_abstract.txt"]
+where_stated = ["docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py", "data/papers/intake/traces/chanyal_2014_springer_abstract.txt"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 20
 
@@ -3819,7 +3819,7 @@ status_token = "NOT_SUPPORTED"
 status_text = "Not supported (numerology; no mechanism)"
 status_date = "2026-02-03"
 summary = "Numerical correspondence gamma ~ epsilon ~ 4*lambda_GB ~ 1/4, relating Barbero-Immirzi parameter, network clustering, and Gauss-Bonnet coupling."
-where_stated = ["docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md", "data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf", "data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf", "data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf", "docs/EXCEPTIONAL_COSMOLOGY.md"]
+where_stated = ["docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md", "data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf", "data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf", "data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf", "docs/EXCEPTIONAL_COSMOLOGY.md"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 23
 
@@ -3830,7 +3830,7 @@ status_token = "NOT_SUPPORTED"
 status_text = "Not supported (dimensional coincidence; no mechanism)"
 status_date = "2026-02-03"
 summary = "F4 26D representation connects to bosonic string critical dimension (D=26)."
-where_stated = ["docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf"]
+where_stated = ["docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 26
 
@@ -3984,7 +3984,7 @@ status_token = "VERIFIED"
 status_text = "Verified (Analog)"
 status_date = "2026-02-02"
 summary = "Metamaterials can emulate Alcubierre warp drive metrics for electromagnetic waves (Analog Gravity)."
-where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"]
+where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 68
 
@@ -3995,7 +3995,7 @@ status_token = "UNKNOWN"
 status_text = "Theoretical (Blueprint)"
 status_date = "2026-02-02"
 summary = "A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble."
-where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/White_2021_Casimir_Warp.pdf"]
+where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/White_2021_Casimir_Warp.pdf"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 71
 
@@ -4006,7 +4006,7 @@ status_token = "REFUTED"
 status_text = "Refuted"
 status_date = "2026-02-02"
 summary = "Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels."
-where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf"]
+where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 74
 
@@ -4017,7 +4017,7 @@ status_token = "UNKNOWN"
 status_text = "Literature (perturbative QFT)"
 status_date = "2026-02-02"
 summary = "One-loop photon-graviton mixing in constant EM fields includes non-zero tadpole contributions (Ahmadiniaz et al. 2026), relevant to semiclassical EM-gravity coupling limits."
-where_stated = ["docs/BIBLIOGRAPHY.md", "data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf"]
+where_stated = ["docs/BIBLIOGRAPHY.md", "data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 77
 
@@ -4028,7 +4028,7 @@ status_token = "UNKNOWN"
 status_text = "Literature (Experimental)"
 status_date = "2026-02-02"
 summary = "Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxed phase matching, enabling flat entangled photon sources."
-where_stated = ["docs/BIBLIOGRAPHY.md", "data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf"]
+where_stated = ["docs/BIBLIOGRAPHY.md", "data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 80
 
@@ -5458,7 +5458,7 @@ status_token = "VERIFIED"
 status_text = "Verified (Analog)"
 status_date = "2026-02-02"
 summary = "Metamaterials can emulate Alcubierre warp drive metrics for electromagnetic waves (Analog Gravity)."
-where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"]
+where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"]
 source_markdown = "docs/claims/by_domain/holography.md"
 source_line = 344
 
@@ -5469,7 +5469,7 @@ status_token = "UNKNOWN"
 status_text = "Theoretical (Blueprint)"
 status_date = "2026-02-02"
 summary = "A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble."
-where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/White_2021_Casimir_Warp.pdf"]
+where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/White_2021_Casimir_Warp.pdf"]
 source_markdown = "docs/claims/by_domain/holography.md"
 source_line = 347
 
@@ -5480,7 +5480,7 @@ status_token = "REFUTED"
 status_text = "Refuted"
 status_date = "2026-02-02"
 summary = "Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels."
-where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf"]
+where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf"]
 source_markdown = "docs/claims/by_domain/holography.md"
 source_line = 350
 
@@ -5887,7 +5887,7 @@ status_token = "VERIFIED"
 status_text = "Verified (Analog)"
 status_date = "2026-02-02"
 summary = "Metamaterials can emulate Alcubierre warp drive metrics for electromagnetic waves (Analog Gravity)."
-where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"]
+where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"]
 source_markdown = "docs/claims/by_domain/materials.md"
 source_line = 17
 
@@ -5898,7 +5898,7 @@ status_token = "UNKNOWN"
 status_text = "Theoretical (Blueprint)"
 status_date = "2026-02-02"
 summary = "A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble."
-where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/White_2021_Casimir_Warp.pdf"]
+where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/White_2021_Casimir_Warp.pdf"]
 source_markdown = "docs/claims/by_domain/materials.md"
 source_line = 20
 
@@ -5909,7 +5909,7 @@ status_token = "REFUTED"
 status_text = "Refuted"
 status_date = "2026-02-02"
 summary = "Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels."
-where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf"]
+where_stated = ["docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf"]
 source_markdown = "docs/claims/by_domain/materials.md"
 source_line = 23
 
@@ -8373,7 +8373,7 @@ status_token = "VERIFIED"
 status_text = "Verified (metadata+abstract; structural prerequisite reproduced)"
 status_date = "2026-02-04"
 summary = "Chanyal (2014): a \"sedenion unified theory of gravi-electromagnetism\" expresses unified potentials/fields/currents of dyons and \"gravito-dyons\" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo)."
-where_stated = ["docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py", "data/external/traces/chanyal_2014_springer_abstract.txt"]
+where_stated = ["docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py", "data/papers/intake/traces/chanyal_2014_springer_abstract.txt"]
 source_markdown = "docs/claims/by_domain/spectral.md"
 source_line = 14
 

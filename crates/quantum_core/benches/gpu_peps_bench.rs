@@ -3,7 +3,7 @@
 //! Compares performance of GPU-accelerated vs CPU PEPS row contraction
 //! for varying tensor sizes. Compiled with `cargo bench --bench gpu_peps_bench --features gpu`.
 
-use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use faer::complex_native::c64;
 use std::hint::black_box;
 

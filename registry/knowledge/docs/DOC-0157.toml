@@ -288,7 +288,7 @@ Total claims: 521
 - Status: `Closed/Source-Insufficient`
 - Last verified: 2026-02-06
 - Statement: Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023).
-- Where stated: `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)
+- Where stated: `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)
 - What would verify/refute it: CLOSED (Phase 7 Batch B): Repo verifies a canonical SU(5) generator basis in the 5D defining rep: traceless/Hermitian/normalized and Lie bracket closed (summary: `data/csv/c033_su5_generator_summary.csv`). Tang & Tang (2023, Sec. 2.6) describe a construction of 24 generalized lambda matrices via five creation/annihilation operators, but do NOT enumerate a unique coefficient mapping from sedenion basis elements to a normalized SU(5) generator basis. The source provides the algebraic framework but not the explicit mapping table (basis conventions + normalization) needed for verification. Closed as source-insufficient.
 
 ## C-034
@@ -296,7 +296,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-04
 - Statement: Chanyal (2014): a \"sedenion unified theory of gravi-electromagnetism\" expresses unified potentials/fields/currents of dyons and \"gravito-dyons\" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo).
-- Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt`
+- Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`
 - What would verify/refute it: The Springer PDF is not cached (requires authentication); only metadata and an abstract extract are stored. Minimal offline check: `data/csv/c034_sedenion_doubling_identity_check.csv` verifies that the repo's S_16 multiplication exactly matches a Cayley-Dickson doubling formula over two octonionic halves, which is the algebraic prerequisite for a \"two eight-potentials\" formulation. The paper's explicit field equations and claimed sector symmetry remain unverified until a legal full-text source is available.
 
 ## C-035
@@ -320,7 +320,7 @@ Total claims: 521
 - Status: `Refuted`
 - Last verified: 2026-02-03
 - Statement: Numerical correspondence gamma ~ epsilon ~ 4*lambda_GB ~ 1/4, relating Barbero-Immirzi parameter, network clustering, and Gauss-Bonnet coupling.
-- Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`
+- Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`
 - What would verify/refute it: epsilon=1/4 is verified as a group-theory ratio (C-035). gamma and lambda_GB are model- and convention-dependent; the claim does not define a mapping that puts these numbers into a shared normalization, and the cited gamma values are not equal to 1/4. Per `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, treat this as an annotated coincidence note unless and until an explicit derivation supplies definitions, tolerances, and symmetric falsification boundaries.
 
 ## C-038
@@ -352,7 +352,7 @@ Total claims: 521
 - Status: `Refuted`
 - Last verified: 2026-02-03
 - Statement: F4 26D representation connects to bosonic string critical dimension (D=26).
-- Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`
+- Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`
 - What would verify/refute it: A shared number (26) does not define a derivation. The repo currently has no explicit mapping from an F4 26D sector to the worldsheet anomaly-cancellation argument that fixes the bosonic-string critical dimension. Per `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, keep as an annotated coincidence note unless and until a concrete mechanism (model class + mapping + falsifiable consequence) is provided.
 
 ## C-042
@@ -401,7 +401,7 @@ Total claims: 521
 - Last verified: 2026-02-04
 - Statement: E9, E10, E11 are Euclidean sphere-packing lattices.
 - Where stated: `archive/legacy_conjectures/`, `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `tests/test_c047_e_series_cartan_signature.py`
-- What would verify/refute it: The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/external/papers/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`).
+- What would verify/refute it: The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate and E10/E11 are indefinite Kac-Moody extensions of E8. Offline hook: `tests/test_c047_e_series_cartan_signature.py`. Sources cached under `data/papers/corpus/` (see `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`).
 
 ## C-048
 
@@ -3224,7 +3224,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-02
 - Statement: Metamaterials can emulate Alcubierre warp drive metrics for electromagnetic waves (Analog Gravity).
-- Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`
+- Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`
 - What would verify/refute it: Smolyaninov (2011) demonstrated bi-anisotropic metamaterials mimicking a warp bubble metric, allowing signal propagation at ~0.25c effectively within the medium. This is a kinematic analog, not a dynamical spacetime warping.
 
 ## C-401
@@ -3232,7 +3232,7 @@ Total claims: 521
 - Status: `Theoretical`
 - Last verified: 2026-02-02
 - Statement: A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble.
-- Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf`
+- Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`
 - What would verify/refute it: White et al. (2021) computed the vacuum energy density for this geometry and found a match to the Alcubierre requirement. Status: Blueprint exists, but device is unbuilt/untested as of Jan 2026.
 
 ## C-402
@@ -3240,7 +3240,7 @@ Total claims: 521
 - Status: `Refuted`
 - Last verified: 2026-02-02
 - Statement: Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels.
-- Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`
+- Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`
 - What would verify/refute it: Rodal (2025) proved that modifying G via metamaterials violates energy-momentum conservation or implies scalar forces excluded by experiment (Lunar Laser Ranging). \"Cheap\" warp drives via EM-gravity coupling are physically impossible under standard GR+SM.
 
 ## C-403
@@ -3304,7 +3304,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-04
 - Statement: One-loop photon-graviton mixing in constant EM fields includes non-zero tadpole contributions (Ahmadiniaz et al. 2026), relevant to semiclassical EM-gravity coupling limits.
-- Where stated: `docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py`
+- Where stated: `docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py`
 - What would verify/refute it: Phase 6 B6: Paper establishes 3rd diagram (tadpole) relevance. Does NOT overturn C-402 (Rodal 2025) refutation: mixing amplitude ratio ~(alpha/pi)*(B/B_cr)^2 is negligible for lab fields. Schwinger B_cr=4.41e9 T verified. 4 passing tests.
 
 ## C-411
@@ -3312,7 +3312,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-04
 - Statement: Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxed phase matching, enabling flat entangled photon sources.
-- Where stated: `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`
+- Where stated: `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`
 - What would verify/refute it: Phase 6 B6: Phase-matching function comparison confirms SFWM dominance (5.8x ratio from phase matching alone; paper quotes 19x including chi coefficients). Coherence lengths match: L_coh_SFWM=33.3 um >> L_coh_SHG=3.1 um, L_coh_SPDC=3.4 um. 4 passing tests.
 
 ## C-412
@@ -3497,7 +3497,7 @@ Total claims: 521
 - Last verified: 2026-02-03
 - Statement: Material stack Silicon-Gold-Ice VIII reconciled with literature-supported optical constants (Si n=3.48, Au complex eps, Ice VIII n=1.73 @ 30 GPa) for 1550nm Analogue Optics experiments.
 - Where stated: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`, `src/scripts/visualization/animate_warp_v8_rigorous.py`
-- What would verify/refute it: Sources cached in `data/external/papers/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used.
+- What would verify/refute it: Sources cached in `data/papers/corpus/` (Li 1980, Babar 2015, Pan 2014) and record-matched in `data/external/PROVENANCE.local.json`. The \"Cinematic n=2.5\" for Ice VIII is explicitly labeled as a fictional host proxy where used.
 
 ## C-435
 

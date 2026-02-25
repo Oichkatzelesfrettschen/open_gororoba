@@ -177,18 +177,8 @@ mod tests {
             omega: 0.1,
             theta: PI / 4.0,
         };
-        let a1 = external_amplitude(
-            &cfg1,
-            PhotonPolarization::Parallel,
-            LoopType::Spinor,
-            &quad,
-        );
-        let a2 = external_amplitude(
-            &cfg2,
-            PhotonPolarization::Parallel,
-            LoopType::Spinor,
-            &quad,
-        );
+        let a1 = external_amplitude(&cfg1, PhotonPolarization::Parallel, LoopType::Spinor, &quad);
+        let a2 = external_amplitude(&cfg2, PhotonPolarization::Parallel, LoopType::Spinor, &quad);
 
         // External ~ Pi(B) * v_F ~ (eB)^2 * (eB) = (eB)^3
         // So doubling B should give ~8x increase

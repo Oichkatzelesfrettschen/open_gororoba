@@ -11,15 +11,18 @@
 
 use ash::vk;
 use clap::{Parser, Subcommand};
-use lbm_vulkan::compute::GororobaEngine;
 use lbm_vulkan::VulkanContext;
+use lbm_vulkan::compute::GororobaEngine;
 use spectral_core::ghost_spectral::{
-    check_ghost, compute_power_spectrum, find_peaks, peak_fwhm, GHOST_FREQ,
+    GHOST_FREQ, check_ghost, compute_power_spectrum, find_peaks, peak_fwhm,
 };
 use std::io::Write;
 
 #[derive(Parser)]
-#[command(name = "zd-resonance-sweep", about = "ZD resonance falsification sweep")]
+#[command(
+    name = "zd-resonance-sweep",
+    about = "ZD resonance falsification sweep"
+)]
 struct Cli {
     #[command(subcommand)]
     cmd: Cmd,
@@ -220,18 +223,14 @@ fn run_tau_sweep(
 
     for &tau in &tau_values {
         let re_eff = (tau as f64 - 0.5) / 3.0;
-        println!(
-            "  tau={tau:.2}, tau_amp={tau_amp:.1}, Re_eff={re_eff:.4} ...",
-        );
+        println!("  tau={tau:.2}, tau_amp={tau_amp:.1}, Re_eff={re_eff:.4} ...",);
         let rho_means = run_sweep_point(&ctx, grid, steps, tau, tau_amp, lambda)?;
         let (peak_freq, peak_power, fwhm, ghost_rank) = analyze_rho_series(&rho_means);
         writeln!(
             file,
             "{tau},{tau_amp},{re_eff:.6},{peak_freq:.6},{peak_power:.6e},{fwhm:.6},{ghost_rank}"
         )?;
-        println!(
-            "    peak_freq={peak_freq:.4}, power={peak_power:.2e}, ghost_rank={ghost_rank}"
-        );
+        println!("    peak_freq={peak_freq:.4}, power={peak_power:.2e}, ghost_rank={ghost_rank}");
     }
 
     println!("Wrote {output}");
@@ -248,10 +247,7 @@ fn run_seeding_sweep(
     let lambda_values: Vec<f32> = vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 12.0, 16.0];
 
     let mut file = std::fs::File::create(output)?;
-    writeln!(
-        file,
-        "tau,lambda,peak_freq,peak_power,fwhm,ghost_rank"
-    )?;
+    writeln!(file, "tau,lambda,peak_freq,peak_power,fwhm,ghost_rank")?;
 
     for &lambda in &lambda_values {
         println!("  tau={tau:.2}, lambda={lambda:.1} ...");
@@ -261,9 +257,7 @@ fn run_seeding_sweep(
             file,
             "{tau},{lambda},{peak_freq:.6},{peak_power:.6e},{fwhm:.6},{ghost_rank}"
         )?;
-        println!(
-            "    peak_freq={peak_freq:.4}, power={peak_power:.2e}, ghost_rank={ghost_rank}"
-        );
+        println!("    peak_freq={peak_freq:.4}, power={peak_power:.2e}, ghost_rank={ghost_rank}");
     }
 
     println!("Wrote {output}");
@@ -275,13 +269,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
 
     match cli.cmd {
-        Cmd::Sweep { grid, steps, output } => {
+        Cmd::Sweep {
+            grid,
+            steps,
+            output,
+        } => {
             println!("=== ZD Resonance Sweep (tau_amp=0.2) ===");
             println!("Grid: {grid}^3, Steps: {steps}");
             println!("Ghost freq target: {GHOST_FREQ:.6}");
             run_tau_sweep(grid, steps, 0.2, &output)?;
         }
-        Cmd::Control { grid, steps, output } => {
+        Cmd::Control {
+            grid,
+            steps,
+            output,
+        } => {
             println!("=== Control Sweep (tau_amp=0.0, NO ZD modulation) ===");
             println!("Grid: {grid}^3, Steps: {steps}");
             run_tau_sweep(grid, steps, 0.0, &output)?;
@@ -313,7 +315,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("Wrote {output} ({} steps)", rho_means.len());
 
             let (peak_freq, peak_power, fwhm, ghost_rank) = analyze_rho_series(&rho_means);
-            println!("Peak: freq={peak_freq:.4}, power={peak_power:.2e}, FWHM={fwhm:.4}, ghost_rank={ghost_rank}");
+            println!(
+                "Peak: freq={peak_freq:.4}, power={peak_power:.2e}, FWHM={fwhm:.4}, ghost_rank={ghost_rank}"
+            );
         }
         Cmd::Analyze { sweep, control } => {
             println!("=== Analyze ZD Resonance Results ===");
@@ -335,8 +339,11 @@ fn analyze_sweep_results(
     // Check 1: Does the peak appear ONLY with ZD modulation?
     let sweep_ghost_count = sweep_data.iter().filter(|r| r.ghost_rank > 0).count();
     let control_ghost_count = control_data.iter().filter(|r| r.ghost_rank > 0).count();
-    println!("Ghost detections: sweep={sweep_ghost_count}/{}, control={control_ghost_count}{}",
-        sweep_data.len(), control_data.len());
+    println!(
+        "Ghost detections: sweep={sweep_ghost_count}/{}, control={control_ghost_count}{}",
+        sweep_data.len(),
+        control_data.len()
+    );
 
     // Check 2: Is the peak frequency constant across tau?
     let sweep_freqs: Vec<f64> = sweep_data.iter().map(|r| r.peak_freq).collect();
@@ -407,11 +414,11 @@ fn linear_regression_slope(xs: &[f64], ys: &[f64]) -> f64 {
     }
     let x_mean = xs.iter().sum::<f64>() / n;
     let y_mean = ys.iter().sum::<f64>() / n;
-    let num: f64 = xs.iter().zip(ys).map(|(x, y)| (x - x_mean) * (y - y_mean)).sum();
+    let num: f64 = xs
+        .iter()
+        .zip(ys)
+        .map(|(x, y)| (x - x_mean) * (y - y_mean))
+        .sum();
     let den: f64 = xs.iter().map(|x| (x - x_mean).powi(2)).sum();
-    if den.abs() < 1e-15 {
-        0.0
-    } else {
-        num / den
-    }
+    if den.abs() < 1e-15 { 0.0 } else { num / den }
 }

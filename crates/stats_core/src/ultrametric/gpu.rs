@@ -330,7 +330,7 @@ pub struct GpuTestResult {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ultrametric::baire::{normalize_data_column_major, AttributeSpec, BaireEncoder};
+    use crate::ultrametric::baire::{AttributeSpec, BaireEncoder, normalize_data_column_major};
 
     #[test]
     fn test_gpu_init() {

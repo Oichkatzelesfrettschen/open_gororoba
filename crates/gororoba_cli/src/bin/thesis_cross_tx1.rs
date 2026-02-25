@@ -14,8 +14,8 @@
 
 use clap::Parser;
 use lattice_filtration::{
-    classify_latency_law_detailed, simulate_frustration_modulated_storm,
-    simulate_shell_return_storm, FrustrationStormConfig, LatencyLawDetail,
+    FrustrationStormConfig, LatencyLawDetail, classify_latency_law_detailed,
+    simulate_frustration_modulated_storm, simulate_shell_return_storm,
 };
 use std::fmt::Write as _;
 use vacuum_frustration::bridge::SedenionField;

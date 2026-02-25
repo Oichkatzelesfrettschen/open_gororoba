@@ -582,6 +582,41 @@ path = "src/bin/landy_absorber_tmm.rs"
 name = "sterile-neutrino-audit"
 path = "src/bin/sterile_neutrino_audit.rs"
 
+[[bin]]
+name = "data-origin-audit"
+path = "src/bin/data_origin_audit.rs"
+
+[[bin]]
+name = "data-governance-gate"
+path = "src/bin/data_governance_gate.rs"
+
+[[bin]]
+name = "data-clean"
+path = "src/bin/data_clean.rs"
+
+[[bin]]
+name = "record-external-hashes"
+path = "src/bin/record_external_hashes.rs"
+
+[[bin]]
+name = "external-redownload-audit"
+path = "src/bin/external_redownload_audit.rs"
+
+[[bin]]
+name = "external-blocked-burndown"
+path = "src/bin/external_blocked_burndown.rs"
+
+[[bin]]
+name = "external-blocked-retry-ledger"
+path = "src/bin/external_blocked_retry_ledger.rs"
+
+[[bin]]
+name = "data-semantic-validate"
+path = "src/bin/data_semantic_validate.rs"
+
+[[bin]]
+name = "hepdata-refresh"
+path = "src/bin/hepdata_refresh.rs"
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }

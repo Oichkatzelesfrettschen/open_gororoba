@@ -16,7 +16,7 @@
 //! - Gray & Ellingsen (2002) ApJ 578 967
 //! - Perez et al. (2022) RNAAS 6 197 (BL 6EQUJ5 follow-up)
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::{Path, PathBuf};
 
 /// IIIF image endpoint for the 1977 Wow! signal printout scan.
@@ -293,7 +293,10 @@ impl DatasetProvider for Bl6equj5ManifestProvider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("bl_6equj5_gbt_manifest.csv").exists()
+        config
+            .output_dir
+            .join("bl_6equj5_gbt_manifest.csv")
+            .exists()
     }
 }
 
@@ -463,7 +466,11 @@ spliced_blc00_59538_39855_DIAG_6EQUJ5_1_0018,DIAG_6EQUJ5_1,18,ON,1,filterbank
             },
         ];
         let filtered = abacad_filter(&bundles);
-        assert_eq!(filtered.len(), 2, "Should return 2 ON pointings with OFF pairs");
+        assert_eq!(
+            filtered.len(),
+            2,
+            "Should return 2 ON pointings with OFF pairs"
+        );
         assert_eq!(filtered[0].bundle_id, "on1");
         assert_eq!(filtered[1].bundle_id, "on2");
     }

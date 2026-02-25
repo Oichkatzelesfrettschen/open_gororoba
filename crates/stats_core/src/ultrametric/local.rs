@@ -382,11 +382,8 @@ pub fn local_ultrametricity_test_nd(
             .collect();
 
         if neighbors.len() >= 3 {
-            let idx = neighborhood_ultrametric_index_nd(
-                &neighbors,
-                n_samples_per_neighborhood,
-                &mut rng,
-            );
+            let idx =
+                neighborhood_ultrametric_index_nd(&neighbors, n_samples_per_neighborhood, &mut rng);
             local_indices.push(idx);
         }
     }
@@ -598,16 +595,12 @@ mod tests {
             .collect();
 
         // Convert to Vec<Vec<f64>>
-        let coords_nd: Vec<Vec<f64>> = coords_3d
-            .iter()
-            .map(|&(x, y, z)| vec![x, y, z])
-            .collect();
+        let coords_nd: Vec<Vec<f64>> = coords_3d.iter().map(|&(x, y, z)| vec![x, y, z]).collect();
 
         let result = local_ultrametricity_test_nd(
-            &coords_nd,
-            5.0,  // epsilon
-            500,  // samples per neighborhood
-            20,   // permutations (small for speed)
+            &coords_nd, 5.0, // epsilon
+            500, // samples per neighborhood
+            20,  // permutations (small for speed)
             42,
         );
 
@@ -626,15 +619,15 @@ mod tests {
             .collect();
 
         let result = local_ultrametricity_test_nd(
-            &coords,
-            12.0, // larger epsilon for 8D (distances grow with sqrt(D))
-            300,
-            10,
-            42,
+            &coords, 12.0, // larger epsilon for 8D (distances grow with sqrt(D))
+            300, 10, 42,
         );
 
         assert_eq!(result.n_points, 40);
-        assert!(result.n_testable > 0, "should find some neighborhoods in 8D");
+        assert!(
+            result.n_testable > 0,
+            "should find some neighborhoods in 8D"
+        );
         assert!(result.mean_local_index >= 0.0 && result.mean_local_index <= 1.0);
     }
 
@@ -647,24 +640,22 @@ mod tests {
             .collect();
 
         let result = local_ultrametricity_test_nd(
-            &coords,
-            18.0, // sqrt(16)*10/2 ~ 20; use 18 to ensure neighborhoods
-            200,
-            10,
-            42,
+            &coords, 18.0, // sqrt(16)*10/2 ~ 20; use 18 to ensure neighborhoods
+            200, 10, 42,
         );
 
         assert_eq!(result.n_points, 50);
         // In 16D, typical Euclidean distance between uniform [0,10]^16 points
         // is sqrt(16 * 100/12) ~ 11.5, so eps=18 should capture many neighbors
-        assert!(result.n_testable > 0, "should find some neighborhoods in 16D");
+        assert!(
+            result.n_testable > 0,
+            "should find some neighborhoods in 16D"
+        );
     }
 
     #[test]
     fn test_local_ultrametricity_nd_too_small_epsilon() {
-        let coords: Vec<Vec<f64>> = (0..10)
-            .map(|i| vec![i as f64 * 100.0, 0.0])
-            .collect();
+        let coords: Vec<Vec<f64>> = (0..10).map(|i| vec![i as f64 * 100.0, 0.0]).collect();
 
         let result = local_ultrametricity_test_nd(&coords, 0.001, 100, 10, 42);
 
@@ -675,11 +666,7 @@ mod tests {
     #[test]
     fn test_euclidean_distance_matrix_nd() {
         // 3 points in 2D forming a right triangle
-        let coords = vec![
-            vec![0.0, 0.0],
-            vec![3.0, 0.0],
-            vec![0.0, 4.0],
-        ];
+        let coords = vec![vec![0.0, 0.0], vec![3.0, 0.0], vec![0.0, 4.0]];
 
         let dists = euclidean_distance_matrix_nd(&coords);
 
@@ -699,15 +686,13 @@ mod tests {
             (7.0, 8.0, 9.0),
             (0.0, 0.0, 0.0),
         ];
-        let coords_nd: Vec<Vec<f64>> = coords_3d
-            .iter()
-            .map(|&(x, y, z)| vec![x, y, z])
-            .collect();
+        let coords_nd: Vec<Vec<f64>> = coords_3d.iter().map(|&(x, y, z)| vec![x, y, z]).collect();
 
         let dists_nd = euclidean_distance_matrix_nd(&coords_nd);
 
         // Manually compute expected distances
-        let expected_01 = ((4.0 - 1.0_f64).powi(2) + (5.0 - 2.0_f64).powi(2) + (6.0 - 3.0_f64).powi(2)).sqrt();
+        let expected_01 =
+            ((4.0 - 1.0_f64).powi(2) + (5.0 - 2.0_f64).powi(2) + (6.0 - 3.0_f64).powi(2)).sqrt();
         assert!((dists_nd[0] - expected_01).abs() < 1e-10);
         assert_eq!(dists_nd.len(), 6); // C(4,2) = 6
     }

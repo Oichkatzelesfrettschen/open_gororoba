@@ -1627,14 +1627,14 @@ target_kind = "csv_artifact_path"
 id = "CED-00232"
 claim_id = "C-033"
 edge_role = "where_stated"
-target_ref = "data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf"
+target_ref = "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
 id = "CED-00233"
 claim_id = "C-033"
 edge_role = "where_stated"
-target_ref = "data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt"
+target_ref = "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -1704,7 +1704,7 @@ target_kind = "csv_artifact_path"
 id = "CED-00243"
 claim_id = "C-034"
 edge_role = "where_stated"
-target_ref = "data/external/traces/chanyal_2014_springer_abstract.txt"
+target_ref = "data/papers/intake/traces/chanyal_2014_springer_abstract.txt"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -1816,21 +1816,21 @@ target_kind = "markdown_path"
 id = "CED-00259"
 claim_id = "C-037"
 edge_role = "where_stated"
-target_ref = "data/external/papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf"
+target_ref = "data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
 id = "CED-00260"
 claim_id = "C-037"
 edge_role = "where_stated"
-target_ref = "data/external/papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf"
+target_ref = "data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
 id = "CED-00261"
 claim_id = "C-037"
 edge_role = "where_stated"
-target_ref = "data/external/papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf"
+target_ref = "data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -2054,7 +2054,7 @@ target_kind = "markdown_path"
 id = "CED-00293"
 claim_id = "C-041"
 edge_role = "where_stated"
-target_ref = "data/external/papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf"
+target_ref = "data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -2236,7 +2236,7 @@ target_kind = "generic_reference"
 id = "CED-00319"
 claim_id = "C-047"
 edge_role = "verification_rule"
-target_ref = "data/external/papers/"
+target_ref = "data/papers/corpus/"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -10034,7 +10034,7 @@ target_kind = "python_source_path"
 id = "CED-01433"
 claim_id = "C-400"
 edge_role = "where_stated"
-target_ref = "data/external/papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"
+target_ref = "data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -10055,7 +10055,7 @@ target_kind = "markdown_path"
 id = "CED-01436"
 claim_id = "C-401"
 edge_role = "where_stated"
-target_ref = "data/external/papers/White_2021_Casimir_Warp.pdf"
+target_ref = "data/papers/corpus/White_2021_Casimir_Warp.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -10076,7 +10076,7 @@ target_kind = "markdown_path"
 id = "CED-01439"
 claim_id = "C-402"
 edge_role = "where_stated"
-target_ref = "data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf"
+target_ref = "data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -10475,7 +10475,7 @@ target_kind = "claim_ref"
 id = "CED-01496"
 claim_id = "C-410"
 edge_role = "where_stated"
-target_ref = "data/external/papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf"
+target_ref = "data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -10503,7 +10503,7 @@ target_kind = "python_source_path"
 id = "CED-01500"
 claim_id = "C-411"
 edge_role = "where_stated"
-target_ref = "data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf"
+target_ref = "data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf"
 target_kind = "generic_reference"
 
 [[edge]]
@@ -10965,7 +10965,7 @@ target_kind = "generic_reference"
 id = "CED-01566"
 claim_id = "C-434"
 edge_role = "verification_rule"
-target_ref = "data/external/papers/"
+target_ref = "data/papers/corpus/"
 target_kind = "generic_reference"
 
 [[edge]]

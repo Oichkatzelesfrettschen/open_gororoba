@@ -1,4 +1,4 @@
-use lattice_filtration::{simulate_fibonacci_collision_storm, LatencyLaw};
+use lattice_filtration::{LatencyLaw, simulate_fibonacci_collision_storm};
 
 #[test]
 fn test_collision_storm_pipeline_runs() {

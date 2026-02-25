@@ -96,7 +96,10 @@ fn main() {
 
     match cli.cmd {
         Cmd::Status => {
-            println!("=== Dataset Cache Status ({} providers) ===", providers.len());
+            println!(
+                "=== Dataset Cache Status ({} providers) ===",
+                providers.len()
+            );
             let mut cached = 0usize;
             let mut missing = 0usize;
             for p in &providers {
@@ -110,10 +113,16 @@ fn main() {
                 println!("  [{status:^7}] {}", p.name());
             }
             println!("---");
-            println!("Cached: {cached}, Missing: {missing}, Total: {}", providers.len());
+            println!(
+                "Cached: {cached}, Missing: {missing}, Total: {}",
+                providers.len()
+            );
         }
         Cmd::Fetch => {
-            println!("=== Fetching All Datasets ({} providers) ===", providers.len());
+            println!(
+                "=== Fetching All Datasets ({} providers) ===",
+                providers.len()
+            );
             let mut ok = 0usize;
             let mut fail = 0usize;
             for p in &providers {

@@ -83,23 +83,24 @@ fn compute_point(
     #[cfg(feature = "gpu")]
     {
         if let Some(ref ctx) = dispatcher.gpu_ctx
-            && let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10) {
-                transport = t;
-                return CouplingPoint {
-                    lambda,
-                    temperature,
-                    frustration,
-                    drude_spin: transport.drude_weight_spin,
-                    drude_energy: transport.drude_weight_energy,
-                    thermal_conductivity: transport.thermal_conductivity,
-                    total_weight_spin: transport.total_weight_spin,
-                    total_weight_energy: transport.total_weight_energy,
-                    specific_heat: {
-                        let ed = exact_diagonalize(&model);
-                        thermodynamic_quantities(&ed, temperature).specific_heat
-                    },
-                };
-            }
+            && let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10)
+        {
+            transport = t;
+            return CouplingPoint {
+                lambda,
+                temperature,
+                frustration,
+                drude_spin: transport.drude_weight_spin,
+                drude_energy: transport.drude_weight_energy,
+                thermal_conductivity: transport.thermal_conductivity,
+                total_weight_spin: transport.total_weight_spin,
+                total_weight_energy: transport.total_weight_energy,
+                specific_heat: {
+                    let ed = exact_diagonalize(&model);
+                    thermodynamic_quantities(&ed, temperature).specific_heat
+                },
+            };
+        }
     }
     let _ = &dispatcher; // suppress unused warning on non-GPU builds
 

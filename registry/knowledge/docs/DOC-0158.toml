@@ -154,8 +154,8 @@ Correct legacy E9/E10/E11 statement; cache primary open-access Kac-Moody anchors
 Output artifacts:
 - `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`
 - `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`
-- `data/external/papers/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`
-- `data/external/papers/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf`
+- `data/papers/corpus/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`
+- `data/papers/corpus/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf`
 
 ### CTASK-0008 (C-047, DONE)
 
@@ -180,7 +180,7 @@ Add motivic tower anchor sources (analogy only) and cache at least one open-acce
 
 Output artifacts:
 - `docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md`
-- `data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`
+- `data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`
 
 ### CTASK-0010 (C-050, DONE)
 
@@ -2366,7 +2366,7 @@ Triage: primary sources cached; still needs a concrete, offline validation check
 
 Output artifacts:
 - `docs/external_sources/WARP_DRIVE_SOURCES.md`
-- `data/external/papers/White_2021_Casimir_Warp.pdf`
+- `data/papers/corpus/White_2021_Casimir_Warp.pdf`
 
 ### CTASK-0178 (C-403, DONE)
 
@@ -2396,10 +2396,10 @@ Source-index + define offline check for modular-data/entanglement-wedge program 
 Output artifacts:
 - `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`
 - `src/scripts/data/fetch_emergence_layers_sources.py`
-- `data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`
-- `data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`
-- `data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`
-- `data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`
+- `data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`
+- `data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`
+- `data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`
+- `data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`
 - `src/holography/maxflow.py`
 - `tests/test_holography_bit_threads.py`
 
@@ -2648,8 +2648,8 @@ Tang (2025) non-associative QED: minimal offline reproduction (Table 2 extractio
 
 Output artifacts:
 - `docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`
-- `data/external/traces/tang_2025_preprints_org_landing.txt`
-- `data/external/papers/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`
+- `data/papers/intake/traces/tang_2025_preprints_org_landing.txt`
+- `data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`
 - `src/scripts/analysis/c032_tang_2025_min_reproduction.py`
 - `data/csv/c032_tang_2025_table2_lepton_masses.csv`
 - `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`
@@ -2667,7 +2667,7 @@ Tang (2025) non-associative QED: mechanize the associator->mass mapping (BLOCKED
 
 Output artifacts:
 - `docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`
-- `data/external/traces/tang_2025_preprints_org_landing.txt`
+- `data/papers/intake/traces/tang_2025_preprints_org_landing.txt`
 
 ### CTASK-0199 (C-033, DONE)
 
@@ -2679,7 +2679,7 @@ Output artifacts:
 SU(5) generator basis verification complete; source does not specify a unique coefficient mapping from sedenion basis to a normalized SU(5) basis (claim demoted accordingly).
 
 Output artifacts:
-- `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`
+- `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`
 - `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`
 - `docs/C033_SU5_MAPPING_CLOSURE.md`
 - `crates/algebra_core/src/group_theory.rs`
@@ -2698,8 +2698,8 @@ Chanyal (2014) sedenion gravi-electromagnetism: minimal structural reproduction 
 
 Output artifacts:
 - `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`
-- `data/external/traces/chanyal_2014_springer_landing.txt`
-- `data/external/traces/chanyal_2014_springer_abstract.txt`
+- `data/papers/intake/traces/chanyal_2014_springer_landing.txt`
+- `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`
 - `docs/C034_CHANYAL_2014_REPRODUCTION.md`
 - `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`
 - `data/csv/c034_sedenion_doubling_identity_check.csv`
@@ -2716,8 +2716,8 @@ Chanyal (2014) sedenion gravi-electromagnetism: equation-level reproduction chec
 
 Output artifacts:
 - `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`
-- `data/external/traces/chanyal_2014_springer_landing.txt`
-- `data/external/traces/chanyal_2014_springer_abstract.txt`
+- `data/papers/intake/traces/chanyal_2014_springer_landing.txt`
+- `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`
 
 ### CTASK-0202 (C-035, DONE)
 

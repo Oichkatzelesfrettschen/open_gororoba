@@ -1,5 +1,5 @@
 use algebra_core::physics::clifford::pauli_matrices;
-use nalgebra::{Matrix3, Matrix4, OMatrix, Vector3, U8};
+use nalgebra::{Matrix3, Matrix4, OMatrix, U8, Vector3};
 use num_complex::Complex64;
 
 type Matrix8<T> = OMatrix<T, U8, U8>;

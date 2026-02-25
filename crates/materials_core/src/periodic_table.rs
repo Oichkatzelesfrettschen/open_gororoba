@@ -492,11 +492,11 @@ mod tests {
     fn test_valence_electrons() {
         // Alkali metals
         assert_eq!(compute_valence_electrons(11), 1); // Na
-                                                      // Halogens
+        // Halogens
         assert_eq!(compute_valence_electrons(17), 7); // Cl
-                                                      // Carbon group
+        // Carbon group
         assert_eq!(compute_valence_electrons(14), 4); // Si
-                                                      // Noble gases
+        // Noble gases
         assert_eq!(compute_valence_electrons(18), 8); // Ar
     }
 
@@ -534,9 +534,9 @@ mod tests {
         use metamaterial::polarizability_a3;
         // Noble gases have small polarizability
         assert!(polarizability_a3(2).unwrap() < 0.5); // He
-                                                      // Metals have larger polarizability
+        // Metals have larger polarizability
         assert!(polarizability_a3(79).unwrap() > 5.0); // Au
-                                                       // Silicon
+        // Silicon
         let si_alpha = polarizability_a3(14).unwrap();
         assert!((si_alpha - 5.38).abs() < 0.1);
         // Invalid element

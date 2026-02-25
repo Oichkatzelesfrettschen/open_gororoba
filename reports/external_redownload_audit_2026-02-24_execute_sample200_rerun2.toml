@@ -1,0 +1,2017 @@
+generated_at_utc = "2026-02-24T08:18:03.781Z"
+execute = true
+backend_order = [
+    "wget",
+    "curl",
+    "fetch",
+]
+total_files = 200
+matched_source_files = 200
+unmatched_source_files = 0
+blocked_pending = 139
+generator_replay_required = 61
+blocked_overdue = 0
+checksum_mismatch = 0
+download_failures = 0
+pass_count = 0
+
+[[records]]
+path = "data/external/DESI_QSO.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/GWTC-3.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "b6ee03773b806a3eb25c26f9fd5f2487c382cdcaf5af4bdc9f0a9ef82664ddb3"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/GWTC-3_GWpy_Official.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "bb5ab708f5d9ef68639dd5a7a09f05e5191af8fc04211c40b55c0715ef727080"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/GWTC-3_confident.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "96b5292325bef325a3df686f21e3103560f625933f63aec684ba8c28ff7bb0eb"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/GWTC-3_synthetic.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "8ffe88c10b50e491792f76b6eba45f19dfbed0497dd69b0568afb7bbd096ed94"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/HST_UDF_Metadata.csv"
+source_id = "SRC-HST-UDF-METADATA"
+source_status = "blocked"
+expected_sha256 = "e0aca08526d149b25ce2c0ddfd4e914f6b0c0d9f7c0cf183f015173bd9bfddac"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/PantheonPlusSH0ES.dat"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/SDSS_DR16Q.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/SDSS_Quasars_Astroquery.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "d18266f5dd06970c9678c1639e0771d1ba90c8a98e05dea1ee7f4b989f881428"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/TESS_Metadata.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "392072233e722cc1c0b31c2cbfedfbc8c77480514f8a42e28b4a15173685da79"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_1.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "80da16e314d7f0ec205412173bd96950c6ebb3685bbabb57753eaf4ef87549b8"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_10.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "5c15bdb5e198b21270d2d82947e5f1c28728e844bfe2e02f2983e84633126ec6"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_11.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "94d489256fa0fa3c2ca47e686cd883438dc2c4982da826d0bd8498b03eba0d85"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_12.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "87013d43c0411e7d9bbf71843b2a8aa470ce202d6d9226ced948be28c2e46688"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_13.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "6ae53eb3b1fca320a7481899cd3e8805019e2d13f3c5a3eed5e0a89a87cda35c"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_14.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "b59152a85cdf32b356750e36799fae1bb24ba9531cfce907edaef6e5b59376ae"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_15.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "622cf27c5672bb26ba95c7159101b2ed2f7adcf0c8e477986cb8a7c57f0b58f6"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_16.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "f194fd3edd7a90dabd67cf49f8abcbd2fcbc4eb39f2cb51c6c0e5833a5dde3f1"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_17.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "96713fcfd9669b8d77e9dc696f1da749d910124754ffb699081d80dbaa4d88df"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_18.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "472ecef5f6de0dabb2b7685e061fd73fc06231f83aa6b0253ad6f50a1f03c133"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_19.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "c04bec2d18de64b035322fb34b439610d638dc248c3fc21616d41dd509d3a07d"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_2.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "b773c9b12758e95dd3c8aea39e4090f4042749672361861a86207b5b67fd9e41"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_20.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "3dacd725d5f834fcf44218c0704b7ee6650146322aeb59da6492f303e8b86dbf"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_21.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "3dbfa1130fba7028d5fc0fc8b0b1b830c69f81c385ccd8c0c52b3207e7d30cb3"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_22.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "236f040a0bf1819360f0f48cdf31f602ac25915fb6d1521f9b9f0e7918818cb8"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_23.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "00cfa16e2caabead81f499a96439b7139e067f4c958a93e0a75354d9d383d5e5"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_24.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "7545399371a57705641ece32e2e8c7e97cec51cab8d11fba6678445063495915"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_25.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "6d4266942d84e93d75d09cb74adb32d2e04024e6c05e43b75f45fb58135dacb6"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_26.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "4cc0319ea73a85335a3b931e0c5ef76037dad27afc20263b868b6882ba67beaa"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_27.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "fdae98e2857231ba67ead31eb1698da928d97089780c563575a173e98f9d222a"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_28.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "f1165ce2f6a6a0c42df3db247ee7716a1772f184a201273d5bb3610a76261fe4"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_29.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "cf0fb9c799464fc69cf6fc15f5975ffbab12de0b4acccf50d7c0530fe05c1e49"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_3.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "57cdf03a91a265ede23a8461f3c5315481f80e3951fdf9d01d0aca45fbb3bf56"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_30.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "7109662fc7a8f37656c565a34487b290e225de2f649805cdfcaec10890ce3c53"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_31.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "6f9bfdd0f5bd09384b5dbc723170c206fa6a536854c3b6fed6428d8fd6c78b8d"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_32.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "4cacc82eb8a6321869dbef74a4fec5b6f5254d2bd32f75e06daa39a9704f9392"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_33.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "232add61667bcdd2fbb26c61795ebdc9fc97907bb2d1f2c8a5acb15855515c42"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_34.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "21d0a3bbfce5ced79895872f5e2c8a05952b543a49ef3052d26c04783224e704"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_35.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "96e1a2baeca733b99ed05b820169d5e218a4738cc0b215d5993d774f68546ba5"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_36.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "6b94500909a361f8445122147a9f29c6e2b05ea5ea9b6031c2a4a203c5bb5bca"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_37.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "0c493df0f99cec05124be921aca13a91be761cdb51d58a54b583eb0ee749a6c8"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_38.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "c8fbdb82b8ff64424209ad78574b452a17748f4aa9ddfd0dd22f98d3706e3f2e"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_39.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "431463da09b298c78b004f091cfe806739e04fc44b627fbb5429a22da0f93170"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_4.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "1be84404544146e164603d3a3ea65a68b0fc7aac527eee38ad48670e0017ec9f"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_40.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "63a2783709b17307d7713358d0ec7c15de109659dc0929d1a9bb046d3251a44b"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_41.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "c4ac94be71c6bf2b149ebd3e08e315d912ad1b7d5809a0647d1c2226099b9c8e"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_42.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "1cf47f8311514009bdf69bb27e9e11b0aee99c5aa15f452f47a2d907b32f4f32"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_43.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "ac3450ccbbd9c7344e9e4a77b277215d4d571b242bdc731c409eadc354f09108"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_44.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "7e773cfeb724e36bf7c830c649e7095aba23d54d987cd7b5628dc64398abb44b"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_45.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "88d869babfcd91ee71f76bfc2e3d7f9ebdb3e0237f24c7b1d2957b628663662e"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_5.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "bf6541aa2b6c6a16f3e24cfab1f55fb8fd2b99b0b8861010b3bcc8b825576e9e"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_6.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "90074a2bfec17e45ffa6b0ee3302992c8d54d7022d1210369862d1695dcdee9d"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_7.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "b5b2509df9e5b44c747fef6310da8183bd40e1efa1c7214192b3c72f3b2fcbe1"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_8.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "e243d4176187dc33aa4a111708d087f55dd99286660fd811bc443c75c966c43a"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/alice_pbpb_raa/table_9.csv"
+source_id = "SRC-ALICE-PBPB-RAA"
+source_status = "active"
+expected_sha256 = "cafed2cca886eb430271f597721b855ea883b6bdd2e042921b5a08abdeb726f1"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-ALICE-PBPB-RAA uses non-single-file path_glob data/external/alice_pbpb_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/atnf_pulsars.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "3a5987bca6ecc3c22dcaa00060acd6c8f483ca6c98820e653f08b5af022b324b"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/chime_frb_cat1.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "affd86573fee8fe94be9d0d85e73cc787fa260b2497ccec5d9d93e1d26610ed5"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/chime_frb_cat2.csv"
+source_id = "SRC-EXTERNAL-FETCH-ROOT"
+source_status = "active"
+expected_sha256 = "5108ada779d279a2547d9f9e73ae25bfdd40d8496d6ba7255ec29c6629057a48"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-EXTERNAL-FETCH-ROOT uses non-single-file path_glob data/external/*; replay via cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempts = []
+
+[[records]]
+path = "data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv"
+source_id = "SRC-CMS-OO-RAA"
+source_status = "active"
+expected_sha256 = "80da16e314d7f0ec205412173bd96950c6ebb3685bbabb57753eaf4ef87549b8"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-CMS-OO-RAA uses non-single-file path_glob data/external/cms_oo_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/cms_oo_raa/table1_pp_spectra.csv"
+source_id = "SRC-CMS-OO-RAA"
+source_status = "active"
+expected_sha256 = "339b4bed5db62555210863da82b7ff3bd1180a5aca1e508eb03e1ce86a72ac14"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-CMS-OO-RAA uses non-single-file path_glob data/external/cms_oo_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/cms_oo_raa/table2_oo_spectra.csv"
+source_id = "SRC-CMS-OO-RAA"
+source_status = "active"
+expected_sha256 = "3f5cc4c5dbaabf85c2b9720b5ced8c080e1763ef92fc33b88097be018bedef1a"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-CMS-OO-RAA uses non-single-file path_glob data/external/cms_oo_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/cms_oo_raa/table3_oo_raa.csv"
+source_id = "SRC-CMS-OO-RAA"
+source_status = "active"
+expected_sha256 = "136f109ea7a42b9983004bb9428fc7874b02ecf66f53d1ce43ea2ff8776e2e01"
+actual_sha256 = ""
+status = "generator_replay_required"
+detail = "source rule SRC-CMS-OO-RAA uses non-single-file path_glob data/external/cms_oo_raa/**; replay via cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis -- --emit-only"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0703745v3/images/image_p12_4.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "241243a71f6a5e9afad1cdacb780c0842bafb164086f12d5622265fd286109a7"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0703745v3/images/image_p14_5.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0703745v3/images/image_p14_6.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0703745v3/images/image_p1_1.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0703745v3/images/image_p4_2.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "46323bf10002cf598e99fa2a122b3aec68aee1592eba62d9219f12c325c340d0"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0703745v3/images/image_p7_3.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0703745v3/paper.toml"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "bf8b7ee5288eb28afb4d6a3763ed3351f6c3370de2f8cd6dde612f849cc033ef"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p10_6.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p10_7.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p11_8.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p11_9.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p12_10.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "63a5caddf2fd656cf4d071d57a7a6acf6bb7516016a5064d37995273ba2b0aca"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p14_11.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p14_12.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p15_13.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p15_14.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p15_15.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p15_16.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p1_1.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p21_17.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p21_18.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p8_2.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p8_3.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p9_4.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/images/image_p9_5.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0704-0112v3/paper.toml"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "37f9b51c736b56d34298763feb25d548ed8285d3f606ca9079eb0836f612bb7f"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p11_71.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "d029e8c71e0bcab367bb20e28359e9ea40a55cad130ef397d08608c9480f9b8a"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p12_72.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "78b930f2454659897c6509e409bee187a527872b184eb81b2da355e56e16e497"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p15_73.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "4ae44efef5aef616993516f409df707bb544816dc9fb51dcb5d96b72613e0e2b"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p15_74.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "63a5caddf2fd656cf4d071d57a7a6acf6bb7516016a5064d37995273ba2b0aca"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_75.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_76.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_77.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_78.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_79.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_80.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_81.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_82.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_83.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_84.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_85.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_86.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_87.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_88.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_89.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_90.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_91.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_92.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_93.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_94.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p18_95.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p1_1.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p21_96.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p21_97.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p22_98.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p22_99.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p23_100.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p23_101.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p6_2.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "04e95ef79e1e6741de3a766d955df557da63a408da977b60ae84a36c2763a7f3"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p7_3.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "1a8b1be22864dfe6eb8f1d18683d261a363747ef27f627d0634c19549a9b2cb1"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_10.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_11.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_12.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_13.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_14.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_15.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_16.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_17.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_18.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_19.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_20.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_21.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_22.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_23.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_24.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_25.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_26.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_27.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_28.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_29.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_30.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_31.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_32.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_33.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_34.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_35.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_36.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_37.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_38.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_39.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_4.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_40.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_41.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_42.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_43.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_44.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_45.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_46.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_47.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_48.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_49.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_5.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_50.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_51.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_52.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_53.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_54.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_55.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_56.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_57.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_58.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_59.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_6.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_60.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_61.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_62.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_63.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_64.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_65.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_66.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_67.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_68.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_69.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_7.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_70.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_8.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/images/image_p9_9.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/0804-3416v2/paper.toml"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "48655551175a15bbbf9bd2c8d5e81eec5c3584f9ea4f0b555237d94796e298c3"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/a-unified-algebra-lattice-graph-inference-monograph-reconstructing-the-full-chat-corpus/paper.toml"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "ced982d38b812a5b9ca941e147c384fab79fa33cae5a16d9a3917320baa97a7a"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/abdi-2007-bonferroni-sidak-corrections/paper.toml"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "1cd7ef373a99a18a98c6809bc2488aada3bbb4811229863bf49249a4f6979568"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/arxiv-0705-0016-hubeny-rangamani-takayanagi-2007-hrt/images/image_p10_6.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/arxiv-0705-0016-hubeny-rangamani-takayanagi-2007-hrt/images/image_p10_7.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/arxiv-0705-0016-hubeny-rangamani-takayanagi-2007-hrt/images/image_p11_8.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/arxiv-0705-0016-hubeny-rangamani-takayanagi-2007-hrt/images/image_p11_9.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/arxiv-0705-0016-hubeny-rangamani-takayanagi-2007-hrt/images/image_p12_10.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/arxiv-0705-0016-hubeny-rangamani-takayanagi-2007-hrt/images/image_p12_11.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/arxiv-0705-0016-hubeny-rangamani-takayanagi-2007-hrt/images/image_p12_12.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+
+[[records]]
+path = "data/external/documents_extracted/arxiv-0705-0016-hubeny-rangamani-takayanagi-2007-hrt/images/image_p12_13.png"
+source_id = "SRC-DOCUMENTS-EXTRACTED"
+source_status = "blocked"
+expected_sha256 = "42b9caf4d71b7d380a1e61eaf157221b3bf89d4c65a168f6c91c69ad5821c968"
+actual_sha256 = ""
+status = "blocked_pending"
+detail = "blocked source: troubleshooting and mirror workflow required"
+attempts = []
+

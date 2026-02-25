@@ -332,14 +332,15 @@ pub fn normalize_all_statuses(claims: &mut [FullClaimEntry]) -> usize {
             modified += 1;
         }
         if let Some(n) = note
-            && claim.status_note.is_none() {
-                claim.status_note = Some(n);
-                // The status was already counted as modified above if it changed;
-                // if only the note was added, count that too.
-                if modified == 0 || claim.status == normalize_status(&claim.status).0 {
-                    // Already counted or no status change
-                }
+            && claim.status_note.is_none()
+        {
+            claim.status_note = Some(n);
+            // The status was already counted as modified above if it changed;
+            // if only the note was added, count that too.
+            if modified == 0 || claim.status == normalize_status(&claim.status).0 {
+                // Already counted or no status change
             }
+        }
     }
     modified
 }
@@ -438,10 +439,11 @@ pub fn enrich_metadata(
         // Phase inference
         if claim.phase.is_none()
             && let Some(ref ws) = claim.where_stated
-                && let Some(phase) = infer_phase(ws) {
-                    claim.phase = Some(phase);
-                    enriched += 1;
-                }
+            && let Some(phase) = infer_phase(ws)
+        {
+            claim.phase = Some(phase);
+            enriched += 1;
+        }
 
         // Confidence derivation
         if claim.confidence.is_none() {
@@ -471,24 +473,26 @@ pub fn enrich_metadata(
 
         // Insight reverse lookup
         if (claim.insights.is_none() || claim.insights.as_ref().is_some_and(|v| v.is_empty()))
-            && let Some(insight_ids) = insight_reverse.get(&claim.id) {
-                claim.insights = Some(insight_ids.clone());
-                enriched += 1;
-            }
+            && let Some(insight_ids) = insight_reverse.get(&claim.id)
+        {
+            claim.insights = Some(insight_ids.clone());
+            enriched += 1;
+        }
 
         // Description: extract first sentence from long statements
         if claim.description.is_none()
             && let Some(ref stmt) = claim.statement
-                && stmt.len() > 200 {
-                    // Take first sentence (up to first period followed by space or end)
-                    let desc = stmt
-                        .find(". ")
-                        .map(|i| &stmt[..=i])
-                        .unwrap_or_else(|| if stmt.len() > 200 { &stmt[..200] } else { stmt })
-                        .to_string();
-                    claim.description = Some(desc);
-                    enriched += 1;
-                }
+            && stmt.len() > 200
+        {
+            // Take first sentence (up to first period followed by space or end)
+            let desc = stmt
+                .find(". ")
+                .map(|i| &stmt[..=i])
+                .unwrap_or_else(|| if stmt.len() > 200 { &stmt[..200] } else { stmt })
+                .to_string();
+            claim.description = Some(desc);
+            enriched += 1;
+        }
     }
 
     enriched
@@ -930,10 +934,10 @@ pub fn analyze(
                             .what_would_verify_refute
                             .as_ref()
                             .is_some_and(|w| w.len() > 100)))
-                {
-                    report.conflict_markers_resolvable += 1;
-                    break;
-                }
+            {
+                report.conflict_markers_resolvable += 1;
+                break;
+            }
         }
     }
 
@@ -1111,9 +1115,21 @@ mod tests {
     #[test]
     fn test_similarity_detection() {
         let claims = vec![
-            make_claim("C-001", "The Cayley-Dickson construction produces non-associative algebras at dimension 8 and beyond.", "Verified"),
-            make_claim("C-002", "The Cayley-Dickson construction produces non-associative algebras at dimension eight and beyond.", "Verified"),
-            make_claim("C-003", "Lattice Boltzmann method converges for Poiseuille flow.", "Verified"),
+            make_claim(
+                "C-001",
+                "The Cayley-Dickson construction produces non-associative algebras at dimension 8 and beyond.",
+                "Verified",
+            ),
+            make_claim(
+                "C-002",
+                "The Cayley-Dickson construction produces non-associative algebras at dimension eight and beyond.",
+                "Verified",
+            ),
+            make_claim(
+                "C-003",
+                "Lattice Boltzmann method converges for Poiseuille flow.",
+                "Verified",
+            ),
         ];
         let pairs = find_similar_pairs(&claims, 0.85);
         assert!(!pairs.is_empty(), "Should find C-001/C-002 as similar");
@@ -1123,9 +1139,17 @@ mod tests {
 
     #[test]
     fn test_similarity_skips_already_linked() {
-        let mut c1 = make_claim("C-001", "The Cayley-Dickson construction produces non-associative algebras at dimension 8 and beyond.", "Verified");
+        let mut c1 = make_claim(
+            "C-001",
+            "The Cayley-Dickson construction produces non-associative algebras at dimension 8 and beyond.",
+            "Verified",
+        );
         c1.claims = Some(vec!["C-002".to_string()]);
-        let c2 = make_claim("C-002", "The Cayley-Dickson construction produces non-associative algebras at dimension eight and beyond.", "Verified");
+        let c2 = make_claim(
+            "C-002",
+            "The Cayley-Dickson construction produces non-associative algebras at dimension eight and beyond.",
+            "Verified",
+        );
         let claims = vec![c1, c2];
         let pairs = find_similar_pairs(&claims, 0.85);
         assert!(pairs.is_empty(), "Should skip already-linked pair");
@@ -1224,17 +1248,21 @@ mod tests {
         let added = build_crossref_graph(&mut claims, &[], &[]);
         assert!(added > 0);
         // C-001 should reference C-002
-        assert!(claims[0]
-            .claims
-            .as_ref()
-            .unwrap()
-            .contains(&"C-002".to_string()));
+        assert!(
+            claims[0]
+                .claims
+                .as_ref()
+                .unwrap()
+                .contains(&"C-002".to_string())
+        );
         // C-002 should back-reference C-001 (bidirectional)
-        assert!(claims[1]
-            .claims
-            .as_ref()
-            .unwrap()
-            .contains(&"C-001".to_string()));
+        assert!(
+            claims[1]
+                .claims
+                .as_ref()
+                .unwrap()
+                .contains(&"C-001".to_string())
+        );
     }
 
     #[test]

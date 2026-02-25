@@ -4,7 +4,7 @@
 //! and stats_core (statistical validation of stability criteria).
 
 use cosmology_core::gravastar::{
-    polytropic_stability_sweep, solve_gravastar, AnisotropicParams, GravastarConfig, PolytropicEos,
+    AnisotropicParams, GravastarConfig, PolytropicEos, polytropic_stability_sweep, solve_gravastar,
 };
 
 /// Test that the gravastar solver produces physically valid solutions.

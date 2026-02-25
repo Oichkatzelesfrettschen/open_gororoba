@@ -5,7 +5,7 @@
 //!
 //! Source: https://heasarc.gsfc.nasa.gov/W3Browse/fermi/fermigbrst.html
 
-use crate::fetcher::{download_heasarc_csv, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_heasarc_csv};
 use crate::parse::parse_f64_or_nan;
 use std::path::{Path, PathBuf};
 

@@ -1,0 +1,325 @@
+generated_at_utc = "2026-02-24T20:46:29.176Z"
+total_validators = 29
+passed = 29
+failed = 0
+unverifiable = 0
+
+[[results]]
+lane_id = "artifacts"
+validator_id = "SV-001"
+validator_kind = "artifacts_manifest_coverage"
+status = "pass"
+checked_files = 680
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "external"
+validator_id = "SV-002"
+validator_kind = "external_dataset_semantics"
+status = "pass"
+checked_files = 23541
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "evidence"
+validator_id = "SV-003"
+validator_kind = "evidence_manifest_integrity"
+status = "pass"
+checked_files = 23
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "csv"
+validator_id = "SV-004"
+validator_kind = "csv_lane_structure"
+status = "pass"
+checked_files = 348
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "csv_legacy"
+validator_id = "SV-005"
+validator_kind = "csv_lane_structure"
+status = "pass"
+checked_files = 200
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "h5"
+validator_id = "SV-006"
+validator_kind = "h5_lane_structure"
+status = "pass"
+checked_files = 431
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "thesis_lab"
+validator_id = "SV-007"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 18
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "thesis_lab_kolmogorov"
+validator_id = "SV-008"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "thesis_lab_non_newtonian"
+validator_id = "SV-009"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "kubo_transport"
+validator_id = "SV-010"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 6
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "wavelet_bridging"
+validator_id = "SV-011"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "wavelet_acf"
+validator_id = "SV-012"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "chsh_wavelet"
+validator_id = "SV-013"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "chsh_betti"
+validator_id = "SV-014"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "meltdown_gating"
+validator_id = "SV-015"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "meltdown_pulsed"
+validator_id = "SV-016"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "e027"
+validator_id = "SV-017"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 18
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "apt_test"
+validator_id = "SV-018"
+validator_kind = "generic_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "equivalence"
+validator_id = "SV-019"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 9
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "papers"
+validator_id = "SV-020"
+validator_kind = "binary_lane_structure"
+status = "pass"
+checked_files = 18
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "sfwm_repro"
+validator_id = "SV-021"
+validator_kind = "csv_lane_structure"
+status = "pass"
+checked_files = 8
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "bl_6equj5_ata"
+validator_id = "SV-022"
+validator_kind = "generic_lane_structure"
+status = "pass"
+checked_files = 0
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "bl_6equj5_gbt"
+validator_id = "SV-023"
+validator_kind = "generic_lane_structure"
+status = "pass"
+checked_files = 15
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "entropy_census"
+validator_id = "SV-024"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "fano_scattering"
+validator_id = "SV-025"
+validator_kind = "generic_lane_structure"
+status = "pass"
+checked_files = 0
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "lattice_hawking"
+validator_id = "SV-026"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "test_e027"
+validator_id = "SV-027"
+validator_kind = "toml_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "test_zd"
+validator_id = "SV-028"
+validator_kind = "csv_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+
+[[results]]
+lane_id = "test_zd_1k"
+validator_id = "SV-029"
+validator_kind = "csv_lane_structure"
+status = "pass"
+checked_files = 1
+error_count = 0
+errors = []
+unverifiable_count = 0
+unverifiable = []
+

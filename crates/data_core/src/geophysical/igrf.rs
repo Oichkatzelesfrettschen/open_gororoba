@@ -7,7 +7,7 @@
 //! Source: NOAA/NCEI, https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html
 //! Reference: Alken et al. (2021), Earth, Planets and Space 73, 49
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::PathBuf;
 
 /// IGRF-13 coefficient file URLs.

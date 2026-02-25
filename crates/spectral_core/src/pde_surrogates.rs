@@ -36,7 +36,15 @@ impl ForcedDiffusion {
         let force_profile: Vec<f64> = (0..n)
             .map(|i| (2.0 * PI * k as f64 * i as f64 * dx).sin())
             .collect();
-        Self { n, dt, nu, rho, k, dx, force_profile }
+        Self {
+            n,
+            dt,
+            nu,
+            rho,
+            k,
+            dx,
+            force_profile,
+        }
     }
 
     /// Evaluate the PDE right-hand side at `u`.
@@ -74,7 +82,13 @@ impl ForcedDiffusion {
 
     /// Run `steps` RK4 steps from `u0`, returning the terminal state.
     pub fn run(&self, u0: &[f64], steps: usize) -> Vec<f64> {
-        assert_eq!(u0.len(), self.n, "ForcedDiffusion::run: u0 length {} != n {}", u0.len(), self.n);
+        assert_eq!(
+            u0.len(),
+            self.n,
+            "ForcedDiffusion::run: u0 length {} != n {}",
+            u0.len(),
+            self.n
+        );
         let mut u = u0.to_vec();
         for _ in 0..steps {
             u = self.step(&u);
@@ -124,13 +138,18 @@ impl ForcedDiffusion {
     /// `duty_cycle` in [0,1]: fraction of steps with active forcing.
     /// Pattern alternates in blocks: `on_block` active steps, then `off_block` quench steps.
     pub fn pulsed_schedule(total_steps: usize, duty_cycle: f64) -> Vec<bool> {
-        assert!((0.0..=1.0).contains(&duty_cycle), "duty_cycle must be in [0,1]");
+        assert!(
+            (0.0..=1.0).contains(&duty_cycle),
+            "duty_cycle must be in [0,1]"
+        );
         if total_steps == 0 {
             return Vec::new();
         }
         // Block sizes: use a period of 20 steps for reasonable alternation
         let period = 20usize;
-        let on_count = ((period as f64 * duty_cycle).round() as usize).max(1).min(period);
+        let on_count = ((period as f64 * duty_cycle).round() as usize)
+            .max(1)
+            .min(period);
         let off_count = period.saturating_sub(on_count);
         let mut schedule = Vec::with_capacity(total_steps);
         let mut remaining = total_steps;
@@ -148,7 +167,11 @@ impl ForcedDiffusion {
     /// Run pulsed simulation according to a schedule.
     /// Returns the terminal state.
     pub fn run_pulsed(&self, u0: &[f64], schedule: &[bool]) -> Vec<f64> {
-        assert_eq!(u0.len(), self.n, "ForcedDiffusion::run_pulsed: u0 length mismatch");
+        assert_eq!(
+            u0.len(),
+            self.n,
+            "ForcedDiffusion::run_pulsed: u0 length mismatch"
+        );
         let mut u = u0.to_vec();
         for &active in schedule {
             u = self.step_pulsed(&u, active);

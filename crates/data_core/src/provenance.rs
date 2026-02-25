@@ -5,7 +5,7 @@
 //! for every file under `data/external/`. This module reads that
 //! JSON and verifies the hashes still match the cached files.
 
-use crate::fetcher::{compute_sha256, FetchError};
+use crate::fetcher::{FetchError, compute_sha256};
 use serde::Deserialize;
 use std::path::Path;
 

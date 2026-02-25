@@ -9,5 +9,5 @@ pub mod pantheon_dat;
 pub mod tap;
 
 pub use gfc::{
-    actual_max_degree, parse_gfc, validate_gfc_degrees, GravityCoefficient, GravityField,
+    GravityCoefficient, GravityField, actual_max_degree, parse_gfc, validate_gfc_degrees,
 };

@@ -13,12 +13,14 @@ use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use spectral_core::ghost_spectral::{
-    check_ghost, compute_power_spectrum, find_peaks, noise_floor, peak_snr, ALIASED_GHOST_FREQ,
+    ALIASED_GHOST_FREQ, check_ghost, compute_power_spectrum, find_peaks, noise_floor, peak_snr,
 };
 use std::io::Write;
 use std::path::PathBuf;
 use std::time::Instant;
-use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField, ViscosityCouplingModel};
+use vacuum_frustration::bridge::{
+    FrustrationViscosityBridge, SedenionField, ViscosityCouplingModel,
+};
 
 /// 4D ZD Resonance Experiments (batch 3D worlds along w-axis)
 #[derive(Parser, Debug)]
@@ -65,12 +67,7 @@ enum Commands {
 
 /// Generate Sedenion field with w-dependent phase rotation.
 /// Each w-slice sees a different phase offset, probing the full 16D parameter space.
-fn generate_4d_viscosity(
-    nx: usize,
-    nw: usize,
-    tau_base: f64,
-    wavelength: f64,
-) -> Vec<f64> {
+fn generate_4d_viscosity(nx: usize, nw: usize, tau_base: f64, wavelength: f64) -> Vec<f64> {
     let nz_total = nx * nw; // Flattened z dimension = nz_sub * nw
     let n_cells = nx * nx * nz_total;
     let bridge = FrustrationViscosityBridge::new(16);

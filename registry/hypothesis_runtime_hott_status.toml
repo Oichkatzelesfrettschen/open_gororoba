@@ -25,7 +25,7 @@ summary = "Hypergranular plan and external-source provenance registries created.
 artifacts = [
   "registry/hypothesis_runtime_hott_plan.toml",
   "registry/hypothesis_runtime_hott_sources.toml",
-  "data/external/traces/hypothesis_runtime_hott_downloads.json",
+  "data/papers/intake/traces/hypothesis_runtime_hott_downloads.json",
 ]
 
 [[complete]]

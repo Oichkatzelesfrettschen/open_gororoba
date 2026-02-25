@@ -15,7 +15,7 @@
 //! (1+2+4+8 dimensions across all valid metric signatures).
 
 use algebra_core::construction::cayley_dickson::{
-    cd_conjugate, cd_multiply_split, cd_norm_sq, CdSignature,
+    CdSignature, cd_conjugate, cd_multiply_split, cd_norm_sq,
 };
 
 // ============================================================================

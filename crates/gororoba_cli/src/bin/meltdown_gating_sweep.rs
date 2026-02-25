@@ -64,7 +64,12 @@ struct Args {
 }
 
 fn l2_rel_err(u: &[f64], u_ref: &[f64]) -> f64 {
-    let num: f64 = u.iter().zip(u_ref.iter()).map(|(&a, &b)| (a - b).powi(2)).sum::<f64>().sqrt();
+    let num: f64 = u
+        .iter()
+        .zip(u_ref.iter())
+        .map(|(&a, &b)| (a - b).powi(2))
+        .sum::<f64>()
+        .sqrt();
     let den: f64 = u_ref.iter().map(|x| x * x).sum::<f64>().sqrt();
     if den < 1e-300 { 0.0 } else { num / den }
 }
@@ -87,12 +92,19 @@ fn main() {
     let rho_vals = [0.5_f64, 1.0, 1.5, 2.0];
 
     println!("Meltdown Gating Concurrency Sweep");
-    println!("  N={} steps={} dt={} nu={}", args.n, args.steps, args.dt, args.nu);
-    println!("  eps0={:.0e} M0={} Mlow={} gamma_up={} gamma_down={}",
-        args.eps0, args.m0, args.m_low, args.gamma_up, args.gamma_down);
+    println!(
+        "  N={} steps={} dt={} nu={}",
+        args.n, args.steps, args.dt, args.nu
+    );
+    println!(
+        "  eps0={:.0e} M0={} Mlow={} gamma_up={} gamma_down={}",
+        args.eps0, args.m0, args.m_low, args.gamma_up, args.gamma_down
+    );
     println!();
-    println!("  {:>6}  {:>10}  {:>10}  {:>12}  {:>10}",
-        "rho", "p95_fixed", "p95_adapt", "reduc_%", "rel_err_a");
+    println!(
+        "  {:>6}  {:>10}  {:>10}  {:>12}  {:>10}",
+        "rho", "p95_fixed", "p95_adapt", "reduc_%", "rel_err_a"
+    );
 
     let mut all_pass = true;
     let mut rows: Vec<String> = Vec::new();
@@ -143,9 +155,15 @@ fn main() {
             all_pass = false;
         }
 
-        println!("  {:>6.2}  {:>10.1}  {:>10.1}  {:>12.2}  {:>10.4}  {}",
-            rho, p95_fixed, p95_adapt, reduction_pct, rel_err_adapt,
-            if pass_row { "OK" } else { "FAIL" });
+        println!(
+            "  {:>6.2}  {:>10.1}  {:>10.1}  {:>12.2}  {:>10.4}  {}",
+            rho,
+            p95_fixed,
+            p95_adapt,
+            reduction_pct,
+            rel_err_adapt,
+            if pass_row { "OK" } else { "FAIL" }
+        );
 
         rows.push(format!(
             "[[result]]\nrho = {rho}\np95_fixed = {p95_fixed:.1}\np95_adaptive = {p95_adapt:.1}\nreduction_pct = {reduction_pct:.3}\nrel_err_adaptive = {rel_err_adapt:.6e}\npass = {pass_row}"
@@ -160,7 +178,11 @@ fn main() {
     let toml_path = dir.join("results.toml");
     let header = format!(
         "# Meltdown Gating Concurrency results\n# N={} steps={} eps0={:.0e} M0={} Mlow={}\n# verdict = {}\n\n",
-        args.n, args.steps, args.eps0, args.m0, args.m_low,
+        args.n,
+        args.steps,
+        args.eps0,
+        args.m0,
+        args.m_low,
         if all_pass { "PASS" } else { "FAIL" }
     );
     fs::write(&toml_path, format!("{}{}\n", header, rows.join("\n\n")))

@@ -41,45 +41,71 @@ pub mod two_fluid;
 pub mod gpu;
 
 pub use mera::{
-    bootstrap_slope_ci, build_mera_structure, fit_log_scaling, mera_entropy_estimate,
-    mera_entropy_scaling_analysis, von_neumann_entropy, MeraLayer, MeraScalingResult,
+    MeraLayer, MeraScalingResult, bootstrap_slope_ci, build_mera_structure, fit_log_scaling,
+    mera_entropy_estimate, mera_entropy_scaling_analysis, von_neumann_entropy,
 };
 
 pub use holographic::{
-    absorber_channel_capacity, absorber_effective_radius, absorber_energy, analyze_entropy_scaling,
-    bekenstein_bound_bits, compute_min_cut, verify_area_law, verify_bekenstein_bound,
     AbsorberLayer, AreaLawResult, BekensteinBoundResult, EntropyScalingResult, MinCutResult,
-    RTLattice,
+    RTLattice, absorber_channel_capacity, absorber_effective_radius, absorber_energy,
+    analyze_entropy_scaling, bekenstein_bound_bits, compute_min_cut, verify_area_law,
+    verify_bekenstein_bound,
 };
 
 pub use fractional_schrodinger::{
-    gaussian_propagator, imaginary_time_ground_state, levy_propagator, propagator_l2_error,
-    split_operator_evolve, variational_ground_state, EvolutionResult, PropagatorResult,
-    VariationalResult,
+    EvolutionResult, PropagatorResult, VariationalResult, gaussian_propagator,
+    imaginary_time_ground_state, levy_propagator, propagator_l2_error, split_operator_evolve,
+    variational_ground_state,
 };
 
 pub use tensor_network_classical::{
-    bell_state_entropy, ghz_state_entropy, prepare_bell_state, prepare_ghz_state,
-    simulate_random_circuit, CircuitEvolutionResult, EntropyResult, TensorNetworkState,
+    CircuitEvolutionResult, EntropyResult, TensorNetworkState, bell_state_entropy,
+    ghz_state_entropy, prepare_bell_state, prepare_ghz_state, simulate_random_circuit,
 };
 
 pub use harper_chern::{
-    fhs_chern_numbers, harper_hamiltonian, hofstadter_chern_map, reduced_fractions,
-    verify_chern_sum_zero, verify_diophantine, ButterflyResult, ChernResult,
+    ButterflyResult, ChernResult, fhs_chern_numbers, harper_hamiltonian, hofstadter_chern_map,
+    reduced_fractions, verify_chern_sum_zero, verify_diophantine,
 };
 
 pub use mps::{MatrixProductState, MpsTensor};
 
 pub use peps::{Peps, PepsTensor};
 
-pub use tensor_networks::{estimate_memory_bytes, suggest_representation, EntanglementMeasure};
+pub use tensor_networks::{EntanglementMeasure, estimate_memory_bytes, suggest_representation};
 
 pub use qua_ten_net_bridge::{
-    contract_network, estimate_contraction_cost, tensor_contract, truncate_mps_bond, truncated_svd,
-    TruncatedSVD,
+    TruncatedSVD, contract_network, estimate_contraction_cost, tensor_contract, truncate_mps_bond,
+    truncated_svd,
 };
 
 pub use casimir::{
+    AdditivityResult,
+    C,
+    CASIMIR_COEFF,
+    // PFA validity guard system (Emig et al. 2006)
+    CasimirError,
+    CasimirForceResult,
+    // Derivative expansion error estimates (Fosco et al. 2024)
+    DeCoefficients,
+    DerivativeExpansionResult,
+    // Lifshitz theory with dielectric functions
+    DielectricModel,
+    HBAR,
+    LifshitzResult,
+    // Additivity API (Xu et al. 2022)
+    PfaAccuracy,
+    PfaValidityInfo,
+    Plate,
+    // Strict spring constant / gain modes with error amplification
+    SPRING_CONSTANT_ERROR_FACTOR,
+    Sphere,
+    SpherePlateSphere,
+    SpringConstantResult,
+    SweepResult,
+    // Three-body transistor dynamics
+    ThreeBodyResult,
+    TransistorResult,
     analyze_transistor,
     casimir_energy_pfa,
     casimir_force_guarded,
@@ -115,44 +141,17 @@ pub use casimir::{
     three_body_gain_strict,
     transistor_gain_additive,
     transistor_gain_strict,
-    AdditivityResult,
-    // PFA validity guard system (Emig et al. 2006)
-    CasimirError,
-    CasimirForceResult,
-    // Derivative expansion error estimates (Fosco et al. 2024)
-    DeCoefficients,
-    DerivativeExpansionResult,
-    // Lifshitz theory with dielectric functions
-    DielectricModel,
-    LifshitzResult,
-    // Additivity API (Xu et al. 2022)
-    PfaAccuracy,
-    PfaValidityInfo,
-    Plate,
-    Sphere,
-    SpherePlateSphere,
-    SpringConstantResult,
-    SweepResult,
-    // Three-body transistor dynamics
-    ThreeBodyResult,
-    TransistorResult,
-    C,
-    CASIMIR_COEFF,
-    HBAR,
-    // Strict spring constant / gain modes with error amplification
-    SPRING_CONSTANT_ERROR_FACTOR,
 };
 
 pub use grover::{
-    amplitude_amplification, apply_diffusion, apply_oracle, grover_iterate, grover_search,
-    grover_search_indices, optimal_iterations, success_probability, theoretical_amplitude,
-    theoretical_success_probability, top_candidates, uniform_superposition, GroverConfig,
-    GroverResult,
+    GroverConfig, GroverResult, amplitude_amplification, apply_diffusion, apply_oracle,
+    grover_iterate, grover_search, grover_search_indices, optimal_iterations, success_probability,
+    theoretical_amplitude, theoretical_success_probability, top_candidates, uniform_superposition,
 };
 
 pub use hypothesis_search::{
-    quantum_grid_search, quantum_hypothesis_search, Hypothesis, HypothesisSearchResult,
-    OraclePredicate, QuantumHypothesisSearch, ThresholdOracle,
+    Hypothesis, HypothesisSearchResult, OraclePredicate, QuantumHypothesisSearch, ThresholdOracle,
+    quantum_grid_search, quantum_hypothesis_search,
 };
 
 pub use hardware::{

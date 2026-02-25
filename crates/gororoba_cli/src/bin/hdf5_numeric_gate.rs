@@ -1,5 +1,5 @@
 #[cfg(feature = "hdf5-export")]
-use data_core::hdf5_export::{scan_hdf5_numeric_datasets, NumericDatasetScanStatus};
+use data_core::hdf5_export::{NumericDatasetScanStatus, scan_hdf5_numeric_datasets};
 use std::collections::BTreeSet;
 use std::error::Error;
 use std::path::PathBuf;

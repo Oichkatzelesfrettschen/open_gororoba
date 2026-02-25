@@ -767,11 +767,7 @@ fn pearson_corr(a: &[f64], b: &[f64]) -> f64 {
     }
 
     let denom = (var_a * var_b).sqrt();
-    if denom < 1e-30 {
-        0.0
-    } else {
-        cov / denom
-    }
+    if denom < 1e-30 { 0.0 } else { cov / denom }
 }
 
 #[cfg(test)]

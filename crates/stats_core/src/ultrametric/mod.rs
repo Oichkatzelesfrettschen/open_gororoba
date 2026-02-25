@@ -54,50 +54,49 @@ pub mod null_models;
 pub mod subset_search;
 pub mod temporal;
 
-use algebra_core::{padic_distance, Rational};
+use algebra_core::{Rational, padic_distance};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
 use crate::claims_gates::{Evidence, GateResult, Verdict};
 
 // Re-export submodule public types
-pub use adaptive::{adaptive_permutation_test, AdaptiveConfig, AdaptiveResult, StopReason};
+pub use adaptive::{AdaptiveConfig, AdaptiveResult, StopReason, adaptive_permutation_test};
 pub use baire::{
-    baire_distance_matrix, euclidean_distance_matrix, euclidean_ultrametric_test,
-    matrix_free_fraction, matrix_free_tolerance_curve, matrix_free_tolerance_curve_with_null,
-    matrix_free_ultrametric_test, matrix_free_ultrametric_test_with_null,
-    normalize_data_column_major, AttributeSpec, BaireEncoder, BaireTestResult,
+    AttributeSpec, BaireEncoder, BaireTestResult, baire_distance_matrix, euclidean_distance_matrix,
+    euclidean_ultrametric_test, matrix_free_fraction, matrix_free_tolerance_curve,
+    matrix_free_tolerance_curve_with_null, matrix_free_ultrametric_test,
+    matrix_free_ultrametric_test_with_null, normalize_data_column_major,
 };
 pub use baire_codebook::{
-    codebook_baire_ultrametric_test, codebook_baire_ultrametric_test_nd, filter_by_predicate,
-    lattice_attribute_specs, lattice_baire_distance, lattice_baire_distance_matrix,
-    lattice_baire_distance_matrix_nd, lattice_baire_distance_nd, lattice_to_column_major,
-    shared_prefix_length, shared_prefix_length_nd, CodebookBaireResult,
+    CodebookBaireResult, codebook_baire_ultrametric_test, codebook_baire_ultrametric_test_nd,
+    filter_by_predicate, lattice_attribute_specs, lattice_baire_distance,
+    lattice_baire_distance_matrix, lattice_baire_distance_matrix_nd, lattice_baire_distance_nd,
+    lattice_to_column_major, shared_prefix_length, shared_prefix_length_nd,
 };
 pub use codebook_null::{
-    codebook_null_test_from_dim, dictionary_to_column_major, extract_zd_basis_pairs,
-    run_codebook_null_test, run_codebook_null_test_with_strategy, selective_mean_squared_distance,
-    CodebookNullResult,
+    CodebookNullResult, codebook_null_test_from_dim, dictionary_to_column_major,
+    extract_zd_basis_pairs, run_codebook_null_test, run_codebook_null_test_with_strategy,
+    selective_mean_squared_distance,
 };
 pub use dendrogram::{
-    cophenetic_correlation, cophenetic_distance_matrix, hierarchical_ultrametric_test,
-    hierarchical_ultrametric_test_with_method, multi_linkage_test, DendrogramResult,
-    MultiLinkageResult,
+    DendrogramResult, MultiLinkageResult, cophenetic_correlation, cophenetic_distance_matrix,
+    hierarchical_ultrametric_test, hierarchical_ultrametric_test_with_method, multi_linkage_test,
 };
 pub use local::{
-    euclidean_distance_matrix_nd, local_ultrametricity_test, local_ultrametricity_test_nd,
-    LocalUltrametricResult,
+    LocalUltrametricResult, euclidean_distance_matrix_nd, local_ultrametricity_test,
+    local_ultrametricity_test_nd,
 };
 pub use null_models::{
-    all_strategies, apply_null_column_major, multi_null_comparison, run_adaptive_null_test,
     ColumnIndependentNull, MultiNullResult, NullModel, NullModelStrategy, NullTestConfig,
-    RandomRotationNull, RowPermutationNull, ToroidalShiftNull,
+    RandomRotationNull, RowPermutationNull, ToroidalShiftNull, all_strategies,
+    apply_null_column_major, multi_null_comparison, run_adaptive_null_test,
 };
 pub use subset_search::{
-    attribute_subsets, project_data, subset_search, SubsetSearchConfig, SubsetSearchResult,
-    SubsetTestResult,
+    SubsetSearchConfig, SubsetSearchResult, SubsetTestResult, attribute_subsets, project_data,
+    subset_search,
 };
-pub use temporal::{analyze_temporal_cascade, CascadeAnalysis, WaitingTimeStats};
+pub use temporal::{CascadeAnalysis, WaitingTimeStats, analyze_temporal_cascade};
 
 /// Configuration for ultrametric analysis.
 #[derive(Debug, Clone)]

@@ -14,14 +14,14 @@
 
 use clap::Parser;
 use std::fmt::Write as _;
-use vacuum_frustration::bridge::{SedenionField, ViscosityCouplingModel, VACUUM_ATTRACTOR};
+use vacuum_frustration::bridge::{SedenionField, VACUUM_ATTRACTOR, ViscosityCouplingModel};
 use vacuum_frustration::spatial_correlation::{
     coefficient_of_variation, dynamic_range_ratio, grid_partition_3d, nonlinearity_index,
     pearson_correlation, point_cloud_overlap, regional_means, spearman_correlation,
 };
 use vacuum_frustration::vietoris_rips::{
-    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix, PersistenceDiagram,
-    VietorisRipsComplex,
+    DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers_at_time,
+    compute_persistent_homology,
 };
 
 #[derive(Parser, Debug)]

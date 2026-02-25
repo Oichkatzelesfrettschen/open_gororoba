@@ -3,8 +3,8 @@ use std::path::{Path, PathBuf};
 
 use clap::Parser;
 use csv::StringRecord;
-use rand::seq::SliceRandom;
 use rand::SeedableRng;
+use rand::seq::SliceRandom;
 use rand_chacha::ChaCha8Rng;
 use serde::Serialize;
 use stats_core::helpers::{mean, std_dev};
@@ -93,7 +93,6 @@ struct EquivalenceReport {
     metrics: EquivalenceMetrics,
     decision: EquivalenceDecision,
 }
-
 
 fn zscore(values: &[f64]) -> Vec<f64> {
     let mu = mean(values);

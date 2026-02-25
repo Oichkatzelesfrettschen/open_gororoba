@@ -5,9 +5,7 @@
 //! (octonion -> sedenion transition) because loss of the alternative property
 //! introduces zero divisors and a non-trivial associator-norm distribution.
 
-use crate::construction::cayley_dickson::{
-    batch_associator_norms_parallel, find_zero_divisors,
-};
+use crate::construction::cayley_dickson::{batch_associator_norms_parallel, find_zero_divisors};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, Normal};
@@ -22,7 +20,10 @@ use rand_distr::{Distribution, Normal};
 /// For dim <= 8 (associative or alternative): all norms cluster near 0, H ~ 0.
 /// For dim >= 16: non-trivial distribution, H > 0.
 pub fn associator_entropy(dim: usize, n_samples: usize, n_bins: usize, seed: u64) -> f64 {
-    assert!(dim >= 2 && dim.is_power_of_two(), "dim must be power of 2 >= 2");
+    assert!(
+        dim >= 2 && dim.is_power_of_two(),
+        "dim must be power of 2 >= 2"
+    );
     assert!(n_bins >= 2, "need at least 2 bins");
     assert!(n_samples >= 1, "need at least 1 sample");
 
@@ -146,7 +147,11 @@ mod tests {
         // Octonions are alternative but NOT associative.
         // Random triples have nonzero associator -> H(8) > 0.
         let h = associator_entropy(8, 500, 50, 42);
-        assert!(h > 0.1, "octonion entropy should be positive (non-associative), got {}", h);
+        assert!(
+            h > 0.1,
+            "octonion entropy should be positive (non-associative), got {}",
+            h
+        );
     }
 
     #[test]

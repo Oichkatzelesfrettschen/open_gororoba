@@ -433,9 +433,10 @@ impl GeneralizedCartanMatrix {
 
         // Mark affine extension node if applicable
         if let Some(LieAlgebraType::E9) = algebra_type
-            && self.rank == 9 {
-                nodes[0].is_affine_extension = true; // Node 0 is traditionally the affine extension
-            }
+            && self.rank == 9
+        {
+            nodes[0].is_affine_extension = true; // Node 0 is traditionally the affine extension
+        }
 
         DynkinDiagram {
             nodes,

@@ -30,22 +30,22 @@
 //! - Tang & Tang (2023): Sedenion SU(5) mass predictions
 
 use crate::analysis::boxkites::{
-    analyze_box_kite_symmetry, find_box_kites, BoxKite, BoxKiteSymmetryResult,
+    BoxKite, BoxKiteSymmetryResult, analyze_box_kite_symmetry, find_box_kites,
 };
 use crate::analysis::zd_graphs::{
-    analyze_associator_graph, analyze_basis_participation, analyze_zd_graph, AssociatorGraphResult,
-    BasisParticipationResult, ZdGraphAnalysis,
+    AssociatorGraphResult, BasisParticipationResult, ZdGraphAnalysis, analyze_associator_graph,
+    analyze_basis_participation, analyze_zd_graph,
 };
 use crate::construction::cayley_dickson::{
-    batch_associator_norms_parallel, cd_associator, cd_associator_norm, cd_conjugate, cd_multiply,
-    cd_norm_sq, count_pathion_zero_divisors, find_zero_divisors, find_zero_divisors_3blade,
-    find_zero_divisors_general_form, find_zero_divisors_parallel, measure_associator_density,
-    zd_spectrum_analysis, GeneralFormZD,
+    GeneralFormZD, batch_associator_norms_parallel, cd_associator, cd_associator_norm,
+    cd_conjugate, cd_multiply, cd_norm_sq, count_pathion_zero_divisors, find_zero_divisors,
+    find_zero_divisors_3blade, find_zero_divisors_general_form, find_zero_divisors_parallel,
+    measure_associator_density, zd_spectrum_analysis,
 };
 use crate::physics::octonion_field::{
+    DispersionResult, EvolutionResult, FANO_TRIPLES, FieldParams, Octonion,
     build_structure_constants, evolve, force, gaussian_wave_packet, hamiltonian,
     measure_dispersion, noether_charges, oct_conjugate, oct_multiply, oct_norm_sq, standing_wave,
-    DispersionResult, EvolutionResult, FieldParams, Octonion, FANO_TRIPLES,
 };
 use crate::traits::Hypercomplex;
 

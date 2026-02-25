@@ -201,7 +201,11 @@ impl CouplingTopology {
     /// For disconnected graphs, this captures the intra-component gap.
     pub fn spectral_gap(&self) -> f64 {
         let eigs = self.eigenvalues();
-        let mut nonzero: Vec<f64> = eigs.iter().map(|e| e.abs()).filter(|e| *e > 1e-12).collect();
+        let mut nonzero: Vec<f64> = eigs
+            .iter()
+            .map(|e| e.abs())
+            .filter(|e| *e > 1e-12)
+            .collect();
         nonzero.sort_by(|a, b| a.partial_cmp(b).unwrap());
         nonzero.first().copied().unwrap_or(0.0)
     }
@@ -230,7 +234,16 @@ impl CouplingTopology {
         adjacency[7][6] = kappa;
 
         // Cross edges (sail-to-mast)
-        let cross_edges = [(0, 4), (1, 4), (2, 5), (3, 5), (0, 6), (1, 7), (2, 6), (3, 7)];
+        let cross_edges = [
+            (0, 4),
+            (1, 4),
+            (2, 5),
+            (3, 5),
+            (0, 6),
+            (1, 7),
+            (2, 6),
+            (3, 7),
+        ];
         for (a, b) in cross_edges {
             adjacency[a][b] = kappa;
             adjacency[b][a] = kappa;
@@ -325,7 +338,17 @@ pub fn run_benchmark(
 ) -> ComparativeBenchmark {
     let results: Vec<BenchmarkResult> = topologies
         .iter()
-        .map(|topo| benchmark_single(topo, base_cavity, frequency_spacing, driven_nodes, drive_amplitude, dt, n_steps))
+        .map(|topo| {
+            benchmark_single(
+                topo,
+                base_cavity,
+                frequency_spacing,
+                driven_nodes,
+                drive_amplitude,
+                dt,
+                n_steps,
+            )
+        })
         .collect();
 
     ComparativeBenchmark {
@@ -471,19 +494,13 @@ fn rk4_coupled_step(
 
     let k1 = deriv(amplitudes, 0.0);
 
-    let s2: Vec<Complex64> = (0..n)
-        .map(|i| amplitudes[i] + 0.5 * dt * k1[i])
-        .collect();
+    let s2: Vec<Complex64> = (0..n).map(|i| amplitudes[i] + 0.5 * dt * k1[i]).collect();
     let k2 = deriv(&s2, 0.5 * dt);
 
-    let s3: Vec<Complex64> = (0..n)
-        .map(|i| amplitudes[i] + 0.5 * dt * k2[i])
-        .collect();
+    let s3: Vec<Complex64> = (0..n).map(|i| amplitudes[i] + 0.5 * dt * k2[i]).collect();
     let k3 = deriv(&s3, 0.5 * dt);
 
-    let s4: Vec<Complex64> = (0..n)
-        .map(|i| amplitudes[i] + dt * k3[i])
-        .collect();
+    let s4: Vec<Complex64> = (0..n).map(|i| amplitudes[i] + dt * k3[i]).collect();
     let k4 = deriv(&s4, dt);
 
     (0..n)
@@ -547,12 +564,10 @@ fn jacobi_eigenvalues(matrix: &[Vec<f64>]) -> Vec<f64> {
                 new_a[q][i] = new_a[i][q];
             }
         }
-        new_a[p][p] = cos_t * cos_t * a[p][p]
-            + 2.0 * sin_t * cos_t * a[p][q]
-            + sin_t * sin_t * a[q][q];
-        new_a[q][q] = sin_t * sin_t * a[p][p]
-            - 2.0 * sin_t * cos_t * a[p][q]
-            + cos_t * cos_t * a[q][q];
+        new_a[p][p] =
+            cos_t * cos_t * a[p][p] + 2.0 * sin_t * cos_t * a[p][q] + sin_t * sin_t * a[q][q];
+        new_a[q][q] =
+            sin_t * sin_t * a[p][p] - 2.0 * sin_t * cos_t * a[p][q] + cos_t * cos_t * a[q][q];
         new_a[p][q] = 0.0;
         new_a[q][p] = 0.0;
 
@@ -652,7 +667,12 @@ impl ComparativeBenchmark {
             };
             lines.push(format!(
                 "{:<20} {:>6} {:>8} {:>12.6} {:>10} {:>6.4}",
-                r.topology_name, r.n_nodes, r.n_components, r.isolation_ratio, xtalk_str, r.spectral_gap,
+                r.topology_name,
+                r.n_nodes,
+                r.n_components,
+                r.isolation_ratio,
+                xtalk_str,
+                r.spectral_gap,
             ));
         }
         lines.join("\n")
@@ -665,7 +685,9 @@ impl ComparativeBenchmark {
             return false;
         }
         let zd_isolation = self.results[0].isolation_ratio;
-        self.results[1..].iter().all(|r| r.isolation_ratio < zd_isolation)
+        self.results[1..]
+            .iter()
+            .all(|r| r.isolation_ratio < zd_isolation)
     }
 }
 
@@ -837,7 +859,11 @@ mod tests {
         assert_eq!(comps.len(), 1, "complete graph is connected");
         // K7 has 7*6/2 = 21 edges
         let n_edges: usize = (0..7)
-            .map(|i| (i + 1..7).filter(|&j| topo.adjacency[i][j].abs() > 1e-15).count())
+            .map(|i| {
+                (i + 1..7)
+                    .filter(|&j| topo.adjacency[i][j].abs() > 1e-15)
+                    .count()
+            })
             .sum();
         assert_eq!(n_edges, 21);
     }
@@ -847,7 +873,11 @@ mod tests {
         // 7 x K6: each K6 has 6*5/2 = 15 edges, total 105
         let topo = CouplingTopology::disconnected_cliques(7, 6, 1.0);
         let n_edges: usize = (0..42)
-            .map(|i| ((i + 1)..42).filter(|&j| topo.adjacency[i][j].abs() > 1e-15).count())
+            .map(|i| {
+                ((i + 1)..42)
+                    .filter(|&j| topo.adjacency[i][j].abs() > 1e-15)
+                    .count()
+            })
             .sum();
         assert_eq!(n_edges, 7 * 15, "7 x K6 has 105 edges");
     }
@@ -960,7 +990,11 @@ mod tests {
         ];
         let eigs = jacobi_eigenvalues(&mat);
         for e in &eigs {
-            assert!((e - 1.0).abs() < 1e-12, "identity eigenvalue should be 1, got {}", e);
+            assert!(
+                (e - 1.0).abs() < 1e-12,
+                "identity eigenvalue should be 1, got {}",
+                e
+            );
         }
     }
 
@@ -984,7 +1018,11 @@ mod tests {
 
         // Count edges: sail cycle (4) + mast pairs (2) + cross (8) = 14
         let n_edges: usize = (0..8)
-            .map(|i| ((i + 1)..8).filter(|&j| topo.adjacency[i][j].abs() > 1e-15).count())
+            .map(|i| {
+                ((i + 1)..8)
+                    .filter(|&j| topo.adjacency[i][j].abs() > 1e-15)
+                    .count()
+            })
             .sum();
         assert_eq!(n_edges, 14, "box-kite has 14 edges");
     }
@@ -1012,7 +1050,15 @@ mod tests {
             CouplingTopology::box_kite(1.0e10),
             CouplingTopology::ring(8, 1.0e10),
         ];
-        let result = run_benchmark(&suite, &cavity, 1.0e12, &[0, 1, 2, 3], 1.0e-3, 1.0e-12, 1000);
+        let result = run_benchmark(
+            &suite,
+            &cavity,
+            1.0e12,
+            &[0, 1, 2, 3],
+            1.0e-3,
+            1.0e-12,
+            1000,
+        );
 
         let family = ZdGraphFamily::from_sedenion(1.0e10);
         // Check failure modes with a high threshold (most topologies should fail)
@@ -1032,9 +1078,16 @@ mod tests {
         // Intra-clique edges: 3 * C(4,2) = 3*6 = 18
         // Bridge edges: 2 (between consecutive cliques)
         let n_edges: usize = (0..12)
-            .map(|i| ((i + 1)..12).filter(|&j| topo.adjacency[i][j].abs() > 1e-15).count())
+            .map(|i| {
+                ((i + 1)..12)
+                    .filter(|&j| topo.adjacency[i][j].abs() > 1e-15)
+                    .count()
+            })
             .sum();
-        assert_eq!(n_edges, 20, "3 x K4 bridged: 18 intra + 2 bridge = 20 edges");
+        assert_eq!(
+            n_edges, 20,
+            "3 x K4 bridged: 18 intra + 2 bridge = 20 edges"
+        );
     }
 
     // -- NA-005 Projection Gate tests --

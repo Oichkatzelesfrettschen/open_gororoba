@@ -303,10 +303,7 @@ mod tests {
         // Longer sampling -> smaller |bound| -> less negative energy allowed
         let b_short = quantum_inequality_bound_4d(0.01);
         let b_long = quantum_inequality_bound_4d(1.0);
-        assert!(
-            b_short < b_long,
-            "shorter tau allows more negative energy"
-        );
+        assert!(b_short < b_long, "shorter tau allows more negative energy");
     }
 
     // -- Lorentzian sampling --

@@ -5,7 +5,7 @@
 //!
 //! Source: https://landsatlook.usgs.gov/stac-server
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::{Path, PathBuf};
 
 const LANDSAT_URLS: &[&str] = &[

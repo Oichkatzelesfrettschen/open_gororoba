@@ -13,8 +13,10 @@
 //! - `clean`:    Delete raw HDF5 files after analysis
 
 use clap::{Parser, Subcommand};
-use data_core::catalogs::bl_filterbank::{bl_6equj5_observations, observation_file_path, BlObservation};
-use data_core::fetcher::{compute_sha256, FetchError};
+use data_core::catalogs::bl_filterbank::{
+    BlObservation, bl_6equj5_observations, observation_file_path,
+};
+use data_core::fetcher::{FetchError, compute_sha256};
 use std::fs;
 use std::io::{self, Read, Write};
 use std::path::{Path, PathBuf};
@@ -155,7 +157,10 @@ fn run_manifest(output: &Path, res: &str, nodes: &str) {
 
     toml_out.push_str("[manifest]\n");
     toml_out.push_str("dataset = \"BL_6EQUJ5_GBT\"\n");
-    toml_out.push_str(&format!("created = \"{}\"\n", chrono::Local::now().format("%Y-%m-%d")));
+    toml_out.push_str(&format!(
+        "created = \"{}\"\n",
+        chrono::Local::now().format("%Y-%m-%d")
+    ));
     toml_out.push_str("base_url = \"https://bldata.berkeley.edu/6EQUJ5/6EQUJ5_GBT/\"\n");
     toml_out.push_str(&format!("total_files = {}\n", obs_list.len()));
     toml_out.push_str(&format!("nodes = {:?}\n", node_list));
@@ -207,7 +212,13 @@ fn run_download(data_dir: &Path, res: &str, nodes: &str, _concurrency: usize, sk
         let dest = observation_file_path(obs, data_dir);
         let url = obs.download_url();
 
-        eprint!("[{}/{}] {} ({})... ", i + 1, total, obs.filename(), obs.pointing_type);
+        eprint!(
+            "[{}/{}] {} ({})... ",
+            i + 1,
+            total,
+            obs.filename(),
+            obs.pointing_type
+        );
 
         if skip_existing && dest.exists() {
             let size = fs::metadata(&dest).map(|m| m.len()).unwrap_or(0);
@@ -241,7 +252,10 @@ fn run_download(data_dir: &Path, res: &str, nodes: &str, _concurrency: usize, sk
     }
 
     println!();
-    println!("Summary: {} downloaded, {} skipped, {} failed", downloaded, skipped, failed);
+    println!(
+        "Summary: {} downloaded, {} skipped, {} failed",
+        downloaded, skipped, failed
+    );
 }
 
 /// Download a file with resume support via HTTP Range header.
@@ -257,8 +271,7 @@ fn download_file_with_resume(url: &str, dest: &Path) -> Result<u64, FetchError> 
         0
     };
 
-    let mut request = ureq::get(url)
-        .header("User-Agent", "gororoba-fetch/0.1 (research)");
+    let mut request = ureq::get(url).header("User-Agent", "gororoba-fetch/0.1 (research)");
 
     if existing_size > 0 {
         request = request.header("Range", &format!("bytes={}-", existing_size));
@@ -334,10 +347,7 @@ fn run_verify(data_dir: &Path, manifest: &Path) {
             .get("filename")
             .and_then(|v| v.as_str())
             .unwrap_or("unknown");
-        let expected_hash = entry
-            .get("sha256")
-            .and_then(|v| v.as_str())
-            .unwrap_or("");
+        let expected_hash = entry.get("sha256").and_then(|v| v.as_str()).unwrap_or("");
 
         let filepath = data_dir.join(filename);
 
@@ -368,7 +378,10 @@ fn run_verify(data_dir: &Path, manifest: &Path) {
                     println!("  [OK] {}", filename);
                     verified += 1;
                 } else {
-                    println!("  [MISMATCH] {} expected={} got={}", filename, expected_hash, hash);
+                    println!(
+                        "  [MISMATCH] {} expected={} got={}",
+                        filename, expected_hash, hash
+                    );
                     mismatched += 1;
                 }
             }
@@ -490,7 +503,11 @@ fn run_clean(data_dir: &Path, res: &str, confirm: bool) {
         }
     }
 
-    println!("Deleted {} files ({:.1} GB freed)", deleted, total_bytes as f64 / 1e9);
+    println!(
+        "Deleted {} files ({:.1} GB freed)",
+        deleted,
+        total_bytes as f64 / 1e9
+    );
 }
 
 fn main() {

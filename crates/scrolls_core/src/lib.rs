@@ -663,9 +663,11 @@ mod tests {
         );
         assert!(!converted.dataset.dataset.header_value_sha256.is_empty());
         assert!(!converted.dataset.dataset.row_value_sha256.is_empty());
-        assert!(converted
-            .rendered_dataset_toml
-            .contains("dataset_class = \"canonical_dataset\""));
+        assert!(
+            converted
+                .rendered_dataset_toml
+                .contains("dataset_class = \"canonical_dataset\"")
+        );
     }
 
     #[test]

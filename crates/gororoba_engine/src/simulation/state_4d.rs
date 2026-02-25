@@ -4,7 +4,6 @@ use anyhow::Context;
 use anyhow::Result;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 
-
 /// Configuration for 4D simulation.
 #[derive(Debug, Clone)]
 pub struct SimulationConfig4D {

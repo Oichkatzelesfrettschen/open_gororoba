@@ -4,8 +4,8 @@
 //! both paper-calibrated and Sellmeier-derived wavevector mismatches.
 
 use optics_core::{
-    coherence_length, maker_fringe_sweep, rate_ratio_with_dk, rate_sweep_with_dk,
-    SfwmMaterialParams,
+    SfwmMaterialParams, coherence_length, maker_fringe_sweep, rate_ratio_with_dk,
+    rate_sweep_with_dk,
 };
 
 #[test]

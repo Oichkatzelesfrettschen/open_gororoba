@@ -27,9 +27,9 @@ pub mod tda_bridge;
 pub mod ultrametric;
 
 pub use claims_gates::{
-    bootstrap_ci_gate, frechet_gate, inverse_pvalue_gate, metric_gate, pvalue_gate,
-    run_bootstrap_ci_gate, run_frechet_gate, run_two_sample_gate, two_sample_gate, Evidence,
-    GateRegistry, GateResult, Verdict,
+    Evidence, GateRegistry, GateResult, Verdict, bootstrap_ci_gate, frechet_gate,
+    inverse_pvalue_gate, metric_gate, pvalue_gate, run_bootstrap_ci_gate, run_frechet_gate,
+    run_two_sample_gate, two_sample_gate,
 };
 
 // C-074 fitting types are defined inline below (AssociatorGrowthFitResult,

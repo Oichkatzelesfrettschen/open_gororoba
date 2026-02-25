@@ -1,0 +1,296 @@
+# Canonical semantic validation contract for data lanes.
+
+[semantic_validators]
+updated = "2026-02-24"
+authoritative = true
+policy_version = "v1"
+
+[[validator]]
+id = "SV-001"
+lane_id = "artifacts"
+name = "Artifacts Manifest Coverage"
+validator_kind = "artifacts_manifest_coverage"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane artifacts"
+description = "Every artifacts-lane file must be represented in ARTIFACTS_MANIFEST.csv (or covered by allowed provenance sidecars)."
+
+[[validator]]
+id = "SV-002"
+lane_id = "external"
+name = "External Dataset Semantics"
+validator_kind = "external_dataset_semantics"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane external"
+description = "External files must have source rules + hashes, pass baseline format checks, and satisfy known parser-level dataset checks."
+
+[[validator]]
+id = "SV-003"
+lane_id = "evidence"
+name = "Evidence Manifest Integrity"
+validator_kind = "evidence_manifest_integrity"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane evidence"
+description = "Evidence files must be present in MANIFEST.toml with valid sha256 and status=present."
+
+[[validator]]
+id = "SV-004"
+lane_id = "csv"
+name = "CSV Lane Structure"
+validator_kind = "csv_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane csv"
+description = "CSV files must parse, include headers, and contain at least one data row."
+
+[[validator]]
+id = "SV-005"
+lane_id = "csv_legacy"
+name = "Legacy CSV Structure"
+validator_kind = "csv_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane csv_legacy"
+description = "Legacy CSV files are still structurally validated (parseable, headers, non-empty rows)."
+
+[[validator]]
+id = "SV-006"
+lane_id = "h5"
+name = "H5 Lane Binary Integrity"
+validator_kind = "h5_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane h5"
+description = "HDF5 lane files must be non-empty binaries; deeper numeric gates are run by dedicated hdf5 gates."
+
+[[validator]]
+id = "SV-007"
+lane_id = "thesis_lab"
+name = "Thesis Lab Lane Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane thesis_lab"
+description = "Thesis lab TOML outputs must parse cleanly."
+
+[[validator]]
+id = "SV-008"
+lane_id = "thesis_lab_kolmogorov"
+name = "Thesis Lab Kolmogorov Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane thesis_lab_kolmogorov"
+description = "Kolmogorov thesis lab TOML outputs must parse cleanly."
+
+[[validator]]
+id = "SV-009"
+lane_id = "thesis_lab_non_newtonian"
+name = "Thesis Lab Non-Newtonian Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane thesis_lab_non_newtonian"
+description = "Non-Newtonian thesis lab TOML outputs must parse cleanly."
+
+[[validator]]
+id = "SV-010"
+lane_id = "kubo_transport"
+name = "Kubo Transport Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane kubo_transport"
+description = "Kubo transport lane TOML outputs must parse cleanly."
+
+[[validator]]
+id = "SV-011"
+lane_id = "wavelet_bridging"
+name = "Wavelet Bridging Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane wavelet_bridging"
+description = "Wavelet bridging outputs must parse cleanly."
+
+[[validator]]
+id = "SV-012"
+lane_id = "wavelet_acf"
+name = "Wavelet ACF Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane wavelet_acf"
+description = "Wavelet ACF outputs must parse cleanly."
+
+[[validator]]
+id = "SV-013"
+lane_id = "chsh_wavelet"
+name = "CHSH Wavelet Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane chsh_wavelet"
+description = "CHSH wavelet outputs must parse cleanly."
+
+[[validator]]
+id = "SV-014"
+lane_id = "chsh_betti"
+name = "CHSH Betti Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane chsh_betti"
+description = "CHSH Betti outputs must parse cleanly."
+
+[[validator]]
+id = "SV-015"
+lane_id = "meltdown_gating"
+name = "Meltdown Gating Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane meltdown_gating"
+description = "Meltdown gating outputs must parse cleanly."
+
+[[validator]]
+id = "SV-016"
+lane_id = "meltdown_pulsed"
+name = "Meltdown Pulsed Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane meltdown_pulsed"
+description = "Meltdown pulsed outputs must parse cleanly."
+
+[[validator]]
+id = "SV-017"
+lane_id = "e027"
+name = "E027 Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane e027"
+description = "E027 outputs must parse cleanly."
+
+[[validator]]
+id = "SV-018"
+lane_id = "apt_test"
+name = "APT Test Structure"
+validator_kind = "generic_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane apt_test"
+description = "APT test lane files must pass extension-aware structural checks."
+
+[[validator]]
+id = "SV-019"
+lane_id = "equivalence"
+name = "Equivalence Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane equivalence"
+description = "Equivalence lane TOML outputs must parse cleanly."
+
+[[validator]]
+id = "SV-020"
+lane_id = "papers"
+name = "Papers Binary Structure"
+validator_kind = "binary_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane papers"
+description = "Papers lane files must be non-empty binaries or parseable text/metadata by extension checks."
+
+[[validator]]
+id = "SV-021"
+lane_id = "sfwm_repro"
+name = "SFWM Repro Structure"
+validator_kind = "csv_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane sfwm_repro"
+description = "SFWM reproducibility CSV outputs must parse with header + data rows."
+
+[[validator]]
+id = "SV-022"
+lane_id = "bl_6equj5_ata"
+name = "BL 6EQUJ5 ATA Structure"
+validator_kind = "generic_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane bl_6equj5_ata"
+description = "BL ATA lane files must pass extension-aware structural checks."
+
+[[validator]]
+id = "SV-023"
+lane_id = "bl_6equj5_gbt"
+name = "BL 6EQUJ5 GBT Structure"
+validator_kind = "generic_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane bl_6equj5_gbt"
+description = "BL GBT lane files must pass extension-aware structural checks."
+
+[[validator]]
+id = "SV-024"
+lane_id = "entropy_census"
+name = "Entropy Census Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane entropy_census"
+description = "Entropy census outputs must parse cleanly."
+
+[[validator]]
+id = "SV-025"
+lane_id = "fano_scattering"
+name = "Fano Scattering Structure"
+validator_kind = "generic_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane fano_scattering"
+description = "Fano scattering outputs must pass extension-aware structural checks."
+
+[[validator]]
+id = "SV-026"
+lane_id = "lattice_hawking"
+name = "Lattice Hawking Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane lattice_hawking"
+description = "Lattice Hawking outputs must parse cleanly."
+
+[[validator]]
+id = "SV-027"
+lane_id = "test_e027"
+name = "Test E027 Structure"
+validator_kind = "toml_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane test_e027"
+description = "E027 test fixtures must parse cleanly."
+
+[[validator]]
+id = "SV-028"
+lane_id = "test_zd"
+name = "Test ZD Structure"
+validator_kind = "csv_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane test_zd"
+description = "ZD test fixtures must parse as CSV with header and data rows."
+
+[[validator]]
+id = "SV-029"
+lane_id = "test_zd_1k"
+name = "Test ZD 1k Structure"
+validator_kind = "csv_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli --bin data-semantic-validate -- --lane test_zd_1k"
+description = "ZD 1k test fixtures must parse as CSV with header and data rows."

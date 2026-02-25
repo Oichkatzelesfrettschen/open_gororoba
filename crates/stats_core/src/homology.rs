@@ -236,13 +236,7 @@ impl SimplicialComplex {
         let euler_characteristic: i64 = betti
             .iter()
             .enumerate()
-            .map(|(k, &b)| {
-                if k % 2 == 0 {
-                    b as i64
-                } else {
-                    -(b as i64)
-                }
-            })
+            .map(|(k, &b)| if k % 2 == 0 { b as i64 } else { -(b as i64) })
             .sum();
 
         BettiResult {
@@ -262,11 +256,7 @@ impl SimplicialComplex {
             .enumerate()
             .map(|(k, simplices)| {
                 let count = simplices.len() as i64;
-                if k % 2 == 0 {
-                    count
-                } else {
-                    -count
-                }
+                if k % 2 == 0 { count } else { -count }
             })
             .sum()
     }
@@ -381,7 +371,10 @@ mod tests {
 
         let result = k.betti_numbers();
         assert_eq!(result.betti[0], 1, "beta_0: torus is connected");
-        assert_eq!(result.betti[1], 2, "beta_1: torus has two independent loops");
+        assert_eq!(
+            result.betti[1], 2,
+            "beta_1: torus has two independent loops"
+        );
         assert_eq!(result.betti[2], 1, "beta_2: torus encloses one void");
 
         // Euler characteristic of torus = 0

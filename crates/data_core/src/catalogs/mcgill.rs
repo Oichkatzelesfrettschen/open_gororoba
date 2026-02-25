@@ -7,7 +7,7 @@
 //! Source: http://www.physics.mcgill.ca/~pulsar/magnetar/main.html
 //! Reference: Olausen & Kaspi (2014), ApJS 212, 6
 
-use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::{Path, PathBuf};
 
 /// A magnetar from the McGill catalog.
@@ -50,9 +50,10 @@ fn parse_f64(s: &str) -> f64 {
     if s.contains('-') && !s.starts_with('-') {
         let parts: Vec<&str> = s.split('-').collect();
         if parts.len() == 2
-            && let (Ok(lo), Ok(hi)) = (parts[0].parse::<f64>(), parts[1].parse::<f64>()) {
-                return (lo + hi) / 2.0;
-            }
+            && let (Ok(lo), Ok(hi)) = (parts[0].parse::<f64>(), parts[1].parse::<f64>())
+        {
+            return (lo + hi) / 2.0;
+        }
     }
     s.parse::<f64>().unwrap_or(f64::NAN)
 }

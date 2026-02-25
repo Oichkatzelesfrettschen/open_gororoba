@@ -25,7 +25,7 @@
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
-use super::null_models::{apply_null_column_major, NullModel};
+use super::null_models::{NullModel, apply_null_column_major};
 
 /// Specification for a single attribute in the Baire encoding.
 #[derive(Debug, Clone)]
@@ -959,7 +959,7 @@ mod tests {
         assert!((cols[0] - 0.2).abs() < 1e-10); // x[0] = 2/10
         assert!((cols[1] - 0.4).abs() < 1e-10); // x[1] = 4/10
         assert!((cols[2] - 0.6).abs() < 1e-10); // x[2] = 6/10
-                                                // Column 1 (y): normalized values of [8, 6, 4] in range [0, 10]
+        // Column 1 (y): normalized values of [8, 6, 4] in range [0, 10]
         assert!((cols[3] - 0.8).abs() < 1e-10); // y[0] = 8/10
         assert!((cols[4] - 0.6).abs() < 1e-10); // y[1] = 6/10
         assert!((cols[5] - 0.4).abs() < 1e-10); // y[2] = 4/10

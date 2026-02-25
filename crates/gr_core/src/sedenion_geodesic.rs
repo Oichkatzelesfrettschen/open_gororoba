@@ -7,9 +7,9 @@
 //! equivalent to a coherence-preserving homotopy in the space of
 //! non-associative sedenion algebras.
 
-use crate::kerr::{kerr_metric_quantities, Kerr};
+use crate::kerr::{Kerr, kerr_metric_quantities};
 use algebra_core::physics::m3::{
-    classify_m3, compute_m3_octonion_basis, M3Classification, OctonionTable,
+    M3Classification, OctonionTable, classify_m3, compute_m3_octonion_basis,
 };
 
 /// Sedenionic representation of the local spacetime metric.

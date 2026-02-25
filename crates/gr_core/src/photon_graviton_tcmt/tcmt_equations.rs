@@ -2,8 +2,8 @@
 //!
 //! Solves the coupled-mode equations:
 //! ```
-//! d/dt [a_ph]   = [-i*ω₀,ph - γ_ph/2    -i*κ] [a_ph]
-//!       [a_grav]   [-i*κ                 -i*ω₀,grav - γ_grav/2] [a_grav]
+//! d/dt [a_ph]   = [-i*\omega_0,ph - \gamma_ph/2    -i*\kappa] [a_ph]
+//!       [a_grav]   [-i*\kappa                 -i*\omega_0,grav - \gamma_grav/2] [a_grav]
 //! ```
 //! using RK4 integration with adaptive timesteps.
 
@@ -30,20 +30,20 @@ impl TCMTSystem {
         let _decay_total = coupling.total_decay_rate();
 
         // Ruan-Fan Eqs. 8, extended to two modes
-        // Diagonal: -i*ω₀ - γ/2
-        // Off-diagonal: -i*κ (coupling)
+        // Diagonal: -i*\omega_0 - \gamma/2
+        // Off-diagonal: -i*\kappa (coupling)
         let h00 = C64::new(
             -coupling.gamma_radiative / 2.0,
             -coupling.resonance_frequency,
         );
 
         let h01 = C64::new(0.0, -coupling.coupling_strength);
-        let h10 = h01;  // Hermitian coupling
+        let h10 = h01; // Hermitian coupling
 
         // Second mode (gravitational) has different decay profile
         let h11 = C64::new(
             -(coupling.gamma_radiative + coupling.gamma_gravitational) / 2.0,
-            -coupling.resonance_frequency,  // Same resonance for coupled system
+            -coupling.resonance_frequency, // Same resonance for coupled system
         );
 
         TCMTSystem {
@@ -146,21 +146,27 @@ pub fn integrate_to_time(
 
 /// Compute energy decay (dephasing) due to dissipation
 ///
-/// In lossy system, total energy E = |a_ph|² + |a_grav|² decays as:
+/// In lossy system, total energy E = |a_ph|^2 + |a_grav|^2 decays as:
 /// E(t) = E(0) * exp(-decay_rate * t)
 ///
 /// # Returns
 /// Decay rate (dimensions: 1/time)
 pub fn energy_decay_rate(system: &TCMTSystem) -> f64 {
     // Average decay from both modes
-    (system.coupling.gamma_radiative + (system.coupling.gamma_radiative + system.coupling.gamma_gravitational)) / 4.0
+    (system.coupling.gamma_radiative
+        + (system.coupling.gamma_radiative + system.coupling.gamma_gravitational))
+        / 4.0
 }
 
 /// Check energy conservation in lossless case
 ///
-/// In pure TCMT with no dissipation (γ_rad = 0), energy should be conserved.
+/// In pure TCMT with no dissipation (\gamma_rad = 0), energy should be conserved.
 /// This is violated in practice by finite integration time-steps.
-pub fn energy_conservation_error(initial: TCMTState, final_state: TCMTState, _system: &TCMTSystem) -> f64 {
+pub fn energy_conservation_error(
+    initial: TCMTState,
+    final_state: TCMTState,
+    _system: &TCMTSystem,
+) -> f64 {
     let e_initial = initial.total_energy();
     let e_final = final_state.total_energy();
 

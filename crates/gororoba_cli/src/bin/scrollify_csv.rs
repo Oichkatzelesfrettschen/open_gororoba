@@ -1,7 +1,7 @@
 use clap::{Parser, ValueEnum};
 use glob::glob;
 use scrolls_core::{
-    convert_csv_to_scroll, render_scroll_index, slugify, ConvertSpec, ScrollIndexEntry,
+    ConvertSpec, ScrollIndexEntry, convert_csv_to_scroll, render_scroll_index, slugify,
 };
 use std::collections::BTreeSet;
 use std::fs;

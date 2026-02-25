@@ -25,13 +25,13 @@ pub mod yield_model;
 
 pub use alpha_chain::{AlphaChainNetwork, AlphaChainState};
 pub use calibration_scan::{
-    best_parameter_set, scan_parameter_sets, CalibrationResult, DdtParameterSet,
+    CalibrationResult, DdtParameterSet, best_parameter_set, scan_parameter_sets,
 };
 pub use eos::{CachedEos, EosComposition, EosState, WhiteDwarfEos};
 pub use error::SniaError;
 pub use hydro::{BoundaryCondition, ConservativeState, HllcFlux1D, LimiterKind};
 pub use lightcurve::{LightCurveModel, LightCurveSample};
-pub use output::{read_snapshot_toml, write_snapshot_toml, SimulationSnapshot};
+pub use output::{SimulationSnapshot, read_snapshot_toml, write_snapshot_toml};
 pub use reaction::{BurnStepResult, CarbonBurnModel};
 pub use solver::{CellState, DetonationEvent, SimulationResult, SniaCoreSolver, SolverConfig};
 pub use types::{BurnState, HydroState1D, ThermoState};

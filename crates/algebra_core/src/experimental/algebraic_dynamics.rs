@@ -170,8 +170,8 @@ pub fn permutation_test_generic<C: ConstraintSystem + ?Sized>(
     n_permutations: usize,
     seed: u64,
 ) -> f64 {
-    use rand::seq::SliceRandom;
     use rand::SeedableRng;
+    use rand::seq::SliceRandom;
     use rand_chacha::ChaCha8Rng;
 
     let observed = compute_generic_locality(system, sequence);
@@ -819,9 +819,10 @@ pub fn simulate_et_billiard(n: usize, s: usize, n_steps: usize, seed: u64) -> Et
 
         // Count DMZ transitions
         if let Some(last) = symbolic.last()
-            && *last != cell_type {
-                n_dmz_transitions += 1;
-            }
+            && *last != cell_type
+        {
+            n_dmz_transitions += 1;
+        }
 
         symbolic.push(cell_type);
         visited.insert((row, col));
@@ -1947,7 +1948,7 @@ mod tests {
         assert_eq!(inv.n, 4);
         assert_eq!(inv.s, 3);
         assert_eq!(inv.edge, 8); // G = 2^3 = 8
-                                 // DMZ density should be between 0 and 1
+        // DMZ density should be between 0 and 1
         assert!(inv.dmz_density >= 0.0 && inv.dmz_density <= 1.0);
         // Structural empties: diagonal + anti-diagonal = 2*8 - 2 (center counted once if edge even)
         assert!(inv.n_structural_empty > 0);
@@ -2010,7 +2011,7 @@ mod tests {
         let r = &results[0];
         assert_eq!(r.n, 4);
         assert_eq!(r.box_kite_count, 3); // N-1 = 3
-                                         // Should have 3 Coxeter comparisons (A_3, B_3, D_3)
+        // Should have 3 Coxeter comparisons (A_3, B_3, D_3)
         assert_eq!(r.coxeter_comparisons.len(), 3);
         // Best match should have a finite match score
         assert!(r.coxeter_comparisons[0].match_score.is_finite());

@@ -808,3 +808,57 @@ crate = "gororoba_cli"
 description = "Seven-stream sterile-neutrino null-result audit (experiment E-079, claims C-703..C-709). Emits null_confirmed only when all seven sensor streams carry a verified null result."
 experiment = "E-079"
 status = "active"
+
+[[binary]]
+name = "data-origin-audit"
+crate = "gororoba_cli"
+description = "Full data-origin audit for data/* lanes. Classifies files as generated/external/legacy/unknown, reports lacunae, and supports fail-on-strict-unknown mode."
+status = "active"
+
+[[binary]]
+name = "data-governance-gate"
+crate = "gororoba_cli"
+description = "Fail-closed governance gate for data origins, lane manifest completeness, naming policy, and gitignore enforcement."
+status = "active"
+
+[[binary]]
+name = "data-clean"
+crate = "gororoba_cli"
+description = "Rust-native cleanup utility for reproducible data lanes with dry-run/apply modes and gitignore-aware deletion."
+status = "active"
+
+[[binary]]
+name = "record-external-hashes"
+crate = "gororoba_cli"
+description = "Rust-native provenance hash recorder for data/external. Writes PROVENANCE.local.json with SHA-256, size, and mtime metadata."
+status = "active"
+
+[[binary]]
+name = "external-redownload-audit"
+crate = "gororoba_cli"
+description = "Exhaustive external origin audit and optional re-download verification with backend fallback order (wget -> curl -> fetch), checksum comparison, and blocked-source deadline policy reporting."
+status = "active"
+
+[[binary]]
+name = "external-blocked-burndown"
+crate = "gororoba_cli"
+description = "Blocked-source debt inventory and burn-down gate: reports blocked files/bytes by source with deadline, overdue, and threshold enforcement."
+status = "active"
+
+[[binary]]
+name = "external-blocked-retry-ledger"
+crate = "gororoba_cli"
+description = "Append-only ledger updater for blocked external sources. Records retry/status attempts with phase, actor, command, and evidence references."
+status = "active"
+
+[[binary]]
+name = "data-semantic-validate"
+crate = "gororoba_cli"
+description = "Semantic data validation runner for governed lanes (external parsers, artifacts/evidence manifest integrity, and lane-specific structural checks)."
+status = "active"
+
+[[binary]]
+name = "hepdata-refresh"
+crate = "gororoba_cli"
+description = "Re-download HEPData CSV tables for managed lanes by resolving per-file table DOI metadata to canonical CSV content URLs."
+status = "active"

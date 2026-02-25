@@ -6,7 +6,7 @@
 use crate::stasheff::mean_pentagon_residual;
 use crate::tensor_ops::alignment_score;
 use crate::training_data::{
-    build_sedenion_table, encode_pair, multiplication_samples, MultiplicationSample, SEDENION_DIM,
+    MultiplicationSample, SEDENION_DIM, build_sedenion_table, encode_pair, multiplication_samples,
 };
 use cosmology_core::bounce::hubble_e_lcdm;
 

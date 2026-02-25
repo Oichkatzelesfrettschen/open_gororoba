@@ -508,11 +508,7 @@ pub fn verify_area_law(lattice: &RTLattice, n_bootstrap: usize, seed: u64) -> Ar
             .iter()
             .map(|&i| {
                 let s = base_result.entropies[i];
-                if s > 1e-10 {
-                    s.ln()
-                } else {
-                    -10.0
-                }
+                if s > 1e-10 { s.ln() } else { -10.0 }
             })
             .collect();
 

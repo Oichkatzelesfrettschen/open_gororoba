@@ -1,0 +1,31 @@
+generated_at_utc = "2026-02-24T07:48:37.032Z"
+execute = true
+backend_order = [
+    "wget",
+    "curl",
+    "fetch",
+]
+total_files = 1
+matched_source_files = 1
+unmatched_source_files = 0
+blocked_pending = 0
+blocked_overdue = 0
+checksum_mismatch = 0
+download_failures = 0
+pass_count = 1
+
+[[records]]
+path = "data/external/sorce_tsi_daily.csv"
+source_id = "SRC-SORCE-TSI-DAILY"
+source_status = "active"
+expected_sha256 = "2eb0f129d82a9597d89db795407780fe2c763e012c6250776d2ba768c8c4e9e6"
+actual_sha256 = "2eb0f129d82a9597d89db795407780fe2c763e012c6250776d2ba768c8c4e9e6"
+status = "pass"
+detail = "hash verification passed"
+
+[[records.attempts]]
+backend = "wget"
+url = "https://lasp.colorado.edu/data/sorce/tsi_data/daily/sorce_tsi_L3_c24h_latest.txt"
+status = "ok"
+detail = "download succeeded"
+

@@ -131,10 +131,7 @@ mod tests {
     #[test]
     fn test_fifth_force_alpha_gr_limit() {
         let alpha = fifth_force_alpha(1e12);
-        assert!(
-            alpha < 1e-6,
-            "GR limit: alpha={alpha:.3e}, expected ~0"
-        );
+        assert!(alpha < 1e-6, "GR limit: alpha={alpha:.3e}, expected ~0");
     }
 
     #[test]

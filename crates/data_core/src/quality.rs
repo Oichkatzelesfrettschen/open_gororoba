@@ -53,7 +53,9 @@ pub enum RhoQualityError {
         inf_count: usize,
         first_non_finite_index: Option<usize>,
     },
-    #[error("final density drift too large: abs_drift_final={abs_drift_final:.6e} > threshold={threshold:.6e}")]
+    #[error(
+        "final density drift too large: abs_drift_final={abs_drift_final:.6e} > threshold={threshold:.6e}"
+    )]
     DriftTooLarge {
         abs_drift_final: f64,
         threshold: f64,
