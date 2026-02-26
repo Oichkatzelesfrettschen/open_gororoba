@@ -1,0 +1,110 @@
+[package]
+name = "gororoba_cli_algebra"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Algebra domain CLI binaries for gororoba"
+license = "MIT"
+autobins = false
+
+[[bin]]
+name = "zd-search"
+path = "src/bin/zd_search.rs"
+
+[[bin]]
+name = "albert-algebra-structure-census"
+path = "src/bin/albert_algebra_structure_census.rs"
+
+[[bin]]
+name = "algebra-entropy-census"
+path = "src/bin/algebra_entropy_census.rs"
+
+[[bin]]
+name = "amplitude-frustration-survey"
+path = "src/bin/amplitude_frustration_survey.rs"
+
+[[bin]]
+name = "c590-attractor-sweep"
+path = "src/bin/c590_attractor_sweep.rs"
+
+[[bin]]
+name = "cd-tower-report"
+path = "src/bin/cd_tower_report.rs"
+
+[[bin]]
+name = "cd-ultrametric-scaling"
+path = "src/bin/cd_ultrametric_scaling.rs"
+
+[[bin]]
+name = "chirality-lock-test"
+path = "src/bin/chirality_lock_test.rs"
+
+[[bin]]
+name = "composition-algebra-taxonomy"
+path = "src/bin/composition_algebra_taxonomy.rs"
+
+[[bin]]
+name = "cross-stack-locality"
+path = "src/bin/cross_stack_locality.rs"
+
+[[bin]]
+name = "dimensional-census"
+path = "src/bin/dimensional_census.rs"
+
+[[bin]]
+name = "dump-assessors"
+path = "src/bin/dump_assessors.rs"
+
+[[bin]]
+name = "et-billiard"
+path = "src/bin/et_billiard.rs"
+
+[[bin]]
+name = "modular-chaos"
+path = "src/bin/modular_chaos.rs"
+
+[[bin]]
+name = "moonshine-filterbank"
+path = "src/bin/moonshine_filterbank.rs"
+
+[[bin]]
+name = "motif-census"
+path = "src/bin/motif_census.rs"
+
+[[bin]]
+name = "oct-field"
+path = "src/bin/oct_field.rs"
+
+[[bin]]
+name = "pathion-sink-test"
+path = "src/bin/pathion_sink_test.rs"
+
+[[bin]]
+name = "prefix-chain-theorem"
+path = "src/bin/prefix_chain_theorem.rs"
+
+[[bin]]
+name = "sky-limit-set"
+path = "src/bin/sky_limit_set.rs"
+
+[[bin]]
+name = "tessarines-mixed-quaternions-census"
+path = "src/bin/tessarines_mixed_quaternions_census.rs"
+
+[[bin]]
+name = "wow-sedenion-synthesis"
+path = "src/bin/wow_sedenion_synthesis.rs"
+
+[dependencies]
+algebra_core = { path = "../algebra_core", features = ["lie", "experimental"] }
+gororoba_engine = { path = "../gororoba_engine" }
+spectral_core = { path = "../spectral_core" }
+stats_core = { path = "../stats_core" }
+clap = { workspace = true }
+csv = { workspace = true }
+env_logger = { workspace = true }
+rand = { workspace = true }
+rand_chacha = { workspace = true }
+rustfft = { workspace = true }
+
+[lints]
+workspace = true

@@ -9,7 +9,7 @@ use num_complex::Complex64 as C64;
 /// Compute the Fano lineshape for normalized detuning parameter
 ///
 /// Based on Ruan-Fan Eq. 23:
-/// ```
+/// ```text
 /// sigma = |S|^2 = |(x + iq) / (x + i)|^2
 ///       = (x^2 + q^2) / (x^2 + 1) * correction_factor
 /// ```
@@ -46,7 +46,7 @@ pub fn fano_lineshape(x: f64, asymmetry: &AsymmetryParameter, _weak_field_param:
 /// Compute scattering cross-section from Fano lineshape
 ///
 /// Based on Ruan-Fan Eq. 14:
-/// ```
+/// ```text
 /// \sigma_sct = \sigma_0 * |S_l|^2 = \sigma_0 * fano_lineshape(x, q, epsilon)
 /// ```
 ///
@@ -69,7 +69,7 @@ pub fn scattering_cross_section(
 ///
 /// In lossless scattering (gamma_0 = 0), absorption vanishes.
 /// With loss (gamma_0 > 0), absorption follows:
-/// ```
+/// ```text
 /// \sigma_abs = \sigma_0 * (gamma_0 / gamma) * lineshape_asymmetric(x, q)
 /// ```
 ///
@@ -146,7 +146,7 @@ pub fn compute_asymmetry_from_coupling(coupling: &GravitationalCoupling) -> Asym
 /// Compute reflected wave amplitude from incident wave
 ///
 /// Ruan-Fan Eq. 21:
-/// ```
+/// ```text
 /// R = e^{i*phi} * [i*(\omega_0 - \omega) + \gamma_0 - \gamma] / [i*(\omega_0 - \omega) + \gamma_0 + \gamma]
 /// ```
 pub fn reflection_coefficient(frequency: f64, coupling: &GravitationalCoupling) -> C64 {
@@ -169,7 +169,7 @@ pub fn reflection_coefficient(frequency: f64, coupling: &GravitationalCoupling) 
 /// Compute scattering coefficient from reflection coefficient
 ///
 /// Ruan-Fan Eq. 8:
-/// ```
+/// ```text
 /// S = (R - 1) / 2
 /// ```
 pub fn scattering_coefficient(reflection: C64) -> C64 {

@@ -10,6 +10,17 @@
 //! - Box-kite symmetry structures (de Marrais)
 //! - Monstrous Moonshine (j-function and Monster group)
 //!
+//! # Feature gates
+//!
+//! | Feature        | Default | Contents |
+//! |----------------|---------|----------|
+//! | `core`         | yes     | Cayley-Dickson construction, traits, error types, universal algebra |
+//! | `analysis`     | yes     | ZD graphs, box-kites, codebook, fractal, stochastic, homotopy, PG |
+//! | `physics`      | yes     | Clifford, octonion field, M3, billiard sim, amplitudes |
+//! | `lie`          | no      | E8 lattice, E7, Kac-Moody, group theory, nilpotent orbits |
+//! | `experimental` | no      | Moonshine, E10-octonion, emanation, Golay, Leech, dynamics |
+//! | `gpu`          | no      | CUDA-accelerated kernels via cudarc |
+//!
 //! # Literature
 //! - de Marrais (2000): Box-kite structure of sedenion zero-divisors
 //! - Furey et al. (2024): Cl(8) -> 3 generations
@@ -17,22 +28,25 @@
 //! - Kac (1990): Infinite-Dimensional Lie Algebras
 //! - Damour, Henneaux, Nicolai (2002): E10 and M-theory
 
-pub mod analysis;
+// -- core ----------------------------------------------------------------
+#[cfg(feature = "core")]
 pub mod construction;
+#[cfg(feature = "core")]
 pub mod error;
-pub mod experimental;
-pub mod lie;
-pub mod physics;
+#[cfg(feature = "core")]
 pub mod traits;
+#[cfg(feature = "core")]
 pub mod universal_algebra;
 
-pub mod gpu;
-
+#[cfg(feature = "core")]
 pub use error::{AlgebraError, AlgebraResult};
+#[cfg(feature = "core")]
 pub use traits::Hypercomplex;
+#[cfg(feature = "core")]
 pub use universal_algebra::UniversalAlgebra;
 
 // Re-export core algebra functions from construction
+#[cfg(feature = "core")]
 pub use construction::cayley_dickson::{
     batch_associator_norms,
     batch_associator_norms_parallel,
@@ -52,40 +66,38 @@ pub use construction::cayley_dickson::{
     zd_spectrum_analysis,
 };
 
+#[cfg(feature = "core")]
 pub use construction::albert::AlbertElement;
 
+#[cfg(feature = "core")]
+pub use construction::kronecker::kron2;
+
+#[cfg(feature = "core")]
 pub use construction::wheels::{WheelQ, canonical_test_set, verify_carlstrom_axioms};
 
+#[cfg(feature = "core")]
 pub use construction::padic::{
     CantorDigits, Rational, abs_p, cantor_function_on_cantor, check_ultrametric, is_dyadic,
     is_power_of_two, padic_distance, ternary_digits_power3, vp, vp_int,
 };
 
+#[cfg(feature = "core")]
 pub use construction::hypercomplex::{
     AlgebraDim, HypercomplexAlgebra, OctonionFieldDynamics, PathionAlgebra, ZeroDivisorResults,
     ZeroSearchConfig,
 };
 
-// Re-export from physics
-pub use physics::clifford::{
-    CliffordAlgebra, GammaMatrix, gamma_matrices_cl8, pauli_matrices, verify_clifford_relation,
-};
+// Re-export external algebra crates for convenience
+#[cfg(feature = "core")]
+pub use padic as ext_padic;
+#[cfg(feature = "core")]
+pub use wheel as ext_wheel;
 
-pub use physics::octonion_field::{
-    DispersionResult, EvolutionResult, FANO_TRIPLES, FieldParams, Octonion,
-    build_structure_constants, evolve, force, gaussian_wave_packet, hamiltonian,
-    measure_dispersion, noether_charges, oct_conjugate, oct_multiply, oct_norm_sq, standing_wave,
-    stormer_verlet_step,
-};
+// -- analysis -------------------------------------------------------------
+#[cfg(feature = "analysis")]
+pub mod analysis;
 
-pub use physics::m3::{M3Classification, OctonionTable, classify_m3, compute_m3_octonion_basis};
-
-pub use physics::billiard_sim::{
-    BilliardConfig, BilliardState, BounceResult, ConstraintDiagnostics, HyperbolicBilliard,
-    LorentzVec,
-};
-
-// Re-export from analysis
+#[cfg(feature = "analysis")]
 pub use analysis::zd_graphs::{
     AssociatorGraphResult,
     BasisParticipationResult,
@@ -115,6 +127,7 @@ pub use analysis::zd_graphs::{
     zero_product_2blade_x_4blade,
 };
 
+#[cfg(feature = "analysis")]
 pub use analysis::boxkites::{
     Assessor,
     BoxKite,
@@ -151,33 +164,39 @@ pub use analysis::boxkites::{
     production_rule_3,
 };
 
+#[cfg(feature = "analysis")]
 pub use analysis::annihilator::{
     AnnihilatorInfo, annihilator_info, find_left_annihilator_vector, is_reggiani_zd,
     is_zero_divisor, left_multiplication_matrix, nullspace_basis, right_multiplication_matrix,
 };
 
+#[cfg(feature = "analysis")]
 pub use analysis::reggiani::{
     StandardZeroDivisor, assert_standard_zero_divisor_annihilators, standard_zero_divisor_partners,
     standard_zero_divisors,
 };
 
+#[cfg(feature = "analysis")]
 pub use analysis::subalgebra::{
     OctonionSubalgebra, SubalgebraEnumeration, SubalgebraGeneration, classify_generations,
     cross_reference_boxkites, enumerate_octonion_subalgebras, subalgebra_associator_spectrum,
 };
 
+#[cfg(feature = "analysis")]
 pub use analysis::grassmannian::{
     Subspace, chordal_distance, count_distinct_distances, geodesic_distance, orthonormality_error,
     pairwise_geodesic_distances, principal_angles, subspace_from_orthonormal,
     subspace_from_vectors,
 };
 
+#[cfg(feature = "analysis")]
 pub use analysis::fractal_analysis::{
     DfaResult, HurstClassification, HurstResult, MultiSeriesHurstResult, RescaledRangeResult,
     analyze_multiple_series, calculate_hurst, classify_hurst, dfa_analysis, generate_fbm,
     generate_fgn, hurst_rs_analysis,
 };
 
+#[cfg(feature = "analysis")]
 pub use analysis::stochastic::{
     // Anomalous diffusion analysis
     AnomalousDiffusionResult,
@@ -196,6 +215,7 @@ pub use analysis::stochastic::{
     generate_ou_process,
 };
 
+#[cfg(feature = "analysis")]
 pub use analysis::homotopy_algebra::{
     // A-infinity structures
     AInfinityAlgebra,
@@ -223,6 +243,7 @@ pub use analysis::homotopy_algebra::{
     l_infinity_sign,
 };
 
+#[cfg(feature = "analysis")]
 pub use analysis::projective_geometry::{
     // C-444 correspondence verification
     PGCorrespondenceResult,
@@ -244,7 +265,37 @@ pub use analysis::projective_geometry::{
     verify_signature_determines_solutions,
 };
 
-// Re-export from lie
+// -- physics --------------------------------------------------------------
+#[cfg(feature = "physics")]
+pub mod physics;
+
+#[cfg(feature = "physics")]
+pub use physics::clifford::{
+    CliffordAlgebra, GammaMatrix, gamma_matrices_cl8, pauli_matrices, verify_clifford_relation,
+};
+
+#[cfg(feature = "physics")]
+pub use physics::octonion_field::{
+    DispersionResult, EvolutionResult, FANO_TRIPLES, FieldParams, Octonion,
+    build_structure_constants, evolve, force, gaussian_wave_packet, hamiltonian,
+    measure_dispersion, noether_charges, oct_conjugate, oct_multiply, oct_norm_sq, standing_wave,
+    stormer_verlet_step,
+};
+
+#[cfg(feature = "physics")]
+pub use physics::m3::{M3Classification, OctonionTable, classify_m3, compute_m3_octonion_basis};
+
+#[cfg(feature = "physics")]
+pub use physics::billiard_sim::{
+    BilliardConfig, BilliardState, BounceResult, ConstraintDiagnostics, HyperbolicBilliard,
+    LorentzVec,
+};
+
+// -- lie ------------------------------------------------------------------
+#[cfg(feature = "lie")]
+pub mod lie;
+
+#[cfg(feature = "lie")]
 pub use lie::e8_lattice::{
     // Atlas-E8 integration
     AtlasE8CrossValidation,
@@ -267,16 +318,19 @@ pub use lie::e8_lattice::{
     verify_cartan_matrix_with_atlas,
 };
 
+#[cfg(feature = "lie")]
 pub use lie::group_theory::{
     PSL_2_7_ORDER, exceptional, is_prime, order_alternating, order_gl, order_psl2_q, order_sl,
     order_symmetric, prime_power,
 };
 
+#[cfg(feature = "lie")]
 pub use lie::nilpotent_orbits::{
     JordanType, NilpotentAnalysis, dominance_order, enumerate_partitions, jordan_block,
     jordan_type_nilpotent, matrix_from_jordan_type, nilpotency_index, partition_count,
 };
 
+#[cfg(feature = "lie")]
 pub use lie::kac_moody::{
     CartanEntry,
     // Dynkin diagrams
@@ -307,7 +361,11 @@ pub use lie::kac_moody::{
     e11_cartan,
 };
 
-// Re-export from experimental
+// -- experimental ---------------------------------------------------------
+#[cfg(feature = "experimental")]
+pub mod experimental;
+
+#[cfg(feature = "experimental")]
 pub use experimental::moonshine::{
     HauptmodulProperty, J_COEFFICIENTS, J_COEFFICIENTS_VALID, LEECH_LATTICE_DIMENSION,
     MONSTER_CONJUGACY_CLASSES, MONSTER_REP_DIMENSIONS, MONSTER_REPS_VALID, MoonshineDecomposition,
@@ -317,6 +375,7 @@ pub use experimental::moonshine::{
     verify_moonshine_c1, verify_moonshine_c2,
 };
 
+#[cfg(feature = "experimental")]
 pub use experimental::e10_octonion::{
     // Cayley integer bridge
     CayleyBasis,
@@ -352,6 +411,7 @@ pub use experimental::e10_octonion::{
     verify_claim4,
 };
 
+#[cfg(feature = "experimental")]
 pub use experimental::billiard_stats::{
     // Chi-squared test
     ChiSquaredResult,
@@ -387,6 +447,7 @@ pub use experimental::billiard_stats::{
     verify_claim1,
 };
 
+#[cfg(feature = "experimental")]
 pub use experimental::emanation::{
     BalloonRide,
     // Balloon ride -- fixed-S, increasing-N sequence
@@ -450,9 +511,10 @@ pub use experimental::emanation::{
     vizier_xor_audit,
 };
 
+#[cfg(feature = "experimental")]
 pub use experimental::cd_external;
+#[cfg(feature = "experimental")]
 pub use experimental::so7_drift;
 
-// Re-export external algebra crates for convenience
-pub use padic as ext_padic;
-pub use wheel as ext_wheel;
+// -- gpu ------------------------------------------------------------------
+pub mod gpu;

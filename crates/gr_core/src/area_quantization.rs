@@ -212,7 +212,7 @@ mod tests {
 
     #[test]
     fn gamma_bg_greater_than_gamma_nzj() {
-        assert!(GAMMA_BG > GAMMA_NZJ);
+        const { assert!(GAMMA_BG > GAMMA_NZJ) };
     }
 
     // -- Area eigenvalue tests --

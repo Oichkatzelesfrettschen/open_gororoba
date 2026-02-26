@@ -610,7 +610,7 @@ title = "albert-algebra-structure-census"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/albert_algebra_structure_census.rs"
+canonical_download_path = "crates/gororoba_cli_algebra/src/bin/albert_algebra_structure_census.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/59::ASOT-0073", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/0"]
 
 [[artifact_ref]]
@@ -1230,7 +1230,7 @@ title = "composition-algebra-taxonomy"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/composition_algebra_taxonomy.rs"
+canonical_download_path = "crates/gororoba_cli_algebra/src/bin/composition_algebra_taxonomy.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/121::ASOT-0155", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/1"]
 
 [[artifact_ref]]
@@ -1740,7 +1740,7 @@ title = "entropy-trap"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/entropy_trap.rs"
+canonical_download_path = "crates/gororoba_cli_physics/src/bin/entropy_trap.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/172::ASOT-0209", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/2"]
 
 [[artifact_ref]]
@@ -2100,7 +2100,7 @@ title = "he4-superfluid"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/he4_superfluid.rs"
+canonical_download_path = "crates/gororoba_cli_physics/src/bin/he4_superfluid.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/208::ASOT-0249", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/3"]
 
 [[artifact_ref]]
@@ -4140,7 +4140,7 @@ title = "registry-event-tracker"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
+canonical_download_path = "crates/gororoba_cli_data/src/bin/registry_event_tracker.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/412::ASOT-1412", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/4"]
 
 [[artifact_ref]]
@@ -47260,7 +47260,7 @@ title = "registry/pantheon_physicsforge_migration_matrix.toml::module_mapping/13
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/extract_papers.rs"
+canonical_download_path = "crates/gororoba_cli_data/src/bin/extract_papers.rs"
 source_refs = ["registry/pantheon_physicsforge_migration_matrix.toml::module_mapping/13::MM-PF-005", "registry/source_lanes/web_references.toml::artifact_ref/4724::ASOT-5756"]
 
 [[artifact_ref]]
@@ -68560,7 +68560,7 @@ title = "tessarines-mixed-quaternions-census"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/tessarines_mixed_quaternions_census.rs"
+canonical_download_path = "crates/gororoba_cli_algebra/src/bin/tessarines_mixed_quaternions_census.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6854::ASOT-8180", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/5"]
 
 [[artifact_ref]]
@@ -68620,7 +68620,7 @@ title = "third-party-source-verifier"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/third_party_source_verifier.rs"
+canonical_download_path = "crates/gororoba_cli_data/src/bin/third_party_source_verifier.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6860::ASOT-8186", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/6"]
 
 [[artifact_ref]]

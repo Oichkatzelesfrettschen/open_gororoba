@@ -1614,16 +1614,21 @@ mod tests {
 
     // ========================================================================
     // Lattice codebook cross-validation (dims 256/512/1024/2048)
+    // Gated behind "experimental" feature because it depends on cd_external.
     // ========================================================================
 
     use crate::analysis::codebook::{
-        LatticeVector, enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
+        enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
         is_in_lambda_1024, is_in_lambda_2048,
     };
+    #[cfg(feature = "experimental")]
+    use crate::analysis::codebook::LatticeVector;
+    #[cfg(feature = "experimental")]
     use crate::experimental::cd_external::{load_lattice_map, load_lattice_points};
 
     /// Parse a lattice vector string like "[-1, -1, -1, -1, -1, -1, -1, -1]"
     /// into an [i8; 8] LatticeVector.
+    #[cfg(feature = "experimental")]
     fn parse_lattice_vec_i8(s: &str) -> Option<LatticeVector> {
         let s = s.trim().trim_start_matches('[').trim_end_matches(']');
         let parts: Vec<&str> = s.split(',').collect();
@@ -1638,6 +1643,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "experimental")]
     fn test_lattice_csv_vs_predicate_256d() {
         // Cross-validate: CSV lattice points == predicate-enumerated Lambda_256.
         // This is the anchor test -- if this fails, the filtration chain is broken.
@@ -1660,6 +1666,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "experimental")]
     fn test_lattice_csv_vs_predicate_512d() {
         // CSV 512D points should all pass is_in_lambda_512.
         // Predicate enumeration should give exactly 512 points.
@@ -1682,6 +1689,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "experimental")]
     fn test_lattice_csv_vs_predicate_1024d() {
         // RESOLVED: Predicate now gives 1024 points, matching CSV exactly.
         // The 2 formerly disputed points [-1,1,1,0,-1,1,0,1] and [-1,1,1,0,-1,1,1,0]
@@ -1721,6 +1729,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "experimental")]
     fn test_lattice_1024d_disputed_points_investigation() {
         // RESOLVED: The 2 formerly disputed points are now correctly excluded
         // by the (-1,1,1,0,-1,1) prefix rule added to is_in_lambda_1024.
@@ -1814,6 +1823,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "experimental")]
     fn test_lattice_csv_vs_predicate_2048d() {
         let csv_points = load_lattice_points(2048);
         let pred_points = enumerate_lattice_by_predicate(is_in_lambda_2048);
@@ -1886,6 +1896,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "experimental")]
     fn test_lattice_carrier_set_validation_256d() {
         // Verify that loading CSV into CarrierSet + EncodingDictionary succeeds
         // and the dictionary is a valid bijection.
@@ -1926,6 +1937,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "experimental")]
     fn test_lattice_consistent_sum_column() {
         // Verify the "Consistent Sum" column from the CSV.
         // "Consistent Sum" = True means the Lattice Sum matches expectations.
@@ -1998,6 +2010,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "experimental")]
     fn test_lattice_multiplication_retention_256d() {
         // The "Structured Multiplication Retention" CSV checks which products
         // e_i * e_j land within Lambda_256 (closed under the encoding).

@@ -1,7 +1,7 @@
 //! TCMT differential equations solver for photon-graviton mixing
 //!
 //! Solves the coupled-mode equations:
-//! ```
+//! ```text
 //! d/dt [a_ph]   = [-i*\omega_0,ph - \gamma_ph/2    -i*\kappa] [a_ph]
 //!       [a_grav]   [-i*\kappa                 -i*\omega_0,grav - \gamma_grav/2] [a_grav]
 //! ```

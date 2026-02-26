@@ -561,7 +561,7 @@ mod tests {
     fn test_gertsenshtein_probability_bounded() {
         // sin^2 is bounded by 1
         let p = gertsenshtein_probability_vacuum(0.01, 1e20);
-        assert!(p >= 0.0 && p <= 1.0, "P = {p} should be in [0,1]");
+        assert!((0.0..=1.0).contains(&p), "P = {p} should be in [0,1]");
     }
 
     #[test]

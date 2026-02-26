@@ -15,8 +15,8 @@ import tomllib
 from pathlib import Path
 
 
-FINDINGS_PATH = "registry/pantheon_physicsforge_migration_findings.toml"
-OVERFLOW_PATH = "registry/pantheon_physicsforge_overflow_tracker.toml"
+FINDINGS_PATH = "archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_findings.toml"
+OVERFLOW_PATH = "archive/registry/pantheon_physicsforge/pantheon_physicsforge_overflow_tracker.toml"
 
 
 def _load(path: Path) -> dict:

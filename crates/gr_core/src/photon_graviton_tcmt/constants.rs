@@ -92,8 +92,8 @@ mod tests {
     #[test]
     fn gravitational_constant_scaling() {
         // Simplified check: Planck mass should be positive and related to fundamental constants
-        assert!(PLANCK_MASS > 0.0);
-        assert!(GRAVITATIONAL_CONSTANT > 0.0);
+        const { assert!(PLANCK_MASS > 0.0) };
+        const { assert!(GRAVITATIONAL_CONSTANT > 0.0) };
         // Planck mass is roughly sqrt(hbar*c/G), dimensionally correct
         let dim_check = REDUCED_PLANCK * SPEED_OF_LIGHT / GRAVITATIONAL_CONSTANT;
         assert!(dim_check > 0.0);
@@ -101,10 +101,10 @@ mod tests {
 
     #[test]
     fn coupling_constants_positive() {
-        assert!(REDUCED_PLANCK > 0.0);
-        assert!(SPEED_OF_LIGHT > 0.0);
-        assert!(GRAVITATIONAL_CONSTANT > 0.0);
-        assert!(FINE_STRUCTURE_CONSTANT > 0.0);
-        assert!(FINE_STRUCTURE_CONSTANT < 1.0);
+        const { assert!(REDUCED_PLANCK > 0.0) };
+        const { assert!(SPEED_OF_LIGHT > 0.0) };
+        const { assert!(GRAVITATIONAL_CONSTANT > 0.0) };
+        const { assert!(FINE_STRUCTURE_CONSTANT > 0.0) };
+        const { assert!(FINE_STRUCTURE_CONSTANT < 1.0) };
     }
 }

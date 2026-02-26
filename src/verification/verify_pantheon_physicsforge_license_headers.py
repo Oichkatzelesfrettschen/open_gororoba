@@ -15,8 +15,8 @@ import re
 import tomllib
 
 
-PORTED_FILES_PATH = "registry/pantheon_physicsforge_ported_files.toml"
-ALIGNMENT_PATH = "registry/pantheon_physicsforge_license_alignment.toml"
+PORTED_FILES_PATH = "archive/registry/pantheon_physicsforge/pantheon_physicsforge_ported_files.toml"
+ALIGNMENT_PATH = "archive/registry/pantheon_physicsforge/pantheon_physicsforge_license_alignment.toml"
 
 FORBIDDEN_PATTERNS = (
     re.compile(r"\\bGPL-3\\.0\\b", re.IGNORECASE),

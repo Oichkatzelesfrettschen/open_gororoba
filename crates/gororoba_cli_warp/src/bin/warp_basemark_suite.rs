@@ -1,5 +1,5 @@
-mod warp_runner;
-mod warp_telemetry;
+use gororoba_cli_warp::warp_runner;
+use gororoba_cli_warp::warp_telemetry;
 
 use lbm_3d_cuda::Precision;
 use std::error::Error;

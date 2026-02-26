@@ -171,11 +171,11 @@ mod tests {
         // The extended Golay code is self-dual: G * G^T = 0 mod 2.
         // For systematic form, this means P * P^T = I mod 2.
         // Actually for the extended code: P * P^T + I = 0 mod 2, i.e. P * P^T = I mod 2.
-        for i in 0..12 {
-            for j in 0..12 {
+        for (i, row_i) in GOLAY_P_MATRIX.iter().enumerate() {
+            for (j, row_j) in GOLAY_P_MATRIX.iter().enumerate() {
                 let mut dot: u8 = 0;
-                for k in 0..12 {
-                    dot ^= GOLAY_P_MATRIX[i][k] & GOLAY_P_MATRIX[j][k];
+                for (ri, rj) in row_i.iter().zip(row_j.iter()) {
+                    dot ^= ri & rj;
                 }
                 let expected = if i == j { 1 } else { 0 };
                 // For self-dual: (I + P*P^T) = 0 mod 2, so P*P^T = I mod 2

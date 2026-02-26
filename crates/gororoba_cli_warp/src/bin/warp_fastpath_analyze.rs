@@ -1522,7 +1522,7 @@ fn run() -> Result<(), Box<dyn Error>> {
 #[cfg(not(feature = "hdf5-export"))]
 fn run() -> Result<(), Box<dyn Error>> {
     Err(std::io::Error::other(
-        "warp-fastpath-analyze requires hdf5-export feature: cargo run -p gororoba_cli --features 'gpu,hdf5-export' --bin warp-fastpath-analyze -- <production_dir>",
+        "warp-fastpath-analyze requires hdf5-export feature: cargo run -p gororoba_cli_warp --features 'gpu,hdf5-export' --bin warp-fastpath-analyze -- <production_dir>",
     )
     .into())
 }

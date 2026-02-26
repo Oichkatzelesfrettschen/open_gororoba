@@ -15,7 +15,7 @@ import re
 import tomllib
 
 
-TRACKER_PATH = "registry/pantheon_physicsforge_overflow_tracker.toml"
+TRACKER_PATH = "archive/registry/pantheon_physicsforge/pantheon_physicsforge_overflow_tracker.toml"
 OVERFLOW_ID_RE = re.compile(r"^OF-(\d{1,2})-(\d{3})$")
 
 

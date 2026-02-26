@@ -148,7 +148,8 @@ fn main() {
         coupling.total_decay_rate(),
         0.2,
     );
-    println!("  Maksimov \kappa_1 - \kappa_2 = \gamma_l constraint: {}\n", check_maksimov);
+    println!(r"  Maksimov \kappa_1 - \kappa_2 = \gamma_l constraint: {}", check_maksimov);
+    println!();
 
     // ============================================================
     // STEP 5: Quality factor and resonance properties

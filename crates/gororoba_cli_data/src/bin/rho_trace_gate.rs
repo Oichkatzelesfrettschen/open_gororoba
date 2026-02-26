@@ -1,5 +1,7 @@
 #[cfg(feature = "hdf5-export")]
-use data_core::hdf5_export::{NumericDatasetScanStatus, scan_hdf5_numeric_datasets};
+use data_core::hdf5_export::read_rho_mean_trace;
+#[cfg(feature = "hdf5-export")]
+use data_core::quality::{RhoQualityThresholds, validate_rho_trace};
 use std::collections::BTreeSet;
 use std::error::Error;
 use std::path::PathBuf;
@@ -42,14 +44,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     tracing_subscriber::fmt::init();
     let args: Vec<String> = std::env::args().skip(1).collect();
     if args.is_empty() {
-        eprintln!("Usage: hdf5-numeric-gate <h5-path-or-glob> [more paths/globs]");
-        eprintln!("Recursively checks all HDF5 datasets and fails on NaN/Inf in numeric datasets.");
+        eprintln!("Usage: rho-trace-gate <h5-path-or-glob> [more paths/globs]");
+        eprintln!("Example: rho-trace-gate 'data/h5/production/**/*.h5'");
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
             "expected at least one path or glob pattern",
         )
         .into());
     }
+
     let paths = expand_inputs(&args)?;
     if paths.is_empty() {
         return Err(std::io::Error::new(
@@ -61,47 +64,28 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     #[cfg(feature = "hdf5-export")]
     {
-        let mut checked_files = 0usize;
+        let thresholds = RhoQualityThresholds::default();
+        let mut ok_count = 0usize;
         for path in &paths {
-            let report = scan_hdf5_numeric_datasets(path)?;
-            for entry in &report.entries {
-                if entry.status == NumericDatasetScanStatus::Checked
-                    && (entry.nan_count > 0 || entry.inf_count > 0)
-                {
-                    return Err(std::io::Error::other(format!(
-                        "{}: non-finite numeric dataset at {} (dtype={}, nan={}, inf={})",
-                        path.display(),
-                        entry.path,
-                        entry.dtype,
-                        entry.nan_count,
-                        entry.inf_count
-                    ))
-                    .into());
-                }
-                if entry.status == NumericDatasetScanStatus::UnsupportedNumericLayout {
-                    return Err(std::io::Error::other(format!(
-                        "{}: unsupported numeric dataset layout at {} (dtype={}); fail-closed",
-                        path.display(),
-                        entry.path,
-                        entry.dtype
-                    ))
-                    .into());
-                }
-            }
-            checked_files += 1;
+            let rho = read_rho_mean_trace(path)?;
+            let quality = validate_rho_trace(&rho, thresholds).map_err(|e| {
+                std::io::Error::other(format!("rho gate failed for {}: {e}", path.display()))
+            })?;
+            ok_count += 1;
             println!(
-                "[OK]   {}: datasets_total={}, numeric_checked={}, non_numeric_skipped={}, unsupported_numeric_layouts={}, non_finite_numeric_datasets={}",
+                "[OK]   {}: samples={}, finite={}/{}, final={:.6}, drift={:.3e}, std={:.3e}",
                 path.display(),
-                report.datasets_total,
-                report.numeric_checked,
-                report.non_numeric_skipped,
-                report.unsupported_numeric_layouts,
-                report.datasets_with_non_finite
+                quality.sample_count,
+                quality.finite_count,
+                quality.sample_count,
+                quality.final_value,
+                quality.abs_drift_final,
+                quality.std_dev
             );
         }
         println!(
-            "HDF5_NUMERIC_GATE: PASS ({} files checked; recursive numeric NaN/Inf scan)",
-            checked_files
+            "FINITE_GATE: PASS ({} files checked, thresholds: drift<= {:.3e}, std<= {:.3e})",
+            ok_count, thresholds.max_abs_drift_final, thresholds.max_std_dev
         );
         Ok(())
     }
@@ -110,7 +94,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     {
         let _ = paths;
         Err(std::io::Error::other(
-            "hdf5-numeric-gate requires hdf5-export feature: cargo run -p gororoba_cli --features hdf5-export --bin hdf5-numeric-gate -- <paths>",
+            "rho-trace-gate requires hdf5-export feature: cargo run -p gororoba_cli_data --features hdf5-export --bin rho-trace-gate -- <paths>",
         )
         .into())
     }

@@ -32,8 +32,13 @@ members = [
     "crates/lbm_3d_cuda",
     "crates/lattice_filtration",
     "crates/neural_homotopy",
+    "crates/gororoba_pipeline", "crates/gororoba_gpu_bridge",
     "crates/gororoba_engine", "crates/gororoba_contracts", "crates/spin_tomography_core", "crates/cd_spin_bridge", "crates/lbm_vulkan",
     "crates/qgp_scaling",
+    "crates/gororoba_cli_algebra",
+    "crates/gororoba_cli_physics",
+    "crates/gororoba_cli_data",
+    "crates/gororoba_cli_warp",
 ]
 
 [workspace.metadata.execution_policy]
@@ -51,6 +56,7 @@ step_3 = "Reuse one built binary set for follow-on runs."
 # Shared dependencies across workspace
 [workspace.dependencies]
 # Core numerics
+# PINNED: num-dual 0.13.2 requires nalgebra <0.34; do not upgrade without full compat review
 nalgebra = "0.33"
 ndarray = "0.16"
 num-complex = "0.4"
@@ -117,7 +123,7 @@ nvml-wrapper = "0.10"
 # Machine learning / Neural synthesis (burn 0.16: pure Rust, backend-agnostic)
 # Note: burn backends are optional at crate level, not workspace level
 burn = { version = "0.16", features = ["train", "autodiff"] }
-blas-src = { version = "0.10", features = ["openblas"] }
+# blas-src moved to neural_homotopy crate (sole consumer); not a workspace dep
 
 # Error handling
 thiserror = "2.0"
@@ -150,6 +156,8 @@ strsim = "0.11"                  # String similarity (Jaro-Winkler, Levenshtein)
 # HDF5 data export (requires system libhdf5)
 # Using hdf5-metno fork which supports HDF5 2.0 (Arch/CachyOS ships 2.0.0-3.1)
 # The upstream hdf5 0.8.1 panics on HDF5 2.0 with "Invalid H5_VERSION"
+# TRACKING: monitor https://github.com/aldanor/hdf5-rust for HDF5 2.0 support;
+# switch back to upstream once merged (eliminates fork dependency)
 hdf5 = { package = "hdf5-metno", version = "0.12" }
 
 # Visualization
@@ -173,6 +181,8 @@ numpy = "0.25"
 approx = "0.5"
 tempfile = "3.24"
 proptest = "1.6"
+# TRACKING: criterion 0.8.2 available (currently 0.5); upgrade requires API audit
+# across 8 consuming crates. Evaluate when benchmark infrastructure is next touched.
 criterion = { version = "0.5", features = ["html_reports"] }
 
 [workspace.lints.clippy]

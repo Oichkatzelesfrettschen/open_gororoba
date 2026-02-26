@@ -1,3 +1,4 @@
+use algebra_core::kron2;
 use algebra_core::physics::clifford::pauli_matrices;
 use nalgebra::{Matrix3, Matrix4, OMatrix, U8, Vector3};
 use num_complex::Complex64;
@@ -37,7 +38,7 @@ impl TwoQubitState {
         // Single spin a (system 1) -> a . sigma x I
         for i in 0..3 {
             if a[i] != 0.0 {
-                let term = kron(&sigmas[i], &eye2) * Complex64::from(a[i]);
+                let term = kron2(&sigmas[i], &eye2) * Complex64::from(a[i]);
                 rho += term;
             }
         }
@@ -45,7 +46,7 @@ impl TwoQubitState {
         // Single spin b (system 2) -> I x b . sigma
         for j in 0..3 {
             if b[j] != 0.0 {
-                let term = kron(&eye2, &sigmas[j]) * Complex64::from(b[j]);
+                let term = kron2(&eye2, &sigmas[j]) * Complex64::from(b[j]);
                 rho += term;
             }
         }
@@ -54,7 +55,7 @@ impl TwoQubitState {
         for i in 0..3 {
             for j in 0..3 {
                 if t[(i, j)] != 0.0 {
-                    let term = kron(&sigmas[i], &sigmas[j]) * Complex64::from(t[(i, j)]);
+                    let term = kron2(&sigmas[i], &sigmas[j]) * Complex64::from(t[(i, j)]);
                     rho += term;
                 }
             }
@@ -135,19 +136,86 @@ impl TwoQubitState {
     }
 }
 
-// Helper for Kronecker product of 2x2 matrices
-fn kron(a: &nalgebra::Matrix2<Complex64>, b: &nalgebra::Matrix2<Complex64>) -> Matrix4<Complex64> {
-    let mut m = Matrix4::zeros();
-    for i in 0..2 {
-        for j in 0..2 {
-            let val_a = a[(i, j)];
-            for k in 0..2 {
-                for l in 0..2 {
-                    let val_b = b[(k, l)];
-                    m[(2 * i + k, 2 * j + l)] = val_a * val_b;
-                }
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_maximally_mixed_state() {
+        // I/4: a=0, b=0, T=0
+        let a = Vector3::zeros();
+        let b = Vector3::zeros();
+        let t = Matrix3::<f64>::zeros();
+        let state = TwoQubitState::from_ab_t(&a, &b, &t);
+        let tr = state.rho.trace().re;
+        assert!((tr - 1.0).abs() < 1e-14, "Trace should be 1.0, got {tr}");
+        // Diagonal should be 0.25 each
+        for i in 0..4 {
+            assert!((state.rho[(i, i)].re - 0.25).abs() < 1e-14);
+        }
+    }
+
+    #[test]
+    fn test_product_state_not_entangled() {
+        // Pure product state |00><00| needs a=(0,0,1), b=(0,0,1), T=diag(0,0,1)
+        // because rho = 1/4(I + a.sigma x I + I x b.sigma + T_{ij} sigma_i x sigma_j)
+        // For |00><00|: T_{33} = 1 (sigma_z x sigma_z correlation)
+        let a = Vector3::new(0.0, 0.0, 1.0);
+        let b = Vector3::new(0.0, 0.0, 1.0);
+        let mut t = Matrix3::<f64>::zeros();
+        t[(2, 2)] = 1.0;
+        let state = TwoQubitState::from_ab_t(&a, &b, &t);
+        assert!(!state.is_entangled(),
+            "Product state |00><00| should not be entangled, negativity={}", state.negativity());
+    }
+
+    #[test]
+    fn test_singlet_state_is_entangled() {
+        // Anti-correlated singlet: T = diag(-1, -1, -1)
+        let a = Vector3::zeros();
+        let b = Vector3::zeros();
+        let t = -Matrix3::<f64>::identity();
+        let state = TwoQubitState::from_ab_t(&a, &b, &t);
+        assert!(state.is_entangled(),
+            "Singlet state should be entangled, negativity={}", state.negativity());
+    }
+
+    #[test]
+    fn test_partial_transpose_double_is_identity() {
+        let a = Vector3::new(0.1, 0.2, 0.3);
+        let b = Vector3::new(-0.1, 0.0, 0.2);
+        let t = Matrix3::<f64>::zeros();
+        let state = TwoQubitState::from_ab_t(&a, &b, &t);
+        let double_pt = state.partial_transpose().partial_transpose();
+        for i in 0..4 {
+            for j in 0..4 {
+                let diff = (state.rho[(i, j)] - double_pt.rho[(i, j)]).norm();
+                assert!(diff < 1e-14,
+                    "Double partial transpose should be identity: [{i},{j}] diff={diff}");
             }
         }
     }
-    m
+
+    #[test]
+    fn test_negativity_nonnegative() {
+        let a = Vector3::new(0.5, 0.0, 0.0);
+        let b = Vector3::new(0.0, 0.5, 0.0);
+        let t = Matrix3::<f64>::identity() * 0.3;
+        let state = TwoQubitState::from_ab_t(&a, &b, &t);
+        assert!(state.negativity() >= 0.0, "Negativity must be non-negative");
+    }
+
+    #[test]
+    fn test_jordan_product_self_gives_rho_squared() {
+        let a = Vector3::zeros();
+        let b = Vector3::zeros();
+        let t = Matrix3::<f64>::zeros();
+        let state = TwoQubitState::from_ab_t(&a, &b, &t);
+        let jp = state.jordan_product(&state);
+        // For rho = I/4: jordan_product(rho, rho) = rho^2 = I/16
+        let expected_diag = 0.0625;
+        for i in 0..4 {
+            assert!((jp.rho[(i, i)].re - expected_diag).abs() < 1e-14);
+        }
+    }
 }

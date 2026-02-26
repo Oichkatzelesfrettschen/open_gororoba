@@ -9,7 +9,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
 burn = { workspace = true, features = ["ndarray", "openblas"] }
-blas-src = { workspace = true }
+blas-src = { version = "0.10", features = ["openblas"] }
 
 [dev-dependencies]
 approx = { workspace = true }

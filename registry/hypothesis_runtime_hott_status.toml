@@ -32,7 +32,7 @@ artifacts = [
 id = "HVE-COMP-003"
 summary = "New equivalence experiment binary implemented and wired."
 artifacts = [
-  "crates/gororoba_cli/src/bin/homotopy_viscosity_equivalence.rs",
+  "crates/gororoba_cli_physics/src/bin/homotopy_viscosity_equivalence.rs",
   "crates/gororoba_cli/Cargo.toml",
 ]
 validation = [

@@ -5,7 +5,7 @@
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-updated = "2026-02-24"
+updated = "2026-02-10"
 python_recommended = "3.11-3.12"
 python_allowed = "3.13+ (with optional extras caveats)"
 primary_markdown = "docs/REQUIREMENTS.md"
@@ -79,30 +79,6 @@ verify_targets = ["PYTHONWARNINGS=error make check", "make install"]
 acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
 
 [[module]]
-id = "REQ-DATA-GOVERNANCE"
-name = "data_governance"
-markdown = "docs/requirements/analysis.md"
-status = "active"
-status_token = "ACTIVE"
-runtime_stack = "rust"
-requires_modules = ["REQ-CORE"]
-install_targets = [
-  "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external",
-  "cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json",
-  "cargo run -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch",
-  "cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown",
-  "cargo run -p gororoba_cli --bin data-governance-gate --",
-  "cargo run -p gororoba_cli --bin data-semantic-validate --",
-]
-verify_targets = [
-  "cargo run -p gororoba_cli --bin data-semantic-validate --",
-  "cargo run -p gororoba_cli --bin external-redownload-audit -- --fail-on-unmatched-source --fail-on-blocked-overdue",
-  "cargo run -p gororoba_cli --bin data-governance-gate --",
-  "cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown",
-]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
-
-[[module]]
 id = "REQ-CPP"
 name = "cpp"
 markdown = "docs/requirements/cpp.md"
@@ -112,6 +88,18 @@ runtime_stack = "cpp"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make cpp-build", "make cpp-test"]
 verify_targets = ["make cpp-build", "make cpp-test"]
+acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+
+[[module]]
+id = "REQ-DATA-GOVERNANCE"
+name = "data_governance"
+markdown = "docs/requirements/analysis.md"
+status = "active"
+status_token = "ACTIVE"
+runtime_stack = "mixed"
+requires_modules = ["REQ-CORE"]
+install_targets = ["cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external", "cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json", "cargo run -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch", "cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown", "cargo run -p gororoba_cli --bin data-governance-gate --", "cargo run -p gororoba_cli --bin data-semantic-validate --"]
+verify_targets = ["cargo run -p gororoba_cli --bin data-governance-gate --", "cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown", "cargo run -p gororoba_cli --bin data-semantic-validate --", "cargo run -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch", "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external", "cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json"]
 acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
 
 [[module]]
@@ -203,3 +191,4 @@ status_token = "OPEN"
 description = "Requirements markdown export is implemented via export_registry_markdown_mirrors.py and wired through Makefile registry-export-markdown."
 proposed_resolution = "Keep mirror freshness verifiers active in docs publish and governance lanes."
 related_module_ids = []
+

@@ -4,13 +4,58 @@ on:
   push:
   pull_request:
 
+# Cancel in-progress runs for the same branch/PR to avoid wasted CI minutes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
+  # --- Rust quality gate: clippy + tests + cargo-deny ---
+  # Matches local pre-push-gate strength so regressions cannot merge undetected.
+  rust-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain (nightly, with clippy)
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: clippy
+
+      - name: Cache cargo registry and build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: rust-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: rust-${{ runner.os }}-
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libhdf5-dev libopenblas-dev pkg-config
+
+      - name: Clippy (warnings-as-errors)
+        run: cargo clippy --workspace --all-targets -j$(nproc) -- -D warnings
+
+      - name: Test (workspace)
+        run: cargo test --workspace -j$(nproc)
+
+      - name: Install cargo-deny
+        uses: taiki-e/install-action@cargo-deny
+
+      - name: License and advisory audit
+        run: cargo deny check
+
+  # --- Python + registry governance + ASCII ---
   canonical-registry-contract:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,6 +64,15 @@ jobs:
       - name: Install project
         run: |
           PYTHONWARNINGS=error make install
+      - name: Python lint (ruff)
+        run: |
+          ruff check src/ tests/ bin/
+      - name: Python tests (pytest)
+        run: |
+          pytest tests/ -x -q --tb=short
+      - name: ASCII-only policy check
+        run: |
+          python3 bin/ascii_check.py --check
       - name: Canonical governance gate
         run: |
           PYTHONWARNINGS=error make governance-gate
@@ -36,4 +90,4 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libhdf5-dev
-          cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-acceptance-gate --allow-empty -- "data/h5/**/*.h5"
+          cargo run -p gororoba_cli_warp --features gpu,hdf5-export --bin warp-acceptance-gate --allow-empty -- "data/h5/**/*.h5"

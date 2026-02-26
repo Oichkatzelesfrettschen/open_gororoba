@@ -1,4 +1,7 @@
-//! Adaptive backend chooser.
+//! GPU backend selection and dispatch for gororoba simulation workloads.
+//!
+//! Provides a runtime-switchable backend chooser that selects between CPU
+//! and GPU execution based on problem size and hardware availability.
 
 /// Compute backend for a workload.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

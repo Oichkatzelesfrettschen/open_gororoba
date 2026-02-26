@@ -955,10 +955,7 @@ mod tests {
 
     #[test]
     fn test_vlbi_gamma_less_stringent_than_cassini() {
-        assert!(
-            VLBI_GAMMA_DEVIATION_BOUND > CASSINI_GAMMA_DEVIATION_BOUND,
-            "VLBI bound should be weaker than Cassini"
-        );
+        const { assert!(VLBI_GAMMA_DEVIATION_BOUND > CASSINI_GAMMA_DEVIATION_BOUND) };
     }
 
     #[test]
@@ -996,14 +993,8 @@ mod tests {
         // Verify ordering: VLBI and LLR are close but different parameters
         // The key hierarchy for gamma: VLBI < Cassini
         // The key hierarchy for eta_N: LLR < Pulsar
-        assert!(
-            VLBI_GAMMA_DEVIATION_BOUND > CASSINI_GAMMA_DEVIATION_BOUND,
-            "VLBI less stringent than Cassini on gamma"
-        );
-        assert!(
-            LLR_NORDTVEDT_BOUND > PULSAR_NORDTVEDT_BOUND,
-            "LLR less stringent than pulsar on Nordtvedt"
-        );
+        const { assert!(VLBI_GAMMA_DEVIATION_BOUND > CASSINI_GAMMA_DEVIATION_BOUND) };
+        const { assert!(LLR_NORDTVEDT_BOUND > PULSAR_NORDTVEDT_BOUND) };
 
         // Omega thresholds for passing
         assert!(

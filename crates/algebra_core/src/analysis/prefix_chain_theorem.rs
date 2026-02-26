@@ -779,9 +779,9 @@ mod tests {
 
         // Each Fano triple must reference valid indices (1..7)
         for &(i, j, k) in &skeleton.fano_triples {
-            assert!(i >= 1 && i <= 7, "Invalid Fano index {}", i);
-            assert!(j >= 1 && j <= 7, "Invalid Fano index {}", j);
-            assert!(k >= 1 && k <= 7, "Invalid Fano index {}", k);
+            assert!((1..=7).contains(&i), "Invalid Fano index {}", i);
+            assert!((1..=7).contains(&j), "Invalid Fano index {}", j);
+            assert!((1..=7).contains(&k), "Invalid Fano index {}", k);
         }
 
         // Verify the full projection invariance

@@ -94,3 +94,47 @@ impl TomographyMoments {
         t[(2, 2)] - 0.5 * (t[(0, 0)] + t[(1, 1)])
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty_moments_returns_zeros() {
+        let tm = TomographyMoments::new();
+        let (a, b, t) = tm.estimate();
+        assert_eq!(a, Vector3::zeros());
+        assert_eq!(b, Vector3::zeros());
+        assert_eq!(t, Matrix3::zeros());
+    }
+
+    #[test]
+    fn test_single_event_accumulation() {
+        let mut tm = TomographyMoments::new();
+        let triad = AlgebraicTriad::default();
+        let event = SpinEvent::new(
+            Vector3::new(0.0, 0.0, 1.0),
+            Vector3::new(0.0, 0.0, 1.0),
+            1.0,
+            1.0,
+        );
+        tm.add(&event, &triad);
+        assert_eq!(tm.weight_sum, 1.0);
+        let (a, b, _t) = tm.estimate();
+        // n1 = (0,0,1) projected on (x,y,z) axes = (0,0,1), scaled by 3/alpha1 = 3
+        assert!((a[2] - 3.0).abs() < 1e-14);
+        assert!((b[2] - 3.0).abs() < 1e-14);
+    }
+
+    #[test]
+    fn test_p_scalar_zero_for_empty() {
+        let tm = TomographyMoments::new();
+        assert_eq!(tm.p_scalar(), 0.0);
+    }
+
+    #[test]
+    fn test_anisotropy_zero_for_empty() {
+        let tm = TomographyMoments::new();
+        assert_eq!(tm.anisotropy(), 0.0);
+    }
+}

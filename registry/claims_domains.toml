@@ -3720,7 +3720,7 @@ status_token = "REFUTED"
 status_text = "Refuted (Rust pipeline, N=5031)"
 status_date = "2026-02-06"
 summary = "Cross-dataset cosmic objects (FRBs+GW events) exhibit dendrogram ultrametricity in comoving 3D space (C-071 follow-up, Direction 5)."
-where_stated = ["crates/gororoba_cli/src/bin/cosmic_dendrogram.rs", "data/csv/c071f_cosmic_dendrogram.csv"]
+where_stated = ["crates/gororoba_cli_physics/src/bin/cosmic_dendrogram.rs", "data/csv/c071f_cosmic_dendrogram.csv"]
 source_markdown = "docs/claims/by_domain/cosmology.md"
 source_line = 44
 
@@ -3731,7 +3731,7 @@ status_token = "VERIFIED"
 status_text = "Verified (Real data, N=1590)"
 status_date = "2026-02-06"
 summary = "Bounce cosmology is disfavored by joint Pantheon+ SN Ia + DESI DR1 BAO fit; Lambda-CDM is the simpler adequate model."
-where_stated = ["crates/cosmology_core/src/observational.rs", "crates/gororoba_cli/src/bin/real_cosmo_fit.rs", "docs/INSIGHTS.md"]
+where_stated = ["crates/cosmology_core/src/observational.rs", "crates/gororoba_cli_physics/src/bin/real_cosmo_fit.rs", "docs/INSIGHTS.md"]
 source_markdown = "docs/claims/by_domain/cosmology.md"
 source_line = 47
 
@@ -4050,7 +4050,7 @@ status_token = "REFUTED"
 status_text = "Refuted (Rust pipeline, N=4996)"
 status_date = "2026-02-06"
 summary = "FRB comoving positions exhibit local ultrametric structure (C-071 follow-up, Direction 1)."
-where_stated = ["crates/gororoba_cli/src/bin/dm_ultrametric.rs", "crates/stats_core/src/ultrametric/local.rs", "data/csv/c071b_dm_comoving_ultrametric.csv"]
+where_stated = ["crates/gororoba_cli_physics/src/bin/dm_ultrametric.rs", "crates/stats_core/src/ultrametric/local.rs", "data/csv/c071b_dm_comoving_ultrametric.csv"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 86
 
@@ -4061,7 +4061,7 @@ status_token = "VERIFIED"
 status_text = "Verified (Rust pipeline, N=5008 FRBs + 4233 pulsars)"
 status_date = "2026-02-06"
 summary = "Compact object multi-attribute parameter space (DM, gl, gb) exhibits ultrametric structure under Euclidean distances (C-071 follow-up, Direction 2)."
-where_stated = ["crates/gororoba_cli/src/bin/baire_compact.rs", "crates/stats_core/src/ultrametric/baire.rs", "data/csv/c071c_baire_compact_ultrametric.csv"]
+where_stated = ["crates/gororoba_cli_data/src/bin/baire_compact.rs", "crates/stats_core/src/ultrametric/baire.rs", "data/csv/c071c_baire_compact_ultrametric.csv"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 89
 
@@ -4072,7 +4072,7 @@ status_token = "VERIFIED"
 status_text = "Verified (partial: 15/40 repeaters, 37.5%)"
 status_date = "2026-02-06"
 summary = "Repeating FRB temporal cascades exhibit ultrametric hierarchy (C-071 follow-up, Direction 3)."
-where_stated = ["crates/gororoba_cli/src/bin/frb_cascades.rs", "crates/stats_core/src/ultrametric/temporal.rs", "data/csv/c071d_frb_cascades_ultrametric.csv"]
+where_stated = ["crates/gororoba_cli_data/src/bin/frb_cascades.rs", "crates/stats_core/src/ultrametric/temporal.rs", "data/csv/c071d_frb_cascades_ultrametric.csv"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 92
 
@@ -4083,7 +4083,7 @@ status_token = "REFUTED"
 status_text = "Refuted (Rust pipeline, N=35 events)"
 status_date = "2026-02-06"
 summary = "GWTC-3 mass-redshift clustering exhibits ultrametric structure (C-071 follow-up, Direction 4)."
-where_stated = ["crates/gororoba_cli/src/bin/gw_merger_tree.rs", "data/csv/c071e_gw_merger_ultrametric.csv"]
+where_stated = ["crates/gororoba_cli_data/src/bin/gw_merger_tree.rs", "data/csv/c071e_gw_merger_ultrametric.csv"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 95
 
@@ -4094,7 +4094,7 @@ status_token = "REFUTED"
 status_text = "Refuted (Rust pipeline, N=5031)"
 status_date = "2026-02-06"
 summary = "Cross-dataset cosmic objects (FRBs+GW events) exhibit dendrogram ultrametricity in comoving 3D space (C-071 follow-up, Direction 5)."
-where_stated = ["crates/gororoba_cli/src/bin/cosmic_dendrogram.rs", "data/csv/c071f_cosmic_dendrogram.csv"]
+where_stated = ["crates/gororoba_cli_physics/src/bin/cosmic_dendrogram.rs", "data/csv/c071f_cosmic_dendrogram.csv"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 98
 
@@ -4105,7 +4105,7 @@ status_token = "VERIFIED"
 status_text = "Verified (Real data, N=1590)"
 status_date = "2026-02-06"
 summary = "Bounce cosmology is disfavored by joint Pantheon+ SN Ia + DESI DR1 BAO fit; Lambda-CDM is the simpler adequate model."
-where_stated = ["crates/cosmology_core/src/observational.rs", "crates/gororoba_cli/src/bin/real_cosmo_fit.rs", "docs/INSIGHTS.md"]
+where_stated = ["crates/cosmology_core/src/observational.rs", "crates/gororoba_cli_physics/src/bin/real_cosmo_fit.rs", "docs/INSIGHTS.md"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 101
 
@@ -4116,7 +4116,7 @@ status_token = "VERIFIED"
 status_text = "Verified (7 catalogs, N=25K total)"
 status_date = "2026-02-06"
 summary = "Multi-attribute Euclidean ultrametricity is specific to radio transient catalogs (FRB, pulsar); not a general property of astrophysical catalogs."
-where_stated = ["crates/gororoba_cli/src/bin/multi_dataset_ultrametric.rs", "data/csv/c071g_multi_dataset_ultrametric.csv", "docs/INSIGHTS.md"]
+where_stated = ["crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs", "data/csv/c071g_multi_dataset_ultrametric.csv", "docs/INSIGHTS.md"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 104
 
@@ -4215,7 +4215,7 @@ status_token = "REFUTED"
 status_text = "Refuted (Rust pipeline, N=35 events)"
 status_date = "2026-02-06"
 summary = "GWTC-3 mass-redshift clustering exhibits ultrametric structure (C-071 follow-up, Direction 4)."
-where_stated = ["crates/gororoba_cli/src/bin/gw_merger_tree.rs", "data/csv/c071e_gw_merger_ultrametric.csv"]
+where_stated = ["crates/gororoba_cli_data/src/bin/gw_merger_tree.rs", "data/csv/c071e_gw_merger_ultrametric.csv"]
 source_markdown = "docs/claims/by_domain/gravitational-waves.md"
 source_line = 26
 
@@ -8571,7 +8571,7 @@ status_token = "REFUTED"
 status_text = "Refuted (Rust pipeline, N=4996)"
 status_date = "2026-02-06"
 summary = "FRB comoving positions exhibit local ultrametric structure (C-071 follow-up, Direction 1)."
-where_stated = ["crates/gororoba_cli/src/bin/dm_ultrametric.rs", "crates/stats_core/src/ultrametric/local.rs", "data/csv/c071b_dm_comoving_ultrametric.csv"]
+where_stated = ["crates/gororoba_cli_physics/src/bin/dm_ultrametric.rs", "crates/stats_core/src/ultrametric/local.rs", "data/csv/c071b_dm_comoving_ultrametric.csv"]
 source_markdown = "docs/claims/by_domain/stellar-cartography.md"
 source_line = 26
 
@@ -8582,7 +8582,7 @@ status_token = "VERIFIED"
 status_text = "Verified (Rust pipeline, N=5008 FRBs + 4233 pulsars)"
 status_date = "2026-02-06"
 summary = "Compact object multi-attribute parameter space (DM, gl, gb) exhibits ultrametric structure under Euclidean distances (C-071 follow-up, Direction 2)."
-where_stated = ["crates/gororoba_cli/src/bin/baire_compact.rs", "crates/stats_core/src/ultrametric/baire.rs", "data/csv/c071c_baire_compact_ultrametric.csv"]
+where_stated = ["crates/gororoba_cli_data/src/bin/baire_compact.rs", "crates/stats_core/src/ultrametric/baire.rs", "data/csv/c071c_baire_compact_ultrametric.csv"]
 source_markdown = "docs/claims/by_domain/stellar-cartography.md"
 source_line = 29
 
@@ -8593,7 +8593,7 @@ status_token = "VERIFIED"
 status_text = "Verified (partial: 15/40 repeaters, 37.5%)"
 status_date = "2026-02-06"
 summary = "Repeating FRB temporal cascades exhibit ultrametric hierarchy (C-071 follow-up, Direction 3)."
-where_stated = ["crates/gororoba_cli/src/bin/frb_cascades.rs", "crates/stats_core/src/ultrametric/temporal.rs", "data/csv/c071d_frb_cascades_ultrametric.csv"]
+where_stated = ["crates/gororoba_cli_data/src/bin/frb_cascades.rs", "crates/stats_core/src/ultrametric/temporal.rs", "data/csv/c071d_frb_cascades_ultrametric.csv"]
 source_markdown = "docs/claims/by_domain/stellar-cartography.md"
 source_line = 32
 
@@ -8604,7 +8604,7 @@ status_token = "VERIFIED"
 status_text = "Verified (7 catalogs, N=25K total)"
 status_date = "2026-02-06"
 summary = "Multi-attribute Euclidean ultrametricity is specific to radio transient catalogs (FRB, pulsar); not a general property of astrophysical catalogs."
-where_stated = ["crates/gororoba_cli/src/bin/multi_dataset_ultrametric.rs", "data/csv/c071g_multi_dataset_ultrametric.csv", "docs/INSIGHTS.md"]
+where_stated = ["crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs", "data/csv/c071g_multi_dataset_ultrametric.csv", "docs/INSIGHTS.md"]
 source_markdown = "docs/claims/by_domain/stellar-cartography.md"
 source_line = 35
 

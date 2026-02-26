@@ -6625,13 +6625,13 @@ mod tests {
         assert!(freqs[1] < 3e14, "xi_1 should be < 3e14, got {}", freqs[1]);
         // Uniform spacing
         let spacing = freqs[1];
-        for i in 2..5 {
+        for (i, &freq) in freqs.iter().enumerate().take(5).skip(2) {
             let expected = i as f64 * spacing;
             assert!(
-                (freqs[i] - expected).abs() < 1e6,
+                (freq - expected).abs() < 1e6,
                 "xi_{} = {} should be {} (uniform spacing)",
                 i,
-                freqs[i],
+                freq,
                 expected
             );
         }
@@ -9413,7 +9413,7 @@ mod tests {
         let omega_max = ev_to_omega(5.0);
         let eta = gold.selective_emitter_efficiency(1500.0, omega_gap, omega_min, omega_max, 300);
         assert!(
-            eta >= 0.0 && eta <= 1.0,
+            (0.0..=1.0).contains(&eta),
             "Selective emitter efficiency should be 0-1, got {:.4}",
             eta
         );
@@ -9639,7 +9639,7 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let qe = gold.quantum_efficiency_near_surface(omega, 100e-9, 0.9);
         assert!(
-            qe >= 0.0 && qe <= 1.0,
+            (0.0..=1.0).contains(&qe),
             "Quantum efficiency should be in [0, 1], got {:.4}",
             qe
         );
@@ -9667,7 +9667,7 @@ mod tests {
         let omega = ev_to_omega(2.0);
         let r = silica.thin_film_reflectance(omega, 100e-9, 1.5);
         assert!(
-            r >= 0.0 && r <= 1.0,
+            (0.0..=1.0).contains(&r),
             "Thin film R should be in [0, 1], got {:.4}",
             r
         );
@@ -9726,8 +9726,8 @@ mod tests {
         let gold = gold_drude_lorentz();
         let (x, y, cap_y) = gold.color_coordinates_cie(200);
         // CIE coordinates should be in valid range
-        assert!(x >= 0.0 && x <= 1.0, "x should be in [0,1], got {:.4}", x);
-        assert!(y >= 0.0 && y <= 1.0, "y should be in [0,1], got {:.4}", y);
+        assert!((0.0..=1.0).contains(&x), "x should be in [0,1], got {:.4}", x);
+        assert!((0.0..=1.0).contains(&y), "y should be in [0,1], got {:.4}", y);
         assert!(
             cap_y >= 0.0,
             "Y luminance should be non-negative, got {:.4e}",
@@ -9990,7 +9990,7 @@ mod tests {
         let radius = 10e-9;
         let albedo = gold.mie_scattering_albedo(omega, radius);
         assert!(
-            albedo >= 0.0 && albedo <= 1.0,
+            (0.0..=1.0).contains(&albedo),
             "Albedo should be in [0,1], got {:.4}",
             albedo
         );
@@ -10105,7 +10105,7 @@ mod tests {
         let omega = 3e15;
         let t_prob = gold.photon_tunneling_probability(omega, 1e7); // 1e7 m^-1 decay
         assert!(
-            t_prob >= 0.0 && t_prob <= 1.0,
+            (0.0..=1.0).contains(&t_prob),
             "Tunneling probability should be in [0,1], got {:.4e}",
             t_prob
         );

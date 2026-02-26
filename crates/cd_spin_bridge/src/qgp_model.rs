@@ -1,3 +1,4 @@
+use algebra_core::kron2;
 use nalgebra::{Matrix4, Vector3};
 use num_complex::Complex64;
 use spin_tomography_core::TwoQubitState;
@@ -96,9 +97,9 @@ impl QGPFrustrationBridge {
             let comp = Complex64::from(omega_hat[i] * p_vort);
 
             // System 1 bias
-            bias_term += kron(&s_i, &eye2) * comp;
+            bias_term += kron2(&s_i, &eye2) * comp;
             // System 2 bias
-            bias_term += kron(&eye2, &s_i) * comp;
+            bias_term += kron2(&eye2, &s_i) * comp;
         }
 
         // Add bias and re-normalize trace to 1
@@ -110,19 +111,105 @@ impl QGPFrustrationBridge {
     }
 }
 
-// Helper for Kronecker product (duplicate from state.rs, should be moved to a shared util)
-fn kron(a: &nalgebra::Matrix2<Complex64>, b: &nalgebra::Matrix2<Complex64>) -> Matrix4<Complex64> {
-    let mut m = Matrix4::zeros();
-    for i in 0..2 {
-        for j in 0..2 {
-            let val_a = a[(i, j)];
-            for k in 0..2 {
-                for l in 0..2 {
-                    let val_b = b[(k, l)];
-                    m[(2 * i + k, 2 * j + l)] = val_a * val_b;
-                }
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use nalgebra::Matrix3;
+
+    fn default_qgp_state() -> QGPState {
+        QGPState {
+            temperature: 0.2,      // 200 MeV in GeV
+            vorticity: Vector3::new(0.0, 0.0, 0.01),
+            energy_density: 1.0,
+        }
+    }
+
+    fn identity_state() -> TwoQubitState {
+        // Maximally mixed state I/4
+        TwoQubitState::new(Matrix4::<Complex64>::identity() * Complex64::from(0.25))
+    }
+
+    fn bell_state() -> TwoQubitState {
+        let a = Vector3::zeros();
+        let b = Vector3::zeros();
+        let mut t = Matrix3::<f64>::zeros();
+        t[(0, 0)] = 1.0;
+        t[(1, 1)] = -1.0;
+        t[(2, 2)] = 1.0;
+        TwoQubitState::from_ab_t(&a, &b, &t)
+    }
+
+    #[test]
+    fn test_predict_frustration_converges_to_attractor() {
+        let bridge = QGPFrustrationBridge::default();
+        // High temperature should drive frustration towards 3/8
+        let hot = QGPState {
+            temperature: 100.0,
+            vorticity: Vector3::zeros(),
+            energy_density: 1.0,
+        };
+        let (f, _a) = bridge.predict_frustration(&hot);
+        assert!((f - 0.375).abs() < 1e-6,
+            "High-T frustration should converge to 3/8: got {f}");
+    }
+
+    #[test]
+    fn test_predict_frustration_low_temp() {
+        let bridge = QGPFrustrationBridge::default();
+        let cold = QGPState {
+            temperature: 0.01,
+            vorticity: Vector3::zeros(),
+            energy_density: 0.5,
+        };
+        let (f, a) = bridge.predict_frustration(&cold);
+        // Low T: residual is 0.1 * exp(-0.01) ~ 0.099, so F ~ 0.474
+        assert!(f > 0.375, "Low-T frustration should exceed vacuum attractor");
+        assert!((a - 0.25).abs() < 1e-14, "Associator = 0.5 * energy_density");
+    }
+
+    #[test]
+    fn test_qgp_decoherence_trace_preservation() {
+        let bridge = QGPFrustrationBridge::default();
+        let qgp = default_qgp_state();
+        let state = bell_state();
+        let out = bridge.apply_qgp_decoherence(&state, &qgp);
+        let tr = out.rho.trace().re;
+        assert!((tr - 1.0).abs() < 1e-10,
+            "QGP decoherence must preserve trace: got {tr}");
+    }
+
+    #[test]
+    fn test_qgp_decoherence_zero_vorticity() {
+        let bridge = QGPFrustrationBridge::default();
+        let qgp = QGPState {
+            temperature: 0.2,
+            vorticity: Vector3::zeros(),
+            energy_density: 1.0,
+        };
+        let state = identity_state();
+        let out = bridge.apply_qgp_decoherence(&state, &qgp);
+        // Zero vorticity: output should still have trace 1 and be Hermitian
+        let tr = out.rho.trace().re;
+        assert!((tr - 1.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_kron_identity() {
+        let eye = nalgebra::Matrix2::<Complex64>::identity();
+        let result = kron2(&eye, &eye);
+        let expected = Matrix4::<Complex64>::identity();
+        for i in 0..4 {
+            for j in 0..4 {
+                let diff = (result[(i, j)] - expected[(i, j)]).norm();
+                assert!(diff < 1e-14, "kron2(I,I) should be I_4: [{i},{j}] diff={diff}");
             }
         }
     }
-    m
+
+    #[test]
+    fn test_default_bridge() {
+        let bridge = QGPFrustrationBridge::default();
+        assert_eq!(bridge.k_vorticity, 0.1);
+        assert_eq!(bridge.k_temp, 1.0);
+    }
 }

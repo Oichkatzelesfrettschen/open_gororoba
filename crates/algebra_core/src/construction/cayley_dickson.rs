@@ -3132,7 +3132,7 @@ mod tests {
     /// Not a correctness test -- prints timing results. Run with:
     ///   cargo test -p algebra_core --release -- benchmark_sign --nocapture --ignored
     #[test]
-    #[ignore]
+    #[ignore] // Benchmark only: prints timing results, not a correctness test
     fn benchmark_sign_computation_paths() {
         use std::hint::black_box;
         use std::time::Instant;

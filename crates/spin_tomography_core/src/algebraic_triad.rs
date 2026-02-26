@@ -55,3 +55,49 @@ impl AlgebraicTriad {
         [Vector3::x(), Vector3::y(), Vector3::z()]
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_default_indices() {
+        let triad = AlgebraicTriad::default();
+        assert_eq!(triad.indices, [1, 2, 3]);
+    }
+
+    #[test]
+    fn test_custom_indices() {
+        let triad = AlgebraicTriad::new(3, 5, 7);
+        assert_eq!(triad.indices, [3, 5, 7]);
+    }
+
+    #[test]
+    fn test_to_axes_vec_orthonormal() {
+        let triad = AlgebraicTriad::default();
+        let axes = triad.to_axes_vec();
+        // Verify orthonormality
+        for ax in &axes {
+            assert!((ax.norm() - 1.0).abs() < 1e-14);
+        }
+        assert!(axes[0].dot(&axes[1]).abs() < 1e-14);
+        assert!(axes[0].dot(&axes[2]).abs() < 1e-14);
+        assert!(axes[1].dot(&axes[2]).abs() < 1e-14);
+    }
+
+    #[test]
+    fn test_pauli_axes_hermitian() {
+        let triad = AlgebraicTriad::default();
+        let paulis = triad.to_pauli_axes();
+        // Each Pauli matrix should be Hermitian: M = M^dagger
+        for (idx, p) in paulis.iter().enumerate() {
+            for i in 0..2 {
+                for j in 0..2 {
+                    let diff = (p[(i, j)] - p[(j, i)].conj()).norm();
+                    assert!(diff < 1e-14,
+                        "Pauli {idx} not Hermitian at [{i},{j}]");
+                }
+            }
+        }
+    }
+}

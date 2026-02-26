@@ -9,7 +9,7 @@ status = "active"
 [engineering_standards.toolchain]
 channel = "nightly"
 reason = "Required for cudarc, nvrtc, and SIMD intrinsics"
-edition = "2021"
+edition = "2024"
 lockfile_policy = "checked_in"
 ci_strictness = "deny_warnings"
 

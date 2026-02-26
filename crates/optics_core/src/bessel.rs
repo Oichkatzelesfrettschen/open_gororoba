@@ -336,7 +336,7 @@ mod tests {
         for n in 1..=5 {
             let z = Complex64::new(2.0, 0.7);
             let j_neg = bessel_j(-n, z);
-            let sign = if (n as u32) % 2 == 0 { 1.0 } else { -1.0 };
+            let sign = if (n as u32).is_multiple_of(2) { 1.0 } else { -1.0 };
             let expected = Complex64::new(sign, 0.0) * bessel_j(n, z);
             assert_complex_approx(
                 j_neg,

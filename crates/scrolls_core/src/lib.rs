@@ -708,4 +708,125 @@ mod tests {
         assert!(output.contains("b = \"\\u00A9\\u03B1\""));
         assert!(output.contains("c = 'not_rewritten'"));
     }
+
+    #[test]
+    fn empty_csv_produces_zero_rows() {
+        let mut temp = NamedTempFile::new().expect("tmp");
+        writeln!(temp, "x,y").expect("write");
+        // Header only, no data rows
+
+        let spec = ConvertSpec {
+            dataset_id: "T-EMPTY",
+            slug: "empty",
+            source_csv: "tmp/empty.csv",
+            canonical_toml: "registry/data/test/T-EMPTY_empty.toml",
+            dataset_class: "canonical_dataset",
+            corpus_label: "test corpus",
+            migrated_by: "scrolls_core::tests",
+        };
+        let converted = convert_csv_to_scroll(temp.path(), &spec).expect("convert");
+        assert_eq!(converted.dataset.dataset.row_count, 0);
+        assert_eq!(converted.dataset.dataset.column_count, 2);
+    }
+
+    #[test]
+    fn single_column_csv() {
+        let mut temp = NamedTempFile::new().expect("tmp");
+        writeln!(temp, "value").expect("write");
+        writeln!(temp, "42").expect("write");
+        writeln!(temp, "99").expect("write");
+
+        let spec = ConvertSpec {
+            dataset_id: "T-SINGLE",
+            slug: "single_col",
+            source_csv: "tmp/single.csv",
+            canonical_toml: "registry/data/test/T-SINGLE.toml",
+            dataset_class: "canonical_dataset",
+            corpus_label: "test corpus",
+            migrated_by: "scrolls_core::tests",
+        };
+        let converted = convert_csv_to_scroll(temp.path(), &spec).expect("convert");
+        assert_eq!(converted.dataset.dataset.column_count, 1);
+        assert_eq!(converted.dataset.dataset.row_count, 2);
+        assert_eq!(converted.dataset.dataset.header, vec!["value"]);
+    }
+
+    #[test]
+    fn tab_delimited_csv_detected() {
+        let mut temp = NamedTempFile::new().expect("tmp");
+        writeln!(temp, "a\tb\tc").expect("write");
+        writeln!(temp, "1\t2\t3").expect("write");
+        writeln!(temp, "4\t5\t6").expect("write");
+
+        let spec = ConvertSpec {
+            dataset_id: "T-TAB",
+            slug: "tab_delim",
+            source_csv: "tmp/tab.csv",
+            canonical_toml: "registry/data/test/T-TAB.toml",
+            dataset_class: "canonical_dataset",
+            corpus_label: "test corpus",
+            migrated_by: "scrolls_core::tests",
+        };
+        let converted = convert_csv_to_scroll(temp.path(), &spec).expect("convert");
+        assert_eq!(converted.dataset.dataset.delimiter, "\t");
+        assert_eq!(converted.dataset.dataset.column_count, 3);
+        assert_eq!(converted.dataset.dataset.row_count, 2);
+    }
+
+    #[test]
+    fn sanitize_header_handles_special_chars() {
+        assert_eq!(sanitize_header_token("Hello World!", 0), "hello_world");
+        assert_eq!(sanitize_header_token("   ", 0), "col_1");
+        assert_eq!(sanitize_header_token("123start", 0), "col_123start");
+        assert_eq!(sanitize_header_token("normal", 0), "normal");
+    }
+
+    #[test]
+    fn infer_type_all_categories() {
+        assert_eq!(infer_type(&[]), "empty");
+        assert_eq!(
+            infer_type(&["".to_string(), "".to_string()]),
+            "empty"
+        );
+        assert_eq!(
+            infer_type(&["true".to_string(), "false".to_string()]),
+            "bool"
+        );
+        assert_eq!(
+            infer_type(&["yes".to_string(), "NO".to_string()]),
+            "bool"
+        );
+        assert_eq!(
+            infer_type(&["42".to_string(), "-7".to_string(), "+0".to_string()]),
+            "int"
+        );
+        assert_eq!(
+            infer_type(&["3.14".to_string(), "-1.0".to_string()]),
+            "float"
+        );
+        assert_eq!(
+            infer_type(&["hello".to_string(), "world".to_string()]),
+            "string"
+        );
+    }
+
+    #[test]
+    fn detect_delimiter_prefers_most_frequent() {
+        assert_eq!(detect_delimiter("a,b,c\n1,2,3\n"), b',');
+        assert_eq!(detect_delimiter("a;b;c\n1;2;3\n"), b';');
+        assert_eq!(detect_delimiter("a\tb\tc\n1\t2\t3\n"), b'\t');
+        assert_eq!(detect_delimiter("a|b|c\n1|2|3\n"), b'|');
+    }
+
+    #[test]
+    fn make_unique_deduplicates_headers() {
+        let tokens = vec![
+            "a".to_string(),
+            "b".to_string(),
+            "a".to_string(),
+            "a".to_string(),
+        ];
+        let unique = make_unique(&tokens);
+        assert_eq!(unique, vec!["a", "b", "a_2", "a_3"]);
+    }
 }

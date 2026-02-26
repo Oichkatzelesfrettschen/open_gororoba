@@ -68,7 +68,7 @@ cosmic ultrametric structure.
 ## Analysis Pipeline
 
 - **Code**: `crates/stats_core/src/ultrametric.rs` (analysis engine)
-- **CLI**: `crates/gororoba_cli/src/bin/frb_ultrametric.rs`
+- **CLI**: `crates/gororoba_cli_data/src/bin/frb_ultrametric.rs`
 - **Results**: `data/csv/c071_frb_ultrametric.csv` (combined),
   `data/csv/c071_frb_ultrametric_cat1.csv`,
   `data/csv/c071_frb_ultrametric_cat2.csv`

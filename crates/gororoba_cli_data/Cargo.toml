@@ -1,0 +1,218 @@
+[package]
+name = "gororoba_cli_data"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Data, registry, and governance CLI binaries for gororoba"
+license = "MIT"
+autobins = false
+
+# ---- Claims (3) ----
+
+[[bin]]
+name = "claims-audit"
+path = "src/bin/claims_audit.rs"
+
+[[bin]]
+name = "claims-consolidate"
+path = "src/bin/claims_consolidate.rs"
+
+[[bin]]
+name = "claims-verify"
+path = "src/bin/claims_verify.rs"
+
+# ---- Registry (4) ----
+
+[[bin]]
+name = "registry-check"
+path = "src/bin/registry_check.rs"
+
+[[bin]]
+name = "registry-emit"
+path = "src/bin/registry_emit.rs"
+
+[[bin]]
+name = "registry-event-tracker"
+path = "src/bin/registry_event_tracker.rs"
+
+[[bin]]
+name = "project-counter-sync"
+path = "src/bin/project_counter_sync.rs"
+
+# ---- Governance (8) ----
+
+[[bin]]
+name = "data-governance-gate"
+path = "src/bin/data_governance_gate.rs"
+
+[[bin]]
+name = "data-origin-audit"
+path = "src/bin/data_origin_audit.rs"
+
+[[bin]]
+name = "data-clean"
+path = "src/bin/data_clean.rs"
+
+[[bin]]
+name = "data-semantic-validate"
+path = "src/bin/data_semantic_validate.rs"
+
+[[bin]]
+name = "record-external-hashes"
+path = "src/bin/record_external_hashes.rs"
+
+[[bin]]
+name = "external-redownload-audit"
+path = "src/bin/external_redownload_audit.rs"
+
+[[bin]]
+name = "external-blocked-burndown"
+path = "src/bin/external_blocked_burndown.rs"
+
+[[bin]]
+name = "external-blocked-retry-ledger"
+path = "src/bin/external_blocked_retry_ledger.rs"
+
+# ---- Fetch/IO (10) ----
+
+[[bin]]
+name = "fetch-datasets"
+path = "src/bin/fetch_datasets.rs"
+
+[[bin]]
+name = "fetch-chime-frb"
+path = "src/bin/fetch_chime_frb.rs"
+
+[[bin]]
+name = "dataset-fetch-all"
+path = "src/bin/dataset_fetch_all.rs"
+
+[[bin]]
+name = "bl-data-fetch"
+path = "src/bin/bl_data_fetch.rs"
+
+[[bin]]
+name = "bl-doppler-search"
+path = "src/bin/bl_doppler_search.rs"
+
+[[bin]]
+name = "hepdata-refresh"
+path = "src/bin/hepdata_refresh.rs"
+
+[[bin]]
+name = "scrollify-csv"
+path = "src/bin/scrollify_csv.rs"
+
+[[bin]]
+name = "export-hdf5"
+path = "src/bin/export_hdf5.rs"
+
+[[bin]]
+name = "hdf5-numeric-gate"
+path = "src/bin/hdf5_numeric_gate.rs"
+
+[[bin]]
+name = "verify-project-csv-split"
+path = "src/bin/verify_project_csv_split.rs"
+
+# ---- Migration (2) ----
+
+[[bin]]
+name = "migrate-claims"
+path = "src/bin/migrate_claims.rs"
+
+[[bin]]
+name = "migrate-insights"
+path = "src/bin/migrate_insights.rs"
+
+# ---- Publishing (3) ----
+
+[[bin]]
+name = "extract-papers"
+path = "src/bin/extract_papers.rs"
+
+[[bin]]
+name = "generate-latex"
+path = "src/bin/generate_latex.rs"
+
+[[bin]]
+name = "paper-build"
+path = "src/bin/paper_build.rs"
+
+# ---- Gates/Analysis (10) ----
+
+[[bin]]
+name = "rho-trace-gate"
+path = "src/bin/rho_trace_gate.rs"
+
+[[bin]]
+name = "simulation-trace-gate"
+path = "src/bin/simulation_trace_gate.rs"
+
+[[bin]]
+name = "evidence-package"
+path = "src/bin/evidence_package.rs"
+
+[[bin]]
+name = "third-party-source-verifier"
+path = "src/bin/third_party_source_verifier.rs"
+
+[[bin]]
+name = "sterile-neutrino-audit"
+path = "src/bin/sterile_neutrino_audit.rs"
+
+[[bin]]
+name = "gw-merger-tree"
+path = "src/bin/gw_merger_tree.rs"
+
+[[bin]]
+name = "frb-cascades"
+path = "src/bin/frb_cascades.rs"
+
+[[bin]]
+name = "frb-ultrametric"
+path = "src/bin/frb_ultrametric.rs"
+
+[[bin]]
+name = "multi-dataset-ultrametric"
+path = "src/bin/multi_dataset_ultrametric.rs"
+
+[[bin]]
+name = "baire-compact"
+path = "src/bin/baire_compact.rs"
+
+[dependencies]
+gororoba_cli = { path = "../gororoba_cli" }
+docpipe = { path = "../docpipe", features = ["fallback"] }
+data_core = { path = "../data_core" }
+scrolls_core = { path = "../scrolls_core" }
+stats_core = { path = "../stats_core" }
+cosmology_core = { path = "../cosmology_core" }
+gororoba_contracts = { path = "../gororoba_contracts" }
+clap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+csv = { workspace = true }
+toml = { workspace = true }
+regex = { workspace = true }
+sha2 = { workspace = true }
+walkdir = { workspace = true }
+glob = { workspace = true }
+chrono = { workspace = true }
+ureq = { workspace = true }
+pgfplots = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+anyhow = { workspace = true }
+rayon = { workspace = true }
+rand = { workspace = true }
+rand_chacha = { workspace = true }
+strsim = { workspace = true }
+flate2 = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+[features]
+hdf5-export = ["data_core/hdf5-export"]
+
+[lints]
+workspace = true
