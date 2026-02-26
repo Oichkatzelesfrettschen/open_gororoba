@@ -473,12 +473,12 @@ impl LbmSolver3DCuda {
             let rho_bytes = match self.precision {
                 Precision::FP32 => Self::encode_f32_to_bytes(&rho_flat),
                 Precision::BF16 => Self::encode_bf16_to_bytes(&rho_flat),
-                Precision::FP64 => unreachable!(),
+                Precision::FP64 => unreachable!("FP64 handled in outer branch"),
             };
             let u_bytes = match self.precision {
                 Precision::FP32 => Self::encode_f32_to_bytes(&u_flat),
                 Precision::BF16 => Self::encode_bf16_to_bytes(&u_flat),
-                Precision::FP64 => unreachable!(),
+                Precision::FP64 => unreachable!("FP64 handled in outer branch"),
             };
             let d_rho_in = self.stream.clone_htod(&rho_bytes)?;
             let d_u_in = self.stream.clone_htod(&u_bytes)?;
@@ -525,7 +525,7 @@ impl LbmSolver3DCuda {
             let bytes = match self.precision {
                 Precision::FP32 => Self::encode_f32_to_bytes(&force_flat),
                 Precision::BF16 => Self::encode_bf16_to_bytes(&force_flat),
-                Precision::FP64 => unreachable!(),
+                Precision::FP64 => unreachable!("FP64 handled in outer branch"),
             };
             self.d_force = self.stream.clone_htod(&bytes)?;
         }
@@ -553,7 +553,7 @@ impl LbmSolver3DCuda {
             let bytes = match self.precision {
                 Precision::FP32 => Self::encode_f32_to_bytes(&tau_flat),
                 Precision::BF16 => Self::encode_bf16_to_bytes(&tau_flat),
-                Precision::FP64 => unreachable!(),
+                Precision::FP64 => unreachable!("FP64 handled in outer branch"),
             };
             self.d_tau = self.stream.clone_htod(&bytes)?;
         }

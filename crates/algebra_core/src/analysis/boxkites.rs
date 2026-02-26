@@ -1267,7 +1267,7 @@ pub fn classify_face_pattern(signs: &[EdgeSignType; 3]) -> FaceSignPattern {
         2 => FaceSignPattern::TwoSameOneOpp,
         1 => FaceSignPattern::OneSameTwoOpp,
         0 => FaceSignPattern::AllOpposite,
-        _ => unreachable!(),
+        _ => unreachable!("triangle has exactly 3 edges, n_same is 0..=3"),
     }
 }
 
@@ -3979,7 +3979,7 @@ mod tests {
                                 1 => n_one_same += 1,
                                 2 => n_two_same += 1,
                                 3 => n_all_same += 1,
-                                _ => unreachable!(),
+                                _ => unreachable!("triangle has exactly 3 edges, n_same is 0..=3"),
                             }
                             n_triangles += 1;
                         }
