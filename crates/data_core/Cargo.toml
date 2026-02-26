@@ -18,11 +18,10 @@ tar = { workspace = true }
 rand = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
 hdf5 = { workspace = true, optional = true }
-ndarray = { workspace = true, optional = true }
 
 [features]
 default = []
-hdf5-export = ["dep:hdf5", "dep:ndarray"]
+hdf5-export = ["dep:hdf5"]
 
 [dev-dependencies]
 approx = { workspace = true }

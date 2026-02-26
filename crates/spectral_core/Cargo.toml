@@ -13,7 +13,6 @@ ndrustfft = { workspace = true }
 statrs = { workspace = true }
 adjustp = { workspace = true }
 rand = { workspace = true }
-rand_chacha = { workspace = true }
 algebra_core = { path = "../algebra_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
 

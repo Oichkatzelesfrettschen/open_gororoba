@@ -103,6 +103,13 @@ faer = "0.20"
 rustfft = "6.4.1"            # High-performance FFT (pure Rust, AVX/SSE)
 ndrustfft = "0.5.0"          # N-dimensional FFT on ndarray (C2C, R2C, DCT)
 
+# Vulkan and Windowing
+ash = "0.38.0"
+gpu-allocator = "0.28.0"
+naga = "28.0.0"
+winit = "0.30.12"
+raw-window-handle = "0.6.2"
+
 # Half-precision types
 half = "2.4"
 periodic-table-on-an-enum = "0.3.2"  # Element enum with atomic data
@@ -132,6 +139,7 @@ nvml-wrapper = "0.10"
 # Machine learning / Neural synthesis (burn 0.16: pure Rust, backend-agnostic)
 # Note: burn backends are optional at crate level, not workspace level
 burn = { version = "0.16", features = ["train", "autodiff"] }
+blas-src = "0.10"
 # blas-src moved to neural_homotopy crate (sole consumer); not a workspace dep
 
 # Error handling

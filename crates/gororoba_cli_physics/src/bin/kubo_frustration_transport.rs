@@ -63,7 +63,7 @@ impl TransportDispatcher {
             }
         }
         // CPU fallback: O(dim^3) optimized algorithm
-        kubo_transport_optimized(model, temperature, 1e-10)
+        kubo_transport_optimized(model, temperature, 1e-10).expect("CPU transport failed")
     }
 }
 
@@ -99,7 +99,7 @@ fn main() -> io::Result<()> {
         let frustration = graph_frustration_index(&model);
         println!("    Frustration index: {:.4}", frustration);
 
-        let ed = exact_diagonalize(&model);
+        let ed = exact_diagonalize(&model).expect("ED failed");
         println!("    Ground state energy: {:.6}", ed.eigenvalues[0]);
         println!(
             "    Energy gap: {:.6}",
@@ -107,7 +107,7 @@ fn main() -> io::Result<()> {
         );
 
         for &t in &temperatures {
-            let thermo = thermodynamic_quantities(&ed, t);
+            let thermo = thermodynamic_quantities(&ed, t).expect("thermo failed");
             let transport = dispatcher.compute(&model, t);
 
             cd_results.push((
@@ -150,7 +150,7 @@ fn main() -> io::Result<()> {
         let model = build_j1j2_chain(n_chain, alpha, 1.0, field_b);
         let frustration = graph_frustration_index(&model);
         let transport = dispatcher.compute(&model, temp);
-        let thermo = thermodynamic_quantities(&exact_diagonalize(&model), temp);
+        let thermo = thermodynamic_quantities(&exact_diagonalize(&model).expect("ED failed"), temp).expect("thermo failed");
 
         j1j2_results.push((
             alpha,

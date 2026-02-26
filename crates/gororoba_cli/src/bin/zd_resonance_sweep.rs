@@ -161,7 +161,7 @@ fn run_sweep_point(
             )?;
         }
 
-        engine.step_with_params(cmd, frame, tau_base, tau_amp, lambda);
+        engine.step_with_params(cmd, frame, tau_base, tau_amp, lambda)?;
 
         unsafe {
             ctx.device.end_command_buffer(cmd)?;
@@ -173,7 +173,7 @@ fn run_sweep_point(
             ctx.device.wait_for_fences(&[fence], true, u64::MAX)?;
         }
 
-        let rho = engine.read_rho_field();
+        let rho = engine.read_rho_field()?;
         let mean = rho.iter().map(|&v| v as f64).sum::<f64>() / rho.len() as f64;
         rho_means.push(mean);
     }

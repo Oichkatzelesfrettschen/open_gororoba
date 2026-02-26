@@ -11,6 +11,19 @@
 //! The thermal Drude weight K_th = D_E - beta * D_ES^2 / D_S (Eq. 15).
 
 use algebra_core::construction::cayley_dickson::SignTable;
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum TransportError {
+    #[error("Hilbert space too large for exact diagonalization: 2^{0}")]
+    HilbertSpaceTooLarge(usize),
+    #[error("Temperature must be positive: {0}")]
+    InvalidTemperature(f64),
+    #[error("Numerical error during diagonalization or sorting")]
+    NumericalError,
+}
+
+type Result<T> = std::result::Result<T, TransportError>;
 
 /// A Heisenberg-type spin model defined by coupling constants on a graph.
 ///
@@ -219,15 +232,12 @@ pub fn build_hamiltonian_matrix(model: &HeisenbergModel) -> Vec<f64> {
 /// For N <= 12 sites (Hilbert dim <= 4096), this is fast (< 1 second).
 /// For N = 14 (dim 16384), takes ~10 seconds.
 /// For N = 15 (dim 32768), takes ~2 minutes.
-pub fn exact_diagonalize(model: &HeisenbergModel) -> ExactDiagResult {
+pub fn exact_diagonalize(model: &HeisenbergModel) -> Result<ExactDiagResult> {
     let n = model.n_sites;
     let dim = 1usize << n;
-    assert!(
-        n <= 15,
-        "N > 15 is infeasible for full diagonalization (2^{} = {})",
-        n,
-        dim
-    );
+    if n > 15 {
+        return Err(TransportError::HilbertSpaceTooLarge(n));
+    }
 
     let h = build_hamiltonian_matrix(model);
 
@@ -235,10 +245,14 @@ pub fn exact_diagonalize(model: &HeisenbergModel) -> ExactDiagResult {
     let mat = nalgebra::DMatrix::from_column_slice(dim, dim, &h);
     let eigen = mat.symmetric_eigen();
 
-    // Sort eigenvalues and eigenvectors
+    // Sort eigenvalues and eigenvectors safely
     let mut indices: Vec<usize> = (0..dim).collect();
     let evals: Vec<f64> = eigen.eigenvalues.iter().copied().collect();
-    indices.sort_by(|&a, &b| evals[a].partial_cmp(&evals[b]).unwrap());
+    indices.sort_by(|&a, &b| {
+        evals[a]
+            .partial_cmp(&evals[b])
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
 
     let sorted_evals: Vec<f64> = indices.iter().map(|&i| evals[i]).collect();
     let mut sorted_evecs = vec![0.0f64; dim * dim];
@@ -248,12 +262,12 @@ pub fn exact_diagonalize(model: &HeisenbergModel) -> ExactDiagResult {
         }
     }
 
-    ExactDiagResult {
+    Ok(ExactDiagResult {
         eigenvalues: sorted_evals,
         eigenvectors: sorted_evecs,
         hilbert_dim: dim,
         n_sites: n,
-    }
+    })
 }
 
 // ---------------------------------------------------------------------------
@@ -261,8 +275,10 @@ pub fn exact_diagonalize(model: &HeisenbergModel) -> ExactDiagResult {
 // ---------------------------------------------------------------------------
 
 /// Compute thermodynamic quantities from the exact spectrum.
-pub fn thermodynamic_quantities(ed: &ExactDiagResult, temperature: f64) -> ThermoQuantities {
-    assert!(temperature > 0.0, "temperature must be positive");
+pub fn thermodynamic_quantities(ed: &ExactDiagResult, temperature: f64) -> Result<ThermoQuantities> {
+    if temperature <= 0.0 {
+        return Err(TransportError::InvalidTemperature(temperature));
+    }
     let beta = 1.0 / temperature;
     let dim = ed.hilbert_dim;
 
@@ -323,7 +339,7 @@ pub fn thermodynamic_quantities(ed: &ExactDiagResult, temperature: f64) -> Therm
 
     let chi = beta * (mag2 - mag * mag);
 
-    ThermoQuantities {
+    Ok(ThermoQuantities {
         temperature,
         partition_function: z,
         internal_energy: u,
@@ -331,7 +347,7 @@ pub fn thermodynamic_quantities(ed: &ExactDiagResult, temperature: f64) -> Therm
         entropy,
         magnetization: mag,
         susceptibility: chi,
-    }
+    })
 }
 
 // ---------------------------------------------------------------------------
@@ -869,8 +885,8 @@ pub fn kubo_transport(
     model: &HeisenbergModel,
     temperature: f64,
     degeneracy_tol: f64,
-) -> KuboTransport {
-    let ed = exact_diagonalize(model);
+) -> Result<KuboTransport> {
+    let ed = exact_diagonalize(model)?;
 
     let j_s = build_spin_current_operator(model);
     let j_e = build_energy_current_operator(model);
@@ -892,7 +908,7 @@ pub fn kubo_transport(
         d_e // No magnetothermal correction when D_S vanishes
     };
 
-    KuboTransport {
+    Ok(KuboTransport {
         temperature,
         drude_weight_spin: d_s,
         drude_weight_energy: d_e,
@@ -900,7 +916,7 @@ pub fn kubo_transport(
         thermal_conductivity: k_th,
         total_weight_spin: i0_s,
         total_weight_energy: i0_e,
-    }
+    })
 }
 
 /// Mixed Drude weight: D_ES = sum over degenerate pairs of <m|J_E|n><n|J_S|m>.
@@ -1184,8 +1200,8 @@ pub fn kubo_transport_optimized(
     model: &HeisenbergModel,
     temperature: f64,
     degeneracy_tol: f64,
-) -> KuboTransport {
-    let ed = exact_diagonalize(model);
+) -> Result<KuboTransport> {
+    let ed = exact_diagonalize(model)?;
     let dim = ed.hilbert_dim;
 
     // Build current operators
@@ -1205,7 +1221,7 @@ pub fn kubo_transport_optimized(
     let j_s_eig: Vec<f64> = j_s_eig_mat.as_slice().to_vec();
     let j_e_eig: Vec<f64> = j_e_eig_mat.as_slice().to_vec();
 
-    compute_transport_from_eigenbasis(
+    Ok(compute_transport_from_eigenbasis(
         &ed.eigenvalues,
         &j_s_eig,
         &j_e_eig,
@@ -1213,7 +1229,7 @@ pub fn kubo_transport_optimized(
         model.n_sites,
         temperature,
         degeneracy_tol,
-    )
+    ))
 }
 
 #[cfg(test)]
@@ -1227,7 +1243,7 @@ mod tests {
         assert_eq!(model.n_sites, 3);
         assert_eq!(model.couplings.len(), 3); // C(3,2) = 3
 
-        let ed = exact_diagonalize(&model);
+        let ed = exact_diagonalize(&model).expect("ED failed");
         assert_eq!(ed.hilbert_dim, 8);
         assert_eq!(ed.eigenvalues.len(), 8);
 
@@ -1246,11 +1262,11 @@ mod tests {
         assert_eq!(model.n_sites, 7);
         assert_eq!(model.couplings.len(), 21); // C(7,2) = 21
 
-        let ed = exact_diagonalize(&model);
+        let ed = exact_diagonalize(&model).expect("ED failed");
         assert_eq!(ed.hilbert_dim, 128);
 
         // Check thermodynamics at T = 1.0
-        let thermo = thermodynamic_quantities(&ed, 1.0);
+        let thermo = thermodynamic_quantities(&ed, 1.0).expect("thermo failed");
         assert!(thermo.specific_heat >= 0.0);
         assert!(thermo.susceptibility >= 0.0);
         assert!(thermo.partition_function > 0.0);
@@ -1343,7 +1359,7 @@ mod tests {
     fn test_kubo_quaternion() {
         // Compute full Kubo transport for quaternion Heisenberg model
         let model = build_cd_heisenberg(4, 0.0);
-        let transport = kubo_transport(&model, 0.5, 1e-10);
+        let transport = kubo_transport(&model, 0.5, 1e-10).expect("kubo failed");
 
         // At finite temperature, Drude weights should be non-negative
         assert!(transport.drude_weight_spin >= -1e-10);
@@ -1355,7 +1371,7 @@ mod tests {
     fn test_kubo_octonion() {
         // Compute Kubo transport for octonion Heisenberg model
         let model = build_cd_heisenberg(8, 0.0);
-        let transport = kubo_transport(&model, 1.0, 1e-10);
+        let transport = kubo_transport(&model, 1.0, 1e-10).expect("kubo failed");
 
         assert!(transport.drude_weight_spin >= -1e-10);
         assert!(transport.thermal_conductivity.is_finite());
@@ -1370,7 +1386,7 @@ mod tests {
 
         for &alpha in &alphas {
             let model = build_j1j2_chain(n, alpha, 1.0, 3.0); // B=3 (near saturation)
-            let transport = kubo_transport(&model, 0.1, 1e-10);
+            let transport = kubo_transport(&model, 0.1, 1e-10).expect("kubo failed");
             kths.push(transport.thermal_conductivity);
         }
 
@@ -1407,8 +1423,8 @@ mod tests {
     #[test]
     fn test_optimized_matches_naive_quaternion() {
         let model = build_cd_heisenberg(4, 0.0);
-        let naive = kubo_transport(&model, 0.5, 1e-10);
-        let opt = kubo_transport_optimized(&model, 0.5, 1e-10);
+        let naive = kubo_transport(&model, 0.5, 1e-10).expect("kubo failed");
+        let opt = kubo_transport_optimized(&model, 0.5, 1e-10).expect("kubo opt failed");
 
         assert!(
             (opt.drude_weight_spin - naive.drude_weight_spin).abs() < 1e-6,
@@ -1437,8 +1453,8 @@ mod tests {
     #[test]
     fn test_optimized_matches_naive_j1j2() {
         let model = build_j1j2_chain(8, 0.25, 1.0, 3.0);
-        let naive = kubo_transport(&model, 0.1, 1e-10);
-        let opt = kubo_transport_optimized(&model, 0.1, 1e-10);
+        let naive = kubo_transport(&model, 0.1, 1e-10).expect("kubo failed");
+        let opt = kubo_transport_optimized(&model, 0.1, 1e-10).expect("kubo opt failed");
 
         assert!(
             (opt.drude_weight_spin - naive.drude_weight_spin).abs() < 1e-6,

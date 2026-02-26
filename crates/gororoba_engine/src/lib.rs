@@ -12,8 +12,10 @@
 // Domain-specific layer implementations (depend on physics crates)
 pub mod correction_layer;
 pub mod dynamics_field;
+pub mod gate;
 pub mod pipeline;
 pub mod pipelines;
+pub mod provenance;
 pub mod simulation;
 pub mod thesis_pipelines;
 pub mod verification_layer;

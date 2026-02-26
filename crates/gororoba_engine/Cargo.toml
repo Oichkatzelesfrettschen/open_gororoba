@@ -20,7 +20,6 @@ cd_spin_bridge = { path = "../cd_spin_bridge" }
 algebra_core = { path = "../algebra_core", features = ["lie"] }
 stats_core = { path = "../stats_core" }
 lbm_3d = { path = "../lbm_3d" }
-serde = { workspace = true, features = ["derive"] }
 gr_core = { version = "0.1.0", path = "../gr_core" }
 spectral_core = { version = "0.1.0", path = "../spectral_core" }
 optics_core = { path = "../optics_core" }
@@ -30,6 +29,10 @@ lbm_3d_cuda = { path = "../lbm_3d_cuda" }
 cudarc = { workspace = true, optional = true }
 nalgebra = { workspace = true }
 rand = { workspace = true }
+pyo3 = { workspace = true, features = ["anyhow"] }
+chrono.workspace = true
+sha2.workspace = true
+serde.workspace = true
 
 [dev-dependencies]
 proptest = { workspace = true }

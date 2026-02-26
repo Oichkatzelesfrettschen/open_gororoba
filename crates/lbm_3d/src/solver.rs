@@ -12,6 +12,21 @@
 use crate::lattice::D3Q19Lattice;
 use cosmic_scheduler::{ScheduleResult, TwoPhaseSystem};
 use rayon::prelude::*;
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum LbmError {
+    #[error("Stability violation: tau={0} < 0.5")]
+    StabilityViolation(f64),
+    #[error("Non-finite value detected: {0}")]
+    NonFiniteValue(f64),
+    #[error("Field length mismatch: expected {expected}, got {found}")]
+    DimensionMismatch { expected: usize, found: usize },
+    #[error("Empty field provided")]
+    EmptyField,
+}
+
+type Result<T> = std::result::Result<T, LbmError>;
 
 /// BGK collision operator for 3D LBM.
 #[derive(Clone, Debug)]
@@ -54,20 +69,17 @@ impl BgkCollision {
     /// - Any tau < 0.5 (violates stability constraint)
     /// - Field contains NaN or Inf
     /// - Field is empty
-    pub fn set_viscosity_field(&mut self, tau_field: Vec<f64>) -> Result<(), String> {
+    pub fn set_viscosity_field(&mut self, tau_field: Vec<f64>) -> Result<()> {
         if tau_field.is_empty() {
-            return Err("Viscosity field cannot be empty".to_string());
+            return Err(LbmError::EmptyField);
         }
 
-        for (i, &tau) in tau_field.iter().enumerate() {
+        for &tau in tau_field.iter() {
             if !tau.is_finite() {
-                return Err(format!("Non-finite tau at index {}: {}", i, tau));
+                return Err(LbmError::NonFiniteValue(tau));
             }
             if tau < 0.5 {
-                return Err(format!(
-                    "Stability violation at index {}: tau={} < 0.5",
-                    i, tau
-                ));
+                return Err(LbmError::StabilityViolation(tau));
             }
         }
 
@@ -284,17 +296,13 @@ impl LbmSolver3D {
     ///
     /// # Errors
     /// Propagates errors from BgkCollision::set_viscosity_field()
-    pub fn set_viscosity_field(&mut self, tau_field: Vec<f64>) -> Result<(), String> {
+    pub fn set_viscosity_field(&mut self, tau_field: Vec<f64>) -> Result<()> {
         let expected_len = self.nx * self.ny * self.nz;
         if tau_field.len() != expected_len {
-            return Err(format!(
-                "Viscosity field length mismatch: got {}, expected {} ({}x{}x{})",
-                tau_field.len(),
-                expected_len,
-                self.nx,
-                self.ny,
-                self.nz
-            ));
+            return Err(LbmError::DimensionMismatch {
+                expected: expected_len,
+                found: tau_field.len(),
+            });
         }
         self.collider.set_viscosity_field(tau_field)
     }
@@ -324,26 +332,19 @@ impl LbmSolver3D {
     /// let force = vec![[0.0, 0.0, -0.001]; nx*ny*nz];
     /// solver.set_force_field(force)?;
     /// ```
-    pub fn set_force_field(&mut self, force_field: Vec<[f64; 3]>) -> Result<(), String> {
+    pub fn set_force_field(&mut self, force_field: Vec<[f64; 3]>) -> Result<()> {
         let expected_len = self.nx * self.ny * self.nz;
         if force_field.len() != expected_len {
-            return Err(format!(
-                "Force field length mismatch: got {}, expected {} ({}x{}x{})",
-                force_field.len(),
-                expected_len,
-                self.nx,
-                self.ny,
-                self.nz
-            ));
+            return Err(LbmError::DimensionMismatch {
+                expected: expected_len,
+                found: force_field.len(),
+            });
         }
 
         // Validate all force components are finite
-        for (i, &[fx, fy, fz]) in force_field.iter().enumerate() {
+        for &[fx, fy, fz] in force_field.iter() {
             if !fx.is_finite() || !fy.is_finite() || !fz.is_finite() {
-                return Err(format!(
-                    "Non-finite force at index {}: [{}, {}, {}]",
-                    i, fx, fy, fz
-                ));
+                return Err(LbmError::NonFiniteValue(fx + fy + fz));
             }
         }
 

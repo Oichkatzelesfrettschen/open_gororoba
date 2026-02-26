@@ -75,7 +75,9 @@ pub fn compute_graph_invariants(graph: &UnGraph<(), ()>) -> GraphInvariants {
     // Spectrum via nalgebra (symmetric_eigen consumes adj, so compute after adj products)
     let eigen = adj.symmetric_eigen();
     let mut spectrum: Vec<f64> = eigen.eigenvalues.iter().cloned().collect();
-    spectrum.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
+    spectrum.sort_by(|a: &f64, b: &f64| {
+        a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal)
+    });
 
     // Diameter (BFS-based for unweighted)
     let mut max_diam = 0;
@@ -99,7 +101,10 @@ pub fn compute_graph_invariants(graph: &UnGraph<(), ()>) -> GraphInvariants {
         q.push_back(start);
 
         while let Some(u) = q.pop_front() {
-            let d_u = dist[u.index()].unwrap();
+            let d_u = match dist[u.index()] {
+                Some(d) => d,
+                None => continue,
+            };
             for v in graph.neighbors(u) {
                 if dist[v.index()].is_none() {
                     dist[v.index()] = Some(d_u + 1);
@@ -107,11 +112,13 @@ pub fn compute_graph_invariants(graph: &UnGraph<(), ()>) -> GraphInvariants {
                     q.push_back(v);
                 } else if Some(v) != parent[u.index()] {
                     // Cycle found
-                    let cycle_len = d_u + dist[v.index()].unwrap() + 1;
-                    min_cycle = match min_cycle {
-                        None => Some(cycle_len),
-                        Some(m) => Some(m.min(cycle_len)),
-                    };
+                    if let Some(d_v) = dist[v.index()] {
+                        let cycle_len = d_u + d_v + 1;
+                        min_cycle = match min_cycle {
+                            None => Some(cycle_len),
+                            Some(m) => Some(m.min(cycle_len)),
+                        };
+                    }
                 }
             }
         }

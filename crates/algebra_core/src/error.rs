@@ -19,6 +19,9 @@ pub enum AlgebraError {
 
     #[error("Simd error: {0}")]
     SimdError(String),
+
+    #[error("Numerical error: {0}")]
+    NumericalError(String),
 }
 
 pub type AlgebraResult<T> = Result<T, AlgebraError>;

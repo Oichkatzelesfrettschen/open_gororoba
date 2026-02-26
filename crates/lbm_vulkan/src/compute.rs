@@ -5,6 +5,27 @@ use gpu_allocator::vulkan::*;
 use std::ffi::CString;
 use std::sync::Arc;
 use std::sync::Mutex;
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum VulkanEngineError {
+    #[error("Vulkan error: {0}")]
+    Vulkan(#[from] vk::Result),
+    #[error("GPU allocator error: {0}")]
+    Allocator(#[from] gpu_allocator::AllocationError),
+    #[error("Failed to lock allocator mutex")]
+    LockError,
+    #[error("Memory mapping failed: {0}")]
+    MappingError(String),
+    #[error("IO error: {0}")]
+    Io(#[from] std::io::Error),
+    #[error("Shader compilation error: {0}")]
+    ShaderError(String),
+    #[error("Image error: {0}")]
+    ImageError(#[from] image::ImageError),
+}
+
+type Result<T> = std::result::Result<T, VulkanEngineError>;
 
 /// Unified Engine for Sedenion-LBM Simulations
 pub struct GororobaEngine {
@@ -45,19 +66,24 @@ struct ImageSet {
     readback: BufferSet,
 }
 
-fn compile_wgsl(source: &str) -> Result<Vec<u32>, Box<dyn std::error::Error>> {
-    let module = naga::front::wgsl::parse_str(source)?;
+fn compile_wgsl(source: &str) -> Result<Vec<u32>> {
+    let module = naga::front::wgsl::parse_str(source)
+        .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
     let info = naga::valid::Validator::new(
         naga::valid::ValidationFlags::all(),
         naga::valid::Capabilities::all(),
     )
-    .validate(&module)?;
+    .validate(&module)
+    .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
     let mut words = Vec::new();
     let mut writer = naga::back::spv::Writer::new(&naga::back::spv::Options {
         lang_version: (1, 3),
         ..Default::default()
-    })?;
-    writer.write(&module, &info, None, &None, &mut words)?;
+    })
+    .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
+    writer
+        .write(&module, &info, None, &None, &mut words)
+        .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
     Ok(words)
 }
 
@@ -66,10 +92,10 @@ impl GororobaEngine {
         ctx: &VulkanContext,
         grid_dim: (u32, u32, u32),
         screen_dim: (u32, u32),
-    ) -> Result<Self, Box<dyn std::error::Error>> {
+    ) -> Result<Self> {
         let device = ctx.device.clone();
         let n_cells = (grid_dim.0 * grid_dim.1 * grid_dim.2) as u64;
-        let mut allocator = ctx.allocator.lock().unwrap();
+        let mut allocator = ctx.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
 
         let f_a = Self::create_buf_internal(
             &device,
@@ -208,7 +234,6 @@ impl GororobaEngine {
         })
     }
 
-    // 8-buffer LBM descriptor set requires individual buffer refs for binding.
     #[allow(clippy::too_many_arguments)]
     fn create_lbm_pipeline(
         device: &Arc<Device>,
@@ -220,8 +245,9 @@ impl GororobaEngine {
         tau: &BufferSet,
         force: &BufferSet,
         entropy: &BufferSet,
-    ) -> Result<ComputePipeline, Box<dyn std::error::Error>> {
-        let code = compile_wgsl(include_str!("../shaders/lbm.wgsl"))?;
+    ) -> Result<ComputePipeline> {
+        let code = compile_wgsl(include_str!("../shaders/lbm.wgsl"))
+            .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
         let module = unsafe {
             device.create_shader_module(
                 &vk::ShaderModuleCreateInfo {
@@ -317,7 +343,9 @@ impl GororobaEngine {
                     stage: vk::PipelineShaderStageCreateInfo {
                         stage: vk::ShaderStageFlags::COMPUTE,
                         module,
-                        p_name: CString::new("main")?.as_ptr(),
+                        p_name: CString::new("main")
+                            .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?
+                            .as_ptr(),
                         ..Default::default()
                     },
                     layout,
@@ -326,8 +354,8 @@ impl GororobaEngine {
                 None,
             )
         }
-        .map_err(|e| e.1)?[0];
-        let mut allocator = ctx.allocator.lock().unwrap();
+        .map_err(|e| VulkanEngineError::Vulkan(e.1))?[0];
+        let mut allocator = ctx.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
         let uniform = Self::create_buf_internal(
             device,
             &mut allocator,
@@ -448,8 +476,9 @@ impl GororobaEngine {
         device: &Arc<Device>,
         ctx: &VulkanContext,
         tau: &BufferSet,
-    ) -> Result<ComputePipeline, Box<dyn std::error::Error>> {
-        let code = compile_wgsl(include_str!("../shaders/zd_gen.wgsl"))?;
+    ) -> Result<ComputePipeline> {
+        let code = compile_wgsl(include_str!("../shaders/zd_gen.wgsl"))
+            .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
         let module = unsafe {
             device.create_shader_module(
                 &vk::ShaderModuleCreateInfo {
@@ -503,7 +532,9 @@ impl GororobaEngine {
                     stage: vk::PipelineShaderStageCreateInfo {
                         stage: vk::ShaderStageFlags::COMPUTE,
                         module,
-                        p_name: CString::new("main")?.as_ptr(),
+                        p_name: CString::new("main")
+                            .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?
+                            .as_ptr(),
                         ..Default::default()
                     },
                     layout,
@@ -512,8 +543,8 @@ impl GororobaEngine {
                 None,
             )
         }
-        .map_err(|e| e.1)?[0];
-        let mut allocator = ctx.allocator.lock().unwrap();
+        .map_err(|e| VulkanEngineError::Vulkan(e.1))?[0];
+        let mut allocator = ctx.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
         let uniform = Self::create_buf_internal(
             device,
             &mut allocator,
@@ -602,8 +633,9 @@ impl GororobaEngine {
         tau: &BufferSet,
         view: vk::ImageView,
         _dim: (u32, u32),
-    ) -> Result<ComputePipeline, Box<dyn std::error::Error>> {
-        let code = compile_wgsl(include_str!("../shaders/render.wgsl"))?;
+    ) -> Result<ComputePipeline> {
+        let code = compile_wgsl(include_str!("../shaders/render.wgsl"))
+            .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
         let module = unsafe {
             device.create_shader_module(
                 &vk::ShaderModuleCreateInfo {
@@ -671,7 +703,9 @@ impl GororobaEngine {
                     stage: vk::PipelineShaderStageCreateInfo {
                         stage: vk::ShaderStageFlags::COMPUTE,
                         module,
-                        p_name: CString::new("main")?.as_ptr(),
+                        p_name: CString::new("main")
+                            .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?
+                            .as_ptr(),
                         ..Default::default()
                     },
                     layout,
@@ -680,8 +714,8 @@ impl GororobaEngine {
                 None,
             )
         }
-        .map_err(|e| e.1)?[0];
-        let mut allocator = ctx.allocator.lock().unwrap();
+        .map_err(|e| VulkanEngineError::Vulkan(e.1))?[0];
+        let mut allocator = ctx.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
         let uniform = Self::create_buf_internal(
             device,
             &mut allocator,
@@ -798,7 +832,7 @@ impl GororobaEngine {
         usage: vk::BufferUsageFlags,
         name: &str,
         loc: MemoryLocation,
-    ) -> Result<BufferSet, Box<dyn std::error::Error>> {
+    ) -> Result<BufferSet> {
         let buffer = unsafe {
             device.create_buffer(
                 &vk::BufferCreateInfo {
@@ -826,9 +860,9 @@ impl GororobaEngine {
         ctx: &VulkanContext,
         f_init: &[f32],
         force: &[f32],
-    ) -> Result<(), Box<dyn std::error::Error>> {
+    ) -> Result<()> {
         let f_size = (f_init.len() * 4) as u64;
-        let mut allocator = self.allocator.lock().unwrap();
+        let mut allocator = self.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
         let staging = Self::create_buf_internal(
             &self.device,
             &mut allocator,
@@ -838,14 +872,16 @@ impl GororobaEngine {
             MemoryLocation::CpuToGpu,
         )?;
         unsafe {
-            std::ptr::copy_nonoverlapping(
-                f_init.as_ptr(),
-                staging.allocation.mapped_ptr().unwrap().as_ptr() as *mut f32,
-                f_init.len(),
-            );
+            let mapped_ptr = staging.allocation.mapped_ptr().ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map staging buffer".to_string())
+            })?;
+            std::ptr::copy_nonoverlapping(f_init.as_ptr(), mapped_ptr.as_ptr() as *mut f32, f_init.len());
         }
-        let f_ptr = self.force_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *mut f32;
         unsafe {
+            let mapped_ptr = self.force_buffer.allocation.mapped_ptr().ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map force buffer".to_string())
+            })?;
+            let f_ptr = mapped_ptr.as_ptr() as *mut f32;
             std::ptr::copy_nonoverlapping(force.as_ptr(), f_ptr, force.len());
         }
         unsafe {
@@ -903,11 +939,13 @@ impl GororobaEngine {
     /// The rho buffer is allocated as `GpuToCpu`, so `mapped_ptr()` is valid
     /// after the compute shader writes to it. Caller MUST ensure the GPU has
     /// finished writing (e.g. via `queue_wait_idle`) before calling this.
-    pub fn read_rho_field(&self) -> Vec<f32> {
-        let ptr = self.rho_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *const f32;
+    pub fn read_rho_field(&self) -> Result<Vec<f32>> {
+        let ptr = self.rho_buffer.allocation.mapped_ptr().ok_or_else(|| {
+            VulkanEngineError::MappingError("Failed to map rho buffer for reading".to_string())
+        })?.as_ptr() as *const f32;
         let n = (self.grid_dim.0 * self.grid_dim.1 * self.grid_dim.2) as usize;
         let data = unsafe { std::slice::from_raw_parts(ptr, n) };
-        data.to_vec()
+        Ok(data.to_vec())
     }
 
     /// Return the grid dimensions.
@@ -915,16 +953,18 @@ impl GororobaEngine {
         self.grid_dim
     }
 
-    pub fn get_diagnostics(&self) -> (f32, f32) {
-        let ptr = self.rho_buffer.allocation.mapped_ptr().unwrap().as_ptr() as *const f32;
+    pub fn get_diagnostics(&self) -> Result<(f32, f32)> {
+        let ptr = self.rho_buffer.allocation.mapped_ptr().ok_or_else(|| {
+            VulkanEngineError::MappingError("Failed to map rho buffer for diagnostics".to_string())
+        })?.as_ptr() as *const f32;
         let n = (self.grid_dim.0 * self.grid_dim.1 * self.grid_dim.2) as usize;
         let data = unsafe { std::slice::from_raw_parts(ptr, n) };
         let total_mass: f32 = data.iter().sum();
         let max_rho = data.iter().cloned().fold(0.0, f32::max);
-        (total_mass, max_rho)
+        Ok((total_mass, max_rho))
     }
 
-    pub fn step(&mut self, cmd: vk::CommandBuffer, frame: u32) {
+    pub fn step(&mut self, cmd: vk::CommandBuffer, frame: u32) -> Result<()> {
         unsafe {
             let zd_pc = ZdGenConstants {
                 nx: self.grid_dim.0,
@@ -935,13 +975,11 @@ impl GororobaEngine {
                 lambda: 5.0,
                 time: frame as f32,
             };
+            let mapped_ptr = self.zd_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map ZD uniform buffer".to_string())
+            })?;
             std::ptr::write(
-                self.zd_pipeline
-                    .uniform_buffer
-                    .allocation
-                    .mapped_ptr()
-                    .unwrap()
-                    .as_ptr() as *mut ZdGenConstants,
+                mapped_ptr.as_ptr() as *mut ZdGenConstants,
                 zd_pc,
             );
             self.device.cmd_bind_pipeline(
@@ -974,13 +1012,11 @@ impl GororobaEngine {
                 gy: -0.0001,
                 gz: 0.0,
             };
+            let mapped_ptr = self.lbm_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map LBM uniform buffer".to_string())
+            })?;
             std::ptr::write(
-                self.lbm_pipeline
-                    .uniform_buffer
-                    .allocation
-                    .mapped_ptr()
-                    .unwrap()
-                    .as_ptr() as *mut LbmConstants,
+                mapped_ptr.as_ptr() as *mut LbmConstants,
                 lbm_pc,
             );
             self.device.cmd_bind_pipeline(
@@ -1011,13 +1047,11 @@ impl GororobaEngine {
                 height: 720,
                 time: frame as f32,
             };
+            let mapped_ptr = self.render_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map render uniform buffer".to_string())
+            })?;
             std::ptr::write(
-                self.render_pipeline
-                    .uniform_buffer
-                    .allocation
-                    .mapped_ptr()
-                    .unwrap()
-                    .as_ptr() as *mut RenderConstants,
+                mapped_ptr.as_ptr() as *mut RenderConstants,
                 render_pc,
             );
             let barrier = vk::ImageMemoryBarrier {
@@ -1097,6 +1131,7 @@ impl GororobaEngine {
                 }],
             );
         }
+        Ok(())
     }
 
     /// Advance the simulation by one step with caller-specified ZD parameters.
@@ -1110,7 +1145,7 @@ impl GororobaEngine {
         tau_base: f32,
         tau_amp: f32,
         lambda: f32,
-    ) {
+    ) -> Result<()> {
         unsafe {
             let zd_pc = ZdGenConstants {
                 nx: self.grid_dim.0,
@@ -1121,13 +1156,11 @@ impl GororobaEngine {
                 lambda,
                 time: frame as f32,
             };
+            let mapped_ptr = self.zd_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map ZD uniform buffer".to_string())
+            })?;
             std::ptr::write(
-                self.zd_pipeline
-                    .uniform_buffer
-                    .allocation
-                    .mapped_ptr()
-                    .unwrap()
-                    .as_ptr() as *mut ZdGenConstants,
+                mapped_ptr.as_ptr() as *mut ZdGenConstants,
                 zd_pc,
             );
             self.device.cmd_bind_pipeline(
@@ -1160,13 +1193,11 @@ impl GororobaEngine {
                 gy: -0.0001,
                 gz: 0.0,
             };
+            let mapped_ptr = self.lbm_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map LBM uniform buffer".to_string())
+            })?;
             std::ptr::write(
-                self.lbm_pipeline
-                    .uniform_buffer
-                    .allocation
-                    .mapped_ptr()
-                    .unwrap()
-                    .as_ptr() as *mut LbmConstants,
+                mapped_ptr.as_ptr() as *mut LbmConstants,
                 lbm_pc,
             );
             self.device.cmd_bind_pipeline(
@@ -1191,15 +1222,18 @@ impl GororobaEngine {
 
             // No render pass in parameterized step -- caller handles readback
         }
+        Ok(())
     }
 
-    pub fn save_frame(&self, path: &str) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn save_frame(&self, path: &str) -> Result<()> {
         let ptr = self
             .render_image
             .readback
             .allocation
             .mapped_ptr()
-            .unwrap()
+            .ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map readback buffer for save_frame".to_string())
+            })?
             .as_ptr() as *const u8;
         let mut pixels = vec![0u8; 1280 * 720 * 4];
         unsafe {
@@ -1218,7 +1252,13 @@ impl Drop for GororobaEngine {
     fn drop(&mut self) {
         unsafe {
             let _ = self.device.device_wait_idle();
-            let mut allocator = self.allocator.lock().unwrap();
+            let mut allocator = match self.allocator.lock() {
+                Ok(a) => a,
+                Err(_) => {
+                    log::error!("Failed to lock allocator in GororobaEngine::drop");
+                    return;
+                }
+            };
 
             // Shared destroy logic
             self.device
@@ -1231,12 +1271,12 @@ impl Drop for GororobaEngine {
                 .destroy_descriptor_pool(self.lbm_pipeline.descriptor_pool, None);
             self.device
                 .destroy_buffer(self.lbm_pipeline.uniform_buffer.buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.lbm_pipeline.uniform_buffer.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.lbm_pipeline.uniform_buffer.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free lbm uniform buffer: {e}");
+            }
 
             self.device
                 .destroy_pipeline(self.zd_pipeline.pipeline, None);
@@ -1248,12 +1288,12 @@ impl Drop for GororobaEngine {
                 .destroy_descriptor_pool(self.zd_pipeline.descriptor_pool, None);
             self.device
                 .destroy_buffer(self.zd_pipeline.uniform_buffer.buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.zd_pipeline.uniform_buffer.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.zd_pipeline.uniform_buffer.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free zd uniform buffer: {e}");
+            }
 
             self.device
                 .destroy_pipeline(self.render_pipeline.pipeline, None);
@@ -1265,79 +1305,79 @@ impl Drop for GororobaEngine {
                 .destroy_descriptor_pool(self.render_pipeline.descriptor_pool, None);
             self.device
                 .destroy_buffer(self.render_pipeline.uniform_buffer.buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.render_pipeline.uniform_buffer.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.render_pipeline.uniform_buffer.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free render uniform buffer: {e}");
+            }
 
             self.device.destroy_image_view(self.render_image.view, None);
             self.device.destroy_image(self.render_image.image, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.render_image.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.render_image.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free render image: {e}");
+            }
             self.device
                 .destroy_buffer(self.render_image.readback.buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.render_image.readback.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.render_image.readback.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free readback buffer: {e}");
+            }
 
             self.device.destroy_buffer(self.f_buffers[0].buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.f_buffers[0].allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.f_buffers[0].allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free f_buffers[0]: {e}");
+            }
             self.device.destroy_buffer(self.f_buffers[1].buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.f_buffers[1].allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.f_buffers[1].allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free f_buffers[1]: {e}");
+            }
             self.device.destroy_buffer(self.rho_buffer.buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.rho_buffer.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.rho_buffer.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free rho buffer: {e}");
+            }
             self.device.destroy_buffer(self.u_buffer.buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.u_buffer.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.u_buffer.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free u buffer: {e}");
+            }
             self.device.destroy_buffer(self.tau_buffer.buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.tau_buffer.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.tau_buffer.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free tau buffer: {e}");
+            }
             self.device.destroy_buffer(self.force_buffer.buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.force_buffer.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.force_buffer.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free force buffer: {e}");
+            }
             self.device.destroy_buffer(self.entropy_buffer.buffer, None);
-            allocator
-                .free(std::mem::replace(
-                    &mut self.entropy_buffer.allocation,
-                    std::mem::zeroed(),
-                ))
-                .unwrap();
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.entropy_buffer.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free entropy buffer: {e}");
+            }
         }
     }
 }

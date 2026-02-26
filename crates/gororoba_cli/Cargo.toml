@@ -99,8 +99,6 @@ spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
 lbm_3d = { path = "../lbm_3d" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
-cudarc = { workspace = true, optional = true }
-nvml-wrapper = { workspace = true, optional = true }
 stats_core = { path = "../stats_core", features = ["gpu"] }
 data_core = { path = "../data_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
@@ -141,8 +139,8 @@ default = ["gpu"]
 gpu = [
     "lbm_3d_cuda",
     "lbm_3d_cuda/cufft",
-    "dep:cudarc",
-    "dep:nvml-wrapper",
+
+
     "algebra_core/gpu",
     "quantum_core/gpu",
     "vacuum_frustration/gpu",

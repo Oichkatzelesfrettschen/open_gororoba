@@ -17,6 +17,7 @@ rand_chacha = { workspace = true }
 statrs = { workspace = true }
 anyhow = { workspace = true }
 cudarc = { workspace = true, optional = true }
+thiserror.workspace = true
 
 [dev-dependencies]
 stats_core = { path = "../stats_core" }

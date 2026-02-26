@@ -24,6 +24,7 @@ toml = { workspace = true }
 regex = { workspace = true }
 thiserror = { workspace = true }
 csv = { workspace = true }
+anyhow.workspace = true
 
 [dev-dependencies]
 tempfile = { workspace = true }

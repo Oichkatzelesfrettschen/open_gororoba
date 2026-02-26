@@ -186,8 +186,6 @@ docpipe = { path = "../docpipe", features = ["fallback"] }
 data_core = { path = "../data_core" }
 scrolls_core = { path = "../scrolls_core" }
 stats_core = { path = "../stats_core" }
-cosmology_core = { path = "../cosmology_core" }
-gororoba_contracts = { path = "../gororoba_contracts" }
 clap = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -199,16 +197,11 @@ walkdir = { workspace = true }
 glob = { workspace = true }
 chrono = { workspace = true }
 ureq = { workspace = true }
-pgfplots = { workspace = true }
-log = { workspace = true }
 env_logger = { workspace = true }
 anyhow = { workspace = true }
 rayon = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
-strsim = { workspace = true }
-flate2 = { workspace = true }
-tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 
 [features]
