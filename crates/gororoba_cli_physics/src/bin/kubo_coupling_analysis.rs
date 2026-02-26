@@ -82,31 +82,29 @@ fn compute_point(
     let transport;
     #[cfg(feature = "gpu")]
     {
-        if let Some(ref ctx) = dispatcher.gpu_ctx
-            && let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10)
-        {
-            transport = t;
-            return CouplingPoint {
-                lambda,
-                temperature,
-                frustration,
-                drude_spin: transport.drude_weight_spin,
-                drude_energy: transport.drude_weight_energy,
-                thermal_conductivity: transport.thermal_conductivity,
-                total_weight_spin: transport.total_weight_spin,
-                total_weight_energy: transport.total_weight_energy,
-                specific_heat: {
-                    let ed = exact_diagonalize(&model);
-                    thermodynamic_quantities(&ed, temperature).specific_heat
-                },
-            };
+        if let Some(ref ctx) = dispatcher.gpu_ctx {
+            if let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10) {
+                transport = t;
+                let ed = exact_diagonalize(&model).expect("ED failed");
+                return CouplingPoint {
+                    lambda,
+                    temperature,
+                    frustration,
+                    drude_spin: transport.drude_weight_spin,
+                    drude_energy: transport.drude_weight_energy,
+                    thermal_conductivity: transport.thermal_conductivity,
+                    total_weight_spin: transport.total_weight_spin,
+                    total_weight_energy: transport.total_weight_energy,
+                    specific_heat: thermodynamic_quantities(&ed, temperature).expect("thermo failed").specific_heat,
+                };
+            }
         }
     }
     let _ = &dispatcher; // suppress unused warning on non-GPU builds
 
-    transport = kubo_transport_optimized(&model, temperature, 1e-10);
-    let ed = exact_diagonalize(&model);
-    let thermo = thermodynamic_quantities(&ed, temperature);
+    transport = kubo_transport_optimized(&model, temperature, 1e-10).expect("CPU transport failed");
+    let ed = exact_diagonalize(&model).expect("ED failed");
+    let thermo = thermodynamic_quantities(&ed, temperature).expect("thermo failed");
 
     CouplingPoint {
         lambda,

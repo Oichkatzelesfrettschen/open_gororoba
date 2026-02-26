@@ -39,6 +39,110 @@ use quantum_core::{
 use spectral_core::fractional_laplacian_periodic_1d;
 use stats_core::frechet_distance;
 
+use gororoba_engine::gate::GororobaGate;
+use gororoba_engine::{SimulationConfig3D, SimulationState3D};
+use lbm_3d_cuda::Precision;
+use algebra_core::physics::octonion_field::FieldParams;
+
+// ============================================================================
+// Engine Module
+// ============================================================================
+
+/// Python wrapper for SimulationConfig3D.
+#[pyclass(name = "SimulationConfig3D")]
+#[derive(Clone)]
+pub struct PySimulationConfig3D {
+    pub inner: SimulationConfig3D,
+}
+
+#[pymethods]
+impl PySimulationConfig3D {
+    #[new]
+    #[pyo3(signature = (nx, ny, nz, tau, use_gpu = false, precision = "fp32"))]
+    fn new(nx: usize, ny: usize, nz: usize, tau: f64, use_gpu: bool, precision: &str) -> PyResult<Self> {
+        let p = match precision {
+            "fp32" => Precision::FP32,
+            "fp64" => Precision::FP64,
+            _ => return Err(PyValueError::new_err("precision must be 'fp32' or 'fp64'")),
+        };
+        Ok(Self {
+            inner: SimulationConfig3D {
+                nx,
+                ny,
+                nz,
+                tau,
+                use_gpu,
+                precision: p,
+                algebra_params: FieldParams::default(),
+                coupling_fluid_algebra: 0.0,
+                coupling_algebra_fluid: 0.0,
+            },
+        })
+    }
+}
+
+/// Python wrapper for SimulationState3D.
+#[pyclass(name = "SimulationState3D")]
+pub struct PySimulationState3D {
+    pub inner: SimulationState3D,
+}
+
+#[pymethods]
+impl PySimulationState3D {
+    #[new]
+    fn new(config: PySimulationConfig3D) -> PyResult<Self> {
+        let state = SimulationState3D::new(config.inner)
+            .map_err(|e| PyValueError::new_err(format!("Failed to create simulation: {e}")))?;
+        Ok(Self { inner: state })
+    }
+
+    /// Advance the simulation by one step.
+    fn step(&mut self) -> PyResult<()> {
+        self.inner.step()
+            .map_err(|e| PyValueError::new_err(format!("Simulation step failed: {e}")))?;
+        Ok(())
+    }
+
+    /// Get current simulation step.
+    #[getter]
+    fn current_step(&self) -> usize {
+        self.inner.current_step
+    }
+
+    /// Get velocity RMS.
+    fn velocity_rms(&mut self) -> PyResult<f64> {
+        self.inner.fluid.try_velocity_rms(self.inner.nx, self.inner.ny, self.inner.nz)
+            .map_err(|e| PyValueError::new_err(format!("Failed to compute RMS: {e}")))
+    }
+
+    /// Get mean density.
+    fn mean_density(&mut self) -> f64 {
+        self.inner.fluid.mean_density()
+    }
+}
+
+/// Execute the gororoba-gate verification on simulation outputs.
+/// Returns a dictionary with Betti numbers, decay exponent, and pass flags.
+#[pyfunction]
+fn py_gororoba_gate(
+    points: Vec<[f64; 3]>,
+    energy_trace: Vec<f64>,
+    mass_error: f64,
+) -> PyResult<PyObject> {
+    let report = GororobaGate::verify(&points, &energy_trace, mass_error)
+        .map_err(|e| PyValueError::new_err(format!("Gate verification failed: {e}")))?;
+
+    Python::with_gil(|py| {
+        let dict = pyo3::types::PyDict::new(py);
+        dict.set_item("betti_numbers", report.betti_numbers)?;
+        dict.set_item("decay_exponent", report.decay_exponent)?;
+        dict.set_item("reynolds_independence_pass", report.reynolds_independence_pass)?;
+        dict.set_item("mass_conservation_pass", report.mass_conservation_pass)?;
+        dict.set_item("overall_pass", report.overall_pass)?;
+        Ok(dict.into())
+    })
+}
+
 // ============================================================================
 // Algebra Module
 // ============================================================================
@@ -597,6 +701,11 @@ fn py_trapped_ion_profile(n_qubits: usize) -> (usize, f64, f64, f64, f64) {
 /// Python module definition.
 #[pymodule]
 fn gororoba_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    // Engine functions
+    m.add_function(wrap_pyfunction!(py_gororoba_gate, m)?)?;
+    m.add_class::<PySimulationConfig3D>()?;
+    m.add_class::<PySimulationState3D>()?;
+
     // Algebra functions
     m.add_function(wrap_pyfunction!(py_cd_multiply, m)?)?;
     m.add_function(wrap_pyfunction!(py_cd_conjugate, m)?)?;

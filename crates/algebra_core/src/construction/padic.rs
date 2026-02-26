@@ -33,29 +33,30 @@
 //! - p-adic absolute value |x|_p = p^{-v_p(x)}
 //! - Ultrametric inequality: |x + y|_p <= max(|x|_p, |y|_p)
 
+use crate::error::{AlgebraError, AlgebraResult};
 use std::fmt;
 
 /// P-adic valuation of an integer.
 ///
 /// Returns the largest k >= 0 such that p^k divides n.
 ///
-/// # Panics
+/// # Errors
 /// - If p < 2 (not a valid prime base)
 /// - If n == 0 (valuation is infinite)
 ///
 /// # Example
 /// ```
 /// use algebra_core::vp_int;
-/// assert_eq!(vp_int(12, 2), 2);  // 12 = 2^2 * 3
-/// assert_eq!(vp_int(12, 3), 1);  // 12 = 4 * 3^1
-/// assert_eq!(vp_int(7, 2), 0);   // 7 is odd
+/// assert_eq!(vp_int(12, 2).unwrap(), 2);  // 12 = 2^2 * 3
+/// assert_eq!(vp_int(12, 3).unwrap(), 1);  // 12 = 4 * 3^1
+/// assert_eq!(vp_int(7, 2).unwrap(), 0);   // 7 is odd
 /// ```
-pub fn vp_int(n: i64, p: u64) -> i32 {
+pub fn vp_int(n: i64, p: u64) -> AlgebraResult<i32> {
     if p < 2 {
-        panic!("p must be >= 2");
+        return Err(AlgebraError::NumericalError("p must be >= 2".to_string()));
     }
     if n == 0 {
-        panic!("v_p(0) is undefined (infinite)");
+        return Err(AlgebraError::NumericalError("v_p(0) is undefined (infinite)".to_string()));
     }
 
     let mut n_abs = n.unsigned_abs();
@@ -64,7 +65,7 @@ pub fn vp_int(n: i64, p: u64) -> i32 {
         n_abs /= p;
         k += 1;
     }
-    k
+    Ok(k)
 }
 
 /// Rational number for p-adic computations.
@@ -78,9 +79,12 @@ pub struct Rational {
 
 impl Rational {
     /// Create a new rational, reducing to lowest terms.
-    pub fn new(num: i64, den: i64) -> Self {
+    ///
+    /// # Errors
+    /// Returns Err if den is zero.
+    pub fn try_new(num: i64, den: i64) -> AlgebraResult<Self> {
         if den == 0 {
-            panic!("Denominator cannot be zero");
+            return Err(AlgebraError::ZeroDivision);
         }
 
         let sign = if den < 0 { -1 } else { 1 };
@@ -88,10 +92,15 @@ impl Rational {
         let den = den.unsigned_abs();
 
         let g = gcd(num.unsigned_abs(), den);
-        Rational {
+        Ok(Rational {
             num: num / g as i64,
             den: den / g,
-        }
+        })
+    }
+
+    /// Create a new rational, panics if den is zero. Legacy support.
+    pub fn new(num: i64, den: i64) -> Self {
+        Self::try_new(num, den).expect("Denominator cannot be zero")
     }
 
     /// Create from integer.
@@ -150,18 +159,18 @@ fn gcd(mut a: u64, mut b: u64) -> u64 {
 ///
 /// For q = a/b in lowest terms: v_p(q) = v_p(a) - v_p(b)
 ///
-/// # Panics
+/// # Errors
 /// - If p < 2
 /// - If q == 0
-pub fn vp(q: Rational, p: u64) -> i32 {
+pub fn vp(q: Rational, p: u64) -> AlgebraResult<i32> {
     if p < 2 {
-        panic!("p must be >= 2");
+        return Err(AlgebraError::NumericalError("p must be >= 2".to_string()));
     }
     if q.is_zero() {
-        panic!("v_p(0) is undefined (infinite)");
+        return Err(AlgebraError::NumericalError("v_p(0) is undefined (infinite)".to_string()));
     }
 
-    vp_int(q.num, p) - vp_int(q.den as i64, p)
+    Ok(vp_int(q.num, p)? - vp_int(q.den as i64, p)?)
 }
 
 /// P-adic absolute value |q|_p.
@@ -169,12 +178,12 @@ pub fn vp(q: Rational, p: u64) -> i32 {
 /// By definition:
 /// - |0|_p = 0
 /// - |q|_p = p^{-v_p(q)} for q != 0
-pub fn abs_p(q: Rational, p: u64) -> f64 {
+pub fn abs_p(q: Rational, p: u64) -> AlgebraResult<f64> {
     if q.is_zero() {
-        return 0.0;
+        return Ok(0.0);
     }
-    let v = vp(q, p);
-    (p as f64).powi(-v)
+    let v = vp(q, p)?;
+    Ok((p as f64).powi(-v))
 }
 
 /// Check if n is a power of two.
@@ -204,11 +213,11 @@ impl CantorDigits {
 ///
 /// Exact for rationals with denominator a power of 3.
 ///
-/// # Panics
+/// # Errors
 /// - If q is not in [0, 1]
-pub fn ternary_digits_power3(q: Rational, n_digits: usize) -> CantorDigits {
+pub fn ternary_digits_power3(q: Rational, n_digits: usize) -> AlgebraResult<CantorDigits> {
     if !q.in_unit_interval() {
-        panic!("q must be in [0, 1]");
+        return Err(AlgebraError::NumericalError("q must be in [0, 1]".to_string()));
     }
 
     let mut digits = Vec::with_capacity(n_digits);
@@ -231,7 +240,7 @@ pub fn ternary_digits_power3(q: Rational, n_digits: usize) -> CantorDigits {
         num -= d as u64 * den;
     }
 
-    CantorDigits { digits }
+    Ok(CantorDigits { digits })
 }
 
 /// Cantor (Devil's staircase) function restricted to Cantor set points.
@@ -242,14 +251,14 @@ pub fn ternary_digits_power3(q: Rational, n_digits: usize) -> CantorDigits {
 ///
 /// Returns the value as a rational.
 ///
-/// # Panics
+/// # Errors
 /// - If q is not in [0, 1]
 /// - If q's ternary expansion contains 1s (not a Cantor set point)
-pub fn cantor_function_on_cantor(q: Rational, n_digits: usize) -> Rational {
-    let digs = ternary_digits_power3(q, n_digits);
+pub fn cantor_function_on_cantor(q: Rational, n_digits: usize) -> AlgebraResult<Rational> {
+    let digs = ternary_digits_power3(q, n_digits)?;
 
     if !digs.is_cantor() {
-        panic!("q is not a Cantor set point (ternary expansion contains 1)");
+        return Err(AlgebraError::NumericalError("q is not a Cantor set point (ternary expansion contains 1)".to_string()));
     }
 
     // Convert ternary {0, 2} to binary {0, 1}
@@ -264,17 +273,17 @@ pub fn cantor_function_on_cantor(q: Rational, n_digits: usize) -> Rational {
         }
     }
 
-    Rational::new(num as i64, den as i64)
+    Rational::try_new(num as i64, den as i64)
 }
 
 /// Compute p-adic distance between two rationals.
 ///
 /// d_p(x, y) = |x - y|_p
-pub fn padic_distance(x: Rational, y: Rational, p: u64) -> f64 {
+pub fn padic_distance(x: Rational, y: Rational, p: u64) -> AlgebraResult<f64> {
     // x - y = (x.num * y.den - y.num * x.den) / (x.den * y.den)
     let num = x.num * (y.den as i64) - y.num * (x.den as i64);
     let den = (x.den * y.den) as i64;
-    let diff = Rational::new(num, den);
+    let diff = Rational::try_new(num, den)?;
     abs_p(diff, p)
 }
 
@@ -283,9 +292,9 @@ pub fn padic_distance(x: Rational, y: Rational, p: u64) -> f64 {
 /// In a p-adic metric: d(x, z) <= max(d(x, y), d(y, z))
 /// (stronger than triangle inequality)
 pub fn check_ultrametric(x: Rational, y: Rational, z: Rational, p: u64) -> bool {
-    let d_xy = padic_distance(x, y, p);
-    let d_yz = padic_distance(y, z, p);
-    let d_xz = padic_distance(x, z, p);
+    let d_xy = padic_distance(x, y, p).unwrap_or(f64::INFINITY);
+    let d_yz = padic_distance(y, z, p).unwrap_or(f64::INFINITY);
+    let d_xz = padic_distance(x, z, p).unwrap_or(f64::INFINITY);
 
     d_xz <= d_xy.max(d_yz) + 1e-14 // Small epsilon for floating point
 }
@@ -296,39 +305,38 @@ mod tests {
 
     #[test]
     fn test_vp_int_basic() {
-        assert_eq!(vp_int(12, 2), 2); // 12 = 2^2 * 3
-        assert_eq!(vp_int(12, 3), 1); // 12 = 4 * 3
-        assert_eq!(vp_int(7, 2), 0); // 7 is odd
-        assert_eq!(vp_int(8, 2), 3); // 8 = 2^3
-        assert_eq!(vp_int(27, 3), 3); // 27 = 3^3
+        assert_eq!(vp_int(12, 2).unwrap(), 2); // 12 = 2^2 * 3
+        assert_eq!(vp_int(12, 3).unwrap(), 1); // 12 = 4 * 3
+        assert_eq!(vp_int(7, 2).unwrap(), 0); // 7 is odd
+        assert_eq!(vp_int(8, 2).unwrap(), 3); // 8 = 2^3
+        assert_eq!(vp_int(27, 3).unwrap(), 3); // 27 = 3^3
     }
 
     #[test]
     fn test_vp_int_negative() {
-        assert_eq!(vp_int(-12, 2), 2);
-        assert_eq!(vp_int(-27, 3), 3);
+        assert_eq!(vp_int(-12, 2).unwrap(), 2);
+        assert_eq!(vp_int(-27, 3).unwrap(), 3);
     }
 
     #[test]
-    #[should_panic]
-    fn test_vp_int_zero_panics() {
-        vp_int(0, 2);
+    fn test_vp_int_zero_fails() {
+        assert!(vp_int(0, 2).is_err());
     }
 
     #[test]
     fn test_vp_rational() {
         let q = Rational::new(12, 9); // 4/3 in lowest terms
-        assert_eq!(vp(q, 2), 2); // v_2(4) - v_2(3) = 2 - 0 = 2
-        assert_eq!(vp(q, 3), -1); // v_3(4) - v_3(3) = 0 - 1 = -1
+        assert_eq!(vp(q, 2).unwrap(), 2); // v_2(4) - v_2(3) = 2 - 0 = 2
+        assert_eq!(vp(q, 3).unwrap(), -1); // v_3(4) - v_3(3) = 0 - 1 = -1
     }
 
     #[test]
     fn test_abs_p() {
         let q = Rational::new(1, 4); // 1/4 = 2^{-2}
-        let abs_2 = abs_p(q, 2);
+        let abs_2 = abs_p(q, 2).unwrap();
         assert!((abs_2 - 4.0).abs() < 1e-10); // |1/4|_2 = 2^{-(-2)} = 4
 
-        assert_eq!(abs_p(Rational::zero(), 2), 0.0);
+        assert_eq!(abs_p(Rational::zero(), 2).unwrap(), 0.0);
     }
 
     #[test]
@@ -354,24 +362,24 @@ mod tests {
     #[test]
     fn test_ternary_digits() {
         // 1/3 in base 3 is 0.1
-        let digs = ternary_digits_power3(Rational::new(1, 3), 5);
+        let digs = ternary_digits_power3(Rational::new(1, 3), 5).unwrap();
         assert_eq!(digs.digits[0], 1);
         assert!(!digs.is_cantor()); // Contains 1
 
         // 2/3 in base 3 is 0.2
-        let digs2 = ternary_digits_power3(Rational::new(2, 3), 5);
+        let digs2 = ternary_digits_power3(Rational::new(2, 3), 5).unwrap();
         assert_eq!(digs2.digits[0], 2);
     }
 
     #[test]
     fn test_cantor_digits() {
         // 0 is in Cantor set
-        let digs = ternary_digits_power3(Rational::zero(), 10);
+        let digs = ternary_digits_power3(Rational::zero(), 10).unwrap();
         assert!(digs.is_cantor());
         assert!(digs.digits.iter().all(|&d| d == 0));
 
         // 2/9 = 0.02 in base 3 - Cantor set point
-        let digs2 = ternary_digits_power3(Rational::new(2, 9), 10);
+        let digs2 = ternary_digits_power3(Rational::new(2, 9), 10).unwrap();
         assert_eq!(digs2.digits[0], 0);
         assert_eq!(digs2.digits[1], 2);
         assert!(digs2.is_cantor());
@@ -380,11 +388,11 @@ mod tests {
     #[test]
     fn test_cantor_function() {
         // 0 -> 0
-        let result = cantor_function_on_cantor(Rational::zero(), 10);
+        let result = cantor_function_on_cantor(Rational::zero(), 10).unwrap();
         assert_eq!(result, Rational::zero());
 
         // 2/3 = 0.2 in base 3 -> 0.1 in binary = 1/2
-        let result2 = cantor_function_on_cantor(Rational::new(2, 3), 10);
+        let result2 = cantor_function_on_cantor(Rational::new(2, 3), 10).unwrap();
         assert_eq!(result2.num, 1);
         // den = 2^10 = 1024, but 1/1024 reduces differently
     }
@@ -404,7 +412,7 @@ mod tests {
         let x = Rational::from_int(0);
         let y = Rational::from_int(4); // 4 = 2^2
 
-        let d = padic_distance(x, y, 2);
+        let d = padic_distance(x, y, 2).unwrap();
         // |4|_2 = 2^{-2} = 0.25
         assert!((d - 0.25).abs() < 1e-10);
     }

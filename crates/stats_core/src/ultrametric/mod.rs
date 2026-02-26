@@ -657,9 +657,9 @@ fn compute_padic_fraction(
         let b = Rational::from_int(int_values[j]);
         let c = Rational::from_int(int_values[k]);
 
-        let d_ab = padic_distance(a, b, prime);
-        let d_bc = padic_distance(b, c, prime);
-        let d_ac = padic_distance(a, c, prime);
+        let d_ab = padic_distance(a, b, prime).unwrap_or(0.0);
+        let d_bc = padic_distance(b, c, prime).unwrap_or(0.0);
+        let d_ac = padic_distance(a, c, prime).unwrap_or(0.0);
 
         total_dist += d_ab + d_bc + d_ac;
         dist_count += 3;
@@ -668,7 +668,7 @@ fn compute_padic_fraction(
         // P-adic metrics are inherently ultrametric, so this should hold exactly,
         // but we use the same relative tolerance for consistency.
         let mut dists = [d_ab, d_bc, d_ac];
-        dists.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
+        dists.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
 
         if dists[2] > 1e-15 {
             let relative_diff = (dists[2] - dists[1]) / dists[2];
@@ -979,8 +979,8 @@ mod tests {
 
         let d = padic_distance(a, b, 2);
         assert!(
-            d.abs() < 1e-15,
-            "Distance between equal values should be 0, got {}",
+            d.as_ref().expect("distance failed").abs() < 1e-15,
+            "Distance between equal values should be 0, got {:?}",
             d
         );
     }

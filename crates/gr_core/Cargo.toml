@@ -12,7 +12,6 @@ nalgebra = { workspace = true }
 ode_solvers = { workspace = true }
 num-complex = { workspace = true }
 gauss-quad = { workspace = true }
-statrs = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

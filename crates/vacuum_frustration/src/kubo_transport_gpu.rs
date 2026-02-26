@@ -267,7 +267,7 @@ mod tests {
         let ed = ctx.exact_diagonalize(&model).unwrap();
         assert_eq!(ed.hilbert_dim, 8);
         assert_eq!(ed.eigenvalues.len(), 8);
-        let cpu_ed = crate::kubo_transport::exact_diagonalize(&model);
+        let cpu_ed = crate::kubo_transport::exact_diagonalize(&model).expect("CPU ED failed");
         for i in 0..8 {
             assert!(
                 (ed.eigenvalues[i] - cpu_ed.eigenvalues[i]).abs() < 1e-8,
@@ -290,7 +290,7 @@ mod tests {
         };
         let model = build_cd_heisenberg(4, 0.0);
         let gpu = ctx.kubo_transport(&model, 0.5, 1e-10).unwrap();
-        let cpu = kubo_transport(&model, 0.5, 1e-10);
+        let cpu = kubo_transport(&model, 0.5, 1e-10).expect("CPU transport failed");
 
         assert!(
             (gpu.drude_weight_spin - cpu.drude_weight_spin).abs() < 1e-6,
@@ -319,7 +319,7 @@ mod tests {
         };
         let model = build_cd_heisenberg(8, 0.0);
         let gpu = ctx.kubo_transport(&model, 1.0, 1e-10).unwrap();
-        let cpu = kubo_transport(&model, 1.0, 1e-10);
+        let cpu = kubo_transport(&model, 1.0, 1e-10).expect("CPU transport failed");
 
         assert!(
             (gpu.drude_weight_spin - cpu.drude_weight_spin).abs() < 1e-6,
@@ -340,7 +340,7 @@ mod tests {
         };
         let model = build_j1j2_chain(8, 0.25, 1.0, 3.0);
         let gpu = ctx.kubo_transport(&model, 0.1, 1e-10).unwrap();
-        let cpu = kubo_transport(&model, 0.1, 1e-10);
+        let cpu = kubo_transport(&model, 0.1, 1e-10).expect("CPU transport failed");
 
         assert!(
             (gpu.drude_weight_spin - cpu.drude_weight_spin).abs() < 1e-6,

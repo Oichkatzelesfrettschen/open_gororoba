@@ -49,7 +49,7 @@ fn test_length_validation_mismatch() {
 
     let result = solver.set_viscosity_field(tau_wrong);
     assert!(result.is_err());
-    assert!(result.unwrap_err().contains("length mismatch"));
+    assert!(result.unwrap_err().to_string().contains("length mismatch"));
 }
 
 #[test]
@@ -60,7 +60,7 @@ fn test_stability_constraint_violation() {
 
     let result = solver.set_viscosity_field(tau_invalid);
     assert!(result.is_err());
-    assert!(result.unwrap_err().contains("Stability violation"));
+    assert!(result.unwrap_err().to_string().contains("Stability violation"));
 }
 
 #[test]
@@ -71,7 +71,7 @@ fn test_nan_rejection() {
 
     let result = solver.set_viscosity_field(tau_invalid);
     assert!(result.is_err());
-    assert!(result.unwrap_err().contains("Non-finite"));
+    assert!(result.unwrap_err().to_string().contains("Non-finite"));
 }
 
 #[test]
@@ -82,7 +82,7 @@ fn test_infinity_rejection() {
 
     let result = solver.set_viscosity_field(tau_invalid);
     assert!(result.is_err());
-    assert!(result.unwrap_err().contains("Non-finite"));
+    assert!(result.unwrap_err().to_string().contains("Non-finite"));
 }
 
 #[test]

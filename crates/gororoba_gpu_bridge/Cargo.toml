@@ -5,12 +5,9 @@ edition = { workspace = true }
 description = "GPU backend selection and dispatch for gororoba simulation workloads"
 license = "GPL-2.0-only"
 
-[dependencies]
-cudarc = { workspace = true, optional = true }
-
 [features]
 default = []
-gpu = ["dep:cudarc"]
+gpu = []
 
 [lints]
 workspace = true

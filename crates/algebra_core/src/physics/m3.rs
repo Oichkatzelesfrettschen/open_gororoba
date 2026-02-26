@@ -205,6 +205,15 @@ fn h_map(s: &SVec) -> SVec {
     out
 }
 
+/// Compute the Kretschmann coupling scale.
+///
+/// Maps the spacetime Kretschmann scalar K to an M3 operator scale factor.
+/// K = R_{abcd} R^{abcd}. For Schwarzschild, K = 48 M^2 / r^6.
+pub fn kretschmann_coupling(k_scalar: f64) -> f64 {
+    // Physically motivated scaling: coupling scales with sqrt of curvature density
+    k_scalar.sqrt()
+}
+
 /// Compute the M3 trilinear operation on octonion basis elements.
 ///
 /// Given basis indices i, j, k in 0..7 (typically 1..7 for imaginary units),

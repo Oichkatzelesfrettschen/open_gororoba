@@ -26,6 +26,7 @@ pub fn parse_precision(input: &str) -> Option<Precision> {
     match input.to_ascii_uppercase().as_str() {
         "FP32" => Some(Precision::FP32),
         "BF16" => Some(Precision::BF16),
+        "FP64" => Some(Precision::FP64),
         _ => None,
     }
 }

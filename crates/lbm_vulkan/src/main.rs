@@ -105,7 +105,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ..Default::default()
                 },
             )?;
-            engine.step(cmd, frame);
+            engine.step(cmd, frame)?;
             ctx.device.end_command_buffer(cmd)?;
             ctx.device.queue_submit(
                 ctx.queue,

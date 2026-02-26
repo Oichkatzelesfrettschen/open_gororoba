@@ -37,7 +37,7 @@ fn test_force_field_length_validation() {
     let force_short = vec![[0.0, 0.0, -0.001]; 8 * 8 * 7];
     let result = solver.set_force_field(force_short);
     assert!(result.is_err());
-    assert!(result.unwrap_err().contains("length mismatch"));
+    assert!(result.unwrap_err().to_string().contains("length mismatch"));
 
     // Wrong length: too long
     let force_long = vec![[0.0, 0.0, -0.001]; 8 * 8 * 9];
@@ -59,7 +59,7 @@ fn test_force_field_finite_validation() {
     force_nan[10][0] = f64::NAN;
     let result = solver.set_force_field(force_nan);
     assert!(result.is_err());
-    assert!(result.unwrap_err().contains("Non-finite"));
+    assert!(result.unwrap_err().to_string().contains("Non-finite"));
 
     // Inf force
     let mut force_inf = vec![[0.0, 0.0, -0.001]; 4 * 4 * 4];

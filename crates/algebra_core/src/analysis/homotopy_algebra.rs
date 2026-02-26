@@ -37,6 +37,7 @@
 //! - Kontsevich, M. (2003). Deformation Quantization of Poisson Manifolds. Lett. Math. Phys.
 //! - Zwiebach, B. (1993). Closed String Field Theory. Nucl. Phys. B 390.
 
+use crate::error::{AlgebraError, AlgebraResult};
 use std::collections::HashMap;
 
 /// Grading for elements in a homotopy algebra.
@@ -705,7 +706,7 @@ impl SedenionAInfinity {
     ///
     /// For practical reasons, we compute the Frobenius norm and spectral
     /// properties via the reduced dim x dim matrix M M^T instead.
-    pub fn obstruction_spectrum(&self) -> ObstructionSpectrum {
+    pub fn obstruction_spectrum(&self) -> AlgebraResult<ObstructionSpectrum> {
         let d = self.dim;
 
         // Build the "obstruction matrix" O[i][j] = ||m_3(e_i, *, e_j)||^2
@@ -735,29 +736,30 @@ impl SedenionAInfinity {
         // symmetric matrix (obs_matrix is symmetric by construction since
         // we sum over the middle slot).
         // For a 16x16 matrix, direct computation suffices.
-        let eigenvalues = Self::symmetric_eigenvalues(&obs_matrix);
+        let eigenvalues = Self::symmetric_eigenvalues(&obs_matrix)?;
 
         let frobenius_norm = eigenvalues.iter().map(|e| e.powi(2)).sum::<f64>().sqrt();
         let spectral_radius = eigenvalues.iter().map(|e| e.abs()).fold(0.0f64, f64::max);
         let nonzero_count = eigenvalues.iter().filter(|e| e.abs() > 1e-10).count();
         let rank_fraction = nonzero_count as f64 / d as f64;
 
-        ObstructionSpectrum {
+        Ok(ObstructionSpectrum {
             eigenvalues,
             frobenius_norm,
             spectral_radius,
             rank_fraction,
-        }
+        })
     }
 
     /// Compute eigenvalues of a symmetric matrix using Jacobi iteration.
     /// Suitable for small matrices (dim <= 64).
     #[allow(clippy::needless_range_loop)]
-    fn symmetric_eigenvalues(matrix: &[Vec<f64>]) -> Vec<f64> {
+    fn symmetric_eigenvalues(matrix: &[Vec<f64>]) -> AlgebraResult<Vec<f64>> {
         let n = matrix.len();
         let mut a: Vec<Vec<f64>> = matrix.to_vec();
 
         // Jacobi eigenvalue algorithm for symmetric matrices
+        let mut converged = false;
         for _ in 0..100 * n * n {
             // Find largest off-diagonal element
             let mut max_val = 0.0f64;
@@ -774,6 +776,7 @@ impl SedenionAInfinity {
             }
 
             if max_val < 1e-12 {
+                converged = true;
                 break;
             }
 
@@ -806,9 +809,13 @@ impl SedenionAInfinity {
             a = new_a;
         }
 
+        if !converged {
+            return Err(AlgebraError::NumericalError("Jacobi iteration did not converge".to_string()));
+        }
+
         let mut eigenvalues: Vec<f64> = (0..n).map(|i| a[i][i]).collect();
-        eigenvalues.sort_by(|a, b| b.abs().partial_cmp(&a.abs()).unwrap());
-        eigenvalues
+        eigenvalues.sort_by(|a, b| b.abs().partial_cmp(&a.abs()).unwrap_or(std::cmp::Ordering::Equal));
+        Ok(eigenvalues)
     }
 
     /// Compute the scalar obstruction norm: a single number summarizing the
@@ -816,9 +823,9 @@ impl SedenionAInfinity {
     ///
     /// Defined as the Frobenius norm of the m_3 operator divided by dim^(3/2)
     /// to normalize across dimensions.
-    pub fn obstruction_norm(&self) -> f64 {
-        let spectrum = self.obstruction_spectrum();
-        spectrum.frobenius_norm / (self.dim as f64).powf(1.5)
+    pub fn obstruction_norm(&self) -> AlgebraResult<f64> {
+        let spectrum = self.obstruction_spectrum()?;
+        Ok(spectrum.frobenius_norm / (self.dim as f64).powf(1.5))
     }
 }
 
@@ -1094,7 +1101,7 @@ mod tests {
     #[test]
     fn test_sedenion_obstruction_spectrum() {
         let sa = SedenionAInfinity::new(16);
-        let spectrum = sa.obstruction_spectrum();
+        let spectrum = sa.obstruction_spectrum().expect("Spectrum failed");
 
         // Eigenvalues should exist
         assert_eq!(spectrum.eigenvalues.len(), 16, "should have 16 eigenvalues");
@@ -1117,7 +1124,7 @@ mod tests {
         );
 
         // Obstruction norm (normalized) should be finite and positive
-        let norm = sa.obstruction_norm();
+        let norm = sa.obstruction_norm().expect("Norm failed");
         assert!(
             norm > 0.0 && norm.is_finite(),
             "obstruction norm should be finite and positive"

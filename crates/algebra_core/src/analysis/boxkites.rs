@@ -1027,7 +1027,7 @@ impl MotifComponent {
         let a = self.adjacency_matrix();
         let eigen = SymmetricEigen::new(a);
         let mut vals: Vec<f64> = eigen.eigenvalues.iter().copied().collect();
-        vals.sort_by(|a, b| b.partial_cmp(a).unwrap());
+        vals.sort_by(|a, b| b.partial_cmp(a).unwrap_or(std::cmp::Ordering::Equal));
         vals
     }
 

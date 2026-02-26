@@ -255,7 +255,6 @@ name = "wow-signal-analysis"
 path = "src/bin/wow_signal_analysis.rs"
 
 [dependencies]
-algebra_core = { path = "../algebra_core", features = ["lie", "experimental"] }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
 materials_core = { path = "../materials_core" }
@@ -284,10 +283,6 @@ rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
 anyhow = { workspace = true }
-plotters = { workspace = true }
-pgfplots = { workspace = true }
-rustfft = { workspace = true }
-log = { workspace = true }
 env_logger = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

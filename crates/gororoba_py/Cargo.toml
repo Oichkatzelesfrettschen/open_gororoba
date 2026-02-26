@@ -20,6 +20,8 @@ gr_core = { path = "../gr_core" }
 pyo3 = { workspace = true, features = ["extension-module"] }
 numpy = { workspace = true }
 sha2 = { workspace = true }
+gororoba_engine = { version = "0.1.0", path = "../gororoba_engine" }
+lbm_3d_cuda = { version = "0.1.0", path = "../lbm_3d_cuda" }
 
 [lints]
 workspace = true

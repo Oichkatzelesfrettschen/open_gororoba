@@ -76,9 +76,9 @@ pub fn padic_triad_weight(k_mag: f64, p_mag: f64, q_mag: f64, prime: u64) -> f64
     let p_int = (p_mag.round() as i64).max(1);
     let q_int = (q_mag.round() as i64).max(1);
 
-    let vk = vp_int(k_int, prime);
-    let vp = vp_int(p_int, prime);
-    let vq = vp_int(q_int, prime);
+    let vk = vp_int(k_int, prime).unwrap_or(0);
+    let vp = vp_int(p_int, prime).unwrap_or(0);
+    let vq = vp_int(q_int, prime).unwrap_or(0);
 
     let v_max = vk.max(vp).max(vq);
     (prime as f64).powi(-v_max)
@@ -155,7 +155,7 @@ pub fn padic_power_spectrum(
         let bin = k.floor() as usize;
         if bin > 0 && bin < k_max {
             // Weight by p-adic valuation of the bin index
-            let vp = vp_int(bin as i64, prime);
+            let vp = vp_int(bin as i64, prime).unwrap_or(0);
             let weight = (prime as f64).powi(-vp);
             power[bin] += val.norm_sqr() * weight;
             counts[bin] += 1;

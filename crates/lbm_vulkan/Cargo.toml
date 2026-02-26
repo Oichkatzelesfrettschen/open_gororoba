@@ -6,17 +6,17 @@ license = "GPL-2.0-only"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
-ash = { version = "0.38.0", features = ["debug", "libloading", "loaded"] }
-gpu-allocator = { version = "0.28.0", features = ["vulkan"] }
+ash = { workspace = true, features = ["debug", "libloading", "loaded"] }
+gpu-allocator = { workspace = true, features = ["vulkan"] }
 log = { workspace = true }
-bytemuck = "1.25.0"
 image = { workspace = true }
-naga = { version = "28.0.0", features = ["wgsl-in", "spv-out"] }
+naga = { workspace = true, features = ["wgsl-in", "spv-out"] }
 env_logger = { workspace = true }
+thiserror = { workspace = true }
 
 [dev-dependencies]
-winit = "0.30.12"
-raw-window-handle = "0.6.2"
+winit = { workspace = true }
+raw-window-handle = { workspace = true }
 
 [lints]
 workspace = true
