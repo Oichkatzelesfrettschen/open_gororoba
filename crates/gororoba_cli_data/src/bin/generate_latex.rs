@@ -50,6 +50,7 @@ struct ClaimsRegistry {
 }
 
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct ClaimEntry {
     id: String,
     #[serde(default)]
@@ -60,37 +61,26 @@ struct ClaimEntry {
     where_stated: Option<String>,
     #[serde(default)]
     confidence: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     phase: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     last_verified: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     what_would_verify_refute: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     supporting_evidence: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     verification_method: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     description: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     sprint: Option<u32>,
-    #[allow(dead_code)]
     #[serde(default)]
     dependencies: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     claims: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     insights: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     status_note: Option<String>,
 }
@@ -125,6 +115,7 @@ struct InsightsRegistry {
 }
 
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct InsightEntry {
     id: String,
     #[serde(default)]
@@ -140,25 +131,18 @@ struct InsightEntry {
     insight: Option<String>,
     #[serde(default)]
     claims: Vec<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     sprint: Option<u32>,
-    #[allow(dead_code)]
     #[serde(default)]
     supporting_evidence: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     related_claims: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     experimental_support: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     confidence: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     verified_date: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     phase: Option<String>,
 }
@@ -222,8 +206,8 @@ struct ManifestFile {
 }
 
 #[derive(serde::Deserialize, Default)]
+#[allow(dead_code)]
 struct ManifestMetadata {
-    #[allow(dead_code)]
     #[serde(default)]
     generated_unix: u64,
     #[serde(default)]

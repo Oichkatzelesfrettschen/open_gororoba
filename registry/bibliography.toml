@@ -3,17 +3,17 @@
 
 [bibliography]
 authoritative = true
-updated = "2026-02-19"
+updated = "2026-02-25"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
 section_count = 34
-entry_count = 217
+entry_count = 220
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
 section_count = 34
-entry_count = 217
+entry_count = 220
 
 [[section]]
 id = "BSEC-001"
@@ -882,10 +882,10 @@ id = "BIB-0061"
 order_index = 61
 group = "Primary Research & Data Sources"
 section = "Algebra & Mathematics"
-citation_markdown = "**Baez, J. C.** (2002). *The Octonions*. Bulletin of the American Mathematical Society, 39, 145-205. [math.RA/0105155](https://arxiv.org/abs/math/0105155)."
+citation_markdown = "**Baez, J. C.** (2002). *The Octonions*. Bulletin of the American Mathematical Society, 39, 145-205. [doi:10.1090/S0273-0979-01-00934-X](https://doi.org/10.1090/S0273-0979-01-00934-X)."
 notes = ["*Reference for G2, F4, and Normed Division Algebras.*"]
 urls = ["https://arxiv.org/abs/math/0105155"]
-dois = []
+dois = ["10.1090/S0273-0979-01-00934-X"]
 source_line = 151
 
 [[entry]]
@@ -2578,3 +2578,33 @@ citation_markdown = "**Immirzi, G.** (1997). *Real and complex connections for c
 notes = ["*Shows beta is free parameter; area spectrum scales as beta*hbar*kappa.*"]
 urls = ["https://arxiv.org/abs/gr-qc/9612030"]
 dois = ["10.1088/0264-9381/14/10/002"]
+
+[[entry]]
+id = "BIB-0218"
+order_index = 218
+group = "Primary Research & Data Sources"
+section = "Lattice Boltzmann Method"
+citation_markdown = "**Chen, S. & Doolen, G. D.** (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30, 329-364. [doi:10.1146/annurev.fluid.30.1.329](https://doi.org/10.1146/annurev.fluid.30.1.329)."
+notes = ["*Foundational review of LBM for computational fluid dynamics.*"]
+urls = ["https://doi.org/10.1146/annurev.fluid.30.1.329"]
+dois = ["10.1146/annurev.fluid.30.1.329"]
+
+[[entry]]
+id = "BIB-0219"
+order_index = 219
+group = "Primary Research & Data Sources"
+section = "Lattice Boltzmann Method"
+citation_markdown = "**Succi, S.** (2001). *The Lattice Boltzmann Equation: For Fluid Dynamics and Beyond*. Oxford University Press."
+notes = ["*Standard reference for LBM theory and applications.*"]
+urls = []
+dois = ["10.1093/oso/9780198503989.001.0001"]
+
+[[entry]]
+id = "BIB-0220"
+order_index = 220
+group = "Primary Research & Data Sources"
+section = "Topological Data Analysis"
+citation_markdown = "**Edelsbrunner, H. & Harer, J. L.** (2010). *Computational Topology: An Introduction*. American Mathematical Society."
+notes = ["*Standard reference for persistent homology and computational topology.*"]
+urls = []
+dois = ["10.1090/mbk/069"]

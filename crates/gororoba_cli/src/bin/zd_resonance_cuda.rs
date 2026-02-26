@@ -331,10 +331,10 @@ fn run_experiment(
     })
 }
 
+#[allow(dead_code)] // rho_mean_trace retained for diagnostics / future CSV dump
 struct ExperimentData {
     ke_trace: Vec<f64>,
     var_trace: Vec<f64>,
-    #[allow(dead_code)] // retained for diagnostics / future CSV dump
     rho_mean_trace: Vec<f64>,
     spatial_k: Vec<f64>,
     spatial_power: Vec<f64>,

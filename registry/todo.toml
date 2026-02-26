@@ -508,8 +508,8 @@ evidence_refs = []
 [[item]]
 id = "T-042"
 area = "deps"
-title = "Track criterion version upgrade (0.5 -> 0.6+)"
-description = "Workspace pins criterion 0.5.1. Criterion 0.6 is available with potential API changes. Evaluate upgrade when benchmark suites are next modified. Verify no API breaking changes affect existing benches."
+title = "Track criterion version upgrade (0.5 -> 0.8)"
+description = "Workspace pins criterion 0.5. Latest is 0.8.2 (requires Rust 1.88+). Evaluate upgrade when benchmark suites are next modified. The 0.5->0.8 jump spans multiple major releases; API audit required across 9 consuming crates."
 priority = "low"
 status = "open"
 status_token = "OPEN"

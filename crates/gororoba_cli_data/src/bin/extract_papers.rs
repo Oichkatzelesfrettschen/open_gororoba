@@ -61,6 +61,7 @@ struct Manifest {
 }
 
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct ManifestEntry {
     id: String,
     title: String,
@@ -68,7 +69,6 @@ struct ManifestEntry {
     year: Option<u32>,     // Some entries might not have year
     arxiv: Option<String>, // Empty string or missing
     local_pdf: String,
-    #[allow(dead_code)]
     status: String,
 }
 
