@@ -90,6 +90,7 @@ struct ClaimsRegistry {
 /// Claim entry struct -- uses #[serde(default)] on all fields except id/status
 /// so that new optional fields added by the consolidation pipeline do not break
 /// deserialization.
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct ClaimEntry {
@@ -131,6 +132,7 @@ struct InsightsRegistry {
     insight: Vec<InsightEntry>,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct InsightEntry {
@@ -162,6 +164,7 @@ struct InsightEntry {
     experimental_support: Option<Vec<String>>,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct ExperimentsRegistry {
@@ -171,6 +174,7 @@ struct ExperimentsRegistry {
 }
 
 /// Header section [experiments] in experiments.toml.
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct ExperimentsHeader {
@@ -190,6 +194,7 @@ struct ExperimentsHeader {
     status_allowlist: Option<Vec<String>>,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct ExperimentEntry {
@@ -244,6 +249,7 @@ struct BinariesRegistry {
     binary: Vec<BinaryEntry>,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct BinaryEntry {
@@ -257,6 +263,7 @@ struct ProjectRegistry {
     project: ProjectMeta,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct ProjectMeta {

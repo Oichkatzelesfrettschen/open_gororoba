@@ -339,6 +339,12 @@ issue = "Uniform forcing with periodic BC can nullify strain"
 impact = "simulation may not exhibit intended dynamics"
 mitigation = "use non-uniform forcing patterns where required"
 
+[[shared.pitfall]]
+id = "PIT-010"
+issue = "ndarray transitive duplication via burn"
+impact = "two ndarray versions in dependency tree, inflated compile time"
+mitigation = "accept until burn aligns; documented in workspace.metadata.feature_policy"
+
 [[shared.reference]]
 path = "registry/engineering_standards.toml"
 note = "canonical engineering standards"

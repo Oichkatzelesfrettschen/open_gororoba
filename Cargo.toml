@@ -53,6 +53,13 @@ step_1 = "Run one compile-heavy cargo command at a time."
 step_2 = "Parallelize only non-cargo tasks (file scans, report parsing, documentation edits)."
 step_3 = "Reuse one built binary set for follow-on runs."
 
+[workspace.metadata.feature_policy]
+library_crates_default = "no_gpu"
+cli_crates_may_default = "gpu"
+tda_scope = "validation_only"
+tda_note = "tda 0.1.0 used solely by test-tda-api binary for Betti-number cross-validation. Consider feature-gating behind tda-validation if compile time becomes a concern."
+ndarray_duplication_note = "burn pulls its own ndarray version; accept transitive duplication until burn aligns."
+
 # Shared dependencies across workspace
 [workspace.dependencies]
 # Core numerics

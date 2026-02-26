@@ -8,5 +8,9 @@ repository = { workspace = true }
 [dependencies]
 serde = { workspace = true, features = ["derive"] }
 
+[dev-dependencies]
+serde_json = { workspace = true }
+toml = { workspace = true }
+
 [lints]
 workspace = true

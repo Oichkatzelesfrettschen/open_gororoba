@@ -38,14 +38,12 @@ struct SpectralSummarySeries {
     triad_clustering: Vec<f64>,
 }
 
-#[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BackendKind {
     Cpu,
     Gpu,
 }
 
-#[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TimingMode {
     /// Wall-clock time around `state.step()` without any GPU synchronization.
@@ -63,7 +61,6 @@ pub enum TimingMode {
     CudaEvents,
 }
 
-#[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum GateProfile {
     Research,
@@ -71,7 +68,6 @@ pub enum GateProfile {
     Canonical300sMeasured,
 }
 
-#[allow(dead_code)]
 impl GateProfile {
     pub fn as_str(self) -> &'static str {
         match self {
@@ -1245,7 +1241,6 @@ pub fn print_case_report(report: &BenchCaseReport) {
     }
 }
 
-#[allow(dead_code)]
 pub fn gate_h5_outputs(paths: &[PathBuf]) -> Result<(), Box<dyn Error>> {
     gate_h5_outputs_with_profile(paths, GateProfile::Research)
 }
@@ -1670,5 +1665,32 @@ pub fn gate_h5_outputs_with_profile(
             std::io::Error::other("cannot run warp acceptance gate without hdf5-export feature")
                 .into(),
         )
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn gate_profile_as_str() {
+        assert_eq!(GateProfile::Research.as_str(), "research");
+        assert_eq!(GateProfile::Canonical300s.as_str(), "canonical_300s");
+        assert_eq!(GateProfile::Canonical300sMeasured.as_str(), "canonical_300s_measured");
+    }
+
+    #[test]
+    fn backend_kind_debug() {
+        let cpu = BackendKind::Cpu;
+        assert_eq!(format!("{:?}", cpu), "Cpu");
+        let gpu = BackendKind::Gpu;
+        assert_eq!(format!("{:?}", gpu), "Gpu");
+    }
+
+    #[test]
+    fn timing_mode_debug() {
+        assert_eq!(format!("{:?}", TimingMode::LaunchOnly), "LaunchOnly");
+        assert_eq!(format!("{:?}", TimingMode::StreamSyncEachStep), "StreamSyncEachStep");
+        assert_eq!(format!("{:?}", TimingMode::CudaEvents), "CudaEvents");
     }
 }

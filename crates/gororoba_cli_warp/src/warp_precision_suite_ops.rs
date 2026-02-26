@@ -30,7 +30,6 @@ pub fn parse_precision(input: &str) -> Option<Precision> {
     }
 }
 
-#[allow(dead_code)]
 pub fn parse_backend(input: &str) -> Option<BackendKind> {
     match input.to_ascii_lowercase().as_str() {
         "cpu" => Some(BackendKind::Cpu),
@@ -39,7 +38,6 @@ pub fn parse_backend(input: &str) -> Option<BackendKind> {
     }
 }
 
-#[allow(dead_code)]
 pub fn parse_timing_mode(input: &str) -> Option<TimingMode> {
     match input.to_ascii_lowercase().as_str() {
         "launch_only" | "launch" => Some(TimingMode::LaunchOnly),
@@ -49,7 +47,6 @@ pub fn parse_timing_mode(input: &str) -> Option<TimingMode> {
     }
 }
 
-#[allow(dead_code)]
 pub fn parse_bool01(input: &str) -> Option<bool> {
     match input {
         "1" | "true" | "TRUE" | "yes" | "YES" => Some(true),
@@ -58,7 +55,6 @@ pub fn parse_bool01(input: &str) -> Option<bool> {
     }
 }
 
-#[allow(dead_code)]
 pub fn parse_csv<T>(
     input: &str,
     parse_one: impl Fn(&str) -> Option<T>,
@@ -88,7 +84,6 @@ pub fn parse_csv<T>(
     Ok(out)
 }
 
-#[allow(dead_code)]
 pub fn default_timing_mode_for_backend(backend: BackendKind) -> TimingMode {
     match backend {
         BackendKind::Cpu => TimingMode::LaunchOnly,
@@ -431,7 +426,6 @@ pub fn run_precision_suite(cfg: PrecisionSuiteConfig) -> Result<(), Box<dyn Erro
     Ok(())
 }
 
-#[allow(dead_code)]
 pub fn run_bench_compat_args(args: &[String]) -> Result<(), Box<dyn Error>> {
     if args.len() < 3 {
         return Err(std::io::Error::new(
@@ -475,7 +469,6 @@ pub fn run_bench_compat_args(args: &[String]) -> Result<(), Box<dyn Error>> {
     })
 }
 
-#[allow(dead_code)]
 pub fn run_matrix_compat_args(args: &[String]) -> Result<(), Box<dyn Error>> {
     let duration_secs: f64 = args.get(1).map_or(Ok(20.0), |s| s.parse())?;
     let trace_stride: usize = args.get(2).map_or(Ok(10usize), |s| s.parse())?;
@@ -515,4 +508,59 @@ pub fn run_matrix_compat_args(args: &[String]) -> Result<(), Box<dyn Error>> {
     })?;
     println!("DONE: matrix complete");
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_precision_smoke() {
+        assert_eq!(parse_precision("FP32"), Some(Precision::FP32));
+        assert_eq!(parse_precision("BF16"), Some(Precision::BF16));
+        assert_eq!(parse_precision("FP64"), Some(Precision::FP64));
+        assert_eq!(parse_precision("invalid"), None);
+    }
+
+    #[test]
+    fn parse_backend_smoke() {
+        assert_eq!(parse_backend("cpu"), Some(BackendKind::Cpu));
+        assert_eq!(parse_backend("CPU"), Some(BackendKind::Cpu));
+        assert_eq!(parse_backend("gpu"), Some(BackendKind::Gpu));
+        assert_eq!(parse_backend("cuda"), Some(BackendKind::Gpu));
+        assert_eq!(parse_backend("invalid"), None);
+    }
+
+    #[test]
+    fn parse_timing_mode_smoke() {
+        assert_eq!(parse_timing_mode("launch_only"), Some(TimingMode::LaunchOnly));
+        assert_eq!(parse_timing_mode("launch"), Some(TimingMode::LaunchOnly));
+        assert_eq!(parse_timing_mode("stream_sync_each_step"), Some(TimingMode::StreamSyncEachStep));
+        assert_eq!(parse_timing_mode("cuda_events"), Some(TimingMode::CudaEvents));
+        assert_eq!(parse_timing_mode("events"), Some(TimingMode::CudaEvents));
+        assert_eq!(parse_timing_mode("invalid"), None);
+    }
+
+    #[test]
+    fn parse_bool01_smoke() {
+        assert_eq!(parse_bool01("1"), Some(true));
+        assert_eq!(parse_bool01("true"), Some(true));
+        assert_eq!(parse_bool01("yes"), Some(true));
+        assert_eq!(parse_bool01("0"), Some(false));
+        assert_eq!(parse_bool01("false"), Some(false));
+        assert_eq!(parse_bool01("no"), Some(false));
+        assert_eq!(parse_bool01("invalid"), None);
+    }
+
+    #[test]
+    fn default_timing_mode_for_backend_smoke() {
+        assert_eq!(
+            default_timing_mode_for_backend(BackendKind::Cpu),
+            TimingMode::LaunchOnly
+        );
+        assert_eq!(
+            default_timing_mode_for_backend(BackendKind::Gpu),
+            TimingMode::CudaEvents
+        );
+    }
 }

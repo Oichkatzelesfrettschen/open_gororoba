@@ -17,9 +17,6 @@ use cudarc::nvrtc::compile_ptx;
 #[cfg(feature = "gpu")]
 use std::sync::Arc;
 
-#[cfg(not(feature = "gpu"))]
-#[allow(unused_imports)]
-use std::sync::Arc;
 
 /// Result of GPU APT census computation
 #[derive(Debug, Clone)]
@@ -639,7 +636,7 @@ impl GpuDimensionalEngine {
 
 /// CUDA kernel source for u16 wide-index APT census
 #[cfg(feature = "gpu")]
-#[allow(dead_code)]
+#[allow(dead_code)] // kernel source for future wide-index GPU APT census
 const APT_CENSUS_WIDE_KERNEL_SRC: &str = r#"
 // Splitmix64 PRNG
 __device__ unsigned long long splitmix64(unsigned long long x) {

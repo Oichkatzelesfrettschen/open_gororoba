@@ -56,6 +56,14 @@ libraries = "thiserror"
 applications = "anyhow"
 panics_policy = "forbidden_in_lib_unless_safety_documented"
 
+[engineering_standards.feature_policy]
+library_default = "no_gpu"
+cli_default = "may_include_gpu"
+gpu_gate = "gpu"
+cufft_gate = "cufft"
+hdf5_gate = "hdf5-export"
+validation_deps = "tda used only by test-tda-api; consider feature-gating if compile time grows"
+
 [engineering_standards.gpu_safety]
 feature_gate = "gpu"
 ffi_encapsulation = "lbm_3d_cuda crate"

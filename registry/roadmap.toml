@@ -3,7 +3,7 @@
 
 [roadmap]
 source_markdown = "docs/ROADMAP.md"
-consolidated_date = "2026-02-10"
+consolidated_date = "2026-02-25"
 supersedes = ["RUST_MIGRATION_PLAN.md", "RUST_REFACTOR_PLAN.md", "docs/RESEARCH_ROADMAP.md"]
 companion_docs = ["docs/TODO.md", "docs/NEXT_ACTIONS.md"]
 status = "active"
