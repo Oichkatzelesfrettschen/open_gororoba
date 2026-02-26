@@ -23,7 +23,7 @@ use vacuum_frustration::kubo_transport::{
 struct TransportDispatcher {
     #[cfg(feature = "gpu")]
     gpu_ctx: Option<vacuum_frustration::kubo_transport_gpu::GpuKuboContext>,
-    #[allow(dead_code)]
+    #[allow(dead_code)] // read at line 486; flagged without gpu feature
     use_gpu: bool,
 }
 

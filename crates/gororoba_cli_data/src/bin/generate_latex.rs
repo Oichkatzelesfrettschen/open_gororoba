@@ -49,6 +49,7 @@ struct ClaimsRegistry {
     claim: Vec<ClaimEntry>,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct ClaimEntry {
@@ -114,6 +115,7 @@ struct InsightsRegistry {
     insight: Vec<InsightEntry>,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct InsightEntry {
@@ -205,6 +207,7 @@ struct ManifestFile {
     summary: ManifestSummary,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize, Default)]
 #[allow(dead_code)]
 struct ManifestMetadata {

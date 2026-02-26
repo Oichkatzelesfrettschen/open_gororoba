@@ -60,6 +60,7 @@ struct Manifest {
     paper: Vec<ManifestEntry>,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct ManifestEntry {

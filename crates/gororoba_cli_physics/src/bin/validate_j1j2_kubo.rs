@@ -277,6 +277,7 @@ fn compare_with_published(
     comparisons
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(Deserialize)]
 #[allow(dead_code)]
 struct TransportData {
@@ -295,6 +296,7 @@ struct Metadata {
     backend: String,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(Deserialize, Clone)]
 #[allow(dead_code)]
 struct J1J2Point {
@@ -306,6 +308,7 @@ struct J1J2Point {
     specific_heat: f64,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(Deserialize, Clone)]
 #[allow(dead_code)]
 struct InterpolationPoint {
@@ -316,6 +319,7 @@ struct InterpolationPoint {
     total_weight_energy: f64,
 }
 
+// Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(Deserialize)]
 #[allow(dead_code)]
 struct CdTransportPoint {

@@ -1,6 +1,4 @@
 use algebra_core::physics::octonion_field::FieldParams;
-#[allow(unused_imports)]
-use anyhow::Context;
 use anyhow::Result;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 

@@ -8,7 +8,7 @@ use neural_homotopy::{HomotopyTrainingConfig, reference_hubble_curve, train_homo
 use std::error::Error;
 use std::fmt::Write as _;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use vacuum_frustration::{
     CASSINI_OMEGA_BD_LOWER_BOUND, FrustrationStarConfig, ScalarFrustrationMap,
     evaluate_frustration_star,
@@ -497,11 +497,3 @@ fn join_f64(values: &[f64]) -> String {
     out
 }
 
-#[allow(dead_code)]
-fn _assert_output_dir_exists(path: &Path) -> Result<(), Box<dyn Error>> {
-    if path.exists() {
-        Ok(())
-    } else {
-        Err(format!("missing output directory: {}", path.display()).into())
-    }
-}

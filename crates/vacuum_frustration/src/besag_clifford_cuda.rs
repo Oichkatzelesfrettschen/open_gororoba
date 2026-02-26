@@ -22,8 +22,6 @@
 //! - Besag & Clifford, "Sequential Monte Carlo p-values", Biometrika (1991)
 //! - stats_core::ultrametric::adaptive for CPU baseline
 
-#![allow(dead_code, unused_variables, unused_imports)]
-
 use anyhow::{Context, Result};
 use cudarc::driver::{
     CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
@@ -63,7 +61,6 @@ pub struct GpuBesagCliffordResult {
 
 /// GPU-accelerated Besag-Clifford null model tester
 pub struct GpuBesagCliffordTester {
-    grid_size: usize,
     n_cells: usize,
     batch_size: usize,
 
@@ -134,7 +131,6 @@ impl GpuBesagCliffordTester {
             .context("Failed to get count extreme kernel function")?;
 
         Ok(Self {
-            grid_size,
             n_cells,
             batch_size,
             _ctx: ctx,

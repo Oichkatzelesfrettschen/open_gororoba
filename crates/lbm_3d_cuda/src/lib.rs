@@ -19,7 +19,6 @@ unsafe impl cudarc::driver::DeviceRepr for ComplexDevice {}
 unsafe impl cudarc::driver::ValidAsZeroBits for ComplexDevice {}
 
 #[cfg(feature = "cufft")]
-#[allow(unused_imports)]
 use cudarc::cufft::result as cufft;
 
 const KERNEL_SRC: &str = include_str!("kernels.cu");
