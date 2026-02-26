@@ -7,6 +7,7 @@ pub mod exceptional_bridge;
 pub mod g2_automorphisms;
 pub mod hypercomplex;
 pub mod jordan;
+pub mod kronecker;
 pub mod mult_table;
 pub mod non_associative;
 pub mod octonion;

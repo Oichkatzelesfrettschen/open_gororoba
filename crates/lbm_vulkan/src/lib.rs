@@ -270,4 +270,173 @@ mod tests {
         };
         assert_eq!(tier, GpuTier::Ultra);
     }
+
+    #[test]
+    fn gpu_tier_ordering() {
+        assert!(GpuTier::Constrained < GpuTier::Standard);
+        assert!(GpuTier::Standard < GpuTier::High);
+        assert!(GpuTier::High < GpuTier::Ultra);
+    }
+
+    #[test]
+    fn tier_boundary_values() {
+        // Verify all four tier boundaries
+        let cases: &[(u32, GpuTier)] = &[
+            (1024, GpuTier::Constrained),
+            (2047, GpuTier::Constrained),
+            (2048, GpuTier::Standard),
+            (4095, GpuTier::Standard),
+            (4096, GpuTier::High),
+            (8191, GpuTier::High),
+            (8192, GpuTier::Ultra),
+            (16384, GpuTier::Ultra),
+        ];
+        for &(vram_mb, expected) in cases {
+            let tier = if vram_mb < 2048 {
+                GpuTier::Constrained
+            } else if vram_mb < 4096 {
+                GpuTier::Standard
+            } else if vram_mb < 8192 {
+                GpuTier::High
+            } else {
+                GpuTier::Ultra
+            };
+            assert_eq!(tier, expected, "vram_mb={vram_mb}");
+        }
+    }
+
+    #[test]
+    fn scaling_parameters_precision_selection() {
+        // Constrained + FP16 support -> FP16
+        let caps = HardwareCapabilities {
+            tier: GpuTier::Constrained,
+            vram_mb: 1024,
+            vendor_id: 0,
+            device_id: 0,
+            device_name: "test".to_string(),
+            supports_fp16: true,
+            supports_fp64: false,
+            max_compute_shared_memory_size: 32768,
+        };
+        let ctx_stub = VulkanContextStub { caps: caps.clone() };
+        let params = ctx_stub.get_scaling_parameters();
+        assert_eq!(params.precision, Precision::FP16);
+        assert_eq!(params.math_complexity, MathComplexity::Newtonian);
+        assert_eq!(params.render_resolution_scale, 0.5);
+
+        // Standard without FP16 -> FP32
+        let caps_std = HardwareCapabilities {
+            tier: GpuTier::Standard,
+            supports_fp16: false,
+            vram_mb: 3072,
+            ..caps.clone()
+        };
+        let ctx_std = VulkanContextStub { caps: caps_std };
+        let params_std = ctx_std.get_scaling_parameters();
+        assert_eq!(params_std.precision, Precision::FP32);
+        assert_eq!(params_std.math_complexity, MathComplexity::Schwarzschild);
+        assert_eq!(params_std.render_resolution_scale, 0.75);
+
+        // Ultra -> full complexity
+        let caps_ultra = HardwareCapabilities {
+            tier: GpuTier::Ultra,
+            vram_mb: 16384,
+            ..caps
+        };
+        let ctx_ultra = VulkanContextStub { caps: caps_ultra };
+        let params_ultra = ctx_ultra.get_scaling_parameters();
+        assert_eq!(params_ultra.math_complexity, MathComplexity::KerrNewman);
+        assert_eq!(params_ultra.render_resolution_scale, 1.0);
+    }
+
+    #[test]
+    fn optimal_grid_dim_minimum_is_32() {
+        // Even with tiny VRAM, grid dim must be at least 32
+        let caps = HardwareCapabilities {
+            tier: GpuTier::Constrained,
+            vram_mb: 1, // 1 MB -- very small
+            vendor_id: 0,
+            device_id: 0,
+            device_name: "tiny".to_string(),
+            supports_fp16: false,
+            supports_fp64: false,
+            max_compute_shared_memory_size: 0,
+        };
+        let ctx = VulkanContextStub { caps };
+        let n = ctx.optimal_grid_dim();
+        assert!(n >= 32, "minimum grid dim must be 32, got {n}");
+        assert_eq!(n % 8, 0, "grid dim must be 8-aligned, got {n}");
+    }
+
+    #[test]
+    fn optimal_grid_dim_scales_with_vram() {
+        let make_caps = |vram_mb: u32, tier: GpuTier| HardwareCapabilities {
+            tier,
+            vram_mb,
+            vendor_id: 0,
+            device_id: 0,
+            device_name: "test".to_string(),
+            supports_fp16: false,
+            supports_fp64: false,
+            max_compute_shared_memory_size: 0,
+        };
+        let small = VulkanContextStub {
+            caps: make_caps(2048, GpuTier::Standard),
+        };
+        let large = VulkanContextStub {
+            caps: make_caps(16384, GpuTier::Ultra),
+        };
+        let n_small = small.optimal_grid_dim();
+        let n_large = large.optimal_grid_dim();
+        assert!(
+            n_large >= n_small,
+            "more VRAM should allow larger grid: {n_large} < {n_small}"
+        );
+    }
+
+    /// Stub that mirrors VulkanContext's pure computation methods
+    /// without requiring an actual Vulkan device.
+    struct VulkanContextStub {
+        caps: HardwareCapabilities,
+    }
+
+    impl VulkanContextStub {
+        fn get_scaling_parameters(&self) -> ScalingParameters {
+            let n = self.optimal_grid_dim();
+            ScalingParameters {
+                grid_dim: (n, n, n),
+                precision: if self.caps.supports_fp16
+                    && self.caps.tier == GpuTier::Constrained
+                {
+                    Precision::FP16
+                } else {
+                    Precision::FP32
+                },
+                math_complexity: match self.caps.tier {
+                    GpuTier::Constrained => MathComplexity::Newtonian,
+                    GpuTier::Standard => MathComplexity::Schwarzschild,
+                    GpuTier::High => MathComplexity::Kerr,
+                    GpuTier::Ultra => MathComplexity::KerrNewman,
+                },
+                render_resolution_scale: match self.caps.tier {
+                    GpuTier::Constrained => 0.5,
+                    GpuTier::Standard => 0.75,
+                    _ => 1.0,
+                },
+            }
+        }
+
+        fn optimal_grid_dim(&self) -> u32 {
+            let vram_bytes = self.caps.vram_mb as u64 * 1024 * 1024;
+            let target_bytes = (vram_bytes as f64 * 0.7) as u64;
+            let bytes_per_cell = match self.caps.tier {
+                GpuTier::Constrained => 128,
+                _ => 256,
+            };
+            let max_cells = target_bytes / bytes_per_cell;
+            let n = (max_cells as f64).cbrt() as u32;
+            let n = (n / 8) * 8;
+            std::cmp::max(n, 32)
+        }
+    }
 }

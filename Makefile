@@ -172,7 +172,7 @@ smoke: install
 	$(PYTHON) bin/ascii_check.py --check
 	$(MAKE) registry-verify-markdown-owner
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_python_core_algorithms_pyo3.py
-	cargo run -p gororoba_cli --bin claims-verify -- --check providers
+	cargo run -p gororoba_cli_data --bin claims-verify -- --check providers
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
 	$(MAKE) verify-pantheon-physicsforge-mapping
@@ -705,20 +705,20 @@ doctor: install
 	$(PYTHON) bin/doctor.py
 
 provenance: install
-	cargo run --release -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-	cargo run --release -p gororoba_cli --bin data-origin-audit -- --out reports/data_origin_audit_$$(date +%F).toml --fail-on-strict-unknown
+	cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+	cargo run --release -p gororoba_cli_data --bin data-origin-audit -- --out reports/data_origin_audit_$$(date +%F).toml --fail-on-strict-unknown
 
 provenance-audit: install
-	cargo run --release -p gororoba_cli --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true
+	cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true
 
 external-redownload-audit: install
-	cargo run --release -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_$$(date +%F).toml --backend-order wget,curl,fetch
+	cargo run --release -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_$$(date +%F).toml --backend-order wget,curl,fetch
 
 semantic-data-validate: install
-	cargo run --release -p gororoba_cli --bin data-semantic-validate -- --out reports/data_semantic_validate_$$(date +%F).toml
+	cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --out reports/data_semantic_validate_$$(date +%F).toml
 
 semantic-data-validate-strict: install
-	cargo run --release -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true --out reports/data_semantic_validate_$$(date +%F)_strict.toml
+	cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true --out reports/data_semantic_validate_$$(date +%F)_strict.toml
 
 patch-pyfilesystem2: install
 	$(PYTHON) bin/patch_pyfilesystem_pkg_resources.py
@@ -749,12 +749,12 @@ artifacts-m3: install
 	PYTHONWARNINGS=error $(PYTHON) src/export_m3_table.py
 
 artifacts-motifs:
-	cargo run -p gororoba_cli --bin motif-census --release -j$$(nproc) -- --dims 16,32 --details
+	cargo run -p gororoba_cli_algebra --bin motif-census --release -j$$(nproc) -- --dims 16,32 --details
 	PYTHONWARNINGS=error $(PYTHON) src/vis_cd_motif_summary.py
 
 artifacts-motifs-big:
-	cargo run -p gororoba_cli --bin motif-census --release -j$$(nproc) -- --dims 16,32,64,128 --summary-only
-	cargo run -p gororoba_cli --bin motif-census --release -j$$(nproc) -- --dims 256 --max-nodes 5000 --seed 0 --summary-only
+	cargo run -p gororoba_cli_algebra --bin motif-census --release -j$$(nproc) -- --dims 16,32,64,128 --summary-only
+	cargo run -p gororoba_cli_algebra --bin motif-census --release -j$$(nproc) -- --dims 256 --max-nodes 5000 --seed 0 --summary-only
 	PYTHONWARNINGS=error $(PYTHON) src/vis_cd_motif_summary.py
 
 # ---- Data fetching ----
@@ -764,17 +764,17 @@ artifacts-motifs-big:
 
 fetch-data: install
 	@echo "Fetching external datasets..."
-	cargo run --release -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+	cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
 	@echo "Refreshing external provenance and source governance..."
-	cargo run --release -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-	cargo run --release -p gororoba_cli --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
+	cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+	cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
 
 fetch-data-redownload: install
 	@echo "Force re-downloading external datasets from origin fetchers..."
-	cargo run --release -p gororoba_cli --bin fetch-datasets -- --all --skip-existing false --output-dir data/external
+	cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing false --output-dir data/external
 	@echo "Refreshing external provenance and source governance..."
-	cargo run --release -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-	cargo run --release -p gororoba_cli --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
+	cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+	cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
 
 # ---- Simulation runs ----
 
@@ -845,7 +845,7 @@ cpp-clean:
 # ---- Cleanup ----
 
 clean-artifacts:
-	cargo run --release -p gororoba_cli --bin data-clean -- --scope reproducible --apply
+	cargo run --release -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply
 	@echo "Done. Regenerate and verify with cargo-native data governance commands."
 
 clean:
@@ -943,8 +943,8 @@ help:
 	@echo "    make external-redownload-audit  Run external source coverage/re-download audit (wget->curl->fetch)"
 	@echo "    make semantic-data-validate Run lane semantic validators from registry/data_semantic_validators.toml"
 	@echo "    make semantic-data-validate-strict Fail on any semantic unverifiable status"
-	@echo "    cargo run -p gororoba_cli --bin data-governance-gate --     Run fail-closed data governance gate"
-	@echo "    cargo run -p gororoba_cli --bin data-clean -- --scope reproducible --apply  Rust-native reproducible-data cleanup"
+	@echo "    cargo run -p gororoba_cli_data --bin data-governance-gate --     Run fail-closed data governance gate"
+	@echo "    cargo run -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply  Rust-native reproducible-data cleanup"
 	@echo ""
 	@echo "  Verification:"
 	@echo "    make verify               Verify artifact schemas"

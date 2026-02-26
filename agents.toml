@@ -1,6 +1,6 @@
 schema = "open_gororoba.agents.v2"
 source_of_truth = true
-updated_on = "2026-02-17"
+updated_on = "2026-02-25"
 
 [rust_native_policy_top]
 enforced = true
@@ -33,8 +33,8 @@ step_3 = "Reuse one built binary set for follow-on runs."
 name = "open_gororoba"
 kind = "computational_physics_research_platform"
 summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, and cosmological observables."
-workspace_crates = 27
-cli_binaries = 139
+workspace_crates = 30
+cli_binaries = 155
 registry_model = "toml_first"
 
 [[shared.path]]
@@ -107,47 +107,47 @@ purpose = "launch gororoba studio via Cargo entrypoint"
 
 [[shared.command]]
 id = "rust.warp.precision_matrix"
-cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-precision-matrix -- <duration_s> <trace_stride> <sizes_csv> <precisions_csv> <out_dir>"
+cmd = "cargo run -p gororoba_cli_warp --features \"gpu,hdf5-export\" --bin warp-precision-matrix -- <duration_s> <trace_stride> <sizes_csv> <precisions_csv> <out_dir>"
 purpose = "Rust-native precision matrix with mandatory rho finite/quality gate"
 
 [[shared.command]]
 id = "rust.warp.precision_suite"
-cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-precision-suite -- <bench|matrix> ..."
+cmd = "cargo run -p gororoba_cli_warp --features \"gpu,hdf5-export\" --bin warp-precision-suite -- <bench|matrix> ..."
 purpose = "Unified Rust-native precision suite entrypoint that subsumes single-case bench and matrix sweep workflows"
 
 [[shared.command]]
 id = "rust.warp.gpu_smoke"
-cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-gpu-smoke -- <duration_s> <trace_stride> <out_dir>"
+cmd = "cargo run -p gororoba_cli_warp --features \"gpu,hdf5-export\" --bin warp-gpu-smoke -- <duration_s> <trace_stride> <out_dir>"
 purpose = "Rust-native short GPU smoke gate (8^3 and 16^3, FP32 and BF16)"
 
 [[shared.command]]
 id = "rust.warp.production_suite"
-cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-production-suite -- <duration_128_s> <duration_256_s> <trace_stride> <precision> <run_fp32_reference_0_or_1> [telemetry_csv_path_optional]"
+cmd = "cargo run -p gororoba_cli_warp --features \"gpu,hdf5-export\" --bin warp-production-suite -- <duration_128_s> <duration_256_s> <trace_stride> <precision> <run_fp32_reference_0_or_1> [telemetry_csv_path_optional]"
 purpose = "Rust-native staged production acceptance lane (128^3 and 256^3) with per-step timing TOML and optional GPU telemetry CSV emission"
 
 [[shared.command]]
 id = "rust.warp.rho_trace_gate"
-cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin rho-trace-gate -- <h5_path_or_glob> [more_paths_or_globs]"
+cmd = "cargo run -p gororoba_cli_data --features \"hdf5-export\" --bin rho-trace-gate -- <h5_path_or_glob> [more_paths_or_globs]"
 purpose = "Rust-native wildcard artifact gate for /simulation/trace/rho_mean (replaces h5dump loops)"
 
 [[shared.command]]
 id = "rust.warp.simulation_trace_gate"
-cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin simulation-trace-gate -- <h5_path_or_glob> [more_paths_or_globs]"
+cmd = "cargo run -p gororoba_cli_data --features \"hdf5-export\" --bin simulation-trace-gate -- <h5_path_or_glob> [more_paths_or_globs]"
 purpose = "Rust-native strict trace gate for /simulation/trace/{time,rho_mean,enstrophy,algebra_norm}"
 
 [[shared.command]]
 id = "rust.warp.hdf5_numeric_gate"
-cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin hdf5-numeric-gate -- <h5_path_or_glob> [more_paths_or_globs]"
+cmd = "cargo run -p gororoba_cli_data --features \"hdf5-export\" --bin hdf5-numeric-gate -- <h5_path_or_glob> [more_paths_or_globs]"
 purpose = "Rust-native recursive gate across all HDF5 datasets; fails on numeric NaN/Inf and unsupported numeric layouts"
 
 [[shared.command]]
 id = "rust.warp.acceptance_gate"
-cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-acceptance-gate -- <h5_path_or_glob> [more_paths_or_globs]"
+cmd = "cargo run -p gororoba_cli_warp --features \"gpu,hdf5-export\" --bin warp-acceptance-gate -- <h5_path_or_glob> [more_paths_or_globs]"
 purpose = "Default fail-closed artifact acceptance command that chains strict simulation-trace checks and recursive numeric HDF5 checks"
 
 [[shared.command]]
 id = "rust.warp.ring_3d"
-cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-ring-3d --"
+cmd = "cargo run -p gororoba_cli_warp --features \"gpu,hdf5-export\" --bin warp-ring-3d --"
 purpose = "full 3D warp ring path with fail-closed rho quality gate"
 
 [[shared.command]]
@@ -187,7 +187,7 @@ crates = ["vacuum_frustration", "lattice_filtration", "neural_homotopy", "lbm_3d
 order = 4
 name = "orchestration"
 description = "Execution surface and integration boundaries."
-crates = ["gororoba_engine", "gororoba_cli", "gororoba_py", "gororoba_contracts"]
+crates = ["gororoba_pipeline", "gororoba_gpu_bridge", "gororoba_engine", "gororoba_cli", "gororoba_py", "gororoba_contracts"]
 
 [[shared.four_thesis_pipeline]]
 order = 1
@@ -221,7 +221,7 @@ phi2 = "streaming_or_execution"
 [shared.registry]
 source_of_truth = "registry/*.toml"
 generated_mirror = "docs/*.md"
-mirror_command = "cargo run -p gororoba_cli --bin registry-emit --"
+mirror_command = "cargo run -p gororoba_cli_data --bin registry-emit --"
 do_not_edit_generated_markdown = true
 schema_signature_file = "registry/schema_signatures.toml"
 schema_hash_count = 22

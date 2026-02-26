@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 32
-edge_count = 193
+lineage_count = 77
+edge_count = 402
 
 [[lineage]]
 id = "XL-001"
@@ -500,6 +500,697 @@ input_path_refs = []
 output_path_refs = ["data/kubo_transport/coupling_analysis.toml"]
 dataset_refs = []
 replay_steps = ["Confirm required input paths are available.", "cargo run --release --features gpu --bin kubo-coupling-analysis", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-033"
+experiment_id = "E-035"
+binary = "warp-gpu-experiment"
+deterministic = false
+seed = 42
+gpu = true
+run_command = "bash run_reynolds_sweep.sh"
+run_command_sha256 = "6249447c54d606eeb1d8cbd329459e8f5c94da992a3447b5adf25a103eb4aafd"
+claim_refs = ["C-682"]
+input_path_refs = []
+output_path_refs = ["data/csv/warp_experiment_c_topology_{N}.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "bash run_reynolds_sweep.sh", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-034"
+experiment_id = "E-036"
+binary = "spin-decoherence-pipeline"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin spin-decoherence-pipeline"
+run_command_sha256 = "92231e386694f4af364c123f4313b854dda77e723af5b0f1b517d8db08aef1fe"
+claim_refs = []
+input_path_refs = ["data/external/lhc_2025/"]
+output_path_refs = ["data/evidence/spin_decoherence.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin spin-decoherence-pipeline", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-035"
+experiment_id = "E-037"
+binary = "amplitude-frustration-survey"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin amplitude-frustration-survey"
+run_command_sha256 = "1b6176592de29440dc2aaeb7f93821bb36354f164a030785ec1451f581571a03"
+claim_refs = ["C-776", "C-777"]
+input_path_refs = []
+output_path_refs = ["data/evidence/amplitude_frustration.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin amplitude-frustration-survey", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-036"
+experiment_id = "E-038"
+binary = "lhc-2025-qgp-synthesis"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin lhc-2025-qgp-synthesis"
+run_command_sha256 = "afe3f8847be1435cb27a3dd07d3aab22064569248cab0d58bcd7f4c57e217a82"
+claim_refs = ["C-778", "C-779"]
+input_path_refs = ["data/external/lhc_2025/"]
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin lhc-2025-qgp-synthesis", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-037"
+experiment_id = "E-039"
+binary = "wavelet-bridging-sweep"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin wavelet-bridging-sweep"
+run_command_sha256 = "1c4c4787992ae019b3a2378cf2aa24de71eccf9a7bae4ddfc7487a75335f3cf5"
+claim_refs = ["C-703"]
+input_path_refs = []
+output_path_refs = ["data/wavelet_bridging/results.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin wavelet-bridging-sweep", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-038"
+experiment_id = "E-040"
+binary = "meltdown-gating-sweep"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin meltdown-gating-sweep"
+run_command_sha256 = "e475a82f7baa29ba2035fd2667689a6d3faae548ee4415804ce028e489a9c398"
+claim_refs = ["C-704"]
+input_path_refs = []
+output_path_refs = ["data/meltdown_gating/results.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin meltdown-gating-sweep", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-039"
+experiment_id = "E-041"
+binary = "wavelet-acf-calibration"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin wavelet-acf-calibration"
+run_command_sha256 = "742c98cbb538e39c4fb0efaff30f8745625be8a0cc62483c80c11dd3a2a0ef0f"
+claim_refs = ["C-705"]
+input_path_refs = []
+output_path_refs = ["data/wavelet_acf/results.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin wavelet-acf-calibration", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-040"
+experiment_id = "E-042"
+binary = "chsh-wavelet-compression"
+deterministic = false
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin chsh-wavelet-compression"
+run_command_sha256 = "0468f573c6382ef45679d4257782f91d2d4236c3c9777a55575484cc1ff1cc86"
+claim_refs = ["C-706"]
+input_path_refs = []
+output_path_refs = ["data/chsh_wavelet/results.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin chsh-wavelet-compression", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-041"
+experiment_id = "E-043"
+binary = "casimir-plate-compare"
+deterministic = true
+seed = 0
+gpu = false
+run_command = "cargo run --release --bin casimir-plate-compare"
+run_command_sha256 = "a144edffa694f6e0c75b75841fab3cf911efe9523b116c0fff469a62ffb9c5e7"
+claim_refs = ["C-738", "C-739"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin casimir-plate-compare", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-042"
+experiment_id = "E-044"
+binary = "casimir-drude-plasma"
+deterministic = true
+seed = 0
+gpu = false
+run_command = "cargo run --release --bin casimir-drude-plasma"
+run_command_sha256 = "a34a075c116c9fbd10f0b8e66f32f96f595e052d1ec50edf6b9debbe4e5d97a6"
+claim_refs = ["C-740", "C-741"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin casimir-drude-plasma", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-043"
+experiment_id = "E-045"
+binary = "wow-signal-analysis"
+deterministic = true
+seed = 0
+gpu = false
+run_command = "cargo run --release --bin wow-signal-analysis -- transcribe"
+run_command_sha256 = "725b7a4bd6883e49df8b601dc47fec0d657975287b38aff46bc53cecd295e65c"
+claim_refs = ["C-769"]
+input_path_refs = ["data/csv/wow1977_transcription.csv"]
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin wow-signal-analysis -- transcribe", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-044"
+experiment_id = "E-046"
+binary = "wow-signal-analysis"
+deterministic = true
+seed = 0
+gpu = false
+run_command = "cargo run --release --bin wow-signal-analysis -- drift-rate"
+run_command_sha256 = "8951480f28e09a376a4dde3f3913357fd21b55e5dd1cff41a940bfcd0dd262b9"
+claim_refs = ["C-770"]
+input_path_refs = []
+output_path_refs = ["data/csv/wow_drift_rate_bounds.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin wow-signal-analysis -- drift-rate", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-045"
+experiment_id = "E-047"
+binary = "wow-signal-analysis"
+deterministic = true
+seed = 0
+gpu = false
+run_command = "cargo run --release --bin wow-signal-analysis -- summary"
+run_command_sha256 = "41f18a206a3ce9213ae542304e98b0cc98cfe293757ea64aea5a8fa5bc407021"
+claim_refs = ["C-771"]
+input_path_refs = ["data/csv/bl_6equj5_gbt_manifest.csv"]
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin wow-signal-analysis -- summary", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-046"
+experiment_id = "E-048"
+binary = "wow-topology"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin wow-topology -- morphology"
+run_command_sha256 = "8de33a1f915694904daff806be4bb99bc30bdc848288bfa4dddc478f424f0c4c"
+claim_refs = ["C-772"]
+input_path_refs = ["data/csv/bl_6equj5_gbt_manifest.csv"]
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin wow-topology -- morphology", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-047"
+experiment_id = "E-049"
+binary = "wow-topology"
+deterministic = true
+seed = 42
+gpu = false
+run_command = "cargo run --release --bin wow-topology -- ultrametric"
+run_command_sha256 = "2f781862fb2153abec63e04621e8b00bf9e33982322477f4c35a713a006da343"
+claim_refs = ["C-773"]
+input_path_refs = ["data/csv/bl_6equj5_gbt_manifest.csv"]
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin wow-topology -- ultrametric", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-048"
+experiment_id = "E-050"
+binary = "bl-doppler-search"
+deterministic = false
+gpu = false
+run_command = "cargo run --release --bin bl-doppler-search --features hdf5-export -- scan --res 0002 && cargo run --release --bin bl-doppler-search -- cadence && cargo run --release --bin bl-doppler-search -- export"
+run_command_sha256 = "069f7f672baea2689156b53529b4dbaa9f518abc5f22d6d4d348164220a78100"
+claim_refs = ["C-771", "C-772", "C-773"]
+input_path_refs = ["data/bl_6equj5_gbt/"]
+output_path_refs = ["data/csv/bl_6equj5_doppler_results.csv", "data/csv/bl_6equj5_cadence_events.csv", "registry/bl_6equj5_analysis.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin bl-doppler-search --features hdf5-export -- scan --res 0002 && cargo run --release --bin bl-doppler-search -- cadence && cargo run --release --bin bl-doppler-search -- export", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-049"
+experiment_id = "E-051"
+binary = "zd-resonance-sweep"
+deterministic = false
+gpu = true
+run_command = "cargo run --release --bin zd-resonance-sweep -- sweep && cargo run --release --bin zd-resonance-sweep -- control && cargo run --release --bin zd-resonance-sweep -- analyze"
+run_command_sha256 = "44ce935dbbee27305d68d352efc1362f9e3b8862e3afd8b759ffd8f9b4e7331c"
+claim_refs = ["C-792"]
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_sweep.csv", "data/csv/zd_resonance_control.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin zd-resonance-sweep -- sweep && cargo run --release --bin zd-resonance-sweep -- control && cargo run --release --bin zd-resonance-sweep -- analyze", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-050"
+experiment_id = "E-052"
+binary = "pathion-sink-test"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin pathion-sink-test -- compare && cargo run --release --bin pathion-sink-test -- sweep"
+run_command_sha256 = "10a0fa386cf1b6846923a09a5115d99370ade9554061fd826e267dfee91018c4"
+claim_refs = ["C-794"]
+input_path_refs = []
+output_path_refs = ["data/csv/pathion_sink_compare.csv", "data/csv/pathion_coupling_sweep.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin pathion-sink-test -- compare && cargo run --release --bin pathion-sink-test -- sweep", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-051"
+experiment_id = "E-053"
+binary = "chirality-lock-test"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin chirality-lock-test -- matrix"
+run_command_sha256 = "2a248598fee6d18b36c87abc066866a5d585f9e18ad2b56d61fa0598179ef986"
+claim_refs = ["C-795"]
+input_path_refs = []
+output_path_refs = ["data/csv/chirality_matrix.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin chirality-lock-test -- matrix", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-052"
+experiment_id = "E-054"
+binary = "moonshine-filterbank"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin moonshine-filterbank -- synth"
+run_command_sha256 = "be02048c1860c5f5ca931fe39b67edd08b787c5fd8032b652905c65d4aa5d100"
+claim_refs = ["C-796"]
+input_path_refs = []
+output_path_refs = ["data/csv/moonshine_synth.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin moonshine-filterbank -- synth", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-053"
+experiment_id = "E-055"
+binary = "wow-sedenion-synthesis"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin wow-sedenion-synthesis -- synth"
+run_command_sha256 = "b6ca8589d64c5ed521162d33978a5a0854d38d153ce6f0c4d7700863d8422941"
+claim_refs = ["C-792", "C-796"]
+input_path_refs = []
+output_path_refs = ["data/csv/wow_sedenion_report.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin wow-sedenion-synthesis -- synth", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-054"
+experiment_id = "E-056"
+binary = "lattice-hawking-sweep"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin lattice-hawking-sweep"
+run_command_sha256 = "2e47cdabb59a77336cebabae7c3a250a5c37238f884a9c545b852fbb4bd0bee3"
+claim_refs = ["C-780"]
+input_path_refs = []
+output_path_refs = ["data/lattice_hawking/results.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin lattice-hawking-sweep", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-055"
+experiment_id = "E-057"
+binary = "algebra-entropy-census"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin algebra-entropy-census"
+run_command_sha256 = "e50c3416b5101108a7dbed12d5d9ed0b9538c4a27ded497298b83d1d44d991bf"
+claim_refs = ["C-781"]
+input_path_refs = []
+output_path_refs = ["data/algebra_entropy/results.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin algebra-entropy-census", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-056"
+experiment_id = "E-058"
+binary = "chsh-betti-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin chsh-betti-sweep"
+run_command_sha256 = "6e449062ba8cfedeb295a8d54ca0c4e24cb511df09417873733ac52fabb12dae"
+claim_refs = ["C-782"]
+input_path_refs = []
+output_path_refs = ["data/chsh_betti/results.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin chsh-betti-sweep", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-057"
+experiment_id = "E-059"
+binary = "meltdown-pulsed-gate"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin meltdown-pulsed-gate"
+run_command_sha256 = "b2367dc1cafc3d268b3e780bee304b9d49e723e155505324f385a9a06edce054"
+claim_refs = ["C-783"]
+input_path_refs = []
+output_path_refs = ["data/meltdown_pulsed/results.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin meltdown-pulsed-gate", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-058"
+experiment_id = "E-060"
+binary = "rho-ghost-fft"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin rho-ghost-fft -- <catalog>"
+run_command_sha256 = "dc6ff5698a7208c61922d42dcfd51a3e1d71f04e737add6baf41c81da9550785"
+claim_refs = ["C-784", "C-785", "C-786", "C-789"]
+input_path_refs = ["data/external/"]
+output_path_refs = ["data/csv/zd_resonance_real_distribution.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin rho-ghost-fft -- <catalog>", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-059"
+experiment_id = "E-061"
+binary = "rho-ghost-fft"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin rho-ghost-fft -- --catalog wow-gbt"
+run_command_sha256 = "13c585009fdc7495b0917df2f115306a3f9cb17b87d9f726d5c6d1a571b96c79"
+claim_refs = ["C-787"]
+input_path_refs = ["data/external/bl_6equj5/"]
+output_path_refs = ["data/csv/wow_followup_snr.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin rho-ghost-fft -- --catalog wow-gbt", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-060"
+experiment_id = "E-062"
+binary = "rho-ghost-fft"
+deterministic = true
+gpu = false
+run_command = "python src/scripts/analysis/cwt_ghost_analysis.py"
+run_command_sha256 = "4aa0ca93292facd2a02004ab82a0358bcb0f2bb7481e5be662b4931f9486f4b2"
+claim_refs = ["C-787", "C-790"]
+input_path_refs = ["data/csv/wow_followup_snr.csv", "data/external/swarm/"]
+output_path_refs = ["data/csv/cwt_ghost_validation.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "python src/scripts/analysis/cwt_ghost_analysis.py", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-061"
+experiment_id = "E-063"
+binary = "zd-resonance-cuda"
+deterministic = false
+gpu = true
+run_command = "cargo run --release --bin zd-resonance-cuda -- sweep --res 128 && cargo run --release --bin zd-resonance-cuda -- control --res 128"
+run_command_sha256 = "5022eb2ad2eb65f1d5fc7a84c6554f01f1733ff29f03554f84623cef2781dc93"
+claim_refs = ["C-792", "C-793"]
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin zd-resonance-cuda -- sweep --res 128 && cargo run --release --bin zd-resonance-cuda -- control --res 128", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-062"
+experiment_id = "E-064"
+binary = "zd-resonance-cuda"
+deterministic = false
+gpu = true
+run_command = "cargo run --release --bin zd-resonance-cuda -- sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance-cuda -- control --res 256 --steps 500"
+run_command_sha256 = "cca99064934b590880d1f685565bc5291697378bbfab4b09c538a79127a34a03"
+claim_refs = ["C-789", "C-792", "C-793"]
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin zd-resonance-cuda -- sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance-cuda -- control --res 256 --steps 500", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-063"
+experiment_id = "E-065"
+binary = "zd-resonance-cuda"
+deterministic = false
+gpu = true
+run_command = "cargo run --release --bin zd-resonance-cuda -- reynolds-sweep --res 128"
+run_command_sha256 = "87c7331df738fe89b8c537960d94fbbfb7ae87f025d2d0c0f3be9c5c195ad704"
+claim_refs = ["C-792"]
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_cuda_reynolds_128.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin zd-resonance-cuda -- reynolds-sweep --res 128", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-064"
+experiment_id = "E-066"
+binary = "zd-resonance-4d"
+deterministic = false
+gpu = true
+run_command = "cargo run --release --bin zd-resonance-4d -- sweep-32 && cargo run --release --bin zd-resonance-4d -- control --res 32"
+run_command_sha256 = "e5a0d6004cb90e9c83f66278b2fa1970a9059ddd3c362f2b0752a78f80559e0c"
+claim_refs = ["C-792", "C-793"]
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin zd-resonance-4d -- sweep-32 && cargo run --release --bin zd-resonance-4d -- control --res 32", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-065"
+experiment_id = "E-067"
+binary = "zd-resonance-4d"
+deterministic = false
+gpu = true
+run_command = "cargo run --release --bin zd-resonance-4d -- sweep-64"
+run_command_sha256 = "3f9078965171dde4575c1c5b75955c80321b8737a86ad4403a3b237c4c0cc733"
+claim_refs = ["C-792", "C-793"]
+input_path_refs = []
+output_path_refs = ["data/csv/zd_resonance_4d_64x16.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin zd-resonance-4d -- sweep-64", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-066"
+experiment_id = "E-068"
+binary = "ghost-spectral-audit"
+deterministic = false
+gpu = false
+run_command = "cargo run --release --bin rho-ghost-fft -- batch --datasets data/csv/ghost_audit/ --column value --permutations 1000 --bootstrap 5000"
+run_command_sha256 = "98dee81a3468c58d03415cbf60fc5c68775dbd1d2541e376eb313a7de1261fef"
+claim_refs = ["C-784", "C-785", "C-786", "C-789", "C-797", "C-798"]
+input_path_refs = ["data/csv/ghost_audit/"]
+output_path_refs = ["data/csv/ghost_audit/batch_results.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin rho-ghost-fft -- batch --datasets data/csv/ghost_audit/ --column value --permutations 1000 --bootstrap 5000", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-067"
+experiment_id = "E-069"
+binary = "lbm-precision-sampler"
+deterministic = true
+gpu = true
+run_command = "cargo run --bin lbm-precision-sampler -- sample --res 32 --steps 200"
+run_command_sha256 = "ae13e7992da8a708c4df7609fa94b1a62c4a3dd5d9ceda1c19b6db623ed3ddc0"
+claim_refs = ["C-799", "C-800"]
+input_path_refs = []
+output_path_refs = ["data/csv/precision_combined_16.csv", "data/csv/precision_combined_32.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --bin lbm-precision-sampler -- sample --res 32 --steps 200", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-068"
+experiment_id = "E-070"
+binary = "evidence-package"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin evidence-package -- bundle --skip-missing"
+run_command_sha256 = "563b0804e511ca82861978553cfffc230fde55fed7e559967bbce4f9edb42912"
+claim_refs = []
+input_path_refs = ["data/evidence/"]
+output_path_refs = ["data/evidence/MANIFEST.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin evidence-package -- bundle --skip-missing", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-069"
+experiment_id = "E-071"
+binary = "ghost-spectral-audit"
+deterministic = true
+gpu = false
+run_command = "ghost-spectral-audit single --dataset <csv> --column value --permutations 10000 --bootstrap 10000 --seed 42"
+run_command_sha256 = "7746dc16305b5a9723529c578344ec4498e7c28e3baa5d9800d1b862881abaab"
+claim_refs = ["C-805"]
+input_path_refs = ["data/external/chime_frb_cat2.csv", "data/external/atnf_pulsars.csv", "data/external/PantheonPlusSH0ES.dat"]
+output_path_refs = ["data/csv/ghost_audit/real_chime_dm.csv", "data/csv/ghost_audit/real_atnf_dm.csv", "data/csv/ghost_audit/real_atnf_period.csv", "data/csv/ghost_audit/real_pantheon_mu.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "ghost-spectral-audit single --dataset <csv> --column value --permutations 10000 --bootstrap 10000 --seed 42", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-070"
+experiment_id = "E-072"
+binary = "thesis-cross-tx2"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin thesis-cross-tx2 -- --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128"
+run_command_sha256 = "44879a5916e76e9365b3298669a12910a5b0aabd2a383f44db68ad8032988760"
+claim_refs = ["C-669"]
+input_path_refs = []
+output_path_refs = ["data/thesis_lab/tx2_128/tx2_report.toml"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin thesis-cross-tx2 -- --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-071"
+experiment_id = "E-073"
+binary = ""
+deterministic = true
+gpu = false
+run_command = "cargo test -p gr_core -- photon_graviton"
+run_command_sha256 = "5fc74129f034091323f94084bea52219059e4a0b533599a12f76d14d0152cb34"
+claim_refs = ["C-819", "C-820", "C-821", "C-822", "C-823"]
+input_path_refs = []
+output_path_refs = ["crates/gr_core/src/photon_graviton/"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p gr_core -- photon_graviton", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-072"
+experiment_id = "E-074"
+binary = "sfwm-figure-repro"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin sfwm-figure-repro -- --output-dir data/sfwm_repro"
+run_command_sha256 = "c68353120f05f6232ddc7bd4dd025ca69a176d00e1cba39d264733389ceb9cd2"
+claim_refs = ["C-832", "C-833", "C-834", "C-835", "C-836", "C-837", "C-838", "C-839"]
+input_path_refs = []
+output_path_refs = ["data/sfwm_repro/fig2a.csv", "data/sfwm_repro/fig2b.csv", "data/sfwm_repro/fig2c.csv", "data/sfwm_repro/fig2d.csv", "data/sfwm_repro/fig3a.csv", "data/sfwm_repro/fig3b.csv", "data/sfwm_repro/fig4a.csv", "data/sfwm_repro/fig4b.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin sfwm-figure-repro -- --output-dir data/sfwm_repro", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-073"
+experiment_id = "E-075"
+binary = "arleo-falmagne-scaling"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin arleo-falmagne-scaling -- full --data-dir data/external"
+run_command_sha256 = "63ec50ffc0743382d9090d8e3baeec4c6f22c26985a3d1c27cf27b8277f9ad92"
+claim_refs = ["C-840", "C-841", "C-842", "C-843", "C-844", "C-845", "C-846", "C-847"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin arleo-falmagne-scaling -- full --data-dir data/external", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-074"
+experiment_id = "E-076"
+binary = "fano-scattering"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin fano-scattering -- --figure all --output-dir data/fano_scattering"
+run_command_sha256 = "63734428b130b0972f7f2c03de9181f069816620638d4d0dc74acebbbda2c301"
+claim_refs = ["C-848", "C-849", "C-850", "C-851"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin fano-scattering -- --figure all --output-dir data/fano_scattering", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-075"
+experiment_id = "E-077"
+binary = "landy-absorber-tmm"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin landy-absorber-tmm"
+run_command_sha256 = "a874c510f1ee71d2304289f2c957e50e67d06a5d778e88e0a16708b5709a337d"
+claim_refs = ["C-853", "C-854", "C-855", "C-856"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin landy-absorber-tmm", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-076"
+experiment_id = "E-078"
+binary = ""
+deterministic = true
+gpu = false
+run_command = "cargo test -p vacuum_frustration --lib immirzi_bridge"
+run_command_sha256 = "d8c6644ad14740e1d7eac2a27ed1946c44e4e7b150300a8c208f8295135fec10"
+claim_refs = ["C-859", "C-860", "C-861"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p vacuum_frustration --lib immirzi_bridge", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-077"
+experiment_id = "E-079"
+binary = "sterile-neutrino-audit"
+deterministic = true
+seed = 0
+gpu = false
+run_command = "cargo run --release --bin sterile-neutrino-audit -- --output reports/sterile_neutrino_audit.toml"
+run_command_sha256 = "3412d412cd58c3f5712575875ecae09c7cd3726c40aaabed29f8cc2b3a14fbef"
+claim_refs = ["C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin sterile-neutrino-audit -- --output reports/sterile_neutrino_audit.toml", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -2237,5 +2928,1886 @@ from_id = "E-034"
 to_ref = "data/kubo_transport/coupling_analysis.toml"
 to_kind = "path"
 edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00194"
+lineage_id = "XL-033"
+from_id = "E-035"
+to_ref = "warp-gpu-experiment"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00195"
+lineage_id = "XL-033"
+from_id = "E-035"
+to_ref = "C-682"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00196"
+lineage_id = "XL-033"
+from_id = "E-035"
+to_ref = "data/csv/warp_experiment_c_topology_{N}.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00197"
+lineage_id = "XL-034"
+from_id = "E-036"
+to_ref = "spin-decoherence-pipeline"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00198"
+lineage_id = "XL-034"
+from_id = "E-036"
+to_ref = "data/external/lhc_2025/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00199"
+lineage_id = "XL-034"
+from_id = "E-036"
+to_ref = "data/evidence/spin_decoherence.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00200"
+lineage_id = "XL-035"
+from_id = "E-037"
+to_ref = "amplitude-frustration-survey"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00201"
+lineage_id = "XL-035"
+from_id = "E-037"
+to_ref = "C-776"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00202"
+lineage_id = "XL-035"
+from_id = "E-037"
+to_ref = "C-777"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00203"
+lineage_id = "XL-035"
+from_id = "E-037"
+to_ref = "data/evidence/amplitude_frustration.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00204"
+lineage_id = "XL-036"
+from_id = "E-038"
+to_ref = "lhc-2025-qgp-synthesis"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00205"
+lineage_id = "XL-036"
+from_id = "E-038"
+to_ref = "C-778"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00206"
+lineage_id = "XL-036"
+from_id = "E-038"
+to_ref = "C-779"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00207"
+lineage_id = "XL-036"
+from_id = "E-038"
+to_ref = "data/external/lhc_2025/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00208"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "wavelet-bridging-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00209"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "C-703"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00210"
+lineage_id = "XL-037"
+from_id = "E-039"
+to_ref = "data/wavelet_bridging/results.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00211"
+lineage_id = "XL-038"
+from_id = "E-040"
+to_ref = "meltdown-gating-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00212"
+lineage_id = "XL-038"
+from_id = "E-040"
+to_ref = "C-704"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00213"
+lineage_id = "XL-038"
+from_id = "E-040"
+to_ref = "data/meltdown_gating/results.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00214"
+lineage_id = "XL-039"
+from_id = "E-041"
+to_ref = "wavelet-acf-calibration"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00215"
+lineage_id = "XL-039"
+from_id = "E-041"
+to_ref = "C-705"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00216"
+lineage_id = "XL-039"
+from_id = "E-041"
+to_ref = "data/wavelet_acf/results.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00217"
+lineage_id = "XL-040"
+from_id = "E-042"
+to_ref = "chsh-wavelet-compression"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00218"
+lineage_id = "XL-040"
+from_id = "E-042"
+to_ref = "C-706"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00219"
+lineage_id = "XL-040"
+from_id = "E-042"
+to_ref = "data/chsh_wavelet/results.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00220"
+lineage_id = "XL-041"
+from_id = "E-043"
+to_ref = "casimir-plate-compare"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00221"
+lineage_id = "XL-041"
+from_id = "E-043"
+to_ref = "C-738"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00222"
+lineage_id = "XL-041"
+from_id = "E-043"
+to_ref = "C-739"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00223"
+lineage_id = "XL-042"
+from_id = "E-044"
+to_ref = "casimir-drude-plasma"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00224"
+lineage_id = "XL-042"
+from_id = "E-044"
+to_ref = "C-740"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00225"
+lineage_id = "XL-042"
+from_id = "E-044"
+to_ref = "C-741"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00226"
+lineage_id = "XL-043"
+from_id = "E-045"
+to_ref = "wow-signal-analysis"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00227"
+lineage_id = "XL-043"
+from_id = "E-045"
+to_ref = "C-769"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00228"
+lineage_id = "XL-043"
+from_id = "E-045"
+to_ref = "data/csv/wow1977_transcription.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00229"
+lineage_id = "XL-044"
+from_id = "E-046"
+to_ref = "wow-signal-analysis"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00230"
+lineage_id = "XL-044"
+from_id = "E-046"
+to_ref = "C-770"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00231"
+lineage_id = "XL-044"
+from_id = "E-046"
+to_ref = "data/csv/wow_drift_rate_bounds.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00232"
+lineage_id = "XL-045"
+from_id = "E-047"
+to_ref = "wow-signal-analysis"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00233"
+lineage_id = "XL-045"
+from_id = "E-047"
+to_ref = "C-771"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00234"
+lineage_id = "XL-045"
+from_id = "E-047"
+to_ref = "data/csv/bl_6equj5_gbt_manifest.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00235"
+lineage_id = "XL-046"
+from_id = "E-048"
+to_ref = "wow-topology"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00236"
+lineage_id = "XL-046"
+from_id = "E-048"
+to_ref = "C-772"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00237"
+lineage_id = "XL-046"
+from_id = "E-048"
+to_ref = "data/csv/bl_6equj5_gbt_manifest.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00238"
+lineage_id = "XL-047"
+from_id = "E-049"
+to_ref = "wow-topology"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00239"
+lineage_id = "XL-047"
+from_id = "E-049"
+to_ref = "C-773"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00240"
+lineage_id = "XL-047"
+from_id = "E-049"
+to_ref = "data/csv/bl_6equj5_gbt_manifest.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00241"
+lineage_id = "XL-048"
+from_id = "E-050"
+to_ref = "bl-doppler-search"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00242"
+lineage_id = "XL-048"
+from_id = "E-050"
+to_ref = "C-771"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00243"
+lineage_id = "XL-048"
+from_id = "E-050"
+to_ref = "C-772"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00244"
+lineage_id = "XL-048"
+from_id = "E-050"
+to_ref = "C-773"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00245"
+lineage_id = "XL-048"
+from_id = "E-050"
+to_ref = "data/bl_6equj5_gbt/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00246"
+lineage_id = "XL-048"
+from_id = "E-050"
+to_ref = "data/csv/bl_6equj5_doppler_results.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00247"
+lineage_id = "XL-048"
+from_id = "E-050"
+to_ref = "data/csv/bl_6equj5_cadence_events.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00248"
+lineage_id = "XL-048"
+from_id = "E-050"
+to_ref = "registry/bl_6equj5_analysis.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00249"
+lineage_id = "XL-049"
+from_id = "E-051"
+to_ref = "zd-resonance-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00250"
+lineage_id = "XL-049"
+from_id = "E-051"
+to_ref = "C-792"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00251"
+lineage_id = "XL-049"
+from_id = "E-051"
+to_ref = "data/csv/zd_resonance_sweep.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00252"
+lineage_id = "XL-049"
+from_id = "E-051"
+to_ref = "data/csv/zd_resonance_control.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00253"
+lineage_id = "XL-050"
+from_id = "E-052"
+to_ref = "pathion-sink-test"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00254"
+lineage_id = "XL-050"
+from_id = "E-052"
+to_ref = "C-794"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00255"
+lineage_id = "XL-050"
+from_id = "E-052"
+to_ref = "data/csv/pathion_sink_compare.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00256"
+lineage_id = "XL-050"
+from_id = "E-052"
+to_ref = "data/csv/pathion_coupling_sweep.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00257"
+lineage_id = "XL-051"
+from_id = "E-053"
+to_ref = "chirality-lock-test"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00258"
+lineage_id = "XL-051"
+from_id = "E-053"
+to_ref = "C-795"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00259"
+lineage_id = "XL-051"
+from_id = "E-053"
+to_ref = "data/csv/chirality_matrix.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00260"
+lineage_id = "XL-052"
+from_id = "E-054"
+to_ref = "moonshine-filterbank"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00261"
+lineage_id = "XL-052"
+from_id = "E-054"
+to_ref = "C-796"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00262"
+lineage_id = "XL-052"
+from_id = "E-054"
+to_ref = "data/csv/moonshine_synth.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00263"
+lineage_id = "XL-053"
+from_id = "E-055"
+to_ref = "wow-sedenion-synthesis"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00264"
+lineage_id = "XL-053"
+from_id = "E-055"
+to_ref = "C-792"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00265"
+lineage_id = "XL-053"
+from_id = "E-055"
+to_ref = "C-796"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00266"
+lineage_id = "XL-053"
+from_id = "E-055"
+to_ref = "data/csv/wow_sedenion_report.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00267"
+lineage_id = "XL-054"
+from_id = "E-056"
+to_ref = "lattice-hawking-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00268"
+lineage_id = "XL-054"
+from_id = "E-056"
+to_ref = "C-780"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00269"
+lineage_id = "XL-054"
+from_id = "E-056"
+to_ref = "data/lattice_hawking/results.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00270"
+lineage_id = "XL-055"
+from_id = "E-057"
+to_ref = "algebra-entropy-census"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00271"
+lineage_id = "XL-055"
+from_id = "E-057"
+to_ref = "C-781"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00272"
+lineage_id = "XL-055"
+from_id = "E-057"
+to_ref = "data/algebra_entropy/results.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00273"
+lineage_id = "XL-056"
+from_id = "E-058"
+to_ref = "chsh-betti-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00274"
+lineage_id = "XL-056"
+from_id = "E-058"
+to_ref = "C-782"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00275"
+lineage_id = "XL-056"
+from_id = "E-058"
+to_ref = "data/chsh_betti/results.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00276"
+lineage_id = "XL-057"
+from_id = "E-059"
+to_ref = "meltdown-pulsed-gate"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00277"
+lineage_id = "XL-057"
+from_id = "E-059"
+to_ref = "C-783"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00278"
+lineage_id = "XL-057"
+from_id = "E-059"
+to_ref = "data/meltdown_pulsed/results.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00279"
+lineage_id = "XL-058"
+from_id = "E-060"
+to_ref = "rho-ghost-fft"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00280"
+lineage_id = "XL-058"
+from_id = "E-060"
+to_ref = "C-784"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00281"
+lineage_id = "XL-058"
+from_id = "E-060"
+to_ref = "C-785"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00282"
+lineage_id = "XL-058"
+from_id = "E-060"
+to_ref = "C-786"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00283"
+lineage_id = "XL-058"
+from_id = "E-060"
+to_ref = "C-789"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00284"
+lineage_id = "XL-058"
+from_id = "E-060"
+to_ref = "data/external/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00285"
+lineage_id = "XL-058"
+from_id = "E-060"
+to_ref = "data/csv/zd_resonance_real_distribution.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00286"
+lineage_id = "XL-059"
+from_id = "E-061"
+to_ref = "rho-ghost-fft"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00287"
+lineage_id = "XL-059"
+from_id = "E-061"
+to_ref = "C-787"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00288"
+lineage_id = "XL-059"
+from_id = "E-061"
+to_ref = "data/external/bl_6equj5/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00289"
+lineage_id = "XL-059"
+from_id = "E-061"
+to_ref = "data/csv/wow_followup_snr.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00290"
+lineage_id = "XL-060"
+from_id = "E-062"
+to_ref = "rho-ghost-fft"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00291"
+lineage_id = "XL-060"
+from_id = "E-062"
+to_ref = "C-787"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00292"
+lineage_id = "XL-060"
+from_id = "E-062"
+to_ref = "C-790"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00293"
+lineage_id = "XL-060"
+from_id = "E-062"
+to_ref = "data/csv/wow_followup_snr.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00294"
+lineage_id = "XL-060"
+from_id = "E-062"
+to_ref = "data/external/swarm/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00295"
+lineage_id = "XL-060"
+from_id = "E-062"
+to_ref = "data/csv/cwt_ghost_validation.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00296"
+lineage_id = "XL-061"
+from_id = "E-063"
+to_ref = "zd-resonance-cuda"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00297"
+lineage_id = "XL-061"
+from_id = "E-063"
+to_ref = "C-792"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00298"
+lineage_id = "XL-061"
+from_id = "E-063"
+to_ref = "C-793"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00299"
+lineage_id = "XL-061"
+from_id = "E-063"
+to_ref = "data/csv/zd_resonance_cuda_128_bf16.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00300"
+lineage_id = "XL-061"
+from_id = "E-063"
+to_ref = "data/csv/zd_resonance_cuda_control_128.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00301"
+lineage_id = "XL-062"
+from_id = "E-064"
+to_ref = "zd-resonance-cuda"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00302"
+lineage_id = "XL-062"
+from_id = "E-064"
+to_ref = "C-789"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00303"
+lineage_id = "XL-062"
+from_id = "E-064"
+to_ref = "C-792"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00304"
+lineage_id = "XL-062"
+from_id = "E-064"
+to_ref = "C-793"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00305"
+lineage_id = "XL-062"
+from_id = "E-064"
+to_ref = "data/csv/zd_resonance_cuda_256_bf16.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00306"
+lineage_id = "XL-062"
+from_id = "E-064"
+to_ref = "data/csv/zd_resonance_cuda_control_256.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00307"
+lineage_id = "XL-063"
+from_id = "E-065"
+to_ref = "zd-resonance-cuda"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00308"
+lineage_id = "XL-063"
+from_id = "E-065"
+to_ref = "C-792"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00309"
+lineage_id = "XL-063"
+from_id = "E-065"
+to_ref = "data/csv/zd_resonance_cuda_reynolds_128.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00310"
+lineage_id = "XL-064"
+from_id = "E-066"
+to_ref = "zd-resonance-4d"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00311"
+lineage_id = "XL-064"
+from_id = "E-066"
+to_ref = "C-792"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00312"
+lineage_id = "XL-064"
+from_id = "E-066"
+to_ref = "C-793"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00313"
+lineage_id = "XL-064"
+from_id = "E-066"
+to_ref = "data/csv/zd_resonance_4d_32x32.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00314"
+lineage_id = "XL-064"
+from_id = "E-066"
+to_ref = "data/csv/zd_resonance_4d_control_32x32.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00315"
+lineage_id = "XL-065"
+from_id = "E-067"
+to_ref = "zd-resonance-4d"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00316"
+lineage_id = "XL-065"
+from_id = "E-067"
+to_ref = "C-792"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00317"
+lineage_id = "XL-065"
+from_id = "E-067"
+to_ref = "C-793"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00318"
+lineage_id = "XL-065"
+from_id = "E-067"
+to_ref = "data/csv/zd_resonance_4d_64x16.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00319"
+lineage_id = "XL-066"
+from_id = "E-068"
+to_ref = "ghost-spectral-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00320"
+lineage_id = "XL-066"
+from_id = "E-068"
+to_ref = "C-784"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00321"
+lineage_id = "XL-066"
+from_id = "E-068"
+to_ref = "C-785"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00322"
+lineage_id = "XL-066"
+from_id = "E-068"
+to_ref = "C-786"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00323"
+lineage_id = "XL-066"
+from_id = "E-068"
+to_ref = "C-789"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00324"
+lineage_id = "XL-066"
+from_id = "E-068"
+to_ref = "C-797"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00325"
+lineage_id = "XL-066"
+from_id = "E-068"
+to_ref = "C-798"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00326"
+lineage_id = "XL-066"
+from_id = "E-068"
+to_ref = "data/csv/ghost_audit/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00327"
+lineage_id = "XL-066"
+from_id = "E-068"
+to_ref = "data/csv/ghost_audit/batch_results.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00328"
+lineage_id = "XL-067"
+from_id = "E-069"
+to_ref = "lbm-precision-sampler"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00329"
+lineage_id = "XL-067"
+from_id = "E-069"
+to_ref = "C-799"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00330"
+lineage_id = "XL-067"
+from_id = "E-069"
+to_ref = "C-800"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00331"
+lineage_id = "XL-067"
+from_id = "E-069"
+to_ref = "data/csv/precision_combined_16.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00332"
+lineage_id = "XL-067"
+from_id = "E-069"
+to_ref = "data/csv/precision_combined_32.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00333"
+lineage_id = "XL-068"
+from_id = "E-070"
+to_ref = "evidence-package"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00334"
+lineage_id = "XL-068"
+from_id = "E-070"
+to_ref = "data/evidence/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00335"
+lineage_id = "XL-068"
+from_id = "E-070"
+to_ref = "data/evidence/MANIFEST.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00336"
+lineage_id = "XL-069"
+from_id = "E-071"
+to_ref = "ghost-spectral-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00337"
+lineage_id = "XL-069"
+from_id = "E-071"
+to_ref = "C-805"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00338"
+lineage_id = "XL-069"
+from_id = "E-071"
+to_ref = "data/external/chime_frb_cat2.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00339"
+lineage_id = "XL-069"
+from_id = "E-071"
+to_ref = "data/external/atnf_pulsars.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00340"
+lineage_id = "XL-069"
+from_id = "E-071"
+to_ref = "data/external/PantheonPlusSH0ES.dat"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00341"
+lineage_id = "XL-069"
+from_id = "E-071"
+to_ref = "data/csv/ghost_audit/real_chime_dm.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00342"
+lineage_id = "XL-069"
+from_id = "E-071"
+to_ref = "data/csv/ghost_audit/real_atnf_dm.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00343"
+lineage_id = "XL-069"
+from_id = "E-071"
+to_ref = "data/csv/ghost_audit/real_atnf_period.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00344"
+lineage_id = "XL-069"
+from_id = "E-071"
+to_ref = "data/csv/ghost_audit/real_pantheon_mu.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00345"
+lineage_id = "XL-070"
+from_id = "E-072"
+to_ref = "thesis-cross-tx2"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00346"
+lineage_id = "XL-070"
+from_id = "E-072"
+to_ref = "C-669"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00347"
+lineage_id = "XL-070"
+from_id = "E-072"
+to_ref = "data/thesis_lab/tx2_128/tx2_report.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00348"
+lineage_id = "XL-071"
+from_id = "E-073"
+to_ref = ""
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = false
+
+[[edge]]
+id = "XLE-00349"
+lineage_id = "XL-071"
+from_id = "E-073"
+to_ref = "C-819"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00350"
+lineage_id = "XL-071"
+from_id = "E-073"
+to_ref = "C-820"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00351"
+lineage_id = "XL-071"
+from_id = "E-073"
+to_ref = "C-821"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00352"
+lineage_id = "XL-071"
+from_id = "E-073"
+to_ref = "C-822"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00353"
+lineage_id = "XL-071"
+from_id = "E-073"
+to_ref = "C-823"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00354"
+lineage_id = "XL-071"
+from_id = "E-073"
+to_ref = "crates/gr_core/src/photon_graviton/"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00355"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "sfwm-figure-repro"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00356"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "C-832"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00357"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "C-833"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00358"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "C-834"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00359"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "C-835"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00360"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "C-836"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00361"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "C-837"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00362"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "C-838"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00363"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "C-839"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00364"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "data/sfwm_repro/fig2a.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00365"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "data/sfwm_repro/fig2b.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00366"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "data/sfwm_repro/fig2c.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00367"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "data/sfwm_repro/fig2d.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00368"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "data/sfwm_repro/fig3a.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00369"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "data/sfwm_repro/fig3b.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00370"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "data/sfwm_repro/fig4a.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00371"
+lineage_id = "XL-072"
+from_id = "E-074"
+to_ref = "data/sfwm_repro/fig4b.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00372"
+lineage_id = "XL-073"
+from_id = "E-075"
+to_ref = "arleo-falmagne-scaling"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00373"
+lineage_id = "XL-073"
+from_id = "E-075"
+to_ref = "C-840"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00374"
+lineage_id = "XL-073"
+from_id = "E-075"
+to_ref = "C-841"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00375"
+lineage_id = "XL-073"
+from_id = "E-075"
+to_ref = "C-842"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00376"
+lineage_id = "XL-073"
+from_id = "E-075"
+to_ref = "C-843"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00377"
+lineage_id = "XL-073"
+from_id = "E-075"
+to_ref = "C-844"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00378"
+lineage_id = "XL-073"
+from_id = "E-075"
+to_ref = "C-845"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00379"
+lineage_id = "XL-073"
+from_id = "E-075"
+to_ref = "C-846"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00380"
+lineage_id = "XL-073"
+from_id = "E-075"
+to_ref = "C-847"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00381"
+lineage_id = "XL-074"
+from_id = "E-076"
+to_ref = "fano-scattering"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00382"
+lineage_id = "XL-074"
+from_id = "E-076"
+to_ref = "C-848"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00383"
+lineage_id = "XL-074"
+from_id = "E-076"
+to_ref = "C-849"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00384"
+lineage_id = "XL-074"
+from_id = "E-076"
+to_ref = "C-850"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00385"
+lineage_id = "XL-074"
+from_id = "E-076"
+to_ref = "C-851"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00386"
+lineage_id = "XL-075"
+from_id = "E-077"
+to_ref = "landy-absorber-tmm"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00387"
+lineage_id = "XL-075"
+from_id = "E-077"
+to_ref = "C-853"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00388"
+lineage_id = "XL-075"
+from_id = "E-077"
+to_ref = "C-854"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00389"
+lineage_id = "XL-075"
+from_id = "E-077"
+to_ref = "C-855"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00390"
+lineage_id = "XL-075"
+from_id = "E-077"
+to_ref = "C-856"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00391"
+lineage_id = "XL-076"
+from_id = "E-078"
+to_ref = ""
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = false
+
+[[edge]]
+id = "XLE-00392"
+lineage_id = "XL-076"
+from_id = "E-078"
+to_ref = "C-859"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00393"
+lineage_id = "XL-076"
+from_id = "E-078"
+to_ref = "C-860"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00394"
+lineage_id = "XL-076"
+from_id = "E-078"
+to_ref = "C-861"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00395"
+lineage_id = "XL-077"
+from_id = "E-079"
+to_ref = "sterile-neutrino-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00396"
+lineage_id = "XL-077"
+from_id = "E-079"
+to_ref = "C-703"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00397"
+lineage_id = "XL-077"
+from_id = "E-079"
+to_ref = "C-704"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00398"
+lineage_id = "XL-077"
+from_id = "E-079"
+to_ref = "C-705"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00399"
+lineage_id = "XL-077"
+from_id = "E-079"
+to_ref = "C-706"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00400"
+lineage_id = "XL-077"
+from_id = "E-079"
+to_ref = "C-707"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00401"
+lineage_id = "XL-077"
+from_id = "E-079"
+to_ref = "C-708"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00402"
+lineage_id = "XL-077"
+from_id = "E-079"
+to_ref = "C-709"
+to_kind = "claim"
+edge_kind = "supports_claim"
 verified = true
 

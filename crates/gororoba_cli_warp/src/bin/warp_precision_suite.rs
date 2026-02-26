@@ -1,5 +1,5 @@
-mod warp_precision_suite_ops;
-mod warp_runner;
+use gororoba_cli_warp::warp_precision_suite_ops;
+use gororoba_cli_warp::warp_runner;
 
 use std::error::Error;
 use std::path::PathBuf;

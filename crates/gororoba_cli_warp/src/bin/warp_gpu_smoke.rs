@@ -1,4 +1,4 @@
-mod warp_runner;
+use gororoba_cli_warp::warp_runner;
 
 use lbm_3d_cuda::Precision;
 use std::error::Error;

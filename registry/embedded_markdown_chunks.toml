@@ -2172,7 +2172,7 @@ kind = "paragraph"
 line_start = 10
 line_end = 11
 heading_level = 0
-text_ascii = "**Script:** `crates/gororoba_cli/src/bin/warp_ring_integration.rs` **Artifacts:** `warp_ring_integration.png`"
+text_ascii = "**Script:** `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs` **Artifacts:** `warp_ring_integration.png`"
 text_sha256 = "aa843f42c82c5885b1a121e55bc14189efe03e1b206b4a961aed1e60faac6a92"
 
 [[chunk]]
@@ -14987,7 +14987,7 @@ kind = "table_row"
 line_start = 63
 line_end = 63
 heading_level = 0
-text_ascii = "C-010 | Falsifiable thesis: a ZD-graph metamaterial could function as a mode-selective \"holographic entropy trap,\" but disconnected ZD topology obstructs local connected-absorber realizations. | `docs/MATERIALS_APPLICATIONS.md`, `docs/THE_GEMINI_PROTOCOL.md`, `docs/GRAND_SYNTHESIS.md`, `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/materials_core/src/metamaterial.rs`, `crates/optics_core/src/tcmt.rs`, `crates/control_core/src/bridges/tcmt.rs`, `crates/gororoba_cli/src/bin/tcmt_sweep.rs`, `data/csv/cd_zd_absorber_mapping.csv`, `registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml`, `data/artifacts/images/absorber_pareto_3160x2820.png` | **Closed/Negative-Result** | 2026-02-10 | Structural mismatch remains decisive: ZD incidence graph has 7 disconnected K6 cliques, while practical absorber lattices are connected. In-repo absorber and optical-capture pipelines (including warp-ring analogue-gravity optics) have not produced a connected local mapping that reproduces ZD-predicted annihilation. The only viable forward path is explicit non-local coupling architecture with reproducible benchmark gains over connected baselines."
+text_ascii = "C-010 | Falsifiable thesis: a ZD-graph metamaterial could function as a mode-selective \"holographic entropy trap,\" but disconnected ZD topology obstructs local connected-absorber realizations. | `docs/MATERIALS_APPLICATIONS.md`, `docs/THE_GEMINI_PROTOCOL.md`, `docs/GRAND_SYNTHESIS.md`, `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/materials_core/src/metamaterial.rs`, `crates/optics_core/src/tcmt.rs`, `crates/control_core/src/bridges/tcmt.rs`, `crates/gororoba_cli_physics/src/bin/tcmt_sweep.rs`, `data/csv/cd_zd_absorber_mapping.csv`, `registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml`, `data/artifacts/images/absorber_pareto_3160x2820.png` | **Closed/Negative-Result** | 2026-02-10 | Structural mismatch remains decisive: ZD incidence graph has 7 disconnected K6 cliques, while practical absorber lattices are connected. In-repo absorber and optical-capture pipelines (including warp-ring analogue-gravity optics) have not produced a connected local mapping that reproduces ZD-predicted annihilation. The only viable forward path is explicit non-local coupling architecture with reproducible benchmark gains over connected baselines."
 text_sha256 = "193d7bd9702300ada59b0b01c3a206f122a56db7d5e597d587d5314b7119e09b"
 
 [[chunk]]
@@ -14998,7 +14998,7 @@ kind = "table_row"
 line_start = 64
 line_end = 64
 heading_level = 0
-text_ascii = "C-011 | Falsifiable thesis: anti-diffusion gravastar core pressure is phenomenologically matched to sedenion coherence-failure at `D_eff = -1.5`; a literal black-hole-to-sedenion-soliton interpretation remains unproven. | `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/GRAND_SYNTHESIS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, `crates/gororoba_cli/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `data/csv/gravastar_anisotropic_stability.csv`, `data/csv/gravastar_ligo_mass_sweep.csv`, `data/csv/gravastar_polytropic_sweep.csv`, `data/csv/gravastar_radial_stability.csv` | **Closed/Obstructed** | 2026-02-10 | Correspondence remains phenomenological; no derived GR stress-energy mapping. C-030 obstruction remains active (O(1) associator norms and parenthesization dependence). First-source gravastar references are already in bibliography, but simulator extension is currently stalled. Verification requires one explicit bypass model with TOV-consistent observables; refutation is proof no such bypass can satisfy physically admissible boundary conditions."
+text_ascii = "C-011 | Falsifiable thesis: anti-diffusion gravastar core pressure is phenomenologically matched to sedenion coherence-failure at `D_eff = -1.5`; a literal black-hole-to-sedenion-soliton interpretation remains unproven. | `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/GRAND_SYNTHESIS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `data/csv/gravastar_anisotropic_stability.csv`, `data/csv/gravastar_ligo_mass_sweep.csv`, `data/csv/gravastar_polytropic_sweep.csv`, `data/csv/gravastar_radial_stability.csv` | **Closed/Obstructed** | 2026-02-10 | Correspondence remains phenomenological; no derived GR stress-energy mapping. C-030 obstruction remains active (O(1) associator norms and parenthesization dependence). First-source gravastar references are already in bibliography, but simulator extension is currently stalled. Verification requires one explicit bypass model with TOV-consistent observables; refutation is proof no such bypass can satisfy physically admissible boundary conditions."
 text_sha256 = "ed6d4e224ad28483a6102469913b97e322fac90ab05af9b00c8c66ec0beee7d4"
 
 [[chunk]]
@@ -16989,7 +16989,7 @@ kind = "paragraph"
 line_start = 320
 line_end = 323
 heading_level = 0
-text_ascii = "`crates/materials_core/src/metamaterial.rs`, `crates/optics_core/src/tcmt.rs`, `crates/control_core/src/bridges/tcmt.rs`, `crates/gororoba_cli/src/bin/tcmt_sweep.rs`"
+text_ascii = "`crates/materials_core/src/metamaterial.rs`, `crates/optics_core/src/tcmt.rs`, `crates/control_core/src/bridges/tcmt.rs`, `crates/gororoba_cli_physics/src/bin/tcmt_sweep.rs`"
 text_sha256 = "fc1d3882705d110be464cd7508360c458bff0e695557b7bd3fde9a55158f37fb"
 
 [[chunk]]
@@ -17187,7 +17187,7 @@ kind = "paragraph"
 line_start = 346
 line_end = 349
 heading_level = 0
-text_ascii = "`crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, `crates/gororoba_cli/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`"
+text_ascii = "`crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`"
 text_sha256 = "e3f1f2d7328893017f3d8d6ebd60a8becd48471c7347defb032d2cb89ec4d022"
 
 [[chunk]]
@@ -83957,7 +83957,7 @@ kind = "paragraph"
 line_start = 53
 line_end = 61
 heading_level = 0
-text_ascii = "**Mechanism (hypothesis):** the anti-diffusion pressure proxy in the toy operator is phenomenologically matched to a non-associative coherence-failure term for a scalar field at $D_{eff} = -1.5$. This is not yet a derived GR stress-energy mapping. $$ P_{neg} \\approx -\\rho_{vac} $$ Current TOV and gravastar computation surfaces are `crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, and `crates/gororoba_cli/src/bin/gravastar_sweep.rs`; these do not establish the equivalence without a validated mapping and explicit bypass mechanism."
+text_ascii = "**Mechanism (hypothesis):** the anti-diffusion pressure proxy in the toy operator is phenomenologically matched to a non-associative coherence-failure term for a scalar field at $D_{eff} = -1.5$. This is not yet a derived GR stress-energy mapping. $$ P_{neg} \\approx -\\rho_{vac} $$ Current TOV and gravastar computation surfaces are `crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, and `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`; these do not establish the equivalence without a validated mapping and explicit bypass mechanism."
 text_sha256 = "c005debb8ce427ca327ad2cd36139cb8c95440044ad05c1ca2e593cb206e402f"
 
 [[chunk]]
@@ -110962,7 +110962,7 @@ kind = "list_item"
 line_start = 51
 line_end = 51
 heading_level = 0
-text_ascii = "**CLI**: `crates/gororoba_cli/src/bin/frb_ultrametric.rs`"
+text_ascii = "**CLI**: `crates/gororoba_cli_data/src/bin/frb_ultrametric.rs`"
 text_sha256 = "fb4ad01913393380ca6f2c56ecd091c6490cc7fcd479d339625fcd05a4902d00"
 
 [[chunk]]

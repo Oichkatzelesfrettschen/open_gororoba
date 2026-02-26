@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/bibliography.toml"
-entry_count = 190
-parse_warning_count = 50
+entry_count = 217
+parse_warning_count = 54
 
 [[entry]]
 id = "BIBN-0001"
@@ -415,14 +415,14 @@ author_count = 4
 publication_year = 1997
 title = "The unphysical nature of \"Warp Drive\""
 venue = "CQG 14, 1743-1751"
-arxiv_id = ""
-doi_list = []
-url_list = []
-document_type = "general_reference"
+arxiv_id = "gr-qc/9702026"
+doi_list = ["10.1088/0264-9381/14/7/015"]
+url_list = ["https://arxiv.org/abs/gr-qc/9702026"]
+document_type = "arxiv_preprint"
 evidence_relevance_score = 0
 claim_refs = []
 parse_warnings = []
-raw_citation = "**Pfenning, M. J., & Ford, L. H.** (1997). *The unphysical nature of \"Warp Drive\"*. CQG 14, 1743-1751."
+raw_citation = "**Pfenning, M. J., & Ford, L. H.** (1997). *The unphysical nature of \"Warp Drive\"*. CQG 14, 1743-1751. [arXiv:gr-qc/9702026](https://arxiv.org/abs/gr-qc/9702026)."
 raw_notes = ["*Quantum inequality constraints: 10c bubble requires ~ visible-universe energy.*"]
 source_line = 53
 
@@ -3476,10 +3476,10 @@ venue = "Journal of Algebra 129(2), 263-278"
 arxiv_id = ""
 doi_list = ["10.1016/0021-8693(90)90221-9"]
 url_list = ["https://doi.org/10.1016/0021-8693(90)90221-9", "https://linkinghub.elsevier.com/retrieve/pii/S0021869390902219", "https://www.sciencedirect.com/science/article/pii/0021869390902219"]
-document_type = "journal_article"
+document_type = "doi_reference"
 evidence_relevance_score = 0
 claim_refs = []
-parse_warnings = ["direct_pdf_gated_in_non_browser_fetch_2026_02_15"]
+parse_warnings = []
 raw_citation = "**Eakin, P. M., & Sathaye, A.** (1990). *On automorphisms and derivations of Cayley-Dickson algebras*. Journal of Algebra 129(2), 263-278."
 raw_notes = ["*Automorphism structure of Cayley-Dickson algebras beyond octonions.*", "*Canonical DOI/landing links are tracked; direct PDF endpoints remained gated in non-browser fetches as of 2026-02-15.*"]
 source_line = 349
@@ -4187,3 +4187,598 @@ parse_warnings = ["missing_venue"]
 raw_citation = "**Will, C. M.** (2018). *Theory and experiment in gravitational physics* (2nd ed.). Cambridge University Press."
 raw_notes = ["*Reference monograph for PPN interpretation and experimental-gravity methodology.*"]
 source_line = 424
+
+[[entry]]
+id = "BIBN-0191"
+source_entry_id = "BIB-0191"
+order_index = 191
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Identities and Structure"
+authors = ["Bremner", "M", "Hentzel", "I"]
+author_count = 4
+publication_year = 2001
+title = "Identities for algebras obtained from the Cayley-Dickson process"
+venue = "Communications in Algebra 29(8), 3523-3544. DOI: 10.1081/AGB-100105036"
+arxiv_id = ""
+doi_list = ["10.1081/AGB-100105036"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Bremner, M., & Hentzel, I.** (2001). *Identities for algebras obtained from the Cayley-Dickson process*. Communications in Algebra 29(8), 3523-3544. DOI: 10.1081/AGB-100105036."
+raw_notes = ["*Determines multilinear identities of degree <= 5 for sedenions; confirms flexible and Jordan identities.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0192"
+source_entry_id = "BIB-0192"
+order_index = 192
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Identities and Structure"
+authors = ["Wilmot", "G. P"]
+author_count = 2
+publication_year = 2025
+title = "Automorphisms of Sedenions"
+venue = ""
+arxiv_id = "2512.07210"
+doi_list = []
+url_list = ["https://arxiv.org/abs/2512.07210"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = ["missing_venue"]
+raw_citation = "**Wilmot, G. P.** (2025). *Automorphisms of Sedenions*. [arXiv:2512.07210](https://arxiv.org/abs/2512.07210)."
+raw_notes = ["*Extends Fano plane to 15D Fano volume; derives Aut(S) ~ G2.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0193"
+source_entry_id = "BIB-0193"
+order_index = 193
+group = "Primary Research & Data Sources"
+section = "QCD and Spin Correlation"
+authors = ["STAR Collaboration"]
+author_count = 1
+publication_year = 2026
+title = "Measuring spin correlation between quarks during QCD confinement"
+venue = "Nature 650, 65-71. DOI: 10.1038/s41586-025-09920-0"
+arxiv_id = ""
+doi_list = ["10.1038/s41586-025-09920-0"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**STAR Collaboration.** (2026). *Measuring spin correlation between quarks during QCD confinement*. Nature 650, 65-71. DOI: 10.1038/s41586-025-09920-0."
+raw_notes = ["*Evidence of spin coherence in Lambda-AntiLambda pairs; observed decoherence trend.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0194"
+source_entry_id = "BIB-0194"
+order_index = 194
+group = "Primary Research & Data Sources"
+section = "Scattering Amplitudes"
+authors = ["Guevara", "A", "et al"]
+author_count = 3
+publication_year = 2026
+title = "Single-minus gluon tree amplitudes are nonzero"
+venue = ""
+arxiv_id = "2602.12176"
+doi_list = []
+url_list = ["https://arxiv.org/abs/2602.12176"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = ["missing_venue"]
+raw_citation = "**Guevara, A., et al.** (2026). *Single-minus gluon tree amplitudes are nonzero*. [arXiv:2602.12176](https://arxiv.org/abs/2602.12176)."
+raw_notes = ["*Derives non-vanishing single-minus amplitudes in half-collinear kinematics; discrete sign-logic closed form.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0195"
+source_entry_id = "BIB-0195"
+order_index = 195
+group = "Primary Research & Data Sources"
+section = "Conformal Space and Inflation"
+authors = ["Gazeau", "J.-P", "Pejhan", "H", "Todorov", "I"]
+author_count = 6
+publication_year = 2026
+title = "Massless Representations in Conformal Space and Their de Sitter (dS) Restrictions"
+venue = ""
+arxiv_id = "2601.18433"
+doi_list = []
+url_list = ["https://arxiv.org/abs/2601.18433"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = ["missing_venue"]
+raw_citation = "**Gazeau, J.-P., Pejhan, H., & Todorov, I.** (2026). *Massless Representations in Conformal Space and Their de Sitter (dS) Restrictions*. [arXiv:2601.18433](https://arxiv.org/abs/2601.18433)."
+raw_notes = ["*Monograph on conformal symmetry and split-octonionic fabric of inflationary dynamics.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0196"
+source_entry_id = "BIB-0196"
+order_index = 196
+group = "Primary Research & Data Sources"
+section = "Unification Theories"
+authors = ["Alvarez", "P. D", "Izaurieta", "F", "Quinzacara", "C"]
+author_count = 6
+publication_year = 2026
+title = "Towards an Action Principle Unifying the Standard Model and Gravity"
+venue = ""
+arxiv_id = "2601.19734"
+doi_list = []
+url_list = ["https://arxiv.org/abs/2601.19734"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = ["missing_venue"]
+raw_citation = "**Alvarez, P. D., Izaurieta, F., & Quinzacara, C.** (2026). *Towards an Action Principle Unifying the Standard Model and Gravity*. [arXiv:2601.19734](https://arxiv.org/abs/2601.19734)."
+raw_notes = ["*Unification via Clifford-algebraic invariant in a ghost-free quadratic gravity framework.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0197"
+source_entry_id = "BIB-0197"
+order_index = 197
+group = "Primary Research & Data Sources"
+section = "Algebra & Mathematics"
+authors = ["Bott", "R", "Milnor", "J"]
+author_count = 4
+publication_year = 1958
+title = "On the parallelizability of the spheres"
+venue = "Bulletin of the American Mathematical Society 64(3), 87-89. DOI: 10.1090/S0002-9904-1958-10166-4"
+arxiv_id = ""
+doi_list = ["10.1090/S0002-9904-1958-10166-4"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Bott, R., & Milnor, J.** (1958). *On the parallelizability of the spheres*. Bulletin of the American Mathematical Society 64(3), 87-89. DOI: 10.1090/S0002-9904-1958-10166-4."
+raw_notes = ["*Proves only S^0, S^1, S^3, S^7 are parallelizable; foundational for the normed division algebra classification used in Thesis 4.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0198"
+source_entry_id = "BIB-0198"
+order_index = 198
+group = "Primary Research & Data Sources"
+section = "Algebra & Mathematics"
+authors = ["Adams", "J. F"]
+author_count = 2
+publication_year = 1960
+title = "On the non-existence of elements of Hopf invariant one"
+venue = "Annals of Mathematics 72(1), 20-104. DOI: 10.2307/1970147"
+arxiv_id = ""
+doi_list = ["10.2307/1970147"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Adams, J. F.** (1960). *On the non-existence of elements of Hopf invariant one*. Annals of Mathematics 72(1), 20-104. DOI: 10.2307/1970147."
+raw_notes = ["*Proves R, C, H, O are the only normed division algebras over the reals; the algebraic foundation for the Thesis 4 subalgebra retention pattern.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0199"
+source_entry_id = "BIB-0199"
+order_index = 199
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Rakic", "A. D", "Djurisic", "A. B", "Elazar", "J. M", "Majewski", "M. L"]
+author_count = 8
+publication_year = 1998
+title = "Optical properties of metallic films for vertical-cavity optoelectronic devices"
+venue = "Applied Optics 37(22), 5271-5283. DOI: 10.1364/AO.37.005271"
+arxiv_id = ""
+doi_list = ["10.1364/AO.37.005271"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Rakic, A. D., Djurisic, A. B., Elazar, J. M., & Majewski, M. L.** (1998). *Optical properties of metallic films for vertical-cavity optoelectronic devices*. Applied Optics 37(22), 5271-5283. DOI: 10.1364/AO.37.005271."
+raw_notes = ["*Canonical 11-metal Drude-Lorentz parameter set; source for Be, Cr, Ni, Pd, Pt, Ti, W optical models in Sprint 43.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0200"
+source_entry_id = "BIB-0200"
+order_index = 200
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Servoin", "J. L", "Luspin", "Y", "Gervais", "F"]
+author_count = 6
+publication_year = 1980
+title = "Infrared dispersion in SrTiO3 at high temperature"
+venue = "Physical Review B 22(11), 5501-5506. DOI: 10.1103/PhysRevB.22.5501"
+arxiv_id = ""
+doi_list = ["10.1103/PhysRevB.22.5501"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Servoin, J. L., Luspin, Y., & Gervais, F.** (1980). *Infrared dispersion in SrTiO3 at high temperature*. Physical Review B 22(11), 5501-5506. DOI: 10.1103/PhysRevB.22.5501."
+raw_notes = ["*IR phonon oscillator parameters for SrTiO3 (3-mode model); source for soft-mode soft-mode frequency near 11 meV.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0201"
+source_entry_id = "BIB-0201"
+order_index = 201
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Okimoto", "Y", "Katsufuji", "T", "Ishikawa", "T", "Urushibara", "A", "Arima", "T", "Tokura", "Y"]
+author_count = 12
+publication_year = 1995
+title = "Anomalous variation of optical spectra with spin polarization in double-exchange ferromagnet: La_{1-x}Sr_xMnO_3"
+venue = "Physical Review Letters 75(1), 109-112. DOI: 10.1103/PhysRevLett.75.109"
+arxiv_id = ""
+doi_list = ["10.1103/PhysRevLett.75.109"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Okimoto, Y., Katsufuji, T., Ishikawa, T., Urushibara, A., Arima, T., & Tokura, Y.** (1995). *Anomalous variation of optical spectra with spin polarization in double-exchange ferromagnet: La_{1-x}Sr_xMnO_3*. Physical Review Letters 75(1), 109-112. DOI: 10.1103/PhysRevLett.75.109."
+raw_notes = ["*Optical conductivity and Mott gap structure in perovskite titanates; informs LaTiO3 absorption model.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0202"
+source_entry_id = "BIB-0202"
+order_index = 202
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Barman", "S. R", "Sarma", "D. D"]
+author_count = 4
+publication_year = 1995
+title = "Electronic structures of TiO and NiO within the density functional theory"
+venue = "Physical Review B 51(19), 13401-13404. DOI: 10.1103/PhysRevB.51.13401"
+arxiv_id = ""
+doi_list = ["10.1103/PhysRevB.51.13401"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Barman, S. R., & Sarma, D. D.** (1995). *Electronic structures of TiO and NiO within the density functional theory*. Physical Review B 51(19), 13401-13404. DOI: 10.1103/PhysRevB.51.13401."
+raw_notes = ["*Band structure and optical properties of TiO (metallic); source for TiO Drude and interband parameters.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0203"
+source_entry_id = "BIB-0203"
+order_index = 203
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["van Mechelen", "J. L. M", "van der Marel", "D", "Grimaldi", "C", "Kuzmenko", "A. B", "Armitage", "N. P", "Reyren", "N", "Hagemann", "H", "Baeriswyl", "I. H"]
+author_count = 16
+publication_year = 2008
+title = "Electron-phonon interaction and charge carrier mass enhancement in SrTiO3"
+venue = "Physical Review Letters 100(22), 226403. DOI: 10.1103/PhysRevLett.100.226403"
+arxiv_id = ""
+doi_list = ["10.1103/PhysRevLett.100.226403"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**van Mechelen, J. L. M., van der Marel, D., Grimaldi, C., Kuzmenko, A. B., Armitage, N. P., Reyren, N., Hagemann, H., & Baeriswyl, I. H.** (2008). *Electron-phonon interaction and charge carrier mass enhancement in SrTiO3*. Physical Review Letters 100(22), 226403. DOI: 10.1103/PhysRevLett.100.226403."
+raw_notes = ["*Extended Drude analysis of doped SrTiO3; demonstrates frequency-dependent scattering and non-Fermi-liquid character.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0204"
+source_entry_id = "BIB-0204"
+order_index = 204
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Granqvist", "C. G"]
+author_count = 2
+publication_year = 2000
+title = "Electrochromic tungsten oxide films: Review of progress 1993-1998"
+venue = "Solar Energy Materials and Solar Cells 60(3), 201-262. DOI: 10.1016/S0927-0248(99)00088-4"
+arxiv_id = ""
+doi_list = ["10.1016/S0927-0248(99)00088-4"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Granqvist, C. G.** (2000). *Electrochromic tungsten oxide films: Review of progress 1993-1998*. Solar Energy Materials and Solar Cells 60(3), 201-262. DOI: 10.1016/S0927-0248(99)00088-4."
+raw_notes = ["*Comprehensive review of WO3 electrochromic properties and optical constants; source for stoichiometric WO3 oscillator parameters.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0205"
+source_entry_id = "BIB-0205"
+order_index = 205
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Niklasson", "G. A", "Granqvist", "C. G"]
+author_count = 4
+publication_year = 2007
+title = "Electrochromics for smart windows: thin films of tungsten oxide and nickel oxide, and devices based on these"
+venue = "Journal of Materials Chemistry 17(2), 127-156. DOI: 10.1039/B612174H"
+arxiv_id = ""
+doi_list = ["10.1039/B612174H"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Niklasson, G. A., & Granqvist, C. G.** (2007). *Electrochromics for smart windows: thin films of tungsten oxide and nickel oxide, and devices based on these*. Journal of Materials Chemistry 17(2), 127-156. DOI: 10.1039/B612174H."
+raw_notes = ["*Updated optical model for WO3 family including sub-stoichiometric and doped variants; phonon mode assignments.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0206"
+source_entry_id = "BIB-0206"
+order_index = 206
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Lynch", "D. W", "Hunter", "W. R"]
+author_count = 4
+publication_year = 1991
+title = "Comments on the Optical Constants of Metals and an Introduction to the Data for Several Metals"
+venue = "In E. D. Palik (Ed.), Handbook of Optical Constants of Solids II, 341-419. Academic Press"
+arxiv_id = ""
+doi_list = []
+url_list = []
+document_type = "general_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Lynch, D. W., & Hunter, W. R.** (1991). *Comments on the Optical Constants of Metals and an Introduction to the Data for Several Metals*. In E. D. Palik (Ed.), Handbook of Optical Constants of Solids II, 341-419. Academic Press."
+raw_notes = ["*Anisotropic Drude parameters for hexagonal tungsten bronzes (Cs0.33WO3); source for uniaxial parallel/perpendicular optical constants.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0207"
+source_entry_id = "BIB-0207"
+order_index = 207
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Nikl", "M", "Bohacek", "P", "Mihokova", "E", "Kobayashi", "M", "Ishii", "M", "Usuki", "Y", "Babin", "V", "Stolovich", "A", "Zazubovich", "S", "Baccaro", "S"]
+author_count = 20
+publication_year = 2000
+title = "Excitonic emission of scheelite tungstates AWO4 (A = Pb, Ca, Ba, Sr)"
+venue = "Radiation Measurements 33(5), 683-689. DOI: 10.1016/S1350-4487(01)00076-1"
+arxiv_id = ""
+doi_list = ["10.1016/S1350-4487(01)00076-1"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Nikl, M., Bohacek, P., Mihokova, E., Kobayashi, M., Ishii, M., Usuki, Y., Babin, V., Stolovich, A., Zazubovich, S., & Baccaro, S.** (2000). *Excitonic emission of scheelite tungstates AWO4 (A = Pb, Ca, Ba, Sr)*. Radiation Measurements 33(5), 683-689. DOI: 10.1016/S1350-4487(01)00076-1."
+raw_notes = ["*Optical properties and scintillation characteristics of CaWO4 and PbWO4 scheelite crystals; band gap and refractive index data.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0208"
+source_entry_id = "BIB-0208"
+order_index = 208
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Garcia", "G", "Buonsanti", "R", "Runnerstrom", "E. L", "Mendelsberg", "R. J", "Llordes", "A", "Anders", "A", "Richardson", "T. J", "Milliron", "D. J"]
+author_count = 16
+publication_year = 2011
+title = "Dynamically Modulating the Surface Plasmon Resonance of Doped Semiconductor Nanocrystals"
+venue = "Nano Letters 11(10), 4415-4420. DOI: 10.1021/nl202597n"
+arxiv_id = ""
+doi_list = ["10.1021/nl202597n"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Garcia, G., Buonsanti, R., Runnerstrom, E. L., Mendelsberg, R. J., Llordes, A., Anders, A., Richardson, T. J., & Milliron, D. J.** (2011). *Dynamically Modulating the Surface Plasmon Resonance of Doped Semiconductor Nanocrystals*. Nano Letters 11(10), 4415-4420. DOI: 10.1021/nl202597n."
+raw_notes = ["*Plasmonic response of oxygen-deficient WO3-x nanocrystals; carrier-density to plasma frequency derivation for sub-stoichiometric tungsten oxide.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0209"
+source_entry_id = "BIB-0209"
+order_index = 209
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Ordal", "M. A", "Bell", "R. J", "Alexander", "R. W", "Long", "L. L", "Querry", "M. R"]
+author_count = 10
+publication_year = 1985
+title = "Optical properties of fourteen metals in the infrared and far infrared: Al, Co, Cu, Au, Fe, Pb, Mo, Ni, Pd, Pt, Ag, Ti, V, and W"
+venue = "Applied Optics, 24(24), 4493-4499"
+arxiv_id = ""
+doi_list = []
+url_list = ["https://opg.optica.org/ao/abstract.cfm?uri=ao-24-24-4493"]
+document_type = "general_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Ordal, M. A., Bell, R. J., Alexander, R. W., Long, L. L., & Querry, M. R.** (1985). *Optical properties of fourteen metals in the infrared and far infrared: Al, Co, Cu, Au, Fe, Pb, Mo, Ni, Pd, Pt, Ag, Ti, V, and W*. Applied Optics, 24(24), 4493-4499."
+raw_notes = ["*Tabulated n,k for 14 metals from 0.667-286 um (far-IR). Au and Cu data used in SPLICED_AU and SPLICED_CU arrays in tabulated_nk.rs to replace the approximate Drude IR tail in the KK transform.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0210"
+source_entry_id = "BIB-0210"
+order_index = 210
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Ordal", "M. A", "Bell", "R. J", "Alexander", "R. W", "Newquist", "L. A", "Querry", "M. R"]
+author_count = 10
+publication_year = 1988
+title = "Optical properties of Al, Fe, Ti, Ta, W, and Mo at submillimeter wavelengths"
+venue = "Applied Optics, 27(6), 1203-1209"
+arxiv_id = ""
+doi_list = []
+url_list = []
+document_type = "general_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Ordal, M. A., Bell, R. J., Alexander, R. W., Newquist, L. A., & Querry, M. R.** (1988). *Optical properties of Al, Fe, Ti, Ta, W, and Mo at submillimeter wavelengths*. Applied Optics, 27(6), 1203-1209."
+raw_notes = ["*Extended far-IR optical constants for metals at submillimeter wavelengths. Complementary to Ordal 1985; referenced for completeness of the Ordal measurement series.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0211"
+source_entry_id = "BIB-0211"
+order_index = 211
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+authors = ["Henke", "B. L", "Gullikson", "E. M", "Davis", "J. C"]
+author_count = 6
+publication_year = 1993
+title = "X-ray interactions: photoabsorption, scattering, transmission, and reflection at E=50-30000 eV, Z=1-92"
+venue = "Atomic Data and Nuclear Data Tables, 54(2), 181-342"
+arxiv_id = ""
+doi_list = ["10.1006/adnd.1993.1013"]
+url_list = ["https://henke.lbl.gov/optical_constants/"]
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Henke, B. L., Gullikson, E. M., & Davis, J. C.** (1993). *X-ray interactions: photoabsorption, scattering, transmission, and reflection at E=50-30000 eV, Z=1-92*. Atomic Data and Nuclear Data Tables, 54(2), 181-342."
+raw_notes = ["*Foundational XUV/X-ray atomic scattering factors f1, f2 for all 92 elements from 10-30000 eV. Converted to n,k via n=1-delta, k=beta. Used in SPLICED3_AU, SPLICED3_AG, SPLICED3_CU arrays in tabulated_nk.rs to extend J&C+Ordal data through the XUV/soft X-ray region for complete KK integration.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0212"
+source_entry_id = "BIB-0212"
+order_index = 212
+group = "Primary Research & Data Sources"
+section = "Technosignature & SETI"
+authors = ["Ehman", "J. R"]
+author_count = 2
+publication_year = 1997
+title = "The Big Ear Wow! Signal: What We Know and Don't Know About It After 20 Years"
+venue = "Technical report, Ohio State University Radio Observatory"
+arxiv_id = ""
+doi_list = []
+url_list = ["https://www.bigear.org/wow20th.htm"]
+document_type = "general_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Ehman, J. R.** (1997). *The Big Ear Wow! Signal: What We Know and Don't Know About It After 20 Years*. Technical report, Ohio State University Radio Observatory."
+raw_notes = ["*Definitive 20th-anniversary analysis of the 1977 Wow! signal by the discoverer. Documents receiver configuration (50-channel, 10 kHz bandwidth), base-36 encoding, beam pattern, and the 6EQUJ5 intensity sequence. Primary reference for transcription verification.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0213"
+source_entry_id = "BIB-0213"
+order_index = 213
+group = "Primary Research & Data Sources"
+section = "Technosignature & SETI"
+authors = ["Gray", "R. H", "Ellingsen", "S. P"]
+author_count = 4
+publication_year = 2002
+title = "A Search for Periodic Emissions at the Wow Locale"
+venue = "The Astrophysical Journal, 578(2), 967-971"
+arxiv_id = ""
+doi_list = ["10.1086/342646"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Gray, R. H. & Ellingsen, S. P.** (2002). *A Search for Periodic Emissions at the Wow Locale*. The Astrophysical Journal, 578(2), 967-971."
+raw_notes = ["*Targeted 14-month reobservation campaign at the Wow! signal coordinates using the 26m Mount Pleasant telescope and the VLA. No periodic signal detected at 1420 MHz. Establishes drift rate bounds and non-detection context for follow-up studies.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0214"
+source_entry_id = "BIB-0214"
+order_index = 214
+group = "Primary Research & Data Sources"
+section = "Technosignature & SETI"
+authors = ["Perez", "K", "Zuluaga", "J. I", "Sheikh", "S. Z", "Enriquez", "J. E", "Price", "D. C", "Isaacson", "H", "Lebofsky", "M", "MacMahon", "D. H. E", "Croft", "S", "DeBoer", "D", "Gajjar", "V", "Howard", "A. W", "Siemion", "A. P. V", "Werthimer", "D"]
+author_count = 28
+publication_year = 2022
+title = "Breakthrough Listen Observations of the Wow! Signal Region"
+venue = "Research Notes of the AAS, 6(9), 197"
+arxiv_id = ""
+doi_list = ["10.3847/2515-5172/ac9631"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Perez, K., Zuluaga, J. I., Sheikh, S. Z., Enriquez, J. E., Price, D. C., Isaacson, H., Lebofsky, M., MacMahon, D. H. E., Croft, S., DeBoer, D., Gajjar, V., Howard, A. W., Siemion, A. P. V., & Werthimer, D.** (2022). *Breakthrough Listen Observations of the Wow! Signal Region*. Research Notes of the AAS, 6(9), 197."
+raw_notes = ["*BL GBT observations at 1-12 GHz of the Wow! signal region using ABACAD cadence strategy. No narrowband or wideband signals detected above threshold. Establishes modern non-detection baseline with 2.5e6 channel resolution.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0215"
+source_entry_id = "BIB-0215"
+order_index = 215
+group = "Primary Research & Data Sources"
+section = "Warp Drive & Exotic Spacetimes"
+authors = ["Ford", "L. H", "Roman", "T. A"]
+author_count = 4
+publication_year = 1996
+title = "Quantum field theory constrains traversable wormhole geometries"
+venue = "Phys. Rev. D 53, 5496-5507"
+arxiv_id = "gr-qc/9510071"
+doi_list = ["10.1103/PhysRevD.53.5496"]
+url_list = ["https://arxiv.org/abs/gr-qc/9510071"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Ford, L. H., & Roman, T. A.** (1996). *Quantum field theory constrains traversable wormhole geometries*. Phys. Rev. D 53, 5496-5507. [arXiv:gr-qc/9510071](https://arxiv.org/abs/gr-qc/9510071)."
+raw_notes = ["*Quantum inequality bounds on negative energy; basis for Pfenning-Ford warp constraint.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0216"
+source_entry_id = "BIB-0216"
+order_index = 216
+group = "Primary Research & Data Sources"
+section = "Loop Quantum Gravity (Barbero-Immirzi Parameter)"
+authors = ["Barbero G", "J. F"]
+author_count = 2
+publication_year = 1995
+title = "Real Ashtekar variables for Lorentzian signature space-times"
+venue = "Phys. Rev. D 51, 5507-5510"
+arxiv_id = "gr-qc/9410014"
+doi_list = ["10.1103/PhysRevD.51.5507"]
+url_list = ["https://arxiv.org/abs/gr-qc/9410014"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Barbero G., J. F.** (1995). *Real Ashtekar variables for Lorentzian signature space-times*. Phys. Rev. D 51, 5507-5510. [arXiv:gr-qc/9410014](https://arxiv.org/abs/gr-qc/9410014)."
+raw_notes = ["*Introduces real-valued SU(2) connection with free parameter beta.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0217"
+source_entry_id = "BIB-0217"
+order_index = 217
+group = "Primary Research & Data Sources"
+section = "Loop Quantum Gravity (Barbero-Immirzi Parameter)"
+authors = ["Immirzi", "G"]
+author_count = 2
+publication_year = 1997
+title = "Real and complex connections for canonical gravity"
+venue = "CQG 14, L177-L181"
+arxiv_id = "gr-qc/9612030"
+doi_list = ["10.1088/0264-9381/14/10/002"]
+url_list = ["https://arxiv.org/abs/gr-qc/9612030"]
+document_type = "arxiv_preprint"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Immirzi, G.** (1997). *Real and complex connections for canonical gravity*. CQG 14, L177-L181. [arXiv:gr-qc/9612030](https://arxiv.org/abs/gr-qc/9612030)."
+raw_notes = ["*Shows beta is free parameter; area spectrum scales as beta*hbar*kappa.*"]
+source_line = 0
+

@@ -34,7 +34,23 @@ diffusionx = { workspace = true }
 cudarc = { workspace = true, optional = true }
 
 [features]
-default = []
+default = ["core", "analysis", "physics"]
+# Core Cayley-Dickson construction, traits, error types, and universal algebra.
+# No internal deps.  Used by 8+ downstream crates.
+core = []
+# ZD graphs, box-kites, codebook, fractal, stochastic, homotopy, PG, Reggiani.
+# Depends on core (analysis modules reference construction::cayley_dickson).
+analysis = ["core"]
+# Clifford, octonion field, M3, billiard simulation, amplitudes.
+# Depends on core + lie (billiard_sim uses kac_moody::E10RootSystem).
+physics = ["core", "lie"]
+# E8 lattice, E7 geometry, Kac-Moody, group theory, nilpotent orbits, Lyndon.
+# No cross-module deps beyond self-referential.
+lie = []
+# Moonshine, E10-octonion, billiard stats, emanation, Golay, Leech, dynamics.
+# Depends on core + analysis + lie + physics (heavy cross-module references).
+experimental = ["core", "analysis", "lie", "physics"]
+# GPU acceleration (CUDA via cudarc).
 gpu = ["cudarc"]
 wedged = []
 
@@ -50,6 +66,18 @@ harness = false
 [[bench]]
 name = "dimensional_bench"
 harness = false
+
+[[example]]
+name = "e10_billiard"
+required-features = ["experimental"]
+
+[[example]]
+name = "et_survey"
+required-features = ["experimental"]
+
+[[example]]
+name = "m3_e8_bridge"
+required-features = ["lie", "physics"]
 
 [lints]
 workspace = true

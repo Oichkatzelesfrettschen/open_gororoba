@@ -135,7 +135,7 @@ fn main() {
         }
     } else {
         eprintln!("JARVIS file not found: {}", jarvis_path.display());
-        eprintln!("  Run: cargo run -p gororoba_cli --bin fetch-datasets -- --dataset JARVIS");
+        eprintln!("  Run: cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset JARVIS");
         Vec::new()
     };
 
@@ -157,7 +157,7 @@ fn main() {
         }
     } else {
         eprintln!("AFLOW file not found: {}", aflow_path.display());
-        eprintln!("  Run: cargo run -p gororoba_cli --bin fetch-datasets -- --dataset AFLOW");
+        eprintln!("  Run: cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset AFLOW");
         Vec::new()
     };
 

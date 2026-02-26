@@ -31,11 +31,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 description = "Synthesize E7 Lie Algebra roots and Navier-Stokes turbulence triads (k+p+q=0) into a unified visual and mathematical framework. Includes spectral analysis, hypergraph metrics (Clustering, Betti), and Kerr-optics lensing."
-primary_outputs = ["crates/gororoba_cli/src/bin/warp_ring_integration.rs", "crates/algebra_core/src/lie/e7_geometry.rs", "crates/lbm_core/src/turbulence.rs", "registry/monograph.toml", "registry/lacunae.toml"]
+primary_outputs = ["crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "crates/algebra_core/src/lie/e7_geometry.rs", "crates/lbm_core/src/turbulence.rs", "registry/monograph.toml", "registry/lacunae.toml"]
 lacunae = ["L-001", "L-002", "L-003", "L-004", "L-005"]
 dependencies = []
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
-evidence_refs = ["crates/algebra_core/src/lie/e7_geometry.rs", "crates/gororoba_cli/src/bin/warp_ring_integration.rs", "crates/lbm_core/src/turbulence.rs", "registry/lacunae.toml", "registry/monograph.toml"]
+evidence_refs = ["crates/algebra_core/src/lie/e7_geometry.rs", "crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "crates/lbm_core/src/turbulence.rs", "registry/lacunae.toml", "registry/monograph.toml"]
 
 [[workstream]]
 id = "WS-CLAIMS-001"
@@ -43,7 +43,6 @@ name = "Claims Evidence Governance"
 priority = "high"
 status = "active"
 status_token = "ACTIVE"
-perpetual = true
 description = "Maintain claim lifecycle with TOML registry authority and markdown mirrors. Perpetual-maintenance workstream: no terminal deliverable, the discipline is in place and operating."
 primary_outputs = ["registry/claims.toml", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md"]
 dependencies = []
@@ -110,12 +109,37 @@ acceptance_criteria = ["workstream status is constrained to declared enum values
 evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "registry/claims.toml", "registry/insights.toml"]
 
 [[workstream]]
+id = "WS-OPTICS-GR-001"
+name = "Optics + GR Infrastructure Expansion"
+priority = "high"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+description = "Sprint 56: Expand materials_core with Landy 2008 metamaterial absorber TMM reproduction (Byrnes amplitude transfer matrix, Lorentz effective-medium model, impedance matching, multilayer convergence). Expand gr_core PPN constraint framework from 7 to 13 gates (GP-B geodetic, preferred-frame alpha_1/2/3, Whitehead xi, MICROSCOPE WEP). Create immirzi_bridge.rs in vacuum_frustration connecting CD frustration density to Barbero-Immirzi parameter via entropy mapping. Fix complex Bessel functions (J_n sign, Y_n Euler gamma) and Fano TCMT tests in optics_core."
+sprint = "S56"
+primary_outputs = ["crates/materials_core/src/landy_absorber.rs", "crates/materials_core/src/effective_medium.rs", "crates/gr_core/src/ppn_constraints.rs", "crates/vacuum_frustration/src/immirzi_bridge.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs"]
+claims = ["C-852", "C-853", "C-854", "C-855", "C-856", "C-857", "C-858", "C-859", "C-860", "C-861", "C-862", "C-863"]
+dependencies = ["C-852", "C-853", "C-854", "C-855", "C-856", "C-857", "C-858", "C-859", "C-860", "C-861", "C-862", "C-863"]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/gr_core/src/ppn_constraints.rs", "crates/materials_core/src/effective_medium.rs", "crates/materials_core/src/landy_absorber.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs", "crates/vacuum_frustration/src/immirzi_bridge.rs"]
+
+[[workstream]]
+id = "WS-PUB-001"
+name = "Phase 5: Publication Preparation"
+priority = "high"
+status = "done"
+status_token = "DONE"
+description = "LLM-Scaffold monograph prepared for arXiv submission. Paper compiles clean (120pp, 0 errors). 818 claims in appendix. arXiv package in docs/latex/arxiv/. Evidence package verified. All 4 theses PASS. 742 Verified, 3 Established, 34 Refuted, 13 Falsified, 10 Superseded claims."
+primary_outputs = ["docs/latex/llm_scaffold_paper.tex", "docs/latex/out/llm_scaffold_paper.pdf", "docs/latex/claims_appendix.tex", "docs/latex/experiments_appendix.tex", "docs/latex/insights_appendix.tex", "docs/latex/reproducibility_appendix.tex", "docs/latex/arxiv/"]
+dependencies = []
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["docs/latex/arxiv/", "docs/latex/claims_appendix.tex", "docs/latex/experiments_appendix.tex", "docs/latex/insights_appendix.tex", "docs/latex/llm_scaffold_paper.tex", "docs/latex/out/llm_scaffold_paper.pdf", "docs/latex/reproducibility_appendix.tex"]
+
+[[workstream]]
 id = "WS-QUALITY-001"
 name = "Warnings-As-Errors Discipline"
 priority = "high"
 status = "active"
 status_token = "ACTIVE"
-perpetual = true
 description = "All Python and Rust checks run with warnings treated as failures. Perpetual-maintenance workstream: no terminal deliverable, the discipline is in place and operating."
 primary_outputs = ["Makefile", "docs/REQUIREMENTS.md", "AGENTS.md"]
 dependencies = []
@@ -159,29 +183,3 @@ dependencies = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
 
-[[workstream]]
-id = "WS-PUB-001"
-name = "Phase 5: Publication Preparation"
-priority = "high"
-status = "done"
-status_token = "DONE"
-description = "LLM-Scaffold monograph prepared for arXiv submission. Paper compiles clean (120pp, 0 errors). 818 claims in appendix. arXiv package in docs/latex/arxiv/. Evidence package verified. All 4 theses PASS. 742 Verified, 3 Established, 34 Refuted, 13 Falsified, 10 Superseded claims."
-primary_outputs = ["docs/latex/llm_scaffold_paper.tex", "docs/latex/out/llm_scaffold_paper.pdf", "docs/latex/claims_appendix.tex", "docs/latex/experiments_appendix.tex", "docs/latex/insights_appendix.tex", "docs/latex/reproducibility_appendix.tex", "docs/latex/arxiv/"]
-claims = []
-dependencies = []
-acceptance_criteria = ["Paper compiles with zero errors and zero undefined references.", "All 818 claims appear in claims appendix.", "All experiment binaries listed in reproducibility appendix.", "Bibliography entries resolve to primary sources.", "workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths.", "arXiv submission package compiles standalone."]
-evidence_refs = ["docs/latex/llm_scaffold_paper.tex", "docs/latex/out/llm_scaffold_paper.pdf", "docs/latex/arxiv/"]
-
-[[workstream]]
-id = "WS-OPTICS-GR-001"
-name = "Optics + GR Infrastructure Expansion"
-priority = "high"
-status = "in_progress"
-status_token = "IN_PROGRESS"
-description = "Sprint 56: Expand materials_core with Landy 2008 metamaterial absorber TMM reproduction (Byrnes amplitude transfer matrix, Lorentz effective-medium model, impedance matching, multilayer convergence). Expand gr_core PPN constraint framework from 7 to 13 gates (GP-B geodetic, preferred-frame alpha_1/2/3, Whitehead xi, MICROSCOPE WEP). Create immirzi_bridge.rs in vacuum_frustration connecting CD frustration density to Barbero-Immirzi parameter via entropy mapping. Fix complex Bessel functions (J_n sign, Y_n Euler gamma) and Fano TCMT tests in optics_core."
-sprint = "S56"
-primary_outputs = ["crates/materials_core/src/landy_absorber.rs", "crates/materials_core/src/effective_medium.rs", "crates/gr_core/src/ppn_constraints.rs", "crates/vacuum_frustration/src/immirzi_bridge.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs"]
-claims = ["C-852", "C-853", "C-854", "C-855", "C-856", "C-857", "C-858", "C-859", "C-860", "C-861", "C-862", "C-863"]
-dependencies = ["WS-PUB-001"]
-acceptance_criteria = ["TMM returns both R and T with energy conservation R+T<=1 for lossy media.", "Landy absorber A(11.48 GHz) >= 0.96 via Lorentz effective-medium TMM.", "PPN framework passes 13 constraint gates for omega_BD >= 40000.", "Immirzi bridge maps phi=3/8 to within 2% of gamma_NZJ.", "Complex Bessel J_n and Y_n match DLMF/scipy to 1e-10.", "All new code passes clippy -D warnings.", "workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
-evidence_refs = ["crates/materials_core/src/landy_absorber.rs", "crates/materials_core/src/effective_medium.rs", "crates/gr_core/src/ppn_constraints.rs", "crates/vacuum_frustration/src/immirzi_bridge.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs", "registry/claims.toml"]

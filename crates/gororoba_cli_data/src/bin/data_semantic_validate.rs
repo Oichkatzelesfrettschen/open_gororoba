@@ -962,7 +962,7 @@ fn validate_replay_contract_hash(
     }
     if !rule
         .retrieval_method
-        .starts_with("cargo run -p gororoba_cli --bin ")
+        .starts_with("cargo run -p gororoba_cli_data --bin")
     {
         return Err(format!(
             "source {} has non-Rust retrieval_method for replay_contract_hash",

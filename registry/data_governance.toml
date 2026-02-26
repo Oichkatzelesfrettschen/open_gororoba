@@ -57,6 +57,7 @@ strict = false
 cleanable = false
 gitignore_required = true
 naming_policy = "legacy_allow_any"
+# No manifests required: frozen legacy data predates governance framework.
 required_manifests = []
 gitignore_allowlist = []
 
@@ -222,6 +223,7 @@ strict = false
 cleanable = false
 gitignore_required = true
 naming_policy = "mixed_transition"
+# No manifests required: manually imported reference papers (exception lane).
 required_manifests = []
 gitignore_allowlist = []
 

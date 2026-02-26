@@ -1976,7 +1976,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/59::ASOT-0073", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/0"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/albert_algebra_structure_census.rs"
+canonical_download_path = "crates/gororoba_cli_algebra/src/bin/albert_algebra_structure_census.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -1991,7 +1991,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/gororoba_cli/src/bin/albert_algebra_structure_census.rs"]
+downloaded_paths = ["crates/gororoba_cli_algebra/src/bin/albert_algebra_structure_census.rs"]
 notes = ["downloaded", "added_to_cargo"]
 
 [[artifact]]
@@ -2585,7 +2585,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["data/external/chime_frb_cat1.csv", "data/external/chime_frb_cat2.csv", "crates/gororoba_cli/src/bin/frb_ultrametric.rs", "data/csv/c071_frb_ultrametric.csv", "data/csv/c071_frb_ultrametric_cat1.csv", "data/csv/c071_frb_ultrametric_cat2.csv", "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"]
+downloaded_paths = ["data/external/chime_frb_cat1.csv", "data/external/chime_frb_cat2.csv", "crates/gororoba_cli_data/src/bin/frb_ultrametric.rs", "data/csv/c071_frb_ultrametric.csv", "data/csv/c071_frb_ultrametric_cat1.csv", "data/csv/c071_frb_ultrametric_cat2.csv", "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"]
 notes = ["Claim C-071 outcome is explicitly refuted with reproducible dataset hashes.", "active", "downloaded"]
 
 [[artifact]]
@@ -4190,7 +4190,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/121::ASOT-0155", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/1"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/composition_algebra_taxonomy.rs"
+canonical_download_path = "crates/gororoba_cli_algebra/src/bin/composition_algebra_taxonomy.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -4205,7 +4205,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/gororoba_cli/src/bin/composition_algebra_taxonomy.rs"]
+downloaded_paths = ["crates/gororoba_cli_algebra/src/bin/composition_algebra_taxonomy.rs"]
 notes = ["downloaded", "added_to_cargo"]
 
 [[artifact]]
@@ -5648,7 +5648,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/172::ASOT-0209", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/2"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/entropy_trap.rs"
+canonical_download_path = "crates/gororoba_cli_physics/src/bin/entropy_trap.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -5663,7 +5663,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/gororoba_cli/src/bin/entropy_trap.rs"]
+downloaded_paths = ["crates/gororoba_cli_physics/src/bin/entropy_trap.rs"]
 notes = ["downloaded", "added_to_cargo"]
 
 [[artifact]]
@@ -6728,7 +6728,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/208::ASOT-0249", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/3"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/he4_superfluid.rs"
+canonical_download_path = "crates/gororoba_cli_physics/src/bin/he4_superfluid.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -6743,7 +6743,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/gororoba_cli/src/bin/he4_superfluid.rs"]
+downloaded_paths = ["crates/gororoba_cli_physics/src/bin/he4_superfluid.rs"]
 notes = ["downloaded", "added_to_cargo"]
 
 [[artifact]]
@@ -38129,7 +38129,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/412::ASOT-1412", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/4"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
+canonical_download_path = "crates/gororoba_cli_data/src/bin/registry_event_tracker.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -38144,7 +38144,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/gororoba_cli/src/bin/registry_event_tracker.rs"]
+downloaded_paths = ["crates/gororoba_cli_data/src/bin/registry_event_tracker.rs"]
 notes = ["downloaded", "added_to_cargo"]
 
 [[artifact]]
@@ -155417,7 +155417,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/pantheon_physicsforge_migration_matrix.toml::module_mapping/13::MM-PF-005", "registry/source_lanes/web_references.toml::artifact_ref/4724::ASOT-5756"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/extract_papers.rs"
+canonical_download_path = "crates/gororoba_cli_data/src/bin/extract_papers.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -155432,7 +155432,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/gororoba_cli/src/bin/extract_papers.rs"]
+downloaded_paths = ["crates/gororoba_cli_data/src/bin/extract_papers.rs"]
 notes = ["mapped", "downloaded"]
 
 [[artifact]]
@@ -155567,7 +155567,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/docpipe/src/text.rs", "crates/docpipe/src/toml_out.rs", "crates/docpipe/src/pdf.rs", "crates/gororoba_cli/src/bin/extract_papers.rs"]
+downloaded_paths = ["crates/docpipe/src/text.rs", "crates/docpipe/src/toml_out.rs", "crates/docpipe/src/pdf.rs", "crates/gororoba_cli_data/src/bin/extract_papers.rs"]
 notes = ["Extraction exists; catalog semantics expansion is still needed.", "downloaded"]
 
 [[artifact]]
@@ -156026,7 +156026,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = [".", "crates/docpipe/src/toml_out.rs", "crates/gororoba_cli/src/bin/extract_papers.rs", "registry/pantheon_physicsforge_migration_matrix.toml", "registry/pantheon_physicsforge_ported_files.toml"]
+downloaded_paths = [".", "crates/docpipe/src/toml_out.rs", "crates/gororoba_cli_data/src/bin/extract_papers.rs", "registry/pantheon_physicsforge_migration_matrix.toml", "registry/pantheon_physicsforge_ported_files.toml"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -158699,7 +158699,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/bridge.rs", "crates/vacuum_frustration/src/frustration.rs", "crates/vacuum_frustration/src/signed_graph.rs", "crates/vacuum_frustration/src/spatial_correlation.rs", "crates/gororoba_cli/src/bin/e027_topology_v2.rs"]
+downloaded_paths = ["crates/vacuum_frustration/src/bridge.rs", "crates/vacuum_frustration/src/frustration.rs", "crates/vacuum_frustration/src/signed_graph.rs", "crates/vacuum_frustration/src/spatial_correlation.rs", "crates/gororoba_cli_physics/src/bin/e027_topology_v2.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -158726,7 +158726,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/bridge.rs", "crates/vacuum_frustration/src/kubo_transport.rs", "crates/vacuum_frustration/src/kubo_transport_gpu.rs", "crates/gororoba_cli/src/bin/kubo_coupling_analysis.rs", "crates/gororoba_cli/src/bin/thesis2_3d_thickening.rs"]
+downloaded_paths = ["crates/vacuum_frustration/src/bridge.rs", "crates/vacuum_frustration/src/kubo_transport.rs", "crates/vacuum_frustration/src/kubo_transport_gpu.rs", "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs", "crates/gororoba_cli/src/bin/thesis2_3d_thickening.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -158888,7 +158888,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/kubo_transport.rs", "crates/vacuum_frustration/src/kubo_transport_gpu.rs", "crates/gororoba_cli/src/bin/kubo_frustration_transport.rs", "crates/gororoba_cli/src/bin/kubo_coupling_analysis.rs", "crates/gororoba_cli/src/bin/validate_j1j2_kubo.rs", "data/kubo_transport/validation/published_transport_benchmarks.toml"]
+downloaded_paths = ["crates/vacuum_frustration/src/kubo_transport.rs", "crates/vacuum_frustration/src/kubo_transport_gpu.rs", "crates/gororoba_cli_physics/src/bin/kubo_frustration_transport.rs", "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs", "crates/gororoba_cli_physics/src/bin/validate_j1j2_kubo.rs", "data/kubo_transport/validation/published_transport_benchmarks.toml"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -220865,7 +220865,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6854::ASOT-8180", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/5"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/tessarines_mixed_quaternions_census.rs"
+canonical_download_path = "crates/gororoba_cli_algebra/src/bin/tessarines_mixed_quaternions_census.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -220880,7 +220880,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/gororoba_cli/src/bin/tessarines_mixed_quaternions_census.rs"]
+downloaded_paths = ["crates/gororoba_cli_algebra/src/bin/tessarines_mixed_quaternions_census.rs"]
 notes = ["downloaded", "added_to_cargo"]
 
 [[artifact]]
@@ -221027,7 +221027,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6860::ASOT-8186", "reports/binary_project_drift_reconciliation_2026_02_14.toml::binary_resolution/6"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/gororoba_cli/src/bin/third_party_source_verifier.rs"
+canonical_download_path = "crates/gororoba_cli_data/src/bin/third_party_source_verifier.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -221042,7 +221042,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/gororoba_cli/src/bin/third_party_source_verifier.rs"]
+downloaded_paths = ["crates/gororoba_cli_data/src/bin/third_party_source_verifier.rs"]
 notes = ["downloaded", "added_to_cargo"]
 
 [[artifact]]
@@ -221879,7 +221879,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["registry/knowledge/artifacts/ART-008.toml", "crates/gororoba_cli/src/bin/warp_ring_integration.rs", "warp_ring_integration.png", "data/artifacts/WARP_RING_REPORT.md"]
+downloaded_paths = ["registry/knowledge/artifacts/ART-008.toml", "crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "warp_ring_integration.png", "data/artifacts/WARP_RING_REPORT.md"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -226604,7 +226604,7 @@ working_mirrors = ["https://storage.googleapis.com/chimefrb-dev.appspot.com/cata
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["data/external/chime_frb_cat1.csv", "data/external/chime_frb_cat2.csv", "crates/gororoba_cli/src/bin/frb_ultrametric.rs", "data/csv/c071_frb_ultrametric.csv", "data/csv/c071_frb_ultrametric_cat1.csv", "data/csv/c071_frb_ultrametric_cat2.csv"]
+downloaded_paths = ["data/external/chime_frb_cat1.csv", "data/external/chime_frb_cat2.csv", "crates/gororoba_cli_data/src/bin/frb_ultrametric.rs", "data/csv/c071_frb_ultrametric.csv", "data/csv/c071_frb_ultrametric_cat1.csv", "data/csv/c071_frb_ultrametric_cat2.csv"]
 notes = ["Claim C-071 outcome is explicitly refuted with reproducible dataset hashes."]
 
 [[artifact]]

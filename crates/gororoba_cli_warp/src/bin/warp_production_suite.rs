@@ -1,5 +1,5 @@
-mod warp_runner;
-mod warp_telemetry;
+use gororoba_cli_warp::warp_runner;
+use gororoba_cli_warp::warp_telemetry;
 
 use gororoba_cli::warp_forcing_policy::{apply_warp_forcing_env, load_warp_forcing_profile};
 use lbm_3d_cuda::Precision;

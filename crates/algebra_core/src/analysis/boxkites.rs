@@ -8388,7 +8388,7 @@ mod tests {
     /// TIER 2: Slow tests (dims 64, 128, 256) - ignored in standard CI
     /// Full APT census with streaming buffers
     #[test]
-    #[ignore]
+    #[ignore] // Long-running: ~2-5 min in release mode (CPU exhaustive census)
     fn test_apt_dim_64_slow() {
         let dim = 64;
         let components = motif_components_for_cross_assessors(dim);
@@ -8397,7 +8397,7 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
+    #[ignore] // Long-running: ~5-15 min in release mode (CPU exhaustive census)
     fn test_apt_dim_128_slow() {
         let dim = 128;
         let components = motif_components_for_cross_assessors(dim);
@@ -8406,7 +8406,7 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
+    #[ignore] // Long-running: ~15-30 min in release mode (CPU exhaustive census)
     fn test_apt_dim_256_slow() {
         let dim = 256;
         let components = motif_components_for_cross_assessors(dim);
@@ -8417,7 +8417,7 @@ mod tests {
     /// TIER 3: Very slow tests (dims 512, 1024) - ignored, requires substantial time
     /// CPU-only exhaustive APT census
     #[test]
-    #[ignore]
+    #[ignore] // Very long-running: ~2+ hours in release mode (CPU exhaustive census)
     fn test_apt_dim_512_very_slow() {
         let dim = 512;
         let components = motif_components_for_cross_assessors(dim);
@@ -8429,7 +8429,7 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
+    #[ignore] // Extremely long: ~17+ hours in release mode (CPU exhaustive census)
     fn test_apt_dim_1024_very_slow() {
         let dim = 1024;
         let components = motif_components_for_cross_assessors(dim);
@@ -8443,7 +8443,7 @@ mod tests {
     /// TIER 4: GPU-required tests (dims 2048, 4096)
     /// GPU Monte Carlo sampling for dimensions beyond CPU practical limits
     #[test]
-    #[ignore]
+    #[ignore] // Requires GPU: Monte Carlo sampling (not yet implemented)
     fn test_apt_dim_2048_gpu() {
         let _dim = 2048;
         // Placeholder: GPU Monte Carlo census implementation needed
@@ -8452,7 +8452,7 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
+    #[ignore] // Requires GPU: Monte Carlo sampling (not yet implemented)
     fn test_apt_dim_4096_gpu() {
         let _dim = 4096;
         // Placeholder: GPU Monte Carlo census implementation needed

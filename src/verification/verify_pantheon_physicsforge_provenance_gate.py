@@ -17,7 +17,7 @@ import tomllib
 
 def main() -> int:
     repo_root = Path(__file__).resolve().parents[2]
-    registry_path = repo_root / "registry" / "pantheon_physicsforge_ported_files.toml"
+    registry_path = repo_root / "archive" / "registry" / "pantheon_physicsforge" / "pantheon_physicsforge_ported_files.toml"
     data = tomllib.loads(registry_path.read_text(encoding="utf-8"))
 
     gate = data.get("provenance_gate", {})

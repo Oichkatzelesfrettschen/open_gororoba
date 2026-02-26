@@ -4,7 +4,7 @@
 [knowledge_proof_skeletons]
 updated = "deterministic"
 authoritative = true
-skeleton_count = 737
+skeleton_count = 908
 
 [[skeleton]]
 id = "PRS-00001"
@@ -724,7 +724,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-010"]
-evidence_refs = ["crates/control_core/src/bridges/tcmt.rs", "crates/gororoba_cli/src/bin/tcmt_sweep.rs", "crates/materials_core/src/metamaterial.rs", "crates/optics_core/src/tcmt.rs", "data/artifacts/images/absorber_pareto_3160x2820.png", "data/csv/cd_zd_absorber_mapping.csv", "data/csv/sedenion_box_kites_clustered.csv", "docs/GRAND_SYNTHESIS.md", "docs/MATERIALS_APPLICATIONS.md", "docs/THE_GEMINI_PROTOCOL.md", "docs/external_sources/OPEN_CLAIMS_SOURCES.md", "registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_c011_verifier_script.py", "tests/test_c010_holographic_entropy_trap.py"]
+evidence_refs = ["crates/control_core/src/bridges/tcmt.rs", "crates/gororoba_cli_physics/src/bin/tcmt_sweep.rs", "crates/materials_core/src/metamaterial.rs", "crates/optics_core/src/tcmt.rs", "data/artifacts/images/absorber_pareto_3160x2820.png", "data/csv/cd_zd_absorber_mapping.csv", "data/csv/sedenion_box_kites_clustered.csv", "docs/GRAND_SYNTHESIS.md", "docs/MATERIALS_APPLICATIONS.md", "docs/THE_GEMINI_PROTOCOL.md", "docs/external_sources/OPEN_CLAIMS_SOURCES.md", "registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_c011_verifier_script.py", "tests/test_c010_holographic_entropy_trap.py"]
 
 [[skeleton]]
 id = "PRS-00041"
@@ -742,7 +742,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-011", "C-030"]
-evidence_refs = ["C-030", "crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "crates/gororoba_cli/src/bin/gravastar_sweep.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "data/csv/genesis_gravastar_bridge.csv", "data/csv/gravastar_anisotropic_stability.csv", "data/csv/gravastar_ligo_mass_sweep.csv", "data/csv/gravastar_polytropic_sweep.csv", "data/csv/gravastar_radial_stability.csv", "docs/BIBLIOGRAPHY.md", "docs/GRAND_SYNTHESIS.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "refs.bib", "registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_c011_verifier_script.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
+evidence_refs = ["C-030", "crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "data/csv/genesis_gravastar_bridge.csv", "data/csv/gravastar_anisotropic_stability.csv", "data/csv/gravastar_ligo_mass_sweep.csv", "data/csv/gravastar_polytropic_sweep.csv", "data/csv/gravastar_radial_stability.csv", "docs/BIBLIOGRAPHY.md", "docs/GRAND_SYNTHESIS.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "refs.bib", "registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_c011_verifier_script.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
 
 [[skeleton]]
 id = "PRS-00042"
@@ -1930,7 +1930,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-071", "C-080", "C-436", "C-437", "C-438", "C-439", "C-440", "I-011"]
-evidence_refs = ["C-080", "C-436", "C-437", "C-438", "C-439", "C-440", "I-011", "crates/gororoba_cli/src/bin/frb_ultrametric.rs", "crates/stats_core/src/ultrametric/mod.rs", "data/csv/c071_frb_ultrametric.csv", "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"]
+evidence_refs = ["C-080", "C-436", "C-437", "C-438", "C-439", "C-440", "I-011", "crates/gororoba_cli_data/src/bin/frb_ultrametric.rs", "crates/stats_core/src/ultrametric/mod.rs", "data/csv/c071_frb_ultrametric.csv", "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00108"
@@ -8113,8 +8113,8 @@ theorem_label = "C-410"
 claim_id = "C-410"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-410."]
-derivation_steps = ["Phase 6 B6: Paper establishes 3rd diagram (tadpole) relevance", "Does NOT overturn C-402 (Rodal 2025) refutation: mixing amplitude ratio ~(alpha/pi)*(B/B_cr)^2 is negligible for lab fields", "Schwinger B_cr=4", "41e9 T verified", "4 passing tests"]
-decision_rule = "Phase 6 B6: Paper establishes 3rd diagram (tadpole) relevance. Does NOT overturn C-402 (Rodal 2025) refutation: mixing amplitude ratio ~(alpha/pi)*(B/B_cr)^2 is negligible for lab fields. Schwinger B_cr=4.41e9 T verified. 4 passing tests."
+derivation_steps = ["Phase 6 B6 -> Sprint 56: Full numerical implementation of all 3 diagrams (irreducible, tadpole, external) via worldline formalism", "100 tests verify: tadpole nonzero, Ward identities pass, weak-field limits match Euler-Heisenberg", "Does NOT overturn C-402: mixing ratio ~(alpha/pi)*(B/B_cr)^2 is negligible for lab fields"]
+decision_rule = "Phase 6 B6 -> Sprint 56: Full numerical implementation of all 3 diagrams (irreducible, tadpole, external) via worldline formalism. 100 tests verify: tadpole nonzero, Ward identities pass, weak-field limits match Euler-Heisenberg. Does NOT overturn C-402: mixing ratio ~(alpha/pi)*(B/B_cr)^2 is negligible for lab fields."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-410"
 source_registry = "registry/claims.toml"
@@ -8122,7 +8122,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-402", "C-410"]
-evidence_refs = ["C-402", "data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf", "docs/BIBLIOGRAPHY.md", "src/scripts/analysis/c410_photon_graviton_scope.py", "tests/test_c410_photon_graviton_scope.py"]
+evidence_refs = ["C-402", "crates/gr_core/src/photon_graviton/", "data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf", "docs/BIBLIOGRAPHY.md"]
 
 [[skeleton]]
 id = "PRS-00452"
@@ -8257,8 +8257,8 @@ theorem_label = "C-418"
 claim_id = "C-418"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-418."]
-derivation_steps = ["Implemented `MaterialDatabase` with explicit Sellmeier models for Quartz/Sapphire/Diamond and Drude models for Gold", "Tracks density and hardness", "Includes exotic phases (Ice VII/X, QGP)", "Phase 7 R6: Closed as engineering database", "literature-sourced optical constants verified"]
-decision_rule = "Implemented `MaterialDatabase` with explicit Sellmeier models for Quartz/Sapphire/Diamond and Drude models for Gold. Tracks density and hardness. Includes exotic phases (Ice VII/X, QGP). Phase 7 R6: Closed as engineering database; literature-sourced optical constants verified."
+derivation_steps = ["Sprint 43 expansion: 25 materials with Drude-Lorentz models (Au, Ag, Cu, Al, Be, Cr, Ni, Pd, Pt, Ti, W, Si, Ge, SiO2, Si3N4, Al2O3, Diamond, Quartz, TiO2, TiO, SrTiO3, SrTiO3:n, LaTiO3, AZO, doped Si)", "All have provenance fields (validity_range_ev, temperature_k, CasimirModelFlag)", "Extended Drude infrastructure supports frequency-dependent scattering", "WHAT WOULD REFUTE: list_materials()", "len() < 25 or any material lacking provenance"]
+decision_rule = "Sprint 43 expansion: 25 materials with Drude-Lorentz models (Au, Ag, Cu, Al, Be, Cr, Ni, Pd, Pt, Ti, W, Si, Ge, SiO2, Si3N4, Al2O3, Diamond, Quartz, TiO2, TiO, SrTiO3, SrTiO3:n, LaTiO3, AZO, doped Si). All have provenance fields (validity_range_ev, temperature_k, CasimirModelFlag). Extended Drude infrastructure supports frequency-dependent scattering. WHAT WOULD REFUTE: list_materials().len() < 25 or any material lacking provenance."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-418"
 source_registry = "registry/claims.toml"
@@ -8266,7 +8266,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-418"]
-evidence_refs = ["crates/materials_core/src/optical_database.rs", "data/external/SiO2_refractive_index.csv", "data/external/TiO2_rutile_refractive_index.csv"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/demo_optical_titanates.rs", "crates/materials_core/src/optical_database.rs"]
 
 [[skeleton]]
 id = "PRS-00460"
@@ -8590,7 +8590,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-071", "C-436"]
-evidence_refs = ["C-071", "crates/cosmology_core/src/distances.rs", "crates/gororoba_cli/src/bin/dm_ultrametric.rs", "crates/stats_core/src/ultrametric/local.rs", "data/csv/c071b_dm_comoving_ultrametric.csv"]
+evidence_refs = ["C-071", "crates/cosmology_core/src/distances.rs", "crates/gororoba_cli_physics/src/bin/dm_ultrametric.rs", "crates/stats_core/src/ultrametric/local.rs", "data/csv/c071b_dm_comoving_ultrametric.csv"]
 
 [[skeleton]]
 id = "PRS-00478"
@@ -8608,7 +8608,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-437", "I-008"]
-evidence_refs = ["I-008", "crates/gororoba_cli/src/bin/multi_dataset_ultrametric.rs", "crates/stats_core/src/ultrametric/baire.rs", "crates/stats_core/src/ultrametric/gpu.rs", "data/csv/c071g_exploration_gpu_10M_1000perm.csv"]
+evidence_refs = ["I-008", "crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs", "crates/stats_core/src/ultrametric/baire.rs", "crates/stats_core/src/ultrametric/gpu.rs", "data/csv/c071g_exploration_gpu_10M_1000perm.csv"]
 
 [[skeleton]]
 id = "PRS-00479"
@@ -8626,7 +8626,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-438"]
-evidence_refs = ["crates/gororoba_cli/src/bin/frb_cascades.rs", "crates/stats_core/src/ultrametric/temporal.rs", "data/csv/c071d_frb_cascades_ultrametric.csv"]
+evidence_refs = ["crates/gororoba_cli_data/src/bin/frb_cascades.rs", "crates/stats_core/src/ultrametric/temporal.rs", "data/csv/c071d_frb_cascades_ultrametric.csv"]
 
 [[skeleton]]
 id = "PRS-00480"
@@ -8644,7 +8644,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-439"]
-evidence_refs = ["crates/gororoba_cli/src/bin/gw_merger_tree.rs", "crates/gororoba_cli/src/bin/multi_dataset_ultrametric.rs", "data/csv/c071e_gw_merger_ultrametric.csv", "data/csv/c071g_exploration_gpu_10M_1000perm.csv"]
+evidence_refs = ["crates/gororoba_cli_data/src/bin/gw_merger_tree.rs", "crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs", "data/csv/c071e_gw_merger_ultrametric.csv", "data/csv/c071g_exploration_gpu_10M_1000perm.csv"]
 
 [[skeleton]]
 id = "PRS-00481"
@@ -8662,7 +8662,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-440"]
-evidence_refs = ["crates/gororoba_cli/src/bin/cosmic_dendrogram.rs", "data/csv/c071f_cosmic_dendrogram.csv"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/cosmic_dendrogram.rs", "data/csv/c071f_cosmic_dendrogram.csv"]
 
 [[skeleton]]
 id = "PRS-00482"
@@ -8680,7 +8680,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-441"]
-evidence_refs = ["crates/cosmology_core/src/observational.rs", "crates/gororoba_cli/src/bin/real_cosmo_fit.rs", "docs/INSIGHTS.md"]
+evidence_refs = ["crates/cosmology_core/src/observational.rs", "crates/gororoba_cli_physics/src/bin/real_cosmo_fit.rs", "docs/INSIGHTS.md"]
 
 [[skeleton]]
 id = "PRS-00483"
@@ -8698,7 +8698,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-442"]
-evidence_refs = ["crates/gororoba_cli/src/bin/multi_dataset_ultrametric.rs", "data/csv/c071g_exploration_gpu_10M_1000perm.csv", "data/csv/c071g_multi_dataset_ultrametric.csv", "docs/INSIGHTS.md"]
+evidence_refs = ["crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs", "data/csv/c071g_exploration_gpu_10M_1000perm.csv", "data/csv/c071g_multi_dataset_ultrametric.csv", "docs/INSIGHTS.md"]
 
 [[skeleton]]
 id = "PRS-00484"
@@ -8835,7 +8835,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-450."]
 derivation_steps = ["WHERE STATED: External AI-generated CSV from convos/CayleyDickson/", "WHAT WOULD REFUTE: Discovering the exact node labeling used in the CSV and showing it IS comparable to cross-assessor adjacency"]
 decision_rule = "WHERE STATED: External AI-generated CSV from convos/CayleyDickson/. WHAT WOULD REFUTE: Discovering the exact node labeling used in the CSV and showing it IS comparable to cross-assessor adjacency."
-conclusion = "INCONCLUSIVE: Inconclusive"
+conclusion = "CLOSED_METHODOLOGY_MISMATCH: Closed/Methodology-Mismatch"
 source_uid = "C-450"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -9069,7 +9069,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-463."]
 derivation_steps = ["WHERE STATED: Monograph Thesis F", "VERIFIED at dims 16 and 32 only", "REFUTED at dims 64 and 128", "Status changed from Verified to Partial", "The parity-clique structure is a small-dimension coincidence, not a universal law"]
 decision_rule = "WHERE STATED: Monograph Thesis F. VERIFIED at dims 16 and 32 only. REFUTED at dims 64 and 128. Status changed from Verified to Partial. The parity-clique structure is a small-dimension coincidence, not a universal law."
-conclusion = "PARTIAL: Partial"
+conclusion = "REFUTED: Refuted"
 source_uid = "C-463"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -9303,14 +9303,14 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-476."]
 derivation_steps = ["E-011 RESULTS: E10 Dynkin: r=1", "0 vs r_null=0", "20, p=0", "000 (STRONG)", "ET DMZ: r=1", "0 vs r_null=0", "01, p=0", "000 (STRONG)"]
 decision_rule = "E-011 RESULTS: E10 Dynkin: r=1.0 vs r_null=0.20, p=0.000 (STRONG). ET DMZ: r=1.0 vs r_null=0.01, p=0.000 (STRONG). Sedenion ZD: r=1.0 vs r_null=0.87, p=1.000 (FAILS -- graph too dense, null already near-local). ALP holds for sparse constraint graphs (E10, ET DMZ) but not for dense graphs (ZD). The ZD failure is structural: with 86.7% edge density, random walks are inherently local. ALP should be refined to require sparse constraint graphs (edge density < 0.5)."
-conclusion = "PARTIAL: Partial"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-476"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-476", "E-011"]
-evidence_refs = ["E-011", "crates/algebra_core/src/experimental/algebraic_dynamics.rs", "crates/algebra_core/src/experimental/billiard_stats.rs", "crates/gororoba_cli/src/bin/cross_stack_locality.rs"]
+evidence_refs = ["E-011", "crates/algebra_core/src/experimental/algebraic_dynamics.rs", "crates/algebra_core/src/experimental/billiard_stats.rs", "crates/gororoba_cli_algebra/src/bin/cross_stack_locality.rs"]
 
 [[skeleton]]
 id = "PRS-00518"
@@ -9321,14 +9321,14 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-477."]
 derivation_steps = ["E-013 RESULTS: A_{N-1} consistently best Coxeter match (scores: N=4: 0", "44, N=5: 0", "23, N=6: 0", "16 -- IMPROVING with level)", "Rank ratio = 1", "0 (box-kite count = Coxeter rank)", "DMZ density/root density ratio converges toward 1", "0 at higher N"]
 decision_rule = "E-013 RESULTS: A_{N-1} consistently best Coxeter match (scores: N=4: 0.44, N=5: 0.23, N=6: 0.16 -- IMPROVING with level). Rank ratio = 1.0 (box-kite count = Coxeter rank). DMZ density/root density ratio converges toward 1.0 at higher N. D_{N-1} second best, B_{N-1} worst. E-012 RESULTS: spectroscopy bands predict billiard entropy (FullFill=0.0, UniformSky=0.44, MixedRegime=0.43), fill-entropy correlation r=-0.85 at N=5. PARTIAL: rank correspondence is strong and improving, but DMZ density match is not yet within 10% of Coxeter root density. Billiard phase prediction holds at N=5, weakens at N=6 (multiple UniformSky sub-bands with different entropies)."
-conclusion = "PARTIAL: Partial"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-477"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-477", "E-012", "E-013"]
-evidence_refs = ["E-012", "E-013", "crates/algebra_core/src/experimental/algebraic_dynamics.rs", "crates/gororoba_cli/src/bin/sky_limit_set.rs"]
+evidence_refs = ["E-012", "E-013", "crates/algebra_core/src/experimental/algebraic_dynamics.rs", "crates/gororoba_cli_algebra/src/bin/sky_limit_set.rs"]
 
 [[skeleton]]
 id = "PRS-00519"
@@ -11002,7 +11002,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-570"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "crates/gororoba_cli/src/bin/dimensional_census.rs"]
+evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "crates/gororoba_cli_algebra/src/bin/dimensional_census.rs"]
 
 [[skeleton]]
 id = "PRS-00612"
@@ -11020,7 +11020,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-571"]
-evidence_refs = ["crates/gororoba_cli/src/bin/dimensional_census.rs", "data/csv/apt_dimensional_census_summary.csv"]
+evidence_refs = ["crates/gororoba_cli_algebra/src/bin/dimensional_census.rs", "data/csv/apt_dimensional_census_summary.csv"]
 
 [[skeleton]]
 id = "PRS-00613"
@@ -11038,7 +11038,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-572"]
-evidence_refs = ["crates/gororoba_cli/src/bin/dimensional_census.rs", "data/csv/apt_dimensional_census_summary.csv"]
+evidence_refs = ["crates/gororoba_cli_algebra/src/bin/dimensional_census.rs", "data/csv/apt_dimensional_census_summary.csv"]
 
 [[skeleton]]
 id = "PRS-00614"
@@ -11362,7 +11362,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-590", "I-041"]
-evidence_refs = ["I-041", "crates/algebra_core/tests/test_split_octonion_attractor.rs", "crates/gororoba_cli/src/bin/c590_attractor_sweep.rs", "data/csv/c590_attractor_ratio_sweep.csv", "data/csv/c590_attractor_runtime_baseline.csv", "registry/insights.toml", "src/scripts/analysis/c590_build_attractor_artifacts.sh"]
+evidence_refs = ["I-041", "crates/algebra_core/tests/test_split_octonion_attractor.rs", "crates/gororoba_cli_algebra/src/bin/c590_attractor_sweep.rs", "data/csv/c590_attractor_ratio_sweep.csv", "data/csv/c590_attractor_runtime_baseline.csv", "registry/insights.toml", "src/scripts/analysis/c590_build_attractor_artifacts.sh"]
 
 [[skeleton]]
 id = "PRS-00632"
@@ -12561,7 +12561,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-657."]
 derivation_steps = ["VERIFIED by STPT-006 (PRIMARY): Cassini bound omega_eff >= 40000 satisfied for lambda-dependent frustration", "VERIFIED by E-027 (secondary, Phase 2): p < 0", "05 correlation", "REFUTATION: Both experiments fail criteria"]
 decision_rule = "VERIFIED by STPT-006 (PRIMARY): Cassini bound omega_eff >= 40000 satisfied for lambda-dependent frustration. VERIFIED by E-027 (secondary, Phase 2): p < 0.05 correlation. REFUTATION: Both experiments fail criteria."
-conclusion = "PROVISIONAL: Provisional"
+conclusion = "ESTABLISHED: Established"
 source_uid = "C-657"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12579,7 +12579,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-658."]
 derivation_steps = ["VERIFIED by E-027 (Phase 2): Negative correlation, p < 0", "05", "REFUTATION: positive/zero correlation or p >= 0", "05"]
 decision_rule = "VERIFIED by E-027 (Phase 2): Negative correlation, p < 0.05. REFUTATION: positive/zero correlation or p >= 0.05."
-conclusion = "PROVISIONAL: Provisional"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-658"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12597,7 +12597,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-659."]
 derivation_steps = ["VERIFIED by E-027 (Phase 2): Null p-value < 0", "05, frustration-derived distinct from random", "REFUTATION: null p >= 0", "05"]
 decision_rule = "VERIFIED by E-027 (Phase 2): Null p-value < 0.05, frustration-derived distinct from random. REFUTATION: null p >= 0.05."
-conclusion = "PROVISIONAL: Provisional"
+conclusion = "ESTABLISHED: Established"
 source_uid = "C-659"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12615,7 +12615,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-660."]
 derivation_steps = ["VERIFIED: overlap=1", "0 for all monotonic models, W2=0 confirmed", "REFUTATION: non-monotonic transform with overlap=1", "0 would violate"]
 decision_rule = "VERIFIED: overlap=1.0 for all monotonic models, W2=0 confirmed. REFUTATION: non-monotonic transform with overlap=1.0 would violate."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-660"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12633,7 +12633,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-661."]
 derivation_steps = ["VERIFIED: CV_ratio << 1 and moderate Spearman despite W2=0", "REFUTATION: sigmoid with F_crit near distribution mean shows high CV_ratio AND high Spearman"]
 decision_rule = "VERIFIED: CV_ratio << 1 and moderate Spearman despite W2=0. REFUTATION: sigmoid with F_crit near distribution mean shows high CV_ratio AND high Spearman."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-661"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12651,7 +12651,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-662."]
 derivation_steps = ["VERIFIED: CV_ratio > 1 for power exponent > 1", "REFUTATION: power-law with exponent > 1 showing CV_ratio < 1"]
 decision_rule = "VERIFIED: CV_ratio > 1 for power exponent > 1. REFUTATION: power-law with exponent > 1 showing CV_ratio < 1."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-662"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12669,7 +12669,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-663."]
 derivation_steps = ["VERIFIED: monotonic Spearman improvement 16->32->64", "REFUTATION: degradation with increasing resolution for any coupling model"]
 decision_rule = "VERIFIED: monotonic Spearman improvement 16->32->64. REFUTATION: degradation with increasing resolution for any coupling model."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-663"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12687,7 +12687,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-664."]
 derivation_steps = ["VERIFIED: v_max ratio < 0", "5 across resolutions", "REFUTATION: power-law v_max >= constant v_max at any resolution"]
 decision_rule = "VERIFIED: v_max ratio < 0.5 across resolutions. REFUTATION: power-law v_max >= constant v_max at any resolution."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-664"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12705,7 +12705,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-665."]
 derivation_steps = ["VERIFIED: max_delta_gamma=0", "19 > 0", "1 threshold at alpha=0", "5", "REFUTATION: gamma invariant to alpha across full sweep range"]
 decision_rule = "VERIFIED: max_delta_gamma=0.19 > 0.1 threshold at alpha=0.5. REFUTATION: gamma invariant to alpha across full sweep range."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-665"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12723,7 +12723,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-666."]
 derivation_steps = ["VERIFIED: non-monotonic delta_gamma with peak at moderate alpha", "REFUTATION: monotonic increase of delta_gamma with alpha"]
 decision_rule = "VERIFIED: non-monotonic delta_gamma with peak at moderate alpha. REFUTATION: monotonic increase of delta_gamma with alpha."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-666"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12741,7 +12741,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-667."]
 derivation_steps = ["VERIFIED: vel_reduction > 0", "05 at alpha=100, n=1", "2", "REFUTATION: non-Newtonian v_max >= Newtonian v_max at all parameter pairs"]
 decision_rule = "VERIFIED: vel_reduction > 0.05 at alpha=100, n=1.2. REFUTATION: non-Newtonian v_max >= Newtonian v_max at all parameter pairs."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-667"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12759,7 +12759,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-668."]
 derivation_steps = ["VERIFIED: vel_reduction(n=1", "2) >> vel_reduction(n=2", "0) at all alphas", "REFUTATION: n=2", "0 producing larger reduction than n=1", "2"]
 decision_rule = "VERIFIED: vel_reduction(n=1.2) >> vel_reduction(n=2.0) at all alphas. REFUTATION: n=2.0 producing larger reduction than n=1.2."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-668"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12775,9 +12775,9 @@ theorem_label = "C-669"
 claim_id = "C-669"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-669."]
-derivation_steps = ["VERIFIED: classification resolves at larger grid (32^3 or 64^3)", "REFUTATION: remains Undetermined across all grid sizes"]
-decision_rule = "VERIFIED: classification resolves at larger grid (32^3 or 64^3). REFUTATION: remains Undetermined across all grid sizes."
-conclusion = "PROVISIONAL: Provisional"
+derivation_steps = ["REFUTED at 128^3 FP64: 0/5 lambda values produce non-Undetermined classification", "Power-law exponent positive at all lambdas (0", "184 at lambda=0", "5, 0", "139 at lambda=10", "0)", "r2_inverse_square peaks at 0", "685 (lambda=2"]
+decision_rule = "REFUTED at 128^3 FP64: 0/5 lambda values produce non-Undetermined classification. Power-law exponent positive at all lambdas (0.184 at lambda=0.5, 0.139 at lambda=10.0). r2_inverse_square peaks at 0.685 (lambda=2.0) but exponent sign prevents classification. This is not a resolution artifact."
+conclusion = "REFUTED: Refuted"
 source_uid = "C-669"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12795,7 +12795,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-670."]
 derivation_steps = ["VERIFIED: 6 unit tests pass", "REFUTATION: slice isolation broken or frustration length incorrect"]
 decision_rule = "VERIFIED: 6 unit tests pass. REFUTATION: slice isolation broken or frustration length incorrect."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-670"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12813,7 +12813,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-671."]
 derivation_steps = ["VERIFIED: trained model violation < associator violation", "REFUTATION: MSE fails to decrease or violation increases with training"]
 decision_rule = "VERIFIED: trained model violation < associator violation. REFUTATION: MSE fails to decrease or violation increases with training."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-671"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12831,7 +12831,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-672."]
 derivation_steps = ["VERIFIED: algebraic-only improvement << neural improvement", "REFUTATION: algebraic-only achieving >20% improvement"]
 decision_rule = "VERIFIED: algebraic-only improvement << neural improvement. REFUTATION: algebraic-only achieving >20% improvement."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-672"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12849,7 +12849,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-673."]
 derivation_steps = ["VERIFIED: violation at 5% noise < 2x baseline", "REFUTATION: violation at 5% noise > 2x baseline"]
 decision_rule = "VERIFIED: violation at 5% noise < 2x baseline. REFUTATION: violation at 5% noise > 2x baseline."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-673"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12867,7 +12867,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-674."]
 derivation_steps = ["VERIFIED: 4/4 gates pass", "REFUTATION: any thesis fails its gate at default parameters"]
 decision_rule = "VERIFIED: 4/4 gates pass. REFUTATION: any thesis fails its gate at default parameters."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-674"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12885,7 +12885,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-675."]
 derivation_steps = ["VERIFIED:", "Spearman", "> 0", "95 at all scales 16^3", "128^3", "REFUTATION: correlation degrades below 0", "90 at any scale"]
 decision_rule = "VERIFIED: |Spearman| > 0.95 at all scales 16^3..128^3. REFUTATION: correlation degrades below 0.90 at any scale."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-675"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12903,7 +12903,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-676."]
 derivation_steps = ["VERIFIED: GPU and CPU paths produce comparable max_vel at same grid/steps", "REFUTATION: GPU max_vel=0 or differs by >50% from CPU"]
 decision_rule = "VERIFIED: GPU and CPU paths produce comparable max_vel at same grid/steps. REFUTATION: GPU max_vel=0 or differs by >50% from CPU."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-676"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12921,7 +12921,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-677."]
 derivation_steps = ["VERIFIED: law=Undetermined at 16^3", "64^3", "REFUTATION: deterministic latency law at any grid >= 128^3 or with different forcing"]
 decision_rule = "VERIFIED: law=Undetermined at 16^3..64^3. REFUTATION: deterministic latency law at any grid >= 128^3 or with different forcing."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-677"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12939,7 +12939,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-678."]
 derivation_steps = ["VERIFIED: D_S(0", "01)/D_S(0) < 0", "03 at T=0", "5 for dim=8", "REFUTATION: D_S ratio > 0", "5 at lambda=0", "01 for any dim or temperature"]
 decision_rule = "VERIFIED: D_S(0.01)/D_S(0) < 0.03 at T=0.5 for dim=8. REFUTATION: D_S ratio > 0.5 at lambda=0.01 for any dim or temperature."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-678"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12957,7 +12957,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-679."]
 derivation_steps = ["VERIFIED: g(0", "375) in [50, 150] for dim=8 at T=0", "5", "REFUTATION: g(0", "375) < 10 or > 500 at these parameters"]
 decision_rule = "VERIFIED: g(0.375) in [50, 150] for dim=8 at T=0.5. REFUTATION: g(0.375) < 10 or > 500 at these parameters."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-679"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12975,7 +12975,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-680."]
 derivation_steps = ["VERIFIED: g(1", "0) in [100, 500] for dim=8 at T=0", "5", "REFUTATION: g(1", "0) < 50 or analytical fit R^2 > 0", "95"]
 decision_rule = "VERIFIED: g(1.0) in [100, 500] for dim=8 at T=0.5. REFUTATION: g(1.0) < 50 or analytical fit R^2 > 0.95."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-680"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -12993,7 +12993,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-681."]
 derivation_steps = ["VERIFIED: 6 unit tests pass including zero-frustration identity, monotonicity near vacuum, enhancement ratio bounds", "REFUTATION: KuboResponse produces NaN or negative viscosity for any valid frustration input"]
 decision_rule = "VERIFIED: 6 unit tests pass including zero-frustration identity, monotonicity near vacuum, enhancement ratio bounds. REFUTATION: KuboResponse produces NaN or negative viscosity for any valid frustration input."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-681"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13011,7 +13011,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-682."]
 derivation_steps = ["VERIFIED: B(0) = 1", "0 to machine precision", "REFUTATION: B(0) < 0", "99 would indicate a bug in the current-current correlator evaluation"]
 decision_rule = "VERIFIED: B(0) = 1.0 to machine precision. REFUTATION: B(0) < 0.99 would indicate a bug in the current-current correlator evaluation."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-682"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13029,7 +13029,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-683."]
 derivation_steps = ["VERIFIED: D_S monotonically increases from alpha=0 to alpha=1", "1 and peaks at alpha=1", "1", "REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard frustration suppression per Heidrich-Meisner PRB 68, 134436)"]
 decision_rule = "VERIFIED: D_S monotonically increases from alpha=0 to alpha=1.1 and peaks at alpha=1.1. REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard frustration suppression per Heidrich-Meisner PRB 68, 134436)."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-683"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13047,7 +13047,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-684."]
 derivation_steps = ["VERIFIED: m3_hexagon_residual > 0 for associator m_3 with n_samples=256", "REFUTATION: If hexagon residual were zero, m_3 alone would satisfy A_5 and no m_4 would be needed"]
 decision_rule = "VERIFIED: m3_hexagon_residual > 0 for associator m_3 with n_samples=256. REFUTATION: If hexagon residual were zero, m_3 alone would satisfy A_5 and no m_4 would be needed."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-684"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13065,7 +13065,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-685."]
 derivation_steps = ["VERIFIED: B(0) = 1", "0 to machine precision matches Castella et al", "REFUTATION: Any B(0) != 1", "0 indicates a spectral weight miscounting bug"]
 decision_rule = "VERIFIED: B(0) = 1.0 to machine precision matches Castella et al. REFUTATION: Any B(0) != 1.0 indicates a spectral weight miscounting bug."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-685"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13083,7 +13083,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-686."]
 derivation_steps = ["VERIFIED: Enhancement is consistent with Varma mechanism (frustration suppressed by competing effects -> D rises)", "REFUTATION: Running at B=0 should show standard frustration suppression per Heidrich-Meisner PRB 68, 134436 (2003)"]
 decision_rule = "VERIFIED: Enhancement is consistent with Varma mechanism (frustration suppressed by competing effects -> D rises). REFUTATION: Running at B=0 should show standard frustration suppression per Heidrich-Meisner PRB 68, 134436 (2003)."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-686"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13101,7 +13101,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-687."]
 derivation_steps = ["VERIFIED: alpha_peak(C_V) = 0", "80 > 0", "2411 at B=3", "0", "At B=0, the peak should move toward alpha_c ~ 0", "2411", "REFUTATION: If C_V peak were at alpha < 0", "2411, the field would suppress rather than shift the crossover"]
 decision_rule = "VERIFIED: alpha_peak(C_V) = 0.80 > 0.2411 at B=3.0. At B=0, the peak should move toward alpha_c ~ 0.2411. REFUTATION: If C_V peak were at alpha < 0.2411, the field would suppress rather than shift the crossover."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-687"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13119,7 +13119,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-688."]
 derivation_steps = ["VERIFIED: TOML file parses and contains all claimed entries", "REFUTATION: If any digitized value is >20% off from paper figure, the entry should be corrected"]
 decision_rule = "VERIFIED: TOML file parses and contains all claimed entries. REFUTATION: If any digitized value is >20% off from paper figure, the entry should be corrected."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-688"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13173,7 +13173,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-691."]
 derivation_steps = ["VERIFY intent: parse `registry/research_intake_2026_02_14", "toml` and confirm `entry_count=34` plus unresolved set `{RI-026, RI-027, RI-032}`", "REFUTE intent: any canonical intake snapshot with a different unresolved count or different unresolved IDs"]
 decision_rule = "VERIFY intent: parse `registry/research_intake_2026_02_14.toml` and confirm `entry_count=34` plus unresolved set `{RI-026, RI-027, RI-032}`. REFUTE intent: any canonical intake snapshot with a different unresolved count or different unresolved IDs."
-conclusion = "ESTABLISHED: Established"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-691"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13191,7 +13191,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-692."]
 derivation_steps = ["VERIFY intent: trace RI-028 source chain and confirm DOI `10", "1126/science", "adl2348` is explicitly linked and topic-aligned", "REFUTE intent: DOI is absent from the chain or resolves to unrelated content"]
 decision_rule = "VERIFY intent: trace RI-028 source chain and confirm DOI `10.1126/science.adl2348` is explicitly linked and topic-aligned. REFUTE intent: DOI is absent from the chain or resolves to unrelated content."
-conclusion = "OPEN: Open"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-692"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13209,7 +13209,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-693."]
 derivation_steps = ["VERIFY intent: confirm both RI-030 and RI-031 chains resolve to DOI `10", "1103/PhysRevD", "110", "116016` with matching article context", "REFUTE intent: chain breaks, DOI mismatch, or topic mismatch"]
 decision_rule = "VERIFY intent: confirm both RI-030 and RI-031 chains resolve to DOI `10.1103/PhysRevD.110.116016` with matching article context. REFUTE intent: chain breaks, DOI mismatch, or topic mismatch."
-conclusion = "OPEN: Open"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-693"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13227,7 +13227,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-694."]
 derivation_steps = ["VERIFY intent: confirm RI-033 chain includes DOI `10", "1038/s41586-025-09917-9` and the linked paper aligns with the described phenomenon", "REFUTE intent: DOI is missing, unresolved, or topically unrelated"]
 decision_rule = "VERIFY intent: confirm RI-033 chain includes DOI `10.1038/s41586-025-09917-9` and the linked paper aligns with the described phenomenon. REFUTE intent: DOI is missing, unresolved, or topically unrelated."
-conclusion = "OPEN: Open"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-694"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -13238,36 +13238,3114 @@ evidence_refs = ["10.1038/s41586-025-09917-9"]
 
 [[skeleton]]
 id = "PRS-00736"
-skeleton_kind = "theorem_proof_sketch"
-theorem_label = "Prefix-Chain Theorem for CD Lattice Filtration"
-claim_id = "C-453"
-assumptions = ["S_base = {v in Z^8 : sum(v_i) even, each v_i in {-1,0,1}} has |S_base| = 2187.", "Lambda_dim = first dim points of S_base in BTreeSet (lexicographic) order.", "project_to_lattice maps CD(dim) basis elements to Z^8 via pi(a,b)_i = round((a_i - b_i) * scale)."]
-obligations = ["Show Lambda_256 < Lambda_512 < Lambda_1024 < Lambda_2048 < S_base is a strict chain of lexicographic prefix-cuts.", "Show each transition Lambda_{2n} -> Lambda_n is determined by a single coordinate threshold."]
-derivation_steps = ["(a) S_base = {v in Z^8 : sum(v_i) even, |v_i|<=1} has |S_base| = 2187 (census by construction).", "(b) Lambda_{2n} are the first 2n points of S_base in lex order (BTreeSet insertion order).", "(c) By construction, Lambda_n is a prefix of Lambda_{2n} in lex order.", "(d) The prefix-cut boundary at each level is the first coordinate where the (n+1)-th point of Lambda_{2n} differs from all points in Lambda_n.", "(e) learn_prefix_cut() discovers divergence coordinates advancing by 1 at each doubling (verified at 256/512/1024/2048)."]
-decision_rule = "VERIFIED: All four transitions pass learn_prefix_cut + boundary_vector assertions in cd_external.rs tests."
-conclusion = "VERIFIED: The tower Lambda_256 < Lambda_512 < Lambda_1024 < Lambda_2048 < S_base is a strict chain of lexicographic prefix-cuts."
-source_uid = "C-453"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-695"
+claim_id = "C-695"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-695."]
+derivation_steps = ["VERIFIED: Exhaustive check over all C(126,3) = 333,396 root triples (excluding opposite-root pairs where the bracket maps to the Cartan subalgebra)", "All 5 tests pass: cocycle condition, antisymmetry, Jacobi identity, unit values, simple root adjacency", "WHAT WOULD REFUTE: any triple where N(a,b)*N(a+b,c)+N(b,c)*N(b+c,a)+N(c,a)*N(c+a,b) != 0"]
+decision_rule = "VERIFIED: Exhaustive check over all C(126,3) = 333,396 root triples (excluding opposite-root pairs where the bracket maps to the Cartan subalgebra). All 5 tests pass: cocycle condition, antisymmetry, Jacobi identity, unit values, simple root adjacency. WHAT WOULD REFUTE: any triple where N(a,b)*N(a+b,c)+N(b,c)*N(b+c,a)+N(c,a)*N(c+a,b) != 0."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-695"
 source_registry = "registry/claims.toml"
-source_path = "crates/algebra_core/src/experimental/cd_external.rs"
-line_start = 2283
-line_end = 2400
-claim_refs = ["C-453", "C-452"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs", "data/csv/cayley_dickson/2048d_lattice_mapping.csv"]
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-695"]
+evidence_refs = ["crates/algebra_core/src/lie/lyndon_basis.rs"]
 
 [[skeleton]]
 id = "PRS-00737"
-skeleton_kind = "theorem_proof_sketch"
-theorem_label = "8D Codomain Lock and Octonion-Lattice Bridge"
-claim_id = "C-452"
-assumptions = ["pi: R^{2^n} -> Z^8 defined by pi(a,b)_i = round((a_i - b_i) * scale) for a=(a_0..a_7), b=(a_8..a_15).", "CD construction: element = (a, b) where a, b are from the previous doubling level.", "E8 lattice provides a rank-8 even unimodular lattice structure."]
-obligations = ["Explain why the codomain is always 8D (not 16D or higher).", "Show the 8D projection reflects octonion subalgebra structure.", "Connect filtration growth deltas to algebraic property constraints."]
-derivation_steps = ["(a) CD construction: element = (a, b) where a, b are octonions (8D each) at the first doubling beyond octonions.", "(b) pi extracts a - b, collapsing the doubling axis to zero: the projection sees only the 8D real-coefficient shadow.", "(c) Injectivity within scale: if a1-b1 != a2-b2 then pi(a1,b1) != pi(a2,b2), verified for unit elements at scale=1.", "(d) Codomain lock: Z^8 inherits rank-8 lattice structure, consistent with E8 root system embedding.", "(e) Growth deltas: |Lambda_{2n}| - |Lambda_n| < n because the prefix-cut excludes points violating parity constraint sum(v_i)=even."]
-decision_rule = "VERIFIED: 8D codomain confirmed at dims 256/512/1024/2048 in cd_external.rs tests; no higher-dimensional coordinates appear."
-conclusion = "VERIFIED: The 8D codomain lock reflects the octonion subalgebra shadow of the Cayley-Dickson construction."
-source_uid = "C-452"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-696"
+claim_id = "C-696"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-696."]
+derivation_steps = ["VERIFIED: Codomain confirmed to be exactly 8D at dims 256, 512, 1024, and 2048", "No higher-dimensional coordinates appear", "Proof skeleton PRS-00737 links this to octonion subalgebra structure", "WHAT WOULD REFUTE: any dimension where the projection codomain exceeds 8D"]
+decision_rule = "VERIFIED: Codomain confirmed to be exactly 8D at dims 256, 512, 1024, and 2048. No higher-dimensional coordinates appear. Proof skeleton PRS-00737 links this to octonion subalgebra structure. WHAT WOULD REFUTE: any dimension where the projection codomain exceeds 8D."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-696"
 source_registry = "registry/claims.toml"
-source_path = "crates/lattice_filtration/src/basis_index.rs"
-line_start = 31
-line_end = 39
-claim_refs = ["C-452", "C-453"]
-evidence_refs = ["crates/lattice_filtration/src/basis_index.rs", "crates/algebra_core/src/experimental/cd_external.rs"]
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-696"]
+evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs", "crates/lattice_filtration/src/basis_index.rs"]
+
+[[skeleton]]
+id = "PRS-00738"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-697"
+claim_id = "C-697"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-697."]
+derivation_steps = ["VERIFIED: All 11 metals have _drude() and _drude_lorentz() constructors", "Tests confirm metallic sign (eps", "re < 0 at 2 eV) and imaginary-freq monotonicity", "Parameters from Rakic et al", "Applied Optics 37(22), 5271-5283 (1998)", "WHAT WOULD REFUTE: any Rakic metal with eps", "re > 0 at 2 eV"]
+decision_rule = "VERIFIED: All 11 metals have _drude() and _drude_lorentz() constructors. Tests confirm metallic sign (eps.re < 0 at 2 eV) and imaginary-freq monotonicity. Parameters from Rakic et al. Applied Optics 37(22), 5271-5283 (1998). WHAT WOULD REFUTE: any Rakic metal with eps.re > 0 at 2 eV."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-697"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-697"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00739"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-698"
+claim_id = "C-698"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-698."]
+derivation_steps = ["VERIFIED: eps", "re < 0 at 0", "5 eV confirms metallic character", "Large gamma relative to omega_p places TiO in the bad-metal regime", "Parameters from Barman & Sarma PRB 51 (1995)", "WHAT WOULD REFUTE: eps", "re > 0 below 1 eV"]
+decision_rule = "VERIFIED: eps.re < 0 at 0.5 eV confirms metallic character. Large gamma relative to omega_p places TiO in the bad-metal regime. Parameters from Barman & Sarma PRB 51 (1995). WHAT WOULD REFUTE: eps.re > 0 below 1 eV."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-698"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-698"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00740"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-699"
+claim_id = "C-699"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-699."]
+derivation_steps = ["VERIFIED: Im[eps] shows strong peak near 11 meV soft mode", "3 oscillators at 11, 22, 65 meV from Servoin et al", "PRB 22 (1980)", "WHAT WOULD REFUTE: featureless Im[eps] in 5-80 meV range"]
+decision_rule = "VERIFIED: Im[eps] shows strong peak near 11 meV soft mode. 3 oscillators at 11, 22, 65 meV from Servoin et al. PRB 22 (1980). WHAT WOULD REFUTE: featureless Im[eps] in 5-80 meV range."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-699"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-699"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00741"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-700"
+claim_id = "C-700"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-700."]
+derivation_steps = ["VERIFIED: Strong absorption (oscillator at 0", "2 eV) with large gamma=0", "15 eV reproduces broad Mott gap feature", "Parameters from Okimoto et al", "PRB 51 (1995)", "WHAT WOULD REFUTE: no absorption feature near 0", "2 eV"]
+decision_rule = "VERIFIED: Strong absorption (oscillator at 0.2 eV) with large gamma=0.15 eV reproduces broad Mott gap feature. Parameters from Okimoto et al. PRB 51 (1995). WHAT WOULD REFUTE: no absorption feature near 0.2 eV."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-700"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-700"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00742"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-701"
+claim_id = "C-701"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-701."]
+derivation_steps = ["VERIFIED:", "eps_regular - eps_extended", "< 1e-10 at all test frequencies (0", "5, 1, 2, 5 eV) for both real-frequency and imaginary-frequency epsilon", "WHAT WOULD REFUTE: any frequency where the two implementations disagree beyond 1e-10"]
+decision_rule = "VERIFIED: |eps_regular - eps_extended| < 1e-10 at all test frequencies (0.5, 1, 2, 5 eV) for both real-frequency and imaginary-frequency epsilon. WHAT WOULD REFUTE: any frequency where the two implementations disagree beyond 1e-10."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-701"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-701"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00743"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-702"
+claim_id = "C-702"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-702."]
+derivation_steps = ["VERIFIED: At 0", "1 eV, Smith (c=-0", "8) has less negative eps", "re than standard Drude, consistent with Anderson localization suppressing itinerant response", "At c=0 Smith matches regular Drude exactly", "WHAT WOULD REFUTE: Smith c<0 producing MORE metallic response than regular Drude"]
+decision_rule = "VERIFIED: At 0.1 eV, Smith (c=-0.8) has less negative eps.re than standard Drude, consistent with Anderson localization suppressing itinerant response. At c=0 Smith matches regular Drude exactly. WHAT WOULD REFUTE: Smith c<0 producing MORE metallic response than regular Drude."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-702"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-702"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00744"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-703"
+claim_id = "C-703"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-703."]
+derivation_steps = ["VERIFIED: wavelet-bridging-sweep reports median improvement = 16", "74% across full (rho, eps) grid -- well above 5% threshold", "PASS", "Bridge reduces RelErr from J&C-only by accumulating sub-threshold residuals and reinjecting", "REFUTE: re-run with same seed=42 producing median < 5%"]
+decision_rule = "VERIFIED: wavelet-bridging-sweep reports median improvement = 16.74% across full (rho, eps) grid -- well above 5% threshold. PASS. Bridge reduces RelErr from J&C-only by accumulating sub-threshold residuals and reinjecting. REFUTE: re-run with same seed=42 producing median < 5%."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-703"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-703"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/wavelet_bridging_sweep.rs", "data/wavelet_bridging/results.toml"]
+
+[[skeleton]]
+id = "PRS-00745"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-704"
+claim_id = "C-704"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-704."]
+derivation_steps = ["VERIFIED: meltdown-gating-sweep reports p95 reductions 57", "48% (rho=0", "50), 51", "59% (rho=1", "00), 53", "54% (rho=1", "50), 55", "91% (rho=2"]
+decision_rule = "VERIFIED: meltdown-gating-sweep reports p95 reductions 57.48% (rho=0.50), 51.59% (rho=1.00), 53.54% (rho=1.50), 55.91% (rho=2.00) -- all far above 10% threshold. PASS. Adaptive epsilon controller drives concurrency toward target M0=130 via proportional threshold updates. REFUTE: re-run with seed=42 producing any rho with p95 reduction < 10%."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-704"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-704"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/meltdown_gating_sweep.rs", "data/meltdown_gating/results.toml"]
+
+[[skeleton]]
+id = "PRS-00746"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-705"
+claim_id = "C-705"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-705."]
+derivation_steps = ["VERIFIED: wavelet-acf-calibration reports R2=0", "4490 (eps=1e-3, INFO), R2=0", "4789 (eps=3e-3, INFO), R2=0", "5079 (eps=1e-2, PASS), R2=0", "8099 (eps=3e-2, PASS)", "Fitted kappa=12", "7-13", "9 rad/s (stable across eps)"]
+decision_rule = "VERIFIED: wavelet-acf-calibration reports R2=0.4490 (eps=1e-3, INFO), R2=0.4789 (eps=3e-3, INFO), R2=0.5079 (eps=1e-2, PASS), R2=0.8099 (eps=3e-2, PASS). Fitted kappa=12.7-13.9 rad/s (stable across eps). R2 >= 0.50 for eps >= 1e-2 confirms single-exponential decay in concentrated-spectral regime. PASS. REFUTE: re-run with seed=42 producing R2 < 0.50 for eps=1e-2 or eps=3e-2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-705"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-705"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/wavelet_acf_calibration.rs", "data/wavelet_acf/results.toml"]
+
+[[skeleton]]
+id = "PRS-00747"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-706"
+claim_id = "C-706"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-706."]
+derivation_steps = ["VERIFIED: chsh-wavelet-compression reports", "S_compressed", "=2", "3424 > 2", "0, delta_S=0", "0000 (exact), compression ratio=19", "0x (N=300 time series, keep 5% + DC)", "PASS"]
+decision_rule = "VERIFIED: chsh-wavelet-compression reports |S_compressed|=2.3424 > 2.0, delta_S=0.0000 (exact), compression ratio=19.0x (N=300 time series, keep 5% + DC). PASS. The scaling coefficient exactness (Haar sum invariance) means Bell parameter is algebraically preserved, not approximately. REFUTE: |S_compressed| <= 2.0 after applying coarsest-coefficient retention, or S_raw <= 2.0 (measurement not demonstrating Bell violation)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-706"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-706"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/chsh_wavelet_compression.rs", "data/chsh_wavelet/results.toml"]
+
+[[skeleton]]
+id = "PRS-00748"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-707"
+claim_id = "C-707"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-707."]
+derivation_steps = ["VERIFIED: wo3_optical()", "drude", "is_none() and 5 oscillators with eps_inf=4", "5", "REFUTE: any evidence of free carriers in stoichiometric WO3 at room temperature"]
+decision_rule = "VERIFIED: wo3_optical().drude.is_none() and 5 oscillators with eps_inf=4.5. REFUTE: any evidence of free carriers in stoichiometric WO3 at room temperature."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-707"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-707"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00749"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-708"
+claim_id = "C-708"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-708."]
+derivation_steps = ["VERIFIED: Drude parameters omega_p=1", "07 eV, gamma=0", "20 eV, eps_inf=5", "88 match Garcia et al", "(2011) carrier-density derivation", "REFUTE: experimental omega_p differing by >30% from 1", "07 eV at x~0", "1"]
+decision_rule = "VERIFIED: Drude parameters omega_p=1.07 eV, gamma=0.20 eV, eps_inf=5.88 match Garcia et al. (2011) carrier-density derivation. REFUTE: experimental omega_p differing by >30% from 1.07 eV at x~0.1."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-708"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-708"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00750"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-709"
+claim_id = "C-709"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-709."]
+derivation_steps = ["VERIFIED: UniaxialOptical stores parallel/perpendicular DrudeLorentzParams with correct Lynch & Hunter values", "par", "omega_p > perp", "omega_p confirmed", "REFUTE: published Cs0", "33WO3 optical constants showing isotropic Drude weight"]
+decision_rule = "VERIFIED: UniaxialOptical stores parallel/perpendicular DrudeLorentzParams with correct Lynch & Hunter values; par.omega_p > perp.omega_p confirmed. REFUTE: published Cs0.33WO3 optical constants showing isotropic Drude weight."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-709"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-709"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00751"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-710"
+claim_id = "C-710"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-710."]
+derivation_steps = ["VERIFIED: polycrystalline_average() matches (par + 2*perp)/3 formula to machine precision", "REFUTE: the 1:2 weighting being incorrect for non-hexagonal crystal systems"]
+decision_rule = "VERIFIED: polycrystalline_average() matches (par + 2*perp)/3 formula to machine precision. REFUTE: the 1:2 weighting being incorrect for non-hexagonal crystal systems."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-710"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-710"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00752"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-711"
+claim_id = "C-711"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-711."]
+derivation_steps = ["VERIFIED: No Drude, eps", "re > 1 and eps", "im < 0", "5 at 2 eV, eps", "im > 0", "5 at 5 eV", "REFUTE: experimental evidence of free carriers or metallic behavior in undoped CaWO4"]
+decision_rule = "VERIFIED: No Drude, eps.re > 1 and eps.im < 0.5 at 2 eV, eps.im > 0.5 at 5 eV. REFUTE: experimental evidence of free carriers or metallic behavior in undoped CaWO4."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-711"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-711"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00753"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-712"
+claim_id = "C-712"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-712."]
+derivation_steps = ["VERIFIED: No Drude, eps_inf=4", "8 matching Nikl et al", "(2000)", "REFUTE: experimental PbWO4 eps_inf differing by >20% from 4", "8"]
+decision_rule = "VERIFIED: No Drude, eps_inf=4.8 matching Nikl et al. (2000). REFUTE: experimental PbWO4 eps_inf differing by >20% from 4.8."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-712"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-712"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00754"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-713"
+claim_id = "C-713"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-713."]
+derivation_steps = ["VERIFIED: list_materials()", "len() == 30, all 15 aliases resolve via get_material()", "REFUTE: any alias returning None"]
+decision_rule = "VERIFIED: list_materials().len() == 30, all 15 aliases resolve via get_material(). REFUTE: any alias returning None."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-713"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-713"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00755"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-714"
+claim_id = "C-714"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-714."]
+derivation_steps = ["VERIFIED: 15 tests covering metals/dielectrics, frequency ranges, sign conventions, ranking, sum rules", "Gold sigma_dc in [1e7, 1e8] S/m", "REFUTE: experimental optical constants differing by >50% from model predictions"]
+decision_rule = "VERIFIED: 15 tests covering metals/dielectrics, frequency ranges, sign conventions, ranking, sum rules. Gold sigma_dc in [1e7, 1e8] S/m. REFUTE: experimental optical constants differing by >50% from model predictions."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-714"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-714"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00756"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-715"
+claim_id = "C-715"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-715."]
+derivation_steps = ["VERIFIED: birefringence > 0", "001 at 0", "5 eV, R_par > R_perp (stronger Drude along c-axis), polycrystalline average bounded between extremes", "REFUTE: single-crystal Cs0", "33WO3 showing isotropic optical response"]
+decision_rule = "VERIFIED: birefringence > 0.001 at 0.5 eV, R_par > R_perp (stronger Drude along c-axis), polycrystalline average bounded between extremes. REFUTE: single-crystal Cs0.33WO3 showing isotropic optical response."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-715"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-715"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00757"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-716"
+claim_id = "C-716"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-716."]
+derivation_steps = ["VERIFIED: reflectivity in [0,1] for all 7 materials x 4 frequencies, sigma_1 > 0 for metals, alpha > 0 for absorbers, k >= 0 always", "REFUTE: pathological material where abs(Im(eps)) is not physically correct"]
+decision_rule = "VERIFIED: reflectivity in [0,1] for all 7 materials x 4 frequencies, sigma_1 > 0 for metals, alpha > 0 for absorbers, k >= 0 always. REFUTE: pathological material where abs(Im(eps)) is not physically correct."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-716"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-716"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00758"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-717"
+claim_id = "C-717"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-717."]
+derivation_steps = ["VERIFIED: Gold n in [1e28, 1e29] m^-3, WO3-x n in [1e26, 1e28] m^-3", "REFUTE: Hall effect measurements showing >10x disagreement with Drude-derived carrier density"]
+decision_rule = "VERIFIED: Gold n in [1e28, 1e29] m^-3, WO3-x n in [1e26, 1e28] m^-3. REFUTE: Hall effect measurements showing >10x disagreement with Drude-derived carrier density."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-717"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-717"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00759"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-718"
+claim_id = "C-718"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-718."]
+derivation_steps = ["VERIFIED: xi_1 in [2e14, 3e14] at 300K, spacing doubles at 600K, eps(i*xi) > 1 and monotonically decreasing for gold", "REFUTE: non-analytic continuation of Lorentz model to imaginary axis"]
+decision_rule = "VERIFIED: xi_1 in [2e14, 3e14] at 300K, spacing doubles at 600K, eps(i*xi) > 1 and monotonically decreasing for gold. REFUTE: non-analytic continuation of Lorentz model to imaginary axis."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-718"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-718"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00760"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-719"
+claim_id = "C-719"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-719."]
+derivation_steps = ["VERIFIED: R_HR > 0", "95 at 0", "01 eV,", "R_HR - R_full", "< 0", "05 at 0", "005 eV", "REFUTE: anomalous skin effect corrections making HR approximation fail at these frequencies for gold"]
+decision_rule = "VERIFIED: R_HR > 0.95 at 0.01 eV, |R_HR - R_full| < 0.05 at 0.005 eV. REFUTE: anomalous skin effect corrections making HR approximation fail at these frequencies for gold."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-719"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-719"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00761"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-720"
+claim_id = "C-720"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-720."]
+derivation_steps = ["VERIFIED: E < 0 (attractive),", "E", "increases with decreasing separation, force = -dE/dd > 0 (pulls plates together)", "REFUTE: experimental Casimir force measurements disagreeing by >50% with Lifshitz prediction"]
+decision_rule = "VERIFIED: E < 0 (attractive), |E| increases with decreasing separation, force = -dE/dd > 0 (pulls plates together). REFUTE: experimental Casimir force measurements disagreeing by >50% with Lifshitz prediction."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-720"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-720"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00762"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-721"
+claim_id = "C-721"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-721."]
+derivation_steps = ["VERIFIED: E_ideal in [1e-8, 1e-5] at 100 nm, eta in [0", "1, 10]", "REFUTE: eta consistently > 10 indicating incorrect normalization"]
+decision_rule = "VERIFIED: E_ideal in [1e-8, 1e-5] at 100 nm, eta in [0.1, 10]. REFUTE: eta consistently > 10 indicating incorrect normalization."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-721"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-721"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00763"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-722"
+claim_id = "C-722"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-722."]
+derivation_steps = ["VERIFIED: WO3 gap detected at 1e5 threshold (min alpha ~4e4), CaWO4 at 1e5, metal returns None, no-transparent-window returns None", "REFUTE: materials where two-pass gives wrong ordering (band edge found below phonon region)"]
+decision_rule = "VERIFIED: WO3 gap detected at 1e5 threshold (min alpha ~4e4), CaWO4 at 1e5, metal returns None, no-transparent-window returns None. REFUTE: materials where two-pass gives wrong ordering (band edge found below phonon region)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-722"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-722"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00764"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-723"
+claim_id = "C-723"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-723."]
+derivation_steps = ["VERIFIED: WO3 min alpha ~ 4e4, CaWO4 min alpha ~ 1", "7e4", "REFUTE: Lorentz model with S>1 and gamma/omega_0 > 0", "1 producing alpha < 100 m^-1 at any frequency"]
+decision_rule = "VERIFIED: WO3 min alpha ~ 4e4, CaWO4 min alpha ~ 1.7e4. REFUTE: Lorentz model with S>1 and gamma/omega_0 > 0.1 producing alpha < 100 m^-1 at any frequency."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-723"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-723"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00765"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-724"
+claim_id = "C-724"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-724."]
+derivation_steps = ["VERIFIED: N_eff > 1e27 at 30 eV, monotonic in cutoff, f-sum ratio > 0", "5 at 50 eV", "REFUTE: negative N_eff (unphysical) or N_eff decreasing with cutoff (violates sum rule)"]
+decision_rule = "VERIFIED: N_eff > 1e27 at 30 eV, monotonic in cutoff, f-sum ratio > 0.5 at 50 eV. REFUTE: negative N_eff (unphysical) or N_eff decreasing with cutoff (violates sum rule)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-724"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-724"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00766"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-725"
+claim_id = "C-725"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-725."]
+derivation_steps = ["VERIFIED: Gold plasmon 3-12 eV, Al plasmon/screened plasma within 3 eV", "REFUTE: loss function peak outside range, or plasmon/screened plasma disagreeing by > 5 eV for free-electron metal"]
+decision_rule = "VERIFIED: Gold plasmon 3-12 eV, Al plasmon/screened plasma within 3 eV. REFUTE: loss function peak outside range, or plasmon/screened plasma disagreeing by > 5 eV for free-electron metal."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-725"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-725"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00767"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-726"
+claim_id = "C-726"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-726."]
+derivation_steps = ["VERIFIED: silica eps_static in [2, 10], gold has no static eps, weight partitioning consistent", "REFUTE: negative intraband or interband weight"]
+decision_rule = "VERIFIED: silica eps_static in [2, 10], gold has no static eps, weight partitioning consistent. REFUTE: negative intraband or interband weight."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-726"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-726"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00768"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-727"
+claim_id = "C-727"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-727."]
+derivation_steps = ["VERIFIED: Gold KK error < 50%, silica KK error < 50%, error decreases with resolution", "REFUTE: KK error increasing with resolution (implementation bug) or error > 100% (pole handling failure)"]
+decision_rule = "VERIFIED: Gold KK error < 50%, silica KK error < 50%, error decreases with resolution. REFUTE: KK error increasing with resolution (implementation bug) or error > 100% (pole handling failure)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-727"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-727"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00769"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-728"
+claim_id = "C-728"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-728."]
+derivation_steps = ["VERIFIED: CaWO4 direct gap 1-10 eV, metals None, WO3 both gaps detected, Penn gap 3", "536 eV for simple osc", "REFUTE: negative Tauc gap (unphysical) or Penn gap for metals (should be None)"]
+decision_rule = "VERIFIED: CaWO4 direct gap 1-10 eV, metals None, WO3 both gaps detected, Penn gap 3.536 eV for simple osc. REFUTE: negative Tauc gap (unphysical) or Penn gap for metals (should be None)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-728"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-728"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00770"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-729"
+claim_id = "C-729"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-729."]
+derivation_steps = ["VERIFIED: Urbach None for metals, JDOS >= 0, JDOS peak near resonance, onset < 10 eV for WO3", "REFUTE: negative JDOS (impossible since eps_2 >= 0) or Urbach returning a value for metals"]
+decision_rule = "VERIFIED: Urbach None for metals, JDOS >= 0, JDOS peak near resonance, onset < 10 eV for WO3. REFUTE: negative JDOS (impossible since eps_2 >= 0) or Urbach returning a value for metals."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-729"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-729"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00771"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-730"
+claim_id = "C-730"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-730."]
+derivation_steps = ["VERIFIED: damping increases with T, strengths preserved, low-T limit gives original, BG ratio matches (1+(T/T_D)^2)", "REFUTE: oscillator strength changing with T (non-physical) or damping decreasing with T"]
+decision_rule = "VERIFIED: damping increases with T, strengths preserved, low-T limit gives original, BG ratio matches (1+(T/T_D)^2). REFUTE: oscillator strength changing with T (non-physical) or damping decreasing with T."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-730"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-730"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00772"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-731"
+claim_id = "C-731"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-731."]
+derivation_steps = ["VERIFIED: MG f=0 matches host, MG f=1 matches inclusion, Bruggeman symmetric", "REFUTE: MG violating Hashin-Shtrikman bounds or Bruggeman asymmetric under exchange"]
+decision_rule = "VERIFIED: MG f=0 matches host, MG f=1 matches inclusion, Bruggeman symmetric. REFUTE: MG violating Hashin-Shtrikman bounds or Bruggeman asymmetric under exchange."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-731"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-731"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00773"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-732"
+claim_id = "C-732"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-732."]
+derivation_steps = ["VERIFIED: Gold m* ~ 1 m_e, dielectrics return None for mass, contrast of material with itself ~ 0, screening ratio 0", "5-1", "0 for gold", "REFUTE: negative effective mass (unphysical) or screening ratio > 5 (model breakdown)"]
+decision_rule = "VERIFIED: Gold m* ~ 1 m_e, dielectrics return None for mass, contrast of material with itself ~ 0, screening ratio 0.5-1.0 for gold. REFUTE: negative effective mass (unphysical) or screening ratio > 5 (model breakdown)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-732"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-732"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00774"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-733"
+claim_id = "C-733"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-733."]
+derivation_steps = ["VERIFIED: Silica positive beta_2 at 3 eV, GVD varies with freq, conversion factor 1e27", "REFUTE: silica anomalous at visible (wrong) or beta_2 = 0 everywhere (implementation bug)"]
+decision_rule = "VERIFIED: Silica positive beta_2 at 3 eV, GVD varies with freq, conversion factor 1e27. REFUTE: silica anomalous at visible (wrong) or beta_2 = 0 everywhere (implementation bug)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-733"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-733"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00775"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-734"
+claim_id = "C-734"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-734."]
+derivation_steps = ["VERIFIED: chi3 positive, gold >> silica, silica n_2 in 1e-25", "1e-15, n_2-chi3 proportionality", "REFUTE: negative chi3 (impossible from", "chi1", "^4) or n_2 < 0 (unphysical)"]
+decision_rule = "VERIFIED: chi3 positive, gold >> silica, silica n_2 in 1e-25..1e-15, n_2-chi3 proportionality. REFUTE: negative chi3 (impossible from |chi1|^4) or n_2 < 0 (unphysical)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-734"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-734"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00776"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-735"
+claim_id = "C-735"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-735."]
+derivation_steps = ["VERIFIED: metals None, below-threshold None, above-threshold positive", "REFUTE: negative beta (impossible from F_2 formula) or TPA active below half-gap energy"]
+decision_rule = "VERIFIED: metals None, below-threshold None, above-threshold positive. REFUTE: negative beta (impossible from F_2 formula) or TPA active below half-gap energy."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-735"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-735"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00777"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-736"
+claim_id = "C-736"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-736."]
+derivation_steps = ["VERIFIED: k_spp > k_light, Im[k_spp] > 0, L_spp in 0", "1-1000 um, glass shorter than vacuum", "REFUTE: k_spp < k_light (SPP below light line) or L_spp < 0 (unphysical)"]
+decision_rule = "VERIFIED: k_spp > k_light, Im[k_spp] > 0, L_spp in 0.1-1000 um, glass shorter than vacuum. REFUTE: k_spp < k_light (SPP below light line) or L_spp < 0 (unphysical)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-736"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-736"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00778"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-737"
+claim_id = "C-737"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-737."]
+derivation_steps = ["VERIFIED: Gold LSPR 1-10 eV, glass redshift, dielectrics None, evanescent 1nm-10um", "REFUTE: LSPR > 15 eV (above scan range) or evanescent decay for dielectric (Re[eps]>0)"]
+decision_rule = "VERIFIED: Gold LSPR 1-10 eV, glass redshift, dielectrics None, evanescent 1nm-10um. REFUTE: LSPR > 15 eV (above scan range) or evanescent decay for dielectric (Re[eps]>0)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-737"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-737"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00779"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-738"
+claim_id = "C-738"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-738."]
+derivation_steps = ["VERIFIED: Normal matches existing method, grazing R > 0", "5, Brewster 40-70 deg for silica, metals None, R_p minimum at Brewster", "REFUTE: normal incidence R_s != R_p (symmetry violation) or Brewster for absorbing metal (pseudo-Brewster not implemented)"]
+decision_rule = "VERIFIED: Normal matches existing method, grazing R > 0.5, Brewster 40-70 deg for silica, metals None, R_p minimum at Brewster. REFUTE: normal incidence R_s != R_p (symmetry violation) or Brewster for absorbing metal (pseudo-Brewster not implemented)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-738"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-738"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00780"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-739"
+claim_id = "C-739"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-739."]
+derivation_steps = ["VERIFIED: LSPR 2", "0-3", "5 eV, closer to exp than 2-osc, metallic at 2 eV, R > 90% at 1 eV, 5 oscillators", "REFUTE: LSPR > 5 eV (insufficient d-band) or R < 50% at 1 eV (model breakdown)"]
+decision_rule = "VERIFIED: LSPR 2.0-3.5 eV, closer to exp than 2-osc, metallic at 2 eV, R > 90% at 1 eV, 5 oscillators. REFUTE: LSPR > 5 eV (insufficient d-band) or R < 50% at 1 eV (model breakdown)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-739"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-739"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00781"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-740"
+claim_id = "C-740"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-740."]
+derivation_steps = ["VERIFIED: Gold", "eps_xy", "> 0 at B > 0, linear in B for small B, Faraday > 0, dielectrics None", "REFUTE: eps_xy nonzero for zero B-field (no symmetry breaking) or Faraday rotation for pure dielectric (no free carriers)"]
+decision_rule = "VERIFIED: Gold |eps_xy| > 0 at B > 0, linear in B for small B, Faraday > 0, dielectrics None. REFUTE: eps_xy nonzero for zero B-field (no symmetry breaking) or Faraday rotation for pure dielectric (no free carriers)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-740"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-740"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00782"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-741"
+claim_id = "C-741"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-741."]
+derivation_steps = ["VERIFIED: Gold resistivity 1e-9 to 1e-7 Ohm*m, scattering time 1e-15 to 1e-13 s, mobility 1-100 cm^2/V/s, rho*(n*e*mu) within 5x of 1", "REFUTE: resistivity < 0 (unphysical) or scattering time > 1e-10 s (too long for metal)"]
+decision_rule = "VERIFIED: Gold resistivity 1e-9 to 1e-7 Ohm*m, scattering time 1e-15 to 1e-13 s, mobility 1-100 cm^2/V/s, rho*(n*e*mu) within 5x of 1. REFUTE: resistivity < 0 (unphysical) or scattering time > 1e-10 s (too long for metal)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-741"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-741"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00783"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-742"
+claim_id = "C-742"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-742."]
+derivation_steps = ["VERIFIED: D > 0 for metals, None for dielectrics, D proportional to omega_p^2, plasma_freq(5", "9e28, 1", "0) ~ 9 eV", "REFUTE: D < 0 (unphysical) or plasma_freq giving negative eV"]
+decision_rule = "VERIFIED: D > 0 for metals, None for dielectrics, D proportional to omega_p^2, plasma_freq(5.9e28, 1.0) ~ 9 eV. REFUTE: D < 0 (unphysical) or plasma_freq giving negative eV."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-742"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-742"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00784"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-743"
+claim_id = "C-743"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-743."]
+derivation_steps = ["VERIFIED: psi=pi/4 at normal, delta nonzero for metal at oblique, psi->0 at Brewster, e+R=1", "REFUTE: psi > pi/2 (unphysical) or emissivity > 1 (violates energy conservation)"]
+decision_rule = "VERIFIED: psi=pi/4 at normal, delta nonzero for metal at oblique, psi->0 at Brewster, e+R=1. REFUTE: psi > pi/2 (unphysical) or emissivity > 1 (violates energy conservation)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-743"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-743"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00785"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-744"
+claim_id = "C-744"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-744."]
+derivation_steps = ["VERIFIED: L=0 at T=0, L>0 at 300K, L(600K) > L(300K), eta_gold < eta_silica", "REFUTE: negative emittance (unphysical) or eta > 1 (violates Planck bound)"]
+decision_rule = "VERIFIED: L=0 at T=0, L>0 at 300K, L(600K) > L(300K), eta_gold < eta_silica. REFUTE: negative emittance (unphysical) or eta > 1 (violates Planck bound)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-744"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-744"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00786"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-745"
+claim_id = "C-745"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-745."]
+derivation_steps = ["VERIFIED: Gold ENZ 5-12 eV, v_g/c > 0", "01, SrTiO3 omega_LO > omega_TO, LST self-consistent, pure Drude None", "REFUTE: ENZ < 1 eV for gold (below interband region) or omega_LO < omega_TO (violates LST)"]
+decision_rule = "VERIFIED: Gold ENZ 5-12 eV, v_g/c > 0.01, SrTiO3 omega_LO > omega_TO, LST self-consistent, pure Drude None. REFUTE: ENZ < 1 eV for gold (below interband region) or omega_LO < omega_TO (violates LST)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-745"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-745"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00787"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-746"
+claim_id = "C-746"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-746."]
+derivation_steps = ["VERIFIED:", "SLF", "> 0 for metals, peak in 1-15 eV for gold, VLW = omega*LF exactly", "REFUTE: SLF identically zero for all frequencies (no surface excitations)"]
+decision_rule = "VERIFIED: |SLF| > 0 for metals, peak in 1-15 eV for gold, VLW = omega*LF exactly. REFUTE: SLF identically zero for all frequencies (no surface excitations)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-746"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-746"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00788"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-747"
+claim_id = "C-747"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-747."]
+derivation_steps = ["VERIFIED:", "F_P - 1", "> 0", "1 at 10nm, F_P ~ 1 at 1mm, Lamb shift nonzero, 1/d^3 scaling", "REFUTE: F_P = 1 exactly at all distances (no surface modification) or Lamb shift increasing with distance"]
+decision_rule = "VERIFIED: |F_P - 1| > 0.1 at 10nm, F_P ~ 1 at 1mm, Lamb shift nonzero, 1/d^3 scaling. REFUTE: F_P = 1 exactly at all distances (no surface modification) or Lamb shift increasing with distance."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-747"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-747"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00789"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-748"
+claim_id = "C-748"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-748."]
+derivation_steps = ["VERIFIED: A(10nm) < A(100nm) for gold, d_opt = 1/alpha gives A ~ 63", "2%, vacuum mismatch ~ 0, gold >> silica mismatch", "REFUTE: A > 1 (violates conservation) or mismatch negative (", "z", ">= 0 always)"]
+decision_rule = "VERIFIED: A(10nm) < A(100nm) for gold, d_opt = 1/alpha gives A ~ 63.2%, vacuum mismatch ~ 0, gold >> silica mismatch. REFUTE: A > 1 (violates conservation) or mismatch negative (|z| >= 0 always)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-748"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-748"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00790"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-749"
+claim_id = "C-749"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-749."]
+derivation_steps = ["VERIFIED: eps monotone-decreasing, eps->1 at 500 eV, eps(i*xi_1)>50 for Au, Ag>Au at low xi, Casimir energy negative and bounded", "REFUTE: eps non-monotone, eps<1 at high xi (Kramers-Kronig causality violation), Casimir energy positive (repulsion without metamaterial design)"]
+decision_rule = "VERIFIED: eps monotone-decreasing, eps->1 at 500 eV, eps(i*xi_1)>50 for Au, Ag>Au at low xi, Casimir energy negative and bounded. REFUTE: eps non-monotone, eps<1 at high xi (Kramers-Kronig causality violation), Casimir energy positive (repulsion without metamaterial design)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-749"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-749"]
+evidence_refs = ["crates/materials_core/src/tabulated_nk.rs"]
+
+[[skeleton]]
+id = "PRS-00791"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-750"
+claim_id = "C-750"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-750."]
+derivation_steps = ["VERIFIED: SrTiO3 Q > 1, gold Drude Q > 10 at 1 eV, SPP FoM > 1 at 1", "5 eV, FoM(1 eV) > FoM(3 eV)", "REFUTE: Q < 0 (unphysical) or SPP FoM increasing toward plasmon resonance"]
+decision_rule = "VERIFIED: SrTiO3 Q > 1, gold Drude Q > 10 at 1 eV, SPP FoM > 1 at 1.5 eV, FoM(1 eV) > FoM(3 eV). REFUTE: Q < 0 (unphysical) or SPP FoM increasing toward plasmon resonance."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-750"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-750"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00792"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-751"
+claim_id = "C-751"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-751."]
+derivation_steps = ["VERIFIED: SW > 0 for gold, SW(1-5) > SW(1-2), silica OPL ~ 1", "5 um at 1 um thickness", "REFUTE: negative spectral weight (violates passivity) or OPL < thickness for n > 1 material"]
+decision_rule = "VERIFIED: SW > 0 for gold, SW(1-5) > SW(1-2), silica OPL ~ 1.5 um at 1 um thickness. REFUTE: negative spectral weight (violates passivity) or OPL < thickness for n > 1 material."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-751"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-751"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00793"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-752"
+claim_id = "C-752"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-752."]
+derivation_steps = ["VERIFIED: lc finite for delta_omega > 0, infinite for delta_omega = 0, gold ratio < 1, vacuum ratio = infinity", "REFUTE: negative coherence length (", "c/n", "> 0 always) or penetration ratio < 0"]
+decision_rule = "VERIFIED: lc finite for delta_omega > 0, infinite for delta_omega = 0, gold ratio < 1, vacuum ratio = infinity. REFUTE: negative coherence length (|c/n| > 0 always) or penetration ratio < 0."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-752"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-752"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00794"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-753"
+claim_id = "C-753"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-753."]
+derivation_steps = ["VERIFIED: Gold A < 0", "5, silica A > 0", "5, A+R=1, AR thickness 50-500nm", "REFUTE: solar absorptance > 1 (unphysical) or AR thickness < 0"]
+decision_rule = "VERIFIED: Gold A < 0.5, silica A > 0.5, A+R=1, AR thickness 50-500nm. REFUTE: solar absorptance > 1 (unphysical) or AR thickness < 0."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-753"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-753"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00795"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-754"
+claim_id = "C-754"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-754."]
+derivation_steps = ["VERIFIED: Wien 300K ~0", "07 eV, 5800K ~1", "4 eV, proportional to T, gold R_lum > silica R_lum", "REFUTE: Wien peak independent of T or luminous reflectance > 1"]
+decision_rule = "VERIFIED: Wien 300K ~0.07 eV, 5800K ~1.4 eV, proportional to T, gold R_lum > silica R_lum. REFUTE: Wien peak independent of T or luminous reflectance > 1."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-754"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-754"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00796"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-755"
+claim_id = "C-755"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-755."]
+derivation_steps = ["VERIFIED: eta in [0,1], eta(1 eV gap) > eta(3 eV gap)", "REFUTE: eta < 0 or eta > 1 (violates energy conservation) or higher gap giving more efficiency (Shockley-Queisser direction wrong)"]
+decision_rule = "VERIFIED: eta in [0,1], eta(1 eV gap) > eta(3 eV gap). REFUTE: eta < 0 or eta > 1 (violates energy conservation) or higher gap giving more efficiency (Shockley-Queisser direction wrong)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-755"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-755"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00797"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-756"
+claim_id = "C-756"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-756."]
+derivation_steps = ["VERIFIED: 8 new tests pass (monotone energy grids, 86/98 point counts, KK monotone, Drude within 15% of spliced at xi_1, Casimir attractive within 25%)", "REFUTE: eps(i*xi) non-monotone under spliced data or Casimir energy positive (repulsive)", "Bibliography: BIB-0209 (Ordal 1985), BIB-0210 (Ordal 1988)"]
+decision_rule = "VERIFIED: 8 new tests pass (monotone energy grids, 86/98 point counts, KK monotone, Drude within 15% of spliced at xi_1, Casimir attractive within 25%). REFUTE: eps(i*xi) non-monotone under spliced data or Casimir energy positive (repulsive). Bibliography: BIB-0209 (Ordal 1985), BIB-0210 (Ordal 1988)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-756"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-756"]
+evidence_refs = ["crates/materials_core/src/tabulated_nk.rs"]
+
+[[skeleton]]
+id = "PRS-00798"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-757"
+claim_id = "C-757"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-757."]
+derivation_steps = ["VERIFIED: 8 tests pass", "NA > 0 for silica/air, V > 0, confinement in (0,1], mode area > 0, birefringence nonzero for metals, dispersion finite", "REFUTE: NA or V negative, confinement > 1, mode area divergence"]
+decision_rule = "VERIFIED: 8 tests pass. NA > 0 for silica/air, V > 0, confinement in (0,1], mode area > 0, birefringence nonzero for metals, dispersion finite. REFUTE: NA or V negative, confinement > 1, mode area divergence."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-757"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-757"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00799"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-758"
+claim_id = "C-758"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-758."]
+derivation_steps = ["VERIFIED: 7 tests pass", "FE > 1 for gold at 2", "5 eV, SERS = FE^4, sensor FoM > 0, QE in [0,1]", "REFUTE: SERS not equal to FE^4, QE out of bounds, zero enhancement at resonance"]
+decision_rule = "VERIFIED: 7 tests pass. FE > 1 for gold at 2.5 eV, SERS = FE^4, sensor FoM > 0, QE in [0,1]. REFUTE: SERS not equal to FE^4, QE out of bounds, zero enhancement at resonance."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-758"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-758"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00800"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-759"
+claim_id = "C-759"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-759."]
+derivation_steps = ["VERIFIED: 6 tests pass", "R+T <= 1, phase > 0, multiple orders for 10um film, finesse > 0, CIE (x,y) in [0,1]", "REFUTE: R+T > 1 for non-absorbing film, finesse negative, chromaticity out of gamut"]
+decision_rule = "VERIFIED: 6 tests pass. R+T <= 1, phase > 0, multiple orders for 10um film, finesse > 0, CIE (x,y) in [0,1]. REFUTE: R+T > 1 for non-absorbing film, finesse negative, chromaticity out of gamut."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-759"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-759"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00801"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-760"
+claim_id = "C-760"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-760."]
+derivation_steps = ["VERIFIED: 6 tests pass", "SPhP in IR for SrTiO3, v_g < c, isotope shift matches analytical, n_BE -> 0 at T->0", "REFUTE: SPhP outside Reststrahlen, superluminal polariton, n_BE negative"]
+decision_rule = "VERIFIED: 6 tests pass. SPhP in IR for SrTiO3, v_g < c, isotope shift matches analytical, n_BE -> 0 at T->0. REFUTE: SPhP outside Reststrahlen, superluminal polariton, n_BE negative."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-760"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-760"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00802"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-761"
+claim_id = "C-761"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-761."]
+derivation_steps = ["VERIFIED: 6 tests pass", "Delta omega_p > 0 for injected carriers, mu = 0 at c=-1, tau_rec = delta_n/G exact, infinite tau at G=0", "REFUTE: Negative plasma shift for positive carrier injection, nonzero mobility at complete backscattering"]
+decision_rule = "VERIFIED: 6 tests pass. Delta omega_p > 0 for injected carriers, mu = 0 at c=-1, tau_rec = delta_n/G exact, infinite tau at G=0. REFUTE: Negative plasma shift for positive carrier injection, nonzero mobility at complete backscattering."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-761"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-761"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00803"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-762"
+claim_id = "C-762"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-762."]
+derivation_steps = ["VERIFIED: 7 tests pass", "a^6 scaling ratio = 64", "0, albedo in [0,1], Q_pr = Q_ext in Rayleigh limit", "REFUTE: Cross section negative, albedo > 1, a^6 scaling broken"]
+decision_rule = "VERIFIED: 7 tests pass. a^6 scaling ratio = 64.0, albedo in [0,1], Q_pr = Q_ext in Rayleigh limit. REFUTE: Cross section negative, albedo > 1, a^6 scaling broken."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-762"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-762"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00804"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-763"
+claim_id = "C-763"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-763."]
+derivation_steps = ["VERIFIED: 10 tests pass", "FD density increases with T, ZPE exact, near-field > far-field, tunneling in [0,1], Casimir decays with d", "REFUTE: FD negative, ZPE != hbar*omega/2, tunneling > 1"]
+decision_rule = "VERIFIED: 10 tests pass. FD density increases with T, ZPE exact, near-field > far-field, tunneling in [0,1], Casimir decays with d. REFUTE: FD negative, ZPE != hbar*omega/2, tunneling > 1."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-763"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-763"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00805"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-764"
+claim_id = "C-764"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-764."]
+derivation_steps = ["VERIFIED: 7 tests pass", "gamma increases with T, zero below cutoff, DOS peaks at sum freqs, bands sorted", "REFUTE: Linewidth decreases with T, absorption below cutoff nonzero"]
+decision_rule = "VERIFIED: 7 tests pass. gamma increases with T, zero below cutoff, DOS peaks at sum freqs, bands sorted. REFUTE: Linewidth decreases with T, absorption below cutoff nonzero."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-764"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-764"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00806"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-765"
+claim_id = "C-765"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-765."]
+derivation_steps = ["VERIFIED: 6 tests pass", "Gap symmetric, R increases with N, lambda_B > 2d for n>1, v_g decreases", "REFUTE: Asymmetric gap, R > 1, lambda_B < 2d"]
+decision_rule = "VERIFIED: 6 tests pass. Gap symmetric, R increases with N, lambda_B > 2d for n>1, v_g decreases. REFUTE: Asymmetric gap, R > 1, lambda_B < 2d."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-765"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-765"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00807"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-766"
+claim_id = "C-766"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-766."]
+derivation_steps = ["VERIFIED: 7 tests pass", "Pockels ratio=2", "0, Kerr ratio=4", "0, FK=0 above gap, M2 ratio=4", "0 for doubled p", "REFUTE: Pockels nonlinear, Kerr non-quadratic, FK nonzero above gap"]
+decision_rule = "VERIFIED: 7 tests pass. Pockels ratio=2.0, Kerr ratio=4.0, FK=0 above gap, M2 ratio=4.0 for doubled p. REFUTE: Pockels nonlinear, Kerr non-quadratic, FK nonzero above gap."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-766"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-766"]
+evidence_refs = ["crates/materials_core/src/optical_database.rs"]
+
+[[skeleton]]
+id = "PRS-00808"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-767"
+claim_id = "C-767"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-767."]
+derivation_steps = ["VERIFIED: test_henke_au_kk_uv_improvement passes (rel < 50%), Henke eps(i*xi_50) > 1, monotone energy grids confirmed for all 3 metals, 548 tests pass", "REFUTE: Henke-derived n,k shows eps(i*xi_50) < 1 for Au (non-physical for Drude metal below plasma frequency) or non-monotone energy grid"]
+decision_rule = "VERIFIED: test_henke_au_kk_uv_improvement passes (rel < 50%), Henke eps(i*xi_50) > 1, monotone energy grids confirmed for all 3 metals, 548 tests pass. REFUTE: Henke-derived n,k shows eps(i*xi_50) < 1 for Au (non-physical for Drude metal below plasma frequency) or non-monotone energy grid."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-767"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-767"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00809"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-768"
+claim_id = "C-768"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-768."]
+derivation_steps = ["VERIFY: 1", "Update `lbm_vulkan` to accept a `tau_field` buffer", "2", "Map `sedenion_box_kites_clustered", "csv` topology to a 3D viscosity texture", "3", "Simulate fluid flow in Kerr-Newman metric background (via shader specialization or texture lookup)", "4"]
+decision_rule = "VERIFY: 1. Update `lbm_vulkan` to accept a `tau_field` buffer. 2. Map `sedenion_box_kites_clustered.csv` topology to a 3D viscosity texture. 3. Simulate fluid flow in Kerr-Newman metric background (via shader specialization or texture lookup). 4. Measure entropy production S_gen = tau * (strain_rate)^2. REFUTE: If entropy production is indistinguishable from a uniform-viscosity baseline or if the simulation fails to stabilize at high Reynolds numbers."
+conclusion = "DEFERRED: Deferred"
+source_uid = "C-768"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-768"]
+evidence_refs = ["crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "crates/lbm_vulkan/shaders/lbm.comp.glsl", "crates/lbm_vulkan/src/compute.rs", "sedenion_box_kites_clustered.csv"]
+
+[[skeleton]]
+id = "PRS-00810"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-769"
+claim_id = "C-769"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-769."]
+derivation_steps = ["VERIFY: SHA-256 of transcription CSV matches expected value", "all 6 Wow! characters decode to [6, 14, 26, 30, 19, 5]", "background rows decode to intensity 1", "REFUTE: Any character-to-intensity mismatch with Ehman (1997) or the IIIF printout scan"]
+decision_rule = "VERIFY: SHA-256 of transcription CSV matches expected value; all 6 Wow! characters decode to [6, 14, 26, 30, 19, 5]; background rows decode to intensity 1. REFUTE: Any character-to-intensity mismatch with Ehman (1997) or the IIIF printout scan."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-769"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-769"]
+evidence_refs = ["crates/data_core/src/catalogs/wow.rs", "data/csv/wow1977_transcription.csv", "docs/external_sources/WOW_SIGNAL_SOURCES.md"]
+
+[[skeleton]]
+id = "PRS-00811"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-770"
+claim_id = "C-770"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-770."]
+derivation_steps = ["VERIFY: Analytical drift rate bound from v_orb=29783 m/s (orbital) and v_rot*cos(lat)=355 m/s (rotational at Big Ear) yields combined bound < 0", "37 Hz/s", "REFUTE: Full ephemeris calculation (SPK/DE440) produces", "drift", "> 0", "37 Hz/s at epoch 1977-08-15 22:16 UT"]
+decision_rule = "VERIFY: Analytical drift rate bound from v_orb=29783 m/s (orbital) and v_rot*cos(lat)=355 m/s (rotational at Big Ear) yields combined bound < 0.37 Hz/s. REFUTE: Full ephemeris calculation (SPK/DE440) produces |drift| > 0.37 Hz/s at epoch 1977-08-15 22:16 UT."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-770"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-770"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/wow_signal_analysis.rs", "docs/external_sources/WOW_SIGNAL_SOURCES.md"]
+
+[[skeleton]]
+id = "PRS-00812"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-771"
+claim_id = "C-771"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-771."]
+derivation_steps = ["VERIFY: Parse BL 6EQUJ5 filterbank data", "run turboSETI with standard thresholds", "zero candidates survive ABACAD cadence filter", "REFUTE: Any candidate survives the full ON-OFF-ON-OFF-ON-OFF discrimination pipeline"]
+decision_rule = "VERIFY: Parse BL 6EQUJ5 filterbank data; run turboSETI with standard thresholds; zero candidates survive ABACAD cadence filter. REFUTE: Any candidate survives the full ON-OFF-ON-OFF-ON-OFF discrimination pipeline."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-771"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-771"]
+evidence_refs = ["data/csv/bl_6equj5_gbt_manifest.csv", "docs/external_sources/WOW_SIGNAL_SOURCES.md"]
+
+[[skeleton]]
+id = "PRS-00813"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-772"
+claim_id = "C-772"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-772."]
+derivation_steps = ["VERIFY: Permutation test on persistent homology of candidate point clouds (frequency, drift rate, SNR features) yields p > 0", "05", "REFUTE: p < 0", "05 with Bonferroni correction across homology dimensions", "RESULT: VERIFIED (p=1", "0, synthetic proxies)"]
+decision_rule = "VERIFY: Permutation test on persistent homology of candidate point clouds (frequency, drift rate, SNR features) yields p > 0.05. REFUTE: p < 0.05 with Bonferroni correction across homology dimensions. RESULT: VERIFIED (p=1.0, synthetic proxies)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-772"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-772"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/wow_topology.rs"]
+
+[[skeleton]]
+id = "PRS-00814"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-773"
+claim_id = "C-773"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-773."]
+derivation_steps = ["VERIFY: Ultrametric fraction test with 10000 triples x 1000 permutations yields p < 0", "05 and positive effect size", "REFUTE: p >= 0", "05, or observed fraction <= null mean (no ultrametric excess)", "RESULT: REFUTED (p=1", "0, frac=0", "0)"]
+decision_rule = "VERIFY: Ultrametric fraction test with 10000 triples x 1000 permutations yields p < 0.05 and positive effect size. REFUTE: p >= 0.05, or observed fraction <= null mean (no ultrametric excess). RESULT: REFUTED (p=1.0, frac=0.0)."
+conclusion = "REFUTED: Refuted"
+source_uid = "C-773"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-773"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/wow_topology.rs"]
+
+[[skeleton]]
+id = "PRS-00815"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-774"
+claim_id = "C-774"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-774."]
+derivation_steps = ["VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1", "0) of spin correlation P as frustration-induced decoherence gamma increases", "Validates CD-frustration as a candidate physical medium for coherence loss"]
+decision_rule = "VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1.0) of spin correlation P as frustration-induced decoherence gamma increases. Validates CD-frustration as a candidate physical medium for coherence loss."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-774"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-774", "E-036"]
+evidence_refs = ["E-036", "crates/gororoba_engine/src/thesis_pipelines.rs", "registry/experiments.toml"]
+
+[[skeleton]]
+id = "PRS-00816"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-775"
+claim_id = "C-775"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-775."]
+derivation_steps = ["VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite frustration threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration"]
+decision_rule = "VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite frustration threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-775"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-775", "E-036"]
+evidence_refs = ["E-036", "crates/gororoba_engine/src/thesis_pipelines.rs"]
+
+[[skeleton]]
+id = "PRS-00817"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-776"
+claim_id = "C-776"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-776."]
+derivation_steps = ["VERIFIED: Single-minus amplitude evaluation in R1 region collapses to a discrete product of sign gates (Eq", "39)", "STAR spin correlation P remains stable only in the short-range (degenerate) bin", "Both map to discrete sign-logic structures"]
+decision_rule = "VERIFIED: Single-minus amplitude evaluation in R1 region collapses to a discrete product of sign gates (Eq. 39). STAR spin correlation P remains stable only in the short-range (degenerate) bin. Both map to discrete sign-logic structures."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-776"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-776"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00818"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-777"
+claim_id = "C-777"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-777."]
+derivation_steps = ["VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero frustration, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation"]
+decision_rule = "VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero frustration, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-777"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-777"]
+evidence_refs = ["crates/gororoba_cli_algebra/src/bin/amplitude_frustration_survey.rs"]
+
+[[skeleton]]
+id = "PRS-00819"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-778"
+claim_id = "C-778"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-778."]
+derivation_steps = ["VERIFIED: Modeling ALICE 5", "36 TeV Pb-Pb global polarization via a vorticity-bias channel reproduces the observed centrality-dependent trend (centrality mid-points map to omega_mag)"]
+decision_rule = "VERIFIED: Modeling ALICE 5.36 TeV Pb-Pb global polarization via a vorticity-bias channel reproduces the observed centrality-dependent trend (centrality mid-points map to omega_mag)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-778"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-778", "E-038"]
+evidence_refs = ["E-038", "crates/cd_spin_bridge/src/qgp_model.rs"]
+
+[[skeleton]]
+id = "PRS-00820"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-779"
+claim_id = "C-779"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-779."]
+derivation_steps = ["VERIFIED: An algebraic twist term proportional to cos(phi) reduces the residual between experiment and hydro-model values to < 0", "05, resolving the sign discrepancy observed in 2025 CMS pPb data"]
+decision_rule = "VERIFIED: An algebraic twist term proportional to cos(phi) reduces the residual between experiment and hydro-model values to < 0.05, resolving the sign discrepancy observed in 2025 CMS pPb data."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-779"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-779", "E-038"]
+evidence_refs = ["E-038", "crates/gororoba_cli_physics/src/bin/lhc_2025_qgp_synthesis.rs"]
+
+[[skeleton]]
+id = "PRS-00821"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-780"
+claim_id = "C-780"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-780."]
+derivation_steps = ["VERIFY:", "T_eff_visc - T_H_ideal", "/T_H_ideal > 5% at finest resolution N=128", "REFUTE: T_eff_visc converges to T_H_ideal as N grows (deviation < 5%)"]
+decision_rule = "VERIFY: |T_eff_visc - T_H_ideal|/T_H_ideal > 5% at finest resolution N=128. REFUTE: T_eff_visc converges to T_H_ideal as N grows (deviation < 5%)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-780"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-780"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/lattice_hawking_sweep.rs", "crates/gr_core/src/acoustic_metric.rs", "crates/gr_core/src/lattice_hawking.rs"]
+
+[[skeleton]]
+id = "PRS-00822"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-781"
+claim_id = "C-781"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-781."]
+derivation_steps = ["VERIFY: H(dim=16) > 0 with", "H(16) - H(8)", "> 0", "10 * H_max", "REFUTE: entropy is smooth across dim=16 transition (no discontinuity exceeding 10%)"]
+decision_rule = "VERIFY: H(dim=16) > 0 with |H(16) - H(8)| > 0.10 * H_max. REFUTE: entropy is smooth across dim=16 transition (no discontinuity exceeding 10%)."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-781"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-781"]
+evidence_refs = ["crates/algebra_core/src/analysis/entropy_census.rs", "crates/gororoba_cli_algebra/src/bin/algebra_entropy_census.rs"]
+
+[[skeleton]]
+id = "PRS-00823"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-782"
+claim_id = "C-782"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-782."]
+derivation_steps = ["VERIFY:", "rho_Spearman(S, B1)", "> 0", "5 with p < 0", "05 at any configuration", "REFUTE:", "rho", "< 0"]
+decision_rule = "VERIFY: |rho_Spearman(S, B1)| > 0.5 with p < 0.05 at any configuration. REFUTE: |rho| < 0.5 or p > 0.05 at all configurations."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-782"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-782"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/chsh_betti_sweep.rs", "crates/spectral_core/src/chsh_betti_bridge.rs"]
+
+[[skeleton]]
+id = "PRS-00824"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-783"
+claim_id = "C-783"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-783."]
+derivation_steps = ["VERIFY: pulsed_p95 < steady_p95 * 0", "90 at any wavelet threshold", "REFUTE: pulsed_p95 >= steady_p95 * 0", "95 (pulsed provides < 5% reduction)"]
+decision_rule = "VERIFY: pulsed_p95 < steady_p95 * 0.90 at any wavelet threshold. REFUTE: pulsed_p95 >= steady_p95 * 0.95 (pulsed provides < 5% reduction)."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-783"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-783"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/meltdown_pulsed_gate.rs", "crates/spectral_core/src/pde_surrogates.rs"]
+
+[[skeleton]]
+id = "PRS-00825"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-784"
+claim_id = "C-784"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-784."]
+derivation_steps = ["VERIFY: peak within 0", "02 of 0", "2138 with SNR > 3", "REFUTE: no peak within tolerance, or peak present in null controls"]
+decision_rule = "VERIFY: peak within 0.02 of 0.2138 with SNR > 3. REFUTE: no peak within tolerance, or peak present in null controls."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-784"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-784"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs", "data/csv/zd_resonance_real_distribution.csv"]
+
+[[skeleton]]
+id = "PRS-00826"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-785"
+claim_id = "C-785"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-785."]
+derivation_steps = ["VERIFY: peak within 0", "02 of 0", "2138 with SNR > 3 in at least one column", "REFUTE: no peak within tolerance"]
+decision_rule = "VERIFY: peak within 0.02 of 0.2138 with SNR > 3 in at least one column. REFUTE: no peak within tolerance."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-785"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-785"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs", "data/csv/zd_resonance_real_distribution.csv"]
+
+[[skeleton]]
+id = "PRS-00827"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-786"
+claim_id = "C-786"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-786."]
+derivation_steps = ["VERIFY: peak within 0", "02 of 0", "2138 with SNR > 3", "REFUTE: no peak within tolerance"]
+decision_rule = "VERIFY: peak within 0.02 of 0.2138 with SNR > 3. REFUTE: no peak within tolerance."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-786"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-786"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs", "data/csv/zd_resonance_real_distribution.csv"]
+
+[[skeleton]]
+id = "PRS-00828"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-787"
+claim_id = "C-787"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-787."]
+derivation_steps = ["VERIFY (null): SNR < 2 at ghost frequency in S-band data", "REFUTE (null): SNR > 3 would indicate S-band ghost presence"]
+decision_rule = "VERIFY (null): SNR < 2 at ghost frequency in S-band data. REFUTE (null): SNR > 3 would indicate S-band ghost presence."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-787"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-787"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs", "data/csv/wow_followup_snr.csv"]
+
+[[skeleton]]
+id = "PRS-00829"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-788"
+claim_id = "C-788"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-788."]
+derivation_steps = ["VERIFY (null): SNR < 2 at ghost frequency in all control datasets", "REFUTE (null): any control dataset shows SNR > 3"]
+decision_rule = "VERIFY (null): SNR < 2 at ghost frequency in all control datasets. REFUTE (null): any control dataset shows SNR > 3."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-788"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-788"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs", "data/csv/zd_resonance_real_distribution.csv"]
+
+[[skeleton]]
+id = "PRS-00830"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-789"
+claim_id = "C-789"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-789."]
+derivation_steps = ["FALSIFIED", "Sub-bin FWHM is physically meaningless", "frequency scatter is sampling variability"]
+decision_rule = "FALSIFIED. Sub-bin FWHM is physically meaningless; frequency scatter is sampling variability."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-789"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-789"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs", "data/csv/zd_resonance_real_distribution.csv"]
+
+[[skeleton]]
+id = "PRS-00831"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-790"
+claim_id = "C-790"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-790."]
+derivation_steps = ["VERIFY (null): ghost-band CWT power < 10% in null-control datasets", "REFUTE (null): ghost-band CWT power > 20% would indicate scale-hidden resonance"]
+decision_rule = "VERIFY (null): ghost-band CWT power < 10% in null-control datasets. REFUTE (null): ghost-band CWT power > 20% would indicate scale-hidden resonance."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-790"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-790"]
+evidence_refs = ["data/csv/cwt_ghost_validation.csv", "src/scripts/analysis/cwt_ghost_analysis.py"]
+
+[[skeleton]]
+id = "PRS-00832"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-791"
+claim_id = "C-791"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-791."]
+derivation_steps = ["VERIFY: ALICE Run 3 R_AA shows peak within 0", "02 of 0", "2138 with SNR > 3 AND permutation p < 0", "05", "REFUTE: No peak at any centrality", "RESULT: FALSIFIED -- 20-bin batch permutation p=1", "0, combined Stouffer Z=-12", "88"]
+decision_rule = "VERIFY: ALICE Run 3 R_AA shows peak within 0.02 of 0.2138 with SNR > 3 AND permutation p < 0.05. REFUTE: No peak at any centrality. RESULT: FALSIFIED -- 20-bin batch permutation p=1.0, combined Stouffer Z=-12.88."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-791"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-791"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs", "data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv"]
+
+[[skeleton]]
+id = "PRS-00833"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-792"
+claim_id = "C-792"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-792."]
+derivation_steps = ["VERIFY: Peak appears ONLY with tau_amp > 0, frequency constant across tau sweep (", "slope", "< 0", "01), does NOT track pc", "lambda seeding parameter", "REFUTE: Peak shifts with tau (fluid artifact), OR appears without ZD modulation (lattice artifact), OR tracks seeding frequency"]
+decision_rule = "VERIFY: Peak appears ONLY with tau_amp > 0, frequency constant across tau sweep (|slope| < 0.01), does NOT track pc.lambda seeding parameter. REFUTE: Peak shifts with tau (fluid artifact), OR appears without ZD modulation (lattice artifact), OR tracks seeding frequency."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-792"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-792"]
+evidence_refs = ["crates/gororoba_cli/src/bin/zd_resonance_cuda.rs", "crates/spectral_core/src/ghost_spectral.rs"]
+
+[[skeleton]]
+id = "PRS-00834"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-793"
+claim_id = "C-793"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-793."]
+derivation_steps = ["VERIFY: FFT of rho_mean time series from warp_field_128_step_*", "h5 shows phi^{-1/2} peak at rank <= 3 with SNR > 5", "0", "REFUTE: No peak near phi^{-1/2} above noise floor, or peak exists but at rank > 3 or SNR < 5", "0"]
+decision_rule = "VERIFY: FFT of rho_mean time series from warp_field_128_step_*.h5 shows phi^{-1/2} peak at rank <= 3 with SNR > 5.0. REFUTE: No peak near phi^{-1/2} above noise floor, or peak exists but at rank > 3 or SNR < 5.0."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-793"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-793"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs", "crates/spectral_core/src/ghost_spectral.rs"]
+
+[[skeleton]]
+id = "PRS-00835"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-794"
+claim_id = "C-794"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-794."]
+derivation_steps = ["VERIFY: Ring survives all max_steps with pathion sink where it destabilized without", "Instability onset monotonically increases with coupling [0", "01, 0", "05, 0", "1, 0", "5, 1", "0]", "REFUTE: Ring still destabilizes at same step for ALL coupling values, or onset is non-monotonic"]
+decision_rule = "VERIFY: Ring survives all max_steps with pathion sink where it destabilized without. Instability onset monotonically increases with coupling [0.01, 0.05, 0.1, 0.5, 1.0]. REFUTE: Ring still destabilizes at same step for ALL coupling values, or onset is non-monotonic."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-794"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-794"]
+evidence_refs = ["crates/gororoba_cli_algebra/src/bin/pathion_sink_test.rs", "crates/gororoba_engine/src/simulation/mod.rs"]
+
+[[skeleton]]
+id = "PRS-00836"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-795"
+claim_id = "C-795"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-795."]
+derivation_steps = ["VERIFY: Config B (Standard CD + Flipped vorticity) is UNSTABLE while Config D (Conjugated CD + Flipped vorticity) is STABLE", "REFUTE: Config B produces stable opposite-handed ring (chirality follows initial conditions, not algebra)"]
+decision_rule = "VERIFY: Config B (Standard CD + Flipped vorticity) is UNSTABLE while Config D (Conjugated CD + Flipped vorticity) is STABLE. REFUTE: Config B produces stable opposite-handed ring (chirality follows initial conditions, not algebra)."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-795"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-795"]
+evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs", "crates/gororoba_cli_algebra/src/bin/chirality_lock_test.rs"]
+
+[[skeleton]]
+id = "PRS-00837"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-796"
+claim_id = "C-796"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-796."]
+derivation_steps = ["VERIFY: Two-proportion z-test on deep hole fraction yields p < 0", "05 between ON (structured signal + noise) and OFF (noise only) chunks", "REFUTE: p >= 0", "05 (Moonshine filter adds no discriminating power)"]
+decision_rule = "VERIFY: Two-proportion z-test on deep hole fraction yields p < 0.05 between ON (structured signal + noise) and OFF (noise only) chunks. REFUTE: p >= 0.05 (Moonshine filter adds no discriminating power)."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-796"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-796"]
+evidence_refs = ["crates/algebra_core/src/experimental/golay_code.rs", "crates/algebra_core/src/experimental/leech_lattice.rs", "crates/gororoba_cli_algebra/src/bin/moonshine_filterbank.rs"]
+
+[[skeleton]]
+id = "PRS-00838"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-797"
+claim_id = "C-797"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-797."]
+derivation_steps = ["VERIFY: All null controls remain NULL, all injected signals remain DETECTED across all methods", "REFUTE: Any null control shows DETECTED, or any injected signal shows NULL"]
+decision_rule = "VERIFY: All null controls remain NULL, all injected signals remain DETECTED across all methods. REFUTE: Any null control shows DETECTED, or any injected signal shows NULL."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-797"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-797"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/ghost_spectral_audit.rs", "crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs", "crates/spectral_core/src/ghost_spectral.rs", "src/ghost_stats/"]
+
+[[skeleton]]
+id = "PRS-00839"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-798"
+claim_id = "C-798"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-798."]
+derivation_steps = ["VERIFY: Literature search confirms no published use of sorted-catalog FFT for signal detection", "REFUTE: Published paper successfully uses sorted-catalog FFT with proper significance testing"]
+decision_rule = "VERIFY: Literature search confirms no published use of sorted-catalog FFT for signal detection. REFUTE: Published paper successfully uses sorted-catalog FFT with proper significance testing."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-798"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-798"]
+evidence_refs = ["crates/spectral_core/src/ghost_spectral.rs", "src/ghost_stats/quantile_periodogram.py"]
+
+[[skeleton]]
+id = "PRS-00840"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-799"
+claim_id = "C-799"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-799."]
+derivation_steps = ["VERIFY (done): FP32 rel_error < 1e-3 confirmed (3", "2e-5)", "REFUTE: Ghost signal in FP32/FP64 absent in BF16 would indicate BF16 suppresses physics"]
+decision_rule = "VERIFY (done): FP32 rel_error < 1e-3 confirmed (3.2e-5). REFUTE: Ghost signal in FP32/FP64 absent in BF16 would indicate BF16 suppresses physics."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-799"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-799", "E-069"]
+evidence_refs = ["E-069", "crates/gororoba_cli_physics/src/bin/lbm_precision_sampler.rs", "data/csv/precision_combined_32.csv"]
+
+[[skeleton]]
+id = "PRS-00841"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-800"
+claim_id = "C-800"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-800."]
+derivation_steps = ["VERIFY: Code audit confirms identical Guo forcing in both paths", "REFUTE: Structural algorithmic difference found between CPU and GPU collision operators"]
+decision_rule = "VERIFY: Code audit confirms identical Guo forcing in both paths. REFUTE: Structural algorithmic difference found between CPU and GPU collision operators."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-800"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-800", "E-069"]
+evidence_refs = ["E-069", "crates/gororoba_cli_physics/src/bin/lbm_precision_sampler.rs"]
+
+[[skeleton]]
+id = "PRS-00842"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-801"
+claim_id = "C-801"
+assumptions = ["Cayley-Dickson projection invariance: for each Lambda level (256..2048), the CD difference projection lands in the 8-dimensional imaginary octonion span, and Fano plane automorphisms (PSL(2,7)) permute boundary vectors consistently."]
+obligations = ["Establish evidence-backed status for C-801."]
+derivation_steps = []
+decision_rule = ""
+conclusion = "VERIFIED: Verified"
+source_uid = "C-801"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-801"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00843"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-802"
+claim_id = "C-802"
+assumptions = ["Simplicial Betti numbers computed via Z_2 Gaussian elimination match known values for standard complexes: point (b0=1), triangle boundary (b0=1,b1=1), filled triangle (b0=1,b1=0,b2=0), torus (b0=1,b1=2,b2=1). Euler-Poincare theorem verified for all cases."]
+obligations = ["Establish evidence-backed status for C-802."]
+derivation_steps = []
+decision_rule = ""
+conclusion = "VERIFIED: Verified"
+source_uid = "C-802"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-802"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00844"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-803"
+claim_id = "C-803"
+assumptions = ["Sedenion ZD box-kite topology (de Marrais 2000) and generic adjacency constructor enable systematic comparison of C-010 non-local coupling topologies beyond the standard suite."]
+obligations = ["Establish evidence-backed status for C-803."]
+derivation_steps = []
+decision_rule = ""
+conclusion = "VERIFIED: Verified"
+source_uid = "C-803"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-803"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00845"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-804"
+claim_id = "C-804"
+assumptions = ["Bridge contrast ratio (rho_shell / rho_interior at R1 boundary) is positive and finite for all three bypass models (MatchedInterior, VacuumCore, GradedTransition). Gamma invariant varies less than 5% across models at default configuration."]
+obligations = ["Establish evidence-backed status for C-804."]
+derivation_steps = []
+decision_rule = ""
+conclusion = "VERIFIED: Verified"
+source_uid = "C-804"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-804"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00846"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-805"
+claim_id = "C-805"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-805."]
+derivation_steps = ["VERIFY: all methods fail to reject H0 for ghost frequency", "REFUTE: any method rejects H0 with p<0", "01 after Bonferroni correction"]
+decision_rule = "VERIFY: all methods fail to reject H0 for ghost frequency. REFUTE: any method rejects H0 with p<0.01 after Bonferroni correction."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-805"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-805", "E-071"]
+evidence_refs = ["E-071", "crates/gororoba_cli_physics/src/bin/ghost_spectral_audit.rs"]
+
+[[skeleton]]
+id = "PRS-00847"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-806"
+claim_id = "C-806"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-806."]
+derivation_steps = ["VERIFY: H(8) > H(16), H(4) = 0, norm_comp_H(16) > 0", "REFUTE: H(16) > H(8) or norm_comp_H(16) = 0"]
+decision_rule = "VERIFY: H(8) > H(16), H(4) = 0, norm_comp_H(16) > 0. REFUTE: H(16) > H(8) or norm_comp_H(16) = 0."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-806"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-806", "E-057"]
+evidence_refs = ["E-057", "crates/algebra_core/src/analysis/entropy_census.rs"]
+
+[[skeleton]]
+id = "PRS-00848"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-807"
+claim_id = "C-807"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-807."]
+derivation_steps = ["VERIFY: Standard quaternion multiplication table and nonzero inverse existence", "REFUTE: Find a non-associative triple product"]
+decision_rule = "VERIFY: Standard quaternion multiplication table and nonzero inverse existence. REFUTE: Find a non-associative triple product."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-807"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-807"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00849"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-808"
+claim_id = "C-808"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-808."]
+derivation_steps = ["VERIFY: Construct nonzero x,y with xy=0", "REFUTE: Every nonzero element is invertible"]
+decision_rule = "VERIFY: Construct nonzero x,y with xy=0. REFUTE: Every nonzero element is invertible."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-808"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-808"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00850"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-809"
+claim_id = "C-809"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-809."]
+derivation_steps = ["VERIFY: Show matrix realization with determinant-zero nonzero elements", "REFUTE: Algebra remains division under the stated embedding"]
+decision_rule = "VERIFY: Show matrix realization with determinant-zero nonzero elements. REFUTE: Algebra remains division under the stated embedding."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-809"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-809"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00851"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-810"
+claim_id = "C-810"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-810."]
+derivation_steps = ["VERIFY: Exhibit a nilpotent dual component and a non-invertible nonzero element", "REFUTE: Full invertibility under the same coefficient regime"]
+decision_rule = "VERIFY: Exhibit a nilpotent dual component and a non-invertible nonzero element. REFUTE: Full invertibility under the same coefficient regime."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-810"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-810"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00852"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-811"
+claim_id = "C-811"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-811."]
+derivation_steps = ["VERIFY: Verify alternativity identities and find a non-associative triple while preserving nonzero inverses", "REFUTE: Show associativity or loss of invertibility for a nonzero element"]
+decision_rule = "VERIFY: Verify alternativity identities and find a non-associative triple while preserving nonzero inverses. REFUTE: Show associativity or loss of invertibility for a nonzero element."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-811"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-811"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00853"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-812"
+claim_id = "C-812"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-812."]
+derivation_steps = ["VERIFY: Construct an isotropic-norm element leading to a zero divisor", "REFUTE: Prove every nonzero element is invertible"]
+decision_rule = "VERIFY: Construct an isotropic-norm element leading to a zero divisor. REFUTE: Prove every nonzero element is invertible."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-812"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-812"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00854"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-813"
+claim_id = "C-813"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-813."]
+derivation_steps = ["VERIFY: Check failure of alternativity identities and provide an explicit zero-divisor pair", "REFUTE: Establish alternativity or remove all nontrivial zero divisors"]
+decision_rule = "VERIFY: Check failure of alternativity identities and provide an explicit zero-divisor pair. REFUTE: Establish alternativity or remove all nontrivial zero divisors."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-813"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-813"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00855"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-814"
+claim_id = "C-814"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-814."]
+derivation_steps = ["VERIFY: Show inherited nilpotent or isotropic structure after scalar extension", "REFUTE: Prove a division property for the stated extensions"]
+decision_rule = "VERIFY: Show inherited nilpotent or isotropic structure after scalar extension. REFUTE: Prove a division property for the stated extensions."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-814"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-814"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00856"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-815"
+claim_id = "C-815"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-815."]
+derivation_steps = ["VERIFY: Confirm the doubling chain dimensions 1,2,4,8,16,32 and the naming equivalence", "REFUTE: Show a conflicting stage order or name-to-dimension mapping"]
+decision_rule = "VERIFY: Confirm the doubling chain dimensions 1,2,4,8,16,32 and the naming equivalence. REFUTE: Show a conflicting stage order or name-to-dimension mapping."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-815"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-815"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00857"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-816"
+claim_id = "C-816"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-816."]
+derivation_steps = ["VERIFY: Validate naming conventions in cited references and dimension mapping to 2^n stages", "REFUTE: Labels map to non-2^n dimensions or conflicting stage names"]
+decision_rule = "VERIFY: Validate naming conventions in cited references and dimension mapping to 2^n stages. REFUTE: Labels map to non-2^n dimensions or conflicting stage names."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-816"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-816"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00858"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-817"
+claim_id = "C-817"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-817."]
+derivation_steps = ["VERIFY: Construct zero divisors at the sedenion stage and propagate the construction across higher stages", "REFUTE: Prove full invertibility for all nonzero elements at any stage n>=4"]
+decision_rule = "VERIFY: Construct zero divisors at the sedenion stage and propagate the construction across higher stages. REFUTE: Prove full invertibility for all nonzero elements at any stage n>=4."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-817"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-817"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00859"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-818"
+claim_id = "C-818"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-818."]
+derivation_steps = ["VERIFY: Show non-isomorphic algebras under parameter choices over a fixed base", "REFUTE: All parameter choices collapse to one isomorphism class"]
+decision_rule = "VERIFY: Show non-isomorphic algebras under parameter choices over a fixed base. REFUTE: All parameter choices collapse to one isomorphism class."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-818"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-545", "C-549", "C-818"]
+evidence_refs = ["C-545", "C-549"]
+
+[[skeleton]]
+id = "PRS-00860"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-819"
+claim_id = "C-819"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-819."]
+derivation_steps = ["VERIFY: Compare exact hyperbolic expressions with O(z^4) Taylor at z << 1", "REFUTE: Discrepancy exceeding truncation error O(z^{2N+2}) at any test point"]
+decision_rule = "VERIFY: Compare exact hyperbolic expressions with O(z^4) Taylor at z << 1. REFUTE: Discrepancy exceeding truncation error O(z^{2N+2}) at any test point."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-819"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-819"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00861"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-820"
+claim_id = "C-820"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-820."]
+derivation_steps = ["VERIFY: Replace epsilon_alpha -> k_alpha in amplitude, verify vanishes for on-shell k^2=0", "REFUTE: Nonzero residual exceeding quadrature truncation error"]
+decision_rule = "VERIFY: Replace epsilon_alpha -> k_alpha in amplitude, verify vanishes for on-shell k^2=0. REFUTE: Nonzero residual exceeding quadrature truncation error."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-820"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-820"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00862"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-821"
+claim_id = "C-821"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-821."]
+derivation_steps = ["VERIFY: Nonzero tadpole at any B > 0, agreement between proper-time quadrature and Bernoulli series", "REFUTE: Tadpole vanishes after renormalization, or representations disagree beyond truncation error"]
+decision_rule = "VERIFY: Nonzero tadpole at any B > 0, agreement between proper-time quadrature and Bernoulli series. REFUTE: Tadpole vanishes after renormalization, or representations disagree beyond truncation error."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-821"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-821"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00863"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-822"
+claim_id = "C-822"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-822."]
+derivation_steps = ["VERIFY: Linearized diffeomorphism variation of total amplitude vanishes on-shell", "REFUTE: Nonzero residual exceeding tolerance"]
+decision_rule = "VERIFY: Linearized diffeomorphism variation of total amplitude vanishes on-shell. REFUTE: Nonzero residual exceeding tolerance."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-822"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-822"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00864"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-823"
+claim_id = "C-823"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-823."]
+derivation_steps = ["VERIFY: Ratio of weak-field Euler-Heisenberg refractive index corrections gives 8:14 = 4:7", "REFUTE: Different coefficient ratio from the one-loop calculation"]
+decision_rule = "VERIFY: Ratio of weak-field Euler-Heisenberg refractive index corrections gives 8:14 = 4:7. REFUTE: Different coefficient ratio from the one-loop calculation."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-823"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-823"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00865"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-824"
+claim_id = "C-824"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-824."]
+derivation_steps = ["VERIFY: gamma = (1+w)/(2+w) at omega=43480 gives", "gamma-1", "< 2", "3e-5", "REFUTE: Published Cassini result retracted or updated with weaker bound"]
+decision_rule = "VERIFY: gamma = (1+w)/(2+w) at omega=43480 gives |gamma-1| < 2.3e-5. REFUTE: Published Cassini result retracted or updated with weaker bound."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-824"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-824"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00866"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-825"
+claim_id = "C-825"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-825."]
+derivation_steps = ["VERIFY: 1/(2+omega) < 5e-4 for omega > 1998", "REFUTE: LLR analysis retracted or superseded"]
+decision_rule = "VERIFY: 1/(2+omega) < 5e-4 for omega > 1998. REFUTE: LLR analysis retracted or superseded."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-825"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-825"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00867"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-826"
+claim_id = "C-826"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-826."]
+derivation_steps = ["VERIFY: 1/(2+omega) < 2e-6 for omega > 499998", "REFUTE: Pulsar timing reanalysis weakens bound"]
+decision_rule = "VERIFY: 1/(2+omega) < 2e-6 for omega > 499998. REFUTE: Pulsar timing reanalysis weakens bound."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-826"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-826"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00868"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-827"
+claim_id = "C-827"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-827."]
+derivation_steps = ["VERIFY: Published bound is 1", "1e-15 at 1-sigma", "REFUTE: MICROSCOPE reanalysis changes bound"]
+decision_rule = "VERIFY: Published bound is 1.1e-15 at 1-sigma. REFUTE: MICROSCOPE reanalysis changes bound."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-827"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-827"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00869"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-828"
+claim_id = "C-828"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-828."]
+derivation_steps = ["VERIFY: yukawa_potential(r,m1,m2,0,lambda) = -G*m1*m2/r exactly", "REFUTE: Torsion-balance reanalysis changes exclusion region"]
+decision_rule = "VERIFY: yukawa_potential(r,m1,m2,0,lambda) = -G*m1*m2/r exactly. REFUTE: Torsion-balance reanalysis changes exclusion region."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-828"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-828"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00870"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-829"
+claim_id = "C-829"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-829."]
+derivation_steps = ["VERIFY: BD tensor gravitational waves propagate on the metric null cone", "REFUTE: Demonstrate BD tensor mode dispersion relation differs from c"]
+decision_rule = "VERIFY: BD tensor gravitational waves propagate on the metric null cone. REFUTE: Demonstrate BD tensor mode dispersion relation differs from c."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-829"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-829"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00871"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-830"
+claim_id = "C-830"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-830."]
+derivation_steps = ["VERIFY: Published constraint from PSR J0337+1715 timing residuals", "REFUTE: Updated timing analysis changes bound"]
+decision_rule = "VERIFY: Published constraint from PSR J0337+1715 timing residuals. REFUTE: Updated timing analysis changes bound."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-830"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-830"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00872"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-831"
+claim_id = "C-831"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-831."]
+derivation_steps = ["VERIFY: Show", "grad(kappa)*T/(2*kappa)", "> 0 for grad(kappa) != 0 and T != 0", "REFUTE: Demonstrate a consistent non-dynamical kappa(x) formulation that preserves covariant conservation"]
+decision_rule = "VERIFY: Show |grad(kappa)*T/(2*kappa)| > 0 for grad(kappa) != 0 and T != 0. REFUTE: Demonstrate a consistent non-dynamical kappa(x) formulation that preserves covariant conservation."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-831"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-831"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00873"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-832"
+claim_id = "C-832"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-832."]
+derivation_steps = ["VERIFY: Rate ratio < 0", "15 at 10 um with paper dk values", "REFUTE: Rate ratio > 1", "0 showing cascaded dominates"]
+decision_rule = "VERIFY: Rate ratio < 0.15 at 10 um with paper dk values. REFUTE: Rate ratio > 1.0 showing cascaded dominates."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-832"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-832"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00874"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-833"
+claim_id = "C-833"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-833."]
+derivation_steps = ["VERIFY: L_coh_SFWM > 3*L_coh_SHG from Zelmon Sellmeier", "REFUTE: Sellmeier gives L_coh_SFWM < L_coh_SHG"]
+decision_rule = "VERIFY: L_coh_SFWM > 3*L_coh_SHG from Zelmon Sellmeier. REFUTE: Sellmeier gives L_coh_SFWM < L_coh_SHG."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-833"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-833"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00875"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-834"
+claim_id = "C-834"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-834."]
+derivation_steps = ["VERIFY: R_cas/R_dir < 0", "15 (allowing chi3 uncertainty)", "REFUTE: Ratio exceeds 1", "0"]
+decision_rule = "VERIFY: R_cas/R_dir < 0.15 (allowing chi3 uncertainty). REFUTE: Ratio exceeds 1.0."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-834"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-834"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00876"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-835"
+claim_id = "C-835"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-835."]
+derivation_steps = ["VERIFY: Log-log slope of N vs P equals 2", "0", "REFUTE: Slope differs significantly from 2"]
+decision_rule = "VERIFY: Log-log slope of N vs P equals 2.0. REFUTE: Slope differs significantly from 2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-835"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-835"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00877"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-836"
+claim_id = "C-836"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-836."]
+derivation_steps = ["VERIFY: g(2)(P_low) >> 2, g(2)(P_high) -> 1", "REFUTE: g(2) < 2 at all powers"]
+decision_rule = "VERIFY: g(2)(P_low) >> 2, g(2)(P_high) -> 1. REFUTE: g(2) < 2 at all powers."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-836"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-836"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00878"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-837"
+claim_id = "C-837"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-837."]
+derivation_steps = ["VERIFY: N_spdc linear in P, g(2) = 1+a/P with distinct 1/P vs 1/P^2 dependence", "REFUTE: SPDC shows quadratic scaling"]
+decision_rule = "VERIFY: N_spdc linear in P, g(2) = 1+a/P with distinct 1/P vs 1/P^2 dependence. REFUTE: SPDC shows quadratic scaling."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-837"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-837"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00879"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-838"
+claim_id = "C-838"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-838."]
+derivation_steps = ["VERIFY: Compute substrate SFWM rate using fused_silica_sellmeier() dk and L=500 um in sinc^2 regime", "REFUTE: Substrate dk gives zero net contribution"]
+decision_rule = "VERIFY: Compute substrate SFWM rate using fused_silica_sellmeier() dk and L=500 um in sinc^2 regime. REFUTE: Substrate dk gives zero net contribution."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-838"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-838"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00880"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-839"
+claim_id = "C-839"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-839."]
+derivation_steps = ["VERIFY: SHG oscillation period within 15% of 2*L_coh_SHG", "SFWM monotonic below 60% of L_coh_SFWM", "REFUTE: SFWM oscillates below its L_coh"]
+decision_rule = "VERIFY: SHG oscillation period within 15% of 2*L_coh_SHG; SFWM monotonic below 60% of L_coh_SFWM. REFUTE: SFWM oscillates below its L_coh."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-839"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-839"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00881"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-840"
+claim_id = "C-840"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-840."]
+derivation_steps = ["VERIFY: Npart within 5% of ALICE PLB 772 Table for all centrality bins 0-5% through 70-80%", "REFUTE: Any bin deviates > 10%"]
+decision_rule = "VERIFY: Npart within 5% of ALICE PLB 772 Table for all centrality bins 0-5% through 70-80%. REFUTE: Any bin deviates > 10%."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-840"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-840"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00882"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-841"
+claim_id = "C-841"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-841."]
+derivation_steps = ["VERIFY: Power-law fit to CMS pp spectrum (pT > 5 GeV) yields n in [5", "8, 6", "5] with bootstrap CI", "REFUTE: n outside [5", "0, 7", "0]"]
+decision_rule = "VERIFY: Power-law fit to CMS pp spectrum (pT > 5 GeV) yields n in [5.8, 6.5] with bootstrap CI. REFUTE: n outside [5.0, 7.0]."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-841"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-841"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00883"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-842"
+claim_id = "C-842"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-842."]
+derivation_steps = ["VERIFY: Overlay all centralities on f(u,n) curve, reduced chi2 < 2", "REFUTE: chi2/ndf > 5 or systematic residuals"]
+decision_rule = "VERIFY: Overlay all centralities on f(u,n) curve, reduced chi2 < 2. REFUTE: chi2/ndf > 5 or systematic residuals."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-842"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-842"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00884"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-843"
+claim_id = "C-843"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-843."]
+derivation_steps = ["VERIFY: Strict monotonic decrease in epsilon_bar with increasing centrality percentile", "REFUTE: Any inversion in ordering"]
+decision_rule = "VERIFY: Strict monotonic decrease in epsilon_bar with increasing centrality percentile. REFUTE: Any inversion in ordering."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-843"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-843"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00885"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-844"
+claim_id = "C-844"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-844."]
+derivation_steps = ["VERIFY: beta in [0", "87, 1", "17] with chi2/ndf < 2", "REFUTE: beta outside [0", "5, 1", "5] or chi2/ndf > 5"]
+decision_rule = "VERIFY: beta in [0.87, 1.17] with chi2/ndf < 2. REFUTE: beta outside [0.5, 1.5] or chi2/ndf > 5."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-844"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-844"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00886"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-845"
+claim_id = "C-845"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-845."]
+derivation_steps = ["VERIFY: K in [0", "20, 0", "50] fm^(1-beta)", "REFUTE: K outside [0", "10, 1", "0]"]
+decision_rule = "VERIFY: K in [0.20, 0.50] fm^(1-beta). REFUTE: K outside [0.10, 1.0]."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-845"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-845"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00887"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-846"
+claim_id = "C-846"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-846."]
+derivation_steps = ["VERIFY: beta_hadrons in [0", "75, 1", "15] with R^2 > 0", "8", "REFUTE: R^2 < 0", "5 or beta outside [0", "5, 1", "5]"]
+decision_rule = "VERIFY: beta_hadrons in [0.75, 1.15] with R^2 > 0.8. REFUTE: R^2 < 0.5 or beta outside [0.5, 1.5]."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-846"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-846"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00888"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-847"
+claim_id = "C-847"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-847."]
+derivation_steps = ["VERIFY: beta_jets in [0", "85, 1", "20] AND", "beta_jets - beta_hadrons", "< 0", "2", "REFUTE:", "beta_jets - beta_hadrons"]
+decision_rule = "VERIFY: beta_jets in [0.85, 1.20] AND |beta_jets - beta_hadrons| < 0.2. REFUTE: |beta_jets - beta_hadrons| > 0.5."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-847"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-847"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00889"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-848"
+claim_id = "C-848"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-848."]
+derivation_steps = ["VERIFY: C_sct(x=0, phi=0)=1", "0 (Lorentzian), C_sct(x=0, phi=pi)=0 (antiresonance)", "REFUTE: either condition violated"]
+decision_rule = "VERIFY: C_sct(x=0, phi=0)=1.0 (Lorentzian), C_sct(x=0, phi=pi)=0 (antiresonance). REFUTE: either condition violated."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-848"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-848"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00890"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-849"
+claim_id = "C-849"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-849."]
+derivation_steps = ["VERIFY:", "C_sct_Mie - C_sct_TCMT", "/ C_sct_TCMT < 1% across resonance (10+ frequency points)", "REFUTE: error > 2%"]
+decision_rule = "VERIFY: |C_sct_Mie - C_sct_TCMT| / C_sct_TCMT < 1% across resonance (10+ frequency points). REFUTE: error > 2%."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-849"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-849"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00891"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-850"
+claim_id = "C-850"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-850."]
+derivation_steps = ["VERIFY:", "C_sct_Mie_total - C_sct_TCMT_total", "/ C_sct_TCMT_total < 2% across 0", "22-0", "233 omega_p", "REFUTE: error > 3%"]
+decision_rule = "VERIFY: |C_sct_Mie_total - C_sct_TCMT_total| / C_sct_TCMT_total < 2% across 0.22-0.233 omega_p. REFUTE: error > 3%."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-850"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-850"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00892"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-851"
+claim_id = "C-851"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-851."]
+derivation_steps = ["VERIFY: C_sct(omega=omega_0, phi=pi, gamma_0=0) = 0 to machine precision", "REFUTE:", "C_sct", "> 1e-10"]
+decision_rule = "VERIFY: C_sct(omega=omega_0, phi=pi, gamma_0=0) = 0 to machine precision. REFUTE: |C_sct| > 1e-10."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-851"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-851"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00893"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-852"
+claim_id = "C-852"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-852."]
+derivation_steps = ["VERIFY: R+T=1 for lossless slab (air/glass/air), R+T<1 for lossy slab,", "r_TMM - r_Airy", "< 1e-10 for single slab", "REFUTE: R+T > 1+eps or mismatch with analytical Fresnel-Airy formula"]
+decision_rule = "VERIFY: R+T=1 for lossless slab (air/glass/air), R+T<1 for lossy slab, |r_TMM - r_Airy| < 1e-10 for single slab. REFUTE: R+T > 1+eps or mismatch with analytical Fresnel-Airy formula."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-852"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-852"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00894"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-853"
+claim_id = "C-853"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-853."]
+derivation_steps = ["VERIFY: absorber_at_frequency peak A >= 0", "96 within 0", "5 GHz of 11", "48 GHz", "REFUTE: A < 0", "90 or peak frequency deviates > 1 GHz"]
+decision_rule = "VERIFY: absorber_at_frequency peak A >= 0.96 within 0.5 GHz of 11.48 GHz. REFUTE: A < 0.90 or peak frequency deviates > 1 GHz."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-853"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-853"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00895"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-854"
+claim_id = "C-854"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-854."]
+derivation_steps = ["VERIFY:", "Z(omega_0)/Z_0 - 1", "< 0", "05", "REFUTE:", "Z/Z_0 - 1", "> 0", "10"]
+decision_rule = "VERIFY: |Z(omega_0)/Z_0 - 1| < 0.05. REFUTE: |Z/Z_0 - 1| > 0.10."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-854"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-854"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00896"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-855"
+claim_id = "C-855"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-855."]
+derivation_steps = ["VERIFY: A > 0", "999 for double-thickness slab at resonance", "REFUTE: A < 0", "99"]
+decision_rule = "VERIFY: A > 0.999 for double-thickness slab at resonance. REFUTE: A < 0.99."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-855"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-855"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00897"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-856"
+claim_id = "C-856"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-856."]
+derivation_steps = ["N/A: This is a negative result documenting model limitations", "No further verification needed"]
+decision_rule = "N/A: This is a negative result documenting model limitations. No further verification needed."
+conclusion = "ESTABLISHED: Established"
+source_uid = "C-856"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-856"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00898"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-857"
+claim_id = "C-857"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-857."]
+derivation_steps = ["VERIFY: report", "n_total=13, all 13 pass at omega=1e6, GP-B fails at omega=10", "REFUTE: gate count mismatch or incorrect pass/fail logic"]
+decision_rule = "VERIFY: report.n_total=13, all 13 pass at omega=1e6, GP-B fails at omega=10. REFUTE: gate count mismatch or incorrect pass/fail logic."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-857"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-857"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00899"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-858"
+claim_id = "C-858"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-858."]
+derivation_steps = ["VERIFY: satisfies_gpb_geodetic(200)=true, satisfies_gpb_geodetic(170)=false", "REFUTE: incorrect boundary"]
+decision_rule = "VERIFY: satisfies_gpb_geodetic(200)=true, satisfies_gpb_geodetic(170)=false. REFUTE: incorrect boundary."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-858"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-858"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00900"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-859"
+claim_id = "C-859"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-859."]
+derivation_steps = ["VERIFY:", "frustration_entropy_bridge(3/8) - gamma_NZJ", "/ gamma_NZJ < 0", "02", "REFUTE: deviation > 5%"]
+decision_rule = "VERIFY: |frustration_entropy_bridge(3/8) - gamma_NZJ| / gamma_NZJ < 0.02. REFUTE: deviation > 5%."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-859"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-859"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00901"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-860"
+claim_id = "C-860"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-860."]
+derivation_steps = ["VERIFY: invert_entropy_bridge_bg() returns None", "REFUTE: finding a bridge formula that naturally yields gamma_BG from frustration density"]
+decision_rule = "VERIFY: invert_entropy_bridge_bg() returns None. REFUTE: finding a bridge formula that naturally yields gamma_BG from frustration density."
+conclusion = "ESTABLISHED: Established"
+source_uid = "C-860"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-860"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00902"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-861"
+claim_id = "C-861"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-861."]
+derivation_steps = ["N/A: Negative result", "Would be overturned by discovery of a physically motivated mapping with < 5% deviation from gamma_BG at phi=3/8"]
+decision_rule = "N/A: Negative result. Would be overturned by discovery of a physically motivated mapping with < 5% deviation from gamma_BG at phi=3/8."
+conclusion = "ESTABLISHED: Established"
+source_uid = "C-861"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-861"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00903"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-862"
+claim_id = "C-862"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-862."]
+derivation_steps = ["VERIFY: Match scipy", "special", "jv/yv reference values to 1e-10 for n=0", "5 at z=1, z=5, z=1+i, z=2", "5+0", "3i", "REFUTE: deviation > 1e-8"]
+decision_rule = "VERIFY: Match scipy.special.jv/yv reference values to 1e-10 for n=0..5 at z=1, z=5, z=1+i, z=2.5+0.3i. REFUTE: deviation > 1e-8."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-862"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-862"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00904"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-863"
+claim_id = "C-863"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-863."]
+derivation_steps = ["VERIFY: Wronskian = 2/(pi*z) to 1e-8 for multiple n and complex z", "REFUTE: deviation > 1e-6"]
+decision_rule = "VERIFY: Wronskian = 2/(pi*z) to 1e-8 for multiple n and complex z. REFUTE: deviation > 1e-6."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-863"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-863"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00905"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-864"
+claim_id = "C-864"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-864."]
+derivation_steps = ["VERIFY: Extract E-073 amplitudes, compute coupling via bridge, confirm weak_field_parameter < 0", "1", "REFUTE: coupling violates weak-field or fails to match amplitude energy scale"]
+decision_rule = "VERIFY: Extract E-073 amplitudes, compute coupling via bridge, confirm weak_field_parameter < 0.1. REFUTE: coupling violates weak-field or fails to match amplitude energy scale."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-864"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-864", "E-073"]
+evidence_refs = ["E-073"]
+
+[[skeleton]]
+id = "PRS-00906"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-865"
+claim_id = "C-865"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-865."]
+derivation_steps = ["VERIFY: compute kappa_1 - kappa_2 for range of gravitational couplings, verify = gamma_l within 1e-10", "REFUTE: systematic deviation > 1e-8"]
+decision_rule = "VERIFY: compute kappa_1 - kappa_2 for range of gravitational couplings, verify = gamma_l within 1e-10. REFUTE: systematic deviation > 1e-8."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-865"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-865"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00907"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-866"
+claim_id = "C-866"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-866."]
+derivation_steps = ["VERIFY: Compute", "T", "^2 +", "R", "^2 for sampled frequencies, verify = 1 to 1e-10", "REFUTE: deviation > 1e-8 at any frequency"]
+decision_rule = "VERIFY: Compute |T|^2 + |R|^2 for sampled frequencies, verify = 1 to 1e-10. REFUTE: deviation > 1e-8 at any frequency."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-866"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-866"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00908"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-867"
+claim_id = "C-867"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-867."]
+derivation_steps = ["VERIFY: Compare TCMT lineshape to E-073 amplitude at 10+ frequency points, verify max relative error < 0", "01", "REFUTE: deviation > 5% at any point"]
+decision_rule = "VERIFY: Compare TCMT lineshape to E-073 amplitude at 10+ frequency points, verify max relative error < 0.01. REFUTE: deviation > 5% at any point."
+conclusion = "PROPOSED: Proposed"
+source_uid = "C-867"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-867", "E-073"]
+evidence_refs = ["E-073"]

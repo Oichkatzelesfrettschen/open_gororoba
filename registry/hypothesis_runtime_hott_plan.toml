@@ -94,7 +94,7 @@ phase = "P1"
 status = "open"
 title = "Experiment A binary entrypoint"
 objective = "Add dedicated CLI binary to run equivalence experiment end-to-end and emit TOML output."
-outputs = ["crates/gororoba_cli/src/bin/homotopy_viscosity_equivalence.rs", "sample outputs"]
+outputs = ["crates/gororoba_cli_physics/src/bin/homotopy_viscosity_equivalence.rs", "sample outputs"]
 blocking = true
 
 [[record]]

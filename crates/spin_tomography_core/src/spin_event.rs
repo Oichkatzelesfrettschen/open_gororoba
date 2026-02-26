@@ -32,3 +32,26 @@ impl SpinEvent {
         self
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_construction_and_defaults() {
+        let n1 = Vector3::new(0.0, 0.0, 1.0);
+        let n2 = Vector3::new(1.0, 0.0, 0.0);
+        let ev = SpinEvent::new(n1, n2, 0.642, 0.732);
+        assert_eq!(ev.alpha1, 0.642);
+        assert_eq!(ev.alpha2, 0.732);
+        assert_eq!(ev.weight, 1.0);
+    }
+
+    #[test]
+    fn test_with_weight() {
+        let n1 = Vector3::z();
+        let n2 = Vector3::x();
+        let ev = SpinEvent::new(n1, n2, 1.0, 1.0).with_weight(2.5);
+        assert_eq!(ev.weight, 2.5);
+    }
+}

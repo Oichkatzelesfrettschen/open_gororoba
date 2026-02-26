@@ -1,3 +1,17 @@
+//! Cayley-Dickson Spin Bridge
+//!
+//! Connects Cayley-Dickson algebraic observables (frustration density,
+//! associator norms) to quantum channel parameters for two-qubit spin
+//! tomography. Bridges three crates:
+//!
+//! - `vacuum_frustration`: provides the 3/8 vacuum attractor and frustration metrics
+//! - `spin_tomography_core`: provides `TwoQubitState` density matrix representation
+//! - `algebra_core`: provides Pauli matrices and Clifford algebra primitives
+//!
+//! The bridge models how Cayley-Dickson algebraic structure induces
+//! decoherence in spin-correlated particle pairs, with applications
+//! to QGP Lambda-AntiLambda polarization measurements.
+
 pub mod decoherence_map;
 pub mod depolarizing_channel;
 pub mod qgp_model;

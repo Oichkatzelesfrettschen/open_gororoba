@@ -1077,4 +1077,84 @@ mod tests {
         solver.sync_to_host().expect("sync_to_host should succeed");
         assert!(solver.rho.iter().all(|v| v.is_finite()));
     }
+
+    // ---- CPU-side tests (no GPU required) ----
+
+    #[test]
+    fn launch_config_1d_fp32_uses_1024_threads() {
+        let cfg = LbmSolver3DCuda::launch_config_1d(2048, Precision::FP32);
+        assert_eq!(cfg.block_dim, (1024, 1, 1));
+        assert_eq!(cfg.grid_dim, (2, 1, 1));
+    }
+
+    #[test]
+    fn launch_config_1d_fp64_uses_128_threads() {
+        let cfg = LbmSolver3DCuda::launch_config_1d(2048, Precision::FP64);
+        assert_eq!(cfg.block_dim, (128, 1, 1));
+        assert_eq!(cfg.grid_dim, (16, 1, 1));
+    }
+
+    #[test]
+    fn launch_config_1d_single_element() {
+        let cfg = LbmSolver3DCuda::launch_config_1d(1, Precision::FP32);
+        assert_eq!(cfg.grid_dim.0, 1, "at least 1 block for 1 element");
+    }
+
+    #[test]
+    fn launch_config_1d_bf16_uses_1024_threads() {
+        let cfg = LbmSolver3DCuda::launch_config_1d(512, Precision::BF16);
+        assert_eq!(cfg.block_dim, (1024, 1, 1));
+        assert_eq!(cfg.grid_dim, (1, 1, 1));
+    }
+
+    #[test]
+    fn encode_f32_roundtrip() {
+        let values = vec![1.0f32, -2.5, 7.25, 0.0];
+        let bytes = LbmSolver3DCuda::encode_f32_to_bytes(&values);
+        assert_eq!(bytes.len(), 16);
+        let mut decoded = vec![0.0f32; 4];
+        LbmSolver3DCuda::decode_f32_from_bytes(&bytes, &mut decoded).unwrap();
+        for (a, b) in values.iter().zip(decoded.iter()) {
+            assert_abs_diff_eq!(a, b, epsilon = 1e-7);
+        }
+    }
+
+    #[test]
+    fn encode_bf16_roundtrip() {
+        let values = vec![1.0f32, -2.0, 0.5, 0.0];
+        let bytes = LbmSolver3DCuda::encode_bf16_to_bytes(&values);
+        assert_eq!(bytes.len(), 8);
+        let mut decoded = vec![0.0f32; 4];
+        LbmSolver3DCuda::decode_bf16_from_bytes(&bytes, &mut decoded).unwrap();
+        for (a, b) in values.iter().zip(decoded.iter()) {
+            // BF16 has limited precision (~3 decimal digits)
+            assert_abs_diff_eq!(a, b, epsilon = 0.02);
+        }
+    }
+
+    #[test]
+    fn encode_f64_to_f32_roundtrip() {
+        let values = vec![1.0f64, -2.5, 7.25, 0.0];
+        let bytes = LbmSolver3DCuda::encode_f64_to_bytes(&values);
+        assert_eq!(bytes.len(), 32);
+        let mut decoded = vec![0.0f32; 4];
+        LbmSolver3DCuda::decode_f64_from_bytes_to_f32(&bytes, &mut decoded).unwrap();
+        for (a, b) in values.iter().zip(decoded.iter()) {
+            assert_abs_diff_eq!(*a as f32, *b, epsilon = 1e-6);
+        }
+    }
+
+    #[test]
+    fn decode_f32_rejects_wrong_length() {
+        let bytes = vec![0u8; 5]; // not a multiple of 4
+        let mut out = vec![0.0f32; 2];
+        assert!(LbmSolver3DCuda::decode_f32_from_bytes(&bytes, &mut out).is_err());
+    }
+
+    #[test]
+    fn decode_bf16_rejects_wrong_length() {
+        let bytes = vec![0u8; 3]; // not a multiple of 2
+        let mut out = vec![0.0f32; 2];
+        assert!(LbmSolver3DCuda::decode_bf16_from_bytes(&bytes, &mut out).is_err());
+    }
 }

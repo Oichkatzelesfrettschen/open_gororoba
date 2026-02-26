@@ -145,7 +145,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     {
         let _ = paths;
         Err(std::io::Error::other(
-            "simulation-trace-gate requires hdf5-export feature: cargo run -p gororoba_cli --features hdf5-export --bin simulation-trace-gate -- <paths>",
+            "simulation-trace-gate requires hdf5-export feature: cargo run -p gororoba_cli_data --features hdf5-export --bin simulation-trace-gate -- <paths>",
         )
         .into())
     }

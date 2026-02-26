@@ -1,5 +1,5 @@
-mod warp_runner;
-mod warp_telemetry;
+use gororoba_cli_warp::warp_runner;
+use gororoba_cli_warp::warp_telemetry;
 
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::read_simulation_trace_component;

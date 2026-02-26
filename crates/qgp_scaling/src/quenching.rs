@@ -183,12 +183,12 @@ mod tests {
         let deriv = log_derivative_raa(&pt, &raa);
 
         // Check interior points (skip boundary; widen tolerance near edges)
-        for i in 5..45 {
+        for (i, &d) in deriv.iter().enumerate().take(45).skip(5) {
             assert!(
-                (deriv[i] - alpha).abs() < 0.2,
+                (d - alpha).abs() < 0.2,
                 "d(ln R_AA)/d(ln pT)[{}] = {} (expected {})",
                 i,
-                deriv[i],
+                d,
                 alpha
             );
         }

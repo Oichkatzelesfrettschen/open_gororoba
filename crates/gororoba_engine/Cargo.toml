@@ -6,13 +6,18 @@ license = "GPL-2.0-only"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
+# Sub-crate decomposition: pipeline traits + GPU bridge
+gororoba_pipeline = { path = "../gororoba_pipeline" }
+gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
+
+# Domain physics crates
 vacuum_frustration = { path = "../vacuum_frustration" }
 lbm_core = { path = "../lbm_core" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
 spin_tomography_core = { path = "../spin_tomography_core" }
 cd_spin_bridge = { path = "../cd_spin_bridge" }
-algebra_core = { path = "../algebra_core" }
+algebra_core = { path = "../algebra_core", features = ["lie"] }
 stats_core = { path = "../stats_core" }
 lbm_3d = { path = "../lbm_3d" }
 serde = { workspace = true, features = ["derive"] }

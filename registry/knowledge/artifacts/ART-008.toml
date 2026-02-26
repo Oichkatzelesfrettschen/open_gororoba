@@ -91,11 +91,11 @@ line_end = 19
 paragraph_count = 3
 char_count = 753
 fingerprint = "2c99efeb47f547c1a3b14b1f11d285694e5dcd41c732008e6ff4ebafa51fa62a"
-summary = "**Script:** `crates/gororoba_cli/src/bin/warp_ring_integration.rs` **Artifacts:** `warp_ring_integration.png` **Result:** We successfully implemented the \"Warp Ring\" visualization pipeline, which projects the 126 roots o"
+summary = "**Script:** `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs` **Artifacts:** `warp_ring_integration.png` **Result:** We successfully implemented the \"Warp Ring\" visualization pipeline, which projects the 126 roots o"
 claim_refs = []
 equation_ref_ids = []
 proof_ref_ids = []
-body_text = "**Script:** `crates/gororoba_cli/src/bin/warp_ring_integration.rs`\n**Artifacts:** `warp_ring_integration.png`\n\n**Result:**\nWe successfully implemented the \"Warp Ring\" visualization pipeline, which projects the 126 roots of the E7 Lie algebra onto a 2D plane (Coxeter projection) and overlays active \"spectral triads\" from a simulated turbulent flow.\n\n*   **E7 Structure:** The 126 roots form a highly symmetric projection, creating the \"ring\" structure.\n*   **Triad Dynamics:** Active triads (k, p, q) where energy transfer is maximal tend to cluster along specific \"struts\" of the E7 polytope.\n*   **Hypergraph Topology:** The clustering coefficient of the interaction graph is ~0.42, indicating strong local connectivity typical of the inertial range."
+body_text = "**Script:** `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs`\n**Artifacts:** `warp_ring_integration.png`\n\n**Result:**\nWe successfully implemented the \"Warp Ring\" visualization pipeline, which projects the 126 roots of the E7 Lie algebra onto a 2D plane (Coxeter projection) and overlays active \"spectral triads\" from a simulated turbulent flow.\n\n*   **E7 Structure:** The 126 roots form a highly symmetric projection, creating the \"ring\" structure.\n*   **Triad Dynamics:** Active triads (k, p, q) where energy transfer is maximal tend to cluster along specific \"struts\" of the E7 polytope.\n*   **Hypergraph Topology:** The clustering coefficient of the interaction graph is ~0.42, indicating strong local connectivity typical of the inertial range."
 
 [[section]]
 id = "ART-008-SEC-004"

@@ -186,7 +186,7 @@ files = [
     "crates/vacuum_frustration/src/frustration.rs",
     "crates/vacuum_frustration/src/signed_graph.rs",
     "crates/vacuum_frustration/src/spatial_correlation.rs",
-    "crates/gororoba_cli/src/bin/e027_topology_v2.rs",
+    "crates/gororoba_cli_physics/src/bin/e027_topology_v2.rs",
 ]
 
 [section.discussion]
@@ -245,7 +245,7 @@ files = [
     "crates/vacuum_frustration/src/bridge.rs",
     "crates/vacuum_frustration/src/kubo_transport.rs",
     "crates/vacuum_frustration/src/kubo_transport_gpu.rs",
-    "crates/gororoba_cli/src/bin/kubo_coupling_analysis.rs",
+    "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs",
     "crates/gororoba_cli/src/bin/thesis2_3d_thickening.rs",
 ]
 
@@ -622,9 +622,9 @@ crates = ["vacuum_frustration", "quantum_core"]
 files = [
     "crates/vacuum_frustration/src/kubo_transport.rs",
     "crates/vacuum_frustration/src/kubo_transport_gpu.rs",
-    "crates/gororoba_cli/src/bin/kubo_frustration_transport.rs",
-    "crates/gororoba_cli/src/bin/kubo_coupling_analysis.rs",
-    "crates/gororoba_cli/src/bin/validate_j1j2_kubo.rs",
+    "crates/gororoba_cli_physics/src/bin/kubo_frustration_transport.rs",
+    "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs",
+    "crates/gororoba_cli_physics/src/bin/validate_j1j2_kubo.rs",
     "data/kubo_transport/validation/published_transport_benchmarks.toml",
 ]
 

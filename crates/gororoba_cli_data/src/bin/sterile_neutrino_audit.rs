@@ -25,6 +25,7 @@ enum StreamStatus {
     /// Experiment completed; null result confirmed for this stream.
     NullConfirmed,
     /// Experiment running or result is still theoretical / inconclusive.
+    #[allow(dead_code)] // constructed in #[cfg(test)] only
     Open,
 }
 
@@ -205,10 +206,10 @@ fn main() {
 
     if let Some(path) = args.output {
         let report = render_toml(streams, verdict);
-        if let Some(parent) = path.parent() {
-            if let Err(e) = std::fs::create_dir_all(parent) {
-                eprintln!("WARN: could not create output directory: {e}");
-            }
+        if let Some(parent) = path.parent()
+            && let Err(e) = std::fs::create_dir_all(parent)
+        {
+            eprintln!("WARN: could not create output directory: {e}");
         }
         match std::fs::write(&path, &report) {
             Ok(()) => println!("Report written to {}", path.display()),

@@ -14,7 +14,7 @@
 //! - Coupling: Gravitational interaction strength epsilon_grav
 //!
 //! The TCMT equations follow Ruan-Fan Eq. 8 extended to coupled modes:
-//! ```
+//! ```text
 //! d/dt [a_ph]   = [-i*omega_0,ph - gamma_ph/2    -i*kappa_coupling] [a_ph]
 //!       [a_grav]   [-i*kappa_coupling             -i*omega_0,grav - gamma_grav/2] [a_grav]
 //! ```
@@ -23,7 +23,7 @@
 //!
 //! The gravitational asymmetry parameter q_grav (generalization of Ruan-Fan Eq. 21)
 //! encodes the ratio of direct to resonant coupling:
-//! ```
+//! ```text
 //! q_grav = (kappa_direct / (i * gamma_coupling))
 //! ```
 //! where gamma_coupling is the effective coupling decay rate extracted from the

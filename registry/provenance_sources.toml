@@ -5,10 +5,10 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/external_sources.toml"
-document_count = 14
-record_count = 63
-url_record_count = 36
-path_record_count = 25
+document_count = 16
+record_count = 87
+url_record_count = 41
+path_record_count = 44
 hash_record_count = 2
 
 [[record]]
@@ -44,7 +44,7 @@ id = "PSR-00003"
 document_id = "XS-001"
 source_markdown = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 source_kind = "path"
-source_ref = "crates/gororoba_cli/src/bin/frb_ultrametric.rs"
+source_ref = "crates/gororoba_cli_data/src/bin/frb_ultrametric.rs"
 sha256 = "5108ada779d279a2547d9f9e73ae25bfdd40d8496d6ba7255ec29c6629057a48"
 retrieved_date = ""
 claim_refs = ["C-071", "C-080"]
@@ -728,6 +728,216 @@ notes = "Slide transcript capture; interpretation remains separate from source c
 [[record]]
 id = "PSR-00052"
 document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/*.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00053"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00054"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/DATASET_MANIFEST.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00055"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00056"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00057"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00058"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00059"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00060"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00061"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00062"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/INVERSE_CD_FORMALISM.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00063"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00064"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00065"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00066"
+document_id = "XS-010"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00067"
+document_id = "XS-011"
 source_markdown = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 source_kind = "path"
 source_ref = "docs/external_sources/INVERSE_CD_FORMALISM.md"
@@ -740,8 +950,8 @@ content_kind = "conversation_extraction"
 notes = "Conversation-derived formalism notes flagged as unverified in-file."
 
 [[record]]
-id = "PSR-00053"
-document_id = "XS-011"
+id = "PSR-00068"
+document_id = "XS-012"
 source_markdown = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 source_kind = "path"
 source_ref = "docs/CLAIMS_EVIDENCE_MATRIX.md"
@@ -754,8 +964,8 @@ content_kind = "claims_inbox_index"
 notes = "Inbox index for open claims pending dedicated source dossiers."
 
 [[record]]
-id = "PSR-00054"
-document_id = "XS-011"
+id = "PSR-00069"
+document_id = "XS-012"
 source_markdown = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 source_kind = "path"
 source_ref = "docs/external_sources/"
@@ -768,8 +978,8 @@ content_kind = "claims_inbox_index"
 notes = "Inbox index for open claims pending dedicated source dossiers."
 
 [[record]]
-id = "PSR-00055"
-document_id = "XS-011"
+id = "PSR-00070"
+document_id = "XS-012"
 source_markdown = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 source_kind = "path"
 source_ref = "docs/external_sources/*.md"
@@ -782,8 +992,8 @@ content_kind = "claims_inbox_index"
 notes = "Inbox index for open claims pending dedicated source dossiers."
 
 [[record]]
-id = "PSR-00056"
-document_id = "XS-012"
+id = "PSR-00071"
+document_id = "XS-013"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "url"
 source_ref = "https://arxiv.org/abs/2411.18881"
@@ -796,8 +1006,8 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00057"
-document_id = "XS-012"
+id = "PSR-00072"
+document_id = "XS-013"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
 source_ref = "data/papers/corpus/reggiani_2024_2411.18881.pdf"
@@ -810,8 +1020,8 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00058"
-document_id = "XS-012"
+id = "PSR-00073"
+document_id = "XS-013"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
 source_ref = "data/papers/corpus/reggiani_2024_2411.18881.txt"
@@ -824,8 +1034,8 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00059"
-document_id = "XS-012"
+id = "PSR-00074"
+document_id = "XS-013"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
 source_ref = "docs/SEDENION_ATLAS.md"
@@ -838,8 +1048,8 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00060"
-document_id = "XS-012"
+id = "PSR-00075"
+document_id = "XS-013"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
 source_ref = "tests/test_reggiani_alignment.py"
@@ -852,8 +1062,8 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00061"
-document_id = "XS-012"
+id = "PSR-00076"
+document_id = "XS-013"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
 source_ref = "tests/test_reggiani_standard_zero_divisors.py"
@@ -866,8 +1076,8 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00062"
-document_id = "XS-013"
+id = "PSR-00077"
+document_id = "XS-014"
 source_markdown = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 source_kind = "url"
 source_ref = "https://github.com/silvioreggiani/sedenion-zero-div"
@@ -880,8 +1090,8 @@ content_kind = "evidence_synthesis"
 notes = "Combines primary-source statements with codebase verification references."
 
 [[record]]
-id = "PSR-00063"
-document_id = "XS-014"
+id = "PSR-00078"
+document_id = "XS-015"
 source_markdown = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 source_kind = "path"
 source_ref = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
@@ -892,4 +1102,130 @@ authority_level = "derived_conversation_note"
 verification_level = "unverified_hypothesis"
 content_kind = "conversation_extraction"
 notes = "Conversation-extracted taxonomy with explicit naming-collision warning."
+
+[[record]]
+id = "PSR-00079"
+document_id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_kind = "url"
+source_ref = "https://bldata.berkeley.edu/6EQUJ5/`"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-769", "C-773"]
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+content_kind = "claim_dataset_provenance"
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
+
+[[record]]
+id = "PSR-00080"
+document_id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_kind = "url"
+source_ref = "https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/full/full/0/default.jpg`"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-769", "C-773"]
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+content_kind = "claim_dataset_provenance"
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
+
+[[record]]
+id = "PSR-00081"
+document_id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_kind = "url"
+source_ref = "https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/manifest.json`"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-769", "C-773"]
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+content_kind = "claim_dataset_provenance"
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
+
+[[record]]
+id = "PSR-00082"
+document_id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_kind = "url"
+source_ref = "https://seti.berkeley.edu/wow/`"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-769", "C-773"]
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+content_kind = "claim_dataset_provenance"
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
+
+[[record]]
+id = "PSR-00083"
+document_id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_kind = "url"
+source_ref = "https://www.bigear.org/6equj5.htm`"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-769", "C-773"]
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+content_kind = "claim_dataset_provenance"
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
+
+[[record]]
+id = "PSR-00084"
+document_id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_kind = "path"
+source_ref = "data/csv/bl_6equj5_gbt_manifest.csv"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-769", "C-773"]
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+content_kind = "claim_dataset_provenance"
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
+
+[[record]]
+id = "PSR-00085"
+document_id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_kind = "path"
+source_ref = "data/csv/wow1977_transcription.csv"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-769", "C-773"]
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+content_kind = "claim_dataset_provenance"
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
+
+[[record]]
+id = "PSR-00086"
+document_id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_kind = "path"
+source_ref = "data/external/wow_1977_printout.jpg"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-769", "C-773"]
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+content_kind = "claim_dataset_provenance"
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
+
+[[record]]
+id = "PSR-00087"
+document_id = "XS-016"
+source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_kind = "path"
+source_ref = "di_YYYYMMDD/spliced_blcNN_guppi_MJDTTTTT_TARGET_OBSNUM/"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-769", "C-773"]
+authority_level = "primary_dataset_index"
+verification_level = "source_capture"
+content_kind = "claim_dataset_provenance"
+notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 

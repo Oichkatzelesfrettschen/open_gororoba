@@ -1,0 +1,110 @@
+[package]
+name = "gororoba_cli_warp"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Warp domain CLI binaries and shared modules for gororoba"
+license = "MIT"
+autobins = false
+
+[[bin]]
+name = "warp-ring-integration"
+path = "src/bin/warp_ring_integration.rs"
+
+[[bin]]
+name = "warp-ring-3d"
+path = "src/bin/warp_ring_3d.rs"
+
+[[bin]]
+name = "warp-gpu-experiment"
+path = "src/bin/warp_gpu_experiment.rs"
+
+[[bin]]
+name = "warp-gpu-smoke"
+path = "src/bin/warp_gpu_smoke.rs"
+
+[[bin]]
+name = "warp-bench-precision"
+path = "src/bin/warp_bench_precision.rs"
+
+[[bin]]
+name = "warp-precision-matrix"
+path = "src/bin/warp_precision_matrix.rs"
+
+[[bin]]
+name = "warp-precision-suite"
+path = "src/bin/warp_precision_suite.rs"
+
+[[bin]]
+name = "warp-basemark-suite"
+path = "src/bin/warp_basemark_suite.rs"
+
+[[bin]]
+name = "warp-fastpath-suite"
+path = "src/bin/warp_fastpath_suite.rs"
+
+[[bin]]
+name = "warp-fastpath-analyze"
+path = "src/bin/warp_fastpath_analyze.rs"
+
+[[bin]]
+name = "warp-production-suite"
+path = "src/bin/warp_production_suite.rs"
+
+[[bin]]
+name = "warp-acceptance-gate"
+path = "src/bin/warp_acceptance_gate.rs"
+
+[[bin]]
+name = "warp-enstrophy-test"
+path = "src/bin/warp_enstrophy_test.rs"
+
+[[bin]]
+name = "warp-lbm-step-test"
+path = "src/bin/warp_lbm_step_test.rs"
+
+[dependencies]
+gororoba_cli = { path = "../gororoba_cli" }
+algebra_core = { path = "../algebra_core", features = ["lie", "experimental"] }
+gororoba_engine = { path = "../gororoba_engine" }
+gororoba_contracts = { path = "../gororoba_contracts" }
+data_core = { path = "../data_core" }
+lbm_core = { path = "../lbm_core" }
+lbm_3d = { path = "../lbm_3d" }
+lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
+cudarc = { workspace = true, optional = true }
+nvml-wrapper = { workspace = true, optional = true }
+stats_core = { path = "../stats_core", features = ["gpu"] }
+spectral_core = { path = "../spectral_core" }
+gr_core = { path = "../gr_core" }
+materials_core = { path = "../materials_core" }
+optics_core = { path = "../optics_core" }
+ndarray = { workspace = true }
+num-complex = { workspace = true }
+clap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+csv = { workspace = true }
+toml = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+chrono = { workspace = true }
+plotters = { workspace = true }
+rand = { workspace = true }
+glob = { workspace = true }
+
+[features]
+default = ["gpu"]
+gpu = [
+    "lbm_3d_cuda",
+    "lbm_3d_cuda/cufft",
+    "dep:cudarc",
+    "dep:nvml-wrapper",
+    "algebra_core/gpu",
+    "gororoba_engine/gpu",
+]
+hdf5-export = ["data_core/hdf5-export"]
+
+[lints]
+workspace = true

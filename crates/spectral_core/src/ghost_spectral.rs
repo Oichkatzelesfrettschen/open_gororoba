@@ -1079,14 +1079,14 @@ mod tests {
         let n = 1024;
         let mut signal: Vec<f64> = vec![0.0; n];
         // Add noise
-        for i in 0..n {
+        for (i, s) in signal.iter_mut().enumerate().take(n) {
             // Deterministic pseudo-noise (hash-based)
             let hash = ((i as u64).wrapping_mul(2654435761) >> 16) as f64 / 65536.0 - 0.5;
-            signal[i] = hash;
+            *s = hash;
         }
         // Add strong sine
-        for i in 0..n {
-            signal[i] += 10.0 * (2.0 * std::f64::consts::PI * 0.25 * i as f64).sin();
+        for (i, s) in signal.iter_mut().enumerate().take(n) {
+            *s += 10.0 * (2.0 * std::f64::consts::PI * 0.25 * i as f64).sin();
         }
 
         let (_freqs, power) = compute_power_spectrum(&signal);
@@ -1181,10 +1181,9 @@ mod tests {
         let n = 512;
         let signal: Vec<f64> = (0..n)
             .map(|i| {
-                let hash = ((i as u64).wrapping_mul(2654435761).wrapping_add(12345) >> 16) as f64
+                ((i as u64).wrapping_mul(2654435761).wrapping_add(12345) >> 16) as f64
                     / 65536.0
-                    - 0.5;
-                hash
+                    - 0.5
             })
             .collect();
 

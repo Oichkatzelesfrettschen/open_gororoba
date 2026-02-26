@@ -3,8 +3,8 @@
 Verify Pantheon/PhysicsForge migration mapping completeness.
 
 This verifier enforces consistency between:
-- registry/pantheon_physicsforge_migration_matrix.toml
-- registry/pantheon_physicsforge_migration_todo.toml
+- archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml
+- archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_todo.toml
 """
 
 from __future__ import annotations
@@ -13,8 +13,8 @@ from pathlib import Path
 import tomllib
 
 
-MATRIX_PATH = "registry/pantheon_physicsforge_migration_matrix.toml"
-TODO_PATH = "registry/pantheon_physicsforge_migration_todo.toml"
+MATRIX_PATH = "archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"
+TODO_PATH = "archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_todo.toml"
 
 
 STATUS_TO_COMPLETION = {

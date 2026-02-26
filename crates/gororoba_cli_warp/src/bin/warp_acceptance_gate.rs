@@ -598,7 +598,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     #[cfg(not(feature = "hdf5-export"))]
     {
         Err(std::io::Error::other(
-            "warp-acceptance-gate requires hdf5-export feature: cargo run -p gororoba_cli --features hdf5-export --bin warp-acceptance-gate -- <paths>",
+            "warp-acceptance-gate requires hdf5-export feature: cargo run -p gororoba_cli_warp --features hdf5-export --bin warp-acceptance-gate -- <paths>",
         )
         .into())
     }

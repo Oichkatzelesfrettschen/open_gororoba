@@ -984,7 +984,7 @@ mod tests {
             fail_on_blocked_overdue: true,
             fail_on_missing_action_plan: true,
         };
-        let command = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing";
+        let command = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing";
         let rewritten =
             rewrite_replay_command_for_staging(command, Path::new("target/staging"), &args)
                 .expect("rewrite");
@@ -1013,7 +1013,7 @@ mod tests {
             fail_on_blocked_overdue: true,
             fail_on_missing_action_plan: true,
         };
-        let command = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa";
+        let command = "cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa";
         let rewritten =
             rewrite_replay_command_for_staging(command, Path::new("target/staging"), &args)
                 .expect("rewrite");

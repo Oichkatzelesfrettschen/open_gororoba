@@ -1,5 +1,4 @@
-mod warp_precision_suite_ops;
-mod warp_runner;
+use gororoba_cli_warp::warp_precision_suite_ops;
 
 use std::error::Error;
 use warp_precision_suite_ops::run_bench_compat_args;

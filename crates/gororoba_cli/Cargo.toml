@@ -6,269 +6,27 @@ description = "CLI tools for gororoba physics simulation library"
 license = "MIT"
 autobins = false
 
+# ---- Residual: dispatcher + thesis + ZD resonance + orchestration ----
+
 [[bin]]
 name = "gororoba"
 path = "src/main.rs"
 
 [[bin]]
-name = "kerr-shadow"
-path = "src/bin/kerr_shadow.rs"
-
-[[bin]]
-name = "zd-search"
-path = "src/bin/zd_search.rs"
-
-[[bin]]
-name = "gravastar-sweep"
-path = "src/bin/gravastar_sweep.rs"
-
-[[bin]]
-name = "grin-trace"
-path = "src/bin/grin_trace.rs"
-
-[[bin]]
-name = "mera-entropy"
-path = "src/bin/mera_entropy.rs"
-
-[[bin]]
-name = "frac-laplacian"
-path = "src/bin/frac_laplacian.rs"
-
-[[bin]]
-name = "lbm-poiseuille"
-path = "src/bin/lbm_poiseuille.rs"
-
-[[bin]]
-name = "bounce-cosmology"
-path = "src/bin/bounce_cosmology.rs"
-
-[[bin]]
-name = "neg-dim-eigen"
-path = "src/bin/neg_dim_eigen.rs"
-
-[[bin]]
-name = "frac-schrodinger"
-path = "src/bin/frac_schrodinger.rs"
-
-[[bin]]
-name = "ema-calc"
-path = "src/bin/ema_calc.rs"
-
-[[bin]]
-name = "oct-field"
-path = "src/bin/oct_field.rs"
-
-[[bin]]
-name = "tensor-network"
-path = "src/bin/tensor_network.rs"
-
-[[bin]]
-name = "harper-chern"
-path = "src/bin/harper_chern.rs"
-
-[[bin]]
-name = "tcmt-sweep"
-path = "src/bin/tcmt_sweep.rs"
-
-[[bin]]
-name = "fetch-chime-frb"
-path = "src/bin/fetch_chime_frb.rs"
-
-[[bin]]
-name = "frb-ultrametric"
-path = "src/bin/frb_ultrametric.rs"
-
-[[bin]]
-name = "gw-merger-tree"
-path = "src/bin/gw_merger_tree.rs"
-
-[[bin]]
-name = "frb-cascades"
-path = "src/bin/frb_cascades.rs"
-
-[[bin]]
-name = "dm-ultrametric"
-path = "src/bin/dm_ultrametric.rs"
-
-[[bin]]
-name = "baire-compact"
-path = "src/bin/baire_compact.rs"
-
-[[bin]]
-name = "cosmic-dendrogram"
-path = "src/bin/cosmic_dendrogram.rs"
-
-[[bin]]
-name = "test-tda-api"
-path = "src/bin/test_tda_api.rs"
-
-[[bin]]
-name = "fetch-datasets"
-path = "src/bin/fetch_datasets.rs"
-
-[[bin]]
-name = "real-cosmo-fit"
-path = "src/bin/real_cosmo_fit.rs"
-
-[[bin]]
-name = "multi-dataset-ultrametric"
-path = "src/bin/multi_dataset_ultrametric.rs"
-
-[[bin]]
-name = "motif-census"
-path = "src/bin/motif_census.rs"
-
-[[bin]]
-name = "claims-audit"
-path = "src/bin/claims_audit.rs"
-
-[[bin]]
-name = "claims-verify"
-path = "src/bin/claims_verify.rs"
-
-[[bin]]
-name = "materials-baseline"
-path = "src/bin/materials_baseline.rs"
-
-[[bin]]
-name = "mass-clumping"
-path = "src/bin/mass_clumping.rs"
-
-[[bin]]
-name = "cross-stack-locality"
-path = "src/bin/cross_stack_locality.rs"
-
-[[bin]]
-name = "et-billiard"
-path = "src/bin/et_billiard.rs"
-
-[[bin]]
-name = "sky-limit-set"
-path = "src/bin/sky_limit_set.rs"
-
-[[bin]]
-name = "extract-papers"
-path = "src/bin/extract_papers.rs"
-
-[[bin]]
-name = "migrate-claims"
-path = "src/bin/migrate_claims.rs"
-
-[[bin]]
-name = "registry-check"
-path = "src/bin/registry_check.rs"
-
-[[bin]]
-name = "project-counter-sync"
-path = "src/bin/project_counter_sync.rs"
-
-[[bin]]
-name = "migrate-insights"
-path = "src/bin/migrate_insights.rs"
-
-[[bin]]
-name = "generate-latex"
-path = "src/bin/generate_latex.rs"
-
-[[bin]]
-name = "export-hdf5"
-path = "src/bin/export_hdf5.rs"
-
-[[bin]]
-name = "cd-tower-report"
-path = "src/bin/cd_tower_report.rs"
-
-[[bin]]
-name = "scrollify-csv"
-path = "src/bin/scrollify_csv.rs"
-
-[[bin]]
-name = "verify-project-csv-split"
-path = "src/bin/verify_project_csv_split.rs"
-
-[[bin]]
-name = "registry-emit"
-path = "src/bin/registry_emit.rs"
-
-[[bin]]
-name = "warp-ring-integration"
-path = "src/bin/warp_ring_integration.rs"
-
-[[bin]]
-name = "warp-gpu-experiment"
-path = "src/bin/warp_gpu_experiment.rs"
-
-[[bin]]
-name = "warp-ring-3d"
-path = "src/bin/warp_ring_3d.rs"
-
-[[bin]]
-name = "dimensional-census"
-path = "src/bin/dimensional_census.rs"
-
-[[bin]]
-name = "c590-attractor-sweep"
-path = "src/bin/c590_attractor_sweep.rs"
-
-[[bin]]
-name = "snia-ddt"
-path = "src/bin/snia_ddt.rs"
-
-[[bin]]
-name = "percolation-experiment"
-path = "src/bin/percolation_experiment.rs"
-
-[[bin]]
-name = "e027-equivalence-adapter"
-path = "src/bin/e027_equivalence_adapter.rs"
-
-[[bin]]
-name = "homotopy-viscosity-equivalence"
-path = "src/bin/homotopy_viscosity_equivalence.rs"
-
-[[bin]]
-name = "thesis-program-sweep"
-path = "src/bin/thesis_program_sweep.rs"
-
-[[bin]]
-name = "gororoba-studio"
-path = "src/bin/gororoba_studio.rs"
-
-[[bin]]
-name = "e027-topology-analyzer"
-path = "src/bin/e027_topology_analyzer.rs"
-
-[[bin]]
-name = "e027-topology-v2"
-path = "src/bin/e027_topology_v2.rs"
-
-[[bin]]
-name = "lattice-filtration-analyzer"
-path = "src/bin/lattice_filtration_analyzer.rs"
-
-[[bin]]
-name = "neural-homotopy-trainer"
-path = "src/bin/neural_homotopy_trainer.rs"
-
-[[bin]]
-name = "thesis-lab"
-path = "src/bin/thesis_lab.rs"
-
-[[bin]]
-name = "thesis2-kolmogorov-2d"
-path = "src/bin/thesis2_kolmogorov_2d.rs"
+name = "thesis-synthesis"
+path = "src/bin/thesis_synthesis.rs"
 
 [[bin]]
 name = "thesis-synthesis-engine"
 path = "src/bin/thesis_synthesis_engine.rs"
 
 [[bin]]
-name = "thesis-cross-tx3"
-path = "src/bin/thesis_cross_tx3.rs"
+name = "thesis-program-sweep"
+path = "src/bin/thesis_program_sweep.rs"
 
 [[bin]]
-name = "thesis2-3d-thickening"
-path = "src/bin/thesis2_3d_thickening.rs"
+name = "thesis-lab"
+path = "src/bin/thesis_lab.rs"
 
 [[bin]]
 name = "thesis-cross-tx1"
@@ -279,224 +37,16 @@ name = "thesis-cross-tx2"
 path = "src/bin/thesis_cross_tx2.rs"
 
 [[bin]]
-name = "kubo-frustration-transport"
-path = "src/bin/kubo_frustration_transport.rs"
+name = "thesis-cross-tx3"
+path = "src/bin/thesis_cross_tx3.rs"
 
 [[bin]]
-name = "kubo-coupling-analysis"
-path = "src/bin/kubo_coupling_analysis.rs"
+name = "thesis2-kolmogorov-2d"
+path = "src/bin/thesis2_kolmogorov_2d.rs"
 
 [[bin]]
-name = "validate-j1j2-kubo"
-path = "src/bin/validate_j1j2_kubo.rs"
-
-[[bin]]
-name = "entropy-trap"
-path = "src/bin/entropy_trap.rs"
-
-[[bin]]
-name = "evidence-package"
-path = "src/bin/evidence_package.rs"
-
-[[bin]]
-name = "he4-superfluid"
-path = "src/bin/he4_superfluid.rs"
-
-[[bin]]
-name = "tessarines-mixed-quaternions-census"
-path = "src/bin/tessarines_mixed_quaternions_census.rs"
-
-[[bin]]
-name = "albert-algebra-structure-census"
-path = "src/bin/albert_algebra_structure_census.rs"
-
-[[bin]]
-name = "composition-algebra-taxonomy"
-path = "src/bin/composition_algebra_taxonomy.rs"
-
-[[bin]]
-name = "registry-event-tracker"
-path = "src/bin/registry_event_tracker.rs"
-
-[[bin]]
-name = "third-party-source-verifier"
-path = "src/bin/third_party_source_verifier.rs"
-
-[[bin]]
-name = "claims-consolidate"
-path = "src/bin/claims_consolidate.rs"
-
-[[bin]]
-name = "gororoba-gate"
-path = "src/bin/gororoba_gate.rs"
-
-[[bin]]
-name = "warp-bench-precision"
-path = "src/bin/warp_bench_precision.rs"
-
-[[bin]]
-name = "warp-precision-matrix"
-path = "src/bin/warp_precision_matrix.rs"
-
-[[bin]]
-name = "warp-precision-suite"
-path = "src/bin/warp_precision_suite.rs"
-
-[[bin]]
-name = "warp-gpu-smoke"
-path = "src/bin/warp_gpu_smoke.rs"
-
-[[bin]]
-name = "warp-production-suite"
-path = "src/bin/warp_production_suite.rs"
-
-[[bin]]
-name = "warp-basemark-suite"
-path = "src/bin/warp_basemark_suite.rs"
-
-[[bin]]
-name = "warp-fastpath-suite"
-path = "src/bin/warp_fastpath_suite.rs"
-
-[[bin]]
-name = "warp-fastpath-analyze"
-path = "src/bin/warp_fastpath_analyze.rs"
-
-[[bin]]
-name = "rho-trace-gate"
-path = "src/bin/rho_trace_gate.rs"
-
-[[bin]]
-name = "simulation-trace-gate"
-path = "src/bin/simulation_trace_gate.rs"
-
-[[bin]]
-name = "hdf5-numeric-gate"
-path = "src/bin/hdf5_numeric_gate.rs"
-
-[[bin]]
-name = "warp-acceptance-gate"
-path = "src/bin/warp_acceptance_gate.rs"
-
-[[bin]]
-name = "warp-enstrophy-test"
-path = "src/bin/warp_enstrophy_test.rs"
-
-[[bin]]
-name = "warp-lbm-step-test"
-path = "src/bin/warp_lbm_step_test.rs"
-
-[[bin]]
-name = "thesis-synthesis"
-path = "src/bin/thesis_synthesis.rs"
-
-[[bin]]
-name = "qgp-parameter-optimizer"
-path = "src/bin/qgp_parameter_optimizer.rs"
-
-[[bin]]
-name = "lhc-2025-qgp-synthesis"
-path = "src/bin/lhc_2025_qgp_synthesis.rs"
-
-[[bin]]
-name = "amplitude-frustration-survey"
-path = "src/bin/amplitude_frustration_survey.rs"
-
-[[bin]]
-name = "spin-decoherence-pipeline"
-path = "src/bin/spin_decoherence_pipeline.rs"
-
-[[bin]]
-name = "compute-all-lambdas"
-path = "src/bin/compute-all-lambdas.rs"
-
-[[bin]]
-name = "demo-real-materials"
-path = "src/bin/demo_real_materials.rs"
-
-[[bin]]
-name = "demo-optical-titanates"
-path = "src/bin/demo_optical_titanates.rs"
-
-[[bin]]
-name = "experiment-c756"
-path = "src/bin/experiment_c756.rs"
-
-[[bin]]
-name = "dump-assessors"
-path = "src/bin/dump_assessors.rs"
-
-[[bin]]
-name = "wavelet-bridging-sweep"
-path = "src/bin/wavelet_bridging_sweep.rs"
-
-[[bin]]
-name = "meltdown-gating-sweep"
-path = "src/bin/meltdown_gating_sweep.rs"
-
-[[bin]]
-name = "meltdown-pulsed-gate"
-path = "src/bin/meltdown_pulsed_gate.rs"
-
-[[bin]]
-name = "wavelet-acf-calibration"
-path = "src/bin/wavelet_acf_calibration.rs"
-
-[[bin]]
-name = "chsh-wavelet-compression"
-path = "src/bin/chsh_wavelet_compression.rs"
-
-[[bin]]
-name = "casimir-plate-compare"
-path = "src/bin/casimir_plate_compare.rs"
-
-[[bin]]
-name = "casimir-drude-plasma"
-path = "src/bin/casimir_drude_plasma.rs"
-
-[[bin]]
-name = "absorber-topology-benchmark"
-path = "src/bin/absorber-topology-benchmark.rs"
-
-[[bin]]
-name = "gravastar-bypass-compare"
-path = "src/bin/gravastar-bypass-compare.rs"
-
-[[bin]]
-name = "prefix-chain-theorem"
-path = "src/bin/prefix_chain_theorem.rs"
-
-[[bin]]
-name = "paper-build"
-path = "src/bin/paper_build.rs"
-
-[[bin]]
-name = "wow-signal-analysis"
-path = "src/bin/wow_signal_analysis.rs"
-
-[[bin]]
-name = "wow-topology"
-path = "src/bin/wow_topology.rs"
-
-[[bin]]
-name = "bl-data-fetch"
-path = "src/bin/bl_data_fetch.rs"
-
-[[bin]]
-name = "bl-doppler-search"
-path = "src/bin/bl_doppler_search.rs"
-
-[[bin]]
-name = "rho-ghost-fft"
-path = "src/bin/rho_ghost_fft.rs"
-
-[[bin]]
-name = "ghost-spectral-audit"
-path = "src/bin/ghost_spectral_audit.rs"
-
-[[bin]]
-name = "cd-ultrametric-scaling"
-path = "src/bin/cd_ultrametric_scaling.rs"
+name = "thesis2-3d-thickening"
+path = "src/bin/thesis2_3d_thickening.rs"
 
 [[bin]]
 name = "zd-resonance-sweep"
@@ -507,38 +57,6 @@ name = "zd-resonance-bf16"
 path = "src/bin/zd_resonance_bf16.rs"
 
 [[bin]]
-name = "pathion-sink-test"
-path = "src/bin/pathion_sink_test.rs"
-
-[[bin]]
-name = "chirality-lock-test"
-path = "src/bin/chirality_lock_test.rs"
-
-[[bin]]
-name = "moonshine-filterbank"
-path = "src/bin/moonshine_filterbank.rs"
-
-[[bin]]
-name = "wow-sedenion-synthesis"
-path = "src/bin/wow_sedenion_synthesis.rs"
-
-[[bin]]
-name = "dataset-fetch-all"
-path = "src/bin/dataset_fetch_all.rs"
-
-[[bin]]
-name = "algebra-entropy-census"
-path = "src/bin/algebra_entropy_census.rs"
-
-[[bin]]
-name = "chsh-betti-sweep"
-path = "src/bin/chsh_betti_sweep.rs"
-
-[[bin]]
-name = "lattice-hawking-sweep"
-path = "src/bin/lattice_hawking_sweep.rs"
-
-[[bin]]
 name = "zd-resonance-cuda"
 path = "src/bin/zd_resonance_cuda.rs"
 
@@ -547,82 +65,34 @@ name = "zd-resonance-4d"
 path = "src/bin/zd_resonance_4d.rs"
 
 [[bin]]
-name = "lbm-precision-sampler"
-path = "src/bin/lbm_precision_sampler.rs"
+name = "gororoba-gate"
+path = "src/bin/gororoba_gate.rs"
 
 [[bin]]
-name = "entropy-pde"
-path = "src/bin/entropy_pde.rs"
+name = "gororoba-studio"
+path = "src/bin/gororoba_studio.rs"
 
 [[bin]]
-name = "modular-chaos"
-path = "src/bin/modular_chaos.rs"
+name = "spin-decoherence-pipeline"
+path = "src/bin/spin_decoherence_pipeline.rs"
 
 [[bin]]
-name = "arleo-falmagne-scaling"
-path = "src/bin/arleo_falmagne_scaling.rs"
+name = "lattice-filtration-analyzer"
+path = "src/bin/lattice_filtration_analyzer.rs"
 
 [[bin]]
-name = "sfwm-figure-repro"
-path = "src/bin/sfwm_figure_repro.rs"
+name = "percolation-experiment"
+path = "src/bin/percolation_experiment.rs"
 
 [[bin]]
-name = "ppn-bound-sweep"
-path = "src/bin/ppn_bound_sweep.rs"
+name = "test-tda-api"
+path = "src/bin/test_tda_api.rs"
 
-[[bin]]
-name = "fano-scattering"
-path = "src/bin/fano_scattering.rs"
-
-[[bin]]
-name = "landy-absorber-tmm"
-path = "src/bin/landy_absorber_tmm.rs"
-
-[[bin]]
-name = "sterile-neutrino-audit"
-path = "src/bin/sterile_neutrino_audit.rs"
-
-[[bin]]
-name = "data-origin-audit"
-path = "src/bin/data_origin_audit.rs"
-
-[[bin]]
-name = "data-governance-gate"
-path = "src/bin/data_governance_gate.rs"
-
-[[bin]]
-name = "data-clean"
-path = "src/bin/data_clean.rs"
-
-[[bin]]
-name = "record-external-hashes"
-path = "src/bin/record_external_hashes.rs"
-
-[[bin]]
-name = "external-redownload-audit"
-path = "src/bin/external_redownload_audit.rs"
-
-[[bin]]
-name = "external-blocked-burndown"
-path = "src/bin/external_blocked_burndown.rs"
-
-[[bin]]
-name = "external-blocked-retry-ledger"
-path = "src/bin/external_blocked_retry_ledger.rs"
-
-[[bin]]
-name = "data-semantic-validate"
-path = "src/bin/data_semantic_validate.rs"
-
-[[bin]]
-name = "hepdata-refresh"
-path = "src/bin/hepdata_refresh.rs"
 [dependencies]
-docpipe = { path = "../docpipe", features = ["fallback"] }
-algebra_core = { path = "../algebra_core" }
+# Workspace domain crates (used by dispatcher + thesis + orchestration bins)
+algebra_core = { path = "../algebra_core", features = ["lie", "experimental"] }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
-materials_core = { path = "../materials_core" }
 optics_core = { path = "../optics_core" }
 quantum_core = { path = "../quantum_core" }
 spectral_core = { path = "../spectral_core" }
@@ -633,48 +103,35 @@ cudarc = { workspace = true, optional = true }
 nvml-wrapper = { workspace = true, optional = true }
 stats_core = { path = "../stats_core", features = ["gpu"] }
 data_core = { path = "../data_core" }
-scrolls_core = { path = "../scrolls_core" }
-snia_core = { path = "../snia_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
 gororoba_engine = { path = "../gororoba_engine" }
-spin_tomography_core = { path = "../spin_tomography_core" }
-cd_spin_bridge = { path = "../cd_spin_bridge" }
 tda = { workspace = true }
+lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
+ash = { version = "0.38.0", features = ["debug"] }
+# External crates
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
 anyhow = { workspace = true }
 rand = { workspace = true }
-rand_chacha = { workspace = true }
-rand_distr = { workspace = true }
 clap = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 axum = { workspace = true }
 tokio = { workspace = true }
 csv = { workspace = true }
-num-complex = { workspace = true }
 plotters = { workspace = true }
-ureq = { workspace = true }
 sha2 = { workspace = true }
-rayon = { workspace = true }
 regex = { workspace = true }
 toml = { workspace = true }
-strsim = { workspace = true }
 walkdir = { workspace = true }
 glob = { workspace = true }
 log = { workspace = true }
 env_logger = { workspace = true }
-tracing = { workspace = true }
-tracing-subscriber = { workspace = true }
-gororoba_contracts = { path = "../gororoba_contracts" }
 pgfplots = { workspace = true }
 chrono = { workspace = true }
-ash = { version = "0.38.0", features = ["debug"] }
-lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
-rustfft = { workspace = true }
-qgp_scaling = { path = "../qgp_scaling" }
+strsim = { workspace = true }
 
 [dev-dependencies]
 tempfile = { workspace = true }

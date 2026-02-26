@@ -76,7 +76,7 @@ slug = "WARP_RING_REPORT"
 title = "Warp Ring Integration: Algebra-Fluid Duality Visualized"
 content_kind = "simulation_report"
 claim_refs = []
-path_refs = ["crates/gororoba_cli/src/bin/warp_ring_integration.rs", "warp_ring_integration.png"]
+path_refs = ["crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "warp_ring_integration.png"]
 line_count = 45
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -88,7 +88,7 @@ body_markdown = '''
 **Status:** Implemented & Visualized
 
 ## 1. The Warp Ring
-**Script:** `crates/gororoba_cli/src/bin/warp_ring_integration.rs`
+**Script:** `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs`
 **Artifacts:** `warp_ring_integration.png`
 
 **Result:**

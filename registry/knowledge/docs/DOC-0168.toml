@@ -63,7 +63,7 @@ Authoritative source: `registry/next_actions.toml`.
 - Description: Drive manuscript generation from verified TOML registries with reproducible sections.
 - References:
   - `docs/latex/`
-  - `crates/gororoba_cli/src/bin/generate_latex.rs`
+  - `crates/gororoba_cli_data/src/bin/generate_latex.rs`
   - `registry/claims.toml`
   - `registry/insights.toml`
 
