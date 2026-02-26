@@ -696,7 +696,7 @@ pub fn algebraic_generation_triples(dim: usize) -> Vec<(usize, (usize, usize, us
             1 => (&lo_range, &lo_range, &hi_range),
             2 => (&lo_range, &hi_range, &hi_range),
             3 => (&hi_range, &hi_range, &hi_range),
-            _ => unreachable!(),
+            _ => unreachable!("depth is always 0..=3"),
         };
 
         let mut depth_norms: Vec<f64> = Vec::new();

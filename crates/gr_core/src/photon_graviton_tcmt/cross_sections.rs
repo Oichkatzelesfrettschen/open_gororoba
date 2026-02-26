@@ -51,8 +51,8 @@ impl CrossSectionComputer {
 
     /// Compute peak cross-section (at resonance)
     pub fn peak_scattering(&self) -> f64 {
-        let c_sct = (self.asymmetry.q * self.asymmetry.q) / 1.0; // x=0: (q^2) / 1
-        c_sct
+        // x=0: (q^2) / 1
+        (self.asymmetry.q * self.asymmetry.q) / 1.0
     }
 
     /// Compute quality factor Q from FWHM

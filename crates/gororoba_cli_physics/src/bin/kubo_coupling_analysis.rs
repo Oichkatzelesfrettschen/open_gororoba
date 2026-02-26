@@ -23,7 +23,7 @@ use vacuum_frustration::kubo_transport::{
 struct TransportDispatcher {
     #[cfg(feature = "gpu")]
     gpu_ctx: Option<vacuum_frustration::kubo_transport_gpu::GpuKuboContext>,
-    #[allow(dead_code)] // read at line 486; flagged without gpu feature
+    #[cfg_attr(not(feature = "gpu"), allow(dead_code))]
     use_gpu: bool,
 }
 
@@ -82,22 +82,22 @@ fn compute_point(
     let transport;
     #[cfg(feature = "gpu")]
     {
-        if let Some(ref ctx) = dispatcher.gpu_ctx {
-            if let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10) {
-                transport = t;
-                let ed = exact_diagonalize(&model).expect("ED failed");
-                return CouplingPoint {
-                    lambda,
-                    temperature,
-                    frustration,
-                    drude_spin: transport.drude_weight_spin,
-                    drude_energy: transport.drude_weight_energy,
-                    thermal_conductivity: transport.thermal_conductivity,
-                    total_weight_spin: transport.total_weight_spin,
-                    total_weight_energy: transport.total_weight_energy,
-                    specific_heat: thermodynamic_quantities(&ed, temperature).expect("thermo failed").specific_heat,
-                };
-            }
+        if let Some(ref ctx) = dispatcher.gpu_ctx
+            && let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10)
+        {
+            transport = t;
+            let ed = exact_diagonalize(&model).expect("ED failed");
+            return CouplingPoint {
+                lambda,
+                temperature,
+                frustration,
+                drude_spin: transport.drude_weight_spin,
+                drude_energy: transport.drude_weight_energy,
+                thermal_conductivity: transport.thermal_conductivity,
+                total_weight_spin: transport.total_weight_spin,
+                total_weight_energy: transport.total_weight_energy,
+                specific_heat: thermodynamic_quantities(&ed, temperature).expect("thermo failed").specific_heat,
+            };
         }
     }
     let _ = &dispatcher; // suppress unused warning on non-GPU builds

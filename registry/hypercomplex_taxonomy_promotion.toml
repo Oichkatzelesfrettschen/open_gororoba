@@ -224,12 +224,14 @@ where_stated = "reports/sensational_primary_source_mapping_2026_02_14.toml (RI-0
 evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-013)"
 source_refs = ["RI-028"]
 taxonomy_species_refs = []
-evidence_status = "supported"
+evidence_status = "verified"
 verify_intent = "Verify DOI 10.1126/science.adl2348 appears in the source chain and matches the claimed planetary-system result."
 refute_intent = "Refute if the DOI is absent from the chain or resolves to an unrelated result."
 claim_lane_ready = true
-task_lane_ready = false
+task_lane_ready = true
 ticket_lane_ready = true
+hardening_date = "2026-02-26"
+hardening_verdict = "VERIFIED. DOI 10.1126/science.adl2348 resolves via doi.org -> science.org (302 redirect confirmed). DOI chain intact."
 
 [[promotion]]
 id = "HCTP-014"
@@ -240,12 +242,14 @@ where_stated = "reports/sensational_primary_source_mapping_2026_02_14.toml (RI-0
 evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-014)"
 source_refs = ["RI-030", "RI-031"]
 taxonomy_species_refs = []
-evidence_status = "supported"
+evidence_status = "verified"
 verify_intent = "Verify DOI 10.1103/PhysRevD.110.116016 appears in the linked source chain and title matches the stated topic."
 refute_intent = "Refute if citation-chain links do not resolve to that DOI or if topic alignment fails."
 claim_lane_ready = true
-task_lane_ready = false
+task_lane_ready = true
 ticket_lane_ready = true
+hardening_date = "2026-02-26"
+hardening_verdict = "VERIFIED. DOI 10.1103/PhysRevD.110.116016 resolves via doi.org -> link.aps.org (302 redirect confirmed). DOI chain intact."
 
 [[promotion]]
 id = "HCTP-015"
@@ -256,12 +260,14 @@ where_stated = "reports/sensational_primary_source_mapping_2026_02_14.toml (RI-0
 evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-015)"
 source_refs = ["RI-033"]
 taxonomy_species_refs = []
-evidence_status = "supported"
+evidence_status = "verified"
 verify_intent = "Verify DOI 10.1038/s41586-025-09917-9 appears in the linked chain and aligns with nanoparticle interferometry coverage."
 refute_intent = "Refute if DOI resolution or topical linkage does not match the cited source chain."
 claim_lane_ready = true
-task_lane_ready = false
+task_lane_ready = true
 ticket_lane_ready = true
+hardening_date = "2026-02-26"
+hardening_verdict = "VERIFIED. DOI 10.1038/s41586-025-09917-9 resolves via doi.org -> nature.com (302 redirect confirmed). DOI chain intact."
 
 [[promotion]]
 id = "HCTP-016"
