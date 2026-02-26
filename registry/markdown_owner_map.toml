@@ -1762,3 +1762,12 @@ owner_group = "docs_root_narratives"
 requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
 
+[[owner]]
+id = "MOWN-0191"
+path = "data/artifacts/THESIS_3D_SYNTHESIS.md"
+scope = "data_artifacts"
+canonical_toml = "registry/artifact_scrolls.toml"
+owner_group = "artifact_scrolls"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error make registry-artifact-scrolls && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
+
