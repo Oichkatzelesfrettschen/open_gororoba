@@ -33,8 +33,8 @@ step_3 = "Reuse one built binary set for follow-on runs."
 name = "open_gororoba"
 kind = "computational_physics_research_platform"
 summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, and cosmological observables."
-workspace_crates = 30
-cli_binaries = 155
+workspace_crates = 34
+cli_binaries = 153
 registry_model = "toml_first"
 
 [[shared.path]]
@@ -287,9 +287,9 @@ rationale = "Prevent unnecessary long GPU runs during iteration while preserving
 
 [[shared.pitfall]]
 id = "PIT-001"
-issue = "nalgebra is pinned to 0.33"
-impact = "naive upgrades can break compatibility with current dependency graph"
-mitigation = "do not upgrade without full compatibility review"
+issue = "nalgebra pinned to 0.33 (statrs 0.18.0 requires ^0.33; gauss-quad pulls 0.34 transitively)"
+impact = "dep tree has two nalgebra copies (0.33 + 0.34); upgrade blocked until statrs 0.19+"
+mitigation = "do not upgrade without verifying statrs compatibility; original num-dual reason is stale"
 
 [[shared.pitfall]]
 id = "PIT-002"

@@ -11,7 +11,7 @@ insight_count = 98
 experiment_count = 77
 complete_experiment_count = 74
 paper_count = 19
-binary_count = 155
+binary_count = 153
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
 [sprints.s56]

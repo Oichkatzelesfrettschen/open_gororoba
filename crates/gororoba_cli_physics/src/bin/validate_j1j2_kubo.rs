@@ -278,11 +278,11 @@ fn compare_with_published(
 }
 
 #[derive(Deserialize)]
+#[allow(dead_code)]
 struct TransportData {
     metadata: Metadata,
     j1j2_transport: Vec<J1J2Point>,
     interpolation: Vec<InterpolationPoint>,
-    #[allow(dead_code)]
     cd_transport: Vec<CdTransportPoint>,
 }
 
@@ -296,9 +296,9 @@ struct Metadata {
 }
 
 #[derive(Deserialize, Clone)]
+#[allow(dead_code)]
 struct J1J2Point {
     alpha: f64,
-    #[allow(dead_code)]
     frustration: f64,
     drude_weight_spin: f64,
     total_weight_spin: f64,
@@ -307,9 +307,9 @@ struct J1J2Point {
 }
 
 #[derive(Deserialize, Clone)]
+#[allow(dead_code)]
 struct InterpolationPoint {
     lambda: f64,
-    #[allow(dead_code)]
     frustration: f64,
     drude_weight_spin: f64,
     total_weight_spin: f64,
@@ -317,20 +317,14 @@ struct InterpolationPoint {
 }
 
 #[derive(Deserialize)]
+#[allow(dead_code)]
 struct CdTransportPoint {
-    #[allow(dead_code)]
     dim: usize,
-    #[allow(dead_code)]
     temperature: f64,
-    #[allow(dead_code)]
     frustration: f64,
-    #[allow(dead_code)]
     specific_heat: f64,
-    #[allow(dead_code)]
     drude_weight_spin: f64,
-    #[allow(dead_code)]
     total_weight_energy: f64,
-    #[allow(dead_code)]
     total_weight_spin: f64,
 }
 

@@ -56,7 +56,9 @@ step_3 = "Reuse one built binary set for follow-on runs."
 # Shared dependencies across workspace
 [workspace.dependencies]
 # Core numerics
-# PINNED: num-dual 0.13.2 requires nalgebra <0.34; do not upgrade without full compat review
+# PINNED: statrs 0.18.0 requires nalgebra ^0.33 (<0.34). gauss-quad 0.2.4 pulls
+# nalgebra 0.34 transitively (dep duplication). Upgrade when statrs releases 0.19+.
+# (Original num-dual 0.13.2 pin reason is stale -- num-dual no longer in dep tree.)
 nalgebra = "0.33"
 ndarray = "0.16"
 num-complex = "0.4"
@@ -182,7 +184,7 @@ approx = "0.5"
 tempfile = "3.24"
 proptest = "1.6"
 # TRACKING: criterion 0.8.2 available (currently 0.5); upgrade requires API audit
-# across 8 consuming crates. Evaluate when benchmark infrastructure is next touched.
+# across 9 consuming crates (T-042). Evaluate when benchmark infrastructure is next touched.
 criterion = { version = "0.5", features = ["html_reports"] }
 
 [workspace.lints.clippy]

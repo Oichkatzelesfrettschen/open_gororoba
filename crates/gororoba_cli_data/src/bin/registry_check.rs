@@ -91,50 +91,37 @@ struct ClaimsRegistry {
 /// so that new optional fields added by the consolidation pipeline do not break
 /// deserialization.
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct ClaimEntry {
     id: String,
-    #[allow(dead_code)]
     #[serde(default)]
     statement: String,
     status: String,
-    #[allow(dead_code)]
     #[serde(default)]
     where_stated: String,
-    #[allow(dead_code)]
     #[serde(default)]
     last_verified: String,
-    #[allow(dead_code)]
     #[serde(default)]
     what_would_verify_refute: String,
     // New optional fields added by consolidation pipeline
-    #[allow(dead_code)]
     #[serde(default)]
     description: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     confidence: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     phase: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     sprint: Option<u32>,
-    #[allow(dead_code)]
     #[serde(default)]
     dependencies: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     claims: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     insights: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     supporting_evidence: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     verification_method: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     status_note: Option<String>,
 }
@@ -145,49 +132,39 @@ struct InsightsRegistry {
 }
 
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct InsightEntry {
     id: String,
-    #[allow(dead_code)]
     #[serde(default)]
     title: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     insight: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     date: Option<String>,
     status: Option<String>,
     #[serde(default)]
     claims: Vec<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     related_claims: Vec<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     sprint: Option<u32>,
-    #[allow(dead_code)]
     #[serde(default)]
     summary: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     supporting_evidence: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     confidence: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     verified_date: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     phase: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     experimental_support: Option<Vec<String>>,
 }
 
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct ExperimentsRegistry {
-    #[allow(dead_code)]
     #[serde(default)]
     experiments: Option<ExperimentsHeader>,
     experiment: Vec<ExperimentEntry>,
@@ -195,34 +172,28 @@ struct ExperimentsRegistry {
 
 /// Header section [experiments] in experiments.toml.
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct ExperimentsHeader {
-    #[allow(dead_code)]
     #[serde(default)]
     updated: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     authoritative: Option<bool>,
-    #[allow(dead_code)]
     #[serde(default)]
     experiment_count: Option<u32>,
-    #[allow(dead_code)]
     #[serde(default)]
     deterministic_count: Option<u32>,
-    #[allow(dead_code)]
     #[serde(default)]
     gpu_count: Option<u32>,
-    #[allow(dead_code)]
     #[serde(default)]
     seeded_count: Option<u32>,
-    #[allow(dead_code)]
     #[serde(default)]
     status_allowlist: Option<Vec<String>>,
 }
 
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct ExperimentEntry {
     id: String,
-    #[allow(dead_code)]
     #[serde(default)]
     title: Option<String>,
     #[serde(default)]
@@ -230,58 +201,40 @@ struct ExperimentEntry {
     #[serde(default)]
     claims: Vec<String>,
     // Extra fields present in the rich schema
-    #[allow(dead_code)]
     #[serde(default)]
     binary_registered: Option<bool>,
-    #[allow(dead_code)]
     #[serde(default)]
     binary_experiment_declared: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     method: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     input: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     output: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     run: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     run_command_sha256: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     claim_refs: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     deterministic: Option<bool>,
-    #[allow(dead_code)]
     #[serde(default)]
     gpu: Option<bool>,
-    #[allow(dead_code)]
     #[serde(default)]
     seed: Option<u64>,
-    #[allow(dead_code)]
     #[serde(default)]
     status: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     status_token: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     lineage_id: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     input_path_refs: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     output_path_refs: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     dataset_refs: Option<Vec<String>>,
-    #[allow(dead_code)]
     #[serde(default)]
     reproducibility_class: Option<String>,
 }
@@ -292,9 +245,9 @@ struct BinariesRegistry {
 }
 
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct BinaryEntry {
     name: String,
-    #[allow(dead_code)]
     description: Option<String>,
     experiment: Option<String>,
 }
@@ -305,10 +258,9 @@ struct ProjectRegistry {
 }
 
 #[derive(serde::Deserialize)]
+#[allow(dead_code)]
 struct ProjectMeta {
-    #[allow(dead_code)]
     name: String,
-    #[allow(dead_code)]
     test_count: Option<u32>,
     claim_count: Option<u32>,
     insight_count: Option<u32>,
