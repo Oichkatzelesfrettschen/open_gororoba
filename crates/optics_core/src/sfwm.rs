@@ -407,6 +407,70 @@ pub fn polarization_dependence(theta: f64) -> f64 {
     theta.cos().powi(2)
 }
 
+/// Substrate SFWM contribution result.
+#[derive(Debug, Clone)]
+pub struct SubstrateSfwmResult {
+    /// SFWM wavevector mismatch dk_SFWM in substrate [1/um].
+    pub dk_sfwm: f64,
+    /// Phase-matching function F(dk, L) [um].
+    pub f_sfwm: f64,
+    /// |F|^2 * chi3^2 (proportional to SFWM rate).
+    pub rate_proxy: f64,
+    /// Substrate thickness [um].
+    pub thickness_um: f64,
+    /// Coherence length L_coh = pi/|dk| [um].
+    pub l_coh_sfwm_um: f64,
+    /// Whether the substrate contributes nonzero SFWM.
+    pub has_contribution: bool,
+}
+
+/// Parameters for computing substrate SFWM contribution.
+#[derive(Debug, Clone)]
+pub struct SubstrateSfwmParams {
+    /// Refractive index at pump wavelength.
+    pub n_pump: f64,
+    /// Refractive index at signal wavelength.
+    pub n_signal: f64,
+    /// Refractive index at idler wavelength.
+    pub n_idler: f64,
+    /// Pump wavelength [um].
+    pub lambda_pump: f64,
+    /// Signal wavelength [um].
+    pub lambda_signal: f64,
+    /// Idler wavelength [um].
+    pub lambda_idler: f64,
+    /// Third-order susceptibility chi(3) [m^2/V^2].
+    pub chi3: f64,
+    /// Substrate thickness [um].
+    pub thickness_um: f64,
+}
+
+/// Compute SFWM contribution from a substrate material.
+///
+/// For a centrosymmetric substrate (e.g. fused silica), only chi(3) SFWM
+/// is possible -- no chi(2) cascaded path. In the thick-crystal regime
+/// (L >> L_coh), the sinc^2 phase-matching function oscillates rapidly
+/// and the time-averaged contribution is nonzero but small.
+pub fn substrate_sfwm_contribution(params: &SubstrateSfwmParams) -> SubstrateSfwmResult {
+    let k_pump = 2.0 * PI * params.n_pump / params.lambda_pump;
+    let k_signal = 2.0 * PI * params.n_signal / params.lambda_signal;
+    let k_idler = 2.0 * PI * params.n_idler / params.lambda_idler;
+    let dk_sfwm = 2.0 * k_pump - k_signal - k_idler;
+
+    let f = phase_matching_function(dk_sfwm, params.thickness_um);
+    let l_coh = coherence_length(dk_sfwm);
+    let rate_proxy = params.chi3 * params.chi3 * f * f;
+
+    SubstrateSfwmResult {
+        dk_sfwm,
+        f_sfwm: f,
+        rate_proxy,
+        thickness_um: params.thickness_um,
+        l_coh_sfwm_um: l_coh,
+        has_contribution: rate_proxy.abs() > 1e-60,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -612,5 +676,44 @@ mod tests {
         let at_90 = polarization_dependence(PI / 2.0);
         assert!((at_0 - 1.0).abs() < 1e-10, "cos^2(0) = {:.4}", at_0);
         assert!(at_90.abs() < 1e-10, "cos^2(pi/2) = {:.4e}", at_90);
+    }
+
+    #[test]
+    fn test_substrate_sfwm_fused_silica_500um() {
+        // Fused silica at same wavelengths as Son & Chekhova (2026):
+        // pump=1030nm, signal=770nm, idler=1550nm.
+        // n(SiO2) from Malitson: ~1.450 (pump), ~1.454 (signal), ~1.444 (idler).
+        // chi3(SiO2) ~ 2.5e-22 m^2/V^2 (Adair et al. 1989, n2=2.74e-16 cm^2/W).
+        let r = substrate_sfwm_contribution(&SubstrateSfwmParams {
+            n_pump: 1.4500,
+            n_signal: 1.4539,
+            n_idler: 1.4440,
+            lambda_pump: 1.030,
+            lambda_signal: 0.770,
+            lambda_idler: 1.550,
+            chi3: 2.5e-22,
+            thickness_um: 500.0,
+        });
+
+        // Substrate IS in thick-crystal regime: L >> L_coh
+        assert!(
+            r.l_coh_sfwm_um < 500.0,
+            "Substrate should be thick: L_coh={:.1} um < 500 um",
+            r.l_coh_sfwm_um,
+        );
+
+        // Nonzero SFWM contribution exists (sinc never exactly zero at generic dk*L)
+        assert!(
+            r.has_contribution,
+            "Substrate should have nonzero SFWM: rate_proxy={:.2e}",
+            r.rate_proxy,
+        );
+
+        // dk should be nonzero (dispersion in SiO2)
+        assert!(
+            r.dk_sfwm.abs() > 1e-6,
+            "dk_SFWM should be nonzero: {:.6}",
+            r.dk_sfwm,
+        );
     }
 }

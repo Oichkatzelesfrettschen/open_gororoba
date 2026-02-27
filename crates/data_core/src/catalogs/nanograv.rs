@@ -535,8 +535,8 @@ impl DatasetProvider for NanoGrav15yrProvider {
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let csv_output = config.output_dir.join("nanograv_15yr_freespectrum.csv");
         if config.skip_existing && csv_output.exists() {
-            eprintln!(
-                "  {} already cached at {}",
+            log::info!(
+                "{} already cached at {}",
                 self.name(),
                 csv_output.display()
             );
@@ -545,24 +545,24 @@ impl DatasetProvider for NanoGrav15yrProvider {
 
         // Download KDE ZIP
         let zip_path = config.output_dir.join("nanograv_15yr_kde.zip");
-        eprintln!("  Downloading {} from Zenodo...", self.name());
+        log::info!("Downloading {} from Zenodo...", self.name());
         match download_to_file(NANOGRAV_KDE_URL, &zip_path) {
             Ok(bytes) => {
                 let data = fs::read(&zip_path)?;
                 if let Err(e) = validate_not_html(&data) {
-                    eprintln!("  Validation failed: {}", e);
+                    log::warn!("Validation failed: {}", e);
                     fs::remove_file(&zip_path).ok();
                     return Err(e);
                 }
-                eprintln!("  Saved {} bytes to {}", bytes, zip_path.display());
+                log::info!("Saved {} bytes to {}", bytes, zip_path.display());
             }
             Err(e) => {
-                eprintln!("  Download failed: {}", e);
+                log::warn!("Download failed: {}", e);
                 // Fall back to hardcoded values
-                eprintln!("  Using hardcoded bestfit values instead");
+                log::warn!("Using hardcoded bestfit values instead");
                 write_free_spectrum_csv(&bestfit::HD_FREE_SPECTRUM, &csv_output)?;
-                eprintln!(
-                    "  Wrote {} bins to {}",
+                log::info!(
+                    "Wrote {} bins to {}",
                     bestfit::N_BINS,
                     csv_output.display()
                 );
@@ -571,22 +571,22 @@ impl DatasetProvider for NanoGrav15yrProvider {
         }
 
         // Extract point estimates from KDE
-        eprintln!("  Extracting free spectrum from KDE posterior densities...");
+        log::info!("Extracting free spectrum from KDE posterior densities...");
         match extract_free_spectrum_from_kde_zip(&zip_path) {
             Ok(points) => {
                 write_free_spectrum_csv(&points, &csv_output)?;
-                eprintln!(
-                    "  Extracted {} frequency bins to {}",
+                log::info!(
+                    "Extracted {} frequency bins to {}",
                     points.len(),
                     csv_output.display()
                 );
             }
             Err(e) => {
-                eprintln!("  KDE extraction failed: {}", e);
-                eprintln!("  Using hardcoded bestfit values instead");
+                log::warn!("KDE extraction failed: {}", e);
+                log::warn!("Using hardcoded bestfit values instead");
                 write_free_spectrum_csv(&bestfit::HD_FREE_SPECTRUM, &csv_output)?;
-                eprintln!(
-                    "  Wrote {} bins to {}",
+                log::info!(
+                    "Wrote {} bins to {}",
                     bestfit::N_BINS,
                     csv_output.display()
                 );

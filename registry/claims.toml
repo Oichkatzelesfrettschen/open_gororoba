@@ -13438,13 +13438,13 @@ status_note = "Sprint 56: SPDC is a chi(2) parametric process. Photon pair produ
 [[claim]]
 id = "C-838"
 statement = "Fused silica substrate (500 um) contributes SFWM photons via chi(3), estimable from Malitson Sellmeier."
-where_stated = "crates/materials_core/src/optical_database.rs (fused_silica_sellmeier, test_fused_silica_at_1030nm), crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs"
-status = "Proposed"
-last_verified = "2026-02-19"
+where_stated = "crates/materials_core/src/optical_database.rs (fused_silica_sellmeier, test_fused_silica_at_1030nm), crates/optics_core/src/sfwm.rs (substrate_sfwm_contribution, test_substrate_sfwm_fused_silica_500um), crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs"
+status = "Verified"
+last_verified = "2026-02-26"
 what_would_verify_refute = "VERIFY: Compute substrate SFWM rate using fused_silica_sellmeier() dk and L=500 um in sinc^2 regime. REFUTE: Substrate dk gives zero net contribution."
-confidence = "medium"
+confidence = "high"
 phase = "optics"
-sprint = 56
+sprint = 57
 dependencies = ["C-832"]
 claims = [
     "C-832",
@@ -13455,7 +13455,7 @@ claims = [
     "C-837",
     "C-839",
 ]
-status_note = "Sprint 56: Fused silica Sellmeier implemented (Malitson 1965). n(1030nm)=1.450 verified. Substrate contribution calculation requires thick-crystal sinc^2 evaluation (fast oscillation regime). Paper estimates ~25% of coincidences from substrate."
+status_note = "Sprint 57B: Verified via substrate_sfwm_contribution(). Malitson Sellmeier gives dk_SFWM(SiO2)=-0.026 1/um, L_coh=121 um. At L=500 um (intermediate regime), F=15.9 um, rate_proxy=1.58e-41. Nonzero contribution confirmed. Binary sfwm-figure-repro now computes substrate analysis."
 
 [[claim]]
 id = "C-839"
@@ -13484,9 +13484,9 @@ id = "C-840"
 statement = "Optical Glauber Npart for Pb-Pb 5.02 TeV matches ALICE published values (PLB 772, 2017) within 5% per centrality bin."
 where_stated = "crates/qgp_scaling/src/glauber.rs (n_part_at_b, compute_centrality_bins), crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs (validate_npart_pbpb)"
 status = "Proposed"
-last_verified = ""
+last_verified = "2026-02-26"
 what_would_verify_refute = "VERIFY: Npart within 5% of ALICE PLB 772 Table for all centrality bins 0-5% through 70-80%. REFUTE: Any bin deviates > 10%."
-confidence = "medium"
+confidence = "low"
 phase = "qgp"
 sprint = 56
 dependencies = []
@@ -13499,7 +13499,7 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 56: Unit test test_npart_headon_pbpb passes (Npart(b=0) in 380-420 range). Full centrality-bin validation pending data run."
+status_note = "Sprint 57B: PARTIAL FAIL. Central bins OK (0-5%: 3.6%, 10-20%: 3.0%, 20-30%: 3.0%) but mid/peripheral bins diverge: 30-40%=12%, 40-50%=27%, 50-60%=44%, 60-70%=80%, 70-80%=119%. Optical Glauber overshoots Npart at peripheral centralities. Needs nuclear density profile refinement (e.g., Woods-Saxon parameter tuning)."
 
 [[claim]]
 id = "C-841"
@@ -13521,7 +13521,7 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 56: Literature value n=6.1 used as default. Direct extraction from CMS Table 7 pending data download."
+status_note = "Sprint 57B: CMS pp reference spectrum downloaded (cms_pp_5020_spectrum_table7.csv). Power-law fit not yet implemented in binary. Literature value n=6.1 still used as default. Needs direct fit to CMS data."
 
 [[claim]]
 id = "C-842"
@@ -13546,7 +13546,7 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 56: Scaling collapse verified analytically (test passes to 1e-12 precision). Data collapse pending epsilon extraction from HEPData."
+status_note = "Sprint 57B: BLOCKED. Epsilon extraction returned eps_bar=0.10 for ALL centrality bins with chi2/ndf>1000. Fit did not converge. Root cause: optimizer stuck at boundary. Needs epsilon_fit.rs debugging before data collapse can be tested."
 
 [[claim]]
 id = "C-843"
@@ -13568,7 +13568,7 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 56: Expected from physics (more central = more quenching). Pending data extraction."
+status_note = "Sprint 57B: BLOCKED. Cannot evaluate -- epsilon extraction returned constant 0.10 for all bins (fit non-convergence). Depends on C-842 fix."
 
 [[claim]]
 id = "C-844"
@@ -13593,7 +13593,7 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 56: Fitting machinery verified with synthetic data (parameter recovery test passes). Multi-system data extraction pending."
+status_note = "Sprint 57B: BLOCKED. Density fit returned beta=0.000, K=0.0071, chi2/ndf=1038. Fit machinery broken because eps_bar extraction non-convergent (upstream of this claim). Synthetic parameter recovery test still passes."
 
 [[claim]]
 id = "C-845"
@@ -13615,7 +13615,7 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 56: K extraction implemented as weighted least-squares at optimal beta. Pending data."
+status_note = "Sprint 57B: BLOCKED. Depends on C-844 (beta fit). K=0.0071 from non-convergent fit is meaningless."
 
 [[claim]]
 id = "C-846"
@@ -13637,7 +13637,7 @@ claims = [
     "C-845",
     "C-847",
 ]
-status_note = "Sprint 56: Linear regression machinery verified with synthetic data (recovery tests pass). CMS v2 data download pending."
+status_note = "Sprint 57B: CMS v2 data downloaded (6 tables). v2/eccentricity fit NOT YET RUN (pipeline step 5 reported 'pending CMS v2 data parsing'). Needs v2 data parser wiring in binary."
 
 [[claim]]
 id = "C-847"
@@ -13659,7 +13659,7 @@ claims = [
     "C-845",
     "C-846",
 ]
-status_note = "Sprint 56: Same linear regression infrastructure as C-846. ATLAS jet data download pending."
+status_note = "Sprint 57B: ATLAS jet v2 download FAILED (HEPData ins1967021 URLs not resolving). ATLAS jet R_AA downloaded (10 tables). v2 analysis blocked on data availability."
 
 [[claim]]
 id = "C-848"
@@ -13954,8 +13954,8 @@ status_note = "Sprint 56: Tested at z=2.5+0.3i for n=0..3. Recurrence-based deri
 id = "C-864"
 statement = "Photon-graviton TCMT equations map three-diagram worldline amplitude (irreducible, tadpole, external-leg from E-073) to Ruan-Fan framework with weak-field parameter epsilon < 0.1."
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (three_diagram_amplitude_to_tcmt, validate_weak_field)"
-status = "Proposed"
-last_verified = "2026-02-19"
+status = "Verified"
+last_verified = "2026-02-26"
 what_would_verify_refute = "VERIFY: Extract E-073 amplitudes, compute coupling via bridge, confirm weak_field_parameter < 0.1. REFUTE: coupling violates weak-field or fails to match amplitude energy scale."
 confidence = "high"
 phase = "optics"
@@ -13996,8 +13996,8 @@ status_note = "Sprint 56: Promoted from Proposed. Tests optical_theorem_at_reson
 id = "C-867"
 statement = "Fano lineshape from photon-graviton TCMT reproduces resonance peak and asymmetry observed in E-073 worldline amplitude weak-field limit (agreement > 99%)."
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (fano_lineshape, compute_cross_sections), tcmt_equations.rs (integration tests)"
-status = "Proposed"
-last_verified = "2026-02-19"
+status = "Verified"
+last_verified = "2026-02-26"
 what_would_verify_refute = "VERIFY: Compare TCMT lineshape to E-073 amplitude at 10+ frequency points, verify max relative error < 0.01. REFUTE: deviation > 5% at any point."
 confidence = "high"
 phase = "optics"

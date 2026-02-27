@@ -151,12 +151,12 @@ impl DatasetProvider for JplEphemerisProvider {
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("jpl_planets_2020_2030.csv");
         if config.skip_existing && output.exists() {
-            eprintln!("  {} already cached at {}", self.name(), output.display());
+            log::info!("{} already cached at {}", self.name(), output.display());
             return Ok(output);
         }
 
-        eprintln!(
-            "  Fetching {} from JPL Horizons (8 planets)...",
+        log::info!(
+            "Fetching {} from JPL Horizons (8 planets)...",
             self.name()
         );
         let mut all_lines = vec!["body,jd,date,ra,dec,delta".to_string()];
@@ -167,7 +167,7 @@ impl DatasetProvider for JplEphemerisProvider {
                 continue;
             }
 
-            eprintln!("    Querying {}...", body_name);
+            log::debug!("Querying {}...", body_name);
             let points = fetch_horizons(body_id, body_name, "2020-01-01", "2030-01-01", "30d")?;
 
             for pt in &points {
@@ -183,7 +183,7 @@ impl DatasetProvider for JplEphemerisProvider {
         }
         let content = all_lines.join("\n");
         fs::write(&output, &content)?;
-        eprintln!("  Saved {} bytes to {}", content.len(), output.display());
+        log::info!("Saved {} bytes to {}", content.len(), output.display());
         Ok(output)
     }
 

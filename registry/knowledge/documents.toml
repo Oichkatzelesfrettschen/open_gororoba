@@ -4,13 +4,46 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 1
-skipped_generated_count = 9
+raw_capture_count = 4
+skipped_generated_count = 7
 authoritative = false
 normalization_required = true
 
 [[document]]
+id = "DOC-0002"
+source_path = "CLAUDE.md"
+title = "CLAUDE Stub"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0002.toml"
+
+[[document]]
+id = "DOC-0003"
+source_path = "GEMINI.md"
+title = "GEMINI Stub"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0003.toml"
+
+[[document]]
 id = "DOC-0010"
+source_path = "data/external/README.md"
+title = "External Data Lane"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0010.toml"
+
+[[document]]
+id = "DOC-0011"
 source_path = "docs/convos/README.md"
 title = "Convos audit workspace"
 kind = "markdown_mirror"
@@ -18,7 +51,7 @@ migration_priority = "critical"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0010.toml"
+document_toml = "registry/knowledge/docs/DOC-0011.toml"
 
 [[document]]
 id = "DOC-0001"
@@ -30,27 +63,9 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0002"
-source_path = "CLAUDE.md"
-title = "Claude Overlay for open_gororoba"
-kind = "markdown_mirror"
-raw_captured = false
-authoritative = false
-skip_reason = "generated_markdown_or_artifact"
-
-[[document]]
-id = "DOC-0003"
-source_path = "GEMINI.md"
-title = "Gemini Overlay for open_gororoba"
-kind = "markdown_mirror"
-raw_captured = false
-authoritative = false
-skip_reason = "generated_markdown_or_artifact"
-
-[[document]]
 id = "DOC-0004"
 source_path = "README.md"
-title = "Gemini Experiments: Evidence-First Algebra/Physics Sandbox"
+title = "open\\_gororoba"
 kind = "markdown_mirror"
 raw_captured = false
 authoritative = false

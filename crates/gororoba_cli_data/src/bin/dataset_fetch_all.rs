@@ -80,6 +80,8 @@ fn all_providers() -> Vec<Box<dyn DatasetProvider>> {
         // Wow! Signal
         Box::new(wow::WowPrintoutProvider),
         Box::new(wow::Bl6equj5ManifestProvider),
+        // Heavy-ion R_AA (HEPData)
+        Box::new(hic_raa::HicRaaProvider),
     ]
 }
 

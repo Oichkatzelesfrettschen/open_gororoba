@@ -17,7 +17,6 @@ rand = { workspace = true }
 rand_chacha = { workspace = true }
 kodama = { workspace = true }
 kiddo = { workspace = true }
-hurst = { workspace = true }
 algebra_core = { path = "../algebra_core" }
 cudarc = { workspace = true, optional = true }
 

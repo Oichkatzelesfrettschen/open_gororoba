@@ -4,9 +4,9 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 10
+document_count = 11
 toml_generated_mirror_count = 6
-toml_manual_source_count = 4
+toml_manual_source_count = 5
 
 [[document]]
 path = "AGENTS.md"
@@ -14,25 +14,25 @@ id = "MDG-0001"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "CLAUDE.md"
 id = "MDG-0002"
-kind = "markdown_mirror"
+kind = "manual_source"
 mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
 
 [[document]]
 path = "GEMINI.md"
 id = "MDG-0003"
-kind = "markdown_mirror"
+kind = "manual_source"
 mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
 
 [[document]]
@@ -41,7 +41,7 @@ id = "MDG-0004"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
@@ -50,7 +50,7 @@ id = "MDG-0005"
 kind = "generated_markdown"
 mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/module_requirements.toml", "registry/requirements.toml", "registry/requirements_narrative.toml"]
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml", "registry/module_requirements.toml", "registry/requirements.toml", "registry/requirements_narrative.toml"]
 notes = "Manual source consumed by TOML normalizers."
 
 [[document]]
@@ -59,7 +59,7 @@ id = "MDG-0006"
 kind = "generated_markdown"
 mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/module_requirements.toml", "registry/requirements.toml"]
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml", "registry/module_requirements.toml", "registry/requirements.toml"]
 notes = "Manual source consumed by TOML normalizers."
 
 [[document]]
@@ -68,7 +68,7 @@ id = "MDG-0007"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
@@ -77,7 +77,7 @@ id = "MDG-0008"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_owner_map.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_owner_map.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
@@ -86,14 +86,23 @@ id = "MDG-0009"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/convos/README.md"
+path = "data/external/README.md"
 id = "MDG-0010"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_inventory.toml", "registry/markdown_payloads.toml"]
+notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "docs/convos/README.md"
+id = "MDG-0011"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/docs_convos.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_owner_map.toml"]
+source_toml_refs = ["registry/docs_convos.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_owner_map.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."

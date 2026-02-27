@@ -5,7 +5,7 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 4539
+test_count = 4554
 claim_count = 867
 insight_count = 98
 experiment_count = 77
@@ -13,6 +13,12 @@ complete_experiment_count = 74
 paper_count = 19
 binary_count = 153
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s57]
+number = 57
+date = "2026-02-26"
+test_count = 4554
+summary = "Proptest activation (15 property tests), C-838 verified, HIC data downloaded, wget/curl fetcher, Group B claims status-noted (fit non-convergence)"
 
 [sprints.s56]
 number = 56

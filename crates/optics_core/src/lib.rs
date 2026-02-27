@@ -109,6 +109,9 @@ pub use sfwm::{
     rate_sweep,
     rate_sweep_with_dk,
     sfwm_dominance_check,
+    substrate_sfwm_contribution,
+    SubstrateSfwmParams,
+    SubstrateSfwmResult,
     thickness_sweep,
 };
 

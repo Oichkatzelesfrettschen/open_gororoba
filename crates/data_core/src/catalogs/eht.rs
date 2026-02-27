@@ -159,10 +159,10 @@ fn fetch_eht_multi(
 
     // CSV and TXT are supplementary; log but do not fail on error
     if let Err(e) = download_with_fallbacks(name, csv_urls, &csv_out, skip_existing) {
-        eprintln!("  Warning: CSV bundle for {name} failed: {e}");
+        log::warn!("CSV bundle for {name} failed: {e}");
     }
     if let Err(e) = download_with_fallbacks(name, txt_urls, &txt_out, skip_existing) {
-        eprintln!("  Warning: TXT bundle for {name} failed: {e}");
+        log::warn!("TXT bundle for {name} failed: {e}");
     }
 
     Ok(uvfits_out)

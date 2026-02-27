@@ -3,63 +3,50 @@
 
 [document]
 id = "DOC-0010"
-source_path = "docs/convos/README.md"
-title = "Convos audit workspace"
-kind = "markdown_mirror"
+source_path = "data/external/README.md"
+title = "External Data Lane"
+kind = "manual_source"
 status = "active"
-migration_priority = "critical"
-generated = true
-source_sha256 = "5ea6a42ba877b03d5922367455fd5ea7d146ead7765deec04eac5260570d137e"
-source_line_count = 44
-source_size_bytes = 1452
-content_sha256 = "5ea6a42ba877b03d5922367455fd5ea7d146ead7765deec04eac5260570d137e"
+migration_priority = "medium"
+generated = false
+source_sha256 = "1fcd6ecd1938ea01982889795b4f73ccf794e57d9306dea629493f9d693a8391"
+source_line_count = 31
+source_size_bytes = 1646
+content_sha256 = "1fcd6ecd1938ea01982889795b4f73ccf794e57d9306dea629493f9d693a8391"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+# External Data Lane
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+This directory is for reproducibly fetched external datasets and source documents.
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+## Policy
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+- Files in this lane are treated as cacheable fetch artifacts.
+- Every file must be reproducible from a documented source URL and fetch command.
+- `data/external/PROVENANCE.local.json` is the machine-readable hash index.
+- `data/external/SOURCES.toml` is the machine-readable source-of-origin contract
+  (canonical URL, mirrors, access class, status, retrieval method, and blocker deadlines).
+- Strict governance is defined in `registry/data_governance.toml` (lane `external`).
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+## Rebuild
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/docs_convos.toml -->
+1. Fetch data with Rust entrypoints (preferred):
+   - `cargo run -p gororoba_cli --bin fetch-datasets -- --output-dir data/external`
+2. Refresh hash provenance:
+   - `cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json`
+3. Audit source coverage and blocked-policy deadlines:
+   - `cargo run -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch`
+4. Audit origin coverage:
+   - `cargo run -p gororoba_cli --bin data-origin-audit -- --out reports/data_origin_audit_YYYY-MM-DD.toml`
+5. Run fail-closed governance + semantic lane validators:
+   - `cargo run -p gororoba_cli --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true`
+   - `cargo run -p gororoba_cli --bin data-semantic-validate --`
 
-# Convos audit workspace
+## Known Gap
 
-Policy:
-- Files under `convos/` are treated as immutable inputs (they may contain Unicode).
-- All synthesis produced under `docs/` should be ASCII-only.
-- Every claim extracted from `convos/` is treated as a hypothesis that must be tied to:
-  - a first-party source (paper/book/manual), and
-  - a repo test and/or a reproducible artifact.
-
-Entry points:
-- Main index: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`
-- Primary chunk audit log (file 1): `docs/convos/audit_1_read_nonuser_lines_cont.md`
-
-Chunking convention (default):
-- Chunk size: 800 lines
-- Chunk ids: C1-0001, C1-0002, ...
-- Reference format: `convos/1_read_nonuser_lines_cont.md:L<line>`
-
-Audit entry fields (recommended):
-- Chunk id
-- Line range
-- Extracted concepts (map to CX-xxx)
-- Extracted claims (write as hypotheses)
-- Immediate next actions (tests, docs, code, sources)
-- Source needs (first-party citations to add)
+`PROVENANCE.local.json` records hashes/sizes/mtimes while `SOURCES.toml` carries source URLs and blocker workflow state.
 
 """

@@ -159,12 +159,12 @@ impl DatasetProvider for FermiGbmProvider {
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("fermi_gbm_grbs.csv");
         if config.skip_existing && output.exists() {
-            eprintln!("  {} already cached at {}", self.name(), output.display());
+            log::info!("{} already cached at {}", self.name(), output.display());
             return Ok(output);
         }
-        eprintln!("  Downloading {} from HEASARC W3Browse...", self.name());
+        log::info!("Downloading {} from HEASARC W3Browse...", self.name());
         let bytes = download_heasarc_csv(FERMI_GBM_URL, &output)?;
-        eprintln!("  Saved {} bytes to {}", bytes, output.display());
+        log::info!("Saved {} bytes to {}", bytes, output.display());
         Ok(output)
     }
 
