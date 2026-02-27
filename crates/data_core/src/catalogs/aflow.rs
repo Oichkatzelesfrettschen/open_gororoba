@@ -184,7 +184,7 @@ pub fn fetch_aflow_dataset(config: &FetchConfig) -> Result<PathBuf, FetchError> 
     let mut page = 0;
 
     loop {
-        eprintln!("  AFLOW page {page} ...");
+        log::debug!("AFLOW page {page} ...");
         let body = fetch_aflow_page(page)?;
         let page_records: Vec<serde_json::Value> = serde_json::from_str(&body).map_err(|e| {
             FetchError::Validation(format!("AFLOW page {page} JSON parse error: {e}"))
@@ -196,7 +196,7 @@ pub fn fetch_aflow_dataset(config: &FetchConfig) -> Result<PathBuf, FetchError> 
 
         let n = page_records.len();
         all_records.extend(page_records);
-        eprintln!("    +{n} records (total: {})", all_records.len());
+        log::debug!("+{n} records (total: {})", all_records.len());
 
         // If we got fewer than PER_PAGE, we've reached the last page
         if n < PER_PAGE {
@@ -205,7 +205,7 @@ pub fn fetch_aflow_dataset(config: &FetchConfig) -> Result<PathBuf, FetchError> 
         page += 1;
     }
 
-    eprintln!("  AFLOW total: {} records", all_records.len());
+    log::info!("AFLOW total: {} records", all_records.len());
 
     let json_out = serde_json::to_string(&all_records)
         .map_err(|e| FetchError::Validation(format!("JSON serialize error: {e}")))?;

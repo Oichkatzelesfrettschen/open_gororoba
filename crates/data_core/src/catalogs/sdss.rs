@@ -149,12 +149,12 @@ impl DatasetProvider for SdssQsoProvider {
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("sdss_dr18_quasars.csv");
         if config.skip_existing && output.exists() {
-            eprintln!("  {} already cached at {}", self.name(), output.display());
+            log::info!("{} already cached at {}", self.name(), output.display());
             return Ok(output);
         }
 
         let url = skyserver_csv_url(SDSS_QUERY);
-        eprintln!("  Downloading {} from SkyServer...", self.name());
+        log::info!("Downloading {} from SkyServer...", self.name());
         let body = download_to_string(&url)?;
         validate_not_html(body.as_bytes())?;
 
@@ -162,7 +162,7 @@ impl DatasetProvider for SdssQsoProvider {
             fs::create_dir_all(parent)?;
         }
         fs::write(&output, &body)?;
-        eprintln!("  Saved {} bytes to {}", body.len(), output.display());
+        log::info!("Saved {} bytes to {}", body.len(), output.display());
         Ok(output)
     }
 

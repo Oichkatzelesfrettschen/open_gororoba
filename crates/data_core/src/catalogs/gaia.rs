@@ -138,11 +138,11 @@ impl DatasetProvider for GaiaDr3Provider {
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("gaia_dr3_nearby.csv");
         if config.skip_existing && output.exists() {
-            eprintln!("  {} already cached at {}", self.name(), output.display());
+            log::info!("{} already cached at {}", self.name(), output.display());
             return Ok(output);
         }
 
-        eprintln!("  Querying {} via TAP...", self.name());
+        log::info!("Querying {} via TAP...", self.name());
         let body = tap::tap_query(GAIA_TAP_BASE, GAIA_ADQL, "csv")?;
         validate_not_html(body.as_bytes())?;
 
@@ -150,7 +150,7 @@ impl DatasetProvider for GaiaDr3Provider {
             fs::create_dir_all(parent)?;
         }
         fs::write(&output, &body)?;
-        eprintln!("  Saved {} bytes to {}", body.len(), output.display());
+        log::info!("Saved {} bytes to {}", body.len(), output.display());
         Ok(output)
     }
 

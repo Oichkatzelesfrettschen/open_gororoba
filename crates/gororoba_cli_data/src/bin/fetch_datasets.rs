@@ -324,6 +324,7 @@ fn build_registry() -> Vec<DatasetEntry> {
 }
 
 fn main() {
+    env_logger::init();
     let args = Args::parse();
     let config = FetchConfig {
         output_dir: std::path::PathBuf::from(&args.output_dir),

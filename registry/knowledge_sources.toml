@@ -4,8 +4,8 @@
 
 [knowledge_sources]
 generated_at = "deterministic"
-tracked_markdown_count = 10
-manual_source_count = 2
+tracked_markdown_count = 11
+manual_source_count = 3
 markdown_mirror_count = 6
 generated_markdown_count = 2
 artifact_report_count = 0
@@ -32,56 +32,59 @@ link_count = 0
 [[document]]
 id = "DOC-0002"
 path = "CLAUDE.md"
-title = "Claude Overlay for open_gororoba"
+title = "CLAUDE Stub"
 kind = "manual_source"
 authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "226551bdd4e7c30807fc2a2afe180ac5dde118cbde0602a8f90376b3af15ac76"
-size_bytes = 192
-line_count = 7
+sha256 = "66ac8fde1947b69bbb97f54719f3869d7fddddb0a59fff4da28182eb1d638938"
+size_bytes = 273
+line_count = 12
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 0
+link_count = 3
+link_sample = ["agents.claude", "agents.toml"]
 
 [[document]]
 id = "DOC-0003"
 path = "GEMINI.md"
-title = "Gemini Overlay for open_gororoba"
+title = "GEMINI Stub"
 kind = "manual_source"
 authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "aab3880208207c03a55058287c3ca26962fbe48a22a4311dc7a17584049a8460"
-size_bytes = 192
-line_count = 7
+sha256 = "0248904a5a1a8b10b7f8cd003780451374f554906e965000d48efa88d81e7203"
+size_bytes = 273
+line_count = 12
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 0
+link_count = 3
+link_sample = ["agents.gemini", "agents.toml"]
 
 [[document]]
 id = "DOC-0004"
 path = "README.md"
-title = "Gemini Experiments: Evidence-First Algebra/Physics Sandbox"
+title = "open\\_gororoba"
 kind = "markdown_mirror"
 authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "a18c9c16e9f89dd167c56159c4fa05a56a8fea8449e88980a2ae19590af5fbdc"
-size_bytes = 218
-line_count = 7
+sha256 = "abff866bd143b10a59ef8e13f3fb288833f344774f023bcebfc01592297d37cb"
+size_bytes = 5867
+line_count = 156
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 0
+link_count = 37
+link_sample = ["docs/", "registry/*.toml", "registry/binaries.toml", "registry/claims.toml", "registry/experiments.toml", "registry/insights.toml", "registry/project.toml", "registry/roadmap.toml"]
 
 [[document]]
 id = "DOC-0005"
@@ -175,6 +178,24 @@ link_count = 0
 
 [[document]]
 id = "DOC-0010"
+path = "data/external/README.md"
+title = "External Data Lane"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "1fcd6ecd1938ea01982889795b4f73ccf794e57d9306dea629493f9d693a8391"
+size_bytes = 1646
+line_count = 31
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 12
+link_sample = ["PROVENANCE.local.json", "SOURCES.toml", "cargo run -p gororoba_cli --bin data-origin-audit -- --out reports/data_origin_audit_YYYY-MM-DD.toml", "cargo run -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch", "cargo run -p gororoba_cli --bin fetch-datasets -- --output-dir data/external", "cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json", "data/external/PROVENANCE.local.json", "data/external/SOURCES.toml"]
+
+[[document]]
+id = "DOC-0011"
 path = "docs/convos/README.md"
 title = "Convos audit workspace"
 kind = "markdown_mirror"

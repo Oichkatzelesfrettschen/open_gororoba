@@ -16,8 +16,9 @@ use std::io::Write;
 
 use materials_core::{SellmeierParams, fused_silica_sellmeier, linbo3_ordinary_sellmeier};
 use optics_core::{
-    SfwmMaterialParams, g2_sfwm_model, g2_spdc_model, maker_fringe_sweep, photon_number_sfwm,
-    photon_number_spdc, polarization_dependence, rate_sweep_with_dk,
+    SfwmMaterialParams, SubstrateSfwmParams, g2_sfwm_model, g2_spdc_model, maker_fringe_sweep,
+    photon_number_sfwm, photon_number_spdc, polarization_dependence, rate_sweep_with_dk,
+    substrate_sfwm_contribution,
 };
 
 #[derive(Parser)]
@@ -42,10 +43,7 @@ struct Args {
 }
 
 /// Build SfwmMaterialParams from Sellmeier refractive indices.
-fn build_params_from_sellmeier(
-    sellmeier_o: &SellmeierParams,
-    _sellmeier_sio2: &SellmeierParams,
-) -> SfwmMaterialParams {
+fn build_params_from_sellmeier(sellmeier_o: &SellmeierParams) -> SfwmMaterialParams {
     SfwmMaterialParams {
         chi2_shg: 27.0e-12,
         chi2_spdc: 27.0e-12,
@@ -76,7 +74,7 @@ fn main() -> Result<()> {
 
     let sellmeier_o = linbo3_ordinary_sellmeier();
     let sellmeier_sio2 = fused_silica_sellmeier();
-    let params = build_params_from_sellmeier(&sellmeier_o, &sellmeier_sio2);
+    let params = build_params_from_sellmeier(&sellmeier_o);
 
     // Dimensionless scaling coefficients for photon number models.
     // These set the absolute scale of the curves; the power-law exponent
@@ -256,6 +254,41 @@ fn main() -> Result<()> {
     );
     println!("  dk_SHG  = {:.4} 1/um  (L_coh = 3.1 um)", wm_paper.dk_shg);
     println!("  dk_SPDC = {:.4} 1/um  (L_coh = 3.4 um)", wm_paper.dk_spdc);
+
+    // ---- C-838: Substrate (fused silica) SFWM contribution ----
+    // Fused silica chi3 ~ 2.5e-22 m^2/V^2 (Adair et al. 1989, n2=2.74e-16 cm^2/W)
+    let chi3_sio2 = 2.5e-22;
+    let substrate_thickness = 500.0; // um
+    let n_pump_sio2 = sellmeier_sio2.refractive_index(1.030);
+    let n_signal_sio2 = sellmeier_sio2.refractive_index(0.770);
+    let n_idler_sio2 = sellmeier_sio2.refractive_index(1.550);
+
+    let sub = substrate_sfwm_contribution(&SubstrateSfwmParams {
+        n_pump: n_pump_sio2,
+        n_signal: n_signal_sio2,
+        n_idler: n_idler_sio2,
+        lambda_pump: 1.030,
+        lambda_signal: 0.770,
+        lambda_idler: 1.550,
+        chi3: chi3_sio2,
+        thickness_um: substrate_thickness,
+    });
+
+    println!();
+    println!("C-838 Substrate SFWM analysis (fused silica, L={:.0} um):", substrate_thickness);
+    println!("  n_pump(SiO2, 1030 nm) = {:.4}", n_pump_sio2);
+    println!("  n_signal(SiO2, 770 nm) = {:.4}", n_signal_sio2);
+    println!("  n_idler(SiO2, 1550 nm) = {:.4}", n_idler_sio2);
+    println!("  dk_SFWM(SiO2) = {:.6} 1/um", sub.dk_sfwm);
+    println!("  L_coh(SiO2) = {:.2} um", sub.l_coh_sfwm_um);
+    println!("  F(dk, L) = {:.6e} um", sub.f_sfwm);
+    println!("  rate_proxy = chi3^2 * F^2 = {:.6e}", sub.rate_proxy);
+    println!("  has_contribution = {}", sub.has_contribution);
+    if sub.has_contribution {
+        println!("  VERDICT: C-838 VERIFIED -- substrate SFWM is nonzero");
+    } else {
+        println!("  VERDICT: C-838 REFUTED -- substrate SFWM is zero");
+    }
 
     Ok(())
 }

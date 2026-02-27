@@ -192,10 +192,10 @@ impl DatasetProvider for DesiBaoProvider {
             match download_to_string(&url) {
                 Ok(data) => {
                     std::fs::write(&output, data)?;
-                    eprintln!("  Saved {}", fname);
+                    log::info!("Saved {}", fname);
                 }
                 Err(e) => {
-                    eprintln!("  Failed to download {}: {}", fname, e);
+                    log::warn!("Failed to download {}: {}", fname, e);
                 }
             }
         }

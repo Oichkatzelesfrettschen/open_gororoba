@@ -4270,4 +4270,399 @@ mod tests {
             "Split sedenions should have at least as many ZD pairs as standard sedenions"
         );
     }
+
+    // ====================================================================
+    // Proptest property-based tests for core Cayley-Dickson algebraic laws
+    // ====================================================================
+    //
+    // These complement the hand-written tests above with randomized inputs
+    // and automatic shrinking. Each property test checks a fundamental
+    // algebraic identity across randomly generated elements.
+
+    mod proptest_laws {
+        use super::*;
+        use proptest::prelude::*;
+
+        /// Generate a random Cayley-Dickson element of the given dimension.
+        /// Components are drawn from [-10, 10] to keep norms in a tractable range
+        /// while still exercising the algebra with nontrivial values.
+        fn arb_element(dim: usize) -> impl Strategy<Value = Vec<f64>> {
+            proptest::collection::vec(-10.0f64..10.0, dim)
+        }
+
+        // ----------------------------------------------------------------
+        // Norm multiplicativity: ||ab|| = ||a|| ||b||
+        //
+        // Holds for composition algebras (R, C, H, O) -- dims 1,2,4,8.
+        // Fails for sedenions (dim=16) due to zero divisors.
+        // ----------------------------------------------------------------
+
+        proptest! {
+            #[test]
+            fn norm_multiplicative_reals(
+                a in arb_element(1),
+                b in arb_element(1),
+            ) {
+                let prod = cd_multiply(&a, &b);
+                let norm_a = cd_norm_sq(&a).sqrt();
+                let norm_b = cd_norm_sq(&b).sqrt();
+                let norm_prod = cd_norm_sq(&prod).sqrt();
+                let scale = 1.0 + norm_a * norm_b;
+                prop_assert!(
+                    (norm_prod - norm_a * norm_b).abs() < 1e-10 * scale,
+                    "Reals: ||ab||={} != ||a||*||b||={}",
+                    norm_prod, norm_a * norm_b,
+                );
+            }
+
+            #[test]
+            fn norm_multiplicative_complex(
+                a in arb_element(2),
+                b in arb_element(2),
+            ) {
+                let prod = cd_multiply(&a, &b);
+                let norm_a = cd_norm_sq(&a).sqrt();
+                let norm_b = cd_norm_sq(&b).sqrt();
+                let norm_prod = cd_norm_sq(&prod).sqrt();
+                let scale = 1.0 + norm_a * norm_b;
+                prop_assert!(
+                    (norm_prod - norm_a * norm_b).abs() < 1e-10 * scale,
+                    "Complex: ||ab||={} != ||a||*||b||={}",
+                    norm_prod, norm_a * norm_b,
+                );
+            }
+
+            #[test]
+            fn norm_multiplicative_quaternions(
+                a in arb_element(4),
+                b in arb_element(4),
+            ) {
+                let prod = cd_multiply(&a, &b);
+                let norm_a = cd_norm_sq(&a).sqrt();
+                let norm_b = cd_norm_sq(&b).sqrt();
+                let norm_prod = cd_norm_sq(&prod).sqrt();
+                let scale = 1.0 + norm_a * norm_b;
+                prop_assert!(
+                    (norm_prod - norm_a * norm_b).abs() < 1e-10 * scale,
+                    "Quaternions: ||ab||={} != ||a||*||b||={}",
+                    norm_prod, norm_a * norm_b,
+                );
+            }
+
+            #[test]
+            fn norm_multiplicative_octonions(
+                a in arb_element(8),
+                b in arb_element(8),
+            ) {
+                let prod = cd_multiply(&a, &b);
+                let norm_a = cd_norm_sq(&a).sqrt();
+                let norm_b = cd_norm_sq(&b).sqrt();
+                let norm_prod = cd_norm_sq(&prod).sqrt();
+                let scale = 1.0 + norm_a * norm_b;
+                prop_assert!(
+                    (norm_prod - norm_a * norm_b).abs() < 1e-10 * scale,
+                    "Octonions: ||ab||={} != ||a||*||b||={}",
+                    norm_prod, norm_a * norm_b,
+                );
+            }
+
+            /// Sedenions break norm multiplicativity (zero divisors exist).
+            /// We verify that SOME random pair violates it. Since the
+            /// violation rate is high (~100% for generic elements), we
+            /// check a batch and assert at least one fails.
+            #[test]
+            fn norm_not_multiplicative_sedenions(
+                seed in 0u64..1000,
+            ) {
+                use rand::prelude::*;
+                use rand::rngs::StdRng;
+                let mut rng = StdRng::seed_from_u64(seed);
+
+                let mut found_violation = false;
+                for _ in 0..50 {
+                    let a: Vec<f64> = (0..16).map(|_| rng.r#gen::<f64>() * 20.0 - 10.0).collect();
+                    let b: Vec<f64> = (0..16).map(|_| rng.r#gen::<f64>() * 20.0 - 10.0).collect();
+                    let prod = cd_multiply(&a, &b);
+                    let norm_a = cd_norm_sq(&a).sqrt();
+                    let norm_b = cd_norm_sq(&b).sqrt();
+                    let norm_prod = cd_norm_sq(&prod).sqrt();
+                    let expected = norm_a * norm_b;
+                    if expected > 1e-8 && (norm_prod - expected).abs() / expected > 1e-6 {
+                        found_violation = true;
+                        break;
+                    }
+                }
+                prop_assert!(
+                    found_violation,
+                    "Sedenions should violate norm multiplicativity for generic elements",
+                );
+            }
+        }
+
+        // ----------------------------------------------------------------
+        // Alternativity: a(ab) = (aa)b and (ba)a = b(aa) for octonions.
+        //
+        // Octonions are alternative but not associative. The left and right
+        // alternative laws hold: x(xy) = (xx)y and (yx)x = y(xx).
+        // ----------------------------------------------------------------
+
+        proptest! {
+            #[test]
+            fn left_alternative_octonions(
+                a in arb_element(8),
+                b in arb_element(8),
+            ) {
+                // a(ab) = (aa)b
+                let ab = cd_multiply(&a, &b);
+                let lhs = cd_multiply(&a, &ab);
+
+                let aa = cd_multiply(&a, &a);
+                let rhs = cd_multiply(&aa, &b);
+
+                let max_diff: f64 = lhs.iter().zip(&rhs)
+                    .map(|(x, y)| (x - y).abs())
+                    .fold(0.0, f64::max);
+                let scale = 1.0 + cd_norm_sq(&lhs).sqrt() + cd_norm_sq(&rhs).sqrt();
+                prop_assert!(
+                    max_diff < 1e-8 * scale,
+                    "Left alternativity: max_diff={}, scale={}",
+                    max_diff, scale,
+                );
+            }
+
+            #[test]
+            fn right_alternative_octonions(
+                a in arb_element(8),
+                b in arb_element(8),
+            ) {
+                // (ba)a = b(aa)
+                let ba = cd_multiply(&b, &a);
+                let lhs = cd_multiply(&ba, &a);
+
+                let aa = cd_multiply(&a, &a);
+                let rhs = cd_multiply(&b, &aa);
+
+                let max_diff: f64 = lhs.iter().zip(&rhs)
+                    .map(|(x, y)| (x - y).abs())
+                    .fold(0.0, f64::max);
+                let scale = 1.0 + cd_norm_sq(&lhs).sqrt() + cd_norm_sq(&rhs).sqrt();
+                prop_assert!(
+                    max_diff < 1e-8 * scale,
+                    "Right alternativity: max_diff={}, scale={}",
+                    max_diff, scale,
+                );
+            }
+        }
+
+        // ----------------------------------------------------------------
+        // Power associativity: a^m * a^n = a^{m+n} for ALL CD algebras.
+        //
+        // Even sedenions and beyond are power-associative: the subalgebra
+        // generated by a single element is always associative.
+        // ----------------------------------------------------------------
+
+        /// Compute a^n by repeated multiplication.
+        fn cd_power(a: &[f64], n: u32) -> Vec<f64> {
+            let dim = a.len();
+            if n == 0 {
+                let mut one = vec![0.0; dim];
+                one[0] = 1.0;
+                return one;
+            }
+            let mut result = a.to_vec();
+            for _ in 1..n {
+                result = cd_multiply(&result, a);
+            }
+            result
+        }
+
+        proptest! {
+            #[test]
+            fn power_associative_quaternions(
+                a in arb_element(4),
+                m in 1u32..5,
+                n in 1u32..5,
+            ) {
+                let a_m = cd_power(&a, m);
+                let a_n = cd_power(&a, n);
+                let lhs = cd_multiply(&a_m, &a_n);
+                let rhs = cd_power(&a, m + n);
+
+                let max_diff: f64 = lhs.iter().zip(&rhs)
+                    .map(|(x, y)| (x - y).abs())
+                    .fold(0.0, f64::max);
+                let scale = 1.0 + cd_norm_sq(&lhs).sqrt() + cd_norm_sq(&rhs).sqrt();
+                prop_assert!(
+                    max_diff < 1e-6 * scale,
+                    "Power assoc (dim=4): a^{}*a^{} != a^{}, diff={}",
+                    m, n, m + n, max_diff,
+                );
+            }
+
+            #[test]
+            fn power_associative_octonions(
+                a in arb_element(8),
+                m in 1u32..4,
+                n in 1u32..4,
+            ) {
+                let a_m = cd_power(&a, m);
+                let a_n = cd_power(&a, n);
+                let lhs = cd_multiply(&a_m, &a_n);
+                let rhs = cd_power(&a, m + n);
+
+                let max_diff: f64 = lhs.iter().zip(&rhs)
+                    .map(|(x, y)| (x - y).abs())
+                    .fold(0.0, f64::max);
+                let scale = 1.0 + cd_norm_sq(&lhs).sqrt() + cd_norm_sq(&rhs).sqrt();
+                prop_assert!(
+                    max_diff < 1e-6 * scale,
+                    "Power assoc (dim=8): a^{}*a^{} != a^{}, diff={}",
+                    m, n, m + n, max_diff,
+                );
+            }
+
+            #[test]
+            fn power_associative_sedenions(
+                a in arb_element(16),
+                m in 1u32..4,
+                n in 1u32..4,
+            ) {
+                let a_m = cd_power(&a, m);
+                let a_n = cd_power(&a, n);
+                let lhs = cd_multiply(&a_m, &a_n);
+                let rhs = cd_power(&a, m + n);
+
+                let max_diff: f64 = lhs.iter().zip(&rhs)
+                    .map(|(x, y)| (x - y).abs())
+                    .fold(0.0, f64::max);
+                let scale = 1.0 + cd_norm_sq(&lhs).sqrt() + cd_norm_sq(&rhs).sqrt();
+                prop_assert!(
+                    max_diff < 1e-5 * scale,
+                    "Power assoc (dim=16): a^{}*a^{} != a^{}, diff={}",
+                    m, n, m + n, max_diff,
+                );
+            }
+        }
+
+        // ----------------------------------------------------------------
+        // Conjugate involution: conj(conj(a)) = a for all dimensions.
+        // ----------------------------------------------------------------
+
+        proptest! {
+            #[test]
+            fn conjugate_involution_all_dims(
+                dim_idx in 0usize..5,
+                seed in 0u64..10000,
+            ) {
+                let dims = [1, 2, 4, 8, 16];
+                let dim = dims[dim_idx];
+
+                use rand::prelude::*;
+                use rand::rngs::StdRng;
+                let mut rng = StdRng::seed_from_u64(seed);
+                let a: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>() * 20.0 - 10.0).collect();
+
+                let double_conj = cd_conjugate(&cd_conjugate(&a));
+                prop_assert_eq!(
+                    a.len(), double_conj.len(),
+                    "Length mismatch after double conjugation",
+                );
+                for (i, (x, y)) in a.iter().zip(&double_conj).enumerate() {
+                    prop_assert!(
+                        (x - y).abs() < 1e-14,
+                        "conj(conj(a))[{}] = {}, expected {}",
+                        i, y, x,
+                    );
+                }
+            }
+        }
+
+        // ----------------------------------------------------------------
+        // Norm-conjugate identity: a * conj(a) = ||a||^2 * e_0
+        //
+        // For composition algebras (R, C, H, O), the product of an element
+        // with its conjugate yields a real scalar equal to the squared norm.
+        // All imaginary components should vanish.
+        // ----------------------------------------------------------------
+
+        proptest! {
+            #[test]
+            fn norm_conjugate_reals(
+                a in arb_element(1),
+            ) {
+                let conj_a = cd_conjugate(&a);
+                let prod = cd_multiply(&a, &conj_a);
+                let norm_sq = cd_norm_sq(&a);
+                prop_assert!(
+                    (prod[0] - norm_sq).abs() < 1e-10 * (1.0 + norm_sq),
+                    "a*conj(a)[0]={}, ||a||^2={}",
+                    prod[0], norm_sq,
+                );
+            }
+
+            #[test]
+            fn norm_conjugate_complex(
+                a in arb_element(2),
+            ) {
+                let conj_a = cd_conjugate(&a);
+                let prod = cd_multiply(&a, &conj_a);
+                let norm_sq = cd_norm_sq(&a);
+                let scale = 1.0 + norm_sq;
+                prop_assert!(
+                    (prod[0] - norm_sq).abs() < 1e-10 * scale,
+                    "a*conj(a)[0]={}, ||a||^2={}",
+                    prod[0], norm_sq,
+                );
+                prop_assert!(
+                    prod[1].abs() < 1e-10 * scale,
+                    "a*conj(a)[1]={}, should be 0",
+                    prod[1],
+                );
+            }
+
+            #[test]
+            fn norm_conjugate_quaternions(
+                a in arb_element(4),
+            ) {
+                let conj_a = cd_conjugate(&a);
+                let prod = cd_multiply(&a, &conj_a);
+                let norm_sq = cd_norm_sq(&a);
+                let scale = 1.0 + norm_sq;
+                prop_assert!(
+                    (prod[0] - norm_sq).abs() < 1e-10 * scale,
+                    "a*conj(a)[0]={}, ||a||^2={}",
+                    prod[0], norm_sq,
+                );
+                for (i, &v) in prod[1..].iter().enumerate() {
+                    prop_assert!(
+                        v.abs() < 1e-10 * scale,
+                        "a*conj(a)[{}]={}, should be 0",
+                        i + 1, v,
+                    );
+                }
+            }
+
+            #[test]
+            fn norm_conjugate_octonions(
+                a in arb_element(8),
+            ) {
+                let conj_a = cd_conjugate(&a);
+                let prod = cd_multiply(&a, &conj_a);
+                let norm_sq = cd_norm_sq(&a);
+                let scale = 1.0 + norm_sq;
+                prop_assert!(
+                    (prod[0] - norm_sq).abs() < 1e-10 * scale,
+                    "a*conj(a)[0]={}, ||a||^2={}",
+                    prod[0], norm_sq,
+                );
+                for (i, &v) in prod[1..].iter().enumerate() {
+                    prop_assert!(
+                        v.abs() < 1e-10 * scale,
+                        "a*conj(a)[{}]={}, should be 0",
+                        i + 1, v,
+                    );
+                }
+            }
+        }
+    }
 }

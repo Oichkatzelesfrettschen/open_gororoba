@@ -47,12 +47,79 @@ impl Default for FetchConfig {
     }
 }
 
-/// Download a URL to a file, returning the number of bytes written.
-pub fn download_to_file(url: &str, path: &Path) -> Result<u64, FetchError> {
-    if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent)?;
+/// Try downloading via wget. Returns Ok(bytes) on success.
+fn download_via_wget(url: &str, path: &Path) -> Result<u64, FetchError> {
+    let status = std::process::Command::new("wget")
+        .args([
+            "--quiet",
+            "--output-document",
+            &path.to_string_lossy(),
+            "--header",
+            "User-Agent: gororoba-fetch/0.1 (research)",
+            "--timeout=60",
+            "--tries=2",
+            url,
+        ])
+        .status()
+        .map_err(|e| FetchError::HttpError {
+            url: url.to_string(),
+            source: Box::new(e),
+        })?;
+
+    if !status.success() {
+        fs::remove_file(path).ok();
+        return Err(FetchError::HttpError {
+            url: url.to_string(),
+            source: format!("wget exited with {}", status).into(),
+        });
     }
 
+    let bytes = fs::metadata(path)
+        .map(|m| m.len())
+        .unwrap_or(0);
+    Ok(bytes)
+}
+
+/// Try downloading via curl. Returns Ok(bytes) on success.
+fn download_via_curl(url: &str, path: &Path) -> Result<u64, FetchError> {
+    let status = std::process::Command::new("curl")
+        .args([
+            "--silent",
+            "--show-error",
+            "--fail",
+            "--location",
+            "--output",
+            &path.to_string_lossy(),
+            "--header",
+            "User-Agent: gororoba-fetch/0.1 (research)",
+            "--max-time",
+            "120",
+            "--retry",
+            "2",
+            url,
+        ])
+        .status()
+        .map_err(|e| FetchError::HttpError {
+            url: url.to_string(),
+            source: Box::new(e),
+        })?;
+
+    if !status.success() {
+        fs::remove_file(path).ok();
+        return Err(FetchError::HttpError {
+            url: url.to_string(),
+            source: format!("curl exited with {}", status).into(),
+        });
+    }
+
+    let bytes = fs::metadata(path)
+        .map(|m| m.len())
+        .unwrap_or(0);
+    Ok(bytes)
+}
+
+/// Try downloading via ureq (Rust-native). Returns Ok(bytes) on success.
+fn download_via_ureq(url: &str, path: &Path) -> Result<u64, FetchError> {
     let response = ureq::get(url)
         .header("Accept", "text/csv,text/plain,application/octet-stream,*/*")
         .header("User-Agent", "gororoba-fetch/0.1 (research)")
@@ -74,6 +141,35 @@ pub fn download_to_file(url: &str, path: &Path) -> Result<u64, FetchError> {
     let mut file = fs::File::create(path)?;
     let bytes = io::copy(&mut reader, &mut file)?;
     Ok(bytes)
+}
+
+/// Download a URL to a file, returning the number of bytes written.
+///
+/// Tries wget first (most robust for academic data servers), then curl,
+/// then falls back to ureq (Rust-native). This ordering reflects that
+/// wget and curl handle redirects, compression, and large responses
+/// better than ureq's default 10MB limit.
+pub fn download_to_file(url: &str, path: &Path) -> Result<u64, FetchError> {
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent)?;
+    }
+
+    // Primary: wget
+    match download_via_wget(url, path) {
+        Ok(bytes) if bytes > 0 => return Ok(bytes),
+        Ok(_) => { /* zero bytes, try next */ }
+        Err(e) => log::debug!("wget failed: {}", e),
+    }
+
+    // Secondary: curl
+    match download_via_curl(url, path) {
+        Ok(bytes) if bytes > 0 => return Ok(bytes),
+        Ok(_) => { /* zero bytes, try next */ }
+        Err(e) => log::debug!("curl failed: {}", e),
+    }
+
+    // Fallback: ureq (Rust-native)
+    download_via_ureq(url, path)
 }
 
 /// Download a URL as a string (for small text files).
@@ -133,8 +229,8 @@ pub fn download_with_fallbacks(
     skip_existing: bool,
 ) -> Result<PathBuf, FetchError> {
     if skip_existing && output_path.exists() {
-        eprintln!(
-            "  {} already exists at {}, skipping",
+        log::info!(
+            "{} already exists at {}, skipping",
             dataset_name,
             output_path.display()
         );
@@ -142,24 +238,24 @@ pub fn download_with_fallbacks(
     }
 
     for url in urls {
-        eprintln!("  Downloading {} from {}...", dataset_name, url);
+        log::info!("Downloading {} from {}...", dataset_name, url);
         match download_to_file(url, output_path) {
             Ok(bytes) => {
                 // Validate it's not HTML
                 let data = fs::read(output_path)?;
                 if let Err(e) = validate_not_html(&data) {
-                    eprintln!("  Validation failed: {}", e);
+                    log::warn!("Validation failed: {}", e);
                     fs::remove_file(output_path).ok();
                     continue;
                 }
-                eprintln!("  Saved {} bytes to {}", bytes, output_path.display());
+                log::info!("Saved {} bytes to {}", bytes, output_path.display());
                 if let Ok(hash) = compute_sha256(output_path) {
-                    eprintln!("  SHA256: {}", hash);
+                    log::debug!("SHA256: {}", hash);
                 }
                 return Ok(output_path.to_path_buf());
             }
             Err(e) => {
-                eprintln!("  Failed: {}", e);
+                log::warn!("Failed: {}", e);
             }
         }
     }
