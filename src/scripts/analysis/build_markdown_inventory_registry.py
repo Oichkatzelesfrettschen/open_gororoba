@@ -64,6 +64,7 @@ IN_SCOPE_GENERATED_PREFIXES = (
 TOML_PUBLISHED_ALLOWLIST: set[str] = set()
 
 DESTINATION_OVERRIDES = {
+    "proofs/README.md": "registry/roadmap.toml",
     "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md": "registry/legacy_markdown_interfaces.toml",
     "PHASE10_11_ULTIMATE_ROADMAP.md": "registry/legacy_markdown_interfaces.toml",
     "PYTHON_REFACTORING_ROADMAP.md": "registry/legacy_markdown_interfaces.toml",
