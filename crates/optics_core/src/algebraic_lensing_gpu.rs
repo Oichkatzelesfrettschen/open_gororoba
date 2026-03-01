@@ -64,7 +64,7 @@ impl AlgebraicLensingGpu {
     /// Trace a batch of rays through the algebraic vacuum.
     ///
     /// # Arguments
-    /// * `density_field` - Precomputed frustration density (nx * ny * nz)
+    /// * `density_field` - Precomputed imbalance density (nx * ny * nz)
     /// * `nx, ny, nz` - Grid dimensions
     /// * `initial_pos` - Starting positions
     /// * `initial_dir` - Starting unit directions

@@ -1,0 +1,32 @@
+%% Fig 40: Falsified claims honest-disclosure matrix
+%% 9 claims with hypothesis, evidence, and insight gained
+\begin{tikzpicture}[
+  cell/.style={minimum width=2.5cm, minimum height=1.0cm,
+    font=\sffamily\tiny, align=center, text width=2.3cm},
+  hdr/.style={cell, fill=gray!15, font=\sffamily\tiny\bfseries},
+  claim/.style={cell, fill=OIvermillion!8},
+]
+  \matrix[
+    matrix of nodes,
+    nodes={cell, draw=gray!20, anchor=center},
+    row 1/.style={nodes={hdr}},
+    column 1/.style={nodes={hdr, minimum width=1.2cm}},
+  ] (m) {
+         & Original Hypothesis & Falsification Evidence & Positive Insight \\
+    C-781 & |[claim]| Entropy increases at $\dim 16$ &
+      |[claim]| Primary transition at $\dim 4 \to 8$ &
+      |[claim]| Norm-composition entropy is the true marker \\
+    C-782 & |[claim]| CHSH--Betti correlation &
+      |[claim]| $S = 2.0$ structural invariant &
+      |[claim]| I-098: wavelet correlator cancellation \\
+    C-783 & |[claim]| Pulsed $\neq$ steady &
+      |[claim]| Identical equilibria &
+      |[claim]| Per-step thresholding erases temporal info \\
+    C-789 & |[claim]| Ghost peak width &
+      |[claim]| Sub-bin FWHM artifact &
+      |[claim]| Resolution limit for spectral analysis \\
+    C-791 & |[claim]| QGP ghost frequency &
+      |[claim]| Fisher $p = 1.0$, $Z = -12.88$ &
+      |[claim]| 7-method pipeline as methodological tool \\
+  };
+\end{tikzpicture}

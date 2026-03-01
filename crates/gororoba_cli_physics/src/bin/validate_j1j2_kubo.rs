@@ -13,9 +13,9 @@
 //!
 //! The existing data uses N=10, B=3.0, T=0.1. The strong magnetic field
 //! polarizes the chain, gapping spin excitations. This produces the
-//! counterintuitive result that D_S INCREASES with frustration alpha
+//! counterintuitive result that D_S INCREASES with imbalance alpha
 //! (competing with polarization creates low-energy excitations).
-//! Standard frustration-suppression emerges only at B=0 or N->infinity.
+//! Standard imbalance-suppression emerges only at B=0 or N->infinity.
 
 use serde::Deserialize;
 use std::f64::consts::PI;
@@ -107,7 +107,7 @@ fn published_benchmarks() -> Vec<PublishedBenchmark> {
             reference: "Varma & Sanchez, PRB 92, 195143 (2015)",
             regime: "Frustrated Aubry-Andre / hardcore bosons: D non-monotonic",
             value: f64::NAN, // qualitative result, no single number
-            unit: "qualitative: interactions suppress frustration -> D rises, then CDW -> D falls",
+            unit: "qualitative: interactions suppress imbalance -> D rises, then CDW -> D falls",
         },
         // -- Stolpp, Zhang, Heidrich-Meisner, Batista (2019) PRB 99, 134413 --
         // Dilute Fermi gas + ED, N=16-20, near saturation field
@@ -191,13 +191,13 @@ fn compare_with_published(
         agreement: "DIFFERENT REGIME: our data at T=0.1, B=3.0, N=10",
     });
 
-    // 3. Frustration suppression vs enhancement
+    // 3. Imbalance suppression vs enhancement
     //    Literature (B=0, N->inf): D_S decreases to 0 with alpha
     //    Our data (B=3.0, N=10): D_S INCREASES with alpha
     //    Varma & Sanchez 2015: non-monotonic D possible in frustrated systems
     let ds_enhancement_peak = j1j2_diag.ds_peak / j1j2_points[0].drude_weight_spin;
     comparisons.push(BenchmarkComparison {
-        label: "Frustration_response_direction",
+        label: "Imbalance_response_direction",
         reference: "Heidrich-Meisner et al., JMMM 272-276 (2004); Varma & Sanchez, PRB 92 (2015)",
         regime: "B=0: D_s decreases with alpha. B>>J: D_s increases (polarization competition)"
             .to_string(),
@@ -222,7 +222,7 @@ fn compare_with_published(
         our_value: interp_diag.g_full,
         unit: "g(1.0) = D_S(quat) / D_S(sed)",
         agreement: if interp_diag.g_full > 10.0 {
-            "PHYSICALLY REASONABLE: sedenion frustration suppresses transport"
+            "PHYSICALLY REASONABLE: sedenion imbalance suppresses transport"
         } else {
             "WEAK SUPPRESSION"
         },
@@ -233,7 +233,7 @@ fn compare_with_published(
     //    Our B=3.0 regime: D_S enhancement peaks at ~30,000x (alpha_peak from J1-J2 data)
     //    Key difference: Stolpp uses discrete alpha, we use continuous CD lambda interpolation
     //    The Lifshitz splitting mechanism (alpha > 1/4 doubles energy carrier count) applies
-    //    to both settings: frustration opens low-energy channels in polarized regime.
+    //    to both settings: imbalance opens low-energy channels in polarized regime.
     let stolpp_enhancement = 15.0; // Stolpp Fig. 10(a) at alpha~1.2
     comparisons.push(BenchmarkComparison {
         label: "Lifshitz_mechanism_direction",
@@ -247,7 +247,7 @@ fn compare_with_published(
         our_value: ds_enhancement_peak,
         unit: "enhancement ratio X(alpha)/X(0)",
         agreement: if ds_enhancement_peak > 1.0 {
-            "CONSISTENT: both show high-field frustration enhancement (Lifshitz mechanism)"
+            "CONSISTENT: both show high-field imbalance enhancement (Lifshitz mechanism)"
         } else {
             "INCONSISTENT: no enhancement observed"
         },
@@ -301,7 +301,7 @@ struct Metadata {
 #[allow(dead_code)]
 struct J1J2Point {
     alpha: f64,
-    frustration: f64,
+    imbalance: f64,
     drude_weight_spin: f64,
     total_weight_spin: f64,
     total_weight_energy: f64,
@@ -313,7 +313,7 @@ struct J1J2Point {
 #[allow(dead_code)]
 struct InterpolationPoint {
     lambda: f64,
-    frustration: f64,
+    imbalance: f64,
     drude_weight_spin: f64,
     total_weight_spin: f64,
     total_weight_energy: f64,
@@ -325,7 +325,7 @@ struct InterpolationPoint {
 struct CdTransportPoint {
     dim: usize,
     temperature: f64,
-    frustration: f64,
+    imbalance: f64,
     specific_heat: f64,
     drude_weight_spin: f64,
     total_weight_energy: f64,
@@ -340,8 +340,8 @@ struct J1J2Diagnostics {
     drude_enhancement: Vec<f64>,
     /// Ballistic fraction: D_S / I0_S
     ballistic_fraction: Vec<f64>,
-    /// Transport-derived frustration: 1 - B(alpha)
-    transport_frustration: Vec<f64>,
+    /// Transport-derived imbalance: 1 - B(alpha)
+    transport_imbalance: Vec<f64>,
     /// Alpha at which D_S peaks
     alpha_peak: f64,
     /// Peak D_S value
@@ -388,7 +388,7 @@ fn compute_j1j2_diagnostics(points: &[J1J2Point]) -> J1J2Diagnostics {
             }
         })
         .collect();
-    let transport_frustration: Vec<f64> = ballistic_fraction.iter().map(|&b| 1.0 - b).collect();
+    let transport_imbalance: Vec<f64> = ballistic_fraction.iter().map(|&b| 1.0 - b).collect();
 
     // Find D_S peak
     let (peak_idx, ds_peak) = points
@@ -427,7 +427,7 @@ fn compute_j1j2_diagnostics(points: &[J1J2Point]) -> J1J2Diagnostics {
         alphas,
         drude_enhancement,
         ballistic_fraction,
-        transport_frustration,
+        transport_imbalance,
         alpha_peak,
         ds_peak,
         alpha_cv_peak,
@@ -532,7 +532,7 @@ fn write_validation_report(
     out.push_str("# At B=3.0, T=0.1, N=10: strong-field polarized regime.\n");
     out.push_str("# D_S increases with alpha because J2 competes with field polarization,\n");
     out.push_str("# creating low-energy spin excitations (depolarization effect).\n");
-    out.push_str("# Standard frustration-suppression requires B=0 or N->infinity.\n");
+    out.push_str("# Standard imbalance-suppression requires B=0 or N->infinity.\n");
 
     let b0 = j1j2.b_integrable;
     if (b0 - 1.0).abs() < 0.01 {
@@ -585,8 +585,8 @@ fn write_validation_report(
             j1j2.ballistic_fraction[i]
         ));
         out.push_str(&format!(
-            "transport_frustration = {:.6}\n",
-            j1j2.transport_frustration[i]
+            "transport_imbalance = {:.6}\n",
+            j1j2.transport_imbalance[i]
         ));
         out.push('\n');
     }
@@ -887,7 +887,7 @@ fn write_canonical_benchmark_dataset(
     // M=0, B=0, N=12-16
     out.push_str("# Stolpp et al. (2019) Fig. 10(b): D_E at zero magnetization (contrast)\n");
     out.push_str("# D_E(alpha)/D_E(0) at M=0, B=0, T/J=0.1, ED[phi] N=12,16\n");
-    out.push_str("# OPPOSITE behavior: frustration SUPPRESSES transport at low field\n");
+    out.push_str("# OPPOSITE behavior: imbalance SUPPRESSES transport at low field\n");
     let stolpp_low_m = [
         (0.0, 1.0, "reference"),
         (0.1, 0.95, "TLL1 phase"),
@@ -922,7 +922,7 @@ fn write_canonical_benchmark_dataset(
     );
     out.push_str("kth_asymptotic_formula = \"K_th(alpha)/K_th(0) ~ 4*alpha for alpha >> 1/4\"\n");
     out.push_str("high_field_mechanism = \"Lifshitz splitting doubles carrier count; K_th ~ 1/sqrt(m*) diverges at alpha=1/4 then increases\"\n");
-    out.push_str("low_field_contrast = \"At B=0: frustration SUPPRESSES transport (gap opening in dimer phase)\"\n\n");
+    out.push_str("low_field_contrast = \"At B=0: imbalance SUPPRESSES transport (gap opening in dimer phase)\"\n\n");
 
     let dataset_path = output_dir.join("published_transport_benchmarks.toml");
     fs::write(&dataset_path, out)?;
@@ -1084,7 +1084,7 @@ fn main() {
     // Write CSV for plotting
     let csv_path = output_dir.join("j1j2_diagnostics.csv");
     let mut csv_out = String::from(
-        "alpha,drude_weight_spin,total_weight_spin,specific_heat,drude_enhancement,ballistic_fraction,transport_frustration\n",
+        "alpha,drude_weight_spin,total_weight_spin,specific_heat,drude_enhancement,ballistic_fraction,transport_imbalance\n",
     );
     for (i, p) in data.j1j2_transport.iter().enumerate() {
         csv_out.push_str(&format!(
@@ -1095,7 +1095,7 @@ fn main() {
             p.specific_heat,
             j1j2.drude_enhancement[i],
             j1j2.ballistic_fraction[i],
-            j1j2.transport_frustration[i],
+            j1j2.transport_imbalance[i],
         ));
     }
     fs::write(&csv_path, csv_out).expect("write CSV");

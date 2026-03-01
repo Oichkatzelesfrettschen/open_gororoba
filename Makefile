@@ -1,7 +1,7 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
-.PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict doctor provenance patch-pyfilesystem2
+.PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict terminology-gate doctor provenance patch-pyfilesystem2
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: rust-test rust-clippy rust-smoke dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -132,8 +132,8 @@ wave6-gate: governance-gate
 	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 
 # Pre-push review lane (recommended before push/sync to origin)
-pre-push-gate: rust-smoke governance-gate ascii-check
-	@echo "OK: pre-push gate passed (rust-smoke + governance + ASCII)."
+pre-push-gate: rust-smoke governance-gate ascii-check terminology-gate
+	@echo "OK: pre-push gate passed (rust-smoke + governance + ASCII + terminology)."
 
 # Optional stricter pre-push lane: include dep-audit + cargo-deny + MCP smoke every push
 pre-push-gate-strict: dep-audit cargo-deny-check mcp-smoke pre-push-gate ascii-check-strict
@@ -684,6 +684,9 @@ synthesis-execution-contract:
 docs-publish: registry-verify-mirrors
 	@echo "OK: TOML-driven markdown mirrors generated and verified for publishing."
 
+terminology-gate:
+	python3 bin/terminology_gate.py
+
 ascii-check:
 	python3 bin/ascii_check.py --check
 
@@ -813,15 +816,15 @@ lva-paper: rocq-proofs rocq-proofs-check
 	cd proofs && just paper-artifacts
 	$(MAKE) latex
 
-# ---- LaTeX ----
+# ---- LaTeX (warnings-as-errors via latexmk -Werror) ----
 
 latex:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found. Install TeX Live (see docs/requirements/latex.md)"; exit 1; }
 	cargo run --release --bin generate-latex
 	@mkdir -p docs/latex/out
-	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -interaction=nonstopmode -halt-on-error -shell-escape -output-directory=out llm_scaffold_paper.tex
-	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out MASTER_SYNTHESIS.tex
-	cd docs/latex && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out MATHEMATICAL_FORMALISM.tex
+	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error -shell-escape -output-directory=out llm_scaffold_paper.tex
+	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error -output-directory=out MASTER_SYNTHESIS.tex
+	cd docs/latex && latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error -output-directory=out MATHEMATICAL_FORMALISM.tex
 
 # ---- Quantum Docker ----
 
@@ -938,7 +941,8 @@ help:
 	@echo "    make governance-gate      5 TOML registry checks (inventory, owner, schema, crossrefs, governance)"
 	@echo "    make registry-verify-typed-policy-error Supplemental strict typed-policy contract lane"
 	@echo "    make synthesis-execution-contract governance-gate + registry-acceptance-gate + strict typed-policy + project-counter-sync --check"
-	@echo "    make pre-push-gate        rust-smoke + governance-gate + ascii-check"
+	@echo "    make terminology-gate     enforce banned-term policy from terminology_standards.toml"
+	@echo "    make pre-push-gate        rust-smoke + governance-gate + ascii-check + terminology-gate"
 	@echo "    make pre-push-gate-strict dep-audit + cargo-deny + mcp-smoke + pre-push-gate + ascii-check-strict"
 	@echo ""
 	@echo "  Artifacts:"

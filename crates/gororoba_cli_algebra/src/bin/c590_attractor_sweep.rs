@@ -1,6 +1,6 @@
 //! Emit attractor regression metrics for C-590 as CSV.
 //!
-//! This binary computes frustration ratios for selected CD dimensions and writes
+//! This binary computes imbalance ratios for selected CD dimensions and writes
 //! deterministic CSV rows with per-dimension runtime.
 
 use std::collections::HashSet;
@@ -9,11 +9,11 @@ use std::io::Write;
 use std::path::PathBuf;
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
-use algebra_core::analysis::boxkites::compute_frustration_ratio;
+use algebra_core::analysis::boxkites::compute_imbalance_ratio;
 use clap::Parser;
 
 const SCHEMA_VERSION: &str = "c590_attractor_sweep_v1";
-const CSV_HEADER: &str = "schema_version,profile_tag,dim,frustration_ratio,delta_to_three_eighths,elapsed_seconds,run_unix_seconds\n";
+const CSV_HEADER: &str = "schema_version,profile_tag,dim,imbalance_ratio,delta_to_three_eighths,elapsed_seconds,run_unix_seconds\n";
 
 #[derive(Parser, Debug)]
 #[command(name = "c590-attractor-sweep")]
@@ -68,16 +68,16 @@ fn build_csv(profile_tag: &str, dims: &[usize], run_unix_seconds: u64) -> String
 
     for dim in dims {
         let started = Instant::now();
-        let res = compute_frustration_ratio(*dim);
+        let res = compute_imbalance_ratio(*dim);
         let elapsed = started.elapsed().as_secs_f64();
-        let delta = res.frustration_ratio - target;
+        let delta = res.imbalance_ratio - target;
 
         csv.push_str(&format!(
             "{},{},{},{:.12},{:.12},{:.6},{}\n",
             SCHEMA_VERSION,
             profile_tag,
             dim,
-            res.frustration_ratio,
+            res.imbalance_ratio,
             delta,
             elapsed,
             run_unix_seconds

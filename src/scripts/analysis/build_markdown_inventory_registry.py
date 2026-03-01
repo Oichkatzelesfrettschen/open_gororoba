@@ -69,7 +69,7 @@ DESTINATION_OVERRIDES = {
     "PHASE10_11_ULTIMATE_ROADMAP.md": "registry/legacy_markdown_interfaces.toml",
     "PYTHON_REFACTORING_ROADMAP.md": "registry/legacy_markdown_interfaces.toml",
     "SYNTHESIS_PIPELINE_PROGRESS.md": "registry/legacy_markdown_interfaces.toml",
-    "crates/vacuum_frustration/IMPLEMENTATION_NOTES.md": "registry/legacy_markdown_interfaces.toml",
+    "crates/sign_imbalance/IMPLEMENTATION_NOTES.md": "registry/legacy_markdown_interfaces.toml",
     "data/artifacts/ALGEBRAIC_FOUNDATIONS.md": "registry/artifact_scrolls.toml",
     "data/artifacts/BIBLIOGRAPHY.md": "registry/artifact_scrolls.toml",
     "data/artifacts/FINAL_REPORT.md": "registry/artifact_scrolls.toml",

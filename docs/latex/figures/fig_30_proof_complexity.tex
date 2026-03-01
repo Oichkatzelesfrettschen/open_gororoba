@@ -1,0 +1,59 @@
+%% Fig 30: Proof complexity dashboard (horizontal bar chart from compile_times.csv)
+%% Two side-by-side: source lines (left) and .vo size (right)
+\pgfplotstableread[col sep=comma, columns/file/.style={string type}]{\proofmetrics/compile_times.csv}\compiletimeslocal
+\begin{tikzpicture}
+  \begin{groupplot}[
+    group style={
+      group size=2 by 1,
+      horizontal sep=1.5cm,
+    },
+  ]
+
+  %% Left panel: Source lines
+  \nextgroupplot[
+    xbar,
+    bar width=3pt,
+    width=0.45\textwidth,
+    height=16cm,
+    xlabel={Source lines},
+    ylabel={},
+    ytick=data,
+    y dir=reverse,
+    xmin=0,
+    nodes near coords,
+    nodes near coords style={font=\sffamily\tiny, anchor=west},
+    enlarge y limits=0.02,
+    yticklabels from table={\compiletimeslocal}{file},
+    y tick label style={font=\ttfamily\tiny, anchor=east},
+    typeset ticklabels with strut,
+    title={\textbf{Source Lines}},
+    title style={font=\sffamily\small},
+  ]
+    \addplot[fill=OIblue!50, draw=OIblue!70] table [x=lines, y expr=\coordindex]
+      {\compiletimeslocal};
+
+  %% Right panel: .vo size
+  \nextgroupplot[
+    xbar,
+    bar width=3pt,
+    width=0.45\textwidth,
+    height=16cm,
+    xlabel={.vo size (bytes)},
+    ylabel={},
+    ytick=data,
+    y dir=reverse,
+    xmin=0,
+    nodes near coords,
+    nodes near coords style={font=\sffamily\tiny, anchor=west},
+    enlarge y limits=0.02,
+    yticklabels from table={\compiletimeslocal}{file},
+    y tick label style={font=\ttfamily\tiny, anchor=east},
+    typeset ticklabels with strut,
+    title={\textbf{Compiled .vo Size}},
+    title style={font=\sffamily\small},
+  ]
+    \addplot[fill=OIgreen!50, draw=OIgreen!70] table [x=vo_size_bytes, y expr=\coordindex]
+      {\compiletimeslocal};
+
+  \end{groupplot}
+\end{tikzpicture}

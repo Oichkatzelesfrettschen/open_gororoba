@@ -1,29 +1,29 @@
 //! Thesis Lab: Experiment-Lab-Concept-Explorer
 //!
-//! Multi-model comparison binary for the frustration-topology-viscosity hypothesis.
+//! Multi-model comparison binary for the imbalance-topology-viscosity hypothesis.
 //! Runs all 5 viscosity coupling models through the full LBM -> topology pipeline,
 //! compares topological signatures via Wasserstein distance, and optionally performs
 //! grid convergence studies.
 //!
 //! This binary ties together:
-//! - vacuum_frustration: SedenionField, FrustrationViscosityBridge, ViscosityCouplingModel
+//! - sign_imbalance: SedenionField, ImbalanceViscosityBridge, ViscosityCouplingModel
 //! - lbm_3d: LbmSolver3D with convergence diagnostics
 //! - vietoris_rips: persistent homology, PersistenceDiagram, Wasserstein/bottleneck
-//! - spatial_correlation: regional frustration-viscosity correlation
+//! - spatial_correlation: regional imbalance-viscosity correlation
 
 use clap::Parser;
 use lbm_3d::solver::LbmSolver3D;
 use std::fmt::Write as _;
-use vacuum_frustration::bridge::{SedenionField, VACUUM_ATTRACTOR, ViscosityCouplingModel};
-use vacuum_frustration::spatial_correlation::{SpatialCorrelationResult, spatial_correlation};
-use vacuum_frustration::vietoris_rips::{
+use sign_imbalance::bridge::{SedenionField, IMBALANCE_ATTRACTOR, ViscosityCouplingModel};
+use sign_imbalance::spatial_correlation::{SpatialCorrelationResult, spatial_correlation};
+use sign_imbalance::vietoris_rips::{
     DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers_at_time,
     compute_persistent_homology,
 };
 
 #[derive(Parser, Debug)]
 #[command(name = "thesis-lab")]
-#[command(about = "Experiment-lab-concept-explorer for frustration-topology-viscosity hypothesis")]
+#[command(about = "Experiment-lab-concept-explorer for imbalance-topology-viscosity hypothesis")]
 struct Args {
     /// Grid size per axis (N^3 cells). Multiple values for grid convergence.
     #[arg(long, default_value = "16")]
@@ -41,7 +41,7 @@ struct Args {
     #[arg(long, default_value = "200")]
     max_points: usize,
 
-    /// Coupling lambda for frustration -> viscosity
+    /// Coupling lambda for imbalance -> viscosity
     #[arg(long, default_value = "2.0")]
     lambda: f64,
 
@@ -149,7 +149,7 @@ struct RunConfig {
 }
 
 /// Run one coupling model through the full pipeline.
-fn run_model(model: &ViscosityCouplingModel, frustration: &[f64], cfg: &RunConfig) -> ModelResult {
+fn run_model(model: &ViscosityCouplingModel, imbalance: &[f64], cfg: &RunConfig) -> ModelResult {
     let RunConfig {
         nx,
         ny,
@@ -165,8 +165,8 @@ fn run_model(model: &ViscosityCouplingModel, frustration: &[f64], cfg: &RunConfi
     } = *cfg;
     let n_cells = nx * ny * nz;
 
-    // Frustration -> viscosity via coupling model
-    let viscosity: Vec<f64> = frustration.iter().map(|&f| model.compute(f)).collect();
+    // Imbalance -> viscosity via coupling model
+    let viscosity: Vec<f64> = imbalance.iter().map(|&f| model.compute(f)).collect();
     let viscosity_mean = viscosity.iter().sum::<f64>() / n_cells as f64;
     let viscosity_var = viscosity
         .iter()
@@ -261,7 +261,7 @@ fn run_model(model: &ViscosityCouplingModel, frustration: &[f64], cfg: &RunConfi
     }
 
     // Spatial correlation
-    let correlation = spatial_correlation(frustration, &viscosity, nx, ny, nz, n_sub);
+    let correlation = spatial_correlation(imbalance, &viscosity, nx, ny, nz, n_sub);
 
     // VR topology on velocity point cloud
     let mut candidates: Vec<(f64, [f64; 3])> = Vec::new();
@@ -364,7 +364,7 @@ fn write_report(out: &mut String, nx: usize, results: &[ModelResult], lambda: f6
     let _ = writeln!(out, "grid_size = {}", nx);
     let _ = writeln!(out, "lambda = {:.3}", lambda);
     let _ = writeln!(out, "nu_base = {:.6}", nu_base);
-    let _ = writeln!(out, "vacuum_attractor = {:.6}", VACUUM_ATTRACTOR);
+    let _ = writeln!(out, "imbalance_attractor = {:.6}", IMBALANCE_ATTRACTOR);
     let _ = writeln!(out, "n_models = {}", results.len());
     let _ = writeln!(out);
 
@@ -546,7 +546,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("  [1/3] Generating SedenionField...");
         let field = generate_sedenion_field(nx, nx, nx);
-        let frustration = field.local_frustration_density(16);
+        let imbalance = field.local_imbalance_density(16);
         let associator_norms = if args.coupling > 0.0 && args.power_index > 1.0 {
             Some(field.local_associator_norm_field(16))
         } else {
@@ -567,10 +567,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             coupling: args.coupling,
             associator_norms,
         };
-        let mean_f = frustration.iter().sum::<f64>() / frustration.len() as f64;
+        let mean_f = imbalance.iter().sum::<f64>() / imbalance.len() as f64;
         println!(
-            "    Mean frustration: {:.6} (vacuum attractor = {:.6})",
-            mean_f, VACUUM_ATTRACTOR
+            "    Mean imbalance: {:.6} (imbalance attractor = {:.6})",
+            mean_f, IMBALANCE_ATTRACTOR
         );
 
         println!("  [2/3] Running {} models...", models.len());
@@ -579,7 +579,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for (i, model) in models.iter().enumerate() {
             print!("    [{}/{}] {}...", i + 1, models.len(), model.label());
 
-            let result = run_model(model, &frustration, &cfg);
+            let result = run_model(model, &imbalance, &cfg);
 
             println!(
                 " v_max={:.6}, b0={}, b1={}, H(H0)={:.4}, spearman={:.4}",

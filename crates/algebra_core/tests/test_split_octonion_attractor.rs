@@ -1,4 +1,4 @@
-use algebra_core::analysis::boxkites::compute_frustration_ratio;
+use algebra_core::analysis::boxkites::compute_imbalance_ratio;
 use algebra_core::construction::cayley_dickson::{CdSignature, cd_basis_mul_sign_split_iter};
 use std::time::Instant;
 
@@ -52,12 +52,12 @@ fn test_split_octonion_psi_fraction() {
 #[test]
 fn test_split_octonion_attractor_coincidence() {
     // This test documents and verifies the numerical coincidence between
-    // the Split-Octonion psi=1 fraction and the high-dim standard CD frustration ratio.
+    // the Split-Octonion psi=1 fraction and the high-dim standard CD imbalance ratio.
 
     // A. Split-Octonion Fraction = 0.375 (Verified above)
     let split_target = 0.375;
 
-    // B. Standard CD Frustration Ratio Convergence
+    // B. Standard CD Imbalance Ratio Convergence
     // We compute low-dim values to establish the trend.
     // High-dim values (dim=1024 -> 0.378) are expensive to compute in a unit test,
     // so we verify the low-dim trajectory here.
@@ -65,11 +65,11 @@ fn test_split_octonion_attractor_coincidence() {
     let dims = [16, 32, 64];
     let mut ratios = Vec::new();
 
-    println!("Standard CD Frustration Ratios:");
+    println!("Standard CD Imbalance Ratios:");
     for &d in &dims {
-        let res = compute_frustration_ratio(d);
-        ratios.push(res.frustration_ratio);
-        println!("dim={}: {:.6}", d, res.frustration_ratio);
+        let res = compute_imbalance_ratio(d);
+        ratios.push(res.imbalance_ratio);
+        println!("dim={}: {:.6}", d, res.imbalance_ratio);
     }
 
     // dim=16: 0.0 (Coboundary)
@@ -124,11 +124,11 @@ fn test_split_octonion_attractor_regression_dim_128_256_guarded() {
     println!("Guarded high-dim attractor regression:");
     for &dim in &dims {
         let started = Instant::now();
-        let res = compute_frustration_ratio(dim);
+        let res = compute_imbalance_ratio(dim);
         let elapsed_s = started.elapsed().as_secs_f64();
         println!(
             "dim={}: ratio={:.6}, elapsed={:.3}s",
-            dim, res.frustration_ratio, elapsed_s
+            dim, res.imbalance_ratio, elapsed_s
         );
 
         assert!(
@@ -139,16 +139,16 @@ fn test_split_octonion_attractor_regression_dim_128_256_guarded() {
             per_dim_budget_s
         );
         assert!(
-            res.frustration_ratio > split_target,
+            res.imbalance_ratio > split_target,
             "dim={} ratio should remain above 3/8 during observed convergence window",
             dim
         );
         assert!(
-            res.frustration_ratio < 0.39,
+            res.imbalance_ratio < 0.39,
             "dim={} ratio should remain in expected high-dim envelope (< 0.39)",
             dim
         );
-        ratios.push(res.frustration_ratio);
+        ratios.push(res.imbalance_ratio);
     }
 
     let total_elapsed_s = suite_start.elapsed().as_secs_f64();
@@ -208,12 +208,12 @@ fn test_split_octonion_attractor_delta_shrink_128_256_512_guarded() {
     println!("Guarded attractor delta-shrink regression (128/256/512):");
     for &dim in &dims {
         let started = Instant::now();
-        let res = compute_frustration_ratio(dim);
+        let res = compute_imbalance_ratio(dim);
         let elapsed_s = started.elapsed().as_secs_f64();
-        let delta = res.frustration_ratio - split_target;
+        let delta = res.imbalance_ratio - split_target;
         println!(
             "dim={}: ratio={:.6}, delta={:.6}, elapsed={:.3}s",
-            dim, res.frustration_ratio, delta, elapsed_s
+            dim, res.imbalance_ratio, delta, elapsed_s
         );
 
         assert!(
@@ -224,12 +224,12 @@ fn test_split_octonion_attractor_delta_shrink_128_256_512_guarded() {
             per_dim_budget_s
         );
         assert!(
-            res.frustration_ratio > split_target,
+            res.imbalance_ratio > split_target,
             "dim={} ratio should stay above 3/8 in the observed attractor regime",
             dim
         );
         assert!(
-            res.frustration_ratio < 0.39,
+            res.imbalance_ratio < 0.39,
             "dim={} ratio should stay within expected high-dim envelope (< 0.39)",
             dim
         );

@@ -9,12 +9,12 @@
 //! update pipeline and the analysis/visualization layers.
 
 pub mod algebra_evolution;
-pub mod frustration_e7;
+pub mod imbalance_e7;
 pub mod state_3d;
 
-pub use frustration_e7::E7SpectralFilter;
+pub use imbalance_e7::E7SpectralFilter;
 pub use state_3d::{
-    AlgebraicField3D, FrustrationField3D, LbmBackend3D, SimulationConfig3D, SimulationState3D,
+    AlgebraicField3D, ImbalanceField3D, LbmBackend3D, SimulationConfig3D, SimulationState3D,
 };
 
 use algebra_core::physics::octonion_field::{FieldParams, Octonion, Pathion, Sedenion};
@@ -183,7 +183,7 @@ pub struct SimulationConfig {
     /// Coupling constant: Algebra -> Fluid (viscosity modulation).
     pub coupling_algebra_fluid: f64,
 
-    /// Coupling constant: Metric -> Algebra (frustration source).
+    /// Coupling constant: Metric -> Algebra (imbalance source).
     pub coupling_metric_algebra: f64,
 }
 
@@ -221,7 +221,7 @@ impl SimulationState {
 
         // 2. Algebra Update
         // Advect algebraic field using fluid velocity
-        // Apply "Frustration Source" from metric curvature
+        // Apply "Imbalance Source" from metric curvature
         self.update_algebra();
 
         // 3. Fluid Update

@@ -1,7 +1,7 @@
 //! 3D Algebraic Field Evolution.
 //!
 //! Implements rigorous evolution of hypercomplex fields on a 3D lattice,
-//! including advection by fluid velocity and non-associative frustration
+//! including advection by fluid velocity and non-associative imbalance
 //! coupling.
 
 use crate::simulation::state_3d::{AlgebraicField3D, LbmBackend3D};
@@ -18,7 +18,7 @@ pub fn evolve_algebra_3d(
     coupling: f64,
 ) {
     advect_sedenion_field(algebra, fluid, coupling);
-    apply_frustration_3d(algebra, fluid, curvature, coupling);
+    apply_imbalance_3d(algebra, fluid, curvature, coupling);
 }
 
 fn advect_sedenion_field(field: &mut Array3<[f64; 16]>, fluid: &LbmBackend3D, coupling: f64) {
@@ -58,7 +58,7 @@ fn advect_sedenion_field(field: &mut Array3<[f64; 16]>, fluid: &LbmBackend3D, co
     }
 }
 
-fn apply_frustration_3d(
+fn apply_imbalance_3d(
     field: &mut Array3<[f64; 16]>,
     _fluid: &LbmBackend3D,
     curvature: &Array3<f64>,
@@ -71,7 +71,7 @@ fn apply_frustration_3d(
             for x in 0..nx {
                 let k_scalar = curvature[[x, y, z]];
 
-                // Frustration source: inject "algebraic noise" proportional to curvature AND coupling
+                // Imbalance source: inject "algebraic noise" proportional to curvature AND coupling
                 let mut phi = field[[x, y, z]];
                 for v in phi.iter_mut().skip(8) {
                     *v += k_scalar * coupling * 0.1;

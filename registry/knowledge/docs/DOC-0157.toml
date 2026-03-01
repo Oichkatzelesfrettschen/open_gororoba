@@ -3887,9 +3887,9 @@ Total claims: 521
 
 - Status: `Verified`
 - Last verified: 2026-02-09
-- Statement: Pure-regime 3:1 TwoSameOneOpp:AllOpposite Ratio Law: In every pure-regime component (only 2 face sign patterns) of the CD zero-divisor graph, the ratio TwoSameOneOpp:AllOpposite is exactly 3:1. Verified in 26 pure-regime components across 4 doublings: dim=16 (7x, 42:14), dim=32 mixed (7x, 18:6), dim=32 special (1x, 210:70), dim=64 pure-max (1x, 2730:910), dim=64 pure-min (8x, 42:14), dim=128 pure-max (1x, 26970:8990), dim=128 pure-min (9x, 90:30). SUPERSEDED by C-487 (Universal Double 3:1 Law) which proves this holds in ALL components, not just pure regimes.
+- Statement: Pure-regime 3:1 TwoSameOneOpp:AllOpposite Ratio Law: In every pure-regime component (only 2 face sign patterns) of the CD zero-divisor graph, the ratio TwoSameOneOpp:AllOpposite is exactly 3:1. Verified in 26 pure-regime components across 4 doublings: dim=16 (7x, 42:14), dim=32 mixed (7x, 18:6), dim=32 special (1x, 210:70), dim=64 pure-max (1x, 2730:910), dim=64 pure-min (8x, 42:14), dim=128 pure-max (1x, 26970:8990), dim=128 pure-min (9x, 90:30). SUPERSEDED by C-487 (Universal 3:1 Theorem) which proves this holds in ALL components, not just pure regimes.
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_three_to_one_ratio_antibalanced)
-- What would verify/refute it: VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components). SUPERSEDED by C-487 (Universal Double 3:1 Law). WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3.
+- What would verify/refute it: VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components). SUPERSEDED by C-487 (Universal 3:1 Theorem). WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3.
 
 ## C-484
 
@@ -3897,7 +3897,7 @@ Total claims: 521
 - Last verified: 2026-02-09
 - Statement: Face Sign Census at dim=128: 821128 triangular faces across 63 components split into 9 regimes. (A) 1 pure-max (1860 edges, 35960 tri, 2 patterns: 26970/8990=3:1). (B) 9 full-max (1860 edges, 35960 tri, 4 patterns). (C-G) 7 full regimes each with distinct edge counts (1524/1284/1092/948/756/516 edges, 8/7/7/7/7/8 components). (H) 9 pure-min (180 edges, 120 tri, 2 patterns: 90/30=3:1). Group sizes palindromic: 1+[9,8,7,7,7,7,8,9].
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim128)
-- What would verify/refute it: VERIFIED by integer-exact computation in ~1s. 9 regimes with exact counts. Both pure regimes satisfy 3:1 ratio. All 4-pattern regimes satisfy Universal Double 3:1 Law (C-487). WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes.
+- What would verify/refute it: VERIFIED by integer-exact computation in ~1s. 9 regimes with exact counts. Both pure regimes satisfy 3:1 ratio. All 4-pattern regimes satisfy Universal 3:1 Theorem (C-487). WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes.
 
 ## C-485
 
@@ -3919,7 +3919,7 @@ Total claims: 521
 
 - Status: `Verified`
 - Last verified: 2026-02-09
-- Statement: Universal Double 3:1 Law: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16, both 3:1 ratio laws hold simultaneously: TwoSameOneOpp = 3*AllOpposite (odd-parity pair) and OneSameTwoOpp = 3*AllSame (even-parity pair). Verified in all 243 components across 5 dimensions (7+15+31+63+127). NOTE: Parity-specific edge regularity is FALSE in non-pure regimes -- the algebraic mechanism must arise from the CD multiplication table structure, not general graph-theoretic counting. Pure-regime C-483 is the special case where AllSame=OneSameTwoOpp=0.
+- Statement: Universal 3:1 Theorem: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16, both 3:1 ratio laws hold simultaneously: TwoSameOneOpp = 3*AllOpposite (odd-parity pair) and OneSameTwoOpp = 3*AllSame (even-parity pair). Verified in all 243 components across 5 dimensions (7+15+31+63+127). NOTE: Parity-specific edge regularity is FALSE in non-pure regimes -- the algebraic mechanism must arise from the CD multiplication table structure, not general graph-theoretic counting. Pure-regime C-483 is the special case where AllSame=OneSameTwoOpp=0.
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_universal_double_three_to_one_law, test_generic_face_sign_census_dim256)
 - What would verify/refute it: VERIFIED by exact computation in all 243 components across dims 16/32/64/128/256. WHAT WOULD REFUTE: any single component at any dimension where either OS != 3*AS or TS != 3*AO.
 
@@ -3927,9 +3927,9 @@ Total claims: 521
 
 - Status: `Verified`
 - Last verified: 2026-02-09
-- Statement: Face Sign Census at dim=256: 13348104 triangular faces across 127 components split into 17 regimes (confirming dim/16+1 formula). 1 pure-max (7812 edges, 2 patterns), 15 full regimes (4 patterns each), 1 pure-min regime (372 edges, 10 components, 2 patterns). Universal Double 3:1 Law holds in all 127 components. Computation time: ~16s in release mode.
+- Statement: Face Sign Census at dim=256: 13348104 triangular faces across 127 components split into 17 regimes (confirming dim/16+1 formula). 1 pure-max (7812 edges, 2 patterns), 15 full regimes (4 patterns each), 1 pure-min regime (372 edges, 10 components, 2 patterns). Universal 3:1 Theorem holds in all 127 components. Computation time: ~16s in release mode.
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim256)
-- What would verify/refute it: VERIFIED by integer-exact computation (~16s). WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the Double 3:1 Law.
+- What would verify/refute it: VERIFIED by integer-exact computation (~16s). WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the 3:1 Theorem.
 
 ## C-489
 
@@ -3943,7 +3943,7 @@ Total claims: 521
 
 - Status: `Verified`
 - Last verified: 2026-02-09
-- Statement: Parity-Specific Edge Regularity is FALSE: In non-pure (4-pattern) face sign regime components, edges do NOT participate in the same number of even-parity (or odd-parity) triangles. At dim=32 comp[0], even-parity triangle counts per edge range from 4 to 8. This means the Universal Double 3:1 Law (C-487) cannot be proved via parity-specific counting arguments. The algebraic mechanism is deeper, arising from the CD multiplication table structure.
+- Statement: Parity-Specific Edge Regularity is FALSE: In non-pure (4-pattern) face sign regime components, edges do NOT participate in the same number of even-parity (or odd-parity) triangles. At dim=32 comp[0], even-parity triangle counts per edge range from 4 to 8. This means the Universal 3:1 Theorem (C-487) cannot be proved via parity-specific counting arguments. The algebraic mechanism is deeper, arising from the CD multiplication table structure.
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_parity_edge_regularity_breakdown)
 - What would verify/refute it: VERIFIED at dim=32: even-parity triangles per edge range [4,8]. WHAT WOULD REFUTE: discovering that parity-specific edge regularity actually holds everywhere (would require a bug in the test).
 
@@ -3975,7 +3975,7 @@ Total claims: 521
 
 - Status: `Verified`
 - Last verified: 2026-02-09
-- Statement: Quarter Rule (mechanism of Double 3:1 Law): Within each parity class of triangles in any ZD graph component, the 'pure' pattern (AllOpposite in even class, AllSame in odd class) is exactly 1/4 of the class total. The 3:1 ratio (C-487) follows: the 'mixed' patterns consume the remaining 3/4, giving TwoSameOneOpp = 3*AllOpposite and OneSameTwoOpp = 3*AllSame. The class total is always divisible by 4.
+- Statement: Quarter Rule (mechanism of 3:1 Theorem): Within each parity class of triangles in any ZD graph component, the 'pure' pattern (AllOpposite in even class, AllSame in odd class) is exactly 1/4 of the class total. The 3:1 ratio (C-487) follows: the 'mixed' patterns consume the remaining 3/4, giving TwoSameOneOpp = 3*AllOpposite and OneSameTwoOpp = 3*AllSame. The class total is always divisible by 4.
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
 - What would verify/refute it: VERIFIED at dims 16, 32, 64 for all components. WHAT WOULD REFUTE: any component where class total is not divisible by 4, or pure count != total/4.
 
@@ -3983,7 +3983,7 @@ Total claims: 521
 
 - Status: `Verified`
 - Last verified: 2026-02-09
-- Statement: Face sign census at dim=512: 255 components, 33 regimes (512/16 + 1), e_max=32004, e_min=756, 214M triangles, Universal Double 3:1 Law holds for all 255 components. Exactly 1 pure-max component. Confirms all scaling laws from C-486/C-487/C-488 at the 6th doubling.
+- Statement: Face sign census at dim=512: 255 components, 33 regimes (512/16 + 1), e_max=32004, e_min=756, 214M triangles, Universal 3:1 Theorem holds for all 255 components. Exactly 1 pure-max component. Confirms all scaling laws from C-486/C-487/C-488 at the 6th doubling.
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim512)
 - What would verify/refute it: VERIFIED: all assertions pass in 275s release mode. 33 regimes, all edge/regime formulas match, 3:1 law holds universally. WHAT WOULD REFUTE: any component violating TS=3*AO or OS=3*AS.
 
@@ -4191,7 +4191,7 @@ Total claims: 521
 
 - Status: `Verified`
 - Last verified: 2026-02-09
-- Statement: Anti-Diagonal Parity Theorem at dim=128: The Anti-Diagonal Parity Theorem (C-520) holds at dim=128 with ZERO mismatches across 821,128 triangles in 63 components. Pure count = 205,282, Mixed count = 615,846 (exact 1:3 ratio). This provides the complete algebraic mechanism for the Double 3:1 Law (C-487): the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, with exactly 1 zero element and 3 nonzero elements. Pure triangles are the zero-element fiber. The nonzero fibers need not be equally sized (confirming the non-uniform distribution observed in face sign census data). The mechanism is purely algebraic: eta depends only on cd_basis_mul_sign via the off-diagonal terms of the edge psi matrix.
+- Statement: Anti-Diagonal Parity Theorem at dim=128: The Anti-Diagonal Parity Theorem (C-520) holds at dim=128 with ZERO mismatches across 821,128 triangles in 63 components. Pure count = 205,282, Mixed count = 615,846 (exact 1:3 ratio). This provides the complete algebraic mechanism for the 3:1 Theorem (C-487): the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, with exactly 1 zero element and 3 nonzero elements. Pure triangles are the zero-element fiber. The nonzero fibers need not be equally sized (confirming the non-uniform distribution observed in face sign census data). The mechanism is purely algebraic: eta depends only on cd_basis_mul_sign via the off-diagonal terms of the edge psi matrix.
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_antidiagonal_parity_theorem_dim128)
 - What would verify/refute it: VERIFIED: 821128 triangles, 63 components, 0 mismatches. WHAT WOULD REFUTE: any mismatch at dim=128 or higher. Verification at dim=256+ would strengthen but requires significant compute (13.3M triangles at dim=256).
 

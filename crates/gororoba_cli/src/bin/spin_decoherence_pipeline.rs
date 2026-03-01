@@ -15,7 +15,7 @@ struct Args {
     #[arg(long, default_value_t = 1000)]
     events_per_bin: usize,
 
-    /// Frustration scaling c_f
+    /// Imbalance scaling c_f
     #[arg(long, default_value_t = 10.0)]
     c_f: f64,
 

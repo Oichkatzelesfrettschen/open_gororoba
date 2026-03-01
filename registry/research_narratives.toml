@@ -18,12 +18,12 @@ body_markdown = '''
 # The Lost Hexagon and the Split-Octonion Attractor
 
 **Date:** 2026-02-10
-**Status:** Unified Theory of Hyper-Structure Frustration
+**Status:** Unified Theory of Hyper-Structure Imbalance
 
-This document formalizes the discovery of the "Split-Octonion Attractor" and the "Lost Hexagon" mechanism, connecting statistical frustration in high-dimensional algebras to the specific null geometry of the 8-dimensional Split-Octonions.
+This document formalizes the discovery of the "Split-Octonion Attractor" and the "Lost Hexagon" mechanism, connecting statistical imbalance in high-dimensional algebras to the specific null geometry of the 8-dimensional Split-Octonions.
 
 ## 1. The 3/8 Attractor (Statistical Limit)
-We verified (C-590) that the Frustration Ratio $\psi$ (fraction of non-associative triads) for standard Cayley-Dickson algebras converges asymptotically to **0.375 (3/8)** as $N \to \infty$.
+We verified (C-590) that the Imbalance Index $\psi$ (fraction of non-associative triads) for standard Cayley-Dickson algebras converges asymptotically to **0.375 (3/8)** as $N \to \infty$.
 *   This limit is not random. It matches exactly the static fraction of negative structure constants in the Split-Octonion multiplication table ($24/64 = 0.375$).
 *   **Implication:** High-dimensional standard algebras ($N \ge 16$) statistically "relax" into a state that mimics the local sign distribution of the Split-Octonions, even though they possess a definite Euclidean metric.
 
@@ -43,5 +43,5 @@ Comparing the precursor interactions to the realized Sedenion units:
 *   The '6 struts' of the octahedron (vertices or diagonals) act as the geometric constraint that forces this shedding, resulting in the 42-element Box-Kite structure.
 
 ## 4. Unified Theory
-Algebraic frustration is the 'statistical shadow' of the Split-Octonion Null Cloud. The 3/8 limit represents the system at the cusp of forming the 48-element symmetric cloud, while the Sedenion structures (42) represent the system after the SU(3) symmetry-breaking event.
+Algebraic imbalance is the 'statistical shadow' of the Split-Octonion Null Cloud. The 3/8 limit represents the system at the cusp of forming the 48-element symmetric cloud, while the Sedenion structures (42) represent the system after the SU(3) symmetry-breaking event.
 '''

@@ -1,0 +1,42 @@
+%% Fig 14: Five coupling model curves (nu vs phi)
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=6cm,
+  xlabel={Sign-imbalance index $\phi$},
+  ylabel={Kinematic viscosity $\nu$},
+  xmin=0, xmax=0.45,
+  ymin=0, ymax=0.15,
+  legend pos=outer north east,
+  legend style={fill=white, fill opacity=0.9, draw=gray!50},
+  domain=0.001:0.44,
+  samples=100,
+]
+  %% Exponential: nu0 * exp(-lambda*(phi - 3/8)^2), lambda=2.0, nu0=0.1
+  \addplot[OIorange, thick, mark=none]
+    {0.1 * exp(-2.0 * (x - 0.375)^2)};
+
+  %% Linear: nu0*(1 + c*(phi - 3/8)), c=0.5
+  \addplot[OIskyblue, thick, dashed, mark=none]
+    {0.1 * (1 + 0.5*(x - 0.375))};
+
+  %% Power-law: nu0 * |phi - 3/8|^alpha, alpha=0.5
+  \addplot[OIblue, thick, densely dotted, mark=none]
+    {0.1 * abs(x - 0.375)^0.5};
+
+  %% Sigmoid: nu_min + (nu_max-nu_min)/(1+exp(-k*(phi-phi_c)))
+  \addplot[OIpurple, thick, dashdotted, mark=none]
+    {0.05 + (0.12-0.05)/(1 + exp(-20*(x - 0.38)))};
+
+  %% Constant: nu0 = 0.1
+  \addplot[OIgray, thick, loosely dashed, mark=none]
+    {0.1};
+
+  %% 3/8 vertical line
+  \draw[OIvermillion, thin, dashed]
+    (axis cs:0.375,0) -- (axis cs:0.375,0.15)
+    node[pos=0.95, right, font=\sffamily\tiny, OIvermillion] {$\phi^* = 3/8$};
+
+  \legend{Exponential, Linear, Power-law, Sigmoid, Constant (null)}
+\end{axis}
+\end{tikzpicture}

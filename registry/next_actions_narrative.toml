@@ -27,10 +27,10 @@ Updated 2026-02-13 from `registry/next_actions.toml`.
 - **S27**: Exhaustive algebra variant family census (quaternion/octonion/sedenion).
   Non-commutativity universal, zero-divisor count gamma-dependent. C-550..C-556,
   I-020..I-024.
-- **S26**: dim=512 APT verified, psi/eta tower to dim=2/4/8, dim=1024 frustration
+- **S26**: dim=512 APT verified, psi/eta tower to dim=2/4/8, dim=1024 imbalance
   0.37849, parameterized CD construction, split-octonion signature, bit-parallel
   sign engine, cd-tower-report binary. C-531..C-549.
-- **S25**: Anti-Diagonal Parity Theorem (complete mechanism for Double 3:1 Law),
+- **S25**: Anti-Diagonal Parity Theorem (complete mechanism for 3:1 Theorem),
   dim=512 census, Fano/coset/filtration laws, GF(2) coboundary phase transition,
   Klein-four fiber symmetry. C-495..C-527, I-018. 2312 tests.
 
@@ -52,7 +52,7 @@ Updated 2026-02-13 from `registry/next_actions.toml`.
 | J. Monograph layers 0-5 | DONE | S13-S15 | TypedCarrier through NullModel |
 | K. Rho(b) coupling | DONE (REFUTED) | S16 | C-466 refuted |
 | L. ALP + Sky-Limit-Set | DONE (PARTIAL) | S17-S19 | C-476/C-477 |
-| M. Face sign census | DONE | S21-S24 | 33 regimes, Double 3:1 Law |
+| M. Face sign census | DONE | S21-S24 | 33 regimes, 3:1 Theorem |
 | N. Coset / filtration | DONE | S25 | Coset obstruction (C-498) |
 | O. Anti-Diagonal Parity | DONE | S25 | Mechanism (C-515..C-527, I-018) |
 | P. Algebra family census | DONE | S26-S27 | CD/tensor/split families |

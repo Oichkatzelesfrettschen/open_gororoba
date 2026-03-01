@@ -6,7 +6,7 @@
 //! Features (when compiled with `gpu` feature):
 //! - Eta matrix computation (parallel XOR operations)
 //! - Component graph construction (parallel edge detection)
-//! - Frustration ratio computation (parallel BFS)
+//! - Imbalance ratio computation (parallel BFS)
 //! - Triangle enumeration (parallel triple checking)
 //!
 //! All GPU operations have CPU fallback implementations.
@@ -16,7 +16,7 @@ pub mod dimensional;
 #[cfg(feature = "gpu")]
 mod eta_matrix;
 #[cfg(feature = "gpu")]
-mod frustration;
+mod imbalance;
 #[cfg(feature = "gpu")]
 mod graph_construction;
 
@@ -24,7 +24,7 @@ pub use dimensional::{GpuAptResult, GpuAptResultWide, GpuDimensionalEngine};
 #[cfg(feature = "gpu")]
 pub use eta_matrix::EtaMatrixGpu;
 #[cfg(feature = "gpu")]
-pub use frustration::FrustrationGpu;
+pub use imbalance::ImbalanceGpu;
 #[cfg(feature = "gpu")]
 pub use graph_construction::GraphConstructorGpu;
 

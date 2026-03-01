@@ -1,8 +1,8 @@
-//! Topological frustration layer.
+//! Topological imbalance layer.
 
 use crate::traits::TopologyLayer;
 
-/// Sliding-window frustration estimator from sign streams.
+/// Sliding-window imbalance estimator from sign streams.
 #[derive(Debug, Clone, Copy)]
 pub struct SlidingTriadTopology {
     pub window: usize,
@@ -15,7 +15,7 @@ impl Default for SlidingTriadTopology {
 }
 
 impl TopologyLayer for SlidingTriadTopology {
-    fn frustration_density(&self, signs: &[i32]) -> Vec<f64> {
+    fn imbalance_density(&self, signs: &[i32]) -> Vec<f64> {
         if signs.is_empty() {
             return Vec::new();
         }
@@ -56,7 +56,7 @@ mod tests {
     #[test]
     fn test_topology_emits_density_series() {
         let topo = SlidingTriadTopology::default();
-        let f = topo.frustration_density(&[1, -1, 1, -1, 1]);
+        let f = topo.imbalance_density(&[1, -1, 1, -1, 1]);
         assert_eq!(f.len(), 5);
         assert!(f.iter().all(|x| (0.0..=1.0).contains(x)));
     }

@@ -101,7 +101,7 @@ detail = "Core paper sections and proof tables are still placeholder-level."
 [[finding]]
 id = "RG-014"
 severity = "high"
-path = "crates/vacuum_frustration/src/besag_clifford_cuda.rs"
+path = "crates/sign_imbalance/src/besag_clifford_cuda.rs"
 title = "GPU pipeline integration unfinished"
 detail = "Current path does not fully execute intended downstream validation stages."
 

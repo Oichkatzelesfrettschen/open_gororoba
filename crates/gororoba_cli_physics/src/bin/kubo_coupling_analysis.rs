@@ -1,7 +1,7 @@
 //! First-principles viscosity coupling from Kubo linear-response transport.
 //!
-//! Computes how the spin Drude weight D_S suppresses with frustration parameter
-//! lambda, deriving the functional form of the frustration-viscosity coupling
+//! Computes how the spin Drude weight D_S suppresses with imbalance parameter
+//! lambda, deriving the functional form of the imbalance-viscosity coupling
 //! from exact diagonalization instead of ad hoc models.
 //!
 //! The key quantity: g(lambda) = D_S(0) / D_S(lambda) = viscosity enhancement ratio.
@@ -14,15 +14,15 @@
 use std::fs;
 use std::io;
 use std::path::Path;
-use vacuum_frustration::kubo_transport::{
-    build_cd_heisenberg, build_interpolated, exact_diagonalize, graph_frustration_index,
+use sign_imbalance::kubo_transport::{
+    build_cd_heisenberg, build_interpolated, exact_diagonalize, graph_imbalance_index,
     kubo_transport_optimized, thermodynamic_quantities,
 };
 
 /// Transport computation dispatcher: GPU-first, CPU fallback.
 struct TransportDispatcher {
     #[cfg(feature = "gpu")]
-    gpu_ctx: Option<vacuum_frustration::kubo_transport_gpu::GpuKuboContext>,
+    gpu_ctx: Option<sign_imbalance::kubo_transport_gpu::GpuKuboContext>,
     #[cfg_attr(not(feature = "gpu"), allow(dead_code))]
     use_gpu: bool,
 }
@@ -31,7 +31,7 @@ impl TransportDispatcher {
     fn new() -> Self {
         #[cfg(feature = "gpu")]
         {
-            match vacuum_frustration::kubo_transport_gpu::GpuKuboContext::new() {
+            match sign_imbalance::kubo_transport_gpu::GpuKuboContext::new() {
                 Ok(ctx) => {
                     println!("  Backend: GPU (cuSOLVER + cuBLAS)");
                     Self {
@@ -60,7 +60,7 @@ impl TransportDispatcher {
 struct CouplingPoint {
     lambda: f64,
     temperature: f64,
-    frustration: f64,
+    imbalance: f64,
     drude_spin: f64,
     drude_energy: f64,
     thermal_conductivity: f64,
@@ -77,7 +77,7 @@ fn compute_point(
 ) -> CouplingPoint {
     let cd_model = build_cd_heisenberg(cd_dim, 0.0);
     let model = build_interpolated(&cd_model, lambda);
-    let frustration = graph_frustration_index(&model);
+    let imbalance = graph_imbalance_index(&model);
 
     let transport;
     #[cfg(feature = "gpu")]
@@ -90,7 +90,7 @@ fn compute_point(
             return CouplingPoint {
                 lambda,
                 temperature,
-                frustration,
+                imbalance,
                 drude_spin: transport.drude_weight_spin,
                 drude_energy: transport.drude_weight_energy,
                 thermal_conductivity: transport.thermal_conductivity,
@@ -109,7 +109,7 @@ fn compute_point(
     CouplingPoint {
         lambda,
         temperature,
-        frustration,
+        imbalance,
         drude_spin: transport.drude_weight_spin,
         drude_energy: transport.drude_weight_energy,
         thermal_conductivity: transport.thermal_conductivity,
@@ -245,7 +245,7 @@ fn main() -> io::Result<()> {
             println!(
                 "  lambda={:.2}: f={:.4}, D_S={:.6e}, K_th={:.6e}, I0_S={:.6e}",
                 lambda,
-                point.frustration,
+                point.imbalance,
                 point.drude_spin,
                 point.thermal_conductivity,
                 point.total_weight_spin
@@ -384,15 +384,15 @@ fn main() -> io::Result<()> {
     // The first-principles coupling formula:
     // nu(f) = nu_base * g(f) where g(f) = D_S(0) / D_S(lambda_eff(f))
     // For the sedenion vacuum (dim=16), f ~ 0.375-0.385
-    // Map: lambda_eff = f / f_cd where f_cd is the CD frustration index
+    // Map: lambda_eff = f / f_cd where f_cd is the CD imbalance index
 
-    let f_cd = graph_frustration_index(&build_cd_heisenberg(cd_dim, 0.0));
-    println!("  CD dim={} frustration index: f_cd = {:.6}", cd_dim, f_cd);
+    let f_cd = graph_imbalance_index(&build_cd_heisenberg(cd_dim, 0.0));
+    println!("  CD dim={} imbalance index: f_cd = {:.6}", cd_dim, f_cd);
 
-    // At f = 0.375 (vacuum attractor):
+    // At f = 0.375 (imbalance attractor):
     let lambda_at_vac = 0.375 / f_cd;
     println!(
-        "  lambda at vacuum attractor (f=0.375): {:.4}",
+        "  lambda at imbalance attractor (f=0.375): {:.4}",
         lambda_at_vac
     );
 
@@ -403,7 +403,7 @@ fn main() -> io::Result<()> {
     let d_s_at_vac =
         primary_points[idx].drude_spin * (1.0 - frac) + primary_points[idx + 1].drude_spin * frac;
     let g_at_vac = d_s_ref / d_s_at_vac.max(1e-30);
-    println!("  D_S at vacuum attractor: {:.6e}", d_s_at_vac);
+    println!("  D_S at imbalance attractor: {:.6e}", d_s_at_vac);
     println!("  g(0.375) = D_S(0)/D_S(0.375) = {:.2}", g_at_vac);
     println!();
 
@@ -423,7 +423,7 @@ fn main() -> io::Result<()> {
     // Option B: Exponential fit (if R^2 > 0.9)
     if r2_exp > 0.9 {
         println!("  B) Exponential fit (R^2={:.4}):", r2_exp);
-        // Map from Kubo lambda to bridge frustration f:
+        // Map from Kubo lambda to bridge imbalance f:
         // g(f) = a_exp * exp(b_exp * f / f_cd)
         // For the Exponential ViscosityCouplingModel:
         // nu = nu_base * exp(-lambda * (F - F0)^2) where lambda is the coupling strength
@@ -455,7 +455,7 @@ fn main() -> io::Result<()> {
         onset_ratio
     );
     println!(
-        "  ANY amount of CD frustration causes a {:.0}x jump in effective viscosity.",
+        "  ANY amount of CD imbalance causes a {:.0}x jump in effective viscosity.",
         onset_ratio
     );
     println!(
@@ -477,7 +477,7 @@ fn main() -> io::Result<()> {
     toml.push_str(&format!("cd_dim = {}\n", cd_dim));
     toml.push_str(&format!("n_lambda = {}\n", n_lambda));
     toml.push_str(&format!("primary_temperature = {}\n", t_primary));
-    toml.push_str(&format!("frustration_cd = {}\n", f_cd));
+    toml.push_str(&format!("imbalance_cd = {}\n", f_cd));
     toml.push_str(&format!("d_s_reference = {}\n", d_s_ref));
     toml.push_str(&format!(
         "backend = \"{}\"\n\n",
@@ -499,7 +499,7 @@ fn main() -> io::Result<()> {
     for p in &primary_points {
         toml.push_str("[[coupling_sweep]]\n");
         toml.push_str(&format!("lambda = {}\n", p.lambda));
-        toml.push_str(&format!("frustration = {}\n", p.frustration));
+        toml.push_str(&format!("imbalance = {}\n", p.imbalance));
         toml.push_str(&format!("drude_spin = {}\n", p.drude_spin));
         toml.push_str(&format!("drude_energy = {}\n", p.drude_energy));
         toml.push_str(&format!(

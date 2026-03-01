@@ -1,6 +1,6 @@
 //! Demonstration: E-027 with REAL materials properties
 //!
-//! This binary shows how to ground the frustration-viscosity experiment in
+//! This binary shows how to ground the imbalance-viscosity experiment in
 //! real physical materials instead of arbitrary parameters.
 //!
 //! Example usage:
@@ -146,7 +146,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!();
         println!("2. Derive lambda from statistical mechanics:");
         println!("   lambda ~ (structural disorder energy) / (thermal energy)");
-        println!("   For frustration: lambda ~ E_frustration / k_B T");
+        println!("   For imbalance: lambda ~ E_imbalance / k_B T");
         println!();
         println!("3. Compare to experimental data:");
         println!("   Validate percolation threshold predictions against");

@@ -30,7 +30,7 @@ Primary API endpoints:
 Dependencies:
 - Rust toolchain matching workspace policy
 - Cargo workspace dependencies (`axum`, `tokio`)
-- Existing thesis pipeline crates (`gororoba_engine`, `vacuum_frustration`, `lbm_core`, `neural_homotopy`, `lattice_filtration`)
+- Existing thesis pipeline crates (`gororoba_engine`, `sign_imbalance`, `lbm_core`, `neural_homotopy`, `lattice_filtration`)
 
 Notes:
 - Designed for Linux/BSD/Windows/macOS host execution immediately.

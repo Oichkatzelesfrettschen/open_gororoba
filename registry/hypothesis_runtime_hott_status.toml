@@ -108,17 +108,17 @@ owner = "registry claims-evidence lane"
 id = "HVE-OPEN-004"
 summary = "Repository-wide ASCII gate is red due to pre-existing non-ASCII in other files."
 evidence = [
-  "crates/vacuum_frustration/src/apt_sedenion.rs",
+  "crates/sign_imbalance/src/apt_sedenion.rs",
   "crates/lbm_3d/src/solver.rs",
   "docs/REAL_MATERIALS_INTEGRATION.md",
 ]
 
 [[open]]
 id = "HVE-OPEN-005"
-summary = "Cargo validation lane is currently blocked by unrelated concurrent compile errors in vacuum_frustration."
+summary = "Cargo validation lane is currently blocked by unrelated concurrent compile errors in sign_imbalance."
 evidence = [
-  "unresolved import associator_norm in crates/vacuum_frustration/src/frustration_energy.rs",
-  "unused import cd_basis_mul_sign in crates/vacuum_frustration/src/frustration_energy.rs",
+  "unresolved import associator_norm in crates/sign_imbalance/src/imbalance_energy.rs",
+  "unused import cd_basis_mul_sign in crates/sign_imbalance/src/imbalance_energy.rs",
 ]
 
 [[next_batch]]

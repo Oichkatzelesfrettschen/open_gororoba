@@ -1,0 +1,60 @@
+%% Fig 9: Single box-kite detail with pure/mixed triangles annotated
+%% Octahedral arrangement, 6 vertices, 12 edges, shaded faces
+\begin{tikzpicture}[
+  vertex/.style={
+    circle, draw, thick, minimum size=9mm,
+    font=\sffamily\footnotesize, inner sep=1pt
+  },
+  posedge/.style={thick, OIorange},
+  negedge/.style={thick, OIblue, dashed},
+]
+  %% Octahedral layout
+  \coordinate (top) at (3,4.5);
+  \coordinate (left) at (0,2.5);
+  \coordinate (right) at (6,2.5);
+  \coordinate (fleft) at (1.5,1);
+  \coordinate (fright) at (4.5,1);
+  \coordinate (bot) at (3,-0.5);
+
+  %% Shaded faces: pure (green) and mixed (red)
+  %% Pure triangle example: top-left-fleft (all eta = +)
+  \fill[OIgreen!15] (top) -- (left) -- (fleft) -- cycle;
+  \node[font=\sffamily\tiny, OIgreen!70!black] at (1.5,2.7) {Pure};
+
+  %% Mixed triangle examples
+  \fill[OIvermillion!10] (top) -- (right) -- (fright) -- cycle;
+  \node[font=\sffamily\tiny, OIvermillion!70!black] at (4.5,2.7) {Mixed};
+
+  \fill[OIvermillion!10] (left) -- (fleft) -- (bot) -- cycle;
+  \fill[OIvermillion!10] (right) -- (fright) -- (bot) -- cycle;
+
+  %% Edges with eta signs
+  \draw[posedge] (top) -- node[above left, font=\sffamily\tiny] {$\eta\!=\!+$} (left);
+  \draw[posedge] (top) -- node[above right, font=\sffamily\tiny] {$\eta\!=\!-$} (right);
+  \draw[posedge] (left) -- node[left, font=\sffamily\tiny] {$\eta\!=\!+$} (fleft);
+  \draw[negedge] (right) -- node[right, font=\sffamily\tiny] {$\eta\!=\!+$} (fright);
+  \draw[negedge] (fleft) -- node[below, font=\sffamily\tiny] {$\eta\!=\!-$} (fright);
+  \draw[posedge] (fleft) -- node[below left, font=\sffamily\tiny] {$\eta\!=\!+$} (bot);
+  \draw[negedge] (fright) -- node[below right, font=\sffamily\tiny] {$\eta\!=\!-$} (bot);
+
+  %% Cross edges
+  \draw[negedge, opacity=0.5] (top) -- (fleft);
+  \draw[posedge, opacity=0.5] (top) -- (fright);
+  \draw[negedge, opacity=0.5] (left) -- (fright);
+  \draw[posedge, opacity=0.5] (right) -- (fleft);
+  \draw[negedge, opacity=0.5] (left) -- (bot);
+  \draw[posedge, opacity=0.5] (right) -- (bot);
+
+  %% Vertices
+  \node[vertex, fill=cAlgebraLight] at (top) {$v_1$};
+  \node[vertex, fill=cAlgebraLight] at (left) {$v_2$};
+  \node[vertex, fill=cAlgebraLight] at (right) {$v_3$};
+  \node[vertex, fill=cAlgebraLight] at (fleft) {$v_4$};
+  \node[vertex, fill=cAlgebraLight] at (fright) {$v_5$};
+  \node[vertex, fill=cAlgebraLight] at (bot) {$v_6$};
+
+  %% Ratio annotation
+  \node[draw, rounded corners, fill=gray!5, font=\sffamily\small,
+    align=center] at (3,-2.0)
+    {$\binom{6}{3} = 20$ triangles: 5 pure + 15 mixed $= 1:3$};
+\end{tikzpicture}

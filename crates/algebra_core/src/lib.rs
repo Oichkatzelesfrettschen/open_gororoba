@@ -135,7 +135,7 @@ pub use analysis::boxkites::{
     // Generalized motif census (cd_motif_census port)
     CrossPair,
     EdgeSignType,
-    FrustrationResult,
+    ImbalanceResult,
     MotifComponent,
     O_TRIPS,
     StrutTable,
@@ -148,8 +148,8 @@ pub use analysis::boxkites::{
     automorphemes_containing_assessor,
     build_coassessor_graph,
     canonical_strut_table,
-    // Frustration ratio computation
-    compute_frustration_ratio,
+    // Imbalance ratio computation
+    compute_imbalance_ratio,
     compute_strut_signature,
     cross_assessors,
     diagonal_zero_product,

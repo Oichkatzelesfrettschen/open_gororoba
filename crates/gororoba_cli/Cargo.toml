@@ -101,7 +101,7 @@ lbm_3d = { path = "../lbm_3d" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 stats_core = { path = "../stats_core", features = ["gpu"] }
 data_core = { path = "../data_core" }
-vacuum_frustration = { path = "../vacuum_frustration" }
+sign_imbalance = { path = "../sign_imbalance" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
 gororoba_engine = { path = "../gororoba_engine" }
@@ -143,7 +143,7 @@ gpu = [
 
     "algebra_core/gpu",
     "quantum_core/gpu",
-    "vacuum_frustration/gpu",
+    "sign_imbalance/gpu",
     "gororoba_engine/gpu",
 ]
 hdf5-export = ["data_core/hdf5-export"]

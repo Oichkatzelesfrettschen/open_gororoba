@@ -14,8 +14,8 @@ pub mod zero_divisor_census;
 
 pub use basis_index::{BasisIndexCodec, project_to_lattice};
 pub use filtration::{
-    CollisionObservation, CollisionStormStats, FrustrationStormConfig, ShellReturnBin,
-    ShellReturnStats, simulate_fibonacci_collision_storm, simulate_frustration_modulated_storm,
+    CollisionObservation, CollisionStormStats, ImbalanceStormConfig, ShellReturnBin,
+    ShellReturnStats, simulate_fibonacci_collision_storm, simulate_imbalance_modulated_storm,
     simulate_sedenion_collision_storm, simulate_shell_return_storm,
 };
 pub use lbm_coupling::{FiltrationFromVelocity, filtration_from_velocity_field};

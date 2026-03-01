@@ -15,8 +15,8 @@ registry model where structured data is the source of truth.
 
 ### Four Thesis Pipelines
 
-1. **Vacuum Frustration** -- Cayley-Dickson algebraic structure perturbs
-   lattice transport behavior.  The 3/8 frustration attractor emerges from
+1. **Sign Imbalance** -- Cayley-Dickson algebraic structure perturbs
+   lattice transport behavior.  The 3/8 imbalance attractor emerges from
    zero-divisor topology in dimension >= 16.
 
 2. **Filtration Cascade** -- Persistent homology traces topological phase
@@ -71,14 +71,14 @@ Cross-domain synthesis and high-fidelity simulation lanes.
 
 | Crate | Purpose |
 |-------|---------|
-| `vacuum_frustration` | Frustration density measurement, zero-divisor attractor |
+| `sign_imbalance` | Imbalance density measurement, zero-divisor attractor |
 | `lattice_filtration` | Persistent homology on algebraically modified fields |
 | `neural_homotopy` | Neural residual learning (burn framework) |
 | `lbm_3d` | CPU 3D lattice Boltzmann solver |
 | `lbm_3d_cuda` | CUDA-accelerated 3D LBM (feature-gated) |
 | `lbm_vulkan` | Vulkan compute LBM (SPIR-V shaders) |
 | `cosmic_scheduler` | Multi-scale simulation orchestration |
-| `cd_spin_bridge` | Bridge: vacuum frustration <-> spin tomography |
+| `cd_spin_bridge` | Bridge: sign imbalance <-> spin tomography |
 
 ### Tier 4: Orchestration
 

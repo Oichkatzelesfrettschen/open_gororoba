@@ -8,12 +8,12 @@
 //!
 //! - Quaternion frame fields parameterize hypersurface orientations
 //! - Octonion non-associativity couples to trace-free extrinsic curvature
-//! - Sedenion frustration sources effective stress-energy in constraints
+//! - Sedenion imbalance sources effective stress-energy in constraints
 //! - Cayley-Dickson dimension maps to nacelle segmentation symmetry
 //!
 //! The key principle: zero coupling constants recover standard GR exactly.
 //! The algebraic corrections are perturbative with dimensionless coupling
-//! alpha, and the vacuum frustration attractor (3/8) gives zero correction.
+//! alpha, and the vacuum imbalance attractor (3/8) gives zero correction.
 //!
 //! # References
 //! - This module (open_gororoba non-canonical exploration)
@@ -36,8 +36,8 @@ pub struct AlgebraicAdmState {
     pub quaternion_frame: [f64; 4],
     /// Local octonion field value (8 components).
     pub octonion_field: [f64; 8],
-    /// Sedenion frustration density at this point (in [0, 0.5]).
-    pub sedenion_frustration: f64,
+    /// Sedenion imbalance density at this point (in [0, 0.5]).
+    pub sedenion_imbalance: f64,
     /// Associator norm of the local algebraic field.
     pub associator_norm: f64,
 }
@@ -47,7 +47,7 @@ pub struct AlgebraicAdmState {
 pub enum AlgebraicCouplingModel {
     /// Quaternion frame orientation modulates the shift vector.
     QuaternionFrame,
-    /// Octonion frustration couples to K_ij trace-free part.
+    /// Octonion imbalance couples to K_ij trace-free part.
     OctonionBivector,
     /// Sedenion F(x) -> effective stress-energy T_{ab}.
     SedenionViscosity,
@@ -55,8 +55,8 @@ pub enum AlgebraicCouplingModel {
     FullTower,
 }
 
-/// The vacuum frustration attractor value (3/8).
-pub const VACUUM_ATTRACTOR: f64 = 0.375;
+/// The vacuum imbalance attractor value (3/8).
+pub const IMBALANCE_ATTRACTOR: f64 = 0.375;
 
 // ============================================================================
 // Frame extraction
@@ -142,24 +142,24 @@ pub fn octonion_bivector_coupling(
     delta
 }
 
-/// Sedenion frustration -> effective energy density.
+/// Sedenion imbalance -> effective energy density.
 ///
-/// Maps frustration density F(x) to an effective energy density via the
+/// Maps imbalance density F(x) to an effective energy density via the
 /// viscous dissipation analogy:
 ///   rho_eff = (1/2) * nu(F) * |K|^2
 ///
 /// where nu is a viscosity coupling function.
-/// Common models: Exponential, Linear, PowerLaw (from vacuum_frustration::bridge).
+/// Common models: Exponential, Linear, PowerLaw (from sign_imbalance::bridge).
 ///
 /// For simplicity, uses exponential coupling: nu = nu_0 * exp(beta * (F - F_vac))
-/// where F_vac = 3/8 is the vacuum attractor.
+/// where F_vac = 3/8 is the imbalance attractor.
 pub fn sedenion_stress_energy(
-    frustration: f64,
+    imbalance: f64,
     k_trace_sq: f64,
     nu_0: f64,
     beta_coupling: f64,
 ) -> f64 {
-    let nu = nu_0 * (beta_coupling * (frustration - VACUUM_ATTRACTOR)).exp();
+    let nu = nu_0 * (beta_coupling * (imbalance - IMBALANCE_ATTRACTOR)).exp();
     0.5 * nu * k_trace_sq
 }
 
@@ -172,11 +172,11 @@ pub fn sedenion_stress_energy(
 /// F > 3/8 (over-frustrated): enhances expansion/contraction.
 /// F < 3/8 (under-frustrated): suppresses expansion/contraction.
 pub fn algebraic_york_time_correction(
-    frustration: f64,
+    imbalance: f64,
     theta_gr: f64,
     alpha_s: f64,
 ) -> f64 {
-    alpha_s * (frustration - VACUUM_ATTRACTOR) * theta_gr
+    alpha_s * (imbalance - IMBALANCE_ATTRACTOR) * theta_gr
 }
 
 /// Map Cayley-Dickson algebra dimension to nacelle count.
@@ -204,7 +204,7 @@ pub fn algebraic_adm_state(
     adm: AdmDecomposition,
     extrinsic: ExtrinsicCurvatureData,
     octonion_field: [f64; 8],
-    sedenion_frustration: f64,
+    sedenion_imbalance: f64,
     associator_norm: f64,
 ) -> AlgebraicAdmState {
     let quaternion_frame = quaternion_frame_from_spatial_metric(&adm.spatial_metric);
@@ -214,7 +214,7 @@ pub fn algebraic_adm_state(
         extrinsic,
         quaternion_frame,
         octonion_field,
-        sedenion_frustration,
+        sedenion_imbalance,
         associator_norm,
     }
 }
@@ -222,7 +222,7 @@ pub fn algebraic_adm_state(
 /// Compute total corrected York time including algebraic contribution.
 pub fn total_york_time(state: &AlgebraicAdmState, alpha_s: f64) -> f64 {
     state.extrinsic.york_time
-        + algebraic_york_time_correction(state.sedenion_frustration, state.extrinsic.york_time, alpha_s)
+        + algebraic_york_time_correction(state.sedenion_imbalance, state.extrinsic.york_time, alpha_s)
 }
 
 /// Compute total effective energy density including algebraic source.
@@ -235,7 +235,7 @@ pub fn total_energy_density(
     let k_trace = trace_symmetric(&state.adm.spatial_metric_inv, &state.extrinsic.k_ij);
     let k_trace_sq = k_trace * k_trace;
     gr_energy_density
-        + sedenion_stress_energy(state.sedenion_frustration, k_trace_sq, nu_0, beta_coupling)
+        + sedenion_stress_energy(state.sedenion_imbalance, k_trace_sq, nu_0, beta_coupling)
 }
 
 #[cfg(test)]
@@ -268,17 +268,17 @@ mod tests {
     }
 
     #[test]
-    fn test_vacuum_attractor_gives_zero_correction() {
-        let delta = algebraic_york_time_correction(VACUUM_ATTRACTOR, 2.0, 1.0);
+    fn test_imbalance_attractor_gives_zero_correction() {
+        let delta = algebraic_york_time_correction(IMBALANCE_ATTRACTOR, 2.0, 1.0);
         assert!(
             delta.abs() < TOL,
-            "vacuum attractor: delta = {delta}"
+            "imbalance attractor: delta = {delta}"
         );
     }
 
     #[test]
     fn test_sedenion_stress_energy_at_vacuum() {
-        let rho = sedenion_stress_energy(VACUUM_ATTRACTOR, 1.0, 1.0, 0.0);
+        let rho = sedenion_stress_energy(IMBALANCE_ATTRACTOR, 1.0, 1.0, 0.0);
         // nu = nu_0 * exp(0) = nu_0 = 1.0, rho = 0.5 * 1.0 * 1.0 = 0.5
         assert!((rho - 0.5).abs() < TOL, "rho at vacuum = {rho}");
     }

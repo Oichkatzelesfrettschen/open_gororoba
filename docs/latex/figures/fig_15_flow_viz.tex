@@ -1,0 +1,36 @@
+%% Fig 15: Stylized flow visualization grid (5 coupling models)
+%% Schematic streamlines showing channeling effects
+\begin{tikzpicture}[
+  panel/.style={draw=gray!40, rounded corners=2pt, minimum width=2.8cm,
+    minimum height=2.8cm},
+  plabel/.style={font=\sffamily\scriptsize\bfseries, anchor=south},
+]
+  %% Five panels side by side
+  \foreach \i/\label/\col [count=\n from 0] in {
+    0/Exponential/OIorange,
+    1/Linear/OIskyblue,
+    2/Power-law/OIblue,
+    3/Sigmoid/OIpurple,
+    4/Constant/OIgray%
+  } {
+    \begin{scope}[shift={(\n*3.2,0)}]
+      \node[panel] (p\n) at (0,0) {};
+      \node[plabel, \col] at (0,1.6) {\label};
+
+      %% Streamlines (stylized sine waves with varying amplitude)
+      \foreach \y in {-1.0,-0.5,0,0.5,1.0} {
+        \pgfmathsetmacro{\amp}{ifthenelse(\n==4, 0.3, 0.3 + 0.15*abs(\y))}
+        \draw[\col!70, thick, opacity=0.7]
+          plot[domain=-1.2:1.2, samples=20, smooth]
+          ({\x}, {\y + \amp*sin(180*\x/1.2)});
+      }
+
+      %% Channel indicator for non-constant models
+      \ifnum\n<4
+        \fill[\col!15, rounded corners=1pt]
+          (-0.3,-0.15) rectangle (0.3,0.15);
+        \node[font=\sffamily\tiny, \col!80!black] at (0,-0.5) {channel};
+      \fi
+    \end{scope}
+  }
+\end{tikzpicture}

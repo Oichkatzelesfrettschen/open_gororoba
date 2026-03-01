@@ -81,7 +81,7 @@ pub fn velocity_to_betti(
     threshold: f64,
     max_points: usize,
 ) -> (usize, usize) {
-    use vacuum_frustration::vietoris_rips::{
+    use sign_imbalance::vietoris_rips::{
         DistanceMatrix, VietorisRipsComplex, compute_betti_numbers, compute_persistent_homology,
     };
 

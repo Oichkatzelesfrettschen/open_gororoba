@@ -118,20 +118,20 @@ status = "active"
 [[term]]
 id = "T-GRAPH-001"
 domain = "Graph Theory & Topology"
-informal = "frustrated edges"
+informal = "imbalanced edges"
 standard = "signed graph G = (V, E\u207A \u222A E-)"
-definition = "Graph with edge signs. Edge (u,v) in E\u207A (positive/balanced) or (u,v) in E- (negative/frustrated). Cycle balanced iff product of edge signs = +1."
-reference = "crates/vacuum_frustration/src/signed_graph.rs"
+definition = "Graph with edge signs. Edge (u,v) in E\u207A (positive/balanced) or (u,v) in E- (negative/imbalanced). Cycle balanced iff product of edge signs = +1."
+reference = "crates/sign_imbalance/src/signed_graph.rs"
 status = "active"
 
 [[term]]
 id = "T-GRAPH-002"
 domain = "Graph Theory & Topology"
-informal = "frustration"
-standard = "balance index / frustration density"
-definition = "Harary-Zaslavsky metric: ratio of frustrated (unbalanced) edges to total edges in signed graph. Ranges [0,1]. Value 3/8 is CD dim=16 attractor."
+informal = "imbalance"
+standard = "balance index / imbalance density"
+definition = "Harary-Zaslavsky metric: ratio of imbalanced (unbalanced) edges to total edges in signed graph. Ranges [0,1]. Value 3/8 is CD dim=16 attractor."
 mathematical = "F = (min edge flips to balance) / |E|"
-reference = "crates/vacuum_frustration/src/balance.rs"
+reference = "crates/sign_imbalance/src/balance.rs"
 status = "active"
 
 [[term]]
@@ -259,10 +259,54 @@ definition = "Deterministic two-phase timing abstraction from Intel 4004. phi_1 
 reference = "crates/cosmic_scheduler/src/phase_scheduler.rs"
 status = "active"
 
+# ---- Banned terms (enforced by bin/terminology_gate.py) ----
+# Each [[banned]] entry triggers a CI failure if the pattern appears in
+# any tracked text file outside of allowlisted historical-citation contexts.
+
+[[banned]]
+pattern = "vacuum frustration"
+replacement = "sign imbalance"
+reason = "Non-standard; use Harary (1959) graph-theory terminology"
+
+[[banned]]
+pattern = "vacuum.attractor"
+replacement = "imbalance attractor"
+reason = "Misleading; not QFT vacuum"
+
+[[banned]]
+pattern = "Double 3:1 Law"
+replacement = "3:1 Theorem"
+reason = "Novel result is a theorem, not a law"
+
+[[banned]]
+pattern = "VACUUM_ATTRACTOR"
+replacement = "IMBALANCE_ATTRACTOR"
+reason = "Renamed constant"
+
+[[banned]]
+pattern = "latency spectr"
+replacement = "first-return time distribution"
+reason = "Standard probability theory term (Redner 2001)"
+
+[[banned]]
+pattern = "frustration_density"
+replacement = "imbalance_density"
+reason = "Renamed identifier (Harary 1959)"
+
+[[banned]]
+pattern = "frustration_energy"
+replacement = "imbalance_energy"
+reason = "Renamed identifier (Harary 1959)"
+
+[[banned]]
+pattern = "vacuum_frustration"
+replacement = "sign_imbalance"
+reason = "Renamed crate"
+
 [metadata]
-version = "1.0"
+version = "1.1"
 source = "TOML-first glossary registry"
-generated = "2026-02-11"
+generated = "2026-03-01"
 domains = [
   "Lattice Boltzmann Method",
   "Physics & Differential Geometry",
@@ -274,3 +318,4 @@ domains = [
   "Engine Architecture"
 ]
 total_terms = 28
+banned_terms = 8

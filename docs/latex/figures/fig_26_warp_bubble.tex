@@ -1,0 +1,50 @@
+%% Fig 26: Alcubierre warp bubble cross-section with ADM annotations
+\begin{tikzpicture}[
+  declare function={
+    clamp(\t) = min(max(\t,-4),4);
+    warp(\x,\R,\sigma) = (tanh(clamp(\sigma*(\x+\R))) - tanh(clamp(\sigma*(\x-\R)))) / (2*tanh(clamp(\sigma*\R)));
+  },
+]
+  %% Background: flat spacetime grid
+  \draw[gray!15, thin, step=0.5] (-5,-2.5) grid (5,2.5);
+
+  %% Warp bubble shape function (top half cross-section)
+  \draw[OIblue, ultra thick, fill=OIblue!8]
+    plot[domain=-3.5:3.5, samples=80, smooth]
+    (\x, {2.0*warp(\x,1.5,2.0)})
+    -- (3.5,0) -- (-3.5,0) -- cycle;
+
+  %% Flat region inside bubble
+  \fill[OIgreen!10] plot[domain=-1.2:1.2, samples=50, smooth]
+    (\x, {2.0*warp(\x,1.5,2.0)})
+    -- (1.2,0) -- (-1.2,0) -- cycle;
+  \node[font=\sffamily\scriptsize, OIgreen!70!black] at (0,0.6) {Flat interior};
+
+  %% Expansion/contraction annotations
+  \draw[OIvermillion, thick, -{Stealth[length=5pt]}]
+    (2.2,1.2) -- (3.2,1.2) node[right, font=\sffamily\scriptsize] {contraction};
+  \draw[OIorange, thick, {Stealth[length=5pt]}-]
+    (-3.2,1.2) -- (-2.2,1.2) node[left, font=\sffamily\scriptsize] {expansion};
+
+  %% Ship velocity arrow
+  \draw[black, ultra thick, -{Stealth[length=6pt]}]
+    (-0.5,-0.3) -- (0.8,-0.3) node[right, font=\sffamily\small] {$v_s$};
+
+  %% ADM decomposition labels
+  \node[font=\sffamily\scriptsize, OIblue!80!black, anchor=west] at (2.5,-1.5)
+    {$\beta^x = -v_s f(r_s)$};
+  \node[font=\sffamily\scriptsize, OIblue!80!black, anchor=west] at (2.5,-2.0)
+    {$\alpha = 1$ (lapse)};
+  \node[font=\sffamily\scriptsize, OIblue!80!black, anchor=west] at (2.5,-2.5)
+    {$\gamma_{ij} = \delta_{ij}$ (spatial)};
+
+  %% Metric equation
+  \node[draw, rounded corners, fill=white, font=\sffamily\scriptsize, align=center]
+    at (0,-2.5) {$ds^2 = -dt^2 + (dx - v_s f\,dt)^2 + dy^2 + dz^2$};
+
+  %% Axes
+  \draw[-{Stealth[length=4pt]}, thick] (-4.5,-0.5) -- (-4.5,2.5)
+    node[above, font=\sffamily\scriptsize] {$f(r_s)$};
+  \draw[-{Stealth[length=4pt]}, thick] (-4.5,-0.5) -- (4.5,-0.5)
+    node[right, font=\sffamily\scriptsize] {$x$};
+\end{tikzpicture}

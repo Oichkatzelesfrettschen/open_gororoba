@@ -8,7 +8,7 @@
 //! ```
 
 use materials_core::list_viscosity_materials;
-use vacuum_frustration::predict_lambda_sedenion;
+use sign_imbalance::predict_lambda_sedenion;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("# Lambda coupling strength for all materials (F=0.35)");
@@ -16,7 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("# Date: 2026-02-11");
     println!();
 
-    let frustration = 0.35; // Typical frustrated value near vacuum attractor
+    let imbalance = 0.35; // Typical imbalanced value near imbalance attractor
 
     // Get all material IDs
     let material_ids = list_viscosity_materials();
@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let material = materials_core::get_viscosity_material(&id).expect("Material should exist");
 
         // Only compute lambda for materials with temperature
-        let lambda = predict_lambda_sedenion(frustration, material.temperature_K);
+        let lambda = predict_lambda_sedenion(imbalance, material.temperature_K);
 
         // Determine coupling regime
         let regime = if lambda > 100.0 {
@@ -50,8 +50,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Add interpretation based on regime
         let interpretation = match regime {
-            "STRONG" => "Frustration dominates, strong viscosity modulation",
-            "MODERATE" => "Frustration and thermal energy comparable",
+            "STRONG" => "Imbalance dominates, strong viscosity modulation",
+            "MODERATE" => "Imbalance and thermal energy comparable",
             "WEAK" => "Thermal fluctuations dominate",
             "VERY_WEAK" => "Thermal effects completely dominate",
             _ => "Unknown regime",

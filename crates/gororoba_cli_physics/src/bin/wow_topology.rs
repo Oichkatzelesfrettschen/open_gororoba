@@ -130,7 +130,7 @@ fn run_morphology(
     use rand::SeedableRng;
     use rand::rngs::StdRng;
     use rand::seq::SliceRandom;
-    use vacuum_frustration::vietoris_rips::{
+    use sign_imbalance::vietoris_rips::{
         DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers,
         compute_persistent_homology,
     };

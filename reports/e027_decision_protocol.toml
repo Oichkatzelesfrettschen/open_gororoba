@@ -9,7 +9,7 @@ Percolation experiment inconclusive (p=0.605 >> 0.05 threshold).
 Root causes: (1) Grid resolution insufficient (16^3 = 4,096 cells, only 1 channel detected which is full z-slice),
 (2) Lambda parameter saturated (5.0 compresses viscosity range),
 (3) Percolation detection insensitive (BFS mean+1.5*std detects single massive blob instead of multiple channels),
-(4) Effect size tiny (3.3% difference: 0.351 vs 0.348 mean frustration).
+(4) Effect size tiny (3.3% difference: 0.351 vs 0.348 mean imbalance).
 
 DEFER to Phase 2 for re-parametrization (grid upscaling, lambda sweep, improved percolation algorithm).
 PROMOTE STPT-006 (scalar-TOV Cassini gates) as PRIMARY Thesis 1 validator.
@@ -28,7 +28,7 @@ severity = "high"
 category = "technical"
 issue = "Lambda parameter saturated"
 evidence = "lambda = 5.0 compresses viscosity to narrow range"
-impact = "No dynamic contrast between high/low frustration regions"
+impact = "No dynamic contrast between high/low imbalance regions"
 severity = "medium"
 
 [[root_causes.cause]]
@@ -41,7 +41,7 @@ severity = "high"
 [[root_causes.cause]]
 category = "scientific"
 issue = "Effect size below resolution"
-evidence = "3.3% difference (mean_frustration_channels=0.351 vs background=0.348)"
+evidence = "3.3% difference (mean_imbalance_channels=0.351 vs background=0.348)"
 impact = "Signal may be real but below experimental resolution, or coupling is genuinely weak"
 severity = "medium"
 
@@ -51,10 +51,10 @@ primary_mechanism = "Scalar-tensor gravity (Brans-Dicke) with Cassini bound omeg
 primary_binary = "thesis-program-sweep"
 primary_status = "active"
 justification = """
-STPT-006 provides independent validation of Thesis 1 (Sedenion frustration ↔ emergent viscosity)
+STPT-006 provides independent validation of Thesis 1 (Sedenion imbalance ↔ emergent viscosity)
 via different physical channel: scalar field phi_scalar coupled to metric,
 constrained by Cassini spacecraft bounds on gravitational coupling.
-If lambda-dependent frustration manifests as scalar-tensor coupling,
+If lambda-dependent imbalance manifests as scalar-tensor coupling,
 omega_eff should satisfy observational bounds.
 """
 

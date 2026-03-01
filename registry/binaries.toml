@@ -231,7 +231,7 @@ description = "Export computed data to HDF5 format (feature-gated)"
 [[binary]]
 name = "cd-tower-report"
 crate = "gororoba_cli"
-description = "Comprehensive CD tower analysis: property retention, psi/eta convergence, ZD geometry, face sign census, frustration ratios, split-CD, scaling laws"
+description = "Comprehensive CD tower analysis: property retention, psi/eta convergence, ZD geometry, face sign census, imbalance indexs, split-CD, scaling laws"
 
 [[binary]]
 name = "scrollify-csv"
@@ -341,7 +341,7 @@ description = "SN Ia delayed-detonation scaffold runner with reproducible snapsh
 [[binary]]
 name = "e027-topology-analyzer"
 crate = "gororoba_cli"
-description = "E-027 Phase 2: Vietoris-Rips persistent homology topology-frustration correlation analyzer for Thesis 1 validation"
+description = "E-027 Phase 2: Vietoris-Rips persistent homology topology-imbalance correlation analyzer for Thesis 1 validation"
 
 [[binary]]
 name = "lattice-filtration-analyzer"
@@ -358,7 +358,7 @@ experiment = "E-029"
 [[binary]]
 name = "percolation-experiment"
 crate = "gororoba_cli"
-description = "E-027: Percolation threshold vs frustration correlation experiment for Thesis 1 validation"
+description = "E-027: Percolation threshold vs imbalance correlation experiment for Thesis 1 validation"
 experiment = "E-027"
 
 [[binary]]
@@ -379,7 +379,7 @@ description = "Generate deterministic STPT-006..009 thesis evidence artifacts ac
 [[binary]]
 name = "c590-attractor-sweep"
 crate = "gororoba_cli"
-description = "Compute C-590 attractor frustration ratios across CD dimensions and emit regression CSV"
+description = "Compute C-590 attractor imbalance indexs across CD dimensions and emit regression CSV"
 
 [[binary]]
 name = "test-tda-api"
@@ -409,12 +409,12 @@ description = "Orchestrate all four thesis pipelines (T1-T4), apply falsificatio
 [[binary]]
 name = "e027-topology-v2"
 crate = "gororoba_cli"
-description = "E-027 v2: Frustration-topology spatial correlation with VR persistent homology, multi-grid sweep, and GPU dispatch"
+description = "E-027 v2: Imbalance-topology spatial correlation with VR persistent homology, multi-grid sweep, and GPU dispatch"
 
 [[binary]]
 name = "thesis-cross-tx3"
 crate = "gororoba_cli"
-description = "TX-3: VR persistent homology on frustration and viscosity fields with sigmoid paradox diagnostics (overlap, CV, NLI, dynamic range)"
+description = "TX-3: VR persistent homology on imbalance and viscosity fields with sigmoid paradox diagnostics (overlap, CV, NLI, dynamic range)"
 
 [[binary]]
 name = "thesis2-3d-thickening"
@@ -424,12 +424,12 @@ description = "Thesis 2: 3D associator-coupled shear thickening sweep over alpha
 [[binary]]
 name = "thesis-cross-tx1"
 crate = "gororoba_cli"
-description = "TX-1: Frustration-modulated collision dynamics (T1 x T4), sweeps alpha to measure delta-gamma vs uniform reference"
+description = "TX-1: Imbalance-modulated collision dynamics (T1 x T4), sweeps alpha to measure delta-gamma vs uniform reference"
 
 [[binary]]
 name = "thesis-cross-tx2"
 crate = "gororoba_cli"
-description = "TX-2: Viscosity-to-filtration loop (T2 x T4), checks whether frustration-derived LBM flow produces coherent latency law"
+description = "TX-2: Viscosity-to-filtration loop (T2 x T4), checks whether imbalance-derived LBM flow produces coherent latency law"
 
 [[binary]]
 name = "tessarines-mixed-quaternions-census"
@@ -477,9 +477,9 @@ crate = "gororoba_cli"
 description = "Run integrated 3D thesis synthesis simulation with topology trace distillation outputs"
 
 [[binary]]
-name = "kubo-frustration-transport"
+name = "kubo-imbalance-transport"
 crate = "gororoba_cli"
-description = "Kubo linear-response transport coefficients for CD-interpolated frustrated Heisenberg chain with GPU acceleration via cuSOLVER"
+description = "Kubo linear-response transport coefficients for CD-interpolated imbalanced Heisenberg chain with GPU acceleration via cuSOLVER"
 experiment = "E-034"
 
 [[binary]]
@@ -500,26 +500,26 @@ crate = "gororoba_cli"
 description = "Fail-closed HDF5 artifact acceptance gate chaining strict simulation trace checks with recursive numeric dataset NaN/Inf checks and TOML policy-driven canonical_300s_measured thresholds"
 
 [[binary]]
-name = "amplitude-frustration-survey"
+name = "amplitude-imbalance-survey"
 crate = "gororoba_cli"
-description = "Enumerate Bott periodicity chambers and compute frustration amplitude statistics across CD dimensions"
+description = "Enumerate Bott periodicity chambers and compute imbalance amplitude statistics across CD dimensions"
 experiment = "E-037"
 
 [[binary]]
 name = "lhc-2025-qgp-synthesis"
 crate = "gororoba_cli"
-description = "QGP frustration bridge synthesis using LHC 2025 collision data with spin tomography cross-validation"
+description = "QGP imbalance bridge synthesis using LHC 2025 collision data with spin tomography cross-validation"
 experiment = "E-038"
 
 [[binary]]
 name = "qgp-parameter-optimizer"
 crate = "gororoba_cli"
-description = "Grid search parameter optimizer for QGP frustration bridge coupling constants"
+description = "Grid search parameter optimizer for QGP imbalance bridge coupling constants"
 
 [[binary]]
 name = "spin-decoherence-pipeline"
 crate = "gororoba_cli"
-description = "Thesis 5 pipeline: spin decoherence rate prediction from frustration geometry"
+description = "Thesis 5 pipeline: spin decoherence rate prediction from imbalance geometry"
 experiment = "E-036"
 
 [[binary]]
@@ -530,7 +530,7 @@ description = "Compute lambda coupling strength for all materials in registry, o
 [[binary]]
 name = "demo-real-materials"
 crate = "gororoba_cli"
-description = "Demonstration of E-027 frustration-viscosity experiment grounded in real physical materials properties"
+description = "Demonstration of E-027 imbalance-viscosity experiment grounded in real physical materials properties"
 
 [[binary]]
 name = "demo-optical-titanates"
@@ -884,5 +884,5 @@ status = "active"
 [[binary]]
 name = "algebraic-warp-sweep"
 crate = "gororoba_cli_physics"
-description = "Nacelle warp sweep with Cayley-Dickson algebraic coupling. Modes: paper (GR only), algebraic (frustration coupling), tower (CD dimension to nacelle map)."
+description = "Nacelle warp sweep with Cayley-Dickson algebraic coupling. Modes: paper (GR only), algebraic (imbalance coupling), tower (CD dimension to nacelle map)."
 status = "active"

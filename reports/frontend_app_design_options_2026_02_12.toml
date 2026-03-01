@@ -42,7 +42,7 @@ status = "planned"
 
 [[design_option]]
 id = "APP-OPT-005"
-name = "Frustration Flow Lab"
+name = "Imbalance Flow Lab"
 targets = ["web", "desktop", "gaming_mode"]
 category = "physics_simulator"
 ux = "interactive field tuning with percolation overlays and score-like challenge runs"

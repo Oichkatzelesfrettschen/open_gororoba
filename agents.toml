@@ -181,7 +181,7 @@ crates = ["gr_core", "cosmology_core", "materials_core", "quantum_core", "snia_c
 order = 3
 name = "synthesis"
 description = "Cross-domain synthesis and high-fidelity simulation lanes."
-crates = ["vacuum_frustration", "lattice_filtration", "neural_homotopy", "lbm_3d", "lbm_3d_cuda", "lbm_vulkan", "cosmic_scheduler", "cd_spin_bridge"]
+crates = ["sign_imbalance", "lattice_filtration", "neural_homotopy", "lbm_3d", "lbm_3d_cuda", "lbm_vulkan", "cosmic_scheduler", "cd_spin_bridge"]
 
 [[shared.architecture_tier]]
 order = 4
@@ -191,7 +191,7 @@ crates = ["gororoba_pipeline", "gororoba_gpu_bridge", "gororoba_engine", "gororo
 
 [[shared.four_thesis_pipeline]]
 order = 1
-name = "vacuum_frustration"
+name = "sign_imbalance"
 summary = "Cayley-Dickson algebraic structure perturbs lattice transport behavior."
 
 [[shared.four_thesis_pipeline]]

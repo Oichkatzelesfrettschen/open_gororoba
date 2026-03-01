@@ -6758,13 +6758,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0483"
 claim_id = "C-483"
-statement = "Pure-regime 3:1 TwoSameOneOpp:AllOpposite Ratio Law: In every pure-regime component (only 2 face sign patterns) of the CD zero-divisor graph, the ratio TwoSameOneOpp:AllOpposite is exactly 3:1. Verified in 26 pure-regime components across 4 doublings: dim=16 (7x, 42:14), dim=32 mixed (7x, 18:6), dim=32 special (1x, 210:70), dim=64 pure-max (1x, 2730:910), dim=64 pure-min (8x, 42:14), dim=128 pure-max (1x, 26970:8990), dim=128 pure-min (9x, 90:30). SUPERSEDED by C-487 (Universal Double 3:1 Law) which proves this holds in ALL components, not just pure regimes."
+statement = "Pure-regime 3:1 TwoSameOneOpp:AllOpposite Ratio Law: In every pure-regime component (only 2 face sign patterns) of the CD zero-divisor graph, the ratio TwoSameOneOpp:AllOpposite is exactly 3:1. Verified in 26 pure-regime components across 4 doublings: dim=16 (7x, 42:14), dim=32 mixed (7x, 18:6), dim=32 special (1x, 210:70), dim=64 pure-max (1x, 2730:910), dim=64 pure-min (8x, 42:14), dim=128 pure-max (1x, 26970:8990), dim=128 pure-min (9x, 90:30). SUPERSEDED by C-487 (Universal 3:1 Theorem) which proves this holds in ALL components, not just pure regimes."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
 where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_three_to_one_ratio_antibalanced)"
-verification_rule = "VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components). SUPERSEDED by C-487 (Universal Double 3:1 Law). WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3."
+verification_rule = "VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components). SUPERSEDED by C-487 (Universal 3:1 Theorem). WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3."
 where_stated_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
 verification_refs = []
 cross_refs = ["C-487"]
@@ -6778,7 +6778,7 @@ status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
 where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim128)"
-verification_rule = "VERIFIED by integer-exact computation in ~1s. 9 regimes with exact counts. Both pure regimes satisfy 3:1 ratio. All 4-pattern regimes satisfy Universal Double 3:1 Law (C-487). WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes."
+verification_rule = "VERIFIED by integer-exact computation in ~1s. 9 regimes with exact counts. Both pure regimes satisfy 3:1 ratio. All 4-pattern regimes satisfy Universal 3:1 Theorem (C-487). WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes."
 where_stated_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
 verification_refs = []
 cross_refs = ["C-487"]
@@ -6814,7 +6814,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0487"
 claim_id = "C-487"
-statement = "Universal Double 3:1 Law: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16, both 3:1 ratio laws hold simultaneously: TwoSameOneOpp = 3*AllOpposite (odd-parity pair) and OneSameTwoOpp = 3*AllSame (even-parity pair). Verified in all 243 components across 5 dimensions (7+15+31+63+127). NOTE: Parity-specific edge regularity is FALSE in non-pure regimes -- the algebraic mechanism must arise from the CD multiplication table structure, not general graph-theoretic counting. Pure-regime C-483 is the special case where AllSame=OneSameTwoOpp=0."
+statement = "Universal 3:1 Theorem: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16, both 3:1 ratio laws hold simultaneously: TwoSameOneOpp = 3*AllOpposite (odd-parity pair) and OneSameTwoOpp = 3*AllSame (even-parity pair). Verified in all 243 components across 5 dimensions (7+15+31+63+127). NOTE: Parity-specific edge regularity is FALSE in non-pure regimes -- the algebraic mechanism must arise from the CD multiplication table structure, not general graph-theoretic counting. Pure-regime C-483 is the special case where AllSame=OneSameTwoOpp=0."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -6828,13 +6828,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0488"
 claim_id = "C-488"
-statement = "Face Sign Census at dim=256: 13348104 triangular faces across 127 components split into 17 regimes (confirming dim/16+1 formula). 1 pure-max (7812 edges, 2 patterns), 15 full regimes (4 patterns each), 1 pure-min regime (372 edges, 10 components, 2 patterns). Universal Double 3:1 Law holds in all 127 components. Computation time: ~16s in release mode."
+statement = "Face Sign Census at dim=256: 13348104 triangular faces across 127 components split into 17 regimes (confirming dim/16+1 formula). 1 pure-max (7812 edges, 2 patterns), 15 full regimes (4 patterns each), 1 pure-min regime (372 edges, 10 components, 2 patterns). Universal 3:1 Theorem holds in all 127 components. Computation time: ~16s in release mode."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
 where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim256)"
-verification_rule = "VERIFIED by integer-exact computation (~16s). WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the Double 3:1 Law."
+verification_rule = "VERIFIED by integer-exact computation (~16s). WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the 3:1 Theorem."
 where_stated_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
 verification_refs = []
 cross_refs = []
@@ -6856,7 +6856,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0490"
 claim_id = "C-490"
-statement = "Parity-Specific Edge Regularity is FALSE: In non-pure (4-pattern) face sign regime components, edges do NOT participate in the same number of even-parity (or odd-parity) triangles. At dim=32 comp[0], even-parity triangle counts per edge range from 4 to 8. This means the Universal Double 3:1 Law (C-487) cannot be proved via parity-specific counting arguments. The algebraic mechanism is deeper, arising from the CD multiplication table structure."
+statement = "Parity-Specific Edge Regularity is FALSE: In non-pure (4-pattern) face sign regime components, edges do NOT participate in the same number of even-parity (or odd-parity) triangles. At dim=32 comp[0], even-parity triangle counts per edge range from 4 to 8. This means the Universal 3:1 Theorem (C-487) cannot be proved via parity-specific counting arguments. The algebraic mechanism is deeper, arising from the CD multiplication table structure."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -6912,7 +6912,7 @@ cross_refs = ["C-491"]
 [[atom]]
 id = "CLA-0494"
 claim_id = "C-494"
-statement = "Quarter Rule (mechanism of Double 3:1 Law): Within each parity class of triangles in any ZD graph component, the 'pure' pattern (AllOpposite in even class, AllSame in odd class) is exactly 1/4 of the class total. The 3:1 ratio (C-487) follows: the 'mixed' patterns consume the remaining 3/4, giving TwoSameOneOpp = 3*AllOpposite and OneSameTwoOpp = 3*AllSame. The class total is always divisible by 4."
+statement = "Quarter Rule (mechanism of 3:1 Theorem): Within each parity class of triangles in any ZD graph component, the 'pure' pattern (AllOpposite in even class, AllSame in odd class) is exactly 1/4 of the class total. The 3:1 ratio (C-487) follows: the 'mixed' patterns consume the remaining 3/4, giving TwoSameOneOpp = 3*AllOpposite and OneSameTwoOpp = 3*AllSame. The class total is always divisible by 4."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -6926,7 +6926,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0495"
 claim_id = "C-495"
-statement = "Face sign census at dim=512: 255 components, 33 regimes (512/16 + 1), e_max=32004, e_min=756, 214M triangles, Universal Double 3:1 Law holds for all 255 components. Exactly 1 pure-max component. Confirms all scaling laws from C-486/C-487/C-488 at the 6th doubling."
+statement = "Face sign census at dim=512: 255 components, 33 regimes (512/16 + 1), e_max=32004, e_min=756, 214M triangles, Universal 3:1 Theorem holds for all 255 components. Exactly 1 pure-max component. Confirms all scaling laws from C-486/C-487/C-488 at the 6th doubling."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -7290,7 +7290,7 @@ cross_refs = ["C-521"]
 [[atom]]
 id = "CLA-0521"
 claim_id = "C-521"
-statement = "Anti-Diagonal Parity Theorem at dim=128: The Anti-Diagonal Parity Theorem (C-520) holds at dim=128 with ZERO mismatches across 821,128 triangles in 63 components. Pure count = 205,282, Mixed count = 615,846 (exact 1:3 ratio). This provides the complete algebraic mechanism for the Double 3:1 Law (C-487): the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, with exactly 1 zero element and 3 nonzero elements. Pure triangles are the zero-element fiber. The nonzero fibers need not be equally sized (confirming the non-uniform distribution observed in face sign census data). The mechanism is purely algebraic: eta depends only on cd_basis_mul_sign via the off-diagonal terms of the edge psi matrix."
+statement = "Anti-Diagonal Parity Theorem at dim=128: The Anti-Diagonal Parity Theorem (C-520) holds at dim=128 with ZERO mismatches across 821,128 triangles in 63 components. Pure count = 205,282, Mixed count = 615,846 (exact 1:3 ratio). This provides the complete algebraic mechanism for the 3:1 Theorem (C-487): the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, with exactly 1 zero element and 3 nonzero elements. Pure triangles are the zero-element fiber. The nonzero fibers need not be equally sized (confirming the non-uniform distribution observed in face sign census data). The mechanism is purely algebraic: eta depends only on cd_basis_mul_sign via the off-diagonal terms of the edge psi matrix."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -7318,13 +7318,13 @@ cross_refs = ["C-521"]
 [[atom]]
 id = "CLA-0523"
 claim_id = "C-523"
-statement = "GF(2) Coboundary Phase Transition: At dim=16, eta is a GF(2) coboundary (0 frustrated cycles out of b1=49 independent cycles). At dim>=32, eta is NOT a coboundary: dim=32 has 224/729 frustrated cycles (30.7%), dim=64 has 2672/7081 (37.7%), dim=128 has 23744/61257 (38.8%). The frustration ratio appears to converge to ~39%. Additionally, within each dimension's regime structure, the pure-min regime (lowest edge count) always has frustrated=0, meaning eta restricted to pure-min components is a coboundary at ALL dimensions. Only higher-edge-count regimes contribute frustration."
+statement = "GF(2) Coboundary Phase Transition: At dim=16, eta is a GF(2) coboundary (0 imbalanced cycles out of b1=49 independent cycles). At dim>=32, eta is NOT a coboundary: dim=32 has 224/729 imbalanced cycles (30.7%), dim=64 has 2672/7081 (37.7%), dim=128 has 23744/61257 (38.8%). The imbalance index appears to converge to ~39%. Additionally, within each dimension's regime structure, the pure-min regime (lowest edge count) always has imbalanced=0, meaning eta restricted to pure-min components is a coboundary at ALL dimensions. Only higher-edge-count regimes contribute imbalance."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
 where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_eta_cohomology_and_klein_four_fibers, test_eta_regime_distribution)"
-verification_rule = "VERIFIED: BFS coboundary test at dims 16/32/64/128. WHAT WOULD REFUTE: finding frustration at dim=16 or no frustration at dim>=32."
+verification_rule = "VERIFIED: BFS coboundary test at dims 16/32/64/128. WHAT WOULD REFUTE: finding imbalance at dim=16 or no imbalance at dim>=32."
 where_stated_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
 verification_refs = []
 cross_refs = []
@@ -7346,7 +7346,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0525"
 claim_id = "C-525"
-statement = "Eta Regime Independence: Within each edge-count regime (face sign census grouping), the following properties hold independently: (1) eta is exactly balanced on edges (eta=0 = eta=1), (2) the 1:3 pure:mixed ratio is exact, (3) F(1,0) = F(1,1) exactly. The eta mechanism operates identically across all regimes -- the regime structure does not affect the mechanism's ratio. However, the coboundary property IS regime-dependent: pure-min regimes have frustrated=0 while higher-edge regimes do not."
+statement = "Eta Regime Independence: Within each edge-count regime (face sign census grouping), the following properties hold independently: (1) eta is exactly balanced on edges (eta=0 = eta=1), (2) the 1:3 pure:mixed ratio is exact, (3) F(1,0) = F(1,1) exactly. The eta mechanism operates identically across all regimes -- the regime structure does not affect the mechanism's ratio. However, the coboundary property IS regime-dependent: pure-min regimes have imbalanced=0 while higher-edge regimes do not."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -7402,12 +7402,12 @@ cross_refs = ["C-520"]
 [[atom]]
 id = "CLA-0529"
 claim_id = "C-529"
-statement = "Frustration Oscillation: the GF(2) cohomological frustration ratio (frustrated non-tree edges / b1) rises rapidly from 0 to 0.388 (dim=128 peak), then MONOTONICALLY DECREASES. Full sequence: 0.000 (dim=16), 0.307 (dim=32), 0.377 (dim=64), 0.388 (dim=128), 0.385 (dim=256), 0.381 (dim=512), 0.378 (dim=1024). The 4-step post-peak descent (0.388->0.385->0.381->0.378) strongly suggests convergence toward approximately 3/8=0.375 from above."
+statement = "Imbalance Oscillation: the GF(2) cohomological imbalance index (imbalanced non-tree edges / b1) rises rapidly from 0 to 0.388 (dim=128 peak), then MONOTONICALLY DECREASES. Full sequence: 0.000 (dim=16), 0.307 (dim=32), 0.377 (dim=64), 0.388 (dim=128), 0.385 (dim=256), 0.381 (dim=512), 0.378 (dim=1024). The 4-step post-peak descent (0.388->0.385->0.381->0.378) strongly suggests convergence toward approximately 3/8=0.375 from above."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
-where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_mechanism_depth_analysis, test_frustration_ratio_dim256, test_frustration_ratio_dim1024)"
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_mechanism_depth_analysis, test_imbalance_index_dim256, test_imbalance_index_dim1024)"
 verification_rule = "VERIFIED: exact computation at 7 dimensions. WHAT WOULD REFUTE: dim=2048 data showing ratio increases above 0.378 (breaking post-peak monotonicity) or ratio at dim=4096 deviating from ~0.375 by more than 0.005."
 where_stated_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
 verification_refs = []
@@ -7430,7 +7430,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0531"
 claim_id = "C-531"
-statement = "Anti-Diagonal Parity Theorem verified at dim=512: 214,448,136 triangles across 255 components (254 nodes each, 33 regimes), 0 mismatches. Quarter Rule exact (pure*4 = total). Klein-four fibers: (0,0)=53612034, (0,1)=52311702, (1,0)=54262200, (1,1)=54262200. Vertex-median symmetry F(1,0)=F(1,1) holds. Edge eta perfectly balanced (2096262:2096262). Frustration ratio 0.38111 continues oscillating convergence. This is the 7th dimension verified (16/32/64/128/256/512)."
+statement = "Anti-Diagonal Parity Theorem verified at dim=512: 214,448,136 triangles across 255 components (254 nodes each, 33 regimes), 0 mismatches. Quarter Rule exact (pure*4 = total). Klein-four fibers: (0,0)=53612034, (0,1)=52311702, (1,0)=54262200, (1,1)=54262200. Vertex-median symmetry F(1,0)=F(1,1) holds. Edge eta perfectly balanced (2096262:2096262). Imbalance index 0.38111 continues oscillating convergence. This is the 7th dimension verified (16/32/64/128/256/512)."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -7486,12 +7486,12 @@ cross_refs = []
 [[atom]]
 id = "CLA-0535"
 claim_id = "C-535"
-statement = "Frustration ratio at dim=1024: 0.37849. The full frustration oscillation sequence is now 0.000 (dim=16), 0.307 (dim=32), 0.377 (dim=64), 0.388 (dim=128), 0.385 (dim=256), 0.381 (dim=512), 0.378 (dim=1024). After the dim=128 maximum (0.388), the ratio MONOTONICALLY DECREASES through 4 consecutive dimensions, consistent with convergence toward approximately 3/8=0.375 from above. ZD graph at dim=1024: 511 components, 33,550,860 edges total, eta perfectly balanced (16,775,430 each), b1=33,290,761 non-tree edges, 12,600,240 frustrated. Runtime: 873.75s (14.6 min)."
+statement = "Imbalance index at dim=1024: 0.37849. The full imbalance oscillation sequence is now 0.000 (dim=16), 0.307 (dim=32), 0.377 (dim=64), 0.388 (dim=128), 0.385 (dim=256), 0.381 (dim=512), 0.378 (dim=1024). After the dim=128 maximum (0.388), the ratio MONOTONICALLY DECREASES through 4 consecutive dimensions, consistent with convergence toward approximately 3/8=0.375 from above. ZD graph at dim=1024: 511 components, 33,550,860 edges total, eta perfectly balanced (16,775,430 each), b1=33,290,761 non-tree edges, 12,600,240 imbalanced. Runtime: 873.75s (14.6 min)."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
-where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_frustration_ratio_dim1024)"
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_imbalance_index_dim1024)"
 verification_rule = "VERIFIED: exact computation at 7 dimensions. The post-peak monotonic decrease (0.388->0.385->0.381->0.378) strongly suggests convergence. WHAT WOULD REFUTE: dim=2048 showing an increase above 0.378, breaking the post-peak monotone descent."
 where_stated_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
 verification_refs = []
@@ -7682,13 +7682,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0549"
 claim_id = "C-549"
-statement = "Split-Octonion psi=1 Fraction Equals 3/8: The full-matrix psi=1 fraction for split-octonions (dim=8, all gamma=+1) is exactly 24/64 = 3/8 = 0.375. This is the SAME value that the standard CD frustration ratio converges toward in the large-dim limit (C-529/C-535: 0.378 at dim=512, 0.37849 at dim=1024, monotonically decreasing toward 3/8). The coincidence is striking: the split construction at dim=8 produces a sign matrix whose negative-entry fraction exactly equals the asymptotic frustration ratio of the standard construction at dim -> infinity."
+statement = "Split-Octonion psi=1 Fraction Equals 3/8: The full-matrix psi=1 fraction for split-octonions (dim=8, all gamma=+1) is exactly 24/64 = 3/8 = 0.375. This is the SAME value that the standard CD imbalance index converges toward in the large-dim limit (C-529/C-535: 0.378 at dim=512, 0.37849 at dim=1024, monotonically decreasing toward 3/8). The coincidence is striking: the split construction at dim=8 produces a sign matrix whose negative-entry fraction exactly equals the asymptotic imbalance index of the standard construction at dim -> infinity."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
 where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_split_vs_standard_sedenion_psi_comparison)"
-verification_rule = "VERIFIED: 24 of 64 entries in the dim=8 split sign matrix are -1. WHAT WOULD REFUTE the coincidence: if the frustration ratio converges to a value other than 3/8 (currently observed at 0.375-0.385 range, converging monotonically from above). The connection between split-octonion structure and standard CD asymptotics is OPEN for theoretical explanation."
+verification_rule = "VERIFIED: 24 of 64 entries in the dim=8 split sign matrix are -1. WHAT WOULD REFUTE the coincidence: if the imbalance index converges to a value other than 3/8 (currently observed at 0.375-0.385 range, converging monotonically from above). The connection between split-octonion structure and standard CD asymptotics is OPEN for theoretical explanation."
 where_stated_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
 verification_refs = []
 cross_refs = []
@@ -7808,13 +7808,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0558"
 claim_id = "C-558"
-statement = "Frustration Ratio and Eta Balance Law Verified at dim=512: The frustration ratio at dim=512 is 0.381068, continuing the monotone convergence from dim=128 peak (0.388) toward the 3/8 = 0.375 asymptote. Eta edge balance is perfect (total eta=0 equals total eta=1 = 2,096,262), confirming the Half-Half Edge Law (C-517). This extends the frustration oscillation sequence (C-529) to a new dimension and validates the convergence hypothesis at practical computational limits."
+statement = "Imbalance Index and Eta Balance Law Verified at dim=512: The imbalance index at dim=512 is 0.381068, continuing the monotone convergence from dim=128 peak (0.388) toward the 3/8 = 0.375 asymptote. Eta edge balance is perfect (total eta=0 equals total eta=1 = 2,096,262), confirming the Half-Half Edge Law (C-517). This extends the imbalance oscillation sequence (C-529) to a new dimension and validates the convergence hypothesis at practical computational limits."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
-where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_frustration_and_apt_dim512_full)"
-verification_rule = "VERIFIED: BFS coboundary test on 255 components at dim=512 (O(V+E) per component, ~44 seconds runtime). Cycle rank b1 = 4,128,009; frustrated edges = 1,573,216; ratio = 0.381068. Eta edge distribution: 2,096,262 edges with eta=0 (even), 2,096,262 edges with eta=1 (odd) -- perfect balance. WHAT WOULD REFUTE: frustration ratio increasing above 0.385 (breaking monotone decrease), or eta balance deviation >1% (breaking C-517)."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_imbalance_and_apt_dim512_full)"
+verification_rule = "VERIFIED: BFS coboundary test on 255 components at dim=512 (O(V+E) per component, ~44 seconds runtime). Cycle rank b1 = 4,128,009; imbalanced edges = 1,573,216; ratio = 0.381068. Eta edge distribution: 2,096,262 edges with eta=0 (even), 2,096,262 edges with eta=1 (odd) -- perfect balance. WHAT WOULD REFUTE: imbalance index increasing above 0.385 (breaking monotone decrease), or eta balance deviation >1% (breaking C-517)."
 where_stated_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
 verification_refs = []
 cross_refs = ["C-517"]
@@ -8018,14 +8018,14 @@ cross_refs = []
 [[atom]]
 id = "CLA-0573"
 claim_id = "C-573"
-statement = "GPU infrastructure for dimensional analysis is operational: eta matrix, graph construction, and frustration CUDA kernels compile via cudarc NVRTC. GPU Monte Carlo APT census engine validates against CPU exhaustive results within 0.3% relative error at dims 32-64."
+statement = "GPU infrastructure for dimensional analysis is operational: eta matrix, graph construction, and imbalance CUDA kernels compile via cudarc NVRTC. GPU Monte Carlo APT census engine validates against CPU exhaustive results within 0.3% relative error at dims 32-64."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
-where_stated = "`crates/algebra_core/src/gpu/eta_matrix.rs`, `crates/algebra_core/src/gpu/graph_construction.rs`, `crates/algebra_core/src/gpu/frustration.rs`, `crates/algebra_core/src/gpu/dimensional.rs` (test_cpu_apt_census_dim32)"
+where_stated = "`crates/algebra_core/src/gpu/eta_matrix.rs`, `crates/algebra_core/src/gpu/graph_construction.rs`, `crates/algebra_core/src/gpu/imbalance.rs`, `crates/algebra_core/src/gpu/dimensional.rs` (test_cpu_apt_census_dim32)"
 verification_rule = "VERIFIED: GPU kernels compile on RTX 4070 Ti, CPU fallback works when GPU unavailable. REFUTED IF: GPU census deviates >1% from CPU exhaustive at any dimension."
-where_stated_refs = ["crates/algebra_core/src/gpu/dimensional.rs", "crates/algebra_core/src/gpu/eta_matrix.rs", "crates/algebra_core/src/gpu/frustration.rs", "crates/algebra_core/src/gpu/graph_construction.rs"]
+where_stated_refs = ["crates/algebra_core/src/gpu/dimensional.rs", "crates/algebra_core/src/gpu/eta_matrix.rs", "crates/algebra_core/src/gpu/imbalance.rs", "crates/algebra_core/src/gpu/graph_construction.rs"]
 verification_refs = []
 cross_refs = []
 
@@ -8228,12 +8228,12 @@ cross_refs = []
 [[atom]]
 id = "CLA-0588"
 claim_id = "C-588"
-statement = "Reusable compute_frustration_ratio() function verified at dim=32: frustration ratio = 0.307 (matching C-529 sequence). Function extracts BFS coboundary frustration as frustrated_edges/cycle_rank across all motif components. Ready for dim=2048 extension."
+statement = "Reusable compute_imbalance_index() function verified at dim=32: imbalance index = 0.307 (matching C-529 sequence). Function extracts BFS coboundary imbalance as imbalanced_edges/cycle_rank across all motif components. Ready for dim=2048 extension."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
-where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_compute_frustration_ratio_dim32)"
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_compute_imbalance_index_dim32)"
 verification_rule = "VERIFIED: dim=32 ratio matches C-529. REFUTED IF: ratio deviates >0.01 from 0.307 at dim=32."
 where_stated_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
 verification_refs = []
@@ -8256,7 +8256,7 @@ cross_refs = ["C-453", "C-455", "C-458", "C-546"]
 [[atom]]
 id = "CLA-0590"
 claim_id = "C-590"
-statement = "The frustration ratio of the standard Cayley-Dickson tower converges toward 3/8 in the high-dimensional regime, matching the split-octonion negative sign fraction."
+statement = "The imbalance index of the standard Cayley-Dickson tower converges toward 3/8 in the high-dimensional regime, matching the split-octonion negative sign fraction."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -8415,7 +8415,7 @@ status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-10"
-where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_dim4096_cross_validate_frustration)"
+where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_dim4096_cross_validate_imbalance)"
 verification_rule = "VERIFIED: CPU-path Monte Carlo with 1M triangle samples across 4,192,256 nodes yielded pure_ratio=0.2505. Klein-four fiber symmetry verified: all 4 fibers within 0.5% of each other."
 where_stated_refs = ["crates/algebra_core/src/gpu/dimensional.rs"]
 verification_refs = []
@@ -8429,7 +8429,7 @@ status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-10"
-where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_dim4096_cross_validate_frustration)"
+where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_dim4096_cross_validate_imbalance)"
 verification_rule = "VERIFIED: Fibers F00=250509, F01=249590, F10=249700, F11=250201 out of 1M samples. Maximum deviation from mean (250000) is 0.20%. Extends C-524 from dim=512 to dim=4096."
 where_stated_refs = ["crates/algebra_core/src/gpu/dimensional.rs"]
 verification_refs = []
@@ -8914,7 +8914,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0637"
 claim_id = "C-637"
-statement = "Dual-octonions (O x D, with epsilon^2 = 0) exhibit a frustration (sign imbalance) fraction of 14/32 = 0.4375, which marks the phase boundary between elliptic and hyperbolic regimes."
+statement = "Dual-octonions (O x D, with epsilon^2 = 0) exhibit a imbalance (sign imbalance) fraction of 14/32 = 0.4375, which marks the phase boundary between elliptic and hyperbolic regimes."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -8928,7 +8928,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0638"
 claim_id = "C-638"
-statement = "Dual-octonion frustration value 0.4375 confirms the phase boundary prediction: it lies between standard octonion frustration (~0.375, elliptic regime) and split-octonion frustration (~0.469, hyperbolic regime)."
+statement = "Dual-octonion imbalance value 0.4375 confirms the phase boundary prediction: it lies between standard octonion imbalance (~0.375, elliptic regime) and split-octonion imbalance (~0.469, hyperbolic regime)."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -9194,13 +9194,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0657"
 claim_id = "C-657"
-statement = "Frustration-Viscosity Coupling Principle (Thesis 1): Spatially-varying kinematic viscosity nu(x,y,z) emerges from Cayley-Dickson frustration density F(x,y,z) via exponential coupling: nu(x,y,z) = nu_base * exp(-lambda * (F(x,y,z) - 3/8)^2), where 3/8 = 0.375 is the vacuum attractor frustration equilibrium. This principle connects algebraic frustration to fluid dynamics via Chapman-Enskog viscosity."
+statement = "Imbalance-Viscosity Coupling Principle (Thesis 1): Spatially-varying kinematic viscosity nu(x,y,z) emerges from Cayley-Dickson imbalance density F(x,y,z) via exponential coupling: nu(x,y,z) = nu_base * exp(-lambda * (F(x,y,z) - 3/8)^2), where 3/8 = 0.375 is the imbalance attractor imbalance equilibrium. This principle connects algebraic imbalance to fluid dynamics via Chapman-Enskog viscosity."
 status_token = "ESTABLISHED"
 status_detail = "Established"
 hypothesis_class = "research_claim"
 last_verified = "2026-02-13"
-where_stated = "crates/vacuum_frustration/src/bridge.rs (FrustrationViscosityBridge), crates/gororoba_cli/src/bin/percolation_experiment.rs (E-027), docs/GRAND_SYNTHESIS_PLAN.md"
-verification_rule = "VERIFIED by STPT-006 (PRIMARY): Cassini bound omega_eff >= 40000 satisfied for lambda-dependent frustration. VERIFIED by E-027 (secondary, Phase 2): p < 0.05 correlation. REFUTATION: Both experiments fail criteria."
+where_stated = "crates/sign_imbalance/src/bridge.rs (ImbalanceViscosityBridge), crates/gororoba_cli/src/bin/percolation_experiment.rs (E-027), docs/GRAND_SYNTHESIS_PLAN.md"
+verification_rule = "VERIFIED by STPT-006 (PRIMARY): Cassini bound omega_eff >= 40000 satisfied for lambda-dependent imbalance. VERIFIED by E-027 (secondary, Phase 2): p < 0.05 correlation. REFUTATION: Both experiments fail criteria."
 where_stated_refs = []
 verification_refs = []
 cross_refs = ["E-027"]
@@ -9208,12 +9208,12 @@ cross_refs = ["E-027"]
 [[atom]]
 id = "CLA-0658"
 claim_id = "C-658"
-statement = "Percolation Threshold Frustration Dependence (Thesis 1 Corollary): Percolation channels preferentially form in low-frustration regions. Mean frustration in channels < mean frustration in background, p < 0.05 (Welch's t-test)."
+statement = "Percolation Threshold Imbalance Dependence (Thesis 1 Corollary): Percolation channels preferentially form in low-imbalance regions. Mean imbalance in channels < mean imbalance in background, p < 0.05 (Welch's t-test)."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-13"
-where_stated = "crates/vacuum_frustration/src/percolation.rs, crates/gororoba_cli/src/bin/percolation_experiment.rs (E-027 step 7)"
+where_stated = "crates/sign_imbalance/src/percolation.rs, crates/gororoba_cli/src/bin/percolation_experiment.rs (E-027 step 7)"
 verification_rule = "VERIFIED by E-027 (Phase 2): Negative correlation, p < 0.05. REFUTATION: positive/zero correlation or p >= 0.05."
 where_stated_refs = []
 verification_refs = []
@@ -9228,7 +9228,7 @@ status_detail = "Established"
 hypothesis_class = "research_claim"
 last_verified = "2026-02-13"
 where_stated = "stats_core/src/ultrametric/adaptive.rs, crates/gororoba_cli/src/bin/percolation_experiment.rs (E-027 step 8)"
-verification_rule = "VERIFIED by E-027 (Phase 2): Null p-value < 0.05, frustration-derived distinct from random. REFUTATION: null p >= 0.05."
+verification_rule = "VERIFIED by E-027 (Phase 2): Null p-value < 0.05, imbalance-derived distinct from random. REFUTATION: null p >= 0.05."
 where_stated_refs = []
 verification_refs = []
 cross_refs = ["E-027"]
@@ -9236,12 +9236,12 @@ cross_refs = ["E-027"]
 [[atom]]
 id = "CLA-0660"
 claim_id = "C-660"
-statement = "TX-3 Topological Overlap Principle: Monotonic viscosity-frustration transforms (linear, power-law, sigmoid) produce Jaccard overlap = 1.0 in top-k point cloud extraction, yielding Wasserstein distance W2 = 0 against frustration topology. Non-monotonic transforms (exponential with negative coupling) produce overlap = 0.0 and W2 > 0. The constant (null) model produces overlap near 0."
+statement = "TX-3 Topological Overlap Principle: Monotonic viscosity-imbalance transforms (linear, power-law, sigmoid) produce Jaccard overlap = 1.0 in top-k point cloud extraction, yielding Wasserstein distance W2 = 0 against imbalance topology. Non-monotonic transforms (exponential with negative coupling) produce overlap = 0.0 and W2 > 0. The constant (null) model produces overlap near 0."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-12"
-where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/vacuum_frustration/src/spatial_correlation.rs (point_cloud_overlap)"
+where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/sign_imbalance/src/spatial_correlation.rs (point_cloud_overlap)"
 verification_rule = "VERIFIED: overlap=1.0 for all monotonic models, W2=0 confirmed. REFUTATION: non-monotonic transform with overlap=1.0 would violate."
 where_stated_refs = []
 verification_refs = []
@@ -9250,12 +9250,12 @@ cross_refs = []
 [[atom]]
 id = "CLA-0661"
 claim_id = "C-661"
-statement = "Sigmoid Dynamic Range Collapse: When sigmoid F_crit (0.38) is far below the actual frustration distribution (mean=0.55), the coefficient of variation ratio drops to ~0.04, compressing per-region viscosity variation to 4% of frustration variability. This explains moderate Spearman correlation (0.64-0.67) despite identical point cloud topology (W2=0, overlap=1.0)."
+statement = "Sigmoid Dynamic Range Collapse: When sigmoid F_crit (0.38) is far below the actual imbalance distribution (mean=0.55), the coefficient of variation ratio drops to ~0.04, compressing per-region viscosity variation to 4% of imbalance variability. This explains moderate Spearman correlation (0.64-0.67) despite identical point cloud topology (W2=0, overlap=1.0)."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-12"
-where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/vacuum_frustration/src/spatial_correlation.rs (coefficient_of_variation, dynamic_range_ratio)"
+where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/sign_imbalance/src/spatial_correlation.rs (coefficient_of_variation, dynamic_range_ratio)"
 verification_rule = "VERIFIED: CV_ratio << 1 and moderate Spearman despite W2=0. REFUTATION: sigmoid with F_crit near distribution mean shows high CV_ratio AND high Spearman."
 where_stated_refs = []
 verification_refs = []
@@ -9264,7 +9264,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0662"
 claim_id = "C-662"
-statement = "Power-Law Dynamic Range Amplification: Power-law viscosity coupling (exponent 1.5) produces CV_ratio ~ 4.7, amplifying spatial variation by nearly 5x compared to frustration. This tail-stretching preserves strong spatial correlation (Spearman > 0.95) while generating a distinct CV fingerprint from linear coupling (CV_ratio ~ 0.47)."
+statement = "Power-Law Dynamic Range Amplification: Power-law viscosity coupling (exponent 1.5) produces CV_ratio ~ 4.7, amplifying spatial variation by nearly 5x compared to imbalance. This tail-stretching preserves strong spatial correlation (Spearman > 0.95) while generating a distinct CV fingerprint from linear coupling (CV_ratio ~ 0.47)."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -9278,7 +9278,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0663"
 claim_id = "C-663"
-statement = "Grid Convergence of Frustration-Viscosity Spatial Correlation: Spearman and Pearson correlations between frustration density and viscosity fields are stable or monotonically improving across 16^3, 32^3, and 64^3 grid resolutions for all coupling models. Linear model: Spearman=1.0 at all resolutions. Sigmoid model: 0.64->0.69->0.95 (improving with resolution)."
+statement = "Grid Convergence of Imbalance-Viscosity Spatial Correlation: Spearman and Pearson correlations between imbalance density and viscosity fields are stable or monotonically improving across 16^3, 32^3, and 64^3 grid resolutions for all coupling models. Linear model: Spearman=1.0 at all resolutions. Sigmoid model: 0.64->0.69->0.95 (improving with resolution)."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -9306,12 +9306,12 @@ cross_refs = []
 [[atom]]
 id = "CLA-0665"
 claim_id = "C-665"
-statement = "TX-1 Frustration-Modulated Collision Dynamics: Local frustration density modulates effective diffusion in lattice collision storms via noise_scale = noise_base * (1 + alpha * F(x,y,z)). Higher frustration regions produce broader diffusion, increasing effective dimensionality of return-time dynamics. Alpha > 0 shifts latency law exponent gamma compared to uniform alpha=0 baseline."
+statement = "TX-1 Imbalance-Modulated Collision Dynamics: Local imbalance density modulates effective diffusion in lattice collision storms via noise_scale = noise_base * (1 + alpha * F(x,y,z)). Higher imbalance regions produce broader diffusion, increasing effective dimensionality of return-time dynamics. Alpha > 0 shifts latency law exponent gamma compared to uniform alpha=0 baseline."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-12"
-where_stated = "crates/lattice_filtration/src/filtration.rs (simulate_frustration_modulated_storm, FrustrationStormConfig), crates/gororoba_cli/src/bin/thesis_cross_tx1.rs"
+where_stated = "crates/lattice_filtration/src/filtration.rs (simulate_imbalance_modulated_storm, ImbalanceStormConfig), crates/gororoba_cli/src/bin/thesis_cross_tx1.rs"
 verification_rule = "VERIFIED: max_delta_gamma=0.19 > 0.1 threshold at alpha=0.5. REFUTATION: gamma invariant to alpha across full sweep range."
 where_stated_refs = []
 verification_refs = []
@@ -9320,7 +9320,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0666"
 claim_id = "C-666"
-statement = "TX-1 Non-Monotonic Alpha Dependence: Frustration-modulated collision dynamics shows maximum gamma shift at moderate coupling (alpha=0.5, delta_gamma=0.19) with decreasing effect at higher alpha (alpha=10: delta=0.0015, alpha=50: delta=0.006). This suggests frustration modulation has optimal coupling strength; excessive coupling saturates the noise landscape."
+statement = "TX-1 Non-Monotonic Alpha Dependence: Imbalance-modulated collision dynamics shows maximum gamma shift at moderate coupling (alpha=0.5, delta_gamma=0.19) with decreasing effect at higher alpha (alpha=10: delta=0.0015, alpha=50: delta=0.006). This suggests imbalance modulation has optimal coupling strength; excessive coupling saturates the noise landscape."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -9362,7 +9362,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0669"
 claim_id = "C-669"
-statement = "TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16^3 with frustration-derived viscosity produce filtration spectra where r2_inverse_square is highest (0.90) but power_law_exponent is positive (+0.39), yielding Undetermined classification. The positive exponent indicates latency increases with radius, opposite to collision-dominated inverse-square decay. Lambda coupling modifies exponent monotonically (0.39 at lambda=0.5 to 0.36 at lambda=10)."
+statement = "TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16^3 with imbalance-derived viscosity produce filtration spectra where r2_inverse_square is highest (0.90) but power_law_exponent is positive (+0.39), yielding Undetermined classification. The positive exponent indicates latency increases with radius, opposite to collision-dominated inverse-square decay. Lambda coupling modifies exponent monotonically (0.39 at lambda=0.5 to 0.36 at lambda=10)."
 status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
@@ -9376,13 +9376,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0670"
 claim_id = "C-670"
-statement = "SedenionField4D: 4D extension of the SedenionField lattice abstraction treats the w-dimension as independent 3D slices. Each w-slice gets independent frustration computation (Harary-Zaslavsky per cell). Inter-slice Pearson correlations are near-zero for uniform fields and finite for spatially-varied fields. At 16^4 (65,536 cells), computation is feasible in CPU mode."
+statement = "SedenionField4D: 4D extension of the SedenionField lattice abstraction treats the w-dimension as independent 3D slices. Each w-slice gets independent imbalance computation (Harary-Zaslavsky per cell). Inter-slice Pearson correlations are near-zero for uniform fields and finite for spatially-varied fields. At 16^4 (65,536 cells), computation is feasible in CPU mode."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-12"
-where_stated = "crates/vacuum_frustration/src/bridge.rs (SedenionField4D), 6 tests passing"
-verification_rule = "VERIFIED: 6 unit tests pass. REFUTATION: slice isolation broken or frustration length incorrect."
+where_stated = "crates/sign_imbalance/src/bridge.rs (SedenionField4D), 6 tests passing"
+verification_rule = "VERIFIED: 6 unit tests pass. REFUTATION: slice isolation broken or imbalance length incorrect."
 where_stated_refs = []
 verification_refs = []
 cross_refs = []
@@ -9446,7 +9446,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0675"
 claim_id = "C-675"
-statement = "E-027 Multi-Scale GPU Convergence: Frustration-velocity anti-correlation is robust across 4 grid scales (16^3 to 128^3, 4K to 2M cells). Best Spearman correlation at lambda=10: -0.976 (16^3), -1.000 (32^3), -0.999 (64^3), -0.998 (128^3). Pearson r > -0.999 at all scales. The signal does not weaken with grid refinement."
+statement = "E-027 Multi-Scale GPU Convergence: Imbalance-velocity anti-correlation is robust across 4 grid scales (16^3 to 128^3, 4K to 2M cells). Best Spearman correlation at lambda=10: -0.976 (16^3), -1.000 (32^3), -0.999 (64^3), -0.998 (128^3). Pearson r > -0.999 at all scales. The signal does not weaken with grid refinement."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -9488,7 +9488,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0678"
 claim_id = "C-678"
-statement = "Kubo Drude Weight Onset Catastrophe: Any nonzero Cayley-Dickson interpolation (lambda > 0) causes a 44x collapse of the spin Drude weight D_S in a dim=8 frustrated Heisenberg chain at T=0.5. The ballistic transport fraction drops from 33% to below 1% at lambda=0.02. This is a first-principles quantum phase transition from ballistic to diffusive transport driven by algebraic frustration."
+statement = "Kubo Drude Weight Onset Catastrophe: Any nonzero Cayley-Dickson interpolation (lambda > 0) causes a 44x collapse of the spin Drude weight D_S in a dim=8 imbalanced Heisenberg chain at T=0.5. The ballistic transport fraction drops from 33% to below 1% at lambda=0.02. This is a first-principles quantum phase transition from ballistic to diffusive transport driven by algebraic imbalance."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -9502,7 +9502,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0679"
 claim_id = "C-679"
-statement = "Vacuum Attractor Kubo Enhancement: At the Cayley-Dickson vacuum attractor frustration f=3/8=0.375, the Drude weight suppression ratio g(lambda) = D_S(0)/D_S(lambda) equals 83.4x for dim=8 at T=0.5. This provides first-principles physical grounding for the vacuum attractor coupling strength previously derived from algebraic arguments alone."
+statement = "Imbalance Attractor Kubo Enhancement: At the Cayley-Dickson imbalance attractor imbalance f=3/8=0.375, the Drude weight suppression ratio g(lambda) = D_S(0)/D_S(lambda) equals 83.4x for dim=8 at T=0.5. This provides first-principles physical grounding for the imbalance attractor coupling strength previously derived from algebraic arguments alone."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -9516,7 +9516,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0680"
 claim_id = "C-680"
-statement = "Full CD Kubo Enhancement Upper Bound: At lambda=1.0 (full octonion algebra, f_CD=0.5429), the Drude weight suppression ratio reaches g=216x for dim=8 at T=0.5. This is the maximum first-principles viscosity enhancement achievable from Cayley-Dickson algebraic frustration. Exponential fit R^2=0.89 captures the trend but misses level-crossing oscillations; lookup table interpolation is the correct coupling method."
+statement = "Full CD Kubo Enhancement Upper Bound: At lambda=1.0 (full octonion algebra, f_CD=0.5429), the Drude weight suppression ratio reaches g=216x for dim=8 at T=0.5. This is the maximum first-principles viscosity enhancement achievable from Cayley-Dickson algebraic imbalance. Exponential fit R^2=0.89 captures the trend but misses level-crossing oscillations; lookup table interpolation is the correct coupling method."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -9530,13 +9530,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0681"
 claim_id = "C-681"
-statement = "KuboResponse First-Principles Coupling Model: ViscosityCouplingModel::KuboResponse replaces the tautological linear coupling nu=nu_base*(1+lambda*f) with a 21-point lookup table derived from exact diagonalization of the Kubo formula. The table maps frustration to Drude weight suppression ratio via linear interpolation. At f=0, enhancement=1 (no coupling); enhancement grows monotonically on average but with non-monotonic level-crossing dips. This is the first physics-derived (not postulated) viscosity coupling in the synthesis pipeline."
+statement = "KuboResponse First-Principles Coupling Model: ViscosityCouplingModel::KuboResponse replaces the tautological linear coupling nu=nu_base*(1+lambda*f) with a 21-point lookup table derived from exact diagonalization of the Kubo formula. The table maps imbalance to Drude weight suppression ratio via linear interpolation. At f=0, enhancement=1 (no coupling); enhancement grows monotonically on average but with non-monotonic level-crossing dips. This is the first physics-derived (not postulated) viscosity coupling in the synthesis pipeline."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-13"
-where_stated = "crates/vacuum_frustration/src/bridge.rs (ViscosityCouplingModel::KuboResponse)"
-verification_rule = "VERIFIED: 6 unit tests pass including zero-frustration identity, monotonicity near vacuum, enhancement ratio bounds. REFUTATION: KuboResponse produces NaN or negative viscosity for any valid frustration input."
+where_stated = "crates/sign_imbalance/src/bridge.rs (ViscosityCouplingModel::KuboResponse)"
+verification_rule = "VERIFIED: 6 unit tests pass including zero-imbalance identity, monotonicity near vacuum, enhancement ratio bounds. REFUTATION: KuboResponse produces NaN or negative viscosity for any valid imbalance input."
 where_stated_refs = []
 verification_refs = []
 cross_refs = []
@@ -9564,7 +9564,7 @@ status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-13"
 where_stated = "data/kubo_transport/validation/j1j2_validation_report.toml"
-verification_rule = "VERIFIED: D_S monotonically increases from alpha=0 to alpha=1.1 and peaks at alpha=1.1. REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard frustration suppression per Heidrich-Meisner PRB 68, 134436)."
+verification_rule = "VERIFIED: D_S monotonically increases from alpha=0 to alpha=1.1 and peaks at alpha=1.1. REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard imbalance suppression per Heidrich-Meisner PRB 68, 134436)."
 where_stated_refs = []
 verification_refs = []
 cross_refs = []
@@ -9600,13 +9600,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0686"
 claim_id = "C-686"
-statement = "Published Benchmark: Polarized-Regime Enhancement Consistent with Varma Mechanism. The 30,778x D_S enhancement with frustration at B=3.0 is physically consistent with the interaction-induced Drude weight enhancement mechanism of Varma & Sanchez PRB 92, 195143 (2015), where interactions suppress frustration effects at intermediate coupling, producing non-monotonic transport behavior. At B>>J, field polarization gaps excitations; J2 competes with polarization, reopening low-energy channels."
+statement = "Published Benchmark: Polarized-Regime Enhancement Consistent with Varma Mechanism. The 30,778x D_S enhancement with imbalance at B=3.0 is physically consistent with the interaction-induced Drude weight enhancement mechanism of Varma & Sanchez PRB 92, 195143 (2015), where interactions suppress imbalance effects at intermediate coupling, producing non-monotonic transport behavior. At B>>J, field polarization gaps excitations; J2 competes with polarization, reopening low-energy channels."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-13"
 where_stated = "data/kubo_transport/validation/j1j2_validation_report.toml"
-verification_rule = "VERIFIED: Enhancement is consistent with Varma mechanism (frustration suppressed by competing effects -> D rises). REFUTATION: Running at B=0 should show standard frustration suppression per Heidrich-Meisner PRB 68, 134436 (2003)."
+verification_rule = "VERIFIED: Enhancement is consistent with Varma mechanism (imbalance suppressed by competing effects -> D rises). REFUTATION: Running at B=0 should show standard imbalance suppression per Heidrich-Meisner PRB 68, 134436 (2003)."
 where_stated_refs = []
 verification_refs = []
 cross_refs = []
@@ -9614,7 +9614,7 @@ cross_refs = []
 [[atom]]
 id = "CLA-0687"
 claim_id = "C-687"
-statement = "Published Benchmark: C_V Crossover Shifted by Strong Field. The specific heat peak occurs at alpha=0.80 in our B=3.0, T=0.1, N=10 data, compared to the Okamoto-Nomura critical point alpha_c = 0.2411 at B=0 (PLA 169, 433, 1992). The strong magnetic field shifts the frustration crossover to higher alpha, consistent with field-induced modification of the singlet-triplet gap structure."
+statement = "Published Benchmark: C_V Crossover Shifted by Strong Field. The specific heat peak occurs at alpha=0.80 in our B=3.0, T=0.1, N=10 data, compared to the Okamoto-Nomura critical point alpha_c = 0.2411 at B=0 (PLA 169, 433, 1992). The strong magnetic field shifts the imbalance crossover to higher alpha, consistent with field-induced modification of the singlet-triplet gap structure."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
@@ -9648,7 +9648,7 @@ status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-13"
 where_stated = "crates/gororoba_cli_physics/src/bin/validate_j1j2_kubo.rs (Lifshitz_mechanism_direction comparison)"
-verification_rule = "VERIFIED: Both our data and Stolpp 2019 show D_S increasing with frustration at high field. REFUTATION: If D_S decreased with alpha at B=3.0 (inconsistent with Lifshitz mechanism), or if Stolpp's theory predicted suppression at all fields."
+verification_rule = "VERIFIED: Both our data and Stolpp 2019 show D_S increasing with imbalance at high field. REFUTATION: If D_S decreased with alpha at B=3.0 (inconsistent with Lifshitz mechanism), or if Stolpp's theory predicted suppression at all fields."
 where_stated_refs = []
 verification_refs = []
 cross_refs = []
@@ -9662,7 +9662,7 @@ status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-14"
 where_stated = "`crates/gr_core/src/sedenion_geodesic.rs`, `reports/breakthrough_shi_geodesics_2026_02_14.md`"
-verification_rule = "Rust tests in `sedenion_geodesic.rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \\to r_h$, tracking monotonic increase in algebraic frustration near the event horizon."
+verification_rule = "Rust tests in `sedenion_geodesic.rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \\to r_h$, tracking monotonic increase in algebraic imbalance near the event horizon."
 where_stated_refs = ["crates/gr_core/src/sedenion_geodesic.rs", "reports/breakthrough_shi_geodesics_2026_02_14.md"]
 verification_refs = ["sedenion_geodesic.rs"]
 cross_refs = []
@@ -10832,13 +10832,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0774"
 claim_id = "C-774"
-statement = "Non-associative algebraic frustration induces monotonic spin decoherence in Lambda-pair systems."
+statement = "Non-associative algebraic imbalance induces monotonic spin decoherence in Lambda-pair systems."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-15"
 where_stated = "Thesis 5 Pipeline (`crates/gororoba_engine/src/thesis_pipelines.rs`), Experiment E-036 (`registry/experiments.toml`), STAR spin correlation synthesis."
-verification_rule = "VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1.0) of spin correlation P as frustration-induced decoherence gamma increases. Validates CD-frustration as a candidate physical medium for coherence loss."
+verification_rule = "VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1.0) of spin correlation P as imbalance-induced decoherence gamma increases. Validates CD-imbalance as a candidate physical medium for coherence loss."
 where_stated_refs = ["crates/gororoba_engine/src/thesis_pipelines.rs", "registry/experiments.toml"]
 verification_refs = []
 cross_refs = ["E-036"]
@@ -10852,7 +10852,7 @@ status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-15"
 where_stated = "Thesis 5 Pipeline (`crates/gororoba_engine/src/thesis_pipelines.rs`), STAR spin correlation paper (s41586-025-09920-0) Discussion section."
-verification_rule = "VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite frustration threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration."
+verification_rule = "VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite imbalance threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration."
 where_stated_refs = ["crates/gororoba_engine/src/thesis_pipelines.rs"]
 verification_refs = []
 cross_refs = ["E-036"]
@@ -10874,14 +10874,14 @@ cross_refs = []
 [[atom]]
 id = "CLA-0777"
 claim_id = "C-777"
-statement = "The nonzero region R1 for single-minus gluon amplitudes corresponds to the zero-frustration locus of the associated sign-graph logic."
+statement = "The nonzero region R1 for single-minus gluon amplitudes corresponds to the zero-imbalance locus of the associated sign-graph logic."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-15"
-where_stated = "Amplitude Frustration Survey CLI (`crates/gororoba_cli_algebra/src/bin/amplitude_frustration_survey.rs`), Single-minus gluon preprint (2602.12176)."
-verification_rule = "VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero frustration, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation."
-where_stated_refs = ["crates/gororoba_cli_algebra/src/bin/amplitude_frustration_survey.rs"]
+where_stated = "Amplitude Imbalance Survey CLI (`crates/gororoba_cli_algebra/src/bin/amplitude_imbalance_survey.rs`), Single-minus gluon preprint (2602.12176)."
+verification_rule = "VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero imbalance, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation."
+where_stated_refs = ["crates/gororoba_cli_algebra/src/bin/amplitude_imbalance_survey.rs"]
 verification_refs = []
 cross_refs = []
 
@@ -10893,7 +10893,7 @@ status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-15"
-where_stated = "QGP Frustration Bridge (`crates/cd_spin_bridge/src/qgp_model.rs`), Experiment E-038."
+where_stated = "QGP Imbalance Bridge (`crates/cd_spin_bridge/src/qgp_model.rs`), Experiment E-038."
 verification_rule = "VERIFIED: Modeling ALICE 5.36 TeV Pb-Pb global polarization via a vorticity-bias channel reproduces the observed centrality-dependent trend (centrality mid-points map to omega_mag)."
 where_stated_refs = ["crates/cd_spin_bridge/src/qgp_model.rs"]
 verification_refs = []
@@ -12022,13 +12022,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0859"
 claim_id = "C-859"
-statement = "Frustration-entropy bridge maps phi=3/8 to gamma ~ 0.122, within 2% of gamma_NZJ = 0.1236."
+statement = "Imbalance-entropy bridge maps phi=3/8 to gamma ~ 0.122, within 2% of gamma_NZJ = 0.1236."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-19"
-where_stated = "crates/vacuum_frustration/src/immirzi_bridge.rs (frustration_entropy_bridge, tests)"
-verification_rule = "VERIFY: |frustration_entropy_bridge(3/8) - gamma_NZJ| / gamma_NZJ < 0.02. REFUTE: deviation > 5%."
+where_stated = "crates/sign_imbalance/src/immirzi_bridge.rs (imbalance_entropy_bridge, tests)"
+verification_rule = "VERIFY: |imbalance_entropy_bridge(3/8) - gamma_NZJ| / gamma_NZJ < 0.02. REFUTE: deviation > 5%."
 where_stated_refs = []
 verification_refs = []
 cross_refs = []
@@ -12036,13 +12036,13 @@ cross_refs = []
 [[atom]]
 id = "CLA-0860"
 claim_id = "C-860"
-statement = "Frustration-entropy bridge maximum at phi=1/2 gives ln(2)/(pi*sqrt(3))=0.1274, far below gamma_BG=0.2375. No phi maps to gamma_BG via this bridge (negative result)."
+statement = "Imbalance-entropy bridge maximum at phi=1/2 gives ln(2)/(pi*sqrt(3))=0.1274, far below gamma_BG=0.2375. No phi maps to gamma_BG via this bridge (negative result)."
 status_token = "ESTABLISHED"
 status_detail = "Established"
 hypothesis_class = "research_claim"
 last_verified = "2026-02-19"
-where_stated = "crates/vacuum_frustration/src/immirzi_bridge.rs (invert_entropy_bridge_bg_is_none test)"
-verification_rule = "VERIFY: invert_entropy_bridge_bg() returns None. REFUTE: finding a bridge formula that naturally yields gamma_BG from frustration density."
+where_stated = "crates/sign_imbalance/src/immirzi_bridge.rs (invert_entropy_bridge_bg_is_none test)"
+verification_rule = "VERIFY: invert_entropy_bridge_bg() returns None. REFUTE: finding a bridge formula that naturally yields gamma_BG from imbalance density."
 where_stated_refs = []
 verification_refs = []
 cross_refs = []
@@ -12050,12 +12050,12 @@ cross_refs = []
 [[atom]]
 id = "CLA-0861"
 claim_id = "C-861"
-statement = "No natural mapping from phi=3/8 to gamma_BG exists: all non-calibrated bridges deviate > 10% from gamma_BG at the vacuum attractor."
+statement = "No natural mapping from phi=3/8 to gamma_BG exists: all non-calibrated bridges deviate > 10% from gamma_BG at the imbalance attractor."
 status_token = "ESTABLISHED"
 status_detail = "Established"
 hypothesis_class = "research_claim"
 last_verified = "2026-02-19"
-where_stated = "crates/vacuum_frustration/src/immirzi_bridge.rs (evaluate_all_mappings, best_bg_match)"
+where_stated = "crates/sign_imbalance/src/immirzi_bridge.rs (evaluate_all_mappings, best_bg_match)"
 verification_rule = "N/A: Negative result. Would be overturned by discovery of a physically motivated mapping with < 5% deviation from gamma_BG at phi=3/8."
 where_stated_refs = []
 verification_refs = []

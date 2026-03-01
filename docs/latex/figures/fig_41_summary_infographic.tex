@@ -1,0 +1,54 @@
+%% Fig 41: Summary of principal results (composite TikZ layout)
+\begin{tikzpicture}[
+  statbox/.style={
+    draw=gray!40, rounded corners=6pt, minimum width=3cm,
+    minimum height=2.2cm, thick, inner sep=6pt
+  },
+  bignum/.style={font=\sffamily\LARGE\bfseries},
+  sublabel/.style={font=\sffamily\scriptsize, gray, align=center},
+]
+  %% Row 1: Key counts
+  \node[statbox, fill=cAlgebraLight] (claims) at (0,0) {};
+  \node[bignum, cAlgebra] at (claims.center) {\claimcount};
+  \node[sublabel] at ([yshift=-8pt]claims.south) {Verified Claims};
+
+  \node[statbox, fill=cFluidLight] (tests) at (4,0) {};
+  \node[bignum, cFluid] at (tests.center) {\testcount};
+  \node[sublabel] at ([yshift=-8pt]tests.south) {Automated Tests};
+
+  \node[statbox, fill=cGRLight] (proofs) at (8,0) {};
+  \node[bignum, cGR] at (proofs.center) {\kernelchecked};
+  \node[sublabel] at ([yshift=-8pt]proofs.south) {Formal Proofs};
+
+  \node[statbox, fill=cQuantumLight] (domains) at (12,0) {};
+  \node[bignum, cQuantum] at (domains.center) {8};
+  \node[sublabel] at ([yshift=-8pt]domains.south) {Research Domains};
+
+  %% Row 2: Thesis results
+  \node[statbox, fill=OIgreen!10, draw=OIgreen!50] (theses) at (2,-4) {};
+  \node[bignum, OIgreen!70!black] at ([yshift=4pt]theses.center) {4/4};
+  \node[sublabel] at ([yshift=-8pt]theses.south) {Theses Pass};
+
+  \node[statbox, fill=OIvermillion!10, draw=OIvermillion!50] (falsified) at (6,-4) {};
+  \node[bignum, OIvermillion!70!black] at ([yshift=4pt]falsified.center) {3};
+  \node[sublabel] at ([yshift=-8pt]falsified.south) {Informative\\Falsifications};
+
+  \node[statbox, fill=cAlgebraLight, draw=cAlgebra!50] (ratio) at (10,-4) {};
+  \node[bignum, cAlgebra] at ([yshift=4pt]ratio.center) {3:1};
+  \node[sublabel] at ([yshift=-8pt]ratio.south) {Universal Law\\(APT Proved)};
+
+  %% Title banner
+  \node[draw=gray!40, fill=gray!5, rounded corners=6pt,
+    minimum width=13cm, minimum height=1cm,
+    font=\sffamily\small\bfseries] at (6,2.5)
+    {Algebraic Structure Constrains Physical Dynamics};
+
+  %% Domain color bar
+  \foreach \i/\col/\lbl [count=\n from 0] in {
+    0/cAlgebra/Alg, 1/cFluid/Fluid, 2/cGR/GR, 3/cQuantum/Quant,
+    4/cMaterials/Mat, 5/cOptics/Opt, 6/cStatistics/Stat, 7/cCosmology/Cosmo%
+  } {
+    \fill[\col!60] (\n*1.6 + 0.2, -6.5) rectangle (\n*1.6 + 1.6, -6.0);
+    \node[font=\sffamily\tiny, white] at (\n*1.6 + 0.9, -6.25) {\lbl};
+  }
+\end{tikzpicture}

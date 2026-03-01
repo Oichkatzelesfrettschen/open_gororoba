@@ -43,11 +43,11 @@ We executed a production-grade 3D parameter sweep using the unified `thesis-synt
 ## 2. Methodology
 *   **Grid:** $16^3$ spatial resolution.
 *   **Solver:** `LbmBackend3D` (CPU/GPU switchable).
-*   **Coupling:** Semi-Lagrangian advection of Sedenion field $\Phi$ with viscosity $\nu$ modulated by associator frustration $\mathcal{F}$.
+*   **Coupling:** Semi-Lagrangian advection of Sedenion field $\Phi$ with viscosity $\nu$ modulated by associator imbalance $\mathcal{F}$.
 *   **Sweep:** $\alpha \in [0.01, 0.05, 0.1, 0.2]$.
 *   **Metrics:** Betti numbers ($\beta_0, \beta_1$) computed via Vietoris-Rips filtration on field level sets.
 
-## 3. Results: The Frustration Transition
+## 3. Results: The Imbalance Transition
 The sweep results demonstrate a clear topological phase transition:
 
 | Alpha ($\alpha$) | Betti-0 ($\beta_0$) | Betti-1 ($\beta_1$) | State |

@@ -3,7 +3,7 @@
 use crate::traits::CorrectionLayer;
 use neural_homotopy::{HomotopyTrainingConfig, train_homotopy_surrogate};
 
-/// Correction layer computing a gain from algebraic frustration and model traces.
+/// Correction layer computing a gain from algebraic imbalance and model traces.
 #[derive(Debug, Clone, Copy)]
 pub struct HomotopyCorrectionLayer {
     pub epochs: usize,
@@ -16,11 +16,11 @@ impl Default for HomotopyCorrectionLayer {
 }
 
 impl CorrectionLayer for HomotopyCorrectionLayer {
-    fn correction_gain(&self, frustration: &[f64]) -> f64 {
-        let mean_f = if frustration.is_empty() {
+    fn correction_gain(&self, imbalance: &[f64]) -> f64 {
+        let mean_f = if imbalance.is_empty() {
             0.0
         } else {
-            frustration.iter().sum::<f64>() / frustration.len() as f64
+            imbalance.iter().sum::<f64>() / imbalance.len() as f64
         };
         let cfg = HomotopyTrainingConfig {
             epochs: self.epochs,

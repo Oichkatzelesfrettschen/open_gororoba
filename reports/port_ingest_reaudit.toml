@@ -57,8 +57,8 @@ blockers = ["GPL-3.0 compatibility decision required"]
 [[port_candidate]]
 priority = 2
 source_path = "PhysicsForge/simulation/cpp/scalar_lattice.cpp"
-target_crate = "crates/vacuum_frustration"
-port_rationale = "Scalar-field lattice evolution is relevant to Thesis 1 scalar-frustration gate behavior."
+target_crate = "crates/sign_imbalance"
+port_rationale = "Scalar-field lattice evolution is relevant to Thesis 1 scalar-imbalance gate behavior."
 estimated_effort = "M"
 blockers = ["GPL-2.0 compatibility decision required"]
 
@@ -103,19 +103,19 @@ note = "Primary octonions reference for algebraic background and terminology nor
 [[documents_shortlist]]
 priority = 2
 path = "data/external/papers/reggiani_2024_2411.18881.pdf"
-lane = "vacuum_frustration"
-note = "Recent geometry of sedenion zero divisors, relevant to topology/frustration claims framing."
+lane = "sign_imbalance"
+note = "Recent geometry of sedenion zero divisors, relevant to topology/imbalance claims framing."
 
 [[documents_shortlist]]
 priority = 3
 path = "data/external/papers/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.txt"
-lane = "vacuum_frustration"
+lane = "sign_imbalance"
 note = "Gravastar stability context for Thesis 1 falsifiability references."
 
 [[documents_shortlist]]
 priority = 4
 path = "data/external/papers/mazur_mottola_2001_gr-qc-0109035_gravastars.txt"
-lane = "vacuum_frustration"
+lane = "sign_imbalance"
 note = "Foundational gravastar proposal text for historical/claim context."
 
 [[documents_shortlist]]

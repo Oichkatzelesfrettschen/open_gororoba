@@ -1,10 +1,10 @@
 //! Cayley-Dickson Spin Bridge
 //!
-//! Connects Cayley-Dickson algebraic observables (frustration density,
+//! Connects Cayley-Dickson algebraic observables (imbalance density,
 //! associator norms) to quantum channel parameters for two-qubit spin
 //! tomography. Bridges three crates:
 //!
-//! - `vacuum_frustration`: provides the 3/8 vacuum attractor and frustration metrics
+//! - `sign_imbalance`: provides the 3/8 imbalance attractor and imbalance metrics
 //! - `spin_tomography_core`: provides `TwoQubitState` density matrix representation
 //! - `algebra_core`: provides Pauli matrices and Clifford algebra primitives
 //!
@@ -19,5 +19,5 @@ pub mod star_channel;
 
 pub use decoherence_map::DecoherenceMap;
 pub use depolarizing_channel::apply_depolarizing_channel;
-pub use qgp_model::{QGPFrustrationBridge, QGPState};
+pub use qgp_model::{QGPImbalanceBridge, QGPState};
 pub use star_channel::StarChannel;

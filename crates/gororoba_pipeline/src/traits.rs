@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 pub struct PipelineState {
     pub words: Vec<u64>,
     pub signs: Vec<i32>,
-    pub frustration: Vec<f64>,
+    pub imbalance: Vec<f64>,
     pub viscosity: Vec<f64>,
     pub correction_gain: f64,
 }
@@ -28,15 +28,15 @@ pub trait ParityLayer {
 }
 
 pub trait TopologyLayer {
-    fn frustration_density(&self, signs: &[i32]) -> Vec<f64>;
+    fn imbalance_density(&self, signs: &[i32]) -> Vec<f64>;
 }
 
 pub trait DynamicsLayer {
-    fn viscosity_field(&self, frustration: &[f64]) -> Vec<f64>;
+    fn viscosity_field(&self, imbalance: &[f64]) -> Vec<f64>;
 }
 
 pub trait CorrectionLayer {
-    fn correction_gain(&self, frustration: &[f64]) -> f64;
+    fn correction_gain(&self, imbalance: &[f64]) -> f64;
 }
 
 pub trait VerificationLayer {

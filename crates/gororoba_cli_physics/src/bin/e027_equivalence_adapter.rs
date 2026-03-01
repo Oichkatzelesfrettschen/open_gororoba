@@ -22,7 +22,7 @@ struct Args {
     include_forcing_runs: bool,
 
     #[arg(long, default_value_t = 0.375)]
-    vacuum_attractor: f64,
+    imbalance_attractor: f64,
 }
 
 #[derive(Debug, Serialize)]
@@ -30,7 +30,7 @@ struct BundleMetadata {
     data_root: String,
     output_dir: String,
     include_forcing_runs: bool,
-    vacuum_attractor: f64,
+    imbalance_attractor: f64,
     point_count: usize,
 }
 
@@ -41,7 +41,7 @@ struct PointRecord {
     label: String,
     lambda: f64,
     nu_base: f64,
-    frustration_mean: f64,
+    imbalance_mean: f64,
     viscosity_proxy: f64,
     loss_proxy: f64,
 }
@@ -63,14 +63,14 @@ fn get_f64(table: &Value, path: &[&str]) -> Option<f64> {
 fn compute_viscosity_proxy(
     nu_base: f64,
     lambda: f64,
-    frustration_mean: f64,
-    vacuum_attractor: f64,
+    imbalance_mean: f64,
+    imbalance_attractor: f64,
 ) -> f64 {
-    let delta = frustration_mean - vacuum_attractor;
+    let delta = imbalance_mean - imbalance_attractor;
     nu_base * (-(lambda * delta * delta)).exp()
 }
 
-fn parse_single_run(path: &Path, vacuum_attractor: f64) -> Result<PointRecord, String> {
+fn parse_single_run(path: &Path, imbalance_attractor: f64) -> Result<PointRecord, String> {
     let raw =
         fs::read_to_string(path).map_err(|e| format!("failed to read {}: {e}", path.display()))?;
     let value: Value = raw
@@ -81,17 +81,17 @@ fn parse_single_run(path: &Path, vacuum_attractor: f64) -> Result<PointRecord, S
         .ok_or_else(|| format!("missing metadata.lambda in {}", path.display()))?;
     let nu_base = get_f64(&value, &["metadata", "nu_base"])
         .ok_or_else(|| format!("missing metadata.nu_base in {}", path.display()))?;
-    let frustration_mean = get_f64(&value, &["correlation", "mean_frustration_channels"])
+    let imbalance_mean = get_f64(&value, &["correlation", "mean_imbalance_channels"])
         .ok_or_else(|| {
             format!(
-                "missing correlation.mean_frustration_channels in {}",
+                "missing correlation.mean_imbalance_channels in {}",
                 path.display()
             )
         })?;
 
     let viscosity_proxy =
-        compute_viscosity_proxy(nu_base, lambda, frustration_mean, vacuum_attractor);
-    let loss_proxy = (frustration_mean - vacuum_attractor).abs();
+        compute_viscosity_proxy(nu_base, lambda, imbalance_mean, imbalance_attractor);
+    let loss_proxy = (imbalance_mean - imbalance_attractor).abs();
 
     let label = path
         .parent()
@@ -105,13 +105,13 @@ fn parse_single_run(path: &Path, vacuum_attractor: f64) -> Result<PointRecord, S
         label,
         lambda,
         nu_base,
-        frustration_mean,
+        imbalance_mean,
         viscosity_proxy,
         loss_proxy,
     })
 }
 
-fn parse_forcing_runs(path: &Path, vacuum_attractor: f64) -> Result<Vec<PointRecord>, String> {
+fn parse_forcing_runs(path: &Path, imbalance_attractor: f64) -> Result<Vec<PointRecord>, String> {
     let raw =
         fs::read_to_string(path).map_err(|e| format!("failed to read {}: {e}", path.display()))?;
     let value: Value = raw
@@ -139,16 +139,16 @@ fn parse_forcing_runs(path: &Path, vacuum_attractor: f64) -> Result<Vec<PointRec
             .get("nu_base")
             .and_then(Value::as_float)
             .ok_or_else(|| format!("run {name}: missing nu_base in {}", path.display()))?;
-        let frustration_mean = get_f64(run, &["results", "frustration_mean"]).ok_or_else(|| {
+        let imbalance_mean = get_f64(run, &["results", "imbalance_mean"]).ok_or_else(|| {
             format!(
-                "run {name}: missing results.frustration_mean in {}",
+                "run {name}: missing results.imbalance_mean in {}",
                 path.display()
             )
         })?;
         let viscosity_proxy = get_f64(run, &["results", "viscosity_mean"]).unwrap_or_else(|| {
-            compute_viscosity_proxy(nu_base, lambda, frustration_mean, vacuum_attractor)
+            compute_viscosity_proxy(nu_base, lambda, imbalance_mean, imbalance_attractor)
         });
-        let loss_proxy = (frustration_mean - vacuum_attractor).abs();
+        let loss_proxy = (imbalance_mean - imbalance_attractor).abs();
 
         out.push(PointRecord {
             index: 0,
@@ -156,7 +156,7 @@ fn parse_forcing_runs(path: &Path, vacuum_attractor: f64) -> Result<Vec<PointRec
             label: format!("forcing:{name}"),
             lambda,
             nu_base,
-            frustration_mean,
+            imbalance_mean,
             viscosity_proxy,
             loss_proxy,
         });
@@ -222,13 +222,13 @@ fn main() -> Result<(), String> {
     let mut points = Vec::new();
     for path in fixed_paths {
         if path.exists() {
-            points.push(parse_single_run(&path, args.vacuum_attractor)?);
+            points.push(parse_single_run(&path, args.imbalance_attractor)?);
         }
     }
 
     let forcing_path = args.data_root.join("e027_forcing_results.toml");
     if args.include_forcing_runs && forcing_path.exists() {
-        points.extend(parse_forcing_runs(&forcing_path, args.vacuum_attractor)?);
+        points.extend(parse_forcing_runs(&forcing_path, args.imbalance_attractor)?);
     }
 
     if points.len() < 3 {
@@ -255,7 +255,7 @@ fn main() -> Result<(), String> {
             data_root: args.data_root.display().to_string(),
             output_dir: args.output_dir.display().to_string(),
             include_forcing_runs: args.include_forcing_runs,
-            vacuum_attractor: args.vacuum_attractor,
+            imbalance_attractor: args.imbalance_attractor,
             point_count: points.len(),
         },
         points,

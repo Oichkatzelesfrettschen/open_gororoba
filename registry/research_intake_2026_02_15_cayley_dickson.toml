@@ -377,7 +377,7 @@ related_thesis = "LFT-001"
 
 [[pilot_test]]
 id = "LFP-002"
-objective = "Re-run topology-frustration sweep with explicit lambda curvature diagnostics."
+objective = "Re-run topology-imbalance sweep with explicit lambda curvature diagnostics."
 run = "cargo run --bin e027-topology-analyzer -- --grid-size 16 --epsilon-steps 20 --max-points 100 --n-permutations 200"
 expected_artifact = "data/e027/e027_topology_NNNcubed.toml"
 related_thesis = "LFT-001"

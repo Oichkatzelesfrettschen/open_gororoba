@@ -1,7 +1,7 @@
 (** * C-880: Single-slice foliation reduces to the underlying field.
 
     Formal proof that a foliation with exactly one time slice has
-    its frustration accessible at slice index 0.
+    its imbalance accessible at slice index 0.
 
     Mirrors: sedenion_foliation.rs test_single_slice_matches_sedenion_field. *)
 
@@ -27,12 +27,12 @@ Qed.
 
 (** Accessing a point in a single-slice foliation works. *)
 Theorem C880_single_slice_point_access :
-  forall (s : FoliationSlice) (f : Frustration) (idx : nat),
+  forall (s : FoliationSlice) (f : Imbalance) (idx : nat),
     nth_error s idx = Some f ->
-    frustration_at [s] 0 idx = Some f.
+    imbalance_at [s] 0 idx = Some f.
 Proof.
   intros s f idx H.
-  unfold frustration_at. simpl. exact H.
+  unfold imbalance_at. simpl. exact H.
 Qed.
 
 (** Multi-slice indexing is consistent. *)

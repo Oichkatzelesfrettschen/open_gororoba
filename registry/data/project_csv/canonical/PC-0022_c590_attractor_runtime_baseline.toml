@@ -18,7 +18,7 @@ corpus_label = "project CSV canonical dataset"
 header = [
     "profile_tag",
     "dim",
-    "frustration_ratio",
+    "imbalance_ratio",
     "delta_to_three_eighths",
     "elapsed_seconds",
     "run_unix_seconds",
@@ -26,7 +26,7 @@ header = [
 original_header = [
     "profile_tag",
     "dim",
-    "frustration_ratio",
+    "imbalance_ratio",
     "delta_to_three_eighths",
     "elapsed_seconds",
     "run_unix_seconds",
@@ -84,8 +84,8 @@ empty_count = 0
 
 [[column]]
 index = 3
-name = "frustration_ratio"
-original_name = "frustration_ratio"
+name = "imbalance_ratio"
+original_name = "imbalance_ratio"
 inferred_type = "float"
 non_empty_count = 4
 empty_count = 0

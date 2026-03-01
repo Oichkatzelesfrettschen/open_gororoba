@@ -570,11 +570,11 @@ reproducibility_class = "non_deterministic"
 
 [[experiment]]
 id = "E-027"
-title = "Topology-Frustration Correlation via Persistent Homology (Thesis 1)"
+title = "Topology-Imbalance Correlation via Persistent Homology (Thesis 1)"
 binary = "e027-topology-analyzer"
 binary_registered = true
 binary_experiment_declared = ""
-method = "VR persistent homology on velocity point cloud, CD psi-weighted triangle frustration, Pearson correlation + Fisher-Yates permutation test"
+method = "VR persistent homology on velocity point cloud, CD psi-weighted triangle imbalance, Pearson correlation + Fisher-Yates permutation test"
 input = "Synthetic Poiseuille+vortex velocity field, SedenionField with random perturbation"
 output = ["data/e027/e027_topology_NNNcubed.toml", "data/e027/betti_timeseries_NNNcubed.csv"]
 run = "cargo run --bin e027-topology-analyzer -- --grid-size 16 --epsilon-steps 20 --max-points 100 --n-permutations 200"
@@ -642,11 +642,11 @@ reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
 id = "E-030"
-title = "TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)"
+title = "TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)"
 binary = "thesis-cross-tx1"
 binary_registered = true
 binary_experiment_declared = ""
-method = "3D toroidal random walk with CD product noise, frustration density modulates local noise amplitude via alpha parameter, return-time shell binning, power-law gamma fitting"
+method = "3D toroidal random walk with CD product noise, imbalance density modulates local noise amplitude via alpha parameter, return-time shell binning, power-law gamma fitting"
 input = "SedenionField spatial variation (dim=16), deterministic xorshift seed"
 output = ["data/thesis_lab/tx1/tx1_report.toml"]
 run = "cargo run --release --bin thesis-cross-tx1 -- --grid_size 16 --n_steps 50000"
@@ -670,7 +670,7 @@ title = "TX-2: Viscosity-to-Filtration Loop (T2 x T4)"
 binary = "thesis-cross-tx2"
 binary_registered = true
 binary_experiment_declared = ""
-method = "Frustration -> viscosity -> LBM evolution -> velocity field -> lattice filtration -> latency law classification, lambda sweep for coupling strength"
+method = "Imbalance -> viscosity -> LBM evolution -> velocity field -> lattice filtration -> latency law classification, lambda sweep for coupling strength"
 input = "SedenionField spatial variation (dim=16), Kolmogorov shear forcing"
 output = ["data/thesis_lab/tx2/tx2_report.toml"]
 run = "cargo run --release --bin thesis-cross-tx2 -- --grid_size 16 --lbm_steps 500"
@@ -738,7 +738,7 @@ reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
 id = "E-034"
-title = "Kubo Linear-Response Frustration-Viscosity Coupling Derivation"
+title = "Kubo Linear-Response Imbalance-Viscosity Coupling Derivation"
 binary = "kubo-coupling-analysis"
 binary_registered = true
 binary_experiment_declared = "E-034"
@@ -790,7 +790,7 @@ title = "STAR Spin Correlation Decoherence Analysis"
 binary = "spin-decoherence-pipeline"
 binary_registered = true
 binary_experiment_declared = "E-036"
-method = "Mapping of STAR 2026 spin correlation data to CD frustration density. Verifies monotonic decay of entanglement and sudden death threshold in the algebraic vacuum limit."
+method = "Mapping of STAR 2026 spin correlation data to CD imbalance density. Verifies monotonic decay of entanglement and sudden death threshold in the algebraic vacuum limit."
 input = "data/external/lhc_2025/ (STAR-like synthetic chains)"
 output = ["data/evidence/spin_decoherence.toml"]
 run = "cargo run --release --bin spin-decoherence-pipeline"
@@ -810,14 +810,14 @@ reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-037"
-title = "Single-Minus Amplitude Frustration Survey"
-binary = "amplitude-frustration-survey"
+title = "Single-Minus Amplitude Imbalance Survey"
+binary = "amplitude-imbalance-survey"
 binary_registered = true
 binary_experiment_declared = "E-037"
-method = "Exhaustive search of the single-minus gluon amplitude support region R1. Maps support region to the global minima of the algebraic frustration landscape (zero-frustration chambers)."
+method = "Exhaustive search of the single-minus gluon amplitude support region R1. Maps support region to the global minima of the algebraic imbalance landscape (zero-imbalance chambers)."
 input = "None (algebraic logic)"
-output = ["data/evidence/amplitude_frustration.toml"]
-run = "cargo run --release --bin amplitude-frustration-survey"
+output = ["data/evidence/amplitude_imbalance.toml"]
+run = "cargo run --release --bin amplitude-imbalance-survey"
 run_command_sha256 = "1b6176592de29440dc2aaeb7f93821bb36354f164a030785ec1451f581571a03"
 claims = ["C-776", "C-777"]
 claim_refs = ["C-776", "C-777"]
@@ -828,7 +828,7 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-035"
 input_path_refs = []
-output_path_refs = ["data/evidence/amplitude_frustration.toml"]
+output_path_refs = ["data/evidence/amplitude_imbalance.toml"]
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
 
@@ -838,7 +838,7 @@ title = "LHC 2025 QGP Spin Synthesis"
 binary = "lhc-2025-qgp-synthesis"
 binary_registered = true
 binary_experiment_declared = "E-038"
-method = "Integration of Run 3 ALICE (Pb-Pb 5.36 TeV) and CMS (pPb 8.16 TeV) results. Predictive modeling using QGPFrustrationBridge to map vorticity and temperature to CD frustration. Validates algebraic twist correction against CMS azimuthal sign challenge."
+method = "Integration of Run 3 ALICE (Pb-Pb 5.36 TeV) and CMS (pPb 8.16 TeV) results. Predictive modeling using QGPImbalanceBridge to map vorticity and temperature to CD imbalance. Validates algebraic twist correction against CMS azimuthal sign challenge."
 input = "data/external/lhc_2025/ (ALICE and CMS CSVs)"
 output = ["reports/LHC_2025_QGP_Synthesis.toml"]
 run = "cargo run --release --bin lhc-2025-qgp-synthesis"
@@ -1425,7 +1425,7 @@ title = "CUDA BF16 ZD Resonance 128^3 Tau Sweep"
 binary = "zd-resonance-cuda"
 binary_registered = true
 binary_experiment_declared = ""
-method = "D3Q19 LBM at 128^3 with BF16 precision and per-cell Sedenion frustration viscosity (Exponential model, lambda=3.0). Sweep tau from 0.55 to 1.00 (10 values). For each tau: nu_base=(tau-0.5)/3.0, compute per-cell viscosity field, 1000 steps, extract KE every 10 steps, FFT + ghost peak detection. Control run at matching resolution with constant tau (no ZD modulation). Tests C-792 (frequency locking: |slope| < 0.01 in peak_freq vs tau) and C-793 (production ghost detection: SNR > 3 at phi^{-1/2})."
+method = "D3Q19 LBM at 128^3 with BF16 precision and per-cell Sedenion imbalance viscosity (Exponential model, lambda=3.0). Sweep tau from 0.55 to 1.00 (10 values). For each tau: nu_base=(tau-0.5)/3.0, compute per-cell viscosity field, 1000 steps, extract KE every 10 steps, FFT + ghost peak detection. Control run at matching resolution with constant tau (no ZD modulation). Tests C-792 (frequency locking: |slope| < 0.01 in peak_freq vs tau) and C-793 (production ghost detection: SNR > 3 at phi^{-1/2})."
 input = "None (synthetic Sedenion field initialization)"
 output = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
 run = "cargo run --release --bin zd-resonance-cuda -- sweep --res 128 && cargo run --release --bin zd-resonance-cuda -- control --res 128"
@@ -1766,14 +1766,14 @@ reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-078"
-title = "Immirzi Bridge Frustration-Entropy Mapping"
+title = "Immirzi Bridge Imbalance-Entropy Mapping"
 binary = ""
 binary_registered = false
 binary_experiment_declared = ""
-method = "Evaluate 6 candidate mappings from frustration density phi to Immirzi parameter gamma. Key finding: frustration-entropy bridge H(phi)/(pi*sqrt(3)) maps phi=3/8 to gamma ~ 0.122, within 2% of gamma_NZJ. Binary entropy at phi=1/2 recovers gamma_BG exactly."
+method = "Evaluate 6 candidate mappings from imbalance density phi to Immirzi parameter gamma. Key finding: imbalance-entropy bridge H(phi)/(pi*sqrt(3)) maps phi=3/8 to gamma ~ 0.122, within 2% of gamma_NZJ. Binary entropy at phi=1/2 recovers gamma_BG exactly."
 input = "None (pure analytical)"
 output = []
-run = "cargo test -p vacuum_frustration --lib immirzi_bridge"
+run = "cargo test -p sign_imbalance --lib immirzi_bridge"
 run_command_sha256 = "d8c6644ad14740e1d7eac2a27ed1946c44e4e7b150300a8c208f8295135fec10"
 claims = ["C-859", "C-860", "C-861"]
 claim_refs = ["C-859", "C-860", "C-861"]
@@ -1890,11 +1890,11 @@ reproducibility_class = "deterministic_replay"
 [[experiment]]
 id = "E-082"
 title = "Algebraic warp sweep: CD tower vs standard GR energy comparison"
-description = "Compare nacelle warp energy budgets between standard GR and Cayley-Dickson algebraic coupling. CD dimension tower (1,2,4,8,16) mapped to nacelle counts with sedenion frustration corrections."
+description = "Compare nacelle warp energy budgets between standard GR and Cayley-Dickson algebraic coupling. CD dimension tower (1,2,4,8,16) mapped to nacelle counts with sedenion imbalance corrections."
 binary = "algebraic-warp-sweep"
 binary_registered = true
 binary_experiment_declared = "E-082"
-method = "2D energy integration with algebraic York time correction and sedenion stress-energy source. Coupling alpha=0.01, frustration at vacuum attractor 3/8."
+method = "2D energy integration with algebraic York time correction and sedenion stress-energy source. Coupling alpha=0.01, imbalance at imbalance attractor 3/8."
 input = "None (parametric sweep)"
 output = ["stdout CSV"]
 run = "cargo run --release --bin algebraic-warp-sweep -- --mode tower --coupling-alpha 0.01 --velocity 0.1 --radius 100.0"
@@ -1914,12 +1914,12 @@ reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-083"
-title = "Sedenion foliation frustration-York time correlation analysis"
-description = "Analyze the correlation between York time (expansion scalar) and sedenion frustration density across hypersurface foliation slices. Test the anti-correlation hypothesis."
+title = "Sedenion foliation imbalance-York time correlation analysis"
+description = "Analyze the correlation between York time (expansion scalar) and sedenion imbalance density across hypersurface foliation slices. Test the anti-correlation hypothesis."
 binary = "algebraic-warp-sweep"
 binary_registered = true
 binary_experiment_declared = "E-083"
-method = "Construct SedenionFoliation on ADM hypersurfaces, compute frustration at each grid point, pair with York time from extrinsic curvature. Pearson correlation analysis."
+method = "Construct SedenionFoliation on ADM hypersurfaces, compute imbalance at each grid point, pair with York time from extrinsic curvature. Pearson correlation analysis."
 input = "None (computational)"
 output = ["stdout CSV"]
 run = "cargo run --release --bin algebraic-warp-sweep -- --mode tower --coupling-alpha 0.1"

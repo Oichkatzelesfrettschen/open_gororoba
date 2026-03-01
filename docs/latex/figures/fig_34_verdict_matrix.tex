@@ -1,0 +1,38 @@
+%% Fig 34: Synthetic dataset verdict matrix (17 rows x 7 columns)
+%% Simplified to representative rows for readability
+\begin{tikzpicture}[
+  cell/.style={minimum width=1.4cm, minimum height=0.45cm,
+    font=\sffamily\tiny, align=center},
+  null/.style={cell, fill=OIgreen!15},
+  sig/.style={cell, fill=OIorange!20},
+  fp/.style={cell, fill=OIvermillion!15},
+  hdr/.style={cell, fill=gray!15, font=\sffamily\tiny\bfseries},
+]
+  \matrix[
+    matrix of nodes,
+    nodes={cell, draw=gray!20, anchor=center},
+    row 1/.style={nodes={hdr}},
+    column 1/.style={nodes={hdr, minimum width=2cm}},
+  ] (m) {
+             & L-S & IAAFT & MTaper & Li12 & MSC & Fisher & Boot \\
+    Null-1 (WN)     & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N \\
+    Null-2 (AR1)    & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N \\
+    Sorted-1        & |[fp]|  FP & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N \\
+    Sorted-3        & |[fp]|  FP & |[fp]|  FP & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N \\
+    Signal-1 (10dB) & |[sig]| D  & |[sig]| D  & |[sig]| D  & |[sig]| D  & |[sig]| D  & |[sig]| D  & |[sig]| D  \\
+    Signal-2 (5dB)  & |[sig]| D  & |[null]| N & |[sig]| D  & |[sig]| D  & |[null]| N & |[sig]| D  & |[null]| N \\
+    Mock-CHIME      & |[fp]|  FP & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N \\
+    Mock-Pantheon   & |[fp]|  FP & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N \\
+    ALICE R$_{AA}$  & |[fp]|  FP & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N & |[null]| N \\
+  };
+
+  %% Legend below
+  \begin{scope}[shift={(0,-5.2)}]
+    \node[null, minimum width=0.8cm] (ln) at (0,0) {N};
+    \node[font=\sffamily\tiny, right=0.1cm of ln] {= correct NULL};
+    \node[sig, minimum width=0.8cm] (ld) at (3.5,0) {D};
+    \node[font=\sffamily\tiny, right=0.1cm of ld] {= correct DETECT};
+    \node[fp, minimum width=0.8cm] (lf) at (7,0) {FP};
+    \node[font=\sffamily\tiny, right=0.1cm of lf] {= false positive (MAD)};
+  \end{scope}
+\end{tikzpicture}

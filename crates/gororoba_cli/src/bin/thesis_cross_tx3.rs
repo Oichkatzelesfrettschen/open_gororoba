@@ -1,25 +1,25 @@
 //! TX-3: Topological persistence of viscosity landscape (T1 x T2).
 //!
 //! Applies VR persistent homology to the power-law viscosity field in 3D,
-//! then correlates the persistence diagram with frustration-derived topology.
-//! This ties T1 (spatial frustration correlation) to T2 (non-Newtonian dynamics).
+//! then correlates the persistence diagram with imbalance-derived topology.
+//! This ties T1 (spatial imbalance correlation) to T2 (non-Newtonian dynamics).
 //!
 //! Pipeline:
 //! 1. Generate SedenionField with spatial variation
-//! 2. Compute frustration density and viscosity field
-//! 3. Extract high-frustration and high-viscosity point clouds
+//! 2. Compute imbalance density and viscosity field
+//! 3. Extract high-imbalance and high-viscosity point clouds
 //! 4. Build VR complexes on both point clouds
 //! 5. Compare persistence diagrams via Wasserstein distance
-//! 6. Compute spatial correlation between frustration and viscosity persistence
+//! 6. Compute spatial correlation between imbalance and viscosity persistence
 
 use clap::Parser;
 use std::fmt::Write as _;
-use vacuum_frustration::bridge::{SedenionField, VACUUM_ATTRACTOR, ViscosityCouplingModel};
-use vacuum_frustration::spatial_correlation::{
+use sign_imbalance::bridge::{SedenionField, IMBALANCE_ATTRACTOR, ViscosityCouplingModel};
+use sign_imbalance::spatial_correlation::{
     coefficient_of_variation, dynamic_range_ratio, grid_partition_3d, nonlinearity_index,
     pearson_correlation, point_cloud_overlap, regional_means, spearman_correlation,
 };
-use vacuum_frustration::vietoris_rips::{
+use sign_imbalance::vietoris_rips::{
     DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers_at_time,
     compute_persistent_homology,
 };
@@ -212,15 +212,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    // Step 2: Compute frustration density and viscosity fields
-    println!("[2/5] Computing frustration density and viscosity...");
-    let frustration = field.local_frustration_density(16);
+    // Step 2: Compute imbalance density and viscosity fields
+    println!("[2/5] Computing imbalance density and viscosity...");
+    let imbalance = field.local_imbalance_density(16);
     drop(field);
 
-    let mean_f = frustration.iter().sum::<f64>() / n_cells as f64;
+    let mean_f = imbalance.iter().sum::<f64>() / n_cells as f64;
     println!(
-        "  Mean frustration: {:.6} (attractor = {:.6})",
-        mean_f, VACUUM_ATTRACTOR
+        "  Mean imbalance: {:.6} (attractor = {:.6})",
+        mean_f, IMBALANCE_ATTRACTOR
     );
 
     // Compute viscosity via multiple coupling models
@@ -228,15 +228,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let viscosity_fields: Vec<(String, Vec<f64>)> = models
         .iter()
         .map(|m| {
-            let vis: Vec<f64> = frustration.iter().map(|&f| m.compute(f)).collect();
+            let vis: Vec<f64> = imbalance.iter().map(|&f| m.compute(f)).collect();
             (m.label().to_string(), vis)
         })
         .collect();
 
-    // Step 3: Extract point clouds from high-frustration and high-viscosity regions
+    // Step 3: Extract point clouds from high-imbalance and high-viscosity regions
     println!("[3/5] Extracting point clouds...");
-    let frustration_points = extract_top_k_points(
-        &frustration,
+    let imbalance_points = extract_top_k_points(
+        &imbalance,
         nx,
         nx,
         nx,
@@ -244,10 +244,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         0.2, // Top 20%
     );
 
-    // Step 4: Compute VR topology on frustration point cloud
+    // Step 4: Compute VR topology on imbalance point cloud
     println!("[4/5] Computing topology...");
     let (frust_d0, frust_d1, frust_b0, frust_b1) =
-        compute_topology(&frustration_points, "Frustration");
+        compute_topology(&imbalance_points, "Imbalance");
 
     // Compute VR topology on each viscosity model's point cloud
     // Store point clouds for overlap analysis
@@ -268,9 +268,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Step 5: Compare persistence diagrams and spatial correlations
     println!("[5/5] Computing cross-thesis correlations...");
 
-    // Spatial correlation: frustration vs each viscosity field
+    // Spatial correlation: imbalance vs each viscosity field
     let regions = grid_partition_3d(nx, nx, nx, args.n_sub);
-    let frustration_means = regional_means(&frustration, &regions, nx, nx);
+    let imbalance_means = regional_means(&imbalance, &regions, nx, nx);
 
     let mut report = String::new();
     let _ = writeln!(report, "[metadata]");
@@ -285,12 +285,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _ = writeln!(report, "n_sub = {}", args.n_sub);
     let _ = writeln!(report, "lambda = {:.3}", args.lambda);
     let _ = writeln!(report, "nu_base = {:.6}", args.nu_base);
-    let _ = writeln!(report, "vacuum_attractor = {:.6}", VACUUM_ATTRACTOR);
-    let _ = writeln!(report, "mean_frustration = {:.6}", mean_f);
+    let _ = writeln!(report, "imbalance_attractor = {:.6}", IMBALANCE_ATTRACTOR);
+    let _ = writeln!(report, "mean_imbalance = {:.6}", mean_f);
     let _ = writeln!(report);
 
-    let _ = writeln!(report, "[frustration_topology]");
-    let _ = writeln!(report, "n_points = {}", frustration_points.len());
+    let _ = writeln!(report, "[imbalance_topology]");
+    let _ = writeln!(report, "n_points = {}", imbalance_points.len());
     let _ = writeln!(report, "betti_0 = {}", frust_b0);
     let _ = writeln!(report, "betti_1 = {}", frust_b1);
     let _ = writeln!(
@@ -315,8 +315,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     let _ = writeln!(report);
 
-    // Compute CV of frustration regional means as baseline
-    let frust_cv = coefficient_of_variation(&frustration_means);
+    // Compute CV of imbalance regional means as baseline
+    let frust_cv = coefficient_of_variation(&imbalance_means);
 
     for mt in &vis_results {
         let vis_field = &viscosity_fields
@@ -326,8 +326,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .1;
 
         let vis_means = regional_means(vis_field, &regions, nx, nx);
-        let sp_r = spearman_correlation(&frustration_means, &vis_means);
-        let pe_r = pearson_correlation(&frustration_means, &vis_means);
+        let sp_r = spearman_correlation(&imbalance_means, &vis_means);
+        let pe_r = pearson_correlation(&imbalance_means, &vis_means);
 
         let w2_h0 = frust_d0.wasserstein_distance(&mt.diagram_h0, 2.0);
         let w2_h1 = frust_d1.wasserstein_distance(&mt.diagram_h1, 2.0);
@@ -336,13 +336,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Diagnostic metrics for sigmoid paradox analysis
         let grid_spacing = 1.0 / nx.max(2) as f64;
-        let overlap = point_cloud_overlap(&frustration_points, &mt.points, grid_spacing * 0.5);
+        let overlap = point_cloud_overlap(&imbalance_points, &mt.points, grid_spacing * 0.5);
         let vis_cv = coefficient_of_variation(&vis_means);
-        let nli = nonlinearity_index(&frustration_means, &vis_means);
-        let dr_ratio = dynamic_range_ratio(&frustration_means, &vis_means);
+        let nli = nonlinearity_index(&imbalance_means, &vis_means);
+        let dr_ratio = dynamic_range_ratio(&imbalance_means, &vis_means);
 
         println!(
-            "  {} vs Frustration: W2_H0={:.6}, W2_H1={:.6}, sp={:.4}, pe={:.4}, \
+            "  {} vs Imbalance: W2_H0={:.6}, W2_H1={:.6}, sp={:.4}, pe={:.4}, \
              overlap={:.3}, CV_ratio={:.4}, NLI={:.4}",
             mt.label,
             w2_h0,
@@ -382,10 +382,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "total_persistence_h1 = {:.8}",
             mt.diagram_h1.total_persistence()
         );
-        let _ = writeln!(report, "wasserstein_h0_vs_frustration = {:.8}", w2_h0);
-        let _ = writeln!(report, "wasserstein_h1_vs_frustration = {:.8}", w2_h1);
-        let _ = writeln!(report, "bottleneck_h0_vs_frustration = {:.8}", bn_h0);
-        let _ = writeln!(report, "bottleneck_h1_vs_frustration = {:.8}", bn_h1);
+        let _ = writeln!(report, "wasserstein_h0_vs_imbalance = {:.8}", w2_h0);
+        let _ = writeln!(report, "wasserstein_h1_vs_imbalance = {:.8}", w2_h1);
+        let _ = writeln!(report, "bottleneck_h0_vs_imbalance = {:.8}", bn_h0);
+        let _ = writeln!(report, "bottleneck_h1_vs_imbalance = {:.8}", bn_h1);
         let _ = writeln!(report, "spearman_r = {:.6}", sp_r);
         let _ = writeln!(report, "pearson_r = {:.6}", pe_r);
         let _ = writeln!(report, "n_regions = {}", regions.len());
@@ -397,9 +397,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let _ = writeln!(report);
     }
 
-    // Summary: which viscosity model's topology is most similar to frustration?
+    // Summary: which viscosity model's topology is most similar to imbalance?
     let _ = writeln!(report, "[summary]");
-    let _ = writeln!(report, "frustration_cv = {:.8}", frust_cv);
+    let _ = writeln!(report, "imbalance_cv = {:.8}", frust_cv);
     if let Some(best) = vis_results
         .iter()
         .filter(|mt| mt.label != "constant")

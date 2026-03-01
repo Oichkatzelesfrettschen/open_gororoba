@@ -1,0 +1,49 @@
+%% Fig 37: Workspace crate dependency graph (simplified top-level)
+\begin{tikzpicture}[
+  crate/.style={
+    draw, rounded corners=2pt, minimum width=1.5cm,
+    minimum height=0.5cm, font=\ttfamily\tiny, thick, inner sep=2pt
+  },
+  dep/.style={-{Stealth[length=3pt]}, gray!40, thin},
+  x=2.0cm, y=1.2cm,
+]
+  %% Core crates (layer 0)
+  \node[crate, fill=cAlgebraLight, draw=cAlgebra!60] (algcore) at (0,0) {algebra\_core};
+  \node[crate, fill=cFluidLight, draw=cFluid!60] (lbm) at (2,0) {lbm\_core};
+  \node[crate, fill=cStatisticsLight, draw=cStatistics!60] (stats) at (4,0) {stats\_core};
+
+  %% Domain crates (layer 1)
+  \node[crate, fill=cGRLight, draw=cGR!60] (gr) at (0,-1) {gr\_core};
+  \node[crate, fill=cMaterialsLight, draw=cMaterials!60] (mat) at (2,-1) {materials\_core};
+  \node[crate, fill=cOpticsLight, draw=cOptics!60] (opt) at (4,-1) {optics\_core};
+  \node[crate, fill=cQuantumLight, draw=cQuantum!60] (vac) at (6,-1) {vacuum\_frust.};
+  \node[crate, fill=cCosmologyLight, draw=cCosmology!60] (cosmo) at (6,0) {cosmo\_core};
+
+  %% Infrastructure crates (layer 2)
+  \node[crate, fill=gray!10, draw=gray!40] (data) at (1,-2) {data\_core};
+  \node[crate, fill=gray!10, draw=gray!40] (topo) at (3,-2) {topo\_core};
+  \node[crate, fill=OIgreen!10, draw=OIgreen!40] (ver) at (5,-2) {verified\_core};
+
+  %% CLI crates (layer 3)
+  \node[crate, fill=gray!5, draw=gray!30] (cli1) at (0,-3) {cli\_algebra};
+  \node[crate, fill=gray!5, draw=gray!30] (cli2) at (2,-3) {cli\_data};
+  \node[crate, fill=gray!5, draw=gray!30] (cli3) at (4,-3) {cli\_physics};
+
+  %% Dependencies (selected)
+  \draw[dep] (lbm) -- (algcore);
+  \draw[dep] (gr) -- (algcore);
+  \draw[dep] (mat) -- (opt);
+  \draw[dep] (vac) -- (algcore);
+  \draw[dep] (vac) -- (stats);
+  \draw[dep] (data) -- (algcore);
+  \draw[dep] (topo) -- (stats);
+  \draw[dep] (cli1) -- (algcore);
+  \draw[dep] (cli2) -- (data);
+  \draw[dep] (cli3) -- (gr);
+  \draw[dep] (cli3) -- (lbm);
+  \draw[dep] (ver) -- (algcore);
+
+  %% Count annotation
+  \node[font=\sffamily\scriptsize, gray, align=center] at (3,-4)
+    {\cratecount{} workspace crates, \binarycount{} binaries};
+\end{tikzpicture}

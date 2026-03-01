@@ -167,7 +167,7 @@ pub fn reynolds_number(velocity_m_s: f64, length_m: f64, nu_m2_s: f64) -> f64 {
 
 /// Load lambda results from registry TOML.
 ///
-/// Returns lambda coupling strength for frustration F=0.35 (baseline).
+/// Returns lambda coupling strength for imbalance F=0.35 (baseline).
 ///
 /// # Returns
 /// HashMap mapping material ID to LambdaResult.
@@ -192,9 +192,9 @@ pub fn load_lambda_results() -> HashMap<String, LambdaResult> {
         .collect()
 }
 
-/// Get lambda coupling strength for material at baseline frustration (F=0.35).
+/// Get lambda coupling strength for material at baseline imbalance (F=0.35).
 ///
-/// Lambda measures how strongly frustration modulates viscosity:
+/// Lambda measures how strongly imbalance modulates viscosity:
 /// - lambda >> 100: STRONG coupling (low temperature, quantum effects)
 /// - lambda ~ 10-100: MODERATE coupling
 /// - lambda ~ 1-10: WEAK coupling (thermal effects dominate)
@@ -216,7 +216,7 @@ pub fn get_lambda(material_id: &str) -> Option<f64> {
     results.get(material_id).map(|r| r.lambda_computed)
 }
 
-/// Get coupling regime for material at baseline frustration (F=0.35).
+/// Get coupling regime for material at baseline imbalance (F=0.35).
 ///
 /// # Arguments
 /// * `material_id` - Material identifier

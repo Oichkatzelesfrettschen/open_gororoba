@@ -1,0 +1,53 @@
+%% Fig 33: Seven-method falsification pipeline flowchart
+\begin{tikzpicture}[
+  method/.style={
+    draw, rounded corners=3pt, minimum width=2.6cm,
+    minimum height=0.7cm, font=\sffamily\tiny, thick, inner sep=3pt,
+    align=center
+  },
+  arr/.style={-{Stealth[length=4pt]}, thick, gray!50},
+  data/.style={
+    draw=cStatistics!60, fill=cStatistics!10, rounded corners=3pt,
+    minimum width=2cm, minimum height=0.6cm, font=\sffamily\tiny, thick
+  },
+]
+  %% Input
+  \node[data] (input) at (0,0) {Raw spectra};
+
+  %% 7 methods branching out
+  \node[method, fill=OIorange!15, draw=OIorange!60] (ls) at (-5,-2)
+    {1. Lomb--Scargle\\+ Baluev FAP};
+  \node[method, fill=OIskyblue!15, draw=OIskyblue!60] (iaaft) at (-2.5,-2)
+    {2. IAAFT\\surrogates};
+  \node[method, fill=OIblue!15, draw=OIblue!60] (mt) at (0,-2)
+    {3. Thomson\\multitaper};
+  \node[method, fill=OIpurple!15, draw=OIpurple!60] (li) at (2.5,-2)
+    {4. Li (2012)\\quantile};
+  \node[method, fill=OIgreen!15, draw=OIgreen!60] (msc) at (5,-2)
+    {5. Magnitude-sq.\\coherence};
+  \node[method, fill=OIvermillion!15, draw=OIvermillion!60] (fs) at (-2.5,-4)
+    {6. Fisher/Stouffer\\combination};
+  \node[method, fill=OIgray!15, draw=OIgray!60] (boot) at (2.5,-4)
+    {7. Bootstrap null\\(sorted data)};
+
+  %% Arrows from input to methods
+  \foreach \m in {ls,iaaft,mt,li,msc} {
+    \draw[arr] (input) -- (\m);
+  }
+  \draw[arr] (input) |- (fs);
+  \draw[arr] (input) |- (boot);
+
+  %% Output: combined verdict
+  \node[data, fill=OIgreen!15, draw=OIgreen!60, minimum width=3cm] (verdict)
+    at (0,-6) {Combined verdict};
+  \foreach \m in {ls,iaaft,mt,li,msc,fs,boot} {
+    \draw[arr] (\m) -- (verdict);
+  }
+
+  %% Result annotation
+  \node[draw, rounded corners, fill=gray!5, font=\sffamily\scriptsize,
+    align=center] at (0,-7.5)
+    {17 datasets: 3 DETECTED, 14 NULL\\
+    Fisher $p = 0.96$, Stouffer $Z = -12.88$\\
+    C-791 definitively falsified};
+\end{tikzpicture}

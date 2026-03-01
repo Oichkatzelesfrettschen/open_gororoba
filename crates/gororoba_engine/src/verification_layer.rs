@@ -2,7 +2,7 @@
 
 use crate::traits::{PipelineState, VerificationLayer, VerificationReport};
 use gr_core::ppn_constraints::check_all_ppn_constraints;
-use vacuum_frustration::{CASSINI_OMEGA_BD_LOWER_BOUND, ScalarFrustrationMap, omega_eff_from_phi};
+use sign_imbalance::{CASSINI_OMEGA_BD_LOWER_BOUND, ScalarImbalanceMap, omega_eff_from_phi};
 
 /// Default verification policy for thesis execution.
 #[derive(Debug, Clone, Copy)]
@@ -25,12 +25,12 @@ impl VerificationLayer for ThesisVerifier {
         let mut messages = Vec::new();
         let mut pass = true;
 
-        if state.frustration.is_empty() {
+        if state.imbalance.is_empty() {
             pass = false;
-            messages.push("no frustration field produced".to_string());
+            messages.push("no imbalance field produced".to_string());
         } else {
-            let mean_f = state.frustration.iter().sum::<f64>() / state.frustration.len() as f64;
-            let phi = ScalarFrustrationMap::new(self.lambda).phi(mean_f);
+            let mean_f = state.imbalance.iter().sum::<f64>() / state.imbalance.len() as f64;
+            let phi = ScalarImbalanceMap::new(self.lambda).phi(mean_f);
             let omega_eff = omega_eff_from_phi(phi, self.omega_reference);
             if omega_eff < CASSINI_OMEGA_BD_LOWER_BOUND {
                 pass = false;

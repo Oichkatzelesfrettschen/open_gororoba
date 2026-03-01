@@ -245,11 +245,11 @@ Total experiments: 82.\\[0.5em]
 
 \textbf{Claims:} none
 
-\subsection{E-027: Topology-Frustration Correlation via Persistent Homology (Thesis 1)}\label{sec:e027}
+\subsection{E-027: Topology-Imbalance Correlation via Persistent Homology (Thesis 1)}\label{sec:e027}
 
 \textbf{Binary:} \texttt{e027-topology-analyzer} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
 
-\textbf{Method:} VR persistent homology on velocity point cloud, CD psi-weighted triangle frustration, Pearson correlation + Fisher-Yates permutation test
+\textbf{Method:} VR persistent homology on velocity point cloud, CD psi-weighted triangle imbalance, Pearson correlation + Fisher-Yates permutation test
 
 \textbf{Run:} \texttt{cargo run --bin e027-topology-analyzer -- --grid-size 16 --epsilon-steps 20 --max-points 100 --n-permutations 200}
 
@@ -275,11 +275,11 @@ Total experiments: 82.\\[0.5em]
 
 \textbf{Claims:} C-671, C-672, C-673
 
-\subsection{E-030: TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)}\label{sec:e030}
+\subsection{E-030: TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)}\label{sec:e030}
 
 \textbf{Binary:} \texttt{thesis-cross-tx1} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} no
 
-\textbf{Method:} 3D toroidal random walk with CD product noise, frustration density modulates local noise amplitude via alpha parameter, return-time shell binning, power-law gamma fitting
+\textbf{Method:} 3D toroidal random walk with CD product noise, imbalance density modulates local noise amplitude via alpha parameter, return-time shell binning, power-law gamma fitting
 
 \textbf{Run:} \texttt{cargo run --release --bin thesis-cross-tx1 -- --grid\_size 16 --n\_steps 50000}
 
@@ -289,7 +289,7 @@ Total experiments: 82.\\[0.5em]
 
 \textbf{Binary:} \texttt{thesis-cross-tx2} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
 
-\textbf{Method:} Frustration -> viscosity -> LBM evolution -> velocity field -> lattice filtration -> latency law classification, lambda sweep for coupling strength
+\textbf{Method:} Imbalance -> viscosity -> LBM evolution -> velocity field -> lattice filtration -> latency law classification, lambda sweep for coupling strength
 
 \textbf{Run:} \texttt{cargo run --release --bin thesis-cross-tx2 -- --grid\_size 16 --lbm\_steps 500}
 
@@ -315,7 +315,7 @@ Total experiments: 82.\\[0.5em]
 
 \textbf{Claims:} C-674
 
-\subsection{E-034: Kubo Linear-Response Frustration-Viscosity Coupling Derivation}\label{sec:e034}
+\subsection{E-034: Kubo Linear-Response Imbalance-Viscosity Coupling Derivation}\label{sec:e034}
 
 \textbf{Binary:} \texttt{kubo-coupling-analysis} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} yes
 
@@ -339,19 +339,19 @@ Total experiments: 82.\\[0.5em]
 
 \textbf{Binary:} \texttt{spin-decoherence-pipeline} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
 
-\textbf{Method:} Mapping of STAR 2026 spin correlation data to CD frustration density. Verifies monotonic decay of entanglement and sudden death threshold in the algebraic vacuum limit.
+\textbf{Method:} Mapping of STAR 2026 spin correlation data to CD imbalance density. Verifies monotonic decay of entanglement and sudden death threshold in the algebraic vacuum limit.
 
 \textbf{Run:} \texttt{cargo run --release --bin spin-decoherence-pipeline}
 
 \textbf{Claims:} none
 
-\subsection{E-037: Single-Minus Amplitude Frustration Survey}\label{sec:e037}
+\subsection{E-037: Single-Minus Amplitude Imbalance Survey}\label{sec:e037}
 
-\textbf{Binary:} \texttt{amplitude-frustration-survey} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
+\textbf{Binary:} \texttt{amplitude-imbalance-survey} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
 
-\textbf{Method:} Exhaustive search of the single-minus gluon amplitude support region R1. Maps support region to the global minima of the algebraic frustration landscape (zero-frustration chambers).
+\textbf{Method:} Exhaustive search of the single-minus gluon amplitude support region R1. Maps support region to the global minima of the algebraic imbalance landscape (zero-imbalance chambers).
 
-\textbf{Run:} \texttt{cargo run --release --bin amplitude-frustration-survey}
+\textbf{Run:} \texttt{cargo run --release --bin amplitude-imbalance-survey}
 
 \textbf{Claims:} C-776, C-777
 
@@ -359,7 +359,7 @@ Total experiments: 82.\\[0.5em]
 
 \textbf{Binary:} \texttt{lhc-2025-qgp-synthesis} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
 
-\textbf{Method:} Integration of Run 3 ALICE (Pb-Pb 5.36 TeV) and CMS (pPb 8.16 TeV) results. Predictive modeling using QGPFrustrationBridge to map vorticity and temperature to CD frustration. Validates algebraic twist correction against CMS azimuthal sign challenge.
+\textbf{Method:} Integration of Run 3 ALICE (Pb-Pb 5.36 TeV) and CMS (pPb 8.16 TeV) results. Predictive modeling using QGPImbalanceBridge to map vorticity and temperature to CD imbalance. Validates algebraic twist correction against CMS azimuthal sign challenge.
 
 \textbf{Run:} \texttt{cargo run --release --bin lhc-2025-qgp-synthesis}
 
@@ -609,7 +609,7 @@ Total experiments: 82.\\[0.5em]
 
 \textbf{Binary:} \texttt{zd-resonance-cuda} \quad \textbf{Status:} active \quad \textbf{Deterministic:} no \quad \textbf{GPU:} yes
 
-\textbf{Method:} D3Q19 LBM at 128\textasciicircum{}3 with BF16 precision and per-cell Sedenion frustration viscosity (Exponential model, lambda=3.0). Sweep tau from 0.55 to 1.00 (10 values). For each tau: nu\_base=(tau-0.5)/3.0, compute per-cell viscosity field, 1000 steps, extract KE every 10 steps, FFT + ghost peak detection. Control run at matching resolution with constant tau (no ZD modulation). Tests C-792 (frequency locking: |slope| < 0.01 in peak\_freq vs tau) and C-793 (production ghost detection: SNR > 3 at phi\textasciicircum{}\{-1/2\}).
+\textbf{Method:} D3Q19 LBM at 128\textasciicircum{}3 with BF16 precision and per-cell Sedenion imbalance viscosity (Exponential model, lambda=3.0). Sweep tau from 0.55 to 1.00 (10 values). For each tau: nu\_base=(tau-0.5)/3.0, compute per-cell viscosity field, 1000 steps, extract KE every 10 steps, FFT + ghost peak detection. Control run at matching resolution with constant tau (no ZD modulation). Tests C-792 (frequency locking: |slope| < 0.01 in peak\_freq vs tau) and C-793 (production ghost detection: SNR > 3 at phi\textasciicircum{}\{-1/2\}).
 
 \textbf{Run:} \texttt{cargo run --release --bin zd-resonance-cuda -- sweep --res 128 \&\& cargo run --release --bin zd-resonance-cuda -- control --res 128}
 
@@ -755,13 +755,13 @@ Total experiments: 82.\\[0.5em]
 
 \textbf{Claims:} C-853, C-854, C-855, C-856
 
-\subsection{E-078: Immirzi Bridge Frustration-Entropy Mapping}\label{sec:e078}
+\subsection{E-078: Immirzi Bridge Imbalance-Entropy Mapping}\label{sec:e078}
 
 \textbf{Binary:} \texttt{} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
 
-\textbf{Method:} Evaluate 6 candidate mappings from frustration density phi to Immirzi parameter gamma. Key finding: frustration-entropy bridge H(phi)/(pi*sqrt(3)) maps phi=3/8 to gamma \textasciitilde{} 0.122, within 2\% of gamma\_NZJ. Binary entropy at phi=1/2 recovers gamma\_BG exactly.
+\textbf{Method:} Evaluate 6 candidate mappings from imbalance density phi to Immirzi parameter gamma. Key finding: imbalance-entropy bridge H(phi)/(pi*sqrt(3)) maps phi=3/8 to gamma \textasciitilde{} 0.122, within 2\% of gamma\_NZJ. Binary entropy at phi=1/2 recovers gamma\_BG exactly.
 
-\textbf{Run:} \texttt{cargo test -p vacuum\_frustration --lib immirzi\_bridge}
+\textbf{Run:} \texttt{cargo test -p sign\_imbalance --lib immirzi\_bridge}
 
 \textbf{Claims:} C-859, C-860, C-861
 
@@ -809,17 +809,17 @@ Total experiments: 82.\\[0.5em]
 
 \textbf{Binary:} \texttt{algebraic-warp-sweep} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
 
-\textbf{Method:} 2D energy integration with algebraic York time correction and sedenion stress-energy source. Coupling alpha=0.01, frustration at vacuum attractor 3/8.
+\textbf{Method:} 2D energy integration with algebraic York time correction and sedenion stress-energy source. Coupling alpha=0.01, imbalance at imbalance attractor 3/8.
 
 \textbf{Run:} \texttt{cargo run --release --bin algebraic-warp-sweep -- --mode tower --coupling-alpha 0.01 --velocity 0.1 --radius 100.0}
 
 \textbf{Claims:} C-877, C-878, C-879
 
-\subsection{E-083: Sedenion foliation frustration-York time correlation analysis}\label{sec:e083}
+\subsection{E-083: Sedenion foliation imbalance-York time correlation analysis}\label{sec:e083}
 
 \textbf{Binary:} \texttt{algebraic-warp-sweep} \quad \textbf{Status:} active \quad \textbf{Deterministic:} yes \quad \textbf{GPU:} no
 
-\textbf{Method:} Construct SedenionFoliation on ADM hypersurfaces, compute frustration at each grid point, pair with York time from extrinsic curvature. Pearson correlation analysis.
+\textbf{Method:} Construct SedenionFoliation on ADM hypersurfaces, compute imbalance at each grid point, pair with York time from extrinsic curvature. Pearson correlation analysis.
 
 \textbf{Run:} \texttt{cargo run --release --bin algebraic-warp-sweep -- --mode tower --coupling-alpha 0.1}
 

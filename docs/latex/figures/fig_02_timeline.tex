@@ -1,0 +1,66 @@
+%% Fig 2: Project timeline (milestones from Sprints 1-57)
+%% TikZ timeline with domain-colored markers
+\begin{tikzpicture}[
+  x=0.22cm,
+  milestone/.style={
+    circle, inner sep=0pt, minimum size=6pt, draw=black!40, thick
+  },
+  mlabel/.style={
+    font=\sffamily\tiny, rotate=45, anchor=south west
+  },
+]
+  %% Horizontal axis
+  \draw[-{Stealth[length=4pt]}, thick, gray!60]
+    (0,0) -- (60,0) node[right, font=\sffamily\small] {Sprint};
+  \foreach \s in {0,10,...,50} {
+    \draw[gray!40] (\s,-0.15) -- (\s,0.15);
+    \node[below, font=\sffamily\tiny, gray] at (\s,-0.2) {\s};
+  }
+
+  %% Cumulative claims curve (approximate)
+  \draw[cAlgebra, thick, opacity=0.6]
+    plot[smooth, tension=0.4] coordinates {
+      (1,0.1) (5,0.3) (10,0.8) (15,1.5) (20,2.5) (25,3.5)
+      (30,4.5) (35,5.5) (40,6.5) (45,7.2) (50,8.0) (55,8.5) (57,8.8)
+    };
+  \node[right, font=\sffamily\tiny, cAlgebra] at (58,8.8) {880 claims};
+
+  %% Y axis for claims (right side)
+  \draw[-{Stealth[length=3pt]}, gray!60]
+    (0,0) -- (0,9.5) node[above, font=\sffamily\tiny, gray] {Claims ($\times 100$)};
+  \foreach \y in {0,2,...,8} {
+    \draw[gray!30] (-0.3,\y) -- (0.3,\y);
+    \node[left, font=\sffamily\tiny, gray] at (-0.4,\y) {\pgfmathparse{int(\y*100)}\pgfmathresult};
+  }
+
+  %% Key milestones (domain-colored)
+  \node[milestone, fill=cAlgebra] (m1) at (5,1.2) {};
+  \node[mlabel] at (m1.north) {CD Tower};
+
+  \node[milestone, fill=cAlgebra] (m2) at (12,2.0) {};
+  \node[mlabel] at (m2.north) {APT Proof};
+
+  \node[milestone, fill=cFluid] (m3) at (18,3.0) {};
+  \node[mlabel] at (m3.north) {LBM Engine};
+
+  \node[milestone, fill=cFluid] (m4) at (25,4.0) {};
+  \node[mlabel] at (m4.north) {4 Theses};
+
+  \node[milestone, fill=cStatistics] (m5) at (32,5.0) {};
+  \node[mlabel] at (m5.north) {Ghost Audit};
+
+  \node[milestone, fill=cGR] (m6) at (38,5.8) {};
+  \node[mlabel] at (m6.north) {GR Module};
+
+  \node[milestone, fill=cQuantum] (m7) at (42,6.5) {};
+  \node[mlabel] at (m7.north) {Rocq Proofs};
+
+  \node[milestone, fill=cMaterials] (m8) at (48,7.5) {};
+  \node[mlabel] at (m8.north) {Optics+Mat};
+
+  \node[milestone, fill=cAlgebra] (m9) at (54,8.3) {};
+  \node[mlabel] at (m9.north) {arXiv Prep};
+
+  \node[milestone, fill=cCosmology] (m10) at (57,8.8) {};
+  \node[mlabel] at (m10.north) {Publication};
+\end{tikzpicture}

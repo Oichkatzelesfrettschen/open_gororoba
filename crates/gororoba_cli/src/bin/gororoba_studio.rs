@@ -978,7 +978,7 @@ fn default_pipeline_catalog() -> Vec<PipelineDescriptor> {
         PipelineDescriptor {
             id: "thesis-1".to_string(),
             title: "T1 Viscous Vacuum Correlation".to_string(),
-            hypothesis: "Frustration density and viscosity should remain strongly coupled in spatial slices.".to_string(),
+            hypothesis: "Imbalance density and viscosity should remain strongly coupled in spatial slices.".to_string(),
             primary_metric: "Spearman correlation".to_string(),
             quick_profile: "8^3 field, subregions=2".to_string(),
             full_profile: "16^3 field, subregions=2".to_string(),

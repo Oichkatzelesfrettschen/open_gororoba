@@ -26,8 +26,8 @@ use spectral_core::ghost_spectral::{
 use std::io::Write;
 use std::path::PathBuf;
 use std::time::Instant;
-use vacuum_frustration::bridge::{
-    FrustrationViscosityBridge, SedenionField, ViscosityCouplingModel,
+use sign_imbalance::bridge::{
+    ImbalanceViscosityBridge, SedenionField, ViscosityCouplingModel,
 };
 
 /// CUDA BF16 ZD Resonance Experiments
@@ -143,7 +143,7 @@ fn generate_sedenion_field(nx: usize, ny: usize, nz: usize, wavelength: f64) -> 
     field
 }
 
-/// Compute viscosity field from Sedenion frustration + coupling model.
+/// Compute viscosity field from Sedenion imbalance + coupling model.
 fn compute_viscosity_field(
     nx: usize,
     ny: usize,
@@ -151,10 +151,10 @@ fn compute_viscosity_field(
     model: &ViscosityCouplingModel,
     wavelength: f64,
 ) -> Vec<f64> {
-    let bridge = FrustrationViscosityBridge::new(16);
+    let bridge = ImbalanceViscosityBridge::new(16);
     let field = generate_sedenion_field(nx, ny, nz, wavelength);
-    let frustration = field.local_frustration_density_par(16);
-    let mut viscosity = bridge.frustration_to_viscosity_model(&frustration, model);
+    let imbalance = field.local_imbalance_density_par(16);
+    let mut viscosity = bridge.imbalance_to_viscosity_model(&imbalance, model);
     for nu in &mut viscosity {
         *nu = nu.clamp(0.001, 0.5);
     }
@@ -512,7 +512,7 @@ fn run_sweep(res: usize, steps: usize, fp32: bool, out_dir: &std::path::Path) ->
     wtr.write_record(csv_header())?;
 
     let wavelength = 10.0;
-    // Exponential model: nu = nu_base * exp(-lambda * frustration)
+    // Exponential model: nu = nu_base * exp(-lambda * imbalance)
     // With lambda=3.0: nu ranges from nu_base (f=0) to nu_base*exp(-3)=0.05*nu_base
     // Per-tau: nu_base = (tau - 0.5) / 3.0, so each tau produces a distinct viscosity field.
     // This ensures the sweep actually tests different flow regimes.
@@ -646,9 +646,9 @@ fn run_coupling_sweep(
 
     let tau = 0.55;
     let wavelength = 10.0;
-    let bridge = FrustrationViscosityBridge::new(16);
+    let bridge = ImbalanceViscosityBridge::new(16);
     let field = generate_sedenion_field(res, res, res, wavelength);
-    let frustration = field.local_frustration_density_par(16);
+    let imbalance = field.local_imbalance_density_par(16);
 
     for &coupling in &COUPLING_VALUES {
         let nu_base = (tau - 0.5) / 3.0;
@@ -660,7 +660,7 @@ fn run_coupling_sweep(
                 lambda: coupling * 10.0,
             }
         };
-        let mut viscosity = bridge.frustration_to_viscosity_model(&frustration, &model);
+        let mut viscosity = bridge.imbalance_to_viscosity_model(&imbalance, &model);
         for nu in &mut viscosity {
             *nu = nu.clamp(0.001, 0.5);
         }

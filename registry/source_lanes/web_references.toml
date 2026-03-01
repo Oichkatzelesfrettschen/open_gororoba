@@ -2020,7 +2020,7 @@ title = "GPU pipeline integration unfinished"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/besag_clifford_cuda.rs"
+canonical_download_path = "crates/sign_imbalance/src/besag_clifford_cuda.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/200::ASOT-0240", "reports/repo_completion_gap_audit_2026_02_14.toml::finding/13::RG-014"]
 
 [[artifact_ref]]
@@ -2265,8 +2265,8 @@ source_refs = ["BIB-0044"]
 
 [[artifact_ref]]
 id = "ASOT-0266"
-key = "title:kubo_linear_response_frustration_viscosity_coupling_derivation"
-title = "Kubo Linear-Response Frustration-Viscosity Coupling Derivation"
+key = "title:kubo_linear_response_imbalance_viscosity_coupling_derivation"
+title = "Kubo Linear-Response Imbalance-Viscosity Coupling Derivation"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
@@ -47580,7 +47580,7 @@ title = "registry/publication_evidence.toml::section/2/evidence"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/bridge.rs"
+canonical_download_path = "crates/sign_imbalance/src/bridge.rs"
 source_refs = ["registry/publication_evidence.toml::section/2/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4756::ASOT-5877"]
 
 [[artifact_ref]]
@@ -47590,7 +47590,7 @@ title = "registry/publication_evidence.toml::section/3/evidence"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/bridge.rs"
+canonical_download_path = "crates/sign_imbalance/src/bridge.rs"
 source_refs = ["registry/publication_evidence.toml::section/3/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4757::ASOT-5878"]
 
 [[artifact_ref]]
@@ -47610,7 +47610,7 @@ title = "registry/publication_evidence.toml::section/5/evidence"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/vietoris_rips.rs"
+canonical_download_path = "crates/sign_imbalance/src/vietoris_rips.rs"
 source_refs = ["registry/publication_evidence.toml::section/5/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4759::ASOT-5880"]
 
 [[artifact_ref]]
@@ -47650,7 +47650,7 @@ title = "registry/publication_evidence.toml::section/9/evidence"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/kubo_transport.rs"
+canonical_download_path = "crates/sign_imbalance/src/kubo_transport.rs"
 source_refs = ["registry/publication_evidence.toml::section/9/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4763::ASOT-5884"]
 
 [[artifact_ref]]
@@ -56980,7 +56980,7 @@ title = "registry/toml_inventory.toml::document/28::TOML-0029"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/Cargo.toml"
+canonical_download_path = "crates/sign_imbalance/Cargo.toml"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/5696::ASOT-6821", "registry/toml_inventory.toml::document/28::TOML-0029"]
 
 [[artifact_ref]]
@@ -67580,7 +67580,7 @@ title = "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/6"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/bridge.rs"
+canonical_download_path = "crates/sign_imbalance/src/bridge.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6756::ASOT-8071", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/6"]
 
 [[artifact_ref]]
@@ -67590,7 +67590,7 @@ title = "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/7"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/tests/integration_test.rs"
+canonical_download_path = "crates/sign_imbalance/tests/integration_test.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6757::ASOT-8072", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/7"]
 
 [[artifact_ref]]
@@ -67600,7 +67600,7 @@ title = "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/8"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/Cargo.toml"
+canonical_download_path = "crates/sign_imbalance/Cargo.toml"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6758::ASOT-8073", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/8"]
 
 [[artifact_ref]]
@@ -67940,7 +67940,7 @@ title = "reports/spec_stpt_006_scalar_tov.toml::test_case/0::TC-006-01"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/frustration.rs"
+canonical_download_path = "crates/sign_imbalance/src/imbalance.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6792::ASOT-8117", "reports/spec_stpt_006_scalar_tov.toml::test_case/0::TC-006-01"]
 
 [[artifact_ref]]
@@ -67950,7 +67950,7 @@ title = "reports/spec_stpt_006_scalar_tov.toml::test_case/1::TC-006-02"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/tests/integration_test.rs"
+canonical_download_path = "crates/sign_imbalance/tests/integration_test.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6793::ASOT-8118", "reports/spec_stpt_006_scalar_tov.toml::test_case/1::TC-006-02"]
 
 [[artifact_ref]]
@@ -68365,12 +68365,12 @@ source_refs = ["BIB-0161"]
 
 [[artifact_ref]]
 id = "ASOT-8160"
-key = "title:scalar_frustration_to_viscosity_bridge_boundary"
-title = "Scalar frustration-to-viscosity bridge boundary"
+key = "title:scalar_imbalance_to_viscosity_bridge_boundary"
+title = "Scalar imbalance-to-viscosity bridge boundary"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/bridge.rs"
+canonical_download_path = "crates/sign_imbalance/src/bridge.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6835::ASOT-8160", "reports/pure_rust_port_boundaries_2026_02_14.toml::boundary/1::PB-002"]
 
 [[artifact_ref]]
@@ -68535,8 +68535,8 @@ source_refs = ["registry/knowledge/docs/DOC-0078.toml::document::DOC-0078", "reg
 
 [[artifact_ref]]
 id = "ASOT-8178"
-key = "title:surface_tension_of_frustration"
-title = "Surface Tension of Frustration"
+key = "title:surface_tension_of_imbalance"
+title = "Surface Tension of Imbalance"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
@@ -68785,8 +68785,8 @@ source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6876::AS
 
 [[artifact_ref]]
 id = "ASOT-8204"
-key = "title:tx_1_frustration_modulated_collision_dynamics_t1_x_t4"
-title = "TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)"
+key = "title:tx_1_imbalance_modulated_collision_dynamics_t1_x_t4"
+title = "TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""

@@ -1,0 +1,33 @@
+%% Fig 20: Simultaneous pass/fail matrix
+%% Rows: 4 theses, Columns: test configurations
+\begin{tikzpicture}[
+  cell/.style={minimum width=2.2cm, minimum height=0.8cm,
+    font=\sffamily\scriptsize, align=center},
+  pass/.style={cell, fill=OIgreen!20},
+  hdr/.style={cell, fill=gray!15, font=\sffamily\scriptsize\bfseries},
+]
+  \matrix[
+    matrix of nodes,
+    nodes={cell, draw=gray!30, anchor=center},
+    row 1/.style={nodes={hdr}},
+    column 1/.style={nodes={hdr}},
+  ] (m) {
+            & $16^3$ & $32^3$ & $64^3$ & Synthesis \\
+    T1: $r_s$ & |[pass]| $-0.952$ & |[pass]| $-0.952$ & |[pass]| $-0.952$ & |[pass]| $-1.0$ \\
+    T2: Ratio & |[pass]| $1.25$ & |[pass]| $1.25$ & |[pass]| $1.25$ & |[pass]| $1.254$ \\
+    T3: Redn. & |[pass]| $78\%$ & |[pass]| $78\%$ & |[pass]| $78\%$ & |[pass]| $78\%$ \\
+    T4: $R^2$ & |[pass]| $0.995$ & |[pass]| $0.995$ & |[pass]| $0.995$ & |[pass]| $0.995$ \\
+  };
+
+  %% Check marks in each pass cell
+  \foreach \r in {2,...,5} {
+    \foreach \c in {2,...,5} {
+      \node[font=\sffamily\tiny, OIgreen!70!black] at (m-\r-\c.north east)
+        [anchor=north east, xshift=-1pt, yshift=-1pt] {$\checkmark$};
+    }
+  }
+
+  %% Summary below
+  \node[font=\sffamily\small, OIgreen!60!black, anchor=north] at (m.south)
+    [yshift=-4pt] {All 16/16 cells PASS simultaneously};
+\end{tikzpicture}

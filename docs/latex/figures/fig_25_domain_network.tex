@@ -1,0 +1,45 @@
+%% Fig 25: Domain network graph (8 domains, weighted edges)
+\begin{tikzpicture}[
+  domnode/.style={
+    circle, draw, thick, minimum size=1.4cm,
+    font=\sffamily\scriptsize\bfseries, text=white, inner sep=2pt,
+    align=center
+  },
+  link/.style={thick, opacity=0.5},
+]
+  %% 8 domains in a circle layout
+  \node[domnode, fill=cAlgebra] (alg) at (90:3.5) {Algebra\\(340)};
+  \node[domnode, fill=cFluid] (fluid) at (45:3.5) {Fluid\\(180)};
+  \node[domnode, fill=cGR] (gr) at (0:3.5) {GR\\(85)};
+  \node[domnode, fill=cQuantum] (quant) at (-45:3.5) {Quantum\\(45)};
+  \node[domnode, fill=cMaterials] (mat) at (-90:3.5) {Materials\\(60)};
+  \node[domnode, fill=cOptics] (opt) at (-135:3.5) {Optics\\(55)};
+  \node[domnode, fill=cStatistics] (stat) at (180:3.5) {Statistics\\(70)};
+  \node[domnode, fill=cCosmology] (cosmo) at (135:3.5) {Cosmology\\(45)};
+
+  %% Weighted edges (width = shared claims / 20)
+  %% Algebra-Fluid (strongest link)
+  \draw[link, cAlgebra, line width=4pt] (alg) -- (fluid);
+  %% Algebra-GR
+  \draw[link, cAlgebra!60!cGR, line width=2pt] (alg) -- (gr);
+  %% Algebra-Quantum
+  \draw[link, cAlgebra!60!cQuantum, line width=1.5pt] (alg) -- (quant);
+  %% Fluid-Statistics
+  \draw[link, cFluid!60!cStatistics, line width=2.5pt] (fluid) -- (stat);
+  %% GR-Optics
+  \draw[link, cGR!60!cOptics, line width=1.5pt] (gr) -- (opt);
+  %% GR-Cosmology
+  \draw[link, cGR!60!cCosmology, line width=2pt] (gr) -- (cosmo);
+  %% Optics-Materials
+  \draw[link, cOptics!60!cMaterials, line width=2pt] (opt) -- (mat);
+  %% Statistics-Fluid
+  \draw[link, cStatistics!60!cFluid, line width=1pt] (stat) -- (fluid);
+  %% Algebra-Statistics (ghost audit)
+  \draw[link, cAlgebra!60!cStatistics, line width=1.5pt] (alg) -- (stat);
+  %% Quantum-Materials
+  \draw[link, cQuantum!60!cMaterials, line width=1pt] (quant) -- (mat);
+
+  %% Center label
+  \node[font=\sffamily\footnotesize, gray, align=center] at (0,0)
+    {\claimcount{} claims\\across 8 domains};
+\end{tikzpicture}

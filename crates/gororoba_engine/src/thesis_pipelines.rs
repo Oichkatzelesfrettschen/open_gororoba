@@ -11,10 +11,10 @@ use nalgebra::Vector3;
 use rand::Rng;
 
 // ---------------------------------------------------------------------------
-// Thesis 1: Viscous Vacuum -- Frustration-Topology Spatial Correlation
+// Thesis 1: Viscous Vacuum -- Imbalance-Topology Spatial Correlation
 // ---------------------------------------------------------------------------
 
-/// Pipeline for Thesis 1: spatial correlation between frustration density
+/// Pipeline for Thesis 1: spatial correlation between imbalance density
 /// and topological observables in 3D sedenion field.
 #[derive(Debug, Clone)]
 pub struct Thesis1Pipeline {
@@ -41,11 +41,11 @@ impl Default for Thesis1Pipeline {
 
 impl ThesisPipeline for Thesis1Pipeline {
     fn name(&self) -> &str {
-        "T1: Viscous Vacuum (Frustration-Topology)"
+        "T1: Viscous Vacuum (Imbalance-Topology)"
     }
 
     fn execute(&self) -> ThesisEvidence {
-        use vacuum_frustration::{FrustrationViscosityBridge, SedenionField, spatial_correlation};
+        use sign_imbalance::{ImbalanceViscosityBridge, SedenionField, spatial_correlation};
 
         let n = self.grid_size;
 
@@ -63,13 +63,13 @@ impl ThesisPipeline for Thesis1Pipeline {
             }
         }
 
-        // Compute frustration and viscosity
-        let frustration = field.local_frustration_density(16);
-        let bridge = FrustrationViscosityBridge::new(16);
-        let viscosity = bridge.frustration_to_viscosity(&frustration, 1.0 / 3.0, self.lambda);
+        // Compute imbalance and viscosity
+        let imbalance = field.local_imbalance_density(16);
+        let bridge = ImbalanceViscosityBridge::new(16);
+        let viscosity = bridge.imbalance_to_viscosity(&imbalance, 1.0 / 3.0, self.lambda);
 
-        // Spatial correlation between frustration and viscosity
-        let result = spatial_correlation(&frustration, &viscosity, n, n, n, self.n_sub);
+        // Spatial correlation between imbalance and viscosity
+        let result = spatial_correlation(&imbalance, &viscosity, n, n, n, self.n_sub);
 
         let passes = result.spearman_r.abs() > 0.5;
 
@@ -468,13 +468,13 @@ impl ThesisPipeline for Thesis4Pipeline {
 }
 
 // ---------------------------------------------------------------------------
-// Thesis 5: Spin Decoherence from CD Frustration
+// Thesis 5: Spin Decoherence from CD Imbalance
 // ---------------------------------------------------------------------------
 
-/// Pipeline for Thesis 5: spin correlation decay driven by CD frustration/associator fields.
+/// Pipeline for Thesis 5: spin correlation decay driven by CD imbalance/associator fields.
 ///
 /// This pipeline tests whether the non-associative "medium" (parameterized by
-/// local frustration and associator norms) induces a monotonic decay in
+/// local imbalance and associator norms) induces a monotonic decay in
 /// reconstructed spin correlation P, mirroring the STAR results.
 #[derive(Debug, Clone)]
 pub struct Thesis5Pipeline {
@@ -482,7 +482,7 @@ pub struct Thesis5Pipeline {
     pub grid_size: usize,
     /// Number of synthetic spin events per bin
     pub events_per_bin: usize,
-    /// Frustration scaling coefficient
+    /// Imbalance scaling coefficient
     pub c_f: f64,
     /// Associator scaling coefficient
     pub c_a: f64,
@@ -507,7 +507,7 @@ impl Default for Thesis5Pipeline {
 
 impl ThesisPipeline for Thesis5Pipeline {
     fn name(&self) -> &str {
-        "T5: Spin Decoherence (CD Frustration)"
+        "T5: Spin Decoherence (CD Imbalance)"
     }
 
     fn execute(&self) -> ThesisEvidence {
@@ -515,7 +515,7 @@ impl ThesisPipeline for Thesis5Pipeline {
         use nalgebra::Matrix3;
         use rand::prelude::*;
         use spin_tomography_core::{AlgebraicTriad, SpinEvent, TomographyMoments, TwoQubitState};
-        use vacuum_frustration::SedenionField;
+        use sign_imbalance::SedenionField;
 
         // 1. Generate CD Medium
         let mut field = SedenionField::uniform(self.grid_size, self.grid_size, self.grid_size);
@@ -532,18 +532,18 @@ impl ThesisPipeline for Thesis5Pipeline {
             }
         }
 
-        let frustration_density = field.local_frustration_density(16);
+        let imbalance_density = field.local_imbalance_density(16);
         let associator_norm = field.local_associator_norm_field(16);
 
         // 2. Map to Gamma
         let map = DecoherenceMap::new(self.c_f, self.c_a, 0.0, 1.0);
         let mut gamma_values = Vec::new();
 
-        let len = frustration_density.len();
+        let len = imbalance_density.len();
         for i in 0..len {
-            let f = frustration_density[i];
+            let f = imbalance_density[i];
             let a = associator_norm[i];
-            gamma_values.push(map.gamma_from_frustration(f, a));
+            gamma_values.push(map.gamma_from_imbalance(f, a));
         }
 
         // 3. Bin by Gamma and Simulate Tomography
@@ -616,7 +616,7 @@ impl ThesisPipeline for Thesis5Pipeline {
         }
 
         // Spearman correlation
-        use vacuum_frustration::spearman_correlation;
+        use sign_imbalance::spearman_correlation;
         let correlation = spearman_correlation(&bin_gamma, &bin_p);
 
         let passes = correlation < self.correlation_threshold;
@@ -811,7 +811,7 @@ mod tests {
     fn test_thesis_pipeline_trait_names() {
         assert_eq!(
             Thesis1Pipeline::default().name(),
-            "T1: Viscous Vacuum (Frustration-Topology)"
+            "T1: Viscous Vacuum (Imbalance-Topology)"
         );
         assert_eq!(
             Thesis2Pipeline::default().name(),
@@ -827,7 +827,7 @@ mod tests {
         );
         assert_eq!(
             Thesis5Pipeline::default().name(),
-            "T5: Spin Decoherence (CD Frustration)"
+            "T5: Spin Decoherence (CD Imbalance)"
         );
     }
 

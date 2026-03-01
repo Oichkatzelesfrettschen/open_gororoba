@@ -14,15 +14,15 @@ pub struct QGPState {
     pub energy_density: f64,
 }
 
-/// Bridge between QGP physical parameters and Cayley-Dickson frustration metrics.
-pub struct QGPFrustrationBridge {
+/// Bridge between QGP physical parameters and Cayley-Dickson imbalance metrics.
+pub struct QGPImbalanceBridge {
     /// Scaling for vorticity to algebraic twist
     pub k_vorticity: f64,
     /// Scaling for temperature to attractor proximity
     pub k_temp: f64,
 }
 
-impl Default for QGPFrustrationBridge {
+impl Default for QGPImbalanceBridge {
     fn default() -> Self {
         Self {
             k_vorticity: 0.1,
@@ -31,22 +31,22 @@ impl Default for QGPFrustrationBridge {
     }
 }
 
-impl QGPFrustrationBridge {
-    /// Maps QGP state to CD frustration density and associator norm proxies.
+impl QGPImbalanceBridge {
+    /// Maps QGP state to CD imbalance density and associator norm proxies.
     ///
     /// Hypothesis:
-    /// - High temperature drives frustration towards the 3/8 attractor (chiral restoration).
+    /// - High temperature drives imbalance towards the 3/8 attractor (chiral restoration).
     /// - Vorticity induces a preferred axis in the spin-space, modeled as a biased channel.
-    pub fn predict_frustration(&self, state: &QGPState) -> (f64, f64) {
-        // As temperature increases, frustration density F converges to 3/8
+    pub fn predict_imbalance(&self, state: &QGPState) -> (f64, f64) {
+        // As temperature increases, imbalance density F converges to 3/8
         // We model the residual |F - 3/8| as decaying with temperature
         let f_residual = 0.1 * (-self.k_temp * state.temperature).exp();
-        let frustration = 0.375 + f_residual;
+        let imbalance = 0.375 + f_residual;
 
         // Associator norm reflects energy density
         let associator = 0.5 * state.energy_density;
 
-        (frustration, associator)
+        (imbalance, associator)
     }
 
     /// Applies a QGP-driven decoherence channel to an initial spin state.
@@ -140,36 +140,36 @@ mod tests {
     }
 
     #[test]
-    fn test_predict_frustration_converges_to_attractor() {
-        let bridge = QGPFrustrationBridge::default();
-        // High temperature should drive frustration towards 3/8
+    fn test_predict_imbalance_converges_to_attractor() {
+        let bridge = QGPImbalanceBridge::default();
+        // High temperature should drive imbalance towards 3/8
         let hot = QGPState {
             temperature: 100.0,
             vorticity: Vector3::zeros(),
             energy_density: 1.0,
         };
-        let (f, _a) = bridge.predict_frustration(&hot);
+        let (f, _a) = bridge.predict_imbalance(&hot);
         assert!((f - 0.375).abs() < 1e-6,
-            "High-T frustration should converge to 3/8: got {f}");
+            "High-T imbalance should converge to 3/8: got {f}");
     }
 
     #[test]
-    fn test_predict_frustration_low_temp() {
-        let bridge = QGPFrustrationBridge::default();
+    fn test_predict_imbalance_low_temp() {
+        let bridge = QGPImbalanceBridge::default();
         let cold = QGPState {
             temperature: 0.01,
             vorticity: Vector3::zeros(),
             energy_density: 0.5,
         };
-        let (f, a) = bridge.predict_frustration(&cold);
+        let (f, a) = bridge.predict_imbalance(&cold);
         // Low T: residual is 0.1 * exp(-0.01) ~ 0.099, so F ~ 0.474
-        assert!(f > 0.375, "Low-T frustration should exceed vacuum attractor");
+        assert!(f > 0.375, "Low-T imbalance should exceed imbalance attractor");
         assert!((a - 0.25).abs() < 1e-14, "Associator = 0.5 * energy_density");
     }
 
     #[test]
     fn test_qgp_decoherence_trace_preservation() {
-        let bridge = QGPFrustrationBridge::default();
+        let bridge = QGPImbalanceBridge::default();
         let qgp = default_qgp_state();
         let state = bell_state();
         let out = bridge.apply_qgp_decoherence(&state, &qgp);
@@ -180,7 +180,7 @@ mod tests {
 
     #[test]
     fn test_qgp_decoherence_zero_vorticity() {
-        let bridge = QGPFrustrationBridge::default();
+        let bridge = QGPImbalanceBridge::default();
         let qgp = QGPState {
             temperature: 0.2,
             vorticity: Vector3::zeros(),
@@ -208,7 +208,7 @@ mod tests {
 
     #[test]
     fn test_default_bridge() {
-        let bridge = QGPFrustrationBridge::default();
+        let bridge = QGPImbalanceBridge::default();
         assert_eq!(bridge.k_vorticity, 0.1);
         assert_eq!(bridge.k_temp, 1.0);
     }

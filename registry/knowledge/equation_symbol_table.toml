@@ -314,8 +314,8 @@ example_equation_ids = ["EQA2-00150", "EQA2-00152", "EQA2-00153", "EQA2-00155"]
 
 [[symbol]]
 id = "SYM-0035"
-symbol = "frustration"
-normalized_symbol = "frustration"
+symbol = "imbalance"
+normalized_symbol = "imbalance"
 category = "identifier"
 usage_count = 4
 source_uids = ["DRN-001", "DRN-002", "DRN-003"]
@@ -1961,8 +1961,8 @@ example_equation_ids = ["EQA2-00063"]
 
 [[symbol]]
 id = "SYM-0218"
-symbol = "frustrated"
-normalized_symbol = "frustrated"
+symbol = "imbalanced"
+normalized_symbol = "imbalanced"
 category = "identifier"
 usage_count = 1
 source_uids = ["DRN-001"]
@@ -1970,8 +1970,8 @@ example_equation_ids = ["EQA2-00102"]
 
 [[symbol]]
 id = "SYM-0219"
-symbol = "Frustration"
-normalized_symbol = "frustration"
+symbol = "Imbalance"
+normalized_symbol = "imbalance"
 category = "identifier"
 usage_count = 1
 source_uids = ["DRN-001"]

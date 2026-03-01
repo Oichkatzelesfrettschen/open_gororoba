@@ -1,0 +1,44 @@
+%% Fig 24: RT-2 entropy vs Cayley-Dickson dimension
+%% Two curves: associator entropy and norm-composition entropy
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=6cm,
+  xlabel={Cayley--Dickson dimension},
+  ylabel={Shannon entropy $H$ (bits)},
+  xmode=log,
+  log basis x=2,
+  xtick={2,4,8,16,32,64,128,256},
+  xticklabels={2,4,8,16,32,64,128,256},
+  ymin=-0.5, ymax=5.5,
+  legend pos=north east,
+  legend style={fill=white, fill opacity=0.9, draw=gray!50},
+]
+  %% Associator entropy: H = 0 for dim<=4 (associative), jump at dim 8
+  \addplot[OIorange, thick, mark=*, mark size=3pt,
+    mark options={fill=OIorange}]
+    coordinates {
+      (2, 0) (4, 0) (8, 4.24) (16, 3.76) (32, 3.95) (64, 4.10) (128, 4.18) (256, 4.22)
+    };
+
+  %% Norm-composition entropy: H = 0 for dim<=8 (division), jump at dim 16
+  \addplot[OIblue, thick, dashed, mark=square*, mark size=3pt,
+    mark options={fill=OIblue}]
+    coordinates {
+      (2, 0) (4, 0) (8, 0) (16, 3.17) (32, 3.45) (64, 3.60) (128, 3.70) (256, 3.75)
+    };
+
+  %% Phase transition markers
+  \draw[OIvermillion, thick, dotted]
+    (axis cs:8,-0.3) -- (axis cs:8,5.0);
+  \node[font=\sffamily\tiny, OIvermillion, anchor=south west, rotate=90]
+    at (axis cs:8,4.5) {Associative $\to$ non-assoc.};
+
+  \draw[OIgreen, thick, dotted]
+    (axis cs:16,-0.3) -- (axis cs:16,5.0);
+  \node[font=\sffamily\tiny, OIgreen!70!black, anchor=south west, rotate=90]
+    at (axis cs:16,4.5) {Division $\to$ zero divisors};
+
+  \legend{Associator $H$, Norm-composition $H$}
+\end{axis}
+\end{tikzpicture}

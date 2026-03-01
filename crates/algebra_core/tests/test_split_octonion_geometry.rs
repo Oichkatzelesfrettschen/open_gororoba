@@ -140,7 +140,7 @@ fn test_null_cloud_topology() {
 }
 
 #[test]
-fn test_hybrid_16_frustration() {
+fn test_hybrid_16_imbalance() {
     let dim = 16;
     let gammas = vec![1, 1, 1, -1];
     let sig_hybrid = CdSignature::from_gammas(&gammas);

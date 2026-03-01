@@ -2,7 +2,7 @@
 
     Formal proof that when alpha_s = 0 (zero coupling constant),
     the algebraic York time correction vanishes identically for
-    all frustration values and all York times.
+    all imbalance values and all York times.
 
     Mirrors: algebraic_york_time_correction() in adm_algebra_bridge.rs:174-180.
     Rust test: test_zero_coupling_gives_zero_correction (line 264-268). *)

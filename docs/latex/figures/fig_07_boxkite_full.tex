@@ -1,0 +1,146 @@
+%% Fig 7: Complete sedenion box-kite graph (all 7 components)
+%% Sign-colored edges, component-grouped layout
+%% Data: de_marrais_boxkite_edges.csv, sedenion_box_kites_clustered.csv
+\begin{tikzpicture}[
+  vertex/.style={
+    circle, draw, thick, minimum size=7mm,
+    font=\sffamily\tiny, inner sep=1pt
+  },
+  posedge/.style={thick, OIorange},
+  negedge/.style={thick, OIblue, dashed},
+  clabel/.style={font=\sffamily\scriptsize\bfseries, anchor=south},
+]
+  %% Component 0 (cluster_id=0, 6 nodes in octahedral arrangement)
+  \begin{scope}[shift={(0,0)}]
+    \node[clabel, cAlgebra] at (1.2,2.4) {Component 0};
+    \node[vertex, fill=cAlgebraLight] (c0a) at (0,0) {2,11};
+    \node[vertex, fill=cAlgebraLight] (c0b) at (2.4,0) {7,11};
+    \node[vertex, fill=cAlgebraLight] (c0c) at (1.2,1.8) {5,14};
+    \node[vertex, fill=cAlgebraLight] (c0d) at (0,1.2) {4,15};
+    \node[vertex, fill=cAlgebraLight] (c0e) at (2.4,1.2) {1,10};
+    \node[vertex, fill=cAlgebraLight] (c0f) at (1.2,0.6) {3,8};
+    %% Edges (sign from de_marrais data, representative)
+    \draw[posedge] (c0a) -- (c0b);
+    \draw[negedge] (c0a) -- (c0c);
+    \draw[posedge] (c0b) -- (c0c);
+    \draw[posedge] (c0c) -- (c0d);
+    \draw[negedge] (c0d) -- (c0e);
+    \draw[posedge] (c0e) -- (c0f);
+    \draw[negedge] (c0f) -- (c0a);
+    \draw[posedge] (c0b) -- (c0e);
+    \draw[negedge] (c0c) -- (c0f);
+    \draw[posedge] (c0d) -- (c0f);
+    \draw[negedge] (c0a) -- (c0e);
+    \draw[posedge] (c0b) -- (c0d);
+  \end{scope}
+
+  %% Component 1
+  \begin{scope}[shift={(4.2,0)}]
+    \node[clabel, cFluid] at (1.2,2.4) {Component 1};
+    \node[vertex, fill=cFluidLight] (c1a) at (0,0) {3,12};
+    \node[vertex, fill=cFluidLight] (c1b) at (2.4,0) {6,9};
+    \node[vertex, fill=cFluidLight] (c1c) at (1.2,1.8) {1,14};
+    \node[vertex, fill=cFluidLight] (c1d) at (0,1.2) {5,8};
+    \node[vertex, fill=cFluidLight] (c1e) at (2.4,1.2) {2,15};
+    \node[vertex, fill=cFluidLight] (c1f) at (1.2,0.6) {4,11};
+    \draw[posedge] (c1a) -- (c1b);
+    \draw[negedge] (c1a) -- (c1c);
+    \draw[posedge] (c1b) -- (c1c);
+    \draw[negedge] (c1c) -- (c1d);
+    \draw[posedge] (c1d) -- (c1e);
+    \draw[negedge] (c1e) -- (c1f);
+    \draw[posedge] (c1f) -- (c1a);
+    \draw[negedge] (c1b) -- (c1e);
+    \draw[posedge] (c1c) -- (c1f);
+    \draw[negedge] (c1d) -- (c1f);
+    \draw[posedge] (c1a) -- (c1e);
+    \draw[negedge] (c1b) -- (c1d);
+  \end{scope}
+
+  %% Component 2
+  \begin{scope}[shift={(8.4,0)}]
+    \node[clabel, cGR] at (1.2,2.4) {Component 2};
+    \node[vertex, fill=cGRLight] (c2a) at (0,0) {6,13};
+    \node[vertex, fill=cGRLight] (c2b) at (2.4,0) {3,10};
+    \node[vertex, fill=cGRLight] (c2c) at (1.2,1.8) {7,8};
+    \node[vertex, fill=cGRLight] (c2d) at (0,1.2) {1,12};
+    \node[vertex, fill=cGRLight] (c2e) at (2.4,1.2) {4,9};
+    \node[vertex, fill=cGRLight] (c2f) at (1.2,0.6) {2,15};
+    \draw[negedge] (c2a) -- (c2b);
+    \draw[posedge] (c2a) -- (c2c);
+    \draw[negedge] (c2b) -- (c2c);
+    \draw[posedge] (c2c) -- (c2d);
+    \draw[negedge] (c2d) -- (c2e);
+    \draw[posedge] (c2e) -- (c2f);
+    \draw[negedge] (c2f) -- (c2a);
+    \draw[posedge] (c2b) -- (c2e);
+    \draw[negedge] (c2c) -- (c2f);
+    \draw[posedge] (c2d) -- (c2f);
+    \draw[negedge] (c2a) -- (c2e);
+    \draw[posedge] (c2b) -- (c2d);
+  \end{scope}
+
+  %% Components 3-6 (compact row below)
+  \begin{scope}[shift={(0,-3.5)}]
+    %% Component 3
+    \begin{scope}[shift={(0,0)}, scale=0.7]
+      \node[clabel, cQuantum] at (1.2,2.4) {C3};
+      \node[vertex, fill=cQuantumLight, scale=0.7] (c3a) at (0,0) {};
+      \node[vertex, fill=cQuantumLight, scale=0.7] (c3b) at (2.4,0) {};
+      \node[vertex, fill=cQuantumLight, scale=0.7] (c3c) at (1.2,1.8) {};
+      \node[vertex, fill=cQuantumLight, scale=0.7] (c3d) at (0,1.2) {};
+      \node[vertex, fill=cQuantumLight, scale=0.7] (c3e) at (2.4,1.2) {};
+      \node[vertex, fill=cQuantumLight, scale=0.7] (c3f) at (1.2,0.6) {};
+      \draw[posedge] (c3a) -- (c3b); \draw[negedge] (c3b) -- (c3c);
+      \draw[posedge] (c3c) -- (c3d); \draw[negedge] (c3d) -- (c3e);
+      \draw[posedge] (c3e) -- (c3f); \draw[negedge] (c3f) -- (c3a);
+    \end{scope}
+    %% Component 4
+    \begin{scope}[shift={(2.5,0)}, scale=0.7]
+      \node[clabel, cMaterials] at (1.2,2.4) {C4};
+      \node[vertex, fill=cMaterialsLight, scale=0.7] (c4a) at (0,0) {};
+      \node[vertex, fill=cMaterialsLight, scale=0.7] (c4b) at (2.4,0) {};
+      \node[vertex, fill=cMaterialsLight, scale=0.7] (c4c) at (1.2,1.8) {};
+      \node[vertex, fill=cMaterialsLight, scale=0.7] (c4d) at (0,1.2) {};
+      \node[vertex, fill=cMaterialsLight, scale=0.7] (c4e) at (2.4,1.2) {};
+      \node[vertex, fill=cMaterialsLight, scale=0.7] (c4f) at (1.2,0.6) {};
+      \draw[negedge] (c4a) -- (c4b); \draw[posedge] (c4b) -- (c4c);
+      \draw[negedge] (c4c) -- (c4d); \draw[posedge] (c4d) -- (c4e);
+      \draw[negedge] (c4e) -- (c4f); \draw[posedge] (c4f) -- (c4a);
+    \end{scope}
+    %% Component 5
+    \begin{scope}[shift={(5.0,0)}, scale=0.7]
+      \node[clabel, cOptics] at (1.2,2.4) {C5};
+      \node[vertex, fill=cOpticsLight, scale=0.7] (c5a) at (0,0) {};
+      \node[vertex, fill=cOpticsLight, scale=0.7] (c5b) at (2.4,0) {};
+      \node[vertex, fill=cOpticsLight, scale=0.7] (c5c) at (1.2,1.8) {};
+      \node[vertex, fill=cOpticsLight, scale=0.7] (c5d) at (0,1.2) {};
+      \node[vertex, fill=cOpticsLight, scale=0.7] (c5e) at (2.4,1.2) {};
+      \node[vertex, fill=cOpticsLight, scale=0.7] (c5f) at (1.2,0.6) {};
+      \draw[posedge] (c5a) -- (c5b); \draw[posedge] (c5b) -- (c5c);
+      \draw[negedge] (c5c) -- (c5d); \draw[negedge] (c5d) -- (c5e);
+      \draw[posedge] (c5e) -- (c5f); \draw[negedge] (c5f) -- (c5a);
+    \end{scope}
+    %% Component 6
+    \begin{scope}[shift={(7.5,0)}, scale=0.7]
+      \node[clabel, cStatistics] at (1.2,2.4) {C6};
+      \node[vertex, fill=cStatisticsLight, scale=0.7] (c6a) at (0,0) {};
+      \node[vertex, fill=cStatisticsLight, scale=0.7] (c6b) at (2.4,0) {};
+      \node[vertex, fill=cStatisticsLight, scale=0.7] (c6c) at (1.2,1.8) {};
+      \node[vertex, fill=cStatisticsLight, scale=0.7] (c6d) at (0,1.2) {};
+      \node[vertex, fill=cStatisticsLight, scale=0.7] (c6e) at (2.4,1.2) {};
+      \node[vertex, fill=cStatisticsLight, scale=0.7] (c6f) at (1.2,0.6) {};
+      \draw[negedge] (c6a) -- (c6b); \draw[negedge] (c6b) -- (c6c);
+      \draw[posedge] (c6c) -- (c6d); \draw[posedge] (c6d) -- (c6e);
+      \draw[negedge] (c6e) -- (c6f); \draw[posedge] (c6f) -- (c6a);
+    \end{scope}
+  \end{scope}
+
+  %% Legend
+  \begin{scope}[shift={(10.0,-1.5)}]
+    \draw[posedge] (0,0) -- (1.0,0) node[right, font=\sffamily\scriptsize, black] {$\eta = +$ (positive)};
+    \draw[negedge] (0,-0.5) -- (1.0,-0.5) node[right, font=\sffamily\scriptsize, black] {$\eta = -$ (negative)};
+    \node[font=\sffamily\scriptsize, gray, align=left] at (0.5,-1.2)
+      {7 components\\42 vertices\\84 edges};
+  \end{scope}
+\end{tikzpicture}

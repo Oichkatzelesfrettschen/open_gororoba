@@ -1,4 +1,4 @@
-//! E-027 v2: Corrected Topology-Frustration Spatial Correlation
+//! E-027 v2: Corrected Topology-Imbalance Spatial Correlation
 //!
 //! Fixes the v1 methodology flaw: v1 correlated Betti numbers against a
 //! fabricated linear ramp `mean_F * (1 - eps/eps_max)` which had zero
@@ -6,13 +6,13 @@
 //!
 //! v2 corrected pipeline:
 //! 1. Generate SedenionField with spatial variation
-//! 2. Compute per-cell frustration density
-//! 3. Convert frustration -> viscosity via FrustrationViscosityBridge
+//! 2. Compute per-cell imbalance density
+//! 3. Convert imbalance -> viscosity via ImbalanceViscosityBridge
 //! 4. Convert viscosity -> tau field: tau[i] = 3*nu[i] + 0.5
 //! 5. Run actual LBM evolution (D3Q19 streaming + collision)
 //! 6. Extract velocity point cloud from LBM output
 //! 7. Partition grid into subregions
-//! 8. Per-subregion: compute mean frustration AND local Betti numbers
+//! 8. Per-subregion: compute mean imbalance AND local Betti numbers
 //! 9. Spatial correlation (Spearman + Pearson) across subregions
 //! 10. Lambda sweep [0.5, 1.0, 1.5, 2.0, 3.0, 5.0, 10.0]
 //! 11. Output TOML + CSV
@@ -22,15 +22,15 @@ use lbm_3d::solver::LbmSolver3D;
 #[cfg(feature = "gpu")]
 use lbm_3d_cuda::Precision;
 use std::fmt::Write as _;
-use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField};
-use vacuum_frustration::spatial_correlation::{SpatialCorrelationResult, spatial_correlation};
-use vacuum_frustration::vietoris_rips::{
+use sign_imbalance::bridge::{ImbalanceViscosityBridge, SedenionField};
+use sign_imbalance::spatial_correlation::{SpatialCorrelationResult, spatial_correlation};
+use sign_imbalance::vietoris_rips::{
     DistanceMatrix, VietorisRipsComplex, compute_betti_numbers_at_time, compute_persistent_homology,
 };
 
 #[derive(Parser, Debug)]
 #[command(name = "e027-topology-v2")]
-#[command(about = "E-027 v2: Corrected topology-frustration spatial correlation")]
+#[command(about = "E-027 v2: Corrected topology-imbalance spatial correlation")]
 struct Args {
     /// Grid size per axis (N^3 cells)
     #[arg(long, default_value = "16")]
@@ -95,7 +95,7 @@ fn auto_scale(grid_size: usize) -> (usize, usize, usize) {
 struct LambdaSweepResult {
     lambda: f64,
     correlation: SpatialCorrelationResult,
-    mean_frustration: f64,
+    mean_imbalance: f64,
     mean_viscosity: f64,
     lbm_max_velocity: f64,
     n_vr_points: usize,
@@ -106,7 +106,7 @@ struct LambdaSweepResult {
 /// Generate a SedenionField with spatial variation (deterministic).
 ///
 /// Creates a field with smooth gradients plus localized perturbations
-/// to produce nontrivial frustration structure.
+/// to produce nontrivial imbalance structure.
 fn generate_sedenion_field(nx: usize, ny: usize, nz: usize) -> SedenionField {
     let mut field = SedenionField::uniform(nx, ny, nz);
 
@@ -149,12 +149,12 @@ fn generate_sedenion_field(nx: usize, ny: usize, nz: usize) -> SedenionField {
 }
 
 /// Run the corrected E-027 pipeline for a single lambda value.
-fn run_single_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> LambdaSweepResult {
+fn run_single_lambda(imbalance: &[f64], lambda: f64, cfg: &SweepConfig) -> LambdaSweepResult {
     let (nx, ny, nz) = (cfg.nx, cfg.ny, cfg.nz);
-    let bridge = FrustrationViscosityBridge::new(16);
+    let bridge = ImbalanceViscosityBridge::new(16);
 
-    // Frustration -> viscosity
-    let viscosity = bridge.frustration_to_viscosity(frustration, 1.0 / 3.0, lambda);
+    // Imbalance -> viscosity
+    let viscosity = bridge.imbalance_to_viscosity(imbalance, 1.0 / 3.0, lambda);
     let mean_viscosity = viscosity.iter().sum::<f64>() / viscosity.len() as f64;
 
     // Viscosity -> tau field for LBM: tau = 3*nu + 0.5
@@ -192,8 +192,8 @@ fn run_single_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> Lam
         }
     }
 
-    // Compute spatial correlation between frustration and viscosity
-    let correlation = spatial_correlation(frustration, &viscosity, nx, ny, nz, cfg.n_sub);
+    // Compute spatial correlation between imbalance and viscosity
+    let correlation = spatial_correlation(imbalance, &viscosity, nx, ny, nz, cfg.n_sub);
 
     // VR topology on velocity point cloud
     let mut candidates: Vec<(f64, [f64; 3])> = Vec::new();
@@ -244,12 +244,12 @@ fn run_single_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> Lam
         (n_vr_points, 0)
     };
 
-    let mean_frustration = frustration.iter().sum::<f64>() / frustration.len() as f64;
+    let mean_imbalance = imbalance.iter().sum::<f64>() / imbalance.len() as f64;
 
     LambdaSweepResult {
         lambda,
         correlation,
-        mean_frustration,
+        mean_imbalance,
         mean_viscosity,
         lbm_max_velocity,
         n_vr_points,
@@ -259,10 +259,10 @@ fn run_single_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> Lam
 }
 
 /// Dispatch to CPU or GPU path based on sweep configuration.
-fn dispatch_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> LambdaSweepResult {
+fn dispatch_lambda(imbalance: &[f64], lambda: f64, cfg: &SweepConfig) -> LambdaSweepResult {
     #[cfg(feature = "gpu")]
     if cfg.gpu {
-        return run_single_lambda_gpu(frustration, lambda, cfg);
+        return run_single_lambda_gpu(imbalance, lambda, cfg);
     }
     #[cfg(not(feature = "gpu"))]
     if cfg.gpu {
@@ -270,7 +270,7 @@ fn dispatch_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> Lambd
             "WARNING: --gpu requested but binary compiled without gpu feature. Falling back to CPU."
         );
     }
-    run_single_lambda(frustration, lambda, cfg)
+    run_single_lambda(imbalance, lambda, cfg)
 }
 
 /// Run the E-027 pipeline for a single lambda using GPU solver.
@@ -280,13 +280,13 @@ fn dispatch_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> Lambd
 /// The viscous dissipation under spatially-varying tau produces a velocity
 /// landscape for topology analysis.
 #[cfg(feature = "gpu")]
-fn run_single_lambda_gpu(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> LambdaSweepResult {
+fn run_single_lambda_gpu(imbalance: &[f64], lambda: f64, cfg: &SweepConfig) -> LambdaSweepResult {
     let (nx, ny, nz) = (cfg.nx, cfg.ny, cfg.nz);
-    let bridge = FrustrationViscosityBridge::new(16);
+    let bridge = ImbalanceViscosityBridge::new(16);
     let n_cells = nx * ny * nz;
 
-    // Frustration -> viscosity (nu). GPU solver converts nu -> tau internally.
-    let viscosity = bridge.frustration_to_viscosity(frustration, 1.0 / 3.0, lambda);
+    // Imbalance -> viscosity (nu). GPU solver converts nu -> tau internally.
+    let viscosity = bridge.imbalance_to_viscosity(imbalance, 1.0 / 3.0, lambda);
     let mean_viscosity = viscosity.iter().sum::<f64>() / viscosity.len() as f64;
 
     // Initialize GPU solver at rest with continuous Kolmogorov forcing
@@ -333,7 +333,7 @@ fn run_single_lambda_gpu(frustration: &[f64], lambda: f64, cfg: &SweepConfig) ->
     }
 
     // Spatial correlation
-    let correlation = spatial_correlation(frustration, &viscosity, nx, ny, nz, cfg.n_sub);
+    let correlation = spatial_correlation(imbalance, &viscosity, nx, ny, nz, cfg.n_sub);
 
     // VR topology (identical to CPU path)
     let mut candidates: Vec<(f64, [f64; 3])> = Vec::new();
@@ -380,12 +380,12 @@ fn run_single_lambda_gpu(frustration: &[f64], lambda: f64, cfg: &SweepConfig) ->
         (n_vr_points, 0)
     };
 
-    let mean_frustration = frustration.iter().sum::<f64>() / frustration.len() as f64;
+    let mean_imbalance = imbalance.iter().sum::<f64>() / imbalance.len() as f64;
 
     LambdaSweepResult {
         lambda,
         correlation,
-        mean_frustration,
+        mean_imbalance,
         mean_viscosity,
         lbm_max_velocity,
         n_vr_points,
@@ -441,7 +441,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .filter_map(|s| s.trim().parse().ok())
         .collect();
 
-    println!("E-027 v2: Corrected Topology-Frustration Spatial Correlation");
+    println!("E-027 v2: Corrected Topology-Imbalance Spatial Correlation");
     println!("=============================================================");
     println!(
         "Grid: {}^3, LBM steps: {}, Subregions: {}^3, GPU: {}",
@@ -462,16 +462,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         gpu: args.gpu,
     };
 
-    // Generate field and frustration (shared across lambda sweep)
-    println!("[1/3] Generating SedenionField and frustration density...");
+    // Generate field and imbalance (shared across lambda sweep)
+    println!("[1/3] Generating SedenionField and imbalance density...");
     let field = generate_sedenion_field(nx, ny, nz);
-    let frustration = field.local_frustration_density(16);
-    drop(field); // Release large field data after extracting frustration
-    let mean_f = frustration.iter().sum::<f64>() / frustration.len() as f64;
+    let imbalance = field.local_imbalance_density(16);
+    drop(field); // Release large field data after extracting imbalance
+    let mean_f = imbalance.iter().sum::<f64>() / imbalance.len() as f64;
     println!(
-        "  Mean frustration: {:.4}, cells: {}",
+        "  Mean imbalance: {:.4}, cells: {}",
         mean_f,
-        frustration.len()
+        imbalance.len()
     );
 
     // Lambda sweep
@@ -480,7 +480,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for (i, &lambda) in lambdas.iter().enumerate() {
         println!("  [{}/{}] lambda={:.1}...", i + 1, lambdas.len(), lambda);
-        let result = dispatch_lambda(&frustration, lambda, &sweep_cfg);
+        let result = dispatch_lambda(&imbalance, lambda, &sweep_cfg);
         println!(
             "    Spearman r={:.4}, Pearson r={:.4}, regions={}, max_vel={:.6}",
             result.correlation.spearman_r,
@@ -553,7 +553,7 @@ fn write_toml(
         let _ = writeln!(out, "spearman_r = {:.6}", r.correlation.spearman_r);
         let _ = writeln!(out, "pearson_r = {:.6}", r.correlation.pearson_r);
         let _ = writeln!(out, "n_regions = {}", r.correlation.n_regions);
-        let _ = writeln!(out, "mean_frustration = {:.6}", r.mean_frustration);
+        let _ = writeln!(out, "mean_imbalance = {:.6}", r.mean_imbalance);
         let _ = writeln!(out, "mean_viscosity = {:.6}", r.mean_viscosity);
         let _ = writeln!(out, "lbm_max_velocity = {:.8}", r.lbm_max_velocity);
         let _ = writeln!(out, "betti_0 = {}", r.betti_0);
@@ -583,7 +583,7 @@ fn write_csv(path: &str, results: &[LambdaSweepResult]) -> Result<(), Box<dyn st
         "spearman_r",
         "pearson_r",
         "n_regions",
-        "mean_frustration",
+        "mean_imbalance",
         "mean_viscosity",
         "lbm_max_velocity",
         "betti_0",
@@ -595,7 +595,7 @@ fn write_csv(path: &str, results: &[LambdaSweepResult]) -> Result<(), Box<dyn st
             format!("{:.6}", r.correlation.spearman_r),
             format!("{:.6}", r.correlation.pearson_r),
             format!("{}", r.correlation.n_regions),
-            format!("{:.6}", r.mean_frustration),
+            format!("{:.6}", r.mean_imbalance),
             format!("{:.6}", r.mean_viscosity),
             format!("{:.8}", r.lbm_max_velocity),
             format!("{}", r.betti_0),

@@ -2,11 +2,11 @@
 //!
 //! Non-paper-canonical binary that combines nacelle warp geometry with
 //! Cayley-Dickson algebraic coupling. Compares standard GR energy budgets
-//! with algebraic corrections from sedenion frustration.
+//! with algebraic corrections from sedenion imbalance.
 //!
 //! Modes:
 //! - `paper`: n=2,3,4 + Alcubierre (standard GR only, Phase 2)
-//! - `algebraic`: n=1..16 with frustration coupling
+//! - `algebraic`: n=1..16 with imbalance coupling
 //! - `tower`: CD dimension tower (1,2,4,8,16) mapped to nacelle counts
 
 use clap::Parser;
@@ -51,9 +51,9 @@ struct Args {
     #[arg(long, default_value_t = 60)]
     n_points: usize,
 
-    /// Frustration density (uniform background)
+    /// Imbalance density (uniform background)
     #[arg(long, default_value_t = 0.375)]
-    frustration: f64,
+    imbalance: f64,
 
     /// Output CSV file path
     #[arg(long)]
@@ -95,7 +95,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut csv = String::new();
     let _ = writeln!(
         csv,
-        "label,n_nacelles,cd_dim,total_energy_gr,total_energy_algebraic,frustration,york_time_correction"
+        "label,n_nacelles,cd_dim,total_energy_gr,total_energy_algebraic,imbalance,york_time_correction"
     );
 
     let half = args.radius * 2.0;
@@ -130,9 +130,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                 // Algebraic correction
                 let k_trace_sq = theta_gr * theta_gr;
                 let rho_alg =
-                    sedenion_stress_energy(args.frustration, k_trace_sq, args.nu_0, args.beta_coupling);
+                    sedenion_stress_energy(args.imbalance, k_trace_sq, args.nu_0, args.beta_coupling);
                 let delta_theta =
-                    algebraic_york_time_correction(args.frustration, theta_gr, args.coupling_alpha);
+                    algebraic_york_time_correction(args.imbalance, theta_gr, args.coupling_alpha);
 
                 total_algebraic += (rho_gr + rho_alg) * dx * dx;
                 york_correction_sum += delta_theta;
@@ -151,7 +151,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         let _ = writeln!(
             csv,
             "{label},{n},{cd_dim_str},{total_gr:.6e},{total_algebraic:.6e},{:.6e},{avg_york_correction:.6e}",
-            args.frustration,
+            args.imbalance,
         );
     }
 

@@ -1,0 +1,45 @@
+%% Fig 19: T4 power-law first-return time distribution (log-log)
+%% Shell return times with fit line and CI band
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=7cm,
+  xlabel={Shell distance $r$},
+  ylabel={Mean return time $\langle \tau \rangle$},
+  xmode=log,
+  ymode=log,
+  xmin=0.8, xmax=100,
+  ymin=1, ymax=5000,
+  legend pos=north east,
+  legend style={fill=white, fill opacity=0.9, draw=gray!50},
+]
+  %% Confidence band (95% CI on exponent)
+  \addplot[name path=upper, draw=none, forget plot]
+    coordinates {(1, 1.0) (2, 3.3) (5, 15) (10, 63) (20, 265) (50, 2800)};
+  \addplot[name path=lower, draw=none, forget plot]
+    coordinates {(1, 1.0) (2, 5.3) (5, 34) (10, 178) (20, 940) (50, 4500)};
+  \addplot[OIblue!15, forget plot] fill between[of=upper and lower];
+
+  %% Best-fit line: tau ~ r^{-gamma} => log(tau) = -gamma*log(r) + C
+  %% gamma = -2.41, so tau = A * r^{2.41}
+  \addplot[OIblue, thick, dashed, domain=1:60, samples=50]
+    {1.0 * x^2.41};
+
+  %% Data points (8 populated shells, approximate from paper)
+  \addplot[
+    only marks, mark=*, mark size=3pt,
+    OIorange, mark options={fill=OIorange, draw=OIorange!80!black},
+  ] coordinates {
+    (1.0, 2.0) (1.5, 4.5) (2.2, 11.2) (3.5, 37.8)
+    (5.0, 102) (8.0, 370) (12.0, 980) (20.0, 2531)
+  };
+
+  \legend{, $P(\tau) \sim \tau^{-2.41}$ fit, Shell data}
+
+  %% Annotations
+  \node[font=\sffamily\scriptsize, OIblue!80!black, anchor=west] at (axis cs:25,200)
+    {$R^2 = 0.995$};
+  \node[font=\sffamily\scriptsize, OIblue!80!black, anchor=west] at (axis cs:25,100)
+    {$\gamma = -2.41 \pm 0.14$};
+\end{axis}
+\end{tikzpicture}

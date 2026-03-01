@@ -5,7 +5,7 @@
     - sedenion_stress_energy (lines 156-164)
 
     The key principle: zero coupling constants recover standard GR exactly,
-    and the vacuum frustration attractor (3/8) gives zero correction. *)
+    and the imbalance attractor (3/8) gives zero correction. *)
 
 From OpenGororoba Require Import Prelude.
 

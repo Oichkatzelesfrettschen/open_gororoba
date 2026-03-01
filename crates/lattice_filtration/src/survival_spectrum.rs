@@ -1,6 +1,6 @@
-//! Radial survival spectrum and latency-law classification.
+//! Radial survival spectrum and first-return time classification.
 
-/// One radial bin in the collision/latency spectrum.
+/// One radial bin in the collision/first-return time distribution.
 #[derive(Debug, Clone, Copy)]
 pub struct SpectrumBin {
     pub radius: f64,

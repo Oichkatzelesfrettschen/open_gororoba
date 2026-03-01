@@ -56,7 +56,7 @@ pub struct ChamberStats {
     pub adj_signs: Vec<i8>,
     pub cumul_signs: Vec<i8>,
     pub amplitude: i8,
-    pub frustration: f64,
+    pub imbalance: f64,
 }
 
 /// Enumerates all possible sign combinations for n gluons and returns stats.
@@ -84,28 +84,28 @@ pub fn enumerate_chambers(n: usize) -> Vec<ChamberStats> {
         }
 
         let amplitude = evaluate_r1_closed_form(n, &adj, &cum);
-        let frustration = compute_sign_graph_frustration(&adj, &cum);
+        let imbalance = compute_sign_graph_imbalance(&adj, &cum);
 
         stats.push(ChamberStats {
             adj_signs: adj,
             cumul_signs: cum,
             amplitude,
-            frustration,
+            imbalance,
         });
     }
 
     stats
 }
 
-/// Compute sign graph frustration index.
+/// Compute sign graph imbalance index.
 ///
 /// Measures the inconsistency in the sign assignment.
 /// For the amplitude to be non-zero, all factors must be non-zero.
 /// This implies s_adj == s_cum for all m.
 /// If they differ, the factor is 0.
 ///
-/// Frustration = fraction of zero factors.
-pub fn compute_sign_graph_frustration(adj_signs: &[i8], cumul_signs: &[i8]) -> f64 {
+/// Imbalance = fraction of zero factors.
+pub fn compute_sign_graph_imbalance(adj_signs: &[i8], cumul_signs: &[i8]) -> f64 {
     let len = adj_signs.len().min(cumul_signs.len());
     if len == 0 {
         return 0.0;

@@ -27,7 +27,7 @@ members = [
     "crates/gororoba_cli",
     "crates/snia_core",
     "crates/cosmic_scheduler",
-    "crates/vacuum_frustration",
+    "crates/sign_imbalance",
     "crates/lbm_3d",
     "crates/lbm_3d_cuda",
     "crates/lattice_filtration",

@@ -18,8 +18,8 @@ use spectral_core::ghost_spectral::{
 use std::io::Write;
 use std::path::PathBuf;
 use std::time::Instant;
-use vacuum_frustration::bridge::{
-    FrustrationViscosityBridge, SedenionField, ViscosityCouplingModel,
+use sign_imbalance::bridge::{
+    ImbalanceViscosityBridge, SedenionField, ViscosityCouplingModel,
 };
 
 /// 4D ZD Resonance Experiments (batch 3D worlds along w-axis)
@@ -70,7 +70,7 @@ enum Commands {
 fn generate_4d_viscosity(nx: usize, nw: usize, tau_base: f64, wavelength: f64) -> Vec<f64> {
     let nz_total = nx * nw; // Flattened z dimension = nz_sub * nw
     let n_cells = nx * nx * nz_total;
-    let bridge = FrustrationViscosityBridge::new(16);
+    let bridge = ImbalanceViscosityBridge::new(16);
     let nu_base = (tau_base - 0.5) / 3.0;
     let model = ViscosityCouplingModel::Exponential {
         nu_base,
@@ -103,8 +103,8 @@ fn generate_4d_viscosity(nx: usize, nw: usize, tau_base: f64, wavelength: f64) -
             }
         }
 
-        let frustration = field.local_frustration_density_par(16);
-        let visc_slice = bridge.frustration_to_viscosity_model(&frustration, &model);
+        let imbalance = field.local_imbalance_density_par(16);
+        let visc_slice = bridge.imbalance_to_viscosity_model(&imbalance, &model);
 
         // Copy into flattened 4D array: idx = x + nx*(y + nx*(z_sub + nx*w))
         // where z_sub is the z within the w-slice

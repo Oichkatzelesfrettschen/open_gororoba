@@ -497,11 +497,11 @@ id = "PRS-00028"
 skeleton_kind = "argument_section"
 theorem_label = "The Lost Hexagon and the Split-Octonion Attractor"
 claim_id = ""
-assumptions = ["**Date:** 2026-02-10", "**Status:** Unified Theory of Hyper-Structure Frustration"]
-obligations = ["**Status:** Unified Theory of Hyper-Structure Frustration"]
-derivation_steps = ["**Date:** 2026-02-10 || **Status:** Unified Theory of Hyper-Structure Frustration || This document formalizes the discovery of the \"Split-Octonion Attractor\" and the \"Lost Hexagon\" mechanism, connecting..."]
-decision_rule = "**Status:** Unified Theory of Hyper-Structure Frustration"
-conclusion = "**Status:** Unified Theory of Hyper-Structure Frustration"
+assumptions = ["**Date:** 2026-02-10", "**Status:** Unified Theory of Hyper-Structure Imbalance"]
+obligations = ["**Status:** Unified Theory of Hyper-Structure Imbalance"]
+derivation_steps = ["**Date:** 2026-02-10 || **Status:** Unified Theory of Hyper-Structure Imbalance || This document formalizes the discovery of the \"Split-Octonion Attractor\" and the \"Lost Hexagon\" mechanism, connecting..."]
+decision_rule = "**Status:** Unified Theory of Hyper-Structure Imbalance"
+conclusion = "**Status:** Unified Theory of Hyper-Structure Imbalance"
 source_uid = "RN-026"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/research/SPLIT_OCTONION_ATTractor.md"
@@ -9427,8 +9427,8 @@ theorem_label = "C-483"
 claim_id = "C-483"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-483."]
-derivation_steps = ["VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components)", "SUPERSEDED by C-487 (Universal Double 3:1 Law)", "WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3"]
-decision_rule = "VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components). SUPERSEDED by C-487 (Universal Double 3:1 Law). WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3."
+derivation_steps = ["VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components)", "SUPERSEDED by C-487 (Universal 3:1 Theorem)", "WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3"]
+decision_rule = "VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components). SUPERSEDED by C-487 (Universal 3:1 Theorem). WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-483"
 source_registry = "registry/claims.toml"
@@ -9445,8 +9445,8 @@ theorem_label = "C-484"
 claim_id = "C-484"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-484."]
-derivation_steps = ["VERIFIED by integer-exact computation in ~1s", "9 regimes with exact counts", "Both pure regimes satisfy 3:1 ratio", "All 4-pattern regimes satisfy Universal Double 3:1 Law (C-487)", "WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes"]
-decision_rule = "VERIFIED by integer-exact computation in ~1s. 9 regimes with exact counts. Both pure regimes satisfy 3:1 ratio. All 4-pattern regimes satisfy Universal Double 3:1 Law (C-487). WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes."
+derivation_steps = ["VERIFIED by integer-exact computation in ~1s", "9 regimes with exact counts", "Both pure regimes satisfy 3:1 ratio", "All 4-pattern regimes satisfy Universal 3:1 Theorem (C-487)", "WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes"]
+decision_rule = "VERIFIED by integer-exact computation in ~1s. 9 regimes with exact counts. Both pure regimes satisfy 3:1 ratio. All 4-pattern regimes satisfy Universal 3:1 Theorem (C-487). WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-484"
 source_registry = "registry/claims.toml"
@@ -9517,8 +9517,8 @@ theorem_label = "C-488"
 claim_id = "C-488"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-488."]
-derivation_steps = ["VERIFIED by integer-exact computation (~16s)", "WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the Double 3:1 Law"]
-decision_rule = "VERIFIED by integer-exact computation (~16s). WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the Double 3:1 Law."
+derivation_steps = ["VERIFIED by integer-exact computation (~16s)", "WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the 3:1 Theorem"]
+decision_rule = "VERIFIED by integer-exact computation (~16s). WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the 3:1 Theorem."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-488"
 source_registry = "registry/claims.toml"
@@ -10147,8 +10147,8 @@ theorem_label = "C-523"
 claim_id = "C-523"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-523."]
-derivation_steps = ["VERIFIED: BFS coboundary test at dims 16/32/64/128", "WHAT WOULD REFUTE: finding frustration at dim=16 or no frustration at dim>=32"]
-decision_rule = "VERIFIED: BFS coboundary test at dims 16/32/64/128. WHAT WOULD REFUTE: finding frustration at dim=16 or no frustration at dim>=32."
+derivation_steps = ["VERIFIED: BFS coboundary test at dims 16/32/64/128", "WHAT WOULD REFUTE: finding imbalance at dim=16 or no imbalance at dim>=32"]
+decision_rule = "VERIFIED: BFS coboundary test at dims 16/32/64/128. WHAT WOULD REFUTE: finding imbalance at dim=16 or no imbalance at dim>=32."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-523"
 source_registry = "registry/claims.toml"
@@ -10615,8 +10615,8 @@ theorem_label = "C-549"
 claim_id = "C-549"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-549."]
-derivation_steps = ["VERIFIED: 24 of 64 entries in the dim=8 split sign matrix are -1", "WHAT WOULD REFUTE the coincidence: if the frustration ratio converges to a value other than 3/8 (currently observed at 0", "375-0", "385 range, converging monotonically from above)", "The connection between split-octonion structure and standard CD asymptotics is OPEN for theoretical explanation"]
-decision_rule = "VERIFIED: 24 of 64 entries in the dim=8 split sign matrix are -1. WHAT WOULD REFUTE the coincidence: if the frustration ratio converges to a value other than 3/8 (currently observed at 0.375-0.385 range, converging monotonically from above). The connection between split-octonion structure and standard CD asymptotics is OPEN for theoretical explanation."
+derivation_steps = ["VERIFIED: 24 of 64 entries in the dim=8 split sign matrix are -1", "WHAT WOULD REFUTE the coincidence: if the imbalance index converges to a value other than 3/8 (currently observed at 0", "375-0", "385 range, converging monotonically from above)", "The connection between split-octonion structure and standard CD asymptotics is OPEN for theoretical explanation"]
+decision_rule = "VERIFIED: 24 of 64 entries in the dim=8 split sign matrix are -1. WHAT WOULD REFUTE the coincidence: if the imbalance index converges to a value other than 3/8 (currently observed at 0.375-0.385 range, converging monotonically from above). The connection between split-octonion structure and standard CD asymptotics is OPEN for theoretical explanation."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-549"
 source_registry = "registry/claims.toml"
@@ -10777,8 +10777,8 @@ theorem_label = "C-558"
 claim_id = "C-558"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-558."]
-derivation_steps = ["VERIFIED: BFS coboundary test on 255 components at dim=512 (O(V+E) per component, ~44 seconds runtime)", "Cycle rank b1 = 4,128,009", "frustrated edges = 1,573,216", "ratio = 0", "381068", "Eta edge distribution: 2,096,262 edges with eta=0 (even), 2,096,262 edges with eta=1 (odd) -- perfect balance", "WHAT WOULD REFUTE: frustration ratio increasing above 0", "385 (breaking monotone decrease), or eta balance deviation >1% (breaking C-517)"]
-decision_rule = "VERIFIED: BFS coboundary test on 255 components at dim=512 (O(V+E) per component, ~44 seconds runtime). Cycle rank b1 = 4,128,009; frustrated edges = 1,573,216; ratio = 0.381068. Eta edge distribution: 2,096,262 edges with eta=0 (even), 2,096,262 edges with eta=1 (odd) -- perfect balance. WHAT WOULD REFUTE: frustration ratio increasing above 0.385 (breaking monotone decrease), or eta balance deviation >1% (breaking C-517)."
+derivation_steps = ["VERIFIED: BFS coboundary test on 255 components at dim=512 (O(V+E) per component, ~44 seconds runtime)", "Cycle rank b1 = 4,128,009", "imbalanced edges = 1,573,216", "ratio = 0", "381068", "Eta edge distribution: 2,096,262 edges with eta=0 (even), 2,096,262 edges with eta=1 (odd) -- perfect balance", "WHAT WOULD REFUTE: imbalance index increasing above 0", "385 (breaking monotone decrease), or eta balance deviation >1% (breaking C-517)"]
+decision_rule = "VERIFIED: BFS coboundary test on 255 components at dim=512 (O(V+E) per component, ~44 seconds runtime). Cycle rank b1 = 4,128,009; imbalanced edges = 1,573,216; ratio = 0.381068. Eta edge distribution: 2,096,262 edges with eta=0 (even), 2,096,262 edges with eta=1 (odd) -- perfect balance. WHAT WOULD REFUTE: imbalance index increasing above 0.385 (breaking monotone decrease), or eta balance deviation >1% (breaking C-517)."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-558"
 source_registry = "registry/claims.toml"
@@ -11056,7 +11056,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-573"]
-evidence_refs = ["crates/algebra_core/src/gpu/dimensional.rs", "crates/algebra_core/src/gpu/eta_matrix.rs", "crates/algebra_core/src/gpu/frustration.rs", "crates/algebra_core/src/gpu/graph_construction.rs"]
+evidence_refs = ["crates/algebra_core/src/gpu/dimensional.rs", "crates/algebra_core/src/gpu/eta_matrix.rs", "crates/algebra_core/src/gpu/imbalance.rs", "crates/algebra_core/src/gpu/graph_construction.rs"]
 
 [[skeleton]]
 id = "PRS-00615"
@@ -12559,8 +12559,8 @@ theorem_label = "C-657"
 claim_id = "C-657"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-657."]
-derivation_steps = ["VERIFIED by STPT-006 (PRIMARY): Cassini bound omega_eff >= 40000 satisfied for lambda-dependent frustration", "VERIFIED by E-027 (secondary, Phase 2): p < 0", "05 correlation", "REFUTATION: Both experiments fail criteria"]
-decision_rule = "VERIFIED by STPT-006 (PRIMARY): Cassini bound omega_eff >= 40000 satisfied for lambda-dependent frustration. VERIFIED by E-027 (secondary, Phase 2): p < 0.05 correlation. REFUTATION: Both experiments fail criteria."
+derivation_steps = ["VERIFIED by STPT-006 (PRIMARY): Cassini bound omega_eff >= 40000 satisfied for lambda-dependent imbalance", "VERIFIED by E-027 (secondary, Phase 2): p < 0", "05 correlation", "REFUTATION: Both experiments fail criteria"]
+decision_rule = "VERIFIED by STPT-006 (PRIMARY): Cassini bound omega_eff >= 40000 satisfied for lambda-dependent imbalance. VERIFIED by E-027 (secondary, Phase 2): p < 0.05 correlation. REFUTATION: Both experiments fail criteria."
 conclusion = "ESTABLISHED: Established"
 source_uid = "C-657"
 source_registry = "registry/claims.toml"
@@ -12595,8 +12595,8 @@ theorem_label = "C-659"
 claim_id = "C-659"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-659."]
-derivation_steps = ["VERIFIED by E-027 (Phase 2): Null p-value < 0", "05, frustration-derived distinct from random", "REFUTATION: null p >= 0", "05"]
-decision_rule = "VERIFIED by E-027 (Phase 2): Null p-value < 0.05, frustration-derived distinct from random. REFUTATION: null p >= 0.05."
+derivation_steps = ["VERIFIED by E-027 (Phase 2): Null p-value < 0", "05, imbalance-derived distinct from random", "REFUTATION: null p >= 0", "05"]
+decision_rule = "VERIFIED by E-027 (Phase 2): Null p-value < 0.05, imbalance-derived distinct from random. REFUTATION: null p >= 0.05."
 conclusion = "ESTABLISHED: Established"
 source_uid = "C-659"
 source_registry = "registry/claims.toml"
@@ -12793,8 +12793,8 @@ theorem_label = "C-670"
 claim_id = "C-670"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-670."]
-derivation_steps = ["VERIFIED: 6 unit tests pass", "REFUTATION: slice isolation broken or frustration length incorrect"]
-decision_rule = "VERIFIED: 6 unit tests pass. REFUTATION: slice isolation broken or frustration length incorrect."
+derivation_steps = ["VERIFIED: 6 unit tests pass", "REFUTATION: slice isolation broken or imbalance length incorrect"]
+decision_rule = "VERIFIED: 6 unit tests pass. REFUTATION: slice isolation broken or imbalance length incorrect."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-670"
 source_registry = "registry/claims.toml"
@@ -12991,8 +12991,8 @@ theorem_label = "C-681"
 claim_id = "C-681"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-681."]
-derivation_steps = ["VERIFIED: 6 unit tests pass including zero-frustration identity, monotonicity near vacuum, enhancement ratio bounds", "REFUTATION: KuboResponse produces NaN or negative viscosity for any valid frustration input"]
-decision_rule = "VERIFIED: 6 unit tests pass including zero-frustration identity, monotonicity near vacuum, enhancement ratio bounds. REFUTATION: KuboResponse produces NaN or negative viscosity for any valid frustration input."
+derivation_steps = ["VERIFIED: 6 unit tests pass including zero-imbalance identity, monotonicity near vacuum, enhancement ratio bounds", "REFUTATION: KuboResponse produces NaN or negative viscosity for any valid imbalance input"]
+decision_rule = "VERIFIED: 6 unit tests pass including zero-imbalance identity, monotonicity near vacuum, enhancement ratio bounds. REFUTATION: KuboResponse produces NaN or negative viscosity for any valid imbalance input."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-681"
 source_registry = "registry/claims.toml"
@@ -13027,8 +13027,8 @@ theorem_label = "C-683"
 claim_id = "C-683"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-683."]
-derivation_steps = ["VERIFIED: D_S monotonically increases from alpha=0 to alpha=1", "1 and peaks at alpha=1", "1", "REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard frustration suppression per Heidrich-Meisner PRB 68, 134436)"]
-decision_rule = "VERIFIED: D_S monotonically increases from alpha=0 to alpha=1.1 and peaks at alpha=1.1. REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard frustration suppression per Heidrich-Meisner PRB 68, 134436)."
+derivation_steps = ["VERIFIED: D_S monotonically increases from alpha=0 to alpha=1", "1 and peaks at alpha=1", "1", "REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard imbalance suppression per Heidrich-Meisner PRB 68, 134436)"]
+decision_rule = "VERIFIED: D_S monotonically increases from alpha=0 to alpha=1.1 and peaks at alpha=1.1. REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard imbalance suppression per Heidrich-Meisner PRB 68, 134436)."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-683"
 source_registry = "registry/claims.toml"
@@ -13081,8 +13081,8 @@ theorem_label = "C-686"
 claim_id = "C-686"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-686."]
-derivation_steps = ["VERIFIED: Enhancement is consistent with Varma mechanism (frustration suppressed by competing effects -> D rises)", "REFUTATION: Running at B=0 should show standard frustration suppression per Heidrich-Meisner PRB 68, 134436 (2003)"]
-decision_rule = "VERIFIED: Enhancement is consistent with Varma mechanism (frustration suppressed by competing effects -> D rises). REFUTATION: Running at B=0 should show standard frustration suppression per Heidrich-Meisner PRB 68, 134436 (2003)."
+derivation_steps = ["VERIFIED: Enhancement is consistent with Varma mechanism (imbalance suppressed by competing effects -> D rises)", "REFUTATION: Running at B=0 should show standard imbalance suppression per Heidrich-Meisner PRB 68, 134436 (2003)"]
+decision_rule = "VERIFIED: Enhancement is consistent with Varma mechanism (imbalance suppressed by competing effects -> D rises). REFUTATION: Running at B=0 should show standard imbalance suppression per Heidrich-Meisner PRB 68, 134436 (2003)."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-686"
 source_registry = "registry/claims.toml"
@@ -13135,8 +13135,8 @@ theorem_label = "C-689"
 claim_id = "C-689"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-689."]
-derivation_steps = ["VERIFIED: Both our data and Stolpp 2019 show D_S increasing with frustration at high field", "REFUTATION: If D_S decreased with alpha at B=3", "0 (inconsistent with Lifshitz mechanism), or if Stolpp's theory predicted suppression at all fields"]
-decision_rule = "VERIFIED: Both our data and Stolpp 2019 show D_S increasing with frustration at high field. REFUTATION: If D_S decreased with alpha at B=3.0 (inconsistent with Lifshitz mechanism), or if Stolpp's theory predicted suppression at all fields."
+derivation_steps = ["VERIFIED: Both our data and Stolpp 2019 show D_S increasing with imbalance at high field", "REFUTATION: If D_S decreased with alpha at B=3", "0 (inconsistent with Lifshitz mechanism), or if Stolpp's theory predicted suppression at all fields"]
+decision_rule = "VERIFIED: Both our data and Stolpp 2019 show D_S increasing with imbalance at high field. REFUTATION: If D_S decreased with alpha at B=3.0 (inconsistent with Lifshitz mechanism), or if Stolpp's theory predicted suppression at all fields."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-689"
 source_registry = "registry/claims.toml"
@@ -13153,8 +13153,8 @@ theorem_label = "C-690"
 claim_id = "C-690"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-690."]
-derivation_steps = ["Rust tests in `sedenion_geodesic", "rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \\to r_h$, tracking monotonic increase in algebraic frustration near the event horizon"]
-decision_rule = "Rust tests in `sedenion_geodesic.rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \\to r_h$, tracking monotonic increase in algebraic frustration near the event horizon."
+derivation_steps = ["Rust tests in `sedenion_geodesic", "rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \\to r_h$, tracking monotonic increase in algebraic imbalance near the event horizon"]
+decision_rule = "Rust tests in `sedenion_geodesic.rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \\to r_h$, tracking monotonic increase in algebraic imbalance near the event horizon."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-690"
 source_registry = "registry/claims.toml"
@@ -14665,8 +14665,8 @@ theorem_label = "C-774"
 claim_id = "C-774"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-774."]
-derivation_steps = ["VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1", "0) of spin correlation P as frustration-induced decoherence gamma increases", "Validates CD-frustration as a candidate physical medium for coherence loss"]
-decision_rule = "VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1.0) of spin correlation P as frustration-induced decoherence gamma increases. Validates CD-frustration as a candidate physical medium for coherence loss."
+derivation_steps = ["VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1", "0) of spin correlation P as imbalance-induced decoherence gamma increases", "Validates CD-imbalance as a candidate physical medium for coherence loss"]
+decision_rule = "VERIFIED (E-036): Simulation of Lambda-pair tomography in a SedenionField shows perfect monotonic decay (Spearman r = -1.0) of spin correlation P as imbalance-induced decoherence gamma increases. Validates CD-imbalance as a candidate physical medium for coherence loss."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-774"
 source_registry = "registry/claims.toml"
@@ -14683,8 +14683,8 @@ theorem_label = "C-775"
 claim_id = "C-775"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-775."]
-derivation_steps = ["VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite frustration threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration"]
-decision_rule = "VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite frustration threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration."
+derivation_steps = ["VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite imbalance threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration"]
+decision_rule = "VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite imbalance threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-775"
 source_registry = "registry/claims.toml"
@@ -14719,8 +14719,8 @@ theorem_label = "C-777"
 claim_id = "C-777"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-777."]
-derivation_steps = ["VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero frustration, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation"]
-decision_rule = "VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero frustration, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation."
+derivation_steps = ["VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero imbalance, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation"]
+decision_rule = "VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero imbalance, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-777"
 source_registry = "registry/claims.toml"
@@ -14728,7 +14728,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-777"]
-evidence_refs = ["crates/gororoba_cli_algebra/src/bin/amplitude_frustration_survey.rs"]
+evidence_refs = ["crates/gororoba_cli_algebra/src/bin/amplitude_imbalance_survey.rs"]
 
 [[skeleton]]
 id = "PRS-00819"
@@ -16195,8 +16195,8 @@ theorem_label = "C-859"
 claim_id = "C-859"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-859."]
-derivation_steps = ["VERIFY:", "frustration_entropy_bridge(3/8) - gamma_NZJ", "/ gamma_NZJ < 0", "02", "REFUTE: deviation > 5%"]
-decision_rule = "VERIFY: |frustration_entropy_bridge(3/8) - gamma_NZJ| / gamma_NZJ < 0.02. REFUTE: deviation > 5%."
+derivation_steps = ["VERIFY:", "imbalance_entropy_bridge(3/8) - gamma_NZJ", "/ gamma_NZJ < 0", "02", "REFUTE: deviation > 5%"]
+decision_rule = "VERIFY: |imbalance_entropy_bridge(3/8) - gamma_NZJ| / gamma_NZJ < 0.02. REFUTE: deviation > 5%."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-859"
 source_registry = "registry/claims.toml"
@@ -16213,8 +16213,8 @@ theorem_label = "C-860"
 claim_id = "C-860"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-860."]
-derivation_steps = ["VERIFY: invert_entropy_bridge_bg() returns None", "REFUTE: finding a bridge formula that naturally yields gamma_BG from frustration density"]
-decision_rule = "VERIFY: invert_entropy_bridge_bg() returns None. REFUTE: finding a bridge formula that naturally yields gamma_BG from frustration density."
+derivation_steps = ["VERIFY: invert_entropy_bridge_bg() returns None", "REFUTE: finding a bridge formula that naturally yields gamma_BG from imbalance density"]
+decision_rule = "VERIFY: invert_entropy_bridge_bg() returns None. REFUTE: finding a bridge formula that naturally yields gamma_BG from imbalance density."
 conclusion = "ESTABLISHED: Established"
 source_uid = "C-860"
 source_registry = "registry/claims.toml"

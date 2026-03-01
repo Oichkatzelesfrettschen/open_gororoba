@@ -126,7 +126,7 @@ rationale = "Box-kite and zero-divisor structure source used in legacy formulati
 id = "DOCSRC-014"
 lane = "thesis_4_cd_algebra"
 path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2007_07040112_sedenions_xor.pdf"
-rationale = "Sedenion XOR structure source aligned with graph/frustration decomposition."
+rationale = "Sedenion XOR structure source aligned with graph/imbalance decomposition."
 
 [[priority_source]]
 id = "DOCSRC-015"

@@ -25,7 +25,7 @@ ROOT_TARGETS = {
     "PHASE10_11_ULTIMATE_ROADMAP.md",
     "PYTHON_REFACTORING_ROADMAP.md",
     "SYNTHESIS_PIPELINE_PROGRESS.md",
-    "crates/vacuum_frustration/IMPLEMENTATION_NOTES.md",
+    "crates/sign_imbalance/IMPLEMENTATION_NOTES.md",
     "curated/README.md",
     "curated/01_theory_frameworks/README_COQ.md",
     "data/csv/README.md",

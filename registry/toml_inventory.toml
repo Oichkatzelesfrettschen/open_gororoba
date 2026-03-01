@@ -434,7 +434,7 @@ sha256 = "7b8f76c26baec949fa3e8df0df26124a8ff32675ad5e020c8a7e76a4213d2756"
 
 [[document]]
 id = "TOML-0029"
-path = "crates/vacuum_frustration/Cargo.toml"
+path = "crates/sign_imbalance/Cargo.toml"
 git_status = "tracked"
 role = "cargo_crate_manifest"
 zone = "crate_manifest"

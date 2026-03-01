@@ -1,0 +1,60 @@
+%% Fig 28: Casimir geometry comparison (3 panels)
+\begin{tikzpicture}[
+  plate/.style={fill=OIblue!30, draw=OIblue!60, thick},
+  pillar/.style={fill=OIgreen!30, draw=OIgreen!60, thick},
+  sphere/.style={fill=OIpurple!30, draw=OIpurple!60, thick},
+  ann/.style={font=\sffamily\scriptsize},
+]
+  %% Panel 1: Parallel plates
+  \begin{scope}[shift={(-5,0)}]
+    \node[ann, anchor=south, OIblue!70!black] at (0,2.5) {\textbf{Parallel Plates}};
+    \fill[plate] (-1.5,-2) rectangle (-1.2,2);
+    \fill[plate] (1.2,-2) rectangle (1.5,2);
+    %% Vacuum modes (wavy lines)
+    \foreach \y in {-1.2,-0.4,0.4,1.2} {
+      \draw[OIorange!60, thick, decorate, decoration={snake, amplitude=2pt, segment length=8pt}]
+        (-1.1,\y) -- (1.1,\y);
+    }
+    %% Separation annotation
+    \draw[{Stealth[length=3pt]}-{Stealth[length=3pt]}, thick]
+      (-1.2,-2.3) -- (1.2,-2.3) node[midway, below, ann] {$a$};
+    \node[ann, gray] at (0,-3.0) {$E \propto a^{-3}$};
+    \node[ann, gray] at (0,-3.5) {(C-871, verified)};
+  \end{scope}
+
+  %% Panel 2: Pillar array
+  \begin{scope}[shift={(0,0)}]
+    \node[ann, anchor=south, OIgreen!70!black] at (0,2.5) {\textbf{Pillar Array}};
+    %% Bottom plate
+    \fill[pillar] (-2,-2) rectangle (2,-1.7);
+    %% Pillars
+    \foreach \x in {-1.2,-0.4,0.4,1.2} {
+      \fill[pillar] (\x-0.15,-1.7) rectangle (\x+0.15,0.5);
+    }
+    %% Top plate
+    \fill[pillar, opacity=0.5] (-2,1.5) rectangle (2,1.8);
+    %% Modes between pillars
+    \foreach \x in {-0.8,0.0,0.8} {
+      \draw[OIorange!50, thick, decorate, decoration={snake, amplitude=1.5pt, segment length=6pt}]
+        (\x,-1.6) -- (\x,1.4);
+    }
+    \node[ann, gray] at (0,-3.0) {$E \propto d^{-4}$};
+  \end{scope}
+
+  %% Panel 3: Sphere in cylinder
+  \begin{scope}[shift={(5,0)}]
+    \node[ann, anchor=south, OIpurple!70!black] at (0,2.5) {\textbf{Sphere-in-Cylinder}};
+    %% Cylinder
+    \draw[sphere, fill=none] (-1.3,-2) -- (-1.3,2);
+    \draw[sphere, fill=none] (1.3,-2) -- (1.3,2);
+    \draw[sphere, fill=none] (-1.3,2) arc(180:360:1.3 and 0.4);
+    \draw[sphere, fill=none, dashed] (-1.3,2) arc(180:0:1.3 and 0.4);
+    \draw[sphere, fill=none] (-1.3,-2) arc(180:360:1.3 and 0.4);
+    %% Sphere
+    \shade[ball color=OIpurple!30] (0,0) circle(0.8);
+    %% Gap annotation
+    \draw[{Stealth[length=3pt]}-{Stealth[length=3pt]}, thick]
+      (0.8,0) -- (1.3,0) node[midway, above, ann] {$\delta$};
+    \node[ann, gray] at (0,-3.0) {$E \propto \delta^{-1}$};
+  \end{scope}
+\end{tikzpicture}

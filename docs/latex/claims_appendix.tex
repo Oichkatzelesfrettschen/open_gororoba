@@ -264,7 +264,7 @@ C-124 & The flexibility identity (ab)(ca) = a((bc)a) holds exactly through dim=8
 \hline
 C-125 & Artin's theorem (2-generated subalgebras are associative) holds through dim=8 and fails at dim=16.... & Verified & medium & `src/scripts/analysis/cd\_algebraic\_... \\
 \hline
-C-590 & The frustration ratio of the standard Cayley-Dickson tower converges toward 3/8 in the... & Verified & high & `crates/algebra\_core/tests/test\_spl... \\
+C-590 & The imbalance index of the standard Cayley-Dickson tower converges toward 3/8 in the... & Verified & high & `crates/algebra\_core/tests/test\_spl... \\
 \hline
 C-631 & In the restricted simple-blade split-octonion census (blades of the form e\_i +/- e\_j), the... & Verified & high & `crates/algebra\_core/tests/test\_spl... \\
 \hline
@@ -992,7 +992,7 @@ C-485 & Regime Count Formula: The number of distinct face sign regimes in the CD
 \hline
 C-486 & Edge Count Extremal Formulas: For dim >= 32, the maximum edge count per component is E\_max =... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
-C-487 & Universal Double 3:1 Law: In EVERY component of the CD zero-divisor graph at EVERY dimension d >=... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
+C-487 & Universal 3:1 Theorem: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16,... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
 C-488 & Face Sign Census at dim=256: 13348104 triangular faces across 127 components split into 17 regimes... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
@@ -1006,7 +1006,7 @@ C-492 & Half-Half Edge Law: In every component of the CD zero-divisor graph at e
 \hline
 C-493 & Parity Product Identity: For any triangle in the ZD graph with edges ab, bc, ac, the product... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
-C-494 & Quarter Rule (mechanism of Double 3:1 Law): Within each parity class of triangles in any ZD graph... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
+C-494 & Quarter Rule (mechanism of 3:1 Theorem): Within each parity class of triangles in any ZD graph... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
 C-495 & Face sign census at dim=512: 255 components, 33 regimes (512/16 + 1), e\_max=32004, e\_min=756, 214M... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
@@ -1064,7 +1064,7 @@ C-521 & Anti-Diagonal Parity Theorem at dim=128: The Anti-Diagonal Parity Theore
 \hline
 C-522 & Anti-Diagonal Parity Theorem at dim=256: Verified with ZERO mismatches across 13,348,104 triangles... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
-C-523 & GF(2) Coboundary Phase Transition: At dim=16, eta is a GF(2) coboundary (0 frustrated cycles out of... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
+C-523 & GF(2) Coboundary Phase Transition: At dim=16, eta is a GF(2) coboundary (0 imbalanced cycles out of... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
 C-524 & Klein-Four Fiber Symmetry Law: The two nonzero-f1 fibers F(1,0) and F(1,1) of the 2-bit invariant F... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
@@ -1076,7 +1076,7 @@ C-527 & GF(2) Polynomial Degree of psi and eta: psi(i,j) has Algebraic Normal Fo
 \hline
 C-528 & Quarter Rule Exactness: pure * 4 = total EXACTLY at every dimension (not approximate, not... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
-C-529 & Frustration Oscillation: the GF(2) cohomological frustration ratio (frustrated non-tree edges / b1)... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
+C-529 & Imbalance Oscillation: the GF(2) cohomological imbalance index (imbalanced non-tree edges / b1)... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
 C-530 & Vertex-Median Symmetry: F(1,0) = F(1,1) in canonical ordering (i<j<k) is explained by the symmetric... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
@@ -1088,7 +1088,7 @@ C-533 & At dim=8 (octonions), the 7x7 psi matrix recovers the Fano plane: exactl
 \hline
 C-534 & The fraction of psi=1 entries in the (dim-1)x(dim-1) imaginary psi matrix converges monotonically... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
-C-535 & Frustration ratio at dim=1024: 0.37849. The full frustration oscillation sequence is now 0.000... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
+C-535 & Imbalance index at dim=1024: 0.37849. The full imbalance oscillation sequence is now 0.000... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
 C-536 & Legacy ZD Adjacency Matrix Cross-Validation REFUTED: The legacy CSV files... & Superseded & n/a & `crates/algebra\_core/src/analysis/l... \\
 \hline
@@ -1134,7 +1134,7 @@ C-556 & Sedenion Zero-Divisor Landscape: Split Sedenions Have Monotonically More
 \hline
 C-557 & Component Scaling Laws Verified at Practical Dimensions: The Cayley-Dickson zero-divisor motif... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
-C-558 & Frustration Ratio and Eta Balance Law Verified at dim=512: The frustration ratio at dim=512 is... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
+C-558 & Imbalance Index and Eta Balance Law Verified at dim=512: The imbalance index at dim=512 is... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
 C-559 & Anti-Diagonal Parity Theorem Mechanism Verified at dim=256 with Zero Mismatches: Triangle... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
@@ -1194,7 +1194,7 @@ C-586 & 168/168 confirmed diagonal zero-divisors of sedenions satisfy the Stiefe
 \hline
 C-587 & Depth-based generation assignment (boundary-crossing count) at dim=16: mean associator norms are... & Closed/Negative-Result & n/a & `crates/materials\_core/src/tang\_mas... \\
 \hline
-C-588 & Reusable compute\_frustration\_ratio() function verified at dim=32: frustration ratio = 0.307... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
+C-588 & Reusable compute\_imbalance\_index() function verified at dim=32: imbalance index = 0.307 (matching... & Verified & high & `crates/algebra\_core/src/analysis/b... \\
 \hline
 C-589 & The 8D lattice dimension in CD codebook is structurally driven by octonion algebra (Hurwitz unique... & Verified & medium & `crates/algebra\_core/src/analysis/c... \\
 \hline
@@ -1286,9 +1286,9 @@ C-635 & Tessarines have zero-divisors and are not division algebras. Example: (z
 \hline
 C-636 & Tessarines norm multiplicativity fails component-wise: ||t1 * t2|| != ||t1|| * ||t2|| in general,... & Verified & high & `crates/algebra\_core/tests/test\_tes... \\
 \hline
-C-637 & Dual-octonions (O x D, with epsilon\textasciicircum{}2 = 0) exhibit a frustration (sign imbalance) fraction of 14/32... & Verified & high & `crates/algebra\_core/tests/test\_exo... \\
+C-637 & Dual-octonions (O x D, with epsilon\textasciicircum{}2 = 0) exhibit a imbalance (sign imbalance) fraction of 14/32 =... & Verified & high & `crates/algebra\_core/tests/test\_exo... \\
 \hline
-C-638 & Dual-octonion frustration value 0.4375 confirms the phase boundary prediction: it lies between... & Verified & high & `crates/algebra\_core/tests/test\_exo... \\
+C-638 & Dual-octonion imbalance value 0.4375 confirms the phase boundary prediction: it lies between... & Verified & high & `crates/algebra\_core/tests/test\_exo... \\
 \hline
 C-639 & Exotic octonion parametrization is complete: Dual-Octonions (O x D), Bi-Octonions (O x C,... & Verified & high & `crates/algebra\_core/tests/test\_exo... \\
 \hline
@@ -1326,33 +1326,33 @@ C-655 & Third-Party Source Verification (W7-005): Automated weekly verification 
 \hline
 C-656 & Third-Party Source Verification Pipeline (W7-005): Python verification script... & Verified & medium & `src/verification/verify\_third\_part... \\
 \hline
-C-657 & Frustration-Viscosity Coupling Principle (Thesis 1): Spatially-varying kinematic viscosity... & Established & low & crates/vacuum\_frustration/src/bridg... \\
+C-657 & Imbalance-Viscosity Coupling Principle (Thesis 1): Spatially-varying kinematic viscosity nu(x,y,z)... & Established & low & crates/sign\_imbalance/src/bridge.rs... \\
 \hline
-C-658 & Percolation Threshold Frustration Dependence (Thesis 1 Corollary): Percolation channels... & Verified & low & crates/vacuum\_frustration/src/perco... \\
+C-658 & Percolation Threshold Imbalance Dependence (Thesis 1 Corollary): Percolation channels... & Verified & low & crates/sign\_imbalance/src/percolati... \\
 \hline
 C-659 & Besag-Clifford Null Model Rejection (Thesis 1 Robustness): Spatially-shuffled viscosity fields... & Established & low & stats\_core/src/ultrametric/adaptive... \\
 \hline
-C-660 & TX-3 Topological Overlap Principle: Monotonic viscosity-frustration transforms (linear, power-law,... & Verified & medium & crates/gororoba\_cli/src/bin/thesis\_... \\
+C-660 & TX-3 Topological Overlap Principle: Monotonic viscosity-imbalance transforms (linear, power-law,... & Verified & medium & crates/gororoba\_cli/src/bin/thesis\_... \\
 \hline
-C-661 & Sigmoid Dynamic Range Collapse: When sigmoid F\_crit (0.38) is far below the actual frustration... & Verified & medium & crates/gororoba\_cli/src/bin/thesis\_... \\
+C-661 & Sigmoid Dynamic Range Collapse: When sigmoid F\_crit (0.38) is far below the actual imbalance... & Verified & medium & crates/gororoba\_cli/src/bin/thesis\_... \\
 \hline
 C-662 & Power-Law Dynamic Range Amplification: Power-law viscosity coupling (exponent 1.5) produces... & Verified & medium & crates/gororoba\_cli/src/bin/thesis\_... \\
 \hline
-C-663 & Grid Convergence of Frustration-Viscosity Spatial Correlation: Spearman and Pearson correlations... & Verified & medium & crates/gororoba\_cli/src/bin/thesis\_... \\
+C-663 & Grid Convergence of Imbalance-Viscosity Spatial Correlation: Spearman and Pearson correlations... & Verified & medium & crates/gororoba\_cli/src/bin/thesis\_... \\
 \hline
 C-664 & Non-Newtonian Shear Thickening Confirmation: Power-law viscosity coupling (power\_index=1.5,... & Verified & medium & crates/gororoba\_cli/src/bin/thesis\_... \\
 \hline
-C-665 & TX-1 Frustration-Modulated Collision Dynamics: Local frustration density modulates effective... & Verified & medium & crates/lattice\_filtration/src/filtr... \\
+C-665 & TX-1 Imbalance-Modulated Collision Dynamics: Local imbalance density modulates effective diffusion... & Verified & medium & crates/lattice\_filtration/src/filtr... \\
 \hline
-C-666 & TX-1 Non-Monotonic Alpha Dependence: Frustration-modulated collision dynamics shows maximum gamma... & Verified & medium & data/thesis\_lab/tx1/tx1\_report.toml... \\
+C-666 & TX-1 Non-Monotonic Alpha Dependence: Imbalance-modulated collision dynamics shows maximum gamma... & Verified & medium & data/thesis\_lab/tx1/tx1\_report.toml... \\
 \hline
 C-667 & Thesis 2 3D Associator-Coupled Shear Thickening: Associator norm coupling produces measurable... & Verified & medium & data/thesis\_lab/thesis2\_3d/thesis2\_... \\
 \hline
 C-668 & Thesis 2 Power-Index Sensitivity Hierarchy: Velocity reduction from associator-coupled... & Verified & medium & data/thesis\_lab/thesis2\_3d/thesis2\_... \\
 \hline
-C-669 & TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16\textasciicircum{}3 with frustration-derived... & Refuted & high & data/thesis\_lab/tx2/tx2\_report.toml... \\
+C-669 & TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16\textasciicircum{}3 with imbalance-derived... & Refuted & high & data/thesis\_lab/tx2/tx2\_report.toml... \\
 \hline
-C-670 & SedenionField4D: 4D extension of the SedenionField lattice abstraction treats the w-dimension as... & Verified & medium & crates/vacuum\_frustration/src/bridg... \\
+C-670 & SedenionField4D: 4D extension of the SedenionField lattice abstraction treats the w-dimension as... & Verified & medium & crates/sign\_imbalance/src/bridge.rs... \\
 \hline
 C-671 & Burn Neural Correction Tensor Training: A 3-layer MLP (256->128->64->16) trained with Adam... & Verified & medium & crates/neural\_homotopy/src/burn\_mod... \\
 \hline
@@ -1362,7 +1362,7 @@ C-673 & Neural Correction Tensor Perturbation Robustness: At 5\% noise perturbat
 \hline
 C-674 & Synthesis Engine 4/4 Gate Pass: All four grand synthesis theses pass their falsification gates in... & Verified & medium & data/evidence/synthesis\_final/synth... \\
 \hline
-C-675 & E-027 Multi-Scale GPU Convergence: Frustration-velocity anti-correlation is robust across 4 grid... & Verified & high & data/e027/v2/e027\_v2\_128cubed.toml \\
+C-675 & E-027 Multi-Scale GPU Convergence: Imbalance-velocity anti-correlation is robust across 4 grid... & Verified & high & data/e027/v2/e027\_v2\_128cubed.toml \\
 \hline
 C-676 & GPU Guo Forcing Validation: CUDA D3Q19 solver with Guo forcing scheme produces Kolmogorov flow with... & Verified & high & data/e027/v2/e027\_v2\_64cubed.toml \\
 \hline
@@ -1370,11 +1370,11 @@ C-677 & TX-2 Null Result at All Grid Scales: The viscosity-to-filtration cross-t
 \hline
 C-678 & Kubo Drude Weight Onset Catastrophe: Any nonzero Cayley-Dickson interpolation (lambda > 0) causes a... & Verified & high & data/kubo\_transport/coupling\_analys... \\
 \hline
-C-679 & Vacuum Attractor Kubo Enhancement: At the Cayley-Dickson vacuum attractor frustration f=3/8=0.375,... & Verified & high & data/kubo\_transport/coupling\_analys... \\
+C-679 & Imbalance Attractor Kubo Enhancement: At the Cayley-Dickson imbalance attractor imbalance... & Verified & high & data/kubo\_transport/coupling\_analys... \\
 \hline
 C-680 & Full CD Kubo Enhancement Upper Bound: At lambda=1.0 (full octonion algebra, f\_CD=0.5429), the Drude... & Verified & high & data/kubo\_transport/coupling\_analys... \\
 \hline
-C-681 & KuboResponse First-Principles Coupling Model: ViscosityCouplingModel::KuboResponse replaces the... & Verified & high & crates/vacuum\_frustration/src/bridg... \\
+C-681 & KuboResponse First-Principles Coupling Model: ViscosityCouplingModel::KuboResponse replaces the... & Verified & high & crates/sign\_imbalance/src/bridge.rs... \\
 \hline
 C-682 & Integrable Heisenberg Chain Fully Ballistic: At alpha=0 (pure nearest-neighbor Heisenberg chain),... & Verified & high & data/kubo\_transport/validation/j1j2... \\
 \hline
@@ -1402,15 +1402,15 @@ C-693 & Primary-source mapping candidate: RI-030/RI-031 ('magic particles' cover
 \hline
 C-694 & Primary-source mapping candidate: RI-033 maps to Nature DOI 10.1038/s41586-025-09917-9. & Verified & medium & registry/hypercomplex\_taxonomy\_prom... \\
 \hline
-C-774 & Non-associative algebraic frustration induces monotonic spin decoherence in Lambda-pair systems. & Verified & high & Thesis 5 Pipeline... \\
+C-774 & Non-associative algebraic imbalance induces monotonic spin decoherence in Lambda-pair systems. & Verified & high & Thesis 5 Pipeline... \\
 \hline
 C-775 & The scalar relative polarization parameter P is insufficient to distinguish entangled states from... & Verified & high & Thesis 5 Pipeline... \\
 \hline
 C-776 & Degenerate kinematic slices in QFT (short-range selection in spin correlation, half-collinear locus... & Verified & high & STAR spin correlation paper... \\
 \hline
-C-777 & The nonzero region R1 for single-minus gluon amplitudes corresponds to the zero-frustration locus... & Verified & high & Amplitude Frustration Survey CLI... \\
+C-777 & The nonzero region R1 for single-minus gluon amplitudes corresponds to the zero-imbalance locus of... & Verified & high & Amplitude Imbalance Survey CLI... \\
 \hline
-C-778 & QGP vorticity induces a global spin polarization that can be modeled as a biased decoherence... & Verified & medium & QGP Frustration Bridge... \\
+C-778 & QGP vorticity induces a global spin polarization that can be modeled as a biased decoherence... & Verified & medium & QGP Imbalance Bridge... \\
 \hline
 C-779 & The CMS azimuthal polarization sign challenge can be resolved by introducing an algebraic twist... & Verified & medium & LHC 2025 QGP Synthesis CLI... \\
 \hline
@@ -1730,11 +1730,11 @@ C-857 & PPN constraint report expanded from 7 to 13 gates: adds GP-B geodetic, a
 \hline
 C-858 & GP-B geodetic precession constrains (1+gamma)/2 to 0.28\%, requiring omega\_BD > 177 for Brans-Dicke. & Verified & high & crates/gr\_core/src/ppn\_constraints.... \\
 \hline
-C-859 & Frustration-entropy bridge maps phi=3/8 to gamma \textasciitilde{} 0.122, within 2\% of gamma\_NZJ = 0.1236. & Verified & medium & crates/vacuum\_frustration/src/immir... \\
+C-859 & Imbalance-entropy bridge maps phi=3/8 to gamma \textasciitilde{} 0.122, within 2\% of gamma\_NZJ = 0.1236. & Verified & medium & crates/sign\_imbalance/src/immirzi\_b... \\
 \hline
-C-860 & Frustration-entropy bridge maximum at phi=1/2 gives ln(2)/(pi*sqrt(3))=0.1274, far below... & Established & very\_high & crates/vacuum\_frustration/src/immir... \\
+C-860 & Imbalance-entropy bridge maximum at phi=1/2 gives ln(2)/(pi*sqrt(3))=0.1274, far below... & Established & very\_high & crates/sign\_imbalance/src/immirzi\_b... \\
 \hline
-C-861 & No natural mapping from phi=3/8 to gamma\_BG exists: all non-calibrated bridges deviate > 10\% from... & Established & high & crates/vacuum\_frustration/src/immir... \\
+C-861 & No natural mapping from phi=3/8 to gamma\_BG exists: all non-calibrated bridges deviate > 10\% from... & Established & high & crates/sign\_imbalance/src/immirzi\_b... \\
 \hline
 C-862 & Complex-argument Bessel functions J\_n, Y\_n via ascending power series match DLMF/scipy reference... & Verified & very\_high & crates/optics\_core/src/bessel.rs... \\
 \hline
@@ -1768,10 +1768,10 @@ C-876 & Quaternion SO(3) rotation via cd\_multiply(dim=4) matches direct matrix 
 \hline
 C-877 & Zero algebraic coupling (alpha=0) recovers standard ADM decomposition with no correction terms. & Verified & very\_high & crates/gr\_core/src/adm\_algebra\_brid... \\
 \hline
-C-878 & Frustration vacuum attractor (3/8) gives zero York time correction and zero stress-energy source. & Verified & very\_high & crates/gr\_core/src/adm\_algebra\_brid... \\
+C-878 & Imbalance imbalance attractor (3/8) gives zero York time correction and zero stress-energy source. & Verified & very\_high & crates/gr\_core/src/adm\_algebra\_brid... \\
 \hline
 C-879 & CD dimension tower (1,2,4,8,16) maps bijectively to nacelle segmentation counts via... & Verified & very\_high & crates/gr\_core/src/adm\_algebra\_brid... \\
 \hline
-C-880 & Sedenion foliation single-slice frustration matches standalone SedenionField output at dim=16. & Verified & very\_high & crates/vacuum\_frustration/src/seden... \\
+C-880 & Sedenion foliation single-slice imbalance matches standalone SedenionField output at dim=16. & Verified & very\_high & crates/sign\_imbalance/src/sedenion\_... \\
 \hline
 \end{longtable}
