@@ -248,7 +248,7 @@ mod tests {
     #[test]
     fn test_flat_metric_gives_identity_quaternion() {
         let q = quaternion_frame_from_spatial_metric(&SPATIAL_IDENTITY);
-        // Should be close to identity (1,0,0,0) or (−1,0,0,0)
+        // Should be close to identity (1,0,0,0) or (-1,0,0,0)
         let w_abs = q[0].abs();
         assert!(
             w_abs > 0.99,
