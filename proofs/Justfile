@@ -1,0 +1,77 @@
+# Justfile for the Living Verification Artifact (LVA).
+#
+# WHY:  Single entry point to build proofs, extract code, generate metrics,
+#       render dependency graphs, and produce paper-ready artifacts.
+# WHAT: Orchestrates the full pipeline from .v sources to publication artifacts.
+# HOW:  just all (full pipeline), just proofs (kernel-check only).
+
+set shell := ["sh", "-eu", "-c"]
+
+# Default: build everything
+default: all
+
+# Build all proofs (.v -> .vo)
+proofs:
+    make -C . all
+
+# Check for admitted proofs
+check: proofs
+    make -C . check
+
+# Extract OCaml from Rocq and verify golden file
+extract: proofs
+    make -C . extract-check
+
+# Collect compilation metrics (lines, .vo sizes, compile times)
+metrics: proofs
+    ./scripts/collect_metrics.sh
+
+# Generate dependency graph (DOT + PDF + SVG)
+depgraph: proofs
+    ./scripts/dep_graph.sh
+
+# Convert dependency graph DOT -> TikZ for paper inclusion
+depgraph-tikz: depgraph
+    #!/bin/sh
+    set -eu
+    if ! command -v dot2tex >/dev/null 2>&1; then
+        echo "SKIP: dot2tex not found (install via pip or pacman)"
+        exit 0
+    fi
+    dot2tex -f tikz --figonly metrics/dep_graph.dot > metrics/dep_graph.tikz 2>/dev/null && \
+        echo "Generated: metrics/dep_graph.tikz" || \
+        echo "TikZ generation failed (non-fatal)"
+
+# Generate rocq doc HTML documentation (Alectryon replacement).
+# Produces browsable HTML for all theory and verified files.
+rocqdoc: proofs
+    ./scripts/generate_rocqdoc.sh
+
+# Generate all paper-ready artifacts: metrics CSV + TikZ dep graph
+paper-artifacts: metrics depgraph-tikz
+    @echo ""
+    @echo "=== Paper Artifacts Ready ==="
+    @echo "  Metrics:   proofs/metrics/compile_times.csv"
+    @echo "  Summary:   proofs/metrics/summary.csv"
+    @echo "  Dep graph: proofs/metrics/dep_graph.tikz"
+    @echo "=============================="
+
+# Count proof files and lines
+count:
+    make -C . count
+
+# Clean all build artifacts
+clean:
+    make -C . clean
+    rm -rf html metrics
+
+# Full pipeline: proofs -> check -> extract -> metrics -> depgraph + tikz
+all: check extract metrics depgraph-tikz
+    @echo ""
+    @echo "=== Living Verification Artifact: COMPLETE ==="
+    @echo "  Proofs:     make -C proofs check  -> CLEAN"
+    @echo "  Extraction: make -C proofs extract-check -> MATCH"
+    @echo "  Metrics:    proofs/metrics/compile_times.csv"
+    @echo "  Summary:    proofs/metrics/summary.csv"
+    @echo "  Dep graph:  proofs/metrics/dep_graph.dot + .tikz"
+    @echo "=============================================="

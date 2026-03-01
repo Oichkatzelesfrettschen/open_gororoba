@@ -2,6 +2,7 @@
 .PHONY: help install install-analysis install-astro install-particle install-quantum
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict doctor provenance patch-pyfilesystem2
+.PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: rust-test rust-clippy rust-smoke dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
@@ -797,13 +798,28 @@ coq:
 		coqc confine_theorems_1024_axioms.v && \
 		coqc confine_theorems_2048_axioms.v
 
+# ---- Rocq formal verification proofs (ADM/Casimir/Warp claims) ----
+
+rocq-proofs:
+	@command -v rocq >/dev/null 2>&1 || { echo "SKIP: rocq not found"; exit 0; }
+	$(MAKE) -C proofs all
+
+rocq-proofs-check:
+	$(MAKE) -C proofs check
+
+# Build proofs, generate paper artifacts, then compile LaTeX
+lva-paper: rocq-proofs rocq-proofs-check
+	@command -v just >/dev/null 2>&1 || { echo "ERROR: just not found (install via cargo install just)"; exit 1; }
+	cd proofs && just paper-artifacts
+	$(MAKE) latex
+
 # ---- LaTeX ----
 
 latex:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found. Install TeX Live (see docs/requirements/latex.md)"; exit 1; }
 	cargo run --release --bin generate-latex
 	@mkdir -p docs/latex/out
-	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out llm_scaffold_paper.tex
+	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -interaction=nonstopmode -halt-on-error -shell-escape -output-directory=out llm_scaffold_paper.tex
 	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out MASTER_SYNTHESIS.tex
 	cd docs/latex && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out MATHEMATICAL_FORMALISM.tex
 

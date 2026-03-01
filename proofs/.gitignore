@@ -1,0 +1,13 @@
+# Generated artifacts (not version-controlled)
+html/
+metrics/
+*.vo
+*.vok
+*.vos
+*.glob
+*.aux
+.Makefile.coq.d
+Makefile.coq
+Makefile.coq.conf
+extraction/*.vo
+extraction/*.glob

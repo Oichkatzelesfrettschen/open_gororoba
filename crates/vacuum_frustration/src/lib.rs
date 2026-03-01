@@ -17,6 +17,7 @@ pub mod frustration_energy;
 pub mod immirzi_bridge;
 pub mod kubo_transport;
 pub mod percolation;
+pub mod sedenion_foliation;
 pub mod signed_graph;
 pub mod spatial_correlation;
 pub mod vietoris_rips;

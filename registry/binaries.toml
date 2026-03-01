@@ -862,3 +862,27 @@ name = "hepdata-refresh"
 crate = "gororoba_cli"
 description = "Re-download HEPData CSV tables for managed lanes by resolving per-file table DOI metadata to canonical CSV content URLs."
 status = "active"
+
+[[binary]]
+name = "nacelle-warp-sweep"
+crate = "gororoba_cli_physics"
+description = "Sweep nacelle count (n=1..16) and compute warp bubble energy budgets, York time, and interior-flat residuals. Paper mode matches White 2025."
+status = "active"
+
+[[binary]]
+name = "worldline-casimir"
+crate = "gororoba_cli_physics"
+description = "Worldline Monte Carlo Casimir energy computation with v-loop algorithm (White 2021). Supports plates, sphere, cylinder, pillar, and sphere-cylinder geometries."
+status = "active"
+
+[[binary]]
+name = "adm-decompose"
+crate = "gororoba_cli_physics"
+description = "ADM 3+1 decomposition diagnostic: lapse, shift, spatial metric, extrinsic curvature, constraint residuals for Minkowski/Schwarzschild/warp spacetimes."
+status = "active"
+
+[[binary]]
+name = "algebraic-warp-sweep"
+crate = "gororoba_cli_physics"
+description = "Nacelle warp sweep with Cayley-Dickson algebraic coupling. Modes: paper (GR only), algebraic (frustration coupling), tower (CD dimension to nacelle map)."
+status = "active"

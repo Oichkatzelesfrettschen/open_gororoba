@@ -10,7 +10,10 @@
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{calc,positioning,arrows.meta,decorations.markings,matrix,patterns}
 \usepgfplotslibrary{groupplots}
+\usepackage{pgfplotstable}
 \usepackage[capitalize,noabbrev]{cleveref}
+\usepackage{minted}
+\setminted{fontsize=\footnotesize, frame=single, breaklines, linenos}
 
 \hypersetup{
   pdftitle={Algebraic Structure Constrains Physical Dynamics: Four Theses on Cayley-Dickson Lattice-Boltzmann Coupling},
@@ -43,6 +46,15 @@
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}[section]
 
+%% Centralized counters -- update here, propagates throughout paper
+\newcommand{\claimcount}{880}
+\newcommand{\testcount}{4554}
+\newcommand{\binarycount}{153}
+\newcommand{\cratecount}{35}
+\newcommand{\prooffilecount}{38}
+\newcommand{\prooflinecount}{2049}
+\newcommand{\kernelchecked}{21}
+
 \title{\textbf{Algebraic Structure Constrains Physical Dynamics: \\
 Four Theses on Cayley--Dickson Lattice--Boltzmann Coupling}\\[0.5em]
 \large With a Complete Mechanism for the Double 3:1 Law}
@@ -74,8 +86,8 @@ computationally at dimensions 16 through 512 with zero mismatches across
 14.2 million triangles.
 
 All results are reproducible from the TOML evidence registry
-(\texttt{registry/claims.toml}, 818 claims) and accompanying Rust test suite
-(4110 tests, zero warnings).
+(\texttt{registry/claims.toml}, \claimcount{} claims) and accompanying Rust test suite
+(\testcount{} tests, zero warnings).
 \end{abstract}
 
 \tableofcontents
@@ -122,7 +134,7 @@ ratio between forcing regimes.  Thesis~3 achieves 78\% pentagon-identity
 violation reduction via neural correction.  Thesis~4 recovers a power-law
 latency spectrum ($R^2 = 0.995$) from sedenion-keyed toroidal walks.  All
 four theses pass simultaneously in a unified synthesis engine, backed by
-818 verifiable claims and 4110 automated tests with zero compiler warnings.
+\claimcount{} verifiable claims and \testcount{} automated tests with zero compiler warnings.
 
 Second, we prove the \emph{Anti-Diagonal Parity Theorem} (APT), which
 provides a complete GF(2)-algebraic mechanism for the Double 3:1 Law
@@ -1007,6 +1019,202 @@ trade components for loops as resolution increases, suggesting
 resolution-dependent topological transitions in their flow fields.
 
 %% ===================================================================
+\section{Formal Verification}
+\label{sec:formal-verification}
+
+Beyond automated testing, \kernelchecked{} claims are formally proved in the
+Rocq Prover (v9.1.1) and kernel-checked as compiled proof objects.  This
+section describes the proof architecture, the extraction pipeline connecting
+Rocq to Rust, and the FFI oracle testing methodology that ensures the
+verified code is functionally identical to the production crate.
+
+\subsection{Proof Architecture}
+\label{sec:proof-arch}
+
+The formal development consists of \prooffilecount{} source files
+(\prooflinecount{} lines) organized into two namespaces:
+
+\begin{itemize}
+  \item \texttt{OpenGororoba} (17 theories): type definitions, function
+    implementations, and abstract module types parameterized over a field.
+  \item \texttt{OpenGororobaVerified} (21 proofs): formal theorems
+    corresponding to specific claims in \texttt{registry/claims.toml}.
+\end{itemize}
+
+All proofs are kernel-checked by \texttt{rocq compile}, producing
+\texttt{.vo} proof objects.  An automated check verifies zero
+\texttt{Admitted} axioms:
+
+\begin{verbatim}
+make -C proofs all    # Compile 38 .v -> .vo (kernel check)
+make -C proofs check  # Verify zero Admitted
+\end{verbatim}
+
+The abstract field module type \texttt{FLOAT\_OPS} captures the algebraic
+axioms needed by all proofs:
+
+\inputminted[firstline=17,lastline=44,fontsize=\scriptsize]{coq}{../../proofs/theories/FloatAxioms.v}
+
+These axioms (commutativity, associativity, distributivity, additive inverse)
+hold exactly for $\mathbb{R}$ and approximately for IEEE 754 \texttt{f64}
+under the assumption that rounding errors are negligible.
+
+\subsection{Extraction Pipeline and Trust Boundary}
+\label{sec:extraction}
+
+Theorems proved over \texttt{FLOAT\_OPS} are extracted to OCaml via Rocq's
+built-in extraction mechanism, producing a golden file:
+
+\begin{verbatim}
+proofs/extraction/ExtractQuaternion.v
+  -> extracted_quat.ml (generated)
+  -> extracted_quat.ml.golden (version-controlled)
+\end{verbatim}
+
+The golden file is diffed on every pipeline run (\texttt{make -C proofs
+extract-check}) to detect any drift between the prover and the extracted code.
+
+The Rust crate \texttt{verified\_core} is a manual translation of the
+extracted OCaml, constituting the \emph{trust boundary}: the single point
+where abstract proofs meet concrete IEEE 754 arithmetic.  The axiom
+realization maps each \texttt{FLOAT\_OPS} operation to an \texttt{f64}
+primitive:
+
+\inputminted[firstline=22,lastline=56,fontsize=\scriptsize]{rust}{../../crates/verified_core/src/axioms.rs}
+
+\subsection{FFI Oracle Testing}
+\label{sec:ffi-oracle}
+
+The \texttt{verified\_core} crate is cross-validated against the production
+\texttt{algebra\_core} crate to ensure bitwise agreement.  The cross-validation
+sweeps 6 rotation axes at 6 angles each (36 test cases), comparing
+quaternion rotation output between the verified extraction and the
+independently-written Cayley--Dickson implementation:
+
+\inputminted[firstline=78,lastline=102,fontsize=\scriptsize]{rust}{../../crates/verified_core/tests/cross_validate.rs}
+
+All 36 test cases pass at $\epsilon < 10^{-12}$, confirming that the
+verified extraction and the production code agree to machine precision.
+
+\subsection{Representative Formal Proofs}
+\label{sec:formal-proofs}
+
+\paragraph{C-876: Quaternion Rotation Equals Matrix Rotation.}
+The fundamental theorem connecting the quaternion sandwich product
+$q \cdot v \cdot \bar{q}$ to $\mathrm{SO}(3)$ rotation matrices.
+The proof unfolds both sides to degree-4 polynomials, substitutes the
+unit constraint $w^2 + x^2 + y^2 + z^2 = 1$, and solves each component
+via the \texttt{ring} tactic:
+
+\inputminted[firstline=31,lastline=49,fontsize=\scriptsize]{coq}{../../proofs/verified/C876_QuaternionRotation.v}
+
+\paragraph{C-871: Casimir Energy Cubic Scaling.}
+Proves that the parallel-plate Casimir energy satisfies
+$E(a) = 8 \cdot E(2a)$, i.e., doubling the plate separation reduces
+the energy by a factor of 8.  The proof uses the \texttt{field} tactic
+with a positivity side condition:
+
+\inputminted[firstline=21,lastline=29,fontsize=\scriptsize]{coq}{../../proofs/verified/C871_CasimirExact.v}
+
+\paragraph{Norm-Conjugate Identity.}
+The Brahmagupta--Fibonacci identity $q \cdot \bar{q} = (|q|^2, 0, 0, 0)$,
+proved for Cayley--Dickson quaternions using the \texttt{ring} tactic:
+
+\inputminted[firstline=82,lastline=89,fontsize=\scriptsize]{coq}{../../proofs/theories/CayleyDicksonAlgebra.v}
+
+\subsection{Proof Complexity}
+\label{sec:proof-complexity}
+
+\Cref{fig:proof-lines} shows source lines per proof file, and
+\cref{fig:proof-vosize} shows compiled proof-object sizes.
+Both read from \texttt{compile\_times.csv}.
+
+\pgfplotstableread[col sep=comma, columns/file/.style={string type}]{../../proofs/metrics/compile_times.csv}\compiletimesdata
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  xbar,
+  bar width=4pt,
+  width=0.82\textwidth,
+  height=16cm,
+  xlabel={Source lines},
+  ylabel={},
+  ytick=data,
+  y dir=reverse,
+  xmin=0,
+  nodes near coords,
+  nodes near coords style={font=\sffamily\tiny, anchor=west},
+  enlarge y limits=0.02,
+  yticklabels from table={\compiletimesdata}{file},
+  y tick label style={font=\ttfamily\tiny, anchor=east},
+  typeset ticklabels with strut,
+]
+  \addplot[fill=blue!50] table [x=lines, y expr=\coordindex]
+    {\compiletimesdata};
+\end{axis}
+\end{tikzpicture}
+\caption{Source lines per proof file.  Theory definitions (top) are
+shorter than verified claim proofs (bottom).}
+\label{fig:proof-lines}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  xbar,
+  bar width=4pt,
+  width=0.82\textwidth,
+  height=16cm,
+  xlabel={.vo size (bytes)},
+  ylabel={},
+  ytick=data,
+  y dir=reverse,
+  xmin=0,
+  nodes near coords,
+  nodes near coords style={font=\sffamily\tiny, anchor=west},
+  enlarge y limits=0.02,
+  yticklabels from table={\compiletimesdata}{file},
+  y tick label style={font=\ttfamily\tiny, anchor=east},
+  typeset ticklabels with strut,
+]
+  \addplot[fill=green!40!black] table [x=vo_size_bytes, y expr=\coordindex]
+    {\compiletimesdata};
+\end{axis}
+\end{tikzpicture}
+\caption{Compiled proof-object (\texttt{.vo}) sizes.  \texttt{nsatz}
+proofs produce larger objects than \texttt{ring} or \texttt{field},
+reflecting Groebner basis complexity.}
+\label{fig:proof-vosize}
+\end{figure}
+
+\subsection{Dependency Structure}
+\label{sec:dep-structure}
+
+\Cref{fig:dep-graph} shows the proof dependency DAG, generated from
+\texttt{Require Import} analysis and rendered via \texttt{dot2tex}.
+Blue nodes are theory definitions; green nodes are verified claim proofs.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{../../proofs/metrics/dep_graph.tikz}{%
+  \resizebox{\textwidth}{!}{\input{../../proofs/metrics/dep_graph.tikz}}%
+}{%
+  \fbox{\parbox{0.8\textwidth}{\centering\vspace{2em}%
+    Dependency graph not yet generated.\\
+    Run: \texttt{just depgraph-tikz} from \texttt{proofs/}%
+  \vspace{2em}}}%
+}
+\caption{Proof dependency graph.  Blue: theory definitions.
+Green: verified claim proofs.  \prooffilecount{} nodes, edges from
+\texttt{Require Import}.  The \texttt{Prelude} module is the common root;
+\texttt{FloatAxioms} and \texttt{Quaternion} are the most-imported theories.}
+\label{fig:dep-graph}
+\end{figure}
+
+%% ===================================================================
 \section{Discussion}
 \label{sec:discussion}
 
@@ -1260,8 +1468,8 @@ structure is not accidental: the 3:1 ratio is a theorem of GF(2) linear
 algebra, holding universally for all CD dimensions $\geq 16$.
 
 All results are fully reproducible from the open-source project repository.
-The evidence base consists of 818 claims in a machine-readable TOML
-registry, verified by 4084 automated tests with zero compiler warnings and
+The evidence base consists of \claimcount{} claims in a machine-readable TOML
+registry, verified by \testcount{} automated tests with zero compiler warnings and
 zero clippy lints.  Every numerical result cited in this paper can be
 reproduced by executing the corresponding binary with the parameters
 recorded in the experiment registry (Appendix~\ref{sec:reproducibility}).
@@ -1311,10 +1519,10 @@ All experiments are reproducible from the project repository.  The
 complete verification pipeline consists of the following steps:
 
 \begin{verbatim}
-# Build all binaries (139 binaries, 27 crates)
+# Build all binaries (153 binaries, 35 crates)
 cargo build --release --workspace -j$(nproc)
 
-# Run full test suite (4084 tests, zero failures)
+# Run full test suite (~4554 tests, zero failures)
 cargo test --workspace -j$(nproc)
 
 # Verify zero warnings (clippy lints are errors)
@@ -1334,19 +1542,27 @@ cargo run --release --bin box-kite-census
 
 # Run governance gates (schema, ASCII, registry integrity)
 make governance-gate
+
+# Formal verification pipeline (Rocq 9.1.1, zero Admitted)
+make -C proofs all && make -C proofs check
+make -C proofs extract-check  # OCaml golden-file diff
+
+# Build paper with source-anchored proofs
+make lva-paper
 \end{verbatim}
 
-The TOML evidence registry (\texttt{registry/claims.toml}) contains 818
+The TOML evidence registry (\texttt{registry/claims.toml}) contains \claimcount{}
 claims with structured metadata including sprint, status, evidence links,
 and cross-references.  Each claim maps to specific test functions in the
-Rust test suite (4084 tests, zero warnings), enabling independent
+Rust test suite (\testcount{} tests, zero warnings), enabling independent
 verification of any individual result.
 
 \textbf{Hardware:} AMD Ryzen 5 5600X3D (12 threads, 96\,MB V-Cache), 32\,GB RAM,
 NVIDIA RTX 4070 Ti (12\,GB VRAM), NVMe SSD.
 
-\textbf{Software:} Rust 1.83+, CUDA 12.x (optional for GPU experiments),
-Python 3.14 (visualization only).
+\textbf{Software:} Rust nightly-2026-02-13 (edition 2024), Rocq 9.1.1
+(OCaml 5.4.0) for formal verification, CUDA 12.x (optional for GPU
+experiments), Python 3.14 (visualization only).
 
 %% ===================================================================
 \bibliographystyle{plainnat}

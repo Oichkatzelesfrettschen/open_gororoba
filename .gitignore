@@ -44,11 +44,19 @@ rustc-ice-*.txt
 cpp/build/
 cpp/.conan/
 
-# Coq
+# Coq / Rocq
 curated/01_theory_frameworks/*.vo
 curated/01_theory_frameworks/*.vos
 curated/01_theory_frameworks/*.vok
 curated/01_theory_frameworks/*.glob
+proofs/**/*.vo
+proofs/**/*.vos
+proofs/**/*.vok
+proofs/**/*.glob
+proofs/**/*.aux
+proofs/Makefile.coq
+proofs/Makefile.coq.conf
+proofs/.Makefile.coq.d
 
 # ------------------------------------------------------------------------------
 # 3. Project Artifact Infrastructure (Standardized)
@@ -169,6 +177,7 @@ credentials.*
 ![Gg][Ee][Mm][Ii][Nn][Ii].md
 ![Rr][Ee][Aa][Dd][Mm][Ee].md
 !**/[Rr][Ee][Aa][Dd][Mm][Ee].md
+!proofs/PIPELINE.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)
