@@ -40,3 +40,12 @@ verified/C_ConjugateInvolution.v
 verified/C_NormConjugate.v
 verified/C_TraceTracefreeVanishes.v
 verified/C_OverImbalancedSign.v
+theories/GF2Algebra.v
+theories/SpectralDimension.v
+theories/ParityClique.v
+theories/SymmetricGroup3.v
+verified/C881_GF2CubicMinDegree.v
+verified/C882_ParityCliqueExact.v
+verified/C883_CalcagniMonotoneRange.v
+verified/C884_NegDimDegeneracy.v
+verified/C885_DemocraticMixing.v
