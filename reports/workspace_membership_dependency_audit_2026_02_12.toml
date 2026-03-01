@@ -90,8 +90,8 @@ manifest = "crates/spectral_core/Cargo.toml"
 name = "stats_core"
 manifest = "crates/stats_core/Cargo.toml"
 [[workspace_member]]
-name = "vacuum_frustration"
-manifest = "crates/vacuum_frustration/Cargo.toml"
+name = "sign_imbalance"
+manifest = "crates/sign_imbalance/Cargo.toml"
 
 [[top_duplicate]]
 crate = "glam"

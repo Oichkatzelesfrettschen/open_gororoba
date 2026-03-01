@@ -1,16 +1,16 @@
-//! E-027 Phase 2: Topology-Frustration Correlation Analyzer
+//! E-027 Phase 2: Topology-Imbalance Correlation Analyzer
 //!
-//! Validates Thesis 1 (frustration-viscosity coupling) by correlating:
+//! Validates Thesis 1 (imbalance-viscosity coupling) by correlating:
 //! - Topological features (Betti numbers) from LBM velocity field
-//! - Frustration density from APT-Sedenion signed graphs
+//! - Imbalance density from APT-Sedenion signed graphs
 //!
 //! Workflow:
 //! 1. Generate or load 3D LBM velocity field (128^3 grid)
 //! 2. Convert to point cloud (sample high-velocity regions)
 //! 3. Compute Vietoris-Rips filtration at multiple epsilon thresholds
 //! 4. Extract Betti number time series: b_0(eps), b_1(eps), b_2(eps)
-//! 5. Load frustration field from vacuum_frustration bridge
-//! 6. Compute spatial correlation between topology and frustration
+//! 5. Load imbalance field from sign_imbalance bridge
+//! 6. Compute spatial correlation between topology and imbalance
 //! 7. Statistical test via permutation null model
 //! 8. Output TOML + CSV results for E-027 Phase 2 validation
 
@@ -18,14 +18,14 @@ use clap::Parser;
 use rand::Rng;
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
-use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField};
-use vacuum_frustration::vietoris_rips::{
+use sign_imbalance::bridge::{ImbalanceViscosityBridge, SedenionField};
+use sign_imbalance::vietoris_rips::{
     DistanceMatrix, VietorisRipsComplex, compute_betti_numbers_at_time, compute_persistent_homology,
 };
 
 #[derive(Parser, Debug)]
 #[command(name = "e027-topology-analyzer")]
-#[command(about = "E-027 Phase 2: Topology-Frustration Correlation Analysis")]
+#[command(about = "E-027 Phase 2: Topology-Imbalance Correlation Analysis")]
 struct Args {
     /// Grid size (cubic: N x N x N)
     #[arg(long, default_value = "16")]
@@ -55,7 +55,7 @@ struct Args {
     #[arg(long, default_value = "200")]
     max_points: usize,
 
-    /// Lambda coupling strength for frustration-viscosity bridge
+    /// Lambda coupling strength for imbalance-viscosity bridge
     #[arg(long, default_value = "2.0")]
     lambda: f64,
 }
@@ -189,18 +189,18 @@ fn pearson_correlation(x: &[f64], y: &[f64]) -> f64 {
     if denom < 1e-14 { 0.0 } else { cov / denom }
 }
 
-/// Permutation null model: shuffle frustration, recompute correlation.
+/// Permutation null model: shuffle imbalance, recompute correlation.
 fn permutation_test(
     observed_r: f64,
     b0_values: &[f64],
-    frustration_at_points: &[f64],
+    imbalance_at_points: &[f64],
     n_permutations: usize,
     seed: u64,
 ) -> (f64, f64, f64) {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
     let mut null_correlations = Vec::with_capacity(n_permutations);
 
-    let mut shuffled = frustration_at_points.to_vec();
+    let mut shuffled = imbalance_at_points.to_vec();
     for _ in 0..n_permutations {
         // Fisher-Yates shuffle
         for i in (1..shuffled.len()).rev() {
@@ -235,8 +235,8 @@ fn write_toml_output(
     path: &str,
     args: &Args,
     topology: &[TopologySnapshot],
-    mean_frustration: f64,
-    var_frustration: f64,
+    mean_imbalance: f64,
+    var_imbalance: f64,
     r_b0_eps: f64,
     r_b0_frust: f64,
     p_value: f64,
@@ -262,15 +262,15 @@ fn write_toml_output(
     writeln!(file, "n_permutations = {}", args.n_permutations)?;
     writeln!(file)?;
 
-    writeln!(file, "[frustration]")?;
-    writeln!(file, "mean = {:.6}", mean_frustration)?;
-    writeln!(file, "variance = {:.6}", var_frustration)?;
-    writeln!(file, "vacuum_attractor = 0.375")?;
+    writeln!(file, "[imbalance]")?;
+    writeln!(file, "mean = {:.6}", mean_imbalance)?;
+    writeln!(file, "variance = {:.6}", var_imbalance)?;
+    writeln!(file, "imbalance_attractor = 0.375")?;
     writeln!(file)?;
 
     writeln!(file, "[correlation]")?;
     writeln!(file, "r_b0_epsilon = {:.6}", r_b0_eps)?;
-    writeln!(file, "r_b0_frustration = {:.6}", r_b0_frust)?;
+    writeln!(file, "r_b0_imbalance = {:.6}", r_b0_frust)?;
     writeln!(file)?;
 
     writeln!(file, "[null_model]")?;
@@ -284,13 +284,13 @@ fn write_toml_output(
     if p_value < 0.05 {
         writeln!(
             file,
-            "verdict = \"SIGNIFICANT: Topology-frustration correlation detected (p={:.4})\"",
+            "verdict = \"SIGNIFICANT: Topology-imbalance correlation detected (p={:.4})\"",
             p_value
         )?;
     } else {
         writeln!(
             file,
-            "verdict = \"NOT SIGNIFICANT: No topology-frustration correlation (p={:.4})\"",
+            "verdict = \"NOT SIGNIFICANT: No topology-imbalance correlation (p={:.4})\"",
             p_value
         )?;
     }
@@ -314,14 +314,14 @@ fn write_toml_output(
 fn write_csv_output(
     path: &str,
     topology: &[TopologySnapshot],
-    mean_frustration: f64,
+    mean_imbalance: f64,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut wtr = csv::Writer::from_path(path)?;
-    wtr.write_record(["epsilon", "mean_frustration", "b_0", "b_1", "b_2"])?;
+    wtr.write_record(["epsilon", "mean_imbalance", "b_0", "b_1", "b_2"])?;
     for snap in topology {
         wtr.write_record(&[
             format!("{:.6}", snap.epsilon),
-            format!("{:.6}", mean_frustration),
+            format!("{:.6}", mean_imbalance),
             snap.b_0.to_string(),
             snap.b_1.to_string(),
             snap.b_2.to_string(),
@@ -335,7 +335,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
     let mut args = Args::parse();
 
-    println!("E-027 Phase 2: Topology-Frustration Correlation Analyzer");
+    println!("E-027 Phase 2: Topology-Imbalance Correlation Analyzer");
     println!("=========================================================");
     println!("Grid: {}^3 cells", args.grid_size);
     println!(
@@ -435,9 +435,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         topology_timeseries.len()
     );
 
-    // Step 5: Compute frustration field
-    println!("[5/7] Computing frustration field (Sedenion dim=16)...");
-    let _bridge = FrustrationViscosityBridge::new(16);
+    // Step 5: Compute imbalance field
+    println!("[5/7] Computing imbalance field (Sedenion dim=16)...");
+    let _bridge = ImbalanceViscosityBridge::new(16);
     let mut sedenion_field = SedenionField::uniform(nx, ny, nz);
 
     // Perturb from uniform (deterministic seed for reproducibility)
@@ -453,39 +453,39 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    let frustration_density = sedenion_field.local_frustration_density(16);
-    let mean_frustration: f64 =
-        frustration_density.iter().sum::<f64>() / frustration_density.len() as f64;
-    let var_frustration: f64 = frustration_density
+    let imbalance_density = sedenion_field.local_imbalance_density(16);
+    let mean_imbalance: f64 =
+        imbalance_density.iter().sum::<f64>() / imbalance_density.len() as f64;
+    let var_imbalance: f64 = imbalance_density
         .iter()
-        .map(|&f| (f - mean_frustration).powi(2))
+        .map(|&f| (f - mean_imbalance).powi(2))
         .sum::<f64>()
-        / frustration_density.len() as f64;
+        / imbalance_density.len() as f64;
     println!(
-        "  Frustration: mean={:.4}, var={:.6}, cells={}",
-        mean_frustration,
-        var_frustration,
-        frustration_density.len()
+        "  Imbalance: mean={:.4}, var={:.6}, cells={}",
+        mean_imbalance,
+        var_imbalance,
+        imbalance_density.len()
     );
 
     // Step 6: Compute correlations
-    println!("[6/7] Computing topology-frustration correlation...");
+    println!("[6/7] Computing topology-imbalance correlation...");
     let b0_values: Vec<f64> = topology_timeseries.iter().map(|s| s.b_0 as f64).collect();
     let eps_values: Vec<f64> = topology_timeseries.iter().map(|s| s.epsilon).collect();
     let r_b0_eps = pearson_correlation(&b0_values, &eps_values);
     println!("  r(b_0, epsilon) = {:.4}", r_b0_eps);
 
-    // Correlation between b_0 and frustration across epsilon sweep
-    // (use frustration variance as proxy for each epsilon step)
+    // Correlation between b_0 and imbalance across epsilon sweep
+    // (use imbalance variance as proxy for each epsilon step)
     let frust_proxy: Vec<f64> = topology_timeseries
         .iter()
         .map(|s| {
-            // Higher epsilon = more connected = lower frustration effect
-            mean_frustration * (1.0 - s.epsilon / args.epsilon_max)
+            // Higher epsilon = more connected = lower imbalance effect
+            mean_imbalance * (1.0 - s.epsilon / args.epsilon_max)
         })
         .collect();
     let r_b0_frust = pearson_correlation(&b0_values, &frust_proxy);
-    println!("  r(b_0, frustration_proxy) = {:.4}", r_b0_frust);
+    println!("  r(b_0, imbalance_proxy) = {:.4}", r_b0_frust);
 
     // Permutation null model test
     println!("  Running {} permutation tests...", args.n_permutations);
@@ -510,8 +510,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         &toml_path,
         &args,
         &topology_timeseries,
-        mean_frustration,
-        var_frustration,
+        mean_imbalance,
+        var_imbalance,
         r_b0_eps,
         r_b0_frust,
         p_value,
@@ -521,7 +521,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  TOML: {}", toml_path);
 
     let csv_path = format!("{}/betti_timeseries_{}cubed.csv", args.output_dir, nx);
-    write_csv_output(&csv_path, &topology_timeseries, mean_frustration)?;
+    write_csv_output(&csv_path, &topology_timeseries, mean_imbalance)?;
     println!("  CSV:  {}", csv_path);
 
     println!();
@@ -529,9 +529,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("E-027 Phase 2 Results Summary");
     println!("=========================================================");
     println!("Grid: {}^3, Points: {}", nx, n_points);
-    println!("Mean frustration: {:.4} (vacuum = 0.375)", mean_frustration);
+    println!("Mean imbalance: {:.4} (vacuum = 0.375)", mean_imbalance);
     println!("r(b_0, epsilon):           {:.4}", r_b0_eps);
-    println!("r(b_0, frustration_proxy): {:.4}", r_b0_frust);
+    println!("r(b_0, imbalance_proxy): {:.4}", r_b0_frust);
     println!("p-value:                   {:.4}", p_value);
     println!(
         "Verdict: {}",

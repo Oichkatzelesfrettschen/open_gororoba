@@ -1,0 +1,100 @@
+%% Fig 16: Redesigned thesis verification dashboard
+%% Okabe-Ito colors, domain-specific bar colors, richer panels
+\begin{tikzpicture}
+  \begin{groupplot}[
+    group style={
+      group size=2 by 2,
+      horizontal sep=2.4cm,
+      vertical sep=2.4cm,
+    },
+    width=0.46\textwidth,
+    height=5cm,
+    every axis/.append style={
+      font=\sffamily\small,
+      grid=major,
+      grid style={gray!20},
+      tick label style={font=\sffamily\footnotesize},
+    },
+  ]
+
+  %% T1: Spearman r_s (Algebra domain -> OIorange)
+  \nextgroupplot[
+    title={\textbf{T1: Spearman} $r_s$},
+    title style={font=\sffamily\small},
+    ybar,
+    bar width=16pt,
+    ymin=-1.15, ymax=0.05,
+    ytick={-1.0,-0.9,-0.5,0},
+    xtick=data,
+    symbolic x coords={Result,Threshold},
+    nodes near coords,
+    nodes near coords style={font=\sffamily\tiny, above},
+    enlarge x limits=0.5,
+  ]
+  \addplot[fill=OIorange!80] coordinates {(Result,-1.0)};
+  \addplot[fill=OIgray!40, postaction={pattern=north east lines, pattern color=OIvermillion!60}]
+    coordinates {(Threshold,-0.9)};
+  \draw[OIvermillion, thick, dashed] (axis cs:Result,-0.9) -- (axis cs:Threshold,-0.9);
+
+  %% T2: Viscosity ratio (Fluid domain -> OIskyblue)
+  \nextgroupplot[
+    title={\textbf{T2: Viscosity Ratio}},
+    title style={font=\sffamily\small},
+    ybar,
+    bar width=16pt,
+    ymin=0, ymax=2.0,
+    ytick={0,0.5,1.0,1.1,1.5,2.0},
+    yticklabels={0,,1.0,1.1,1.5,2.0},
+    xmin=0, xmax=2,
+    xtick={1},
+    xticklabels={Result},
+  ]
+  \addplot[fill=OIskyblue!80] coordinates {(1,1.254)};
+  \draw[OIvermillion, thick, dashed] (axis cs:1,1.1) -- ([xshift=0.7cm]axis cs:1,1.1)
+    node[right, font=\sffamily\tiny, OIvermillion] {$R_{\min}$};
+  \draw[OIvermillion, thick, dashed] (axis cs:1,1.5) -- ([xshift=0.7cm]axis cs:1,1.5)
+    node[right, font=\sffamily\tiny, OIvermillion] {$R_{\max}$};
+  \node[font=\sffamily\footnotesize, OIskyblue!70!black] at (axis cs:1,1.6)
+    {$R = 1.254$};
+
+  %% T3: Violation reduction (Quantum domain -> OIpurple)
+  \nextgroupplot[
+    title={\textbf{T3: Violation Reduction}},
+    title style={font=\sffamily\small},
+    ybar,
+    bar width=16pt,
+    ymin=0, ymax=100,
+    ytick={0,25,50,75,100},
+    yticklabel={\pgfmathprintnumber{\tick}\%},
+    xtick=data,
+    symbolic x coords={Result,Threshold},
+    nodes near coords={\pgfmathprintnumber{\pgfplotspointmeta}\%},
+    nodes near coords style={font=\sffamily\tiny, above},
+    enlarge x limits=0.5,
+  ]
+  \addplot[fill=OIpurple!70] coordinates {(Result,78)};
+  \addplot[fill=OIgray!40, postaction={pattern=north east lines, pattern color=OIvermillion!60}]
+    coordinates {(Threshold,50)};
+  \draw[OIvermillion, thick, dashed] (axis cs:Result,50) -- (axis cs:Threshold,50);
+
+  %% T4: Power-law R^2 (Statistics domain -> OIgray with blue accent)
+  \nextgroupplot[
+    title={\textbf{T4: Power-law} $R^2$},
+    title style={font=\sffamily\small},
+    ybar,
+    bar width=16pt,
+    ymin=0.8, ymax=1.05,
+    ytick={0.8,0.85,0.9,0.95,1.0},
+    xtick=data,
+    symbolic x coords={Result,Threshold},
+    nodes near coords,
+    nodes near coords style={font=\sffamily\tiny, above},
+    enlarge x limits=0.5,
+  ]
+  \addplot[fill=OIblue!70] coordinates {(Result,0.995)};
+  \addplot[fill=OIgray!40, postaction={pattern=north east lines, pattern color=OIvermillion!60}]
+    coordinates {(Threshold,0.95)};
+  \draw[OIvermillion, thick, dashed] (axis cs:Result,0.95) -- (axis cs:Threshold,0.95);
+
+  \end{groupplot}
+\end{tikzpicture}

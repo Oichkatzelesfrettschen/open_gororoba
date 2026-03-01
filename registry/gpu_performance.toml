@@ -7,7 +7,7 @@
 # Last Updated: 2026-02-10
 #
 # Schema per benchmark:
-# - operation: String (e.g., "frustration_index_compute")
+# - operation: String (e.g., "imbalance_index_compute")
 # - dimensions: Vec<usize> (test dimensions)
 # - cpu_times_ms: Vec<f64> (CPU times for each dimension)
 # - gpu_times_ms: Vec<f64> (GPU times for each dimension, nan if not benchmarked)
@@ -30,15 +30,15 @@ operation_count_planned = 8
 operations_benchmarked = 0
 
 # =============================================================================
-# PHASE 1: THESIS 1 (Vacuum Frustration)
+# PHASE 1: THESIS 1 (Sign Imbalance)
 # =============================================================================
 
 # Harary-Zaslavsky signed-graph balance solver
 # Expected: GPU beneficial for graphs > 1000 nodes (dim ~ 128+)
 [[benchmark]]
-operation = "frustration_index_compute"
+operation = "imbalance_index_compute"
 phase = "Phase 1"
-description = "Compute frustration index from signed graph (Harary-Zaslavsky algorithm)"
+description = "Compute imbalance index from signed graph (Harary-Zaslavsky algorithm)"
 dimensions = []  # Will be populated after benchmarks
 cpu_times_ms = []
 gpu_times_ms = []

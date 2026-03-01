@@ -72,11 +72,11 @@ path_refs = [
 [[boundary]]
 id = "PB-002"
 priority = 2
-title = "Scalar frustration-to-viscosity bridge boundary"
+title = "Scalar imbalance-to-viscosity bridge boundary"
 external_candidate = "PhysicsForge/simulation/cpp/scalar_lattice.cpp"
 external_repo = "external_ref:PhysicsForge"
-ownership_crate = "crates/vacuum_frustration"
-ownership_module = "crates/vacuum_frustration/src/bridge.rs"
+ownership_crate = "crates/sign_imbalance"
+ownership_module = "crates/sign_imbalance/src/bridge.rs"
 value_case = "Directly supports Thesis 1 scalar bridge behavior with existing integration hooks."
 in_contract = [
   "Accept only typed scalar field tensors and deterministic configuration structs.",
@@ -84,7 +84,7 @@ in_contract = [
   "Use algebra_core only through public APIs.",
 ]
 out_contract = [
-  "Emit scalar frustration maps and viscosity vectors with deterministic ordering.",
+  "Emit scalar imbalance maps and viscosity vectors with deterministic ordering.",
   "Surface omega bounds and bridge diagnostics in plain data structs.",
   "Guarantee finite, non-negative viscosity outputs for valid inputs.",
 ]
@@ -94,19 +94,19 @@ forbidden_coupling = [
   "No implicit randomization without an explicit seeded parameter.",
 ]
 acceptance_test_hooks = [
-  "crates/vacuum_frustration/src/bridge.rs::test_frustration_to_viscosity_vacuum",
-  "crates/vacuum_frustration/src/bridge.rs::test_frustration_density_par_matches_sequential",
-  "crates/vacuum_frustration/tests/integration_test.rs::test_scalar_frustration_bridge_integration",
+  "crates/sign_imbalance/src/bridge.rs::test_imbalance_to_viscosity_imbalance",
+  "crates/sign_imbalance/src/bridge.rs::test_imbalance_density_par_matches_sequential",
+  "crates/sign_imbalance/tests/integration_test.rs::test_scalar_imbalance_bridge_integration",
 ]
 acceptance_commands = [
-  "cargo test -p vacuum_frustration test_frustration_to_viscosity_vacuum",
-  "cargo test -p vacuum_frustration test_frustration_density_par_matches_sequential",
-  "cargo test -p vacuum_frustration test_scalar_frustration_bridge_integration",
+  "cargo test -p sign_imbalance test_imbalance_to_viscosity_imbalance",
+  "cargo test -p sign_imbalance test_imbalance_density_par_matches_sequential",
+  "cargo test -p sign_imbalance test_scalar_imbalance_bridge_integration",
 ]
 path_refs = [
-  "crates/vacuum_frustration/src/bridge.rs",
-  "crates/vacuum_frustration/tests/integration_test.rs",
-  "crates/vacuum_frustration/Cargo.toml",
+  "crates/sign_imbalance/src/bridge.rs",
+  "crates/sign_imbalance/tests/integration_test.rs",
+  "crates/sign_imbalance/Cargo.toml",
 ]
 
 [[boundary]]
@@ -312,17 +312,17 @@ exists = true
 used_by = ["PB-001"]
 
 [[path_check]]
-path = "crates/vacuum_frustration/src/bridge.rs"
+path = "crates/sign_imbalance/src/bridge.rs"
 exists = true
 used_by = ["PB-002"]
 
 [[path_check]]
-path = "crates/vacuum_frustration/tests/integration_test.rs"
+path = "crates/sign_imbalance/tests/integration_test.rs"
 exists = true
 used_by = ["PB-002"]
 
 [[path_check]]
-path = "crates/vacuum_frustration/Cargo.toml"
+path = "crates/sign_imbalance/Cargo.toml"
 exists = true
 used_by = ["PB-002"]
 

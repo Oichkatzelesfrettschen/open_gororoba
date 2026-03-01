@@ -21,7 +21,7 @@ theories/CayleyDicksonAlgebra.v
 theories/SpatialAlgebra.v
 verified/C879_DimensionBijection.v
 verified/C877_ZeroCoupling.v
-verified/C878_VacuumAttractor.v
+verified/C878_ImbalanceAttractor.v
 verified/C880_FoliationSlice.v
 verified/C875_HamiltonianVacuum.v
 verified/C871_CasimirExact.v
@@ -39,4 +39,4 @@ verified/C_WECImpliesNEC.v
 verified/C_ConjugateInvolution.v
 verified/C_NormConjugate.v
 verified/C_TraceTracefreeVanishes.v
-verified/C_OverFrustratedSign.v
+verified/C_OverImbalancedSign.v

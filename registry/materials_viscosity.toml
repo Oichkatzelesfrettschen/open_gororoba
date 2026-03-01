@@ -276,32 +276,32 @@ solids = "Crystalline solids have infinite instantaneous viscosity but finite cr
 grain_boundaries = "Polycrystalline materials: effective viscosity from grain boundary sliding. Estimate: eta_eff ~ G*d/v_slide, where G is shear modulus, d is grain size, v_slide is sliding velocity."
 
 # ============================================================================
-# LAMBDA DERIVATION (FRUSTRATION-VISCOSITY COUPLING)
+# LAMBDA DERIVATION (IMBALANCE-VISCOSITY COUPLING)
 # ============================================================================
-# Implementation: vacuum_frustration/src/frustration_energy.rs
+# Implementation: sign_imbalance/src/imbalance_energy.rs
 # Status: COMPLETE (2026-02-11)
 # Tests: 9/9 passing, zero warnings
 
 [lambda_derivation]
 formula = "lambda = [F * C(N,3) * E_0] / (k_B * T)"
-description = "Temperature-dependent coupling strength between signed-graph frustration and kinematic viscosity"
+description = "Temperature-dependent coupling strength between signed-graph imbalance and kinematic viscosity"
 
 [lambda_derivation.components]
-F = "Harary-Zaslavsky frustration index (fraction of unbalanced triangles), typical: 0.35, vacuum attractor: 0.375"
+F = "Harary-Zaslavsky imbalance index (fraction of unbalanced triangles), typical: 0.35, imbalance attractor: 0.375"
 C_N_3 = "Number of triangles in graph: N*(N-1)*(N-2)/6, for sedenions (N=16): 560"
 E_0 = "Bond mismatch energy from Cayley-Dickson associator norms: mean_norm * 1 meV, typical: 1.76e-22 J"
 k_B = "Boltzmann constant: 1.381e-23 J/K"
 T = "Temperature in Kelvin (material-dependent)"
 
 [lambda_derivation.implementation]
-module = "vacuum_frustration::frustration_energy"
-function = "predict_lambda_sedenion(frustration: f64, temperature_K: f64) -> f64"
+module = "sign_imbalance::imbalance_energy"
+function = "predict_lambda_sedenion(imbalance: f64, temperature_K: f64) -> f64"
 reference_energy = "1 meV = 1.602e-22 J (atomic bond disorder scale)"
 associator_sampling = "Full enumeration for dim<=16, sparse (step=4) for dim>16, skip real axis (i=0)"
 
 [lambda_derivation.physics]
-interpretation_low_T = "lambda >> 1: Frustration dominates thermal fluctuations (strong coupling)"
-interpretation_moderate = "lambda ~ 1-10: Frustration and thermal energy comparable (moderate coupling)"
+interpretation_low_T = "lambda >> 1: Imbalance dominates thermal fluctuations (strong coupling)"
+interpretation_moderate = "lambda ~ 1-10: Imbalance and thermal energy comparable (moderate coupling)"
 interpretation_high_T = "lambda << 1: Thermal fluctuations dominate (weak coupling)"
 temperature_scaling = "lambda inversely proportional to T: low temperature -> high coupling strength"
 

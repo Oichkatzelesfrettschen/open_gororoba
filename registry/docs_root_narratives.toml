@@ -15,7 +15,7 @@ title = "Phase 1 Remaining Work: Comprehensive Roadmap (Phases 1.4-1.9)"
 status_token = "NARRATIVE"
 content_kind = "status_note"
 claim_refs = ["C-657", "C-660", "C-661", "C-662", "C-663", "C-664", "C-670"]
-path_refs = ["data/e027/lambda_sweep_results.csv", "registry/experiments.toml", "data/e027/grid_sweep_results.csv", "docs/LAMBDA_DERIVATION.md", "crates/vacuum_frustration/src/analytical.rs", "crates/vacuum_frustration/src/spatial_analysis.rs", "data/e027/spatial_analysis_results.csv", "crates/lbm_3d/tests/test_chapman_enskog_verification.rs", "docs/PARAMETER_SWEEP_SYNTHESIS.md", "docs/ANALYTICAL_SYNTHESIS.md", "docs/STRONG_LAMBDA_VALIDATION.md"]
+path_refs = ["data/e027/lambda_sweep_results.csv", "registry/experiments.toml", "data/e027/grid_sweep_results.csv", "docs/LAMBDA_DERIVATION.md", "crates/sign_imbalance/src/analytical.rs", "crates/sign_imbalance/src/spatial_analysis.rs", "data/e027/spatial_analysis_results.csv", "crates/lbm_3d/tests/test_chapman_enskog_verification.rs", "docs/PARAMETER_SWEEP_SYNTHESIS.md", "docs/ANALYTICAL_SYNTHESIS.md", "docs/STRONG_LAMBDA_VALIDATION.md"]
 line_count = 538
 body_markdown = '''
 # Phase 1 Remaining Work: Comprehensive Roadmap (Phases 1.4-1.9)
@@ -46,7 +46,7 @@ and identify optimal configurations for Thesis 1 validation.
 
 **Status**: Active parameter sweep running
 **Grid**: 64^3
-**Parameter**: Lambda (frustration coupling strength)
+**Parameter**: Lambda (imbalance coupling strength)
 **Range**: lambda = 0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0
 
 **Implementation**:
@@ -86,7 +86,7 @@ done
 ### Phase 1.4.3: Grid Resolution (PENDING - Task #41)
 
 **Objective**: Validate E-027 correlation across spatial resolutions to ensure
-the frustration-percolation relationship is not an artifact of coarse discretization.
+the imbalance-percolation relationship is not an artifact of coarse discretization.
 
 **Grid Sizes**: 32^3, 48^3, 64^3, 96^3, 128^3
 **Fixed Parameters**: lambda=1.0, nu_base=0.333, steps=2500
@@ -120,18 +120,18 @@ done
 
 ## Phase 1.5: Analytical Investigation
 
-**Objective**: Derive theoretical foundations for frustration-viscosity coupling
+**Objective**: Derive theoretical foundations for imbalance-viscosity coupling
 and validate analytical predictions against numerical experiments.
 
 ### Phase 1.5.1: Analytical Coupling Strength Derivation (PENDING - Task #42)
 
-**Objective**: Derive lambda from first principles using frustration energy scales
+**Objective**: Derive lambda from first principles using imbalance energy scales
 and thermal energy normalization.
 
 **Approach**:
-1. **Frustration Energy Scale**: <U+0394>E_F = characteristic energy per frustrated edge
+1. **Imbalance Energy Scale**: <U+0394>E_F = characteristic energy per imbalanced edge
    - Use Harary-Zaslavsky balance index thermodynamics
-   - Reference: Phase 1 Week 1 frustration solver results
+   - Reference: Phase 1 Week 1 imbalance solver results
 
 2. **Thermal Energy Normalization**: kT_effective for Sedenion field dynamics
    - Relate to APT evolution temperature
@@ -143,7 +143,7 @@ and thermal energy normalization.
 
 **Deliverables**:
 - `docs/LAMBDA_DERIVATION.md` - Complete mathematical derivation
-- `crates/vacuum_frustration/src/analytical.rs` - Compute lambda from parameters
+- `crates/sign_imbalance/src/analytical.rs` - Compute lambda from parameters
 - Registry: Claim C-660 "Analytical Lambda Derivation"
 
 **Timeline**: 3 days (theoretical work + implementation + validation)
@@ -153,30 +153,30 @@ and thermal energy normalization.
 ### Phase 1.5.2: Sedenion Field Spatial Structure Analysis (PENDING - Task #43)
 
 **Objective**: Characterize spatial autocorrelation and length scales in APT-evolved
-Sedenion fields to understand frustration field structure.
+Sedenion fields to understand imbalance field structure.
 
 **Metrics to Compute**:
-1. **Autocorrelation Function**: C(r) = <F(x) F(x+r)> for frustration field
+1. **Autocorrelation Function**: C(r) = <F(x) F(x+r)> for imbalance field
 2. **Correlation Length**: xi = integral of C(r) over r
-3. **Power Spectral Density**: S(k) via FFT of frustration field
-4. **Fractal Dimension**: Box-counting on thresholded frustration regions
+3. **Power Spectral Density**: S(k) via FFT of imbalance field
+4. **Fractal Dimension**: Box-counting on thresholded imbalance regions
 
 **Implementation**:
 ```rust
-// crates/vacuum_frustration/src/spatial_analysis.rs
+// crates/sign_imbalance/src/spatial_analysis.rs
 pub struct SpatialStatistics {
     pub autocorrelation_length: f64,
     pub power_spectrum: Vec<f64>,
     pub fractal_dimension: f64,
 }
 
-pub fn analyze_frustration_field(field: &[f64], grid_size: usize) -> SpatialStatistics;
+pub fn analyze_imbalance_field(field: &[f64], grid_size: usize) -> SpatialStatistics;
 ```
 
 **Deliverables**:
-- `crates/vacuum_frustration/src/spatial_analysis.rs` (250 lines)
+- `crates/sign_imbalance/src/spatial_analysis.rs` (250 lines)
 - `data/e027/spatial_analysis_results.csv`
-- Registry: Claim C-661 "Frustration Field Spatial Structure"
+- Registry: Claim C-661 "Imbalance Field Spatial Structure"
 
 **Timeline**: 2-3 days (implementation + validation)
 
@@ -215,7 +215,7 @@ fn test_chapman_enskog_exact() {
 
 ### Phase 1.5.4: Alternative Viscosity Laws Investigation (PENDING - Task #45)
 
-**Objective**: Explore alternative frustration-viscosity coupling functions beyond
+**Objective**: Explore alternative imbalance-viscosity coupling functions beyond
 the exponential form: nu(x) = nu_base * exp(-lambda * (F(x) - 3/8)^2)
 
 **Alternative Forms**:
@@ -226,7 +226,7 @@ the exponential form: nu(x) = nu_base * exp(-lambda * (F(x) - 3/8)^2)
 
 **Implementation**:
 ```rust
-// crates/vacuum_frustration/src/bridge.rs - extend
+// crates/sign_imbalance/src/bridge.rs - extend
 pub enum CouplingLaw {
     Exponential { lambda: f64 },
     Linear { lambda: f64 },
@@ -234,8 +234,8 @@ pub enum CouplingLaw {
     Sigmoid { lambda: f64, f_c: f64 },
 }
 
-impl FrustrationViscosityBridge {
-    pub fn transform_with_law(&self, frustration: &[f64], law: CouplingLaw) -> Vec<f64>;
+impl ImbalanceViscosityBridge {
+    pub fn transform_with_law(&self, imbalance: &[f64], law: CouplingLaw) -> Vec<f64>;
 }
 ```
 
@@ -339,11 +339,11 @@ Mass Ratio Filtration / Thesis 2).
 **Objective**: Port percolation detection and correlation analysis to GPU for
 strong lambda validation at 256^3 resolution.
 
-### Phase 1.9.1: Create vacuum_frustration_cuda crate (PENDING - Task #52)
+### Phase 1.9.1: Create sign_imbalance_cuda crate (PENDING - Task #52)
 
 **Architecture**:
 ```
-crates/vacuum_frustration_cuda/
+crates/sign_imbalance_cuda/
   src/
     lib.rs                - Public API
     percolation_kernels.cu - CUDA BFS implementation
@@ -357,12 +357,12 @@ crates/vacuum_frustration_cuda/
    - Challenge: CUDA BFS is non-trivial (requires atomics + synchronization)
    - Solution: Use level-synchronous BFS with frontier queues
 
-2. **GPU Correlation**: Parallel Welch's t-test on channel frustration values
+2. **GPU Correlation**: Parallel Welch's t-test on channel imbalance values
    - Parallel reduction for mean, variance computation
    - Atomic operations for global statistics
 
 **Deliverables**:
-- vacuum_frustration_cuda crate (400 lines)
+- sign_imbalance_cuda crate (400 lines)
 - Equivalence tests (8 tests)
 - Performance target: 10-100x speedup for 256^3 grids
 
@@ -377,7 +377,7 @@ crates/vacuum_frustration_cuda/
 **Implementation**:
 ```rust
 // Modify crates/gororoba_cli/src/bin/percolation_experiment.rs
-use vacuum_frustration_cuda::PercolationDetectorGpu;
+use sign_imbalance_cuda::PercolationDetectorGpu;
 
 // Add --use-gpu flag
 if args.use_gpu {
@@ -438,7 +438,7 @@ cargo run --release --bin percolation-experiment --use-gpu -- \
 **Success Criteria**:
 - Correlation p-value < 0.001 (very strong validation)
 - LBM remains stable (no negative tau, no NaN)
-- Percolation channels clearly segregated by frustration
+- Percolation channels clearly segregated by imbalance
 
 **Deliverables**:
 - E-027-L050 experiment result
@@ -479,7 +479,7 @@ Thesis 1 validation statement.
 **Key Questions**:
 1. How does correlation strength scale with lambda?
 2. At what lambda does LBM become unstable?
-3. Is the frustration-percolation relationship robust at extreme parameters?
+3. Is the imbalance-percolation relationship robust at extreme parameters?
 
 **Deliverables**:
 - `docs/STRONG_LAMBDA_VALIDATION.md`
@@ -566,14 +566,14 @@ title = "Real Materials Integration for E-027"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
-path_refs = ["registry/materials_viscosity.toml", "nu_lattice = nu / (dx^2/dt) = 2.18e-8 / (1e-12 / 1e-8) = 2.18e-4", "tau = 3*nu_lattice + 0.5 = 3*(2.18e-4) + 0.5 = 0.500654", "vacuum_frustration/src/frustration_energy.rs"]
+path_refs = ["registry/materials_viscosity.toml", "nu_lattice = nu / (dx^2/dt) = 2.18e-8 / (1e-12 / 1e-8) = 2.18e-4", "tau = 3*nu_lattice + 0.5 = 3*(2.18e-4) + 0.5 = 0.500654", "sign_imbalance/src/imbalance_energy.rs"]
 line_count = 310
 body_markdown = '''
 # Real Materials Integration for E-027
 
 ## Overview
 
-This document demonstrates how E-027 (Frustration-Viscosity Percolation Experiment)
+This document demonstrates how E-027 (Imbalance-Viscosity Percolation Experiment)
 now uses **real materials properties** from NIST and peer-reviewed literature instead
 of arbitrary numerical parameters.
 
@@ -693,7 +693,7 @@ where:
 ```
 
 This provides a **physical basis** for spatially-varying viscosity from
-structural disorder (frustration at grain boundaries).
+structural disorder (imbalance at grain boundaries).
 
 ---
 
@@ -742,27 +742,27 @@ let dt = 1e-8;  // 10 ns
 let nu_lattice = to_lattice_units(nu_physical, dx, dt);
 
 // Derive lambda from theory (still needed!)
-let lambda = derive_lambda_from_frustration_energy(material);
+let lambda = derive_lambda_from_imbalance_energy(material);
 ```
 
 ---
 
 ## Deriving Lambda from Theory (IMPLEMENTED)
 
-**Status**: [OK] COMPLETE in `vacuum_frustration/src/frustration_energy.rs`
+**Status**: [OK] COMPLETE in `sign_imbalance/src/imbalance_energy.rs`
 
-Lambda is **coupling strength** between frustration and viscosity:
+Lambda is **coupling strength** between imbalance and viscosity:
 ```
 nu(x) = nu_base * exp(-lambda * (F(x) - 3/8)^2)
 ```
 
 ### Statistical Mechanics Derivation
 ```
-lambda = E_frustration / (k_B * T)
+lambda = E_imbalance / (k_B * T)
 
 where:
-  E_frustration = F * C(N,3) * E_0
-  F = Harary-Zaslavsky frustration index (fraction of unbalanced triangles)
+  E_imbalance = F * C(N,3) * E_0
+  F = Harary-Zaslavsky imbalance index (fraction of unbalanced triangles)
   C(N,3) = N*(N-1)*(N-2)/6 (number of triangles)
   E_0 = associator_norm * 1 meV (bond mismatch energy from CD algebra)
   k_B = Boltzmann constant (1.381e-23 J/K)
@@ -771,9 +771,9 @@ where:
 
 ### Implementation Formula
 ```rust
-pub fn predict_lambda_sedenion(frustration: f64, temperature_K: f64) -> f64 {
+pub fn predict_lambda_sedenion(imbalance: f64, temperature_K: f64) -> f64 {
     let e0 = estimate_e0_from_associators(16); // ~1.76e-22 J
-    let E_frust = frustration * 560 * e0;      // For dim=16
+    let E_frust = imbalance * 560 * e0;      // For dim=16
     E_frust / (K_BOLTZMANN * temperature_K)
 }
 ```
@@ -785,36 +785,36 @@ pub fn predict_lambda_sedenion(frustration: f64, temperature_K: f64) -> f64 {
 #### He-4 at 4.2 K:
 ```
 Thermal energy: k_B * T = 5.8e-23 J
-Frustration energy: E_frust = 3.5e-20 J
+Imbalance energy: E_frust = 3.5e-20 J
 Lambda (measured): 600
 
 Physical interpretation: HIGH coupling
-- Frustration dominates at low temperature
+- Imbalance dominates at low temperature
 - Strong viscosity modulation from structural disorder
 ```
 
 #### Water at 293 K:
 ```
 Thermal energy: k_B * T = 4.1e-21 J
-Frustration energy: E_frust = 3.5e-20 J (same as above)
+Imbalance energy: E_frust = 3.5e-20 J (same as above)
 Lambda (measured): 8.5
 
 Physical interpretation: MODERATE coupling
-- Thermal fluctuations comparable to frustration energy
+- Thermal fluctuations comparable to imbalance energy
 - Moderate viscosity sensitivity to disorder
 ```
 
 **Key Insight**: Lambda is TEMPERATURE-DEPENDENT via the k_B*T normalization.
-Low temperatures -> high lambda -> strong frustration effects.
-High temperatures -> low lambda -> weak frustration effects.
+Low temperatures -> high lambda -> strong imbalance effects.
+High temperatures -> low lambda -> weak imbalance effects.
 
 ---
 
 ## Next Steps
 
 ### 1. Complete Lambda Derivation
-- Connect frustration F(x) to molecular disorder energy
-- Use Cayley-Dickson algebra to compute E_frustration
+- Connect imbalance F(x) to molecular disorder energy
+- Use Cayley-Dickson algebra to compute E_imbalance
 - Validate against experimental viscosity-temperature curves
 
 ### 2. Experimental Validation
@@ -829,7 +829,7 @@ High temperatures -> low lambda -> weak frustration effects.
 
 ### 4. Quantum Fluids
 - Implement two-fluid model for He-4 superfluid
-- Explore quantized vorticity in frustration-driven flow
+- Explore quantized vorticity in imbalance-driven flow
 - Connect to Gross-Pitaevskii equation
 
 ---
@@ -889,7 +889,7 @@ title = "Physics Synthesis Pipeline: Overall Progress Tracker"
 status_token = "NARRATIVE"
 content_kind = "analysis_note"
 claim_refs = ["C-001", "C-632", "C-657", "C-658", "C-659", "C-660", "C-664", "C-670"]
-path_refs = ["crates/cosmic_scheduler", "crates/vacuum_frustration/src/signed_graph.rs", "crates/vacuum_frustration/src/balance.rs", "crates/lbm_3d", "crates/vacuum_frustration/src/bridge.rs", "crates/lbm_3d_cuda", "src/kernels.cu", "src/lib.rs", "benches/gpu_performance.rs", "benches/gpu_exhaustive.rs", "tests/test_gpu_cpu_equivalence.rs", "tests/test_debug_init.rs", "registry/lbm_gpu_performance.toml"]
+path_refs = ["crates/cosmic_scheduler", "crates/sign_imbalance/src/signed_graph.rs", "crates/sign_imbalance/src/balance.rs", "crates/lbm_3d", "crates/sign_imbalance/src/bridge.rs", "crates/lbm_3d_cuda", "src/kernels.cu", "src/lib.rs", "benches/gpu_performance.rs", "benches/gpu_exhaustive.rs", "tests/test_gpu_cpu_equivalence.rs", "tests/test_debug_init.rs", "registry/lbm_gpu_performance.toml"]
 line_count = 509
 body_markdown = '''
 # Physics Synthesis Pipeline: Overall Progress Tracker
@@ -903,7 +903,7 @@ body_markdown = '''
 ## Executive Summary
 
 The Physics Synthesis Pipeline validates four grand theses connecting algebraic
-structure to continuum physics. Phase 1 (Thesis 1: Frustration-Viscosity Coupling)
+structure to continuum physics. Phase 1 (Thesis 1: Imbalance-Viscosity Coupling)
 is 70% complete, with GPU infrastructure operational and parameter sweeps in progress.
 
 **Phase Status**:
@@ -922,14 +922,14 @@ is 70% complete, with GPU infrastructure operational and parameter sweeps in pro
 Phase 0: Foundation (COMPLETE 2026-02-06)
   <U+2514><U+2500>> cosmic_scheduler crate (38 tests)
 
-Phase 1 Week 1: Frustration Solver (COMPLETE 2026-02-10)
-  <U+2514><U+2500>> vacuum_frustration signed_graph + balance (14 tests)
+Phase 1 Week 1: Imbalance Solver (COMPLETE 2026-02-10)
+  <U+2514><U+2500>> sign_imbalance signed_graph + balance (14 tests)
 
 Phase 1 Week 2: LBM Refactoring (COMPLETE 2026-02-11)
   <U+2514><U+2500>> lbm_3d two-phase system (61 tests)
 
-Phase 1 Week 3: Frustration-Viscosity Bridge (COMPLETE 2026-02-11)
-  <U+2514><U+2500>> FrustrationViscosityBridge + SedenionField (22 tests)
+Phase 1 Week 3: Imbalance-Viscosity Bridge (COMPLETE 2026-02-11)
+  <U+2514><U+2500>> ImbalanceViscosityBridge + SedenionField (22 tests)
 
 Phase 1 Week 4: E-027 Experiment (IN PROGRESS 2026-02-11..present)
   <U+251C><U+2500>> E-027 baseline run: FAILED (p=0.805 at 32^3, <U+03BB>=5.0)
@@ -944,7 +944,7 @@ Phase 1.8: GPU LBM (COMPLETE 2026-02-12)
   <U+2514><U+2500>> Commit 305ac498 (1845 lines added)
 
 Phase 1.9-1.11: GPU Percolation + Strong Lambda (PENDING)
-  <U+251C><U+2500>> vacuum_frustration_cuda crate: NOT STARTED
+  <U+251C><U+2500>> sign_imbalance_cuda crate: NOT STARTED
   <U+251C><U+2500>> GPU percolation detection: NOT STARTED
   <U+2514><U+2500>> Strong lambda validation (<U+03BB>=50, <U+03BB>=100): BLOCKED by 1.9
 
@@ -973,12 +973,12 @@ ISA timing.rs, creating reusable two-phase coordination abstraction.
 
 ---
 
-### Phase 1 Week 1: Frustration Solver
+### Phase 1 Week 1: Imbalance Solver
 
 **Status**: <U+2713> COMPLETE (2026-02-10)
 **Deliverables**:
-- `crates/vacuum_frustration/src/signed_graph.rs` (237 lines)
-- `crates/vacuum_frustration/src/balance.rs` (334 lines)
+- `crates/sign_imbalance/src/signed_graph.rs` (237 lines)
+- `crates/sign_imbalance/src/balance.rs` (334 lines)
 
 **Test Coverage**: 14 tests passing
 - Harary-Zaslavsky exact solver (8 nodes exhaustive)
@@ -986,10 +986,10 @@ ISA timing.rs, creating reusable two-phase coordination abstraction.
 - Simulated annealing for optimization
 - Edge signing and balance index computation
 
-**Key Algorithm**: F(x) = frustrated_edges / total_edges
-- Vacuum attractor: F = 3/8 (0.375)
-- Zero frustration: All-positive or bipartite graphs
-- Maximum frustration: Complete mixed-sign graphs
+**Key Algorithm**: F(x) = imbalanced_edges / total_edges
+- Imbalance attractor: F = 3/8 (0.375)
+- Zero imbalance: All-positive or bipartite graphs
+- Maximum imbalance: Complete mixed-sign graphs
 
 ---
 
@@ -1015,24 +1015,24 @@ ISA timing.rs, creating reusable two-phase coordination abstraction.
 
 ---
 
-### Phase 1 Week 3: Frustration-Viscosity Bridge
+### Phase 1 Week 3: Imbalance-Viscosity Bridge
 
 **Status**: <U+2713> COMPLETE (2026-02-11)
 **Deliverables**:
-- `crates/vacuum_frustration/src/bridge.rs` (284 lines)
+- `crates/sign_imbalance/src/bridge.rs` (284 lines)
 - SedenionField 3D lattice abstraction
-- Frustration-to-viscosity transformation
+- Imbalance-to-viscosity transformation
 
 **Test Coverage**: 22 tests passing (9 new + 13 framework)
 - Field creation tests (uniform, random, gradient)
-- Frustration linearization (Harary-Zaslavsky per cell)
+- Imbalance linearization (Harary-Zaslavsky per cell)
 - Bridge transformation (exponential coupling law)
-- Integration tests (field <U+2192> frustration <U+2192> viscosity)
+- Integration tests (field <U+2192> imbalance <U+2192> viscosity)
 
 **Key Equation**: <U+03BD>(x) = <U+03BD>_base <U+00B7> exp(-<U+03BB> <U+00B7> (F(x) - 3/8)<U+00B2>)
 - <U+03BD>_base = 0.333 (lattice units, typical)
 - <U+03BB> = coupling strength (parameter to sweep)
-- 3/8 = vacuum attractor (equilibrium frustration)
+- 3/8 = imbalance attractor (equilibrium imbalance)
 
 **Behavior**:
 - F = 3/8 <U+2192> <U+03BD> = <U+03BD>_base (minimal perturbation)
@@ -1140,7 +1140,7 @@ p_value = 0.900990099009901  # FAILED (>> 0.05)
 ### Phase 1.5: Analytical Investigation (ALL PENDING)
 
 #### Phase 1.5.1: Analytical Lambda Derivation (Task #42)
-- Derive <U+03BB> from frustration energy <U+0394>E_F and thermal energy kT_eff
+- Derive <U+03BB> from imbalance energy <U+0394>E_F and thermal energy kT_eff
 - Expected range: 0.5-5.0 for typical materials
 - Compare to empirical optimal <U+03BB> from Phase 1.4.1
 
@@ -1181,7 +1181,7 @@ p_value = 0.900990099009901  # FAILED (>> 0.05)
 5. <U+2610> Phase 1.11: Strong lambda validation BLOCKED
 
 **Test Coverage**: 166+ Phase 1 tests (target: 200+)
-**Current**: ~140 tests (cosmic_scheduler 38 + lbm_3d 61 + vacuum_frustration 22 + lbm_3d_cuda 4 + framework 15)
+**Current**: ~140 tests (cosmic_scheduler 38 + lbm_3d 61 + sign_imbalance 22 + lbm_3d_cuda 4 + framework 15)
 
 **Documentation**:
 - <U+2713> PHASE1_REMAINING_ROADMAP.md (comprehensive scope)
@@ -1195,7 +1195,7 @@ p_value = 0.900990099009901  # FAILED (>> 0.05)
 
 ### Phase 1.9: GPU Percolation Detection (PENDING)
 
-#### Phase 1.9.1: Create vacuum_frustration_cuda crate (Task #52)
+#### Phase 1.9.1: Create sign_imbalance_cuda crate (Task #52)
 - GPU BFS for connected component detection
 - Parallel Welch's t-test for correlation
 - Target: 10-100x speedup vs CPU for 256<U+00B3>
@@ -1252,7 +1252,7 @@ p_value = 0.900990099009901  # FAILED (>> 0.05)
 
 **Phase 1 Test Breakdown**:
 - cosmic_scheduler: 38 tests
-- vacuum_frustration: 22 tests (14 solver + 8 bridge)
+- sign_imbalance: 22 tests (14 solver + 8 bridge)
 - lbm_3d: 61 tests (legacy + two-phase system)
 - lbm_3d_cuda: 4 tests (GPU equivalence + debug)
 - Framework/integration: ~15 tests
@@ -1267,8 +1267,8 @@ p_value = 0.900990099009901  # FAILED (>> 0.05)
 ### Claims
 - **C-001..C-632**: Legacy claims (632 total, dedup complete)
 - **C-657..C-670**: Thesis 1 claims (14 planned, registration PENDING)
-  - C-657: Frustration-Viscosity Coupling Principle
-  - C-658: Percolation Threshold Frustration Dependence
+  - C-657: Imbalance-Viscosity Coupling Principle
+  - C-658: Percolation Threshold Imbalance Dependence
   - C-659: Besag-Clifford Null Model Rejection
   - C-660..C-664: Parameter sweep + strong lambda claims (PENDING)
 
@@ -1279,7 +1279,7 @@ p_value = 0.900990099009901  # FAILED (>> 0.05)
 
 ### Experiments
 - **E-001..E-026**: Legacy experiments
-- **E-027**: Percolation Threshold vs Frustration (ACTIVE, partial validation)
+- **E-027**: Percolation Threshold vs Imbalance (ACTIVE, partial validation)
   - Baseline run: FAILED (p=0.805)
   - Lambda sweep: IN PROGRESS
   - Grid sweep: PENDING
@@ -1347,7 +1347,7 @@ p_value = 0.900990099009901  # FAILED (>> 0.05)
 
 4. **Design GPU BFS Architecture** (Task #52 prep):
    - Research parallel BFS algorithms
-   - Design vacuum_frustration_cuda crate structure
+   - Design sign_imbalance_cuda crate structure
    - Can start in parallel with Phase 1.4-1.6
 
 5. **Update Task Tracking**:
@@ -1666,7 +1666,7 @@ coefficient to avoid blowup and to adaptively suppress high-frequency structure.
 ### 4.3 algebra_norm
 
 `algebra_norm` is intended as a coupling-strength diagnostic from optional
-algebraic/frustration layers. When those layers are absent, this repo now falls
+algebraic/imbalance layers. When those layers are absent, this repo now falls
 back to a physically meaningful proxy:
 
 1. velocity RMS from the fluid field when available

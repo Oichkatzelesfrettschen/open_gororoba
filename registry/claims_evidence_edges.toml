@@ -12435,7 +12435,7 @@ target_kind = "rust_source_path"
 id = "CED-01776"
 claim_id = "C-573"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/frustration.rs"
+target_ref = "crates/algebra_core/src/gpu/imbalance.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -14192,7 +14192,7 @@ target_kind = "rust_source_path"
 id = "CED-02027"
 claim_id = "C-777"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_algebra/src/bin/amplitude_frustration_survey.rs"
+target_ref = "crates/gororoba_cli_algebra/src/bin/amplitude_imbalance_survey.rs"
 target_kind = "rust_source_path"
 
 [[edge]]

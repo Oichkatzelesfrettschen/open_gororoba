@@ -1,13 +1,13 @@
 //! TX-2: Cross-Thesis T2 x T4 -- Viscosity-to-Filtration Loop
 //!
-//! Tests whether frustration-derived viscosity -> LBM flow -> filtration
+//! Tests whether imbalance-derived viscosity -> LBM flow -> filtration
 //! produces a meaningful latency law. This closes the loop:
-//! algebraic frustration -> viscosity -> flow -> filtration -> latency law.
+//! algebraic imbalance -> viscosity -> flow -> filtration -> latency law.
 //!
 //! Pipeline:
-//! 1. Generate SedenionField, compute frustration density
+//! 1. Generate SedenionField, compute imbalance density
 //! 2. For each lambda (coupling strength):
-//!    a. Convert frustration -> viscosity -> tau
+//!    a. Convert imbalance -> viscosity -> tau
 //!    b. Run LBM evolution with Kolmogorov forcing
 //!    c. Extract velocity field from LBM
 //!    d. Feed velocity into filtration_from_velocity_field()
@@ -20,7 +20,7 @@ use lattice_filtration::{
 };
 use lbm_3d::solver::LbmSolver3D;
 use std::fmt::Write as _;
-use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField};
+use sign_imbalance::bridge::{ImbalanceViscosityBridge, SedenionField};
 
 #[derive(Parser, Debug)]
 #[command(name = "thesis-cross-tx2")]
@@ -138,18 +138,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Lambda sweep: {:?}", lambdas);
     println!();
 
-    // Step 1: Generate frustration field
-    println!("[1/3] Generating SedenionField and frustration density...");
+    // Step 1: Generate imbalance field
+    println!("[1/3] Generating SedenionField and imbalance density...");
     let field = generate_sedenion_field(nx);
-    let frustration = field.local_frustration_density(16);
+    let imbalance = field.local_imbalance_density(16);
     drop(field);
 
-    let mean_f = frustration.iter().sum::<f64>() / n_cells as f64;
-    println!("  Mean frustration: {:.6}", mean_f);
+    let mean_f = imbalance.iter().sum::<f64>() / n_cells as f64;
+    println!("  Mean imbalance: {:.6}", mean_f);
 
     // Step 2: Lambda sweep
     println!("[2/3] Lambda sweep ({} values)...", lambdas.len());
-    let bridge = FrustrationViscosityBridge::new(16);
+    let bridge = ImbalanceViscosityBridge::new(16);
     let pi2 = std::f64::consts::PI * 2.0;
     let mut results = Vec::new();
 
@@ -165,8 +165,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (i, &lambda) in lambdas.iter().enumerate() {
         print!("  [{}/{}] lambda={:.1}... ", i + 1, lambdas.len(), lambda);
 
-        // Frustration -> viscosity -> tau
-        let viscosity = bridge.frustration_to_viscosity(&frustration, args.nu_base, lambda);
+        // Imbalance -> viscosity -> tau
+        let viscosity = bridge.imbalance_to_viscosity(&imbalance, args.nu_base, lambda);
         let mean_viscosity = viscosity.iter().sum::<f64>() / viscosity.len() as f64;
         let tau_field: Vec<f64> = viscosity.iter().map(|&nu| 3.0 * nu + 0.5).collect();
 
@@ -250,7 +250,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _ = writeln!(report, "force_amplitude = {:.2e}", args.force_amp);
     let _ = writeln!(report, "projection_scale = {:.2}", args.projection_scale);
     let _ = writeln!(report, "n_bins = {}", args.n_bins);
-    let _ = writeln!(report, "mean_frustration = {:.8}", mean_f);
+    let _ = writeln!(report, "mean_imbalance = {:.8}", mean_f);
     let _ = writeln!(report);
 
     for r in &results {

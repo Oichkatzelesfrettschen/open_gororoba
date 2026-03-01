@@ -63,11 +63,11 @@ validation = "Git clean."
 
 [phase.2]
 name = "Physics Implementation (Warp Mechanism)"
-goal = "Implement the E7-derived frustration term in LBM."
+goal = "Implement the E7-derived imbalance term in LBM."
 
 [[phase.2.step]]
 id = 11
-action = "Define `FrustrationField` trait in `gororoba_engine`."
+action = "Define `ImbalanceField` trait in `gororoba_engine`."
 validation = "Trait compiles."
 
 [[phase.2.step]]
@@ -82,12 +82,12 @@ validation = "FFT benchmarked on GPU."
 
 [[phase.2.step]]
 id = 14
-action = "Implement `apply_frustration` kernel in CUDA (spectral masking)."
+action = "Implement `apply_imbalance` kernel in CUDA (spectral masking)."
 validation = "Kernel compiles."
 
 [[phase.2.step]]
 id = 15
-action = "Wire `apply_frustration` into `LbmSolver3DCuda::step()` loop."
+action = "Wire `apply_imbalance` into `LbmSolver3DCuda::step()` loop."
 validation = "Simulation runs with forcing."
 
 [[phase.2.step]]
@@ -132,7 +132,7 @@ validation = "Allocation succeeds."
 [[phase.3.step]]
 id = 23
 action = "Initialize with Gaussian Splatting Projector (Anti-LARP)."
-validation = "Projector verified (frustration_e7.rs)."
+validation = "Projector verified (imbalance_e7.rs)."
 
 [[phase.3.step]]
 id = 24

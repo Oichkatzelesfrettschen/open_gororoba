@@ -1,0 +1,60 @@
+%% Fig 35: Claims lifecycle Sankey diagram (hand-rolled TikZ)
+%% 880 claims flowing through statuses
+\begin{tikzpicture}[
+  stage/.style={
+    draw=gray!40, rounded corners=3pt, minimum width=2cm,
+    minimum height=0.6cm, font=\sffamily\small\bfseries, thick
+  },
+  flow/.style={thick, opacity=0.4},
+]
+  %% Left: All claims
+  \node[stage, fill=cAlgebraLight] (total) at (0,0) {880 Claims};
+
+  %% Middle: status breakdown
+  \node[stage, fill=OIgreen!20, draw=OIgreen!50] (verified) at (5,1.5)
+    {786 Verified};
+  \node[stage, fill=OIorange!20, draw=OIorange!50] (proposed) at (5,0)
+    {7 Proposed};
+  \node[stage, fill=OIvermillion!20, draw=OIvermillion!50] (falsified) at (5,-1.5)
+    {9 Falsified};
+  \node[stage, fill=OIgray!20, draw=OIgray!50] (other) at (5,-3)
+    {78 Other};
+
+  %% Flow bands (width proportional to count)
+  %% Verified: 786/880 = 89% of band height
+  \fill[OIgreen!30, rounded corners=2pt]
+    (1.2,0.5) -- (3.5,2.2) -- (3.5,0.8) -- (1.2,-0.1) -- cycle;
+  %% Proposed: 7/880
+  \fill[OIorange!30, rounded corners=2pt]
+    (1.2,-0.1) -- (3.5,0.15) -- (3.5,-0.15) -- (1.2,-0.15) -- cycle;
+  %% Falsified: 9/880
+  \fill[OIvermillion!30, rounded corners=2pt]
+    (1.2,-0.15) -- (3.5,-1.2) -- (3.5,-1.8) -- (1.2,-0.2) -- cycle;
+  %% Other
+  \fill[OIgray!20, rounded corners=2pt]
+    (1.2,-0.2) -- (3.5,-2.7) -- (3.5,-3.3) -- (1.2,-0.5) -- cycle;
+
+  %% Right: domain breakdown for verified
+  \node[stage, fill=cAlgebraLight, draw=cAlgebra!50, font=\sffamily\scriptsize]
+    (alg) at (10,3) {Algebra (310)};
+  \node[stage, fill=cFluidLight, draw=cFluid!50, font=\sffamily\scriptsize]
+    (flu) at (10,2) {Fluid (165)};
+  \node[stage, fill=cGRLight, draw=cGR!50, font=\sffamily\scriptsize]
+    (gr) at (10,1) {GR (80)};
+  \node[stage, fill=cMaterialsLight, draw=cMaterials!50, font=\sffamily\scriptsize]
+    (mat) at (10,0) {Others (231)};
+
+  %% Flows from verified to domains
+  \fill[cAlgebra!20]
+    (6.2,2.0) -- (8.5,3.3) -- (8.5,2.7) -- (6.2,1.6) -- cycle;
+  \fill[cFluid!20]
+    (6.2,1.6) -- (8.5,2.3) -- (8.5,1.7) -- (6.2,1.2) -- cycle;
+  \fill[cGR!20]
+    (6.2,1.2) -- (8.5,1.3) -- (8.5,0.7) -- (6.2,0.9) -- cycle;
+  \fill[cStatistics!15]
+    (6.2,0.9) -- (8.5,0.3) -- (8.5,-0.3) -- (6.2,0.8) -- cycle;
+
+  %% Percentage annotations
+  \node[font=\sffamily\tiny, OIgreen!70!black] at (2.3,1.2) {89.3\%};
+  \node[font=\sffamily\tiny, OIvermillion!70!black] at (2.3,-0.8) {1.0\%};
+\end{tikzpicture}

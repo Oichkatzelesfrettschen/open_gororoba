@@ -1,30 +1,30 @@
-//! TX-1: Cross-Thesis T1 x T4 -- Frustration-Modulated Collision Dynamics
+//! TX-1: Cross-Thesis T1 x T4 -- Imbalance-Modulated Collision Dynamics
 //!
-//! Tests whether frustration topology modulates collision dynamics:
-//! does spatially-varying frustration density change the return-time
+//! Tests whether imbalance topology modulates collision dynamics:
+//! does spatially-varying imbalance density change the return-time
 //! scaling exponent (gamma) compared to a uniform reference?
 //!
 //! Pipeline:
-//! 1. Generate SedenionField, compute local frustration density
+//! 1. Generate SedenionField, compute local imbalance density
 //! 2. Uniform reference: simulate_shell_return_storm (no modulation)
-//! 3. For each alpha: scale frustration -> collision noise modulation
-//!    via simulate_frustration_modulated_storm
+//! 3. For each alpha: scale imbalance -> collision noise modulation
+//!    via simulate_imbalance_modulated_storm
 //! 4. Compare gamma exponents and latency law classifications
 //! 5. Gate: |gamma_modulated - gamma_uniform| > 0.1 for any alpha
 
 use clap::Parser;
 use lattice_filtration::{
-    FrustrationStormConfig, LatencyLawDetail, classify_latency_law_detailed,
-    simulate_frustration_modulated_storm, simulate_shell_return_storm,
+    ImbalanceStormConfig, LatencyLawDetail, classify_latency_law_detailed,
+    simulate_imbalance_modulated_storm, simulate_shell_return_storm,
 };
 use std::fmt::Write as _;
-use vacuum_frustration::bridge::SedenionField;
+use sign_imbalance::bridge::SedenionField;
 
 #[derive(Parser, Debug)]
 #[command(name = "thesis-cross-tx1")]
-#[command(about = "TX-1: Frustration-modulated collision dynamics (T1 x T4)")]
+#[command(about = "TX-1: Imbalance-modulated collision dynamics (T1 x T4)")]
 struct Args {
-    /// Grid size per axis (N^3 cells for frustration field)
+    /// Grid size per axis (N^3 cells for imbalance field)
     #[arg(long, default_value = "16")]
     grid_size: usize,
 
@@ -125,7 +125,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .filter_map(|s| s.trim().parse().ok())
         .collect();
 
-    println!("TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)");
+    println!("TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)");
     println!("========================================================");
     println!("Grid: {}^3 ({} cells)", nx, n_cells);
     println!(
@@ -135,27 +135,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Alpha sweep: {:?}", alphas);
     println!();
 
-    // Step 1: Generate SedenionField and compute frustration
-    println!("[1/4] Generating SedenionField and frustration density...");
+    // Step 1: Generate SedenionField and compute imbalance
+    println!("[1/4] Generating SedenionField and imbalance density...");
     let field = generate_sedenion_field(nx);
-    let frustration = field.local_frustration_density(16);
+    let imbalance = field.local_imbalance_density(16);
     drop(field);
 
-    let mean_f = frustration.iter().sum::<f64>() / n_cells as f64;
-    let f_min = frustration.iter().cloned().fold(f64::INFINITY, f64::min);
-    let f_max = frustration
+    let mean_f = imbalance.iter().sum::<f64>() / n_cells as f64;
+    let f_min = imbalance.iter().cloned().fold(f64::INFINITY, f64::min);
+    let f_max = imbalance
         .iter()
         .cloned()
         .fold(f64::NEG_INFINITY, f64::max);
     println!(
-        "  Frustration: mean={:.6}, min={:.6}, max={:.6}, range={:.6}",
+        "  Imbalance: mean={:.6}, min={:.6}, max={:.6}, range={:.6}",
         mean_f,
         f_min,
         f_max,
         f_max - f_min,
     );
 
-    // Step 2: Uniform reference (no frustration modulation)
+    // Step 2: Uniform reference (no imbalance modulation)
     println!("[2/4] Uniform reference walk...");
     let (ref_stats, ref_bins) =
         simulate_shell_return_storm(args.n_steps, 16, args.seed, args.n_shells);
@@ -196,17 +196,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         }
 
-        let cfg = FrustrationStormConfig {
+        let cfg = ImbalanceStormConfig {
             n_steps: args.n_steps,
             seed: args.seed,
             n_shells: args.n_shells,
-            frustration_field: &frustration,
+            imbalance_field: &imbalance,
             field_nx: nx,
             field_ny: nx,
             field_nz: nx,
             alpha,
         };
-        let (stats, bins) = simulate_frustration_modulated_storm(&cfg);
+        let (stats, bins) = simulate_imbalance_modulated_storm(&cfg);
         let samples = bins_to_samples(&bins);
         let detail = classify_latency_law_detailed(&samples);
 
@@ -239,14 +239,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _ = writeln!(report, "experiment = \"TX-1\"");
     let _ = writeln!(
         report,
-        "description = \"Frustration-modulated collision dynamics (T1 x T4)\""
+        "description = \"Imbalance-modulated collision dynamics (T1 x T4)\""
     );
     let _ = writeln!(report, "grid_size = {}", nx);
     let _ = writeln!(report, "n_steps = {}", args.n_steps);
     let _ = writeln!(report, "n_shells = {}", args.n_shells);
     let _ = writeln!(report, "seed = {}", args.seed);
-    let _ = writeln!(report, "mean_frustration = {:.8}", mean_f);
-    let _ = writeln!(report, "frustration_range = {:.8}", f_max - f_min);
+    let _ = writeln!(report, "mean_imbalance = {:.8}", mean_f);
+    let _ = writeln!(report, "imbalance_range = {:.8}", f_max - f_min);
     let _ = writeln!(report);
 
     let _ = writeln!(report, "[reference]");

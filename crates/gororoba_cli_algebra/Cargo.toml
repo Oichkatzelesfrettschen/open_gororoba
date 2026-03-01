@@ -19,8 +19,8 @@ name = "algebra-entropy-census"
 path = "src/bin/algebra_entropy_census.rs"
 
 [[bin]]
-name = "amplitude-frustration-survey"
-path = "src/bin/amplitude_frustration_survey.rs"
+name = "amplitude-imbalance-survey"
+path = "src/bin/amplitude_imbalance_survey.rs"
 
 [[bin]]
 name = "c590-attractor-sweep"

@@ -9,9 +9,9 @@ use std::error::Error;
 use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
-use vacuum_frustration::{
-    CASSINI_OMEGA_BD_LOWER_BOUND, FrustrationStarConfig, ScalarFrustrationMap,
-    evaluate_frustration_star,
+use sign_imbalance::{
+    CASSINI_OMEGA_BD_LOWER_BOUND, ImbalanceStarConfig, ScalarImbalanceMap,
+    evaluate_imbalance_star,
 };
 
 #[derive(Debug, Parser)]
@@ -50,10 +50,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 fn thesis1_scalar_tov_report(run_tov: bool) -> String {
     let lambdas = [0.5_f64, 1.0, 2.0, 4.0];
-    let frustrations = [0.125_f64, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875];
-    let cfg = FrustrationStarConfig {
+    let imbalances = [0.125_f64, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875];
+    let cfg = ImbalanceStarConfig {
         run_tov,
-        ..FrustrationStarConfig::default()
+        ..ImbalanceStarConfig::default()
     };
 
     let mut out = String::new();
@@ -73,15 +73,15 @@ fn thesis1_scalar_tov_report(run_tov: bool) -> String {
     let _ = writeln!(out, "lambda_values = [0.5, 1.0, 2.0, 4.0]");
     let _ = writeln!(
         out,
-        "frustration_values = [0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875]"
+        "imbalance_values = [0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875]"
     );
     let _ = writeln!(out);
 
     for lambda in lambdas {
-        let map = ScalarFrustrationMap::new(lambda);
-        for frustration in frustrations {
-            let field = vec![frustration; 64];
-            let result = evaluate_frustration_star(&field, map, &cfg);
+        let map = ScalarImbalanceMap::new(lambda);
+        for imbalance in imbalances {
+            let field = vec![imbalance; 64];
+            let result = evaluate_imbalance_star(&field, map, &cfg);
             let verdict = if result.cassini_violation {
                 "fail"
             } else {
@@ -96,7 +96,7 @@ fn thesis1_scalar_tov_report(run_tov: bool) -> String {
 
             let _ = writeln!(out, "[[sample]]");
             let _ = writeln!(out, "lambda = {:.3}", lambda);
-            let _ = writeln!(out, "mean_frustration = {:.6}", result.mean_frustration);
+            let _ = writeln!(out, "mean_imbalance = {:.6}", result.mean_imbalance);
             let _ = writeln!(out, "mean_phi = {:.6}", result.mean_phi);
             let _ = writeln!(out, "omega_eff = {:.6}", result.omega_eff);
             let _ = writeln!(out, "cassini_verdict = \"{}\"", verdict);

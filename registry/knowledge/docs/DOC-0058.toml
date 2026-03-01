@@ -31,7 +31,7 @@ Updated 2026-02-08 (Sprint 10 complete).
 
 - **PEPS scaling validation**: `peps_boundary_entropy()` is implemented (Sprint 8)
   but only validated on small grids (rows*cols <= 16).  Boundary MPS contraction
-  for large grids needs numerical stability testing on 2D frustrated systems.
+  for large grids needs numerical stability testing on 2D imbalanced systems.
 
 - **Primary-source citation gap**: 10 claims were cited in Sprint 8, but ~20
   claims in the evidence matrix still lack WHERE STATED or bibliography refs.

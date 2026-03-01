@@ -1,0 +1,76 @@
+%% Fig 21: Multi-panel convergence dashboard
+%% Top: Spearman grouped bar, Bottom: Betti numbers table
+\begin{tikzpicture}
+  \begin{groupplot}[
+    group style={
+      group size=1 by 2,
+      vertical sep=2.5cm,
+    },
+    width=0.85\textwidth,
+  ]
+
+  %% Panel 1: Spearman r_s by grid and model
+  \nextgroupplot[
+    height=5.5cm,
+    ybar,
+    bar width=7pt,
+    ylabel={Spearman $r_s$},
+    xlabel={Grid size},
+    symbolic x coords={$16^3$, $32^3$, $64^3$},
+    xtick=data,
+    ymin=-1.15, ymax=1.15,
+    ytick={-1.0,-0.5,0,0.5,1.0},
+    legend pos=south east,
+    legend columns=2,
+    enlarge x limits=0.25,
+    title={\textbf{Spearman Correlation Convergence}},
+    title style={font=\sffamily\small},
+  ]
+    \addplot[fill=OIorange!80] coordinates {
+      ($16^3$, -0.952) ($32^3$, -0.952) ($64^3$, -0.952)
+    };
+    \addplot[fill=OIskyblue!70] coordinates {
+      ($16^3$, 1.000) ($32^3$, 1.000) ($64^3$, 1.000)
+    };
+    \addplot[fill=OIpurple!60] coordinates {
+      ($16^3$, 0.643) ($32^3$, 0.690) ($64^3$, 0.952)
+    };
+    \addplot[fill=OIgray!60] coordinates {
+      ($16^3$, 0.000) ($32^3$, 0.000) ($64^3$, 0.000)
+    };
+    \legend{Exponential, Linear, Sigmoid, Constant}
+
+  %% Panel 2: Betti numbers as grouped bar
+  \nextgroupplot[
+    height=4.5cm,
+    ybar,
+    bar width=7pt,
+    ylabel={Betti number},
+    xlabel={Grid size},
+    symbolic x coords={$16^3$, $32^3$, $64^3$},
+    xtick=data,
+    ymin=0, ymax=4,
+    ytick={0,1,2,3},
+    legend pos=north east,
+    legend columns=2,
+    enlarge x limits=0.25,
+    title={\textbf{Topological Stability (Betti-0)}},
+    title style={font=\sffamily\small},
+  ]
+    %% b0 values for each model
+    \addplot[fill=OIorange!80] coordinates {
+      ($16^3$, 1) ($32^3$, 1) ($64^3$, 3)
+    };
+    \addplot[fill=OIskyblue!70] coordinates {
+      ($16^3$, 3) ($32^3$, 1) ($64^3$, 2)
+    };
+    \addplot[fill=OIblue!70] coordinates {
+      ($16^3$, 1) ($32^3$, 1) ($64^3$, 1)
+    };
+    \addplot[fill=OIpurple!60] coordinates {
+      ($16^3$, 2) ($32^3$, 3) ($64^3$, 1)
+    };
+    \legend{Exponential, Constant, Power-law, Sigmoid}
+
+  \end{groupplot}
+\end{tikzpicture}

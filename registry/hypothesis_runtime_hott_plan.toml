@@ -11,7 +11,7 @@ record_count = 20
 source_refs = [
   "registry/hypothesis_runtime_hott_sources.toml",
   "registry/experiments.toml",
-  "crates/vacuum_frustration/src/bridge.rs",
+  "crates/sign_imbalance/src/bridge.rs",
   "crates/lbm_3d/src/solver.rs",
   "crates/neural_homotopy/src/lib.rs"
 ]
@@ -111,7 +111,7 @@ id = "HRHP-011"
 phase = "P2"
 status = "open"
 title = "Mass as type-error proxy"
-objective = "Define topological/type residual metric over frustration graph and correlate with mass observables."
+objective = "Define topological/type residual metric over imbalance graph and correlate with mass observables."
 outputs = ["metric definitions", "registry experiment entry", "validation tests"]
 blocking = true
 

@@ -436,17 +436,17 @@ pub fn simulate_shell_return_storm(
     (stats, bins)
 }
 
-/// Configuration for the frustration-modulated collision storm.
+/// Configuration for the imbalance-modulated collision storm.
 #[derive(Debug, Clone)]
-pub struct FrustrationStormConfig<'a> {
+pub struct ImbalanceStormConfig<'a> {
     /// Number of walk steps
     pub n_steps: usize,
     /// PRNG seed for reproducibility
     pub seed: u64,
     /// Maximum shell index
     pub n_shells: usize,
-    /// Pre-computed frustration density, length = nx*ny*nz
-    pub frustration_field: &'a [f64],
+    /// Pre-computed imbalance density, length = nx*ny*nz
+    pub imbalance_field: &'a [f64],
     /// Grid dimensions (should match torus)
     pub field_nx: usize,
     pub field_ny: usize,
@@ -455,28 +455,28 @@ pub struct FrustrationStormConfig<'a> {
     pub alpha: f64,
 }
 
-/// Cross-thesis TX-1: Frustration-modulated collision dynamics.
+/// Cross-thesis TX-1: Imbalance-modulated collision dynamics.
 ///
-/// Combines T1 (frustration-topology spatial correlation) with T4 (latency
+/// Combines T1 (imbalance-topology spatial correlation) with T4 (latency
 /// law). Runs the same 3D torus walk as `simulate_shell_return_storm`, but
 /// the noise scale at each lattice point is modulated by a pre-computed
-/// frustration density field.
+/// imbalance density field.
 ///
-/// Physical model: the frustration density at each point acts as a local
-/// "temperature" that controls diffusion speed. High frustration = larger
+/// Physical model: the imbalance density at each point acts as a local
+/// "temperature" that controls diffusion speed. High imbalance = larger
 /// noise = faster diffusion. This creates a spatially non-homogeneous
 /// random walk whose effective dimensionality may differ from 3.
 ///
-/// The question: does frustration topology change the return-time scaling
+/// The question: does imbalance topology change the return-time scaling
 /// law from the pure geometric inverse-square?
-pub fn simulate_frustration_modulated_storm(
-    cfg: &FrustrationStormConfig<'_>,
+pub fn simulate_imbalance_modulated_storm(
+    cfg: &ImbalanceStormConfig<'_>,
 ) -> (ShellReturnStats, Vec<ShellReturnBin>) {
-    let FrustrationStormConfig {
+    let ImbalanceStormConfig {
         n_steps,
         seed,
         n_shells,
-        frustration_field,
+        imbalance_field,
         field_nx,
         field_ny,
         field_nz,
@@ -487,9 +487,9 @@ pub fn simulate_frustration_modulated_storm(
     assert!(n_steps > 0, "n_steps must be > 0");
     assert!(n_shells > 0, "n_shells must be > 0");
     assert_eq!(
-        frustration_field.len(),
+        imbalance_field.len(),
         field_nx * field_ny * field_nz,
-        "frustration_field length must equal nx*ny*nz"
+        "imbalance_field length must equal nx*ny*nz"
     );
 
     // Deterministic PRNG (xorshift64)
@@ -504,7 +504,7 @@ pub fn simulate_frustration_modulated_storm(
     // Base noise scale (same as uniform torus walk)
     let noise_base = 0.5;
 
-    // Torus dimensions: must match the frustration field grid
+    // Torus dimensions: must match the imbalance field grid
     let torus_half_x = field_nx as f64 / 2.0;
     let torus_half_y = field_ny as f64 / 2.0;
     let torus_half_z = field_nz as f64 / 2.0;
@@ -522,7 +522,7 @@ pub fn simulate_frustration_modulated_storm(
         std::collections::HashSet::new();
 
     for _ in 0..n_steps {
-        // Current lattice position (for frustration lookup)
+        // Current lattice position (for imbalance lookup)
         let lx = walker[0].round() as i32;
         let ly = walker[1].round() as i32;
         let lz = walker[2].round() as i32;
@@ -533,9 +533,9 @@ pub fn simulate_frustration_modulated_storm(
         let gz = lz.rem_euclid(field_nz as i32) as usize;
         let grid_idx = gz * (field_nx * field_ny) + gy * field_nx + gx;
 
-        // Look up local frustration and compute modulated noise scale
-        let local_frustration = frustration_field[grid_idx];
-        let noise_scale = noise_base * (1.0 + alpha * local_frustration);
+        // Look up local imbalance and compute modulated noise scale
+        let local_imbalance = imbalance_field[grid_idx];
+        let noise_scale = noise_base * (1.0 + alpha * local_imbalance);
 
         // Generate random sedenion pair and compute CD product
         let mut a = [0.0f64; 16];
@@ -798,10 +798,10 @@ mod tests {
         );
     }
 
-    // -- TX-1: Frustration-modulated storm tests --
+    // -- TX-1: Imbalance-modulated storm tests --
 
-    /// Helper: generate a simple frustration field with sinusoidal spatial variation.
-    fn make_test_frustration_field(nx: usize, ny: usize, nz: usize) -> Vec<f64> {
+    /// Helper: generate a simple imbalance field with sinusoidal spatial variation.
+    fn make_test_imbalance_field(nx: usize, ny: usize, nz: usize) -> Vec<f64> {
         let n = nx * ny * nz;
         let mut field = vec![0.0; n];
         let pi2 = std::f64::consts::PI * 2.0;
@@ -811,7 +811,7 @@ mod tests {
                     let idx = z * (nx * ny) + y * nx + x;
                     let xn = x as f64 / nx as f64;
                     let yn = y as f64 / ny as f64;
-                    // Spatially varying frustration: 0.2 to 0.8
+                    // Spatially varying imbalance: 0.2 to 0.8
                     field[idx] = 0.5 + 0.3 * (pi2 * xn).sin() * (pi2 * yn).cos();
                 }
             }
@@ -820,20 +820,20 @@ mod tests {
     }
 
     #[test]
-    fn test_frustration_modulated_storm_basic() {
+    fn test_imbalance_modulated_storm_basic() {
         let nx = 14;
-        let field = make_test_frustration_field(nx, nx, nx);
-        let cfg = FrustrationStormConfig {
+        let field = make_test_imbalance_field(nx, nx, nx);
+        let cfg = ImbalanceStormConfig {
             n_steps: 5000,
             seed: 42,
             n_shells: 20,
-            frustration_field: &field,
+            imbalance_field: &field,
             field_nx: nx,
             field_ny: nx,
             field_nz: nx,
             alpha: 1.0,
         };
-        let (stats, bins) = simulate_frustration_modulated_storm(&cfg);
+        let (stats, bins) = simulate_imbalance_modulated_storm(&cfg);
         assert_eq!(stats.n_steps, 5000);
         assert!(stats.n_shells_populated > 0, "should populate shells");
         assert!(!bins.is_empty(), "should have shell bins");
@@ -842,21 +842,21 @@ mod tests {
     }
 
     #[test]
-    fn test_frustration_modulated_storm_reproducible() {
+    fn test_imbalance_modulated_storm_reproducible() {
         let nx = 14;
-        let field = make_test_frustration_field(nx, nx, nx);
-        let cfg = FrustrationStormConfig {
+        let field = make_test_imbalance_field(nx, nx, nx);
+        let cfg = ImbalanceStormConfig {
             n_steps: 2000,
             seed: 42,
             n_shells: 20,
-            frustration_field: &field,
+            imbalance_field: &field,
             field_nx: nx,
             field_ny: nx,
             field_nz: nx,
             alpha: 1.0,
         };
-        let (s1, b1) = simulate_frustration_modulated_storm(&cfg);
-        let (s2, b2) = simulate_frustration_modulated_storm(&cfg);
+        let (s1, b1) = simulate_imbalance_modulated_storm(&cfg);
+        let (s2, b2) = simulate_imbalance_modulated_storm(&cfg);
         assert_eq!(s1.n_unique_keys, s2.n_unique_keys);
         assert_eq!(b1.len(), b2.len());
         for (a, b) in b1.iter().zip(b2.iter()) {
@@ -865,21 +865,21 @@ mod tests {
     }
 
     #[test]
-    fn test_frustration_modulated_storm_alpha_zero_matches_uniform() {
-        // With alpha=0, frustration has no effect; should behave like uniform.
+    fn test_imbalance_modulated_storm_alpha_zero_matches_uniform() {
+        // With alpha=0, imbalance has no effect; should behave like uniform.
         let nx = 14;
-        let field = make_test_frustration_field(nx, nx, nx);
-        let cfg = FrustrationStormConfig {
+        let field = make_test_imbalance_field(nx, nx, nx);
+        let cfg = ImbalanceStormConfig {
             n_steps: 10000,
             seed: 42,
             n_shells: 20,
-            frustration_field: &field,
+            imbalance_field: &field,
             field_nx: nx,
             field_ny: nx,
             field_nz: nx,
             alpha: 0.0,
         };
-        let (stats_mod, _) = simulate_frustration_modulated_storm(&cfg);
+        let (stats_mod, _) = simulate_imbalance_modulated_storm(&cfg);
         let (stats_uni, _) = simulate_shell_return_storm(10000, 16, 42, 20);
         // Both should produce a reasonable power-law fit
         assert!(
@@ -895,26 +895,26 @@ mod tests {
     }
 
     #[test]
-    fn test_frustration_modulated_storm_gamma_shifts_with_alpha() {
-        // With strong frustration coupling, gamma should deviate from -2.
+    fn test_imbalance_modulated_storm_gamma_shifts_with_alpha() {
+        // With strong imbalance coupling, gamma should deviate from -2.
         let nx = 14;
-        let field = make_test_frustration_field(nx, nx, nx);
-        let cfg_weak = FrustrationStormConfig {
+        let field = make_test_imbalance_field(nx, nx, nx);
+        let cfg_weak = ImbalanceStormConfig {
             n_steps: 30000,
             seed: 42,
             n_shells: 20,
-            frustration_field: &field,
+            imbalance_field: &field,
             field_nx: nx,
             field_ny: nx,
             field_nz: nx,
             alpha: 0.1,
         };
-        let cfg_strong = FrustrationStormConfig {
+        let cfg_strong = ImbalanceStormConfig {
             alpha: 5.0,
             ..cfg_weak.clone()
         };
-        let (stats_weak, _) = simulate_frustration_modulated_storm(&cfg_weak);
-        let (stats_strong, _) = simulate_frustration_modulated_storm(&cfg_strong);
+        let (stats_weak, _) = simulate_imbalance_modulated_storm(&cfg_weak);
+        let (stats_strong, _) = simulate_imbalance_modulated_storm(&cfg_strong);
         let gamma_diff = (stats_strong.power_law_gamma - stats_weak.power_law_gamma).abs();
         assert!(
             gamma_diff > 0.01 || stats_strong.power_law_r2 > 0.3,

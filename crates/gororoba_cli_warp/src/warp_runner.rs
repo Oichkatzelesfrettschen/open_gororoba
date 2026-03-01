@@ -860,7 +860,7 @@ fn sample_algebra_norm_trace_value(
     state: &mut SimulationState3D,
     forcing: &KolmogorovForcingSpec,
 ) -> f64 {
-    if let Some(field) = state.frustration.as_ref() {
+    if let Some(field) = state.imbalance.as_ref() {
         return field.trace_algebra_norm();
     }
 
@@ -912,7 +912,7 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
         forcing.acceleration_amplitude,
     );
     state.fluid.try_set_force_field(&force_field)?;
-    state.frustration = Some(Box::new(E7SpectralFilter::new(
+    state.imbalance = Some(Box::new(E7SpectralFilter::new(
         case.resolution,
         case.resolution,
         case.resolution,

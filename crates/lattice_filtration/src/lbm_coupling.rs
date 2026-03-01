@@ -3,7 +3,7 @@
 //! Converts 3D LBM velocity fields into inputs suitable for the
 //! filtration collision storm simulator. This enables Thesis 2
 //! (particle mass from filtration) to receive velocity data from
-//! Thesis 1 (frustration-viscosity coupling via LBM).
+//! Thesis 1 (imbalance-viscosity coupling via LBM).
 
 use crate::basis_index::project_to_lattice;
 use crate::patricia_trie::PatriciaIndex;

@@ -206,7 +206,7 @@ fn test_similarity_ignores_short_statements() {
 #[test]
 fn test_enrich_phase_from_where_stated() {
     let mut claims = vec![make_claim("C-001", "Test claim", "Verified")];
-    claims[0].where_stated = Some("crates/vacuum_frustration/src/frustration.rs".to_string());
+    claims[0].where_stated = Some("crates/sign_imbalance/src/imbalance.rs".to_string());
     enrich_metadata(&mut claims, &[], &[]);
     assert_eq!(claims[0].phase.as_deref(), Some("Phase 1"));
 }

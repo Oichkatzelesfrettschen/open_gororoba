@@ -1,0 +1,32 @@
+%% Fig 11: APT dimensional census stacked bar chart
+%% Data: exact counts from the paper text (not Monte Carlo csv)
+\begin{tikzpicture}
+\begin{axis}[
+  ybar stacked,
+  bar width=18pt,
+  width=0.82\textwidth,
+  height=7cm,
+  xlabel={Cayley--Dickson dimension},
+  ylabel={Triangle count (log scale)},
+  ymode=log,
+  symbolic x coords={16, 32, 64, 128, 256, 512},
+  xtick=data,
+  legend pos=north west,
+  legend style={fill=white, fill opacity=0.9, draw=gray!50},
+  enlarge x limits=0.15,
+  nodes near coords style={font=\sffamily\tiny},
+  ymin=10,
+]
+  %% Pure triangles (bottom, green)
+  \addplot[fill=OIgreen!60, draw=OIgreen!80!black] coordinates {
+    (16, 14) (32, 1365) (64, 11319) (128, 205282) (256, 3337026) (512, 53517882)
+  };
+
+  %% Mixed triangles (stacked on top, vermillion)
+  \addplot[fill=OIvermillion!50, draw=OIvermillion!80!black] coordinates {
+    (16, 42) (32, 4095) (64, 33957) (128, 615846) (256, 10011078) (512, 160553646)
+  };
+
+  \legend{Pure ($1/4$), Mixed ($3/4$)}
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,48 @@
+%% Fig 8: Motif scaling laws (log-log)
+%% Data from cd_motif_summary_by_dim.csv
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=7cm,
+  xlabel={Cayley--Dickson dimension},
+  ylabel={Count},
+  xmode=log,
+  ymode=log,
+  log basis x=2,
+  xtick={16,32,64,128,256},
+  xticklabels={16,32,64,128,256},
+  legend pos=north west,
+  legend style={fill=white, fill opacity=0.8, draw=gray!50},
+]
+  %% Component count
+  \addplot[OIorange, thick, mark=*, mark size=3pt,
+    mark options={fill=OIorange, draw=OIorange!80!black}]
+    coordinates {
+      (16, 7) (32, 15) (64, 31) (128, 63) (256, 127)
+    };
+
+  %% Active nodes total
+  \addplot[OIskyblue, thick, mark=square*, mark size=3pt,
+    mark options={fill=OIskyblue, draw=OIskyblue!80!black}]
+    coordinates {
+      (16, 42) (32, 210) (64, 930) (128, 3906) (256, 16002)
+    };
+
+  %% Max component edges
+  \addplot[OIblue, thick, mark=triangle*, mark size=3pt,
+    mark options={fill=OIblue, draw=OIblue!80!black}]
+    coordinates {
+      (16, 12) (32, 84) (64, 420) (128, 1860) (256, 7812)
+    };
+
+  %% Octahedron (K_{2,2,2}) count -- only present at dim 16
+  \addplot[OIpurple, thick, dashed, mark=diamond*, mark size=3pt,
+    mark options={fill=OIpurple, draw=OIpurple!80!black},
+    only marks]
+    coordinates {
+      (16, 7)
+    };
+
+  \legend{Components, Active nodes, Max edges, Octahedra ($K_{2{,}2{,}2}$)}
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,48 @@
+%% Fig 22: Persistence diagram scatter (birth vs death)
+%% Each coupling model gets a distinct color and marker
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.7\textwidth,
+  height=0.7\textwidth,
+  xlabel={Birth},
+  ylabel={Death},
+  xmin=0, xmax=1.2,
+  ymin=0, ymax=1.2,
+  legend pos=south east,
+  legend style={fill=white, fill opacity=0.9, draw=gray!50},
+  axis equal,
+]
+  %% Diagonal (death = birth, noise threshold)
+  \addplot[gray!40, dashed, domain=0:1.2, forget plot] {x};
+
+  %% Exponential model features
+  \addplot[only marks, mark=*, mark size=3pt, OIorange,
+    mark options={fill=OIorange}]
+    coordinates {(0.05,0.85) (0.12,0.72) (0.18,0.45) (0.25,0.35) (0.30,0.32)};
+
+  %% Constant model features
+  \addplot[only marks, mark=square*, mark size=3pt, OIgray,
+    mark options={fill=OIgray}]
+    coordinates {(0.08,0.90) (0.15,0.42) (0.22,0.30) (0.35,0.38)};
+
+  %% Power-law model features
+  \addplot[only marks, mark=triangle*, mark size=3.5pt, OIblue,
+    mark options={fill=OIblue}]
+    coordinates {(0.06,0.88) (0.10,0.65) (0.20,0.28)};
+
+  %% Sigmoid model features
+  \addplot[only marks, mark=diamond*, mark size=3.5pt, OIpurple,
+    mark options={fill=OIpurple}]
+    coordinates {(0.07,0.92) (0.14,0.50) (0.19,0.38) (0.28,0.32) (0.32,0.34)};
+
+  \legend{Exponential, Constant, Power-law, Sigmoid}
+
+  %% Annotation: persistent vs noise
+  \draw[{Stealth[length=3pt]}-, OIgreen!70!black, thick]
+    (axis cs:0.06,0.88) -- (axis cs:0.3,1.05)
+    node[right, font=\sffamily\tiny] {persistent features};
+  \draw[{Stealth[length=3pt]}-, OIvermillion!70, thick]
+    (axis cs:0.30,0.32) -- (axis cs:0.5,0.2)
+    node[right, font=\sffamily\tiny] {near-diagonal noise};
+\end{axis}
+\end{tikzpicture}

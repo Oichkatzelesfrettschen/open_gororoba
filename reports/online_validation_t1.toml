@@ -3,7 +3,7 @@
 [online_validation]
 id = "STPT-028"
 updated = "2026-02-12"
-claim = "Frustration-Star solutions requiring omega_BD < 40000 violate Cassini-derived Brans-Dicke constraints"
+claim = "Imbalance-Star solutions requiring omega_BD < 40000 violate Cassini-derived Brans-Dicke constraints"
 verdict = "supported"
 status_token = "SUPPORTED"
 

@@ -110,7 +110,7 @@ summary = """The Pathion Cubic Anomaly (C-448): dim=32 zero-divisor motif partit
 
 Complete Mechanism (Sprints 20-26): The anti-diagonal parity theorem (C-520) provides the algebraic mechanism. For any triangle (a,b,c) of cross-assessor ZD pairs, define eta(x,y) = psi(lo_x,hi_y) XOR psi(hi_x,lo_y). The triangle is pure iff eta is constant across all three edges. The 2-bit invariant F in GF(2)^2 produces exact 1:3 pure:mixed ratio via Klein-four fiber structure (C-524). Verified with zero mismatches across 50.3M+ triangles at dims 128,256 combined.
 
-Dimensional Extensions (Sprint 27): Frustration oscillation (C-529) peaks at dim=128 (0.388), then monotonically decreases toward 3/8 limit (0.378 at dim=1024, 0.381 at dim=512). GF(2) polynomial degree scales as log2(dim) (C-527). Component scaling laws (dim/2-1 components, dim/2-2 nodes each) verified across 6 dimensions (16-512). psi=1 fraction converges toward 50% (C-534)."""
+Dimensional Extensions (Sprint 27): Imbalance oscillation (C-529) peaks at dim=128 (0.388), then monotonically decreases toward 3/8 limit (0.378 at dim=1024, 0.381 at dim=512). GF(2) polynomial degree scales as log2(dim) (C-527). Component scaling laws (dim/2-1 components, dim/2-2 nodes each) verified across 6 dimensions (16-512). psi=1 fraction converges toward 50% (C-534)."""
 claims = [
   "C-443", "C-444", "C-445", "C-446", "C-447", "C-448",
   "C-480", "C-481", "C-489",
@@ -171,10 +171,10 @@ sprint = 19
 
 [[insight]]
 id = "I-018"
-title = "Anti-Diagonal Parity Theorem: Mechanism for the Double 3:1 Law"
+title = "Anti-Diagonal Parity Theorem: Mechanism for the 3:1 Theorem"
 date = "2026-02-09"
 status = "verified"
-summary = "Complete mechanistic explanation for the Universal Double 3:1 Law (C-487). The GF(2) twist exponent psi(i,j) forms a 2x2 matrix M_ab per edge; its anti-diagonal XOR eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) characterizes the pure/mixed partition: a triangle is pure iff eta is constant across all 3 edges. The 2-bit invariant F in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256 (13.3M+ triangles, 0 mismatches). Key supporting results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta = 1 XOR eta_half (C-526), eta ANF degree = log2(dim)-1 (C-527). The mechanism traces to the conjugation asymmetry in the Cayley-Dickson doubling formula."
+summary = "Complete mechanistic explanation for the Universal 3:1 Theorem (C-487). The GF(2) twist exponent psi(i,j) forms a 2x2 matrix M_ab per edge; its anti-diagonal XOR eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) characterizes the pure/mixed partition: a triangle is pure iff eta is constant across all 3 edges. The 2-bit invariant F in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256 (13.3M+ triangles, 0 mismatches). Key supporting results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta = 1 XOR eta_half (C-526), eta ANF degree = log2(dim)-1 (C-527). The mechanism traces to the conjugation asymmetry in the Cayley-Dickson doubling formula."
 claims = ["C-515", "C-516", "C-517", "C-518", "C-519", "C-520", "C-521", "C-522", "C-523", "C-524", "C-525", "C-526", "C-527"]
 sprint = 25
 
@@ -334,7 +334,7 @@ id = "I-035"
 title = "Dimensional Ladder Validates APT Mechanism with GPU Infrastructure"
 date = "2026-02-09"
 status = "verified"
-summary = "Complete dimensional census tool (dimensional-census binary) validates the Anti-Diagonal Parity Theorem across dims 16-256 exhaustively (14.2M+ graph triangles) with pure_ratio = 0.250000 EXACTLY at every dimension. The 1:3 ratio, Quarter Rule, and Klein-four fiber symmetry all hold without exception. GPU acceleration infrastructure is operational: eta matrix, graph construction, frustration, and Monte Carlo APT kernels compile via cudarc NVRTC. Monte Carlo rejection sampling at dims 32-64 converges to 0.25 within 0.2% at 100K samples. Criterion benchmarking suite (7 groups) establishes scaling baselines: component extraction O(n^2), triangle enumeration O(n^3), cd_basis_mul_sign O(log dim). The exhaustive census confirms that APT is not an approximation -- the mechanism is algebraically exact at every verified dimension."
+summary = "Complete dimensional census tool (dimensional-census binary) validates the Anti-Diagonal Parity Theorem across dims 16-256 exhaustively (14.2M+ graph triangles) with pure_ratio = 0.250000 EXACTLY at every dimension. The 1:3 ratio, Quarter Rule, and Klein-four fiber symmetry all hold without exception. GPU acceleration infrastructure is operational: eta matrix, graph construction, imbalance, and Monte Carlo APT kernels compile via cudarc NVRTC. Monte Carlo rejection sampling at dims 32-64 converges to 0.25 within 0.2% at 100K samples. Criterion benchmarking suite (7 groups) establishes scaling baselines: component extraction O(n^2), triangle enumeration O(n^3), cd_basis_mul_sign O(log dim). The exhaustive census confirms that APT is not an approximation -- the mechanism is algebraically exact at every verified dimension."
 claims = ["C-570", "C-571", "C-572", "C-573", "C-574"]
 sprint = 28
 
@@ -370,7 +370,7 @@ id = "I-039"
 title = "Five-Direction Research Sprint: Stiefel V_{8,2}, Albert J_3(O), and Negative Results"
 date = "2026-02-09"
 status = "verified"
-summary = "Sprint 29 executed five parallel research directions: (D1) Gresnigt subalgebra decomposition -- 15 alternative subalgebras, uniform structure, depth as mass discriminator (I-038). (D2) Albert algebra J_3(O) -- 27D exceptional Jordan algebra with Cardano eigenvalue solver; Singh delta^2=3/8 NOT reproduced for real trace-free elements, likely requires complexified algebra (C-584, C-585 NEGATIVE). (D3) Koebisu Stiefel manifold -- 168/168 confirmed ZDs satisfy V_{8,2} exactly (C-586). (D4) Tang convention unblocking -- depth-based norms (0.87-2.0 range) insufficient for 3500:1 mass hierarchy (C-587 NEGATIVE). (L4) Frustration convergence -- reusable compute_frustration_ratio() function, dim=2048 test scaffolded (C-588). Two genuine negative results (C-585, C-587) constrain future approaches: raw associator norms and generic real J_3(O) elements are insufficient for mass ratio predictions."
+summary = "Sprint 29 executed five parallel research directions: (D1) Gresnigt subalgebra decomposition -- 15 alternative subalgebras, uniform structure, depth as mass discriminator (I-038). (D2) Albert algebra J_3(O) -- 27D exceptional Jordan algebra with Cardano eigenvalue solver; Singh delta^2=3/8 NOT reproduced for real trace-free elements, likely requires complexified algebra (C-584, C-585 NEGATIVE). (D3) Koebisu Stiefel manifold -- 168/168 confirmed ZDs satisfy V_{8,2} exactly (C-586). (D4) Tang convention unblocking -- depth-based norms (0.87-2.0 range) insufficient for 3500:1 mass hierarchy (C-587 NEGATIVE). (L4) Imbalance convergence -- reusable compute_imbalance_index() function, dim=2048 test scaffolded (C-588). Two genuine negative results (C-585, C-587) constrain future approaches: raw associator norms and generic real J_3(O) elements are insufficient for mass ratio predictions."
 claims = ["C-581", "C-582", "C-583", "C-584", "C-585", "C-586", "C-587", "C-588"]
 sprint = 29
 
@@ -388,7 +388,7 @@ id = "I-041"
 title = "The Split-Octonion Attractor"
 date = "2026-02-10"
 status = "verified"
-summary = "The asymptotic frustration ratio of the standard Cayley-Dickson tower approaches 3/8 and aligns with the split-octonion negative sign fraction (24/64). New guarded regression checks at dims 128 and 256 keep this attractor behavior reproducible under configurable runtime budgets."
+summary = "The asymptotic imbalance index of the standard Cayley-Dickson tower approaches 3/8 and aligns with the split-octonion negative sign fraction (24/64). New guarded regression checks at dims 128 and 256 keep this attractor behavior reproducible under configurable runtime budgets."
 claims = ["C-590"]
 sprint = 32
 
@@ -406,7 +406,7 @@ id = "I-043"
 title = "Exact 3/8 Sign Balance"
 date = "2026-02-10"
 status = "verified"
-summary = "The multiplication table of the Split-Octonions (dim 8) has exactly 24 negative structure constants out of 64 entries (24/64 = 0.375). This provides the exact arithmetic mechanism for the 3/8 frustration limit observed in I-041."
+summary = "The multiplication table of the Split-Octonions (dim 8) has exactly 24 negative structure constants out of 64 entries (24/64 = 0.375). This provides the exact arithmetic mechanism for the 3/8 imbalance limit observed in I-041."
 claims = []
 related_insights = ["I-041"]
 sprint = 32
@@ -434,7 +434,7 @@ id = "I-046"
 title = "Phase A: Algebraic Depth -- GF(2) Separating Degree Formula and APT at dim=4096"
 date = "2026-02-10"
 status = "verified"
-summary = "Phase A verified two key algebraic predictions at unprecedented scale: (1) GF(2) SEPARATING DEGREE FORMULA: min_degree = log2(dim) - 2 confirmed universal across dims 32/64/128/256, yielding degrees 3/4/5/6. At dim=256, greedy partition refinement found a separating 6-tuple for all 16 motif classes in PG(6,2) with 127 points, where brute-force C(127,6) enumeration is infeasible. (2) APT AT dim=4096: Monte Carlo census with 1M samples across 4,192,256 nodes yielded pure_ratio=0.2505, confirming the 1:3 APT law. Klein-four fiber symmetry holds within 0.20% deviation. Frustration ratio continues monotone decrease trend. (3) LAMBDA_4096 FILTRATION: The base universe saturates at 2187 vectors (= Lambda_4096), with all 4 octonion parity constraints holding at every filtration level. The filtration chain Lambda_256(256) < Lambda_512(512) < Lambda_1024(1026) < Lambda_2048(2048) < Lambda_4096(2187) is strictly increasing and exhaustive."
+summary = "Phase A verified two key algebraic predictions at unprecedented scale: (1) GF(2) SEPARATING DEGREE FORMULA: min_degree = log2(dim) - 2 confirmed universal across dims 32/64/128/256, yielding degrees 3/4/5/6. At dim=256, greedy partition refinement found a separating 6-tuple for all 16 motif classes in PG(6,2) with 127 points, where brute-force C(127,6) enumeration is infeasible. (2) APT AT dim=4096: Monte Carlo census with 1M samples across 4,192,256 nodes yielded pure_ratio=0.2505, confirming the 1:3 APT law. Klein-four fiber symmetry holds within 0.20% deviation. Imbalance index continues monotone decrease trend. (3) LAMBDA_4096 FILTRATION: The base universe saturates at 2187 vectors (= Lambda_4096), with all 4 octonion parity constraints holding at every filtration level. The filtration chain Lambda_256(256) < Lambda_512(512) < Lambda_1024(1026) < Lambda_2048(2048) < Lambda_4096(2187) is strictly increasing and exhaustive."
 claims = ["C-599", "C-600", "C-601", "C-602", "C-603", "C-604", "C-605"]
 sprint = 32
 
@@ -486,10 +486,10 @@ sprint = 32
 
 [[insight]]
 id = "I-052"
-title = "Surface Tension of Frustration"
+title = "Surface Tension of Imbalance"
 date = "2026-02-10"
 status = "verified"
-summary = "A 16-dimensional 'Hybrid' algebra (Split-Octonion core doubled with -1) exhibits a frustration ratio of 0.4375, significantly lower than the standard Sedenion (0.46875) and trending towards the 0.375 attractor. This identifies frustration as a 'surface tension' effect where signature constraints (+/-1) compete with the underlying statistical limit of the Split-Octonion mean-field."
+summary = "A 16-dimensional 'Hybrid' algebra (Split-Octonion core doubled with -1) exhibits a imbalance index of 0.4375, significantly lower than the standard Sedenion (0.46875) and trending towards the 0.375 attractor. This identifies imbalance as a 'surface tension' effect where signature constraints (+/-1) compete with the underlying statistical limit of the Split-Octonion mean-field."
 claims = ["C-590"]
 related_insights = ["I-041"]
 sprint = 32
@@ -499,7 +499,7 @@ id = "I-053"
 title = "Dual-Octonion Phase Boundary"
 date = "2026-02-10"
 status = "verified"
-summary = "The Dual-Octonions (O x D) exhibit a frustration sign ratio of 0.4375 (14/32), placing them exactly between the Standard Sedenions (0.46875, 15/32) and the Split-Octonion Attractor (0.375, 12/32). This statistically confirms the role of Dual numbers (epsilon^2=0) as the phase boundary between the Elliptic (Standard) and Hyperbolic (Split) geometric regimes of the Cayley-Dickson tower."
+summary = "The Dual-Octonions (O x D) exhibit a imbalance sign ratio of 0.4375 (14/32), placing them exactly between the Standard Sedenions (0.46875, 15/32) and the Split-Octonion Attractor (0.375, 12/32). This statistically confirms the role of Dual numbers (epsilon^2=0) as the phase boundary between the Elliptic (Standard) and Hyperbolic (Split) geometric regimes of the Cayley-Dickson tower."
 claims = ["C-630"]
 related_insights = ["I-052"]
 sprint = 32
@@ -526,10 +526,10 @@ sprint = 35
 
 [[insight]]
 id = "I-056"
-title = "Frustration as Topological Phase Boundary Marker"
+title = "Imbalance as Topological Phase Boundary Marker"
 date = "2026-02-10"
 status = "verified"
-summary = "Frustration (sign imbalance in multiplication tables) acts as a topological phase boundary marker. The dual-octonion phase boundary 0.4375 lies exactly between elliptic (standard, ~0.375) and hyperbolic (split, ~0.469) regimes, suggesting that algebraic structure is constrained by geometric topology. Tensor product variants (Dual/Bi/Para octonions) exhibit different frustration values (0.4375, 0.4688, 0.6562) predictable from their respective algebraic definitions, independent of Cayley-Dickson theory."
+summary = "Imbalance (sign imbalance in multiplication tables) acts as a topological phase boundary marker. The dual-octonion phase boundary 0.4375 lies exactly between elliptic (standard, ~0.375) and hyperbolic (split, ~0.469) regimes, suggesting that algebraic structure is constrained by geometric topology. Tensor product variants (Dual/Bi/Para octonions) exhibit different imbalance values (0.4375, 0.4688, 0.6562) predictable from their respective algebraic definitions, independent of Cayley-Dickson theory."
 claims = ["C-637", "C-638", "C-639"]
 confidence = "high"
 sprint = 35
@@ -577,7 +577,7 @@ sprint = 35
 [[insight]]
 id = "I-064"
 title = "The Bit-to-Physics Pipeline as Scientific Paradigm"
-insight = "The Physics Synthesis Pipeline demonstrates emergent physical phenomena derived from algebraic structure with falsifiable predictions. The six-layer architecture bridges information theory to continuum physics: (0) Bit manipulation via Cayley-Dickson doubling formula, (1) Algebraic parity from signed-graph psi signs, (2) Topological frustration via Harary-Zaslavsky balance, (3) Dynamical viscosity via exponential coupling, (4) Fluid flow via LBM simulation, (5) Empirical validation via percolation correlation. Thesis 1 proves macroscopic fluid properties (viscosity fields, percolation channels) derive from finite-dimensional algebra without ad-hoc physical postulates. This paradigm suggests deep principle: algebraic structure at microscopic scale directly determines macroscopic physics via falsifiable experimental tests E-027, E-028, E-029."
+insight = "The Physics Synthesis Pipeline demonstrates emergent physical phenomena derived from algebraic structure with falsifiable predictions. The six-layer architecture bridges information theory to continuum physics: (0) Bit manipulation via Cayley-Dickson doubling formula, (1) Algebraic parity from signed-graph psi signs, (2) Topological imbalance via Harary-Zaslavsky balance, (3) Dynamical viscosity via exponential coupling, (4) Fluid flow via LBM simulation, (5) Empirical validation via percolation correlation. Thesis 1 proves macroscopic fluid properties (viscosity fields, percolation channels) derive from finite-dimensional algebra without ad-hoc physical postulates. This paradigm suggests deep principle: algebraic structure at microscopic scale directly determines macroscopic physics via falsifiable experimental tests E-027, E-028, E-029."
 supporting_evidence = ["C-657", "C-658", "C-659", "CRI-001", "CRI-002", "E-027"]
 related_claims = ["C-657", "C-658", "C-659"]
 experimental_support = ["E-027"]
@@ -588,8 +588,8 @@ sprint = 36
 
 [[insight]]
 id = "I-065"
-title = "Cross-Thesis Non-Monotonic Coupling Reveals Optimal Frustration Regime"
-insight = "TX-1 (frustration-modulated collision dynamics) reveals non-monotonic dependence: maximum gamma shift occurs at moderate alpha=0.5 (delta_gamma=0.19), while high alpha values (10-50) produce near-zero shifts. This suggests an optimal frustration coupling regime where microscopic algebraic structure most effectively modulates macroscopic dynamics. The non-monotonicity may arise from noise saturation: beyond a threshold, all sites have high enough noise that relative differences vanish. Combined with TX-2 (viscosity-to-filtration loop showing positive latency-radius correlation) and thesis2-3D (10.88% shear thickening at alpha=100), the cross-thesis experiments establish that algebraic frustration modulates physics through at least three independent channels (collision noise, viscosity field, filtration spectrum) with different optimal coupling strengths."
+title = "Cross-Thesis Non-Monotonic Coupling Reveals Optimal Imbalance Regime"
+insight = "TX-1 (imbalance-modulated collision dynamics) reveals non-monotonic dependence: maximum gamma shift occurs at moderate alpha=0.5 (delta_gamma=0.19), while high alpha values (10-50) produce near-zero shifts. This suggests an optimal imbalance coupling regime where microscopic algebraic structure most effectively modulates macroscopic dynamics. The non-monotonicity may arise from noise saturation: beyond a threshold, all sites have high enough noise that relative differences vanish. Combined with TX-2 (viscosity-to-filtration loop showing positive latency-radius correlation) and thesis2-3D (10.88% shear thickening at alpha=100), the cross-thesis experiments establish that algebraic imbalance modulates physics through at least three independent channels (collision noise, viscosity field, filtration spectrum) with different optimal coupling strengths."
 supporting_evidence = ["C-665", "C-666", "C-667", "C-668", "C-669", "data/thesis_lab/tx1/tx1_report.toml", "data/thesis_lab/thesis2_3d/thesis2_3d.toml", "data/thesis_lab/tx2/tx2_report.toml"]
 related_claims = ["C-665", "C-666", "C-667", "C-668", "C-669", "C-670"]
 experimental_support = ["E-030", "E-031", "E-032"]
@@ -613,7 +613,7 @@ sprint = 40
 [[insight]]
 id = "I-067"
 title = "First-Principles Kubo Coupling Replaces Tautological Viscosity Postulate"
-insight = "The Kubo linear-response formula applied to a CD-interpolated Heisenberg chain reveals that algebraic frustration causes a quantum phase transition in transport: the spin Drude weight D_S collapses by 44x at ANY nonzero CD coupling (lambda=0.01), converting ballistic transport to diffusive. This provides a first-principles derivation of the frustration-viscosity coupling, replacing the tautological nu=nu_base*(1+lambda*f). Key features: (1) onset catastrophe -- sharp 44x collapse, not gradual, (2) non-monotonic level-crossing dips at lambda=0.30, 0.50, 0.75, (3) vacuum attractor enhancement g(3/8)=83.4x agrees with independent algebraic prediction, (4) analytical fits fail (power R^2=0.60, exp R^2=0.89) -- lookup table is the correct representation. The thermal Drude weight K_th is identically zero due to D_ES^2/D_S cancellation, making spin transport the sole relevant channel."
+insight = "The Kubo linear-response formula applied to a CD-interpolated Heisenberg chain reveals that algebraic imbalance causes a quantum phase transition in transport: the spin Drude weight D_S collapses by 44x at ANY nonzero CD coupling (lambda=0.01), converting ballistic transport to diffusive. This provides a first-principles derivation of the imbalance-viscosity coupling, replacing the tautological nu=nu_base*(1+lambda*f). Key features: (1) onset catastrophe -- sharp 44x collapse, not gradual, (2) non-monotonic level-crossing dips at lambda=0.30, 0.50, 0.75, (3) imbalance attractor enhancement g(3/8)=83.4x agrees with independent algebraic prediction, (4) analytical fits fail (power R^2=0.60, exp R^2=0.89) -- lookup table is the correct representation. The thermal Drude weight K_th is identically zero due to D_ES^2/D_S cancellation, making spin transport the sole relevant channel."
 supporting_evidence = ["C-678", "C-679", "C-680", "C-681", "data/kubo_transport/coupling_analysis.toml"]
 related_claims = ["C-678", "C-679", "C-680", "C-681"]
 experimental_support = ["E-034"]
@@ -625,20 +625,20 @@ sprint = 41
 [[insight]]
 id = "I-068"
 title = "Varma Mechanism Explains Polarized-Regime Transport Enhancement"
-body = """The 30,778x D_S enhancement with frustration at B=3.0, T=0.1, N=10 appears paradoxical
-against the standard result that frustration suppresses spin transport (Heidrich-Meisner PRB 68,
+body = """The 30,778x D_S enhancement with imbalance at B=3.0, T=0.1, N=10 appears paradoxical
+against the standard result that imbalance suppresses spin transport (Heidrich-Meisner PRB 68,
 134436). The resolution comes from two independent published mechanisms:
 
-(1) Varma & Sanchez PRB 92, 195143 (2015) showed that Drude weight can increase with frustration
-in a regime where competing interactions suppress the frustrating effects. This produces non-monotonic
-transport: D first rises (frustration suppressed by interactions), then falls (CDW fluctuations).
+(1) Varma & Sanchez PRB 92, 195143 (2015) showed that Drude weight can increase with imbalance
+in a regime where competing interactions suppress the imbalancing effects. This produces non-monotonic
+transport: D first rises (imbalance suppressed by interactions), then falls (CDW fluctuations).
 
 (2) In the strong-field polarized regime (B=3J >> T=0.1J), the external field gaps all spin excitations.
-Increasing J2 (frustration) competes with polarization, reopening low-energy channels. The mechanism
+Increasing J2 (imbalance) competes with polarization, reopening low-energy channels. The mechanism
 is opposite to zero-field: at B=0, J2 gaps the spectrum; at B>>J, J2 ungaps it.
 
 These are distinct from the standard Karrasch (PRL 108, 2012) picture where D_S decreases monotonically
-with anisotropy Delta at B=0. The three regimes (B=0 integrable, B=0 frustrated, B>>J frustrated)
+with anisotropy Delta at B=0. The three regimes (B=0 integrable, B=0 imbalanced, B>>J imbalanced)
 have qualitatively different transport physics, now documented with published benchmark comparisons."""
 related_claims = ["C-683", "C-685", "C-686", "C-687"]
 date = "2026-02-13"
@@ -659,10 +659,10 @@ dilute fermions near these minima. Doubling the minima doubles the available tra
 alpha=1/4, creating an effective mass divergence. For alpha > 1/4, 1/m*(alpha) = J(4*alpha - 1/(4*alpha))
 increases monotonically, so K_th ~ 1/sqrt(m*) also increases.
 
-(3) FIELD POLARITY INVERSION: At B=0, frustration opens a gap (dimer phase for alpha > 0.2411),
-SUPPRESSING transport: D_E(alpha)/D_E(0) drops to ~0.25 at alpha=0.7. At B ~ B_sat, frustration
+(3) FIELD POLARITY INVERSION: At B=0, imbalance opens a gap (dimer phase for alpha > 0.2411),
+SUPPRESSING transport: D_E(alpha)/D_E(0) drops to ~0.25 at alpha=0.7. At B ~ B_sat, imbalance
 ENHANCES transport: K_th(alpha)/K_th(0) reaches ~15x at alpha=1.2 (ED, M=0.4, T/J=0.1). This
-field polarity inversion is the key physics: same frustration parameter, opposite transport effect.
+field polarity inversion is the key physics: same imbalance parameter, opposite transport effect.
 
 Our 30,778x D_S enhancement at B=3.0, N=10 is quantitatively larger than Stolpp's 15x because:
 (a) stronger field B=3.0 produces deeper polarization, (b) N=10 is further from thermodynamic limit,
@@ -670,7 +670,7 @@ Our 30,778x D_S enhancement at B=3.0, N=10 is quantitatively larger than Stolpp'
 discrete alpha). But the DIRECTION of the effect -- enhancement at high field -- matches exactly.
 
 The asymptotic formula K_th(alpha)/K_th(0) ~ 4*alpha (Stolpp Eq. 40 + Fig. 7) provides the scaling
-law for transport enhancement by frustration in the polarized regime. This is the theoretical
+law for transport enhancement by imbalance in the polarized regime. This is the theoretical
 foundation for the first-principles Kubo coupling model (C-681)."""
 related_claims = ["C-681", "C-683", "C-685", "C-686", "C-689"]
 date = "2026-02-13"
@@ -970,11 +970,11 @@ id = "I-087"
 title = "Sensor-fusion audit: cosmological constant claims vs codebase reality"
 body = """An external LLM-generated answer attributed several false physics claims to this repository. A three-layer audit (registry, code, ingest) found all overclaims originated externally:
 
-1. VACUUM ATTRACTOR IS TRANSPORT, NOT LAMBDA: bridge.rs outputs kinematic viscosity (m^2/s) via six coupling models. No vacuum energy density, no cosmological constant, no stress-energy tensor from frustration. Claims C-678..C-681 record transport parameters only.
+1. IMBALANCE ATTRACTOR IS TRANSPORT, NOT LAMBDA: bridge.rs outputs kinematic viscosity (m^2/s) via six coupling models. No vacuum energy density, no cosmological constant, no stress-energy tensor from imbalance. Claims C-678..C-681 record transport parameters only.
 
 2. YUKAWA POTENTIALS DO NOT EXIST: Zero implementations of spatial potentials (Yukawa, soft-core, form factor). Only occurrence is C-084 (Refuted). The word 'screened' appears only in optical context (screened plasma frequency).
 
-3. DARK ENERGY MODELS TESTED AND REFUTED: C-012 (neg-dim DE, dAIC=+11.6) REFUTED. C-430 (NegDim expansion) CLOSED/REFUTED. C-441 (bounce cosmology, dBIC=+6.37) VERIFIED as disfavored. Cosmology modules (cosmology_algebra_bridge.rs, flrw.rs) have zero frustration coupling.
+3. DARK ENERGY MODELS TESTED AND REFUTED: C-012 (neg-dim DE, dAIC=+11.6) REFUTED. C-430 (NegDim expansion) CLOSED/REFUTED. C-441 (bounce cosmology, dBIC=+6.37) VERIFIED as disfavored. Cosmology modules (cosmology_algebra_bridge.rs, flrw.rs) have zero imbalance coupling.
 
 4. QED RENORMALIZATION NOT CLAIMED: 'renormalization' in codebase means null geodesic constraint fixing, billiard normalization, or wavefunction normalization. tang_mass computes algebraic mass ratios, not QED loops. No running couplings, no counterterms.
 
@@ -1131,13 +1131,13 @@ sprint = 56
 
 [[insight]]
 id = "I-100"
-title = "Frustration-Entropy Bridge Connects Vacuum Attractor phi=3/8 to Immirzi Parameter gamma_NZJ"
+title = "Imbalance-Entropy Bridge Connects Imbalance Attractor phi=3/8 to Immirzi Parameter gamma_NZJ"
 date = "2026-02-19"
 status = "Verified"
-summary = "The binary entropy H(phi) = -phi*ln(phi) - (1-phi)*ln(1-phi) as a degeneracy factor in the Immirzi formula gamma = H/(pi*sqrt(3)) maps the CD frustration attractor phi = 3/8 to gamma = 0.1216, within 1.6% of gamma_NZJ = 0.1236 (Domagala-Lewandowski 2004). The mathematical structure: (1) H(1/2) = ln(2) recovers gamma_BG exactly (maximum frustration = maximum entropy); (2) H(3/8) = 0.6616 < ln(2) gives a smaller gamma corresponding to the NZJ counting. Physically, the BG counting (j_min=1/2) maximizes spin degeneracy, while the NZJ counting (j_min=1) reduces it. The frustration attractor at phi = 3/8 < 1/2 sits in the reduced-degeneracy regime, naturally matching the NZJ branch. However, no natural mapping to gamma_BG exists at phi = 3/8 (all non-calibrated bridges deviate > 10%). This is an honest negative result for the BG branch."
+summary = "The binary entropy H(phi) = -phi*ln(phi) - (1-phi)*ln(1-phi) as a degeneracy factor in the Immirzi formula gamma = H/(pi*sqrt(3)) maps the CD imbalance attractor phi = 3/8 to gamma = 0.1216, within 1.6% of gamma_NZJ = 0.1236 (Domagala-Lewandowski 2004). The mathematical structure: (1) H(1/2) = ln(2) recovers gamma_BG exactly (maximum imbalance = maximum entropy); (2) H(3/8) = 0.6616 < ln(2) gives a smaller gamma corresponding to the NZJ counting. Physically, the BG counting (j_min=1/2) maximizes spin degeneracy, while the NZJ counting (j_min=1) reduces it. The imbalance attractor at phi = 3/8 < 1/2 sits in the reduced-degeneracy regime, naturally matching the NZJ branch. However, no natural mapping to gamma_BG exists at phi = 3/8 (all non-calibrated bridges deviate > 10%). This is an honest negative result for the BG branch."
 claims = ["C-859", "C-860", "C-861"]
 confidence = "medium"
-phase = "lqg-frustration"
+phase = "lqg-imbalance"
 sprint = 56
 
 [[insight]]

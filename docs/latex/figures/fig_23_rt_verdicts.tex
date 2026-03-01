@@ -1,0 +1,63 @@
+%% Fig 23: Reframed thesis verdict dashboard (4 panels)
+\begin{tikzpicture}[
+  verdict/.style={
+    draw, rounded corners=5pt, minimum width=5.5cm,
+    minimum height=3.2cm, inner sep=6pt, thick
+  },
+  vtitle/.style={font=\sffamily\small\bfseries, anchor=north west},
+  vresult/.style={font=\sffamily\footnotesize, anchor=north west},
+  passbox/.style={verdict, draw=OIgreen!60, fill=OIgreen!5},
+  failbox/.style={verdict, draw=OIvermillion!60, fill=OIvermillion!5},
+]
+  %% RT-1: PASS
+  \node[passbox] (rt1) at (0,0) {};
+  \node[vtitle, OIgreen!70!black] at ([xshift=4pt, yshift=-4pt]rt1.north west)
+    {RT-1: Hawking Cutoff};
+  \node[vresult] at ([xshift=4pt, yshift=-20pt]rt1.north west) {
+    \begin{minipage}{4.8cm}
+    \footnotesize Viscous cutoff bounds analog $T_H$.\\
+    Deviation 0.5\% at $N=16$;\\
+    $T_\text{eff} = 0$ at $N \geq 32$.\\[2pt]
+    \textcolor{OIgreen!70!black}{\textbf{PASS}} $\checkmark$
+    \end{minipage}
+  };
+
+  %% RT-2: FALSIFIED
+  \node[failbox] (rt2) at (7,0) {};
+  \node[vtitle, OIvermillion!70!black] at ([xshift=4pt, yshift=-4pt]rt2.north west)
+    {RT-2: Entropy Transition};
+  \node[vresult] at ([xshift=4pt, yshift=-20pt]rt2.north west) {
+    \begin{minipage}{4.8cm}
+    \footnotesize Primary transition at $\dim 4 \to 8$,\\
+    not $8 \to 16$. Norm-composition\\
+    entropy confirms ZD phase.\\[2pt]
+    \textcolor{OIvermillion!70!black}{\textbf{FALSIFIED}} $\times$
+    \end{minipage}
+  };
+
+  %% RT-3: FALSIFIED
+  \node[failbox] (rt3) at (0,-4.5) {};
+  \node[vtitle, OIvermillion!70!black] at ([xshift=4pt, yshift=-4pt]rt3.north west)
+    {RT-3: CHSH--Betti Bridge};
+  \node[vresult] at ([xshift=4pt, yshift=-20pt]rt3.north west) {
+    \begin{minipage}{4.8cm}
+    \footnotesize $S = 2.0$ exactly (structural\\
+    invariant). $B_1 = 110$ constant.\\
+    Wavelet correlators cancel $A$.\\[2pt]
+    \textcolor{OIvermillion!70!black}{\textbf{FALSIFIED}} $\times$
+    \end{minipage}
+  };
+
+  %% RT-4: FALSIFIED
+  \node[failbox] (rt4) at (7,-4.5) {};
+  \node[vtitle, OIvermillion!70!black] at ([xshift=4pt, yshift=-4pt]rt4.north west)
+    {RT-4: Pulsed Meltdown Gate};
+  \node[vresult] at ([xshift=4pt, yshift=-20pt]rt4.north west) {
+    \begin{minipage}{4.8cm}
+    \footnotesize Pulsed = steady at equilibrium.\\
+    Per-step thresholding erases\\
+    temporal duty-cycle structure.\\[2pt]
+    \textcolor{OIvermillion!70!black}{\textbf{FALSIFIED}} $\times$
+    \end{minipage}
+  };
+\end{tikzpicture}

@@ -2,12 +2,12 @@
 //!
 //! Orchestrates Anti-Diagonal Parity Theorem census from dim=4 to dim=4096,
 //! classifying every triangle as pure or mixed and verifying the 1:3 ratio,
-//! fiber symmetry, and frustration convergence at each dimension.
+//! fiber symmetry, and imbalance convergence at each dimension.
 //!
 //! Outputs:
 //!   - Per-dimension summary CSV with component/triangle/ratio statistics
 //!   - Per-component detail CSV (optional, with --details)
-//!   - Frustration convergence table
+//!   - Imbalance convergence table
 //!
 //! Usage:
 //!   dimensional-census --dims 16,32,64              # specific dimensions
@@ -503,7 +503,7 @@ fn main() {
         eprintln!("Detail CSV:  {}", detail_path.display());
     }
 
-    // Print frustration-like convergence table
+    // Print imbalance-like convergence table
     eprintln!("\n=== Pure Ratio Convergence ===");
     eprintln!(
         "{:<8} {:<12} {:<12} {:<12}",

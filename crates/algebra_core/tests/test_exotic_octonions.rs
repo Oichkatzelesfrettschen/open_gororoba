@@ -233,7 +233,7 @@ fn test_exotic_sign_balance() {
 }
 
 #[test]
-fn test_exotic_frustration() {
+fn test_exotic_imbalance() {
     // Check Associativity for these algebras
     println!("--- Exotic Associativity ---");
 
@@ -288,17 +288,17 @@ fn test_exotic_frustration() {
             total += 1;
         }
     }
-    println!("Dual-Oct Frustration (Sample): {} / {}", frustrated, total);
+    println!("Dual-Oct Imbalance (Sample): {} / {}", frustrated, total);
 }
 
 #[test]
 fn test_generalized_hybrid_ladder() {
-    println!("--- Frustration Hyper-Ladder (Associativity) ---");
+    println!("--- Imbalance Hyper-Ladder (Associativity) ---");
     use algebra_core::construction::cayley_dickson::cd_multiply_split;
     use rand::Rng; // We need random sampling for dim 32
 
-    // Helper to calculate frustration (non-associative triples / total triples)
-    let calc_associativity_frustration = |dim: usize, gammas: &[i32], samples: usize| -> f64 {
+    // Helper to calculate imbalance (non-associative triples / total triples)
+    let calc_associativity_imbalance = |dim: usize, gammas: &[i32], samples: usize| -> f64 {
         let sig = CdSignature::from_gammas(gammas);
         let mut frustrated = 0;
         let mut total = 0;
@@ -417,20 +417,20 @@ fn test_generalized_hybrid_ladder() {
         let g_std = vec![-1; depth];
         println!(
             "  Standard: {:.5}",
-            calc_associativity_frustration(dim as usize, &g_std, samples)
+            calc_associativity_imbalance(dim as usize, &g_std, samples)
         );
 
         let g_split = vec![1; depth];
         println!(
             "  Split   : {:.5}",
-            calc_associativity_frustration(dim as usize, &g_split, samples)
+            calc_associativity_imbalance(dim as usize, &g_split, samples)
         );
 
         let mut g_hybrid = vec![1; depth];
         g_hybrid[depth - 1] = -1;
         println!(
             "  Hybrid  : {:.5}",
-            calc_associativity_frustration(dim as usize, &g_hybrid, samples)
+            calc_associativity_imbalance(dim as usize, &g_hybrid, samples)
         );
     }
 }

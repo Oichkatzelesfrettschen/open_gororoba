@@ -500,13 +500,13 @@ Three experiments testing ALP (C-476) and Sky-Limit-Set (C-477). E-011: ALP hold
 
 [[entry]]
 id = "I-018"
-title = "Anti-Diagonal Parity Theorem: Mechanism for the Double 3:1 Law"
+title = "Anti-Diagonal Parity Theorem: Mechanism for the 3:1 Theorem"
 body_markdown = """
 Date: 2026-02-09
 Status: verified
 Claims: C-515, C-516, C-517, C-518, C-519, C-520, C-521, C-522, C-523, C-524, C-525, C-526, C-527
 
-Complete mechanistic explanation for the Universal Double 3:1 Law (C-487). The GF(2) twist exponent psi(i,j) forms a 2x2 matrix M_ab per edge; its anti-diagonal XOR eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) characterizes the pure/mixed partition: a triangle is pure iff eta is constant across all 3 edges. The 2-bit invariant F in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256 (13.3M+ triangles, 0 mismatches). Key supporting results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta = 1 XOR eta_half (C-526), eta ANF degree = log2(dim)-1 (C-527). The mechanism traces to the conjugation asymmetry in the Cayley-Dickson doubling formula.
+Complete mechanistic explanation for the Universal 3:1 Theorem (C-487). The GF(2) twist exponent psi(i,j) forms a 2x2 matrix M_ab per edge; its anti-diagonal XOR eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) characterizes the pure/mixed partition: a triangle is pure iff eta is constant across all 3 edges. The 2-bit invariant F in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256 (13.3M+ triangles, 0 mismatches). Key supporting results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta = 1 XOR eta_half (C-526), eta ANF degree = log2(dim)-1 (C-527). The mechanism traces to the conjugation asymmetry in the Cayley-Dickson doubling formula.
 """
 
 [[entry]]
@@ -693,7 +693,7 @@ Date: 2026-02-09
 Status: verified
 Claims: C-570, C-571, C-572, C-573, C-574
 
-Complete dimensional census tool (dimensional-census binary) validates the Anti-Diagonal Parity Theorem across dims 16-256 exhaustively (14.2M+ graph triangles) with pure_ratio = 0.250000 EXACTLY at every dimension. The 1:3 ratio, Quarter Rule, and Klein-four fiber symmetry all hold without exception. GPU acceleration infrastructure is operational: eta matrix, graph construction, frustration, and Monte Carlo APT kernels compile via cudarc NVRTC. Monte Carlo rejection sampling at dims 32-64 converges to 0.25 within 0.2% at 100K samples. Criterion benchmarking suite (7 groups) establishes scaling baselines: component extraction O(n^2), triangle enumeration O(n^3), cd_basis_mul_sign O(log dim). The exhaustive census confirms that APT is not an approximation -- the mechanism is algebraically exact at every verified dimension.
+Complete dimensional census tool (dimensional-census binary) validates the Anti-Diagonal Parity Theorem across dims 16-256 exhaustively (14.2M+ graph triangles) with pure_ratio = 0.250000 EXACTLY at every dimension. The 1:3 ratio, Quarter Rule, and Klein-four fiber symmetry all hold without exception. GPU acceleration infrastructure is operational: eta matrix, graph construction, imbalance, and Monte Carlo APT kernels compile via cudarc NVRTC. Monte Carlo rejection sampling at dims 32-64 converges to 0.25 within 0.2% at 100K samples. Criterion benchmarking suite (7 groups) establishes scaling baselines: component extraction O(n^2), triangle enumeration O(n^3), cd_basis_mul_sign O(log dim). The exhaustive census confirms that APT is not an approximation -- the mechanism is algebraically exact at every verified dimension.
 """
 
 [[entry]]
@@ -737,7 +737,7 @@ Date: 2026-02-09
 Status: verified
 Claims: C-581, C-582, C-583, C-584, C-585, C-586, C-587, C-588
 
-Sprint 29 executed five parallel research directions: (D1) Gresnigt subalgebra decomposition -- 15 alternative subalgebras, uniform structure, depth as mass discriminator (I-038). (D2) Albert algebra J_3(O) -- 27D exceptional Jordan algebra with Cardano eigenvalue solver; Singh delta^2=3/8 NOT reproduced for real trace-free elements, likely requires complexified algebra (C-584, C-585 NEGATIVE). (D3) Koebisu Stiefel manifold -- 168/168 confirmed ZDs satisfy V_{8,2} exactly (C-586). (D4) Tang convention unblocking -- depth-based norms (0.87-2.0 range) insufficient for 3500:1 mass hierarchy (C-587 NEGATIVE). (L4) Frustration convergence -- reusable compute_frustration_ratio() function, dim=2048 test scaffolded (C-588). Two genuine negative results (C-585, C-587) constrain future approaches: raw associator norms and generic real J_3(O) elements are insufficient for mass ratio predictions.
+Sprint 29 executed five parallel research directions: (D1) Gresnigt subalgebra decomposition -- 15 alternative subalgebras, uniform structure, depth as mass discriminator (I-038). (D2) Albert algebra J_3(O) -- 27D exceptional Jordan algebra with Cardano eigenvalue solver; Singh delta^2=3/8 NOT reproduced for real trace-free elements, likely requires complexified algebra (C-584, C-585 NEGATIVE). (D3) Koebisu Stiefel manifold -- 168/168 confirmed ZDs satisfy V_{8,2} exactly (C-586). (D4) Tang convention unblocking -- depth-based norms (0.87-2.0 range) insufficient for 3500:1 mass hierarchy (C-587 NEGATIVE). (L4) Imbalance convergence -- reusable compute_imbalance_index() function, dim=2048 test scaffolded (C-588). Two genuine negative results (C-585, C-587) constrain future approaches: raw associator norms and generic real J_3(O) elements are insufficient for mass ratio predictions.
 """
 
 [[entry]]
@@ -759,7 +759,7 @@ Date: 2026-02-10
 Status: verified
 Claims: C-590
 
-The asymptotic frustration ratio of the standard Cayley-Dickson tower approaches 3/8 and aligns with the split-octonion negative sign fraction (24/64). New guarded regression checks at dims 128 and 256 keep this attractor behavior reproducible under configurable runtime budgets.
+The asymptotic imbalance index of the standard Cayley-Dickson tower approaches 3/8 and aligns with the split-octonion negative sign fraction (24/64). New guarded regression checks at dims 128 and 256 keep this attractor behavior reproducible under configurable runtime budgets.
 """
 
 [[entry]]
@@ -781,7 +781,7 @@ Date: 2026-02-10
 Status: verified
 Claims: C-607, C-590
 
-Split-octonion sign census confirms exactly 24 negative entries out of 64 in the basis multiplication table (fraction 3/8), matching the attractor target used in high-dimensional frustration regressions.
+Split-octonion sign census confirms exactly 24 negative entries out of 64 in the basis multiplication table (fraction 3/8), matching the attractor target used in high-dimensional imbalance regressions.
 """
 
 [[entry]]
@@ -814,5 +814,5 @@ Date: 2026-02-10
 Status: verified
 Claims: C-599, C-600, C-601, C-602, C-603, C-604, C-605
 
-Phase A verified two key algebraic predictions at unprecedented scale: (1) GF(2) SEPARATING DEGREE FORMULA: min_degree = log2(dim) - 2 confirmed universal across dims 32/64/128/256, yielding degrees 3/4/5/6. At dim=256, greedy partition refinement found a separating 6-tuple for all 16 motif classes in PG(6,2) with 127 points, where brute-force C(127,6) enumeration is infeasible. (2) APT AT dim=4096: Monte Carlo census with 1M samples across 4,192,256 nodes yielded pure_ratio=0.2505, confirming the 1:3 APT law. Klein-four fiber symmetry holds within 0.20% deviation. Frustration ratio continues monotone decrease trend. (3) LAMBDA_4096 FILTRATION: The base universe saturates at 2187 vectors (= Lambda_4096), with all 4 octonion parity constraints holding at every filtration level. The filtration chain Lambda_256(256) < Lambda_512(512) < Lambda_1024(1026) < Lambda_2048(2048) < Lambda_4096(2187) is strictly increasing and exhaustive.
+Phase A verified two key algebraic predictions at unprecedented scale: (1) GF(2) SEPARATING DEGREE FORMULA: min_degree = log2(dim) - 2 confirmed universal across dims 32/64/128/256, yielding degrees 3/4/5/6. At dim=256, greedy partition refinement found a separating 6-tuple for all 16 motif classes in PG(6,2) with 127 points, where brute-force C(127,6) enumeration is infeasible. (2) APT AT dim=4096: Monte Carlo census with 1M samples across 4,192,256 nodes yielded pure_ratio=0.2505, confirming the 1:3 APT law. Klein-four fiber symmetry holds within 0.20% deviation. Imbalance index continues monotone decrease trend. (3) LAMBDA_4096 FILTRATION: The base universe saturates at 2187 vectors (= Lambda_4096), with all 4 octonion parity constraints holding at every filtration level. The filtration chain Lambda_256(256) < Lambda_512(512) < Lambda_1024(1026) < Lambda_2048(2048) < Lambda_4096(2187) is strictly increasing and exhaustive.
 """

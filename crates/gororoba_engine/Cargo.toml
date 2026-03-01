@@ -11,7 +11,7 @@ gororoba_pipeline = { path = "../gororoba_pipeline" }
 gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
 
 # Domain physics crates
-vacuum_frustration = { path = "../vacuum_frustration" }
+sign_imbalance = { path = "../sign_imbalance" }
 lbm_core = { path = "../lbm_core" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }

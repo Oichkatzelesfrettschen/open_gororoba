@@ -1408,9 +1408,9 @@ pub fn generic_face_sign_census(dim: usize) -> GenericFaceSignCensus {
     }
 }
 
-/// Result of frustration ratio computation at a given dimension.
+/// Result of imbalance ratio computation at a given dimension.
 #[derive(Debug, Clone)]
-pub struct FrustrationResult {
+pub struct ImbalanceResult {
     /// Cayley-Dickson dimension.
     pub dim: usize,
     /// Number of connected components.
@@ -1425,13 +1425,13 @@ pub struct FrustrationResult {
     pub total_b1: usize,
     /// Total frustrated edges (edges not explained by BFS coboundary).
     pub total_frustrated: usize,
-    /// Frustration ratio: frustrated / b1.
-    pub frustration_ratio: f64,
+    /// Imbalance ratio: frustrated / b1.
+    pub imbalance_ratio: f64,
     /// Wall-clock time for computation.
     pub elapsed_secs: f64,
 }
 
-/// Compute the frustration ratio at a given Cayley-Dickson dimension.
+/// Compute the imbalance ratio at a given Cayley-Dickson dimension.
 ///
 /// This is the ratio of frustrated edges to cycle rank across all
 /// components of the zero-product graph. The BFS coboundary assigns
@@ -1442,7 +1442,7 @@ pub struct FrustrationResult {
 /// for dims 16, 32, 64, 128, 256, 512, 1024.
 ///
 /// Convergence appears toward 3/8 = 0.375 from above.
-pub fn compute_frustration_ratio(dim: usize) -> FrustrationResult {
+pub fn compute_imbalance_ratio(dim: usize) -> ImbalanceResult {
     use crate::construction::cayley_dickson::cd_basis_mul_sign;
     use std::time::Instant;
 
@@ -1525,7 +1525,7 @@ pub fn compute_frustration_ratio(dim: usize) -> FrustrationResult {
         0.0
     };
 
-    FrustrationResult {
+    ImbalanceResult {
         dim,
         n_components: components.len(),
         total_edges,
@@ -1533,7 +1533,7 @@ pub fn compute_frustration_ratio(dim: usize) -> FrustrationResult {
         eta1_count: total_eta1,
         total_b1,
         total_frustrated,
-        frustration_ratio: frust_ratio,
+        imbalance_ratio: frust_ratio,
         elapsed_secs: t0.elapsed().as_secs_f64(),
     }
 }
@@ -3434,7 +3434,7 @@ mod tests {
             e_min
         );
 
-        // Universal Double 3:1 Law
+        // Universal 3:1 Theorem
         for comp in &census.per_component {
             let as_count = comp
                 .pattern_counts
@@ -3481,13 +3481,13 @@ mod tests {
         // regimes. Even-parity triangle counts per edge vary (e.g., 4 to 8 at
         // dim=32 comp[0]). Odd-parity may also vary.
         //
-        // This means the Universal Double 3:1 Law (C-487) is NOT explained by
+        // This means the Universal 3:1 Theorem (C-487) is NOT explained by
         // parity-specific edge regularity. The proof mechanism is deeper --
         // it must arise from the algebraic structure of the CD multiplication
         // table itself, not from general graph-theoretic properties.
         //
         // What IS true: total (all-parity) edge regularity in pure regimes.
-        // What IS true: the Double 3:1 law holds in ALL components (C-487).
+        // What IS true: the 3:1 Theorem holds in ALL components (C-487).
         // What is FALSE: parity-specific edge regularity in non-pure regimes.
 
         // Verify that parity-specific regularity DOES fail (documenting the breakdown)
@@ -3741,7 +3741,7 @@ mod tests {
 
     #[test]
     fn test_universal_double_three_to_one_law() {
-        // Universal Double 3:1 Law (C-487):
+        // Universal 3:1 Theorem (C-487):
         //
         // In EVERY component of the CD zero-divisor graph at EVERY dimension:
         //   TwoSameOneOpp = 3 * AllOpposite     (odd-parity pair)
@@ -3868,7 +3868,7 @@ mod tests {
         }
     }
 
-    /// Algebraic mechanism of the Universal Double 3:1 Law (C-487).
+    /// Algebraic mechanism of the Universal 3:1 Theorem (C-487).
     ///
     /// For each edge between cross-assessors a=(i,j) and b=(k,l), define
     /// sigma_ab = cd_basis_mul_sign(dim, i, k) * cd_basis_mul_sign(dim, j, l).
@@ -4068,7 +4068,7 @@ mod tests {
 
     /// Half-Half Edge Law at dim=128: every component has exactly 50% Same
     /// and 50% Opposite edges. This is the foundational property underlying
-    /// the Double 3:1 Law. Verified at dims 16, 32, 64 in the mechanism test;
+    /// the 3:1 Theorem. Verified at dims 16, 32, 64 in the mechanism test;
     /// this test extends to dim=128.
     #[test]
     fn test_half_half_edge_law_dim128() {
@@ -4110,7 +4110,7 @@ mod tests {
     ///   n_regimes = 512/16 + 1 = 33
     ///   e_max = C(254,2) - (512/4 - 1) = 32131 - 127 = 32004
     ///   e_min = 3*512/2 - 12 = 756
-    ///   Universal Double 3:1 Law holds for all components
+    ///   Universal 3:1 Theorem holds for all components
     ///   Exactly 1 pure-max component
     ///
     /// Runtime: ~30-60s in release mode (16x scaling from dim=256).
@@ -4182,7 +4182,7 @@ mod tests {
             e_min
         );
 
-        // Universal Double 3:1 Law
+        // Universal 3:1 Theorem
         for comp in &census.per_component {
             let as_count = comp
                 .pattern_counts
@@ -6044,7 +6044,7 @@ mod tests {
     /// The face sign census groups components by edge count into "regimes."
     /// For each regime, we compute:
     /// - Edge eta balance (eta=0 vs eta=1)
-    /// - Per-component frustration ratio (frustrated / b1)
+    /// - Per-component imbalance ratio (frustrated / b1)
     /// - Klein-four fiber sizes
     /// - Per-regime pure:mixed ratio
     ///
@@ -6399,10 +6399,10 @@ mod tests {
     }
 
     /// Comprehensive mechanism depth analysis: Quarter Rule exactness,
-    /// frustration asymptotics, and Klein-four fiber symmetry proof attempt.
+    /// imbalance asymptotics, and Klein-four fiber symmetry proof attempt.
     ///
     /// (C-528): Quarter Rule Deviation -- is pure/total = 1/4 exactly?
-    /// (C-529): Asymptotic frustration ratio convergence
+    /// (C-529): Asymptotic imbalance ratio convergence
     /// (C-530): Klein-four fiber symmetry -- structural proof via eta-swap
     #[test]
     fn test_mechanism_depth_analysis() {
@@ -6675,8 +6675,8 @@ mod tests {
         );
         eprintln!("F(1,0) = F(1,1) holds in EVERY component at EVERY dimension.");
 
-        // ---- Analysis: Frustration Asymptotics (C-529) ----
-        eprintln!("\n=== Frustration Asymptotics (C-529) ===");
+        // ---- Analysis: Imbalance Asymptotics (C-529) ----
+        eprintln!("\n=== Imbalance Asymptotics (C-529) ===");
         eprintln!(
             "{:<6} {:>10} {:>10} {:>12}",
             "dim", "b1", "frustrated", "frust/b1"
@@ -6691,7 +6691,7 @@ mod tests {
             eprintln!("{:<6} {:>10} {:>10} {:>12.8}", dim, b1, frustrated, ratio);
         }
 
-        // Frustration ratio converges but is NOT monotone (oscillates).
+        // Imbalance ratio converges but is NOT monotone (oscillates).
         // dim=32: 0.307, dim=64: 0.377, dim=128: 0.388, dim=256: 0.385
         // Verify convergence: each step is closer to limit (~0.386)
         // but allow oscillation.
@@ -6700,11 +6700,11 @@ mod tests {
                 let ratio = frustrated as f64 / b1 as f64;
                 assert!(
                     ratio > 0.25,
-                    "dim={dim}: frustration ratio suspiciously low"
+                    "dim={dim}: imbalance ratio suspiciously low"
                 );
                 assert!(
                     ratio < 0.50,
-                    "dim={dim}: frustration ratio suspiciously high"
+                    "dim={dim}: imbalance ratio suspiciously high"
                 );
             }
         }
@@ -6939,11 +6939,11 @@ mod tests {
         );
     }
 
-    /// Frustration ratio at dim=256 via cohomology-only analysis (no triangle enum).
+    /// Imbalance ratio at dim=256 via cohomology-only analysis (no triangle enum).
     /// Extends C-529 asymptotic data.
     #[test]
     #[ignore] // ~15s in release mode
-    fn test_frustration_ratio_dim256() {
+    fn test_imbalance_ratio_dim256() {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
         use std::collections::VecDeque;
 
@@ -7020,11 +7020,11 @@ mod tests {
         }
 
         let frust_ratio = total_frustrated as f64 / total_b1 as f64;
-        eprintln!("\n=== Frustration at dim=256 ===");
+        eprintln!("\n=== Imbalance at dim=256 ===");
         eprintln!("components: {}", components.len());
         eprintln!("edges: {total_edges}, eta=0: {total_eta0}, eta=1: {total_eta1}");
         eprintln!("b1: {total_b1}, frustrated: {total_frustrated}");
-        eprintln!("frustration ratio: {frust_ratio:.8}");
+        eprintln!("imbalance ratio: {frust_ratio:.8}");
 
         // Known values from smaller dims:
         // dim=32: 0.30727, dim=64: 0.37735, dim=128: 0.38761, dim=256: 0.38489
@@ -7035,14 +7035,14 @@ mod tests {
             total_frustrated > 0,
             "dim=256: eta should not be a coboundary"
         );
-        // Frustration ratio is near the dim=128 value but slightly lower (non-monotone)
+        // Imbalance ratio is near the dim=128 value but slightly lower (non-monotone)
         assert!(
             frust_ratio > 0.38,
-            "dim=256: frustration ratio should be near limit"
+            "dim=256: imbalance ratio should be near limit"
         );
         assert!(
             frust_ratio < 0.40,
-            "dim=256: frustration ratio should be below 0.40"
+            "dim=256: imbalance ratio should be below 0.40"
         );
     }
 
@@ -7284,7 +7284,7 @@ mod tests {
     /// Extends verification to the largest computed dimension: 255 components,
     /// 254 nodes each, producing ~214M triangles across 33 regimes.
     /// Also collects Klein-four fibers, edge eta balance, cycle rank,
-    /// and frustration ratio (extending C-529).
+    /// and imbalance ratio (extending C-529).
     ///
     /// Runtime: ~3-5 min in release mode.
     #[test]
@@ -7351,7 +7351,7 @@ mod tests {
             total_eta0 += comp_eta0;
             total_eta1 += comp_eta1;
 
-            // Cycle rank and frustration (BFS coboundary test)
+            // Cycle rank and imbalance (BFS coboundary test)
             let b1 = comp.edges.len() - n + 1;
             total_cycle_rank += b1;
 
@@ -7457,7 +7457,7 @@ mod tests {
         );
         eprintln!("Edge eta balance: eta=0: {total_eta0}, eta=1: {total_eta1}");
         eprintln!("Total cycle rank: {total_cycle_rank}");
-        eprintln!("Frustration: {total_frustrated}/{total_cycle_rank} = {frust_ratio:.8}");
+        eprintln!("Imbalance: {total_frustrated}/{total_cycle_rank} = {frust_ratio:.8}");
 
         // ASSERTION 1: Anti-Diagonal Parity Theorem holds
         assert_eq!(
@@ -7498,27 +7498,27 @@ mod tests {
         // Expected: ~214M triangles from generic_face_sign_census(512)
         assert!(total_triangles > 200_000_000, "Expected ~214M triangles");
 
-        // ASSERTION 8: Frustration ratio in range (extends C-529)
+        // ASSERTION 8: Imbalance ratio in range (extends C-529)
         assert!(
             frust_ratio > 0.37,
-            "dim=512: frustration should be near limit"
+            "dim=512: imbalance should be near limit"
         );
         assert!(
             frust_ratio < 0.41,
-            "dim=512: frustration should not exceed 0.41"
+            "dim=512: imbalance should not exceed 0.41"
         );
     }
 
-    /// Quick frustration-only test at dim=512 (extends C-529).
+    /// Quick imbalance-only test at dim=512 (extends C-529).
     ///
-    /// Computes ONLY the BFS coboundary frustration ratio, skipping the
+    /// Computes ONLY the BFS coboundary imbalance ratio, skipping the
     /// expensive O(n^3) triangle enumeration. This is O(V+E) per component.
     ///
     /// Sequence so far: 0.000, 0.307, 0.377, 0.388, 0.385 (dims 16..256).
     /// Does dim=512 continue the oscillation?
     #[test]
     #[ignore] // ~30s in release mode (graph construction dominates)
-    fn test_frustration_ratio_dim512() {
+    fn test_imbalance_ratio_dim512() {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
 
@@ -7534,7 +7534,7 @@ mod tests {
         let t0 = Instant::now();
         let components = motif_components_for_cross_assessors(dim);
         let t_graph = t0.elapsed();
-        eprintln!("\n=== Frustration at dim={dim} ===");
+        eprintln!("\n=== Imbalance at dim={dim} ===");
         eprintln!("Graph construction: {:.2}s", t_graph.as_secs_f64());
         eprintln!("Components: {}", components.len());
 
@@ -7605,7 +7605,7 @@ mod tests {
         let frust_ratio = total_frustrated as f64 / total_b1 as f64;
         eprintln!("edges: {total_edges}, eta=0: {total_eta0}, eta=1: {total_eta1}");
         eprintln!("b1: {total_b1}, frustrated: {total_frustrated}");
-        eprintln!("frustration ratio: {frust_ratio:.8}");
+        eprintln!("imbalance ratio: {frust_ratio:.8}");
 
         // Sequence: 0.000, 0.307, 0.377, 0.388, 0.385 (dims 16..256)
         // dim=512 should be near the same range
@@ -7616,17 +7616,17 @@ mod tests {
         );
         assert!(
             frust_ratio > 0.37,
-            "dim=512: frustration should be near limit"
+            "dim=512: imbalance should be near limit"
         );
         assert!(
             frust_ratio < 0.41,
-            "dim=512: frustration should not exceed 0.41"
+            "dim=512: imbalance should not exceed 0.41"
         );
     }
 
-    /// Quick frustration-only test at dim=1024.
+    /// Quick imbalance-only test at dim=1024.
     ///
-    /// Computes ONLY the BFS coboundary frustration ratio, skipping the
+    /// Computes ONLY the BFS coboundary imbalance ratio, skipping the
     /// expensive O(n^3) triangle enumeration. This is O(V+E) per component.
     ///
     /// Sequence so far: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381 (dims 16..512).
@@ -7636,7 +7636,7 @@ mod tests {
     /// 511 components x 510 nodes x ~129K edges each).
     #[test]
     #[ignore] // ~7-8 min in release mode
-    fn test_frustration_ratio_dim1024() {
+    fn test_imbalance_ratio_dim1024() {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
 
@@ -7652,7 +7652,7 @@ mod tests {
         let t0 = Instant::now();
         let components = motif_components_for_cross_assessors(dim);
         let t_graph = t0.elapsed();
-        eprintln!("\n=== Frustration at dim={dim} ===");
+        eprintln!("\n=== Imbalance at dim={dim} ===");
         eprintln!("Graph construction: {:.2}s", t_graph.as_secs_f64());
         eprintln!("Components: {}", components.len());
 
@@ -7723,7 +7723,7 @@ mod tests {
         let frust_ratio = total_frustrated as f64 / total_b1 as f64;
         eprintln!("edges: {total_edges}, eta=0: {total_eta0}, eta=1: {total_eta1}");
         eprintln!("b1: {total_b1}, frustrated: {total_frustrated}");
-        eprintln!("frustration ratio: {frust_ratio:.8}");
+        eprintln!("imbalance ratio: {frust_ratio:.8}");
 
         // Sequence: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381 (dims 16..512)
         // dim=1024 should be near the same range
@@ -7734,11 +7734,11 @@ mod tests {
         );
         assert!(
             frust_ratio > 0.37,
-            "dim=1024: frustration should be near limit"
+            "dim=1024: imbalance should be near limit"
         );
         assert!(
             frust_ratio < 0.41,
-            "dim=1024: frustration should not exceed 0.41"
+            "dim=1024: imbalance should not exceed 0.41"
         );
     }
 
@@ -7747,7 +7747,7 @@ mod tests {
     /// 511 components, 510 nodes each, graph density ~99.8% (near-clique).
     /// Expected ~11.3 billion triangles across 65 regimes.
     /// Also collects Klein-four fibers, edge eta balance, cycle rank,
-    /// and frustration ratio.
+    /// and imbalance ratio.
     ///
     /// Runtime: ~35-40 min in release mode. This is the LARGEST feasible
     /// brute-force verification of the theorem.
@@ -7815,7 +7815,7 @@ mod tests {
             total_eta0 += comp_eta0;
             total_eta1 += comp_eta1;
 
-            // Cycle rank and frustration (BFS coboundary test)
+            // Cycle rank and imbalance (BFS coboundary test)
             let b1 = comp.edges.len() - n + 1;
             total_cycle_rank += b1;
 
@@ -7933,7 +7933,7 @@ mod tests {
         );
         eprintln!("Edge eta balance: eta=0: {total_eta0}, eta=1: {total_eta1}");
         eprintln!("Total cycle rank: {total_cycle_rank}");
-        eprintln!("Frustration: {total_frustrated}/{total_cycle_rank} = {frust_ratio:.8}");
+        eprintln!("Imbalance: {total_frustrated}/{total_cycle_rank} = {frust_ratio:.8}");
 
         // ASSERTION 1: Anti-Diagonal Parity Theorem holds
         assert_eq!(
@@ -7976,23 +7976,23 @@ mod tests {
             "Expected ~11.3B triangles"
         );
 
-        // ASSERTION 8: Frustration ratio in range (extends C-529)
+        // ASSERTION 8: Imbalance ratio in range (extends C-529)
         assert!(
             frust_ratio > 0.37,
-            "dim=1024: frustration should be near limit"
+            "dim=1024: imbalance should be near limit"
         );
         assert!(
             frust_ratio < 0.41,
-            "dim=1024: frustration should not exceed 0.41"
+            "dim=1024: imbalance should not exceed 0.41"
         );
     }
 
-    /// Frustration ratio verification at dim=512 with full APT analysis.
+    /// Imbalance ratio verification at dim=512 with full APT analysis.
     /// Extends existing dim=256 test to next dimension.
-    /// Validates C-557: Frustration and eta balance at dim=512 with complete mechanism.
+    /// Validates C-557: Imbalance and eta balance at dim=512 with complete mechanism.
     /// Runtime: ~3-4 min in release mode.
     #[test]
-    fn test_frustration_and_apt_dim512_full() {
+    fn test_imbalance_and_apt_dim512_full() {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
 
@@ -8008,7 +8008,7 @@ mod tests {
         let t0 = Instant::now();
         let components = motif_components_for_cross_assessors(dim);
         let t_graph = t0.elapsed();
-        eprintln!("\n=== Frustration and APT at dim={} ===", dim);
+        eprintln!("\n=== Imbalance and APT at dim={} ===", dim);
         eprintln!("Graph construction: {:.2}s", t_graph.as_secs_f64());
         eprintln!("Components: {}", components.len());
 
@@ -8033,7 +8033,7 @@ mod tests {
                 }
             }
 
-            // BFS coboundary test for frustration
+            // BFS coboundary test for imbalance
             let node_idx: std::collections::HashMap<CrossPair, usize> =
                 nodes.iter().enumerate().map(|(i, &n)| (n, i)).collect();
             let mut adj: Vec<Vec<(usize, u8)>> = vec![vec![]; n];
@@ -8077,18 +8077,18 @@ mod tests {
         let frust_ratio = total_frustrated as f64 / total_b1 as f64;
         eprintln!("eta=0: {}, eta=1: {}", total_eta0, total_eta1);
         eprintln!("b1: {}, frustrated: {}", total_b1, total_frustrated);
-        eprintln!("frustration ratio: {:.8}", frust_ratio);
+        eprintln!("imbalance ratio: {:.8}", frust_ratio);
 
         // Verify eta balance (Half-Half Edge Law, C-517)
         assert_eq!(total_eta0, total_eta1, "dim=512: eta not balanced");
 
-        // Verify frustration ratio is reasonable (dim=512 should be between dim=256 and dim=1024)
+        // Verify imbalance ratio is reasonable (dim=512 should be between dim=256 and dim=1024)
         // Sequence: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381, 0.378 (dims 16..1024)
         // dim=512 should be around 0.381-0.385
-        assert!(frust_ratio > 0.37, "dim=512: frustration ratio too low");
-        assert!(frust_ratio < 0.39, "dim=512: frustration ratio too high");
+        assert!(frust_ratio > 0.37, "dim=512: imbalance ratio too low");
+        assert!(frust_ratio < 0.39, "dim=512: imbalance ratio too high");
 
-        eprintln!("PASS: Frustration ratio and eta balance verified at dim=512");
+        eprintln!("PASS: Imbalance ratio and eta balance verified at dim=512");
     }
 
     /// Pathion-specific verifications: dimension scaling laws at practical limits.
@@ -8459,7 +8459,7 @@ mod tests {
         eprintln!("dim=4096: GPU Monte Carlo (not yet implemented)");
     }
 
-    /// Frustration ratio at dim=2048 using reusable compute_frustration_ratio.
+    /// Imbalance ratio at dim=2048 using reusable compute_imbalance_ratio.
     ///
     /// Sequence: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381, 0.378
     /// for dims 16, 32, 64, 128, 256, 512, 1024.
@@ -8468,10 +8468,10 @@ mod tests {
     /// Runtime: ~60 min in release mode (1023 components x 1022 nodes each).
     #[test]
     #[ignore] // ~60 min in release mode
-    fn test_frustration_ratio_dim2048() {
-        let result = compute_frustration_ratio(2048);
+    fn test_imbalance_ratio_dim2048() {
+        let result = compute_imbalance_ratio(2048);
 
-        eprintln!("\n=== Frustration at dim=2048 ===");
+        eprintln!("\n=== Imbalance at dim=2048 ===");
         eprintln!("Components: {}", result.n_components);
         eprintln!("Edges: {}", result.total_edges);
         eprintln!("eta=0: {}, eta=1: {}", result.eta0_count, result.eta1_count);
@@ -8479,7 +8479,7 @@ mod tests {
             "b1: {}, frustrated: {}",
             result.total_b1, result.total_frustrated
         );
-        eprintln!("frustration ratio: {:.8}", result.frustration_ratio);
+        eprintln!("imbalance ratio: {:.8}", result.imbalance_ratio);
         eprintln!("elapsed: {:.2}s", result.elapsed_secs);
 
         // Eta balance
@@ -8488,7 +8488,7 @@ mod tests {
             "dim=2048: eta not balanced"
         );
 
-        // Frustration should exist (not coboundary for dim >= 32)
+        // Imbalance should exist (not coboundary for dim >= 32)
         assert!(
             result.total_frustrated > 0,
             "dim=2048: eta should not be a coboundary"
@@ -8496,27 +8496,27 @@ mod tests {
 
         // Should be closer to 3/8 = 0.375 than dim=1024 was (0.378)
         assert!(
-            result.frustration_ratio > 0.37,
-            "dim=2048: frustration should be near limit"
+            result.imbalance_ratio > 0.37,
+            "dim=2048: imbalance should be near limit"
         );
         assert!(
-            result.frustration_ratio < 0.39,
-            "dim=2048: frustration should not exceed 0.39"
+            result.imbalance_ratio < 0.39,
+            "dim=2048: imbalance should not exceed 0.39"
         );
     }
 
-    /// Quick smoke test of compute_frustration_ratio at dim=32.
+    /// Quick smoke test of compute_imbalance_ratio at dim=32.
     #[test]
-    fn test_compute_frustration_ratio_dim32() {
-        let result = compute_frustration_ratio(32);
+    fn test_compute_imbalance_ratio_dim32() {
+        let result = compute_imbalance_ratio(32);
 
         assert_eq!(result.n_components, 15);
         assert_eq!(result.eta0_count, result.eta1_count);
         // Known value from C-529: ~0.307
         assert!(
-            (result.frustration_ratio - 0.307).abs() < 0.01,
-            "dim=32: frustration should be ~0.307, got {}",
-            result.frustration_ratio
+            (result.imbalance_ratio - 0.307).abs() < 0.01,
+            "dim=32: imbalance should be ~0.307, got {}",
+            result.imbalance_ratio
         );
     }
 

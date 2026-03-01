@@ -45,7 +45,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("Minimum RMS Error: {}", rms_err);
 
     let report = format!(
-        "model = \"QGPFrustrationBridge\"
+        "model = \"QGPImbalanceBridge\"
 target_dataset = \"ALICE 2025 Pb-Pb 5.36 TeV\"
 best_k_vorticity = {}
 final_rms_error = {}

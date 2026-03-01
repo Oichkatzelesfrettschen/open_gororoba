@@ -1,0 +1,68 @@
+%% Fig 42: Claims domain bubble chart
+%% Each bubble = domain, area ~ claim count, position = (verification_rate, complexity)
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=8cm,
+  xlabel={Verification rate (\%)},
+  ylabel={Average claim complexity (lines of evidence)},
+  xmin=75, xmax=100,
+  ymin=0, ymax=5,
+  legend pos=outer north east,
+  legend style={fill=white, draw=gray!50},
+  grid=major,
+  grid style={gray!15},
+]
+  %% Algebra: ~340 claims, 95% verified, complexity 3.2
+  \addplot[only marks, mark=*, mark size=17pt, OIorange,
+    mark options={fill=OIorange!40, draw=OIorange}]
+    coordinates {(95, 3.2)};
+  \node[font=\sffamily\tiny] at (axis cs:95,3.2) {Algebra};
+
+  %% Fluid: ~180 claims, 92% verified, complexity 2.8
+  \addplot[only marks, mark=*, mark size=13pt, OIskyblue,
+    mark options={fill=OIskyblue!40, draw=OIskyblue}]
+    coordinates {(92, 2.8)};
+  \node[font=\sffamily\tiny] at (axis cs:92,2.8) {Fluid};
+
+  %% GR: ~85 claims, 88% verified, complexity 3.5
+  \addplot[only marks, mark=*, mark size=9pt, OIblue,
+    mark options={fill=OIblue!40, draw=OIblue}]
+    coordinates {(88, 3.5)};
+  \node[font=\sffamily\tiny, white] at (axis cs:88,3.5) {GR};
+
+  %% Statistics: ~70 claims, 85% verified, complexity 4.0
+  \addplot[only marks, mark=*, mark size=8pt, OIgray,
+    mark options={fill=OIgray!40, draw=OIgray}]
+    coordinates {(85, 4.0)};
+  \node[font=\sffamily\tiny] at (axis cs:85,4.0) {Stats};
+
+  %% Materials: ~60 claims, 93% verified, complexity 2.5
+  \addplot[only marks, mark=*, mark size=7.5pt, OIgreen,
+    mark options={fill=OIgreen!40, draw=OIgreen}]
+    coordinates {(93, 2.5)};
+  \node[font=\sffamily\tiny, white] at (axis cs:93,2.5) {Mat};
+
+  %% Optics: ~55 claims, 90% verified, complexity 2.8
+  \addplot[only marks, mark=*, mark size=7pt, OIyellow,
+    mark options={fill=OIyellow!40, draw=OIyellow!80!black}]
+    coordinates {(90, 2.3)};
+  \node[font=\sffamily\tiny] at (axis cs:90,2.3) {Optics};
+
+  %% Quantum: ~45 claims, 80% verified, complexity 3.8
+  \addplot[only marks, mark=*, mark size=6.5pt, OIpurple,
+    mark options={fill=OIpurple!40, draw=OIpurple}]
+    coordinates {(80, 3.8)};
+  \node[font=\sffamily\tiny, white] at (axis cs:80,3.8) {Quant};
+
+  %% Cosmology: ~45 claims, 82% verified, complexity 3.0
+  \addplot[only marks, mark=*, mark size=6.5pt, OIvermillion,
+    mark options={fill=OIvermillion!40, draw=OIvermillion}]
+    coordinates {(82, 3.0)};
+  \node[font=\sffamily\tiny] at (axis cs:82,3.0) {Cosmo};
+
+\end{axis}
+
+%% Size legend
+\node[font=\sffamily\tiny, gray] at (10, 0.5) {Bubble area $\propto$ claim count};
+\end{tikzpicture}

@@ -1,0 +1,67 @@
+%% Fig 3: Redesigned Cayley-Dickson tower with Okabe-Ito colors
+%% Full-page version with property annotations and dimension coloring
+\begin{tikzpicture}[
+  node distance=1.4cm,
+  algebra/.style={
+    draw, rounded corners=4pt, minimum width=3.5cm,
+    minimum height=0.85cm, font=\sffamily\small, inner sep=5pt,
+    thick
+  },
+  arrow/.style={-{Stealth[length=6pt]}, thick, gray!50},
+  loss/.style={font=\sffamily\scriptsize, anchor=west},
+  prop/.style={font=\sffamily\scriptsize, anchor=east, text=gray!70!black},
+  divline/.style={dashed, thick},
+]
+  %% Nodes -- colors encode: green=division algebra, orange=zero-divisor
+  \node[algebra, fill=cAlgebraLight, draw=cAlgebra]
+    (R) {$\mathbb{R}$ \quad dim\,1};
+  \node[algebra, fill=cAlgebraLight, draw=cAlgebra, below=of R]
+    (C) {$\mathbb{C}$ \quad dim\,2};
+  \node[algebra, fill=cAlgebraLight, draw=cAlgebra, below=of C]
+    (H) {$\mathbb{H}$ \quad dim\,4};
+  \node[algebra, fill=cAlgebraLight, draw=cAlgebra, below=of H]
+    (O) {$\mathbb{O}$ \quad dim\,8};
+  \node[algebra, fill=cCosmologyLight, draw=cCosmology, below=of O]
+    (S) {$\mathbb{S}$ \quad dim\,16};
+  \node[algebra, fill=cCosmologyLight, draw=cCosmology, below=of S]
+    (P) {$\mathbb{P}$ \quad dim\,32};
+  \node[below=0.5cm of P, font=\sffamily\small, gray] (dots) {$\vdots$};
+
+  %% Arrows
+  \draw[arrow] (R) -- (C);
+  \draw[arrow] (C) -- (H);
+  \draw[arrow] (H) -- (O);
+  \draw[arrow] (O) -- (S);
+  \draw[arrow] (S) -- (P);
+
+  %% Property losses (right side) -- distinct style per loss
+  \node[loss, right=0.8cm of C, text=cGR]
+    {$\triangleright$ loses ordering};
+  \node[loss, right=0.8cm of H, text=cFluid]
+    {$\blacksquare$ loses commutativity};
+  \node[loss, right=0.8cm of O, text=cQuantum]
+    {$\blacklozenge$ loses associativity};
+  \node[loss, right=0.8cm of S, text=cCosmology]
+    {$\bigstar$ loses alternativity, gains ZDs};
+  \node[loss, right=0.8cm of P, text=cCosmology]
+    {$\bullet$ cubic GF(2) obstruction};
+
+  %% Property checklist (left side)
+  \node[prop, left=0.8cm of R] {ordered, commutative, associative};
+  \node[prop, left=0.8cm of C] {commutative, associative};
+  \node[prop, left=0.8cm of H] {associative, division};
+  \node[prop, left=0.8cm of O] {alternative, division};
+  \node[prop, left=0.8cm of S] {power-associative, ZDs};
+  \node[prop, left=0.8cm of P] {flexible, ZDs};
+
+  %% Hurwitz boundary
+  \node[font=\sffamily\scriptsize, text=cGR, left=2.5cm of O,
+    align=right] {Hurwitz\\boundary};
+  \draw[divline, cGR!60] ([xshift=-3cm]O.south west)
+    -- ([xshift=5.5cm]O.south west);
+
+  %% Imbalance annotation
+  \node[draw=cCosmology!40, rounded corners, fill=cCosmologyLight!40,
+    font=\sffamily\scriptsize, align=center, right=0.3cm of dots]
+    {Imbalance $\to 3/8$\\as $\dim \to \infty$};
+\end{tikzpicture}

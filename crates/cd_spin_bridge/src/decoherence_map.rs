@@ -1,9 +1,9 @@
-use vacuum_frustration::VACUUM_ATTRACTOR;
+use sign_imbalance::IMBALANCE_ATTRACTOR;
 
-/// Maps CD field observables (frustration density, associator norms) to quantum channel parameters.
+/// Maps CD field observables (imbalance density, associator norms) to quantum channel parameters.
 #[derive(Debug, Clone)]
 pub struct DecoherenceMap {
-    /// Scaling for frustration term
+    /// Scaling for imbalance term
     pub c_f: f64,
     /// Scaling for associator term
     pub c_a: f64,
@@ -34,11 +34,11 @@ impl DecoherenceMap {
         }
     }
 
-    /// Computes gamma from local frustration density and associator norm.
+    /// Computes gamma from local imbalance density and associator norm.
     /// gamma = gamma_0 + c_f * (F - 3/8)^2 + c_a * A
-    pub fn gamma_from_frustration(&self, frustration: f64, associator_norm: f64) -> f64 {
-        let f_diff = frustration - VACUUM_ATTRACTOR;
-        // Using squared difference as deviation from vacuum attractor implies higher energy cost/decoherence?
+    pub fn gamma_from_imbalance(&self, imbalance: f64, associator_norm: f64) -> f64 {
+        let f_diff = imbalance - IMBALANCE_ATTRACTOR;
+        // Using squared difference as deviation from imbalance attractor implies higher energy cost/decoherence?
         // Or maybe just linear?
         // The plan suggests: gamma = gamma_0 + c_F * (F - 3/8)^2 + c_A * A
 
@@ -69,30 +69,30 @@ mod tests {
     }
 
     #[test]
-    fn test_gamma_at_vacuum_attractor() {
-        // At F = 3/8 (vacuum attractor), frustration term vanishes.
+    fn test_gamma_at_imbalance_attractor() {
+        // At F = 3/8 (imbalance attractor), imbalance term vanishes.
         // gamma = gamma_0 + c_f * 0^2 + c_a * A = gamma_0 + c_a * A
         let dm = DecoherenceMap::default();
-        let gamma = dm.gamma_from_frustration(VACUUM_ATTRACTOR, 0.0);
+        let gamma = dm.gamma_from_imbalance(IMBALANCE_ATTRACTOR, 0.0);
         assert!((gamma - dm.gamma_0).abs() < 1e-14,
-            "At vacuum attractor with zero associator, gamma should equal gamma_0");
+            "At imbalance attractor with zero associator, gamma should equal gamma_0");
     }
 
     #[test]
     fn test_gamma_nonzero_deviation() {
         // F != 3/8 should increase gamma (quadratic penalty)
         let dm = DecoherenceMap::default();
-        let gamma_at_attractor = dm.gamma_from_frustration(VACUUM_ATTRACTOR, 0.0);
-        let gamma_deviated = dm.gamma_from_frustration(0.5, 0.0);
+        let gamma_at_attractor = dm.gamma_from_imbalance(IMBALANCE_ATTRACTOR, 0.0);
+        let gamma_deviated = dm.gamma_from_imbalance(0.5, 0.0);
         assert!(gamma_deviated > gamma_at_attractor,
-            "Deviation from vacuum attractor should increase decoherence rate");
+            "Deviation from imbalance attractor should increase decoherence rate");
     }
 
     #[test]
     fn test_gamma_associator_contribution() {
         let dm = DecoherenceMap::default();
-        let gamma_no_assoc = dm.gamma_from_frustration(VACUUM_ATTRACTOR, 0.0);
-        let gamma_with_assoc = dm.gamma_from_frustration(VACUUM_ATTRACTOR, 1.0);
+        let gamma_no_assoc = dm.gamma_from_imbalance(IMBALANCE_ATTRACTOR, 0.0);
+        let gamma_with_assoc = dm.gamma_from_imbalance(IMBALANCE_ATTRACTOR, 1.0);
         assert!((gamma_with_assoc - gamma_no_assoc - dm.c_a).abs() < 1e-14,
             "Associator norm contribution should be c_a * A");
     }

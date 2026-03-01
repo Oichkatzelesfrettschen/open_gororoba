@@ -70,7 +70,7 @@ unit_ids = ["LEGU-000546", "LEGU-000547", "LEGU-000548", "LEGU-000549", "LEGU-00
 
 [[document]]
 id = "LEG-0005"
-legacy_path = "crates/vacuum_frustration/IMPLEMENTATION_NOTES.md"
+legacy_path = "crates/sign_imbalance/IMPLEMENTATION_NOTES.md"
 status = "migrated_from_markdown"
 content_format = "markdown"
 title = "Phase 1 Week 1: Signed-Graph Balance Solver"
@@ -1740,7 +1740,7 @@ kind = "list_item"
 line_start = 58
 line_end = 58
 heading_level = 0
-text_ascii = "Exotic octonion frustration spectrum (Dual 0.4375, Bi 0.4688, Para 0.6562)"
+text_ascii = "Exotic octonion imbalance spectrum (Dual 0.4375, Bi 0.4688, Para 0.6562)"
 text_sha256 = "35b36b0c1b3f9ad1530eac8336ff8eb55953fc45a4d9469dda8510d422cf8fea"
 
 [[unit]]
@@ -5590,7 +5590,7 @@ kind = "paragraph"
 line_start = 12
 line_end = 12
 heading_level = 0
-text_ascii = "**Grand Vision**: Transform abstract algebraic theory into **testable, runnable physics simulations** where fluid dynamics emerges from signed-graph frustration, particle masses arise from topological filtration, and quantum unitarity is restored via neural synthesis."
+text_ascii = "**Grand Vision**: Transform abstract algebraic theory into **testable, runnable physics simulations** where fluid dynamics emerges from signed-graph imbalance, particle masses arise from topological filtration, and quantum unitarity is restored via neural synthesis."
 text_sha256 = "8686e3222a50b92fd2314f4514ca657f725e14d39e050ebc6f1886ba3375cca1"
 
 [[unit]]
@@ -5870,7 +5870,7 @@ kind = "heading"
 line_start = 56
 line_end = 56
 heading_level = 2
-text_ascii = "Phase 1 Status: Vacuum Frustration & LBM Integration"
+text_ascii = "Phase 1 Status: Sign Imbalance & LBM Integration"
 text_sha256 = "bca914d95a02ebca7e02d2c4067818c4e35d66f3dedeff139ef28a921e510e26"
 
 [[unit]]
@@ -5890,7 +5890,7 @@ kind = "paragraph"
 line_start = 59
 line_end = 59
 heading_level = 0
-text_ascii = "**Milestone**: Signed-graph balance solver for frustration quantization"
+text_ascii = "**Milestone**: Signed-graph balance solver for imbalance quantization"
 text_sha256 = "a2fc1dd0e7771b93dbe8e3a219567fc11d56691dcd328e234ea6ba6b9210758e"
 
 [[unit]]
@@ -5910,7 +5910,7 @@ kind = "list_item"
 line_start = 62
 line_end = 62
 heading_level = 0
-text_ascii = "`crates/vacuum_frustration/src/signed_graph.rs` (237 lines): Graph construction from psi matrix"
+text_ascii = "`crates/sign_imbalance/src/signed_graph.rs` (237 lines): Graph construction from psi matrix"
 text_sha256 = "1cdea88f760f58453b82a914879fad4b95e8a45e39d84351fd9a5c02c1e52ddb"
 
 [[unit]]
@@ -5920,7 +5920,7 @@ kind = "list_item"
 line_start = 63
 line_end = 63
 heading_level = 0
-text_ascii = "`crates/vacuum_frustration/src/balance.rs` (334 lines): Harary-Zaslavsky frustration solver"
+text_ascii = "`crates/sign_imbalance/src/balance.rs` (334 lines): Harary-Zaslavsky imbalance solver"
 text_sha256 = "41c771c2356ecee41b6fc1eff21118e4c4c37be8351a24fcc9f2d289fe02e08c"
 
 [[unit]]
@@ -5940,7 +5940,7 @@ kind = "list_item"
 line_start = 65
 line_end = 65
 heading_level = 0
-text_ascii = "Frustration index computation: exact (brute force), greedy, and simulated annealing solvers"
+text_ascii = "Imbalance index computation: exact (brute force), greedy, and simulated annealing solvers"
 text_sha256 = "e870e3834e2a97c5cd29ea4355a9c5065ec435cfa7b00ae28ca3b723d000ad0e"
 
 [[unit]]
@@ -6050,7 +6050,7 @@ kind = "list_item"
 line_start = 78
 line_end = 78
 heading_level = 0
-text_ascii = "Total Phase 1 W1-W2: **61 lbm_3d tests + 14 vacuum_frustration tests = 75 tests passing**"
+text_ascii = "Total Phase 1 W1-W2: **61 lbm_3d tests + 14 sign_imbalance tests = 75 tests passing**"
 text_sha256 = "0f3a1dccc81cd7139f40e6e17eab79505b45fb1e8a1bc9e5d753b8c3db96c121"
 
 [[unit]]
@@ -6510,7 +6510,7 @@ kind = "table_row"
 line_start = 143
 line_end = 143
 heading_level = 0
-text_ascii = "vacuum_frustration (Phase 1 W1) | 14 | \\u2713 PASS | Signed-graph + balance solver"
+text_ascii = "sign_imbalance (Phase 1 W1) | 14 | \\u2713 PASS | Signed-graph + balance solver"
 text_sha256 = "e8b795c1db2567955e2709c670e690dabd2363dc4168a33089c9c2c5915c344f"
 
 [[unit]]
@@ -6630,7 +6630,7 @@ kind = "list_item"
 line_start = 160
 line_end = 160
 heading_level = 0
-text_ascii = "**Frustration-Viscosity Bridge** (vacuum_frustration \\u2192 lbm_3d integration)"
+text_ascii = "**Imbalance-Viscosity Bridge** (sign_imbalance \\u2192 lbm_3d integration)"
 text_sha256 = "e75c4f3df288baa9b4161535e6dcdbdb8fc552c4dfce2d421f70c92b52bbb010"
 
 [[unit]]
@@ -6640,7 +6640,7 @@ kind = "list_item"
 line_start = 161
 line_end = 161
 heading_level = 0
-text_ascii = "Compute spatially-varying viscosity field from frustration index"
+text_ascii = "Compute spatially-varying viscosity field from imbalance index"
 text_sha256 = "45d16907f4b05c5e4f0c775e6e49fd40d3dc050b373ac3df081423820dee823c"
 
 [[unit]]
@@ -6650,7 +6650,7 @@ kind = "list_item"
 line_start = 162
 line_end = 162
 heading_level = 0
-text_ascii = "Map frustration density F(x) \\u2192 kinematic viscosity \\u03BD(x)"
+text_ascii = "Map imbalance density F(x) \\u2192 kinematic viscosity \\u03BD(x)"
 text_sha256 = "45b5670461e49cf3912d014967640fe380f143597964b3ce8abc55476920c3ab"
 
 [[unit]]
@@ -6700,7 +6700,7 @@ kind = "list_item"
 line_start = 168
 line_end = 168
 heading_level = 0
-text_ascii = "Compute per-cell frustration density"
+text_ascii = "Compute per-cell imbalance density"
 text_sha256 = "82718d024d2d216e04b0d2596e58de6bcdb61de5e68729bfb7315f28b1a16b3e"
 
 [[unit]]
@@ -6730,7 +6730,7 @@ kind = "list_item"
 line_start = 171
 line_end = 171
 heading_level = 0
-text_ascii = "Correlate channel distribution with frustration threshold"
+text_ascii = "Correlate channel distribution with imbalance threshold"
 text_sha256 = "f6172796a308ada089776477b89661dfbd79f0d43e57f1794fe17b42cbd7324b"
 
 [[unit]]
@@ -6900,7 +6900,7 @@ kind = "code_block"
 line_start = 196
 line_end = 212
 heading_level = 0
-text_ascii = "LAYER 0 (BIT LEVEL)\n  \\u2193 psi(a,b) = cd_basis_mul_sign(a,b)\nLAYER 1 (PARITY)\n  \\u2193 eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b)\nLAYER 2 (TOPOLOGY)\n  \\u2193 SignedGraph from psi \\u2192 FrustrationIndex\nLAYER 3 (DYNAMICS) \\u2190 cosmic_scheduler (TIER 1 COMPLETE)\n  \\u2193 Frustration \\u2192 Viscosity \\u2192 LBM evolution\n  \\u2193 phi1 = collision, phi2 = streaming\nLAYER 4 (FILTRATION)\n  \\u2193 Patricia trie + Survival cascade (Lambda_2048 \\u2192 Lambda_256)\nLAYER 5 (CORRECTION)\n  \\u2193 Stasheff pentagon \\u2192 m_4 tensor synthesis\nLAYER 6 (VERIFICATION)\n  \\u2193 Besag-Clifford adaptive testing + Cross-validation"
+text_ascii = "LAYER 0 (BIT LEVEL)\n  \\u2193 psi(a,b) = cd_basis_mul_sign(a,b)\nLAYER 1 (PARITY)\n  \\u2193 eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b)\nLAYER 2 (TOPOLOGY)\n  \\u2193 SignedGraph from psi \\u2192 ImbalanceIndex\nLAYER 3 (DYNAMICS) \\u2190 cosmic_scheduler (TIER 1 COMPLETE)\n  \\u2193 Imbalance \\u2192 Viscosity \\u2192 LBM evolution\n  \\u2193 phi1 = collision, phi2 = streaming\nLAYER 4 (FILTRATION)\n  \\u2193 Patricia trie + Survival cascade (Lambda_2048 \\u2192 Lambda_256)\nLAYER 5 (CORRECTION)\n  \\u2193 Stasheff pentagon \\u2192 m_4 tensor synthesis\nLAYER 6 (VERIFICATION)\n  \\u2193 Besag-Clifford adaptive testing + Cross-validation"
 text_sha256 = "eb37900bab01aa71d054a922ab6d692af260331c07b006f21ecad14fe8b20afc"
 
 [[unit]]
@@ -7170,7 +7170,7 @@ kind = "list_item"
 line_start = 249
 line_end = 249
 heading_level = 0
-text_ascii = "[x] vacuum_frustration signed-graph solver (14 tests) \\u2713 W1 DONE"
+text_ascii = "[x] sign_imbalance signed-graph solver (14 tests) \\u2713 W1 DONE"
 text_sha256 = "10fae5f7b28658d654a198482424442c21af7e30b591489accd107a60c60572d"
 
 [[unit]]
@@ -7210,7 +7210,7 @@ kind = "list_item"
 line_start = 253
 line_end = 253
 heading_level = 0
-text_ascii = "[ ] Frustration-viscosity bridge (W3)"
+text_ascii = "[ ] Imbalance-viscosity bridge (W3)"
 text_sha256 = "32f6087b9ef6e3148321a333e54db90e18d011cd4ccb3974109faf5b73abcbae"
 
 [[unit]]
@@ -7780,7 +7780,7 @@ kind = "list_item"
 line_start = 329
 line_end = 329
 heading_level = 0
-text_ascii = "[ ] Continue Phase 1 Week 3-4 frustration-viscosity bridge implementation"
+text_ascii = "[ ] Continue Phase 1 Week 3-4 imbalance-viscosity bridge implementation"
 text_sha256 = "5fc77eef92e6dbb52c2748fc0b49ebd45f292bfa50058dbdc6e107babe2d49b3"
 
 [[unit]]
@@ -7800,7 +7800,7 @@ kind = "paragraph"
 line_start = 332
 line_end = 332
 heading_level = 0
-text_ascii = "**Current focus**: Phase 1 Week 3-4 ACTIVE - implementing frustration-viscosity coupling and percolation threshold validation."
+text_ascii = "**Current focus**: Phase 1 Week 3-4 ACTIVE - implementing imbalance-viscosity coupling and percolation threshold validation."
 text_sha256 = "37a6b716a9abdf2c7c4796712c80781131efeac4a22b58fdb6236d319919e44b"
 
 [[unit]]
@@ -7810,7 +7810,7 @@ kind = "paragraph"
 line_start = 334
 line_end = 334
 heading_level = 0
-text_ascii = "**Expected Completion**: Feb 18-25 (frustration-viscosity bridge + E-027 experiment registration)"
+text_ascii = "**Expected Completion**: Feb 18-25 (imbalance-viscosity bridge + E-027 experiment registration)"
 text_sha256 = "6dc90e23346ec34852745f16e1a8726ec11f27753c76a1f85fa36ec46f77985e"
 
 [[unit]]
@@ -8080,7 +8080,7 @@ kind = "paragraph"
 line_start = 36
 line_end = 36
 heading_level = 0
-text_ascii = "**Purpose**: Harary-Zaslavsky frustration index computation"
+text_ascii = "**Purpose**: Harary-Zaslavsky imbalance index computation"
 text_sha256 = "420127c6b92568a02d7e8c1df55e3fb50b8a08e3015b1dcf304d7ced9f146252"
 
 [[unit]]
@@ -8100,7 +8100,7 @@ kind = "list_item"
 line_start = 39
 line_end = 39
 heading_level = 0
-text_ascii = "`FrustrationResult`: Output struct with min_flips, density, method"
+text_ascii = "`ImbalanceResult`: Output struct with min_flips, density, method"
 text_sha256 = "3ba3da0143513557a9b4ae497562ce2e59703c3698ad13826547655b229433c1"
 
 [[unit]]
@@ -8120,7 +8120,7 @@ kind = "list_item"
 line_start = 41
 line_end = 41
 heading_level = 0
-text_ascii = "`compute_frustration_index()`: Dispatcher to appropriate solver"
+text_ascii = "`compute_imbalance_index()`: Dispatcher to appropriate solver"
 text_sha256 = "222f7fb8662b9dbb6d1c17e34cedd9af67fbcd65bb4c08fdea7ebbe9a9d3460e"
 
 [[unit]]
@@ -8130,7 +8130,7 @@ kind = "list_item"
 line_start = 42
 line_end = 42
 heading_level = 0
-text_ascii = "`brute_force_frustration()`: Exhaustive search (<=20 edges)"
+text_ascii = "`brute_force_imbalance()`: Exhaustive search (<=20 edges)"
 text_sha256 = "44a2f9b25e37a352c4cd4282f83084b650e57f02c2898cd0acd971980be3ed93"
 
 [[unit]]
@@ -8140,7 +8140,7 @@ kind = "list_item"
 line_start = 43
 line_end = 43
 heading_level = 0
-text_ascii = "`greedy_frustration_solver()`: Local search for medium graphs"
+text_ascii = "`greedy_imbalance_solver()`: Local search for medium graphs"
 text_sha256 = "dde2ce281f03afe49a411ae1142f64d0b6d16ff19da46ccd9ec23a10dd1d165d"
 
 [[unit]]
@@ -8150,7 +8150,7 @@ kind = "list_item"
 line_start = 44
 line_end = 44
 heading_level = 0
-text_ascii = "`approximate_frustration_solver()`: Simulated annealing for large graphs"
+text_ascii = "`approximate_imbalance_solver()`: Simulated annealing for large graphs"
 text_sha256 = "14fa1aa7162e94f64854214176ab7d7877e75781cb319020877efd9d5212d8dd"
 
 [[unit]]
@@ -8210,7 +8210,7 @@ kind = "list_item"
 line_start = 52
 line_end = 52
 heading_level = 0
-text_ascii = "`test_empty_graph_frustration`: Edge case"
+text_ascii = "`test_empty_graph_imbalance`: Edge case"
 text_sha256 = "6506633022ee4ce9948e3709c9c99bfbe395f11d89e4787c48e632a1e649ae5a"
 
 [[unit]]
@@ -8250,7 +8250,7 @@ kind = "list_item"
 line_start = 56
 line_end = 56
 heading_level = 0
-text_ascii = "`test_frustration_density_range`: Normalization check"
+text_ascii = "`test_imbalance_density_range`: Normalization check"
 text_sha256 = "8a963626f3bcf4a2930984e0216a417006e762458086d5cc8638df19cdd61005"
 
 [[unit]]
@@ -8270,7 +8270,7 @@ kind = "heading"
 line_start = 59
 line_end = 59
 heading_level = 4
-text_ascii = "3. `frustration.rs` (25 lines)"
+text_ascii = "3. `imbalance.rs` (25 lines)"
 text_sha256 = "a5f71f4b319393dfce3bf5a490884095621a801cd9b008731313334c9eba3602"
 
 [[unit]]
@@ -8280,7 +8280,7 @@ kind = "paragraph"
 line_start = 60
 line_end = 60
 heading_level = 0
-text_ascii = "**Purpose**: Placeholder for higher-level frustration metrics (Phase 1 Week 2)"
+text_ascii = "**Purpose**: Placeholder for higher-level imbalance metrics (Phase 1 Week 2)"
 text_sha256 = "224a3ae4faa3e6cead4d479233e177380c8d85562a26ce754f5482add6333070"
 
 [[unit]]
@@ -8300,7 +8300,7 @@ kind = "list_item"
 line_start = 63
 line_end = 63
 heading_level = 0
-text_ascii = "`FrustrationIndex` struct with Default derive"
+text_ascii = "`ImbalanceIndex` struct with Default derive"
 text_sha256 = "01f124c46fb2a23f694c784275343d9812e2097607b88887ae584592eceb7505"
 
 [[unit]]
@@ -8340,7 +8340,7 @@ kind = "list_item"
 line_start = 69
 line_end = 69
 heading_level = 0
-text_ascii = "`FrustrationViscosityBridge` struct with Default derive"
+text_ascii = "`ImbalanceViscosityBridge` struct with Default derive"
 text_sha256 = "420962b6b3aea5c8fe05d3a9b4cdceb9256a0d2365c9ba2ab364788564d2f4b8"
 
 [[unit]]
@@ -8360,7 +8360,7 @@ kind = "heading"
 line_start = 73
 line_end = 73
 heading_level = 3
-text_ascii = "Harary-Zaslavsky Frustration Index"
+text_ascii = "Harary-Zaslavsky Imbalance Index"
 text_sha256 = "96330c0cb9d355693a0a98c5eb9ca8c339d950dd5d2255b863a6642c03dd9a0d"
 
 [[unit]]
@@ -8530,7 +8530,7 @@ kind = "list_item"
 line_start = 101
 line_end = 101
 heading_level = 0
-text_ascii = "**Balance**: 6 tests for frustration computation"
+text_ascii = "**Balance**: 6 tests for imbalance computation"
 text_sha256 = "b204b26e59f065eb5e5942f1b31e91bd72daff872e2fd68f289a6be105e4adc5"
 
 [[unit]]
@@ -8600,7 +8600,7 @@ kind = "list_item"
 line_start = 109
 line_end = 109
 heading_level = 0
-text_ascii = "Density normalization (0 <= frustration_density <= 1)"
+text_ascii = "Density normalization (0 <= imbalance_density <= 1)"
 text_sha256 = "3ee40471be893f5c6e033307933e462f9fa3eafe6b3e1d036ea978613827bf17"
 
 [[unit]]
@@ -8720,7 +8720,7 @@ kind = "list_item"
 line_start = 125
 line_end = 125
 heading_level = 0
-text_ascii = "Frustration computation is inherently sequential (cycle-dependent)"
+text_ascii = "Imbalance computation is inherently sequential (cycle-dependent)"
 text_sha256 = "934d10ba54e2a5bc4b4369b407def5bc7cb26ede0b92f662aac1c43ca7952c68"
 
 [[unit]]
@@ -8870,7 +8870,7 @@ kind = "list_item"
 line_start = 145
 line_end = 145
 heading_level = 0
-text_ascii = "Frustration metrics across CD algebras (dim=16-1024)"
+text_ascii = "Imbalance metrics across CD algebras (dim=16-1024)"
 text_sha256 = "ce27f7d838940c14ebe45d55850ee90250edcaee88f7e2ad75a1ddb585cb45c5"
 
 [[unit]]
@@ -8900,7 +8900,7 @@ kind = "list_item"
 line_start = 148
 line_end = 148
 heading_level = 0
-text_ascii = "Viscosity field computation from frustration"
+text_ascii = "Viscosity field computation from imbalance"
 text_sha256 = "b740faf0801e81d61e80ca7ce7b7ab12f93cdedaf03272a78937225b659a46a7"
 
 [[unit]]
@@ -9040,7 +9040,7 @@ kind = "list_item"
 line_start = 167
 line_end = 167
 heading_level = 0
-text_ascii = "[x] Compiles with `cargo build -p vacuum_frustration`"
+text_ascii = "[x] Compiles with `cargo build -p sign_imbalance`"
 text_sha256 = "6b0773152095549babeb64846fd813280672d22810beef6c4af30908c3f2a6ef"
 
 [[unit]]
@@ -9050,7 +9050,7 @@ kind = "list_item"
 line_start = 168
 line_end = 168
 heading_level = 0
-text_ascii = "[x] All tests pass: `cargo test -p vacuum_frustration --lib`"
+text_ascii = "[x] All tests pass: `cargo test -p sign_imbalance --lib`"
 text_sha256 = "02e865a291ff7162e7132d0cf78634699a468f0125403506ebd054b3f2dc2480"
 
 [[unit]]
@@ -9060,7 +9060,7 @@ kind = "list_item"
 line_start = 169
 line_end = 169
 heading_level = 0
-text_ascii = "[x] Zero warnings: `cargo clippy -p vacuum_frustration -- -D warnings`"
+text_ascii = "[x] Zero warnings: `cargo clippy -p sign_imbalance -- -D warnings`"
 text_sha256 = "4400eeb2b793017329804a74a783fbae365ae1a133705eb4318f9a1781cb272f"
 
 [[unit]]
@@ -9140,7 +9140,7 @@ kind = "list_item"
 line_start = 180
 line_end = 180
 heading_level = 0
-text_ascii = "**Week 3**: Frustration-viscosity bridge"
+text_ascii = "**Week 3**: Imbalance-viscosity bridge"
 text_sha256 = "9ab3d1f117c74408ffd2ff4d50efa36b49cd18a4267326550d97b12a60744acf"
 
 [[unit]]
@@ -9150,7 +9150,7 @@ kind = "list_item"
 line_start = 181
 line_end = 181
 heading_level = 0
-text_ascii = "Connect signed graph frustration to LBM viscosity field"
+text_ascii = "Connect signed graph imbalance to LBM viscosity field"
 text_sha256 = "24a763891b127f8f2250583acb91bc55cc4c1e949d9502a0b935f427ea5d3819"
 
 [[unit]]
@@ -9170,7 +9170,7 @@ kind = "list_item"
 line_start = 183
 line_end = 183
 heading_level = 0
-text_ascii = "Integration tests bridging algebra_core -> vacuum_frustration -> lbm_3d"
+text_ascii = "Integration tests bridging algebra_core -> sign_imbalance -> lbm_3d"
 text_sha256 = "bcdda02b852100834fdb26bb637cc968fed4e34f35ca335a64aad2ed5d739070"
 
 [[unit]]

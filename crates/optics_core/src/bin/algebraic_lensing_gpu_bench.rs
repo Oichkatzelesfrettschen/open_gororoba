@@ -22,7 +22,7 @@ fn main() -> anyhow::Result<()> {
         let nz = 64;
         let mut density = vec![0.375f32; nx * ny * nz]; // Vacuum background
 
-        // Create a high-frustration core (the "Black Hole")
+        // Create a high-imbalance core (the "Black Hole")
         let cx = nx as f32 / 2.0;
         let cy = ny as f32 / 2.0;
         let cz = nz as f32 / 2.0;
@@ -32,7 +32,7 @@ fn main() -> anyhow::Result<()> {
                     let dist = ((x as f32 - cx).powi(2) + (y as f32 - cy).powi(2) + (z as f32 - cz).powi(2)).sqrt();
                     if dist < 10.0 {
                         let idx = z * nx * ny + y * nx + x;
-                        density[idx] = 0.8; // High frustration core
+                        density[idx] = 0.8; // High imbalance core
                     }
                 }
             }

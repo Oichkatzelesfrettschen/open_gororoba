@@ -1,1 +1,11 @@
 out/
+# LaTeX build artifacts (stale if latexmk runs without -output-directory)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.toc
+*.log
+_minted/

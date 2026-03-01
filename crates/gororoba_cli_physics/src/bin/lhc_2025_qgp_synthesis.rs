@@ -1,4 +1,4 @@
-use cd_spin_bridge::{QGPFrustrationBridge, QGPState};
+use cd_spin_bridge::{QGPImbalanceBridge, QGPState};
 use clap::Parser;
 use csv::ReaderBuilder;
 use nalgebra::{Matrix3, Vector3};
@@ -27,7 +27,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
     let alice_records = load_alice_data(&args.alice_data)?;
     let cms_records = load_cms_data(&args.cms_data)?;
-    let bridge = QGPFrustrationBridge::default();
+    let bridge = QGPImbalanceBridge::default();
     let initial_rho = TwoQubitState::from_ab_t(
         &Vector3::zeros(),
         &Vector3::zeros(),

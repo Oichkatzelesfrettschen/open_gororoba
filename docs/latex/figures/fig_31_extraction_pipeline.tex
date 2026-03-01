@@ -1,0 +1,50 @@
+%% Fig 31: Extraction pipeline flowchart (Rocq -> OCaml -> Rust)
+\begin{tikzpicture}[
+  box/.style={
+    draw, rounded corners=4pt, minimum width=2.8cm,
+    minimum height=0.8cm, font=\sffamily\small, thick, inner sep=4pt
+  },
+  arr/.style={-{Stealth[length=5pt]}, thick},
+  trust/.style={draw=OIvermillion, very thick, dashed, rounded corners=6pt},
+]
+  %% Rocq source
+  \node[box, fill=OIblue!15, draw=OIblue!60] (rocq) at (0,0)
+    {Rocq source (.v)};
+  \node[font=\sffamily\tiny, gray, below=0.1cm of rocq] {38 files, 2049 lines};
+
+  %% Kernel check
+  \node[box, fill=OIblue!15, draw=OIblue!60] (kernel) at (4,0)
+    {Kernel check (.vo)};
+  \draw[arr, OIblue!60] (rocq) -- node[above, font=\sffamily\tiny] {rocq compile} (kernel);
+
+  %% Extraction
+  \node[box, fill=OIorange!15, draw=OIorange!60] (ocaml) at (8,0)
+    {OCaml (.ml)};
+  \draw[arr, OIorange!60] (kernel) -- node[above, font=\sffamily\tiny] {Extract} (ocaml);
+
+  %% Golden file diff
+  \node[box, fill=OIorange!15, draw=OIorange!60] (golden) at (8,-2)
+    {Golden file};
+  \draw[arr, OIorange!60] (ocaml) -- node[right, font=\sffamily\tiny] {diff} (golden);
+  \node[font=\sffamily\tiny, OIgreen!70!black, right=0.1cm of golden] {$\checkmark$ match};
+
+  %% Trust boundary
+  \node[box, fill=OIvermillion!10, draw=OIvermillion!60] (rust) at (4,-2)
+    {Rust verified\_core};
+  \draw[arr, OIvermillion!60] (golden) -- node[above, font=\sffamily\tiny]
+    {manual translation} (rust);
+
+  %% Trust boundary box
+  \begin{scope}[on background layer]
+    \node[trust, fit=(rust), inner sep=8pt,
+      label={[font=\sffamily\tiny, OIvermillion!70!black]above:Trust Boundary}] {};
+  \end{scope}
+
+  %% Cross-validation
+  \node[box, fill=OIgreen!15, draw=OIgreen!60] (prod) at (0,-2)
+    {algebra\_core};
+  \draw[arr, OIgreen!60] (rust) -- node[above, font=\sffamily\tiny]
+    {cross-validate} (prod);
+  \node[font=\sffamily\tiny, OIgreen!70!black, below=0.1cm of prod]
+    {36 tests, $\epsilon < 10^{-12}$};
+\end{tikzpicture}

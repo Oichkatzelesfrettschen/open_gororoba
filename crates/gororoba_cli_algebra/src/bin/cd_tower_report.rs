@@ -8,7 +8,7 @@
 //! - Zero-divisor 2-blade pair counts
 //! - Motif component counts and scaling laws
 //! - Face sign census regime counts
-//! - Frustration ratios (GF(2) cohomology)
+//! - Imbalance ratios (GF(2) cohomology)
 //! - Split-CD zero-divisor counts (where feasible)
 //!
 //! References claims: C-483, C-487, C-520, C-528, C-529, C-531, C-534,
@@ -42,9 +42,9 @@ struct Args {
     #[arg(long)]
     census: bool,
 
-    /// Include frustration ratios (slow at dim >= 128).
+    /// Include imbalance ratios (slow at dim >= 128).
     #[arg(long)]
-    frustration: bool,
+    imbalance: bool,
 
     /// Include all optional analyses.
     #[arg(long)]
@@ -74,8 +74,8 @@ struct DimRow {
     // Face sign census
     n_regimes: Option<usize>,
     total_triangles: Option<usize>,
-    // Frustration ratio
-    frustration_ratio: Option<f64>,
+    // Imbalance ratio
+    imbalance_ratio: Option<f64>,
     // Split-CD ZD count
     split_zd_count: Option<usize>,
     // Timing
@@ -123,8 +123,8 @@ fn count_zd_pairs(dim: usize) -> usize {
     find_zero_divisors(dim, 1e-10).len()
 }
 
-/// Compute frustration ratio for a given dimension using BFS cohomology.
-fn compute_frustration_ratio(dim: usize) -> (usize, usize, f64) {
+/// Compute imbalance ratio for a given dimension using BFS cohomology.
+fn compute_imbalance_ratio(dim: usize) -> (usize, usize, f64) {
     let components = motif_components_for_cross_assessors(dim);
     let psi = |d: usize, i: usize, j: usize| -> u8 {
         if cd_basis_mul_sign_iter(d, i, j) == 1 {
@@ -237,7 +237,7 @@ fn main() {
     let args = Args::parse();
     let do_split = args.split || args.all;
     let do_census = args.census || args.all;
-    let do_frustration = args.frustration || args.all;
+    let do_imbalance = args.imbalance || args.all;
 
     assert!(
         args.max_dim.is_power_of_two(),
@@ -332,9 +332,9 @@ fn main() {
             (None, None)
         };
 
-        // Frustration ratio (feasible up to dim=256 in reasonable time)
-        let frust = if do_frustration && (16..=256).contains(&dim) {
-            let (_, _, r) = compute_frustration_ratio(dim);
+        // Imbalance ratio (feasible up to dim=256 in reasonable time)
+        let frust = if do_imbalance && (16..=256).contains(&dim) {
+            let (_, _, r) = compute_imbalance_ratio(dim);
             Some(r)
         } else if dim < 16 {
             Some(0.0)
@@ -371,7 +371,7 @@ fn main() {
             n_motif_classes: n_classes,
             n_regimes,
             total_triangles: n_triangles,
-            frustration_ratio: frust,
+            imbalance_ratio: frust,
             split_zd_count: split_zd,
             compute_time_ms: elapsed,
         });
@@ -490,14 +490,14 @@ fn main() {
     println!();
 
     // =========================================================================
-    // Section 4: Face Sign Census & Frustration
+    // Section 4: Face Sign Census & Imbalance
     // =========================================================================
-    if do_census || do_frustration {
-        println!("SECTION 4: FACE SIGN CENSUS & FRUSTRATION RATIOS");
+    if do_census || do_imbalance {
+        println!("SECTION 4: FACE SIGN CENSUS & IMBALANCE RATIOS");
         println!("-----------------------------------------------------------------------------");
         println!(
             "{:<14} {:>5} {:>10} {:>12} {:>12}",
-            "Algebra", "dim", "Regimes", "Triangles", "Frustration"
+            "Algebra", "dim", "Regimes", "Triangles", "Imbalance"
         );
         println!(
             "{:<14} {:>5} {:>10} {:>12} {:>12}",
@@ -512,7 +512,7 @@ fn main() {
                 Some(n) => format!("{}", n),
                 None => "---".to_string(),
             };
-            let frust_str = match r.frustration_ratio {
+            let frust_str = match r.imbalance_ratio {
                 Some(f) if f > 0.0 => format!("{:.5}", f),
                 Some(_) => "0.000".to_string(),
                 None => "---".to_string(),
@@ -524,9 +524,9 @@ fn main() {
         }
         println!();
         println!("  Regime count formula (dim >= 32): dim/16 + 1");
-        println!("  Universal Double 3:1 Law (C-487): OS = 3*AS, TS = 3*AO in ALL components");
+        println!("  Universal 3:1 Theorem (C-487): OS = 3*AS, TS = 3*AO in ALL components");
         println!("  Anti-Diagonal Parity Theorem (C-520/C-521): mechanism via GF(2)^2 invariant F");
-        println!("  Frustration converges toward 3/8 = 0.375 (C-529/C-535)");
+        println!("  Imbalance converges toward 3/8 = 0.375 (C-529/C-535)");
         println!();
     }
 
@@ -564,7 +564,7 @@ fn main() {
         println!("    - CD always non-commutative at dim >= 4 regardless of gamma (C-546)");
         println!("    - Split-octonion signature (4,3) with 128 ZD pairs (C-547)");
         println!("    - Dim=4: standard [-1,-1] is ONLY signature without ZDs (C-548)");
-        println!("    - Split-octonion psi=1 fraction = 3/8 matches frustration limit (C-549)");
+        println!("    - Split-octonion psi=1 fraction = 3/8 matches imbalance limit (C-549)");
         println!();
     }
 
@@ -675,10 +675,10 @@ fn main() {
     // =========================================================================
     println!("SECTION 7: PRECOMPUTED / KNOWN VALUES (from prior sprints)");
     println!("-----------------------------------------------------------------------------");
-    println!("  dim=512:  33 face sign regimes, 214M triangles, frustration ~0.385 (C-531)");
-    println!("  dim=1024: frustration ratio = 0.37849 (C-535)");
+    println!("  dim=512:  33 face sign regimes, 214M triangles, imbalance ~0.385 (C-531)");
+    println!("  dim=1024: imbalance ratio = 0.37849 (C-535)");
     println!("  dim=2048: lattice codebook filtration verified (I-015)");
-    println!("  Frustration convergence: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381, 0.378");
+    println!("  Imbalance convergence: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381, 0.378");
     println!("    (dims 16, 32, 64, 128, 256, 512, 1024) -- post-peak monotone decrease");
     println!("    toward 3/8 = 0.375 (C-529/C-535)");
     println!();
@@ -689,7 +689,7 @@ fn main() {
     println!("SECTION 8: KEY THEOREMS AND CLAIMS VERIFIED");
     println!("-----------------------------------------------------------------------------");
     println!("  C-483:  Universal 3:1 TwoSameOneOpp:AllOpposite ratio (antibalanced graph)");
-    println!("  C-487:  Universal Double 3:1 Law (OS=3*AS AND TS=3*AO)");
+    println!("  C-487:  Universal 3:1 Theorem (OS=3*AS AND TS=3*AO)");
     println!("  C-520:  Anti-Diagonal Parity Theorem (eta = psi_02 XOR psi_10)");
     println!("  C-521:  GF(2)^2 invariant F determines face sign pattern");
     println!("  C-523:  GF(2) coboundary phase transition at dim=16");
@@ -697,7 +697,7 @@ fn main() {
     println!("  C-526:  CD doubling recursion: eta = 1 XOR eta_half");
     println!("  C-527:  GF(2) polynomial degree: psi ANF deg = log2(dim)");
     println!("  C-528:  Quarter Rule: pure = total/4 exactly");
-    println!("  C-529:  Frustration convergence toward 3/8");
+    println!("  C-529:  Imbalance convergence toward 3/8");
     println!("  C-534:  psi=1 fraction converges to 50% from above");
     println!("  C-537:  Universal anti-commutativity of CD basis elements");
     println!("  C-544:  psi=1 exact formula (n+1)/(2n) proved");
@@ -705,7 +705,7 @@ fn main() {
     println!("  C-546:  CD always non-commutative at dim >= 4");
     println!("  C-547:  Split-octonion signature (4,3) with 128 ZD pairs");
     println!("  C-548:  Standard quaternions uniquely ZD-free at dim=4");
-    println!("  C-549:  Split-octonion psi=1 frac = 3/8 = frustration limit");
+    println!("  C-549:  Split-octonion psi=1 frac = 3/8 = imbalance limit");
     println!();
 
     // =========================================================================

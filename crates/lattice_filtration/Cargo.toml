@@ -8,7 +8,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 [dependencies]
 algebra_core = { path = "../algebra_core", version = "0.1" }
 rand.workspace = true
-vacuum_frustration = { version = "0.1.0", path = "../vacuum_frustration" }
+sign_imbalance = { version = "0.1.0", path = "../sign_imbalance" }
 
 [dev-dependencies]
 stats_core = { path = "../stats_core" }

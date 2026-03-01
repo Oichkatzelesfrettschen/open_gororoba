@@ -7,7 +7,7 @@ weeks_completed = 4
 start_date = "2026-02-06"
 end_date = "2026-02-12"
 duration_days = 7
-crates_delivered = ["cosmic_scheduler", "vacuum_frustration", "lbm_3d"]
+crates_delivered = ["cosmic_scheduler", "sign_imbalance", "lbm_3d"]
 crates_scaffolded = ["lattice_filtration", "neural_homotopy", "gororoba_engine"]
 total_workspace_crates = 23
 total_rust_loc = 177933
@@ -33,11 +33,11 @@ claim = "CRI-002"
 description = "PhaseScheduler trait: two-phase clock abstraction inspired by Intel 4004 timing"
 
 [[deliverables]]
-crate = "vacuum_frustration"
+crate = "sign_imbalance"
 tests = 22
 status = "complete"
 claims = ["C-657", "C-658", "C-659"]
-description = "Harary-Zaslavsky frustration, SedenionField, FrustrationViscosityBridge, Vietoris-Rips homology"
+description = "Harary-Zaslavsky imbalance, SedenionField, ImbalanceViscosityBridge, Vietoris-Rips homology"
 
 [[deliverables]]
 crate = "lbm_3d"
@@ -69,7 +69,7 @@ executed = ["E-027", "STPT-006", "STPT-007", "STPT-008", "STPT-009"]
 
 [experiments.e027]
 status = "ACTIVE"
-method = "Vietoris-Rips persistent homology + CD psi-weighted frustration"
+method = "Vietoris-Rips persistent homology + CD psi-weighted imbalance"
 binary = "e027-topology-analyzer"
 result_8cubed = "r=-0.522, p=0.149 (not significant at alpha=0.05)"
 result_16cubed = "r=-0.378, p=0.075 (marginal)"
@@ -109,7 +109,7 @@ external_gpl = ["hurst (GPL-3.0-or-later)", "physical_constants (GPL-3.0)", "qua
 known_gpl_issues = "hurst crate GPL-3.0 conflict documented in MEMORY.md; used behind catch_unwind"
 
 [thesis_evidence_summary]
-thesis_1 = "Frustration-viscosity coupling implemented. STPT-006 shows narrow validity (lambda=0.5, F=0.125). E-027 topology analysis active."
+thesis_1 = "Imbalance-viscosity coupling implemented. STPT-006 shows narrow validity (lambda=0.5, F=0.125). E-027 topology analysis active."
 thesis_2 = "STPT-007 refuted linear thickening model. Needs non-linear associator coupling."
 thesis_3 = "STPT-008 supported (trivially -- no plateau). Needs deeper training."
 thesis_4 = "STPT-009 refuted inverse-square latency. Fibonacci collision model needs refinement."

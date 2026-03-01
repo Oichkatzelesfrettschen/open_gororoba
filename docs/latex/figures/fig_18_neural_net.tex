@@ -1,0 +1,67 @@
+%% Fig 18: Neural pentagon correction architecture (256->128->64->16)
+%% TikZ neural network diagram with layer annotations
+\begin{tikzpicture}[
+  neuron/.style={circle, draw, thick, minimum size=5pt, inner sep=0pt},
+  layer/.style={font=\sffamily\scriptsize},
+  conn/.style={gray!30, thin},
+]
+  %% Layer positions
+  \def\layersep{2.5cm}
+
+  %% Input layer (256 -- show 8 representative neurons)
+  \foreach \y in {1,...,8} {
+    \node[neuron, fill=cAlgebra!40] (I\y) at (0, -\y*0.5 + 2.5) {};
+  }
+  \node[layer, above] at (0, 2.8) {\textbf{Input}};
+  \node[layer, below] at (0, -1.8) {256};
+  \node[font=\sffamily\tiny, gray] at (0, -0.5) {$\vdots$};
+
+  %% Hidden layer 1 (128 -- show 6)
+  \foreach \y in {1,...,6} {
+    \node[neuron, fill=cFluid!40] (H1\y) at (\layersep, -\y*0.55 + 2.2) {};
+  }
+  \node[layer, above] at (\layersep, 2.8) {\textbf{Hidden 1}};
+  \node[layer, below] at (\layersep, -1.8) {128};
+  \node[font=\sffamily\tiny, gray] at (\layersep, -0.3) {$\vdots$};
+
+  %% Hidden layer 2 (64 -- show 5)
+  \foreach \y in {1,...,5} {
+    \node[neuron, fill=cGR!40] (H2\y) at (2*\layersep, -\y*0.55 + 2.0) {};
+  }
+  \node[layer, above] at (2*\layersep, 2.8) {\textbf{Hidden 2}};
+  \node[layer, below] at (2*\layersep, -1.8) {64};
+
+  %% Output layer (16 -- show 4)
+  \foreach \y in {1,...,4} {
+    \node[neuron, fill=cQuantum!40, minimum size=7pt] (O\y) at (3*\layersep, -\y*0.6 + 1.7) {};
+  }
+  \node[layer, above] at (3*\layersep, 2.8) {\textbf{Output}};
+  \node[layer, below] at (3*\layersep, -1.8) {16};
+
+  %% Connections (sparse representative)
+  \foreach \i in {1,...,8} {
+    \foreach \j in {1,...,6} {
+      \draw[conn] (I\i) -- (H1\j);
+    }
+  }
+  \foreach \i in {1,...,6} {
+    \foreach \j in {1,...,5} {
+      \draw[conn] (H1\i) -- (H2\j);
+    }
+  }
+  \foreach \i in {1,...,5} {
+    \foreach \j in {1,...,4} {
+      \draw[conn] (H2\i) -- (O\j);
+    }
+  }
+
+  %% Activation labels
+  \node[font=\sffamily\tiny, OIblue, rotate=90] at (1.25, -2.3) {ReLU};
+  \node[font=\sffamily\tiny, OIblue, rotate=90] at (3.75, -2.3) {ReLU};
+  \node[font=\sffamily\tiny, OIblue, rotate=90] at (6.25, -2.3) {Linear};
+
+  %% Annotations
+  \node[draw, rounded corners, fill=gray!5, font=\sffamily\tiny, align=center]
+    at (3.75, -3.2) {Adam optimizer, MSE loss, 64 epochs\\
+    Baseline: 2.50 $\to$ Result: 0.547 (78\% reduction)};
+\end{tikzpicture}

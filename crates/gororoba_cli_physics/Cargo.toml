@@ -217,8 +217,8 @@ name = "kubo-coupling-analysis"
 path = "src/bin/kubo_coupling_analysis.rs"
 
 [[bin]]
-name = "kubo-frustration-transport"
-path = "src/bin/kubo_frustration_transport.rs"
+name = "kubo-imbalance-transport"
+path = "src/bin/kubo_imbalance_transport.rs"
 
 [[bin]]
 name = "e027-topology-analyzer"
@@ -287,7 +287,7 @@ lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 stats_core = { path = "../stats_core" }
 data_core = { path = "../data_core" }
 snia_core = { path = "../snia_core" }
-vacuum_frustration = { path = "../vacuum_frustration" }
+sign_imbalance = { path = "../sign_imbalance" }
 neural_homotopy = { path = "../neural_homotopy" }
 spin_tomography_core = { path = "../spin_tomography_core" }
 cd_spin_bridge = { path = "../cd_spin_bridge" }
@@ -312,7 +312,7 @@ glob = { workspace = true }
 
 [features]
 default = ["gpu"]
-gpu = ["lbm_3d_cuda", "vacuum_frustration/gpu"]
+gpu = ["lbm_3d_cuda", "sign_imbalance/gpu"]
 hdf5-export = ["data_core/hdf5-export"]
 
 [lints]

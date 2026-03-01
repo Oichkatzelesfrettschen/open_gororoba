@@ -6485,7 +6485,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/200::ASOT-0240", "reports/repo_completion_gap_audit_2026_02_14.toml::finding/13::RG-014"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/besag_clifford_cuda.rs"
+canonical_download_path = "crates/sign_imbalance/src/besag_clifford_cuda.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -6500,7 +6500,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/besag_clifford_cuda.rs"]
+downloaded_paths = ["crates/sign_imbalance/src/besag_clifford_cuda.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -7180,9 +7180,9 @@ notes = ["*2D enstrophy cascade yields E(k) ~ k^{-3} spectrum; EXACT match for p
 
 [[artifact]]
 id = "ASOT-0266"
-key = "title:kubo_linear_response_frustration_viscosity_coupling_derivation"
-title = "Kubo Linear-Response Frustration-Viscosity Coupling Derivation"
-citation = "Kubo Linear-Response Frustration-Viscosity Coupling Derivation"
+key = "title:kubo_linear_response_imbalance_viscosity_coupling_derivation"
+title = "Kubo Linear-Response Imbalance-Viscosity Coupling Derivation"
+citation = "Kubo Linear-Response Imbalance-Viscosity Coupling Derivation"
 source_kinds = ["toml_source"]
 source_refs = ["registry/experiments.toml::experiment/32::E-034", "registry/source_lanes/web_references.toml::artifact_ref/225::ASOT-0266"]
 doi_list = []
@@ -8498,7 +8498,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/cosmic_scheduler", "crates/vacuum_frustration/src/signed_graph.rs", "crates/vacuum_frustration/src/balance.rs", "crates/lbm_3d", "crates/vacuum_frustration/src/bridge.rs", "crates/lbm_3d_cuda", "registry/lbm_gpu_performance.toml", "docs/SYNTHESIS_PIPELINE_PROGRESS.md"]
+downloaded_paths = ["crates/cosmic_scheduler", "crates/sign_imbalance/src/signed_graph.rs", "crates/sign_imbalance/src/balance.rs", "crates/lbm_3d", "crates/sign_imbalance/src/bridge.rs", "crates/lbm_3d_cuda", "registry/lbm_gpu_performance.toml", "docs/SYNTHESIS_PIPELINE_PROGRESS.md"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -158684,7 +158684,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/publication_evidence.toml::section/2/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4756::ASOT-5877"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/bridge.rs"
+canonical_download_path = "crates/sign_imbalance/src/bridge.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -158699,7 +158699,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/bridge.rs", "crates/vacuum_frustration/src/frustration.rs", "crates/vacuum_frustration/src/signed_graph.rs", "crates/vacuum_frustration/src/spatial_correlation.rs", "crates/gororoba_cli_physics/src/bin/e027_topology_v2.rs"]
+downloaded_paths = ["crates/sign_imbalance/src/bridge.rs", "crates/sign_imbalance/src/imbalance.rs", "crates/sign_imbalance/src/signed_graph.rs", "crates/sign_imbalance/src/spatial_correlation.rs", "crates/gororoba_cli_physics/src/bin/e027_topology_v2.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -158711,7 +158711,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/publication_evidence.toml::section/3/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4757::ASOT-5878"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/bridge.rs"
+canonical_download_path = "crates/sign_imbalance/src/bridge.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -158726,7 +158726,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/bridge.rs", "crates/vacuum_frustration/src/kubo_transport.rs", "crates/vacuum_frustration/src/kubo_transport_gpu.rs", "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs", "crates/gororoba_cli/src/bin/thesis2_3d_thickening.rs"]
+downloaded_paths = ["crates/sign_imbalance/src/bridge.rs", "crates/sign_imbalance/src/kubo_transport.rs", "crates/sign_imbalance/src/kubo_transport_gpu.rs", "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs", "crates/gororoba_cli/src/bin/thesis2_3d_thickening.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -158765,7 +158765,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/publication_evidence.toml::section/5/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4759::ASOT-5880"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/vietoris_rips.rs"
+canonical_download_path = "crates/sign_imbalance/src/vietoris_rips.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -158780,7 +158780,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/vietoris_rips.rs"]
+downloaded_paths = ["crates/sign_imbalance/src/vietoris_rips.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -158873,7 +158873,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/publication_evidence.toml::section/9/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4763::ASOT-5884"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/kubo_transport.rs"
+canonical_download_path = "crates/sign_imbalance/src/kubo_transport.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -158888,7 +158888,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/kubo_transport.rs", "crates/vacuum_frustration/src/kubo_transport_gpu.rs", "crates/gororoba_cli_physics/src/bin/kubo_frustration_transport.rs", "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs", "crates/gororoba_cli_physics/src/bin/validate_j1j2_kubo.rs", "data/kubo_transport/validation/published_transport_benchmarks.toml"]
+downloaded_paths = ["crates/sign_imbalance/src/kubo_transport.rs", "crates/sign_imbalance/src/kubo_transport_gpu.rs", "crates/gororoba_cli_physics/src/bin/kubo_imbalance_transport.rs", "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs", "crates/gororoba_cli_physics/src/bin/validate_j1j2_kubo.rs", "data/kubo_transport/validation/published_transport_benchmarks.toml"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -184172,7 +184172,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/5696::ASOT-6821", "registry/toml_inventory.toml::document/28::TOML-0029"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/Cargo.toml"
+canonical_download_path = "crates/sign_imbalance/Cargo.toml"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -184187,7 +184187,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/Cargo.toml"]
+downloaded_paths = ["crates/sign_imbalance/Cargo.toml"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -217101,7 +217101,7 @@ working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
 downloaded_paths = ["data/papers/corpus/reggiani_2024_2411.18881.pdf"]
-notes = ["downloaded", "Recent geometry of sedenion zero divisors, relevant to topology/frustration claims framing."]
+notes = ["downloaded", "Recent geometry of sedenion zero divisors, relevant to topology/imbalance claims framing."]
 
 [[artifact]]
 id = "ASOT-8041"
@@ -217922,7 +217922,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6756::ASOT-8071", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/6"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/bridge.rs"
+canonical_download_path = "crates/sign_imbalance/src/bridge.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -217937,7 +217937,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/bridge.rs"]
+downloaded_paths = ["crates/sign_imbalance/src/bridge.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -217949,7 +217949,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6757::ASOT-8072", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/7"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/tests/integration_test.rs"
+canonical_download_path = "crates/sign_imbalance/tests/integration_test.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -217964,7 +217964,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/tests/integration_test.rs"]
+downloaded_paths = ["crates/sign_imbalance/tests/integration_test.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -217976,7 +217976,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6758::ASOT-8073", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/8"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/Cargo.toml"
+canonical_download_path = "crates/sign_imbalance/Cargo.toml"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -217991,7 +217991,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/Cargo.toml"]
+downloaded_paths = ["crates/sign_imbalance/Cargo.toml"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -219164,7 +219164,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6792::ASOT-8117", "reports/spec_stpt_006_scalar_tov.toml::test_case/0::TC-006-01"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/frustration.rs"
+canonical_download_path = "crates/sign_imbalance/src/imbalance.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -219179,7 +219179,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/frustration.rs"]
+downloaded_paths = ["crates/sign_imbalance/src/imbalance.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -219191,7 +219191,7 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6793::ASOT-8118", "reports/spec_stpt_006_scalar_tov.toml::test_case/1::TC-006-02"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/tests/integration_test.rs"
+canonical_download_path = "crates/sign_imbalance/tests/integration_test.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -219206,7 +219206,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/tests/integration_test.rs"]
+downloaded_paths = ["crates/sign_imbalance/tests/integration_test.rs"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -220286,7 +220286,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["Cargo.toml", "crates/algebra_core", "crates/vacuum_frustration", "crates/gororoba_cli", "crates/lbm_3d_cuda"]
+downloaded_paths = ["Cargo.toml", "crates/algebra_core", "crates/sign_imbalance", "crates/gororoba_cli", "crates/lbm_3d_cuda"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -220318,14 +220318,14 @@ notes = ["*Maps CD zero-divisor structure to PG(n-2,2) finite projective spaces;
 
 [[artifact]]
 id = "ASOT-8160"
-key = "title:scalar_frustration_to_viscosity_bridge_boundary"
-title = "Scalar frustration-to-viscosity bridge boundary"
-citation = "Scalar frustration-to-viscosity bridge boundary"
+key = "title:scalar_imbalance_to_viscosity_bridge_boundary"
+title = "Scalar imbalance-to-viscosity bridge boundary"
+citation = "Scalar imbalance-to-viscosity bridge boundary"
 source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6835::ASOT-8160", "reports/pure_rust_port_boundaries_2026_02_14.toml::boundary/1::PB-002"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/vacuum_frustration/src/bridge.rs"
+canonical_download_path = "crates/sign_imbalance/src/bridge.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -220340,7 +220340,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/vacuum_frustration/src/bridge.rs", "crates/vacuum_frustration/tests/integration_test.rs", "crates/vacuum_frustration/Cargo.toml"]
+downloaded_paths = ["crates/sign_imbalance/src/bridge.rs", "crates/sign_imbalance/tests/integration_test.rs", "crates/sign_imbalance/Cargo.toml"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -220804,9 +220804,9 @@ notes = ["active", "downloaded"]
 
 [[artifact]]
 id = "ASOT-8178"
-key = "title:surface_tension_of_frustration"
-title = "Surface Tension of Frustration"
-citation = "Surface Tension of Frustration"
+key = "title:surface_tension_of_imbalance"
+title = "Surface Tension of Imbalance"
+citation = "Surface Tension of Imbalance"
 source_kinds = ["toml_source"]
 source_refs = ["registry/insights.toml::insight/44::I-052", "registry/source_lanes/web_references.toml::artifact_ref/6852::ASOT-8178"]
 doi_list = []
@@ -221506,9 +221506,9 @@ notes = ["active", "downloaded"]
 
 [[artifact]]
 id = "ASOT-8204"
-key = "title:tx_1_frustration_modulated_collision_dynamics_t1_x_t4"
-title = "TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)"
-citation = "TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)"
+key = "title:tx_1_imbalance_modulated_collision_dynamics_t1_x_t4"
+title = "TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)"
+citation = "TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)"
 source_kinds = ["toml_source"]
 source_refs = ["registry/experiments.toml::experiment/28::E-030", "registry/source_lanes/web_references.toml::artifact_ref/6877::ASOT-8204", "registry/studio_pipeline_catalog.toml::pipeline/3::thesis-4"]
 doi_list = []

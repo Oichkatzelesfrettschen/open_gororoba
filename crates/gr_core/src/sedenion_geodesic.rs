@@ -16,7 +16,7 @@ use algebra_core::physics::m3::{
 pub struct SedenionMetricState {
     pub associativity_drift: f64,
     pub scalar_coherence: f64,
-    pub vector_frustration: f64,
+    pub vector_imbalance: f64,
 }
 
 /// Compute the sedenionic associativity metrics for a given Kerr state.
@@ -25,14 +25,14 @@ pub struct SedenionMetricState {
 pub fn compute_sedenion_coherence(kerr: &Kerr, r: f64, theta: f64) -> SedenionMetricState {
     let (sigma, _delta) = kerr_metric_quantities(r, theta, kerr.spin / kerr.mass);
 
-    // The "frustration" is proportional to the curvature components
+    // The "imbalance" is proportional to the curvature components
     // that break the alternativity of the algebra.
     // In Kerr BL, this is dominated by the frame-dragging cross term.
     let frame_dragging = 2.0 * kerr.mass * kerr.spin * r / sigma;
 
     // Simulated M3 analysis:
     // We use the OctonionTable to compute base residuals and then
-    // scale them by the metric frustration.
+    // scale them by the metric imbalance.
     let oct = OctonionTable::new();
     let mut scalar_sum = 0.0;
     let mut vector_sum = 0.0;
@@ -62,7 +62,7 @@ pub fn compute_sedenion_coherence(kerr: &Kerr, r: f64, theta: f64) -> SedenionMe
     SedenionMetricState {
         associativity_drift: total_drift,
         scalar_coherence: scalar_sum,
-        vector_frustration: vector_sum,
+        vector_imbalance: vector_sum,
     }
 }
 
@@ -87,10 +87,10 @@ pub fn sedenion_homotopy_step(
 
     let state1 = compute_sedenion_coherence(kerr, r1, theta1);
 
-    // The "Homotopy Force" is the gradient of the vector frustration
-    let dr = (state1.vector_frustration - state0.vector_frustration) / h;
+    // The "Homotopy Force" is the gradient of the vector imbalance
+    let dr = (state1.vector_imbalance - state0.vector_imbalance) / h;
 
-    // Adjust velocities to counteract frustration growth
+    // Adjust velocities to counteract imbalance growth
     // This is the "Breakthrough" correction term.
     let alpha = 0.1; // Homotopy coupling constant
     let vr_corr = vr - alpha * dr * vr;
@@ -115,8 +115,8 @@ mod tests {
         // Coherence near horizon
         let state_near = compute_sedenion_coherence(&kerr, r_h + 0.1, FRAC_PI_2);
 
-        // Frustration should be higher near the horizon due to extreme frame dragging
-        assert!(state_near.vector_frustration > state_far.vector_frustration);
+        // Imbalance should be higher near the horizon due to extreme frame dragging
+        assert!(state_near.vector_imbalance > state_far.vector_imbalance);
     }
 
     #[test]

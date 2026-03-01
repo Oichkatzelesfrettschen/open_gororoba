@@ -32,7 +32,7 @@ priority = "medium"
 [[candidate]]
 id = "MSC-003"
 source_path = "src/mathphysics/algebras/cayley_dickson.py"
-target_crate = "crates/vacuum_frustration"
+target_crate = "crates/sign_imbalance"
 target_module = "cd_algebra"
 summary = "Trimmed sedenion-focused CD multiplication and zero-divisor search utilities."
 effort = "L"

@@ -77,7 +77,7 @@ license_risk = "subset_based_import_rules_required"
 port_mode = "clean_room_by_default"
 
 [thesis_normalization]
-t1 = "Frustration-metric coupling hypothesis: map signed-graph frustration density F(x) to scalar viscosity modifier phi(x)=exp(-lambda*F(x)) and test against bounded Brans-Dicke/TOV constraints."
+t1 = "Imbalance-metric coupling hypothesis: map signed-graph imbalance density F(x) to scalar viscosity modifier phi(x)=exp(-lambda*F(x)) and test against bounded Brans-Dicke/TOV constraints."
 t2 = "Associator-viscosity transport hypothesis: map local non-associativity norm ||m3|| into LBM collision operator and test for thresholded shear-thickening."
 t3 = "Homotopy-time correspondence hypothesis: synthesize m4 correction tensor by minimizing pentagon residual and test epoch alignment against H(z) benchmarks."
 t4 = "Lattice projection engine hypothesis: model 16D->8D filtration collisions and test latency scaling law against inverse-square null alternatives."
@@ -137,7 +137,7 @@ required_tests = ["fixture_equation_parse", "symbol_table_stability"]
 id = "PU-006"
 source_repo = "PhysicsForge"
 source_path = "simulation/cpp/scalar_lattice.cpp"
-target_crate = "crates/vacuum_frustration"
+target_crate = "crates/sign_imbalance"
 target_module = "scalar_lattice"
 math_object = "stencil-based scalar evolution for thesis-1 bridge"
 required_outputs = ["scalar_field_solver", "boundary_conditions", "energy_monitor"]
@@ -234,7 +234,7 @@ acceptance = "Source list with provenance rows and deduped identifiers."
 [[roadmap_task]]
 id = "CRP-005"
 phase = "phase_1"
-title = "Formalize frustration index definition and numeric solver bounds"
+title = "Formalize imbalance index definition and numeric solver bounds"
 owner = "codex"
 effort = "M"
 depends_on = []
@@ -261,7 +261,7 @@ acceptance = "Claims use measurable metrics, thresholds, and refutation conditio
 [[roadmap_task]]
 id = "CRP-008"
 phase = "phase_2"
-title = "Scaffold crates/vacuum_frustration signed-graph API"
+title = "Scaffold crates/sign_imbalance signed-graph API"
 owner = "codex"
 effort = "M"
 depends_on = ["CRP-005"]
@@ -270,7 +270,7 @@ acceptance = "SignedGraph API compiles with clippy -D warnings."
 [[roadmap_task]]
 id = "CRP-009"
 phase = "phase_2"
-title = "Implement exact frustration solver for small graphs"
+title = "Implement exact imbalance solver for small graphs"
 owner = "codex"
 effort = "M"
 depends_on = ["CRP-008"]
@@ -279,7 +279,7 @@ acceptance = "Exact solver matches brute-force fixtures up to configured N."
 [[roadmap_task]]
 id = "CRP-010"
 phase = "phase_2"
-title = "Implement approximate frustration solver for large graphs"
+title = "Implement approximate imbalance solver for large graphs"
 owner = "codex"
 effort = "L"
 depends_on = ["CRP-009"]
@@ -297,7 +297,7 @@ acceptance = "LBM interfaces compile and expose deterministic step API."
 [[roadmap_task]]
 id = "CRP-012"
 phase = "phase_2"
-title = "Inject frustration-derived viscosity into LBM collision operator"
+title = "Inject imbalance-derived viscosity into LBM collision operator"
 owner = "codex"
 effort = "M"
 depends_on = ["CRP-010", "CRP-011"]

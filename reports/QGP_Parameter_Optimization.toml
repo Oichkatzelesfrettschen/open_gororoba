@@ -1,4 +1,4 @@
-model = "QGPFrustrationBridge"
+model = "QGPImbalanceBridge"
 target_dataset = "ALICE 2025 Pb-Pb 5.36 TeV"
 best_k_vorticity = 0.0026000000000000003
 final_rms_error = 0.00024686928615047363

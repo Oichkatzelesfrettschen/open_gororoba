@@ -27,8 +27,8 @@ pub enum LbmBackend3D {
     Gpu(LbmSolver3DCuda),
 }
 
-/// Trait for a 3D frustration field.
-pub trait FrustrationField3D: Send + Sync {
+/// Trait for a 3D imbalance field.
+pub trait ImbalanceField3D: Send + Sync {
     fn apply(&mut self, fluid: &mut LbmBackend3D, nx: usize, ny: usize, nz: usize) -> Result<()>;
 
     /// Optional scalar diagnostic exported in warp traces as `algebra_norm`.
@@ -311,7 +311,7 @@ impl LbmBackend3D {
 
 pub struct SimulationState3D {
     pub fluid: LbmBackend3D,
-    pub frustration: Option<Box<dyn FrustrationField3D>>,
+    pub imbalance: Option<Box<dyn ImbalanceField3D>>,
     pub curvature_field: Vec<f64>,
     pub nx: usize,
     pub ny: usize,
@@ -346,7 +346,7 @@ impl SimulationState3D {
 
         Ok(Self {
             fluid,
-            frustration: None,
+            imbalance: None,
             curvature_field,
             nx,
             ny,
@@ -357,7 +357,7 @@ impl SimulationState3D {
 
     pub fn step(&mut self) -> Result<()> {
         self.fluid.step()?;
-        if let Some(ref mut f) = self.frustration {
+        if let Some(ref mut f) = self.imbalance {
             f.apply(&mut self.fluid, self.nx, self.ny, self.nz)?;
         }
         self.current_step += 1;

@@ -491,14 +491,14 @@ impl GpuDimensionalEngine {
 // Wide-index (u16) API for dim > 512 (where dim/2 > 255 overflows u8)
 // ============================================================================
 
-/// Result of GPU APT census with frustration tracking
+/// Result of GPU APT census with imbalance tracking
 #[derive(Debug, Clone)]
 pub struct GpuAptResultWide {
     /// Base APT result (pure/mixed/fiber counts)
     pub base: GpuAptResult,
-    /// Frustration index: fraction of edges in eta graph that are frustrated
+    /// Imbalance index: fraction of edges in eta graph that are frustrated
     /// (only computed when exhaustive=true, else NaN)
-    pub frustration: f64,
+    pub imbalance: f64,
 }
 
 impl GpuDimensionalEngine {
@@ -617,7 +617,7 @@ impl GpuDimensionalEngine {
                 fiber_11,
                 pure_ratio,
             },
-            frustration: f64::NAN, // Not computed in Monte Carlo mode
+            imbalance: f64::NAN, // Not computed in Monte Carlo mode
         })
     }
 
@@ -965,8 +965,8 @@ mod tests {
     }
 
     #[test]
-    fn test_apt_dim4096_cross_validate_frustration() {
-        // C-597: Frustration monotone decrease: at dim=4096, frustration
+    fn test_apt_dim4096_cross_validate_imbalance() {
+        // C-597: Imbalance monotone decrease: at dim=4096, imbalance
         // should be <= dim=2048 value (0.378) and approaching 3/8=0.375.
         // This test computes a small CPU sample to verify the ratio holds.
         let dim = 4096;
@@ -975,13 +975,13 @@ mod tests {
 
         // Small sample for ratio check (10K is sufficient for 2% accuracy)
         let result = GpuDimensionalEngine::compute_apt_cpu_wide(dim, &nodes, 10_000, 42)
-            .expect("dim=4096 frustration");
+            .expect("dim=4096 imbalance");
 
         let r = &result.base;
         let pure_ratio = r.pure_ratio;
 
         eprintln!(
-            "dim=4096 frustration proxy: pure_ratio={:.4} (expected ~0.25)",
+            "dim=4096 imbalance proxy: pure_ratio={:.4} (expected ~0.25)",
             pure_ratio
         );
 

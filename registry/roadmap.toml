@@ -66,11 +66,11 @@ evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs", "docs
 
 [[workstream]]
 id = "WS-FACESIGN-001"
-name = "Face Sign Census and Double 3:1 Law"
+name = "Face Sign Census and 3:1 Theorem"
 priority = "high"
 status = "done"
 status_token = "DONE"
-description = "Extended box-kite face sign census from dim=16 to dim=512 (33 regimes, 214M triangles). Discovered the Universal Double 3:1 Law (C-487): OneSameTwoOpp=3*AllSame AND TwoSameOneOpp=3*AllOpposite in ALL components at ALL dimensions. Derived the mechanism via Anti-Diagonal Parity Theorem (WS-MECHANISM-001)."
+description = "Extended box-kite face sign census from dim=16 to dim=512 (33 regimes, 214M triangles). Discovered the Universal 3:1 Theorem (C-487): OneSameTwoOpp=3*AllSame AND TwoSameOneOpp=3*AllOpposite in ALL components at ALL dimensions. Derived the mechanism via Anti-Diagonal Parity Theorem (WS-MECHANISM-001)."
 sprint = "S20-S25"
 primary_outputs = ["crates/algebra_core/src/analysis/boxkites.rs"]
 claims = ["C-478", "C-479", "C-480", "C-481", "C-482", "C-483", "C-484", "C-485", "C-486", "C-487", "C-488", "C-489", "C-490", "C-491", "C-492", "C-493", "C-494", "C-495", "C-496", "C-497"]
@@ -99,7 +99,7 @@ name = "Anti-Diagonal Parity Mechanism"
 priority = "high"
 status = "done"
 status_token = "DONE"
-description = "Complete mechanistic explanation for the Universal Double 3:1 Law (C-487). The GF(2) twist exponent psi(i,j) per edge yields a 2-bit anti-diagonal XOR invariant eta. Per triangle, the Klein-four invariant F = (eta_ab XOR eta_bc, eta_bc XOR eta_ac) in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256. Key sub-results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta=1 XOR eta_half (C-526), psi ANF degree=log2(dim) and eta degree=log2(dim)-1 (C-527)."
+description = "Complete mechanistic explanation for the Universal 3:1 Theorem (C-487). The GF(2) twist exponent psi(i,j) per edge yields a 2-bit anti-diagonal XOR invariant eta. Per triangle, the Klein-four invariant F = (eta_ab XOR eta_bc, eta_bc XOR eta_ac) in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256. Key sub-results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta=1 XOR eta_half (C-526), psi ANF degree=log2(dim) and eta degree=log2(dim)-1 (C-527)."
 sprint = "S25"
 primary_outputs = ["crates/algebra_core/src/analysis/boxkites.rs", "registry/claims.toml", "registry/insights.toml"]
 claims = ["C-515", "C-516", "C-517", "C-518", "C-519", "C-520", "C-521", "C-522", "C-523", "C-524", "C-525", "C-526", "C-527"]
@@ -114,13 +114,13 @@ name = "Optics + GR Infrastructure Expansion"
 priority = "high"
 status = "in_progress"
 status_token = "IN_PROGRESS"
-description = "Sprint 56: Expand materials_core with Landy 2008 metamaterial absorber TMM reproduction (Byrnes amplitude transfer matrix, Lorentz effective-medium model, impedance matching, multilayer convergence). Expand gr_core PPN constraint framework from 7 to 13 gates (GP-B geodetic, preferred-frame alpha_1/2/3, Whitehead xi, MICROSCOPE WEP). Create immirzi_bridge.rs in vacuum_frustration connecting CD frustration density to Barbero-Immirzi parameter via entropy mapping. Fix complex Bessel functions (J_n sign, Y_n Euler gamma) and Fano TCMT tests in optics_core."
+description = "Sprint 56: Expand materials_core with Landy 2008 metamaterial absorber TMM reproduction (Byrnes amplitude transfer matrix, Lorentz effective-medium model, impedance matching, multilayer convergence). Expand gr_core PPN constraint framework from 7 to 13 gates (GP-B geodetic, preferred-frame alpha_1/2/3, Whitehead xi, MICROSCOPE WEP). Create immirzi_bridge.rs in sign_imbalance connecting CD imbalance density to Barbero-Immirzi parameter via entropy mapping. Fix complex Bessel functions (J_n sign, Y_n Euler gamma) and Fano TCMT tests in optics_core."
 sprint = "S56"
-primary_outputs = ["crates/materials_core/src/landy_absorber.rs", "crates/materials_core/src/effective_medium.rs", "crates/gr_core/src/ppn_constraints.rs", "crates/vacuum_frustration/src/immirzi_bridge.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs"]
+primary_outputs = ["crates/materials_core/src/landy_absorber.rs", "crates/materials_core/src/effective_medium.rs", "crates/gr_core/src/ppn_constraints.rs", "crates/sign_imbalance/src/immirzi_bridge.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs"]
 claims = ["C-852", "C-853", "C-854", "C-855", "C-856", "C-857", "C-858", "C-859", "C-860", "C-861", "C-862", "C-863"]
 dependencies = ["C-852", "C-853", "C-854", "C-855", "C-856", "C-857", "C-858", "C-859", "C-860", "C-861", "C-862", "C-863"]
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
-evidence_refs = ["crates/gr_core/src/ppn_constraints.rs", "crates/materials_core/src/effective_medium.rs", "crates/materials_core/src/landy_absorber.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs", "crates/vacuum_frustration/src/immirzi_bridge.rs"]
+evidence_refs = ["crates/gr_core/src/ppn_constraints.rs", "crates/materials_core/src/effective_medium.rs", "crates/materials_core/src/landy_absorber.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs", "crates/sign_imbalance/src/immirzi_bridge.rs"]
 
 [[workstream]]
 id = "WS-PUB-001"

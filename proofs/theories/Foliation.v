@@ -1,7 +1,7 @@
 (** * Sedenion foliation: abstract model of time slices.
 
     Models the SedenionFoliation from sedenion_foliation.rs.
-    A foliation is a sequence of frustration densities on hypersurfaces.
+    A foliation is a sequence of imbalance densities on hypersurfaces.
     The key property: a single-slice foliation trivially reduces to
     the underlying field. *)
 
@@ -9,11 +9,11 @@ From Stdlib Require Import List.
 From OpenGororoba Require Import Prelude.
 Import ListNotations.
 
-(** Abstract frustration value on a spatial point. *)
-Definition Frustration := R.
+(** Abstract imbalance value on a spatial point. *)
+Definition Imbalance := R.
 
-(** A foliation slice is a list of frustration values (one per grid point). *)
-Definition FoliationSlice := list Frustration.
+(** A foliation slice is a list of imbalance values (one per grid point). *)
+Definition FoliationSlice := list Imbalance.
 
 (** A foliation is a list of slices (one per time step). *)
 Definition Foliation := list FoliationSlice.
@@ -27,8 +27,8 @@ Fixpoint nth_slice (fol : Foliation) (n : nat) : option FoliationSlice :=
   end.
 
 (** Access a specific point within a slice. *)
-Definition frustration_at (fol : Foliation) (slice_idx point_idx : nat)
-  : option Frustration :=
+Definition imbalance_at (fol : Foliation) (slice_idx point_idx : nat)
+  : option Imbalance :=
   match nth_slice fol slice_idx with
   | Some s => nth_error s point_idx
   | None => None

@@ -1,15 +1,15 @@
 //! E-027 Percolation Threshold Experiment
 //!
-//! Validates Thesis 1: Frustration-viscosity coupling produces measurable percolation channels.
+//! Validates Thesis 1: Imbalance-viscosity coupling produces measurable percolation channels.
 //!
 //! Pipeline:
 //! 1. Generate Sedenion field (APT-evolved or uniform with perturbation)
-//! 2. Compute frustration density F(x,y,z)
+//! 2. Compute imbalance density F(x,y,z)
 //! 3. Transform to viscosity: nu(x) = nu_base * exp(-lambda * (F(x) - 3/8)^2)
 //! 4. Initialize LBM solver with spatial viscosity
 //! 5. Evolve LBM for N timesteps
 //! 6. Detect percolation channels (BFS on velocity field)
-//! 7. Correlate channels with frustration (Welch's t-test)
+//! 7. Correlate channels with imbalance (Welch's t-test)
 //! 8. Run Besag-Clifford null model test
 //! 9. Export results to TOML
 //! 10. Validate/falsify Thesis 1 (p < 0.05 threshold)
@@ -20,7 +20,7 @@ use std::fs;
 
 #[derive(Parser)]
 #[command(name = "percolation-experiment")]
-#[command(about = "E-027: Percolation Threshold vs Frustration Correlation", long_about = None)]
+#[command(about = "E-027: Percolation Threshold vs Imbalance Correlation", long_about = None)]
 struct Args {
     /// Grid size (cubic domain)
     #[arg(long, default_value = "32")]
@@ -34,7 +34,7 @@ struct Args {
     #[arg(long, default_value = "0.333")]
     nu_base: f64,
 
-    /// Frustration coupling strength
+    /// Imbalance coupling strength
     #[arg(long, default_value = "1.0")]
     lambda: f64,
 
@@ -87,43 +87,43 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         eprintln!("\n[1/10] Generating Sedenion field...");
     }
 
-    // Step 2: Compute frustration density via APT-evolved Sedenion field
+    // Step 2: Compute imbalance density via APT-evolved Sedenion field
     if args.verbose {
-        eprintln!("[2/10] Computing frustration density via APT evolution...");
+        eprintln!("[2/10] Computing imbalance density via APT evolution...");
     }
-    let frustration_field = generate_apt_frustration_field(args.grid_size, args.seed)?;
+    let imbalance_field = generate_apt_imbalance_field(args.grid_size, args.seed)?;
 
-    // Compute frustration statistics
-    let f_min = frustration_field
+    // Compute imbalance statistics
+    let f_min = imbalance_field
         .iter()
         .copied()
         .fold(f64::INFINITY, f64::min);
-    let f_max = frustration_field
+    let f_max = imbalance_field
         .iter()
         .copied()
         .fold(f64::NEG_INFINITY, f64::max);
-    let f_mean = frustration_field.iter().sum::<f64>() / (frustration_field.len() as f64);
+    let f_mean = imbalance_field.iter().sum::<f64>() / (imbalance_field.len() as f64);
     let f_std = {
-        let variance = frustration_field
+        let variance = imbalance_field
             .iter()
             .map(|&f| (f - f_mean).powi(2))
             .sum::<f64>()
-            / (frustration_field.len() as f64);
+            / (imbalance_field.len() as f64);
         variance.sqrt()
     };
 
     if args.verbose {
         eprintln!(
-            "  Frustration stats: mean={:.4}, std={:.4}, range=[{:.4}, {:.4}]",
+            "  Imbalance stats: mean={:.4}, std={:.4}, range=[{:.4}, {:.4}]",
             f_mean, f_std, f_min, f_max
         );
     }
 
-    // Step 3: Transform frustration to viscosity
+    // Step 3: Transform imbalance to viscosity
     if args.verbose {
         eprintln!("[3/10] Transforming to viscosity field...");
     }
-    let viscosity_field = frustration_to_viscosity(&frustration_field, args.nu_base, args.lambda);
+    let viscosity_field = imbalance_to_viscosity(&imbalance_field, args.nu_base, args.lambda);
 
     // Compute viscosity statistics
     let nu_min = viscosity_field
@@ -210,12 +210,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if args.verbose {
         eprintln!("[6/10] Detecting percolation channels...");
     }
-    let mut detector = vacuum_frustration::PercolationDetector::new(
+    let mut detector = sign_imbalance::PercolationDetector::new(
         args.grid_size,
         args.grid_size,
         args.grid_size,
     );
-    let threshold = vacuum_frustration::auto_velocity_threshold(&velocity_field);
+    let threshold = sign_imbalance::auto_velocity_threshold(&velocity_field);
     let above_threshold = u_magnitudes.iter().filter(|&&u| u > threshold).count();
 
     if args.verbose {
@@ -233,11 +233,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         eprintln!("  Found {} channels", channels.len());
     }
 
-    // Step 7: Correlate with frustration
+    // Step 7: Correlate with imbalance
     if args.verbose {
-        eprintln!("[7/10] Computing frustration correlation...");
+        eprintln!("[7/10] Computing imbalance correlation...");
     }
-    let correlation = vacuum_frustration::correlate_with_frustration(&channels, &frustration_field);
+    let correlation = sign_imbalance::correlate_with_imbalance(&channels, &imbalance_field);
 
     if args.verbose {
         eprintln!("  t-statistic: {:.6}", correlation.t_statistic);
@@ -253,7 +253,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
     let null_result = run_besag_clifford_null(BesagCliffordParams {
-        frustration_field: &frustration_field,
+        imbalance_field: &imbalance_field,
         grid_size: args.grid_size,
         max_permutations: args.n_permutations,
         seed: args.seed + 1000, // Different seed for null model
@@ -313,7 +313,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 // Helper: Evolve LBM on GPU and return velocity field
 //
-// Uses GPU-accelerated D3Q19 LBM solver for frustration-viscosity coupling validation.
+// Uses GPU-accelerated D3Q19 LBM solver for imbalance-viscosity coupling validation.
 // Initializes with velocity shear profile and evolves on GPU, then transfers results
 // back to CPU for percolation analysis.
 #[cfg(feature = "gpu")]
@@ -340,7 +340,7 @@ fn evolve_lbm_gpu(
         eprintln!("  Setting spatially-varying viscosity field...");
     }
 
-    // Set frustration-derived viscosity field
+    // Set imbalance-derived viscosity field
     solver.set_viscosity_field(viscosity_field)?;
 
     if verbose {
@@ -388,36 +388,36 @@ fn evolve_lbm_gpu(
         .collect())
 }
 
-// Helper: Generate APT-evolved Sedenion field with frustration
+// Helper: Generate APT-evolved Sedenion field with imbalance
 //
 // Implements Attracting-Point-Transformation (APT) evolution on Sedenion algebra.
-// Uses Harary-Zaslavsky frustration as attractor to generate correlated spatial fields
+// Uses Harary-Zaslavsky imbalance as attractor to generate correlated spatial fields
 // without ad-hoc perturbation. This replaces mock data with real algebraic evolution.
-fn generate_apt_frustration_field(
+fn generate_apt_imbalance_field(
     grid_size: usize,
     seed: u64,
 ) -> Result<Vec<f64>, Box<dyn std::error::Error>> {
-    use vacuum_frustration::AptSedenionField;
+    use sign_imbalance::AptSedenionField;
 
     // Create APT field with Metropolis-Hastings evolution
     let mut apt = AptSedenionField::new(grid_size, seed);
 
     // Evolve for 1000+ iterations per cell to reach quasi-equilibrium
-    // Temperature cooling schedule drives frustration toward vacuum attractor (3/8)
+    // Temperature cooling schedule drives imbalance toward imbalance attractor (3/8)
     let n_iterations = grid_size.max(100);
     apt.evolve(n_iterations);
 
-    // Extract frustration field after evolution
-    Ok(apt.frustration_field())
+    // Extract imbalance field after evolution
+    Ok(apt.imbalance_field())
 }
 
-// Helper: Transform frustration to viscosity
-fn frustration_to_viscosity(frustration: &[f64], nu_base: f64, lambda: f64) -> Vec<f64> {
-    frustration
+// Helper: Transform imbalance to viscosity
+fn imbalance_to_viscosity(imbalance: &[f64], nu_base: f64, lambda: f64) -> Vec<f64> {
+    imbalance
         .iter()
         .map(|&f| {
-            let vacuum_attractor = 0.375;
-            let exponent = -lambda * (f - vacuum_attractor).powi(2);
+            let imbalance_attractor = 0.375;
+            let exponent = -lambda * (f - imbalance_attractor).powi(2);
             nu_base * exponent.exp()
         })
         .collect()
@@ -520,7 +520,7 @@ fn initialize_lbm_solver(
 
 /// Parameters for Besag-Clifford null model test
 struct BesagCliffordParams<'a> {
-    frustration_field: &'a [f64],
+    imbalance_field: &'a [f64],
     grid_size: usize,
     max_permutations: usize,
     seed: u64,
@@ -559,13 +559,13 @@ fn run_besag_clifford_null(
             let mut batch_extreme = 0;
 
             for _ in 0..batch_size {
-                // Shuffle frustration field (breaks spatial structure)
-                let mut shuffled_frustration = params.frustration_field.to_vec();
-                shuffled_frustration.shuffle(&mut rng);
+                // Shuffle imbalance field (breaks spatial structure)
+                let mut shuffled_imbalance = params.imbalance_field.to_vec();
+                shuffled_imbalance.shuffle(&mut rng);
 
                 // Transform to viscosity
                 let shuffled_viscosity =
-                    frustration_to_viscosity(&shuffled_frustration, params.nu_base, params.lambda);
+                    imbalance_to_viscosity(&shuffled_imbalance, params.nu_base, params.lambda);
 
                 // Initialize and evolve LBM with shuffled field
                 let mut solver_null = match initialize_lbm_solver(
@@ -581,18 +581,18 @@ fn run_besag_clifford_null(
                 solver_null.evolve(params.lbm_steps);
 
                 // Detect channels
-                let mut detector = vacuum_frustration::PercolationDetector::new(
+                let mut detector = sign_imbalance::PercolationDetector::new(
                     params.grid_size,
                     params.grid_size,
                     params.grid_size,
                 );
-                let threshold = vacuum_frustration::auto_velocity_threshold(&solver_null.u);
+                let threshold = sign_imbalance::auto_velocity_threshold(&solver_null.u);
                 let channels_null = detector.detect_channels(&solver_null.u, threshold);
 
                 // Compute null correlation
-                let corr_null = vacuum_frustration::correlate_with_frustration(
+                let corr_null = sign_imbalance::correlate_with_imbalance(
                     &channels_null,
-                    &shuffled_frustration,
+                    &shuffled_imbalance,
                 );
 
                 // Count if |t_null| >= |t_observed| (two-sided test)
@@ -647,8 +647,8 @@ struct CorrelationData {
     t_statistic: f64,
     p_value: f64,
     effect_size: f64,
-    mean_frustration_channels: f64,
-    mean_frustration_background: f64,
+    mean_imbalance_channels: f64,
+    mean_imbalance_background: f64,
     n_channel: usize,
     n_background: usize,
     n_channels_detected: usize,
@@ -674,8 +674,8 @@ struct ExportParams {
 // Helper: Export results to TOML
 fn export_results(
     output_dir: &str,
-    channels: &[vacuum_frustration::PercolationChannel],
-    correlation: &vacuum_frustration::CorrelationResult,
+    channels: &[sign_imbalance::PercolationChannel],
+    correlation: &sign_imbalance::CorrelationResult,
     null_result: &NullModelResult,
     params: ExportParams,
 ) -> Result<(), Box<dyn std::error::Error>> {
@@ -710,8 +710,8 @@ fn export_results(
             t_statistic: correlation.t_statistic,
             p_value: correlation.p_value,
             effect_size: correlation.effect_size,
-            mean_frustration_channels: correlation.mean_frustration_channels,
-            mean_frustration_background: correlation.mean_frustration_background,
+            mean_imbalance_channels: correlation.mean_imbalance_channels,
+            mean_imbalance_background: correlation.mean_imbalance_background,
             n_channel: correlation.n_channel,
             n_background: correlation.n_background,
             n_channels_detected: channels.len(),

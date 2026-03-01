@@ -1,0 +1,59 @@
+%% Fig 43: Experiment timeline with domain color tags
+%% 77 experiments plotted chronologically (representative subset)
+\begin{tikzpicture}[
+  expt/.style={
+    draw=gray!30, rounded corners=2pt, minimum width=0.6cm,
+    minimum height=0.3cm, inner sep=1pt, thick
+  },
+  elabel/.style={font=\sffamily\tiny, anchor=west},
+]
+  %% Horizontal time axis
+  \draw[-{Stealth[length=4pt]}, thick, gray!50]
+    (0,0) -- (13,0) node[right, font=\sffamily\small] {Experiment ID};
+  \foreach \e in {1,10,20,30,40,50,60,70,77} {
+    \pgfmathsetmacro{\xpos}{\e * 13 / 80}
+    \draw[gray!30] (\xpos,-0.1) -- (\xpos,0.1);
+    \node[below, font=\sffamily\tiny, gray] at (\xpos,-0.15) {E-\pgfmathparse{int(\e)}\pgfmathresult};
+  }
+
+  %% Representative experiments as colored blocks
+  %% E-027 (Fluid) -- Thesis correlation
+  \node[expt, fill=cFluidLight] at (27*13/80, 0.5) {};
+  \node[elabel] at (27*13/80 + 0.4, 0.5) {E-027: Thesis correlations};
+
+  %% E-028 (Fluid) -- Forcing ratio
+  \node[expt, fill=cFluidLight] at (28*13/80, 1.0) {};
+  \node[elabel] at (28*13/80 + 0.4, 1.0) {E-028: Forcing ratio};
+
+  %% E-029 (Algebra) -- Neural pentagon
+  \node[expt, fill=cAlgebraLight] at (29*13/80, 1.5) {};
+  \node[elabel] at (29*13/80 + 0.4, 1.5) {E-029: Neural pentagon};
+
+  %% E-048 (Statistics) -- Morphology
+  \node[expt, fill=cStatisticsLight] at (48*13/80, 2.0) {};
+  \node[elabel] at (48*13/80 + 0.4, 2.0) {E-048: Morphology PASS};
+
+  %% E-056 (GR) -- Hawking cutoff
+  \node[expt, fill=cGRLight] at (56*13/80, 2.5) {};
+  \node[elabel] at (56*13/80 + 0.4, 2.5) {E-056: RT-1 Hawking};
+
+  %% E-068 (Statistics) -- Ghost audit
+  \node[expt, fill=cStatisticsLight] at (68*13/80, 3.0) {};
+  \node[elabel] at (68*13/80 + 0.4, 3.0) {E-068: 7-method audit};
+
+  %% E-069 (Fluid) -- Multi-precision
+  \node[expt, fill=cFluidLight] at (69*13/80, 3.5) {};
+  \node[elabel] at (69*13/80 + 0.4, 3.5) {E-069: Multi-precision};
+
+  %% E-070 (Algebra) -- TX-2 falsification
+  \node[expt, fill=cAlgebraLight] at (70*13/80, 4.0) {};
+  \node[elabel] at (70*13/80 + 0.4, 4.0) {E-070: C-669 refuted};
+
+  %% E-078 (Materials) -- Latest
+  \node[expt, fill=cMaterialsLight] at (78*13/80, 4.5) {};
+  \node[elabel] at (78*13/80 + 0.4, 4.5) {E-078: Photon-graviton};
+
+  %% Summary
+  \node[font=\sffamily\scriptsize, gray, align=center] at (6.5,-1)
+    {77 experiments (74 completed, 3 active)};
+\end{tikzpicture}

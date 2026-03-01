@@ -1,0 +1,36 @@
+%% Fig 39: Open conjectures mindmap (3 partially-verified conjectures)
+\begin{tikzpicture}[
+  mindmap,
+  every node/.style={concept, circular drop shadow, minimum size=0pt},
+  root concept/.append style={
+    concept color=OIgray!60, fill=white, line width=1pt,
+    font=\sffamily\small\bfseries, text=black,
+    minimum size=2.8cm,
+  },
+  level 1 concept/.append style={
+    font=\sffamily\tiny\bfseries, text=white,
+    minimum size=1.6cm, level distance=3.8cm,
+    sibling angle=120,
+  },
+  level 2 concept/.append style={
+    font=\sffamily\tiny, text=white,
+    minimum size=1.0cm, level distance=2.5cm,
+  },
+]
+\node[root concept] {Open\\Conjectures}
+  child[concept color=cAlgebra, grow=150] {
+    node[concept] {L-450\\Chingon\\Graph}
+    child[grow=180] { node[concept] {Basis vs\\pair\\encoding} }
+    child[grow=120] { node[concept] {64D\\adjacency} }
+  }
+  child[concept color=cGR, grow=30] {
+    node[concept] {L-476\\Algebraic\\Locality}
+    child[grow=60] { node[concept] {3 stacks\\partial\\evidence} }
+    child[grow=0] { node[concept] {Missing\\full proof} }
+  }
+  child[concept color=cCosmology, grow=270] {
+    node[concept] {L-477\\Sky-Limit\\Set}
+    child[grow=240] { node[concept] {ET $\to$\\Coxeter} }
+    child[grow=300] { node[concept] {Numerical\\hints} }
+  };
+\end{tikzpicture}

@@ -3,11 +3,11 @@
 # physics to experimental validation. Source of truth for paper skeleton.
 #
 # Narrative chain:
-#   Algebra -> Frustration -> Viscosity -> Flow -> Topology
+#   Algebra -> Imbalance -> Viscosity -> Flow -> Topology
 #     -> Latency -> Correction -> Cross-Thesis -> First-Principles -> Benchmarks
 
 [metadata]
-title = "Cayley-Dickson Frustration and Continuum Physics: Evidence Consolidation"
+title = "Cayley-Dickson Imbalance and Continuum Physics: Evidence Consolidation"
 version = "1.0.0"
 date = "2026-02-13"
 sprint = 41
@@ -28,15 +28,15 @@ The Cayley-Dickson (CD) doubling construction generates a tower of algebras:
 R -> C -> H -> O -> S (sedenions, dim=16) -> ... -> dim=2^n. Beyond the
 octonions (dim=8), these algebras lose the division property and acquire
 zero-divisor pairs. The sedenion multiplication table encodes a signed
-graph whose frustration index (Harary balance) converges to 3/8 as
-dimension increases. This algebraic frustration is not a defect but a
+graph whose imbalance index (Harary balance) converges to 3/8 as
+dimension increases. This algebraic imbalance is not a defect but a
 structural invariant with physical consequences."""
 
 [section.evidence]
 claims = [
     "C-479",  # Lanyard sign census (42 TwoSameOneOpp + 14 AllOpposite)
     "C-483",  # Universal 3:1 ratio law
-    "C-487",  # Universal Double 3:1 Law (OS=3*AS, TS=3*AO)
+    "C-487",  # Universal 3:1 Theorem (OS=3*AS, TS=3*AO)
     "C-520",  # Anti-Diagonal Parity Theorem (mechanism)
     "C-521",  # APT GF(2)^2 invariant F
     "C-523",  # GF(2) coboundary phase transition at dim=16
@@ -44,15 +44,15 @@ claims = [
     "C-526",  # Eta Doubling Recursion
     "C-527",  # GF(2) polynomial degree: psi=log2(dim), eta=log2(dim)-1
     "C-528",  # Quarter Rule exactness
-    "C-529",  # Frustration oscillation converging to 3/8
-    "C-535",  # dim=1024 frustration 0.37849
+    "C-529",  # Imbalance oscillation converging to 3/8
+    "C-535",  # dim=1024 imbalance 0.37849
     "C-544",  # psi=1 exact formula (n+1)/(2n)
 ]
 insights = ["I-018"]  # Anti-Diagonal Parity Theorem: complete mechanism
 experiments = ["E-001"]  # Cayley-Dickson Motif Census
 key_metrics = [
     { name = "triangles_verified", value = "14.2M+", dims = "16..256" },
-    { name = "frustration_3_8_limit", value = "0.375", verified_to = "dim=1024" },
+    { name = "imbalance_3_8_limit", value = "0.375", verified_to = "dim=1024" },
     { name = "components_at_dim16", value = "7", structure = "box-kites" },
     { name = "zero_mismatches_APT", value = "0", scope = "all dims" },
 ]
@@ -66,14 +66,14 @@ files = [
 [section.discussion]
 mechanism = """
 The Anti-Diagonal Parity Theorem (C-520/C-521) provides the complete
-mechanism for the Universal Double 3:1 Law. The edge parity eta(a,b) =
+mechanism for the Universal 3:1 Theorem. The edge parity eta(a,b) =
 psi(lo_a, hi_b) XOR psi(hi_a, lo_b) classifies triangles into pure
 (eta constant, 1 state) and mixed (eta non-constant, 3 states in GF(2)^2).
 This gives the exact 1:3 ratio (Quarter Rule) with zero tolerance."""
 
 open_questions = [
-    "Does the 3/8 frustration limit have a closed-form proof?",
-    "What is the relationship between frustration convergence and split-octonion psi=1 fraction (also 3/8)?",
+    "Does the 3/8 imbalance limit have a closed-form proof?",
+    "What is the relationship between imbalance convergence and split-octonion psi=1 fraction (also 3/8)?",
     "Can the GF(2) coboundary phase transition at dim=16 be understood category-theoretically?",
 ]
 
@@ -101,8 +101,8 @@ claims = [
     "C-635",  # Division algebra gamma-dependent
     "C-636",  # Tensor product never division
     "C-637",  # Dual-octonion phase boundary 0.4375
-    "C-638",  # Bi-octonion frustration 0.4688
-    "C-639",  # Para-octonion frustration 0.6562
+    "C-638",  # Bi-octonion imbalance 0.4688
+    "C-639",  # Para-octonion imbalance 0.6562
     "C-640",  # Categorical distinction theorem (5 axioms)
     "C-641",  # Albert algebra 100% commutative
     "C-646",  # Two-axis taxonomy
@@ -119,7 +119,7 @@ key_metrics = [
     { name = "algebras_surveyed", value = "15+", dims = "1,2,4,8,16" },
     { name = "commutativity_CD", value = "0%", note = "universal at dim>=4" },
     { name = "commutativity_tensor", value = "100%", note = "all families" },
-    { name = "exotic_frustration_range", value = "0.4375-0.6562", note = "Dual/Bi/Para octonions" },
+    { name = "exotic_imbalance_range", value = "0.4375-0.6562", note = "Dual/Bi/Para octonions" },
 ]
 crates = ["algebra_core"]
 files = [
@@ -141,29 +141,29 @@ can bridge it."""
 
 open_questions = [
     "Are there other construction methods beyond tensor/CD/exceptional?",
-    "Do the exotic frustration values (0.4375, 0.4688, 0.6562) form a predictable sequence?",
+    "Do the exotic imbalance values (0.4375, 0.4688, 0.6562) form a predictable sequence?",
 ]
 
 # =========================================================================
-# SECTION 3: Frustration as Physical Observable
+# SECTION 3: Imbalance as Physical Observable
 # =========================================================================
 [[section]]
 id = "S3"
-title = "Frustration Density and the Vacuum Attractor"
+title = "Imbalance Density and the Imbalance Attractor"
 narrative = """
 The sedenion multiplication table defines a signed graph where each edge
-carries a sign s(i,j) = +1 or -1. The frustration index (fraction of
+carries a sign s(i,j) = +1 or -1. The imbalance index (fraction of
 triangles that cannot be 2-colored consistently) provides a local density
 field when computed over spatial subregions of a sedenion-valued field.
-The vacuum attractor at frustration = 3/8 (the asymptotic CD limit)
+The imbalance attractor at imbalance = 3/8 (the asymptotic CD limit)
 represents a distinguished physical state where the algebra's internal
 tension is minimized relative to the doubling tower."""
 
 [section.evidence]
 claims = [
-    "C-529",  # Frustration oscillation converging to 3/8
-    "C-535",  # dim=1024 frustration 0.37849
-    "C-657",  # Spatial correlation r=-1.0 (frustration vs velocity)
+    "C-529",  # Imbalance oscillation converging to 3/8
+    "C-535",  # dim=1024 imbalance 0.37849
+    "C-657",  # Spatial correlation r=-1.0 (imbalance vs velocity)
     "C-658",  # Multi-scale convergence
     "C-659",  # Pearson r > -0.999
     "C-675",  # E-027 4-scale GPU convergence
@@ -180,39 +180,39 @@ key_metrics = [
     { name = "n_regions_128", value = "125", note = "5^3 subregions" },
     { name = "betti_0_128", value = "2", note = "stable across lambda" },
 ]
-crates = ["vacuum_frustration", "lbm_3d", "lbm_3d_cuda"]
+crates = ["sign_imbalance", "lbm_3d", "lbm_3d_cuda"]
 files = [
-    "crates/vacuum_frustration/src/bridge.rs",
-    "crates/vacuum_frustration/src/frustration.rs",
-    "crates/vacuum_frustration/src/signed_graph.rs",
-    "crates/vacuum_frustration/src/spatial_correlation.rs",
+    "crates/sign_imbalance/src/bridge.rs",
+    "crates/sign_imbalance/src/imbalance.rs",
+    "crates/sign_imbalance/src/signed_graph.rs",
+    "crates/sign_imbalance/src/spatial_correlation.rs",
     "crates/gororoba_cli_physics/src/bin/e027_topology_v2.rs",
 ]
 
 [section.discussion]
 mechanism = """
-Frustration density acts as a spatially-varying resistance to flow.
-High-frustration subregions have more internal algebraic tension
+Imbalance density acts as a spatially-varying resistance to flow.
+High-imbalance subregions have more internal algebraic tension
 (more non-2-colorable triangles), which translates to higher effective
-viscosity via the FrustrationViscosityBridge. The anti-correlation
+viscosity via the ImbalanceViscosityBridge. The anti-correlation
 (Spearman r approaching -1.0) shows that velocity magnitude is
-suppressed precisely where frustration is highest. Grid convergence
+suppressed precisely where imbalance is highest. Grid convergence
 from 16^3 to 128^3 confirms this is not a finite-size artifact."""
 
 caveats = [
     "The Spearman dip at 128^3 (0.998 vs 1.0 at 32^3) may reflect floating-point accumulation or genuine multi-scale structure",
     "E-027 uses Kolmogorov forcing disabled (epsilon=0) -- the correlation under active forcing needs separate study",
-    "The causal direction (frustration -> velocity suppression) is inferred from the coupling model, not proven from dynamics alone",
+    "The causal direction (imbalance -> velocity suppression) is inferred from the coupling model, not proven from dynamics alone",
 ]
 
 # =========================================================================
-# SECTION 4: Frustration-Viscosity Bridge
+# SECTION 4: Imbalance-Viscosity Bridge
 # =========================================================================
 [[section]]
 id = "S4"
 title = "Six Viscosity Coupling Models"
 narrative = """
-The FrustrationViscosityBridge maps frustration density f to kinematic
+The ImbalanceViscosityBridge maps imbalance density f to kinematic
 viscosity nu via six distinct coupling models: Exponential (nu = nu_base *
 exp(lambda * f)), Linear, PowerLaw, Sigmoid, Constant (baseline), and
 KuboResponse (first-principles lookup table from spin transport). The
@@ -227,7 +227,7 @@ claims = [
     "C-668",  # Power-index sensitivity hierarchy
     "C-674",  # All 4/4 gates pass with engine integration
     "C-678",  # 44x Drude weight collapse at onset
-    "C-679",  # 83.4x enhancement at vacuum attractor (f=3/8)
+    "C-679",  # 83.4x enhancement at imbalance attractor (f=3/8)
     "C-680",  # 216x enhancement at full CD (lambda=1.0)
     "C-681",  # KuboResponse lookup table
 ]
@@ -235,16 +235,16 @@ insights = ["I-067"]
 experiments = ["E-032", "E-034"]
 key_metrics = [
     { name = "kubo_onset_collapse", value = "44x", at = "lambda=0.01" },
-    { name = "kubo_vacuum_attractor", value = "83.4x", at = "f=3/8" },
+    { name = "kubo_imbalance_attractor", value = "83.4x", at = "f=3/8" },
     { name = "kubo_full_cd", value = "216x", at = "lambda=1.0" },
     { name = "vel_reduction_max", value = "10.88%", at = "alpha=100, n=1.2" },
     { name = "n_lookup_points", value = "21", range = "lambda 0.0 to 1.0" },
 ]
-crates = ["vacuum_frustration", "lbm_3d"]
+crates = ["sign_imbalance", "lbm_3d"]
 files = [
-    "crates/vacuum_frustration/src/bridge.rs",
-    "crates/vacuum_frustration/src/kubo_transport.rs",
-    "crates/vacuum_frustration/src/kubo_transport_gpu.rs",
+    "crates/sign_imbalance/src/bridge.rs",
+    "crates/sign_imbalance/src/kubo_transport.rs",
+    "crates/sign_imbalance/src/kubo_transport_gpu.rs",
     "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs",
     "crates/gororoba_cli/src/bin/thesis2_3d_thickening.rs",
 ]
@@ -256,9 +256,9 @@ spin Drude weight of a Heisenberg chain interpolated by CD structure
 constants. At lambda=0 (pure XXX chain), D_S is maximal (ballistic
 transport). At ANY nonzero lambda, D_S collapses by 44x due to a
 quantum phase transition: the CD interpolation introduces incommensuration
-that breaks integrability. The vacuum attractor at lambda corresponding
+that breaks integrability. The imbalance attractor at lambda corresponding
 to f=3/8 shows g(3/8)=83.4x enhancement, confirming that the algebraically
-distinguished frustration level has a first-principles transport signature.
+distinguished imbalance level has a first-principles transport signature.
 
 The lookup table replaces the tautological linear coupling (nu proportional
 to f) with physics: nu(f) = nu_base * g(f / f_cd), where g is the
@@ -352,28 +352,28 @@ claims = [
 ]
 experiments = ["E-027"]
 key_metrics = [
-    { name = "w2_linear_frustration", value = "0.000", note = "identical topology" },
-    { name = "w2_powerlaw_frustration", value = "0.000", note = "identical topology" },
-    { name = "w2_sigmoid_frustration", value = "0.000", note = "identical despite weak Spearman" },
-    { name = "w2_constant_frustration", value = "0.558", note = "different topology" },
-    { name = "w2_exponential_frustration", value = "0.489", note = "anti-correlated" },
+    { name = "w2_linear_imbalance", value = "0.000", note = "identical topology" },
+    { name = "w2_powerlaw_imbalance", value = "0.000", note = "identical topology" },
+    { name = "w2_sigmoid_imbalance", value = "0.000", note = "identical despite weak Spearman" },
+    { name = "w2_constant_imbalance", value = "0.558", note = "different topology" },
+    { name = "w2_exponential_imbalance", value = "0.489", note = "anti-correlated" },
 ]
-crates = ["vacuum_frustration"]
+crates = ["sign_imbalance"]
 files = [
-    "crates/vacuum_frustration/src/vietoris_rips.rs",
+    "crates/sign_imbalance/src/vietoris_rips.rs",
 ]
 
 [section.discussion]
 mechanism = """
-The key finding is that frustration-coupled viscosity models (linear,
+The key finding is that imbalance-coupled viscosity models (linear,
 power-law, sigmoid) produce velocity fields with IDENTICAL topology
-(W_2 = 0) to the frustration field itself, while the constant model
+(W_2 = 0) to the imbalance field itself, while the constant model
 (no coupling) produces DIFFERENT topology (W_2 = 0.558). This means
 the viscosity coupling preserves the topological structure of the
-algebraic frustration in the resulting flow.
+algebraic imbalance in the resulting flow.
 
 The exponential model has W_2 = 0.489 because it ANTI-correlates with
-frustration (high frustration -> high viscosity -> low velocity, which
+imbalance (high imbalance -> high viscosity -> low velocity, which
 inverts the relationship). Its topology differs because the inversion
 changes the filtration order."""
 
@@ -431,10 +431,10 @@ structure). The power-law exponent gamma=-2.41 is close to -2 (inverse
 square) but not exact, suggesting corrections from the non-trivial
 topology of the zero-divisor graph.
 
-TX-1 shows that frustration modulation changes gamma non-monotonically,
+TX-1 shows that imbalance modulation changes gamma non-monotonically,
 with peak deviation at alpha=0.5. This suggests a resonance between the
-frustration density and the collision dynamics -- the walk is most
-sensitive to frustration at intermediate coupling."""
+imbalance density and the collision dynamics -- the walk is most
+sensitive to imbalance at intermediate coupling."""
 
 caveats = [
     "The original latency measure (occupancy/r^2) was tautological (always R^2=1.0) -- replaced with shell return-time in Phase 2",
@@ -515,11 +515,11 @@ id = "S9"
 title = "Cross-Thesis Experiments and Null Results"
 narrative = """
 Three cross-thesis experiments test connections between the four theses.
-TX-1 (T1 x T4) shows that frustration-modulated collision dynamics change
+TX-1 (T1 x T4) shows that imbalance-modulated collision dynamics change
 the latency exponent gamma non-monotonically. TX-2 (T2 x T4) is a null
 result: the viscosity-to-filtration loop does NOT change the latency law
 classification. TX-3 (T1 x T2) resolves the sigmoid paradox: despite
-weak Spearman correlation (0.64), sigmoid viscosity preserves frustration
+weak Spearman correlation (0.64), sigmoid viscosity preserves imbalance
 topology (W_2 = 0) because the point cloud perfectly overlaps at regional
 resolution but has collapsed dynamic range (CV = 0.001)."""
 
@@ -540,7 +540,7 @@ key_metrics = [
     { name = "tx3_point_cloud_overlap", value = "1.000" },
     { name = "tx3_cv_regional_means", value = "0.001" },
 ]
-crates = ["lattice_filtration", "vacuum_frustration", "lbm_3d"]
+crates = ["lattice_filtration", "sign_imbalance", "lbm_3d"]
 files = [
     "crates/gororoba_cli/src/bin/thesis_cross_tx1.rs",
     "crates/gororoba_cli/src/bin/thesis_cross_tx2.rs",
@@ -552,23 +552,23 @@ files = [
 [section.discussion]
 mechanism = """
 TX-1 (significant): The non-monotonic alpha dependence suggests a resonance
-between frustration density and collision dynamics. At low alpha (< 0.5),
-frustration modulation perturbs the walk weakly. At alpha=0.5, the
+between imbalance density and collision dynamics. At low alpha (< 0.5),
+imbalance modulation perturbs the walk weakly. At alpha=0.5, the
 perturbation is maximal (delta_gamma=0.19). At high alpha (> 5.0),
-the frustration field saturates the collision probability and gamma
+the imbalance field saturates the collision probability and gamma
 returns to the reference value.
 
 TX-2 (null): The viscosity-to-filtration loop does NOT produce a
 deterministic latency law because the projection from 3D velocity field
-to 1D latency spectrum loses too much information. All R^2 values are
+to 1D first-return time distribution loses too much information. All R^2 values are
 below 0.60 regardless of lambda. This is a genuine decoupling: the
 macroscopic flow structure does not encode the microscopic collision
 statistics directly.
 
 TX-3 (paradox resolved): The sigmoid model produces W_2=0 (identical
-topology to frustration) despite Spearman=0.64 because the sigmoid
+topology to imbalance) despite Spearman=0.64 because the sigmoid
 compresses the dynamic range. The point cloud overlap is 1.0 (every
-frustration subregion maps to a sigmoid value within the same region),
+imbalance subregion maps to a sigmoid value within the same region),
 but the CV of regional means is 0.001 (all regions give nearly the same
 sigmoid value). The topology is preserved but the rank ordering is lost
 to compression."""
@@ -589,14 +589,14 @@ constants are interpolated between standard (lambda=0, integrable XXX)
 and full CD structure (lambda=1.0). Exact diagonalization via cuSOLVER
 eigendecomposition on GPU yields the spin Drude weight D_S(T=0.5) as a
 function of lambda. The enhancement factor g(lambda) = D_S(0)/D_S(lambda)
-ranges from 1.0 (integrable) to 216 (full CD). The vacuum attractor
-frustration f=3/8 corresponds to g=83.4x, confirming the algebraically
-distinguished frustration level has a transport signature."""
+ranges from 1.0 (integrable) to 216 (full CD). The imbalance attractor
+imbalance f=3/8 corresponds to g=83.4x, confirming the algebraically
+distinguished imbalance level has a transport signature."""
 
 [section.evidence]
 claims = [
     "C-678",  # Drude onset catastrophe 44x
-    "C-679",  # Vacuum attractor 83.4x
+    "C-679",  # Imbalance attractor 83.4x
     "C-680",  # Full CD 216x
     "C-681",  # KuboResponse lookup table
     "C-682",  # Integrable chain ballistic
@@ -611,18 +611,18 @@ insights = ["I-065", "I-066", "I-067", "I-068", "I-069"]
 experiments = ["E-034"]
 key_metrics = [
     { name = "drude_onset", value = "44x collapse", at = "lambda=0.01" },
-    { name = "vacuum_attractor_g", value = "83.4x", at = "f=3/8" },
+    { name = "imbalance_attractor_g", value = "83.4x", at = "f=3/8" },
     { name = "full_cd_g", value = "216x", at = "lambda=1.0" },
     { name = "level_crossings", value = "3", at = "lambda=0.30, 0.50, 0.75" },
     { name = "j1j2_enhancement", value = "30778x", at = "alpha=1.1, B=3.0" },
     { name = "benchmark_papers", value = "8", range = "1990-2019" },
     { name = "benchmark_values", value = "76+", types = "Bethe, DMRG, ED" },
 ]
-crates = ["vacuum_frustration", "quantum_core"]
+crates = ["sign_imbalance", "quantum_core"]
 files = [
-    "crates/vacuum_frustration/src/kubo_transport.rs",
-    "crates/vacuum_frustration/src/kubo_transport_gpu.rs",
-    "crates/gororoba_cli_physics/src/bin/kubo_frustration_transport.rs",
+    "crates/sign_imbalance/src/kubo_transport.rs",
+    "crates/sign_imbalance/src/kubo_transport_gpu.rs",
+    "crates/gororoba_cli_physics/src/bin/kubo_imbalance_transport.rs",
     "crates/gororoba_cli_physics/src/bin/kubo_coupling_analysis.rs",
     "crates/gororoba_cli_physics/src/bin/validate_j1j2_kubo.rs",
     "data/kubo_transport/validation/published_transport_benchmarks.toml",
@@ -638,9 +638,9 @@ energy spectrum that suppresses transport. This is a quantum phase
 transition in the transport channel.
 
 The 83.4x enhancement at f=3/8 connects algebraic structure to transport:
-the vacuum attractor frustration level corresponds to a specific lambda
+the imbalance attractor imbalance level corresponds to a specific lambda
 on the interpolation path where the Drude weight has a particular value.
-This is NOT a coincidence -- the frustration index of the sedenion
+This is NOT a coincidence -- the imbalance index of the sedenion
 multiplication table determines the effective coupling constants of the
 spin chain, and those constants determine the transport properties.
 
@@ -766,7 +766,7 @@ sequence and applies falsification gates. All four pass simultaneously
 (E-033): T1 r=-1.0 (threshold 0.5), T2 ratio=1.254 (threshold 1.05),
 T3 violation=0.547 (threshold 1.0), T4 R^2=0.995 (threshold 0.60).
 The synthesis is not merely four independent results but a coherent
-physics picture: algebraic frustration -> viscosity -> flow -> topology
+physics picture: algebraic imbalance -> viscosity -> flow -> topology
 -> latency, with neural correction providing the A-infinity bridge."""
 
 [section.evidence]
@@ -812,7 +812,7 @@ value = "12"
 scope = "dims 16-1024, 14.2M+ triangles"
 
 [[headline_results.entries]]
-label = "Frustration-topology correlation"
+label = "Imbalance-topology correlation"
 value = "Spearman r = -0.998"
 scope = "128^3 GPU (E-027)"
 

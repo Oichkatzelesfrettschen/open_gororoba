@@ -40,14 +40,14 @@ impl GororobaEngine {
     pub fn run(&self, n_words: usize) -> (PipelineState, VerificationReport) {
         let words = self.bit_source.sample_words(n_words);
         let signs = self.parity.compute_signs(&words);
-        let frustration = self.topology.frustration_density(&signs);
-        let viscosity = self.dynamics.viscosity_field(&frustration);
-        let correction_gain = self.correction.correction_gain(&frustration);
+        let imbalance = self.topology.imbalance_density(&signs);
+        let viscosity = self.dynamics.viscosity_field(&imbalance);
+        let correction_gain = self.correction.correction_gain(&imbalance);
 
         let state = PipelineState {
             words,
             signs,
-            frustration,
+            imbalance,
             viscosity,
             correction_gain,
         };
@@ -66,7 +66,7 @@ mod tests {
         let (state, report) = engine.run(128);
         assert_eq!(state.words.len(), 128);
         assert_eq!(state.signs.len(), 128);
-        assert_eq!(state.frustration.len(), 128);
+        assert_eq!(state.imbalance.len(), 128);
         assert_eq!(state.viscosity.len(), 128);
         assert!(!report.messages.is_empty());
     }

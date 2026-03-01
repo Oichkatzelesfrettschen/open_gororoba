@@ -46,7 +46,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut state = SimulationState3D::new(config)?;
     // Gaussian Projector with sigma=1.5
-    state.frustration = Some(Box::new(E7SpectralFilter::new(nx, ny, nz, 0.95)));
+    state.imbalance = Some(Box::new(E7SpectralFilter::new(nx, ny, nz, 0.95)));
 
     info!(
         "[1/5] Initializing 3D Fluid ({}x{}x{}, tau={})...",

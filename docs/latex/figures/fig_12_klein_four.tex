@@ -1,0 +1,51 @@
+%% Fig 12: Klein-four (V4) group diagram
+%% Shows the 4 elements of GF(2)^2 and their group operation
+\begin{tikzpicture}[
+  elem/.style={
+    draw, rounded corners=4pt, minimum width=1.8cm,
+    minimum height=1.2cm, font=\sffamily\small, align=center, thick
+  },
+  op/.style={-{Stealth[length=4pt]}, thick, bend left=15},
+]
+  %% Four elements in a diamond layout
+  \node[elem, fill=OIgreen!20, draw=OIgreen!60] (e00) at (0,2.5) {$(0,0)$\\Pure\\Identity};
+  \node[elem, fill=OIvermillion!15, draw=OIvermillion!50] (e01) at (-3,0) {$(0,1)$\\Mixed};
+  \node[elem, fill=OIvermillion!15, draw=OIvermillion!50] (e10) at (3,0) {$(1,0)$\\Mixed};
+  \node[elem, fill=OIvermillion!15, draw=OIvermillion!50] (e11) at (0,-2.5) {$(1,1)$\\Mixed};
+
+  %% Group operation arrows (XOR)
+  \draw[op, OIblue] (e01) to node[above, font=\sffamily\tiny, sloped] {$\oplus$} (e10);
+  \draw[op, OIblue] (e10) to node[below, font=\sffamily\tiny, sloped] {$\oplus$} (e11);
+  \draw[op, OIblue] (e11) to node[below, font=\sffamily\tiny, sloped] {$\oplus$} (e01);
+
+  %% Self-inverse arrows
+  \draw[op, gray!50, bend left=30] (e01.south east) to
+    node[right, font=\sffamily\tiny] {$a \oplus a = e$} (e00.south west);
+  \draw[op, gray!50, bend right=30] (e10.south west) to
+    node[left, font=\sffamily\tiny] {$b \oplus b = e$} (e00.south east);
+
+  %% Multiplication table
+  \begin{scope}[shift={(6.5,0)}]
+    \node[font=\sffamily\small\bfseries] at (1.2,2.8) {$V_4$ table ($\oplus$)};
+    \matrix[
+      matrix of math nodes,
+      nodes={minimum width=1.1cm, minimum height=0.7cm, font=\sffamily\small,
+        anchor=center, draw=gray!30},
+      row 1/.style={nodes={fill=gray!10, font=\sffamily\small\bfseries}},
+      column 1/.style={nodes={fill=gray!10, font=\sffamily\small\bfseries}},
+    ] (tab) at (1.2,0.5) {
+      \oplus & (0,0) & (0,1) & (1,0) & (1,1) \\
+      (0,0) & (0,0) & (0,1) & (1,0) & (1,1) \\
+      (0,1) & (0,1) & (0,0) & (1,1) & (1,0) \\
+      (1,0) & (1,0) & (1,1) & (0,0) & (0,1) \\
+      (1,1) & (1,1) & (1,0) & (0,1) & (0,0) \\
+    };
+  \end{scope}
+
+  %% Summary
+  \node[draw, rounded corners, fill=gray!5, font=\sffamily\scriptsize,
+    align=center] at (0,-4.2)
+    {$V_4 \cong \mathbb{Z}_2 \times \mathbb{Z}_2$: every non-identity
+     element has order 2\\
+     The three mixed classes are permuted by the $V_4$ action};
+\end{tikzpicture}

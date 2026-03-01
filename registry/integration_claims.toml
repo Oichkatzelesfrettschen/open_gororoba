@@ -8,17 +8,17 @@
 
 [[cross_repository_integration]]
 id = "CRI-001"
-title = "Signed-Graph Frustration as Viscosity Source (Thesis 1 Foundation)"
-statement = "The Harary-Zaslavsky frustration index computed on Cayley-Dickson signed graphs provides the microscopic origin of macroscopic fluid viscosity. Algebraic frustration F(x) directly couples to kinematic viscosity nu(x) via exponential transformation."
+title = "Signed-Graph Imbalance as Viscosity Source (Thesis 1 Foundation)"
+statement = "The Harary-Zaslavsky imbalance index computed on Cayley-Dickson signed graphs provides the microscopic origin of macroscopic fluid viscosity. Algebraic imbalance F(x) directly couples to kinematic viscosity nu(x) via exponential transformation."
 evidence = [
   "38 cosmic_scheduler tests validating two-phase abstraction",
   "61 lbm_3d tests demonstrating D3Q19 collision/streaming isotropy",
-  "22 vacuum_frustration tests for signed-graph balance computation",
-  "FrustrationViscosityBridge.rs: 284-line implementation of nu(x) = nu_base*exp(-lambda*(F(x)-3/8)^2)",
+  "22 sign_imbalance tests for signed-graph balance computation",
+  "ImbalanceViscosityBridge.rs: 284-line implementation of nu(x) = nu_base*exp(-lambda*(F(x)-3/8)^2)",
   "E-027 percolation experiment: falsifiable test of coupling correlation"
 ]
 repositories = ["open_gororoba"]
-domains = ["algebra", "lbm_3d", "vacuum_frustration"]
+domains = ["algebra", "lbm_3d", "sign_imbalance"]
 status = "verified"
 last_verified = "2026-02-11"
 sprint = 36
@@ -53,7 +53,7 @@ evidence = [
   "1000 permutation budget with binomial CI convergence"
 ]
 repositories = ["open_gororoba"]
-domains = ["stats_core", "vacuum_frustration"]
+domains = ["stats_core", "sign_imbalance"]
 status = "active"
 last_verified = "2026-02-11"
 sprint = 36
@@ -61,14 +61,14 @@ sprint = 36
 [[cross_repository_integration]]
 id = "CRI-004"
 title = "Sedenion Field Lattice as Computational Domain for Physics Simulation"
-statement = "16-dimensional Sedenion algebra elements form natural lattice structure for representing quantum vacuum frustration. SedenionField abstraction (3D spatial grid of 16D elements) enables simultaneous algebraic and geometric operations in physics simulations."
+statement = "16-dimensional Sedenion algebra elements form natural lattice structure for representing quantum sign imbalance. SedenionField abstraction (3D spatial grid of 16D elements) enables simultaneous algebraic and geometric operations in physics simulations."
 evidence = [
-  "vacuum_frustration/src/bridge.rs: SedenionField struct with 3D indexing",
-  "bridge.rs: local_frustration_density() computes per-cell frustration",
-  "lbm_3d integration: uses frustration field to set per-cell viscosity"
+  "sign_imbalance/src/bridge.rs: SedenionField struct with 3D indexing",
+  "bridge.rs: local_imbalance_density() computes per-cell imbalance",
+  "lbm_3d integration: uses imbalance field to set per-cell viscosity"
 ]
 repositories = ["open_gororoba"]
-domains = ["algebra_core", "vacuum_frustration", "lbm_3d"]
+domains = ["algebra_core", "sign_imbalance", "lbm_3d"]
 status = "active"
 last_verified = "2026-02-11"
 sprint = 36
@@ -76,15 +76,15 @@ sprint = 36
 [[cross_repository_integration]]
 id = "CRI-005"
 title = "Percolation Theory Bridge Between Algebra and Fluid Dynamics"
-statement = "Percolation channel detection (BFS on velocity field) creates quantifiable bridge between algebraic frustration and fluid transport phenomena. Channel formation correlates with frustration minima, demonstrating that algebraic structure constrains macroscopic fluid behavior."
+statement = "Percolation channel detection (BFS on velocity field) creates quantifiable bridge between algebraic imbalance and fluid transport phenomena. Channel formation correlates with imbalance minima, demonstrating that algebraic structure constrains macroscopic fluid behavior."
 evidence = [
-  "vacuum_frustration/src/percolation.rs: PercolationDetector and CorrelationResult",
+  "sign_imbalance/src/percolation.rs: PercolationDetector and CorrelationResult",
   "10 tests covering BFS connectivity, threshold sensitivity, channel statistics",
-  "correlate_with_frustration(): Welch's t-test comparing channel vs background frustration",
+  "correlate_with_imbalance(): Welch's t-test comparing channel vs background imbalance",
   "E-027 validates statistical significance of this bridge"
 ]
 repositories = ["open_gororoba"]
-domains = ["vacuum_frustration", "lbm_3d", "stats_core"]
+domains = ["sign_imbalance", "lbm_3d", "stats_core"]
 status = "active"
 last_verified = "2026-02-11"
 sprint = 36

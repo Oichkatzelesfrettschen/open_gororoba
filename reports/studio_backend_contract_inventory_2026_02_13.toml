@@ -61,7 +61,7 @@ notes = "Tolerance-based stability check and gate consistency."
 [[pipeline_mapping]]
 id = "thesis-1"
 registry_experiment = "E-027"
-registry_title = "Topology-Frustration Correlation via Persistent Homology (Thesis 1)"
+registry_title = "Topology-Imbalance Correlation via Persistent Homology (Thesis 1)"
 artifact_paths = ["data/e027/e027_topology_NNNcubed.toml", "data/e027/betti_timeseries_NNNcubed.csv"]
 
 [[pipeline_mapping]]
@@ -79,6 +79,6 @@ artifact_paths = ["data/evidence/e029_neural_homotopy.toml", "data/evidence/e029
 [[pipeline_mapping]]
 id = "thesis-4"
 registry_experiment = "E-030"
-registry_title = "TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)"
+registry_title = "TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)"
 artifact_paths = ["data/thesis_lab/tx1/tx1_report.toml"]
 fallback_notes = "If dedicated mapping is unavailable, synthesis references in E-033 include thesis4 evidence files."

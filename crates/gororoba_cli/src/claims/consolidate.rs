@@ -351,7 +351,7 @@ pub fn normalize_all_statuses(claims: &mut [FullClaimEntry]) -> usize {
 
 /// Phase mapping from crate/module paths in where_stated.
 const PHASE_CRATE_MAP: &[(&str, &str)] = &[
-    ("vacuum_frustration", "Phase 1"),
+    ("sign_imbalance", "Phase 1"),
     ("lbm_3d", "Phase 1"),
     ("lattice_filtration", "Phase 2"),
     ("neural_homotopy", "Phase 3"),
@@ -1183,7 +1183,7 @@ mod tests {
     #[test]
     fn test_infer_phase() {
         assert_eq!(
-            infer_phase("crates/vacuum_frustration/src/lib.rs"),
+            infer_phase("crates/sign_imbalance/src/lib.rs"),
             Some("Phase 1".to_string())
         );
         assert_eq!(

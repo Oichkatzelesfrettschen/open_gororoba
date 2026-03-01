@@ -1,0 +1,55 @@
+%% Fig 38: Test suite treemap (tests by crate, area ~ test count)
+\begin{tikzpicture}[
+  block/.style={draw=gray!30, thick, font=\sffamily\tiny,
+    text=white, align=center, inner sep=2pt},
+]
+  %% Total area represents ~4554 tests
+  %% Major crates get proportionally sized rectangles
+
+  %% algebra_core (~800 tests) - largest
+  \fill[cAlgebra!70] (0,0) rectangle (5,3);
+  \node[block] at (2.5,1.5) {algebra\_core\\$\sim$800 tests};
+
+  %% stats_core (~600 tests)
+  \fill[cStatistics!70] (5.1,0) rectangle (9,3);
+  \node[block] at (7.05,1.5) {stats\_core\\$\sim$600 tests};
+
+  %% lbm_core (~500 tests)
+  \fill[cFluid!70] (0,3.1) rectangle (4,5.5);
+  \node[block] at (2,4.3) {lbm\_core\\$\sim$500 tests};
+
+  %% sign_imbalance (~400 tests)
+  \fill[cQuantum!70] (4.1,3.1) rectangle (7.5,5.5);
+  \node[block] at (5.8,4.3) {sign\_imb.\\$\sim$400 tests};
+
+  %% gr_core (~350 tests)
+  \fill[cGR!70] (7.6,3.1) rectangle (10.5,5.5);
+  \node[block] at (9.05,4.3) {gr\_core\\$\sim$350 tests};
+
+  %% optics_core (~300 tests)
+  \fill[cOptics!70] (9.1,0) rectangle (11.5,2);
+  \node[block] at (10.3,1.0) {optics\\$\sim$300};
+
+  %% materials_core (~250 tests)
+  \fill[cMaterials!70] (9.1,2.1) rectangle (11.5,3);
+  \node[block] at (10.3,2.55) {materials\\$\sim$250};
+
+  %% topo_core (~200 tests)
+  \fill[cCosmology!70] (0,5.6) rectangle (3,7);
+  \node[block] at (1.5,6.3) {topo\_core\\$\sim$200};
+
+  %% data_core + others (~154 tests combined)
+  \fill[gray!60] (3.1,5.6) rectangle (6,7);
+  \node[block] at (4.55,6.3) {data\_core\\$\sim$154};
+
+  %% verified_core + cli crates (~remaining)
+  \fill[OIgreen!60] (6.1,5.6) rectangle (10.5,7);
+  \node[block] at (8.3,6.3) {verified\_core + CLI crates\\$\sim$500};
+
+  %% Total annotation
+  \node[font=\sffamily\small\bfseries, gray, anchor=north west] at (0,7.5)
+    {\testcount{} tests across \cratecount{} crates (zero failures)};
+
+  %% 11.6 x 7.0 total
+  \draw[gray!50, thick] (0,0) rectangle (11.5,7);
+\end{tikzpicture}

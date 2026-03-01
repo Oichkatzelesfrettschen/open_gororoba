@@ -6,8 +6,8 @@ pipeline_count = 4
 
 [[pipeline]]
 id = "thesis-1"
-title = "Topology-Frustration Correlation via Persistent Homology (Thesis 1)"
-hypothesis = "Frustration density and viscosity should remain strongly coupled in spatial slices."
+title = "Topology-Imbalance Correlation via Persistent Homology (Thesis 1)"
+hypothesis = "Imbalance density and viscosity should remain strongly coupled in spatial slices."
 primary_metric = "Spearman correlation"
 quick_profile = "8^3 field, subregions=2"
 full_profile = "16^3 field, subregions=2"
@@ -42,7 +42,7 @@ artifact_paths = ["data/evidence/e029_neural_homotopy.toml", "data/evidence/e029
 
 [[pipeline]]
 id = "thesis-4"
-title = "TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)"
+title = "TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)"
 hypothesis = "Collision return-time statistics should exhibit inverse-square style scaling."
 primary_metric = "Inverse-square R^2"
 quick_profile = "500 steps"

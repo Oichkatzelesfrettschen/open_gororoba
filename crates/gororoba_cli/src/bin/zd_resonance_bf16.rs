@@ -6,8 +6,8 @@ use spectral_core::ghost_spectral::{
 };
 use std::path::PathBuf;
 use std::time::Instant;
-use vacuum_frustration::bridge::{
-    FrustrationViscosityBridge, SedenionField, ViscosityCouplingModel,
+use sign_imbalance::bridge::{
+    ImbalanceViscosityBridge, SedenionField, ViscosityCouplingModel,
 };
 
 /// Zero-Divisor Resonance Sweep (BF16)
@@ -99,10 +99,10 @@ fn main() -> Result<()> {
     let field = generate_sedenion_field(args.size, args.size, args.size, args.lambda);
     println!("Generation took {:.2?}", start_gen.elapsed());
 
-    // 2. Compute Frustration & Viscosity (CPU)
-    println!("Computing local frustration & viscosity...");
+    // 2. Compute Imbalance & Viscosity (CPU)
+    println!("Computing local imbalance & viscosity...");
     let start_visc = Instant::now();
-    let bridge = FrustrationViscosityBridge::new(16);
+    let bridge = ImbalanceViscosityBridge::new(16);
 
     let nu_base = (args.tau_base - 0.5) / 3.0;
 
@@ -129,8 +129,8 @@ fn main() -> Result<()> {
         },
     };
 
-    let frustration = field.local_frustration_density_par(16);
-    let mut viscosity = bridge.frustration_to_viscosity_model(&frustration, &model);
+    let imbalance = field.local_imbalance_density_par(16);
+    let mut viscosity = bridge.imbalance_to_viscosity_model(&imbalance, &model);
 
     for nu in &mut viscosity {
         *nu = nu.clamp(0.001, 0.5); // tau range [0.503, 2.0]

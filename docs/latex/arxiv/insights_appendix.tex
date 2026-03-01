@@ -77,7 +77,7 @@ The Pathion Cubic Anomaly (C-448): dim=32 zero-divisor motif partition (8 heptac
 
 Complete Mechanism (Sprints 20-26): The anti-diagonal parity theorem (C-520) provides the algebraic mechanism. For any triangle (a,b,c) of cross-assessor ZD pairs, define eta(x,y) = psi(lo\_x,hi\_y) XOR psi(hi\_x,lo\_y). The triangle is pure iff eta is constant across all three edges. The 2-bit invariant F in GF(2)\textasciicircum{}2 produces exact 1:3 pure:mixed ratio via Klein-four fiber structure (C-524). Verified with zero mismatches across 50.3M+ triangles at dims 128,256 combined.
 
-Dimensional Extensions (Sprint 27): Frustration oscillation (C-529) peaks at dim=128 (0.388), then monotonically decreases toward 3/8 limit (0.378 at dim=1024, 0.381 at dim=512). GF(2) polynomial degree scales as log2(dim) (C-527). Component scaling laws (dim/2-1 components, dim/2-2 nodes each) verified across 6 dimensions (16-512). psi=1 fraction converges toward 50\% (C-534).
+Dimensional Extensions (Sprint 27): Imbalance oscillation (C-529) peaks at dim=128 (0.388), then monotonically decreases toward 3/8 limit (0.378 at dim=1024, 0.381 at dim=512). GF(2) polynomial degree scales as log2(dim) (C-527). Component scaling laws (dim/2-1 components, dim/2-2 nodes each) verified across 6 dimensions (16-512). psi=1 fraction converges toward 50\% (C-534).
 
 \subsection{I-013: The Hierarchy Fingerprint Theorem}\label{sec:i013}
 
@@ -109,11 +109,11 @@ Implemented L1-L18 emanation layers from de Marrais construction. DMZ = sign-con
 
 Three experiments testing ALP (C-476) and Sky-Limit-Set (C-477). E-011: ALP holds for sparse constraint graphs (E10 Dynkin p=0.000, ET DMZ p=0.000) but fails for dense graphs (Sedenion ZD p=1.000, edge density 86.7\%). E-012: Billiard symbolic dynamics predict spectroscopy behavior (FullFill entropy=0.0, UniformSky entropy=0.44, fill-entropy r=-0.85 at N=5). E-013: A\_\{N-1\} Coxeter group is consistently the best match for ET skybox invariants (rank ratio=1.0, improving match scores at higher N). ALP needs sparsity refinement; Coxeter correspondence is strong but DMZ density match not yet within 10\%.
 
-\subsection{I-018: Anti-Diagonal Parity Theorem: Mechanism for the Double 3:1 Law}\label{sec:i018}
+\subsection{I-018: Anti-Diagonal Parity Theorem: Mechanism for the 3:1 Theorem}\label{sec:i018}
 
 \textbf{Date:} 2026-02-09 \quad \textbf{Status:} verified \quad \textbf{Claims:} C-515, C-516, C-517, C-518, C-519, C-520, C-521, C-522, C-523, C-524, C-525, C-526, C-527
 
-Complete mechanistic explanation for the Universal Double 3:1 Law (C-487). The GF(2) twist exponent psi(i,j) forms a 2x2 matrix M\_ab per edge; its anti-diagonal XOR eta(a,b) = psi(lo\_a,hi\_b) XOR psi(hi\_a,lo\_b) characterizes the pure/mixed partition: a triangle is pure iff eta is constant across all 3 edges. The 2-bit invariant F in GF(2)\textasciicircum{}2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256 (13.3M+ triangles, 0 mismatches). Key supporting results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta = 1 XOR eta\_half (C-526), eta ANF degree = log2(dim)-1 (C-527). The mechanism traces to the conjugation asymmetry in the Cayley-Dickson doubling formula.
+Complete mechanistic explanation for the Universal 3:1 Theorem (C-487). The GF(2) twist exponent psi(i,j) forms a 2x2 matrix M\_ab per edge; its anti-diagonal XOR eta(a,b) = psi(lo\_a,hi\_b) XOR psi(hi\_a,lo\_b) characterizes the pure/mixed partition: a triangle is pure iff eta is constant across all 3 edges. The 2-bit invariant F in GF(2)\textasciicircum{}2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256 (13.3M+ triangles, 0 mismatches). Key supporting results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta = 1 XOR eta\_half (C-526), eta ANF degree = log2(dim)-1 (C-527). The mechanism traces to the conjugation asymmetry in the Cayley-Dickson doubling formula.
 
 \subsection{I-019: Gamma-Invariance of CD Non-Commutativity: Structural vs Parametric Properties}\label{sec:i019}
 
@@ -215,7 +215,7 @@ Phase 3c reconnaissance determined that exceptional algebras E6/E7/E8 are Lie al
 
 \textbf{Date:} 2026-02-09 \quad \textbf{Status:} verified \quad \textbf{Claims:} C-570, C-571, C-572, C-573, C-574
 
-Complete dimensional census tool (dimensional-census binary) validates the Anti-Diagonal Parity Theorem across dims 16-256 exhaustively (14.2M+ graph triangles) with pure\_ratio = 0.250000 EXACTLY at every dimension. The 1:3 ratio, Quarter Rule, and Klein-four fiber symmetry all hold without exception. GPU acceleration infrastructure is operational: eta matrix, graph construction, frustration, and Monte Carlo APT kernels compile via cudarc NVRTC. Monte Carlo rejection sampling at dims 32-64 converges to 0.25 within 0.2\% at 100K samples. Criterion benchmarking suite (7 groups) establishes scaling baselines: component extraction O(n\textasciicircum{}2), triangle enumeration O(n\textasciicircum{}3), cd\_basis\_mul\_sign O(log dim). The exhaustive census confirms that APT is not an approximation -- the mechanism is algebraically exact at every verified dimension.
+Complete dimensional census tool (dimensional-census binary) validates the Anti-Diagonal Parity Theorem across dims 16-256 exhaustively (14.2M+ graph triangles) with pure\_ratio = 0.250000 EXACTLY at every dimension. The 1:3 ratio, Quarter Rule, and Klein-four fiber symmetry all hold without exception. GPU acceleration infrastructure is operational: eta matrix, graph construction, imbalance, and Monte Carlo APT kernels compile via cudarc NVRTC. Monte Carlo rejection sampling at dims 32-64 converges to 0.25 within 0.2\% at 100K samples. Criterion benchmarking suite (7 groups) establishes scaling baselines: component extraction O(n\textasciicircum{}2), triangle enumeration O(n\textasciicircum{}3), cd\_basis\_mul\_sign O(log dim). The exhaustive census confirms that APT is not an approximation -- the mechanism is algebraically exact at every verified dimension.
 
 \subsection{I-036: 8D Lattice Embedding Hardened with Injective Round-Trip Gates}\label{sec:i036}
 
@@ -239,7 +239,7 @@ Direction 1 (Gresnigt decomposition) enumerated all 15 octonion subalgebras of s
 
 \textbf{Date:} 2026-02-09 \quad \textbf{Status:} verified \quad \textbf{Claims:} C-581, C-582, C-583, C-584, C-585, C-586, C-587, C-588
 
-Sprint 29 executed five parallel research directions: (D1) Gresnigt subalgebra decomposition -- 15 alternative subalgebras, uniform structure, depth as mass discriminator (I-038). (D2) Albert algebra J\_3(O) -- 27D exceptional Jordan algebra with Cardano eigenvalue solver; Singh delta\textasciicircum{}2=3/8 NOT reproduced for real trace-free elements, likely requires complexified algebra (C-584, C-585 NEGATIVE). (D3) Koebisu Stiefel manifold -- 168/168 confirmed ZDs satisfy V\_\{8,2\} exactly (C-586). (D4) Tang convention unblocking -- depth-based norms (0.87-2.0 range) insufficient for 3500:1 mass hierarchy (C-587 NEGATIVE). (L4) Frustration convergence -- reusable compute\_frustration\_ratio() function, dim=2048 test scaffolded (C-588). Two genuine negative results (C-585, C-587) constrain future approaches: raw associator norms and generic real J\_3(O) elements are insufficient for mass ratio predictions.
+Sprint 29 executed five parallel research directions: (D1) Gresnigt subalgebra decomposition -- 15 alternative subalgebras, uniform structure, depth as mass discriminator (I-038). (D2) Albert algebra J\_3(O) -- 27D exceptional Jordan algebra with Cardano eigenvalue solver; Singh delta\textasciicircum{}2=3/8 NOT reproduced for real trace-free elements, likely requires complexified algebra (C-584, C-585 NEGATIVE). (D3) Koebisu Stiefel manifold -- 168/168 confirmed ZDs satisfy V\_\{8,2\} exactly (C-586). (D4) Tang convention unblocking -- depth-based norms (0.87-2.0 range) insufficient for 3500:1 mass hierarchy (C-587 NEGATIVE). (L4) Imbalance convergence -- reusable compute\_imbalance\_ratio() function, dim=2048 test scaffolded (C-588). Two genuine negative results (C-585, C-587) constrain future approaches: raw associator norms and generic real J\_3(O) elements are insufficient for mass ratio predictions.
 
 \subsection{I-040: Phase 5b: Octonion Sub-Algebra Provides Fundamental 8D Lattice Encoding for All CD Dimensions}\label{sec:i040}
 
@@ -251,7 +251,7 @@ Phase 5b research resolved the 8D dimensional correspondence mystery: the 8D lat
 
 \textbf{Date:} 2026-02-10 \quad \textbf{Status:} verified \quad \textbf{Claims:} C-590
 
-The asymptotic frustration ratio of the standard Cayley-Dickson tower approaches 3/8 and aligns with the split-octonion negative sign fraction (24/64). New guarded regression checks at dims 128 and 256 keep this attractor behavior reproducible under configurable runtime budgets.
+The asymptotic imbalance index of the standard Cayley-Dickson tower approaches 3/8 and aligns with the split-octonion negative sign fraction (24/64). New guarded regression checks at dims 128 and 256 keep this attractor behavior reproducible under configurable runtime budgets.
 
 \subsection{I-042: The 48-Element Null Cloud}\label{sec:i042}
 
@@ -263,7 +263,7 @@ Restricted simple-blade split-octonion census yields 52 total zero-product pairs
 
 \textbf{Date:} 2026-02-10 \quad \textbf{Status:} verified \quad \textbf{Claims:} none
 
-The multiplication table of the Split-Octonions (dim 8) has exactly 24 negative structure constants out of 64 entries (24/64 = 0.375). This provides the exact arithmetic mechanism for the 3/8 frustration limit observed in I-041.
+The multiplication table of the Split-Octonions (dim 8) has exactly 24 negative structure constants out of 64 entries (24/64 = 0.375). This provides the exact arithmetic mechanism for the 3/8 imbalance limit observed in I-041.
 
 \subsection{I-044: Phase 6: CD Non-Commutativity Is Universal Across Standard Parameter Space (99\% Confidence)}\label{sec:i044}
 
@@ -281,7 +281,7 @@ Phase 8 conducted a comprehensive census across 15 Cayley-Dickson algebras (dims
 
 \textbf{Date:} 2026-02-10 \quad \textbf{Status:} verified \quad \textbf{Claims:} C-599, C-600, C-601, C-602, C-603, C-604, C-605
 
-Phase A verified two key algebraic predictions at unprecedented scale: (1) GF(2) SEPARATING DEGREE FORMULA: min\_degree = log2(dim) - 2 confirmed universal across dims 32/64/128/256, yielding degrees 3/4/5/6. At dim=256, greedy partition refinement found a separating 6-tuple for all 16 motif classes in PG(6,2) with 127 points, where brute-force C(127,6) enumeration is infeasible. (2) APT AT dim=4096: Monte Carlo census with 1M samples across 4,192,256 nodes yielded pure\_ratio=0.2505, confirming the 1:3 APT law. Klein-four fiber symmetry holds within 0.20\% deviation. Frustration ratio continues monotone decrease trend. (3) LAMBDA\_4096 FILTRATION: The base universe saturates at 2187 vectors (= Lambda\_4096), with all 4 octonion parity constraints holding at every filtration level. The filtration chain Lambda\_256(256) < Lambda\_512(512) < Lambda\_1024(1026) < Lambda\_2048(2048) < Lambda\_4096(2187) is strictly increasing and exhaustive.
+Phase A verified two key algebraic predictions at unprecedented scale: (1) GF(2) SEPARATING DEGREE FORMULA: min\_degree = log2(dim) - 2 confirmed universal across dims 32/64/128/256, yielding degrees 3/4/5/6. At dim=256, greedy partition refinement found a separating 6-tuple for all 16 motif classes in PG(6,2) with 127 points, where brute-force C(127,6) enumeration is infeasible. (2) APT AT dim=4096: Monte Carlo census with 1M samples across 4,192,256 nodes yielded pure\_ratio=0.2505, confirming the 1:3 APT law. Klein-four fiber symmetry holds within 0.20\% deviation. Imbalance index continues monotone decrease trend. (3) LAMBDA\_4096 FILTRATION: The base universe saturates at 2187 vectors (= Lambda\_4096), with all 4 octonion parity constraints holding at every filtration level. The filtration chain Lambda\_256(256) < Lambda\_512(512) < Lambda\_1024(1026) < Lambda\_2048(2048) < Lambda\_4096(2187) is strictly increasing and exhaustive.
 
 \subsection{I-047: Phase 9: Tessarines -- Bridging the Gap Between Tensor Products and Recursive Doubling}\label{sec:i047}
 
@@ -313,17 +313,17 @@ Phase D implemented the He-4 superfluid foundation: BEC thermodynamics, Landau t
 
 The zero-divisor geometry of the Split-Octonions is governed by exactly 12 Fundamental Units (unique sets of 4 indices). This matches 1:1 with the 12 roots of the G2 Lie algebra (the automorphism group of the octonions). The 'Missing 6' in the Sedenion transition is identified as exactly one SU(3) root hexagon (6 interactions) being shed to satisfy Euclidean signature constraints.
 
-\subsection{I-052: Surface Tension of Frustration}\label{sec:i052}
+\subsection{I-052: Surface Tension of Imbalance}\label{sec:i052}
 
 \textbf{Date:} 2026-02-10 \quad \textbf{Status:} verified \quad \textbf{Claims:} C-590
 
-A 16-dimensional 'Hybrid' algebra (Split-Octonion core doubled with -1) exhibits a frustration ratio of 0.4375, significantly lower than the standard Sedenion (0.46875) and trending towards the 0.375 attractor. This identifies frustration as a 'surface tension' effect where signature constraints (+/-1) compete with the underlying statistical limit of the Split-Octonion mean-field.
+A 16-dimensional 'Hybrid' algebra (Split-Octonion core doubled with -1) exhibits an imbalance index of 0.4375, significantly lower than the standard Sedenion (0.46875) and trending towards the 0.375 attractor. This identifies imbalance as a 'surface tension' effect where signature constraints (+/-1) compete with the underlying statistical limit of the Split-Octonion mean-field.
 
 \subsection{I-053: Dual-Octonion Phase Boundary}\label{sec:i053}
 
 \textbf{Date:} 2026-02-10 \quad \textbf{Status:} verified \quad \textbf{Claims:} C-630
 
-The Dual-Octonions (O x D) exhibit a frustration sign ratio of 0.4375 (14/32), placing them exactly between the Standard Sedenions (0.46875, 15/32) and the Split-Octonion Attractor (0.375, 12/32). This statistically confirms the role of Dual numbers (epsilon\textasciicircum{}2=0) as the phase boundary between the Elliptic (Standard) and Hyperbolic (Split) geometric regimes of the Cayley-Dickson tower.
+The Dual-Octonions (O x D) exhibit an imbalance sign ratio of 0.4375 (14/32), placing them exactly between the Standard Sedenions (0.46875, 15/32) and the Split-Octonion Attractor (0.375, 12/32). This statistically confirms the role of Dual numbers (epsilon\textasciicircum{}2=0) as the phase boundary between the Elliptic (Standard) and Hyperbolic (Split) geometric regimes of the Cayley-Dickson tower.
 
 \subsection{I-054: Commutativity Depends on Construction Method, Not Dimension}\label{sec:i054}
 
@@ -337,11 +337,11 @@ Commutativity is not universal across composition algebras. Tensor product const
 
 Division algebra status depends on BOTH construction method AND signature. Cayley-Dickson algebras have division status fully determined by gamma=-1 vs gamma=+1 (all-division at gamma=+1 up to dim=8, all non-division at gamma=-1). Tessarines are never division algebras regardless of signature, because the zero-divisor structure is inherent to the tensor product. This means 'is this a division algebra?' requires specifying the family, not just the dimension.
 
-\subsection{I-056: Frustration as Topological Phase Boundary Marker}\label{sec:i056}
+\subsection{I-056: Imbalance as Topological Phase Boundary Marker}\label{sec:i056}
 
 \textbf{Date:} 2026-02-10 \quad \textbf{Status:} verified \quad \textbf{Claims:} C-637, C-638, C-639
 
-Frustration (sign imbalance in multiplication tables) acts as a topological phase boundary marker. The dual-octonion phase boundary 0.4375 lies exactly between elliptic (standard, \textasciitilde{}0.375) and hyperbolic (split, \textasciitilde{}0.469) regimes, suggesting that algebraic structure is constrained by geometric topology. Tensor product variants (Dual/Bi/Para octonions) exhibit different frustration values (0.4375, 0.4688, 0.6562) predictable from their respective algebraic definitions, independent of Cayley-Dickson theory.
+Imbalance (sign imbalance in multiplication tables) acts as a topological phase boundary marker. The dual-octonion phase boundary 0.4375 lies exactly between elliptic (standard, \textasciitilde{}0.375) and hyperbolic (split, \textasciitilde{}0.469) regimes, suggesting that algebraic structure is constrained by geometric topology. Tensor product variants (Dual/Bi/Para octonions) exhibit different imbalance values (0.4375, 0.4688, 0.6562) predictable from their respective algebraic definitions, independent of Cayley-Dickson theory.
 
 \subsection{I-057: Exceptional Jordan Algebras Preserve Commutativity Pattern}\label{sec:i057}
 
@@ -371,13 +371,13 @@ The categorical distinction between tensor products and recursive doubling algeb
 
 \textbf{Date:} unknown \quad \textbf{Status:} open \quad \textbf{Claims:} none
 
-The Physics Synthesis Pipeline demonstrates emergent physical phenomena derived from algebraic structure with falsifiable predictions. The six-layer architecture bridges information theory to continuum physics: (0) Bit manipulation via Cayley-Dickson doubling formula, (1) Algebraic parity from signed-graph psi signs, (2) Topological frustration via Harary-Zaslavsky balance, (3) Dynamical viscosity via exponential coupling, (4) Fluid flow via LBM simulation, (5) Empirical validation via percolation correlation. Thesis 1 proves macroscopic fluid properties (viscosity fields, percolation channels) derive from finite-dimensional algebra without ad-hoc physical postulates. This paradigm suggests deep principle: algebraic structure at microscopic scale directly determines macroscopic physics via falsifiable experimental tests E-027, E-028, E-029.
+The Physics Synthesis Pipeline demonstrates emergent physical phenomena derived from algebraic structure with falsifiable predictions. The six-layer architecture bridges information theory to continuum physics: (0) Bit manipulation via Cayley-Dickson doubling formula, (1) Algebraic parity from signed-graph psi signs, (2) Topological imbalance via Harary-Zaslavsky balance, (3) Dynamical viscosity via exponential coupling, (4) Fluid flow via LBM simulation, (5) Empirical validation via percolation correlation. Thesis 1 proves macroscopic fluid properties (viscosity fields, percolation channels) derive from finite-dimensional algebra without ad-hoc physical postulates. This paradigm suggests deep principle: algebraic structure at microscopic scale directly determines macroscopic physics via falsifiable experimental tests E-027, E-028, E-029.
 
-\subsection{I-065: Cross-Thesis Non-Monotonic Coupling Reveals Optimal Frustration Regime}\label{sec:i065}
+\subsection{I-065: Cross-Thesis Non-Monotonic Coupling Reveals Optimal Imbalance Regime}\label{sec:i065}
 
 \textbf{Date:} unknown \quad \textbf{Status:} open \quad \textbf{Claims:} none
 
-TX-1 (frustration-modulated collision dynamics) reveals non-monotonic dependence: maximum gamma shift occurs at moderate alpha=0.5 (delta\_gamma=0.19), while high alpha values (10-50) produce near-zero shifts. This suggests an optimal frustration coupling regime where microscopic algebraic structure most effectively modulates macroscopic dynamics. The non-monotonicity may arise from noise saturation: beyond a threshold, all sites have high enough noise that relative differences vanish. Combined with TX-2 (viscosity-to-filtration loop showing positive latency-radius correlation) and thesis2-3D (10.88\% shear thickening at alpha=100), the cross-thesis experiments establish that algebraic frustration modulates physics through at least three independent channels (collision noise, viscosity field, filtration spectrum) with different optimal coupling strengths.
+TX-1 (imbalance-modulated collision dynamics) reveals non-monotonic dependence: maximum gamma shift occurs at moderate alpha=0.5 (delta\_gamma=0.19), while high alpha values (10-50) produce near-zero shifts. This suggests an optimal imbalance coupling regime where microscopic algebraic structure most effectively modulates macroscopic dynamics. The non-monotonicity may arise from noise saturation: beyond a threshold, all sites have high enough noise that relative differences vanish. Combined with TX-2 (viscosity-to-filtration loop showing positive latency-radius correlation) and thesis2-3D (10.88\% shear thickening at alpha=100), the cross-thesis experiments establish that algebraic imbalance modulates physics through at least three independent channels (collision noise, viscosity field, filtration spectrum) with different optimal coupling strengths.
 
 \subsection{I-066: Neural Initialization Escapes Associator Basin in Pentagon Optimization}\label{sec:i066}
 
@@ -389,7 +389,7 @@ The algebraic associator tensor m\_3 is a local minimum in the 65536-dimensional
 
 \textbf{Date:} unknown \quad \textbf{Status:} open \quad \textbf{Claims:} none
 
-The Kubo linear-response formula applied to a CD-interpolated Heisenberg chain reveals that algebraic frustration causes a quantum phase transition in transport: the spin Drude weight D\_S collapses by 44x at ANY nonzero CD coupling (lambda=0.01), converting ballistic transport to diffusive. This provides a first-principles derivation of the frustration-viscosity coupling, replacing the tautological nu=nu\_base*(1+lambda*f). Key features: (1) onset catastrophe -- sharp 44x collapse, not gradual, (2) non-monotonic level-crossing dips at lambda=0.30, 0.50, 0.75, (3) vacuum attractor enhancement g(3/8)=83.4x agrees with independent algebraic prediction, (4) analytical fits fail (power R\textasciicircum{}2=0.60, exp R\textasciicircum{}2=0.89) -- lookup table is the correct representation. The thermal Drude weight K\_th is identically zero due to D\_ES\textasciicircum{}2/D\_S cancellation, making spin transport the sole relevant channel.
+The Kubo linear-response formula applied to a CD-interpolated Heisenberg chain reveals that algebraic imbalance causes a quantum phase transition in transport: the spin Drude weight D\_S collapses by 44x at ANY nonzero CD coupling (lambda=0.01), converting ballistic transport to diffusive. This provides a first-principles derivation of the imbalance-viscosity coupling, replacing the tautological nu=nu\_base*(1+lambda*f). Key features: (1) onset catastrophe -- sharp 44x collapse, not gradual, (2) non-monotonic level-crossing dips at lambda=0.30, 0.50, 0.75, (3) imbalance attractor enhancement g(3/8)=83.4x agrees with independent algebraic prediction, (4) analytical fits fail (power R\textasciicircum{}2=0.60, exp R\textasciicircum{}2=0.89) -- lookup table is the correct representation. The thermal Drude weight K\_th is identically zero due to D\_ES\textasciicircum{}2/D\_S cancellation, making spin transport the sole relevant channel.
 
 \subsection{I-068: Varma Mechanism Explains Polarized-Regime Transport Enhancement}\label{sec:i068}
 
@@ -583,11 +583,11 @@ The CHSH-like S parameter computed from Haar DWT of a sinusoidal velocity profil
 
 The Landy 2008 perfect absorber achieves A -> 1 by simultaneously driving R -> 0 (impedance matching Z = sqrt(mu/eps) = Z\_0) and T -> 0 (resonant absorption over a lambda/35 slab). Independent Lorentz oscillators for epsilon and mu, with matched parameters (S\_e = S\_m, gamma\_e = gamma\_m, omega\_0e = omega\_0m), give eps(omega) = mu(omega) identically, so Z = 1 at ALL frequencies. The absorption then comes entirely from the imaginary part of n\_eff = sqrt(eps*mu). This is the Born \& Wolf effective-medium regime where homogenization is valid: unit cell << lambda (0.72 mm vs 26 mm). The Byrnes amplitude transfer matrix correctly handles lossy media where the original Born \& Wolf characteristic matrix fails (cos/sin oscillate for Im(delta) != 0, while exp(+/-i*delta) properly decays). The key calibration insight: oscillator strength S = 0.40 balances impedance mismatch vs absorption depth for the 0.72 mm geometry.
 
-\subsection{I-100: Frustration-Entropy Bridge Connects Vacuum Attractor phi=3/8 to Immirzi Parameter gamma\_NZJ}\label{sec:i100}
+\subsection{I-100: Imbalance-Entropy Bridge Connects Imbalance Attractor phi=3/8 to Immirzi Parameter gamma\_NZJ}\label{sec:i100}
 
 \textbf{Date:} 2026-02-19 \quad \textbf{Status:} Verified \quad \textbf{Claims:} C-859, C-860, C-861
 
-The binary entropy H(phi) = -phi*ln(phi) - (1-phi)*ln(1-phi) as a degeneracy factor in the Immirzi formula gamma = H/(pi*sqrt(3)) maps the CD frustration attractor phi = 3/8 to gamma = 0.1216, within 1.6\% of gamma\_NZJ = 0.1236 (Domagala-Lewandowski 2004). The mathematical structure: (1) H(1/2) = ln(2) recovers gamma\_BG exactly (maximum frustration = maximum entropy); (2) H(3/8) = 0.6616 < ln(2) gives a smaller gamma corresponding to the NZJ counting. Physically, the BG counting (j\_min=1/2) maximizes spin degeneracy, while the NZJ counting (j\_min=1) reduces it. The frustration attractor at phi = 3/8 < 1/2 sits in the reduced-degeneracy regime, naturally matching the NZJ branch. However, no natural mapping to gamma\_BG exists at phi = 3/8 (all non-calibrated bridges deviate > 10\%). This is an honest negative result for the BG branch.
+The binary entropy H(phi) = -phi*ln(phi) - (1-phi)*ln(1-phi) as a degeneracy factor in the Immirzi formula gamma = H/(pi*sqrt(3)) maps the CD imbalance attractor phi = 3/8 to gamma = 0.1216, within 1.6\% of gamma\_NZJ = 0.1236 (Domagala-Lewandowski 2004). The mathematical structure: (1) H(1/2) = ln(2) recovers gamma\_BG exactly (maximum imbalance = maximum entropy); (2) H(3/8) = 0.6616 < ln(2) gives a smaller gamma corresponding to the NZJ counting. Physically, the BG counting (j\_min=1/2) maximizes spin degeneracy, while the NZJ counting (j\_min=1) reduces it. The imbalance attractor at phi = 3/8 < 1/2 sits in the reduced-degeneracy regime, naturally matching the NZJ branch. However, no natural mapping to gamma\_BG exists at phi = 3/8 (all non-calibrated bridges deviate > 10\%). This is an honest negative result for the BG branch.
 
 \subsection{I-101: PPN Constraint Hierarchy: 13 Gates from 4 Physical Sectors}\label{sec:i101}
 

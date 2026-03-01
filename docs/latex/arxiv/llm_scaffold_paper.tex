@@ -45,7 +45,7 @@
 
 \title{\textbf{Algebraic Structure Constrains Physical Dynamics: \\
 Four Theses on Cayley--Dickson Lattice--Boltzmann Coupling}\\[0.5em]
-\large With a Complete Mechanism for the Double 3:1 Law}
+\large With a Complete Mechanism for the 3:1 Theorem}
 \author{open\_gororoba Project}
 \date{February 2026}
 
@@ -56,19 +56,19 @@ Four Theses on Cayley--Dickson Lattice--Boltzmann Coupling}\\[0.5em]
 \begin{abstract}
 We establish four theses connecting algebraic properties of Cayley--Dickson
 algebras to lattice--Boltzmann fluid dynamics on three-dimensional periodic
-lattices.  Thesis~1 establishes a frustration--viscosity coupling whose
+lattices.  Thesis~1 establishes an imbalance--viscosity coupling whose
 monotone structure guarantees rank anti-correlation; independent topological
 evidence (TX-3) and Kubo response analysis confirm distinguishability.
 Thesis~2 identifies a universal 5:4 ratio in effective viscosity between
 power-law and constant forcing regimes.  Thesis~3 achieves 78\% reduction in
 pentagon-identity violation via neural correction tensors trained with the
-Burn framework.  Thesis~4 recovers a power-law latency spectrum
+Burn framework.  Thesis~4 recovers a power-law first-return time distribution
 ($R^2 = 0.995$, $\gamma = -2.41$) from three-dimensional toroidal walks
 with sedenion-keyed transitions.  All four theses pass simultaneously in a
 unified synthesis engine.
 
 Independently, we prove the Anti-Diagonal Parity Theorem, which provides a
-complete GF(2)-algebraic mechanism for the Double 3:1 Law governing face-sign
+complete GF(2)-algebraic mechanism for the 3:1 Theorem governing face-sign
 purity in Cayley--Dickson box-kite triangles.  The theorem is verified
 computationally at dimensions 16 through 512 with zero mismatches across
 14.2 million triangles.
@@ -108,24 +108,24 @@ framework for simulating fluid flow, particularly in complex geometries and
 for non-Newtonian rheology.  The persistent homology pipeline
 \cite{EdelsbrunnerHarer2010} provides a rigorous topological lens for
 comparing flow structures across coupling models.  Our contribution is to
-bridge these domains: we use algebraic frustration as a spatially-varying
+bridge these domains: we use algebraic imbalance as a spatially-varying
 field that modulates lattice--Boltzmann collision operators, and we
 demonstrate that the resulting dynamics are constrained by the algebraic
 structure in precise, measurable ways.
 
 This paper establishes two main results.  First, we demonstrate a framework
 of \emph{Four Theses} connecting Cayley--Dickson algebra to
-lattice--Boltzmann fluid dynamics through vacuum-frustration coupling.
-Thesis~1 shows perfect anti-correlation ($r_s = -1.0$) between frustration
+lattice--Boltzmann fluid dynamics through imbalance coupling.
+Thesis~1 shows perfect anti-correlation ($r_s = -1.0$) between imbalance
 and viscosity.  Thesis~2 identifies a universal 5:4 effective viscosity
 ratio between forcing regimes.  Thesis~3 achieves 78\% pentagon-identity
 violation reduction via neural correction.  Thesis~4 recovers a power-law
-latency spectrum ($R^2 = 0.995$) from sedenion-keyed toroidal walks.  All
+first-return time distribution ($R^2 = 0.995$) from sedenion-keyed toroidal walks.  All
 four theses pass simultaneously in a unified synthesis engine, backed by
 818 verifiable claims and 4110 automated tests with zero compiler warnings.
 
 Second, we prove the \emph{Anti-Diagonal Parity Theorem} (APT), which
-provides a complete GF(2)-algebraic mechanism for the Double 3:1 Law
+provides a complete GF(2)-algebraic mechanism for the 3:1 Theorem
 governing face-sign purity in box-kite triangles.  The theorem is verified
 computationally at dimensions 16 through 512 with zero mismatches across
 14.2 million triangles.
@@ -133,7 +133,7 @@ computationally at dimensions 16 through 512 with zero mismatches across
 The remainder of the paper is organized as follows.
 Section~\ref{sec:background} reviews the Cayley--Dickson construction and
 box-kite geometry.  Section~\ref{sec:methods} describes the computational
-methods: lattice--Boltzmann simulation, algebraic frustration computation,
+methods: lattice--Boltzmann simulation, sign-imbalance computation,
 persistent homology pipeline, neural pentagon correction, and shell
 return-time analysis.  Section~\ref{sec:theses} states and verifies the
 Four Theses with full evidence.  Section~\ref{sec:apt} presents the
@@ -206,7 +206,7 @@ component has $\dim/2 - 2$ nodes organized into $\dim/16$ motif classes
 
 For each triangle $(i,j,k)$ in a box-kite component, the \emph{face sign}
 is classified as \emph{pure} (all three edge signs agree) or \emph{mixed}
-(at least one disagrees).  The Double 3:1 Law (claim C-487) states:
+(at least one disagrees).  The 3:1 Theorem (claim C-487) states:
 \begin{equation}
   \text{Mixed} = 3 \times \text{Pure}
   \label{eq:3to1}
@@ -255,19 +255,19 @@ universally across all components and dimensions $\geq 16$.
 \caption{Box-kite zero-divisor structure.  Nodes represent cross-assessor
 pairs; edge labels $\eta$ are anti-diagonal parity signs.  Pure triangles
 (all signs agree) account for exactly $1/4$ of all faces; mixed triangles
-account for $3/4$, yielding the universal Double 3:1 Law.}
+account for $3/4$, yielding the universal 3:1 Theorem.}
 \label{fig:boxkite}
 \end{figure}
 
-\subsection{Algebraic Frustration}
+\subsection{Sign Imbalance}
 
-The \emph{frustration ratio} $\phi$ of a box-kite component is the fraction
+The \emph{sign-imbalance index} $\phi$ of a box-kite component is the fraction
 of fundamental cycles whose edge signs fail to form a GF(2) coboundary.
-The frustration sequence across dimensions is:
+The imbalance sequence across dimensions is:
 \begin{equation}
   \phi = 0.000,\; 0.307,\; 0.377,\; 0.388,\; 0.385,\; 0.381,\; 0.378
   \quad (\dim = 16, 32, \ldots, 1024)
-  \label{eq:frustration}
+  \label{eq:imbalance-index}
 \end{equation}
 converging toward $3/8 = 0.375$ from above (claims C-529, C-535).
 
@@ -286,7 +286,7 @@ with wavenumber $k = 2$ and amplitude $f_0 = 10^{-5}$, which avoids the
 zero-net-strain-rate problem of uniform forcing under periodic boundary
 conditions.
 
-The local kinematic viscosity is modulated by the algebraic frustration
+The local kinematic viscosity is modulated by the algebraic imbalance
 field $\phi(\mathbf{x})$ through five coupling models:
 \begin{align}
   \text{Exponential:} \quad & \nu(\mathbf{x}) = \nu_0 \exp\bigl(-\lambda
@@ -361,10 +361,10 @@ with $c_s^2 = 1/3$.}
 \label{fig:d3q19}
 \end{figure}
 
-\subsection{Algebraic Frustration Computation}
-\label{sec:frustration-method}
+\subsection{Sign-Imbalance Computation}
+\label{sec:imbalance-method}
 
-The frustration field is derived from the Cayley--Dickson sign function.
+The imbalance field is derived from the Cayley--Dickson sign function.
 For dimension $2^n$ with $n \geq 4$, each lattice site $\mathbf{x}$ is
 assigned a CD basis index $i(\mathbf{x}) \in \{0, \ldots, 2^n - 1\}$.
 Box-kite components are enumerated via the cross-assessor zero-product
@@ -372,10 +372,10 @@ graph: vertices are half-index pairs $(a, b)$ with $a \oplus b \neq 0$ and
 $e_a e_b = 0$.  Connected components partition the vertex set.
 
 Within each component, the edge sign $\eta(a,b)$ (Equation~\ref{eq:eta})
-classifies fundamental cycles as frustrated or unfrustrated.  The
-frustration ratio $\phi$ is the fraction of fundamental cycles that are
-frustrated, converging to $3/8$ with increasing dimension
-(Equation~\ref{eq:frustration}).  Each lattice site inherits a frustration
+classifies fundamental cycles as imbalanced or balanced.  The
+imbalance index $\phi$ is the fraction of fundamental cycles that are
+imbalanced, converging to $3/8$ with increasing dimension
+(Equation~\ref{eq:imbalance-index}).  Each lattice site inherits an imbalance
 value from its assigned component.
 
 \subsection{Persistent Homology Pipeline}
@@ -430,20 +430,20 @@ confidence intervals on $\gamma$ obtained via bootstrap resampling.
 \section{Four Theses: Algebra--Dynamics Coupling}
 \label{sec:theses}
 
-\subsection{Thesis 1: Frustration--Viscosity Anti-Correlation}
+\subsection{Thesis 1: Imbalance--Viscosity Anti-Correlation}
 \label{sec:t1}
 
-\begin{theorem}[T1: Frustration--Viscosity Coupling]
-In a D3Q19 lattice--Boltzmann simulation with vacuum-frustration-modulated
+\begin{theorem}[T1: Imbalance--Viscosity Coupling]
+In a D3Q19 lattice--Boltzmann simulation with imbalance-modulated
 collision operator, the Spearman rank correlation between algebraic
-frustration $\phi$ and effective viscosity $\nu_{\mathrm{eff}}$ satisfies
+imbalance $\phi$ and effective viscosity $\nu_{\mathrm{eff}}$ satisfies
 $r_s = -1.0$ across all tested grid resolutions ($16^3$, $32^3$, $64^3$).
 \end{theorem}
 
 The coupling mechanism is direct: the exponential model
-(Equation~\ref{eq:coupling-exp}) maps higher frustration to lower viscosity,
+(Equation~\ref{eq:coupling-exp}) maps higher imbalance to lower viscosity,
 creating an algebraically-determined spatial viscosity field.  The Spearman
-rank correlation $r_s$ between frustration rank and viscosity rank is
+rank correlation $r_s$ between imbalance rank and viscosity rank is
 exactly $-1.0$ for the exponential model at all three grid resolutions,
 confirming that the monotonic relationship is preserved under grid
 refinement.  The constant model gives $r_s = 0.0$ (null control), while
@@ -471,11 +471,11 @@ $\nu = \nu_{\mathrm{base}} \exp\bigl(-\lambda\,(\phi - \phi_0)^2\bigr)$
 is a strictly monotone function of $|\phi - \phi_0|$.  Therefore
 $r_s = -1.0$ is guaranteed by construction and does not constitute an
 independent empirical test.  The falsifiable content of Thesis~1 is whether
-frustration-derived viscosity produces \emph{distinguishable flow topology}
+imbalance-derived viscosity produces \emph{distinguishable flow topology}
 relative to spatially uniform viscosity.  Experiment~E-027 (Vietoris--Rips
 persistent homology, $p = 0.605$) remains inconclusive on this point.
 Independent evidence comes from TX-3 (topological overlap $= 1.0$) and the
-Kubo response model ($83\times$ enhancement at the vacuum attractor,
+Kubo response model ($83\times$ enhancement at the imbalance attractor,
 claims C-678--C-681).  Re-parametrisation of E-027 with larger grids and
 KuboResponse coupling is required for independent confirmation.
 \end{remark}
@@ -485,7 +485,7 @@ KuboResponse coupling is required for independent confirmation.
 
 \begin{theorem}[T2: 5:4 Viscosity Ratio]
 The ratio of maximum velocity $v_{\max}$ between power-law-forced and
-constant-forced vacuum-frustrated LBM fluids converges to $\approx 1.25$
+constant-forced imbalance-coupled LBM fluids converges to $\approx 1.25$
 (5:4 ratio), confirming shear-thickening behavior induced by algebraic
 coupling.
 \end{theorem}
@@ -494,7 +494,7 @@ The synthesis engine measures a ratio of $1.254$ between power-law-forced
 and constant-forced maximum velocities at matched grid resolution.  This
 ${\approx}5{:}4$ ratio is consistent with shear-thickening behavior: the
 power-law coupling model concentrates viscosity reduction in
-high-frustration regions, creating localized channels of low resistance
+high-imbalance regions, creating localized channels of low resistance
 that amplify peak velocity relative to the uniform-viscosity baseline.  The
 ratio is stable across grid sizes, confirming it reflects a physical
 coupling effect rather than a numerical artifact (experiment E-028).
@@ -526,12 +526,12 @@ sparsity is $97.2\%$ (baseline) and $96.8\%$ (optimized), indicating that
 the correction preserves the sparse structure of the multiplication table
 (experiment E-029, claims C-671--C-674, insight I-066).
 
-\subsection{Thesis 4: Power-Law Latency Spectrum}
+\subsection{Thesis 4: Power-Law First-Return Time Distribution}
 \label{sec:t4}
 
-\begin{theorem}[T4: Toroidal Walk Latency Law]
+\begin{theorem}[T4: Toroidal Walk First-Return Time Law]
 Three-dimensional toroidal random walks with sedenion-keyed transition
-probabilities exhibit a power-law latency spectrum:
+probabilities exhibit a power-law first-return time distribution:
 \begin{equation}
   P(\tau) \sim \tau^{\gamma}, \quad \gamma = -2.41, \quad R^2 = 0.995
   \label{eq:latency}
@@ -800,7 +800,7 @@ $(\eta_{ab}, \eta_{bc})$ flanking $b$, while the second involves
 $(\eta_{bc}, \eta_{ac})$ (claim C-530).
 \end{proof}
 
-\begin{corollary}[Double 3:1 Law]
+\begin{corollary}[3:1 Theorem]
 For any Cayley--Dickson algebra of dimension $\geq 16$, the number of mixed
 triangles is exactly three times the number of pure triangles in every
 box-kite component.
@@ -815,7 +815,7 @@ total, mixed triangles occupy $3/4$, giving ratio $3:1$.
 The proof depends only on the GF(2) structure of $\eta$ and the linear
 algebra of the fiber map $F$.  It does not use dimension-specific
 properties of any particular Cayley--Dickson algebra.  Therefore, the
-Double 3:1 Law holds universally for all CD algebras of dimension $\geq 16$,
+3:1 Theorem holds universally for all CD algebras of dimension $\geq 16$,
 as confirmed computationally through dimension 512 (claims C-515--C-527).
 \end{remark}
 
@@ -887,8 +887,8 @@ giving the $1:3$ ratio.}
 
 Zero mismatches across 14.2 million triangles (claims C-520, C-521, C-522,
 C-531).  The GF(2) coboundary property exhibits a phase transition: $\eta$
-is a coboundary at $\dim = 16$ but not at $\dim \geq 32$, with frustration
-ratio converging to $\approx 3/8$ (claim C-523).
+is a coboundary at $\dim = 16$ but not at $\dim \geq 32$, with imbalance
+index converging to $\approx 3/8$ (claim C-523).
 
 %% ===================================================================
 \section{Grid Convergence}
@@ -902,11 +902,11 @@ $\mathrm{CFL} < 0.003$ and conserve mass to machine precision.
 \subsection{Spearman Correlation Convergence}
 
 Table~\ref{tab:spearman} shows the Spearman rank correlation between
-frustration and viscosity across grid sizes.
+imbalance and viscosity across grid sizes.
 
 \begin{table}[htbp]
 \centering
-\caption{Spearman correlation $r_s$ (frustration vs.\ viscosity) by grid
+\caption{Spearman correlation $r_s$ (imbalance vs.\ viscosity) by grid
 size and coupling model.  The exponential model shows stable perfect
 anti-correlation; the sigmoid model converges toward anti-correlation at
 higher resolution.}
@@ -928,7 +928,7 @@ resolutions.  The sigmoid model shows a pronounced convergence trend:
 $r_s = 0.643 \to 0.690 \to 0.952$, approaching perfect correlation at
 higher resolution.  This suggests that the sigmoid coupling, while
 exhibiting a threshold nonlinearity, converges to a monotone
-frustration--viscosity relationship when spatial resolution resolves the
+imbalance--viscosity relationship when spatial resolution resolves the
 transition region around $\phi_c = 0.38$.
 
 \begin{figure}[htbp]
@@ -966,7 +966,7 @@ transition region around $\phi_c = 0.38$.
   \legend{Exponential, Linear, Sigmoid, Constant}
 \end{axis}
 \end{tikzpicture}
-\caption{Spearman rank correlation $r_s$ (frustration vs.\ viscosity) by
+\caption{Spearman rank correlation $r_s$ (imbalance vs.\ viscosity) by
 grid size and coupling model.  The exponential model achieves stable
 anti-correlation ($r_s \approx -0.95$) at all resolutions.  The sigmoid
 model converges toward perfect correlation with increasing resolution.
@@ -1017,13 +1017,13 @@ the implications, connections, and limitations of these results.
 
 \paragraph{Algebraic structure as physical constraint.}
 The perfect anti-correlation of Thesis~1 ($r_s = -1.0$ at all grid sizes)
-is the central result: it shows that the frustration ratio, a purely
+is the central result: it shows that the sign-imbalance index, a purely
 algebraic quantity derived from the GF(2) sign function on box-kite edges,
 determines the spatial viscosity field in a lattice--Boltzmann simulation.
 This is not a statistical correlation---it is an exact rank relationship
 enforced by the exponential coupling mechanism.  The convergence of the
-frustration ratio toward $3/8$ with increasing dimension
-(Equation~\ref{eq:frustration}) suggests that this coupling approaches a
+imbalance index toward $3/8$ with increasing dimension
+(Equation~\ref{eq:imbalance-index}) suggests that this coupling approaches a
 universal attractor independent of the specific CD algebra used.
 
 \paragraph{Neural correction as algebraic bridge.}
@@ -1038,33 +1038,33 @@ algebra cannot provide exactly.  The dramatic gap between neural correction
 structure is fundamentally nonlinear and requires representation learning
 to capture.
 
-\paragraph{Universality of the 3:1 Law.}
+\paragraph{Universality of the 3:1 Theorem.}
 The Anti-Diagonal Parity Theorem (Section~\ref{sec:apt}) provides a
-complete mechanism for the empirically observed Double 3:1 Law.  The proof
+complete mechanism for the empirically observed 3:1 Theorem.  The proof
 is purely GF(2)-algebraic: it depends only on the balanced edge law
 (Lemma~\ref{lem:half-half}) and the linearity of the fiber map $F$ over
 GF(2).  No dimension-specific properties are used.  This universality is
 confirmed computationally through dimension 512, encompassing 14.2 million
 triangles with zero mismatches.  The GF(2) structure underlying the proof
-is the same structure that determines frustration ratios, connecting the
+is the same structure that determines imbalance indices, connecting the
 APT to the Four Theses through the shared algebraic substrate.
 
 \paragraph{Grid convergence and physical coupling.}
 The convergence of the sigmoid model's Spearman correlation from $r_s =
 0.643$ at $16^3$ to $r_s = 0.952$ at $64^3$ is particularly informative.
 The sigmoid coupling has a threshold at $\phi_c = 0.38$ (near the
-frustration attractor $3/8$), and the convergence toward anti-correlation
+imbalance attractor $3/8$), and the convergence toward anti-correlation
 suggests that higher resolution resolves the transition region more
-accurately.  This is evidence that the frustration--viscosity relationship
+accurately.  This is evidence that the imbalance--viscosity relationship
 reflects genuine physical coupling rather than a numerical artifact of
 coarse discretization.
 
 \paragraph{T1 tautology and independent validation.}
 As noted in Section~\ref{sec:t1}, the monotone exponential coupling
 guarantees $r_s = -1.0$ by construction.  This makes the rank correlation
-a necessary---but not sufficient---test of the frustration--viscosity
+a necessary---but not sufficient---test of the imbalance--viscosity
 hypothesis.  The genuinely falsifiable prediction is that
-frustration-modulated viscosity fields produce topologically distinct flow
+imbalance-modulated viscosity fields produce topologically distinct flow
 compared to uniform viscosity.  Experiment~E-027 ($p = 0.605$) does not
 reach significance, and re-parametrisation with the KuboResponse model
 (which derives coupling strength from first-principles exact
@@ -1082,7 +1082,7 @@ faithful reference.  The neural pentagon correction architecture
 ($256 \to 128 \to 64 \to 16$) was chosen empirically; equivariant
 neural networks respecting CD symmetries could achieve larger reductions.
 The toroidal walk of Thesis~4 populates only 8 of 40 shells; longer
-walks would probe the latency spectrum tail more thoroughly.
+walks would probe the first-return time distribution tail more thoroughly.
 
 \paragraph{Falsified claims.}
 Nine claims were falsified during the investigation and are reported
@@ -1229,14 +1229,14 @@ independent of temporal injection pattern).
 
 We have established a framework of four theses connecting Cayley--Dickson
 algebraic structure to lattice--Boltzmann fluid dynamics.  Thesis~1
-demonstrates exact anti-correlation between algebraic frustration and
+demonstrates exact anti-correlation between algebraic imbalance and
 viscosity.  Thesis~2 identifies a universal 5:4 effective viscosity ratio
 between forcing regimes.  Thesis~3 achieves 78\% pentagon-identity
 violation reduction via neural correction, bridging non-associative algebra
-and approximate coherence.  Thesis~4 recovers a power-law latency spectrum
+and approximate coherence.  Thesis~4 recovers a power-law first-return time distribution
 from algebraically-keyed random walks.  All four theses pass simultaneously
 in a unified synthesis engine.  Independently, the Anti-Diagonal Parity
-Theorem provides a complete GF(2)-algebraic proof of the Double 3:1 Law,
+Theorem provides a complete GF(2)-algebraic proof of the 3:1 Theorem,
 verified across 14.2 million box-kite triangles with zero mismatches.
 
 Beyond the original four theses, four reframed theses probe the framework's
@@ -1251,10 +1251,10 @@ negative results constrain future theoretical work as sharply as the positive
 results.
 
 These results constitute, to our knowledge, the first demonstration that
-zero-divisor frustration in Cayley--Dickson algebras constrains measurable
-physical dynamics.  The frustration ratio---a purely algebraic invariant of
+zero-divisor imbalance in Cayley--Dickson algebras constrains measurable
+physical dynamics.  The sign-imbalance index---a purely algebraic invariant of
 the GF(2) sign function on box-kite edges---determines spatial viscosity
-patterns, flow topology, and latency spectra in three-dimensional fluid
+patterns, flow topology, and first-return time distributions in three-dimensional fluid
 simulations.  The Anti-Diagonal Parity Theorem shows that this algebraic
 structure is not accidental: the 3:1 ratio is a theorem of GF(2) linear
 algebra, holding universally for all CD dimensions $\geq 16$.
@@ -1327,9 +1327,9 @@ cargo run --release --bin thesis-synthesis-engine
 cargo run --release --bin thesis-lab          # T1: grid convergence
 cargo run --release --bin thesis-lab -- --t2  # T2: forcing ratio
 cargo run --release --bin neural-pentagon     # T3: neural correction
-cargo run --release --bin thesis-lab -- --t4  # T4: latency spectrum
+cargo run --release --bin thesis-lab -- --t4  # T4: first-return time distribution
 
-# Verify APT (Double 3:1 Law)
+# Verify APT (3:1 Theorem)
 cargo run --release --bin box-kite-census
 
 # Run governance gates (schema, ASCII, registry integrity)

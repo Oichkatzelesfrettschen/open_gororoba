@@ -15,7 +15,7 @@
 //! The set of all collapse points forms the "Singular Manifold" of the vacuum.
 
 use algebra_core::{cd_multiply, cd_norm_sq};
-use vacuum_frustration::AptSedenionField;
+use sign_imbalance::AptSedenionField;
 
 /// Represents a continuous Sedenion field interpolated from discrete grid data.
 pub struct ContinuousVacuum {
@@ -237,7 +237,7 @@ pub fn simulate_collapse_manifold(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use vacuum_frustration::AptSedenionField;
+    use sign_imbalance::AptSedenionField;
 
     #[test]
     fn test_continuous_vacuum_creation() {

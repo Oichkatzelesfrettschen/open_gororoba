@@ -1,0 +1,55 @@
+%% Fig 6: Imbalance convergence toward 3/8
+%% Data from c590_attractor_ratio_sweep.csv
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=6cm,
+  xlabel={Cayley--Dickson dimension},
+  ylabel={Sign-imbalance index $\phi$},
+  xmode=log,
+  log basis x=2,
+  xtick={16,32,64,128,256,512,1024},
+  xticklabels={16,32,64,128,256,512,1024},
+  ymin=0, ymax=0.45,
+  ytick={0, 0.1, 0.2, 0.3, 0.375, 0.4},
+  yticklabels={0, 0.1, 0.2, 0.3, $3/8$, 0.4},
+  legend pos=south east,
+  grid=major,
+  grid style={gray!20},
+]
+  %% 3/8 attractor line
+  \draw[OIvermillion, thick, dashed]
+    (axis cs:16,0.375) -- (axis cs:1024,0.375)
+    node[pos=0.5, above, font=\sffamily\tiny, OIvermillion] {$\phi^* = 3/8$};
+
+  %% Imbalance data points (from c590_attractor_ratio_sweep.csv)
+  \addplot[
+    OIorange, thick, mark=*, mark size=3pt,
+    mark options={fill=OIorange, draw=OIorange!80!black},
+  ] coordinates {
+    (16, 0.000)
+    (32, 0.3073)
+    (64, 0.3770)
+    (128, 0.3880)
+    (256, 0.3850)
+    (512, 0.3810)
+    (1024, 0.3780)
+  };
+
+  %% Delta annotations (error bars showing |phi - 3/8|)
+  \addplot[
+    OIblue, thick, dashed, mark=square*, mark size=2.5pt,
+    mark options={fill=OIblue!60, draw=OIblue},
+  ] coordinates {
+    (16, 0.375)
+    (32, 0.0677)
+    (64, 0.002)
+    (128, 0.013)
+    (256, 0.010)
+    (512, 0.006)
+    (1024, 0.003)
+  };
+
+  \legend{$\phi(\dim)$, $|\phi - 3/8|$}
+\end{axis}
+\end{tikzpicture}

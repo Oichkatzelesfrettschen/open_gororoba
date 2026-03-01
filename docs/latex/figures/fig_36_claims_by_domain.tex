@@ -1,0 +1,58 @@
+%% Fig 36: Claims by domain stacked area chart (approximate sprint data)
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.85\textwidth,
+  height=6cm,
+  xlabel={Sprint},
+  ylabel={Cumulative claims},
+  xmin=0, xmax=60,
+  ymin=0, ymax=950,
+  stack plots=y,
+  area style,
+  legend pos=outer north east,
+  legend style={fill=white, fill opacity=0.9, draw=gray!50},
+  legend columns=1,
+]
+  %% Algebra (largest, bottom)
+  \addplot[fill=cAlgebra!50, draw=cAlgebra!70] coordinates {
+    (0,0) (10,40) (20,120) (30,180) (40,240) (50,300) (57,340)
+  } \closedcycle;
+
+  %% Fluid
+  \addplot[fill=cFluid!50, draw=cFluid!70] coordinates {
+    (0,0) (10,10) (20,60) (30,100) (40,130) (50,155) (57,180)
+  } \closedcycle;
+
+  %% Statistics
+  \addplot[fill=cStatistics!50, draw=cStatistics!70] coordinates {
+    (0,0) (10,0) (20,5) (30,20) (40,40) (50,60) (57,70)
+  } \closedcycle;
+
+  %% GR
+  \addplot[fill=cGR!50, draw=cGR!70] coordinates {
+    (0,0) (10,0) (20,5) (30,15) (40,40) (50,70) (57,85)
+  } \closedcycle;
+
+  %% Materials
+  \addplot[fill=cMaterials!50, draw=cMaterials!70] coordinates {
+    (0,0) (10,0) (20,0) (30,5) (40,20) (50,45) (57,60)
+  } \closedcycle;
+
+  %% Optics
+  \addplot[fill=cOptics!50, draw=cOptics!70] coordinates {
+    (0,0) (10,0) (20,0) (30,5) (40,15) (50,40) (57,55)
+  } \closedcycle;
+
+  %% Quantum
+  \addplot[fill=cQuantum!50, draw=cQuantum!70] coordinates {
+    (0,0) (10,0) (20,0) (30,5) (40,15) (50,35) (57,45)
+  } \closedcycle;
+
+  %% Cosmology
+  \addplot[fill=cCosmology!50, draw=cCosmology!70] coordinates {
+    (0,0) (10,0) (20,0) (30,0) (40,10) (50,30) (57,45)
+  } \closedcycle;
+
+  \legend{Algebra, Fluid, Statistics, GR, Materials, Optics, Quantum, Cosmology}
+\end{axis}
+\end{tikzpicture}

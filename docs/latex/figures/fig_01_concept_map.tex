@@ -1,0 +1,55 @@
+%% Fig 1: Conceptual landscape mindmap (8 research domains)
+%% Uses TikZ mindmap library with Okabe-Ito colors
+\begin{tikzpicture}[
+  mindmap,
+  every node/.style={concept, circular drop shadow, minimum size=0pt},
+  root concept/.append style={
+    concept color=black!40, fill=white, line width=1.2pt,
+    font=\sffamily\bfseries\large, text=black,
+    minimum size=3.5cm,
+  },
+  level 1 concept/.append style={
+    font=\sffamily\small\bfseries, text=white,
+    minimum size=2.2cm, level distance=4.5cm,
+    sibling angle=45,
+  },
+  level 2 concept/.append style={
+    font=\sffamily\tiny, text=white,
+    minimum size=1.2cm, level distance=2.8cm,
+  },
+]
+\node[root concept] {Algebraic\\Structure\\Constrains\\Dynamics}
+  child[concept color=cAlgebra, grow=90] {
+    node[concept] {Algebra}
+    child[grow=60] { node[concept] {Cayley--\\Dickson} }
+    child[grow=120] { node[concept] {Box-\\Kites} }
+  }
+  child[concept color=cFluid, grow=45] {
+    node[concept] {Fluid\\Dynamics}
+    child[grow=30] { node[concept] {LBM\\D3Q19} }
+  }
+  child[concept color=cGR, grow=0] {
+    node[concept] {General\\Relativity}
+    child[grow=-20] { node[concept] {Warp\\Bubble} }
+  }
+  child[concept color=cQuantum, grow=-45] {
+    node[concept] {Quantum}
+    child[grow=-60] { node[concept] {CHSH\\Bridge} }
+  }
+  child[concept color=cMaterials, grow=-90] {
+    node[concept] {Materials}
+    child[grow=-110] { node[concept] {Meta-\\material} }
+  }
+  child[concept color=cOptics, grow=-135] {
+    node[concept] {Optics}
+    child[grow=-150] { node[concept] {Casimir} }
+  }
+  child[concept color=cStatistics, grow=180] {
+    node[concept] {Statistics}
+    child[grow=200] { node[concept] {Ghost\\Audit} }
+  }
+  child[concept color=cCosmology, grow=135] {
+    node[concept] {Cosmology}
+    child[grow=150] { node[concept] {Dark\\Energy} }
+  };
+\end{tikzpicture}

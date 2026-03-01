@@ -1,0 +1,50 @@
+%% Fig 32: Proof domain treemap (38 files grouped by category)
+%% Rectangle area proportional to source lines
+\begin{tikzpicture}[
+  block/.style={draw=gray!40, thick, font=\sffamily\tiny,
+    text=white, align=center, inner sep=2pt},
+]
+  %% Algebra group (largest: ~800 lines total)
+  \fill[cAlgebra!80] (0,0) rectangle (6,4);
+  \node[block, minimum width=2.8cm, minimum height=1.8cm] at (1.5,3)
+    {CayleyDickson\\(120 lines)};
+  \node[block, minimum width=2.8cm, minimum height=1.8cm] at (4.5,3)
+    {Quaternion\\(95 lines)};
+  \node[block, minimum width=2.8cm, minimum height=1.8cm] at (1.5,1)
+    {FloatQuat\\(85 lines)};
+  \node[block, minimum width=1.3cm, minimum height=1.8cm] at (3.8,1)
+    {Float\\Axioms\\(44 lines)};
+  \node[block, minimum width=1.3cm, minimum height=1.8cm] at (5.3,1)
+    {Prelude\\(30 lines)};
+  \node[font=\sffamily\scriptsize\bfseries, cAlgebra!80!black] at (3,4.3)
+    {Algebra (17 theories)};
+
+  %% Physics group (~600 lines)
+  \fill[cGR!80] (6.2,0) rectangle (10.5,4);
+  \node[block, minimum width=2cm, minimum height=1.5cm] at (7.4,3)
+    {ADM\\(33 lines)};
+  \node[block, minimum width=2cm, minimum height=1.5cm] at (9.4,3)
+    {Casimir\\(28 lines)};
+  \node[block, minimum width=2cm, minimum height=1cm] at (7.4,1.5)
+    {York\\(25 lines)};
+  \node[block, minimum width=2cm, minimum height=1cm] at (9.4,1.5)
+    {Spatial\\(22 lines)};
+  \node[block, minimum width=4.1cm, minimum height=0.8cm] at (8.35,0.4)
+    {ADMBridge, Vec3, ...};
+  \node[font=\sffamily\scriptsize\bfseries, cGR!80!black] at (8.35,4.3)
+    {Physics};
+
+  %% Verified proofs group (21 files, ~650 lines)
+  \fill[OIgreen!80] (0,-0.2) rectangle (10.5,-3.5);
+  \foreach \i/\label [count=\n from 0] in {
+    C876/Rotation, C875/NormConj, C871/Casimir, C868/NormMult,
+    C870/Warp, C873/York, C880/QIBound%
+  } {
+    \pgfmathsetmacro{\xpos}{1.5 + mod(\n,5)*2.0}
+    \pgfmathsetmacro{\ypos}{-0.8 - floor(\n/5)*1.2}
+    \node[block, fill=OIgreen!60, minimum width=1.8cm, minimum height=0.9cm]
+      at (\xpos,\ypos) {\label\\\i};
+  }
+  \node[font=\sffamily\scriptsize\bfseries, OIgreen!80!black] at (5.25,-3.8)
+    {Verified Proofs (21 files)};
+\end{tikzpicture}

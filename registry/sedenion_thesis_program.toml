@@ -17,7 +17,7 @@ source_repositories = [
 ]
 workspace_crates = [
   "crates/algebra_core",
-  "crates/vacuum_frustration",
+  "crates/sign_imbalance",
   "crates/lbm_core",
   "crates/neural_homotopy",
   "crates/lattice_filtration",
@@ -56,15 +56,15 @@ immediate_focus = [
 
 [[thesis]]
 id = "STP-T1"
-title = "Scalar-Frustration Equivalence"
+title = "Scalar-Imbalance Equivalence"
 scope = "modified_gravity"
-domain_map = "scalar_tensor_gravity <-> signed_graph_frustration"
+domain_map = "scalar_tensor_gravity <-> signed_graph_imbalance"
 algebraic_structure = "16D sedenion signed graphs (Cayley-Dickson psi twist)"
-physical_principle = "frustration-viscosity coupling"
-hypothesis = "high frustration maps to stiff spacetime, low frustration maps to vacuum-like low viscosity"
-experiment_crate = "crates/vacuum_frustration"
+physical_principle = "imbalance-viscosity coupling"
+hypothesis = "high imbalance maps to stiff spacetime, low imbalance maps to vacuum-like low viscosity"
+experiment_crate = "crates/sign_imbalance"
 falsifier = "refute if omega_eff < 40000 under the Cassini-bound gate"
-metrics = ["r_s", "omega_eff", "phi_mean", "frustration_density"]
+metrics = ["r_s", "omega_eff", "phi_mean", "imbalance_density"]
 claim_refs = ["C-011", "C-103"]
 status = "done"
 status_token = "DONE"
@@ -119,15 +119,15 @@ id = "STPT-001"
 thesis_id = "STP-T1"
 title = "Implement scalar map and Cassini gate"
 owner = "codex"
-responsibility = "vacuum_frustration module hardening"
+responsibility = "sign_imbalance module hardening"
 effort = "S"
 duration_estimate = "0.5d"
 status = "done"
 status_token = "DONE"
 dependencies = []
 deliverables = [
-  "crates/vacuum_frustration/src/frustration.rs",
-  "crates/vacuum_frustration/tests/integration_test.rs"
+  "crates/sign_imbalance/src/imbalance.rs",
+  "crates/sign_imbalance/tests/integration_test.rs"
 ]
 
 [[task]]

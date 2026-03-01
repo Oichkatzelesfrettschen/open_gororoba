@@ -1,12 +1,12 @@
-//! Dynamics layer: frustration -> viscosity mapping.
+//! Dynamics layer: imbalance -> viscosity mapping.
 
 use crate::traits::DynamicsLayer;
-use vacuum_frustration::FrustrationViscosityBridge;
+use sign_imbalance::ImbalanceViscosityBridge;
 
 /// Runtime parameters for the dynamics bridge.
 #[derive(Debug, Clone)]
 pub struct VacuumDynamicsLayer {
-    bridge: FrustrationViscosityBridge,
+    bridge: ImbalanceViscosityBridge,
     pub nu_base: f64,
     pub lambda: f64,
 }
@@ -14,7 +14,7 @@ pub struct VacuumDynamicsLayer {
 impl Default for VacuumDynamicsLayer {
     fn default() -> Self {
         Self {
-            bridge: FrustrationViscosityBridge::new(16),
+            bridge: ImbalanceViscosityBridge::new(16),
             nu_base: 1.0 / 3.0,
             lambda: 1.0,
         }
@@ -22,9 +22,9 @@ impl Default for VacuumDynamicsLayer {
 }
 
 impl DynamicsLayer for VacuumDynamicsLayer {
-    fn viscosity_field(&self, frustration: &[f64]) -> Vec<f64> {
+    fn viscosity_field(&self, imbalance: &[f64]) -> Vec<f64> {
         self.bridge
-            .frustration_to_viscosity(frustration, self.nu_base, self.lambda)
+            .imbalance_to_viscosity(imbalance, self.nu_base, self.lambda)
     }
 }
 

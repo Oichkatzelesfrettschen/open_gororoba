@@ -14,7 +14,7 @@ statrs = { workspace = true }
 adjustp = { workspace = true }
 rand = { workspace = true }
 algebra_core = { path = "../algebra_core" }
-vacuum_frustration = { path = "../vacuum_frustration" }
+sign_imbalance = { path = "../sign_imbalance" }
 
 [dev-dependencies]
 approx = { workspace = true }
