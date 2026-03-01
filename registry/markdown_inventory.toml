@@ -10565,7 +10565,7 @@ experiment_ref_count = 0
 [[document]]
 id = "MDI-0436"
 path = "reports/LHC_2025_QGP_Full_Synthesis.md"
-title = "Synthesis Report: LHC 2025 QGP Spin Results & Cayley-Dickson Imbalance"
+title = "Synthesis Report: LHC 2025 QGP Spin Results & Cayley-Dickson Frustration"
 git_status = "ignored"
 archived = false
 generated_declared = true

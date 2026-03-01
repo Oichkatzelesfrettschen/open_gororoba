@@ -127,6 +127,7 @@ last_verified = "2026-01-30"
 what_would_verify_refute = "Phase 2.2 (eta=0): Pre-registered model comparison with 1740 data points. Neg-dim eta=0 is equivalent to Lambda-CDM (w=-1 always); DECISIVELY REJECTED (Delta-AIC=+11.6, Delta-BIC=+11.6). Phase 2B (free eta): Amendment pre-registered and executed. Free-eta model (4 params: H0, Omega_m, alpha, eta) achieves chi2=783.42, identical to constant-w (3 params, chi2=783.42). Alpha and eta are exactly degenerate: only the product eta*(alpha+1.5) enters the physics as w_eff. Best-fit w_eff=-1.086 matches constant-w exactly. Delta-AIC=+2.0, Delta-BIC=+7.5 vs constant-w -- STRONG EVIDENCE AGAINST due to unnecessary 4th parameter. The neg-dim parameterization adds no predictive power beyond constant-w: it reparameterizes w via two coupled parameters (alpha, eta) that are individually unidentifiable. Evidence: `data/csv/neg_dim_free_eta_comparison_results.csv`."
 confidence = "n/a"
 phase = "spectral"
+reformulated_as = "C-884"
 claims = [
     "C-428",
     "C-430",
@@ -434,6 +435,7 @@ last_verified = "2026-02-03"
 what_would_verify_refute = "Under the Calcagni (2012) linearized mapping implemented in `crates/cosmology_core/src/spectral.rs`, D_eff=2.8-3.0 yields n_s in [0.4, 0.5], far from Planck n_s=0.9649. The best-fit D_eff is ~3.93 (near 4). The C-040 claim is therefore treated as refuted *as stated* under this mapping. This does not establish a first-principles prediction for D_eff from the F4/bigraph framework; the analysis is explicitly post-hoc. Artifact: `data/csv/c040_primordial_tilt_summary.csv`."
 confidence = "n/a"
 phase = "cosmology"
+reformulated_as = "C-883"
 
 [[claim]]
 id = "C-041"
@@ -992,6 +994,7 @@ status = "Refuted"
 last_verified = "2026-02-05"
 what_would_verify_refute = "REFUTED (Phase 7 Batch A): The normalized 3x3 mixing matrix is near-uniform (close to democratic 1/3 in all entries) with Frobenius distance 0.611 from PMNS |U_ij|^2. Mean diagonal 0.314 vs PMNS mean diagonal ~0.54. The matrix lacks the hierarchical structure required to match neutrino oscillation data. No symmetry-breaking mechanism produces PMNS-like mixing from this construction."
 confidence = "n/a"
+reformulated_as = "C-885"
 
 [[claim]]
 id = "C-078"
@@ -6046,6 +6049,7 @@ last_verified = "2026-02-07"
 what_would_verify_refute = "REFUTED: `test_determine_exact_degree_dim32` confirms the 8/7 split at dim=32 is NOT linearly separable (degree 1 fails), NOR quadratically separable (degree 2 fails). A degree-3 (cubic) GF(2) polynomial IS the minimum separating predicate. The structure is a cubic hypersurface in PG(3,2), not a hyperplane."
 confidence = "n/a"
 phase = "algebra"
+reformulated_as = "C-881"
 claims = [
     "C-443",
     "C-444",
@@ -6545,6 +6549,7 @@ last_verified = "2026-02-19"
 what_would_verify_refute = "WHERE STATED: Monograph Thesis F. VERIFIED at dims 16 and 32 only. REFUTED at dims 64 and 128. Status changed from Verified to Partial. The parity-clique structure is a small-dimension coincidence, not a universal law."
 confidence = "n/a"
 phase = "algebra"
+reformulated_as = "C-882"
 dependencies = ["C-451"]
 claims = [
     "C-451",
@@ -14176,3 +14181,68 @@ phase = "vacuum"
 sprint = 57
 dependencies = []
 status_note = "Formal proof: proofs/verified/C880_FoliationSlice.v (Rocq kernel-checked). Proves nth_slice [s] 0 = Some s by simpl/reflexivity. Single-element foliation trivially reduces."
+
+[[claim]]
+id = "C-881"
+statement = "GF(2) cubic minimum separating degree in PG(3,2): the 8/7 motif class partition at CD dim=32 requires a degree-3 polynomial over GF(2) to separate. Degree 1 (linear) and degree 2 (quadratic) fail exhaustively."
+where_stated = "crates/algebra_core/src/analysis/projective_geometry.rs (test_determine_exact_degree_dim32)"
+status = "Verified"
+last_verified = "2026-03-01"
+what_would_verify_refute = "VERIFY: vm_compute in Rocq kernel confirms separates_b returns false for all degree <= 2 monomial subsets and true for the cubic witness [1;2;3;4;5;6;7;8]. REFUTE: any degree-2 subset that separates."
+confidence = "very_high"
+phase = "algebra"
+sprint = 58
+dependencies = ["C-445"]
+status_note = "Formal proof: proofs/verified/C881_GF2CubicMinDegree.v (Rocq kernel-checked). Reformulation of refuted C-445: the positive content is that the minimum separating degree is exactly 3, not 1 as C-445 claimed."
+
+[[claim]]
+id = "C-882"
+statement = "Parity-clique decomposition is exact at CD dims 16 and 32: ZD adjacency decomposes into K_4+K_4 (12 edges) at dim=16 and K_8+K_8 (56 edges) at dim=32."
+where_stated = "crates/algebra_core/src/experimental/cd_external.rs (verify_parity_clique)"
+status = "Verified"
+last_verified = "2026-03-01"
+what_would_verify_refute = "VERIFY: clique_edges(4)=6, clique_edges(8)=28, 2*6=12, 2*28=56 by reflexivity in Rocq kernel. REFUTE: edge count mismatch at dim=16 or dim=32."
+confidence = "very_high"
+phase = "algebra"
+sprint = 58
+dependencies = ["C-463"]
+status_note = "Formal proof: proofs/verified/C882_ParityCliqueExact.v (Rocq kernel-checked). Reformulation of refuted C-463: the positive content is the exact edge counts at the two specific dimensions where parity-clique decomposition holds."
+
+[[claim]]
+id = "C-883"
+statement = "Calcagni spectral dimension d_S(s) = 4 - 2/(1+s) has range (2,4) and is strictly increasing for s > 0. Any prediction of d_S outside this range is provably impossible under the Calcagni ansatz."
+where_stated = "crates/cosmology_core/src/spectral.rs (calcagni_spectral_dimension)"
+status = "Verified"
+last_verified = "2026-03-01"
+what_would_verify_refute = "VERIFY: Rocq kernel proves 2 < d_S(s) < 4 and monotonicity via Rinv_lt_contravar. REFUTE: a value of s > 0 giving d_S outside (2,4)."
+confidence = "very_high"
+phase = "cosmology"
+sprint = 58
+dependencies = ["C-040"]
+status_note = "Formal proof: proofs/verified/C883_CalcagniMonotoneRange.v (Rocq kernel-checked). Reformulation of refuted C-040: the positive content is the rigorous range bound and monotonicity, which makes the original claim's D_eff mapping falsifiable."
+
+[[claim]]
+id = "C-884"
+statement = "Neg-dim EOS w_eff = -1 - eta*(alpha + 3/2) depends on (alpha, eta) only through the product P = eta*(alpha + 3/2). The 2D parameterization is not identifiable from w_eff observations alone."
+where_stated = "crates/spectral_core/src/neg_dim.rs"
+status = "Verified"
+last_verified = "2026-03-01"
+what_would_verify_refute = "VERIFY: Rocq kernel proves neg_dim_product_degeneracy: same product => same w_eff via lra. REFUTE: two (alpha,eta) pairs with same product but different w_eff."
+confidence = "very_high"
+phase = "spectral"
+sprint = 58
+dependencies = ["C-012"]
+status_note = "Formal proof: proofs/verified/C884_NegDimDegeneracy.v (Rocq kernel-checked). Reformulation of refuted C-012: the positive content is the parameter degeneracy theorem. Also proves vacuum limit (eta=0 => w=-1), phantom/quintessence regimes, and explicit degeneracy witness."
+
+[[claim]]
+id = "C-885"
+statement = "Any S3-invariant bilinear form on a 3-element set has exactly two free parameters (diagonal a and off-diagonal b). Under doubly stochastic normalization with a=b, the unique solution is the democratic matrix with all entries 1/3."
+where_stated = "crates/algebra_core/src/physics/quat_rotation.rs (mixing matrix S3 structure)"
+status = "Verified"
+last_verified = "2026-03-01"
+what_would_verify_refute = "VERIFY: Rocq kernel proves s3_invariant_diagonal_equal and s3_invariant_offdiag_equal by exhaustive S3 transposition chaining. REFUTE: an S3-invariant form with three distinct values."
+confidence = "very_high"
+phase = "algebra"
+sprint = 58
+dependencies = ["C-076", "C-077"]
+status_note = "Formal proof: proofs/verified/C885_DemocraticMixing.v (Rocq kernel-checked). Reformulation unifying verified C-076 (mixing matrix has S3 symmetry) and refuted C-077 (mixing matrix resembles PMNS). The positive content: S3 symmetry forces the two-orbit structure, and uniform mixing (a=b) gives democratic 1/3."

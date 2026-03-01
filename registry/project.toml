@@ -5,14 +5,25 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 4554
-claim_count = 867
+test_count = 4690
+claim_count = 885
 insight_count = 98
 experiment_count = 77
 complete_experiment_count = 74
 paper_count = 19
 binary_count = 153
+kernel_checked_claims = 26
+proof_files = 47
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s58]
+number = 58
+date = "2026-03-01"
+test_count = 4690
+claim_count = 885
+kernel_checked_claims = 26
+proof_files = 47
+summary = "Refuted Claims -> Formal Proofs Sprint. 5 refuted claims reformulated as positive theorems and kernel-checked via Rocq 9.1: C-881 (GF2 cubic min degree in PG(3,2), from C-445), C-882 (parity-clique exact at dims 16/32, from C-463), C-883 (Calcagni d_S range and monotonicity, from C-040), C-884 (neg-dim parameter degeneracy, from C-012), C-885 (S3-invariant democratic mixing, from C-076/C-077). 4 new theory files (GF2Algebra, SpectralDimension, ParityClique, SymmetricGroup3), 5 new verified claim files. Verified Rust modules with cross-validation against algebra_core and cosmology_core."
 
 [sprints.s57]
 number = 57

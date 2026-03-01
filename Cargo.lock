@@ -8451,6 +8451,7 @@ name = "verified_core"
 version = "0.1.0"
 dependencies = [
  "algebra_core",
+ "cosmology_core",
 ]
 
 [[package]]

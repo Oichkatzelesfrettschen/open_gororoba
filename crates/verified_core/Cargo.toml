@@ -2,7 +2,7 @@
 name = "verified_core"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Rocq-verified quaternion operations extracted to Rust"
+description = "Rocq-verified operations extracted to Rust"
 license = "GPL-2.0-only"
 
 # Zero external dependencies: this crate contains only pure arithmetic
@@ -11,6 +11,7 @@ license = "GPL-2.0-only"
 
 [dev-dependencies]
 algebra_core = { path = "../algebra_core" }
+cosmology_core = { path = "../cosmology_core" }
 
 [lints]
 workspace = true
