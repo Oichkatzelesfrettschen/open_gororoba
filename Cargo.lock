@@ -1011,6 +1011,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "casimir_core"
+version = "0.1.0"
+dependencies = [
+ "approx",
+ "gauss-quad",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_distr 0.4.3",
+ "rayon",
+]
+
+[[package]]
 name = "cassowary"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3367,8 +3379,10 @@ dependencies = [
 name = "gororoba_cli_physics"
 version = "0.1.0"
 dependencies = [
+ "algebra_core",
  "anyhow",
  "ash",
+ "casimir_core",
  "cd_spin_bridge",
  "clap",
  "cosmology_core",
@@ -8430,6 +8444,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "956ae1e0d85bca567dee1dcf87fb1ca2e792792f66f87dced8381f99cd91156a"
 dependencies = [
  "piston-float",
+]
+
+[[package]]
+name = "verified_core"
+version = "0.1.0"
+dependencies = [
+ "algebra_core",
 ]
 
 [[package]]

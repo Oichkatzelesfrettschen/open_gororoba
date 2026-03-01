@@ -1811,3 +1811,128 @@ output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
 
+
+[[experiment]]
+id = "E-079"
+title = "ADM decomposition verification against exact solutions"
+description = "Decompose Minkowski and Schwarzschild (Painleve-Gullstrand) metrics into ADM variables. Verify lapse, shift, spatial metric, extrinsic curvature, York time, and constraint residuals against known analytical values."
+binary = "adm-decompose"
+binary_registered = true
+binary_experiment_declared = "E-079"
+method = "Numerical ADM decomposition with finite-difference extrinsic curvature. Compare against PG exact: alpha=1, beta^r=sqrt(2M/r), gamma=delta. Hamiltonian constraint residual for vacuum."
+input = "None (analytical spacetimes)"
+output = ["stdout CSV"]
+run = "cargo run --release --bin adm-decompose -- --spacetime schwarzschild --mass 1.0 --radius 10.0 --n-points 20"
+run_command_sha256 = ""
+claims = ["C-868", "C-875"]
+claim_refs = ["C-868", "C-875"]
+deterministic = true
+seed = 0
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-079"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-080"
+title = "Nacelle warp bubble parameter sweep (n=1..16)"
+description = "Sweep nacelle count from 1 to 16 and compute total negative energy, peak density, York time, and interior-flat residual for each configuration. Compare with Alcubierre baseline."
+binary = "nacelle-warp-sweep"
+binary_registered = true
+binary_experiment_declared = "E-080"
+method = "2D energy density integration on y-z cross-section at x=0 for each nacelle count. Paper mode restricts to n=2,3,4 matching White 2025."
+input = "None (parametric sweep)"
+output = ["stdout CSV"]
+run = "cargo run --release --bin nacelle-warp-sweep -- --paper-mode --velocity 0.1 --radius 100.0 --n-points 80"
+run_command_sha256 = ""
+claims = ["C-869", "C-870", "C-874"]
+claim_refs = ["C-869", "C-870", "C-874"]
+deterministic = true
+seed = 0
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-080"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-081"
+title = "Worldline Casimir numerics: parallel plate validation"
+description = "Compute Casimir energy density between parallel plates using worldline Monte Carlo v-loop algorithm. Validate against analytical E/A = -pi^2/(720*a^3)."
+binary = "worldline-casimir"
+binary_registered = true
+binary_experiment_declared = "E-081"
+method = "Monte Carlo worldline path integral with Gauss-Legendre quadrature for proper-time integration. 10k loops per T-sample, 500 points per loop."
+input = "None (analytical geometry)"
+output = ["stdout CSV"]
+run = "cargo run --release --bin worldline-casimir -- --geometry plates --separation 1.0 --n-loops 10000 --n-profile 20"
+run_command_sha256 = ""
+claims = ["C-871"]
+claim_refs = ["C-871"]
+deterministic = true
+seed = 42
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-081"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-082"
+title = "Algebraic warp sweep: CD tower vs standard GR energy comparison"
+description = "Compare nacelle warp energy budgets between standard GR and Cayley-Dickson algebraic coupling. CD dimension tower (1,2,4,8,16) mapped to nacelle counts with sedenion frustration corrections."
+binary = "algebraic-warp-sweep"
+binary_registered = true
+binary_experiment_declared = "E-082"
+method = "2D energy integration with algebraic York time correction and sedenion stress-energy source. Coupling alpha=0.01, frustration at vacuum attractor 3/8."
+input = "None (parametric sweep)"
+output = ["stdout CSV"]
+run = "cargo run --release --bin algebraic-warp-sweep -- --mode tower --coupling-alpha 0.01 --velocity 0.1 --radius 100.0"
+run_command_sha256 = ""
+claims = ["C-877", "C-878", "C-879"]
+claim_refs = ["C-877", "C-878", "C-879"]
+deterministic = true
+seed = 0
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-082"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-083"
+title = "Sedenion foliation frustration-York time correlation analysis"
+description = "Analyze the correlation between York time (expansion scalar) and sedenion frustration density across hypersurface foliation slices. Test the anti-correlation hypothesis."
+binary = "algebraic-warp-sweep"
+binary_registered = true
+binary_experiment_declared = "E-083"
+method = "Construct SedenionFoliation on ADM hypersurfaces, compute frustration at each grid point, pair with York time from extrinsic curvature. Pearson correlation analysis."
+input = "None (computational)"
+output = ["stdout CSV"]
+run = "cargo run --release --bin algebraic-warp-sweep -- --mode tower --coupling-alpha 0.1"
+run_command_sha256 = ""
+claims = ["C-880"]
+claim_refs = ["C-880"]
+deterministic = true
+seed = 0
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-083"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic_replay"

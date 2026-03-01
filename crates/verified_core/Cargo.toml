@@ -1,0 +1,16 @@
+[package]
+name = "verified_core"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Rocq-verified quaternion operations extracted to Rust"
+license = "GPL-2.0-only"
+
+# Zero external dependencies: this crate contains only pure arithmetic
+# derived from Rocq extraction. The trust boundary is the f64-to-FLOAT_OPS
+# mapping in axioms.rs.
+
+[dev-dependencies]
+algebra_core = { path = "../algebra_core" }
+
+[lints]
+workspace = true

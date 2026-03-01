@@ -1,0 +1,42 @@
+-R theories OpenGororoba
+-R verified OpenGororobaVerified
+-arg -w
+-arg +default
+theories/Prelude.v
+theories/Tanh.v
+theories/Quaternion.v
+theories/ADM.v
+theories/ADMAlgebraBridge.v
+theories/Casimir.v
+theories/FiniteBijection.v
+theories/Foliation.v
+theories/WarpShapeFunction.v
+theories/WorldlineBound.v
+theories/FloatAxioms.v
+theories/FloatQuaternion.v
+theories/FloatRealBridge.v
+theories/QuantumInequalities.v
+theories/EnergyConditions.v
+theories/CayleyDicksonAlgebra.v
+theories/SpatialAlgebra.v
+verified/C879_DimensionBijection.v
+verified/C877_ZeroCoupling.v
+verified/C878_VacuumAttractor.v
+verified/C880_FoliationSlice.v
+verified/C875_HamiltonianVacuum.v
+verified/C871_CasimirExact.v
+verified/C868_PainleveGullstrand.v
+verified/C876_QuaternionRotation.v
+verified/C869_InteriorFlat.v
+verified/C870_NacelleModulationDistinct.v
+verified/C872_PillarCasimirFinite.v
+verified/C873_SphereInCylinderFinite.v
+verified/C874_YorkTimeVanishesInterior.v
+verified/C_QIBoundNegative.v
+verified/C_QITauScaling.v
+verified/C_WarpEnergyNonpositive.v
+verified/C_WECImpliesNEC.v
+verified/C_ConjugateInvolution.v
+verified/C_NormConjugate.v
+verified/C_TraceTracefreeVanishes.v
+verified/C_OverFrustratedSign.v

@@ -67,6 +67,8 @@
 
 pub mod absorption;
 pub mod acoustic_metric;
+pub mod adm;
+pub mod adm_algebra_bridge;
 pub mod area_quantization;
 pub mod constants;
 pub mod coordinates;
@@ -93,7 +95,9 @@ pub mod schwarzschild;
 pub mod sedenion_geodesic;
 pub mod spacetime_algebra;
 pub mod spectral_bands;
+pub mod spatial;
 pub mod synchrotron;
+pub mod warp_metric;
 
 // Re-export primary types from each module
 pub use kerr::{
@@ -150,3 +154,7 @@ pub use quantum_inequalities::{
     pfenning_ford_energy_ratio, quantum_inequality_bound_4d, strong_energy_condition,
     warp_bubble_total_energy, warp_wall_thickness_bound, weak_energy_condition,
 };
+
+pub use adm::{AdmConstraints, AdmDecomposition, ExtrinsicCurvatureData, decompose_metric};
+
+pub use warp_metric::{NacelleWarpBubble, NacelleWarpParams};

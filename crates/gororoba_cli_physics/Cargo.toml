@@ -254,7 +254,27 @@ path = "src/bin/wow_topology.rs"
 name = "wow-signal-analysis"
 path = "src/bin/wow_signal_analysis.rs"
 
+# ---- Warp / Casimir (4) ----
+
+[[bin]]
+name = "nacelle-warp-sweep"
+path = "src/bin/nacelle_warp_sweep.rs"
+
+[[bin]]
+name = "worldline-casimir"
+path = "src/bin/worldline_casimir.rs"
+
+[[bin]]
+name = "adm-decompose"
+path = "src/bin/adm_decompose.rs"
+
+[[bin]]
+name = "algebraic-warp-sweep"
+path = "src/bin/algebraic_warp_sweep.rs"
+
 [dependencies]
+algebra_core = { path = "../algebra_core" }
+casimir_core = { path = "../casimir_core" }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
 materials_core = { path = "../materials_core" }
