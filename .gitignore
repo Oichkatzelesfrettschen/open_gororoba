@@ -41,10 +41,6 @@ target_codex_hve/
 target_codex_hve2/
 rustc-ice-*.txt
 
-# C++
-cpp/build/
-cpp/.conan/
-
 # Coq / Rocq
 curated/01_theory_frameworks/*.vo
 curated/01_theory_frameworks/*.vos

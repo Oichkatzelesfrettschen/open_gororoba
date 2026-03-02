@@ -33,7 +33,7 @@ step_3 = "Reuse one built binary set for follow-on runs."
 name = "open_gororoba"
 kind = "computational_physics_research_platform"
 summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, and cosmological observables."
-workspace_crates = 34
+workspace_crates = 39
 cli_binaries = 153
 registry_model = "toml_first"
 
