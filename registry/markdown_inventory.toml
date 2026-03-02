@@ -4,15 +4,15 @@
 [markdown_inventory]
 generated_at = "deterministic"
 authoritative = true
-document_count = 497
+document_count = 496
 tracked_count = 12
 untracked_count = 0
-ignored_count = 485
+ignored_count = 484
 filesystem_only_count = 0
 generated_count = 176
-non_generated_count = 321
+non_generated_count = 320
 archived_count = 0
-third_party_count = 14
+third_party_count = 13
 manual_exception_count = 0
 unbacked_manual_count = 0
 toml_backed_manual_count = 307
@@ -11668,29 +11668,6 @@ experiment_ref_count = 0
 
 [[document]]
 id = "MDI-0484"
-path = ".pytest_cache/README.md"
-title = "pytest cache directory #"
-git_status = "ignored"
-archived = false
-generated_declared = false
-generated_pattern = false
-generated = false
-manual_exception = false
-third_party = true
-classification = "third_party_markdown"
-migration_action = "ignore_vendor"
-migration_priority = "none"
-toml_destination = "registry/markdown_payloads.toml"
-rationale = "Third-party or tool cache markdown; not a project knowledge source."
-size_bytes = 302
-line_count = 9
-sha256 = "73fd6fccdd802c419a6b2d983d6c3173b7da97558ac4b589edec2dfe443db9ad"
-claim_ref_count = 0
-insight_ref_count = 0
-experiment_ref_count = 0
-
-[[document]]
-id = "MDI-0485"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11713,7 +11690,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0486"
+id = "MDI-0485"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11736,7 +11713,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0487"
+id = "MDI-0486"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/LICENSE.md"
 title = "NCSA Open Source License"
 git_status = "ignored"
@@ -11759,7 +11736,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0488"
+id = "MDI-0487"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/distributions/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11782,7 +11759,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0489"
+id = "MDI-0488"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md"
 title = "MT19937"
 git_status = "ignored"
@@ -11805,7 +11782,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0490"
+id = "MDI-0489"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md"
 title = "PCG64"
 git_status = "ignored"
@@ -11828,7 +11805,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0491"
+id = "MDI-0490"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/philox/LICENSE.md"
 title = "PHILOX"
 git_status = "ignored"
@@ -11851,7 +11828,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0492"
+id = "MDI-0491"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md"
 title = "SFC64"
 git_status = "ignored"
@@ -11874,7 +11851,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0493"
+id = "MDI-0492"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md"
 title = "SPLITMIX64"
 git_status = "ignored"
@@ -11897,7 +11874,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0494"
+id = "MDI-0493"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/LICENSE.md"
 title = "NCSA Open Source License"
 git_status = "ignored"
@@ -11920,7 +11897,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0495"
+id = "MDI-0494"
 path = "wow_analysis_venv/lib/python3.14/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11943,7 +11920,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0496"
+id = "MDI-0495"
 path = "wow_analysis_venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11966,7 +11943,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0497"
+id = "MDI-0496"
 path = "wow_analysis_venv/lib/python3.14/site-packages/scipy/fft/_pocketfft/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
