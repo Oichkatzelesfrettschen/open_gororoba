@@ -7,7 +7,7 @@
     - Maximum at p = 1/2: H(1/2) = ln(2)
     - Nonnegative on (0,1)
 
-    Mirrors: vacuum_frustration/src/immirzi_bridge.rs *)
+    Mirrors: sign_imbalance/src/immirzi_bridge.rs *)
 
 From Stdlib Require Import Reals Lra Psatz Rpower.
 Open Scope R_scope.

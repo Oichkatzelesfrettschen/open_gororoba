@@ -44,6 +44,7 @@ IGNORED_PREFIXES = (
     "venv/",
     ".venv/",
     ".venv_ingest/",
+    ".horusec/",
     "target/",
     "logs/",
     "build/",
