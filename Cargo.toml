@@ -10,6 +10,9 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 [workspace]
 resolver = "3"
 members = [
+    "crates/cd_kernel",
+    "crates/algebra_analysis",
+    "crates/algebra_experimental",
     "crates/algebra_core",
     "crates/control_core",
     "crates/cosmology_core",
@@ -64,6 +67,11 @@ ndarray_duplication_note = "burn pulls its own ndarray version; accept transitiv
 
 # Shared dependencies across workspace
 [workspace.dependencies]
+# Workspace-internal crates (extracted from algebra_core)
+cd_kernel = { path = "crates/cd_kernel" }
+algebra_analysis = { path = "crates/algebra_analysis" }
+algebra_experimental = { path = "crates/algebra_experimental" }
+
 # Core numerics
 # PINNED: statrs 0.18.0 requires nalgebra ^0.33 (<0.34). gauss-quad 0.2.4 pulls
 # nalgebra 0.34 transitively (dep duplication). Upgrade when statrs releases 0.19+.

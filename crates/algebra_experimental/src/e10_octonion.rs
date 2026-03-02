@@ -27,11 +27,11 @@
 
 use rand::SeedableRng;
 
-use crate::experimental::billiard_stats::{
+use crate::billiard_stats::{
     NullModel, PermutationTestResult, generate_null_sequence, summarize_permutation_test,
 };
-use crate::lie::e8_lattice::{E8Root, e8_simple_roots, generate_e8_roots};
-use crate::physics::octonion_field::{FANO_TRIPLES, Octonion, oct_multiply, oct_norm_sq};
+use algebra_core::lie::e8_lattice::{E8Root, e8_simple_roots, generate_e8_roots};
+use algebra_core::physics::octonion_field::{FANO_TRIPLES, Octonion, oct_multiply, oct_norm_sq};
 
 /// Given two distinct imaginary octonion indices (1..=7), return the third
 /// index that completes their unique Fano line, or None if the input is
@@ -680,7 +680,7 @@ pub fn compare_8x8_graphs(a: &[[bool; 8]; 8], b: &[[bool; 8]; 8]) -> GraphEdgeCo
 
 /// Extract the E8 sub-adjacency from E10_ADJACENCY (walls 0-7 only).
 pub fn e8_dynkin_adjacency() -> [[bool; 8]; 8] {
-    let e10 = crate::experimental::billiard_stats::E10_ADJACENCY;
+    let e10 = crate::billiard_stats::E10_ADJACENCY;
     let mut adj = [[false; 8]; 8];
     for i in 0..8 {
         for j in 0..8 {

@@ -1,0 +1,55 @@
+# Standalone CI for LaTeX publication builds.
+#
+# This workflow is designed for the future open_gororoba_paper repository.
+# Until extraction, it runs in the monorepo on docs/latex/ changes only.
+#
+# When extracted to a separate repo, copy this file as .github/workflows/ci.yml,
+# remove the paths filter and working-directory settings, and adjust TEXINPUTS
+# paths for the standalone repo layout.
+name: paper
+
+on:
+  push:
+    paths:
+      - 'docs/latex/**'
+  pull_request:
+    paths:
+      - 'docs/latex/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: texlive/texlive:latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build main paper
+        working-directory: docs/latex
+        run: |
+          mkdir -p out
+          latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
+            -shell-escape -output-directory=out llm_scaffold_paper.tex
+
+      - name: Build synthesis document
+        working-directory: docs/latex
+        run: |
+          latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
+            -output-directory=out MASTER_SYNTHESIS.tex
+
+      - name: Build mathematical formalism
+        working-directory: docs/latex
+        run: |
+          latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
+            -output-directory=out MATHEMATICAL_FORMALISM.tex
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-pdfs
+          path: docs/latex/out/*.pdf
+          retention-days: 30

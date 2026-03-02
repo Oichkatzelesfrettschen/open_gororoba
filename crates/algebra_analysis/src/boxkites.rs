@@ -29,8 +29,8 @@
 //! - de Marrais (2000): "The 42 Assessors and the Box-Kites they fly" (arXiv:math/0011260)
 //! - de Marrais (2004): "Box-Kites III: Quizzical Quaternions" (arXiv:math/0403113)
 
-use crate::analysis::zd_graphs::xor_key;
-use crate::construction::cayley_dickson::{cd_basis_mul_sign, cd_multiply, cd_norm_sq};
+use crate::zd_graphs::xor_key;
+use cd_kernel::cayley_dickson::{cd_basis_mul_sign, cd_multiply, cd_norm_sq};
 use nalgebra::{DMatrix, SymmetricEigen};
 use petgraph::graph::{NodeIndex, UnGraph};
 use std::collections::{BTreeSet, HashMap, HashSet, VecDeque};
@@ -1443,7 +1443,7 @@ pub struct ImbalanceResult {
 ///
 /// Convergence appears toward 3/8 = 0.375 from above.
 pub fn compute_imbalance_ratio(dim: usize) -> ImbalanceResult {
-    use crate::construction::cayley_dickson::cd_basis_mul_sign;
+    use cd_kernel::cayley_dickson::cd_basis_mul_sign;
     use std::time::Instant;
 
     let psi = |d: usize, i: usize, j: usize| -> u8 {
@@ -2739,7 +2739,7 @@ mod tests {
         // be a zero-divisor: there exists some other sedenion b such that
         // d*b = 0. This is verified by checking left-multiplication matrix
         // nullity.
-        use crate::analysis::annihilator::annihilator_info;
+        use crate::annihilator::annihilator_info;
         let assessors = primitive_assessors();
         for a in &assessors {
             for sign in [-1.0, 1.0] {
@@ -3813,7 +3813,7 @@ mod tests {
     fn test_special_heptacross_identity_dim32() {
         // Identify which component is the "special" pure heptacross at dim=32.
         // Uses XOR labels from projective_geometry to characterize each component.
-        use crate::analysis::projective_geometry::component_xor_label;
+        use crate::projective_geometry::component_xor_label;
 
         let components = motif_components_for_cross_assessors(32);
         let census = generic_face_sign_census(32);
@@ -3896,7 +3896,7 @@ mod tests {
     /// (4) fraction of Same edges per component (diagnostic)
     #[test]
     fn test_double_three_to_one_algebraic_mechanism() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         for dim in [16, 32, 64] {
             let components = motif_components_for_cross_assessors(dim);
@@ -4072,7 +4072,7 @@ mod tests {
     /// this test extends to dim=128.
     #[test]
     fn test_half_half_edge_law_dim128() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         let components = motif_components_for_cross_assessors(128);
         assert_eq!(components.len(), 63);
@@ -4471,7 +4471,7 @@ mod tests {
     /// product(sigma) over triangle edges determines face sign class.
     #[test]
     fn test_sigma_correspondence_and_parity_product() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         for &dim in &[16, 32, 64] {
             let components = motif_components_for_cross_assessors(dim);
@@ -4642,8 +4642,8 @@ mod tests {
     /// (exactly half of edges have Delta_k psi = 0, half have 1).
     #[test]
     fn test_translation_derivative_and_half_half() {
-        use crate::analysis::zd_graphs::xor_key;
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use crate::zd_graphs::xor_key;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         // Extract GF(2) exponent: s(i,j) = (-1)^psi(i,j) => psi = 0 if s=+1, 1 if s=-1
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -4763,8 +4763,8 @@ mod tests {
     /// component key k.
     #[test]
     fn test_associator_obstruction_candidate_b() {
-        use crate::analysis::zd_graphs::xor_key;
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use crate::zd_graphs::xor_key;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         // CD associator sign: A(i,j,k) = s(i,j) * s(i^j, k) * s(j,k) * s(i, j^k)
         // In {+/-1} arithmetic, division = multiplication, so this is:
@@ -4977,7 +4977,7 @@ mod tests {
     /// where "pure = zero state".
     #[test]
     fn test_psi_matrix_obstruction_search() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {
@@ -5246,7 +5246,7 @@ mod tests {
     /// Alternative approach: per-component search for universal invariant.
     #[test]
     fn test_separator_generalization() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {
@@ -5438,7 +5438,7 @@ mod tests {
     /// We verify this at dim=128 per-component for full confidence.
     #[test]
     fn test_antidiagonal_parity_theorem_dim128() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {
@@ -5571,7 +5571,7 @@ mod tests {
     #[test]
     #[ignore] // Long-running: ~15-30s in release mode
     fn test_antidiagonal_parity_theorem_dim256() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -5743,7 +5743,7 @@ mod tests {
     /// witnesses a frustrated cycle.
     #[test]
     fn test_eta_cohomology_and_klein_four_fibers() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::collections::VecDeque;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -5953,7 +5953,7 @@ mod tests {
     /// in case 3 is the sole source of eta != 0.
     #[test]
     fn test_eta_doubling_decomposition() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {
@@ -6052,7 +6052,7 @@ mod tests {
     /// across all regimes or has regime-dependent structure.
     #[test]
     fn test_eta_regime_distribution() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::collections::{BTreeMap, VecDeque};
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -6245,7 +6245,7 @@ mod tests {
     /// of psi evaluations.
     #[test]
     fn test_psi_gf2_polynomial_degree() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {
@@ -6406,7 +6406,7 @@ mod tests {
     /// (C-530): Klein-four fiber symmetry -- structural proof via eta-swap
     #[test]
     fn test_mechanism_depth_analysis() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::collections::VecDeque;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -6840,7 +6840,7 @@ mod tests {
     /// the UPPER endpoint. This is a "vertex-median symmetry".
     #[test]
     fn test_vertex_median_symmetry() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {
@@ -6944,7 +6944,7 @@ mod tests {
     #[test]
     #[ignore] // ~15s in release mode
     fn test_imbalance_ratio_dim256() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::collections::VecDeque;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -7059,7 +7059,7 @@ mod tests {
     /// At dim=8: psi has 7 imaginary elements, 7x7 matrix, Fano plane structure
     #[test]
     fn test_psi_eta_tower_dim2_dim4_dim8() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {
@@ -7290,7 +7290,7 @@ mod tests {
     #[test]
     #[ignore] // Long-running: ~3-5 min in release mode
     fn test_antidiagonal_parity_theorem_dim512() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -7519,7 +7519,7 @@ mod tests {
     #[test]
     #[ignore] // ~30s in release mode (graph construction dominates)
     fn test_imbalance_ratio_dim512() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -7637,7 +7637,7 @@ mod tests {
     #[test]
     #[ignore] // ~7-8 min in release mode
     fn test_imbalance_ratio_dim1024() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -7754,7 +7754,7 @@ mod tests {
     #[test]
     #[ignore] // VERY long-running: ~35-40 min in release mode
     fn test_antidiagonal_parity_theorem_dim1024() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -7993,7 +7993,7 @@ mod tests {
     /// Runtime: ~3-4 min in release mode.
     #[test]
     fn test_imbalance_and_apt_dim512_full() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
@@ -8144,7 +8144,7 @@ mod tests {
     /// Runtime: ~7 sec (full triangle enumeration and Klein-four fiber analysis).
     #[test]
     fn test_pathion_apt_mechanism_dim256_regression() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {

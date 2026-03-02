@@ -90,7 +90,7 @@ path = "src/bin/test_tda_api.rs"
 
 [dependencies]
 # Workspace domain crates (used by dispatcher + thesis + orchestration bins)
-algebra_core = { path = "../algebra_core", features = ["lie", "experimental"] }
+algebra_core = { path = "../algebra_core", features = ["lie"] }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
 optics_core = { path = "../optics_core" }

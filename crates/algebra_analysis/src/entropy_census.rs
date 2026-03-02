@@ -5,7 +5,7 @@
 //! (octonion -> sedenion transition) because loss of the alternative property
 //! introduces zero divisors and a non-trivial associator-norm distribution.
 
-use crate::construction::cayley_dickson::{batch_associator_norms_parallel, find_zero_divisors};
+use cd_kernel::cayley_dickson::{batch_associator_norms_parallel, find_zero_divisors};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, Normal};

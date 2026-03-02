@@ -17,7 +17,7 @@ use nalgebra::{DMatrix, DVector};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
-use crate::construction::cayley_dickson::{cd_multiply, cd_norm_sq};
+use cd_kernel::cayley_dickson::{cd_multiply, cd_norm_sq};
 
 /// Canonical sedenion zero-divisor pair: a = e1 + e10, b = e4 - e15.
 ///

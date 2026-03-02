@@ -37,7 +37,7 @@
 //! - Kontsevich, M. (2003). Deformation Quantization of Poisson Manifolds. Lett. Math. Phys.
 //! - Zwiebach, B. (1993). Closed String Field Theory. Nucl. Phys. B 390.
 
-use crate::error::{AlgebraError, AlgebraResult};
+use cd_kernel::error::{AlgebraError, AlgebraResult};
 use std::collections::HashMap;
 
 /// Grading for elements in a homotopy algebra.
@@ -669,7 +669,7 @@ impl SedenionAInfinity {
     pub fn m2(&self, a: &[f64], b: &[f64]) -> Vec<f64> {
         assert_eq!(a.len(), self.dim);
         assert_eq!(b.len(), self.dim);
-        crate::cd_multiply(a, b)
+        cd_kernel::cd_multiply(a, b)
     }
 
     /// Evaluate m_3: the Cayley-Dickson associator [a,b,c] = (ab)c - a(bc).
@@ -677,7 +677,7 @@ impl SedenionAInfinity {
         assert_eq!(a.len(), self.dim);
         assert_eq!(b.len(), self.dim);
         assert_eq!(c.len(), self.dim);
-        crate::cd_associator(a, b, c)
+        cd_kernel::cd_associator(a, b, c)
     }
 
     /// Verify the A-infinity relation at n=3 (with m_1=0):
@@ -1044,7 +1044,7 @@ mod tests {
         let mut e2 = vec![0.0; 16];
         e2[2] = 1.0;
         let product = sa.m2(&e1, &e2);
-        let expected = crate::cd_multiply(&e1, &e2);
+        let expected = cd_kernel::cd_multiply(&e1, &e2);
         assert_eq!(product, expected, "m_2 should equal CD multiply");
         // Product should be a single basis element (nonzero)
         let nonzero: Vec<_> = product.iter().filter(|x| x.abs() > 1e-15).collect();

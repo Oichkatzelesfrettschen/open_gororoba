@@ -248,7 +248,7 @@ impl SedenionZdSystem {
     /// All 12 basis indices that appear in a box-kite's 6 assessors are
     /// pairwise ZD-adjacent within that box-kite.
     pub fn new() -> Self {
-        use crate::analysis::boxkites::find_box_kites;
+        use algebra_analysis::boxkites::find_box_kites;
         let bks = find_box_kites(16, 1e-10);
 
         // 15 non-identity basis elements, indexed 0..14 (representing e_1..e_15)
@@ -320,7 +320,7 @@ impl EtDmzSystem {
     /// Cells are linearized as row * k + col. Two cells are DMZ-adjacent if
     /// they are grid-neighbors (up/down/left/right) and at least one is a DMZ cell.
     pub fn new(n: usize, s: usize) -> Self {
-        use super::emanation::create_strutted_et;
+        use crate::emanation::create_strutted_et;
         let et = create_strutted_et(n, s);
         let k = et.tone_row.k;
         let n_cells = k * k;
@@ -398,7 +398,7 @@ pub struct TwistNavigationSystem {
 impl TwistNavigationSystem {
     /// Build from the Twisted Sisters graph.
     pub fn new() -> Self {
-        use super::emanation::twisted_sisters_graph;
+        use crate::emanation::twisted_sisters_graph;
         let edges = twisted_sisters_graph();
 
         let struts = [1, 3, 5, 7, 9, 11, 13];
@@ -692,7 +692,7 @@ pub struct EtBilliardTrajectory {
 /// 4 attempts (full rotation). If all 4 directions are blocked, stay in place
 /// and reverse direction.
 pub fn simulate_et_billiard(n: usize, s: usize, n_steps: usize, seed: u64) -> EtBilliardTrajectory {
-    use super::emanation::create_strutted_et;
+    use crate::emanation::create_strutted_et;
     use rand::prelude::*;
     use rand_chacha::ChaCha8Rng;
 
@@ -1052,7 +1052,7 @@ pub fn experiment_b_billiard_vs_spectroscopy(
     n_steps: usize,
     seed: u64,
 ) -> BandDynamicsComparison {
-    use super::emanation::spectroscopy_bands;
+    use crate::emanation::spectroscopy_bands;
 
     let spec = spectroscopy_bands(n);
     let sweep = et_billiard_phase_sweep(n, n_steps, seed);
@@ -1142,7 +1142,7 @@ pub struct SkyboxInvariants {
 
 /// Extract skybox pattern invariants for a given (N, S).
 pub fn extract_skybox_invariants(n: usize, s: usize) -> SkyboxInvariants {
-    use super::emanation::create_skybox;
+    use crate::emanation::create_skybox;
 
     let sb = create_skybox(n, s);
     let edge = sb.edge;

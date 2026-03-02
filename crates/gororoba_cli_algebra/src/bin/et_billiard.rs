@@ -5,7 +5,7 @@
 
 use std::path::PathBuf;
 
-use algebra_core::experimental::algebraic_dynamics::{
+use algebra_experimental::algebraic_dynamics::{
     et_billiard_phase_sweep, experiment_b_billiard_vs_spectroscopy,
 };
 use clap::Parser;

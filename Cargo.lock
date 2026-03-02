@@ -76,11 +76,27 @@ dependencies = [
 ]
 
 [[package]]
-name = "algebra_core"
+name = "algebra_analysis"
 version = "0.1.0"
 dependencies = [
  "approx",
+ "cd_kernel",
+ "nalgebra 0.33.2",
+ "petgraph 0.7.1",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_distr 0.4.3",
+ "serde",
+]
+
+[[package]]
+name = "algebra_core"
+version = "0.1.0"
+dependencies = [
+ "algebra_analysis",
+ "approx",
  "atlas-embeddings",
+ "cd_kernel",
  "criterion",
  "csv",
  "cudarc 0.19.2",
@@ -91,7 +107,6 @@ dependencies = [
  "num-traits",
  "padic",
  "petgraph 0.7.1",
- "proptest",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
@@ -102,6 +117,22 @@ dependencies = [
  "thiserror 2.0.18",
  "wheel",
  "wide",
+]
+
+[[package]]
+name = "algebra_experimental"
+version = "0.1.0"
+dependencies = [
+ "algebra_analysis",
+ "algebra_core",
+ "approx",
+ "cd_kernel",
+ "nalgebra 0.33.2",
+ "num-bigint",
+ "petgraph 0.7.1",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_distr 0.4.3",
 ]
 
 [[package]]
@@ -1083,6 +1114,21 @@ dependencies = [
  "jobserver",
  "libc",
  "shlex",
+]
+
+[[package]]
+name = "cd_kernel"
+version = "0.1.0"
+dependencies = [
+ "approx",
+ "proptest",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_distr 0.4.3",
+ "rayon",
+ "sha2",
+ "thiserror 2.0.18",
+ "wide",
 ]
 
 [[package]]
@@ -3336,6 +3382,7 @@ name = "gororoba_cli_algebra"
 version = "0.1.0"
 dependencies = [
  "algebra_core",
+ "algebra_experimental",
  "clap",
  "csv",
  "env_logger",
