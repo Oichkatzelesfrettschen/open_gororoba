@@ -54,7 +54,7 @@ All motif census computations are exact (not sampled) and complete in under
 cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
 ```
 
-Implementation: `crates/algebra_core/src/boxkites.rs` (16 regression tests
+Implementation: `crates/algebra_analysis/src/boxkites.rs` (16 regression tests
 covering dim=64,128,256).
 
 ## Claims

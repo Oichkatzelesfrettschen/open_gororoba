@@ -141,7 +141,7 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 - H3: VERIFIED. XOR-bucket heuristics have zero false negatives (perfect recall). Precision quantified in CX-003: 168/315 = 53.3% at dim=16.
 
 ### Implementation artifacts
-- `crates/algebra_core/src/boxkites.rs`: `cross_assessors()`, `diagonal_zero_products_exact()`, `MotifComponent`, `motif_components_for_cross_assessors()`.
+- `crates/algebra_analysis/src/boxkites.rs`: `cross_assessors()`, `diagonal_zero_products_exact()`, `MotifComponent`, `motif_components_for_cross_assessors()`.
 - Exact census extended to dim=256 (16 regression tests in boxkites.rs).
 - 5 verified scaling laws: n_components = dim/2-1, nodes_per_component = dim/2-2, n_motif_classes = dim/16, K2_components = 3+log2(dim), K2_parts = dim/4-1.
 - NO octahedra beyond dim=16; structure completely restructures each doubling.

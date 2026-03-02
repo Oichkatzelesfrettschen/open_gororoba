@@ -4,8 +4,8 @@
 
 [knowledge_sources]
 generated_at = "deterministic"
-tracked_markdown_count = 11
-manual_source_count = 3
+tracked_markdown_count = 12
+manual_source_count = 4
 markdown_mirror_count = 6
 generated_markdown_count = 2
 artifact_report_count = 0
@@ -77,8 +77,8 @@ generated = true
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "abff866bd143b10a59ef8e13f3fb288833f344774f023bcebfc01592297d37cb"
-size_bytes = 5867
+sha256 = "9e649e3639247310715fd6894dbb7262b8d1dd50ca0108045665e0d1022064ae"
+size_bytes = 5851
 line_count = 156
 claim_ref_count = 0
 insight_ref_count = 0
@@ -95,8 +95,8 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "fc34a266b657b0fad5ef7d7695c4db3704700900c662fe582c897d9d1d5c78d8"
-size_bytes = 1264
+sha256 = "5a15c27c9160ec5ce14d9e93f8ef21cc6b65c3c53fef8816f78b2b2bcd82d7c1"
+size_bytes = 1260
 line_count = 41
 claim_ref_count = 0
 insight_ref_count = 0
@@ -212,3 +212,21 @@ insight_ref_count = 0
 experiment_ref_count = 0
 link_count = 5
 link_sample = ["convos/", "convos/1_read_nonuser_lines_cont.md:L<line>", "docs/", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "docs/convos/audit_1_read_nonuser_lines_cont.md"]
+
+[[document]]
+id = "DOC-0012"
+path = "proofs/README.md"
+title = "Living Verification Artifact -- Pipeline Architecture"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "e2d802605d3c94eaf2efb3e411f88e235b5c087bad5000728dafd2eec9c41968"
+size_bytes = 5216
+line_count = 136
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 49
+link_sample = ["(*<*tagname>*) ... (*</tagname>*)", "//<*tagname> ... //</tagname>", "crates/verified_core/src/axioms.rs", "crates/verified_core/tests/cross_validate.rs", "html/index.html", "metrics/compile_times.csv", "metrics/dep_graph.tikz", "metrics/dep_graph.{dot,pdf,svg}"]

@@ -526,7 +526,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-001"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs", "crates/algebra_core/src/construction/hypercomplex.rs", "docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/src/construction/hypercomplex.rs", "docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00030"
@@ -562,7 +562,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-002"]
-evidence_refs = ["crates/algebra_core/src/analysis/annihilator.rs", "crates/algebra_core/src/analysis/boxkites.rs", "docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md", "docs/external_sources/DE_MARRAIS_SOURCES.md"]
+evidence_refs = ["crates/algebra_analysis/src/annihilator.rs", "crates/algebra_analysis/src/boxkites.rs", "docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md", "docs/external_sources/DE_MARRAIS_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00032"
@@ -598,7 +598,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-003"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "docs/SEDENION_ATLAS.md", "docs/external_sources/DE_MARRAIS_SOURCES.md"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "docs/SEDENION_ATLAS.md", "docs/external_sources/DE_MARRAIS_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00034"
@@ -616,7 +616,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-004"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "crates/algebra_core/src/lie/group_theory.rs", "docs/SEDENION_ATLAS.md", "docs/external_sources/PSL_2_7_SOURCES.md"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "crates/algebra_core/src/lie/group_theory.rs", "docs/SEDENION_ATLAS.md", "docs/external_sources/PSL_2_7_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00035"
@@ -634,7 +634,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-005"]
-evidence_refs = ["crates/algebra_core/src/analysis/grassmannian.rs", "data/csv/c005_grassmannian_zd_analysis.csv", "docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md"]
+evidence_refs = ["crates/algebra_analysis/src/grassmannian.rs", "data/csv/c005_grassmannian_zd_analysis.csv", "docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md"]
 
 [[skeleton]]
 id = "PRS-00036"
@@ -814,7 +814,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-013"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "docs/BIBLIOGRAPHY.md", "docs/DE_MARRAIS_REPLICATION.md"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "docs/BIBLIOGRAPHY.md", "docs/DE_MARRAIS_REPLICATION.md"]
 
 [[skeleton]]
 id = "PRS-00046"
@@ -832,7 +832,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-014"]
-evidence_refs = ["crates/algebra_core/src/analysis/annihilator.rs", "crates/algebra_core/src/analysis/reggiani.rs", "docs/BIBLIOGRAPHY.md", "docs/REGGIANI_REPLICATION.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"]
+evidence_refs = ["crates/algebra_analysis/src/annihilator.rs", "crates/algebra_analysis/src/reggiani.rs", "docs/BIBLIOGRAPHY.md", "docs/REGGIANI_REPLICATION.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"]
 
 [[skeleton]]
 id = "PRS-00047"
@@ -850,7 +850,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-015"]
-evidence_refs = ["crates/algebra_core/src/analysis/reggiani.rs", "docs/BIBLIOGRAPHY.md", "docs/REGGIANI_REPLICATION.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"]
+evidence_refs = ["crates/algebra_analysis/src/reggiani.rs", "docs/BIBLIOGRAPHY.md", "docs/REGGIANI_REPLICATION.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"]
 
 [[skeleton]]
 id = "PRS-00048"
@@ -886,7 +886,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-017"]
-evidence_refs = ["crates/algebra_core/src/analysis/zd_graphs.rs", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md"]
+evidence_refs = ["crates/algebra_analysis/src/zd_graphs.rs", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md"]
 
 [[skeleton]]
 id = "PRS-00050"
@@ -994,7 +994,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-023"]
-evidence_refs = ["crates/algebra_core/src/analysis/grassmannian.rs", "data/csv/cd_fiber_holonomy_comparison.csv", "data/csv/cd_holonomy_basis_triples.csv", "docs/theory/unified_tensor_wheel_cd_framework.md", "src/scripts/analysis/cd_fiber_holonomy_analysis.py", "tests/test_cd_holonomy.py"]
+evidence_refs = ["crates/algebra_analysis/src/grassmannian.rs", "data/csv/cd_fiber_holonomy_comparison.csv", "data/csv/cd_holonomy_basis_triples.csv", "docs/theory/unified_tensor_wheel_cd_framework.md", "src/scripts/analysis/cd_fiber_holonomy_analysis.py", "tests/test_cd_holonomy.py"]
 
 [[skeleton]]
 id = "PRS-00056"
@@ -1030,7 +1030,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-025"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "crates/stats_core/src/claims_gates.rs", "data/csv/tscp_alignment_results.csv", "docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "docs/stellar_cartography/theory/HYPOTHESIS_DEF.md", "src/scripts/analysis/verify_tscp_alignment.py", "tests/test_tscp_alignment_offline.py"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "crates/stats_core/src/claims_gates.rs", "data/csv/tscp_alignment_results.csv", "docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "docs/stellar_cartography/theory/HYPOTHESIS_DEF.md", "src/scripts/analysis/verify_tscp_alignment.py", "tests/test_tscp_alignment_offline.py"]
 
 [[skeleton]]
 id = "PRS-00058"
@@ -1066,7 +1066,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-027"]
-evidence_refs = ["crates/algebra_core/src/analysis/grassmannian.rs", "crates/stats_core/src/claims_gates.rs", "data/csv/deff_horizon_mass_scaling_summary.csv", "docs/C027_DEFF_HORIZON_TEST.md", "docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md", "docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md", "src/scripts/analysis/deff_horizon_mass_scaling.py", "tests/test_c027_deff_horizon_mass_scaling.py"]
+evidence_refs = ["crates/algebra_analysis/src/grassmannian.rs", "crates/stats_core/src/claims_gates.rs", "data/csv/deff_horizon_mass_scaling_summary.csv", "docs/C027_DEFF_HORIZON_TEST.md", "docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md", "docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md", "src/scripts/analysis/deff_horizon_mass_scaling.py", "tests/test_c027_deff_horizon_mass_scaling.py"]
 
 [[skeleton]]
 id = "PRS-00060"
@@ -1570,7 +1570,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-055"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs", "crates/algebra_core/src/construction/hypercomplex.rs"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/src/construction/hypercomplex.rs"]
 
 [[skeleton]]
 id = "PRS-00088"
@@ -8050,7 +8050,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-406"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "docs/convos/CONVOS_CLAIMS_INBOX.md", "docs/external_sources/TSCP_METHOD_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_alignment_offline.py", "tests/test_tscp_embedding_sweep.py"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "docs/convos/CONVOS_CLAIMS_INBOX.md", "docs/external_sources/TSCP_METHOD_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_alignment_offline.py", "tests/test_tscp_embedding_sweep.py"]
 
 [[skeleton]]
 id = "PRS-00448"
@@ -8716,7 +8716,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-443", "I-006"]
-evidence_refs = ["I-006", "crates/algebra_core/src/analysis/boxkites.rs", "docs/INSIGHTS.md"]
+evidence_refs = ["I-006", "crates/algebra_analysis/src/boxkites.rs", "docs/INSIGHTS.md"]
 
 [[skeleton]]
 id = "PRS-00485"
@@ -8734,7 +8734,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-444"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "crates/algebra_core/src/analysis/projective_geometry.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "crates/algebra_analysis/src/projective_geometry.rs"]
 
 [[skeleton]]
 id = "PRS-00486"
@@ -8752,7 +8752,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-445"]
-evidence_refs = ["crates/algebra_core/src/analysis/projective_geometry.rs"]
+evidence_refs = ["crates/algebra_analysis/src/projective_geometry.rs"]
 
 [[skeleton]]
 id = "PRS-00487"
@@ -8770,7 +8770,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-446"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "crates/algebra_core/src/analysis/projective_geometry.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "crates/algebra_analysis/src/projective_geometry.rs"]
 
 [[skeleton]]
 id = "PRS-00488"
@@ -8806,7 +8806,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-448"]
-evidence_refs = ["crates/algebra_core/src/analysis/projective_geometry.rs"]
+evidence_refs = ["crates/algebra_analysis/src/projective_geometry.rs"]
 
 [[skeleton]]
 id = "PRS-00490"
@@ -8842,7 +8842,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-450"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00492"
@@ -8860,7 +8860,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-451"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00493"
@@ -8878,7 +8878,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-452"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs", "data/csv/cayley_dickson/256d_lattice_mapping.csv"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs", "data/csv/cayley_dickson/256d_lattice_mapping.csv"]
 
 [[skeleton]]
 id = "PRS-00494"
@@ -8896,7 +8896,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-453"]
-evidence_refs = ["2048}d_lattice_mapping.csv", "crates/algebra_core/src/experimental/cd_external.rs", "data/csv/cayley_dickson/{512"]
+evidence_refs = ["2048}d_lattice_mapping.csv", "crates/algebra_experimental/src/cd_external.rs", "data/csv/cayley_dickson/{512"]
 
 [[skeleton]]
 id = "PRS-00495"
@@ -8914,7 +8914,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-454"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00496"
@@ -8932,7 +8932,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-455"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00497"
@@ -8950,7 +8950,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-456"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00498"
@@ -8968,7 +8968,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-457"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00499"
@@ -8986,7 +8986,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-458"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00500"
@@ -9004,7 +9004,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-459"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00501"
@@ -9022,7 +9022,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-460"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00502"
@@ -9040,7 +9040,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-461"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00503"
@@ -9058,7 +9058,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-462"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00504"
@@ -9076,7 +9076,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-463"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00505"
@@ -9094,7 +9094,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-464"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00506"
@@ -9112,7 +9112,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-465"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs"]
 
 [[skeleton]]
 id = "PRS-00507"
@@ -9130,7 +9130,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-466"]
-evidence_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+evidence_refs = ["crates/algebra_analysis/src/codebook.rs"]
 
 [[skeleton]]
 id = "PRS-00508"
@@ -9166,7 +9166,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-468"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00510"
@@ -9184,7 +9184,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-469"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00511"
@@ -9202,7 +9202,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-470"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00512"
@@ -9220,7 +9220,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-471"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00513"
@@ -9238,7 +9238,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-472"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00514"
@@ -9256,7 +9256,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-473"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00515"
@@ -9274,7 +9274,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-474"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00516"
@@ -9292,7 +9292,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-475"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00517"
@@ -9310,7 +9310,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-476", "E-011"]
-evidence_refs = ["E-011", "crates/algebra_core/src/experimental/algebraic_dynamics.rs", "crates/algebra_core/src/experimental/billiard_stats.rs", "crates/gororoba_cli_algebra/src/bin/cross_stack_locality.rs"]
+evidence_refs = ["E-011", "crates/algebra_experimental/src/algebraic_dynamics.rs", "crates/algebra_experimental/src/billiard_stats.rs", "crates/gororoba_cli_algebra/src/bin/cross_stack_locality.rs"]
 
 [[skeleton]]
 id = "PRS-00518"
@@ -9328,7 +9328,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-477", "E-012", "E-013"]
-evidence_refs = ["E-012", "E-013", "crates/algebra_core/src/experimental/algebraic_dynamics.rs", "crates/gororoba_cli_algebra/src/bin/sky_limit_set.rs"]
+evidence_refs = ["E-012", "E-013", "crates/algebra_experimental/src/algebraic_dynamics.rs", "crates/gororoba_cli_algebra/src/bin/sky_limit_set.rs"]
 
 [[skeleton]]
 id = "PRS-00519"
@@ -9346,7 +9346,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-478"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00520"
@@ -9364,7 +9364,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-479"]
-evidence_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+evidence_refs = ["crates/algebra_experimental/src/emanation.rs"]
 
 [[skeleton]]
 id = "PRS-00521"
@@ -9382,7 +9382,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-480"]
-evidence_refs = ["crates/algebra_core/src/analysis/projective_geometry.rs"]
+evidence_refs = ["crates/algebra_analysis/src/projective_geometry.rs"]
 
 [[skeleton]]
 id = "PRS-00522"
@@ -9400,7 +9400,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-479", "C-481"]
-evidence_refs = ["C-479", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-479", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00523"
@@ -9418,7 +9418,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-482"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00524"
@@ -9436,7 +9436,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-483", "C-487"]
-evidence_refs = ["C-487", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-487", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00525"
@@ -9454,7 +9454,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-484", "C-487"]
-evidence_refs = ["C-487", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-487", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00526"
@@ -9472,7 +9472,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-485"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00527"
@@ -9490,7 +9490,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-486"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00528"
@@ -9508,7 +9508,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-487"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00529"
@@ -9526,7 +9526,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-488"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00530"
@@ -9544,7 +9544,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-489"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00531"
@@ -9562,7 +9562,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-490"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00532"
@@ -9580,7 +9580,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-491"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00533"
@@ -9598,7 +9598,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-492"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00534"
@@ -9616,7 +9616,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-491", "C-493"]
-evidence_refs = ["C-491", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-491", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00535"
@@ -9634,7 +9634,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-494"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00536"
@@ -9652,7 +9652,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-495"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00537"
@@ -9670,7 +9670,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-496"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00538"
@@ -9688,7 +9688,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-497"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00539"
@@ -9706,7 +9706,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-498"]
-evidence_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+evidence_refs = ["crates/algebra_analysis/src/codebook.rs"]
 
 [[skeleton]]
 id = "PRS-00540"
@@ -9724,7 +9724,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-499"]
-evidence_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+evidence_refs = ["crates/algebra_analysis/src/codebook.rs"]
 
 [[skeleton]]
 id = "PRS-00541"
@@ -9778,7 +9778,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-502"]
-evidence_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+evidence_refs = ["crates/algebra_analysis/src/codebook.rs"]
 
 [[skeleton]]
 id = "PRS-00544"
@@ -9796,7 +9796,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-503"]
-evidence_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+evidence_refs = ["crates/algebra_analysis/src/codebook.rs"]
 
 [[skeleton]]
 id = "PRS-00545"
@@ -10012,7 +10012,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-515"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00557"
@@ -10030,7 +10030,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-516"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00558"
@@ -10048,7 +10048,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-517"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00559"
@@ -10066,7 +10066,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-518"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00560"
@@ -10084,7 +10084,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-519", "C-521"]
-evidence_refs = ["C-521", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-521", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00561"
@@ -10102,7 +10102,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-520", "C-521"]
-evidence_refs = ["C-521", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-521", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00562"
@@ -10120,7 +10120,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-521"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00563"
@@ -10138,7 +10138,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-521", "C-522"]
-evidence_refs = ["C-521", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-521", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00564"
@@ -10156,7 +10156,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-523"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00565"
@@ -10174,7 +10174,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-524"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00566"
@@ -10192,7 +10192,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-525"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00567"
@@ -10210,7 +10210,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-526"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00568"
@@ -10228,7 +10228,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-527"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00569"
@@ -10246,7 +10246,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-520", "C-528"]
-evidence_refs = ["C-520", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-520", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00570"
@@ -10264,7 +10264,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-529"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00571"
@@ -10282,7 +10282,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-530"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00572"
@@ -10300,7 +10300,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-531"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00573"
@@ -10318,7 +10318,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-532"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00574"
@@ -10336,7 +10336,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-533"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00575"
@@ -10354,7 +10354,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-534"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00576"
@@ -10372,7 +10372,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-535"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00577"
@@ -10390,7 +10390,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-536"]
-evidence_refs = ["crates/algebra_core/src/analysis/legacy_crossval.rs"]
+evidence_refs = ["crates/algebra_analysis/src/legacy_crossval.rs"]
 
 [[skeleton]]
 id = "PRS-00578"
@@ -10408,7 +10408,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-537"]
-evidence_refs = ["crates/algebra_core/src/analysis/legacy_crossval.rs"]
+evidence_refs = ["crates/algebra_analysis/src/legacy_crossval.rs"]
 
 [[skeleton]]
 id = "PRS-00579"
@@ -10426,7 +10426,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-538"]
-evidence_refs = ["crates/algebra_core/src/analysis/legacy_crossval.rs"]
+evidence_refs = ["crates/algebra_analysis/src/legacy_crossval.rs"]
 
 [[skeleton]]
 id = "PRS-00580"
@@ -10444,7 +10444,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-539"]
-evidence_refs = ["crates/algebra_core/src/analysis/legacy_crossval.rs"]
+evidence_refs = ["crates/algebra_analysis/src/legacy_crossval.rs"]
 
 [[skeleton]]
 id = "PRS-00581"
@@ -10462,7 +10462,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-540"]
-evidence_refs = ["crates/algebra_core/src/analysis/legacy_crossval.rs"]
+evidence_refs = ["crates/algebra_analysis/src/legacy_crossval.rs"]
 
 [[skeleton]]
 id = "PRS-00582"
@@ -10480,7 +10480,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-541"]
-evidence_refs = ["crates/algebra_core/src/analysis/legacy_crossval.rs"]
+evidence_refs = ["crates/algebra_analysis/src/legacy_crossval.rs"]
 
 [[skeleton]]
 id = "PRS-00583"
@@ -10498,7 +10498,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-542"]
-evidence_refs = ["crates/algebra_core/src/analysis/legacy_crossval.rs"]
+evidence_refs = ["crates/algebra_analysis/src/legacy_crossval.rs"]
 
 [[skeleton]]
 id = "PRS-00584"
@@ -10516,7 +10516,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-543"]
-evidence_refs = ["crates/algebra_core/src/analysis/legacy_crossval.rs"]
+evidence_refs = ["crates/algebra_analysis/src/legacy_crossval.rs"]
 
 [[skeleton]]
 id = "PRS-00585"
@@ -10534,7 +10534,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-537", "C-544"]
-evidence_refs = ["C-537", "crates/algebra_core/src/analysis/legacy_crossval.rs"]
+evidence_refs = ["C-537", "crates/algebra_analysis/src/legacy_crossval.rs"]
 
 [[skeleton]]
 id = "PRS-00586"
@@ -10552,7 +10552,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-545"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00587"
@@ -10570,7 +10570,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-546", "C-550", "C-552", "C-589", "C-591", "I-040"]
-evidence_refs = ["C-550", "C-552", "C-589", "C-591", "I-040", "crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["C-550", "C-552", "C-589", "C-591", "I-040", "crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00588"
@@ -10588,7 +10588,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-547"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs", "crates/algebra_core/tests/test_split_octonion_geometry.rs", "e_i +/- e_j"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/tests/test_split_octonion_geometry.rs", "e_i +/- e_j"]
 
 [[skeleton]]
 id = "PRS-00589"
@@ -10606,7 +10606,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-548"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00590"
@@ -10624,7 +10624,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-549"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00591"
@@ -10642,7 +10642,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-546", "C-550"]
-evidence_refs = ["C-546", "crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["C-546", "crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00592"
@@ -10660,7 +10660,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-551"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00593"
@@ -10696,7 +10696,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-550", "C-553"]
-evidence_refs = ["C-550", "crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["C-550", "crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00595"
@@ -10714,7 +10714,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-554"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00596"
@@ -10732,7 +10732,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-550", "C-553", "C-555"]
-evidence_refs = ["C-550", "C-553", "crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["C-550", "C-553", "crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00597"
@@ -10750,7 +10750,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-556"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00598"
@@ -10768,7 +10768,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-557"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00599"
@@ -10786,7 +10786,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-517", "C-558"]
-evidence_refs = ["C-517", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-517", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00600"
@@ -10804,7 +10804,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-559"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00601"
@@ -11002,7 +11002,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-570"]
-evidence_refs = ["crates/algebra_core/src/analysis/boxkites.rs", "crates/gororoba_cli_algebra/src/bin/dimensional_census.rs"]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "crates/gororoba_cli_algebra/src/bin/dimensional_census.rs"]
 
 [[skeleton]]
 id = "PRS-00612"
@@ -11200,7 +11200,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-581"]
-evidence_refs = ["crates/algebra_core/src/analysis/subalgebra.rs"]
+evidence_refs = ["crates/algebra_analysis/src/subalgebra.rs"]
 
 [[skeleton]]
 id = "PRS-00623"
@@ -11218,7 +11218,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-582"]
-evidence_refs = ["crates/algebra_core/src/analysis/subalgebra.rs"]
+evidence_refs = ["crates/algebra_analysis/src/subalgebra.rs"]
 
 [[skeleton]]
 id = "PRS-00624"
@@ -11236,7 +11236,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-583"]
-evidence_refs = ["crates/algebra_core/src/analysis/subalgebra.rs"]
+evidence_refs = ["crates/algebra_analysis/src/subalgebra.rs"]
 
 [[skeleton]]
 id = "PRS-00625"
@@ -11290,7 +11290,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-586"]
-evidence_refs = ["crates/algebra_core/src/analysis/stiefel.rs"]
+evidence_refs = ["crates/algebra_analysis/src/stiefel.rs"]
 
 [[skeleton]]
 id = "PRS-00628"
@@ -11326,7 +11326,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-529", "C-588"]
-evidence_refs = ["C-529", "crates/algebra_core/src/analysis/boxkites.rs"]
+evidence_refs = ["C-529", "crates/algebra_analysis/src/boxkites.rs"]
 
 [[skeleton]]
 id = "PRS-00630"
@@ -11344,7 +11344,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-453", "C-455", "C-458", "C-546", "C-589"]
-evidence_refs = ["C-453", "C-455", "C-458", "C-546", "crates/algebra_core/src/analysis/codebook.rs"]
+evidence_refs = ["C-453", "C-455", "C-458", "C-546", "crates/algebra_analysis/src/codebook.rs"]
 
 [[skeleton]]
 id = "PRS-00631"
@@ -11380,7 +11380,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-591"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00633"
@@ -11524,7 +11524,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-599"]
-evidence_refs = ["crates/algebra_core/src/analysis/projective_geometry.rs"]
+evidence_refs = ["crates/algebra_analysis/src/projective_geometry.rs"]
 
 [[skeleton]]
 id = "PRS-00641"
@@ -11542,7 +11542,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-600"]
-evidence_refs = ["crates/algebra_core/src/analysis/projective_geometry.rs"]
+evidence_refs = ["crates/algebra_analysis/src/projective_geometry.rs"]
 
 [[skeleton]]
 id = "PRS-00642"
@@ -11596,7 +11596,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-603"]
-evidence_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+evidence_refs = ["crates/algebra_analysis/src/codebook.rs"]
 
 [[skeleton]]
 id = "PRS-00645"
@@ -11614,7 +11614,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-604"]
-evidence_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+evidence_refs = ["crates/algebra_analysis/src/codebook.rs"]
 
 [[skeleton]]
 id = "PRS-00646"
@@ -11740,7 +11740,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-611"]
-evidence_refs = ["crates/algebra_core/src/analysis/homotopy_algebra.rs"]
+evidence_refs = ["crates/algebra_analysis/src/homotopy_algebra.rs"]
 
 [[skeleton]]
 id = "PRS-00653"
@@ -11758,7 +11758,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-612"]
-evidence_refs = ["crates/algebra_core/src/analysis/homotopy_algebra.rs"]
+evidence_refs = ["crates/algebra_analysis/src/homotopy_algebra.rs"]
 
 [[skeleton]]
 id = "PRS-00654"
@@ -12262,7 +12262,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-640"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs", "crates/algebra_core/src/construction/tessarines.rs", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/src/construction/tessarines.rs", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"]
 
 [[skeleton]]
 id = "PRS-00682"
@@ -13270,7 +13270,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-696"]
-evidence_refs = ["crates/algebra_core/src/experimental/cd_external.rs", "crates/lattice_filtration/src/basis_index.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs", "crates/lattice_filtration/src/basis_index.rs"]
 
 [[skeleton]]
 id = "PRS-00738"
@@ -14800,7 +14800,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-781"]
-evidence_refs = ["crates/algebra_core/src/analysis/entropy_census.rs", "crates/gororoba_cli_algebra/src/bin/algebra_entropy_census.rs"]
+evidence_refs = ["crates/algebra_analysis/src/entropy_census.rs", "crates/gororoba_cli_algebra/src/bin/algebra_entropy_census.rs"]
 
 [[skeleton]]
 id = "PRS-00823"
@@ -15052,7 +15052,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-795"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs", "crates/gororoba_cli_algebra/src/bin/chirality_lock_test.rs"]
+evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/gororoba_cli_algebra/src/bin/chirality_lock_test.rs"]
 
 [[skeleton]]
 id = "PRS-00837"
@@ -15070,7 +15070,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-796"]
-evidence_refs = ["crates/algebra_core/src/experimental/golay_code.rs", "crates/algebra_core/src/experimental/leech_lattice.rs", "crates/gororoba_cli_algebra/src/bin/moonshine_filterbank.rs"]
+evidence_refs = ["crates/algebra_experimental/src/golay_code.rs", "crates/algebra_experimental/src/leech_lattice.rs", "crates/gororoba_cli_algebra/src/bin/moonshine_filterbank.rs"]
 
 [[skeleton]]
 id = "PRS-00838"
@@ -15250,7 +15250,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-806", "E-057"]
-evidence_refs = ["E-057", "crates/algebra_core/src/analysis/entropy_census.rs"]
+evidence_refs = ["E-057", "crates/algebra_analysis/src/entropy_census.rs"]
 
 [[skeleton]]
 id = "PRS-00848"

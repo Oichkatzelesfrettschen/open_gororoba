@@ -33,7 +33,7 @@ Cayley-Dickson multiplication rule.
 
 The census is computed using integer-exact arithmetic to avoid
 floating-point error entirely.  The implementation lives in
-`crates/algebra_core/src/boxkites.rs`.
+`crates/algebra_analysis/src/boxkites.rs`.
 
 ## The XOR filter
 

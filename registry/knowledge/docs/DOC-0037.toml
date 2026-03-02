@@ -718,7 +718,7 @@ lattice codebook filtration of Cayley-Dickson algebras. Results:
 ## I-016: De Marrais Emanation Architecture
 
 **Claims**: C-468..C-475
-**Module**: `crates/algebra_core/src/emanation.rs` (~4400 lines, 113 tests)
+**Module**: `crates/algebra_experimental/src/emanation.rs` (~4400 lines, 113 tests)
 
 ### Summary
 

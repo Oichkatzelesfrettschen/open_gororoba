@@ -3,7 +3,7 @@
     Quaternion inverse: q^{-1} = conj(q) / |q|^2.
     Requires norm_sq <> 0 (i.e. q <> 0).
 
-    Mirrors: algebra_core/src/construction/cayley_dickson.rs (inverse). *)
+    Mirrors: cd_kernel/src/cayley_dickson.rs (inverse). *)
 
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra.
 

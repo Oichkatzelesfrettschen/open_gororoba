@@ -9,7 +9,7 @@
     Octonions lose associativity but retain alternativity.
     Sedenions lose alternativity and gain zero divisors.
 
-    Mirrors: algebra_core/src/construction/cayley_dickson.rs *)
+    Mirrors: cd_kernel/src/cayley_dickson.rs *)
 
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra.
 

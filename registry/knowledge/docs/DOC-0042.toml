@@ -28,7 +28,7 @@ conventions for consistency.
 
 ## 1. Cayley-Dickson Doubling Formula
 
-**File:** `crates/algebra_core/src/cayley_dickson.rs:31-67`
+**File:** `crates/cd_kernel/src/cayley_dickson.rs:31-67`
 
 The Cayley-Dickson multiplication uses the standard doubling construction:
 
@@ -46,7 +46,7 @@ This is the same convention as Baez (2002), \"The Octonions,\" Bull. AMS 39(2).
 
 ## 2. Basis Ordering
 
-**File:** `crates/algebra_core/src/cayley_dickson.rs:266-289`
+**File:** `crates/cd_kernel/src/cayley_dickson.rs:266-289`
 
 All Cayley-Dickson algebra elements are represented as `Vec<f64>` or `&[f64]`
 with the following ordering:
@@ -182,7 +182,7 @@ Source: IAU 2015 nominal solar parameters (Prsa et al. 2016).
 
 ## 8. Norm Convention
 
-**File:** `crates/algebra_core/src/cayley_dickson.rs:69-73`
+**File:** `crates/cd_kernel/src/cayley_dickson.rs:69-73`
 
 The norm used throughout is the Euclidean (L2) norm squared:
 

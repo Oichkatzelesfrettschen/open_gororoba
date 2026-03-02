@@ -66,7 +66,7 @@ section = "algebra"
 slug = "docs_book_src_algebra_box-kites"
 title = "Box-Kite Structure"
 claim_refs = ["C-050", "C-060", "C-454", "C-468", "C-475"]
-path_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+path_refs = ["crates/algebra_experimental/src/emanation.rs"]
 line_count = 40
 body_markdown = '''
 # Box-Kite Structure
@@ -94,7 +94,7 @@ The box-kite structure extends to an 18-layer "emanation" construction
 - **Sail-loop** = Fano incidence pattern
 - **Oriented Trip Sync** is universal across all 7 box-kites
 
-Implementation: `crates/algebra_core/src/experimental/emanation.rs` (4400 lines, 113 tests).
+Implementation: `crates/algebra_experimental/src/emanation.rs` (4400 lines, 113 tests).
 
 See [Emanation Architecture](./emanation.md) for details.
 
@@ -118,7 +118,7 @@ section = "algebra"
 slug = "docs_book_src_algebra_emanation"
 title = "Emanation Architecture"
 claim_refs = ["C-468", "C-469", "C-470", "C-471", "C-475"]
-path_refs = ["crates/algebra_core/src/experimental/emanation.rs"]
+path_refs = ["crates/algebra_experimental/src/emanation.rs"]
 line_count = 39
 body_markdown = '''
 # Emanation Architecture
@@ -144,7 +144,7 @@ box-kite elements:
 
 ## Implementation
 
-- Source: `crates/algebra_core/src/experimental/emanation.rs`
+- Source: `crates/algebra_experimental/src/emanation.rs`
 - Size: 4400 lines
 - Tests: 113 dedicated tests
 - Sprint: S10
@@ -169,7 +169,7 @@ section = "algebra"
 slug = "docs_book_src_algebra_motif-scaling"
 title = "Motif Scaling Laws"
 claim_refs = ["C-126", "C-130", "C-445", "C-448"]
-path_refs = ["crates/algebra_core/src/boxkites.rs"]
+path_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 line_count = 47
 body_markdown = '''
 # Motif Scaling Laws
@@ -208,7 +208,7 @@ All motif census computations are exact (not sampled) and complete in under
 cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
 ```
 
-Implementation: `crates/algebra_core/src/boxkites.rs` (16 regression tests
+Implementation: `crates/algebra_analysis/src/boxkites.rs` (16 regression tests
 covering dim=64,128,256).
 
 ## Claims
@@ -228,7 +228,7 @@ section = "algebra"
 slug = "docs_book_src_algebra_zero-divisors"
 title = "Zero-Divisor Census"
 claim_refs = ["C-050", "C-060", "C-445", "C-448"]
-path_refs = ["crates/algebra_core/src/boxkites.rs"]
+path_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 line_count = 34
 body_markdown = '''
 # Zero-Divisor Census
@@ -246,7 +246,7 @@ Cayley-Dickson multiplication rule.
 
 The census is computed using integer-exact arithmetic to avoid
 floating-point error entirely.  The implementation lives in
-`crates/algebra_core/src/boxkites.rs`.
+`crates/algebra_analysis/src/boxkites.rs`.
 
 ## The XOR filter
 

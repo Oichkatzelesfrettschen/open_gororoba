@@ -4,7 +4,7 @@
     associativity.  For quaternions it vanishes identically, which implies
     flexibility a*(b*a) = (a*b)*a and the Jordan identity.
 
-    Mirrors: algebra_core/src/construction/cayley_dickson.rs (proptest). *)
+    Mirrors: cd_kernel/src/cayley_dickson.rs (proptest). *)
 
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra.
 

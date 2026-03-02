@@ -32,7 +32,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: Cayley-Dickson algebras become non-associative at 8D and beyond.
-- Where stated: `crates/algebra_core/src/construction/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/construction/hypercomplex.rs` (test_non_associativity_scaling), `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
+- Where stated: `crates/cd_kernel/src/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/construction/hypercomplex.rs` (test_non_associativity_scaling), `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
 - What would verify/refute it: Rust tests verify associativity at dims 1/2/4 and find non-associative triples at dim >= 8; cite Baez (2002) for background.
 
 ## C-002
@@ -40,7 +40,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: 16D sedenions have zero divisors and lose norm composition.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_primitive_unit_zero_divisors_count), `crates/algebra_core/src/analysis/annihilator.rs` (test_known_zero_divisor_has_nontrivial_annihilator), `docs/external_sources/DE_MARRAIS_SOURCES.md`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_primitive_unit_zero_divisors_count), `crates/algebra_analysis/src/annihilator.rs` (test_known_zero_divisor_has_nontrivial_annihilator), `docs/external_sources/DE_MARRAIS_SOURCES.md`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
 - What would verify/refute it: Rust tests verify sedenion zero-divisor existence and norm-composition failure at dim 16; cite de Marrais (2000) and Baez (2002) for background.
 
 ## C-003
@@ -48,7 +48,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: \"42 assessors\" / \"7 box-kites\" organize primitive sedenion zero divisors.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_primitive_assessors_count, test_sedenion_boxkite_count, test_assessors_partition_into_boxkites), `docs/SEDENION_ATLAS.md`, `docs/external_sources/DE_MARRAIS_SOURCES.md`
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_primitive_assessors_count, test_sedenion_boxkite_count, test_assessors_partition_into_boxkites), `docs/SEDENION_ATLAS.md`, `docs/external_sources/DE_MARRAIS_SOURCES.md`
 - What would verify/refute it: Rust tests reproduce 42 primitive assessors and 7 octahedral box-kites under the repo's sedenion multiplication convention; cite de Marrais (2000) as primary source for the construction.
 
 ## C-004
@@ -56,7 +56,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-01-28
 - Statement: The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs.
-- Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/lie/group_theory.rs`, `crates/algebra_core/src/analysis/boxkites.rs` (Rust tests: test_sedenion_boxkite_structure, test_coassessor_symmetry)
+- Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/lie/group_theory.rs`, `crates/algebra_analysis/src/boxkites.rs` (Rust tests: test_sedenion_boxkite_structure, test_coassessor_symmetry)
 - What would verify/refute it: Verified: GL(3,2) (order 168, isomorphic to PSL(2,7)) acts on Fano-plane points and induces a deterministic permutation of CD indices that maps each computed box-kite to another computed box-kite, preserving assessor sets and edge sets. This validates a concrete \"governs\" meaning: it acts by symmetries on the box-kite family produced by this repo's CD convention.
 
 ## C-005
@@ -64,7 +64,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: \"The geometry of sedenion zero divisors\" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`).
-- Where stated: `crates/algebra_core/src/analysis/grassmannian.rs` (test_c005_* tests), `data/csv/c005_grassmannian_zd_analysis.csv`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`
+- Where stated: `crates/algebra_analysis/src/grassmannian.rs` (test_c005_* tests), `data/csv/c005_grassmannian_zd_analysis.csv`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`
 - What would verify/refute it: VERIFIED (Phase 7): Rust integration tests confirm Reggiani geometry claims with one correction: (1) all 84 ZDs have exactly 4-dim annihilators (CONFIRMED), (2) sign variants have ORTHOGONAL annihilators (distance=pi), NOT shared subspaces - this corrects original claim; (3) 5 distinct geodesic distance values exist (close to claimed 6; discrete structure confirms PSL(2,7) symmetry), (4) box-kite membership stratifies distances (within mean 2.77 vs across mean 2.21 - CONFIRMED). Riemannian isometry proofs (Z(S) ~ G2) remain NOT replicated but geometric invariants strongly support the structure. See `data/csv/c005_grassmannian_zd_analysis.csv`.
 
 ## C-006
@@ -128,7 +128,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: de Marrais' GoTo \"automorphemes\" (from the 7 O-trips + the \"8-ball\" exclude rule) cover the 42 primitive assessors exactly twice; each assessor lies in exactly two automorphemes (Production Rule #3 uniqueness).
-- Where stated: `docs/DE_MARRAIS_REPLICATION.md`, `crates/algebra_core/src/analysis/boxkites.rs` (test_automorphemes_cover_assessors_twice, test_production_rule_3_unique_other), `docs/BIBLIOGRAPHY.md`
+- Where stated: `docs/DE_MARRAIS_REPLICATION.md`, `crates/algebra_analysis/src/boxkites.rs` (test_automorphemes_cover_assessors_twice, test_production_rule_3_unique_other), `docs/BIBLIOGRAPHY.md`
 - What would verify/refute it: Rust tests reconstruct GoTo automorphemes and validate the \"exactly two\" uniqueness property. Primary source: de Marrais, R. (2000) \"The 42 Assessors and the Box-Kites they Fly\" arXiv:math/0011260; de Marrais, R. (2004) \"Placeholder Substructures II: Meta-Fractal Behavior, the (3,8)-Theorem, and the Arithmetic of Hypercomplex Numbers.\"
 
 ## C-014
@@ -136,7 +136,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: The diagonal-form family of 84 sedenion zero divisors `(e_low +/- e_high)` (from de Marrais' 42 primitive assessors) has left and right annihilator dimension 4 (so the annihilator unit sphere is S^3 ~ SU(2)).
-- Where stated: `docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_core/src/analysis/reggiani.rs` (test_all_standard_zds_have_nullity_4_4), `crates/algebra_core/src/analysis/annihilator.rs` (test_all_primitive_assessor_diagonals_have_nullity_4), `docs/BIBLIOGRAPHY.md`
+- Where stated: `docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_analysis/src/reggiani.rs` (test_all_standard_zds_have_nullity_4_4), `crates/algebra_analysis/src/annihilator.rs` (test_all_primitive_assessor_diagonals_have_nullity_4), `docs/BIBLIOGRAPHY.md`
 - What would verify/refute it: Rust tests verify nullity (4,4) for all 84 and check annihilator basis vectors annihilate. Primary sources: Reggiani, C. (2024) \"Geometry of Sedenion Zero Divisors\" arXiv:2411.18881; Biss, Dugger & Isaksen (2008) \"Large Annihilators in Cayley-Dickson Algebras\" Comm. Algebra 36(2).
 
 ## C-015
@@ -144,7 +144,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: For each of the 84 diagonal-form zero divisors `u`, there are exactly 4 other diagonal-form zero divisors `v` with `u*v=0`, and these 4 span `Ann_L(u)`.
-- Where stated: `docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_core/src/analysis/reggiani.rs` (test_standard_zd_annihilator_consistency), `docs/BIBLIOGRAPHY.md`
+- Where stated: `docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_analysis/src/reggiani.rs` (test_standard_zd_annihilator_consistency), `docs/BIBLIOGRAPHY.md`
 - What would verify/refute it: Rust tests compute partner sets and verify the \"4 partners spanning\" invariant. Primary source: Reggiani, C. (2024) \"Geometry of Sedenion Zero Divisors\" arXiv:2411.18881.
 
 ## C-016
@@ -160,7 +160,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: For diagonal 2-blades `(e_i +/- e_j)` in 16D CD, any observed zero product between two 2-blades satisfies the XOR-bucket necessary condition `(i^j) == (k^ell)`.
-- Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `crates/algebra_core/src/analysis/zd_graphs.rs` (test_xor_bucket_necessary_two_blade, test_xor_bucket_necessary_2v4)
+- Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `crates/algebra_analysis/src/zd_graphs.rs` (test_xor_bucket_necessary_two_blade, test_xor_bucket_necessary_2v4)
 - What would verify/refute it: Rust tests check necessity on a deterministic sweep; do NOT claim sufficiency.
 
 ## C-018
@@ -208,7 +208,7 @@ Total claims: 521
 - Status: `Closed/Toy`
 - Last verified: 2026-02-05
 - Statement: Toy model: interpret the CD associator as a discrete connection/holonomy signal over triples.
-- Where stated: `docs/theory/unified_tensor_wheel_cd_framework.md`, `crates/algebra_core/src/analysis/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py`, `data/csv/cd_holonomy_basis_triples.csv`, `data/csv/cd_fiber_holonomy_comparison.csv`, `tests/test_cd_holonomy.py`
+- Where stated: `docs/theory/unified_tensor_wheel_cd_framework.md`, `crates/algebra_analysis/src/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py`, `data/csv/cd_holonomy_basis_triples.csv`, `data/csv/cd_fiber_holonomy_comparison.csv`, `tests/test_cd_holonomy.py`
 - What would verify/refute it: CLOSED (Phase 7 Batch A): This is a basis-vector holonomy model, not derivable from CD associator in any physical sense. The statistical difference between ZD-adjacent vs generic basis triples (p ~ 9.4e-8) is a discrete combinatorial signal, not a continuous fiber bundle holonomy. No connection to physical gauge theory or differential geometry established. Keep as documented toy model.
 
 ## C-024
@@ -224,7 +224,7 @@ Total claims: 521
 - Status: `Refuted`
 - Last verified: 2026-01-31
 - Statement: GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection).
-- Where stated: `docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `crates/algebra_core/src/analysis/boxkites.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py`, `docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md`
+- Where stated: `docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `crates/algebra_analysis/src/boxkites.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py`, `docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md`
 - What would verify/refute it: Pre-registered Monte Carlo test (`src/scripts/analysis/verify_tscp_alignment.py`) executed on 35 GWTC-3 events. Observed mean min-distance: 21.26 deg. Z-score vs isotropy: -1.04 (slight alignment). P-value: 0.152. H0 (isotropy) NOT REJECTED at alpha=0.01. Evidence: `data/csv/tscp_alignment_results.csv`.
 
 ## C-026
@@ -240,7 +240,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-03
 - Statement: Toy model: define D_eff(rho) = 3 - k*log10(rho/rho_vac). With rho_h(M) = M/((4/3)*pi*r_s^3) at r_s = 2GM/c^2 (average density inside Schwarzschild radius), D_eff(rho_h(M)) crosses 0 at a critical mass M_crit (horizon \"phase transition\" proxy).
-- Where stated: `docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md`, `crates/algebra_core/src/analysis/grassmannian.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/C027_DEFF_HORIZON_TEST.md`, `src/scripts/analysis/deff_horizon_mass_scaling.py`, `data/csv/deff_horizon_mass_scaling_summary.csv`, `tests/test_c027_deff_horizon_mass_scaling.py`, `docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md`
+- Where stated: `docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md`, `crates/algebra_analysis/src/grassmannian.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/C027_DEFF_HORIZON_TEST.md`, `src/scripts/analysis/deff_horizon_mass_scaling.py`, `data/csv/deff_horizon_mass_scaling_summary.csv`, `tests/test_c027_deff_horizon_mass_scaling.py`, `docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md`
 - What would verify/refute it: Offline consequence check: `data/csv/deff_horizon_mass_scaling_summary.csv` reports M_crit = 1.36e9 M_sun for canonical rho_vac=1e-29 kg/m^3, k=0.1, so D_eff(r_s) <= 0 holds for stellar-mass BHs but not for sufficiently massive SMBHs under this proxy. This does not validate a physical \"horizon phase transition\" (horizon-local density is not a GR invariant); without a derived k and a distinct observable, keep as toy narrative only.
 
 ## C-028
@@ -464,7 +464,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: Non-associativity is the generic (bulk) state of 16D/32D CD algebras (100% prevalence).
-- Where stated: `crates/algebra_core/src/construction/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/construction/hypercomplex.rs` (test_non_associativity_scaling)
+- Where stated: `crates/cd_kernel/src/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/construction/hypercomplex.rs` (test_non_associativity_scaling)
 - What would verify/refute it: Rust tests verify non-associativity at dim=16 (cayley_dickson.rs) and scaling with dimension (hypercomplex.rs). Original Monte Carlo ($N=100,000$) in 16D/32D showed 100% of pairs have non-zero round-trip residual.
 
 ## C-056
@@ -3272,7 +3272,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: TSCP/box-kite sky mapping must be invariant under the relevant algebraic symmetries (or else explicitly enumerate tested embeddings) to avoid \"picked the embedding that worked\".
-- Where stated: `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `crates/algebra_core/src/analysis/boxkites.rs`, `tests/test_tscp_alignment_offline.py`, `tests/test_tscp_embedding_sweep.py`
+- Where stated: `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `crates/algebra_analysis/src/boxkites.rs`, `tests/test_tscp_alignment_offline.py`, `tests/test_tscp_embedding_sweep.py`
 - What would verify/refute it: VERIFIED (Phase 7 Batch E): This is a methodology standard, not a physics claim. The requirement (enumerate embeddings or prove invariance) is documented in `docs/preregistered/TSCP_SKY_ALIGNMENT.md`. The existing test suite (`tests/test_tscp_embedding_sweep.py`) implements N=10 random embedding trials. This is a pre-registration discipline standard that the repo's claims infrastructure enforces. Verified as methodology infrastructure.
 
 ## C-407
@@ -3568,7 +3568,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2]. This is structurally distinct from the sedenion (dim=16) pattern of 7 octahedral K_{2,2,2} components.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (motif_components_for_cross_assessors, test_motif_census_32d_summary, test_complement_graph_regression_dim16), `docs/INSIGHTS.md` (I-006)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (motif_components_for_cross_assessors, test_motif_census_32d_summary, test_complement_graph_regression_dim16), `docs/INSIGHTS.md` (I-006)
 - What would verify/refute it: VERIFIED: Exhaustive cross-assessor complement graph enumeration at dim=32. 15 components, all with exactly 14 nodes. 8 heptacross components: K_{2,2,2,2,2,2,2} (14 nodes, 84 edges, degree-12 regular). 7 mixed-degree components: 14 nodes, 36 edges, degree sequence [4^12, 12^2] (hub-spoke structure with 2 high-degree hubs). No octahedra (the dim=16 motif) appear at dim=32 -- the zero-divisor geometry completely restructures at each Cayley-Dickson doubling. The heptacross count (7 parts) equals the number of assessor types plus one, suggesting a combinatorial relationship to the doubling construction. Falsification: find an error in the Cayley-Dickson product table or cross-assessor extraction at dim=32.
 
 ## C-444
@@ -3576,7 +3576,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: CD motif components at dim=2^n correspond bijectively to points of PG(n-2,2) finite projective space. At dim=16 (7 components <-> 7 PG(2,2) points), dim=32 (15 <-> PG(3,2)), dim=64 (31 <-> PG(4,2)), dim=128 (63 <-> PG(5,2)). The XOR-key of each component encodes its GF(2) label.
-- Where stated: `crates/algebra_core/src/analysis/projective_geometry.rs`, `crates/algebra_core/src/analysis/boxkites.rs`
+- Where stated: `crates/algebra_analysis/src/projective_geometry.rs`, `crates/algebra_analysis/src/boxkites.rs`
 - What would verify/refute it: WHERE STATED: Saniga-Holweck-Pracna (2015) for the PG(n-2,2) correspondence; de Marrais (2000) for the 7-component sedenion structure. Our XOR-key extraction from motif_components_for_cross_assessors provides the constructive bijection. VERIFIED at dim=16,32,64,128 via verify_pg_correspondence() with bijection + line structure checks. WHAT WOULD REFUTE: A dimension where component count != 2^(n-1)-1, or where XOR-keys fail to form the point set of PG(n-2,2).
 
 ## C-445
@@ -3584,7 +3584,7 @@ Total claims: 521
 - Status: `Refuted`
 - Last verified: 2026-02-07
 - Statement: Motif class assignment within a given CD dimension is determined by a GF(2)-linear predicate: a weight vector w in GF(2)^(n-1) such that the inner product <w, label> mod 2 separates classes. At dim=32 the 8/7 split corresponds to a hyperplane of PG(3,2).
-- Where stated: `crates/algebra_core/src/analysis/projective_geometry.rs`
+- Where stated: `crates/algebra_analysis/src/projective_geometry.rs`
 - What would verify/refute it: REFUTED: `test_determine_exact_degree_dim32` confirms the 8/7 split at dim=32 is NOT linearly separable (degree 1 fails), NOR quadratically separable (degree 2 fails). A degree-3 (cubic) GF(2) polynomial IS the minimum separating predicate. The structure is a cubic hypersurface in PG(3,2), not a hyperplane.
 
 ## C-446
@@ -3592,7 +3592,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-07
 - Statement: Sign-twist signature (4-bit encoding of sign products for cross-pair interactions) fully determines the zero-product solution count for diagonal zero-divisor pairs.
-- Where stated: `crates/algebra_core/src/analysis/projective_geometry.rs`, `crates/algebra_core/src/analysis/boxkites.rs`
+- Where stated: `crates/algebra_analysis/src/projective_geometry.rs`, `crates/algebra_analysis/src/boxkites.rs`
 - What would verify/refute it: Verified by `test_sign_twist_determines_solutions_dim16` which confirms a functional mapping from signature to solution count.
 
 ## C-447
@@ -3608,7 +3608,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-07
 - Statement: The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=32 (8 heptacross + 7 mixed-degree) requires a degree-3 (cubic) GF(2) polynomial for separation in PG(3,2). Degree 1 (linear) and degree 2 (quadratic) are insufficient. This establishes a non-linear geometric obstruction in the Cayley-Dickson zero-divisor hierarchy starting at the first post-sedenion doubling.
-- Where stated: `crates/algebra_core/src/analysis/projective_geometry.rs` (test_determine_exact_degree_dim32)
+- Where stated: `crates/algebra_analysis/src/projective_geometry.rs` (test_determine_exact_degree_dim32)
 - What would verify/refute it: VERIFIED: `find_boolean_class_predicate` brute-force search over all 2^15 subsets of degree-3 GF(2) monomials on 4-bit PG(3,2) labels. Degree 1: no separator among 15 linear forms. Degree 2: no separator among 2^11 subsets of 11 quadratic+linear monomials. Degree 3: separator FOUND among 2^15 subsets of 15 cubic+quadratic+linear monomials. WHAT WOULD REFUTE: finding an error in component_xor_label mapping or the GF(2) monomial evaluation.
 
 ## C-449
@@ -3624,7 +3624,7 @@ Total claims: 521
 - Status: `Inconclusive`
 - Last verified: 2026-02-07
 - Statement: The external 64D chingon adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node labeling that differs from our cross-assessor-pair representation. The two representations are not directly comparable without a mapping between basis-element adjacency and cross-assessor zero-product adjacency.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (test_csv_64d_adjacency_vs_rust)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_csv_64d_adjacency_vs_rust)
 - What would verify/refute it: WHERE STATED: External AI-generated CSV from convos/CayleyDickson/. WHAT WOULD REFUTE: Discovering the exact node labeling used in the CSV and showing it IS comparable to cross-assessor adjacency.
 
 ## C-451
@@ -3632,7 +3632,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: 128D Cayley-Dickson cross-validation: 4032 cross-pairs confirmed, XOR partner law universal (3968/3968 valid, mask=8), 65100 ZD edges via 64 XOR-bucket-optimized adjacency, parity-biclique does NOT hold (32640 cross-edges). Bucketed adjacency cross-validated against full O(n^2) adjacency at dim=32.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (verify_c451_128d, build_zd_adjacency_bucketed, test_c451_cross_validation_128d, test_c451_bucketed_adjacency_consistent_with_full_at_32d)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_c451_128d, build_zd_adjacency_bucketed, test_c451_cross_validation_128d, test_c451_bucketed_adjacency_consistent_with_full_at_32d)
 - What would verify/refute it: WHERE STATED: Computed from first principles via cd_multiply + cross_assessors at dim=128. VERIFIED BY: (1) XOR partner law partner(i)=i^8 universal at 128D, (2) bucket-optimized adjacency matches full adjacency at 32D (cross-validation), (3) 65100 ZD edges found via 124992 within-bucket pair checks (63x speedup over naive O(n^2)). WHAT WOULD REFUTE: Any discrepancy between bucketed and full adjacency at 128D.
 
 ## C-452
@@ -3640,7 +3640,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-07
 - Statement: Cayley-Dickson basis elements at dim=256 embed into an 8-dimensional integer lattice with coordinates in {-1, 0, 1}. The mapping is consistent across all 256 basis elements as verified by parsing the external CSV and cross-checking dimensions.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (test_csv_256d_lattice_mapping_parses)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_csv_256d_lattice_mapping_parses)
 - What would verify/refute it: WHERE STATED: External CSV 256D_Basis-to-Extended_Lattice_Mapping.csv. VERIFIED: All 256 rows parse correctly, basis elements have 256 components, lattice points have 8 coordinates. WHAT WOULD REFUTE: Finding lattice points that do not map back to valid basis elements under the doubling-tree encoding.
 
 ## C-453
@@ -3648,7 +3648,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-07
 - Statement: The 8D lattice embedding extends to dims 512, 1024, and 2048 (all use 8D lattice, NOT log2(dim)-dimensional as initially hypothesized). This suggests the octonion sub-algebra provides the fundamental lattice structure regardless of Cayley-Dickson dimension.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (test_csv_512d/1024d/2048d_lattice_mapping_parses)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_csv_512d/1024d/2048d_lattice_mapping_parses)
 - What would verify/refute it: WHERE STATED: External CSVs for 512D, 1024D, 2048D. VERIFIED: 512 rows (8D lattice), 1024 rows (8D lattice), 2048 rows (8D lattice). WHAT WOULD REFUTE: Finding an alternative lattice embedding that uses the full dimensionality or showing the 8D projection loses critical ZD information.
 
 ## C-454
@@ -3656,7 +3656,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-07
 - Statement: De Marrais's strut table from \"Flying Higher Than A Box-Kite\" (unpublished, page 3) matches our computed strut tables for all 7 sedenion box-kites: the set of 6 assessor pairs per box-kite is identical, all 21 strut pairings (A-F, B-E, C-D) are confirmed, and the inner XOR property (low XOR high = 8 + strut_constant) holds for all 42 assessors.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (test_strut_table_matches_de_marrais_flying_higher), `crates/algebra_core/src/analysis/boxkites.rs`
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_strut_table_matches_de_marrais_flying_higher), `crates/algebra_analysis/src/boxkites.rs`
 - What would verify/refute it: WHERE STATED: de Marrais, \"Flying Higher Than A Box-Kite\", page 3. VERIFIED: verify_strut_table_against_de_marrais() compares all 7 box-kites by assessor set and strut pairing. Also verified: inner XOR property, zigzag L-indices form NATO trips. WHAT WOULD REFUTE: Error in canonical_strut_table() or find_box_kites() implementations.
 
 ## C-455
@@ -3664,7 +3664,7 @@ Total claims: 521
 - Status: `Refuted`
 - Last verified: 2026-02-07
 - Statement: Lattice-point differences between ZD-adjacent cross-assessor pairs at dim=16 (mapped to the 256D lattice) do NOT include any E8 root vectors (norm-squared = 2). The observed norm-squared values are {4, 6, 8, 10, 12, 14, 18}, with minimum separation |d|^2 = 4. The 105 unique difference vectors form their own combinatorial structure distinct from E8.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (test_256d_lattice_zd_difference_structure)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_256d_lattice_zd_difference_structure)
 - What would verify/refute it: WHERE STATED: Hypothesis that ZD adjacency might correspond to E8 root system under lattice embedding. REFUTED: Zero out of 336 pairwise differences have norm-squared = 2. The minimum lattice separation for ZD-adjacent pairs is |d|^2 = 4. WHAT WOULD REFUTE THIS REFUTATION: An alternative normalization of the lattice coordinates under which the differences DO form E8 roots.
 
 ## C-456
@@ -3672,7 +3672,7 @@ Total claims: 521
 - Status: `Refuted`
 - Last verified: 2026-02-07
 - Statement: The external 256D associativity CSV (256D_Cayley-Dickson_Basis_Properties.csv) incorrectly claims all 125 tested triples are associative. Our Rust integer-exact computation finds 4 out of 50 sampled triples are non-associative, involving basis elements e_128, e_64, e_32, and e_192. The CSV is an AI-generated error.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (test_csv_256d_basis_properties_vs_rust)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_csv_256d_basis_properties_vs_rust)
 - What would verify/refute it: WHERE STATED: External CSV 256D_Cayley-Dickson_Basis_Properties.csv. REFUTED: cd_multiply is integer-exact for basis elements; (e_128 * e_64) * e_32 != e_128 * (e_64 * e_32) at dim=256. WHAT WOULD REFUTE: Finding an error in cd_multiply for high-index basis products.
 
 ## C-457
@@ -3680,7 +3680,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-07
 - Statement: The Cayley-Dickson nested-tuple format uses a binary tree representation where (0, 0) at tree depth k represents 2^k zeros. A tree-based parser with sibling-size-balancing (padding shorter subtrees to next power of 2) correctly parses all dims from 4 (quaternions) through 2048.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (parse_nested_tuple, CdTree)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (parse_nested_tuple, CdTree)
 - What would verify/refute it: WHERE STATED: Format observed in external CSVs from convos/CayleyDickson/. VERIFIED: 256 + 512 + 1024 + 2048 = 3840 lattice rows + 125 associativity rows + 20 operation rows + tests for dims 4, 8. WHAT WOULD REFUTE: A nested-tuple string that our parser misinterprets (wrong index or wrong dimension).
 
 ## C-458
@@ -3688,7 +3688,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Codebook parity (Thesis A): All lattice codebook points at dims 256, 512, 1024, 2048 satisfy: (a) coordinates in {-1, 0, 1}, (b) coordinate sum is even, (c) number of nonzero coordinates is even, (d) first coordinate is never +1.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (verify_codebook_parity, test_thesis_a_codebook_parity_{256,512,1024,2048}d)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_codebook_parity, test_thesis_a_codebook_parity_{256,512,1024,2048}d)
 - What would verify/refute it: WHERE STATED: Monograph Thesis A. VERIFIED: verify_codebook_parity checks all 4 conditions for every row in each lattice CSV. All 3840 total rows pass. WHAT WOULD REFUTE: A lattice CSV row violating any of the 4 parity conditions.
 
 ## C-459
@@ -3696,7 +3696,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Lattice filtration nesting (Thesis B): Lambda_256 is a strict subset of Lambda_512, which is a strict subset of Lambda_1024, which is a strict subset of Lambda_2048. The embedding is by exact lattice-point membership.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (verify_lattice_filtration, test_thesis_b_filtration_nesting)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_lattice_filtration, test_thesis_b_filtration_nesting)
 - What would verify/refute it: WHERE STATED: Monograph Thesis B. VERIFIED: verify_lattice_filtration loads all 4 dims and confirms proper subset relationships via BTreeSet inclusion. WHAT WOULD REFUTE: A lattice point in Lambda_N that is absent from Lambda_{2N}.
 
 ## C-460
@@ -3704,7 +3704,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Prefix-cut characterization (Thesis C): Each filtration transition (2048->1024, 1024->512, 512->256) is a lexicographic prefix cut -- the child codebook consists of exactly the first |child| points when the parent is sorted in lexicographic order.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (learn_prefix_cut, verify_prefix_cut, test_thesis_c_*_prefix_cut)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (learn_prefix_cut, verify_prefix_cut, test_thesis_c_*_prefix_cut)
 - What would verify/refute it: WHERE STATED: Monograph Thesis C (expected decision-trie rules; actual structure is simpler: pure lex prefix). VERIFIED: learn_prefix_cut identifies the lex-sorted cut index; verify_prefix_cut confirms the child is the exact lex-sorted prefix. WHAT WOULD REFUTE: A filtration step where the child is not a contiguous lex prefix of the parent.
 
 ## C-461
@@ -3712,7 +3712,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Lambda_32 (the 32-row alignment) is a \"pinned corner\" of Lambda_256: all 32 points have first 4 coordinates equal to (-1, -1, -1, -1). It is the lex-first 32 points of Lambda_256 under lex order.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (test_lambda_32_as_predicate_cut_of_256)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_lambda_32_as_predicate_cut_of_256)
 - What would verify/refute it: WHERE STATED: Monograph (421E slice). VERIFIED: test checks pinning predicate and lex-prefix property. WHAT WOULD REFUTE: A point in Lambda_32 whose first 4 coords differ from (-1,-1,-1,-1).
 
 ## C-462
@@ -3720,7 +3720,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: XOR partner law (Thesis E): In cross-assessor pairs at dim=64, each pair index i has unique partner i XOR 4 in the matching-type adjacency. Generalizes to partner(i) = i XOR (N/16) for N = 2^n >= 64.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (verify_xor_partner_law, test_thesis_e_xor_partner_64d)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_xor_partner_law, test_thesis_e_xor_partner_64d)
 - What would verify/refute it: WHERE STATED: Monograph Thesis E. VERIFIED: verify_xor_partner_law checks that for every cross-pair (a,b) with a XOR b giving a matching edge, the XOR partner relationship holds. WHAT WOULD REFUTE: A dimension where the XOR partner relationship fails or is non-unique.
 
 ## C-463
@@ -3728,7 +3728,7 @@ Total claims: 521
 - Status: `Partial`
 - Last verified: 2026-02-09
 - Statement: Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K_4 union K_4 by parity of the lower basis index. At dim=32 it decomposes into K_8 union K_8. NOTE: This property is LIMITED TO dims 16 and 32. REFUTED at dim=64 (cross-partition edges exist, test_thesis_f_parity_clique_64d) and dim=128 (C-451: 32640 cross-partition edges). Not a universal property.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (verify_parity_clique, test_thesis_f_parity_clique_{16d,32d,64d})
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_parity_clique, test_thesis_f_parity_clique_{16d,32d,64d})
 - What would verify/refute it: WHERE STATED: Monograph Thesis F. VERIFIED at dims 16 and 32 only. REFUTED at dims 64 and 128. Status changed from Verified to Partial. The parity-clique structure is a small-dimension coincidence, not a universal law.
 
 ## C-464
@@ -3736,7 +3736,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Spectral fingerprints (Thesis G): Adjacency graph motif classes are distinguishable by spectral invariants (eigenvalue multiset, degree sequence, triangle count, diameter, girth). Complete graph K_m has spectrum {(m-1)^1, (-1)^{m-1}}; perfect matching r*K_2 has spectrum {(+1)^r, (-1)^r}.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (spectral_fingerprint_from_adjacency, test_thesis_g_*)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (spectral_fingerprint_from_adjacency, test_thesis_g_*)
 - What would verify/refute it: WHERE STATED: Monograph Thesis G. VERIFIED: spectral_fingerprint_from_adjacency computes eigenvalues via power iteration and verifies against known spectra for K_4, K_8, K_4 union K_4, and 4*K_2 matching. WHAT WOULD REFUTE: A pair of non-isomorphic motif classes with identical spectral fingerprints (known cospectral limitation).
 
 ## C-465
@@ -3744,7 +3744,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Scalar shadow action (Thesis D): For each lattice point, the scalar shadow pi(b) = signum(sum(coords)) maps to {-1, 0, 1}. The addition-mode action ell_out = ell + pi(b)*ones_8 shifts lattice points by a multiple of the all-ones vector.
-- Where stated: `crates/algebra_core/src/experimental/cd_external.rs` (scalar_shadow, verify_scalar_shadow_addition, test_thesis_d_*)
+- Where stated: `crates/algebra_experimental/src/cd_external.rs` (scalar_shadow, verify_scalar_shadow_addition, test_thesis_d_*)
 - What would verify/refute it: WHERE STATED: Monograph Thesis D. VERIFIED: scalar_shadow computes sign pattern; verify_scalar_shadow_addition confirms the shift action preserves parity. WHAT WOULD REFUTE: A basis element whose scalar shadow falls outside {-1, 0, 1} or an addition-mode action that violates parity.
 
 ## C-466
@@ -3752,7 +3752,7 @@ Total claims: 521
 - Status: `Refuted`
 - Last verified: 2026-02-09
 - Statement: Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT exist as a linear endomorphism on the lattice subspace for any non-identity basis element. At dim=16 (sedenions), only b=0 (identity) has consistent coupling (1/16); at dim=32 (pathions), also 1/32. The lattice vectors span rank 5 of 8 dimensions (first 16 Lambda_256 vectors), and left-multiplication by e_b for b>=1 produces O(1) residuals in the reduced 5D subspace, not numerical noise. The scalar shadow pi(b) remains the only valid lattice-level multiplicative structure.
-- Where stated: `crates/algebra_core/src/analysis/codebook.rs` (compute_multiplication_coupling, test_multiplication_coupling_sedenion_characterize, test_multiplication_coupling_pathion)
+- Where stated: `crates/algebra_analysis/src/codebook.rs` (compute_multiplication_coupling, test_multiplication_coupling_sedenion_characterize, test_multiplication_coupling_pathion)
 - What would verify/refute it: WHERE STATED: Monograph Thesis D gap, now resolved. VERIFIED BY: Computed M_b = Y_b * X^{-1} in reduced r-dimensional subspace (Gram-Schmidt projection), verified consistency on ALL dim basis vectors. Only identity element b=0 yields zero residual. WHAT WOULD RE-OPEN: Finding a different encoding (non-canonical Lambda_256 assignment) where rho(b) exists for b>=1.
 
 ## C-467
@@ -3768,7 +3768,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Emanation table (dim=16): The 15x15 signed product table has 84 zero-divisor-marked cells (42 primitive assessor pairs x 2 symmetric entries). All diagonal cells have sign -1 (e_i * e_i = -1). Product indices match XOR (product_index = row XOR col).
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (emanation_table, test_emanation_table_dim16_*)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (emanation_table, test_emanation_table_dim16_*)
 - What would verify/refute it: WHERE STATED: de Marrais, \"Flying Higher Than A Box-Kite\". VERIFIED: emanation_table(16) produces correct 15x15 table with 84 ZD cells, XOR products, -1 diagonal. WHAT WOULD REFUTE: A cell where product_index != row XOR col, or ZD count != 84.
 
 ## C-469
@@ -3776,7 +3776,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Strutted emanation table (dim=16): For each strut constant S in {1..7}, the 6x6 strutted ET correctly partitions assessor-pair cells into DMZ (sign-concordant) and non-DMZ (sign-discordant) regions. The DMZ count is uniform across all 7 BKs by Fano plane symmetry.
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (create_strutted_et, test_strutted_et_*)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (create_strutted_et, test_strutted_et_*)
 - What would verify/refute it: WHERE STATED: de Marrais, \"Presto! Digitization\" series. VERIFIED: All 7 strut tables produced, DMZ counts uniform, sign concordance verified. WHAT WOULD REFUTE: A BK whose DMZ count differs from the others.
 
 ## C-470
@@ -3784,7 +3784,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Oriented Trip Sync: Every sedenion box-kite admits at least one PSL(2,7) orientation where the de Marrais shorthand pattern (a,b,c),(a,d,e),(d,b,f),(e,f,c) is satisfiable. Each BK has exactly 4 available O-trips and all 4 are tested as zigzag candidates.
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (oriented_trip_sync, test_oriented_trip_sync_*)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (oriented_trip_sync, test_oriented_trip_sync_*)
 - What would verify/refute it: WHERE STATED: de Marrais, \"Pathions 3\" (shorthand notation). VERIFIED: All 7 BKs have has_valid_embedding=true; 4 available trips per BK; shorthand uses all 6 L-indices. WHAT WOULD REFUTE: A BK with no valid shorthand embedding.
 
 ## C-471
@@ -3792,7 +3792,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Signed adjacency graph: The strutted ET encodes a signed graph where DMZ cells have sign +1 (same-slope coupling) or -1 (cross-slope coupling). All 7 BKs have the same DMZ edge count (structural invariant). Edge signs are strictly +1 or -1.
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (extract_signed_graph, test_signed_graph_*)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (extract_signed_graph, test_signed_graph_*)
 - What would verify/refute it: WHERE STATED: de Marrais, \"Presto! Digitization I\" (edge-sign semantics). VERIFIED: DMZ edge count uniform across BKs; all signs in {+1,-1}; nodes are 6 distinct L-indices. WHAT WOULD REFUTE: A BK with different DMZ edge count or non-binary edge signs.
 
 ## C-472
@@ -3800,7 +3800,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Lanyard state-machine traversal: Face-level lanyards are extracted as state-machine traversals of the signed graph. Negative edges flip diagonal state (/\\), positive edges preserve it. Each BK produces 8 face lanyards (8 triangular faces), each of cycle length 3.
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (traverse_lanyard, extract_lanyards_from_et, test_lanyard_*, test_extract_lanyards_*)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (traverse_lanyard, extract_lanyards_from_et, test_lanyard_*, test_extract_lanyards_*)
 - What would verify/refute it: WHERE STATED: de Marrais, \"Presto! Digitization I-III\" (lanyard mechanics). VERIFIED: 8 lanyards per BK; cycle length 3; zigzag (all-negative) produces /\\/; trefoil (2pos+1neg) produces ///. WHAT WOULD REFUTE: A face with incorrect edge-count or a state-machine traversal that violates sign semantics.
 
 ## C-473
@@ -3808,7 +3808,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Delta transition function: Each S0 in {1..7} has exactly 3 strut pairs {u,v} with u XOR v = S0, u < v, u,v in {1..7}\\{S0}. The 6 endpoints of the 3 pairs cover exactly {1..7}\\{S0}. Delta reachability matches twist navigation reachability.
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (strut_pairs_for, delta_transition, verify_delta_reachability, test_strut_pairs_*, test_delta_*)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (strut_pairs_for, delta_transition, verify_delta_reachability, test_strut_pairs_*, test_delta_*)
 - What would verify/refute it: WHERE STATED: de Marrais, \"Pathions 3\" (Twisted Sisters automaton). VERIFIED: XOR identity, 3 pairs per S0, full coverage, delta=twist reachability. WHAT WOULD REFUTE: An S0 with fewer than 3 strut pairs, or endpoints that don't cover {1..7}\\{S0}.
 
 ## C-474
@@ -3816,7 +3816,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Brocade normalization: Each BK has exactly 4 brocade relabelings (one per O-trip in its L-set). Each central trip is a valid O-trip, and the outer indices are the exact complement of the central trip within the L-set. CPO preservation count is uniform across BKs.
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (brocade_relabelings, verify_brocade_consistency, test_brocade_*)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (brocade_relabelings, verify_brocade_consistency, test_brocade_*)
 - What would verify/refute it: WHERE STATED: de Marrais, \"Pathions 3\" (brocade/slipcover normalization). VERIFIED: 4 relabelings per BK; central trips are O-trips; outer = L-set \\ central; consistency across all 7 BKs. WHAT WOULD REFUTE: A BK with != 4 relabelings, or outer indices that don't complement the central trip.
 
 ## C-475
@@ -3824,7 +3824,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-08
 - Statement: Sail-loop partition (automorpheme duality): The 28 O-trip sails across all 7 BKs partition into exactly 7 loops of 4 sails each. Each loop corresponds to one automorpheme (Cawagas loop). Each BK appears in exactly 4 loops (one per O-trip face). This is the BK-automorpheme duality.
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (sail_loop_partition, test_sail_loop_*)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (sail_loop_partition, test_sail_loop_*)
 - What would verify/refute it: WHERE STATED: de Marrais, \"Flying Higher\"; Cawagas (2004) deformed octonion copies. VERIFIED: 28 sails total; 7 loops of 4; each BK in exactly 4 distinct loops; each loop has 4 distinct BKs. WHAT WOULD REFUTE: Fewer or more than 7 loops, or a loop without exactly 4 BKs from 4 distinct strut sigs.
 
 ## C-476
@@ -3832,7 +3832,7 @@ Total claims: 521
 - Status: `Partial`
 - Last verified: 2026-02-09
 - Statement: Algebraic Locality Principle (ALP): In physically realized or numerically stable regimes, generator sequences in algebraic constraint systems concentrate on locally adjacent moves in the constraint graph Gamma, because nonlocal moves are either dynamically suppressed (long collision times, low measure) or annihilated (zero product, absorption). This produces geometric locality in the observed chaos. Evidence across three stacks: (A) E10 billiard r_e8=0.45 vs r_null=0.25; (B) CD zero-divisor graphs where non-adjacent products vanish; (C) ET DMZ adjacency constraining valid transitions.
-- Where stated: `crates/algebra_core/src/experimental/billiard_stats.rs`, `crates/algebra_core/src/experimental/algebraic_dynamics.rs` (cross_stack_comparison), `crates/gororoba_cli_algebra/src/bin/cross_stack_locality.rs` (E-011)
+- Where stated: `crates/algebra_experimental/src/billiard_stats.rs`, `crates/algebra_experimental/src/algebraic_dynamics.rs` (cross_stack_comparison), `crates/gororoba_cli_algebra/src/bin/cross_stack_locality.rs` (E-011)
 - What would verify/refute it: E-011 RESULTS: E10 Dynkin: r=1.0 vs r_null=0.20, p=0.000 (STRONG). ET DMZ: r=1.0 vs r_null=0.01, p=0.000 (STRONG). Sedenion ZD: r=1.0 vs r_null=0.87, p=1.000 (FAILS -- graph too dense, null already near-local). ALP holds for sparse constraint graphs (E10, ET DMZ) but not for dense graphs (ZD). The ZD failure is structural: with 86.7% edge density, random walks are inherently local. ALP should be refined to require sparse constraint graphs (edge density < 0.5).
 
 ## C-477
@@ -3840,7 +3840,7 @@ Total claims: 521
 - Status: `Partial`
 - Last verified: 2026-02-09
 - Statement: Sky-Limit-Set Hypothesis: For appropriate encoding of ET (Emanation Table) rules as reflection-group constraints, the ET empty/filled pattern is a discrete cross-section of a reflection-group limit set. Spectroscopy bands correspond to changes in effective Coxeter data. Specifically: (1) the skybox G x G grid at each CD level N encodes a fractal-like pattern whose invariants (box-kite count scaling, emptiness clustering exponent, DMZ density) should match invariants of a Coxeter limit set with matching rank, and (2) the spectroscopy band transitions (Dense/Sparse/Mixed behaviors across 8-strut blocks) encode discrete jumps in Coxeter diagram connectivity.
-- Where stated: `crates/algebra_core/src/experimental/algebraic_dynamics.rs` (experiment_c_sky_limit_set, extract_skybox_invariants, coxeter_invariants), `crates/gororoba_cli_algebra/src/bin/sky_limit_set.rs` (E-013)
+- Where stated: `crates/algebra_experimental/src/algebraic_dynamics.rs` (experiment_c_sky_limit_set, extract_skybox_invariants, coxeter_invariants), `crates/gororoba_cli_algebra/src/bin/sky_limit_set.rs` (E-013)
 - What would verify/refute it: E-013 RESULTS: A_{N-1} consistently best Coxeter match (scores: N=4: 0.44, N=5: 0.23, N=6: 0.16 -- IMPROVING with level). Rank ratio = 1.0 (box-kite count = Coxeter rank). DMZ density/root density ratio converges toward 1.0 at higher N. D_{N-1} second best, B_{N-1} worst. E-012 RESULTS: spectroscopy bands predict billiard entropy (FullFill=0.0, UniformSky=0.44, MixedRegime=0.43), fill-entropy correlation r=-0.85 at N=5. PARTIAL: rank correspondence is strong and improving, but DMZ density match is not yet within 10% of Coxeter root density. Billiard phase prediction holds at N=5, weakens at N=6 (multiple UniformSky sub-bands with different entropies).
 
 ## C-478
@@ -3848,7 +3848,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Fano Line Pairing Theorem: For any sedenion box-kite with strut constant S and any tray-rack perpendicular to edge pair {p0, p1} (where p0 XOR p1 = S), the 4 vent assessor L-indices admit exactly 3 complementary 2+2 pairings. The common XOR value of each pairing's sub-pairs equals one element of the Fano line {S, p0, p1}. All three Fano line elements are realized. The S-pairing (with common XOR = S) gives the delta-consistent twist targets, making h_star XOR v_star = S universally across all 21 transitions.
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (twist_delta_correspondence, vent_pairing_analysis, twist_transition_table)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (twist_delta_correspondence, vent_pairing_analysis, twist_transition_table)
 - What would verify/refute it: VERIFIED by exhaustive computation: 21/21 tray-racks across all 7 box-kites satisfy the theorem. Three tests: test_twist_delta_xor_law_universal (21/21 XOR=S), test_twist_delta_strut_pair_match_universal (21/21 match delta), test_vent_pairing_three_fano_roles (all 3 Fano roles appear for every tray-rack). WHAT WOULD REFUTE: finding a BK at dim=16 where the 3 pairing XOR values differ from {S, p0, p1}, or where the S-pairing does not produce a valid strut pair.
 
 ## C-479
@@ -3856,7 +3856,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Sedenion Lanyard Sign Census: Across all 7 box-kites in 16D Cayley-Dickson, the 56 triangular faces (8 per BK) admit exactly 2 of 4 possible edge-sign patterns when classified by signed-graph edge labels: (1) TwoSameOneOpp: 42 faces (6 per BK), where exactly 2 edges share one sign and the third is opposite; (2) AllOpposite: 14 faces (2 per BK), where all 3 edges have the same sign (all negative). The patterns AllSame (0 faces) and OneSameTwoOpp (0 faces) are never realized. The distribution is perfectly uniform across all 7 box-kites. The TwoSameOneOpp pattern corresponds to de Marrais trefoil lanyards; AllOpposite corresponds to triple-zigzag lanyards.
-- Where stated: `crates/algebra_core/src/experimental/emanation.rs` (cross_bk_lanyard_census, FaceSignPattern, FaceClassification)
+- Where stated: `crates/algebra_experimental/src/emanation.rs` (cross_bk_lanyard_census, FaceSignPattern, FaceClassification)
 - What would verify/refute it: VERIFIED by exhaustive computation: 56 faces across 7 BKs classified using order-independent FaceSignPattern normalization. Five tests: test_cross_bk_lanyard_census_total (56), test_cross_bk_lanyard_no_blues (0 AllSame), test_cross_bk_lanyard_zigzag_count (14 AllOpposite), test_cross_bk_lanyard_uniform_patterns (6+2 per BK), test_cross_bk_lanyard_full_classification (complete census). WHAT WOULD REFUTE: finding a sedenion BK face with AllSame or OneSameTwoOpp sign pattern, or a BK with non-uniform distribution (not 6+2).
 
 ## C-480
@@ -3864,7 +3864,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: GF(2) Separating Degree Scaling: The minimum GF(2) polynomial degree separating motif classes equals the projective dimension m = log2(dim) - 2. Verified at three doublings: dim=32 (m=3, degree 3, 2 classes 8+7), dim=64 (m=4, degree 4, 4 classes 9+8+7+7), dim=128 (m=5, degree 5, 8 classes 10+9+8+8+7+7+7+7). At the minimum degree, ALL 2^k-1 non-zero class signatures are achievable (k = number of classes). Degree grows as +1 per doubling of the algebra dimension.
-- Where stated: `crates/algebra_core/src/analysis/projective_geometry.rs` (find_minimum_separating_degree, check_separation_at_degree, gf2_solvable)
+- Where stated: `crates/algebra_analysis/src/projective_geometry.rs` (find_minimum_separating_degree, check_separation_at_degree, gf2_solvable)
 - What would verify/refute it: VERIFIED by GF(2) Gaussian elimination at 3 doublings: test_separating_degree_dim32_is_3 (d=3), test_separating_degree_dim64 (d=4, all 15 sigs), test_separating_degree_dim128 (d=5, all 255 sigs). Class structures: dim=32 {84:8, other:7}, dim=64 {420:9, 84:8, 228:7, 276:7}, dim=128 {1860:10, 180:9, 516:8, 1524:8, 756:7, 948:7, 1092:7, 1284:7}. WHAT WOULD REFUTE: finding a degree < m polynomial system that separates the classes at any verified dimension, or a dimension where the degree differs from m.
 
 ## C-481
@@ -3872,7 +3872,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Face Sign Census at dim=32 (pathions): 2408 triangular faces across 15 components split into 3 regimes. (A) 7 heptacross components (84 edges, 280 triangles): all 4 FaceSignPattern realized (102 TwoSameOneOpp, 108 OneSameTwoOpp, 36 AllSame, 34 AllOpposite). (B) 1 special heptacross (84 edges, 280 triangles): only 2 patterns with 3:1 ratio (210 TwoSameOneOpp, 70 AllOpposite). (C) 7 mixed components (36 edges, 24 triangles): only 2 patterns with 3:1 ratio (18 TwoSameOneOpp, 6 AllOpposite). The 3:1 TwoSameOneOpp:AllOpposite ratio is universal in pure-regime components across dim=16 and dim=32.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (generic_face_sign_census, edge_sign_type_exact)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (generic_face_sign_census, edge_sign_type_exact)
 - What would verify/refute it: VERIFIED by integer-exact computation: test_generic_face_sign_census_dim16_matches_c479 (reproduces C-479), test_generic_face_sign_census_dim32 (all three regimes verified with exact counts). Totals: 1050+756+252+350=2408. WHAT WOULD REFUTE: finding a pure-regime component (only 2 patterns) where the TwoSameOneOpp:AllOpposite ratio differs from 3:1, or finding all 4 patterns in ALL components at dim=32 (would contradict regime differentiation).
 
 ## C-482
@@ -3880,7 +3880,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Face Sign Census at dim=64: 48328 triangular faces across 31 components split into 5 regimes. (A) 1 pure-max (420 edges, 3640 tri, 2 patterns: 2730/910=3:1). (B) 8 full-max (420 edges, 3640 tri, 4 patterns). (C) 7 full-mid1 (276 edges, 1336 tri, 4 patterns). (D) 7 full-mid2 (228 edges, 824 tri, 4 patterns). (E) 8 pure-min (84 edges, 56 tri, 2 patterns: 42/14=3:1). The 84-edge pure components exactly reproduce dim=16's 42:14 census -- sedenion sub-algebra embedding.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (generic_face_sign_census, test_generic_face_sign_census_dim64)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (generic_face_sign_census, test_generic_face_sign_census_dim64)
 - What would verify/refute it: VERIFIED by integer-exact computation: 5 regimes with exact counts. 3:1 TwoSameOneOpp:AllOpposite ratio in both pure regimes (2730/910 and 42/14). WHAT WOULD REFUTE: any pure-regime component violating 3:1 ratio, or fewer than 5 regimes at dim=64.
 
 ## C-483
@@ -3888,7 +3888,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Pure-regime 3:1 TwoSameOneOpp:AllOpposite Ratio Law: In every pure-regime component (only 2 face sign patterns) of the CD zero-divisor graph, the ratio TwoSameOneOpp:AllOpposite is exactly 3:1. Verified in 26 pure-regime components across 4 doublings: dim=16 (7x, 42:14), dim=32 mixed (7x, 18:6), dim=32 special (1x, 210:70), dim=64 pure-max (1x, 2730:910), dim=64 pure-min (8x, 42:14), dim=128 pure-max (1x, 26970:8990), dim=128 pure-min (9x, 90:30). SUPERSEDED by C-487 (Universal 3:1 Theorem) which proves this holds in ALL components, not just pure regimes.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_three_to_one_ratio_antibalanced)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_three_to_one_ratio_antibalanced)
 - What would verify/refute it: VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components). SUPERSEDED by C-487 (Universal 3:1 Theorem). WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3.
 
 ## C-484
@@ -3896,7 +3896,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Face Sign Census at dim=128: 821128 triangular faces across 63 components split into 9 regimes. (A) 1 pure-max (1860 edges, 35960 tri, 2 patterns: 26970/8990=3:1). (B) 9 full-max (1860 edges, 35960 tri, 4 patterns). (C-G) 7 full regimes each with distinct edge counts (1524/1284/1092/948/756/516 edges, 8/7/7/7/7/8 components). (H) 9 pure-min (180 edges, 120 tri, 2 patterns: 90/30=3:1). Group sizes palindromic: 1+[9,8,7,7,7,7,8,9].
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim128)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_generic_face_sign_census_dim128)
 - What would verify/refute it: VERIFIED by integer-exact computation in ~1s. 9 regimes with exact counts. Both pure regimes satisfy 3:1 ratio. All 4-pattern regimes satisfy Universal 3:1 Theorem (C-487). WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes.
 
 ## C-485
@@ -3904,7 +3904,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Regime Count Formula: The number of distinct face sign regimes in the CD zero-divisor graph follows n_regimes = dim/16 + 1 for dim >= 32 (1 for dim=16). Verified at 4 dimensions: dim=16 (1), dim=32 (3), dim=64 (5), dim=128 (9). This corrects the earlier estimate 2*log2(dim/16)+1 which failed at dim=128. The formula decomposes as: 2 pure regimes + (dim/16 - 1) full regimes for dim >= 32.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_regime_and_edge_scaling_laws)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_regime_and_edge_scaling_laws)
 - What would verify/refute it: VERIFIED by exact computation at 4 dimensions. WHAT WOULD REFUTE: dim=256 having other than 17 regimes (256/16+1), or any dimension not conforming to dim/16+1.
 
 ## C-486
@@ -3912,7 +3912,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Edge Count Extremal Formulas: For dim >= 32, the maximum edge count per component is E_max = C(dim/2-2, 2) - (dim/4-1), and the minimum edge count is E_min = 3*dim/2 - 12. The maximum component is nearly complete, missing exactly dim/4-1 edges. Verified at dims 32 (E_max=84, E_min=36), 64 (E_max=420, E_min=84), 128 (E_max=1860, E_min=180). Exactly 1 pure-max component at each dimension (the special component with XOR label = dim/4).
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_regime_and_edge_scaling_laws, test_generic_face_sign_census_dim128)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_regime_and_edge_scaling_laws, test_generic_face_sign_census_dim128)
 - What would verify/refute it: VERIFIED by formula matching at 3 dimensions (32/64/128). WHAT WOULD REFUTE: dim=256 having E_max != C(126,2)-63 = 7812 or E_min != 3*256/2-12 = 372.
 
 ## C-487
@@ -3920,7 +3920,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Universal 3:1 Theorem: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16, both 3:1 ratio laws hold simultaneously: TwoSameOneOpp = 3*AllOpposite (odd-parity pair) and OneSameTwoOpp = 3*AllSame (even-parity pair). Verified in all 243 components across 5 dimensions (7+15+31+63+127). NOTE: Parity-specific edge regularity is FALSE in non-pure regimes -- the algebraic mechanism must arise from the CD multiplication table structure, not general graph-theoretic counting. Pure-regime C-483 is the special case where AllSame=OneSameTwoOpp=0.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_universal_double_three_to_one_law, test_generic_face_sign_census_dim256)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_universal_double_three_to_one_law, test_generic_face_sign_census_dim256)
 - What would verify/refute it: VERIFIED by exact computation in all 243 components across dims 16/32/64/128/256. WHAT WOULD REFUTE: any single component at any dimension where either OS != 3*AS or TS != 3*AO.
 
 ## C-488
@@ -3928,7 +3928,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Face Sign Census at dim=256: 13348104 triangular faces across 127 components split into 17 regimes (confirming dim/16+1 formula). 1 pure-max (7812 edges, 2 patterns), 15 full regimes (4 patterns each), 1 pure-min regime (372 edges, 10 components, 2 patterns). Universal 3:1 Theorem holds in all 127 components. Computation time: ~16s in release mode.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim256)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_generic_face_sign_census_dim256)
 - What would verify/refute it: VERIFIED by integer-exact computation (~16s). WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the 3:1 Theorem.
 
 ## C-489
@@ -3936,7 +3936,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Regime-GF(2) Class Correspondence: Face sign regimes = GF(2) edge-count classes + 1. The GF(2) separating classes (C-480) correspond exactly to edge-count groups (dim/16 classes). The face sign census adds 1 extra regime by splitting the max-edge class into pure-max (1 component, XOR label = dim/4) and full-max. At min-edge, ALL components are pure (no split). Verified at dims 32/64/128. Unifies motif census, GF(2) projective geometry, and face sign census.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_regime_gf2_class_correspondence)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_regime_gf2_class_correspondence)
 - What would verify/refute it: VERIFIED at dims 32/64/128: n_regimes = n_edge_groups + 1, exactly 1 pure-max per dim, all min-edge are pure. WHAT WOULD REFUTE: a dimension where the max-edge class does NOT split into pure + full, or where min-edge components are not all pure.
 
 ## C-490
@@ -3944,7 +3944,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Parity-Specific Edge Regularity is FALSE: In non-pure (4-pattern) face sign regime components, edges do NOT participate in the same number of even-parity (or odd-parity) triangles. At dim=32 comp[0], even-parity triangle counts per edge range from 4 to 8. This means the Universal 3:1 Theorem (C-487) cannot be proved via parity-specific counting arguments. The algebraic mechanism is deeper, arising from the CD multiplication table structure.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_parity_edge_regularity_breakdown)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_parity_edge_regularity_breakdown)
 - What would verify/refute it: VERIFIED at dim=32: even-parity triangles per edge range [4,8]. WHAT WOULD REFUTE: discovering that parity-specific edge regularity actually holds everywhere (would require a bug in the test).
 
 ## C-491
@@ -3952,7 +3952,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Sigma Correspondence: For each edge in the ZD graph between cross-assessors a=(i,j) and b=(k,l), define sigma_ab = cd_basis_mul_sign(dim, i, k) * cd_basis_mul_sign(dim, j, l). Then sigma_ab = -1 iff edge is Same-type, +1 iff Opposite-type. This gives a closed-form edge sign determination bypassing the full diagonal_zero_products_exact computation.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
 - What would verify/refute it: VERIFIED at dims 16, 32, 64 -- all edges in all components. WHAT WOULD REFUTE: any edge where sigma disagrees with edge_sign_type_exact.
 
 ## C-492
@@ -3960,7 +3960,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Half-Half Edge Law: In every component of the CD zero-divisor graph at every dimension >= 16, exactly half the edges are Same-type and half are Opposite-type (n_same = n_opposite). This is a fundamental property of the CD multiplication table's signed graph structure, verified at dims 16/32/64/128 across all 214 components.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism, test_half_half_edge_law_dim128)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_double_three_to_one_algebraic_mechanism, test_half_half_edge_law_dim128)
 - What would verify/refute it: VERIFIED at dims 16 (7 comps), 32 (15 comps), 64 (31 comps), 128 (63 comps) = 116+98 = 214 total. WHAT WOULD REFUTE: any component at any dimension with unequal Same/Opposite edge counts.
 
 ## C-493
@@ -3968,7 +3968,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Parity Product Identity: For any triangle in the ZD graph with edges ab, bc, ac, the product sigma_ab * sigma_bc * sigma_ac = (-1)^{n_same} where n_same is the number of Same-type edges. This splits triangles into two parity classes: even-Same (product=+1, containing AllOpposite and TwoSameOneOpp) and odd-Same (product=-1, containing AllSame and OneSameTwoOpp).
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
 - What would verify/refute it: VERIFIED at dims 16, 32, 64 for all triangles in all components. Follows algebraically from sigma = -1 iff Same. WHAT WOULD REFUTE: logically impossible given C-491.
 
 ## C-494
@@ -3976,7 +3976,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Quarter Rule (mechanism of 3:1 Theorem): Within each parity class of triangles in any ZD graph component, the 'pure' pattern (AllOpposite in even class, AllSame in odd class) is exactly 1/4 of the class total. The 3:1 ratio (C-487) follows: the 'mixed' patterns consume the remaining 3/4, giving TwoSameOneOpp = 3*AllOpposite and OneSameTwoOpp = 3*AllSame. The class total is always divisible by 4.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
 - What would verify/refute it: VERIFIED at dims 16, 32, 64 for all components. WHAT WOULD REFUTE: any component where class total is not divisible by 4, or pure count != total/4.
 
 ## C-495
@@ -3984,7 +3984,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Face sign census at dim=512: 255 components, 33 regimes (512/16 + 1), e_max=32004, e_min=756, 214M triangles, Universal 3:1 Theorem holds for all 255 components. Exactly 1 pure-max component. Confirms all scaling laws from C-486/C-487/C-488 at the 6th doubling.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim512)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_generic_face_sign_census_dim512)
 - What would verify/refute it: VERIFIED: all assertions pass in 275s release mode. 33 regimes, all edge/regime formulas match, 3:1 law holds universally. WHAT WOULD REFUTE: any component violating TS=3*AO or OS=3*AS.
 
 ## C-496
@@ -3992,7 +3992,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Fano Residue Distribution Law: At dim=2^n (n>=4), each ZD graph component has a unique XOR key (lo ^ hi), and the Fano residue (xor_key & 7) distributes as: 7 residues get dim/16 components each, 1 'deficit' residue gets dim/16 - 1 components. Total: 7*(dim/16) + (dim/16-1) = dim/2 - 1. The deficit residue is 0. This means the octonion Fano structure propagates through ALL doublings as a mod-8 partition of the XOR product space.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_octonion_subalgebra_fano_projection)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_octonion_subalgebra_fano_projection)
 - What would verify/refute it: VERIFIED at dims 32 and 64. dim=32: {0:1, others:2} = 15 comps. dim=64: {0:3, others:4} = 31 comps. WHAT WOULD REFUTE: any dimension where the Fano residue distribution violates the dim/16 formula, or where components do not have unique XOR keys.
 
 ## C-497
@@ -4000,7 +4000,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Fano Projection Full Mixing: At dim>=32, every ZD graph component uses the FULL set of Fano projections (lo & 7) in its cross-assessor low indices. The octonion subalgebra does NOT partition component node membership -- it only labels components via the XOR product residue (C-496).
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_octonion_subalgebra_fano_projection)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_octonion_subalgebra_fano_projection)
 - What would verify/refute it: VERIFIED: at dims 32 (15/15) and 64 (31/31) all components use all 7+ Fano indices. WHAT WOULD REFUTE: any component at dim>=32 whose low indices project onto fewer than 7 distinct Fano residues.
 
 ## C-498
@@ -4008,7 +4008,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Coset Obstruction Theorem: Lambda_n (n <= 1024) has exactly 0% closure under both Z-addition and F_3-addition because all lattice vectors have l_0 = -1. Z-addition gives l_0 = (-1)+(-1) = -2, leaving the trinary range {-1,0,1}. F_3-addition gives l_0 = (-1)+(-1) = +1 (mod 3), mapping to the forbidden l_0=+1 coset excluded by is_in_base_universe(). This applies to ALL pairs without exception. The zero vector [0,...,0] is NOT in any Lambda_n (fails l_0=-1 at Lambda_1024), so there is no additive identity.
-- Where stated: `crates/algebra_core/src/analysis/codebook.rs` (test_coset_obstruction_and_affine_closure)
+- Where stated: `crates/algebra_analysis/src/codebook.rs` (test_coset_obstruction_and_affine_closure)
 - What would verify/refute it: VERIFIED: exhaustive check over all 65536 pairs of Lambda_256 vectors confirms l_0=+1 for every F_3 sum and l_0=-2 for every Z sum. WHAT WOULD REFUTE: existence of any Lambda_n vector with l_0 != -1 (structurally impossible by Lambda_1024 definition).
 
 ## C-499
@@ -4016,7 +4016,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Affine F_3 Partial Closure: The affine F_3 operation a +_3 b -_3 p (for fixed base point p) preserves l_0=-1 and achieves partial closure on Lambda sets. Measured rates: Lambda_256 = 30-39% (base-dependent), Lambda_512 = 34%, Lambda_1024 = 47%, Lambda_2048 l_0=0 sub-lattice = 45%. Rates are below 100% at all levels because forbidden prefix exclusions break F_3 group structure. Rates vary with base point, confirming Lambda_n sets are NOT affine subgroups of F_3^8.
-- Where stated: `crates/algebra_core/src/analysis/codebook.rs` (test_coset_obstruction_and_affine_closure)
+- Where stated: `crates/algebra_analysis/src/codebook.rs` (test_coset_obstruction_and_affine_closure)
 - What would verify/refute it: VERIFIED: measured with 4 base points on Lambda_256 (range 30.2%-38.8%), Lambda_512 (33.7%), Lambda_1024 (46.9%), and l_0=0 sub-lattice of Lambda_2048 (44.8%). WHAT WOULD REFUTE: finding any Lambda_n with 100% affine F_3 closure would mean it IS an affine subgroup, contradicting the trie-cut exclusion mechanism.
 
 ## C-500
@@ -4040,7 +4040,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Affine F_3 Closure Hamming Weight Dependence: Full sweep over all 256 base points of Lambda_256 reveals affine F_3 closure rate depends primarily on the Hamming weight (number of nonzero coordinates) of the base point. Mean rate 37.8% (std 1.8%). Monotone trend: hw=2 gives 39.6% (max), hw=4 gives 38.5%, hw=6 gives 37.8%, hw=8 gives 36.6% (min). Distribution is bimodal: 243/256 base points cluster at 35-40%, 13/256 are outliers at 30-35%. All 13 low-closure outliers have hw=8 AND l_2=+1 (in original coordinates). Pearson correlation hw vs rate r=-0.33. Coordinate sum is uncorrelated (r=0.08). The unique hw=2 base point [-1,-1,0,0,0,0,0,0] achieves the global maximum 39.6%.
-- Where stated: `crates/algebra_core/src/analysis/codebook.rs` (test_affine_f3_closure_full_basepoint_sweep)
+- Where stated: `crates/algebra_analysis/src/codebook.rs` (test_affine_f3_closure_full_basepoint_sweep)
 - What would verify/refute it: VERIFIED: exhaustive sweep over all 256 base points with all 65536 pair evaluations per base point. WHAT WOULD REFUTE: finding any base point with closure >= 50% would indicate near-affine-subgroup structure. Finding no correlation with Hamming weight would indicate the base-point dependence is not sparsity-driven.
 
 ## C-503
@@ -4048,7 +4048,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Lambda_512 Affine Closure l_1 Dominance: Full sweep over all 512 base points of Lambda_512 reveals affine F_3 closure rate is almost perfectly determined by l_1 (Pearson r=-0.997). l_1=-1 base points give 33.9% mean closure (N=365), l_1=0 base points give 23.5% mean closure (N=147). The bimodal histogram (147 at 20-25%, 365 at 30-35%) maps exactly to this l_1 dichotomy. Hamming weight correlation REVERSES sign relative to Lambda_256 (r=+0.30 vs r=-0.33), and is a secondary effect. This connects to C-501: l_1 encodes a hierarchy l_1=+1 (anti-ultrametric, excluded) > l_1=0 (low closure) > l_1=-1 (high closure).
-- Where stated: `crates/algebra_core/src/analysis/codebook.rs` (test_affine_f3_closure_lambda512_full_sweep)
+- Where stated: `crates/algebra_analysis/src/codebook.rs` (test_affine_f3_closure_lambda512_full_sweep)
 - What would verify/refute it: VERIFIED: exhaustive sweep over all 512 base points with all 262144 pair evaluations per base point. WHAT WOULD REFUTE: finding l_1 correlation below 0.9 would indicate the variance is NOT l_1-dominated. Finding l_1=0 base points with closure >= 30% would break the bimodal structure.
 
 ## C-504
@@ -4144,7 +4144,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Sigma Correspondence: For any CD dimension >= 16, the edge sign type (Same vs Opposite) in the cross-assessor ZD graph is exactly determined by sigma_ab = s(lo_a,lo_b) * s(hi_a,hi_b) where s = cd_basis_mul_sign. Same iff sigma=-1, Opposite iff sigma=+1. Verified on all edges at dims 16 (84), 32 (924), 64 (7980). Additionally, the Parity Product Theorem holds: product(sigma) over a triangle's 3 edges is +1 iff even number of Same edges (AllOpposite or TwoSameOneOpp) and -1 iff odd number (AllSame or OneSameTwoOpp). The Quarter Rule is exact: in each parity class, the 'pure' pattern (AllOpposite in even, AllSame in odd) is exactly 1/4 of the class total, with zero remainder. At dim=16, ONLY the even parity class exists (all 56 triangles have product=+1). Odd parity first appears at dim=32.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_sigma_correspondence_and_parity_product)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_sigma_correspondence_and_parity_product)
 - What would verify/refute it: VERIFIED: exact match on all edges at dims 16/32/64, exact Quarter Rule (pure*4=total) in every parity class. WHAT WOULD REFUTE: finding any edge where sigma != expected_sigma, or any parity class where pure != total/4.
 
 ## C-516
@@ -4152,7 +4152,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Translation Derivative Identity: The sigma correspondence has a clean algebraic interpretation as a discrete derivative of the twist exponent. Define psi(i,j) in GF(2) by s(i,j) = (-1)^psi(i,j). For a component with XOR key k, sigma(x,y) = (-1)^{Delta_k psi(x,y)} where Delta_k psi(x,y) = psi(x,y) XOR psi(x XOR k, y XOR k). Within a component, hi_a = lo_a XOR k, so Delta_k psi(lo_a,lo_b) = psi(lo_a,lo_b) XOR psi(hi_a,hi_b). Verified on all edges at dims 16 (84), 32 (924), 64 (7980), 128 (65100) with zero exceptions.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_translation_derivative_and_half_half)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_translation_derivative_and_half_half)
 - What would verify/refute it: VERIFIED: exact match on all 74088 edges across 4 dimensions. WHAT WOULD REFUTE: any edge where sigma != (-1)^{psi XOR psi_translated}.
 
 ## C-517
@@ -4160,7 +4160,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Half-Half Edge Law as Delta_k Balance: Within every motif component at every CD dimension >= 16, the translation derivative Delta_k psi is perfectly balanced: exactly half of edges have Delta_k psi = 0 (Opposite-type) and half have Delta_k psi = 1 (Same-type). Verified on ALL components: 7/7 at dim=16, 15/15 at dim=32, 31/31 at dim=64, 63/63 at dim=128. This is not approximate -- the balance is exact to the last edge in every component.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_translation_derivative_and_half_half)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_translation_derivative_and_half_half)
 - What would verify/refute it: VERIFIED: all 116 components across 4 dimensions have exact 50/50 split. WHAT WOULD REFUTE: any component with unequal Same/Opposite edge counts.
 
 ## C-518
@@ -4168,7 +4168,7 @@ Total claims: 521
 - Status: `Refuted`
 - Last verified: 2026-02-09
 - Statement: Associator Sign Obstruction REFUTED: The CD associator sign A(i,j,k) = s(i,j)*s(i XOR j, k)*s(j,k)*s(i, j XOR k) does NOT separate pure from mixed triangles when applied as F(triangle) = (A(lo_a,lo_b,lo_c), A(hi_a,hi_b,hi_c)). At dim=16, F=(+1,+1) never occurs. At dim=32/64, all four F-values contain both pure and mixed triangles. A cross lo/hi variant also fails. However, within each F-fiber at dim=16, the pure:mixed ratio is exactly 1:3, suggesting the 1:3 ratio is a deeper invariant than the associator.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_associator_obstruction_candidate_b)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_associator_obstruction_candidate_b)
 - What would verify/refute it: REFUTED: F=(+1,+1) does not correspond to pure triangles at any dimension tested. The associator operates on basis indices, while the mechanism operates on the off-diagonal psi terms of the edge's twist matrix.
 
 ## C-519
@@ -4176,7 +4176,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: GF(2)-Linear 2-Bit Separator Exists: At dim=16, an exhaustive search over all GF(2)-linear functions of the 12 psi bits per triangle (3 edges x 4 psi matrix entries) found a perfect 2-bit separator: F=(0,0) iff pure. The separator found at dim=16 is: f1 = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) (anti-diagonal XOR of edge ab's psi matrix), f2 = psi(lo_a,lo_b) XOR psi(lo_a,hi_b) XOR psi(lo_b,lo_c) XOR psi(hi_b,lo_c). Result: F=(0,0) captures all 14 pure and 0 mixed; the 3 nonzero fibers have 13, 16, 13 mixed triangles (confirming non-uniform distribution among mixed classes). No single-bit function achieves perfect separation.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_psi_matrix_obstruction_search)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_psi_matrix_obstruction_search)
 - What would verify/refute it: VERIFIED: exhaustive search over 4095^2 candidate pairs at dim=16. WHAT WOULD REFUTE: finding that the separator does not generalize to higher dimensions (addressed by C-521).
 
 ## C-520
@@ -4184,7 +4184,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Anti-Diagonal Parity Theorem (Generalization): Define eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) for each ZD edge (the 'anti-diagonal XOR' of the edge's psi matrix). A triangle (a,b,c) is 'pure' (AllOpposite in even parity class, AllSame in odd parity class) if and only if eta is constant across all three edges: eta(a,b) = eta(b,c) = eta(a,c). Equivalently, the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, and F=(0,0) iff pure. Verified PERFECTLY (zero mismatches) at dims 16 (56 triangles), 32 (2408), 64 (48328).
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_separator_generalization)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_separator_generalization)
 - What would verify/refute it: VERIFIED: zero mismatches across 50792 triangles at 3 dimensions. WHAT WOULD REFUTE: any triangle where eta-constant disagrees with is-pure. Extended verification at dim=128 in C-521.
 
 ## C-521
@@ -4192,7 +4192,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-09
 - Statement: Anti-Diagonal Parity Theorem at dim=128: The Anti-Diagonal Parity Theorem (C-520) holds at dim=128 with ZERO mismatches across 821,128 triangles in 63 components. Pure count = 205,282, Mixed count = 615,846 (exact 1:3 ratio). This provides the complete algebraic mechanism for the 3:1 Theorem (C-487): the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, with exactly 1 zero element and 3 nonzero elements. Pure triangles are the zero-element fiber. The nonzero fibers need not be equally sized (confirming the non-uniform distribution observed in face sign census data). The mechanism is purely algebraic: eta depends only on cd_basis_mul_sign via the off-diagonal terms of the edge psi matrix.
-- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_antidiagonal_parity_theorem_dim128)
+- Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_antidiagonal_parity_theorem_dim128)
 - What would verify/refute it: VERIFIED: 821128 triangles, 63 components, 0 mismatches. WHAT WOULD REFUTE: any mismatch at dim=128 or higher. Verification at dim=256+ would strengthen but requires significant compute (13.3M triangles at dim=256).
 
 """

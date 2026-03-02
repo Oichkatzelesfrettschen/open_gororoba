@@ -770,7 +770,7 @@ title = "Box-Kite Structure"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/src/experimental/emanation.rs"
+canonical_download_path = "crates/algebra_experimental/src/emanation.rs"
 source_refs = ["registry/book_docs.toml::document/1::BOOK-002", "registry/knowledge/docs/DOC-0079.toml::document::DOC-0079", "registry/markdown_inventory.toml::document/58::MDI-0059", "registry/source_lanes/web_references.toml::artifact_ref/75::ASOT-0090"]
 
 [[artifact_ref]]
@@ -840,7 +840,7 @@ title = "Cayley-Dickson algebra kernel boundary"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/src/construction/cayley_dickson.rs"
+canonical_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/82::ASOT-0098", "reports/pure_rust_port_boundaries_2026_02_14.toml::boundary/2::PB-003"]
 
 [[artifact_ref]]
@@ -1710,7 +1710,7 @@ title = "Emanation Architecture"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/src/experimental/emanation.rs"
+canonical_download_path = "crates/algebra_experimental/src/emanation.rs"
 source_refs = ["registry/book_docs.toml::document/2::BOOK-003", "registry/knowledge/docs/DOC-0080.toml::document::DOC-0080", "registry/markdown_inventory.toml::document/59::MDI-0060", "registry/source_lanes/web_references.toml::artifact_ref/169::ASOT-0206"]
 
 [[artifact_ref]]
@@ -47320,7 +47320,7 @@ title = "registry/pantheon_physicsforge_migration_matrix.toml::overlap_coverage/
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/src/construction/cayley_dickson.rs"
+canonical_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
 source_refs = ["registry/pantheon_physicsforge_migration_matrix.toml::overlap_coverage/3::OG-COVER-004", "registry/source_lanes/web_references.toml::artifact_ref/4730::ASOT-5762"]
 
 [[artifact_ref]]
@@ -47530,7 +47530,7 @@ title = "registry/publication_evidence.toml::section/0/evidence"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/src/analysis/boxkites.rs"
+canonical_download_path = "crates/algebra_analysis/src/boxkites.rs"
 source_refs = ["registry/publication_evidence.toml::section/0/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4751::ASOT-5872"]
 
 [[artifact_ref]]
@@ -47550,7 +47550,7 @@ title = "registry/publication_evidence.toml::section/11/evidence"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/src/analysis/codebook.rs"
+canonical_download_path = "crates/algebra_analysis/src/codebook.rs"
 source_refs = ["registry/publication_evidence.toml::section/11/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4753::ASOT-5874"]
 
 [[artifact_ref]]
@@ -67610,7 +67610,7 @@ title = "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/9"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/src/construction/cayley_dickson.rs"
+canonical_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6759::ASOT-8074", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/9"]
 
 [[artifact_ref]]

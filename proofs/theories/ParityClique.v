@@ -7,7 +7,7 @@
     At dim=16: adjacency decomposes into K_4 + K_4  (12 edges total).
     At dim=32: adjacency decomposes into K_8 + K_8  (56 edges total).
 
-    Mirrors: algebra_core::analysis::graph_projections (edge counting) *)
+    Mirrors: algebra_analysis::graph_projections (edge counting) *)
 
 From Stdlib Require Import Arith PeanoNat Lia.
 

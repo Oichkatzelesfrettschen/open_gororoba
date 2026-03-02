@@ -22,7 +22,7 @@ test_lines = 460
 registry_entries = 15
 new_claims = 7
 new_insights = 2
-crate_modification = "crates/algebra_core/src/construction/cayley_dickson.rs"
+crate_modification = "crates/cd_kernel/src/cayley_dickson.rs"
 modification_type = "Added public gammas() accessor to CdSignature"
 
 [phase8.metrics]
