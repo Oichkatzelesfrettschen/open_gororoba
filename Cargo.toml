@@ -115,7 +115,10 @@ ndrustfft = "0.5.0"          # N-dimensional FFT on ndarray (C2C, R2C, DCT)
 # Vulkan and Windowing
 ash = "0.38.0"
 gpu-allocator = "0.28.0"
-naga = "28.0.0"
+# PINNED: naga 27.0.3 aligns with Bevy 0.18 (gororoba_app). The API surface
+# used by lbm_vulkan (wgsl::parse_str, valid::Validator, back::spv::Writer)
+# is identical between naga 27 and 28. Upgrade when Bevy ships naga 28+.
+naga = "27.0.3"
 winit = "0.30.12"
 raw-window-handle = "0.6.2"
 
