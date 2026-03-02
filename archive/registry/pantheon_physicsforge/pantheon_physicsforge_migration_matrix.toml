@@ -113,9 +113,9 @@ id = "OG-COVER-004"
 domain = "Octonion and Cayley-Dickson algebra"
 covered = true
 open_gororoba_paths = [
-  "crates/algebra_core/src/construction/cayley_dickson.rs",
+  "crates/cd_kernel/src/cayley_dickson.rs",
   "crates/algebra_core/src/physics/octonion_field.rs",
-  "crates/algebra_core/src/analysis/boxkites.rs",
+  "crates/algebra_analysis/src/boxkites.rs",
 ]
 notes = "Do not port PhysicsForge octonion scripts as canonical compute code."
 

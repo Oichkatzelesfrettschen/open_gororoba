@@ -4,7 +4,7 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 4
+raw_capture_count = 5
 skipped_generated_count = 7
 authoritative = false
 normalization_required = true
@@ -52,6 +52,17 @@ raw_captured = true
 authoritative = false
 normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0011.toml"
+
+[[document]]
+id = "DOC-0012"
+source_path = "proofs/README.md"
+title = "Living Verification Artifact -- Pipeline Architecture"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0012.toml"
 
 [[document]]
 id = "DOC-0001"

@@ -8,7 +8,7 @@
     to 1 on point p iff all bits of m are set in p.  A polynomial is
     a list of monomials; evaluation XORs monomial values (addition mod 2).
 
-    Mirrors: algebra_core::analysis::projective_geometry::find_boolean_class_predicate *)
+    Mirrors: algebra_analysis::projective_geometry::find_boolean_class_predicate *)
 
 From Stdlib Require Import Bool Arith PeanoNat Lia List.
 Import ListNotations.

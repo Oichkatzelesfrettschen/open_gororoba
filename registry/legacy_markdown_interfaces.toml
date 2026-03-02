@@ -3330,7 +3330,7 @@ kind = "list_item"
 line_start = 271
 line_end = 271
 heading_level = 0
-text_ascii = "`crates/algebra_core/src/analysis/spectral_composition.rs` (200+ lines, Phase 11.1)"
+text_ascii = "`crates/algebra_analysis/src/spectral_composition.rs` (200+ lines, Phase 11.1)"
 text_sha256 = "31f3aded67be1bc74420f176851e40bfb8788929f89b9e6a6a77e1facc25bf31"
 
 [[unit]]
@@ -3810,7 +3810,7 @@ kind = "table_row"
 line_start = 33
 line_end = 33
 heading_level = 0
-text_ascii = "`vis_box_kites.py` | sklearn (KMeans, PCA) | Clustering + DR | 95 | `crates/algebra_core/src/analysis/clustering.rs`"
+text_ascii = "`vis_box_kites.py` | sklearn (KMeans, PCA) | Clustering + DR | 95 | `crates/algebra_analysis/src/clustering.rs`"
 text_sha256 = "d0e72fd4e4286745745dd8545d1469ca0c900a2bea856304356d2ceacb04a9c4"
 
 [[unit]]
@@ -4470,7 +4470,7 @@ kind = "paragraph"
 line_start = 150
 line_end = 150
 heading_level = 0
-text_ascii = "**Target**: `crates/algebra_core/src/analysis/clustering.rs`"
+text_ascii = "**Target**: `crates/algebra_analysis/src/clustering.rs`"
 text_sha256 = "56c494836eaac7545dc51af1d8dbb5d6ef38bf3839e00223a493747c9161d777"
 
 [[unit]]

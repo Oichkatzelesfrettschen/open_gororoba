@@ -56,8 +56,8 @@ We have identified two distinct graph projections for the 64D/128D algebras:
 ## 4. Implementation Status
 *   **Typed Carrier**: Implemented `UniversalAlgebra` struct.
 *   **Optimization**: Implemented non-allocating `cd_multiply_mut`.
-*   **Logic**: Implemented predicate cuts in `algebra_core::analysis::codebook`.
-*   **Graphs**: Implemented generators in `algebra_core::analysis::graph_projections`.
+*   **Logic**: Implemented predicate cuts in `algebra_analysis::codebook`.
+*   **Graphs**: Implemented generators in `algebra_analysis::graph_projections`.
 
 ## 5. Next Steps (Research)
 *   **Generate 32D/256D Matching Graphs**: Verify the `i XOR (Dim/16)` conjecture.

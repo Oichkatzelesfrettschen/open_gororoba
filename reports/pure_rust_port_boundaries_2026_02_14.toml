@@ -116,7 +116,7 @@ title = "Cayley-Dickson algebra kernel boundary"
 external_candidate = "MathScienceCompendium/src/mathphysics/algebras/cayley_dickson.py"
 external_repo = "external_ref:MathScienceCompendium"
 ownership_crate = "crates/algebra_core"
-ownership_module = "crates/algebra_core/src/construction/cayley_dickson.rs"
+ownership_module = "crates/cd_kernel/src/cayley_dickson.rs"
 value_case = "Core algebra correctness anchor used by multiple downstream crates."
 in_contract = [
   "Accept basis vectors, signatures, and dimensions as explicit typed parameters.",
@@ -134,9 +134,9 @@ forbidden_coupling = [
   "No runtime external source loading from data/external during kernel calls.",
 ]
 acceptance_test_hooks = [
-  "crates/algebra_core/src/construction/cayley_dickson.rs::test_sedenion_non_associative",
-  "crates/algebra_core/src/construction/cayley_dickson.rs::test_find_zero_divisors_sedenion",
-  "crates/algebra_core/src/construction/cayley_dickson.rs::test_all_signatures_dim16_commutativity",
+  "crates/cd_kernel/src/cayley_dickson.rs::test_sedenion_non_associative",
+  "crates/cd_kernel/src/cayley_dickson.rs::test_find_zero_divisors_sedenion",
+  "crates/cd_kernel/src/cayley_dickson.rs::test_all_signatures_dim16_commutativity",
 ]
 acceptance_commands = [
   "cargo test -p algebra_core test_sedenion_non_associative",
@@ -144,7 +144,7 @@ acceptance_commands = [
   "cargo test -p algebra_core test_all_signatures_dim16_commutativity",
 ]
 path_refs = [
-  "crates/algebra_core/src/construction/cayley_dickson.rs",
+  "crates/cd_kernel/src/cayley_dickson.rs",
   "crates/algebra_core/Cargo.toml",
 ]
 
@@ -327,7 +327,7 @@ exists = true
 used_by = ["PB-002"]
 
 [[path_check]]
-path = "crates/algebra_core/src/construction/cayley_dickson.rs"
+path = "crates/cd_kernel/src/cayley_dickson.rs"
 exists = true
 used_by = ["PB-003"]
 

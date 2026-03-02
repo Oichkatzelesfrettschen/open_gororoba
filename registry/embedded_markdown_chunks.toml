@@ -11929,7 +11929,7 @@ kind = "list_item"
 line_start = 383
 line_end = 383
 heading_level = 0
-text_ascii = "**Implementation**: crates/algebra_core/src/construction/cayley_dickson.rs (tests)"
+text_ascii = "**Implementation**: crates/cd_kernel/src/cayley_dickson.rs (tests)"
 text_sha256 = "2d7771227a450ba8e3aee26fd3a65d5ff2e2e1cb68e780d429ef2fbe927d56cc"
 
 [[chunk]]
@@ -14822,7 +14822,7 @@ kind = "table_row"
 line_start = 48
 line_end = 48
 heading_level = 0
-text_ascii = "C-002 | 16D sedenions have zero divisors and lose norm composition. | `docs/THE_GEMINI_PROTOCOL.md`, `crates/algebra_core/src/cayley_dickson.rs` | **Verified** (math) | 2026-01-28 | `tests/test_cayley_dickson_properties.py` includes an explicit zero divisor and verifies norm-composition failure; cite de Marrais/Baez for background."
+text_ascii = "C-002 | 16D sedenions have zero divisors and lose norm composition. | `docs/THE_GEMINI_PROTOCOL.md`, `crates/cd_kernel/src/cayley_dickson.rs` | **Verified** (math) | 2026-01-28 | `tests/test_cayley_dickson_properties.py` includes an explicit zero divisor and verifies norm-composition failure; cite de Marrais/Baez for background."
 text_sha256 = "8e6e290a8deb5ae2a787cdf4adb553bf6fdc2c58b0d15b5a0c55c79f088e3cc9"
 
 [[chunk]]
@@ -14921,7 +14921,7 @@ kind = "table_row"
 line_start = 57
 line_end = 57
 heading_level = 0
-text_ascii = "C-004 | The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs. | `docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/group_theory.rs`, `crates/algebra_core/src/boxkites.rs`, `tests/test_psl_2_7_action.py`, `tests/test_boxkite_symmetry_action.py` | **Verified** (count + in-repo action on box-kites) | 2026-01-28 | Verified: GL(3,2) (order 168, isomorphic to PSL(2,7)) acts on Fano-plane points and induces a deterministic permutation of CD indices that maps each computed box-kite to another computed box-kite, preserving assessor sets and edge sets. This validates a concrete \"governs\" meaning: it acts by symmetries on the box-kite family produced by this repo's CD convention."
+text_ascii = "C-004 | The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs. | `docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/group_theory.rs`, `crates/algebra_analysis/src/boxkites.rs`, `tests/test_psl_2_7_action.py`, `tests/test_boxkite_symmetry_action.py` | **Verified** (count + in-repo action on box-kites) | 2026-01-28 | Verified: GL(3,2) (order 168, isomorphic to PSL(2,7)) acts on Fano-plane points and induces a deterministic permutation of CD indices that maps each computed box-kite to another computed box-kite, preserving assessor sets and edge sets. This validates a concrete \"governs\" meaning: it acts by symmetries on the box-kite family produced by this repo's CD convention."
 text_sha256 = "117f048a229991f06b581e34ec03c778fc700045fdc700c8e4131774c1c497cc"
 
 [[chunk]]
@@ -15053,7 +15053,7 @@ kind = "table_row"
 line_start = 69
 line_end = 69
 heading_level = 0
-text_ascii = "C-023 | Projective Lie Algebra Fibers explain policy convergence; CD associator as fiber connection/holonomy. | `docs/theory/unified_tensor_wheel_cd_framework.md`, `crates/algebra_core/src/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py` | **Modeled** (Toy; Phase 4B holonomy analysis) | 2026-01-30 | `crates/algebra_core/src/homotopy_algebra.rs` simulates fiber rotation under base flow. Phase 4B extends: `crates/algebra_core/src/grassmannian.rs` interprets the CD associator A(a,b,c) = (a*b)*c - a*(b*c) as a fiber connection, computing holonomy around ZD-adjacent triples vs generic triples. Key finding: ZD-adjacent triples show significantly different associator statistics (p < 1e-7 by permutation test) from random triples, confirming that ZD adjacency has measurable geometric content. Tests: `tests/test_cd_holonomy.py` (20 tests)."
+text_ascii = "C-023 | Projective Lie Algebra Fibers explain policy convergence; CD associator as fiber connection/holonomy. | `docs/theory/unified_tensor_wheel_cd_framework.md`, `crates/algebra_analysis/src/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py` | **Modeled** (Toy; Phase 4B holonomy analysis) | 2026-01-30 | `crates/algebra_analysis/src/homotopy_algebra.rs` simulates fiber rotation under base flow. Phase 4B extends: `crates/algebra_analysis/src/grassmannian.rs` interprets the CD associator A(a,b,c) = (a*b)*c - a*(b*c) as a fiber connection, computing holonomy around ZD-adjacent triples vs generic triples. Key finding: ZD-adjacent triples show significantly different associator statistics (p < 1e-7 by permutation test) from random triples, confirming that ZD adjacency has measurable geometric content. Tests: `tests/test_cd_holonomy.py` (20 tests)."
 text_sha256 = "5f2b35a505d24c30ae9b1f46adb8ce8fe754f65aa706cd10bbcc915d4a0954cb"
 
 [[chunk]]
@@ -15075,7 +15075,7 @@ kind = "table_row"
 line_start = 71
 line_end = 71
 heading_level = 0
-text_ascii = "C-025 | GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection). | `docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `crates/algebra_core/src/boxkites.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py`, `docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md` | **Refuted** (/ Not Supported (Phase 5)) | 2026-01-31 | Pre-registered Monte Carlo test (`src/scripts/analysis/verify_tscp_alignment.py`) executed on 35 GWTC-3 events. Observed mean min-distance: 21.26 deg. Z-score vs isotropy: -1.04 (slight alignment). P-value: 0.152. H0 (isotropy) NOT REJECTED at alpha=0.01. Evidence: `data/csv/tscp_alignment_results.csv`."
+text_ascii = "C-025 | GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection). | `docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `crates/algebra_analysis/src/boxkites.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py`, `docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md` | **Refuted** (/ Not Supported (Phase 5)) | 2026-01-31 | Pre-registered Monte Carlo test (`src/scripts/analysis/verify_tscp_alignment.py`) executed on 35 GWTC-3 events. Observed mean min-distance: 21.26 deg. Z-score vs isotropy: -1.04 (slight alignment). P-value: 0.152. H0 (isotropy) NOT REJECTED at alpha=0.01. Evidence: `data/csv/tscp_alignment_results.csv`."
 text_sha256 = "4ea68abfb95e6c0e7e40c584a2d636f5cc5ad580db886f6aa6c7d639661f3ba6"
 
 [[chunk]]
@@ -15097,7 +15097,7 @@ kind = "table_row"
 line_start = 73
 line_end = 73
 heading_level = 0
-text_ascii = "C-027 | Gravitational collapse is a phase transition in effective dimension D_eff, with D_eff = 3 - k*log10(rho/rho_vac), crossing D_eff < 0 at the event horizon. | `docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md`, `crates/algebra_core/src/grassmannian.rs`, `docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md` | **Speculative** (toy model) | 2026-01-30 | The D_eff formula is a toy parameterization with no first-principles derivation. Overlaps C-012 (w(D) coupling). Would require: (1) derivation of k from CD algebraic structure, (2) comparison against horizon formation simulations, (3) falsifiable prediction distinct from GR."
+text_ascii = "C-027 | Gravitational collapse is a phase transition in effective dimension D_eff, with D_eff = 3 - k*log10(rho/rho_vac), crossing D_eff < 0 at the event horizon. | `docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md`, `crates/algebra_analysis/src/grassmannian.rs`, `docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md` | **Speculative** (toy model) | 2026-01-30 | The D_eff formula is a toy parameterization with no first-principles derivation. Overlaps C-012 (w(D) coupling). Would require: (1) derivation of k from CD algebraic structure, (2) comparison against horizon formation simulations, (3) falsifiable prediction distinct from GR."
 text_sha256 = "06aa0c29866a402d0a63f361cdddb0a8fa9df0eac3de1b3187395fdd5ab7f6a3"
 
 [[chunk]]
@@ -15350,7 +15350,7 @@ kind = "table_row"
 line_start = 102
 line_end = 102
 heading_level = 0
-text_ascii = "C-043 | \"Compact Object\" populations (Pulsars, Magnetars, FRBs) can be integrated into the unified framework for multi-messenger testing. | `docs/ROADMAP_DETAILED.md` | **Speculative** (Integrated (Data fetched)) | 2026-01-31 | `src/scripts/data/fetch_compact_objects.py` successfully creates curated catalogs in `data/external/`. See also C-062 (CHIME FRB), C-063 (ATNF pulsars + McGill magnetars), C-064 (Fermi GRBs). ZD cosmic predictor (`crates/algebra_core/src/zd_graphs.rs`) provides the sky-projection scoring pipeline."
+text_ascii = "C-043 | \"Compact Object\" populations (Pulsars, Magnetars, FRBs) can be integrated into the unified framework for multi-messenger testing. | `docs/ROADMAP_DETAILED.md` | **Speculative** (Integrated (Data fetched)) | 2026-01-31 | `src/scripts/data/fetch_compact_objects.py` successfully creates curated catalogs in `data/external/`. See also C-062 (CHIME FRB), C-063 (ATNF pulsars + McGill magnetars), C-064 (Fermi GRBs). ZD cosmic predictor (`crates/algebra_analysis/src/zd_graphs.rs`) provides the sky-projection scoring pipeline."
 text_sha256 = "c9248ffdd0b16223d290db56727292531b107650f27a1fa175779269a4a7fe37"
 
 [[chunk]]
@@ -16505,7 +16505,7 @@ kind = "paragraph"
 line_start = 245
 line_end = 247
 heading_level = 0
-text_ascii = "and GWTC-3 sky localizations (C-060, 64 events). Multi-probe joint analysis (C-056--C-058) provides cosmological context. ZD cosmic predictor (`crates/algebra_core/src/zd_graphs.rs`) enables sky-matching against predicted ZD positions."
+text_ascii = "and GWTC-3 sky localizations (C-060, 64 events). Multi-probe joint analysis (C-056--C-058) provides cosmological context. ZD cosmic predictor (`crates/algebra_analysis/src/zd_graphs.rs`) enables sky-matching against predicted ZD positions."
 text_sha256 = "fc2939be9dd734200bb323f730e3dfea9e5ee965d1eae6ac145d90405ff8fb9e"
 
 [[chunk]]
@@ -18562,7 +18562,7 @@ kind = "list_item"
 line_start = 522
 line_end = 522
 heading_level = 0
-text_ascii = "**Required evidence**: `crates/algebra_core/src/homotopy_algebra.rs`,"
+text_ascii = "**Required evidence**: `crates/algebra_analysis/src/homotopy_algebra.rs`,"
 text_sha256 = "c5f7a7361633b646e5b380907d4f1b9bf7f11a4eb0660a5e49a664371419a2d0"
 
 [[chunk]]
@@ -18573,7 +18573,7 @@ kind = "paragraph"
 line_start = 523
 line_end = 524
 heading_level = 0
-text_ascii = "`crates/algebra_core/src/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py`."
+text_ascii = "`crates/algebra_analysis/src/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py`."
 text_sha256 = "9a61eddea41d15b6d4c57fa8668a0909e158063738ae151177b7dc48da61cc48"
 
 [[chunk]]
@@ -18804,7 +18804,7 @@ kind = "list_item"
 line_start = 559
 line_end = 559
 heading_level = 0
-text_ascii = "`crates/algebra_core/src/boxkites.rs` (CMB-aligned projection)"
+text_ascii = "`crates/algebra_analysis/src/boxkites.rs` (CMB-aligned projection)"
 text_sha256 = "d0c05a9a165567e2b8258094356bc12f8f202bdcb4e815d2ef8219a5ca942b91"
 
 [[chunk]]
@@ -19002,7 +19002,7 @@ kind = "paragraph"
 line_start = 583
 line_end = 585
 heading_level = 0
-text_ascii = "(`crates/algebra_core/src/zd_graphs.rs`) provides generic sky-projection and distance-prediction pipeline. Can score against GWTC-3 (C-060), O4 events (C-061), CHIME FRBs (C-062), and pulsars/magnetars (C-063) once PE sky positions are available."
+text_ascii = "(`crates/algebra_analysis/src/zd_graphs.rs`) provides generic sky-projection and distance-prediction pipeline. Can score against GWTC-3 (C-060), O4 events (C-061), CHIME FRBs (C-062), and pulsars/magnetars (C-063) once PE sky positions are available."
 text_sha256 = "f0c21392018c9b176a57151cc4bdd33b8e11c840214c7de269ff8c5eb8615742"
 
 [[chunk]]
@@ -19233,7 +19233,7 @@ kind = "list_item"
 line_start = 617
 line_end = 617
 heading_level = 0
-text_ascii = "`crates/algebra_core/src/grassmannian.rs` (D_eff computation)"
+text_ascii = "`crates/algebra_analysis/src/grassmannian.rs` (D_eff computation)"
 text_sha256 = "f363d2748fc9bee33605f18094ecaed5bc54489960708a835912c38f0e5a7785"
 
 [[chunk]]
@@ -41222,7 +41222,7 @@ kind = "list_item"
 line_start = 145
 line_end = 145
 heading_level = 0
-text_ascii = "`crates/algebra_core/src/boxkites.rs`: `cross_assessors()`, `diagonal_zero_products_exact()`, `MotifComponent`, `motif_components_for_cross_assessors()`."
+text_ascii = "`crates/algebra_analysis/src/boxkites.rs`: `cross_assessors()`, `diagonal_zero_products_exact()`, `MotifComponent`, `motif_components_for_cross_assessors()`."
 text_sha256 = "4073cdf127d8e710146b95cf83ef981f412a39ffd335db44df9819df948938d3"
 
 [[chunk]]
@@ -60516,7 +60516,7 @@ kind = "list_item"
 line_start = 60
 line_end = 60
 heading_level = 0
-text_ascii = "**Logic**: Implemented predicate cuts in `algebra_core::analysis::codebook`."
+text_ascii = "**Logic**: Implemented predicate cuts in `algebra_analysis::codebook`."
 text_sha256 = "ffdf260bf606c65d9015f51937f8e61b173677606fe0a2c08488f7fee9039a2f"
 
 [[chunk]]
@@ -60527,7 +60527,7 @@ kind = "list_item"
 line_start = 61
 line_end = 61
 heading_level = 0
-text_ascii = "**Graphs**: Implemented generators in `algebra_core::analysis::graph_projections`."
+text_ascii = "**Graphs**: Implemented generators in `algebra_analysis::graph_projections`."
 text_sha256 = "717500499edb84c55a7d8a50c422bddb1cae2f24c4673787627bb0dc722ad5b2"
 
 [[chunk]]
@@ -60692,7 +60692,7 @@ kind = "paragraph"
 line_start = 32
 line_end = 32
 heading_level = 0
-text_ascii = "**File:** `crates/algebra_core/src/cayley_dickson.rs:31-67`"
+text_ascii = "**File:** `crates/cd_kernel/src/cayley_dickson.rs:31-67`"
 text_sha256 = "69fe332ff49458e7b63e8b4f0fe04abd3f36474e3235723d1f727956ca2a623c"
 
 [[chunk]]
@@ -60780,7 +60780,7 @@ kind = "paragraph"
 line_start = 50
 line_end = 50
 heading_level = 0
-text_ascii = "**File:** `crates/algebra_core/src/cayley_dickson.rs:266-289`"
+text_ascii = "**File:** `crates/cd_kernel/src/cayley_dickson.rs:266-289`"
 text_sha256 = "bfaeea26ee3bf558f65973a748ca55cb14b122b076c0d2b3b0b8cd5bb58ee1ba"
 
 [[chunk]]
@@ -61616,7 +61616,7 @@ kind = "paragraph"
 line_start = 186
 line_end = 186
 heading_level = 0
-text_ascii = "**File:** `crates/algebra_core/src/cayley_dickson.rs:69-73`"
+text_ascii = "**File:** `crates/cd_kernel/src/cayley_dickson.rs:69-73`"
 text_sha256 = "298d714b56f70ced3f4b2c8c8d6e3d391e7ac35e3bf8f26798181dd5a30f4747"
 
 [[chunk]]
@@ -61891,7 +61891,7 @@ kind = "paragraph"
 line_start = 253
 line_end = 253
 heading_level = 0
-text_ascii = "**File:** `crates/algebra_core/src/construction/cayley_dickson.rs` (Layer 2 tests)"
+text_ascii = "**File:** `crates/cd_kernel/src/cayley_dickson.rs` (Layer 2 tests)"
 text_sha256 = "1b31075580125097cc496e96c1f49e1bf364d1f39b8a3bb15c96fa6379a08c29"
 
 [[chunk]]
@@ -73155,7 +73155,7 @@ kind = "list_item"
 line_start = 197
 line_end = 197
 heading_level = 0
-text_ascii = "Test source: `crates/algebra_core/src/construction/cayley_dickson.rs`"
+text_ascii = "Test source: `crates/cd_kernel/src/cayley_dickson.rs`"
 text_sha256 = "62191cf7f2fa15fdaf17b5aea5e7e8322796aa9ebbb1d33b74fd8cd4c5552917"
 
 [[chunk]]
@@ -73166,7 +73166,7 @@ kind = "list_item"
 line_start = 198
 line_end = 198
 heading_level = 0
-text_ascii = "Lattice codebook: `crates/algebra_core/src/analysis/codebook.rs`"
+text_ascii = "Lattice codebook: `crates/algebra_analysis/src/codebook.rs`"
 text_sha256 = "750b191a579f8e293e543cc9bbb165a11f0378e9947f10c6a3bf2a11c2f3a07f"
 
 [[chunk]]
@@ -87026,7 +87026,7 @@ kind = "list_item"
 line_start = 78
 line_end = 78
 heading_level = 0
-text_ascii = "[x] Add tests for associativity and norm composition behavior (Rust: `crates/algebra_core/src/cayley_dickson.rs`)."
+text_ascii = "[x] Add tests for associativity and norm composition behavior (Rust: `crates/cd_kernel/src/cayley_dickson.rs`)."
 text_sha256 = "66d6517eceb8fd59d29b52b03d82c5b4536daa86f3f8234f7dd410c9454011f0"
 
 [[chunk]]
@@ -91206,7 +91206,7 @@ kind = "paragraph"
 line_start = 26
 line_end = 26
 heading_level = 0
-text_ascii = "Implementation: `crates/algebra_core/src/experimental/emanation.rs` (4400 lines, 113 tests)."
+text_ascii = "Implementation: `crates/algebra_experimental/src/emanation.rs` (4400 lines, 113 tests)."
 text_sha256 = "652774ea9bc304c9690caa6e122783f2ecf3137386e39037a8bf59ed27c01e01"
 
 [[chunk]]
@@ -91393,7 +91393,7 @@ kind = "list_item"
 line_start = 24
 line_end = 24
 heading_level = 0
-text_ascii = "Source: `crates/algebra_core/src/experimental/emanation.rs`"
+text_ascii = "Source: `crates/algebra_experimental/src/emanation.rs`"
 text_sha256 = "e8170625e754fafc845afe8db626db86e20a9c93bb6728efbeac6706db674986"
 
 [[chunk]]
@@ -91712,7 +91712,7 @@ kind = "paragraph"
 line_start = 37
 line_end = 38
 heading_level = 0
-text_ascii = "Implementation: `crates/algebra_core/src/boxkites.rs` (16 regression tests covering dim=64,128,256)."
+text_ascii = "Implementation: `crates/algebra_analysis/src/boxkites.rs` (16 regression tests covering dim=64,128,256)."
 text_sha256 = "69db18584a312a2976aa2c39512eebf192a7c1c45d56109ab785adc793c55bb5"
 
 [[chunk]]
@@ -91811,7 +91811,7 @@ kind = "paragraph"
 line_start = 14
 line_end = 16
 heading_level = 0
-text_ascii = "The census is computed using integer-exact arithmetic to avoid floating-point error entirely. The implementation lives in `crates/algebra_core/src/boxkites.rs`."
+text_ascii = "The census is computed using integer-exact arithmetic to avoid floating-point error entirely. The implementation lives in `crates/algebra_analysis/src/boxkites.rs`."
 text_sha256 = "cebeec0cf81c005e3ac0585fed3973fa75fa9a9648c24dea7c7c5948f33e358f"
 
 [[chunk]]

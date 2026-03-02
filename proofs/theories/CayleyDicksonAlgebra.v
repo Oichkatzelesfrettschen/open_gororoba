@@ -8,7 +8,7 @@
     These hold at EVERY Cayley-Dickson level (R, C, H, O, S, ...),
     though we formalize only dims 2 and 4 for extraction efficiency.
 
-    Mirrors: algebra_core/src/construction/cayley_dickson.rs *)
+    Mirrors: cd_kernel/src/cayley_dickson.rs *)
 
 From OpenGororoba Require Import Prelude.
 

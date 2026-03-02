@@ -393,8 +393,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "PSL(2,7) action: construct explicit 168-element action and show it permutes the 7 box-kites as subgraphs."
-output_artifacts = ["docs/external_sources/PSL_2_7_SOURCES.md", "crates/algebra_core/src/group_theory.rs", "crates/algebra_core/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py"]
-output_artifacts_raw = "`docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/group_theory.rs`, `crates/algebra_core/src/boxkites.rs`, `tests/test_psl_2_7_action.py`, `tests/test_boxkite_symmetry_action.py`"
+output_artifacts = ["docs/external_sources/PSL_2_7_SOURCES.md", "crates/algebra_core/src/group_theory.rs", "crates/algebra_analysis/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py"]
+output_artifacts_raw = "`docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/group_theory.rs`, `crates/algebra_analysis/src/boxkites.rs`, `tests/test_psl_2_7_action.py`, `tests/test_boxkite_symmetry_action.py`"
 source_line = 38
 
 [[task]]
@@ -573,8 +573,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "CLOSED/TOY: Basis-vector holonomy model; compares associator norms across CD levels and finds statistical signal (p~9.4e-8) between ZD-adjacent vs generic triples. \"Holonomy\" label is metaphorical, not geometric."
-output_artifacts = ["crates/algebra_core/src/grassmannian.rs", "data/csv/cd_fiber_holonomy_comparison.csv", "tests/test_cd_holonomy.py"]
-output_artifacts_raw = "`crates/algebra_core/src/grassmannian.rs`, `data/csv/cd_fiber_holonomy_comparison.csv`, `tests/test_cd_holonomy.py`"
+output_artifacts = ["crates/algebra_analysis/src/grassmannian.rs", "data/csv/cd_fiber_holonomy_comparison.csv", "tests/test_cd_holonomy.py"]
+output_artifacts_raw = "`crates/algebra_analysis/src/grassmannian.rs`, `data/csv/cd_fiber_holonomy_comparison.csv`, `tests/test_cd_holonomy.py`"
 source_line = 50
 
 [[task]]

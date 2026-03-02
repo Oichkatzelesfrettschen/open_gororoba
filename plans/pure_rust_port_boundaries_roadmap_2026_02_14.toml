@@ -279,7 +279,7 @@ path = "crates/sign_imbalance/src/bridge.rs"
 exists = true
 
 [[path_check]]
-path = "crates/algebra_core/src/construction/cayley_dickson.rs"
+path = "crates/cd_kernel/src/cayley_dickson.rs"
 exists = true
 
 [[path_check]]

@@ -85,7 +85,7 @@ informal = "doubling formula"
 standard = "Cayley-Dickson construction"
 definition = "Recursive formula generating composition algebras of dimension 2^n. Defines multiplication on successive algebras via sedenion basis multiplication sign function psi(a,b)."
 mathematical = "Dim 2^n from Dim 2^(n-1) via (x_1, x_2) * (y_1, y_2) = (x_1y_1 - y_2*x_2*, x_2x_1* + y_1x_2)"
-reference = "algebra_core/src/construction/cayley_dickson.rs"
+reference = "cd_kernel/src/cayley_dickson.rs"
 status = "active"
 
 [[term]]
@@ -104,7 +104,7 @@ informal = "non-invertible elements"
 standard = "zero divisor"
 definition = "Element a != 0 such that \u2203b != 0 with ab = 0. Signals non-division algebra structure."
 mathematical = "a in D, a != 0 \u2227 \u2203b != 0: ab = 0"
-reference = "algebra_core/src/analysis/zero_divisor.rs"
+reference = "algebra_analysis/src/zero_divisor.rs"
 status = "active"
 
 [[term]]

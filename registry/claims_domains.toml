@@ -2873,7 +2873,7 @@ status_token = "VERIFIED"
 status_text = "Verified (math)"
 status_date = "2026-02-02"
 summary = "\"42 assessors\" / \"7 box-kites\" organize primitive sedenion zero divisors."
-where_stated = ["docs/SEDENION_ATLAS.md", "crates/algebra_core/src/boxkites.rs", "tests/test_de_marrais_boxkites.py", "docs/external_sources/DE_MARRAIS_SOURCES.md"]
+where_stated = ["docs/SEDENION_ATLAS.md", "crates/algebra_analysis/src/boxkites.rs", "tests/test_de_marrais_boxkites.py", "docs/external_sources/DE_MARRAIS_SOURCES.md"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 14
 
@@ -2884,7 +2884,7 @@ status_token = "VERIFIED"
 status_text = "Verified (count + in-repo action on box-kites)"
 status_date = "2026-01-28"
 summary = "The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs."
-where_stated = ["docs/SEDENION_ATLAS.md", "docs/external_sources/PSL_2_7_SOURCES.md", "crates/algebra_core/src/group_theory.rs", "crates/algebra_core/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py"]
+where_stated = ["docs/SEDENION_ATLAS.md", "docs/external_sources/PSL_2_7_SOURCES.md", "crates/algebra_core/src/group_theory.rs", "crates/algebra_analysis/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 17
 
@@ -2917,7 +2917,7 @@ status_token = "VERIFIED"
 status_text = "Verified (math)"
 status_date = "2026-01-28"
 summary = "de Marrais' GoTo \"automorphemes\" (from the 7 O-trips + the \"8-ball\" exclude rule) cover the 42 primitive assessors exactly twice; each assessor lies in exactly two automorphemes (Production Rule #3 uniqueness)."
-where_stated = ["docs/DE_MARRAIS_REPLICATION.md", "crates/algebra_core/src/boxkites.rs"]
+where_stated = ["docs/DE_MARRAIS_REPLICATION.md", "crates/algebra_analysis/src/boxkites.rs"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 26
 
@@ -2928,7 +2928,7 @@ status_token = "VERIFIED"
 status_text = "Verified (math)"
 status_date = "2026-01-28"
 summary = "The diagonal-form family of 84 sedenion zero divisors `(e_low +/- e_high)` (from de Marrais' 42 primitive assessors) has left and right annihilator dimension 4 (so the annihilator unit sphere is S^3 ~ SU(2))."
-where_stated = ["docs/REGGIANI_REPLICATION.md", "crates/algebra_core/src/reggiani.rs"]
+where_stated = ["docs/REGGIANI_REPLICATION.md", "crates/algebra_analysis/src/reggiani.rs"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 29
 
@@ -2939,7 +2939,7 @@ status_token = "VERIFIED"
 status_text = "Verified (math)"
 status_date = "2026-01-28"
 summary = "For each of the 84 diagonal-form zero divisors `u`, there are exactly 4 other diagonal-form zero divisors `v` with `u*v=0`, and these 4 span `Ann_L(u)`."
-where_stated = ["docs/REGGIANI_REPLICATION.md", "crates/algebra_core/src/reggiani.rs"]
+where_stated = ["docs/REGGIANI_REPLICATION.md", "crates/algebra_analysis/src/reggiani.rs"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 32
 
@@ -2994,7 +2994,7 @@ status_token = "MODELED"
 status_text = "Modeled (Toy; Phase 4B holonomy analysis)"
 status_date = "2026-02-02"
 summary = "Toy model: interpret the CD associator as a discrete connection/holonomy signal over triples."
-where_stated = ["docs/theory/unified_tensor_wheel_cd_framework.md", "crates/algebra_core/src/grassmannian.rs", "src/scripts/analysis/cd_fiber_holonomy_analysis.py", "data/csv/cd_holonomy_basis_triples.csv", "data/csv/cd_fiber_holonomy_comparison.csv", "tests/test_cd_holonomy.py"]
+where_stated = ["docs/theory/unified_tensor_wheel_cd_framework.md", "crates/algebra_analysis/src/grassmannian.rs", "src/scripts/analysis/cd_fiber_holonomy_analysis.py", "data/csv/cd_holonomy_basis_triples.csv", "data/csv/cd_fiber_holonomy_comparison.csv", "tests/test_cd_holonomy.py"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 47
 
@@ -3577,7 +3577,7 @@ status_token = "VERIFIED"
 status_text = "Verified (exhaustive enumeration)"
 status_date = "2026-02-06"
 summary = "Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2]."
-where_stated = ["crates/algebra_core/src/boxkites.rs", "docs/INSIGHTS.md"]
+where_stated = ["crates/algebra_analysis/src/boxkites.rs", "docs/INSIGHTS.md"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 206
 
@@ -4171,7 +4171,7 @@ status_token = "REFUTED"
 status_text = "Refuted (Phase 5)"
 status_date = "2026-01-31"
 summary = "GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection)."
-where_stated = ["docs/stellar_cartography/theory/HYPOTHESIS_DEF.md", "crates/algebra_core/src/boxkites.rs", "crates/stats_core/src/claims_gates.rs", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_alignment_offline.py", "docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md"]
+where_stated = ["docs/stellar_cartography/theory/HYPOTHESIS_DEF.md", "crates/algebra_analysis/src/boxkites.rs", "crates/stats_core/src/claims_gates.rs", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_alignment_offline.py", "docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md"]
 source_markdown = "docs/claims/by_domain/gravitational-waves.md"
 source_line = 14
 
@@ -4292,7 +4292,7 @@ status_token = "REFUTED"
 status_text = "Refuted (Phase 5)"
 status_date = "2026-01-31"
 summary = "GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection)."
-where_stated = ["docs/stellar_cartography/theory/HYPOTHESIS_DEF.md", "crates/algebra_core/src/boxkites.rs", "crates/stats_core/src/claims_gates.rs", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_alignment_offline.py", "docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md"]
+where_stated = ["docs/stellar_cartography/theory/HYPOTHESIS_DEF.md", "crates/algebra_analysis/src/boxkites.rs", "crates/stats_core/src/claims_gates.rs", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_alignment_offline.py", "docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md"]
 source_markdown = "docs/claims/by_domain/holography.md"
 source_line = 26
 
@@ -4314,7 +4314,7 @@ status_token = "VERIFIED"
 status_text = "Verified (Toy Model; decision rule implemented)"
 status_date = "2026-02-03"
 summary = "Toy model: define D_eff(rho) = 3 - k*log10(rho/rho_vac). With rho_h(M) = M/((4/3)*pi*r_s^3) at r_s = 2GM/c^2 (average density inside Schwarzschild radius), D_eff(rho_h(M)) crosses 0 at a critical mass M_crit (horizon \"phase transition\" proxy)."
-where_stated = ["docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md", "crates/algebra_core/src/grassmannian.rs", "crates/stats_core/src/claims_gates.rs", "docs/C027_DEFF_HORIZON_TEST.md", "src/scripts/analysis/deff_horizon_mass_scaling.py", "data/csv/deff_horizon_mass_scaling_summary.csv", "tests/test_c027_deff_horizon_mass_scaling.py", "docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md"]
+where_stated = ["docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md", "crates/algebra_analysis/src/grassmannian.rs", "crates/stats_core/src/claims_gates.rs", "docs/C027_DEFF_HORIZON_TEST.md", "src/scripts/analysis/deff_horizon_mass_scaling.py", "data/csv/deff_horizon_mass_scaling_summary.csv", "tests/test_c027_deff_horizon_mass_scaling.py", "docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md"]
 source_markdown = "docs/claims/by_domain/holography.md"
 source_line = 32
 
@@ -5502,7 +5502,7 @@ status_token = "PARTIALLY_VERIFIED"
 status_text = "Partially verified (method)"
 status_date = "2026-02-02"
 summary = "TSCP/box-kite sky mapping must be invariant under the relevant algebraic symmetries (or else explicitly enumerate tested embeddings) to avoid \"picked the embedding that worked\"."
-where_stated = ["docs/convos/CONVOS_CLAIMS_INBOX.md", "docs/external_sources/TSCP_METHOD_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "crates/algebra_core/src/boxkites.rs", "tests/test_tscp_alignment_offline.py", "tests/test_tscp_embedding_sweep.py"]
+where_stated = ["docs/convos/CONVOS_CLAIMS_INBOX.md", "docs/external_sources/TSCP_METHOD_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "crates/algebra_analysis/src/boxkites.rs", "tests/test_tscp_alignment_offline.py", "tests/test_tscp_embedding_sweep.py"]
 source_markdown = "docs/claims/by_domain/holography.md"
 source_line = 356
 
@@ -5986,7 +5986,7 @@ status_token = "VERIFIED"
 status_text = "Verified (math)"
 status_date = "2026-01-28"
 summary = "For diagonal 2-blades `(e_i +/- e_j)` in 16D CD, any observed zero product between two 2-blades satisfies the XOR-bucket necessary condition `(i^j) == (k^ell)`."
-where_stated = ["docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "crates/algebra_core/src/zd_graphs.rs"]
+where_stated = ["docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "crates/algebra_analysis/src/zd_graphs.rs"]
 source_markdown = "docs/claims/by_domain/meta.md"
 source_line = 8
 
@@ -8505,7 +8505,7 @@ status_token = "REFUTED"
 status_text = "Refuted (Phase 5)"
 status_date = "2026-01-31"
 summary = "GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection)."
-where_stated = ["docs/stellar_cartography/theory/HYPOTHESIS_DEF.md", "crates/algebra_core/src/boxkites.rs", "crates/stats_core/src/claims_gates.rs", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_alignment_offline.py", "docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md"]
+where_stated = ["docs/stellar_cartography/theory/HYPOTHESIS_DEF.md", "crates/algebra_analysis/src/boxkites.rs", "crates/stats_core/src/claims_gates.rs", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_alignment_offline.py", "docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md"]
 source_markdown = "docs/claims/by_domain/stellar-cartography.md"
 source_line = 8
 
@@ -8538,7 +8538,7 @@ status_token = "PARTIALLY_VERIFIED"
 status_text = "Partially verified (method)"
 status_date = "2026-02-02"
 summary = "TSCP/box-kite sky mapping must be invariant under the relevant algebraic symmetries (or else explicitly enumerate tested embeddings) to avoid \"picked the embedding that worked\"."
-where_stated = ["docs/convos/CONVOS_CLAIMS_INBOX.md", "docs/external_sources/TSCP_METHOD_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "crates/algebra_core/src/boxkites.rs", "tests/test_tscp_alignment_offline.py", "tests/test_tscp_embedding_sweep.py"]
+where_stated = ["docs/convos/CONVOS_CLAIMS_INBOX.md", "docs/external_sources/TSCP_METHOD_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "crates/algebra_analysis/src/boxkites.rs", "tests/test_tscp_alignment_offline.py", "tests/test_tscp_embedding_sweep.py"]
 source_markdown = "docs/claims/by_domain/stellar-cartography.md"
 source_line = 17
 
@@ -8637,7 +8637,7 @@ status_token = "PARTIALLY_VERIFIED"
 status_text = "Partially verified (method)"
 status_date = "2026-02-02"
 summary = "TSCP/box-kite sky mapping must be invariant under the relevant algebraic symmetries (or else explicitly enumerate tested embeddings) to avoid \"picked the embedding that worked\"."
-where_stated = ["docs/convos/CONVOS_CLAIMS_INBOX.md", "docs/external_sources/TSCP_METHOD_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "crates/algebra_core/src/boxkites.rs", "tests/test_tscp_alignment_offline.py", "tests/test_tscp_embedding_sweep.py"]
+where_stated = ["docs/convos/CONVOS_CLAIMS_INBOX.md", "docs/external_sources/TSCP_METHOD_SOURCES.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "crates/algebra_analysis/src/boxkites.rs", "tests/test_tscp_alignment_offline.py", "tests/test_tscp_embedding_sweep.py"]
 source_markdown = "docs/claims/by_domain/tensor-networks.md"
 source_line = 14
 

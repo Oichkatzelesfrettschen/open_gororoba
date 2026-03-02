@@ -74,7 +74,7 @@ Remaining open items are forward-looking research (Sections B partial, C, D, F, 
 
 ## E. Algebra Engine (Sedenions and Beyond)
 
-- [x] Add tests for associativity and norm composition behavior (Rust: `crates/algebra_core/src/cayley_dickson.rs`).
+- [x] Add tests for associativity and norm composition behavior (Rust: `crates/cd_kernel/src/cayley_dickson.rs`).
 - [x] Replace random search with explicit constructions: Reggiani standard ZDs (84 count), annihilator SVD, M3 classification (Rust: `annihilator.rs`, `reggiani.rs`, `m3.rs`).
 - [x] Motif census at dim=16 and dim=32 with graph component analysis (Rust: `boxkites.rs`).
 - [ ] Add a fast basis-element multiplication table generator (for 16D and 32D) with cache + checksum.

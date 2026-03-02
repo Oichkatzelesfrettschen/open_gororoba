@@ -12,7 +12,7 @@
 
     Therefore the minimum separating degree is exactly 3.
 
-    Data source: algebra_core::analysis::projective_geometry test
+    Data source: algebra_analysis::projective_geometry test
     test_determine_exact_degree_dim32 (labels and classes extracted
     at runtime and hardcoded here for kernel-level verification).
 
