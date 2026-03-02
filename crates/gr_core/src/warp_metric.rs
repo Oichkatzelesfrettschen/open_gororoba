@@ -450,8 +450,10 @@ mod tests {
 
     #[test]
     fn test_modulation_alcubierre_limit() {
-        let mut params = NacelleWarpParams::default();
-        params.n_nacelles = 0;
+        let params = NacelleWarpParams {
+            n_nacelles: 0,
+            ..NacelleWarpParams::default()
+        };
         let m = modulation(5.0, 0.0, &params);
         assert!(
             (m - 1.0).abs() < TOL,
@@ -476,12 +478,8 @@ mod tests {
     fn test_shift_zero_far_field() {
         let params = NacelleWarpParams::default();
         let beta = shift_vector(0.0, 100.0, 100.0, 100.0, &params);
-        for i in 0..3 {
-            assert!(
-                beta[i].abs() < 0.01,
-                "far-field beta[{i}] = {}",
-                beta[i]
-            );
+        for (i, &b) in beta.iter().enumerate() {
+            assert!(b.abs() < 0.01, "far-field beta[{i}] = {}", b);
         }
     }
 
@@ -607,6 +605,7 @@ mod tests {
     // -- Metric symmetry --
 
     #[test]
+    #[allow(clippy::needless_range_loop)] // 2D metric tensor symmetry check g[mu][nu] == g[nu][mu]
     fn test_metric_symmetric() {
         let params = NacelleWarpParams::default();
         let warp = NacelleWarpBubble::new(params);

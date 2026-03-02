@@ -222,7 +222,7 @@ mod tests {
         let (theta, _err) = theta_sigma_average(&plates, center, 0.5, 500, 100, 42);
         // We just check it's in [0, 1] and not identically zero
         assert!(
-            theta >= 0.0 && theta <= 1.0,
+            (0.0..=1.0).contains(&theta),
             "theta_sigma = {theta}"
         );
     }

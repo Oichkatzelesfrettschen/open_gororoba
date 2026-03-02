@@ -221,6 +221,7 @@ mod tests {
     const TOL: f64 = 1e-12;
 
     #[test]
+    #[allow(clippy::needless_range_loop)] // 2D matrix indexing is clearer with indices
     fn test_identity_inverse() {
         let inv = invert_3x3_symmetric(&SPATIAL_IDENTITY);
         for i in 0..SDIM {
@@ -245,6 +246,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)] // 2D matrix product with triple index i,j,k
     fn test_inverse_round_trip() {
         // A non-diagonal positive-definite metric
         let gamma = [[2.0, 0.5, 0.1], [0.5, 3.0, 0.2], [0.1, 0.2, 4.0]];

@@ -169,11 +169,9 @@ mod tests {
 
         // Check return-to-start: last_point + disp_{0} should give points[0]
         // Equivalently, sum of displacements should be zero
-        let mut disp_sum = [0.0; 3];
-        disp_sum[0] = wl.points[0][0]; // first displacement = points[0] - origin
-        disp_sum[1] = wl.points[0][1];
-        disp_sum[2] = wl.points[0][2];
+        let mut disp_sum = wl.points[0];
         for i in 1..n {
+            #[allow(clippy::needless_range_loop)] // 2D point indexing
             for d in 0..3 {
                 disp_sum[d] += wl.points[i][d] - wl.points[i - 1][d];
             }
@@ -192,11 +190,9 @@ mod tests {
         let wl = generate_unit_loop(n, &mut rng);
 
         // Check that displacements sum to zero
-        let mut disp_sum = [0.0; 3];
-        disp_sum[0] = wl.points[0][0];
-        disp_sum[1] = wl.points[0][1];
-        disp_sum[2] = wl.points[0][2];
+        let mut disp_sum = wl.points[0];
         for i in 1..n {
+            #[allow(clippy::needless_range_loop)] // 2D point indexing
             for d in 0..3 {
                 disp_sum[d] += wl.points[i][d] - wl.points[i - 1][d];
             }
@@ -229,6 +225,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::needless_range_loop)] // 2D point array comparison
     fn test_scaling() {
         let mut rng = ChaCha8Rng::seed_from_u64(99);
         let wl = generate_unit_loop(50, &mut rng);
