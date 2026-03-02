@@ -50,7 +50,6 @@
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run coq latex
-.PHONY: cpp-deps cpp-build cpp-test cpp-bench cpp-clean
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-artifacts clean-all
 
@@ -872,27 +871,6 @@ docker-quantum-shell:
 		-v "$(PWD)/src:/app/src" \
 		qiskit-env /bin/bash
 
-# ---- C++ kernels ----
-
-cpp-deps:
-	@test -f cpp/conanfile.txt -o -f cpp/conanfile.py || { echo "ERROR: missing cpp/conanfile.*"; exit 1; }
-	cd cpp && conan install . --build=missing
-
-cpp-build:
-	@test -f cpp/CMakeLists.txt || { echo "ERROR: missing cpp/CMakeLists.txt"; exit 1; }
-	cmake -S cpp -B cpp/build/Release -DCMAKE_BUILD_TYPE=Release
-	cmake --build cpp/build/Release -j$$(nproc)
-
-cpp-test: cpp-build
-	ctest --test-dir cpp/build/Release --output-on-failure
-
-cpp-bench: cpp-build
-	@command -v ./cpp/build/Release/bench_cd_multiply >/dev/null 2>&1 || { echo "ERROR: bench_cd_multiply not built"; exit 1; }
-	./cpp/build/Release/bench_cd_multiply
-
-cpp-clean:
-	rm -rf cpp/build
-
 # ---- Cleanup ----
 
 clean-artifacts:
@@ -907,6 +885,8 @@ clean:
 	rm -rf src/*.egg-info
 
 clean-all: clean clean-artifacts
+	@command -v cargo-sweep >/dev/null 2>&1 && cargo sweep --time 14 || true
+	@rm -rf /tmp/open_gororoba_*_target 2>/dev/null || true
 	@echo "Full cleanup complete. Run 'make install && make artifacts' to rebuild."
 
 # ---- Help ----
@@ -1012,9 +992,6 @@ help:
 	@echo "    make run                  Run simulations (sedenion, modular, entropy)"
 	@echo "    make coq                  Compile Coq proofs"
 	@echo "    make latex                Build MASTER_SYNTHESIS.pdf"
-	@echo "    make cpp-build            Build optional C++ kernels"
-	@echo "    make cpp-test             Run C++ kernel tests"
-	@echo "    make cpp-bench            Run C++ kernel benchmarks"
 	@echo "    make docker-quantum-build Build qiskit-env Docker image"
 	@echo "    make docker-quantum-run   Run quantum script in Docker (ARGS=...)"
 	@echo "    make docker-quantum-shell Open interactive shell in qiskit-env"

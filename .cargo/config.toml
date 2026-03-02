@@ -14,6 +14,10 @@ rustc-wrapper = "sccache"
 rustflags = ["-C", "target-cpu=native", "-C", "link-arg=-fuse-ld=mold", "-Dwarnings"]
 linker = "clang"
 
+# Help sccache cache debug builds by not packing debug info into binaries
+[profile.dev]
+split-debuginfo = "unpacked"
+
 # --- PGO (Profile-Guided Optimization) workflow ---
 # PGO requires a two-pass build; it cannot be a static profile setting.
 #
