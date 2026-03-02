@@ -10,9 +10,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # --- Scope detection: route CI to affected crates/gates only ---
+  determine-scope:
+    runs-on: ubuntu-latest
+    outputs:
+      rust_scope: ${{ steps.scope.outputs.rust_scope }}
+      run_rust: ${{ steps.scope.outputs.run_rust }}
+      run_governance: ${{ steps.scope.outputs.run_governance }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: scope
+        run: python3 scripts/ci_affected_crates.py --verbose
+
   # --- Rust quality gate: clippy + tests + cargo-deny ---
   # Matches local pre-push-gate strength so regressions cannot merge undetected.
+  # Skipped entirely when only non-Rust files changed (registry, docs, proofs).
   rust-quality:
+    needs: determine-scope
+    if: needs.determine-scope.outputs.run_rust == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,11 +54,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libhdf5-dev libopenblas-dev pkg-config
 
-      - name: Clippy (warnings-as-errors)
-        run: cargo clippy --workspace --all-targets -j$(nproc) -- -D warnings
+      - name: Clippy (scoped)
+        run: cargo clippy ${{ needs.determine-scope.outputs.rust_scope }} --all-targets -j$(nproc) -- -D warnings
 
-      - name: Test (workspace)
-        run: cargo test --workspace -j$(nproc)
+      - name: Test (scoped)
+        run: cargo test ${{ needs.determine-scope.outputs.rust_scope }} -j$(nproc)
 
       - name: Install cargo-deny
         uses: taiki-e/install-action@cargo-deny
@@ -51,6 +68,7 @@ jobs:
 
   # --- Python + registry governance + ASCII ---
   canonical-registry-contract:
+    needs: determine-scope
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -74,15 +92,19 @@ jobs:
         run: |
           python3 bin/ascii_check.py --check
       - name: Canonical governance gate
+        if: needs.determine-scope.outputs.run_governance == 'true'
         run: |
           PYTHONWARNINGS=error make governance-gate
       - name: Canonical registry acceptance gate
+        if: needs.determine-scope.outputs.run_governance == 'true'
         run: |
           PYTHONWARNINGS=error make registry-acceptance-gate
       - name: Strict typed-policy registry lane
+        if: needs.determine-scope.outputs.run_governance == 'true'
         run: |
           PYTHONWARNINGS=error make registry-verify-typed-policy-error
       - name: Synthesis execution contract rollup
+        if: needs.determine-scope.outputs.run_governance == 'true'
         run: |
           PYTHONWARNINGS=error make synthesis-execution-contract
       - name: Warp artifact acceptance gate (when HDF5 artifacts are present)

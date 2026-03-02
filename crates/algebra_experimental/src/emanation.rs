@@ -33,13 +33,13 @@
 //! - de Marrais (2001): "42 Assessors" (arXiv:math/0011260)
 //! - Greimas (1966): Structural Semantics (semiotic square)
 
-use crate::analysis::boxkites::{
+use algebra_analysis::boxkites::{
     Assessor, BoxKite, CrossPair, EdgeSignType, FaceSignPattern, O_TRIPS,
     all_diagonal_zero_products, automorpheme_assessors, canonical_strut_table,
     classify_face_pattern, cross_assessors, edge_sign_type, find_box_kites,
     motif_components_for_cross_assessors,
 };
-use crate::construction::cayley_dickson::cd_basis_mul_sign;
+use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 use std::collections::{HashMap, HashSet};
 
 // ===========================================================================
@@ -1335,7 +1335,7 @@ pub struct HjelmslevNet {
 
 /// Construct the Hjelmslev net for a Cayley-Dickson dimension.
 pub fn hjelmslev_net(dim: usize) -> HjelmslevNet {
-    use crate::analysis::projective_geometry::pg_from_cd_dim;
+    use algebra_analysis::projective_geometry::pg_from_cd_dim;
     let pg = pg_from_cd_dim(dim);
     HjelmslevNet {
         proj_dim: pg.m,
@@ -1459,7 +1459,7 @@ pub fn extract_rho_matrix(
         }
 
         // Multiply by e_b
-        let product = crate::construction::cayley_dickson::cd_multiply(&cd_vec, &e_b);
+        let product = cd_kernel::cayley_dickson::cd_multiply(&cd_vec, &e_b);
 
         // Extract first 8 components as output lattice vector
         let out_ell: Vec<i32> = product
@@ -3960,7 +3960,7 @@ pub fn verify_three_viziers(bk: &BoxKite, dim: usize) -> ThreeVizierResult {
 ///
 /// Returns `None` if the component has no edges.
 pub fn vizier_xor_audit(
-    component: &crate::analysis::boxkites::MotifComponent,
+    component: &algebra_analysis::boxkites::MotifComponent,
 ) -> Option<VizierXorAudit> {
     if component.edges.is_empty() {
         return None;

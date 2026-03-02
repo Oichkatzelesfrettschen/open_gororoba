@@ -5,7 +5,7 @@
 
 use std::path::PathBuf;
 
-use algebra_core::experimental::algebraic_dynamics::{
+use algebra_experimental::algebraic_dynamics::{
     ConstraintSystem, E10DynkinSystem, EtDmzSystem, SedenionZdSystem, TwistNavigationSystem,
     cross_stack_comparison,
 };

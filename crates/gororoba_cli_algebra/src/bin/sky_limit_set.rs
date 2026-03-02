@@ -6,7 +6,7 @@
 use std::collections::BTreeSet;
 use std::path::PathBuf;
 
-use algebra_core::experimental::algebraic_dynamics::{CoxeterType, experiment_c_sky_limit_set};
+use algebra_experimental::algebraic_dynamics::{CoxeterType, experiment_c_sky_limit_set};
 use clap::Parser;
 
 #[derive(Parser)]

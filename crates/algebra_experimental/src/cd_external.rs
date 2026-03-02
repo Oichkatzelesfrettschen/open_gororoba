@@ -17,11 +17,11 @@
 //! - Associativity triple validation
 //! - Strut table cross-validation against de Marrais (unpublished)
 
-use crate::analysis::boxkites::{
+use algebra_analysis::boxkites::{
     Assessor, CrossPair, canonical_strut_table, cross_assessors, diagonal_zero_products_exact,
     find_box_kites,
 };
-use crate::construction::cayley_dickson::cd_multiply;
+use cd_kernel::cayley_dickson::cd_multiply;
 use std::collections::{BTreeSet, HashMap, HashSet};
 
 // ---------------------------------------------------------------------------
@@ -934,7 +934,7 @@ pub fn verify_parity_clique(dim: usize) -> ParityCliqueResult {
 /// only occur between cross-pairs sharing the same XOR key. At dim=128
 /// this reduces from ~8.1M pair checks to ~127K checks (63x speedup).
 pub fn build_zd_adjacency_bucketed(dim: usize) -> (Vec<CrossPair>, Vec<Vec<u8>>) {
-    use crate::analysis::zd_graphs::xor_key;
+    use algebra_analysis::zd_graphs::xor_key;
 
     let pairs = cross_assessors(dim);
     let n = pairs.len();
@@ -993,7 +993,7 @@ pub struct CrossValidation128Result {
 /// 2. Parity-clique structure via bucket-optimized adjacency
 /// 3. Cross-validation statistics
 pub fn verify_c451_128d() -> CrossValidation128Result {
-    use crate::analysis::zd_graphs::xor_key;
+    use algebra_analysis::zd_graphs::xor_key;
 
     let dim = 128;
 
@@ -2431,7 +2431,7 @@ mod tests {
     fn test_lambda_256_csv_vs_predicates() {
         // Cross-validate CSV-loaded Lambda_256 against predicate-based enumeration.
         // The predicate chain gives exactly 256 points (verified in codebook tests).
-        use crate::analysis::codebook::{LatticeVector, enumerate_lambda_256};
+        use algebra_analysis::codebook::{LatticeVector, enumerate_lambda_256};
 
         let csv_points: Vec<Vec<i32>> = load_lattice_points(256);
         let pred_points: Vec<LatticeVector> = enumerate_lambda_256();
@@ -2612,7 +2612,7 @@ mod tests {
     /// components plus some isolated nodes (boundary pairs without valid partners).
     #[test]
     fn test_thesis_e_xor_involution_invariants_128d() {
-        use crate::analysis::graph_projections::compute_invariant_suite_from_graph;
+        use algebra_analysis::graph_projections::compute_invariant_suite_from_graph;
         use petgraph::graph::{NodeIndex, UnGraph};
 
         let dim = 128usize;

@@ -95,7 +95,8 @@ name = "wow-sedenion-synthesis"
 path = "src/bin/wow_sedenion_synthesis.rs"
 
 [dependencies]
-algebra_core = { path = "../algebra_core", features = ["lie", "experimental"] }
+algebra_core = { path = "../algebra_core", features = ["lie"] }
+algebra_experimental = { workspace = true }
 gororoba_engine = { path = "../gororoba_engine" }
 spectral_core = { path = "../spectral_core" }
 stats_core = { path = "../stats_core" }

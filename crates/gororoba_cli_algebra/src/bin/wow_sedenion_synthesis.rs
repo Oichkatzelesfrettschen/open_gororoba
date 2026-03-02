@@ -7,7 +7,7 @@
 //! 4. Compute ultrametric structure on candidate feature vectors
 //! 5. Consolidated report with pass/fail for each thesis
 
-use algebra_core::experimental::leech_lattice::{HoleStatistics, LeechBasis, project_signal_chunk};
+use algebra_experimental::leech_lattice::{HoleStatistics, LeechBasis, project_signal_chunk};
 use clap::{Parser, Subcommand};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;

@@ -23,7 +23,7 @@
 //! - Koebisu (arXiv:2512.13002): ZD set = V_{8,2} Stiefel manifold
 //! - Reggiani (2024): Geometry of sedenion zero divisors
 
-use crate::construction::cayley_dickson::cd_norm_sq;
+use cd_kernel::cayley_dickson::cd_norm_sq;
 
 /// Result of the Stiefel manifold verification.
 #[derive(Debug, Clone)]
@@ -57,9 +57,9 @@ fn is_zero_divisor(z: &[f64]) -> bool {
     // Use the basis ZD test: multiply z by each basis element and check
     // if any product has unexpectedly small norm.
     // More rigorous: build left multiplication matrix and check rank.
-    let mat = crate::analysis::annihilator::left_multiplication_matrix(z, 16);
-    let svd = nalgebra::SVD::new(mat, false, false);
-    let min_sv = svd
+    let mat = crate::annihilator::left_multiplication_matrix(z, 16);
+    let svd = nalgebra::linalg::SVD::new(mat, false, false);
+    let min_sv: f64 = svd
         .singular_values
         .iter()
         .copied()
@@ -187,7 +187,7 @@ pub fn verify_stiefel_condition(n_samples: usize, seed: u64) -> StiefelVerificat
 ///
 /// This provides analytic verification of the V_{8,2} condition.
 pub fn verify_stiefel_algebraic() -> StiefelVerification {
-    use crate::analysis::boxkites::{cross_assessors, diagonal_zero_products_exact};
+    use crate::boxkites::{cross_assessors, diagonal_zero_products_exact};
 
     let pairs = cross_assessors(16);
     let mut n_stiefel = 0;
@@ -353,7 +353,7 @@ mod tests {
         // Find a confirmed zero-divisor from the box-kite zero-product structure.
         // Not every e_lo + e_hi is a ZD; only those pairs (a, b) where
         // diagonal_zero_products_exact returns non-empty solutions.
-        use crate::analysis::boxkites::{cross_assessors, diagonal_zero_products_exact};
+        use crate::boxkites::{cross_assessors, diagonal_zero_products_exact};
 
         let pairs = cross_assessors(16);
         let mut found_zd = false;
@@ -418,7 +418,7 @@ mod tests {
     fn test_verified_zd_count() {
         // Count how many confirmed ZDs satisfy V_{8,2} vs how many do not.
         // This gives us the actual fraction for Koebisu's claim.
-        use crate::analysis::boxkites::{cross_assessors, diagonal_zero_products_exact};
+        use crate::boxkites::{cross_assessors, diagonal_zero_products_exact};
 
         let pairs = cross_assessors(16);
         let mut n_zd = 0;

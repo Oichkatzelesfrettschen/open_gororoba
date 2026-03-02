@@ -862,8 +862,8 @@ pub struct Claim1Result {
 ///
 /// Returns `None` if the billiard module produces no usable sequences.
 pub fn verify_claim1(n_seeds: usize, n_bounces: usize) -> Claim1Result {
-    use crate::lie::kac_moody::E10RootSystem;
-    use crate::physics::billiard_sim::HyperbolicBilliard;
+    use algebra_core::lie::kac_moody::E10RootSystem;
+    use algebra_core::physics::billiard_sim::HyperbolicBilliard;
 
     let e10 = E10RootSystem::new();
 
@@ -1078,8 +1078,8 @@ pub fn fano_structure_analysis(
     n_bounces: usize,
     n_permutations: usize,
 ) -> FanoStructureAnalysis {
-    use crate::lie::kac_moody::E10RootSystem;
-    use crate::physics::billiard_sim::HyperbolicBilliard;
+    use algebra_core::lie::kac_moody::E10RootSystem;
+    use algebra_core::physics::billiard_sim::HyperbolicBilliard;
 
     let e10 = E10RootSystem::new();
     let mut billiard = HyperbolicBilliard::from_e10(&e10, seed);

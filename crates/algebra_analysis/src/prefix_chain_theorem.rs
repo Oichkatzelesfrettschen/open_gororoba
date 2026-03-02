@@ -33,7 +33,7 @@
 //! structure of octonion multiplication is reflected in the sign patterns of the lattice
 //! vectors via the even-sum and even-weight constraints.
 
-use crate::analysis::codebook::{
+use crate::codebook::{
     ForbiddenFamily, LatticeVector, enumerate_lambda_4096, is_in_base_universe,
     verify_octonion_parity_constraints,
 };
@@ -350,7 +350,7 @@ pub fn verify_prefix_chain_theorem() -> PrefixChainTheoremResult {
 
 /// Count forbidden points by family.
 pub fn count_forbidden_by_family() -> Vec<(ForbiddenFamily, usize)> {
-    use crate::analysis::codebook::classify_forbidden;
+    use crate::codebook::classify_forbidden;
 
     let sbase: Vec<LatticeVector> = enumerate_lambda_4096();
     let mut counts = std::collections::HashMap::new();

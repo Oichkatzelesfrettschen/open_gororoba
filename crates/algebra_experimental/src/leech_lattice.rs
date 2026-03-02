@@ -15,7 +15,7 @@
 //! - Conway & Sloane, "Sphere Packings, Lattices and Groups", Ch. 4
 //! - Babai (1986), "On Lovasz' lattice reduction and the nearest lattice point problem"
 
-use super::golay_code;
+use crate::golay_code;
 
 /// A point in 24-dimensional space.
 pub type Point24 = [f64; 24];

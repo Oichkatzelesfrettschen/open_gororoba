@@ -571,7 +571,7 @@ pub fn compute_invariant_suite_from_graph(name: &str, graph: &UnGraph<(), ()>) -
 // policy: full O(n^3) invariants for small components (n < BUDGET_THRESHOLD),
 // lightweight O(n+e) invariants for large ones.
 
-use crate::analysis::boxkites::{CrossPair, MotifComponent};
+use crate::boxkites::{CrossPair, MotifComponent};
 
 /// Threshold for switching from full to lightweight invariants.
 /// Components with n_nodes >= this value skip eigendecomposition and
@@ -1042,7 +1042,7 @@ mod tests {
     // triangles, diameter, girth, degree sequence).
     // ====================================================================
 
-    use crate::analysis::boxkites::motif_components_for_cross_assessors;
+    use crate::boxkites::motif_components_for_cross_assessors;
 
     /// Helper: compare two sorted spectra within tolerance.
     fn spectra_match(a: &[f64], b: &[f64], tol: f64) -> bool {
@@ -1314,7 +1314,7 @@ mod tests {
 
     #[test]
     fn test_motif_component_bridge_dim16() {
-        use crate::analysis::boxkites::motif_components_for_cross_assessors;
+        use crate::boxkites::motif_components_for_cross_assessors;
 
         let comps = motif_components_for_cross_assessors(16);
         assert_eq!(comps.len(), 7);
@@ -1344,7 +1344,7 @@ mod tests {
 
     #[test]
     fn test_budget_threshold_selects_light() {
-        use crate::analysis::boxkites::motif_components_for_cross_assessors;
+        use crate::boxkites::motif_components_for_cross_assessors;
 
         // At dim=64, components have 30 nodes -- below BUDGET_THRESHOLD (256)
         let comps_64 = motif_components_for_cross_assessors(64);

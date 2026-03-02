@@ -1424,7 +1424,7 @@ pub struct MultiplicationCoupling {
 /// Two variants: unsigned (ignoring product sign) and signed (including sign).
 pub fn compute_multiplication_coupling(
     dict: &EncodingDictionary,
-    mult_table: &crate::construction::mult_table::CdMultTable,
+    mult_table: &cd_kernel::mult_table::CdMultTable,
 ) -> MultiplicationCoupling {
     let dim = dict.dim();
     assert_eq!(
@@ -2868,7 +2868,7 @@ mod tests {
     /// and the corresponding multiplication table.
     fn sedenion_coupling_setup() -> (
         EncodingDictionary,
-        crate::construction::mult_table::CdMultTable,
+        cd_kernel::mult_table::CdMultTable,
     ) {
         let lambda = enumerate_lambda_256();
         assert!(lambda.len() >= 16);
@@ -2878,7 +2878,7 @@ mod tests {
             .map(|(i, &v)| (i, v))
             .collect();
         let dict = EncodingDictionary::try_from_pairs(16, &pairs).unwrap();
-        let table = crate::construction::mult_table::CdMultTable::generate(16);
+        let table = cd_kernel::mult_table::CdMultTable::generate(16);
         (dict, table)
     }
 
@@ -3015,7 +3015,7 @@ mod tests {
             .map(|(i, &v)| (i, v))
             .collect();
         let dict = EncodingDictionary::try_from_pairs(32, &pairs).unwrap();
-        let table = crate::construction::mult_table::CdMultTable::generate(32);
+        let table = cd_kernel::mult_table::CdMultTable::generate(32);
 
         let coupling = compute_multiplication_coupling(&dict, &table);
 

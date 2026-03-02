@@ -64,7 +64,7 @@ path = "src/bin/warp_lbm_step_test.rs"
 
 [dependencies]
 gororoba_cli = { path = "../gororoba_cli" }
-algebra_core = { path = "../algebra_core", features = ["lie", "experimental"] }
+algebra_core = { path = "../algebra_core", features = ["lie"] }
 gororoba_engine = { path = "../gororoba_engine" }
 gororoba_contracts = { path = "../gororoba_contracts" }
 data_core = { path = "../data_core" }

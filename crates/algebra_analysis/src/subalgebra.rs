@@ -18,7 +18,7 @@
 
 use std::collections::{BTreeSet, HashMap};
 
-use crate::construction::cayley_dickson::cd_basis_mul_sign;
+use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
 /// An octonion subalgebra within a Cayley-Dickson algebra.
 ///
@@ -426,7 +426,7 @@ pub fn subalgebra_associator_spectrum(dim: usize, subalgebra: &OctonionSubalgebr
                 if k == i || k == j {
                     continue;
                 }
-                let norm = crate::cd_associator_norm(
+                let norm = cd_kernel::cd_associator_norm(
                     &basis_vec(dim, i),
                     &basis_vec(dim, j),
                     &basis_vec(dim, k),
@@ -501,7 +501,7 @@ pub fn classify_generations(enumeration: &SubalgebraEnumeration) -> Vec<Subalgeb
 /// imaginary elements include both the lo and hi indices of at least
 /// one cross-assessor pair in the component.
 pub fn cross_reference_boxkites(enumeration: &SubalgebraEnumeration) -> HashMap<usize, Vec<usize>> {
-    use crate::analysis::boxkites::motif_components_for_cross_assessors;
+    use crate::boxkites::motif_components_for_cross_assessors;
 
     let dim = enumeration.dim;
     let components = motif_components_for_cross_assessors(dim);
@@ -599,7 +599,7 @@ pub fn cross_subalgebra_associator(
                 if j == k {
                     continue;
                 }
-                let norm = crate::cd_associator_norm(
+                let norm = cd_kernel::cd_associator_norm(
                     &basis_vec(dim, i),
                     &basis_vec(dim, j),
                     &basis_vec(dim, k),
@@ -650,7 +650,7 @@ pub fn algebraic_generation_triples(dim: usize) -> Vec<(usize, (usize, usize, us
     if let Some(si) = standard_idx {
         let sub = &enumeration.subalgebras[si];
         if let Some(&(i, j, k)) = sub.fano_triples.first() {
-            let norm = crate::cd_associator_norm(
+            let norm = cd_kernel::cd_associator_norm(
                 &basis_vec(dim, i),
                 &basis_vec(dim, j),
                 &basis_vec(dim, k),
@@ -663,7 +663,7 @@ pub fn algebraic_generation_triples(dim: usize) -> Vec<(usize, (usize, usize, us
     // Use a triple with 2 indices from lower half, 1 from upper
     {
         let best_triple = (1, 2, 8); // lo, lo, hi
-        let norm = crate::cd_associator_norm(
+        let norm = cd_kernel::cd_associator_norm(
             &basis_vec(dim, best_triple.0),
             &basis_vec(dim, best_triple.1),
             &basis_vec(dim, best_triple.2),
@@ -674,7 +674,7 @@ pub fn algebraic_generation_triples(dim: usize) -> Vec<(usize, (usize, usize, us
     // Generation 2: triple entirely in upper half (sedenion-specific)
     {
         let best_triple = (8, 9, 10);
-        let norm = crate::cd_associator_norm(
+        let norm = cd_kernel::cd_associator_norm(
             &basis_vec(dim, best_triple.0),
             &basis_vec(dim, best_triple.1),
             &basis_vec(dim, best_triple.2),
@@ -712,7 +712,7 @@ pub fn algebraic_generation_triples(dim: usize) -> Vec<(usize, (usize, usize, us
                     if k == i || k == j {
                         continue;
                     }
-                    let norm = crate::cd_associator_norm(
+                    let norm = cd_kernel::cd_associator_norm(
                         &basis_vec(dim, i),
                         &basis_vec(dim, j),
                         &basis_vec(dim, k),

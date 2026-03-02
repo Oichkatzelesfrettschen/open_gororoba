@@ -3,7 +3,8 @@
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict terminology-gate doctor provenance patch-pyfilesystem2
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
-.PHONY: rust-test rust-clippy rust-smoke dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
+.PHONY: rust-test rust-clippy rust-smoke rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
+.PHONY: pre-push-gate-scoped submodule-sync
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
 .PHONY: verify-pantheon-physicsforge-mapping verify-pantheon-physicsforge-license-headers
@@ -192,6 +193,29 @@ rust-clippy:
 
 rust-smoke: rust-clippy rust-test
 	@echo "OK: Rust quality gate passed (clippy + tests)."
+
+# Scoped Rust quality gate: only affected crates (via ci_affected_crates.py).
+# Usage: make rust-smoke-scoped  (auto-detects changes vs origin/main)
+#        make rust-smoke-scoped RUST_SCOPE="-p algebra_core -p gr_core"
+rust-smoke-scoped:
+	$(eval RUST_SCOPE ?= $(shell python3 scripts/ci_affected_crates.py --local 2>/dev/null || echo "--workspace"))
+	@if [ -z "$(RUST_SCOPE)" ]; then \
+	    echo "SKIP: no Rust-relevant changes detected."; \
+	else \
+	    echo "[rust-smoke-scoped] scope: $(RUST_SCOPE)"; \
+	    cargo clippy $(RUST_SCOPE) --all-targets -j$$(nproc) -- -D warnings; \
+	    cargo test $(RUST_SCOPE) -j$$(nproc); \
+	    echo "OK: Rust quality gate passed (scoped: clippy + tests)."; \
+	fi
+
+# Scoped pre-push: routes Rust/governance to affected scope only.
+pre-push-gate-scoped: rust-smoke-scoped ascii-check terminology-gate
+	@echo "OK: scoped pre-push gate passed."
+
+# Convenience: sync all git submodules (proofs, paper when extracted).
+submodule-sync:
+	git submodule update --init --recursive
+	@echo "OK: submodules synchronized."
 
 studio-run:
 	cargo run -p gororoba_cli --bin gororoba-studio -- --host 127.0.0.1 --port 8088
@@ -805,10 +829,18 @@ coq:
 
 rocq-proofs:
 	@command -v rocq >/dev/null 2>&1 || { echo "SKIP: rocq not found"; exit 0; }
-	$(MAKE) -C proofs all
+	@if [ -f proofs/Makefile ]; then \
+	    $(MAKE) -C proofs all; \
+	else \
+	    echo "SKIP: proofs/ not present (submodule not initialized? run: make submodule-sync)"; \
+	fi
 
 rocq-proofs-check:
-	$(MAKE) -C proofs check
+	@if [ -f proofs/Makefile ]; then \
+	    $(MAKE) -C proofs check; \
+	else \
+	    echo "SKIP: proofs/ not present (submodule not initialized? run: make submodule-sync)"; \
+	fi
 
 # Build proofs, generate paper artifacts, then compile LaTeX
 lva-paper: rocq-proofs rocq-proofs-check
