@@ -372,8 +372,8 @@ mod tests {
         let q = quat_from_axis_angle([1.0, 0.0, 0.0], 0.5);
         let q_dot = [0.0, 0.0, 0.0, 0.0];
         let omega = quat_angular_velocity(&q, &q_dot);
-        for i in 0..3 {
-            assert!(omega[i].abs() < TOL, "stationary omega[{i}] = {}", omega[i]);
+        for (i, &w) in omega.iter().enumerate() {
+            assert!(w.abs() < TOL, "stationary omega[{i}] = {}", w);
         }
     }
 }
