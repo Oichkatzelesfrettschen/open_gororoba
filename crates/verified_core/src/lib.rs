@@ -17,6 +17,10 @@
 //! arithmetic derived from formal proofs.
 
 pub mod axioms;
+pub mod binary_entropy;
+pub mod brans_dicke;
+pub mod cayley_dickson;
+pub mod fano_resonance;
 pub mod gf2;
 pub mod neg_dim;
 pub mod parity_clique;

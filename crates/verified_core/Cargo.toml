@@ -12,6 +12,8 @@ license = "GPL-2.0-only"
 [dev-dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
+gr_core = { path = "../gr_core" }
+optics_core = { path = "../optics_core" }
 
 [lints]
 workspace = true

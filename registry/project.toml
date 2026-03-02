@@ -5,16 +5,25 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 4690
-claim_count = 885
+test_count = 4720
+claim_count = 921
 insight_count = 98
 experiment_count = 77
 complete_experiment_count = 74
 paper_count = 19
 binary_count = 153
-kernel_checked_claims = 26
-proof_files = 47
+kernel_checked_claims = 62
+proof_files = 89
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s59]
+number = 59
+date = "2026-03-01"
+test_count = 4720
+claim_count = 921
+kernel_checked_claims = 62
+proof_files = 89
+summary = "Exhaustive Rocq Formalization Expansion. 36 new kernel-checked claims (C-886..C-921) across 8 waves: Brans-Dicke PPN bounds (C-886..C-891), Euler-Heisenberg dichroism (C-892), CD algebra core (complex commutativity/associativity/norm/conj C-893..C-896, quaternion associativity/norm/conj/re-comm/quadratic/imaginary-square/re-square C-897..C-903, associator/Jordan/inverse/non-commutative C-904..C-907), sedenion zero-divisor (C-908), octonion non-associativity/alternativity (C-909..C-910), rotation norm/composition (C-911..C-912), Fano/TCMT (C-913..C-914), binary entropy (C-915..C-917), property tower (C-918..C-921). 6 new theory files (BransDicke, CDAssociator, CDInverse, Sedenion, FanoResonance, BinaryEntropy). Extended CayleyDicksonAlgebra.v with 15 new lemmas. 4 new verified Rust modules with cross-validation. Total: 89 .v files (27 theories + 62 verified), 62 kernel-checked claims, zero Admitted."
 
 [sprints.s58]
 number = 58

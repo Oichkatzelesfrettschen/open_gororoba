@@ -4,8 +4,8 @@
 [conflict_markers]
 updated = "2026-02-10"
 authoritative = true
-marker_count = 74
-high_severity_count = 69
+marker_count = 76
+high_severity_count = 71
 medium_severity_count = 5
 low_severity_count = 0
 kind_count = 2
@@ -1116,6 +1116,38 @@ notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
 id = "CM-0070"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-919"]
+source_registry = "registry/claims.toml"
+source_document = "C-919"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["VERIFIED"]
+negative_evidence = ["Commutativity fails at dim=4 (property tower: first loss). Quaternions are the first CD level to lose commutativity. Same witness as C-907."]
+jaccard_overlap = 0.000000
+notes = "Verified status conflicts with negative language in statement."
+
+[[marker]]
+id = "CM-0071"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-921"]
+source_registry = "registry/claims.toml"
+source_document = "C-921"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["VERIFIED"]
+negative_evidence = ["Associativity fails at dim=8 (property tower: second loss). Octonions are the first CD level to lose associativity. References C-909 witness."]
+jaccard_overlap = 0.000000
+notes = "Verified status conflicts with negative language in statement."
+
+[[marker]]
+id = "CM-0072"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1131,7 +1163,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0071"
+id = "CM-0073"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1147,7 +1179,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0072"
+id = "CM-0074"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1163,7 +1195,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0073"
+id = "CM-0075"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1179,7 +1211,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0074"
+id = "CM-0076"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
