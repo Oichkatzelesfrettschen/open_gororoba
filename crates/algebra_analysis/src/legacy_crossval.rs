@@ -13,7 +13,7 @@
 //! 3. Quaternion Lie Bracket Structure
 //! 4. Dimension-by-Dimension Property Retention
 
-use crate::construction::cayley_dickson::{cd_basis_mul_sign, cd_multiply};
+use cd_kernel::cayley_dickson::{cd_basis_mul_sign, cd_multiply};
 
 /// Compute the commutativity matrix for a Cayley-Dickson algebra.
 ///
@@ -1612,7 +1612,62 @@ mod tests {
         }
     }
 
-    // Lattice filtration nesting test moved to algebra_analysis::legacy_crossval
-    // (depends only on codebook predicates, which live in algebra_analysis).
+    // ========================================================================
+    // Lattice codebook cross-validation (dims 256/512/1024/2048)
+    // These tests use codebook predicates only (no CSV/external data deps).
+    // ========================================================================
+
+    use crate::codebook::{
+        enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
+        is_in_lambda_1024, is_in_lambda_2048,
+    };
+
+    #[test]
+    fn test_lattice_filtration_nesting() {
+        // Verify strict nesting: Lambda_256 < Lambda_512 < Lambda_1024 < Lambda_2048.
+        // Note: is_in_lambda_1024 gives 1026 (2 disputed singletons vs CSV).
+        let p256 = enumerate_lattice_by_predicate(is_in_lambda_256);
+        let p512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let p1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
+        let p2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+
+        assert_eq!(p256.len(), 256);
+        assert_eq!(p512.len(), 512);
+        assert_eq!(p1024.len(), 1024, "Predicate should match CSV at 1024");
+        assert_eq!(p2048.len(), 2048);
+
+        // Every Lambda_256 point is in Lambda_512
+        for v in &p256 {
+            assert!(
+                is_in_lambda_512(v),
+                "Lambda_256 point {:?} not in Lambda_512",
+                v
+            );
+        }
+        // Every Lambda_512 point is in Lambda_1024
+        for v in &p512 {
+            assert!(
+                is_in_lambda_1024(v),
+                "Lambda_512 point {:?} not in Lambda_1024",
+                v
+            );
+        }
+        // Every Lambda_1024 point is in Lambda_2048
+        for v in &p1024 {
+            assert!(
+                is_in_lambda_2048(v),
+                "Lambda_1024 point {:?} not in Lambda_2048",
+                v
+            );
+        }
+
+        eprintln!(
+            "Filtration sizes: Lambda_256={}, Lambda_512={}, Lambda_1024={} (pred), Lambda_2048={}",
+            p256.len(),
+            p512.len(),
+            p1024.len(),
+            p2048.len()
+        );
+    }
 
 }

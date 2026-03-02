@@ -6,6 +6,8 @@ description = "Cayley-Dickson algebras, Clifford algebras, and algebraic structu
 license = "MIT"
 
 [dependencies]
+cd_kernel = { workspace = true }
+algebra_analysis = { workspace = true }
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
 num-traits = { workspace = true }
@@ -47,16 +49,12 @@ physics = ["core", "lie"]
 # E8 lattice, E7 geometry, Kac-Moody, group theory, nilpotent orbits, Lyndon.
 # No cross-module deps beyond self-referential.
 lie = []
-# Moonshine, E10-octonion, billiard stats, emanation, Golay, Leech, dynamics.
-# Depends on core + analysis + lie + physics (heavy cross-module references).
-experimental = ["core", "analysis", "lie", "physics"]
 # GPU acceleration (CUDA via cudarc).
 gpu = ["cudarc"]
 wedged = []
 
 [dev-dependencies]
 approx = { workspace = true }
-proptest = { workspace = true }
 criterion = { workspace = true }
 
 [[bench]]
@@ -66,14 +64,6 @@ harness = false
 [[bench]]
 name = "dimensional_bench"
 harness = false
-
-[[example]]
-name = "e10_billiard"
-required-features = ["experimental"]
-
-[[example]]
-name = "et_survey"
-required-features = ["experimental"]
 
 [[example]]
 name = "m3_e8_bridge"
