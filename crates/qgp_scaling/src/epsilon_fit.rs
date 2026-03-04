@@ -8,6 +8,7 @@
 //! Reference: Arleo & Falmagne arXiv:2411.13258, Sec. III.
 
 use crate::quenching::r_aa_model;
+use crate::straggling::StragglingGrid;
 
 /// Result of epsilon_bar extraction for a single centrality bin.
 #[derive(Debug, Clone)]
@@ -105,7 +106,75 @@ pub fn extract_epsilon(
     }
 }
 
-/// Brent's method for 1D minimization on [a, b].
+/// Compute chi2 using the straggling-smeared R_AA from a precomputed grid.
+fn chi2_straggling(data: &[RaaDataPoint], epsilon_bar: f64, grid: &StragglingGrid) -> f64 {
+    let mut sum = 0.0;
+    for pt in data {
+        let model = grid.lookup(pt.pt, epsilon_bar);
+        let err = pt.total_err();
+        if err > 0.0 {
+            let diff = pt.raa - model;
+            sum += diff * diff / (err * err);
+        }
+    }
+    sum
+}
+
+/// Extract epsilon_bar from R_AA data using the straggling-smeared model.
+///
+/// Identical to [`extract_epsilon`] except that the chi2 function calls
+/// `grid.lookup(pt, epsilon_bar)` (O(1) bilinear interpolation) rather than
+/// `r_aa_model(pt, epsilon_bar, n)`.  The precomputed [`StragglingGrid`]
+/// must have been built with the same spectral index `n` as the fit.
+///
+/// # Arguments
+/// * `data`    – R_AA data points (already filtered to the desired pT range)
+/// * `n`       – Spectral index of the pp spectrum (informational; must match `grid`)
+/// * `eps_lo`  – Lower bound for ε̄ search (GeV)
+/// * `eps_hi`  – Upper bound for ε̄ search (GeV)
+/// * `tol`     – Convergence tolerance on ε̄
+/// * `grid`    – Precomputed straggling lookup table
+pub fn extract_epsilon_straggling(
+    data: &[RaaDataPoint],
+    n: f64,
+    eps_lo: f64,
+    eps_hi: f64,
+    tol: f64,
+    grid: &StragglingGrid,
+) -> EpsilonFitResult {
+    let (best_eps, best_chi2) =
+        brent_minimize(|eps| chi2_straggling(data, eps, grid), eps_lo, eps_hi, tol);
+
+    let ndf = if data.len() > 1 { data.len() - 1 } else { 1 };
+
+    let target = best_chi2 + 1.0;
+
+    let err_up = find_delta_chi2_crossing(
+        |eps| chi2_straggling(data, eps, grid),
+        best_eps,
+        eps_hi,
+        target,
+        tol,
+    ) - best_eps;
+
+    let err_down = best_eps
+        - find_delta_chi2_crossing(
+            |eps| chi2_straggling(data, eps, grid),
+            eps_lo,
+            best_eps,
+            target,
+            tol,
+        );
+
+    EpsilonFitResult {
+        epsilon_bar: best_eps,
+        err_up,
+        err_down,
+        chi2_min: best_chi2,
+        ndf,
+        n_spectral: n,
+    }
+}
 /// Returns (x_min, f_min).
 fn brent_minimize<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, tol: f64) -> (f64, f64) {
     let golden = 0.381966011250105; // (3 - sqrt(5)) / 2
