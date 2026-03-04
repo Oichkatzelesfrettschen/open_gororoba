@@ -304,7 +304,7 @@ fn run_alice(data_dir: &str, pt_min: f64, use_straggling: bool, kappa: f64) {
 
         // Extract epsilon_bar: use straggling-smeared model if requested
         let result = if let Some(ref grid) = straggling_grid {
-            extract_epsilon_straggling(&all_data, n_spectral, 0.1, 20.0, 1e-6, grid)
+            extract_epsilon_straggling(&all_data, 0.1, 20.0, 1e-6, grid)
         } else {
             extract_epsilon(&all_data, n_spectral, 0.1, 20.0, 1e-6)
         };

@@ -8,7 +8,8 @@
 //! P(ε; ε̄, σ) = (1 / √(2π σ²)) · exp(−(ε − ε̄)² / (2σ²))
 //! ```
 //!
-//! where σ = κ · √ε̄  (BDMPS scaling: variance grows as √(mean energy loss)).
+//! where σ = κ · √ε̄  (BDMPS scaling: standard deviation grows as √(mean energy loss),
+//! equivalently the variance grows linearly with the mean energy loss).
 //!
 //! The straggling-smeared R_AA is:
 //!
@@ -24,7 +25,7 @@
 //!
 //! Computing the quadrature in the optimiser's inner loop is too expensive.
 //! [`StragglingGrid`] precomputes R_AA^smeared on a (pT, ε̄) grid **once**
-//! and then provides O(1) bilinear interpolation at query time.
+//! and then provides O(log N) bilinear interpolation at query time.
 
 use gauss_quad::GaussLegendre;
 
@@ -36,8 +37,9 @@ const N_GL: usize = 32;
 
 /// Compute the straggling width σ = κ · √ε̄.
 ///
-/// This follows the BDMPS prediction that the variance of the energy-loss
-/// distribution grows as the square root of the mean energy loss.
+/// This follows the BDMPS prediction that the standard deviation of the
+/// energy-loss distribution grows as the square root of the mean energy loss
+/// (equivalently, the variance grows linearly with the mean energy loss).
 ///
 /// # Arguments
 /// * `epsilon_bar` – mean energy loss ε̄ (GeV)
@@ -63,6 +65,13 @@ pub fn straggling_sigma(epsilon_bar: f64, kappa: f64) -> f64 {
 /// When `sigma <= 0` the result falls back to the sharp discrete model.
 ///
 /// Uses 32-point Gauss-Legendre quadrature.
+///
+/// # Performance note
+///
+/// This function constructs a fresh [`GaussLegendre`] object on every call.
+/// For high-throughput use (e.g. inside a fitting loop) use [`StragglingGrid`]
+/// instead, which precomputes the values once and serves them via O(log N)
+/// bilinear interpolation.
 ///
 /// # Arguments
 /// * `pt`          – transverse momentum (GeV)
@@ -99,22 +108,40 @@ fn r_aa_straggling_with_gl(
         };
     }
 
-    // Integration domain: 5σ window around ε̄, clipped to [0, pT]
+    // Integration domain: 5σ window around ε̄, physical lower bound at 0
     let eps_lo = (epsilon_bar - 5.0 * sigma).max(0.0);
-    let eps_hi = (epsilon_bar + 5.0 * sigma).min(pt);
+    // Upper bound for the Gaussian support used for normalization (no pT clip);
+    // the R_AA integral below clips this to min(pT, eps_hi_full)
+    let eps_hi_full = epsilon_bar + 5.0 * sigma;
+
+    let two_sigma_sq = 2.0 * sigma * sigma;
+    let norm = (std::f64::consts::TAU * sigma * sigma).sqrt().recip();
+
+    // Normalization: Gaussian mass over the physical domain [eps_lo, eps_hi_full].
+    // When ε̄ is small relative to σ, a non-negligible fraction of the untruncated
+    // Gaussian falls below ε = 0 (unphysical).  Re-normalising here ensures
+    // R_AA(pT → ∞) → 1 regardless of how much probability mass is clipped at 0.
+    let gauss_mass = gl.integrate(eps_lo, eps_hi_full, |eps: f64| {
+        let diff = eps - epsilon_bar;
+        norm * (-(diff * diff) / two_sigma_sq).exp()
+    });
+
+    if gauss_mass < 1e-15 {
+        return 0.0;
+    }
 
     // If the entire Gaussian support is above pT, R_AA ≈ 0
     if eps_lo >= pt {
         return 0.0;
     }
 
+    // R_AA integral over [eps_lo, min(pT, eps_hi_full)]
+    let eps_hi = eps_hi_full.min(pt);
+
     // If the window collapses (eps_hi <= eps_lo), return 0
     if eps_hi <= eps_lo {
         return 0.0;
     }
-
-    let two_sigma_sq = 2.0 * sigma * sigma;
-    let norm = (std::f64::consts::TAU * sigma * sigma).sqrt().recip();
 
     let integrand = |eps: f64| {
         // Gaussian weight
@@ -129,7 +156,7 @@ fn r_aa_straggling_with_gl(
         gauss * raa_factor
     };
 
-    gl.integrate(eps_lo, eps_hi, integrand)
+    gl.integrate(eps_lo, eps_hi, integrand) / gauss_mass
 }
 
 /// Precomputed 2-D lookup table for the straggling-smeared R_AA.
@@ -181,8 +208,16 @@ impl StragglingGrid {
     ) -> Self {
         assert!(n_pt >= 2, "need at least 2 pT grid nodes");
         assert!(n_eps >= 2, "need at least 2 eps grid nodes");
-        assert!(pt_range.0 > 0.0 && pt_range.1 > pt_range.0);
-        assert!(eps_range.0 > 0.0 && eps_range.1 > eps_range.0);
+        assert!(
+            pt_range.0 > 0.0 && pt_range.1 > pt_range.0,
+            "pt_range must satisfy 0 < pt_min < pt_max, got {:?}",
+            pt_range
+        );
+        assert!(
+            eps_range.0 > 0.0 && eps_range.1 > eps_range.0,
+            "eps_range must satisfy 0 < eps_min < eps_max, got {:?}",
+            eps_range
+        );
 
         // Log-spaced pT grid
         let log_pt_lo = pt_range.0.ln();
@@ -304,6 +339,24 @@ mod tests {
     fn test_straggling_sigma_zero_for_nonpositive() {
         assert_eq!(straggling_sigma(0.0, 0.5), 0.0);
         assert_eq!(straggling_sigma(-1.0, 0.5), 0.0);
+    }
+
+    #[test]
+    fn test_r_aa_straggling_normalization_at_small_epsilon() {
+        // With ε̄ = 0.5 GeV and κ = 0.5, σ ≈ 0.354 GeV.
+        // The 5σ lower bound ≈ -1.27 < 0, so ~20% of the untruncated Gaussian
+        // lies below 0.  Without re-normalisation, R_AA(pT → ∞) ≈ 0.80.
+        // The corrected normalization should give R_AA ≈ 1 at pT >> ε̄.
+        let eps = 0.5;
+        let n = 6.0;
+        let sigma = straggling_sigma(eps, DEFAULT_KAPPA);
+        let pt_large = 500.0; // far above ε̄
+
+        let raa = r_aa_straggling(pt_large, eps, n, sigma);
+        assert!(
+            (raa - 1.0).abs() < 0.01,
+            "R_AA at pT >> ε̄ should be ~1 (normalization fix), got {raa}"
+        );
     }
 
     #[test]
