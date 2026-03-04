@@ -123,20 +123,18 @@ fn chi2_straggling(data: &[RaaDataPoint], epsilon_bar: f64, grid: &StragglingGri
 /// Extract epsilon_bar from R_AA data using the straggling-smeared model.
 ///
 /// Identical to [`extract_epsilon`] except that the chi2 function calls
-/// `grid.lookup(pt, epsilon_bar)` (O(1) bilinear interpolation) rather than
-/// `r_aa_model(pt, epsilon_bar, n)`.  The precomputed [`StragglingGrid`]
-/// must have been built with the same spectral index `n` as the fit.
+/// `grid.lookup(pt, epsilon_bar)` (O(log N) bilinear interpolation) rather than
+/// `r_aa_model(pt, epsilon_bar, n)`.  The spectral index is read from
+/// `grid.n_spectral` so there is no risk of a silent mismatch.
 ///
 /// # Arguments
 /// * `data`    – R_AA data points (already filtered to the desired pT range)
-/// * `n`       – Spectral index of the pp spectrum (informational; must match `grid`)
 /// * `eps_lo`  – Lower bound for ε̄ search (GeV)
 /// * `eps_hi`  – Upper bound for ε̄ search (GeV)
 /// * `tol`     – Convergence tolerance on ε̄
 /// * `grid`    – Precomputed straggling lookup table
 pub fn extract_epsilon_straggling(
     data: &[RaaDataPoint],
-    n: f64,
     eps_lo: f64,
     eps_hi: f64,
     tol: f64,
@@ -172,7 +170,7 @@ pub fn extract_epsilon_straggling(
         err_down,
         chi2_min: best_chi2,
         ndf,
-        n_spectral: n,
+        n_spectral: grid.n_spectral,
     }
 }
 
@@ -399,5 +397,96 @@ mod tests {
             "crossing = {} (expected 6)",
             crossing
         );
+    }
+
+    /// Generate synthetic R_AA data from the straggling model with known epsilon_bar.
+    fn synthetic_straggling_data(
+        epsilon_bar: f64,
+        n: f64,
+        kappa: f64,
+        pt_min: f64,
+        pt_max: f64,
+        n_pts: usize,
+    ) -> Vec<RaaDataPoint> {
+        use crate::straggling::straggling_sigma;
+        use crate::straggling::r_aa_straggling;
+        let dpt = (pt_max - pt_min) / (n_pts - 1) as f64;
+        (0..n_pts)
+            .map(|i| {
+                let pt = pt_min + i as f64 * dpt;
+                let sigma = straggling_sigma(epsilon_bar, kappa);
+                let raa = r_aa_straggling(pt, epsilon_bar, n, sigma);
+                RaaDataPoint {
+                    pt,
+                    raa,
+                    stat_err: 0.02,
+                    syst_err: 0.03,
+                }
+            })
+            .collect()
+    }
+
+    #[test]
+    fn test_epsilon_straggling_extraction_synthetic() {
+        use crate::straggling::{DEFAULT_KAPPA, StragglingGrid};
+
+        let true_eps = 5.0;
+        let n = 6.0;
+        let kappa = DEFAULT_KAPPA;
+        // Generate data from the straggling model at pT well above ε̄
+        let data = synthetic_straggling_data(true_eps, n, kappa, 6.0, 50.0, 30);
+
+        let grid = StragglingGrid::new((1.0, 100.0), 100, (0.1, 20.0), 80, n, kappa);
+        let result = extract_epsilon_straggling(&data, 0.1, 20.0, 1e-6, &grid);
+
+        assert!(
+            (result.epsilon_bar - true_eps).abs() < 0.2,
+            "extracted epsilon = {} (expected {})",
+            result.epsilon_bar,
+            true_eps
+        );
+        assert!(
+            result.chi2_min < 0.5,
+            "chi2_min = {} (expected ~0 for self-consistent data)",
+            result.chi2_min
+        );
+        // n_spectral should come from the grid
+        assert!(
+            (result.n_spectral - n).abs() < 1e-12,
+            "n_spectral mismatch: got {}, expected {}",
+            result.n_spectral,
+            n
+        );
+    }
+
+    #[test]
+    fn test_epsilon_straggling_extraction_noisy() {
+        use crate::straggling::{DEFAULT_KAPPA, StragglingGrid};
+
+        let true_eps = 3.5;
+        let n = 6.2;
+        let kappa = DEFAULT_KAPPA;
+        let mut data = synthetic_straggling_data(true_eps, n, kappa, 4.0, 40.0, 25);
+
+        // Perturb every other point slightly
+        for (i, d) in data.iter_mut().enumerate() {
+            if i % 2 == 0 {
+                d.raa += 0.01;
+            } else {
+                d.raa -= 0.01;
+            }
+        }
+
+        let grid = StragglingGrid::new((1.0, 80.0), 100, (0.1, 15.0), 80, n, kappa);
+        let result = extract_epsilon_straggling(&data, 0.1, 15.0, 1e-6, &grid);
+
+        assert!(
+            (result.epsilon_bar - true_eps).abs() < 0.5,
+            "extracted epsilon = {} (expected {} +/- 0.5)",
+            result.epsilon_bar,
+            true_eps
+        );
+        assert!(result.err_up > 0.0, "err_up should be positive");
+        assert!(result.err_down > 0.0, "err_down should be positive");
     }
 }
