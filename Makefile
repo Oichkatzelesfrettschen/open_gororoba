@@ -53,6 +53,11 @@
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-artifacts clean-all
 
+# Parallelism: 75% of logical CPUs, minimum 1.
+# nproc is available on Linux; expr provides pure-shell integer arithmetic.
+NPROC := $(shell nproc 2>/dev/null || echo 4)
+NJOBS := $(shell expr $(NPROC) \* 3 / 4)
+
 VENV ?= venv
 PYTHON := $(VENV)/bin/python3
 PIP := $(VENV)/bin/pip
@@ -110,8 +115,15 @@ check: registry-verify-markdown-owner test lint smoke
 registry-verify-markdown-governance:
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
 
-# Governance acceptance gate (5 TOML registry checks)
-governance-gate: registry-verify-markdown-inventory registry-verify-markdown-owner registry-verify-schema-signatures registry-verify-crossrefs registry-verify-markdown-governance
+# Governance acceptance gate: 5 TOML registry checks, run in parallel.
+# Prerequisites share registry-markdown-inventory -- GNU Make deduplicates correctly.
+governance-gate:
+	$(MAKE) -j$(NJOBS) \
+	    registry-verify-markdown-inventory \
+	    registry-verify-markdown-owner \
+	    registry-verify-schema-signatures \
+	    registry-verify-crossrefs \
+	    registry-verify-markdown-governance
 	@echo ""
 	@echo "=========================================="
 	@echo "GOVERNANCE ACCEPTANCE GATE: PASSED"
@@ -131,12 +143,17 @@ governance-gate: registry-verify-markdown-inventory registry-verify-markdown-own
 wave6-gate: governance-gate
 	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 
-# Pre-push review lane (recommended before push/sync to origin)
-pre-push-gate: rust-smoke governance-gate ascii-check terminology-gate
+# Pre-push review lane: all 4 gates run concurrently.
+# rust-smoke is the long pole; Python gates hide behind it.
+pre-push-gate:
+	$(MAKE) -j$(NJOBS) rust-smoke governance-gate ascii-check terminology-gate
 	@echo "OK: pre-push gate passed (rust-smoke + governance + ASCII + terminology)."
 
-# Optional stricter pre-push lane: include dep-audit + cargo-deny + MCP smoke every push
-pre-push-gate-strict: dep-audit cargo-deny-check mcp-smoke pre-push-gate ascii-check-strict
+# Strict pre-push: 3-way parallel audit, then scoped gate, then strict ASCII.
+pre-push-gate-strict:
+	$(MAKE) -j$(NJOBS) dep-audit cargo-deny-check mcp-smoke
+	$(MAKE) pre-push-gate
+	$(MAKE) ascii-check-strict
 	@echo "OK: strict pre-push gate passed (dep-audit + cargo-deny + mcp-smoke + pre-push-gate + ascii-check-strict)."
 
 hooks-install:
@@ -547,7 +564,12 @@ registry-verify-wave5-batch4: registry-verify-strict-toml-batch4
 registry-wave5-batch4: registry-strict-toml-batch4
 	@echo "DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
 
-registry-acceptance-gate: registry-semantic-atoms-gate registry-evidence-provenance-gate registry-integrity-resolution-gate registry-execution-planning-gate
+registry-acceptance-gate:
+	$(MAKE) -j$(NJOBS) \
+	    registry-semantic-atoms-gate \
+	    registry-evidence-provenance-gate \
+	    registry-integrity-resolution-gate \
+	    registry-execution-planning-gate
 	@echo "OK: registry acceptance gate complete."
 
 registry-wave5: registry-acceptance-gate

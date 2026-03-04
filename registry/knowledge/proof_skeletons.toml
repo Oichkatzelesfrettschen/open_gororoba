@@ -4,7 +4,7 @@
 [knowledge_proof_skeletons]
 updated = "deterministic"
 authoritative = true
-skeleton_count = 908
+skeleton_count = 973
 
 [[skeleton]]
 id = "PRS-00001"
@@ -526,7 +526,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-001"]
-evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/src/construction/hypercomplex.rs", "docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md"]
+evidence_refs = ["crates/algebra_core/src/construction/hypercomplex.rs", "crates/cd_kernel/src/cayley_dickson.rs", "docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md"]
 
 [[skeleton]]
 id = "PRS-00030"
@@ -742,7 +742,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-011", "C-030"]
-evidence_refs = ["C-030", "crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "data/csv/genesis_gravastar_bridge.csv", "data/csv/gravastar_anisotropic_stability.csv", "data/csv/gravastar_ligo_mass_sweep.csv", "data/csv/gravastar_polytropic_sweep.csv", "data/csv/gravastar_radial_stability.csv", "docs/BIBLIOGRAPHY.md", "docs/GRAND_SYNTHESIS.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "refs.bib", "registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_c011_verifier_script.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
+evidence_refs = ["C-030", "crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs", "data/csv/genesis_gravastar_bridge.csv", "data/csv/gravastar_anisotropic_stability.csv", "data/csv/gravastar_ligo_mass_sweep.csv", "data/csv/gravastar_polytropic_sweep.csv", "data/csv/gravastar_radial_stability.csv", "docs/BIBLIOGRAPHY.md", "docs/GRAND_SYNTHESIS.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "refs.bib", "registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_c011_verifier_script.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
 
 [[skeleton]]
 id = "PRS-00042"
@@ -868,7 +868,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-016"]
-evidence_refs = ["crates/algebra_core/src/m3.rs", "docs/BIBLIOGRAPHY.md", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md"]
+evidence_refs = ["crates/algebra_core/src/physics/m3.rs", "docs/BIBLIOGRAPHY.md", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md"]
 
 [[skeleton]]
 id = "PRS-00049"
@@ -1570,7 +1570,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-055"]
-evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/src/construction/hypercomplex.rs"]
+evidence_refs = ["crates/algebra_core/src/construction/hypercomplex.rs", "crates/cd_kernel/src/cayley_dickson.rs"]
 
 [[skeleton]]
 id = "PRS-00088"
@@ -10588,7 +10588,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-547"]
-evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/tests/test_split_octonion_geometry.rs", "e_i +/- e_j"]
+evidence_refs = ["crates/algebra_core/tests/test_split_octonion_geometry.rs", "crates/cd_kernel/src/cayley_dickson.rs", "e_i +/- e_j"]
 
 [[skeleton]]
 id = "PRS-00589"
@@ -11056,7 +11056,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-573"]
-evidence_refs = ["crates/algebra_core/src/gpu/dimensional.rs", "crates/algebra_core/src/gpu/eta_matrix.rs", "crates/algebra_core/src/gpu/imbalance.rs", "crates/algebra_core/src/gpu/graph_construction.rs"]
+evidence_refs = ["crates/algebra_core/src/gpu/dimensional.rs", "crates/algebra_core/src/gpu/eta_matrix.rs", "crates/algebra_core/src/gpu/graph_construction.rs", "crates/algebra_core/src/gpu/imbalance.rs"]
 
 [[skeleton]]
 id = "PRS-00615"
@@ -12262,7 +12262,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-640"]
-evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/src/construction/tessarines.rs", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"]
+evidence_refs = ["crates/algebra_core/src/construction/tessarines.rs", "crates/cd_kernel/src/cayley_dickson.rs", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"]
 
 [[skeleton]]
 id = "PRS-00682"
@@ -15819,7 +15819,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-838."]
 derivation_steps = ["VERIFY: Compute substrate SFWM rate using fused_silica_sellmeier() dk and L=500 um in sinc^2 regime", "REFUTE: Substrate dk gives zero net contribution"]
 decision_rule = "VERIFY: Compute substrate SFWM rate using fused_silica_sellmeier() dk and L=500 um in sinc^2 regime. REFUTE: Substrate dk gives zero net contribution."
-conclusion = "PROPOSED: Proposed"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-838"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -15999,7 +15999,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-848."]
 derivation_steps = ["VERIFY: C_sct(x=0, phi=0)=1", "0 (Lorentzian), C_sct(x=0, phi=pi)=0 (antiresonance)", "REFUTE: either condition violated"]
 decision_rule = "VERIFY: C_sct(x=0, phi=0)=1.0 (Lorentzian), C_sct(x=0, phi=pi)=0 (antiresonance). REFUTE: either condition violated."
-conclusion = "PROPOSED: Proposed"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-848"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -16053,7 +16053,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-851."]
 derivation_steps = ["VERIFY: C_sct(omega=omega_0, phi=pi, gamma_0=0) = 0 to machine precision", "REFUTE:", "C_sct", "> 1e-10"]
 decision_rule = "VERIFY: C_sct(omega=omega_0, phi=pi, gamma_0=0) = 0 to machine precision. REFUTE: |C_sct| > 1e-10."
-conclusion = "PROPOSED: Proposed"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-851"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -16287,7 +16287,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-864."]
 derivation_steps = ["VERIFY: Extract E-073 amplitudes, compute coupling via bridge, confirm weak_field_parameter < 0", "1", "REFUTE: coupling violates weak-field or fails to match amplitude energy scale"]
 decision_rule = "VERIFY: Extract E-073 amplitudes, compute coupling via bridge, confirm weak_field_parameter < 0.1. REFUTE: coupling violates weak-field or fails to match amplitude energy scale."
-conclusion = "PROPOSED: Proposed"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-864"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -16305,7 +16305,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-865."]
 derivation_steps = ["VERIFY: compute kappa_1 - kappa_2 for range of gravitational couplings, verify = gamma_l within 1e-10", "REFUTE: systematic deviation > 1e-8"]
 decision_rule = "VERIFY: compute kappa_1 - kappa_2 for range of gravitational couplings, verify = gamma_l within 1e-10. REFUTE: systematic deviation > 1e-8."
-conclusion = "PROPOSED: Proposed"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-865"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -16323,7 +16323,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-866."]
 derivation_steps = ["VERIFY: Compute", "T", "^2 +", "R", "^2 for sampled frequencies, verify = 1 to 1e-10", "REFUTE: deviation > 1e-8 at any frequency"]
 decision_rule = "VERIFY: Compute |T|^2 + |R|^2 for sampled frequencies, verify = 1 to 1e-10. REFUTE: deviation > 1e-8 at any frequency."
-conclusion = "PROPOSED: Proposed"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-866"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -16341,7 +16341,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-867."]
 derivation_steps = ["VERIFY: Compare TCMT lineshape to E-073 amplitude at 10+ frequency points, verify max relative error < 0", "01", "REFUTE: deviation > 5% at any point"]
 decision_rule = "VERIFY: Compare TCMT lineshape to E-073 amplitude at 10+ frequency points, verify max relative error < 0.01. REFUTE: deviation > 5% at any point."
-conclusion = "PROPOSED: Proposed"
+conclusion = "VERIFIED: Verified"
 source_uid = "C-867"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -16349,3 +16349,1173 @@ line_start = 0
 line_end = 0
 claim_refs = ["C-867", "E-073"]
 evidence_refs = ["E-073"]
+
+[[skeleton]]
+id = "PRS-00909"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-868"
+claim_id = "C-868"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-868."]
+derivation_steps = ["VERIFY: decompose PG metric -> lapse=1 to 1e-6, shift^r=sqrt(2M/r) to 1e-3, gamma_ij=delta_ij to 1e-6", "REFUTE: any deviation > 1e-2"]
+decision_rule = "VERIFY: decompose PG metric -> lapse=1 to 1e-6, shift^r=sqrt(2M/r) to 1e-3, gamma_ij=delta_ij to 1e-6. REFUTE: any deviation > 1e-2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-868"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-868"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00910"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-869"
+claim_id = "C-869"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-869."]
+derivation_steps = ["VERIFY: nacelle_york_time(0,0,0) < 1e-10 for all n", "REFUTE: nonzero York time at center"]
+decision_rule = "VERIFY: nacelle_york_time(0,0,0) < 1e-10 for all n. REFUTE: nonzero York time at center."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-869"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-869"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00911"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-870"
+claim_id = "C-870"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-870."]
+derivation_steps = ["VERIFY: total_energy(n=2) != total_energy(n=4) by > 1%", "REFUTE: identical energies for all n"]
+decision_rule = "VERIFY: total_energy(n=2) != total_energy(n=4) by > 1%. REFUTE: identical energies for all n."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-870"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-870"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00912"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-871"
+claim_id = "C-871"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-871."]
+derivation_steps = ["VERIFY: exact function matches analytical to 1e-14", "Monte Carlo profile is finite and negative", "REFUTE: wrong sign or infinite energy"]
+decision_rule = "VERIFY: exact function matches analytical to 1e-14. Monte Carlo profile is finite and negative. REFUTE: wrong sign or infinite energy."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-871"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-871"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00913"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-872"
+claim_id = "C-872"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-872."]
+derivation_steps = ["VERIFY: casimir_energy_at_point returns finite result for pillar geometry", "REFUTE: NaN or infinite"]
+decision_rule = "VERIFY: casimir_energy_at_point returns finite result for pillar geometry. REFUTE: NaN or infinite."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-872"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-872"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00914"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-873"
+claim_id = "C-873"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-873."]
+derivation_steps = ["VERIFY: energy profile along radius returns finite, non-trivial values", "REFUTE: all zeros or NaN"]
+decision_rule = "VERIFY: energy profile along radius returns finite, non-trivial values. REFUTE: all zeros or NaN."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-873"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-873"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00915"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-874"
+claim_id = "C-874"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-874."]
+derivation_steps = ["VERIFY: nacelle_york_time at bubble center < 1e-10", "REFUTE: nonzero York time in interior"]
+decision_rule = "VERIFY: nacelle_york_time at bubble center < 1e-10. REFUTE: nonzero York time in interior."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-874"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-874"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00916"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-875"
+claim_id = "C-875"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-875."]
+derivation_steps = ["VERIFY: hamiltonian_constraint returns", "H", "< 0", "1 for r > 3M", "REFUTE: residual > 1", "0 everywhere"]
+decision_rule = "VERIFY: hamiltonian_constraint returns |H| < 0.1 for r > 3M. REFUTE: residual > 1.0 everywhere."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-875"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-875"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00917"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-876"
+claim_id = "C-876"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-876."]
+derivation_steps = ["VERIFY: quat_rotate_vector agrees with matrix rotation to 1e-10", "REFUTE: deviation > 1e-6"]
+decision_rule = "VERIFY: quat_rotate_vector agrees with matrix rotation to 1e-10. REFUTE: deviation > 1e-6."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-876"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-876"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00918"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-877"
+claim_id = "C-877"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-877."]
+derivation_steps = ["VERIFY: algebraic_york_time_correction returns 0 when alpha=0", "REFUTE: nonzero correction at zero coupling"]
+decision_rule = "VERIFY: algebraic_york_time_correction returns 0 when alpha=0. REFUTE: nonzero correction at zero coupling."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-877"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-877"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00919"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-878"
+claim_id = "C-878"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-878."]
+derivation_steps = ["VERIFY: algebraic_york_time_correction(F=3/8) = 0 to 1e-10", "REFUTE: nonzero at imbalance attractor"]
+decision_rule = "VERIFY: algebraic_york_time_correction(F=3/8) = 0 to 1e-10. REFUTE: nonzero at imbalance attractor."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-878"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-878"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00920"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-879"
+claim_id = "C-879"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-879."]
+derivation_steps = ["VERIFY: cd_dimension_nacelle_map(d)=Some(d) for d in {1,2,4,8,16}, None for others", "REFUTE: wrong mapping"]
+decision_rule = "VERIFY: cd_dimension_nacelle_map(d)=Some(d) for d in {1,2,4,8,16}, None for others. REFUTE: wrong mapping."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-879"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-879"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00921"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-880"
+claim_id = "C-880"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-880."]
+derivation_steps = ["VERIFY: SedenionFoliation(n_t=1)", "imbalance_at_slice(0) ~ 3/8 for uniform field", "REFUTE: different from bridge", "rs output"]
+decision_rule = "VERIFY: SedenionFoliation(n_t=1).imbalance_at_slice(0) ~ 3/8 for uniform field. REFUTE: different from bridge.rs output."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-880"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-880"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00922"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-881"
+claim_id = "C-881"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-881."]
+derivation_steps = ["VERIFY: vm_compute in Rocq kernel confirms separates_b returns false for all degree <= 2 monomial subsets and true for the cubic witness [1", "2", "3", "4", "5", "6", "7", "8]"]
+decision_rule = "VERIFY: vm_compute in Rocq kernel confirms separates_b returns false for all degree <= 2 monomial subsets and true for the cubic witness [1;2;3;4;5;6;7;8]. REFUTE: any degree-2 subset that separates."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-881"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-881"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00923"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-882"
+claim_id = "C-882"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-882."]
+derivation_steps = ["VERIFY: clique_edges(4)=6, clique_edges(8)=28, 2*6=12, 2*28=56 by reflexivity in Rocq kernel", "REFUTE: edge count mismatch at dim=16 or dim=32"]
+decision_rule = "VERIFY: clique_edges(4)=6, clique_edges(8)=28, 2*6=12, 2*28=56 by reflexivity in Rocq kernel. REFUTE: edge count mismatch at dim=16 or dim=32."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-882"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-882"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00924"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-883"
+claim_id = "C-883"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-883."]
+derivation_steps = ["VERIFY: Rocq kernel proves 2 < d_S(s) < 4 and monotonicity via Rinv_lt_contravar", "REFUTE: a value of s > 0 giving d_S outside (2,4)"]
+decision_rule = "VERIFY: Rocq kernel proves 2 < d_S(s) < 4 and monotonicity via Rinv_lt_contravar. REFUTE: a value of s > 0 giving d_S outside (2,4)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-883"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-883"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00925"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-884"
+claim_id = "C-884"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-884."]
+derivation_steps = ["VERIFY: Rocq kernel proves neg_dim_product_degeneracy: same product => same w_eff via lra", "REFUTE: two (alpha,eta) pairs with same product but different w_eff"]
+decision_rule = "VERIFY: Rocq kernel proves neg_dim_product_degeneracy: same product => same w_eff via lra. REFUTE: two (alpha,eta) pairs with same product but different w_eff."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-884"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-884"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00926"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-885"
+claim_id = "C-885"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-885."]
+derivation_steps = ["VERIFY: Rocq kernel proves s3_invariant_diagonal_equal and s3_invariant_offdiag_equal by exhaustive S3 transposition chaining", "REFUTE: an S3-invariant form with three distinct values"]
+decision_rule = "VERIFY: Rocq kernel proves s3_invariant_diagonal_equal and s3_invariant_offdiag_equal by exhaustive S3 transposition chaining. REFUTE: an S3-invariant form with three distinct values."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-885"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-885"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00927"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-886"
+claim_id = "C-886"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-886."]
+derivation_steps = ["VERIFY: Rocq kernel proves bd_gamma_deviation via field", "REFUTE: a value of omega > 0 where the identity fails"]
+decision_rule = "VERIFY: Rocq kernel proves bd_gamma_deviation via field. REFUTE: a value of omega > 0 where the identity fails."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-886"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-886"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00928"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-887"
+claim_id = "C-887"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-887."]
+derivation_steps = ["VERIFY: Rocq kernel proves both strict bounds via cross-multiplication", "REFUTE: omega > 0 with gamma outside (1/2, 1)"]
+decision_rule = "VERIFY: Rocq kernel proves both strict bounds via cross-multiplication. REFUTE: omega > 0 with gamma outside (1/2, 1)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-887"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-887"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00929"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-888"
+claim_id = "C-888"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-888."]
+derivation_steps = ["VERIFY: Rocq kernel proves monotonicity via cross-multiplication reducing to omega1 < omega2", "REFUTE: omega1 < omega2 with gamma(omega1) >= gamma(omega2)"]
+decision_rule = "VERIFY: Rocq kernel proves monotonicity via cross-multiplication reducing to omega1 < omega2. REFUTE: omega1 < omega2 with gamma(omega1) >= gamma(omega2)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-888"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-888"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00930"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-889"
+claim_id = "C-889"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-889."]
+derivation_steps = ["VERIFY: Rocq kernel proves threshold via Rabs reduction and cross-multiplication", "REFUTE: omega = 43478 with", "gamma-1", ">= 2", "3e-5"]
+decision_rule = "VERIFY: Rocq kernel proves threshold via Rabs reduction and cross-multiplication. REFUTE: omega = 43478 with |gamma-1| >= 2.3e-5."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-889"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-889"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00931"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-890"
+claim_id = "C-890"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-890."]
+derivation_steps = ["VERIFY: Rocq kernel proves threshold via cross-multiplication", "REFUTE: omega > 1998 with nordtvedt >= 5e-4"]
+decision_rule = "VERIFY: Rocq kernel proves threshold via cross-multiplication. REFUTE: omega > 1998 with nordtvedt >= 5e-4."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-890"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-890"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00932"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-891"
+claim_id = "C-891"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-891."]
+derivation_steps = ["VERIFY: Rocq kernel proves threshold via Rabs reduction and cross-multiplication", "REFUTE: omega > 177 with", "gamma-1", ">= 5", "6e-3"]
+decision_rule = "VERIFY: Rocq kernel proves threshold via Rabs reduction and cross-multiplication. REFUTE: omega > 177 with |gamma-1| >= 5.6e-3."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-891"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-891"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00933"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-892"
+claim_id = "C-892"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-892."]
+derivation_steps = ["VERIFY: Rocq kernel proves (8/45)/(14/45) = 4/7 via field", "REFUTE: a numerical evaluation showing ratio != 4/7"]
+decision_rule = "VERIFY: Rocq kernel proves (8/45)/(14/45) = 4/7 via field. REFUTE: a numerical evaluation showing ratio != 4/7."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-892"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-892"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00934"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-893"
+claim_id = "C-893"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-893."]
+derivation_steps = ["VERIFY: Rocq kernel proves complex_mul_comm by destruct/unfold/f_equal/ring", "REFUTE: a complex pair with z*w != w*z"]
+decision_rule = "VERIFY: Rocq kernel proves complex_mul_comm by destruct/unfold/f_equal/ring. REFUTE: a complex pair with z*w != w*z."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-893"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-893"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00935"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-894"
+claim_id = "C-894"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-894."]
+derivation_steps = ["VERIFY: Rocq kernel proves complex_mul_assoc by destruct/unfold/f_equal/ring", "REFUTE: a triple with (x*y)*z != x*(y*z)"]
+decision_rule = "VERIFY: Rocq kernel proves complex_mul_assoc by destruct/unfold/f_equal/ring. REFUTE: a triple with (x*y)*z != x*(y*z)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-894"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-894"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00936"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-895"
+claim_id = "C-895"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-895."]
+derivation_steps = ["VERIFY: Rocq kernel proves complex_norm_mul by destruct/unfold/ring", "REFUTE: z, w with", "z*w", "^2 !=", "z", "^2*", "w", "^2"]
+decision_rule = "VERIFY: Rocq kernel proves complex_norm_mul by destruct/unfold/ring. REFUTE: z, w with |z*w|^2 != |z|^2*|w|^2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-895"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-895"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00937"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-896"
+claim_id = "C-896"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-896."]
+derivation_steps = ["VERIFY: Rocq kernel proves complex_conj_antimorphism by destruct/unfold/f_equal/ring", "REFUTE: z, w with conj(z*w) != conj(w)*conj(z)"]
+decision_rule = "VERIFY: Rocq kernel proves complex_conj_antimorphism by destruct/unfold/f_equal/ring. REFUTE: z, w with conj(z*w) != conj(w)*conj(z)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-896"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-896"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00938"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-897"
+claim_id = "C-897"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-897."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_mul_assoc by destruct/unfold/f_equal/ring", "REFUTE: a triple with (x*y)*z != x*(y*z)"]
+decision_rule = "VERIFY: Rocq kernel proves quat_mul_assoc by destruct/unfold/f_equal/ring. REFUTE: a triple with (x*y)*z != x*(y*z)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-897"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-897"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00939"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-898"
+claim_id = "C-898"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-898."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_norm_mul by destruct/unfold/ring", "REFUTE: p, q with", "p*q", "^2 !=", "p", "^2*", "q", "^2"]
+decision_rule = "VERIFY: Rocq kernel proves quat_norm_mul by destruct/unfold/ring. REFUTE: p, q with |p*q|^2 != |p|^2*|q|^2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-898"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-898"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00940"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-899"
+claim_id = "C-899"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-899."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_conj_antimorphism by destruct/unfold/f_equal/ring", "REFUTE: p, q with conj(p*q) != conj(q)*conj(p)"]
+decision_rule = "VERIFY: Rocq kernel proves quat_conj_antimorphism by destruct/unfold/f_equal/ring. REFUTE: p, q with conj(p*q) != conj(q)*conj(p)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-899"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-899"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00941"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-900"
+claim_id = "C-900"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-900."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_re_mul_comm by destruct/unfold/ring", "REFUTE: p, q with Re(p*q) != Re(q*p)"]
+decision_rule = "VERIFY: Rocq kernel proves quat_re_mul_comm by destruct/unfold/ring. REFUTE: p, q with Re(p*q) != Re(q*p)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-900"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-900"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00942"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-901"
+claim_id = "C-901"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-901."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_quadratic_identity by destruct/unfold/f_equal/ring", "REFUTE: q with q^2 != 2*Re(q)*q -", "q", "^2"]
+decision_rule = "VERIFY: Rocq kernel proves quat_quadratic_identity by destruct/unfold/f_equal/ring. REFUTE: q with q^2 != 2*Re(q)*q - |q|^2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-901"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-901"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00943"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-902"
+claim_id = "C-902"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-902."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_imaginary_square with hypothesis qa q = 0 by subst/ring", "REFUTE: pure q with q^2 != -", "q", "^2"]
+decision_rule = "VERIFY: Rocq kernel proves quat_imaginary_square with hypothesis qa q = 0 by subst/ring. REFUTE: pure q with q^2 != -|q|^2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-902"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-902"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00944"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-903"
+claim_id = "C-903"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-903."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_re_square by destruct/unfold/ring", "REFUTE: q with Re(q^2) != 2*Re(q)^2 -", "q", "^2"]
+decision_rule = "VERIFY: Rocq kernel proves quat_re_square by destruct/unfold/ring. REFUTE: q with Re(q^2) != 2*Re(q)^2 - |q|^2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-903"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-903"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00945"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-904"
+claim_id = "C-904"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-904."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_assoc_zero by destruct/unfold/f_equal/ring", "REFUTE: a triple with nonzero associator"]
+decision_rule = "VERIFY: Rocq kernel proves quat_assoc_zero by destruct/unfold/f_equal/ring. REFUTE: a triple with nonzero associator."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-904"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-904"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00946"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-905"
+claim_id = "C-905"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-905."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_jordan by destruct/unfold/f_equal/ring", "REFUTE: a pair with (a^2*b)*a != a^2*(b*a)"]
+decision_rule = "VERIFY: Rocq kernel proves quat_jordan by destruct/unfold/f_equal/ring. REFUTE: a pair with (a^2*b)*a != a^2*(b*a)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-905"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-905"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00947"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-906"
+claim_id = "C-906"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-906."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_mul_inv_r and quat_mul_inv_l via field with norm_sq <> 0", "REFUTE: nonzero q where inverse formula fails"]
+decision_rule = "VERIFY: Rocq kernel proves quat_mul_inv_r and quat_mul_inv_l via field with norm_sq <> 0. REFUTE: nonzero q where inverse formula fails."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-906"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-906"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00948"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-907"
+claim_id = "C-907"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-907."]
+derivation_steps = ["VERIFY: Rocq kernel proves quat_noncommutative via discriminate on qd component", "REFUTE: i*j = j*i (impossible)"]
+decision_rule = "VERIFY: Rocq kernel proves quat_noncommutative via discriminate on qd component. REFUTE: i*j = j*i (impossible)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-907"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-907"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00949"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-908"
+claim_id = "C-908"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-908."]
+derivation_steps = ["VERIFY: Rocq kernel proves sed_mul sed_zd_a sed_zd_b = sed_zero and both witnesses nonzero", "REFUTE: the product being nonzero (impossible)"]
+decision_rule = "VERIFY: Rocq kernel proves sed_mul sed_zd_a sed_zd_b = sed_zero and both witnesses nonzero. REFUTE: the product being nonzero (impossible)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-908"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-908"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00950"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-909"
+claim_id = "C-909"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-909."]
+derivation_steps = ["VERIFY: Rocq kernel proves non-equality via f_equal oct_hi, f_equal qd, then lra on 1 != -1", "REFUTE: (e1*e2)*e4 = e1*(e2*e4) (impossible)"]
+decision_rule = "VERIFY: Rocq kernel proves non-equality via f_equal oct_hi, f_equal qd, then lra on 1 != -1. REFUTE: (e1*e2)*e4 = e1*(e2*e4) (impossible)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-909"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-909"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00951"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-910"
+claim_id = "C-910"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-910."]
+derivation_steps = ["VERIFY: Rocq kernel proves oct_left_alternative_e1_e2 by unfold + simpl + f_equal + ring", "REFUTE: e1*(e1*e2) != (e1*e1)*e2"]
+decision_rule = "VERIFY: Rocq kernel proves oct_left_alternative_e1_e2 by unfold + simpl + f_equal + ring. REFUTE: e1*(e1*e2) != (e1*e1)*e2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-910"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-910"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00952"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-911"
+claim_id = "C-911"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-911."]
+derivation_steps = ["VERIFY: Rocq kernel proves rotation_preserves_norm via unit-constraint substitution and ring", "REFUTE: unit q, v with", "qvq*", "^2 !=", "v", "^2"]
+decision_rule = "VERIFY: Rocq kernel proves rotation_preserves_norm via unit-constraint substitution and ring. REFUTE: unit q, v with ||qvq*||^2 != ||v||^2."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-911"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-911"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00953"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-912"
+claim_id = "C-912"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-912."]
+derivation_steps = ["VERIFY: Rocq kernel proves rotation_composition as degree-6 polynomial identity in 11 variables via destruct/unfold/f_equal/ring", "REFUTE: p, q, v with rotation(p, rotation(q, v)) != rotation(p*q, v)"]
+decision_rule = "VERIFY: Rocq kernel proves rotation_composition as degree-6 polynomial identity in 11 variables via destruct/unfold/f_equal/ring. REFUTE: p, q, v with rotation(p, rotation(q, v)) != rotation(p*q, v)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-912"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-912"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00954"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-913"
+claim_id = "C-913"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-913."]
+derivation_steps = ["VERIFY: Rocq kernel proves tcmt_antiresonance via unfold + field", "REFUTE: T(0, gamma_e, 0) != 0"]
+decision_rule = "VERIFY: Rocq kernel proves tcmt_antiresonance via unfold + field. REFUTE: T(0, gamma_e, 0) != 0."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-913"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-913"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00955"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-914"
+claim_id = "C-914"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-914."]
+derivation_steps = ["VERIFY: Rocq kernel proves tcmt_unitarity_lossless via field with delta^2+gamma_e^2 > 0", "REFUTE: delta, gamma_e with T+R != 1"]
+decision_rule = "VERIFY: Rocq kernel proves tcmt_unitarity_lossless via field with delta^2+gamma_e^2 > 0. REFUTE: delta, gamma_e with T+R != 1."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-914"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-914"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00956"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-915"
+claim_id = "C-915"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-915."]
+derivation_steps = ["VERIFY: Rocq kernel proves binary_entropy_symmetric via unfold + ring", "REFUTE: p with H(p) != H(1-p)"]
+decision_rule = "VERIFY: Rocq kernel proves binary_entropy_symmetric via unfold + ring. REFUTE: p with H(p) != H(1-p)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-915"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-915"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00957"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-916"
+claim_id = "C-916"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-916."]
+derivation_steps = ["VERIFY: Rocq kernel proves binary_entropy_max_value via unfold + field + ln properties", "REFUTE: H(1/2) != ln(2)"]
+decision_rule = "VERIFY: Rocq kernel proves binary_entropy_max_value via unfold + field + ln properties. REFUTE: H(1/2) != ln(2)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-916"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-916"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00958"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-917"
+claim_id = "C-917"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-917."]
+derivation_steps = ["VERIFY: Rocq kernel proves binary_entropy_nonneg via ln monotonicity bounds", "REFUTE: p in (0,1) with H(p) < 0"]
+decision_rule = "VERIFY: Rocq kernel proves binary_entropy_nonneg via ln monotonicity bounds. REFUTE: p in (0,1) with H(p) < 0."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-917"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-917"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00959"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-918"
+claim_id = "C-918"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-918."]
+derivation_steps = ["VERIFY: Rocq kernel proves via complex_mul_comm", "REFUTE: z, w with z*w != w*z"]
+decision_rule = "VERIFY: Rocq kernel proves via complex_mul_comm. REFUTE: z, w with z*w != w*z."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-918"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-918"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00960"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-919"
+claim_id = "C-919"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-919."]
+derivation_steps = ["VERIFY: Rocq kernel proves via discriminate on qd component", "REFUTE: i*j = j*i"]
+decision_rule = "VERIFY: Rocq kernel proves via discriminate on qd component. REFUTE: i*j = j*i."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-919"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-919"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00961"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-920"
+claim_id = "C-920"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-920."]
+derivation_steps = ["VERIFY: Rocq kernel proves via quat_mul_assoc", "REFUTE: triple with (x*y)*z != x*(y*z)"]
+decision_rule = "VERIFY: Rocq kernel proves via quat_mul_assoc. REFUTE: triple with (x*y)*z != x*(y*z)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-920"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-920"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00962"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-921"
+claim_id = "C-921"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-921."]
+derivation_steps = ["VERIFY: Rocq kernel proves via C909_octonion_non_associative import", "REFUTE: (e1*e2)*e4 = e1*(e2*e4)"]
+decision_rule = "VERIFY: Rocq kernel proves via C909_octonion_non_associative import. REFUTE: (e1*e2)*e4 = e1*(e2*e4)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-921"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-921"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00963"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-922"
+claim_id = "C-922"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-922."]
+derivation_steps = ["VERIFY: d_s(t) plateau values computed and consistent across reruns", "REFUTE: no stable plateau found at any dimension"]
+decision_rule = "VERIFY: d_s(t) plateau values computed and consistent across reruns. REFUTE: no stable plateau found at any dimension."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-922"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-922"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00964"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-923"
+claim_id = "C-923"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-923."]
+derivation_steps = ["VERIFY: monotonic increase in plateau d_s with CD dimension", "REFUTE: non-monotonic or constant plateau values"]
+decision_rule = "VERIFY: monotonic increase in plateau d_s with CD dimension. REFUTE: non-monotonic or constant plateau values."
+conclusion = "FALSIFIED: Falsified"
+source_uid = "C-923"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-923"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00965"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-924"
+claim_id = "C-924"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-924."]
+derivation_steps = ["VERIFY: bound holds for dim = 16, 32, 64", "REFUTE: entropy exceeds bound at some dimension"]
+decision_rule = "VERIFY: bound holds for dim = 16, 32, 64. REFUTE: entropy exceeds bound at some dimension."
+conclusion = "PENDING: Pending"
+source_uid = "C-924"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-924"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00966"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-925"
+claim_id = "C-925"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-925."]
+derivation_steps = ["VERIFY: invert_entropy_bridge(gamma_BG) returns None", "invert_entropy_bridge(gamma_NZJ) returns phi near 3/8", "REFUTE: gamma_BG is invertible"]
+decision_rule = "VERIFY: invert_entropy_bridge(gamma_BG) returns None; invert_entropy_bridge(gamma_NZJ) returns phi near 3/8. REFUTE: gamma_BG is invertible."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-925"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-925"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00967"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-926"
+claim_id = "C-926"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-926."]
+derivation_steps = ["VERIFY: spectral_gap_census() returns is_expander=true for all dims 16-512", "REFUTE: some dimension has gap_ratio below 1/(2n)"]
+decision_rule = "VERIFY: spectral_gap_census() returns is_expander=true for all dims 16-512. REFUTE: some dimension has gap_ratio below 1/(2n)."
+conclusion = "PENDING: Pending"
+source_uid = "C-926"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-926"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00968"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-927"
+claim_id = "C-927"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-927."]
+derivation_steps = ["VERIFY: decompose_entropy_adaptive(32,", ") yields near_frac < 1", "0", "REFUTE: adaptive threshold still saturates"]
+decision_rule = "VERIFY: decompose_entropy_adaptive(32,...) yields near_frac < 1.0. REFUTE: adaptive threshold still saturates."
+conclusion = "PENDING: Pending"
+source_uid = "C-927"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-927"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00969"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-928"
+claim_id = "C-928"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-928."]
+derivation_steps = ["VERIFY: sweep phi in (0,1) shows gamma <= GAMMA_MAX", "gamma_NZJ < GAMMA_MAX < gamma_BG", "REFUTE: some phi gives gamma > GAMMA_MAX"]
+decision_rule = "VERIFY: sweep phi in (0,1) shows gamma <= GAMMA_MAX; gamma_NZJ < GAMMA_MAX < gamma_BG. REFUTE: some phi gives gamma > GAMMA_MAX."
+conclusion = "PENDING: Pending"
+source_uid = "C-928"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-928"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00970"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-929"
+claim_id = "C-929"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-929."]
+derivation_steps = ["VERIFY: nnsd_census([128,256]) returns brody_q < 0", "1 and verdict=DegenerateIntegrable for all dims", "REFUTE: some dimension shows q > 0", "3 (Intermediate or GOE) or variance near 1", "0 (generic Poisson)"]
+decision_rule = "VERIFY: nnsd_census([128,256]) returns brody_q < 0.1 and verdict=DegenerateIntegrable for all dims. REFUTE: some dimension shows q > 0.3 (Intermediate or GOE) or variance near 1.0 (generic Poisson)."
+conclusion = "PENDING: Pending"
+source_uid = "C-929"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-929"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00971"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-930"
+claim_id = "C-930"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-930."]
+derivation_steps = ["VERIFY: nnsd_by_motif_class(128) returns brody_q < 0", "1 and verdict=DegenerateIntegrable for all 8 classes", "REFUTE: some motif class shows q > 0", "3 or variance near 1", "0"]
+decision_rule = "VERIFY: nnsd_by_motif_class(128) returns brody_q < 0.1 and verdict=DegenerateIntegrable for all 8 classes. REFUTE: some motif class shows q > 0.3 or variance near 1.0."
+conclusion = "PENDING: Pending"
+source_uid = "C-930"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-930"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00972"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-931"
+claim_id = "C-931"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-931."]
+derivation_steps = ["VERIFY: heat_kernel_k22(0,k)=1 and spectral_dimension_k22(0,k)=0 for all k, with P(100)->1/(2k)", "REFUTE: numerical eigenvalue decomposition of the actual K_{2,2,", ",2} Laplacian gives different eigenvalues than mu_1=2(k-1), mu_2=2k"]
+decision_rule = "VERIFY: heat_kernel_k22(0,k)=1 and spectral_dimension_k22(0,k)=0 for all k, with P(100)->1/(2k). REFUTE: numerical eigenvalue decomposition of the actual K_{2,2,...,2} Laplacian gives different eigenvalues than mu_1=2(k-1), mu_2=2k."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-931"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-931"]
+evidence_refs = []
+
+[[skeleton]]
+id = "PRS-00973"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-932"
+claim_id = "C-932"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-932."]
+derivation_steps = ["VERIFY: run orthoplex-cosmo-fit --skip-download --k 63 --fixed_beta, confirm delta-BIC < 0 and w(0) in [-0", "8, -0", "6]", "REFUTE: delta-BIC > +10 or optimizer fails to converge"]
+decision_rule = "VERIFY: run orthoplex-cosmo-fit --skip-download --k 63 --fixed_beta, confirm delta-BIC < 0 and w(0) in [-0.8, -0.6]. REFUTE: delta-BIC > +10 or optimizer fails to converge."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-932"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-932"]
+evidence_refs = []

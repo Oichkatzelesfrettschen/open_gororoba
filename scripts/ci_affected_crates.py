@@ -39,11 +39,13 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 CRATES_DIR = REPO_ROOT / "crates"
 
 # Files whose change forces a full workspace rebuild.
+# NOTE: .cargo/config.toml is intentionally omitted: rustflag changes are
+# incorporated into sccache's per-crate hash key, so only affected crates
+# rebuild. Toolchain pin and workspace manifest structure still force --workspace.
 WORKSPACE_TRIGGERS = {
     "Cargo.toml",
     "Cargo.lock",
     "rust-toolchain.toml",
-    ".cargo/config.toml",
 }
 
 # Prefixes that never affect Rust compilation.

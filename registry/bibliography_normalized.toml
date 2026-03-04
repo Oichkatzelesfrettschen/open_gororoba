@@ -5,7 +5,7 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/bibliography.toml"
-entry_count = 217
+entry_count = 220
 parse_warning_count = 54
 
 [[entry]]
@@ -1340,13 +1340,13 @@ publication_year = 2002
 title = "The Octonions"
 venue = "Bulletin of the American Mathematical Society, 39, 145-205"
 arxiv_id = ""
-doi_list = []
+doi_list = ["10.1090/S0273-0979-01-00934-X"]
 url_list = ["https://arxiv.org/abs/math/0105155"]
-document_type = "general_reference"
+document_type = "doi_reference"
 evidence_relevance_score = 0
 claim_refs = []
 parse_warnings = []
-raw_citation = "**Baez, J. C.** (2002). *The Octonions*. Bulletin of the American Mathematical Society, 39, 145-205. [math.RA/0105155](https://arxiv.org/abs/math/0105155)."
+raw_citation = "**Baez, J. C.** (2002). *The Octonions*. Bulletin of the American Mathematical Society, 39, 145-205. [doi:10.1090/S0273-0979-01-00934-X](https://doi.org/10.1090/S0273-0979-01-00934-X)."
 raw_notes = ["*Reference for G2, F4, and Normed Division Algebras.*"]
 source_line = 151
 
@@ -4780,5 +4780,71 @@ claim_refs = []
 parse_warnings = []
 raw_citation = "**Immirzi, G.** (1997). *Real and complex connections for canonical gravity*. CQG 14, L177-L181. [arXiv:gr-qc/9612030](https://arxiv.org/abs/gr-qc/9612030)."
 raw_notes = ["*Shows beta is free parameter; area spectrum scales as beta*hbar*kappa.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0218"
+source_entry_id = "BIB-0218"
+order_index = 218
+group = "Primary Research & Data Sources"
+section = "Lattice Boltzmann Method"
+authors = ["Chen", "S", "Doolen", "G. D"]
+author_count = 4
+publication_year = 1998
+title = "Lattice Boltzmann method for fluid flows"
+venue = "Annual Review of Fluid Mechanics, 30, 329-364"
+arxiv_id = ""
+doi_list = ["10.1146/annurev.fluid.30.1.329"]
+url_list = ["https://doi.org/10.1146/annurev.fluid.30.1.329"]
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Chen, S. & Doolen, G. D.** (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30, 329-364. [doi:10.1146/annurev.fluid.30.1.329](https://doi.org/10.1146/annurev.fluid.30.1.329)."
+raw_notes = ["*Foundational review of LBM for computational fluid dynamics.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0219"
+source_entry_id = "BIB-0219"
+order_index = 219
+group = "Primary Research & Data Sources"
+section = "Lattice Boltzmann Method"
+authors = ["Succi", "S"]
+author_count = 2
+publication_year = 2001
+title = "The Lattice Boltzmann Equation: For Fluid Dynamics and Beyond"
+venue = "Oxford University Press"
+arxiv_id = ""
+doi_list = ["10.1093/oso/9780198503989.001.0001"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Succi, S.** (2001). *The Lattice Boltzmann Equation: For Fluid Dynamics and Beyond*. Oxford University Press."
+raw_notes = ["*Standard reference for LBM theory and applications.*"]
+source_line = 0
+
+[[entry]]
+id = "BIBN-0220"
+source_entry_id = "BIB-0220"
+order_index = 220
+group = "Primary Research & Data Sources"
+section = "Topological Data Analysis"
+authors = ["Edelsbrunner", "H", "Harer", "J. L"]
+author_count = 4
+publication_year = 2010
+title = "Computational Topology: An Introduction"
+venue = "American Mathematical Society"
+arxiv_id = ""
+doi_list = ["10.1090/mbk/069"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Edelsbrunner, H. & Harer, J. L.** (2010). *Computational Topology: An Introduction*. American Mathematical Society."
+raw_notes = ["*Standard reference for persistent homology and computational topology.*"]
 source_line = 0
 

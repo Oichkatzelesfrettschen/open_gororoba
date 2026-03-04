@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import datetime as dt
 import shlex
 import subprocess
@@ -169,7 +170,8 @@ def _render_report(
 
 
 def _run_contract(repo_root: Path) -> list[StepResult]:
-    steps = [
+    # Group A: pure Python/Make targets -- safe to parallelize.
+    group_a = [
         ContractStep(
             step_id="governance_gate",
             label="governance-gate",
@@ -180,6 +182,10 @@ def _run_contract(repo_root: Path) -> list[StepResult]:
             label="registry-acceptance-gate",
             argv=("make", "registry-acceptance-gate"),
         ),
+    ]
+    # Group B: cargo run --release targets -- must run sequentially to avoid
+    # cargo build-lock contention.
+    group_b = [
         ContractStep(
             step_id="typed_policy_strict",
             label="registry-verify-typed-policy-error",
@@ -200,31 +206,10 @@ def _run_contract(repo_root: Path) -> list[StepResult]:
         ),
     ]
 
-    results: list[StepResult] = []
-    previous_failed = False
-
-    for step in steps:
+    def _run_one(step: ContractStep) -> StepResult:
         command = shlex.join(step.argv)
-        if previous_failed:
-            results.append(
-                StepResult(
-                    step_id=step.step_id,
-                    label=step.label,
-                    command=command,
-                    exit_code=-1,
-                    outcome="skipped",
-                    started_utc="",
-                    finished_utc="",
-                    duration_seconds=0.0,
-                    stdout_excerpt="",
-                    stderr_excerpt="",
-                    skip_reason="previous step failed",
-                )
-            )
-            continue
-
         started_utc = _utc_now()
-        started_monotonic = time.monotonic()
+        t0 = time.monotonic()
         completed = subprocess.run(
             list(step.argv),
             cwd=repo_root,
@@ -232,26 +217,36 @@ def _run_contract(repo_root: Path) -> list[StepResult]:
             text=True,
             check=False,
         )
-        duration_seconds = time.monotonic() - started_monotonic
-        finished_utc = _utc_now()
-        outcome = "pass" if completed.returncode == 0 else "fail"
-        if outcome == "fail":
-            previous_failed = True
-
-        results.append(
-            StepResult(
-                step_id=step.step_id,
-                label=step.label,
-                command=command,
-                exit_code=completed.returncode,
-                outcome=outcome,
-                started_utc=started_utc,
-                finished_utc=finished_utc,
-                duration_seconds=duration_seconds,
-                stdout_excerpt=_excerpt(completed.stdout),
-                stderr_excerpt=_excerpt(completed.stderr),
-            )
+        duration = time.monotonic() - t0
+        return StepResult(
+            step_id=step.step_id,
+            label=step.label,
+            command=command,
+            exit_code=completed.returncode,
+            outcome="pass" if completed.returncode == 0 else "fail",
+            started_utc=started_utc,
+            finished_utc=_utc_now(),
+            duration_seconds=duration,
+            stdout_excerpt=_excerpt(completed.stdout),
+            stderr_excerpt=_excerpt(completed.stderr),
         )
+
+    # Phase 1: run Group A in parallel; collect all results before gating.
+    results: list[StepResult] = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+        future_map = {pool.submit(_run_one, s): s for s in group_a}
+        a_results: list[StepResult] = []
+        for future in concurrent.futures.as_completed(future_map):
+            a_results.append(future.result())
+    # Restore original step order for deterministic TOML output.
+    order = {s.step_id: i for i, s in enumerate(group_a)}
+    a_results.sort(key=lambda r: order[r.step_id])
+    results.extend(a_results)
+
+    # Phase 2: run Group B sequentially (cargo build lock contention risk).
+    for step in group_b:
+        results.append(_run_one(step))
+
     return results
 
 
