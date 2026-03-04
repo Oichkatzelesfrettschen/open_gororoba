@@ -5,10 +5,10 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/knowledge/proof_skeletons.toml"
-step_count = 3723
-skeleton_count = 908
-skeleton_with_steps_count = 908
-claim_linked_step_count = 3569
+step_count = 3907
+skeleton_count = 973
+skeleton_with_steps_count = 973
+claim_linked_step_count = 3753
 max_steps_per_skeleton = 8
 
 [[step]]
@@ -3062,11 +3062,11 @@ claim_refs = []
 step_index = 2
 step_kind = "status_update"
 text = "**Status:** Unified Theory of Hyper-Structure Imbalance"
-text_sha256 = "2046dbd2f10b4335ca14f32ec4bba445c2b625043b38446b930d720b01a97a83"
+text_sha256 = "1aa2ee2c619f7706421b072bd92d326fbcac1d4c08767752ced4c4b508fd2750"
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["Imbalance", "Hyper", "Status", "Structure", "Theory", "Unified"]
+key_tokens = ["Hyper", "Imbalance", "Status", "Structure", "Theory", "Unified"]
 depends_on_step_ids = ["DS-000152"]
 line_start = 4
 line_end = 10
@@ -46062,11 +46062,11 @@ claim_refs = ["C-483", "C-487"]
 step_index = 2
 step_kind = "derivation_step"
 text = "SUPERSEDED by C-487 (Universal 3:1 Theorem)"
-text_sha256 = "2c0abe0967681c571ca27906a6b1f65f13cab9c6b708192f34cb171728c532b0"
+text_sha256 = "7c7ea4705aa8370c40176904edf5791f94e6ca48145bce14434892ed7b6fc27a"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "3", "487"]
-key_tokens = ["Double", "Law", "SUPERSEDED", "Universal"]
+key_tokens = ["SUPERSEDED", "Theorem", "Universal"]
 depends_on_step_ids = ["DS-002302"]
 line_start = 0
 line_end = 0
@@ -46162,11 +46162,11 @@ claim_refs = ["C-484", "C-487"]
 step_index = 4
 step_kind = "derivation_step"
 text = "All 4-pattern regimes satisfy Universal 3:1 Theorem (C-487)"
-text_sha256 = "be1c32f3ad209470945161c5f4182500ce226d5d44fb54d23befd980f3ced532"
+text_sha256 = "19b2ea8a35ac10bf1565e286fda0b94e698236fd077a051e5fcd2b6fb343125f"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "3", "4", "487"]
-key_tokens = ["All", "Double", "Law", "Universal", "pattern", "regimes", "satisfy"]
+key_tokens = ["All", "Theorem", "Universal", "pattern", "regimes", "satisfy"]
 depends_on_step_ids = ["DS-002307"]
 line_start = 0
 line_end = 0
@@ -46342,11 +46342,11 @@ claim_refs = ["C-488"]
 step_index = 2
 step_kind = "derivation_step"
 text = "WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the 3:1 Theorem"
-text_sha256 = "d73a3f75c9d777285b8b076d0da6cc58658da5b107085a36763724f4412a4d01"
+text_sha256 = "9fb230d927a42dc5cf919252fd2961448de22732e353e797917b03194731ff55"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "17", "3"]
-key_tokens = ["Double", "Law", "REFUTE", "WHAT", "WOULD", "any", "component", "fewer", "more", "regimes", "than", "violating"]
+key_tokens = ["REFUTE", "Theorem", "WHAT", "WOULD", "any", "component", "fewer", "more", "regimes", "than", "violating"]
 depends_on_step_ids = ["DS-002316"]
 line_start = 0
 line_end = 0
@@ -48722,7 +48722,7 @@ claim_refs = ["C-523"]
 step_index = 2
 step_kind = "derivation_step"
 text = "WHAT WOULD REFUTE: finding imbalance at dim=16 or no imbalance at dim>=32"
-text_sha256 = "a439253031130787ff925d7de06da33cb25f39da3d0f14e9f1a325140a940bba"
+text_sha256 = "bff0467f723c32f68f6569148ac45d79767c99704166c6cd48985b5a17040d6b"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["16", "32"]
@@ -50142,11 +50142,11 @@ claim_refs = ["C-549"]
 step_index = 2
 step_kind = "derivation_step"
 text = "WHAT WOULD REFUTE the coincidence: if the imbalance index converges to a value other than 3/8 (currently observed at 0"
-text_sha256 = "61b624d5e9269055ef0d95a2255eaf2310b4d0f6f195c6c5bb80fe2ee3317784"
+text_sha256 = "0b710c61a9905410e80ae79a6872f850b1e3299069617788bdbed7497584942b"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "3", "8"]
-key_tokens = ["REFUTE", "WHAT", "WOULD", "coincidence", "converges", "currently", "imbalance", "if", "observed", "other", "ratio", "than", "value"]
+key_tokens = ["REFUTE", "WHAT", "WOULD", "coincidence", "converges", "currently", "if", "imbalance", "index", "observed", "other", "than", "value"]
 depends_on_step_ids = ["DS-002506"]
 line_start = 0
 line_end = 0
@@ -51022,7 +51022,7 @@ claim_refs = ["C-517", "C-558"]
 step_index = 3
 step_kind = "derivation_step"
 text = "imbalanced edges = 1,573,216"
-text_sha256 = "29e5f9d6e84ef505097a94b12aa995f895063810d8eb29423ec48c4e612954b5"
+text_sha256 = "639b8de108d92b06941df6466cee838ccf5a6238c56421bd0629a528560ad9d7"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "216", "573"]
@@ -51102,11 +51102,11 @@ claim_refs = ["C-517", "C-558"]
 step_index = 7
 step_kind = "derivation_step"
 text = "WHAT WOULD REFUTE: imbalance index increasing above 0"
-text_sha256 = "ae538f963c4db1fb3864dbc1185483c7eff3b48933e49eadfa22180723dc40b8"
+text_sha256 = "614612be9374ca20f96abe40a15b0811c1928727c875df1449addaf2a94ad1b1"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
-key_tokens = ["REFUTE", "WHAT", "WOULD", "above", "imbalance", "increasing", "ratio"]
+key_tokens = ["REFUTE", "WHAT", "WOULD", "above", "imbalance", "increasing", "index"]
 depends_on_step_ids = ["DS-002554"]
 line_start = 0
 line_end = 0
@@ -59242,7 +59242,7 @@ claim_refs = ["C-657"]
 step_index = 1
 step_kind = "status_update"
 text = "VERIFIED by STPT-006 (PRIMARY): Cassini bound omega_eff >= 40000 satisfied for lambda-dependent imbalance"
-text_sha256 = "ee193ab82e5956a75daa19c7b11dfabf1c9463debc39cb8685fd2fb2f791ee4e"
+text_sha256 = "04277cb0bd3ccab6706327db9d4a96ea32b92f099284f1557e08955123310985"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["006", "40000"]
@@ -59422,7 +59422,7 @@ claim_refs = ["C-659"]
 step_index = 2
 step_kind = "derivation_step"
 text = "05, imbalance-derived distinct from random"
-text_sha256 = "d03445120f32087ecd06e294488ba0b01733aa931721e70062354b58597164ad"
+text_sha256 = "5d1b904d8326846b7a8750e226d2740136184e359078f356afac09af89a82249"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["05"]
@@ -60262,7 +60262,7 @@ claim_refs = ["C-670"]
 step_index = 2
 step_kind = "derivation_step"
 text = "REFUTATION: slice isolation broken or imbalance length incorrect"
-text_sha256 = "11cc1c600c86232380b96f307c6d1ddd00aa00770a2b4bb51857a035e7951d47"
+text_sha256 = "98b701ea3ef1ccbaef0c068b0379c49ca0dcae9f763176ee7f795c21e9416538"
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
@@ -61042,11 +61042,11 @@ claim_refs = ["C-681"]
 step_index = 1
 step_kind = "status_update"
 text = "VERIFIED: 6 unit tests pass including zero-imbalance identity, monotonicity near vacuum, enhancement ratio bounds"
-text_sha256 = "1fe52677e12e9b33e6fed9d4ba731ef8fab0ea16c6ff94e639eff02dcf52a22d"
+text_sha256 = "b428ed56d4d378cefbaa8fa4b4aa18b6db6e0fa1d0a14a302f268904be21ed8d"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["6"]
-key_tokens = ["VERIFIED", "bounds", "enhancement", "imbalance", "identity", "including", "monotonicity", "near", "pass", "ratio", "tests", "unit", "vacuum", "zero"]
+key_tokens = ["VERIFIED", "bounds", "enhancement", "identity", "imbalance", "including", "monotonicity", "near", "pass", "ratio", "tests", "unit", "vacuum", "zero"]
 depends_on_step_ids = []
 line_start = 0
 line_end = 0
@@ -61062,7 +61062,7 @@ claim_refs = ["C-681"]
 step_index = 2
 step_kind = "derivation_step"
 text = "REFUTATION: KuboResponse produces NaN or negative viscosity for any valid imbalance input"
-text_sha256 = "a863a009d43cb268f2dfad475ab278962ebab0d5c0b2a6b8d96ecdde75bff24b"
+text_sha256 = "26be869a1c402a1bb5b0e3de9fceda9b68b7fc3b5add2f8fd89b2a941698a6af"
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
@@ -61222,7 +61222,7 @@ claim_refs = ["C-683"]
 step_index = 4
 step_kind = "derivation_step"
 text = "REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard imbalance suppression per Heidrich-Meisner PRB 68, 134436)"
-text_sha256 = "644d2a37ddaecbf02c19e8c4e702a6cc859b027cc9f9470ef924091c1c15ed99"
+text_sha256 = "cafb4cb72ee534a292d825ebb6051215b7d08438c58844beed93016c57adbe06"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "134436", "68"]
@@ -61362,7 +61362,7 @@ claim_refs = ["C-686"]
 step_index = 1
 step_kind = "status_update"
 text = "VERIFIED: Enhancement is consistent with Varma mechanism (imbalance suppressed by competing effects -> D rises)"
-text_sha256 = "335e6aae722fc1a0df51949f497e74ee976b93bea0a78c397f0822c4083c5902"
+text_sha256 = "f7cf427584084b9c1ce4d4e3904c0f4dd6969b0b71b8dc4079dde858b27c6cf7"
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
@@ -61382,7 +61382,7 @@ claim_refs = ["C-686"]
 step_index = 2
 step_kind = "derivation_step"
 text = "REFUTATION: Running at B=0 should show standard imbalance suppression per Heidrich-Meisner PRB 68, 134436 (2003)"
-text_sha256 = "0d3a52e8651a764e526c9c64d9851eb9fa01c52d6491deccbc1fa27415ccbb9b"
+text_sha256 = "2a47357387fc82a8281a601c88e480f00ee7c6b8c5f52b8f972394815f8e006e"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "134436", "2003", "68"]
@@ -61602,11 +61602,11 @@ claim_refs = ["C-689"]
 step_index = 1
 step_kind = "status_update"
 text = "VERIFIED: Both our data and Stolpp 2019 show D_S increasing with imbalance at high field"
-text_sha256 = "d9db0a1c9e4a38647ecc721ac7728461a5b383bcb0f4651cb69edd9b0b365db0"
+text_sha256 = "c83de348385583570fdd4be99fd9e67710d8a6a398ba9d401a368eed94a1ec6c"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["2019"]
-key_tokens = ["Both", "D_S", "Stolpp", "VERIFIED", "data", "field", "imbalance", "high", "increasing", "our", "show"]
+key_tokens = ["Both", "D_S", "Stolpp", "VERIFIED", "data", "field", "high", "imbalance", "increasing", "our", "show"]
 depends_on_step_ids = []
 line_start = 0
 line_end = 0
@@ -61682,11 +61682,11 @@ claim_refs = ["C-690"]
 step_index = 2
 step_kind = "derivation_step"
 text = "rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \\to r_h$, tracking monotonic increase in algebraic imbalance near the event horizon"
-text_sha256 = "0a1ccec8d9ac5d9170ee5b3a96bc34d39777619416a7841917d3e58dc88cfb58"
+text_sha256 = "1a0a129f9801066ce4c7bc34f99a14755644a7a78df8f7b2a25acc337d8c629d"
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["Euler", "Force", "Homotopy", "algebraic", "corrections", "diverge", "event", "imbalance", "horizon", "increase", "linear", "monotonic", "near", "r_h", "rs", "steps", "tracking", "verify"]
+key_tokens = ["Euler", "Force", "Homotopy", "algebraic", "corrections", "diverge", "event", "horizon", "imbalance", "increase", "linear", "monotonic", "near", "r_h", "rs", "steps", "tracking", "verify"]
 depends_on_step_ids = ["DS-003083"]
 line_start = 0
 line_end = 0
@@ -68302,11 +68302,11 @@ claim_refs = ["C-774"]
 step_index = 2
 step_kind = "derivation_step"
 text = "0) of spin correlation P as imbalance-induced decoherence gamma increases"
-text_sha256 = "21547e9ff4b1fa90fe130936794f8fb8fab6e5df3196586d43786b08a70e8841"
+text_sha256 = "7dbcfd983ccfbf8be10f82fb679d92546bd8bc614093c35afb04fdd04292d6d6"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
-key_tokens = ["correlation", "decoherence", "imbalance", "gamma", "increases", "induced", "spin"]
+key_tokens = ["correlation", "decoherence", "gamma", "imbalance", "increases", "induced", "spin"]
 depends_on_step_ids = ["DS-003414"]
 line_start = 0
 line_end = 0
@@ -68322,7 +68322,7 @@ claim_refs = ["C-774"]
 step_index = 3
 step_kind = "derivation_step"
 text = "Validates CD-imbalance as a candidate physical medium for coherence loss"
-text_sha256 = "4fd5533ebc14019004e4316565d4647858458a3dab0e52da85f03cc4fc77d2eb"
+text_sha256 = "10887d12dc4db8967809da37ce4b64c22615c7a54e58f2ae04f518f55edb8770"
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
@@ -68342,7 +68342,7 @@ claim_refs = ["C-775"]
 step_index = 1
 step_kind = "status_update"
 text = "VERIFIED (E-036 follow-up): Reconstructed negativity for a singlet state (P=-1) reaches zero at a finite imbalance threshold while correlation P remains non-zero, confirming that P alone cannot certify entanglement boundaries as suggested by the STAR collaboration"
-text_sha256 = "42ddf36034360863c1289efc1b0e44b0c703eb8b11ad30e9096ae6e35d13e1d8"
+text_sha256 = "ff5152d39a75fd36a8cd8e4990bfcde3ae68c2514c188c89d703e48cbf8ed907"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["036", "1"]
@@ -68442,11 +68442,11 @@ claim_refs = ["C-777"]
 step_index = 1
 step_kind = "status_update"
 text = "VERIFIED: Exhaustive enumeration of 256 chambers for n=6 gluons shows that exactly 16 chambers have zero imbalance, and these are exactly the 16 chambers with non-zero amplitude in the R1 closed-form evaluation"
-text_sha256 = "1ad829af5840ca8723443194d5c2d006b3d76ee61d530e941c0734538cd55045"
+text_sha256 = "847de0fc4d9cc3126f98ff8bc90d6e7eca3980b1b94164301b56709440e24ad4"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["16", "256", "6"]
-key_tokens = ["Exhaustive", "R1", "VERIFIED", "amplitude", "are", "chambers", "closed", "enumeration", "evaluation", "exactly", "form", "imbalance", "gluons", "have", "non", "shows", "these", "zero"]
+key_tokens = ["Exhaustive", "R1", "VERIFIED", "amplitude", "are", "chambers", "closed", "enumeration", "evaluation", "exactly", "form", "gluons", "have", "imbalance", "non", "shows", "these", "zero"]
 depends_on_step_ids = []
 line_start = 0
 line_end = 0
@@ -73862,11 +73862,11 @@ claim_refs = ["C-859"]
 step_index = 2
 step_kind = "derivation_step"
 text = "imbalance_entropy_bridge(3/8) - gamma_NZJ"
-text_sha256 = "784294e824e8838eb15b3ed25e1d527bf1e8f4cc3f0ffc7dd0882abcc6988b5d"
+text_sha256 = "71058d54ccc4e8dfc67401b5efd3c8848a323f2ac377cdf583236c82f978512f"
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["3", "8"]
-key_tokens = ["imbalance_entropy_bridge", "gamma_NZJ"]
+key_tokens = ["gamma_NZJ", "imbalance_entropy_bridge"]
 depends_on_step_ids = ["DS-003692"]
 line_start = 0
 line_end = 0
@@ -73962,11 +73962,11 @@ claim_refs = ["C-860"]
 step_index = 2
 step_kind = "derivation_step"
 text = "REFUTE: finding a bridge formula that naturally yields gamma_BG from imbalance density"
-text_sha256 = "0386633a314a0ee503ee1f2c00dba7235db4162ebb7d04d1441d11b9884c70fd"
+text_sha256 = "3849e42a6410eadc9900ca4c5d8932344eee1b5e81147a70fe8161f96c5cc28e"
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["REFUTE", "bridge", "density", "finding", "formula", "imbalance", "gamma_BG", "naturally", "yields"]
+key_tokens = ["REFUTE", "bridge", "density", "finding", "formula", "gamma_BG", "imbalance", "naturally", "yields"]
 depends_on_step_ids = ["DS-003697"]
 line_start = 0
 line_end = 0
@@ -74468,6 +74468,3686 @@ symbol_refs = []
 numeric_constants = ["5"]
 key_tokens = ["REFUTE", "any", "deviation", "point"]
 depends_on_step_ids = ["DS-003722"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003724"
+skeleton_id = "PRS-00909"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-868"
+claim_id = "C-868"
+claim_refs = ["C-868"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: decompose PG metric -> lapse=1 to 1e-6, shift^r=sqrt(2M/r) to 1e-3, gamma_ij=delta_ij to 1e-6"
+text_sha256 = "00e775b608f7019e17255465df4ab199ec0a2a1ffa4b2a92944b324021b2b9b7"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "1e-3", "1e-6"]
+key_tokens = ["PG", "VERIFY", "decompose", "delta_ij", "gamma_ij", "lapse", "metric", "shift", "sqrt"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003725"
+skeleton_id = "PRS-00909"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-868"
+claim_id = "C-868"
+claim_refs = ["C-868"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: any deviation > 1e-2"
+text_sha256 = "b448a126c48f1e00e0e016474567d0a1cb175d827e8ad16e4f1cd94f46c56f02"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1e-2"]
+key_tokens = ["REFUTE", "any", "deviation"]
+depends_on_step_ids = ["DS-003724"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003726"
+skeleton_id = "PRS-00910"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-869"
+claim_id = "C-869"
+claim_refs = ["C-869"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: nacelle_york_time(0,0,0) < 1e-10 for all n"
+text_sha256 = "e2906ebb585f88fd931f14104fbd939e3788e41637d1f1aa19366056d2ed4cb3"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "1e-10"]
+key_tokens = ["VERIFY", "all", "nacelle_york_time"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003727"
+skeleton_id = "PRS-00910"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-869"
+claim_id = "C-869"
+claim_refs = ["C-869"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: nonzero York time at center"
+text_sha256 = "11cd29df7c6f4f124bb0cecbd9ee8e86655bf1a9b7cb9db6f362820963a738a2"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "York", "center", "nonzero", "time"]
+depends_on_step_ids = ["DS-003726"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003728"
+skeleton_id = "PRS-00911"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-870"
+claim_id = "C-870"
+claim_refs = ["C-870"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: total_energy(n=2) != total_energy(n=4) by > 1%"
+text_sha256 = "2fcb4a08433c679cf7d43c17dea00ae47da573d3449b6fa15262434329cab2c4"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "2", "4"]
+key_tokens = ["VERIFY", "total_energy"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003729"
+skeleton_id = "PRS-00911"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-870"
+claim_id = "C-870"
+claim_refs = ["C-870"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: identical energies for all n"
+text_sha256 = "37eefef85c6e56f79954d0e7a694d7f00fd9fdf95fd37edc80015c2f9c207d4e"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "all", "energies", "identical"]
+depends_on_step_ids = ["DS-003728"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003730"
+skeleton_id = "PRS-00912"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-871"
+claim_id = "C-871"
+claim_refs = ["C-871"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: exact function matches analytical to 1e-14"
+text_sha256 = "5bc8d4595bf5a0ebbbce372a36110b889d3fbd6dd3fd60062670a0a601f87865"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1e-14"]
+key_tokens = ["VERIFY", "analytical", "exact", "function", "matches"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003731"
+skeleton_id = "PRS-00912"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-871"
+claim_id = "C-871"
+claim_refs = ["C-871"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Monte Carlo profile is finite and negative"
+text_sha256 = "e275ec3071a03ab9d1464e9b9378224b8553aedb114120c63bdeba408e4b94ac"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Carlo", "Monte", "finite", "negative", "profile"]
+depends_on_step_ids = ["DS-003730"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003732"
+skeleton_id = "PRS-00912"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-871"
+claim_id = "C-871"
+claim_refs = ["C-871"]
+step_index = 3
+step_kind = "derivation_step"
+text = "REFUTE: wrong sign or infinite energy"
+text_sha256 = "8d3be0f113542f29bd4d887fad076736873aca3ca148d9e261cf137a3901671f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "energy", "infinite", "sign", "wrong"]
+depends_on_step_ids = ["DS-003731"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003733"
+skeleton_id = "PRS-00913"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-872"
+claim_id = "C-872"
+claim_refs = ["C-872"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: casimir_energy_at_point returns finite result for pillar geometry"
+text_sha256 = "a6b0378e188f6e43eba98d907b2e41196d0db2f339f773299792ab30a463d97b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["VERIFY", "casimir_energy_at_point", "finite", "geometry", "pillar", "result", "returns"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003734"
+skeleton_id = "PRS-00913"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-872"
+claim_id = "C-872"
+claim_refs = ["C-872"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: NaN or infinite"
+text_sha256 = "71d1f5eccbaf7595daad5e5644a0ceb3498c678dd9dae09a08c81ac24e8bcd39"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["NaN", "REFUTE", "infinite"]
+depends_on_step_ids = ["DS-003733"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003735"
+skeleton_id = "PRS-00914"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-873"
+claim_id = "C-873"
+claim_refs = ["C-873"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: energy profile along radius returns finite, non-trivial values"
+text_sha256 = "12d0c884ff8f7ec287af7a93eb089011d1e661ceb9075490f1a0aa976ed338df"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["VERIFY", "along", "energy", "finite", "non", "profile", "radius", "returns", "trivial", "values"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003736"
+skeleton_id = "PRS-00914"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-873"
+claim_id = "C-873"
+claim_refs = ["C-873"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: all zeros or NaN"
+text_sha256 = "1e1796d257e9398be3088a81c6a8aec39c02d4f7baac965cfb25f32d0206a5b3"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["NaN", "REFUTE", "all", "zeros"]
+depends_on_step_ids = ["DS-003735"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003737"
+skeleton_id = "PRS-00915"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-874"
+claim_id = "C-874"
+claim_refs = ["C-874"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: nacelle_york_time at bubble center < 1e-10"
+text_sha256 = "d596b37a3100ee4b9d11c88519abae176e7a90b0f982188a9ccdf9dadc5247f5"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1e-10"]
+key_tokens = ["VERIFY", "bubble", "center", "nacelle_york_time"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003738"
+skeleton_id = "PRS-00915"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-874"
+claim_id = "C-874"
+claim_refs = ["C-874"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: nonzero York time in interior"
+text_sha256 = "b617ed7b1b38625f483a2cd207e9f7f8ba70ad12caa255f0d054ed5d92d7c746"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "York", "interior", "nonzero", "time"]
+depends_on_step_ids = ["DS-003737"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003739"
+skeleton_id = "PRS-00916"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-875"
+claim_id = "C-875"
+claim_refs = ["C-875"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: hamiltonian_constraint returns"
+text_sha256 = "66c5e8fa8b290ae47d26cfc1183d4284fa8d35a6d4031d28239dc02d85f8b568"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["VERIFY", "hamiltonian_constraint", "returns"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003740"
+skeleton_id = "PRS-00916"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-875"
+claim_id = "C-875"
+claim_refs = ["C-875"]
+step_index = 2
+step_kind = "derivation_step"
+text = "H"
+text_sha256 = "44bd7ae60f478fae1061e11a7739f4b94d1daf917982d33b6fc8a01a63f89c21"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003739"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003741"
+skeleton_id = "PRS-00916"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-875"
+claim_id = "C-875"
+claim_refs = ["C-875"]
+step_index = 3
+step_kind = "derivation_step"
+text = "< 0"
+text_sha256 = "435c92323c1aeb1325130f238bf18acb5e68e8c72dac35b61902c926c7c622f1"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = []
+depends_on_step_ids = ["DS-003740"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003742"
+skeleton_id = "PRS-00916"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-875"
+claim_id = "C-875"
+claim_refs = ["C-875"]
+step_index = 4
+step_kind = "derivation_step"
+text = "1 for r > 3M"
+text_sha256 = "8dcfa0ebcb1dfbf7b6d34fdb1649af04fb7184c243609bfef3b457fdcebf2e34"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = []
+depends_on_step_ids = ["DS-003741"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003743"
+skeleton_id = "PRS-00916"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-875"
+claim_id = "C-875"
+claim_refs = ["C-875"]
+step_index = 5
+step_kind = "derivation_step"
+text = "REFUTE: residual > 1"
+text_sha256 = "ce1f037d3ccd39831e16414105e61a81029b3eb52d08f0ee7c6fac143f15b0a4"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["REFUTE", "residual"]
+depends_on_step_ids = ["DS-003742"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003744"
+skeleton_id = "PRS-00916"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-875"
+claim_id = "C-875"
+claim_refs = ["C-875"]
+step_index = 6
+step_kind = "derivation_step"
+text = "0 everywhere"
+text_sha256 = "301fabfbd21e227c38a30f268e2c1928793c4d469f8523db9dd6cdbe5431de10"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["everywhere"]
+depends_on_step_ids = ["DS-003743"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003745"
+skeleton_id = "PRS-00917"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-876"
+claim_id = "C-876"
+claim_refs = ["C-876"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: quat_rotate_vector agrees with matrix rotation to 1e-10"
+text_sha256 = "5cd0ed35dbc51bda320356dc1d669dec5de0d5341564275460e7dee77354e1e5"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1e-10"]
+key_tokens = ["VERIFY", "agrees", "matrix", "quat_rotate_vector", "rotation"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003746"
+skeleton_id = "PRS-00917"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-876"
+claim_id = "C-876"
+claim_refs = ["C-876"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: deviation > 1e-6"
+text_sha256 = "c0d2fb62e51555fda52a2456f64b31620ec1b477db3b2eb5348ca14530556d33"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1e-6"]
+key_tokens = ["REFUTE", "deviation"]
+depends_on_step_ids = ["DS-003745"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003747"
+skeleton_id = "PRS-00918"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-877"
+claim_id = "C-877"
+claim_refs = ["C-877"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: algebraic_york_time_correction returns 0 when alpha=0"
+text_sha256 = "cbf1543b2b52fb6f801c24e104b94ec89dd2a4d6f04b7027fa5b21efa14edff9"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["VERIFY", "algebraic_york_time_correction", "alpha", "returns", "when"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003748"
+skeleton_id = "PRS-00918"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-877"
+claim_id = "C-877"
+claim_refs = ["C-877"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: nonzero correction at zero coupling"
+text_sha256 = "5678b15f8d11e2a1bdfb4806d7eaaafa2c5ac0db29060f3fa60d0d4225770152"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "correction", "coupling", "nonzero", "zero"]
+depends_on_step_ids = ["DS-003747"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003749"
+skeleton_id = "PRS-00919"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-878"
+claim_id = "C-878"
+claim_refs = ["C-878"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: algebraic_york_time_correction(F=3/8) = 0 to 1e-10"
+text_sha256 = "30bcdba4f547cae5a2051fbdc6d582e3583324c643ca7946047ae538219f2b0b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "1e-10", "3", "8"]
+key_tokens = ["VERIFY", "algebraic_york_time_correction"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003750"
+skeleton_id = "PRS-00919"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-878"
+claim_id = "C-878"
+claim_refs = ["C-878"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: nonzero at imbalance attractor"
+text_sha256 = "5b9e24aba24396865556117f39043ad41dc55b904da4806b5699074a1c00517a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "attractor", "imbalance", "nonzero"]
+depends_on_step_ids = ["DS-003749"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003751"
+skeleton_id = "PRS-00920"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-879"
+claim_id = "C-879"
+claim_refs = ["C-879"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: cd_dimension_nacelle_map(d)=Some(d) for d in {1,2,4,8,16}, None for others"
+text_sha256 = "291560a925dac15c1dfb1e75b02c86076733661e813dcedce0cb95c48c25cc41"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "16", "2", "4", "8"]
+key_tokens = ["None", "Some", "VERIFY", "cd_dimension_nacelle_map", "others"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003752"
+skeleton_id = "PRS-00920"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-879"
+claim_id = "C-879"
+claim_refs = ["C-879"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: wrong mapping"
+text_sha256 = "53f4c586df9302fe3604819fee45802d4ce7a3ccdcef877bcd4b7cc64112e3d6"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "mapping", "wrong"]
+depends_on_step_ids = ["DS-003751"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003753"
+skeleton_id = "PRS-00921"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-880"
+claim_id = "C-880"
+claim_refs = ["C-880"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: SedenionFoliation(n_t=1)"
+text_sha256 = "7b35c184035917116042ce0402abf974e4b764a62ad77e9a5d97e7253ea9b826"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["SedenionFoliation", "VERIFY", "n_t"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003754"
+skeleton_id = "PRS-00921"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-880"
+claim_id = "C-880"
+claim_refs = ["C-880"]
+step_index = 2
+step_kind = "derivation_step"
+text = "imbalance_at_slice(0) ~ 3/8 for uniform field"
+text_sha256 = "f8f5189767a61f616e10182905329c6b1e374e249071a037181e3a86d7b973a1"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "3", "8"]
+key_tokens = ["field", "imbalance_at_slice", "uniform"]
+depends_on_step_ids = ["DS-003753"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003755"
+skeleton_id = "PRS-00921"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-880"
+claim_id = "C-880"
+claim_refs = ["C-880"]
+step_index = 3
+step_kind = "derivation_step"
+text = "REFUTE: different from bridge"
+text_sha256 = "e9dc8451d94081a568fc567a5fe7da6824b88f2963f8c674c39e510848f1270c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "bridge", "different"]
+depends_on_step_ids = ["DS-003754"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003756"
+skeleton_id = "PRS-00921"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-880"
+claim_id = "C-880"
+claim_refs = ["C-880"]
+step_index = 4
+step_kind = "derivation_step"
+text = "rs output"
+text_sha256 = "74d10f033e5d16d458422ababd894eb82f0544dd9305d60cd6b7624cff99bb85"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["output", "rs"]
+depends_on_step_ids = ["DS-003755"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003757"
+skeleton_id = "PRS-00922"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-881"
+claim_id = "C-881"
+claim_refs = ["C-881"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: vm_compute in Rocq kernel confirms separates_b returns false for all degree <= 2 monomial subsets and true for the cubic witness [1"
+text_sha256 = "d7495093e275b3f56f2d3328aeaf89fe3be9ab4cfad5466aaeed05c1fddf9981"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "2"]
+key_tokens = ["Rocq", "VERIFY", "all", "confirms", "cubic", "degree", "false", "kernel", "monomial", "returns", "separates_b", "subsets", "true", "vm_compute", "witness"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003758"
+skeleton_id = "PRS-00922"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-881"
+claim_id = "C-881"
+claim_refs = ["C-881"]
+step_index = 2
+step_kind = "derivation_step"
+text = "2"
+text_sha256 = "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003757"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003759"
+skeleton_id = "PRS-00922"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-881"
+claim_id = "C-881"
+claim_refs = ["C-881"]
+step_index = 3
+step_kind = "derivation_step"
+text = "3"
+text_sha256 = "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["3"]
+key_tokens = []
+depends_on_step_ids = ["DS-003758"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003760"
+skeleton_id = "PRS-00922"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-881"
+claim_id = "C-881"
+claim_refs = ["C-881"]
+step_index = 4
+step_kind = "derivation_step"
+text = "4"
+text_sha256 = "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["4"]
+key_tokens = []
+depends_on_step_ids = ["DS-003759"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003761"
+skeleton_id = "PRS-00922"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-881"
+claim_id = "C-881"
+claim_refs = ["C-881"]
+step_index = 5
+step_kind = "derivation_step"
+text = "5"
+text_sha256 = "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["5"]
+key_tokens = []
+depends_on_step_ids = ["DS-003760"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003762"
+skeleton_id = "PRS-00922"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-881"
+claim_id = "C-881"
+claim_refs = ["C-881"]
+step_index = 6
+step_kind = "derivation_step"
+text = "6"
+text_sha256 = "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["6"]
+key_tokens = []
+depends_on_step_ids = ["DS-003761"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003763"
+skeleton_id = "PRS-00922"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-881"
+claim_id = "C-881"
+claim_refs = ["C-881"]
+step_index = 7
+step_kind = "derivation_step"
+text = "7"
+text_sha256 = "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["7"]
+key_tokens = []
+depends_on_step_ids = ["DS-003762"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003764"
+skeleton_id = "PRS-00922"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-881"
+claim_id = "C-881"
+claim_refs = ["C-881"]
+step_index = 8
+step_kind = "derivation_step"
+text = "8]"
+text_sha256 = "dc92d3d04e27855907ab899343c2aed649c6678f6888e665203b861b5cd6688b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["8"]
+key_tokens = []
+depends_on_step_ids = ["DS-003763"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003765"
+skeleton_id = "PRS-00923"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-882"
+claim_id = "C-882"
+claim_refs = ["C-882"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: clique_edges(4)=6, clique_edges(8)=28, 2*6=12, 2*28=56 by reflexivity in Rocq kernel"
+text_sha256 = "735bd6336bb68479171a6d17d6ccdf9d51d4829ea60add0b00f9f35e293dc22d"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["12", "2", "28", "4", "56", "6", "8"]
+key_tokens = ["Rocq", "VERIFY", "clique_edges", "kernel", "reflexivity"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003766"
+skeleton_id = "PRS-00923"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-882"
+claim_id = "C-882"
+claim_refs = ["C-882"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: edge count mismatch at dim=16 or dim=32"
+text_sha256 = "750c6e7eff4f9fe6c55cb7580bdaef0198aa0ef3bdd19cfacc6d58d598e90e8a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["16", "32"]
+key_tokens = ["REFUTE", "count", "dim", "edge", "mismatch"]
+depends_on_step_ids = ["DS-003765"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003767"
+skeleton_id = "PRS-00924"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-883"
+claim_id = "C-883"
+claim_refs = ["C-883"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves 2 < d_S(s) < 4 and monotonicity via Rinv_lt_contravar"
+text_sha256 = "8bbcdf7bd8e5a01cfe5daa500725428a8fa698a2ada24212fd08cddf48e9a28f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2", "4"]
+key_tokens = ["Rinv_lt_contravar", "Rocq", "VERIFY", "d_S", "kernel", "monotonicity", "proves", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003768"
+skeleton_id = "PRS-00924"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-883"
+claim_id = "C-883"
+claim_refs = ["C-883"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: a value of s > 0 giving d_S outside (2,4)"
+text_sha256 = "b7731723f306d065151cdabd276d51303d3fffc044d9041d2a3bb309511aae36"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "2", "4"]
+key_tokens = ["REFUTE", "d_S", "giving", "outside", "value"]
+depends_on_step_ids = ["DS-003767"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003769"
+skeleton_id = "PRS-00925"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-884"
+claim_id = "C-884"
+claim_refs = ["C-884"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves neg_dim_product_degeneracy: same product => same w_eff via lra"
+text_sha256 = "716e9fe7a19adb59718b19891d4f95de08cb1124b51456f83a84fa42bf3b21a1"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "kernel", "lra", "neg_dim_product_degeneracy", "product", "proves", "same", "via", "w_eff"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003770"
+skeleton_id = "PRS-00925"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-884"
+claim_id = "C-884"
+claim_refs = ["C-884"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: two (alpha,eta) pairs with same product but different w_eff"
+text_sha256 = "312905d41fcb652df3d9d34d60a732474141b5d2599a8fbfed7362adf8b0d5bf"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "alpha", "but", "different", "eta", "pairs", "product", "same", "two", "w_eff"]
+depends_on_step_ids = ["DS-003769"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003771"
+skeleton_id = "PRS-00926"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-885"
+claim_id = "C-885"
+claim_refs = ["C-885"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves s3_invariant_diagonal_equal and s3_invariant_offdiag_equal by exhaustive S3 transposition chaining"
+text_sha256 = "ab49de742623a8ac0ebd8fc44ab349c153c4e7559b2f61b3faf8537d5a2662b6"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "S3", "VERIFY", "chaining", "exhaustive", "kernel", "proves", "s3_invariant_diagonal_equal", "s3_invariant_offdiag_equal", "transposition"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003772"
+skeleton_id = "PRS-00926"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-885"
+claim_id = "C-885"
+claim_refs = ["C-885"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: an S3-invariant form with three distinct values"
+text_sha256 = "9618e57caa56474e03f0c83519ed4c17894a78299e0374973f19d669f0504828"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "S3", "distinct", "form", "invariant", "three", "values"]
+depends_on_step_ids = ["DS-003771"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003773"
+skeleton_id = "PRS-00927"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-886"
+claim_id = "C-886"
+claim_refs = ["C-886"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves bd_gamma_deviation via field"
+text_sha256 = "15a2ad452b20d141abbc3313659a697e068520944975f69e8d414201056db537"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "bd_gamma_deviation", "field", "kernel", "proves", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003774"
+skeleton_id = "PRS-00927"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-886"
+claim_id = "C-886"
+claim_refs = ["C-886"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: a value of omega > 0 where the identity fails"
+text_sha256 = "36d4d8e177fe5b46e8b8d654835612bdde41297dd00c9b3e0f3d9808c5ba288a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["REFUTE", "fails", "identity", "omega", "value", "where"]
+depends_on_step_ids = ["DS-003773"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003775"
+skeleton_id = "PRS-00928"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-887"
+claim_id = "C-887"
+claim_refs = ["C-887"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves both strict bounds via cross-multiplication"
+text_sha256 = "458a546c92eda4573551c5b1b0408e9e1d65339b0d277c79761183e6a9965ba4"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "both", "bounds", "cross", "kernel", "multiplication", "proves", "strict", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003776"
+skeleton_id = "PRS-00928"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-887"
+claim_id = "C-887"
+claim_refs = ["C-887"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: omega > 0 with gamma outside (1/2, 1)"
+text_sha256 = "82e30ef8689b9512f5f1574b41bf2d1c6c108f86ec8c3584c372743d6c6f52b0"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "1", "2"]
+key_tokens = ["REFUTE", "gamma", "omega", "outside"]
+depends_on_step_ids = ["DS-003775"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003777"
+skeleton_id = "PRS-00929"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-888"
+claim_id = "C-888"
+claim_refs = ["C-888"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves monotonicity via cross-multiplication reducing to omega1 < omega2"
+text_sha256 = "79c9eaae45bf3d67885340c59d2aba6c71eb71b1b9a2260577dc1f92058a2e23"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "cross", "kernel", "monotonicity", "multiplication", "omega1", "omega2", "proves", "reducing", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003778"
+skeleton_id = "PRS-00929"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-888"
+claim_id = "C-888"
+claim_refs = ["C-888"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: omega1 < omega2 with gamma(omega1) >= gamma(omega2)"
+text_sha256 = "c6b36ad95f1186ac12b10053b523a0baf9d5f8115a3390e5774cffd869825a74"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "gamma", "omega1", "omega2"]
+depends_on_step_ids = ["DS-003777"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003779"
+skeleton_id = "PRS-00930"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-889"
+claim_id = "C-889"
+claim_refs = ["C-889"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves threshold via Rabs reduction and cross-multiplication"
+text_sha256 = "6e8837151154f2e7a0c0632b7d08778a896c8e44f175f7d2c7e7c07cbf7b5281"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rabs", "Rocq", "VERIFY", "cross", "kernel", "multiplication", "proves", "reduction", "threshold", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003780"
+skeleton_id = "PRS-00930"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-889"
+claim_id = "C-889"
+claim_refs = ["C-889"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: omega = 43478 with"
+text_sha256 = "c47a042bdad96a021dd8b525e18de52a8e42dd8ca0795c00cc1e14bcafc2bd9e"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["43478"]
+key_tokens = ["REFUTE", "omega"]
+depends_on_step_ids = ["DS-003779"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003781"
+skeleton_id = "PRS-00930"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-889"
+claim_id = "C-889"
+claim_refs = ["C-889"]
+step_index = 3
+step_kind = "derivation_step"
+text = "gamma-1"
+text_sha256 = "74cf9225fac68b257f93bc4074685ac507a81ba2fffa7bad5051827b6bb3d306"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["gamma"]
+depends_on_step_ids = ["DS-003780"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003782"
+skeleton_id = "PRS-00930"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-889"
+claim_id = "C-889"
+claim_refs = ["C-889"]
+step_index = 4
+step_kind = "derivation_step"
+text = ">= 2"
+text_sha256 = "a2dafac9c7e9fe83f9f4d810c992f7089774dab5dd379aa1678d7fb5efe12089"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003781"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003783"
+skeleton_id = "PRS-00930"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-889"
+claim_id = "C-889"
+claim_refs = ["C-889"]
+step_index = 5
+step_kind = "derivation_step"
+text = "3e-5"
+text_sha256 = "75d8dc5cd9c494ac04af2c75fa0363918959550c12a6de32e619323f88715de5"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["3e-5"]
+key_tokens = []
+depends_on_step_ids = ["DS-003782"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003784"
+skeleton_id = "PRS-00931"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-890"
+claim_id = "C-890"
+claim_refs = ["C-890"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves threshold via cross-multiplication"
+text_sha256 = "da9df3c356a80df39a9a39e9337fcca4260d11737975ad00c32f5040e5fc3293"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "cross", "kernel", "multiplication", "proves", "threshold", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003785"
+skeleton_id = "PRS-00931"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-890"
+claim_id = "C-890"
+claim_refs = ["C-890"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: omega > 1998 with nordtvedt >= 5e-4"
+text_sha256 = "2847f4aad5580f6be596a606ab366650495587e7b6422fe007f2e8a07d429c2f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1998", "5e-4"]
+key_tokens = ["REFUTE", "nordtvedt", "omega"]
+depends_on_step_ids = ["DS-003784"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003786"
+skeleton_id = "PRS-00932"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-891"
+claim_id = "C-891"
+claim_refs = ["C-891"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves threshold via Rabs reduction and cross-multiplication"
+text_sha256 = "6e8837151154f2e7a0c0632b7d08778a896c8e44f175f7d2c7e7c07cbf7b5281"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rabs", "Rocq", "VERIFY", "cross", "kernel", "multiplication", "proves", "reduction", "threshold", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003787"
+skeleton_id = "PRS-00932"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-891"
+claim_id = "C-891"
+claim_refs = ["C-891"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: omega > 177 with"
+text_sha256 = "e2a3502b24c8164a41887ff6d82394a5c1a46df997124d2e09b5959a04ef3797"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["177"]
+key_tokens = ["REFUTE", "omega"]
+depends_on_step_ids = ["DS-003786"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003788"
+skeleton_id = "PRS-00932"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-891"
+claim_id = "C-891"
+claim_refs = ["C-891"]
+step_index = 3
+step_kind = "derivation_step"
+text = "gamma-1"
+text_sha256 = "74cf9225fac68b257f93bc4074685ac507a81ba2fffa7bad5051827b6bb3d306"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["gamma"]
+depends_on_step_ids = ["DS-003787"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003789"
+skeleton_id = "PRS-00932"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-891"
+claim_id = "C-891"
+claim_refs = ["C-891"]
+step_index = 4
+step_kind = "derivation_step"
+text = ">= 5"
+text_sha256 = "f029cb143e514f8c809169f6b6272033710ab70ba79bc8080f918abe25ff450e"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["5"]
+key_tokens = []
+depends_on_step_ids = ["DS-003788"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003790"
+skeleton_id = "PRS-00932"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-891"
+claim_id = "C-891"
+claim_refs = ["C-891"]
+step_index = 5
+step_kind = "derivation_step"
+text = "6e-3"
+text_sha256 = "3c17746fb6908332a14a23b275b0c7157b065acb507244dceade14f6199e3410"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["6e-3"]
+key_tokens = []
+depends_on_step_ids = ["DS-003789"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003791"
+skeleton_id = "PRS-00933"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-892"
+claim_id = "C-892"
+claim_refs = ["C-892"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves (8/45)/(14/45) = 4/7 via field"
+text_sha256 = "1b1087d5d809a3401f653cc9fc69a50dda58d28804a93721dda019ff11dfa2e9"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["14", "4", "45", "7", "8"]
+key_tokens = ["Rocq", "VERIFY", "field", "kernel", "proves", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003792"
+skeleton_id = "PRS-00933"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-892"
+claim_id = "C-892"
+claim_refs = ["C-892"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: a numerical evaluation showing ratio != 4/7"
+text_sha256 = "b71bf23dc2425e38023f93e2ebc150cece8affa68a73348de6e7685ade77f4a2"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["4", "7"]
+key_tokens = ["REFUTE", "evaluation", "numerical", "ratio", "showing"]
+depends_on_step_ids = ["DS-003791"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003793"
+skeleton_id = "PRS-00934"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-893"
+claim_id = "C-893"
+claim_refs = ["C-893"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves complex_mul_comm by destruct/unfold/f_equal/ring"
+text_sha256 = "5207cd326140770c66bdd392fc17977c213495a43a4dcd283db736698db452eb"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "complex_mul_comm", "destruct", "f_equal", "kernel", "proves", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003794"
+skeleton_id = "PRS-00934"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-893"
+claim_id = "C-893"
+claim_refs = ["C-893"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: a complex pair with z*w != w*z"
+text_sha256 = "ac374077a9d6f35fea8ff4f196a3cc10b7d25cb4bfb40ebc50d0cacc242c0301"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "complex", "pair"]
+depends_on_step_ids = ["DS-003793"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003795"
+skeleton_id = "PRS-00935"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-894"
+claim_id = "C-894"
+claim_refs = ["C-894"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves complex_mul_assoc by destruct/unfold/f_equal/ring"
+text_sha256 = "65daec05e5f99304c4fe1b6182e39ef78c68086875fa6794a5b1182fd99d90f1"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "complex_mul_assoc", "destruct", "f_equal", "kernel", "proves", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003796"
+skeleton_id = "PRS-00935"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-894"
+claim_id = "C-894"
+claim_refs = ["C-894"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: a triple with (x*y)*z != x*(y*z)"
+text_sha256 = "4ca3be2d8126ab0ce8de91ca3fe8a46ad6d5008992a439c2ad34401cdab028db"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "triple"]
+depends_on_step_ids = ["DS-003795"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003797"
+skeleton_id = "PRS-00936"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-895"
+claim_id = "C-895"
+claim_refs = ["C-895"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves complex_norm_mul by destruct/unfold/ring"
+text_sha256 = "82c36f907b2a666400c1c17fef9da6ce75cdffd86c945df52dd745cb29908ce4"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "complex_norm_mul", "destruct", "kernel", "proves", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003798"
+skeleton_id = "PRS-00936"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-895"
+claim_id = "C-895"
+claim_refs = ["C-895"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: z, w with"
+text_sha256 = "bf56072a6d54e14121fcab55a9365b437d7ad85b605e6c4741110219d6db00bd"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE"]
+depends_on_step_ids = ["DS-003797"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003799"
+skeleton_id = "PRS-00936"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-895"
+claim_id = "C-895"
+claim_refs = ["C-895"]
+step_index = 3
+step_kind = "derivation_step"
+text = "z*w"
+text_sha256 = "885d704b4fb16691c249dcfddfbd139b8351359f5cf9f0e66bfb576003b97909"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003798"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003800"
+skeleton_id = "PRS-00936"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-895"
+claim_id = "C-895"
+claim_refs = ["C-895"]
+step_index = 4
+step_kind = "derivation_step"
+text = "^2 !="
+text_sha256 = "786201a0168438f78671f9b8792f7752ada784ef789497ce41cd139fecedac44"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003799"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003801"
+skeleton_id = "PRS-00936"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-895"
+claim_id = "C-895"
+claim_refs = ["C-895"]
+step_index = 5
+step_kind = "derivation_step"
+text = "z"
+text_sha256 = "594e519ae499312b29433b7dd8a97ff068defcba9755b6d5d00e84c524d67b06"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003800"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003802"
+skeleton_id = "PRS-00936"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-895"
+claim_id = "C-895"
+claim_refs = ["C-895"]
+step_index = 6
+step_kind = "derivation_step"
+text = "^2*"
+text_sha256 = "a3d545f2831daded72346835e7ae7ca0b01ef5622bb5f4369c7227c2802fdc38"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003801"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003803"
+skeleton_id = "PRS-00936"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-895"
+claim_id = "C-895"
+claim_refs = ["C-895"]
+step_index = 7
+step_kind = "derivation_step"
+text = "w"
+text_sha256 = "50e721e49c013f00c62cf59f2163542a9d8df02464efeb615d31051b0fddc326"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003802"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003804"
+skeleton_id = "PRS-00936"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-895"
+claim_id = "C-895"
+claim_refs = ["C-895"]
+step_index = 8
+step_kind = "derivation_step"
+text = "^2"
+text_sha256 = "a48fd6407e3d9c41d3e0448c0e6d1db6d436c7a8f150ec30e9175d94ba7bc93f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003803"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003805"
+skeleton_id = "PRS-00937"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-896"
+claim_id = "C-896"
+claim_refs = ["C-896"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves complex_conj_antimorphism by destruct/unfold/f_equal/ring"
+text_sha256 = "d4b2aff42101ad8bc51b7b517375078deaf94e760c633026c2badccd61762bef"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "complex_conj_antimorphism", "destruct", "f_equal", "kernel", "proves", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003806"
+skeleton_id = "PRS-00937"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-896"
+claim_id = "C-896"
+claim_refs = ["C-896"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: z, w with conj(z*w) != conj(w)*conj(z)"
+text_sha256 = "cc3f07e96a6784f0d3cbdc30b04013ca061274977e5a5dbe67099f8aed1135d8"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "conj"]
+depends_on_step_ids = ["DS-003805"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003807"
+skeleton_id = "PRS-00938"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-897"
+claim_id = "C-897"
+claim_refs = ["C-897"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_mul_assoc by destruct/unfold/f_equal/ring"
+text_sha256 = "98ef8ee6197bb5a0f3ce139392472314648bac3510d04a37d5538a3007b2423a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "destruct", "f_equal", "kernel", "proves", "quat_mul_assoc", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003808"
+skeleton_id = "PRS-00938"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-897"
+claim_id = "C-897"
+claim_refs = ["C-897"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: a triple with (x*y)*z != x*(y*z)"
+text_sha256 = "4ca3be2d8126ab0ce8de91ca3fe8a46ad6d5008992a439c2ad34401cdab028db"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "triple"]
+depends_on_step_ids = ["DS-003807"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003809"
+skeleton_id = "PRS-00939"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-898"
+claim_id = "C-898"
+claim_refs = ["C-898"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_norm_mul by destruct/unfold/ring"
+text_sha256 = "56f00fdd5167106b1e720978ec807a5a062ec5b120e8a16b8e594ef58c0cd710"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "destruct", "kernel", "proves", "quat_norm_mul", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003810"
+skeleton_id = "PRS-00939"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-898"
+claim_id = "C-898"
+claim_refs = ["C-898"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: p, q with"
+text_sha256 = "b995506e7cc1de21de3e14a9ec8f219002ab0f5e263f418c4efde6779100813f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE"]
+depends_on_step_ids = ["DS-003809"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003811"
+skeleton_id = "PRS-00939"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-898"
+claim_id = "C-898"
+claim_refs = ["C-898"]
+step_index = 3
+step_kind = "derivation_step"
+text = "p*q"
+text_sha256 = "be934b882c84e45c382f0c38b21a1e1b11bb657dd0564351f08e3dc38aa50f09"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003810"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003812"
+skeleton_id = "PRS-00939"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-898"
+claim_id = "C-898"
+claim_refs = ["C-898"]
+step_index = 4
+step_kind = "derivation_step"
+text = "^2 !="
+text_sha256 = "786201a0168438f78671f9b8792f7752ada784ef789497ce41cd139fecedac44"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003811"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003813"
+skeleton_id = "PRS-00939"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-898"
+claim_id = "C-898"
+claim_refs = ["C-898"]
+step_index = 5
+step_kind = "derivation_step"
+text = "p"
+text_sha256 = "148de9c5a7a44d19e56cd9ae1a554bf67847afb0c58f6e12fa29ac7ddfca9940"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003812"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003814"
+skeleton_id = "PRS-00939"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-898"
+claim_id = "C-898"
+claim_refs = ["C-898"]
+step_index = 6
+step_kind = "derivation_step"
+text = "^2*"
+text_sha256 = "a3d545f2831daded72346835e7ae7ca0b01ef5622bb5f4369c7227c2802fdc38"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003813"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003815"
+skeleton_id = "PRS-00939"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-898"
+claim_id = "C-898"
+claim_refs = ["C-898"]
+step_index = 7
+step_kind = "derivation_step"
+text = "q"
+text_sha256 = "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003814"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003816"
+skeleton_id = "PRS-00939"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-898"
+claim_id = "C-898"
+claim_refs = ["C-898"]
+step_index = 8
+step_kind = "derivation_step"
+text = "^2"
+text_sha256 = "a48fd6407e3d9c41d3e0448c0e6d1db6d436c7a8f150ec30e9175d94ba7bc93f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003815"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003817"
+skeleton_id = "PRS-00940"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-899"
+claim_id = "C-899"
+claim_refs = ["C-899"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_conj_antimorphism by destruct/unfold/f_equal/ring"
+text_sha256 = "cc658cd19e2c8ec36ba71b8cfb83dee57dda5bcdae133ec360478370202f4594"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "destruct", "f_equal", "kernel", "proves", "quat_conj_antimorphism", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003818"
+skeleton_id = "PRS-00940"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-899"
+claim_id = "C-899"
+claim_refs = ["C-899"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: p, q with conj(p*q) != conj(q)*conj(p)"
+text_sha256 = "a21fe9a354a0867ae6ae0e29b7adf28b64dbfdf5459ab0a0e2fb694671c3e226"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "conj"]
+depends_on_step_ids = ["DS-003817"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003819"
+skeleton_id = "PRS-00941"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-900"
+claim_id = "C-900"
+claim_refs = ["C-900"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_re_mul_comm by destruct/unfold/ring"
+text_sha256 = "11081517b1b30469f4edcf2c7b49b06fbaa72e0894e37d36a4400ea1f4dc09de"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "destruct", "kernel", "proves", "quat_re_mul_comm", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003820"
+skeleton_id = "PRS-00941"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-900"
+claim_id = "C-900"
+claim_refs = ["C-900"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: p, q with Re(p*q) != Re(q*p)"
+text_sha256 = "8109447612aa8c48adad90e9175b5d4c5445bd1e138ba78420356438238576d2"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "Re"]
+depends_on_step_ids = ["DS-003819"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003821"
+skeleton_id = "PRS-00942"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-901"
+claim_id = "C-901"
+claim_refs = ["C-901"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_quadratic_identity by destruct/unfold/f_equal/ring"
+text_sha256 = "38d3cd30d50b1ec3bc30717074267afcb47340901c7d2b9ffdb8289b97830adc"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "destruct", "f_equal", "kernel", "proves", "quat_quadratic_identity", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003822"
+skeleton_id = "PRS-00942"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-901"
+claim_id = "C-901"
+claim_refs = ["C-901"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: q with q^2 != 2*Re(q)*q -"
+text_sha256 = "7b81515a833e85f7bdea4022ebcadc25ccb6df25be8caaf92cc7af4067006fd0"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = ["REFUTE", "Re"]
+depends_on_step_ids = ["DS-003821"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003823"
+skeleton_id = "PRS-00942"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-901"
+claim_id = "C-901"
+claim_refs = ["C-901"]
+step_index = 3
+step_kind = "derivation_step"
+text = "q"
+text_sha256 = "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003822"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003824"
+skeleton_id = "PRS-00942"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-901"
+claim_id = "C-901"
+claim_refs = ["C-901"]
+step_index = 4
+step_kind = "derivation_step"
+text = "^2"
+text_sha256 = "a48fd6407e3d9c41d3e0448c0e6d1db6d436c7a8f150ec30e9175d94ba7bc93f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003823"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003825"
+skeleton_id = "PRS-00943"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-902"
+claim_id = "C-902"
+claim_refs = ["C-902"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_imaginary_square with hypothesis qa q = 0 by subst/ring"
+text_sha256 = "0d329110cc23a72b1e178bbcc35eae391901c85bc1f1cb0b8493672046c32ffc"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["Rocq", "VERIFY", "hypothesis", "kernel", "proves", "qa", "quat_imaginary_square", "ring", "subst"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003826"
+skeleton_id = "PRS-00943"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-902"
+claim_id = "C-902"
+claim_refs = ["C-902"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: pure q with q^2 != -"
+text_sha256 = "696e0bf749aa09412114537017e2a44453bed80cc594d0fc78ee999046af5722"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = ["REFUTE", "pure"]
+depends_on_step_ids = ["DS-003825"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003827"
+skeleton_id = "PRS-00943"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-902"
+claim_id = "C-902"
+claim_refs = ["C-902"]
+step_index = 3
+step_kind = "derivation_step"
+text = "q"
+text_sha256 = "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003826"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003828"
+skeleton_id = "PRS-00943"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-902"
+claim_id = "C-902"
+claim_refs = ["C-902"]
+step_index = 4
+step_kind = "derivation_step"
+text = "^2"
+text_sha256 = "a48fd6407e3d9c41d3e0448c0e6d1db6d436c7a8f150ec30e9175d94ba7bc93f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003827"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003829"
+skeleton_id = "PRS-00944"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-903"
+claim_id = "C-903"
+claim_refs = ["C-903"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_re_square by destruct/unfold/ring"
+text_sha256 = "6b413ab97debc378f877bcb1c64905bfa12697361ca3131ce6afb17fde548c2a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "destruct", "kernel", "proves", "quat_re_square", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003830"
+skeleton_id = "PRS-00944"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-903"
+claim_id = "C-903"
+claim_refs = ["C-903"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: q with Re(q^2) != 2*Re(q)^2 -"
+text_sha256 = "47ad634ca70bc638a472c528835484abf67409e1e1f4840c072eed2ccc6acaa8"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = ["REFUTE", "Re"]
+depends_on_step_ids = ["DS-003829"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003831"
+skeleton_id = "PRS-00944"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-903"
+claim_id = "C-903"
+claim_refs = ["C-903"]
+step_index = 3
+step_kind = "derivation_step"
+text = "q"
+text_sha256 = "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003830"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003832"
+skeleton_id = "PRS-00944"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-903"
+claim_id = "C-903"
+claim_refs = ["C-903"]
+step_index = 4
+step_kind = "derivation_step"
+text = "^2"
+text_sha256 = "a48fd6407e3d9c41d3e0448c0e6d1db6d436c7a8f150ec30e9175d94ba7bc93f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003831"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003833"
+skeleton_id = "PRS-00945"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-904"
+claim_id = "C-904"
+claim_refs = ["C-904"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_assoc_zero by destruct/unfold/f_equal/ring"
+text_sha256 = "436c1cae23920c55313cfa1389905fc8bc825ae5548bd7ccec1ffff79405893e"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "destruct", "f_equal", "kernel", "proves", "quat_assoc_zero", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003834"
+skeleton_id = "PRS-00945"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-904"
+claim_id = "C-904"
+claim_refs = ["C-904"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: a triple with nonzero associator"
+text_sha256 = "8586138103d8f0b3135d8b0ae32f4d566c17ad3fd273c40858e651e89fd23091"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "associator", "nonzero", "triple"]
+depends_on_step_ids = ["DS-003833"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003835"
+skeleton_id = "PRS-00946"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-905"
+claim_id = "C-905"
+claim_refs = ["C-905"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_jordan by destruct/unfold/f_equal/ring"
+text_sha256 = "56ab93d2746e1e2584e5bc4149f5ded20e1eea6bafea61c782a1295622eac923"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "destruct", "f_equal", "kernel", "proves", "quat_jordan", "ring", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003836"
+skeleton_id = "PRS-00946"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-905"
+claim_id = "C-905"
+claim_refs = ["C-905"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: a pair with (a^2*b)*a != a^2*(b*a)"
+text_sha256 = "c456e99a1e2d90cbfcc867482d034f91e0a6b35b5c4a6648aba97154ce3a20f8"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = ["REFUTE", "pair"]
+depends_on_step_ids = ["DS-003835"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003837"
+skeleton_id = "PRS-00947"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-906"
+claim_id = "C-906"
+claim_refs = ["C-906"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_mul_inv_r and quat_mul_inv_l via field with norm_sq <> 0"
+text_sha256 = "0a21ed1aec841df701d5629e7e67a08f5614c179c6248bdbdf9d4e8683828749"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["Rocq", "VERIFY", "field", "kernel", "norm_sq", "proves", "quat_mul_inv_l", "quat_mul_inv_r", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003838"
+skeleton_id = "PRS-00947"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-906"
+claim_id = "C-906"
+claim_refs = ["C-906"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: nonzero q where inverse formula fails"
+text_sha256 = "b52e113ed3944449202ed6cdc772ab28bd93b1c5be9ca73fd95161aaf906f414"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "fails", "formula", "inverse", "nonzero", "where"]
+depends_on_step_ids = ["DS-003837"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003839"
+skeleton_id = "PRS-00948"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-907"
+claim_id = "C-907"
+claim_refs = ["C-907"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves quat_noncommutative via discriminate on qd component"
+text_sha256 = "1d01098ffaa68d4e86650dfd1240fcd49b57a1bc9547beb2ce156cc9eec4139d"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "component", "discriminate", "kernel", "proves", "qd", "quat_noncommutative", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003840"
+skeleton_id = "PRS-00948"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-907"
+claim_id = "C-907"
+claim_refs = ["C-907"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: i*j = j*i (impossible)"
+text_sha256 = "ff0f8e6d6f18649c2dc6cfbfd870b84fdf9a68026f7397e119412de461278f6d"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "impossible"]
+depends_on_step_ids = ["DS-003839"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003841"
+skeleton_id = "PRS-00949"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-908"
+claim_id = "C-908"
+claim_refs = ["C-908"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves sed_mul sed_zd_a sed_zd_b = sed_zero and both witnesses nonzero"
+text_sha256 = "19d40f81831e44a6b83a19ec3be5a448d003833c5ab07cc8b6df0b46b0d1143d"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "both", "kernel", "nonzero", "proves", "sed_mul", "sed_zd_a", "sed_zd_b", "sed_zero", "witnesses"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003842"
+skeleton_id = "PRS-00949"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-908"
+claim_id = "C-908"
+claim_refs = ["C-908"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: the product being nonzero (impossible)"
+text_sha256 = "bd43db890a099e53d6c98b52772d7c1af289ce6cf60cbfc99d2dc677c2bc22a1"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "being", "impossible", "nonzero", "product"]
+depends_on_step_ids = ["DS-003841"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003843"
+skeleton_id = "PRS-00950"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-909"
+claim_id = "C-909"
+claim_refs = ["C-909"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves non-equality via f_equal oct_hi, f_equal qd, then lra on 1 != -1"
+text_sha256 = "d26da91f2fd14ca7ba3cb61478aa36211c16e86f4968be72feb988f0e022b5e2"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["Rocq", "VERIFY", "equality", "f_equal", "kernel", "lra", "non", "oct_hi", "proves", "qd", "then", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003844"
+skeleton_id = "PRS-00950"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-909"
+claim_id = "C-909"
+claim_refs = ["C-909"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: (e1*e2)*e4 = e1*(e2*e4) (impossible)"
+text_sha256 = "e9f5326f0afa147eaa1e65b7219967c78651965ea71d105a80bbae51199fc1eb"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "e1", "e2", "e4", "impossible"]
+depends_on_step_ids = ["DS-003843"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003845"
+skeleton_id = "PRS-00951"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-910"
+claim_id = "C-910"
+claim_refs = ["C-910"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves oct_left_alternative_e1_e2 by unfold + simpl + f_equal + ring"
+text_sha256 = "30344589173b7a7019c217578cfa77fb7b0d21ded44c3711f165299645d7b46c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "f_equal", "kernel", "oct_left_alternative_e1_e2", "proves", "ring", "simpl", "unfold"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003846"
+skeleton_id = "PRS-00951"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-910"
+claim_id = "C-910"
+claim_refs = ["C-910"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: e1*(e1*e2) != (e1*e1)*e2"
+text_sha256 = "9eb3ae27bd6b7c64a96a4f3223945fb583b556a4db7f5e78525d8704f221c4b2"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "e1", "e2"]
+depends_on_step_ids = ["DS-003845"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003847"
+skeleton_id = "PRS-00952"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-911"
+claim_id = "C-911"
+claim_refs = ["C-911"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves rotation_preserves_norm via unit-constraint substitution and ring"
+text_sha256 = "f1ccfac406c98fe0b14a7884f9fce2d01ee13fd43c21f49c09d6affde1b96bfe"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "constraint", "kernel", "proves", "ring", "rotation_preserves_norm", "substitution", "unit", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003848"
+skeleton_id = "PRS-00952"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-911"
+claim_id = "C-911"
+claim_refs = ["C-911"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: unit q, v with"
+text_sha256 = "853855d4c79043c71506c06ebb05a464b45e4722f24fa4551e2006110da3552c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "unit"]
+depends_on_step_ids = ["DS-003847"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003849"
+skeleton_id = "PRS-00952"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-911"
+claim_id = "C-911"
+claim_refs = ["C-911"]
+step_index = 3
+step_kind = "derivation_step"
+text = "qvq*"
+text_sha256 = "bcbbc33b0e584c58812ad947307ba32bced2790ff13666c828bf779be9dc1431"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["qvq"]
+depends_on_step_ids = ["DS-003848"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003850"
+skeleton_id = "PRS-00952"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-911"
+claim_id = "C-911"
+claim_refs = ["C-911"]
+step_index = 4
+step_kind = "derivation_step"
+text = "^2 !="
+text_sha256 = "786201a0168438f78671f9b8792f7752ada784ef789497ce41cd139fecedac44"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003849"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003851"
+skeleton_id = "PRS-00952"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-911"
+claim_id = "C-911"
+claim_refs = ["C-911"]
+step_index = 5
+step_kind = "derivation_step"
+text = "v"
+text_sha256 = "4c94485e0c21ae6c41ce1dfe7b6bfaceea5ab68e40a2476f50208e526f506080"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-003850"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003852"
+skeleton_id = "PRS-00952"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-911"
+claim_id = "C-911"
+claim_refs = ["C-911"]
+step_index = 6
+step_kind = "derivation_step"
+text = "^2"
+text_sha256 = "a48fd6407e3d9c41d3e0448c0e6d1db6d436c7a8f150ec30e9175d94ba7bc93f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-003851"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003853"
+skeleton_id = "PRS-00953"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-912"
+claim_id = "C-912"
+claim_refs = ["C-912"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves rotation_composition as degree-6 polynomial identity in 11 variables via destruct/unfold/f_equal/ring"
+text_sha256 = "748103b15c0e5f863ea21c087c541d3dab220cd30e283d8a0f12c557b0fed5af"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["11", "6"]
+key_tokens = ["Rocq", "VERIFY", "degree", "destruct", "f_equal", "identity", "kernel", "polynomial", "proves", "ring", "rotation_composition", "unfold", "variables", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003854"
+skeleton_id = "PRS-00953"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-912"
+claim_id = "C-912"
+claim_refs = ["C-912"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: p, q, v with rotation(p, rotation(q, v)) != rotation(p*q, v)"
+text_sha256 = "624430690940ee8eb08aa4e21806f831913bf5c62d25560077073a5be1c2b935"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "rotation"]
+depends_on_step_ids = ["DS-003853"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003855"
+skeleton_id = "PRS-00954"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-913"
+claim_id = "C-913"
+claim_refs = ["C-913"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves tcmt_antiresonance via unfold + field"
+text_sha256 = "6054ceca077cd75fdb39fb28e0eca3a633802b0a5be4d05dbf4c3a87a193f60e"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "field", "kernel", "proves", "tcmt_antiresonance", "unfold", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003856"
+skeleton_id = "PRS-00954"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-913"
+claim_id = "C-913"
+claim_refs = ["C-913"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: T(0, gamma_e, 0) != 0"
+text_sha256 = "c334503188042bb5675852c6834ec4315bbe76358c22b69c09220aae49575cfb"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["REFUTE", "gamma_e"]
+depends_on_step_ids = ["DS-003855"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003857"
+skeleton_id = "PRS-00955"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-914"
+claim_id = "C-914"
+claim_refs = ["C-914"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves tcmt_unitarity_lossless via field with delta^2+gamma_e^2 > 0"
+text_sha256 = "53b6098b0bd3f0f72dcb4f66b204655dfaa6230db7abd644a9448b1e4476fcdf"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "2"]
+key_tokens = ["Rocq", "VERIFY", "delta", "field", "gamma_e", "kernel", "proves", "tcmt_unitarity_lossless", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003858"
+skeleton_id = "PRS-00955"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-914"
+claim_id = "C-914"
+claim_refs = ["C-914"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: delta, gamma_e with T+R != 1"
+text_sha256 = "83150ee6c8a7957a61307d0b6eda38fcdbe39a2957e8afe83b0beb77b0c98cac"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["REFUTE", "delta", "gamma_e"]
+depends_on_step_ids = ["DS-003857"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003859"
+skeleton_id = "PRS-00956"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-915"
+claim_id = "C-915"
+claim_refs = ["C-915"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves binary_entropy_symmetric via unfold + ring"
+text_sha256 = "5ff7e43b23b21cadd935efa5c435a0cfcf8e3a23b2c8d48f7555dd30e178742e"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "binary_entropy_symmetric", "kernel", "proves", "ring", "unfold", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003860"
+skeleton_id = "PRS-00956"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-915"
+claim_id = "C-915"
+claim_refs = ["C-915"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: p with H(p) != H(1-p)"
+text_sha256 = "34b98ee053a4ef23866c159f8b9585b59e70fe629f7f4a9cabefc845a838fc22"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["REFUTE"]
+depends_on_step_ids = ["DS-003859"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003861"
+skeleton_id = "PRS-00957"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-916"
+claim_id = "C-916"
+claim_refs = ["C-916"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves binary_entropy_max_value via unfold + field + ln properties"
+text_sha256 = "146a2d289f9969281248bfcd83775ee31bf62483b254b624a7f82f35a019049a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "binary_entropy_max_value", "field", "kernel", "ln", "properties", "proves", "unfold", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003862"
+skeleton_id = "PRS-00957"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-916"
+claim_id = "C-916"
+claim_refs = ["C-916"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: H(1/2) != ln(2)"
+text_sha256 = "17fcb156eebbc588b79708182415ccfeae230c8edb9ce91b77cb50262d979394"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "2"]
+key_tokens = ["REFUTE", "ln"]
+depends_on_step_ids = ["DS-003861"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003863"
+skeleton_id = "PRS-00958"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-917"
+claim_id = "C-917"
+claim_refs = ["C-917"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves binary_entropy_nonneg via ln monotonicity bounds"
+text_sha256 = "9f95009d9d5286aed96406904f53402b058505a5342b39e57806f18cc9f42a7a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "binary_entropy_nonneg", "bounds", "kernel", "ln", "monotonicity", "proves", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003864"
+skeleton_id = "PRS-00958"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-917"
+claim_id = "C-917"
+claim_refs = ["C-917"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: p in (0,1) with H(p) < 0"
+text_sha256 = "21abe5d945365336153348fbe1cbbb09d2fe119b83ffbf9de07ac1bec5b2218a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "1"]
+key_tokens = ["REFUTE"]
+depends_on_step_ids = ["DS-003863"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003865"
+skeleton_id = "PRS-00959"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-918"
+claim_id = "C-918"
+claim_refs = ["C-918"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves via complex_mul_comm"
+text_sha256 = "51ad5f39231aa72b8979e169ce848232625959cebe98764a2760209682812c93"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "complex_mul_comm", "kernel", "proves", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003866"
+skeleton_id = "PRS-00959"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-918"
+claim_id = "C-918"
+claim_refs = ["C-918"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: z, w with z*w != w*z"
+text_sha256 = "98eb55a6f687baff7c51d80632b9eec886293f3c6d54bd05ff7396546e2022fc"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE"]
+depends_on_step_ids = ["DS-003865"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003867"
+skeleton_id = "PRS-00960"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-919"
+claim_id = "C-919"
+claim_refs = ["C-919"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves via discriminate on qd component"
+text_sha256 = "794177b198d6eb17ef77b0dbde2927c9028bd4456b7a266790d79b65182e2f94"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "component", "discriminate", "kernel", "proves", "qd", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003868"
+skeleton_id = "PRS-00960"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-919"
+claim_id = "C-919"
+claim_refs = ["C-919"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: i*j = j*i"
+text_sha256 = "28f7ce9d328532e330b33fe6f42c95173a95491ad59bcb36d7b3925c30f27d02"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE"]
+depends_on_step_ids = ["DS-003867"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003869"
+skeleton_id = "PRS-00961"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-920"
+claim_id = "C-920"
+claim_refs = ["C-920"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves via quat_mul_assoc"
+text_sha256 = "a0c6ece42ccc018d3b9a0c4c74bc836b0a261ff6e1cfa444a868b29a55245e6d"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Rocq", "VERIFY", "kernel", "proves", "quat_mul_assoc", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003870"
+skeleton_id = "PRS-00961"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-920"
+claim_id = "C-920"
+claim_refs = ["C-920"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: triple with (x*y)*z != x*(y*z)"
+text_sha256 = "bece7bb250ad6a8aee11a9b41a539a45aa70137e916c0018a68da0829bed803f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "triple"]
+depends_on_step_ids = ["DS-003869"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003871"
+skeleton_id = "PRS-00962"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-921"
+claim_id = "C-921"
+claim_refs = ["C-921"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: Rocq kernel proves via C909_octonion_non_associative import"
+text_sha256 = "0ce04d7aca673cc728fe0f2c159c0e30bf25fa13c7c7ece1d71cb5b7f683e98a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["C909_octonion_non_associative", "Rocq", "VERIFY", "import", "kernel", "proves", "via"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003872"
+skeleton_id = "PRS-00962"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-921"
+claim_id = "C-921"
+claim_refs = ["C-921"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: (e1*e2)*e4 = e1*(e2*e4)"
+text_sha256 = "9ff9630c2574871540abbd012be7eb2ded15a061636a592150c4c489c20d963b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "e1", "e2", "e4"]
+depends_on_step_ids = ["DS-003871"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003873"
+skeleton_id = "PRS-00963"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-922"
+claim_id = "C-922"
+claim_refs = ["C-922"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: d_s(t) plateau values computed and consistent across reruns"
+text_sha256 = "d669c098b2634b8f238305dfa507452e5fb145115dbfb535258e170253dd7543"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["VERIFY", "across", "computed", "consistent", "d_s", "plateau", "reruns", "values"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003874"
+skeleton_id = "PRS-00963"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-922"
+claim_id = "C-922"
+claim_refs = ["C-922"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: no stable plateau found at any dimension"
+text_sha256 = "e96591c19216a77f3c795e845a8dc7e7753ecab2173c51aa70ca5f205b3396c4"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "any", "dimension", "found", "no", "plateau", "stable"]
+depends_on_step_ids = ["DS-003873"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003875"
+skeleton_id = "PRS-00964"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-923"
+claim_id = "C-923"
+claim_refs = ["C-923"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: monotonic increase in plateau d_s with CD dimension"
+text_sha256 = "a20861426263a930e4b9bafc4eecddb08c155a91758c02bfa150fb47838a8a0b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["CD", "VERIFY", "d_s", "dimension", "increase", "monotonic", "plateau"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003876"
+skeleton_id = "PRS-00964"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-923"
+claim_id = "C-923"
+claim_refs = ["C-923"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: non-monotonic or constant plateau values"
+text_sha256 = "22cd135451e4b2860b1893ae96bd7b2881cb80f2aab3807041c609973f0dd1d5"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "constant", "monotonic", "non", "plateau", "values"]
+depends_on_step_ids = ["DS-003875"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003877"
+skeleton_id = "PRS-00965"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-924"
+claim_id = "C-924"
+claim_refs = ["C-924"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: bound holds for dim = 16, 32, 64"
+text_sha256 = "4989bddb64aed1e400843cc207fc24a8e0a10bc316a990e4205cadc8dfe5df84"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["16", "32", "64"]
+key_tokens = ["VERIFY", "bound", "dim", "holds"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003878"
+skeleton_id = "PRS-00965"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-924"
+claim_id = "C-924"
+claim_refs = ["C-924"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: entropy exceeds bound at some dimension"
+text_sha256 = "afb35e32f7f5d3123dc625a147fc0e9dc64608da321001600bbd48127e070341"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "bound", "dimension", "entropy", "exceeds", "some"]
+depends_on_step_ids = ["DS-003877"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003879"
+skeleton_id = "PRS-00966"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-925"
+claim_id = "C-925"
+claim_refs = ["C-925"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: invert_entropy_bridge(gamma_BG) returns None"
+text_sha256 = "08430fa6a8573e3ace88a66c8b7961b5c80753aec95bb9a0f6c00cb5756991fc"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["None", "VERIFY", "gamma_BG", "invert_entropy_bridge", "returns"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003880"
+skeleton_id = "PRS-00966"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-925"
+claim_id = "C-925"
+claim_refs = ["C-925"]
+step_index = 2
+step_kind = "derivation_step"
+text = "invert_entropy_bridge(gamma_NZJ) returns phi near 3/8"
+text_sha256 = "e42919817f95f052f85c41a64520b3e281d458f418fac8980212dde15aaa4177"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["3", "8"]
+key_tokens = ["gamma_NZJ", "invert_entropy_bridge", "near", "phi", "returns"]
+depends_on_step_ids = ["DS-003879"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003881"
+skeleton_id = "PRS-00966"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-925"
+claim_id = "C-925"
+claim_refs = ["C-925"]
+step_index = 3
+step_kind = "derivation_step"
+text = "REFUTE: gamma_BG is invertible"
+text_sha256 = "ef98dd8ff9ca1292fbcb9f83302d7cb7fe87c0bbf28375d1f8c0afe8d2e9a914"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "gamma_BG", "invertible"]
+depends_on_step_ids = ["DS-003880"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003882"
+skeleton_id = "PRS-00967"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-926"
+claim_id = "C-926"
+claim_refs = ["C-926"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: spectral_gap_census() returns is_expander=true for all dims 16-512"
+text_sha256 = "f505fa8ef5f017cf5243963f2c7b74d8486bd10e37427fcec097d5451c7147d2"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["16", "512"]
+key_tokens = ["VERIFY", "all", "dims", "is_expander", "returns", "spectral_gap_census", "true"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003883"
+skeleton_id = "PRS-00967"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-926"
+claim_id = "C-926"
+claim_refs = ["C-926"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: some dimension has gap_ratio below 1/(2n)"
+text_sha256 = "d17cb934c9a0195939e637349078ea6f5412ba2bc00a56a984241fea304e67b5"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["REFUTE", "below", "dimension", "gap_ratio", "has", "some"]
+depends_on_step_ids = ["DS-003882"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003884"
+skeleton_id = "PRS-00968"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-927"
+claim_id = "C-927"
+claim_refs = ["C-927"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: decompose_entropy_adaptive(32,"
+text_sha256 = "d2c1d2a3ba26fdb8d925bb2a2818e93cc83b33092cc9ab11c8565382bfcee3af"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["32"]
+key_tokens = ["VERIFY", "decompose_entropy_adaptive"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003885"
+skeleton_id = "PRS-00968"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-927"
+claim_id = "C-927"
+claim_refs = ["C-927"]
+step_index = 2
+step_kind = "derivation_step"
+text = ") yields near_frac < 1"
+text_sha256 = "1c52fd81e5079c58becde25a1ee60debacac51c7d2d6be7e990fdfb231a02709"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["near_frac", "yields"]
+depends_on_step_ids = ["DS-003884"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003886"
+skeleton_id = "PRS-00968"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-927"
+claim_id = "C-927"
+claim_refs = ["C-927"]
+step_index = 3
+step_kind = "derivation_step"
+text = "0"
+text_sha256 = "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = []
+depends_on_step_ids = ["DS-003885"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003887"
+skeleton_id = "PRS-00968"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-927"
+claim_id = "C-927"
+claim_refs = ["C-927"]
+step_index = 4
+step_kind = "derivation_step"
+text = "REFUTE: adaptive threshold still saturates"
+text_sha256 = "41fcc90ee928ca3078c94e309c18c5eb30ba358c5d8c7024e1ef0cfc21f375f2"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "adaptive", "saturates", "still", "threshold"]
+depends_on_step_ids = ["DS-003886"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003888"
+skeleton_id = "PRS-00969"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-928"
+claim_id = "C-928"
+claim_refs = ["C-928"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: sweep phi in (0,1) shows gamma <= GAMMA_MAX"
+text_sha256 = "8272800e46b4b3658bedbfadbd7653657ad444f00a8319ffb07051e134c0033c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "1"]
+key_tokens = ["GAMMA_MAX", "VERIFY", "gamma", "phi", "shows", "sweep"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003889"
+skeleton_id = "PRS-00969"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-928"
+claim_id = "C-928"
+claim_refs = ["C-928"]
+step_index = 2
+step_kind = "derivation_step"
+text = "gamma_NZJ < GAMMA_MAX < gamma_BG"
+text_sha256 = "3a9eccfff68e0565dbfcb72db3d15f8cb5218874596e07cad8192744bf515a63"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["GAMMA_MAX", "gamma_BG", "gamma_NZJ"]
+depends_on_step_ids = ["DS-003888"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003890"
+skeleton_id = "PRS-00969"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-928"
+claim_id = "C-928"
+claim_refs = ["C-928"]
+step_index = 3
+step_kind = "derivation_step"
+text = "REFUTE: some phi gives gamma > GAMMA_MAX"
+text_sha256 = "a44d1291e376e4b068ec0d2ea5376381001c6a7d79295c2af7550d8827717c5e"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["GAMMA_MAX", "REFUTE", "gamma", "gives", "phi", "some"]
+depends_on_step_ids = ["DS-003889"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003891"
+skeleton_id = "PRS-00970"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-929"
+claim_id = "C-929"
+claim_refs = ["C-929"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: nnsd_census([128,256]) returns brody_q < 0"
+text_sha256 = "1dd702656f30a3e8407e50c3e119ed92249219d67017a9562fe1a095c0abfbe0"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "128", "256"]
+key_tokens = ["VERIFY", "brody_q", "nnsd_census", "returns"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003892"
+skeleton_id = "PRS-00970"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-929"
+claim_id = "C-929"
+claim_refs = ["C-929"]
+step_index = 2
+step_kind = "derivation_step"
+text = "1 and verdict=DegenerateIntegrable for all dims"
+text_sha256 = "3f4ff632cf9d586ef017e37c38170254243d6d8ad1b176820094e3667f682f96"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["DegenerateIntegrable", "all", "dims", "verdict"]
+depends_on_step_ids = ["DS-003891"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003893"
+skeleton_id = "PRS-00970"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-929"
+claim_id = "C-929"
+claim_refs = ["C-929"]
+step_index = 3
+step_kind = "derivation_step"
+text = "REFUTE: some dimension shows q > 0"
+text_sha256 = "abac4746001a06f8682cd3d1740f536ec5420255220567e0fd68ebb5cf043099"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["REFUTE", "dimension", "shows", "some"]
+depends_on_step_ids = ["DS-003892"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003894"
+skeleton_id = "PRS-00970"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-929"
+claim_id = "C-929"
+claim_refs = ["C-929"]
+step_index = 4
+step_kind = "derivation_step"
+text = "3 (Intermediate or GOE) or variance near 1"
+text_sha256 = "55272b17dc6c0006b85a7621c174a2fd1e484c3c3cb722a097b1e91ad617e512"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "3"]
+key_tokens = ["GOE", "Intermediate", "near", "variance"]
+depends_on_step_ids = ["DS-003893"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003895"
+skeleton_id = "PRS-00970"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-929"
+claim_id = "C-929"
+claim_refs = ["C-929"]
+step_index = 5
+step_kind = "derivation_step"
+text = "0 (generic Poisson)"
+text_sha256 = "f68de3302cbe02613893458e0764b0fc766d70febd8d3f5f72a0c58aa7470862"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["Poisson", "generic"]
+depends_on_step_ids = ["DS-003894"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003896"
+skeleton_id = "PRS-00971"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-930"
+claim_id = "C-930"
+claim_refs = ["C-930"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: nnsd_by_motif_class(128) returns brody_q < 0"
+text_sha256 = "1ef0741201800fd76c39cf18b4bdeff7a73cc1f1718976c3f0957e19b7b9d40d"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "128"]
+key_tokens = ["VERIFY", "brody_q", "nnsd_by_motif_class", "returns"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003897"
+skeleton_id = "PRS-00971"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-930"
+claim_id = "C-930"
+claim_refs = ["C-930"]
+step_index = 2
+step_kind = "derivation_step"
+text = "1 and verdict=DegenerateIntegrable for all 8 classes"
+text_sha256 = "f470e68f3dfc7ecc865fb01eac823efdbd0ee41fb09e8c52a9797e9e9d211b12"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "8"]
+key_tokens = ["DegenerateIntegrable", "all", "classes", "verdict"]
+depends_on_step_ids = ["DS-003896"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003898"
+skeleton_id = "PRS-00971"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-930"
+claim_id = "C-930"
+claim_refs = ["C-930"]
+step_index = 3
+step_kind = "derivation_step"
+text = "REFUTE: some motif class shows q > 0"
+text_sha256 = "6b6c27a0213c9325c0520ff0b0b913b54120874b8c91fe6c03e9b0b5cb28aa58"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["REFUTE", "class", "motif", "shows", "some"]
+depends_on_step_ids = ["DS-003897"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003899"
+skeleton_id = "PRS-00971"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-930"
+claim_id = "C-930"
+claim_refs = ["C-930"]
+step_index = 4
+step_kind = "derivation_step"
+text = "3 or variance near 1"
+text_sha256 = "75d61092679126f96f2a1a98b9c85ba90f9f46dad2b19aea1a0d4e98a7f12923"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "3"]
+key_tokens = ["near", "variance"]
+depends_on_step_ids = ["DS-003898"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003900"
+skeleton_id = "PRS-00971"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-930"
+claim_id = "C-930"
+claim_refs = ["C-930"]
+step_index = 5
+step_kind = "derivation_step"
+text = "0"
+text_sha256 = "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = []
+depends_on_step_ids = ["DS-003899"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003901"
+skeleton_id = "PRS-00972"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-931"
+claim_id = "C-931"
+claim_refs = ["C-931"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: heat_kernel_k22(0,k)=1 and spectral_dimension_k22(0,k)=0 for all k, with P(100)->1/(2k)"
+text_sha256 = "076891f25f9c08411aefed2dc56b69462a5aa322131fd957979cc7fbfc6c1e7d"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "1", "100"]
+key_tokens = ["VERIFY", "all", "heat_kernel_k22", "spectral_dimension_k22"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003902"
+skeleton_id = "PRS-00972"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-931"
+claim_id = "C-931"
+claim_refs = ["C-931"]
+step_index = 2
+step_kind = "derivation_step"
+text = "REFUTE: numerical eigenvalue decomposition of the actual K_{2,2,"
+text_sha256 = "58efc23a9c67f8f661944559eec877c4e9b2f2cb8ee70f570905baf45b7fa225"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = ["K_", "REFUTE", "actual", "decomposition", "eigenvalue", "numerical"]
+depends_on_step_ids = ["DS-003901"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003903"
+skeleton_id = "PRS-00972"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-931"
+claim_id = "C-931"
+claim_refs = ["C-931"]
+step_index = 3
+step_kind = "derivation_step"
+text = ",2} Laplacian gives different eigenvalues than mu_1=2(k-1), mu_2=2k"
+text_sha256 = "bb38de69f72b69f6caf6639246ddf454fbd2f8531b1d85a183812de91683fdca"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "2"]
+key_tokens = ["Laplacian", "different", "eigenvalues", "gives", "mu_1", "mu_2", "than"]
+depends_on_step_ids = ["DS-003902"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003904"
+skeleton_id = "PRS-00973"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-932"
+claim_id = "C-932"
+claim_refs = ["C-932"]
+step_index = 1
+step_kind = "derivation_step"
+text = "VERIFY: run orthoplex-cosmo-fit --skip-download --k 63 --fixed_beta, confirm delta-BIC < 0 and w(0) in [-0"
+text_sha256 = "6c6e7df188a1bdf54430f10974bc8010b77cd8e40489e0828f7320fc419fd9d8"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "63"]
+key_tokens = ["BIC", "VERIFY", "confirm", "cosmo", "delta", "download", "fit", "fixed_beta", "orthoplex", "run", "skip"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003905"
+skeleton_id = "PRS-00973"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-932"
+claim_id = "C-932"
+claim_refs = ["C-932"]
+step_index = 2
+step_kind = "derivation_step"
+text = "8, -0"
+text_sha256 = "078d560eeca4913e482181d399b37e8f29dac63cc07d44184b528019f31db20a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "8"]
+key_tokens = []
+depends_on_step_ids = ["DS-003904"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003906"
+skeleton_id = "PRS-00973"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-932"
+claim_id = "C-932"
+claim_refs = ["C-932"]
+step_index = 3
+step_kind = "derivation_step"
+text = "6]"
+text_sha256 = "00c6e21dfd952606936a31ebaed5164ccfbd5596df0532e4813554dde1e35857"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["6"]
+key_tokens = []
+depends_on_step_ids = ["DS-003905"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-003907"
+skeleton_id = "PRS-00973"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-932"
+claim_id = "C-932"
+claim_refs = ["C-932"]
+step_index = 4
+step_kind = "derivation_step"
+text = "REFUTE: delta-BIC > +10 or optimizer fails to converge"
+text_sha256 = "ea8b6f0fef99675dad045dbdf268c1ff3245b70529b4fcacce3512533e2a1ace"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["10"]
+key_tokens = ["BIC", "REFUTE", "converge", "delta", "fails", "optimizer"]
+depends_on_step_ids = ["DS-003906"]
 line_start = 0
 line_end = 0
 

@@ -10,14 +10,14 @@ edge_count = 2086
 id = "CED-00001"
 claim_id = "C-001"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-00002"
 claim_id = "C-001"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -668,14 +668,14 @@ target_kind = "rust_source_path"
 id = "CED-00095"
 claim_id = "C-011"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs"
+target_ref = "crates/gororoba_cli/tests/integration_gravastar.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-00096"
 claim_id = "C-011"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli/tests/integration_gravastar.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -1004,7 +1004,7 @@ target_kind = "markdown_path"
 id = "CED-00143"
 claim_id = "C-016"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/m3.rs"
+target_ref = "crates/algebra_core/src/physics/m3.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -2453,14 +2453,14 @@ target_kind = "rust_source_path"
 id = "CED-00350"
 claim_id = "C-055"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-00351"
 claim_id = "C-055"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -12435,14 +12435,14 @@ target_kind = "rust_source_path"
 id = "CED-01776"
 claim_id = "C-573"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/imbalance.rs"
+target_ref = "crates/algebra_core/src/gpu/graph_construction.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01777"
 claim_id = "C-573"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/graph_construction.rs"
+target_ref = "crates/algebra_core/src/gpu/imbalance.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -13212,14 +13212,14 @@ target_kind = "markdown_path"
 id = "CED-01887"
 claim_id = "C-640"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "crates/algebra_core/src/construction/tessarines.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01888"
 claim_id = "C-640"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
 target_kind = "rust_source_path"
 
 [[edge]]

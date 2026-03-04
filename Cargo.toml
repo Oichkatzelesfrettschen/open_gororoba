@@ -2,6 +2,9 @@
 # Cargo is the authoritative workflow surface for Rust operations.
 # Add operational entrypoints as Rust binaries in workspace crates.
 
+# Enable Cranelift codegen backend for dev/test profiles (fast compile, no LLVM).
+cargo-features = ["codegen-backend"]
+
 [workspace.package]
 edition = "2024"
 license = "GPL-2.0-only"
@@ -220,26 +223,33 @@ all = { level = "warn", priority = -1 }
 [workspace.lints.rust]
 warnings = "deny"
 
-# Development: fast iteration with good optimization and full debug info.
-# Thin LTO provides ~95% of fat LTO's cross-crate optimization at ~3x faster link.
-# For bit-exact numerical parity with release: cargo build --profile=parity
+# Development: fast iteration. Cranelift backend skips LLVM passes for sub-minute
+# cold builds. Use 'cargo build --profile parity' for release-level numerical parity.
+# NOTE: Cranelift does not emit FMA/auto-vectorized code; IEEE 754 results may differ
+# from release by ~1 ULP. Use 'cargo test --profile parity' for strict FP validation.
+# CGU=16 saturates the 12-thread CPU (Ryzen 5 5600X3D) without thrashing.
+# 256 CGUs caused OS-level thread thrashing with multiple crates compiling in parallel.
 [profile.dev]
-opt-level = 3              # numerical consistency with release
-debug = "full"             # maximal DWARF info for gdb/lldb/flamegraph/perf
-strip = "none"             # keep all symbols for profiling
-lto = "thin"               # fast cross-crate optimization (was: "fat")
-codegen-units = 16         # parallel codegen within crates (was: 1)
-incremental = true         # now actually effective with thin LTO
-overflow-checks = true     # catch integer overflow bugs at runtime
-debug-assertions = true    # catch debug_assert! failures
-panic = "unwind"           # keep unwind semantics for catch_unwind call-sites
-
-# Test: aligned with dev profile for consistent behavior under test harness.
-[profile.test]
-opt-level = 3
-lto = "thin"               # match dev profile (was: inherited fat LTO)
-codegen-units = 16         # match dev profile
+opt-level = 2              # Cranelift max; does not support opt-level 3
+debug = "full"             # maximal DWARF for gdb/lldb/flamegraph/perf
+strip = "none"
+lto = "off"                # Cranelift does not support LTO (LLVM-only)
+codegen-units = 16         # saturates 12-thread CPU; 256 causes thrashing
 incremental = true
+overflow-checks = true
+debug-assertions = true
+panic = "unwind"
+codegen-backend = "cranelift"
+
+# Test: fast compile iteration. Cranelift for sub-minute cold test builds.
+# For numerically-sensitive tests: cargo test --profile parity
+[profile.test]
+opt-level = 1              # Cranelift: opt-level 1 inlines generics, enough for tests
+lto = "off"                # Cranelift does not support LTO
+codegen-units = 16         # saturates 12-thread CPU without thrashing
+incremental = true
+overflow-checks = true
+codegen-backend = "cranelift"
 
 # Release: maximum optimization, no debug data, stripped for distribution.
 # Use for final binaries, benchmarks against baselines, and published artifacts.
@@ -260,11 +270,14 @@ lto = "fat"                 # benchmark against production-optimized code paths
 codegen-units = 1           # single codegen for consistent benchmark results
 
 # Parity: bit-exact numerical match with release for validation.
+# Uses LLVM (codegen-backend = "llvm" overrides dev's cranelift).
+# inherits = "dev" propagates cranelift; must explicitly override here.
 # Use: cargo build --profile=parity -p <crate>
 # Use: cargo test --profile=parity -p <crate>
 [profile.parity]
 inherits = "dev"
-opt-level = 3
+opt-level = 3              # LLVM opt-level 3 for release parity
 lto = "fat"                # full cross-crate LTO for exact release parity
 codegen-units = 1          # single codegen unit for deterministic output
 incremental = false        # do not pollute cache with LTO artifacts
+codegen-backend = "llvm"   # override dev cranelift; LTO requires LLVM

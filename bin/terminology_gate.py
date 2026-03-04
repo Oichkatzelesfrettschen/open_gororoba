@@ -43,6 +43,10 @@ SKIP_EXTENSIONS = frozenset({
 SKIP_NAMES = frozenset({
     "Cargo.lock",
     "terminology_gate.py",  # do not scan ourselves
+    # Generated TOML mirrors -- terminology must be enforced in the source docs,
+    # not in machine-generated provenance payloads that embed "where_stated" paths.
+    "markdown_payload_chunks.toml",
+    "markdown_payloads.toml",
 })
 
 SKIP_SUFFIXES = (
