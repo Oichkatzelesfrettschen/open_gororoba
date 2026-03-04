@@ -175,6 +175,8 @@ pub fn extract_epsilon_straggling(
         n_spectral: n,
     }
 }
+
+/// Brent's method for 1D minimization on [a, b].
 /// Returns (x_min, f_min).
 fn brent_minimize<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, tol: f64) -> (f64, f64) {
     let golden = 0.381966011250105; // (3 - sqrt(5)) / 2

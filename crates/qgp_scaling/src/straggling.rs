@@ -71,6 +71,21 @@ pub fn straggling_sigma(epsilon_bar: f64, kappa: f64) -> f64 {
 /// * `sigma`       – straggling width σ (GeV); pass 0 for the sharp limit
 #[must_use]
 pub fn r_aa_straggling(pt: f64, epsilon_bar: f64, n: f64, sigma: f64) -> f64 {
+    let gl = GaussLegendre::new(N_GL).expect("GL quadrature init");
+    r_aa_straggling_with_gl(pt, epsilon_bar, n, sigma, &gl)
+}
+
+/// Inner implementation that reuses a pre-constructed [`GaussLegendre`] object.
+///
+/// This avoids reconstructing the quadrature nodes on every call when
+/// evaluating on a grid (see [`StragglingGrid::new`]).
+fn r_aa_straggling_with_gl(
+    pt: f64,
+    epsilon_bar: f64,
+    n: f64,
+    sigma: f64,
+    gl: &GaussLegendre,
+) -> f64 {
     if pt <= 0.0 || epsilon_bar < 0.0 {
         return 0.0;
     }
@@ -100,8 +115,6 @@ pub fn r_aa_straggling(pt: f64, epsilon_bar: f64, n: f64, sigma: f64) -> f64 {
 
     let two_sigma_sq = 2.0 * sigma * sigma;
     let norm = (std::f64::consts::TAU * sigma * sigma).sqrt().recip();
-
-    let gl = GaussLegendre::new(N_GL).expect("GL quadrature init");
 
     let integrand = |eps: f64| {
         // Gaussian weight
@@ -189,7 +202,8 @@ impl StragglingGrid {
             })
             .collect();
 
-        // Precompute the table
+        // Precompute the table, constructing the GL object once for all grid evaluations
+        let gl = GaussLegendre::new(N_GL).expect("GL quadrature init");
         let raa_values: Vec<Vec<f64>> = pt_grid
             .iter()
             .map(|&pt| {
@@ -197,7 +211,7 @@ impl StragglingGrid {
                     .iter()
                     .map(|&eps_bar| {
                         let sigma = straggling_sigma(eps_bar, kappa);
-                        r_aa_straggling(pt, eps_bar, n_spectral, sigma)
+                        r_aa_straggling_with_gl(pt, eps_bar, n_spectral, sigma, &gl)
                     })
                     .collect()
             })
