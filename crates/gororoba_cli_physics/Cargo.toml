@@ -32,11 +32,15 @@ path = "src/bin/lattice_hawking_sweep.rs"
 name = "ppn-bound-sweep"
 path = "src/bin/ppn_bound_sweep.rs"
 
-# ---- Cosmology (5) ----
+# ---- Cosmology (6) ----
 
 [[bin]]
 name = "real-cosmo-fit"
 path = "src/bin/real_cosmo_fit.rs"
+
+[[bin]]
+name = "orthoplex-cosmo-fit"
+path = "src/bin/orthoplex_cosmo_fit.rs"
 
 [[bin]]
 name = "cosmic-dendrogram"
