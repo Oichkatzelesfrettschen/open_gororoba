@@ -251,6 +251,15 @@ incremental = true
 overflow-checks = true
 codegen-backend = "cranelift"
 
+# gororoba_py is a cdylib (Python extension module); pyo3 requires Python symbols
+# at link time. Cranelift's test harness binary path omits -lpython, so we revert
+# this single crate to LLVM for dev and test to preserve linkage.
+[profile.dev.package.gororoba_py]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_py]
+codegen-backend = "llvm"
+
 # Release: maximum optimization, no debug data, stripped for distribution.
 # Use for final binaries, benchmarks against baselines, and published artifacts.
 [profile.release]
