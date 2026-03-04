@@ -115,9 +115,9 @@ pub use homotopy_bridge::{
 };
 
 pub use halo::{
-    CDG2_DM_FRACTION_MIN, CDG2_STELLAR_MASS_SOLAR, DELTA_C, PERSEUS_Z, linear_growth_factor,
-    nfw_density, nfw_enclosed_mass, nfw_velocity_dispersion, press_schechter_mass_function,
-    press_schechter_orthoplex, sigma_mass, udg_abundance_ratio,
+    CDG2_DM_FRACTION_MIN, CDG2_STELLAR_MASS_SOLAR, DELTA_C, PERSEUS_Z, bbks_transfer,
+    linear_growth_factor, nfw_density, nfw_enclosed_mass, nfw_velocity_dispersion,
+    press_schechter_mass_function, press_schechter_orthoplex, sigma_mass, udg_abundance_ratio,
 };
 
 pub use flrw::{

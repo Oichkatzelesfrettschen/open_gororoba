@@ -82,7 +82,7 @@ const RHO_CRIT_MPC: f64 = 2.775e11;
 ///
 /// Shape parameter q = k/Ω_m with k in Mpc⁻¹ (h = 1 convention).
 /// T → 1 for small k (large scales), suppressed for large k (small scales).
-fn bbks_transfer(k_mpc: f64, omega_m: f64) -> f64 {
+pub fn bbks_transfer(k_mpc: f64, omega_m: f64) -> f64 {
     if omega_m <= 0.0 || k_mpc <= 0.0 {
         return 1.0;
     }
@@ -111,7 +111,7 @@ fn bbks_transfer(k_mpc: f64, omega_m: f64) -> f64 {
 /// Uses the Taylor expansion 1 − x²/10 for |x| < 10⁻³ to avoid cancellation.
 #[inline]
 fn top_hat_window(x: f64) -> f64 {
-    if x < 1e-3 {
+    if x.abs() < 1e-3 {
         1.0 - x * x / 10.0
     } else {
         3.0 * (x.sin() - x * x.cos()) / (x * x * x)
@@ -170,13 +170,39 @@ fn mass_to_radius_mpc(mass_solar: f64, omega_m: f64) -> f64 {
 /// # Returns
 /// σ(M) at z = 0 (dimensionless)
 pub fn sigma_mass(mass_solar: f64, omega_m: f64, sigma8: f64, ns: f64) -> f64 {
+    if mass_solar <= 0.0
+        || omega_m <= 0.0
+        || sigma8 < 0.0
+        || !mass_solar.is_finite()
+        || !omega_m.is_finite()
+        || !sigma8.is_finite()
+        || !ns.is_finite()
+    {
+        return 0.0;
+    }
     const R8: f64 = 8.0; // Mpc (= 8 h⁻¹ Mpc at h = 1)
-    let r = mass_to_radius_mpc(mass_solar, omega_m);
-    let i_r = sigma_sq_integral(r, omega_m, ns);
     let i_r8 = sigma_sq_integral(R8, omega_m, ns);
     if i_r8 <= 0.0 {
         return sigma8;
     }
+    sigma_mass_inner(mass_solar, omega_m, sigma8, ns, i_r8)
+}
+
+/// Internal helper: σ(M) given precomputed `i_r8 = I(8 Mpc)`.
+///
+/// # Parameters
+/// - `mass_solar`: Halo mass in M☉
+/// - `omega_m`: Dimensionless matter density Ω_m
+/// - `sigma8`: σ₈ normalization at z = 0
+/// - `ns`: Primordial spectral index
+/// - `i_r8`: Precomputed unnormalized power integral I(R₈ = 8 Mpc, ω_m, nₛ).
+///   Pass the value returned by `sigma_sq_integral(8.0, omega_m, ns)`.
+///   Providing this avoids recomputing the expensive GL integration every call
+///   when multiple masses are evaluated under the same cosmology.
+#[inline]
+fn sigma_mass_inner(mass_solar: f64, omega_m: f64, sigma8: f64, ns: f64, i_r8: f64) -> f64 {
+    let r = mass_to_radius_mpc(mass_solar, omega_m);
+    let i_r = sigma_sq_integral(r, omega_m, ns);
     sigma8 * (i_r / i_r8).sqrt()
 }
 
@@ -232,11 +258,41 @@ pub fn press_schechter_mass_function<F: Fn(f64) -> f64>(
         return 0.0;
     }
 
-    // Growth factor D(z)/D(0)
     let d_z = linear_growth_factor(z, omega_m, e_func);
+    let i_r8 = sigma_sq_integral(8.0, omega_m, ns);
+    if i_r8 <= 0.0 {
+        return 0.0;
+    }
+    press_schechter_inner(mass_solar, d_z, omega_m, sigma8, ns, i_r8)
+}
 
-    // σ(M) at z = 0, then evolved to redshift z
-    let sigma_m0 = sigma_mass(mass_solar, omega_m, sigma8, ns);
+/// Internal helper: PS dn/dM given precomputed growth factor `d_z = D(z)/D(0)`
+/// and normalization `i_r8 = I(8 Mpc)`.
+///
+/// Separating the pre-computation from the mass evaluation avoids re-running
+/// the RK4 growth ODE and the R₈ normalization integral for every quadrature
+/// node inside `udg_abundance_ratio`.
+///
+/// # Parameters
+/// - `mass_solar`: Halo mass in M☉
+/// - `d_z`: Precomputed linear growth factor D(z)/D(0)
+/// - `omega_m`: Dimensionless matter density Ω_m
+/// - `sigma8`: σ₈ normalization at z = 0
+/// - `ns`: Primordial spectral index
+/// - `i_r8`: Precomputed normalization integral I(R₈ = 8 Mpc, ω_m, nₛ)
+fn press_schechter_inner(
+    mass_solar: f64,
+    d_z: f64,
+    omega_m: f64,
+    sigma8: f64,
+    ns: f64,
+    i_r8: f64,
+) -> f64 {
+    if mass_solar <= 0.0 {
+        return 0.0;
+    }
+
+    let sigma_m0 = sigma_mass_inner(mass_solar, omega_m, sigma8, ns, i_r8);
     let sigma_m = sigma_m0 * d_z;
     if sigma_m <= 0.0 {
         return 0.0;
@@ -244,8 +300,10 @@ pub fn press_schechter_mass_function<F: Fn(f64) -> f64>(
 
     // Central-difference derivative dσ/dM (1% mass perturbation)
     let eps = 0.01;
-    let sigma_plus = sigma_mass(mass_solar * (1.0 + eps), omega_m, sigma8, ns) * d_z;
-    let sigma_minus = sigma_mass(mass_solar * (1.0 - eps), omega_m, sigma8, ns) * d_z;
+    let sigma_plus =
+        sigma_mass_inner(mass_solar * (1.0 + eps), omega_m, sigma8, ns, i_r8) * d_z;
+    let sigma_minus =
+        sigma_mass_inner(mass_solar * (1.0 - eps), omega_m, sigma8, ns, i_r8) * d_z;
     let dsigma_dm = (sigma_plus - sigma_minus) / (2.0 * eps * mass_solar);
 
     // Mean comoving matter density (M☉ Mpc⁻³)
@@ -337,6 +395,13 @@ pub fn udg_abundance_ratio(
         return 1.0;
     }
 
+    // Precompute the R₈ normalization integral once — shared by both models
+    // since it depends only on omega_m and ns (not on the dark energy model).
+    let i_r8 = sigma_sq_integral(8.0, omega_m, ns);
+    if i_r8 <= 0.0 {
+        return 1.0;
+    }
+
     // Integrate in log-mass space: M = exp(u), dM = M du
     let u_lo = m_lo.ln();
     let u_hi = m_hi.ln();
@@ -344,10 +409,14 @@ pub fn udg_abundance_ratio(
     let e_ortho = |zp: f64| hubble_e_orthoplex(zp, omega_m, k, alpha, beta, t_0);
     let e_lcdm = |zp: f64| hubble_e_lcdm(zp, omega_m);
 
+    // Precompute growth factors (one RK4 sweep per model, not one per GL node)
+    let d_ortho = linear_growth_factor(z, omega_m, &e_ortho);
+    let d_lcdm = linear_growth_factor(z, omega_m, &e_lcdm);
+
     let n_ortho = gl_integrate(
         |u| {
             let m = u.exp();
-            press_schechter_mass_function(m, z, omega_m, sigma8, ns, &e_ortho) * m
+            press_schechter_inner(m, d_ortho, omega_m, sigma8, ns, i_r8) * m
         },
         u_lo,
         u_hi,
@@ -357,7 +426,7 @@ pub fn udg_abundance_ratio(
     let n_lcdm = gl_integrate(
         |u| {
             let m = u.exp();
-            press_schechter_mass_function(m, z, omega_m, sigma8, ns, &e_lcdm) * m
+            press_schechter_inner(m, d_lcdm, omega_m, sigma8, ns, i_r8) * m
         },
         u_lo,
         u_hi,
@@ -396,6 +465,22 @@ fn nfw_rho_s(c200: f64) -> f64 {
     200.0 * RHO_CRIT_KPC * c200 * c200 * c200 / (3.0 * gc)
 }
 
+/// Internal: NFW density ρ(r) given precomputed scale radius r_s and
+/// characteristic density rho_s.  Avoids recomputing r_s and rho_s on each
+/// call inside the Jeans quadrature integrand.
+#[inline]
+fn nfw_density_rs(r_kpc: f64, r_s: f64, rho_s: f64) -> f64 {
+    let x = r_kpc / r_s;
+    rho_s / (x * (1.0 + x) * (1.0 + x))
+}
+
+/// Internal: NFW enclosed mass M(r) given precomputed r_s and rho_s.
+#[inline]
+fn nfw_enclosed_mass_rs(r_kpc: f64, r_s: f64, rho_s: f64) -> f64 {
+    let x = r_kpc / r_s;
+    4.0 * std::f64::consts::PI * rho_s * r_s * r_s * r_s * ((1.0 + x).ln() - x / (1.0 + x))
+}
+
 /// NFW density profile ρ(r) in M☉ kpc⁻³.
 ///
 /// ρ(r) = ρ_s / [(r/r_s)(1 + r/r_s)²]
@@ -410,11 +495,9 @@ pub fn nfw_density(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     if r_kpc <= 0.0 || m200_solar <= 0.0 || c200 <= 0.0 {
         return 0.0;
     }
-    let r_200 = nfw_r200_kpc(m200_solar);
-    let r_s = r_200 / c200;
+    let r_s = nfw_r200_kpc(m200_solar) / c200;
     let rho_s = nfw_rho_s(c200);
-    let x = r_kpc / r_s;
-    rho_s / (x * (1.0 + x) * (1.0 + x))
+    nfw_density_rs(r_kpc, r_s, rho_s)
 }
 
 /// NFW enclosed mass M(r) in M☉.
@@ -431,11 +514,9 @@ pub fn nfw_enclosed_mass(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     if r_kpc <= 0.0 || m200_solar <= 0.0 || c200 <= 0.0 {
         return 0.0;
     }
-    let r_200 = nfw_r200_kpc(m200_solar);
-    let r_s = r_200 / c200;
+    let r_s = nfw_r200_kpc(m200_solar) / c200;
     let rho_s = nfw_rho_s(c200);
-    let x = r_kpc / r_s;
-    4.0 * std::f64::consts::PI * rho_s * r_s * r_s * r_s * ((1.0 + x).ln() - x / (1.0 + x))
+    nfw_enclosed_mass_rs(r_kpc, r_s, rho_s)
 }
 
 /// Isotropic velocity dispersion σ_r(r) (km/s) from the Jeans equation.
@@ -460,12 +541,17 @@ pub fn nfw_velocity_dispersion(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     if r_kpc <= 0.0 || m200_solar <= 0.0 || c200 <= 0.0 {
         return 0.0;
     }
-    let rho_r = nfw_density(r_kpc, m200_solar, c200);
+
+    // Precompute r_s and rho_s once — reused for every GL quadrature node.
+    let r_200 = nfw_r200_kpc(m200_solar);
+    let r_s = r_200 / c200;
+    let rho_s = nfw_rho_s(c200);
+
+    let rho_r = nfw_density_rs(r_kpc, r_s, rho_s);
     if rho_r <= 0.0 {
         return 0.0;
     }
 
-    let r_200 = nfw_r200_kpc(m200_solar);
     let r_max = 10.0 * r_200;
 
     // Log substitution r' = r_kpc * exp(u), dr' = r' du:
@@ -475,8 +561,8 @@ pub fn nfw_velocity_dispersion(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     let integral = gl_integrate(
         |u| {
             let rp = r_kpc * u.exp();
-            let rho_p = nfw_density(rp, m200_solar, c200);
-            let m_p = nfw_enclosed_mass(rp, m200_solar, c200);
+            let rho_p = nfw_density_rs(rp, r_s, rho_s);
+            let m_p = nfw_enclosed_mass_rs(rp, r_s, rho_s);
             // Units: (km/s)² kpc M☉⁻¹ × M☉ × M☉ kpc⁻³ / kpc = (km/s)² M☉ kpc⁻³
             G_KPC_KM_S * m_p * rho_p / rp
         },
@@ -539,6 +625,33 @@ mod tests {
         let w_taylor = top_hat_window(9e-4);
         let w_exact = top_hat_window(1.1e-3);
         assert_relative_eq!(w_taylor, w_exact, max_relative = 1e-4);
+    }
+
+    #[test]
+    fn test_top_hat_window_negative_input_is_finite() {
+        // Negative x is not physically expected but the function must not diverge.
+        let w = top_hat_window(-1e-4);
+        assert!(w.is_finite(), "W(−1e-4) must be finite");
+    }
+
+    #[test]
+    fn test_sigma_mass_invalid_inputs_return_zero() {
+        // Non-physical inputs must not panic or return NaN.
+        assert_eq!(sigma_mass(0.0, OMEGA_M, SIGMA8, NS), 0.0);
+        assert_eq!(sigma_mass(-1e9, OMEGA_M, SIGMA8, NS), 0.0);
+        assert_eq!(sigma_mass(1e9, 0.0, SIGMA8, NS), 0.0);
+        assert_eq!(sigma_mass(1e9, -0.3, SIGMA8, NS), 0.0);
+        assert_eq!(sigma_mass(f64::INFINITY, OMEGA_M, SIGMA8, NS), 0.0);
+        assert_eq!(sigma_mass(f64::NAN, OMEGA_M, SIGMA8, NS), 0.0);
+    }
+
+    #[test]
+    fn test_nfw_rho_s_tiny_c_returns_zero() {
+        // Very small c200 makes gc ≈ 0; nfw_rho_s must return 0.0 (no NaN/inf).
+        let rho = nfw_density(1.0, 1e12, 1e-15);
+        assert_eq!(rho, 0.0);
+        let m = nfw_enclosed_mass(1.0, 1e12, 1e-15);
+        assert_eq!(m, 0.0);
     }
 
     #[test]
