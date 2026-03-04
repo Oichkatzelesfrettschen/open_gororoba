@@ -9,6 +9,7 @@
 //! - Axiodilaton scalar field cosmology
 //! - Relativistic polytropic equation of state
 //! - Neutron star TOV solver with tidal deformability
+//! - UDG halo kinematics (CDG-2 / Perseus; fifth observational pillar)
 //!
 //! # Literature
 //! - Mazur & Mottola (2004): Gravastar proposal
@@ -23,6 +24,7 @@
 //! - Hinderer (2008): ApJ 677, 1216 (tidal Love number)
 //! - Yagi & Yunes (2013): Science 341, 365 (I-Love-Q universality)
 //! - Abbott et al. (2017): PRL 119, 161101 (GW170817)
+//! - Li et al. (2025): arXiv:2506.15644 (CDG-2 ultra-diffuse galaxy)
 
 use gauss_quad::GaussLegendre;
 
@@ -34,6 +36,7 @@ pub mod distances;
 pub mod eos;
 pub mod flrw;
 pub mod gravastar;
+pub mod halo;
 pub mod homotopy_bridge;
 pub mod observational;
 pub mod orthoplex_diffusion;
@@ -109,6 +112,12 @@ pub use tov::{
 pub use homotopy_bridge::{
     HomotopyStressEnergy, ObstructionSweepResult, SweepConfig, homotopy_lambda,
     homotopy_stress_energy, solve_gravastar_homotopy, sweep_obstruction_coupling,
+};
+
+pub use halo::{
+    CDG2_DM_FRACTION_MIN, CDG2_STELLAR_MASS_SOLAR, DELTA_C, PERSEUS_Z, linear_growth_factor,
+    nfw_density, nfw_enclosed_mass, nfw_velocity_dispersion, press_schechter_mass_function,
+    press_schechter_orthoplex, sigma_mass, udg_abundance_ratio,
 };
 
 pub use flrw::{
