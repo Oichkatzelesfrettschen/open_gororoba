@@ -1,5 +1,4 @@
-use lbm_vulkan::VulkanContext;
-use lbm_vulkan::compute::GororobaEngine;
+use lbm_vulkan::{VulkanContext, compute::GororobaEngine};
 use std::time::Instant;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

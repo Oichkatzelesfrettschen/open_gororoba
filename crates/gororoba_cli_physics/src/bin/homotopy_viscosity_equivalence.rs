@@ -1,10 +1,11 @@
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 use clap::Parser;
 use csv::StringRecord;
-use rand::SeedableRng;
-use rand::seq::SliceRandom;
+use rand::{SeedableRng, seq::SliceRandom};
 use rand_chacha::ChaCha8Rng;
 use serde::Serialize;
 use stats_core::helpers::{mean, std_dev};

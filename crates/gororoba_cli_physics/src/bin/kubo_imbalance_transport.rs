@@ -9,13 +9,11 @@
 //! CPU fallback: uses nalgebra-based O(dim^3) eigenbasis transformation.
 //! Both paths are O(dim^3), not the naive O(dim^4).
 
-use std::fs;
-use std::io;
-use std::path::Path;
 use sign_imbalance::kubo_transport::{
     HeisenbergModel, KuboTransport, build_cd_heisenberg, build_interpolated, build_j1j2_chain,
     exact_diagonalize, graph_imbalance_index, kubo_transport_optimized, thermodynamic_quantities,
 };
+use std::{fs, io, path::Path};
 
 /// Transport computation dispatcher: GPU-first, CPU fallback.
 struct TransportDispatcher {
@@ -150,7 +148,8 @@ fn main() -> io::Result<()> {
         let model = build_j1j2_chain(n_chain, alpha, 1.0, field_b);
         let imbalance = graph_imbalance_index(&model);
         let transport = dispatcher.compute(&model, temp);
-        let thermo = thermodynamic_quantities(&exact_diagonalize(&model).expect("ED failed"), temp).expect("thermo failed");
+        let thermo = thermodynamic_quantities(&exact_diagonalize(&model).expect("ED failed"), temp)
+            .expect("thermo failed");
 
         j1j2_results.push((
             alpha,

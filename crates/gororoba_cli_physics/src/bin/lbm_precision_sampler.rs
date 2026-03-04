@@ -11,9 +11,11 @@
 
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
-use std::io::Write;
-use std::path::{Path, PathBuf};
-use std::time::Instant;
+use std::{
+    io::Write,
+    path::{Path, PathBuf},
+    time::Instant,
+};
 
 #[cfg(feature = "gpu")]
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};

@@ -20,15 +20,16 @@
 //!       disappears in the continuum limit.
 
 use clap::Parser;
-use gr_core::acoustic_metric::{
-    LBM_CS, acoustic_hawking_temperature, acoustic_horizon_1d, acoustic_surface_gravity,
-    radial_inflow_profile,
+use gr_core::{
+    acoustic_metric::{
+        LBM_CS, acoustic_hawking_temperature, acoustic_horizon_1d, acoustic_surface_gravity,
+        radial_inflow_profile,
+    },
+    lattice_hawking::{
+        compute_spectra, effective_temperature, spectral_chi_squared, viscosity_cutoff,
+    },
 };
-use gr_core::lattice_hawking::{
-    compute_spectra, effective_temperature, spectral_chi_squared, viscosity_cutoff,
-};
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about = "Reframed T1: Lattice-Hawking spectrum sweep")]

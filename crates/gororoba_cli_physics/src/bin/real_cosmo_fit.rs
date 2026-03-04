@@ -11,10 +11,16 @@
 //!   real-cosmo-fit --json             # JSON output
 
 use clap::Parser;
-use cosmology_core::{RealBaoData, compare_models, desi_to_real_bao, filter_pantheon_data};
-use data_core::catalogs::desi_bao::desi_dr1_bao;
-use data_core::catalogs::pantheon::{PantheonProvider, parse_pantheon_dat};
-use data_core::fetcher::{DatasetProvider, FetchConfig};
+use cosmology_core::{
+    RealBaoData, compare_models, cosmic_chronometer_data, desi_to_real_bao, filter_pantheon_data,
+};
+use data_core::{
+    catalogs::{
+        desi_bao::desi_dr1_bao,
+        pantheon::{PantheonProvider, parse_pantheon_dat},
+    },
+    fetcher::{DatasetProvider, FetchConfig},
+};
 use std::path::PathBuf;
 
 #[derive(Parser)]
@@ -159,12 +165,21 @@ fn main() {
     }
 
     // -----------------------------------------------------------------------
-    // Step 4: Fit models and compare
+    // Step 4: Load cosmic chronometer H(z) data
     // -----------------------------------------------------------------------
-    eprintln!("[4/4] Fitting Lambda-CDM and bounce models...");
+    let cc_data = cosmic_chronometer_data();
+    eprintln!(
+        "[4/5] Loaded {} cosmic chronometer H(z) measurements (z=0.07..1.965)",
+        cc_data.len()
+    );
+
+    // -----------------------------------------------------------------------
+    // Step 5: Fit models and compare
+    // -----------------------------------------------------------------------
+    eprintln!("[5/5] Fitting Lambda-CDM and bounce models...");
     eprintln!();
 
-    let comparison = compare_models(&sn_data, &bao_data);
+    let comparison = compare_models(&sn_data, &bao_data, &cc_data, &[]);
 
     if args.json {
         print_json(&comparison, sn_data.n_sne, bao_data.z_eff.len());
@@ -175,6 +190,7 @@ fn main() {
 
 fn print_report(c: &cosmology_core::ModelComparison, n_sne: usize, n_bao: usize) {
     let n_data_total = c.lcdm.n_data;
+    let n_cc = cosmology_core::cosmic_chronometer_data().len();
     let dof_lcdm = n_data_total as f64 - c.lcdm.n_params as f64;
     let dof_bounce = n_data_total as f64 - c.bounce.n_params as f64;
 
@@ -182,13 +198,15 @@ fn print_report(c: &cosmology_core::ModelComparison, n_sne: usize, n_bao: usize)
     println!("    REAL OBSERVATIONAL COSMOLOGY FIT RESULTS");
     println!("================================================================");
     println!();
+    let n_bao_pts = n_data_total - n_sne - 1 - n_cc;
     println!("Data summary:");
     println!("  Pantheon+ SN Ia:     {} supernovae", n_sne);
     println!(
-        "  DESI DR1 BAO:        {} bins (5 anisotropic + 2 isotropic = {} data pts)",
-        n_bao,
-        n_data_total - n_sne
+        "  DESI DR1 BAO:        {} bins ({} data pts)",
+        n_bao, n_bao_pts
     );
+    println!("  CMB shift parameter: 1 data point (R = 1.7502 +/- 0.0046)");
+    println!("  Cosmic chronometers: {} H(z) measurements", n_cc);
     println!("  Total data points:   {}", n_data_total);
     println!();
     println!("----------------------------------------------------------------");
@@ -199,6 +217,8 @@ fn print_report(c: &cosmology_core::ModelComparison, n_sne: usize, n_bao: usize)
     println!("  chi2_total    = {:.2}", c.lcdm.chi2_total);
     println!("    chi2_SN     = {:.2}", c.lcdm.chi2_sn);
     println!("    chi2_BAO    = {:.2}", c.lcdm.chi2_bao);
+    println!("    chi2_CMB    = {:.2}", c.lcdm.chi2_cmb);
+    println!("    chi2_CC     = {:.2}", c.lcdm.chi2_cc);
     println!(
         "  chi2/dof      = {:.3} ({:.0}/{:.0})",
         c.lcdm.chi2_total / dof_lcdm,
@@ -217,6 +237,8 @@ fn print_report(c: &cosmology_core::ModelComparison, n_sne: usize, n_bao: usize)
     println!("  chi2_total    = {:.2}", c.bounce.chi2_total);
     println!("    chi2_SN     = {:.2}", c.bounce.chi2_sn);
     println!("    chi2_BAO    = {:.2}", c.bounce.chi2_bao);
+    println!("    chi2_CMB    = {:.2}", c.bounce.chi2_cmb);
+    println!("    chi2_CC     = {:.2}", c.bounce.chi2_cc);
     println!(
         "  chi2/dof      = {:.3} ({:.0}/{:.0})",
         c.bounce.chi2_total / dof_bounce,
@@ -264,6 +286,8 @@ fn print_json(c: &cosmology_core::ModelComparison, n_sne: usize, n_bao: usize) {
     println!("    \"chi2_total\": {:.4},", c.lcdm.chi2_total);
     println!("    \"chi2_sn\": {:.4},", c.lcdm.chi2_sn);
     println!("    \"chi2_bao\": {:.4},", c.lcdm.chi2_bao);
+    println!("    \"chi2_cmb\": {:.4},", c.lcdm.chi2_cmb);
+    println!("    \"chi2_cc\": {:.4},", c.lcdm.chi2_cc);
     println!("    \"aic\": {:.4},", c.lcdm.aic);
     println!("    \"bic\": {:.4}", c.lcdm.bic);
     println!("  }},");
@@ -274,6 +298,8 @@ fn print_json(c: &cosmology_core::ModelComparison, n_sne: usize, n_bao: usize) {
     println!("    \"chi2_total\": {:.4},", c.bounce.chi2_total);
     println!("    \"chi2_sn\": {:.4},", c.bounce.chi2_sn);
     println!("    \"chi2_bao\": {:.4},", c.bounce.chi2_bao);
+    println!("    \"chi2_cmb\": {:.4},", c.bounce.chi2_cmb);
+    println!("    \"chi2_cc\": {:.4},", c.bounce.chi2_cc);
     println!("    \"aic\": {:.4},", c.bounce.aic);
     println!("    \"bic\": {:.4},", c.bounce.bic);
     println!("    \"n_s\": {:.6}", c.n_s_bounce);

@@ -4,9 +4,7 @@
 //! dS/dt = D * Lap(S) - gamma * S - alpha * S^3 + J
 
 use clap::Parser;
-use std::fs::File;
-use std::io::Write;
-use std::path::PathBuf;
+use std::{fs::File, io::Write, path::PathBuf};
 
 #[derive(Parser)]
 struct Args {

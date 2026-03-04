@@ -9,12 +9,11 @@
 //! - `gate`:    Run projection gate, exit 0 on PASS, 1 on FAIL
 
 use clap::{Parser, Subcommand};
-use optics_core::absorber_benchmark::{
-    ProjectionGate, reduced_c010_suite, run_benchmark, standard_c010_suite,
+use optics_core::{
+    absorber_benchmark::{ProjectionGate, reduced_c010_suite, run_benchmark, standard_c010_suite},
+    tcmt::{InputField, KerrCavity},
 };
-use optics_core::tcmt::{InputField, KerrCavity};
-use std::fs;
-use std::path::PathBuf;
+use std::{fs, path::PathBuf};
 
 #[derive(Parser)]
 #[command(

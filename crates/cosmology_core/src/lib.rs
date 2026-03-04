@@ -83,8 +83,12 @@ pub use bounce::{
 pub use dimensional_geometry::{ball_volume, sample_dimensional_range, unit_sphere_surface_area};
 
 pub use observational::{
-    ModelComparison, ObsFitResult, RealBaoData, RealSnData, bao_data_point_count, chi2_bao_real,
-    chi2_sn_real, compare_models, desi_to_real_bao, filter_pantheon_data, fit_real_data,
+    CMB_SHIFT_R_ERR, CMB_SHIFT_R_OBS, CcMeasurement, FsigMeasurement, ModelComparison,
+    ObsFitResult, RealBaoData, RealSnData, SIGMA8_PLANCK, bao_data_point_count, chi2_bao_real,
+    chi2_cc, chi2_cmb_shift, chi2_fsig8, chi2_sn_real, compare_models, compute_growth_batch,
+    compute_growth_fsig8,
+    cosmic_chronometer_data, desi_to_real_bao, filter_pantheon_data, fit_real_data,
+    growth_rate_data,
 };
 
 pub use distances::{
@@ -116,9 +120,12 @@ pub use flrw::{
 
 pub use orthoplex_diffusion::{
     OrthoplexComparison, OrthoplexFitResult, OrthoplexParams, chi2_bao_orthoplex,
-    chi2_sn_orthoplex, compare_orthoplex, dark_energy_density_ratio, diffusion_time,
-    distance_modulus_orthoplex, fit_orthoplex_model, heat_kernel_k22, hubble_e_orthoplex,
-    luminosity_distance_orthoplex, spectral_dimension_k22, w_of_z_table, w_orthoplex,
+    chi2_cc_orthoplex, chi2_cmb_shift_orthoplex, chi2_fsig8_orthoplex, chi2_sn_orthoplex,
+    cmb_shift_parameter_orthoplex, compare_orthoplex, compare_orthoplex_all,
+    compare_orthoplex_fixed_beta, dark_energy_density_ratio, diffusion_time,
+    distance_modulus_orthoplex, fit_orthoplex_model, fit_orthoplex_model_fixed_beta,
+    heat_kernel_k22, hubble_e_orthoplex, luminosity_distance_orthoplex, spectral_dimension_k22,
+    w_of_z_table, w_orthoplex,
 };
 
 /// Gauss-Legendre quadrature over [a, b].

@@ -2,10 +2,7 @@ use clap::Parser;
 use gr_core::ppn_constraints::{
     check_all_ppn_constraints, kappa_eff_bd, nordtvedt_parameter_bd, ppn_gamma_bd,
 };
-use std::error::Error;
-use std::fmt::Write as _;
-use std::fs;
-use std::path::PathBuf;
+use std::{error::Error, fmt::Write as _, fs, path::PathBuf};
 
 #[derive(Debug, Parser)]
 #[command(name = "ppn-bound-sweep")]

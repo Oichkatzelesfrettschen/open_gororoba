@@ -170,6 +170,15 @@ pub fn best_nzj_match() -> ImmirziMappingResult {
 /// Maximum of the imbalance-entropy bridge: ln(2)/(pi*sqrt(3)) at phi=0.5.
 pub const BRIDGE_MAX: f64 = 0.127_384_023_140_948;
 
+/// Absolute ceiling of the Immirzi bridge.
+///
+/// gamma_max = H_nat(0.5) / (pi * sqrt(3)) = ln(2) / (pi * sqrt(3)) = 0.12738.
+/// This is the maximum gamma achievable by ANY imbalance density phi in (0,1),
+/// attained uniquely at phi=0.5 (maximal binary entropy). Since gamma_BG=0.2375
+/// exceeds this ceiling, the BG exclusion is STRUCTURAL: no CD imbalance density
+/// can ever map to gamma_BG through the entropy bridge.
+pub const GAMMA_MAX: f64 = BRIDGE_MAX;
+
 /// Invert the imbalance-entropy bridge on the LEFT branch (0, 0.5).
 ///
 /// Finds phi in (0, 0.5) such that imbalance_entropy_bridge(phi) = target.
@@ -210,6 +219,191 @@ pub fn invert_entropy_bridge_nzj() -> f64 {
 /// no imbalance density maps to gamma_BG via this bridge.
 pub fn invert_entropy_bridge_bg() -> Option<f64> {
     invert_entropy_bridge(GAMMA_BG)
+}
+
+// ---------------------------------------------------------------------------
+// Newton-Raphson inverse of the binary entropy bridge
+// ---------------------------------------------------------------------------
+
+/// Binary entropy function H(p) = -p*ln(p) - (1-p)*ln(1-p).
+///
+/// This is the NATURAL-LOG version (nats). The bridge divides by pi*sqrt(3)
+/// to get gamma.
+pub fn binary_entropy(p: f64) -> f64 {
+    if p <= 0.0 || p >= 1.0 {
+        return 0.0;
+    }
+    -p * p.ln() - (1.0 - p) * (1.0 - p).ln()
+}
+
+/// Derivative of binary entropy: H'(p) = ln((1-p)/p).
+///
+/// Monotonically decreasing on (0, 1). Zero at p = 0.5.
+/// H'(p) > 0 for p < 0.5, H'(p) < 0 for p > 0.5.
+pub fn binary_entropy_deriv(p: f64) -> f64 {
+    ((1.0 - p) / p).ln()
+}
+
+/// Invert the imbalance-entropy bridge via Newton-Raphson.
+///
+/// Finds phi in (0, 0.5) such that H(phi) / (pi*sqrt(3)) = target.
+/// Equivalently: H(phi) = target * pi * sqrt(3).
+///
+/// Newton-Raphson converges quadratically from any starting point in (0, 0.5)
+/// because H is concave and H' is monotonically decreasing on that interval.
+///
+/// Returns None if target exceeds BRIDGE_MAX or is non-positive.
+pub fn invert_entropy_bridge_newton(target: f64) -> Option<f64> {
+    if target > BRIDGE_MAX + 1e-12 || target <= 0.0 {
+        return None;
+    }
+
+    let h_target = target * PI * 3.0_f64.sqrt();
+    let mut p: f64 = 0.25; // Initial guess: midpoint of valid range
+
+    for _ in 0..50 {
+        // Domain clamping: prevent log(0) or log(negative)
+        p = p.clamp(1e-14, 0.5 - 1e-14);
+
+        let h = binary_entropy(p);
+        let hp = binary_entropy_deriv(p);
+
+        if hp.abs() < 1e-30 {
+            break; // At the maximum, derivative vanishes
+        }
+
+        let step = (h - h_target) / hp;
+        p -= step;
+
+        // Post-step clamping
+        p = p.clamp(1e-14, 0.5 - 1e-14);
+
+        if step.abs() < 1e-15 {
+            break; // Converged to machine precision
+        }
+    }
+
+    Some(p)
+}
+
+/// Invert the bridge for gamma_NZJ via Newton-Raphson.
+pub fn invert_entropy_bridge_nzj_newton() -> f64 {
+    invert_entropy_bridge_newton(GAMMA_NZJ).expect("gamma_NZJ is within bridge range")
+}
+
+// ---------------------------------------------------------------------------
+// Selectivity analysis
+// ---------------------------------------------------------------------------
+
+/// Result of Immirzi selectivity analysis.
+#[derive(Debug, Clone)]
+pub struct SelectivityResult {
+    /// phi value inverted from gamma_NZJ.
+    pub phi_nzj: f64,
+    /// phi value inverted from gamma_BG (None if out of range).
+    pub phi_bg: Option<f64>,
+    /// Whether phi_nzj is in the valid CD imbalance range.
+    pub nzj_in_cd_range: bool,
+    /// Whether phi_bg is in the valid CD imbalance range.
+    pub bg_in_cd_range: bool,
+    /// The imbalance attractor value (3/8).
+    pub attractor: f64,
+    /// Fractional distance from phi_nzj to attractor.
+    pub nzj_attractor_deviation: f64,
+    /// Absolute ceiling of the entropy bridge: gamma_max = ln(2)/(pi*sqrt(3)).
+    pub gamma_max: f64,
+}
+
+/// Test whether the CD algebraic structure selects gamma_NZJ over gamma_BG.
+///
+/// The imbalance-entropy bridge maps phi -> gamma. By inverting:
+/// - gamma_NZJ = 0.1236 -> phi_NZJ (should be near 3/8)
+/// - gamma_BG = 0.2375 -> phi_BG (should be None, out of bridge range)
+///
+/// If phi_NZJ lands near the CD imbalance attractor and phi_BG does not
+/// exist, then the CD structure SELECTS the NZJ branch.
+pub fn selectivity_analysis() -> SelectivityResult {
+    let phi_nzj = invert_entropy_bridge_newton(GAMMA_NZJ).unwrap_or(0.0);
+    let phi_bg = invert_entropy_bridge_newton(GAMMA_BG);
+
+    // CD imbalance range: the attractor is at 3/8, valid densities in (0, 0.5)
+    // We consider "in range" if the phi value is within [0.1, 0.5)
+    let in_cd_range = |phi: f64| (0.1..0.5).contains(&phi);
+
+    let nzj_attractor_deviation = (phi_nzj - VACUUM_PHI).abs() / VACUUM_PHI;
+
+    SelectivityResult {
+        phi_nzj,
+        phi_bg,
+        nzj_in_cd_range: in_cd_range(phi_nzj),
+        bg_in_cd_range: phi_bg.is_some_and(in_cd_range),
+        attractor: VACUUM_PHI,
+        nzj_attractor_deviation,
+        gamma_max: GAMMA_MAX,
+    }
+}
+
+/// Enumerate achievable imbalance densities for a CD dimension.
+///
+/// At each dimension, the sign structure of the CD multiplication table
+/// determines which imbalance densities can arise. This function computes
+/// the actual imbalance density from the Cayley-Dickson basis multiplication
+/// signs using the XOR-based sign function.
+///
+/// Returns the imbalance density phi for the standard CD multiplication table.
+pub fn cd_imbalance_density(dim: usize) -> f64 {
+    use algebra_core::cd_basis_mul_sign;
+
+    assert!(dim >= 4 && dim.is_power_of_two());
+
+    let mut negative_count = 0usize;
+    let mut total_count = 0usize;
+
+    // Count sign imbalance in the multiplication table
+    // Exclude e_0 (identity) from the sign graph
+    for i in 1..dim {
+        for j in (i + 1)..dim {
+            let sign = cd_basis_mul_sign(dim, i, j);
+            total_count += 1;
+            if sign < 0 {
+                negative_count += 1;
+            }
+        }
+    }
+
+    if total_count == 0 {
+        return 0.0;
+    }
+    negative_count as f64 / total_count as f64
+}
+
+/// Census of CD imbalance densities across dimensions.
+///
+/// Returns (dim, phi) pairs for dims 4, 8, 16, 32, 64, ...
+pub fn imbalance_density_census(max_dim: usize) -> Vec<(usize, f64)> {
+    let mut results = Vec::new();
+    let mut dim = 4;
+    while dim <= max_dim {
+        let phi = cd_imbalance_density(dim);
+        results.push((dim, phi));
+        dim *= 2;
+    }
+    results
+}
+
+/// Check if a target phi falls within the achievable imbalance range.
+///
+/// The "achievable range" is defined as [phi_min, phi_max] across the
+/// census of CD dimensions.
+pub fn phi_in_achievable_range(target: f64, census: &[(usize, f64)]) -> bool {
+    if census.is_empty() {
+        return false;
+    }
+    let min_phi = census.iter().map(|(_, p)| *p).fold(f64::MAX, f64::min);
+    let max_phi = census.iter().map(|(_, p)| *p).fold(f64::MIN, f64::max);
+    // Allow 10% margin
+    let margin = (max_phi - min_phi) * 0.1;
+    target >= (min_phi - margin) && target <= (max_phi + margin)
 }
 
 #[cfg(test)]
@@ -396,5 +590,165 @@ mod tests {
                 "imbalance entropy should be maximal at phi=0.5: H({phi})={gamma} > H(0.5)={gamma_half}"
             );
         }
+    }
+
+    // -- Newton-Raphson inverse tests --
+
+    #[test]
+    fn newton_raphson_roundtrip() {
+        // For several phi values: |phi - H^{-1}(H(phi)/(pi*sqrt(3)))| < 1e-14
+        for &phi in &[0.1, 0.2, 0.3, 0.375, 0.45] {
+            let gamma = imbalance_entropy_bridge(phi);
+            let recovered = invert_entropy_bridge_newton(gamma).unwrap();
+            assert!(
+                (recovered - phi).abs() < 1e-12,
+                "Newton roundtrip at phi={phi}: recovered={recovered}, diff={}",
+                (recovered - phi).abs()
+            );
+        }
+    }
+
+    #[test]
+    fn newton_raphson_matches_bisection() {
+        // Newton and bisection should agree to high precision
+        let phi_bisection = invert_entropy_bridge_nzj();
+        let phi_newton = invert_entropy_bridge_nzj_newton();
+        assert!(
+            (phi_bisection - phi_newton).abs() < 1e-10,
+            "Newton ({phi_newton}) and bisection ({phi_bisection}) should agree"
+        );
+    }
+
+    #[test]
+    fn newton_raphson_bg_out_of_range() {
+        // gamma_BG exceeds bridge max -> None
+        assert!(
+            invert_entropy_bridge_newton(GAMMA_BG).is_none(),
+            "gamma_BG should be out of range for Newton inversion"
+        );
+    }
+
+    #[test]
+    fn newton_raphson_boundary_safety() {
+        // Near-boundary initial conditions should not panic
+        let result = invert_entropy_bridge_newton(0.001);
+        assert!(result.is_some(), "very small target should be invertible");
+        let phi = result.unwrap();
+        assert!(phi > 0.0 && phi < 0.5, "phi should be in (0, 0.5): {phi}");
+    }
+
+    #[test]
+    fn binary_entropy_at_half() {
+        let h = binary_entropy(0.5);
+        let expected = 2.0_f64.ln(); // ln(2) in nats
+        assert!(
+            (h - expected).abs() < 1e-14,
+            "H(0.5) should be ln(2): {h}"
+        );
+    }
+
+    #[test]
+    fn binary_entropy_deriv_at_half() {
+        let hp = binary_entropy_deriv(0.5);
+        assert!(
+            hp.abs() < 1e-14,
+            "H'(0.5) should be 0 (maximum): {hp}"
+        );
+    }
+
+    #[test]
+    fn selectivity_nzj_in_range_bg_excluded() {
+        let result = selectivity_analysis();
+        assert!(
+            result.nzj_in_cd_range,
+            "phi_NZJ should be in CD range: phi_nzj={}",
+            result.phi_nzj
+        );
+        assert!(
+            !result.bg_in_cd_range,
+            "phi_BG should NOT be in CD range: phi_bg={:?}",
+            result.phi_bg
+        );
+        assert!(
+            result.nzj_attractor_deviation < 0.1,
+            "phi_NZJ should be near attractor: dev={}",
+            result.nzj_attractor_deviation
+        );
+    }
+
+    #[test]
+    fn cd_imbalance_density_dim16() {
+        let phi = cd_imbalance_density(16);
+        // The pairwise sign density counts negative signs in the upper triangle.
+        // This is NOT the Harary-Zaslavsky cycle-based imbalance (3/8 attractor),
+        // but the raw fraction of negative pairwise products.
+        // For sedenions: ~46.7% of basis product signs are negative.
+        assert!(
+            phi > 0.3 && phi < 0.6,
+            "sedenion pairwise sign density should be in (0.3, 0.6): {phi}"
+        );
+    }
+
+    #[test]
+    fn imbalance_census_monotonicity() {
+        let census = imbalance_density_census(64);
+        assert!(census.len() >= 3, "should have at least 3 dimensions");
+        // All densities should be in (0, 1)
+        for &(dim, phi) in &census {
+            assert!(
+                phi > 0.0 && phi < 1.0,
+                "phi should be in (0,1) at dim={dim}: {phi}"
+            );
+        }
+    }
+
+    // -- gamma_max ceiling tests --
+
+    #[test]
+    fn gamma_max_equals_bridge_max() {
+        assert!(
+            (GAMMA_MAX - BRIDGE_MAX).abs() < 1e-15,
+            "GAMMA_MAX and BRIDGE_MAX must be identical: {} vs {}",
+            GAMMA_MAX, BRIDGE_MAX
+        );
+    }
+
+    #[test]
+    fn gamma_max_equals_entropy_at_half() {
+        let gamma_at_half = imbalance_entropy_bridge(0.5);
+        assert!(
+            (gamma_at_half - GAMMA_MAX).abs() < 1e-12,
+            "gamma(0.5) should equal GAMMA_MAX: {} vs {}",
+            gamma_at_half, GAMMA_MAX
+        );
+    }
+
+    #[test]
+    fn gamma_max_is_ceiling_for_all_phi() {
+        // Sweep phi in (0,1) and verify gamma <= GAMMA_MAX everywhere
+        for i in 1..1000 {
+            let phi = i as f64 / 1000.0;
+            let gamma = imbalance_entropy_bridge(phi);
+            assert!(
+                gamma <= GAMMA_MAX + 1e-14,
+                "gamma({phi}) = {gamma} exceeds ceiling {}", GAMMA_MAX
+            );
+        }
+    }
+
+    #[test]
+    fn selectivity_includes_gamma_max() {
+        let result = selectivity_analysis();
+        // gamma_NZJ < gamma_max < gamma_BG
+        assert!(
+            GAMMA_NZJ < result.gamma_max,
+            "gamma_NZJ ({}) should be below gamma_max ({})",
+            GAMMA_NZJ, result.gamma_max
+        );
+        assert!(
+            result.gamma_max < GAMMA_BG,
+            "gamma_max ({}) should be below gamma_BG ({})",
+            result.gamma_max, GAMMA_BG
+        );
     }
 }

@@ -9,12 +9,9 @@
 
 use clap::Parser;
 use gr_core::warp_metric::{
-    NacelleWarpParams, nacelle_energy_density, nacelle_york_time, nacelle_cross_section_energy,
+    NacelleWarpParams, nacelle_cross_section_energy, nacelle_energy_density, nacelle_york_time,
 };
-use std::error::Error;
-use std::fmt::Write as _;
-use std::fs;
-use std::path::PathBuf;
+use std::{error::Error, fmt::Write as _, fs, path::PathBuf};
 
 #[derive(Debug, Parser)]
 #[command(name = "nacelle-warp-sweep")]

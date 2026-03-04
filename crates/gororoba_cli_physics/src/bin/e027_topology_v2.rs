@@ -21,12 +21,15 @@ use clap::Parser;
 use lbm_3d::solver::LbmSolver3D;
 #[cfg(feature = "gpu")]
 use lbm_3d_cuda::Precision;
-use std::fmt::Write as _;
-use sign_imbalance::bridge::{ImbalanceViscosityBridge, SedenionField};
-use sign_imbalance::spatial_correlation::{SpatialCorrelationResult, spatial_correlation};
-use sign_imbalance::vietoris_rips::{
-    DistanceMatrix, VietorisRipsComplex, compute_betti_numbers_at_time, compute_persistent_homology,
+use sign_imbalance::{
+    bridge::{ImbalanceViscosityBridge, SedenionField},
+    spatial_correlation::{SpatialCorrelationResult, spatial_correlation},
+    vietoris_rips::{
+        DistanceMatrix, VietorisRipsComplex, compute_betti_numbers_at_time,
+        compute_persistent_homology,
+    },
 };
+use std::fmt::Write as _;
 
 #[derive(Parser, Debug)]
 #[command(name = "e027-topology-v2")]

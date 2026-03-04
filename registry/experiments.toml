@@ -1936,3 +1936,107 @@ input_path_refs = []
 output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-084"
+title = "ZD graph spectral dimension census"
+description = "Compute graph spectral dimension d_s(t) of cross-assessor zero-divisor graphs across Cayley-Dickson dimensions 16..512. Extract plateau values and test for dimensional flow matching Calcagni's prediction."
+binary = "zd-spectral-dimension"
+binary_registered = true
+binary_experiment_declared = "E-084"
+method = "For each CD dim: build cross-assessor ZD graph, compute Laplacian, eigendecompose, compute P(t) on geometric t-grid, SG-smooth ln P vs ln t, extract d_s plateau via central differences."
+input = "None (computational)"
+output = ["data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_gap.csv"]
+run = "cargo run --release --bin zd-spectral-dimension -- --min-dim 16 --max-dim 512 --t-points 300"
+run_command_sha256 = ""
+claims = ["C-922", "C-923", "C-926"]
+claim_refs = ["C-922", "C-923", "C-926"]
+deterministic = true
+seed = 0
+gpu = false
+status = "complete"
+status_token = "COMPLETE"
+lineage_id = "XL-084"
+input_path_refs = []
+output_path_refs = ["data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+result_summary = "Negative result: no d_s plateau at any CD dimension (16-512). d_s(t) grows monotonically. C-922 verified (measurement complete), C-923 falsified (no plateau flow). Root cause: near-complete graph topology per XOR bucket. Extended with spectral gap census: lambda_2 and gap_ratio output for C-926 (expander analysis)."
+
+[[experiment]]
+id = "E-085"
+title = "Associator entropy mechanism decomposition"
+description = "Decompose associator-norm Shannon entropy by proximity to ZD 2-planes across CD dimensions 4..64. Test entropy upper bound H(dim) <= H(8) - k*ln(n_ZD+1)."
+binary = ""
+binary_registered = false
+binary_experiment_declared = "E-085"
+method = "Sample random unit triples via Muller's method, compute associator norms, partition by ZD proximity threshold, compare conditional entropies."
+input = "None (computational)"
+output = ["stdout"]
+run = "cargo test -p algebra_analysis -- associator_entropy"
+run_command_sha256 = ""
+claims = ["C-924", "C-927"]
+claim_refs = ["C-924", "C-927"]
+deterministic = true
+seed = 42
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-085"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+status_note = "Extended with adaptive proximity threshold epsilon(N) = 1.3*sqrt(16/N) to prevent near_frac saturation at dim>=32."
+
+[[experiment]]
+id = "E-086"
+title = "ZD Quantum Chaos NNSD Census"
+description = "Nearest-Neighbor Spacing Distribution analysis of ZD graph Laplacian eigenvalue spectra. Diagnoses quantum chaos vs integrability via Brody parameter, KS statistics, and SSE scoring against Poisson and GOE Wigner surmise."
+binary = "zd-quantum-chaos"
+binary_registered = true
+binary_experiment_declared = "E-086"
+method = "Compute Laplacian eigenvalues per ZD graph component, Gaussian KDE unfold (sigma = 0.1*range), build normalized spacing histogram, fit Brody parameter via method-of-moments bisection, compute KS statistics vs Poisson and GOE CDFs."
+input = "None (computational)"
+output = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
+run = "cargo run --release --bin zd-quantum-chaos -- --min-dim 64 --max-dim 256 --by-motif"
+run_command_sha256 = ""
+claims = ["C-929", "C-930"]
+claim_refs = ["C-929", "C-930"]
+deterministic = true
+seed = 0
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-086"
+input_path_refs = []
+output_path_refs = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+result_summary = "All dims (128, 256) classified DegenerateIntegrable: brody_q = 0.0, spacing variance 59.0 and 123.0 (super-Poisson). All motif classes at dim=128 (8 classes) and dim=256 (16 classes) uniformly DegenerateIntegrable. ZD graphs are integrable expanders: spectral gap from algebraic rigidity (Ramanujan-like), not random-matrix chaos."
+
+[[experiment]]
+id = "E-087"
+title = "Orthoplex Diffusion Dark Energy Fit"
+description = "Fit orthoplex dark energy model (w = -1 + beta*d_s(t(z))) to Pantheon+ SN Ia (1578 SNe) + DESI DR1 BAO (7 bins, 12 data points). Compare against Lambda-CDM via chi2, AIC, BIC. Output w(z) table."
+binary = "orthoplex-cosmo-fit"
+binary_registered = true
+binary_experiment_declared = "E-087"
+method = "Bounded Nelder-Mead optimization over 5 parameters (omega_m, h0, alpha, beta, t_0) with k=63 fixed. Joint chi2 = chi2_SN (analytic M_B marginalization) + chi2_BAO (mixed isotropic + 2x2 anisotropic covariance)."
+input = "data/external/PantheonPlusSH0ES.dat, DESI DR1 BAO (hardcoded)"
+output = ["orthoplex_w_of_z.csv"]
+run = "cargo run --release --bin orthoplex-cosmo-fit -- --skip-download --k 63"
+run_command_sha256 = ""
+claims = ["C-931", "C-932"]
+claim_refs = ["C-931", "C-932"]
+deterministic = true
+seed = 0
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-087"
+input_path_refs = ["data/external/PantheonPlusSH0ES.dat"]
+output_path_refs = ["orthoplex_w_of_z.csv"]
+dataset_refs = ["Pantheon+SH0ES", "DESI-DR1-BAO"]
+reproducibility_class = "deterministic_replay"
+result_summary = "chi2=725.06 (LCDM 738.61), delta-AIC=-7.55, delta-BIC=+8.56. Thawing EOS: w(0)=-0.72, w(2)=-1.00. BIC-disfavored but below pre-registered +10 falsification threshold. Best-fit: omega_m=0.312, h0=68.35, alpha=5.0, beta=0.117, t_0=0.01."

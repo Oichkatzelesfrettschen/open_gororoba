@@ -11,8 +11,7 @@
 
 use anyhow::Result;
 use clap::Parser;
-use std::fs;
-use std::io::Write;
+use std::{fs, io::Write};
 
 use materials_core::{SellmeierParams, fused_silica_sellmeier, linbo3_ordinary_sellmeier};
 use optics_core::{
@@ -275,7 +274,10 @@ fn main() -> Result<()> {
     });
 
     println!();
-    println!("C-838 Substrate SFWM analysis (fused silica, L={:.0} um):", substrate_thickness);
+    println!(
+        "C-838 Substrate SFWM analysis (fused silica, L={:.0} um):",
+        substrate_thickness
+    );
     println!("  n_pump(SiO2, 1030 nm) = {:.4}", n_pump_sio2);
     println!("  n_signal(SiO2, 770 nm) = {:.4}", n_signal_sio2);
     println!("  n_idler(SiO2, 1550 nm) = {:.4}", n_idler_sio2);

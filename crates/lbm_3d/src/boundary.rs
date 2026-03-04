@@ -171,6 +171,61 @@ impl BounceBackBoundary {
     }
 }
 
+impl BounceBackBoundary {
+    /// Apply bounce-back at all solid cells identified by a voxel mask.
+    ///
+    /// Each entry in `voxels` marks a grid cell as solid (`true`) or fluid
+    /// (`false`). Solid cells get their distribution functions reflected so
+    /// that no-slip walls appear wherever the voxel grid is `true`.
+    ///
+    /// The voxel array is linearized in the same order as `GridIndex::linearize`:
+    /// index = z * (nx * ny) + y * nx + x.
+    ///
+    /// # Panics
+    /// Panics if `voxels.len() != nx * ny * nz` or `f_grid.len() != nx * ny * nz * 19`.
+    pub fn inject_boundary_from_voxels(
+        &self,
+        f_grid: &mut [f64],
+        voxels: &[bool],
+        nx: usize,
+        ny: usize,
+        nz: usize,
+    ) {
+        let n_cells = nx * ny * nz;
+        assert_eq!(
+            voxels.len(),
+            n_cells,
+            "voxel mask length {} does not match grid dimensions {}x{}x{} = {}",
+            voxels.len(),
+            nx,
+            ny,
+            nz,
+            n_cells,
+        );
+        assert_eq!(
+            f_grid.len(),
+            n_cells * 19,
+            "f_grid length {} does not match grid dimensions {}x{}x{} * 19 = {}",
+            f_grid.len(),
+            nx,
+            ny,
+            nz,
+            n_cells * 19,
+        );
+
+        for (cell_idx, &is_solid) in voxels.iter().enumerate() {
+            if !is_solid {
+                continue;
+            }
+            let base = cell_idx * 19;
+            let mut f_local = [0.0; 19];
+            f_local.copy_from_slice(&f_grid[base..base + 19]);
+            let f_bounce = self.apply_at_node(&f_local);
+            f_grid[base..base + 19].copy_from_slice(&f_bounce);
+        }
+    }
+}
+
 impl Default for BounceBackBoundary {
     fn default() -> Self {
         Self::new()
@@ -338,5 +393,106 @@ mod tests {
 
         // All components should be non-negative
         assert!(BgkCollision::is_stable(&f_wall));
+    }
+
+    #[test]
+    fn test_inject_boundary_from_voxels_no_solids() {
+        let bb = BounceBackBoundary::new();
+        let lattice = D3Q19Lattice::new();
+        let (nx, ny, nz) = (4, 4, 4);
+        let n_cells = nx * ny * nz;
+
+        // All fluid, no solids
+        let voxels = vec![false; n_cells];
+        let f_eq = BgkCollision::initialize_with_velocity(1.0, [0.05, 0.0, 0.0], &lattice);
+        let mut f_grid = Vec::with_capacity(n_cells * 19);
+        for _ in 0..n_cells {
+            f_grid.extend_from_slice(&f_eq);
+        }
+        let f_original = f_grid.clone();
+
+        bb.inject_boundary_from_voxels(&mut f_grid, &voxels, nx, ny, nz);
+
+        // No solids means no changes
+        assert_eq!(f_grid, f_original);
+    }
+
+    #[test]
+    fn test_inject_boundary_from_voxels_single_solid() {
+        let bb = BounceBackBoundary::new();
+        let lattice = D3Q19Lattice::new();
+        let (nx, ny, nz) = (4, 4, 4);
+        let n_cells = nx * ny * nz;
+
+        let mut voxels = vec![false; n_cells];
+        // Mark cell (2, 1, 1) as solid
+        let solid_idx = GridIndex::new(2, 1, 1).linearize(nx, ny);
+        voxels[solid_idx] = true;
+
+        let f_eq = BgkCollision::initialize_with_velocity(1.0, [0.05, 0.0, 0.0], &lattice);
+        let mut f_grid = Vec::with_capacity(n_cells * 19);
+        for _ in 0..n_cells {
+            f_grid.extend_from_slice(&f_eq);
+        }
+
+        bb.inject_boundary_from_voxels(&mut f_grid, &voxels, nx, ny, nz);
+
+        // Solid cell should be bounce-backed
+        let base = solid_idx * 19;
+        let f_bounce = bb.apply_at_node(&f_eq);
+        assert_eq!(&f_grid[base..base + 19], &f_bounce);
+
+        // A non-solid neighbor should be unchanged
+        let fluid_idx = GridIndex::new(1, 1, 1).linearize(nx, ny);
+        let fluid_base = fluid_idx * 19;
+        assert_eq!(&f_grid[fluid_base..fluid_base + 19], &f_eq[..]);
+    }
+
+    #[test]
+    fn test_inject_boundary_from_voxels_mass_conservation() {
+        let bb = BounceBackBoundary::new();
+        let lattice = D3Q19Lattice::new();
+        let (nx, ny, nz) = (4, 4, 4);
+        let n_cells = nx * ny * nz;
+
+        let mut voxels = vec![false; n_cells];
+        // Mark a few cells as solid
+        for x in 0..nx {
+            voxels[GridIndex::new(x, 0, 0).linearize(nx, ny)] = true;
+        }
+
+        let f_eq = BgkCollision::initialize_with_velocity(1.0, [0.0, 0.0, 0.0], &lattice);
+        let mut f_grid = Vec::with_capacity(n_cells * 19);
+        for _ in 0..n_cells {
+            f_grid.extend_from_slice(&f_eq);
+        }
+
+        let mass_before: f64 = f_grid.iter().sum();
+        bb.inject_boundary_from_voxels(&mut f_grid, &voxels, nx, ny, nz);
+        let mass_after: f64 = f_grid.iter().sum();
+
+        // Bounce-back conserves mass at each node
+        assert!(
+            (mass_before - mass_after).abs() < 1e-12,
+            "mass before={mass_before}, after={mass_after}"
+        );
+    }
+
+    #[test]
+    #[should_panic(expected = "voxel mask length")]
+    fn test_inject_boundary_from_voxels_wrong_voxel_size() {
+        let bb = BounceBackBoundary::new();
+        let mut f_grid = vec![0.0; 4 * 4 * 4 * 19];
+        let voxels = vec![false; 10]; // wrong size
+        bb.inject_boundary_from_voxels(&mut f_grid, &voxels, 4, 4, 4);
+    }
+
+    #[test]
+    #[should_panic(expected = "f_grid length")]
+    fn test_inject_boundary_from_voxels_wrong_grid_size() {
+        let bb = BounceBackBoundary::new();
+        let mut f_grid = vec![0.0; 10]; // wrong size
+        let voxels = vec![false; 4 * 4 * 4];
+        bb.inject_boundary_from_voxels(&mut f_grid, &voxels, 4, 4, 4);
     }
 }

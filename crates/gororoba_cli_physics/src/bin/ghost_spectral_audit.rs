@@ -9,9 +9,11 @@
 //!     ghost-spectral-audit single --dataset data.csv --column value
 //!     ghost-spectral-audit batch --dir data/csv/ghost_audit/ --column value
 
-use std::collections::BTreeMap;
-use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::{
+    collections::BTreeMap,
+    path::{Path, PathBuf},
+    process::Command,
+};
 
 use clap::{Parser, Subcommand};
 

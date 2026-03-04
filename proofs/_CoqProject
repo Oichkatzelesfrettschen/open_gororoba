@@ -91,3 +91,7 @@ verified/C918_ComplexIsCommutative.v
 verified/C919_QuatLosesCommutativity.v
 verified/C920_QuatIsAssociative.v
 verified/C921_OctLosesAssociativity.v
+theories/HeatKernel.v
+theories/DarkEnergyEOS.v
+verified/C931_OrthoplexHeatKernel.v
+verified/C932_OrthoplexThawing.v

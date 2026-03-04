@@ -26,8 +26,7 @@ use std::path::PathBuf;
 use cosmology_core::distances::{
     comoving_distance, dm_excess_to_redshift, planck2018, radec_to_cartesian,
 };
-use data_core::catalogs::chime::parse_chime_csv;
-use data_core::catalogs::gwtc::parse_gwtc3_csv;
+use data_core::catalogs::{chime::parse_chime_csv, gwtc::parse_gwtc3_csv};
 use stats_core::ultrametric::dendrogram::{
     euclidean_distance_matrix_3d, hierarchical_ultrametric_test,
 };
@@ -123,11 +122,12 @@ fn main() {
     let n_frbs = objects.len();
     eprintln!("Loading GW events...");
     if let Ok(gw_events) = parse_gwtc3_csv(&cli.gws) {
-        use rand::Rng;
-        use rand::SeedableRng;
+        use rand::{Rng, SeedableRng};
         use rand_chacha::ChaCha8Rng;
-        use std::collections::hash_map::DefaultHasher;
-        use std::hash::{Hash, Hasher};
+        use std::{
+            collections::hash_map::DefaultHasher,
+            hash::{Hash, Hasher},
+        };
 
         for event in &gw_events {
             if event.redshift <= 0.0 || event.redshift.is_nan() {

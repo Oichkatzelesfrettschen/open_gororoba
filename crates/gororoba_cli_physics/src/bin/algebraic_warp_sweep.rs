@@ -10,14 +10,13 @@
 //! - `tower`: CD dimension tower (1,2,4,8,16) mapped to nacelle counts
 
 use clap::Parser;
-use gr_core::adm_algebra_bridge::{
-    algebraic_york_time_correction, cd_dimension_nacelle_map, sedenion_stress_energy,
+use gr_core::{
+    adm_algebra_bridge::{
+        algebraic_york_time_correction, cd_dimension_nacelle_map, sedenion_stress_energy,
+    },
+    warp_metric::{NacelleWarpParams, nacelle_energy_density, nacelle_york_time},
 };
-use gr_core::warp_metric::{NacelleWarpParams, nacelle_energy_density, nacelle_york_time};
-use std::error::Error;
-use std::fmt::Write as _;
-use std::fs;
-use std::path::PathBuf;
+use std::{error::Error, fmt::Write as _, fs, path::PathBuf};
 
 #[derive(Debug, Parser)]
 #[command(name = "algebraic-warp-sweep")]
@@ -129,8 +128,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                 // Algebraic correction
                 let k_trace_sq = theta_gr * theta_gr;
-                let rho_alg =
-                    sedenion_stress_energy(args.imbalance, k_trace_sq, args.nu_0, args.beta_coupling);
+                let rho_alg = sedenion_stress_energy(
+                    args.imbalance,
+                    k_trace_sq,
+                    args.nu_0,
+                    args.beta_coupling,
+                );
                 let delta_theta =
                     algebraic_york_time_correction(args.imbalance, theta_gr, args.coupling_alpha);
 

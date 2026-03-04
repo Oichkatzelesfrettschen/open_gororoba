@@ -8,10 +8,8 @@
 //!   materials-baseline [--data-dir data/external] [--seed 42]
 
 use clap::Parser;
-use data_core::catalogs::aflow;
-use data_core::catalogs::jarvis;
-use materials_core::baselines;
-use materials_core::featurizer;
+use data_core::catalogs::{aflow, jarvis};
+use materials_core::{baselines, featurizer};
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]

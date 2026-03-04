@@ -45,10 +45,13 @@ pub use imbalance_energy::{
     predict_lambda_sedenion,
 };
 pub use immirzi_bridge::{
-    BRIDGE_MAX, GAMMA_BG as IMMIRZI_GAMMA_BG, GAMMA_NZJ as IMMIRZI_GAMMA_NZJ, ImmirziMappingResult,
-    VACUUM_PHI, best_bg_match, best_nzj_match, entropy_bridge, evaluate_all_mappings,
-    imbalance_entropy_bridge, invert_entropy_bridge, invert_entropy_bridge_bg,
-    invert_entropy_bridge_nzj, linear_bridge_bg, log_bridge_bg, power_bridge_bg,
+    BRIDGE_MAX, GAMMA_BG as IMMIRZI_GAMMA_BG, GAMMA_MAX, GAMMA_NZJ as IMMIRZI_GAMMA_NZJ,
+    ImmirziMappingResult, SelectivityResult, VACUUM_PHI, best_bg_match, best_nzj_match,
+    binary_entropy, binary_entropy_deriv, cd_imbalance_density, entropy_bridge,
+    evaluate_all_mappings, imbalance_density_census, imbalance_entropy_bridge,
+    invert_entropy_bridge, invert_entropy_bridge_bg, invert_entropy_bridge_newton,
+    invert_entropy_bridge_nzj, invert_entropy_bridge_nzj_newton, linear_bridge_bg,
+    log_bridge_bg, phi_in_achievable_range, power_bridge_bg, selectivity_analysis,
 };
 pub use percolation::{
     CorrelationResult, PercolationChannel, PercolationDetector, auto_velocity_threshold,

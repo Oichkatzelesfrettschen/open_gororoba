@@ -13,10 +13,7 @@ use casimir_core::{
     casimir_parallel_plates_exact, energy_cross_section,
 };
 use clap::Parser;
-use std::error::Error;
-use std::fmt::Write as _;
-use std::fs;
-use std::path::PathBuf;
+use std::{error::Error, fmt::Write as _, fs, path::PathBuf};
 
 #[derive(Debug, Parser)]
 #[command(name = "worldline-casimir")]

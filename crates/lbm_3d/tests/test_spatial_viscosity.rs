@@ -60,7 +60,12 @@ fn test_stability_constraint_violation() {
 
     let result = solver.set_viscosity_field(tau_invalid);
     assert!(result.is_err());
-    assert!(result.unwrap_err().to_string().contains("Stability violation"));
+    assert!(
+        result
+            .unwrap_err()
+            .to_string()
+            .contains("Stability violation")
+    );
 }
 
 #[test]
