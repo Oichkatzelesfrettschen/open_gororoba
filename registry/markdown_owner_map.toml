@@ -5,7 +5,7 @@
 updated = "deterministic"
 authoritative = true
 scope = "docs reports data_artifacts"
-document_count = 189
+document_count = 191
 
 [[owner]]
 id = "MOWN-0001"
@@ -1770,4 +1770,22 @@ canonical_toml = "registry/artifact_scrolls.toml"
 owner_group = "artifact_scrolls"
 requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error make registry-artifact-scrolls && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
+
+[[owner]]
+id = "MOWN-0192"
+path = "docs/engine_optimizations.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
+
+[[owner]]
+id = "MOWN-0193"
+path = "docs/theory/cayley_dickson_integrable_expanders.md"
+scope = "docs"
+canonical_toml = "registry/research_narratives.toml"
+owner_group = "research_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
 
