@@ -11,6 +11,7 @@
 //! - [`quenching`]: R_AA model and scaling function f(u,n)
 //! - [`epsilon_fit`]: Chi-square epsilon_bar extraction per centrality
 //! - [`density_scaling`]: Multi-system fit epsilon_bar = K * (dNch/dy / A_perp) * L^beta
+//! - [`straggling`]: Quantum straggling (Gaussian-smeared R_AA) and precomputed lookup grid
 //! - [`v2_relation`]: v2/eccentricity vs d(ln R_AA)/d(ln pT) linear analysis
 //! - [`multiplicity`]: Hardcoded dNch/dy tables per collision system and centrality
 //! - [`data_tables`]: Published Glauber Npart validation tables
@@ -22,4 +23,5 @@ pub mod glauber;
 pub mod multiplicity;
 pub mod nucleus;
 pub mod quenching;
+pub mod straggling;
 pub mod v2_relation;
