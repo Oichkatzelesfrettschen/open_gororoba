@@ -388,6 +388,11 @@ fn nfw_r200_kpc(m200_solar: f64) -> f64 {
 #[inline]
 fn nfw_rho_s(c200: f64) -> f64 {
     let gc = (1.0 + c200).ln() - c200 / (1.0 + c200);
+    // Guard against pathological cases where gc is non-finite or too close to zero,
+    // which would otherwise produce inf/NaN in the division below.
+    if !gc.is_finite() || gc.abs() < 1.0e-12 {
+        return 0.0;
+    }
     200.0 * RHO_CRIT_KPC * c200 * c200 * c200 / (3.0 * gc)
 }
 
