@@ -1,7 +1,6 @@
 use clap::Parser;
 use csv::ReaderBuilder;
-use std::error::Error;
-use std::fs;
+use std::{error::Error, fs};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]

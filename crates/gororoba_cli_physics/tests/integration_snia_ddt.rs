@@ -1,7 +1,9 @@
-use std::fs;
-use std::path::PathBuf;
-use std::process::{Command, Output};
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::{
+    fs,
+    path::PathBuf,
+    process::{Command, Output},
+    time::{SystemTime, UNIX_EPOCH},
+};
 
 fn snia_binary_path() -> PathBuf {
     let keys = ["CARGO_BIN_EXE_snia-ddt", "CARGO_BIN_EXE_snia_ddt"];

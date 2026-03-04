@@ -198,10 +198,7 @@ mod tests {
             }
         }
         let err = (disp_sum[0].powi(2) + disp_sum[1].powi(2) + disp_sum[2].powi(2)).sqrt();
-        assert!(
-            err < 1e-10,
-            "displacement sum should be zero: {err}"
-        );
+        assert!(err < 1e-10, "displacement sum should be zero: {err}");
     }
 
     #[test]

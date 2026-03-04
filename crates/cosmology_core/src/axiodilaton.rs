@@ -14,8 +14,7 @@
 //! References:
 //!   - Planck Collaboration VI (2020): A&A 641, A6 (baseline parameters)
 
-use crate::bounce::C_KM_S;
-use crate::gl_integrate;
+use crate::{bounce::C_KM_S, gl_integrate};
 
 // ============================================================================
 // Axiodilaton parameters

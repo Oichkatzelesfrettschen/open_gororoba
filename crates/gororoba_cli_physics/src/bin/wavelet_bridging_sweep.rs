@@ -17,8 +17,7 @@ use spectral_core::{
     wavelet::{WaveletBridge, concurrency, haar_dwt, haar_idwt, hard_threshold},
 };
 use stats_core::helpers::median;
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about = "Thesis 1: wavelet bridging accuracy sweep")]

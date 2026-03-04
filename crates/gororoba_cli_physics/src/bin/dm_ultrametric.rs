@@ -24,10 +24,10 @@ use cosmology_core::distances::{
     comoving_distance, dm_excess_to_redshift, planck2018, radec_to_cartesian,
 };
 use data_core::catalogs::chime::parse_chime_csv;
-use stats_core::ultrametric::dendrogram::{
-    euclidean_distance_matrix_3d, hierarchical_ultrametric_test,
+use stats_core::ultrametric::{
+    dendrogram::{euclidean_distance_matrix_3d, hierarchical_ultrametric_test},
+    local::local_ultrametricity_test,
 };
-use stats_core::ultrametric::local::local_ultrametricity_test;
 
 #[derive(Parser)]
 #[command(name = "dm-ultrametric")]

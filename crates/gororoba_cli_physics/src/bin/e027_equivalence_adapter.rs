@@ -1,5 +1,7 @@
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 use clap::Parser;
 use csv::Writer;
@@ -81,8 +83,8 @@ fn parse_single_run(path: &Path, imbalance_attractor: f64) -> Result<PointRecord
         .ok_or_else(|| format!("missing metadata.lambda in {}", path.display()))?;
     let nu_base = get_f64(&value, &["metadata", "nu_base"])
         .ok_or_else(|| format!("missing metadata.nu_base in {}", path.display()))?;
-    let imbalance_mean = get_f64(&value, &["correlation", "mean_imbalance_channels"])
-        .ok_or_else(|| {
+    let imbalance_mean =
+        get_f64(&value, &["correlation", "mean_imbalance_channels"]).ok_or_else(|| {
             format!(
                 "missing correlation.mean_imbalance_channels in {}",
                 path.display()

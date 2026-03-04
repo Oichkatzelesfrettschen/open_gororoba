@@ -18,9 +18,7 @@
 //! Standard imbalance-suppression emerges only at B=0 or N->infinity.
 
 use serde::Deserialize;
-use std::f64::consts::PI;
-use std::fs;
-use std::path::Path;
+use std::{f64::consts::PI, fs, path::Path};
 
 // ---------------------------------------------------------------------------
 // Published benchmark data from the spin-transport literature.

@@ -184,7 +184,10 @@ mod tests {
     fn test_render_uniform_zero() {
         let grid = AsciiGrid::new(3, 5, (-1.0, 1.0, -1.0, 1.0));
         let output = grid.render();
-        assert!(output.contains("     "), "zero grid should render as spaces");
+        assert!(
+            output.contains("     "),
+            "zero grid should render as spaces"
+        );
     }
 
     #[test]

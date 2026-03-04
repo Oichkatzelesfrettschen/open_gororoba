@@ -13,8 +13,7 @@
 //!
 //! For parallel plates: E/A = -pi^2 / (720*a^3) (exact analytical result).
 
-use crate::geometry::CasimirGeometry;
-use crate::vloop::generate_unit_loop;
+use crate::{geometry::CasimirGeometry, vloop::generate_unit_loop};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rayon::prelude::*;
@@ -125,8 +124,14 @@ pub fn casimir_energy_at_point<G: CasimirGeometry>(
         let t = config.t_min * (frac * log_ratio).exp();
         let dt_du = t * log_ratio / 2.0; // Jacobian
 
-        let (theta_avg, theta_err) =
-            theta_sigma_average(geometry, point, t, config.n_loops, config.n_loop_points, config.seed.wrapping_add((frac * 1e6) as u64));
+        let (theta_avg, theta_err) = theta_sigma_average(
+            geometry,
+            point,
+            t,
+            config.n_loops,
+            config.n_loop_points,
+            config.seed.wrapping_add((frac * 1e6) as u64),
+        );
 
         let integrand = theta_avg / t.powf(2.5);
         integral += w * integrand * dt_du;
@@ -155,11 +160,7 @@ pub fn casimir_energy_profile<G: CasimirGeometry>(
     n_points: usize,
     config: &WorldlineCasimirConfig,
 ) -> Vec<(f64, f64)> {
-    let direction = [
-        end[0] - start[0],
-        end[1] - start[1],
-        end[2] - start[2],
-    ];
+    let direction = [end[0] - start[0], end[1] - start[1], end[2] - start[2]];
 
     (0..n_points)
         .into_par_iter()
@@ -174,6 +175,87 @@ pub fn casimir_energy_profile<G: CasimirGeometry>(
             (t_param, result.energy)
         })
         .collect()
+}
+
+/// Result of a 3D Casimir energy field computation.
+///
+/// Contains a flat grid of energy density values suitable for GPU volume
+/// rendering, plus the spatial bounds and resolution for reconstruction.
+#[derive(Debug, Clone)]
+pub struct CasimirEnergyField3D {
+    /// Energy density values in row-major order: data[z * ny * nx + y * nx + x].
+    pub data: Vec<f64>,
+    /// Grid resolution (nx, ny, nz).
+    pub resolution: (usize, usize, usize),
+    /// Spatial bounds: (x_min, x_max, y_min, y_max, z_min, z_max).
+    pub bounds: (f64, f64, f64, f64, f64, f64),
+    /// Total number of Monte Carlo loops evaluated across all grid points.
+    pub total_loops: u64,
+}
+
+/// Compute Casimir energy density on a 3D grid.
+///
+/// Evaluates the worldline path integral at each grid point within the
+/// specified spatial bounds. The result is a flat `Vec<f64>` suitable for
+/// uploading to a GPU as a 3D texture for volume rendering.
+///
+/// Parallelized over grid points via rayon.
+///
+/// # Arguments
+/// * `geometry` - The Casimir boundary geometry.
+/// * `bounds` - Spatial extent: (x_min, x_max, y_min, y_max, z_min, z_max).
+/// * `resolution` - Grid size: (nx, ny, nz).
+/// * `config` - Worldline Monte Carlo parameters.
+pub fn casimir_energy_field_3d<G: CasimirGeometry>(
+    geometry: &G,
+    bounds: (f64, f64, f64, f64, f64, f64),
+    resolution: (usize, usize, usize),
+    config: &WorldlineCasimirConfig,
+) -> CasimirEnergyField3D {
+    let (nx, ny, nz) = resolution;
+    let (x_min, x_max, y_min, y_max, z_min, z_max) = bounds;
+    let n_total = nx * ny * nz;
+
+    let dx = if nx > 1 {
+        (x_max - x_min) / (nx - 1) as f64
+    } else {
+        0.0
+    };
+    let dy = if ny > 1 {
+        (y_max - y_min) / (ny - 1) as f64
+    } else {
+        0.0
+    };
+    let dz = if nz > 1 {
+        (z_max - z_min) / (nz - 1) as f64
+    } else {
+        0.0
+    };
+
+    let results: Vec<CasimirEnergyResult> = (0..n_total)
+        .into_par_iter()
+        .map(|idx| {
+            let ix = idx % nx;
+            let iy = (idx / nx) % ny;
+            let iz = idx / (nx * ny);
+            let point = [
+                x_min + ix as f64 * dx,
+                y_min + iy as f64 * dy,
+                z_min + iz as f64 * dz,
+            ];
+            casimir_energy_at_point(geometry, point, config)
+        })
+        .collect();
+
+    let data: Vec<f64> = results.iter().map(|r| r.energy).collect();
+    let total_loops: u64 = results.iter().map(|r| r.n_loops_total).sum();
+
+    CasimirEnergyField3D {
+        data,
+        resolution,
+        bounds,
+        total_loops,
+    }
 }
 
 /// Exact Casimir energy density between parallel plates.
@@ -221,10 +303,7 @@ mod tests {
         let center = [0.0, 0.0, 0.5]; // midpoint
         let (theta, _err) = theta_sigma_average(&plates, center, 0.5, 500, 100, 42);
         // We just check it's in [0, 1] and not identically zero
-        assert!(
-            (0.0..=1.0).contains(&theta),
-            "theta_sigma = {theta}"
-        );
+        assert!((0.0..=1.0).contains(&theta), "theta_sigma = {theta}");
     }
 
     #[test]
@@ -246,6 +325,73 @@ mod tests {
             result.energy.is_finite(),
             "energy should be finite: {}",
             result.energy
+        );
+    }
+
+    #[test]
+    fn test_energy_field_3d_dimensions() {
+        let plates = ParallelPlates { separation: 1.0 };
+        let config = WorldlineCasimirConfig {
+            n_loop_points: 20,
+            n_loops: 50,
+            t_min: 0.1,
+            t_max: 2.0,
+            n_t_points: 4,
+            seed: 42,
+        };
+        let field = casimir_energy_field_3d(
+            &plates,
+            (-0.5, 0.5, -0.5, 0.5, 0.0, 1.0),
+            (3, 3, 3),
+            &config,
+        );
+        assert_eq!(field.data.len(), 27);
+        assert_eq!(field.resolution, (3, 3, 3));
+        assert!(field.total_loops > 0);
+    }
+
+    #[test]
+    fn test_energy_field_3d_all_finite() {
+        let plates = ParallelPlates { separation: 1.0 };
+        let config = WorldlineCasimirConfig {
+            n_loop_points: 20,
+            n_loops: 50,
+            t_min: 0.1,
+            t_max: 2.0,
+            n_t_points: 4,
+            seed: 42,
+        };
+        let field = casimir_energy_field_3d(
+            &plates,
+            (-0.5, 0.5, -0.5, 0.5, 0.1, 0.9),
+            (2, 2, 4),
+            &config,
+        );
+        for (i, &val) in field.data.iter().enumerate() {
+            assert!(val.is_finite(), "non-finite energy at index {i}: {val}");
+        }
+    }
+
+    #[test]
+    fn test_energy_field_3d_single_point() {
+        let plates = ParallelPlates { separation: 1.0 };
+        let config = WorldlineCasimirConfig {
+            n_loop_points: 30,
+            n_loops: 100,
+            t_min: 0.05,
+            t_max: 3.0,
+            n_t_points: 6,
+            seed: 42,
+        };
+        // 1x1x1 grid should give the same result as a single point evaluation
+        let field =
+            casimir_energy_field_3d(&plates, (0.0, 0.0, 0.0, 0.0, 0.5, 0.5), (1, 1, 1), &config);
+        let single = casimir_energy_at_point(&plates, [0.0, 0.0, 0.5], &config);
+        assert!(
+            (field.data[0] - single.energy).abs() < 1e-14,
+            "single-point field {:.6e} != direct {:.6e}",
+            field.data[0],
+            single.energy,
         );
     }
 }

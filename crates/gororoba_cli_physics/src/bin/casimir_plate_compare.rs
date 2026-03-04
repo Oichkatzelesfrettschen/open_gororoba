@@ -20,8 +20,7 @@ use materials_core::{
     casimir_energy_ideal, casimir_lifshitz_energy, casimir_lifshitz_force, germanium_optical,
     silica_casimir_optical, silicon_optical,
 };
-use std::f64::consts::PI;
-use std::io::Write;
+use std::{f64::consts::PI, io::Write};
 
 #[derive(Parser)]
 #[command(name = "casimir-plate-compare")]

@@ -13,8 +13,10 @@ use clap::{Parser, ValueEnum};
 use optics_core::{
     FanoDrudeParams, mie_scattering, normalized_fano_c_sct, ruan_fan_mdm_fig4, ruan_fan_mdm_fig5,
 };
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
 enum Figure {

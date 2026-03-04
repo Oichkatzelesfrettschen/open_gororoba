@@ -572,8 +572,7 @@ fn run_csv(
 }
 
 fn run_synth(n: usize, inject_ghost: bool, amplitude: f64, noise_std: f64, seed: u64) {
-    use rand::SeedableRng;
-    use rand::rngs::StdRng;
+    use rand::{SeedableRng, rngs::StdRng};
     use rand_distr::{Distribution, Normal};
 
     let mut rng = StdRng::seed_from_u64(seed);
@@ -912,8 +911,7 @@ mod tests {
 
     #[test]
     fn test_no_ghost_in_noise() {
-        use rand::SeedableRng;
-        use rand::rngs::StdRng;
+        use rand::{SeedableRng, rngs::StdRng};
         use rand_distr::{Distribution, Normal};
 
         let mut rng = StdRng::seed_from_u64(12345);
@@ -934,8 +932,7 @@ mod tests {
         // The old verdict was rank<=3 && SNR>5.0. The new verdict uses
         // p_fdr < alpha AND p_bonferroni < alpha. These are NOT equivalent:
         // many peaks with SNR > 5 fail FDR correction.
-        use rand::SeedableRng;
-        use rand::rngs::StdRng;
+        use rand::{SeedableRng, rngs::StdRng};
         use rand_distr::{Distribution, Normal};
 
         let mut rng = StdRng::seed_from_u64(99999);

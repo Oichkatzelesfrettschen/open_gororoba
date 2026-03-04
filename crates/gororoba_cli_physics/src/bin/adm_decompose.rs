@@ -8,14 +8,13 @@
 //! warp bubble (Alcubierre/nacelle).
 
 use clap::Parser;
-use gr_core::adm::{decompose_metric, extrinsic_curvature, hamiltonian_constraint};
-use gr_core::metric::SpacetimeMetric;
-use gr_core::schwarzschild::Schwarzschild;
-use gr_core::warp_metric::{NacelleWarpBubble, NacelleWarpParams};
-use std::error::Error;
-use std::fmt::Write as _;
-use std::fs;
-use std::path::PathBuf;
+use gr_core::{
+    adm::{decompose_metric, extrinsic_curvature, hamiltonian_constraint},
+    metric::SpacetimeMetric,
+    schwarzschild::Schwarzschild,
+    warp_metric::{NacelleWarpBubble, NacelleWarpParams},
+};
+use std::{error::Error, fmt::Write as _, fs, path::PathBuf};
 
 #[derive(Debug, Parser)]
 #[command(name = "adm-decompose")]
@@ -69,8 +68,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let _ = writeln!(
                     csv,
                     "{r:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e}",
-                    adm.lapse, adm.shift[0], adm.shift[1], adm.shift[2],
-                    ext.york_time, h,
+                    adm.lapse, adm.shift[0], adm.shift[1], adm.shift[2], ext.york_time, h,
                 );
             }
         }
@@ -91,8 +89,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let _ = writeln!(
                     csv,
                     "{r:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e}",
-                    adm.lapse, adm.shift[0], adm.shift[1], adm.shift[2],
-                    ext.york_time, h,
+                    adm.lapse, adm.shift[0], adm.shift[1], adm.shift[2], ext.york_time, h,
                 );
             }
         }
@@ -115,8 +112,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let _ = writeln!(
                     csv,
                     "{y:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e}",
-                    adm.lapse, adm.shift[0], adm.shift[1], adm.shift[2],
-                    ext.york_time, h,
+                    adm.lapse, adm.shift[0], adm.shift[1], adm.shift[2], ext.york_time, h,
                 );
             }
         }
@@ -138,8 +134,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let _ = writeln!(
                     csv,
                     "{y:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e}",
-                    adm.lapse, adm.shift[0], adm.shift[1], adm.shift[2],
-                    ext.york_time, h,
+                    adm.lapse, adm.shift[0], adm.shift[1], adm.shift[2], ext.york_time, h,
                 );
             }
         }

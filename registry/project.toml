@@ -5,16 +5,23 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 4738
-claim_count = 921
-insight_count = 98
-experiment_count = 77
-complete_experiment_count = 74
+test_count = 4807
+claim_count = 932
+insight_count = 99
+experiment_count = 86
+complete_experiment_count = 75
 paper_count = 19
-binary_count = 153
-kernel_checked_claims = 62
-proof_files = 89
+binary_count = 159
+kernel_checked_claims = 70
+proof_files = 93
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s60]
+number = 60
+date = "2026-03-03"
+test_count = 4807
+claim_count = 932
+summary = "Architecture Elevation: spectral gap census (C-926), adaptive entropy thresholding (C-927), Immirzi bridge ceiling (C-928), quantum chaos NNSD analysis (C-929, C-930), orthoplex diffusion dark energy (C-931, C-932). Fixed beta=1.0 orthoplex model: chi2=749.01 vs LCDM 767.39, delta-BIC=-3.58 (orthoplex PREFERRED). 1638 data points (Pantheon+ + DESI DR1 BAO + CC + f*sigma8 RSD + CMB R). Rocq proofs: HeatKernel.v + DarkEnergyEOS.v, 8 new kernel-checked theorems (70 total), 93 .v files. 30 new tests, 7 new claims (C-926..C-932), 2 new binaries, E-086, E-087."
 
 [sprints.s59]
 number = 59

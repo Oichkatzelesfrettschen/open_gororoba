@@ -12,16 +12,15 @@
 //!   arleo-falmagne-scaling alice             # ALICE-only fast path
 
 use clap::{Parser, Subcommand};
-use data_core::catalogs::hic_raa;
-use data_core::fetcher::FetchConfig;
-use qgp_scaling::data_tables;
-use qgp_scaling::density_scaling::{DensityScalingPoint, fit_density_scaling};
-use qgp_scaling::epsilon_fit::{RaaDataPoint, extract_epsilon};
-use qgp_scaling::glauber::{
-    CentralityBinGeometry, SigmaNN, compute_centrality_bins, standard_centrality_edges,
+use data_core::{catalogs::hic_raa, fetcher::FetchConfig};
+use qgp_scaling::{
+    data_tables,
+    density_scaling::{DensityScalingPoint, fit_density_scaling},
+    epsilon_fit::{RaaDataPoint, extract_epsilon},
+    glauber::{CentralityBinGeometry, SigmaNN, compute_centrality_bins, standard_centrality_edges},
+    multiplicity,
+    nucleus::NucleusParams,
 };
-use qgp_scaling::multiplicity;
-use qgp_scaling::nucleus::NucleusParams;
 use std::path::PathBuf;
 
 #[derive(Parser)]

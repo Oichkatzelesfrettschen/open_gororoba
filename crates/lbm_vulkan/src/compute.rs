@@ -1,10 +1,10 @@
 use crate::VulkanContext;
 use ash::{Device, vk};
-use gpu_allocator::MemoryLocation;
-use gpu_allocator::vulkan::*;
-use std::ffi::CString;
-use std::sync::Arc;
-use std::sync::Mutex;
+use gpu_allocator::{MemoryLocation, vulkan::*};
+use std::{
+    ffi::CString,
+    sync::{Arc, Mutex},
+};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -42,6 +42,7 @@ pub struct GororobaEngine {
     entropy_buffer: BufferSet,
     render_image: ImageSet,
     grid_dim: (u32, u32, u32),
+    screen_dim: (u32, u32),
     step_counter: u64,
 }
 
@@ -95,7 +96,10 @@ impl GororobaEngine {
     ) -> Result<Self> {
         let device = ctx.device.clone();
         let n_cells = (grid_dim.0 * grid_dim.1 * grid_dim.2) as u64;
-        let mut allocator = ctx.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
+        let mut allocator = ctx
+            .allocator
+            .lock()
+            .map_err(|_| VulkanEngineError::LockError)?;
 
         let f_a = Self::create_buf_internal(
             &device,
@@ -125,9 +129,9 @@ impl GororobaEngine {
             &device,
             &mut allocator,
             n_cells * 3 * 4,
-            vk::BufferUsageFlags::STORAGE_BUFFER,
+            vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC,
             "u",
-            MemoryLocation::GpuOnly,
+            MemoryLocation::GpuToCpu,
         )?;
         let tau = Self::create_buf_internal(
             &device,
@@ -230,6 +234,7 @@ impl GororobaEngine {
                 readback,
             },
             grid_dim,
+            screen_dim,
             step_counter: 0,
         })
     }
@@ -355,7 +360,10 @@ impl GororobaEngine {
             )
         }
         .map_err(|e| VulkanEngineError::Vulkan(e.1))?[0];
-        let mut allocator = ctx.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
+        let mut allocator = ctx
+            .allocator
+            .lock()
+            .map_err(|_| VulkanEngineError::LockError)?;
         let uniform = Self::create_buf_internal(
             device,
             &mut allocator,
@@ -544,7 +552,10 @@ impl GororobaEngine {
             )
         }
         .map_err(|e| VulkanEngineError::Vulkan(e.1))?[0];
-        let mut allocator = ctx.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
+        let mut allocator = ctx
+            .allocator
+            .lock()
+            .map_err(|_| VulkanEngineError::LockError)?;
         let uniform = Self::create_buf_internal(
             device,
             &mut allocator,
@@ -715,7 +726,10 @@ impl GororobaEngine {
             )
         }
         .map_err(|e| VulkanEngineError::Vulkan(e.1))?[0];
-        let mut allocator = ctx.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
+        let mut allocator = ctx
+            .allocator
+            .lock()
+            .map_err(|_| VulkanEngineError::LockError)?;
         let uniform = Self::create_buf_internal(
             device,
             &mut allocator,
@@ -862,7 +876,10 @@ impl GororobaEngine {
         force: &[f32],
     ) -> Result<()> {
         let f_size = (f_init.len() * 4) as u64;
-        let mut allocator = self.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
+        let mut allocator = self
+            .allocator
+            .lock()
+            .map_err(|_| VulkanEngineError::LockError)?;
         let staging = Self::create_buf_internal(
             &self.device,
             &mut allocator,
@@ -875,7 +892,11 @@ impl GororobaEngine {
             let mapped_ptr = staging.allocation.mapped_ptr().ok_or_else(|| {
                 VulkanEngineError::MappingError("Failed to map staging buffer".to_string())
             })?;
-            std::ptr::copy_nonoverlapping(f_init.as_ptr(), mapped_ptr.as_ptr() as *mut f32, f_init.len());
+            std::ptr::copy_nonoverlapping(
+                f_init.as_ptr(),
+                mapped_ptr.as_ptr() as *mut f32,
+                f_init.len(),
+            );
         }
         unsafe {
             let mapped_ptr = self.force_buffer.allocation.mapped_ptr().ok_or_else(|| {
@@ -940,9 +961,14 @@ impl GororobaEngine {
     /// after the compute shader writes to it. Caller MUST ensure the GPU has
     /// finished writing (e.g. via `queue_wait_idle`) before calling this.
     pub fn read_rho_field(&self) -> Result<Vec<f32>> {
-        let ptr = self.rho_buffer.allocation.mapped_ptr().ok_or_else(|| {
-            VulkanEngineError::MappingError("Failed to map rho buffer for reading".to_string())
-        })?.as_ptr() as *const f32;
+        let ptr = self
+            .rho_buffer
+            .allocation
+            .mapped_ptr()
+            .ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map rho buffer for reading".to_string())
+            })?
+            .as_ptr() as *const f32;
         let n = (self.grid_dim.0 * self.grid_dim.1 * self.grid_dim.2) as usize;
         let data = unsafe { std::slice::from_raw_parts(ptr, n) };
         Ok(data.to_vec())
@@ -954,9 +980,16 @@ impl GororobaEngine {
     }
 
     pub fn get_diagnostics(&self) -> Result<(f32, f32)> {
-        let ptr = self.rho_buffer.allocation.mapped_ptr().ok_or_else(|| {
-            VulkanEngineError::MappingError("Failed to map rho buffer for diagnostics".to_string())
-        })?.as_ptr() as *const f32;
+        let ptr = self
+            .rho_buffer
+            .allocation
+            .mapped_ptr()
+            .ok_or_else(|| {
+                VulkanEngineError::MappingError(
+                    "Failed to map rho buffer for diagnostics".to_string(),
+                )
+            })?
+            .as_ptr() as *const f32;
         let n = (self.grid_dim.0 * self.grid_dim.1 * self.grid_dim.2) as usize;
         let data = unsafe { std::slice::from_raw_parts(ptr, n) };
         let total_mass: f32 = data.iter().sum();
@@ -975,13 +1008,15 @@ impl GororobaEngine {
                 lambda: 5.0,
                 time: frame as f32,
             };
-            let mapped_ptr = self.zd_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
-                VulkanEngineError::MappingError("Failed to map ZD uniform buffer".to_string())
-            })?;
-            std::ptr::write(
-                mapped_ptr.as_ptr() as *mut ZdGenConstants,
-                zd_pc,
-            );
+            let mapped_ptr = self
+                .zd_pipeline
+                .uniform_buffer
+                .allocation
+                .mapped_ptr()
+                .ok_or_else(|| {
+                    VulkanEngineError::MappingError("Failed to map ZD uniform buffer".to_string())
+                })?;
+            std::ptr::write(mapped_ptr.as_ptr() as *mut ZdGenConstants, zd_pc);
             self.device.cmd_bind_pipeline(
                 cmd,
                 vk::PipelineBindPoint::COMPUTE,
@@ -1012,13 +1047,15 @@ impl GororobaEngine {
                 gy: -0.0001,
                 gz: 0.0,
             };
-            let mapped_ptr = self.lbm_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
-                VulkanEngineError::MappingError("Failed to map LBM uniform buffer".to_string())
-            })?;
-            std::ptr::write(
-                mapped_ptr.as_ptr() as *mut LbmConstants,
-                lbm_pc,
-            );
+            let mapped_ptr = self
+                .lbm_pipeline
+                .uniform_buffer
+                .allocation
+                .mapped_ptr()
+                .ok_or_else(|| {
+                    VulkanEngineError::MappingError("Failed to map LBM uniform buffer".to_string())
+                })?;
+            std::ptr::write(mapped_ptr.as_ptr() as *mut LbmConstants, lbm_pc);
             self.device.cmd_bind_pipeline(
                 cmd,
                 vk::PipelineBindPoint::COMPUTE,
@@ -1043,17 +1080,21 @@ impl GororobaEngine {
                 nx: self.grid_dim.0,
                 ny: self.grid_dim.1,
                 nz: self.grid_dim.2,
-                width: 1280,
-                height: 720,
+                width: self.screen_dim.0,
+                height: self.screen_dim.1,
                 time: frame as f32,
             };
-            let mapped_ptr = self.render_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
-                VulkanEngineError::MappingError("Failed to map render uniform buffer".to_string())
-            })?;
-            std::ptr::write(
-                mapped_ptr.as_ptr() as *mut RenderConstants,
-                render_pc,
-            );
+            let mapped_ptr = self
+                .render_pipeline
+                .uniform_buffer
+                .allocation
+                .mapped_ptr()
+                .ok_or_else(|| {
+                    VulkanEngineError::MappingError(
+                        "Failed to map render uniform buffer".to_string(),
+                    )
+                })?;
+            std::ptr::write(mapped_ptr.as_ptr() as *mut RenderConstants, render_pc);
             let barrier = vk::ImageMemoryBarrier {
                 old_layout: vk::ImageLayout::UNDEFINED,
                 new_layout: vk::ImageLayout::GENERAL,
@@ -1088,8 +1129,12 @@ impl GororobaEngine {
                 &self.render_pipeline.descriptor_sets,
                 &[],
             );
-            self.device
-                .cmd_dispatch(cmd, 1280u32.div_ceil(16), 720u32.div_ceil(16), 1);
+            self.device.cmd_dispatch(
+                cmd,
+                self.screen_dim.0.div_ceil(16),
+                self.screen_dim.1.div_ceil(16),
+                1,
+            );
             let barrier2 = vk::ImageMemoryBarrier {
                 old_layout: vk::ImageLayout::GENERAL,
                 new_layout: vk::ImageLayout::TRANSFER_SRC_OPTIMAL,
@@ -1123,8 +1168,8 @@ impl GororobaEngine {
                         ..Default::default()
                     },
                     image_extent: vk::Extent3D {
-                        width: 1280,
-                        height: 720,
+                        width: self.screen_dim.0,
+                        height: self.screen_dim.1,
                         depth: 1,
                     },
                     ..Default::default()
@@ -1156,13 +1201,15 @@ impl GororobaEngine {
                 lambda,
                 time: frame as f32,
             };
-            let mapped_ptr = self.zd_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
-                VulkanEngineError::MappingError("Failed to map ZD uniform buffer".to_string())
-            })?;
-            std::ptr::write(
-                mapped_ptr.as_ptr() as *mut ZdGenConstants,
-                zd_pc,
-            );
+            let mapped_ptr = self
+                .zd_pipeline
+                .uniform_buffer
+                .allocation
+                .mapped_ptr()
+                .ok_or_else(|| {
+                    VulkanEngineError::MappingError("Failed to map ZD uniform buffer".to_string())
+                })?;
+            std::ptr::write(mapped_ptr.as_ptr() as *mut ZdGenConstants, zd_pc);
             self.device.cmd_bind_pipeline(
                 cmd,
                 vk::PipelineBindPoint::COMPUTE,
@@ -1193,13 +1240,15 @@ impl GororobaEngine {
                 gy: -0.0001,
                 gz: 0.0,
             };
-            let mapped_ptr = self.lbm_pipeline.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
-                VulkanEngineError::MappingError("Failed to map LBM uniform buffer".to_string())
-            })?;
-            std::ptr::write(
-                mapped_ptr.as_ptr() as *mut LbmConstants,
-                lbm_pc,
-            );
+            let mapped_ptr = self
+                .lbm_pipeline
+                .uniform_buffer
+                .allocation
+                .mapped_ptr()
+                .ok_or_else(|| {
+                    VulkanEngineError::MappingError("Failed to map LBM uniform buffer".to_string())
+                })?;
+            std::ptr::write(mapped_ptr.as_ptr() as *mut LbmConstants, lbm_pc);
             self.device.cmd_bind_pipeline(
                 cmd,
                 vk::PipelineBindPoint::COMPUTE,
@@ -1232,15 +1281,69 @@ impl GororobaEngine {
             .allocation
             .mapped_ptr()
             .ok_or_else(|| {
-                VulkanEngineError::MappingError("Failed to map readback buffer for save_frame".to_string())
+                VulkanEngineError::MappingError(
+                    "Failed to map readback buffer for save_frame".to_string(),
+                )
             })?
             .as_ptr() as *const u8;
-        let mut pixels = vec![0u8; 1280 * 720 * 4];
+        let (w, h) = self.screen_dim;
+        let byte_count = (w * h * 4) as usize;
+        let mut pixels = vec![0u8; byte_count];
         unsafe {
             std::ptr::copy_nonoverlapping(ptr, pixels.as_mut_ptr(), pixels.len());
         }
-        image::save_buffer(path, &pixels, 1280, 720, image::ColorType::Rgba8)?;
+        image::save_buffer(path, &pixels, w, h, image::ColorType::Rgba8)?;
         Ok(())
+    }
+
+    /// Read back the rendered RGBA pixels from GPU memory as a byte vector.
+    ///
+    /// Returns `screen_dim.0 * screen_dim.1 * 4` bytes in R8G8B8A8_UNORM format.
+    /// Caller MUST ensure the GPU has finished rendering (via `queue_wait_idle`)
+    /// before calling this.
+    pub fn read_render_pixels(&self) -> Result<Vec<u8>> {
+        let ptr = self
+            .render_image
+            .readback
+            .allocation
+            .mapped_ptr()
+            .ok_or_else(|| {
+                VulkanEngineError::MappingError(
+                    "Failed to map readback buffer for read_render_pixels".to_string(),
+                )
+            })?
+            .as_ptr() as *const u8;
+        let (w, h) = self.screen_dim;
+        let byte_count = (w * h * 4) as usize;
+        let mut pixels = vec![0u8; byte_count];
+        unsafe {
+            std::ptr::copy_nonoverlapping(ptr, pixels.as_mut_ptr(), byte_count);
+        }
+        Ok(pixels)
+    }
+
+    /// Read back the velocity field from GPU memory.
+    ///
+    /// Returns a flat vector of `3 * nx * ny * nz` f32 values
+    /// in (vx, vy, vz) interleaved layout. Caller MUST ensure the GPU
+    /// has finished computing (via `queue_wait_idle`) before calling this.
+    pub fn read_velocity_field(&self) -> Result<Vec<f32>> {
+        let ptr = self
+            .u_buffer
+            .allocation
+            .mapped_ptr()
+            .ok_or_else(|| {
+                VulkanEngineError::MappingError("Failed to map u buffer for reading".to_string())
+            })?
+            .as_ptr() as *const f32;
+        let n = (self.grid_dim.0 * self.grid_dim.1 * self.grid_dim.2 * 3) as usize;
+        let data = unsafe { std::slice::from_raw_parts(ptr, n) };
+        Ok(data.to_vec())
+    }
+
+    /// Return the screen (render target) dimensions.
+    pub fn screen_dim(&self) -> (u32, u32) {
+        self.screen_dim
     }
 }
 

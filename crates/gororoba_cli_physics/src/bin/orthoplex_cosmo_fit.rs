@@ -13,8 +13,9 @@
 
 use clap::Parser;
 use cosmology_core::{
-    RealBaoData, compare_orthoplex, desi_to_real_bao, filter_pantheon_data, w_of_z_table,
-    w_orthoplex,
+    OrthoplexComparison, RealBaoData, compare_orthoplex_all, compare_orthoplex_fixed_beta,
+    cosmic_chronometer_data, desi_to_real_bao, filter_pantheon_data, growth_rate_data,
+    w_of_z_table, w_orthoplex,
 };
 use data_core::{
     catalogs::{
@@ -64,6 +65,10 @@ struct Args {
     /// Output as JSON (fit results only, no CSV).
     #[arg(long)]
     json: bool,
+
+    /// Run only the 4-param fixed-beta (beta=1.0) fit.
+    #[arg(long)]
+    fixed_beta: bool,
 }
 
 fn main() {
@@ -169,12 +174,31 @@ fn main() {
     );
 
     // -----------------------------------------------------------------------
-    // Step 4: Fit models and compare
+    // Step 4: Load cosmic chronometer H(z) + f*sigma8 growth rate data
     // -----------------------------------------------------------------------
-    eprintln!("[4/5] Fitting Lambda-CDM and orthoplex models...");
+    let cc_data = cosmic_chronometer_data();
+    let fsig_data = growth_rate_data();
+    eprintln!(
+        "[4/6] Loaded {} CC H(z) + {} f*sigma8 growth rate measurements",
+        cc_data.len(),
+        fsig_data.len(),
+    );
+
+    // -----------------------------------------------------------------------
+    // Step 5: Fit models and compare
+    // -----------------------------------------------------------------------
+    if args.fixed_beta {
+        eprintln!("[5/6] Fitting Lambda-CDM and orthoplex (fixed beta=1.0, 4 params)...");
+    } else {
+        eprintln!("[5/6] Fitting Lambda-CDM and orthoplex (free + fixed beta)...");
+    }
     eprintln!();
 
-    let comparison = compare_orthoplex(&sn_data, &bao_data, args.k);
+    let comparison = if args.fixed_beta {
+        compare_orthoplex_fixed_beta(&sn_data, &bao_data, &cc_data, &fsig_data, args.k)
+    } else {
+        compare_orthoplex_all(&sn_data, &bao_data, &cc_data, &fsig_data, args.k)
+    };
 
     if args.json {
         print_json(&comparison, sn_data.n_sne, bao_data.z_eff.len());
@@ -183,10 +207,15 @@ fn main() {
     }
 
     // -----------------------------------------------------------------------
-    // Step 5: Write w(z) CSV
+    // Step 6: Write w(z) CSV
     // -----------------------------------------------------------------------
-    eprintln!("[5/5] Writing w(z) table to {}...", args.csv);
-    let orth = &comparison.orthoplex;
+    eprintln!("[6/6] Writing w(z) table to {}...", args.csv);
+    // Use fixed-beta result if available and better, otherwise free-beta.
+    let orth = if let Some(ref fb) = comparison.orthoplex_fixed_beta {
+        if fb.chi2_total <= comparison.orthoplex.chi2_total + 1.0 { fb } else { &comparison.orthoplex }
+    } else {
+        &comparison.orthoplex
+    };
     let table = w_of_z_table(
         orth.k,
         orth.alpha,
@@ -214,8 +243,9 @@ fn main() {
     eprintln!("Done.");
 }
 
-fn print_report(c: &cosmology_core::OrthoplexComparison, n_sne: usize, n_bao: usize) {
+fn print_report(c: &OrthoplexComparison, n_sne: usize, n_bao: usize) {
     let n_data_total = c.lcdm.n_data;
+    let n_cc = cosmology_core::cosmic_chronometer_data().len();
     let dof_lcdm = n_data_total as f64 - c.lcdm.n_params as f64;
     let dof_orthoplex = c.orthoplex.n_data as f64 - c.orthoplex.n_params as f64;
 
@@ -223,13 +253,15 @@ fn print_report(c: &cosmology_core::OrthoplexComparison, n_sne: usize, n_bao: us
     println!("    ORTHOPLEX DARK ENERGY FIT RESULTS");
     println!("================================================================");
     println!();
+    let n_bao_pts = n_data_total - n_sne - 1 - n_cc;
     println!("Data summary:");
     println!("  Pantheon+ SN Ia:     {} supernovae", n_sne);
     println!(
         "  DESI DR1 BAO:        {} bins ({} data pts)",
-        n_bao,
-        n_data_total - n_sne
+        n_bao, n_bao_pts
     );
+    println!("  CMB shift parameter: 1 data point (R = 1.7502 +/- 0.0046)");
+    println!("  Cosmic chronometers: {} H(z) measurements", n_cc);
     println!("  Total data points:   {}", n_data_total);
     println!();
     println!("----------------------------------------------------------------");
@@ -240,6 +272,9 @@ fn print_report(c: &cosmology_core::OrthoplexComparison, n_sne: usize, n_bao: us
     println!("  chi2_total    = {:.2}", c.lcdm.chi2_total);
     println!("    chi2_SN     = {:.2}", c.lcdm.chi2_sn);
     println!("    chi2_BAO    = {:.2}", c.lcdm.chi2_bao);
+    println!("    chi2_CMB    = {:.2}", c.lcdm.chi2_cmb);
+    println!("    chi2_CC     = {:.2}", c.lcdm.chi2_cc);
+    println!("    chi2_fsig8  = {:.2}", c.lcdm.chi2_fsig);
     println!(
         "  chi2/dof      = {:.3} ({:.0}/{:.0})",
         c.lcdm.chi2_total / dof_lcdm,
@@ -248,66 +283,66 @@ fn print_report(c: &cosmology_core::OrthoplexComparison, n_sne: usize, n_bao: us
     );
     println!("  AIC           = {:.2}", c.lcdm.aic);
     println!("  BIC           = {:.2}", c.lcdm.bic);
-    println!();
-    println!("----------------------------------------------------------------");
-    println!(
-        "  Orthoplex K_{{2,2,...,2}} k={} (5 params: Omega_m, H_0, alpha, beta, t_0)",
-        c.orthoplex.k
-    );
-    println!("----------------------------------------------------------------");
-    println!("  Omega_m       = {:.4}", c.orthoplex.omega_m);
-    println!("  H_0           = {:.2} km/s/Mpc", c.orthoplex.h0);
-    println!("  alpha         = {:.4}", c.orthoplex.alpha);
-    println!("  beta          = {:.6}", c.orthoplex.beta);
-    println!("  t_0           = {:.4}", c.orthoplex.t_0);
-    println!("  w(z=0)        = {:.6}", c.orthoplex.w_0);
-    println!("  w(z=2)        = {:.6}", c.orthoplex.w_high_z);
-    println!("  chi2_total    = {:.2}", c.orthoplex.chi2_total);
-    println!("    chi2_SN     = {:.2}", c.orthoplex.chi2_sn);
-    println!("    chi2_BAO    = {:.2}", c.orthoplex.chi2_bao);
-    println!(
-        "  chi2/dof      = {:.3} ({:.0}/{:.0})",
-        c.orthoplex.chi2_total / dof_orthoplex,
-        c.orthoplex.chi2_total,
-        dof_orthoplex
-    );
-    println!("  AIC           = {:.2}", c.orthoplex.aic);
-    println!("  BIC           = {:.2}", c.orthoplex.bic);
-    println!();
 
-    // w(z) at key redshifts
-    println!("  w(z) at key redshifts:");
-    for z in [0.0, 0.3, 0.5, 1.0, 2.0] {
-        let w = w_orthoplex(
-            z,
-            c.orthoplex.k,
-            c.orthoplex.alpha,
-            c.orthoplex.beta,
-            c.orthoplex.t_0,
+    // Print free-beta section only if it was fitted (not fixed-beta-only mode)
+    if !c.orthoplex.beta_fixed {
+        println!();
+        println!("----------------------------------------------------------------");
+        println!(
+            "  Orthoplex K_{{2,2,...,2}} k={} (5 params: Omega_m, H_0, alpha, beta, t_0)",
+            c.orthoplex.k
         );
-        println!("    w(z={z:.1})      = {w:.6}");
+        println!("----------------------------------------------------------------");
+        print_orthoplex_result(&c.orthoplex, dof_orthoplex);
+    }
+
+    // Print fixed-beta section
+    if let Some(ref fb) = c.orthoplex_fixed_beta {
+        let dof_fb = fb.n_data as f64 - fb.n_params as f64;
+        println!();
+        println!("----------------------------------------------------------------");
+        println!(
+            "  Orthoplex K_{{2,2,...,2}} k={} (4 params: Omega_m, H_0, alpha, t_0; beta=1.0 FIXED)",
+            fb.k
+        );
+        println!("----------------------------------------------------------------");
+        print_orthoplex_result(fb, dof_fb);
+    } else if c.orthoplex.beta_fixed {
+        // Fixed-beta-only mode: result is in c.orthoplex
+        println!();
+        println!("----------------------------------------------------------------");
+        println!(
+            "  Orthoplex K_{{2,2,...,2}} k={} (4 params: Omega_m, H_0, alpha, t_0; beta=1.0 FIXED)",
+            c.orthoplex.k
+        );
+        println!("----------------------------------------------------------------");
+        print_orthoplex_result(&c.orthoplex, dof_orthoplex);
     }
 
     println!();
     println!("================================================================");
     println!("  MODEL COMPARISON");
     println!("================================================================");
-    println!("  Delta AIC  = {:.2} (orthoplex - LCDM)", c.delta_aic);
-    println!("  Delta BIC  = {:.2} (orthoplex - LCDM)", c.delta_bic);
-    println!();
 
-    if c.delta_bic > 10.0 {
-        println!("  Verdict: Very strong evidence for Lambda-CDM over orthoplex.");
-    } else if c.delta_bic > 6.0 {
-        println!("  Verdict: Strong evidence for Lambda-CDM over orthoplex.");
-    } else if c.delta_bic > 2.0 {
-        println!("  Verdict: Positive evidence for Lambda-CDM over orthoplex.");
-    } else if c.delta_bic > -2.0 {
-        println!("  Verdict: No significant difference between models.");
-    } else if c.delta_bic > -6.0 {
-        println!("  Verdict: Positive evidence for orthoplex over Lambda-CDM.");
-    } else {
-        println!("  Verdict: Strong evidence for orthoplex over Lambda-CDM.");
+    if !c.orthoplex.beta_fixed {
+        println!("  Free beta (5 params):");
+        println!("    Delta AIC  = {:.2} (orthoplex - LCDM)", c.delta_aic);
+        println!("    Delta BIC  = {:.2} (orthoplex - LCDM)", c.delta_bic);
+        print_bic_verdict("    ", c.delta_bic);
+    }
+
+    if let Some(delta_bic_fb) = c.delta_bic_fixed_beta {
+        let delta_aic_fb = c.delta_aic_fixed_beta.unwrap_or(0.0);
+        println!();
+        println!("  Fixed beta=1.0 (4 params):");
+        println!("    Delta AIC  = {:.2} (orthoplex - LCDM)", delta_aic_fb);
+        println!("    Delta BIC  = {:.2} (orthoplex - LCDM)", delta_bic_fb);
+        print_bic_verdict("    ", delta_bic_fb);
+    } else if c.orthoplex.beta_fixed {
+        println!("  Fixed beta=1.0 (4 params):");
+        println!("    Delta AIC  = {:.2} (orthoplex - LCDM)", c.delta_aic);
+        println!("    Delta BIC  = {:.2} (orthoplex - LCDM)", c.delta_bic);
+        print_bic_verdict("    ", c.delta_bic);
     }
 
     println!();
@@ -315,7 +350,54 @@ fn print_report(c: &cosmology_core::OrthoplexComparison, n_sne: usize, n_bao: us
     println!("================================================================");
 }
 
-fn print_json(c: &cosmology_core::OrthoplexComparison, n_sne: usize, n_bao: usize) {
+fn print_orthoplex_result(orth: &cosmology_core::OrthoplexFitResult, dof: f64) {
+    println!("  Omega_m       = {:.4}", orth.omega_m);
+    println!("  H_0           = {:.2} km/s/Mpc", orth.h0);
+    println!("  alpha         = {:.4}", orth.alpha);
+    println!("  beta          = {:.6}{}", orth.beta, if orth.beta_fixed { " (FIXED)" } else { "" });
+    println!("  t_0           = {:.6}", orth.t_0);
+    println!("  w(z=0)        = {:.6}", orth.w_0);
+    println!("  w(z=2)        = {:.6}", orth.w_high_z);
+    println!("  chi2_total    = {:.2}", orth.chi2_total);
+    println!("    chi2_SN     = {:.2}", orth.chi2_sn);
+    println!("    chi2_BAO    = {:.2}", orth.chi2_bao);
+    println!("    chi2_CMB    = {:.2}", orth.chi2_cmb);
+    println!("    chi2_CC     = {:.2}", orth.chi2_cc);
+    println!("    chi2_fsig8  = {:.2}", orth.chi2_fsig);
+    println!(
+        "  chi2/dof      = {:.3} ({:.0}/{:.0})",
+        orth.chi2_total / dof,
+        orth.chi2_total,
+        dof
+    );
+    println!("  AIC           = {:.2}", orth.aic);
+    println!("  BIC           = {:.2}", orth.bic);
+
+    println!();
+    println!("  w(z) at key redshifts:");
+    for z in [0.0, 0.3, 0.5, 1.0, 2.0] {
+        let w = w_orthoplex(z, orth.k, orth.alpha, orth.beta, orth.t_0);
+        println!("    w(z={z:.1})      = {w:.6}");
+    }
+}
+
+fn print_bic_verdict(prefix: &str, delta_bic: f64) {
+    if delta_bic > 10.0 {
+        println!("{prefix}Verdict: Very strong evidence for Lambda-CDM over orthoplex.");
+    } else if delta_bic > 6.0 {
+        println!("{prefix}Verdict: Strong evidence for Lambda-CDM over orthoplex.");
+    } else if delta_bic > 2.0 {
+        println!("{prefix}Verdict: Positive evidence for Lambda-CDM over orthoplex.");
+    } else if delta_bic > -2.0 {
+        println!("{prefix}Verdict: No significant difference between models.");
+    } else if delta_bic > -6.0 {
+        println!("{prefix}Verdict: Positive evidence for orthoplex over Lambda-CDM.");
+    } else {
+        println!("{prefix}Verdict: Strong evidence for orthoplex over Lambda-CDM.");
+    }
+}
+
+fn print_json(c: &OrthoplexComparison, n_sne: usize, n_bao: usize) {
     println!("{{");
     println!("  \"data\": {{");
     println!("    \"n_sne\": {},", n_sne);
@@ -328,27 +410,54 @@ fn print_json(c: &cosmology_core::OrthoplexComparison, n_sne: usize, n_bao: usiz
     println!("    \"chi2_total\": {:.4},", c.lcdm.chi2_total);
     println!("    \"chi2_sn\": {:.4},", c.lcdm.chi2_sn);
     println!("    \"chi2_bao\": {:.4},", c.lcdm.chi2_bao);
+    println!("    \"chi2_cmb\": {:.4},", c.lcdm.chi2_cmb);
+    println!("    \"chi2_cc\": {:.4},", c.lcdm.chi2_cc);
     println!("    \"aic\": {:.4},", c.lcdm.aic);
     println!("    \"bic\": {:.4}", c.lcdm.bic);
     println!("  }},");
     println!("  \"orthoplex\": {{");
     println!("    \"k\": {},", c.orthoplex.k);
+    println!("    \"beta_fixed\": {},", c.orthoplex.beta_fixed);
     println!("    \"omega_m\": {:.6},", c.orthoplex.omega_m);
     println!("    \"h0\": {:.4},", c.orthoplex.h0);
     println!("    \"alpha\": {:.4},", c.orthoplex.alpha);
     println!("    \"beta\": {:.6},", c.orthoplex.beta);
-    println!("    \"t_0\": {:.4},", c.orthoplex.t_0);
+    println!("    \"t_0\": {:.6},", c.orthoplex.t_0);
     println!("    \"w_0\": {:.6},", c.orthoplex.w_0);
     println!("    \"w_high_z\": {:.6},", c.orthoplex.w_high_z);
     println!("    \"chi2_total\": {:.4},", c.orthoplex.chi2_total);
     println!("    \"chi2_sn\": {:.4},", c.orthoplex.chi2_sn);
     println!("    \"chi2_bao\": {:.4},", c.orthoplex.chi2_bao);
+    println!("    \"chi2_cmb\": {:.4},", c.orthoplex.chi2_cmb);
+    println!("    \"chi2_cc\": {:.4},", c.orthoplex.chi2_cc);
     println!("    \"aic\": {:.4},", c.orthoplex.aic);
     println!("    \"bic\": {:.4}", c.orthoplex.bic);
     println!("  }},");
+    if let Some(ref fb) = c.orthoplex_fixed_beta {
+        println!("  \"orthoplex_fixed_beta\": {{");
+        println!("    \"k\": {},", fb.k);
+        println!("    \"omega_m\": {:.6},", fb.omega_m);
+        println!("    \"h0\": {:.4},", fb.h0);
+        println!("    \"alpha\": {:.4},", fb.alpha);
+        println!("    \"beta\": {:.6},", fb.beta);
+        println!("    \"t_0\": {:.6},", fb.t_0);
+        println!("    \"w_0\": {:.6},", fb.w_0);
+        println!("    \"w_high_z\": {:.6},", fb.w_high_z);
+        println!("    \"chi2_total\": {:.4},", fb.chi2_total);
+        println!("    \"aic\": {:.4},", fb.aic);
+        println!("    \"bic\": {:.4}", fb.bic);
+        println!("  }},");
+    }
     println!("  \"comparison\": {{");
     println!("    \"delta_aic\": {:.4},", c.delta_aic);
-    println!("    \"delta_bic\": {:.4}", c.delta_bic);
+    print!("    \"delta_bic\": {:.4}", c.delta_bic);
+    if let (Some(da), Some(db)) = (c.delta_aic_fixed_beta, c.delta_bic_fixed_beta) {
+        println!(",");
+        println!("    \"delta_aic_fixed_beta\": {:.4},", da);
+        println!("    \"delta_bic_fixed_beta\": {:.4}", db);
+    } else {
+        println!();
+    }
     println!("  }}");
     println!("}}");
 }

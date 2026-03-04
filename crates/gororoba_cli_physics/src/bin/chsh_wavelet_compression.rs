@@ -19,9 +19,7 @@ use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Binomial, Distribution};
 use spectral_core::wavelet::{haar_dwt, haar_idwt};
-use std::f64::consts::PI;
-use std::fs;
-use std::path::Path;
+use std::{f64::consts::PI, fs, path::Path};
 
 #[derive(Parser, Debug)]
 #[command(

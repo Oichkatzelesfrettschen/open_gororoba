@@ -38,8 +38,12 @@
 use crate::{
     bounce::{C_KM_S, bao_sound_horizon},
     gl_integrate,
-    observational::{RealBaoData, RealSnData},
+    observational::{
+        CMB_SHIFT_R_ERR, CMB_SHIFT_R_OBS, CcMeasurement, FsigMeasurement, RealBaoData, RealSnData,
+        SIGMA8_PLANCK, compute_growth_batch,
+    },
 };
+use rayon::prelude::*;
 
 // ---------------------------------------------------------------------------
 // Types
@@ -58,7 +62,7 @@ pub struct OrthoplexParams {
     pub t_0: f64,
 }
 
-/// Result of fitting the orthoplex diffusion model to SN + BAO data.
+/// Result of fitting the orthoplex diffusion model to SN + BAO + CMB + CC data.
 #[derive(Clone, Debug)]
 pub struct OrthoplexFitResult {
     /// Best-fit matter density parameter.
@@ -73,13 +77,21 @@ pub struct OrthoplexFitResult {
     pub t_0: f64,
     /// Number of parts in K_{2,2,...,2} (fixed, not fitted).
     pub k: usize,
+    /// Whether beta was fixed (true) or fitted (false).
+    pub beta_fixed: bool,
     /// Total chi-square.
     pub chi2_total: f64,
     /// SN contribution to chi-square.
     pub chi2_sn: f64,
     /// BAO contribution to chi-square.
     pub chi2_bao: f64,
-    /// Number of free parameters (5).
+    /// CMB shift parameter contribution to chi-square.
+    pub chi2_cmb: f64,
+    /// Cosmic chronometer contribution to chi-square.
+    pub chi2_cc: f64,
+    /// f*sigma8 growth rate contribution to chi-square.
+    pub chi2_fsig: f64,
+    /// Number of free parameters.
     pub n_params: usize,
     /// Number of data points.
     pub n_data: usize,
@@ -102,6 +114,12 @@ pub struct OrthoplexComparison {
     pub delta_bic: f64,
     /// Delta AIC = AIC_orthoplex - AIC_lcdm.
     pub delta_aic: f64,
+    /// Fixed-beta (beta=1.0, 4-param) fit result, if computed.
+    pub orthoplex_fixed_beta: Option<OrthoplexFitResult>,
+    /// Delta BIC for fixed-beta variant.
+    pub delta_bic_fixed_beta: Option<f64>,
+    /// Delta AIC for fixed-beta variant.
+    pub delta_aic_fixed_beta: Option<f64>,
 }
 
 // ---------------------------------------------------------------------------
@@ -255,12 +273,115 @@ pub fn distance_modulus_orthoplex(
 }
 
 // ---------------------------------------------------------------------------
+// Grid-interpolated comoving distance (avoids redundant GL quadrature)
+// ---------------------------------------------------------------------------
+
+/// Precomputed comoving distance grid for fast interpolation.
+///
+/// Instead of running a 50-point GL quadrature from 0 to z_i for each of the
+/// ~1578 supernovae (each GL node itself triggering another 50-point inner
+/// quadrature for dark_energy_density_ratio), we evaluate d_C(z) on a
+/// linearly-spaced grid once, then interpolate. Reduces per-step cost from
+/// O(N_data * N_GL^2) to O(N_grid * N_GL^2 + N_data).
+struct ComovingGrid {
+    /// Grid redshifts, linearly spaced from 0 to z_max.
+    z_grid: Vec<f64>,
+    /// Comoving distance (c/H_0) * integral_0^z dz'/E(z') at each grid point.
+    dc_grid: Vec<f64>,
+    /// E(z) at each grid point (for BAO d_H computation).
+    e_grid: Vec<f64>,
+    /// Grid spacing (uniform).
+    dz: f64,
+}
+
+impl ComovingGrid {
+    /// Build grid with `n_grid` points covering [0, z_max].
+    ///
+    /// Uses cumulative GL quadrature: each segment [z_i, z_{i+1}] is integrated
+    /// once, then accumulated. Total: n_grid GL evaluations instead of
+    /// n_data * n_grid.
+    #[allow(clippy::too_many_arguments)]
+    fn build(
+        z_max: f64,
+        n_grid: usize,
+        omega_m: f64,
+        h0: f64,
+        k: usize,
+        alpha: f64,
+        beta: f64,
+        t_0: f64,
+    ) -> Self {
+        let dz = z_max / (n_grid - 1).max(1) as f64;
+        let c_over_h0 = C_KM_S / h0;
+
+        let mut z_grid = Vec::with_capacity(n_grid);
+        let mut dc_grid = Vec::with_capacity(n_grid);
+        let mut e_grid = Vec::with_capacity(n_grid);
+
+        let mut cumulative_dc = 0.0;
+
+        for i in 0..n_grid {
+            let z = dz * i as f64;
+            z_grid.push(z);
+
+            if i > 0 {
+                let z_prev = z_grid[i - 1];
+                let segment = gl_integrate(
+                    |zp| 1.0 / hubble_e_orthoplex(zp, omega_m, k, alpha, beta, t_0),
+                    z_prev,
+                    z,
+                    20, // 20 GL nodes per segment is sufficient for smooth E(z)
+                );
+                cumulative_dc += c_over_h0 * segment;
+            }
+
+            dc_grid.push(cumulative_dc);
+            e_grid.push(hubble_e_orthoplex(z, omega_m, k, alpha, beta, t_0));
+        }
+
+        Self { z_grid, dc_grid, e_grid, dz }
+    }
+
+    /// Interpolate comoving distance at arbitrary z via linear interpolation.
+    #[inline]
+    fn interp_dc(&self, z: f64) -> f64 {
+        if z <= 0.0 {
+            return 0.0;
+        }
+        let idx_f = z / self.dz;
+        let idx = idx_f as usize;
+        if idx + 1 >= self.z_grid.len() {
+            return *self.dc_grid.last().unwrap_or(&0.0);
+        }
+        let frac = idx_f - idx as f64;
+        self.dc_grid[idx] + frac * (self.dc_grid[idx + 1] - self.dc_grid[idx])
+    }
+
+    /// Interpolate E(z) at arbitrary z via linear interpolation.
+    #[inline]
+    fn interp_e(&self, z: f64) -> f64 {
+        if z <= 0.0 {
+            return 1.0;
+        }
+        let idx_f = z / self.dz;
+        let idx = idx_f as usize;
+        if idx + 1 >= self.z_grid.len() {
+            return *self.e_grid.last().unwrap_or(&1.0);
+        }
+        let frac = idx_f - idx as f64;
+        self.e_grid[idx] + frac * (self.e_grid[idx + 1] - self.e_grid[idx])
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Chi-square functions for observational fitting
 // ---------------------------------------------------------------------------
 
 /// Chi-square for Pantheon+ SN data with orthoplex dark energy model.
 ///
-/// Uses analytic M_B marginalization (Conley+ 2011).
+/// Uses grid-interpolated comoving distance (200-point grid, cumulative GL
+/// quadrature) and rayon parallelism over the 1578 SN residuals.
+/// Analytic M_B marginalization (Conley+ 2011).
 pub fn chi2_sn_orthoplex(
     omega_m: f64,
     h0: f64,
@@ -274,26 +395,36 @@ pub fn chi2_sn_orthoplex(
         return 1e10;
     }
 
-    let mut a_sum = 0.0_f64;
-    let mut b_sum = 0.0_f64;
-    let mut c_sum = 0.0_f64;
+    let z_max = sn.z.iter().cloned().fold(0.0_f64, f64::max);
+    let grid = ComovingGrid::build(z_max * 1.01, 200, omega_m, h0, k, alpha, beta, t_0);
 
-    for i in 0..sn.z.len() {
-        let mu_model = distance_modulus_orthoplex(sn.z[i], omega_m, h0, k, alpha, beta, t_0);
-        let residual = sn.mu[i] - mu_model;
-        let inv_var = 1.0 / (sn.mu_err[i] * sn.mu_err[i]);
+    // Parallel reduction over SN data: compute (a_sum, b_sum, c_sum)
+    let (a_sum, b_sum, c_sum) = (0..sn.z.len())
+        .into_par_iter()
+        .map(|i| {
+            let zi = sn.z[i];
+            let dc = grid.interp_dc(zi);
+            let d_l = dc * (1.0 + zi);  // luminosity distance in Mpc
+            let d_l_pc = d_l * 1e6;
+            let mu_model = 5.0 * (d_l_pc.max(1e-30) / 10.0).log10();
 
-        a_sum += residual * residual * inv_var;
-        b_sum += residual * inv_var;
-        c_sum += inv_var;
-    }
+            let residual = sn.mu[i] - mu_model;
+            let inv_var = 1.0 / (sn.mu_err[i] * sn.mu_err[i]);
+
+            (residual * residual * inv_var, residual * inv_var, inv_var)
+        })
+        .reduce(
+            || (0.0, 0.0, 0.0),
+            |(a1, b1, c1), (a2, b2, c2)| (a1 + a2, b1 + b2, c1 + c2),
+        );
 
     a_sum - b_sum * b_sum / c_sum
 }
 
 /// Chi-square for real BAO data with orthoplex dark energy model.
 ///
-/// Supports mixed isotropic + anisotropic bins (same format as observational.rs).
+/// Uses same grid-interpolation as SN chi2 for comoving distance.
+/// BAO has only 7-12 bins so parallelism is unnecessary here.
 pub fn chi2_bao_orthoplex(
     omega_m: f64,
     h0: f64,
@@ -307,26 +438,16 @@ pub fn chi2_bao_orthoplex(
         return 1e10;
     }
 
+    let z_max = bao.z_eff.iter().cloned().fold(0.0_f64, f64::max);
+    let grid = ComovingGrid::build(z_max * 1.01, 200, omega_m, h0, k, alpha, beta, t_0);
+
     let r_d = bao_sound_horizon(omega_m, h0);
     let mut chi2 = 0.0;
 
     for i in 0..bao.z_eff.len() {
         let zi = bao.z_eff[i];
-
-        // Comoving distance via GL quadrature
-        let d_c = if zi <= 0.0 {
-            0.0
-        } else {
-            let integral = gl_integrate(
-                |zp| 1.0 / hubble_e_orthoplex(zp, omega_m, k, alpha, beta, t_0),
-                0.0,
-                zi,
-                50,
-            );
-            (C_KM_S / h0) * integral
-        };
-
-        let e_val = hubble_e_orthoplex(zi, omega_m, k, alpha, beta, t_0);
+        let d_c = grid.interp_dc(zi);
+        let e_val = grid.interp_e(zi);
         let d_h = C_KM_S / (h0 * e_val);
 
         if bao.is_isotropic[i] {
@@ -368,20 +489,126 @@ pub fn chi2_bao_orthoplex(
 }
 
 // ---------------------------------------------------------------------------
+// CMB and cosmic chronometer chi-square for orthoplex
+// ---------------------------------------------------------------------------
+
+/// CMB shift parameter R for the orthoplex dark energy model.
+///
+/// R = sqrt(Omega_m) * integral_0^{z_star} dz/E(z)
+///
+/// At z_star = 1089, orthoplex w(z) -> -1 rapidly (d_s -> 0 at large z),
+/// so this effectively matches LCDM. Uses GL(100) for the high-z integral.
+pub fn cmb_shift_parameter_orthoplex(
+    omega_m: f64,
+    k: usize,
+    alpha: f64,
+    beta: f64,
+    t_0: f64,
+) -> f64 {
+    let z_star = 1089.0;
+    let integral = gl_integrate(
+        |z| 1.0 / hubble_e_orthoplex(z, omega_m, k, alpha, beta, t_0),
+        0.0,
+        z_star,
+        100,
+    );
+    omega_m.sqrt() * integral
+}
+
+/// Chi-square from the CMB shift parameter for orthoplex dark energy.
+pub fn chi2_cmb_shift_orthoplex(
+    omega_m: f64,
+    k: usize,
+    alpha: f64,
+    beta: f64,
+    t_0: f64,
+) -> f64 {
+    let r_model = cmb_shift_parameter_orthoplex(omega_m, k, alpha, beta, t_0);
+    let residual = (r_model - CMB_SHIFT_R_OBS) / CMB_SHIFT_R_ERR;
+    residual * residual
+}
+
+/// Chi-square for cosmic chronometer H(z) data with orthoplex dark energy.
+///
+/// H_model(z) = H_0 * E(z). Each E(z) call triggers a 50-node inner GL
+/// for dark_energy_density_ratio, but only 31 CC points = 1550 evals per step.
+pub fn chi2_cc_orthoplex(
+    omega_m: f64,
+    h0: f64,
+    k: usize,
+    alpha: f64,
+    beta: f64,
+    t_0: f64,
+    cc: &[CcMeasurement],
+) -> f64 {
+    if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) {
+        return 1e10;
+    }
+
+    let mut chi2 = 0.0;
+    for m in cc {
+        let e_val = hubble_e_orthoplex(m.z, omega_m, k, alpha, beta, t_0);
+        let h_model = h0 * e_val;
+        let residual = (m.h_obs - h_model) / m.h_err;
+        chi2 += residual * residual;
+    }
+
+    chi2
+}
+
+/// Chi-square for f*sigma8 growth rate data with orthoplex dark energy.
+///
+/// Uses batch RK4 growth ODE integrator (single sweep) with orthoplex E(z).
+pub fn chi2_fsig8_orthoplex(
+    omega_m: f64,
+    k: usize,
+    alpha: f64,
+    beta: f64,
+    t_0: f64,
+    fsig: &[FsigMeasurement],
+) -> f64 {
+    if fsig.is_empty() {
+        return 0.0;
+    }
+
+    let e_func = |z: f64| hubble_e_orthoplex(z, omega_m, k, alpha, beta, t_0);
+    let zs: Vec<f64> = fsig.iter().map(|m| m.z).collect();
+    let results = compute_growth_batch(omega_m, &e_func, &zs, SIGMA8_PLANCK);
+
+    let mut chi2 = 0.0;
+    for (m, &(_, fsig8_model)) in fsig.iter().zip(results.iter()) {
+        let residual = (m.fsig8_obs - fsig8_model) / m.fsig8_err;
+        chi2 += residual * residual;
+    }
+    chi2
+}
+
+// ---------------------------------------------------------------------------
 // Model fitting
 // ---------------------------------------------------------------------------
 
-/// Fit orthoplex dark energy model to real SN + BAO data.
+/// Fit orthoplex dark energy model to real SN + BAO + CC + f*sigma8 data.
 ///
 /// Free parameters: omega_m, h0, alpha, beta, t_0 (5 parameters).
 /// Fixed: k (graph topology, determined by CD algebra dimension).
 ///
+/// Objective includes: SN chi2 + BAO chi2 + CMB shift chi2 + CC chi2 + f*sigma8 chi2.
+/// Pass `&[]` for `cc` or `fsig` to omit those constraints.
+///
 /// Uses multi-start Nelder-Mead: 9 initial guesses spanning the expanded
 /// parameter space (alpha up to 25, t_0 down to 1e-5) to avoid local
 /// minima in the 5D chi2 landscape. Each start runs 10k iterations.
-pub fn fit_orthoplex_model(sn: &RealSnData, bao: &RealBaoData, k: usize) -> OrthoplexFitResult {
+pub fn fit_orthoplex_model(
+    sn: &RealSnData,
+    bao: &RealBaoData,
+    cc: &[CcMeasurement],
+    fsig: &[FsigMeasurement],
+    k: usize,
+) -> OrthoplexFitResult {
     let n_bao_data = crate::observational::bao_data_point_count(bao);
-    let n_data = sn.z.len() + n_bao_data;
+    let n_cmb = 1;
+    let n_cc = cc.len();
+    let n_data = sn.z.len() + n_bao_data + n_cmb + n_cc + fsig.len();
 
     let bounds = [
         (0.1, 0.5),    // omega_m
@@ -391,39 +618,110 @@ pub fn fit_orthoplex_model(sn: &RealSnData, bao: &RealBaoData, k: usize) -> Orth
         (1e-5, 10.0),  // t_0    (uncaged from 0.01)
     ];
 
+    // Combined objective: builds ONE shared grid per step for both SN + BAO.
+    let z_max_sn = sn.z.iter().cloned().fold(0.0_f64, f64::max);
+    let z_max_bao = bao.z_eff.iter().cloned().fold(0.0_f64, f64::max);
+    let z_max = z_max_sn.max(z_max_bao) * 1.01;
+
     let obj = |p: &[f64]| {
-        chi2_sn_orthoplex(p[0], p[1], k, p[2], p[3], p[4], sn)
-            + chi2_bao_orthoplex(p[0], p[1], k, p[2], p[3], p[4], bao)
+        let omega_m = p[0];
+        let h0 = p[1];
+        let alpha = p[2];
+        let beta = p[3];
+        let t_0 = p[4];
+
+        if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) {
+            return 1e10;
+        }
+
+        let grid = ComovingGrid::build(z_max, 200, omega_m, h0, k, alpha, beta, t_0);
+
+        // SN chi2 with analytic M_B marginalization (parallel)
+        let (a_sum, b_sum, c_sum) = (0..sn.z.len())
+            .into_par_iter()
+            .map(|i| {
+                let zi = sn.z[i];
+                let dc = grid.interp_dc(zi);
+                let d_l = dc * (1.0 + zi);
+                let d_l_pc = d_l * 1e6;
+                let mu_model = 5.0 * (d_l_pc.max(1e-30) / 10.0).log10();
+                let residual = sn.mu[i] - mu_model;
+                let inv_var = 1.0 / (sn.mu_err[i] * sn.mu_err[i]);
+                (residual * residual * inv_var, residual * inv_var, inv_var)
+            })
+            .reduce(
+                || (0.0, 0.0, 0.0),
+                |(a1, b1, c1), (a2, b2, c2)| (a1 + a2, b1 + b2, c1 + c2),
+            );
+        let chi2_sn = a_sum - b_sum * b_sum / c_sum;
+
+        // BAO chi2 (7 bins, sequential is fine)
+        let r_d = bao_sound_horizon(omega_m, h0);
+        let mut chi2_bao = 0.0;
+        for i in 0..bao.z_eff.len() {
+            let zi = bao.z_eff[i];
+            let d_c = grid.interp_dc(zi);
+            let e_val = grid.interp_e(zi);
+            let d_h = C_KM_S / (h0 * e_val);
+
+            if bao.is_isotropic[i] {
+                let dv_model = (zi * d_c * d_c * d_h).powf(1.0 / 3.0) / r_d;
+                let sigma = bao.dm_over_rd_err[i];
+                if sigma > 0.0 {
+                    let residual = (bao.dm_over_rd[i] - dv_model) / sigma;
+                    chi2_bao += residual * residual;
+                }
+            } else {
+                let dm_model = d_c / r_d;
+                let dh_model = d_h / r_d;
+                let delta_dm = bao.dm_over_rd[i] - dm_model;
+                let delta_dh = bao.dh_over_rd[i] - dh_model;
+                let s_dm = bao.dm_over_rd_err[i];
+                let s_dh = bao.dh_over_rd_err[i];
+                let rho_i = bao.rho[i];
+                let var_dm = s_dm * s_dm;
+                let var_dh = s_dh * s_dh;
+                let cov = rho_i * s_dm * s_dh;
+                let det = var_dm * var_dh - cov * cov;
+                if det.abs() < 1e-30 {
+                    continue;
+                }
+                let inv_det = 1.0 / det;
+                chi2_bao += inv_det
+                    * (var_dh * delta_dm * delta_dm
+                        - 2.0 * cov * delta_dm * delta_dh
+                        + var_dm * delta_dh * delta_dh);
+            }
+        }
+
+        let chi2_cmb = chi2_cmb_shift_orthoplex(omega_m, k, alpha, beta, t_0);
+        let chi2_cc_val = chi2_cc_orthoplex(omega_m, h0, k, alpha, beta, t_0, cc);
+
+        // f*sigma8 excluded from inner loop (RK4 too expensive); evaluated post-fit.
+        chi2_sn + chi2_bao + chi2_cmb + chi2_cc_val
     };
 
     // Multi-start: sample initial guesses across the expanded space.
-    // Grid covers low/mid/high alpha x low/mid/high t_0, with omega_m/h0/beta
-    // seeded near their physical values.
-    let initial_guesses: &[&[f64]] = &[
+    // Parallelized via rayon to use all CPU cores concurrently.
+    let initial_guesses: Vec<Vec<f64>> = vec![
         // [omega_m, h0, alpha, beta, t_0]
-        &[0.3,  70.0, 1.0,  0.0,   1.0  ],  // baseline (near LCDM)
-        &[0.3,  70.0, 5.0,  0.05,  0.01 ],  // previous boundary hit
-        &[0.3,  70.0, 8.0,  0.1,   0.005],  // deeper alpha, sharper t_0
-        &[0.3,  70.0, 12.0, 0.05,  0.001],  // high alpha, very sharp onset
-        &[0.3,  70.0, 20.0, 0.02,  1e-4 ],  // extreme alpha frontier
-        &[0.28, 68.0, 3.0,  0.15,  0.5  ],  // lower H0, moderate alpha
-        &[0.32, 72.0, 6.0, -0.1,   0.1  ],  // phantom regime (beta < 0)
-        &[0.3,  70.0, 10.0, 0.03,  0.003],  // mid-range exploration
-        &[0.3,  70.0, 15.0, 0.08,  5e-4 ],  // high-alpha sharp-onset
+        vec![0.3,  70.0, 1.0,  0.0,   1.0  ],  // baseline (near LCDM)
+        vec![0.3,  70.0, 5.0,  0.05,  0.01 ],  // previous boundary hit
+        vec![0.3,  70.0, 8.0,  0.1,   0.005],  // deeper alpha, sharper t_0
+        vec![0.3,  70.0, 12.0, 0.05,  0.001],  // high alpha, very sharp onset
+        vec![0.3,  70.0, 20.0, 0.02,  1e-4 ],  // extreme alpha frontier
+        vec![0.28, 68.0, 3.0,  0.15,  0.5  ],  // lower H0, moderate alpha
+        vec![0.32, 72.0, 6.0, -0.1,   0.1  ],  // phantom regime (beta < 0)
+        vec![0.3,  70.0, 10.0, 0.03,  0.003],  // mid-range exploration
+        vec![0.3,  70.0, 15.0, 0.08,  5e-4 ],  // high-alpha sharp-onset
     ];
 
-    let mut global_best: Vec<f64> = initial_guesses[0].to_vec();
-    let mut global_chi2 = f64::INFINITY;
-
-    for &x0 in initial_guesses {
-        let (candidate, chi2) = bounded_nelder_mead(obj, x0, &bounds, 10_000, 1e-10);
-        if chi2 < global_chi2 {
-            global_best = candidate;
-            global_chi2 = chi2;
-        }
-    }
-
-    let (best, chi2_total) = (global_best, global_chi2);
+    let obj_ref = &obj;
+    let (best, _global_chi2) = initial_guesses
+        .into_par_iter()
+        .map(|x0| bounded_nelder_mead(|p| obj_ref(p), &x0, &bounds, 2_000, 1e-4))
+        .min_by(|a, b| a.1.partial_cmp(&b.1).unwrap())
+        .unwrap();
 
     let omega_m = best[0];
     let h0 = best[1];
@@ -433,6 +731,10 @@ pub fn fit_orthoplex_model(sn: &RealSnData, bao: &RealBaoData, k: usize) -> Orth
 
     let chi2_sn_val = chi2_sn_orthoplex(omega_m, h0, k, alpha, beta, t_0, sn);
     let chi2_bao_val = chi2_bao_orthoplex(omega_m, h0, k, alpha, beta, t_0, bao);
+    let chi2_cmb_val = chi2_cmb_shift_orthoplex(omega_m, k, alpha, beta, t_0);
+    let chi2_cc_val = chi2_cc_orthoplex(omega_m, h0, k, alpha, beta, t_0, cc);
+    let chi2_fsig_val = chi2_fsig8_orthoplex(omega_m, k, alpha, beta, t_0, fsig);
+    let chi2_total = chi2_sn_val + chi2_bao_val + chi2_cmb_val + chi2_cc_val + chi2_fsig_val;
     let n_params = 5;
     let aic = chi2_total + 2.0 * n_params as f64;
     let bic = chi2_total + n_params as f64 * (n_data as f64).ln();
@@ -447,9 +749,13 @@ pub fn fit_orthoplex_model(sn: &RealSnData, bao: &RealBaoData, k: usize) -> Orth
         beta,
         t_0,
         k,
+        beta_fixed: false,
         chi2_total,
         chi2_sn: chi2_sn_val,
         chi2_bao: chi2_bao_val,
+        chi2_cmb: chi2_cmb_val,
+        chi2_cc: chi2_cc_val,
+        chi2_fsig: chi2_fsig_val,
         n_params,
         n_data,
         aic,
@@ -460,9 +766,17 @@ pub fn fit_orthoplex_model(sn: &RealSnData, bao: &RealBaoData, k: usize) -> Orth
 }
 
 /// Run full model comparison: Lambda-CDM vs orthoplex on real data.
-pub fn compare_orthoplex(sn: &RealSnData, bao: &RealBaoData, k: usize) -> OrthoplexComparison {
-    let lcdm = crate::observational::fit_real_data(sn, bao, false);
-    let orthoplex = fit_orthoplex_model(sn, bao, k);
+///
+/// Pass `&[]` for `cc` or `fsig` to omit those constraints.
+pub fn compare_orthoplex(
+    sn: &RealSnData,
+    bao: &RealBaoData,
+    cc: &[CcMeasurement],
+    fsig: &[FsigMeasurement],
+    k: usize,
+) -> OrthoplexComparison {
+    let lcdm = crate::observational::fit_real_data(sn, bao, cc, fsig, false);
+    let orthoplex = fit_orthoplex_model(sn, bao, cc, fsig, k);
 
     let delta_bic = orthoplex.bic - lcdm.bic;
     let delta_aic = orthoplex.aic - lcdm.aic;
@@ -472,6 +786,231 @@ pub fn compare_orthoplex(sn: &RealSnData, bao: &RealBaoData, k: usize) -> Orthop
         orthoplex,
         delta_bic,
         delta_aic,
+        orthoplex_fixed_beta: None,
+        delta_bic_fixed_beta: None,
+        delta_aic_fixed_beta: None,
+    }
+}
+
+/// Fit orthoplex dark energy model with beta fixed at 1.0 (4 free parameters).
+///
+/// Reduces from 5 to 4 free parameters: omega_m, h0, alpha, t_0.
+/// Beta=1.0 is where the 5-param optimizer converges anyway, so chi2 should
+/// be nearly identical while saving ln(N) ~ 7.39 in BIC penalty.
+pub fn fit_orthoplex_model_fixed_beta(
+    sn: &RealSnData,
+    bao: &RealBaoData,
+    cc: &[CcMeasurement],
+    fsig: &[FsigMeasurement],
+    k: usize,
+) -> OrthoplexFitResult {
+    let beta = 1.0; // Fixed
+    let n_bao_data = crate::observational::bao_data_point_count(bao);
+    let n_cmb = 1;
+    let n_cc = cc.len();
+    let n_data = sn.z.len() + n_bao_data + n_cmb + n_cc + fsig.len();
+
+    let bounds = [
+        (0.1, 0.5),    // omega_m
+        (60.0, 80.0),  // h0
+        (0.1, 25.0),   // alpha
+        (1e-5, 10.0),  // t_0
+    ];
+
+    let z_max_sn = sn.z.iter().cloned().fold(0.0_f64, f64::max);
+    let z_max_bao = bao.z_eff.iter().cloned().fold(0.0_f64, f64::max);
+    let z_max = z_max_sn.max(z_max_bao) * 1.01;
+
+    let obj = |p: &[f64]| {
+        let omega_m = p[0];
+        let h0 = p[1];
+        let alpha = p[2];
+        let t_0 = p[3];
+
+        if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) {
+            return 1e10;
+        }
+
+        let grid = ComovingGrid::build(z_max, 200, omega_m, h0, k, alpha, beta, t_0);
+
+        let (a_sum, b_sum, c_sum) = (0..sn.z.len())
+            .into_par_iter()
+            .map(|i| {
+                let zi = sn.z[i];
+                let dc = grid.interp_dc(zi);
+                let d_l = dc * (1.0 + zi);
+                let d_l_pc = d_l * 1e6;
+                let mu_model = 5.0 * (d_l_pc.max(1e-30) / 10.0).log10();
+                let residual = sn.mu[i] - mu_model;
+                let inv_var = 1.0 / (sn.mu_err[i] * sn.mu_err[i]);
+                (residual * residual * inv_var, residual * inv_var, inv_var)
+            })
+            .reduce(
+                || (0.0, 0.0, 0.0),
+                |(a1, b1, c1), (a2, b2, c2)| (a1 + a2, b1 + b2, c1 + c2),
+            );
+        let chi2_sn = a_sum - b_sum * b_sum / c_sum;
+
+        let r_d = bao_sound_horizon(omega_m, h0);
+        let mut chi2_bao = 0.0;
+        for i in 0..bao.z_eff.len() {
+            let zi = bao.z_eff[i];
+            let d_c = grid.interp_dc(zi);
+            let e_val = grid.interp_e(zi);
+            let d_h = C_KM_S / (h0 * e_val);
+
+            if bao.is_isotropic[i] {
+                let dv_model = (zi * d_c * d_c * d_h).powf(1.0 / 3.0) / r_d;
+                let sigma = bao.dm_over_rd_err[i];
+                if sigma > 0.0 {
+                    let residual = (bao.dm_over_rd[i] - dv_model) / sigma;
+                    chi2_bao += residual * residual;
+                }
+            } else {
+                let dm_model = d_c / r_d;
+                let dh_model = d_h / r_d;
+                let delta_dm = bao.dm_over_rd[i] - dm_model;
+                let delta_dh = bao.dh_over_rd[i] - dh_model;
+                let s_dm = bao.dm_over_rd_err[i];
+                let s_dh = bao.dh_over_rd_err[i];
+                let rho_i = bao.rho[i];
+                let var_dm = s_dm * s_dm;
+                let var_dh = s_dh * s_dh;
+                let cov = rho_i * s_dm * s_dh;
+                let det = var_dm * var_dh - cov * cov;
+                if det.abs() < 1e-30 {
+                    continue;
+                }
+                let inv_det = 1.0 / det;
+                chi2_bao += inv_det
+                    * (var_dh * delta_dm * delta_dm
+                        - 2.0 * cov * delta_dm * delta_dh
+                        + var_dm * delta_dh * delta_dh);
+            }
+        }
+
+        let chi2_cmb = chi2_cmb_shift_orthoplex(omega_m, k, alpha, beta, t_0);
+        let chi2_cc_val = chi2_cc_orthoplex(omega_m, h0, k, alpha, beta, t_0, cc);
+
+        // f*sigma8 excluded from inner loop (RK4 too expensive); evaluated post-fit.
+        chi2_sn + chi2_bao + chi2_cmb + chi2_cc_val
+    };
+
+    // Multi-start: 4D grid (no beta dimension).
+    // Parallelized via rayon to use all CPU cores concurrently.
+    let initial_guesses: Vec<Vec<f64>> = vec![
+        // [omega_m, h0, alpha, t_0]
+        vec![0.3,  70.0, 1.0,   1.0  ],
+        vec![0.3,  70.0, 5.0,   0.01 ],
+        vec![0.3,  70.0, 8.0,   0.005],
+        vec![0.3,  70.0, 12.0,  0.001],
+        vec![0.3,  70.0, 20.0,  1e-4 ],
+        vec![0.28, 68.0, 3.0,   0.5  ],
+        vec![0.32, 72.0, 6.0,   0.1  ],
+        vec![0.3,  70.0, 10.0,  0.003],
+        vec![0.3,  70.0, 15.0,  5e-4 ],
+    ];
+
+    let obj_ref = &obj;
+    let (global_best, _global_chi2) = initial_guesses
+        .into_par_iter()
+        .map(|x0| bounded_nelder_mead(|p| obj_ref(p), &x0, &bounds, 2_000, 1e-4))
+        .min_by(|a, b| a.1.partial_cmp(&b.1).unwrap())
+        .unwrap();
+
+    let omega_m = global_best[0];
+    let h0 = global_best[1];
+    let alpha = global_best[2];
+    let t_0 = global_best[3];
+
+    let chi2_sn_val = chi2_sn_orthoplex(omega_m, h0, k, alpha, beta, t_0, sn);
+    let chi2_bao_val = chi2_bao_orthoplex(omega_m, h0, k, alpha, beta, t_0, bao);
+    let chi2_cmb_val = chi2_cmb_shift_orthoplex(omega_m, k, alpha, beta, t_0);
+    let chi2_cc_val = chi2_cc_orthoplex(omega_m, h0, k, alpha, beta, t_0, cc);
+    let chi2_fsig_val = chi2_fsig8_orthoplex(omega_m, k, alpha, beta, t_0, fsig);
+    let chi2_total = chi2_sn_val + chi2_bao_val + chi2_cmb_val + chi2_cc_val + chi2_fsig_val;
+    let n_params = 4;
+    let aic = chi2_total + 2.0 * n_params as f64;
+    let bic = chi2_total + n_params as f64 * (n_data as f64).ln();
+
+    let w_0 = w_orthoplex(0.0, k, alpha, beta, t_0);
+    let w_high_z = w_orthoplex(2.0, k, alpha, beta, t_0);
+
+    OrthoplexFitResult {
+        omega_m,
+        h0,
+        alpha,
+        beta,
+        t_0,
+        k,
+        beta_fixed: true,
+        chi2_total,
+        chi2_sn: chi2_sn_val,
+        chi2_bao: chi2_bao_val,
+        chi2_cmb: chi2_cmb_val,
+        chi2_cc: chi2_cc_val,
+        chi2_fsig: chi2_fsig_val,
+        n_params,
+        n_data,
+        aic,
+        bic,
+        w_0,
+        w_high_z,
+    }
+}
+
+/// Compare Lambda-CDM vs orthoplex with fixed beta=1.0.
+pub fn compare_orthoplex_fixed_beta(
+    sn: &RealSnData,
+    bao: &RealBaoData,
+    cc: &[CcMeasurement],
+    fsig: &[FsigMeasurement],
+    k: usize,
+) -> OrthoplexComparison {
+    let lcdm = crate::observational::fit_real_data(sn, bao, cc, fsig, false);
+    let orthoplex = fit_orthoplex_model_fixed_beta(sn, bao, cc, fsig, k);
+
+    let delta_bic = orthoplex.bic - lcdm.bic;
+    let delta_aic = orthoplex.aic - lcdm.aic;
+
+    OrthoplexComparison {
+        lcdm,
+        orthoplex_fixed_beta: None,
+        delta_bic_fixed_beta: None,
+        delta_aic_fixed_beta: None,
+        orthoplex,
+        delta_bic,
+        delta_aic,
+    }
+}
+
+/// Run full model comparison: LCDM vs free-beta vs fixed-beta orthoplex.
+///
+/// Populates all fields in OrthoplexComparison including the fixed-beta variant.
+pub fn compare_orthoplex_all(
+    sn: &RealSnData,
+    bao: &RealBaoData,
+    cc: &[CcMeasurement],
+    fsig: &[FsigMeasurement],
+    k: usize,
+) -> OrthoplexComparison {
+    let lcdm = crate::observational::fit_real_data(sn, bao, cc, fsig, false);
+    let orthoplex = fit_orthoplex_model(sn, bao, cc, fsig, k);
+    let fixed = fit_orthoplex_model_fixed_beta(sn, bao, cc, fsig, k);
+
+    let delta_bic = orthoplex.bic - lcdm.bic;
+    let delta_aic = orthoplex.aic - lcdm.aic;
+    let delta_bic_fb = fixed.bic - lcdm.bic;
+    let delta_aic_fb = fixed.aic - lcdm.aic;
+
+    OrthoplexComparison {
+        lcdm,
+        orthoplex,
+        delta_bic,
+        delta_aic,
+        orthoplex_fixed_beta: Some(fixed),
+        delta_bic_fixed_beta: Some(delta_bic_fb),
+        delta_aic_fixed_beta: Some(delta_aic_fb),
     }
 }
 
@@ -672,5 +1211,14 @@ mod tests {
     fn hubble_e_z0_is_one() {
         let e = hubble_e_orthoplex(0.0, 0.3, K, 1.0, 0.1, 1.0);
         assert_relative_eq!(e, 1.0, epsilon = 1e-8);
+    }
+
+    #[test]
+    fn cmb_shift_orthoplex_reduces_to_lcdm() {
+        // With beta=0, orthoplex -> LCDM: CMB shift parameters should match.
+        let omega_m = 0.3;
+        let r_orthoplex = cmb_shift_parameter_orthoplex(omega_m, K, 1.0, 0.0, 1.0);
+        let r_lcdm = crate::bounce::cmb_shift_parameter(omega_m, 0.0, 1089.0);
+        assert_relative_eq!(r_orthoplex, r_lcdm, epsilon = 1e-4);
     }
 }

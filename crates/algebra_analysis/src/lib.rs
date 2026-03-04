@@ -9,6 +9,7 @@
 //! and stochastic processes.
 
 pub mod annihilator;
+pub mod associator_entropy;
 pub mod boxkites;
 pub mod codebook;
 pub mod entropy_census;
@@ -19,7 +20,9 @@ pub mod homotopy_algebra;
 pub mod legacy_crossval;
 pub mod prefix_chain_theorem;
 pub mod projective_geometry;
+pub mod quantum_chaos;
 pub mod reggiani;
+pub mod spectral_dimension;
 pub mod stiefel;
 pub mod stochastic;
 pub mod subalgebra;

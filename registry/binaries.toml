@@ -886,3 +886,15 @@ name = "algebraic-warp-sweep"
 crate = "gororoba_cli_physics"
 description = "Nacelle warp sweep with Cayley-Dickson algebraic coupling. Modes: paper (GR only), algebraic (imbalance coupling), tower (CD dimension to nacelle map)."
 status = "active"
+
+[[binary]]
+name = "zd-quantum-chaos"
+crate = "gororoba_cli_data"
+description = "NNSD analysis of ZD graph Laplacian eigenvalue spectra. Brody parameter census, KS statistics, per-motif-class analysis. Diagnoses quantum chaos vs integrability."
+status = "active"
+
+[[binary]]
+name = "orthoplex-cosmo-fit"
+crate = "gororoba_cli_physics"
+description = "Fit orthoplex dark energy model (K_{2,2,...,2} heat kernel) to Pantheon+ SN Ia + DESI DR1 BAO + CC + f*sigma8 RSD + CMB R. Supports --fixed_beta for 4-param model. Outputs w(z) table and model comparison."
+status = "active"

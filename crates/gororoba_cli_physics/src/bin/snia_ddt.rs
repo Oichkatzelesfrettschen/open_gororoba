@@ -5,9 +5,11 @@ use snia_core::{
     NickelYieldModel, SimulationResult, SimulationSnapshot, SniaCoreSolver, SolverConfig,
     WhiteDwarfEos, best_parameter_set, scan_parameter_sets, write_snapshot_toml,
 };
-use std::error::Error;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    error::Error,
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug, Clone, Copy, ValueEnum)]
 enum RunMode {

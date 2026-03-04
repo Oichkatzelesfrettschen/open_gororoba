@@ -15,12 +15,14 @@
 //! 8. Output TOML + CSV results for E-027 Phase 2 validation
 
 use clap::Parser;
-use rand::Rng;
-use rand::SeedableRng;
+use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha8Rng;
-use sign_imbalance::bridge::{ImbalanceViscosityBridge, SedenionField};
-use sign_imbalance::vietoris_rips::{
-    DistanceMatrix, VietorisRipsComplex, compute_betti_numbers_at_time, compute_persistent_homology,
+use sign_imbalance::{
+    bridge::{ImbalanceViscosityBridge, SedenionField},
+    vietoris_rips::{
+        DistanceMatrix, VietorisRipsComplex, compute_betti_numbers_at_time,
+        compute_persistent_homology,
+    },
 };
 
 #[derive(Parser, Debug)]

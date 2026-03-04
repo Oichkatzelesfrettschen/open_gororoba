@@ -138,6 +138,18 @@ path = "src/bin/generate_latex.rs"
 name = "paper-build"
 path = "src/bin/paper_build.rs"
 
+# ---- Spectral Dimension (1) ----
+
+[[bin]]
+name = "zd-spectral-dimension"
+path = "src/bin/zd_spectral_dimension.rs"
+
+# ---- Quantum Chaos (1) ----
+
+[[bin]]
+name = "zd-quantum-chaos"
+path = "src/bin/zd_quantum_chaos.rs"
+
 # ---- Gates/Analysis (10) ----
 
 [[bin]]
@@ -181,6 +193,7 @@ name = "baire-compact"
 path = "src/bin/baire_compact.rs"
 
 [dependencies]
+algebra_analysis = { workspace = true }
 gororoba_cli = { path = "../gororoba_cli" }
 docpipe = { path = "../docpipe", features = ["fallback"] }
 data_core = { path = "../data_core" }

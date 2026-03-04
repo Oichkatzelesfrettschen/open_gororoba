@@ -1150,3 +1150,14 @@ claims = ["C-857", "C-858"]
 confidence = "high"
 phase = "gr"
 sprint = 56
+
+[[insight]]
+id = "I-102"
+title = "ZD Graph Spectral Dimension: Negative Result and Structural Explanation"
+date = "2026-03-03"
+status = "Active"
+description = "Census of d_s(t) across CD dims 16-512 shows NO stable spectral dimension plateau at any dimension. Root cause: the XOR-bucket necessity theorem forces cross-assessor ZD components to be provably disconnected near-complete graphs (K_{2,2,...,2}), with uniform eigenvalue spectra that produce monotonically increasing d_s(t). This RULES OUT recovering Calcagni's 2->4 flow from individual ZD components. Three novel cross-domain connections completed: (1) ZD spectral dimension census (C-922 verified, C-923 falsified), (2) associator entropy mechanism via ZD constraints (C-924), (3) Immirzi parameter selectivity from CD structure (C-925 verified: NZJ selected, BG excluded). Future direction: hierarchical graph connecting components ACROSS CD dimensions may yield richer spectral structure."
+claims = ["C-922", "C-923", "C-924", "C-925"]
+confidence = "high"
+phase = "algebra"
+sprint = 60

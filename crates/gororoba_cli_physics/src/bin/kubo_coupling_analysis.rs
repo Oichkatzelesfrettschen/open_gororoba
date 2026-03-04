@@ -11,13 +11,11 @@
 //! Also computes K_th (thermal Drude weight) and C_V for the thermal conductivity
 //! channel: kappa ~ K_th / T, giving nu_th ~ T * C_V / K_th.
 
-use std::fs;
-use std::io;
-use std::path::Path;
 use sign_imbalance::kubo_transport::{
     build_cd_heisenberg, build_interpolated, exact_diagonalize, graph_imbalance_index,
     kubo_transport_optimized, thermodynamic_quantities,
 };
+use std::{fs, io, path::Path};
 
 /// Transport computation dispatcher: GPU-first, CPU fallback.
 struct TransportDispatcher {
@@ -96,7 +94,9 @@ fn compute_point(
                 thermal_conductivity: transport.thermal_conductivity,
                 total_weight_spin: transport.total_weight_spin,
                 total_weight_energy: transport.total_weight_energy,
-                specific_heat: thermodynamic_quantities(&ed, temperature).expect("thermo failed").specific_heat,
+                specific_heat: thermodynamic_quantities(&ed, temperature)
+                    .expect("thermo failed")
+                    .specific_heat,
             };
         }
     }

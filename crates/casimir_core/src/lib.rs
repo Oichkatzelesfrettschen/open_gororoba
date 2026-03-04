@@ -30,8 +30,8 @@ pub mod vloop;
 // Re-export primary types
 pub use ascii_render::{AsciiGrid, energy_cross_section};
 pub use energy::{
-    CasimirEnergyResult, WorldlineCasimirConfig, casimir_energy_at_point,
-    casimir_energy_profile, casimir_parallel_plates_exact,
+    CasimirEnergyField3D, CasimirEnergyResult, WorldlineCasimirConfig, casimir_energy_at_point,
+    casimir_energy_field_3d, casimir_energy_profile, casimir_parallel_plates_exact,
 };
 pub use geometry::{
     CasimirGeometry, InfiniteCylinder, ParallelPlates, PillarInCavity, SolidSphere,

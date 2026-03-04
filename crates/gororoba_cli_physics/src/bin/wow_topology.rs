@@ -127,9 +127,7 @@ fn run_morphology(
     seed: u64,
 ) {
     use data_core::catalogs::wow::{abacad_filter, parse_bl_manifest_csv};
-    use rand::SeedableRng;
-    use rand::rngs::StdRng;
-    use rand::seq::SliceRandom;
+    use rand::{SeedableRng, rngs::StdRng, seq::SliceRandom};
     use sign_imbalance::vietoris_rips::{
         DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers,
         compute_persistent_homology,
@@ -351,10 +349,10 @@ fn run_ultrametric(
     seed: u64,
 ) {
     use data_core::catalogs::wow::parse_bl_manifest_csv;
-    use stats_core::ultrametric::local::{
-        euclidean_distance_matrix_nd, local_ultrametricity_test_nd,
+    use stats_core::ultrametric::{
+        local::{euclidean_distance_matrix_nd, local_ultrametricity_test_nd},
+        ultrametric_fraction_from_matrix,
     };
-    use stats_core::ultrametric::ultrametric_fraction_from_matrix;
 
     println!("=== Multi-D Ultrametric Analysis: BL 6EQUJ5 Candidates ===");
     println!();

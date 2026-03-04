@@ -1,7 +1,6 @@
 use ash::{Device, Entry, Instance, vk};
 use gpu_allocator::vulkan::*;
-use std::ffi::CStr;
-use std::sync::Arc;
+use std::{ffi::CStr, sync::Arc};
 
 pub mod compute;
 
@@ -405,9 +404,7 @@ mod tests {
             let n = self.optimal_grid_dim();
             ScalingParameters {
                 grid_dim: (n, n, n),
-                precision: if self.caps.supports_fp16
-                    && self.caps.tier == GpuTier::Constrained
-                {
+                precision: if self.caps.supports_fp16 && self.caps.tier == GpuTier::Constrained {
                     Precision::FP16
                 } else {
                     Precision::FP32

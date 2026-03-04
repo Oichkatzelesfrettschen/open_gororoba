@@ -18,9 +18,7 @@
 use clap::Parser;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use spectral_core::chsh_betti_bridge::{spearman_correlation, velocity_to_betti, velocity_to_chsh};
-use std::f64::consts::PI;
-use std::fs;
-use std::path::Path;
+use std::{f64::consts::PI, fs, path::Path};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about = "Reframed T3: CHSH-Betti correlation sweep")]

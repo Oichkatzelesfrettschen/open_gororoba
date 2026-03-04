@@ -27,12 +27,7 @@ pub trait CasimirGeometry: Send + Sync {
     /// * `loop_points` - Points of the scaled loop (already at proper time T).
     /// * `center` - The point x around which the loop is centered.
     /// * `scale` - The sqrt(T) scale factor (for reference; points are pre-scaled).
-    fn intersects_count(
-        &self,
-        loop_points: &[[f64; 3]],
-        center: [f64; 3],
-        scale: f64,
-    ) -> usize;
+    fn intersects_count(&self, loop_points: &[[f64; 3]], center: [f64; 3], scale: f64) -> usize;
 
     /// Human-readable name.
     fn name(&self) -> &str;
@@ -49,12 +44,7 @@ pub struct ParallelPlates {
 }
 
 impl CasimirGeometry for ParallelPlates {
-    fn intersects_count(
-        &self,
-        loop_points: &[[f64; 3]],
-        center: [f64; 3],
-        _scale: f64,
-    ) -> usize {
+    fn intersects_count(&self, loop_points: &[[f64; 3]], center: [f64; 3], _scale: f64) -> usize {
         let a = self.separation;
         let mut count = 0;
 
@@ -90,12 +80,7 @@ pub struct SolidSphere {
 }
 
 impl CasimirGeometry for SolidSphere {
-    fn intersects_count(
-        &self,
-        loop_points: &[[f64; 3]],
-        center: [f64; 3],
-        _scale: f64,
-    ) -> usize {
+    fn intersects_count(&self, loop_points: &[[f64; 3]], center: [f64; 3], _scale: f64) -> usize {
         let r2 = self.radius * self.radius;
         let mut count = 0;
 
@@ -132,12 +117,7 @@ pub struct InfiniteCylinder {
 }
 
 impl CasimirGeometry for InfiniteCylinder {
-    fn intersects_count(
-        &self,
-        loop_points: &[[f64; 3]],
-        center: [f64; 3],
-        _scale: f64,
-    ) -> usize {
+    fn intersects_count(&self, loop_points: &[[f64; 3]], center: [f64; 3], _scale: f64) -> usize {
         let r2 = self.radius * self.radius;
         let mut count = 0;
 
@@ -175,12 +155,7 @@ pub struct SphereInCylinder {
 }
 
 impl CasimirGeometry for SphereInCylinder {
-    fn intersects_count(
-        &self,
-        loop_points: &[[f64; 3]],
-        center: [f64; 3],
-        _scale: f64,
-    ) -> usize {
+    fn intersects_count(&self, loop_points: &[[f64; 3]], center: [f64; 3], _scale: f64) -> usize {
         let rs2 = self.sphere_radius * self.sphere_radius;
         let rc2 = self.cylinder_radius * self.cylinder_radius;
         let mut count = 0;
@@ -233,12 +208,7 @@ pub struct PillarInCavity {
 }
 
 impl CasimirGeometry for PillarInCavity {
-    fn intersects_count(
-        &self,
-        loop_points: &[[f64; 3]],
-        center: [f64; 3],
-        _scale: f64,
-    ) -> usize {
+    fn intersects_count(&self, loop_points: &[[f64; 3]], center: [f64; 3], _scale: f64) -> usize {
         let a = self.plate_separation;
         let rp2 = self.pillar_radius * self.pillar_radius;
         let mut count = 0;
@@ -323,6 +293,9 @@ mod tests {
         let points = vec![[0.0, 0.0, 0.0], [2.0, 0.0, 0.0], [1.0, 1.0, 0.0]];
         let center = [0.0, 0.0, 0.0]; // center at origin
         let count = cyl.intersects_count(&points, center, 1.0);
-        assert!(count > 0, "loop crossing cylinder boundary should intersect");
+        assert!(
+            count > 0,
+            "loop crossing cylinder boundary should intersect"
+        );
     }
 }

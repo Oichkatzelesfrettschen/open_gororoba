@@ -16,8 +16,7 @@ use spectral_core::{
     pde_surrogates::ForcedDiffusion,
     wavelet::{concurrency, haar_dwt, haar_idwt, hard_threshold},
 };
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about = "Thesis 2: meltdown gating concurrency sweep")]
