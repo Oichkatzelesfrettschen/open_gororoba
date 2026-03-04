@@ -36,6 +36,7 @@ pub mod flrw;
 pub mod gravastar;
 pub mod homotopy_bridge;
 pub mod observational;
+pub mod orthoplex_diffusion;
 pub mod spectral;
 pub mod tov;
 
@@ -111,6 +112,13 @@ pub use flrw::{
     PLANCK18_T_CMB, age_at_z, apply_redshift_to_wavelength, deceleration_parameter,
     distance_duality_deviation, lookback_time, redshift_flux_dimming, universe_age,
     verify_distance_duality, wavelength_to_redshift, z_equality,
+};
+
+pub use orthoplex_diffusion::{
+    OrthoplexComparison, OrthoplexFitResult, OrthoplexParams, chi2_bao_orthoplex,
+    chi2_sn_orthoplex, compare_orthoplex, dark_energy_density_ratio, diffusion_time,
+    distance_modulus_orthoplex, fit_orthoplex_model, heat_kernel_k22, hubble_e_orthoplex,
+    luminosity_distance_orthoplex, spectral_dimension_k22, w_of_z_table, w_orthoplex,
 };
 
 /// Gauss-Legendre quadrature over [a, b].
