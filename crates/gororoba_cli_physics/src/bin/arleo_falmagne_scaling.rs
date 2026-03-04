@@ -16,10 +16,11 @@ use data_core::{catalogs::hic_raa, fetcher::FetchConfig};
 use qgp_scaling::{
     data_tables,
     density_scaling::{DensityScalingPoint, fit_density_scaling},
-    epsilon_fit::{RaaDataPoint, extract_epsilon},
+    epsilon_fit::{RaaDataPoint, extract_epsilon, extract_epsilon_straggling},
     glauber::{CentralityBinGeometry, SigmaNN, compute_centrality_bins, standard_centrality_edges},
     multiplicity,
     nucleus::NucleusParams,
+    straggling::{DEFAULT_KAPPA, StragglingGrid},
 };
 use std::path::PathBuf;
 
@@ -50,6 +51,14 @@ enum Commands {
         /// Gauss-Legendre quadrature order for Glauber integrals.
         #[arg(long, default_value = "48")]
         n_gl: usize,
+
+        /// Enable quantum straggling (Gaussian-smeared R_AA) for low-pT fits.
+        #[arg(long)]
+        straggling: bool,
+
+        /// Straggling width coefficient κ (σ = κ · √ε̄); only used with --straggling.
+        #[arg(long, default_value_t = DEFAULT_KAPPA)]
+        kappa: f64,
     },
 
     /// ALICE-only fast path (Pb-Pb 5.02 TeV only, uses existing data).
@@ -61,6 +70,14 @@ enum Commands {
         /// Minimum pT (GeV).
         #[arg(long, default_value = "5.0")]
         pt_min: f64,
+
+        /// Enable quantum straggling (Gaussian-smeared R_AA) for low-pT fits.
+        #[arg(long)]
+        straggling: bool,
+
+        /// Straggling width coefficient κ (σ = κ · √ε̄); only used with --straggling.
+        #[arg(long, default_value_t = DEFAULT_KAPPA)]
+        kappa: f64,
     },
 
     /// Glauber geometry calculations only.
@@ -80,11 +97,18 @@ fn main() {
             skip_download,
             pt_min,
             n_gl,
+            straggling,
+            kappa,
         } => {
-            run_full(&data_dir, skip_download, pt_min, n_gl);
+            run_full(&data_dir, skip_download, pt_min, n_gl, straggling, kappa);
         }
-        Commands::Alice { data_dir, pt_min } => {
-            run_alice(&data_dir, pt_min);
+        Commands::Alice {
+            data_dir,
+            pt_min,
+            straggling,
+            kappa,
+        } => {
+            run_alice(&data_dir, pt_min, straggling, kappa);
         }
         Commands::GlauberOnly { n_gl } => {
             run_glauber_only(n_gl);
@@ -183,8 +207,11 @@ fn validate_npart_pbpb(bins: &[CentralityBinGeometry]) {
     }
 }
 
-fn run_alice(data_dir: &str, pt_min: f64) {
+fn run_alice(data_dir: &str, pt_min: f64, use_straggling: bool, kappa: f64) {
     eprintln!("=== Arleo-Falmagne Scaling: ALICE Pb-Pb 5.02 TeV ===");
+    if use_straggling {
+        eprintln!("    Straggling mode: enabled (kappa = {kappa:.3})");
+    }
     eprintln!();
 
     // Step 1: Glauber geometry
@@ -212,6 +239,26 @@ fn run_alice(data_dir: &str, pt_min: f64) {
     ];
 
     let n_spectral = 6.1; // Spectral index for 5.02 TeV pp spectrum
+
+    // Build straggling grid once before the per-centrality loop (expensive but one-time)
+    let straggling_grid = if use_straggling {
+        eprintln!(
+            "[2.5/4] Building straggling grid (kappa = {kappa:.3}, n = {n_spectral:.1})..."
+        );
+        let t0 = std::time::Instant::now();
+        let grid = StragglingGrid::new(
+            (1.0, 100.0),
+            200,
+            (0.1, 30.0),
+            150,
+            n_spectral,
+            kappa,
+        );
+        eprintln!("        Grid built in {:.2}s", t0.elapsed().as_secs_f64());
+        Some(grid)
+    } else {
+        None
+    };
 
     let mut epsilon_results = Vec::new();
 
@@ -255,8 +302,12 @@ fn run_alice(data_dir: &str, pt_min: f64) {
             continue;
         }
 
-        // Average if multiple tables (take the first table's points for simplicity)
-        let result = extract_epsilon(&all_data, n_spectral, 0.1, 20.0, 1e-6);
+        // Extract epsilon_bar: use straggling-smeared model if requested
+        let result = if let Some(ref grid) = straggling_grid {
+            extract_epsilon_straggling(&all_data, 0.1, 20.0, 1e-6, grid)
+        } else {
+            extract_epsilon(&all_data, n_spectral, 0.1, 20.0, 1e-6)
+        };
 
         eprintln!(
             "  {:>4.0}-{:<5.0}% {:>8.2} {:>8.2} {:>8.2} {:>8.2} {:>8}",
@@ -335,7 +386,7 @@ fn run_alice(data_dir: &str, pt_min: f64) {
     }
 }
 
-fn run_full(data_dir: &str, skip_download: bool, pt_min: f64, n_gl: usize) {
+fn run_full(data_dir: &str, skip_download: bool, pt_min: f64, n_gl: usize, use_straggling: bool, kappa: f64) {
     eprintln!("=== Arleo-Falmagne Scaling: Full Multi-System Analysis ===");
     eprintln!();
 
@@ -364,7 +415,7 @@ fn run_full(data_dir: &str, skip_download: bool, pt_min: f64, n_gl: usize) {
 
     // Step 3: ALICE analysis (primary system)
     eprintln!("[3/6] ALICE Pb-Pb 5.02 TeV epsilon extraction...");
-    run_alice(data_dir, pt_min);
+    run_alice(data_dir, pt_min, use_straggling, kappa);
 
     // Steps 4-6 would continue with CMS, ATLAS, PHENIX, and the combined fit.
     // For now, the ALICE-only path demonstrates the full pipeline mechanics.
