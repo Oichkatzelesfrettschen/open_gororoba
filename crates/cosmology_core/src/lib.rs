@@ -36,9 +36,11 @@ pub mod distances;
 pub mod eos;
 pub mod flrw;
 pub mod gravastar;
+pub mod cdg2_mapping;
 pub mod halo;
 pub mod homotopy_bridge;
 pub mod observational;
+pub mod optimizer;
 pub mod orthoplex_diffusion;
 pub mod spectral;
 pub mod tov;
@@ -89,9 +91,9 @@ pub use observational::{
     CMB_SHIFT_R_ERR, CMB_SHIFT_R_OBS, CcMeasurement, FsigMeasurement, ModelComparison,
     ObsFitResult, RealBaoData, RealSnData, SIGMA8_PLANCK, bao_data_point_count, chi2_bao_real,
     chi2_cc, chi2_cmb_shift, chi2_fsig8, chi2_sn_real, compare_models, compute_growth_batch,
-    compute_growth_fsig8,
+    compute_growth_fsig8, compute_precision_matrix,
     cosmic_chronometer_data, desi_to_real_bao, filter_pantheon_data, fit_real_data,
-    growth_rate_data,
+    growth_rate_data, set_sn_precision_from_cov,
 };
 
 pub use distances::{
@@ -127,14 +129,21 @@ pub use flrw::{
     verify_distance_duality, wavelength_to_redshift, z_equality,
 };
 
+pub use cdg2_mapping::{
+    DarkHaloFalsificationResult, evaluate_cdg2_consistency, spectral_dim_at_cdg2,
+    zd_bottleneck_volume_fraction,
+};
+
+pub use optimizer::{NelderMeadConfig, bounded_nelder_mead, bounded_nelder_mead_single};
+
 pub use orthoplex_diffusion::{
     OrthoplexComparison, OrthoplexFitResult, OrthoplexParams, chi2_bao_orthoplex,
     chi2_cc_orthoplex, chi2_cmb_shift_orthoplex, chi2_fsig8_orthoplex, chi2_sn_orthoplex,
-    cmb_shift_parameter_orthoplex, compare_orthoplex, compare_orthoplex_all,
+    chi2_udg_orthoplex, cmb_shift_parameter_orthoplex, compare_orthoplex, compare_orthoplex_all,
     compare_orthoplex_fixed_beta, dark_energy_density_ratio, diffusion_time,
     distance_modulus_orthoplex, fit_orthoplex_model, fit_orthoplex_model_fixed_beta,
-    heat_kernel_k22, hubble_e_orthoplex, luminosity_distance_orthoplex, spectral_dimension_k22,
-    w_of_z_table, w_orthoplex,
+    heat_kernel_k22, hubble_e_orthoplex, luminosity_distance_orthoplex,
+    profile_likelihood_alpha, spectral_dimension_k22, w_of_z_table, w_orthoplex,
 };
 
 /// Gauss-Legendre quadrature over [a, b].

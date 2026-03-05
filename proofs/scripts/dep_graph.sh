@@ -4,7 +4,7 @@
 # Output: proofs/metrics/dep_graph.dot (and .pdf if dot is available)
 #
 # WHY:  Visualizes which theories depend on which, for the paper.
-# WHAT: Parses _CoqProject and Require Import lines to build a DAG.
+# WHAT: Parses _RocqProject/_CoqProject and Require Import lines to build a DAG.
 # HOW:  grep imports from .v files, emit DOT, render with graphviz.
 
 set -eu

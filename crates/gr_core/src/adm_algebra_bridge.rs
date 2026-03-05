@@ -58,6 +58,10 @@ pub enum AlgebraicCouplingModel {
 /// The vacuum imbalance attractor value (3/8).
 pub const IMBALANCE_ATTRACTOR: f64 = 0.375;
 
+/// The purely algebraic cosmological constant derived from the sedenion imbalance.
+/// Replaces the fitted Lambda parameter with a structural invariant.
+pub const LAMBDA_SED: f64 = IMBALANCE_ATTRACTOR;
+
 // ============================================================================
 // Frame extraction
 // ============================================================================
@@ -161,6 +165,20 @@ pub fn sedenion_stress_energy(
 ) -> f64 {
     let nu = nu_0 * (beta_coupling * (imbalance - IMBALANCE_ATTRACTOR)).exp();
     0.5 * nu * k_trace_sq
+}
+
+/// Sedenion dark energy equation of state pressure.
+///
+/// Models the thawing dynamics: when imbalance F = 3/8, we recover w = -1
+/// exactly, meaning P = -rho. When F deviates, w "thaws" to a less negative value.
+pub fn sedenion_dark_energy_pressure(
+    imbalance: f64,
+    rho_eff: f64,
+    beta_thaw: f64,
+) -> f64 {
+    // Equation of state w = -1 + beta * (F - F_vac)^2
+    let w = -1.0 + beta_thaw * (imbalance - LAMBDA_SED).powi(2);
+    w * rho_eff
 }
 
 /// Algebraic correction to York time.

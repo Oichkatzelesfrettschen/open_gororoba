@@ -19,9 +19,9 @@ Theorem C910_octonion_left_alt_e1 : forall b,
   oct_mul (oct_mul (oct_e 1) (oct_e 1)) b.
 Proof.
   intros b. destruct b as [[ba bb bc bd] [be bf bg bh]].
-  unfold oct_e, oct_mul, oct_conj, quat_mul, quat_add, quat_neg,
-         quat_conj, quat_zero, quat_one.
-  simpl. f_equal; f_equal; ring.
+  cbv [oct_e oct_mul oct_conj quat_mul quat_add quat_neg
+       quat_conj quat_zero quat_one oct_lo oct_hi qa qb qc qd].
+  f_equal; f_equal; abstract ring.
 Qed.
 
 (** Left alternative identity for e4: e4*(e4*b) = (e4*e4)*b. *)
@@ -30,7 +30,7 @@ Theorem C910_octonion_left_alt_e4 : forall b,
   oct_mul (oct_mul (oct_e 4) (oct_e 4)) b.
 Proof.
   intros b. destruct b as [[ba bb bc bd] [be bf bg bh]].
-  unfold oct_e, oct_mul, oct_conj, quat_mul, quat_add, quat_neg,
-         quat_conj, quat_zero, quat_one.
-  simpl. f_equal; f_equal; ring.
+  cbv [oct_e oct_mul oct_conj quat_mul quat_add quat_neg
+       quat_conj quat_zero quat_one oct_lo oct_hi qa qb qc qd].
+  f_equal; f_equal; abstract ring.
 Qed.

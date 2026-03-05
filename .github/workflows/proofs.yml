@@ -37,24 +37,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y opam
           opam init --bare --disable-sandboxing --yes
-          opam switch create rocq-9.1.0-isolated ocaml-base-compiler.5.4.0 --yes || true
-          eval $(opam env --switch=rocq-9.1.0-isolated)
+          opam switch create rocq-9.1.1 ocaml-base-compiler.5.4.0 --yes || true
+          eval $(opam env --switch=rocq-9.1.1)
           opam install rocq-core.9.1.1 rocq-stdlib.9.1.1 --yes
 
       - name: Compile all proofs
         working-directory: proofs
         run: |
-          eval $(opam env --switch=rocq-9.1.0-isolated)
+          eval $(opam env --switch=rocq-9.1.1)
           make all
 
       - name: Zero-Admitted check
         working-directory: proofs
         run: |
-          eval $(opam env --switch=rocq-9.1.0-isolated)
+          eval $(opam env --switch=rocq-9.1.1)
           make check
 
       - name: Extraction golden-file diff
         working-directory: proofs
         run: |
-          eval $(opam env --switch=rocq-9.1.0-isolated)
+          eval $(opam env --switch=rocq-9.1.1)
           make extract-check

@@ -898,3 +898,15 @@ name = "orthoplex-cosmo-fit"
 crate = "gororoba_cli_physics"
 description = "Fit orthoplex dark energy model (K_{2,2,...,2} heat kernel) to Pantheon+ SN Ia + DESI DR1 BAO + CC + f*sigma8 RSD + CMB R. Supports --fixed_beta for 4-param model. Outputs w(z) table and model comparison."
 status = "active"
+
+[[binary]]
+name = "clustering-256"
+crate = "gororoba_cli_physics"
+description = "Besag-Clifford permutation test for ZD-imbalance clustering at 256^3. Re-evaluates C-659 with GPU-accelerated LBM."
+status = "planned"
+
+[[binary]]
+name = "dark-halo-hunt"
+crate = "gororoba_cli_physics"
+description = "Search for topological dark halos in ZD-mediated LBM simulations across k values. CDG-2 consistency falsification."
+status = "planned"

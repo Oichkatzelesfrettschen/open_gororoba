@@ -118,10 +118,10 @@ Tags in use:
 
 ## Opam Environment
 
-- Switch: `rocq-9.1.0-isolated`
+- Switch: `rocq-9.1.1`
 - Rocq: 9.1.1 (OCaml 5.4.0)
 - No external Rocq dependencies (stdlib only)
-- Backup: `opam switch export rocq-9.1.0-isolated-backup.export`
+- Backup: `opam switch export rocq-9.1.1-backup.export`
 
 ## Tool Versions
 

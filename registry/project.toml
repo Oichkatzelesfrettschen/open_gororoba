@@ -5,16 +5,25 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 4807
-claim_count = 932
+test_count = 4907
+claim_count = 935
 insight_count = 99
-experiment_count = 86
+experiment_count = 88
 complete_experiment_count = 75
 paper_count = 19
-binary_count = 159
-kernel_checked_claims = 70
-proof_files = 93
+binary_count = 161
+kernel_checked_claims = 107
+proof_files = 142
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s64]
+number = 64
+date = "2026-03-05"
+test_count = 4907
+claim_count = 935
+kernel_checked_claims = 107
+proof_files = 142
+summary = "S64-67: GPU buffer accessors, compile_wgsl pub(crate), BC live dispatch stubs, dark halo pipeline, Pantheon+ .cov parser, E-088/E-089 active. Rocq: sed_e(0..15) basis, oct/sed conj involution proofs, right alternativity (8 basis), EPISTEMIC_BOUNDARIES.md. Registry: experiment_count 86->88, binary_count 159->161, claim_count 932->935, proof_files 93->142, kernel_checked 70->107. Fixed lra->ring in conj involution proofs, Rocq version mismatch (9.1.0 vs 9.1.1), claims.toml TOML backslash syntax."
 
 [sprints.s60]
 number = 60

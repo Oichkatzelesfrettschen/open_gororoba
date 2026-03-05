@@ -57,7 +57,7 @@ pub use catalogs::jarvis::{
 pub use catalogs::landsat::looks_like_landsat_stac_json;
 pub use catalogs::mcgill::{Magnetar, parse_mcgill_csv};
 pub use catalogs::nanograv::{FreeSpectrumPoint, parse_nanograv_free_spectrum};
-pub use catalogs::pantheon::{Supernova, parse_pantheon_dat};
+pub use catalogs::pantheon::{Supernova, parse_pantheon_cov, parse_pantheon_dat};
 pub use catalogs::planck::bestfit as planck2018;
 pub use catalogs::sdss::{SdssQuasar, parse_sdss_quasar_csv};
 pub use catalogs::sorce::{SorceMeasurement, parse_sorce_csv};

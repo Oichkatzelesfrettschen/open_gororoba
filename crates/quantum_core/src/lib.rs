@@ -161,3 +161,4 @@ pub use hardware::{
 };
 
 pub use hamiltonian_evolution::HamiltonianND;
+pub mod qec_boxkite;

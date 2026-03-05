@@ -154,6 +154,45 @@ pub fn parse_pantheon_dat(path: &Path) -> Result<Vec<Supernova>, FetchError> {
     Ok(sne)
 }
 
+/// Parse Pantheon+ STAT+SYS covariance matrix file.
+///
+/// Format: first line is N (integer), then N*N whitespace-delimited f64
+/// values in row-major order. For Pantheon+, N=1701.
+///
+/// Returns the covariance matrix as nalgebra::DMatrix<f64>.
+pub fn parse_pantheon_cov(path: &Path) -> Result<nalgebra::DMatrix<f64>, FetchError> {
+    let content = std::fs::read_to_string(path)
+        .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;
+
+    let mut tokens = content.split_whitespace();
+    let n: usize = tokens
+        .next()
+        .ok_or_else(|| FetchError::Validation("Empty covariance file".to_string()))?
+        .parse()
+        .map_err(|e| FetchError::Validation(format!("Invalid N: {}", e)))?;
+
+    let mut data = Vec::with_capacity(n * n);
+    for token in tokens {
+        if data.len() >= n * n {
+            break;
+        }
+        let val: f64 = token
+            .parse()
+            .map_err(|e| FetchError::Validation(format!("Invalid float: {}", e)))?;
+        data.push(val);
+    }
+
+    if data.len() != n * n {
+        return Err(FetchError::Validation(format!(
+            "Expected {} values, got {}",
+            n * n,
+            data.len()
+        )));
+    }
+
+    Ok(nalgebra::DMatrix::from_row_slice(n, n, &data))
+}
+
 const PANTHEON_URLS: &[&str] = &[
     "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat",
 ];
@@ -263,6 +302,36 @@ TOO_SHORT 0.05 0.051 36.5
         let f = write_temp(dat);
         let sne = parse_pantheon_dat(f.path()).unwrap();
         assert!(sne.is_empty());
+    }
+
+    #[test]
+    fn test_parse_cov_synthetic() {
+        let cov_data = "3\n1.0 0.1 0.2 0.1 2.0 0.3 0.2 0.3 3.0\n";
+        let mut f = NamedTempFile::new().unwrap();
+        f.write_all(cov_data.as_bytes()).unwrap();
+        f.flush().unwrap();
+        let cov = parse_pantheon_cov(f.path()).unwrap();
+        assert_eq!(cov.nrows(), 3);
+        assert_eq!(cov.ncols(), 3);
+        assert!((cov[(0, 0)] - 1.0).abs() < 1e-10);
+        assert!((cov[(0, 1)] - 0.1).abs() < 1e-10);
+        assert!((cov[(2, 2)] - 3.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_parse_cov_empty_file() {
+        let cov_data = "";
+        let f = write_temp(cov_data);
+        let result = parse_pantheon_cov(f.path());
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_parse_cov_insufficient_values() {
+        let cov_data = "3\n1.0 0.1 0.2 0.1 2.0\n";
+        let f = write_temp(cov_data);
+        let result = parse_pantheon_cov(f.path());
+        assert!(result.is_err());
     }
 
     #[test]

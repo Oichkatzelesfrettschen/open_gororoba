@@ -1476,6 +1476,7 @@ version = "0.1.0"
 dependencies = [
  "approx",
  "gauss-quad",
+ "nalgebra 0.33.2",
  "rand 0.8.5",
  "rand_distr 0.4.3",
  "rayon",
@@ -1965,6 +1966,7 @@ dependencies = [
  "gororoba_contracts",
  "hdf5-metno",
  "log",
+ "nalgebra 0.33.2",
  "rand 0.8.5",
  "rand_distr 0.4.3",
  "serde",
@@ -3464,6 +3466,18 @@ dependencies = [
  "spin_tomography_core",
  "stats_core",
  "toml",
+]
+
+[[package]]
+name = "gororoba_cli_quantum"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "csv",
+ "hdf5-metno",
+ "ndarray 0.15.6",
+ "quantum_core",
 ]
 
 [[package]]

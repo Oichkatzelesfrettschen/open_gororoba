@@ -14894,4 +14894,43 @@ confidence = "high"
 phase = "cosmology"
 sprint = 60
 dependencies = ["C-931"]
-status_note = "Kernel-checked via Rocq 9.1. 5 theorems in proofs/verified/C932_OrthoplexThawing.v: LCDM limits (beta=0 -> w=-1, d_s=0 -> w=-1), thawing direction (w >= -1), boundedness (w in [-1, beta*d_s_max-1]), monotonicity in beta. Theory file: proofs/theories/DarkEnergyEOS.v. Fixed beta=1.0 eliminates one free parameter, yielding 4-param model that beats LCDM (2-param) by delta-BIC=-3.58. Parallel 9-start Nelder-Mead (rayon par_iter), batch RK4 growth integrator for 16 f*sigma8 RSD measurements. Dataset: Pantheon+ (Scolnic+ 2022), DESI DR1 BAO (2024), cosmic chronometers (31 H(z)), f*sigma8 (6dFGS+BOSS+DESI DR1), CMB R shift."
+status_note = "Kernel-checked via Rocq 9.1. 5 theorems in proofs/verified/C932_OrthoplexThawing.v: LCDM limits (beta=0 -> w=-1, d_s=0 -> w=-1), thawing direction (w >= -1), boundedness (w in [-1, beta*d_s_max-1]), monotonicity in beta. Theory file: proofs/theories/DarkEnergyEOS.v. Fixed beta=1.0 eliminates one free parameter, yielding 4-param model that beats LCDM (2-param) by delta-BIC=-3.58. Parallel 9-start Nelder-Mead (rayon par_iter), batch RK4 growth integrator for 16 f*sigma8 RSD measurements. Dataset: Pantheon+ (Scolnic+ 2022), DESI DR1 BAO (2024), cosmic chronometers (31 H(z)), f*sigma8 (6dFGS+BOSS+DESI DR1), CMB R shift. Note: fixed-beta (4 params, dBIC=-3.58) and free-beta (5 params, dBIC=+3.82) are distinct model comparisons against LCDM (2 params). The 4-param model is preferred; the 5-param model is not."
+
+[[claim]]
+id = "C-950"
+statement = "Sedenion zero-divisor K_{2,2,2} graph topologies constitute an exact parity-check matrix for a non-associative topological stabilizer code, where non-associative zero-products act as localized error syndromes."
+where_stated = "crates/quantum_core/"
+status = "Pending"
+last_verified = "2026-03-04"
+what_would_verify_refute = "VERIFY: qec-boxkite-sweep confirms distance thresholds. REFUTE: Error syndromes cascade uncontrollably due to non-associativity."
+confidence = "high"
+phase = "quantum"
+sprint = 61
+dependencies = ["C-003"]
+status_note = "Phase A1 complete. Rust implementation and Coq proofs pending."
+
+[[claim]]
+id = "C-960"
+statement = 'The cosmological constant \Lambda is a non-perturbative topological invariant derived exactly from the Cayley-Dickson imbalance attractor F_{vac} = 3/8, rendering vacuum energy a strictly algebraic property.'
+where_stated = "crates/cosmology_core/"
+status = "Pending"
+last_verified = "2026-03-04"
+what_would_verify_refute = "VERIFY: cosmology-lambda-sweep beats LCDM BIC without free parameters. REFUTE: Model fails to fit Pantheon+ data."
+confidence = "high"
+phase = "cosmology"
+sprint = 61
+dependencies = ["C-878", "C-932"]
+status_note = "Phase B1 complete. Rust implementation and Coq proofs pending."
+
+[[claim]]
+id = "C-970"
+statement = "The sequential breakdown of algebraic properties in the CD tower corresponds to topological phase transitions in nacelle warp bubble geometries. Alternativity loss at d=16 allows stress-energy localization into 16 discrete nacelles."
+where_stated = "crates/gr_core/"
+status = "Pending"
+last_verified = "2026-03-04"
+what_would_verify_refute = "VERIFY: warp-holography-sweep verifies stable stress-energy at d=16. REFUTE: Alternativity loss causes metric instability."
+confidence = "high"
+phase = "gr"
+sprint = 61
+dependencies = ["C-879"]
+status_note = "Phase C1 complete. Rust implementation and Coq proofs pending."

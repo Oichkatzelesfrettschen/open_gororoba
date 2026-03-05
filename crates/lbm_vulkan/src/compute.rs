@@ -55,9 +55,9 @@ struct ComputePipeline {
     uniform_buffer: BufferSet,
 }
 
-struct BufferSet {
-    buffer: vk::Buffer,
-    allocation: Allocation,
+pub(crate) struct BufferSet {
+    pub(crate) buffer: vk::Buffer,
+    pub(crate) allocation: Allocation,
 }
 
 struct ImageSet {
@@ -67,7 +67,7 @@ struct ImageSet {
     readback: BufferSet,
 }
 
-fn compile_wgsl(source: &str) -> Result<Vec<u32>> {
+pub(crate) fn compile_wgsl(source: &str) -> Result<Vec<u32>> {
     let module = naga::front::wgsl::parse_str(source)
         .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
     let info = naga::valid::Validator::new(
@@ -867,6 +867,32 @@ impl GororobaEngine {
         })?;
         unsafe { device.bind_buffer_memory(buffer, allocation.memory(), allocation.offset()) }?;
         Ok(BufferSet { buffer, allocation })
+    }
+
+    /// Buffer handle for the density (rho) field. Used by BC engine for
+    /// descriptor set binding.
+    pub fn rho_buffer_handle(&self) -> vk::Buffer {
+        self.rho_buffer.buffer
+    }
+
+    /// Buffer handle for the velocity (u) field.
+    pub fn u_buffer_handle(&self) -> vk::Buffer {
+        self.u_buffer.buffer
+    }
+
+    /// Buffer handle for the relaxation time (tau) field.
+    pub fn tau_buffer_handle(&self) -> vk::Buffer {
+        self.tau_buffer.buffer
+    }
+
+    /// Shared reference to the logical device.
+    pub fn device_ref(&self) -> &Arc<Device> {
+        &self.device
+    }
+
+    /// Shared reference to the GPU memory allocator.
+    pub fn allocator_ref(&self) -> &Arc<Mutex<Allocator>> {
+        &self.allocator
     }
 
     pub fn upload_initial_state(

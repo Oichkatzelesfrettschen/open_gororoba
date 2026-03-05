@@ -45,6 +45,7 @@ members = [
     "crates/gororoba_cli_physics",
     "crates/gororoba_cli_data",
     "crates/gororoba_cli_warp",
+    "crates/gororoba_cli_quantum",
     "crates/casimir_core",
     "crates/verified_core",
 ]

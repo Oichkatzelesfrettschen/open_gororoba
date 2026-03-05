@@ -23,8 +23,8 @@ Proof.
   intros a c.
   destruct a as [[a0 a1 a2 a3] [a4 a5 a6 a7]].
   destruct c as [[c0 c1 c2 c3] [c4 c5 c6 c7]].
-  unfold sed_embed_lo, sed_mul, oct_mul, oct_conj, oct_zero,
-         quat_mul, quat_add, quat_neg, quat_conj, quat_zero, quat_one.
-  simpl. unfold oct_zero, quat_zero.
-  f_equal; f_equal; f_equal; ring.
+  cbv [sed_embed_lo sed_mul oct_mul oct_conj oct_zero
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  f_equal; f_equal; f_equal; abstract ring.
 Qed.
