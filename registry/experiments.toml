@@ -2011,7 +2011,7 @@ binary_registered = true
 binary_experiment_declared = ""
 method = "Bounded Nelder-Mead optimization over 5 parameters (omega_m, h0, alpha, beta, t_0) with k=63 fixed. Joint chi2 = chi2_SN (analytic M_B marginalization) + chi2_BAO (mixed isotropic + 2x2 anisotropic covariance)."
 input = "data/external/PantheonPlusSH0ES.dat, DESI DR1 BAO (hardcoded)"
-output = ["orthoplex_w_of_z.csv"]
+output = ["data/csv/orthoplex_w_of_z.csv"]
 run = "cargo run --release --bin orthoplex-cosmo-fit -- --skip-download --k 63"
 run_command_sha256 = "b3307c5a75fd119e4a5e7b7e8913b78519675e2305f91068a1bf38becc6fa5fb"
 claims = ["C-931", "C-932"]
@@ -2023,7 +2023,7 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-086"
 input_path_refs = ["data/external/PantheonPlusSH0ES.dat"]
-output_path_refs = []
+output_path_refs = ["data/csv/orthoplex_w_of_z.csv"]
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
 

@@ -59,7 +59,7 @@ struct Args {
     n_points: usize,
 
     /// Output path for w(z) CSV file.
-    #[arg(long, default_value = "orthoplex_w_of_z.csv")]
+    #[arg(long, default_value = "data/csv/orthoplex_w_of_z.csv")]
     csv: String,
 
     /// Output as JSON (fit results only, no CSV).
