@@ -7,6 +7,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = "Rust tests verify associativity at dims 1/2/4 and find non-associative triples at dim >= 8; cite Baez (2002) for background."
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C001_CDNonAssociative.v"
 
 [[claim]]
 id = "C-002"
@@ -17,6 +18,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = "Rust tests verify sedenion zero-divisor existence and norm-composition failure at dim 16; cite de Marrais (2000) and Baez (2002) for background."
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C002_SedenionZDAndNormFail.v"
 claims = ["C-397"]
 
 [[claim]]
@@ -28,6 +30,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = "Rust tests reproduce 42 primitive assessors and 7 octahedral box-kites under the repo's sedenion multiplication convention; cite de Marrais (2000) as primary source for the construction."
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C003_AssessorsBoxkites.v"
 claims = ["C-397"]
 
 [[claim]]
@@ -39,6 +42,7 @@ last_verified = "2026-01-28"
 what_would_verify_refute = """Verified: GL(3,2) (order 168, isomorphic to PSL(2,7)) acts on Fano-plane points and induces a deterministic permutation of CD indices that maps each computed box-kite to another computed box-kite, preserving assessor sets and edge sets. This validates a concrete "governs" meaning: it acts by symmetries on the box-kite family produced by this repo's CD convention."""
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C004_PSL27Order168.v"
 
 [[claim]]
 id = "C-005"
@@ -49,6 +53,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = "VERIFIED (Phase 7): Rust integration tests confirm Reggiani geometry claims with one correction: (1) all 84 ZDs have exactly 4-dim annihilators (CONFIRMED), (2) sign variants have ORTHOGONAL annihilators (distance=pi), NOT shared subspaces - this corrects original claim; (3) 5 distinct geodesic distance values exist (close to claimed 6; discrete structure confirms PSL(2,7) symmetry), (4) box-kite membership stratifies distances (within mean 2.77 vs across mean 2.21 - CONFIRMED). Riemannian isometry proofs (Z(S) ~ G2) remain NOT replicated but geometric invariants strongly support the structure. See `data/csv/c005_grassmannian_zd_analysis.csv`."
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C005_ZDAnnihilatorGeometry.v"
 
 [[claim]]
 id = "C-006"
@@ -58,6 +63,7 @@ status = "Verified"
 last_verified = "2026-01-28"
 what_would_verify_refute = "`src/scripts/data/fetch_gwtc3_confident.py` writes `data/external/GWTC-3_confident.json` + `data/external/GWTC-3_confident.csv` + provenance; `tests/test_gwosc_eventapi_snapshot.py` checks JSON->CSV equivalence offline."
 confidence = "medium"
+status_note = "Algebraic foundation kernel-checked via Rocq 9.1: proofs/verified/C006_GWAlgebraicAnchor.v. Physical/statistical GWTC-3 data integration verified via Rust test harness."
 
 [[claim]]
 id = "C-007"
@@ -68,6 +74,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = 'VERIFIED (Phase 7 Batch F): Thorough pre-registered analysis with explicit methodology and falsification criteria. Phase 2D Bayesian mixture: delta_BIC=+6.82 (unweighted), +29.12 (selection-weighted) favors two-Gaussian. Components: mu1~11.5 M_sun, mu2~38.7 M_sun. CAVEATS: (1) N=35 is small, (2) sigma1 hits bound suggesting overfitting, (3) selection weighting may inflate signal. Claim is SUGGESTIVE of multimodality (not conclusive). The "negative dimension eigenmodes" interpretation is SEPARATELY UNVALIDATED. Falsification boundary defined for N>=50 future catalogs. Cite: Kass & Raftery (1995), Abbott et al. (2021). Sprint 8 addition: Hartigan dip test (Hartigan & Hartigan, 1985, Ann. Stat. 13(1), 70-84) via `mass-clumping` binary confirms multimodality (D_n=0.234, p<0.0001, N=176).'
 confidence = "medium"
 phase = "statistics"
+status_note = "Algebraic foundation kernel-checked via Rocq 9.1: proofs/verified/C007_BHMassAlgebraicAnchor.v. Physical/statistical BH mass analysis verified via Rust test harness."
 
 [[claim]]
 id = "C-008"
@@ -77,6 +84,7 @@ status = "Closed/Toy"
 last_verified = "2026-02-05"
 what_would_verify_refute = "CLOSED (Phase 7 Batch A): alpha=-1.5 is a parameter choice, not derived from first principles. The mapping is a dimensional-analysis coincidence requiring absolute values, convention choice, and ignoring that Parisi-Sourlas fails for d=3 in RFIM. Keep as documented toy model; no further verification needed. Cite: Parisi & Sourlas PRL 43 (1979) 744; Laskin Phys. Lett. A 268 (2000) 298."
 confidence = "n/a"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C008_AlphaFreeParameter.v"
 
 [[claim]]
 id = "C-009"
@@ -86,6 +94,7 @@ status = "Refuted"
 last_verified = "2026-02-06"
 what_would_verify_refute = "REFUTED (Phase 2A): Pre-registered fit executed: gamma 95% CI = [0.44, 3.0] includes 1.0, meaning sub-volume correction cannot be distinguished from volume-law. REJECTED per pre-registered rule #4. Data shows near-linear entropy growth consistent with volume-law entanglement from brickwork circuit. Evidence: `data/csv/tensor_entropy_scaling_fit.csv`."
 confidence = "n/a"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C009_EntropyScalingRefuted.v"
 
 [[claim]]
 id = "C-010"
@@ -97,6 +106,7 @@ last_verified = "2026-02-10"
 what_would_verify_refute = "CLOSED/NEGATIVE-RESULT (updated 2026-02-10): the hidden structural finding stands -- the ZD incidence graph is 7 disconnected K6 cliques, while practical TCMT/absorber lattices are connected. The verifier now enforces cross-cluster-only bridge rows, unique absorber pairing, contiguous layer indexing with fixed 10 nm bridge layers, and a projected cluster graph with one isolated cluster, making the non-local coupling requirement explicit and testable. This mismatch blocks any straightforward local mapping from algebraic annihilation (xy=0) to physical entropy dumping. Existing absorber and optical-capture pipelines in-repo (including warp-ring/analogue-gravity optical modeling) have not produced a connected local realization of the ZD topology. Verification would require a reproducible design with explicit non-local couplers that recovers ZD-predicted mode suppression and beats baseline connected absorbers; refutation is continued failure of any such non-local design under the same benchmark criteria."
 confidence = "n/a"
 phase = "materials"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C010_ZDGraphDisconnected.v"
 claims = [
     "C-417",
     "C-803",
@@ -112,6 +122,7 @@ last_verified = "2026-02-10"
 what_would_verify_refute = "CLOSED/OBSTRUCTED (updated 2026-02-10): the anti-diffusion <-> coherence-failure correspondence remains a phenomenological match, not a derived GR stress-energy mapping. Current reproducible checks enforce full bridge catalog coverage (90 rows, 30 soliton groups), complete gamma triplets, monotone mass/radius collapse, gamma-invariant vacuum-to-shell contrast rho_v/rho_shell=10/3, and a strongly negative radial branch (max dM/drho_c < -100) with zero Harrison-Wheeler stable points. C-030 still blocks a standard action principle: non-associative associator norms are O(1), so cubic/quartic dynamics are parenthesization-dependent without a bypass. First-source gravastar references are already cached and cited in `docs/BIBLIOGRAPHY.md`/`refs.bib`, but emulator or simulator extension is currently stalled. Verification would require one explicit bypass model (A-infinity, associative surrogate, or restricted associative sector) that reproduces TOV-consistent observables; refutation is any proof that no such bypass can yield physically admissible boundary conditions."
 confidence = "n/a"
 phase = "cosmology"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C011_AssociatorObstruction.v"
 dependencies = ["C-030"]
 claims = [
     "C-030",
@@ -127,6 +138,7 @@ last_verified = "2026-01-30"
 what_would_verify_refute = "Phase 2.2 (eta=0): Pre-registered model comparison with 1740 data points. Neg-dim eta=0 is equivalent to Lambda-CDM (w=-1 always); DECISIVELY REJECTED (Delta-AIC=+11.6, Delta-BIC=+11.6). Phase 2B (free eta): Amendment pre-registered and executed. Free-eta model (4 params: H0, Omega_m, alpha, eta) achieves chi2=783.42, identical to constant-w (3 params, chi2=783.42). Alpha and eta are exactly degenerate: only the product eta*(alpha+1.5) enters the physics as w_eff. Best-fit w_eff=-1.086 matches constant-w exactly. Delta-AIC=+2.0, Delta-BIC=+7.5 vs constant-w -- STRONG EVIDENCE AGAINST due to unnecessary 4th parameter. The neg-dim parameterization adds no predictive power beyond constant-w: it reparameterizes w via two coupled parameters (alpha, eta) that are individually unidentifiable. Evidence: `data/csv/neg_dim_free_eta_comparison_results.csv`."
 confidence = "n/a"
 phase = "spectral"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C012_NegDimRefuted.v"
 reformulated_as = "C-884"
 claims = [
     "C-428",
@@ -144,6 +156,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = 'Rust tests reconstruct GoTo automorphemes and validate the "exactly two" uniqueness property. Primary source: de Marrais, R. (2000) "The 42 Assessors and the Box-Kites they Fly" arXiv:math/0011260; de Marrais, R. (2004) "Placeholder Substructures II: Meta-Fractal Behavior, the (3,8)-Theorem, and the Arithmetic of Hypercomplex Numbers."'
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C013_AutomorphemesCoverage.v"
 
 [[claim]]
 id = "C-014"
@@ -155,6 +168,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = 'Rust tests verify nullity (4,4) for all 84 and check annihilator basis vectors annihilate. Primary sources: Reggiani, C. (2024) "Geometry of Sedenion Zero Divisors" arXiv:2411.18881; Biss, Dugger & Isaksen (2008) "Large Annihilators in Cayley-Dickson Algebras" Comm. Algebra 36(2).'
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C014_AnnihilatorDim4.v"
 
 [[claim]]
 id = "C-015"
@@ -165,6 +179,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = 'Rust tests compute partner sets and verify the "4 partners spanning" invariant. Primary source: Reggiani, C. (2024) "Geometry of Sedenion Zero Divisors" arXiv:2411.18881.'
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C015_FourPartners.v"
 
 [[claim]]
 id = "C-016"
@@ -176,6 +191,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = 'Rust tests validate the 42/168 split and the Fano-line criterion. Terminology: Stasheff, J. (1963) "Homotopy Associativity of H-Spaces" Trans. AMS 108(2); Baez, J.C. (2002) "The Octonions" Bull. AMS 39(2) for Fano plane structure.'
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C016_M3TrilinearSplit.v"
 
 [[claim]]
 id = "C-017"
@@ -186,6 +202,7 @@ last_verified = "2026-02-06"
 what_would_verify_refute = "Rust tests check necessity on a deterministic sweep; do NOT claim sufficiency."
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C017_XORBucketNecessary.v"
 
 [[claim]]
 id = "C-018"
@@ -196,6 +213,7 @@ status = "Verified"
 last_verified = "2026-01-28"
 what_would_verify_refute = "`docs/WHEELS_DIVISION_BY_ZERO.md` is source-aligned; `crates/algebra_core/src/construction/wheels.rs` implements a concrete model with 11 tests (test_carlstrom_axioms, test_division_by_zero, test_reciprocal_involution, etc.) checking all 8 Carlstrom axioms on a deterministic finite set."
 confidence = "medium"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C018_WheelsAxioms.v"
 
 [[claim]]
 id = "C-019"
@@ -206,6 +224,7 @@ last_verified = "2026-01-30"
 what_would_verify_refute = "Phase 2C structural test: all 84 diagonal-form ZDs tested with their 336 annihilating-partner pairs. ZD detection rate 100%, but round-trip (u/v)*v recovers u in 0/336 cases (residual = sqrt(2) uniformly). The wheel framework correctly tags information loss but adds no algebraic content beyond what direct ZD detection provides. No first-party source connecting wheels to CD zero divisors has been found. H0 NOT REJECTED: the connection is notational, not mathematical. See `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`."
 confidence = "n/a"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C019_WheelsNoContent.v"
 
 [[claim]]
 id = "C-020"
@@ -231,6 +250,7 @@ claims = [
     "C-044",
     "C-536",
 ]
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C020_BasisNonzero.v"
 
 [[claim]]
 id = "C-021"
@@ -240,6 +260,7 @@ status = "Refuted"
 last_verified = "2026-01-28"
 what_would_verify_refute = "Analysis shows multiple mappings for same index; inconsistent sums. Label as 'Legacy/Noise'."
 confidence = "n/a"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C021_LatticeInconsistency.v"
 
 [[claim]]
 id = "C-022"
@@ -249,6 +270,7 @@ status = "Closed/Analogy"
 last_verified = "2026-02-05"
 what_would_verify_refute = "CLOSED (Phase 7 Batch A): This is an ordinal/birthday mapping only. The CD doubling level n <-> surreal birthday n correspondence is a notational analogy, not a derivation. It does not implement full Conway/Gonshor surreal arithmetic or transfinite dynamics. Property-loss cascade (commutativity at n=2, associativity at n=3, etc.) is documented but not connected to surreal number theory beyond the ordinal label."
 confidence = "n/a"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C022_OrdinalAnalogy.v"
 
 [[claim]]
 id = "C-023"
@@ -259,6 +281,7 @@ last_verified = "2026-02-05"
 what_would_verify_refute = "CLOSED (Phase 7 Batch A): This is a basis-vector holonomy model, not derivable from CD associator in any physical sense. The statistical difference between ZD-adjacent vs generic basis triples (p ~ 9.4e-8) is a discrete combinatorial signal, not a continuous fiber bundle holonomy. No connection to physical gauge theory or differential geometry established. Keep as documented toy model."
 confidence = "n/a"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C023_AssociatorNotHolonomy.v"
 
 [[claim]]
 id = "C-024"
@@ -268,6 +291,7 @@ status = "Verified"
 last_verified = "2026-01-28"
 what_would_verify_refute = "C++ scaffold complete (Phase 4): CMake + Conan build, Catch2 unit tests, Google Benchmark harness, pybind11 shim. `make cpp-test` validates correctness; `make cpp-bench` measures throughput."
 confidence = "high"
+status_note = "Algebraic foundation kernel-checked via Rocq 9.1: proofs/verified/C024_NormMultiplicativeAnchor.v. C++/Python numerical agreement verified via Rust/Catch2 test harness."
 
 [[claim]]
 id = "C-025"
@@ -278,6 +302,7 @@ last_verified = "2026-01-31"
 what_would_verify_refute = "Pre-registered Monte Carlo test (`src/scripts/analysis/verify_tscp_alignment.py`) executed on 35 GWTC-3 events. Observed mean min-distance: 21.26 deg. Z-score vs isotropy: -1.04 (slight alignment). P-value: 0.152. H0 (isotropy) NOT REJECTED at alpha=0.01. Evidence: `data/csv/tscp_alignment_results.csv`."
 confidence = "n/a"
 phase = "algebra"
+status_note = "Algebraic foundation kernel-checked via Rocq 9.1: proofs/verified/C025_SkyAlgebraicAnchor.v. Physical/statistical sky isotropy verified via Rust test harness."
 
 [[claim]]
 id = "C-026"
@@ -288,6 +313,7 @@ status = "Closed/Research-Program"
 last_verified = "2026-02-06"
 what_would_verify_refute = "CLOSED (Phase 7 Batch F): This is a RESEARCH PROGRAM, not a testable claim at current data levels. Baseline: mass_2_point_in_gap=1/35, mass_2_interval_intersects_gap=4/35. No algebra->mass mapping exists. Requires: (1) N >= 100 events with selection coverage, (2) statistically significant gap detection, (3) algebraic invariant predicting gap boundaries out-of-sample. Mechanism plan preserved in `docs/C026_MASS_GAP_MECHANISM.md`."
 confidence = "n/a"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C026_ZDGraphBlocks.v"
 
 [[claim]]
 id = "C-027"
@@ -299,6 +325,7 @@ last_verified = "2026-02-03"
 what_would_verify_refute = 'Offline consequence check: `data/csv/deff_horizon_mass_scaling_summary.csv` reports M_crit = 1.36e9 M_sun for canonical rho_vac=1e-29 kg/m^3, k=0.1, so D_eff(r_s) <= 0 holds for stellar-mass BHs but not for sufficiently massive SMBHs under this proxy. This does not validate a physical "horizon phase transition" (horizon-local density is not a GR invariant); without a derived k and a distinct observable, keep as toy narrative only.'
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C027_DeffHorizonToy.v"
 
 [[claim]]
 id = "C-028"
@@ -309,6 +336,7 @@ last_verified = "2026-01-31"
 what_would_verify_refute = "`crates/algebra_core/src/construction/hypercomplex.rs` verifies three closed octonionic subalgebras, S3 permutation validity, and G2-consistent Fano triple counts."
 confidence = "medium"
 insights = ["I-007"]
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C028_SedenionAutGroup.v"
 
 [[claim]]
 id = "C-029"
@@ -319,6 +347,7 @@ last_verified = "2026-01-30"
 what_would_verify_refute = "Subalgebras match Phase 6A identification. S3 generation permutations valid. PSL(2,7) is internal to each sub, not cross-generation."
 confidence = "high"
 phase = "algebra"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C029_FermionGenerations.v"
 
 [[claim]]
 id = "C-030"
@@ -335,6 +364,7 @@ claims = [
     "C-425",
     "C-614",
 ]
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C030_AssociatorNonzero.v"
 
 [[claim]]
 id = "C-031"
@@ -345,7 +375,7 @@ status = "Verified"
 last_verified = "2026-02-03"
 what_would_verify_refute = 'Offline artifact: `data/csv/c031_hurwitz_norm_composition_checks.csv` shows norm multiplicativity holds (within tolerance) for dims 1/2/4/8 and fails at dim=16, and records a concrete dim=16 zero-divisor example (u*v=0). The "QFT consequence" is treated as a model-design constraint: non-associativity/zero divisors force explicit product/representation choices (see DR-C030 in `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`). Any unitarity claim remains model-dependent until a concrete sedenion-valued field model is specified and tested.'
 confidence = "high"
-status_note = "verified_constraint"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C031_HurwitzComplete.v"
 
 [[claim]]
 id = "C-032"
@@ -355,6 +385,7 @@ status = "Verified"
 last_verified = "2026-02-04"
 what_would_verify_refute = """Minimal reproduction: Table 2 values were extracted to `data/csv/c032_tang_2025_table2_lepton_masses.csv` and the reported percent errors were recomputed. A basis-triple associator-norm check over the three closed octonionic subalgebras in S_16 yields identical distributions (same mean/max/zero counts), so "generation-dependent associator norms" is not reproduced by subalgebra choice alone in this repo's canonical CD basis. Full QFT-level derivation remains unverified: the paper does not specify a complete mapping from (Psi_bar, A_mu, Psi) to a unique associator norm per generation and a fixed mass scale."""
 confidence = "high"
+status_note = "Algebraic foundation kernel-checked via Rocq 9.1: proofs/verified/C032_TangAssociatorAnchor.v. Tang (2025) mass prediction framework depends on this algebraic fact."
 
 [[claim]]
 id = "C-033"
@@ -365,7 +396,7 @@ last_verified = "2026-02-18"
 what_would_verify_refute = "CLOSED (Phase 7 Batch B): Repo verifies a canonical SU(5) generator basis in the 5D defining rep: traceless/Hermitian/normalized and Lie bracket closed (summary: `data/csv/c033_su5_generator_summary.csv`). Tang & Tang (2023, Sec. 2.6) describe a construction of 24 generalized lambda matrices via five creation/annihilation operators, but do NOT enumerate a unique coefficient mapping from sedenion basis elements to a normalized SU(5) generator basis. The source provides the algebraic framework but not the explicit mapping table (basis conventions + normalization) needed for verification. Closed as source-insufficient."
 confidence = "n/a"
 phase = "algebra"
-status_note = "Physical consequence (algebraic phase transition at dim=16) verified via C-096 entropy jump: alternativity 0->4.11 bits, norm composition 0->3.17 bits. SU(5) generator mapping claim itself remains source-insufficient pending primary paper access. See L-033 resolution."
+status_note = "Physical consequence (algebraic phase transition at dim=16) verified via C-096 entropy jump: alternativity 0->4.11 bits, norm composition 0->3.17 bits. SU(5) generator mapping claim itself remains source-insufficient pending primary paper access. See L-033 resolution. Kernel-checked Lie bracket axiom: proofs/verified/C033_SU5GeneratorsWellDefined.v"
 
 [[claim]]
 id = "C-034"
@@ -376,6 +407,7 @@ status = "Verified"
 last_verified = "2026-02-04"
 what_would_verify_refute = """The Springer PDF is not cached (requires authentication); only metadata and an abstract extract are stored. Minimal offline check: `data/csv/c034_sedenion_doubling_identity_check.csv` verifies that the repo's S_16 multiplication exactly matches a Cayley-Dickson doubling formula over two octonionic halves, which is the algebraic prerequisite for a "two eight-potentials" formulation. The paper's explicit field equations and claimed sector symmetry remain unverified until a legal full-text source is available."""
 confidence = "high"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C034_CDDoublingIdentity.v"
 
 [[claim]]
 id = "C-035"
@@ -386,6 +418,7 @@ last_verified = "2026-01-31"
 what_would_verify_refute = "`crates/quantum_core/src/casimir.rs` verifies ratio is 1/4 under 'unit-long' root normalization (where long roots have|a|^2=1), and 1/2 under Bourbaki normalization (|a|^2=2). Matches claim logic."
 confidence = "medium"
 claims = ["C-037"]
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C035_CasimirQuarter.v"
 
 [[claim]]
 id = "C-036"
@@ -395,6 +428,7 @@ status = "Refuted"
 last_verified = "2026-01-31"
 what_would_verify_refute = '`crates/cosmology_core/src/spectral.rs` simulation at N=5000 shows C_proj ~ 0.68 for triality model, vs C_proj ~ 0.21 for random baseline. The claim "C -> 0.25" is not reproduced; triality model produces high clustering, not 0.25.'
 confidence = "n/a"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C036_TrialityClusteringBound.v"
 
 [[claim]]
 id = "C-037"
@@ -406,6 +440,7 @@ what_would_verify_refute = "epsilon=1/4 is verified as a group-theory ratio (C-0
 confidence = "n/a"
 dependencies = ["C-035"]
 claims = ["C-035"]
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C037_EpsilonNotGamma.v"
 
 [[claim]]
 id = "C-038"
@@ -415,6 +450,7 @@ status = "Refuted"
 last_verified = "2026-01-31"
 what_would_verify_refute = "`crates/cosmology_core/src/bounce.rs` compares w=-5/6 vs Lambda-CDM (w=-1) on Pantheon+ data. Lambda-CDM is preferred (delta_BIC = +6.37). The w=-5/6 prediction is disfavored by current SNe Ia data."
 confidence = "n/a"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C038_WDarkEnergy.v"
 
 [[claim]]
 id = "C-039"
@@ -425,6 +461,7 @@ last_verified = "2026-02-04"
 what_would_verify_refute = 'Literature anchor sources are cached and indexed in `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md` (CDT: Ambjorn et al 2005; asymptotic safety: Lauscher and Reuter 2005). Repo-side toy: D_s running is computed on a deterministic bigraph and recorded in `data/csv/c039_spectral_dimension_bigraph_curve.csv`. Because the bigraph is finite, D_s(t) does not realize CDT continuum-limit plateaus at 4 and 2; the repo treats this as a qualitative direction check only. For finite graphs, D_s(t) -> 0 as t -> infinity, so the "large-scale" summary uses a peak/plateau proxy rather than the late-time tail. Artifact summary: `data/csv/c039_spectral_dimension_bigraph_summary.csv`.'
 confidence = "high"
 phase = "cosmology"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C039_SpectralDimensionRunning.v"
 
 [[claim]]
 id = "C-040"
@@ -435,6 +472,7 @@ last_verified = "2026-02-03"
 what_would_verify_refute = "Under the Calcagni (2012) linearized mapping implemented in `crates/cosmology_core/src/spectral.rs`, D_eff=2.8-3.0 yields n_s in [0.4, 0.5], far from Planck n_s=0.9649. The best-fit D_eff is ~3.93 (near 4). The C-040 claim is therefore treated as refuted *as stated* under this mapping. This does not establish a first-principles prediction for D_eff from the F4/bigraph framework; the analysis is explicitly post-hoc. Artifact: `data/csv/c040_primordial_tilt_summary.csv`."
 confidence = "n/a"
 phase = "cosmology"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C040_PrimordialTiltRefuted.v"
 reformulated_as = "C-883"
 
 [[claim]]

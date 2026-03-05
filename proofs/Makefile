@@ -6,12 +6,13 @@
 # HOW:  make all (build), make check (no Admitted), make clean.
 
 ROCQMAKEFILE := rocq makefile
+JOBS ?= $(shell nproc 2>/dev/null || echo 1)
 
 Makefile.coq: _CoqProject
 	$(ROCQMAKEFILE) -f _CoqProject -o Makefile.coq
 
 all: Makefile.coq
-	$(MAKE) -f Makefile.coq all
+	$(MAKE) -j$(JOBS) -f Makefile.coq all
 
 clean: Makefile.coq
 	$(MAKE) -f Makefile.coq clean
