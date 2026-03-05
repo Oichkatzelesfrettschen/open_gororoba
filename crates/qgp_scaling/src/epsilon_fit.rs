@@ -128,11 +128,11 @@ fn chi2_straggling(data: &[RaaDataPoint], epsilon_bar: f64, grid: &StragglingGri
 /// `grid.n_spectral` so there is no risk of a silent mismatch.
 ///
 /// # Arguments
-/// * `data`    – R_AA data points (already filtered to the desired pT range)
-/// * `eps_lo`  – Lower bound for ε̄ search (GeV)
-/// * `eps_hi`  – Upper bound for ε̄ search (GeV)
-/// * `tol`     – Convergence tolerance on ε̄
-/// * `grid`    – Precomputed straggling lookup table
+/// * `data`    -- R_AA data points (already filtered to the desired pT range)
+/// * `eps_lo`  -- Lower bound for epsilon_bar search (GeV)
+/// * `eps_hi`  -- Upper bound for epsilon_bar search (GeV)
+/// * `tol`     -- Convergence tolerance on epsilon_bar
+/// * `grid`    -- Precomputed straggling lookup table
 pub fn extract_epsilon_straggling(
     data: &[RaaDataPoint],
     eps_lo: f64,
@@ -433,7 +433,7 @@ mod tests {
         let true_eps = 5.0;
         let n = 6.0;
         let kappa = DEFAULT_KAPPA;
-        // Generate data from the straggling model at pT well above ε̄
+        // Generate data from the straggling model at pT well above epsilon_bar
         let data = synthetic_straggling_data(true_eps, n, kappa, 6.0, 50.0, 30);
 
         let grid = StragglingGrid::new((1.0, 100.0), 100, (0.1, 20.0), 80, n, kappa);

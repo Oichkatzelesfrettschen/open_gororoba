@@ -4,26 +4,26 @@
 //! # Fifth Observational Pillar
 //!
 //! CDG-2 is an ultra-diffuse galaxy in the Perseus cluster (z = 0.0179) with
-//! ≥ 99.94% dark matter fraction (Li et al. 2025, arXiv:2506.15644), identified
+//! at least 99.94% dark matter fraction (Li et al. 2025, arXiv:2506.15644), identified
 //! via its globular cluster system. This module provides:
 //!
 //! 1. Press-Schechter halo mass function using the orthoplex growth factor
 //! 2. NFW halo profile and Jeans-equation velocity dispersion
-//! 3. UDG abundance ratio: orthoplex/ΛCDM prediction in Perseus-like environments
+//! 3. UDG abundance ratio: orthoplex/LambdaCDM prediction in Perseus-like environments
 //!
 //! # Conventions
 //!
-//! All computations use h = 1 units (k in Mpc⁻¹, lengths in Mpc or kpc):
-//! - Mean matter density: ρ̄₀ = Ω_m × 2.775 × 10¹¹ M☉ Mpc⁻³
-//! - Critical density: ρ_crit,0 = 277.5 M☉ kpc⁻³  (= 2.775 × 10¹¹ M☉ Mpc⁻³)
-//! - BBKS shape parameter: q = k / Ω_m  (k in Mpc⁻¹, h = 1)
-//! - Normalization sphere: R₈ = 8 Mpc  (= 8 h⁻¹ Mpc at h = 1)
+//! All computations use h = 1 units (k in Mpc^{-1}, lengths in Mpc or kpc):
+//! - Mean matter density: rho_bar_0 = Omega_m * 2.775 * 10^1^1 Msun Mpc^{-3}
+//! - Critical density: rho_crit,0 = 277.5 Msun kpc^{-3}  (= 2.775 * 10^1^1 Msun Mpc^{-3})
+//! - BBKS shape parameter: q = k / Omega_m  (k in Mpc^{-1}, h = 1)
+//! - Normalization sphere: R_8 = 8 Mpc  (= 8 h^{-1} Mpc at h = 1)
 //!
 //! # References
 //! - Press & Schechter (1974), ApJ 187, 425
 //! - Bardeen, Bond, Kaiser & Szalay (1986), ApJ 304, 15 (BBKS transfer function)
 //! - Navarro, Frenk & White (1997), ApJ 490, 493 (NFW profile)
-//! - Łokas & Mamon (2001), MNRAS 321, 155 (NFW Jeans solution)
+//! - Lokas & Mamon (2001), MNRAS 321, 155 (NFW Jeans solution)
 //! - Li et al. (2025), arXiv:2506.15644 (CDG-2 discovery)
 
 use crate::{
@@ -43,12 +43,12 @@ pub const DELTA_C: f64 = 1.686;
 /// Perseus cluster redshift (Struble & Rood 1999; Hitomi Collaboration 2016).
 pub const PERSEUS_Z: f64 = 0.0179;
 
-/// CDG-2 stellar mass (L_V = 6.2 ± 3.0 × 10⁶ L☉, assuming M/L_V ≈ 1).
+/// CDG-2 stellar mass (L_V = 6.2 +- 3.0 * 10^6 Lsun, assuming M/L_V ~ 1).
 ///
 /// Reference: Li et al. (2025), arXiv:2506.15644, Table 1.
 pub const CDG2_STELLAR_MASS_SOLAR: f64 = 6.2e6;
 
-/// Minimum dark matter fraction of CDG-2 (≥ 99.94%).
+/// Minimum dark matter fraction of CDG-2 (>= 99.94%).
 ///
 /// Derived from the upper limit on the dynamical mass-to-light ratio.
 /// Reference: Li et al. (2025), arXiv:2506.15644.
@@ -58,18 +58,18 @@ pub const CDG2_DM_FRACTION_MIN: f64 = 0.9994;
 // Physical constants (h = 1 units)
 // ---------------------------------------------------------------------------
 
-/// Gravitational constant G in kpc (km/s)² M☉⁻¹.
+/// Gravitational constant G in kpc (km/s)^2 Msun^{-1}.
 ///
-/// Derived from G = 6.674 × 10⁻¹¹ m³ kg⁻¹ s⁻²,
-/// 1 M☉ = 1.989 × 10³⁰ kg, 1 kpc = 3.086 × 10¹⁹ m.
+/// Derived from G = 6.674 * 10^{-1}^1 m^3 kg^{-1} s^-^2,
+/// 1 Msun = 1.989 * 10^3^0 kg, 1 kpc = 3.086 * 10^1^9 m.
 const G_KPC_KM_S: f64 = 4.302e-6;
 
-/// Present-day critical density (h = 1) in M☉ kpc⁻³.
+/// Present-day critical density (h = 1) in Msun kpc^{-3}.
 ///
-/// ρ_crit,0 = 3H₀²/(8πG) = 2.775 × 10¹¹ M☉ Mpc⁻³ / (10³)³ at h = 1.
+/// rho_crit,0 = 3H_0^2/(8piG) = 2.775 * 10^1^1 Msun Mpc^{-3} / (10^3)^3 at h = 1.
 const RHO_CRIT_KPC: f64 = 277.5;
 
-/// Present-day critical density (h = 1) in M☉ Mpc⁻³.
+/// Present-day critical density (h = 1) in Msun Mpc^{-3}.
 const RHO_CRIT_MPC: f64 = 2.775e11;
 
 // ---------------------------------------------------------------------------
@@ -78,17 +78,17 @@ const RHO_CRIT_MPC: f64 = 2.775e11;
 
 /// BBKS (1986) CDM transfer function T(q).
 ///
-/// T(q) = ln(1 + 2.34q)/(2.34q) × [1 + 3.89q + (16.1q)² + (5.46q)³ + (6.71q)⁴]^{-1/4}
+/// T(q) = ln(1 + 2.34q)/(2.34q) * [1 + 3.89q + (16.1q)^2 + (5.46q)^3 + (6.71q)^4]^{-1/4}
 ///
-/// Shape parameter q = k/Ω_m with k in Mpc⁻¹ (h = 1 convention).
-/// T → 1 for small k (large scales), suppressed for large k (small scales).
+/// Shape parameter q = k/Omega_m with k in Mpc^{-1} (h = 1 convention).
+/// T -> 1 for small k (large scales), suppressed for large k (small scales).
 pub fn bbks_transfer(k_mpc: f64, omega_m: f64) -> f64 {
     if omega_m <= 0.0 || k_mpc <= 0.0 {
         return 1.0;
     }
     let q = k_mpc / omega_m;
     let q234 = 2.34 * q;
-    // ln(1 + 2.34q)/(2.34q) → 1 as q → 0
+    // ln(1 + 2.34q)/(2.34q) -> 1 as q -> 0
     let ln_term = if q234 < 1e-6 {
         1.0 - 0.5 * q234 + q234 * q234 / 3.0
     } else {
@@ -106,9 +106,9 @@ pub fn bbks_transfer(k_mpc: f64, omega_m: f64) -> f64 {
 // Top-hat window function in Fourier space
 // ---------------------------------------------------------------------------
 
-/// Real-space top-hat window function W(x) = 3[sin(x) − x cos(x)] / x³.
+/// Real-space top-hat window function W(x) = 3[sin(x) - x cos(x)] / x^3.
 ///
-/// Uses the Taylor expansion 1 − x²/10 for |x| < 10⁻³ to avoid cancellation.
+/// Uses the Taylor expansion 1 - x^2/10 for |x| < 10^{-3} to avoid cancellation.
 #[inline]
 fn top_hat_window(x: f64) -> f64 {
     if x.abs() < 1e-3 {
@@ -119,19 +119,19 @@ fn top_hat_window(x: f64) -> f64 {
 }
 
 // ---------------------------------------------------------------------------
-// σ(M): RMS mass fluctuation
+// sigma(M): RMS mass fluctuation
 // ---------------------------------------------------------------------------
 
-/// Unnormalized σ² integral I(R) over all k for a top-hat sphere of radius R (Mpc).
+/// Unnormalized sigma^2 integral I(R) over all k for a top-hat sphere of radius R (Mpc).
 ///
-/// I(R) = ∫₀^∞ k^(ns+2) T²(k) W²(kR) dk
+/// I(R) = integral_0^inf k^(ns+2) T^2(k) W^2(kR) dk
 ///
 /// Evaluated via Gauss-Legendre (100 nodes) in log-k space to handle the
 /// wide dynamic range: k = exp(u), dk = k du gives
-///   I(R) = ∫ k^(ns+3) T²(k) W²(kR) du
+///   I(R) = integral k^(ns+3) T^2(k) W^2(kR) du
 fn sigma_sq_integral(r_mpc: f64, omega_m: f64, ns: f64) -> f64 {
-    let u_min = 1e-5_f64.ln(); // k_min = 10⁻⁵ Mpc⁻¹
-    let u_max = 1e5_f64.ln();  // k_max = 10⁵ Mpc⁻¹
+    let u_min = 1e-5_f64.ln(); // k_min = 10^-^5 Mpc^{-1}
+    let u_max = 1e5_f64.ln();  // k_max = 10^5 Mpc^{-1}
     gl_integrate(
         |u| {
             let k = u.exp();
@@ -145,30 +145,30 @@ fn sigma_sq_integral(r_mpc: f64, omega_m: f64, ns: f64) -> f64 {
     )
 }
 
-/// Comoving radius (Mpc) of the top-hat sphere enclosing mass M (M☉).
+/// Comoving radius (Mpc) of the top-hat sphere enclosing mass M (Msun).
 ///
-/// R = (3M / 4π ρ̄₀)^{1/3}  with ρ̄₀ = Ω_m × 2.775 × 10¹¹ M☉ Mpc⁻³.
+/// R = (3M / 4pi rho_bar_0)^{1/3}  with rho_bar_0 = Omega_m * 2.775 * 10^1^1 Msun Mpc^{-3}.
 #[inline]
 fn mass_to_radius_mpc(mass_solar: f64, omega_m: f64) -> f64 {
     let rho_bar = omega_m * RHO_CRIT_MPC;
     (3.0 * mass_solar / (4.0 * std::f64::consts::PI * rho_bar)).cbrt()
 }
 
-/// RMS mass fluctuation σ(M) at z = 0, normalized so σ(R = 8 Mpc) = σ₈.
+/// RMS mass fluctuation sigma(M) at z = 0, normalized so sigma(R = 8 Mpc) = sigma_8.
 ///
-/// σ²(M) = σ₈² × I(R(M)) / I(8 Mpc)
+/// sigma^2(M) = sigma_8^2 * I(R(M)) / I(8 Mpc)
 ///
-/// where I(R) = ∫₀^∞ k^(ns+2) T²(k) W²(kR) dk uses the BBKS transfer function
-/// with shape parameter q = k / Ω_m (k in Mpc⁻¹, h = 1).
+/// where I(R) = integral_0^inf k^(ns+2) T^2(k) W^2(kR) dk uses the BBKS transfer function
+/// with shape parameter q = k / Omega_m (k in Mpc^{-1}, h = 1).
 ///
 /// # Parameters
-/// - `mass_solar`: Halo mass in M☉
-/// - `omega_m`: Dimensionless matter density Ω_m
-/// - `sigma8`: σ₈ normalization at z = 0
+/// - `mass_solar`: Halo mass in Msun
+/// - `omega_m`: Dimensionless matter density Omega_m
+/// - `sigma8`: sigma_8 normalization at z = 0
 /// - `ns`: Primordial power spectral index
 ///
 /// # Returns
-/// σ(M) at z = 0 (dimensionless)
+/// sigma(M) at z = 0 (dimensionless)
 pub fn sigma_mass(mass_solar: f64, omega_m: f64, sigma8: f64, ns: f64) -> f64 {
     if mass_solar <= 0.0
         || omega_m <= 0.0
@@ -180,7 +180,7 @@ pub fn sigma_mass(mass_solar: f64, omega_m: f64, sigma8: f64, ns: f64) -> f64 {
     {
         return 0.0;
     }
-    const R8: f64 = 8.0; // Mpc (= 8 h⁻¹ Mpc at h = 1)
+    const R8: f64 = 8.0; // Mpc (= 8 h^{-1} Mpc at h = 1)
     let i_r8 = sigma_sq_integral(R8, omega_m, ns);
     if i_r8 <= 0.0 {
         return sigma8;
@@ -188,14 +188,14 @@ pub fn sigma_mass(mass_solar: f64, omega_m: f64, sigma8: f64, ns: f64) -> f64 {
     sigma_mass_inner(mass_solar, omega_m, sigma8, ns, i_r8)
 }
 
-/// Internal helper: σ(M) given precomputed `i_r8 = I(8 Mpc)`.
+/// Internal helper: sigma(M) given precomputed `i_r8 = I(8 Mpc)`.
 ///
 /// # Parameters
-/// - `mass_solar`: Halo mass in M☉
-/// - `omega_m`: Dimensionless matter density Ω_m
-/// - `sigma8`: σ₈ normalization at z = 0
+/// - `mass_solar`: Halo mass in Msun
+/// - `omega_m`: Dimensionless matter density Omega_m
+/// - `sigma8`: sigma_8 normalization at z = 0
 /// - `ns`: Primordial spectral index
-/// - `i_r8`: Precomputed unnormalized power integral I(R₈ = 8 Mpc, ω_m, nₛ).
+/// - `i_r8`: Precomputed unnormalized power integral I(R_8 = 8 Mpc, omega_m, n_s).
 ///   Pass the value returned by `sigma_sq_integral(8.0, omega_m, ns)`.
 ///   Providing this avoids recomputing the expensive GL integration every call
 ///   when multiple masses are evaluated under the same cosmology.
@@ -215,7 +215,7 @@ fn sigma_mass_inner(mass_solar: f64, omega_m: f64, sigma8: f64, ns: f64, i_r8: f
 /// Wraps [`compute_growth_batch`] to expose a single-redshift interface.
 /// The RK4 growth ODE integrator uses the provided `e_func` for E(z).
 ///
-/// Returns D(z)/D(0) ∈ (0, 1] for z ≥ 0.
+/// Returns D(z)/D(0) in (0, 1] for z >= 0.
 pub fn linear_growth_factor<F: Fn(f64) -> f64>(z: f64, omega_m: f64, e_func: &F) -> f64 {
     let results = compute_growth_batch(omega_m, e_func, &[z], 1.0);
     results[0].0
@@ -227,25 +227,25 @@ pub fn linear_growth_factor<F: Fn(f64) -> f64>(z: f64, omega_m: f64, e_func: &F)
 
 /// Press-Schechter halo mass function dn/dM at redshift z.
 ///
-/// dn/dM = √(2/π) × (ρ̄/M) × (δ_c/σ²) × |dσ/dM| × exp(−δ_c²/2σ²)
+/// dn/dM = sqrt(2/pi) * (rho_bar/M) * (delta_c/sigma^2) * |dsigma/dM| * exp(-delta_c^2/2sigma^2)
 ///
-/// where σ = σ(M) × D(z)/D(0) is the linearly evolved mass fluctuation,
-/// δ_c = 1.686 is the spherical collapse threshold, and ρ̄ is the mean
+/// where sigma = sigma(M) * D(z)/D(0) is the linearly evolved mass fluctuation,
+/// delta_c = 1.686 is the spherical collapse threshold, and rho_bar is the mean
 /// comoving matter density.
 ///
-/// The derivative |dσ/dM| is computed by central finite difference with
+/// The derivative |dsigma/dM| is computed by central finite difference with
 /// a 1% mass step.
 ///
 /// # Parameters
-/// - `mass_solar`: Halo mass in M☉
+/// - `mass_solar`: Halo mass in Msun
 /// - `z`: Redshift
-/// - `omega_m`: Dimensionless matter density Ω_m
-/// - `sigma8`: σ₈ normalization at z = 0
+/// - `omega_m`: Dimensionless matter density Omega_m
+/// - `sigma8`: sigma_8 normalization at z = 0
 /// - `ns`: Primordial power spectral index
-/// - `e_func`: E(z) = H(z)/H₀ for the dark energy model
+/// - `e_func`: E(z) = H(z)/H_0 for the dark energy model
 ///
 /// # Returns
-/// dn/dM in Mpc⁻³ M☉⁻¹ (comoving)
+/// dn/dM in Mpc^{-3} Msun^{-1} (comoving)
 pub fn press_schechter_mass_function<F: Fn(f64) -> f64>(
     mass_solar: f64,
     z: f64,
@@ -270,16 +270,16 @@ pub fn press_schechter_mass_function<F: Fn(f64) -> f64>(
 /// and normalization `i_r8 = I(8 Mpc)`.
 ///
 /// Separating the pre-computation from the mass evaluation avoids re-running
-/// the RK4 growth ODE and the R₈ normalization integral for every quadrature
+/// the RK4 growth ODE and the R_8 normalization integral for every quadrature
 /// node inside `udg_abundance_ratio`.
 ///
 /// # Parameters
-/// - `mass_solar`: Halo mass in M☉
+/// - `mass_solar`: Halo mass in Msun
 /// - `d_z`: Precomputed linear growth factor D(z)/D(0)
-/// - `omega_m`: Dimensionless matter density Ω_m
-/// - `sigma8`: σ₈ normalization at z = 0
+/// - `omega_m`: Dimensionless matter density Omega_m
+/// - `sigma8`: sigma_8 normalization at z = 0
 /// - `ns`: Primordial spectral index
-/// - `i_r8`: Precomputed normalization integral I(R₈ = 8 Mpc, ω_m, nₛ)
+/// - `i_r8`: Precomputed normalization integral I(R_8 = 8 Mpc, omega_m, n_s)
 fn press_schechter_inner(
     mass_solar: f64,
     d_z: f64,
@@ -298,7 +298,7 @@ fn press_schechter_inner(
         return 0.0;
     }
 
-    // Central-difference derivative dσ/dM (1% mass perturbation)
+    // Central-difference derivative dsigma/dM (1% mass perturbation)
     let eps = 0.01;
     let sigma_plus =
         sigma_mass_inner(mass_solar * (1.0 + eps), omega_m, sigma8, ns, i_r8) * d_z;
@@ -306,7 +306,7 @@ fn press_schechter_inner(
         sigma_mass_inner(mass_solar * (1.0 - eps), omega_m, sigma8, ns, i_r8) * d_z;
     let dsigma_dm = (sigma_plus - sigma_minus) / (2.0 * eps * mass_solar);
 
-    // Mean comoving matter density (M☉ Mpc⁻³)
+    // Mean comoving matter density (Msun Mpc^{-3})
     let rho_bar = omega_m * RHO_CRIT_MPC;
 
     // PS formula
@@ -327,18 +327,18 @@ fn press_schechter_inner(
 /// dark energy changes D(z) and hence predicts different halo abundances.
 ///
 /// # Parameters
-/// - `mass_solar`: Halo mass in M☉
+/// - `mass_solar`: Halo mass in Msun
 /// - `z`: Redshift
-/// - `omega_m`: Dimensionless matter density Ω_m
-/// - `sigma8`: σ₈ normalization at z = 0
+/// - `omega_m`: Dimensionless matter density Omega_m
+/// - `sigma8`: sigma_8 normalization at z = 0
 /// - `ns`: Primordial power spectral index
 /// - `k`: Number of parts in K_{2,2,...,2} orthoplex graph
-/// - `alpha`: Power-law exponent for diffusion scale mapping t(z) = t₀/(1+z)^α
-/// - `beta`: Coupling constant w = −1 + β d_s
+/// - `alpha`: Power-law exponent for diffusion scale mapping t(z) = t_0/(1+z)^alpha
+/// - `beta`: Coupling constant w = -1 + beta d_s
 /// - `t_0`: Present-day diffusion scale
 ///
 /// # Returns
-/// dn/dM in Mpc⁻³ M☉⁻¹ (comoving)
+/// dn/dM in Mpc^{-3} Msun^{-1} (comoving)
 #[allow(clippy::too_many_arguments)]
 pub fn press_schechter_orthoplex(
     mass_solar: f64,
@@ -359,25 +359,25 @@ pub fn press_schechter_orthoplex(
 // UDG abundance ratio
 // ---------------------------------------------------------------------------
 
-/// Ratio of UDG-scale halo number density: orthoplex / ΛCDM.
+/// Ratio of UDG-scale halo number density: orthoplex / LambdaCDM.
 ///
 /// Integrates dn/dM over [m_lo, m_hi] in log-mass space for both the
-/// orthoplex dark energy model and ΛCDM, then returns their ratio.
+/// orthoplex dark energy model and LambdaCDM, then returns their ratio.
 ///
-/// Dense environments like Perseus (z ≈ 0.0179) may show measurably different
+/// Dense environments like Perseus (z ~ 0.0179) may show measurably different
 /// UDG abundances between dark energy models once the mass function is
-/// integrated over the UDG host halo mass range (∼10⁸–10¹⁰ M☉).
+/// integrated over the UDG host halo mass range (~10^8--10^1^0 Msun).
 ///
 /// # Parameters
 /// - `z`: Cluster redshift (use `PERSEUS_Z` for CDG-2 / Perseus)
-/// - `omega_m`: Dimensionless matter density Ω_m
-/// - `sigma8`: σ₈ normalization at z = 0
+/// - `omega_m`: Dimensionless matter density Omega_m
+/// - `sigma8`: sigma_8 normalization at z = 0
 /// - `ns`: Primordial power spectral index
-/// - `m_lo`, `m_hi`: Integration mass limits in M☉
+/// - `m_lo`, `m_hi`: Integration mass limits in Msun
 /// - `k`, `alpha`, `beta`, `t_0`: Orthoplex dark energy parameters
 ///
 /// # Returns
-/// n_orthoplex / n_ΛCDM (ratio > 1 means more UDGs predicted by orthoplex)
+/// n_orthoplex / n_LambdaCDM (ratio > 1 means more UDGs predicted by orthoplex)
 #[allow(clippy::too_many_arguments)]
 pub fn udg_abundance_ratio(
     z: f64,
@@ -395,7 +395,7 @@ pub fn udg_abundance_ratio(
         return 1.0;
     }
 
-    // Precompute the R₈ normalization integral once — shared by both models
+    // Precompute the R_8 normalization integral once --- shared by both models
     // since it depends only on omega_m and ns (not on the dark energy model).
     let i_r8 = sigma_sq_integral(8.0, omega_m, ns);
     if i_r8 <= 0.0 {
@@ -443,17 +443,17 @@ pub fn udg_abundance_ratio(
 // NFW profile
 // ---------------------------------------------------------------------------
 
-/// NFW virial radius r₂₀₀ (kpc) from M₂₀₀ (M☉).
+/// NFW virial radius r_2_0_0 (kpc) from M_2_0_0 (Msun).
 ///
-/// r₂₀₀ = (3 M₂₀₀ / (4π × 200 ρ_crit))^{1/3}  with ρ_crit = 277.5 M☉ kpc⁻³.
+/// r_2_0_0 = (3 M_2_0_0 / (4pi * 200 rho_crit))^{1/3}  with rho_crit = 277.5 Msun kpc^{-3}.
 #[inline]
 fn nfw_r200_kpc(m200_solar: f64) -> f64 {
     (3.0 * m200_solar / (4.0 * std::f64::consts::PI * 200.0 * RHO_CRIT_KPC)).cbrt()
 }
 
-/// NFW characteristic density ρ_s (M☉ kpc⁻³).
+/// NFW characteristic density rho_s (Msun kpc^{-3}).
 ///
-/// ρ_s = 200 ρ_crit c³ / [3 (ln(1+c) − c/(1+c))]
+/// rho_s = 200 rho_crit c^3 / [3 (ln(1+c) - c/(1+c))]
 #[inline]
 fn nfw_rho_s(c200: f64) -> f64 {
     let gc = (1.0 + c200).ln() - c200 / (1.0 + c200);
@@ -465,7 +465,7 @@ fn nfw_rho_s(c200: f64) -> f64 {
     200.0 * RHO_CRIT_KPC * c200 * c200 * c200 / (3.0 * gc)
 }
 
-/// Internal: NFW density ρ(r) given precomputed scale radius r_s and
+/// Internal: NFW density rho(r) given precomputed scale radius r_s and
 /// characteristic density rho_s.  Avoids recomputing r_s and rho_s on each
 /// call inside the Jeans quadrature integrand.
 #[inline]
@@ -481,16 +481,16 @@ fn nfw_enclosed_mass_rs(r_kpc: f64, r_s: f64, rho_s: f64) -> f64 {
     4.0 * std::f64::consts::PI * rho_s * r_s * r_s * r_s * ((1.0 + x).ln() - x / (1.0 + x))
 }
 
-/// NFW density profile ρ(r) in M☉ kpc⁻³.
+/// NFW density profile rho(r) in Msun kpc^{-3}.
 ///
-/// ρ(r) = ρ_s / [(r/r_s)(1 + r/r_s)²]
+/// rho(r) = rho_s / [(r/r_s)(1 + r/r_s)^2]
 ///
-/// where r_s = r₂₀₀/c₂₀₀ and ρ_s is set by the mass normalization.
+/// where r_s = r_2_0_0/c_2_0_0 and rho_s is set by the mass normalization.
 ///
 /// # Parameters
 /// - `r_kpc`: Radius in kpc
-/// - `m200_solar`: Virial mass M₂₀₀ in M☉
-/// - `c200`: Concentration parameter c₂₀₀
+/// - `m200_solar`: Virial mass M_2_0_0 in Msun
+/// - `c200`: Concentration parameter c_2_0_0
 pub fn nfw_density(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     if r_kpc <= 0.0 || m200_solar <= 0.0 || c200 <= 0.0 {
         return 0.0;
@@ -500,16 +500,16 @@ pub fn nfw_density(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     nfw_density_rs(r_kpc, r_s, rho_s)
 }
 
-/// NFW enclosed mass M(r) in M☉.
+/// NFW enclosed mass M(r) in Msun.
 ///
-/// M(r) = 4π ρ_s r_s³ [ln(1 + r/r_s) − (r/r_s)/(1 + r/r_s)]
+/// M(r) = 4pi rho_s r_s^3 [ln(1 + r/r_s) - (r/r_s)/(1 + r/r_s)]
 ///
-/// At r = r₂₀₀: M(r₂₀₀) = M₂₀₀ exactly by construction.
+/// At r = r_2_0_0: M(r_2_0_0) = M_2_0_0 exactly by construction.
 ///
 /// # Parameters
 /// - `r_kpc`: Radius in kpc
-/// - `m200_solar`: Virial mass M₂₀₀ in M☉
-/// - `c200`: Concentration parameter c₂₀₀
+/// - `m200_solar`: Virial mass M_2_0_0 in Msun
+/// - `c200`: Concentration parameter c_2_0_0
 pub fn nfw_enclosed_mass(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     if r_kpc <= 0.0 || m200_solar <= 0.0 || c200 <= 0.0 {
         return 0.0;
@@ -519,30 +519,30 @@ pub fn nfw_enclosed_mass(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     nfw_enclosed_mass_rs(r_kpc, r_s, rho_s)
 }
 
-/// Isotropic velocity dispersion σ_r(r) (km/s) from the Jeans equation.
+/// Isotropic velocity dispersion sigma_r(r) (km/s) from the Jeans equation.
 ///
 /// Solves the isotropic, spherical Jeans equation numerically:
 ///
-///   σ²_r(r) = (1/ρ(r)) ∫_r^{r_max} ρ(r') G M(r') / r'² dr'
+///   sigma^2_r(r) = (1/rho(r)) integral_r^{r_max} rho(r') G M(r') / r'^2 dr'
 ///
 /// The log substitution r' = r exp(u) removes the near-center singularity,
-/// giving an integrand ρ(r') G M(r') / r' that is smooth on [0, ln(r_max/r)].
+/// giving an integrand rho(r') G M(r') / r' that is smooth on [0, ln(r_max/r)].
 ///
-/// Upper limit r_max = 10 r₂₀₀ (truncation bias < 1% for typical NFW halos).
+/// Upper limit r_max = 10 r_2_0_0 (truncation bias < 1% for typical NFW halos).
 ///
 /// # Parameters
 /// - `r_kpc`: Projected radius in kpc
-/// - `m200_solar`: Virial mass M₂₀₀ in M☉
-/// - `c200`: Concentration parameter c₂₀₀
+/// - `m200_solar`: Virial mass M_2_0_0 in Msun
+/// - `c200`: Concentration parameter c_2_0_0
 ///
 /// # Returns
-/// Radial velocity dispersion σ_r in km/s
+/// Radial velocity dispersion sigma_r in km/s
 pub fn nfw_velocity_dispersion(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     if r_kpc <= 0.0 || m200_solar <= 0.0 || c200 <= 0.0 {
         return 0.0;
     }
 
-    // Precompute r_s and rho_s once — reused for every GL quadrature node.
+    // Precompute r_s and rho_s once --- reused for every GL quadrature node.
     let r_200 = nfw_r200_kpc(m200_solar);
     let r_s = r_200 / c200;
     let rho_s = nfw_rho_s(c200);
@@ -555,7 +555,7 @@ pub fn nfw_velocity_dispersion(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
     let r_max = 10.0 * r_200;
 
     // Log substitution r' = r_kpc * exp(u), dr' = r' du:
-    //   ∫_r^{r_max} ρ(r') G M(r') / r'² dr' = ∫_0^{u_max} ρ(r') G M(r') / r' du
+    //   integral_r^{r_max} rho(r') G M(r') / r'^2 dr' = integral_0^{u_max} rho(r') G M(r') / r' du
     let u_max = (r_max / r_kpc).ln();
 
     let integral = gl_integrate(
@@ -563,7 +563,7 @@ pub fn nfw_velocity_dispersion(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
             let rp = r_kpc * u.exp();
             let rho_p = nfw_density_rs(rp, r_s, rho_s);
             let m_p = nfw_enclosed_mass_rs(rp, r_s, rho_s);
-            // Units: (km/s)² kpc M☉⁻¹ × M☉ × M☉ kpc⁻³ / kpc = (km/s)² M☉ kpc⁻³
+            // Units: (km/s)^2 kpc Msun^{-1} * Msun * Msun kpc^{-3} / kpc = (km/s)^2 Msun kpc^{-3}
             G_KPC_KM_S * m_p * rho_p / rp
         },
         0.0,
@@ -571,7 +571,7 @@ pub fn nfw_velocity_dispersion(r_kpc: f64, m200_solar: f64, c200: f64) -> f64 {
         100,
     );
 
-    // σ²_r = integral / ρ(r)  [(km/s)² M☉ kpc⁻³ / (M☉ kpc⁻³) = (km/s)²]
+    // sigma^2_r = integral / rho(r)  [(km/s)^2 Msun kpc^{-3} / (Msun kpc^{-3}) = (km/s)^2]
     (integral / rho_r).max(0.0).sqrt()
 }
 
@@ -598,7 +598,7 @@ mod tests {
 
     #[test]
     fn test_bbks_transfer_low_k_approaches_one() {
-        // T(q) → 1 as k → 0 (large scales, no suppression)
+        // T(q) -> 1 as k -> 0 (large scales, no suppression)
         let t = bbks_transfer(1e-6, 0.3);
         assert_relative_eq!(t, 1.0, max_relative = 0.01);
     }
@@ -621,7 +621,7 @@ mod tests {
 
     #[test]
     fn test_top_hat_window_continuity_at_transition() {
-        // Check continuity near the Taylor/exact boundary (x ≈ 1e-3)
+        // Check continuity near the Taylor/exact boundary (x ~ 1e-3)
         let w_taylor = top_hat_window(9e-4);
         let w_exact = top_hat_window(1.1e-3);
         assert_relative_eq!(w_taylor, w_exact, max_relative = 1e-4);
@@ -631,7 +631,7 @@ mod tests {
     fn test_top_hat_window_negative_input_is_finite() {
         // Negative x is not physically expected but the function must not diverge.
         let w = top_hat_window(-1e-4);
-        assert!(w.is_finite(), "W(−1e-4) must be finite");
+        assert!(w.is_finite(), "W(-1e-4) must be finite");
     }
 
     #[test]
@@ -647,7 +647,7 @@ mod tests {
 
     #[test]
     fn test_nfw_rho_s_tiny_c_returns_zero() {
-        // Very small c200 makes gc ≈ 0; nfw_rho_s must return 0.0 (no NaN/inf).
+        // Very small c200 makes gc ~ 0; nfw_rho_s must return 0.0 (no NaN/inf).
         let rho = nfw_density(1.0, 1e12, 1e-15);
         assert_eq!(rho, 0.0);
         let m = nfw_enclosed_mass(1.0, 1e12, 1e-15);
@@ -656,7 +656,7 @@ mod tests {
 
     #[test]
     fn test_sigma_mass_r8_normalization() {
-        // σ(M₈) must equal σ₈ where M₈ is the mass within R₈ = 8 Mpc
+        // sigma(M_8) must equal sigma_8 where M_8 is the mass within R_8 = 8 Mpc
         let rho_bar = OMEGA_M * RHO_CRIT_MPC;
         let m8 = (4.0 / 3.0) * std::f64::consts::PI * 8.0_f64.powi(3) * rho_bar;
         let s = sigma_mass(m8, OMEGA_M, SIGMA8, NS);
@@ -665,20 +665,20 @@ mod tests {
 
     #[test]
     fn test_sigma_mass_decreases_with_mass() {
-        // σ(M) is a decreasing function of M
+        // sigma(M) is a decreasing function of M
         let s1 = sigma_mass(1e8, OMEGA_M, SIGMA8, NS);
         let s2 = sigma_mass(1e10, OMEGA_M, SIGMA8, NS);
         let s3 = sigma_mass(1e12, OMEGA_M, SIGMA8, NS);
-        assert!(s1 > s2, "σ(10⁸) > σ(10¹⁰)");
-        assert!(s2 > s3, "σ(10¹⁰) > σ(10¹²)");
+        assert!(s1 > s2, "sigma(10^8) > sigma(10^1^0)");
+        assert!(s2 > s3, "sigma(10^1^0) > sigma(10^1^2)");
     }
 
     #[test]
     fn test_sigma_mass_udg_range_positive() {
-        // CDG-2 mass range (10⁸–10¹⁰ M☉) must give positive σ
+        // CDG-2 mass range (10^8--10^1^0 Msun) must give positive sigma
         let s = sigma_mass(1e9, OMEGA_M, SIGMA8, NS);
-        assert!(s > 0.0, "σ(10⁹ M☉) must be positive");
-        assert!(s.is_finite(), "σ(10⁹ M☉) must be finite");
+        assert!(s > 0.0, "sigma(10^9 Msun) must be positive");
+        assert!(s.is_finite(), "sigma(10^9 Msun) must be finite");
     }
 
     #[test]
@@ -703,7 +703,7 @@ mod tests {
     fn test_press_schechter_mass_function_positive() {
         let e_lcdm = |z: f64| hubble_e_lcdm(z, OMEGA_M);
         let dn_dm = press_schechter_mass_function(1e12, 0.0, OMEGA_M, SIGMA8, NS, &e_lcdm);
-        assert!(dn_dm > 0.0, "PS mass function must be positive at 10¹² M☉");
+        assert!(dn_dm > 0.0, "PS mass function must be positive at 10^1^2 Msun");
         assert!(dn_dm.is_finite(), "PS mass function must be finite");
     }
 
@@ -713,12 +713,12 @@ mod tests {
         let e_lcdm = |z: f64| hubble_e_lcdm(z, OMEGA_M);
         let dn11 = press_schechter_mass_function(1e11, 0.0, OMEGA_M, SIGMA8, NS, &e_lcdm);
         let dn13 = press_schechter_mass_function(1e13, 0.0, OMEGA_M, SIGMA8, NS, &e_lcdm);
-        assert!(dn11 > dn13, "PS: dn/dM(10¹¹) > dn/dM(10¹³)");
+        assert!(dn11 > dn13, "PS: dn/dM(10^1^1) > dn/dM(10^1^3)");
     }
 
     #[test]
     fn test_press_schechter_orthoplex_beta_zero_matches_lcdm() {
-        // With β = 0 the orthoplex model reduces to ΛCDM
+        // With beta = 0 the orthoplex model reduces to LambdaCDM
         let e_lcdm = |z: f64| hubble_e_lcdm(z, OMEGA_M);
         let dn_lcdm = press_schechter_mass_function(
             1e12, PERSEUS_Z, OMEGA_M, SIGMA8, NS, &e_lcdm,
@@ -730,7 +730,7 @@ mod tests {
 
     #[test]
     fn test_udg_abundance_ratio_beta_zero_near_unity() {
-        // β = 0 orthoplex = ΛCDM, so ratio ≈ 1
+        // beta = 0 orthoplex = LambdaCDM, so ratio ~ 1
         let ratio = udg_abundance_ratio(
             PERSEUS_Z, OMEGA_M, SIGMA8, NS, 1e8, 1e10, 3, 1.0, 0.0, 1.0,
         );
@@ -757,8 +757,8 @@ mod tests {
         let rho1 = nfw_density(1.0, 1e11, 10.0);
         let rho2 = nfw_density(10.0, 1e11, 10.0);
         let rho3 = nfw_density(100.0, 1e11, 10.0);
-        assert!(rho1 > rho2, "ρ_NFW(1 kpc) > ρ_NFW(10 kpc)");
-        assert!(rho2 > rho3, "ρ_NFW(10 kpc) > ρ_NFW(100 kpc)");
+        assert!(rho1 > rho2, "rho_NFW(1 kpc) > rho_NFW(10 kpc)");
+        assert!(rho2 > rho3, "rho_NFW(10 kpc) > rho_NFW(100 kpc)");
     }
 
     #[test]
@@ -779,7 +779,7 @@ mod tests {
 
     #[test]
     fn test_nfw_enclosed_mass_equals_m200_at_r200() {
-        // M(r₂₀₀) ≡ M₂₀₀ by construction
+        // M(r_2_0_0) = M_2_0_0 by construction
         let m200 = 1e11_f64;
         let c200 = 10.0_f64;
         let r200 = nfw_r200_kpc(m200);
@@ -790,16 +790,16 @@ mod tests {
     #[test]
     fn test_nfw_velocity_dispersion_positive_and_finite() {
         let sigma = nfw_velocity_dispersion(10.0, 1e11, 10.0);
-        assert!(sigma > 0.0, "σ_r must be positive");
-        assert!(sigma.is_finite(), "σ_r must be finite");
+        assert!(sigma > 0.0, "sigma_r must be positive");
+        assert!(sigma.is_finite(), "sigma_r must be finite");
     }
 
     #[test]
     fn test_nfw_velocity_dispersion_udg_scale() {
-        // UDG-scale halo (10¹⁰ M☉, c = 15): expect σ ~ 10–100 km/s
+        // UDG-scale halo (10^1^0 Msun, c = 15): expect sigma ~ 10--100 km/s
         let sigma = nfw_velocity_dispersion(5.0, 1e10, 15.0);
-        assert!(sigma > 1.0, "σ_r(UDG) > 1 km/s");
-        assert!(sigma < 500.0, "σ_r(UDG) < 500 km/s");
+        assert!(sigma > 1.0, "sigma_r(UDG) > 1 km/s");
+        assert!(sigma < 500.0, "sigma_r(UDG) < 500 km/s");
     }
 
     #[test]
