@@ -56,7 +56,7 @@ enum Commands {
         #[arg(long)]
         straggling: bool,
 
-        /// Straggling width coefficient κ (σ = κ · √ε̄); only used with --straggling.
+        /// Straggling width coefficient kappa (sigma = kappa * sqrtepsilon_bar); only used with --straggling.
         #[arg(long, default_value_t = DEFAULT_KAPPA)]
         kappa: f64,
     },
@@ -75,7 +75,7 @@ enum Commands {
         #[arg(long)]
         straggling: bool,
 
-        /// Straggling width coefficient κ (σ = κ · √ε̄); only used with --straggling.
+        /// Straggling width coefficient kappa (sigma = kappa * sqrtepsilon_bar); only used with --straggling.
         #[arg(long, default_value_t = DEFAULT_KAPPA)]
         kappa: f64,
     },

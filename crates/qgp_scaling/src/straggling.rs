@@ -1,52 +1,52 @@
 //! Quantum straggling: Gaussian-smeared R_AA for smooth low-pT behaviour.
 //!
-//! Real parton energy loss in the QGP is stochastic.  The actual energy loss ε
-//! fluctuates around the mean ε̄ with a Gaussian probability distribution
+//! Real parton energy loss in the QGP is stochastic.  The actual energy loss epsilon
+//! fluctuates around the mean epsilon_bar with a Gaussian probability distribution
 //! (quantum straggling / Landau-Pomeranchuk-Migdal fluctuations):
 //!
 //! ```text
-//! P(ε; ε̄, σ) = (1 / √(2π σ²)) · exp(−(ε − ε̄)² / (2σ²))
+//! P(epsilon; epsilon_bar, sigma) = (1 / sqrt(2pi sigma^2)) * exp(-(epsilon - epsilon_bar)^2 / (2sigma^2))
 //! ```
 //!
-//! where σ = κ · √ε̄  (BDMPS scaling: standard deviation grows as √(mean energy loss),
+//! where sigma = kappa * sqrtepsilon_bar  (BDMPS scaling: standard deviation grows as sqrt(mean energy loss),
 //! equivalently the variance grows linearly with the mean energy loss).
 //!
 //! The straggling-smeared R_AA is:
 //!
 //! ```text
-//! R_AA^smeared(pT, ε̄, n, σ) = ∫₀^pT  P(ε; ε̄, σ) · ((pT − ε) / pT)^{n−1}  dε
+//! R_AA^smeared(pT, epsilon_bar, n, sigma) = integral_0^pT  P(epsilon; epsilon_bar, sigma) * ((pT - epsilon) / pT)^{n-1}  depsilon
 //! ```
 //!
-//! This integral smooths out the sharp cutoff at pT = ε̄, making R_AA a
-//! smooth function of pT even near ε̄, and allowing fits to extend down to
+//! This integral smooths out the sharp cutoff at pT = epsilon_bar, making R_AA a
+//! smooth function of pT even near epsilon_bar, and allowing fits to extend down to
 //! pT ~ 1 GeV without stalling the Brent optimiser.
 //!
 //! # Performance strategy
 //!
 //! Computing the quadrature in the optimiser's inner loop is too expensive.
-//! [`StragglingGrid`] precomputes R_AA^smeared on a (pT, ε̄) grid **once**
+//! [`StragglingGrid`] precomputes R_AA^smeared on a (pT, epsilon_bar) grid **once**
 //! and then provides O(log N) bilinear interpolation at query time.
 
 use gauss_quad::GaussLegendre;
 
-/// Default BDMPS-inspired straggling width parameter κ.
+/// Default BDMPS-inspired straggling width parameter kappa.
 pub const DEFAULT_KAPPA: f64 = 0.5;
 
 /// Number of GL quadrature nodes used for production accuracy.
 const N_GL: usize = 32;
 
-/// Compute the straggling width σ = κ · √ε̄.
+/// Compute the straggling width sigma = kappa * sqrtepsilon_bar.
 ///
 /// This follows the BDMPS prediction that the standard deviation of the
 /// energy-loss distribution grows as the square root of the mean energy loss
 /// (equivalently, the variance grows linearly with the mean energy loss).
 ///
 /// # Arguments
-/// * `epsilon_bar` – mean energy loss ε̄ (GeV)
-/// * `kappa` – width coefficient κ (dimensionless); use [`DEFAULT_KAPPA`] = 0.5
+/// * `epsilon_bar` -- mean energy loss epsilon_bar (GeV)
+/// * `kappa` -- width coefficient kappa (dimensionless); use [`DEFAULT_KAPPA`] = 0.5
 ///
 /// # Returns
-/// σ (GeV).  Returns 0 for non-positive `epsilon_bar`.
+/// sigma (GeV).  Returns 0 for non-positive `epsilon_bar`.
 #[must_use]
 pub fn straggling_sigma(epsilon_bar: f64, kappa: f64) -> f64 {
     if epsilon_bar <= 0.0 {
@@ -58,10 +58,10 @@ pub fn straggling_sigma(epsilon_bar: f64, kappa: f64) -> f64 {
 /// Compute the Gaussian-convolved (straggling-smeared) R_AA.
 ///
 /// ```text
-/// R_AA^smeared(pT, ε̄, n, σ) = ∫_{ε_lo}^{ε_hi}  P(ε; ε̄, σ) · ((pT − ε) / pT)^{n−1}  dε
+/// R_AA^smeared(pT, epsilon_bar, n, sigma) = integral_{epsilon_lo}^{epsilon_hi}  P(epsilon; epsilon_bar, sigma) * ((pT - epsilon) / pT)^{n-1}  depsilon
 /// ```
 ///
-/// Integration domain is truncated to `[max(0, ε̄ − 5σ), min(pT, ε̄ + 5σ)]`.
+/// Integration domain is truncated to `[max(0, epsilon_bar - 5sigma), min(pT, epsilon_bar + 5sigma)]`.
 /// When `sigma <= 0` the result falls back to the sharp discrete model.
 ///
 /// Uses 32-point Gauss-Legendre quadrature.
@@ -74,10 +74,10 @@ pub fn straggling_sigma(epsilon_bar: f64, kappa: f64) -> f64 {
 /// bilinear interpolation.
 ///
 /// # Arguments
-/// * `pt`          – transverse momentum (GeV)
-/// * `epsilon_bar` – mean energy loss ε̄ (GeV)
-/// * `n`           – spectral index of the pp spectrum
-/// * `sigma`       – straggling width σ (GeV); pass 0 for the sharp limit
+/// * `pt`          -- transverse momentum (GeV)
+/// * `epsilon_bar` -- mean energy loss epsilon_bar (GeV)
+/// * `n`           -- spectral index of the pp spectrum
+/// * `sigma`       -- straggling width sigma (GeV); pass 0 for the sharp limit
 #[must_use]
 pub fn r_aa_straggling(pt: f64, epsilon_bar: f64, n: f64, sigma: f64) -> f64 {
     let gl = GaussLegendre::new(N_GL).expect("GL quadrature init");
@@ -99,7 +99,7 @@ fn r_aa_straggling_with_gl(
         return 0.0;
     }
 
-    // Degenerate limit: no straggling → sharp discrete model
+    // Degenerate limit: no straggling -> sharp discrete model
     if sigma <= 0.0 {
         return if pt > epsilon_bar {
             ((pt - epsilon_bar) / pt).powf(n - 1.0)
@@ -108,7 +108,7 @@ fn r_aa_straggling_with_gl(
         };
     }
 
-    // Integration domain: 5σ window around ε̄, physical lower bound at 0
+    // Integration domain: 5sigma window around epsilon_bar, physical lower bound at 0
     let eps_lo = (epsilon_bar - 5.0 * sigma).max(0.0);
     // Upper bound for the Gaussian support used for normalization (no pT clip);
     // the R_AA integral below clips this to min(pT, eps_hi_full)
@@ -118,9 +118,9 @@ fn r_aa_straggling_with_gl(
     let norm = (std::f64::consts::TAU * sigma * sigma).sqrt().recip();
 
     // Normalization: Gaussian mass over the physical domain [eps_lo, eps_hi_full].
-    // When ε̄ is small relative to σ, a non-negligible fraction of the untruncated
-    // Gaussian falls below ε = 0 (unphysical).  Re-normalising here ensures
-    // R_AA(pT → ∞) → 1 regardless of how much probability mass is clipped at 0.
+    // When epsilon_bar is small relative to sigma, a non-negligible fraction of the untruncated
+    // Gaussian falls below epsilon = 0 (unphysical).  Re-normalising here ensures
+    // R_AA(pT -> inf) -> 1 regardless of how much probability mass is clipped at 0.
     let gauss_mass = gl.integrate(eps_lo, eps_hi_full, |eps: f64| {
         let diff = eps - epsilon_bar;
         norm * (-(diff * diff) / two_sigma_sq).exp()
@@ -130,7 +130,7 @@ fn r_aa_straggling_with_gl(
         return 0.0;
     }
 
-    // If the entire Gaussian support is above pT, R_AA ≈ 0
+    // If the entire Gaussian support is above pT, R_AA ~ 0
     if eps_lo >= pt {
         return 0.0;
     }
@@ -166,37 +166,37 @@ fn r_aa_straggling_with_gl(
 ///
 /// # Grid layout
 /// - `pt_grid`: log-spaced pT nodes (better resolution at low pT)
-/// - `eps_grid`: linearly-spaced ε̄ nodes
+/// - `eps_grid`: linearly-spaced epsilon_bar nodes
 /// - `raa_values[i_pt][i_eps]`: precomputed R_AA^smeared value
 pub struct StragglingGrid {
     /// pT grid points (sorted ascending, log-spaced)
     pt_grid: Vec<f64>,
-    /// ε̄ grid points (sorted ascending, linear-spaced)
+    /// epsilon_bar grid points (sorted ascending, linear-spaced)
     eps_grid: Vec<f64>,
     /// Precomputed R_AA values: `raa_values[i_pt][i_eps]`
     raa_values: Vec<Vec<f64>>,
     /// Spectral index n (fixed for the grid)
     pub n_spectral: f64,
-    /// Straggling width parameter κ
+    /// Straggling width parameter kappa
     pub kappa: f64,
 }
 
 impl StragglingGrid {
-    /// Construct the grid by evaluating `r_aa_straggling` at every (pT_i, ε̄_j) node.
+    /// Construct the grid by evaluating `r_aa_straggling` at every (pT_i, epsilon_bar_j) node.
     ///
-    /// This is O(`n_pt` × `n_eps` × 32) GL evaluations — expensive but done once.
+    /// This is O(`n_pt` * `n_eps` * 32) GL evaluations --- expensive but done once.
     ///
     /// # Default parameters (suggested)
     /// - `pt_range  = (1.0, 100.0)`, `n_pt  = 200` (log-spaced)
     /// - `eps_range = (0.1,  30.0)`, `n_eps = 150` (linear-spaced)
     ///
     /// # Arguments
-    /// * `pt_range`    – `(pt_min, pt_max)` in GeV
-    /// * `n_pt`        – number of pT grid nodes
-    /// * `eps_range`   – `(eps_min, eps_max)` in GeV
-    /// * `n_eps`       – number of ε̄ grid nodes
-    /// * `n_spectral`  – spectral index n (same value used in every evaluation)
-    /// * `kappa`       – straggling width coefficient κ
+    /// * `pt_range`    -- `(pt_min, pt_max)` in GeV
+    /// * `n_pt`        -- number of pT grid nodes
+    /// * `eps_range`   -- `(eps_min, eps_max)` in GeV
+    /// * `n_eps`       -- number of epsilon_bar grid nodes
+    /// * `n_spectral`  -- spectral index n (same value used in every evaluation)
+    /// * `kappa`       -- straggling width coefficient kappa
     #[must_use]
     pub fn new(
         pt_range: (f64, f64),
@@ -229,7 +229,7 @@ impl StragglingGrid {
             })
             .collect();
 
-        // Linear-spaced ε̄ grid
+        // Linear-spaced epsilon_bar grid
         let eps_grid: Vec<f64> = (0..n_eps)
             .map(|j| {
                 let t = j as f64 / (n_eps - 1) as f64;
@@ -266,7 +266,7 @@ impl StragglingGrid {
     /// Returns the interpolated value for (`pt`, `epsilon_bar`).
     /// Values outside the grid are clamped to the nearest boundary.
     ///
-    /// This is O(log N) for the binary searches + O(1) for the interpolation —
+    /// This is O(log N) for the binary searches + O(1) for the interpolation ---
     /// far cheaper than a 32-point GL integration.
     #[must_use]
     pub fn lookup(&self, pt: f64, epsilon_bar: f64) -> f64 {
@@ -289,7 +289,7 @@ impl StragglingGrid {
 /// Binary-search helper: find the bracketing indices and interpolation weight
 /// for `x` in the sorted slice `grid`.
 ///
-/// Returns `(i_lo, i_hi, t)` where `t ∈ [0, 1]` and
+/// Returns `(i_lo, i_hi, t)` where `t in [0, 1]` and
 /// `grid[i_lo] * (1-t) + grid[i_hi] * t == x` (approximately).
 ///
 /// Clamps to the boundary when `x` is outside the grid.
@@ -327,12 +327,12 @@ mod tests {
 
     #[test]
     fn test_straggling_sigma_basic() {
-        // σ = κ · √ε̄
+        // sigma = kappa * sqrtepsilon_bar
         let sigma = straggling_sigma(4.0, 0.5);
-        assert!((sigma - 1.0).abs() < 1e-12, "σ = {sigma} (expected 1.0)");
+        assert!((sigma - 1.0).abs() < 1e-12, "sigma = {sigma} (expected 1.0)");
 
         let sigma2 = straggling_sigma(9.0, 1.0);
-        assert!((sigma2 - 3.0).abs() < 1e-12, "σ = {sigma2} (expected 3.0)");
+        assert!((sigma2 - 3.0).abs() < 1e-12, "sigma = {sigma2} (expected 3.0)");
     }
 
     #[test]
@@ -343,27 +343,27 @@ mod tests {
 
     #[test]
     fn test_r_aa_straggling_normalization_at_small_epsilon() {
-        // With ε̄ = 0.5 GeV and κ = 0.5, σ ≈ 0.354 GeV.
-        // The 5σ lower bound ≈ -1.27 < 0, so ~20% of the untruncated Gaussian
-        // lies below 0.  Without re-normalisation, R_AA(pT → ∞) ≈ 0.80.
-        // The corrected normalization should give R_AA ≈ 1 at pT >> ε̄.
+        // With epsilon_bar = 0.5 GeV and kappa = 0.5, sigma ~ 0.354 GeV.
+        // The 5sigma lower bound ~ -1.27 < 0, so ~20% of the untruncated Gaussian
+        // lies below 0.  Without re-normalisation, R_AA(pT -> inf) ~ 0.80.
+        // The corrected normalization should give R_AA ~ 1 at pT >> epsilon_bar.
         let eps = 0.5;
         let n = 6.0;
         let sigma = straggling_sigma(eps, DEFAULT_KAPPA);
-        let pt_large = 500.0; // far above ε̄
+        let pt_large = 500.0; // far above epsilon_bar
 
         let raa = r_aa_straggling(pt_large, eps, n, sigma);
         assert!(
             (raa - 1.0).abs() < 0.01,
-            "R_AA at pT >> ε̄ should be ~1 (normalization fix), got {raa}"
+            "R_AA at pT >> epsilon_bar should be ~1 (normalization fix), got {raa}"
         );
     }
 
     #[test]
     fn test_r_aa_straggling_large_pt_approaches_discrete() {
-        // At pT >> ε̄ (and σ small compared to pT), the Gaussian is fully
+        // At pT >> epsilon_bar (and sigma small compared to pT), the Gaussian is fully
         // within [0, pT] and the power-law factor is nearly constant over the
-        // smearing window, so R_AA^smeared ≈ R_AA^discrete.
+        // smearing window, so R_AA^smeared ~ R_AA^discrete.
         let eps = 3.0;
         let n = 6.0;
         let sigma = straggling_sigma(eps, 0.1); // very narrow smearing
@@ -381,29 +381,29 @@ mod tests {
 
     #[test]
     fn test_r_aa_straggling_smooth_near_epsilon() {
-        // The smeared R_AA should be non-zero and smoothly nonzero just below ε̄,
+        // The smeared R_AA should be non-zero and smoothly nonzero just below epsilon_bar,
         // unlike the sharp discrete model which is exactly zero.
         let eps = 5.0;
         let n = 6.0;
         let sigma = straggling_sigma(eps, 0.5); // DEFAULT_KAPPA
 
-        // Discrete model is 0 at pT = ε̄
+        // Discrete model is 0 at pT = epsilon_bar
         assert_eq!(r_aa_model(eps, eps, n), 0.0);
 
-        // Smeared model should be > 0 at pT = ε̄ (some of the Gaussian weight
-        // has ε < pT, contributing to the integral)
+        // Smeared model should be > 0 at pT = epsilon_bar (some of the Gaussian weight
+        // has epsilon < pT, contributing to the integral)
         let smeared_at_eps = r_aa_straggling(eps, eps, n, sigma);
         assert!(
             smeared_at_eps > 0.0,
-            "smeared R_AA at pT = ε̄ should be > 0, got {smeared_at_eps}"
+            "smeared R_AA at pT = epsilon_bar should be > 0, got {smeared_at_eps}"
         );
 
-        // And it should also be > 0 just below ε̄
+        // And it should also be > 0 just below epsilon_bar
         let pt_below = eps * 0.8;
         let smeared_below = r_aa_straggling(pt_below, eps, n, sigma);
         assert!(
             smeared_below > 0.0,
-            "smeared R_AA below ε̄ should be > 0, got {smeared_below}"
+            "smeared R_AA below epsilon_bar should be > 0, got {smeared_below}"
         );
     }
 
@@ -423,7 +423,7 @@ mod tests {
 
     #[test]
     fn test_r_aa_straggling_monotone_in_pt() {
-        // R_AA^smeared should be non-decreasing in pT for fixed ε̄
+        // R_AA^smeared should be non-decreasing in pT for fixed epsilon_bar
         let eps = 3.0;
         let n = 6.0;
         let sigma = straggling_sigma(eps, DEFAULT_KAPPA);
