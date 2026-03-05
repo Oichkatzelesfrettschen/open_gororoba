@@ -276,6 +276,16 @@ path = "src/bin/adm_decompose.rs"
 name = "algebraic-warp-sweep"
 path = "src/bin/algebraic_warp_sweep.rs"
 
+# ---- GPU Falsification (2) ----
+
+[[bin]]
+name = "clustering-256"
+path = "src/bin/clustering_256.rs"
+
+[[bin]]
+name = "dark-halo-hunt"
+path = "src/bin/dark_halo_hunt.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 casimir_core = { path = "../casimir_core" }

@@ -42,6 +42,7 @@ use crate::{
         CMB_SHIFT_R_ERR, CMB_SHIFT_R_OBS, CcMeasurement, FsigMeasurement, RealBaoData, RealSnData,
         SIGMA8_PLANCK, compute_growth_batch,
     },
+    optimizer::{NelderMeadConfig, bounded_nelder_mead},
 };
 use rayon::prelude::*;
 
@@ -379,9 +380,11 @@ impl ComovingGrid {
 
 /// Chi-square for Pantheon+ SN data with orthoplex dark energy model.
 ///
-/// Uses grid-interpolated comoving distance (200-point grid, cumulative GL
-/// quadrature) and rayon parallelism over the 1578 SN residuals.
-/// Analytic M_B marginalization (Conley+ 2011).
+/// When `sn.precision` is `Some`, uses the full covariance precision matrix:
+///   chi2 = delta^T P delta - (1^T P delta)^2 / (1^T P 1)
+/// Otherwise falls back to diagonal:
+///   chi2 = sum (delta_i / sigma_i)^2 - [sum(delta_i/sigma_i^2)]^2 / [sum(1/sigma_i^2)]
+/// Both include analytic M_B marginalization (Conley+ 2011).
 pub fn chi2_sn_orthoplex(
     omega_m: f64,
     h0: f64,
@@ -398,27 +401,47 @@ pub fn chi2_sn_orthoplex(
     let z_max = sn.z.iter().cloned().fold(0.0_f64, f64::max);
     let grid = ComovingGrid::build(z_max * 1.01, 200, omega_m, h0, k, alpha, beta, t_0);
 
-    // Parallel reduction over SN data: compute (a_sum, b_sum, c_sum)
-    let (a_sum, b_sum, c_sum) = (0..sn.z.len())
+    // Compute residuals (mu_obs - mu_model) for all SNe
+    let n = sn.z.len();
+    let residuals: Vec<f64> = (0..n)
         .into_par_iter()
         .map(|i| {
             let zi = sn.z[i];
             let dc = grid.interp_dc(zi);
-            let d_l = dc * (1.0 + zi);  // luminosity distance in Mpc
+            let d_l = dc * (1.0 + zi);
             let d_l_pc = d_l * 1e6;
             let mu_model = 5.0 * (d_l_pc.max(1e-30) / 10.0).log10();
-
-            let residual = sn.mu[i] - mu_model;
-            let inv_var = 1.0 / (sn.mu_err[i] * sn.mu_err[i]);
-
-            (residual * residual * inv_var, residual * inv_var, inv_var)
+            sn.mu[i] - mu_model
         })
-        .reduce(
-            || (0.0, 0.0, 0.0),
-            |(a1, b1, c1), (a2, b2, c2)| (a1 + a2, b1 + b2, c1 + c2),
-        );
+        .collect();
 
-    a_sum - b_sum * b_sum / c_sum
+    if let Some(ref prec) = sn.precision {
+        // Full covariance: chi2_marg = A - B^2/C
+        // A = delta^T * P * delta
+        // B = 1^T * P * delta
+        // C = 1^T * P * 1
+        let delta = nalgebra::DVector::from_column_slice(&residuals);
+        let p_delta = prec * &delta;
+        let a = delta.dot(&p_delta);
+        let b: f64 = p_delta.iter().sum();
+        let c: f64 = prec.row_iter().map(|row| row.iter().sum::<f64>()).sum();
+        if c.abs() < 1e-30 {
+            return 1e10;
+        }
+        a - b * b / c
+    } else {
+        // Diagonal fallback: original implementation
+        let mut a_sum = 0.0;
+        let mut b_sum = 0.0;
+        let mut c_sum = 0.0;
+        for (i, &r) in residuals.iter().enumerate().take(n) {
+            let inv_var = 1.0 / (sn.mu_err[i] * sn.mu_err[i]);
+            a_sum += r * r * inv_var;
+            b_sum += r * inv_var;
+            c_sum += inv_var;
+        }
+        a_sum - b_sum * b_sum / c_sum
+    }
 }
 
 /// Chi-square for real BAO data with orthoplex dark energy model.
@@ -618,11 +641,6 @@ pub fn fit_orthoplex_model(
         (1e-5, 10.0),  // t_0    (uncaged from 0.01)
     ];
 
-    // Combined objective: builds ONE shared grid per step for both SN + BAO.
-    let z_max_sn = sn.z.iter().cloned().fold(0.0_f64, f64::max);
-    let z_max_bao = bao.z_eff.iter().cloned().fold(0.0_f64, f64::max);
-    let z_max = z_max_sn.max(z_max_bao) * 1.01;
-
     let obj = |p: &[f64]| {
         let omega_m = p[0];
         let h0 = p[1];
@@ -630,70 +648,8 @@ pub fn fit_orthoplex_model(
         let beta = p[3];
         let t_0 = p[4];
 
-        if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) {
-            return 1e10;
-        }
-
-        let grid = ComovingGrid::build(z_max, 200, omega_m, h0, k, alpha, beta, t_0);
-
-        // SN chi2 with analytic M_B marginalization (parallel)
-        let (a_sum, b_sum, c_sum) = (0..sn.z.len())
-            .into_par_iter()
-            .map(|i| {
-                let zi = sn.z[i];
-                let dc = grid.interp_dc(zi);
-                let d_l = dc * (1.0 + zi);
-                let d_l_pc = d_l * 1e6;
-                let mu_model = 5.0 * (d_l_pc.max(1e-30) / 10.0).log10();
-                let residual = sn.mu[i] - mu_model;
-                let inv_var = 1.0 / (sn.mu_err[i] * sn.mu_err[i]);
-                (residual * residual * inv_var, residual * inv_var, inv_var)
-            })
-            .reduce(
-                || (0.0, 0.0, 0.0),
-                |(a1, b1, c1), (a2, b2, c2)| (a1 + a2, b1 + b2, c1 + c2),
-            );
-        let chi2_sn = a_sum - b_sum * b_sum / c_sum;
-
-        // BAO chi2 (7 bins, sequential is fine)
-        let r_d = bao_sound_horizon(omega_m, h0);
-        let mut chi2_bao = 0.0;
-        for i in 0..bao.z_eff.len() {
-            let zi = bao.z_eff[i];
-            let d_c = grid.interp_dc(zi);
-            let e_val = grid.interp_e(zi);
-            let d_h = C_KM_S / (h0 * e_val);
-
-            if bao.is_isotropic[i] {
-                let dv_model = (zi * d_c * d_c * d_h).powf(1.0 / 3.0) / r_d;
-                let sigma = bao.dm_over_rd_err[i];
-                if sigma > 0.0 {
-                    let residual = (bao.dm_over_rd[i] - dv_model) / sigma;
-                    chi2_bao += residual * residual;
-                }
-            } else {
-                let dm_model = d_c / r_d;
-                let dh_model = d_h / r_d;
-                let delta_dm = bao.dm_over_rd[i] - dm_model;
-                let delta_dh = bao.dh_over_rd[i] - dh_model;
-                let s_dm = bao.dm_over_rd_err[i];
-                let s_dh = bao.dh_over_rd_err[i];
-                let rho_i = bao.rho[i];
-                let var_dm = s_dm * s_dm;
-                let var_dh = s_dh * s_dh;
-                let cov = rho_i * s_dm * s_dh;
-                let det = var_dm * var_dh - cov * cov;
-                if det.abs() < 1e-30 {
-                    continue;
-                }
-                let inv_det = 1.0 / det;
-                chi2_bao += inv_det
-                    * (var_dh * delta_dm * delta_dm
-                        - 2.0 * cov * delta_dm * delta_dh
-                        + var_dm * delta_dh * delta_dh);
-            }
-        }
-
+        let chi2_sn = chi2_sn_orthoplex(omega_m, h0, k, alpha, beta, t_0, sn);
+        let chi2_bao = chi2_bao_orthoplex(omega_m, h0, k, alpha, beta, t_0, bao);
         let chi2_cmb = chi2_cmb_shift_orthoplex(omega_m, k, alpha, beta, t_0);
         let chi2_cc_val = chi2_cc_orthoplex(omega_m, h0, k, alpha, beta, t_0, cc);
 
@@ -716,12 +672,13 @@ pub fn fit_orthoplex_model(
         vec![0.3,  70.0, 15.0, 0.08,  5e-4 ],  // high-alpha sharp-onset
     ];
 
-    let obj_ref = &obj;
-    let (best, _global_chi2) = initial_guesses
-        .into_par_iter()
-        .map(|x0| bounded_nelder_mead(|p| obj_ref(p), &x0, &bounds, 2_000, 1e-4))
-        .min_by(|a, b| a.1.partial_cmp(&b.1).unwrap())
-        .unwrap();
+    let nm_config = NelderMeadConfig {
+        bounds: bounds.to_vec(),
+        max_iter: 2_000,
+        tol: 1e-4,
+        ..Default::default()
+    };
+    let (best, _global_chi2) = bounded_nelder_mead(obj, &initial_guesses, &nm_config);
 
     let omega_m = best[0];
     let h0 = best[1];
@@ -817,78 +774,14 @@ pub fn fit_orthoplex_model_fixed_beta(
         (1e-5, 10.0),  // t_0
     ];
 
-    let z_max_sn = sn.z.iter().cloned().fold(0.0_f64, f64::max);
-    let z_max_bao = bao.z_eff.iter().cloned().fold(0.0_f64, f64::max);
-    let z_max = z_max_sn.max(z_max_bao) * 1.01;
-
     let obj = |p: &[f64]| {
         let omega_m = p[0];
         let h0 = p[1];
         let alpha = p[2];
         let t_0 = p[3];
 
-        if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) {
-            return 1e10;
-        }
-
-        let grid = ComovingGrid::build(z_max, 200, omega_m, h0, k, alpha, beta, t_0);
-
-        let (a_sum, b_sum, c_sum) = (0..sn.z.len())
-            .into_par_iter()
-            .map(|i| {
-                let zi = sn.z[i];
-                let dc = grid.interp_dc(zi);
-                let d_l = dc * (1.0 + zi);
-                let d_l_pc = d_l * 1e6;
-                let mu_model = 5.0 * (d_l_pc.max(1e-30) / 10.0).log10();
-                let residual = sn.mu[i] - mu_model;
-                let inv_var = 1.0 / (sn.mu_err[i] * sn.mu_err[i]);
-                (residual * residual * inv_var, residual * inv_var, inv_var)
-            })
-            .reduce(
-                || (0.0, 0.0, 0.0),
-                |(a1, b1, c1), (a2, b2, c2)| (a1 + a2, b1 + b2, c1 + c2),
-            );
-        let chi2_sn = a_sum - b_sum * b_sum / c_sum;
-
-        let r_d = bao_sound_horizon(omega_m, h0);
-        let mut chi2_bao = 0.0;
-        for i in 0..bao.z_eff.len() {
-            let zi = bao.z_eff[i];
-            let d_c = grid.interp_dc(zi);
-            let e_val = grid.interp_e(zi);
-            let d_h = C_KM_S / (h0 * e_val);
-
-            if bao.is_isotropic[i] {
-                let dv_model = (zi * d_c * d_c * d_h).powf(1.0 / 3.0) / r_d;
-                let sigma = bao.dm_over_rd_err[i];
-                if sigma > 0.0 {
-                    let residual = (bao.dm_over_rd[i] - dv_model) / sigma;
-                    chi2_bao += residual * residual;
-                }
-            } else {
-                let dm_model = d_c / r_d;
-                let dh_model = d_h / r_d;
-                let delta_dm = bao.dm_over_rd[i] - dm_model;
-                let delta_dh = bao.dh_over_rd[i] - dh_model;
-                let s_dm = bao.dm_over_rd_err[i];
-                let s_dh = bao.dh_over_rd_err[i];
-                let rho_i = bao.rho[i];
-                let var_dm = s_dm * s_dm;
-                let var_dh = s_dh * s_dh;
-                let cov = rho_i * s_dm * s_dh;
-                let det = var_dm * var_dh - cov * cov;
-                if det.abs() < 1e-30 {
-                    continue;
-                }
-                let inv_det = 1.0 / det;
-                chi2_bao += inv_det
-                    * (var_dh * delta_dm * delta_dm
-                        - 2.0 * cov * delta_dm * delta_dh
-                        + var_dm * delta_dh * delta_dh);
-            }
-        }
-
+        let chi2_sn = chi2_sn_orthoplex(omega_m, h0, k, alpha, beta, t_0, sn);
+        let chi2_bao = chi2_bao_orthoplex(omega_m, h0, k, alpha, beta, t_0, bao);
         let chi2_cmb = chi2_cmb_shift_orthoplex(omega_m, k, alpha, beta, t_0);
         let chi2_cc_val = chi2_cc_orthoplex(omega_m, h0, k, alpha, beta, t_0, cc);
 
@@ -911,12 +804,13 @@ pub fn fit_orthoplex_model_fixed_beta(
         vec![0.3,  70.0, 15.0,  5e-4 ],
     ];
 
-    let obj_ref = &obj;
-    let (global_best, _global_chi2) = initial_guesses
-        .into_par_iter()
-        .map(|x0| bounded_nelder_mead(|p| obj_ref(p), &x0, &bounds, 2_000, 1e-4))
-        .min_by(|a, b| a.1.partial_cmp(&b.1).unwrap())
-        .unwrap();
+    let nm_config = NelderMeadConfig {
+        bounds: bounds.to_vec(),
+        max_iter: 2_000,
+        tol: 1e-4,
+        ..Default::default()
+    };
+    let (global_best, _global_chi2) = bounded_nelder_mead(obj, &initial_guesses, &nm_config);
 
     let omega_m = global_best[0];
     let h0 = global_best[1];
@@ -1039,110 +933,138 @@ pub fn w_of_z_table(
 }
 
 // ---------------------------------------------------------------------------
-// Bounded Nelder-Mead optimizer
+// Profile likelihood for alpha
 // ---------------------------------------------------------------------------
 
-/// Bounded Nelder-Mead optimizer for cosmological parameter fitting.
-fn bounded_nelder_mead<F: Fn(&[f64]) -> f64>(
-    f: F,
-    x0: &[f64],
-    bounds: &[(f64, f64)],
-    max_iter: usize,
-    tol: f64,
-) -> (Vec<f64>, f64) {
-    let n = x0.len();
+/// Profile likelihood scan over alpha.
+///
+/// For each alpha in `alpha_grid`, fix alpha and optimize the remaining
+/// parameters (omega_m, h0, t_0, optionally beta) via bounded Nelder-Mead.
+/// Returns Vec<(alpha, chi2_min, omega_m, h0, t_0)>.
+pub fn profile_likelihood_alpha(
+    sn: &RealSnData,
+    bao: &RealBaoData,
+    cc: &[CcMeasurement],
+    fsig: &[FsigMeasurement],
+    k: usize,
+    alpha_grid: &[f64],
+    fixed_beta: bool,
+) -> Vec<(f64, f64, f64, f64, f64)> {
+    let beta_val = if fixed_beta { 1.0 } else { 0.0 };
 
-    let project = |x: &[f64]| -> Vec<f64> {
-        x.iter()
-            .zip(bounds.iter())
-            .map(|(&xi, &(lo, hi))| xi.clamp(lo, hi))
-            .collect()
-    };
+    alpha_grid
+        .par_iter()
+        .map(|&alpha_fixed| {
+            if fixed_beta {
+                // 3-param optimization: omega_m, h0, t_0
+                let obj = |p: &[f64]| {
+                    let omega_m = p[0];
+                    let h0 = p[1];
+                    let t_0 = p[2];
+                    chi2_sn_orthoplex(omega_m, h0, k, alpha_fixed, beta_val, t_0, sn)
+                        + chi2_bao_orthoplex(omega_m, h0, k, alpha_fixed, beta_val, t_0, bao)
+                        + chi2_cmb_shift_orthoplex(omega_m, k, alpha_fixed, beta_val, t_0)
+                        + chi2_cc_orthoplex(omega_m, h0, k, alpha_fixed, beta_val, t_0, cc)
+                };
 
-    let mut simplex: Vec<Vec<f64>> = Vec::with_capacity(n + 1);
-    simplex.push(project(x0));
-    for i in 0..n {
-        let mut v = x0.to_vec();
-        let range = bounds[i].1 - bounds[i].0;
-        v[i] += range * 0.05;
-        simplex.push(project(&v));
-    }
-
-    let mut fvals: Vec<f64> = simplex.iter().map(|v| f(v)).collect();
-
-    let nm_alpha = 1.0;
-    let nm_gamma = 2.0;
-    let nm_rho = 0.5;
-    let nm_sigma = 0.5;
-
-    for _ in 0..max_iter {
-        let mut order: Vec<usize> = (0..=n).collect();
-        order.sort_by(|&a, &b| fvals[a].partial_cmp(&fvals[b]).unwrap());
-        let sorted_simplex: Vec<Vec<f64>> = order.iter().map(|&i| simplex[i].clone()).collect();
-        let sorted_fvals: Vec<f64> = order.iter().map(|&i| fvals[i]).collect();
-        simplex = sorted_simplex;
-        fvals = sorted_fvals;
-
-        let f_range = fvals[n] - fvals[0];
-        if f_range < tol {
-            break;
-        }
-
-        let centroid: Vec<f64> = (0..n)
-            .map(|j| simplex[..n].iter().map(|v| v[j]).sum::<f64>() / n as f64)
-            .collect();
-
-        let xr: Vec<f64> = (0..n)
-            .map(|j| centroid[j] + nm_alpha * (centroid[j] - simplex[n][j]))
-            .collect();
-        let xr = project(&xr);
-        let fr = f(&xr);
-
-        if fr < fvals[0] {
-            let xe: Vec<f64> = (0..n)
-                .map(|j| centroid[j] + nm_gamma * (xr[j] - centroid[j]))
-                .collect();
-            let xe = project(&xe);
-            let fe = f(&xe);
-            if fe < fr {
-                simplex[n] = xe;
-                fvals[n] = fe;
+                let nm_config = NelderMeadConfig {
+                    bounds: vec![(0.1, 0.5), (60.0, 80.0), (1e-5, 10.0)],
+                    max_iter: 2_000,
+                    tol: 1e-4,
+                    ..Default::default()
+                };
+                let guesses = vec![
+                    vec![0.3, 70.0, 0.01],
+                    vec![0.28, 68.0, 0.5],
+                    vec![0.32, 72.0, 0.001],
+                ];
+                let (best, _) = bounded_nelder_mead(obj, &guesses, &nm_config);
+                let omega_m = best[0];
+                let h0 = best[1];
+                let t_0 = best[2];
+                let chi2 = chi2_sn_orthoplex(omega_m, h0, k, alpha_fixed, beta_val, t_0, sn)
+                    + chi2_bao_orthoplex(omega_m, h0, k, alpha_fixed, beta_val, t_0, bao)
+                    + chi2_cmb_shift_orthoplex(omega_m, k, alpha_fixed, beta_val, t_0)
+                    + chi2_cc_orthoplex(omega_m, h0, k, alpha_fixed, beta_val, t_0, cc)
+                    + chi2_fsig8_orthoplex(omega_m, k, alpha_fixed, beta_val, t_0, fsig);
+                (alpha_fixed, chi2, omega_m, h0, t_0)
             } else {
-                simplex[n] = xr;
-                fvals[n] = fr;
-            }
-        } else if fr < fvals[n - 1] {
-            simplex[n] = xr;
-            fvals[n] = fr;
-        } else {
-            let xc: Vec<f64> = (0..n)
-                .map(|j| centroid[j] + nm_rho * (simplex[n][j] - centroid[j]))
-                .collect();
-            let xc = project(&xc);
-            let fc = f(&xc);
-            if fc < fvals[n] {
-                simplex[n] = xc;
-                fvals[n] = fc;
-            } else {
-                let best = simplex[0].clone();
-                for i in 1..=n {
-                    for (sij, &bj) in simplex[i].iter_mut().zip(best.iter()) {
-                        *sij = bj + nm_sigma * (*sij - bj);
-                    }
-                    simplex[i] = project(&simplex[i]);
-                    fvals[i] = f(&simplex[i]);
-                }
-            }
-        }
-    }
+                // 4-param optimization: omega_m, h0, beta, t_0
+                let obj = |p: &[f64]| {
+                    let omega_m = p[0];
+                    let h0 = p[1];
+                    let beta = p[2];
+                    let t_0 = p[3];
+                    chi2_sn_orthoplex(omega_m, h0, k, alpha_fixed, beta, t_0, sn)
+                        + chi2_bao_orthoplex(omega_m, h0, k, alpha_fixed, beta, t_0, bao)
+                        + chi2_cmb_shift_orthoplex(omega_m, k, alpha_fixed, beta, t_0)
+                        + chi2_cc_orthoplex(omega_m, h0, k, alpha_fixed, beta, t_0, cc)
+                };
 
-    let best_idx = fvals
-        .iter()
-        .enumerate()
-        .min_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
-        .unwrap()
-        .0;
-    (simplex[best_idx].clone(), fvals[best_idx])
+                let nm_config = NelderMeadConfig {
+                    bounds: vec![(0.1, 0.5), (60.0, 80.0), (-0.5, 1.0), (1e-5, 10.0)],
+                    max_iter: 2_000,
+                    tol: 1e-4,
+                    ..Default::default()
+                };
+                let guesses = vec![
+                    vec![0.3, 70.0, 0.05, 0.01],
+                    vec![0.28, 68.0, 0.1, 0.5],
+                    vec![0.32, 72.0, 0.0, 0.001],
+                ];
+                let (best, _) = bounded_nelder_mead(obj, &guesses, &nm_config);
+                let omega_m = best[0];
+                let h0 = best[1];
+                let beta = best[2];
+                let t_0 = best[3];
+                let chi2 = chi2_sn_orthoplex(omega_m, h0, k, alpha_fixed, beta, t_0, sn)
+                    + chi2_bao_orthoplex(omega_m, h0, k, alpha_fixed, beta, t_0, bao)
+                    + chi2_cmb_shift_orthoplex(omega_m, k, alpha_fixed, beta, t_0)
+                    + chi2_cc_orthoplex(omega_m, h0, k, alpha_fixed, beta, t_0, cc)
+                    + chi2_fsig8_orthoplex(omega_m, k, alpha_fixed, beta, t_0, fsig);
+                (alpha_fixed, chi2, omega_m, h0, t_0)
+            }
+        })
+        .collect()
+}
+
+// ---------------------------------------------------------------------------
+// CDG-2 ultra-diffuse galaxy chi-square constraint
+// ---------------------------------------------------------------------------
+
+/// Chi-square for CDG-2 UDG abundance ratio constraint.
+///
+/// Uses Press-Schechter mass function to compute the ratio of UDG abundance
+/// in orthoplex vs Lambda-CDM at the Perseus cluster redshift. The chi2 term
+/// penalizes models where the ratio deviates from 1 (weak Gaussian prior).
+#[allow(clippy::too_many_arguments)]
+pub fn chi2_udg_orthoplex(
+    omega_m: f64,
+    k: usize,
+    alpha: f64,
+    beta: f64,
+    t_0: f64,
+    sigma8: f64,
+    ns: f64,
+) -> f64 {
+    let ratio = crate::halo::udg_abundance_ratio(
+        crate::halo::PERSEUS_Z,
+        omega_m,
+        sigma8,
+        ns,
+        1e8,  // m_lo: 10^8 Msun
+        1e10, // m_hi: 10^10 Msun
+        k,
+        alpha,
+        beta,
+        t_0,
+    );
+
+    // Weak prior: ratio should be >= 1 for orthoplex model
+    // sigma_ratio = 0.5 (generous uncertainty)
+    let sigma_ratio = 0.5;
+    let residual = (ratio - 1.0) / sigma_ratio;
+    residual * residual
 }
 
 // ---------------------------------------------------------------------------

@@ -61,6 +61,10 @@ pub struct NacelleWarpParams {
     pub axial_l: f64,
     /// Axial taper steepness.
     pub sigma_x: f64,
+
+    /// Cayley-Dickson alternativity violation ratio (0 for dims <= 8, ~0.5 for sedenions).
+    /// Used to directly modulate the nacelle radial envelope.
+    pub cd_alternativity_ratio: f64,
 }
 
 impl Default for NacelleWarpParams {
@@ -77,6 +81,7 @@ impl Default for NacelleWarpParams {
             delta_gating: 0.5,
             axial_l: 8.0,
             sigma_x: 1.0,
+            cd_alternativity_ratio: 0.5, // Default to sedenion breakdown
         }
     }
 }
@@ -91,6 +96,7 @@ impl NacelleWarpParams {
             n_nacelles: 0,
             axial_l: r_bubble * 2.0,
             sigma_x: sigma,
+            cd_alternativity_ratio: 0.0,
             ..Default::default()
         }
     }
@@ -109,6 +115,7 @@ impl NacelleWarpParams {
             delta_gating: 0.5,
             axial_l: 8.0,
             sigma_x: 1.0,
+            cd_alternativity_ratio: 0.5,
         }
     }
 }
@@ -147,9 +154,21 @@ pub fn alcubierre_shape_derivative(r_s: f64, r_bubble: f64, sigma: f64) -> f64 {
 ///
 /// Gaussian centered at rho_0 with width sigma_rho:
 /// F(rho) = exp(-(rho - rho_0)^2 / (2 * sigma_rho^2))
-pub fn nacelle_radial_envelope(rho: f64, rho_0: f64, sigma_rho: f64) -> f64 {
+///
+/// The effective width is directly modulated by the algebraic alternativity ratio.
+/// If alternativity holds (ratio = 0), the envelope diffuses (sigma -> infinity),
+/// destroying localization. At the Sedenion limit (ratio ~ 0.5), it localizes into the nacelle.
+pub fn nacelle_radial_envelope(rho: f64, rho_0: f64, sigma_rho: f64, cd_ratio: f64) -> f64 {
+    // If algebra is alternative, it cannot localize stress-energy into distinct nacelles.
+    let eff_sigma = if cd_ratio < 1e-5 {
+        1e6 // effectively infinite width
+    } else {
+        // Sedenion ratio ~ 0.5 gives the base sigma_rho.
+        sigma_rho * (0.5 / cd_ratio)
+    };
+
     let dr = rho - rho_0;
-    (-dr * dr / (2.0 * sigma_rho * sigma_rho)).exp()
+    (-dr * dr / (2.0 * eff_sigma * eff_sigma)).exp()
 }
 
 /// Interior-flat gating function W_g(rho).
@@ -171,14 +190,15 @@ pub fn gating_function(rho: f64, rho_0: f64, kappa: f64, delta: f64) -> f64 {
 /// G_n = C_n * F(rho) * sum_{k=0}^{n-1} exp(-(phi - phi_k)^2 / (2*sigma_phi^2))
 ///
 /// where sigma_phi = pi/n (each nacelle subtends ~2*pi/n).
-pub fn nacelle_array(rho: f64, phi: f64, n: usize, rho_0: f64, sigma_rho: f64) -> f64 {
+pub fn nacelle_array(rho: f64, phi: f64, params: &NacelleWarpParams) -> f64 {
+    let n = params.n_nacelles;
     if n == 0 {
         return 1.0; // No nacelles: uniform modulation = Alcubierre limit
     }
 
     let n_f = n as f64;
     let sigma_phi = PI / n_f;
-    let f_rho = nacelle_radial_envelope(rho, rho_0, sigma_rho);
+    let f_rho = nacelle_radial_envelope(rho, params.rho_0, params.sigma_rho, params.cd_alternativity_ratio);
 
     let mut sum = 0.0;
     for k in 0..n {
@@ -225,7 +245,7 @@ pub fn modulation(rho: f64, phi: f64, params: &NacelleWarpParams) -> f64 {
         return 1.0; // Alcubierre: no modulation
     }
     let wg = gating_function(rho, params.rho_0, params.kappa, params.delta_gating);
-    let gn = nacelle_array(rho, phi, params.n_nacelles, params.rho_0, params.sigma_rho);
+    let gn = nacelle_array(rho, phi, params);
     1.0 - wg + wg * gn
 }
 

@@ -9,5 +9,8 @@ metrics/
 .Makefile.coq.d
 Makefile.coq
 Makefile.coq.conf
+.Makefile.rocq.d
+Makefile.rocq
+Makefile.rocq.conf
 extraction/*.vo
 extraction/*.glob

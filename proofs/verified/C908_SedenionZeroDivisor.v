@@ -30,14 +30,9 @@ Qed.
 Theorem C908_sedenion_zero_divisor :
   sed_mul sed_zd_a sed_zd_b = sed_zero.
 Proof.
-  unfold sed_zd_a, sed_zd_b, sed_mul, oct_mul, oct_conj,
-         quat_mul, quat_add, quat_neg, quat_conj,
-         oct_zero, quat_zero, quat_one, sed_zero.
-  (* simpl reduces to mkSed(mkOct,mkOct) form but re-folds oct_zero/quat_zero;
-     unfold them again so f_equal can decompose all 4 constructor layers. *)
-  simpl. unfold oct_zero, quat_zero.
-  f_equal;       (* mkSed: 2 CDOct goals *)
-    f_equal;     (* mkOct: 4 CDQuat goals *)
-      f_equal;   (* mkQuat: 16 R goals *)
-        ring.    (* each 0*0-0*1+... = 0 *)
+  cbv [sed_zd_a sed_zd_b sed_mul oct_mul oct_conj
+       quat_mul quat_add quat_neg quat_conj
+       oct_zero quat_zero quat_one sed_zero
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  f_equal; f_equal; f_equal; abstract ring.
 Qed.

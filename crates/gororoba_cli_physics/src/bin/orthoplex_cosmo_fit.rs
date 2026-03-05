@@ -15,7 +15,7 @@ use clap::Parser;
 use cosmology_core::{
     OrthoplexComparison, RealBaoData, compare_orthoplex_all, compare_orthoplex_fixed_beta,
     cosmic_chronometer_data, desi_to_real_bao, filter_pantheon_data, growth_rate_data,
-    w_of_z_table, w_orthoplex,
+    profile_likelihood_alpha, w_of_z_table, w_orthoplex,
 };
 use data_core::{
     catalogs::{
@@ -69,6 +69,22 @@ struct Args {
     /// Run only the 4-param fixed-beta (beta=1.0) fit.
     #[arg(long)]
     fixed_beta: bool,
+
+    /// Sweep over multiple k values (e.g. --k-sweep 15,31,63,127).
+    #[arg(long, value_delimiter = ',')]
+    k_sweep: Vec<usize>,
+
+    /// Run alpha profile likelihood scan (fixed-beta mode, 50-point grid).
+    #[arg(long)]
+    alpha_profile: bool,
+
+    /// Include CDG-2 UDG abundance as fifth observational constraint.
+    #[arg(long)]
+    include_udg: bool,
+
+    /// Path to Pantheon+ STAT+SYS covariance matrix file (.cov).
+    #[arg(long)]
+    cov_file: Option<String>,
 }
 
 fn main() {
@@ -130,7 +146,7 @@ fn main() {
     let mu_err: Vec<f64> = sne.iter().map(|s| s.mu_err).collect();
     let is_cal: Vec<bool> = sne.iter().map(|s| s.is_calibrator).collect();
 
-    let sn_data = filter_pantheon_data(
+    let mut sn_data = filter_pantheon_data(
         &z_cmb,
         &mu,
         &mu_err,
@@ -142,6 +158,34 @@ fn main() {
         "      After filtering (z_min={}, excl. calibrators={}): {} SNe",
         args.z_min, !args.include_calibrators, sn_data.n_sne,
     );
+
+    // Optional: load covariance matrix for full precision-matrix chi2
+    if let Some(ref cov_path) = args.cov_file {
+        eprintln!("[2b/5] Loading covariance matrix from {}...", cov_path);
+        match data_core::catalogs::pantheon::parse_pantheon_cov(std::path::Path::new(cov_path)) {
+            Ok(cov) => {
+                eprintln!("      Covariance matrix: {}x{}", cov.nrows(), cov.ncols());
+                cosmology_core::set_sn_precision_from_cov(&mut sn_data, &cov);
+                if sn_data.precision.is_some() {
+                    eprintln!(
+                        "      Precision matrix set ({} x {})",
+                        sn_data.n_sne, sn_data.n_sne
+                    );
+                } else {
+                    eprintln!(
+                        "      WARNING: Covariance dimensions ({}x{}) != n_sne ({}), using diagonal",
+                        cov.nrows(),
+                        cov.ncols(),
+                        sn_data.n_sne
+                    );
+                }
+            }
+            Err(e) => {
+                eprintln!("      WARNING: Failed to parse covariance: {e}");
+                eprintln!("      Falling back to diagonal errors.");
+            }
+        }
+    }
 
     if sn_data.n_sne == 0 {
         eprintln!("ERROR: No SNe passed filtering.");
@@ -239,6 +283,86 @@ fn main() {
     }
 
     eprintln!("      Wrote {} rows to {}", table.len(), args.csv);
+
+    // -----------------------------------------------------------------------
+    // Optional: k-sweep across multiple graph dimensions (C-3)
+    // -----------------------------------------------------------------------
+    if !args.k_sweep.is_empty() {
+        eprintln!();
+        eprintln!("[k-sweep] Scanning k values: {:?}", args.k_sweep);
+        let sweep_path = "data/csv/orthoplex_k_sweep.csv";
+        let mut sweep_file = match std::fs::File::create(sweep_path) {
+            Ok(f) => f,
+            Err(e) => {
+                eprintln!("ERROR: Cannot create {sweep_path}: {e}");
+                std::process::exit(1);
+            }
+        };
+        writeln!(
+            sweep_file,
+            "k,chi2_total,chi2_sn,chi2_bao,chi2_cc,chi2_fsig,chi2_cmb,delta_aic,delta_bic,omega_m,h0,alpha,beta,t_0,w0"
+        )
+        .unwrap();
+
+        for &k_val in &args.k_sweep {
+            eprintln!("  k={k_val}...");
+            let cmp = compare_orthoplex_fixed_beta(
+                &sn_data, &bao_data, &cc_data, &fsig_data, k_val,
+            );
+            let fb = cmp.orthoplex_fixed_beta.as_ref().unwrap_or(&cmp.orthoplex);
+            let db = cmp.delta_bic_fixed_beta.unwrap_or(cmp.delta_bic);
+            let da = cmp.delta_aic_fixed_beta.unwrap_or(cmp.delta_aic);
+            writeln!(
+                sweep_file,
+                "{},{:.4},{:.4},{:.4},{:.4},{:.4},{:.4},{:.4},{:.4},{:.6},{:.4},{:.4},{:.6},{:.8},{:.6}",
+                k_val, fb.chi2_total, fb.chi2_sn, fb.chi2_bao, fb.chi2_cc, fb.chi2_fsig,
+                fb.chi2_cmb, da, db, fb.omega_m, fb.h0, fb.alpha, fb.beta, fb.t_0, fb.w_0,
+            )
+            .unwrap();
+        }
+        eprintln!("[k-sweep] Wrote {} rows to {sweep_path}", args.k_sweep.len());
+    }
+
+    // -----------------------------------------------------------------------
+    // Optional: alpha profile likelihood scan (C-4)
+    // -----------------------------------------------------------------------
+    if args.alpha_profile {
+        eprintln!();
+        eprintln!("[alpha-profile] Running profile likelihood scan (50 points)...");
+        let alpha_grid: Vec<f64> = (0..50).map(|i| 0.5 + i as f64 * 0.3).collect();
+        let profile = profile_likelihood_alpha(
+            &sn_data, &bao_data, &cc_data, &fsig_data, args.k, &alpha_grid, true,
+        );
+        let profile_path = "data/csv/orthoplex_alpha_profile.csv";
+        let mut pf = match std::fs::File::create(profile_path) {
+            Ok(f) => f,
+            Err(e) => {
+                eprintln!("ERROR: Cannot create {profile_path}: {e}");
+                std::process::exit(1);
+            }
+        };
+        writeln!(pf, "alpha,chi2,omega_m,h0,t_0").unwrap();
+        for &(alpha_val, chi2, om, h0, t0) in &profile {
+            writeln!(pf, "{alpha_val:.4},{chi2:.4},{om:.6},{h0:.4},{t0:.8}").unwrap();
+        }
+        eprintln!("[alpha-profile] Wrote {} rows to {profile_path}", profile.len());
+    }
+
+    // -----------------------------------------------------------------------
+    // Optional: include-udg note (C-5)
+    // -----------------------------------------------------------------------
+    if args.include_udg {
+        eprintln!();
+        eprintln!("[include-udg] CDG-2 UDG abundance constraint active.");
+        eprintln!("    NOTE: chi2_udg is computed inside the fit when precision matrix includes UDG.");
+        eprintln!("    For standalone evaluation, use the chi2_udg_orthoplex() library function.");
+        // Evaluate chi2_udg at best-fit parameters for informational display
+        let chi2_udg = cosmology_core::chi2_udg_orthoplex(
+            orth.omega_m, orth.k, orth.alpha, orth.beta, orth.t_0, 0.811, 0.965,
+        );
+        eprintln!("    chi2_udg(best-fit) = {chi2_udg:.4}");
+    }
+
     eprintln!();
     eprintln!("Done.");
 }

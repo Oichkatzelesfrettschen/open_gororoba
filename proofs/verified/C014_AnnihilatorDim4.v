@@ -20,10 +20,10 @@ Theorem C014_zero_annihilates : forall a : CDSed,
 Proof.
   intro a. destruct a as [[[a0 a1 a2 a3] [a4 a5 a6 a7]]
                            [[b0 b1 b2 b3] [b4 b5 b6 b7]]].
-  unfold sed_mul, sed_zero, oct_mul, oct_conj, oct_zero,
-         quat_mul, quat_add, quat_neg, quat_conj, quat_zero, quat_one.
-  simpl. unfold oct_zero, quat_zero.
-  f_equal; f_equal; f_equal; ring.
+  cbv [sed_mul sed_zero oct_mul oct_conj oct_zero
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  f_equal; f_equal; f_equal; abstract ring.
 Qed.
 
 (** The Moreno-Froloff witness provides one nonzero annihilator. *)

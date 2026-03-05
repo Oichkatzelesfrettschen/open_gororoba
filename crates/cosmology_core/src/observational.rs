@@ -42,6 +42,16 @@ pub struct RealSnData {
     pub mu_err: Vec<f64>,
     /// Number of SNe after filtering.
     pub n_sne: usize,
+    /// Precision matrix C^{-1} from full Pantheon+ STAT+SYS covariance.
+    ///
+    /// If `Some`, `chi2_sn_orthoplex` uses the matrix-form chi2:
+    ///   chi2 = delta_mu^T * precision * delta_mu
+    /// with analytic M_B marginalization in matrix form.
+    ///
+    /// If `None`, falls back to diagonal: sum (delta_mu_i / sigma_i)^2.
+    /// The precision matrix is computed ONCE at data load time via Cholesky
+    /// decomposition of the covariance matrix.
+    pub precision: Option<nalgebra::DMatrix<f64>>,
 }
 
 /// Real BAO measurements (e.g., from DESI DR1).
@@ -978,6 +988,7 @@ pub fn filter_pantheon_data(
         mu: fmu,
         mu_err: fme,
         n_sne,
+        precision: None,
     }
 }
 
@@ -1021,6 +1032,44 @@ pub fn bao_data_point_count(bao: &RealBaoData) -> usize {
         .sum()
 }
 
+/// Compute precision matrix from covariance via Cholesky decomposition.
+///
+/// If the covariance matrix is ill-conditioned (Cholesky fails), applies
+/// Tikhonov regularization: adds ridge * max(diag(C)) * I to the diagonal.
+pub fn compute_precision_matrix(cov: &nalgebra::DMatrix<f64>) -> nalgebra::DMatrix<f64> {
+    let n = cov.nrows();
+
+    // Try Cholesky first
+    if let Some(chol) = cov.clone().cholesky() {
+        return chol.inverse();
+    }
+
+    // Tikhonov regularization: add small ridge to diagonal
+    let max_diag = (0..n).map(|i| cov[(i, i)].abs()).fold(0.0_f64, f64::max);
+    let ridge = 1e-8 * max_diag;
+    let mut cov_reg = cov.clone();
+    for i in 0..n {
+        cov_reg[(i, i)] += ridge;
+    }
+
+    cov_reg
+        .cholesky()
+        .expect("Cholesky failed even with regularization")
+        .inverse()
+}
+
+/// Set precision matrix on RealSnData from a covariance matrix.
+///
+/// The covariance matrix must be N x N where N matches sn.n_sne.
+/// If the dimensions match, computes precision = C^{-1} via Cholesky.
+/// If dimensions differ (filtering removed some SNe), falls back to diagonal.
+pub fn set_sn_precision_from_cov(sn: &mut RealSnData, cov: &nalgebra::DMatrix<f64>) {
+    if cov.nrows() == sn.n_sne && cov.ncols() == sn.n_sne {
+        sn.precision = Some(compute_precision_matrix(cov));
+    }
+    // If dimensions don't match, leave precision as None (diagonal fallback)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1039,6 +1088,7 @@ mod tests {
             mu,
             mu_err,
             n_sne: 20,
+            precision: None,
         }
     }
 
@@ -1252,5 +1302,49 @@ mod tests {
             ],
         };
         assert_eq!(bao_data_point_count(&bao), 12);
+    }
+
+    #[test]
+    fn test_precision_matrix_diagonal() {
+        // For a diagonal covariance, precision should be diagonal inverse
+        let cov =
+            nalgebra::DMatrix::from_diagonal(&nalgebra::DVector::from_vec(vec![4.0, 9.0, 16.0]));
+        let prec = compute_precision_matrix(&cov);
+        assert!((prec[(0, 0)] - 0.25).abs() < 1e-10);
+        assert!((prec[(1, 1)] - 1.0 / 9.0).abs() < 1e-10);
+        assert!((prec[(2, 2)] - 1.0 / 16.0).abs() < 1e-10);
+        // Off-diagonals should be near zero
+        assert!(prec[(0, 1)].abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_set_sn_precision_from_cov_matching() {
+        let mut sn = RealSnData {
+            z: vec![0.1, 0.2, 0.3],
+            mu: vec![33.0, 35.0, 37.0],
+            mu_err: vec![0.1, 0.1, 0.1],
+            n_sne: 3,
+            precision: None,
+        };
+        let cov =
+            nalgebra::DMatrix::from_diagonal(&nalgebra::DVector::from_vec(vec![4.0, 9.0, 16.0]));
+        set_sn_precision_from_cov(&mut sn, &cov);
+        assert!(sn.precision.is_some());
+    }
+
+    #[test]
+    fn test_set_sn_precision_from_cov_mismatched() {
+        let mut sn = RealSnData {
+            z: vec![0.1, 0.2],
+            mu: vec![33.0, 35.0],
+            mu_err: vec![0.1, 0.1],
+            n_sne: 2,
+            precision: None,
+        };
+        // 3x3 covariance but only 2 SNe -- should leave precision as None
+        let cov =
+            nalgebra::DMatrix::from_diagonal(&nalgebra::DVector::from_vec(vec![4.0, 9.0, 16.0]));
+        set_sn_precision_from_cov(&mut sn, &cov);
+        assert!(sn.precision.is_none());
     }
 }

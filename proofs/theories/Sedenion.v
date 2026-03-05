@@ -91,3 +91,26 @@ Definition sed_zd_b : CDSed :=
     (mkOct quat_zero (mkQuat 0 0 1 0))        (* e6 in lo *)
     (mkOct quat_zero (mkQuat 0 0 0 (-1))).    (* -e15 in hi *)
 (*</sedzd>*)
+
+(** * Basis element constructors for sedenions. *)
+
+Definition sed_e (i : nat) : CDSed :=
+  match i with
+  | 0 => mkSed (oct_e 0) oct_zero
+  | 1 => mkSed (oct_e 1) oct_zero
+  | 2 => mkSed (oct_e 2) oct_zero
+  | 3 => mkSed (oct_e 3) oct_zero
+  | 4 => mkSed (oct_e 4) oct_zero
+  | 5 => mkSed (oct_e 5) oct_zero
+  | 6 => mkSed (oct_e 6) oct_zero
+  | 7 => mkSed (oct_e 7) oct_zero
+  | 8 => mkSed oct_zero (oct_e 0)
+  | 9 => mkSed oct_zero (oct_e 1)
+  | 10 => mkSed oct_zero (oct_e 2)
+  | 11 => mkSed oct_zero (oct_e 3)
+  | 12 => mkSed oct_zero (oct_e 4)
+  | 13 => mkSed oct_zero (oct_e 5)
+  | 14 => mkSed oct_zero (oct_e 6)
+  | 15 => mkSed oct_zero (oct_e 7)
+  | _ => sed_zero
+  end.

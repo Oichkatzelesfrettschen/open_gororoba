@@ -18,9 +18,10 @@ Proof.
   destruct a as [[a0 a1 a2 a3] [a4 a5 a6 a7]].
   destruct b as [[b0 b1 b2 b3] [b4 b5 b6 b7]].
   destruct c as [[c0 c1 c2 c3] [c4 c5 c6 c7]].
-  unfold oct_mul, oct_add, oct_conj,
-         quat_mul, quat_add, quat_neg, quat_conj.
-  simpl. f_equal; f_equal; ring.
+  cbv [oct_mul oct_add oct_conj
+       quat_mul quat_add quat_neg quat_conj
+       oct_lo oct_hi qa qb qc qd].
+  f_equal; f_equal; abstract ring.
 Qed.
 
 (** Octonion norm is multiplicative (bounds algebraic precision). *)

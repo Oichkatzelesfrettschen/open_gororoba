@@ -3,19 +3,55 @@
 # WHY:  Machine-checked proofs elevate claim evidence from "tested at
 #       sample points" to "proven for all valid inputs."
 # WHAT: Compiles .v files to kernel-checked .vo proof objects.
-# HOW:  make all (build), make check (no Admitted), make clean.
+# HOW:  eval "$(opam env --switch rocq-9.1.1)" && make all
+#
+# REQUIRES: opam switch rocq-9.1.1 with rocq-core >= 9.1.1.
+
+# Guard: abort if OPAM_SWITCH_PREFIX is unset (opam env not sourced).
+ifndef OPAM_SWITCH_PREFIX
+$(error OPAM_SWITCH_PREFIX is not set. Run: eval "$$(opam env --switch rocq-9.1.1)")
+endif
 
 ROCQMAKEFILE := rocq makefile
-JOBS ?= $(shell nproc 2>/dev/null || echo 1)
 
-Makefile.coq: _CoqProject
-	$(ROCQMAKEFILE) -f _CoqProject -o Makefile.coq
+# Detect PHYSICAL core count (not logical/SMT threads).
+# WHY: Rocq proofs peak at ~500MB per file. Running on all SMT threads
+#      causes L3 cache thrashing on chips like the 5600X3D (96MB 3D V-Cache
+#      shared across SMT siblings). One process per physical core keeps each
+#      rocqc in its own cache slice.
+PHYS_CORES := $(shell lscpu --all --parse=CORE 2>/dev/null \
+                | grep -v '^[[:punct:]]' | sort -u | wc -l)
+# Build the CPU affinity list: first logical CPU of each physical core.
+PHYS_CPUS := $(shell lscpu --all --parse=CPU,CORE 2>/dev/null \
+               | grep -v '^[[:punct:]]' | sort -t, -k2 -n -u | cut -d, -f1 \
+               | paste -sd, -)
+JOBS ?= $(or $(PHYS_CORES),$(shell nproc 2>/dev/null),1)
 
-all: Makefile.coq
-	$(MAKE) -j$(JOBS) -f Makefile.coq all
+# Pin to physical cores when taskset is available; fall back to unpinned.
+TASKSET := $(shell command -v taskset 2>/dev/null)
+ifdef TASKSET
+  PINNED = $(TASKSET) -c $(PHYS_CPUS)
+else
+  PINNED =
+endif
 
-clean: Makefile.coq
-	$(MAKE) -f Makefile.coq clean
+# OCaml GC tuning: large initial heap + reduced minor GC pressure.
+# WHY: cbv + ring on octonion polynomial identities peaks at ~500MB per file.
+#      Generous minor heap (32MB) reduces GC pauses on heavy proofs.
+export OCAMLRUNPARAM ?= s=1G,i=32M,O=3
+
+# Prefer _RocqProject (Rocq 9.x native), fall back to _CoqProject.
+PROJ_FILE := $(shell if [ -f _RocqProject ]; then echo _RocqProject; else echo _CoqProject; fi)
+
+Makefile.rocq: $(PROJ_FILE)
+	$(ROCQMAKEFILE) -f $(PROJ_FILE) -o Makefile.rocq
+
+all: Makefile.rocq
+	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq all
+
+clean: Makefile.rocq
+	$(MAKE) -f Makefile.rocq clean
+	rm -f Makefile.rocq Makefile.rocq.conf .Makefile.rocq.d
 	rm -f Makefile.coq Makefile.coq.conf .Makefile.coq.d
 
 check: all

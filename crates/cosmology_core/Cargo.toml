@@ -17,6 +17,9 @@ statrs = { workspace = true }
 rand = { workspace = true }
 rand_distr = { workspace = true }
 
+# Linear algebra (Cholesky factorization for covariance matrices)
+nalgebra = { workspace = true }
+
 # Parallel chi2 evaluation across SN data points
 rayon = { workspace = true }
 

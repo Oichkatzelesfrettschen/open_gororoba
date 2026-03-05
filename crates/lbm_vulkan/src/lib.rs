@@ -2,6 +2,7 @@ use ash::{Device, Entry, Instance, vk};
 use gpu_allocator::vulkan::*;
 use std::{ffi::CStr, sync::Arc};
 
+pub mod besag_clifford_vulkan;
 pub mod compute;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
