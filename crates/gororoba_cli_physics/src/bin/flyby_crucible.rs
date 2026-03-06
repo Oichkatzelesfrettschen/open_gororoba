@@ -9,7 +9,7 @@
 
 use algebra_core::construction::chingon::AlternativityViolationTensor;
 use clap::Parser;
-use gr_core::forces::chingon_drag::compute_chingon_drag;
+use gr_core::forces::chingon_bivector_drag::compute_chingon_bivector_drag;
 use nalgebra::{Matrix3, Vector3};
 use rayon::prelude::*;
 use std::sync::Arc;
@@ -27,9 +27,6 @@ const R_EARTH: f64 = 6371.0;
 /// Sun moves at ~220 km/s toward Galactic l=90, b=0 (Cygnus direction).
 /// Components: (U_toward_center, V_rotation, W_north) in Galactic frame.
 const V_WIND_GALACTIC: [f64; 3] = [-11.1, 232.24, 7.25];
-
-/// Dark matter local density (normalized, dimensionless coupling absorbed into alpha).
-const RHO_DM: f64 = 1.0;
 
 /// SOI radius for integration window: 50 Earth radii.
 /// Beyond this, Earth's gravity is negligible and Chingon drag has no
@@ -310,7 +307,9 @@ fn run_flyby(
                 let a_grav = -p_in * (GM_EARTH / (r_sq * r));
                 if use_chingon {
                     a_grav
-                        + compute_chingon_drag(v_in - *v_wind, RHO_DM, ALPHA_CHINGON, avt)
+                        + compute_chingon_bivector_drag(
+                            p_in, v_in, *v_wind, ALPHA_CHINGON, avt,
+                        )
                 } else {
                     a_grav
                 }
