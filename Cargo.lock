@@ -81,11 +81,13 @@ version = "0.1.0"
 dependencies = [
  "approx",
  "cd_kernel",
+ "core_affinity",
  "nalgebra 0.33.2",
  "petgraph 0.7.1",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
+ "rayon",
  "serde",
 ]
 
@@ -3462,6 +3464,7 @@ dependencies = [
  "casimir_core",
  "cd_spin_bridge",
  "clap",
+ "core_affinity",
  "cosmology_core",
  "csv",
  "data_core",
@@ -3485,6 +3488,7 @@ dependencies = [
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
+ "rayon",
  "serde",
  "serde_json",
  "sha2",
