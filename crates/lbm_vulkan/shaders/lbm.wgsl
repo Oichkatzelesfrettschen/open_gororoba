@@ -35,14 +35,15 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
 
     if (x >= pc.nx || y >= pc.ny || z >= pc.nz) { return; }
     let idx = x + pc.nx * (y + pc.ny * z);
-    
-    // 1. Load Moments
+    let N = pc.nx * pc.ny * pc.nz;
+
+    // 1. Load Moments (SoA layout: f[dir * N + idx] for coalesced reads)
     var rho = 0.0;
     var u = vec3<f32>(0.0);
     var f_local: array<f32, 19>;
 
     for (var i = 0u; i < 19u; i++) {
-        let val = f_in[idx * 19u + i];
+        let val = f_in[i * N + idx];  // SoA: coalesced read
         f_local[i] = max(0.0, val); // Force positivity
         rho += f_local[i];
         let c = vec3<f32>(f32(CX[i]), f32(CY[i]), f32(CZ[i]));
@@ -51,7 +52,8 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
 
     // 2. Force Coupling (Buoyancy + Central Force)
     // Coupling central force from buffer + global gravity
-    let f_ext = vec3<f32>(force_in[idx * 3u], force_in[idx * 3u + 1u], force_in[idx * 3u + 2u]);
+    // SoA force: fx[N], fy[N], fz[N]
+    let f_ext = vec3<f32>(force_in[idx], force_in[N + idx], force_in[2u * N + idx]);
     let g_global = vec3<f32>(pc.gx, pc.gy, pc.gz);
     
     // Total physical force scaled for lattice units
@@ -68,9 +70,10 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
     }
 
     rho_out[idx] = rho;
-    u_out[idx * 3u + 0u] = u.x;
-    u_out[idx * 3u + 1u] = u.y;
-    u_out[idx * 3u + 2u] = u.z;
+    // SoA velocity: ux[N], uy[N], uz[N]
+    u_out[idx]         = u.x;
+    u_out[N + idx]     = u.y;
+    u_out[2u * N + idx] = u.z;
 
     // 3. Collision (BGK)
     let tau_val = max(0.51, tau_in[idx]); // Stability floor
@@ -103,7 +106,7 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
         let next_z = (i32(z) + CZ[i] + nz_i) % nz_i;
         let next_idx = u32(next_x) + pc.nx * (u32(next_y) + pc.ny * u32(next_z));
         
-        f_out[next_idx * 19u + i] = f_new;
+        f_out[i * N + next_idx] = f_new;  // SoA: coalesced write
     }
     
     entropy_out[idx] = entropy_accum;

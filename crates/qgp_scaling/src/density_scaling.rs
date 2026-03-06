@@ -248,7 +248,13 @@ pub struct MultiSystemScalingResult {
 /// Multi-system density scaling fit with per-system K constants and shared beta.
 ///
 /// For each beta, groups data by `system` label, fits a separate K for each
-/// system via weighted least-squares, and sums the chi2 values.
+/// system via weighted least-squares, and sums the chi2 values. This breaks
+/// the geometric L-density degeneracy that plagues single-system fits.
+///
+/// Model: epsilon_bar_i = K_sys * (dNch/dy_i / A_perp_i) * L_i^beta
+///
+/// Free parameters: beta (shared), K_sys (one per system).
+/// NDF = n_total - n_systems - 1.
 pub fn fit_density_scaling_multi_k(
     data: &[DensityScalingPoint],
     beta_lo: f64,
@@ -404,6 +410,58 @@ mod tests {
             result.chi2_per_ndf < 0.01,
             "chi2/ndf = {} (expected ~0 for perfect data)",
             result.chi2_per_ndf
+        );
+    }
+
+    #[test]
+    fn test_multi_k_density_scaling() {
+        // Two systems with different geometries but same beta
+        let beta_true = 1.02;
+        let k_pb = 0.33;
+        let k_xe = 0.28; // Xe-Xe has different transport coefficient
+
+        let pb_data = make_synthetic_data(beta_true, k_pb);
+        let mut xe_data: Vec<DensityScalingPoint> = [
+            (1200.0, 90.0, 5.5, "0-5%"),
+            (900.0, 80.0, 5.0, "5-10%"),
+            (600.0, 65.0, 4.2, "10-20%"),
+            (350.0, 50.0, 3.5, "20-30%"),
+        ]
+        .iter()
+        .map(|&(dnch_dy, a_perp, l_avg, cent): &(f64, f64, f64, &str)| {
+            let x = (dnch_dy / a_perp) * l_avg.powf(beta_true);
+            DensityScalingPoint {
+                epsilon_bar: k_xe * x,
+                epsilon_bar_err: k_xe * x * 0.1,
+                dnch_dy,
+                a_perp,
+                l_avg,
+                system: "Xe-Xe 5.44 TeV".to_string(),
+                centrality: cent.to_string(),
+            }
+        })
+        .collect();
+
+        let mut combined = pb_data;
+        combined.append(&mut xe_data);
+
+        let result = fit_density_scaling_multi_k(&combined, 0.0, 3.0, 0.01);
+        assert!(
+            (result.beta - beta_true).abs() < 0.05,
+            "multi-K beta = {} (expected {})",
+            result.beta, beta_true
+        );
+        assert_eq!(result.k_per_system.len(), 2, "should have 2 systems");
+
+        let k_pb_fit = result.k_per_system.iter().find(|k| k.0.contains("Pb")).unwrap().1;
+        let k_xe_fit = result.k_per_system.iter().find(|k| k.0.contains("Xe")).unwrap().1;
+        assert!(
+            (k_pb_fit - k_pb).abs() < 0.05,
+            "K_Pb = {} (expected {})", k_pb_fit, k_pb
+        );
+        assert!(
+            (k_xe_fit - k_xe).abs() < 0.05,
+            "K_Xe = {} (expected {})", k_xe_fit, k_xe
         );
     }
 

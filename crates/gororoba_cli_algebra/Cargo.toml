@@ -94,6 +94,10 @@ path = "src/bin/tessarines_mixed_quaternions_census.rs"
 name = "wow-sedenion-synthesis"
 path = "src/bin/wow_sedenion_synthesis.rs"
 
+[[bin]]
+name = "deep-space-survey"
+path = "src/bin/deep_space_survey.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core", features = ["lie"] }
 algebra_experimental = { workspace = true }
@@ -106,6 +110,7 @@ env_logger = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rustfft = { workspace = true }
+anyhow.workspace = true
 
 [lints]
 workspace = true

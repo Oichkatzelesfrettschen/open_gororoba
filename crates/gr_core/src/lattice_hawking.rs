@@ -110,34 +110,39 @@ pub fn effective_temperature(omegas: &[f64], spectrum: &[f64]) -> f64 {
     let mut sum_xx = 0.0;
 
     for (&omega, &n) in omegas.iter().zip(spectrum.iter()) {
-        if n > 1e-10 && omega > 1e-10 {
+        if n > 1e-30 && omega > 1e-30 {
             let y = (1.0 + 1.0 / n).ln();
             sum_xy += omega * y;
             sum_xx += omega * omega;
         }
     }
 
-    if sum_xy.abs() < 1e-30 {
+    if sum_xy.abs() < 1e-60 {
         return 0.0;
     }
 
     sum_xx / sum_xy
-}
+    }
 
-/// Full spectrum computation at a given grid resolution.
-///
-/// Returns (omegas, ideal, lattice, viscous) arrays.
-pub fn compute_spectra(
+    /// Full spectrum computation at a given grid resolution.
+    ///
+    /// Returns (omegas, ideal, lattice, viscous) arrays.
+    pub fn compute_spectra(
     t_h: f64,
     n_grid: usize,
     nu: f64,
     n_omega: usize,
-) -> (Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>) {
+    ) -> (Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>) {
     let dx = 1.0 / n_grid as f64;
     let omega_max = 2.0 / dx; // Nyquist
+    let omega_min = t_h * 0.01; // Capture the very low frequency tail
 
-    let omegas: Vec<f64> = (1..=n_omega)
-        .map(|i| omega_max * i as f64 / (n_omega as f64 + 1.0))
+    let log_min = omega_min.ln();
+    let log_max = omega_max.ln();
+    let log_step = (log_max - log_min) / (n_omega as f64 - 1.0);
+
+    let omegas: Vec<f64> = (0..n_omega)
+        .map(|i| (log_min + i as f64 * log_step).exp())
         .collect();
 
     let ideal: Vec<f64> = omegas
@@ -154,8 +159,68 @@ pub fn compute_spectra(
         .collect();
 
     (omegas, ideal, lattice, viscous)
-}
+    }
 
+    /// Compute spectra with spatially varying viscosity using a WKB approximation
+    /// for the cumulative viscous damping from the horizon to the boundary.
+    pub fn compute_spectra_variable_nu(
+    t_h: f64,
+    n_grid: usize,
+    dx: f64,
+    nu_array: &[f64],
+    velocity_mag: &[f64],
+    h_pos: usize,
+    n_omega: usize,
+    ) -> (Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>) {
+    let omega_max = 2.0 / dx; // Nyquist
+    let omega_min = t_h * 0.01;
+
+    let log_min = omega_min.ln();
+    let log_max = omega_max.ln();
+    let log_step = (log_max - log_min) / (n_omega as f64 - 1.0);
+
+    let omegas: Vec<f64> = (0..n_omega)
+        .map(|i| (log_min + i as f64 * log_step).exp())
+        .collect();
+
+    let ideal: Vec<f64> = omegas
+        .iter()
+        .map(|&w| ideal_hawking_spectrum(t_h, w))
+        .collect();
+
+    let lattice: Vec<f64> = omegas
+        .iter()
+        .map(|&w| lattice_cutoff_spectrum(t_h, w, dx))
+        .collect();
+
+    // WKB viscous damping:
+    // Wave travels from horizon to outer boundary.
+    // Damping = exp( - sum_{x=h_pos}^{N-1} nu(x) * k^2 * (dx / c_s_eff(x)) )
+    // We approximate k for the lattice dispersion: sin(k dx / 2) = w dx / 2
+
+    let mut viscous: Vec<f64> = Vec::with_capacity(n_omega);
+    for (i, &w) in omegas.iter().enumerate() {
+        let arg = w * dx / 2.0;
+        if arg >= 1.0 {
+            viscous.push(0.0);
+            continue;
+        }
+        let k = (2.0 / dx) * arg.asin();
+
+        let mut damping_integral = 0.0;
+        for i_x in h_pos..n_grid {
+            let v = velocity_mag[i_x];
+            let c_s = crate::acoustic_metric::LBM_CS;
+            let c_eff = (c_s - v).abs().max(1e-5);
+            let dt = dx / c_eff;
+            damping_integral += nu_array[i_x] * k * k * dt;
+        }
+
+        viscous.push(lattice[i] * (-damping_integral).exp());
+    }
+
+    (omegas, ideal, lattice, viscous)
+    }
 #[cfg(test)]
 mod tests {
     use super::*;

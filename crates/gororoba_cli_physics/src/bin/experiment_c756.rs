@@ -2,12 +2,14 @@
 //! Unifying Sedenion Associator Tension with LBM Fluid Dynamics.
 
 use ash::vk;
-use lbm_vulkan::{VulkanContext, compute::GororobaEngine};
+use lbm_vulkan::{Precision, VulkanContext, compute::GororobaEngine};
 use std::time::Instant;
 
 fn generate_physics_data(n: usize) -> (Vec<f32>, Vec<f32>) {
-    let mut force = vec![0.0; n * n * n * 3];
-    let mut f_init = vec![0.0; n * n * n * 19];
+    let total = n * n * n;
+    // SoA layout: force[comp * total + idx], f_init[q * total + idx]
+    let mut force = vec![0.0; total * 3];
+    let mut f_init = vec![0.0; total * 19];
     let wf = [
         0.33333333, 0.05555556, 0.05555556, 0.05555556, 0.05555556, 0.05555556, 0.05555556,
         0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778,
@@ -18,17 +20,18 @@ fn generate_physics_data(n: usize) -> (Vec<f32>, Vec<f32>) {
     for z in 0..n {
         for y in 0..n {
             for x in 0..n {
-                let idx_3 = (x + n * (y + n * z)) * 3;
-                let idx_19 = (x + n * (y + n * z)) * 19;
+                let idx = x + n * (y + n * z);
                 let dx = x as f32 - center;
                 let dy = y as f32 - center;
                 let dz = z as f32 - center;
                 let r_sq = dx * dx + dy * dy + dz * dz + 1.0;
                 let mag = 200.0 / r_sq;
-                force[idx_3] = -mag * dx / r_sq.sqrt();
-                force[idx_3 + 1] = -mag * dy / r_sq.sqrt();
-                force[idx_3 + 2] = -mag * dz / r_sq.sqrt();
-                f_init[idx_19..idx_19 + 19].copy_from_slice(&wf);
+                force[idx] = -mag * dx / r_sq.sqrt();
+                force[total + idx] = -mag * dy / r_sq.sqrt();
+                force[2 * total + idx] = -mag * dz / r_sq.sqrt();
+                for (q, &w) in wf.iter().enumerate() {
+                    f_init[q * total + idx] = w;
+                }
             }
         }
     }
@@ -42,7 +45,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Resolution: 160^3
     let grid_dim = (160, 160, 160);
     let ctx = VulkanContext::new(true)?;
-    let mut engine = GororobaEngine::new(&ctx, grid_dim, (1280, 720))?;
+    let mut engine = GororobaEngine::new(&ctx, grid_dim, (1280, 720), Precision::FP32)?;
 
     let (f_init, force) = generate_physics_data(160);
     engine.upload_initial_state(&ctx, &f_init, &force)?;

@@ -23,7 +23,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let grid = params.grid_dim;
     let screen = (1280u32, 720u32);
-    let mut engine = GororobaEngine::new(&ctx, grid, screen)?;
+    let mut engine = GororobaEngine::new(&ctx, grid, screen, params.precision)?;
 
     // Generate D3Q19 equilibrium initial state: f_i = w_i * rho_0 (rho_0 = 1)
     let n = (grid.0 * grid.1 * grid.2) as usize;
@@ -48,12 +48,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         1.0 / 36.0,
         1.0 / 36.0,
     ];
+    // SoA layout: f_init[q * n + cell] -- contiguous per direction
     let mut f_init = vec![0.0f32; n * 19];
-    for cell in 0..n {
-        for (q, &w) in weights.iter().enumerate() {
-            f_init[cell * 19 + q] = w;
+    for (q, &w) in weights.iter().enumerate() {
+        for cell in 0..n {
+            f_init[q * n + cell] = w;
         }
     }
+    // SoA force: fx[0..n], fy[n..2n], fz[2n..3n]
     let force = vec![0.0f32; n * 3];
     engine.upload_initial_state(&ctx, &f_init, &force)?;
 

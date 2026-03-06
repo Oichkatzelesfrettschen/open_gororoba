@@ -9,6 +9,34 @@ autobins = false
 # ---- GR (6) ----
 
 [[bin]]
+name = "kerr-pathion-gpu"
+path = "src/bin/kerr_pathion_gpu.rs"
+
+[[bin]]
+name = "generate-topological-voids"
+path = "src/bin/generate_topological_voids.rs"
+
+[[bin]]
+name = "pathion-shadow-cli"
+path = "src/bin/pathion_shadow_cli.rs"
+
+[[bin]]
+name = "pathion-solar-system-crucible"
+path = "src/bin/pathion_solar_system_crucible.rs"
+
+[[bin]]
+name = "flyby-crucible"
+path = "src/bin/flyby_crucible.rs"
+
+[[bin]]
+name = "voudon-friedmann-sweep"
+path = "src/bin/voudon_friedmann_sweep.rs"
+
+[[bin]]
+name = "cmb-axis-crucible"
+path = "src/bin/cmb_axis_crucible.rs"
+
+[[bin]]
 name = "kerr-shadow"
 path = "src/bin/kerr_shadow.rs"
 
@@ -324,6 +352,7 @@ toml = { workspace = true }
 sha2 = { workspace = true }
 glob = { workspace = true }
 mimalloc = { workspace = true }
+pathion_ellip = { version = "0.1.0", path = "../pathion_ellip" }
 
 [features]
 default = ["gpu"]

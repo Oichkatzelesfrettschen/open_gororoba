@@ -195,11 +195,7 @@ pub fn tracefree_part(
 /// Inner product of two spatial vectors using the metric.
 ///
 /// <u, v> = gamma_{ij} u^i v^j
-pub fn spatial_inner_product(
-    gamma: &SpatialMetric,
-    u: &SpatialVector,
-    v: &SpatialVector,
-) -> f64 {
+pub fn spatial_inner_product(gamma: &SpatialMetric, u: &SpatialVector, v: &SpatialVector) -> f64 {
     let mut result = 0.0;
     for i in 0..SDIM {
         for j in 0..SDIM {

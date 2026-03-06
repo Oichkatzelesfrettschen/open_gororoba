@@ -19,8 +19,10 @@
 
 use num_complex::Complex64;
 
-use super::constants::KAPPA_NATURAL;
-use super::types::{FieldConfig, GravitonPolarization, HelicityChannel, PhotonPolarization};
+use super::{
+    constants::KAPPA_NATURAL,
+    types::{FieldConfig, GravitonPolarization, HelicityChannel, PhotonPolarization},
+};
 
 /// Compute the tree-level amplitude for a given helicity channel.
 ///

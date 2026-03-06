@@ -29,11 +29,13 @@
 //! - Gourgoulhon (2012): 3+1 Formalism in General Relativity
 //! - Baumgarte & Shapiro (2010): Numerical Relativity
 
-use crate::metric::{DIM, MetricComponents, SpacetimeMetric, T};
-use crate::spatial::{
-    SDIM, SpatialChristoffel, SpatialMetric, SpatialSymmetricTensor, SpatialVector,
-    invert_3x3_symmetric, raise_index_vector, raise_symmetric_tensor, spatial_determinant,
-    trace_symmetric,
+use crate::{
+    metric::{DIM, MetricComponents, SpacetimeMetric, T},
+    spatial::{
+        SDIM, SpatialChristoffel, SpatialMetric, SpatialSymmetricTensor, SpatialVector,
+        invert_3x3_symmetric, raise_index_vector, raise_symmetric_tensor, spatial_determinant,
+        trace_symmetric,
+    },
 };
 
 // ============================================================================
@@ -288,8 +290,7 @@ pub fn extrinsic_curvature<M: SpacetimeMetric>(
     for i in 0..SDIM {
         for j in i..SDIM {
             let dt_gamma = (g_tp[i + 1][j + 1] - g_tm[i + 1][j + 1]) / (2.0 * h_t);
-            k_ij[i][j] =
-                -(1.0 / (2.0 * adm.lapse)) * (dt_gamma - d_beta[i][j] - d_beta[j][i]);
+            k_ij[i][j] = -(1.0 / (2.0 * adm.lapse)) * (dt_gamma - d_beta[i][j] - d_beta[j][i]);
             k_ij[j][i] = k_ij[i][j]; // symmetric
         }
     }
@@ -380,8 +381,7 @@ pub fn spatial_ricci_scalar<M: SpacetimeMetric>(metric: &M, x: &[f64; DIM]) -> f
         for a in 0..SDIM {
             for b in 0..SDIM {
                 for c in 0..SDIM {
-                    dgamma[a][b][c][d] =
-                        (gamma_plus[a][b][c] - gamma_minus[a][b][c]) / (2.0 * h);
+                    dgamma[a][b][c][d] = (gamma_plus[a][b][c] - gamma_minus[a][b][c]) / (2.0 * h);
                 }
             }
         }
@@ -449,8 +449,7 @@ fn spatial_christoffel_numerical<M: SpacetimeMetric>(
             for k in j..SDIM {
                 let mut sum = 0.0;
                 for l in 0..SDIM {
-                    sum += adm.spatial_metric_inv[i][l]
-                        * (dg[l][j][k] + dg[l][k][j] - dg[j][k][l]);
+                    sum += adm.spatial_metric_inv[i][l] * (dg[l][j][k] + dg[l][k][j] - dg[j][k][l]);
                 }
                 gamma_s[i][j][k] = 0.5 * sum;
                 gamma_s[i][k][j] = gamma_s[i][j][k]; // symmetric in lower indices
@@ -464,11 +463,7 @@ fn spatial_christoffel_numerical<M: SpacetimeMetric>(
 /// Adaptive step size for spatial finite differences.
 fn adaptive_spatial_step(x_val: f64, _coord_index: usize) -> f64 {
     let abs_x = x_val.abs();
-    if abs_x > 1.0 {
-        abs_x * 1e-7
-    } else {
-        1e-7
-    }
+    if abs_x > 1.0 { abs_x * 1e-7 } else { 1e-7 }
 }
 
 // ============================================================================
@@ -498,8 +493,7 @@ pub fn decompose_from_inverse(g_inv: &MetricComponents) -> AdmDecomposition {
     let mut gamma_inv = [[0.0; SDIM]; SDIM];
     for i in 0..SDIM {
         for j in 0..SDIM {
-            gamma_inv[i][j] =
-                g_inv[i + 1][j + 1] + g_inv[T][i + 1] * g_inv[T][j + 1] / g_inv[T][T];
+            gamma_inv[i][j] = g_inv[i + 1][j + 1] + g_inv[T][i + 1] * g_inv[T][j + 1] / g_inv[T][T];
         }
     }
 
@@ -849,10 +843,7 @@ mod tests {
         let mink = MinkowskiCartesian;
         let x = [0.0, 5.0, 3.0, 2.0];
         let r3 = spatial_ricci_scalar(&mink, &x);
-        assert!(
-            r3.abs() < 0.01,
-            "Flat space R^(3) = {r3} (expected 0)"
-        );
+        assert!(r3.abs() < 0.01, "Flat space R^(3) = {r3} (expected 0)");
     }
 
     // -- Determinant --

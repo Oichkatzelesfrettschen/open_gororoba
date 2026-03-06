@@ -903,10 +903,10 @@ status = "active"
 name = "clustering-256"
 crate = "gororoba_cli_physics"
 description = "Besag-Clifford permutation test for ZD-imbalance clustering at 256^3. Re-evaluates C-659 with GPU-accelerated LBM."
-status = "planned"
+status = "active"
 
 [[binary]]
 name = "dark-halo-hunt"
 crate = "gororoba_cli_physics"
 description = "Search for topological dark halos in ZD-mediated LBM simulations across k values. CDG-2 consistency falsification."
-status = "planned"
+status = "active"

@@ -22,8 +22,7 @@
 use crate::metric::{
     ChristoffelComponents, DIM, MetricComponents, PHI, R, SpacetimeMetric, T, THETA,
 };
-use ode_solvers::dopri5::Dopri5;
-use ode_solvers::{SVector, System};
+use ode_solvers::{SVector, System, dopri5::Dopri5};
 use rayon::prelude::*;
 use std::f64::consts::PI;
 

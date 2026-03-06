@@ -20,9 +20,9 @@
 //! - Arnowitt, Deser, Misner (1962): ADM formalism
 //! - de Marrais (2000): Sedenion zero-divisor structure
 
-use crate::adm::{AdmDecomposition, ExtrinsicCurvatureData};
-use crate::spatial::{
-    SDIM, SpatialMetric, SpatialSymmetricTensor, trace_symmetric,
+use crate::{
+    adm::{AdmDecomposition, ExtrinsicCurvatureData},
+    spatial::{SDIM, SpatialMetric, SpatialSymmetricTensor, trace_symmetric},
 };
 
 /// Combined ADM + algebraic state at a spatial point.
@@ -76,9 +76,15 @@ pub const LAMBDA_SED: f64 = IMBALANCE_ATTRACTOR;
 /// The quaternion encodes R.
 pub fn quaternion_frame_from_spatial_metric(gamma: &SpatialMetric) -> [f64; 4] {
     let mat = nalgebra::Matrix3::new(
-        gamma[0][0], gamma[0][1], gamma[0][2],
-        gamma[1][0], gamma[1][1], gamma[1][2],
-        gamma[2][0], gamma[2][1], gamma[2][2],
+        gamma[0][0],
+        gamma[0][1],
+        gamma[0][2],
+        gamma[1][0],
+        gamma[1][1],
+        gamma[1][2],
+        gamma[2][0],
+        gamma[2][1],
+        gamma[2][2],
     );
 
     // Eigendecompose (symmetric -> real eigenvalues, orthogonal eigenvectors)
@@ -171,11 +177,7 @@ pub fn sedenion_stress_energy(
 ///
 /// Models the thawing dynamics: when imbalance F = 3/8, we recover w = -1
 /// exactly, meaning P = -rho. When F deviates, w "thaws" to a less negative value.
-pub fn sedenion_dark_energy_pressure(
-    imbalance: f64,
-    rho_eff: f64,
-    beta_thaw: f64,
-) -> f64 {
+pub fn sedenion_dark_energy_pressure(imbalance: f64, rho_eff: f64, beta_thaw: f64) -> f64 {
     // Equation of state w = -1 + beta * (F - F_vac)^2
     let w = -1.0 + beta_thaw * (imbalance - LAMBDA_SED).powi(2);
     w * rho_eff
@@ -189,11 +191,7 @@ pub fn sedenion_dark_energy_pressure(
 /// At F = 3/8 (vacuum): delta_theta = 0 exactly.
 /// F > 3/8 (over-frustrated): enhances expansion/contraction.
 /// F < 3/8 (under-frustrated): suppresses expansion/contraction.
-pub fn algebraic_york_time_correction(
-    imbalance: f64,
-    theta_gr: f64,
-    alpha_s: f64,
-) -> f64 {
+pub fn algebraic_york_time_correction(imbalance: f64, theta_gr: f64, alpha_s: f64) -> f64 {
     alpha_s * (imbalance - IMBALANCE_ATTRACTOR) * theta_gr
 }
 
@@ -240,7 +238,11 @@ pub fn algebraic_adm_state(
 /// Compute total corrected York time including algebraic contribution.
 pub fn total_york_time(state: &AlgebraicAdmState, alpha_s: f64) -> f64 {
     state.extrinsic.york_time
-        + algebraic_york_time_correction(state.sedenion_imbalance, state.extrinsic.york_time, alpha_s)
+        + algebraic_york_time_correction(
+            state.sedenion_imbalance,
+            state.extrinsic.york_time,
+            alpha_s,
+        )
 }
 
 /// Compute total effective energy density including algebraic source.
@@ -288,10 +290,7 @@ mod tests {
     #[test]
     fn test_imbalance_attractor_gives_zero_correction() {
         let delta = algebraic_york_time_correction(IMBALANCE_ATTRACTOR, 2.0, 1.0);
-        assert!(
-            delta.abs() < TOL,
-            "imbalance attractor: delta = {delta}"
-        );
+        assert!(delta.abs() < TOL, "imbalance attractor: delta = {delta}");
     }
 
     #[test]

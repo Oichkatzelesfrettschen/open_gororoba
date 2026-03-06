@@ -1,6 +1,8 @@
 pub mod albert;
 pub mod cayley_dickson;
+pub mod chingon;
 pub mod clifford;
+pub mod deep_space;
 pub mod composition_algebra_census;
 pub mod e8_root_system;
 pub mod exceptional_bridge;

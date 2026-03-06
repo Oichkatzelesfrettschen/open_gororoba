@@ -17,11 +17,13 @@
 
 use num_complex::Complex64;
 
-use super::constants::ALPHA_EM;
-use super::quadrature::{self, QuadratureConfig};
-use super::special_functions;
-use super::types::{FieldConfig, LoopType, PhotonPolarization};
-use super::worldline_greens;
+use super::{
+    constants::ALPHA_EM,
+    quadrature::{self, QuadratureConfig},
+    special_functions,
+    types::{FieldConfig, LoopType, PhotonPolarization},
+    worldline_greens,
+};
 
 /// Compute the vacuum polarization for a given photon polarization in
 /// a pure magnetic field.

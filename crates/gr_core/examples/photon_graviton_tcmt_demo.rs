@@ -148,7 +148,10 @@ fn main() {
         coupling.total_decay_rate(),
         0.2,
     );
-    println!(r"  Maksimov \kappa_1 - \kappa_2 = \gamma_l constraint: {}", check_maksimov);
+    println!(
+        r"  Maksimov \kappa_1 - \kappa_2 = \gamma_l constraint: {}",
+        check_maksimov
+    );
     println!();
 
     // ============================================================

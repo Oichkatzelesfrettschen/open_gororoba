@@ -114,6 +114,10 @@ path = "src/bin/hdf5_numeric_gate.rs"
 name = "verify-project-csv-split"
 path = "src/bin/verify_project_csv_split.rs"
 
+[[bin]]
+name = "test-spk"
+path = "src/bin/test_spk.rs"
+
 # ---- Migration (2) ----
 
 [[bin]]

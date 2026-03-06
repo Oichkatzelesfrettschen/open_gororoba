@@ -32,6 +32,7 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
     }
 
     let idx = x + pc.nx * (y + pc.ny * z);
+    let N = pc.nx * pc.ny * pc.nz;
     let center = vec3<f32>(f32(pc.nx)*0.5, f32(pc.ny)*0.5, f32(pc.nz)*0.5);
     let p = vec3<f32>(f32(x), f32(y), f32(z));
     let r_vec = p - center;
@@ -61,11 +62,12 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
         let c = vec3<f32>(f32(CX[i]), f32(CY[i]), f32(CZ[i]));
         let cu = dot(c, u);
         let feq = WF[i] * rho * (1.0 + 3.0*cu + 4.5*cu*cu - 1.5*u_sq);
-        f_out[idx * 19u + i] = feq;
+        f_out[i * N + idx] = feq;  // SoA: coalesced write
     }
-    
+
     rho_out[idx] = rho;
-    u_out[idx * 3u + 0u] = u.x;
-    u_out[idx * 3u + 1u] = u.y;
-    u_out[idx * 3u + 2u] = u.z;
+    // SoA velocity: ux[N], uy[N], uz[N]
+    u_out[idx]         = u.x;
+    u_out[N + idx]     = u.y;
+    u_out[2u * N + idx] = u.z;
 }

@@ -22,10 +22,12 @@ use std::f64::consts::PI;
 
 use num_complex::Complex64;
 
-use super::constants::ALPHA_EM;
-use super::quadrature::{self, QuadratureConfig};
-use super::special_functions;
-use super::types::{FieldConfig, LoopType};
+use super::{
+    constants::ALPHA_EM,
+    quadrature::{self, QuadratureConfig},
+    special_functions,
+    types::{FieldConfig, LoopType},
+};
 
 // ---------------------------------------------------------------------------
 // Representation 1: Proper-time integral

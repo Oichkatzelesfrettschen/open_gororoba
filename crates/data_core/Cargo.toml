@@ -20,6 +20,8 @@ nalgebra = { workspace = true }
 log = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
 hdf5 = { workspace = true, optional = true }
+memmap2 = "0.9.10"
+wide.workspace = true
 
 [features]
 default = []

@@ -11,6 +11,8 @@ lbm_3d = { path = "../lbm_3d" }
 cudarc = { workspace = true }
 half = { workspace = true }
 anyhow = { workspace = true }
+rayon = { workspace = true }
+wide = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

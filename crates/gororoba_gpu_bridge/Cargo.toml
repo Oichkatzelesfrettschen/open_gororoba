@@ -5,12 +5,12 @@ edition = { workspace = true }
 description = "GPU backend selection and dispatch for gororoba simulation workloads"
 license = "GPL-2.0-only"
 
+[dependencies]
+core_affinity = { workspace = true }
+
 [features]
 default = []
 gpu = []
-
-[dependencies]
-core_affinity = { workspace = true }
 
 [lints]
 workspace = true
