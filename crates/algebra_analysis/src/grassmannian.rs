@@ -532,9 +532,9 @@ mod tests {
         // Verify that box-kite membership stratifies geodesic distances
         // ZDs within the same box-kite should have different mean distance
         // than ZDs in different box-kites
-        use crate::boxkites::find_box_kites;
+        use crate::boxkites::cached_sedenion_boxkites;
 
-        let box_kites = find_box_kites(16, 1e-10);
+        let box_kites = cached_sedenion_boxkites();
         assert_eq!(box_kites.len(), 7, "Should have 7 box-kites");
 
         // Get all assessors with their box-kite membership

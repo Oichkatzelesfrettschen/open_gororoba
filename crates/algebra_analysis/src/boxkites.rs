@@ -345,6 +345,20 @@ pub fn find_box_kites(dim: usize, atol: f64) -> Vec<BoxKite> {
     boxkites
 }
 
+/// Cached sedenion box-kites (dim=16, atol=1e-10).
+/// Safe for concurrent test access: OnceLock guarantees single initialization.
+/// In test builds, also initializes the Rayon pool with physical core pinning
+/// before computing box-kites (which triggers parallel ZD search via cd_kernel).
+pub fn cached_sedenion_boxkites() -> &'static Vec<BoxKite> {
+    use std::sync::OnceLock;
+    static SEDENION_BOXKITES: OnceLock<Vec<BoxKite>> = OnceLock::new();
+    SEDENION_BOXKITES.get_or_init(|| {
+        #[cfg(test)]
+        crate::test_support::init_physical_rayon_pool();
+        find_box_kites(16, 1e-10)
+    })
+}
+
 /// Analyze the symmetry structure of box-kites.
 pub fn analyze_box_kite_symmetry(dim: usize, atol: f64) -> BoxKiteSymmetryResult {
     let boxkites = find_box_kites(dim, atol);
@@ -1584,7 +1598,7 @@ mod tests {
 
     #[test]
     fn test_sedenion_boxkite_count() {
-        let boxkites = find_box_kites(16, 1e-10);
+        let boxkites = cached_sedenion_boxkites();
         assert_eq!(
             boxkites.len(),
             7,
@@ -1595,7 +1609,7 @@ mod tests {
 
     #[test]
     fn test_sedenion_boxkite_structure() {
-        let boxkites = find_box_kites(16, 1e-10);
+        let boxkites = cached_sedenion_boxkites();
 
         for (i, bk) in boxkites.iter().enumerate() {
             // Each box-kite should have 6 assessors
@@ -1637,7 +1651,7 @@ mod tests {
 
     #[test]
     fn test_sedenion_strut_signatures() {
-        let boxkites = find_box_kites(16, 1e-10);
+        let boxkites = cached_sedenion_boxkites();
         let mut signatures: Vec<usize> = boxkites.iter().map(|bk| bk.strut_signature).collect();
         signatures.sort();
 
@@ -1675,7 +1689,7 @@ mod tests {
 
     #[test]
     fn test_assessors_partition_into_boxkites() {
-        let boxkites = find_box_kites(16, 1e-10);
+        let boxkites = cached_sedenion_boxkites();
 
         // Collect all assessors from all box-kites
         let mut all_assessors: Vec<Assessor> = boxkites
@@ -1692,9 +1706,9 @@ mod tests {
 
     #[test]
     fn test_octahedral_degree() {
-        let boxkites = find_box_kites(16, 1e-10);
+        let boxkites = cached_sedenion_boxkites();
 
-        for bk in &boxkites {
+        for bk in boxkites {
             // Count degree of each vertex
             let mut degrees = [0usize; 6];
             for &(i, j) in &bk.edges {
@@ -1730,8 +1744,8 @@ mod tests {
 
     #[test]
     fn test_all_edges_have_sign_solutions() {
-        let boxkites = find_box_kites(16, 1e-10);
-        for bk in &boxkites {
+        let boxkites = cached_sedenion_boxkites();
+        for bk in boxkites {
             for &(i, j) in &bk.edges {
                 let sols = all_diagonal_zero_products(&bk.assessors[i], &bk.assessors[j], 1e-10);
                 assert!(
@@ -1749,8 +1763,8 @@ mod tests {
     #[test]
     fn test_each_box_kite_has_6_trefoil_and_2_zigzag() {
         // de Marrais: 8 triangular faces = 6 trefoils + 2 zigzags
-        let boxkites = find_box_kites(16, 1e-10);
-        for bk in &boxkites {
+        let boxkites = cached_sedenion_boxkites();
+        for bk in boxkites {
             let nodes = &bk.assessors;
             let edge_set: HashSet<(usize, usize)> = bk
                 .edges
@@ -1806,8 +1820,8 @@ mod tests {
     #[test]
     fn test_strut_pairs_no_zero_products() {
         // Struts (non-edges in octahedron) should have no diagonal zero-products
-        let boxkites = find_box_kites(16, 1e-10);
-        for bk in &boxkites {
+        let boxkites = cached_sedenion_boxkites();
+        for bk in boxkites {
             for &(i, j) in &bk.struts {
                 let sols = all_diagonal_zero_products(&bk.assessors[i], &bk.assessors[j], 1e-10);
                 assert!(
@@ -1824,8 +1838,8 @@ mod tests {
 
     #[test]
     fn test_canonical_strut_table_two_zigzag_faces() {
-        let boxkites = find_box_kites(16, 1e-10);
-        for bk in &boxkites {
+        let boxkites = cached_sedenion_boxkites();
+        for bk in boxkites {
             let tab = canonical_strut_table(bk, 1e-10);
 
             // ABC should be a zigzag face (all Opposite edges)
@@ -1861,8 +1875,8 @@ mod tests {
     #[test]
     fn test_production_rule_1_trefoil_third() {
         // PR#1 should reconstruct a valid third vertex for every edge
-        let boxkites = find_box_kites(16, 1e-10);
-        for bk in &boxkites {
+        let boxkites = cached_sedenion_boxkites();
+        for bk in boxkites {
             let edge_set: HashSet<(usize, usize)> = bk
                 .edges
                 .iter()
@@ -1922,9 +1936,9 @@ mod tests {
     fn test_production_rule_2_creates_new_co_assessors() {
         // PR#2 outputs must be co-assessors with each other but not with inputs
         let primitives: HashSet<Assessor> = primitive_assessors().into_iter().collect();
-        let boxkites = find_box_kites(16, 1e-10);
+        let boxkites = cached_sedenion_boxkites();
 
-        for bk in &boxkites {
+        for bk in boxkites {
             for &(i, j) in &bk.edges {
                 let (p, q) = production_rule_2(&bk.assessors[i], &bk.assessors[j], 1e-10);
                 assert_ne!(p, q);
@@ -2085,7 +2099,7 @@ mod tests {
         );
 
         // Cross-validate against find_box_kites
-        let boxkites = find_box_kites(16, 1e-10);
+        let boxkites = cached_sedenion_boxkites();
         let bk_union: HashSet<CrossPair> = boxkites
             .iter()
             .flat_map(|bk| bk.assessors.iter().map(|a| (a.low, a.high)))
@@ -2713,10 +2727,10 @@ mod tests {
     fn test_every_boxkite_edge_has_zero_product() {
         // Every edge (co-assessor pair) in every box-kite must have at
         // least one sign combination (s,t) such that diag(s)*diag(t) = 0.
-        let boxkites = find_box_kites(16, 1e-10);
+        let boxkites = cached_sedenion_boxkites();
         assert_eq!(boxkites.len(), 7);
 
-        for bk in &boxkites {
+        for bk in boxkites {
             assert_eq!(bk.edges.len(), 12, "octahedron has 12 edges");
             for &(i, j) in &bk.edges {
                 let has_zp = diagonal_zero_product(&bk.assessors[i], &bk.assessors[j], 1e-10);
