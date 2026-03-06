@@ -99,9 +99,9 @@ fn simulate_cpu(
                     // Eigenvalue-modulated sink
                     let theta = dy.atan2(dx);
                     let mut sink_strength = 0.0f32;
-                    for k in 0..16 {
+                    for (k, &ev) in eigenvalues.iter().enumerate().take(16) {
                         let phase = (k as f32 * theta).cos();
-                        sink_strength += eigenvalues[k] * phase * phase;
+                        sink_strength += ev * phase * phase;
                     }
 
                     let tau = rho[idx];
