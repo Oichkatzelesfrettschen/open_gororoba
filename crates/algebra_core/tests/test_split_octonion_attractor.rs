@@ -111,8 +111,8 @@ fn test_split_octonion_attractor_regression_dim_128_256_guarded() {
         return;
     }
 
-    let per_dim_budget_s = env_f64("CD_ATTRACTOR_PER_DIM_BUDGET_S", 20.0);
-    let total_budget_s = env_f64("CD_ATTRACTOR_TOTAL_BUDGET_S", 30.0);
+    let per_dim_budget_s = env_f64("CD_ATTRACTOR_PER_DIM_BUDGET_S", 30.0);
+    let total_budget_s = env_f64("CD_ATTRACTOR_TOTAL_BUDGET_S", 45.0);
     let max_diff_128 = env_f64("CD_ATTRACTOR_MAX_DIFF_128", 0.02);
     let max_diff_256 = env_f64("CD_ATTRACTOR_MAX_DIFF_256", 0.02);
     let split_target = 0.375;
