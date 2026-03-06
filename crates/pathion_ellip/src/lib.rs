@@ -1,3 +1,4 @@
+pub mod angular_size;
 pub mod diagonalizer;
 pub mod carlson;
 pub mod pathion_eigenvalues;
