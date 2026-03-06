@@ -353,13 +353,8 @@ fn step_size(x_val: f64, coord_index: usize) -> f64 {
         // Time: rarely varied, use absolute step
         T => 1e-6,
         // Radial: proportional for large r, absolute floor for small r
-        R => {
-            if abs_x > 1.0 {
-                abs_x * 1e-7
-            } else {
-                1e-7
-            }
-        }
+        R if abs_x > 1.0 => abs_x * 1e-7,
+        R => 1e-7,
         // Theta: keep away from poles (0 and pi)
         THETA => {
             let safe = abs_x.min(std::f64::consts::PI - abs_x);

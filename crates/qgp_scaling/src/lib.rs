@@ -15,7 +15,9 @@
 //! - [`v2_relation`]: v2/eccentricity vs d(ln R_AA)/d(ln pT) linear analysis
 //! - [`multiplicity`]: Hardcoded dNch/dy tables per collision system and centrality
 //! - [`data_tables`]: Published Glauber Npart validation tables
+//! - [`competing_models`]: BIC comparison against CUJET3.0 and fractional Langevin
 
+pub mod competing_models;
 pub mod data_tables;
 pub mod density_scaling;
 pub mod epsilon_fit;

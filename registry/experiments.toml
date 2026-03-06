@@ -1710,8 +1710,9 @@ claims = ["C-840", "C-841", "C-842", "C-843", "C-844", "C-845", "C-846", "C-847"
 claim_refs = ["C-840", "C-841", "C-842", "C-843", "C-844", "C-845", "C-846", "C-847"]
 deterministic = true
 gpu = false
-status = "planned"
-status_token = "PLANNED"
+status = "complete"
+status_token = "COMPLETE"
+status_note = "Sprint 69: Full pipeline executed. Pb-Pb eps_bar=[0.60,2.92] GeV monotonic. Multi-system (8 PbPb + 8 XeXe) beta=0.355+/-0.011, K_PbPb=0.1152, K_XeXe=0.1248, chi2/ndf=28.4. C-842/C-844/C-845/C-846 FALSIFIED. C-843 VERIFIED. v2 R^2=-0.94. Xe-Xe HEPData record corrected: ins1672790 (was ins1684320)."
 lineage_id = "XL-073"
 input_path_refs = []
 output_path_refs = []
@@ -2009,23 +2010,24 @@ title = "Orthoplex Diffusion Dark Energy Fit"
 binary = "orthoplex-cosmo-fit"
 binary_registered = true
 binary_experiment_declared = ""
-method = "Bounded Nelder-Mead optimization over 5 parameters (omega_m, h0, alpha, beta, t_0) with k=63 fixed. Joint chi2 = chi2_SN (analytic M_B marginalization) + chi2_BAO (mixed isotropic + 2x2 anisotropic covariance)."
-input = "data/external/PantheonPlusSH0ES.dat, DESI DR1 BAO (hardcoded)"
+method = "Bounded Nelder-Mead optimization over 5 parameters (omega_m, h0, alpha, beta, t_0) with k=63 fixed. Joint chi2 = chi2_SN (full 1578x1578 STAT+SYS precision matrix via Cholesky, analytic M_B marginalization) + chi2_BAO (mixed isotropic + 2x2 anisotropic covariance) + chi2_CC + chi2_fsig8 + chi2_CMB."
+input = "data/external/PantheonPlusSH0ES.dat, data/external/Pantheon+SH0ES_STAT+SYS.cov, DESI DR1 BAO (hardcoded)"
 output = ["data/csv/orthoplex_w_of_z.csv"]
-run = "cargo run --release --bin orthoplex-cosmo-fit -- --skip-download --k 63"
-run_command_sha256 = "b3307c5a75fd119e4a5e7b7e8913b78519675e2305f91068a1bf38becc6fa5fb"
+run = "cargo run --release --bin orthoplex-cosmo-fit -- --k 63"
+run_command_sha256 = ""
 claims = ["C-931", "C-932"]
 claim_refs = ["C-931", "C-932"]
 deterministic = true
 seed = 0
 gpu = false
-status = "active"
-status_token = "ACTIVE"
+status = "complete"
+status_token = "COMPLETE"
 lineage_id = "XL-086"
-input_path_refs = ["data/external/PantheonPlusSH0ES.dat"]
+input_path_refs = ["data/external/PantheonPlusSH0ES.dat", "data/external/Pantheon+SH0ES_STAT+SYS.cov"]
 output_path_refs = ["data/csv/orthoplex_w_of_z.csv"]
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
+status_note = "Completed 2026-03-05 with full 1578x1578 STAT+SYS covariance. LCDM: chi2=767.39, BIC=782.20. Orthoplex fixed-beta: chi2=1458.07, BIC=1487.68, delta-BIC=+705.48. C-932 FALSIFIED."
 
 [[experiment]]
 id = "E-088"
@@ -2057,21 +2059,47 @@ title = "Dark Halo Hunt: CDG-2 Consistency Across k Values"
 binary = "dark-halo-hunt"
 binary_registered = true
 binary_experiment_declared = ""
-method = "Sweep k values [4,8,16,32], run LBM + dark halo detector (dark_halo_detector.wgsl) at each k. Evaluate CDG-2 consistency via spectral dimension and volume fraction mapping."
+method = "Sweep k values [4,8,16,32,63], run LBM + dark halo detector at each k. CUDA path: SoA layout, L2 pinning, fused collision+streaming. Detect overdense low-velocity cells as halo candidates. Threshold: rho > density_factor * rho_mean AND |u| < velocity_epsilon."
 input = "LBM simulation (generated internally)"
-output = ["data/evidence/dark_halo_hunt.toml"]
-run = "cargo run --release --bin dark-halo-hunt -- --grid 256 --steps 2000"
+output = ["data/evidence/dark_halo_hunt_cuda.toml"]
+run = "cargo run --release --bin dark-halo-hunt -- --cuda --grid 256 --steps 2000 --k-values 4,8,16,32,63"
 run_command_sha256 = ""
 claims = []
 claim_refs = []
 deterministic = false
-seed = 0
+seed = 42
 gpu = true
-status = "active"
-status_token = "ACTIVE"
+status = "complete"
+status_token = "COMPLETE"
+status_note = "Verdict: FALSIFIED. VF=0.0 at all k=[4,8,16,32,63] with density_factor=1.5, vel_eps=0.01. No k-value produces CDG-2-like overdense structures in 256^3 BGK-LBM after 2000 steps. ZD viscosity modulation insufficient to create baryon-empty gravitational wells."
 lineage_id = "XL-088"
 input_path_refs = []
-output_path_refs = ["data/evidence/dark_halo_hunt.toml"]
+output_path_refs = ["data/evidence/dark_halo_hunt_cuda.toml"]
 dataset_refs = []
 reproducibility_class = "stochastic_seeded"
+
+[[experiment]]
+id = "E-090"
+title = "BIC Model Comparison: Arleo-Falmagne vs CUJET3.0 vs Fractional Langevin"
+binary = "arleo-falmagne-scaling"
+binary_registered = true
+binary_experiment_declared = ""
+method = "Compare R_AA predictions from three QGP energy-loss models via Bayesian Information Criterion. Arleo-Falmagne (2 params: beta, K) vs CUJET3.0 (5 params: alpha_s, mu_M/T, c_M, f_E, f_M) vs fractional Langevin (3 params: alpha, D_s, T_c). BIC = chi2 + k*ln(n). CUJET3.0 digitized from JHEP02(2016)169 Fig. 4. Langevin digitized from arXiv:2401.03757 Fig. 3. Evaluated against ALICE Pb-Pb 5.02 TeV 0-5% R_AA."
+input = "ALICE Pb-Pb 5.02 TeV R_AA (HEPData record 89396)"
+output = ["stdout"]
+run = "cargo run --release --bin arleo-falmagne-scaling -- bic-compare --data-dir data/external --pt-min 5.0"
+run_command_sha256 = ""
+claims = ["C-938", "C-939"]
+claim_refs = []
+deterministic = true
+seed = 0
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+status_note = "All code implemented (competing_models.rs + BicCompare subcommand). Awaiting execution against real ALICE data."
+lineage_id = "XL-090"
+input_path_refs = ["data/external/alice_pbpb_raa/"]
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
 
