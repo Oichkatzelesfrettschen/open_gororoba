@@ -381,6 +381,8 @@ lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
 ash = { version = "0.38.0", features = ["debug"] }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
+rayon = { workspace = true }
+core_affinity = { workspace = true }
 clap = { workspace = true }
 csv = { workspace = true }
 num-complex = { workspace = true }
