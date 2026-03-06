@@ -10,6 +10,7 @@
 
 pub mod annihilator;
 pub mod associator_entropy;
+pub mod boxkite_alignment;
 pub mod boxkites;
 pub mod codebook;
 pub mod entropy_census;
@@ -22,6 +23,8 @@ pub mod prefix_chain_theorem;
 pub mod projective_geometry;
 pub mod quantum_chaos;
 pub mod reggiani;
+pub mod riemann_resonance;
+pub mod sedenion_lifting;
 pub mod spectral_dimension;
 pub mod stiefel;
 pub mod stochastic;

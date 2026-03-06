@@ -304,7 +304,41 @@ path = "src/bin/adm_decompose.rs"
 name = "algebraic-warp-sweep"
 path = "src/bin/algebraic_warp_sweep.rs"
 
-# ---- GPU Falsification (2) ----
+# ---- N-Body / Gravastar (1) ----
+
+[[bin]]
+name = "gravastar-orbit-crucible"
+path = "src/bin/gravastar_orbit_crucible.rs"
+
+[[bin]]
+name = "kerr-chingon-sweep"
+path = "src/bin/kerr_chingon_sweep.rs"
+
+[[bin]]
+name = "dark-halo-nfw-fit"
+path = "src/bin/dark_halo_nfw_fit.rs"
+
+# ---- Chaos / Spectral Crucibles (4) ----
+
+[[bin]]
+name = "routon-chaos-crucible"
+path = "src/bin/routon_chaos_crucible.rs"
+
+[[bin]]
+name = "riemann-resonance-sweep"
+path = "src/bin/riemann_resonance_sweep.rs"
+
+[[bin]]
+name = "cd-ladder-chaos"
+path = "src/bin/cd_ladder_chaos.rs"
+
+# ---- Entropy / Alignment Scan (1) ----
+
+[[bin]]
+name = "entropy-trap-scan"
+path = "src/bin/entropy_trap_scan.rs"
+
+# ---- GPU Falsification / Sweep (4) ----
 
 [[bin]]
 name = "clustering-256"
@@ -314,8 +348,17 @@ path = "src/bin/clustering_256.rs"
 name = "dark-halo-hunt"
 path = "src/bin/dark_halo_hunt.rs"
 
+[[bin]]
+name = "kerr-pathion-sweep"
+path = "src/bin/kerr_pathion_sweep.rs"
+
+[[bin]]
+name = "mass-gap-spectrum"
+path = "src/bin/mass_gap_spectrum.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
+algebra_analysis = { path = "../algebra_analysis" }
 casimir_core = { path = "../casimir_core" }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }

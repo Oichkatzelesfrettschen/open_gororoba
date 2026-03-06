@@ -151,3 +151,10 @@ verified/C910_Right_e4.v
 verified/C910_Right_e5.v
 verified/C910_Right_e6.v
 verified/C910_Right_e7.v
+theories/CarlsonIntegrals.v
+theories/CDPropertyTower.v
+theories/BekensteinEntropy.v
+theories/PathionZDGraph.v
+verified/C993_CarlsonBranchFree.v
+verified/C999_PathionEntropyBound.v
+verified/C1007_CDPropertyLoss.v
