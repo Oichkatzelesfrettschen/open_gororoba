@@ -7,8 +7,10 @@ repository.workspace = true
 
 [dependencies]
 algebra_core = { version = "0.1.0", path = "../algebra_core" }
+cd_kernel = { workspace = true }
 anyhow.workspace = true
 ellip = "1.1.0"
+nalgebra.workspace = true
 num-complex.workspace = true
 rayon.workspace = true
 

@@ -511,4 +511,22 @@ mod tests {
         let src = include_str!("../shaders/init.wgsl");
         crate::compute::compile_wgsl(src).expect("f32 init shader must compile via naga");
     }
+
+    #[test]
+    fn compile_wgsl_pathion_sink_shader() {
+        let src = include_str!("../shaders/pathion_sink.wgsl");
+        crate::compute::compile_wgsl(src).expect("pathion sink v1 shader must compile via naga");
+    }
+
+    #[test]
+    fn compile_wgsl_pathion_sink_v2_shader() {
+        let src = include_str!("../shaders/pathion_sink_v2.wgsl");
+        crate::compute::compile_wgsl(src).expect("pathion sink v2 shader must compile via naga");
+    }
+
+    #[test]
+    fn compile_wgsl_non_newtonian_shader() {
+        let src = include_str!("../shaders/lbm_non_newtonian.wgsl");
+        crate::compute::compile_wgsl(src).expect("non-Newtonian LBM shader must compile via naga");
+    }
 }

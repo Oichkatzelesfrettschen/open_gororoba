@@ -3455,6 +3455,7 @@ dependencies = [
 name = "gororoba_cli_physics"
 version = "0.1.0"
 dependencies = [
+ "algebra_analysis",
  "algebra_core",
  "anyhow",
  "ash",
@@ -5941,7 +5942,9 @@ dependencies = [
  "algebra_core",
  "anyhow",
  "approx",
+ "cd_kernel",
  "ellip",
+ "nalgebra 0.33.2",
  "num-complex",
  "rayon",
 ]

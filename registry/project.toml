@@ -11,9 +11,9 @@ insight_count = 99
 experiment_count = 89
 complete_experiment_count = 76
 paper_count = 19
-binary_count = 161
+binary_count = 170
 kernel_checked_claims = 107
-proof_files = 142
+proof_files = 156
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
 [sprints.s69]
