@@ -29,6 +29,23 @@ step_1 = "Run one compile-heavy cargo command at a time."
 step_2 = "Parallelize only non-cargo tasks (file scans, report parsing, documentation edits)."
 step_3 = "Reuse one built binary set for follow-on runs."
 
+[shared.testing_protocol]
+mandatory = true
+note = """
+Never use standard `cargo test` for algebra_analysis or gr_core. \
+These crates contain O(dim^3+) mathematical tests that take 29+ minutes \
+under Cranelift. Always use the LLVM test-heavy profile via nextest."""
+
+[shared.testing_protocol.heavy_crates]
+algebra_analysis = "cargo nextest run --cargo-profile test-heavy --profile heavy -p algebra_analysis"
+gr_core = "cargo nextest run --cargo-profile test-heavy --profile heavy -p gr_core"
+
+[shared.testing_protocol.core_pinning]
+required_for = "Any new heavy O(dim^3+) mathematical test"
+call = "crate::test_support::init_physical_rayon_pool();"
+placement = "First line of test function body"
+reason = "Prevents SMT V-Cache thrashing on AMD Zen 3D and similar architectures"
+
 [shared.project]
 name = "open_gororoba"
 kind = "computational_physics_research_platform"

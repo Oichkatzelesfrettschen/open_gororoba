@@ -1,0 +1,19 @@
+[store]
+dir = "target/nextest"
+
+# Default profile: fast iteration with Cranelift (existing profile.test)
+[profile.default]
+test-threads = 6
+slow-timeout = { period = "30s", terminate-after = 3 }
+fail-fast = true
+status-level = "fail"
+final-status-level = "slow"
+
+# Heavy profile: LLVM-compiled math-intensive tests
+# Usage: cargo nextest run --cargo-profile test-heavy --profile heavy -p algebra_analysis
+[profile.heavy]
+test-threads = 6
+slow-timeout = { period = "120s", terminate-after = 2 }
+fail-fast = false
+status-level = "fail"
+final-status-level = "slow"

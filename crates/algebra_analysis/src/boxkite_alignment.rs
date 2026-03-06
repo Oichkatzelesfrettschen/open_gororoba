@@ -6,7 +6,7 @@
 //!
 //! This is a *structural/exploratory* tool, not a physical prediction.
 
-use crate::boxkites::{BoxKite, find_box_kites};
+use crate::boxkites::{cached_sedenion_boxkites, BoxKite};
 use cd_kernel::cayley_dickson::cd_norm_sq;
 
 /// Alignment spectrum: projection weights onto each of the 7 box-kites.
@@ -74,10 +74,9 @@ pub fn alignment_spectrum(v: &[f64], boxkites: &[BoxKite]) -> AlignmentSpectrum 
     }
 }
 
-/// Convenience: compute alignment spectrum using freshly computed box-kites.
+/// Convenience: compute alignment spectrum using cached sedenion box-kites.
 pub fn compute_alignment(v: &[f64]) -> AlignmentSpectrum {
-    let boxkites = find_box_kites(16, 1e-10);
-    alignment_spectrum(v, &boxkites)
+    alignment_spectrum(v, cached_sedenion_boxkites())
 }
 
 /// Scan result for a single time step in the entropy trap scan.
@@ -100,8 +99,8 @@ mod tests {
     #[test]
     fn alignment_of_zero_vector() {
         let v = vec![0.0; 16];
-        let boxkites = find_box_kites(16, 1e-10);
-        let spec = alignment_spectrum(&v, &boxkites);
+        let boxkites = cached_sedenion_boxkites();
+        let spec = alignment_spectrum(&v, boxkites);
         assert_eq!(spec.n_boxkites, 7);
         assert!(spec.total_captured.abs() < 1e-12);
     }
@@ -112,8 +111,8 @@ mod tests {
         // Should have zero alignment with all box-kites (they span imaginary indices)
         let mut v = vec![0.0; 16];
         v[0] = 1.0;
-        let boxkites = find_box_kites(16, 1e-10);
-        let spec = alignment_spectrum(&v, &boxkites);
+        let boxkites = cached_sedenion_boxkites();
+        let spec = alignment_spectrum(&v, boxkites);
         assert!(
             spec.total_captured < 1e-12,
             "Pure real should have zero BK alignment, got {}",
@@ -126,8 +125,8 @@ mod tests {
         // e1 should be captured by box-kites that contain assessors with low=1
         let mut v = vec![0.0; 16];
         v[1] = 1.0;
-        let boxkites = find_box_kites(16, 1e-10);
-        let spec = alignment_spectrum(&v, &boxkites);
+        let boxkites = cached_sedenion_boxkites();
+        let spec = alignment_spectrum(&v, boxkites);
         // At least one box-kite should capture this
         assert!(
             spec.total_captured > 0.5,
@@ -138,7 +137,7 @@ mod tests {
 
     #[test]
     fn seven_boxkites_found() {
-        let boxkites = find_box_kites(16, 1e-10);
+        let boxkites = cached_sedenion_boxkites();
         assert_eq!(boxkites.len(), 7, "Sedenions should have exactly 7 box-kites");
     }
 }

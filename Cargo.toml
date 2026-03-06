@@ -258,6 +258,15 @@ incremental = true
 overflow-checks = true
 codegen-backend = "cranelift"
 
+# Heavy math tests: LLVM backend for vectorization + FMA on eigensolvers,
+# associator computations, and O(dim^4) ZD graph construction.
+# Use: cargo nextest run --cargo-profile test-heavy --profile heavy -p algebra_analysis
+[profile.test-heavy]
+inherits = "test"
+opt-level = 2
+codegen-backend = "llvm"
+codegen-units = 4
+
 # gororoba_py is a cdylib (Python extension module); pyo3 requires Python symbols
 # at link time. Cranelift's test harness binary path omits -lpython, so we revert
 # this single crate to LLVM for dev and test to preserve linkage.

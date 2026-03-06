@@ -29,4 +29,5 @@ pub mod spectral_dimension;
 pub mod stiefel;
 pub mod stochastic;
 pub mod subalgebra;
+pub mod test_support;
 pub mod zd_graphs;

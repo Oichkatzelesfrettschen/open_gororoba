@@ -7,11 +7,13 @@ license = "GPL-2.0-only"
 
 [dependencies]
 cd_kernel = { workspace = true }
+core_affinity = { workspace = true }
 nalgebra = { workspace = true }
 petgraph = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
+rayon = { workspace = true }
 serde = { workspace = true }
 
 [dev-dependencies]
