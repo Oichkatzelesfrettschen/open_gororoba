@@ -129,6 +129,7 @@ raw-window-handle = "0.6.2"
 # Half-precision types
 half = "2.4"
 periodic-table-on-an-enum = "0.3.2"  # Element enum with atomic data
+moyo = "0.7"                         # Crystal symmetry finder (pure Rust, spglib team)
 
 # Numerical quadrature
 gauss-quad = "0.2.4"         # Gauss-Legendre quadrature (replaces hand-rolled Simpson)
