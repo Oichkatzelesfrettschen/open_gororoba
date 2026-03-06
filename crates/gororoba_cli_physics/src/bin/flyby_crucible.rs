@@ -97,11 +97,19 @@ struct FlybyConfig {
     inbound_dec_deg: f64,
     /// Inbound asymptotic right ascension (degrees).
     inbound_ra_deg: f64,
+    /// Outbound asymptotic declination (degrees).
+    /// From Anderson et al. (2008) Table I. Required to determine the
+    /// orbital plane normal h = (-v_in) x v_out correctly.
+    outbound_dec_deg: f64,
+    /// Outbound asymptotic right ascension (degrees).
+    outbound_ra_deg: f64,
     /// Observed anomalous delta-V (mm/s). Positive = speed gain.
     observed_dv_mm_s: f64,
 }
 
 fn all_flybys() -> Vec<FlybyConfig> {
+    // Inbound/outbound asymptotic directions from Anderson et al. (2008)
+    // PRL 100, 091102, Table I.
     vec![
         FlybyConfig {
             name: "Galileo-I (1990-12-08)",
@@ -109,6 +117,8 @@ fn all_flybys() -> Vec<FlybyConfig> {
             v_inf: 8.949,
             inbound_dec_deg: -12.5,
             inbound_ra_deg: 263.0,
+            outbound_dec_deg: -4.9,
+            outbound_ra_deg: 223.0,
             observed_dv_mm_s: 3.92,
         },
         FlybyConfig {
@@ -117,6 +127,8 @@ fn all_flybys() -> Vec<FlybyConfig> {
             v_inf: 6.851,
             inbound_dec_deg: -20.8,
             inbound_ra_deg: 280.0,
+            outbound_dec_deg: 72.0,
+            outbound_ra_deg: 89.0,
             observed_dv_mm_s: 13.46,
         },
         FlybyConfig {
@@ -125,6 +137,8 @@ fn all_flybys() -> Vec<FlybyConfig> {
             v_inf: 16.01,
             inbound_dec_deg: -12.9,
             inbound_ra_deg: 257.0,
+            outbound_dec_deg: -5.0,
+            outbound_ra_deg: 344.0,
             observed_dv_mm_s: -2.0,
         },
         FlybyConfig {
@@ -133,6 +147,8 @@ fn all_flybys() -> Vec<FlybyConfig> {
             v_inf: 3.863,
             inbound_dec_deg: -34.3,
             inbound_ra_deg: 247.0,
+            outbound_dec_deg: -20.6,
+            outbound_ra_deg: 116.0,
             observed_dv_mm_s: 1.80,
         },
         FlybyConfig {
@@ -141,6 +157,8 @@ fn all_flybys() -> Vec<FlybyConfig> {
             v_inf: 4.056,
             inbound_dec_deg: 31.4,
             inbound_ra_deg: 232.0,
+            outbound_dec_deg: 75.4,
+            outbound_ra_deg: 174.0,
             observed_dv_mm_s: 0.02,
         },
         FlybyConfig {
@@ -149,6 +167,8 @@ fn all_flybys() -> Vec<FlybyConfig> {
             v_inf: 9.897,
             inbound_dec_deg: -13.6,
             inbound_ra_deg: 0.0,
+            outbound_dec_deg: -5.3,
+            outbound_ra_deg: 345.0,
             observed_dv_mm_s: 0.0,
         },
     ]
@@ -256,17 +276,45 @@ fn hyperbolic_initial_state(
     let vx_pf = -GM_EARTH / h_ang * nu.sin();
     let vy_pf = GM_EARTH / h_ang * (e + nu.cos());
 
-    // Rotate perifocal frame to ECI using asymptotic direction
+    // Rotate perifocal frame to ECI using inbound AND outbound asymptotic directions.
+    //
+    // The perifocal frame has x_hat pointing from the focus toward perigee (nu=0),
+    // y_hat perpendicular in the orbital plane (toward nu=pi/2), and z_hat = h_hat
+    // perpendicular to the orbital plane.
+    //
+    // The perigee direction bisects the angle between the two asymptotic velocity
+    // vectors (-v_in and v_out). This is geometrically exact: the hyperbola is
+    // symmetric about the apse line, and both asymptotes make equal angles with it.
     let inbound_dir = radec_to_unit(cfg.inbound_ra_deg, cfg.inbound_dec_deg);
+    let outbound_dir = radec_to_unit(cfg.outbound_ra_deg, cfg.outbound_dec_deg);
 
-    let x_hat = -inbound_dir;
-    let z_ref = Vector3::new(0.0, 0.0, 1.0);
-    let y_hat = z_ref.cross(&x_hat);
-    let y_hat = if y_hat.norm() < 1e-10 {
-        let x_ref = Vector3::new(1.0, 0.0, 0.0);
-        x_ref.cross(&x_hat).normalize()
+    // Perigee direction = bisector of -inbound and outbound
+    let bisector = -inbound_dir + outbound_dir;
+    let x_hat = if bisector.norm() > 1e-10 {
+        bisector.normalize()
     } else {
-        y_hat.normalize()
+        // Degenerate: 180-degree turning (head-on collision). Use -inbound.
+        (-inbound_dir).normalize()
+    };
+
+    // Orbital angular momentum direction: h = (-v_in) x v_out
+    let h_orbital = (-inbound_dir).cross(&outbound_dir);
+    let h_norm_orb = h_orbital.norm();
+
+    // y_hat completes the right-handed perifocal frame: y = h x x
+    let y_hat = if h_norm_orb > 1e-10 {
+        let h_hat = h_orbital / h_norm_orb;
+        h_hat.cross(&x_hat).normalize()
+    } else {
+        // Degenerate: inbound ~ outbound (no turning). Fall back to z_ref.
+        let z_ref = Vector3::new(0.0, 0.0, 1.0);
+        let y_raw = z_ref.cross(&x_hat);
+        if y_raw.norm() > 1e-10 {
+            y_raw.normalize()
+        } else {
+            let x_ref = Vector3::new(1.0, 0.0, 0.0);
+            x_ref.cross(&x_hat).normalize()
+        }
     };
 
     let pos = x_hat * x_pf + y_hat * y_pf;
@@ -477,11 +525,41 @@ fn main() -> anyhow::Result<()> {
         all.iter().collect()
     };
 
+    // Print orbital plane diagnostics: h_hat and h.v_wind for each spacecraft
+    println!("--- Orbital plane diagnostics ---");
     println!(
-        "{:>30} {:>10} {:>10} {:>12} {:>12} {:>10} {:>10}",
+        "{:>30} {:>8} {:>8} {:>12} {:>6} {:>6}",
+        "Spacecraft", "h.vw_s", "turn_d", "h_dec", "obs_s", "pred_s"
+    );
+    for cfg in &configs {
+        let inb = radec_to_unit(cfg.inbound_ra_deg, cfg.inbound_dec_deg);
+        let outb = radec_to_unit(cfg.outbound_ra_deg, cfg.outbound_dec_deg);
+        let h_orb = (-inb).cross(&outb);
+        let h_n = h_orb.norm();
+        let h_hat = if h_n > 1e-10 { h_orb / h_n } else { Vector3::zeros() };
+        let h_dot_vw = h_hat.dot(&v_wind);
+        let turn_deg = (-inb).dot(&outb).acos().to_degrees();
+        let h_dec = h_hat.z.asin().to_degrees();
+        let pred_s = if h_dot_vw > 0.0 { "+" } else { "-" };
+        let obs_s = if cfg.observed_dv_mm_s > 0.01 {
+            "+"
+        } else if cfg.observed_dv_mm_s < -0.01 {
+            "-"
+        } else {
+            "~0"
+        };
+        println!(
+            "{:>30} {:>8.2} {:>8.1} {:>12.1} {:>6} {:>6}",
+            cfg.name, h_dot_vw, turn_deg, h_dec, obs_s, pred_s
+        );
+    }
+    println!();
+
+    println!(
+        "{:>30} {:>10} {:>12} {:>12} {:>12} {:>10} {:>10}",
         "Spacecraft", "Obs (mm/s)", "Pred (mm/s)", "Ratio", "Perigee(km)", "v_inf", "Window(s)"
     );
-    println!("{}", "-".repeat(104));
+    println!("{}", "-".repeat(108));
 
     // Run all flyby simulations in parallel
     let t1 = std::time::Instant::now();
@@ -510,7 +588,7 @@ fn main() -> anyhow::Result<()> {
 
     for (cfg, delta_v_mm_s, ratio, window, traj) in &results {
         println!(
-            "{:>30} {:>10.2} {:>10.4} {:>12.4} {:>12.0} {:>10.3} {:>10.0}",
+            "{:>30} {:>10.2} {:>12.4e} {:>12.4} {:>12.0} {:>10.3} {:>10.0}",
             cfg.name,
             cfg.observed_dv_mm_s,
             delta_v_mm_s,

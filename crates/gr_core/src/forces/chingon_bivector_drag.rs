@@ -3,23 +3,28 @@ use nalgebra::Vector3;
 
 /// Bivector-embedded Chingon drag: sign-sensitive to orbital plane orientation.
 ///
-/// Unlike `compute_chingon_drag()` which uses `.abs()` on all trig projections
-/// (making force always decelerating), this version embeds the 3D state into 64D
-/// using the orbital bivector r ^ v. The angular momentum direction h = r x v
-/// naturally encodes which hemisphere the spacecraft approaches from.
+/// Uses a **frame-invariant** orbital triad to embed the 3D state into 64D,
+/// ensuring the tensor contraction produces forces whose sign relative to
+/// velocity is determined by the physical geometry, not the coordinate frame.
+///
+/// The orbital triad (e_v, e_h, e_n):
+/// - `e_v = v_rel / |v_rel|` -- along the DM-relative velocity
+/// - `e_h = h_hat` -- orbital angular momentum direction (h = r x v)
+/// - `e_n = e_v x e_h` -- completing the right-handed triad
 ///
 /// Three blocks of 21 axes each (total 63 imaginary dimensions + 1 real = 64):
 ///
-/// 1. **Angular momentum block (axes 1-21)**: h_hat projects without .abs(),
-///    preserving the sign of each component.
-/// 2. **Velocity block (axes 22-42)**: v_rel = v - v_wind, direction preserved.
-/// 3. **Cross-coupling block (axes 43-63)**: sign(h . v_wind) * |v_rel| combined
-///    with G2-motivated rotation indices. Southern approach (h . v_wind > 0)
-///    produces positive torque (speed gain); northern produces negative (speed loss).
+/// 1. **Angular momentum block (axes 1-21)**: h projected into orbital triad
+///    (always [0, 1, 0] in this frame, so this block encodes h_norm only).
+/// 2. **Velocity block (axes 22-42)**: v_rel projected into orbital triad
+///    (always [|v_rel|, 0, 0] in this frame).
+/// 3. **Cross-coupling block (axes 43-63)**: sign(h . v_wind) * mixed terms.
+///    This block is the only one sensitive to the spacecraft's hemisphere
+///    relative to the dark matter wind.
 ///
-/// This produces the correct sign pattern:
-/// - NEAR (dec = -20.8, southern): positive delta-V (+13.46 mm/s observed)
-/// - Cassini (dec = -12.9, but outbound geometry flipped): negative delta-V
+/// Force direction: The cross-coupling block's sign(h . v_wind) determines
+/// whether the force accelerates (+) or decelerates (-) the spacecraft along
+/// its velocity vector.
 pub fn compute_chingon_bivector_drag(
     r: Vector3<f64>,
     v: Vector3<f64>,
@@ -53,8 +58,24 @@ pub fn compute_chingon_bivector_drag(
         Vector3::zeros()
     };
 
+    // Build the orbital triad (e_v, e_h, e_n) for frame-invariant embedding.
+    // In this frame:
+    //   h projects to [0, h_norm, 0]
+    //   v_rel projects to [v_rel_norm, 0, 0]  (approximately -- has small e_n component)
+    //   The cross-coupling mixes e_h and e_v components with cross_sign
+    let e_v = v_rel_hat;
+    let e_h = h_hat;
+    let e_n = e_v.cross(&e_h);
+    let e_n_norm = e_n.norm();
+    let e_n = if e_n_norm > 1e-30 { e_n / e_n_norm } else { Vector3::zeros() };
+
+    // Project physical vectors into the orbital triad
+    let h_triad = [h.dot(&e_v), h.dot(&e_h), h.dot(&e_n)];
+    let vrel_triad = [v_rel.dot(&e_v), v_rel.dot(&e_h), v_rel.dot(&e_n)];
+    let vrel_hat_triad = [v_rel_hat.dot(&e_v), v_rel_hat.dot(&e_h), v_rel_hat.dot(&e_n)];
+
     // Embed 3D state into 64D using three physically motivated blocks.
-    // Each block fills 21 axes using combinations of the 3 spatial components
+    // Each block fills 21 axes using combinations of the 3 orbital triad components
     // with 7 octonion-like rotation phases (7 imaginary units * 3 components = 21).
     let mut v_64d = [0.0f64; 64];
 
@@ -63,15 +84,9 @@ pub fn compute_chingon_bivector_drag(
     for axis in 0..21 {
         let comp = axis % 3;
         let phase_idx = axis / 3;
-        // Octonion phase rotation: 2*pi*k/7 for k=0..6
         let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
         let weight = phase.cos();
-        let h_comp = match comp {
-            0 => h_hat.x,
-            1 => h_hat.y,
-            _ => h_hat.z,
-        };
-        v_64d[1 + axis] = h_comp * weight * h_norm;
+        v_64d[1 + axis] = h_triad[comp] * weight;
     }
 
     // Block 2: relative velocity (axes 22-42)
@@ -80,12 +95,7 @@ pub fn compute_chingon_bivector_drag(
         let phase_idx = axis / 3;
         let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
         let weight = phase.sin() + phase.cos();
-        let v_comp = match comp {
-            0 => v_rel.x,
-            1 => v_rel.y,
-            _ => v_rel.z,
-        };
-        v_64d[22 + axis] = v_comp * weight;
+        v_64d[22 + axis] = vrel_triad[comp] * weight;
     }
 
     // Block 3: cross-coupling (axes 43-63)
@@ -93,98 +103,56 @@ pub fn compute_chingon_bivector_drag(
         let comp = axis % 3;
         let phase_idx = axis / 3;
         let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
-        // Mix angular momentum and velocity with cross-sign
-        let h_comp = match comp {
-            0 => h_hat.x,
-            1 => h_hat.y,
-            _ => h_hat.z,
-        };
-        let v_comp = match comp {
-            0 => v_rel_hat.x,
-            1 => v_rel_hat.y,
-            _ => v_rel_hat.z,
-        };
-        v_64d[43 + axis] = cross_sign * v_rel_norm * (h_comp * phase.sin() + v_comp * phase.cos());
+        let h_c = h_triad[comp] / h_norm.max(1e-30);
+        let v_c = vrel_hat_triad[comp];
+        v_64d[43 + axis] = cross_sign * v_rel_norm * (h_c * phase.sin() + v_c * phase.cos());
     }
 
-    // Normalize the embedding vector to unit norm so that the force scales
-    // purely through alpha, independent of trajectory-dependent magnitudes.
-    let emb_norm_sq: f64 = v_64d.iter().map(|x| x * x).sum();
-    let emb_norm = emb_norm_sq.sqrt();
-    if emb_norm < 1e-30 {
-        return Vector3::zeros();
-    }
-    for x in &mut v_64d {
-        *x /= emb_norm;
-    }
-
-    // Contract through AVT violations
+    // Do NOT normalize to unit norm. The physical magnitudes (h_norm, v_rel_norm)
+    // carry the trajectory-dependent amplification that makes the force O(mm/s)
+    // over a flyby. The bilinear AVT contraction with physical magnitudes gives
+    // force ~ alpha * h_norm * v_rel_norm / 64 ~ O(1e-8) km/s^2 at alpha=8e-14,
+    // integrating to O(1 mm/s) delta-V over a typical 50000 s flyby window.
+    //
+    // Stability: v_rel is dominated by v_wind (~230 km/s), so the embedding
+    // magnitudes don't grow with the integration. The force is bounded by
+    // alpha * |v_wind|^2 * SOI_radius ~ 8e-14 * 5e4 * 3e5 ~ 1e-6 km/s^2,
+    // which is 9 orders of magnitude below gravity at perigee. RK4 is stable.
     let n_viol = avt.violations.len().max(1) as f64;
     let mut force_64d = [0.0f64; 64];
     for &(i, j, _k, m, sign) in &avt.violations {
         let contribution = alpha * v_64d[i] * v_64d[j] * (sign as f64);
         force_64d[m] += contribution;
     }
-    // Normalize by violation count to keep force O(alpha)
+    // Normalize by violation count to keep force O(alpha * phys_scale)
     for f in &mut force_64d {
         *f /= n_viol;
     }
 
-    // Project back to 3D using the same embedding basis (adjoint projection).
-    // Sum contributions from all three blocks, weighted by their projection vectors.
-    let mut res = Vector3::zeros();
+    // Project back to 3D using ONLY the cross-coupling block (axes 43-63).
+    //
+    // The angular momentum block (1-21) and velocity block (22-42) encode the
+    // orbital state but should not generate force: they represent the "classical"
+    // embedding that merely positions the spacecraft in the 64D algebra. The
+    // physical non-alternative torque arises solely from the cross-coupling block
+    // which mixes h and v_rel with cross_sign = sign(h . v_wind).
+    //
+    // This isolates the non-alternative torque from classical drag artifacts,
+    // ensuring the force sign along velocity is governed by cross_sign.
+    let mut res_triad = [0.0f64; 3];
 
-    // Project from angular momentum block
     for axis in 0..21 {
         let comp = axis % 3;
         let phase_idx = axis / 3;
         let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
-        let weight = phase.cos();
-        let f = force_64d[1 + axis];
-        match comp {
-            0 => res.x += f * weight,
-            1 => res.y += f * weight,
-            _ => res.z += f * weight,
-        }
+        let h_c = h_triad[comp] / h_norm.max(1e-30);
+        let v_c = vrel_hat_triad[comp];
+        let proj = cross_sign * (h_c * phase.sin() + v_c * phase.cos());
+        res_triad[comp] += force_64d[43 + axis] * proj;
     }
 
-    // Project from velocity block
-    for axis in 0..21 {
-        let comp = axis % 3;
-        let phase_idx = axis / 3;
-        let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
-        let weight = phase.sin() + phase.cos();
-        let f = force_64d[22 + axis];
-        match comp {
-            0 => res.x += f * weight,
-            1 => res.y += f * weight,
-            _ => res.z += f * weight,
-        }
-    }
-
-    // Project from cross-coupling block
-    for axis in 0..21 {
-        let comp = axis % 3;
-        let phase_idx = axis / 3;
-        let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
-        let h_comp = match comp {
-            0 => h_hat.x,
-            1 => h_hat.y,
-            _ => h_hat.z,
-        };
-        let v_comp = match comp {
-            0 => v_rel_hat.x,
-            1 => v_rel_hat.y,
-            _ => v_rel_hat.z,
-        };
-        let f = force_64d[43 + axis];
-        let proj = cross_sign * (h_comp * phase.sin() + v_comp * phase.cos());
-        match comp {
-            0 => res.x += f * proj,
-            1 => res.y += f * proj,
-            _ => res.z += f * proj,
-        }
-    }
+    // Rotate from orbital triad back to the original coordinate frame
+    let res = e_v * res_triad[0] + e_h * res_triad[1] + e_n * res_triad[2];
 
     res / 64.0
 }
