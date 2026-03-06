@@ -3458,6 +3458,7 @@ dependencies = [
  "lbm_core",
  "lbm_vulkan",
  "materials_core",
+ "mimalloc",
  "nalgebra 0.33.2",
  "ndarray 0.16.1",
  "neural_homotopy",

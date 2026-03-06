@@ -226,6 +226,125 @@ fn golden_section_minimize<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, tol: f64) ->
     (x, f(x))
 }
 
+/// Result of a multi-system density scaling fit with per-system K constants.
+#[derive(Debug, Clone)]
+pub struct MultiSystemScalingResult {
+    /// Best-fit path-length exponent (shared across systems).
+    pub beta: f64,
+    /// Upper error on beta (delta-chi2 = 1).
+    pub beta_err_up: f64,
+    /// Lower error on beta (delta-chi2 = 1).
+    pub beta_err_down: f64,
+    /// Per-system K constants: (system_label, K, K_err).
+    pub k_per_system: Vec<(String, f64, f64)>,
+    /// Total chi2 at best fit.
+    pub chi2_min: f64,
+    /// Number of degrees of freedom.
+    pub ndf: usize,
+    /// Chi2/ndf (reduced chi2).
+    pub chi2_per_ndf: f64,
+}
+
+/// Multi-system density scaling fit with per-system K constants and shared beta.
+///
+/// For each beta, groups data by `system` label, fits a separate K for each
+/// system via weighted least-squares, and sums the chi2 values.
+pub fn fit_density_scaling_multi_k(
+    data: &[DensityScalingPoint],
+    beta_lo: f64,
+    beta_hi: f64,
+    beta_step: f64,
+) -> MultiSystemScalingResult {
+    let mut systems: Vec<String> = data.iter().map(|d| d.system.clone()).collect();
+    systems.sort();
+    systems.dedup();
+    let n_systems = systems.len();
+
+    let n_steps = ((beta_hi - beta_lo) / beta_step).ceil() as usize + 1;
+    let mut best_beta = beta_lo;
+    let mut best_chi2 = f64::INFINITY;
+    let mut chi2_profile = Vec::with_capacity(n_steps);
+
+    for step in 0..n_steps {
+        let beta = beta_lo + step as f64 * beta_step;
+        let c2 = chi2_at_beta_multi_k(data, &systems, beta);
+        chi2_profile.push((beta, c2));
+        if c2 < best_chi2 {
+            best_chi2 = c2;
+            best_beta = beta;
+        }
+    }
+
+    // Refine with golden-section search
+    let refine_lo = (best_beta - 2.0 * beta_step).max(beta_lo);
+    let refine_hi = (best_beta + 2.0 * beta_step).min(beta_hi);
+    let (refined_beta, refined_chi2) = golden_section_minimize(
+        |b| chi2_at_beta_multi_k(data, &systems, b),
+        refine_lo,
+        refine_hi,
+        1e-6,
+    );
+    if refined_chi2 < best_chi2 {
+        best_beta = refined_beta;
+        best_chi2 = refined_chi2;
+    }
+
+    // Extract per-system K at best beta
+    let k_per_system: Vec<(String, f64, f64)> = systems
+        .iter()
+        .map(|sys| {
+            let sub: Vec<&DensityScalingPoint> =
+                data.iter().filter(|d| &d.system == sys).collect();
+            let (k, _) = chi2_at_beta(&sub_to_owned(&sub), best_beta);
+            let ke = k_error(&sub_to_owned(&sub), best_beta);
+            (sys.clone(), k, ke)
+        })
+        .collect();
+
+    let ndf = if data.len() > n_systems + 1 {
+        data.len() - n_systems - 1
+    } else {
+        1
+    };
+
+    let target = best_chi2 + 1.0;
+    let beta_err_up = scan_for_crossing(&chi2_profile, best_beta, true, target) - best_beta;
+    let beta_err_down = best_beta - scan_for_crossing(&chi2_profile, best_beta, false, target);
+
+    MultiSystemScalingResult {
+        beta: best_beta,
+        beta_err_up: beta_err_up.max(0.0),
+        beta_err_down: beta_err_down.max(0.0),
+        k_per_system,
+        chi2_min: best_chi2,
+        ndf,
+        chi2_per_ndf: best_chi2 / ndf as f64,
+    }
+}
+
+/// Chi2 for multi-K model: sum of per-system chi2 with independent K fits.
+fn chi2_at_beta_multi_k(data: &[DensityScalingPoint], systems: &[String], beta: f64) -> f64 {
+    systems
+        .iter()
+        .map(|sys| {
+            let sub: Vec<DensityScalingPoint> = data
+                .iter()
+                .filter(|d| &d.system == sys)
+                .cloned()
+                .collect();
+            if sub.is_empty() {
+                return 0.0;
+            }
+            chi2_at_beta(&sub, beta).1
+        })
+        .sum()
+}
+
+/// Helper: convert slice of refs to owned vec for chi2_at_beta.
+fn sub_to_owned(sub: &[&DensityScalingPoint]) -> Vec<DensityScalingPoint> {
+    sub.iter().map(|d| (*d).clone()).collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

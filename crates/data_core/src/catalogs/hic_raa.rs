@@ -76,6 +76,9 @@ pub struct HepDataTable {
 /// Directory for ALICE Pb-Pb R_AA data.
 pub const ALICE_PBPB_RAA_DIR: &str = "alice_pbpb_raa";
 
+/// Directory for ALICE Xe-Xe R_AA data.
+pub const ALICE_XEXE_RAA_DIR: &str = "alice_xexe_raa";
+
 /// Number of centrality bins in ALICE data (Tables 1-20).
 pub const ALICE_PBPB_RAA_N_CENT: usize = 20;
 

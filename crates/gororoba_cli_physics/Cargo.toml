@@ -323,6 +323,7 @@ serde_json = { workspace = true }
 toml = { workspace = true }
 sha2 = { workspace = true }
 glob = { workspace = true }
+mimalloc = { workspace = true }
 
 [features]
 default = ["gpu"]
