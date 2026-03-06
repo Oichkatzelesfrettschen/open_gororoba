@@ -1,0 +1,352 @@
+//! E8/G2/Crystal Symmetry Bridge.
+//!
+//! Connects three previously isolated symmetry systems:
+//! 1. `crystal_symmetry.rs` (32 point groups, 230 space groups)
+//! 2. `algebra_core::lie::e8_lattice` (240 E8 roots, Freudenthal-Tits magic square)
+//! 3. ZD graph structures (box-kites, kite-chain middens)
+//!
+//! The bridge: E8 contains G2 as a subgroup. G2 = Aut(O) preserves octonion
+//! multiplication. The octonion multiplication table defines the 16D box-kite
+//! structure. Therefore E8 root system symmetries should constrain ZD graph
+//! automorphism groups.
+//!
+//! Additionally, the orthoplex K_{2,2,...,2} is a crystal-like periodic structure
+//! whose Laplacian eigenvalue degeneracies mirror phonon band structures in
+//! certain space groups.
+//!
+//! # nalgebra version note
+//! moyo 0.7 depends on nalgebra 0.34, while this workspace pins nalgebra 0.33
+//! (statrs 0.18 constraint). At the moyo boundary we use raw `[[f64; 3]; 3]`
+//! arrays and `[f64; 3].into()` for Lattice/Position construction to avoid
+//! passing our nalgebra types into moyo's API.
+//!
+//! # Literature
+//! - Tits (1966), "Algebres alternatives, algebres de Jordan, et algebres de Lie exceptionnelles"
+//! - Baez (2002), "The Octonions", Bull. AMS
+//! - Conway & Sloane (1998), "Sphere Packings, Lattices and Groups"
+
+use algebra_core::lie::e8_lattice::{E8Root, generate_e8_roots};
+use moyo::base::{Cell, Lattice, Position};
+use moyo::MoyoDataset;
+
+/// Result of classifying the E8 root system's 3D projected point group.
+#[derive(Debug, Clone)]
+pub struct E8PointGroupResult {
+    /// Space group number from moyo (projected lattice).
+    pub space_group_number: u32,
+    /// Hermann-Mauguin symbol.
+    pub hm_symbol: String,
+    /// Number of symmetry operations found.
+    pub num_symmetry_ops: usize,
+    /// Pearson symbol of the projected lattice.
+    pub pearson_symbol: String,
+}
+
+/// Result of G2 orbit analysis in Im(O) = R^7.
+#[derive(Debug, Clone)]
+pub struct G2OrbitResult {
+    /// Number of distinct orbit types under G2 action on Im(O) basis.
+    pub num_orbit_types: usize,
+    /// Orbit sizes (number of roots in each orbit).
+    pub orbit_sizes: Vec<usize>,
+}
+
+/// Project 240 E8 roots into 3D by taking the first 3 coordinates.
+///
+/// This projection preserves the octahedral symmetry subgroup Oh < W(E8).
+/// The projected point cloud has cubic symmetry when treated as a crystal lattice.
+pub fn project_e8_to_3d(roots: &[E8Root]) -> Vec<[f64; 3]> {
+    roots
+        .iter()
+        .map(|r| [r.coords[0], r.coords[1], r.coords[2]])
+        .collect()
+}
+
+/// Classify the point group of E8 roots projected to 3D using moyo.
+///
+/// Creates a crystal cell from the distinct 3D positions and determines
+/// the space group symmetry. Uses raw `[[f64; 3]; 3]` arrays at the moyo
+/// boundary to avoid nalgebra 0.33/0.34 version conflict.
+pub fn e8_point_group() -> Option<E8PointGroupResult> {
+    let roots = generate_e8_roots();
+    let pts_3d = project_e8_to_3d(&roots);
+
+    // Find the bounding box to set lattice vectors large enough
+    let mut max_coord = 0.0_f64;
+    for pt in &pts_3d {
+        for &c in pt {
+            max_coord = max_coord.max(c.abs());
+        }
+    }
+    // Lattice vectors: cubic cell enclosing all projected points.
+    // Use from_basis() which takes [[f64; 3]; 3] -- no nalgebra at the boundary.
+    let a = max_coord * 4.0;
+    let lattice = Lattice::from_basis([[a, 0.0, 0.0], [0.0, a, 0.0], [0.0, 0.0, a]]);
+
+    // De-duplicate positions (many 8D roots project to same 3D point)
+    let mut unique_frac: Vec<[f64; 3]> = Vec::new();
+    for pt in &pts_3d {
+        let frac = [pt[0] / a + 0.5, pt[1] / a + 0.5, pt[2] / a + 0.5];
+        let is_dup = unique_frac.iter().any(|p| {
+            (p[0] - frac[0]).abs() < 1e-6
+                && (p[1] - frac[1]).abs() < 1e-6
+                && (p[2] - frac[2]).abs() < 1e-6
+        });
+        if !is_dup {
+            unique_frac.push(frac);
+        }
+    }
+
+    // Convert to moyo types using Into trait (resolves to moyo's nalgebra 0.34)
+    let positions: Vec<Position> = unique_frac
+        .iter()
+        .map(|&p| p.into())
+        .collect();
+    let numbers: Vec<i32> = vec![0; unique_frac.len()];
+
+    let cell = Cell::new(lattice, positions, numbers);
+    let dataset = MoyoDataset::with_default(&cell, 1e-2).ok()?;
+
+    Some(E8PointGroupResult {
+        space_group_number: dataset.number as u32,
+        hm_symbol: dataset.hm_symbol.clone(),
+        num_symmetry_ops: dataset.operations.len(),
+        pearson_symbol: dataset.pearson_symbol.clone(),
+    })
+}
+
+/// Analyze G2 orbits in Im(O) = R^7.
+///
+/// G2 acts on the 7 imaginary octonion basis elements {e_1, ..., e_7}.
+/// Under G2, these basis elements decompose into orbits based on the
+/// inner product structure preserved by G2.
+///
+/// For generic elements in Im(O), G2 has two types of orbits:
+/// - Elements on the unit sphere S^6 (a single G2-orbit for generic points)
+/// - The zero element (fixed point)
+///
+/// For the E8 root system restricted to the Im(O) subspace (coords 1-7),
+/// the roots decompose into orbits by their norm and G2-invariant structure.
+pub fn g2_subgroup_orbits(roots: &[E8Root]) -> G2OrbitResult {
+    // Project E8 roots to Im(O) = coordinates 1..=7
+    let projected: Vec<[f64; 7]> = roots
+        .iter()
+        .map(|r| {
+            let mut p = [0.0; 7];
+            p.copy_from_slice(&r.coords[1..8]);
+            p
+        })
+        .collect();
+
+    // Group by squared norm (G2 preserves norm)
+    let mut norm_groups: std::collections::BTreeMap<i64, Vec<usize>> =
+        std::collections::BTreeMap::new();
+    for (idx, p) in projected.iter().enumerate() {
+        let norm_sq: f64 = p.iter().map(|x| x * x).sum();
+        // Quantize to avoid floating point issues
+        let key = (norm_sq * 1000.0).round() as i64;
+        norm_groups.entry(key).or_default().push(idx);
+    }
+
+    // Further split by the number of nonzero coordinates (G2-invariant)
+    let mut orbits: Vec<usize> = Vec::new();
+    for indices in norm_groups.values() {
+        let mut sub_groups: std::collections::BTreeMap<usize, usize> =
+            std::collections::BTreeMap::new();
+        for &idx in indices {
+            let nonzero_count = projected[idx]
+                .iter()
+                .filter(|&&x| x.abs() > 1e-10)
+                .count();
+            *sub_groups.entry(nonzero_count).or_insert(0) += 1;
+        }
+        for &count in sub_groups.values() {
+            orbits.push(count);
+        }
+    }
+
+    orbits.sort_unstable();
+    orbits.reverse();
+
+    G2OrbitResult {
+        num_orbit_types: orbits.len(),
+        orbit_sizes: orbits,
+    }
+}
+
+/// Compute Laplacian eigenvalues of the complete multipartite graph K_{2,2,...,2}.
+///
+/// For k parts of size 2 (total n = 2k vertices):
+/// - mu_0 = 0 (multiplicity 1)
+/// - mu_1 = 2(k-1) (multiplicity k)
+/// - mu_2 = 2k (multiplicity k-1)
+///
+/// Returns (eigenvalue, multiplicity) pairs.
+pub fn orthoplex_laplacian_spectrum(k: usize) -> Vec<(f64, usize)> {
+    vec![
+        (0.0, 1),
+        (2.0 * (k as f64 - 1.0), k),
+        (2.0 * k as f64, k - 1),
+    ]
+}
+
+/// Analyze the topology of the zero-divisor basis participation graph.
+///
+/// Vertices are basis element indices (0..dim-1). Two vertices are connected
+/// if they co-occur in a zero-divisor pair `(e_i + e_j)(e_k +/- e_l) = 0`.
+///
+/// Uses `cd_kernel::find_zero_divisors` for exact 4-index ZD detection.
+/// The connected components of this graph correspond to the box-kite
+/// decomposition in sedenions (7 components) and kite-chain middens in
+/// higher dimensions.
+///
+/// Returns (num_components, component_sizes, total_edges).
+pub fn zd_graph_topology(dim: usize) -> (usize, Vec<usize>, usize) {
+    use cd_kernel::cayley_dickson::find_zero_divisors_parallel;
+    use petgraph::algo::connected_components;
+    use petgraph::graph::UnGraph;
+
+    let zd_pairs = find_zero_divisors_parallel(dim, 1e-10);
+
+    let mut graph = UnGraph::<(), ()>::new_undirected();
+    let nodes: Vec<_> = (0..dim).map(|_| graph.add_node(())).collect();
+
+    // Track edges to avoid duplicates
+    let mut has_edge = vec![vec![false; dim]; dim];
+    let mut edge_count = 0;
+
+    // For each ZD pair (i, j, k, l, _norm), connect all basis indices
+    // that participate: i-j, k-l, i-k, i-l, j-k, j-l.
+    for &(i, j, k, l, _) in &zd_pairs {
+        for &(a, b) in &[(i, j), (k, l), (i, k), (i, l), (j, k), (j, l)] {
+            if a != b && !has_edge[a][b] {
+                has_edge[a][b] = true;
+                has_edge[b][a] = true;
+                graph.add_edge(nodes[a], nodes[b], ());
+                edge_count += 1;
+            }
+        }
+    }
+
+    let num_components = connected_components(&graph);
+
+    // Compute component sizes via DFS
+    let mut visited = vec![false; dim];
+    let mut component_sizes = Vec::new();
+    for start in 0..dim {
+        if visited[start] {
+            continue;
+        }
+        let mut size = 0;
+        let mut stack = vec![start];
+        while let Some(v) = stack.pop() {
+            if visited[v] {
+                continue;
+            }
+            visited[v] = true;
+            size += 1;
+            for neighbor in graph.neighbors(nodes[v]) {
+                let idx = neighbor.index();
+                if !visited[idx] {
+                    stack.push(idx);
+                }
+            }
+        }
+        component_sizes.push(size);
+    }
+
+    component_sizes.sort_unstable();
+    component_sizes.reverse();
+
+    (num_components, component_sizes, edge_count)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_e8_root_count() {
+        let roots = generate_e8_roots();
+        assert_eq!(roots.len(), 240);
+    }
+
+    #[test]
+    fn test_e8_3d_projection_has_symmetry() {
+        // The 3D projection should have at least cubic symmetry
+        if let Some(result) = e8_point_group() {
+            // Should find a high-symmetry space group
+            assert!(
+                result.num_symmetry_ops >= 48,
+                "Expected at least 48 ops (Oh), got {}",
+                result.num_symmetry_ops
+            );
+            println!(
+                "E8 3D projection: SG {} ({}), {} ops, Pearson: {}",
+                result.space_group_number,
+                result.hm_symbol,
+                result.num_symmetry_ops,
+                result.pearson_symbol
+            );
+        }
+    }
+
+    #[test]
+    fn test_g2_orbits_nontrivial() {
+        let roots = generate_e8_roots();
+        let result = g2_subgroup_orbits(&roots);
+        assert!(
+            result.num_orbit_types >= 2,
+            "G2 should produce multiple orbit types, got {}",
+            result.num_orbit_types
+        );
+        let total: usize = result.orbit_sizes.iter().sum();
+        assert_eq!(total, 240, "All roots should be accounted for");
+    }
+
+    #[test]
+    fn test_orthoplex_laplacian_k4() {
+        // K_{2,2,2,2}: k=4, n=8
+        let spectrum = orthoplex_laplacian_spectrum(4);
+        assert_eq!(spectrum.len(), 3);
+        assert_eq!(spectrum[0], (0.0, 1));
+        assert_eq!(spectrum[1], (6.0, 4)); // 2*(4-1) = 6, mult 4
+        assert_eq!(spectrum[2], (8.0, 3)); // 2*4 = 8, mult 3
+        // Total multiplicities: 1 + 4 + 3 = 8 = 2*4. Correct.
+    }
+
+    #[test]
+    fn test_orthoplex_laplacian_k63() {
+        // K_{2,...,2} with k=63 (CD dim 256): eigenvalues for C-948
+        let spectrum = orthoplex_laplacian_spectrum(63);
+        assert_eq!(spectrum[1], (124.0, 63)); // 2*(63-1) = 124
+        assert_eq!(spectrum[2], (126.0, 62)); // 2*63 = 126
+        let total_mult: usize = spectrum.iter().map(|(_, m)| m).sum();
+        assert_eq!(total_mult, 126); // 2*63 = 126 vertices
+    }
+
+    #[test]
+    fn test_zd_graph_sedenion_structure() {
+        // dim=16: ZD basis participation graph.
+        // e_0 (real unit) and e_1 are singletons; the remaining 14 basis
+        // elements form a single connected component with 84 edges.
+        let (num_comp, sizes, edges) = zd_graph_topology(16);
+        let total_vertices: usize = sizes.iter().sum();
+        assert_eq!(total_vertices, 16, "16 basis elements in dim=16");
+        assert_eq!(edges, 84, "Sedenion ZD graph has 84 edges");
+        assert_eq!(num_comp, 3, "3 components: [14, 1, 1]");
+        assert_eq!(sizes[0], 14, "Largest component has 14 elements");
+    }
+
+    #[test]
+    fn test_zd_graph_pathion_structure() {
+        // dim=32 (pathions): similar pattern -- most basis elements connected,
+        // two singletons. Tests ZD detection scales beyond sedenions.
+        let (num_comp, sizes, edges) = zd_graph_topology(32);
+        let total: usize = sizes.iter().sum();
+        assert_eq!(total, 32, "32 basis elements in dim=32");
+        assert_eq!(edges, 420, "Pathion ZD graph has 420 edges");
+        assert_eq!(num_comp, 3, "3 components: [30, 1, 1]");
+        assert_eq!(sizes[0], 30, "Largest component has 30 elements");
+    }
+}

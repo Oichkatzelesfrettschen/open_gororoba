@@ -7,8 +7,11 @@ license = "MIT"
 
 [dependencies]
 algebra_core = { path = "../algebra_core" }
+cd_kernel = { workspace = true }
 gauss-quad = { workspace = true }
+moyo = { workspace = true }
 nalgebra = { workspace = true }
+petgraph = { workspace = true }
 num-complex = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
