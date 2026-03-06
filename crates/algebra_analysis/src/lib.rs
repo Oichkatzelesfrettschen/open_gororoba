@@ -10,6 +10,7 @@
 
 pub mod annihilator;
 pub mod associator_entropy;
+pub mod avt_entropy;
 pub mod boxkite_alignment;
 pub mod boxkites;
 pub mod codebook;
