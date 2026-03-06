@@ -9,5 +9,8 @@ license = "GPL-2.0-only"
 default = []
 gpu = []
 
+[dependencies]
+core_affinity = { workspace = true }
+
 [lints]
 workspace = true
