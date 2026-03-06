@@ -26,9 +26,11 @@ use gr_core::{
         radial_inflow_profile,
     },
     lattice_hawking::{
-        compute_spectra, effective_temperature, spectral_chi_squared, viscosity_cutoff,
+        compute_spectra, compute_spectra_variable_nu, effective_temperature, spectral_chi_squared,
+        viscosity_cutoff,
     },
 };
+use sign_imbalance::bridge::{ImbalanceViscosityBridge, SedenionField, ViscosityCouplingModel};
 use std::{fs, path::Path};
 
 #[derive(Parser, Debug)]
@@ -55,6 +57,15 @@ struct Args {
     /// Output directory
     #[arg(long, default_value = "data/lattice_hawking")]
     output_dir: String,
+    /// Sedenion viscosity coupling model (constant, exponential, kubo_response)
+    #[arg(long, default_value = "constant")]
+    coupling_model: String,
+    /// Coupling strength (lambda)
+    #[arg(long, default_value_t = 2.0)]
+    coupling_strength: f64,
+    /// Sedenion noise perturbation amplitude
+    #[arg(long, default_value_t = 0.0)]
+    sedenion_noise: f64,
 }
 
 fn main() {
@@ -72,22 +83,38 @@ fn main() {
         grids, args.nu, args.n_omega
     );
     println!("  v0={} r0={} alpha={}", args.v0, args.r0, args.alpha);
+    println!(
+        "  coupling={} lambda={} noise={}",
+        args.coupling_model, args.coupling_strength, args.sedenion_noise
+    );
     println!();
 
     // Header
     println!(
-        "  {:>5}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}",
-        "N", "dx", "kappa", "T_H_ideal", "T_eff_lat", "T_eff_visc", "chi2_lat", "chi2_visc"
+        "  {:>5}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}  {:>10}",
+        "N",
+        "dx",
+        "kappa",
+        "T_H_ideal",
+        "T_eff_lat",
+        "T_eff_visc",
+        "chi2_lat",
+        "chi2_visc",
+        "nu_horiz"
     );
     println!(
-        "  {:->5}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}",
-        "", "", "", "", "", "", "", ""
+        "  {:->5}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}  {:->10}",
+        "", "", "", "", "", "", "", "", ""
     );
 
     let mut results: Vec<SweepRow> = Vec::new();
 
+    let bridge = ImbalanceViscosityBridge::new(16);
+
     for &n in &grids {
         let dx = 1.0 / n as f64;
+        let dx_ref = 1.0 / 16.0;
+        let scale_factor = dx_ref / dx;
 
         // Generate radial inflow profile (1D analog black hole)
         let (velocity_mag, grid_dx) =
@@ -102,6 +129,7 @@ fn main() {
 
         // Use first horizon crossing
         let h_pos = horizons[0];
+        let h_pos_idx = h_pos.round() as usize;
         let kappa = acoustic_surface_gravity(&velocity_mag, grid_dx, h_pos);
         let t_h = acoustic_hawking_temperature(kappa);
 
@@ -110,23 +138,76 @@ fn main() {
             continue;
         }
 
+        // Generate Sedenion Field and local viscosity
+        let mut field = SedenionField::uniform(n, 1, 1);
+        let scaled_noise = args.sedenion_noise; // No scaling
+
+        if args.sedenion_noise > 0.0 {
+            for x in 0..n {
+                let s = field.get_mut(x, 0, 0);
+                let phase = 2.0 * std::f64::consts::PI * (x as f64) / (n as f64);
+                s[1] = scaled_noise * phase.sin();
+                s[3] = scaled_noise * (2.0 * phase).cos();
+                s[5] = scaled_noise * (0.5 * phase).sin();
+            }
+        }
+
+        let imbalance = field.local_imbalance_density(16);
+
+        // Scale the effective lambda for Kubo/Exponential models
+        let scaled_coupling = match args.coupling_model.as_str() {
+            "exponential" => ViscosityCouplingModel::Exponential { 
+                nu_base: args.nu * scale_factor.powi(2), 
+                lambda: args.coupling_strength * scale_factor.powi(2)
+            },
+            "linear" => ViscosityCouplingModel::Linear { 
+                nu_base: args.nu * scale_factor.powi(2), 
+                alpha: args.coupling_strength
+            },
+            "power_law" => ViscosityCouplingModel::PowerLaw {
+                nu_base: args.nu * scale_factor.powi(2),
+                n: 2.0
+            },
+            "kubo_response" => {
+                let mut kubo = ViscosityCouplingModel::kubo_default(args.nu * scale_factor.powi(2));
+                if let ViscosityCouplingModel::KuboResponse { ref mut f_cd, .. } = kubo {
+                    *f_cd *= 1.0 / scale_factor;
+                }
+                kubo
+            },
+            _ => ViscosityCouplingModel::Constant { nu_base: args.nu * scale_factor.powi(2) },
+        };
+
+        let nu_array = bridge.imbalance_to_viscosity_model(&imbalance, &scaled_coupling);
+        let nu_horizon = nu_array[h_pos_idx];
         // Compute spectra at this resolution
-        let (omegas, ideal, lattice, viscous) = compute_spectra(t_h, n, args.nu, args.n_omega);
+        let (omegas, ideal, lattice, viscous) = if args.coupling_model == "constant" {
+            compute_spectra(t_h, n, args.nu, args.n_omega)
+        } else {
+            compute_spectra_variable_nu(
+                t_h,
+                n,
+                dx,
+                &nu_array,
+                &velocity_mag,
+                h_pos_idx,
+                args.n_omega,
+            )
+        };
 
         // Chi-squared deviations from ideal
         let chi2_lat = spectral_chi_squared(&ideal, &lattice, 1e-10);
         let chi2_visc = spectral_chi_squared(&ideal, &viscous, 1e-10);
 
         // Effective temperatures from low-frequency fits
-        // Use only the first third of the spectrum (below viscosity cutoff)
-        let omega_visc = viscosity_cutoff(args.nu, dx);
+        let omega_visc = viscosity_cutoff(nu_horizon, dx);
         let n_low = omegas.iter().filter(|&&w| w < omega_visc).count().max(5);
         let t_eff_lat = effective_temperature(&omegas[..n_low], &lattice[..n_low]);
         let t_eff_visc = effective_temperature(&omegas[..n_low], &viscous[..n_low]);
 
         println!(
-            "  {:>5}  {:>10.6}  {:>10.6}  {:>10.6}  {:>10.6}  {:>10.6}  {:>10.4}  {:>10.4}",
-            n, dx, kappa, t_h, t_eff_lat, t_eff_visc, chi2_lat, chi2_visc
+            "  {:>5}  {:>10.6}  {:>10.6}  {:>10.6}  {:>10.6}  {:>10.6}  {:>10.4}  {:>10.4}  {:>10.6}",
+            n, dx, kappa, t_h, t_eff_lat, t_eff_visc, chi2_lat, chi2_visc, nu_horizon
         );
 
         results.push(SweepRow {
@@ -139,6 +220,7 @@ fn main() {
             chi2_lattice: chi2_lat,
             chi2_viscous: chi2_visc,
             omega_visc,
+            nu_horizon,
         });
     }
 
@@ -151,21 +233,18 @@ fn main() {
     let first = &results[0];
     let last = &results[results.len() - 1];
 
-    // Relative deviation of viscous T from ideal T at finest resolution
     let rel_dev_last = if last.t_h_ideal > 1e-15 {
         (last.t_eff_viscous - last.t_h_ideal).abs() / last.t_h_ideal
     } else {
         0.0
     };
 
-    // Relative deviation at coarsest resolution
     let rel_dev_first = if first.t_h_ideal > 1e-15 {
         (first.t_eff_viscous - first.t_h_ideal).abs() / first.t_h_ideal
     } else {
         0.0
     };
 
-    // The thesis holds if viscous T stays bounded (rel_dev doesn't vanish as N grows)
     let verdict = if rel_dev_last > 0.05 {
         "PASS (viscosity bounds analog Hawking temperature)"
     } else if (rel_dev_last - rel_dev_first).abs() < 0.01 {
@@ -176,27 +255,32 @@ fn main() {
 
     println!();
     println!("  omega_visc(finest) = {:.4}", last.omega_visc);
+    println!("  nu_horizon(finest) = {:.6}", last.nu_horizon);
     println!(
         "  |T_visc - T_ideal|/T_ideal: coarsest={:.4}, finest={:.4}",
         rel_dev_first, rel_dev_last
     );
     println!("  Verdict: {}", verdict);
 
-    // Write results to TOML
     let dir = Path::new(&args.output_dir);
     fs::create_dir_all(dir).expect("failed to create output dir");
     let toml_path = dir.join("results.toml");
 
     let mut toml = format!(
-        "# Lattice-Hawking Spectrum Sweep\n# nu={} n_omega={} verdict=\"{}\"\n\n",
-        args.nu, args.n_omega, verdict
+        "# Lattice-Hawking Spectrum Sweep\n# nu={} n_omega={} coupling={} lambda={} noise={} verdict=\"{}\"\n\n",
+        args.nu,
+        args.n_omega,
+        args.coupling_model,
+        args.coupling_strength,
+        args.sedenion_noise,
+        verdict
     );
 
     for row in &results {
         toml.push_str(&format!(
             "[[sweep]]\nN = {}\ndx = {:.8}\nkappa = {:.8}\nT_H_ideal = {:.8}\n\
              T_eff_lattice = {:.8}\nT_eff_viscous = {:.8}\n\
-             chi2_lattice = {:.6}\nchi2_viscous = {:.6}\nomega_visc = {:.4}\n\n",
+             chi2_lattice = {:.6}\nchi2_viscous = {:.6}\nomega_visc = {:.4}\nnu_horizon = {:.6}\n\n",
             row.n,
             row.dx,
             row.kappa,
@@ -205,7 +289,8 @@ fn main() {
             row.t_eff_viscous,
             row.chi2_lattice,
             row.chi2_viscous,
-            row.omega_visc
+            row.omega_visc,
+            row.nu_horizon
         ));
     }
 
@@ -223,4 +308,5 @@ struct SweepRow {
     chi2_lattice: f64,
     chi2_viscous: f64,
     omega_visc: f64,
+    nu_horizon: f64,
 }

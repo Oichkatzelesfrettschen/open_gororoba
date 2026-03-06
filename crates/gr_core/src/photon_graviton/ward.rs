@@ -14,9 +14,11 @@
 //! # References
 //! - Bastianelli et al. (2026), Sec 7
 
-use super::irreducible;
-use super::quadrature::QuadratureConfig;
-use super::types::{FieldConfig, LoopType, WardCheckResult, WardIdentity};
+use super::{
+    irreducible,
+    quadrature::QuadratureConfig,
+    types::{FieldConfig, LoopType, WardCheckResult, WardIdentity},
+};
 
 /// Check the gauge Ward identity for the irreducible diagram.
 ///

@@ -14,13 +14,14 @@
 use clap::Parser;
 use cosmology_core::{
     OrthoplexComparison, RealBaoData, compare_orthoplex_all, compare_orthoplex_fixed_beta,
-    cosmic_chronometer_data, desi_to_real_bao, filter_pantheon_data, growth_rate_data,
-    profile_likelihood_alpha, w_of_z_table, w_orthoplex,
+    cosmic_chronometer_data, desi_to_real_bao, extract_cov_submatrix,
+    filter_pantheon_data_with_indices, growth_rate_data, profile_likelihood_alpha, w_of_z_table,
+    w_orthoplex,
 };
 use data_core::{
     catalogs::{
         desi_bao::desi_dr1_bao,
-        pantheon::{PantheonProvider, parse_pantheon_dat},
+        pantheon::{PantheonCovProvider, PantheonProvider, parse_pantheon_cov, parse_pantheon_dat},
     },
     fetcher::{DatasetProvider, FetchConfig},
 };
@@ -146,7 +147,7 @@ fn main() {
     let mu_err: Vec<f64> = sne.iter().map(|s| s.mu_err).collect();
     let is_cal: Vec<bool> = sne.iter().map(|s| s.is_calibrator).collect();
 
-    let mut sn_data = filter_pantheon_data(
+    let (mut sn_data, kept_indices) = filter_pantheon_data_with_indices(
         &z_cmb,
         &mu,
         &mu_err,
@@ -159,25 +160,48 @@ fn main() {
         args.z_min, !args.include_calibrators, sn_data.n_sne,
     );
 
-    // Optional: load covariance matrix for full precision-matrix chi2
-    if let Some(ref cov_path) = args.cov_file {
-        eprintln!("[2b/5] Loading covariance matrix from {}...", cov_path);
-        match data_core::catalogs::pantheon::parse_pantheon_cov(std::path::Path::new(cov_path)) {
+    // Covariance: explicit --cov-file > auto-download > skip
+    let cov_path: Option<PathBuf> = if let Some(ref p) = args.cov_file {
+        Some(PathBuf::from(p))
+    } else if !args.skip_download {
+        eprintln!("[2b/5] Auto-downloading Pantheon+ STAT+SYS covariance...");
+        match PantheonCovProvider.fetch(&config) {
+            Ok(p) => {
+                eprintln!("      OK: {}", p.display());
+                Some(p)
+            }
+            Err(e) => {
+                eprintln!("      WARNING: Covariance download failed: {e}");
+                eprintln!("      Falling back to diagonal errors.");
+                None
+            }
+        }
+    } else {
+        // Check if cached
+        let cached = config.output_dir.join("Pantheon+SH0ES_STAT+SYS.cov");
+        if cached.exists() { Some(cached) } else { None }
+    };
+
+    if let Some(ref cp) = cov_path {
+        eprintln!("[2b/5] Loading covariance from {}...", cp.display());
+        match parse_pantheon_cov(cp) {
             Ok(cov) => {
-                eprintln!("      Covariance matrix: {}x{}", cov.nrows(), cov.ncols());
-                cosmology_core::set_sn_precision_from_cov(&mut sn_data, &cov);
+                eprintln!("      Full covariance: {}x{}", cov.nrows(), cov.ncols());
+                let sub = extract_cov_submatrix(&cov, &kept_indices);
+                eprintln!(
+                    "      Sub-matrix: {}x{} (matching {} filtered SNe)",
+                    sub.nrows(),
+                    sub.ncols(),
+                    sn_data.n_sne,
+                );
+                cosmology_core::set_sn_precision_from_cov(&mut sn_data, &sub);
                 if sn_data.precision.is_some() {
                     eprintln!(
                         "      Precision matrix set ({} x {})",
-                        sn_data.n_sne, sn_data.n_sne
+                        sn_data.n_sne, sn_data.n_sne,
                     );
                 } else {
-                    eprintln!(
-                        "      WARNING: Covariance dimensions ({}x{}) != n_sne ({}), using diagonal",
-                        cov.nrows(),
-                        cov.ncols(),
-                        sn_data.n_sne
-                    );
+                    eprintln!("      WARNING: Cholesky failed on sub-matrix, using diagonal");
                 }
             }
             Err(e) => {
@@ -256,7 +280,11 @@ fn main() {
     eprintln!("[6/6] Writing w(z) table to {}...", args.csv);
     // Use fixed-beta result if available and better, otherwise free-beta.
     let orth = if let Some(ref fb) = comparison.orthoplex_fixed_beta {
-        if fb.chi2_total <= comparison.orthoplex.chi2_total + 1.0 { fb } else { &comparison.orthoplex }
+        if fb.chi2_total <= comparison.orthoplex.chi2_total + 1.0 {
+            fb
+        } else {
+            &comparison.orthoplex
+        }
     } else {
         &comparison.orthoplex
     };
@@ -306,9 +334,8 @@ fn main() {
 
         for &k_val in &args.k_sweep {
             eprintln!("  k={k_val}...");
-            let cmp = compare_orthoplex_fixed_beta(
-                &sn_data, &bao_data, &cc_data, &fsig_data, k_val,
-            );
+            let cmp =
+                compare_orthoplex_fixed_beta(&sn_data, &bao_data, &cc_data, &fsig_data, k_val);
             let fb = cmp.orthoplex_fixed_beta.as_ref().unwrap_or(&cmp.orthoplex);
             let db = cmp.delta_bic_fixed_beta.unwrap_or(cmp.delta_bic);
             let da = cmp.delta_aic_fixed_beta.unwrap_or(cmp.delta_aic);
@@ -320,7 +347,10 @@ fn main() {
             )
             .unwrap();
         }
-        eprintln!("[k-sweep] Wrote {} rows to {sweep_path}", args.k_sweep.len());
+        eprintln!(
+            "[k-sweep] Wrote {} rows to {sweep_path}",
+            args.k_sweep.len()
+        );
     }
 
     // -----------------------------------------------------------------------
@@ -331,7 +361,13 @@ fn main() {
         eprintln!("[alpha-profile] Running profile likelihood scan (50 points)...");
         let alpha_grid: Vec<f64> = (0..50).map(|i| 0.5 + i as f64 * 0.3).collect();
         let profile = profile_likelihood_alpha(
-            &sn_data, &bao_data, &cc_data, &fsig_data, args.k, &alpha_grid, true,
+            &sn_data,
+            &bao_data,
+            &cc_data,
+            &fsig_data,
+            args.k,
+            &alpha_grid,
+            true,
         );
         let profile_path = "data/csv/orthoplex_alpha_profile.csv";
         let mut pf = match std::fs::File::create(profile_path) {
@@ -345,7 +381,10 @@ fn main() {
         for &(alpha_val, chi2, om, h0, t0) in &profile {
             writeln!(pf, "{alpha_val:.4},{chi2:.4},{om:.6},{h0:.4},{t0:.8}").unwrap();
         }
-        eprintln!("[alpha-profile] Wrote {} rows to {profile_path}", profile.len());
+        eprintln!(
+            "[alpha-profile] Wrote {} rows to {profile_path}",
+            profile.len()
+        );
     }
 
     // -----------------------------------------------------------------------
@@ -354,11 +393,19 @@ fn main() {
     if args.include_udg {
         eprintln!();
         eprintln!("[include-udg] CDG-2 UDG abundance constraint active.");
-        eprintln!("    NOTE: chi2_udg is computed inside the fit when precision matrix includes UDG.");
+        eprintln!(
+            "    NOTE: chi2_udg is computed inside the fit when precision matrix includes UDG."
+        );
         eprintln!("    For standalone evaluation, use the chi2_udg_orthoplex() library function.");
         // Evaluate chi2_udg at best-fit parameters for informational display
         let chi2_udg = cosmology_core::chi2_udg_orthoplex(
-            orth.omega_m, orth.k, orth.alpha, orth.beta, orth.t_0, 0.811, 0.965,
+            orth.omega_m,
+            orth.k,
+            orth.alpha,
+            orth.beta,
+            orth.t_0,
+            0.811,
+            0.965,
         );
         eprintln!("    chi2_udg(best-fit) = {chi2_udg:.4}");
     }
@@ -478,7 +525,11 @@ fn print_orthoplex_result(orth: &cosmology_core::OrthoplexFitResult, dof: f64) {
     println!("  Omega_m       = {:.4}", orth.omega_m);
     println!("  H_0           = {:.2} km/s/Mpc", orth.h0);
     println!("  alpha         = {:.4}", orth.alpha);
-    println!("  beta          = {:.6}{}", orth.beta, if orth.beta_fixed { " (FIXED)" } else { "" });
+    println!(
+        "  beta          = {:.6}{}",
+        orth.beta,
+        if orth.beta_fixed { " (FIXED)" } else { "" }
+    );
     println!("  t_0           = {:.6}", orth.t_0);
     println!("  w(z=0)        = {:.6}", orth.w_0);
     println!("  w(z=2)        = {:.6}", orth.w_high_z);

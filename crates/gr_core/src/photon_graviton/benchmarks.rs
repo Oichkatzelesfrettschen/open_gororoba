@@ -20,16 +20,11 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::photon_graviton::constants::*;
-    use crate::photon_graviton::gertsenshtein;
-    use crate::photon_graviton::irreducible;
-    use crate::photon_graviton::quadrature::QuadratureConfig;
-    use crate::photon_graviton::special_functions;
-    use crate::photon_graviton::tadpole;
-    use crate::photon_graviton::tree_level;
-    use crate::photon_graviton::types::*;
-    use crate::photon_graviton::worldline_greens;
-    use crate::photon_graviton::{magnetic_dichroism, one_loop_amplitude};
+    use crate::photon_graviton::{
+        constants::*, gertsenshtein, irreducible, magnetic_dichroism, one_loop_amplitude,
+        quadrature::QuadratureConfig, special_functions, tadpole, tree_level, types::*,
+        worldline_greens,
+    };
     use std::f64::consts::PI;
 
     // ========================================================================

@@ -19,10 +19,12 @@
 
 use num_complex::Complex64;
 
-use super::constants::KAPPA_NATURAL;
-use super::quadrature::QuadratureConfig;
-use super::types::{FieldConfig, LoopType, PhotonPolarization};
-use super::vacuum_pol;
+use super::{
+    constants::KAPPA_NATURAL,
+    quadrature::QuadratureConfig,
+    types::{FieldConfig, LoopType, PhotonPolarization},
+    vacuum_pol,
+};
 
 /// Compute the external-leg diagram amplitude for a given photon polarization.
 ///

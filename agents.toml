@@ -218,6 +218,39 @@ clock_model = "two_phase"
 phi1 = "collision_or_preparation"
 phi2 = "streaming_or_execution"
 
+[shared.gpu_optimization_roadmap]
+priority = "top"
+target_gpu = "RTX 4070 Ti (Ada Lovelace SM 8.9, 48 MB L2, 504 GB/s, CUDA 13.1)"
+target_cpu = "5600X3D (Zen 3, 96 MB L3 V-Cache, 6 physical cores)"
+cudarc_version = "0.19.1"
+
+[shared.gpu_optimization_roadmap.phase_1_soa_coalescing]
+status = "complete"
+summary = "AoS -> SoA memory layout for D3Q19 distribution functions"
+detail = "f[i * n_cells + idx] gives 4-byte stride, 32 threads per warp pull one 128-byte cache line. Fused collision+streaming kernel eliminates intermediate barrier."
+files = ["crates/lbm_3d_cuda/src/kernels_dark_halo.cu", "crates/lbm_3d_cuda/src/lib.rs"]
+
+[shared.gpu_optimization_roadmap.phase_2_l2_residency]
+status = "pending"
+summary = "Pin rho field (8.4 MB at 128^3, 67 MB at 256^3) in Ada Lovelace L2 cache"
+detail = "Use cudarc::driver::sys FFI: cuStreamSetAttribute with CU_STREAM_ATTRIBUTE_ACCESS_POLICY_WINDOW. hitRatio=1.0, hitProp=CU_ACCESS_PROPERTY_PERSISTING for d_rho."
+note = "cudarc 0.19 does not expose L2 policy -- use raw sys bindings."
+
+[shared.gpu_optimization_roadmap.phase_3_zero_copy_dma]
+status = "pending"
+summary = "Page-locked host memory for PCIe DMA bypass of DDR4 paging"
+detail = "alloc_zeros_host or cuMemAllocHost FFI. GPU DMA controller writes directly to pinned physical addresses. Async dtoh with stream synchronize."
+
+[shared.gpu_optimization_roadmap.phase_4_vcache_simd]
+status = "pending"
+summary = "CPU-side halo counting via rayon + AVX2 on Zen 3 V-Cache"
+detail = "6 physical cores, par_chunks(8), _mm256_cmp_ps threshold, _mm256_movemask_ps + count_ones. 8.4 MB pinned rho fits in 96 MB L3. ~200 GB/s internal bandwidth."
+
+[shared.gpu_optimization_roadmap.future]
+f16_storage = "FIXME: f16 storage with f32 compute for 2x bandwidth (cuda_fp16.h)"
+aa_streaming = "TODO: A-A (in-place) streaming pattern to halve VRAM usage"
+texture_3d = "TODO: 3D texture binding for streaming neighbor fetch (Morton Z-curve ordering)"
+
 [shared.registry]
 source_of_truth = "registry/*.toml"
 generated_mirror = "docs/*.md"

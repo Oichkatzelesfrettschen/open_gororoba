@@ -31,6 +31,7 @@ use gauss_quad::GaussLegendre;
 pub mod axiodilaton;
 pub mod bounce;
 pub mod bypass_models;
+pub mod cmb_axis;
 pub mod dimensional_geometry;
 pub mod distances;
 pub mod eos;
@@ -44,6 +45,7 @@ pub mod optimizer;
 pub mod orthoplex_diffusion;
 pub mod spectral;
 pub mod tov;
+pub mod voudon_friedmann;
 
 pub use gravastar::{
     AnisotropicParams, AnisotropicStabilityResult, GravastarConfig, GravastarSolution,
@@ -92,7 +94,8 @@ pub use observational::{
     ObsFitResult, RealBaoData, RealSnData, SIGMA8_PLANCK, bao_data_point_count, chi2_bao_real,
     chi2_cc, chi2_cmb_shift, chi2_fsig8, chi2_sn_real, compare_models, compute_growth_batch,
     compute_growth_fsig8, compute_precision_matrix,
-    cosmic_chronometer_data, desi_to_real_bao, filter_pantheon_data, fit_real_data,
+    cosmic_chronometer_data, desi_to_real_bao, extract_cov_submatrix,
+    filter_pantheon_data, filter_pantheon_data_with_indices, fit_real_data,
     growth_rate_data, set_sn_precision_from_cov,
 };
 
@@ -128,6 +131,9 @@ pub use flrw::{
     distance_duality_deviation, lookback_time, redshift_flux_dimming, universe_age,
     verify_distance_duality, wavelength_to_redshift, z_equality,
 };
+
+pub use voudon_friedmann::VoudonFriedmann;
+pub use cmb_axis::VoudonCmbAnalyzer;
 
 pub use cdg2_mapping::{
     DarkHaloFalsificationResult, evaluate_cdg2_consistency, spectral_dim_at_cdg2,

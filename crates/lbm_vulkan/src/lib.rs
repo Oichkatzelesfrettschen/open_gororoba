@@ -152,6 +152,25 @@ impl VulkanContext {
             ..Default::default()
         };
 
+        // Chain f16 device features when hardware supports them.
+        // Float16Int8 enables f16 arithmetic in shaders;
+        // 16BitStorage enables f16 in storage buffers (SPIR-V StorageBuffer16BitAccess).
+        let mut storage16_features = vk::PhysicalDevice16BitStorageFeaturesKHR {
+            s_type: vk::StructureType::PHYSICAL_DEVICE_16BIT_STORAGE_FEATURES_KHR,
+            storage_buffer16_bit_access: if caps.supports_fp16 { vk::TRUE } else { vk::FALSE },
+            ..Default::default()
+        };
+
+        let mut float16_features = vk::PhysicalDeviceFloat16Int8FeaturesKHR {
+            s_type: vk::StructureType::PHYSICAL_DEVICE_FLOAT16_INT8_FEATURES_KHR,
+            shader_float16: if caps.supports_fp16 { vk::TRUE } else { vk::FALSE },
+            p_next: &mut storage16_features as *mut _ as *mut std::ffi::c_void,
+            ..Default::default()
+        };
+
+        // Build the p_next chain: dynamic_rendering -> float16 -> storage16
+        dynamic_rendering.p_next = &mut float16_features as *mut _ as *mut std::ffi::c_void;
+
         let device_create_info = vk::DeviceCreateInfo {
             s_type: vk::StructureType::DEVICE_CREATE_INFO,
             queue_create_info_count: 1,
@@ -190,7 +209,7 @@ impl VulkanContext {
         let n = self.optimal_grid_dim();
         ScalingParameters {
             grid_dim: (n, n, n),
-            precision: if self.caps.supports_fp16 && self.caps.tier == GpuTier::Constrained {
+            precision: if self.caps.supports_fp16 && self.caps.tier != GpuTier::Ultra {
                 Precision::FP16
             } else {
                 Precision::FP32
@@ -230,6 +249,18 @@ pub enum Precision {
     FP16,
     FP32,
     FP64,
+}
+
+impl Precision {
+    /// Size of one distribution-function element in bytes.
+    #[must_use]
+    pub fn bytes_per_element(self) -> usize {
+        match self {
+            Precision::FP16 => 2,
+            Precision::FP32 => 4,
+            Precision::FP64 => 8,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -337,7 +368,17 @@ mod tests {
         assert_eq!(params_std.math_complexity, MathComplexity::Schwarzschild);
         assert_eq!(params_std.render_resolution_scale, 0.75);
 
-        // Ultra -> full complexity
+        // Standard WITH FP16 -> FP16 (non-Ultra tiers get FP16 when supported)
+        let caps_std_fp16 = HardwareCapabilities {
+            tier: GpuTier::Standard,
+            supports_fp16: true,
+            vram_mb: 3072,
+            ..caps.clone()
+        };
+        let ctx_std_fp16 = VulkanContextStub { caps: caps_std_fp16 };
+        assert_eq!(ctx_std_fp16.get_scaling_parameters().precision, Precision::FP16);
+
+        // Ultra -> full complexity, stays FP32 even with FP16 support
         let caps_ultra = HardwareCapabilities {
             tier: GpuTier::Ultra,
             vram_mb: 16384,
@@ -347,6 +388,15 @@ mod tests {
         let params_ultra = ctx_ultra.get_scaling_parameters();
         assert_eq!(params_ultra.math_complexity, MathComplexity::KerrNewman);
         assert_eq!(params_ultra.render_resolution_scale, 1.0);
+        // Ultra with FP16 support still stays FP32 (plenty of VRAM)
+        assert_eq!(params_ultra.precision, Precision::FP32);
+    }
+
+    #[test]
+    fn precision_bytes_per_element() {
+        assert_eq!(Precision::FP16.bytes_per_element(), 2);
+        assert_eq!(Precision::FP32.bytes_per_element(), 4);
+        assert_eq!(Precision::FP64.bytes_per_element(), 8);
     }
 
     #[test]
@@ -405,7 +455,7 @@ mod tests {
             let n = self.optimal_grid_dim();
             ScalingParameters {
                 grid_dim: (n, n, n),
-                precision: if self.caps.supports_fp16 && self.caps.tier == GpuTier::Constrained {
+                precision: if self.caps.supports_fp16 && self.caps.tier != GpuTier::Ultra {
                     Precision::FP16
                 } else {
                     Precision::FP32
@@ -436,5 +486,29 @@ mod tests {
             let n = (n / 8) * 8;
             std::cmp::max(n, 32)
         }
+    }
+
+    #[test]
+    fn compile_wgsl_f16_lbm_shader() {
+        let src = include_str!("../shaders/lbm_f16.wgsl");
+        crate::compute::compile_wgsl(src).expect("f16 LBM shader must compile via naga");
+    }
+
+    #[test]
+    fn compile_wgsl_f16_init_shader() {
+        let src = include_str!("../shaders/init_f16.wgsl");
+        crate::compute::compile_wgsl(src).expect("f16 init shader must compile via naga");
+    }
+
+    #[test]
+    fn compile_wgsl_f32_lbm_shader() {
+        let src = include_str!("../shaders/lbm.wgsl");
+        crate::compute::compile_wgsl(src).expect("f32 LBM shader must compile via naga");
+    }
+
+    #[test]
+    fn compile_wgsl_f32_init_shader() {
+        let src = include_str!("../shaders/init.wgsl");
+        crate::compute::compile_wgsl(src).expect("f32 init shader must compile via naga");
     }
 }

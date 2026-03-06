@@ -1070,6 +1070,77 @@ pub fn set_sn_precision_from_cov(sn: &mut RealSnData, cov: &nalgebra::DMatrix<f6
     // If dimensions don't match, leave precision as None (diagonal fallback)
 }
 
+/// Filter Pantheon+ data and return the surviving original indices.
+///
+/// Identical filtering logic to `filter_pantheon_data`, but also returns
+/// the indices into the original arrays that survived. This enables
+/// extracting the correct sub-matrix from the full 1701x1701 covariance.
+pub fn filter_pantheon_data_with_indices(
+    z_cmb: &[f64],
+    mu: &[f64],
+    mu_err: &[f64],
+    is_calibrator: &[bool],
+    z_min: f64,
+    include_calibrators: bool,
+) -> (RealSnData, Vec<usize>) {
+    let mut fz = Vec::new();
+    let mut fmu = Vec::new();
+    let mut fme = Vec::new();
+    let mut kept = Vec::new();
+
+    for i in 0..z_cmb.len() {
+        if z_cmb[i].is_nan() || mu[i].is_nan() || mu_err[i].is_nan() {
+            continue;
+        }
+        if z_cmb[i] < z_min {
+            continue;
+        }
+        if !include_calibrators && is_calibrator[i] {
+            continue;
+        }
+        let err = mu_err[i].max(0.01);
+        fz.push(z_cmb[i]);
+        fmu.push(mu[i]);
+        fme.push(err);
+        kept.push(i);
+    }
+
+    let n_sne = fz.len();
+    let data = RealSnData {
+        z: fz,
+        mu: fmu,
+        mu_err: fme,
+        n_sne,
+        precision: None,
+    };
+    (data, kept)
+}
+
+/// Extract a sub-matrix from the full covariance using kept indices.
+///
+/// Given the full N x N covariance and the indices of SNe that survived
+/// filtering, returns the k x k sub-matrix where k = kept_indices.len().
+///
+/// If cov dimensions already match k (user provided pre-filtered covariance),
+/// returns a clone without extraction.
+pub fn extract_cov_submatrix(
+    cov: &nalgebra::DMatrix<f64>,
+    kept_indices: &[usize],
+) -> nalgebra::DMatrix<f64> {
+    let k = kept_indices.len();
+    if cov.nrows() == k && cov.ncols() == k {
+        return cov.clone();
+    }
+
+    let mut sub = nalgebra::DMatrix::zeros(k, k);
+    for (new_i, &orig_i) in kept_indices.iter().enumerate() {
+        for (new_j, &orig_j) in kept_indices.iter().enumerate() {
+            sub[(new_i, new_j)] = cov[(orig_i, orig_j)];
+        }
+    }
+    sub
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1346,5 +1417,51 @@ mod tests {
             nalgebra::DMatrix::from_diagonal(&nalgebra::DVector::from_vec(vec![4.0, 9.0, 16.0]));
         set_sn_precision_from_cov(&mut sn, &cov);
         assert!(sn.precision.is_none());
+    }
+
+    #[test]
+    fn test_filter_pantheon_data_with_indices() {
+        let z = vec![0.001, 0.05, f64::NAN, 0.10, 0.02];
+        let mu = vec![28.0, 36.0, 35.0, 38.0, 33.0];
+        let mu_err = vec![0.1, 0.2, 0.1, 0.15, 0.12];
+        let is_cal = vec![false, false, false, false, true];
+
+        let (data, kept) = filter_pantheon_data_with_indices(
+            &z, &mu, &mu_err, &is_cal, 0.01, false,
+        );
+
+        // z[0]=0.001 < z_min, z[2]=NaN, z[4] is calibrator -> kept = [1, 3]
+        assert_eq!(data.n_sne, 2);
+        assert_eq!(kept, vec![1, 3]);
+        assert_relative_eq!(data.z[0], 0.05, epsilon = 1e-10);
+        assert_relative_eq!(data.z[1], 0.10, epsilon = 1e-10);
+    }
+
+    #[test]
+    fn test_extract_cov_submatrix() {
+        // 4x4 matrix, select indices [0, 2]
+        let full = nalgebra::DMatrix::from_row_slice(4, 4, &[
+            1.0, 0.1, 0.2, 0.3,
+            0.1, 2.0, 0.4, 0.5,
+            0.2, 0.4, 3.0, 0.6,
+            0.3, 0.5, 0.6, 4.0,
+        ]);
+        let kept = vec![0, 2];
+        let sub = extract_cov_submatrix(&full, &kept);
+        assert_eq!(sub.nrows(), 2);
+        assert_eq!(sub.ncols(), 2);
+        assert_relative_eq!(sub[(0, 0)], 1.0, epsilon = 1e-10);
+        assert_relative_eq!(sub[(0, 1)], 0.2, epsilon = 1e-10);
+        assert_relative_eq!(sub[(1, 0)], 0.2, epsilon = 1e-10);
+        assert_relative_eq!(sub[(1, 1)], 3.0, epsilon = 1e-10);
+    }
+
+    #[test]
+    fn test_extract_cov_submatrix_already_matching() {
+        // When dimensions already match, return clone
+        let cov = nalgebra::DMatrix::from_row_slice(2, 2, &[1.0, 0.1, 0.1, 2.0]);
+        let kept = vec![0, 1];
+        let sub = extract_cov_submatrix(&cov, &kept);
+        assert_eq!(sub, cov);
     }
 }

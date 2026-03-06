@@ -8,6 +8,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 [dependencies]
 ash = { workspace = true, features = ["debug", "libloading", "loaded"] }
 gpu-allocator = { workspace = true, features = ["vulkan"] }
+half = { workspace = true }
 log = { workspace = true }
 image = { workspace = true }
 naga = { workspace = true, features = ["wgsl-in", "spv-out"] }

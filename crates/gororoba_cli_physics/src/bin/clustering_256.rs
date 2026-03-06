@@ -16,6 +16,9 @@ use lbm_vulkan::besag_clifford_vulkan::{
 };
 use std::io::Write;
 
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+
 #[derive(Parser)]
 #[command(name = "clustering-256")]
 #[command(about = "Besag-Clifford permutation test for ZD-imbalance clustering at 256^3")]
@@ -109,7 +112,10 @@ fn main() {
     eprintln!("    Initializing Vulkan context...");
     let ctx = match lbm_vulkan::VulkanContext::new(false) {
         Ok(c) => {
-            eprintln!("      GPU: {} ({} MB VRAM)", c.caps.device_name, c.caps.vram_mb);
+            eprintln!(
+                "      GPU: {} ({} MB VRAM)",
+                c.caps.device_name, c.caps.vram_mb
+            );
             c
         }
         Err(e) => {
@@ -136,7 +142,12 @@ fn main() {
     };
 
     // Create LBM engine with (1,1) screen dim for headless compute
-    let mut lbm = match lbm_vulkan::compute::GororobaEngine::new(&ctx, config.grid_dim, (1, 1)) {
+    let mut lbm = match lbm_vulkan::compute::GororobaEngine::new(
+        &ctx,
+        config.grid_dim,
+        (1, 1),
+        lbm_vulkan::Precision::FP32,
+    ) {
         Ok(e) => e,
         Err(e) => {
             eprintln!("    ERROR: LBM engine init failed: {e}");
@@ -162,7 +173,11 @@ fn main() {
             eprintln!("    Observed stat: {:.6}", result.observed_stat);
             eprintln!();
 
-            let status = if result.early_stopped { "early_stopped" } else { "complete" };
+            let status = if result.early_stopped {
+                "early_stopped"
+            } else {
+                "complete"
+            };
             write_evidence(&args.output, &config, &result, status);
         }
         Err(e) => {
@@ -175,12 +190,7 @@ fn main() {
     let _ = should_stop_early(0, 0, 0.05);
 }
 
-fn write_evidence(
-    path: &str,
-    config: &BesagCliffordVulkanConfig,
-    result: &BcResult,
-    status: &str,
-) {
+fn write_evidence(path: &str, config: &BesagCliffordVulkanConfig, result: &BcResult, status: &str) {
     // Ensure parent directory exists
     if let Some(parent) = std::path::Path::new(path).parent() {
         let _ = std::fs::create_dir_all(parent);

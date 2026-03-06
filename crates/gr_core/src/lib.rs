@@ -75,6 +75,7 @@ pub mod coordinates;
 pub mod cosmology_algebra_bridge;
 pub mod doppler;
 pub mod energy_conserving;
+pub mod forces;
 pub mod gravitational_waves;
 pub mod hawking;
 pub mod kerr;
@@ -82,6 +83,7 @@ pub mod kerr_de_sitter;
 pub mod kerr_newman;
 pub mod lattice_hawking;
 pub mod metric;
+pub mod nbody_integration;
 pub mod novikov_thorne;
 pub mod null_constraint;
 pub mod penrose;
@@ -94,8 +96,8 @@ pub mod scattering;
 pub mod schwarzschild;
 pub mod sedenion_geodesic;
 pub mod spacetime_algebra;
-pub mod spectral_bands;
 pub mod spatial;
+pub mod spectral_bands;
 pub mod synchrotron;
 pub mod warp_metric;
 
@@ -158,3 +160,5 @@ pub use quantum_inequalities::{
 pub use adm::{AdmConstraints, AdmDecomposition, ExtrinsicCurvatureData, decompose_metric};
 
 pub use warp_metric::{NacelleWarpBubble, NacelleWarpParams};
+
+pub use nbody_integration::{BodyState, NBodySystem};

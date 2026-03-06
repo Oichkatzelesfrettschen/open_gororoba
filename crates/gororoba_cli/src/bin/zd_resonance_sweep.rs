@@ -11,7 +11,7 @@
 
 use ash::vk;
 use clap::{Parser, Subcommand};
-use lbm_vulkan::VulkanContext;
+use lbm_vulkan::{Precision, VulkanContext};
 use lbm_vulkan::compute::GororobaEngine;
 use spectral_core::ghost_spectral::{
     GHOST_FREQ, check_ghost, compute_power_spectrum, find_peaks, peak_fwhm,
@@ -96,7 +96,7 @@ fn run_sweep_point(
     lambda: f32,
 ) -> Result<Vec<f64>, Box<dyn std::error::Error>> {
     let grid_dim = (grid, grid, grid);
-    let mut engine = GororobaEngine::new(ctx, grid_dim, (64, 64))?;
+    let mut engine = GororobaEngine::new(ctx, grid_dim, (64, 64), Precision::FP32)?;
 
     // Initialize with uniform equilibrium + small central perturbation
     let n = (grid * grid * grid) as usize;
@@ -105,6 +105,7 @@ fn run_sweep_point(
         0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778,
         0.02777778, 0.02777778, 0.02777778, 0.02777778, 0.02777778,
     ];
+    // SoA layout: f_init[q * n + idx], force[comp * n + idx]
     let mut f_init = vec![0.0f32; n * 19];
     let mut force = vec![0.0f32; n * 3];
     let center = grid as f32 / 2.0;
@@ -112,15 +113,17 @@ fn run_sweep_point(
         for y in 0..grid {
             for x in 0..grid {
                 let idx = (x + grid * (y + grid * z)) as usize;
-                f_init[idx * 19..idx * 19 + 19].copy_from_slice(&wf);
+                for (q, &w) in wf.iter().enumerate() {
+                    f_init[q * n + idx] = w;
+                }
                 let dx = x as f32 - center;
                 let dy = y as f32 - center;
                 let dz = z as f32 - center;
                 let r_sq = dx * dx + dy * dy + dz * dz + 1.0;
                 let mag = 50.0 / r_sq;
-                force[idx * 3] = -mag * dx / r_sq.sqrt();
-                force[idx * 3 + 1] = -mag * dy / r_sq.sqrt();
-                force[idx * 3 + 2] = -mag * dz / r_sq.sqrt();
+                force[idx] = -mag * dx / r_sq.sqrt();
+                force[n + idx] = -mag * dy / r_sq.sqrt();
+                force[2 * n + idx] = -mag * dz / r_sq.sqrt();
             }
         }
     }

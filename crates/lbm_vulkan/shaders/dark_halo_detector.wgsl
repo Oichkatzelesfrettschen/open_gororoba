@@ -47,10 +47,11 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
     }
     let zd_extreme = zd_proxy > pc.zd_threshold;
 
-    // Criterion 2: Low velocity (baryon-empty analogue)
-    let ux = u_in[idx * 3u + 0u];
-    let uy = u_in[idx * 3u + 1u];
-    let uz = u_in[idx * 3u + 2u];
+    // Criterion 2: Low velocity (baryon-empty analogue, SoA layout)
+    let N = pc.nx * pc.ny * pc.nz;
+    let ux = u_in[idx];
+    let uy = u_in[N + idx];
+    let uz = u_in[2u * N + idx];
     let speed = sqrt(ux * ux + uy * uy + uz * uz);
     let velocity_low = speed < pc.velocity_epsilon;
 

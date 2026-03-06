@@ -12,6 +12,7 @@
 // Domain-specific layer implementations (depend on physics crates)
 pub mod correction_layer;
 pub mod dynamics_field;
+pub mod fluid_dynamics_bridge;
 pub mod gate;
 pub mod pipeline;
 pub mod pipelines;
@@ -54,7 +55,9 @@ pub mod adaptive_gpu {
     pub use gororoba_gpu_bridge::*;
 }
 
-pub use gororoba_gpu_bridge::{ComputeBackend, choose_backend};
+pub use gororoba_gpu_bridge::{
+    ComputeBackend, HardwareCaps, SimdCaps, choose_backend, detect_best_backend, probe_simd,
+};
 pub use pipeline::GororobaEngine;
 pub use pipelines::warp_ring::WarpRingPipeline;
 pub use simulation::{SimulationConfig, SimulationConfig3D, SimulationState, SimulationState3D};

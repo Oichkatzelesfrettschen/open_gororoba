@@ -30,11 +30,13 @@ use std::f64::consts::PI;
 
 use num_complex::Complex64;
 
-use super::constants::{ALPHA_EM, KAPPA_NATURAL};
-use super::quadrature::{self, QuadratureConfig};
-use super::special_functions;
-use super::types::{FieldConfig, HelicityChannel, LoopType, PhotonPolarization};
-use super::worldline_greens;
+use super::{
+    constants::{ALPHA_EM, KAPPA_NATURAL},
+    quadrature::{self, QuadratureConfig},
+    special_functions,
+    types::{FieldConfig, HelicityChannel, LoopType, PhotonPolarization},
+    worldline_greens,
+};
 
 /// Compute the irreducible amplitude for a given helicity channel.
 ///

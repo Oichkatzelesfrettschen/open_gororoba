@@ -25,8 +25,10 @@
 //! - Alcubierre (1994): Class. Quantum Grav. 11, L73
 //! - Pfenning & Ford (1997): Class. Quantum Grav. 14, 1743
 
-use crate::metric::{DIM, MetricComponents, SpacetimeMetric};
-use crate::spatial::SpatialVector;
+use crate::{
+    metric::{DIM, MetricComponents, SpacetimeMetric},
+    spatial::SpatialVector,
+};
 use std::f64::consts::PI;
 
 // ============================================================================
@@ -198,7 +200,12 @@ pub fn nacelle_array(rho: f64, phi: f64, params: &NacelleWarpParams) -> f64 {
 
     let n_f = n as f64;
     let sigma_phi = PI / n_f;
-    let f_rho = nacelle_radial_envelope(rho, params.rho_0, params.sigma_rho, params.cd_alternativity_ratio);
+    let f_rho = nacelle_radial_envelope(
+        rho,
+        params.rho_0,
+        params.sigma_rho,
+        params.cd_alternativity_ratio,
+    );
 
     let mut sum = 0.0;
     for k in 0..n {
@@ -403,19 +410,13 @@ mod tests {
     #[test]
     fn test_shape_function_at_center() {
         let f = alcubierre_shape_function(0.0, 10.0, 1.0);
-        assert!(
-            (f - 1.0).abs() < 0.01,
-            "f(0) = {f}, expected ~1.0"
-        );
+        assert!((f - 1.0).abs() < 0.01, "f(0) = {f}, expected ~1.0");
     }
 
     #[test]
     fn test_shape_function_far_field() {
         let f = alcubierre_shape_function(100.0, 10.0, 1.0);
-        assert!(
-            f.abs() < 0.01,
-            "f(100) = {f}, expected ~0"
-        );
+        assert!(f.abs() < 0.01, "f(100) = {f}, expected ~0");
     }
 
     #[test]
@@ -454,10 +455,7 @@ mod tests {
     #[test]
     fn test_axial_taper_center() {
         let wx = axial_taper(0.0, 8.0, 1.0);
-        assert!(
-            (wx - 1.0).abs() < 0.01,
-            "W_x(0) = {wx}, expected ~1"
-        );
+        assert!((wx - 1.0).abs() < 0.01, "W_x(0) = {wx}, expected ~1");
     }
 
     #[test]
@@ -486,10 +484,7 @@ mod tests {
         let params = NacelleWarpParams::default();
         // Interior: rho << rho_0, so W_g ~ 0, M ~ 1
         let m = modulation(0.1, 0.0, &params);
-        assert!(
-            (m - 1.0).abs() < 0.01,
-            "Interior M = {m}, expected ~1"
-        );
+        assert!((m - 1.0).abs() < 0.01, "Interior M = {m}, expected ~1");
     }
 
     // -- Shift vector --
@@ -527,16 +522,8 @@ mod tests {
             "far-field g_00 = {}",
             g[0][0]
         );
-        assert!(
-            g[0][1].abs() < 0.01,
-            "far-field g_0x = {}",
-            g[0][1]
-        );
-        assert!(
-            (g[1][1] - 1.0).abs() < TOL,
-            "far-field g_xx = {}",
-            g[1][1]
-        );
+        assert!(g[0][1].abs() < 0.01, "far-field g_0x = {}", g[0][1]);
+        assert!((g[1][1] - 1.0).abs() < TOL, "far-field g_xx = {}", g[1][1]);
     }
 
     #[test]
@@ -589,10 +576,7 @@ mod tests {
         // At the interior center, the shift is nearly uniform, so divergence ~ 0
         let theta = nacelle_york_time(0.0, 0.0, 0.0, &params);
         // May not be exactly zero due to axial taper gradient, but should be small
-        assert!(
-            theta.abs() < 0.1,
-            "York time at center: {theta}"
-        );
+        assert!(theta.abs() < 0.1, "York time at center: {theta}");
     }
 
     // -- Nacelle count effects --
@@ -662,6 +646,9 @@ mod tests {
 
         let rho_nacelle = nacelle_energy_density(x_pt, y_pt, z_pt, &params);
         // Should be non-positive
-        assert!(rho_nacelle <= 1e-15, "Alcubierre limit density should be <= 0: {rho_nacelle}");
+        assert!(
+            rho_nacelle <= 1e-15,
+            "Alcubierre limit density should be <= 0: {rho_nacelle}"
+        );
     }
 }
