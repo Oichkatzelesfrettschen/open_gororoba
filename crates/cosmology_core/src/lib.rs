@@ -44,6 +44,7 @@ pub mod halo_profile;
 pub mod homotopy_bridge;
 pub mod observational;
 pub mod optimizer;
+pub mod orthoplex_crystal;
 pub mod orthoplex_diffusion;
 pub mod spectral;
 pub mod tov;
