@@ -5,16 +5,25 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 4907
-claim_count = 935
+test_count = 4946
+claim_count = 941
 insight_count = 99
-experiment_count = 88
-complete_experiment_count = 75
+experiment_count = 89
+complete_experiment_count = 76
 paper_count = 19
 binary_count = 161
 kernel_checked_claims = 107
 proof_files = 142
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s69]
+number = 69
+date = "2026-03-05"
+test_count = 4946
+claim_count = 941
+kernel_checked_claims = 107
+proof_files = 142
+summary = "S68-69: Vulkan f16 mixed-precision shaders (lbm_f16.wgsl, init_f16.wgsl) with Precision-aware buffer sizing. QGP Arleo-Falmagne: pT sweep (beta=1.133 at pT>3GeV, 0.324 at pT>5GeV), beta cross-validation (density vs azimuthal, C-936), eccentricity robustness (optical vs MC Glauber, C-937), BIC model comparison (AF vs CUJET3.0 vs frac. Langevin, E-090, C-938/C-939). MC Glauber published values (ALICE Pb-Pb 5.02/5.36 + Xe-Xe 5.44). ALICE Run 3 5.36 TeV integration (arXiv:2504.02505). Infrastructure: mimalloc, core_affinity, ComputeBackend {CpuScalar,CpuSimd,Vulkan,Cuda} + SimdCaps, portable SIMD via wide::f32x8. Nightly updated 2026-02-13 -> 2026-03-05. 39 new tests (4907->4946)."
 
 [sprints.s64]
 number = 64

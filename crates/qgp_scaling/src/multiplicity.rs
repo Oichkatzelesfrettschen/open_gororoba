@@ -39,6 +39,7 @@ impl MultiplicityBin {
 /// Collision system identifier.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum CollisionSystem {
+    PbPb5360,
     PbPb5020,
     PbPb2760,
     AuAu200,
@@ -50,6 +51,7 @@ impl CollisionSystem {
     #[must_use]
     pub fn label(&self) -> &'static str {
         match self {
+            Self::PbPb5360 => "Pb-Pb 5.36 TeV",
             Self::PbPb5020 => "Pb-Pb 5.02 TeV",
             Self::PbPb2760 => "Pb-Pb 2.76 TeV",
             Self::AuAu200 => "Au-Au 200 GeV",
@@ -123,6 +125,26 @@ pub fn alice_pbpb_5020_multiplicity() -> Vec<MultiplicityBin> {
             dnch_deta: 17.5,
             dnch_deta_err: 1.8,
         },
+    ]
+}
+
+/// ALICE Pb-Pb 5.36 TeV dNch/deta at midrapidity (LHC Run 3).
+/// Source: ALICE Collaboration, arXiv:2504.02505 (2025), Table 2.
+/// First Run 3 measurement with upgraded ITS and continuous readout.
+/// sigma_INEL = 68.2 +/- 0.6 mb.
+#[must_use]
+pub fn alice_pbpb_5360_multiplicity() -> Vec<MultiplicityBin> {
+    vec![
+        MultiplicityBin { cent_lo: 0.00, cent_hi: 0.05, dnch_deta: 2047.0, dnch_deta_err: 54.0 },
+        MultiplicityBin { cent_lo: 0.05, cent_hi: 0.10, dnch_deta: 1668.0, dnch_deta_err: 42.0 },
+        MultiplicityBin { cent_lo: 0.10, cent_hi: 0.20, dnch_deta: 1253.0, dnch_deta_err: 33.0 },
+        MultiplicityBin { cent_lo: 0.20, cent_hi: 0.30, dnch_deta: 848.0, dnch_deta_err: 25.0 },
+        MultiplicityBin { cent_lo: 0.30, cent_hi: 0.40, dnch_deta: 559.0, dnch_deta_err: 19.0 },
+        MultiplicityBin { cent_lo: 0.40, cent_hi: 0.50, dnch_deta: 351.0, dnch_deta_err: 14.0 },
+        MultiplicityBin { cent_lo: 0.50, cent_hi: 0.60, dnch_deta: 205.0, dnch_deta_err: 11.0 },
+        MultiplicityBin { cent_lo: 0.60, cent_hi: 0.70, dnch_deta: 110.0, dnch_deta_err: 8.0 },
+        MultiplicityBin { cent_lo: 0.70, cent_hi: 0.80, dnch_deta: 53.0, dnch_deta_err: 5.0 },
+        MultiplicityBin { cent_lo: 0.80, cent_hi: 0.90, dnch_deta: 23.2, dnch_deta_err: 2.8 },
     ]
 }
 
@@ -304,6 +326,7 @@ pub fn alice_xexe_5440_multiplicity() -> Vec<MultiplicityBin> {
 #[must_use]
 pub fn multiplicity_table(system: CollisionSystem) -> Vec<MultiplicityBin> {
     match system {
+        CollisionSystem::PbPb5360 => alice_pbpb_5360_multiplicity(),
         CollisionSystem::PbPb5020 => alice_pbpb_5020_multiplicity(),
         CollisionSystem::PbPb2760 => alice_pbpb_2760_multiplicity(),
         CollisionSystem::AuAu200 => phenix_auau_200_multiplicity(),
@@ -359,6 +382,7 @@ mod tests {
     #[test]
     fn test_all_systems_nonempty() {
         for sys in [
+            CollisionSystem::PbPb5360,
             CollisionSystem::PbPb5020,
             CollisionSystem::PbPb2760,
             CollisionSystem::AuAu200,

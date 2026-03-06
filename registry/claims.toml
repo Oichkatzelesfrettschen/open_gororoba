@@ -13542,7 +13542,7 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 57B: PARTIAL FAIL. Central bins OK (0-5%: 3.6%, 10-20%: 3.0%, 20-30%: 3.0%) but mid/peripheral bins diverge: 30-40%=12%, 40-50%=27%, 50-60%=44%, 60-70%=80%, 70-80%=119%. Optical Glauber overshoots Npart at peripheral centralities. Needs nuclear density profile refinement (e.g., Woods-Saxon parameter tuning)."
+status_note = "Sprint 69: PARTIAL FAIL confirmed. Central bins OK: 0-5%=3.6%, 5-10%=5.4%, 10-20%=3.0%, 20-30%=3.0%. Peripheral bins diverge: 30-40%=12.0%, 40-50%=27.1%, 50-60%=44.0%, 60-70%=80.0%, 70-80%=118.9%. Optical Glauber overshoots Npart at peripheral centralities due to hard-sphere density profile limitations. Claim PARTIALLY VERIFIED for 0-5% through 20-30% only."
 
 [[claim]]
 id = "C-841"
@@ -13564,13 +13564,13 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 57B: CMS pp reference spectrum downloaded (cms_pp_5020_spectrum_table7.csv). Power-law fit not yet implemented in binary. Literature value n=6.1 still used as default. Needs direct fit to CMS data."
+status_note = "Sprint 69: ESTABLISHED. Literature value n=6.1 used as default for Pb-Pb 5.02 TeV. CMS pp spectrum (table7.csv) available but power-law fit not yet implemented. Epsilon extraction with n=6.1 yields eps_bar in [0.60, 2.92] GeV, physically sensible. Direct CMS fit deferred."
 
 [[claim]]
 id = "C-842"
 statement = "R_AA(pT) for multiple centralities collapses onto universal curve f(u = pT/epsilon_bar, n) with reduced chi2 < 2."
 where_stated = "crates/qgp_scaling/src/quenching.rs (r_aa_model, scaling_function, test_scaling_function_matches_raa)"
-status = "Proposed"
+status = "Falsified"
 last_verified = ""
 what_would_verify_refute = "VERIFY: Overlay all centralities on f(u,n) curve, reduced chi2 < 2. REFUTE: chi2/ndf > 5 or systematic residuals."
 confidence = "medium"
@@ -13589,13 +13589,13 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 57B: BLOCKED. Epsilon extraction returned eps_bar=0.10 for ALL centrality bins with chi2/ndf>1000. Fit did not converge. Root cause: optimizer stuck at boundary. Needs epsilon_fit.rs debugging before data collapse can be tested."
+status_note = "Sprint 69: FALSIFIED. Epsilon extraction now converges (parse_raa_csv fix resolved prior boundary-sticking). Per-bin chi2/ndf: 0-5%=758, 5-10%=703, 10-20%=529, 20-30%=412, 30-40%=231, 40-50%=151, 50-60%=75, 60-70%=28. All chi2/ndf >> 2 threshold. The simple power-law R_AA model does not achieve scaling collapse against ALICE data at these precision levels."
 
 [[claim]]
 id = "C-843"
 statement = "epsilon_bar shows monotonic centrality ordering: 0-5% > 5-10% > ... > 70-80% across all collision systems."
 where_stated = "crates/qgp_scaling/src/epsilon_fit.rs (extract_epsilon), crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs (run_alice)"
-status = "Proposed"
+status = "Verified"
 last_verified = ""
 what_would_verify_refute = "VERIFY: Strict monotonic decrease in epsilon_bar with increasing centrality percentile. REFUTE: Any inversion in ordering."
 confidence = "medium"
@@ -13611,14 +13611,14 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 57B: BLOCKED. Cannot evaluate -- epsilon extraction returned constant 0.10 for all bins (fit non-convergence). Depends on C-842 fix."
+status_note = "Sprint 69: VERIFIED. Epsilon_bar is strictly monotonically decreasing: 0-5%=2.92, 5-10%=2.63, 10-20%=2.25, 20-30%=1.85, 30-40%=1.50, 40-50%=1.17, 50-60%=0.87, 60-70%=0.60 GeV. All values in physical range [0.6, 2.9] GeV. No inversions."
 
 [[claim]]
 id = "C-844"
 statement = "Multi-system density scaling fit yields beta = 1.02 +/- 0.15 (within 1-sigma of Arleo-Falmagne) from Pb-Pb + Au-Au + Xe-Xe data."
 where_stated = "crates/qgp_scaling/src/density_scaling.rs (fit_density_scaling, test_density_scaling_recovery)"
-status = "Proposed"
-last_verified = ""
+status = "Falsified"
+last_verified = "2026-03-05"
 what_would_verify_refute = "VERIFY: beta in [0.87, 1.17] with chi2/ndf < 2. REFUTE: beta outside [0.5, 1.5] or chi2/ndf > 5."
 confidence = "medium"
 phase = "qgp"
@@ -13636,14 +13636,14 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 57B: BLOCKED. Density fit returned beta=0.000, K=0.0071, chi2/ndf=1038. Fit machinery broken because eps_bar extraction non-convergent (upstream of this claim). Synthetic parameter recovery test still passes."
+status_note = "Sprint 69: FALSIFIED at pT>5 GeV (beta=0.355, chi2/ndf=28.4). However pT sweep reveals strong pT dependence: pT>3 beta=1.133 (chi2/ndf=60), pT>5 beta=0.324 (chi2/ndf=42), pT>10 beta=0.217 (chi2/ndf=4.2), pT>15 beta=0.245 (chi2/ndf=1.1), pT>20 beta=0.557 (chi2/ndf=0.09). Beta recovers Arleo-Falmagne value at low pT where fractional energy loss eps/pT is large. Optical Glauber Npart diverges peripherally but A_perp/L_avg (geometric) are unaffected. MC Glauber A_perp=sigma*Npart^2/(4*Ncoll) gives unphysical values >pi*R^2. Multi-system (8 PbPb + 8 XeXe): beta=0.355 at pT>5."
 
 [[claim]]
 id = "C-845"
 statement = "Density scaling constant K = 0.33 +/- 0.10 fm^(1-beta) from multi-system fit."
 where_stated = "crates/qgp_scaling/src/density_scaling.rs (fit_density_scaling)"
-status = "Proposed"
-last_verified = ""
+status = "Falsified"
+last_verified = "2026-03-05"
 what_would_verify_refute = "VERIFY: K in [0.20, 0.50] fm^(1-beta). REFUTE: K outside [0.10, 1.0]."
 confidence = "medium"
 phase = "qgp"
@@ -13658,13 +13658,13 @@ claims = [
     "C-846",
     "C-847",
 ]
-status_note = "Sprint 57B: BLOCKED. Depends on C-844 (beta fit). K=0.0071 from non-convergent fit is meaningless."
+status_note = "Sprint 69: FALSIFIED. Multi-system K_PbPb=0.1152 +/- 0.0002, K_XeXe=0.1248 +/- 0.0008 at beta=0.355. Both K values are below [0.20, 0.50] range. K is anti-correlated with beta -- at the wrong beta=0.355, K is systematically low. Consistent with C-844 falsification."
 
 [[claim]]
 id = "C-846"
 statement = "Hadron v2/eccentricity vs d(ln R_AA)/d(ln pT) linear relation yields beta_hadrons = 0.94 +/- 0.15."
 where_stated = "crates/qgp_scaling/src/v2_relation.rs (fit_v2_relation, test_v2_relation_recovery_origin)"
-status = "Proposed"
+status = "Falsified"
 last_verified = ""
 what_would_verify_refute = "VERIFY: beta_hadrons in [0.75, 1.15] with R^2 > 0.8. REFUTE: R^2 < 0.5 or beta outside [0.5, 1.5]."
 confidence = "medium"
@@ -13680,7 +13680,7 @@ claims = [
     "C-845",
     "C-847",
 ]
-status_note = "Sprint 57B: CMS v2 data downloaded (6 tables). v2/eccentricity fit NOT YET RUN (pipeline step 5 reported 'pending CMS v2 data parsing'). Needs v2 data parser wiring in binary."
+status_note = "Sprint 69: FALSIFIED. v2 relation fitted with 36 matched data points. Result: beta_hadrons=0.021 +/- 0.006, R^2=-0.94. R^2 < 0 means the linear model is worse than a constant. The v2/eccentricity vs d(ln R_AA)/d(ln pT) relation does not hold in current data/matching procedure. Possible causes: pT bin matching window too wide, Glauber eccentricity systematic bias at peripheral centralities."
 
 [[claim]]
 id = "C-847"
@@ -13702,7 +13702,7 @@ claims = [
     "C-845",
     "C-846",
 ]
-status_note = "Sprint 57B: ATLAS jet v2 download FAILED (HEPData ins1967021 URLs not resolving). ATLAS jet R_AA downloaded (10 tables). v2 analysis blocked on data availability."
+status_note = "Sprint 69: DEFERRED. ATLAS jet v2 download still failing (HEPData ins1967021 URLs not resolving). ATLAS jet R_AA available (10 tables) but v2 data required for this claim. Blocked on external data availability."
 
 [[claim]]
 id = "C-848"
@@ -14887,14 +14887,66 @@ status_note = "Kernel-checked via Rocq 9.1. 3 theorems in proofs/verified/C931_O
 id = "C-932"
 statement = "Orthoplex diffusion dark energy with fixed beta=1.0 (w = -1 + d_s(t(z)), t = t_0/(1+z)^alpha) fitted to 1638 data points (1578 Pantheon+ SNe + 12 DESI DR1 BAO + 31 cosmic chronometers + 16 f*sigma8 RSD + CMB R shift) at k=63: chi2=749.01 (vs LCDM 767.39), delta-AIC=-14.38, delta-BIC=-3.58. Fixed-beta model (4 params: omega_m, h0, alpha, t_0) preferred over LCDM by Kass-Raftery scale. Free-beta (5 params): delta-BIC=+3.82, LCDM weakly preferred. Thawing EOS: w(0)=-0.663, w(2)=-0.9999. Pre-registered falsification: delta-BIC > +10 = disfavored. Result: delta-BIC=-3.58, orthoplex PREFERRED."
 where_stated = "crates/cosmology_core/src/orthoplex_diffusion.rs"
-status = "Verified"
-last_verified = "2026-03-03"
+status = "Falsified"
+last_verified = "2026-03-05"
 what_would_verify_refute = "VERIFY: run orthoplex-cosmo-fit --skip-download --k 63 --fixed_beta, confirm delta-BIC < 0 and w(0) in [-0.8, -0.6]. REFUTE: delta-BIC > +10 or optimizer fails to converge."
 confidence = "high"
 phase = "cosmology"
 sprint = 60
 dependencies = ["C-931"]
-status_note = "Kernel-checked via Rocq 9.1. 5 theorems in proofs/verified/C932_OrthoplexThawing.v: LCDM limits (beta=0 -> w=-1, d_s=0 -> w=-1), thawing direction (w >= -1), boundedness (w in [-1, beta*d_s_max-1]), monotonicity in beta. Theory file: proofs/theories/DarkEnergyEOS.v. Fixed beta=1.0 eliminates one free parameter, yielding 4-param model that beats LCDM (2-param) by delta-BIC=-3.58. Parallel 9-start Nelder-Mead (rayon par_iter), batch RK4 growth integrator for 16 f*sigma8 RSD measurements. Dataset: Pantheon+ (Scolnic+ 2022), DESI DR1 BAO (2024), cosmic chronometers (31 H(z)), f*sigma8 (6dFGS+BOSS+DESI DR1), CMB R shift. Note: fixed-beta (4 params, dBIC=-3.58) and free-beta (5 params, dBIC=+3.82) are distinct model comparisons against LCDM (2 params). The 4-param model is preferred; the 5-param model is not."
+status_note = "FALSIFIED in Sprint 68 (2026-03-05). With full Pantheon+ STAT+SYS 1578x1578 covariance matrix (auto-downloaded, sub-matrix extracted for filtered SNe), the result reverses completely. Fixed-beta: chi2=1458.07 vs LCDM 767.39, delta-BIC=+705.48. Free-beta: delta-BIC=+712.88. Pre-registered falsification threshold was delta-BIC > +10; measured +705 exceeds by 70x. The original delta-BIC=-3.58 used diagonal errors only, which absorbed the apparent signal that off-diagonal correlations (shared calibration, dust, survey systematics) now eliminate. Rocq proofs of mathematical properties (C932_OrthoplexThawing.v) remain valid -- they prove structural EOS bounds, not observational preference. The model is mathematically consistent but observationally disfavored against LCDM by overwhelming margin."
+
+[[claim]]
+id = "C-936"
+statement = "The Arleo-Falmagne path-length exponent beta extracted from density scaling (epsilon_bar = K * rho * L^beta) and from azimuthal anisotropy (v2/epsilon = (beta/2) * d(ln R_AA)/d(ln pT)) are statistically consistent (z-score < 2), confirming universality of the path-length dependence across independent observables."
+where_stated = "crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs"
+status = "Pending"
+last_verified = "2026-03-05"
+what_would_verify_refute = "VERIFY: arleo-falmagne-scaling cross-validate yields z-score < 2.0 with beta_density and beta_azimuthal both in [0.5, 2.0]. REFUTE: z-score >= 2.0 indicating the two extraction methods yield incompatible exponents, breaking universality."
+confidence = "medium"
+phase = "physics"
+sprint = 69
+dependencies = ["C-844", "C-846"]
+status_note = "Phase A1 complete. CrossValidate subcommand implemented. Awaiting execution against real ALICE+CMS data."
+
+[[claim]]
+id = "C-937"
+statement = "The path-length exponent beta extracted from the v2/eccentricity relation is robust under replacement of optical Glauber eccentricity with MC Glauber epsilon_2{2}: |delta_beta| < 0.2 between the two eccentricity models for Pb-Pb 5.02 TeV centralities 0-50%."
+where_stated = "crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs"
+status = "Pending"
+last_verified = "2026-03-05"
+what_would_verify_refute = "VERIFY: arleo-falmagne-scaling ecc-compare yields |delta_beta| < 0.2 with both models producing R^2 > 0.5. REFUTE: |delta_beta| >= 0.2 or one model fails to converge."
+confidence = "medium"
+phase = "physics"
+sprint = 69
+dependencies = ["C-936", "C-846"]
+status_note = "Phase A1 complete. EccCompare subcommand implemented with optical Glauber and MC eps_2{2} from PRC 93 (2016). Awaiting execution against real data."
+
+[[claim]]
+id = "C-938"
+statement = "The Arleo-Falmagne scaling ansatz (2 parameters: beta, K) achieves a lower BIC than CUJET3.0 (5 parameters) when compared against ALICE Pb-Pb R_AA data at 0-5% centrality with pT > 5 GeV, demonstrating that the simpler model is not disfavored by Occam's razor."
+where_stated = "crates/qgp_scaling/src/competing_models.rs"
+status = "Pending"
+last_verified = "2026-03-05"
+what_would_verify_refute = "VERIFY: BIC(AF) < BIC(CUJET3.0) when both are evaluated against ALICE 0-5% R_AA. REFUTE: BIC(AF) >= BIC(CUJET3.0), meaning the more complex model is preferred despite its parameter penalty."
+confidence = "medium"
+phase = "physics"
+sprint = 69
+dependencies = ["C-842"]
+status_note = "Competing models module implemented with digitized CUJET3.0 (JHEP02(2016)169) and fractional Langevin (arXiv:2401.03757) predictions. BicCompare subcommand added. Awaiting execution."
+
+[[claim]]
+id = "C-939"
+statement = "The Arleo-Falmagne scaling ansatz achieves a lower BIC than the fractional Langevin heavy-quark model (3 parameters) when compared against ALICE Pb-Pb R_AA data, noting the caveat that the Langevin model targets D-meson R_AA (heavy quarks) while AF targets light hadron R_AA."
+where_stated = "crates/qgp_scaling/src/competing_models.rs"
+status = "Pending"
+last_verified = "2026-03-05"
+what_would_verify_refute = "VERIFY: BIC(AF) < BIC(Langevin) on shared pT range. REFUTE: BIC(AF) >= BIC(Langevin), or the comparison is invalid due to flavor mismatch."
+confidence = "low"
+phase = "physics"
+sprint = 69
+dependencies = ["C-938"]
+status_note = "Langevin model digitized from arXiv:2401.03757 (D-meson R_AA). Flavor mismatch caveat noted: light hadron vs heavy quark comparison is approximate."
 
 [[claim]]
 id = "C-950"
@@ -14934,3 +14986,42 @@ phase = "gr"
 sprint = 61
 dependencies = ["C-879"]
 status_note = "Phase C1 complete. Rust implementation and Coq proofs pending."
+
+[[claim]]
+id = "C-980"
+statement = "Pathion gravity predicts a discrete 15+1 macroscopic splintering of the Kerr photon ring. The non-associative 32D Carter constant diagonalizes into 16 complex planes corresponding to the 15 connected components of the Zero-Divisor graph, creating distinct nested sub-rings."
+where_stated = "crates/pathion_ellip/src/pathion_shadow.rs"
+status = "Pending"
+last_verified = "2026-03-05"
+what_would_verify_refute = "VERIFY: pathion-shadow-cli yields non-zero variance across 16 planes, indicating physically distinct deflection boundaries. REFUTE: Pathion fluctuations average to a single classical Bardeen curve with zero variance."
+confidence = "high"
+phase = "gr"
+sprint = 62
+dependencies = ["C-443", "I-012"]
+status_note = "Phase A1 complete. Rust Carlson integral engine over 32D Pathions implemented. Bounded via Solar System Crucible: alpha_pathion < 1e-24 s^-2 based on 1-year DE440 heliocentric drift residual (LLR constraint). Coq verification of branch cut boundaries pending."
+
+[[claim]]
+id = "C-990"
+statement = "The 64D Chingon algebra breaks alternativity, inducing a non-conservative geometry drag. The Alternativity Violation Tensor (AVT) acts as an asymmetric momentum sink during spacecraft hyperbolic gravity assists (The Earth Flyby Anomaly)."
+where_stated = "crates/gr_core/src/forces/chingon_drag.rs"
+status = "Pending"
+last_verified = "2026-03-05"
+what_would_verify_refute = "VERIFY: flyby-crucible replicates the +3.92 mm/s Galileo Delta-V anomaly using Chingon drag coupled to the 220 km/s dark matter wind. REFUTE: The AVT torque produces unphysical trajectories or violates stable planetary limits."
+confidence = "high"
+phase = "physics"
+sprint = 71
+dependencies = ["C-980"]
+status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge."
+
+[[claim]]
+id = "C-1010"
+statement = "At 128D (Routons) and 256D (Voudons), discrete Cayley-Dickson algebraic violations average out into statistical thermodynamics. The 128D ZD graph exhibits Wigner-Dyson level spacing (Quantum Chaos), and the 256D Global Mean Frustration Density acts as a non-zero algebraic pressure term for cosmological homogeneity."
+where_stated = "crates/algebra_core/src/construction/deep_space.rs"
+status = "Pending"
+last_verified = "2026-03-05"
+what_would_verify_refute = "VERIFY: Voudon algebraic pressure is stable and non-zero (~0.4), and Routon spectral spacing diverges from Poisson towards Wigner-Dyson. REFUTE: The Voudon pressure evaluates to zero or Routon spacing remains purely Poisson."
+confidence = "high"
+phase = "algebra"
+sprint = 72
+dependencies = ["C-990"]
+status_note = "Phase A1 complete. 128D and 256D algebra elements generated with SIMD acceleration. Voudon frustration density calculation verified (~0.395)."
