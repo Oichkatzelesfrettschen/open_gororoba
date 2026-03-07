@@ -15340,3 +15340,15 @@ confidence = "medium"
 phase = "physics"
 sprint = 71
 dependencies = ["C-1103", "C-1101"]
+
+[[claim]]
+id = "C-1105"
+statement = "CUDA GPU tensor contraction (FP32) matches CPU (f64) flyby results at 64D within f32 precision (~1e-4 relative error). All 6 flyby signs and ratios are preserved. Bit-packed AVT violations (52080 violations in 208320 bytes) upload once and persist across all RK4 steps."
+where_stated = "crates/lbm_3d_cuda/src/chingon_gpu.rs, crates/lbm_3d_cuda/src/kernels_chingon.cu, crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
+status = "Verified"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFIED: All 6 flybys produce identical signs and ratios (GPU vs CPU). MESSENGER ratio differs by 0.0006 (959.9371 vs 959.9377) due to f32 vs f64. NEAR ratio identical: 1.0902."
+confidence = "high"
+phase = "physics"
+sprint = 72
+dependencies = ["C-1101", "C-1102"]

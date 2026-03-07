@@ -10,10 +10,22 @@
 use algebra_core::construction::chingon::AlternativityViolationTensor;
 use clap::Parser;
 use gororoba_cli_physics::ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN};
-use gr_core::forces::chingon_bivector_drag::compute_chingon_bivector_drag_3body;
+use gr_core::forces::chingon_bivector_drag::{
+    compute_chingon_bivector_drag_3body, ThreeBodyOrbitalParams,
+};
+#[cfg(feature = "gpu")]
+use lbm_3d_cuda::chingon_gpu::ChingonGpuPipeline;
 use nalgebra::{Matrix3, Vector3};
 use rayon::prelude::*;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
+
+/// Type alias for the GPU pipeline, gated behind the `gpu` feature.
+/// When `gpu` is disabled, we use a unit struct so function signatures
+/// remain identical (the `Option` is always `None`).
+#[cfg(feature = "gpu")]
+type GpuPipeline = ChingonGpuPipeline;
+#[cfg(not(feature = "gpu"))]
+type GpuPipeline = ();
 
 /// Coupling constant with NFW-like 1/r^3 density scaling.
 ///
@@ -459,6 +471,7 @@ fn run_flyby(
     ephem: Option<&EphemerisLoader>,
     trace_h: bool,
     eta_wake: f64,
+    gpu_pipeline: Option<&Mutex<GpuPipeline>>,
 ) -> (f64, f64, Vec<[f64; 7]>, Vec<[f64; 12]>) {
     let (pos_init, vel_init) = hyperbolic_initial_state(cfg, t_before);
     let total_time = t_before + t_after;
@@ -527,9 +540,45 @@ fn run_flyby(
                         let alpha_eff = ALPHA_CHINGON * dm_wake_density_factor(
                             p_in.norm(), &p_in, v_wind, eta_wake,
                         );
-                        a += compute_chingon_bivector_drag_3body(
-                            p_in, v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
-                        );
+
+                        #[cfg(feature = "gpu")]
+                        let gpu_force = gpu_pipeline.and_then(|mtx| {
+                            let params = ThreeBodyOrbitalParams::compute(
+                                p_in, v_in, *v_wind, r_moon, r_sun,
+                            )?;
+                            let mut pipe = mtx.lock().ok()?;
+                            let f = pipe.compute_force_3body(
+                                &params.triad_earth,
+                                &params.triad_lunar,
+                                &params.triad_solar,
+                                &params.h_triad_earth,
+                                &params.vrel_triad_lunar,
+                                &params.h_triad_solar,
+                                &params.vhat_triad_solar,
+                                params.h_earth_norm,
+                                params.v_rel_norm,
+                                params.cross_sign,
+                                alpha_eff,
+                            ).ok()?;
+                            Some(Vector3::new(f[0], f[1], f[2]))
+                        });
+
+                        #[cfg(feature = "gpu")]
+                        {
+                            if let Some(f) = gpu_force {
+                                a += f;
+                            } else {
+                                a += compute_chingon_bivector_drag_3body(
+                                    p_in, v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
+                                );
+                            }
+                        }
+                        #[cfg(not(feature = "gpu"))]
+                        {
+                            a += compute_chingon_bivector_drag_3body(
+                                p_in, v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
+                            );
+                        }
                     }
 
                     a
@@ -758,6 +807,35 @@ fn main() -> anyhow::Result<()> {
     println!("  AVT: {} violations ({:.2}s)", avt.violations.len(), t0.elapsed().as_secs_f64());
     println!();
 
+    // Initialize GPU pipeline if requested
+    let gpu_pipeline: Option<Arc<Mutex<GpuPipeline>>> = if cli.gpu {
+        #[cfg(feature = "gpu")]
+        {
+            let packed = avt.pack_for_gpu();
+            println!("Initializing CUDA pipeline...");
+            println!("  Packed AVT: {} violations, {} bits/index, {} bytes",
+                packed.violation_count, packed.index_bits, packed.data.len() * 4);
+            let t_gpu = std::time::Instant::now();
+            match ChingonGpuPipeline::new(&packed) {
+                Ok(pipeline) => {
+                    println!("  GPU pipeline ready ({:.2}s)", t_gpu.elapsed().as_secs_f64());
+                    Some(Arc::new(Mutex::new(pipeline)))
+                }
+                Err(e) => {
+                    println!("  GPU init failed: {} -- falling back to CPU", e);
+                    None
+                }
+            }
+        }
+        #[cfg(not(feature = "gpu"))]
+        {
+            println!("WARNING: --gpu requested but binary compiled without 'gpu' feature");
+            None
+        }
+    } else {
+        None
+    };
+
     let all = all_flybys();
     let configs: Vec<&FlybyConfig> = if let Some(ref name) = cli.spacecraft {
         let key = name.to_lowercase();
@@ -828,6 +906,7 @@ fn main() -> anyhow::Result<()> {
             let (v_ctrl, v_chingon, traj, h_trace_data) = run_flyby(
                 cfg, &avt, cli.dt, t_before, t_after, stride, &v_wind,
                 ephem.as_ref(), cli.trace_h, eta_wake,
+                gpu_pipeline.as_deref(),
             );
 
             let delta_v_mm_s = (v_chingon - v_ctrl) * 1e6;

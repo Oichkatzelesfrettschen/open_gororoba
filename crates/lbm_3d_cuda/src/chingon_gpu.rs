@@ -130,9 +130,10 @@ impl ChingonGpuPipeline {
         cross_sign: f64,
         alpha: f64,
     ) -> Result<[f64; 3]> {
-        // Step 1: Zero the force buffers
-        self.zero_buffer(&mut self.d_force_nd.clone(), self.dim as usize)?;
-        self.zero_buffer(&mut self.d_force_3d.clone(), 3)?;
+        // Step 1: Zero the force buffers (must zero the ACTUAL buffers,
+        // not clones -- CudaSlice::clone() allocates a new device buffer)
+        zero_device_buffer(&self.stream, &self.zero_kernel, &mut self.d_force_nd, self.dim as usize)?;
+        zero_device_buffer(&self.stream, &self.zero_kernel, &mut self.d_force_3d, 3)?;
 
         // Step 2: Build the N-D state vector
         self.build_state(
@@ -159,19 +160,8 @@ impl ChingonGpuPipeline {
         Ok([force[0] as f64, force[1] as f64, force[2] as f64])
     }
 
-    fn zero_buffer(&self, buf: &mut CudaSlice<f32>, n: usize) -> Result<()> {
-        let n_u32 = n as u32;
-        let cfg = LaunchConfig {
-            grid_dim: (n_u32.div_ceil(256), 1, 1),
-            block_dim: (256, 1, 1),
-            shared_mem_bytes: 0,
-        };
-        let mut builder = self.stream.launch_builder(&self.zero_kernel);
-        builder.arg(buf);
-        builder.arg(&n_u32);
-        unsafe { builder.launch(cfg).context("Launch zero_buffer")? };
-        Ok(())
-    }
+    // zero_buffer moved to free function zero_device_buffer() to avoid
+    // borrow conflicts when zeroing self.d_force_nd/d_force_3d
 
     #[allow(clippy::too_many_arguments)]
     fn build_state(
@@ -279,11 +269,9 @@ impl ChingonGpuPipeline {
             shared_mem_bytes: shared_bytes,
         };
 
-        let mut d_packed = self.d_packed_avt.clone();
-        let mut d_v = self.d_v_nd.clone();
         let mut builder = self.stream.launch_builder(&self.contraction_kernel);
-        builder.arg(&mut d_packed);
-        builder.arg(&mut d_v);
+        builder.arg(&self.d_packed_avt);
+        builder.arg(&self.d_v_nd);
         builder.arg(&mut self.d_force_nd);
         builder.arg(&self.n_violations);
         builder.arg(&self.dim);
@@ -327,9 +315,8 @@ impl ChingonGpuPipeline {
         let h_norm = h_earth_norm as f32;
         let cs = cross_sign as f32;
 
-        let mut d_force_nd = self.d_force_nd.clone();
         let mut builder = self.stream.launch_builder(&self.project_kernel);
-        builder.arg(&mut d_force_nd);
+        builder.arg(&self.d_force_nd);
         builder.arg(&mut self.d_force_3d);
         builder.arg(&e_v_solar_x); builder.arg(&e_v_solar_y); builder.arg(&e_v_solar_z);
         builder.arg(&e_h_solar_x); builder.arg(&e_h_solar_y); builder.arg(&e_h_solar_z);
@@ -353,4 +340,27 @@ impl ChingonGpuPipeline {
         self.stream.clone_dtoh(&self.d_v_nd)
             .context("Read v_Nd")
     }
+}
+
+/// Zero a GPU buffer by launching the zero kernel.
+///
+/// Extracted as a free function to avoid borrow conflicts when zeroing
+/// `self.d_force_nd` / `self.d_force_3d` inside `compute_force_3body`.
+fn zero_device_buffer(
+    stream: &Arc<CudaStream>,
+    kernel: &CudaFunction,
+    buf: &mut CudaSlice<f32>,
+    n: usize,
+) -> Result<()> {
+    let n_u32 = n as u32;
+    let cfg = LaunchConfig {
+        grid_dim: (n_u32.div_ceil(256), 1, 1),
+        block_dim: (256, 1, 1),
+        shared_mem_bytes: 0,
+    };
+    let mut builder = stream.launch_builder(kernel);
+    builder.arg(buf);
+    builder.arg(&n_u32);
+    unsafe { builder.launch(cfg).context("Launch zero_buffer")? };
+    Ok(())
 }

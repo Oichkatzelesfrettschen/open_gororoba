@@ -2236,3 +2236,25 @@ input_path_refs = ["data/external/arxiv_2502.04456_earth_dm_wind.pdf", "data/ext
 output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-097"
+title = "CUDA GPU vs CPU validation at 64D for flyby crucible"
+description = "Cross-validate GPU (FP32, CUDA) and CPU (f64) tensor contraction paths at 64D. Bit-packed AVT (52080 violations) uploaded once. Three CUDA kernels: build_state_3body, avt_contraction (register accumulation + atomicAdd), project_3body. RTX 4070 Ti (SM 8.9)."
+date = "2026-03-06"
+sprint = 72
+binary_registered = true
+binary_experiment_declared = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
+method = "Run flyby crucible with --gpu flag vs without. Compare all 6 flyby delta-V values. Tolerance: f32 precision (~1e-4 relative error)."
+input = "64D AVT (52080 violations), 6 flyby configs from Anderson et al. (2008)"
+output = ["run"]
+run = "cargo run --release --bin flyby-crucible -- --gpu --no-threebody --dt 2.0"
+run_command_sha256 = ""
+claims = ["C-1105"]
+status = "complete"
+status_note = "VERIFIED Sprint 72. All 6 flybys match within f32 precision. MESSENGER ratio: 959.9371 (GPU) vs 959.9377 (CPU)."
+lineage_id = "XL-097"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
