@@ -15076,7 +15076,7 @@ confidence = "high"
 phase = "physics"
 sprint = 70
 dependencies = ["C-942"]
-status_note = "h_trace_Rosetta_I CSV: h_dot_vwind range [+3.37e6, +3.65e6], never negative. dm_factor range [9.2e-7, 0.267]. Moon accel ~1.7e-7 km/s^2, Sun accel ~6.0e-6 km/s^2. Three-body correction adds correct physics but does not resolve the non-universal scalar alpha problem."
+status_note = "Sprint 71 barycentric experiment: EMB offset (~4671 km) shifts h-vector but h.vw remains positive throughout (no sign transitions). Geocentric h.vw [+3.37e6, +3.65e6]; barycentric h.vw [+3.80e6, +5.27e6]. Barycentric Chingon force amplifies magnitude without fixing sign. Three-body classical gravity correct (restricted 3-body with indirect terms). Root cause: 64D tensor contraction projects force opposite to velocity regardless of coordinate frame."
 
 [[claim]]
 id = "C-952"
@@ -15089,7 +15089,7 @@ confidence = "high"
 phase = "physics"
 sprint = 70
 dependencies = ["C-942", "C-951"]
-status_note = "Sprint 70 boundary: 64D scalar alpha exhausted. Rosetta-I (1956km perigee, 3.863 km/s v_inf, 72-deg turn) and MESSENGER (2347km, 4.056 km/s) need orbital-geometry-dependent coupling."
+status_note = "Sprint 71 confirmed: barycentric h-vector experiment degraded NEAR from 0.999 to 1.45 ratio while worsening Rosetta-I from -22.43 to -36.06 mm/s. Geocentric h with scalar alpha=6e-12 remains optimal for NEAR. MESSENGER improved 3x with barycentric (905x -> 329x) but still wildly off. The non-universality is in the 64D tensor contraction direction, not the coordinate frame."
 
 [[claim]]
 id = "C-953"
