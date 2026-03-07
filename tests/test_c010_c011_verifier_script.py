@@ -8,8 +8,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VERIFY_SCRIPT = REPO_ROOT / "src/verification/verify_c010_c011_theses.py"
+pytestmark = pytest.mark.smoke
 
 
 def test_c010_c011_verifier_script_passes() -> None:

@@ -31,9 +31,13 @@ make studio-check
 ```
 
 Notes:
-- `make check` runs `make test`, `make lint`, and `make smoke` (warnings-as-errors).
+- `make check` runs `make lint`, `make smoke`, and `make integrity` (warnings-as-errors).
+- `make smoke` runs the dedicated fast smoke lanes (`make python-smoke` + `make rust-smoke`).
+- `make rust-regression` runs the required non-ignored Rust regression lane.
 - `make studio-check` runs Rust tests + clippy (`-D warnings`) for the Studio app lane.
-- `make smoke` also runs `make ascii-check` (repo-authored ASCII-only gate).
+- `make integrity` carries the verifier, ASCII, and inventory bundle.
+- If your shell or outer tooling exports `MAKEFLAGS` globally and GNU make warns about a stale jobserver FIFO before targets run, invoke repo targets through `./makew <target>` so the repo's own concurrency policy is applied from a clean environment.
+- Rust quality lanes auto-detect logical threads, divide by two for the worker budget, and apply that budget consistently to Cargo build jobs, nextest test threads, libtest threads, and Rayon pools unless a lane overrides it for a known heavy test group.
 - Some doc/source extraction utilities rely on system tools like `pdftotext`; see `docs/REQUIREMENTS.md`.
 - Optional modules may not install cleanly on very new Python versions; use a Python 3.11/3.12 env or Docker when needed.
 - In particular, the `analysis` extra conditionally installs `scikit-learn` only for Python <3.14 (see `pyproject.toml`).
@@ -66,17 +70,17 @@ make verify
 ## 4) Data provenance and cleanup (Rust-native)
 
 ```bash
-cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
-cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
-cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
-cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
-cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
-cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
-cargo run -p gororoba_cli --bin data-governance-gate --
-cargo run -p gororoba_cli --bin data-semantic-validate --
-cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
-cargo run -p gororoba_cli --bin data-clean -- --scope reproducible --apply
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
+cargo run -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply
 ```
 
 Notes:
@@ -121,32 +125,36 @@ If you need module-specific details, see:
    ```bash
    make install
    ```
-2. Run the full gate (tests + lint + verifiers) with warnings-as-errors:
+2. Run the fast smoke + integrity gate with warnings-as-errors:
    ```bash
    PYTHONWARNINGS=error make check
    ```
-3. Run environment and toolchain diagnostics:
+3. Run the required Rust regression lane:
+   ```bash
+   PYTHONWARNINGS=error make rust-regression
+   ```
+4. Run environment and toolchain diagnostics:
    ```bash
    make doctor
    ```
-4. Verify the Studio front-end lane with warnings-as-errors Rust checks:
+5. Verify the Studio front-end lane with warnings-as-errors Rust checks:
    ```bash
    make studio-check
    ```
 
-5. Run Rust-native data governance checks:
+6. Run Rust-native data governance checks:
    ```bash
-   cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
-cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
-   cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-   cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --replay-mode staging --fail-on-replay-side-effects true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
-cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
-cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
-   cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
-   cargo run -p gororoba_cli --bin data-governance-gate --
-   cargo run -p gororoba_cli --bin data-semantic-validate --
-cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
-   cargo run -p gororoba_cli --bin data-clean -- --scope reproducible --apply
+   cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+   cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+   cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --replay-mode staging --fail-on-replay-side-effects true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+   cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+   cargo run -p gororoba_cli_data --bin data-governance-gate --
+   cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
+   cargo run -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply
    ```
 
    Why each command exists:
@@ -159,7 +167,7 @@ cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable
    - `data-governance-gate` enforces fail-closed policy checks (origin, naming, gitignore, blocked deadlines, unclassified-lane zero).
    - `data-semantic-validate` reports lane-level status as pass/fail/unverifiable for structural plus scientific checks; use `--fail-on-unverifiable true` for strict governance passes.
    - `data-clean` removes reproducible build outputs so regeneration remains deterministic.
-- Cargo workflow policy: run compile-heavy Cargo commands serially; parallelize only non-Cargo analysis/edit tasks to avoid lock contention.
+- Cargo workflow policy: detect logical threads, divide by two for the worker budget, use that budget for Cargo build parallelism (`CARGO_JOBS`), nextest scheduling (`NEXTEST_TEST_THREADS`), libtest threads (`RUST_TEST_THREADS`), and intra-test worker pools such as Rayon unless a specific lane narrows concurrency further.
 - Lane boundary: keep only replayable dataset payloads in `data/external`; move manual intake/document corpora to `data/papers` (manual import exception lane).
    - Active source rules must use explicit scientific validator refs (no `structure_only` on active entries).
    - Validation snapshot (`2026-02-25`): strict semantic gate passed `29/29` validators with `failed=0` and `unverifiable=0` (`reports/data_semantic_validate_2026-02-25_burndown_step2_postretire.toml`).
@@ -235,12 +243,20 @@ exercised by Rust unit and integration tests.
 Install:
 ```bash
 make install
-make test
+make rust-smoke
+make rust-regression
 ```
 
 Notes:
 - The core algebra replication/validation code depends only on the base install extras (NumPy/SciPy/SymPy/Numba).
 - Keep `PYTHONWARNINGS=error` enabled in scripts/CI; treat warnings as errors.
+- Native BLAS backends for the Burn-based `neural_homotopy` path are explicit Cargo feature opt-ins, not defaults.
+  - `cargo check -p neural_homotopy --features openblas-system`
+- The opt-in boundary is the crate's `[features]` section in `crates/neural_homotopy/Cargo.toml`, enabled with `cargo ... --features <name>`. A detected system library does nothing by itself until a build command opts into the matching feature.
+- Use `make doctor-blas` (or `sh scripts/detect_native_blas.sh`) to see which native BLAS/LAPACK candidates are present on the host and how they map to the repo's exposed feature surface.
+- `openblas-system` expects a system OpenBLAS install and is the only repo-exposed native BLAS feature today.
+- `BLIS` is intentionally not exposed as a repo feature today: `blas-src` supports it, but Burn's ndarray backend does not forward a BLIS selector for this crate.
+- Burn can support other native BLAS equivalents upstream, but this repo intentionally keeps them off the exposed feature surface until they can coexist with the default `nextest` smoke lane without implicit dependency downloads. A fresh `openblas` source-backed build currently attempts a network fetch through `openblas-src`, so the repo exposes only `openblas-system`. `accelerate` and `blas-netlib` therefore stay upstream-only, while `blis`, `intel-mkl`, and `r` remain `blas-src`-level capabilities that are not forwarded by Burn for this crate.
 - Artifact generation entrypoints:
   - `make artifacts-boxkites` (de Marrais exports)
   - `make artifacts-reggiani` (Reggiani exports)
@@ -370,17 +386,17 @@ Notes:
 Analysis outputs are treated as reproducible build artifacts and must pass Rust-native governance checks:
 
 ```bash
-cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
-cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
-cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
-cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
-cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
-cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
-cargo run -p gororoba_cli --bin data-governance-gate --
-cargo run -p gororoba_cli --bin data-semantic-validate --
-cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
-cargo run -p gororoba_cli --bin data-clean -- --scope reproducible --apply
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
+cargo run -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply
 ```
 
 This sequence verifies origin contracts, replayability, semantic integrity, and clean rebuild behavior for analysis lanes.
@@ -401,8 +417,8 @@ make install-astro
 Rust-based unified fetcher for cosmology/astro/geophysical pillars:
 
 ```bash
-cargo run --bin fetch-datasets -- --list
-cargo run --bin fetch-datasets -- --all --skip-existing
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --list
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
 ```
 
 If a dataset is missing, fetch it explicitly and record provenance in:
@@ -413,16 +429,16 @@ If a dataset is missing, fetch it explicitly and record provenance in:
 ## Provenance governance checklist
 
 ```bash
-cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
-cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
-cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
-cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
-cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
-cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
-cargo run -p gororoba_cli --bin data-governance-gate --
-cargo run -p gororoba_cli --bin data-semantic-validate --
-cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
 ```
 
 Run this checklist whenever astro datasets are refreshed so provenance and semantic contracts remain reproducible.
@@ -536,16 +552,16 @@ make artifacts-materials
 ## Provenance governance checklist
 
 ```bash
-cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
-cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
-cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
-cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
-cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
-cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
-cargo run -p gororoba_cli --bin data-governance-gate --
-cargo run -p gororoba_cli --bin data-semantic-validate --
-cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
 ```
 
 Use this lane after materials refreshes to verify source-of-origin, replayability, and schema validity.
@@ -579,16 +595,16 @@ under `data/external/` and update `docs/BIBLIOGRAPHY.md`.
 ## Provenance governance checklist
 
 ```bash
-cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external
-cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
-cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-cargo run -p gororoba_cli --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
-cargo run -p gororoba_cli --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
-cargo run -p gororoba_cli --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
-cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown
-cargo run -p gororoba_cli --bin data-governance-gate --
-cargo run -p gororoba_cli --bin data-semantic-validate --
-cargo run -p gororoba_cli --bin data-semantic-validate -- --fail-on-unverifiable true
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
 ```
 
 Run this checklist for particle snapshots to keep external datasets reproducible and policy-compliant.

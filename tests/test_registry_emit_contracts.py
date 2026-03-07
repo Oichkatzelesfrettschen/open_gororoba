@@ -4,12 +4,23 @@ Golden contract tests for registry-emit output formats.
 
 from __future__ import annotations
 
+import os
 import subprocess
 from pathlib import Path
 from textwrap import dedent
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_EMIT_BIN = REPO_ROOT / "target" / "debug" / "registry-emit"
+pytestmark = pytest.mark.regression
+
+
+def _cargo_env() -> dict[str, str]:
+    env = dict(os.environ)
+    env["RUSTC_WRAPPER"] = ""
+    env["SCCACHE_DISABLE"] = "1"
+    return env
 
 
 def _run(cmd: list[str]) -> subprocess.CompletedProcess[str]:
@@ -32,6 +43,7 @@ def test_registry_emit_bibliography_bibtex_contract(tmp_path: Path) -> None:
     build = subprocess.run(
         ["cargo", "build", "--quiet", "--bin", "registry-emit"],
         cwd=REPO_ROOT,
+        env=_cargo_env(),
         capture_output=True,
         text=True,
         check=False,

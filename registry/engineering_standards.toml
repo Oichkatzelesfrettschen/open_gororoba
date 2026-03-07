@@ -28,12 +28,13 @@ license_check = "cargo-deny"
 mode = "two_speed"
 fast_iteration_scope = "crate_local"
 fast_iteration_commands = [
-  "cargo check -p <crate> --all-targets",
-  "cargo test -p <crate> <test_name>",
-  "cargo clippy -p <crate> --all-targets -- -D warnings",
+  "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo check -p <crate> --all-targets",
+  "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET RAYON_NUM_THREADS=$WORKER_BUDGET RUST_TEST_THREADS=$WORKER_BUDGET cargo nextest run --build-jobs $WORKER_BUDGET --test-threads $WORKER_BUDGET -p <crate> <filter-or-test>",
+  "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo clippy -p <crate> --all-targets -- -D warnings",
 ]
 checkpoint_push_policy = "Allowed via git push --no-verify for rapid iteration only after focused crate gates pass."
-milestone_gate_policy = "Required for production claims and major merges: cargo clippy --workspace -j$(nproc) -- -D warnings && cargo test --workspace -j$(nproc)."
+milestone_gate_policy = "Required for production claims and major merges: make check plus make rust-regression, with algebra_analysis and gr_core routed through cargo nextest --cargo-profile test-heavy."
+execution_topology = "Detect logical threads at runtime, divide by two to set the worker budget, apply that same budget to Cargo build jobs, nextest test threads, libtest test threads, and Rayon worker pools unless a narrower lane override is required."
 rationale = "Balance high-velocity iteration with strict milestone integrity."
 
 [engineering_standards.gpu_run_cadence]
@@ -62,6 +63,11 @@ cli_default = "may_include_gpu"
 gpu_gate = "gpu"
 cufft_gate = "cufft"
 hdf5_gate = "hdf5-export"
+native_blas_policy = "crate_local_opt_in_only"
+native_blas_surface = "neural_homotopy exposes only openblas-system via Cargo features."
+native_blas_detection = "Use make doctor-blas or sh scripts/detect_native_blas.sh to report host BLAS/LAPACK candidates; detection never auto-enables Cargo features."
+native_blas_non_goal = "Do not expose BLIS, Accelerate, Netlib, or source-backed OpenBLAS in repo features until the selected backend is reproducible in offline gates without implicit downloads."
+make_entrypoint_wrapper = "Use ./makew <target> when shells or outer tools export MAKEFLAGS and you need the repo's own concurrency policy without inherited GNU make jobserver warnings."
 validation_deps = "tda used only by test-tda-api; consider feature-gating if compile time grows"
 
 [engineering_standards.gpu_safety]
@@ -74,6 +80,12 @@ unit_tests = "colocated_in_src"
 integration_tests = "tests_directory"
 property_testing = "proptest"
 benchmarking = "criterion"
+taxonomy = "smoke_regression_heavy"
+smoke_lane = "Dedicated fast suites only (`make smoke`, `make python-smoke`, `make rust-smoke`)."
+regression_lane = "Required default non-ignored coverage (`make test`, `make python-regression`, `make rust-regression`)."
+heavy_lane = "Ignored, GPU, and research-heavy suites (`make heavy`) with nextest heavy profile routing."
+inventory_source = "registry/test_taxonomy.toml via cargo run -p gororoba_cli_data --bin test-inventory -- --check"
+heavy_crate_policy = "Never use standard cargo test for algebra_analysis or gr_core; use cargo nextest with --cargo-profile test-heavy and the repo worker budget (logical threads / 2) for build threads, nextest test threads, libtest threads, and Rayon pools unless a stricter per-test override applies."
 
 [engineering_standards.documentation]
 public_api = "warn_missing_docs"

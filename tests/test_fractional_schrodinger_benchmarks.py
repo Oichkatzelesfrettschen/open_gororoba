@@ -8,10 +8,14 @@ Validates:
 """
 from __future__ import annotations
 
+import pytest
+
 from quantum.fractional_schrodinger_benchmarks import (
     fractional_ho_variational_energy,
     free_particle_l2_error,
 )
+
+pytestmark = pytest.mark.regression
 
 
 def test_free_particle_alpha2_recovers_gaussian() -> None:

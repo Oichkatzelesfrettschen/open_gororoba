@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -eu
+
+# GNU make reads MAKEFLAGS from the environment before it parses the repo's
+# Makefile. Some shells and tooling export global parallel flags, which can
+# leave behind stale jobserver FIFOs and trigger "jobserver mkfifo ... File
+# exists" warnings before any target runs. Strip inherited make state here and
+# let the repo's own concurrency policy take over.
+unset MAKEFLAGS
+unset MFLAGS
+unset CARGO_MAKEFLAGS
+unset GNUMAKEFLAGS
+unset MAKELEVEL
+
+exec make "$@"

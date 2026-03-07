@@ -167,10 +167,10 @@ cudarc = { version = "0.19", default-features = false, features = [
 nvml-wrapper = "0.10"
 
 # Machine learning / Neural synthesis (burn 0.16: pure Rust, backend-agnostic)
-# Note: burn backends are optional at crate level, not workspace level
+# Note: burn backends are optional at crate level, not workspace level.
+# Native BLAS backends remain crate-local opt-ins so default workspace builds stay
+# offline-friendly and do not assume OpenBLAS/BLIS/Accelerate availability.
 burn = { version = "0.16", features = ["train", "autodiff"] }
-blas-src = "0.10"
-# blas-src moved to neural_homotopy crate (sole consumer); not a workspace dep
 
 # Error handling
 thiserror = "2.0"

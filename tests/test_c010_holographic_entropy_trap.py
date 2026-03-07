@@ -16,9 +16,12 @@ from collections import Counter
 from math import isclose
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 BOXKITE_CLUSTERS_CSV = REPO_ROOT / "data/csv/sedenion_box_kites_clustered.csv"
 ABSORBER_MAPPING_CSV = REPO_ROOT / "data/csv/cd_zd_absorber_mapping.csv"
+pytestmark = pytest.mark.regression
 
 
 def _parse_root_pair(raw: str) -> tuple[int, int]:
