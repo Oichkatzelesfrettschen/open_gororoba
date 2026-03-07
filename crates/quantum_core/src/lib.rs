@@ -19,6 +19,7 @@
 //! - Grover (1996): Quantum search algorithm
 
 pub mod casimir;
+pub mod deka_voudon_qec;
 pub mod fractional_schrodinger;
 pub mod gross_pitaevskii;
 pub mod grover;
