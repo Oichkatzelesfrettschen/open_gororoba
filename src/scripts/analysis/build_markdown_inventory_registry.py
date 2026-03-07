@@ -73,6 +73,7 @@ TOML_PUBLISHED_ALLOWLIST: set[str] = set()
 
 DESTINATION_OVERRIDES = {
     "proofs/README.md": "registry/roadmap.toml",
+    "proofs/EPISTEMIC_BOUNDARIES.md": "registry/entrypoint_docs.toml",
     "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md": "registry/legacy_markdown_interfaces.toml",
     "PHASE10_11_ULTIMATE_ROADMAP.md": "registry/legacy_markdown_interfaces.toml",
     "PYTHON_REFACTORING_ROADMAP.md": "registry/legacy_markdown_interfaces.toml",
