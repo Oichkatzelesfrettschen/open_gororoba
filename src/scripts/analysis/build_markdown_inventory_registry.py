@@ -41,6 +41,7 @@ THIRD_PARTY_PATTERNS = (
 )
 
 IGNORED_PREFIXES = (
+    ".pytest_cache/",
     "venv/",
     ".venv/",
     ".venv_ingest/",
@@ -238,7 +239,7 @@ def _skip_path(path: str) -> bool:
         return True
     parts = path.split("/")
     # Skip any directory named venv, .venv, target, logs, build, temp, or tmp at any level
-    if any(p in {"venv", ".venv", "target", "logs", "build", "dist", "temp", "tmp"} for p in parts):
+    if any(p in {".pytest_cache", "venv", ".venv", "target", "logs", "build", "dist", "temp", "tmp"} for p in parts):
         return True
     return False
 
