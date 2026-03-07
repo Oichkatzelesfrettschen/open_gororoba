@@ -221,9 +221,14 @@ impl SingularitarianEngine {
         }
     }
 
+    /// Run Bell inequality test via associator torque correlations at a given dimension.
+    pub fn bell_test_512d_at(&self, dim: usize, n_samples: usize, seed: u64) -> BellTestResult {
+        chsh_violation_test(dim, n_samples, seed)
+    }
+
     /// Run 512D Bell inequality test via associator torque correlations.
     pub fn bell_test_512d(&self, n_samples: usize, seed: u64) -> BellTestResult {
-        chsh_violation_test(512, n_samples, seed)
+        self.bell_test_512d_at(512, n_samples, seed)
     }
 
     /// Analyze 1024D gauge group structure via sampled AVT.
@@ -421,9 +426,16 @@ impl SingularitarianEngine {
     }
 
     /// Run the full unified integration: all subsystems exercised end-to-end.
+    ///
+    /// Accepts `bell_dim` and `gauge_samples` to control the computational
+    /// weight of the algebraic subsystems.  Production callers should use
+    /// `(512, 10_000)` for physics-grade runs.  Test callers should use
+    /// `(16, 100)` for fast smoke tests that exercise the same plumbing.
     pub fn run_unified(
         &mut self,
         stabilizers: &[DekaVoudonStabilizer],
+        bell_dim: usize,
+        gauge_samples: usize,
     ) -> UnifiedRunResult {
         // 1. Hawking spectrum
         let hawking_spectrum = self.predict_sgr_a_spectrum();
@@ -431,11 +443,11 @@ impl SingularitarianEngine {
         // 2. CMB multipoles
         let cmb_multipoles = self.cmb_alignment_prediction(stabilizers);
 
-        // 3. Bell test (small sample for integration test)
-        let bell_result = Some(self.bell_test_512d(1000, 42));
+        // 3. Bell test
+        let bell_result = Some(self.bell_test_512d_at(bell_dim, 1000, 42));
 
-        // 4. Gauge sector analysis (small sample)
-        let gauge_report = Some(self.gauge_sector_analysis(10000, 42));
+        // 4. Gauge sector analysis
+        let gauge_report = Some(self.gauge_sector_analysis(gauge_samples, 42));
 
         // 5. Fractal flyby (NEAR-like geometry: perigee = R_earth + 539 km)
         let fractal_flyby = Some(self.fractal_flyby(6910.0, 6.851));
@@ -615,7 +627,9 @@ mod tests {
 
         engine.initialize_vacuum_decoder(&avt);
 
-        let result = engine.run_unified(&[stab]);
+        // Smoke-test scale: dim=16 for Bell (sedenion plumbing), 100 gauge samples.
+        // Full physics: (512, 10_000). This exercises the same code paths in seconds.
+        let result = engine.run_unified(&[stab], 16, 100);
 
         // All outputs should be finite
         assert!(result.hawking_spectrum.hawking_temp_k.is_finite());

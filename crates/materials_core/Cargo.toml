@@ -12,6 +12,8 @@ gauss-quad = { workspace = true }
 moyo = { workspace = true }
 nalgebra = { workspace = true }
 petgraph = { workspace = true }
+fixedbitset = { workspace = true }
+rayon = { workspace = true }
 num-complex = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }

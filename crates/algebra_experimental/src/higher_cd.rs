@@ -197,6 +197,49 @@ pub struct SampledAvt {
     pub hit_rate: f64,
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::Instant;
+
+    #[test]
+    fn profile_higher_avt_construction() {
+        // Warmup
+        let _ = HigherAvt::new(16);
+
+        for dim in [16, 32, 64, 128, 256] {
+            let t = Instant::now();
+            let avt = HigherAvt::new(dim);
+            let elapsed = t.elapsed();
+            let mem_bytes = avt.violations.len() * std::mem::size_of::<(usize, usize, usize, usize, i32)>();
+            eprintln!(
+                "HigherAvt::new({:>4}): {:>8} violations, {:>10.3}ms, {:.1} MB",
+                dim,
+                avt.violations.len(),
+                elapsed.as_secs_f64() * 1000.0,
+                mem_bytes as f64 / 1e6,
+            );
+        }
+    }
+
+    #[test]
+    fn profile_sampled_avt_512_1024() {
+        for (dim, n_samples) in [(512, 1_000_000), (1024, 1_000_000)] {
+            let t = Instant::now();
+            let result = HigherAvt::sampled(dim, n_samples, 42);
+            let elapsed = t.elapsed();
+            eprintln!(
+                "HigherAvt::sampled({:>4}, {}): {:>8} violations, hit_rate={:.4}, {:>10.3}ms",
+                dim,
+                n_samples,
+                result.avt.violations.len(),
+                result.hit_rate,
+                elapsed.as_secs_f64() * 1000.0,
+            );
+        }
+    }
+}
+
 fn associator_basis(dim: usize, i: usize, j: usize, k: usize) -> (usize, i32) {
     let ij_idx = i ^ j;
     let ij_sign = cd_basis_mul_sign_iter(dim, i, j);
