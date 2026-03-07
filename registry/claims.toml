@@ -15494,3 +15494,26 @@ confidence = "high"
 phase = "gr"
 sprint = 76
 dependencies = ["C-1116"]
+
+[[claim]]
+id = "C-1118"
+statement = "Non-Associative Entropy Filter: iterative solver on 128D Routon LBM grid reduces Shannon entropy from initial H_0 toward target_coherence. Uniform Routon (H ~ ln(128)) has higher entropy than sparse Routon (4 nonzero components). Entropy filter damping decreases grid-averaged entropy monotonically via component-wise damping weighted by excess entropy ratio."
+where_stated = "crates/quantum_core/src/intention_operator.rs (entropy_filter_solve, measure_routon_chaos)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: 7 unit tests pass -- uniform > sparse entropy ordering, filter reduces entropy, convergence with high target, damping monotonicity, AVT baseline correlation. REFUTE: filter increases entropy (would indicate amplification instead of damping)."
+confidence = "high"
+phase = "quantum"
+sprint = 77
+
+[[claim]]
+id = "C-1119"
+statement = "AVT entropy baseline at dim=128: violation participation distribution across 128 output axes has Shannon entropy H > 0 (strictly non-alternative). Routon-weighted participation entropy is bounded by ln(128) ~ 4.85 bits. The entropy filter solver connects the algebraic AVT noise floor to LBM fluid dynamics via bias-modified relaxation time: tau_eff = tau_base + bias(entropy)."
+where_stated = "crates/quantum_core/src/intention_operator.rs (test_avt_entropy_baseline_connection, grid_average_entropy)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: avt.violations.len() > 0 at dim=128, computed H > 0 and finite, h_routon <= ln(128). REFUTE: dim=128 has zero violations (would mean Routon algebra is alternative, contradicting Cayley-Dickson theory beyond dim=8)."
+confidence = "high"
+phase = "quantum"
+sprint = 77
+dependencies = ["C-1118"]

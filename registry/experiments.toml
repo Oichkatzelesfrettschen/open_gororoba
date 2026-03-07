@@ -2342,5 +2342,25 @@ status_note = "COMPLETE. 11/11 tests pass. Wick rotation preserves energy at the
 lineage_id = "XL-101"
 input_path_refs = []
 output_path_refs = []
+
+[[experiment]]
+id = "E-102"
+title = "128D Routon non-associative entropy filter on LBM grid"
+description = "Implement and test the Non-Associative Entropy Filter: iterative solver coupling 128D Routon Shannon entropy to D2Q9 LBM relaxation time modification. measure_routon_chaos computes AVT-weighted participation entropy. entropy_filter_solve iterates: compute bias -> modify tau -> collide/stream -> damp Routon -> measure entropy. 7 unit tests validate entropy ordering, convergence, damping, and AVT baseline connection."
+date = "2026-03-07"
+sprint = 77
+binary_registered = false
+binary_experiment_declared = "crates/quantum_core/src/intention_operator.rs"
+method = "Unit tests: measure_routon_chaos (uniform vs sparse), apply_to_lbm bias field, entropy_filter_solve convergence and damping, grid_average_entropy, avt_entropy_baseline_connection."
+input = "HigherAvt::new(128) violations, Routon(128D) field on 4x4 LBM grid"
+output = ["test"]
+run = "cargo test --release -p quantum_core -- intention_operator --nocapture"
+run_command_sha256 = ""
+claims = ["C-1118", "C-1119"]
+status = "complete"
+status_note = "COMPLETE. 7/7 tests pass. Uniform Routon entropy > sparse Routon entropy. Filter damping reduces grid-averaged entropy. AVT baseline at dim=128 has H > 0, bounded by ln(128)."
+lineage_id = "XL-102"
+input_path_refs = []
+output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic"
