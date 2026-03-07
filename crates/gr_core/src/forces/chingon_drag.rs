@@ -1,41 +1,69 @@
 use nalgebra::Vector3;
 use algebra_core::construction::chingon::AlternativityViolationTensor;
 
-/// Computes the non-alternative Chingon drag acceleration.
-pub fn compute_chingon_drag(
-    v_rel: Vector3<f64>,
+/// Computes the Bivector-Embedded Chingon drag acceleration.
+/// 
+/// This model implements 'Angular Momentum Bleed' with sign-sensitivity 
+/// to the orbital plane orientation.
+/// 
+/// Bivector B = r ^ v represents the orbital plane. 
+/// The drag force is modulated by the interaction of B with the AVT.
+pub fn compute_bivector_chingon_drag(
+    pos: Vector3<f64>,
+    vel: Vector3<f64>,
+    v_wind: Vector3<f64>,
     _rho: f64,
     alpha: f64,
     avt: &AlternativityViolationTensor,
 ) -> Vector3<f64> {
+    let v_rel = vel - v_wind;
+    let v_mag = v_rel.norm();
+    if v_mag < 1e-9 { return Vector3::<f64>::zeros(); }
+
+    // 1. Compute the Orbital Bivector (Angular Momentum direction)
+    let h = pos.cross(&vel); // L = r x p, direction of the bivector
+    let h_unit = if h.norm() > 1e-15 { h.normalize() } else { Vector3::z() };
+
+    // 2. Embed the 3D velocity AND the 3D bivector into 64D
     let mut v_64d = [0.0f64; 64];
-
-    // Robust embedding of 3D velocity into 64D space.
-    for (i, slot) in v_64d.iter_mut().enumerate() {
+    let mut h_64d = [0.0f64; 64];
+    
+    for i in 0..64 {
         let t = i as f64;
         let px = (t * 17.0).cos().abs();
         let py = (t * 31.0).sin().abs();
         let pz = (t * 43.0).cos().abs();
-        *slot = v_rel.x * px + v_rel.y * py + v_rel.z * pz;
+        v_64d[i] = v_rel.x * px + v_rel.y * py + v_rel.z * pz;
+        h_64d[i] = h_unit.x * px + h_unit.y * py + h_unit.z * pz;
     }
 
-    let mut force_64d = [0.0f64; 64];
-    for &(i, j, _k, m, sign) in &avt.violations {
-        let contribution = alpha * v_64d[i] * v_64d[j] * (sign as f64);
-        force_64d[m] += contribution;
+    // 3. Compute the Alternativity Violation Torque
+    // The force depends on the interaction between motion V and the orbital plane H.
+    let mut torque_64d = [0.0f64; 64];
+    for &(i, j, k, m, sign) in &avt.violations {
+        // [V, H, Y] interaction
+        // i: velocity component
+        // j: bivector component
+        // k: identity reference (0)
+        if k == 0 {
+            let contribution = alpha * v_64d[i] * h_64d[j] * (sign as f64);
+            torque_64d[m] += contribution;
+        }
     }
 
-    // Project back to 3D
-    let mut res = Vector3::zeros();
-    for (i, &f) in force_64d.iter().enumerate() {
+    // 4. Project the 64D non-conservative torque back to 3D
+    let mut drag = Vector3::<f64>::zeros();
+    for (i, &torque) in torque_64d.iter().enumerate() {
         let t = i as f64;
         let px = (t * 17.0).cos().abs();
         let py = (t * 31.0).sin().abs();
         let pz = (t * 43.0).cos().abs();
-        res.x += f * px;
-        res.y += f * py;
-        res.z += f * pz;
+        drag.x += torque * px;
+        drag.y += torque * py;
+        drag.z += torque * pz;
     }
 
-    res / 64.0
+    // The result is a non-conservative 'geometric lift' force
+    // that depends on the sign of the orbital angular momentum.
+    drag * v_mag
 }

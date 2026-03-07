@@ -770,6 +770,138 @@ fn pearson_corr(a: &[f64], b: &[f64]) -> f64 {
     if denom < 1e-30 { 0.0 } else { cov / denom }
 }
 
+/// Variable-dimension Cayley-Dickson field for dim > 16.
+///
+/// Generalization of `SedenionField` to arbitrary CD dimension (32, 64, 128, ...).
+/// Each cell stores a `Vec<f64>` of length `dim` instead of a fixed `[f64; 16]`.
+/// Used for pathion (32D), chingon (64D), and higher-dimensional cosmic web generation
+/// where the zero-divisor graph structure determines filament/void topology.
+#[derive(Clone, Debug)]
+pub struct CdField {
+    pub nx: usize,
+    pub ny: usize,
+    pub nz: usize,
+    pub dim: usize,
+    pub data: Vec<Vec<f64>>,
+}
+
+impl CdField {
+    /// Create a uniform CD field with all cells initialized to e_0.
+    pub fn uniform(nx: usize, ny: usize, nz: usize, dim: usize) -> Self {
+        let mut zero = vec![0.0; dim];
+        zero[0] = 1.0;
+        let data = vec![zero; nx * ny * nz];
+        Self { nx, ny, nz, dim, data }
+    }
+
+    /// Linear index from (x, y, z) coordinates.
+    pub fn linearize(&self, x: usize, y: usize, z: usize) -> usize {
+        z * (self.nx * self.ny) + y * self.nx + x
+    }
+
+    /// Get element at grid point.
+    pub fn get(&self, x: usize, y: usize, z: usize) -> &[f64] {
+        &self.data[self.linearize(x, y, z)]
+    }
+
+    /// Get mutable element at grid point.
+    pub fn get_mut(&mut self, x: usize, y: usize, z: usize) -> &mut Vec<f64> {
+        let idx = self.linearize(x, y, z);
+        &mut self.data[idx]
+    }
+
+    /// Compute local imbalance density at each grid point.
+    ///
+    /// Identical algorithm to `SedenionField::local_imbalance_density` but
+    /// works with arbitrary dimension.
+    pub fn local_imbalance_density(&self) -> Vec<f64> {
+        use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
+
+        let dim = self.dim;
+        let mut psi = vec![0i32; dim * dim];
+        for i in 0..dim {
+            for j in 0..dim {
+                psi[i * dim + j] = cd_basis_mul_sign(dim, i, j);
+            }
+        }
+
+        self.data
+            .iter()
+            .map(|cell| {
+                let weights: Vec<f64> = cell.iter().map(|c| c.abs()).collect();
+                let mut frustrated_sum = 0.0;
+                let mut total_weight = 0.0;
+
+                for i in 0..dim {
+                    for j in (i + 1)..dim {
+                        for k in (j + 1)..dim {
+                            let w = weights[i] * weights[j] * weights[k];
+                            let cycle_sign = psi[i * dim + j]
+                                * psi[j * dim + k]
+                                * psi[i * dim + k];
+                            total_weight += w;
+                            if cycle_sign < 0 {
+                                frustrated_sum += w;
+                            }
+                        }
+                    }
+                }
+
+                if total_weight > 0.0 {
+                    frustrated_sum / total_weight
+                } else {
+                    0.0
+                }
+            })
+            .collect()
+    }
+
+    /// Parallel version of `local_imbalance_density` using rayon.
+    ///
+    /// Pre-computes the psi sign matrix once, then distributes voxel
+    /// evaluation across all available threads. The CD multiplication
+    /// table (dim*dim*4 bytes) fits easily in L3 cache.
+    pub fn local_imbalance_density_par(&self) -> Vec<f64> {
+        use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
+        use rayon::prelude::*;
+
+        let dim = self.dim;
+        let psi: Vec<i32> = (0..dim * dim)
+            .map(|idx| cd_basis_mul_sign(dim, idx / dim, idx % dim))
+            .collect();
+
+        self.data
+            .par_iter()
+            .map(|cell| {
+                let weights: Vec<f64> = cell.iter().map(|c| c.abs()).collect();
+                let mut frustrated_sum = 0.0;
+                let mut total_weight = 0.0;
+
+                for i in 0..dim {
+                    for j in (i + 1)..dim {
+                        for k in (j + 1)..dim {
+                            let w = weights[i] * weights[j] * weights[k];
+                            let cycle_sign = psi[i * dim + j]
+                                * psi[j * dim + k]
+                                * psi[i * dim + k];
+                            total_weight += w;
+                            if cycle_sign < 0 {
+                                frustrated_sum += w;
+                            }
+                        }
+                    }
+                }
+
+                if total_weight > 0.0 {
+                    frustrated_sum / total_weight
+                } else {
+                    0.0
+                }
+            })
+            .collect()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

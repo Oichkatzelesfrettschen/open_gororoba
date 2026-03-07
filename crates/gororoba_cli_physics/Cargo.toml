@@ -356,6 +356,10 @@ path = "src/bin/kerr_pathion_sweep.rs"
 name = "mass-gap-spectrum"
 path = "src/bin/mass_gap_spectrum.rs"
 
+[[bin]]
+name = "eht-pathion-separation"
+path = "src/bin/eht_pathion_separation.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 algebra_analysis = { path = "../algebra_analysis" }
