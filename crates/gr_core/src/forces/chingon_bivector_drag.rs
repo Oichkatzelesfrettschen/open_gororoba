@@ -32,12 +32,33 @@ pub fn compute_chingon_bivector_drag(
     alpha: f64,
     avt: &AlternativityViolationTensor,
 ) -> Vector3<f64> {
+    compute_chingon_bivector_drag_bary(r, v, v_wind, alpha, avt, Vector3::zeros())
+}
+
+/// Barycentric variant: `emb_offset` shifts the angular momentum reference
+/// point from geocenter to the Earth-Moon barycenter.
+///
+/// h_3body = (r - emb_offset) x v
+///
+/// At Rosetta-I perigee (1956 km), the EMB offset (~4671 km) is LARGER than
+/// the geocentric radius, fundamentally changing the h-vector geometry.
+pub fn compute_chingon_bivector_drag_bary(
+    r: Vector3<f64>,
+    v: Vector3<f64>,
+    v_wind: Vector3<f64>,
+    alpha: f64,
+    avt: &AlternativityViolationTensor,
+    emb_offset: Vector3<f64>,
+) -> Vector3<f64> {
     if alpha == 0.0 {
         return Vector3::zeros();
     }
 
     let v_rel = v - v_wind;
-    let h = r.cross(&v);
+    // Compute angular momentum relative to the Earth-Moon barycenter.
+    // When emb_offset is zero, this reduces to the geocentric h = r x v.
+    let r_bary = r - emb_offset;
+    let h = r_bary.cross(&v);
     let h_norm = h.norm();
 
     // Angular momentum unit vector (handle zero case)

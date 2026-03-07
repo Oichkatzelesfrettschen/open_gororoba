@@ -416,11 +416,11 @@ fn run_flyby(
                 // Pre-fetch three-body positions (once per step, shared across RK4 stages).
                 // Moon/Sun move negligibly during a single RK4 step (~1s), so querying
                 // once per step rather than per stage is both correct and 4x faster.
-                let (r_moon, r_sun) = if let Some(eph) = ephem {
+                let (r_moon, r_sun, _emb_offset) = if let Some(eph) = ephem {
                     let state = eph.three_body_state(jed_now);
-                    (state.moon_pos_km, state.sun_pos_km)
+                    (state.moon_pos_km, state.sun_pos_km, state.emb_offset_km)
                 } else {
-                    (Vector3::zeros(), Vector3::zeros())
+                    (Vector3::zeros(), Vector3::zeros(), Vector3::zeros())
                 };
 
                 let accel = |p_in: Vector3<f64>, v_in: Vector3<f64>| -> Vector3<f64> {
@@ -454,6 +454,9 @@ fn run_flyby(
 
                     if use_chingon {
                         let alpha_eff = ALPHA_CHINGON * dm_density_factor(r);
+                        // Geocentric h gives NEAR ratio 0.999; barycentric degrades to 1.45.
+                        // Barycentric experiment (Sprint 71) showed EMB shift amplifies force
+                        // without fixing Rosetta-I sign. Keep geocentric for production.
                         a += compute_chingon_bivector_drag(
                             p_in, v_in, *v_wind, alpha_eff, avt,
                         );
@@ -462,7 +465,7 @@ fn run_flyby(
                     a
                 };
 
-                // h(t).v_wind trace for diagnostics
+                // h(t).v_wind trace for diagnostics (geocentric h)
                 if do_trace && step % trajectory_stride == 0 {
                     let h = p.cross(&v);
                     let h_dot_vw = h.dot(v_wind);
