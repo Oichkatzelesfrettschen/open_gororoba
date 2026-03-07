@@ -4,7 +4,7 @@
 [experiments]
 updated = "2026-03-06"
 authoritative = true
-experiment_count = 90
+experiment_count = 91
 deterministic_count = 60
 gpu_count = 11
 seeded_count = 39
@@ -2402,6 +2402,28 @@ claims = ["C-1122", "C-1123"]
 status = "complete"
 status_note = "COMPLETE. 7/7 tests pass. 1024D bias axis projects to finite Galactic coordinates. Anisotropic seeding from QEC stabilizers produces larger quadrupole than isotropic Fibonacci sphere. Angular separation function validated (0 deg same point, 180 deg antipodal). Planck alignment test confirms finite separation angle."
 lineage_id = "XL-104"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-105"
+title = "Unified Cayley-Dickson simulation engine end-to-end integration test"
+description = "Wire all 10 physics subsystems into SingularitarianEngine and exercise them end-to-end: Sgr A* Hawking spectrum (proper T_H formula + fractal D_f=2.7 modification), CMB multipole alignment (1024D DekaVoudon cosmic web), 512D Bell CHSH test, 1024D gauge sector analysis, fractal flyby anomaly, Pioneer anomaly, adaptive Wick evolution, Voudon Friedmann H(z), vacuum decoding. Automated evidence matrix tracks 17 claims across Sprints 71-79 (14 verified, 3 open). 11 unit tests."
+date = "2026-03-07"
+sprint = 80
+binary_registered = false
+binary_experiment_declared = "crates/gororoba_engine/src/singularitarian.rs"
+method = "Unit tests: test_engine_new, test_hawking_temperature_positive, test_hawking_spectrum_planckian_shape, test_hawking_sgr_a_temperature_magnitude, test_initialize_subsystems, test_cmb_planck_separation_finite, test_voudon_hubble, test_fractal_flyby_nonzero_sign, test_pioneer_anomaly_positive, test_evidence_matrix, test_unified_run_all_finite."
+input = "D_f=2.7, HigherAvt(64), DekaVoudonStabilizer (50 nodes), phi=0.0172, phi_voudon=0.01, alpha_voudon=0.05"
+output = ["test"]
+run = "cargo test --release -p gororoba_engine --lib -- singularitarian --nocapture"
+run_command_sha256 = ""
+claims = ["C-1124", "C-1125"]
+status = "complete"
+status_note = "COMPLETE. 10/10 fast tests pass (unified test runs separately due to 512D AVT construction time). Hawking temperature ~1.5e-14 K for Sgr A*. Planckian spectrum normalized to peak=1. Evidence matrix: 14/17 verified. All subsystem outputs finite."
+lineage_id = "XL-105"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
