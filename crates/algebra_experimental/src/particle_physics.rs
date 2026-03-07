@@ -514,7 +514,7 @@ mod tests {
         // All positions should be in [0, 1] range
         for pt in &lattice {
             for &c in &pt.position {
-                assert!(c >= 0.0 && c <= 1.0, "position {c} out of range");
+                assert!((0.0..=1.0).contains(&c), "position {c} out of range");
             }
         }
 

@@ -197,6 +197,19 @@ pub struct SampledAvt {
     pub hit_rate: f64,
 }
 
+fn associator_basis(dim: usize, i: usize, j: usize, k: usize) -> (usize, i32) {
+    let ij_idx = i ^ j;
+    let ij_sign = cd_basis_mul_sign_iter(dim, i, j);
+    let ijk_idx1 = ij_idx ^ k;
+    let ijk_sign1 = ij_sign * cd_basis_mul_sign_iter(dim, ij_idx, k);
+
+    let jk_idx = j ^ k;
+    let jk_sign = cd_basis_mul_sign_iter(dim, j, k);
+    let ijk_sign2 = jk_sign * cd_basis_mul_sign_iter(dim, i, jk_idx);
+
+    (ijk_idx1, ijk_sign1 - ijk_sign2)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -238,17 +251,4 @@ mod tests {
             );
         }
     }
-}
-
-fn associator_basis(dim: usize, i: usize, j: usize, k: usize) -> (usize, i32) {
-    let ij_idx = i ^ j;
-    let ij_sign = cd_basis_mul_sign_iter(dim, i, j);
-    let ijk_idx1 = ij_idx ^ k;
-    let ijk_sign1 = ij_sign * cd_basis_mul_sign_iter(dim, ij_idx, k);
-
-    let jk_idx = j ^ k;
-    let jk_sign = cd_basis_mul_sign_iter(dim, j, k);
-    let ijk_sign2 = jk_sign * cd_basis_mul_sign_iter(dim, i, jk_idx);
-
-    (ijk_idx1, ijk_sign1 - ijk_sign2)
 }
