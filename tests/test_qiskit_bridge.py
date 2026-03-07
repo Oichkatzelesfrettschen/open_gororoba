@@ -10,14 +10,14 @@ from unittest.mock import patch
 
 import pytest
 
-# Skip entire module if qiskit not installed
-pytest.importorskip("qiskit")
-pytestmark = [pytest.mark.regression, pytest.mark.requires_ext]
+try:
+    from src.quantum_runtime.ibm_bridge import JobResult, QiskitService
+except ModuleNotFoundError as exc:
+    if exc.name and exc.name.startswith("qiskit"):
+        pytest.skip("qiskit not installed", allow_module_level=True)
+    raise
 
-from src.quantum_runtime.ibm_bridge import (
-    JobResult,
-    QiskitService,
-)
+pytestmark = [pytest.mark.regression, pytest.mark.requires_ext]
 
 
 class TestJobResult:
