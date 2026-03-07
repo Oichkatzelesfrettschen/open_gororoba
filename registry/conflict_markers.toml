@@ -4,8 +4,8 @@
 [conflict_markers]
 updated = "2026-02-10"
 authoritative = true
-marker_count = 76
-high_severity_count = 71
+marker_count = 78
+high_severity_count = 73
 medium_severity_count = 5
 low_severity_count = 0
 kind_count = 2
@@ -1148,6 +1148,38 @@ notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
 id = "CM-0072"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-1111"]
+source_registry = "registry/claims.toml"
+source_document = "C-1111"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["VERIFIED"]
+negative_evidence = ["512D Cayley-Dickson CHSH S-value = -1.528 (does NOT violate classical bound |S|<=2). Associator-based measurement model with sedenion-lifted ZD pairs produces dimension-invariant S ~ -1.5 across 16D through 512D. The correlators are uniformly anti-correlated (~-0.85) with insufficient angular dependence for CHSH violation."]
+jaccard_overlap = 0.000000
+notes = "Verified status conflicts with negative language in statement."
+
+[[marker]]
+id = "CM-0073"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-1128"]
+source_registry = "registry/claims.toml"
+source_document = "C-1128"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["VERIFIED"]
+negative_evidence = ["Non-associativity at dim 8 (octonions) lifts to dim 16 (sedenions) via Cayley-Dickson doubling embedding (x, 0). The AVT violation set is non-empty at all dims >= 8. Constructive proof: the octonion witness (e1, e2, e4) embedded in sedenions still fails associativity. Kernel-checked via Rocq 9.1."]
+jaccard_overlap = 0.000000
+notes = "Verified status conflicts with negative language in statement."
+
+[[marker]]
+id = "CM-0074"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1163,7 +1195,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0073"
+id = "CM-0075"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1179,7 +1211,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0074"
+id = "CM-0076"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1195,7 +1227,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0075"
+id = "CM-0077"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1211,7 +1243,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0076"
+id = "CM-0078"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"

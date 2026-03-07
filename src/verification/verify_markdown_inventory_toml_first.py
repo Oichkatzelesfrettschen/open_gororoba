@@ -27,6 +27,8 @@ ALLOWED_TRACKED_MARKDOWN = {
     "CLAUDE.md",
     "GEMINI.md",
     "README.md",
+    "docs/research/high_dimensional_algebra_unification_2026.md",
+    "proofs/EPISTEMIC_BOUNDARIES.md",
 }
 
 

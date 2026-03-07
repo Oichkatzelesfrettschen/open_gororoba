@@ -4,18 +4,18 @@
 [markdown_inventory]
 generated_at = "deterministic"
 authoritative = true
-document_count = 498
-tracked_count = 12
+document_count = 500
+tracked_count = 14
 untracked_count = 0
 ignored_count = 486
 filesystem_only_count = 0
-generated_count = 176
-non_generated_count = 322
+generated_count = 177
+non_generated_count = 323
 archived_count = 0
 third_party_count = 13
 manual_exception_count = 0
 unbacked_manual_count = 0
-toml_backed_manual_count = 309
+toml_backed_manual_count = 310
 
 [[migration_queue]]
 rank = 1
@@ -86,7 +86,7 @@ path = "REQUIREMENTS.md"
 migration_priority = "high"
 migration_action = "port_body_to_toml_and_lock_mirror"
 toml_destination = "registry/requirements.toml"
-line_count = 82
+line_count = 86
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[migration_queue]]
@@ -596,9 +596,9 @@ migration_action = "port_body_to_toml_and_lock_mirror"
 migration_priority = "high"
 toml_destination = "registry/requirements.toml"
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-size_bytes = 4753
-line_count = 82
-sha256 = "c77be9f944445e11a790beab97055f9da68eb13dcde46660c7392b5794dc78fb"
+size_bytes = 5483
+line_count = 86
+sha256 = "4d25dbc899bb44afd46109633ee79287e58538848f3bae0a8a5c2acc2fb5a4a6"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -1332,9 +1332,9 @@ migration_action = "port_body_to_toml_and_lock_mirror"
 migration_priority = "medium"
 toml_destination = "registry/knowledge_sources.toml"
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-size_bytes = 1646
-line_count = 31
-sha256 = "1fcd6ecd1938ea01982889795b4f73ccf794e57d9306dea629493f9d693a8391"
+size_bytes = 3275
+line_count = 67
+sha256 = "670650cb20117a36743c25ae8e00ac1c38b9df617a7071fab367d13937f900d9"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -7643,6 +7643,29 @@ experiment_ref_count = 0
 
 [[document]]
 id = "MDI-0309"
+path = "proofs/EPISTEMIC_BOUNDARIES.md"
+title = "Epistemic Boundaries"
+git_status = "tracked"
+archived = false
+generated_declared = false
+generated_pattern = false
+generated = false
+manual_exception = false
+third_party = false
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+toml_destination = "registry/entrypoint_docs.toml"
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+size_bytes = 3127
+line_count = 66
+sha256 = "ddddad4d02d51b29d6091627f9b0b3a2cfe152d108628b8fb8940692e4dab48e"
+claim_ref_count = 3
+insight_ref_count = 0
+experiment_ref_count = 0
+
+[[document]]
+id = "MDI-0310"
 path = "proofs/README.md"
 title = "Living Verification Artifact -- Pipeline Architecture"
 git_status = "tracked"
@@ -7657,15 +7680,15 @@ migration_action = "port_body_to_toml_and_lock_mirror"
 migration_priority = "medium"
 toml_destination = "registry/roadmap.toml"
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-size_bytes = 5216
+size_bytes = 5198
 line_count = 136
-sha256 = "e2d802605d3c94eaf2efb3e411f88e235b5c087bad5000728dafd2eec9c41968"
+sha256 = "249056238fbec2ecafe533ef4bc8aeac036868762f88fee22f0bacbb4c98835c"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0310"
+id = "MDI-0311"
 path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
 title = "Algebraic Foundations: Re-Deriving $G_2$ Structure via Homotopy Transfer"
 git_status = "ignored"
@@ -7688,7 +7711,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0311"
+id = "MDI-0312"
 path = "data/artifacts/BIBLIOGRAPHY.md"
 title = "Bibliography: Sedenion Physics, Modular Entropy, and Noncommutative Geometry"
 git_status = "ignored"
@@ -7711,7 +7734,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0312"
+id = "MDI-0313"
 path = "data/artifacts/FINAL_REPORT.md"
 title = "Final Technical Report: Topology, Spectral Flow, and Holography"
 git_status = "ignored"
@@ -7734,7 +7757,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0313"
+id = "MDI-0314"
 path = "data/artifacts/QUANTUM_REPORT.md"
 title = "Quantum Simulation Report: $F_4$ Symmetry Verification"
 git_status = "ignored"
@@ -7757,7 +7780,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0314"
+id = "MDI-0315"
 path = "data/artifacts/README.md"
 title = "README"
 git_status = "tracked"
@@ -7780,7 +7803,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0315"
+id = "MDI-0316"
 path = "data/artifacts/SIMULATION_REPORT.md"
 title = "Advanced Simulation Report: pushing the Boundaries"
 git_status = "ignored"
@@ -7803,7 +7826,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0316"
+id = "MDI-0317"
 path = "data/artifacts/THESIS_3D_SYNTHESIS.md"
 title = "Thesis 3D Synthesis: Topological Phase Transitions in Hypercomplex Fluids"
 git_status = "ignored"
@@ -7826,7 +7849,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0317"
+id = "MDI-0318"
 path = "data/artifacts/WARP_RING_REPORT.md"
 title = "Warp Ring Integration: Algebra-Fluid Duality Visualized"
 git_status = "ignored"
@@ -7849,7 +7872,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0318"
+id = "MDI-0319"
 path = "data/artifacts/extracted_equations.md"
 title = "extracted_equations"
 git_status = "ignored"
@@ -7872,7 +7895,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0319"
+id = "MDI-0320"
 path = "data/artifacts/reality_check_and_synthesis.md"
 title = "Reality Check & Synthesis: Aligning \"Surreal-Noncommutative\" Framework with Academic Consensus"
 git_status = "ignored"
@@ -7895,7 +7918,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0320"
+id = "MDI-0321"
 path = "docs/BIBLIOGRAPHY.md"
 title = "Unified Bibliography"
 git_status = "ignored"
@@ -7918,7 +7941,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0321"
+id = "MDI-0322"
 path = "docs/CLAIMS_EVIDENCE_MATRIX.md"
 title = "Claims / Evidence Matrix (Markdown Mirror)"
 git_status = "ignored"
@@ -7933,15 +7956,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/claims.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 602319
-line_count = 931
-sha256 = "ede1245eccc139bd7f36d3d0977b162b66636fdc450ab8bc7f17fef4eaf1c4a3"
-claim_ref_count = 921
+size_bytes = 647524
+line_count = 1012
+sha256 = "bebe73de2013d6b697fbb3c206403281df60733387a4b924939c8aa1b1fa316d"
+claim_ref_count = 953
 insight_ref_count = 8
-experiment_ref_count = 16
+experiment_ref_count = 19
 
 [[document]]
-id = "MDI-0322"
+id = "MDI-0323"
 path = "docs/CLAIMS_TASKS.md"
 title = "Claims -> Tasks Tracker (Generated Mirror)"
 git_status = "ignored"
@@ -7964,7 +7987,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0323"
+id = "MDI-0324"
 path = "docs/DATASET_MANIFEST.md"
 title = "Dataset Manifest (Pointer)"
 git_status = "ignored"
@@ -7987,7 +8010,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0324"
+id = "MDI-0325"
 path = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
 title = "Experiments Portfolio Shortlist"
 git_status = "ignored"
@@ -8002,15 +8025,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/experiments.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 48499
-line_count = 1169
-sha256 = "5d483b1034a83dcac5d12847aa5ed54944b18306bf9544cc77647f12ed5ed690"
+size_bytes = 60777
+line_count = 1481
+sha256 = "7391d9ff64a8b2209036c3a98eb95239c17859705cd02ce9fcadc96be5beaa97"
 claim_ref_count = 30
 insight_ref_count = 1
-experiment_ref_count = 81
+experiment_ref_count = 107
 
 [[document]]
-id = "MDI-0325"
+id = "MDI-0326"
 path = "docs/INSIGHTS.md"
 title = "Insights"
 git_status = "ignored"
@@ -8025,15 +8048,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/insights.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 80403
-line_count = 1286
-sha256 = "3ae489294189698f98f37b6f17cc88778eea19412cecc181b5eeff8ffd851301"
-claim_ref_count = 185
-insight_ref_count = 98
+size_bytes = 81301
+line_count = 1346
+sha256 = "419b067bffe4f3e3bc933bf8bc6a4757a7fc2f5fb2190a1f6d770bbc2b2bd6e5"
+claim_ref_count = 191
+insight_ref_count = 104
 experiment_ref_count = 7
 
 [[document]]
-id = "MDI-0326"
+id = "MDI-0327"
 path = "docs/NEXT_ACTIONS.md"
 title = "Next Actions (Prioritized)"
 git_status = "ignored"
@@ -8048,15 +8071,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/next_actions.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 4631
+size_bytes = 4852
 line_count = 104
-sha256 = "09a0a7bd92c9cb3390060d1e68e0a14ddd7b5e88981ee0ee70481474e5c27480"
+sha256 = "32fdc88bc3eac316fcad3147d05886fce901f429203fdd7acd48558cf617a13c"
 claim_ref_count = 14
 insight_ref_count = 7
 experiment_ref_count = 4
 
 [[document]]
-id = "MDI-0327"
+id = "MDI-0328"
 path = "docs/PHASE1_REMAINING_ROADMAP.md"
 title = "Phase 1 Remaining Work: Comprehensive Roadmap (Phases 1.4-1.9)"
 git_status = "ignored"
@@ -8079,7 +8102,7 @@ insight_ref_count = 5
 experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0328"
+id = "MDI-0329"
 path = "docs/REAL_MATERIALS_INTEGRATION.md"
 title = "Real Materials Integration for E-027"
 git_status = "ignored"
@@ -8102,7 +8125,7 @@ insight_ref_count = 0
 experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0329"
+id = "MDI-0330"
 path = "docs/REQUIREMENTS.md"
 title = "Requirements for Gemini Experiments"
 git_status = "ignored"
@@ -8117,15 +8140,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/requirements.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 6923
-line_count = 131
-sha256 = "789bef21930642d51d4927bed20cc73582b3e5d2511823d9d940c74ec31a5687"
+size_bytes = 7257
+line_count = 135
+sha256 = "bcf65b44aa3e80109e06467c102e3d195842c0c397be72e0748c44b5ee49b8b1"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0330"
+id = "MDI-0331"
 path = "docs/ROADMAP.md"
 title = "open_gororoba Roadmap"
 git_status = "ignored"
@@ -8140,15 +8163,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/roadmap.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 36672
+size_bytes = 37349
 line_count = 769
-sha256 = "5c372b233d7d0f08c8bf7d5c3c9719642246ce5fd9b0c6304e5041b75b51c6d0"
+sha256 = "71d2a65a3cfe0ab9b19d5ff2fe20945106fa1fcf08753b4b34f87eb81e532229"
 claim_ref_count = 44
 insight_ref_count = 8
 experiment_ref_count = 2
 
 [[document]]
-id = "MDI-0331"
+id = "MDI-0332"
 path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 title = "Physics Synthesis Pipeline: Overall Progress Tracker"
 git_status = "ignored"
@@ -8171,7 +8194,7 @@ insight_ref_count = 5
 experiment_ref_count = 5
 
 [[document]]
-id = "MDI-0332"
+id = "MDI-0333"
 path = "docs/TODO.md"
 title = "TODO (updated 2026-02-13): executable, test-driven tracker"
 git_status = "ignored"
@@ -8186,15 +8209,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/todo.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 3049
+size_bytes = 3268
 line_count = 58
-sha256 = "255c7ba23611a36643d33c9c286e76a2bd91b01991ea3bd086272b6f3acc1902"
+sha256 = "c7eece0c8314fd51167a68191900407f2c43a7b62dab5c96cd204385c610278f"
 claim_ref_count = 9
 insight_ref_count = 5
 experiment_ref_count = 5
 
 [[document]]
-id = "MDI-0333"
+id = "MDI-0334"
 path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
 title = "Warp Ring N^3: Physics, Numerics, And What The Data Means"
 git_status = "ignored"
@@ -8217,7 +8240,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0334"
+id = "MDI-0335"
 path = "docs/book/src/SUMMARY.md"
 title = "Summary"
 git_status = "ignored"
@@ -8240,7 +8263,7 @@ insight_ref_count = 0
 experiment_ref_count = 3
 
 [[document]]
-id = "MDI-0335"
+id = "MDI-0336"
 path = "docs/book/src/algebra/box-kites.md"
 title = "Box-Kite Structure"
 git_status = "ignored"
@@ -8263,7 +8286,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0336"
+id = "MDI-0337"
 path = "docs/book/src/algebra/emanation.md"
 title = "Emanation Architecture"
 git_status = "ignored"
@@ -8286,7 +8309,7 @@ insight_ref_count = 1
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0337"
+id = "MDI-0338"
 path = "docs/book/src/algebra/motif-scaling.md"
 title = "Motif Scaling Laws"
 git_status = "ignored"
@@ -8309,7 +8332,7 @@ insight_ref_count = 2
 experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0338"
+id = "MDI-0339"
 path = "docs/book/src/algebra/zero-divisors.md"
 title = "Zero-Divisor Census"
 git_status = "ignored"
@@ -8332,7 +8355,7 @@ insight_ref_count = 1
 experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0339"
+id = "MDI-0340"
 path = "docs/book/src/architecture/crates.md"
 title = "Crate Ecosystem"
 git_status = "ignored"
@@ -8355,7 +8378,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0340"
+id = "MDI-0341"
 path = "docs/book/src/architecture/layout.md"
 title = "Project Layout"
 git_status = "ignored"
@@ -8378,7 +8401,7 @@ insight_ref_count = 2
 experiment_ref_count = 2
 
 [[document]]
-id = "MDI-0341"
+id = "MDI-0342"
 path = "docs/book/src/architecture/verification.md"
 title = "Verification Ladder"
 git_status = "ignored"
@@ -8401,7 +8424,7 @@ insight_ref_count = 2
 experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0342"
+id = "MDI-0343"
 path = "docs/book/src/cli/catalog.md"
 title = "Binary Catalog"
 git_status = "ignored"
@@ -8424,7 +8447,7 @@ insight_ref_count = 0
 experiment_ref_count = 10
 
 [[document]]
-id = "MDI-0343"
+id = "MDI-0344"
 path = "docs/book/src/experiments/e001.md"
 title = "E-001: Cayley-Dickson Motif Census"
 git_status = "ignored"
@@ -8447,7 +8470,7 @@ insight_ref_count = 1
 experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0344"
+id = "MDI-0345"
 path = "docs/book/src/experiments/e002.md"
 title = "E-002: Multi-Dataset GPU Ultrametric Sweep"
 git_status = "ignored"
@@ -8470,7 +8493,7 @@ insight_ref_count = 3
 experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0345"
+id = "MDI-0346"
 path = "docs/book/src/experiments/e003.md"
 title = "E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)"
 git_status = "ignored"
@@ -8493,7 +8516,7 @@ insight_ref_count = 1
 experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0346"
+id = "MDI-0347"
 path = "docs/book/src/glossary.md"
 title = "Glossary"
 git_status = "ignored"
@@ -8516,7 +8539,7 @@ insight_ref_count = 1
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0347"
+id = "MDI-0348"
 path = "docs/book/src/introduction.md"
 title = "open_gororoba"
 git_status = "ignored"
@@ -8539,7 +8562,7 @@ insight_ref_count = 2
 experiment_ref_count = 2
 
 [[document]]
-id = "MDI-0348"
+id = "MDI-0349"
 path = "docs/book/src/papers/collection.md"
 title = "Paper Collection"
 git_status = "ignored"
@@ -8562,7 +8585,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0349"
+id = "MDI-0350"
 path = "docs/book/src/registry/claims.md"
 title = "Claims Evidence Matrix"
 git_status = "ignored"
@@ -8585,7 +8608,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0350"
+id = "MDI-0351"
 path = "docs/book/src/registry/experiments.md"
 title = "Experiments Portfolio"
 git_status = "ignored"
@@ -8608,7 +8631,7 @@ insight_ref_count = 0
 experiment_ref_count = 10
 
 [[document]]
-id = "MDI-0351"
+id = "MDI-0352"
 path = "docs/book/src/registry/insights.md"
 title = "Insights"
 git_status = "ignored"
@@ -8631,7 +8654,7 @@ insight_ref_count = 16
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0352"
+id = "MDI-0353"
 path = "docs/claims/INDEX.md"
 title = "Claims by domain"
 git_status = "ignored"
@@ -8654,7 +8677,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0353"
+id = "MDI-0354"
 path = "docs/claims/by_domain/algebra.md"
 title = "Claims: algebra"
 git_status = "ignored"
@@ -8677,7 +8700,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0354"
+id = "MDI-0355"
 path = "docs/claims/by_domain/coq.md"
 title = "Claims: coq"
 git_status = "ignored"
@@ -8700,7 +8723,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0355"
+id = "MDI-0356"
 path = "docs/claims/by_domain/cosmology.md"
 title = "Claims: cosmology"
 git_status = "ignored"
@@ -8723,7 +8746,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0356"
+id = "MDI-0357"
 path = "docs/claims/by_domain/cpp.md"
 title = "Claims: cpp"
 git_status = "ignored"
@@ -8746,7 +8769,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0357"
+id = "MDI-0358"
 path = "docs/claims/by_domain/datasets.md"
 title = "Claims: datasets"
 git_status = "ignored"
@@ -8769,7 +8792,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0358"
+id = "MDI-0359"
 path = "docs/claims/by_domain/engineering.md"
 title = "Claims: engineering"
 git_status = "ignored"
@@ -8792,7 +8815,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0359"
+id = "MDI-0360"
 path = "docs/claims/by_domain/gravitational-waves.md"
 title = "Claims: gravitational-waves"
 git_status = "ignored"
@@ -8815,7 +8838,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0360"
+id = "MDI-0361"
 path = "docs/claims/by_domain/holography.md"
 title = "Claims: holography"
 git_status = "ignored"
@@ -8838,7 +8861,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0361"
+id = "MDI-0362"
 path = "docs/claims/by_domain/legacy.md"
 title = "Claims: legacy"
 git_status = "ignored"
@@ -8861,7 +8884,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0362"
+id = "MDI-0363"
 path = "docs/claims/by_domain/materials.md"
 title = "Claims: materials"
 git_status = "ignored"
@@ -8884,7 +8907,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0363"
+id = "MDI-0364"
 path = "docs/claims/by_domain/meta.md"
 title = "Claims: meta"
 git_status = "ignored"
@@ -8907,7 +8930,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0364"
+id = "MDI-0365"
 path = "docs/claims/by_domain/open-systems.md"
 title = "Claims: open-systems"
 git_status = "ignored"
@@ -8930,7 +8953,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0365"
+id = "MDI-0366"
 path = "docs/claims/by_domain/spectral.md"
 title = "Claims: spectral"
 git_status = "ignored"
@@ -8953,7 +8976,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0366"
+id = "MDI-0367"
 path = "docs/claims/by_domain/stellar-cartography.md"
 title = "Claims: stellar-cartography"
 git_status = "ignored"
@@ -8976,7 +8999,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0367"
+id = "MDI-0368"
 path = "docs/claims/by_domain/tensor-networks.md"
 title = "Claims: tensor-networks"
 git_status = "ignored"
@@ -8999,7 +9022,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0368"
+id = "MDI-0369"
 path = "docs/claims/by_domain/visualization.md"
 title = "Claims: visualization"
 git_status = "ignored"
@@ -9022,7 +9045,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0369"
+id = "MDI-0370"
 path = "docs/convos/CONVOS_CLAIMS_INBOX.md"
 title = "Convos Claims Inbox (Triage Queue, ASCII-only)"
 git_status = "ignored"
@@ -9045,7 +9068,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0370"
+id = "MDI-0371"
 path = "docs/convos/README.md"
 title = "Convos audit workspace"
 git_status = "tracked"
@@ -9068,7 +9091,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0371"
+id = "MDI-0372"
 path = "docs/convos/audit_1_read_nonuser_lines_cont.md"
 title = "Audit: convos/1_read_nonuser_lines_cont.md"
 git_status = "ignored"
@@ -9091,7 +9114,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0372"
+id = "MDI-0373"
 path = "docs/convos/implement_next_from_1_read_nonuser_lines_cont.md"
 title = "Implement-next backlog (from convos/1_read_nonuser_lines_cont.md)"
 git_status = "ignored"
@@ -9114,7 +9137,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0373"
+id = "MDI-0374"
 path = "docs/convos/keywords_1_read_nonuser_lines_cont.md"
 title = "Convos keyword summary: convos/1_read_nonuser_lines_cont.md"
 git_status = "ignored"
@@ -9137,7 +9160,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0374"
+id = "MDI-0375"
 path = "docs/engineering/INDEX.md"
 title = "Engineering Narratives"
 git_status = "ignored"
@@ -9160,7 +9183,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0375"
+id = "MDI-0376"
 path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 title = "C-071: FRB Ultrametric Structure -- Data Provenance"
 git_status = "ignored"
@@ -9183,7 +9206,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0376"
+id = "MDI-0377"
 path = "docs/external_sources/DATASET_MANIFEST.md"
 title = "Dataset Manifest"
 git_status = "ignored"
@@ -9206,7 +9229,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0377"
+id = "MDI-0378"
 path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 title = "2004 Math0403113 Boxkites Iii"
 git_status = "ignored"
@@ -9229,7 +9252,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0378"
+id = "MDI-0379"
 path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 title = "Voyage by Catamaran"
 git_status = "ignored"
@@ -9252,7 +9275,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0379"
+id = "MDI-0380"
 path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 title = "Flying Higher Than A Box-Kite"
 git_status = "ignored"
@@ -9275,7 +9298,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0380"
+id = "MDI-0381"
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 title = "Placeholder Substructures I"
 git_status = "ignored"
@@ -9298,7 +9321,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0381"
+id = "MDI-0382"
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 title = "Placeholder Substructures III"
 git_status = "ignored"
@@ -9321,7 +9344,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0382"
+id = "MDI-0383"
 path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 title = "Presto! Digitization: Part I"
 git_status = "ignored"
@@ -9344,7 +9367,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0383"
+id = "MDI-0384"
 path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 title = "2004 Wolfram Science Slides"
 git_status = "ignored"
@@ -9367,7 +9390,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0384"
+id = "MDI-0385"
 path = "docs/external_sources/INDEX.md"
 title = "External Sources"
 git_status = "ignored"
@@ -9390,7 +9413,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0385"
+id = "MDI-0386"
 path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 title = "Inverse Cayley-Dickson Formalism"
 git_status = "ignored"
@@ -9413,7 +9436,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0386"
+id = "MDI-0387"
 path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 title = "Open Claims Sources (Inbox)"
 git_status = "ignored"
@@ -9436,7 +9459,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0387"
+id = "MDI-0388"
 path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 title = "Reggiani 2024 manifold identifications (C-005)"
 git_status = "ignored"
@@ -9459,7 +9482,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0388"
+id = "MDI-0389"
 path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 title = "Sedenion Zero-Divisor Experimental Connections"
 git_status = "ignored"
@@ -9482,7 +9505,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0389"
+id = "MDI-0390"
 path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 title = "Wheel Algebra Taxonomy"
 git_status = "ignored"
@@ -9505,7 +9528,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0390"
+id = "MDI-0391"
 path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 title = "Wow! Signal Source Dossier"
 git_status = "ignored"
@@ -9528,7 +9551,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0391"
+id = "MDI-0392"
 path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
 title = "Bibliography Registry Mirror"
 git_status = "ignored"
@@ -9551,7 +9574,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0392"
+id = "MDI-0393"
 path = "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md"
 title = "Book Docs Registry Mirror"
 git_status = "ignored"
@@ -9574,7 +9597,7 @@ insight_ref_count = 0
 experiment_ref_count = 3
 
 [[document]]
-id = "MDI-0393"
+id = "MDI-0394"
 path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
 title = "Claims Domains Registry Mirror"
 git_status = "ignored"
@@ -9597,7 +9620,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0394"
+id = "MDI-0395"
 path = "docs/generated/CLAIMS_REGISTRY_MIRROR.md"
 title = "Claims Registry Mirror"
 git_status = "ignored"
@@ -9612,15 +9635,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/claims.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 670750
-line_count = 7377
-sha256 = "fa337fc6fad71d4a0487792ab0a0c0094916959cbc6b4c275b6fc72baca5955b"
-claim_ref_count = 921
+size_bytes = 722072
+line_count = 8025
+sha256 = "7909a4911c187fd22e0846b3a2a740a2b25eb0d9bd4ae342e73737787a68d0c4"
+claim_ref_count = 953
 insight_ref_count = 8
-experiment_ref_count = 16
+experiment_ref_count = 19
 
 [[document]]
-id = "MDI-0395"
+id = "MDI-0396"
 path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
 title = "Claims Tasks Registry Mirror"
 git_status = "ignored"
@@ -9643,7 +9666,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0396"
+id = "MDI-0397"
 path = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
 title = "Claim Tickets Registry Mirror"
 git_status = "ignored"
@@ -9666,7 +9689,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0397"
+id = "MDI-0398"
 path = "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md"
 title = "Data Artifact Narratives Registry Mirror"
 git_status = "ignored"
@@ -9689,7 +9712,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0398"
+id = "MDI-0399"
 path = "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md"
 title = "Docs Convos Registry Mirror"
 git_status = "ignored"
@@ -9712,7 +9735,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0399"
+id = "MDI-0400"
 path = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
 title = "Docs Root Narratives Registry Mirror"
 git_status = "ignored"
@@ -9735,7 +9758,7 @@ insight_ref_count = 0
 experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0400"
+id = "MDI-0401"
 path = "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md"
 title = "Entrypoint Docs Registry Mirror"
 git_status = "ignored"
@@ -9758,7 +9781,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0401"
+id = "MDI-0402"
 path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
 title = "Experiments Registry Mirror"
 git_status = "ignored"
@@ -9773,15 +9796,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/experiments.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 53540
-line_count = 1438
-sha256 = "9ecc77e1297063fc8bfa4f38e74cc96847c062a61d575d41414bb522022ca50f"
-claim_ref_count = 199
+size_bytes = 68353
+line_count = 1891
+sha256 = "d7278dda57521afcf706be9207b89cccee26341d6db261b3c50c7bb9919aee7c"
+claim_ref_count = 215
 insight_ref_count = 0
-experiment_ref_count = 81
+experiment_ref_count = 107
 
 [[document]]
-id = "MDI-0402"
+id = "MDI-0403"
 path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
 title = "External Sources Registry Mirror"
 git_status = "ignored"
@@ -9804,7 +9827,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0403"
+id = "MDI-0404"
 path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
 title = "Insights Registry Mirror"
 git_status = "ignored"
@@ -9819,15 +9842,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/insights.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 69521
-line_count = 895
-sha256 = "5d5aa685ada0946d2a87571130ed6806a19bbfd54ed10a320a5060a3f7cd4679"
-claim_ref_count = 212
-insight_ref_count = 98
+size_bytes = 70504
+line_count = 949
+sha256 = "a0e563c7a5b1ed45a7ae2194a80d5dc917e60b3e65520d08e6ba3cc52e85cfcd"
+claim_ref_count = 218
+insight_ref_count = 104
 experiment_ref_count = 7
 
 [[document]]
-id = "MDI-0404"
+id = "MDI-0405"
 path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
 title = "Knowledge Migration Plan Registry Mirror"
 git_status = "ignored"
@@ -9850,7 +9873,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0405"
+id = "MDI-0406"
 path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
 title = "Markdown Governance Registry Mirror"
 git_status = "ignored"
@@ -9873,7 +9896,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0406"
+id = "MDI-0407"
 path = "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md"
 title = "Navigator Registry Mirror"
 git_status = "ignored"
@@ -9896,7 +9919,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0407"
+id = "MDI-0408"
 path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
 title = "Next Actions Registry Mirror"
 git_status = "ignored"
@@ -9919,7 +9942,7 @@ insight_ref_count = 2
 experiment_ref_count = 3
 
 [[document]]
-id = "MDI-0408"
+id = "MDI-0409"
 path = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
 title = "Reports Narratives Registry Mirror"
 git_status = "ignored"
@@ -9942,7 +9965,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0409"
+id = "MDI-0410"
 path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
 title = "Requirements Registry Mirror"
 git_status = "ignored"
@@ -9957,15 +9980,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/requirements.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 3248
-line_count = 124
-sha256 = "78fe321f656907c4e5155e77e1d39ce576d986b136b2ef1b57f41b2d72458f8b"
+size_bytes = 3240
+line_count = 123
+sha256 = "7c7d786e83f9768cea00a182254005ffd6d80178afb4f3d94c314c454c6b8f53"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0410"
+id = "MDI-0411"
 path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
 title = "Research Narratives Registry Mirror"
 git_status = "ignored"
@@ -9980,15 +10003,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/research_narratives.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 568
-line_count = 22
-sha256 = "eaa454cf6d449598e8db73d9c97d526bff6df394aca07f5f4cdb7b5782f755b2"
+size_bytes = 918
+line_count = 32
+sha256 = "b44174d55a194b37dfd2327478a1a2e9498af544831759c4af524d89958f3b20"
 claim_ref_count = 3
 insight_ref_count = 3
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0411"
+id = "MDI-0412"
 path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
 title = "Roadmap Registry Mirror"
 git_status = "ignored"
@@ -10005,13 +10028,13 @@ toml_destination = "registry/roadmap.toml"
 rationale = "Published markdown generated from TOML destination."
 size_bytes = 8503
 line_count = 169
-sha256 = "df684754019e8a4bf0336531c80c14befabf14f293759c4481c624dba7c99d63"
+sha256 = "8037003dbe926abf71a0254320b7b41092fa00d14b3c990f086f3793dbb711c4"
 claim_ref_count = 16
 insight_ref_count = 1
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0412"
+id = "MDI-0413"
 path = "docs/generated/TODO_REGISTRY_MIRROR.md"
 title = "TODO Registry Mirror"
 git_status = "ignored"
@@ -10026,15 +10049,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/todo.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 235
-line_count = 13
-sha256 = "e9e6f810dcf165bd01e77a71d95185441db60070e491134b7867cc084c4e70ac"
-claim_ref_count = 0
-insight_ref_count = 0
-experiment_ref_count = 0
+size_bytes = 25581
+line_count = 567
+sha256 = "800be30eb4982d68b08b693fc9a218f3e685a48a26598cb2a3e87d4968f5bbf9"
+claim_ref_count = 11
+insight_ref_count = 1
+experiment_ref_count = 1
 
 [[document]]
-id = "MDI-0413"
+id = "MDI-0414"
 path = "docs/monograph/01_foundations.md"
 title = "Volume I: Algebraic Foundations of Flow"
 git_status = "ignored"
@@ -10057,7 +10080,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0414"
+id = "MDI-0415"
 path = "docs/monograph/02_turbulence.md"
 title = "Volume II: Turbulence and Spectral Theory"
 git_status = "ignored"
@@ -10080,7 +10103,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0415"
+id = "MDI-0416"
 path = "docs/monograph/03_synthesis.md"
 title = "Volume III: Synthesis - The Warp Ring"
 git_status = "ignored"
@@ -10103,7 +10126,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0416"
+id = "MDI-0417"
 path = "docs/requirements/algebra.md"
 title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
 git_status = "ignored"
@@ -10118,15 +10141,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/requirements.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 4879
-line_count = 120
-sha256 = "633627d32d9eff04e3ad8aa250d337f36d0748866162d7fbd7d925ea3eeb736d"
+size_bytes = 6343
+line_count = 128
+sha256 = "fd9c88c38fdb8073a0115741e0072766b894b0e2d39f34cc0e146462fff565ac"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0417"
+id = "MDI-0418"
 path = "docs/requirements/analysis.md"
 title = "Requirements: Analysis (Topology + Embeddings)"
 git_status = "ignored"
@@ -10141,15 +10164,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/requirements.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 2114
+size_bytes = 2169
 line_count = 39
-sha256 = "60759f54f883d688ce11f1ce865ebdbb51b201b52e308833e366f5235ce20f92"
+sha256 = "4fb01398b6b6bcae54f1bde41f62cd386811a06faf1146cef3c5a954de4ca1e6"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0418"
+id = "MDI-0419"
 path = "docs/requirements/astro.md"
 title = "Requirements: Astronomy Data Fetching"
 git_status = "ignored"
@@ -10164,15 +10187,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/requirements.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 2034
+size_bytes = 2153
 line_count = 45
-sha256 = "89e1f9991dd56edc35ca72d98837ea5bcd77250e6d9f8edaf5f61fcfdd3eab29"
+sha256 = "b7684f04cfc08fe18a4cde3bb0b3d2f86e81ef260c5dc58a52a71374a1fc68e8"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0419"
+id = "MDI-0420"
 path = "docs/requirements/coq.md"
 title = "Requirements: Coq Proof Checking"
 git_status = "ignored"
@@ -10195,7 +10218,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0420"
+id = "MDI-0421"
 path = "docs/requirements/cpp.md"
 title = "Requirements: C++ Kernels (Conan + CMake)"
 git_status = "ignored"
@@ -10218,7 +10241,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0421"
+id = "MDI-0422"
 path = "docs/requirements/latex.md"
 title = "Requirements: LaTeX (PDF Build)"
 git_status = "ignored"
@@ -10241,7 +10264,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0422"
+id = "MDI-0423"
 path = "docs/requirements/materials.md"
 title = "Requirements: Materials Datasets"
 git_status = "ignored"
@@ -10256,15 +10279,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/requirements.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 1949
+size_bytes = 1999
 line_count = 40
-sha256 = "f6fdd831fb91aacb5b36bac71f7fa58318c8a78f9effa6fcc7db4cb192b20ba8"
+sha256 = "a0f0953404394964520d2ee4deb9962ea5b3e4429f210939883b8dc92bc202df"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0423"
+id = "MDI-0424"
 path = "docs/requirements/particle.md"
 title = "Requirements: Particle Data Workflows"
 git_status = "ignored"
@@ -10279,15 +10302,15 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/requirements.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 1821
+size_bytes = 1871
 line_count = 37
-sha256 = "f4823a7f5f8467d7971b3a02eefaac338e7739d8c2d794541ffb42bbfe3d10d0"
+sha256 = "bceb5a5bc7011c561b273a9eee8e45eb8007abca73cad37edb586b30863ebf31"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0424"
+id = "MDI-0425"
 path = "docs/requirements/quantum-docker.md"
 title = "Requirements: Quantum (Qiskit via Docker)"
 git_status = "ignored"
@@ -10310,7 +10333,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0425"
+id = "MDI-0426"
 path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 title = "The Lost Hexagon and the Split-Octonion Attractor"
 git_status = "ignored"
@@ -10325,15 +10348,38 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 toml_destination = "registry/research_narratives.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 2726
-line_count = 36
-sha256 = "edbe5cbd51906bc7d96ff2fc408b656fb72b82a20e16cd31413f99aa96a1ddcb"
+size_bytes = 2627
+line_count = 33
+sha256 = "51bc9e2e0d0953581bc37f600d1f80d704d56c743681aae5d2b64b054233575c"
 claim_ref_count = 2
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0426"
+id = "MDI-0427"
+path = "docs/research/high_dimensional_algebra_unification_2026.md"
+title = "Research Summary: High-Dimensional Cayley-Dickson Physics (2024-2026)"
+git_status = "tracked"
+archived = false
+generated_declared = true
+generated_pattern = false
+generated = true
+manual_exception = false
+third_party = false
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+toml_destination = "registry/research_narratives.toml"
+rationale = "Published markdown generated from TOML destination."
+size_bytes = 2953
+line_count = 41
+sha256 = "a82613a3ff0719c8195769c6cea6d01991ac983f4585baf6ac93de57f8266825"
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+
+[[document]]
+id = "MDI-0428"
 path = "docs/theory/INDEX.md"
 title = "Theory Narratives"
 git_status = "ignored"
@@ -10356,7 +10402,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0427"
+id = "MDI-0429"
 path = "docs/tickets/C001_C050_claims_audit.md"
 title = "Ticket: Claims audit batch C-001..C-050"
 git_status = "ignored"
@@ -10379,7 +10425,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0428"
+id = "MDI-0430"
 path = "docs/tickets/C051_C100_claims_audit.md"
 title = "Ticket: Claims audit batch C-051..C-100"
 git_status = "ignored"
@@ -10402,7 +10448,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0429"
+id = "MDI-0431"
 path = "docs/tickets/C101_C150_claims_audit.md"
 title = "Ticket: Claims audit batch C-101..C-150"
 git_status = "ignored"
@@ -10425,7 +10471,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0430"
+id = "MDI-0432"
 path = "docs/tickets/C151_C200_claims_audit.md"
 title = "Ticket: Claims audit batch C-151..C-200"
 git_status = "ignored"
@@ -10448,7 +10494,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0431"
+id = "MDI-0433"
 path = "docs/tickets/C201_C250_claims_audit.md"
 title = "Ticket: Claims audit batch C-201..C-250"
 git_status = "ignored"
@@ -10471,7 +10517,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0432"
+id = "MDI-0434"
 path = "docs/tickets/C251_C300_claims_audit.md"
 title = "Ticket: Claims audit batch C-251..C-300"
 git_status = "ignored"
@@ -10494,7 +10540,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0433"
+id = "MDI-0435"
 path = "docs/tickets/C301_C350_claims_audit.md"
 title = "Ticket: Claims audit batch C-301..C-350"
 git_status = "ignored"
@@ -10517,7 +10563,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0434"
+id = "MDI-0436"
 path = "docs/tickets/C351_C400_claims_audit.md"
 title = "Ticket: Claims audit batch C-351..C-400"
 git_status = "ignored"
@@ -10540,7 +10586,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0435"
+id = "MDI-0437"
 path = "docs/tickets/C401_C427_claims_audit.md"
 title = "Ticket: Claims audit batch C-401..C-427"
 git_status = "ignored"
@@ -10563,7 +10609,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0436"
+id = "MDI-0438"
 path = "docs/tickets/INDEX.md"
 title = "Claim Audit Tickets"
 git_status = "ignored"
@@ -10586,7 +10632,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0437"
+id = "MDI-0439"
 path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
 title = "Plan: Warp Ring Physics Reconciliation"
 git_status = "ignored"
@@ -10609,7 +10655,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0438"
+id = "MDI-0440"
 path = "reports/LHC_2025_QGP_Full_Synthesis.md"
 title = "Synthesis Report: LHC 2025 QGP Spin Results & Cayley-Dickson Imbalance"
 git_status = "ignored"
@@ -10632,7 +10678,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0439"
+id = "MDI-0441"
 path = "reports/artifacts_phase0_dryrun.md"
 title = "Artifacts Phase 0 dry-run"
 git_status = "ignored"
@@ -10655,7 +10701,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0440"
+id = "MDI-0442"
 path = "reports/artifacts_reorg_plan.md"
 title = "Artifacts reorganization plan (non-destructive)"
 git_status = "ignored"
@@ -10678,7 +10724,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0441"
+id = "MDI-0443"
 path = "reports/audit_network_gating.md"
 title = "Network Gating Audit (2026-02-06)"
 git_status = "ignored"
@@ -10701,7 +10747,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0442"
+id = "MDI-0444"
 path = "reports/audit_nonpython_toolchains.md"
 title = "Non-Python Toolchains Audit (2026-02-06)"
 git_status = "ignored"
@@ -10724,7 +10770,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0443"
+id = "MDI-0445"
 path = "reports/audit_provenance.md"
 title = "Provenance Audit (2026-02-04)"
 git_status = "ignored"
@@ -10747,7 +10793,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0444"
+id = "MDI-0446"
 path = "reports/audit_pythonpath.md"
 title = "Pythonpath Hygiene Audit (2026-02-04)"
 git_status = "ignored"
@@ -10770,7 +10816,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0445"
+id = "MDI-0447"
 path = "reports/claims_batch_backlog_C001_C050.md"
 title = "Claims Batch Backlog (C-001..C-050) (2026-02-03)"
 git_status = "ignored"
@@ -10793,7 +10839,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0446"
+id = "MDI-0448"
 path = "reports/claims_batch_backlog_C001_C200.md"
 title = "Claims Batch Backlog (C-001..C-200) (2026-02-04)"
 git_status = "ignored"
@@ -10816,7 +10862,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0447"
+id = "MDI-0449"
 path = "reports/claims_batch_backlog_C011_C025.md"
 title = "Claims Batch Backlog (C-011..C-025) (2026-02-02)"
 git_status = "ignored"
@@ -10839,7 +10885,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0448"
+id = "MDI-0450"
 path = "reports/claims_batch_backlog_C027_C045.md"
 title = "Claims Batch Backlog (C-027..C-045) (2026-02-03)"
 git_status = "ignored"
@@ -10862,7 +10908,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0449"
+id = "MDI-0451"
 path = "reports/claims_batch_backlog_C046_C060.md"
 title = "Claims Batch Backlog (C-046..C-060) (2026-02-02)"
 git_status = "ignored"
@@ -10885,7 +10931,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0450"
+id = "MDI-0452"
 path = "reports/claims_batch_backlog_C046_C066.md"
 title = "Claims Batch Backlog (C-046..C-066) (2026-02-03)"
 git_status = "ignored"
@@ -10908,7 +10954,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0451"
+id = "MDI-0453"
 path = "reports/claims_batch_backlog_C051_C100.md"
 title = "Claims Batch Backlog (C-051..C-100) (2026-02-03)"
 git_status = "ignored"
@@ -10931,7 +10977,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0452"
+id = "MDI-0454"
 path = "reports/claims_batch_backlog_C101_C150.md"
 title = "Claims Batch Backlog (C-101..C-150) (2026-02-03)"
 git_status = "ignored"
@@ -10954,7 +11000,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0453"
+id = "MDI-0455"
 path = "reports/claims_batch_backlog_C151_C200.md"
 title = "Claims Batch Backlog (C-151..C-200) (2026-02-02)"
 git_status = "ignored"
@@ -10977,7 +11023,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0454"
+id = "MDI-0456"
 path = "reports/claims_batch_backlog_C201_C250.md"
 title = "Claims Batch Backlog (C-201..C-250) (2026-02-02)"
 git_status = "ignored"
@@ -11000,7 +11046,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0455"
+id = "MDI-0457"
 path = "reports/claims_batch_backlog_C201_C408.md"
 title = "Claims Batch Backlog (C-201..C-408) (2026-02-02)"
 git_status = "ignored"
@@ -11023,7 +11069,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0456"
+id = "MDI-0458"
 path = "reports/claims_batch_backlog_C201_C427.md"
 title = "Claims Batch Backlog (C-201..C-427) (2026-02-02)"
 git_status = "ignored"
@@ -11046,7 +11092,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0457"
+id = "MDI-0459"
 path = "reports/claims_batch_backlog_C201_C430.md"
 title = "Claims Batch Backlog (C-201..C-430) (2026-02-02)"
 git_status = "ignored"
@@ -11069,7 +11115,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0458"
+id = "MDI-0460"
 path = "reports/claims_batch_backlog_C201_C432.md"
 title = "Claims Batch Backlog (C-201..C-432) (2026-02-04)"
 git_status = "ignored"
@@ -11092,7 +11138,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0459"
+id = "MDI-0461"
 path = "reports/claims_batch_backlog_C251_C300.md"
 title = "Claims Batch Backlog (C-251..C-300) (2026-02-02)"
 git_status = "ignored"
@@ -11115,7 +11161,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0460"
+id = "MDI-0462"
 path = "reports/claims_batch_backlog_C301_C350.md"
 title = "Claims Batch Backlog (C-301..C-350) (2026-02-02)"
 git_status = "ignored"
@@ -11138,7 +11184,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0461"
+id = "MDI-0463"
 path = "reports/claims_batch_backlog_C351_C400.md"
 title = "Claims Batch Backlog (C-351..C-400) (2026-02-02)"
 git_status = "ignored"
@@ -11161,7 +11207,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0462"
+id = "MDI-0464"
 path = "reports/claims_batch_backlog_C401_C427.md"
 title = "Claims Batch Backlog (C-401..C-427) (2026-02-03)"
 git_status = "ignored"
@@ -11184,7 +11230,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0463"
+id = "MDI-0465"
 path = "reports/claims_bold_tokens_inventory.md"
 title = "Claims Bold-Token Inventory (2026-02-04)"
 git_status = "ignored"
@@ -11207,7 +11253,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0464"
+id = "MDI-0466"
 path = "reports/claims_id_inventory.md"
 title = "Claims ID Inventory (2026-02-04)"
 git_status = "ignored"
@@ -11230,7 +11276,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0465"
+id = "MDI-0467"
 path = "reports/claims_priority_ranking.md"
 title = "Claims Priority Ranking (2026-02-02)"
 git_status = "ignored"
@@ -11253,7 +11299,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0466"
+id = "MDI-0468"
 path = "reports/claims_staleness_report.md"
 title = "Claims Staleness Report (2026-02-04)"
 git_status = "ignored"
@@ -11276,7 +11322,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0467"
+id = "MDI-0469"
 path = "reports/claims_status_contradictions.md"
 title = "Claims Status Contradictions (2026-02-04)"
 git_status = "ignored"
@@ -11299,7 +11345,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0468"
+id = "MDI-0470"
 path = "reports/claims_status_inventory.md"
 title = "Claims Status Inventory (2026-02-04)"
 git_status = "ignored"
@@ -11322,7 +11368,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0469"
+id = "MDI-0471"
 path = "reports/config_audit.md"
 title = "Config Audit Notes (2026-02-01)"
 git_status = "ignored"
@@ -11345,7 +11391,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0470"
+id = "MDI-0472"
 path = "reports/convos_claim_candidates.md"
 title = "Convos Claim Candidates (Auto-Scan)"
 git_status = "ignored"
@@ -11368,7 +11414,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0471"
+id = "MDI-0473"
 path = "reports/convos_claim_candidates_prioritized.md"
 title = "Convos Claim Candidates (Prioritized Shortlist, 2026-02-01)"
 git_status = "ignored"
@@ -11391,7 +11437,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0472"
+id = "MDI-0474"
 path = "reports/convos_pdf_inventory.md"
 title = "Convos PDF inventory"
 git_status = "ignored"
@@ -11414,7 +11460,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0473"
+id = "MDI-0475"
 path = "reports/handoff_algebra_fluid_duality.md"
 title = "Handoff Report: Algebra-Fluid Duality Implementation"
 git_status = "ignored"
@@ -11437,7 +11483,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0474"
+id = "MDI-0476"
 path = "reports/non_iso_dates_inventory.md"
 title = "Non-ISO date inventory"
 git_status = "ignored"
@@ -11460,7 +11506,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0475"
+id = "MDI-0477"
 path = "reports/open_claims_missing_dedicated_sources.md"
 title = "Open claims missing dedicated source index"
 git_status = "ignored"
@@ -11483,7 +11529,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0476"
+id = "MDI-0478"
 path = "reports/open_claims_missing_test_hooks.md"
 title = "Open claims missing explicit test/verifier hook"
 git_status = "ignored"
@@ -11506,7 +11552,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0477"
+id = "MDI-0479"
 path = "reports/package_index.md"
 title = "Package Index (2026-02-01)"
 git_status = "ignored"
@@ -11529,7 +11575,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0478"
+id = "MDI-0480"
 path = "reports/pdf_inventory.md"
 title = "PDF Inventory"
 git_status = "ignored"
@@ -11552,7 +11598,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0479"
+id = "MDI-0481"
 path = "reports/pythonpath_refactor_plan.md"
 title = "Pythonpath Refactor Plan (2026-02-04)"
 git_status = "ignored"
@@ -11575,7 +11621,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0480"
+id = "MDI-0482"
 path = "reports/repo_inventory.md"
 title = "Repo Inventory (2026-02-01)"
 git_status = "ignored"
@@ -11598,7 +11644,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0481"
+id = "MDI-0483"
 path = "reports/repo_structure_audit.md"
 title = "Repo Structure Audit (2026-02-04)"
 git_status = "ignored"
@@ -11621,7 +11667,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0482"
+id = "MDI-0484"
 path = "reports/script_contracts_inventory.md"
 title = "Script contract inventory"
 git_status = "ignored"
@@ -11644,7 +11690,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0483"
+id = "MDI-0485"
 path = "reports/tickets_inventory.md"
 title = "Tickets Inventory (2026-02-04)"
 git_status = "ignored"
@@ -11667,7 +11713,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0484"
+id = "MDI-0486"
 path = "reports/todo_fixme_scan.md"
 title = "TODO/FIXME Scan (2026-02-07)"
 git_status = "ignored"
@@ -11690,7 +11736,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0485"
+id = "MDI-0487"
 path = "reports/tscp_trial_factor_ledger.md"
 title = "TSCP Trial-Factor Ledger (2026-02-04)"
 git_status = "ignored"
@@ -11713,7 +11759,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0486"
+id = "MDI-0488"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11736,7 +11782,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0487"
+id = "MDI-0489"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11759,7 +11805,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0488"
+id = "MDI-0490"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/LICENSE.md"
 title = "NCSA Open Source License"
 git_status = "ignored"
@@ -11782,7 +11828,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0489"
+id = "MDI-0491"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/distributions/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11805,7 +11851,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0490"
+id = "MDI-0492"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md"
 title = "MT19937"
 git_status = "ignored"
@@ -11828,7 +11874,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0491"
+id = "MDI-0493"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md"
 title = "PCG64"
 git_status = "ignored"
@@ -11851,7 +11897,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0492"
+id = "MDI-0494"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/philox/LICENSE.md"
 title = "PHILOX"
 git_status = "ignored"
@@ -11874,7 +11920,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0493"
+id = "MDI-0495"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md"
 title = "SFC64"
 git_status = "ignored"
@@ -11897,7 +11943,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0494"
+id = "MDI-0496"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md"
 title = "SPLITMIX64"
 git_status = "ignored"
@@ -11920,7 +11966,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0495"
+id = "MDI-0497"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/LICENSE.md"
 title = "NCSA Open Source License"
 git_status = "ignored"
@@ -11943,7 +11989,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0496"
+id = "MDI-0498"
 path = "wow_analysis_venv/lib/python3.14/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11966,7 +12012,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0497"
+id = "MDI-0499"
 path = "wow_analysis_venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -11989,7 +12035,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0498"
+id = "MDI-0500"
 path = "wow_analysis_venv/lib/python3.14/site-packages/scipy/fft/_pocketfft/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"

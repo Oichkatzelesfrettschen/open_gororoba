@@ -46,11 +46,11 @@ id = "SIG-0004"
 path = "registry/claims.toml"
 top_level_keys = ["claim"]
 schema_version = "v1"
-schema_sha256 = "e92800530fd9b14ac09ec810b1878a8f12a955866b49cd0a6886d10412eb05bb"
-content_sha256 = "3a566b2e2b8f408dc7066451ddf58902d7a1acfdea34d8d8b4ae50672f79245d"
+schema_sha256 = "e5780c4d3057c34603a4021190aa3b13769b0bfe3efad46e4b50954b98e969de"
+content_sha256 = "10ab1c6eca7bd6a93e6b51bec8b81b8a40b33556edcfb1a6002b7fd6c230f03c"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"confidence\",\"id\",\"status\"],\"row_count\":935,\"type\":\"array\",\"union_keys\":[\"claims\",\"confidence\",\"dependencies\",\"description\",\"id\",\"insights\",\"last_verified\",\"phase\",\"reformulated_as\",\"sprint\",\"statement\",\"status\",\"status_note\",\"supporting_evidence\",\"verification_method\",\"what_would_verify_refute\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
+shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"confidence\",\"id\",\"status\"],\"row_count\":1002,\"type\":\"array\",\"union_keys\":[\"claims\",\"confidence\",\"dependencies\",\"description\",\"id\",\"insights\",\"last_verified\",\"phase\",\"reformulated_as\",\"sprint\",\"statement\",\"status\",\"status_note\",\"supporting_evidence\",\"verification_method\",\"what_would_verify_refute\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
 
 [[signature]]
 id = "SIG-0005"
@@ -79,22 +79,22 @@ id = "SIG-0007"
 path = "registry/conflict_markers.toml"
 top_level_keys = ["conflict_markers", "marker"]
 schema_version = "v1"
-schema_sha256 = "e2c82c1a95bb710656cee3c38bedf8ac193c65380e7a8df1eba58a03c84a8a69"
-content_sha256 = "05255ce2f2525bf207f80b7bd2e10235c39fb4767f9dacafc1b8987821831432"
+schema_sha256 = "356d51a926d47cb3fa3fd909e0043024b7535791440638231ced8c41ded08625"
+content_sha256 = "5e167d25ea621db7dedb8965639b1bac277483eb8378e7a03583f6e2fbd613c6"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/conflict_markers.toml\",\"shapes\":{\"conflict_markers\":{\"keys\":[\"authoritative\",\"high_severity_count\",\"kind_count\",\"low_severity_count\",\"marker_count\",\"medium_severity_count\",\"updated\"],\"type\":\"table\"},\"marker\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_refs\",\"id\",\"jaccard_overlap\",\"line_end\",\"line_start\",\"marker_kind\",\"negative_evidence\",\"notes\",\"positive_evidence\",\"section_label\",\"severity\",\"source_document\",\"source_registry\",\"status\"],\"row_count\":76,\"type\":\"array\",\"union_keys\":[\"claim_refs\",\"id\",\"jaccard_overlap\",\"line_end\",\"line_start\",\"marker_kind\",\"negative_evidence\",\"notes\",\"positive_evidence\",\"section_label\",\"severity\",\"source_document\",\"source_registry\",\"status\"]}},\"top_level_keys\":[\"conflict_markers\",\"marker\"]}"
+shape_json = "{\"path\":\"registry/conflict_markers.toml\",\"shapes\":{\"conflict_markers\":{\"keys\":[\"authoritative\",\"high_severity_count\",\"kind_count\",\"low_severity_count\",\"marker_count\",\"medium_severity_count\",\"updated\"],\"type\":\"table\"},\"marker\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_refs\",\"id\",\"jaccard_overlap\",\"line_end\",\"line_start\",\"marker_kind\",\"negative_evidence\",\"notes\",\"positive_evidence\",\"section_label\",\"severity\",\"source_document\",\"source_registry\",\"status\"],\"row_count\":78,\"type\":\"array\",\"union_keys\":[\"claim_refs\",\"id\",\"jaccard_overlap\",\"line_end\",\"line_start\",\"marker_kind\",\"negative_evidence\",\"notes\",\"positive_evidence\",\"section_label\",\"severity\",\"source_document\",\"source_registry\",\"status\"]}},\"top_level_keys\":[\"conflict_markers\",\"marker\"]}"
 
 [[signature]]
 id = "SIG-0008"
 path = "registry/experiments.toml"
 top_level_keys = ["experiment", "experiments"]
 schema_version = "v1"
-schema_sha256 = "fffec7083e347d31e2fdfe81d997f0d5ae61d0e7aaf02b8b4804640af44fa443"
-content_sha256 = "fb47c3996658e139ff55bd3681e5e6e436dd29da928e4def7c8954f76ef4c9d5"
+schema_sha256 = "00afe67f35f824fbd7fd9139b8d897fb2689945368f6bb9b7ca2bb89fc7e2dc6"
+content_sha256 = "5c3d93f525e792cef76f99319c928c2b92ac425f5c9f7bac73acb103b41cb3e8"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/experiments.toml\",\"shapes\":{\"experiment\":{\"entry_kind\":\"table\",\"required_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_refs\",\"deterministic\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"status\",\"status_token\",\"title\"],\"row_count\":88,\"type\":\"array\",\"union_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_refs\",\"deterministic\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"seed\",\"status\",\"status_token\",\"title\"]},\"experiments\":{\"keys\":[\"authoritative\",\"deterministic_count\",\"experiment_count\",\"gpu_count\",\"seeded_count\",\"status_allowlist\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"experiment\",\"experiments\"]}"
+shape_json = "{\"path\":\"registry/experiments.toml\",\"shapes\":{\"experiment\":{\"entry_kind\":\"table\",\"required_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_refs\",\"deterministic\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"status\",\"status_token\",\"title\"],\"row_count\":108,\"type\":\"array\",\"union_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_refs\",\"deterministic\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"seed\",\"status\",\"status_token\",\"title\"]},\"experiments\":{\"keys\":[\"authoritative\",\"deterministic_count\",\"experiment_count\",\"gpu_count\",\"seeded_count\",\"status_allowlist\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"experiment\",\"experiments\"]}"
 
 [[signature]]
 id = "SIG-0009"
@@ -112,11 +112,11 @@ id = "SIG-0010"
 path = "registry/insights.toml"
 top_level_keys = ["insight"]
 schema_version = "v1"
-schema_sha256 = "ea058f98ba2030f59fa431f790bdcbd1a67a5370bef77294ec98362dc3bb3b6a"
-content_sha256 = "b6af547d2e0172e2fad2a428c8c79ae3c3f3f9d6953b0884b3d8ac95fa1718da"
+schema_sha256 = "51ed8659ce5e42dc7b7e9c6e69f79b7611b7548f7e07a3afab111342f160d50e"
+content_sha256 = "3fc0c2fba4c842adc6ad73efac2220a18e33d1a44c5362c17c986bc41b8e2352"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/insights.toml\",\"shapes\":{\"insight\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"title\"],\"row_count\":99,\"type\":\"array\",\"union_keys\":[\"body\",\"claims\",\"confidence\",\"date\",\"description\",\"experimental_support\",\"extension_sprint\",\"id\",\"insight\",\"mechanism_sprint\",\"phase\",\"related_claims\",\"related_insights\",\"sprint\",\"status\",\"summary\",\"supporting_evidence\",\"title\",\"verified_date\"]}},\"top_level_keys\":[\"insight\"]}"
+shape_json = "{\"path\":\"registry/insights.toml\",\"shapes\":{\"insight\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"title\"],\"row_count\":104,\"type\":\"array\",\"union_keys\":[\"body\",\"claims\",\"confidence\",\"date\",\"description\",\"experimental_support\",\"extension_sprint\",\"id\",\"insight\",\"mechanism_sprint\",\"phase\",\"related_claims\",\"related_insights\",\"sprint\",\"status\",\"summary\",\"supporting_evidence\",\"title\",\"verified_date\"]}},\"top_level_keys\":[\"insight\"]}"
 
 [[signature]]
 id = "SIG-0011"
