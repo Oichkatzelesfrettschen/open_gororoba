@@ -41,7 +41,7 @@ fn main() -> anyhow::Result<()> {
         
         println!("\nTarget: {}", bh.name);
         println!("  Schwarzschild Radius: {:.2} km", rs);
-        println!("  Angular Scale (Rs/D): {:.2} μas", scale_uas);
+        println!("  Angular Scale (Rs/D): {:.2} uas", scale_uas);
 
         // Pathion Deflection Calculation
         let mut spin = [0.0; 32];
@@ -53,15 +53,15 @@ fn main() -> anyhow::Result<()> {
 
         let result = pathion_deflection(1.0, &spin, &xi, &eta)?;
         
-        // Calculate the angular variance in μas
+        // Calculate the angular variance in uas
         let mean_defl = result.iter().sum::<f64>() / 32.0;
         let p_variations: Vec<f64> = result.iter().map(|&x| (x - mean_defl).abs()).collect();
         let max_separation = p_variations.iter().cloned().fold(f64::NAN, f64::max) * scale_uas;
 
-        println!("  Max Sub-ring Separation: {:.4} μas", max_separation);
+        println!("  Max Sub-ring Separation: {:.4} uas", max_separation);
         
         if max_separation > 1.0 {
-            println!("  [OBSERVABLE] Separation exceeds EHT resolution floor (1 μas).");
+            println!("  [OBSERVABLE] Separation exceeds EHT resolution floor (1 uas).");
         } else {
             println!("  [SUB-RESOLUTION] Separation hidden within diffraction limit.");
         }
