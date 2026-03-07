@@ -164,6 +164,12 @@ pub use quantum_inequalities::{
 pub use adm::{AdmConstraints, AdmDecomposition, ExtrinsicCurvatureData, decompose_metric};
 
 pub use warp_metric::{NacelleWarpBubble, NacelleWarpParams};
-pub use fractal_metric::FractalMetric;
+pub use fractal_metric::{
+    FractalMetric, QtensorFractalMetric, FractalFlybyResult,
+    fractal_flyby_prediction, pioneer_anomaly_prediction,
+};
 
-pub use nbody_integration::{BodyState, NBodySystem};
+pub use nbody_integration::{
+    BodyState, NBodySystem, WickEvolutionResult, AdaptiveWickResult,
+    SingularityAvoidanceResult, WkbResult, wkb_tunneling_amplitude,
+};

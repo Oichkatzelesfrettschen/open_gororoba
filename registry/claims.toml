@@ -15517,3 +15517,26 @@ confidence = "high"
 phase = "quantum"
 sprint = 77
 dependencies = ["C-1118"]
+
+[[claim]]
+id = "C-1120"
+statement = "D_f=2.7 fractal spacetime metric with Q-tensor disclination: anomalous radial acceleration a = (4-D_f)*v^2/(2r) gives correct sign for flyby anomalies (positive delta-v for perigee approaches). Pioneer anomaly prediction has correct sign (deceleration toward Sun) but magnitude is ~4 orders too large, indicating D_f must have scale-dependent (running) corrections rather than being a pure constant."
+where_stated = "crates/gr_core/src/fractal_metric.rs (QtensorFractalMetric, pioneer_anomaly_prediction, fractal_flyby_prediction)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: 9 tests pass -- metric positive-definite for D_f in (2,3), correct sign pattern, Q-tensor order parameter profile, disclination acceleration peaks at r_d. REFUTE: D_f=2.7 gives wrong sign for flyby anomaly (would mean fractal exponent formula is incorrect)."
+confidence = "medium"
+phase = "gr"
+sprint = 78
+
+[[claim]]
+id = "C-1121"
+statement = "Q-tensor fractal metric preserves metric positive-definiteness for S_bulk < 1 and D_f in (2,4). The Q-tensor modification factors (1+2S/3) for radial and (1-S/3) for angular components maintain positive spatial metric for |S| < 1. The disclination acceleration a_Q = -(2/3)*s_bulk*v^2/r_d * sech^2((r-r_d)/r_d) is localized near the disclination scale r_d and vanishes at r >> r_d."
+where_stated = "crates/gr_core/src/fractal_metric.rs (test_qtensor_metric_positive_definite, disclination_acceleration)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: g_tt < 0, g_rr > 0, g_theta > 0, g_phi > 0 at r=200M with S_bulk=0.3. Disclination acceleration peaks at r=r_d and is negligible at r=1e6*r_d. REFUTE: metric becomes singular or indefinite for physical parameter values."
+confidence = "high"
+phase = "gr"
+sprint = 78
+dependencies = ["C-1120"]

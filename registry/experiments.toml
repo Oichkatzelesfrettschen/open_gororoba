@@ -2362,5 +2362,25 @@ status_note = "COMPLETE. 7/7 tests pass. Uniform Routon entropy > sparse Routon 
 lineage_id = "XL-102"
 input_path_refs = []
 output_path_refs = []
+
+[[experiment]]
+id = "E-103"
+title = "Fractal spacetime D_f=2.7 with Q-tensor metric: flyby + Pioneer test"
+description = "Implement Q-tensor fractal spacetime metric with Landau-de Gennes disclination profile. Test flyby anomaly sign prediction and Pioneer anomaly deceleration magnitude. Q-tensor modifies radial and angular metric components via order parameter S(r) = s_bulk*tanh((r-r_d)/r_d). 9 unit tests validate metric positivity, acceleration signs, disclination localization, and scaling factors."
+date = "2026-03-07"
+sprint = 78
+binary_registered = false
+binary_experiment_declared = "crates/gr_core/src/fractal_metric.rs"
+method = "Unit tests: scaling_factor at r_0, D_f<4 monotonicity, anomalous acceleration sign, Q-tensor order parameter profile, radial/angular factors, disclination peak, metric positive-definiteness, Pioneer magnitude, flyby sign."
+input = "Schwarzschild base metric, D_f=2.7, r_0=1.0, r_disclination=100.0, s_bulk=0.3-0.5"
+output = ["test"]
+run = "cargo test --release -p gr_core -- fractal_metric --nocapture"
+run_command_sha256 = ""
+claims = ["C-1120", "C-1121"]
+status = "complete"
+status_note = "COMPLETE. 9/9 tests pass. D_f=2.7 gives correct flyby sign (+1 for NEAR). Pioneer prediction positive (deceleration) but ~4x too large, indicating running D_f needed. Q-tensor metric positive-definite for S_bulk=0.3."
+lineage_id = "XL-103"
+input_path_refs = []
+output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic"
