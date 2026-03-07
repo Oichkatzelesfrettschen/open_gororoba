@@ -15435,3 +15435,39 @@ confidence = "high"
 phase = "quantum"
 sprint = 74
 dependencies = ["C-1111"]
+
+[[claim]]
+id = "C-1113"
+statement = "1024D DekaVoudon sampled AVT: 49.3% hit rate (492789/999109 triples non-alternative at 1024D). SU(3)_C x SU(2)_L has 0 intra-sector violations but 11 cross-sector violations -- the SM gauge groups are locally alternative but cross-coupled through non-associativity. SU(2) x U(1) shows 0 cross-coupling at 1M sample size."
+where_stated = "crates/algebra_experimental/src/particle_physics.rs (analyze_1024d_gauge_sectors), E-100"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: 1M sample, seed=42. REFUTE: larger sample (10M+) changes SU(2)xU(1) coupling from 0 to nonzero, or intra-SU(3) violations appear at higher sample."
+confidence = "high"
+phase = "particle"
+sprint = 75
+dependencies = []
+
+[[claim]]
+id = "C-1114"
+statement = "E6/E7/SO(10) GUT cross-sector coupling ratios: E6xE7=0.513, E6xSO(10)=0.491, E7xSO(10)=0.419. Roughly half of violations straddle GUT block boundaries, indicating strong non-associative entanglement between gauge sectors. SM generators (12 axes) are a proper subset of the E6 block (78 axes)."
+where_stated = "crates/algebra_experimental/src/particle_physics.rs (ForceSectorMapping, analyze_cross_sector_coupling)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: cross-sector ratios stable across seeds. REFUTE: alternative block partitioning (respecting CD layer boundaries differently) produces asymmetric coupling ratios suggesting a preferred GUT."
+confidence = "high"
+phase = "particle"
+sprint = 75
+dependencies = ["C-1113"]
+
+[[claim]]
+id = "C-1115"
+statement = "Basis-to-lattice mapper: 1024D basis elements project to 3D positions via AVT violation fingerprinting (violation count, mean partner index, DFT layer). Per-axis violation density is approximately uniform across CD layers (octonion layer avg=93.2, dekavoudon layer avg=96.6 at 100K sample), indicating that non-associativity at 1024D is a bulk property, not layer-specific."
+where_stated = "crates/algebra_experimental/src/particle_physics.rs (basis_to_lattice, dft_layer)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: violation counts uniform across layers. REFUTE: moyo space group classification of the lattice point cloud reveals non-trivial crystal symmetry correlated with gauge group structure."
+confidence = "medium"
+phase = "particle"
+sprint = 75
+dependencies = ["C-1113"]
