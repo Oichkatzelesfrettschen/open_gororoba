@@ -195,17 +195,167 @@ pub fn orthoplex_laplacian_spectrum(k: usize) -> Vec<(f64, usize)> {
 /// Vertices are basis element indices (0..dim-1). Two vertices are connected
 /// if they co-occur in a zero-divisor pair `(e_i + e_j)(e_k +/- e_l) = 0`.
 ///
-/// Uses the sign-table XOR approach at ALL dimensions: pre-compute the
-/// dim x dim sign table, then test each (i,j,k,l) candidate via 4 XOR +
-/// 4 sign lookups in O(1). This replaces the old `cd_multiply`-based path
-/// which was O(dim^2) per candidate with heap allocation per inner iteration.
+/// # Structure theorem (verified numerically at dims 16, 32, 64, 128, 256)
 ///
-/// The connected components of this graph correspond to the box-kite
-/// decomposition in sedenions and kite-chain middens in higher dimensions.
+/// The ZD basis participation graph has exactly 3 connected components:
+/// - Giant component of size `dim - 2`: all basis elements except e_0 and e_{dim/2}
+/// - Two singletons: {e_0} (real unit) and {e_{dim/2}} (last-doubling generator)
+///
+/// The giant component is K_{dim-2} minus exactly `dim/2 - 1` edges.
+/// The missing edges are pairs `(i, i XOR dim/2)` for i in the giant component
+/// with `i < i XOR dim/2`. These pairs differ in the highest bit only,
+/// corresponding to the last Cayley-Dickson doubling involution.
+///
+/// Edge count closed form: `(dim^2 - 6*dim + 8) / 2`
 ///
 /// Returns (num_components, component_sizes, total_edges).
 pub fn zd_graph_topology(dim: usize) -> (usize, Vec<usize>, usize) {
+    assert!(dim >= 16 && dim.is_power_of_two());
+    zd_graph_topology_closed_form(dim)
+}
+
+/// O(dim) closed-form ZD graph topology generator.
+///
+/// Based on the structure theorem: the ZD basis participation graph at dim = 2^n
+/// (n >= 4) has exactly 3 connected components:
+/// - Giant component of size `dim - 2`: all basis elements except e_0 and e_{dim/2}
+/// - Two singletons: {e_0} (real unit) and {e_{dim/2}} (last-doubling generator)
+///
+/// The giant component is K_{dim-2} minus exactly `dim/2 - 1` edges.
+/// The missing edges are pairs `(i, i XOR dim/2)` for `i` in the giant component
+/// with `i < i XOR dim/2`. These are pairs differing in the highest bit only --
+/// elements related by the last Cayley-Dickson doubling involution.
+///
+/// Edge count: C(dim-2, 2) - (dim/2 - 1) = (dim^2 - 6*dim + 8) / 2
+fn zd_graph_topology_closed_form(dim: usize) -> (usize, Vec<usize>, usize) {
+    let edge_count = (dim * dim - 6 * dim + 8) / 2;
+    let component_sizes = vec![dim - 2, 1, 1];
+    (3, component_sizes, edge_count)
+}
+
+/// Brute-force ZD graph topology via sign table (O(dim^4) candidates).
+///
+/// Retained for cross-validation against the O(1) closed-form at small dims.
+pub fn zd_graph_topology_brute_force(dim: usize) -> (usize, Vec<usize>, usize) {
     zd_graph_topology_sign_table(dim)
+}
+
+/// Brute-force adjacency extraction: returns sorted list of edges (i, j) with i < j
+/// that exist in the ZD basis participation graph.
+///
+/// This is the full O(dim^4) search used only for small-dim verification.
+#[cfg(test)]
+fn zd_graph_edges_brute_force(dim: usize) -> Vec<(usize, usize)> {
+    use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
+    use fixedbitset::FixedBitSet;
+
+    let sign_table: Vec<i32> = (0..dim * dim)
+        .map(|idx| cd_basis_mul_sign_iter(dim, idx / dim, idx % dim))
+        .collect();
+
+    let mut adj = FixedBitSet::with_capacity(dim * dim);
+    for i in 0..dim {
+        for j in (i + 1)..dim {
+            for k in 0..dim {
+                for l in (k + 1)..dim {
+                    if is_zd_2blade(&sign_table, dim, i, j, k, l, 1)
+                        || is_zd_2blade(&sign_table, dim, i, j, k, l, -1)
+                    {
+                        // Same edge marking as production: connect all co-occurring pairs
+                        let pairs = [(i, j), (k, l), (i, k), (i, l), (j, k), (j, l)];
+                        for &(p, q) in &pairs {
+                            let (lo, hi) = if p < q { (p, q) } else { (q, p) };
+                            if lo != hi {
+                                adj.insert(lo * dim + hi);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    let mut edges = Vec::new();
+    for i in 0..dim {
+        for j in (i + 1)..dim {
+            if adj.contains(i * dim + j) {
+                edges.push((i, j));
+            }
+        }
+    }
+    edges
+}
+
+/// Return the set of missing edges in the ZD basis participation graph.
+///
+/// These are the `dim/2 - 1` pairs `(i, i XOR dim/2)` with `i < i XOR dim/2`,
+/// for all `i` in the giant component (i.e., `i != 0` and `i != dim/2`).
+///
+/// Each pair differs only in the highest bit (XOR = dim/2), corresponding to
+/// elements related by the last Cayley-Dickson doubling involution. The element
+/// e_{dim/2} is the "new imaginary unit" introduced by the final doubling step,
+/// and pairs connected by this involution cannot co-occur in any zero divisor.
+pub fn zd_graph_missing_edges(dim: usize) -> Vec<(usize, usize)> {
+    assert!(dim >= 16 && dim.is_power_of_two());
+    let half = dim / 2;
+    let mut missing = Vec::with_capacity(half - 1);
+    // Pairs (i, i^half) with i < i^half, where i is in the giant component.
+    // i is in {1, ..., dim-1} \ {half}. For i < half, i^half = i+half > i. Good.
+    // For i > half, i^half = i-half < i. Skip (would be duplicate with i' = i-half).
+    for i in 1..half {
+        missing.push((i, i ^ half));
+    }
+    missing
+}
+
+/// Return which vertices are singletons (isolated) in the ZD graph.
+///
+/// For dim = 2^n (n >= 4): singletons are {0, dim/2}.
+/// - e_0: the real unit, trivially cannot form zero divisors
+/// - e_{dim/2}: the generator of the last CD doubling, algebraically immune to ZDs
+pub fn zd_graph_singletons(dim: usize) -> Vec<usize> {
+    assert!(dim >= 16 && dim.is_power_of_two());
+    vec![0, dim / 2]
+}
+
+/// Analytical O(dim^2) ZD adjacency matrix builder.
+///
+/// Generates the full FixedBitSet adjacency matrix using the closed-form
+/// structure theorem (proved in C958_ZDGraphTopology.v):
+///
+/// - Singletons {e_0, e_{dim/2}} have no edges.
+/// - All other pairs (i, j) with i != j are connected UNLESS i XOR j == dim/2
+///   (the last-doubling involution pairs).
+///
+/// This replaces the O(dim^4) brute-force for dims >= 128 where the
+/// sign-table search becomes computationally prohibitive.
+///
+/// Returns a symmetric adjacency matrix as FixedBitSet of capacity dim*dim.
+pub fn zd_graph_adjacency_analytical(dim: usize) -> fixedbitset::FixedBitSet {
+    use fixedbitset::FixedBitSet;
+
+    assert!(dim >= 16 && dim.is_power_of_two());
+    let half = dim / 2;
+    let mut adj = FixedBitSet::with_capacity(dim * dim);
+
+    // Giant component: vertices in {1, ..., dim-1} \ {half}
+    // Edge (i, j) exists iff i XOR j != half
+    for i in 1..dim {
+        if i == half {
+            continue;
+        }
+        for j in (i + 1)..dim {
+            if j == half {
+                continue;
+            }
+            if (i ^ j) != half {
+                adj.insert(i * dim + j);
+                adj.insert(j * dim + i);
+            }
+        }
+    }
+
+    adj
 }
 
 /// Sign-table ZD graph for all dimensions.
@@ -443,17 +593,14 @@ mod tests {
     #[test]
     fn test_zd_graph_sedenion_structure() {
         // dim=16: ZD basis participation graph.
-        // e_0 (real unit) and e_1 are singletons; the remaining 14 basis
-        // elements form a single connected component with 84 edges.
-        let t = std::time::Instant::now();
+        // e_0 (real unit) and e_8 (last-doubling generator) are singletons;
+        // the remaining 14 basis elements form a single connected component.
         let (num_comp, sizes, edges) = zd_graph_topology(16);
-        let elapsed = t.elapsed();
         let total_vertices: usize = sizes.iter().sum();
         assert_eq!(total_vertices, 16, "16 basis elements in dim=16");
         assert_eq!(edges, 84, "Sedenion ZD graph has 84 edges");
         assert_eq!(num_comp, 3, "3 components: [14, 1, 1]");
         assert_eq!(sizes[0], 14, "Largest component has 14 elements");
-        eprintln!("16D ZD graph: {} edges, elapsed={:.3}ms", edges, elapsed.as_secs_f64() * 1000.0);
     }
 
     #[test]
@@ -473,45 +620,208 @@ mod tests {
 
     #[test]
     fn test_zd_graph_chingon_structure() {
-        // dim=64 (chingons): exhaustive path. Same structural pattern.
-        let t = std::time::Instant::now();
+        // dim=64 (chingons): closed-form. Exact structure.
         let (num_comp, sizes, edges) = zd_graph_topology(64);
-        let elapsed = t.elapsed();
-        let total: usize = sizes.iter().sum();
-        assert_eq!(total, 64, "64 basis elements in dim=64");
-        assert!(num_comp >= 2, "At least 2 components");
-        assert!(sizes[0] >= 60, "Largest component >= 60 elements, got {}", sizes[0]);
-        eprintln!(
-            "64D ZD graph: {} components, {} edges, largest={}, elapsed={:.3}s",
-            num_comp, edges, sizes[0], elapsed.as_secs_f64()
-        );
-        eprintln!("  Component sizes: {:?}", &sizes[..sizes.len().min(10)]);
+        assert_eq!(num_comp, 3, "3 components: [62, 1, 1]");
+        assert_eq!(sizes, vec![62, 1, 1]);
+        assert_eq!(edges, 1860, "64D ZD graph has 1860 edges");
     }
 
     #[test]
-    fn test_zd_graph_routon_sampled() {
-        // dim=128 (Routon): uses sampled ZD search (fast path).
-        // The sampled approach should find the same structural pattern:
-        // 2 singletons (e_0 real unit, e_1) + 1 giant component.
-        let t = std::time::Instant::now();
+    fn test_zd_graph_routon_structure() {
+        // dim=128 (Routon): closed-form gives exact answer in O(1).
         let (num_comp, sizes, edges) = zd_graph_topology(128);
+        assert_eq!(num_comp, 3, "3 components: [126, 1, 1]");
+        assert_eq!(sizes, vec![126, 1, 1]);
+        assert_eq!(edges, 7812, "128D ZD graph has 7812 edges");
+    }
+
+    #[test]
+    fn test_zd_graph_closed_form_instant() {
+        // The closed-form generator should work for any power-of-two dim >= 16.
+        for &dim in &[16, 32, 64, 128, 256, 512, 1024] {
+            let t = std::time::Instant::now();
+            let (num_comp, sizes, edges) = zd_graph_topology(dim);
+            let elapsed = t.elapsed();
+            assert_eq!(num_comp, 3);
+            assert_eq!(sizes, vec![dim - 2, 1, 1]);
+            assert_eq!(edges, (dim * dim - 6 * dim + 8) / 2);
+            eprintln!("dim={}: {} edges, elapsed={:.0}ns", dim, edges, elapsed.as_nanos());
+        }
+    }
+
+    #[test]
+    fn test_zd_closed_form_matches_brute_force_16d() {
+        let (nc_bf, sz_bf, e_bf) = zd_graph_topology_brute_force(16);
+        let (nc_cf, sz_cf, e_cf) = zd_graph_topology_closed_form(16);
+        assert_eq!((nc_bf, &sz_bf, e_bf), (nc_cf, &sz_cf, e_cf),
+            "Closed-form must match brute-force at 16D");
+    }
+
+    #[test]
+    fn test_zd_closed_form_matches_brute_force_32d() {
+        let (nc_bf, sz_bf, e_bf) = zd_graph_topology_brute_force(32);
+        let (nc_cf, sz_cf, e_cf) = zd_graph_topology_closed_form(32);
+        assert_eq!((nc_bf, &sz_bf, e_bf), (nc_cf, &sz_cf, e_cf),
+            "Closed-form must match brute-force at 32D");
+    }
+
+    #[test]
+    fn test_zd_closed_form_matches_brute_force_64d() {
+        let (nc_bf, sz_bf, e_bf) = zd_graph_topology_brute_force(64);
+        let (nc_cf, sz_cf, e_cf) = zd_graph_topology_closed_form(64);
+        assert_eq!((nc_bf, &sz_bf, e_bf), (nc_cf, &sz_cf, e_cf),
+            "Closed-form must match brute-force at 64D");
+    }
+
+    #[test]
+    fn test_zd_missing_edges_are_xor_half_pairs() {
+        let missing = zd_graph_missing_edges(16);
+        assert_eq!(missing.len(), 7, "16D should have 7 missing edges");
+        for &(i, j) in &missing {
+            assert_eq!(i ^ j, 8, "Missing edge ({},{}) should have XOR=dim/2=8", i, j);
+            assert!(i != 0 && j != 0 && i != 8 && j != 8,
+                "Missing edges should be in giant component (not singletons 0 or 8)");
+        }
+        // Verify: (1,9), (2,10), (3,11), (4,12), (5,13), (6,14), (7,15)
+        let expected: Vec<(usize, usize)> = (1..8).map(|i| (i, i ^ 8)).collect();
+        assert_eq!(missing, expected);
+
+        // Also verify singletons
+        assert_eq!(zd_graph_singletons(16), vec![0, 8]);
+    }
+
+    #[test]
+    fn test_zd_missing_edges_discovery_16d() {
+        // Discover the actual missing edges at 16D by brute-force, then
+        // verify that the closed-form prediction matches.
+        let dim = 16usize;
+        let half = dim / 2;
+        let edges = zd_graph_edges_brute_force(dim);
+        let edge_set: std::collections::HashSet<(usize, usize)> = edges.iter().copied().collect();
+        assert_eq!(edges.len(), 84, "16D should have 84 edges total");
+
+        // Verify singletons: e_0 and e_{dim/2} have no edges
+        let deg_0 = edges.iter().filter(|&&(i,j)| i == 0 || j == 0).count();
+        let deg_half = edges.iter().filter(|&&(i,j)| i == half || j == half).count();
+        assert_eq!(deg_0, 0, "e_0 should be a singleton");
+        assert_eq!(deg_half, 0, "e_{{dim/2}} should be a singleton");
+
+        // Find missing edges in giant component (exclude singletons 0 and dim/2)
+        let giant: Vec<usize> = (0..dim).filter(|&v| v != 0 && v != half).collect();
+        let mut actual_missing = Vec::new();
+        for (idx_i, &i) in giant.iter().enumerate() {
+            for &j in &giant[idx_i + 1..] {
+                if !edge_set.contains(&(i, j)) {
+                    actual_missing.push((i, j));
+                }
+            }
+        }
+
+        assert_eq!(actual_missing.len(), 7, "16D should have 7 missing edges");
+
+        // Verify all missing edges have XOR = dim/2
+        for &(i, j) in &actual_missing {
+            assert_eq!(i ^ j, half, "Missing ({},{}) should have XOR={}", i, j, half);
+        }
+
+        let predicted = zd_graph_missing_edges(dim);
+        assert_eq!(actual_missing, predicted,
+            "Predicted missing edges must match brute-force at 16D");
+    }
+
+    #[test]
+    fn test_zd_missing_edges_discovery_32d() {
+        // Same discovery at 32D to verify the pattern scales.
+        let dim = 32usize;
+        let half = dim / 2;
+        let edges = zd_graph_edges_brute_force(dim);
+        let edge_set: std::collections::HashSet<(usize, usize)> = edges.iter().copied().collect();
+        assert_eq!(edges.len(), 420, "32D should have 420 edges total");
+
+        // Verify singletons
+        let deg_0 = edges.iter().filter(|&&(i,j)| i == 0 || j == 0).count();
+        let deg_half = edges.iter().filter(|&&(i,j)| i == half || j == half).count();
+        assert_eq!(deg_0, 0, "e_0 should be a singleton");
+        assert_eq!(deg_half, 0, "e_{{dim/2}} should be a singleton");
+
+        // Find missing edges in giant component
+        let giant: Vec<usize> = (0..dim).filter(|&v| v != 0 && v != half).collect();
+        let mut actual_missing = Vec::new();
+        for (idx_i, &i) in giant.iter().enumerate() {
+            for &j in &giant[idx_i + 1..] {
+                if !edge_set.contains(&(i, j)) {
+                    actual_missing.push((i, j));
+                }
+            }
+        }
+
+        assert_eq!(actual_missing.len(), 15, "32D should have 15 missing edges");
+        for &(i, j) in &actual_missing {
+            assert_eq!(i ^ j, half, "Missing ({},{}) should have XOR={}", i, j, half);
+        }
+
+        let predicted = zd_graph_missing_edges(dim);
+        assert_eq!(actual_missing, predicted,
+            "Predicted missing edges must match brute-force at 32D");
+    }
+
+    #[test]
+    fn test_zd_adjacency_analytical_matches_brute_force_16d() {
+        // Cross-validate the O(dim^2) analytical adjacency builder against
+        // the O(dim^4) brute-force edge list at 16D.
+        let dim = 16usize;
+        let adj = zd_graph_adjacency_analytical(dim);
+        let bf_edges = zd_graph_edges_brute_force(dim);
+
+        // Check analytical has the right edge count
+        let analytical_edge_count = (0..dim)
+            .flat_map(|i| ((i + 1)..dim).map(move |j| (i, j)))
+            .filter(|&(i, j)| adj.contains(i * dim + j))
+            .count();
+        assert_eq!(analytical_edge_count, 84, "16D analytical should have 84 edges");
+        assert_eq!(bf_edges.len(), 84, "16D brute-force should have 84 edges");
+
+        // Every brute-force edge must be in the analytical matrix
+        for &(i, j) in &bf_edges {
+            assert!(
+                adj.contains(i * dim + j),
+                "Brute-force edge ({},{}) missing from analytical", i, j
+            );
+        }
+
+        // Every analytical edge must be in the brute-force list
+        let bf_set: std::collections::HashSet<(usize, usize)> =
+            bf_edges.iter().copied().collect();
+        for i in 0..dim {
+            for j in (i + 1)..dim {
+                if adj.contains(i * dim + j) {
+                    assert!(
+                        bf_set.contains(&(i, j)),
+                        "Analytical edge ({},{}) not in brute-force", i, j
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_zd_adjacency_analytical_instant_at_512d() {
+        // 512D analytical should complete in microseconds.
+        let t = std::time::Instant::now();
+        let adj = zd_graph_adjacency_analytical(512);
         let elapsed = t.elapsed();
-        let total: usize = sizes.iter().sum();
-        assert_eq!(total, 128, "128 basis elements in dim=128");
-        // Singletons: e_0 (real unit) cannot be a ZD. e_1 may or may not
-        // participate depending on sampling. At minimum 1 singleton (e_0).
-        assert!(num_comp >= 2, "At least 2 components (giant + e_0 singleton)");
-        // Giant component should contain most elements
-        assert!(sizes[0] >= 120, "Largest component should have >= 120 elements, got {}", sizes[0]);
-        // Edge count should be substantial
-        assert!(edges >= 100, "Should find substantial edges, got {}", edges);
-        eprintln!(
-            "128D ZD graph (sampled): {} components, {} edges, largest={}, elapsed={:.3}s",
-            num_comp, edges, sizes[0], elapsed.as_secs_f64()
-        );
-        eprintln!("  Component sizes: {:?}", &sizes[..sizes.len().min(10)]);
-        // Performance: sign-table path should complete in under 30 seconds
-        assert!(elapsed.as_secs() < 30, "ZD graph at 128D took too long: {:.1}s", elapsed.as_secs_f64());
+        assert!(elapsed.as_secs() < 2, "512D analytical took too long: {:.1}s", elapsed.as_secs_f64());
+
+        // Verify edge count matches closed-form
+        let edge_count = (0..512usize)
+            .flat_map(|i| ((i + 1)..512).map(move |j| (i, j)))
+            .filter(|&(i, j)| adj.contains(i * 512 + j))
+            .count();
+        assert_eq!(edge_count, (512 * 512 - 6 * 512 + 8) / 2,
+            "512D edge count mismatch");
+        eprintln!("512D analytical adjacency: {} edges, elapsed={:.3}ms",
+            edge_count, elapsed.as_secs_f64() * 1000.0);
     }
 
     #[test]
@@ -521,16 +831,16 @@ mod tests {
         // 256D: 32640 pairs * 32640 tests = ~1.07 billion checks.
         // Each check is O(1) via sign table, but the sheer volume needs patience.
         let t = std::time::Instant::now();
-        let (num_comp, sizes, edges) = zd_graph_topology(256);
+        let (num_comp, sizes, edges) = zd_graph_topology_brute_force(256);
         let elapsed = t.elapsed();
         let total: usize = sizes.iter().sum();
         assert_eq!(total, 256, "256 basis elements in dim=256");
-        assert!(num_comp >= 2, "At least 2 components (giant + e_0 singleton)");
-        assert!(sizes[0] >= 250, "Largest component should have >= 250 elements, got {}", sizes[0]);
+        assert_eq!(num_comp, 3, "3 components: [254, 1, 1]");
+        assert_eq!(sizes[0], 254, "Largest component has 254 elements");
+        assert_eq!(edges, (256 * 256 - 6 * 256 + 8) / 2);
         eprintln!(
-            "256D ZD graph: {} components, {} edges, largest={}, elapsed={:.1}s",
+            "256D ZD graph (brute-force): {} components, {} edges, largest={}, elapsed={:.1}s",
             num_comp, edges, sizes[0], elapsed.as_secs_f64()
         );
-        eprintln!("  Component sizes: {:?}", &sizes[..sizes.len().min(10)]);
     }
 }

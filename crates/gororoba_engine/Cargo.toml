@@ -50,5 +50,17 @@ harness = false
 gpu = ["lbm_3d_cuda/cufft", "algebra_core/gpu", "algebra_experimental/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
 cufft = []
 
+[[example]]
+name = "voudon_cuda_bridge"
+required-features = ["gpu"]
+
+[[example]]
+name = "voudon_stabilizer_demo"
+required-features = ["gpu"]
+
+[[example]]
+name = "phase_transition_demo"
+required-features = ["gpu"]
+
 [lints]
 workspace = true

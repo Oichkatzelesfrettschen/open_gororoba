@@ -1,4 +1,4 @@
-use cd_kernel::cayley_dickson::{cd_associator, cd_multiply, cd_norm_sq};
+use cd_kernel::cayley_dickson::{cd_basis_mul_sign_iter, cd_multiply, cd_norm_sq};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use std::collections::HashSet;
@@ -26,8 +26,15 @@ pub struct BellTestResult {
 /// A zero-divisor pair lifted to high dimension.
 #[derive(Debug, Clone)]
 struct ZdChannel {
+    // Dense representation retained for test validation (cd_multiply cross-check).
+    #[allow(dead_code)]
     a: Vec<f64>,
+    #[allow(dead_code)]
     b: Vec<f64>,
+    /// Sparse representation of a: [(basis_idx, coefficient), ...]
+    a_sparse: Vec<(usize, f64)>,
+    /// Sparse representation of b: [(basis_idx, coefficient), ...]
+    b_sparse: Vec<(usize, f64)>,
     /// Basis indices with non-zero support in a or b
     basis_indices: Vec<usize>,
     /// Optimal probes: basis elements where the associator [A', e_k, B'] is non-zero
@@ -43,12 +50,16 @@ struct ZdChannel {
 ///
 /// Embedding: A_512 = (A_16, 0, 0, ..., 0). Because the right-hand elements are zero,
 /// conjugate terms in the doubling formula drop out, and A*B = 0 is strictly preserved.
+///
+/// Uses the pre-computed sign table for sparse probe finding, avoiding the O(dim^2)
+/// dense cd_associator that was the 512D bottleneck.
 fn lift_zd_to_dim(
     a_16: &[f64; 16],
     b_16: &[f64; 16],
     target_dim: usize,
     alice_plane: (usize, usize),
     bob_plane: (usize, usize),
+    sign_cache: &SignTableCache,
 ) -> ZdChannel {
     assert!(target_dim >= 16 && target_dim.is_power_of_two());
 
@@ -71,22 +82,20 @@ fn lift_zd_to_dim(
     }
     let basis_indices: Vec<usize> = basis_set.into_iter().collect();
 
-    // Compute probe validity for all four (Alice basis, Bob basis) combinations.
+    let a_sparse = to_sparse(&a);
+    let b_sparse = to_sparse(&b);
+
+    // Compute probe validity using the sparse sign-table path.
     // For Alice rotating in plane (a1, a2), her rotated element is:
     //   A' = cos(theta_a) * e_{a1} + sin(theta_a) * e_{a2}  (within her support)
-    // Similarly for Bob in plane (b1, b2).
-    //
-    // The associator is trilinear, so:
-    //   [A', X, B'] = sum over (ai, bj) of cos/sin * [e_ai, e_k, e_bj]
-    //
     // For non-trivial correlations at ALL angles, X must be valid for ALL four combos.
     let (a1, a2) = alice_plane;
     let (b1, b2) = bob_plane;
 
-    let probes_a1_b1 = find_valid_probes_basis(&a, &b, a1, b1, target_dim);
-    let probes_a1_b2 = find_valid_probes_basis(&a, &b, a1, b2, target_dim);
-    let probes_a2_b1 = find_valid_probes_basis(&a, &b, a2, b1, target_dim);
-    let probes_a2_b2 = find_valid_probes_basis(&a, &b, a2, b2, target_dim);
+    let probes_a1_b1 = find_valid_probes_sparse(&a_sparse, &b_sparse, a1, b1, target_dim, sign_cache);
+    let probes_a1_b2 = find_valid_probes_sparse(&a_sparse, &b_sparse, a1, b2, target_dim, sign_cache);
+    let probes_a2_b1 = find_valid_probes_sparse(&a_sparse, &b_sparse, a2, b1, target_dim, sign_cache);
+    let probes_a2_b2 = find_valid_probes_sparse(&a_sparse, &b_sparse, a2, b2, target_dim, sign_cache);
 
     // X_optimal = intersection of all four sets
     let optimal_probes: Vec<usize> = probes_a1_b1
@@ -114,6 +123,8 @@ fn lift_zd_to_dim(
     ZdChannel {
         a,
         b,
+        a_sparse,
+        b_sparse,
         basis_indices,
         optimal_probes,
         union_probes,
@@ -122,52 +133,33 @@ fn lift_zd_to_dim(
 
 /// Find basis elements e_k where [A_rotated_in_axis_i, e_k, B_rotated_in_axis_j] != 0.
 ///
-/// This tests the associator with A perturbed along axis `alice_axis` and B along `bob_axis`,
-/// checking which probe directions k produce non-zero torque.
-///
-/// Optimization: for sedenion-lifted ZD pairs (support in indices 0..15), the XOR-based
-/// index mapping confines products to the same power-of-2 block. We compute the actual
-/// support bound and limit the scan to 2x that range to capture cross terms.
-fn find_valid_probes_basis(
-    a: &[f64],
-    b: &[f64],
+/// Uses the sparse sign-table path for O(support^2) per probe instead of O(dim^2).
+/// This is critical at 512D+ where dense cd_associator is too slow.
+fn find_valid_probes_sparse(
+    a_sparse: &[(usize, f64)],
+    b_sparse: &[(usize, f64)],
     alice_axis: usize,
     bob_axis: usize,
     dim: usize,
+    sign_cache: &SignTableCache,
 ) -> Vec<usize> {
     let theta_test = 0.3;
-    let a_perturbed = rotate_in_plane(a, alice_axis, next_axis(alice_axis, dim), theta_test);
-    let b_perturbed = rotate_in_plane(b, bob_axis, next_axis(bob_axis, dim), theta_test);
+    let next_a = next_axis(alice_axis, dim);
+    let next_b = next_axis(bob_axis, dim);
+    let a_rotated = rotate_sparse(a_sparse, alice_axis, next_a, theta_test);
+    let b_rotated = rotate_sparse(b_sparse, bob_axis, next_b, theta_test);
 
-    // Compute support bound: highest non-zero index in the perturbed elements.
-    // For sedenion-lifted pairs, this is typically 15 (or includes rotation axes).
-    let max_a = a_perturbed
-        .iter()
-        .enumerate()
-        .rev()
-        .find(|&(_, v)| v.abs() > 1e-15)
-        .map(|(i, _)| i + 1)
-        .unwrap_or(0);
-    let max_b = b_perturbed
-        .iter()
-        .enumerate()
-        .rev()
-        .find(|&(_, v)| v.abs() > 1e-15)
-        .map(|(i, _)| i + 1)
-        .unwrap_or(0);
+    // Compute support bound from sparse elements
+    let max_a = a_rotated.iter().map(|&(i, _)| i).max().unwrap_or(0) + 1;
+    let max_b = b_rotated.iter().map(|&(i, _)| i).max().unwrap_or(0) + 1;
     let max_support = max_a.max(max_b);
-
-    // XOR products of indices < N stay < N when N is a power of 2.
-    // Scan up to 2 * next_power_of_two(max_support) to be safe, capped by dim.
     let scan_limit = dim.min(max_support.next_power_of_two() * 2);
 
     (0..scan_limit)
         .filter(|&k| {
-            let mut x = vec![0.0; dim];
-            x[k] = 1.0;
-            let assoc = cd_associator(&a_perturbed, &x, &b_perturbed);
-            let norm_sq: f64 = assoc.iter().map(|v| v * v).sum();
-            norm_sq > 1e-20
+            let x_sparse = [(k, 1.0)];
+            let total = sign_cache.sparse_associator_sum(&a_rotated, &x_sparse, &b_rotated);
+            total.abs() > 1e-20
         })
         .collect()
 }
@@ -225,6 +217,7 @@ fn known_sedenion_zd_pairs() -> Vec<([f64; 16], [f64; 16])> {
 /// rotated element from escaping the ZD graph structure:
 ///   x'[axis_a] = x[axis_a] * cos(theta) - x[axis_b] * sin(theta)
 ///   x'[axis_b] = x[axis_a] * sin(theta) + x[axis_b] * cos(theta)
+#[allow(dead_code)]
 fn rotate_in_plane(x: &[f64], axis_a: usize, axis_b: usize, theta: f64) -> Vec<f64> {
     let mut result = x.to_vec();
     let (c, s) = (theta.cos(), theta.sin());
@@ -235,41 +228,171 @@ fn rotate_in_plane(x: &[f64], axis_a: usize, axis_b: usize, theta: f64) -> Vec<f
     result
 }
 
-/// Compute the associator-based measurement outcome.
+/// Pre-computed sign table for O(1) basis multiplication.
+///
+/// Caches `sign_table[i * dim + j] = cd_basis_mul_sign_iter(dim, i, j)`.
+/// At 512D: 512*512 = 262K entries = 1 MB (fits in L2 cache on 5600X3D).
+///
+/// This eliminates ALL recursive `cd_multiply` calls in the Bell test hot loop.
+/// The sparse associator evaluates [A', e_k, B'] using only coefficient arithmetic
+/// on the ~4-6 nonzero components of each rotated element.
+struct SignTableCache {
+    dim: usize,
+    table: Vec<i32>,
+}
+
+impl SignTableCache {
+    fn new(dim: usize) -> Self {
+        let table: Vec<i32> = (0..dim * dim)
+            .map(|idx| cd_basis_mul_sign_iter(dim, idx / dim, idx % dim))
+            .collect();
+        Self { dim, table }
+    }
+
+    /// Multiply two sparse elements using sign-table lookups.
+    ///
+    /// Input: sparse coefficient lists `[(basis_idx, coeff), ...]`
+    /// Output: sparse coefficient list of the product.
+    ///
+    /// Each pair (i, a_i) * (j, b_j) produces (i^j, sign(i,j) * a_i * b_j).
+    /// We accumulate into a small dense buffer indexed by output basis.
+    fn sparse_multiply(
+        &self,
+        a_sparse: &[(usize, f64)],
+        b_sparse: &[(usize, f64)],
+    ) -> Vec<(usize, f64)> {
+        // Use a small fixed-size accumulator. For sedenion-lifted elements
+        // with 2-4 nonzero components, the product has at most ~16 terms
+        // that collapse to fewer distinct basis indices via XOR.
+        let mut accum = vec![0.0f64; self.dim];
+        let mut touched = Vec::with_capacity(a_sparse.len() * b_sparse.len());
+
+        for &(i, ai) in a_sparse {
+            for &(j, bj) in b_sparse {
+                let out_idx = i ^ j;
+                let sign = self.table[i * self.dim + j] as f64;
+                let old = accum[out_idx];
+                if old == 0.0 {
+                    touched.push(out_idx);
+                }
+                accum[out_idx] = old + sign * ai * bj;
+            }
+        }
+
+        let result: Vec<(usize, f64)> = touched
+            .into_iter()
+            .filter_map(|idx| {
+                let v = accum[idx];
+                accum[idx] = 0.0; // Reset for reuse
+                if v.abs() > 1e-20 { Some((idx, v)) } else { None }
+            })
+            .collect();
+
+        result
+    }
+
+    /// Compute sparse associator [a, x, b] = (a*x)*b - a*(x*b).
+    ///
+    /// Returns the sum of all components (used for sign measurement).
+    fn sparse_associator_sum(
+        &self,
+        a_sparse: &[(usize, f64)],
+        x_sparse: &[(usize, f64)],
+        b_sparse: &[(usize, f64)],
+    ) -> f64 {
+        // Left: (a*x)*b
+        let ax = self.sparse_multiply(a_sparse, x_sparse);
+        let left = self.sparse_multiply(&ax, b_sparse);
+
+        // Right: a*(x*b)
+        let xb = self.sparse_multiply(x_sparse, b_sparse);
+        let right = self.sparse_multiply(a_sparse, &xb);
+
+        // Sum all components of (left - right)
+        let left_sum: f64 = left.iter().map(|&(_, v)| v).sum();
+        let right_sum: f64 = right.iter().map(|&(_, v)| v).sum();
+        left_sum - right_sum
+    }
+}
+
+/// Extract sparse representation from a dense vector.
+fn to_sparse(v: &[f64]) -> Vec<(usize, f64)> {
+    v.iter()
+        .enumerate()
+        .filter(|&(_, &val)| val.abs() > 1e-15)
+        .map(|(i, &val)| (i, val))
+        .collect()
+}
+
+/// Rotate sparse element in the (axis_a, axis_b) SO(2) subplane by angle theta.
+///
+/// Only modifies the two affected axes, preserving sparsity.
+fn rotate_sparse(
+    sparse: &[(usize, f64)],
+    axis_a: usize,
+    axis_b: usize,
+    theta: f64,
+) -> Vec<(usize, f64)> {
+    let (c, s) = (theta.cos(), theta.sin());
+
+    // Find current values at the rotation axes
+    let va = sparse.iter().find(|&&(i, _)| i == axis_a).map_or(0.0, |&(_, v)| v);
+    let vb = sparse.iter().find(|&&(i, _)| i == axis_b).map_or(0.0, |&(_, v)| v);
+
+    let new_a = va * c - vb * s;
+    let new_b = va * s + vb * c;
+
+    let mut result: Vec<(usize, f64)> = sparse
+        .iter()
+        .filter(|&&(i, _)| i != axis_a && i != axis_b)
+        .copied()
+        .collect();
+
+    if new_a.abs() > 1e-15 {
+        result.push((axis_a, new_a));
+    }
+    if new_b.abs() > 1e-15 {
+        result.push((axis_b, new_b));
+    }
+    result
+}
+
+/// Compute the associator-based measurement outcome using sparse sign-table arithmetic.
 ///
 /// Given a ZD channel (A, B), measurement angle theta for the measured party,
 /// rotation plane, and probe element e_k:
 ///   outcome = sign( sum_j [A'(theta), e_k, B]_j )
 ///
 /// The probe e_k must be valid (non-zero associator with both A and B sides).
-fn associator_measurement(
-    measured: &[f64],
-    partner: &[f64],
+///
+/// This is the FAST PATH: uses pre-computed sign table for O(support^2) evaluation
+/// instead of O(dim^2) recursive cd_multiply. For sedenion-lifted elements with
+/// ~4 nonzero components, this is ~16 sign lookups vs ~262K recursive multiplies at 512D.
+fn associator_measurement_fast(
+    measured_sparse: &[(usize, f64)],
+    partner_sparse: &[(usize, f64)],
     theta: f64,
     plane: (usize, usize),
     probe_idx: usize,
-    dim: usize,
+    sign_cache: &SignTableCache,
 ) -> f64 {
-    let rotated = rotate_in_plane(measured, plane.0, plane.1, theta);
+    let rotated = rotate_sparse(measured_sparse, plane.0, plane.1, theta);
+    let x_sparse = [(probe_idx, 1.0)];
 
-    let mut x = vec![0.0; dim];
-    x[probe_idx] = 1.0;
-
-    let assoc = cd_associator(&rotated, &x, partner);
-    let total: f64 = assoc.iter().sum();
+    let total = sign_cache.sparse_associator_sum(&rotated, &x_sparse, partner_sparse);
 
     if total >= 0.0 { 1.0 } else { -1.0 }
 }
+
 
 /// CHSH measurement configuration.
 struct ChshConfig {
     alice_plane: (usize, usize),
     bob_plane: (usize, usize),
-    dim: usize,
     n_trials: usize,
 }
 
-/// Compute the CHSH correlator E(theta_a, theta_b).
+/// Compute the CHSH correlator E(theta_a, theta_b) using sparse sign-table arithmetic.
 ///
 /// For each trial:
 /// 1. Pick a random ZD channel (shared entanglement resource)
@@ -279,11 +402,16 @@ struct ChshConfig {
 /// 5. Record product of outcomes
 ///
 /// E = <outcome_a * outcome_b> averaged over n_trials.
+///
+/// Performance: O(support^2) per measurement via pre-computed sign table.
+/// At 512D with ~4-component sparse elements: ~16 sign lookups vs ~262K
+/// recursive multiplies per measurement.
 fn compute_chsh_correlator(
     channels: &[ZdChannel],
     theta_a: f64,
     theta_b: f64,
     cfg: &ChshConfig,
+    sign_cache: &SignTableCache,
     rng: &mut ChaCha8Rng,
 ) -> f64 {
     let usable: Vec<&ZdChannel> = channels
@@ -309,12 +437,24 @@ fn compute_chsh_correlator(
         let probe = probes[rng.gen_range(0..probes.len())];
 
         // Alice measures: sign([A'(theta_a), e_probe, B])
-        let outcome_a =
-            associator_measurement(&ch.a, &ch.b, theta_a, cfg.alice_plane, probe, cfg.dim);
+        let outcome_a = associator_measurement_fast(
+            &ch.a_sparse,
+            &ch.b_sparse,
+            theta_a,
+            cfg.alice_plane,
+            probe,
+            sign_cache,
+        );
 
         // Bob measures: sign([B'(theta_b), e_probe, A])
-        let outcome_b =
-            associator_measurement(&ch.b, &ch.a, theta_b, cfg.bob_plane, probe, cfg.dim);
+        let outcome_b = associator_measurement_fast(
+            &ch.b_sparse,
+            &ch.a_sparse,
+            theta_b,
+            cfg.bob_plane,
+            probe,
+            sign_cache,
+        );
 
         total += outcome_a * outcome_b;
     }
@@ -346,11 +486,16 @@ pub fn chsh_violation_test(dim: usize, n_samples: usize, seed: u64) -> BellTestR
     let alice_plane = (1, 2);
     let bob_plane = (3, 4);
 
-    // Step 1: Get sedenion ZD pairs and lift to target dimension
+    // Step 1: Pre-compute sign table for O(1) basis multiplication.
+    // At 512D: 512*512 = 262K entries = 1 MB. Fits in L2 cache on 5600X3D.
+    // Built FIRST so lift_zd_to_dim can use sparse probe finding.
+    let sign_cache = SignTableCache::new(dim);
+
+    // Step 2: Get sedenion ZD pairs and lift to target dimension
     let sed_pairs = known_sedenion_zd_pairs();
     let channels: Vec<ZdChannel> = sed_pairs
         .iter()
-        .map(|(a, b)| lift_zd_to_dim(a, b, dim, alice_plane, bob_plane))
+        .map(|(a, b)| lift_zd_to_dim(a, b, dim, alice_plane, bob_plane, &sign_cache))
         .collect();
 
     let n_zd_pairs = channels.len();
@@ -360,32 +505,31 @@ pub fn chsh_violation_test(dim: usize, n_samples: usize, seed: u64) -> BellTestR
         .count();
     let n_optimal_probes: usize = channels.iter().map(|ch| ch.optimal_probes.len()).sum();
 
-    // Step 2: CHSH measurement settings (optimal for max quantum violation)
+    // Step 3: CHSH measurement settings (optimal for max quantum violation)
     let a = 0.0;
     let a_prime = std::f64::consts::FRAC_PI_2;
     let b = std::f64::consts::FRAC_PI_4;
     let b_prime = -std::f64::consts::FRAC_PI_4;
 
-    // Step 3: Compute all four correlators
+    // Step 4: Compute all four correlators via sparse sign-table arithmetic
     let cfg = ChshConfig {
         alice_plane,
         bob_plane,
-        dim,
         n_trials: n_samples,
     };
 
-    let e_ab = compute_chsh_correlator(&channels, a, b, &cfg, &mut rng);
-    let e_ab_prime = compute_chsh_correlator(&channels, a, b_prime, &cfg, &mut rng);
-    let e_a_prime_b = compute_chsh_correlator(&channels, a_prime, b, &cfg, &mut rng);
-    let e_a_prime_b_prime = compute_chsh_correlator(&channels, a_prime, b_prime, &cfg, &mut rng);
+    let e_ab = compute_chsh_correlator(&channels, a, b, &cfg, &sign_cache, &mut rng);
+    let e_ab_prime = compute_chsh_correlator(&channels, a, b_prime, &cfg, &sign_cache, &mut rng);
+    let e_a_prime_b = compute_chsh_correlator(&channels, a_prime, b, &cfg, &sign_cache, &mut rng);
+    let e_a_prime_b_prime = compute_chsh_correlator(&channels, a_prime, b_prime, &cfg, &sign_cache, &mut rng);
 
-    // Step 4: S-value
+    // Step 5: S-value
     let s_value = e_ab - e_ab_prime + e_a_prime_b + e_a_prime_b_prime;
 
-    // Step 5: Statistical error (SE for binary outcomes)
+    // Step 6: Statistical error (SE for binary outcomes)
     let s_error = 4.0 / (n_samples as f64).sqrt();
 
-    // Step 6: Shared ZD paths
+    // Step 7: Shared ZD paths
     let n_shared_paths = count_shared_zd_paths(&channels);
 
     BellTestResult {
@@ -426,10 +570,11 @@ pub fn find_shared_zd_paths(dim: usize) -> Vec<Vec<usize>> {
     let alice_plane = (1, 2);
     let bob_plane = (3, 4);
 
+    let sign_cache = SignTableCache::new(dim);
     let sed_pairs = known_sedenion_zd_pairs();
     let channels: Vec<ZdChannel> = sed_pairs
         .iter()
-        .map(|(a, b)| lift_zd_to_dim(a, b, dim, alice_plane, bob_plane))
+        .map(|(a, b)| lift_zd_to_dim(a, b, dim, alice_plane, bob_plane, &sign_cache))
         .collect();
 
     let n = channels.len();
@@ -527,7 +672,8 @@ mod tests {
         let alice_plane = (1, 2);
         let bob_plane = (3, 4);
         for &target_dim in &[32, 64, 128, 256, 512] {
-            let ch = lift_zd_to_dim(a16, b16, target_dim, alice_plane, bob_plane);
+            let sc = SignTableCache::new(target_dim);
+            let ch = lift_zd_to_dim(a16, b16, target_dim, alice_plane, bob_plane, &sc);
             let ab = cd_multiply(&ch.a, &ch.b);
             let norm = cd_norm_sq(&ab).sqrt();
             assert!(
@@ -544,7 +690,8 @@ mod tests {
         assert!(!pairs.is_empty());
 
         let (a16, b16) = &pairs[0];
-        let ch = lift_zd_to_dim(a16, b16, 16, (1, 2), (3, 4));
+        let sc = SignTableCache::new(16);
+        let ch = lift_zd_to_dim(a16, b16, 16, (1, 2), (3, 4), &sc);
         let total_probes = ch.union_probes.len();
         let optimal_probes = ch.optimal_probes.len();
         println!(

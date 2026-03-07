@@ -1,3 +1,6 @@
+# DEPRECATED: Use _RocqProject instead (Rocq 9.1.1 native).
+# This file is kept only for backward compatibility with older tooling.
+# The Makefile prefers _RocqProject when it exists.
 -R theories OpenGororoba
 -R verified OpenGororobaVerified
 -arg -w
@@ -159,3 +162,4 @@ verified/C954_ThreeBodyBlocks.v
 verified/C955_CrossBlockCoupling.v
 verified/C956_RoutonAVT.v
 verified/C957_VoudonZD.v
+verified/C958_ZDGraphTopology.v

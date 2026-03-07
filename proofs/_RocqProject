@@ -158,3 +158,14 @@ theories/PathionZDGraph.v
 verified/C993_CarlsonBranchFree.v
 verified/C999_PathionEntropyBound.v
 verified/C1007_CDPropertyLoss.v
+theories/ThreeBodyAngMom.v
+theories/FractalMetricPositivity.v
+theories/BellCHSH.v
+theories/ComplexTimeEIH.v
+verified/C954_ThreeBodyBlocks.v
+verified/C955_CrossBlockCoupling.v
+verified/C956_RoutonAVT.v
+verified/C957_VoudonZD.v
+verified/C958_ZDGraphTopology.v
+verified/C958b_ZDAdjacencyAnalytical.v
+verified/C959_CHSHClassicalBound.v
