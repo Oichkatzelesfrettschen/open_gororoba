@@ -32,6 +32,7 @@ pub mod axiodilaton;
 pub mod bounce;
 pub mod bypass_models;
 pub mod cmb_axis;
+pub mod deka_voudon_cmb;
 pub mod dimensional_geometry;
 pub mod distances;
 pub mod eos;
@@ -137,6 +138,7 @@ pub use flrw::{
 
 pub use voudon_friedmann::VoudonFriedmann;
 pub use cmb_axis::VoudonCmbAnalyzer;
+pub use deka_voudon_cmb::{DekaVoudonCmbAnalyzer, CosmicWebGenerator};
 
 pub use cdg2_mapping::{
     DarkHaloFalsificationResult, evaluate_cdg2_consistency, spectral_dim_at_cdg2,

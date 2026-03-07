@@ -78,6 +78,7 @@ pub mod energy_conserving;
 pub mod cd_ladder_force;
 pub mod chingon_frame_dragging;
 pub mod forces;
+pub mod fractal_metric;
 pub mod gravitational_waves;
 pub mod lyapunov;
 pub mod hawking;
@@ -163,5 +164,6 @@ pub use quantum_inequalities::{
 pub use adm::{AdmConstraints, AdmDecomposition, ExtrinsicCurvatureData, decompose_metric};
 
 pub use warp_metric::{NacelleWarpBubble, NacelleWarpParams};
+pub use fractal_metric::FractalMetric;
 
 pub use nbody_integration::{BodyState, NBodySystem};

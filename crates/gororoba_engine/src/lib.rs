@@ -17,6 +17,7 @@ pub mod gate;
 pub mod pipeline;
 pub mod pipelines;
 pub mod provenance;
+pub mod singularitarian;
 pub mod simulation;
 pub mod thesis_pipelines;
 pub mod verification_layer;

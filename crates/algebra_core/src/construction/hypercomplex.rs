@@ -29,6 +29,7 @@
 //! - Furey et al. (2024): Cl(8) -> 3 generations of fermions
 //! - Tang & Tang (2023): Sedenion SU(5) mass predictions
 
+// TEST COMMENT
 use crate::analysis::boxkites::{
     BoxKite, BoxKiteSymmetryResult, analyze_box_kite_symmetry, find_box_kites,
 };
@@ -70,6 +71,10 @@ pub enum AlgebraDim {
     Routon = 128,
     /// Voudons (dim 256)
     Voudon = 256,
+    /// Eristons (dim 512)
+    Eriston = 512,
+    /// DekaVoudons (dim 1024)
+    DekaVoudon = 1024,
 }
 
 impl AlgebraDim {
@@ -110,6 +115,8 @@ impl AlgebraDim {
             AlgebraDim::Chingon => "Chingon",
             AlgebraDim::Routon => "Routon",
             AlgebraDim::Voudon => "Voudon",
+            AlgebraDim::Eriston => "Eriston",
+            AlgebraDim::DekaVoudon => "DekaVoudon",
         }
     }
 
@@ -125,6 +132,8 @@ impl AlgebraDim {
             64 => Some(AlgebraDim::Chingon),
             128 => Some(AlgebraDim::Routon),
             256 => Some(AlgebraDim::Voudon),
+            512 => Some(AlgebraDim::Eriston),
+            1024 => Some(AlgebraDim::DekaVoudon),
             _ => None,
         }
     }

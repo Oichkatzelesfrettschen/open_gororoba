@@ -23,6 +23,7 @@ pub mod fractional_schrodinger;
 pub mod gross_pitaevskii;
 pub mod grover;
 pub mod hamiltonian_evolution;
+pub mod intention_operator;
 pub mod hardware;
 pub mod harper_chern;
 pub mod holographic;
