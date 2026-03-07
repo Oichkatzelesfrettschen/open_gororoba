@@ -35,10 +35,11 @@ else
   PINNED =
 endif
 
-# OCaml GC tuning: large initial heap + reduced minor GC pressure.
-# WHY: cbv + ring on octonion polynomial identities peaks at ~500MB per file.
-#      Generous minor heap (32MB) reduces GC pauses on heavy proofs.
-export OCAMLRUNPARAM ?= s=1G,i=32M,O=3
+# OCaml 5.4.0 GC tuning: only `o=` (space_overhead) is effective.
+# WHY: OCaml 5 ignores s= (initial heap), i= (minor heap size), O= (compaction).
+#      o=200 lets major GC tolerate 200% overhead before collecting, reducing
+#      pauses during large `ring` term construction (C912 peaks at ~300MB).
+export OCAMLRUNPARAM ?= o=200
 
 # Prefer _RocqProject (Rocq 9.x native), fall back to _CoqProject.
 PROJ_FILE := $(shell if [ -f _RocqProject ]; then echo _RocqProject; else echo _CoqProject; fi)
@@ -48,6 +49,28 @@ Makefile.rocq: $(PROJ_FILE)
 
 all: Makefile.rocq
 	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq all
+
+# --- Fast two-phase build pipeline ---
+#
+# Phase 1: vos (compiled interfaces) -- skips all proof bodies.
+#   Checks that definitions, theorem statements, and cross-module
+#   imports are well-formed. Seconds, not minutes.
+#
+# Phase 2: vok (proof checking) -- checks every proof body in parallel.
+#   Each file is independent once .vos interfaces exist.
+#   Saturates all physical cores.
+#
+# Workflow:
+#   make vos   # instant interface check (iterative dev)
+#   make vok   # full proof verification (CI / pre-commit)
+
+vos: Makefile.rocq
+	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq vos
+
+vok: Makefile.rocq
+	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq vok
+
+# --- Standard targets ---
 
 clean: Makefile.rocq
 	$(MAKE) -f Makefile.rocq clean
@@ -81,5 +104,7 @@ count:
 	@echo "Verified files: $$(ls verified/*.v 2>/dev/null | wc -l)"
 	@echo "Total .v files: $$(ls theories/*.v verified/*.v 2>/dev/null | wc -l)"
 	@echo "Compiled .vo:   $$(ls theories/*.vo verified/*.vo 2>/dev/null | wc -l)"
+	@echo "Interfaces .vos: $$(ls theories/*.vos verified/*.vos 2>/dev/null | wc -l)"
+	@echo "Checked .vok:    $$(ls theories/*.vok verified/*.vok 2>/dev/null | wc -l)"
 
-.PHONY: all clean check extract extract-check count
+.PHONY: all vos vok clean check extract extract-check count

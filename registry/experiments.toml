@@ -2428,3 +2428,91 @@ input_path_refs = []
 output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-106"
+title = "Majorana braid through CD tower at dims 16-128"
+description = "Execute standard 4-Majorana braid circuit [(0,1),(1,2),(2,3),(0,1)] through the Cayley-Dickson tower. Measures Clifford control group (unitarity, parity preservation), CD topological friction, parity match, and dimensional scaling."
+date = "2026-03-07"
+sprint = 75
+binary_registered = true
+binary_experiment_declared = "majorana-braid-crucible"
+method = "Clifford braid via gamma_matrices_cl8(), CD braid via SignTableCache + rotate_sparse(), friction = cumulative associator norm."
+input = "circuit=[(0,1),(1,2),(2,3),(0,1)], dims=[16,32,64,128], seed=42"
+output = ["stdout"]
+run = "cargo run --release --bin majorana-braid-crucible -- braid --dim 16"
+run_command_sha256 = ""
+claims = ["C-1133", "C-1134", "C-1136"]
+status = "complete"
+status_note = "COMPLETE. Clifford: unitarity_err<1e-15, [P,U]=0. CD: parity=-1 matches Clifford. Friction: 16.97 (dim=16), 39.60 (32), 84.85 (64), 175.36 (128). Max_assoc constant at sqrt(2)."
+lineage_id = "XL-106"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-107"
+title = "Box-kite fusion statistics at dim=16"
+description = "Compute CD basis multiplication signs for all 42 assessor pairs across 7 box-kites. Count distinct sign classes per kite to test Ising anyon fusion rule."
+date = "2026-03-07"
+sprint = 75
+binary_registered = true
+binary_experiment_declared = "majorana-braid-crucible"
+method = "cd_basis_mul_sign_iter(dim, lo, hi) for each assessor pair. Partition by sign, count distinct values."
+input = "dim=16, 7 box-kites x 6 pairs = 42 products"
+output = ["stdout"]
+run = "cargo run --release --bin majorana-braid-crucible -- fusion --dim 16"
+run_command_sha256 = ""
+claims = ["C-1135"]
+status = "complete"
+status_note = "COMPLETE. ALL 7 box-kites have exactly 2 fusion channels. Signs: BK0=[1,-1,-1,1,1,-1], BK1=[1,-1,-1,-1,1,1], etc. Ising anyon fusion CONFIRMED."
+lineage_id = "XL-107"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-108"
+title = "Braid-aligned CHSH test at dim=16"
+description = "Re-run CHSH Bell inequality test with measurement probes aligned along braiding channels (box-kite assessor pairs) instead of uniform random sampling."
+date = "2026-03-07"
+sprint = 75
+binary_registered = true
+binary_experiment_declared = "majorana-braid-crucible"
+method = "chsh_braid_aligned: rotate in ZD subplanes, measure correlators via associator_measurement_fast."
+input = "dim=16, n_samples=10000, seed=42"
+output = ["stdout"]
+run = "cargo run --release --bin majorana-braid-crucible -- aligned-chsh --dim 16 --n-samples 10000 --seed 42"
+run_command_sha256 = ""
+claims = ["C-1139"]
+status = "complete"
+status_note = "COMPLETE. S=-1.536 +/- 0.040. No classical violation. 168 ZD pairs, 2072 optimal probes."
+lineage_id = "XL-108"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-109"
+title = "Complex-time Majorana braid Wick rotation sweep"
+description = "Sweep Wick rotation angle theta from 0 (real time) to pi/2 (imaginary time). At each theta, measure topological friction from CD braid."
+date = "2026-03-07"
+sprint = 75
+binary_registered = true
+binary_experiment_declared = "majorana-braid-crucible"
+method = "complex_time_braid: SO(2) rotation with damping factor cos(theta)*sin(theta)."
+input = "dim=16, theta_steps=10"
+output = ["stdout"]
+run = "cargo run --release --bin majorana-braid-crucible -- complex-time --dim 16 --theta-steps 10"
+run_command_sha256 = ""
+claims = ["C-1138"]
+status = "complete"
+status_note = "COMPLETE. Friction monotone decrease: 16.97 (theta=0) -> 6.74 (theta=pi/2). Wick rotation damps topological friction."
+lineage_id = "XL-109"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
