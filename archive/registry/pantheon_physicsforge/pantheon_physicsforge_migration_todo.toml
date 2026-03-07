@@ -97,7 +97,7 @@ phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
 title = "Build function-level inventory for Pantheon DDT modules (`mcp-ripgrep`)."
-evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]
 id = "PPF-011"
@@ -106,7 +106,7 @@ phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
 title = "Build class/function inventory for Pantheon elevated calibration modules (`mcp-ripgrep`)."
-evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]
 id = "PPF-012"
@@ -115,7 +115,7 @@ phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
 title = "Build PhysicsForge pipeline inventory for extraction and catalog semantics (`mcp-ripgrep`)."
-evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]
 id = "PPF-013"
@@ -124,7 +124,7 @@ phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
 title = "Map each inventoried unit to target crate/module in open_gororoba (`mcp-bash` + markdown matrix)."
-evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]
 id = "PPF-014"
@@ -133,7 +133,7 @@ phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
 title = "Identify overlap already covered in `data_core` and `cosmology_core` (`mcp-ripgrep`)."
-evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]
 id = "PPF-015"
@@ -142,7 +142,7 @@ phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
 title = "Identify overlap already covered in `docpipe` and `gororoba_cli` (`mcp-ripgrep`)."
-evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]
 id = "PPF-016"
@@ -151,7 +151,7 @@ phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
 title = "Identify overlap already covered in `algebra_core` to avoid redundant octonion ports (`mcp-ripgrep`)."
-evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]
 id = "PPF-017"
@@ -160,7 +160,7 @@ phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
 title = "Define migration boundaries: port, rewrite, skip, deprecate (`claims-evidence-executor`)."
-evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]
 id = "PPF-018"
@@ -169,7 +169,7 @@ phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
 title = "Publish source-to-target mapping table under `docs/tickets/` (`filesystem` or `mcp-bash`)."
-evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]
 id = "PPF-019"
