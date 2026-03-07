@@ -2203,3 +2203,16 @@ output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic"
 
+
+[[experiment]]
+id = "E-095"
+title = "Three-body 64D flyby integration with body-specific triads"
+binary = "flyby-crucible"
+binary_registered = true
+binary_experiment_declared = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
+method = "RK4 integration of 6 spacecraft flybys with 3-body (Earth/Moon/Sun) 64D Chingon bivector drag. Body-specific triads: Earth triad for angular momentum block, Lunar triad for velocity block, Solar triad for cross-coupling block. JPL DE440 ephemeris for Moon/Sun positions."
+input = "Anderson et al. (2008) PRL 100, 091102 flyby parameters, JPL DE440 ephemeris"
+output = ["run"]
+run = "cargo run --release --bin flyby-crucible -- --trace-h"
+run_command_sha256 = ""
+claims = ["C-1101", "C-1102"]

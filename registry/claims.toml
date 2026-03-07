@@ -15291,3 +15291,27 @@ phase = "meta"
 sprint = 80
 dependencies = ["C-1040", "C-1050", "C-1060", "C-1070", "C-1080", "C-1090"]
 
+
+[[claim]]
+id = "C-1101"
+statement = "Body-specific 64D embedding with Earth(1-21)/Moon(22-42)/Sun(43-63) triad-per-block structure preserves 5/6 flyby anomaly signs with NEAR ratio 1.11."
+where_stated = "crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)"
+status = "Active"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFY: 6/6 signs correct with Rosetta-I positive. REFUTE: 3-body triad embedding produces fewer correct signs than single-body."
+confidence = "medium"
+phase = "physics"
+sprint = 71
+dependencies = ["C-990"]
+
+[[claim]]
+id = "C-1102"
+statement = "Three-body non-associative torques arise from cross-block AVT coupling: violations spanning block boundaries (e.g. axis 5 to axis 35) couple Earth and Lunar geometric frames."
+where_stated = "crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)"
+status = "Active"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFY: Cross-block AVT violations produce measurably different force than intra-block violations alone. REFUTE: Block-diagonal restriction reproduces full 3-body force."
+confidence = "high"
+phase = "physics"
+sprint = 71
+dependencies = ["C-1101"]
