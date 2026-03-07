@@ -32,16 +32,20 @@ pub fn compute_chingon_bivector_drag(
     alpha: f64,
     avt: &AlternativityViolationTensor,
 ) -> Vector3<f64> {
-    compute_chingon_bivector_drag_bary(r, v, v_wind, alpha, avt, Vector3::zeros())
+    chingon_bivector_drag_core(r.cross(&v), v - v_wind, v_wind, alpha, avt)
 }
 
-/// Barycentric variant: `emb_offset` shifts the angular momentum reference
-/// point from geocenter to the Earth-Moon barycenter.
+/// EXPLOREME(Sprint 71): Barycentric variant -- FALSIFIED.
 ///
-/// h_3body = (r - emb_offset) x v
+/// Shifts angular momentum reference from geocenter to Earth-Moon barycenter:
+///   h_3body = (r - emb_offset) x v
 ///
-/// At Rosetta-I perigee (1956 km), the EMB offset (~4671 km) is LARGER than
-/// the geocentric radius, fundamentally changing the h-vector geometry.
+/// Sprint 71 experiment showed this DEGRADES NEAR from 0.999 to 1.45 ratio
+/// and worsens Rosetta-I from -22.43 to -36.06 mm/s. The EMB offset (~4671 km)
+/// is larger than Rosetta-I perigee (1956 km), amplifying h and the Chingon force.
+///
+/// Kept for reference. Geocentric h (the non-_bary variant) is production.
+#[allow(dead_code)]
 pub fn compute_chingon_bivector_drag_bary(
     r: Vector3<f64>,
     v: Vector3<f64>,
@@ -50,15 +54,21 @@ pub fn compute_chingon_bivector_drag_bary(
     avt: &AlternativityViolationTensor,
     emb_offset: Vector3<f64>,
 ) -> Vector3<f64> {
+    chingon_bivector_drag_core((r - emb_offset).cross(&v), v - v_wind, v_wind, alpha, avt)
+}
+
+/// Shared core: takes precomputed h and v_rel.
+fn chingon_bivector_drag_core(
+    h: Vector3<f64>,
+    v_rel: Vector3<f64>,
+    v_wind: Vector3<f64>,
+    alpha: f64,
+    avt: &AlternativityViolationTensor,
+) -> Vector3<f64> {
     if alpha == 0.0 {
         return Vector3::zeros();
     }
 
-    let v_rel = v - v_wind;
-    // Compute angular momentum relative to the Earth-Moon barycenter.
-    // When emb_offset is zero, this reduces to the geocentric h = r x v.
-    let r_bary = r - emb_offset;
-    let h = r_bary.cross(&v);
     let h_norm = h.norm();
 
     // Angular momentum unit vector (handle zero case)
