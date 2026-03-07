@@ -192,3 +192,4 @@ credentials.*
 /*.txt
 *.h5
 .venv/
+h_trace_*.csv
