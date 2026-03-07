@@ -2322,5 +2322,25 @@ status_note = "COMPLETE. Hit rate 49.3%. SM sectors locally alternative (0 intra
 lineage_id = "XL-100"
 input_path_refs = []
 output_path_refs = []
+
+[[experiment]]
+id = "E-101"
+title = "Complex-time Wick rotation + WKB tunneling + Pathion shadow boundary"
+description = "Implement and test complex-time N-body integration with Wick rotation dispatcher (theta parameterization), WKB tunneling amplitude calculator, Pathion shadow transition radius, and adaptive Wick evolution. 11 unit tests validate: energy conservation (real time), WKB vs analytical (square barrier), shadow radius scaling (cube root), adaptive angle bounds (sigmoid)."
+date = "2026-03-07"
+sprint = 76
+binary_registered = false
+binary_experiment_declared = "crates/gr_core/src/nbody_integration.rs"
+method = "Unit tests: wick_evolve at theta=0/pi/4/pi/2, wkb_tunneling_amplitude vs analytical, singularity_avoidance_test with/without Pathion, pathion_shadow_radius, adaptive_wick_evolve, pathion_variance_max_eigenvalue."
+input = "NBodySystem with Complex<f64> positions/velocities, EIH corrections, Pathion perturbation"
+output = ["test"]
+run = "cargo test --release -p gr_core -- nbody_integration --nocapture"
+run_command_sha256 = ""
+claims = ["C-1116", "C-1117"]
+status = "complete"
+status_note = "COMPLETE. 11/11 tests pass. Wick rotation preserves energy at theta=0 (drift < 1%). WKB matches analytical within 1%. Shadow radius ~ 1.1e7 km for alpha=1e-10. Adaptive Wick angle bounded in [0, theta_max]."
+lineage_id = "XL-101"
+input_path_refs = []
+output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic"
