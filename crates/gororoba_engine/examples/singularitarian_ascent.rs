@@ -7,7 +7,7 @@ fn main() {
     println!("--- Grand Unification: Singularitarian Ascent (Sprints 74-80) ---");
     
     // 1. Initialize the Engine with Fractal Dimension Df = 2.7
-    let engine = SingularitarianEngine::new(2.7);
+    let mut engine = SingularitarianEngine::new(2.7);
     println!("Engine initialized with fractal dimension Df = 2.7");
     
     // 2. Predict Sgr A* Hawking Radiation Spectrum
