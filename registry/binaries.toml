@@ -910,3 +910,9 @@ name = "dark-halo-hunt"
 crate = "gororoba_cli_physics"
 description = "Search for topological dark halos in ZD-mediated LBM simulations across k values. CDG-2 consistency falsification."
 status = "active"
+
+[[binary]]
+name = "majorana-braid-crucible"
+crate = "gororoba_cli_algebra"
+description = "Majorana braiding operators mapped to the Cayley-Dickson tower. 6 subcommands: braid (Clifford vs CD), fusion (box-kite channels), protection (missing-edge associators), aligned-chsh (braid-aligned Bell test), complex-time (Wick rotation sweep), scaling (friction vs dimension)."
+status = "active"

@@ -13,6 +13,7 @@ pub mod emanation;
 pub mod golay_code;
 pub mod higher_cd;
 pub mod leech_lattice;
+pub mod majorana_braiding;
 pub mod moonshine;
 pub mod particle_physics;
 pub mod so7_drift;

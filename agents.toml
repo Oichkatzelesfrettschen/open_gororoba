@@ -178,6 +178,31 @@ cmd = "cargo build --release --workspace -j$(nproc)"
 purpose = "optimized release build"
 
 [[shared.command]]
+id = "rocq.vos"
+cmd = "eval \"$(opam env --switch rocq-9.1.1)\" && make -C proofs vos"
+purpose = "fast interface-only build: skips proof bodies, checks definitions and cross-module imports in seconds"
+
+[[shared.command]]
+id = "rocq.vok"
+cmd = "eval \"$(opam env --switch rocq-9.1.1)\" && make -C proofs vok"
+purpose = "full parallel proof verification: checks every proof body independently across all physical cores"
+
+[[shared.command]]
+id = "rocq.all"
+cmd = "eval \"$(opam env --switch rocq-9.1.1)\" && make -C proofs all"
+purpose = "traditional .vo build (parallel at file level). Use vos+vok for faster iteration."
+
+[[shared.command]]
+id = "rocq.check"
+cmd = "eval \"$(opam env --switch rocq-9.1.1)\" && make -C proofs check"
+purpose = "build all .vo files then grep for Admitted/admit (zero-tolerance gate)"
+
+[[shared.command]]
+id = "rocq.clean"
+cmd = "eval \"$(opam env --switch rocq-9.1.1)\" && make -C proofs clean"
+purpose = "remove all compiled artifacts (.vo, .vos, .vok, .glob, Makefile.rocq)"
+
+[[shared.command]]
 id = "git.push.checkpoint"
 cmd = "git push --no-verify origin <branch>"
 purpose = "checkpoint push for high-frequency iteration after focused crate gates pass"

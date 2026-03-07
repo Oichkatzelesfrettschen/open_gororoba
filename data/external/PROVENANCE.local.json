@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-02-25T07:02:15.283Z",
+  "generated_at_utc": "2026-03-07T18:54:39.334Z",
   "root": "data/external",
   "hash_backend": "rust",
   "hashes": [
@@ -981,6 +981,61 @@
       "source_access_class": "public",
       "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
       "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "arxiv_2207.02472_microsoft_tgp.pdf",
+      "size_bytes": 9745509,
+      "mtime_utc": "2024-03-12T01:46:38.000Z",
+      "sha256": "82e76718f5098ac54b8c6e8bb71106b1dec75f0b6593cae19774aa276f0f3bcc",
+      "source_id": "SRC-MAJORANA-MICROSOFT-TGP",
+      "source_status": "active",
+      "source_access_class": "open",
+      "source_canonical_url": "https://arxiv.org/abs/2207.02472",
+      "source_retrieval_method": "wget -O data/external/arxiv_2207.02472_microsoft_tgp.pdf https://arxiv.org/pdf/2207.02472"
+    },
+    {
+      "path": "arxiv_0707.1889_nayak_anyons_tqc.pdf",
+      "size_bytes": 1608725,
+      "mtime_utc": "2024-11-30T00:39:58.000Z",
+      "sha256": "9e912c51f931a98715965333b1cb3b064cbde521dc2d921da2814cbba55e00ff",
+      "source_id": "SRC-MAJORANA-NAYAK-TQC",
+      "source_status": "active",
+      "source_access_class": "open",
+      "source_canonical_url": "https://arxiv.org/abs/0707.1889",
+      "source_retrieval_method": "wget -O data/external/arxiv_0707.1889_nayak_anyons_tqc.pdf https://arxiv.org/pdf/0707.1889"
+    },
+    {
+      "path": "arxiv_cond-mat_0005069_ivanov_braiding.pdf",
+      "size_bytes": 118443,
+      "mtime_utc": "2024-11-30T00:39:33.000Z",
+      "sha256": "db3e5c1baa853d6e0f7284895db1becd76bff366d3b249936e6ef33bdddf1ada",
+      "source_id": "SRC-MAJORANA-IVANOV-BRAIDING",
+      "source_status": "active",
+      "source_access_class": "open",
+      "source_canonical_url": "https://arxiv.org/abs/cond-mat/0005069",
+      "source_retrieval_method": "wget -O data/external/arxiv_cond-mat_0005069_ivanov_braiding.pdf https://arxiv.org/pdf/cond-mat/0005069"
+    },
+    {
+      "path": "arxiv_cond-mat_0010440_kitaev_majorana.pdf",
+      "size_bytes": 174894,
+      "mtime_utc": "2026-03-07T18:53:07.049Z",
+      "sha256": "a1db2291c4834d9f1d471cfccb36e5b48a9eb4807e11b222728d397c19986f40",
+      "source_id": "SRC-MAJORANA-KITAEV-CHAIN",
+      "source_status": "active",
+      "source_access_class": "open",
+      "source_canonical_url": "https://arxiv.org/abs/cond-mat/0010440",
+      "source_retrieval_method": "curl -sL -A Mozilla/5.0 -o data/external/arxiv_cond-mat_0010440_kitaev_majorana.pdf https://arxiv.org/pdf/cond-mat/0010440"
+    },
+    {
+      "path": "arxiv_2502.12252_microsoft_majorana_2025.pdf",
+      "size_bytes": 2163219,
+      "mtime_utc": "2026-03-07T18:54:14.765Z",
+      "sha256": "5f7dd9e1e0390c10cd41f1353baea8f068d3bb7f24c22669623199f5902c16f0",
+      "source_id": "SRC-MAJORANA-NATURE-2025",
+      "source_status": "active",
+      "source_access_class": "open",
+      "source_canonical_url": "https://doi.org/10.1038/s41586-025-08617-6",
+      "source_retrieval_method": "curl -sL -o data/external/arxiv_2502.12252_microsoft_majorana_2025.pdf https://arxiv.org/pdf/2502.12252"
     }
   ]
 }

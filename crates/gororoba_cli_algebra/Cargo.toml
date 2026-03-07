@@ -102,6 +102,10 @@ path = "src/bin/deep_space_survey.rs"
 name = "avt-entropy-report"
 path = "src/bin/avt_entropy_report.rs"
 
+[[bin]]
+name = "majorana-braid-crucible"
+path = "src/bin/majorana_braid_crucible.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 algebra_core = { path = "../algebra_core", features = ["lie"] }

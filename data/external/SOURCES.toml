@@ -564,6 +564,76 @@ scientific_validator_refs = ["blocked_manifest_only"]
 blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
 
 [[source]]
+id = "SRC-MAJORANA-MICROSOFT-TGP"
+path_glob = "data/external/arxiv_2207.02472_microsoft_tgp.pdf"
+canonical_url = "https://arxiv.org/abs/2207.02472"
+mirror_urls = ["https://arxiv.org/pdf/2207.02472"]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2207.02472_microsoft_tgp.pdf https://arxiv.org/pdf/2207.02472"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = ["Phys. Rev. B 107, 245423 (2023)"]
+scientific_validator_refs = ["majorana_tgp_protocol"]
+
+[[source]]
+id = "SRC-MAJORANA-NAYAK-TQC"
+path_glob = "data/external/arxiv_0707.1889_nayak_anyons_tqc.pdf"
+canonical_url = "https://arxiv.org/abs/0707.1889"
+mirror_urls = ["https://arxiv.org/pdf/0707.1889"]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_0707.1889_nayak_anyons_tqc.pdf https://arxiv.org/pdf/0707.1889"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = ["Rev. Mod. Phys. 80, 1083 (2008)"]
+scientific_validator_refs = ["majorana_braiding_canonical_ref"]
+
+[[source]]
+id = "SRC-MAJORANA-KITAEV-CHAIN"
+path_glob = "data/external/arxiv_cond-mat_0010440_kitaev_majorana.pdf"
+canonical_url = "https://arxiv.org/abs/cond-mat/0010440"
+mirror_urls = ["https://arxiv.org/pdf/cond-mat/0010440", "https://iopscience.iop.org/article/10.1070/1063-7869/44/10S/S29"]
+access_class = "open"
+status = "active"
+retrieval_method = "curl -sL -A 'Mozilla/5.0' -o data/external/arxiv_cond-mat_0010440_kitaev_majorana.pdf https://arxiv.org/pdf/cond-mat/0010440"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Plan had wrong ID (quant-ph/0002130); correct arXiv ID is cond-mat/0010440."
+evidence_refs = ["Phys.-Usp. 44, 131 (2001)"]
+scientific_validator_refs = ["majorana_braiding_canonical_ref"]
+
+[[source]]
+id = "SRC-MAJORANA-NATURE-2025"
+path_glob = "data/external/arxiv_2502.12252_microsoft_majorana_2025.pdf"
+canonical_url = "https://doi.org/10.1038/s41586-025-08617-6"
+mirror_urls = ["https://arxiv.org/abs/2502.12252", "https://arxiv.org/pdf/2502.12252"]
+access_class = "open"
+status = "active"
+retrieval_method = "curl -sL -A 'Mozilla/5.0' -o data/external/arxiv_2502.12252_microsoft_majorana_2025.pdf https://arxiv.org/pdf/2502.12252"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "arXiv preprint companion to Nature 638, 651-655 (2025). Full Nature PDF behind paywall; arXiv version has complete content."
+evidence_refs = ["Nature 638, 651-655 (2025)", "arXiv:2502.12252"]
+scientific_validator_refs = ["majorana_tgp_protocol"]
+
+[[source]]
+id = "SRC-MAJORANA-IVANOV-BRAIDING"
+path_glob = "data/external/arxiv_cond-mat_0005069_ivanov_braiding.pdf"
+canonical_url = "https://arxiv.org/abs/cond-mat/0005069"
+mirror_urls = ["https://arxiv.org/pdf/cond-mat/0005069"]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_cond-mat_0005069_ivanov_braiding.pdf https://arxiv.org/pdf/cond-mat/0005069"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = ["Phys. Rev. Lett. 86, 268 (2001)"]
+scientific_validator_refs = ["majorana_braiding_matrices"]
+
+[[source]]
 id = "SRC-TRACE-LOGS"
 path_glob = "data/papers/intake/traces/**"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/hypothesis_runtime_hott_sources.toml"

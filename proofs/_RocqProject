@@ -169,3 +169,8 @@ verified/C957_VoudonZD.v
 verified/C958_ZDGraphTopology.v
 verified/C958b_ZDAdjacencyAnalytical.v
 verified/C959_CHSHClassicalBound.v
+theories/SedenionAssociator.v
+verified/C1133_BraidParityPreservation.v
+verified/C1134_TopologicalFrictionBound.v
+verified/C1135_BoxKiteFusionRules.v
+verified/C1137_MissingEdgeQuantizedGap.v
