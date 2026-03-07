@@ -299,8 +299,8 @@ mod tests {
         let analyzer = DekaVoudonCmbAnalyzer::new(0.0172);
         let (l, b) = analyzer.axis_galactic_coords();
         assert!(l.is_finite() && b.is_finite());
-        assert!(l >= 0.0 && l < 360.0, "l={l} out of range");
-        assert!(b >= -90.0 && b <= 90.0, "b={b} out of range");
+        assert!((0.0..360.0).contains(&l), "l={l} out of range");
+        assert!((-90.0..=90.0).contains(&b), "b={b} out of range");
     }
 
     #[test]
@@ -380,6 +380,6 @@ mod tests {
         // The 1024D bias axis direction depends on the phi parameter
         assert!(sep.is_finite(), "separation should be finite");
         // Just verify the test runs and produces a result
-        assert!(sep >= 0.0 && sep <= 180.0);
+        assert!((0.0..=180.0).contains(&sep));
     }
 }
