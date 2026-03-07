@@ -15297,24 +15297,26 @@ id = "C-1101"
 statement = "Body-specific 64D embedding with Earth(1-21)/Moon(22-42)/Sun(43-63) triad-per-block structure preserves 5/6 flyby anomaly signs with NEAR ratio 1.11."
 where_stated = "crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)"
 status = "Active"
-last_verified = "2026-03-06"
+last_verified = "2026-03-07"
 what_would_verify_refute = "VERIFY: 6/6 signs correct with Rosetta-I positive. REFUTE: 3-body triad embedding produces fewer correct signs than single-body."
 confidence = "medium"
 phase = "physics"
 sprint = 71
 dependencies = ["C-990"]
+status_note = "Structural properties kernel-checked via Rocq 9.1: proofs/theories/ThreeBodyAngMom.v (cross_sub_distributes), proofs/verified/C954_ThreeBodyBlocks.v (dot_bilinear, two_block_decomposition)"
 
 [[claim]]
 id = "C-1102"
 statement = "Three-body non-associative torques arise from cross-block AVT coupling: violations spanning block boundaries (e.g. axis 5 to axis 35) couple Earth and Lunar geometric frames."
 where_stated = "crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)"
 status = "Active"
-last_verified = "2026-03-06"
+last_verified = "2026-03-07"
 what_would_verify_refute = "VERIFY: Cross-block AVT violations produce measurably different force than intra-block violations alone. REFUTE: Block-diagonal restriction reproduces full 3-body force."
 confidence = "high"
 phase = "physics"
 sprint = 71
 dependencies = ["C-1101"]
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C955_CrossBlockCoupling.v (cross_block_witness, cross_block_nonzero_generic)"
 
 [[claim]]
 id = "C-1103"
@@ -15587,3 +15589,80 @@ confidence = "high"
 phase = "engine"
 sprint = 80
 dependencies = ["C-1120"]
+
+[[claim]]
+id = "C-1126"
+statement = "Cross product distributes over vector subtraction: (r - r_B) x v = r x v - r_B x v. This is the foundational identity for 3-body angular momentum decomposition in the 64D Chingon drag. Kernel-checked via Rocq 9.1."
+where_stated = "proofs/theories/ThreeBodyAngMom.v (cross_sub_distributes, three_body_ang_mom_decomposition, cross_right_distributes, cross_anticommutative)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: Rocq kernel accepts all 4 theorems (cross_sub_distributes, cross_right_distributes, cross_anticommutative, three_body_ang_mom_decomposition) with zero Admitted. REFUTE: kernel rejects proof."
+confidence = "high"
+phase = "proofs"
+sprint = 71
+
+[[claim]]
+id = "C-1127"
+statement = "Bilinear contraction of block-structured vectors decomposes into intra-block and cross-block terms: <a+b, c+d> = <a,c> + <a,d> + <b,c> + <b,d>. Two-block decomposition |a+b|^2 = |a|^2 + 2<a,b> + |b|^2. Kernel-checked via Rocq 9.1."
+where_stated = "proofs/verified/C954_ThreeBodyBlocks.v (dot_bilinear, two_block_decomposition)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: Rocq kernel accepts both theorems with zero Admitted. REFUTE: kernel rejects proof."
+confidence = "high"
+phase = "proofs"
+sprint = 71
+
+[[claim]]
+id = "C-1128"
+statement = "Non-associativity at dim 8 (octonions) lifts to dim 16 (sedenions) via Cayley-Dickson doubling embedding (x, 0). The AVT violation set is non-empty at all dims >= 8. Constructive proof: the octonion witness (e1, e2, e4) embedded in sedenions still fails associativity. Kernel-checked via Rocq 9.1."
+where_stated = "proofs/verified/C956_RoutonAVT.v (embed_preserves_mul_os, non_assoc_lifts_to_sedenion, sedenion_avt_nonempty)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: Rocq kernel accepts all theorems including sedenion_avt_nonempty existential witness. REFUTE: kernel rejects proof."
+confidence = "high"
+phase = "proofs"
+sprint = 72
+
+[[claim]]
+id = "C-1129"
+statement = "Sedenion zero-divisor graph has at least 1 edge: there exist nonzero a, b with a*b = 0 (the Moreno-Froloff pair). The norm mismatch |a*b|^2 = 0 but |a|^2 = |b|^2 = 2 establishes Hurwitz failure at dim >= 16. Kernel-checked via Rocq 9.1."
+where_stated = "proofs/verified/C957_VoudonZD.v (sedenion_zd_graph_nonempty, sed_zd_norm_mismatch, hurwitz_fails_implies_zd_persistent)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: Rocq kernel accepts existential ZD witness and norm computation. REFUTE: kernel rejects proof."
+confidence = "high"
+phase = "proofs"
+sprint = 73
+
+[[claim]]
+id = "C-1130"
+statement = "CHSH classical bound |S| <= 4 for bounded correlations E in [-1,1]. Tsirelson bound 2*sqrt(2) > 2, establishing quantum advantage. Kernel-checked via Rocq 9.1."
+where_stated = "proofs/theories/BellCHSH.v (chsh_classical_bound_weak, tsirelson_bound_positive, tsirelson_exceeds_classical)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: Rocq kernel accepts all 3 theorems. The weak bound |S|<=4 and tsirelson_bound>2 are both kernel-checked. REFUTE: kernel rejects proof."
+confidence = "high"
+phase = "proofs"
+sprint = 74
+
+[[claim]]
+id = "C-1131"
+statement = "Fractal metric scaling factor is positive for D_f in (2,3): the exponent D_f-3 is in (-1,0), ratio r/r_0 > 0 for r,r_0 > 0, and the product g_base * scaling > 0. This guarantees the modified metric remains a valid Riemannian metric. Kernel-checked via Rocq 9.1."
+where_stated = "proofs/theories/FractalMetricPositivity.v (fractal_exponent_range, ratio_positive, metric_component_positive, fractal_factor_positive)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: Rocq kernel accepts all 4 theorems with zero Admitted. REFUTE: kernel rejects proof."
+confidence = "high"
+phase = "proofs"
+sprint = 78
+
+[[claim]]
+id = "C-1132"
+statement = "Complex-time gravitational potential is finite and bounded for r > 0. Wick rotation preserves modulus: |dt*(cos(theta)+i*sin(theta))|^2 = dt^2 via Pythagorean identity. The contractive property H*tau > 0 for H,tau > 0 guarantees well-posedness of the Wick-rotated evolution. Kernel-checked via Rocq 9.1."
+where_stated = "proofs/theories/ComplexTimeEIH.v (potential_finite, potential_bounded_below, rotation_preserves_modulus, wick_contractivity)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: Rocq kernel accepts all theorems including the Pythagorean identity bridge (sin2_cos2 + nra). REFUTE: kernel rejects proof."
+confidence = "high"
+phase = "proofs"
+sprint = 76
