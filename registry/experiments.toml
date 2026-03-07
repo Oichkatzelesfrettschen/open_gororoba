@@ -2216,3 +2216,23 @@ output = ["run"]
 run = "cargo run --release --bin flyby-crucible -- --trace-h"
 run_command_sha256 = ""
 claims = ["C-1101", "C-1102"]
+
+[[experiment]]
+id = "E-096"
+title = "ETA_WAKE gravitational focusing wake parameter sweep"
+binary = "flyby-crucible"
+binary_registered = true
+binary_experiment_declared = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
+method = "Sweep ETA_WAKE=[0.0,0.05,0.10,0.15,0.20] with 3-body 64D Chingon drag. Measures effect of asymmetric (cos theta_wind) density modulation on 6 flyby delta-V predictions. Tests whether gravitational focusing wake can flip Rosetta-I sign."
+input = "Anderson et al. (2008) flyby parameters, arXiv:2112.05718 + arXiv:2502.04456 + arXiv:1409.2858 (gravitational focusing literature)"
+output = ["run"]
+run = "for eta in 0.00 0.05 0.10 0.15 0.20; do cargo run --release --bin flyby-crucible -- --eta-wake $eta; done"
+run_command_sha256 = ""
+claims = ["C-1103", "C-1104"]
+status = "complete"
+status_note = "FALSIFIED Sprint 71.3. Rosetta-I ratio linear from -14.89 to -12.12. Sign cannot flip. NEAR worsens from 1.11 to 1.31."
+lineage_id = "XL-096"
+input_path_refs = ["data/external/arxiv_2502.04456_earth_dm_wind.pdf", "data/external/arxiv_2112.05718_gravitational_focusing.pdf", "data/external/arxiv_1409.2858_earth_moon_modulation.pdf"]
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"

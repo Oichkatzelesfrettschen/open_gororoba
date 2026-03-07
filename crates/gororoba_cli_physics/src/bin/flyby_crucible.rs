@@ -40,6 +40,37 @@ const V_WIND_GALACTIC: [f64; 3] = [-11.1, 232.24, 7.25];
 /// geometric coupling to the flyby trajectory.
 const SOI_R_EARTH: f64 = 50.0;
 
+/// Gravitational focusing wake amplitude.
+///
+/// EXPLOREME(Sprint 71.3): ETA_WAKE PARTIALLY EFFECTIVE, CANNOT FIX ROSETTA-I.
+///
+/// Earth's gravity deflects DM particles passing nearby, creating a
+/// density enhancement (caustic) downstream in the DM wind flow.
+/// The wake has a cos(theta) profile along the wind axis:
+///   rho_wake(r, theta) = rho_0 * (1 + ETA_WAKE * cos(theta))
+///
+/// Physical motivation:
+/// - Lundberg & Edsjo (2004): gravitational focusing ~10-20% enhancement
+/// - arXiv:2112.05718 (Lee et al. 2021): angular dependence from lensing
+/// - arXiv:2502.04456 (2025): directional DM wind enhancement near Earth
+///
+/// Sprint 71.3 sweep results (ETA_WAKE = 0.0 / 0.05 / 0.10 / 0.15 / 0.20):
+///   Rosetta-I ratio: -14.89 / -14.19 / -13.50 / -12.81 / -12.12
+///   NEAR ratio:       1.11  /  1.16  /  1.21  /  1.26  /  1.31
+///   Galileo ratio:    0.496 /  0.495 /  0.494 /  0.494 /  0.493
+///   Cassini ratio:    0.226 /  0.231 /  0.236 /  0.241 /  0.245
+///
+/// The wake correctly breaks inbound/outbound symmetry (cos is odd),
+/// reducing |Rosetta-I| by ~18% at ETA_WAKE=0.20. But the baseline
+/// is -26.8 mm/s; would need ETA_WAKE ~ 2.2 (220% modulation) to flip
+/// sign. This is unphysical.
+///
+/// CONCLUSION: density modulation (both tidal and wake) CANNOT fix
+/// Rosetta-I. The sign problem is structural in the 64D cross-coupling
+/// block geometry. Fix must come from higher-dimensional embedding
+/// (Sprint 73: 256D with 85 axes/body vs 21 at 64D).
+const ETA_WAKE: f64 = 0.10;
+
 /// Altitude-dependent DM density enhancement factor.
 ///
 /// Models Earth's gravitational focusing of galactic DM as a power-law
@@ -69,6 +100,36 @@ fn dm_density_factor(r_km: f64) -> f64 {
         return 1.0;
     }
     (R_EARTH / r_km).powi(3)
+}
+
+/// DM density with gravitational focusing wake along the wind axis.
+///
+/// Combines the 1/r^3 NFW radial profile with the cos^2(theta) wake
+/// enhancement. The wake is strongest when the spacecraft is directly
+/// downstream of Earth in the DM wind flow (cos_wind = +1), and
+/// weakest when upstream (cos_wind = -1, where cos^2 still gives +1,
+/// but note the asymmetry below).
+///
+/// The SIGNED wake uses cos_wind (not cos^2) to break the up/downstream
+/// symmetry: downstream (cos > 0) gets enhancement, upstream (cos < 0)
+/// gets depletion. This is physically correct because the gravitational
+/// focusing wake is asymmetric -- particles are focused INTO the wake
+/// downstream and DEPLETED upstream where the mass absorbs/deflects them.
+fn dm_wake_density_factor(r_km: f64, r_pos: &Vector3<f64>, v_wind: &Vector3<f64>, eta_wake: f64) -> f64 {
+    let base = dm_density_factor(r_km);
+    if eta_wake == 0.0 {
+        return base;
+    }
+    let r_n = r_pos.norm();
+    let v_n = v_wind.norm();
+    if r_n < 1.0 || v_n < 1.0 {
+        return base;
+    }
+    // cos(theta) between position and wind direction
+    // Positive when spacecraft is downstream (wind blows toward it from Earth)
+    let cos_wind = r_pos.dot(v_wind) / (r_n * v_n);
+    // Asymmetric wake: enhance downstream, deplete upstream
+    base * (1.0 + eta_wake * cos_wind)
 }
 
 // EXPLOREME(Sprint 71.1): tidal_dm_density FALSIFIED.
@@ -397,6 +458,7 @@ fn run_flyby(
     v_wind: &Vector3<f64>,
     ephem: Option<&EphemerisLoader>,
     trace_h: bool,
+    eta_wake: f64,
 ) -> (f64, f64, Vec<[f64; 7]>, Vec<[f64; 12]>) {
     let (pos_init, vel_init) = hyperbolic_initial_state(cfg, t_before);
     let total_time = t_before + t_after;
@@ -462,7 +524,9 @@ fn run_flyby(
                     }
 
                     if use_chingon {
-                        let alpha_eff = ALPHA_CHINGON * dm_density_factor(p_in.norm());
+                        let alpha_eff = ALPHA_CHINGON * dm_wake_density_factor(
+                            p_in.norm(), &p_in, v_wind, eta_wake,
+                        );
                         a += compute_chingon_bivector_drag_3body(
                             p_in, v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
                         );
@@ -476,7 +540,7 @@ fn run_flyby(
                     let h = p.cross(&v);
                     let h_dot_vw = h.dot(v_wind);
                     let cross_sign = if h_dot_vw > 0.0 { 1.0 } else { -1.0 };
-                    let dm_fac = dm_density_factor(p.norm());
+                    let dm_fac = dm_wake_density_factor(p.norm(), &p, v_wind, eta_wake);
                     let h_lunar = (p - r_moon).cross(&v);
                     let h_solar = (p - r_sun).cross(&v);
                     let a_chingon_mag = if use_chingon {
@@ -628,6 +692,11 @@ struct Cli {
     #[arg(long)]
     t_after: Option<f64>,
 
+    /// Override the gravitational focusing wake amplitude (ETA_WAKE).
+    /// Default: 0.10. Set to 0.0 to disable wake density modulation.
+    #[arg(long)]
+    eta_wake: Option<f64>,
+
     /// Output trajectory CSV file prefix.
     #[arg(long)]
     csv_prefix: Option<String>,
@@ -738,6 +807,9 @@ fn main() -> anyhow::Result<()> {
     println!("{}", "-".repeat(108));
 
     // Run all flyby simulations in parallel
+    let eta_wake = cli.eta_wake.unwrap_or(ETA_WAKE);
+    println!("  eta_wake = {:.3}", eta_wake);
+
     let t1 = std::time::Instant::now();
     let results: Vec<_> = configs
         .par_iter()
@@ -749,7 +821,7 @@ fn main() -> anyhow::Result<()> {
 
             let (v_ctrl, v_chingon, traj, h_trace_data) = run_flyby(
                 cfg, &avt, cli.dt, t_before, t_after, stride, &v_wind,
-                ephem.as_ref(), cli.trace_h,
+                ephem.as_ref(), cli.trace_h, eta_wake,
             );
 
             let delta_v_mm_s = (v_chingon - v_ctrl) * 1e6;

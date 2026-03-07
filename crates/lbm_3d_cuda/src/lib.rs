@@ -58,6 +58,8 @@ pub struct LbmSolver3DCuda {
     apply_mask_kernel: CudaFunction,
     convert_real_to_complex_kernel: CudaFunction,
     convert_complex_to_real_kernel: CudaFunction,
+    #[allow(dead_code)]
+    update_tau_from_voudon_kernel: CudaFunction,
     lbm_block_dim: (u32, u32, u32),
     #[cfg(feature = "cufft")]
     fft_plan: Option<cudarc::cufft::sys::cufftHandle>,
@@ -196,6 +198,7 @@ impl LbmSolver3DCuda {
             Precision::FP64 => "convert_complex_f32_to_real_fp64_kernel",
             Precision::FP32 => "convert_complex_to_real_kernel",
         })?;
+        let update_tau_from_voudon_kernel = module.load_function("update_tau_from_voudon_frustration_kernel")?;
 
         let es = match precision {
             Precision::FP32 => 4,
@@ -304,6 +307,7 @@ impl LbmSolver3DCuda {
             apply_mask_kernel,
             convert_real_to_complex_kernel,
             convert_complex_to_real_kernel,
+            update_tau_from_voudon_kernel,
             lbm_block_dim,
             #[cfg(feature = "cufft")]
             fft_plan: None,
@@ -495,6 +499,25 @@ impl LbmSolver3DCuda {
                 .arg(&nz_i);
             unsafe { init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
         }
+        Ok(())
+    }
+
+    pub fn update_tau_from_voudon(
+        &mut self,
+        frustration: &CudaSlice<f32>,
+        tau_base: f32,
+        alpha_voudon: f32,
+    ) -> Result<()> {
+        let n_cells = self.n_cells as u32;
+        let n_cells_i = n_cells as i32;
+        let mut b = self.stream.launch_builder(&self.update_tau_from_voudon_kernel);
+        b.arg(&mut self.d_tau)
+            .arg(frustration)
+            .arg(&tau_base)
+            .arg(&alpha_voudon)
+            .arg(&n_cells_i);
+
+        unsafe { b.launch(Self::launch_config_1d(n_cells, self.precision)) }?;
         Ok(())
     }
 
