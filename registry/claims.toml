@@ -15315,3 +15315,28 @@ confidence = "high"
 phase = "physics"
 sprint = 71
 dependencies = ["C-1101"]
+
+[[claim]]
+id = "C-1103"
+statement = "ETA_WAKE gravitational focusing wake (cos(theta_wind) density modulation) reduces Rosetta-I magnitude by ~18% at ETA_WAKE=0.20 but CANNOT flip the sign. Ratio goes from -14.89 (eta=0) to -12.12 (eta=0.20). Would need ETA_WAKE~2.2 (unphysical). Density modulation alone cannot fix Rosetta-I."
+where_stated = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs (dm_wake_density_factor)"
+status = "Falsified"
+status_note = "FALSIFIED Sprint 71.3. Sweep ETA_WAKE=[0.0,0.05,0.10,0.15,0.20] shows linear decrease in Rosetta-I ratio but sign remains negative. NEAR ratio worsens from 1.11 to 1.31. Other 4 flybys barely affected (<5%)."
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFY: ETA_WAKE < 0.30 flips Rosetta-I sign to positive. REFUTE: sign stays negative for all physical ETA_WAKE values."
+confidence = "high"
+phase = "physics"
+sprint = 71
+dependencies = ["C-1101"]
+
+[[claim]]
+id = "C-1104"
+statement = "Rosetta-I flyby anomaly sign problem is structural in the 64D cross-coupling block geometry (Solar triad projection, axes 43-63). Neither density modulation (tidal S71.1, wake S71.3) nor 3-body embedding (S71.2) can fix it at 64D. Higher-dimensional embedding (256D, 85 axes/body) is required."
+where_stated = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
+status = "Active"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFY: 256D flyby crucible produces 6/6 correct signs. REFUTE: 256D still fails on Rosetta-I, implying the problem is in the embedding strategy, not dimension."
+confidence = "medium"
+phase = "physics"
+sprint = 71
+dependencies = ["C-1103", "C-1101"]

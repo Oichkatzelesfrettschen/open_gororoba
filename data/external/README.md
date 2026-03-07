@@ -39,6 +39,28 @@ The loader (`gororoba_cli_physics::ephemeris_loader`) uses anise 0.9.5 to parse
 this file. All state vectors are returned in ICRS/J2000 ECI -- zero frame rotation
 required for flyby RA/Dec coordinates.
 
+## Dark Matter Wind / Gravitational Focusing Papers (Sprint 71.3)
+
+Used for ETA_WAKE downwind caustic parameter in flyby crucible.
+
+- **arxiv_2502.04456_earth_dm_wind.pdf**
+  - Title: Enhanced Axion-wind near Earth's Surface
+  - Source: `https://arxiv.org/pdf/2502.04456`
+  - Date: Feb 2025
+  - Relevance: Earth's gravitational potential modifies local DM wind velocity and density
+
+- **arxiv_2112.05718_gravitational_focusing.pdf**
+  - Title: Gravitational focusing of light bosonic dark matter
+  - Source: `https://arxiv.org/pdf/2112.05718`
+  - Date: Dec 2021
+  - Relevance: Quantifies density enhancement downstream of Earth in DM wind (caustic wake)
+
+- **arxiv_1409.2858_earth_moon_modulation.pdf**
+  - Title: Monthly Modulation in Dark Matter Direct-Detection Experiments
+  - Source: `https://arxiv.org/pdf/1409.2858`
+  - Date: Sep 2014
+  - Relevance: Moon's gravitational focusing creates monthly density modulation at Earth
+
 ## Known Gap
 
 `PROVENANCE.local.json` records hashes/sizes/mtimes while `SOURCES.toml` carries source URLs and blocker workflow state.

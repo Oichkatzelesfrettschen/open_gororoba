@@ -13,6 +13,7 @@
 
 // dimensional module is always available (has CPU fallback + wide-index API)
 pub mod dimensional;
+pub mod voudon;
 #[cfg(feature = "gpu")]
 mod eta_matrix;
 #[cfg(feature = "gpu")]
