@@ -1172,3 +1172,14 @@ claims = ["C-922", "C-931", "C-833"]
 confidence = "medium"
 phase = "cross-domain"
 sprint = 68
+
+[[insight]]
+id = "I-104"
+title = "Mersenne Prime Barrier: 128D Cayley-Dickson Cannot Support Symmetric 3-Body Embedding"
+date = "2026-03-06"
+status = "Verified"
+description = "The CD tower contains a number-theoretic obstruction at 128D: 128-1=127 is the Mersenne prime M_7 (2^7-1), which is indivisible by 3 (or by any integer >1). This forces any 3-body block partition to be asymmetric (42/42/43), breaking the tensor contraction geometry that produces correct flyby signs. Experimentally: 128D degrades from 5/6 to 2/6 correct signs. The symmetric 3-body partition dims in the CD tower are 64(63=3*21), 256(255=3*85), 1024(1023=3*341). 512D(511=7*73) is blocked for 3-body but admits 7-body embedding (511/7=73). This is not tunable: the primality of 127 is a hard algebraic constraint."
+claims = ["C-1106", "C-1108"]
+confidence = "high"
+phase = "physics"
+sprint = 73

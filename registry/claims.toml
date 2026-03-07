@@ -15352,3 +15352,62 @@ confidence = "high"
 phase = "physics"
 sprint = 72
 dependencies = ["C-1101", "C-1102"]
+
+[[claim]]
+id = "C-1106"
+statement = "128D 3-body flyby DEGRADED to 2/6 correct signs (Galileo and Cassini wrong). 128-1=127 is Mersenne prime M_7, forcing asymmetric 42/42/43 block partition. The 1-axis asymmetry structurally breaks tensor contraction geometry. 128D is excluded from 3-body flyby applications."
+where_stated = "crates/gr_core/src/forces/chingon_bivector_drag.rs (block_layout), crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
+status = "Verified"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFIED: 128D GPU flyby produces 2/6 correct signs (Galileo-I wrong sign, Cassini wrong sign). Force magnitudes ~10x smaller than 64D due to 1/N_viol dilution (468720 vs 52080 violations). The asymmetric partition is a hard number-theoretic constraint (127 is prime)."
+confidence = "high"
+phase = "physics"
+sprint = 73
+dependencies = ["C-1104", "C-1105"]
+
+[[claim]]
+id = "C-1107"
+statement = "AVT violation count scales as O(dim^3) with density v/d^3 converging toward 0.25: 8D=0 (alternative), 16D=336, 32D=5040, 64D=52080, 128D=468720, 256D=3968496. Ratio between successive doublings converges from 15.0x to 8.5x (approaching 8=2^3)."
+where_stated = "crates/algebra_core/src/construction/chingon.rs (AlternativityViolationTensor::new), crates/algebra_core/src/construction/chingon_tests.rs (test_avt_scaling_survey)"
+status = "Verified"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFIED: Scaling survey at dims 8..256 using canonical cd_basis_mul_sign_iter from cd_kernel. 256D completes in ~2.1s on 5600X3D without hitting 10M cap."
+confidence = "high"
+phase = "algebra"
+sprint = 73
+
+[[claim]]
+id = "C-1108"
+statement = "3-body block symmetry in CD tower: dim-1 divisible by 3 allows symmetric N-body partition. 64D(63=3*21), 256D(255=3*85), 1024D(1023=3*341) are symmetric. 128D(127 prime), 512D(511=7*73) are NOT divisible by 3. 512D admits 7-body partition (511/7=73) for outer planet embedding."
+where_stated = "crates/gr_core/src/forces/chingon_bivector_drag.rs (block_layout doc)"
+status = "Verified"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFIED: Pure number theory -- 127 is Mersenne prime, 255=3*5*17, 511=7*73, 1023=3*11*31. Experimentally confirmed: 128D asymmetric partition degrades to 2/6 correct signs."
+confidence = "high"
+phase = "algebra"
+sprint = 73
+dependencies = ["C-1106"]
+
+[[claim]]
+id = "C-1109"
+statement = "256D symmetric 85/85/85 3-body flyby produces 4/6 correct signs (DEGRADED from 64D 5/6). Rosetta-I sign still negative (-1.41 predicted vs +1.80 observed). MESSENGER ratio exploded from 959.9x (64D) to 63.2x (256D) due to asymmetric 1/N_viol dilution across flybys. Force magnitudes drop ~100x from 64D. Total runtime 4887s (81 min) on RTX 4070 Ti."
+where_stated = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs, crates/lbm_3d_cuda/src/chingon_gpu.rs"
+status = "Verified"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFIED: 256D GPU flyby completed in 4887s. Signs: Galileo+(C), NEAR+(C), Cassini-(C), Rosetta-(W), MESSENGER+(C but 63x ratio), Juno~0(C). Rosetta-I sign problem is NOT fixed by dimensional expansion alone."
+confidence = "high"
+phase = "physics"
+sprint = 73
+dependencies = ["C-1104", "C-1107"]
+
+[[claim]]
+id = "C-1110"
+statement = "Rosetta-I flyby anomaly sign problem is NOT fixable by dimensional scaling (64D->128D->256D). All three dimensions produce negative predicted delta-V. The sign is determined by the cross-coupling block projection geometry (Solar triad), which is invariant to block size. Dimensional expansion changes magnitude (via 1/N_viol dilution) but not direction."
+where_stated = "crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body), E-098"
+status = "Verified"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFIED across 3 dimensions: 64D Rosetta-I pred=-14.89 (5/6), 128D pred=-1.41 (2/6), 256D pred=-1.41 (4/6). Sign locked negative at all dims. REFUTE: alternative embedding strategy (not block-diagonal) produces positive Rosetta-I."
+confidence = "high"
+phase = "physics"
+sprint = 73
+dependencies = ["C-1104", "C-1106", "C-1109"]

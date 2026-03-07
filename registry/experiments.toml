@@ -4,7 +4,7 @@
 [experiments]
 updated = "2026-03-06"
 authoritative = true
-experiment_count = 88
+experiment_count = 89
 deterministic_count = 60
 gpu_count = 11
 seeded_count = 39
@@ -2254,6 +2254,28 @@ claims = ["C-1105"]
 status = "complete"
 status_note = "VERIFIED Sprint 72. All 6 flybys match within f32 precision. MESSENGER ratio: 959.9371 (GPU) vs 959.9377 (CPU)."
 lineage_id = "XL-097"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-098"
+title = "Dimensional scaling: 128D + 256D GPU flyby crucible"
+description = "Test Chingon 3-body flyby predictions across dimensions 64D (baseline 5/6), 128D (Mersenne prime asymmetric partition), and 256D (symmetric 85/85/85). Quantify AVT violation count scaling (O(d^3)) and force magnitude dilution (1/N_viol). RTX 4070 Ti GPU pipeline with dimension-parametric CUDA kernels."
+date = "2026-03-06"
+sprint = 73
+binary_registered = true
+binary_experiment_declared = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
+method = "Run flyby crucible with --dim 128 --gpu and --dim 256 --gpu. Compare sign patterns and magnitudes against 64D CPU baseline."
+input = "AVT at dims 128 (468720 violations) and 256 (3968496 violations), 6 flyby configs"
+output = ["run"]
+run = "cargo run --release --bin flyby-crucible --features gpu -- --dim 256 --gpu"
+run_command_sha256 = ""
+claims = ["C-1106", "C-1107", "C-1108", "C-1109", "C-1110"]
+status = "complete"
+status_note = "COMPLETE. 128D: 2/6 signs (Mersenne prime asymmetry). 256D: 4/6 signs (Rosetta-I still negative, MESSENGER ratio exploded). Dimensional scaling DOES NOT fix Rosetta-I sign. 256D runtime: 4887s on RTX 4070 Ti."
+lineage_id = "XL-098"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
