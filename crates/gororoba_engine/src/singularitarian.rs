@@ -573,7 +573,7 @@ mod tests {
 
         engine.initialize_cmb_analyzer(0.0172);
         let sep = engine.cmb_planck_separation().unwrap();
-        assert!(sep >= 0.0 && sep <= 180.0, "separation={sep}");
+        assert!((0.0..=180.0).contains(&sep), "separation={sep}");
     }
 
     #[test]

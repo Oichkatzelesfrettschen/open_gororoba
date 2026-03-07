@@ -243,12 +243,11 @@ mod tests {
         }
     }
 
-    #[test]
-    fn test_flyby_epoch_ordering() {
+    const _: () = {
         assert!(flyby_epochs::GALILEO < flyby_epochs::NEAR);
         assert!(flyby_epochs::NEAR < flyby_epochs::CASSINI);
         assert!(flyby_epochs::CASSINI < flyby_epochs::ROSETTA_I);
         assert!(flyby_epochs::ROSETTA_I < flyby_epochs::MESSENGER);
         assert!(flyby_epochs::MESSENGER < flyby_epochs::JUNO);
-    }
+    };
 }
