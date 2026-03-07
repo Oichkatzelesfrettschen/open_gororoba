@@ -1,4 +1,4 @@
-use algebra_core::construction::higher_cd::DekaVoudon;
+use crate::higher_cd::DekaVoudon;
 use std::collections::HashMap;
 
 /// Mapping of 1024D basis blocks to Grand Unified Groups (GUT).
@@ -9,10 +9,16 @@ pub struct ForceSectorMapping {
     pub so10_block: Vec<usize>,
 }
 
+impl Default for ForceSectorMapping {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ForceSectorMapping {
     /// Construct the force sector mapping from the 1024D manifold.
     ///
-    /// We identify sub-algebras by checking for closed multiplication 
+    /// We identify sub-algebras by checking for closed multiplication
     /// under the Cayley-Dickson rule.
     pub fn new() -> Self {
         // Mock mapping for now: in Sprint 75, we'll use Gemma to 

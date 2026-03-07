@@ -30,8 +30,8 @@ impl<M: SpacetimeMetric> SpacetimeMetric for FractalMetric<M> {
             let scale = (r_val / self.r_0).powf(self.d_f - 4.0);
             
             // Modify space-like components
-            for i in 1..DIM {
-                g[i][i] *= scale;
+            for (i, row) in g.iter_mut().enumerate().skip(1) {
+                row[i] *= scale;
             }
         }
         

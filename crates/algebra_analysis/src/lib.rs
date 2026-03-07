@@ -11,7 +11,6 @@
 pub mod annihilator;
 pub mod associator_entropy;
 pub mod avt_entropy;
-pub mod bell_inequality;
 pub mod boxkite_alignment;
 pub mod boxkites;
 pub mod codebook;
@@ -20,7 +19,6 @@ pub mod fractal_analysis;
 pub mod graph_projections;
 pub mod grassmannian;
 pub mod homotopy_algebra;
-pub mod particle_physics;
 pub mod legacy_crossval;
 pub mod prefix_chain_theorem;
 pub mod projective_geometry;

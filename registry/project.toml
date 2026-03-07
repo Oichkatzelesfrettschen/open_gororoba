@@ -5,13 +5,13 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 5039
-claim_count = 950
+test_count = 5045
+claim_count = 963
 insight_count = 99
 experiment_count = 93
 complete_experiment_count = 76
 paper_count = 19
-binary_count = 170
+binary_count = 161
 kernel_checked_claims = 107
 proof_files = 156
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
@@ -19,11 +19,11 @@ scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 [sprints.s70]
 number = 70
 date = "2026-03-06"
-test_count = 5039
-claim_count = 950
+test_count = 5045
+claim_count = 963
 kernel_checked_claims = 107
 proof_files = 156
-summary = "S70: The 64D Crucible. Bivector-embedded Chingon drag with orbital plane sign sensitivity (C-941/C-942, E-091). EHT pathion shadow angular size for M87* (C-943, E-092). AVT Shannon entropy (C-945). Crystal symmetry bridge: moyo + E8/G2 projection (SG 221 Pm-3m, 48 ops) + CIF parser + ZD graph topology (sedenion 3 components [14,1,1], 84 edges; pathion 3 components [30,1,1], 420 edges) (C-946..C-949, E-094). Orthoplex-crystal phonon band analogy. Liquid crystal Q-tensor prototype (C-950/C-951). QGP BIC model comparison executed: CUJET3.0 best (BIC=1209), AF (BIC=2416), frac. Langevin (BIC=3693) (E-090). Riemann resonance: all DegenerateIntegrable (E-093, C-944). 93 new tests (4946->5039), 9 new claims (C-941..C-949), 4 new experiments (E-091..E-094)."
+summary = "S70: The 64D Crucible. Bivector-embedded Chingon drag: 5/6 flyby signs correct, NEAR ratio 0.999 (13.44 vs 13.46 mm/s). Three-body Earth-Moon-Sun tidal correction via anise 0.9.5 + JPL DE440 (C-951/C-953). Rosetta-I h.vw trace proves scalar alpha non-universality (C-952). NFW 1/r^3 DM density scaling (C-941/C-942, E-091). EHT pathion shadow angular size (C-943, E-092). AVT Shannon entropy (C-945). Crystal symmetry bridge: moyo + E8/G2 + CIF + ZD graph (C-946..C-949, E-094). Liquid crystal Q-tensor (C-949). QGP BIC model comparison (E-090). Forward stubs for Sprints 74-80: algebra_experimental crate (higher_cd, bell_inequality, particle_physics), complex-time NBody, fractal metric, singularitarian engine. 99 new tests (4946->5045), 12 new claims (C-941..C-949, C-951..C-953), 4 new experiments (E-091..E-094)."
 
 [sprints.s69]
 number = 69

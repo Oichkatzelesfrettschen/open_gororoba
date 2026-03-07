@@ -140,10 +140,12 @@ dependencies = [
  "cd_kernel",
  "nalgebra 0.33.2",
  "num-bigint",
+ "num-complex",
  "petgraph 0.7.1",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
+ "wide",
 ]
 
 [[package]]
@@ -3665,9 +3667,11 @@ name = "gororoba_engine"
 version = "0.1.0"
 dependencies = [
  "algebra_core",
+ "algebra_experimental",
  "anyhow",
  "cd_spin_bridge",
  "chrono",
+ "cosmology_core",
  "criterion",
  "cudarc 0.19.3",
  "gororoba_gpu_bridge",
@@ -3680,9 +3684,11 @@ dependencies = [
  "nalgebra 0.33.2",
  "ndarray 0.16.1",
  "neural_homotopy",
+ "num-complex",
  "optics_core",
  "proptest",
  "pyo3",
+ "quantum_core",
  "rand 0.8.5",
  "serde",
  "sha2",
@@ -6764,6 +6770,7 @@ dependencies = [
 name = "quantum_core"
 version = "0.1.0"
 dependencies = [
+ "algebra_experimental",
  "approx",
  "criterion",
  "cudarc 0.19.3",

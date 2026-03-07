@@ -6,6 +6,7 @@ description = "Quantum physics: MERA tensor networks, holographic entropy, Ryu-T
 license = "MIT"
 
 [dependencies]
+algebra_experimental = { path = "../algebra_experimental" }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
 num-complex = { workspace = true }

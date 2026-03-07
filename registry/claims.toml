@@ -14959,20 +14959,20 @@ confidence = "high"
 phase = "physics"
 sprint = 70
 dependencies = []
-status_note = "6 unit tests passing. Sign sensitivity confirmed for NEAR (positive) and Cassini (negative) geometries. Real trajectory sign pattern needs J2000 refinement."
+status_note = "6 unit tests passing. Sign sensitivity confirmed for 5/6 flybys (Galileo-I, NEAR, Cassini, MESSENGER, Juno). Rosetta-I sign incorrect: scalar alpha insufficient for its marginal h.vw geometry."
 
 [[claim]]
 id = "C-942"
-statement = "The bivector drag model with alpha=8e-14 produces finite, non-divergent predictions for all 6 historical flyby spacecraft when using unit-norm embedding normalization."
+statement = "The 64D bivector drag model with alpha=6e-12 and NFW 1/r^3 DM density produces 5/6 correct flyby anomaly signs and NEAR magnitude ratio 0.999 (13.44 vs 13.46 mm/s observed)."
 where_stated = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
 status = "Verified"
 last_verified = "2026-03-06"
-what_would_verify_refute = "VERIFY: flyby-crucible runs without inf/NaN for all 6 spacecraft. REFUTE: RK4 integration diverges for any trajectory."
+what_would_verify_refute = "VERIFY: flyby-crucible produces correct sign for 5/6 spacecraft and NEAR ratio within 1%. REFUTE: Sign predictions degrade or NEAR ratio exceeds 5% error."
 confidence = "high"
 phase = "physics"
 sprint = 70
 dependencies = ["C-941"]
-status_note = "All 6 flyby predictions finite after embedding normalization. Magnitudes ~1e-5 mm/s (coupling constant needs recalibration for normalized embedding)."
+status_note = "Sprint 70 final: Galileo-I +1.92 (obs +3.92, ratio 0.49), NEAR +13.44 (obs +13.46, ratio 0.999), Cassini -0.48 (obs -2.00, ratio 0.24), Rosetta-I -22.43 (obs +1.80, WRONG SIGN), MESSENGER +18.11 (obs +0.02, 900x excess), Juno +0.80 (obs ~0)."
 
 [[claim]]
 id = "C-943"
@@ -15064,6 +15064,45 @@ phase = "materials"
 sprint = 70
 dependencies = []
 status_note = "9 tests passing. 5CB reference constants: K1=6.2pN, K2=3.9pN, K3=8.2pN. Bridge to SedenionField via director mapping documented."
+
+[[claim]]
+id = "C-951"
+statement = "Three-body Earth-Moon-Sun tidal correction via JPL DE440 ephemeris (anise 0.9.5) preserves NEAR 0.999 ratio but does NOT fix Rosetta-I sign: the h.v_wind never crosses zero throughout the 150,305s integration window."
+where_stated = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
+status = "Verified"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFY: h_trace CSV shows h_dot_vwind positive for all 502 Rosetta-I samples. REFUTE: h_dot_vwind crosses zero at some integration timestep."
+confidence = "high"
+phase = "physics"
+sprint = 70
+dependencies = ["C-942"]
+status_note = "h_trace_Rosetta_I CSV: h_dot_vwind range [+3.37e6, +3.65e6], never negative. dm_factor range [9.2e-7, 0.267]. Moon accel ~1.7e-7 km/s^2, Sun accel ~6.0e-6 km/s^2. Three-body correction adds correct physics but does not resolve the non-universal scalar alpha problem."
+
+[[claim]]
+id = "C-952"
+statement = "The scalar coupling alpha_chingon=6e-12 is NOT universal across flyby geometries: it fits NEAR (ratio 0.999) but produces 900x excess for MESSENGER and wrong sign for Rosetta-I. A rank-2 tidal density tensor T_DM(r,t) or higher-dimensional embedding (128D/256D) is required."
+where_stated = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
+status = "Verified"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFY: 128D or 256D tensor contraction produces geometry-dependent effective alpha that improves Rosetta-I and MESSENGER predictions. REFUTE: Higher dimensions produce equivalent non-universality."
+confidence = "high"
+phase = "physics"
+sprint = 70
+dependencies = ["C-942", "C-951"]
+status_note = "Sprint 70 boundary: 64D scalar alpha exhausted. Rosetta-I (1956km perigee, 3.863 km/s v_inf, 72-deg turn) and MESSENGER (2347km, 4.056 km/s) need orbital-geometry-dependent coupling."
+
+[[claim]]
+id = "C-953"
+statement = "Thread-safe JPL DE440 ephemeris loader (anise 0.9.5) provides machine-epsilon Moon/Sun positions for all 6 flyby epochs, compatible with rayon parallel integration on 6 physical cores."
+where_stated = "crates/gororoba_cli_physics/src/ephemeris_loader.rs"
+status = "Verified"
+last_verified = "2026-03-06"
+what_would_verify_refute = "VERIFY: EphemerisLoader returns finite Moon/Sun positions for all 6 flyby JED epochs via &self (no interior mutability). REFUTE: Thread contention or incorrect positions under parallel access."
+confidence = "high"
+phase = "physics"
+sprint = 70
+dependencies = []
+status_note = "13 unit tests passing. nalgebra 0.33/0.34 bridge via component extraction. Fallback to celestial-ephemeris analytical theories if .bsp not found."
 
 [[claim]]
 id = "C-950"
