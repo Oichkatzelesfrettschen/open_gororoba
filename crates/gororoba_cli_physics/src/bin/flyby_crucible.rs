@@ -71,6 +71,54 @@ fn dm_density_factor(r_km: f64) -> f64 {
     (R_EARTH / r_km).powi(3)
 }
 
+/// Tidal DM density: anisotropic modifier using Moon/Sun alignment.
+///
+/// The scalar 1/r^3 profile is stretched along the Earth-Moon and
+/// Earth-Sun axes. When the spacecraft is aligned with the Moon
+/// (cos^2(theta) ~ 1), density is enhanced. When perpendicular
+/// (cos^2(theta) ~ 0), density equals the isotropic base.
+///
+/// eta_moon: tidal stretching strength from lunar gravity
+/// eta_sun: tidal stretching strength from solar gravity (weaker)
+///
+/// Physical motivation: the Moon's gravity well focuses galactic DM
+/// infall along the Earth-Moon axis, creating tidal density ridges
+/// analogous to oceanic tides but in the dark matter halo.
+const ETA_MOON: f64 = 0.15;
+const ETA_SUN: f64 = 0.05;
+
+fn tidal_dm_density(
+    r_sc: Vector3<f64>,
+    r_moon: Vector3<f64>,
+    r_sun: Vector3<f64>,
+) -> f64 {
+    let r_km = r_sc.norm();
+    let base = dm_density_factor(r_km);
+
+    if r_km < 1.0 {
+        return base;
+    }
+
+    // cos(angle) between spacecraft and Moon directions
+    let r_moon_norm = r_moon.norm();
+    let cos_moon = if r_moon_norm > 1.0 {
+        r_sc.dot(&r_moon) / (r_km * r_moon_norm)
+    } else {
+        0.0
+    };
+
+    // cos(angle) between spacecraft and Sun directions
+    let r_sun_norm = r_sun.norm();
+    let cos_sun = if r_sun_norm > 1.0 {
+        r_sc.dot(&r_sun) / (r_km * r_sun_norm)
+    } else {
+        0.0
+    };
+
+    // Anisotropic tidal stretching: density enhanced along Moon/Sun axes
+    base * (1.0 + ETA_MOON * cos_moon * cos_moon + ETA_SUN * cos_sun * cos_sun)
+}
+
 /// Galactic-to-J2000 ECI rotation matrix.
 ///
 /// IAU definition (Hipparcos-based, Murray 1989 / Liu+ 2011):
@@ -453,10 +501,8 @@ fn run_flyby(
                     }
 
                     if use_chingon {
-                        let alpha_eff = ALPHA_CHINGON * dm_density_factor(r);
-                        // Geocentric h gives NEAR ratio 0.999; barycentric degrades to 1.45.
-                        // Barycentric experiment (Sprint 71) showed EMB shift amplifies force
-                        // without fixing Rosetta-I sign. Keep geocentric for production.
+                        // Tidal DM density: anisotropic along Moon/Sun axes
+                        let alpha_eff = ALPHA_CHINGON * tidal_dm_density(p_in, r_moon, r_sun);
                         a += compute_chingon_bivector_drag(
                             p_in, v_in, *v_wind, alpha_eff, avt,
                         );
@@ -470,14 +516,13 @@ fn run_flyby(
                     let h = p.cross(&v);
                     let h_dot_vw = h.dot(v_wind);
                     let cross_sign = if h_dot_vw > 0.0 { 1.0 } else { -1.0 };
-                    let r = p.norm();
+                    let dm_fac = tidal_dm_density(p, r_moon, r_sun);
                     let a_chingon_mag = if use_chingon {
-                        let alpha_eff = ALPHA_CHINGON * dm_density_factor(r);
+                        let alpha_eff = ALPHA_CHINGON * dm_fac;
                         compute_chingon_bivector_drag(p, v, *v_wind, alpha_eff, avt).norm()
                     } else {
                         0.0
                     };
-                    let dm_fac = dm_density_factor(r);
                     let a_moon_mag = if ephem.is_some() {
                         let dp = p - r_moon;
                         let d = dp.norm();
