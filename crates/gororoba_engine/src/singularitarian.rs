@@ -1,8 +1,6 @@
-use algebra_core::construction::higher_cd::{Eriston, DekaVoudon};
-use gr_core::{FractalMetric, Schwarzschild, BodyState, NBodySystem};
+use gr_core::{FractalMetric, Schwarzschild, NBodySystem};
 use quantum_core::intention_operator::IntentionOperator;
 use cosmology_core::{DekaVoudonCmbAnalyzer, CosmicWebGenerator};
-use nalgebra::Vector3;
 use num_complex::Complex;
 
 /// The Singularitarian Engine: Unified Full-Stack Universal Simulator.
@@ -25,7 +23,6 @@ impl SingularitarianEngine {
     pub fn predict_sgr_a_spectrum(&self) -> Vec<f64> {
         // 1. Setup the physical environment (Schwarzschild + Fractal Metric)
         let sgr_a_mass = 4.1e6; // M_sun
-        let rs = 2.0 * sgr_a_mass; // units G=c=1
         let base_metric = Schwarzschild::new(sgr_a_mass);
         let _fractal_metric = FractalMetric::new(base_metric, self.fractal_dim, 1.0);
         

@@ -18,11 +18,15 @@ lattice_filtration = { path = "../lattice_filtration" }
 spin_tomography_core = { path = "../spin_tomography_core" }
 cd_spin_bridge = { path = "../cd_spin_bridge" }
 algebra_core = { path = "../algebra_core", features = ["lie"] }
+algebra_experimental = { path = "../algebra_experimental" }
 stats_core = { path = "../stats_core" }
 lbm_3d = { path = "../lbm_3d" }
 gr_core = { version = "0.1.0", path = "../gr_core" }
 spectral_core = { version = "0.1.0", path = "../spectral_core" }
 optics_core = { path = "../optics_core" }
+cosmology_core = { path = "../cosmology_core" }
+quantum_core = { path = "../quantum_core" }
+num-complex = { workspace = true }
 ndarray = { workspace = true }
 anyhow = { workspace = true }
 lbm_3d_cuda = { path = "../lbm_3d_cuda" }

@@ -1,4 +1,3 @@
-use algebra_core::construction::higher_cd::DekaVoudon;
 use nalgebra::Vector3;
 
 /// Analyzes 1024D DekaVoudon Global Bias vs CMB Axis of Evil alignment.
@@ -17,6 +16,7 @@ impl DekaVoudonCmbAnalyzer {
     }
 
     /// Projects the 1024D bias onto the 3D CMB multipole space.
+    #[allow(clippy::approx_constant)]
     pub fn project_axis(&self) -> Vector3<f64> {
         let mut axis = Vector3::zeros();
         for (i, &b) in self.bias_1024d.iter().enumerate() {

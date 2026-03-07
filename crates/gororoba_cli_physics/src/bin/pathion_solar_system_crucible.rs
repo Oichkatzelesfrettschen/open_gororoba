@@ -7,6 +7,7 @@ use data_core::spice::daf::DafReader;
 use data_core::spice::spk::SpkReader;
 use gr_core::{BodyState, NBodySystem};
 use nalgebra::{Vector3, Matrix3};
+use num_complex::Complex;
 use std::time::Instant;
 use std::collections::HashMap;
 
@@ -41,10 +42,12 @@ fn main() -> anyhow::Result<()> {
 
     for (&id, &gm) in &gm_map {
         if let Some(state) = spk.compute_state(0, id, t0) {
+            let p = Vector3::from(state.position);
+            let v = Vector3::from(state.velocity);
             system.bodies.push(BodyState {
                 id, mass: gm,
-                pos: Vector3::from(state.position),
-                vel: Vector3::from(state.velocity),
+                pos: p.map(Complex::from),
+                vel: v.map(Complex::from),
             });
         }
     }
@@ -73,7 +76,7 @@ fn main() -> anyhow::Result<()> {
     let start = Instant::now();
 
     for i in 1..=steps {
-        system.step(dt);
+        system.step(Complex::from(dt));
 
         if i % 1000 == 0 || i == steps {
             let t = t0 + (i as f64 * dt);
@@ -83,7 +86,9 @@ fn main() -> anyhow::Result<()> {
             let p_jpl_helio = Vector3::from(jpl_emb.position) - Vector3::from(jpl_sun.position);
 
             let p_sim_helio = system.bodies[earth_idx].pos - system.bodies[sun_idx].pos;
-            let drift = (p_sim_helio - p_jpl_helio).norm();
+            // Extract real part for comparison with JPL (imaginary time component is zero for real-time evolution)
+            let p_sim_real = p_sim_helio.map(|c| c.re);
+            let drift = (p_sim_real - p_jpl_helio).norm();
             println!("  T + {:>8.1} days: Helio Earth Drift = {:>10.4} km", t / 86400.0, drift);
         }
     }
@@ -97,7 +102,8 @@ fn main() -> anyhow::Result<()> {
     let jpl_emb_final = spk.compute_state(0, 3, t_final).unwrap();
     let p_jpl_helio_final = Vector3::from(jpl_emb_final.position) - Vector3::from(jpl_sun_final.position);
     let p_sim_helio_final = system.bodies[earth_idx].pos - system.bodies[sun_idx].pos;
-    let drift_final = (p_sim_helio_final - p_jpl_helio_final).norm();
+    let p_sim_real_final = p_sim_helio_final.map(|c| c.re);
+    let drift_final = (p_sim_real_final - p_jpl_helio_final).norm();
 
     println!("\n=== Final Results ===");
     println!("Total Heliocentric Earth secular drift (1 yr): {:.4} km", drift_final);

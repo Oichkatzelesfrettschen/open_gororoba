@@ -108,9 +108,10 @@ impl NBodySystem {
         let k4_p: Vec<_> = self.bodies.iter().map(|b| b.vel).collect();
         
         // Combine
+        let two = Complex::from(2.0);
         for i in 0..self.bodies.len() {
-            self.bodies[i].pos = initial_bodies[i].pos + (k1_p[i] + k2_p[i] * 2.0 + k3_p[i] * 2.0 + k4_p[i]) * (d_tau / 6.0);
-            self.bodies[i].vel = initial_bodies[i].vel + (k1_v[i] + k2_v[i] * 2.0 + k3_v[i] * 2.0 + k4_v[i]) * (d_tau / 6.0);
+            self.bodies[i].pos = initial_bodies[i].pos + (k1_p[i] + k2_p[i] * two + k3_p[i] * two + k4_p[i]) * (d_tau / 6.0);
+            self.bodies[i].vel = initial_bodies[i].vel + (k1_v[i] + k2_v[i] * two + k3_v[i] * two + k4_v[i]) * (d_tau / 6.0);
         }
     }
 }

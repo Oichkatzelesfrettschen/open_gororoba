@@ -1,5 +1,5 @@
-use algebra_core::construction::higher_cd::Routon;
-use algebra_core::construction::higher_cd::HigherAvt;
+use algebra_experimental::higher_cd::Routon;
+use algebra_experimental::higher_cd::HigherAvt;
 use ndarray::Array2;
 
 /// The Intention Operator (Phi_I0) for stabilizing high-dimensional chaos.

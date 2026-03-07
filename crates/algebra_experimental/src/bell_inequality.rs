@@ -1,5 +1,4 @@
-use algebra_core::construction::higher_cd::Eriston;
-use algebra_core::construction::higher_cd::HigherAvt;
+use crate::higher_cd::HigherAvt;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
@@ -49,7 +48,7 @@ pub fn chsh_violation_test_512d(seed: u64) -> BellTestResult {
     // We'll sample 4 settings (a, b, a', b')
     let n_samples = 10000;
     
-    let compute_correlation = |phi_a: f64, phi_b: f64| -> f64 {
+    let mut compute_correlation = |phi_a: f64, phi_b: f64| -> f64 {
         let mut total_corr = 0.0;
         for _ in 0..n_samples {
             // Random "hidden variable" lambda representing the internal state of the 512D vacuum
@@ -95,7 +94,7 @@ pub fn chsh_violation_test_512d(seed: u64) -> BellTestResult {
 ///
 /// A path is a sequence of basis elements e_i_1, e_i_2, ... e_i_k
 /// such that e_i_n * e_i_{n+1} = 0 (in a generalized sense).
-pub fn find_shared_zd_paths(dim: usize) -> Vec<Vec<usize>> {
+pub fn find_shared_zd_paths(_dim: usize) -> Vec<Vec<usize>> {
     // This will be implemented using the HigherAvt to find chains of non-alternative torques
     // that effectively "cancel" causality.
     Vec::new()

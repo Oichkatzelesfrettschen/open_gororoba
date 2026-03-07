@@ -11,6 +11,8 @@ algebra_analysis = { workspace = true }
 # Needed for e10_octonion (lie::e8_lattice, physics::octonion_field)
 # and billiard_stats (SedenionZdSystem uses algebra_core types).
 algebra_core = { path = "../algebra_core", features = ["lie", "physics"] }
+num-complex = { workspace = true }
+wide = { workspace = true }
 nalgebra = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
