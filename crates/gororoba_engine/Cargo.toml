@@ -47,7 +47,7 @@ name = "pipeline_bench"
 harness = false
 
 [features]
-gpu = ["lbm_3d_cuda/cufft", "algebra_core/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
+gpu = ["lbm_3d_cuda/cufft", "algebra_core/gpu", "algebra_experimental/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
 cufft = []
 
 [lints]

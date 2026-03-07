@@ -17,6 +17,7 @@ rustfft = { workspace = true }
 faer = { workspace = true }
 thiserror = { workspace = true }
 qua_ten_net = { workspace = true }
+lbm_core = { path = "../lbm_core" }
 
 # GPU acceleration (optional)
 cudarc = { workspace = true, optional = true }

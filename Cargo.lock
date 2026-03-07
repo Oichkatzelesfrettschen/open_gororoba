@@ -138,6 +138,7 @@ dependencies = [
  "algebra_core",
  "approx",
  "cd_kernel",
+ "cudarc 0.19.3",
  "nalgebra 0.33.2",
  "num-bigint",
  "num-complex",
@@ -4570,6 +4571,7 @@ dependencies = [
 name = "lbm_3d_cuda"
 version = "0.1.0"
 dependencies = [
+ "algebra_core",
  "anyhow",
  "approx",
  "cudarc 0.19.3",
@@ -6777,6 +6779,7 @@ dependencies = [
  "criterion",
  "cudarc 0.19.3",
  "faer",
+ "lbm_core",
  "nalgebra 0.33.2",
  "ndarray 0.16.1",
  "num-complex",
