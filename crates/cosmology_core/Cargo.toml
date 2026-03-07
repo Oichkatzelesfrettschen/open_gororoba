@@ -22,6 +22,8 @@ nalgebra = { workspace = true }
 
 # Parallel chi2 evaluation across SN data points
 rayon = { workspace = true }
+algebra_experimental = { path = "../algebra_experimental" }
+quantum_core = { path = "../quantum_core" }
 
 [dev-dependencies]
 approx = { workspace = true }

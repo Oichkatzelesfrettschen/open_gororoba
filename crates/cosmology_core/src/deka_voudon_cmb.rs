@@ -1,3 +1,4 @@
+use quantum_core::deka_voudon_qec::DekaVoudonStabilizer;
 use nalgebra::Vector3;
 
 /// Analyzes 1024D DekaVoudon Global Bias vs CMB Axis of Evil alignment.
@@ -47,33 +48,31 @@ impl CosmicWebGenerator {
     /// Generate an anisotropic seeding field for the cosmic web.
     ///
     /// It uses the "kite-chain midden" recursion to determine the positions
-    /// of the initial matter fluctuations.
-    pub fn generate_seeding(&self, analyzer: &DekaVoudonCmbAnalyzer) -> Vec<Vector3<f64>> {
+    /// of the initial matter fluctuations, mapping them to QEC stabilizer nodes.
+    pub fn generate_seeding(&self, analyzer: &DekaVoudonCmbAnalyzer, stabilizers: &[DekaVoudonStabilizer]) -> Vec<Vector3<f64>> {
         let cmb_axis = analyzer.project_axis();
         let mut seeds = Vec::new();
-        
-        // Recursive kite-chain midden expansion:
-        // We start with the 7 sedenion box-kites and expand them to 1024D.
-        for level in 0..10 {
-            let n_seeds = 2_usize.pow(level as u32);
-            for i in 0..n_seeds {
-                let theta = (i as f64 / n_seeds as f64) * std::f64::consts::TAU;
-                let phi = (level as f64 / 10.0) * std::f64::consts::PI;
-                
+
+        // Map seeds to the stabilizer nodes identified in Step 1
+        for stabilizer in stabilizers {
+            for &node in &stabilizer.nodes {
+                let theta = (node as f64 / 1024.0) * std::f64::consts::TAU;
+                let phi = (node as f64 / 1024.0) * std::f64::consts::PI;
+
                 let mut pos = Vector3::new(
                     phi.sin() * theta.cos(),
                     phi.sin() * theta.sin(),
                     phi.cos()
                 );
-                
-                // Apply anisotropic torque from 1024D bias
+
+                // Anisotropic torque derived from the 1024D Global Bias
                 let torque = cmb_axis.cross(&pos) * self.alpha_1024;
                 pos += torque;
-                
+
                 seeds.push(pos.normalize());
             }
         }
-        
+
         seeds
     }
 }
