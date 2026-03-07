@@ -78,13 +78,13 @@ optics, quantum, statistics, and data fetching.
 ### 1.3 Where We Are Now
 
 **Migration status**: COMPLETE.  All 15 Python modules ported to Rust.
-**Blackhole C++ port**: COMPLETE.  18 gr_core modules (394 tests), 5 cosmology_core
+**Blackhole C++ port**: COMPLETE.  18 gr_core modules with broad regression coverage, 5 cosmology_core
 modules (tov, eos, flrw, axiodilaton, observational), scattering, absorption,
 spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
 Penrose process, coordinates, null constraint, energy-conserving integrator.
 **Claims infrastructure**: COMPLETE.  Rust claims-audit + claims-verify binaries
 replace 11 Python scripts.  118 backfill items confirmed Verified (2026-02-07).
-**Test count**: 2312 Rust tests pass (unit + doc + integration), 0 clippy warnings.
+**Testing policy**: smoke/regression/heavy lanes are defined in `registry/test_taxonomy.toml`; use `cargo run -p gororoba_cli_data --bin test-inventory -- --check` for current counts.
 gororoba_kernels removed (2026-02-06).
 **GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
 **Claims**: 527 (C-001..C-527). **Insights**: I-001..I-018. **Experiments**: E-001..E-013. **Binaries**: 57.
@@ -278,8 +278,8 @@ These implementations STAY because no suitable crate exists or licensing prevent
 
 ### 3.1 Current State
 
-1628 Rust tests pass across 13 crates (unit + integration + doc-tests), 2 GPU-gated ignored.
-0 clippy warnings (warnings-as-errors is non-negotiable).
+Regression coverage spans 13 crates, with ignored GPU-heavy suites routed into the heavy lane.
+Warnings-as-errors remain non-negotiable.
 
 ### 3.2 Testing Layers
 
@@ -333,8 +333,8 @@ and can be re-run for reproducibility.
 
 ```bash
 # Non-negotiable before any commit:
-cargo clippy --workspace -j$(nproc) -- -D warnings
-cargo test --workspace -j$(nproc)
+WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo clippy --workspace -- -D warnings
+WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET RUST_TEST_THREADS=$WORKER_BUDGET cargo test --workspace
 
 # Additional gates:
 make ascii-check          # No Unicode in source
@@ -359,8 +359,8 @@ No deletions; only append/clarify sources:
 ### 4.2 Implementation
 
 - [x] Wheels axioms checker + unit tests (CX-017) -- DONE
-- [x] XOR-balanced search extension + tests (CX-003) -- DONE (10 regression tests)
-- [x] Motif census: extend to 64D/128D/256D exact + scaling laws (CX-002) -- DONE (16 regression tests)
+- [x] XOR-balanced search extension + tests (CX-003) -- DONE (regression lane coverage added)
+- [x] Motif census: extend to 64D/128D/256D exact + scaling laws (CX-002) -- DONE (regression lane coverage plus 5 scaling laws)
 - [x] Visualization hygiene and artifact saving policy (CX-019) -- DONE
 - [ ] Fast basis-element multiplication table generator (16D/32D) with cache + checksum
 
@@ -371,7 +371,7 @@ NANOGrav, Planck.
 
 Remaining:
 - [x] `fetch-datasets --pillar {candle,map,image,...}` grouping flags -- DONE
-- [x] Parser-level schema checks for every newly added dataset -- DONE (21 tests)
+- [x] Parser-level schema checks for every newly added dataset -- DONE (broad parser verification coverage)
 - [x] Deterministic row-count / column-integrity tests per provider -- DONE (D3 Sprint 5)
 - [x] Benchmark scripts for parser throughput on large catalogs -- DONE (Section H)
 - [x] Link dataset pillars to claim IDs in CLAIMS_EVIDENCE_MATRIX.md -- DONE
@@ -408,7 +408,7 @@ computations into `crates/gr_core/` as pure Rust, with full test coverage
 and provenance to the original C++ source.
 
 **STATUS: COMPLETE** (2026-02-06).  All 6 layers (30 tasks) finished.
-18 gr_core modules with 394 tests, plus 5 cosmology_core modules.
+18 gr_core modules with broad regression coverage, plus 5 cosmology_core modules.
 See gr_core/src/lib.rs for the full module listing.
 
 ### 5.2 Dependency Graph
@@ -516,7 +516,7 @@ pub mod constants;         // Physical constants (NEW from #63)
 
 ### 6.4 Cross-Domain Ultrametric Analysis -- COMPLETE (I-011)
 - **Result**: GPU exploration (10M triples x 1000 permutations x 9 catalogs).
-  82/472 tests significant at BH-FDR<0.05.
+  82/472 measurement slices significant at BH-FDR<0.05.
 - **Key finding**: Ultrametricity is NOT radio-transient-specific (old I-008 was wrong).
   Galactic kinematics dominates (60/82 hits from Hipparcos + Gaia proper motions).
 - **Catalogs with signal**: Hipparcos (48/114), Gaia (12/114), CHIME (8/8),
@@ -606,7 +606,7 @@ Cayley-Dickson lattice codebook structure.
 | E | XOR partner law | C-462 | **Verified** (dim=64) |
 | F | Parity-clique law | C-463 | **Verified** (dims 16, 32) |
 | G | Spectral fingerprints | C-464 | **Verified** (known graphs) |
-| H | Null-model identity | C-467 | **Verified** (3 tests) |
+| H | Null-model identity | C-467 | **Verified** (targeted regression coverage) |
 
 **Novel discovery**: All filtration transitions are lexicographic prefix cuts
 (simpler than anticipated decision-trie rules). S_base = 2187 = 3^7.
@@ -617,7 +617,7 @@ extracts in docs/external_sources/ (inverse CD, wheel taxonomy, sedenion ZD).
 ~~**Open question**: Multiplication coupling rho(b) in GL(8,Z) (C-466).~~ **REFUTED** (Sprint 16).
 
 **Insight**: I-015 (monograph theses verification)
-**Test count**: ~1690+ (20 new cd_external + 3 stats_core)
+**Test note**: historical suite growth is recorded in sprint artifacts; current counts live in `test-inventory`.
 
 ### 7.10 De Marrais Emanation Architecture (Sprint 10)
 
@@ -625,7 +625,7 @@ extracts in docs/external_sources/ (inverse CD, wheel taxonomy, sedenion ZD).
 coherent Rust module covering emanation tables, twist mechanics, lanyard
 taxonomy, PSL(2,7) navigation, semiotic geometry, and brocade normalization.
 
-**Module**: `crates/algebra_experimental/src/emanation.rs` (~4400 lines, 113 tests)
+**Module**: `crates/algebra_experimental/src/emanation.rs` (~4400 lines, substantial local test coverage)
 
 | Layer | Items | Topic | Claims |
 |-------|-------|-------|--------|
@@ -646,7 +646,7 @@ taxonomy, PSL(2,7) navigation, semiotic geometry, and brocade normalization.
 brocade CPO count explanation.
 
 **Insight**: I-016 (De Marrais Emanation Architecture)
-**Test count**: 1806 (113 new emanation + prior 1693)
+**Test note**: historical suite growth is recorded in sprint artifacts; current counts live in `test-inventory`.
 **Claims**: C-468..C-475 (8 new, total 475)
 
 ### 7.11 Face Sign Census and 3:1 Theorem (Sprint 21-24)
@@ -692,7 +692,7 @@ investigate the relationship between filtration depth and ultrametric structure.
   significantly ultrametric (Lambda_256, z=17.07, p<0.005).
 
 **Claims**: C-498..C-500 (3 claims)
-**Test count**: 2280 (10 new tests in S25 first phase)
+**Test note**: historical suite growth is recorded in sprint artifacts; current counts live in `test-inventory`.
 
 ### 7.13 Anti-Diagonal Parity Mechanism (Sprint 25)
 
@@ -724,7 +724,7 @@ investigate the relationship between filtration depth and ultrametric structure.
 
 **Claims**: C-501..C-527 (27 claims)
 **Insight**: I-018 (Anti-Diagonal Parity Theorem)
-**Test count**: 2312 (32 new tests in S25 second phase)
+**Test note**: historical suite growth is recorded in sprint artifacts; current counts live in `test-inventory`.
 
 ---
 
@@ -735,8 +735,8 @@ investigate the relationship between filtration depth and ultrametric structure.
 | ~~Near~~ | ~~Complete GR module Layers 0-6~~ | ~~Task #48 crate research~~ | **DONE** (2026-02-06) |
 | ~~Near~~ | ~~Cross-domain ultrametric analysis (9 catalogs)~~ | ~~Dataset providers~~ | **DONE** (I-011, 82/472 sig) |
 | ~~Near~~ | ~~GPU acceleration (CUDA ultrametric kernel)~~ | ~~cudarc 0.19.1~~ | **DONE** (RTX 4070 Ti) |
-| ~~Near~~ | ~~Schema checks for all 18 dataset providers~~ | ~~Parser code in data_core~~ | **DONE** (21 tests, 3 URL fixes) |
-| ~~Near~~ | ~~Extend motif census to 64D/128D/256D exact~~ | ~~algebra_core~~ | **DONE** (16 regression tests, 5 scaling laws) |
+| ~~Near~~ | ~~Schema checks for all 18 dataset providers~~ | ~~Parser code in data_core~~ | **DONE** (broad parser verification coverage, 3 URL fixes) |
+| ~~Near~~ | ~~Extend motif census to 64D/128D/256D exact~~ | ~~algebra_core~~ | **DONE** (regression lane coverage, 5 scaling laws) |
 | Medium | WASM target for browser visualization | Crate compatibility audit | Future |
 | Medium | Hardware quantum circuit run (IBM Eagle 127q) | F4 circuit design | Future |
 | Medium | Publication pipeline (LaTeX from verified results) | Source-first research | Future |

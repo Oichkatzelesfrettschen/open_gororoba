@@ -32,9 +32,12 @@ step_3 = "Reuse one built binary set for follow-on runs."
 [shared.testing_protocol]
 mandatory = true
 note = """
-Never use standard `cargo test` for algebra_analysis or gr_core. \
-These crates contain O(dim^3+) mathematical tests that take 29+ minutes \
-under Cranelift. Always use the LLVM test-heavy profile via nextest."""
+Test execution is split into explicit `smoke`, `regression`, and `heavy` lanes. \
+`smoke` runs only the dedicated fast suites, `regression` runs the required \
+default non-ignored coverage, and `heavy` owns ignored/GPU/research lanes. \
+Never use standard `cargo test` for algebra_analysis or gr_core. These crates \
+contain O(dim^3+) mathematical tests that take 29+ minutes under Cranelift. \
+Always use the LLVM test-heavy profile via nextest."""
 
 [shared.testing_protocol.heavy_crates]
 algebra_analysis = "cargo nextest run --cargo-profile test-heavy --profile heavy -p algebra_analysis"
@@ -84,38 +87,63 @@ purpose = "Studio and app assets."
 
 [[shared.command]]
 id = "rust.build.workspace"
-cmd = "cargo build --workspace -j$(nproc)"
+cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo build --workspace"
 purpose = "full workspace build"
 
 [[shared.command]]
 id = "rust.test.workspace"
-cmd = "cargo test --workspace -j$(nproc)"
-purpose = "run workspace tests"
+cmd = "make rust-regression"
+purpose = "run the required Rust regression lane"
 
 [[shared.command]]
 id = "rust.test.focused"
-cmd = "cargo test -p <crate> <test_name>"
-purpose = "run focused Rust test loop"
+cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET RAYON_NUM_THREADS=$$WORKER_BUDGET RUST_TEST_THREADS=$$WORKER_BUDGET cargo nextest run --build-jobs $$WORKER_BUDGET --test-threads $$WORKER_BUDGET -p <crate> <filter-or-test>"
+purpose = "run a focused Rust test loop via nextest"
 
 [[shared.command]]
 id = "rust.check.focused"
-cmd = "cargo check -p <crate> --all-targets"
+cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo check -p <crate> --all-targets"
 purpose = "fast crate-scoped compile loop for iterative edits"
 
 [[shared.command]]
 id = "rust.clippy.focused"
-cmd = "cargo clippy -p <crate> --all-targets -- -D warnings"
+cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo clippy -p <crate> --all-targets -- -D warnings"
 purpose = "fast crate-scoped lint gate with warnings-as-errors"
 
 [[shared.command]]
 id = "rust.clippy.workspace"
-cmd = "cargo clippy --workspace -j$(nproc) -- -D warnings"
+cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo clippy --workspace -- -D warnings"
 purpose = "warnings-as-errors lint gate"
 
 [[shared.command]]
 id = "rust.smoke"
-cmd = "cargo clippy --workspace -j$(nproc) -- -D warnings && cargo test --workspace -j$(nproc)"
-purpose = "composite Rust gate: clippy plus tests"
+cmd = "make rust-smoke"
+purpose = "dedicated fast Rust smoke lane"
+
+[[shared.command]]
+id = "rust.regression"
+cmd = "make rust-regression"
+purpose = "workspace Rust regression lane with nextest heavy-crate routing"
+
+[[shared.command]]
+id = "rust.regression.scoped"
+cmd = "make rust-regression-scoped RUST_SCOPE=\"-p <crate>\""
+purpose = "scoped Rust regression lane with nextest heavy-crate routing"
+
+[[shared.command]]
+id = "rust.heavy"
+cmd = "make heavy"
+purpose = "ignored/GPU/research-heavy Rust lane"
+
+[[shared.command]]
+id = "python.smoke"
+cmd = "make python-smoke"
+purpose = "run only smoke-marked pytest coverage"
+
+[[shared.command]]
+id = "python.regression"
+cmd = "make python-regression"
+purpose = "run only regression-marked pytest coverage"
 
 [[shared.command]]
 id = "rust.studio.run"
@@ -174,7 +202,7 @@ purpose = "criterion benchmarks"
 
 [[shared.command]]
 id = "rust.release"
-cmd = "cargo build --release --workspace -j$(nproc)"
+cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo build --release --workspace"
 purpose = "optimized release build"
 
 [[shared.command]]
@@ -253,7 +281,7 @@ summary = "Combined outputs are compared against cosmological observables."
 
 [shared.runtime_model]
 gpu_default = "cpu_only"
-gpu_enable_cmd = "cargo build --workspace --features gpu -j$(nproc)"
+gpu_enable_cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo build --workspace --features gpu"
 gpu_note = "CUDA support is feature-gated; cudarc uses NVRTC runtime compilation."
 gpu_policy = "Use CUDA-first, Vulkan-second for pure GPU compute backends. Use strictly Pure Vulkan (via Rust kernels/SPIR-V) for all hybrid simulation-visualization tasks."
 clock_model = "two_phase"

@@ -15,9 +15,12 @@ from collections import defaultdict
 from math import isclose
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 GENESIS_BRIDGE_CSV = REPO_ROOT / "data/csv/genesis_gravastar_bridge.csv"
 RADIAL_STABILITY_CSV = REPO_ROOT / "data/csv/gravastar_radial_stability.csv"
+pytestmark = pytest.mark.regression
 
 
 def test_c011_bridge_triplets_show_monotone_gamma_collapse() -> None:

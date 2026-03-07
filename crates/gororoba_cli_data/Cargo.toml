@@ -196,6 +196,10 @@ path = "src/bin/multi_dataset_ultrametric.rs"
 name = "baire-compact"
 path = "src/bin/baire_compact.rs"
 
+[[bin]]
+name = "test-inventory"
+path = "src/bin/test_inventory.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 gororoba_cli = { path = "../gororoba_cli" }

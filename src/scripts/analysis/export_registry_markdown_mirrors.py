@@ -471,24 +471,37 @@ def export_roadmap_legacy(repo_root: Path, out_path: Path) -> None:
 def export_todo(repo_root: Path, out_path: Path) -> None:
     data = _load_toml(repo_root / "registry/todo.toml")
     todo = data.get("todo", {})
-    sprint = data.get("sprint", {})
-    tasks = data.get("task", [])
+    items = data.get("item", [])
     lines = _header("TODO Registry Mirror")
     lines.append("Authoritative source: `registry/todo.toml`.")
     lines.append("")
     lines.append(f"- Updated: {todo.get('updated', '')}")
-    lines.append(f"- Sprint: {sprint.get('id', '')} ({sprint.get('name', '')})")
-    lines.append(f"- Sprint status: `{sprint.get('status', '')}`")
+    lines.append(f"- Status: `{todo.get('status', '')}`")
+    lines.append(f"- Item count: `{todo.get('item_count', len(items))}`")
     lines.append("")
-    lines.append("## Tasks")
+    lines.append("## Items")
     lines.append("")
-    for task in tasks:
-        lines.append(f"### {task.get('id', 'TASK-???')}: {task.get('title', '(untitled)')}")
+    for item in items:
+        item_id = str(item.get("id", "T-???"))
+        lines.append(f"### {item_id}: {item.get('title', '(untitled)')}")
         lines.append("")
-        lines.append(f"- Status: `{task.get('status', '')}`")
-        lines.append("- Evidence:")
-        for ev in task.get("evidence", []):
-            lines.append(f"  - `{ev}`")
+        lines.append(f"- Area: `{item.get('area', '')}`")
+        lines.append(f"- Priority: `{item.get('priority', '')}`")
+        lines.append(f"- Status: `{item.get('status', '')}`")
+        lines.append(f"- Description: {item.get('description', '')}")
+        dependencies = item.get("dependencies", [])
+        dep_text = ", ".join(f"`{dep}`" for dep in dependencies) if dependencies else "(none)"
+        lines.append(f"- Dependencies: {dep_text}")
+        lines.append("- Acceptance criteria:")
+        for criterion in item.get("acceptance_criteria", []):
+            lines.append(f"  - {criterion}")
+        evidence_refs = item.get("evidence_refs", [])
+        lines.append("- Evidence refs:")
+        if evidence_refs:
+            for ev in evidence_refs:
+                lines.append(f"  - `{ev}`")
+        else:
+            lines.append("  - (none)")
         lines.append("")
     _write(out_path, "\n".join(lines))
 

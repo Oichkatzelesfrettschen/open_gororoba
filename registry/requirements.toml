@@ -74,8 +74,8 @@ status = "active"
 status_token = "ACTIVE"
 runtime_stack = "mixed"
 requires_modules = []
-install_targets = ["make install", "PYTHONWARNINGS=error make check"]
-verify_targets = ["PYTHONWARNINGS=error make check", "make install"]
+install_targets = ["make install"]
+verify_targets = ["make install"]
 acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
 
 [[module]]
@@ -98,8 +98,8 @@ status = "active"
 status_token = "ACTIVE"
 runtime_stack = "mixed"
 requires_modules = ["REQ-CORE"]
-install_targets = ["cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external", "cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json", "cargo run -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch", "cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown", "cargo run -p gororoba_cli --bin data-governance-gate --", "cargo run -p gororoba_cli --bin data-semantic-validate --"]
-verify_targets = ["cargo run -p gororoba_cli --bin data-governance-gate --", "cargo run -p gororoba_cli --bin data-origin-audit -- --fail-on-strict-unknown", "cargo run -p gororoba_cli --bin data-semantic-validate --", "cargo run -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch", "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing --output-dir data/external", "cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json"]
+install_targets = ["cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external", "cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json", "cargo run -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch", "cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown", "cargo run -p gororoba_cli_data --bin data-governance-gate --", "cargo run -p gororoba_cli_data --bin data-semantic-validate --"]
+verify_targets = ["cargo run -p gororoba_cli_data --bin data-governance-gate --", "cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown", "cargo run -p gororoba_cli_data --bin data-semantic-validate --", "cargo run -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external", "cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json"]
 acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
 
 [[module]]

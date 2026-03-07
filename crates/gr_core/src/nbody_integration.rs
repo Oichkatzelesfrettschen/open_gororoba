@@ -678,7 +678,7 @@ mod tests {
         // All thetas should be finite and in [0, theta_max]
         for &t in &result.thetas {
             assert!(t.is_finite());
-            assert!(t >= 0.0 && t <= PI / 2.0 + 1e-10, "theta={t} out of range");
+            assert!((0.0..=PI / 2.0 + 1e-10).contains(&t), "theta={t} out of range");
         }
     }
 

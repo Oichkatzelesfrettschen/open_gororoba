@@ -24,7 +24,7 @@ jobs:
       - id: scope
         run: python3 scripts/ci_affected_crates.py --verbose
 
-  # --- Rust quality gate: clippy + tests + cargo-deny ---
+  # --- Rust quality gate: scoped nextest regression + cargo-deny ---
   # Matches local pre-push-gate strength so regressions cannot merge undetected.
   # Skipped entirely when only non-Rust files changed (registry, docs, proofs).
   rust-quality:
@@ -34,10 +34,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Detect worker budget from logical threads / 2
+        run: |
+          WORKER_BUDGET="$(sh scripts/detect_worker_budget.sh)"
+          echo "WORKER_BUDGET=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "RAYON_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "CARGO_JOBS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "NEXTEST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
+
       - name: Install Rust toolchain (nightly, with clippy)
         uses: dtolnay/rust-toolchain@nightly
         with:
           components: clippy
+
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@nextest
 
       - name: Cache cargo registry and build artifacts
         uses: actions/cache@v4
@@ -52,13 +65,10 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libhdf5-dev libopenblas-dev pkg-config
+          sudo apt-get install -y libhdf5-dev pkg-config
 
-      - name: Clippy (scoped)
-        run: cargo clippy ${{ needs.determine-scope.outputs.rust_scope }} --all-targets -j$(nproc) -- -D warnings
-
-      - name: Test (scoped)
-        run: cargo test ${{ needs.determine-scope.outputs.rust_scope }} -j$(nproc)
+      - name: Regression lane (scoped)
+        run: make rust-regression-scoped RUST_SCOPE="${{ needs.determine-scope.outputs.rust_scope }}"
 
       - name: Install cargo-deny
         uses: taiki-e/install-action@cargo-deny
@@ -85,26 +95,34 @@ jobs:
       - name: Python lint (ruff)
         run: |
           ruff check src/ tests/ bin/
-      - name: Python tests (pytest)
+      - name: Python smoke lane
         run: |
-          pytest tests/ -x -q --tb=short
+          PYTHONWARNINGS=error make python-smoke
+      - name: Python regression lane
+        if: matrix.python-version == '3.11'
+        run: |
+          PYTHONWARNINGS=error make python-regression
+      - name: Integrity lane
+        if: matrix.python-version == '3.11'
+        run: |
+          PYTHONWARNINGS=error make integrity
       - name: ASCII-only policy check
         run: |
           python3 bin/ascii_check.py --check
       - name: Canonical governance gate
-        if: needs.determine-scope.outputs.run_governance == 'true'
+        if: needs.determine-scope.outputs.run_governance == 'true' && matrix.python-version == '3.11'
         run: |
           PYTHONWARNINGS=error make governance-gate
       - name: Canonical registry acceptance gate
-        if: needs.determine-scope.outputs.run_governance == 'true'
+        if: needs.determine-scope.outputs.run_governance == 'true' && matrix.python-version == '3.11'
         run: |
           PYTHONWARNINGS=error make registry-acceptance-gate
       - name: Strict typed-policy registry lane
-        if: needs.determine-scope.outputs.run_governance == 'true'
+        if: needs.determine-scope.outputs.run_governance == 'true' && matrix.python-version == '3.11'
         run: |
           PYTHONWARNINGS=error make registry-verify-typed-policy-error
       - name: Synthesis execution contract rollup
-        if: needs.determine-scope.outputs.run_governance == 'true'
+        if: needs.determine-scope.outputs.run_governance == 'true' && matrix.python-version == '3.11'
         run: |
           PYTHONWARNINGS=error make synthesis-execution-contract
       - name: Warp artifact acceptance gate (when HDF5 artifacts are present)

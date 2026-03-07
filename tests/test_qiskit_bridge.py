@@ -12,6 +12,7 @@ import pytest
 
 # Skip entire module if qiskit not installed
 pytest.importorskip("qiskit")
+pytestmark = [pytest.mark.regression, pytest.mark.requires_ext]
 
 from src.quantum_runtime.ibm_bridge import (
     JobResult,
@@ -101,6 +102,7 @@ class TestGroverCircuit:
     "QISKIT_IBM_TOKEN" not in os.environ,
     reason="QISKIT_IBM_TOKEN not set",
 )
+@pytest.mark.slow
 class TestQiskitServiceLive:
     """Live tests requiring IBM Quantum access."""
 

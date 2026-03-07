@@ -8,8 +8,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
-burn = { workspace = true, features = ["ndarray", "openblas"] }
-blas-src = { workspace = true, features = ["openblas"] }
+burn = { workspace = true, features = ["ndarray"] }
 
 [dev-dependencies]
 approx = { workspace = true }
@@ -20,6 +19,20 @@ proptest = { workspace = true }
 default = ["wgpu-backend"]
 wgpu-backend = []
 cuda-backend = []
+# Native BLAS acceleration is opt-in so default builds stay offline-friendly and
+# portable across CI and developer machines. These feature names are enabled with
+# `cargo ... --features <name>`.
+#
+# Burn 0.16 can forward additional native BLAS backends upstream, but the repo's
+# default nextest lanes resolve the workspace with all package features. Exposing
+# source-backed backends here would drag uncached native source crates into the
+# default smoke lane, so keep the repo surface limited to the backend we can
+# support in CI and on this machine without implicit downloads.
+#
+# `blas-src` itself also supports BLIS, but Burn does not expose a BLIS backend
+# flag here, so this crate intentionally does not advertise a misleading `blis`
+# feature until the backend plumbing supports it end-to-end.
+openblas-system = ["burn/openblas-system"]
 
 [[bench]]
 name = "training_bench"

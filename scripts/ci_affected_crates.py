@@ -46,6 +46,11 @@ WORKSPACE_TRIGGERS = {
     "Cargo.toml",
     "Cargo.lock",
     "rust-toolchain.toml",
+    "Makefile",
+    "agents.toml",
+    ".config/nextest.toml",
+    "registry/test_taxonomy.toml",
+    "registry/engineering_standards.toml",
 }
 
 # Prefixes that never affect Rust compilation.

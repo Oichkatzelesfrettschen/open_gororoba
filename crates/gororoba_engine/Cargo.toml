@@ -19,6 +19,7 @@ spin_tomography_core = { path = "../spin_tomography_core" }
 cd_spin_bridge = { path = "../cd_spin_bridge" }
 algebra_core = { path = "../algebra_core", features = ["lie"] }
 algebra_experimental = { path = "../algebra_experimental" }
+algebra_analysis = { path = "../algebra_analysis", optional = true }
 stats_core = { path = "../stats_core" }
 lbm_3d = { path = "../lbm_3d" }
 gr_core = { version = "0.1.0", path = "../gr_core" }
@@ -49,6 +50,7 @@ harness = false
 [features]
 gpu = ["lbm_3d_cuda/cufft", "algebra_core/gpu", "algebra_experimental/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
 cufft = []
+analysis-examples = ["dep:algebra_analysis"]
 
 [[example]]
 name = "voudon_cuda_bridge"
@@ -60,7 +62,7 @@ required-features = ["gpu"]
 
 [[example]]
 name = "phase_transition_demo"
-required-features = ["gpu"]
+required-features = ["gpu", "analysis-examples"]
 
 [lints]
 workspace = true

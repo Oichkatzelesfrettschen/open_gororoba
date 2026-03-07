@@ -3669,6 +3669,7 @@ dependencies = [
 name = "gororoba_engine"
 version = "0.1.0"
 dependencies = [
+ "algebra_analysis",
  "algebra_core",
  "algebra_experimental",
  "anyhow",
@@ -5408,7 +5409,6 @@ version = "0.1.0"
 dependencies = [
  "algebra_core",
  "approx",
- "blas-src",
  "burn",
  "cosmology_core",
  "criterion",

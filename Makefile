@@ -1,9 +1,10 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum
-.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
-.PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict terminology-gate doctor provenance patch-pyfilesystem2
+.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke integrity math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
+.PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict terminology-gate doctor doctor-blas provenance patch-pyfilesystem2
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
-.PHONY: rust-test rust-clippy rust-smoke rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
+.PHONY: python-smoke python-regression heavy test-inventory
+.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
 .PHONY: pre-push-gate-scoped submodule-sync
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
@@ -53,10 +54,16 @@
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-artifacts clean-all
 
-# Parallelism: 75% of logical CPUs, minimum 1.
-# nproc is available on Linux; expr provides pure-shell integer arithmetic.
+# Non-cargo make fanout: 75% of logical CPUs, minimum 1.
+# Cargo and Rust test runners use a shared worker budget equal to logical threads / 2.
 NPROC := $(shell nproc 2>/dev/null || echo 4)
 NJOBS := $(shell expr $(NPROC) \* 3 / 4)
+WORKER_BUDGET ?= $(shell sh scripts/detect_worker_budget.sh)
+CARGO_JOBS ?= $(WORKER_BUDGET)
+NEXTEST_TEST_THREADS ?= $(WORKER_BUDGET)
+RUST_TEST_THREADS ?= $(WORKER_BUDGET)
+RAYON_THREADS ?= $(WORKER_BUDGET)
+CARGO_ENV = MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
 
 VENV ?= venv
 PYTHON := $(VENV)/bin/python3
@@ -93,8 +100,13 @@ install-quantum: install
 
 # ---- Quality gates ----
 
-test: install
-	PYTHONWARNINGS=error $(PYTHON) -m pytest
+python-smoke: install
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest -m smoke tests/ -x -q --tb=short
+
+python-regression: install
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest -m regression tests/ -x -q --tb=short
+
+test: python-regression
 
 lint: install
 	$(PYTHON) -m ruff check src/gemini_physics tests
@@ -108,7 +120,7 @@ lint-all-stats: install
 lint-all-fix-safe: install
 	$(PYTHON) -m ruff check src --select W291,W293,I001 --fix
 
-check: registry-verify-markdown-owner test lint smoke
+check: lint smoke integrity
 	@echo "OK: check suite complete."
 
 # Governance verifier targets
@@ -137,21 +149,24 @@ governance-gate:
 	@echo "TOML-first governance checks are operational."
 	@echo "=========================================="
 	@echo ""
-	@echo "To run full validation pipeline including ASCII check:"
-	@echo "  make check && make ascii-check"
+	@echo "To run the full fast validation pipeline:"
+	@echo "  make check"
 
 wave6-gate: governance-gate
 	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 
-# Pre-push review lane: all 4 gates run concurrently.
-# rust-smoke is the long pole; Python gates hide behind it.
 pre-push-gate:
-	$(MAKE) -j$(NJOBS) rust-smoke governance-gate ascii-check terminology-gate
-	@echo "OK: pre-push gate passed (rust-smoke + governance + ASCII + terminology)."
+	$(MAKE) check
+	$(MAKE) rust-regression
+	$(MAKE) governance-gate
+	$(MAKE) terminology-gate
+	@echo "OK: pre-push gate passed (check + rust-regression + governance + terminology)."
 
 # Strict pre-push: 3-way parallel audit, then scoped gate, then strict ASCII.
 pre-push-gate-strict:
-	$(MAKE) -j$(NJOBS) dep-audit cargo-deny-check mcp-smoke
+	$(MAKE) dep-audit
+	$(MAKE) cargo-deny-check
+	$(MAKE) mcp-smoke
 	$(MAKE) pre-push-gate
 	$(MAKE) ascii-check-strict
 	@echo "OK: strict pre-push gate passed (dep-audit + cargo-deny + mcp-smoke + pre-push-gate + ascii-check-strict)."
@@ -184,49 +199,99 @@ hooks-status:
 	@echo "pre-push hook exists? $$(test -f "$(HOOKS_DIR)/pre-push" && echo yes || echo no)"
 
 smoke: install
+	$(MAKE) python-smoke
+	$(MAKE) rust-smoke
+
+integrity: install
 	PYTHONWARNINGS=error $(PYTHON) -m compileall -q src
 	$(PYTHON) -m ruff check src/gemini_physics tests
 	$(PYTHON) -m ruff check src --statistics --exit-zero
 	$(PYTHON) bin/ascii_check.py --check
 	$(MAKE) registry-verify-markdown-owner
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_python_core_algorithms_pyo3.py
-	cargo run -p gororoba_cli_data --bin claims-verify -- --check providers
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin claims-verify -- --check providers
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
 	$(MAKE) verify-pantheon-physicsforge-mapping
 	$(MAKE) verify-pantheon-physicsforge-license-headers
 	$(MAKE) verify-pantheon-physicsforge-overflow
 	$(MAKE) registry-verify-embedded-markdown
+	$(MAKE) test-inventory
+
+test-inventory:
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin test-inventory -- --check
 
 math-verify: test lint
 	@echo "OK: math validation suite complete. See docs/MATH_VALIDATION_REPORT.md"
 
-rust-test:
-	cargo test --workspace -j$$(nproc)
+rust-test: rust-regression
+	@echo "OK: rust-test is an alias for rust-regression."
 
 rust-clippy:
-	cargo clippy --workspace -j$$(nproc) -- -D warnings
+	$(CARGO_ENV) cargo clippy --workspace -- -D warnings
 
-rust-smoke: rust-clippy rust-test
-	@echo "OK: Rust quality gate passed (clippy + tests)."
+rust-smoke:
+	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) -P smoke -p algebra_core --test smoke_algebra_core -p lbm_3d --test smoke_lbm_3d -p gororoba_engine --test smoke_gororoba_engine
+	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P smoke -p gr_core --test smoke_gr_core
+	@echo "OK: Rust smoke lane passed."
 
-# Scoped Rust quality gate: only affected crates (via ci_affected_crates.py).
-# Usage: make rust-smoke-scoped  (auto-detects changes vs origin/main)
-#        make rust-smoke-scoped RUST_SCOPE="-p algebra_core -p gr_core"
-rust-smoke-scoped:
+rust-regression: rust-clippy
+	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --workspace --exclude algebra_analysis --exclude gr_core
+	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy -p algebra_analysis -p gr_core
+	@echo "OK: Rust regression lane passed."
+
+# Scoped Rust regression gate: only affected crates (via ci_affected_crates.py).
+# Usage: make rust-regression-scoped  (auto-detects changes vs origin/main)
+#        make rust-regression-scoped RUST_SCOPE="-p algebra_core -p gr_core"
+rust-regression-scoped:
 	$(eval RUST_SCOPE ?= $(shell python3 scripts/ci_affected_crates.py --local 2>/dev/null || echo "--workspace"))
 	@if [ -z "$(RUST_SCOPE)" ]; then \
 	    echo "SKIP: no Rust-relevant changes detected."; \
 	else \
-	    echo "[rust-smoke-scoped] scope: $(RUST_SCOPE)"; \
-	    cargo clippy $(RUST_SCOPE) --all-targets -j$$(nproc) -- -D warnings; \
-	    cargo test $(RUST_SCOPE) -j$$(nproc); \
-	    echo "OK: Rust quality gate passed (scoped: clippy + tests)."; \
+	    echo "[rust-regression-scoped] scope: $(RUST_SCOPE)"; \
+	    $(CARGO_ENV) cargo clippy $(RUST_SCOPE) --all-targets -- -D warnings; \
+	    if [ "$(RUST_SCOPE)" = "--workspace" ]; then \
+	        light_scope="--workspace --exclude algebra_analysis --exclude gr_core"; \
+	        heavy_scope="-p algebra_analysis -p gr_core"; \
+	    else \
+	        light_scope=""; \
+	        heavy_scope=""; \
+	        prev=""; \
+	        for token in $(RUST_SCOPE); do \
+	            if [ "$$prev" = "-p" ]; then \
+	                case "$$token" in \
+	                    algebra_analysis|gr_core) heavy_scope="$$heavy_scope -p $$token" ;; \
+	                    *) light_scope="$$light_scope -p $$token" ;; \
+	                esac; \
+	                prev=""; \
+	            elif [ "$$token" = "-p" ]; then \
+	                prev="-p"; \
+	            fi; \
+	        done; \
+	    fi; \
+	    if [ -n "$$light_scope" ]; then \
+	        $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $$light_scope; \
+	    fi; \
+	    if [ -n "$$heavy_scope" ]; then \
+	        $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy $$heavy_scope; \
+	    fi; \
+	    echo "OK: Rust regression gate passed (scoped: clippy + nextest)."; \
 	fi
 
+rust-smoke-scoped: rust-regression-scoped
+	@echo "DEPRECATED: make rust-smoke-scoped is a legacy alias. Use make rust-regression-scoped."
+
 # Scoped pre-push: routes Rust/governance to affected scope only.
-pre-push-gate-scoped: rust-smoke-scoped ascii-check terminology-gate
+pre-push-gate-scoped:
+	$(MAKE) check
+	$(MAKE) rust-regression-scoped
+	$(MAKE) terminology-gate
 	@echo "OK: scoped pre-push gate passed."
+
+heavy:
+	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --workspace --exclude algebra_analysis --exclude gr_core --run-ignored only -P heavy
+	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy -p algebra_analysis -p gr_core --run-ignored only
+	@echo "OK: heavy lane passed."
 
 # Convenience: sync all git submodules (proofs, paper when extracted).
 submodule-sync:
@@ -234,11 +299,11 @@ submodule-sync:
 	@echo "OK: submodules synchronized."
 
 studio-run:
-	cargo run -p gororoba_cli --bin gororoba-studio -- --host 127.0.0.1 --port 8088
+	$(CARGO_ENV) cargo run -p gororoba_cli --bin gororoba-studio -- --host 127.0.0.1 --port 8088
 
 studio-check:
-	cargo test -p gororoba_cli --bin gororoba-studio
-	cargo clippy -p gororoba_cli --bin gororoba-studio -- -D warnings
+	$(CARGO_ENV) cargo test -p gororoba_cli --bin gororoba-studio
+	$(CARGO_ENV) cargo clippy -p gororoba_cli --bin gororoba-studio -- -D warnings
 	@echo "OK: gororoba-studio checks passed."
 
 dep-audit:
@@ -260,11 +325,11 @@ mcp-smoke:
 
 e027-validate:
 	@echo "Validating E-027 Percolation Experiment (Thesis 1 binary)..."
-	cargo build --release --bin percolation-experiment -j$$(nproc)
+	$(CARGO_ENV) cargo build --release --bin percolation-experiment
 	@mkdir -p data/e027
 	@rm -f data/e027/e027_results.toml
 	@echo "Running E-027 with small grid (8^3, 100 steps)..."
-	@cargo run --release --bin percolation-experiment -- \
+	@$(CARGO_ENV) cargo run --release --bin percolation-experiment -- \
 	  --grid-size 8 \
 	  --lbm-steps 100 \
 	  --seed 42 \
@@ -278,19 +343,20 @@ e027-validate:
 	@echo "NOTE: Small grid validation may refute Thesis 1 (expected with mock data). Full validation requires 32x32x32 grid."
 
 rust-parity:
-	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target cargo test --workspace -j$$(nproc)
-	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target cargo clippy --workspace -j$$(nproc) -- -D warnings
+	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target $(CARGO_ENV) cargo test --workspace
+	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target $(CARGO_ENV) cargo clippy --workspace -- -D warnings
 	@echo "OK: parity lane passed (workspace tests + clippy with release-class optimization semantics)."
 
 rust-release-fat-lto:
-	CARGO_TARGET_DIR=/tmp/open_gororoba_release_target cargo build --release --workspace -j$$(nproc)
+	CARGO_TARGET_DIR=/tmp/open_gororoba_release_target $(CARGO_ENV) cargo build --release --workspace
 	@echo "OK: release fat-LTO workspace build completed."
 
 rust-pgo-instrument:
 	mkdir -p "$(PGO_DIR)"
 	CARGO_TARGET_DIR=/tmp/open_gororoba_pgo_target \
+	$(CARGO_ENV) \
 	RUSTFLAGS="-Cprofile-generate=$(PGO_DIR)" \
-	cargo build --release --workspace -j$$(nproc)
+	cargo build --release --workspace
 	@echo "OK: PGO instrumented build completed. Run representative binaries to collect .profraw files in $(PGO_DIR)."
 
 rust-pgo-merge:
@@ -299,8 +365,9 @@ rust-pgo-merge:
 
 rust-pgo-build:
 	CARGO_TARGET_DIR=/tmp/open_gororoba_pgo_use_target \
+	$(CARGO_ENV) \
 	RUSTFLAGS="-Cprofile-use=$(PGO_DIR)/merged.profdata" \
-	cargo build --release --workspace -j$$(nproc)
+	cargo build --release --workspace
 	@echo "OK: PGO-optimized release build completed."
 
 verify-pantheon-physicsforge-license:
@@ -606,7 +673,7 @@ registry-csv-holdings:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_holding_registries.py
 
 registry-scroll-project-csv-canonical: registry-project-csv-split
-	cargo run --release --bin scrollify-csv -- \
+	$(CARGO_ENV) cargo run --release --bin scrollify-csv -- \
 		--source-manifest registry/manifests/project_csv_canonical_manifest.txt \
 		--out-index registry/project_csv_canonical_datasets.toml \
 		--out-dir registry/data/project_csv/canonical \
@@ -616,7 +683,7 @@ registry-scroll-project-csv-canonical: registry-project-csv-split
 		--dataset-class canonical-dataset
 
 registry-scroll-project-csv-generated: registry-project-csv-split
-	cargo run --release --bin scrollify-csv -- \
+	$(CARGO_ENV) cargo run --release --bin scrollify-csv -- \
 		--source-manifest registry/manifests/project_csv_generated_manifest.txt \
 		--out-index registry/project_csv_generated_artifacts.toml \
 		--out-dir registry/data/project_csv/generated \
@@ -626,7 +693,7 @@ registry-scroll-project-csv-generated: registry-project-csv-split
 		--dataset-class generated-artifact
 
 registry-scroll-archive-csv-holding: registry-csv-holdings
-	cargo run --release --bin scrollify-csv -- \
+	$(CARGO_ENV) cargo run --release --bin scrollify-csv -- \
 		--source-manifest registry/manifests/archive_csv_holding_manifest.txt \
 		--out-index registry/archive_csv_holding_datasets.toml \
 		--out-dir registry/data/archive_csv_holding \
@@ -636,7 +703,7 @@ registry-scroll-archive-csv-holding: registry-csv-holdings
 		--dataset-class holding-archive
 
 registry-scroll-external-csv-holding: registry-csv-holdings
-	cargo run --release --bin scrollify-csv -- \
+	$(CARGO_ENV) cargo run --release --bin scrollify-csv -- \
 		--source-manifest registry/manifests/external_csv_holding_manifest.txt \
 		--out-index registry/external_csv_holding_datasets.toml \
 		--out-dir registry/data/external_csv_holding \
@@ -660,7 +727,7 @@ registry-verify-project-csv-split: registry-scroll-project-csv-canonical registr
 		--index-path registry/project_csv_generated_artifacts.toml \
 		--source-manifest registry/manifests/project_csv_generated_manifest.txt \
 		--corpus-label 'project CSV generated artifact'
-	cargo run --release --bin verify-project-csv-split -- \
+	$(CARGO_ENV) cargo run --release --bin verify-project-csv-split -- \
 		--repo-root .
 
 registry-verify-csv-holdings: registry-csv-holdings registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
@@ -713,13 +780,13 @@ registry-verify-mirrors: registry-export-markdown
 	fi
 
 registry-sync-project-counters:
-	cargo run --release --bin project-counter-sync
+	$(CARGO_ENV) cargo run --release --bin project-counter-sync
 
 registry: registry-refresh registry-data registry-sync-project-counters
-	cargo run --release --bin registry-check
+	$(CARGO_ENV) cargo run --release --bin registry-check
 
 registry-verify-typed-policy-error:
-	cargo run --release --bin registry-check -- --typed-policy error
+	$(CARGO_ENV) cargo run --release --bin registry-check -- --typed-policy error
 
 synthesis-execution-contract:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_synthesis_gate_rollup.py \
@@ -752,22 +819,26 @@ verify-python-core-algorithms:
 
 doctor: install
 	$(PYTHON) bin/doctor.py
+	sh scripts/detect_native_blas.sh
+
+doctor-blas:
+	sh scripts/detect_native_blas.sh
 
 provenance: install
-	cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-	cargo run --release -p gororoba_cli_data --bin data-origin-audit -- --out reports/data_origin_audit_$$(date +%F).toml --fail-on-strict-unknown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-origin-audit -- --out reports/data_origin_audit_$$(date +%F).toml --fail-on-strict-unknown
 
 provenance-audit: install
-	cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true
 
 external-redownload-audit: install
-	cargo run --release -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_$$(date +%F).toml --backend-order wget,curl,fetch
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_$$(date +%F).toml --backend-order wget,curl,fetch
 
 semantic-data-validate: install
-	cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --out reports/data_semantic_validate_$$(date +%F).toml
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --out reports/data_semantic_validate_$$(date +%F).toml
 
 semantic-data-validate-strict: install
-	cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true --out reports/data_semantic_validate_$$(date +%F)_strict.toml
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true --out reports/data_semantic_validate_$$(date +%F)_strict.toml
 
 patch-pyfilesystem2: install
 	$(PYTHON) bin/patch_pyfilesystem_pkg_resources.py
@@ -798,12 +869,12 @@ artifacts-m3: install
 	PYTHONWARNINGS=error $(PYTHON) src/export_m3_table.py
 
 artifacts-motifs:
-	cargo run -p gororoba_cli_algebra --bin motif-census --release -j$$(nproc) -- --dims 16,32 --details
+	$(CARGO_ENV) cargo run -p gororoba_cli_algebra --bin motif-census --release -- --dims 16,32 --details
 	PYTHONWARNINGS=error $(PYTHON) src/vis_cd_motif_summary.py
 
 artifacts-motifs-big:
-	cargo run -p gororoba_cli_algebra --bin motif-census --release -j$$(nproc) -- --dims 16,32,64,128 --summary-only
-	cargo run -p gororoba_cli_algebra --bin motif-census --release -j$$(nproc) -- --dims 256 --max-nodes 5000 --seed 0 --summary-only
+	$(CARGO_ENV) cargo run -p gororoba_cli_algebra --bin motif-census --release -- --dims 16,32,64,128 --summary-only
+	$(CARGO_ENV) cargo run -p gororoba_cli_algebra --bin motif-census --release -- --dims 256 --max-nodes 5000 --seed 0 --summary-only
 	PYTHONWARNINGS=error $(PYTHON) src/vis_cd_motif_summary.py
 
 # ---- Data fetching ----
@@ -813,24 +884,24 @@ artifacts-motifs-big:
 
 fetch-data: install
 	@echo "Fetching external datasets..."
-	cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
 	@echo "Refreshing external provenance and source governance..."
-	cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-	cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
 
 fetch-data-redownload: install
 	@echo "Force re-downloading external datasets from origin fetchers..."
-	cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing false --output-dir data/external
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing false --output-dir data/external
 	@echo "Refreshing external provenance and source governance..."
-	cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
-	cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
 
 # ---- Simulation runs ----
 
 run: rust-smoke
-	cargo run --release --bin thesis_lab -- --steps 100 --seed 42
-	cargo run --release --bin modular_chaos -- --steps 100 --n 256
-	cargo run --release --bin entropy_pde -- --depth 50
+	$(CARGO_ENV) cargo run --release --bin thesis_lab -- --steps 100 --seed 42
+	$(CARGO_ENV) cargo run --release --bin modular_chaos -- --steps 100 --n 256
+	$(CARGO_ENV) cargo run --release --bin entropy_pde -- --depth 50
 	@echo "OK: All core Rust simulations completed and artifacts generated."
 
 # ---- Coq proofs ----
@@ -873,7 +944,7 @@ lva-paper: rocq-proofs rocq-proofs-check
 
 latex:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found. Install TeX Live (see docs/requirements/latex.md)"; exit 1; }
-	cargo run --release --bin generate-latex
+	$(CARGO_ENV) cargo run --release --bin generate-latex
 	@mkdir -p docs/latex/out
 	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error -shell-escape -output-directory=out llm_scaffold_paper.tex
 	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error -output-directory=out MASTER_SYNTHESIS.tex
@@ -896,7 +967,7 @@ docker-quantum-shell:
 # ---- Cleanup ----
 
 clean-artifacts:
-	cargo run --release -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply
 	@echo "Done. Regenerate and verify with cargo-native data governance commands."
 
 clean:
@@ -924,17 +995,24 @@ help:
 	@echo "    make install-quantum      Add quantum extras (qiskit, Docker recommended)"
 	@echo ""
 	@echo "  Quality:"
-	@echo "    make test                 Run pytest (warnings-as-errors)"
+	@echo "    make python-smoke         Run smoke-marked pytest coverage"
+	@echo "    make python-regression    Run regression-marked pytest coverage"
+	@echo "    make test                 Alias for python-regression"
 	@echo "    make lint                 Ruff check on src/gemini_physics + tests"
-	@echo "    make smoke                Compileall + lint stats + artifact verifiers"
-	@echo "    make check                test + lint + smoke (CI entry point)"
+	@echo "    make smoke                Composite fast smoke lane (python-smoke + rust-smoke)"
+	@echo "    make integrity            Verifier, ASCII, and inventory lane"
+	@echo "    make check                lint + smoke + integrity"
 	@echo "    make ascii-check          Verify ASCII-only policy"
 	@echo "    make ascii-check-strict   Verify ASCII-only policy + fail on <U+....> placeholders in crates/tests"
 	@echo "    make verify-pantheon-physicsforge-mapping Verify migration matrix/todo mapping completeness"
 	@echo "    make verify-pantheon-physicsforge-license-headers Verify GPL-2.0-only header consistency in migrated files"
 	@echo "    make verify-pantheon-physicsforge-overflow Verify overflow tracker max-5-active policy"
 	@echo "    make seed-pantheon-physicsforge-sqlite Seed sqlite memoization for migration findings/risks"
-	@echo "    make rust-smoke           Rust clippy + full test suite"
+	@echo "    make rust-smoke           Dedicated Rust smoke suites via nextest"
+	@echo "    make rust-regression      Full Rust regression lane with heavy-crate routing"
+	@echo "    make rust-regression-scoped Scoped Rust regression lane for affected crates"
+	@echo "    make heavy                Ignored/GPU/research-heavy nextest lane"
+	@echo "    make test-inventory       Enforce taxonomy coverage and stale-doc checks"
 	@echo "    make mcp-smoke            Re-test configured MCP server parity and startup health"
 	@echo "    make cargo-deny-check     Enforce deny.toml (advisories, bans, licenses, sources)"
 	@echo "    make registry             Validate TOML registry consistency"
@@ -976,7 +1054,7 @@ help:
 	@echo "    make registry-verify-typed-policy-error Supplemental strict typed-policy contract lane"
 	@echo "    make synthesis-execution-contract governance-gate + registry-acceptance-gate + strict typed-policy + project-counter-sync --check"
 	@echo "    make terminology-gate     enforce banned-term policy from terminology_standards.toml"
-	@echo "    make pre-push-gate        rust-smoke + governance-gate + ascii-check + terminology-gate"
+	@echo "    make pre-push-gate        check + rust-regression + governance-gate + terminology-gate"
 	@echo "    make pre-push-gate-strict dep-audit + cargo-deny + mcp-smoke + pre-push-gate + ascii-check-strict"
 	@echo ""
 	@echo "  Artifacts:"
@@ -1018,3 +1096,5 @@ help:
 	@echo "    make docker-quantum-run   Run quantum script in Docker (ARGS=...)"
 	@echo "    make docker-quantum-shell Open interactive shell in qiskit-env"
 	@echo "    make doctor               Environment diagnostics"
+	@echo "    make doctor-blas          Detect native BLAS/LAPACK candidates and Cargo feature mapping"
+	@echo "    ./makew <target>          Run make with inherited jobserver env stripped (useful when shells/tools export MAKEFLAGS)"

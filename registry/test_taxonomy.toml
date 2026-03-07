@@ -1,0 +1,91 @@
+# Canonical test taxonomy for smoke/regression/heavy lanes.
+
+[test_taxonomy]
+authoritative = true
+updated = "2026-03-07"
+status = "active"
+stale_test_count_pattern = "\\b[0-9][0-9,]*(?:\\+)?\\s+(?:Rust\\s+)?tests\\b"
+
+[[rust_smoke_target]]
+package = "algebra_core"
+target = "smoke_algebra_core"
+kind = "integration"
+description = "Fast algebra invariants for the default smoke lane."
+
+[[rust_smoke_target]]
+package = "gr_core"
+target = "smoke_gr_core"
+kind = "integration"
+description = "Fast Kerr/GR sanity checks for the default smoke lane."
+
+[[rust_smoke_target]]
+package = "lbm_3d"
+target = "smoke_lbm_3d"
+kind = "integration"
+description = "Fast LBM solver initialization and conservation smoke checks."
+
+[[rust_smoke_target]]
+package = "gororoba_engine"
+target = "smoke_gororoba_engine"
+kind = "integration"
+description = "Fast engine orchestration smoke checks."
+
+[[rust_heavy_package]]
+name = "algebra_analysis"
+cargo_profile = "test-heavy"
+nextest_profile = "heavy"
+reason = "O(dim^3+) graph/eigen/triangle-enumeration research tests."
+
+[[rust_heavy_package]]
+name = "gr_core"
+cargo_profile = "test-heavy"
+nextest_profile = "heavy"
+reason = "Numerically heavy regression tests including strong-field validation."
+
+[[python_test_file]]
+path = "tests/test_c010_c011_verifier_script.py"
+lane = "smoke"
+
+[[python_test_file]]
+path = "tests/test_c010_holographic_entropy_trap.py"
+lane = "regression"
+
+[[python_test_file]]
+path = "tests/test_c011_gravastar_equivalence_obstruction.py"
+lane = "regression"
+
+[[python_test_file]]
+path = "tests/test_fractional_schrodinger_benchmarks.py"
+lane = "regression"
+
+[[python_test_file]]
+path = "tests/test_qiskit_bridge.py"
+lane = "regression"
+
+[[python_test_file]]
+path = "tests/test_registry_emit_contracts.py"
+lane = "regression"
+
+[[doc_no_count]]
+path = "docs/TODO.md"
+reason = "Use the structured mirror or test-inventory output for current counts."
+
+[[doc_no_count]]
+path = "docs/NEXT_ACTIONS.md"
+reason = "Use the structured mirror or test-inventory output for current counts."
+
+[[doc_no_count]]
+path = "docs/ROADMAP.md"
+reason = "Roadmap should describe architecture and policy, not stale suite totals."
+
+[[doc_no_count]]
+path = "registry/todo_narrative.toml"
+reason = "Narrative overlays must not hard-code test totals."
+
+[[doc_no_count]]
+path = "registry/next_actions_narrative.toml"
+reason = "Narrative overlays must not hard-code test totals."
+
+[[doc_no_count]]
+path = "registry/roadmap_narrative.toml"
+reason = "Narrative overlays must not hard-code test totals."

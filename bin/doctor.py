@@ -74,6 +74,7 @@ def main() -> int:
 
     print("\nNext steps:")
     print("- Core: `make test`")
+    print("- Native BLAS candidates: `make doctor-blas`")
     print("- Optional requirements: `REQUIREMENTS.md`")
     return 0
 

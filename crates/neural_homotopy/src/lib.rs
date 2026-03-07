@@ -4,10 +4,9 @@
 //! obstruction can be synthesized via neural search constrained by Stasheff
 //! polytope geometry.
 
-// Force cargo to link OpenBLAS (needed by burn-ndarray for matmul).
-// Without this, cargo omits -lopenblas from the linker command because
-// no Rust code directly references the blas_src crate.
-extern crate blas_src;
+// Native BLAS backends are selected at compile time via this crate's Cargo
+// features (see `[features]` in `Cargo.toml`). Keep them opt-in so the default
+// path stays offline-friendly and CI-portable.
 
 pub mod burn_backend;
 pub mod burn_model;
