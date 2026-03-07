@@ -402,6 +402,7 @@ sha2 = { workspace = true }
 glob = { workspace = true }
 mimalloc = { workspace = true }
 pathion_ellip = { version = "0.1.0", path = "../pathion_ellip" }
+anise = { workspace = true }
 
 [features]
 default = ["gpu"]
