@@ -9,6 +9,7 @@
 
 use algebra_core::construction::chingon::AlternativityViolationTensor;
 use clap::Parser;
+use gororoba_cli_physics::ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN};
 use gr_core::forces::chingon_bivector_drag::compute_chingon_bivector_drag;
 use nalgebra::{Matrix3, Vector3};
 use rayon::prelude::*;
@@ -142,11 +143,15 @@ struct FlybyConfig {
     outbound_ra_deg: f64,
     /// Observed anomalous delta-V (mm/s). Positive = speed gain.
     observed_dv_mm_s: f64,
+    /// Perigee epoch as Julian Ephemeris Date (JED/TDB).
+    /// Required for three-body Moon/Sun position queries.
+    perigee_jed: f64,
 }
 
 fn all_flybys() -> Vec<FlybyConfig> {
     // Inbound/outbound asymptotic directions from Anderson et al. (2008)
     // PRL 100, 091102, Table I.
+    use gororoba_cli_physics::ephemeris_loader::flyby_epochs;
     vec![
         FlybyConfig {
             name: "Galileo-I (1990-12-08)",
@@ -157,6 +162,7 @@ fn all_flybys() -> Vec<FlybyConfig> {
             outbound_dec_deg: -4.9,
             outbound_ra_deg: 223.0,
             observed_dv_mm_s: 3.92,
+            perigee_jed: flyby_epochs::GALILEO,
         },
         FlybyConfig {
             name: "NEAR (1998-01-23)",
@@ -167,6 +173,7 @@ fn all_flybys() -> Vec<FlybyConfig> {
             outbound_dec_deg: 72.0,
             outbound_ra_deg: 89.0,
             observed_dv_mm_s: 13.46,
+            perigee_jed: flyby_epochs::NEAR,
         },
         FlybyConfig {
             name: "Cassini (1999-08-18)",
@@ -177,6 +184,7 @@ fn all_flybys() -> Vec<FlybyConfig> {
             outbound_dec_deg: -5.0,
             outbound_ra_deg: 344.0,
             observed_dv_mm_s: -2.0,
+            perigee_jed: flyby_epochs::CASSINI,
         },
         FlybyConfig {
             name: "Rosetta-I (2005-03-04)",
@@ -187,6 +195,7 @@ fn all_flybys() -> Vec<FlybyConfig> {
             outbound_dec_deg: -20.6,
             outbound_ra_deg: 116.0,
             observed_dv_mm_s: 1.80,
+            perigee_jed: flyby_epochs::ROSETTA_I,
         },
         FlybyConfig {
             name: "MESSENGER (2005-08-02)",
@@ -197,6 +206,7 @@ fn all_flybys() -> Vec<FlybyConfig> {
             outbound_dec_deg: 75.4,
             outbound_ra_deg: 174.0,
             observed_dv_mm_s: 0.02,
+            perigee_jed: flyby_epochs::MESSENGER,
         },
         FlybyConfig {
             name: "Juno (2013-10-09)",
@@ -207,6 +217,7 @@ fn all_flybys() -> Vec<FlybyConfig> {
             outbound_dec_deg: -5.3,
             outbound_ra_deg: 345.0,
             observed_dv_mm_s: 0.0,
+            perigee_jed: flyby_epochs::JUNO,
         },
     ]
 }
@@ -361,7 +372,12 @@ fn hyperbolic_initial_state(
 }
 
 /// Run a single flyby simulation with RK4 integration.
-/// Returns (v_out_control, v_out_chingon, trajectory_points).
+/// Returns (v_out_control, v_out_chingon, trajectory_points, h_trace).
+///
+/// When `ephem` is Some, Moon and Sun gravitational accelerations are added
+/// to the RK4 closure (three-body correction). The ephemeris is queried at
+/// the JED corresponding to each integration timestep.
+#[allow(clippy::too_many_arguments)]
 fn run_flyby(
     cfg: &FlybyConfig,
     avt: &AlternativityViolationTensor,
@@ -370,65 +386,143 @@ fn run_flyby(
     t_after: f64,
     trajectory_stride: usize,
     v_wind: &Vector3<f64>,
-) -> (f64, f64, Vec<[f64; 7]>) {
+    ephem: Option<&EphemerisLoader>,
+    trace_h: bool,
+) -> (f64, f64, Vec<[f64; 7]>, Vec<[f64; 10]>) {
     let (pos_init, vel_init) = hyperbolic_initial_state(cfg, t_before);
     let total_time = t_before + t_after;
     let steps = (total_time / dt) as usize;
 
-    let rk4_run = |use_chingon: bool, record: bool| -> (f64, Vec<[f64; 7]>) {
-        let mut p = pos_init;
-        let mut v = vel_init;
-        let mut traj = Vec::new();
+    /// Seconds per Julian day.
+    const SPD: f64 = 86400.0;
 
-        for step in 0..steps {
-            if record && step % trajectory_stride == 0 {
-                let t = step as f64 * dt - t_before;
+    let rk4_run =
+        |use_chingon: bool, record: bool, do_trace: bool| -> (f64, Vec<[f64; 7]>, Vec<[f64; 10]>) {
+            let mut p = pos_init;
+            let mut v = vel_init;
+            let mut traj = Vec::new();
+            let mut h_trace_out: Vec<[f64; 10]> = Vec::new();
+
+            for step in 0..steps {
+                let t_sec = step as f64 * dt - t_before;
+
+                if record && step % trajectory_stride == 0 {
+                    traj.push([t_sec, p.x, p.y, p.z, v.x, v.y, v.z]);
+                }
+
+                // Current JED for ephemeris queries (perigee + offset in days)
+                let jed_now = cfg.perigee_jed + t_sec / SPD;
+
+                // Pre-fetch three-body positions (once per step, shared across RK4 stages).
+                // Moon/Sun move negligibly during a single RK4 step (~1s), so querying
+                // once per step rather than per stage is both correct and 4x faster.
+                let (r_moon, r_sun) = if let Some(eph) = ephem {
+                    let state = eph.three_body_state(jed_now);
+                    (state.moon_pos_km, state.sun_pos_km)
+                } else {
+                    (Vector3::zeros(), Vector3::zeros())
+                };
+
+                let accel = |p_in: Vector3<f64>, v_in: Vector3<f64>| -> Vector3<f64> {
+                    let r_sq = p_in.norm_squared();
+                    let r = r_sq.sqrt();
+                    let mut a = -p_in * (GM_EARTH / (r_sq * r));
+
+                    // Three-body: Moon and Sun gravitational perturbations
+                    if ephem.is_some() {
+                        let dp_moon = p_in - r_moon;
+                        let d_moon = dp_moon.norm();
+                        if d_moon > 1.0 {
+                            a -= dp_moon * (GM_MOON / (d_moon * d_moon * d_moon));
+                            // Indirect term: acceleration of Earth by Moon
+                            let d_moon_0 = r_moon.norm();
+                            if d_moon_0 > 1.0 {
+                                a -= r_moon * (GM_MOON / (d_moon_0 * d_moon_0 * d_moon_0));
+                            }
+                        }
+                        let dp_sun = p_in - r_sun;
+                        let d_sun = dp_sun.norm();
+                        if d_sun > 1.0 {
+                            a -= dp_sun * (GM_SUN / (d_sun * d_sun * d_sun));
+                            // Indirect term: acceleration of Earth by Sun
+                            let d_sun_0 = r_sun.norm();
+                            if d_sun_0 > 1.0 {
+                                a -= r_sun * (GM_SUN / (d_sun_0 * d_sun_0 * d_sun_0));
+                            }
+                        }
+                    }
+
+                    if use_chingon {
+                        let alpha_eff = ALPHA_CHINGON * dm_density_factor(r);
+                        a += compute_chingon_bivector_drag(
+                            p_in, v_in, *v_wind, alpha_eff, avt,
+                        );
+                    }
+
+                    a
+                };
+
+                // h(t).v_wind trace for diagnostics
+                if do_trace && step % trajectory_stride == 0 {
+                    let h = p.cross(&v);
+                    let h_dot_vw = h.dot(v_wind);
+                    let cross_sign = if h_dot_vw > 0.0 { 1.0 } else { -1.0 };
+                    let r = p.norm();
+                    let a_chingon_mag = if use_chingon {
+                        let alpha_eff = ALPHA_CHINGON * dm_density_factor(r);
+                        compute_chingon_bivector_drag(p, v, *v_wind, alpha_eff, avt).norm()
+                    } else {
+                        0.0
+                    };
+                    let dm_fac = dm_density_factor(r);
+                    let a_moon_mag = if ephem.is_some() {
+                        let dp = p - r_moon;
+                        let d = dp.norm();
+                        if d > 1.0 { GM_MOON / (d * d) } else { 0.0 }
+                    } else {
+                        0.0
+                    };
+                    let a_sun_mag = if ephem.is_some() {
+                        let dp = p - r_sun;
+                        let d = dp.norm();
+                        if d > 1.0 { GM_SUN / (d * d) } else { 0.0 }
+                    } else {
+                        0.0
+                    };
+                    h_trace_out.push([
+                        t_sec, h.x, h.y, h.z, h_dot_vw, cross_sign,
+                        a_chingon_mag, dm_fac, a_moon_mag, a_sun_mag,
+                    ]);
+                }
+
+                let k1_v = accel(p, v);
+                let k1_p = v;
+
+                let k2_v = accel(p + k1_p * (dt / 2.0), v + k1_v * (dt / 2.0));
+                let k2_p = v + k1_v * (dt / 2.0);
+
+                let k3_v = accel(p + k2_p * (dt / 2.0), v + k2_v * (dt / 2.0));
+                let k3_p = v + k2_v * (dt / 2.0);
+
+                let k4_v = accel(p + k3_p * dt, v + k3_v * dt);
+                let k4_p = v + k3_v * dt;
+
+                p += (k1_p + 2.0 * k2_p + 2.0 * k3_p + k4_p) * (dt / 6.0);
+                v += (k1_v + 2.0 * k2_v + 2.0 * k3_v + k4_v) * (dt / 6.0);
+            }
+
+            if record {
+                let t = steps as f64 * dt - t_before;
                 traj.push([t, p.x, p.y, p.z, v.x, v.y, v.z]);
             }
 
-            let accel = |p_in: Vector3<f64>, v_in: Vector3<f64>| -> Vector3<f64> {
-                let r_sq = p_in.norm_squared();
-                let r = r_sq.sqrt();
-                let a_grav = -p_in * (GM_EARTH / (r_sq * r));
-                if use_chingon {
-                    let alpha_eff = ALPHA_CHINGON * dm_density_factor(r);
-                    a_grav
-                        + compute_chingon_bivector_drag(
-                            p_in, v_in, *v_wind, alpha_eff, avt,
-                        )
-                } else {
-                    a_grav
-                }
-            };
+            (v.norm(), traj, h_trace_out)
+        };
 
-            let k1_v = accel(p, v);
-            let k1_p = v;
+    let (v_ctrl, _, _) = rk4_run(false, false, false);
+    let (v_chingon, traj, h_trace_data) = rk4_run(true, true, trace_h);
 
-            let k2_v = accel(p + k1_p * (dt / 2.0), v + k1_v * (dt / 2.0));
-            let k2_p = v + k1_v * (dt / 2.0);
-
-            let k3_v = accel(p + k2_p * (dt / 2.0), v + k2_v * (dt / 2.0));
-            let k3_p = v + k2_v * (dt / 2.0);
-
-            let k4_v = accel(p + k3_p * dt, v + k3_v * dt);
-            let k4_p = v + k3_v * dt;
-
-            p += (k1_p + 2.0 * k2_p + 2.0 * k3_p + k4_p) * (dt / 6.0);
-            v += (k1_v + 2.0 * k2_v + 2.0 * k3_v + k4_v) * (dt / 6.0);
-        }
-
-        if record {
-            let t = steps as f64 * dt - t_before;
-            traj.push([t, p.x, p.y, p.z, v.x, v.y, v.z]);
-        }
-
-        (v.norm(), traj)
-    };
-
-    let (v_ctrl, _) = rk4_run(false, false);
-    let (v_chingon, traj) = rk4_run(true, true);
-
-    (v_ctrl, v_chingon, traj)
+    (v_ctrl, v_chingon, traj, h_trace_data)
 }
 
 /// Pin the current thread pool to physical cores for V-Cache locality.
@@ -496,6 +590,19 @@ struct Cli {
     #[arg(long)]
     spacecraft: Option<String>,
 
+    /// Path to JPL .bsp ephemeris file (DE440 or DE430).
+    /// Enables three-body Moon/Sun gravitational correction.
+    #[arg(long, default_value = "data/external/de440.bsp")]
+    bsp: String,
+
+    /// Disable three-body correction (single-body Earth-only gravity).
+    #[arg(long)]
+    no_threebody: bool,
+
+    /// Output h(t).v_wind trace CSV per spacecraft (diagnostic for Rosetta-I sign crossing).
+    #[arg(long)]
+    trace_h: bool,
+
     /// Integration timestep in seconds.
     #[arg(long, default_value = "1.0")]
     dt: f64,
@@ -520,6 +627,24 @@ fn main() -> anyhow::Result<()> {
     pin_physical_cores();
 
     let v_wind = dm_wind_j2000();
+
+    // Load three-body ephemeris (Moon + Sun positions from JPL DE440)
+    let ephem: Option<EphemerisLoader> = if cli.no_threebody {
+        println!("Three-body correction DISABLED (--no-threebody)");
+        None
+    } else {
+        let bsp_path = std::path::Path::new(&cli.bsp);
+        match EphemerisLoader::load(bsp_path) {
+            Ok(loader) => {
+                println!("Three-body correction ENABLED (JPL DE440)");
+                Some(loader)
+            }
+            Err(e) => {
+                println!("Three-body correction DISABLED: {}", e);
+                None
+            }
+        }
+    };
 
     println!("=== 64D Chingon-Vlasov Flyby Crucible ===");
     println!("  alpha_chingon = {:.2e} (LOCKED)", ALPHA_CHINGON);
@@ -609,8 +734,10 @@ fn main() -> anyhow::Result<()> {
             let total_steps = ((t_before + t_after) / cli.dt) as usize;
             let stride = (total_steps / 500).max(1);
 
-            let (v_ctrl, v_chingon, traj) =
-                run_flyby(cfg, &avt, cli.dt, t_before, t_after, stride, &v_wind);
+            let (v_ctrl, v_chingon, traj, h_trace_data) = run_flyby(
+                cfg, &avt, cli.dt, t_before, t_after, stride, &v_wind,
+                ephem.as_ref(), cli.trace_h,
+            );
 
             let delta_v_mm_s = (v_chingon - v_ctrl) * 1e6;
             let ratio = if cfg.observed_dv_mm_s.abs() > 0.001 {
@@ -619,12 +746,12 @@ fn main() -> anyhow::Result<()> {
                 f64::NAN
             };
 
-            (*cfg, delta_v_mm_s, ratio, t_before + t_after, traj)
+            (*cfg, delta_v_mm_s, ratio, t_before + t_after, traj, h_trace_data)
         })
         .collect();
     let sim_elapsed = t1.elapsed().as_secs_f64();
 
-    for (cfg, delta_v_mm_s, ratio, window, traj) in &results {
+    for (cfg, delta_v_mm_s, ratio, window, traj, h_trace_data) in &results {
         println!(
             "{:>30} {:>10.2} {:>12.4e} {:>12.4} {:>12.0} {:>10.3} {:>10.0}",
             cfg.name,
@@ -648,6 +775,26 @@ fn main() -> anyhow::Result<()> {
             wtr.write_record(["t_s", "x_km", "y_km", "z_km", "vx_km_s", "vy_km_s", "vz_km_s"])?;
             for row in traj {
                 wtr.write_record(row.iter().map(|v| format!("{:.6}", v)))?;
+            }
+            wtr.flush()?;
+            eprintln!("  Wrote {}", path);
+        }
+
+        // Write h(t).v_wind trace CSV if --trace-h was given
+        if cli.trace_h && !h_trace_data.is_empty() {
+            let safe_name: String = cfg
+                .name
+                .chars()
+                .map(|c| if c.is_alphanumeric() { c } else { '_' })
+                .collect();
+            let path = format!("h_trace_{}.csv", safe_name);
+            let mut wtr = csv::Writer::from_path(&path)?;
+            wtr.write_record([
+                "t_s", "h_x", "h_y", "h_z", "h_dot_vwind", "cross_sign",
+                "a_chingon_mag", "dm_factor", "a_moon_mag", "a_sun_mag",
+            ])?;
+            for row in h_trace_data {
+                wtr.write_record(row.iter().map(|v| format!("{:.8e}", v)))?;
             }
             wtr.flush()?;
             eprintln!("  Wrote {}", path);

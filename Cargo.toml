@@ -138,6 +138,12 @@ gauss-quad = "0.2.4"         # Gauss-Legendre quadrature (replaces hand-rolled S
 ode_solvers = "0.6.1"        # Dormand-Prince 5(4), Dop853, RK4 (nalgebra-based)
 qua_ten_net = "0.2.0"        # Tensor networks for quantum computing
 
+# Astrodynamics / Ephemeris
+# anise: pure Rust, thread-safe JPL .bsp/SPK parser (machine-epsilon precision).
+# Each rayon worker queries .bsp concurrently without locks. Built by nyx-space.
+# BANISHED: rust-spice (C-SPICE FFI, thread-unsafe mutable state, segfaults under rayon).
+anise = { version = "0.9.5", default-features = false }
+
 # Parallelism
 rayon = "1.10"
 
