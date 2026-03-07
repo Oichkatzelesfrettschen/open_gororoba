@@ -2280,3 +2280,25 @@ input_path_refs = []
 output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-099"
+title = "512D Bell inequality (CHSH) via associator torque correlations"
+description = "Test whether Cayley-Dickson non-associativity produces CHSH violation (|S|>2). Sedenion 2-blade ZD pairs lifted to dim=16..512 via CD doubling. Measurement: sign of associator [A'(theta), e_k, B] for optimal probe elements. SO(2) rotations in orthogonal subplanes. Optimal probe set X_optimal = intersection across all 4 CHSH angle combos."
+date = "2026-03-07"
+sprint = 74
+binary_registered = false
+binary_experiment_declared = "crates/algebra_experimental/src/bell_inequality.rs"
+method = "chsh_violation_test(dim, n_samples=1000, seed=42) at dims 16,32,64,512."
+input = "168 sedenion 2-blade ZD pairs, 4316 optimal probes per channel at 512D"
+output = ["test"]
+run = "cargo test --release -p algebra_experimental -- bell_inequality --nocapture"
+run_command_sha256 = ""
+claims = ["C-1111", "C-1112"]
+status = "complete"
+status_note = "COMPLETE. S-values: 16D=-1.488, 32D=-1.504, 64D=-1.444, 512D=-1.528. NO CHSH violation. Associator sign dominated by ZD pair structure, insufficient angular dependence for |S|>2."
+lineage_id = "XL-099"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"

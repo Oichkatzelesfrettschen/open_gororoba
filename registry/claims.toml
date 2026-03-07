@@ -15411,3 +15411,27 @@ confidence = "high"
 phase = "physics"
 sprint = 73
 dependencies = ["C-1104", "C-1106", "C-1109"]
+
+[[claim]]
+id = "C-1111"
+statement = "512D Cayley-Dickson CHSH S-value = -1.528 (does NOT violate classical bound |S|<=2). Associator-based measurement model with sedenion-lifted ZD pairs produces dimension-invariant S ~ -1.5 across 16D through 512D. The correlators are uniformly anti-correlated (~-0.85) with insufficient angular dependence for CHSH violation."
+where_stated = "crates/algebra_experimental/src/bell_inequality.rs (chsh_violation_test), E-099"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED at 16D (S=-1.488), 32D (S=-1.504), 64D (S=-1.444), 512D (S=-1.528). REFUTE: alternative measurement model (e.g. full AVT contraction, native 512D ZDs, or different rotation planes) produces |S|>2."
+confidence = "high"
+phase = "quantum"
+sprint = 74
+dependencies = []
+
+[[claim]]
+id = "C-1112"
+statement = "Shared ZD paths in sedenion-lifted 512D: 168 ZD pairs form 10332 shared connections (nearly complete graph). All pairs share basis indices because sedenion 2-blade ZDs are embedded in the same 16D subspace. Optimal probes (valid for all 4 CHSH angle combos) number 4316 per channel."
+where_stated = "crates/algebra_experimental/src/bell_inequality.rs (find_shared_zd_paths, count_shared_zd_paths)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: connected components analysis shows near-complete connectivity. REFUTE: native 512D ZDs (not sedenion-lifted) form sparser, non-trivial graph topology."
+confidence = "high"
+phase = "quantum"
+sprint = 74
+dependencies = ["C-1111"]

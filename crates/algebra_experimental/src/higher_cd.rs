@@ -91,8 +91,9 @@ impl HigherAvt {
                     }
                 }
             }
-            // Limit violations for very high dimensions to prevent memory explosion
-            if violations.len() > 1_000_000 {
+            // Limit violations for very high dimensions to prevent memory explosion.
+            // 10M cap accommodates 256D (~3.97M violations) with headroom for 512D sampling.
+            if violations.len() > 10_000_000 {
                 break;
             }
         }
