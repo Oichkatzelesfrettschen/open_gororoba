@@ -186,8 +186,8 @@ hooks-install-strict:
 		'set -euo pipefail' \
 		'repo_root="$$(git rev-parse --show-toplevel)"' \
 		'cd "$$repo_root"' \
-		'echo "[pre-push] running make pre-push-gate-strict"' \
-		'make pre-push-gate-strict' \
+		'echo "[pre-push] running ./makew pre-push-gate-strict"' \
+		'./makew pre-push-gate-strict' \
 		> "$(HOOKS_DIR)/pre-push"
 	@chmod +x "$(HOOKS_DIR)/pre-push"
 	@git config core.hooksPath "$(HOOKS_DIR)"

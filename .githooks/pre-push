@@ -31,7 +31,13 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Rust quality gate (clippy + tests) -- scoped when possible
+# Fast shared gate (python smoke + rust smoke + integrity)
+# ---------------------------------------------------------------------------
+echo "[pre-push] running shared check gate via ./makew..."
+./makew check
+
+# ---------------------------------------------------------------------------
+# Rust quality gate -- scoped when possible, routed through nextest/make policy
 # ---------------------------------------------------------------------------
 if [ "$RUN_RUST" = "true" ]; then
     if [ -z "$SCOPE" ]; then
@@ -40,10 +46,7 @@ if [ "$RUN_RUST" = "true" ]; then
         SCOPE="--workspace"
     fi
     echo "[pre-push] rust scope: $SCOPE"
-    # shellcheck disable=SC2086
-    cargo clippy $SCOPE --all-targets -j"$(nproc)" -- -D warnings
-    # shellcheck disable=SC2086
-    cargo test $SCOPE -j"$(nproc)"
+    ./makew rust-regression-scoped RUST_SCOPE="$SCOPE"
     echo "[pre-push] OK: Rust quality gate passed."
 else
     echo "[pre-push] SKIP: no Rust-relevant changes detected."
@@ -54,7 +57,7 @@ fi
 # ---------------------------------------------------------------------------
 if [ "$RUN_GOVERNANCE" = "true" ]; then
     echo "[pre-push] running governance gate..."
-    make governance-gate
+    ./makew governance-gate
 else
     echo "[pre-push] SKIP: no governance-relevant changes detected."
 fi
@@ -62,8 +65,8 @@ fi
 # ---------------------------------------------------------------------------
 # ASCII + terminology gates (always run -- fast and universal)
 # ---------------------------------------------------------------------------
-make ascii-check
-make terminology-gate
+./makew ascii-check
+./makew terminology-gate
 
 echo "[pre-push] OK: pre-push gate passed."
 
