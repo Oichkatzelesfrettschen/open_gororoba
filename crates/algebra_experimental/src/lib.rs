@@ -16,3 +16,4 @@ pub mod leech_lattice;
 pub mod moonshine;
 pub mod particle_physics;
 pub mod so7_drift;
+pub mod voudon_stabilizer;

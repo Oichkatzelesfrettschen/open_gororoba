@@ -19,6 +19,10 @@ rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
 num-bigint = { workspace = true }
 petgraph = { workspace = true }
+cudarc = { workspace = true, optional = true }
+
+[features]
+gpu = ["algebra_core/gpu", "dep:cudarc"]
 
 [dev-dependencies]
 approx = { workspace = true }

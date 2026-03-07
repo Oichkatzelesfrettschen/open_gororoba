@@ -1,6 +1,8 @@
 // GPU-accelerated Lattice Boltzmann Method (D3Q19) with CUDA
 // Runtime kernel compilation via cudarc NVRTC
 
+pub mod chingon_gpu;
+
 use anyhow::{Context, Result, ensure};
 use cudarc::driver::{
     CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtr, LaunchConfig, PushKernelArg,

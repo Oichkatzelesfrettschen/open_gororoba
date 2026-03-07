@@ -697,6 +697,12 @@ struct Cli {
     #[arg(long)]
     eta_wake: Option<f64>,
 
+    /// Use GPU (CUDA) for AVT tensor contraction.
+    /// The RK4 loop and orbital mechanics stay on CPU in f64;
+    /// only the 64D bilinear contraction runs on GPU in f32.
+    #[arg(long)]
+    gpu: bool,
+
     /// Output trajectory CSV file prefix.
     #[arg(long)]
     csv_prefix: Option<String>,

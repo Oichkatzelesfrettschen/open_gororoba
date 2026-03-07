@@ -238,6 +238,15 @@ pub fn viscosity_cross_model(eta_0: f64, eta_inf: f64, lambda: f64, n: f64, gamm
     eta_inf + (eta_0 - eta_inf) / denominator
 }
 
+/// Effective viscosity under Chrono-Complex modulation.
+///
+/// Formula: `nu_eff = nu_base * (1 + alpha * epsilon)`, where `epsilon` is the
+/// imaginary component of 2D complex time. This models the viscous drag 
+/// induced by temporal flux.
+pub fn viscosity_with_chrono_complex(nu_base: f64, alpha: f64, epsilon: f64) -> f64 {
+    nu_base * (1.0 + alpha * epsilon)
+}
+
 /// Compute D2Q9 equilibrium distributions.
 ///
 /// f_eq_i = w_i * rho * (1 + 3*c_i.u + 9/2*(c_i.u)^2 - 3/2*u^2)

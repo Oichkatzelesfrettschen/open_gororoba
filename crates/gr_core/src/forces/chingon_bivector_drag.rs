@@ -191,6 +191,109 @@ fn chingon_bivector_drag_core(
     res / 64.0
 }
 
+/// Pre-computed orbital parameters for the 3-body 64D embedding.
+///
+/// Extracted from `compute_chingon_bivector_drag_3body` so that both
+/// the CPU and GPU contraction paths can share the same geometry computation.
+pub struct ThreeBodyOrbitalParams {
+    /// Earth triad: [e_v, e_h, e_n] as row-major 3x3.
+    pub triad_earth: [[f64; 3]; 3],
+    /// Lunar triad.
+    pub triad_lunar: [[f64; 3]; 3],
+    /// Solar triad.
+    pub triad_solar: [[f64; 3]; 3],
+    /// h_earth projected into Earth triad [3].
+    pub h_triad_earth: [f64; 3],
+    /// v_rel projected into Lunar triad [3].
+    pub vrel_triad_lunar: [f64; 3],
+    /// h_earth projected into Solar triad [3].
+    pub h_triad_solar: [f64; 3],
+    /// v_hat projected into Solar triad [3].
+    pub vhat_triad_solar: [f64; 3],
+    /// Magnitude of h_earth.
+    pub h_earth_norm: f64,
+    /// Magnitude of v_rel.
+    pub v_rel_norm: f64,
+    /// sign(h_earth . v_wind): +1.0 or -1.0.
+    pub cross_sign: f64,
+}
+
+impl ThreeBodyOrbitalParams {
+    /// Compute orbital parameters for the 3-body embedding.
+    ///
+    /// Returns `None` if the geometry is degenerate (zero velocity or
+    /// zero angular momentum).
+    pub fn compute(
+        r: Vector3<f64>,
+        v: Vector3<f64>,
+        v_wind: Vector3<f64>,
+        r_moon: Vector3<f64>,
+        r_sun: Vector3<f64>,
+    ) -> Option<Self> {
+        let v_rel = v - v_wind;
+        let v_rel_norm = v_rel.norm();
+        if v_rel_norm < 1e-30 {
+            return None;
+        }
+
+        let h_earth = r.cross(&v);
+        let h_lunar = (r - r_moon).cross(&v);
+        let h_solar = (r - r_sun).cross(&v);
+
+        let h_earth_norm = h_earth.norm();
+        if h_earth_norm < 1e-30 {
+            return None;
+        }
+
+        let h_dot_wind = h_earth.dot(&v_wind);
+        let cross_sign = if h_dot_wind > 0.0 { 1.0 } else { -1.0 };
+
+        let build_triad = |h: &Vector3<f64>| -> (Vector3<f64>, Vector3<f64>, Vector3<f64>) {
+            let hn = h.norm();
+            if hn < 1e-30 {
+                let e_h = h_earth / h_earth_norm;
+                let e_v = v_rel / v_rel_norm;
+                let e_n_raw = e_v.cross(&e_h);
+                let e_n_n = e_n_raw.norm();
+                let e_n = if e_n_n > 1e-30 { e_n_raw / e_n_n } else { Vector3::zeros() };
+                return (e_v, e_h, e_n);
+            }
+            let e_h = *h / hn;
+            let e_v = v_rel / v_rel_norm;
+            let e_n_raw = e_v.cross(&e_h);
+            let e_n_n = e_n_raw.norm();
+            let e_n = if e_n_n > 1e-30 { e_n_raw / e_n_n } else { Vector3::zeros() };
+            (e_v, e_h, e_n)
+        };
+
+        let (e_v_earth, e_h_earth, e_n_earth) = build_triad(&h_earth);
+        let (e_v_lunar, e_h_lunar, e_n_lunar) = build_triad(&h_lunar);
+        let (e_v_solar, e_h_solar, e_n_solar) = build_triad(&h_solar);
+
+        let v_hat = v_rel / v_rel_norm;
+
+        let h_triad_earth = [h_earth.dot(&e_v_earth), h_earth.dot(&e_h_earth), h_earth.dot(&e_n_earth)];
+        let vrel_triad_lunar = [v_rel.dot(&e_v_lunar), v_rel.dot(&e_h_lunar), v_rel.dot(&e_n_lunar)];
+        let h_triad_solar = [h_earth.dot(&e_v_solar), h_earth.dot(&e_h_solar), h_earth.dot(&e_n_solar)];
+        let vhat_triad_solar = [v_hat.dot(&e_v_solar), v_hat.dot(&e_h_solar), v_hat.dot(&e_n_solar)];
+
+        fn v3_to_arr(v: Vector3<f64>) -> [f64; 3] { [v.x, v.y, v.z] }
+
+        Some(Self {
+            triad_earth: [v3_to_arr(e_v_earth), v3_to_arr(e_h_earth), v3_to_arr(e_n_earth)],
+            triad_lunar: [v3_to_arr(e_v_lunar), v3_to_arr(e_h_lunar), v3_to_arr(e_n_lunar)],
+            triad_solar: [v3_to_arr(e_v_solar), v3_to_arr(e_h_solar), v3_to_arr(e_n_solar)],
+            h_triad_earth,
+            vrel_triad_lunar,
+            h_triad_solar,
+            vhat_triad_solar,
+            h_earth_norm,
+            v_rel_norm,
+            cross_sign,
+        })
+    }
+}
+
 /// Three-body 64D embedding: body-specific triads for each sub-block.
 ///
 /// Uses the SAME 3x21-axis structure as the single-body function, but
@@ -221,66 +324,30 @@ pub fn compute_chingon_bivector_drag_3body(
         return Vector3::zeros();
     }
 
-    let v_rel = v - v_wind;
-    let v_rel_norm = v_rel.norm();
-    if v_rel_norm < 1e-30 {
-        return Vector3::zeros();
-    }
-
-    // Three body-relative angular momenta
-    let h_earth = r.cross(&v);
-    let h_lunar = (r - r_moon).cross(&v);
-    let h_solar = (r - r_sun).cross(&v);
-
-    let h_earth_norm = h_earth.norm();
-    if h_earth_norm < 1e-30 {
-        return Vector3::zeros();
-    }
-
-    // Cross-coupling sign from Earth's hemisphere
-    let h_dot_wind = h_earth.dot(&v_wind);
-    let cross_sign = if h_dot_wind > 0.0 { 1.0 } else { -1.0 };
-
-    // Build orbital triad for a given h-vector
-    let build_triad = |h: &Vector3<f64>| -> (Vector3<f64>, Vector3<f64>, Vector3<f64>) {
-        let hn = h.norm();
-        if hn < 1e-30 {
-            // Fall back to Earth triad
-            let e_h = h_earth / h_earth_norm;
-            let e_v = v_rel / v_rel_norm;
-            let e_n_raw = e_v.cross(&e_h);
-            let e_n_n = e_n_raw.norm();
-            let e_n = if e_n_n > 1e-30 { e_n_raw / e_n_n } else { Vector3::zeros() };
-            return (e_v, e_h, e_n);
-        }
-        let e_h = *h / hn;
-        let e_v = v_rel / v_rel_norm;
-        let e_n_raw = e_v.cross(&e_h);
-        let e_n_n = e_n_raw.norm();
-        let e_n = if e_n_n > 1e-30 { e_n_raw / e_n_n } else { Vector3::zeros() };
-        (e_v, e_h, e_n)
+    let params = match ThreeBodyOrbitalParams::compute(r, v, v_wind, r_moon, r_sun) {
+        Some(p) => p,
+        None => return Vector3::zeros(),
     };
 
-    // Three triads -- one per body
-    let (e_v_earth, e_h_earth, e_n_earth) = build_triad(&h_earth);
-    let (e_v_lunar, e_h_lunar, e_n_lunar) = build_triad(&h_lunar);
-    let (e_v_solar, e_h_solar, e_n_solar) = build_triad(&h_solar);
+    let v_rel = v - v_wind;
+    let v_rel_norm = params.v_rel_norm;
+    let h_earth_norm = params.h_earth_norm;
+    let cross_sign = params.cross_sign;
 
-    // Project Earth's h and v_rel into EACH body's triad for embedding.
-    // The PHYSICAL quantities (h_earth, v_rel) are the same -- only the
-    // FRAME (triad) differs. This ensures magnitudes match the single-body
-    // case while directions carry body-specific geometric information.
-    let v_hat = v_rel / v_rel_norm;
+    // Reconstruct triads as Vector3 for the contraction below
+    fn arr_to_v3(a: [f64; 3]) -> Vector3<f64> { Vector3::new(a[0], a[1], a[2]) }
 
-    // Block 1 uses Earth triad for h projection
-    let h_triad_earth = [h_earth.dot(&e_v_earth), h_earth.dot(&e_h_earth), h_earth.dot(&e_n_earth)];
+    let e_v_solar = arr_to_v3(params.triad_solar[0]);
+    let e_h_solar = arr_to_v3(params.triad_solar[1]);
+    let e_n_solar = arr_to_v3(params.triad_solar[2]);
 
-    // Block 2 uses Lunar triad for v_rel projection
-    let vrel_triad_lunar = [v_rel.dot(&e_v_lunar), v_rel.dot(&e_h_lunar), v_rel.dot(&e_n_lunar)];
+    let h_triad_earth = params.h_triad_earth;
+    let vrel_triad_lunar = params.vrel_triad_lunar;
+    let h_triad_solar = params.h_triad_solar;
+    let vhat_triad_solar = params.vhat_triad_solar;
 
-    // Block 3 uses Solar triad for cross-coupling
-    let h_triad_solar = [h_earth.dot(&e_v_solar), h_earth.dot(&e_h_solar), h_earth.dot(&e_n_solar)];
-    let vhat_triad_solar = [v_hat.dot(&e_v_solar), v_hat.dot(&e_h_solar), v_hat.dot(&e_n_solar)];
+    // Suppress unused binding warning -- v_rel was used to compute params
+    let _ = v_rel;
 
     // Precompute trig table (7 phases for 7 octonion-like rotation phases)
     let phase_trig: [(f64, f64); 7] = std::array::from_fn(|k| {

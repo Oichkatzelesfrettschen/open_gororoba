@@ -108,6 +108,99 @@ impl AlternativityViolationTensor {
 
         Self { dim, violations }
     }
+
+    /// Bit-pack violations for GPU upload, dropping unused `k` index.
+    ///
+    /// The AVT contraction loop uses only `(i, j, m, sign)` -- the `k` index
+    /// is the third element of the associator triple used during CONSTRUCTION
+    /// but is never referenced during the bilinear tensor contraction:
+    ///   `force_64d[m] += alpha * v[i] * v[j] * sign`
+    ///
+    /// # Packing layout (uint32)
+    ///
+    /// The bit width per index is `ceil(log2(dim))`:
+    ///   - 64D:   6 bits/index -> i(6) + j(6) + m(6) + sign(1) = 19 bits
+    ///   - 256D:  8 bits/index -> i(8) + j(8) + m(8) + sign(1) = 25 bits
+    ///   - 512D:  9 bits/index -> i(9) + j(9) + m(9) + sign(1) = 28 bits
+    ///   - 1024D: 10 bits/index -> i(10) + j(10) + m(10) + sign(1) = 31 bits
+    ///
+    /// Bit layout (LSB to MSB):
+    ///   `[m: bits] [j: bits] [i: bits] [sign_positive: 1]`
+    ///
+    /// Sign encoding: bit=1 means positive sign, bit=0 means negative.
+    /// The magnitude is always 2 (since sum_sign = s1+s2 where each is +/-1,
+    /// and only non-zero sums are stored). The GPU reconstructs:
+    ///   `float sign_val = (packed >> sign_shift) & 1 ? 2.0f : -2.0f;`
+    ///
+    /// # Returns
+    ///
+    /// `(packed_data, index_bits)` where `index_bits` is needed by the GPU
+    /// to unpack the fields.
+    pub fn pack_for_gpu(&self) -> PackedAvt {
+        let bits = index_bits_for_dim(self.dim);
+        assert!(3 * bits < 32, "dim {} requires {}*3+1={} bits, exceeds u32",
+                self.dim, bits, 3 * bits + 1);
+
+        let mask = (1u32 << bits) - 1;
+        let mut packed = Vec::with_capacity(self.violations.len());
+
+        for &(i, j, _k, m, sign) in &self.violations {
+            let sign_bit: u32 = if sign > 0 { 1 } else { 0 };
+            let word = (m as u32 & mask)
+                | ((j as u32 & mask) << bits)
+                | ((i as u32 & mask) << (2 * bits))
+                | (sign_bit << (3 * bits));
+            packed.push(word);
+        }
+
+        PackedAvt {
+            data: packed,
+            index_bits: bits as u32,
+            dim: self.dim as u32,
+            violation_count: self.violations.len() as u32,
+        }
+    }
+}
+
+/// Bit-packed AVT violations for GPU upload.
+///
+/// Each `u32` in `data` encodes one `(i, j, m, sign)` tuple.
+/// The `k` index is omitted because the tensor contraction never uses it.
+#[derive(Debug, Clone)]
+pub struct PackedAvt {
+    /// Bit-packed violation words.
+    pub data: Vec<u32>,
+    /// Number of bits per index field (6 for 64D, 8 for 256D, 10 for 1024D).
+    pub index_bits: u32,
+    /// Algebra dimension.
+    pub dim: u32,
+    /// Number of violations (== data.len()).
+    pub violation_count: u32,
+}
+
+impl PackedAvt {
+    /// Unpack a single violation for CPU-side verification.
+    pub fn unpack(&self, idx: usize) -> (usize, usize, usize, i32) {
+        let word = self.data[idx];
+        let bits = self.index_bits;
+        let mask = (1u32 << bits) - 1;
+
+        let m = (word & mask) as usize;
+        let j = ((word >> bits) & mask) as usize;
+        let i = ((word >> (2 * bits)) & mask) as usize;
+        let sign_positive = ((word >> (3 * bits)) & 1) != 0;
+        let sign: i32 = if sign_positive { 2 } else { -2 };
+
+        (i, j, m, sign)
+    }
+}
+
+/// Compute the number of bits needed to represent indices for a given dimension.
+pub fn index_bits_for_dim(dim: usize) -> usize {
+    // dim is always a power of 2; we need ceil(log2(dim)) bits.
+    // For dim=64: log2(64)=6, for dim=256: 8, for dim=1024: 10.
+    assert!(dim >= 2 && dim.is_power_of_two());
+    dim.trailing_zeros() as usize
 }
 
 /// Helper: returns (index, sign) such that [e_i, e_j, e_k] = sign * e_index
