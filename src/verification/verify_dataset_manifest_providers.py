@@ -18,7 +18,7 @@ from pathlib import Path
 
 
 MANIFEST_REGISTRY_PATH = Path("registry/external_sources.toml")
-FETCH_RS_PATH = Path("crates/gororoba_cli/src/bin/fetch_datasets.rs")
+FETCH_RS_PATH = Path("crates/gororoba_cli_data/src/bin/fetch_datasets.rs")
 PROVIDER_TOKEN_RE = re.compile(r"([A-Za-z0-9_]+Provider)")
 RUST_PROVIDER_RE = re.compile(
     r"Box::new\(\s*[A-Za-z0-9_:]*?([A-Za-z0-9_]+Provider)\)"

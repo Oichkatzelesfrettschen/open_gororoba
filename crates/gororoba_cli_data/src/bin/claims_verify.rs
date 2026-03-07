@@ -155,14 +155,14 @@ fn main() {
         }
         "providers" => {
             let registry_path = repo_root.join("registry/external_sources.toml");
-            let fetch_path = repo_root.join("crates/gororoba_cli/src/bin/fetch_datasets.rs");
+            let fetch_path = repo_root.join("crates/gororoba_cli_data/src/bin/fetch_datasets.rs");
 
             if !registry_path.exists() {
                 eprintln!("ERROR: Missing registry/external_sources.toml");
                 all_ok = false;
             }
             if !fetch_path.exists() {
-                eprintln!("ERROR: Missing crates/gororoba_cli/src/bin/fetch_datasets.rs");
+                eprintln!("ERROR: Missing crates/gororoba_cli_data/src/bin/fetch_datasets.rs");
                 all_ok = false;
             }
 
@@ -178,7 +178,7 @@ fn main() {
                     Ok(t) => t,
                     Err(e) => {
                         eprintln!(
-                            "ERROR: Cannot read crates/gororoba_cli/src/bin/fetch_datasets.rs: {e}"
+                            "ERROR: Cannot read crates/gororoba_cli_data/src/bin/fetch_datasets.rs: {e}"
                         );
                         process::exit(2);
                     }

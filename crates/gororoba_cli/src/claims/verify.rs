@@ -463,7 +463,7 @@ pub fn run_all_verifications(repo_root: &Path) -> Result<String, Vec<String>> {
 
     // 7. Dataset providers (registry provider-manifest -> Rust fetch registry).
     let registry_path = repo_root.join("registry/external_sources.toml");
-    let fetch_path = repo_root.join("crates/gororoba_cli/src/bin/fetch_datasets.rs");
+    let fetch_path = repo_root.join("crates/gororoba_cli_data/src/bin/fetch_datasets.rs");
     let mut registry_text: Option<String> = None;
     let mut fetch_src: Option<String> = None;
 
@@ -477,12 +477,12 @@ pub fn run_all_verifications(repo_root: &Path) -> Result<String, Vec<String>> {
     }
 
     if !fetch_path.exists() {
-        all_failures.push("Missing crates/gororoba_cli/src/bin/fetch_datasets.rs".to_string());
+        all_failures.push("Missing crates/gororoba_cli_data/src/bin/fetch_datasets.rs".to_string());
     } else {
         match std::fs::read_to_string(&fetch_path) {
             Ok(t) => fetch_src = Some(t),
             Err(e) => all_failures.push(format!(
-                "Cannot read crates/gororoba_cli/src/bin/fetch_datasets.rs: {e}"
+                "Cannot read crates/gororoba_cli_data/src/bin/fetch_datasets.rs: {e}"
             )),
         }
     }
