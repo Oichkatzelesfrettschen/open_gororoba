@@ -3,14 +3,17 @@
 // Performs the bilinear tensor contraction on GPU (FP32) while the
 // RK4 integration loop and orbital mechanics stay on CPU (f64).
 //
+// Dimension-parametric: works for 64D, 128D, 256D, etc.
+//
 // Data flow per RK4 sub-step:
 //   CPU -> GPU: orbital parameters (~100 bytes as kernel args)
-//   GPU:        build_state (O(64)) -> contraction (O(52K)) -> project (O(21))
+//   GPU:        build_state (O(dim)) -> contraction (O(violations)) -> project (O(block3))
 //   GPU -> CPU: 3D force vector (12 bytes)
 
 use algebra_core::construction::chingon::PackedAvt;
 use anyhow::{Context, Result};
 use cudarc::driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg};
+use gr_core::forces::chingon_bivector_drag::block_layout;
 use std::sync::Arc;
 
 const KERNEL_SRC: &str = include_str!("kernels_chingon.cu");
@@ -19,6 +22,9 @@ const KERNEL_SRC: &str = include_str!("kernels_chingon.cu");
 ///
 /// Holds compiled kernels, device buffers, and the packed AVT data.
 /// Created once at startup; reused for every RK4 sub-step of every flyby.
+///
+/// Dimension-parametric: the `dim` field determines buffer sizes and
+/// block layout. All kernels receive block boundaries as arguments.
 pub struct ChingonGpuPipeline {
     _ctx: Arc<CudaContext>,
     stream: Arc<CudaStream>,
@@ -37,6 +43,14 @@ pub struct ChingonGpuPipeline {
     index_bits: u32,
     n_violations: u32,
     inv_n_viol: f32,
+    // Block layout (precomputed from dim)
+    block_size: u32,
+    block3_size: u32,
+    b1_start: u32,
+    b2_start: u32,
+    b3_start: u32,
+    n_phases: u32,
+    n_phases_b3: u32,
 }
 
 impl ChingonGpuPipeline {
@@ -62,6 +76,10 @@ impl ChingonGpuPipeline {
         let zero_kernel = module.load_function("chingon_zero_buffer")?;
 
         let dim = packed.dim as usize;
+
+        // Compute block layout
+        let (bs, np, b1s, b2s, b3s, b3sz) = block_layout(dim);
+        let n_phases_b3 = b3sz.div_ceil(3);
 
         // Upload packed AVT (read-only for entire simulation)
         let d_packed_avt = stream.clone_htod(&packed.data)
@@ -93,6 +111,13 @@ impl ChingonGpuPipeline {
             index_bits: packed.index_bits,
             n_violations,
             inv_n_viol,
+            block_size: bs as u32,
+            block3_size: b3sz as u32,
+            b1_start: b1s as u32,
+            b2_start: b2s as u32,
+            b3_start: b3s as u32,
+            n_phases: np as u32,
+            n_phases_b3: n_phases_b3 as u32,
         })
     }
 
@@ -101,20 +126,6 @@ impl ChingonGpuPipeline {
     /// All orbital parameters are passed as f64 from the CPU integrator,
     /// cast to f32 for the GPU kernel. The 3D force is returned as f64
     /// for integration back into the f64 RK4 loop.
-    ///
-    /// # Arguments
-    ///
-    /// * `triad_earth` - Earth orbital triad: (e_v, e_h, e_n) as 3x[f64;3]
-    /// * `triad_lunar` - Lunar orbital triad
-    /// * `triad_solar` - Solar orbital triad
-    /// * `h_triad_earth` - h_earth projected into Earth triad [3]
-    /// * `vrel_triad_lunar` - v_rel projected into Lunar triad [3]
-    /// * `h_triad_solar` - h_earth projected into Solar triad [3]
-    /// * `vhat_triad_solar` - v_hat projected into Solar triad [3]
-    /// * `h_earth_norm` - magnitude of h_earth
-    /// * `v_rel_norm` - magnitude of v_rel
-    /// * `cross_sign` - sign(h_earth . v_wind): +1.0 or -1.0
-    /// * `alpha` - coupling constant (alpha_eff)
     #[allow(clippy::too_many_arguments)]
     pub fn compute_force_3body(
         &mut self,
@@ -130,8 +141,7 @@ impl ChingonGpuPipeline {
         cross_sign: f64,
         alpha: f64,
     ) -> Result<[f64; 3]> {
-        // Step 1: Zero the force buffers (must zero the ACTUAL buffers,
-        // not clones -- CudaSlice::clone() allocates a new device buffer)
+        // Step 1: Zero the force buffers
         zero_device_buffer(&self.stream, &self.zero_kernel, &mut self.d_force_nd, self.dim as usize)?;
         zero_device_buffer(&self.stream, &self.zero_kernel, &mut self.d_force_3d, 3)?;
 
@@ -160,9 +170,6 @@ impl ChingonGpuPipeline {
         Ok([force[0] as f64, force[1] as f64, force[2] as f64])
     }
 
-    // zero_buffer moved to free function zero_device_buffer() to avoid
-    // borrow conflicts when zeroing self.d_force_nd/d_force_3d
-
     #[allow(clippy::too_many_arguments)]
     fn build_state(
         &mut self,
@@ -177,9 +184,12 @@ impl ChingonGpuPipeline {
         v_rel_norm: f64,
         cross_sign: f64,
     ) -> Result<()> {
+        // Launch enough threads to cover all axes
+        let threads = 256u32.min(self.dim);
+        let blocks = self.dim.div_ceil(threads);
         let cfg = LaunchConfig {
-            grid_dim: (1, 1, 1),
-            block_dim: (64, 1, 1),
+            grid_dim: (blocks, 1, 1),
+            block_dim: (threads, 1, 1),
             shared_mem_bytes: 0,
         };
 
@@ -232,6 +242,15 @@ impl ChingonGpuPipeline {
 
         let mut builder = self.stream.launch_builder(&self.build_state_kernel);
         builder.arg(&mut self.d_v_nd);
+        // Block layout parameters
+        builder.arg(&self.dim);
+        builder.arg(&self.block_size);
+        builder.arg(&self.block3_size);
+        builder.arg(&self.b1_start);
+        builder.arg(&self.b2_start);
+        builder.arg(&self.b3_start);
+        builder.arg(&self.n_phases);
+        builder.arg(&self.n_phases_b3);
         // Earth triad
         builder.arg(&e_v_earth_x); builder.arg(&e_v_earth_y); builder.arg(&e_v_earth_z);
         builder.arg(&e_h_earth_x); builder.arg(&e_h_earth_y); builder.arg(&e_h_earth_z);
@@ -258,9 +277,10 @@ impl ChingonGpuPipeline {
 
     fn run_contraction(&mut self, alpha: f32) -> Result<()> {
         let block_size = 256u32;
-        // Use enough blocks to cover all violations with good occupancy
-        // but not so many that we have idle threads.
-        let grid_size = (self.n_violations.div_ceil(block_size)).clamp(1, 256);
+        // At 256D with 3.97M violations, 256 blocks gives only 65K threads each
+        // processing ~60 violations. Allow up to 4096 blocks (1M threads) to
+        // saturate the RTX 4070 Ti's 60 SMs with multiple warps per SM.
+        let grid_size = (self.n_violations.div_ceil(block_size)).clamp(1, 4096);
         let shared_bytes = self.dim * 4; // sizeof(float) * dim
 
         let cfg = LaunchConfig {
@@ -318,6 +338,12 @@ impl ChingonGpuPipeline {
         let mut builder = self.stream.launch_builder(&self.project_kernel);
         builder.arg(&self.d_force_nd);
         builder.arg(&mut self.d_force_3d);
+        // Block layout
+        builder.arg(&self.dim);
+        builder.arg(&self.b3_start);
+        builder.arg(&self.block3_size);
+        builder.arg(&self.n_phases_b3);
+        // Solar triad
         builder.arg(&e_v_solar_x); builder.arg(&e_v_solar_y); builder.arg(&e_v_solar_z);
         builder.arg(&e_h_solar_x); builder.arg(&e_h_solar_y); builder.arg(&e_h_solar_z);
         builder.arg(&e_n_solar_x); builder.arg(&e_n_solar_y); builder.arg(&e_n_solar_z);

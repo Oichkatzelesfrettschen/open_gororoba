@@ -1,4 +1,4 @@
-//! flyby-crucible: Test the 64D Chingon non-alternative drag against
+//! flyby-crucible: Test the N-dimensional Chingon non-alternative drag against
 //! anomalous spacecraft flyby velocity jumps.
 //!
 //! Universality test: the coupling constant alpha_chingon = 8.0e-14 is LOCKED.
@@ -709,7 +709,7 @@ fn pin_physical_cores() {
 
 #[derive(Parser)]
 #[command(name = "flyby-crucible")]
-#[command(about = "64D Chingon-Vlasov flyby anomaly universality test")]
+#[command(about = "N-dimensional Chingon-Vlasov flyby anomaly universality test")]
 struct Cli {
     /// Run only a specific spacecraft (galileo, near, cassini, rosetta, messenger, juno).
     /// If omitted, runs all spacecraft.
@@ -748,9 +748,25 @@ struct Cli {
 
     /// Use GPU (CUDA) for AVT tensor contraction.
     /// The RK4 loop and orbital mechanics stay on CPU in f64;
-    /// only the 64D bilinear contraction runs on GPU in f32.
+    /// only the N-D bilinear contraction runs on GPU in f32.
     #[arg(long)]
     gpu: bool,
+
+    /// Algebra dimension (must be power of 2: 64, 128, 256).
+    /// Higher dimensions provide more geometric bandwidth for the
+    /// non-associative tensor contraction at the cost of more violations
+    /// and GPU memory.
+    ///   64D:  52K violations, 0.2 MB SSBO  (production baseline)
+    ///   128D: 469K violations, 1.9 MB SSBO (127 prime: asymmetric 3-body)
+    ///   256D: 3.97M violations, 15.9 MB SSBO (symmetric 3-body: 85/85/85)
+    #[arg(long, default_value = "64")]
+    dim: usize,
+
+    /// Violation cap for AVT construction.
+    /// At 256D: 3.97M violations (uncapped). Set lower to trade accuracy
+    /// for construction speed at higher dimensions.
+    #[arg(long, default_value = "10000000")]
+    avt_cap: usize,
 
     /// Output trajectory CSV file prefix.
     #[arg(long)]
@@ -800,11 +816,21 @@ fn main() -> anyhow::Result<()> {
     println!("  SOI = {} R_earth = {:.0} km", SOI_R_EARTH, SOI_R_EARTH * R_EARTH);
     println!();
 
-    // Compute AVT once (expensive at dim=64)
-    println!("Computing 64D Alternativity Violation Tensor...");
+    // Validate dimension
+    let dim = cli.dim;
+    assert!(dim.is_power_of_two() && dim >= 16, "dim must be a power of 2 >= 16, got {}", dim);
+    let (block_size, n_phases, _b1_start, _b2_start, _b3_start, block3_size) =
+        gr_core::forces::chingon_bivector_drag::block_layout(dim);
+    println!("  dim = {}D, blocks = {}/{}/{}, phases = {}/{}", dim,
+        block_size, block_size, block3_size, n_phases, block3_size.div_ceil(3));
+
+    // Compute AVT once (expensive at high dims)
+    println!("Computing {}D Alternativity Violation Tensor (cap={})...", dim, cli.avt_cap);
     let t0 = std::time::Instant::now();
-    let avt = Arc::new(AlternativityViolationTensor::new(64));
-    println!("  AVT: {} violations ({:.2}s)", avt.violations.len(), t0.elapsed().as_secs_f64());
+    let avt = Arc::new(AlternativityViolationTensor::new_with_cap(dim, cli.avt_cap));
+    println!("  AVT: {} violations ({:.2}s, {:.1} MB)",
+        avt.violations.len(), t0.elapsed().as_secs_f64(),
+        avt.violations.len() as f64 * 40.0 / 1e6);
     println!();
 
     // Initialize GPU pipeline if requested

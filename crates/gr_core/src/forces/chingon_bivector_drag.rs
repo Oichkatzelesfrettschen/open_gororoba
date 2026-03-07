@@ -294,23 +294,80 @@ impl ThreeBodyOrbitalParams {
     }
 }
 
-/// Three-body 64D embedding: body-specific triads for each sub-block.
+/// Compute the three-body block layout for a given dimension.
 ///
-/// Uses the SAME 3x21-axis structure as the single-body function, but
-/// each of the three sub-blocks uses a DIFFERENT orbital triad:
-///   Block 1 (axes 1-21):  angular momentum via Earth triad (h_earth = r x v)
-///   Block 2 (axes 22-42): velocity via Lunar triad (h_lunar = (r-r_moon) x v)
-///   Block 3 (axes 43-63): cross-coupling via Solar triad (h_solar = (r-r_sun) x v)
+/// Returns `(block_size, n_phases, block1_start, block2_start, block3_start, block3_size)`
+/// where blocks 1 and 2 have `block_size` axes, block 3 has `block3_size` axes,
+/// and `n_phases = ceil(block_size / 3)` for trig LUT sizing.
 ///
-/// This preserves the exact normalization and magnitude structure of the
-/// single-body function while injecting geometric diversity from the
-/// three-body gravitational field. The force projection back to 3D uses
-/// a weighted combination of the three triads.
+/// # Symmetric vs Asymmetric Partitions
 ///
-/// Physical motivation: the Moon and Sun perturb the DM halo's local
-/// angular momentum structure. The orbital triad rotates differently
-/// when computed from body-relative h-vectors, changing the direction
-/// (not just magnitude) of the non-associative force.
+/// The three-body embedding partitions `(dim-1)` imaginary axes into 3 blocks.
+/// When `(dim-1) % 3 != 0`, block3 absorbs the remainder.
+///
+/// ```text
+///   dim   n_imag  partition        symmetry    3-body flyby quality
+///    64       63  21 / 21 / 21     symmetric   5/6 signs correct (production)
+///   128      127  42 / 42 / 43     ASYMMETRIC  2/6 signs (DEGRADED -- Mersenne prime)
+///   256      255  85 / 85 / 85     symmetric   (pending, Sprint 73)
+///   512      511  170/ 170/ 171    ASYMMETRIC  (511 = 7 * 73, not divisible by 3)
+///  1024     1023  341/ 341/ 341    symmetric   (1023 = 3 * 341)
+/// ```
+///
+/// # 128D Mersenne Prime Blocking (Sprint 73 finding, C-958)
+///
+/// 128 - 1 = 127, which is the Mersenne prime M_7 = 2^7 - 1.
+/// 127 is indivisible by 3 (or any integer > 1), forcing an asymmetric
+/// 42/42/43 partition. This 1-axis asymmetry BREAKS the tensor contraction
+/// geometry: experimentally degrades flyby sign prediction from 5/6 to 2/6.
+/// The asymmetry is structural, not tunable -- no scalar parameter can fix it.
+///
+/// 128D is therefore EXCLUDED from 3-body flyby applications. It remains
+/// useful for non-flyby work: NNSD quantum chaos (routon_chaos_crucible),
+/// topological void generation, and Non-Associative Entropy Filter (LBM).
+///
+/// # AVT Dimensional Scaling (Sprint 73 survey)
+///
+/// ```text
+///   dim   AVT violations    ratio     v/d^3       construction time
+///     8              0        -     0.000000      <1 ms  (alternative)
+///    16            336        -     0.082031      <1 ms
+///    32          5,040    15.0x     0.153809       3 ms
+///    64         52,080    10.3x     0.198669      28 ms
+///   128        468,720     9.0x     0.223503     250 ms
+///   256      3,968,496     8.5x     0.236541    2100 ms
+/// ```
+///
+/// The ratio converges toward 8x (= 2^3) confirming O(dim^3) scaling.
+/// The density v/d^3 converges toward ~0.25 (quarter-dense).
+pub fn block_layout(dim: usize) -> (usize, usize, usize, usize, usize, usize) {
+    let n_imag = dim - 1; // imaginary axes (axis 0 is real/unused)
+    let base_block = n_imag / 3;
+    let remainder = n_imag % 3;
+    // Blocks 1 and 2 get base_block; block 3 gets base_block + remainder
+    let block1_size = base_block;
+    let block2_size = base_block;
+    let block3_size = base_block + remainder;
+    let block1_start = 1; // skip axis 0
+    let block2_start = block1_start + block1_size;
+    let block3_start = block2_start + block2_size;
+    let n_phases = block1_size.div_ceil(3); // ceil(block_size / 3) for trig LUT
+    (block1_size, n_phases, block1_start, block2_start, block3_start, block3_size)
+}
+
+/// Three-body N-dimensional embedding: body-specific triads for each sub-block.
+///
+/// Dimension-parametric version that works for 64D, 128D, 256D, etc.
+/// Uses the same physical embedding strategy as the 64D version but
+/// with block sizes computed from `block_layout(avt.dim)`.
+///
+/// Block partition for 3-body:
+///   Block 1: angular momentum via Earth triad (h_earth = r x v)
+///   Block 2: velocity via Lunar triad (h_lunar = (r-r_moon) x v)
+///   Block 3: cross-coupling via Solar triad (h_solar = (r-r_sun) x v)
+///
+/// For 128D (127 prime): asymmetric partition 42/42/43.
+/// For 256D (255 = 3*85): symmetric partition 85/85/85.
 pub fn compute_chingon_bivector_drag_3body(
     r: Vector3<f64>,
     v: Vector3<f64>,
@@ -329,12 +386,14 @@ pub fn compute_chingon_bivector_drag_3body(
         None => return Vector3::zeros(),
     };
 
+    let dim = avt.dim;
+    let (block_size, n_phases, b1_start, b2_start, b3_start, block3_size) = block_layout(dim);
+
     let v_rel = v - v_wind;
     let v_rel_norm = params.v_rel_norm;
     let h_earth_norm = params.h_earth_norm;
     let cross_sign = params.cross_sign;
 
-    // Reconstruct triads as Vector3 for the contraction below
     fn arr_to_v3(a: [f64; 3]) -> Vector3<f64> { Vector3::new(a[0], a[1], a[2]) }
 
     let e_v_solar = arr_to_v3(params.triad_solar[0]);
@@ -346,66 +405,84 @@ pub fn compute_chingon_bivector_drag_3body(
     let h_triad_solar = params.h_triad_solar;
     let vhat_triad_solar = params.vhat_triad_solar;
 
-    // Suppress unused binding warning -- v_rel was used to compute params
     let _ = v_rel;
 
-    // Precompute trig table (7 phases for 7 octonion-like rotation phases)
-    let phase_trig: [(f64, f64); 7] = std::array::from_fn(|k| {
-        let phase = std::f64::consts::TAU * (k as f64) / 7.0;
-        (phase.sin(), phase.cos())
-    });
+    // Precompute trig table: n_phases distinct rotation phases
+    let phase_trig: Vec<(f64, f64)> = (0..n_phases)
+        .map(|k| {
+            let phase = std::f64::consts::TAU * (k as f64) / (n_phases as f64);
+            (phase.sin(), phase.cos())
+        })
+        .collect();
 
-    let mut v_64d = [0.0f64; 64];
+    // Allocate state vector on the heap for dim > 64
+    let mut v_nd = vec![0.0f64; dim];
 
-    // Block 1 (axes 1-21): angular momentum via Earth triad
-    for axis in 0..21 {
+    // Block 1: angular momentum via Earth triad
+    for axis in 0..block_size {
         let comp = axis % 3;
-        let (_, cos_p) = phase_trig[axis / 3];
-        v_64d[1 + axis] = h_triad_earth[comp] * cos_p;
+        let phase_idx = axis / 3;
+        let (_, cos_p) = phase_trig[phase_idx];
+        v_nd[b1_start + axis] = h_triad_earth[comp] * cos_p;
     }
 
-    // Block 2 (axes 22-42): velocity via Lunar triad
-    for axis in 0..21 {
+    // Block 2: velocity via Lunar triad
+    for axis in 0..block_size {
         let comp = axis % 3;
-        let (sin_p, cos_p) = phase_trig[axis / 3];
-        v_64d[22 + axis] = vrel_triad_lunar[comp] * (sin_p + cos_p);
+        let phase_idx = axis / 3;
+        let (sin_p, cos_p) = phase_trig[phase_idx];
+        v_nd[b2_start + axis] = vrel_triad_lunar[comp] * (sin_p + cos_p);
     }
 
-    // Block 3 (axes 43-63): cross-coupling via Solar triad
-    for axis in 0..21 {
+    // Block 3: cross-coupling via Solar triad
+    // block3_size may differ from block_size (128D: 43 vs 42)
+    let n_phases_b3 = block3_size.div_ceil(3);
+    let phase_trig_b3: Vec<(f64, f64)> = if block3_size != block_size {
+        (0..n_phases_b3)
+            .map(|k| {
+                let phase = std::f64::consts::TAU * (k as f64) / (n_phases_b3 as f64);
+                (phase.sin(), phase.cos())
+            })
+            .collect()
+    } else {
+        phase_trig.clone()
+    };
+
+    for axis in 0..block3_size {
         let comp = axis % 3;
-        let (sin_p, cos_p) = phase_trig[axis / 3];
+        let phase_idx = axis / 3;
+        let (sin_p, cos_p) = phase_trig_b3[phase_idx];
         let h_c = h_triad_solar[comp] / h_earth_norm.max(1e-30);
         let v_c = vhat_triad_solar[comp];
-        v_64d[43 + axis] = cross_sign * v_rel_norm * (h_c * sin_p + v_c * cos_p);
+        v_nd[b3_start + axis] = cross_sign * v_rel_norm * (h_c * sin_p + v_c * cos_p);
     }
 
     // AVT contraction
     let n_viol = avt.violations.len().max(1) as f64;
-    let mut force_64d = [0.0f64; 64];
+    let mut force_nd = vec![0.0f64; dim];
     for &(i, j, _k, m, sign) in &avt.violations {
-        force_64d[m] += alpha * v_64d[i] * v_64d[j] * (sign as f64);
+        force_nd[m] += alpha * v_nd[i] * v_nd[j] * (sign as f64);
     }
-    for f in &mut force_64d {
+    for f in &mut force_nd {
         *f /= n_viol;
     }
 
-    // Project back to 3D using the cross-coupling block (axes 43-63)
-    // through the Solar triad (matching the embedding triad)
+    // Project back to 3D using the cross-coupling block through the Solar triad
     let mut res_triad = [0.0f64; 3];
-    for axis in 0..21 {
+    for axis in 0..block3_size {
         let comp = axis % 3;
-        let (sin_p, cos_p) = phase_trig[axis / 3];
+        let phase_idx = axis / 3;
+        let (sin_p, cos_p) = phase_trig_b3[phase_idx];
         let h_c = h_triad_solar[comp] / h_earth_norm.max(1e-30);
         let v_c = vhat_triad_solar[comp];
         let proj = cross_sign * (h_c * sin_p + v_c * cos_p);
-        res_triad[comp] += force_64d[43 + axis] * proj;
+        res_triad[comp] += force_nd[b3_start + axis] * proj;
     }
 
     // Rotate from Solar triad back to ECI
     let res = e_v_solar * res_triad[0] + e_h_solar * res_triad[1] + e_n_solar * res_triad[2];
 
-    res / 64.0
+    res / (dim as f64)
 }
 
 #[cfg(test)]

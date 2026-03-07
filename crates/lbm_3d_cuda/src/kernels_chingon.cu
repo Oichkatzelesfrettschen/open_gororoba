@@ -1,8 +1,10 @@
-// Chingon 64D/256D AVT tensor contraction -- CUDA kernel (FP32)
+// Chingon N-dimensional AVT tensor contraction -- CUDA kernel (FP32)
 //
 // Performs the bilinear AVT contraction:
 //   force_Nd[m] += alpha * v_Nd[i] * v_Nd[j] * sign
 // for each packed violation (i, j, m, sign).
+//
+// Dimension-parametric: works for 64D, 128D, 256D, 512D, 1024D.
 //
 // The kernel is designed for the RTX 4070 Ti (AD104, SM 8.9):
 //   - FP32: 128 ALUs/SM = 7680 total, 40 TFLOPS
@@ -14,12 +16,9 @@
 //   [m: index_bits] [j: index_bits] [i: index_bits] [sign_positive: 1]
 //
 // At 64D:  index_bits=6,  total=19 bits per violation
+// At 128D: index_bits=7,  total=22 bits per violation
 // At 256D: index_bits=8,  total=25 bits per violation
 // At 1024D: index_bits=10, total=31 bits per violation
-//
-// Warp-level reduction via __shfl_down_sync eliminates shared memory
-// atomics for the final force accumulation. Each warp processes a
-// chunk of violations independently, then reduces within the warp.
 
 // Maximum dimension we support (1024D = DekaVoudon)
 #define MAX_DIM 1024
@@ -30,22 +29,15 @@
 extern __shared__ float s_v_Nd[];
 
 // ------------------------------------------------------------------
-// Kernel 1: AVT tensor contraction with warp-level reduction
+// Kernel 1: AVT tensor contraction with register accumulation
 //
 // Each BLOCK processes the ENTIRE violation list against ONE state vector.
-// This is NOT a grid-parallelism kernel (we have 1 flyby per launch).
 //
 // Strategy:
 //   1. Load v_Nd into shared memory (coalesced, one load per thread)
 //   2. Each thread processes a stride of violations: idx, idx+blockDim, ...
-//   3. Accumulate per-thread partial sums for each of 3 force components
-//   4. Warp-level reduction via __shfl_down_sync
-//   5. Lane 0 of each warp atomicAdd to global force output
-//
-// Why not one-thread-per-violation? Because the output force_Nd[m]
-// has collisions (many violations share the same m), requiring atomics.
-// With per-thread accumulation + warp reduction, we minimize atomics
-// to (n_warps * 3) writes instead of (n_violations * 1) atomics.
+//   3. Accumulate per-thread partial sums in local array
+//   4. AtomicAdd to global force output
 // ------------------------------------------------------------------
 extern "C" __global__ void chingon_avt_contraction(
     const unsigned int* __restrict__ packed_avt,   // [n_violations] bit-packed
@@ -70,20 +62,13 @@ extern "C" __global__ void chingon_avt_contraction(
     __syncthreads();
 
     // Phase 2: Per-thread accumulation over strided violations
-    // We accumulate directly into a local force_Nd array.
-    // For 64D this is 64 floats = 256 bytes in registers (fits).
-    // For 256D this is 256 floats = 1 KB -- may spill to local memory,
-    // but local memory on Ada is cached in L1 so still fast.
-    //
-    // Alternative for large dims: accumulate only into force_Nd[m]
-    // using atomicAdd per violation. But for 64D the register approach
-    // is dramatically faster (no atomic contention).
-
-    // For dims <= 256, use register accumulation.
-    // For dims > 256, fall through to the atomic path below.
-    if (dim <= 256) {
-        // Register-based accumulation (optimal for 64D/256D)
-        float local_force[256];  // Stack allocation, compiler may use registers
+    // Register path: float local_force[dim] uses `dim` registers per thread.
+    // SM 8.9 has 65536 regs/SM. At 128D: 128 regs/thread -> 512 threads/SM (2 blocks).
+    // At 256D: 256+ regs/thread -> 1 block/SM, likely register spilling to L1.
+    // Threshold at 128D: use register path for 64D/128D, atomic path for 256D+.
+    if (dim <= 128) {
+        // Register-based accumulation (optimal for 64D/128D)
+        float local_force[128];
         for (unsigned int d = 0; d < dim; d++) {
             local_force[d] = 0.0f;
         }
@@ -108,7 +93,7 @@ extern "C" __global__ void chingon_avt_contraction(
             }
         }
     } else {
-        // Atomic path for large dims (512D, 1024D)
+        // Atomic path for dim >= 256 (256D, 512D, 1024D)
         for (unsigned int v = global_tid; v < n_violations; v += n_threads) {
             unsigned int packed = packed_avt[v];
             unsigned int m_idx = packed & mask;
@@ -124,20 +109,31 @@ extern "C" __global__ void chingon_avt_contraction(
 }
 
 // ------------------------------------------------------------------
-// Kernel 2: Build 64D state vector from orbital parameters
+// Kernel 2: Build N-D state vector from orbital parameters
 //
-// Runs as a SINGLE THREAD (or small block) since this is O(64) work.
-// The expensive part is the AVT contraction above, not the embedding.
+// Dimension-parametric: accepts block layout as kernel arguments.
+// One thread per axis (launch with blockDim.x >= dim).
 //
-// Inputs: 3D vectors (r, v_rel, h_earth, h_lunar, h_solar, v_wind)
-//         plus scalars (h_earth_norm, v_rel_norm, cross_sign)
-// Output: v_64d[64] state vector in global memory
+// Block layout:
+//   Block 1 [b1_start .. b1_start + block_size): h_earth via Earth triad
+//   Block 2 [b2_start .. b2_start + block_size): v_rel via Lunar triad
+//   Block 3 [b3_start .. b3_start + b3_size):    cross-coupling via Solar triad
 //
-// This mirrors the Rust function compute_chingon_bivector_drag_3body()
-// exactly, to enable GPU/CPU cross-validation.
+// For 64D:  blocks = 21/21/21, n_phases = 7
+// For 128D: blocks = 42/42/43, n_phases_b12 = 14, n_phases_b3 = 15
+// For 256D: blocks = 85/85/85, n_phases = 29
 // ------------------------------------------------------------------
 extern "C" __global__ void chingon_build_state_3body(
-    float* __restrict__ v_Nd,         // [64] output state vector
+    float* __restrict__ v_Nd,         // [dim] output state vector
+    // Block layout parameters
+    unsigned int dim,
+    unsigned int block_size,          // block1 and block2 size
+    unsigned int block3_size,         // block3 size (may differ for prime dims)
+    unsigned int b1_start,            // first axis of block 1
+    unsigned int b2_start,            // first axis of block 2
+    unsigned int b3_start,            // first axis of block 3
+    unsigned int n_phases,            // trig phases for blocks 1 & 2
+    unsigned int n_phases_b3,         // trig phases for block 3
     // Earth triad (row-major 3x3)
     float e_v_earth_x, float e_v_earth_y, float e_v_earth_z,
     float e_h_earth_x, float e_h_earth_y, float e_h_earth_z,
@@ -163,11 +159,9 @@ extern "C" __global__ void chingon_build_state_3body(
     float v_rel_norm,
     float cross_sign
 ) {
-    int tid = threadIdx.x;
-    if (tid >= 64) return;
+    unsigned int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if (tid >= dim) return;
 
-    // Precompute phase trig (7 phases)
-    // phase_k = 2*pi*k/7, same as Rust side
     const float TAU = 6.28318530717958647692f;
     float h_triad_earth[3] = { h_triad_earth_0, h_triad_earth_1, h_triad_earth_2 };
     float vrel_triad_lunar[3] = { vrel_triad_lunar_0, vrel_triad_lunar_1, vrel_triad_lunar_2 };
@@ -179,29 +173,29 @@ extern "C" __global__ void chingon_build_state_3body(
     if (tid == 0) {
         // Axis 0: real component, always 0
         val = 0.0f;
-    } else if (tid >= 1 && tid <= 21) {
-        // Block 1 (axes 1-21): angular momentum via Earth triad
-        int axis = tid - 1;
-        int comp = axis % 3;
-        int phase_idx = axis / 3;
-        float phase = TAU * (float)phase_idx / 7.0f;
+    } else if (tid >= b1_start && tid < b1_start + block_size) {
+        // Block 1: angular momentum via Earth triad
+        unsigned int axis = tid - b1_start;
+        unsigned int comp = axis % 3;
+        unsigned int phase_idx = axis / 3;
+        float phase = TAU * (float)phase_idx / (float)n_phases;
         float cos_p = cosf(phase);
         val = h_triad_earth[comp] * cos_p;
-    } else if (tid >= 22 && tid <= 42) {
-        // Block 2 (axes 22-42): velocity via Lunar triad
-        int axis = tid - 22;
-        int comp = axis % 3;
-        int phase_idx = axis / 3;
-        float phase = TAU * (float)phase_idx / 7.0f;
+    } else if (tid >= b2_start && tid < b2_start + block_size) {
+        // Block 2: velocity via Lunar triad
+        unsigned int axis = tid - b2_start;
+        unsigned int comp = axis % 3;
+        unsigned int phase_idx = axis / 3;
+        float phase = TAU * (float)phase_idx / (float)n_phases;
         float sin_p = sinf(phase);
         float cos_p = cosf(phase);
         val = vrel_triad_lunar[comp] * (sin_p + cos_p);
-    } else if (tid >= 43 && tid <= 63) {
-        // Block 3 (axes 43-63): cross-coupling via Solar triad
-        int axis = tid - 43;
-        int comp = axis % 3;
-        int phase_idx = axis / 3;
-        float phase = TAU * (float)phase_idx / 7.0f;
+    } else if (tid >= b3_start && tid < b3_start + block3_size) {
+        // Block 3: cross-coupling via Solar triad
+        unsigned int axis = tid - b3_start;
+        unsigned int comp = axis % 3;
+        unsigned int phase_idx = axis / 3;
+        float phase = TAU * (float)phase_idx / (float)n_phases_b3;
         float sin_p = sinf(phase);
         float cos_p = cosf(phase);
         float h_inv = (h_earth_norm > 1.0e-30f) ? (1.0f / h_earth_norm) : 0.0f;
@@ -214,14 +208,19 @@ extern "C" __global__ void chingon_build_state_3body(
 }
 
 // ------------------------------------------------------------------
-// Kernel 3: Project 64D force back to 3D via Solar triad
+// Kernel 3: Project N-D force back to 3D via Solar triad
 //
-// Mirrors the Rust projection code. Single-thread since O(21) work.
-// Output: force_3d[3] in ECI coordinates.
+// Dimension-parametric: accepts block3_start and block3_size as args.
+// Single-thread since O(block3_size) work.
 // ------------------------------------------------------------------
 extern "C" __global__ void chingon_project_3body(
-    const float* __restrict__ force_Nd,  // [64] force in N-D
+    const float* __restrict__ force_Nd,  // [dim] force in N-D
     float* __restrict__ force_3d,        // [3] output force in ECI
+    // Block layout
+    unsigned int dim,
+    unsigned int b3_start,
+    unsigned int block3_size,
+    unsigned int n_phases_b3,
     // Solar triad (for cross-coupling block projection)
     float e_v_solar_x, float e_v_solar_y, float e_v_solar_z,
     float e_h_solar_x, float e_h_solar_y, float e_h_solar_z,
@@ -240,23 +239,23 @@ extern "C" __global__ void chingon_project_3body(
     float res_triad[3] = { 0.0f, 0.0f, 0.0f };
     float h_inv = (h_earth_norm > 1.0e-30f) ? (1.0f / h_earth_norm) : 0.0f;
 
-    for (int axis = 0; axis < 21; axis++) {
-        int comp = axis % 3;
-        int phase_idx = axis / 3;
-        float phase = TAU * (float)phase_idx / 7.0f;
+    for (unsigned int axis = 0; axis < block3_size; axis++) {
+        unsigned int comp = axis % 3;
+        unsigned int phase_idx = axis / 3;
+        float phase = TAU * (float)phase_idx / (float)n_phases_b3;
         float sin_p = sinf(phase);
         float cos_p = cosf(phase);
         float h_c = h_triad_solar[comp] * h_inv;
         float v_c = vhat_triad_solar[comp];
         float proj = cross_sign * (h_c * sin_p + v_c * cos_p);
-        res_triad[comp] += force_Nd[43 + axis] * proj;
+        res_triad[comp] += force_Nd[b3_start + axis] * proj;
     }
 
-    // Rotate from Solar triad back to ECI, then divide by 64
-    float inv64 = 1.0f / 64.0f;
-    force_3d[0] = (e_v_solar_x * res_triad[0] + e_h_solar_x * res_triad[1] + e_n_solar_x * res_triad[2]) * inv64;
-    force_3d[1] = (e_v_solar_y * res_triad[0] + e_h_solar_y * res_triad[1] + e_n_solar_y * res_triad[2]) * inv64;
-    force_3d[2] = (e_v_solar_z * res_triad[0] + e_h_solar_z * res_triad[1] + e_n_solar_z * res_triad[2]) * inv64;
+    // Rotate from Solar triad back to ECI, then divide by dim
+    float inv_dim = 1.0f / (float)dim;
+    force_3d[0] = (e_v_solar_x * res_triad[0] + e_h_solar_x * res_triad[1] + e_n_solar_x * res_triad[2]) * inv_dim;
+    force_3d[1] = (e_v_solar_y * res_triad[0] + e_h_solar_y * res_triad[1] + e_n_solar_y * res_triad[2]) * inv_dim;
+    force_3d[2] = (e_v_solar_z * res_triad[0] + e_h_solar_z * res_triad[1] + e_n_solar_z * res_triad[2]) * inv_dim;
 }
 
 // ------------------------------------------------------------------

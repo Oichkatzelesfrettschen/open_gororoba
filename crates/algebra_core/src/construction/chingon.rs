@@ -78,11 +78,22 @@ pub struct AlternativityViolationTensor {
 
 impl AlternativityViolationTensor {
     pub fn new(dim: usize) -> Self {
+        Self::new_with_cap(dim, usize::MAX)
+    }
+
+    /// Construct AVT with a maximum violation cap.
+    ///
+    /// At 128D: O(128^3/2) = ~1M iterations, ~100K-500K violations.
+    /// At 256D: O(256^3/2) = ~8.3M iterations, ~1M-5M violations.
+    /// The cap prevents memory explosion for high dimensions while
+    /// preserving the most structurally important violations (low-index
+    /// basis elements have the strongest geometric coupling).
+    pub fn new_with_cap(dim: usize, max_violations: usize) -> Self {
         assert!(dim.is_power_of_two());
         let mut violations = Vec::new();
 
         // We only need to check i < j to avoid double counting and i=j (which is always 0)
-        for i in 0..dim {
+        'outer: for i in 0..dim {
             for j in (i + 1)..dim {
                 for k in 0..dim {
                     // Associator [i, j, k]
@@ -101,6 +112,9 @@ impl AlternativityViolationTensor {
                             println!("AVT Violation: [{}, {}, {}] + [{}, {}, {}] = {} * e_{}", i, j, k, j, i, k, sum_sign, m1);
                         }
                         violations.push((i, j, k, m1, sum_sign));
+                        if violations.len() >= max_violations {
+                            break 'outer;
+                        }
                     }
                 }
             }
