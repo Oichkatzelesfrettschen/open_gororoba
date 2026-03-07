@@ -3410,6 +3410,7 @@ dependencies = [
 name = "gororoba_cli_algebra"
 version = "0.1.0"
 dependencies = [
+ "algebra_analysis",
  "algebra_core",
  "algebra_experimental",
  "anyhow",

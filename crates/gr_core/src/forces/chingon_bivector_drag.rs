@@ -74,6 +74,15 @@ pub fn compute_chingon_bivector_drag(
     let vrel_triad = [v_rel.dot(&e_v), v_rel.dot(&e_h), v_rel.dot(&e_n)];
     let vrel_hat_triad = [v_rel_hat.dot(&e_v), v_rel_hat.dot(&e_h), v_rel_hat.dot(&e_n)];
 
+    // Precompute trig table: only 7 distinct phases (TAU * k / 7, k=0..6).
+    // Each RK4 step calls this function, so eliminating 42 trig calls per
+    // invocation (~150k steps * 6 spacecraft = ~900k calls) is significant.
+    // The 512-byte v_64d array fits in L1; the 112-byte trig table does too.
+    let phase_trig: [(f64, f64); 7] = std::array::from_fn(|k| {
+        let phase = std::f64::consts::TAU * (k as f64) / 7.0;
+        (phase.sin(), phase.cos())
+    });
+
     // Embed 3D state into 64D using three physically motivated blocks.
     // Each block fills 21 axes using combinations of the 3 orbital triad components
     // with 7 octonion-like rotation phases (7 imaginary units * 3 components = 21).
@@ -83,29 +92,24 @@ pub fn compute_chingon_bivector_drag(
     // Block 1: angular momentum (axes 1-21)
     for axis in 0..21 {
         let comp = axis % 3;
-        let phase_idx = axis / 3;
-        let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
-        let weight = phase.cos();
-        v_64d[1 + axis] = h_triad[comp] * weight;
+        let (_, cos_p) = phase_trig[axis / 3];
+        v_64d[1 + axis] = h_triad[comp] * cos_p;
     }
 
     // Block 2: relative velocity (axes 22-42)
     for axis in 0..21 {
         let comp = axis % 3;
-        let phase_idx = axis / 3;
-        let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
-        let weight = phase.sin() + phase.cos();
-        v_64d[22 + axis] = vrel_triad[comp] * weight;
+        let (sin_p, cos_p) = phase_trig[axis / 3];
+        v_64d[22 + axis] = vrel_triad[comp] * (sin_p + cos_p);
     }
 
     // Block 3: cross-coupling (axes 43-63)
     for axis in 0..21 {
         let comp = axis % 3;
-        let phase_idx = axis / 3;
-        let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
+        let (sin_p, cos_p) = phase_trig[axis / 3];
         let h_c = h_triad[comp] / h_norm.max(1e-30);
         let v_c = vrel_hat_triad[comp];
-        v_64d[43 + axis] = cross_sign * v_rel_norm * (h_c * phase.sin() + v_c * phase.cos());
+        v_64d[43 + axis] = cross_sign * v_rel_norm * (h_c * sin_p + v_c * cos_p);
     }
 
     // Do NOT normalize to unit norm. The physical magnitudes (h_norm, v_rel_norm)
@@ -143,11 +147,10 @@ pub fn compute_chingon_bivector_drag(
 
     for axis in 0..21 {
         let comp = axis % 3;
-        let phase_idx = axis / 3;
-        let phase = std::f64::consts::TAU * (phase_idx as f64) / 7.0;
+        let (sin_p, cos_p) = phase_trig[axis / 3];
         let h_c = h_triad[comp] / h_norm.max(1e-30);
         let v_c = vrel_hat_triad[comp];
-        let proj = cross_sign * (h_c * phase.sin() + v_c * phase.cos());
+        let proj = cross_sign * (h_c * sin_p + v_c * cos_p);
         res_triad[comp] += force_64d[43 + axis] * proj;
     }
 

@@ -98,7 +98,12 @@ path = "src/bin/wow_sedenion_synthesis.rs"
 name = "deep-space-survey"
 path = "src/bin/deep_space_survey.rs"
 
+[[bin]]
+name = "avt-entropy-report"
+path = "src/bin/avt_entropy_report.rs"
+
 [dependencies]
+algebra_analysis = { workspace = true }
 algebra_core = { path = "../algebra_core", features = ["lie"] }
 algebra_experimental = { workspace = true }
 gororoba_engine = { path = "../gororoba_engine" }
