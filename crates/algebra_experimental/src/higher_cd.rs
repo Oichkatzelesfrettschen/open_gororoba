@@ -1,4 +1,7 @@
 use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
+use rand::prelude::*;
+use rand_chacha::ChaCha8Rng;
+use std::collections::HashSet;
 use wide::f64x4;
 
 macro_rules! implement_higher_cd {
@@ -100,6 +103,98 @@ impl HigherAvt {
 
         Self { dim, violations }
     }
+
+    /// Construct an AVT by uniformly sampling random (i,j,k) triples.
+    ///
+    /// At 1024D, full enumeration requires O(1024^3/2) ~ 537M iterations,
+    /// which is infeasible. Instead, we sample `n_samples` random triples
+    /// and test each for non-alternativity. Duplicates are deduplicated
+    /// via a hash set on (i,j,k) to avoid double-counting.
+    ///
+    /// The `hit_rate` field records the fraction of sampled triples that
+    /// produced a violation, which estimates the global violation density.
+    pub fn sampled(dim: usize, n_samples: usize, seed: u64) -> SampledAvt {
+        assert!(dim.is_power_of_two());
+        let mut rng = ChaCha8Rng::seed_from_u64(seed);
+        let mut seen = HashSet::new();
+        let mut violations = Vec::new();
+        let mut tested = 0u64;
+        let mut hits = 0u64;
+
+        for _ in 0..n_samples {
+            let i = rng.gen_range(0..dim);
+            let j_raw = rng.gen_range(0..dim - 1);
+            // Ensure j != i by mapping [0, dim-2) past i
+            let j = if j_raw >= i { j_raw + 1 } else { j_raw };
+            let k = rng.gen_range(0..dim);
+
+            // Canonical ordering: i < j for dedup
+            let (i_c, j_c) = if i < j { (i, j) } else { (j, i) };
+            if !seen.insert((i_c, j_c, k)) {
+                continue;
+            }
+
+            tested += 1;
+
+            let (m1, s1) = associator_basis(dim, i_c, j_c, k);
+            let (m2, s2) = associator_basis(dim, j_c, i_c, k);
+            debug_assert_eq!(m1, m2);
+
+            let sum_sign = s1 + s2;
+            if sum_sign != 0 {
+                hits += 1;
+                violations.push((i_c, j_c, k, m1, sum_sign));
+            }
+        }
+
+        let hit_rate = if tested > 0 {
+            hits as f64 / tested as f64
+        } else {
+            0.0
+        };
+
+        SampledAvt {
+            avt: HigherAvt { dim, violations },
+            n_tested: tested,
+            n_hits: hits,
+            hit_rate,
+        }
+    }
+
+    /// Count violations where both (i,j) indices fall within a given axis range.
+    /// Useful for measuring intra-sector violation density.
+    pub fn count_violations_in_range(&self, lo: usize, hi: usize) -> usize {
+        self.violations
+            .iter()
+            .filter(|&&(i, j, _, _, _)| i >= lo && i < hi && j >= lo && j < hi)
+            .count()
+    }
+
+    /// Count violations where (i,j) straddle two different axis ranges.
+    /// Measures cross-sector coupling between sub-blocks.
+    pub fn count_cross_violations(
+        &self,
+        lo_a: usize,
+        hi_a: usize,
+        lo_b: usize,
+        hi_b: usize,
+    ) -> usize {
+        self.violations
+            .iter()
+            .filter(|&&(i, j, _, _, _)| {
+                (i >= lo_a && i < hi_a && j >= lo_b && j < hi_b)
+                    || (i >= lo_b && i < hi_b && j >= lo_a && j < hi_a)
+            })
+            .count()
+    }
+}
+
+/// Result of sampled AVT construction with statistics.
+pub struct SampledAvt {
+    pub avt: HigherAvt,
+    pub n_tested: u64,
+    pub n_hits: u64,
+    pub hit_rate: f64,
 }
 
 fn associator_basis(dim: usize, i: usize, j: usize, k: usize) -> (usize, i32) {

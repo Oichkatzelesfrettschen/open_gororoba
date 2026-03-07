@@ -2302,3 +2302,25 @@ input_path_refs = []
 output_path_refs = []
 dataset_refs = []
 reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-100"
+title = "1024D DekaVoudon gauge sector analysis via sampled AVT"
+description = "Map Standard Model gauge groups (SU(3)xSU(2)xU(1), 12 generators) and GUT groups (E6/E7/SO(10)) to 1024D Cayley-Dickson sub-blocks. Sample 1M random triples from the 1024^3/2 AVT candidate space to measure intra-sector and cross-sector non-associative violation densities. Basis-to-lattice mapper projects 1024D elements to 3D positions via violation fingerprinting for moyo space group classification."
+date = "2026-03-07"
+sprint = 75
+binary_registered = false
+binary_experiment_declared = "crates/algebra_experimental/src/particle_physics.rs"
+method = "analyze_1024d_gauge_sectors(n_samples=1_000_000, seed=42). HigherAvt::sampled(1024, n, seed) with dedup via HashSet."
+input = "1024D Cayley-Dickson multiplication table (cd_basis_mul_sign_iter)"
+output = ["test"]
+run = "cargo test --release -p algebra_experimental -- particle_physics --nocapture"
+run_command_sha256 = ""
+claims = ["C-1113", "C-1114", "C-1115"]
+status = "complete"
+status_note = "COMPLETE. Hit rate 49.3%. SM sectors locally alternative (0 intra-violations), cross-coupled (SU3xSU2=11, SU3xU1=13, SU2xU1=0). GUT cross-ratios: E6xE7=0.513, E6xSO10=0.491, E7xSO10=0.419. Basis-to-lattice: violation density uniform across CD layers."
+lineage_id = "XL-100"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
