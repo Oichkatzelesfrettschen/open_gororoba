@@ -233,5 +233,21 @@ fn main() -> anyhow::Result<()> {
 
     eprintln!("Data saved to {}", args.output);
 
+    // TODO(Phase 7.5 -- moyo post-analysis):
+    // moyo is strictly analytical: classifies symmetry AFTER density field generation.
+    // 1. classify_void_symmetry(): extract peak/void 3D positions from rho_field
+    // 2. moyo::determine_spacegroup() on extracted fractional coordinates
+    // This is post-processing only -- not a runtime dependency of the generator.
+
+    // TODO(Phase 7.6 -- Vulkan compute migration for dim>=256):
+    // For 256^3 grids, migrate AVT contraction to Vulkan compute shader.
+    // Reference: lbm_vulkan/src/compute.rs for ash 0.38.0 pipeline pattern.
+    // Buffer architecture:
+    //   SSBO: AVT violations tensor (stored once, read-only)
+    //   UBO: time-varying parameters (Moon/Sun/Earth positions from ephemeris)
+    // Target shader: rk4_chingon.comp (GLSL compute)
+    // For 256D: ~16.7M ops/timestep, 4x per RK4 step = ~67M/step
+    //   ~150k steps/flyby = ~10T FLOPs per flyby -- GPU territory
+
     Ok(())
 }

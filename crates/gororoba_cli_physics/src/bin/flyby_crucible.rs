@@ -660,6 +660,17 @@ fn main() -> anyhow::Result<()> {
     println!("  the coupling constant is universal.");
     println!("  Tolerance: |pred/obs - 1| < 0.25 for each flyby.");
 
+    // TODO(Sprint 73 -- Vulkan RK4 port):
+    // For 256D AVT contraction: 256^3 = ~16.7M ops/timestep * 4 RK4 stages
+    // = ~67M ops/step * 150k steps = ~10T FLOPs per flyby. CPU freezes.
+    // Port to GLSL compute shader: rk4_chingon.comp
+    //   SSBO: OnceLock 256D AVT violations tensor (read-only, loaded once)
+    //   UBO: JPL ephemeris data (Earth, Moon, Sun at time T, updated per step)
+    //   Push Constants: alpha_eff, dm_density_factor for current step
+    // Pipeline: ash 0.38.0 (already in workspace), mirror lbm_vulkan/src/compute.rs
+    // RTX 4070 Ti: 48 SMs, 7680 CUDA cores, 12 GB VRAM, 504 GB/s bandwidth
+    //   256D AVT violations fit in ~10 MB SSBO (trivial). Compute-bound.
+
     Ok(())
 }
 
