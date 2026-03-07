@@ -138,7 +138,10 @@ pub use flrw::{
 
 pub use voudon_friedmann::VoudonFriedmann;
 pub use cmb_axis::VoudonCmbAnalyzer;
-pub use deka_voudon_cmb::{DekaVoudonCmbAnalyzer, CosmicWebGenerator};
+pub use deka_voudon_cmb::{
+    DekaVoudonCmbAnalyzer, CosmicWebGenerator, MultipoleResult,
+    extract_multipoles, angular_separation_degrees,
+};
 
 pub use cdg2_mapping::{
     DarkHaloFalsificationResult, evaluate_cdg2_consistency, spectral_dim_at_cdg2,

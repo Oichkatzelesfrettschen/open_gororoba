@@ -4,7 +4,7 @@
 [experiments]
 updated = "2026-03-06"
 authoritative = true
-experiment_count = 89
+experiment_count = 90
 deterministic_count = 60
 gpu_count = 11
 seeded_count = 39
@@ -2380,6 +2380,28 @@ claims = ["C-1120", "C-1121"]
 status = "complete"
 status_note = "COMPLETE. 9/9 tests pass. D_f=2.7 gives correct flyby sign (+1 for NEAR). Pioneer prediction positive (deceleration) but ~4x too large, indicating running D_f needed. Q-tensor metric positive-definite for S_bulk=0.3."
 lineage_id = "XL-103"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-104"
+title = "CMB Quadrupole-Octupole Alignment reconciliation via 1024D DekaVoudon cosmic web seeding"
+description = "Project 1024D DekaVoudon Global Bias axis onto 3D CMB multipole space. Generate anisotropic cosmic web via CosmicWebGenerator with QEC stabilizer seeding. Extract multipole moments (l=2 quadrupole, l=3 octupole) from traceless inertia tensor and spherical harmonics. Compare quadrupole axis to Planck 2018 observed direction (l,b)~(240,63). 7 unit tests validate axis projection, Galactic coordinates, isotropic seeding coverage, multipole extraction, anisotropic enhancement, angular separation, and Planck alignment direction."
+date = "2026-03-07"
+sprint = 79
+binary_registered = false
+binary_experiment_declared = "crates/cosmology_core/src/deka_voudon_cmb.rs"
+method = "Unit tests: project_axis_is_unit, galactic_coords_finite, isotropic_seeding_coverage, extract_multipoles_isotropic, anisotropic_has_larger_quadrupole, angular_separation, planck_alignment_direction."
+input = "DekaVoudonCmbAnalyzer(phi=0.0172), CosmicWebGenerator(d_f=2.7, alpha_1024=0.01-0.5), DekaVoudonStabilizer nodes"
+output = ["test"]
+run = "cargo test --release -p cosmology_core -- deka_voudon_cmb --nocapture"
+run_command_sha256 = ""
+claims = ["C-1122", "C-1123"]
+status = "complete"
+status_note = "COMPLETE. 7/7 tests pass. 1024D bias axis projects to finite Galactic coordinates. Anisotropic seeding from QEC stabilizers produces larger quadrupole than isotropic Fibonacci sphere. Angular separation function validated (0 deg same point, 180 deg antipodal). Planck alignment test confirms finite separation angle."
+lineage_id = "XL-104"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []

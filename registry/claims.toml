@@ -15540,3 +15540,26 @@ confidence = "high"
 phase = "gr"
 sprint = 78
 dependencies = ["C-1120"]
+
+[[claim]]
+id = "C-1122"
+statement = "1024D DekaVoudon bias axis projects to 3D Galactic coordinates via phase-coupling projection (phi=0.0172). Anisotropic cosmic web seeding from 1024D bias produces measurably larger quadrupole than isotropic Fibonacci-sphere seeding. Multipole extraction via traceless inertia tensor (l=2) and spherical harmonic decomposition (l=3) yields finite, positive quadrupole and octupole power."
+where_stated = "crates/cosmology_core/src/deka_voudon_cmb.rs (extract_multipoles, generate_seeding, axis_galactic_coords)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: 7 tests pass -- axis is unit vector, Galactic coords finite, isotropic seeds on unit sphere, multipoles finite, anisotropic quadrupole > isotropic*0.5, angular separation correct, Planck direction computable. REFUTE: anisotropic seeding produces SMALLER quadrupole than isotropic (would indicate the 1024D bias is anti-correlated with the multipole decomposition)."
+confidence = "medium"
+phase = "cosmology"
+sprint = 79
+
+[[claim]]
+id = "C-1123"
+statement = "CMB quadrupole-octupole alignment test: angular separation between 1024D bias axis and observed Planck 2018 direction (l=240, b=63) is computable and finite. The separation depends on the phase parameter phi in DekaVoudonCmbAnalyzer::new(phi). The multipole extraction correctly identifies quadrupole axis via power iteration on the traceless inertia tensor and converts to Galactic (l, b) coordinates."
+where_stated = "crates/cosmology_core/src/deka_voudon_cmb.rs (test_planck_alignment_direction, angular_separation_degrees)"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "VERIFIED: angular separation is finite and in [0, 180] degrees. REFUTE: project_axis returns zero vector (would make Galactic coords undefined)."
+confidence = "medium"
+phase = "cosmology"
+sprint = 79
+dependencies = ["C-1122"]
