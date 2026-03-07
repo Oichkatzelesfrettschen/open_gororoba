@@ -10,7 +10,7 @@
 use algebra_core::construction::chingon::AlternativityViolationTensor;
 use clap::Parser;
 use gororoba_cli_physics::ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN};
-use gr_core::forces::chingon_bivector_drag::compute_chingon_bivector_drag;
+use gr_core::forces::chingon_bivector_drag::compute_chingon_bivector_drag_3body;
 use nalgebra::{Matrix3, Vector3};
 use rayon::prelude::*;
 use std::sync::Arc;
@@ -71,53 +71,14 @@ fn dm_density_factor(r_km: f64) -> f64 {
     (R_EARTH / r_km).powi(3)
 }
 
-/// Tidal DM density: anisotropic modifier using Moon/Sun alignment.
-///
-/// The scalar 1/r^3 profile is stretched along the Earth-Moon and
-/// Earth-Sun axes. When the spacecraft is aligned with the Moon
-/// (cos^2(theta) ~ 1), density is enhanced. When perpendicular
-/// (cos^2(theta) ~ 0), density equals the isotropic base.
-///
-/// eta_moon: tidal stretching strength from lunar gravity
-/// eta_sun: tidal stretching strength from solar gravity (weaker)
-///
-/// Physical motivation: the Moon's gravity well focuses galactic DM
-/// infall along the Earth-Moon axis, creating tidal density ridges
-/// analogous to oceanic tides but in the dark matter halo.
-const ETA_MOON: f64 = 0.15;
-const ETA_SUN: f64 = 0.05;
-
-fn tidal_dm_density(
-    r_sc: Vector3<f64>,
-    r_moon: Vector3<f64>,
-    r_sun: Vector3<f64>,
-) -> f64 {
-    let r_km = r_sc.norm();
-    let base = dm_density_factor(r_km);
-
-    if r_km < 1.0 {
-        return base;
-    }
-
-    // cos(angle) between spacecraft and Moon directions
-    let r_moon_norm = r_moon.norm();
-    let cos_moon = if r_moon_norm > 1.0 {
-        r_sc.dot(&r_moon) / (r_km * r_moon_norm)
-    } else {
-        0.0
-    };
-
-    // cos(angle) between spacecraft and Sun directions
-    let r_sun_norm = r_sun.norm();
-    let cos_sun = if r_sun_norm > 1.0 {
-        r_sc.dot(&r_sun) / (r_km * r_sun_norm)
-    } else {
-        0.0
-    };
-
-    // Anisotropic tidal stretching: density enhanced along Moon/Sun axes
-    base * (1.0 + ETA_MOON * cos_moon * cos_moon + ETA_SUN * cos_sun * cos_sun)
-}
+// EXPLOREME(Sprint 71.1): tidal_dm_density FALSIFIED.
+// cos^2(theta) modifiers along Moon/Sun axes only change force MAGNITUDE,
+// not direction. Cannot rotate the 64D tensor contraction force vector.
+// NEAR preserved (1.009) but Rosetta-I sign unchanged.
+// Reverted to scalar dm_density_factor (1/r^3 NFW profile).
+// Sprint 71.2 replaces this with body-specific 3-body 64D embedding
+// where Earth/Moon/Sun each occupy their own 21-axis block with
+// body-relative angular momenta, changing the GEOMETRY of the contraction.
 
 /// Galactic-to-J2000 ECI rotation matrix.
 ///
@@ -436,7 +397,7 @@ fn run_flyby(
     v_wind: &Vector3<f64>,
     ephem: Option<&EphemerisLoader>,
     trace_h: bool,
-) -> (f64, f64, Vec<[f64; 7]>, Vec<[f64; 10]>) {
+) -> (f64, f64, Vec<[f64; 7]>, Vec<[f64; 12]>) {
     let (pos_init, vel_init) = hyperbolic_initial_state(cfg, t_before);
     let total_time = t_before + t_after;
     let steps = (total_time / dt) as usize;
@@ -445,11 +406,11 @@ fn run_flyby(
     const SPD: f64 = 86400.0;
 
     let rk4_run =
-        |use_chingon: bool, record: bool, do_trace: bool| -> (f64, Vec<[f64; 7]>, Vec<[f64; 10]>) {
+        |use_chingon: bool, record: bool, do_trace: bool| -> (f64, Vec<[f64; 7]>, Vec<[f64; 12]>) {
             let mut p = pos_init;
             let mut v = vel_init;
             let mut traj = Vec::new();
-            let mut h_trace_out: Vec<[f64; 10]> = Vec::new();
+            let mut h_trace_out: Vec<[f64; 12]> = Vec::new();
 
             for step in 0..steps {
                 let t_sec = step as f64 * dt - t_before;
@@ -501,25 +462,28 @@ fn run_flyby(
                     }
 
                     if use_chingon {
-                        // Tidal DM density: anisotropic along Moon/Sun axes
-                        let alpha_eff = ALPHA_CHINGON * tidal_dm_density(p_in, r_moon, r_sun);
-                        a += compute_chingon_bivector_drag(
-                            p_in, v_in, *v_wind, alpha_eff, avt,
+                        let alpha_eff = ALPHA_CHINGON * dm_density_factor(p_in.norm());
+                        a += compute_chingon_bivector_drag_3body(
+                            p_in, v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
                         );
                     }
 
                     a
                 };
 
-                // h(t).v_wind trace for diagnostics (geocentric h)
+                // h(t).v_wind trace for diagnostics (geocentric h + body h norms)
                 if do_trace && step % trajectory_stride == 0 {
                     let h = p.cross(&v);
                     let h_dot_vw = h.dot(v_wind);
                     let cross_sign = if h_dot_vw > 0.0 { 1.0 } else { -1.0 };
-                    let dm_fac = tidal_dm_density(p, r_moon, r_sun);
+                    let dm_fac = dm_density_factor(p.norm());
+                    let h_lunar = (p - r_moon).cross(&v);
+                    let h_solar = (p - r_sun).cross(&v);
                     let a_chingon_mag = if use_chingon {
                         let alpha_eff = ALPHA_CHINGON * dm_fac;
-                        compute_chingon_bivector_drag(p, v, *v_wind, alpha_eff, avt).norm()
+                        compute_chingon_bivector_drag_3body(
+                            p, v, *v_wind, alpha_eff, avt, r_moon, r_sun,
+                        ).norm()
                     } else {
                         0.0
                     };
@@ -540,6 +504,7 @@ fn run_flyby(
                     h_trace_out.push([
                         t_sec, h.x, h.y, h.z, h_dot_vw, cross_sign,
                         a_chingon_mag, dm_fac, a_moon_mag, a_sun_mag,
+                        h_lunar.norm(), h_solar.norm(),
                     ]);
                 }
 
@@ -840,6 +805,7 @@ fn main() -> anyhow::Result<()> {
             wtr.write_record([
                 "t_s", "h_x", "h_y", "h_z", "h_dot_vwind", "cross_sign",
                 "a_chingon_mag", "dm_factor", "a_moon_mag", "a_sun_mag",
+                "h_lunar_norm", "h_solar_norm",
             ])?;
             for row in h_trace_data {
                 wtr.write_record(row.iter().map(|v| format!("{:.8e}", v)))?;

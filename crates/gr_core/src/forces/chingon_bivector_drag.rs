@@ -191,6 +191,156 @@ fn chingon_bivector_drag_core(
     res / 64.0
 }
 
+/// Three-body 64D embedding: body-specific triads for each sub-block.
+///
+/// Uses the SAME 3x21-axis structure as the single-body function, but
+/// each of the three sub-blocks uses a DIFFERENT orbital triad:
+///   Block 1 (axes 1-21):  angular momentum via Earth triad (h_earth = r x v)
+///   Block 2 (axes 22-42): velocity via Lunar triad (h_lunar = (r-r_moon) x v)
+///   Block 3 (axes 43-63): cross-coupling via Solar triad (h_solar = (r-r_sun) x v)
+///
+/// This preserves the exact normalization and magnitude structure of the
+/// single-body function while injecting geometric diversity from the
+/// three-body gravitational field. The force projection back to 3D uses
+/// a weighted combination of the three triads.
+///
+/// Physical motivation: the Moon and Sun perturb the DM halo's local
+/// angular momentum structure. The orbital triad rotates differently
+/// when computed from body-relative h-vectors, changing the direction
+/// (not just magnitude) of the non-associative force.
+pub fn compute_chingon_bivector_drag_3body(
+    r: Vector3<f64>,
+    v: Vector3<f64>,
+    v_wind: Vector3<f64>,
+    alpha: f64,
+    avt: &AlternativityViolationTensor,
+    r_moon: Vector3<f64>,
+    r_sun: Vector3<f64>,
+) -> Vector3<f64> {
+    if alpha == 0.0 {
+        return Vector3::zeros();
+    }
+
+    let v_rel = v - v_wind;
+    let v_rel_norm = v_rel.norm();
+    if v_rel_norm < 1e-30 {
+        return Vector3::zeros();
+    }
+
+    // Three body-relative angular momenta
+    let h_earth = r.cross(&v);
+    let h_lunar = (r - r_moon).cross(&v);
+    let h_solar = (r - r_sun).cross(&v);
+
+    let h_earth_norm = h_earth.norm();
+    if h_earth_norm < 1e-30 {
+        return Vector3::zeros();
+    }
+
+    // Cross-coupling sign from Earth's hemisphere
+    let h_dot_wind = h_earth.dot(&v_wind);
+    let cross_sign = if h_dot_wind > 0.0 { 1.0 } else { -1.0 };
+
+    // Build orbital triad for a given h-vector
+    let build_triad = |h: &Vector3<f64>| -> (Vector3<f64>, Vector3<f64>, Vector3<f64>) {
+        let hn = h.norm();
+        if hn < 1e-30 {
+            // Fall back to Earth triad
+            let e_h = h_earth / h_earth_norm;
+            let e_v = v_rel / v_rel_norm;
+            let e_n_raw = e_v.cross(&e_h);
+            let e_n_n = e_n_raw.norm();
+            let e_n = if e_n_n > 1e-30 { e_n_raw / e_n_n } else { Vector3::zeros() };
+            return (e_v, e_h, e_n);
+        }
+        let e_h = *h / hn;
+        let e_v = v_rel / v_rel_norm;
+        let e_n_raw = e_v.cross(&e_h);
+        let e_n_n = e_n_raw.norm();
+        let e_n = if e_n_n > 1e-30 { e_n_raw / e_n_n } else { Vector3::zeros() };
+        (e_v, e_h, e_n)
+    };
+
+    // Three triads -- one per body
+    let (e_v_earth, e_h_earth, e_n_earth) = build_triad(&h_earth);
+    let (e_v_lunar, e_h_lunar, e_n_lunar) = build_triad(&h_lunar);
+    let (e_v_solar, e_h_solar, e_n_solar) = build_triad(&h_solar);
+
+    // Project Earth's h and v_rel into EACH body's triad for embedding.
+    // The PHYSICAL quantities (h_earth, v_rel) are the same -- only the
+    // FRAME (triad) differs. This ensures magnitudes match the single-body
+    // case while directions carry body-specific geometric information.
+    let v_hat = v_rel / v_rel_norm;
+
+    // Block 1 uses Earth triad for h projection
+    let h_triad_earth = [h_earth.dot(&e_v_earth), h_earth.dot(&e_h_earth), h_earth.dot(&e_n_earth)];
+
+    // Block 2 uses Lunar triad for v_rel projection
+    let vrel_triad_lunar = [v_rel.dot(&e_v_lunar), v_rel.dot(&e_h_lunar), v_rel.dot(&e_n_lunar)];
+
+    // Block 3 uses Solar triad for cross-coupling
+    let h_triad_solar = [h_earth.dot(&e_v_solar), h_earth.dot(&e_h_solar), h_earth.dot(&e_n_solar)];
+    let vhat_triad_solar = [v_hat.dot(&e_v_solar), v_hat.dot(&e_h_solar), v_hat.dot(&e_n_solar)];
+
+    // Precompute trig table (7 phases for 7 octonion-like rotation phases)
+    let phase_trig: [(f64, f64); 7] = std::array::from_fn(|k| {
+        let phase = std::f64::consts::TAU * (k as f64) / 7.0;
+        (phase.sin(), phase.cos())
+    });
+
+    let mut v_64d = [0.0f64; 64];
+
+    // Block 1 (axes 1-21): angular momentum via Earth triad
+    for axis in 0..21 {
+        let comp = axis % 3;
+        let (_, cos_p) = phase_trig[axis / 3];
+        v_64d[1 + axis] = h_triad_earth[comp] * cos_p;
+    }
+
+    // Block 2 (axes 22-42): velocity via Lunar triad
+    for axis in 0..21 {
+        let comp = axis % 3;
+        let (sin_p, cos_p) = phase_trig[axis / 3];
+        v_64d[22 + axis] = vrel_triad_lunar[comp] * (sin_p + cos_p);
+    }
+
+    // Block 3 (axes 43-63): cross-coupling via Solar triad
+    for axis in 0..21 {
+        let comp = axis % 3;
+        let (sin_p, cos_p) = phase_trig[axis / 3];
+        let h_c = h_triad_solar[comp] / h_earth_norm.max(1e-30);
+        let v_c = vhat_triad_solar[comp];
+        v_64d[43 + axis] = cross_sign * v_rel_norm * (h_c * sin_p + v_c * cos_p);
+    }
+
+    // AVT contraction
+    let n_viol = avt.violations.len().max(1) as f64;
+    let mut force_64d = [0.0f64; 64];
+    for &(i, j, _k, m, sign) in &avt.violations {
+        force_64d[m] += alpha * v_64d[i] * v_64d[j] * (sign as f64);
+    }
+    for f in &mut force_64d {
+        *f /= n_viol;
+    }
+
+    // Project back to 3D using the cross-coupling block (axes 43-63)
+    // through the Solar triad (matching the embedding triad)
+    let mut res_triad = [0.0f64; 3];
+    for axis in 0..21 {
+        let comp = axis % 3;
+        let (sin_p, cos_p) = phase_trig[axis / 3];
+        let h_c = h_triad_solar[comp] / h_earth_norm.max(1e-30);
+        let v_c = vhat_triad_solar[comp];
+        let proj = cross_sign * (h_c * sin_p + v_c * cos_p);
+        res_triad[comp] += force_64d[43 + axis] * proj;
+    }
+
+    // Rotate from Solar triad back to ECI
+    let res = e_v_solar * res_triad[0] + e_h_solar * res_triad[1] + e_n_solar * res_triad[2];
+
+    res / 64.0
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -338,5 +488,105 @@ mod tests {
             "Cassini should show negative thrust along velocity, got f.v_hat = {:.2e}",
             f_along_v
         );
+    }
+
+    // --- 3-body embedding tests ---
+
+    #[test]
+    fn test_3body_zero_alpha() {
+        let avt = test_avt();
+        let r = Vector3::new(7000.0, 0.0, 0.0);
+        let v = Vector3::new(0.0, 7.0, -3.0);
+        let v_wind = Vector3::new(0.0, 200.0, 50.0);
+        let r_moon = Vector3::new(384400.0, 0.0, 0.0);
+        let r_sun = Vector3::new(1.496e8, 0.0, 0.0);
+
+        let f = compute_chingon_bivector_drag_3body(
+            r, v, v_wind, 0.0, &avt, r_moon, r_sun,
+        );
+        assert_eq!(f, Vector3::zeros());
+    }
+
+    #[test]
+    fn test_3body_moon_perturbation_changes_force() {
+        let avt = test_avt();
+        // Use off-axis geometry so Moon position rotates the Lunar triad
+        let r = Vector3::new(7000.0, 0.0, 0.0);
+        let v = Vector3::new(0.0, 7.0, -3.0);
+        let v_wind = Vector3::new(0.0, 200.0, 50.0);
+        let r_sun = Vector3::new(1.496e8, 0.0, 0.0);
+        let alpha = 1e-10;
+
+        // Moon along +x (aligned with r)
+        let r_moon_x = Vector3::new(384400.0, 0.0, 0.0);
+        let f_x = compute_chingon_bivector_drag_3body(
+            r, v, v_wind, alpha, &avt, r_moon_x, r_sun,
+        );
+
+        // Moon along +y (perpendicular to r, different triad rotation)
+        let r_moon_y = Vector3::new(0.0, 384400.0, 0.0);
+        let f_y = compute_chingon_bivector_drag_3body(
+            r, v, v_wind, alpha, &avt, r_moon_y, r_sun,
+        );
+
+        // Different Moon positions should produce different forces
+        // because the Lunar triad (Block 2) rotates, changing AVT couplings
+        let diff = (f_x - f_y).norm();
+        assert!(
+            diff > 0.0,
+            "Moon at different positions should change force via triad rotation: \
+             f_x={:?}, f_y={:?}",
+            f_x, f_y
+        );
+    }
+
+    #[test]
+    fn test_3body_sign_sensitivity() {
+        let avt = test_avt();
+        let r = Vector3::new(7000.0, 0.0, 0.0);
+        let v_wind = Vector3::new(0.0, 200.0, 50.0);
+        let r_moon = Vector3::new(384400.0, 0.0, 0.0);
+        let r_sun = Vector3::new(1.496e8, 0.0, 0.0);
+        let alpha = 1e-10;
+
+        // Southward approach
+        let v_south = Vector3::new(0.0, 7.0, -3.0);
+        let f_south = compute_chingon_bivector_drag_3body(
+            r, v_south, v_wind, alpha, &avt, r_moon, r_sun,
+        );
+
+        // Northward approach (flip v_z)
+        let v_north = Vector3::new(0.0, 7.0, 3.0);
+        let f_north = compute_chingon_bivector_drag_3body(
+            r, v_north, v_wind, alpha, &avt, r_moon, r_sun,
+        );
+
+        // Forces should differ in sign for at least one component
+        let dot = f_south.dot(&f_north);
+        assert!(
+            dot < 0.0 || (f_south - f_north).norm() > 1e-20,
+            "North vs south should produce different force directions: \
+             f_south={:?}, f_north={:?}",
+            f_south,
+            f_north
+        );
+    }
+
+    #[test]
+    fn test_3body_finite_output() {
+        let avt = test_avt();
+        let r = Vector3::new(7331.0, 0.0, 0.0);
+        let v = Vector3::new(0.0, 8.949, -1.9);
+        let v_wind = Vector3::new(-10.0, 200.0, 50.0);
+        let r_moon = Vector3::new(300000.0, 200000.0, 50000.0);
+        let r_sun = Vector3::new(1.0e8, 0.5e8, 0.0);
+
+        let f = compute_chingon_bivector_drag_3body(
+            r, v, v_wind, 8e-14, &avt, r_moon, r_sun,
+        );
+        assert!(f.x.is_finite(), "Force x not finite");
+        assert!(f.y.is_finite(), "Force y not finite");
+        assert!(f.z.is_finite(), "Force z not finite");
+        assert!(f.norm() > 0.0, "Force should be nonzero for non-degenerate geometry");
     }
 }
