@@ -6,6 +6,13 @@ use std::{
 };
 
 fn snia_binary_path() -> PathBuf {
+    if let Some(path) = option_env!("CARGO_BIN_EXE_snia-ddt") {
+        return PathBuf::from(path);
+    }
+    if let Some(path) = option_env!("CARGO_BIN_EXE_snia_ddt") {
+        return PathBuf::from(path);
+    }
+
     let keys = ["CARGO_BIN_EXE_snia-ddt", "CARGO_BIN_EXE_snia_ddt"];
     for key in keys {
         if let Ok(path) = std::env::var(key) {

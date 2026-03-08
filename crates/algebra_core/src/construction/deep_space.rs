@@ -63,7 +63,7 @@ impl Routon {
 
 /// A 256-dimensional Voudon algebra element, SIMD-accelerated via `wide::f64x4`.
 /// At 256 dimensions, individual associator splintering averages out into a
-/// Global Mean Frustration Density, mimicking cosmological algebraic pressure.
+/// Global Mean Imbalance Density, mimicking cosmological algebraic pressure.
 #[derive(Clone, Copy, Debug)]
 pub struct Voudon {
     pub data: [f64x4; 64],
@@ -121,12 +121,12 @@ impl Voudon {
     }
 }
 
-/// Computes the Global Mean Frustration Density for the 256D Voudon algebra.
-/// 
-/// Frustration $\Phi$ is measured as the ratio of non-zero associators
+/// Computes the Global Mean Imbalance Density for the 256D Voudon algebra.
+///
+/// Imbalance $\Phi$ is measured as the ratio of non-zero associators
 /// to total possible basis triplets. This acts as the 'Algebraic Pressure'
 /// term in the Voudon-Friedmann cosmological equations.
-pub fn compute_voudon_frustration_density() -> f64 {
+pub fn compute_voudon_imbalance_density() -> f64 {
     // Exact computation over 256^3 (16.7 million) combinations is fast enough in Rust.
     let dim = 256;
     let mut non_zero_count = 0u64;
@@ -195,9 +195,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_voudon_frustration_density() {
-        let density = compute_voudon_frustration_density();
+    fn test_voudon_imbalance_density() {
+        let density = compute_voudon_imbalance_density();
         assert!(density > 0.0 && density < 1.0);
-        println!("256D Voudon Global Mean Frustration Density: {:.6}", density);
+        println!("256D Voudon Global Mean Imbalance Density: {:.6}", density);
     }
 }

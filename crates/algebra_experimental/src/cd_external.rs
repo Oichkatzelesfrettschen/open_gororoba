@@ -2611,6 +2611,7 @@ mod tests {
     /// connects to exactly (lo^mask, hi^mask). This should yield n_edges K_2
     /// components plus some isolated nodes (boundary pairs without valid partners).
     #[test]
+    #[ignore = "heavy research lane: full invariant-suite characterization at 128D"]
     fn test_thesis_e_xor_involution_invariants_128d() {
         use algebra_analysis::graph_projections::compute_invariant_suite_from_graph;
         use petgraph::graph::{NodeIndex, UnGraph};

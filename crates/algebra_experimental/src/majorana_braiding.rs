@@ -394,6 +394,16 @@ pub fn complex_time_braid(
     result
 }
 
+/// Exported friction measurement for use in N-body Wick evolution callbacks.
+///
+/// Measures the topological friction at a given Wick angle theta, using
+/// the standard sigma_1 braid (modes 0, 1) as the probe.
+pub fn friction_at_theta(theta: f64, dim: usize, sign_table: &SignTableCache) -> f64 {
+    let modes = map_majoranas_to_cd(4, dim);
+    let result = complex_time_braid(&modes[0], &modes[1], theta, sign_table);
+    result.topological_friction
+}
+
 /// Friction vs dimension scaling sweep.
 ///
 /// Measures topological friction at dims 16, 32, 64, ..., max_dim

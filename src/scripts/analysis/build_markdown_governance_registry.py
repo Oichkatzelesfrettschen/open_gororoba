@@ -16,10 +16,89 @@ from __future__ import annotations
 
 import argparse
 import fnmatch
+import subprocess
 import tomllib
 from pathlib import Path
 
 IMMUTABLE_AGENT_OVERLAYS = {"CLAUDE.md", "GEMINI.md"}
+SAFE_CLASSIFICATIONS = [
+    "toml_published_markdown",
+    "toml_destination_exists_manual_markdown",
+    "generated_artifact",
+    "third_party_markdown",
+]
+TRACKED_ALLOWED_MODES = ["toml_generated_mirror", "toml_manual_source"]
+TRACKED_ALLOWED_PATHS = [
+    "docs/research/high_dimensional_algebra_unification_2026.md",
+    "proofs/EPISTEMIC_BOUNDARIES.md",
+]
+EMBEDDED_MARKDOWN_PREFIXES = ["docs/", "reports/", "data/artifacts/"]
+EMBEDDED_MARKDOWN_ROOT_PATHS = [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    "README.md",
+    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md",
+    "PHASE10_11_ULTIMATE_ROADMAP.md",
+    "PYTHON_REFACTORING_ROADMAP.md",
+    "SYNTHESIS_PIPELINE_PROGRESS.md",
+    "crates/sign_imbalance/IMPLEMENTATION_NOTES.md",
+    "curated/README.md",
+    "curated/01_theory_frameworks/README_COQ.md",
+    "data/csv/README.md",
+    "data/artifacts/README.md",
+    "NAVIGATOR.md",
+    "REQUIREMENTS.md",
+    "docs/REQUIREMENTS.md",
+]
+OWNER_SCOPE_PREFIXES = ["docs/", "reports/", "data/artifacts/"]
+OWNER_SCOPE_PATHS = [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    "README.md",
+    "apps/gororoba_studio/README.md",
+    "crates/lbm_3d_cuda/README.md",
+    "curated/README.md",
+    "data/csv/README.md",
+    "data/external/README.md",
+    "proofs/EPISTEMIC_BOUNDARIES.md",
+    "proofs/README.md",
+]
+GENERATED_PATTERNS = ["build/docs/generated/*.md", "docs/generated/*.md"]
+SKIP_PREFIXES = [
+    ".cache/",
+    "reports/gates/",
+    ".pytest_cache/",
+    "venv/",
+    ".venv/",
+    ".venv_ingest/",
+    ".horusec/",
+    ".claude/",
+    ".gemini/",
+    ".playwright-mcp/",
+    ".mamba/",
+    "target/",
+    "logs/",
+    "build/",
+    "dist/",
+    "temp/",
+    "tmp/",
+]
+SKIP_PATH_PARTS = [
+    ".cache",
+    "cargo-home",
+    ".pytest_cache",
+    "venv",
+    ".venv",
+    "target",
+    "logs",
+    "build",
+    "dist",
+    "temp",
+    "tmp",
+]
+DISK_FORBIDDEN_MODES = ["deleted_mirror"]
 
 
 def _escape(text: str) -> str:
@@ -85,6 +164,17 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
         walk(data, reg.relative_to(root).as_posix())
 
     return refs
+
+
+def _git_paths(root: Path, args: list[str]) -> set[str]:
+    proc = subprocess.run(
+        ["git", *args, "--", "*.md"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return {line.strip() for line in proc.stdout.splitlines() if line.strip()}
 
 
 def _generated_mirror_patterns() -> list[str]:
@@ -157,6 +247,45 @@ def _render(records: list[dict]) -> str:
     for key in sorted(by_mode):
         lines.append(f"{key}_count = {by_mode[key]}")
     lines.append("")
+    lines.append("[policy]")
+    lines.append(
+        "safe_classifications = [" + ", ".join(_escape(item) for item in SAFE_CLASSIFICATIONS) + "]"
+    )
+    lines.append(
+        "tracked_allowed_modes = ["
+        + ", ".join(_escape(item) for item in TRACKED_ALLOWED_MODES)
+        + "]"
+    )
+    lines.append(
+        "tracked_allowed_paths = ["
+        + ", ".join(_escape(item) for item in TRACKED_ALLOWED_PATHS)
+        + "]"
+    )
+    lines.append(
+        "embedded_markdown_prefixes = ["
+        + ", ".join(_escape(item) for item in EMBEDDED_MARKDOWN_PREFIXES)
+        + "]"
+    )
+    lines.append(
+        "embedded_markdown_root_paths = ["
+        + ", ".join(_escape(item) for item in EMBEDDED_MARKDOWN_ROOT_PATHS)
+        + "]"
+    )
+    lines.append(
+        "owner_scope_prefixes = [" + ", ".join(_escape(item) for item in OWNER_SCOPE_PREFIXES) + "]"
+    )
+    lines.append(
+        "owner_scope_paths = [" + ", ".join(_escape(item) for item in OWNER_SCOPE_PATHS) + "]"
+    )
+    lines.append(
+        "generated_patterns = [" + ", ".join(_escape(item) for item in GENERATED_PATTERNS) + "]"
+    )
+    lines.append("skip_prefixes = [" + ", ".join(_escape(item) for item in SKIP_PREFIXES) + "]")
+    lines.append("skip_path_parts = [" + ", ".join(_escape(item) for item in SKIP_PATH_PARTS) + "]")
+    lines.append(
+        "disk_forbidden_modes = [" + ", ".join(_escape(item) for item in DISK_FORBIDDEN_MODES) + "]"
+    )
+    lines.append("")
 
     for rec in records:
         lines.append("[[document]]")
@@ -188,6 +317,11 @@ def main() -> int:
         help="Knowledge source index path.",
     )
     parser.add_argument(
+        "--inventory",
+        default="registry/markdown_inventory.toml",
+        help="Markdown inventory TOML path.",
+    )
+    parser.add_argument(
         "--out",
         default="registry/markdown_governance.toml",
         help="Output governance registry path.",
@@ -196,24 +330,62 @@ def main() -> int:
 
     root = Path(args.repo_root).resolve()
     knowledge = tomllib.loads((root / args.knowledge_index).read_text(encoding="utf-8"))
+    inventory = tomllib.loads((root / args.inventory).read_text(encoding="utf-8"))
     refs = _iter_registry_refs(root)
+    tracked_markdown = _git_paths(root, ["ls-files"])
+    inventory_by_path = {
+        str(row.get("path", "")).strip(): row
+        for row in inventory.get("document", [])
+        if str(row.get("path", "")).strip().endswith(".md")
+    }
+    knowledge_by_path = {
+        str(row.get("path", "")).strip(): row
+        for row in knowledge.get("document", [])
+        if str(row.get("path", "")).strip().endswith(".md")
+    }
+
+    governed_paths: set[str] = set(knowledge_by_path)
+    governed_paths.update(refs.keys())
+    governed_paths.update(path for path in tracked_markdown if path.endswith(".md"))
 
     records: list[dict] = []
-    for i, row in enumerate(knowledge.get("document", []), start=1):
-        path = str(row.get("path", "")).strip()
+    for i, path in enumerate(sorted(governed_paths), start=1):
+        row = knowledge_by_path.get(path, {})
+        inv_row = inventory_by_path.get(path, {})
         if not path.endswith(".md"):
             continue
-        kind = str(row.get("kind", ""))
+        classification = str(inv_row.get("classification", "")).strip()
+        git_status = str(inv_row.get("git_status", "")).strip()
+        if git_status and git_status != "tracked" and classification != "generated_artifact":
+            continue
+        if classification and classification not in SAFE_CLASSIFICATIONS:
+            continue
+        kind = str(row.get("kind", "")) or classification or "markdown"
         source_refs = sorted(refs.get(path, set()))
-        toml_backing = str(row.get("toml_backing", "")).strip()
+        toml_backing = (
+            str(row.get("toml_backing", "")).strip()
+            or str(inv_row.get("toml_destination", "")).strip()
+        )
         if toml_backing:
             source_refs = [toml_backing] + [ref for ref in source_refs if ref != toml_backing]
 
-        if path in IMMUTABLE_AGENT_OVERLAYS:
+        if classification == "third_party_markdown":
+            mode = "third_party_markdown"
+            header_required = False
+            notes = "Third-party or cache markdown; allowed on disk but not authoritative."
+        elif classification == "generated_artifact":
+            mode = "generated_artifact"
+            header_required = False
+            notes = "Generated artifact/report; preserve reproducibility."
+        elif path in IMMUTABLE_AGENT_OVERLAYS:
             mode = "toml_manual_source"
             header_required = False
             notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
-        elif (path.startswith("docs/") and path.count("/") == 1) or _is_generated_mirror(path):
+        elif (
+            classification == "toml_published_markdown"
+            or (path.startswith("docs/") and path.count("/") == 1)
+            or _is_generated_mirror(path)
+        ):
             mode = "toml_generated_mirror"
             header_required = True
             notes = "Generated from TOML registries and overlays."

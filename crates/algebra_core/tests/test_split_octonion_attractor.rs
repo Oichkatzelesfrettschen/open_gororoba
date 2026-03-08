@@ -99,6 +99,7 @@ fn test_split_octonion_attractor_coincidence() {
 }
 
 #[test]
+#[ignore = "heavy research lane: guarded high-dimensional attractor regression"]
 fn test_split_octonion_attractor_regression_dim_128_256_guarded() {
     // Runtime guard knobs (seconds) for heavier regression checks.
     // Override locally/CI via env vars when hardware budget differs.
@@ -111,8 +112,11 @@ fn test_split_octonion_attractor_regression_dim_128_256_guarded() {
         return;
     }
 
-    let per_dim_budget_s = env_f64("CD_ATTRACTOR_PER_DIM_BUDGET_S", 30.0);
-    let total_budget_s = env_f64("CD_ATTRACTOR_TOTAL_BUDGET_S", 45.0);
+    // The shared repo worker budget is logical_threads / 2, which can be
+    // materially slower than a fully saturated local desktop run. Keep the
+    // default regression budget wide enough for that standardized gate.
+    let per_dim_budget_s = env_f64("CD_ATTRACTOR_PER_DIM_BUDGET_S", 60.0);
+    let total_budget_s = env_f64("CD_ATTRACTOR_TOTAL_BUDGET_S", 90.0);
     let max_diff_128 = env_f64("CD_ATTRACTOR_MAX_DIFF_128", 0.02);
     let max_diff_256 = env_f64("CD_ATTRACTOR_MAX_DIFF_256", 0.02);
     let split_target = 0.375;

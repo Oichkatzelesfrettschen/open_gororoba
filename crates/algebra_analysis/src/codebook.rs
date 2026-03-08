@@ -3366,6 +3366,7 @@ mod tests {
     /// then correlates closure with lattice properties (Hamming weight,
     /// coordinate pattern, filtration depth).
     #[test]
+    #[ignore = "heavy research lane: exhaustive affine F_3 base-point sweep"]
     fn test_affine_f3_closure_full_basepoint_sweep() {
         use std::collections::HashSet;
 
@@ -3601,6 +3602,7 @@ mod tests {
     /// This test sweeps ALL 512 base points to characterize the full distribution,
     /// and correlates with lattice properties to explain the variance.
     #[test]
+    #[ignore = "heavy research lane: exhaustive affine F_3 Lambda_512 sweep"]
     fn test_affine_f3_closure_lambda512_full_sweep() {
         use std::collections::HashSet;
 

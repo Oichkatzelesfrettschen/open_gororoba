@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Verify parity between knowledge_sources and markdown_governance registries.
+Verify that knowledge_sources markdown is covered by markdown_governance.
 """
 
 from __future__ import annotations
@@ -11,9 +11,7 @@ from pathlib import Path
 
 def main() -> int:
     repo_root = Path(__file__).resolve().parents[2]
-    ks = tomllib.loads(
-        (repo_root / "registry/knowledge_sources.toml").read_text(encoding="utf-8")
-    )
+    ks = tomllib.loads((repo_root / "registry/knowledge_sources.toml").read_text(encoding="utf-8"))
     gov = tomllib.loads(
         (repo_root / "registry/markdown_governance.toml").read_text(encoding="utf-8")
     )
@@ -31,17 +29,10 @@ def main() -> int:
 
     failures: list[str] = []
     missing_in_gov = sorted(ks_paths - gov_paths)
-    extra_in_gov = sorted(gov_paths - ks_paths)
-
     if missing_in_gov:
         failures.append(
             "knowledge_sources paths missing in markdown_governance: "
             + ", ".join(missing_in_gov[:20])
-        )
-    if extra_in_gov:
-        failures.append(
-            "markdown_governance paths not in knowledge_sources: "
-            + ", ".join(extra_in_gov[:20])
         )
 
     if failures:

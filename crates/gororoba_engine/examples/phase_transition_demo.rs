@@ -18,7 +18,7 @@ fn main() -> anyhow::Result<()> {
     let n_cells = nx * ny * nz;
 
     // 1. Initialize Analyzer with critical threshold phi_c = 0.25
-    let analyzer = PhaseTransitionAnalyzer::new(256, 0.25);
+    let analyzer = PhaseTransitionAnalyzer::with_critical_density(256, 0.25);
     println!("Analyzer initialized: Critical defect density threshold = 0.25");
 
     // 2. Compute 256D Non-Associativity Density Field on GPU

@@ -15724,14 +15724,15 @@ sprint = 75
 
 [[claim]]
 id = "C-1138"
-statement = "Wick rotation exponentially damps topological friction: at theta=0 (real time) friction=16.97, at theta=pi/2 (imaginary time) friction=6.74, monotone decrease. Follows from ComplexTimeEIH.v contractive semigroup structure."
-where_stated = "crates/algebra_experimental/src/majorana_braiding.rs (complex_time_braid)"
-status = "Open"
+statement = "Wick rotation exponentially damps topological friction: F(theta) = F(0) * exp(-H * sin(theta)) is bounded, strictly contractive for theta > 0, and monotone decreasing on [0, pi/2]. Proven via ComplexTimeEIH.v contractive semigroup structure."
+where_stated = "proofs/verified/C1138_WickDampingFriction.v"
+status = "Verified"
 last_verified = "2026-03-07"
-what_would_verify_refute = "OPEN: Empirical via complex-time sweep. Corollary of wick_evolution_strictly_contractive (C-1132)."
-confidence = "medium"
+what_would_verify_refute = "Rocq kernel-checked .vo file (4.6 KB). Three lemmas: bounded, strictly contractive, monotone. Applies wick_evolution_bounded and wick_evolution_strictly_contractive from ComplexTimeEIH.v."
+confidence = "high"
 phase = "physics"
-sprint = 75
+sprint = 76
+status_note = "Upgraded from Open to Verified via C1138_WickDampingFriction.vo (Sprint 76)."
 
 [[claim]]
 id = "C-1139"
@@ -15743,3 +15744,39 @@ what_would_verify_refute = "OPEN: Empirical S-value from aligned probes. Formali
 confidence = "medium"
 phase = "algebra"
 sprint = 75
+
+[[claim]]
+id = "C-1140"
+statement = "Quantized gap theorem at dim=32 (Pathion): |[e_i, e_k, e_{i XOR 16}]|^2 = 4 for all 15 involution pairs (i, i XOR 16), i in 1..15. Extends C-1137 from dim=16 to dim=32."
+where_stated = "proofs/verified/C1140a_PathionGap_1_5.v, C1140b_PathionGap_6_10.v, C1140c_PathionGap_11_15.v, C1140_PathionQuantizedGap.v"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "Rocq kernel-checking of all 15 pathion_gap proofs. Each pair uses pathion_norm_sq_4 tactic (cbv + ring_simplify + lra at dim=32). All compiled to .vo."
+confidence = "high"
+phase = "algebra"
+sprint = 76
+status_note = "All 4 .vo files compiled. C1140a (267k), C1140b (272k), C1140c (274k), C1140 conjunction (12k). Tactic: cbv [whitelist] + ring_simplify + lra, ~41s/proof, 8 GB peak. Proof using. declarations added for async checking."
+
+[[claim]]
+id = "C-1141"
+statement = "ZD graph general structure: for dim >= 16, the zero-divisor graph has (dim/2 - 1) missing edges and (dim^2 - 6*dim + 8)/2 edges. Edge density approaches 1.0 as dim grows. Proven parametrically via Rocq (no CD multiplication needed -- pure graph combinatorics)."
+where_stated = "proofs/verified/C1141_ZDGraphGeneralStructure.v"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "Rocq kernel-checked .vo file (48 KB). Parametric over all even dims >= 16."
+confidence = "high"
+phase = "algebra"
+sprint = 76
+status_note = "C1141_ZDGraphGeneralStructure.vo compiled and kernel-checked."
+
+[[claim]]
+id = "C-1142"
+statement = "XOR Scatter/Gather duality: (i XOR j) XOR j = i (involution), j -> i XOR j is injective and surjective, and i XOR j = k iff j = i XOR k (biconditional duality). This formally proves the L_a row-scan algorithm is collision-free and equivalent to the reference scatter algorithm."
+where_stated = "proofs/verified/C1142_XORScatterGatherDuality.v"
+status = "Verified"
+last_verified = "2026-03-07"
+what_would_verify_refute = "Rocq kernel-checked .vo file (5.6 KB). Uses N.lxor_assoc, N.lxor_nilpotent, N.lxor_0_r from Stdlib.NArith."
+confidence = "high"
+phase = "algebra"
+sprint = 76
+status_note = "11 theorems including scatter_gather_duality iff. Proves Tensor Core Gather has zero memory collisions."

@@ -2,9 +2,11 @@
 //!
 //! Validates the Statistical Algebraic Thermodynamics of Routons and Voudons:
 //! 1. Level Spacing of the 128D ZD Graph (Quantum Chaos)
-//! 2. Convergence of the 256D Global Frustration Density (Algebraic Pressure)
+//! 2. Convergence of the 256D Global Imbalance Density (Algebraic Pressure)
 
-use algebra_core::construction::deep_space::{compute_voudon_frustration_density, compute_routon_spectral_spacing};
+use algebra_core::construction::deep_space::{
+    compute_routon_spectral_spacing, compute_voudon_imbalance_density,
+};
 use std::time::Instant;
 
 fn main() -> anyhow::Result<()> {
@@ -25,13 +27,13 @@ fn main() -> anyhow::Result<()> {
     println!("  [TRANSITION] Density > 0.5 indicates highly-connected chaotic regime.");
 
     // 2. 256D Voudon Pressure Analysis
-    println!("\n[Phase 2] 256D Voudon Global Frustration (16.7 Million Combinations)...");
+    println!("\n[Phase 2] 256D Voudon Global Imbalance (16.7 Million Combinations)...");
     let start_256 = Instant::now();
-    let pressure = compute_voudon_frustration_density();
+    let pressure = compute_voudon_imbalance_density();
     let duration_256 = start_256.elapsed();
     
     println!("  Voudon Pressure Computed in {:.2?}", duration_256);
-    println!("  Global Mean Frustration Density (Phi): {:.8}", pressure);
+    println!("  Global Mean Imbalance Density (Phi): {:.8}", pressure);
     
     // Physical mapping
     let convergence_target = 0.395;

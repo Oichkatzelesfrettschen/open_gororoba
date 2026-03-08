@@ -570,6 +570,7 @@ mod tests {
     // ================================================================
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive filtration study"]
     fn test_euclidean_ultrametricity_across_filtration_levels() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -707,6 +708,7 @@ mod tests {
     ///   k=5: also exclude l_1=0,l_2=0,l_3=-1,l_4=1
     ///   k=6: Lambda_512                 (512 vectors)
     #[test]
+    #[ignore = "heavy research lane: exhaustive filtration gradient"]
     fn test_intermediate_filtration_gradient() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -917,6 +919,7 @@ mod tests {
     /// If so, the phase transition is a trivial size effect.
     /// If not, the l_1=+1 vectors are algebraically special.
     #[test]
+    #[ignore = "heavy research lane: random removal control sweep"]
     fn test_random_removal_control() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -1089,6 +1092,7 @@ mod tests {
     /// Lambda_1024->Lambda_512 jump at rule 1), or whether ultrametricity
     /// saturates/strengthens gradually.
     #[test]
+    #[ignore = "heavy research lane: exhaustive filtration gradient"]
     fn test_lambda512_to_256_intermediate_gradient() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -1212,6 +1216,7 @@ mod tests {
     /// Verifies that removing 147 l_1=0 vectors (rule 1) produces higher
     /// ultrametricity than removing 147 random vectors.
     #[test]
+    #[ignore = "heavy research lane: random removal control sweep"]
     fn test_lambda512_to_256_random_removal_control() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -1394,6 +1399,7 @@ mod tests {
     /// Tests whether removing the 3 forbidden prefix patterns from S_base
     /// affects ultrametricity significantly.
     #[test]
+    #[ignore = "heavy research lane: exhaustive filtration gradient"]
     fn test_sbase_to_lambda2048_gradient() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -1522,6 +1528,7 @@ mod tests {
     /// This tests whether l_0=0 vectors are actively anti-ultrametric
     /// or merely neutral diluters.
     #[test]
+    #[ignore = "heavy research lane: stratified null-distribution study"]
     fn test_l0_subpopulation_ultrametricity() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -1616,6 +1623,7 @@ mod tests {
     /// Tests whether the l_0=-1 slice and subsequent pattern exclusions
     /// produce a monotone or discontinuous ultrametricity change.
     #[test]
+    #[ignore = "heavy research lane: exhaustive filtration gradient"]
     fn test_lambda2048_to_1024_intermediate_gradient() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -1763,6 +1771,7 @@ mod tests {
     /// If (b) or (c) show positive z while (d) shows strong negative z,
     /// the l_1 phase transition exists within the l_0=-1 population itself.
     #[test]
+    #[ignore = "heavy research lane: stratified null-distribution study"]
     fn test_l1_filter_on_l0_neg1_subset() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -1873,6 +1882,7 @@ mod tests {
     /// If each l_2 subgroup has HIGHER z than the combined l_1=-1 z, the paradox
     /// is recursive through the entire coordinate hierarchy.
     #[test]
+    #[ignore = "heavy research lane: recursive Simpson study"]
     fn test_recursive_simpsons_paradox_l2() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -2010,6 +2020,7 @@ mod tests {
     ///     This directly tests whether cross-stratum triples are the source of
     ///     the anti-ultrametricity in C-508/C-509.
     #[test]
+    #[ignore = "heavy research lane: high-sample triple decomposition"]
     fn test_cross_stratum_triple_decomposition() {
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
@@ -2137,6 +2148,7 @@ mod tests {
     /// l_0=-1 result (C-509) to determine if the paradox is universal across
     /// l_0 strata.
     #[test]
+    #[ignore = "heavy research lane: stratified null-distribution study"]
     fn test_l0_zero_simpsons_paradox() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -2249,6 +2261,7 @@ mod tests {
     /// dimensions, it confirms the mechanism is intrinsic to the ternary lattice
     /// structure rather than specific to Lambda_2048.
     #[test]
+    #[ignore = "heavy research lane: cross-dimensional null-distribution study"]
     fn test_dimensional_universality_simpsons_paradox() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};
@@ -2405,6 +2418,7 @@ mod tests {
     /// Also tests the stratum count -> z-score relationship by computing a
     /// comprehensive table across all 4 filtration levels.
     #[test]
+    #[ignore = "heavy research lane: full stratum summary sweep"]
     fn test_lambda1024_stratum_paradox_and_summary() {
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{NullModel, apply_null_column_major};

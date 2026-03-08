@@ -38,19 +38,37 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CRATES_DIR = REPO_ROOT / "crates"
 
-# Files whose change forces a full workspace rebuild.
-# NOTE: .cargo/config.toml is intentionally omitted: rustflag changes are
-# incorporated into sccache's per-crate hash key, so only affected crates
-# rebuild. Toolchain pin and workspace manifest structure still force --workspace.
-WORKSPACE_TRIGGERS = {
+# Files whose change forces a full workspace rebuild in CI.
+# CI stays conservative because these files alter shared gate behavior or
+# workspace-wide build settings enough that scoped Rust execution is unsafe.
+CI_WORKSPACE_TRIGGERS = {
     "Cargo.toml",
     "Cargo.lock",
+    ".cargo/config.toml",
     "rust-toolchain.toml",
     "Makefile",
     "agents.toml",
     ".config/nextest.toml",
     "registry/test_taxonomy.toml",
     "registry/engineering_standards.toml",
+}
+
+# Files that still warrant Rust validation locally, but should not force a
+# workspace-wide run when the same change set already points to concrete crates.
+# If these are the only Rust-relevant changes, local routing still falls back
+# to `--workspace`.
+LOCAL_SHARED_RUST_TRIGGERS = {
+    "Cargo.toml",
+    "Cargo.lock",
+    ".cargo/config.toml",
+    "Makefile",
+    "agents.toml",
+    ".config/nextest.toml",
+    "registry/test_taxonomy.toml",
+    "registry/engineering_standards.toml",
+}
+LOCAL_WORKSPACE_TRIGGERS = {
+    "rust-toolchain.toml",
 }
 
 # Prefixes that never affect Rust compilation.
@@ -63,7 +81,7 @@ RUST_IRRELEVANT_PREFIXES = (
     "src/ghost_stats/",
     "src/verification/",
     "bin/",
-    "tests/",       # Python tests
+    "tests/",  # Python tests
     "data/",
     ".github/",
     ".githooks/",
@@ -71,14 +89,29 @@ RUST_IRRELEVANT_PREFIXES = (
     "plans/",
     ".horusec/",
 )
+RUST_IRRELEVANT_FILES = {
+    ".gitignore",
+    "pyproject.toml",
+    "pytest.ini",
+}
 
 # Prefixes that indicate governance/registry work.
 GOVERNANCE_PREFIXES = (
     "registry/",
+    "docs/",
+    "reports/",
+    "data/artifacts/",
+    "proofs/",
     "bin/",
     "src/verification/",
     "tests/",
 )
+
+GOVERNANCE_ROOT_MARKDOWN_SUFFIX = ".md"
+
+
+class BaseRefError(RuntimeError):
+    """Raised when the selected git diff base cannot be resolved safely."""
 
 
 def parse_args() -> argparse.Namespace:
@@ -105,6 +138,7 @@ def parse_args() -> argparse.Namespace:
 # Git helpers
 # ---------------------------------------------------------------------------
 
+
 def git(*args: str) -> str:
     """Run a git command and return stripped stdout."""
     result = subprocess.run(
@@ -114,6 +148,24 @@ def git(*args: str) -> str:
         cwd=REPO_ROOT,
     )
     return result.stdout.strip()
+
+
+def git_result(*args: str) -> subprocess.CompletedProcess[str]:
+    """Run a git command and return the full completed process."""
+    return subprocess.run(
+        ["git", *args],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+
+
+def in_ci() -> bool:
+    return os.environ.get("GITHUB_ACTIONS", "").lower() == "true"
+
+
+def ref_exists(ref: str) -> bool:
+    return git_result("rev-parse", "--verify", ref).returncode == 0
 
 
 def detect_base_ref(explicit_base: str | None) -> str:
@@ -139,21 +191,46 @@ def detect_base_ref(explicit_base: str | None) -> str:
     return "HEAD~1"
 
 
-def changed_files(base: str) -> list[str]:
+def validate_base_ref(base: str) -> None:
+    if ref_exists(base):
+        return
+    raise BaseRefError(
+        f"cannot resolve diff base `{base}`. Fetch the base history before running "
+        "CI routing (for GitHub Actions, use actions/checkout with fetch-depth: 0)."
+    )
+
+
+def changed_files(base: str | None) -> list[str]:
     """Return list of changed file paths relative to repo root."""
-    raw = git("diff", "--name-only", f"{base}...HEAD")
-    if not raw:
-        # Maybe not a range -- try two-dot diff.
-        raw = git("diff", "--name-only", base, "HEAD")
-    if not raw:
-        # Fallback: check unstaged + staged changes (local pre-push).
-        raw = git("diff", "--name-only", "HEAD")
-    return [f for f in raw.splitlines() if f]
+    paths: set[str] = set()
+
+    if base is not None:
+        committed = git_result("diff", "--name-only", f"{base}...HEAD")
+        if committed.returncode != 0 or not committed.stdout.strip():
+            committed = git_result("diff", "--name-only", base, "HEAD")
+        if committed.returncode != 0:
+            raise BaseRefError(
+                f"failed to diff against base `{base}`. Fetch the base history before "
+                "running CI routing."
+            )
+        paths.update(f for f in committed.stdout.splitlines() if f)
+
+    # Local routing must see staged/unstaged changes even when a base ref exists.
+    working_tree = git("diff", "--name-only", "HEAD")
+    if working_tree:
+        paths.update(f for f in working_tree.splitlines() if f)
+
+    untracked = git("ls-files", "--others", "--exclude-standard")
+    if untracked:
+        paths.update(f for f in untracked.splitlines() if f)
+
+    return sorted(paths)
 
 
 # ---------------------------------------------------------------------------
 # Dependency graph
 # ---------------------------------------------------------------------------
+
 
 def _parse_workspace_path_deps() -> dict[str, str]:
     """Read root Cargo.toml [workspace.dependencies] for path-based entries.
@@ -205,7 +282,7 @@ def build_dependency_graph() -> tuple[set[str], dict[str, set[str]]]:
     )
     # Pass 2: workspace deps (e.g. ``some_crate = { workspace = true }``).
     ws_dep_re = re.compile(
-        r'^\s*(\w[\w-]*)\s*=\s*\{[^}]*workspace\s*=\s*true',
+        r"^\s*(\w[\w-]*)\s*=\s*\{[^}]*workspace\s*=\s*true",
         re.MULTILINE,
     )
 
@@ -260,30 +337,41 @@ def transitive_closure(
 # File-to-crate mapping
 # ---------------------------------------------------------------------------
 
+
 def classify_changes(
     files: list[str],
     all_crates: set[str],
-) -> tuple[set[str], bool, bool]:
+    local_mode: bool,
+) -> tuple[set[str], bool, bool, bool]:
     """Classify changed files into affected crates and flags.
 
     Returns:
-        (affected_crates, force_workspace, has_governance_changes)
+        (affected_crates, force_workspace, has_governance_changes, has_shared_rust_changes)
     """
     affected: set[str] = set()
     force_workspace = False
     has_governance = False
-    has_rust_relevant = False
+    has_shared_rust_changes = False
+    workspace_triggers = LOCAL_WORKSPACE_TRIGGERS if local_mode else CI_WORKSPACE_TRIGGERS
+    shared_rust_triggers = LOCAL_SHARED_RUST_TRIGGERS if local_mode else set()
 
     for f in files:
         # Root workspace files force full rebuild.
-        if f in WORKSPACE_TRIGGERS:
+        if f in workspace_triggers:
             force_workspace = True
-            has_rust_relevant = True
+            continue
+        if f in shared_rust_triggers:
+            has_shared_rust_changes = True
             continue
 
         # Check governance relevance.
         if any(f.startswith(pfx) for pfx in GOVERNANCE_PREFIXES):
             has_governance = True
+        elif "/" not in f and f.endswith(GOVERNANCE_ROOT_MARKDOWN_SUFFIX):
+            has_governance = True
+
+        if f in RUST_IRRELEVANT_FILES:
+            continue
 
         # Check if this file is Rust-irrelevant.
         if any(f.startswith(pfx) for pfx in RUST_IRRELEVANT_PREFIXES):
@@ -294,28 +382,22 @@ def classify_changes(
             parts = f.split("/", 2)
             if len(parts) >= 2 and parts[1] in all_crates:
                 affected.add(parts[1])
-                has_rust_relevant = True
             else:
                 # Unknown crate directory -- be conservative.
                 force_workspace = True
-                has_rust_relevant = True
             continue
 
-        # Any other file at root level that might affect Rust builds.
-        # (e.g., build.rs at root, .cargo/ files not in WORKSPACE_TRIGGERS)
-        if f.endswith(".rs") or f.endswith(".toml"):
+        # Any other root-level file that might affect Rust builds.
+        if "/" not in f and (f.endswith(".rs") or f.endswith(".toml")):
             force_workspace = True
-            has_rust_relevant = True
 
-    # If no Rust-relevant files changed, signal to skip Rust entirely.
-    run_rust = has_rust_relevant or force_workspace or bool(affected)
-
-    return affected, force_workspace, has_governance
+    return affected, force_workspace, has_governance, has_shared_rust_changes
 
 
 # ---------------------------------------------------------------------------
 # Output
 # ---------------------------------------------------------------------------
+
 
 def format_cargo_scope(crates: set[str]) -> str:
     """Format crate set as cargo -p flags."""
@@ -371,13 +453,28 @@ def emit_github(
 # Main
 # ---------------------------------------------------------------------------
 
-def main() -> None:
+
+def main() -> int:
     args = parse_args()
 
     try:
         base = detect_base_ref(args.base)
+        local_base_fallback = False
         if args.verbose:
             print(f"[ci-routing] base_ref={base}", file=sys.stderr)
+
+        try:
+            validate_base_ref(base)
+        except BaseRefError as exc:
+            if not args.local or in_ci():
+                raise
+            local_base_fallback = True
+            print(
+                "[ci-routing] WARNING: "
+                f"{exc} Falling back to working-tree and untracked files only.",
+                file=sys.stderr,
+            )
+            base = None
 
         files = changed_files(base)
         if args.verbose:
@@ -389,8 +486,10 @@ def main() -> None:
         all_crates, deps = build_dependency_graph()
         rdeps = invert_graph(deps)
 
-        affected, force_workspace, has_governance = classify_changes(
-            files, all_crates,
+        affected, force_workspace, has_governance, has_shared_rust_changes = classify_changes(
+            files,
+            all_crates,
+            args.local,
         )
 
         if force_workspace:
@@ -401,25 +500,43 @@ def main() -> None:
             full_set = transitive_closure(affected, rdeps)
             scope = format_cargo_scope(full_set)
             run_rust = True
+        elif has_shared_rust_changes:
+            scope = "--workspace"
+            run_rust = True
         else:
             scope = ""
             run_rust = False
+
+        if local_base_fallback and not files:
+            scope = "--workspace"
+            run_rust = True
+            has_governance = True
+            if args.verbose:
+                print(
+                    "[ci-routing] local fallback could not inspect committed branch "
+                    "deltas; promoting to --workspace.",
+                    file=sys.stderr,
+                )
 
         if args.local:
             emit_local(scope, run_rust, has_governance, args.verbose)
         else:
             emit_github(scope, run_rust, has_governance, args.verbose)
+        return 0
 
+    except BaseRefError as e:
+        print(f"[ci-routing] ERROR: {e}", file=sys.stderr)
+        return 2
     except Exception as e:
         # Conservative fallback: any error -> full workspace build.
-        print(f"[ci-routing] ERROR: {e} -- falling back to --workspace",
-              file=sys.stderr)
+        print(f"[ci-routing] ERROR: {e} -- falling back to --workspace", file=sys.stderr)
         scope = "--workspace"
         if args.local:
             print(scope)
         else:
             emit_github(scope, True, True, args.verbose)
+        return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

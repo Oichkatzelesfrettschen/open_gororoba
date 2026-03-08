@@ -1,11 +1,12 @@
 # ---- Phony targets ----
-.PHONY: help install install-analysis install-astro install-particle install-quantum
-.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke integrity math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
+.PHONY: help install install-analysis install-astro install-particle install-quantum bootstrap-dev
+.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe lint-advisory check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict terminology-gate doctor doctor-blas provenance patch-pyfilesystem2
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
-.PHONY: python-smoke python-regression heavy test-inventory
+.PHONY: python-smoke python-regression heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
-.PHONY: pre-push-gate-scoped submodule-sync
+.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-python gate-ci-python-compat gate-ci-rust gate-audit profile-python-toml-inventory
+.PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
 .PHONY: verify-pantheon-physicsforge-mapping verify-pantheon-physicsforge-license-headers
@@ -54,6 +55,8 @@
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-artifacts clean-all
 
+.NOTPARALLEL: install bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-python gate-ci-python-compat gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
+
 # Non-cargo make fanout: 75% of logical CPUs, minimum 1.
 # Cargo and Rust test runners use a shared worker budget equal to logical threads / 2.
 NPROC := $(shell nproc 2>/dev/null || echo 4)
@@ -63,11 +66,18 @@ CARGO_JOBS ?= $(WORKER_BUDGET)
 NEXTEST_TEST_THREADS ?= $(WORKER_BUDGET)
 RUST_TEST_THREADS ?= $(WORKER_BUDGET)
 RAYON_THREADS ?= $(WORKER_BUDGET)
-CARGO_ENV = MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+RUST_SCOPED_CLIPPY_TARGETS ?= --lib --tests
+RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(algebra_core) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
+REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
+REPO_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/gate-target
+CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+PYTEST_WORKERS ?= $(WORKER_BUDGET)
+PYTEST_XDIST_ARGS = -p xdist.plugin -n $(PYTEST_WORKERS) --dist worksteal
 
 VENV ?= venv
 PYTHON := $(VENV)/bin/python3
 PIP := $(VENV)/bin/pip
+DEV_STAMP := $(VENV)/.installed-dev
 HOOKS_DIR ?= .githooks
 MARKDOWN_EXPORT ?= 0
 MARKDOWN_EXPORT_OUT_DIR ?= build/docs/generated
@@ -76,15 +86,26 @@ MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC ?= 1
 PGO_DIR ?= /tmp/pgo-data
 SYNTHESIS_CONTRACT_DATE ?= 2026_02_14
 SYNTHESIS_CONTRACT_REPORT ?= reports/synthesis_execution_contract_$(SYNTHESIS_CONTRACT_DATE).toml
+GATE_AUDIT_SCRIPT := scripts/gate_audit.py
+PROFILE_TIMESTAMP := $(shell date +%Y-%m-%d/%H%M%S)
+PROFILE_ROOT ?= reports/gates/profiles/$(PROFILE_TIMESTAMP)
 
 # ---- Environment setup ----
 
-venv:
+$(VENV)/bin/python3:
 	python3 -m venv $(VENV)
 	$(PIP) install -U pip
 
-install: venv
+venv: $(VENV)/bin/python3
+
+$(DEV_STAMP): $(VENV)/bin/python3 pyproject.toml
 	$(PIP) install -e ".[dev]"
+	@touch "$(DEV_STAMP)"
+
+install: $(DEV_STAMP)
+
+bootstrap-dev: install
+	@echo "OK: dev bootstrap is current."
 
 install-analysis: install
 	$(PIP) install -e ".[analysis]"
@@ -101,44 +122,50 @@ install-quantum: install
 # ---- Quality gates ----
 
 python-smoke: install
-	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest -m smoke tests/ -x -q --tb=short
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest $(PYTEST_XDIST_ARGS) -m "smoke and not requires_ext" tests/ -x -q --tb=short
 
 python-regression: install
-	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest -m regression tests/ -x -q --tb=short
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest $(PYTEST_XDIST_ARGS) -m "regression and not requires_ext" tests/ -x -q --tb=short
+
+python-requires-ext: install
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest $(PYTEST_XDIST_ARGS) -m "requires_ext" tests/ -x -q --tb=short
 
 test: python-regression
 
 lint: install
-	$(PYTHON) -m ruff check src/gemini_physics tests
+	$(PYTHON) scripts/run_ruff_changed.py
 
 lint-all: install
-	$(PYTHON) -m ruff check src
+	$(PYTHON) -m ruff check src tests bin scripts
 
 lint-all-stats: install
-	$(PYTHON) -m ruff check src --statistics --exit-zero
+	$(PYTHON) -m ruff check src tests bin scripts --statistics --exit-zero
+
+lint-advisory: lint-all-stats
+	@echo "OK: advisory lint statistics collected."
 
 lint-all-fix-safe: install
 	$(PYTHON) -m ruff check src --select W291,W293,I001 --fix
 
-check: lint smoke integrity
-	@echo "OK: check suite complete."
+verify-no-reports-writes: install
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_no_reports_writes.py
+
+check: lint python-smoke ascii-check terminology-gate verify-no-reports-writes
+	@echo "OK: fast shared check suite complete."
 
 # Governance verifier targets
 registry-verify-markdown-governance:
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
 
-# Governance acceptance gate: 5 TOML registry checks, run in parallel.
-# Prerequisites share registry-markdown-inventory -- GNU Make deduplicates correctly.
-governance-gate:
-	$(MAKE) -j$(NJOBS) \
-	    registry-verify-markdown-inventory \
-	    registry-verify-markdown-owner \
-	    registry-verify-schema-signatures \
-	    registry-verify-crossrefs \
-	    registry-verify-markdown-governance
+governance-gate-readonly:
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_inventory_toml_first.py
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_owner_map.py
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_schema_signatures.py
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_crossrefs.py
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
 	@echo ""
 	@echo "=========================================="
-	@echo "GOVERNANCE ACCEPTANCE GATE: PASSED"
+	@echo "READ-ONLY GOVERNANCE GATE: PASSED"
 	@echo "=========================================="
 	@echo "[done] Markdown inventory validated (TOML-first)"
 	@echo "[done] Markdown owner map verified"
@@ -148,35 +175,93 @@ governance-gate:
 	@echo ""
 	@echo "TOML-first governance checks are operational."
 	@echo "=========================================="
-	@echo ""
-	@echo "To run the full fast validation pipeline:"
-	@echo "  make check"
+
+governance-gate: governance-gate-readonly
+	@echo "OK: governance-gate is a compatibility alias for governance-gate-readonly."
 
 wave6-gate: governance-gate
 	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 
-pre-push-gate:
-	$(MAKE) check
-	$(MAKE) rust-regression
-	$(MAKE) governance-gate
-	$(MAKE) terminology-gate
-	@echo "OK: pre-push gate passed (check + rust-regression + governance + terminology)."
+gate-local:
+	@set -e; \
+	scope=""; \
+	run_rust="true"; \
+	run_governance="true"; \
+	echo "[gate-local] determining scope..."; \
+	if command -v python3 >/dev/null 2>&1 && [ -f scripts/ci_affected_crates.py ]; then \
+	    scope_file="$$(mktemp)"; \
+	    meta_file="$$(mktemp)"; \
+	    python3 scripts/ci_affected_crates.py --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
+	    scope="$$(cat "$$scope_file" 2>/dev/null || true)"; \
+	    routing_meta="$$(cat "$$meta_file" 2>/dev/null || true)"; \
+	    rm -f "$$scope_file" "$$meta_file"; \
+	    if [ -n "$$routing_meta" ]; then printf '%s\n' "$$routing_meta"; fi; \
+	    printf '%s\n' "$$routing_meta" | grep -q 'run_rust=False' && run_rust="false" || true; \
+	    printf '%s\n' "$$routing_meta" | grep -q 'run_governance=False' && run_governance="false" || true; \
+	else \
+	    echo "[gate-local] WARNING: ci_affected_crates.py not found, running full workspace"; \
+	    scope="--workspace"; \
+	fi; \
+	$(MAKE) check; \
+	if [ "$$run_rust" = "true" ]; then \
+	    if [ -z "$$scope" ]; then scope="--workspace"; fi; \
+	    echo "[gate-local] rust scope: $$scope"; \
+	    $(MAKE) rust-regression-scoped RUST_SCOPE="$$scope" RUST_RUN_HEAVY=0; \
+	else \
+	    echo "[gate-local] SKIP: no Rust-relevant changes detected."; \
+	fi; \
+	if [ "$$run_governance" = "true" ]; then \
+	    $(MAKE) governance-gate-readonly; \
+	else \
+	    echo "[gate-local] SKIP: no governance-relevant changes detected."; \
+	fi; \
+	echo "[gate-local] OK: local gate passed."
 
-# Strict pre-push: 3-way parallel audit, then scoped gate, then strict ASCII.
-pre-push-gate-strict:
-	$(MAKE) dep-audit
+pre-push-gate: gate-local
+	@echo "OK: pre-push-gate is a compatibility alias for gate-local."
+
+gate-ci-python: install
+	$(MAKE) check
+	$(MAKE) python-regression
+	$(MAKE) integrity
+	$(MAKE) governance-gate-readonly
+	$(MAKE) registry-control-plane-gate-readonly
+	$(MAKE) registry-acceptance-gate-readonly
+	@echo "OK: gate-ci-python passed."
+
+gate-ci-python-compat: check
+	@echo "OK: gate-ci-python-compat passed."
+
+gate-ci-rust:
+	$(MAKE) rust-regression
+	$(MAKE) integrity-rust
 	$(MAKE) cargo-deny-check
-	$(MAKE) mcp-smoke
-	$(MAKE) pre-push-gate
-	$(MAKE) ascii-check-strict
-	@echo "OK: strict pre-push gate passed (dep-audit + cargo-deny + mcp-smoke + pre-push-gate + ascii-check-strict)."
+	@echo "OK: gate-ci-rust passed."
+
+gate-audit: install
+	PYTHONWARNINGS=error $(PYTHON) $(GATE_AUDIT_SCRIPT)
+	@echo "OK: gate-audit completed."
+
+profile-python-toml-inventory: install
+	@mkdir -p "$(PROFILE_ROOT)"
+	@if command -v py-spy >/dev/null 2>&1; then \
+		echo "[profile] using py-spy"; \
+		py-spy record --format speedscope -o "$(PROFILE_ROOT)/toml_inventory.speedscope.json" -- $(PYTHON) src/scripts/analysis/build_toml_inventory_registry.py; \
+	else \
+		echo "[profile] py-spy not found; falling back to cProfile"; \
+		PYTHONWARNINGS=error $(PYTHON) -m cProfile -o "$(PROFILE_ROOT)/toml_inventory.cprofile" src/scripts/analysis/build_toml_inventory_registry.py; \
+	fi
+	@echo "OK: Python TOML inventory profile written under $(PROFILE_ROOT)"
+
+pre-push-gate-strict: gate-audit
+	@echo "OK: pre-push-gate-strict is a compatibility alias for gate-audit."
 
 hooks-install:
 	@mkdir -p "$(HOOKS_DIR)"
 	@chmod +x "$(HOOKS_DIR)/pre-push"
 	@git config core.hooksPath "$(HOOKS_DIR)"
 	@echo "OK: git hooks installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "Pre-push will run: make pre-push-gate"
+	@echo "Pre-push will run: make gate-local"
 
 hooks-install-strict:
 	@mkdir -p "$(HOOKS_DIR)"
@@ -186,37 +271,43 @@ hooks-install-strict:
 		'set -euo pipefail' \
 		'repo_root="$$(git rev-parse --show-toplevel)"' \
 		'cd "$$repo_root"' \
-		'echo "[pre-push] running ./makew pre-push-gate-strict"' \
-		'./makew pre-push-gate-strict' \
+		'echo "[pre-push] running ./makew gate-local"' \
+		'./makew gate-local' \
 		> "$(HOOKS_DIR)/pre-push"
 	@chmod +x "$(HOOKS_DIR)/pre-push"
 	@git config core.hooksPath "$(HOOKS_DIR)"
 	@echo "OK: strict git hook installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "Pre-push will run: make pre-push-gate-strict"
+	@echo "Pre-push will run: make gate-local"
 
 hooks-status:
 	@echo "core.hooksPath=$$(git config --get core.hooksPath || echo .git/hooks)"
 	@echo "pre-push hook exists? $$(test -f "$(HOOKS_DIR)/pre-push" && echo yes || echo no)"
 
-smoke: install
-	$(MAKE) python-smoke
-	$(MAKE) rust-smoke
+smoke: check rust-smoke
+	@echo "OK: smoke lane passed."
+
+registry-control-plane-gate-readonly: install
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_corpus_registry.py
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_toml_inventory_registry.py
+	@echo "OK: read-only registry control-plane gate passed."
 
 integrity: install
 	PYTHONWARNINGS=error $(PYTHON) -m compileall -q src
-	$(PYTHON) -m ruff check src/gemini_physics tests
-	$(PYTHON) -m ruff check src --statistics --exit-zero
-	$(PYTHON) bin/ascii_check.py --check
-	$(MAKE) registry-verify-markdown-owner
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_python_core_algorithms_pyo3.py
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin claims-verify -- --check providers
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
 	$(MAKE) verify-pantheon-physicsforge-mapping
 	$(MAKE) verify-pantheon-physicsforge-license-headers
 	$(MAKE) verify-pantheon-physicsforge-overflow
-	$(MAKE) registry-verify-embedded-markdown
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_embedded_markdown_structured_registry.py
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_mirror_freshness.py
+	@echo "OK: integrity lane passed."
+
+integrity-rust:
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin claims-verify -- --check providers
 	$(MAKE) test-inventory
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin registry-check -- --typed-policy error
+	@echo "OK: Rust integrity lane passed."
 
 test-inventory:
 	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin test-inventory -- --check
@@ -245,14 +336,19 @@ rust-regression: rust-clippy
 #        make rust-regression-scoped RUST_SCOPE="-p algebra_core -p gr_core"
 rust-regression-scoped:
 	$(eval RUST_SCOPE ?= $(shell python3 scripts/ci_affected_crates.py --local 2>/dev/null || echo "--workspace"))
-	@if [ -z "$(RUST_SCOPE)" ]; then \
+	$(eval RUST_RUN_HEAVY ?= 1)
+	@set -e; \
+	if [ -z "$(RUST_SCOPE)" ]; then \
 	    echo "SKIP: no Rust-relevant changes detected."; \
 	else \
 	    echo "[rust-regression-scoped] scope: $(RUST_SCOPE)"; \
-	    $(CARGO_ENV) cargo clippy $(RUST_SCOPE) --all-targets -- -D warnings; \
+	    $(CARGO_ENV) cargo clippy $(RUST_SCOPE) $(RUST_SCOPED_CLIPPY_TARGETS) -- -D warnings; \
+	    local_light_scope=""; \
+	    local_light_packages=""; \
 	    if [ "$(RUST_SCOPE)" = "--workspace" ]; then \
 	        light_scope="--workspace --exclude algebra_analysis --exclude gr_core"; \
 	        heavy_scope="-p algebra_analysis -p gr_core"; \
+	        local_light_scope="$$light_scope"; \
 	    else \
 	        light_scope=""; \
 	        heavy_scope=""; \
@@ -261,7 +357,9 @@ rust-regression-scoped:
 	            if [ "$$prev" = "-p" ]; then \
 	                case "$$token" in \
 	                    algebra_analysis|gr_core) heavy_scope="$$heavy_scope -p $$token" ;; \
-	                    *) light_scope="$$light_scope -p $$token" ;; \
+	                    *) \
+	                        light_scope="$$light_scope -p $$token"; \
+	                        local_light_packages="$$local_light_packages $$token" ;; \
 	                esac; \
 	                prev=""; \
 	            elif [ "$$token" = "-p" ]; then \
@@ -269,11 +367,29 @@ rust-regression-scoped:
 	            fi; \
 	        done; \
 	    fi; \
-	    if [ -n "$$light_scope" ]; then \
-	        $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $$light_scope; \
+	    filterset=""; \
+	    if [ "$(RUST_RUN_HEAVY)" != "1" ]; then \
+	        filterset='$(RUST_LOCAL_SKIP_FILTERSET)'; \
 	    fi; \
-	    if [ -n "$$heavy_scope" ]; then \
+	    if [ "$(RUST_SCOPE)" = "--workspace" ]; then \
+	        if [ -n "$$filterset" ]; then \
+	            echo "[rust-regression-scoped] local skip filter enabled"; \
+	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $$local_light_scope -E "$$filterset"; \
+	        else \
+	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $$local_light_scope; \
+	        fi; \
+	    elif [ -n "$$local_light_packages" ]; then \
+	        if [ -n "$$filterset" ]; then \
+	            echo "[rust-regression-scoped] local skip filter enabled"; \
+	            $(CARGO_ENV) python3 scripts/run_local_nextest_plan.py --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --filterset "$$filterset" $$local_light_packages; \
+	        else \
+	            $(CARGO_ENV) python3 scripts/run_local_nextest_plan.py --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $$local_light_packages; \
+	        fi; \
+	    fi; \
+	    if [ -n "$$heavy_scope" ] && [ "$(RUST_RUN_HEAVY)" = "1" ]; then \
 	        $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy $$heavy_scope; \
+	    elif [ -n "$$heavy_scope" ]; then \
+	        echo "[rust-regression-scoped] SKIP heavy nextest in local fast path: $$heavy_scope"; \
 	    fi; \
 	    echo "OK: Rust regression gate passed (scoped: clippy + nextest)."; \
 	fi
@@ -283,10 +399,8 @@ rust-smoke-scoped: rust-regression-scoped
 
 # Scoped pre-push: routes Rust/governance to affected scope only.
 pre-push-gate-scoped:
-	$(MAKE) check
-	$(MAKE) rust-regression-scoped
-	$(MAKE) terminology-gate
-	@echo "OK: scoped pre-push gate passed."
+	$(MAKE) gate-local
+	@echo "OK: scoped pre-push gate passed via gate-local."
 
 heavy:
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --workspace --exclude algebra_analysis --exclude gr_core --run-ignored only -P heavy
@@ -317,7 +431,7 @@ dep-audit:
 
 cargo-deny-check:
 	@command -v cargo-deny >/dev/null 2>&1 || { echo "ERROR: cargo-deny not found. Install with: cargo install cargo-deny"; exit 1; }
-	cargo deny check --config deny.toml --show-stats --hide-inclusion-graph advisories bans licenses sources
+	$(CARGO_ENV) cargo deny check --config deny.toml --show-stats --hide-inclusion-graph advisories bans licenses sources
 	@echo "OK: cargo-deny policy gate passed."
 
 mcp-smoke:
@@ -471,13 +585,13 @@ registry-refresh: registry-migrate-corpus registry-ingest-legacy registry-govern
 registry-knowledge-atoms:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_structured_knowledge_atoms.py
 
-registry-verify-knowledge-atoms: registry-knowledge-atoms
+registry-verify-knowledge-atoms:
 	PYTHONWARNINGS=error python3 src/verification/verify_structured_knowledge_atoms.py
 
 registry-artifact-scrolls: registry-knowledge-atoms
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_artifact_scrolls_registry.py
 
-registry-verify-artifact-scrolls: registry-artifact-scrolls
+registry-verify-artifact-scrolls:
 	PYTHONWARNINGS=error python3 src/verification/verify_artifact_scrolls_registry.py
 
 registry-markdown-inventory:
@@ -495,22 +609,22 @@ registry-markdown-origin-audit: registry-markdown-inventory
 registry-embedded-markdown:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_embedded_markdown_structured_registry.py
 
-registry-verify-embedded-markdown: registry-embedded-markdown
+registry-verify-embedded-markdown:
 	PYTHONWARNINGS=error python3 src/verification/verify_embedded_markdown_structured_registry.py
 
-registry-verify-markdown-inventory: registry-markdown-inventory
+registry-verify-markdown-inventory:
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
 
-registry-verify-markdown-origin: registry-markdown-origin-audit
+registry-verify-markdown-origin:
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_origin_audit.py
 
-registry-verify-markdown-owner: registry-markdown-inventory
+registry-verify-markdown-owner:
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
 
 registry-verify-markdown-toml-first: registry-verify-markdown-inventory registry-verify-markdown-owner
 	@echo "OK: markdown TOML-first owner/inventory gates verified."
 
-registry-verify-control-plane: registry-markdown-corpus registry-toml-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms registry-verify-artifact-scrolls
+registry-verify-control-plane: registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms registry-verify-artifact-scrolls
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_corpus_registry.py
 	PYTHONWARNINGS=error python3 src/verification/verify_toml_inventory_registry.py
 
@@ -527,7 +641,7 @@ registry-strict-toml-batch1-build:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_semantic_atoms.py
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_payload_registries.py
 
-registry-verify-strict-toml-batch1: registry-strict-toml-batch1-build
+registry-verify-strict-toml-batch1:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_semantic_atoms.py
 
 registry-strict-toml-batch1: registry-verify-strict-toml-batch1
@@ -551,7 +665,7 @@ registry-wave5-batch1: registry-strict-toml-batch1
 registry-strict-toml-batch2-build: registry-strict-toml-batch1-build
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_evidence_provenance.py
 
-registry-verify-strict-toml-batch2: registry-strict-toml-batch2-build
+registry-verify-strict-toml-batch2:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_evidence_provenance.py
 
 registry-strict-toml-batch2: registry-verify-strict-toml-batch2
@@ -575,13 +689,13 @@ registry-wave5-batch2: registry-strict-toml-batch2
 registry-strict-toml-batch3-build:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_integrity_resolution.py
 
-registry-verify-schema-signatures: registry-strict-toml-batch3-build
+registry-verify-schema-signatures:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py
 
 registry-verify-crossrefs:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
 
-registry-verify-strict-toml-batch3: registry-strict-toml-batch3-build
+registry-verify-strict-toml-batch3:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_integrity_resolution.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
@@ -607,7 +721,7 @@ registry-wave5-batch3: registry-strict-toml-batch3
 registry-strict-toml-batch4-build:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_execution_planning.py
 
-registry-verify-strict-toml-batch4: registry-strict-toml-batch4-build registry-markdown-inventory
+registry-verify-strict-toml-batch4:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_execution_planning.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
@@ -631,13 +745,15 @@ registry-verify-wave5-batch4: registry-verify-strict-toml-batch4
 registry-wave5-batch4: registry-strict-toml-batch4
 	@echo "DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
 
-registry-acceptance-gate:
-	$(MAKE) -j$(NJOBS) \
-	    registry-semantic-atoms-gate \
-	    registry-evidence-provenance-gate \
-	    registry-integrity-resolution-gate \
-	    registry-execution-planning-gate
+registry-acceptance-gate-readonly:
+	$(MAKE) registry-verify-semantic-atoms
+	$(MAKE) registry-verify-evidence-provenance
+	$(MAKE) registry-verify-integrity-resolution
+	$(MAKE) registry-verify-execution-planning
 	@echo "OK: registry acceptance gate complete."
+
+registry-acceptance-gate: registry-acceptance-gate-readonly
+	@echo "OK: registry-acceptance-gate is a compatibility alias for registry-acceptance-gate-readonly."
 
 registry-wave5: registry-acceptance-gate
 	@echo "DEPRECATED: make registry-wave5 is a legacy alias. Use make registry-acceptance-gate."
@@ -764,7 +880,7 @@ registry-export-markdown: registry-refresh
 	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py \
 		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag $$claims_flag
 
-registry-verify-mirrors: registry-export-markdown
+registry-verify-mirrors:
 	MARKDOWN_EXPORT_OUT_DIR="$(MARKDOWN_EXPORT_OUT_DIR)" \
 	MARKDOWN_EXPORT_EMIT_LEGACY="$(MARKDOWN_EXPORT_EMIT_LEGACY)" \
 	MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC="$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" \
@@ -793,7 +909,8 @@ synthesis-execution-contract:
 		--date-token "$(SYNTHESIS_CONTRACT_DATE)" \
 		--report-path "$(SYNTHESIS_CONTRACT_REPORT)"
 
-docs-publish: registry-verify-mirrors
+docs-publish: registry-export-markdown
+	$(MAKE) registry-verify-mirrors
 	@echo "OK: TOML-driven markdown mirrors generated and verified for publishing."
 
 terminology-gate:
@@ -976,8 +1093,10 @@ clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	rm -rf .pytest_cache .ruff_cache
 	rm -rf src/*.egg-info
+	rm -rf $(REPO_CARGO_TARGET_DIR)
 
 clean-all: clean clean-artifacts
+	@rm -rf $(REPO_CARGO_HOME)
 	@command -v cargo-sweep >/dev/null 2>&1 && cargo sweep --time 14 || true
 	@rm -rf /tmp/open_gororoba_*_target 2>/dev/null || true
 	@echo "Full cleanup complete. Run 'make install && make artifacts' to rebuild."
@@ -989,6 +1108,7 @@ help:
 	@echo ""
 	@echo "  Setup:"
 	@echo "    make install              Create venv and install (editable, dev deps)"
+	@echo "    make bootstrap-dev        Ensure the dev venv/install stamp is current"
 	@echo "    make install-analysis     Add analysis extras (networkx, ripser, sklearn)"
 	@echo "    make install-astro        Add astronomy extras (gwpy, astroquery)"
 	@echo "    make install-particle     Add particle-analysis extras (uproot, awkward, vector)"
@@ -996,12 +1116,14 @@ help:
 	@echo ""
 	@echo "  Quality:"
 	@echo "    make python-smoke         Run smoke-marked pytest coverage"
-	@echo "    make python-regression    Run regression-marked pytest coverage"
+	@echo "    make python-regression    Run regression-marked pytest coverage without optional-extension tests"
+	@echo "    make python-requires-ext  Run opt-in pytest coverage that needs optional vendor/extensions"
 	@echo "    make test                 Alias for python-regression"
-	@echo "    make lint                 Ruff check on src/gemini_physics + tests"
-	@echo "    make smoke                Composite fast smoke lane (python-smoke + rust-smoke)"
-	@echo "    make integrity            Verifier, ASCII, and inventory lane"
-	@echo "    make check                lint + smoke + integrity"
+	@echo "    make lint                 Changed-file Ruff ratchet on src + tests + bin + scripts"
+	@echo "    make smoke                Composite fast smoke lane (check + rust-smoke)"
+	@echo "    make integrity            Python-only integrity lane (artifacts, mirrors, markdown)"
+	@echo "    make integrity-rust       Cargo-backed integrity lane (claims + inventory + typed policy)"
+	@echo "    make check                Fast local check (lint + python-smoke + ascii + terminology + no-reports)"
 	@echo "    make ascii-check          Verify ASCII-only policy"
 	@echo "    make ascii-check-strict   Verify ASCII-only policy + fail on <U+....> placeholders in crates/tests"
 	@echo "    make verify-pantheon-physicsforge-mapping Verify migration matrix/todo mapping completeness"
@@ -1011,6 +1133,11 @@ help:
 	@echo "    make rust-smoke           Dedicated Rust smoke suites via nextest"
 	@echo "    make rust-regression      Full Rust regression lane with heavy-crate routing"
 	@echo "    make rust-regression-scoped Scoped Rust regression lane for affected crates"
+	@echo "    make gate-local           Canonical scoped local push gate"
+	@echo "    make gate-ci-python       Full Python/read-only governance CI gate"
+	@echo "    make gate-ci-python-compat Python compatibility gate for non-authoritative versions"
+	@echo "    make gate-ci-rust         Full Rust CI gate"
+	@echo "    make gate-audit           Keep-going dry-run audit that writes reports/gates/*"
 	@echo "    make heavy                Ignored/GPU/research-heavy nextest lane"
 	@echo "    make test-inventory       Enforce taxonomy coverage and stale-doc checks"
 	@echo "    make mcp-smoke            Re-test configured MCP server parity and startup health"
@@ -1018,13 +1145,15 @@ help:
 	@echo "    make registry             Validate TOML registry consistency"
 	@echo "    make registry-verify-typed-policy-error Strict registry-check typed-policy lane (--typed-policy error)"
 	@echo "    make synthesis-execution-contract Run full synthesis execution contract and emit rollup TOML"
-	@echo "    make registry-control-plane-gate Validate markdown/TOML control-plane + atom extraction gates"
+	@echo "    make governance-gate-readonly Read-only TOML registry governance gate"
+	@echo "    make registry-control-plane-gate-readonly Read-only markdown/TOML control-plane gate"
 	@echo "    make registry-csv-pipeline-gate  Validate project/external/archive CSV scroll pipeline lanes"
-	@echo "    make registry-semantic-atoms-gate      Build+verify claims/equation/proof/payload TOML lanes"
-	@echo "    make registry-evidence-provenance-gate Build+verify derivation/bibliography/provenance/paragraph lanes"
-	@echo "    make registry-integrity-resolution-gate Build+verify contradiction/lacuna/schema/crossref lanes"
-	@echo "    make registry-execution-planning-gate  Build+verify experiment/planning/requirements lanes"
-	@echo "    make registry-acceptance-gate    Run full registry acceptance gate (semantic-atoms + evidence-provenance + integrity-resolution + execution-planning)"
+	@echo "    make registry-semantic-atoms-gate      Legacy build+verify semantic-atoms lane"
+	@echo "    make registry-evidence-provenance-gate Legacy build+verify evidence-provenance lane"
+	@echo "    make registry-integrity-resolution-gate Legacy build+verify integrity-resolution lane"
+	@echo "    make registry-execution-planning-gate  Legacy build+verify execution-planning lane"
+	@echo "    make registry-acceptance-gate-readonly Read-only semantic/evidence/integrity/execution gate"
+	@echo "    make registry-acceptance-gate    Compatibility alias for registry-acceptance-gate-readonly"
 	@echo "    make registry-verify-schema-signatures Verify critical registry schema signatures"
 	@echo "    make registry-verify-crossrefs Verify dangling cross-registry references"
 	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"
@@ -1050,12 +1179,14 @@ help:
 	@echo "    make wave6-gate                  DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 	@echo ""
 	@echo "  Gates (tiered):"
-	@echo "    make governance-gate      5 TOML registry checks (inventory, owner, schema, crossrefs, governance)"
+	@echo "    make governance-gate      Compatibility alias for governance-gate-readonly"
+	@echo "    make registry-control-plane-gate-readonly Read-only control-plane registry gate"
+	@echo "    make registry-acceptance-gate-readonly Read-only semantic/evidence/integrity/execution gate"
 	@echo "    make registry-verify-typed-policy-error Supplemental strict typed-policy contract lane"
 	@echo "    make synthesis-execution-contract governance-gate + registry-acceptance-gate + strict typed-policy + project-counter-sync --check"
 	@echo "    make terminology-gate     enforce banned-term policy from terminology_standards.toml"
-	@echo "    make pre-push-gate        check + rust-regression + governance-gate + terminology-gate"
-	@echo "    make pre-push-gate-strict dep-audit + cargo-deny + mcp-smoke + pre-push-gate + ascii-check-strict"
+	@echo "    make pre-push-gate        Compatibility alias for gate-local"
+	@echo "    make pre-push-gate-strict Compatibility alias for gate-audit"
 	@echo ""
 	@echo "  Artifacts:"
 	@echo "    make artifacts            Regenerate all core artifact sets"

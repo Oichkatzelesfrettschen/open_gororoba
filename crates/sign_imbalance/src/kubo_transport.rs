@@ -1378,6 +1378,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: transport alpha sweep"]
     fn test_kubo_j1j2_alpha_sweep() {
         // Sweep imbalance parameter and check non-monotonic transport
         let n = 8;

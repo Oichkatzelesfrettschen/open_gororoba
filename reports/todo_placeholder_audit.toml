@@ -34,7 +34,7 @@ note = "text_ascii = \"TODO/FIXME Scan (2026-02-07)\""
 key = "./registry/embedded_markdown_chunks.toml:164799"
 value = 4
 token = "FIXME"
-note = "text_ascii = \"`rg -n \\"\\\\b(TODO|FIXME)\\\\b\\" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'`\""
+note = 'text_ascii = "`rg -n "\\b(TODO|FIXME)\\b" -S --glob !venv/** --glob !.mamba/** --glob !data/** --glob !curated/** --glob !archive/**`"'
 [[section.item]]
 key = "./registry/embedded_markdown_payloads.toml:3382"
 value = 4
@@ -59,7 +59,7 @@ note = "# TODO/FIXME Scan (2026-02-07)"
 key = "./registry/knowledge/docs/DOC-0242.toml:40"
 value = 4
 token = "FIXME"
-note = "`rg -n \\"\\\\b(TODO|FIXME)\\\\b\\" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'`"
+note = 'rg -n "\\b(TODO|FIXME)\\b" -S --glob !venv/** --glob !.mamba/** --glob !data/** --glob !curated/** --glob !archive/**'
 [[section.item]]
 key = "./registry/markdown_payload_chunks.toml:98073"
 value = 4
@@ -74,7 +74,7 @@ note = "title = \"TODO/FIXME Scan (2026-02-07)\""
 key = "./registry/reports_narratives.toml:5499"
 value = 4
 token = "FIXME"
-note = "path_refs = [\"rg -n \\"\\\\b(TODO|FIXME)\\\\b\\" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'\", \"docs/CLAIMS_TASKS.md\", \"docs/TODO.md\", \"docs/tickets/TICKET_"
+note = 'path_refs include rg -n "\\b(TODO|FIXME)\\b" plus docs/CLAIMS_TASKS.md, docs/TODO.md, and docs/tickets/TICKET_*'
 [[section.item]]
 key = "./registry/reports_narratives.toml:5520"
 value = 4

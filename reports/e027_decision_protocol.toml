@@ -95,8 +95,9 @@ success_criteria = [
   "If all lambda values fail at 128^3, escalate to 256^3 or pivot to direct viscosity measurement"
 ]
 
-[lessons_learned]
-- "Small-grid prototypes (16^3) insufficient for percolation experiments"
-- "Parameter sweeps (lambda) should be performed BEFORE single-point experiments"
-- "Percolation detection algorithms need validation on synthetic test cases with known channel count"
-- "Effect size estimates (power analysis) should guide grid resolution choice upfront"
+lessons_learned = [
+  "Small-grid prototypes (16^3) insufficient for percolation experiments",
+  "Parameter sweeps (lambda) should be performed BEFORE single-point experiments",
+  "Percolation detection algorithms need validation on synthetic test cases with known channel count",
+  "Effect size estimates (power analysis) should guide grid resolution choice upfront",
+]

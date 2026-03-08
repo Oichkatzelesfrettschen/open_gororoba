@@ -16,27 +16,6 @@ import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
-
-TARGET_PREFIXES = ("docs/", "reports/", "data/artifacts/")
-ROOT_TARGETS = {
-    "AGENTS.md",
-    "CLAUDE.md",
-    "GEMINI.md",
-    "README.md",
-    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md",
-    "PHASE10_11_ULTIMATE_ROADMAP.md",
-    "PYTHON_REFACTORING_ROADMAP.md",
-    "SYNTHESIS_PIPELINE_PROGRESS.md",
-    "crates/sign_imbalance/IMPLEMENTATION_NOTES.md",
-    "curated/README.md",
-    "curated/01_theory_frameworks/README_COQ.md",
-    "data/csv/README.md",
-    "data/artifacts/README.md",
-    "NAVIGATOR.md",
-    "REQUIREMENTS.md",
-    "docs/REQUIREMENTS.md",
-}
-
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 LIST_RE = re.compile(r"^(?:[-*+]\s+|\d+\.\s+)(.+)$")
 
@@ -97,12 +76,30 @@ def _collapse(text: str) -> str:
     return " ".join(_ascii_clean(text).split())
 
 
-def _is_target_path(path: str) -> bool:
+def _load_governance(repo_root: Path) -> tuple[set[str], set[str]]:
+    gov = tomllib.loads(
+        (repo_root / "registry/markdown_governance.toml").read_text(encoding="utf-8")
+    )
+    policy = gov.get("policy", {})
+    prefixes = {
+        str(item).strip()
+        for item in policy.get("embedded_markdown_prefixes", [])
+        if str(item).strip()
+    }
+    roots = {
+        str(item).strip().replace("\\", "/")
+        for item in policy.get("embedded_markdown_root_paths", [])
+        if str(item).strip()
+    }
+    return prefixes, roots
+
+
+def _is_target_path(path: str, prefixes: set[str], roots: set[str]) -> bool:
     if not path.endswith(".md"):
         return False
-    if path in ROOT_TARGETS:
+    if path in roots:
         return True
-    return path.startswith(TARGET_PREFIXES)
+    return any(path.startswith(prefix) for prefix in prefixes)
 
 
 def _pick_path(row: dict) -> str:
@@ -269,6 +266,7 @@ def _collect_candidates(repo_root: Path) -> dict[str, Candidate]:
     files = sorted(p for p in registry_dir.glob("*.toml") if p.is_file())
     best_by_path: dict[str, Candidate] = {}
     duplicate_sources: dict[str, list[str]] = {}
+    target_prefixes, root_targets = _load_governance(repo_root)
 
     for file_path in files:
         raw = tomllib.loads(file_path.read_text(encoding="utf-8"))
@@ -283,7 +281,7 @@ def _collect_candidates(repo_root: Path) -> dict[str, Candidate]:
             if not body.strip():
                 continue
             path = _pick_path(row)
-            if not path or not _is_target_path(path):
+            if not path or not _is_target_path(path, target_prefixes, root_targets):
                 continue
             candidate = Candidate(
                 path=path,

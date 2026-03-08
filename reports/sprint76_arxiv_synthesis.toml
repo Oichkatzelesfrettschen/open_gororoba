@@ -1,0 +1,373 @@
+# Sprint 76 arXiv Research Synthesis
+# Generated: 2026-03-07
+# Scope: 5 domains, 23 papers (8 CLASSIC, 15 LATEST)
+# Purpose: Literature grounding for Sprint 76 research threads
+
+[metadata]
+date = "2026-03-07"
+sprint = 76
+paper_count = 23
+domains = [
+    "cayley_dickson_zero_divisor_topology",
+    "wick_rotation_complex_time_qg",
+    "tensor_core_mixed_precision",
+    "topological_phase_transitions_algebraic",
+    "majorana_braiding_tqc",
+]
+
+# =============================================================================
+# DOMAIN 1: Cayley-Dickson Zero-Divisor Topology
+# =============================================================================
+
+[[papers]]
+id = "2411.18881"
+title = "The geometry of sedenion zero divisors"
+authors = ["Silvio Reggiani"]
+year = 2024
+era = "LATEST"
+domain = "cayley_dickson_zero_divisor_topology"
+relevance = "Proves sedenion zero-divisor pair space is isometric to exceptional Lie group G2 with naturally reductive metric; normalized annihilator elements form Stiefel manifold V2(R^7)."
+methods = "Riemannian submersion theory over the exceptional symmetric space of quaternion subalgebras; constructs new Einstein metrics on zero-divisor manifold."
+assumptions = "Restricts to normalized zero-divisor pairs in the 16-dimensional sedenion algebra from Cayley-Dickson construction."
+limits = "Analysis confined to sedenions (dim 16); does not extend to 32-ions or higher Cayley-Dickson levels."
+project_link = "Directly validates C-908 (sedenion ZD geometry) and informs box-kite topology in algebra_core."
+
+[[papers]]
+id = "2512.13002"
+title = "Singular structures and geometric holonomy in the zero divisor set of the sedenions"
+authors = ["Shoot Koebisu"]
+year = 2025
+era = "LATEST"
+domain = "cayley_dickson_zero_divisor_topology"
+relevance = "Shows left zero-divisor set is diffeomorphic to V2(R^8) (Stiefel manifold of orthonormal 2-frames); computes Levi-Civita connection and parallel transport revealing singular holonomy."
+methods = "Explicit algebraic representation of sedenions as octonion pairs; polynomial criterion for zero-divisors; 3D linear slice modeled as quadratic double cone."
+assumptions = "Left zero-divisors only (not bilateral); normalization required for manifold identification."
+limits = "Holonomy computed along specific loops; full holonomy group classification remains open."
+project_link = "Extends Reggiani result to frame-bundle interpretation; relevant to Sprint 75 braid topology on CD tower."
+
+[[papers]]
+id = "2505.11747"
+title = "Structure of the Cayley-Dickson algebras"
+authors = ["G.P. Wilmot"]
+year = 2025
+era = "LATEST"
+domain = "cayley_dickson_zero_divisor_topology"
+relevance = "Shows zero divisors in Cayley-Dickson algebras occur in multiples of 84, reducible to 7 primary pairs; clarifies Moufang loop identity structure via graded notation."
+methods = "Graded construction defining associativity in 3 classes and non-associative components in 4 types; split sedenion analysis."
+assumptions = "Power-associativity as the mechanism introducing zero divisors."
+limits = "Primarily structural/combinatorial; does not address metric or topological properties of ZD sets."
+project_link = "Confirms 84-fold ZD multiplicity pattern relevant to box-kite counting in algebra_core."
+
+[[papers]]
+id = "math/0207003"
+title = "Flying Higher Than a Box-Kite: Kite-Chain Middens, Sand Mandalas, and Zero-Divisor Patterns in the 2n-ions Beyond the Sedenions"
+authors = ["Robert P. C. de Marrais"]
+year = 2002
+era = "CLASSIC"
+domain = "cayley_dickson_zero_divisor_topology"
+relevance = "Foundational paper on box-kite zero-divisor structures in sedenions (7 octahedral lattices) and kite-chain extensions to higher 2^n-ions; introduces 168-cell sand mandala tables."
+methods = "Combinatorial enumeration of zero-divisor orbits; octahedral lattice classification; recursive pattern identification across Cayley-Dickson levels."
+assumptions = "Cayley-Dickson doubling process; specific sign conventions for imaginary unit multiplication."
+limits = "Pre-dates modern differential-geometric treatment (Reggiani/Koebisu); combinatorial rather than topological analysis."
+project_link = "Origin of box-kite terminology used throughout open_gororoba; directly informs E-107 (box-kite fusion channels)."
+
+[[papers]]
+id = "math/0105155"
+title = "The Octonions"
+authors = ["John C. Baez"]
+year = 2001
+era = "CLASSIC"
+domain = "cayley_dickson_zero_divisor_topology"
+relevance = "Definitive survey connecting octonions to Clifford algebras, spinors, Bott periodicity, projective geometry, Jordan algebras, exceptional Lie groups, quantum logic, and supersymmetry."
+methods = "Expository review synthesizing algebraic, geometric, and physical perspectives on normed division algebras."
+assumptions = "Standard Cayley-Dickson construction; octonions as the largest normed division algebra."
+limits = "Survey paper; does not develop new theorems but provides essential context for all CD algebra work."
+project_link = "Reference foundation for the entire algebra_core crate; Bott periodicity connection relevant to Domain 4."
+
+# =============================================================================
+# DOMAIN 2: Wick Rotation and Complex-Time Quantum Gravity
+# =============================================================================
+
+[[papers]]
+id = "2105.10161"
+title = "Wick rotation and the positivity of energy in quantum field theory"
+authors = ["Maxim Kontsevich", "Graeme Segal"]
+year = 2021
+era = "CLASSIC"
+domain = "wick_rotation_complex_time_qg"
+relevance = "Proposes axiom system for unitary QFTs on curved backgrounds by requiring partition function and correlators to extend analytically to a domain of complex-valued metrics; Riemannian metrics are interior, Lorentzian metrics are boundary."
+methods = "Analytic continuation framework; positivity conditions on complex metric domain; spectral analysis of metric deformations."
+assumptions = "Unitary QFT; smooth curved spacetime background; existence of analytic continuation."
+limits = "Does not include gravity dynamically; the gravitational extension requires additional criteria (see Witten 2111.06514)."
+project_link = "Foundational for E-109 (Wick rotation experiment); defines the allowability criterion our CD-tower Wick rotation must satisfy."
+
+[[papers]]
+id = "2111.06514"
+title = "A Note On Complex Spacetime Metrics"
+authors = ["Edward Witten"]
+year = 2021
+era = "CLASSIC"
+domain = "wick_rotation_complex_time_qg"
+relevance = "Extends Kontsevich-Segal criterion to gravitational path integral; proposes restrictions on allowable complex saddle points to avoid unphysical solutions in Euclidean gravity."
+methods = "Complex saddle-point analysis of gravitational path integral; motivated by Louko-Sorkin topology change."
+assumptions = "Semi-classical regime; saddle-point approximation valid; restriction to geometries without topology change."
+limits = "Speculative criterion; full non-perturbative justification remains open."
+project_link = "Defines KSW criterion that constrains our Wick-rotated CD-algebra path integral construction."
+
+[[papers]]
+id = "2111.07816"
+title = "Allowable complex metrics in minisuperspace quantum cosmology"
+authors = ["Jean-Luc Lehners"]
+year = 2021
+era = "CLASSIC"
+domain = "wick_rotation_complex_time_qg"
+relevance = "Tests KSW criterion in minisuperspace models (de Sitter, no-boundary, AdS); finds saddle points emerge at boundary of allowable domain and Lefschetz thimbles are restricted from non-allowable regions."
+methods = "Minisuperspace path integral with complex lapse; Lefschetz thimble analysis; Picard-Lefschetz theory."
+assumptions = "Minisuperspace truncation; FRW symmetry; single scalar field."
+limits = "Minisuperspace is a drastic truncation; full field-theoretic analysis not performed."
+project_link = "Provides concrete cosmological test cases for our Wick rotation framework; saddle-point boundary behavior analogous to CD associator phase boundary."
+
+[[papers]]
+id = "2602.05979"
+title = "Allowable Complex Black Holes in the Euclidean Gravitational Path Integral"
+authors = ["Vineeth Krishna", "Finn Larsen"]
+year = 2026
+era = "LATEST"
+domain = "wick_rotation_complex_time_qg"
+relevance = "Discovers KSW criterion violation in N=4 SYM superconformal index coincides precisely with breakdown of statistical description; identifies phase transition to grey galaxy configurations."
+methods = "Complex black hole saddle-point analysis; superconformal index computation; micro-canonical ensemble phase structure."
+assumptions = "N=4 SYM; large N limit; unequal angular momenta."
+limits = "Specific to AdS5 black holes; generalization to other dimensions unclear."
+project_link = "Latest KSW criterion application; phase transition at criterion boundary parallels our associator-driven phase transitions."
+
+[[papers]]
+id = "2205.15332"
+title = "Uses of Complex Metrics in Cosmology"
+authors = ["Jean-Luc Lehners"]
+year = 2022
+era = "CLASSIC"
+domain = "wick_rotation_complex_time_qg"
+relevance = "Shows no-boundary solutions are allowable under KSW criterion; demonstrates explicit integration contour over allowable metrics in arbitrary spacetime dimensions with initial momentum condition."
+methods = "Allowability criterion analysis; contour integration in complexified lapse plane; dimensional generalization."
+assumptions = "No-boundary proposal (Hartle-Hawking); FRW minisuperspace."
+limits = "Contour construction requires initial momentum condition; does not handle topology change."
+project_link = "Dimensional generalization relevant to our CD-tower dimensional ladder (2,4,8,16)."
+
+# =============================================================================
+# DOMAIN 3: Tensor Core / Mixed-Precision Scientific Computing
+# =============================================================================
+
+[[papers]]
+id = "2412.19322"
+title = "Mixed-precision numerics in scientific applications: survey and perspectives"
+authors = ["Aditya Kashi", "Hao Lu", "Wesley Brewer", "David Rogers", "Michael Matheson", "Mallikarjun Shankar", "Feiyi Wang"]
+year = 2024
+era = "LATEST"
+domain = "tensor_core_mixed_precision"
+relevance = "Comprehensive survey of mixed-precision strategies across fluid dynamics, climate modeling, quantum chemistry, and genomics; covers iterative refinement, adaptive precision solvers, and HPC software infrastructure."
+methods = "Literature survey; benchmarking across scientific domains; software ecosystem analysis."
+assumptions = "Modern GPU hardware with FP16/BF16/FP8 acceleration."
+limits = "Survey paper; does not introduce new algorithms."
+project_link = "Directly informs our lbm_f16.wgsl and init_f16.wgsl precision strategy; validates iterative-refinement approach for recovering accuracy."
+
+[[papers]]
+id = "2407.09621"
+title = "Acceleration of Tensor-Product Operations with Tensor Cores"
+authors = ["Cu Cui"]
+year = 2024
+era = "LATEST"
+domain = "tensor_core_mixed_precision"
+relevance = "Achieves 2.3x speedup in double precision and 4x in half precision for finite-element tensor-product operations on A100 Tensor Cores using inline PTX instructions with conflict-free shared memory."
+methods = "WMMA and inline PTX programming; conflict-free shared memory access patterns; FGMRES preconditioned by multigrid."
+assumptions = "NVIDIA A100 GPU; tensor-product structure in operators (separable kernels)."
+limits = "Specific to tensor-product operators; non-tensor-product operators do not benefit."
+project_link = "Directly applicable to our Vulkan compute pipeline; PTX patterns inform future CUDA kernel optimization for CD algebra operations."
+
+[[papers]]
+id = "2512.07004"
+title = "Accurate Models of NVIDIA Tensor Cores"
+authors = ["Faizan A. Khattak", "Mantas Mikaitis"]
+year = 2025
+era = "LATEST"
+domain = "tensor_core_mixed_precision"
+relevance = "Develops software emulation models for V100/A100/H100/B200 Tensor Cores capturing rounding behavior, accumulator width, and normalization across FP8/FP16/FP19 formats; addresses reproducibility of non-IEEE-754 hardware."
+methods = "Reverse-engineering of Tensor Core behavior via microbenchmarking; software emulation models; cross-generation comparison."
+assumptions = "Black-box testing approach; NVIDIA hardware specifics."
+limits = "Models may not capture all undocumented hardware behaviors; limited to NVIDIA ecosystem."
+project_link = "Essential for understanding FP16 rounding error budget in our lbm_f16.wgsl simulation; validates our precision-aware buffer sizing in compute.rs."
+
+[[papers]]
+id = "2602.14450"
+title = "Mixed precision solvers with half-precision floating point numbers for Lattice QCD on A64FX processor"
+authors = ["Issaku Kanamori", "Hideo Matsufuru", "Tatsumi Aoyoma", "Kazuyuki Kanaya", "Yusuke Namekawa", "Hidekatsu Nemura", "Keigo Nitadori"]
+year = 2026
+era = "LATEST"
+domain = "tensor_core_mixed_precision"
+relevance = "Demonstrates FP16 is practical for lattice QCD with rescaling in iterative refinement and BiCGStab inner solver; additional iteration count within 20% of FP64 version."
+methods = "Mixed-precision iterative refinement; rescaling in outer and inner solvers; Wilson kernel benchmark on A64FX."
+assumptions = "A64FX SIMD (512-bit SVE); Wilson fermion discretization."
+limits = "Specific to A64FX (not GPU); Wilson kernel only (not staggered or domain-wall fermions)."
+project_link = "Validates FP16 feasibility for physics simulations; rescaling technique applicable to our LBM f16 pipeline."
+
+[[papers]]
+id = "2511.13778"
+title = "Guaranteed DGEMM Accuracy While Using Reduced Precision Tensor Cores Through Extensions of the Ozaki Scheme"
+authors = ["Various (see arXiv)"]
+year = 2025
+era = "LATEST"
+domain = "tensor_core_mixed_precision"
+relevance = "Uses Ozaki-style decomposition to achieve full FP64 accuracy from low-precision Tensor Core matrix multiplies; orders-of-magnitude throughput advantage."
+methods = "Ozaki scheme decomposition; error-free splitting of FP64 values into FP16 components; guaranteed accuracy bounds."
+assumptions = "NVIDIA Tensor Core hardware; matrix multiplication workloads."
+limits = "Decomposition overhead may negate speedup for small matrices; memory bandwidth bound for large problems."
+project_link = "Potential path to FP64-accurate CD algebra matrix operations on Tensor Cores for our 512^3 blocked regime."
+
+# =============================================================================
+# DOMAIN 4: Topological Phase Transitions in Algebraic Systems
+# =============================================================================
+
+[[papers]]
+id = "2601.20828"
+title = "TQFTs do not detect the Milnor sphere"
+authors = ["Ben Gripaios", "Oscar Randal-Williams"]
+year = 2026
+era = "LATEST"
+domain = "topological_phase_transitions_algebraic"
+relevance = "Proves TQFTs cannot detect homotopy spheres bounding parallelisable manifolds (including Milnor exotic 7-sphere); fundamental limitation on topological invariants at the octonion dimension."
+methods = "TQFT axiomatics; mapping class group analysis of framed manifolds; category-theoretic arguments."
+assumptions = "Standard TQFT framework; tangential structures."
+limits = "Negative result (non-detection); does not propose alternative invariants."
+project_link = "The exotic 7-sphere is intimately linked to octonion structure (dim 8, Bott periodicity); this non-detection result constrains what our CD-tower topological observables can distinguish."
+
+[[papers]]
+id = "2312.01259"
+title = "Topological defect formation in a phase transition with tunable order"
+authors = ["Various (see arXiv)"]
+year = 2023
+era = "LATEST"
+domain = "topological_phase_transitions_algebraic"
+relevance = "Extends Kibble-Zurek mechanism to tunable-order phase transitions; combines KZM with nucleation theory for defect density prediction."
+methods = "Kibble-Zurek scaling; nucleation theory; tunable phase transition parameter."
+assumptions = "Second-order or weakly first-order transitions; equilibrium correlation length divergence."
+limits = "Classical KZM framework; quantum corrections not included."
+project_link = "KZM defect density scaling potentially applicable to zero-divisor defect formation at the octonion-sedenion transition (dim 8 to 16)."
+
+[[papers]]
+id = "2410.06250"
+title = "Statistics of topological defects across a phase transition in a digital superconducting quantum processor"
+authors = ["Various (see arXiv)"]
+year = 2024
+era = "LATEST"
+domain = "topological_phase_transitions_algebraic"
+relevance = "Experimental observation of topological defect statistics across quantum phase transitions on superconducting quantum processor; validates KZM predictions in quantum regime."
+methods = "Digital quantum simulation; defect counting; KZM scaling verification."
+assumptions = "Superconducting qubit array; transverse-field Ising model."
+limits = "1D chain; extension to higher-dimensional algebraic systems non-trivial."
+project_link = "Experimental template for measuring defect density in our algebraic phase transition simulations; validates that KZM applies in quantum setting."
+
+# =============================================================================
+# DOMAIN 5: Majorana Braiding and Topological Quantum Computation
+# =============================================================================
+
+[[papers]]
+id = "quant-ph/9707021"
+title = "Fault-tolerant quantum computation by anyons"
+authors = ["A. Yu. Kitaev"]
+year = 1997
+era = "CLASSIC"
+domain = "majorana_braiding_tqc"
+relevance = "Foundational proposal that 2D systems with anyonic excitations can perform fault-tolerant quantum computation via braiding; inherent robustness from topological protection."
+methods = "Topological quantum computation framework; anyon braiding as unitary gates; toric code model."
+assumptions = "2D system at zero temperature; gap above ground state; anyonic quasiparticles."
+limits = "Ising anyons alone are not universal for quantum computation; requires magic state distillation or supplementary gates."
+project_link = "Foundational reference for Sprint 75 Majorana braiding on CD tower; C-1133 (braid parity) and C-1135 (Ising fusion) build on this framework."
+
+[[papers]]
+id = "0707.1889"
+title = "Non-Abelian Anyons and Topological Quantum Computation"
+authors = ["Chetan Nayak", "Steven H. Simon", "Ady Stern", "Michael Freedman", "Sankar Das Sarma"]
+year = 2008
+era = "CLASSIC"
+domain = "majorana_braiding_tqc"
+relevance = "Comprehensive review of non-Abelian statistics, topological quantum Hall states, experimental detection proposals, and topological quantum computer architectures."
+methods = "Review paper covering: Chern-Simons theory, conformal field theory, quantum Hall effect, braid group representations, Fibonacci anyons."
+assumptions = "Fractional quantum Hall setting; non-Abelian statistics of quasiparticles."
+limits = "Pre-dates experimental demonstrations; focused on quantum Hall rather than superconductor-based Majorana platforms."
+project_link = "Primary reference for anyon fusion rules in E-107 and E-106 (braid fidelity); Ising anyon model directly used in our CD-tower braiding."
+
+[[papers]]
+id = "2305.03766"
+title = "Non-Abelian Topological Order and Anyons on a Trapped-Ion Processor"
+authors = ["Mohsin Iqbal", "Nathanan Tantivasadakarn", "Ruben Verresen", "Sara L. Campbell", "Joan M. Dreiling", "Caroline Figgatt", "John P. Gaebler", "Jacob Johansen", "Michael Mills", "Steven A. Moses", "Juan M. Pino", "Anthony Ransford", "Mary Rowe", "Peter Siegfried", "Russell P. Stutz", "Michael Foss-Feig", "Ashvin Vishwanath", "Henrik Dreyer"]
+year = 2023
+era = "LATEST"
+domain = "majorana_braiding_tqc"
+relevance = "First experimental demonstration of non-Abelian topological order: D4 topological order on 27-qubit kagome lattice at 98.4% per-site fidelity; braiding signatures via Borromean ring manipulation."
+methods = "Trapped-ion quantum processor; D4 topological order preparation; anyon tunneling around torus to generate all 22 ground states."
+assumptions = "Trapped-ion hardware; D4 (not Ising) anyon model; kagome lattice geometry."
+limits = "D4 anyons (not Majorana/Ising); small system size; decoherence limits braiding depth."
+project_link = "Experimental validation of non-Abelian braiding; informs fidelity expectations for our simulated Majorana braids in E-106."
+
+[[papers]]
+id = "2409.04515"
+title = "Cavity Control of Topological Qubits: Fusion Rule, Anyon Braiding, and Majorana-Schroedinger Cat States"
+authors = ["Luis Quiroga", "Fernando J. Gomez-Ruiz", "Ivan A. Bocanegra-Garay", "Ferney J. Rodriguez", "Carlos Tejedor"]
+year = 2024
+era = "LATEST"
+domain = "majorana_braiding_tqc"
+relevance = "Shows ultrastrong cavity coupling to Kitaev chain enables non-Abelian fusion rules and braiding operations; generates hybrid Majorana-polariton Schroedinger cat states."
+methods = "Kitaev chain in spatially selective electromagnetic cavity; Rabi-like effective model; parity measurement and photon-induced phase detection."
+assumptions = "Ultrastrong coupling regime; Kitaev chain topological phase; single-mode cavity."
+limits = "Theoretical proposal; experimental realization of required coupling strengths remains challenging."
+project_link = "Novel braiding mechanism via cavity QED; potential alternative to spatial braiding for our CD-tower Majorana modes."
+
+[[papers]]
+id = "2602.11258"
+title = "Quantum computing with anyons is fault tolerant"
+authors = ["Anasuya Lyons", "Benjamin J. Brown"]
+year = 2026
+era = "LATEST"
+domain = "majorana_braiding_tqc"
+relevance = "Proves anyonic braiding computation achieves arbitrarily low failure rates below noise threshold on sufficiently large devices; bridges theoretical TQC and practical noisy hardware."
+methods = "Error-correction framework for anyonic computation; threshold theorem for braiding under circuit noise."
+assumptions = "Circuit-level noise model; sufficiently large device; noise below threshold."
+limits = "Threshold value not computed for specific anyon models; overhead scaling not optimized."
+project_link = "Provides fault-tolerance guarantee that validates our Majorana braiding approach; directly relevant to C-1133 (braid parity conservation under noise)."
+
+# =============================================================================
+# CROSS-DOMAIN CONNECTIONS (inferred, not sourced)
+# =============================================================================
+
+[cross_domain_notes]
+cd_wick_connection = """
+The Kontsevich-Segal allowability criterion (2105.10161) restricts complex metrics to a
+domain where Riemannian metrics are interior and Lorentzian are boundary. The Cayley-Dickson
+tower introduces non-associativity at dim >= 8, which can be interpreted as a phase boundary
+in algebraic structure space. The project hypothesis (NOT sourced from any paper) is that
+the associator norm provides an algebraic analog of the KSW allowability boundary, with
+the octonion-sedenion transition playing the role of the Lorentzian-Euclidean boundary.
+This is an INFERRED connection, not a claim from any cited paper.
+"""
+
+cd_braiding_connection = """
+The sedenion zero-divisor manifold V2(R^8) identified by Koebisu (2512.13002) is a fiber
+bundle over the 7-sphere. Majorana zero modes (Kitaev quant-ph/9707021) live at domain walls
+of topological superconductors. The project explores (Sprint 75) whether the CD-tower
+zero-divisor geometry provides a natural algebraic substrate for encoding non-Abelian
+braiding statistics. This is an INFERRED research direction, not established in literature.
+"""
+
+mixed_precision_cd = """
+Tensor-product acceleration (2407.09621) achieves 4x speedup for separable operators in FP16.
+Cayley-Dickson multiplication has tensor-product structure (doubling formula). The project
+hypothesis is that CD algebra operations on the GPU can exploit Tensor Core WMMA instructions
+by decomposing the doubling formula into FP16 matrix multiplies with iterative refinement
+for accuracy recovery. This is an ENGINEERING inference, not a published result.
+"""
+
+defect_cd_transition = """
+KZM defect density scaling (2312.01259) at tunable phase transitions, combined with the
+zero-divisor count jump (0 at dim 8, multiples of 84 at dim 16 per Wilmot 2505.11747),
+suggests the octonion-sedenion boundary is a topological phase transition with quantized
+defect density. This is a PROJECT HYPOTHESIS under investigation, not a literature claim.
+"""

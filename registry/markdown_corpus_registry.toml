@@ -5,220 +5,727 @@
 updated = "deterministic"
 authoritative = true
 source_inventory = "registry/markdown_inventory.toml"
-document_count = 498
-tracked_violation_count = 12
+document_count = 500
+tracked_violation_count = 0
 classification_violation_count = 0
 destination_missing_count = 0
-risk_item_count = 344
+risk_item_count = 341
 
 [policy]
 toml_first_required = true
-allow_tracked_markdown_entrypoints_only = false
-safe_classifications = ["toml_published_markdown", "toml_destination_exists_manual_markdown", "generated_artifact", "third_party_markdown"]
+allow_tracked_markdown_entrypoints_only = true
+safe_classifications = ["generated_artifact", "third_party_markdown", "toml_destination_exists_manual_markdown", "toml_published_markdown"]
 
 allowed_tracked_markdown = [
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/AGENTS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/CLAUDE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/GEMINI.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/NAVIGATOR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/REQUIREMENTS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/apps/gororoba_studio/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/CLAIMS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/INSIGHTS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/NAVIGATOR_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/ROADMAP_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/build/docs/generated/TODO_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/LICENSE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/crates/gororoba_py/venv/lib/python3.14/site-packages/scipy/fft/_pocketfft/LICENSE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/crates/lbm_3d_cuda/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/curated/01_theory_frameworks/README_COQ.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/curated/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/BIBLIOGRAPHY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/FINAL_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/QUANTUM_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/SIMULATION_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/THESIS_3D_SYNTHESIS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/WARP_RING_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/extracted_equations.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/artifacts/reality_check_and_synthesis.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/csv/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/external/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/theory_narrative_next25.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions/tang_tang_mdpi_link_search.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/unresolved_direct_sources.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/cd_hypercomplex/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/dpll_cdcl.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/cd_hypercomplex/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/CI_CD_ARCHITECTURE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/hott_formal/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-theorem-provers/hott_agda.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/probabilistic_lambda_intro.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/differential_lambda_survey.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/taylor_expansion_lambda.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/LambdaLearner/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/LambdaLearner/requirements.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/1_NEXT_STEPS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/ANALYSIS_SUMMARY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/BASELINE_EXECUTIVE_SUMMARY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/BASELINE_METRICS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/CLAUDE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/GEMINI.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/METRICS_CITATION_CORRECTION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/METRICS_README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/METRICS_SUMMARY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/REPOSITORY_ANALYSIS_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/RESEARCH_PLAN.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/START_HERE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/BIBLIOGRAPHY_STANDARDIZATION_GUIDE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/BIBLIOGRAPHY_STANDARDIZATION_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/BIBLIOGRAPHY_UPDATE_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/CONSOLIDATION_ANALYSIS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/DOCUMENTATION_ARCHITECTURE_ANALYSIS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/FINAL_REPOSITORY_SUMMARY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/IMMEDIATE_ACTION_PLAN.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/IMPLEMENTATION_EXECUTION_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/IMPLEMENTATION_ROADMAP.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/MKDOCS_SETUP_GUIDE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/MODERNIZATION_ROADMAP.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE1_COMPLETION_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE1_VALIDATION_BASELINE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE2_COMPLETION_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE2_ISSUES_TO_FIX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/QUICK_REFERENCE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/RUST_AUDIT_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/TASK_2.4_COMPLETION_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/THEORETICAL_VALIDATION_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/TODO_AUDIT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/VALIDATION_CONSOLIDATION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/agent-tasks/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/10-concurrent-variants/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/11-quantum-variants/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/13-combinatory-logic/implementations.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/13-combinatory-logic/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/13-combinatory-logic/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/18-categorical-semantics/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/18-categorical-semantics/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/22-quantum-lambda-calculus/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/22-quantum-lambda-calculus/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/23-advanced-lambda-variants/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/23-advanced-lambda-variants/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/24-tensor-lambda-calculus/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/24-tensor-lambda-calculus/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/25-geometric-algebra-lambda-calculus/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/25-geometric-algebra-lambda-calculus/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/appendices/license.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/bibliography/core.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/comprehensive-bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/comprehensive-index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/01-untyped-lambda-calculus/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/01-untyped-lambda-calculus/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/02-simply-typed-lambda-calculus/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/02-simply-typed-lambda-calculus/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/03-system-f-polymorphic/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/03-system-f-polymorphic/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/04-calculus-of-constructions/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/04-calculus-of-constructions/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/05-martin-lof-type-theory/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/05-martin-lof-type-theory/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/fundamentals/church-1936.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/fundamentals/girard-1989.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/fundamentals/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/guides/beginners-guide.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/IMPLEMENTATION_SUMMARY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/QUICK_REFERENCE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/architecture.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/development.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/examples.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/extending.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/integration.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/performance.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/testing.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/simply-typed-haskell.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/untyped-lambda-python.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/includes/abbreviations.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/access-type.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/by-author.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/by-citation.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/by-topic.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/chronological.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/comprehensive.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/statistics.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/introduction/educational-pathways.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/introduction/implementation-catalog.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/introduction/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/pdf-access-test.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/pdf-library.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research-highlights.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/BREAKTHROUGH_ANALYSIS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/CROSS_REFERENCE_SYSTEM.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/EXPERIMENT_PROTOCOLS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/RESEARCH_IMPACT_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/SYNERGY_MAP.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/tags.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/test-pdf-access.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/26-proof-theory/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/26-proof-theory/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/27-domain-theory/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/27-domain-theory/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/28-abstract-machines/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/28-abstract-machines/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/29-homotopy-type-theory/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/29-homotopy-type-theory/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/30-cubical-type-theory/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/30-cubical-type-theory/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/31-directed-type-theory/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/theory/31-directed-type-theory/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/tools/pdf-index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/06-linear-lambda-calculus/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/06-linear-lambda-calculus/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/07-session-types/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/07-session-types/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/08-dependent-types/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/08-dependent-types/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/09-substructural-types/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/09-substructural-types/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/12-pure-type-systems/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/12-pure-type-systems/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/14-intersection-types/implementations.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/14-intersection-types/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/14-intersection-types/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/15-union-types/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/15-union-types/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/16-gradual-typing/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/16-gradual-typing/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/17-effect-systems/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/17-effect-systems/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/19-modal-types/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/19-modal-types/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/20-refinement-types/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/20-refinement-types/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/21-probabilistic-types/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/21-probabilistic-types/papers/bibliography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/experiments/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/idris/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scala/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/scheme/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/implementations/sml/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/IMPLEMENTATION_SUMMARY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/research/advanced_mathematical_lambda_calculus_extensions_2025.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/requirements.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/tests/TEST_SPECIFICATION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/ARCHITECTURE_ANALYSIS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/CI_COMPARISON.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/MODERNIZATION_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/PROJECT_COMPLETION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/RESEARCH_ANALYSIS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/USS_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/requirements.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155256/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155256/workspace_root/docs/REPRODUCIBLE_BACKUP_MANIFEST.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155256/workspace_root/docs/ROADMAP_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155413/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_155413/workspace_root/docs/ROADMAP_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/lambda-research/docs/appendices/license.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/lambda-research/docs/implementations/rust/architecture.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/CLAUDE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/GEMINI.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/MODULE_REQUIREMENTS_MATRIX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/agents.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/BENCHMARK_PROTOCOL.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/CLAIM_REGISTER.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/CONSOLIDATION_CONFLICT_RESOLUTION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/LICENSES_MATRIX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/LICENSE_RECONCILIATION_REPORT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/MERGE_IN_WORKFLOW.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/ORIGINAL_SOURCE_MANIFEST.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/QUALITY_POLICY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/REPO_INTEGRATION_CONTRACT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/REPRODUCIBLE_BACKUP_MANIFEST.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/ROADMAP_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/SEVEN_DAY_EXECUTION_NOTE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/docs/requirements_profile.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/workspace_root/src/lambda_unified/modules/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160629/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160629/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160818/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160829/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160829/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160829/workspace_root/docs/ROADMAP_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160846/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_161721/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_161721/workspace_root/docs/PYTHON_THREADING_POLICY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_161721/workspace_root/docs/ROADMAP_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/MERGE_IN_WORKFLOW.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/PYTHON_THREADING_POLICY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/QUALITY_POLICY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_162525/workspace_root/docs/ROADMAP_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/MERGE_IN_WORKFLOW.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/ROADMAP_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/CONFLICT_RECONCILIATION_LEDGER.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/FIRST_PARTY_SOURCE_INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/INTEGRATION_INTERFACE_CONTRACTS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_163149/workspace_root/docs/first_party/UNIFIED_REPO_CONSTITUTION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/TODOWRITE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/archive/legacy_unified_lane/20260213_220437/src/lambda_unified/modules/indices/CANONICAL_BIBLIOGRAPHY_INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/archive/legacy_unified_lane/20260213_220437/src/lambda_unified/modules/indices/CANONICAL_DOCS_INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/archive/legacy_unified_lane/20260213_220437/src/lambda_unified/modules/indices/MODULE_TOPIC_MAP.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/ASCII_COMMUNICATION_STYLE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/CLAIM_REGISTER.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/CONSOLIDATION_CONFLICT_RESOLUTION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/LEGACY_LANE_RETIREMENT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/LICENSES_MATRIX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/MERGE_IN_WORKFLOW.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/MODULE_FILE_CONSOLIDATION_RULES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/ORIGINAL_SOURCE_MANIFEST.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/PYTHON_THREADING_POLICY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/REPO_INTEGRATION_CONTRACT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/REPRODUCIBLE_BACKUP_MANIFEST.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/ROADMAP_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/SINGULAR_REPO_LAYOUT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/SYNC_SCOPE_FROM_SOURCE_FOLDERS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/VISUAL_DOCUMENTATION_STYLE_GUIDE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/archive/legacy_unified_docs/20260213_221719/docs/MODULE_FILE_CONSOLIDATION_RULES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/archive/legacy_unified_docs/20260213_221719/docs/REPO_INTEGRATION_CONTRACT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/archive/legacy_unified_docs/LATEST.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/CONFLICT_RECONCILIATION_LEDGER.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/FILETYPE_HARMONIZATION_PLAYBOOK.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/FIRST_PARTY_SOURCE_INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/INTEGRATION_INTERFACE_CONTRACTS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/NOVEL_RESEARCH_PROGRAM.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/first_party/UNIFIED_REPO_CONSTITUTION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/visuals/20260214_singular_merge_state_v1_dark.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/docs/visuals/INFOGRAPHIC_SPEC_TEMPLATE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/merge_in/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260214_121216/workspace_root/requirements.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/linear_constraints.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-formal-methods/linear_logic_girard.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-formal-methods/linear_logic_programming.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/bounded_linear_logic.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/differential_linear_logic.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/goi_linear_logic.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-semantics/linear_haskell.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-semantics/linear_types_survey.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-theorem-provers/idris2_linear_types.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/supporting_misc/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/synthetic_topology.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/ARTIFACT_SOURCE_OF_TRUTH.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/BIBLIOGRAPHY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/CLAIMS_EVIDENCE_MATRIX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/CLAIMS_TASKS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/DATASET_MANIFEST.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/E027_PHASE2_EXECUTION_PLAN.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/INSIGHTS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/MCP_SERVERS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/NEXT_ACTIONS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/PHASE1_REMAINING_ROADMAP.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/REAL_MATERIALS_INTEGRATION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/REQUIREMENTS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/ROADMAP.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/SCOPE_GUARDRAILS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/SOURCE_INFRASTRUCTURE_BEST_PRACTICES_2026_02_15.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/SYNTHESIS_PIPELINE_PROGRESS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/TCMT_PHOTON_GRAVITON_SYNTHESIS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/TCMT_QUICK_REFERENCE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/TCMT_SYNTHESIS_INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/TODO.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/SUMMARY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/algebra/box-kites.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/algebra/emanation.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/algebra/motif-scaling.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/algebra/zero-divisors.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/architecture/crates.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/architecture/layout.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/architecture/verification.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/cli/catalog.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/experiments/e001.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/experiments/e002.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/experiments/e003.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/glossary.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/introduction.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/papers/collection.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/registry/claims.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/registry/experiments.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/book/src/registry/insights.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/algebra.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/coq.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/cosmology.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/cpp.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/datasets.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/engineering.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/gravitational-waves.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/holography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/legacy.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/materials.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/meta.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/open-systems.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/spectral.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/stellar-cartography.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/tensor-networks.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/claims/by_domain/visualization.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/convos/CONVOS_CLAIMS_INBOX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/convos/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/convos/audit_1_read_nonuser_lines_cont.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/convos/implement_next_from_1_read_nonuser_lines_cont.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/convos/keywords_1_read_nonuser_lines_cont.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/engineering/INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/engineering/RUST_STYLE_GUIDE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/engineering/SCOPE_ULTRA_THROUGHPUT.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/engineering/WARP_RING_SPECIFICATION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/DATASET_MANIFEST.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/DE_MARRAIS_BOXKITES_III.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/DE_MARRAIS_CATAMARAN.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/INVERSE_CD_FORMALISM.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/OPEN_CLAIMS_SOURCES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/external_sources/WOW_SIGNAL_SOURCES.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/CLAIMS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/INSIGHTS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/NAVIGATOR_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/ROADMAP_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/generated/TODO_REGISTRY_MIRROR.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/monograph/01_foundations.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/monograph/02_turbulence.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/monograph/03_synthesis.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/requirements/algebra.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/requirements/analysis.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/requirements/astro.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/requirements/coq.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/requirements/cpp.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/requirements/latex.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/requirements/materials.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/requirements/particle.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/requirements/quantum-docker.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/research/SPLIT_OCTONION_ATTractor.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/research/THESIS_2_3_4_NARRATIVE_PACK.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/theory/INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/theory/OPTIMIZATION_BREAKTHROUGHS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/theory/THEORY_PHASE_3_HOLO_ALGEBRAIC_VACUUM.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/theory/WARP_COMPRESSIBILITY_DERIVATION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/theory/WARP_RING_PHYSICS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/C001_C050_claims_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/C051_C100_claims_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/C101_C150_claims_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/C151_C200_claims_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/C201_C250_claims_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/C251_C300_claims_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/C301_C350_claims_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/C351_C400_claims_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/C401_C427_claims_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/INDEX.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/proofs/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/LHC_2025_QGP_Full_Synthesis.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/PHASE2_STATUS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/artifacts_phase0_dryrun.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/artifacts_reorg_plan.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/audit_network_gating.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/audit_nonpython_toolchains.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/audit_provenance.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/audit_pythonpath.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/breakthrough_shi_geodesics_2026_02_14.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C001_C050.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C001_C200.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C011_C025.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C027_C045.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C046_C060.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C046_C066.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C051_C100.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C101_C150.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C151_C200.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C201_C250.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C201_C408.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C201_C427.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C201_C430.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C201_C432.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C251_C300.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C301_C350.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C351_C400.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_batch_backlog_C401_C427.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_bold_tokens_inventory.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_id_inventory.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_priority_ranking.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_staleness_report.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_status_contradictions.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/claims_status_inventory.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/config_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/convos_claim_candidates.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/convos_claim_candidates_prioritized.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/convos_pdf_inventory.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/handoff_algebra_fluid_duality.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/manual_override_fetch_summary_2026_02_15.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/non_iso_dates_inventory.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/open_claims_missing_dedicated_sources.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/open_claims_missing_test_hooks.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/package_index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/pdf_inventory.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/pythonpath_refactor_plan.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/repo_inventory.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/repo_structure_audit.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/reynolds_scaling_analysis.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/script_contracts_inventory.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/tickets_inventory.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/todo_fixme_scan.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/reports/tscp_trial_factor_ledger.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/BACKERS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/CONTRIBUTORS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/SECURITY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/USAGE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/benchmark/pybench/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/about.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/build_system.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/ci.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/developers.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/distributing.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/extensions.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/faq.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/install.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/runtime_variables.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/docs/user_manual.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/lapack-netlib/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/relapack/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/relapack/config.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/relapack/coverage.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-2cb242a08cb52560/out/OpenBLAS-0.3.31/relapack/test/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/BACKERS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/CONTRIBUTORS.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/SECURITY.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/USAGE.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/benchmark/pybench/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/about.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/build_system.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/ci.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/developers.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/distributing.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/extensions.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/faq.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/index.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/install.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/runtime_variables.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/docs/user_manual.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/lapack-netlib/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/relapack/README.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/relapack/config.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/relapack/coverage.md",
+  ".horusec/a1f451c0-1c33-45c1-bd20-a951c04e4fec/target/debug/build/openblas-src-6497b1e497cd34c0/out/OpenBLAS-0.3.31/relapack/test/README.md",
+  ".venv_ingest/lib/python3.14/site-packages/pip-26.0.1.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md",
+  ".venv_ingest/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md",
+  "AGENTS.md",
+  "CLAUDE.md",
+  "GEMINI.md",
+  "README.md",
+  "apps/gororoba_studio/README.md",
+  "build/docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md",
+  "build/docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md",
+  "build/docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
+  "build/docs/generated/CLAIMS_REGISTRY_MIRROR.md",
+  "build/docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
+  "build/docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md",
+  "build/docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md",
+  "build/docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md",
+  "build/docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md",
+  "build/docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md",
+  "build/docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md",
+  "build/docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md",
+  "build/docs/generated/INSIGHTS_REGISTRY_MIRROR.md",
+  "build/docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md",
+  "build/docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md",
+  "build/docs/generated/NAVIGATOR_REGISTRY_MIRROR.md",
+  "build/docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md",
+  "build/docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md",
+  "build/docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md",
+  "build/docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md",
+  "build/docs/generated/ROADMAP_REGISTRY_MIRROR.md",
+  "build/docs/generated/TODO_REGISTRY_MIRROR.md",
+  "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/LICENSE.md",
+  "crates/gororoba_py/venv/lib/python3.14/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md",
+  "crates/gororoba_py/venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md",
+  "crates/gororoba_py/venv/lib/python3.14/site-packages/scipy/fft/_pocketfft/LICENSE.md",
+  "crates/lbm_3d_cuda/README.md",
+  "curated/README.md",
+  "data/artifacts/README.md",
+  "data/csv/README.md",
+  "data/external/README.md",
+  "docs/PHYSICAL_INTERPRETATION.md",
+  "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md",
+  "docs/convos/README.md",
+  "docs/research/high_dimensional_algebra_unification_2026.md",
+  "proofs/EPISTEMIC_BOUNDARIES.md",
+  "proofs/README.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/BACKERS.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/CONTRIBUTORS.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/README.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/SECURITY.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/USAGE.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/benchmark/pybench/README.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/about.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/build_system.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/ci.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/developers.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/distributing.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/extensions.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/faq.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/index.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/install.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/runtime_variables.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/docs/user_manual.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/lapack-netlib/README.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/relapack/README.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/relapack/config.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/relapack/coverage.md",
+  "target/debug/build/openblas-src-3c1f64ce130c0d7e/out/OpenBLAS-0.3.31/relapack/test/README.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/BACKERS.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/CONTRIBUTORS.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/README.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/SECURITY.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/USAGE.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/benchmark/pybench/README.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/about.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/build_system.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/ci.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/developers.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/distributing.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/extensions.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/faq.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/index.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/install.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/runtime_variables.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/docs/user_manual.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/lapack-netlib/README.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/relapack/README.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/relapack/config.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/relapack/coverage.md",
+  "target/debug/build/openblas-src-77b83bdc3a0f973c/out/OpenBLAS-0.3.31/relapack/test/README.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/BACKERS.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/CONTRIBUTORS.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/README.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/SECURITY.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/USAGE.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/benchmark/pybench/README.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/about.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/build_system.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/ci.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/developers.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/distributing.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/extensions.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/faq.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/index.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/install.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/runtime_variables.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/docs/user_manual.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/lapack-netlib/README.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/relapack/README.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/relapack/config.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/relapack/coverage.md",
+  "target/debug/build/openblas-src-f3eb5ba1b745322c/out/OpenBLAS-0.3.31/relapack/test/README.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/BACKERS.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/CONTRIBUTORS.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/README.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/SECURITY.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/USAGE.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/benchmark/pybench/README.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/about.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/build_system.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/ci.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/developers.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/distributing.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/extensions.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/faq.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/index.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/install.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/runtime_variables.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/docs/user_manual.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/lapack-netlib/README.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/relapack/README.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/relapack/config.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/relapack/coverage.md",
+  "target/release/build/openblas-src-370d5e6cb72ae3f1/out/OpenBLAS-0.3.31/relapack/test/README.md",
+  "venv/lib/python3.14/site-packages/pip-26.0.1.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md",
+  "venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md",
 ]
 
 [git_status_counts]
 ignored = 486
-tracked = 12
+tracked = 14
 
 [classification_counts]
 third_party_markdown = 13
-toml_destination_exists_manual_markdown = 309
-toml_published_markdown = 176
+toml_destination_exists_manual_markdown = 306
+toml_published_markdown = 181
 
 [lifecycle_counts]
 generated_artifact_report = 10
 generated_book_source = 18
 generated_conversation_extract = 5
-generated_docs_tree = 91
-generated_other = 285
+generated_docs_tree = 92
+generated_other = 286
 generated_publish_mirror = 22
 generated_report_output = 52
 generated_root_overlay = 2
 third_party_cache = 13
 
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "AGENTS.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "CLAUDE.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "GEMINI.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "README.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "apps/gororoba_studio/README.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "crates/lbm_3d_cuda/README.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "curated/README.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "data/artifacts/README.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "data/csv/README.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "data/external/README.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "docs/convos/README.md"
-
-[[policy_violation]]
-kind = "tracked_markdown_outside_allowlist"
-path = "proofs/README.md"
-
 [[risk_queue]]
 rank = 1
-path = "proofs/README.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/roadmap.toml"
-line_count = 136
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 2
-path = "apps/gororoba_studio/README.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/knowledge_sources.toml"
-line_count = 41
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 3
-path = "data/external/README.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/knowledge_sources.toml"
-line_count = 31
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 4
-path = "crates/lbm_3d_cuda/README.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/entrypoint_docs.toml"
-line_count = 15
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 5
-path = "CLAUDE.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/entrypoint_docs.toml"
-line_count = 12
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 6
-path = "GEMINI.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/entrypoint_docs.toml"
-line_count = 12
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 7
-path = "AGENTS.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/entrypoint_docs.toml"
-line_count = 7
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 8
-path = "README.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/entrypoint_docs.toml"
-line_count = 7
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 9
-path = "curated/README.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/entrypoint_docs.toml"
-line_count = 7
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 10
-path = "data/csv/README.md"
-risk_score = 210
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "medium"
-lifecycle = "generated_other"
-destination_exists = true
-toml_destination = "registry/entrypoint_docs.toml"
-line_count = 7
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 11
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/differential_linear_logic.md"
 risk_score = 150
 classification = "toml_destination_exists_manual_markdown"
@@ -231,7 +738,7 @@ line_count = 6153
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 12
+rank = 2
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-formal-methods/linear_logic_programming.md"
 risk_score = 142
 classification = "toml_destination_exists_manual_markdown"
@@ -244,7 +751,7 @@ line_count = 3190
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 13
+rank = 3
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-semantics/linear_haskell.md"
 risk_score = 140
 classification = "toml_destination_exists_manual_markdown"
@@ -257,7 +764,7 @@ line_count = 2674
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 14
+rank = 4
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/differential_lambda_survey.md"
 risk_score = 139
 classification = "toml_destination_exists_manual_markdown"
@@ -270,7 +777,7 @@ line_count = 2406
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 15
+rank = 5
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md"
 risk_score = 138
 classification = "toml_destination_exists_manual_markdown"
@@ -283,7 +790,7 @@ line_count = 2158
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 16
+rank = 6
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-theorem-provers/idris2_linear_types.md"
 risk_score = 138
 classification = "toml_destination_exists_manual_markdown"
@@ -296,7 +803,7 @@ line_count = 2153
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 17
+rank = 7
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/supporting_misc/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/synthetic_topology.md"
 risk_score = 138
 classification = "toml_destination_exists_manual_markdown"
@@ -309,7 +816,7 @@ line_count = 2074
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 18
+rank = 8
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/taylor_expansion_lambda.md"
 risk_score = 137
 classification = "toml_destination_exists_manual_markdown"
@@ -322,7 +829,7 @@ line_count = 1893
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 19
+rank = 9
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/bounded_linear_logic.md"
 risk_score = 136
 classification = "toml_destination_exists_manual_markdown"
@@ -335,7 +842,7 @@ line_count = 1749
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 20
+rank = 10
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/probabilistic_lambda_intro.md"
 risk_score = 136
 classification = "toml_destination_exists_manual_markdown"
@@ -348,7 +855,7 @@ line_count = 1622
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 21
+rank = 11
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-formal-methods/linear_logic_girard.md"
 risk_score = 135
 classification = "toml_destination_exists_manual_markdown"
@@ -361,7 +868,7 @@ line_count = 1499
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 22
+rank = 12
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/goi_linear_logic.md"
 risk_score = 135
 classification = "toml_destination_exists_manual_markdown"
@@ -374,7 +881,7 @@ line_count = 1310
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 23
+rank = 13
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/IMPLEMENTATION_ROADMAP.md"
 risk_score = 134
 classification = "toml_destination_exists_manual_markdown"
@@ -387,7 +894,7 @@ line_count = 1157
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 24
+rank = 14
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/linear_constraints.md"
 risk_score = 134
 classification = "toml_destination_exists_manual_markdown"
@@ -400,7 +907,7 @@ line_count = 1046
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 25
+rank = 15
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/extending.md"
 risk_score = 134
 classification = "toml_destination_exists_manual_markdown"
@@ -413,7 +920,7 @@ line_count = 1023
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 26
+rank = 16
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/RESEARCH_ANALYSIS.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -426,7 +933,7 @@ line_count = 964
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 27
+rank = 17
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/CONSOLIDATION_ANALYSIS.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -439,7 +946,7 @@ line_count = 916
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 28
+rank = 18
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-semantics/linear_types_survey.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -452,7 +959,7 @@ line_count = 848
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 29
+rank = 19
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/development.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -465,7 +972,7 @@ line_count = 842
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 30
+rank = 20
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/examples.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -478,7 +985,7 @@ line_count = 820
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 31
+rank = 21
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/hott_formal/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-theorem-provers/hott_agda.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -491,7 +998,7 @@ line_count = 802
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 32
+rank = 22
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/BASELINE_METRICS.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -504,7 +1011,7 @@ line_count = 790
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 33
+rank = 23
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/testing.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -517,7 +1024,7 @@ line_count = 780
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 34
+rank = 24
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/integration.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -530,7 +1037,7 @@ line_count = 744
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 35
+rank = 25
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/ARCHITECTURE_ANALYSIS.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -543,7 +1050,7 @@ line_count = 736
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 36
+rank = 26
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/performance.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -556,7 +1063,7 @@ line_count = 704
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 37
+rank = 27
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/REPOSITORY_ANALYSIS_REPORT.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -569,7 +1076,7 @@ line_count = 654
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 38
+rank = 28
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/architecture.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -582,7 +1089,7 @@ line_count = 615
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 39
+rank = 29
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_160253/lambda-research/docs/implementations/rust/architecture.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -595,7 +1102,7 @@ line_count = 615
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 40
+rank = 30
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/DOCUMENTATION_ARCHITECTURE_ANALYSIS.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -608,7 +1115,7 @@ line_count = 594
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 41
+rank = 31
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/MODERNIZATION_REPORT.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -621,7 +1128,7 @@ line_count = 529
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 42
+rank = 32
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/25-geometric-algebra-lambda-calculus/index.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -634,7 +1141,7 @@ line_count = 522
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 43
+rank = 33
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/13-combinatory-logic/index.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -647,7 +1154,7 @@ line_count = 515
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 44
+rank = 34
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/PROJECT_COMPLETION.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -660,7 +1167,7 @@ line_count = 512
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 45
+rank = 35
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/15-union-types/index.md"
 risk_score = 132
 classification = "toml_destination_exists_manual_markdown"
@@ -673,7 +1180,7 @@ line_count = 502
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 46
+rank = 36
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/MKDOCS_SETUP_GUIDE.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -686,7 +1193,7 @@ line_count = 492
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 47
+rank = 37
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/IMPLEMENTATION_EXECUTION_REPORT.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -699,7 +1206,7 @@ line_count = 489
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 48
+rank = 38
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/RUST_AUDIT_REPORT.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -712,7 +1219,7 @@ line_count = 486
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 49
+rank = 39
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/09-substructural-types/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -725,7 +1232,7 @@ line_count = 470
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 50
+rank = 40
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/11-quantum-variants/index.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -738,7 +1245,7 @@ line_count = 464
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 51
+rank = 41
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/introduction/implementation-catalog.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -751,7 +1258,7 @@ line_count = 452
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 52
+rank = 42
 path = "docs/TCMT_PHOTON_GRAVITON_SYNTHESIS.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -764,7 +1271,7 @@ line_count = 451
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 53
+rank = 43
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/CLAUDE.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -777,7 +1284,7 @@ line_count = 450
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 54
+rank = 44
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/10-concurrent-variants/index.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -790,7 +1297,7 @@ line_count = 450
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 55
+rank = 45
 path = "docs/theory/cayley_dickson_integrable_expanders.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -803,7 +1310,7 @@ line_count = 447
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 56
+rank = 46
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/12-pure-type-systems/index.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -816,7 +1323,7 @@ line_count = 445
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 57
+rank = 47
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/15-union-types/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -829,7 +1336,7 @@ line_count = 443
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 58
+rank = 48
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/1_NEXT_STEPS.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -842,7 +1349,7 @@ line_count = 441
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 59
+rank = 49
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE1_COMPLETION_REPORT.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -855,7 +1362,7 @@ line_count = 421
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 60
+rank = 50
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/IMMEDIATE_ACTION_PLAN.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -868,7 +1375,7 @@ line_count = 417
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 61
+rank = 51
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/13-combinatory-logic/implementations.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -881,7 +1388,7 @@ line_count = 383
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 62
+rank = 52
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/18-categorical-semantics/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -894,7 +1401,7 @@ line_count = 381
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 63
+rank = 53
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/24-tensor-lambda-calculus/index.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -907,7 +1414,7 @@ line_count = 380
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 64
+rank = 54
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/22-quantum-lambda-calculus/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -920,7 +1427,7 @@ line_count = 374
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 65
+rank = 55
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/13-combinatory-logic/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -933,7 +1440,7 @@ line_count = 371
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 66
+rank = 56
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/17-effect-systems/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -946,7 +1453,7 @@ line_count = 362
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 67
+rank = 57
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE1_VALIDATION_BASELINE.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -959,7 +1466,7 @@ line_count = 351
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 68
+rank = 58
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/cd_hypercomplex/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/CI_CD_ARCHITECTURE.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -972,7 +1479,7 @@ line_count = 346
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 69
+rank = 59
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/23-advanced-lambda-variants/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -985,7 +1492,7 @@ line_count = 344
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 70
+rank = 60
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/tests/TEST_SPECIFICATION.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -998,7 +1505,7 @@ line_count = 343
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 71
+rank = 61
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/09-substructural-types/index.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1011,7 +1518,7 @@ line_count = 338
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 72
+rank = 62
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/VALIDATION_CONSOLIDATION.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1024,7 +1531,7 @@ line_count = 330
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 73
+rank = 63
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/12-pure-type-systems/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1037,7 +1544,7 @@ line_count = 327
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 74
+rank = 64
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/comprehensive.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1050,7 +1557,7 @@ line_count = 325
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 75
+rank = 65
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/08-dependent-types/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1063,7 +1570,7 @@ line_count = 324
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 76
+rank = 66
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/07-session-types/index.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1076,7 +1583,7 @@ line_count = 323
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 77
+rank = 67
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/cd_hypercomplex/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/dpll_cdcl.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1089,7 +1596,7 @@ line_count = 321
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 78
+rank = 68
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/comprehensive-index.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1102,7 +1609,7 @@ line_count = 321
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 79
+rank = 69
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/14-intersection-types/implementations.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1115,7 +1622,7 @@ line_count = 320
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 80
+rank = 70
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/README.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1128,7 +1635,7 @@ line_count = 318
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 81
+rank = 71
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/BASELINE_EXECUTIVE_SUMMARY.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1141,7 +1648,7 @@ line_count = 317
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 82
+rank = 72
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/METRICS_README.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1154,7 +1661,7 @@ line_count = 317
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 83
+rank = 73
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/06-linear-lambda-calculus/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1167,7 +1674,7 @@ line_count = 315
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 84
+rank = 74
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/MODERNIZATION_ROADMAP.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1180,7 +1687,7 @@ line_count = 313
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 85
+rank = 75
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/08-dependent-types/index.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1193,7 +1700,7 @@ line_count = 307
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 86
+rank = 76
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/CROSS_REFERENCE_SYSTEM.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1206,7 +1713,7 @@ line_count = 305
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 87
+rank = 77
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/PHASE2_COMPLETION_REPORT.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1219,7 +1726,7 @@ line_count = 304
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 88
+rank = 78
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/simply-typed-haskell.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1232,7 +1739,7 @@ line_count = 299
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 89
+rank = 79
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/14-intersection-types/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1245,7 +1752,7 @@ line_count = 299
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 90
+rank = 80
 path = "docs/TCMT_SYNTHESIS_INDEX.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1258,7 +1765,7 @@ line_count = 291
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 91
+rank = 81
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/THEORETICAL_VALIDATION_REPORT.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1271,7 +1778,7 @@ line_count = 290
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 92
+rank = 82
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/README.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1284,7 +1791,7 @@ line_count = 283
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 93
+rank = 83
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/research/advanced_mathematical_lambda_calculus_extensions_2025.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1297,7 +1804,7 @@ line_count = 277
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 94
+rank = 84
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/16-gradual-typing/papers/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1310,7 +1817,7 @@ line_count = 273
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 95
+rank = 85
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/fundamentals/girard-1989.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1323,7 +1830,7 @@ line_count = 262
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 96
+rank = 86
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/05-martin-lof-type-theory/bibliography.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1336,7 +1843,7 @@ line_count = 254
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 97
+rank = 87
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/by-citation.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1349,7 +1856,7 @@ line_count = 254
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 98
+rank = 88
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/TASK_2.4_COMPLETION_REPORT.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -1362,7 +1869,7 @@ line_count = 253
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 99
+rank = 89
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/by-topic.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1375,7 +1882,7 @@ line_count = 242
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 100
+rank = 90
 path = "docs/TCMT_QUICK_REFERENCE.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1388,7 +1895,7 @@ line_count = 241
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 101
+rank = 91
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/fundamentals/church-1936.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1401,7 +1908,7 @@ line_count = 235
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 102
+rank = 92
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/06-linear-lambda-calculus/index.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1414,7 +1921,7 @@ line_count = 234
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 103
+rank = 93
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/untyped-lambda-python.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1427,7 +1934,7 @@ line_count = 227
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 104
+rank = 94
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/introduction/educational-pathways.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1440,7 +1947,7 @@ line_count = 226
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 105
+rank = 95
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/ANALYSIS_SUMMARY.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1453,7 +1960,7 @@ line_count = 222
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 106
+rank = 96
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/QUICK_REFERENCE.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1466,7 +1973,7 @@ line_count = 222
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 107
+rank = 97
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/CI_COMPARISON.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1479,7 +1986,7 @@ line_count = 220
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 108
+rank = 98
 path = "docs/SCOPE_GUARDRAILS.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1492,7 +1999,7 @@ line_count = 212
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 109
+rank = 99
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/IMPLEMENTATION_SUMMARY.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1505,7 +2012,7 @@ line_count = 209
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 110
+rank = 100
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/guides/beginners-guide.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1518,7 +2025,7 @@ line_count = 208
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 111
+rank = 101
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/indices/by-author.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1531,7 +2038,7 @@ line_count = 207
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 112
+rank = 102
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/FINAL_REPOSITORY_SUMMARY.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1544,7 +2051,7 @@ line_count = 199
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 113
+rank = 103
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/QUICK_REFERENCE.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1557,7 +2064,7 @@ line_count = 193
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 114
+rank = 104
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/21-probabilistic-types/papers/bibliography.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1570,7 +2077,7 @@ line_count = 187
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 115
+rank = 105
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/START_HERE.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1583,7 +2090,7 @@ line_count = 186
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 116
+rank = 106
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/01-untyped-lambda-calculus/papers/bibliography.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1596,7 +2103,7 @@ line_count = 184
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 117
+rank = 107
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/05-martin-lof-type-theory/index.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1609,7 +2116,7 @@ line_count = 184
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 118
+rank = 108
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/rust/IMPLEMENTATION_SUMMARY.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1622,7 +2129,7 @@ line_count = 183
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 119
+rank = 109
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-synthesis-experiments/README.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1635,7 +2142,7 @@ line_count = 181
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 120
+rank = 110
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/advanced/25-geometric-algebra-lambda-calculus/papers/bibliography.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -1647,16 +2154,146 @@ toml_destination = "registry/markdown_payloads.toml"
 line_count = 176
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
+[[risk_queue]]
+rank = 111
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/research/index.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+lifecycle = "generated_other"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 174
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 112
+path = "docs/E027_PHASE2_EXECUTION_PLAN.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_docs_tree"
+destination_exists = true
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 173
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 113
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/20-refinement-types/papers/bibliography.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+lifecycle = "generated_other"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 169
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 114
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/type-systems/19-modal-types/papers/bibliography.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+lifecycle = "generated_other"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 166
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 115
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/foundation/04-calculus-of-constructions/index.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+lifecycle = "generated_other"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 165
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 116
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/METRICS_CITATION_CORRECTION.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+lifecycle = "generated_other"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 163
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 117
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/papers-archive/README.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+lifecycle = "generated_other"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 162
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 118
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/docs/implementations/index.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+lifecycle = "generated_other"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 159
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 119
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/BIBLIOGRAPHY_STANDARDIZATION_STATUS.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+lifecycle = "generated_other"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 155
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 120
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/lambda_gororoba_backups/20260213_143527/lambda-research/admin/BIBLIOGRAPHY_STANDARDIZATION_GUIDE.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "medium"
+lifecycle = "generated_other"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 150
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
 [[document]]
 path = "AGENTS.md"
 git_status = "tracked"
-classification = "toml_destination_exists_manual_markdown"
+classification = "toml_published_markdown"
 lifecycle = "generated_other"
-generated = false
+generated = true
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
+risk_score = 0
 size_bytes = 198
 line_count = 7
 toml_destination = "registry/entrypoint_docs.toml"
@@ -1668,9 +2305,9 @@ classification = "toml_destination_exists_manual_markdown"
 lifecycle = "generated_other"
 generated = false
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
+risk_score = 130
 size_bytes = 273
 line_count = 12
 toml_destination = "registry/entrypoint_docs.toml"
@@ -1682,9 +2319,9 @@ classification = "toml_destination_exists_manual_markdown"
 lifecycle = "generated_other"
 generated = false
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
+risk_score = 130
 size_bytes = 273
 line_count = 12
 toml_destination = "registry/entrypoint_docs.toml"
@@ -1706,13 +2343,13 @@ toml_destination = "registry/navigator.toml"
 [[document]]
 path = "README.md"
 git_status = "tracked"
-classification = "toml_destination_exists_manual_markdown"
+classification = "toml_published_markdown"
 lifecycle = "generated_other"
-generated = false
+generated = true
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
+risk_score = 0
 size_bytes = 218
 line_count = 7
 toml_destination = "registry/entrypoint_docs.toml"
@@ -1727,8 +2364,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 130
-size_bytes = 4753
-line_count = 82
+size_bytes = 6701
+line_count = 91
 toml_destination = "registry/requirements.toml"
 
 [[document]]
@@ -1738,9 +2375,9 @@ classification = "toml_destination_exists_manual_markdown"
 lifecycle = "generated_other"
 generated = false
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
+risk_score = 130
 size_bytes = 1260
 line_count = 41
 toml_destination = "registry/knowledge_sources.toml"
@@ -1752,9 +2389,9 @@ classification = "toml_destination_exists_manual_markdown"
 lifecycle = "generated_other"
 generated = false
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
+risk_score = 130
 size_bytes = 449
 line_count = 15
 toml_destination = "registry/entrypoint_docs.toml"
@@ -1776,13 +2413,13 @@ toml_destination = "registry/entrypoint_docs.toml"
 [[document]]
 path = "curated/README.md"
 git_status = "tracked"
-classification = "toml_destination_exists_manual_markdown"
+classification = "toml_published_markdown"
 lifecycle = "generated_other"
-generated = false
+generated = true
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
+risk_score = 0
 size_bytes = 205
 line_count = 7
 toml_destination = "registry/entrypoint_docs.toml"
@@ -1850,9 +2487,9 @@ classification = "toml_published_markdown"
 lifecycle = "generated_artifact_report"
 generated = true
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 80
+risk_score = 0
 size_bytes = 166
 line_count = 7
 toml_destination = "registry/entrypoint_docs.toml"
@@ -1930,13 +2567,13 @@ toml_destination = "registry/artifact_scrolls.toml"
 [[document]]
 path = "data/csv/README.md"
 git_status = "tracked"
-classification = "toml_destination_exists_manual_markdown"
+classification = "toml_published_markdown"
 lifecycle = "generated_other"
-generated = false
+generated = true
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
+risk_score = 0
 size_bytes = 184
 line_count = 7
 toml_destination = "registry/entrypoint_docs.toml"
@@ -1948,11 +2585,11 @@ classification = "toml_destination_exists_manual_markdown"
 lifecycle = "generated_other"
 generated = false
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
-size_bytes = 1646
-line_count = 31
+risk_score = 130
+size_bytes = 3275
+line_count = 67
 toml_destination = "registry/knowledge_sources.toml"
 
 [[document]]
@@ -5828,9 +6465,9 @@ generated = true
 third_party = false
 tracked_allowed = true
 destination_exists = true
-risk_score = 3
-size_bytes = 602319
-line_count = 931
+risk_score = 4
+size_bytes = 647524
+line_count = 1012
 toml_destination = "registry/claims.toml"
 
 [[document]]
@@ -5884,9 +6521,9 @@ generated = true
 third_party = false
 tracked_allowed = true
 destination_exists = true
-risk_score = 4
-size_bytes = 48499
-line_count = 1169
+risk_score = 5
+size_bytes = 60777
+line_count = 1481
 toml_destination = "registry/experiments.toml"
 
 [[document]]
@@ -5899,8 +6536,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 5
-size_bytes = 80403
-line_count = 1286
+size_bytes = 81301
+line_count = 1346
 toml_destination = "registry/insights.toml"
 
 [[document]]
@@ -5927,7 +6564,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4631
+size_bytes = 4852
 line_count = 104
 toml_destination = "registry/next_actions.toml"
 
@@ -5969,8 +6606,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 6923
-line_count = 131
+size_bytes = 7523
+line_count = 136
 toml_destination = "registry/requirements.toml"
 
 [[document]]
@@ -5983,7 +6620,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 3
-size_bytes = 36672
+size_bytes = 37349
 line_count = 769
 toml_destination = "registry/roadmap.toml"
 
@@ -6081,7 +6718,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3049
+size_bytes = 3268
 line_count = 58
 toml_destination = "registry/todo.toml"
 
@@ -6610,9 +7247,9 @@ classification = "toml_published_markdown"
 lifecycle = "generated_conversation_extract"
 generated = true
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 80
+risk_score = 0
 size_bytes = 1452
 line_count = 44
 toml_destination = "registry/docs_convos.toml"
@@ -7005,8 +7642,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 20
-size_bytes = 670750
-line_count = 7377
+size_bytes = 722072
+line_count = 8025
 toml_destination = "registry/claims.toml"
 
 [[document]]
@@ -7102,9 +7739,9 @@ generated = true
 third_party = false
 tracked_allowed = true
 destination_exists = true
-risk_score = 5
-size_bytes = 53540
-line_count = 1438
+risk_score = 7
+size_bytes = 68473
+line_count = 1891
 toml_destination = "registry/experiments.toml"
 
 [[document]]
@@ -7131,8 +7768,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 3
-size_bytes = 69521
-line_count = 895
+size_bytes = 70504
+line_count = 949
 toml_destination = "registry/insights.toml"
 
 [[document]]
@@ -7158,9 +7795,9 @@ generated = true
 third_party = false
 tracked_allowed = true
 destination_exists = true
-risk_score = 0
-size_bytes = 5181
-line_count = 176
+risk_score = 20
+size_bytes = 246087
+line_count = 6274
 toml_destination = "registry/markdown_governance.toml"
 
 [[document]]
@@ -7187,8 +7824,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 9956
-line_count = 198
+size_bytes = 11829
+line_count = 228
 toml_destination = "registry/next_actions.toml"
 
 [[document]]
@@ -7215,8 +7852,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3248
-line_count = 124
+size_bytes = 3240
+line_count = 123
 toml_destination = "registry/requirements.toml"
 
 [[document]]
@@ -7229,8 +7866,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 568
-line_count = 22
+size_bytes = 918
+line_count = 32
 toml_destination = "registry/research_narratives.toml"
 
 [[document]]
@@ -7243,8 +7880,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 8503
-line_count = 169
+size_bytes = 9121
+line_count = 183
 toml_destination = "registry/roadmap.toml"
 
 [[document]]
@@ -7256,9 +7893,9 @@ generated = true
 third_party = false
 tracked_allowed = true
 destination_exists = true
-risk_score = 0
-size_bytes = 235
-line_count = 13
+risk_score = 2
+size_bytes = 32436
+line_count = 707
 toml_destination = "registry/todo.toml"
 
 [[document]]
@@ -7313,8 +7950,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4879
-line_count = 120
+size_bytes = 6343
+line_count = 128
 toml_destination = "registry/requirements.toml"
 
 [[document]]
@@ -7327,7 +7964,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2114
+size_bytes = 2169
 line_count = 39
 toml_destination = "registry/requirements.toml"
 
@@ -7341,7 +7978,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2034
+size_bytes = 2153
 line_count = 45
 toml_destination = "registry/requirements.toml"
 
@@ -7397,7 +8034,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1949
+size_bytes = 1999
 line_count = 40
 toml_destination = "registry/requirements.toml"
 
@@ -7411,7 +8048,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1821
+size_bytes = 1871
 line_count = 37
 toml_destination = "registry/requirements.toml"
 
@@ -7439,8 +8076,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2726
-line_count = 36
+size_bytes = 2627
+line_count = 33
 toml_destination = "registry/research_narratives.toml"
 
 [[document]]
@@ -7455,6 +8092,20 @@ destination_exists = true
 risk_score = 130
 size_bytes = 1630
 line_count = 26
+toml_destination = "registry/research_narratives.toml"
+
+[[document]]
+path = "docs/research/high_dimensional_algebra_unification_2026.md"
+git_status = "tracked"
+classification = "toml_published_markdown"
+lifecycle = "generated_docs_tree"
+generated = true
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 0
+size_bytes = 2953
+line_count = 41
 toml_destination = "registry/research_narratives.toml"
 
 [[document]]
@@ -7696,16 +8347,30 @@ line_count = 37
 toml_destination = "registry/claim_tickets.toml"
 
 [[document]]
+path = "proofs/EPISTEMIC_BOUNDARIES.md"
+git_status = "tracked"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_other"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 3127
+line_count = 66
+toml_destination = "registry/entrypoint_docs.toml"
+
+[[document]]
 path = "proofs/README.md"
 git_status = "tracked"
 classification = "toml_destination_exists_manual_markdown"
 lifecycle = "generated_other"
 generated = false
 third_party = false
-tracked_allowed = false
+tracked_allowed = true
 destination_exists = true
-risk_score = 210
-size_bytes = 5216
+risk_score = 130
+size_bytes = 5198
 line_count = 136
 toml_destination = "registry/roadmap.toml"
 

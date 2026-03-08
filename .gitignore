@@ -39,6 +39,9 @@ venv/
 target/
 target_codex_hve/
 target_codex_hve2/
+.cache/cargo-default-target/
+.cache/cargo-home/
+.cache/gate-target/
 rustc-ice-*.txt
 
 # Coq / Rocq
