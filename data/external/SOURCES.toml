@@ -724,3 +724,59 @@ resolution_deadline_utc = ""
 blocker_note = ""
 evidence_refs = ["arXiv:2412.19322"]
 scientific_validator_refs = ["mixed_precision_hpc"]
+
+[[source]]
+id = "SRC-DESI-DR2-BAO"
+path_glob = "data/external/desi_bao/**"
+canonical_url = "https://arxiv.org/abs/2503.14738"
+mirror_urls = ["https://github.com/CobayaSampler/bao_data"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'DESI DR2 BAO' --output-dir data/external --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "DR2 BAO values also hardcoded in crates/data_core/src/catalogs/desi_bao.rs::desi_dr2_bao()."
+evidence_refs = ["arXiv:2503.14738"]
+scientific_validator_refs = ["bao_distance_monotonicity"]
+
+[[source]]
+id = "SRC-DES-Y6-3X2PT"
+path_glob = "data/external/des_y6/**"
+canonical_url = "https://arxiv.org/abs/2601.14559"
+mirror_urls = ["https://desdr-server.ncsa.illinois.edu/despublic/y6a2_files/"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'DES Y6 3x2pt' --output-dir data/external --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Key constraints hardcoded in crates/data_core/src/catalogs/des_y6.rs."
+evidence_refs = ["arXiv:2601.14559"]
+scientific_validator_refs = ["des_s8_consistency"]
+
+[[source]]
+id = "SRC-ACE-SWEPAM-HOURLY"
+path_glob = "data/external/ace_swepam/**"
+canonical_url = "https://izw1.caltech.edu/ACE/ASC/level2/"
+mirror_urls = ["https://izw1.caltech.edu/ACE/ASC/DATA/level2/swepam/"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'ACE SWEPAM Solar Wind' --output-dir data/external --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = ["McComas et al. (1998), Space Sci. Rev. 86, 563"]
+scientific_validator_refs = ["solar_wind_proton_ranges"]
+
+[[source]]
+id = "SRC-DM-BIBLIOGRAPHY-PDFS"
+path_glob = "papers/pdf/*_dark_*"
+canonical_url = "https://arxiv.org/"
+mirror_urls = []
+access_class = "open"
+status = "active"
+retrieval_method = "sh papers/pdf/fetch_dm_papers.sh"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "76 dark matter bibliography items; 50 downloadable PDFs (48 arXiv + 1 CDS + 1 APS)."
+evidence_refs = ["papers/MANIFEST.toml"]
+scientific_validator_refs = ["dm_bibliography_coverage"]
