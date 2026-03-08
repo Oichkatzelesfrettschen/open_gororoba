@@ -170,7 +170,16 @@ verified/C958_ZDGraphTopology.v
 verified/C958b_ZDAdjacencyAnalytical.v
 verified/C959_CHSHClassicalBound.v
 theories/SedenionAssociator.v
+theories/Pathion.v
+theories/PathionAssociator.v
 verified/C1133_BraidParityPreservation.v
 verified/C1134_TopologicalFrictionBound.v
 verified/C1135_BoxKiteFusionRules.v
 verified/C1137_MissingEdgeQuantizedGap.v
+verified/C1138_WickDampingFriction.v
+verified/C1140a_PathionGap_1_5.v
+verified/C1140b_PathionGap_6_10.v
+verified/C1140c_PathionGap_11_15.v
+verified/C1140_PathionQuantizedGap.v
+verified/C1141_ZDGraphGeneralStructure.v
+verified/C1142_XORScatterGatherDuality.v

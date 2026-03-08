@@ -4,14 +4,14 @@
 //! expansion of the universe and calculates the Voudon Smoothing Scale.
 
 use cosmology_core::{FlatLCDM, VoudonFriedmann};
-use algebra_core::construction::deep_space::compute_voudon_frustration_density;
+use algebra_core::construction::deep_space::compute_voudon_imbalance_density;
 
 fn main() -> anyhow::Result<()> {
     println!("=== Phase 2: Voudon-Friedmann Cosmological Integration ===");
 
     // 1. Get Algebraic input from 256D Voudon algebra
-    let phi = compute_voudon_frustration_density();
-    println!("  Input Voudon Frustration Density: {:.8}", phi);
+    let phi = compute_voudon_imbalance_density();
+    println!("  Input Voudon Imbalance Density: {:.8}", phi);
 
     // 2. Initialize Modified Cosmology
     let base = FlatLCDM::planck2018();

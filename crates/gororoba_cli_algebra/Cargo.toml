@@ -106,6 +106,10 @@ path = "src/bin/avt_entropy_report.rs"
 name = "majorana-braid-crucible"
 path = "src/bin/majorana_braid_crucible.rs"
 
+[[bin]]
+name = "phase-transition-crucible"
+path = "src/bin/phase_transition_crucible.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 algebra_core = { path = "../algebra_core", features = ["lie"] }

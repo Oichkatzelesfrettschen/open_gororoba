@@ -15,13 +15,37 @@ Canonical semantic-atoms registry set:
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import hashlib
 import math
+import os
+import shutil
+import subprocess
 import tomllib
 from pathlib import Path
 
-
 ALLOWED_CHUNK_KINDS = {"heading", "paragraph", "list_item", "table_row", "code_block"}
+SKIP_DIR_NAMES = {
+    ".git",
+    ".cache",
+    ".pytest_cache",
+    "venv",
+    ".venv",
+    ".venv_ingest",
+    ".horusec",
+    ".claude",
+    ".gemini",
+    ".playwright-mcp",
+    ".mamba",
+    "cargo-home",
+    "target",
+    "logs",
+    "build",
+    "dist",
+    "temp",
+    "tmp",
+}
+SKIP_PREFIXES = {"reports/gates/"}
 
 # Semantic-atoms quality policy calibration (2026-02-14).
 # Keep claim->evidence coverage high while allowing bounded growth in canonical claim volume.
@@ -46,20 +70,72 @@ def _load(path: Path) -> dict:
     return tomllib.loads(path.read_text(encoding="utf-8"))
 
 
-def _discover_markdown_files(repo_root: Path) -> set[str]:
+def _worker_budget(repo_root: Path) -> int:
+    raw = os.environ.get("WORKER_BUDGET", "").strip()
+    if raw.isdigit():
+        return max(1, int(raw))
+
+    script = repo_root / "scripts" / "detect_worker_budget.sh"
+    if script.is_file():
+        proc = subprocess.run(
+            ["sh", str(script)],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        value = proc.stdout.strip()
+        if value.isdigit():
+            return max(1, int(value))
+
+    return 1
+
+
+def _discover_markdown_with_rg(repo_root: Path) -> set[str]:
+    proc = subprocess.run(
+        ["rg", "--files", "--hidden", "--no-ignore", "-g", "*.md"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
     out: set[str] = set()
-    for path in repo_root.rglob("*.md"):
-        rel = path.relative_to(repo_root).as_posix()
-        if rel.startswith(".git/"):
+    for rel in proc.stdout.splitlines():
+        if (
+            rel.startswith(".git/")
+            or any(rel.startswith(prefix) for prefix in SKIP_PREFIXES)
+            or any(part in SKIP_DIR_NAMES for part in rel.split("/"))
+        ):
             continue
         out.add(rel)
     return out
 
 
+def _discover_markdown_files(repo_root: Path) -> set[str]:
+    if shutil.which("rg"):
+        return _discover_markdown_with_rg(repo_root)
+
+    out: set[str] = set()
+    for path in repo_root.rglob("*.md"):
+        rel = path.relative_to(repo_root).as_posix()
+        if (
+            rel.startswith(".git/")
+            or any(rel.startswith(prefix) for prefix in SKIP_PREFIXES)
+            or any(part in SKIP_DIR_NAMES for part in rel.split("/"))
+        ):
+            continue
+        out.add(rel)
+    return out
+
+
+def _hash_file(args: tuple[Path, str]) -> tuple[str, str]:
+    root, rel_path = args
+    raw = (root / rel_path).read_bytes()
+    return rel_path, hashlib.sha256(raw).hexdigest()
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Verify canonical semantic-atoms lane registries."
-    )
+    parser = argparse.ArgumentParser(description="Verify canonical semantic-atoms lane registries.")
     parser.add_argument(
         "--repo-root",
         default=str(Path(__file__).resolve().parents[2]),
@@ -175,7 +251,9 @@ def main() -> int:
     for edge in claim_edges:
         claim_id = str(edge.get("claim_id", ""))
         edges_by_claim[claim_id] = edges_by_claim.get(claim_id, 0) + 1
-    uncovered_claims = [claim_id for claim_id in canonical_claim_ids if edges_by_claim.get(claim_id, 0) <= 0]
+    uncovered_claims = [
+        claim_id for claim_id in canonical_claim_ids if edges_by_claim.get(claim_id, 0) <= 0
+    ]
     if len(uncovered_claims) > max_uncovered_claims:
         failures.append(
             "too many claims without evidence edges: "
@@ -197,9 +275,9 @@ def main() -> int:
             f"{len(equation_atoms)} (min required {min_equation_atoms}; "
             f"semantic-atoms density policy floor={equation_atom_density_floor:.4f} atoms/claim)"
         )
-    if int(
-        equation_atoms_raw.get("knowledge_equation_atoms_v2", {}).get("atom_count", -1)
-    ) != len(equation_atoms):
+    if int(equation_atoms_raw.get("knowledge_equation_atoms_v2", {}).get("atom_count", -1)) != len(
+        equation_atoms
+    ):
         failures.append("equation_atoms_v2 metadata atom_count mismatch.")
     if int(equation_symbols_raw.get("equation_symbol_table", {}).get("symbol_count", -1)) != len(
         equation_symbols
@@ -234,7 +312,8 @@ def main() -> int:
     # Semantic-atoms lane: W5-010 legacy row.
     if len(proof_rows) < len(canonical_claims):
         failures.append(
-            f"proof_skeletons too small: {len(proof_rows)} < canonical claims {len(canonical_claims)}"
+            "proof_skeletons too small: "
+            f"{len(proof_rows)} < canonical claims {len(canonical_claims)}"
         )
     if int(proof_raw.get("knowledge_proof_skeletons", {}).get("skeleton_count", -1)) != len(
         proof_rows
@@ -284,6 +363,19 @@ def main() -> int:
             for item in extra[:20]:
                 failures.append(f"  extra: {item}")
 
+    worker_budget = _worker_budget(root)
+    existing_payload_paths = sorted(
+        rel_path for rel_path in payload_paths if (root / rel_path).exists()
+    )
+    file_digests: dict[str, str] = {}
+    if existing_payload_paths:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=worker_budget) as pool:
+            for rel_path, digest in pool.map(
+                _hash_file,
+                ((root, rel_path) for rel_path in existing_payload_paths),
+            ):
+                file_digests[rel_path] = digest
+
     chunk_by_id = {str(row.get("id", "")): row for row in payload_chunks}
     if len(chunk_by_id) != len(payload_chunks):
         failures.append("duplicate markdown payload chunk ids detected.")
@@ -306,8 +398,7 @@ def main() -> int:
             failures.append(f"payload doc path missing on disk: {doc_id} -> {rel_path}")
             continue
 
-        raw = file_path.read_bytes()
-        digest = hashlib.sha256(raw).hexdigest()
+        digest = file_digests.get(rel_path, "")
         if digest != str(row.get("content_sha256", "")):
             failures.append(f"sha mismatch for {doc_id} ({rel_path})")
 
@@ -333,7 +424,8 @@ def main() -> int:
             idx = int(chunk.get("chunk_index", 0))
             if idx != expected_next:
                 failures.append(
-                    f"chunk index sequence mismatch for {doc_id}: got {idx} expected {expected_next}"
+                    f"chunk index sequence mismatch for {doc_id}: "
+                    f"got {idx} expected {expected_next}"
                 )
             expected_next += 1
 

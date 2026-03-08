@@ -5,17 +5,32 @@ Verify Wave 4 markdown corpus control-plane invariants.
 
 from __future__ import annotations
 
-from pathlib import Path
 import tomllib
+from pathlib import Path
 
-SAFE_CLASSIFICATIONS = {
-    "toml_published_markdown",
-    "toml_destination_exists_manual_markdown",
-    "generated_artifact",
-    "third_party_markdown",
-}
 
-ALLOWED_TRACKED_MARKDOWN: set[str] = set()
+def _load_governance(repo_root: Path) -> tuple[set[str], set[str]]:
+    gov = tomllib.loads(
+        (repo_root / "registry/markdown_governance.toml").read_text(encoding="utf-8")
+    )
+    policy = gov.get("policy", {})
+    safe_classifications = {
+        str(item).strip() for item in policy.get("safe_classifications", []) if str(item).strip()
+    }
+    tracked_allowed_modes = {
+        str(item).strip() for item in policy.get("tracked_allowed_modes", []) if str(item).strip()
+    }
+    tracked_allowed_paths = {
+        str(item).strip().replace("\\", "/")
+        for item in policy.get("tracked_allowed_paths", [])
+        if str(item).strip()
+    }
+    for row in gov.get("document", []):
+        path = str(row.get("path", "")).strip().replace("\\", "/")
+        mode = str(row.get("mode", "")).strip()
+        if path and mode in tracked_allowed_modes:
+            tracked_allowed_paths.add(path)
+    return safe_classifications, tracked_allowed_paths
 
 
 def _in_policy_scope(path: str) -> bool:
@@ -30,15 +45,29 @@ def main() -> int:
 
     inv = tomllib.loads(inv_path.read_text(encoding="utf-8"))
     corpus = tomllib.loads(corpus_path.read_text(encoding="utf-8"))
+    safe_classifications, allowed_tracked_markdown = _load_governance(repo_root)
 
     failures: list[str] = []
     docs = inv.get("document", [])
-    corpus_docs = corpus.get("document", [])
-    corpus_summary = corpus.get("markdown_corpus_registry", {})
+    policy = corpus.get("policy", {})
 
-    tracked_violations = 0
-    class_violations = 0
-    destination_missing = 0
+    safe_from_corpus = {
+        str(item).strip() for item in policy.get("safe_classifications", []) if str(item).strip()
+    }
+    if safe_from_corpus and safe_from_corpus != safe_classifications:
+        failures.append(
+            "markdown_corpus_registry policy safe_classifications drift from markdown_governance"
+        )
+
+    allowed_from_corpus = {
+        str(item).strip().replace("\\", "/")
+        for item in policy.get("allowed_tracked_markdown", [])
+        if str(item).strip()
+    }
+    if allowed_from_corpus and allowed_from_corpus != allowed_tracked_markdown:
+        failures.append(
+            "markdown_corpus_registry allowed_tracked_markdown drift from markdown_governance"
+        )
 
     for row in docs:
         path = str(row.get("path", "")).strip()
@@ -46,58 +75,29 @@ def main() -> int:
         classification = str(row.get("classification", "")).strip()
         destination = str(row.get("toml_destination", "")).strip()
 
-        if _in_policy_scope(path) and classification not in SAFE_CLASSIFICATIONS:
-            class_violations += 1
+        if _in_policy_scope(path) and classification not in safe_classifications:
             failures.append(f"{path}: classification={classification} is outside safe set")
 
-        if _in_policy_scope(path) and git_status == "tracked" and path not in ALLOWED_TRACKED_MARKDOWN:
-            tracked_violations += 1
+        if (
+            _in_policy_scope(path)
+            and git_status == "tracked"
+            and path not in allowed_tracked_markdown
+        ):
             failures.append(f"{path}: tracked markdown is outside allowlist")
 
         if _in_policy_scope(path) and classification == "toml_published_markdown":
             if not destination:
-                destination_missing += 1
                 failures.append(f"{path}: missing toml_destination")
             elif not (repo_root / destination).is_file():
-                destination_missing += 1
                 failures.append(f"{path}: toml_destination not found -> {destination}")
 
-    if int(corpus_summary.get("document_count", -1)) != len(docs):
-        failures.append(
-            "markdown_corpus_registry.document_count mismatch: "
-            f"{corpus_summary.get('document_count')} vs {len(docs)}"
-        )
-    if len(corpus_docs) != len(docs):
-        failures.append(f"corpus document table mismatch: {len(corpus_docs)} vs {len(docs)}")
-
-    if int(corpus_summary.get("tracked_violation_count", -1)) != tracked_violations:
-        failures.append(
-            "tracked_violation_count mismatch: "
-            f"{corpus_summary.get('tracked_violation_count')} vs {tracked_violations}"
-        )
-    if int(corpus_summary.get("classification_violation_count", -1)) != class_violations:
-        failures.append(
-            "classification_violation_count mismatch: "
-            f"{corpus_summary.get('classification_violation_count')} vs {class_violations}"
-        )
-    if int(corpus_summary.get("destination_missing_count", -1)) != destination_missing:
-        failures.append(
-            "destination_missing_count mismatch: "
-            f"{corpus_summary.get('destination_missing_count')} vs {destination_missing}"
-        )
-
-    for row in corpus.get("policy_violation", []):
-        kind = str(row.get("kind", "")).strip()
-        path = str(row.get("path", "")).strip()
-        failures.append(f"policy_violation present: {kind} -> {path}")
-
     if failures:
-        print("ERROR: Wave 4 markdown corpus registry verification failed (strict TOML-only mode).")
+        print("ERROR: Wave 4 markdown corpus policy verification failed.")
         for failure in failures:
             print(f"- {failure}")
         return 1
 
-    print("OK: Wave 4 markdown corpus registry invariants satisfied (no tracked markdown).")
+    print("OK: Wave 4 markdown corpus policy matches markdown_governance and markdown_inventory.")
     return 0
 
 

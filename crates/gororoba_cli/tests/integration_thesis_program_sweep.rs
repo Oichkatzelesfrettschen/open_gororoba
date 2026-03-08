@@ -4,6 +4,13 @@ use std::process::{Command, Output};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 fn binary_path() -> PathBuf {
+    if let Some(path) = option_env!("CARGO_BIN_EXE_thesis-program-sweep") {
+        return PathBuf::from(path);
+    }
+    if let Some(path) = option_env!("CARGO_BIN_EXE_thesis_program_sweep") {
+        return PathBuf::from(path);
+    }
+
     let keys = [
         "CARGO_BIN_EXE_thesis-program-sweep",
         "CARGO_BIN_EXE_thesis_program_sweep",

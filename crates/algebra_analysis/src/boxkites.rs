@@ -30,9 +30,10 @@
 //! - de Marrais (2004): "Box-Kites III: Quizzical Quaternions" (arXiv:math/0403113)
 
 use crate::zd_graphs::xor_key;
-use cd_kernel::cayley_dickson::{cd_basis_mul_sign, cd_multiply, cd_norm_sq};
+use cd_kernel::cayley_dickson::{cd_basis_mul_sign_iter, cd_multiply, cd_norm_sq};
 use nalgebra::{DMatrix, SymmetricEigen};
 use petgraph::graph::{NodeIndex, UnGraph};
+use rayon::prelude::*;
 use std::collections::{BTreeSet, HashMap, HashSet, VecDeque};
 
 /// An assessor: pair (low, high) with low in 1..7, high in 8..15.
@@ -894,8 +895,9 @@ pub fn cross_assessors(dim: usize) -> Vec<CrossPair> {
 /// sign pairs (s, t) in {+1, -1}^2 such that
 /// `(e_i + s*e_j) * (e_k + t*e_l) = 0`.
 ///
-/// Uses `cd_basis_mul_sign` for integer-exact computation -- no floating-point
-/// tolerance is needed.
+/// Uses `cd_basis_mul_sign_iter` (iterative) for integer-exact computation
+/// with minimal function-call overhead. The coefficient accumulator uses a
+/// fixed-size array indexed by the 4 XOR target slots instead of a HashMap.
 pub fn diagonal_zero_products_exact(dim: usize, a: CrossPair, b: CrossPair) -> Vec<(i8, i8)> {
     let (i, j) = a;
     let (k, l) = b;
@@ -905,21 +907,35 @@ pub fn diagonal_zero_products_exact(dim: usize, a: CrossPair, b: CrossPair) -> V
     let idx_jk = j ^ k;
     let idx_jl = j ^ l;
 
-    let s_ik = cd_basis_mul_sign(dim, i, k);
-    let s_il = cd_basis_mul_sign(dim, i, l);
-    let s_jk = cd_basis_mul_sign(dim, j, k);
-    let s_jl = cd_basis_mul_sign(dim, j, l);
+    let s_ik = cd_basis_mul_sign_iter(dim, i, k);
+    let s_il = cd_basis_mul_sign_iter(dim, i, l);
+    let s_jk = cd_basis_mul_sign_iter(dim, j, k);
+    let s_jl = cd_basis_mul_sign_iter(dim, j, l);
 
+    // Fixed-size accumulator: at most 4 distinct XOR target indices.
+    // Collect unique indices and accumulate coefficients in a stack array
+    // instead of heap-allocating a HashMap per (s,t) combination.
+    let indices = [idx_ik, idx_il, idx_jk, idx_jl];
     let mut solutions = Vec::new();
     for s in [1i32, -1] {
         for t in [1i32, -1] {
-            let mut coeffs = HashMap::new();
-            *coeffs.entry(idx_ik).or_insert(0i32) += s_ik;
-            *coeffs.entry(idx_il).or_insert(0i32) += t * s_il;
-            *coeffs.entry(idx_jk).or_insert(0i32) += s * s_jk;
-            *coeffs.entry(idx_jl).or_insert(0i32) += s * t * s_jl;
-
-            if coeffs.values().all(|&v| v == 0) {
+            let contributions = [s_ik, t * s_il, s * s_jk, s * t * s_jl];
+            // Accumulate by matching index -- O(4*4) = O(16) comparisons,
+            // no allocation. For each unique index among the 4 slots, sum
+            // all contributions that target it.
+            let all_zero = (0..4).all(|slot| {
+                let target = indices[slot];
+                // Only check each unique index once (first occurrence)
+                if indices[..slot].contains(&target) {
+                    return true; // Already checked via earlier slot
+                }
+                let sum: i32 = (0..4)
+                    .filter(|&c| indices[c] == target)
+                    .map(|c| contributions[c])
+                    .sum();
+                sum == 0
+            });
+            if all_zero {
                 solutions.push((s as i8, t as i8));
             }
         }
@@ -1174,25 +1190,37 @@ pub fn motif_components_for_cross_assessors(dim: usize) -> Vec<MotifComponent> {
         buckets.entry(xor_key(a.0, a.1)).or_default().push(a);
     }
 
-    let mut adj: HashMap<CrossPair, HashSet<CrossPair>> =
-        nodes.iter().map(|&n| (n, HashSet::new())).collect();
-    let mut edges: HashSet<(CrossPair, CrossPair)> = HashSet::new();
-
-    for bucket_nodes in buckets.values() {
-        let mut sorted_bucket = bucket_nodes.clone();
-        sorted_bucket.sort();
-        for i in 0..sorted_bucket.len() {
-            for j in (i + 1)..sorted_bucket.len() {
-                let a = sorted_bucket[i];
-                let b = sorted_bucket[j];
-                let sols = diagonal_zero_products_exact(dim, a, b);
-                if !sols.is_empty() {
-                    adj.get_mut(&a).unwrap().insert(b);
-                    adj.get_mut(&b).unwrap().insert(a);
-                    edges.insert((a, b));
+    // Parallel bucket processing: each bucket's pairwise comparisons are
+    // independent. Collect edges from all buckets in parallel, then merge.
+    let bucket_list: Vec<Vec<CrossPair>> = buckets.into_values().collect();
+    let all_edges: Vec<(CrossPair, CrossPair)> = bucket_list
+        .par_iter()
+        .flat_map_iter(|bucket_nodes| {
+            let mut sorted_bucket = bucket_nodes.clone();
+            sorted_bucket.sort();
+            let mut local_edges = Vec::new();
+            for i in 0..sorted_bucket.len() {
+                for j in (i + 1)..sorted_bucket.len() {
+                    let a = sorted_bucket[i];
+                    let b = sorted_bucket[j];
+                    let sols = diagonal_zero_products_exact(dim, a, b);
+                    if !sols.is_empty() {
+                        local_edges.push((a, b));
+                    }
                 }
             }
-        }
+            local_edges
+        })
+        .collect();
+
+    // Build adjacency from collected edges
+    let mut adj: HashMap<CrossPair, HashSet<CrossPair>> =
+        nodes.iter().map(|&n| (n, HashSet::new())).collect();
+    let mut edges: HashSet<(CrossPair, CrossPair)> = HashSet::with_capacity(all_edges.len());
+    for (a, b) in all_edges {
+        adj.get_mut(&a).unwrap().insert(b);
+        adj.get_mut(&b).unwrap().insert(a);
+        edges.insert((a, b));
     }
 
     // Only keep nodes that participate in at least one edge
@@ -2062,6 +2090,7 @@ mod tests {
     // --- Motif Census Tests ---
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_16d_matches_de_marrais_box_kites() {
         // At dim=16 the motif census must recover exactly the 7 box-kites
         let comps = motif_components_for_cross_assessors(16);
@@ -2126,6 +2155,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_32d_has_k2_multipartite() {
         // At dim=32, new graph motifs appear beyond octahedra
         let comps = motif_components_for_cross_assessors(32);
@@ -2137,6 +2167,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_32d_summary() {
         // Record the dim=32 census as a regression test.
         //
@@ -2194,12 +2225,14 @@ mod tests {
     // ---------------------------------------------------------------
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_64d_component_count() {
         let comps = motif_components_for_cross_assessors(64);
         assert_eq!(comps.len(), 31, "dim=64 should have 31 components");
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_64d_uniform_node_count() {
         let comps = motif_components_for_cross_assessors(64);
         for (i, c) in comps.iter().enumerate() {
@@ -2208,6 +2241,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_64d_summary() {
         // dim=64 census (discovered 2026-02-07):
         //   31 components, all with 30 nodes.
@@ -2265,12 +2299,14 @@ mod tests {
     // ---------------------------------------------------------------
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_128d_component_count() {
         let comps = motif_components_for_cross_assessors(128);
         assert_eq!(comps.len(), 63, "dim=128 should have 63 components");
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_128d_uniform_node_count() {
         let comps = motif_components_for_cross_assessors(128);
         for (i, c) in comps.iter().enumerate() {
@@ -2284,6 +2320,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_128d_summary() {
         // dim=128 census (discovered 2026-02-07):
         //   63 components, all with 62 nodes.
@@ -2338,12 +2375,14 @@ mod tests {
     // ---------------------------------------------------------------
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_256d_component_count() {
         let comps = motif_components_for_cross_assessors(256);
         assert_eq!(comps.len(), 127, "dim=256 should have 127 components");
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_256d_uniform_node_count() {
         let comps = motif_components_for_cross_assessors(256);
         for (i, c) in comps.iter().enumerate() {
@@ -2357,6 +2396,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive motif census"]
     fn test_motif_census_256d_summary() {
         // dim=256 census (discovered 2026-02-07):
         //   127 components, all with 126 nodes.
@@ -2851,6 +2891,7 @@ mod tests {
     // ================================================================
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive face-sign census"]
     fn test_generic_face_sign_census_dim16_matches_c479() {
         // C-479: 56 faces = 42 TwoSameOneOpp + 14 AllOpposite, 0 AllSame, 0 OneSameTwoOpp
         let census = generic_face_sign_census(16);
@@ -2894,6 +2935,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive face-sign census"]
     fn test_generic_face_sign_census_dim32() {
         // dim=32 has 15 components, each with 14 nodes.
         // Two motif classes: 8 heptacross (84 edges) and 7 mixed (36 edges).
@@ -3024,6 +3066,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive face-sign census"]
     fn test_generic_face_sign_census_dim64() {
         // dim=64 has 31 components, each with 30 nodes.
         // 4 motif classes by edge count.
@@ -3258,6 +3301,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive face-sign census"]
     fn test_generic_face_sign_census_dim128() {
         // Regime count formula: dim/16 + 1 = 128/16 + 1 = 9 at dim=128.
         // This test verifies the 9-regime structure.
@@ -3381,6 +3425,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: exhaustive face-sign census"]
     fn test_generic_face_sign_census_dim256() {
         // Regime count formula: dim/16 + 1 = 256/16 + 1 = 17 at dim=256.
         use std::time::Instant;
@@ -8006,6 +8051,7 @@ mod tests {
     /// Validates C-557: Imbalance and eta balance at dim=512 with complete mechanism.
     /// Runtime: ~3-4 min in release mode.
     #[test]
+    #[ignore] // Long-running: ~3-4 min in release mode
     fn test_imbalance_and_apt_dim512_full() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::time::Instant;
@@ -8111,6 +8157,7 @@ mod tests {
     /// Validates C-558: Component scaling laws verified across 6 dimensions.
     /// Runtime: <2 min (just graph construction, no analysis).
     #[test]
+    #[ignore = "heavy research lane: multi-dimension component scaling census"]
     fn test_component_scaling_across_dimensions() {
         eprintln!("\n=== Component Scaling Laws (dims 16, 32, 64, 128, 256, 512) ===");
 

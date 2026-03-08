@@ -23,22 +23,22 @@ validation = "Time columns t_norm created."
 
 [[phase.1.step]]
 id = 3
-action = "Normalize Enstrophy by initial value $\Omega(0)$."
+action = "Normalize enstrophy by initial value Omega(0)."
 validation = "Omega_norm columns created."
 
 [[phase.1.step]]
 id = 4
-action = "Plot $\Omega_{norm}$ vs $t_{norm}$ for 8^3, 16^3, 32^3."
+action = "Plot Omega_norm vs t_norm for 8^3, 16^3, 32^3."
 validation = "Decay curves generated."
 
 [[phase.1.step]]
 id = 5
-action = "Calculate decay exponent $\alpha$ where $\Omega \sim t^{-\alpha}$."
+action = "Calculate decay exponent alpha where Omega ~ t^(-alpha)."
 validation = "Alpha values derived (expect ~1.2-1.4)."
 
 [[phase.1.step]]
 id = 6
-action = "Verify if $\alpha$ converges as $N \to 32$."
+action = "Verify whether alpha converges as N approaches 32."
 validation = "Convergence check passed/failed."
 
 [[phase.1.step]]
@@ -97,7 +97,7 @@ validation = "Binary runs."
 
 [[phase.2.step]]
 id = 17
-action = "Tune coupling constant $\lambda$ for stability (avoid blowup)."
+action = "Tune coupling constant lambda for stability (avoid blowup)."
 validation = "Stable run for 1000 steps."
 
 [[phase.2.step]]

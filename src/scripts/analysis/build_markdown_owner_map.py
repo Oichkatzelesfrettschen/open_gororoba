@@ -15,6 +15,12 @@ import tomllib
 from pathlib import Path
 
 IN_SCOPE_PREFIXES = ("docs/", "reports/", "data/artifacts/")
+GOVERNANCE_IN_SCOPE_MODES = {
+    "toml_generated_mirror",
+    "toml_manual_source",
+    "immutable_transcript",
+    "manual_narrative",
+}
 
 
 def _assert_ascii(text: str, context: str) -> None:
@@ -50,7 +56,11 @@ def _owner_group(path: str, destination: str) -> str:
         return "claims_domains"
     if path.startswith("docs/convos/"):
         return "docs_convos"
-    if path.startswith("docs/theory/") or path.startswith("docs/engineering/") or path.startswith("docs/research/"):
+    if (
+        path.startswith("docs/theory/")
+        or path.startswith("docs/engineering/")
+        or path.startswith("docs/research/")
+    ):
         return "research_narratives"
     if path.startswith("docs/") and destination == "registry/docs_root_narratives.toml":
         return "docs_root_narratives"
@@ -64,57 +74,69 @@ def _owner_group(path: str, destination: str) -> str:
 
 
 def _conversion_hint(path: str, destination: str) -> str:
+    publish_cmd = (
+        "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 "
+        "MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+    )
     if destination == "registry/monograph.toml":
-        return (
-            "Edit registry/monograph.toml document body_markdown and run: "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
-        )
+        return f"Edit registry/monograph.toml document body_markdown and run: {publish_cmd}"
     if path.startswith("docs/book/src/"):
         return (
-            "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py "
+            "Run: PYTHONWARNINGS=error python3 "
+            "src/scripts/analysis/normalize_book_docs_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            f"{publish_cmd}"
         )
     if path.startswith("docs/external_sources/"):
         return (
-            "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py "
+            "Run: PYTHONWARNINGS=error python3 "
+            "src/scripts/analysis/normalize_external_sources_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            f"{publish_cmd}"
         )
     if path.startswith("docs/tickets/") or path.startswith("docs/claims/by_domain/"):
         return (
-            "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py "
+            "Run: PYTHONWARNINGS=error python3 "
+            "src/scripts/analysis/normalize_claims_support_registries.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            f"{publish_cmd}"
         )
     if path.startswith("docs/convos/"):
         return (
-            "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py "
+            "Run: PYTHONWARNINGS=error python3 "
+            "src/scripts/analysis/normalize_docs_convos_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            f"{publish_cmd}"
         )
-    if path.startswith("docs/theory/") or path.startswith("docs/engineering/") or path.startswith("docs/research/"):
+    if (
+        path.startswith("docs/theory/")
+        or path.startswith("docs/engineering/")
+        or path.startswith("docs/research/")
+    ):
         return (
-            "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py "
+            "Run: PYTHONWARNINGS=error python3 "
+            "src/scripts/analysis/normalize_research_narratives_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            f"{publish_cmd}"
         )
     if path.startswith("docs/"):
         return (
-            "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py "
+            "Run: PYTHONWARNINGS=error python3 "
+            "src/scripts/analysis/normalize_docs_root_narratives_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            f"{publish_cmd}"
         )
     if path.startswith("reports/"):
         return (
-            "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py "
+            "Run: PYTHONWARNINGS=error python3 "
+            "src/scripts/analysis/normalize_reports_narratives_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            f"{publish_cmd}"
         )
     if path.startswith("data/artifacts/") and path != "data/artifacts/README.md":
         return (
             "Run: PYTHONWARNINGS=error make registry-artifact-scrolls "
-            "&& PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            f"&& {publish_cmd}"
         )
     return "Assign canonical registry owner and add a conversion pipeline."
 
@@ -137,6 +159,11 @@ def main() -> int:
         help="Input markdown origin audit TOML path.",
     )
     parser.add_argument(
+        "--governance",
+        default="registry/markdown_governance.toml",
+        help="Markdown governance TOML path.",
+    )
+    parser.add_argument(
         "--out",
         default="registry/markdown_owner_map.toml",
         help="Output owner mapping table.",
@@ -146,14 +173,18 @@ def main() -> int:
     root = Path(args.repo_root).resolve()
     inventory = tomllib.loads((root / args.inventory).read_text(encoding="utf-8"))
     origin = tomllib.loads((root / args.origin_audit).read_text(encoding="utf-8"))
-    origin_by_path = {
+    governance = tomllib.loads((root / args.governance).read_text(encoding="utf-8"))
+    origin_by_path = {str(row.get("path", "")).strip(): row for row in origin.get("document", [])}
+    governance_by_path = {
         str(row.get("path", "")).strip(): row
-        for row in origin.get("document", [])
+        for row in governance.get("document", [])
+        if str(row.get("mode", "")).strip() in GOVERNANCE_IN_SCOPE_MODES
     }
     docs = [
         row
         for row in inventory.get("document", [])
         if any(str(row.get("path", "")).startswith(prefix) for prefix in IN_SCOPE_PREFIXES)
+        or str(row.get("path", "")).strip() in governance_by_path
     ]
     docs.sort(key=lambda row: str(row.get("path", "")))
 
@@ -177,16 +208,26 @@ def main() -> int:
             for item in origin_row.get("source_of_truth_paths", [])
             if str(item).strip()
         ]
+        governance_row = governance_by_path.get(path, {})
         if source_paths:
             destination = sorted(set(source_paths))[0]
+        else:
+            governance_refs = [
+                str(item).strip()
+                for item in governance_row.get("source_toml_refs", [])
+                if str(item).strip()
+            ]
+            if governance_refs:
+                destination = governance_refs[0]
         lines.append("[[owner]]")
         lines.append(f"id = {_esc(f'MOWN-{i:04d}')}")
         lines.append(f"path = {_esc(path)}")
         lines.append(f"scope = {_esc(_scope(path))}")
         lines.append(f"canonical_toml = {_esc(destination)}")
         lines.append(f"owner_group = {_esc(_owner_group(path, destination))}")
+        header_required = bool(governance_row.get("header_required", False))
         lines.append(
-            "requires_generated_header = true"
+            f"requires_generated_header = {'true' if header_required else 'false'}"
         )
         lines.append(f"conversion_hint = {_esc(_conversion_hint(path, destination))}")
         lines.append("")

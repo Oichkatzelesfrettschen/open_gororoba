@@ -6,24 +6,85 @@ from __future__ import annotations
 
 import os
 import subprocess
+import time
 from pathlib import Path
 from textwrap import dedent
 
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-REGISTRY_EMIT_BIN = REPO_ROOT / "target" / "debug" / "registry-emit"
+CARGO_TARGET_DIR = Path(os.environ.get("CARGO_TARGET_DIR", REPO_ROOT / "target"))
+REGISTRY_EMIT_BIN = CARGO_TARGET_DIR / "debug" / "registry-emit"
+REGISTRY_EMIT_BUILD_LOCK = CARGO_TARGET_DIR / "debug" / ".registry-emit-build.lock"
+REGISTRY_EMIT_BUILD_TIMEOUT_SECONDS = 300.0
+_REGISTRY_EMIT_READY = False
 pytestmark = pytest.mark.regression
+
+
+def _worker_budget() -> str:
+    detected = subprocess.run(
+        ["sh", "scripts/detect_worker_budget.sh"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if detected.returncode != 0:
+        return "1"
+    budget = detected.stdout.strip()
+    return budget or "1"
 
 
 def _cargo_env() -> dict[str, str]:
     env = dict(os.environ)
     env["RUSTC_WRAPPER"] = ""
     env["SCCACHE_DISABLE"] = "1"
+    env["CARGO_BUILD_JOBS"] = _worker_budget()
     return env
 
 
+def _ensure_registry_emit_built() -> None:
+    global _REGISTRY_EMIT_READY
+
+    if _REGISTRY_EMIT_READY:
+        return
+
+    REGISTRY_EMIT_BIN.parent.mkdir(parents=True, exist_ok=True)
+    deadline = time.monotonic() + REGISTRY_EMIT_BUILD_TIMEOUT_SECONDS
+
+    while True:
+        try:
+            REGISTRY_EMIT_BUILD_LOCK.mkdir()
+            break
+        except FileExistsError:
+            if REGISTRY_EMIT_BIN.exists():
+                _REGISTRY_EMIT_READY = True
+                return
+            if time.monotonic() > deadline:
+                raise AssertionError(
+                    "timed out waiting for registry-emit build lock to clear"
+                ) from None
+            time.sleep(0.1)
+
+    try:
+        build = subprocess.run(
+            ["cargo", "build", "--quiet", "-p", "gororoba_cli_data", "--bin", "registry-emit"],
+            cwd=REPO_ROOT,
+            env=_cargo_env(),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert build.returncode == 0, f"cargo build failed:\n{build.stdout}\n{build.stderr}"
+        assert REGISTRY_EMIT_BIN.exists()
+        _REGISTRY_EMIT_READY = True
+    finally:
+        if REGISTRY_EMIT_BUILD_LOCK.exists():
+            REGISTRY_EMIT_BUILD_LOCK.rmdir()
+
+
 def _run(cmd: list[str]) -> subprocess.CompletedProcess[str]:
+    _ensure_registry_emit_built()
     proc = subprocess.run(
         [str(REGISTRY_EMIT_BIN), *cmd],
         cwd=REPO_ROOT,
@@ -40,17 +101,6 @@ def _run(cmd: list[str]) -> subprocess.CompletedProcess[str]:
 
 
 def test_registry_emit_bibliography_bibtex_contract(tmp_path: Path) -> None:
-    build = subprocess.run(
-        ["cargo", "build", "--quiet", "--bin", "registry-emit"],
-        cwd=REPO_ROOT,
-        env=_cargo_env(),
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert build.returncode == 0, f"cargo build failed:\n{build.stdout}\n{build.stderr}"
-    assert REGISTRY_EMIT_BIN.exists()
-
     input_path = tmp_path / "bibliography.toml"
     output_path = tmp_path / "bibliography.bib"
     input_path.write_text(

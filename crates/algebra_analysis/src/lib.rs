@@ -20,6 +20,7 @@ pub mod graph_projections;
 pub mod grassmannian;
 pub mod homotopy_algebra;
 pub mod legacy_crossval;
+pub mod phase_transition;
 pub mod prefix_chain_theorem;
 pub mod projective_geometry;
 pub mod quantum_chaos;

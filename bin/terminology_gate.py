@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -118,6 +119,45 @@ def load_banned_terms(toml_path: Path) -> list[dict[str, str]]:
     return banned
 
 
+def build_candidate_lines_with_rg(
+    repo: Path,
+    files: list[Path],
+    banned: list[dict[str, str]],
+) -> list[tuple[Path, int, str]]:
+    """Use ripgrep to prefilter candidate lines before Python validation."""
+    command = ["rg", "--line-number", "--with-filename", "--no-heading", "--color", "never"]
+    command.extend(["--fixed-strings", "--ignore-case", "--no-messages"])
+    for entry in banned:
+        command.extend(["-e", entry["pattern"]])
+    command.extend(str(path) for path in files)
+
+    result = subprocess.run(
+        command,
+        cwd=repo,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode not in {0, 1}:
+        print(f"ERROR: rg scan failed: {result.stderr}", file=sys.stderr)
+        sys.exit(2)
+
+    candidates: list[tuple[Path, int, str]] = []
+    seen: set[tuple[str, int, str]] = set()
+    for raw_line in result.stdout.splitlines():
+        parts = raw_line.split(":", 2)
+        if len(parts) != 3:
+            continue
+        rel_path, line_no, line_text = parts
+        if not line_no.isdigit():
+            continue
+        key = (rel_path, int(line_no), line_text)
+        if key in seen:
+            continue
+        seen.add(key)
+        candidates.append((Path(rel_path), int(line_no), line_text))
+    return candidates
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Terminology gate")
     parser.add_argument("--quiet", action="store_true", help="suppress violation details")
@@ -145,25 +185,33 @@ def main() -> int:
             compiled.append((re.compile(re.escape(pat_str), re.IGNORECASE), entry))
 
     files = git_tracked_files(repo)
+    scan_files = [rel_path for rel_path in files if not should_skip(rel_path)]
     violations: list[tuple[Path, int, str, dict[str, str]]] = []
 
-    for rel_path in files:
-        if should_skip(rel_path):
-            continue
-        full_path = repo / rel_path
-        if not full_path.is_file():
-            continue
-        try:
-            text = full_path.read_text(encoding="utf-8", errors="replace")
-        except (OSError, UnicodeDecodeError):
-            continue
-
-        for lineno, line in enumerate(text.splitlines(), start=1):
+    if shutil.which("rg") and scan_files:
+        candidates = build_candidate_lines_with_rg(repo, scan_files, banned)
+        for rel_path, lineno, line in candidates:
             if is_allowlisted(line):
                 continue
             for regex, entry in compiled:
                 if regex.search(line):
                     violations.append((rel_path, lineno, line.strip(), entry))
+    else:
+        for rel_path in scan_files:
+            full_path = repo / rel_path
+            if not full_path.is_file():
+                continue
+            try:
+                text = full_path.read_text(encoding="utf-8", errors="replace")
+            except (OSError, UnicodeDecodeError):
+                continue
+
+            for lineno, line in enumerate(text.splitlines(), start=1):
+                if is_allowlisted(line):
+                    continue
+                for regex, entry in compiled:
+                    if regex.search(line):
+                        violations.append((rel_path, lineno, line.strip(), entry))
 
     if violations:
         if not args.quiet:
@@ -180,8 +228,11 @@ def main() -> int:
         return 1
     else:
         if not args.quiet:
-            print(f"OK: terminology gate passed ({len(compiled)} banned patterns, "
-                  f"{len(files)} files scanned).")
+            engine = "ripgrep" if shutil.which("rg") else "python"
+            print(
+                f"OK: terminology gate passed ({len(compiled)} banned patterns, "
+                f"{len(files)} files scanned, engine={engine})."
+            )
         return 0
 
 

@@ -16,13 +16,13 @@ import argparse
 import json
 import re
 import tomllib
-from collections import defaultdict
 from pathlib import Path
-
 
 CLAIM_ID_RE = re.compile(r"\bC-\d{3}\b")
 EVIDENCE_ID_RE = re.compile(r"\b(?:C|I|E)-\d{3}\b")
 BACKTICK_RE = re.compile(r"`([^`]+)`")
+PATH_LIKE_RE = re.compile(r"\b(?:[A-Za-z0-9_.-]+/)+[A-Za-z0-9_.-]+(?:\.[A-Za-z0-9_.-]+)?\b")
+FILE_LIKE_RE = re.compile(r"\b[A-Za-z0-9_.-]+\.(?:md|rs|py|toml|csv|json|txt)\b")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 INLINE_MATH_RE = re.compile(r"\$([^$\n]{2,260})\$")
 IDENTIFIER_RE = re.compile(r"\b[A-Za-z_][A-Za-z0-9_]*\b")
@@ -148,6 +148,14 @@ def _extract_backtick_refs(text: str) -> list[str]:
                 continue
             if "/" in candidate or "." in candidate:
                 refs.add(candidate)
+    for matcher in (PATH_LIKE_RE, FILE_LIKE_RE):
+        for match in matcher.finditer(text):
+            candidate = _collapse(match.group(0)).strip(" .;:()[]{}")
+            if not candidate:
+                continue
+            if candidate.startswith("C-") and len(candidate) == 5:
+                continue
+            refs.add(candidate)
     return sorted(refs)
 
 
@@ -563,7 +571,9 @@ def _build_proof_skeletons(claim_atoms: list[dict], proof_atoms: list[dict]) -> 
         if kind not in PROOF_KINDS:
             kind = "argument_section"
         claim_refs = sorted(set(str(item) for item in row.get("claim_refs", [])))
-        assumptions = [_collapse(str(item)) for item in row.get("assumption_lines", []) if _collapse(str(item))]
+        assumptions = [
+            _collapse(str(item)) for item in row.get("assumption_lines", []) if _collapse(str(item))
+        ]
         derivation_steps = [
             _collapse(str(item))
             for item in row.get("inference_markers", [])
@@ -574,9 +584,7 @@ def _build_proof_skeletons(claim_atoms: list[dict], proof_atoms: list[dict]) -> 
             if excerpt:
                 derivation_steps = [excerpt]
         obligations = [
-            _collapse(str(item))
-            for item in row.get("decision_lines", [])
-            if _collapse(str(item))
+            _collapse(str(item)) for item in row.get("decision_lines", []) if _collapse(str(item))
         ]
         skeletons.append(
             {
@@ -801,9 +809,7 @@ def _write(path: Path, text: str) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Build canonical semantic-atoms lane registries."
-    )
+    parser = argparse.ArgumentParser(description="Build canonical semantic-atoms lane registries.")
     parser.add_argument(
         "--repo-root",
         default=str(Path(__file__).resolve().parents[3]),
@@ -856,7 +862,9 @@ def main() -> int:
         atom["id"] = f"EQA2-{idx:05d}"
     symbol_rows, symbol_ref_map = _build_symbol_table(equation_atoms)
     for atom in equation_atoms:
-        atom["symbol_refs"] = [symbol_ref_map[name] for name in atom["symbol_names"] if name in symbol_ref_map]
+        atom["symbol_refs"] = [
+            symbol_ref_map[name] for name in atom["symbol_names"] if name in symbol_ref_map
+        ]
 
     proof_atoms = _load_proof_atoms(repo_root / args.proof_atoms_path)
     proof_skeletons = _build_proof_skeletons(claims, proof_atoms)

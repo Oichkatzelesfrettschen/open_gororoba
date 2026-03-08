@@ -654,3 +654,73 @@ manual_manifest_refs = [
 ]
 scientific_validator_refs = ["blocked_manifest_only"]
 blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+
+[[source]]
+id = "SRC-SEDENION-GEOMETRY-REGGIANI"
+path_glob = "data/external/arxiv_2411.18881_sedenion_geometry.pdf"
+canonical_url = "https://arxiv.org/abs/2411.18881"
+mirror_urls = ["https://arxiv.org/pdf/2411.18881"]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2411.18881_sedenion_geometry.pdf https://arxiv.org/pdf/2411.18881"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = ["arXiv:2411.18881"]
+scientific_validator_refs = ["zd_graph_topology"]
+
+[[source]]
+id = "SRC-ZD-HOLONOMY-KOEBISU"
+path_glob = "data/external/arxiv_2512.13002_zd_holonomy.pdf"
+canonical_url = "https://arxiv.org/abs/2512.13002"
+mirror_urls = ["https://arxiv.org/pdf/2512.13002"]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2512.13002_zd_holonomy.pdf https://arxiv.org/pdf/2512.13002"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = ["arXiv:2512.13002"]
+scientific_validator_refs = ["zd_graph_topology"]
+
+[[source]]
+id = "SRC-WICK-ROTATION-KONTSEVICH-SEGAL"
+path_glob = "data/external/arxiv_2105.10161_wick_rotation.pdf"
+canonical_url = "https://arxiv.org/abs/2105.10161"
+mirror_urls = ["https://arxiv.org/pdf/2105.10161"]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2105.10161_wick_rotation.pdf https://arxiv.org/pdf/2105.10161"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = ["arXiv:2105.10161"]
+scientific_validator_refs = ["wick_rotation_positivity"]
+
+[[source]]
+id = "SRC-TENSOR-CORE-ACCELERATION-CUI"
+path_glob = "data/external/arxiv_2407.09621_tensor_core_acceleration.pdf"
+canonical_url = "https://arxiv.org/abs/2407.09621"
+mirror_urls = ["https://arxiv.org/pdf/2407.09621"]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2407.09621_tensor_core_acceleration.pdf https://arxiv.org/pdf/2407.09621"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = ["arXiv:2407.09621"]
+scientific_validator_refs = ["tensor_core_hpc"]
+
+[[source]]
+id = "SRC-MIXED-PRECISION-SURVEY-KASHI"
+path_glob = "data/external/arxiv_2412.19322_mixed_precision_scientific.pdf"
+canonical_url = "https://arxiv.org/abs/2412.19322"
+mirror_urls = ["https://arxiv.org/pdf/2412.19322"]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2412.19322_mixed_precision_scientific.pdf https://arxiv.org/pdf/2412.19322"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = ["arXiv:2412.19322"]
+scientific_validator_refs = ["mixed_precision_hpc"]

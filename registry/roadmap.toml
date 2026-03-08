@@ -9,7 +9,7 @@ companion_docs = ["docs/TODO.md", "docs/NEXT_ACTIONS.md"]
 status = "active"
 status_token = "ACTIVE"
 authoritative = true
-workstream_count = 12
+workstream_count = 13
 status_allowlist = ["planned", "active", "in_progress", "done", "paused", "blocked"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -147,6 +147,18 @@ acceptance_criteria = ["workstream status is constrained to declared enum values
 evidence_refs = ["AGENTS.md", "Makefile", "docs/REQUIREMENTS.md"]
 
 [[workstream]]
+id = "WS-GATES-001"
+name = "Required Gate Stabilization"
+priority = "high"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+description = "Stabilize the scoped local gate, the authoritative Python gate, and the authoritative Rust gate without exploding backlog tracking into per-test busywork. Current tranche CP-GATES-2026-03 keeps the work bucketed into control-plane truthfulness, Rust regression routing, and final acceptance evidence."
+primary_outputs = ["Makefile", ".githooks/pre-push", ".github/workflows/ci.yml", "registry/control_plane_roadmap.toml", "registry/next_actions.toml", "registry/todo.toml", "reports/gates/"]
+dependencies = ["WS-QUALITY-001", "WS-CLAIMS-001", "WS-REGISTRY-001", "T-043", "T-045", "T-049", "T-051"]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "gate-local, gate-ci-python, and gate-ci-rust are green on the canonical branch state.", "Evidence references point to maintained canonical paths."]
+evidence_refs = [".github/workflows/ci.yml", ".githooks/pre-push", "Makefile", "registry/control_plane_roadmap.toml", "registry/next_actions.toml", "registry/todo.toml", "reports/gates/"]
+
+[[workstream]]
 id = "WS-REGISTRY-001"
 name = "Documentation Registry Evolution"
 priority = "high"
@@ -182,4 +194,3 @@ claims = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 dependencies = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/algebra_experimental/src/cd_external.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
-

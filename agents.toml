@@ -22,7 +22,7 @@ single_compile_heavy_command_at_a_time = true
 parallelize_non_cargo_tasks_only = true
 reuse_existing_build_artifacts = true
 deterministic_reproducibility_required = true
-contention_avoidance_note = "Avoid concurrent cargo build/run/clippy/test invocations that contend on package/artifact locks. Serialize compile-heavy cargo tasks and parallelize only non-cargo work."
+contention_avoidance_note = "Avoid concurrent cargo build/run/clippy/test invocations that contend on package/artifact locks. Serialize compile-heavy cargo tasks and parallelize only non-cargo work. Required gates isolate Cargo state per project with repo-local CARGO_HOME and CARGO_TARGET_DIR defaults so different repos and agents do not fight over shared cache locks."
 
 [shared.cargo_execution_policy.recommended_sequence]
 step_1 = "Run one compile-heavy cargo command at a time."
@@ -301,23 +301,55 @@ detail = "f[i * n_cells + idx] gives 4-byte stride, 32 threads per warp pull one
 files = ["crates/lbm_3d_cuda/src/kernels_dark_halo.cu", "crates/lbm_3d_cuda/src/lib.rs"]
 
 [shared.gpu_optimization_roadmap.phase_2_l2_residency]
-status = "pending"
-summary = "Pin rho field (8.4 MB at 128^3, 67 MB at 256^3) in Ada Lovelace L2 cache"
-detail = "Use cudarc::driver::sys FFI: cuStreamSetAttribute with CU_STREAM_ATTRIBUTE_ACCESS_POLICY_WINDOW. hitRatio=1.0, hitProp=CU_ACCESS_PROPERTY_PERSISTING for d_rho."
-note = "cudarc 0.19 does not expose L2 policy -- use raw sys bindings."
+status = "complete"
+summary = "Pin rho field in Ada Lovelace L2 cache via CU_LAUNCH_ATTRIBUTE_ACCESS_POLICY_WINDOW"
+detail = "hitRatio=1.0, PERSISTING. 64 MB rho field pinned. cudarc 0.19 raw sys bindings."
 
 [shared.gpu_optimization_roadmap.phase_3_zero_copy_dma]
-status = "pending"
-summary = "Page-locked host memory for PCIe DMA bypass of DDR4 paging"
-detail = "alloc_zeros_host or cuMemAllocHost FFI. GPU DMA controller writes directly to pinned physical addresses. Async dtoh with stream synchronize."
+status = "complete"
+summary = "Page-locked host memory via ctx.alloc_pinned::<f32>()"
+detail = "PinnedHostSlice bypasses OS paging. GPU DMA controller writes directly to pinned physical addresses."
 
 [shared.gpu_optimization_roadmap.phase_4_vcache_simd]
-status = "pending"
-summary = "CPU-side halo counting via rayon + AVX2 on Zen 3 V-Cache"
-detail = "6 physical cores, par_chunks(8), _mm256_cmp_ps threshold, _mm256_movemask_ps + count_ones. 8.4 MB pinned rho fits in 96 MB L3. ~200 GB/s internal bandwidth."
+status = "complete"
+summary = "CPU-side halo counting via rayon par_chunks(8) + wide::f32x8"
+detail = "Portable SIMD via wide crate (AVX2 on x86_64, NEON on aarch64). 96 MB V-Cache fits 256^3 rho field."
+
+[shared.gpu_optimization_roadmap.phase_5_tensor_core_la]
+status = "active"
+summary = "Tensor Core AVT via Left-Multiplication Matrix L_a for dim>=64 CD algebras"
+detail = """
+CANONICAL STANDARD for all high-dimensional (dim>=64) CD algebra GPU computation.
+
+The Left-Multiplication Matrix L_a encodes a*x as standard matrix-vector product:
+  L_a[i][j] = a[i XOR j] * gamma(i XOR j, j)
+where gamma = cd_basis_mul_sign. This maps non-associative CD multiplication into
+linear algebra suitable for Tensor Core WMMA MMA instructions.
+
+Key properties:
+- For basis elements (entries 0 or +/-1), FP16 is EXACT -- no rounding.
+- FP32 accumulator preserves full single precision for linear combinations.
+- At dim=256 (Voudon), L_a = 256x256 = 256 WMMA 16x16 tiles.
+- Tiled streaming: never need full L_a in memory. Build tiles on-the-fly via
+  build_left_mul_tile(). Working set: ~2 KB per row-block.
+
+Files:
+- crates/algebra_core/src/gpu/kernels_tensor_avt.cu  (CUDA kernel: build_left_mul_tile + tensor_cd_mul_kernel)
+- crates/algebra_core/src/gpu/tensor_avt.rs          (host orchestration: TensorAVT, compute_cd_mul, compute_dense_avt_field)
+- crates/cd_kernel/src/cayley_dickson.rs:467          (CPU reference: left_mult_operator f64)
+- crates/algebra_core/src/construction/cayley_dickson  (re-export: cd_basis_mul_sign, cd_multiply)
+
+Verification: 3 independent paths must agree:
+1. compute_cd_mul (L_a row-scan)
+2. cd_multiply from cd_kernel (recursive doubling)
+3. reference_cd_multiply (target-index accumulation, test-only)
+
+Dims supported: 16, 32, 64, 128, 256, 512, 1024 (powers of 2, >= 16).
+"""
+hardware = "RTX 4070 Ti SM 8.9: 4th-gen Tensor Cores, FP16 MMA + FP32 accumulate, ~165 TFLOPS"
 
 [shared.gpu_optimization_roadmap.future]
-f16_storage = "FIXME: f16 storage with f32 compute for 2x bandwidth (cuda_fp16.h)"
+wmma_batching_16col = "TODO: batch 16 x-vectors into B fragment columns for 16x throughput (MxM not MxV)"
 aa_streaming = "TODO: A-A (in-place) streaming pattern to halve VRAM usage"
 texture_3d = "TODO: 3D texture binding for streaming neighbor fetch (Morton Z-curve ordering)"
 

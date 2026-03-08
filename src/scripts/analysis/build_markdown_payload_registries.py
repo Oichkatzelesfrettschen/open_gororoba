@@ -14,6 +14,7 @@ Design goal:
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import hashlib
 import json
 import re
@@ -22,9 +23,41 @@ import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
+from repo_fastpath import discover_files, worker_budget
 
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 LIST_RE = re.compile(r"^(?:[-*+]\s+|\d+\.\s+)(.+)$")
+IGNORED_PREFIXES = (
+    ".cache/",
+    ".pytest_cache/",
+    "venv/",
+    ".venv/",
+    ".venv_ingest/",
+    ".horusec/",
+    ".claude/",
+    ".gemini/",
+    ".playwright-mcp/",
+    ".mamba/",
+    "target/",
+    "logs/",
+    "build/",
+    "dist/",
+    "temp/",
+    "tmp/",
+)
+IGNORED_PATH_PARTS = {
+    ".cache",
+    "cargo-home",
+    ".pytest_cache",
+    "venv",
+    ".venv",
+    "target",
+    "logs",
+    "build",
+    "dist",
+    "temp",
+    "tmp",
+}
 
 
 @dataclass(frozen=True)
@@ -86,15 +119,24 @@ def _git_paths(repo_root: Path, args: list[str]) -> set[str]:
     return set(line.strip() for line in proc.stdout.splitlines() if line.strip())
 
 
+def _load_governance_policy(repo_root: Path) -> dict[str, object]:
+    gov_path = repo_root / "registry/markdown_governance.toml"
+    if not gov_path.is_file():
+        return {}
+    raw = tomllib.loads(gov_path.read_text(encoding="utf-8"))
+    policy = raw.get("policy", {})
+    return policy if isinstance(policy, dict) else {}
+
+
+def _skip_path(path: str) -> bool:
+    if any(path.startswith(prefix) for prefix in IGNORED_PREFIXES):
+        return True
+    parts = path.split("/")
+    return any(part in IGNORED_PATH_PARTS for part in parts)
+
+
 def _discover_markdown_files(repo_root: Path) -> list[str]:
-    paths: list[str] = []
-    for path in repo_root.rglob("*.md"):
-        rel = path.relative_to(repo_root).as_posix()
-        if rel.startswith(".git/"):
-            continue
-        paths.append(rel)
-    paths.sort()
-    return paths
+    return discover_files(repo_root, ".md", IGNORED_PREFIXES, IGNORED_PATH_PARTS)
 
 
 def _origin_class(path: str, generated: bool, third_party: bool) -> str:
@@ -258,6 +300,115 @@ def _write(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def _process_markdown_document(
+    args: tuple[
+        Path,
+        int,
+        str,
+        dict[str, dict[str, object]],
+        dict[str, dict[str, object]],
+        set[str],
+        set[str],
+        set[str],
+    ],
+) -> tuple[dict[str, object], list[dict[str, object]], str, str]:
+    (
+        repo_root,
+        idx,
+        rel_path,
+        inventory_by_path,
+        owner_by_path,
+        tracked,
+        untracked,
+        ignored,
+    ) = args
+    abs_path = repo_root / rel_path
+    raw = abs_path.read_bytes()
+    decoded_text = raw.decode("utf-8", errors="ignore")
+
+    sha256 = hashlib.sha256(raw).hexdigest()
+    size_bytes = len(raw)
+    line_count = decoded_text.count("\n") + (
+        1 if decoded_text and not decoded_text.endswith("\n") else 0
+    )
+
+    inv_row = inventory_by_path.get(rel_path, {})
+    owner_row = owner_by_path.get(rel_path, {})
+    generated = bool(inv_row.get("generated", False))
+    third_party = bool(inv_row.get("third_party", False))
+    origin_class = _origin_class(rel_path, generated=generated, third_party=third_party)
+
+    if rel_path in tracked:
+        git_status = "tracked"
+    elif rel_path in untracked:
+        git_status = "untracked"
+    elif rel_path in ignored:
+        git_status = "ignored"
+    else:
+        git_status = "filesystem_only"
+
+    units = _parse_markdown_units(decoded_text)
+    doc_id = f"MPY-{idx:05d}"
+    chunk_ids: list[str] = []
+    chunks: list[dict[str, object]] = []
+
+    heading_count = 0
+    paragraph_count = 0
+    list_item_count = 0
+    table_row_count = 0
+    code_block_count = 0
+
+    for part_idx, unit in enumerate(units, start=1):
+        chunk_id = f"{doc_id}-C{part_idx:04d}"
+        chunk_ids.append(chunk_id)
+        text_sha256 = hashlib.sha256(unit.text_ascii.encode("utf-8")).hexdigest()
+        chunks.append(
+            {
+                "id": chunk_id,
+                "document_id": doc_id,
+                "chunk_index": part_idx,
+                "kind": unit.kind,
+                "line_start": unit.line_start,
+                "line_end": unit.line_end,
+                "heading_level": unit.heading_level,
+                "text_ascii": unit.text_ascii,
+                "text_sha256": text_sha256,
+            }
+        )
+        if unit.kind == "heading":
+            heading_count += 1
+        elif unit.kind == "paragraph":
+            paragraph_count += 1
+        elif unit.kind == "list_item":
+            list_item_count += 1
+        elif unit.kind == "table_row":
+            table_row_count += 1
+        elif unit.kind == "code_block":
+            code_block_count += 1
+
+    document = {
+        "id": doc_id,
+        "path": rel_path,
+        "git_status": git_status,
+        "origin_class": origin_class,
+        "generated": generated,
+        "third_party": third_party,
+        "canonical_toml_owner": str(owner_row.get("canonical_toml", "")),
+        "size_bytes": size_bytes,
+        "line_count": line_count,
+        "content_sha256": sha256,
+        "content_encoding": "structured_toml_units",
+        "chunk_count": len(chunk_ids),
+        "heading_count": heading_count,
+        "paragraph_count": paragraph_count,
+        "list_item_count": list_item_count,
+        "table_row_count": table_row_count,
+        "code_block_count": code_block_count,
+        "chunk_ids": chunk_ids,
+    }
+    return document, chunks, git_status, origin_class
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -288,11 +439,25 @@ def main() -> int:
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
+    policy = _load_governance_policy(repo_root)
+    global IGNORED_PREFIXES, IGNORED_PATH_PARTS
+    skip_prefixes = tuple(
+        str(item).strip() for item in policy.get("skip_prefixes", []) if str(item).strip()
+    )
+    if skip_prefixes:
+        IGNORED_PREFIXES = skip_prefixes
+    skip_parts = {
+        str(item).strip() for item in policy.get("skip_path_parts", []) if str(item).strip()
+    }
+    if skip_parts:
+        IGNORED_PATH_PARTS = skip_parts
     inventory_raw = tomllib.loads((repo_root / args.inventory_path).read_text(encoding="utf-8"))
     owner_raw = tomllib.loads((repo_root / args.owner_map_path).read_text(encoding="utf-8"))
 
     inventory_by_path = {
-        str(row.get("path", "")): row for row in inventory_raw.get("document", []) if row.get("path")
+        str(row.get("path", "")): row
+        for row in inventory_raw.get("document", [])
+        if row.get("path")
     }
     owner_by_path = {
         str(row.get("path", "")): row for row in owner_raw.get("owner", []) if row.get("path")
@@ -306,99 +471,35 @@ def main() -> int:
     )
 
     markdown_paths = _discover_markdown_files(repo_root)
-    documents: list[dict] = []
-    chunks: list[dict] = []
+    documents: list[dict[str, object]] = []
+    chunks: list[dict[str, object]] = []
     status_counts = {"tracked": 0, "untracked": 0, "ignored": 0, "filesystem_only": 0}
     origin_counts = {"project_manual": 0, "project_generated": 0, "third_party_cache": 0}
     kind_counts = {"heading": 0, "paragraph": 0, "list_item": 0, "table_row": 0, "code_block": 0}
-
-    for idx, rel_path in enumerate(markdown_paths, start=1):
-        abs_path = repo_root / rel_path
-        raw = abs_path.read_bytes()
-        decoded_text = raw.decode("utf-8", errors="ignore")
-
-        sha256 = hashlib.sha256(raw).hexdigest()
-        size_bytes = len(raw)
-        line_count = decoded_text.count("\n") + (1 if decoded_text and not decoded_text.endswith("\n") else 0)
-
-        inv_row = inventory_by_path.get(rel_path, {})
-        owner_row = owner_by_path.get(rel_path, {})
-        generated = bool(inv_row.get("generated", False))
-        third_party = bool(inv_row.get("third_party", False))
-        origin_class = _origin_class(rel_path, generated=generated, third_party=third_party)
-
-        if rel_path in tracked:
-            git_status = "tracked"
-        elif rel_path in untracked:
-            git_status = "untracked"
-        elif rel_path in ignored:
-            git_status = "ignored"
-        else:
-            git_status = "filesystem_only"
-        status_counts[git_status] = status_counts.get(git_status, 0) + 1
-        origin_counts[origin_class] = origin_counts.get(origin_class, 0) + 1
-
-        units = _parse_markdown_units(decoded_text)
-        doc_id = f"MPY-{idx:05d}"
-        chunk_ids: list[str] = []
-
-        heading_count = 0
-        paragraph_count = 0
-        list_item_count = 0
-        table_row_count = 0
-        code_block_count = 0
-
-        for part_idx, unit in enumerate(units, start=1):
-            chunk_id = f"{doc_id}-C{part_idx:04d}"
-            chunk_ids.append(chunk_id)
-            text_sha256 = hashlib.sha256(unit.text_ascii.encode("utf-8")).hexdigest()
-            chunks.append(
-                {
-                    "id": chunk_id,
-                    "document_id": doc_id,
-                    "chunk_index": part_idx,
-                    "kind": unit.kind,
-                    "line_start": unit.line_start,
-                    "line_end": unit.line_end,
-                    "heading_level": unit.heading_level,
-                    "text_ascii": unit.text_ascii,
-                    "text_sha256": text_sha256,
-                }
-            )
-            kind_counts[unit.kind] = kind_counts.get(unit.kind, 0) + 1
-            if unit.kind == "heading":
-                heading_count += 1
-            elif unit.kind == "paragraph":
-                paragraph_count += 1
-            elif unit.kind == "list_item":
-                list_item_count += 1
-            elif unit.kind == "table_row":
-                table_row_count += 1
-            elif unit.kind == "code_block":
-                code_block_count += 1
-
-        documents.append(
-            {
-                "id": doc_id,
-                "path": rel_path,
-                "git_status": git_status,
-                "origin_class": origin_class,
-                "generated": generated,
-                "third_party": third_party,
-                "canonical_toml_owner": str(owner_row.get("canonical_toml", "")),
-                "size_bytes": size_bytes,
-                "line_count": line_count,
-                "content_sha256": sha256,
-                "content_encoding": "structured_toml_units",
-                "chunk_count": len(chunk_ids),
-                "heading_count": heading_count,
-                "paragraph_count": paragraph_count,
-                "list_item_count": list_item_count,
-                "table_row_count": table_row_count,
-                "code_block_count": code_block_count,
-                "chunk_ids": chunk_ids,
-            }
+    tasks = [
+        (
+            repo_root,
+            idx,
+            rel_path,
+            inventory_by_path,
+            owner_by_path,
+            tracked,
+            untracked,
+            ignored,
         )
+        for idx, rel_path in enumerate(markdown_paths, start=1)
+    ]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=worker_budget(repo_root)) as executor:
+        for document, doc_chunks, git_status, origin_class in executor.map(
+            _process_markdown_document, tasks
+        ):
+            documents.append(document)
+            chunks.extend(doc_chunks)
+            status_counts[git_status] = status_counts.get(git_status, 0) + 1
+            origin_counts[origin_class] = origin_counts.get(origin_class, 0) + 1
+            for row in doc_chunks:
+                kind = str(row["kind"])
+                kind_counts[kind] = kind_counts.get(kind, 0) + 1
 
     payload_lines: list[str] = [
         "# Structured markdown payload registry (pure TOML textual units).",
@@ -407,7 +508,7 @@ def main() -> int:
         "[markdown_payloads]",
         'updated = "deterministic"',
         "authoritative = true",
-        "representation = \"structured_toml_units\"",
+        'representation = "structured_toml_units"',
         f"document_count = {len(documents)}",
         f"tracked_count = {status_counts.get('tracked', 0)}",
         f"untracked_count = {status_counts.get('untracked', 0)}",
@@ -456,7 +557,7 @@ def main() -> int:
         "[markdown_payload_chunks]",
         'updated = "deterministic"',
         "authoritative = true",
-        "representation = \"structured_toml_units\"",
+        'representation = "structured_toml_units"',
         f"chunk_count = {len(chunks)}",
         f"document_count = {len(documents)}",
         "",

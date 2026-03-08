@@ -15,27 +15,6 @@ import tomllib
 from pathlib import Path
 
 
-TARGET_PREFIXES = ("docs/", "reports/", "data/artifacts/")
-ROOT_TARGETS = {
-    "AGENTS.md",
-    "CLAUDE.md",
-    "GEMINI.md",
-    "README.md",
-    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md",
-    "PHASE10_11_ULTIMATE_ROADMAP.md",
-    "PYTHON_REFACTORING_ROADMAP.md",
-    "SYNTHESIS_PIPELINE_PROGRESS.md",
-    "crates/sign_imbalance/IMPLEMENTATION_NOTES.md",
-    "curated/README.md",
-    "curated/01_theory_frameworks/README_COQ.md",
-    "data/csv/README.md",
-    "data/artifacts/README.md",
-    "NAVIGATOR.md",
-    "REQUIREMENTS.md",
-    "docs/REQUIREMENTS.md",
-}
-
-
 def _load(path: Path) -> dict:
     return tomllib.loads(path.read_text(encoding="utf-8"))
 
@@ -48,12 +27,36 @@ def _assert_ascii(path: Path) -> None:
         raise SystemExit(f"ERROR: non-ASCII content in {path}: {sample!r}")
 
 
-def _is_target_path(path: str) -> bool:
+def _load_governance(repo_root: Path) -> tuple[set[str], set[str], dict[str, str], set[str]]:
+    gov = _load(repo_root / "registry/markdown_governance.toml")
+    policy = gov.get("policy", {})
+    prefixes = {
+        str(item).strip()
+        for item in policy.get("embedded_markdown_prefixes", [])
+        if str(item).strip()
+    }
+    roots = {
+        str(item).strip().replace("\\", "/")
+        for item in policy.get("embedded_markdown_root_paths", [])
+        if str(item).strip()
+    }
+    path_modes = {
+        str(row.get("path", "")).strip().replace("\\", "/"): str(row.get("mode", "")).strip()
+        for row in gov.get("document", [])
+        if str(row.get("path", "")).strip().endswith(".md")
+    }
+    forbidden_modes = {
+        str(item).strip() for item in policy.get("disk_forbidden_modes", []) if str(item).strip()
+    }
+    return prefixes, roots, path_modes, forbidden_modes
+
+
+def _is_target_path(path: str, prefixes: set[str], roots: set[str]) -> bool:
     if not path.endswith(".md"):
         return False
-    if path in ROOT_TARGETS:
+    if path in roots:
         return True
-    return path.startswith(TARGET_PREFIXES)
+    return any(path.startswith(prefix) for prefix in prefixes)
 
 
 def _pick_path(row: dict) -> str:
@@ -68,7 +71,7 @@ def _pick_path(row: dict) -> str:
     return ""
 
 
-def _collect_expected_paths(repo_root: Path) -> set[str]:
+def _collect_expected_paths(repo_root: Path, prefixes: set[str], roots: set[str]) -> set[str]:
     expected: set[str] = set()
     for registry_path in sorted((repo_root / "registry").glob("*.toml")):
         raw = _load(registry_path)
@@ -82,7 +85,7 @@ def _collect_expected_paths(repo_root: Path) -> set[str]:
             if not body.strip():
                 continue
             path = _pick_path(row)
-            if path and _is_target_path(path):
+            if path and _is_target_path(path, prefixes, roots):
                 expected.add(path)
     return expected
 
@@ -115,6 +118,7 @@ def main() -> int:
     if not chunks_path.exists():
         raise SystemExit(f"ERROR: missing chunk registry: {chunks_path}")
 
+    target_prefixes, root_targets, governed_modes, forbidden_modes = _load_governance(root)
     _assert_ascii(payload_path)
     _assert_ascii(chunks_path)
 
@@ -159,9 +163,13 @@ def main() -> int:
             if unit_id not in chunk_by_id:
                 failures.append(f"missing chunk for document {path}: {unit_id}")
         if (root / path).exists():
-            failures.append(f"strict-toml target markdown still exists on disk: {path}")
+            mode = governed_modes.get(path, "")
+            if mode in forbidden_modes:
+                failures.append(
+                    f"markdown exists on disk despite forbidden governance mode: {path}"
+                )
 
-    expected_paths = _collect_expected_paths(root)
+    expected_paths = _collect_expected_paths(root, target_prefixes, root_targets)
     missing = sorted(expected_paths - payload_paths)
     extra = sorted(payload_paths - expected_paths)
     if missing:

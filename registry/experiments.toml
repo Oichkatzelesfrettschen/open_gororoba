@@ -1812,7 +1812,7 @@ dataset_refs = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
-id = "E-079"
+id = "E-110"
 title = "ADM decomposition verification against exact solutions"
 binary = "adm-decompose"
 binary_registered = true
@@ -1935,7 +1935,7 @@ reproducibility_class = "deterministic_replay"
 id = "E-084"
 title = "ZD graph spectral dimension census"
 binary = "zd-spectral-dimension"
-binary_registered = false
+binary_registered = true
 binary_experiment_declared = ""
 method = "For each CD dim: build cross-assessor ZD graph, compute Laplacian, eigendecompose, compute P(t) on geometric t-grid, SG-smooth ln P vs ln t, extract d_s plateau via central differences."
 input = "None (computational)"
@@ -2103,7 +2103,7 @@ reproducibility_class = "deterministic_replay"
 id = "E-091"
 title = "Flyby Crucible with Bivector-Embedded Chingon Drag"
 binary = "flyby-crucible"
-binary_registered = false
+binary_registered = true
 binary_experiment_declared = ""
 method = "Integrate 6 spacecraft trajectories through Earth SOI with bivector-embedded 64D Chingon drag force. Unit-norm embedding with 3 blocks: angular momentum (axes 1-21), velocity (axes 22-42), cross-coupling (axes 43-63). Sign sensitivity via sign(h . v_wind) where h = r x v. Compare predicted delta-V signs with observed flyby anomaly (Anderson 2008)."
 input = "Flyby orbital elements from Anderson et al. (2008) PRL 100 091102"
@@ -2127,7 +2127,7 @@ reproducibility_class = "deterministic_replay"
 id = "E-092"
 title = "EHT Pathion Shadow Angular Size for M87*"
 binary = "pathion-shadow-cli"
-binary_registered = false
+binary_registered = true
 binary_experiment_declared = ""
 method = "Compute Schwarzschild photon sphere shadow angular size and sub-ring demagnification for M87* (mass 6.5e9 M_sun, distance 16.8 Mpc). Shadow radius = 3*sqrt(3)/2 * r_s. Sub-ring separation via exp(-pi) demagnification factor. Compare with EHT 2019 observation of ~42 uas."
 input = "M87* mass and distance from EHT Collaboration (2019)"
@@ -2151,7 +2151,7 @@ reproducibility_class = "deterministic_replay"
 id = "E-093"
 title = "Riemann Resonance Sweep: Brody Parameter for Orthoplex Laplacians"
 binary = "riemann-resonance-sweep"
-binary_registered = false
+binary_registered = true
 binary_experiment_declared = ""
 method = "Compute Laplacian eigenvalue spacing statistics for orthoplex K_{2,...,2} graphs at CD dimensions 4,8,16,32,64,128,256. Classify via Brody parameter q (q=0 Poisson/integrable, q=1 GOE/chaotic). All orthoplex Laplacians have only 3 distinct eigenvalues (0, 2(k-1), 2k) so spacing statistics are degenerate."
 input = "Analytically computed eigenvalues"
@@ -2199,7 +2199,7 @@ reproducibility_class = "deterministic_replay"
 id = "E-095"
 title = "Three-body 64D flyby integration with body-specific triads"
 binary = "flyby-crucible"
-binary_registered = false
+binary_registered = true
 binary_experiment_declared = ""
 method = "RK4 integration of 6 spacecraft flybys with 3-body (Earth/Moon/Sun) 64D Chingon bivector drag. Body-specific triads: Earth triad for angular momentum block, Lunar triad for velocity block, Solar triad for cross-coupling block. JPL DE440 ephemeris for Moon/Sun positions."
 input = "Anderson et al. (2008) PRL 100, 091102 flyby parameters, JPL DE440 ephemeris"
@@ -2222,7 +2222,7 @@ reproducibility_class = "non_deterministic"
 id = "E-096"
 title = "ETA_WAKE gravitational focusing wake parameter sweep"
 binary = "flyby-crucible"
-binary_registered = false
+binary_registered = true
 binary_experiment_declared = ""
 method = "Sweep ETA_WAKE=[0.0,0.05,0.10,0.15,0.20] with 3-body 64D Chingon drag. Measures effect of asymmetric (cos theta_wind) density modulation on 6 flyby delta-V predictions. Tests whether gravitational focusing wake can flip Rosetta-I sign."
 input = "Anderson et al. (2008) flyby parameters, arXiv:2112.05718 + arXiv:2502.04456 + arXiv:1409.2858 (gravitational focusing literature)"
@@ -2244,8 +2244,8 @@ reproducibility_class = "non_deterministic"
 [[experiment]]
 id = "E-097"
 title = "CUDA GPU vs CPU validation at 64D for flyby crucible"
-binary = ""
-binary_registered = false
+binary = "flyby-crucible"
+binary_registered = true
 binary_experiment_declared = ""
 method = "Run flyby crucible with --gpu flag vs without. Compare all 6 flyby delta-V values. Tolerance: f32 precision (~1e-4 relative error)."
 input = "64D AVT (52080 violations), 6 flyby configs from Anderson et al. (2008)"
@@ -2267,8 +2267,8 @@ reproducibility_class = "non_deterministic"
 [[experiment]]
 id = "E-098"
 title = "Dimensional scaling: 128D + 256D GPU flyby crucible"
-binary = ""
-binary_registered = false
+binary = "flyby-crucible"
+binary_registered = true
 binary_experiment_declared = ""
 method = "Run flyby crucible with --dim 128 --gpu and --dim 256 --gpu. Compare sign patterns and magnitudes against 64D CPU baseline."
 input = "AVT at dims 128 (468720 violations) and 256 (3968496 violations), 6 flyby configs"
@@ -2451,8 +2451,8 @@ reproducibility_class = "non_deterministic"
 [[experiment]]
 id = "E-106"
 title = "Majorana braid through CD tower at dims 16-128"
-binary = ""
-binary_registered = false
+binary = "majorana-braid-crucible"
+binary_registered = true
 binary_experiment_declared = ""
 method = "Clifford braid via gamma_matrices_cl8(), CD braid via SignTableCache + rotate_sparse(), friction = cumulative associator norm."
 input = "circuit=[(0,1),(1,2),(2,3),(0,1)], dims=[16,32,64,128], seed=42"
@@ -2474,8 +2474,8 @@ reproducibility_class = "non_deterministic"
 [[experiment]]
 id = "E-107"
 title = "Box-kite fusion statistics at dim=16"
-binary = ""
-binary_registered = false
+binary = "majorana-braid-crucible"
+binary_registered = true
 binary_experiment_declared = ""
 method = "cd_basis_mul_sign_iter(dim, lo, hi) for each assessor pair. Partition by sign, count distinct values."
 input = "dim=16, 7 box-kites x 6 pairs = 42 products"
@@ -2497,8 +2497,8 @@ reproducibility_class = "non_deterministic"
 [[experiment]]
 id = "E-108"
 title = "Braid-aligned CHSH test at dim=16"
-binary = ""
-binary_registered = false
+binary = "majorana-braid-crucible"
+binary_registered = true
 binary_experiment_declared = ""
 method = "chsh_braid_aligned: rotate in ZD subplanes, measure correlators via associator_measurement_fast."
 input = "dim=16, n_samples=10000, seed=42"
@@ -2520,8 +2520,8 @@ reproducibility_class = "non_deterministic"
 [[experiment]]
 id = "E-109"
 title = "Complex-time Majorana braid Wick rotation sweep"
-binary = ""
-binary_registered = false
+binary = "majorana-braid-crucible"
+binary_registered = true
 binary_experiment_declared = ""
 method = "complex_time_braid: SO(2) rotation with damping factor cos(theta)*sin(theta)."
 input = "dim=16, theta_steps=10"
@@ -2539,4 +2539,3 @@ input_path_refs = []
 output_path_refs = []
 dataset_refs = []
 reproducibility_class = "non_deterministic"
-

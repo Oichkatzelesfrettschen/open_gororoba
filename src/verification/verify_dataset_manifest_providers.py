@@ -16,7 +16,6 @@ import re
 import tomllib
 from pathlib import Path
 
-
 MANIFEST_REGISTRY_PATH = Path("registry/external_sources.toml")
 FETCH_RS_PATH = Path("crates/gororoba_cli_data/src/bin/fetch_datasets.rs")
 PROVIDER_TOKEN_RE = re.compile(r"([A-Za-z0-9_]+Provider)")

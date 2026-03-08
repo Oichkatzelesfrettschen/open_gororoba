@@ -4,15 +4,15 @@
 //! anomalous multipole alignment in the Cosmic Microwave Background.
 
 use cosmology_core::VoudonCmbAnalyzer;
-use algebra_core::construction::deep_space::compute_voudon_frustration_density;
+use algebra_core::construction::deep_space::compute_voudon_imbalance_density;
 use nalgebra::Vector3;
 
 fn main() -> anyhow::Result<()> {
     println!("=== Phase 3: CMB Axis of Evil Crucible (256D Voudon Alignment) ===");
 
     // 1. Get Algebraic input from 256D Voudon algebra
-    let phi = compute_voudon_frustration_density();
-    println!("  Voudon Frustration Density (Phi): {:.8}", phi);
+    let phi = compute_voudon_imbalance_density();
+    println!("  Voudon Imbalance Density (Phi): {:.8}", phi);
 
     // 2. Initialize CMB Analyzer
     let analyzer = VoudonCmbAnalyzer::new(phi);

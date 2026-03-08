@@ -31,18 +31,25 @@ make studio-check
 ```
 
 Notes:
-- `make check` runs `make lint`, `make smoke`, and `make integrity` (warnings-as-errors).
-- `make smoke` runs the dedicated fast smoke lanes (`make python-smoke` + `make rust-smoke`).
+- `make check` runs the fast shared non-mutating gate: `make lint`, `make python-smoke`, `make ascii-check`, `make terminology-gate`, and `make verify-no-reports-writes` (warnings-as-errors).
+- `make lint` is the required changed-file Ruff ratchet for Python files under `src/`, `tests/`, `bin/`, and `scripts/`; use `make lint-all` or `make lint-advisory` to inspect the full legacy backlog.
+- `make smoke` runs the dedicated fast smoke lanes (`make python-smoke` + `make rust-smoke`). Pytest files marked `requires_ext` stay out of the default smoke lane.
+- `make gate-local` is the pre-push entrypoint; it runs `make check`, then adds scoped Rust regression and read-only governance verification only when the current diff touches those surfaces.
+- The local Rust fast path is intentionally narrower than CI: `make rust-regression-scoped` now lint-checks only `--lib --tests` for the affected packages before running scoped light `cargo nextest`. Full `--all-targets` clippy enforcement remains in the required CI/full regression lanes.
 - `make rust-regression` runs the required non-ignored Rust regression lane.
+- `make python-regression` runs the default regression pytest lane without optional-extension suites; Python pytest lanes use `pytest-xdist` with the shared worker budget (`nproc/2`) and explicit plugin loading because plugin autoload is disabled by default. Use `make python-requires-ext` when the matching extras are installed and you want the opt-in extension/vendor coverage.
 - `make studio-check` runs Rust tests + clippy (`-D warnings`) for the Studio app lane.
 - `make integrity` carries the verifier, ASCII, and inventory bundle.
 - If your shell or outer tooling exports `MAKEFLAGS` globally and GNU make warns about a stale jobserver FIFO before targets run, invoke repo targets through `./makew <target>` so the repo's own concurrency policy is applied from a clean environment.
 - Rust quality lanes auto-detect logical threads, divide by two for the worker budget, and apply that budget consistently to Cargo build jobs, nextest test threads, libtest threads, and Rayon pools unless a lane overrides it for a known heavy test group.
+- Required Rust gates isolate Cargo state per project by default: `CARGO_HOME=$(pwd)/.cache/cargo-home` and `CARGO_TARGET_DIR=$(pwd)/.cache/gate-target`. This avoids cross-project package-cache locks when multiple agents, MCP background checks, or neighboring repos are active at the same time.
+- `make clean` removes the repo-local gate target dir for a fresh rebuild, while `make clean-all` also removes `.cache/cargo-home` for a fully cold Rust dependency/bootstrap cycle.
 - Some doc/source extraction utilities rely on system tools like `pdftotext`; see `docs/REQUIREMENTS.md`.
 - Optional modules may not install cleanly on very new Python versions; use a Python 3.11/3.12 env or Docker when needed.
 - In particular, the `analysis` extra conditionally installs `scikit-learn` only for Python <3.14 (see `pyproject.toml`).
 - System-installed Python packages (e.g., Arch/AUR) are not visible inside this repo's default venv unless you use `--system-site-packages` or install the pip equivalents.
 - Editable installs may create `src/*.egg-info/`; these are gitignored and should never be committed.
+- Dev tooling now includes `pytest-xdist` so pytest can use the same bounded worker budget as the Rust lanes without relying on plugin autoload.
 
 ## 2) Optional Modules
 
@@ -167,7 +174,9 @@ cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverif
    - `data-governance-gate` enforces fail-closed policy checks (origin, naming, gitignore, blocked deadlines, unclassified-lane zero).
    - `data-semantic-validate` reports lane-level status as pass/fail/unverifiable for structural plus scientific checks; use `--fail-on-unverifiable true` for strict governance passes.
    - `data-clean` removes reproducible build outputs so regeneration remains deterministic.
-- Cargo workflow policy: detect logical threads, divide by two for the worker budget, use that budget for Cargo build parallelism (`CARGO_JOBS`), nextest scheduling (`NEXTEST_TEST_THREADS`), libtest threads (`RUST_TEST_THREADS`), and intra-test worker pools such as Rayon unless a specific lane narrows concurrency further.
+- Cargo workflow policy: detect logical threads, divide by two for the worker budget, use that budget for Cargo build parallelism (`CARGO_JOBS`), nextest scheduling (`NEXTEST_TEST_THREADS`), libtest threads (`RUST_TEST_THREADS`), and intra-test worker pools such as Rayon unless a specific lane narrows concurrency further. Required gates also isolate Cargo state per project with `CARGO_HOME=$(pwd)/.cache/cargo-home` and `CARGO_TARGET_DIR=$(pwd)/.cache/gate-target`.
+- Python workflow policy: use `pytest-xdist` for bounded pytest parallelism at the same worker budget, but keep the registry/markdown builder scripts selective and mostly serial unless a specific script proves to be CPU-bound and safe under `concurrent.futures`.
+- Cleanup policy: `make clean` drops `.cache/gate-target/`; `make clean-all` also drops `.cache/cargo-home` for a cold-start dependency refresh.
 - Lane boundary: keep only replayable dataset payloads in `data/external`; move manual intake/document corpora to `data/papers` (manual import exception lane).
    - Active source rules must use explicit scientific validator refs (no `structure_only` on active entries).
    - Validation snapshot (`2026-02-25`): strict semantic gate passed `29/29` validators with `failed=0` and `unverifiable=0` (`reports/data_semantic_validate_2026-02-25_burndown_step2_postretire.toml`).

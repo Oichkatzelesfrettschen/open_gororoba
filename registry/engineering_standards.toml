@@ -19,10 +19,11 @@ trigger = "pre-commit"
 import_grouping = "std_external_crate"
 
 [engineering_standards.linting]
-tool = "clippy"
-policy = "cargo clippy --all-targets --all-features -- -D warnings"
+tool = "clippy_and_ruff"
+policy = "Rust required gates use cargo clippy --all-targets --all-features -- -D warnings; Python required gates use the changed-file Ruff ratchet via scripts/run_ruff_changed.py while full-corpus Ruff remains an explicit backlog/advisory lane."
 allowed_lints_policy = "explicit_justification_required"
 license_check = "cargo-deny"
+python_ratchet_policy = "Required Python linting applies only to changed files under src/, tests/, bin/, and scripts/ so legacy debt does not block unrelated pushes; use make lint-all or make lint-advisory to burn down and report the remaining backlog."
 
 [engineering_standards.quality_gate_cadence]
 mode = "two_speed"
@@ -33,8 +34,10 @@ fast_iteration_commands = [
   "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo clippy -p <crate> --all-targets -- -D warnings",
 ]
 checkpoint_push_policy = "Allowed via git push --no-verify for rapid iteration only after focused crate gates pass."
-milestone_gate_policy = "Required for production claims and major merges: make check plus make rust-regression, with algebra_analysis and gr_core routed through cargo nextest --cargo-profile test-heavy."
+milestone_gate_policy = "Required for production claims and major merges: make check plus make rust-regression, with algebra_analysis and gr_core routed through cargo nextest --cargo-profile test-heavy, and with Python lint enforced as a changed-file ratchet rather than a full-repo legacy sweep."
+local_push_fast_path = "make gate-local keeps the Rust lint surface intentionally narrow: rust-regression-scoped runs cargo clippy over --lib --tests for the affected packages, then runs light nextest for the scoped regression surface. Full-target clippy coverage remains authoritative in CI and the full rust-regression lane."
 execution_topology = "Detect logical threads at runtime, divide by two to set the worker budget, apply that same budget to Cargo build jobs, nextest test threads, libtest test threads, and Rayon worker pools unless a narrower lane override is required."
+cargo_state_isolation = "Required gates set repo-local CARGO_HOME=.cache/cargo-home and CARGO_TARGET_DIR=.cache/gate-target so multiple agents, MCP background checks, or neighboring repos do not contend on shared Cargo package/build locks."
 rationale = "Balance high-velocity iteration with strict milestone integrity."
 
 [engineering_standards.gpu_run_cadence]
@@ -80,10 +83,11 @@ unit_tests = "colocated_in_src"
 integration_tests = "tests_directory"
 property_testing = "proptest"
 benchmarking = "criterion"
+python_parallel_test_runner = "pytest-xdist"
 taxonomy = "smoke_regression_heavy"
-smoke_lane = "Dedicated fast suites only (`make smoke`, `make python-smoke`, `make rust-smoke`)."
-regression_lane = "Required default non-ignored coverage (`make test`, `make python-regression`, `make rust-regression`)."
-heavy_lane = "Ignored, GPU, and research-heavy suites (`make heavy`) with nextest heavy profile routing."
+smoke_lane = "Dedicated fast suites only (`make smoke`, `make python-smoke`, `make rust-smoke`); Python smoke uses pytest-xdist with the shared worker budget and explicit plugin loading while optional-extension pytest cases marked `requires_ext` stay out of the default smoke lane."
+regression_lane = "Required default non-ignored coverage (`make test`, `make python-regression`, `make rust-regression`); Python regression uses pytest-xdist with the shared worker budget, and pytest cases marked `requires_ext` are excluded until the matching optional stack is installed explicitly."
+heavy_lane = "Ignored, GPU, and research-heavy suites (`make heavy`) with nextest heavy profile routing; opt-in Python extension suites run through `make python-requires-ext`."
 inventory_source = "registry/test_taxonomy.toml via cargo run -p gororoba_cli_data --bin test-inventory -- --check"
 heavy_crate_policy = "Never use standard cargo test for algebra_analysis or gr_core; use cargo nextest with --cargo-profile test-heavy and the repo worker budget (logical threads / 2) for build threads, nextest test threads, libtest threads, and Rayon pools unless a stricter per-test override applies."
 

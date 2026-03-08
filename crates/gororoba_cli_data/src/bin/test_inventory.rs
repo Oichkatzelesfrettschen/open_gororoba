@@ -1,7 +1,7 @@
 //! Validate smoke/regression/heavy test taxonomy and stale-count policy.
 
 use std::{
-    collections::BTreeSet,
+    collections::{BTreeMap, BTreeSet},
     path::{Path, PathBuf},
 };
 
@@ -26,6 +26,7 @@ struct Args {
 #[derive(Debug, Deserialize)]
 struct TaxonomyRegistry {
     test_taxonomy: TaxonomyMeta,
+    rust_runtime_policy: RustRuntimePolicy,
     #[serde(default)]
     rust_smoke_target: Vec<RustSmokeTarget>,
     #[serde(default)]
@@ -40,6 +41,14 @@ struct TaxonomyRegistry {
 struct TaxonomyMeta {
     updated: String,
     stale_test_count_pattern: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct RustRuntimePolicy {
+    require_ignore_runtime_seconds: u64,
+    runtime_comment_pattern: String,
+    #[serde(default)]
+    name_hints_require_ignore: Vec<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -68,6 +77,14 @@ struct PythonTestFile {
 struct DocNoCount {
     path: String,
     reason: String,
+}
+
+#[derive(Debug)]
+struct RustTestCase {
+    rel_path: String,
+    name: String,
+    has_ignore: bool,
+    runtime_seconds: Option<u64>,
 }
 
 fn read_registry(path: &Path) -> Result<TaxonomyRegistry, String> {
@@ -257,6 +274,211 @@ fn validate_heavy_packages(
     registry.rust_heavy_package.len()
 }
 
+fn extract_runtime_seconds(
+    runtime_regex: &Regex,
+    text: &str,
+) -> Result<Option<u64>, String> {
+    let Some(captures) = runtime_regex.captures(text) else {
+        return Ok(None);
+    };
+    let lower = captures
+        .get(1)
+        .ok_or_else(|| "missing runtime lower bound capture".to_string())?
+        .as_str()
+        .parse::<u64>()
+        .map_err(|err| format!("parse runtime lower bound: {err}"))?;
+    let upper = captures
+        .get(2)
+        .map(|m| m.as_str().parse::<u64>())
+        .transpose()
+        .map_err(|err| format!("parse runtime upper bound: {err}"))?
+        .unwrap_or(lower);
+    let magnitude = lower.max(upper);
+    let unit = captures
+        .get(3)
+        .ok_or_else(|| "missing runtime unit capture".to_string())?
+        .as_str()
+        .to_ascii_lowercase();
+    let seconds = match unit.as_str() {
+        "s" | "sec" | "secs" | "second" | "seconds" => magnitude,
+        "min" | "mins" | "minute" | "minutes" => magnitude * 60,
+        "hr" | "hrs" | "hour" | "hours" => magnitude * 60 * 60,
+        other => return Err(format!("unsupported runtime unit `{other}`")),
+    };
+    Ok(Some(seconds))
+}
+
+fn discover_rust_tests_in_file(
+    repo_root: &Path,
+    path: &Path,
+    runtime_regex: &Regex,
+    failures: &mut Vec<String>,
+) -> Vec<RustTestCase> {
+    let text = match std::fs::read_to_string(path) {
+        Ok(text) => text,
+        Err(err) => {
+            failures.push(format!("ERROR: read {}: {err}", path.display()));
+            return Vec::new();
+        }
+    };
+    let lines: Vec<&str> = text.lines().collect();
+    let mut tests = Vec::new();
+
+    for (idx, line) in lines.iter().enumerate() {
+        let trimmed = line.trim();
+        let Some(name_part) = trimmed.strip_prefix("fn test_") else {
+            continue;
+        };
+        let Some(paren_index) = name_part.find('(') else {
+            continue;
+        };
+        let name = format!("test_{}", &name_part[..paren_index]);
+
+        let mut has_test = false;
+        let mut has_ignore = false;
+        let mut context = String::new();
+        let mut cursor = idx;
+        while cursor > 0 {
+            cursor -= 1;
+            let prev = lines[cursor].trim();
+            if prev.is_empty() {
+                continue;
+            }
+            if prev.starts_with("#[test]") {
+                has_test = true;
+            }
+            if prev.starts_with("#[ignore") {
+                has_ignore = true;
+            }
+            if prev.starts_with("#[")
+                || prev.starts_with("//")
+                || prev.starts_with("///")
+                || prev.starts_with("//!")
+            {
+                context.push_str(prev);
+                context.push('\n');
+                continue;
+            }
+            break;
+        }
+        if !has_test {
+            continue;
+        }
+
+        let runtime_seconds = match extract_runtime_seconds(runtime_regex, &context) {
+            Ok(runtime) => runtime,
+            Err(err) => {
+                failures.push(format!(
+                    "ERROR: parse runtime comment for {} in {}: {err}",
+                    name,
+                    path.display()
+                ));
+                None
+            }
+        };
+
+        let rel_path = path
+            .strip_prefix(repo_root)
+            .map(|p| p.to_string_lossy().replace('\\', "/"))
+            .unwrap_or_else(|_| path.to_string_lossy().replace('\\', "/"));
+
+        tests.push(RustTestCase {
+            rel_path,
+            name,
+            has_ignore,
+            runtime_seconds,
+        });
+    }
+
+    tests
+}
+
+fn validate_rust_runtime_policy(
+    repo_root: &Path,
+    registry: &TaxonomyRegistry,
+    failures: &mut Vec<String>,
+) -> usize {
+    let heavy_packages: BTreeSet<&str> = registry
+        .rust_heavy_package
+        .iter()
+        .map(|row| row.name.as_str())
+        .collect();
+    let runtime_regex = match Regex::new(&registry.rust_runtime_policy.runtime_comment_pattern) {
+        Ok(regex) => regex,
+        Err(err) => {
+            failures.push(format!(
+                "ERROR: invalid rust runtime regex `{}`: {err}",
+                registry.rust_runtime_policy.runtime_comment_pattern
+            ));
+            return 0;
+        }
+    };
+
+    let mut package_tests: BTreeMap<String, Vec<RustTestCase>> = BTreeMap::new();
+    for package in &heavy_packages {
+        let crate_root = repo_root.join("crates").join(package);
+        if !crate_root.is_dir() {
+            continue;
+        }
+        let mut discovered = Vec::new();
+        for entry in WalkDir::new(&crate_root) {
+            let entry = match entry {
+                Ok(entry) => entry,
+                Err(err) => {
+                    failures.push(format!("ERROR: walk {}: {err}", crate_root.display()));
+                    continue;
+                }
+            };
+            if !entry.file_type().is_file() {
+                continue;
+            }
+            let path = entry.path();
+            if path.extension().and_then(|ext| ext.to_str()) != Some("rs") {
+                continue;
+            }
+            discovered.extend(discover_rust_tests_in_file(
+                repo_root,
+                path,
+                &runtime_regex,
+                failures,
+            ));
+        }
+        package_tests.insert((*package).to_string(), discovered);
+    }
+
+    let mut audited = 0usize;
+    for (package, tests) in &package_tests {
+        for test in tests {
+            audited += 1;
+            let name_requires_ignore = registry
+                .rust_runtime_policy
+                .name_hints_require_ignore
+                .iter()
+                .any(|hint| test.name.contains(hint));
+            let runtime_requires_ignore = test
+                .runtime_seconds
+                .is_some_and(|seconds| seconds >= registry.rust_runtime_policy.require_ignore_runtime_seconds);
+
+            if (name_requires_ignore || runtime_requires_ignore) && !test.has_ignore {
+                let reason = if let Some(seconds) = test.runtime_seconds {
+                    format!(
+                        "runtime={}s threshold={}s",
+                        seconds, registry.rust_runtime_policy.require_ignore_runtime_seconds
+                    )
+                } else {
+                    "name hint matched heavy-runtime policy".to_string()
+                };
+                failures.push(format!(
+                    "ERROR: heavy-package Rust test `{}` in {} ({}) should be #[ignore] for the heavy lane: {}",
+                    test.name, test.rel_path, package, reason
+                ));
+            }
+        }
+    }
+
+    audited
+}
+
 fn validate_docs_without_counts(
     repo_root: &Path,
     registry: &TaxonomyRegistry,
@@ -314,14 +536,16 @@ fn main() {
     let mut failures = Vec::new();
     let rust_smoke_count = validate_rust_smoke_targets(&repo_root, &registry, &mut failures);
     let rust_heavy_count = validate_heavy_packages(&repo_root, &registry, &mut failures);
+    let rust_runtime_audited = validate_rust_runtime_policy(&repo_root, &registry, &mut failures);
     let python_smoke_count = validate_python_files(&repo_root, &registry, &mut failures);
     let docs_checked = validate_docs_without_counts(&repo_root, &registry, &mut failures);
 
     println!(
-        "test-inventory: updated={} rust_smoke_targets={} rust_heavy_packages={} python_files={} python_smoke_files={} docs_without_totals={}",
+        "test-inventory: updated={} rust_smoke_targets={} rust_heavy_packages={} rust_runtime_audited={} python_files={} python_smoke_files={} docs_without_totals={}",
         registry.test_taxonomy.updated,
         rust_smoke_count,
         rust_heavy_count,
+        rust_runtime_audited,
         registry.python_test_file.len(),
         python_smoke_count,
         docs_checked,

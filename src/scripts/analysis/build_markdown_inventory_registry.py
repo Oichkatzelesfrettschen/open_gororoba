@@ -11,6 +11,7 @@ This inventory is intentionally broader than registry/knowledge_sources.toml:
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import fnmatch
 import hashlib
 import re
@@ -18,6 +19,8 @@ import subprocess
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
+
+from repo_fastpath import discover_files, worker_budget
 
 HEADING_RE = re.compile(r"^#\s+(.+?)\s*$", flags=re.M)
 CLAIM_RE = re.compile(r"\bC-\d{3}\b")
@@ -41,6 +44,7 @@ THIRD_PARTY_PATTERNS = (
 )
 
 IGNORED_PREFIXES = (
+    ".cache/",
     ".pytest_cache/",
     "venv/",
     ".venv/",
@@ -57,6 +61,19 @@ IGNORED_PREFIXES = (
     "temp/",
     "tmp/",
 )
+IGNORED_PATH_PARTS = {
+    ".cache",
+    "cargo-home",
+    ".pytest_cache",
+    "venv",
+    ".venv",
+    "target",
+    "logs",
+    "build",
+    "dist",
+    "temp",
+    "tmp",
+}
 
 GENERATED_PATTERNS = (
     "build/docs/generated/*.md",
@@ -101,7 +118,9 @@ DESTINATION_OVERRIDES = {
     "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md": "registry/experiments.toml",
     "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md": "registry/external_sources.toml",
     "docs/generated/INSIGHTS_REGISTRY_MIRROR.md": "registry/insights.toml",
-    "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md": "registry/knowledge_migration_plan.toml",
+    "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md": (
+        "registry/knowledge_migration_plan.toml"
+    ),
     "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md": "registry/markdown_governance.toml",
     "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md": "registry/navigator.toml",
     "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md": "registry/next_actions.toml",
@@ -131,7 +150,11 @@ def _destination_by_scope(path: str) -> str:
         return "registry/claim_tickets.toml"
     if path.startswith("docs/convos/"):
         return "registry/docs_convos.toml"
-    if path.startswith("docs/engineering/") or path.startswith("docs/research/") or path.startswith("docs/theory/"):
+    if (
+        path.startswith("docs/engineering/")
+        or path.startswith("docs/research/")
+        or path.startswith("docs/theory/")
+    ):
         return "registry/research_narratives.toml"
     if path.startswith("docs/monograph/"):
         return "registry/monograph.toml"
@@ -141,7 +164,16 @@ def _destination_by_scope(path: str) -> str:
         return "registry/reports_narratives.toml"
     if path.startswith("data/artifacts/") and path != "data/artifacts/README.md":
         return "registry/artifact_scrolls.toml"
-    if path in {"AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md", "curated/README.md", "curated/01_theory_frameworks/README_COQ.md", "data/csv/README.md", "data/artifacts/README.md"}:
+    if path in {
+        "AGENTS.md",
+        "CLAUDE.md",
+        "GEMINI.md",
+        "README.md",
+        "curated/README.md",
+        "curated/01_theory_frameworks/README_COQ.md",
+        "data/csv/README.md",
+        "data/artifacts/README.md",
+    }:
         return "registry/entrypoint_docs.toml"
     if path == "NAVIGATOR.md":
         return "registry/navigator.toml"
@@ -223,23 +255,15 @@ def _git_paths(root: Path, args: list[str]) -> set[str]:
 
 
 def _all_filesystem_markdown(root: Path) -> set[str]:
-    out: set[str] = set()
-    for path in root.rglob("*.md"):
-        rel = path.relative_to(root).as_posix()
-        if rel.startswith(".git/"):
-            continue
-        if _skip_path(rel):
-            continue
-        out.add(rel)
-    return out
+    return set(discover_files(root, ".md", IGNORED_PREFIXES, IGNORED_PATH_PARTS))
 
 
 def _skip_path(path: str) -> bool:
     if any(path.startswith(prefix) for prefix in IGNORED_PREFIXES):
         return True
     parts = path.split("/")
-    # Skip any directory named venv, .venv, target, logs, build, temp, or tmp at any level
-    if any(p in {".pytest_cache", "venv", ".venv", "target", "logs", "build", "dist", "temp", "tmp"} for p in parts):
+    # Skip cache/build directories no matter where they appear in the tree.
+    if any(p in IGNORED_PATH_PARTS for p in parts):
         return True
     return False
 
@@ -250,6 +274,20 @@ def _is_archived(path: str) -> bool:
 
 def _is_generated_pattern(path: str) -> bool:
     return any(fnmatch.fnmatch(path, pattern) for pattern in GENERATED_PATTERNS)
+
+
+def _load_governance_policy(root: Path) -> tuple[dict[str, object], set[str]]:
+    gov_path = root / "registry/markdown_governance.toml"
+    if not gov_path.is_file():
+        return {}, set()
+    raw = tomllib.loads(gov_path.read_text(encoding="utf-8"))
+    policy = raw.get("policy", {})
+    generated_paths = {
+        str(row.get("path", "")).strip()
+        for row in raw.get("document", [])
+        if str(row.get("mode", "")).strip() == "toml_generated_mirror"
+    }
+    return (policy if isinstance(policy, dict) else {}), generated_paths
 
 
 def _is_pipeline_generated(path: str, generated_declared: bool, toml_destination: str) -> bool:
@@ -292,7 +330,8 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
         "registry/markdown_owner_map.toml",
     }
     archival_non_destination_registries = {
-        # Preserve immutable archival roadmap exclusion while active logic uses canonical mirror path.
+        # Preserve immutable archival roadmap exclusion while active logic
+        # uses canonical mirror path.
         "registry/wave4_roadmap.toml",
     }
 
@@ -306,7 +345,13 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
         if isinstance(obj, dict):
             for key, value in obj.items():
                 lk = key.lower()
-                if lk in {"source_markdown", "markdown", "output_markdown", "path", "primary_markdown"}:
+                if lk in {
+                    "source_markdown",
+                    "markdown",
+                    "output_markdown",
+                    "path",
+                    "primary_markdown",
+                }:
                     if isinstance(value, str):
                         add(value, src)
                     elif isinstance(value, list):
@@ -421,11 +466,10 @@ def _classify(path: str, text: str, toml_destination: str) -> tuple[str, str, st
     )
 
 
-def _build_doc(
-    root: Path, path: str, git_status: str, refs: dict[str, set[str]]
-) -> Doc:
+def _build_doc(root: Path, path: str, git_status: str, refs: dict[str, set[str]]) -> Doc:
     full = root / path
-    text = full.read_text(encoding="utf-8", errors="ignore")
+    raw = full.read_bytes()
+    text = raw.decode("utf-8", errors="ignore")
     title = _first_title(text, Path(path).stem)
     sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
     lines = text.count("\n") + (1 if text else 0)
@@ -460,6 +504,11 @@ def _build_doc(
         migration_priority=priority,
         rationale=_ascii_safe(rationale),
     )
+
+
+def _build_doc_task(args: tuple[Path, str, str, dict[str, set[str]]]) -> Doc:
+    root, path, git_status, refs = args
+    return _build_doc(root, path, git_status, refs)
 
 
 def _render(docs: list[Doc]) -> str:
@@ -566,11 +615,28 @@ def main() -> int:
     args = parser.parse_args()
 
     root = Path(args.repo_root).resolve()
+    policy, generated_paths = _load_governance_policy(root)
+    global GENERATED_PATTERNS, IGNORED_PREFIXES, IGNORED_PATH_PARTS, TOML_PUBLISHED_ALLOWLIST
+    generated_patterns = tuple(
+        str(item).strip() for item in policy.get("generated_patterns", []) if str(item).strip()
+    )
+    if generated_patterns:
+        GENERATED_PATTERNS = generated_patterns
+    skip_prefixes = tuple(
+        str(item).strip() for item in policy.get("skip_prefixes", []) if str(item).strip()
+    )
+    if skip_prefixes:
+        IGNORED_PREFIXES = skip_prefixes
+    skip_parts = {
+        str(item).strip() for item in policy.get("skip_path_parts", []) if str(item).strip()
+    }
+    if skip_parts:
+        IGNORED_PATH_PARTS = skip_parts
+    if generated_paths:
+        TOML_PUBLISHED_ALLOWLIST = set(generated_paths)
     tracked = _git_paths(root, ["ls-files", "*.md"])
     untracked = _git_paths(root, ["ls-files", "--others", "--exclude-standard", "*.md"])
-    ignored = _git_paths(
-        root, ["ls-files", "--others", "--ignored", "--exclude-standard", "*.md"]
-    )
+    ignored = _git_paths(root, ["ls-files", "--others", "--ignored", "--exclude-standard", "*.md"])
     fs_all = _all_filesystem_markdown(root)
 
     all_paths = sorted(
@@ -578,7 +644,7 @@ def main() -> int:
     )
     refs = _iter_registry_refs(root)
 
-    docs: list[Doc] = []
+    tasks: list[tuple[Path, str, str, dict[str, set[str]]]] = []
     for path in all_paths:
         full = root / path
         if not full.exists():
@@ -592,7 +658,13 @@ def main() -> int:
             git_status = "ignored"
         else:
             git_status = "filesystem_only"
-        docs.append(_build_doc(root, path, git_status, refs))
+        tasks.append((root, path, git_status, refs))
+
+    docs: list[Doc] = []
+    max_workers = worker_budget(root)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        for doc in executor.map(_build_doc_task, tasks):
+            docs.append(doc)
 
     text = _render(docs)
     out_path = root / args.out

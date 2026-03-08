@@ -4,33 +4,16 @@ on:
   push:
   pull_request:
 
-# Cancel in-progress runs for the same branch/PR to avoid wasted CI minutes.
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
-  # --- Scope detection: route CI to affected crates/gates only ---
-  determine-scope:
-    runs-on: ubuntu-latest
-    outputs:
-      rust_scope: ${{ steps.scope.outputs.rust_scope }}
-      run_rust: ${{ steps.scope.outputs.run_rust }}
-      run_governance: ${{ steps.scope.outputs.run_governance }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - id: scope
-        run: python3 scripts/ci_affected_crates.py --verbose
-
-  # --- Rust quality gate: scoped nextest regression + cargo-deny ---
-  # Matches local pre-push-gate strength so regressions cannot merge undetected.
-  # Skipped entirely when only non-Rust files changed (registry, docs, proofs).
   rust-quality:
-    needs: determine-scope
-    if: needs.determine-scope.outputs.run_rust == 'true'
     runs-on: ubuntu-latest
+    env:
+      CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
       - uses: actions/checkout@v4
 
@@ -52,13 +35,16 @@ jobs:
       - name: Install cargo-nextest
         uses: taiki-e/install-action@nextest
 
+      - name: Install cargo-deny
+        uses: taiki-e/install-action@cargo-deny
+
       - name: Cache cargo registry and build artifacts
         uses: actions/cache@v4
         with:
           path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
           key: rust-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
           restore-keys: rust-${{ runner.os }}-
 
@@ -67,67 +53,121 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libhdf5-dev pkg-config
 
-      - name: Regression lane (scoped)
-        run: make rust-regression-scoped RUST_SCOPE="${{ needs.determine-scope.outputs.rust_scope }}"
+      - name: Full Rust gate
+        run: ./makew gate-ci-rust
 
-      - name: Install cargo-deny
-        uses: taiki-e/install-action@cargo-deny
+      - name: Warp artifact acceptance gate (when HDF5 artifacts are present)
+        if: ${{ hashFiles('data/h5/**/*.h5') != '' }}
+        run: |
+          cargo run -p gororoba_cli_warp --features gpu,hdf5-export --bin warp-acceptance-gate --allow-empty -- "data/h5/**/*.h5"
 
-      - name: License and advisory audit
-        run: cargo deny check
-
-  # --- Python + registry governance + ASCII ---
   canonical-registry-contract:
-    needs: determine-scope
     runs-on: ubuntu-latest
+    env:
+      CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
     steps:
+      # Full history is required because make check shells out to
+      # scripts/run_ruff_changed.py, which diffs against the base ref.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install project
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Detect worker budget from logical threads / 2
         run: |
-          PYTHONWARNINGS=error make install
-      - name: Python lint (ruff)
-        run: |
-          ruff check src/ tests/ bin/
-      - name: Python smoke lane
-        run: |
-          PYTHONWARNINGS=error make python-smoke
-      - name: Python regression lane
+          WORKER_BUDGET="$(sh scripts/detect_worker_budget.sh)"
+          echo "WORKER_BUDGET=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "RAYON_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "CARGO_JOBS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "NEXTEST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
+
+      - name: Python 3.11 authoritative gate
         if: matrix.python-version == '3.11'
         run: |
-          PYTHONWARNINGS=error make python-regression
-      - name: Integrity lane
-        if: matrix.python-version == '3.11'
+          PYTHONWARNINGS=error ./makew gate-ci-python
+
+      - name: Python compatibility gate
+        if: matrix.python-version != '3.11'
         run: |
-          PYTHONWARNINGS=error make integrity
-      - name: ASCII-only policy check
+          PYTHONWARNINGS=error ./makew gate-ci-python-compat
+
+  gate-audit-report:
+    needs:
+      - rust-quality
+      - canonical-registry-contract
+    if: ${{ always() && failure() }}
+    runs-on: ubuntu-latest
+    env:
+      CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
+    steps:
+      # gate-audit reruns gate-local and gate-ci-python, both of which rely on
+      # base-aware git diff helpers for accurate routing and lint coverage.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Detect worker budget from logical threads / 2
         run: |
-          python3 bin/ascii_check.py --check
-      - name: Canonical governance gate
-        if: needs.determine-scope.outputs.run_governance == 'true' && matrix.python-version == '3.11'
-        run: |
-          PYTHONWARNINGS=error make governance-gate
-      - name: Canonical registry acceptance gate
-        if: needs.determine-scope.outputs.run_governance == 'true' && matrix.python-version == '3.11'
-        run: |
-          PYTHONWARNINGS=error make registry-acceptance-gate
-      - name: Strict typed-policy registry lane
-        if: needs.determine-scope.outputs.run_governance == 'true' && matrix.python-version == '3.11'
-        run: |
-          PYTHONWARNINGS=error make registry-verify-typed-policy-error
-      - name: Synthesis execution contract rollup
-        if: needs.determine-scope.outputs.run_governance == 'true' && matrix.python-version == '3.11'
-        run: |
-          PYTHONWARNINGS=error make synthesis-execution-contract
-      - name: Warp artifact acceptance gate (when HDF5 artifacts are present)
-        if: ${{ matrix.python-version == '3.11' && hashFiles('data/h5/**/*.h5') != '' }}
+          WORKER_BUDGET="$(sh scripts/detect_worker_budget.sh)"
+          echo "WORKER_BUDGET=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "RAYON_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "CARGO_JOBS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "NEXTEST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
+          echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
+
+      - name: Install Rust toolchain (nightly, with clippy)
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: clippy
+
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@nextest
+
+      - name: Install cargo-deny
+        uses: taiki-e/install-action@cargo-deny
+
+      - name: Cache cargo registry and build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_TARGET_DIR }}
+          key: rust-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: rust-${{ runner.os }}-
+
+      - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libhdf5-dev
-          cargo run -p gororoba_cli_warp --features gpu,hdf5-export --bin warp-acceptance-gate --allow-empty -- "data/h5/**/*.h5"
+          sudo apt-get install -y libhdf5-dev pkg-config
+
+      - name: Generate keep-going gate audit
+        run: |
+          PYTHONWARNINGS=error ./makew gate-audit || true
+
+      - name: Upload gate audit reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-audit-reports
+          path: reports/gates/**
+          if-no-files-found: ignore

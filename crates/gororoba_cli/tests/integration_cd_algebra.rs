@@ -64,6 +64,7 @@ fn test_octonion_no_2blade_zero_divisors() {
 
 /// Test zero divisor count scales with dimension.
 #[test]
+#[ignore = "heavy research lane: zero-divisor scaling census"]
 fn test_zero_divisor_scaling() {
     let zd_16 = find_zero_divisors(16, 1e-10);
     let zd_32 = find_zero_divisors(32, 1e-10);

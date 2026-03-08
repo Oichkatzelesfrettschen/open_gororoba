@@ -37,6 +37,31 @@ def _in_policy_scope(path: str) -> bool:
     return bool(path)
 
 
+def _load_governance_policy(root: Path) -> tuple[set[str], set[str]]:
+    gov_path = root / "registry/markdown_governance.toml"
+    if not gov_path.is_file():
+        return SAFE_CLASSIFICATIONS, ALLOWED_TRACKED_MARKDOWN
+    gov = tomllib.loads(gov_path.read_text(encoding="utf-8"))
+    policy = gov.get("policy", {})
+    safe_classifications = {
+        str(item).strip() for item in policy.get("safe_classifications", []) if str(item).strip()
+    }
+    tracked_allowed_modes = {
+        str(item).strip() for item in policy.get("tracked_allowed_modes", []) if str(item).strip()
+    }
+    tracked_allowed_paths = {
+        str(item).strip().replace("\\", "/")
+        for item in policy.get("tracked_allowed_paths", [])
+        if str(item).strip()
+    }
+    for row in gov.get("document", []):
+        path = str(row.get("path", "")).strip().replace("\\", "/")
+        mode = str(row.get("mode", "")).strip()
+        if path and mode in tracked_allowed_modes:
+            tracked_allowed_paths.add(path)
+    return safe_classifications or SAFE_CLASSIFICATIONS, tracked_allowed_paths
+
+
 def _assert_ascii(text: str, context: str) -> None:
     bad = sorted({ch for ch in text if ord(ch) > 127})
     if bad:
@@ -71,7 +96,13 @@ def _lifecycle(path: str, row: dict[str, object]) -> str:
     return "generated_other"
 
 
-def _risk_score(path: str, row: dict[str, object], destination_exists: bool) -> int:
+def _risk_score(
+    path: str,
+    row: dict[str, object],
+    destination_exists: bool,
+    safe_classifications: set[str],
+    allowed_tracked_markdown: set[str],
+) -> int:
     score = 0
     classification = str(row.get("classification", ""))
     migration_action = str(row.get("migration_action", ""))
@@ -80,9 +111,9 @@ def _risk_score(path: str, row: dict[str, object], destination_exists: bool) -> 
     generated = _bool(row.get("generated"))
     third_party = _bool(row.get("third_party"))
 
-    if classification not in SAFE_CLASSIFICATIONS:
+    if classification not in safe_classifications:
         score += 100
-    if git_status == "tracked" and path not in ALLOWED_TRACKED_MARKDOWN:
+    if git_status == "tracked" and path not in allowed_tracked_markdown:
         score += 80
     if (not generated) and (not third_party):
         score += 80
@@ -118,6 +149,7 @@ def main() -> int:
     out_path = root / args.out
 
     inv = tomllib.loads(inv_path.read_text(encoding="utf-8"))
+    safe_classifications, allowed_tracked_markdown = _load_governance_policy(root)
     docs = inv.get("document", [])
 
     git_status_counts: Counter[str] = Counter()
@@ -138,17 +170,31 @@ def main() -> int:
 
         destination_exists = bool(toml_destination) and (root / toml_destination).is_file()
         lifecycle = _lifecycle(path, row)
-        risk = _risk_score(path, row, destination_exists)
+        risk = _risk_score(
+            path,
+            row,
+            destination_exists,
+            safe_classifications,
+            allowed_tracked_markdown,
+        )
 
         git_status_counts[git_status] += 1
         classification_counts[classification] += 1
         lifecycle_counts[lifecycle] += 1
 
-        if _in_policy_scope(path) and git_status == "tracked" and path not in ALLOWED_TRACKED_MARKDOWN:
+        if (
+            _in_policy_scope(path)
+            and git_status == "tracked"
+            and path not in allowed_tracked_markdown
+        ):
             tracked_violations.append(path)
-        if _in_policy_scope(path) and classification not in SAFE_CLASSIFICATIONS:
+        if _in_policy_scope(path) and classification not in safe_classifications:
             classification_violations.append(path)
-        if _in_policy_scope(path) and classification == "toml_published_markdown" and not destination_exists:
+        if (
+            _in_policy_scope(path)
+            and classification == "toml_published_markdown"
+            and not destination_exists
+        ):
             destination_missing.append(path)
 
         if risk > 0:
@@ -173,14 +219,16 @@ def main() -> int:
 
     lines.append("[policy]")
     lines.append("toml_first_required = true")
-    lines.append("allow_tracked_markdown_entrypoints_only = false")
+    lines.append("allow_tracked_markdown_entrypoints_only = true")
     lines.append(
-        'safe_classifications = ["toml_published_markdown", "toml_destination_exists_manual_markdown", "generated_artifact", "third_party_markdown"]'
+        "safe_classifications = ["
+        + ", ".join(_esc(item) for item in sorted(safe_classifications))
+        + "]"
     )
     lines.append("")
 
     lines.append("allowed_tracked_markdown = [")
-    for path in sorted(ALLOWED_TRACKED_MARKDOWN):
+    for path in sorted(allowed_tracked_markdown):
         lines.append(f"  {_esc(path)},")
     lines.append("]")
     lines.append("")
@@ -218,7 +266,9 @@ def main() -> int:
         lines.append(f"path = {_esc(path)}")
         lines.append("")
 
-    for i, (risk, _, path, row, lifecycle, destination_exists) in enumerate(risk_rows[:120], start=1):
+    for i, (risk, _, path, row, lifecycle, destination_exists) in enumerate(
+        risk_rows[:120], start=1
+    ):
         lines.append("[[risk_queue]]")
         lines.append(f"rank = {i}")
         lines.append(f"path = {_esc(path)}")
@@ -239,11 +289,17 @@ def main() -> int:
         lifecycle = _lifecycle(path, row)
         toml_destination = str(row.get("toml_destination", "")).strip()
         destination_exists = bool(toml_destination) and (root / toml_destination).is_file()
-        risk = _risk_score(path, row, destination_exists)
+        risk = _risk_score(
+            path,
+            row,
+            destination_exists,
+            safe_classifications,
+            allowed_tracked_markdown,
+        )
         tracked_allowed = not (
             _in_policy_scope(path)
             and str(row.get("git_status", "")) == "tracked"
-            and path not in ALLOWED_TRACKED_MARKDOWN
+            and path not in allowed_tracked_markdown
         )
 
         lines.append("[[document]]")

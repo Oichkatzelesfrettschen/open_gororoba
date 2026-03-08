@@ -46,33 +46,33 @@ id = "SIG-0004"
 path = "registry/claims.toml"
 top_level_keys = ["claim"]
 schema_version = "v1"
-schema_sha256 = "e5780c4d3057c34603a4021190aa3b13769b0bfe3efad46e4b50954b98e969de"
-content_sha256 = "10ab1c6eca7bd6a93e6b51bec8b81b8a40b33556edcfb1a6002b7fd6c230f03c"
+schema_sha256 = "c5aad372f6e87450e0f1d50968df648d95d9d47f7b10ed7f89d2b327fbb2b878"
+content_sha256 = "29abe07f5fbcc64b7721fa99efcf877ee8e470295f9a3677a05c4fd52d7ce541"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"confidence\",\"id\",\"status\"],\"row_count\":1002,\"type\":\"array\",\"union_keys\":[\"claims\",\"confidence\",\"dependencies\",\"description\",\"id\",\"insights\",\"last_verified\",\"phase\",\"reformulated_as\",\"sprint\",\"statement\",\"status\",\"status_note\",\"supporting_evidence\",\"verification_method\",\"what_would_verify_refute\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
+shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"confidence\",\"id\",\"status\"],\"row_count\":1005,\"type\":\"array\",\"union_keys\":[\"claims\",\"confidence\",\"dependencies\",\"description\",\"id\",\"insights\",\"last_verified\",\"phase\",\"reformulated_as\",\"sprint\",\"statement\",\"status\",\"status_note\",\"supporting_evidence\",\"verification_method\",\"what_would_verify_refute\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
 
 [[signature]]
 id = "SIG-0005"
 path = "registry/claims_atoms.toml"
 top_level_keys = ["atom", "claims_atoms"]
 schema_version = "v1"
-schema_sha256 = "a69a48f799e933c1a696bd8a9c383c858efc2ce9169711f4c119003fa50c0f23"
-content_sha256 = "5e5d28032026c8696694298c7c63b57b9926f4097907aeae08d67f6702f21181"
+schema_sha256 = "4104454743797cf5d2e69c5a84e38b1a314dfe984669ef7da0cf78a1eff99882"
+content_sha256 = "3046679d9b5c989b0b8fa539e45694dc57c445e996ed7fdb06d1e000b92b8b50"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/claims_atoms.toml\",\"shapes\":{\"atom\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_id\",\"cross_refs\",\"hypothesis_class\",\"id\",\"last_verified\",\"statement\",\"status_detail\",\"status_token\",\"verification_refs\",\"verification_rule\",\"where_stated\",\"where_stated_refs\"],\"row_count\":932,\"type\":\"array\",\"union_keys\":[\"claim_id\",\"cross_refs\",\"hypothesis_class\",\"id\",\"last_verified\",\"statement\",\"status_detail\",\"status_token\",\"verification_refs\",\"verification_rule\",\"where_stated\",\"where_stated_refs\"]},\"claims_atoms\":{\"keys\":[\"atom_count\",\"authoritative\",\"unique_claim_count\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"atom\",\"claims_atoms\"]}"
+shape_json = "{\"path\":\"registry/claims_atoms.toml\",\"shapes\":{\"atom\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_id\",\"cross_refs\",\"hypothesis_class\",\"id\",\"last_verified\",\"statement\",\"status_detail\",\"status_token\",\"verification_refs\",\"verification_rule\",\"where_stated\",\"where_stated_refs\"],\"row_count\":1005,\"type\":\"array\",\"union_keys\":[\"claim_id\",\"cross_refs\",\"hypothesis_class\",\"id\",\"last_verified\",\"statement\",\"status_detail\",\"status_token\",\"verification_refs\",\"verification_rule\",\"where_stated\",\"where_stated_refs\"]},\"claims_atoms\":{\"keys\":[\"atom_count\",\"authoritative\",\"unique_claim_count\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"atom\",\"claims_atoms\"]}"
 
 [[signature]]
 id = "SIG-0006"
 path = "registry/claims_evidence_edges.toml"
 top_level_keys = ["claims_evidence_edges", "edge"]
 schema_version = "v1"
-schema_sha256 = "7d92241471fdbbb888b7d1af0d0401386aedd69862b8c3fb43a387291380ccca"
-content_sha256 = "d11f8bbd8957e545855af34c40f3d49edb14942e46fb403f250bec50e23930e6"
+schema_sha256 = "cf16aece0b6bc6967b72031eff31ed4de240f2949d7401908bfc3efebfe1a915"
+content_sha256 = "edb6de3023ba0a12f32495b86bd1a98c5c9ee5f3aad2a37c9c787bf243c662c7"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/claims_evidence_edges.toml\",\"shapes\":{\"claims_evidence_edges\":{\"keys\":[\"authoritative\",\"edge_count\",\"updated\"],\"type\":\"table\"},\"edge\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_id\",\"edge_role\",\"id\",\"target_kind\",\"target_ref\"],\"row_count\":2086,\"type\":\"array\",\"union_keys\":[\"claim_id\",\"edge_role\",\"id\",\"target_kind\",\"target_ref\"]}},\"top_level_keys\":[\"claims_evidence_edges\",\"edge\"]}"
+shape_json = "{\"path\":\"registry/claims_evidence_edges.toml\",\"shapes\":{\"claims_evidence_edges\":{\"keys\":[\"authoritative\",\"edge_count\",\"updated\"],\"type\":\"table\"},\"edge\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_id\",\"edge_role\",\"id\",\"target_kind\",\"target_ref\"],\"row_count\":5150,\"type\":\"array\",\"union_keys\":[\"claim_id\",\"edge_role\",\"id\",\"target_kind\",\"target_ref\"]}},\"top_level_keys\":[\"claims_evidence_edges\",\"edge\"]}"
 
 [[signature]]
 id = "SIG-0007"
@@ -91,7 +91,7 @@ path = "registry/experiments.toml"
 top_level_keys = ["experiment", "experiments"]
 schema_version = "v1"
 schema_sha256 = "00afe67f35f824fbd7fd9139b8d897fb2689945368f6bb9b7ca2bb89fc7e2dc6"
-content_sha256 = "5c3d93f525e792cef76f99319c928c2b92ac425f5c9f7bac73acb103b41cb3e8"
+content_sha256 = "05e52d5eb4da8e43f9ffb5f31c728ad61397fc4d62b7758de3c36e2ae0c62718"
 array_table_count = 1
 table_count = 1
 shape_json = "{\"path\":\"registry/experiments.toml\",\"shapes\":{\"experiment\":{\"entry_kind\":\"table\",\"required_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_refs\",\"deterministic\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"status\",\"status_token\",\"title\"],\"row_count\":108,\"type\":\"array\",\"union_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_refs\",\"deterministic\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"seed\",\"status\",\"status_token\",\"title\"]},\"experiments\":{\"keys\":[\"authoritative\",\"deterministic_count\",\"experiment_count\",\"gpu_count\",\"seeded_count\",\"status_allowlist\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"experiment\",\"experiments\"]}"
@@ -123,44 +123,44 @@ id = "SIG-0011"
 path = "registry/knowledge/derivation_steps.toml"
 top_level_keys = ["knowledge_derivation_steps", "step"]
 schema_version = "v1"
-schema_sha256 = "587c5c65b61496f309633be2f382cffedc53be22ddd7a22a6a69c03344d180f7"
-content_sha256 = "c0e8376e47be1b110201453f67b1165b6da6c975f5c27f20aee45832f89b3cfd"
+schema_sha256 = "399d31d94bd969e5d937b3584014ed176f1324939d54a31ceb01be871d43af90"
+content_sha256 = "8aedb854830f84d1c3d7a0c1477c7e73b2a914a6b6c3e3d4e1a6e9ae4f0b89b4"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/knowledge/derivation_steps.toml\",\"shapes\":{\"knowledge_derivation_steps\":{\"keys\":[\"authoritative\",\"claim_linked_step_count\",\"max_steps_per_skeleton\",\"skeleton_count\",\"skeleton_with_steps_count\",\"source_registry\",\"step_count\",\"updated\"],\"type\":\"table\"},\"step\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_id\",\"claim_refs\",\"depends_on_step_ids\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"skeleton_id\",\"skeleton_kind\",\"source_path\",\"source_uid\",\"step_index\",\"step_kind\",\"symbol_refs\",\"text\",\"text_sha256\"],\"row_count\":3907,\"type\":\"array\",\"union_keys\":[\"claim_id\",\"claim_refs\",\"depends_on_step_ids\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"skeleton_id\",\"skeleton_kind\",\"source_path\",\"source_uid\",\"step_index\",\"step_kind\",\"symbol_refs\",\"text\",\"text_sha256\"]}},\"top_level_keys\":[\"knowledge_derivation_steps\",\"step\"]}"
+shape_json = "{\"path\":\"registry/knowledge/derivation_steps.toml\",\"shapes\":{\"knowledge_derivation_steps\":{\"keys\":[\"authoritative\",\"claim_linked_step_count\",\"max_steps_per_skeleton\",\"skeleton_count\",\"skeleton_with_steps_count\",\"source_registry\",\"step_count\",\"updated\"],\"type\":\"table\"},\"step\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_id\",\"claim_refs\",\"depends_on_step_ids\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"skeleton_id\",\"skeleton_kind\",\"source_path\",\"source_uid\",\"step_index\",\"step_kind\",\"symbol_refs\",\"text\",\"text_sha256\"],\"row_count\":4116,\"type\":\"array\",\"union_keys\":[\"claim_id\",\"claim_refs\",\"depends_on_step_ids\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"skeleton_id\",\"skeleton_kind\",\"source_path\",\"source_uid\",\"step_index\",\"step_kind\",\"symbol_refs\",\"text\",\"text_sha256\"]}},\"top_level_keys\":[\"knowledge_derivation_steps\",\"step\"]}"
 
 [[signature]]
 id = "SIG-0012"
 path = "registry/knowledge/equation_atoms_v2.toml"
 top_level_keys = ["atom", "knowledge_equation_atoms_v2"]
 schema_version = "v1"
-schema_sha256 = "ff890168628f0b9f738ebbaf44defee37c7eef75044d4a72a63a865f54e3d7d3"
-content_sha256 = "3a8f4ef4400f46e9744b4b04ac08e1d1fb3f2a8369a5bc6a84f71084095e82e1"
+schema_sha256 = "4ce18709d4dddb260056a26d966a679a0e7307febbe039f21a7c0b423a96b6cb"
+content_sha256 = "bf4756e74c0a4cc4d43a49e546900f8224f7cc77ae3d174c96e855daa97dee86"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/knowledge/equation_atoms_v2.toml\",\"shapes\":{\"atom\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_refs\",\"equation_kind\",\"expression\",\"extraction_confidence\",\"extraction_kind\",\"id\",\"lhs_expression\",\"normalized_expression\",\"numeric_constants\",\"quality_flags\",\"relation_operator\",\"rhs_expression\",\"section_title\",\"source_group\",\"source_line\",\"source_path\",\"source_registry\",\"source_uid\",\"symbol_names\",\"symbol_refs\"],\"row_count\":179,\"type\":\"array\",\"union_keys\":[\"claim_refs\",\"equation_kind\",\"expression\",\"extraction_confidence\",\"extraction_kind\",\"id\",\"lhs_expression\",\"normalized_expression\",\"numeric_constants\",\"quality_flags\",\"relation_operator\",\"rhs_expression\",\"section_title\",\"source_group\",\"source_line\",\"source_path\",\"source_registry\",\"source_uid\",\"symbol_names\",\"symbol_refs\"]},\"knowledge_equation_atoms_v2\":{\"keys\":[\"atom_count\",\"authoritative\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"atom\",\"knowledge_equation_atoms_v2\"]}"
+shape_json = "{\"path\":\"registry/knowledge/equation_atoms_v2.toml\",\"shapes\":{\"atom\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_refs\",\"equation_kind\",\"expression\",\"extraction_confidence\",\"extraction_kind\",\"id\",\"lhs_expression\",\"normalized_expression\",\"numeric_constants\",\"quality_flags\",\"relation_operator\",\"rhs_expression\",\"section_title\",\"source_group\",\"source_line\",\"source_path\",\"source_registry\",\"source_uid\",\"symbol_names\",\"symbol_refs\"],\"row_count\":186,\"type\":\"array\",\"union_keys\":[\"claim_refs\",\"equation_kind\",\"expression\",\"extraction_confidence\",\"extraction_kind\",\"id\",\"lhs_expression\",\"normalized_expression\",\"numeric_constants\",\"quality_flags\",\"relation_operator\",\"rhs_expression\",\"section_title\",\"source_group\",\"source_line\",\"source_path\",\"source_registry\",\"source_uid\",\"symbol_names\",\"symbol_refs\"]},\"knowledge_equation_atoms_v2\":{\"keys\":[\"atom_count\",\"authoritative\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"atom\",\"knowledge_equation_atoms_v2\"]}"
 
 [[signature]]
 id = "SIG-0013"
 path = "registry/knowledge/equation_symbol_table.toml"
 top_level_keys = ["equation_symbol_table", "symbol"]
 schema_version = "v1"
-schema_sha256 = "47cdf476f94580ffa41b5d5754e40338bdfd187bf89dcc5c7bea6c01a0bcb61c"
-content_sha256 = "0e9c3c8f7a1607bdd12656b2f013324905244badea8d609b5c079435e32c92b8"
+schema_sha256 = "13581b4e9a2d50be91aa3daa5040c0ba7a521847799d187b494016aa64eca46f"
+content_sha256 = "374aefceeeaaec436ebb10cc88b48a84f782bb95db06feacd6880dcdc51e2710"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/knowledge/equation_symbol_table.toml\",\"shapes\":{\"equation_symbol_table\":{\"keys\":[\"authoritative\",\"symbol_count\",\"updated\"],\"type\":\"table\"},\"symbol\":{\"entry_kind\":\"table\",\"required_keys\":[\"category\",\"example_equation_ids\",\"id\",\"normalized_symbol\",\"source_uids\",\"symbol\",\"usage_count\"],\"row_count\":360,\"type\":\"array\",\"union_keys\":[\"category\",\"example_equation_ids\",\"id\",\"normalized_symbol\",\"source_uids\",\"symbol\",\"usage_count\"]}},\"top_level_keys\":[\"equation_symbol_table\",\"symbol\"]}"
+shape_json = "{\"path\":\"registry/knowledge/equation_symbol_table.toml\",\"shapes\":{\"equation_symbol_table\":{\"keys\":[\"authoritative\",\"symbol_count\",\"updated\"],\"type\":\"table\"},\"symbol\":{\"entry_kind\":\"table\",\"required_keys\":[\"category\",\"example_equation_ids\",\"id\",\"normalized_symbol\",\"source_uids\",\"symbol\",\"usage_count\"],\"row_count\":390,\"type\":\"array\",\"union_keys\":[\"category\",\"example_equation_ids\",\"id\",\"normalized_symbol\",\"source_uids\",\"symbol\",\"usage_count\"]}},\"top_level_keys\":[\"equation_symbol_table\",\"symbol\"]}"
 
 [[signature]]
 id = "SIG-0014"
 path = "registry/knowledge/proof_skeletons.toml"
 top_level_keys = ["knowledge_proof_skeletons", "skeleton"]
 schema_version = "v1"
-schema_sha256 = "789e2b28691a63f00a5ea964d4e6179e842e19f1b760d62ea92665ac3d228dde"
-content_sha256 = "637cbe37e6125f1522af25eb9bebd6ed58b6b91aa788cd08ae8511ab69661b3d"
+schema_sha256 = "d867182bd8a9aae8caeab83f375a2d8868f2efc5bc149a82e800549ef13c0c79"
+content_sha256 = "4c21cc82d40a919b1015c064a75e38d51a87f213ef034c6896cc5ceeca5fa651"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/knowledge/proof_skeletons.toml\",\"shapes\":{\"knowledge_proof_skeletons\":{\"keys\":[\"authoritative\",\"skeleton_count\",\"updated\"],\"type\":\"table\"},\"skeleton\":{\"entry_kind\":\"table\",\"required_keys\":[\"assumptions\",\"claim_id\",\"claim_refs\",\"conclusion\",\"decision_rule\",\"derivation_steps\",\"evidence_refs\",\"id\",\"line_end\",\"line_start\",\"obligations\",\"skeleton_kind\",\"source_path\",\"source_registry\",\"source_uid\",\"theorem_label\"],\"row_count\":973,\"type\":\"array\",\"union_keys\":[\"assumptions\",\"claim_id\",\"claim_refs\",\"conclusion\",\"decision_rule\",\"derivation_steps\",\"evidence_refs\",\"id\",\"line_end\",\"line_start\",\"obligations\",\"skeleton_kind\",\"source_path\",\"source_registry\",\"source_uid\",\"theorem_label\"]}},\"top_level_keys\":[\"knowledge_proof_skeletons\",\"skeleton\"]}"
+shape_json = "{\"path\":\"registry/knowledge/proof_skeletons.toml\",\"shapes\":{\"knowledge_proof_skeletons\":{\"keys\":[\"authoritative\",\"skeleton_count\",\"updated\"],\"type\":\"table\"},\"skeleton\":{\"entry_kind\":\"table\",\"required_keys\":[\"assumptions\",\"claim_id\",\"claim_refs\",\"conclusion\",\"decision_rule\",\"derivation_steps\",\"evidence_refs\",\"id\",\"line_end\",\"line_start\",\"obligations\",\"skeleton_kind\",\"source_path\",\"source_registry\",\"source_uid\",\"theorem_label\"],\"row_count\":1046,\"type\":\"array\",\"union_keys\":[\"assumptions\",\"claim_id\",\"claim_refs\",\"conclusion\",\"decision_rule\",\"derivation_steps\",\"evidence_refs\",\"id\",\"line_end\",\"line_start\",\"obligations\",\"skeleton_kind\",\"source_path\",\"source_registry\",\"source_uid\",\"theorem_label\"]}},\"top_level_keys\":[\"knowledge_proof_skeletons\",\"skeleton\"]}"
 
 [[signature]]
 id = "SIG-0015"
@@ -178,11 +178,11 @@ id = "SIG-0016"
 path = "registry/narrative_paragraph_atoms.toml"
 top_level_keys = ["narrative_paragraph_atoms", "paragraph"]
 schema_version = "v1"
-schema_sha256 = "34ab86f6c394082f9f760dd8a13e19f89974761abbba4590d1ccbf4f43c7cb4e"
-content_sha256 = "d58fce473cf637b8ac32b24322c003ecd8abb04b42458f72915cc00095003692"
+schema_sha256 = "4f6adad4f190ccb13adae8e24d390564a5a5c7af4727b604fe6417340aee83b8"
+content_sha256 = "0b21898bf6b03b9507bd6938c88b3db2a9d38b72f172c064c23ddbba095c68f4"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/narrative_paragraph_atoms.toml\",\"shapes\":{\"narrative_paragraph_atoms\":{\"keys\":[\"artifact_document_count\",\"artifact_paragraph_count\",\"authoritative\",\"docs_root_document_count\",\"docs_root_paragraph_count\",\"document_count\",\"external_sources_document_count\",\"external_sources_paragraph_count\",\"paragraph_count\",\"research_document_count\",\"research_paragraph_count\",\"source_registries\",\"updated\"],\"type\":\"table\"},\"paragraph\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_refs\",\"document_id\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"paragraph_index\",\"paragraph_kind\",\"source_markdown\",\"source_registry\",\"symbol_refs\",\"text\",\"text_sha256\"],\"row_count\":885,\"type\":\"array\",\"union_keys\":[\"claim_refs\",\"document_id\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"paragraph_index\",\"paragraph_kind\",\"source_markdown\",\"source_registry\",\"symbol_refs\",\"text\",\"text_sha256\"]}},\"top_level_keys\":[\"narrative_paragraph_atoms\",\"paragraph\"]}"
+shape_json = "{\"path\":\"registry/narrative_paragraph_atoms.toml\",\"shapes\":{\"narrative_paragraph_atoms\":{\"keys\":[\"artifact_document_count\",\"artifact_paragraph_count\",\"authoritative\",\"docs_root_document_count\",\"docs_root_paragraph_count\",\"document_count\",\"external_sources_document_count\",\"external_sources_paragraph_count\",\"paragraph_count\",\"research_document_count\",\"research_paragraph_count\",\"source_registries\",\"updated\"],\"type\":\"table\"},\"paragraph\":{\"entry_kind\":\"table\",\"required_keys\":[\"claim_refs\",\"document_id\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"paragraph_index\",\"paragraph_kind\",\"source_markdown\",\"source_registry\",\"symbol_refs\",\"text\",\"text_sha256\"],\"row_count\":942,\"type\":\"array\",\"union_keys\":[\"claim_refs\",\"document_id\",\"equation_refs\",\"id\",\"key_tokens\",\"line_end\",\"line_start\",\"numeric_constants\",\"paragraph_index\",\"paragraph_kind\",\"source_markdown\",\"source_registry\",\"symbol_refs\",\"text\",\"text_sha256\"]}},\"top_level_keys\":[\"narrative_paragraph_atoms\",\"paragraph\"]}"
 
 [[signature]]
 id = "SIG-0017"

@@ -260,6 +260,69 @@ impl NBodySystem {
         }
     }
 
+    /// Wick evolution with dynamically adjusted theta based on friction feedback.
+    ///
+    /// The friction callback `friction_fn(theta) -> f64` measures the topological
+    /// friction at a given Wick angle. The dispatcher adjusts theta to keep
+    /// friction below `target_max_friction`:
+    /// - If friction > target: increase theta (more Wick rotation, more damping)
+    /// - If friction < target: decrease theta (more real-time, less damping)
+    ///
+    /// This creates a self-regulating system where the CD algebra's non-associative
+    /// structure feeds back into the gravitational evolution.
+    pub fn wick_evolve_with_friction(
+        &mut self,
+        dt: f64,
+        friction_fn: impl Fn(f64) -> f64,
+        target_max_friction: f64,
+        n_steps: usize,
+    ) -> FrictionAwareResult {
+        let mut trajectory = Vec::with_capacity(n_steps + 1);
+        let mut energies = Vec::with_capacity(n_steps + 1);
+        let mut thetas = Vec::with_capacity(n_steps + 1);
+        let mut frictions = Vec::with_capacity(n_steps + 1);
+
+        trajectory.push(self.snapshot_real_positions());
+        energies.push(self.total_energy());
+
+        // Start at theta = 0 (real time)
+        let mut theta = 0.0_f64;
+        let theta_max = std::f64::consts::FRAC_PI_2;
+        let adjustment_rate = 0.05; // radians per step
+
+        for _ in 0..n_steps {
+            let friction = friction_fn(theta);
+            frictions.push(friction);
+            thetas.push(theta);
+
+            // Adjust theta based on friction feedback
+            if friction > target_max_friction && theta < theta_max {
+                theta = (theta + adjustment_rate).min(theta_max);
+            } else if friction < target_max_friction * 0.5 && theta > 0.0 {
+                theta = (theta - adjustment_rate).max(0.0);
+            }
+
+            let d_tau = Complex::new(dt * theta.cos(), dt * theta.sin());
+            self.step(d_tau);
+
+            trajectory.push(self.snapshot_real_positions());
+            energies.push(self.total_energy());
+        }
+
+        // Record final friction/theta
+        let final_friction = friction_fn(theta);
+        frictions.push(final_friction);
+        thetas.push(theta);
+
+        FrictionAwareResult {
+            trajectory,
+            energies,
+            thetas,
+            frictions,
+            target_max_friction,
+        }
+    }
+
     /// Compute the Pathion shadow transition radius.
     ///
     /// The shadow radius is the distance at which the Pathion perturbation
@@ -372,6 +435,21 @@ impl NBodySystem {
 fn pathion_variance_max_eigenvalue(m: &Matrix3<f64>) -> f64 {
     let eigenvalues = m.symmetric_eigenvalues();
     eigenvalues.iter().cloned().fold(0.0_f64, f64::max)
+}
+
+/// Result of friction-aware Wick evolution.
+#[derive(Debug)]
+pub struct FrictionAwareResult {
+    /// Trajectory: real-part positions at each step.
+    pub trajectory: Vec<Vec<Vector3<f64>>>,
+    /// Total energy (real part) at each step.
+    pub energies: Vec<f64>,
+    /// Wick angle at each step.
+    pub thetas: Vec<f64>,
+    /// Measured friction at each step.
+    pub frictions: Vec<f64>,
+    /// Target maximum friction used for regulation.
+    pub target_max_friction: f64,
 }
 
 /// Result of adaptive Wick evolution with dynamic angle.

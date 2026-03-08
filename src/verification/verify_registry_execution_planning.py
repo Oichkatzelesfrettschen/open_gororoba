@@ -24,7 +24,6 @@ import re
 import tomllib
 from pathlib import Path
 
-
 CLAIM_RE = re.compile(r"^C-\d{3}$")
 INSIGHT_RE = re.compile(r"^I-\d{3}$")
 EXPERIMENT_RE = re.compile(r"^E-\d{3}$")
@@ -222,6 +221,7 @@ def main() -> int:
 
     exp_status_allow = set(experiments_meta.get("status_allowlist", []))
     exp_ids = {str(row.get("id", "")) for row in experiments}
+    exp_by_id = {str(row.get("id", "")): row for row in experiments}
     lineage_ids = {str(row.get("id", "")) for row in lineages}
     seen_exp_ids: set[str] = set()
     for row in experiments:
@@ -254,15 +254,13 @@ def main() -> int:
             failures.append(f"experiment[{eid}] binary marked unregistered but exists: {binary}")
 
         declared = str(row.get("binary_experiment_declared", ""))
-        if declared and declared != eid:
-            failures.append(
-                f"experiment[{eid}] binary_experiment_declared mismatch: {declared}"
-            )
-        if binary in binary_experiment and binary_experiment.get(binary, "") not in {"", eid}:
-            failures.append(
-                f"experiment[{eid}] binary registry experiment mismatch: "
-                f"{binary_experiment.get(binary, '')}"
-            )
+        registered_experiment = binary_experiment.get(binary, "")
+        if declared:
+            expected_declared = registered_experiment or eid
+            if declared != expected_declared:
+                failures.append(
+                    f"experiment[{eid}] binary_experiment_declared mismatch: {declared}"
+                )
 
         claims_refs = {str(v) for v in row.get("claim_refs", [])}
         claims_legacy = {str(v) for v in row.get("claims", [])}
@@ -293,6 +291,9 @@ def main() -> int:
     for row in lineages:
         lid = str(row.get("id", ""))
         eid = str(row.get("experiment_id", ""))
+        exp_row = exp_by_id.get(eid, {})
+        expected_binary = str(exp_row.get("binary", "")) if isinstance(exp_row, dict) else ""
+        lineage_binary = str(row.get("binary", ""))
         if lid in seen_lineage_ids:
             failures.append(f"duplicate lineage id: {lid}")
             continue
@@ -300,11 +301,16 @@ def main() -> int:
         lineage_to_experiment[lid] = eid
         if eid not in exp_ids:
             failures.append(f"lineage[{lid}] unknown experiment_id: {eid}")
-        if str(row.get("binary", "")) not in binary_names:
+        if expected_binary != lineage_binary:
+            failures.append(
+                f"lineage[{lid}] binary mismatch: expected {expected_binary or '<none>'}"
+            )
+        if lineage_binary and lineage_binary not in binary_names:
             failures.append(f"lineage[{lid}] unknown binary")
-        if str(row.get("run_command_sha256", "")) != hashlib.sha256(
-            str(row.get("run_command", "")).encode("utf-8")
-        ).hexdigest():
+        if (
+            str(row.get("run_command_sha256", ""))
+            != hashlib.sha256(str(row.get("run_command", "")).encode("utf-8")).hexdigest()
+        ):
             failures.append(f"lineage[{lid}] run_command_sha256 mismatch")
         for cid in row.get("claim_refs", []):
             if str(cid) not in claim_ids:
@@ -347,8 +353,19 @@ def main() -> int:
         if edge_kind not in edge_kinds:
             failures.append(f"lineage edge[{edge_id}] invalid edge_kind: {edge_kind}")
         if to_kind == "binary":
+            expected_binary = ""
+            if eid in exp_by_id:
+                expected_binary = str(exp_by_id[eid].get("binary", ""))
+            if not to_ref:
+                if expected_binary:
+                    failures.append(f"lineage edge[{edge_id}] empty binary ref")
+                continue
             if to_ref not in binary_names:
                 failures.append(f"lineage edge[{edge_id}] unknown binary ref: {to_ref}")
+            if expected_binary and to_ref != expected_binary:
+                failures.append(
+                    f"lineage edge[{edge_id}] binary ref mismatch: expected {expected_binary}"
+                )
             binary_edge_lineages.add(lid)
         elif to_kind == "claim" and to_ref not in claim_ids:
             failures.append(f"lineage edge[{edge_id}] unknown claim ref: {to_ref}")
@@ -357,7 +374,10 @@ def main() -> int:
         elif to_kind == "path" and not to_ref:
             failures.append(f"lineage edge[{edge_id}] empty path ref")
     for lid in seen_lineage_ids:
-        if lid not in binary_edge_lineages:
+        exp_binary = ""
+        if lid in lineage_to_experiment and lineage_to_experiment[lid] in exp_by_id:
+            exp_binary = str(exp_by_id[lineage_to_experiment[lid]].get("binary", ""))
+        if exp_binary and lid not in binary_edge_lineages:
             failures.append(f"lineage[{lid}] missing binary edge")
 
     # Execution-planning lane: W5-021 legacy row (roadmap/todo/next-actions schema hardening).
@@ -480,7 +500,9 @@ def main() -> int:
         for dep in row.get("requires_modules", []):
             dep_id = str(dep)
             if dep_id not in req_ids:
-                failures.append(f"requirements.module[{rid}] unknown requires_modules ref: {dep_id}")
+                failures.append(
+                    f"requirements.module[{rid}] unknown requires_modules ref: {dep_id}"
+                )
         for field in ("install_targets", "verify_targets", "acceptance_criteria"):
             value = row.get(field, [])
             if not isinstance(value, list):
@@ -536,14 +558,10 @@ def main() -> int:
                 )
         for cmd_id in row.get("command_refs", []):
             if str(cmd_id) not in command_ids:
-                failures.append(
-                    f"module_requirements.module[{mid}] unknown command_ref: {cmd_id}"
-                )
+                failures.append(f"module_requirements.module[{mid}] unknown command_ref: {cmd_id}")
         for pkg_id in row.get("package_refs", []):
             if str(pkg_id) not in package_ids:
-                failures.append(
-                    f"module_requirements.module[{mid}] unknown package_ref: {pkg_id}"
-                )
+                failures.append(f"module_requirements.module[{mid}] unknown package_ref: {pkg_id}")
 
     for row in mr_commands:
         cid = str(row.get("id", ""))
@@ -570,7 +588,10 @@ def main() -> int:
             failures.append(f"module_requirements.package[{pid}] empty name")
 
     if failures:
-        print("ERROR: execution-planning registry lane verification failed (canonical verify_registry_execution_planning.py).")
+        print(
+            "ERROR: execution-planning registry lane verification failed "
+            "(canonical verify_registry_execution_planning.py)."
+        )
         for item in failures[:300]:
             print(f"- {item}")
         if len(failures) > 300:
@@ -578,7 +599,8 @@ def main() -> int:
         return 1
 
     print(
-        "OK: execution-planning registry lane verified (canonical verify_registry_execution_planning.py). "
+        "OK: execution-planning registry lane verified "
+        "(canonical verify_registry_execution_planning.py). "
         f"experiments={len(experiments)} lineages={len(lineages)} edges={len(edges)} "
         f"workstreams={len(workstreams)} todo={len(todo_items)} actions={len(actions)} "
         f"req_modules={len(req_modules)} mr_packages={len(mr_packages)}"
