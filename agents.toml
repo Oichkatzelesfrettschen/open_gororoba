@@ -56,7 +56,7 @@ name = "open_gororoba"
 kind = "computational_physics_research_platform"
 summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, and cosmological observables."
 workspace_crates = 41
-cli_binaries = 168
+cli_binaries = 176
 registry_model = "toml_first"
 
 [[shared.path]]

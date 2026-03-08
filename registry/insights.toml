@@ -1216,3 +1216,47 @@ claims = ["C-1135"]
 confidence = "high"
 phase = "algebra"
 sprint = 75
+
+[[insight]]
+id = "I-108"
+title = "Adapter Pattern: Single-File Spacecraft Addition"
+date = "2026-03-08"
+status = "Verified"
+description = "Adding a new spacecraft data source to the solar wind MHD pipeline requires only one new Rust file: a parser module with a *_to_omni() adapter function. The entire downstream pipeline (IC generation, MHD simulation, DM coupling) works unchanged because all data flows through OmniRecord as the universal interchange format. ACE MAG, WIND SWE+MFI, and STEREO-A PLASTIC+IMPACT/MAG each required ~250-300 lines of parser code with zero changes to the simulation binaries."
+claims = []
+confidence = "high"
+phase = "fluids"
+sprint = 76
+
+[[insight]]
+id = "I-109"
+title = "Sub-Hourly Resolution Resolves Ion Inertial Length Gradients"
+date = "2026-03-08"
+status = "Active"
+description = "WIND MFI 3-second data resolves CME shock ramps where ion inertial length gradients (~100 km at 1 AU) produce micro-turbulent magnetic topology. At 3-sec cadence with nx=128, the LBM grid covers 384 seconds (6.4 minutes) of shock transit -- enough to capture a full CME shock front. This is the regime where DM interactions at O(10^-15) would be most detectable, making a null result here a much stronger constraint than hourly-averaged data."
+claims = ["C-1150"]
+confidence = "medium"
+phase = "fluids"
+sprint = 76
+
+[[insight]]
+id = "I-110"
+title = "STEREO Triangulation Breaks 1D Taylor Hypothesis"
+date = "2026-03-08"
+status = "Active"
+description = "With ACE/WIND at L1 plus STEREO-A at a different heliocentric longitude, longitudinal plasma gradients can be interpolated for volumetric initial conditions. Y-axis maps to heliocentric longitude offset: y=0 is pure L1 data, y=ny-1 is pure STEREO-A, intermediate is linear interpolation. This replaces the uniform Y/Z planes (Taylor frozen-in from a single point source) with physically motivated transverse gradients."
+claims = ["C-1151"]
+confidence = "medium"
+phase = "fluids"
+sprint = 76
+
+[[insight]]
+id = "I-111"
+title = "CD Dark Sector Instability as Algebraic Vocabulary for DM-Baryon Decoupling"
+date = "2026-03-08"
+status = "Speculative"
+description = "The Leech-Pathion dark sector instability (100% of dark x dark products escape to Leech sector at dim=32) provides structural algebraic vocabulary for the O(10^-12) DM-baryon force suppression. If the non-associative structure of dim>=16 CD algebras implies dark sector products escape to lower-index sectors, then dark-baryonic gravitational coupling should be negligible. Multi-spacecraft confirmation (instrument-independent null ratio) is consistent with this algebraic prediction but does not prove causation."
+claims = ["C-1153"]
+confidence = "low"
+phase = "algebra"
+sprint = 76

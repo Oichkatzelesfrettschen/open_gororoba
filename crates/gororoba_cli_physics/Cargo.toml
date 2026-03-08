@@ -206,7 +206,7 @@ path = "src/bin/wavelet_acf_calibration.rs"
 name = "wavelet-bridging-sweep"
 path = "src/bin/wavelet_bridging_sweep.rs"
 
-# ---- Fluids (7) ----
+# ---- Fluids (8) ----
 
 [[bin]]
 name = "lbm-poiseuille"
@@ -227,6 +227,10 @@ path = "src/bin/solar_wind_dm_mhd.rs"
 [[bin]]
 name = "solar-wind-ic"
 path = "src/bin/solar_wind_ic.rs"
+
+[[bin]]
+name = "cross-validate-solar-wind"
+path = "src/bin/cross_validate_solar_wind.rs"
 
 [[bin]]
 name = "chrono-flyby-probe"

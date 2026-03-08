@@ -5,7 +5,7 @@
 updated = "2026-02-09"
 authoritative = true
 source_markdown_glob = "docs/external_sources/*.md"
-document_count = 16
+document_count = 20
 
 [[document]]
 id = "XS-001"
@@ -9513,4 +9513,137 @@ claims C-769 through C-773 in the open_gororoba registry.
 - **WT-003**: BL ABACAD cadence discriminates the Wow! locale from terrestrial RFI.
 - **WT-004**: ON and OFF cadence pointings are topologically indistinguishable (null result).
 - **WT-005**: Candidate feature vectors show non-trivial ultrametric structure vs null.
+'''
+
+[[document]]
+id = "XS-017"
+source_markdown = ""
+slug = "ace_mag_l2_data_provenance"
+title = "ACE MAG L2 -- Magnetic Field Data Provenance"
+status_token = "ACTIVE"
+content_kind = "instrument_dataset_provenance"
+authority_level = "primary_dataset_index"
+verification_level = "pending"
+has_full_transcript = false
+claim_refs = ["C-1147"]
+url_refs = ["https://izw1.caltech.edu/ACE/ASC/DATA/level2/mag/"]
+path_refs = ["data/external/ace_mag/", "crates/data_core/src/catalogs/ace_mag.rs", "bin/fetch_ace_mag.py"]
+line_count = 0
+notes = "ACE MAG L2 16-second cadence B-field in GSE. Smith et al. (1998), Space Sci. Rev. 86, 613."
+body_markdown = '''
+# ACE MAG L2 -- Magnetic Field Data Provenance
+
+## Instrument
+ACE Magnetometer (MAG), L2 definitive 16-second cadence data.
+
+## Reference
+Smith, C.W. et al. (1998). "The ACE Magnetic Fields Experiment."
+Space Science Reviews, 86(1-4), 613-632.
+
+## Data Format
+Fixed-width ASCII. Columns: Year, DOY, Hour, Min, Sec, Bmag, Bx, By, Bz (GSE).
+Fill values: -999.9, -1e31. Ceiling: |B| > 200 nT rejected.
+'''
+
+[[document]]
+id = "XS-018"
+source_markdown = ""
+slug = "wind_swe_data_provenance"
+title = "WIND SWE -- Solar Wind Plasma Data Provenance"
+status_token = "ACTIVE"
+content_kind = "instrument_dataset_provenance"
+authority_level = "primary_dataset_index"
+verification_level = "pending"
+has_full_transcript = false
+claim_refs = ["C-1148", "C-1149"]
+url_refs = ["https://spdf.gsfc.nasa.gov/pub/data/wind/swe/ascii/"]
+path_refs = ["data/external/wind_swe/", "crates/data_core/src/catalogs/wind_swe.rs", "bin/fetch_wind.py"]
+line_count = 0
+notes = "WIND SWE key-parameter data (proton density, speed, temperature). Ogilvie et al. (1995), Space Sci. Rev. 71, 55."
+body_markdown = '''
+# WIND SWE -- Solar Wind Plasma Data Provenance
+
+## Instrument
+WIND Solar Wind Experiment (SWE), key-parameter summary files.
+
+## Reference
+Ogilvie, K.W. et al. (1995). "SWE, a Comprehensive Plasma Instrument
+for the Wind Spacecraft." Space Science Reviews, 71(1-4), 55-77.
+
+## Data Format
+Space-delimited ASCII. Columns: Year, DecimalDOY, FlowSpeed, Vx_GSE,
+Temperature, ProtonDensity, Vth, Vy_GSE, Vz_GSE, alpha_ratio.
+Fill values: 99999.9 (speed), 9999999 (temp), 999.99 (density).
+'''
+
+[[document]]
+id = "XS-019"
+source_markdown = ""
+slug = "wind_mfi_data_provenance"
+title = "WIND MFI -- Magnetic Field Data Provenance"
+status_token = "ACTIVE"
+content_kind = "instrument_dataset_provenance"
+authority_level = "primary_dataset_index"
+verification_level = "pending"
+has_full_transcript = false
+claim_refs = ["C-1149", "C-1150"]
+url_refs = ["https://spdf.gsfc.nasa.gov/pub/data/wind/mfi/ascii/"]
+path_refs = ["data/external/wind_mfi/", "crates/data_core/src/catalogs/wind_swe.rs", "bin/fetch_wind.py"]
+line_count = 0
+notes = "WIND MFI hourly B-field in GSE. 3-sec cadence available for shock ramps. Lepping et al. (1995), Space Sci. Rev. 71, 207."
+body_markdown = '''
+# WIND MFI -- Magnetic Field Data Provenance
+
+## Instrument
+WIND Magnetic Field Investigation (MFI), hourly averaged B-field.
+
+## Reference
+Lepping, R.P. et al. (1995). "The Wind Magnetic Field Investigation."
+Space Science Reviews, 71(1-4), 207-229.
+
+## Data Format
+Space-delimited ASCII. Columns: Year, Month, Day, Hour, BxGSE, ByGSE,
+BzGSE, Bmag, Npts. Fill values: values outside [-100, 100] nT rejected.
+High-resolution 3-second data resolves CME shock ramps at ion inertial
+length (~100 km at 1 AU).
+'''
+
+[[document]]
+id = "XS-020"
+source_markdown = ""
+slug = "stereo_plastic_data_provenance"
+title = "STEREO-A PLASTIC + IMPACT/MAG -- Data Provenance"
+status_token = "ACTIVE"
+content_kind = "instrument_dataset_provenance"
+authority_level = "primary_dataset_index"
+verification_level = "pending"
+has_full_transcript = false
+claim_refs = ["C-1151"]
+url_refs = ["https://stereo-ssc.nascom.nasa.gov/data/ins_data/plastic/level2/Protons/Derived/", "https://spdf.gsfc.nasa.gov/pub/data/stereo/ahead/l2/impact/magplasma/"]
+path_refs = ["data/external/stereo_plastic/", "data/external/stereo_impact/", "crates/data_core/src/catalogs/stereo_plastic.rs", "bin/fetch_stereo.py"]
+line_count = 0
+notes = "STEREO-A PLASTIC plasma + IMPACT/MAG B-field in RTN. RTN->GSE transform via separation angle. Galvin et al. (2008), Space Sci. Rev. 136, 437."
+body_markdown = '''
+# STEREO-A PLASTIC + IMPACT/MAG -- Data Provenance
+
+## Instruments
+- PLASTIC (PLAsma and SupraThermal Ion Composition): proton density, bulk speed, temperature in RTN coordinates.
+- IMPACT/MAG: magnetic field Br, Bt, Bn in RTN coordinates.
+
+## References
+- Galvin, A.B. et al. (2008). "The Plasma and Suprathermal Ion Composition (PLASTIC)
+  Investigation on the STEREO Observatories." Space Science Reviews, 136(1-4), 437-486.
+- Acuna, M.H. et al. (2008). "The STEREO/IMPACT Magnetic Field Experiment."
+  Space Science Reviews, 136(1-4), 203-226.
+
+## Coordinate Transform
+RTN (Radial-Tangential-Normal) -> GSE via Earth-STEREO separation angle:
+  bx_gse = br * cos(sep) - bt * sin(sep)
+  by_gse = br * sin(sep) + bt * cos(sep)
+  bz_gse = bn
+STEREO-A was ~12-15 deg ahead of Earth in 2024.
+
+## Data Format
+PLASTIC: space-delimited ASCII, daily files. Fill: -1e31.
+IMPACT/MAG: CDF or ASCII monthly, 8-sec cadence averaged to hourly. Fill: -1e31.
 '''

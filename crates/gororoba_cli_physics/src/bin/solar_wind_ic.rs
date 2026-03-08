@@ -4,8 +4,14 @@
 //! Bx/By/Bz in GSE coordinates) and maps them to 3D LBM grid initial
 //! conditions using Taylor's frozen-in hypothesis.
 //!
-//! Also supports ACE SWEPAM data (plasma only, no B-field -- falls back to
-//! Parker spiral for magnetic field).
+//! Supports multiple spacecraft data sources via the adapter pattern:
+//!   - NASA OMNI2 (preferred: merged multi-source, includes B-field)
+//!   - ACE SWEPAM (plasma only, Parker spiral B-field fallback)
+//!   - ACE MAG L2 (B-field only, 16-sec -> hourly averaged)
+//!   - WIND SWE + MFI (independent L1 spacecraft, plasma + B-field)
+//!   - STEREO-A PLASTIC + IMPACT/MAG (different heliocentric longitude)
+//!
+//! All data flows through OmniRecord as the universal interchange format.
 //!
 //! GSE coordinate convention:
 //!   X -> Sun-Earth line (radial, our LBM x-axis)
@@ -16,8 +22,16 @@
 //! snapshot format used by solar-wind-mhd-sim and solar-wind-dm-mhd.
 
 use clap::Parser;
+use data_core::catalogs::ace_mag::{ace_mag_to_omni, average_to_hourly, parse_ace_mag_file};
 use data_core::catalogs::omni::{OmniRecord, parse_omni_file, parse_omni_hourly};
 use data_core::catalogs::solar_wind::parse_swepam_file;
+use data_core::catalogs::stereo_plastic::{
+    average_stereo_mag_hourly, parse_stereo_magplasma_file, parse_stereo_plastic_file,
+    stereo_to_omni,
+};
+use data_core::catalogs::wind_swe::{
+    merge_wind_swe_mfi, parse_wind_mfi_file, parse_wind_swe_file, wind_mfi_to_omni,
+};
 use std::fs;
 use std::io::Write;
 use std::path::PathBuf;
@@ -39,6 +53,56 @@ struct Cli {
     /// When used, B-field falls back to Parker spiral model.
     #[arg(long)]
     swepam_file: Option<PathBuf>,
+
+    /// Path to ACE MAG L2 file (16-sec B-field data, averaged to hourly).
+    /// Provides independent B-field measurements; plasma uses defaults.
+    #[arg(long)]
+    ace_mag_file: Option<PathBuf>,
+
+    /// Path to WIND SWE key-parameter file (plasma: density, speed, temp).
+    #[arg(long)]
+    wind_swe_file: Option<PathBuf>,
+
+    /// Path to WIND MFI file (magnetic field in GSE, hourly averaged).
+    /// If --wind-swe-file is also provided, merges plasma + B-field.
+    #[arg(long)]
+    wind_mfi_file: Option<PathBuf>,
+
+    /// Path to STEREO-A PLASTIC file (plasma in RTN coordinates).
+    #[arg(long)]
+    stereo_file: Option<PathBuf>,
+
+    /// Path to STEREO-A IMPACT/MAG file (B-field in RTN coordinates).
+    #[arg(long)]
+    stereo_mag_file: Option<PathBuf>,
+
+    /// STEREO-A heliocentric separation angle from Earth (degrees).
+    /// Required for RTN -> GSE coordinate transform.
+    #[arg(long, default_value_t = 0.0)]
+    stereo_sep_deg: f64,
+
+    /// Enable L1+STEREO-A 3D triangulation mode.
+    /// Y-axis maps to heliocentric longitude: y=0 is pure L1 data,
+    /// y=ny-1 is pure STEREO-A data, intermediate slices are linearly
+    /// interpolated. Requires both L1 data (OMNI/ACE/WIND) and STEREO.
+    #[arg(long, default_value_t = false)]
+    triangulate: bool,
+
+    /// Time resolution per x-slice in seconds (default: 3600 = hourly).
+    /// For WIND MFI 3-second data, use --time-resolution 3 to resolve
+    /// CME shock ramps (nx=128 at 3s covers 384s = 6.4 min of shock transit).
+    #[arg(long, default_value_t = 3600)]
+    time_resolution: u32,
+
+    /// Density clamp range [min, max] in LBM units for shock mode.
+    /// Default: 0.1,10.0. For high-variability shock data: 0.01,50.0.
+    #[arg(long, default_value = "0.1,10.0")]
+    clamp_density_range: String,
+
+    /// Speed clamp range [min, max] in LBM units for shock mode.
+    /// Default: 0.001,0.15. For CME shock data: 0.0001,0.25.
+    #[arg(long, default_value = "0.001,0.15")]
+    clamp_speed_range: String,
 
     /// Start hour index within the data file (0-based).
     #[arg(long, default_value_t = 0)]
@@ -142,6 +206,10 @@ struct UnitConversion {
     v_ref: f64,
     /// LBM velocity scale. u_lbm = (v / v_ref) * u_scale.
     u_scale: f64,
+    /// Density clamp range in LBM units: [min, max].
+    density_clamp: [f64; 2],
+    /// Speed clamp range in LBM units: [min, max].
+    speed_clamp: [f64; 2],
 }
 
 impl UnitConversion {
@@ -175,6 +243,8 @@ impl UnitConversion {
             n_ref,
             v_ref,
             u_scale: 0.05,
+            density_clamp: [0.1, 10.0],
+            speed_clamp: [0.001, 0.15],
         }
     }
 
@@ -182,7 +252,7 @@ impl UnitConversion {
         if n_p.is_nan() {
             1.0
         } else {
-            (n_p / self.n_ref).clamp(0.1, 10.0)
+            (n_p / self.n_ref).clamp(self.density_clamp[0], self.density_clamp[1])
         }
     }
 
@@ -190,8 +260,20 @@ impl UnitConversion {
         if v_sw.is_nan() {
             self.u_scale
         } else {
-            (v_sw / self.v_ref * self.u_scale).clamp(0.001, 0.15)
+            (v_sw / self.v_ref * self.u_scale).clamp(self.speed_clamp[0], self.speed_clamp[1])
         }
+    }
+}
+
+/// Parse a "min,max" string into [f64; 2].
+fn parse_clamp_range(s: &str) -> [f64; 2] {
+    let parts: Vec<&str> = s.split(',').collect();
+    if parts.len() == 2 {
+        let lo = parts[0].trim().parse::<f64>().unwrap_or(0.1);
+        let hi = parts[1].trim().parse::<f64>().unwrap_or(10.0);
+        [lo, hi]
+    } else {
+        [0.1, 10.0]
     }
 }
 
@@ -361,14 +443,215 @@ fn swepam_to_omni(
         .collect()
 }
 
+/// Load WIND SWE (plasma) and/or MFI (B-field) data, merge if both present.
+fn load_wind_data(cli: &Cli) -> anyhow::Result<Vec<OmniRecord>> {
+    let mfi_records = if let Some(ref path) = cli.wind_mfi_file {
+        eprintln!("loading WIND MFI from: {}", path.display());
+        let raw = parse_wind_mfi_file(path)?;
+        eprintln!("  {} MFI hourly records", raw.len());
+        Some(raw)
+    } else {
+        None
+    };
+
+    let swe_records = if let Some(ref path) = cli.wind_swe_file {
+        eprintln!("loading WIND SWE from: {}", path.display());
+        let raw = parse_wind_swe_file(path)?;
+        eprintln!("  {} SWE records (~92-sec cadence)", raw.len());
+        Some(raw)
+    } else {
+        None
+    };
+
+    let omni = match (swe_records, mfi_records) {
+        (Some(swe), Some(mfi)) => {
+            eprintln!("merging WIND SWE + MFI (time-aligned hourly)");
+            merge_wind_swe_mfi(&swe, &mfi)
+        }
+        (None, Some(mfi)) => {
+            eprintln!("WIND MFI only (B-field, no plasma data)");
+            wind_mfi_to_omni(&mfi)
+        }
+        (Some(swe), None) => {
+            eprintln!("WIND SWE only (plasma, no B-field -> Parker spiral fallback)");
+            // Convert SWE to OmniRecord with NaN B-field
+            swe.iter()
+                .filter(|r| !r.proton_density.is_nan() || !r.flow_speed.is_nan())
+                .map(|r| OmniRecord {
+                    year: r.year,
+                    doy: r.decimal_doy as u16,
+                    hour: ((r.decimal_doy.fract() * 24.0) as u8).min(23),
+                    b_magnitude: f64::NAN,
+                    bx_gse: f64::NAN,
+                    by_gse: f64::NAN,
+                    bz_gse: f64::NAN,
+                    proton_temperature: r.temperature,
+                    proton_density: r.proton_density,
+                    bulk_speed: r.flow_speed,
+                    flow_pressure: f64::NAN,
+                    plasma_beta: f64::NAN,
+                    alfven_mach: f64::NAN,
+                    dst_index: f64::NAN,
+                    ae_index: f64::NAN,
+                    kp_times_10: 0,
+                })
+                .collect()
+        }
+        (None, None) => unreachable!("caller ensures at least one WIND file"),
+    };
+
+    Ok(filter_valid_omni(&omni))
+}
+
+/// Load STEREO-A PLASTIC (plasma) and/or IMPACT/MAG (B-field) data with
+/// RTN -> GSE coordinate transform.
+fn load_stereo_data(cli: &Cli) -> anyhow::Result<Vec<OmniRecord>> {
+    let plastic = if let Some(ref path) = cli.stereo_file {
+        eprintln!("loading STEREO-A PLASTIC from: {}", path.display());
+        let raw = parse_stereo_plastic_file(path)?;
+        eprintln!("  {} PLASTIC records", raw.len());
+        Some(raw)
+    } else {
+        None
+    };
+
+    let mag = if let Some(ref path) = cli.stereo_mag_file {
+        eprintln!("loading STEREO-A IMPACT/MAG from: {}", path.display());
+        let raw = parse_stereo_magplasma_file(path)?;
+        let hourly = average_stereo_mag_hourly(&raw);
+        eprintln!("  {} MAG records -> {} hourly averages", raw.len(), hourly.len());
+        Some(hourly)
+    } else {
+        None
+    };
+
+    eprintln!("STEREO-A separation angle: {:.1} deg", cli.stereo_sep_deg);
+
+    let omni = stereo_to_omni(
+        plastic.as_deref().unwrap_or(&[]),
+        mag.as_deref().unwrap_or(&[]),
+        cli.stereo_sep_deg,
+    );
+
+    Ok(filter_valid_omni(&omni))
+}
+
+/// Generate 3D IC with L1+STEREO-A longitudinal triangulation.
+///
+/// Y-axis maps to heliocentric longitude offset between L1 and STEREO-A:
+///   y=0: pure L1 data, y=ny-1: pure STEREO-A data, intermediate: lerp.
+/// Z-axis remains uniform (no out-of-ecliptic spacecraft available).
+fn triangulate_ic_from_multi_spacecraft(
+    l1_records: &[OmniRecord],
+    stereo_records: &[OmniRecord],
+    cli: &Cli,
+    units: &UnitConversion,
+) -> Vec<CellIc> {
+    let nx = cli.nx;
+    let ny = cli.ny;
+    let nz = cli.nz;
+    let l1_count = l1_records.len().max(1);
+    let stereo_count = stereo_records.len().max(1);
+    let cells_per_hour_l1 = nx / l1_count;
+    let cells_per_hour_st = nx / stereo_count;
+
+    let mut data = Vec::with_capacity(nx * ny * nz);
+
+    for z in 0..nz {
+        for y in 0..ny {
+            // Interpolation weight: 0.0 at y=0 (pure L1), 1.0 at y=ny-1 (pure STEREO)
+            let alpha = if ny > 1 {
+                y as f64 / (ny - 1) as f64
+            } else {
+                0.0
+            };
+
+            for x in 0..nx {
+                // L1 record for this x-slice
+                let l1_idx = x
+                    .checked_div(cells_per_hour_l1)
+                    .map_or_else(|| x * l1_count / nx, |q| q.min(l1_count - 1));
+                let l1 = &l1_records[l1_idx];
+
+                // STEREO record for this x-slice
+                let st_idx = x
+                    .checked_div(cells_per_hour_st)
+                    .map_or_else(|| x * stereo_count / nx, |q| q.min(stereo_count - 1));
+                let st = &stereo_records[st_idx];
+
+                // Interpolate density (physical, then convert)
+                let n_l1 = if l1.proton_density.is_nan() {
+                    units.n_ref
+                } else {
+                    l1.proton_density
+                };
+                let n_st = if st.proton_density.is_nan() {
+                    units.n_ref
+                } else {
+                    st.proton_density
+                };
+                let n_interp = n_l1 * (1.0 - alpha) + n_st * alpha;
+                let rho = units.density_to_lbm(n_interp);
+
+                // Interpolate speed
+                let v_l1 = if l1.bulk_speed.is_nan() {
+                    units.v_ref
+                } else {
+                    l1.bulk_speed
+                };
+                let v_st = if st.bulk_speed.is_nan() {
+                    units.v_ref
+                } else {
+                    st.bulk_speed
+                };
+                let v_interp = v_l1 * (1.0 - alpha) + v_st * alpha;
+                let v_lbm = units.speed_to_lbm(v_interp);
+                let u = [v_lbm, 0.0, 0.0];
+
+                // Interpolate B-field components
+                let lerp_b = |b_l1: f64, b_st: f64| -> f64 {
+                    let a = if b_l1.is_nan() { 0.0 } else { b_l1 };
+                    let b = if b_st.is_nan() { 0.0 } else { b_st };
+                    a * (1.0 - alpha) + b * alpha
+                };
+                let b = if !l1.bx_gse.is_nan() || !st.bx_gse.is_nan() {
+                    [
+                        lerp_b(l1.bx_gse, st.bx_gse) * cli.b_scale,
+                        lerp_b(l1.by_gse, st.by_gse) * cli.b_scale,
+                        lerp_b(l1.bz_gse, st.bz_gse) * cli.b_scale,
+                    ]
+                } else {
+                    parker_spiral_b(x, y, nx, ny, cli.b_scale * 5.0, cli.omega, v_lbm)
+                };
+
+                data.push(CellIc { x, y, z, rho, u, b });
+            }
+        }
+    }
+
+    data
+}
+
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
-    // Load data: prefer OMNI (has B-field), fall back to SWEPAM
+    // Load data via adapter pattern.
+    // Priority: OMNI > WIND SWE+MFI > ACE MAG > STEREO > SWEPAM > builtin
     let records: Vec<OmniRecord> = if let Some(ref path) = cli.omni_file {
         eprintln!("loading NASA OMNI2 from: {}", path.display());
         let raw = parse_omni_file(path)?;
         filter_valid_omni(&raw)
+    } else if cli.wind_swe_file.is_some() || cli.wind_mfi_file.is_some() {
+        load_wind_data(&cli)?
+    } else if let Some(ref path) = cli.ace_mag_file {
+        eprintln!("loading ACE MAG L2 from: {} (B-field only)", path.display());
+        let raw = parse_ace_mag_file(path)?;
+        let hourly = average_to_hourly(&raw);
+        eprintln!("  {} 16-sec samples -> {} hourly averages", raw.len(), hourly.len());
+        let omni = ace_mag_to_omni(&hourly);
+        filter_valid_omni(&omni)
+    } else if cli.stereo_file.is_some() || cli.stereo_mag_file.is_some() {
+        load_stereo_data(&cli)?
     } else if let Some(ref path) = cli.swepam_file {
         eprintln!("loading ACE SWEPAM from: {} (no real B-field)", path.display());
         let raw = parse_swepam_file(path)?;
@@ -400,10 +683,27 @@ fn main() -> anyhow::Result<()> {
     );
 
     // Unit conversion from the selected window
-    let units = UnitConversion::from_omni(window);
+    let mut units = UnitConversion::from_omni(window);
+    units.density_clamp = parse_clamp_range(&cli.clamp_density_range);
+    units.speed_clamp = parse_clamp_range(&cli.clamp_speed_range);
+
+    if cli.time_resolution != 3600 {
+        eprintln!(
+            "time resolution: {} sec/x-slice (nx={} covers {} sec = {:.1} min)",
+            cli.time_resolution,
+            cli.nx,
+            cli.nx as u64 * cli.time_resolution as u64,
+            cli.nx as f64 * cli.time_resolution as f64 / 60.0,
+        );
+    }
     eprintln!(
         "units: n_ref={:.2} cm^-3, v_ref={:.1} km/s, u_scale={:.4}",
         units.n_ref, units.v_ref, units.u_scale,
+    );
+    eprintln!(
+        "clamp: density=[{:.4}, {:.4}], speed=[{:.5}, {:.4}]",
+        units.density_clamp[0], units.density_clamp[1],
+        units.speed_clamp[0], units.speed_clamp[1],
     );
 
     // Report physical ranges
@@ -415,7 +715,28 @@ fn main() -> anyhow::Result<()> {
     );
 
     // Generate IC
-    let data = generate_ic_from_omni(window, &cli, &units);
+    let data = if cli.triangulate {
+        // Triangulation mode: interpolate between L1 and STEREO along Y
+        if cli.stereo_file.is_none() && cli.stereo_mag_file.is_none() {
+            anyhow::bail!("--triangulate requires --stereo-file and/or --stereo-mag-file");
+        }
+        let stereo_records = load_stereo_data(&cli)?;
+        if stereo_records.is_empty() {
+            anyhow::bail!("no valid STEREO records for triangulation");
+        }
+        let stereo_end = (cli.start_hour + num_hours).min(stereo_records.len());
+        let stereo_start = stereo_end.saturating_sub(num_hours);
+        let stereo_window = &stereo_records[stereo_start..stereo_end];
+        eprintln!(
+            "triangulate: {} L1 hours + {} STEREO hours, sep={:.1} deg",
+            window.len(),
+            stereo_window.len(),
+            cli.stereo_sep_deg,
+        );
+        triangulate_ic_from_multi_spacecraft(window, stereo_window, &cli, &units)
+    } else {
+        generate_ic_from_omni(window, &cli, &units)
+    };
 
     // Diagnostics
     let (rho_min, rho_max) = data.iter().fold((f64::MAX, f64::MIN), |(lo, hi), c| {

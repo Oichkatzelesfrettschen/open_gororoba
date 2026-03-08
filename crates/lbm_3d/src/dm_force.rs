@@ -24,6 +24,24 @@ const AU_M: f64 = 1.496e11;
 /// GeV/cm^3 to kg/m^3 conversion: 1 GeV/c^2 = 1.783e-27 kg, 1 cm^3 = 1e-6 m^3.
 const GEV_CM3_TO_KG_M3: f64 = 1.783e-21;
 
+/// Proton mass in GeV/c^2.
+const M_PROTON_GEV: f64 = 0.938;
+
+/// ADM dark baryon mass (~5 * m_proton).
+const M_CHI_GEV: f64 = 5.0 * M_PROTON_GEV;
+
+/// Reduced mass of DM-proton system in GeV/c^2.
+const M_REDUCED_GEV: f64 = (M_CHI_GEV * M_PROTON_GEV) / (M_CHI_GEV + M_PROTON_GEV);
+
+/// DM halo velocity dispersion (km/s).
+const V_CHI_DISPERSION_KMS: f64 = 220.0;
+
+/// 1 GeV/c^2 in kg.
+const GEV_TO_KG: f64 = 1.783e-27;
+
+/// 1 km/s in m/s.
+const KMS_TO_MS: f64 = 1.0e3;
+
 /// Configuration for the dark matter gravitational force field.
 #[derive(Clone, Debug)]
 pub struct DmForceConfig {
@@ -41,6 +59,8 @@ pub struct DmForceConfig {
     /// Computed as delta_t^2 / delta_x where delta_x and delta_t are the LBM
     /// lattice spacing and timestep in physical units.
     pub force_scale: f64,
+    /// DM-baryon scattering cross-section (cm^2). Default 0 = pure gravity.
+    pub sigma_chi_b: f64,
 }
 
 impl Default for DmForceConfig {
@@ -63,6 +83,7 @@ impl Default for DmForceConfig {
             v_dm_wind: [0.0, 0.0, 0.0],
             eta_wake: 0.0,
             force_scale,
+            sigma_chi_b: 0.0,
         }
     }
 }
@@ -210,6 +231,88 @@ impl DmForceField {
             .iter()
             .map(|f| (f[0] * f[0] + f[1] * f[1] + f[2] * f[2]).sqrt())
             .fold(0.0_f64, f64::max)
+    }
+
+    /// Compute dynamic DM-baryon drag force from scattering cross-section.
+    ///
+    /// F_drag = n_chi * n_b * sigma_chi_b * m_reduced * |v_rel| * v_rel_hat
+    /// per unit volume, converted to lattice acceleration.
+    ///
+    /// Arguments:
+    /// - `baryon_density`: proton density per cell in LBM units (rho field)
+    /// - `baryon_velocity`: velocity per cell in LBM units (u field)
+    /// - `n_ref_cm3`: reference proton density (cm^-3) for unit conversion
+    /// - `v_ref_kms`: reference bulk speed (km/s) for unit conversion
+    pub fn drag_force(
+        &self,
+        baryon_density: &[f64],
+        baryon_velocity: &[[f64; 3]],
+        n_ref_cm3: f64,
+        v_ref_kms: f64,
+    ) -> Vec<[f64; 3]> {
+        let sigma = self.config.sigma_chi_b;
+        if sigma <= 0.0 {
+            return vec![[0.0; 3]; self.force.len()];
+        }
+
+        let n = self.force.len();
+        let mut drag = vec![[0.0; 3]; n];
+
+        // Local DM number density (cm^-3)
+        let n_chi_cm3 = self.config.rho_dm_local_gev_cm3 / M_CHI_GEV;
+        // Convert to SI: cm^-3 -> m^-3
+        let n_chi_m3 = n_chi_cm3 * 1.0e6;
+        // Reduced mass in kg
+        let m_red_kg = M_REDUCED_GEV * GEV_TO_KG;
+        // Sigma in m^2
+        let sigma_m2 = sigma * 1.0e-4;
+        // DM wind in physical units (m/s)
+        let v_dm_phys = [
+            self.config.v_dm_wind[0] * v_ref_kms * KMS_TO_MS / 0.05,
+            self.config.v_dm_wind[1] * v_ref_kms * KMS_TO_MS / 0.05,
+            self.config.v_dm_wind[2] * v_ref_kms * KMS_TO_MS / 0.05,
+        ];
+        // Default DM velocity if no wind specified: use dispersion along x
+        let v_dm_default = [V_CHI_DISPERSION_KMS * KMS_TO_MS, 0.0, 0.0];
+        let v_dm = if self.config.v_dm_wind.iter().any(|&v| v.abs() > 1e-30) {
+            v_dm_phys
+        } else {
+            v_dm_default
+        };
+
+        for idx in 0..n {
+            // Convert baryon density from LBM to physical (cm^-3 -> m^-3)
+            let n_b_m3 = baryon_density[idx] * n_ref_cm3 * 1.0e6;
+
+            // Convert baryon velocity from LBM to physical (m/s)
+            let v_b = [
+                baryon_velocity[idx][0] * v_ref_kms * KMS_TO_MS / 0.05,
+                baryon_velocity[idx][1] * v_ref_kms * KMS_TO_MS / 0.05,
+                baryon_velocity[idx][2] * v_ref_kms * KMS_TO_MS / 0.05,
+            ];
+
+            // Relative velocity
+            let v_rel = [v_dm[0] - v_b[0], v_dm[1] - v_b[1], v_dm[2] - v_b[2]];
+            let v_rel_mag = (v_rel[0] * v_rel[0] + v_rel[1] * v_rel[1] + v_rel[2] * v_rel[2]).sqrt();
+
+            if v_rel_mag < 1e-30 {
+                continue;
+            }
+
+            // F_drag = n_chi * n_b * sigma * m_red * |v_rel| * v_rel_hat (N/m^3)
+            // Then convert to LBM acceleration: a_lattice = F * force_scale / rho_phys
+            let f_mag = n_chi_m3 * n_b_m3 * sigma_m2 * m_red_kg * v_rel_mag;
+            let a_phys = f_mag / (n_b_m3 * M_PROTON_GEV * GEV_TO_KG);
+            let a_lattice = a_phys * self.config.force_scale;
+
+            drag[idx] = [
+                a_lattice * v_rel[0] / v_rel_mag,
+                a_lattice * v_rel[1] / v_rel_mag,
+                a_lattice * v_rel[2] / v_rel_mag,
+            ];
+        }
+
+        drag
     }
 }
 
@@ -564,5 +667,68 @@ mod tests {
                 );
             }
         }
+    }
+
+    #[test]
+    fn test_drag_zero_sigma() {
+        let field = default_field(8, 4, 4);
+        let rho = vec![1.0; 8 * 4 * 4];
+        let u = vec![[0.05, 0.0, 0.0]; 8 * 4 * 4];
+        let drag = field.drag_force(&rho, &u, 5.0, 400.0);
+        assert!(drag.iter().all(|f| f[0] == 0.0 && f[1] == 0.0 && f[2] == 0.0));
+    }
+
+    #[test]
+    fn test_drag_nonzero_sigma() {
+        let config = DmForceConfig {
+            sigma_chi_b: 1e-40,
+            ..DmForceConfig::default()
+        };
+        let field = DmForceField::new(8, 4, 4, config);
+        let rho = vec![1.0; 8 * 4 * 4];
+        let u = vec![[0.05, 0.0, 0.0]; 8 * 4 * 4];
+        let drag = field.drag_force(&rho, &u, 5.0, 400.0);
+        // At least some cells should have nonzero drag
+        let has_nonzero = drag.iter().any(|f| f[0].abs() > 0.0 || f[1].abs() > 0.0 || f[2].abs() > 0.0);
+        assert!(has_nonzero, "drag should be nonzero at sigma=1e-40");
+        // All drag should be finite
+        for f in &drag {
+            assert!(f[0].is_finite());
+            assert!(f[1].is_finite());
+            assert!(f[2].is_finite());
+        }
+    }
+
+    #[test]
+    fn test_drag_monotonic_with_sigma() {
+        // Higher sigma should produce larger drag force
+        let config_low = DmForceConfig {
+            sigma_chi_b: 1e-45,
+            ..DmForceConfig::default()
+        };
+        let config_high = DmForceConfig {
+            sigma_chi_b: 1e-40,
+            ..DmForceConfig::default()
+        };
+        let field_low = DmForceField::new(8, 4, 4, config_low);
+        let field_high = DmForceField::new(8, 4, 4, config_high);
+
+        let rho = vec![1.0; 8 * 4 * 4];
+        let u = vec![[0.05, 0.0, 0.0]; 8 * 4 * 4];
+
+        let drag_low = field_low.drag_force(&rho, &u, 5.0, 400.0);
+        let drag_high = field_high.drag_force(&rho, &u, 5.0, 400.0);
+
+        let max_low: f64 = drag_low.iter()
+            .map(|f| (f[0]*f[0] + f[1]*f[1] + f[2]*f[2]).sqrt())
+            .fold(0.0, f64::max);
+        let max_high: f64 = drag_high.iter()
+            .map(|f| (f[0]*f[0] + f[1]*f[1] + f[2]*f[2]).sqrt())
+            .fold(0.0, f64::max);
+
+        assert!(
+            max_high > max_low,
+            "higher sigma should produce larger drag: low={max_low:.3e}, high={max_high:.3e}"
+        );
     }
 }

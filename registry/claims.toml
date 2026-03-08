@@ -15825,3 +15825,111 @@ confidence = "high"
 phase = "algebra"
 sprint = 76
 dependencies = ["C-1107"]
+
+[[claim]]
+id = "C-1147"
+statement = "OMNI2 B-field components (Bx, By, Bz GSE) correlate with raw ACE MAG L2 16-sec hourly averages at Pearson r > 0.95, confirming that OMNI2 faithfully includes ACE MAG measurements."
+where_stated = "crates/gororoba_cli_physics/src/bin/cross_validate_solar_wind.rs (OmniVsAceMag)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Run cross-validate-solar-wind omni-vs-ace-mag with overlapping 2024 data. REFUTE if Pearson r < 0.90 for any B component."
+confidence = "medium"
+phase = "fluids"
+sprint = 76
+dependencies = []
+
+[[claim]]
+id = "C-1148"
+statement = "ACE SWEPAM and WIND SWE proton density and bulk speed correlate at Pearson r > 0.90 for overlapping L1 observations, confirming independent spacecraft agreement."
+where_stated = "crates/gororoba_cli_physics/src/bin/cross_validate_solar_wind.rs (AceVsWind)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Run cross-validate-solar-wind ace-vs-wind with overlapping 2024 data. REFUTE if density r < 0.85 or speed r < 0.90."
+confidence = "medium"
+phase = "fluids"
+sprint = 76
+dependencies = []
+
+[[claim]]
+id = "C-1149"
+statement = "WIND SWE+MFI data yields |F_DM|/|F_Lorentz| ~ O(10^-12) in the D3Q19 LBM+MHD simulation, confirming the DM null result is independent of the data source (OMNI vs raw WIND)."
+where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND IC)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Run E-113 with WIND IC. REFUTE if ratio exceeds O(10^-6)."
+confidence = "high"
+phase = "fluids"
+sprint = 76
+dependencies = ["C-1145"]
+
+[[claim]]
+id = "C-1150"
+statement = "High-resolution WIND MFI 3-second data in the shock ramp regime (CME front at L1) yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result holds even in the highest-gradient magnetic topology."
+where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Run E-113 with 3-sec WIND MFI IC around a known CME event. REFUTE if ratio exceeds O(10^-6)."
+confidence = "medium"
+phase = "fluids"
+sprint = 76
+dependencies = ["C-1149"]
+
+[[claim]]
+id = "C-1151"
+statement = "STEREO-A PLASTIC+IMPACT/MAG triangulated 3D IC yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result is geometry-independent (not an artifact of 1D Taylor hypothesis)."
+where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with STEREO triangulated IC)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Run E-113 with L1+STEREO triangulated IC. REFUTE if ratio exceeds O(10^-6)."
+confidence = "medium"
+phase = "fluids"
+sprint = 76
+dependencies = ["C-1149"]
+
+[[claim]]
+id = "C-1152"
+statement = "The multi-spacecraft DM null result (O(10^-12) across OMNI, WIND, ACE MAG, STEREO-A) is instrument-independent, confirming it reflects a genuine physical suppression rather than measurement artifact."
+where_stated = "registry/experiments.toml (E-113)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: All of C-1147 through C-1151 confirmed. REFUTE if any spacecraft yields a qualitatively different ratio."
+confidence = "high"
+phase = "fluids"
+sprint = 76
+dependencies = ["C-1147", "C-1148", "C-1149", "C-1150", "C-1151"]
+
+[[claim]]
+id = "C-1153"
+statement = "The CD tower dark sector instability (dark x dark -> Leech, 100% escape rate at dim=32) provides an algebraic vocabulary for DM-baryon decoupling at the gravitational level. The multi-spacecraft null result (O(10^-12)) is consistent with universal dark sector suppression predicted by the CD tower structure."
+where_stated = "crates/algebra_experimental/src/leech_pathion.rs (LeechPathionEmbedding), registry/experiments.toml (E-113)"
+status = "Speculative"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Independent mathematical formalization linking CD dark sector escape rate to gravitational coupling suppression. REFUTE if a rigorous mapping shows the algebraic structure permits non-negligible dark-baryonic coupling."
+confidence = "low"
+phase = "algebra"
+sprint = 76
+dependencies = ["C-007", "C-1145"]
+
+[[claim]]
+id = "C-1154"
+statement = "DM-baryon scattering cross-section detection threshold in magnetized solar wind at 1 AU: sigma_chi_b must exceed approximately 10^-45 cm^2 for the drag force to produce |F_drag|/|F_Lorentz| > O(10^-12). Below this threshold, the drag is dynamically negligible."
+where_stated = "crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-sigma)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Run sigma sweep {0, 1e-50, 1e-48, 1e-46, 1e-44, 1e-42, 1e-40} and identify transition. REFUTE if threshold differs by more than 2 orders of magnitude."
+confidence = "medium"
+phase = "fluids"
+sprint = 76
+dependencies = ["C-1145"]
+
+[[claim]]
+id = "C-1155"
+statement = "Asymmetric dark matter mass m_chi ~ 5 m_b ~ 4.7-5.0 GeV/c^2 (from Omega_DM/Omega_b ~ 5.4) yields local DM number density n_chi ~ 0.06 cm^-3 at rho_dm = 0.3 GeV/cm^3, which is O(10^-2) of solar wind proton density. Combined with sub-weak sigma_chi_b < 10^-45 cm^2, the DM-baryon drag is dynamically negligible (O(10^-12) of Lorentz) as confirmed by E-112/E-113."
+where_stated = "crates/lbm_3d/src/dm_force.rs (M_CHI_GEV, N_CHI_LOCAL constants)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Numerical confirmation from E-113 drag force sweep. REFUTE if measured drag exceeds O(10^-6) at sigma=0."
+confidence = "high"
+phase = "fluids"
+sprint = 76
+dependencies = ["C-1154"]

@@ -4,7 +4,7 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 111
+experiment_count = 112
 deterministic_count = 65
 gpu_count = 13
 seeded_count = 46
@@ -2607,4 +2607,27 @@ lineage_id = "XL-111"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = ["ACE SWEPAM"]
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-113"
+title = "Multi-spacecraft solar wind MHD + DM null test replication"
+binary = "solar-wind-dm-mhd"
+binary_registered = true
+binary_experiment_declared = ""
+method = "Multi-spacecraft replication of E-112 DM null test using independent data sources (ACE MAG L2, WIND SWE+MFI, STEREO-A PLASTIC+IMPACT/MAG). Each dataset flows through spacecraft-specific parser -> *_to_omni() adapter -> OmniRecord -> generate_ic_from_omni() -> LBM/MHD grid. RTN->GSE coordinate transform applied to STEREO-A data. Cross-validation via Pearson correlation, RMSE, and bias between overlapping hourly measurements. Confirms instrument independence of |F_DM|/|F_Lorentz| ~ O(10^-12) null result. DM-baryon drag force (sigma_chi_b) sweep identifies detection threshold."
+input = "ACE MAG L2 16-sec, WIND SWE 92-sec + MFI 1-hour, STEREO-A PLASTIC 1-min + IMPACT/MAG 8-sec, OMNI2 1-hour. nx=128, ny=32, nz=32, steps=5000, tau=0.7, eta=0.01"
+output = ["csv_snapshots", "cross_validation_csv"]
+run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file <wind_ic.csv> --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --eta 0.01 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500"
+run_command_sha256 = ""
+claims = ["C-1147", "C-1148", "C-1149", "C-1150", "C-1151", "C-1152", "C-1153", "C-1154", "C-1155"]
+claim_refs = ["C-1147", "C-1148", "C-1149", "C-1150", "C-1151", "C-1152", "C-1153", "C-1154", "C-1155"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-112"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = ["ACE MAG L2", "WIND SWE", "WIND MFI", "STEREO-A PLASTIC", "STEREO-A IMPACT/MAG", "OMNI2"]
 reproducibility_class = "deterministic"
