@@ -1583,6 +1583,7 @@ pub fn compute_imbalance_ratio(dim: usize) -> ImbalanceResult {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use cd_kernel::cd_basis_mul_sign;
 
     // Regime accumulator: (n_comps, eta0, eta1, b1, frustrated, fibers[4], pure, mixed)
     type RegimeAccum = (usize, usize, usize, usize, usize, [usize; 4], usize, usize);
