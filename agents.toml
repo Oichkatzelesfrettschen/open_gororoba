@@ -72,6 +72,10 @@ path = "tests/"
 purpose = "Python pytest suites and integration checks."
 
 [[shared.path]]
+path = "bin/"
+purpose = "Utility scripts (Python .py only). Data fetchers, gates, and tooling. No .sh scripts."
+
+[[shared.path]]
 path = "registry/"
 purpose = "Canonical TOML records for claims, roadmap, standards, and governance state."
 

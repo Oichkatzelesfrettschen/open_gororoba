@@ -66,6 +66,7 @@ pub struct OmniRecord {
 }
 
 // Fill values from the OMNI2 format specification.
+// These are the exact sentinel values NASA uses for missing data.
 const FILL_B: f64 = 999.9;
 const FILL_TEMP: f64 = 9999999.0;
 const FILL_DENSITY: f64 = 999.9;
@@ -76,8 +77,40 @@ const FILL_MACH: f64 = 999.9;
 const FILL_DST: f64 = 99999.0;
 const FILL_AE: f64 = 9999.0;
 
-/// Convert a field value to f64, returning NaN if it matches the fill value.
-fn parse_or_nan(s: &str, fill: f64) -> f64 {
+// Hard physical ceilings for solar wind parameters at 1 AU.
+// Any value above these is rejected as unphysical or a partial fill leak.
+//
+// Rationale:
+//   B: largest CME sheath fields at 1 AU peak ~100 nT (rare). 200 nT is
+//       beyond any credible measurement. Typical quiet: 3-8 nT.
+//   T: coronal holes push ~1e6 K; CME sheaths ~1e7 K. 1e8 K is unphysical
+//       at 1 AU (that's stellar interior territory).
+//   n: densest CME ejecta ~100 cm^-3; 500 is generous ceiling.
+//   V: fastest CMEs reach ~2500 km/s (rare). 3000 is ceiling.
+//   P: flow pressure = 0.5 * m_p * n * V^2; maxes ~200 nPa in extreme CMEs.
+//   beta: plasma beta >100 is suspicious at 1 AU (typical: 0.1-5).
+//   Ma: Alfven Mach >100 is unphysical (typical: 5-20).
+const CEIL_B: f64 = 200.0;
+const CEIL_TEMP: f64 = 1.0e8;
+const CEIL_DENSITY: f64 = 500.0;
+const CEIL_SPEED: f64 = 3000.0;
+const CEIL_PRESSURE: f64 = 500.0;
+const CEIL_BETA: f64 = 500.0;
+const CEIL_MACH: f64 = 200.0;
+
+/// Two-stage filter: (1) reject exact fill values, (2) reject values above
+/// hard physical ceilings. Returns NaN for anything suspicious.
+fn parse_or_nan(s: &str, fill: f64, ceiling: f64) -> f64 {
+    match s.trim().parse::<f64>() {
+        Ok(v) if (v - fill).abs() < 0.5 => f64::NAN,
+        Ok(v) if v.abs() > ceiling => f64::NAN,
+        Ok(v) => v,
+        Err(_) => f64::NAN,
+    }
+}
+
+/// Parse without physical ceiling (for indices where ceilings don't apply).
+fn parse_or_nan_fill_only(s: &str, fill: f64) -> f64 {
     match s.trim().parse::<f64>() {
         Ok(v) if (v - fill).abs() < 0.5 => f64::NAN,
         Ok(v) => v,
@@ -129,22 +162,27 @@ pub fn parse_omni_hourly(content: &str) -> Vec<OmniRecord> {
             Err(_) => continue,
         };
 
-        let b_magnitude = parse_or_nan(fields[8], FILL_B);
-        let bx_gse = parse_or_nan(fields[12], FILL_B);
-        let by_gse = parse_or_nan(fields[13], FILL_B);
-        let bz_gse = parse_or_nan(fields[14], FILL_B);
+        // Two-stage parsing: fill detection + physical ceiling rejection.
+        // This prevents partial fills (e.g. 998.0 for B) from leaking
+        // into the LBM normalizer and blowing up the simulation.
+        let b_magnitude = parse_or_nan(fields[8], FILL_B, CEIL_B);
+        let bx_gse = parse_or_nan(fields[12], FILL_B, CEIL_B);
+        let by_gse = parse_or_nan(fields[13], FILL_B, CEIL_B);
+        let bz_gse = parse_or_nan(fields[14], FILL_B, CEIL_B);
 
-        let proton_temperature = parse_or_nan(fields[22], FILL_TEMP);
-        let proton_density = parse_or_nan(fields[23], FILL_DENSITY);
-        let bulk_speed = parse_or_nan(fields[24], FILL_SPEED);
-        let flow_pressure = parse_or_nan(fields[28], FILL_PRESSURE);
+        let proton_temperature = parse_or_nan(fields[22], FILL_TEMP, CEIL_TEMP);
+        let proton_density = parse_or_nan(fields[23], FILL_DENSITY, CEIL_DENSITY);
+        let bulk_speed = parse_or_nan(fields[24], FILL_SPEED, CEIL_SPEED);
+        let flow_pressure = parse_or_nan(fields[28], FILL_PRESSURE, CEIL_PRESSURE);
 
-        let plasma_beta = parse_or_nan(fields[36], FILL_BETA);
-        let alfven_mach = parse_or_nan(fields[37], FILL_MACH);
+        let plasma_beta = parse_or_nan(fields[36], FILL_BETA, CEIL_BETA);
+        let alfven_mach = parse_or_nan(fields[37], FILL_MACH, CEIL_MACH);
 
         let kp_times_10: u8 = fields[38].trim().parse().unwrap_or(99);
-        let dst_index = parse_or_nan(fields[40], FILL_DST);
-        let ae_index = parse_or_nan(fields[41], FILL_AE);
+        // Geomagnetic indices: fill-only (no physical ceiling -- Dst can
+        // be large negative during extreme storms, AE can reach thousands).
+        let dst_index = parse_or_nan_fill_only(fields[40], FILL_DST);
+        let ae_index = parse_or_nan_fill_only(fields[41], FILL_AE);
 
         records.push(OmniRecord {
             year,
@@ -348,5 +386,68 @@ mod tests {
         assert!((r.dst_index - 0.0).abs() < 0.5);
         assert!((r.ae_index - 20.0).abs() < 0.5);
         assert_eq!(r.kp_times_10, 7); // Kp = 0.7
+    }
+
+    #[test]
+    fn test_omni_ceiling_rejects_near_fill_values() {
+        // A near-fill value of 998.0 for B-field would pass the fill check
+        // (999.9 - 998.0 = 1.9 > 0.5 tolerance) but is unphysical at 1 AU
+        // (typical B ~ 5 nT, max CME ~ 100 nT). The ceiling at 200 nT
+        // must catch this.
+        //
+        // Similarly, T=9999998 would pass fill check but is 10^7 K -- the
+        // ceiling at 1e8 K passes it (it IS physically possible in extreme
+        // CME sheaths). But V=9998 km/s passes fill (9999-9998=1) and the
+        // ceiling at 3000 km/s must reject it.
+        assert!(parse_or_nan("998.0", FILL_B, CEIL_B).is_nan());
+        assert!(parse_or_nan("500.0", FILL_B, CEIL_B).is_nan());
+        assert!(parse_or_nan("201.0", FILL_B, CEIL_B).is_nan());
+        // 100 nT is a huge but real CME sheath field -- should survive
+        assert!(!parse_or_nan("100.0", FILL_B, CEIL_B).is_nan());
+        assert!((parse_or_nan("100.0", FILL_B, CEIL_B) - 100.0).abs() < 0.01);
+
+        // Speed: 9998 km/s is a near-fill leak, must be rejected
+        assert!(parse_or_nan("9998.0", FILL_SPEED, CEIL_SPEED).is_nan());
+        assert!(parse_or_nan("5000.0", FILL_SPEED, CEIL_SPEED).is_nan());
+        // 2000 km/s is a fast CME -- should survive
+        assert!(!parse_or_nan("2000.0", FILL_SPEED, CEIL_SPEED).is_nan());
+
+        // Density: 998 is near-fill, must be rejected
+        assert!(parse_or_nan("998.0", FILL_DENSITY, CEIL_DENSITY).is_nan());
+        // 50 cm^-3 is dense CME ejecta -- should survive
+        assert!(!parse_or_nan("50.0", FILL_DENSITY, CEIL_DENSITY).is_nan());
+
+        // Temperature: 9999998 is near-fill but below ceiling
+        // (1e8 ceiling is generous for extreme CME sheath T)
+        assert!(
+            !parse_or_nan("9999998.0", FILL_TEMP, CEIL_TEMP).is_nan(),
+            "9999998 is near-fill but below 1e8 ceiling -- ambiguous case"
+        );
+        // But the fill check (within 0.5) should catch 9999999.0 exactly
+        assert!(parse_or_nan("9999999.0", FILL_TEMP, CEIL_TEMP).is_nan());
+        // And anything above 1e8 is clearly unphysical
+        assert!(parse_or_nan("200000000.0", FILL_TEMP, CEIL_TEMP).is_nan());
+    }
+
+    #[test]
+    fn test_omni_legitimate_extreme_values_survive() {
+        // Carrington-class event values that are extreme but real:
+        // B = 50 nT (large CME sheath), V = 2500 km/s (fast CME),
+        // n = 100 cm^-3 (dense sheath), T = 5e6 K (hot sheath)
+        let r = parse_or_nan("50.0", FILL_B, CEIL_B);
+        assert!(!r.is_nan() && (r - 50.0).abs() < 0.01);
+
+        let r = parse_or_nan("2500.0", FILL_SPEED, CEIL_SPEED);
+        assert!(!r.is_nan() && (r - 2500.0).abs() < 0.1);
+
+        let r = parse_or_nan("100.0", FILL_DENSITY, CEIL_DENSITY);
+        assert!(!r.is_nan() && (r - 100.0).abs() < 0.01);
+
+        let r = parse_or_nan("5000000.0", FILL_TEMP, CEIL_TEMP);
+        assert!(!r.is_nan() && (r - 5e6).abs() < 1.0);
+
+        // Negative Bx (sunward B in GSE) is physical and common
+        let r = parse_or_nan("-30.0", FILL_B, CEIL_B);
+        assert!(!r.is_nan() && (r - (-30.0)).abs() < 0.01);
     }
 }
