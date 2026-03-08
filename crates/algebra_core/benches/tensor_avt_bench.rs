@@ -1,9 +1,13 @@
 //! Criterion benchmarks for tensor_avt CPU and GPU paths.
 
+#[cfg(feature = "gpu")]
+use algebra_core::gpu::ComputeBackend;
 use algebra_core::gpu::TensorAVT;
 #[cfg(feature = "gpu")]
 use algebra_core::gpu::is_gpu_available;
 use criterion::{BenchmarkId, Criterion, black_box, criterion_group, criterion_main};
+#[cfg(feature = "gpu")]
+use std::time::Instant;
 
 fn bench_large_enabled() -> bool {
     matches!(
@@ -105,6 +109,42 @@ fn bench_tensor_avt_single_gpu(c: &mut Criterion) {
 }
 
 #[cfg(feature = "gpu")]
+fn bench_tensor_avt_single_gpu_resident(c: &mut Criterion) {
+    if !is_gpu_available() {
+        return;
+    }
+    let mut group = c.benchmark_group("tensor_avt_single_gpu_resident");
+    for dim in single_dims() {
+        let avt = TensorAVT::new(dim);
+        let a = values(dim, 0xA551 + dim as u64);
+        let x = values(dim, 0xB661 + dim as u64);
+        let mut session = avt
+            .new_mul_session(ComputeBackend::Cuda, 1)
+            .expect("create CUDA mul session");
+        session.load_left(&a).expect("load left input");
+        session.load_right(&x, 1).expect("load right input");
+        group.bench_with_input(
+            BenchmarkId::new("gpu-resident", dim),
+            &dim,
+            move |bench, _| {
+                bench.iter_custom(|iters| {
+                    let start = Instant::now();
+                    for _ in 0..iters {
+                        session.run_single(&avt).expect("run resident single");
+                    }
+                    let output = session
+                        .download_output(dim)
+                        .expect("download resident single");
+                    black_box(output);
+                    start.elapsed()
+                });
+            },
+        );
+    }
+    group.finish();
+}
+
+#[cfg(feature = "gpu")]
 fn bench_tensor_avt_batch_gpu(c: &mut Criterion) {
     if !is_gpu_available() {
         return;
@@ -119,6 +159,44 @@ fn bench_tensor_avt_batch_gpu(c: &mut Criterion) {
             bench.iter(|| {
                 avt.compute_cd_mul_batch(black_box(&a), black_box(&x_batch), black_box(batch_size))
                     .unwrap()
+            });
+        });
+    }
+    group.finish();
+}
+
+#[cfg(feature = "gpu")]
+fn bench_tensor_avt_batch_gpu_resident(c: &mut Criterion) {
+    if !is_gpu_available() {
+        return;
+    }
+    let mut group = c.benchmark_group("tensor_avt_batch_gpu_resident");
+    for (dim, batch_size) in batch_shapes() {
+        let avt = TensorAVT::new(dim);
+        let a = values(dim, 0xC771 + dim as u64);
+        let x_batch = values(dim * batch_size, 0xD881 + batch_size as u64);
+        let len = dim * batch_size;
+        let label = format!("gpu-resident-dim{dim}-batch{batch_size}");
+        let mut session = avt
+            .new_mul_session(ComputeBackend::Cuda, batch_size)
+            .expect("create CUDA batch session");
+        session.load_left(&a).expect("load batch left input");
+        session
+            .load_right(&x_batch, batch_size)
+            .expect("load batch right input");
+        group.bench_function(label, move |bench| {
+            bench.iter_custom(|iters| {
+                let start = Instant::now();
+                for _ in 0..iters {
+                    session
+                        .run_batch(&avt, batch_size)
+                        .expect("run resident batch");
+                }
+                let output = session
+                    .download_output(len)
+                    .expect("download resident batch");
+                black_box(output);
+                start.elapsed()
             });
         });
     }
@@ -145,14 +223,58 @@ fn bench_tensor_avt_norm_gpu(c: &mut Criterion) {
     group.finish();
 }
 
+#[cfg(feature = "gpu")]
+fn bench_tensor_avt_norm_gpu_resident(c: &mut Criterion) {
+    if !is_gpu_available() {
+        return;
+    }
+    let mut group = c.benchmark_group("tensor_avt_norm_sq_gpu_resident");
+    for (dim, batch_size) in batch_shapes() {
+        let avt = TensorAVT::new(dim);
+        let vectors = values(dim * batch_size, 0xE991 + batch_size as u64);
+        let label = format!("gpu-resident-dim{dim}-batch{batch_size}");
+        let mut session = avt
+            .new_norm_session(ComputeBackend::Cuda, batch_size)
+            .expect("create CUDA norm session");
+        session
+            .load_vectors(&vectors, batch_size)
+            .expect("load norm vectors");
+        group.bench_function(label, move |bench| {
+            bench.iter_custom(|iters| {
+                let start = Instant::now();
+                for _ in 0..iters {
+                    session
+                        .run_norms(&avt, batch_size)
+                        .expect("run resident norms");
+                }
+                let output = session
+                    .download_norms(batch_size)
+                    .expect("download resident norms");
+                black_box(output);
+                start.elapsed()
+            });
+        });
+    }
+    group.finish();
+}
+
 #[cfg(not(feature = "gpu"))]
 fn bench_tensor_avt_single_gpu(_: &mut Criterion) {}
+
+#[cfg(not(feature = "gpu"))]
+fn bench_tensor_avt_single_gpu_resident(_: &mut Criterion) {}
 
 #[cfg(not(feature = "gpu"))]
 fn bench_tensor_avt_batch_gpu(_: &mut Criterion) {}
 
 #[cfg(not(feature = "gpu"))]
+fn bench_tensor_avt_batch_gpu_resident(_: &mut Criterion) {}
+
+#[cfg(not(feature = "gpu"))]
 fn bench_tensor_avt_norm_gpu(_: &mut Criterion) {}
+
+#[cfg(not(feature = "gpu"))]
+fn bench_tensor_avt_norm_gpu_resident(_: &mut Criterion) {}
 
 criterion_group!(
     benches,
@@ -160,7 +282,10 @@ criterion_group!(
     bench_tensor_avt_batch,
     bench_tensor_avt_norm,
     bench_tensor_avt_single_gpu,
+    bench_tensor_avt_single_gpu_resident,
     bench_tensor_avt_batch_gpu,
+    bench_tensor_avt_batch_gpu_resident,
     bench_tensor_avt_norm_gpu,
+    bench_tensor_avt_norm_gpu_resident,
 );
 criterion_main!(benches);

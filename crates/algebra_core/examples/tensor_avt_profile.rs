@@ -1,5 +1,5 @@
 #[cfg(feature = "gpu")]
-use algebra_core::gpu::tensor_avt::{TensorAvtMulGpuWorkspace, TensorAvtNormGpuWorkspace};
+use algebra_core::gpu::{ComputeBackend, TensorAvtMulSession, TensorAvtNormSession};
 use algebra_core::gpu::{TensorAVT, is_gpu_available};
 use std::{env, hint::black_box, process, time::Instant};
 
@@ -178,43 +178,45 @@ fn run_once_cpu(config: &Config, avt: &TensorAVT, inputs: &Inputs) -> f32 {
 }
 
 #[cfg(feature = "gpu")]
-enum GpuWorkspace {
-    Mul(TensorAvtMulGpuWorkspace),
-    Norm(TensorAvtNormGpuWorkspace),
+enum GpuSession {
+    Mul(TensorAvtMulSession),
+    Norm(TensorAvtNormSession),
 }
 
 #[cfg(feature = "gpu")]
-fn make_gpu_workspace(config: &Config, avt: &TensorAVT) -> Result<GpuWorkspace, String> {
+fn make_gpu_session(config: &Config, avt: &TensorAVT) -> Result<GpuSession, String> {
     match config.path {
-        PathKind::Single => Ok(GpuWorkspace::Mul(avt.new_gpu_mul_workspace(1)?)),
-        PathKind::Batch => Ok(GpuWorkspace::Mul(
-            avt.new_gpu_mul_workspace(config.batch_size)?,
+        PathKind::Single => Ok(GpuSession::Mul(
+            avt.new_mul_session(ComputeBackend::Cuda, 1)?,
         )),
-        PathKind::Norm => Ok(GpuWorkspace::Norm(
-            avt.new_gpu_norm_workspace(config.batch_size)?,
+        PathKind::Batch => Ok(GpuSession::Mul(
+            avt.new_mul_session(ComputeBackend::Cuda, config.batch_size)?,
+        )),
+        PathKind::Norm => Ok(GpuSession::Norm(
+            avt.new_norm_session(ComputeBackend::Cuda, config.batch_size)?,
         )),
     }
 }
 
 #[cfg(feature = "gpu")]
-fn upload_resident_inputs(
+fn load_session_inputs(
     config: &Config,
     inputs: &Inputs,
-    workspace: &mut GpuWorkspace,
+    session: &mut GpuSession,
 ) -> Result<(), String> {
-    match (config.path, workspace) {
-        (PathKind::Single, GpuWorkspace::Mul(workspace)) => {
-            workspace.upload_a(&inputs.a)?;
-            workspace.upload_x(&inputs.x, 1, config.dim)
+    match (config.path, session) {
+        (PathKind::Single, GpuSession::Mul(session)) => {
+            session.load_left(&inputs.a)?;
+            session.load_right(&inputs.x, 1)
         }
-        (PathKind::Batch, GpuWorkspace::Mul(workspace)) => {
-            workspace.upload_a(&inputs.a)?;
-            workspace.upload_x(&inputs.x_batch, config.batch_size, config.dim)
+        (PathKind::Batch, GpuSession::Mul(session)) => {
+            session.load_left(&inputs.a)?;
+            session.load_right(&inputs.x_batch, config.batch_size)
         }
-        (PathKind::Norm, GpuWorkspace::Norm(workspace)) => {
-            workspace.upload_vectors(&inputs.vectors, config.batch_size, config.dim)
+        (PathKind::Norm, GpuSession::Norm(session)) => {
+            session.load_vectors(&inputs.vectors, config.batch_size)
         }
-        _ => Err("workspace kind does not match profiling path".into()),
+        _ => Err("session kind does not match profiling path".into()),
     }
 }
 
@@ -223,24 +225,29 @@ fn run_once_gpu_workspace(
     config: &Config,
     avt: &TensorAVT,
     inputs: &Inputs,
-    workspace: &mut GpuWorkspace,
+    session: &mut GpuSession,
 ) -> Result<f32, String> {
-    match (config.path, workspace) {
-        (PathKind::Single, GpuWorkspace::Mul(workspace)) => avt
-            .compute_cd_mul_with_workspace(&inputs.a, &inputs.x, workspace)
-            .map(|out| black_box(out.iter().copied().sum::<f32>())),
-        (PathKind::Batch, GpuWorkspace::Mul(workspace)) => avt
-            .compute_cd_mul_batch_with_workspace(
-                &inputs.a,
-                &inputs.x_batch,
-                config.batch_size,
-                workspace,
-            )
-            .map(|out| black_box(out.iter().copied().sum::<f32>())),
-        (PathKind::Norm, GpuWorkspace::Norm(workspace)) => avt
-            .compute_norm_sq_batch_with_workspace(&inputs.vectors, config.batch_size, workspace)
-            .map(|out| black_box(out.iter().copied().sum::<f32>())),
-        _ => Err("workspace kind does not match profiling path".into()),
+    load_session_inputs(config, inputs, session)?;
+    match (config.path, session) {
+        (PathKind::Single, GpuSession::Mul(session)) => {
+            session.run_single(avt)?;
+            session
+                .download_output(config.dim)
+                .map(|out| black_box(out.iter().copied().sum::<f32>()))
+        }
+        (PathKind::Batch, GpuSession::Mul(session)) => {
+            session.run_batch(avt, config.batch_size)?;
+            session
+                .download_output(config.batch_size * config.dim)
+                .map(|out| black_box(out.iter().copied().sum::<f32>()))
+        }
+        (PathKind::Norm, GpuSession::Norm(session)) => {
+            session.run_norms(avt, config.batch_size)?;
+            session
+                .download_norms(config.batch_size)
+                .map(|out| black_box(out.iter().copied().sum::<f32>()))
+        }
+        _ => Err("session kind does not match profiling path".into()),
     }
 }
 
@@ -248,47 +255,29 @@ fn run_once_gpu_workspace(
 fn run_once_gpu_resident(
     config: &Config,
     avt: &TensorAVT,
-    workspace: &mut GpuWorkspace,
+    session: &mut GpuSession,
 ) -> Result<(), String> {
-    match (config.path, workspace) {
-        (PathKind::Single, GpuWorkspace::Mul(workspace)) => {
-            avt.launch_cd_mul_with_workspace(workspace)?;
-            workspace
-                .stream()
-                .synchronize()
-                .map_err(|e| format!("Synchronize single stream: {e}"))
-        }
-        (PathKind::Batch, GpuWorkspace::Mul(workspace)) => {
-            avt.launch_cd_mul_batch_with_workspace(config.batch_size, workspace)?;
-            workspace
-                .stream()
-                .synchronize()
-                .map_err(|e| format!("Synchronize batch stream: {e}"))
-        }
-        (PathKind::Norm, GpuWorkspace::Norm(workspace)) => {
-            avt.launch_norm_sq_batch_with_workspace(config.batch_size, workspace)?;
-            workspace
-                .stream()
-                .synchronize()
-                .map_err(|e| format!("Synchronize norm stream: {e}"))
-        }
-        _ => Err("workspace kind does not match profiling path".into()),
+    match (config.path, session) {
+        (PathKind::Single, GpuSession::Mul(session)) => session.run_single(avt),
+        (PathKind::Batch, GpuSession::Mul(session)) => session.run_batch(avt, config.batch_size),
+        (PathKind::Norm, GpuSession::Norm(session)) => session.run_norms(avt, config.batch_size),
+        _ => Err("session kind does not match profiling path".into()),
     }
 }
 
 #[cfg(feature = "gpu")]
-fn resident_checksum(config: &Config, workspace: &mut GpuWorkspace) -> Result<f32, String> {
-    match (config.path, workspace) {
-        (PathKind::Single, GpuWorkspace::Mul(workspace)) => workspace
-            .download_y(config.dim)
+fn resident_checksum(config: &Config, session: &mut GpuSession) -> Result<f32, String> {
+    match (config.path, session) {
+        (PathKind::Single, GpuSession::Mul(session)) => session
+            .download_output(config.dim)
             .map(|out| black_box(out.iter().copied().sum::<f32>())),
-        (PathKind::Batch, GpuWorkspace::Mul(workspace)) => workspace
-            .download_y(config.batch_size * config.dim)
+        (PathKind::Batch, GpuSession::Mul(session)) => session
+            .download_output(config.batch_size * config.dim)
             .map(|out| black_box(out.iter().copied().sum::<f32>())),
-        (PathKind::Norm, GpuWorkspace::Norm(workspace)) => workspace
+        (PathKind::Norm, GpuSession::Norm(session)) => session
             .download_norms(config.batch_size)
             .map(|out| black_box(out.iter().copied().sum::<f32>())),
-        _ => Err("workspace kind does not match profiling path".into()),
+        _ => Err("session kind does not match profiling path".into()),
     }
 }
 
@@ -347,28 +336,29 @@ fn run_gpu_profile(
             }
         },
         GpuMode::Workspace => {
-            let mut workspace = make_gpu_workspace(config, avt)?;
+            let mut session = make_gpu_session(config, avt)?;
             let mut checksum = 0.0f32;
             for _ in 0..config.warmup {
-                checksum = black_box(run_once_gpu_workspace(config, avt, inputs, &mut workspace)?);
+                checksum = black_box(run_once_gpu_workspace(config, avt, inputs, &mut session)?);
             }
             let start = Instant::now();
             for _ in 0..config.iters {
-                checksum = black_box(run_once_gpu_workspace(config, avt, inputs, &mut workspace)?);
+                checksum = black_box(run_once_gpu_workspace(config, avt, inputs, &mut session)?);
             }
             Ok((start.elapsed(), checksum))
         }
         GpuMode::Resident => {
-            let mut workspace = make_gpu_workspace(config, avt)?;
-            upload_resident_inputs(config, inputs, &mut workspace)?;
+            let mut session = make_gpu_session(config, avt)?;
+            load_session_inputs(config, inputs, &mut session)?;
             for _ in 0..config.warmup {
-                run_once_gpu_resident(config, avt, &mut workspace)?;
+                run_once_gpu_resident(config, avt, &mut session)?;
             }
+            let _ = resident_checksum(config, &mut session)?;
             let start = Instant::now();
             for _ in 0..config.iters {
-                run_once_gpu_resident(config, avt, &mut workspace)?;
+                run_once_gpu_resident(config, avt, &mut session)?;
             }
-            let checksum = resident_checksum(config, &mut workspace)?;
+            let checksum = resident_checksum(config, &mut session)?;
             Ok((start.elapsed(), checksum))
         }
     }

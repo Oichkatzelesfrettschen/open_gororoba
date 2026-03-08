@@ -15,6 +15,9 @@
 //! For CD basis elements (entries are exactly 0 or +/-1), FP16 is EXACT.
 //! The FP32 accumulator preserves full single-precision for dense vectors.
 
+use gororoba_gpu_bridge::{ComputeBackend, probe_simd};
+use std::{sync::OnceLock, time::Instant};
+
 #[cfg(feature = "gpu")]
 use cudarc::driver::{
     CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
@@ -28,7 +31,7 @@ use std::fs;
 #[cfg(feature = "gpu")]
 use std::path::PathBuf;
 #[cfg(feature = "gpu")]
-use std::sync::{Arc, OnceLock};
+use std::sync::Arc;
 
 /// Build NVRTC compile options for Tensor Core kernels.
 ///
@@ -99,7 +102,6 @@ fn compile_tensor_avt_ptx() -> Result<Ptx, String> {
     Ok(Ptx::from_src(ptx_src))
 }
 
-#[cfg(any(not(feature = "gpu"), test))]
 fn tensor_avt_cpu_sign_table(dim: usize) -> std::sync::Arc<Vec<i8>> {
     use crate::construction::cayley_dickson::cd_basis_mul_sign;
     use std::{
@@ -377,6 +379,346 @@ impl TensorAvtNormGpuWorkspace {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TensorAvtCalibrationMode {
+    LazyInProcess,
+    Disabled,
+}
+
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct TensorAvtThresholdOverrides {
+    pub cd_mul_min_problem_size: Option<usize>,
+    pub cd_mul_batch_min_problem_size: Option<usize>,
+    pub norm_sq_batch_min_problem_size: Option<usize>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct TensorAvtAutoConfig {
+    pub backend_order: [ComputeBackend; 4],
+    pub calibration: TensorAvtCalibrationMode,
+    pub threshold_overrides: TensorAvtThresholdOverrides,
+}
+
+impl Default for TensorAvtAutoConfig {
+    fn default() -> Self {
+        Self {
+            backend_order: [
+                ComputeBackend::Cuda,
+                ComputeBackend::Vulkan,
+                ComputeBackend::CpuSimd,
+                ComputeBackend::CpuScalar,
+            ],
+            calibration: TensorAvtCalibrationMode::LazyInProcess,
+            threshold_overrides: TensorAvtThresholdOverrides::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct TensorAvtAutoResult<T> {
+    pub backend: ComputeBackend,
+    pub value: T,
+    pub calibrated_this_call: bool,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+enum TensorAvtAutoOp {
+    CdMul,
+    CdMulBatch,
+    NormSqBatch,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+struct TensorAvtCalibrationKey {
+    op: TensorAvtAutoOp,
+    dim: usize,
+    count: usize,
+    cuda_available: bool,
+    simd_available: bool,
+}
+
+fn tensor_avt_calibration_cache()
+-> &'static std::sync::Mutex<std::collections::HashMap<TensorAvtCalibrationKey, ComputeBackend>> {
+    static CACHE: OnceLock<
+        std::sync::Mutex<std::collections::HashMap<TensorAvtCalibrationKey, ComputeBackend>>,
+    > = OnceLock::new();
+    CACHE.get_or_init(|| std::sync::Mutex::new(std::collections::HashMap::new()))
+}
+
+fn tensor_avt_backend_is_cpu(backend: ComputeBackend) -> bool {
+    matches!(backend, ComputeBackend::CpuScalar | ComputeBackend::CpuSimd)
+}
+
+fn tensor_avt_backend_is_gpu(backend: ComputeBackend) -> bool {
+    matches!(backend, ComputeBackend::Cuda | ComputeBackend::Vulkan)
+}
+
+#[cfg(feature = "gpu")]
+fn tensor_avt_cuda_available() -> bool {
+    super::is_gpu_available()
+}
+
+#[cfg(not(feature = "gpu"))]
+fn tensor_avt_cuda_available() -> bool {
+    false
+}
+
+#[derive(Clone)]
+struct TensorAvtCpuMulSession {
+    left: Vec<f32>,
+    right: Vec<f32>,
+    output: Vec<f32>,
+}
+
+impl TensorAvtCpuMulSession {
+    fn new(dim: usize, max_batch_size: usize) -> Self {
+        Self {
+            left: vec![0.0; dim],
+            right: vec![0.0; dim * max_batch_size],
+            output: vec![0.0; dim * max_batch_size],
+        }
+    }
+}
+
+#[derive(Clone)]
+struct TensorAvtCpuNormSession {
+    vectors: Vec<f32>,
+    norms: Vec<f32>,
+}
+
+impl TensorAvtCpuNormSession {
+    fn new(dim: usize, max_vectors: usize) -> Self {
+        Self {
+            vectors: vec![0.0; dim * max_vectors],
+            norms: vec![0.0; max_vectors],
+        }
+    }
+}
+
+enum TensorAvtMulSessionInner {
+    Cpu(TensorAvtCpuMulSession),
+    #[cfg(feature = "gpu")]
+    Cuda(TensorAvtMulGpuWorkspace),
+}
+
+pub struct TensorAvtMulSession {
+    backend: ComputeBackend,
+    dim: usize,
+    max_batch_size: usize,
+    inner: TensorAvtMulSessionInner,
+}
+
+impl TensorAvtMulSession {
+    pub fn backend(&self) -> ComputeBackend {
+        self.backend
+    }
+
+    pub fn max_batch_size(&self) -> usize {
+        self.max_batch_size
+    }
+
+    pub fn load_left(&mut self, a: &[f32]) -> Result<(), String> {
+        if a.len() != self.dim {
+            return Err(format!(
+                "left input length {} must equal dim {}",
+                a.len(),
+                self.dim
+            ));
+        }
+        match &mut self.inner {
+            TensorAvtMulSessionInner::Cpu(session) => {
+                session.left.copy_from_slice(a);
+                Ok(())
+            }
+            #[cfg(feature = "gpu")]
+            TensorAvtMulSessionInner::Cuda(workspace) => workspace.upload_a(a),
+        }
+    }
+
+    pub fn load_right(&mut self, x: &[f32], batch_size: usize) -> Result<(), String> {
+        if batch_size == 0 || batch_size > self.max_batch_size {
+            return Err(format!(
+                "batch_size must be in 1..={}, got {}",
+                self.max_batch_size, batch_size
+            ));
+        }
+        let expected = batch_size * self.dim;
+        if x.len() != expected {
+            return Err(format!(
+                "right input length {} must equal batch_size * dim {}",
+                x.len(),
+                expected
+            ));
+        }
+        match &mut self.inner {
+            TensorAvtMulSessionInner::Cpu(session) => {
+                session.right[..expected].copy_from_slice(x);
+                Ok(())
+            }
+            #[cfg(feature = "gpu")]
+            TensorAvtMulSessionInner::Cuda(workspace) => {
+                workspace.upload_x(x, batch_size, self.dim)
+            }
+        }
+    }
+
+    pub fn run_single(&mut self, avt: &TensorAVT) -> Result<(), String> {
+        match &mut self.inner {
+            TensorAvtMulSessionInner::Cpu(session) => {
+                session.output =
+                    avt.compute_cd_mul_cpu(&session.left, &session.right[..self.dim])?;
+                Ok(())
+            }
+            #[cfg(feature = "gpu")]
+            TensorAvtMulSessionInner::Cuda(workspace) => {
+                avt.launch_cd_mul_with_workspace(workspace)
+            }
+        }
+    }
+
+    pub fn run_batch(&mut self, avt: &TensorAVT, batch_size: usize) -> Result<(), String> {
+        if batch_size == 0 || batch_size > self.max_batch_size {
+            return Err(format!(
+                "batch_size must be in 1..={}, got {}",
+                self.max_batch_size, batch_size
+            ));
+        }
+        let expected = batch_size * self.dim;
+        match &mut self.inner {
+            TensorAvtMulSessionInner::Cpu(session) => {
+                session.output = avt.compute_cd_mul_batch_cpu(
+                    &session.left,
+                    &session.right[..expected],
+                    batch_size,
+                )?;
+                Ok(())
+            }
+            #[cfg(feature = "gpu")]
+            TensorAvtMulSessionInner::Cuda(workspace) => {
+                avt.launch_cd_mul_batch_with_workspace(batch_size, workspace)
+            }
+        }
+    }
+
+    pub fn download_output(&mut self, len: usize) -> Result<Vec<f32>, String> {
+        if len > self.dim * self.max_batch_size {
+            return Err(format!(
+                "output length {} exceeds session capacity {}",
+                len,
+                self.dim * self.max_batch_size
+            ));
+        }
+        match &mut self.inner {
+            TensorAvtMulSessionInner::Cpu(session) => {
+                if len > session.output.len() {
+                    return Err(format!(
+                        "requested output length {} exceeds computed output length {}",
+                        len,
+                        session.output.len()
+                    ));
+                }
+                Ok(session.output[..len].to_vec())
+            }
+            #[cfg(feature = "gpu")]
+            TensorAvtMulSessionInner::Cuda(workspace) => workspace.download_y(len),
+        }
+    }
+}
+
+enum TensorAvtNormSessionInner {
+    Cpu(TensorAvtCpuNormSession),
+    #[cfg(feature = "gpu")]
+    Cuda(TensorAvtNormGpuWorkspace),
+}
+
+pub struct TensorAvtNormSession {
+    backend: ComputeBackend,
+    dim: usize,
+    max_vectors: usize,
+    inner: TensorAvtNormSessionInner,
+}
+
+impl TensorAvtNormSession {
+    pub fn backend(&self) -> ComputeBackend {
+        self.backend
+    }
+
+    pub fn max_vectors(&self) -> usize {
+        self.max_vectors
+    }
+
+    pub fn load_vectors(&mut self, vectors: &[f32], n_vectors: usize) -> Result<(), String> {
+        if n_vectors == 0 || n_vectors > self.max_vectors {
+            return Err(format!(
+                "n_vectors must be in 1..={}, got {}",
+                self.max_vectors, n_vectors
+            ));
+        }
+        let expected = n_vectors * self.dim;
+        if vectors.len() != expected {
+            return Err(format!(
+                "vectors length {} must equal n_vectors * dim {}",
+                vectors.len(),
+                expected
+            ));
+        }
+        match &mut self.inner {
+            TensorAvtNormSessionInner::Cpu(session) => {
+                session.vectors[..expected].copy_from_slice(vectors);
+                Ok(())
+            }
+            #[cfg(feature = "gpu")]
+            TensorAvtNormSessionInner::Cuda(workspace) => {
+                workspace.upload_vectors(vectors, n_vectors, self.dim)
+            }
+        }
+    }
+
+    pub fn run_norms(&mut self, avt: &TensorAVT, n_vectors: usize) -> Result<(), String> {
+        if n_vectors == 0 || n_vectors > self.max_vectors {
+            return Err(format!(
+                "n_vectors must be in 1..={}, got {}",
+                self.max_vectors, n_vectors
+            ));
+        }
+        let expected = n_vectors * self.dim;
+        match &mut self.inner {
+            TensorAvtNormSessionInner::Cpu(session) => {
+                session.norms =
+                    avt.compute_norm_sq_batch_cpu(&session.vectors[..expected], n_vectors)?;
+                Ok(())
+            }
+            #[cfg(feature = "gpu")]
+            TensorAvtNormSessionInner::Cuda(workspace) => {
+                avt.launch_norm_sq_batch_with_workspace(n_vectors, workspace)
+            }
+        }
+    }
+
+    pub fn download_norms(&mut self, n_vectors: usize) -> Result<Vec<f32>, String> {
+        if n_vectors == 0 || n_vectors > self.max_vectors {
+            return Err(format!(
+                "n_vectors must be in 1..={}, got {}",
+                self.max_vectors, n_vectors
+            ));
+        }
+        match &mut self.inner {
+            TensorAvtNormSessionInner::Cpu(session) => {
+                if n_vectors > session.norms.len() {
+                    return Err(format!(
+                        "requested norms length {} exceeds computed length {}",
+                        n_vectors,
+                        session.norms.len()
+                    ));
+                }
+                Ok(session.norms[..n_vectors].to_vec())
+            }
+            #[cfg(feature = "gpu")]
+            TensorAvtNormSessionInner::Cuda(workspace) => workspace.download_norms(n_vectors),
+        }
+    }
+}
+
 /// Tensor Core AVT contraction engine.
 ///
 /// For dense CD multiplication, constructs the Left-Multiplication Matrix
@@ -407,6 +749,403 @@ impl TensorAVT {
         Self {
             dim,
             tile_count: dim / 16,
+        }
+    }
+
+    fn validate_backend_request(&self, backend: ComputeBackend) -> Result<ComputeBackend, String> {
+        match backend {
+            ComputeBackend::CpuScalar => Ok(backend),
+            ComputeBackend::CpuSimd => {
+                if probe_simd().any() {
+                    Ok(backend)
+                } else {
+                    Err("TensorAVT CPU SIMD backend unavailable on this machine".into())
+                }
+            }
+            ComputeBackend::Vulkan => Err("TensorAVT Vulkan backend is not implemented".into()),
+            ComputeBackend::Cuda => {
+                #[cfg(feature = "gpu")]
+                {
+                    if tensor_avt_cuda_available() {
+                        Ok(backend)
+                    } else {
+                        Err("TensorAVT CUDA backend unavailable on this machine".into())
+                    }
+                }
+                #[cfg(not(feature = "gpu"))]
+                {
+                    let _ = self;
+                    Err(
+                        "TensorAVT CUDA backend requires building algebra_core with --features gpu"
+                            .into(),
+                    )
+                }
+            }
+        }
+    }
+
+    pub fn new_mul_session(
+        &self,
+        backend: ComputeBackend,
+        max_batch_size: usize,
+    ) -> Result<TensorAvtMulSession, String> {
+        if max_batch_size == 0 {
+            return Err("max_batch_size must be > 0".into());
+        }
+        let backend = self.validate_backend_request(backend)?;
+        let inner = match backend {
+            ComputeBackend::CpuScalar | ComputeBackend::CpuSimd => {
+                TensorAvtMulSessionInner::Cpu(TensorAvtCpuMulSession::new(self.dim, max_batch_size))
+            }
+            #[cfg(feature = "gpu")]
+            ComputeBackend::Cuda => {
+                TensorAvtMulSessionInner::Cuda(self.new_gpu_mul_workspace(max_batch_size)?)
+            }
+            ComputeBackend::Vulkan => unreachable!("validated unsupported Vulkan above"),
+            #[cfg(not(feature = "gpu"))]
+            ComputeBackend::Cuda => unreachable!("validated unavailable CUDA above"),
+        };
+        Ok(TensorAvtMulSession {
+            backend,
+            dim: self.dim,
+            max_batch_size,
+            inner,
+        })
+    }
+
+    pub fn new_norm_session(
+        &self,
+        backend: ComputeBackend,
+        max_vectors: usize,
+    ) -> Result<TensorAvtNormSession, String> {
+        if max_vectors == 0 {
+            return Err("max_vectors must be > 0".into());
+        }
+        let backend = self.validate_backend_request(backend)?;
+        let inner = match backend {
+            ComputeBackend::CpuScalar | ComputeBackend::CpuSimd => {
+                TensorAvtNormSessionInner::Cpu(TensorAvtCpuNormSession::new(self.dim, max_vectors))
+            }
+            #[cfg(feature = "gpu")]
+            ComputeBackend::Cuda => {
+                TensorAvtNormSessionInner::Cuda(self.new_gpu_norm_workspace(max_vectors)?)
+            }
+            ComputeBackend::Vulkan => unreachable!("validated unsupported Vulkan above"),
+            #[cfg(not(feature = "gpu"))]
+            ComputeBackend::Cuda => unreachable!("validated unavailable CUDA above"),
+        };
+        Ok(TensorAvtNormSession {
+            backend,
+            dim: self.dim,
+            max_vectors,
+            inner,
+        })
+    }
+
+    fn auto_threshold_for(
+        &self,
+        op: TensorAvtAutoOp,
+        config: &TensorAvtAutoConfig,
+    ) -> Option<usize> {
+        match op {
+            TensorAvtAutoOp::CdMul => config.threshold_overrides.cd_mul_min_problem_size,
+            TensorAvtAutoOp::CdMulBatch => config.threshold_overrides.cd_mul_batch_min_problem_size,
+            TensorAvtAutoOp::NormSqBatch => {
+                config.threshold_overrides.norm_sq_batch_min_problem_size
+            }
+        }
+    }
+
+    fn first_available_backend(&self, order: &[ComputeBackend; 4]) -> Option<ComputeBackend> {
+        order
+            .iter()
+            .copied()
+            .find(|backend| self.backend_is_available(*backend))
+    }
+
+    fn first_available_cpu_backend(&self, order: &[ComputeBackend; 4]) -> Option<ComputeBackend> {
+        order.iter().copied().find(|backend| {
+            tensor_avt_backend_is_cpu(*backend) && self.backend_is_available(*backend)
+        })
+    }
+
+    fn first_available_gpu_backend(&self, order: &[ComputeBackend; 4]) -> Option<ComputeBackend> {
+        order.iter().copied().find(|backend| {
+            tensor_avt_backend_is_gpu(*backend) && self.backend_is_available(*backend)
+        })
+    }
+
+    fn backend_is_available(&self, backend: ComputeBackend) -> bool {
+        let _ = self;
+        match backend {
+            ComputeBackend::CpuScalar => true,
+            ComputeBackend::CpuSimd => probe_simd().any(),
+            ComputeBackend::Vulkan => false,
+            ComputeBackend::Cuda => tensor_avt_cuda_available(),
+        }
+    }
+
+    fn select_backend_from_override(
+        &self,
+        op: TensorAvtAutoOp,
+        problem_size: usize,
+        config: &TensorAvtAutoConfig,
+    ) -> Option<ComputeBackend> {
+        let threshold = self.auto_threshold_for(op, config)?;
+        if problem_size >= threshold {
+            self.first_available_gpu_backend(&config.backend_order)
+                .or_else(|| self.first_available_cpu_backend(&config.backend_order))
+        } else {
+            self.first_available_cpu_backend(&config.backend_order)
+                .or_else(|| self.first_available_gpu_backend(&config.backend_order))
+        }
+    }
+
+    fn calibration_key(&self, op: TensorAvtAutoOp, count: usize) -> TensorAvtCalibrationKey {
+        TensorAvtCalibrationKey {
+            op,
+            dim: self.dim,
+            count,
+            cuda_available: tensor_avt_cuda_available(),
+            simd_available: probe_simd().any(),
+        }
+    }
+
+    fn calibration_inputs(&self, len: usize, seed: u64) -> Vec<f32> {
+        let mut state = seed;
+        (0..len)
+            .map(|idx| {
+                state = state
+                    .wrapping_mul(6364136223846793005)
+                    .wrapping_add(1442695040888963407 + idx as u64);
+                let unit = ((state >> 32) as u32) as f32 / (u32::MAX as f32);
+                (unit * 2.0) - 1.0
+            })
+            .collect()
+    }
+
+    fn calibration_runs(&self, op: TensorAvtAutoOp, count: usize) -> (usize, usize) {
+        let problem_size = match op {
+            TensorAvtAutoOp::CdMul => self.dim,
+            TensorAvtAutoOp::CdMulBatch | TensorAvtAutoOp::NormSqBatch => self.dim * count,
+        };
+        if matches!(op, TensorAvtAutoOp::CdMulBatch) && problem_size >= 65_536 {
+            (1, 1)
+        } else {
+            (1, 3)
+        }
+    }
+
+    fn measure_cd_mul_cpu_ns(
+        &self,
+        a: &[f32],
+        x: &[f32],
+        warmup: usize,
+        runs: usize,
+    ) -> Result<u128, String> {
+        for _ in 0..warmup {
+            let _ = self.compute_cd_mul_cpu(a, x)?;
+        }
+        let start = Instant::now();
+        for _ in 0..runs {
+            let _ = self.compute_cd_mul_cpu(a, x)?;
+        }
+        Ok(start.elapsed().as_nanos() / runs as u128)
+    }
+
+    fn measure_cd_mul_batch_cpu_ns(
+        &self,
+        a: &[f32],
+        x_batch: &[f32],
+        batch_size: usize,
+        warmup: usize,
+        runs: usize,
+    ) -> Result<u128, String> {
+        for _ in 0..warmup {
+            let _ = self.compute_cd_mul_batch_cpu(a, x_batch, batch_size)?;
+        }
+        let start = Instant::now();
+        for _ in 0..runs {
+            let _ = self.compute_cd_mul_batch_cpu(a, x_batch, batch_size)?;
+        }
+        Ok(start.elapsed().as_nanos() / runs as u128)
+    }
+
+    fn measure_norm_sq_batch_cpu_ns(
+        &self,
+        vectors: &[f32],
+        n_vectors: usize,
+        warmup: usize,
+        runs: usize,
+    ) -> Result<u128, String> {
+        for _ in 0..warmup {
+            let _ = self.compute_norm_sq_batch_cpu(vectors, n_vectors)?;
+        }
+        let start = Instant::now();
+        for _ in 0..runs {
+            let _ = self.compute_norm_sq_batch_cpu(vectors, n_vectors)?;
+        }
+        Ok(start.elapsed().as_nanos() / runs as u128)
+    }
+
+    #[cfg(feature = "gpu")]
+    fn measure_cd_mul_cuda_ns(
+        &self,
+        a: &[f32],
+        x: &[f32],
+        warmup: usize,
+        runs: usize,
+    ) -> Result<u128, String> {
+        for _ in 0..warmup {
+            let _ = self.compute_cd_mul(a, x)?;
+        }
+        let start = Instant::now();
+        for _ in 0..runs {
+            let _ = self.compute_cd_mul(a, x)?;
+        }
+        Ok(start.elapsed().as_nanos() / runs as u128)
+    }
+
+    #[cfg(feature = "gpu")]
+    fn measure_cd_mul_batch_cuda_ns(
+        &self,
+        a: &[f32],
+        x_batch: &[f32],
+        batch_size: usize,
+        warmup: usize,
+        runs: usize,
+    ) -> Result<u128, String> {
+        for _ in 0..warmup {
+            let _ = self.compute_cd_mul_batch(a, x_batch, batch_size)?;
+        }
+        let start = Instant::now();
+        for _ in 0..runs {
+            let _ = self.compute_cd_mul_batch(a, x_batch, batch_size)?;
+        }
+        Ok(start.elapsed().as_nanos() / runs as u128)
+    }
+
+    #[cfg(feature = "gpu")]
+    fn measure_norm_sq_batch_cuda_ns(
+        &self,
+        vectors: &[f32],
+        n_vectors: usize,
+        warmup: usize,
+        runs: usize,
+    ) -> Result<u128, String> {
+        for _ in 0..warmup {
+            let _ = self.compute_norm_sq_batch(vectors, n_vectors)?;
+        }
+        let start = Instant::now();
+        for _ in 0..runs {
+            let _ = self.compute_norm_sq_batch(vectors, n_vectors)?;
+        }
+        Ok(start.elapsed().as_nanos() / runs as u128)
+    }
+
+    fn calibrate_auto_backend(
+        &self,
+        op: TensorAvtAutoOp,
+        count: usize,
+        config: &TensorAvtAutoConfig,
+    ) -> Result<Option<(ComputeBackend, bool)>, String> {
+        if config.calibration != TensorAvtCalibrationMode::LazyInProcess {
+            return Ok(None);
+        }
+        let cpu_backend = match self.first_available_cpu_backend(&config.backend_order) {
+            Some(backend) => backend,
+            None => {
+                return Ok(self
+                    .first_available_backend(&config.backend_order)
+                    .map(|b| (b, false)));
+            }
+        };
+        let cuda_available = self
+            .first_available_gpu_backend(&config.backend_order)
+            .is_some_and(|backend| backend == ComputeBackend::Cuda);
+        if !cuda_available {
+            return Ok(Some((cpu_backend, false)));
+        }
+
+        let key = self.calibration_key(op, count);
+        {
+            let cache = tensor_avt_calibration_cache()
+                .lock()
+                .expect("tensor_avt calibration cache poisoned");
+            if let Some(backend) = cache.get(&key).copied() {
+                return Ok(Some((backend, false)));
+            }
+        }
+
+        let (warmup, runs) = self.calibration_runs(op, count);
+        let chosen = match op {
+            TensorAvtAutoOp::CdMul => {
+                let a = self.calibration_inputs(self.dim, 0xA11CE);
+                let x = self.calibration_inputs(self.dim, 0xBADC0DE);
+                let cpu_ns = self.measure_cd_mul_cpu_ns(&a, &x, warmup, runs)?;
+                #[cfg(feature = "gpu")]
+                let cuda_ns = self.measure_cd_mul_cuda_ns(&a, &x, warmup, runs)?;
+                #[cfg(not(feature = "gpu"))]
+                let cuda_ns = u128::MAX;
+                if cuda_ns < cpu_ns {
+                    ComputeBackend::Cuda
+                } else {
+                    cpu_backend
+                }
+            }
+            TensorAvtAutoOp::CdMulBatch => {
+                let a = self.calibration_inputs(self.dim, 0xCAFE);
+                let x_batch = self.calibration_inputs(self.dim * count, 0xFACEFEED);
+                let cpu_ns = self.measure_cd_mul_batch_cpu_ns(&a, &x_batch, count, warmup, runs)?;
+                #[cfg(feature = "gpu")]
+                let cuda_ns =
+                    self.measure_cd_mul_batch_cuda_ns(&a, &x_batch, count, warmup, runs)?;
+                #[cfg(not(feature = "gpu"))]
+                let cuda_ns = u128::MAX;
+                if cuda_ns < cpu_ns {
+                    ComputeBackend::Cuda
+                } else {
+                    cpu_backend
+                }
+            }
+            TensorAvtAutoOp::NormSqBatch => {
+                let vectors = self.calibration_inputs(self.dim * count, 0xDEADBEEF);
+                let cpu_ns = self.measure_norm_sq_batch_cpu_ns(&vectors, count, warmup, runs)?;
+                #[cfg(feature = "gpu")]
+                let cuda_ns = self.measure_norm_sq_batch_cuda_ns(&vectors, count, warmup, runs)?;
+                #[cfg(not(feature = "gpu"))]
+                let cuda_ns = u128::MAX;
+                if cuda_ns < cpu_ns {
+                    ComputeBackend::Cuda
+                } else {
+                    cpu_backend
+                }
+            }
+        };
+
+        let mut cache = tensor_avt_calibration_cache()
+            .lock()
+            .expect("tensor_avt calibration cache poisoned");
+        cache.insert(key, chosen);
+        Ok(Some((chosen, true)))
+    }
+
+    fn select_auto_backend(
+        &self,
+        op: TensorAvtAutoOp,
+        count: usize,
+        problem_size: usize,
+        config: &TensorAvtAutoConfig,
+    ) -> Result<(ComputeBackend, bool), String> {
+        if let Some(backend) = self.select_backend_from_override(op, problem_size, config) {
+            return Ok((backend, false));
+        }
+        if let Some((backend, calibrated)) = self.calibrate_auto_backend(op, count, config)? {
+            return Ok((backend, calibrated));
+        }
+        match self.first_available_backend(&config.backend_order) {
+            Some(backend) => Ok((backend, false)),
+            None => Err("no TensorAVT backend is available for the requested configuration".into()),
         }
     }
 
@@ -773,7 +1512,6 @@ impl TensorAVT {
         )
     }
 
-    #[cfg(any(not(feature = "gpu"), test))]
     fn compute_cd_mul_cpu(&self, a: &[f32], x: &[f32]) -> Result<Vec<f32>, String> {
         assert_eq!(a.len(), self.dim, "a must have dim elements");
         assert_eq!(x.len(), self.dim, "x must have dim elements");
@@ -789,7 +1527,6 @@ impl TensorAVT {
         Ok(y)
     }
 
-    #[cfg(any(not(feature = "gpu"), test))]
     fn compute_cd_mul_batch_cpu(
         &self,
         a: &[f32],
@@ -821,7 +1558,6 @@ impl TensorAVT {
         Ok(y_batch)
     }
 
-    #[cfg(any(not(feature = "gpu"), test))]
     fn compute_norm_sq_batch_cpu(
         &self,
         vectors: &[f32],
@@ -1128,11 +1864,167 @@ impl TensorAVT {
     ) -> Result<Vec<f32>, String> {
         self.compute_norm_sq_batch_cpu(vectors, n_vectors)
     }
+
+    pub fn compute_cd_mul_auto(
+        &self,
+        a: &[f32],
+        x: &[f32],
+    ) -> Result<TensorAvtAutoResult<Vec<f32>>, String> {
+        self.compute_cd_mul_auto_with_config(a, x, &TensorAvtAutoConfig::default())
+    }
+
+    pub fn compute_cd_mul_auto_with_config(
+        &self,
+        a: &[f32],
+        x: &[f32],
+        config: &TensorAvtAutoConfig,
+    ) -> Result<TensorAvtAutoResult<Vec<f32>>, String> {
+        let (backend, calibrated_this_call) =
+            self.select_auto_backend(TensorAvtAutoOp::CdMul, 1, self.dim, config)?;
+        let value = match backend {
+            ComputeBackend::CpuScalar | ComputeBackend::CpuSimd => self.compute_cd_mul_cpu(a, x)?,
+            #[cfg(feature = "gpu")]
+            ComputeBackend::Cuda => self.compute_cd_mul(a, x)?,
+            #[cfg(not(feature = "gpu"))]
+            ComputeBackend::Cuda => {
+                return Err(
+                    "TensorAVT CUDA backend requires building algebra_core with --features gpu"
+                        .into(),
+                );
+            }
+            ComputeBackend::Vulkan => {
+                return Err("TensorAVT Vulkan backend is not implemented".into());
+            }
+        };
+        Ok(TensorAvtAutoResult {
+            backend,
+            value,
+            calibrated_this_call,
+        })
+    }
+
+    pub fn compute_cd_mul_batch_auto(
+        &self,
+        a: &[f32],
+        x_batch: &[f32],
+        batch_size: usize,
+    ) -> Result<TensorAvtAutoResult<Vec<f32>>, String> {
+        self.compute_cd_mul_batch_auto_with_config(
+            a,
+            x_batch,
+            batch_size,
+            &TensorAvtAutoConfig::default(),
+        )
+    }
+
+    pub fn compute_cd_mul_batch_auto_with_config(
+        &self,
+        a: &[f32],
+        x_batch: &[f32],
+        batch_size: usize,
+        config: &TensorAvtAutoConfig,
+    ) -> Result<TensorAvtAutoResult<Vec<f32>>, String> {
+        let problem_size = self.dim * batch_size;
+        let (backend, calibrated_this_call) = self.select_auto_backend(
+            TensorAvtAutoOp::CdMulBatch,
+            batch_size,
+            problem_size,
+            config,
+        )?;
+        let value = match backend {
+            ComputeBackend::CpuScalar | ComputeBackend::CpuSimd => {
+                self.compute_cd_mul_batch_cpu(a, x_batch, batch_size)?
+            }
+            #[cfg(feature = "gpu")]
+            ComputeBackend::Cuda => self.compute_cd_mul_batch(a, x_batch, batch_size)?,
+            #[cfg(not(feature = "gpu"))]
+            ComputeBackend::Cuda => {
+                return Err(
+                    "TensorAVT CUDA backend requires building algebra_core with --features gpu"
+                        .into(),
+                );
+            }
+            ComputeBackend::Vulkan => {
+                return Err("TensorAVT Vulkan backend is not implemented".into());
+            }
+        };
+        Ok(TensorAvtAutoResult {
+            backend,
+            value,
+            calibrated_this_call,
+        })
+    }
+
+    pub fn compute_norm_sq_batch_auto(
+        &self,
+        vectors: &[f32],
+        n_vectors: usize,
+    ) -> Result<TensorAvtAutoResult<Vec<f32>>, String> {
+        self.compute_norm_sq_batch_auto_with_config(
+            vectors,
+            n_vectors,
+            &TensorAvtAutoConfig::default(),
+        )
+    }
+
+    pub fn compute_norm_sq_batch_auto_with_config(
+        &self,
+        vectors: &[f32],
+        n_vectors: usize,
+        config: &TensorAvtAutoConfig,
+    ) -> Result<TensorAvtAutoResult<Vec<f32>>, String> {
+        let problem_size = self.dim * n_vectors;
+        let (backend, calibrated_this_call) = self.select_auto_backend(
+            TensorAvtAutoOp::NormSqBatch,
+            n_vectors,
+            problem_size,
+            config,
+        )?;
+        let value = match backend {
+            ComputeBackend::CpuScalar | ComputeBackend::CpuSimd => {
+                self.compute_norm_sq_batch_cpu(vectors, n_vectors)?
+            }
+            #[cfg(feature = "gpu")]
+            ComputeBackend::Cuda => self.compute_norm_sq_batch(vectors, n_vectors)?,
+            #[cfg(not(feature = "gpu"))]
+            ComputeBackend::Cuda => {
+                return Err(
+                    "TensorAVT CUDA backend requires building algebra_core with --features gpu"
+                        .into(),
+                );
+            }
+            ComputeBackend::Vulkan => {
+                return Err("TensorAVT Vulkan backend is not implemented".into());
+            }
+        };
+        Ok(TensorAvtAutoResult {
+            backend,
+            value,
+            calibrated_this_call,
+        })
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn assert_vec_close(got: &[f32], expected: &[f32], tol: f32, label: &str) {
+        assert_eq!(
+            got.len(),
+            expected.len(),
+            "{label}: length mismatch {} != {}",
+            got.len(),
+            expected.len()
+        );
+        for (idx, (lhs, rhs)) in got.iter().zip(expected.iter()).enumerate() {
+            let diff = (*lhs - *rhs).abs();
+            assert!(
+                diff <= tol,
+                "{label}: mismatch at [{idx}] got {lhs}, expected {rhs}, diff {diff}"
+            );
+        }
+    }
 
     #[test]
     fn test_tensor_avt_creation() {
@@ -1499,5 +2391,170 @@ mod tests {
                 );
             }
         }
+    }
+
+    #[test]
+    fn test_mul_session_cpu_scalar_matches_explicit_paths() {
+        let dim = 16;
+        let batch_size = 4;
+        let avt = TensorAVT::new(dim);
+        let a: Vec<f32> = (0..dim).map(|i| (i as f32 * 0.25).sin()).collect();
+        let x_single: Vec<f32> = (0..dim).map(|i| (i as f32 * 0.13).cos()).collect();
+        let x_batch: Vec<f32> = (0..(dim * batch_size))
+            .map(|i| (i as f32 * 0.09).sin())
+            .collect();
+
+        let mut single_session = avt
+            .new_mul_session(ComputeBackend::CpuScalar, 1)
+            .expect("create CPU scalar single session");
+        single_session.load_left(&a).expect("load left");
+        single_session
+            .load_right(&x_single, 1)
+            .expect("load right single");
+        single_session.run_single(&avt).expect("run single");
+        let got_single = single_session
+            .download_output(dim)
+            .expect("download single output");
+        let expected_single = avt
+            .compute_cd_mul_cpu(&a, &x_single)
+            .expect("explicit single");
+        assert_vec_close(
+            &got_single,
+            &expected_single,
+            1e-6,
+            "cpu scalar single session",
+        );
+
+        let mut batch_session = avt
+            .new_mul_session(ComputeBackend::CpuScalar, batch_size)
+            .expect("create CPU scalar batch session");
+        batch_session.load_left(&a).expect("load batch left");
+        batch_session
+            .load_right(&x_batch, batch_size)
+            .expect("load batch right");
+        batch_session
+            .run_batch(&avt, batch_size)
+            .expect("run batch");
+        let got_batch = batch_session
+            .download_output(dim * batch_size)
+            .expect("download batch output");
+        let expected_batch = avt
+            .compute_cd_mul_batch_cpu(&a, &x_batch, batch_size)
+            .expect("explicit batch");
+        assert_vec_close(
+            &got_batch,
+            &expected_batch,
+            1e-6,
+            "cpu scalar batch session",
+        );
+    }
+
+    #[test]
+    fn test_norm_session_cpu_scalar_matches_explicit_path() {
+        let dim = 16;
+        let batch_size = 3;
+        let avt = TensorAVT::new(dim);
+        let vectors: Vec<f32> = (0..(dim * batch_size))
+            .map(|i| ((i * 5 + 1) as f32 * 0.07).cos())
+            .collect();
+
+        let mut session = avt
+            .new_norm_session(ComputeBackend::CpuScalar, batch_size)
+            .expect("create CPU scalar norm session");
+        session
+            .load_vectors(&vectors, batch_size)
+            .expect("load vectors");
+        session.run_norms(&avt, batch_size).expect("run norms");
+        let got = session
+            .download_norms(batch_size)
+            .expect("download norm output");
+        let expected = avt
+            .compute_norm_sq_batch_cpu(&vectors, batch_size)
+            .expect("explicit norms");
+        assert_vec_close(&got, &expected, 1e-6, "cpu scalar norm session");
+    }
+
+    #[test]
+    fn test_vulkan_sessions_are_rejected() {
+        let avt = TensorAVT::new(16);
+        let mul_err = match avt.new_mul_session(ComputeBackend::Vulkan, 1) {
+            Ok(_) => panic!("Vulkan mul session must be unsupported"),
+            Err(err) => err,
+        };
+        assert!(
+            mul_err.contains("Vulkan backend is not implemented"),
+            "unexpected mul session error: {mul_err}"
+        );
+
+        let norm_err = match avt.new_norm_session(ComputeBackend::Vulkan, 1) {
+            Ok(_) => panic!("Vulkan norm session must be unsupported"),
+            Err(err) => err,
+        };
+        assert!(
+            norm_err.contains("Vulkan backend is not implemented"),
+            "unexpected norm session error: {norm_err}"
+        );
+    }
+
+    #[test]
+    fn test_auto_cd_mul_respects_cpu_threshold_override() {
+        let dim = 16;
+        let avt = TensorAVT::new(dim);
+        let a: Vec<f32> = (0..dim).map(|i| (i as f32 * 0.17).sin()).collect();
+        let x: Vec<f32> = (0..dim).map(|i| (i as f32 * 0.11).cos()).collect();
+        let config = TensorAvtAutoConfig {
+            backend_order: [
+                ComputeBackend::CpuScalar,
+                ComputeBackend::CpuSimd,
+                ComputeBackend::Cuda,
+                ComputeBackend::Vulkan,
+            ],
+            calibration: TensorAvtCalibrationMode::Disabled,
+            threshold_overrides: TensorAvtThresholdOverrides {
+                cd_mul_min_problem_size: Some(dim + 1),
+                ..TensorAvtThresholdOverrides::default()
+            },
+        };
+
+        let auto = avt
+            .compute_cd_mul_auto_with_config(&a, &x, &config)
+            .expect("auto cd_mul");
+        let expected = avt.compute_cd_mul_cpu(&a, &x).expect("explicit single");
+        assert_eq!(auto.backend, ComputeBackend::CpuScalar);
+        assert!(!auto.calibrated_this_call);
+        assert_vec_close(&auto.value, &expected, 1e-6, "auto cd_mul override");
+    }
+
+    #[test]
+    fn test_auto_norm_respects_cpu_threshold_override() {
+        let dim = 16;
+        let batch_size = 2;
+        let avt = TensorAVT::new(dim);
+        let vectors: Vec<f32> = (0..(dim * batch_size))
+            .map(|i| ((i * 3 + 2) as f32 * 0.19).sin())
+            .collect();
+        let config = TensorAvtAutoConfig {
+            backend_order: [
+                ComputeBackend::CpuScalar,
+                ComputeBackend::CpuSimd,
+                ComputeBackend::Cuda,
+                ComputeBackend::Vulkan,
+            ],
+            calibration: TensorAvtCalibrationMode::Disabled,
+            threshold_overrides: TensorAvtThresholdOverrides {
+                norm_sq_batch_min_problem_size: Some(dim * batch_size + 1),
+                ..TensorAvtThresholdOverrides::default()
+            },
+        };
+
+        let auto = avt
+            .compute_norm_sq_batch_auto_with_config(&vectors, batch_size, &config)
+            .expect("auto norms");
+        let expected = avt
+            .compute_norm_sq_batch_cpu(&vectors, batch_size)
+            .expect("explicit norms");
+        assert_eq!(auto.backend, ComputeBackend::CpuScalar);
+        assert!(!auto.calibrated_this_call);
+        assert_vec_close(&auto.value, &expected, 1e-6, "auto norm override");
     }
 }
