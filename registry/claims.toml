@@ -15780,3 +15780,36 @@ confidence = "high"
 phase = "algebra"
 sprint = 76
 status_note = "11 theorems including scatter_gather_duality iff. Proves Tensor Core Gather has zero memory collisions."
+
+[[claim]]
+id = "C-1143"
+statement = "NFW DM halo gravitational perturbation on solar wind density at 1 AU is delta_rho/rho < 10^-15 for canonical local DM density 0.3 GeV/cm^3 and MW virial mass 1e12 Msun."
+where_stated = "crates/lbm_3d/src/dm_force.rs"
+status = "Open"
+last_verified = "2026-03-08"
+what_would_verify_refute = "Run E-112 with --dm-density 0.3. Compare density field with --no-dm baseline. Difference should be < 10^-15 relative."
+confidence = "high"
+phase = "fluids"
+sprint = 76
+
+[[claim]]
+id = "C-1144"
+statement = "DM wind anisotropy (eta_wake > 0) produces upstream/downstream solar wind density asymmetry that scales linearly with eta_wake at fixed NFW parameters."
+where_stated = "crates/lbm_3d/src/dm_force.rs"
+status = "Open"
+last_verified = "2026-03-08"
+what_would_verify_refute = "Run E-112 with --dm-wake 0.1, 0.5, 1.0 and DM wind along x. Compare upstream vs downstream density asymmetry. Should scale linearly."
+confidence = "medium"
+phase = "fluids"
+sprint = 76
+
+[[claim]]
+id = "C-1145"
+statement = "Ratio of DM gravitational force to Lorentz force in magnetized solar wind at 1 AU is O(10^-12), confirming DM gravity alone cannot produce observable solar wind perturbations."
+where_stated = "crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+status = "Open"
+last_verified = "2026-03-08"
+what_would_verify_refute = "Run E-112 with default parameters. The printed max|F_DM|/max|F_Lorentz| ratio should be O(10^-12) or smaller."
+confidence = "high"
+phase = "fluids"
+sprint = 76

@@ -340,6 +340,138 @@ impl MhdField {
         max_div
     }
 
+    /// Project B-field to its divergence-free component via Helmholtz decomposition.
+    ///
+    /// Solves the Poisson equation `Lap(phi) = div(B)` using Jacobi iteration
+    /// with periodic boundary conditions, then sets `B <- B - grad(phi)`.
+    /// The result satisfies `div(B) = 0` to within the solver tolerance.
+    ///
+    /// This should be called ONCE after initialization (e.g., `parker_spiral_init`)
+    /// to remove the magnetic monopole artifacts from projecting a spherically
+    /// symmetric field onto a Cartesian grid.
+    ///
+    /// Returns `(initial_max_div, final_max_div)` for diagnostics.
+    pub fn project_divergence_free(&mut self, max_iters: usize, tol: f64) -> (f64, f64) {
+        let nx = self.nx;
+        let ny = self.ny;
+        let nz = self.nz;
+        let n = nx * ny * nz;
+
+        let initial_div = self.max_div_b();
+
+        // Compute RHS: div(B) at each cell
+        let mut rhs = vec![0.0; n];
+        for z in 0..nz {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let idx = z * (nx * ny) + y * nx + x;
+                    let xp = z * (nx * ny) + y * nx + (x + 1) % nx;
+                    let xm = z * (nx * ny) + y * nx + (x + nx - 1) % nx;
+                    let yp = z * (nx * ny) + ((y + 1) % ny) * nx + x;
+                    let ym = z * (nx * ny) + ((y + ny - 1) % ny) * nx + x;
+                    let zp = ((z + 1) % nz) * (nx * ny) + y * nx + x;
+                    let zm = ((z + nz - 1) % nz) * (nx * ny) + y * nx + x;
+
+                    rhs[idx] = 0.5 * (self.bx[xp] - self.bx[xm])
+                        + 0.5 * (self.by[yp] - self.by[ym])
+                        + 0.5 * (self.bz[zp] - self.bz[zm]);
+                }
+            }
+        }
+
+        // Subtract mean from RHS (Poisson with periodic BC requires zero-mean RHS)
+        let mean_rhs: f64 = rhs.iter().sum::<f64>() / n as f64;
+        for v in &mut rhs {
+            *v -= mean_rhs;
+        }
+
+        // Solve div_h(grad_h(phi)) = rhs via Jacobi iteration.
+        //
+        // Critical: the discrete Poisson operator MUST be consistent with the
+        // central-difference div and grad operators used in max_div_b() and
+        // the correction step. Central-difference div(grad(phi)) in 1D is:
+        //   0.25*(phi[x+2] - 2*phi[x] + phi[x-2])
+        // which is a WIDER stencil than the standard Laplacian. We solve
+        // this directly to ensure div_h(B - grad_h(phi)) = 0 exactly.
+        //
+        // The wide Laplacian in 3D:
+        //   L_wide(phi) = 0.25 * sum_dim (phi[+2] + phi[-2] - 2*phi[0])
+        // Jacobi update: phi_new = (sum_wide_neighbors/4 - rhs) * 4/6
+        //   where sum_wide = phi[x+2]+phi[x-2]+phi[y+2]+phi[y-2]+phi[z+2]+phi[z-2]
+
+        // Helper: periodic index offset by +/-2
+        let wrap = |v: usize, delta: isize, size: usize| -> usize {
+            ((v as isize + delta).rem_euclid(size as isize)) as usize
+        };
+
+        let mut phi = vec![0.0; n];
+        let mut phi_new = vec![0.0; n];
+
+        for _iter in 0..max_iters {
+            let mut max_residual = 0.0_f64;
+
+            for z in 0..nz {
+                for y in 0..ny {
+                    for x in 0..nx {
+                        let idx = z * (nx * ny) + y * nx + x;
+
+                        // Wide stencil neighbors (offset +/-2)
+                        let xp2 = z * (nx * ny) + y * nx + wrap(x, 2, nx);
+                        let xm2 = z * (nx * ny) + y * nx + wrap(x, -2, nx);
+                        let yp2 = z * (nx * ny) + wrap(y, 2, ny) * nx + x;
+                        let ym2 = z * (nx * ny) + wrap(y, -2, ny) * nx + x;
+                        let zp2 = wrap(z, 2, nz) * (nx * ny) + y * nx + x;
+                        let zm2 = wrap(z, -2, nz) * (nx * ny) + y * nx + x;
+
+                        let sum_wide =
+                            phi[xp2] + phi[xm2] + phi[yp2] + phi[ym2] + phi[zp2] + phi[zm2];
+
+                        // Wide Laplacian: L = 0.25*(sum_wide - 6*phi_center)
+                        // Solving L(phi) = rhs:
+                        //   0.25*(sum_wide - 6*phi) = rhs
+                        //   phi = (sum_wide - 4*rhs) / 6
+                        phi_new[idx] = (sum_wide - 4.0 * rhs[idx]) / 6.0;
+
+                        // Residual check
+                        let lap_wide =
+                            0.25 * (sum_wide - 6.0 * phi[idx]);
+                        let residual = (lap_wide - rhs[idx]).abs();
+                        max_residual = max_residual.max(residual);
+                    }
+                }
+            }
+
+            std::mem::swap(&mut phi, &mut phi_new);
+
+            if max_residual < tol {
+                break;
+            }
+        }
+
+        // Apply correction: B <- B - grad_h(phi)
+        // grad_h uses the same central-difference stencil as div_h
+        for z in 0..nz {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let idx = z * (nx * ny) + y * nx + x;
+                    let xp = z * (nx * ny) + y * nx + (x + 1) % nx;
+                    let xm = z * (nx * ny) + y * nx + (x + nx - 1) % nx;
+                    let yp = z * (nx * ny) + ((y + 1) % ny) * nx + x;
+                    let ym = z * (nx * ny) + ((y + ny - 1) % ny) * nx + x;
+                    let zp = ((z + 1) % nz) * (nx * ny) + y * nx + x;
+                    let zm = ((z + nz - 1) % nz) * (nx * ny) + y * nx + x;
+
+                    self.bx[idx] -= 0.5 * (phi[xp] - phi[xm]);
+                    self.by[idx] -= 0.5 * (phi[yp] - phi[ym]);
+                    self.bz[idx] -= 0.5 * (phi[zp] - phi[zm]);
+                }
+            }
+        }
+
+        let final_div = self.max_div_b();
+        (initial_div, final_div)
+    }
+
     /// Total magnetic energy: integral of B^2 / (2 * mu_0) over the grid.
     pub fn magnetic_energy(&self) -> f64 {
         let n = self.nx * self.ny * self.nz;
@@ -454,6 +586,105 @@ mod tests {
         assert!(
             (energy_before - energy_after).abs() < 1e-12,
             "energy_before={energy_before}, energy_after={energy_after}"
+        );
+    }
+
+    #[test]
+    fn test_projection_uniform_is_identity() {
+        // A uniform B-field already has div(B) = 0.
+        // Projection should leave it unchanged.
+        let mut field = MhdField::new(8, 8, 8, MhdConfig::default());
+        let n = 8 * 8 * 8;
+        for idx in 0..n {
+            field.bx[idx] = 3.0;
+            field.by[idx] = -1.0;
+            field.bz[idx] = 2.0;
+        }
+        let energy_before = field.magnetic_energy();
+        let (init_div, final_div) = field.project_divergence_free(1000, 1e-12);
+
+        assert!(init_div < 1e-14, "uniform field should have zero div: {init_div}");
+        assert!(final_div < 1e-14, "projection should preserve zero div: {final_div}");
+
+        let energy_after = field.magnetic_energy();
+        let rel_change = (energy_after - energy_before).abs() / energy_before;
+        assert!(
+            rel_change < 1e-10,
+            "projection of divergence-free field should preserve energy: rel_change={rel_change:.3e}"
+        );
+    }
+
+    #[test]
+    fn test_projection_parker_reduces_div() {
+        // Parker spiral on Cartesian grid has large div(B).
+        // Projection should reduce it by several orders of magnitude.
+        let mut field = MhdField::new(16, 8, 8, MhdConfig {
+            b0_nt: 5.0,
+            omega: 2.662e-6,
+            ..MhdConfig::default()
+        });
+        field.parker_spiral_init(0.1);
+
+        let (init_div, final_div) = field.project_divergence_free(5000, 1e-10);
+
+        assert!(
+            init_div > 1.0,
+            "Parker spiral should have significant div(B): {init_div:.3e}"
+        );
+        assert!(
+            final_div < init_div * 1e-3,
+            "projection should reduce div(B) by >3 orders: {init_div:.3e} -> {final_div:.3e}"
+        );
+    }
+
+    #[test]
+    fn test_projection_preserves_energy_order() {
+        // Projection removes the irrotational (gradient) component.
+        // For a Parker spiral, the solenoidal component carries most of the energy.
+        // Energy should remain within the same order of magnitude.
+        let mut field = MhdField::new(16, 8, 8, MhdConfig {
+            b0_nt: 5.0,
+            omega: 2.662e-6,
+            ..MhdConfig::default()
+        });
+        field.parker_spiral_init(0.1);
+        let energy_before = field.magnetic_energy();
+
+        field.project_divergence_free(5000, 1e-10);
+
+        let energy_after = field.magnetic_energy();
+        // Energy may decrease (we're removing the gradient component) but should
+        // stay within a factor of 10
+        assert!(
+            energy_after > energy_before * 0.1,
+            "energy should remain same order: before={energy_before:.3e}, after={energy_after:.3e}"
+        );
+        assert!(
+            energy_after <= energy_before * 1.01,
+            "energy should not increase: before={energy_before:.3e}, after={energy_after:.3e}"
+        );
+    }
+
+    #[test]
+    fn test_projection_preserves_br_monotonicity() {
+        // After projection, B_r should still decrease with x (radial distance)
+        // along the midline, though values will be modified.
+        let mut field = MhdField::new(16, 8, 8, MhdConfig {
+            b0_nt: 5.0,
+            omega: 2.662e-6,
+            ..MhdConfig::default()
+        });
+        field.parker_spiral_init(0.1);
+        field.project_divergence_free(5000, 1e-10);
+
+        // Check B_r decreases from x=2 to x=14 at midline
+        let idx_near = GridIndex::new(2, 4, 4).linearize(16, 8);
+        let idx_far = GridIndex::new(14, 4, 4).linearize(16, 8);
+        assert!(
+            field.bx[idx_near] > field.bx[idx_far],
+            "B_r should still decrease with radius after projection: near={:.3e}, far={:.3e}",
+            field.bx[idx_near],
+            field.bx[idx_far]
         );
     }
 }

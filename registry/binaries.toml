@@ -964,6 +964,12 @@ description = "D3Q19 LBM + MHD simulation of magnetized solar wind. Parker spira
 status = "active"
 
 [[binary]]
+name = "solar-wind-dm-mhd"
+crate = "gororoba_cli_physics"
+description = "D3Q19 LBM + MHD + NFW dark matter gravitational coupling. Extends E-111 solar wind sim with static DM halo force field. Quantifies DM/Lorentz force ratio as null test (O(10^-12))."
+status = "active"
+
+[[binary]]
 name = "crate-inventory"
 crate = "gororoba_cli_data"
 description = "Validate registry/rust_crate_catalog.toml against cargo metadata and shared repo governance state."

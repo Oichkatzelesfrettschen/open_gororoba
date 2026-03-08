@@ -114,10 +114,14 @@ fn main() -> anyhow::Result<()> {
     let mut mhd = MhdField::new(cli.nx, cli.ny, cli.nz, mhd_config);
     mhd.parker_spiral_init(cli.v_sw);
 
+    // Project B-field to divergence-free state. The Parker spiral initialization
+    // on a Cartesian grid creates magnetic monopole artifacts (dBr/dx != 0 but
+    // the Cartesian divergence operator doesn't account for the spherical area
+    // element). This Helmholtz projection removes the irrotational component.
+    let (div_before, div_after) = mhd.project_divergence_free(5000, 1e-12);
     let initial_energy = mhd.magnetic_energy();
-    let initial_div = mhd.max_div_b();
-    eprintln!("initial magnetic energy: {initial_energy:.6e}");
-    eprintln!("initial max |div B|: {initial_div:.6e}");
+    eprintln!("div(B) projection: {div_before:.6e} -> {div_after:.6e}");
+    eprintln!("initial magnetic energy (post-projection): {initial_energy:.6e}");
 
     // Zou-He boundary for velocity inlet
     let zou_he = ZouHeBoundary::new();
