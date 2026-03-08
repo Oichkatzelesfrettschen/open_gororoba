@@ -122,6 +122,92 @@ pub fn desi_dr1_bao() -> Vec<BaoMeasurement> {
     ]
 }
 
+/// Hardcoded DESI DR2 BAO results from DESI Collaboration (2025) Table 1.
+///
+/// DR2 uses updated tracers and tighter error bars compared to DR1.
+/// BGS (z=0.295) and QSO (z=1.491) remain isotropic (DV/rd only).
+/// All other bins provide anisotropic DM/rd + DH/rd.
+///
+/// Source: arXiv:2503.14738, Table 1
+pub fn desi_dr2_bao() -> Vec<BaoMeasurement> {
+    vec![
+        // Isotropic: DV/rd only
+        BaoMeasurement {
+            z_eff: 0.295,
+            is_isotropic: true,
+            dm_over_rd: 7.94,
+            dm_over_rd_err: 0.13,
+            dh_over_rd: 0.0,
+            dh_over_rd_err: 0.0,
+            rho: 0.0,
+            tracer: "BGS".to_string(),
+        },
+        // Anisotropic: DM/rd + DH/rd
+        BaoMeasurement {
+            z_eff: 0.510,
+            is_isotropic: false,
+            dm_over_rd: 13.62,
+            dm_over_rd_err: 0.19,
+            dh_over_rd: 20.93,
+            dh_over_rd_err: 0.49,
+            rho: -0.432,
+            tracer: "LRG1".to_string(),
+        },
+        BaoMeasurement {
+            z_eff: 0.706,
+            is_isotropic: false,
+            dm_over_rd: 16.86,
+            dm_over_rd_err: 0.24,
+            dh_over_rd: 20.07,
+            dh_over_rd_err: 0.46,
+            rho: -0.400,
+            tracer: "LRG2".to_string(),
+        },
+        BaoMeasurement {
+            z_eff: 0.934,
+            is_isotropic: false,
+            dm_over_rd: 21.65,
+            dm_over_rd_err: 0.22,
+            dh_over_rd: 17.86,
+            dh_over_rd_err: 0.28,
+            rho: -0.376,
+            tracer: "LRG3+ELG1".to_string(),
+        },
+        BaoMeasurement {
+            z_eff: 1.321,
+            is_isotropic: false,
+            dm_over_rd: 27.80,
+            dm_over_rd_err: 0.52,
+            dh_over_rd: 13.85,
+            dh_over_rd_err: 0.33,
+            rho: -0.420,
+            tracer: "ELG2".to_string(),
+        },
+        // Isotropic: DV/rd only
+        BaoMeasurement {
+            z_eff: 1.484,
+            is_isotropic: true,
+            dm_over_rd: 26.08,
+            dm_over_rd_err: 0.55,
+            dh_over_rd: 0.0,
+            dh_over_rd_err: 0.0,
+            rho: 0.0,
+            tracer: "QSO".to_string(),
+        },
+        // Anisotropic: DM/rd + DH/rd
+        BaoMeasurement {
+            z_eff: 2.330,
+            is_isotropic: false,
+            dm_over_rd: 39.74,
+            dm_over_rd_err: 0.80,
+            dh_over_rd: 8.53,
+            dh_over_rd_err: 0.14,
+            rho: -0.467,
+            tracer: "Lya".to_string(),
+        },
+    ]
+}
+
 /// Parse a DESI BAO text file (Cobaya format).
 ///
 /// Format: z_eff DM/rd DH/rd
@@ -348,5 +434,72 @@ bad_line
         let measurements = parse_desi_bao_txt(f.path()).unwrap();
         // "bad_line" parses z as NaN which is_finite() == false, so skipped
         assert_eq!(measurements.len(), 2);
+    }
+
+    // --- DESI DR2 tests ---
+
+    #[test]
+    fn test_desi_dr2_hardcoded_values() {
+        let bao = desi_dr2_bao();
+        assert_eq!(bao.len(), 7, "DESI DR2 has 7 redshift bins");
+
+        for w in bao.windows(2) {
+            assert!(w[0].z_eff < w[1].z_eff, "z_eff should increase");
+        }
+
+        let aniso: Vec<&BaoMeasurement> = bao.iter().filter(|b| !b.is_isotropic).collect();
+        for w in aniso.windows(2) {
+            assert!(
+                w[0].dm_over_rd < w[1].dm_over_rd,
+                "DM/rd should increase with z among anisotropic bins"
+            );
+        }
+    }
+
+    #[test]
+    fn test_desi_dr2_tighter_errors_than_dr1() {
+        let dr1 = desi_dr1_bao();
+        let dr2 = desi_dr2_bao();
+        assert_eq!(dr1.len(), dr2.len());
+
+        // DR2 errors should generally be tighter (smaller) than DR1
+        let mut tighter_count = 0;
+        for (b1, b2) in dr1.iter().zip(dr2.iter()) {
+            if b2.dm_over_rd_err <= b1.dm_over_rd_err {
+                tighter_count += 1;
+            }
+        }
+        // At least 5 of 7 bins should have tighter DM/rd errors
+        assert!(
+            tighter_count >= 5,
+            "DR2 should have tighter errors in most bins, got {}/7",
+            tighter_count
+        );
+    }
+
+    #[test]
+    fn test_desi_dr2_tracer_types() {
+        let bao = desi_dr2_bao();
+        let tracers: Vec<&str> = bao.iter().map(|b| b.tracer.as_str()).collect();
+        assert_eq!(
+            tracers,
+            &["BGS", "LRG1", "LRG2", "LRG3+ELG1", "ELG2", "QSO", "Lya"]
+        );
+    }
+
+    #[test]
+    fn test_desi_dr2_dh_decreases_for_aniso() {
+        let bao = desi_dr2_bao();
+        let aniso: Vec<&BaoMeasurement> = bao.iter().filter(|b| !b.is_isotropic).collect();
+        for w in aniso.windows(2) {
+            assert!(
+                w[0].dh_over_rd > w[1].dh_over_rd,
+                "DH/rd should decrease with z: {} > {} at z={} vs z={}",
+                w[0].dh_over_rd,
+                w[1].dh_over_rd,
+                w[0].z_eff,
+                w[1].z_eff
+            );
+        }
     }
 }
