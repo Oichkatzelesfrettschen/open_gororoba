@@ -114,6 +114,10 @@ path = "src/bin/phase_transition_crucible.rs"
 name = "tensor-avt-profile-suite"
 path = "src/bin/tensor_avt_profile_suite.rs"
 
+[[bin]]
+name = "dm-cd-4096-analysis"
+path = "src/bin/dm_cd_4096_analysis.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 algebra_core = { path = "../algebra_core", features = ["lie"] }
