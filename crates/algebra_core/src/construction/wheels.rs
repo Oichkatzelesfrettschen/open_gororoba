@@ -14,8 +14,10 @@
 //! - All 8 Carlstrom axioms are satisfied
 
 use num_traits::{One, Zero};
-use std::fmt;
-use std::ops::{Add, Div, Mul, Neg};
+use std::{
+    fmt,
+    ops::{Add, Div, Mul, Neg},
+};
 
 /// Wheel element over rationals.
 ///

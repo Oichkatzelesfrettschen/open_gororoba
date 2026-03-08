@@ -129,8 +129,7 @@ impl ImbalanceGpu {
         let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
         let stream = ctx.default_stream();
 
-        let ptx =
-            compile_ptx(IMBALANCE_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
+        let ptx = compile_ptx(IMBALANCE_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
 
         let module = ctx
             .load_module(ptx)

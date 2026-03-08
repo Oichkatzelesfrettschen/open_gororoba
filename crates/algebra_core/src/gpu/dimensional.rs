@@ -17,7 +17,6 @@ use cudarc::nvrtc::compile_ptx;
 #[cfg(feature = "gpu")]
 use std::sync::Arc;
 
-
 /// Result of GPU APT census computation
 #[derive(Debug, Clone)]
 pub struct GpuAptResult {

@@ -56,7 +56,9 @@ pub fn vp_int(n: i64, p: u64) -> AlgebraResult<i32> {
         return Err(AlgebraError::NumericalError("p must be >= 2".to_string()));
     }
     if n == 0 {
-        return Err(AlgebraError::NumericalError("v_p(0) is undefined (infinite)".to_string()));
+        return Err(AlgebraError::NumericalError(
+            "v_p(0) is undefined (infinite)".to_string(),
+        ));
     }
 
     let mut n_abs = n.unsigned_abs();
@@ -167,7 +169,9 @@ pub fn vp(q: Rational, p: u64) -> AlgebraResult<i32> {
         return Err(AlgebraError::NumericalError("p must be >= 2".to_string()));
     }
     if q.is_zero() {
-        return Err(AlgebraError::NumericalError("v_p(0) is undefined (infinite)".to_string()));
+        return Err(AlgebraError::NumericalError(
+            "v_p(0) is undefined (infinite)".to_string(),
+        ));
     }
 
     Ok(vp_int(q.num, p)? - vp_int(q.den as i64, p)?)
@@ -217,7 +221,9 @@ impl CantorDigits {
 /// - If q is not in [0, 1]
 pub fn ternary_digits_power3(q: Rational, n_digits: usize) -> AlgebraResult<CantorDigits> {
     if !q.in_unit_interval() {
-        return Err(AlgebraError::NumericalError("q must be in [0, 1]".to_string()));
+        return Err(AlgebraError::NumericalError(
+            "q must be in [0, 1]".to_string(),
+        ));
     }
 
     let mut digits = Vec::with_capacity(n_digits);
@@ -258,7 +264,9 @@ pub fn cantor_function_on_cantor(q: Rational, n_digits: usize) -> AlgebraResult<
     let digs = ternary_digits_power3(q, n_digits)?;
 
     if !digs.is_cantor() {
-        return Err(AlgebraError::NumericalError("q is not a Cantor set point (ternary expansion contains 1)".to_string()));
+        return Err(AlgebraError::NumericalError(
+            "q is not a Cantor set point (ternary expansion contains 1)".to_string(),
+        ));
     }
 
     // Convert ternary {0, 2} to binary {0, 1}

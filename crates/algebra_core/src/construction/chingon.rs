@@ -103,13 +103,19 @@ impl AlternativityViolationTensor {
 
                     if m1 != m2 {
                         // This would be extremely strange for CD basis
-                        panic!("Structural failure in CD associator indices: {} != {}", m1, m2);
+                        panic!(
+                            "Structural failure in CD associator indices: {} != {}",
+                            m1, m2
+                        );
                     }
 
                     let sum_sign = s1 + s2;
                     if sum_sign != 0 {
                         if violations.len() < 10 {
-                            println!("AVT Violation: [{}, {}, {}] + [{}, {}, {}] = {} * e_{}", i, j, k, j, i, k, sum_sign, m1);
+                            println!(
+                                "AVT Violation: [{}, {}, {}] + [{}, {}, {}] = {} * e_{}",
+                                i, j, k, j, i, k, sum_sign, m1
+                            );
                         }
                         violations.push((i, j, k, m1, sum_sign));
                         if violations.len() >= max_violations {
@@ -152,8 +158,13 @@ impl AlternativityViolationTensor {
     /// to unpack the fields.
     pub fn pack_for_gpu(&self) -> PackedAvt {
         let bits = index_bits_for_dim(self.dim);
-        assert!(3 * bits < 32, "dim {} requires {}*3+1={} bits, exceeds u32",
-                self.dim, bits, 3 * bits + 1);
+        assert!(
+            3 * bits < 32,
+            "dim {} requires {}*3+1={} bits, exceeds u32",
+            self.dim,
+            bits,
+            3 * bits + 1
+        );
 
         let mask = (1u32 << bits) - 1;
         let mut packed = Vec::with_capacity(self.violations.len());

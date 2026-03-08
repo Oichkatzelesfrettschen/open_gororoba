@@ -1,5 +1,7 @@
-use algebra_core::analysis::boxkites::compute_imbalance_ratio;
-use algebra_core::construction::cayley_dickson::{CdSignature, cd_basis_mul_sign_split_iter};
+use algebra_core::{
+    analysis::boxkites::compute_imbalance_ratio,
+    construction::cayley_dickson::{CdSignature, cd_basis_mul_sign_split_iter},
+};
 use std::time::Instant;
 
 fn env_f64(name: &str, default: f64) -> f64 {
