@@ -8,6 +8,7 @@ license = "MIT"
 [dependencies]
 cd_kernel = { workspace = true }
 algebra_analysis = { workspace = true }
+gororoba_gpu_bridge = { workspace = true }
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
 num-traits = { workspace = true }

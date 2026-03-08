@@ -25,11 +25,15 @@ pub mod voudon;
 pub use dimensional::{GpuAptResult, GpuAptResultWide, GpuDimensionalEngine};
 #[cfg(feature = "gpu")]
 pub use eta_matrix::EtaMatrixGpu;
+pub use gororoba_gpu_bridge::ComputeBackend;
 #[cfg(feature = "gpu")]
 pub use graph_construction::GraphConstructorGpu;
 #[cfg(feature = "gpu")]
 pub use imbalance::ImbalanceGpu;
-pub use tensor_avt::TensorAVT;
+pub use tensor_avt::{
+    TensorAVT, TensorAvtAutoConfig, TensorAvtAutoResult, TensorAvtCalibrationMode,
+    TensorAvtMulSession, TensorAvtNormSession, TensorAvtThresholdOverrides,
+};
 
 /// GPU device initialization and error handling.
 #[cfg(feature = "gpu")]

@@ -112,6 +112,7 @@ dependencies = [
  "csv",
  "cudarc 0.19.3",
  "diffusionx",
+ "gororoba_gpu_bridge",
  "nalgebra 0.33.2",
  "num-bigint",
  "num-complex",

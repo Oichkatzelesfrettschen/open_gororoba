@@ -75,6 +75,7 @@ ndarray_duplication_note = "burn pulls its own ndarray version; accept transitiv
 cd_kernel = { path = "crates/cd_kernel" }
 algebra_analysis = { path = "crates/algebra_analysis" }
 algebra_experimental = { path = "crates/algebra_experimental" }
+gororoba_gpu_bridge = { path = "crates/gororoba_gpu_bridge" }
 
 # Core numerics
 # PINNED: statrs 0.18.0 requires nalgebra ^0.33 (<0.34). gauss-quad 0.2.4 pulls
