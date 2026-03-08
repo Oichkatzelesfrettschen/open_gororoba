@@ -40,12 +40,18 @@ impl PhaseTransitionAnalyzer {
     /// is coherent (defect = 0), dim >= 16 is dissipative.
     pub fn new(dimension: usize) -> Self {
         let critical_density = Self::derive_critical_density(dimension);
-        Self { dimension, critical_density }
+        Self {
+            dimension,
+            critical_density,
+        }
     }
 
     /// Create analyzer with explicit critical density override.
     pub fn with_critical_density(dimension: usize, critical_density: f64) -> Self {
-        Self { dimension, critical_density }
+        Self {
+            dimension,
+            critical_density,
+        }
     }
 
     /// Derive the theoretical critical density from ZD graph combinatorics.

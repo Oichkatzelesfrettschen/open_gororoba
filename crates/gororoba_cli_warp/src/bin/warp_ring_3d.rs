@@ -3,8 +3,7 @@
 //! Extends the 2D Warp Ring to a full 3D experiment-emulation-simulation.
 //! Integrating 3D LBM, E7 roots, and SHI warp lensing.
 
-use algebra_core::lie::e7_geometry::generate_e7_roots;
-use algebra_core::physics::octonion_field::FieldParams;
+use algebra_core::{lie::e7_geometry::generate_e7_roots, physics::octonion_field::FieldParams};
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::{
     export_experiment_contract, export_field_3d, export_rho_quality_metrics,
@@ -17,8 +16,7 @@ use gororoba_engine::simulation::{
     E7SpectralFilter, LbmBackend3D, SimulationConfig3D, SimulationState3D,
 };
 use lbm_core::turbulence::extract_dominant_triads_3d;
-use std::error::Error;
-use std::path::Path;
+use std::{error::Error, path::Path};
 use tracing::info;
 
 fn main() -> Result<(), Box<dyn Error>> {

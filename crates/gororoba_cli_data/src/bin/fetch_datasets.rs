@@ -79,8 +79,7 @@ const VALID_PILLARS: &[&str] = &[
 ];
 
 fn build_registry() -> Vec<DatasetEntry> {
-    use data_core::catalogs::*;
-    use data_core::geophysical::*;
+    use data_core::{catalogs::*, geophysical::*};
 
     vec![
         // -- Survey pillar: multi-object catalogs --

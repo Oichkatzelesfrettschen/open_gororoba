@@ -135,16 +135,66 @@ pub fn alice_pbpb_5020_multiplicity() -> Vec<MultiplicityBin> {
 #[must_use]
 pub fn alice_pbpb_5360_multiplicity() -> Vec<MultiplicityBin> {
     vec![
-        MultiplicityBin { cent_lo: 0.00, cent_hi: 0.05, dnch_deta: 2047.0, dnch_deta_err: 54.0 },
-        MultiplicityBin { cent_lo: 0.05, cent_hi: 0.10, dnch_deta: 1668.0, dnch_deta_err: 42.0 },
-        MultiplicityBin { cent_lo: 0.10, cent_hi: 0.20, dnch_deta: 1253.0, dnch_deta_err: 33.0 },
-        MultiplicityBin { cent_lo: 0.20, cent_hi: 0.30, dnch_deta: 848.0, dnch_deta_err: 25.0 },
-        MultiplicityBin { cent_lo: 0.30, cent_hi: 0.40, dnch_deta: 559.0, dnch_deta_err: 19.0 },
-        MultiplicityBin { cent_lo: 0.40, cent_hi: 0.50, dnch_deta: 351.0, dnch_deta_err: 14.0 },
-        MultiplicityBin { cent_lo: 0.50, cent_hi: 0.60, dnch_deta: 205.0, dnch_deta_err: 11.0 },
-        MultiplicityBin { cent_lo: 0.60, cent_hi: 0.70, dnch_deta: 110.0, dnch_deta_err: 8.0 },
-        MultiplicityBin { cent_lo: 0.70, cent_hi: 0.80, dnch_deta: 53.0, dnch_deta_err: 5.0 },
-        MultiplicityBin { cent_lo: 0.80, cent_hi: 0.90, dnch_deta: 23.2, dnch_deta_err: 2.8 },
+        MultiplicityBin {
+            cent_lo: 0.00,
+            cent_hi: 0.05,
+            dnch_deta: 2047.0,
+            dnch_deta_err: 54.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.05,
+            cent_hi: 0.10,
+            dnch_deta: 1668.0,
+            dnch_deta_err: 42.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.10,
+            cent_hi: 0.20,
+            dnch_deta: 1253.0,
+            dnch_deta_err: 33.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.20,
+            cent_hi: 0.30,
+            dnch_deta: 848.0,
+            dnch_deta_err: 25.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.30,
+            cent_hi: 0.40,
+            dnch_deta: 559.0,
+            dnch_deta_err: 19.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.40,
+            cent_hi: 0.50,
+            dnch_deta: 351.0,
+            dnch_deta_err: 14.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.50,
+            cent_hi: 0.60,
+            dnch_deta: 205.0,
+            dnch_deta_err: 11.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.60,
+            cent_hi: 0.70,
+            dnch_deta: 110.0,
+            dnch_deta_err: 8.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.70,
+            cent_hi: 0.80,
+            dnch_deta: 53.0,
+            dnch_deta_err: 5.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.80,
+            cent_hi: 0.90,
+            dnch_deta: 23.2,
+            dnch_deta_err: 2.8,
+        },
     ]
 }
 

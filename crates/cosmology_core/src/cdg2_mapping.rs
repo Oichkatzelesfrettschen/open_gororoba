@@ -6,8 +6,10 @@
 //! the ZD-mediated viscosity mechanism can produce structures consistent with
 //! the baryon-free ultra-diffuse galaxy CDG-2 in Perseus.
 
-use crate::halo::{CDG2_DM_FRACTION_MIN, CDG2_STELLAR_MASS_SOLAR, PERSEUS_Z};
-use crate::orthoplex_diffusion::{diffusion_time, spectral_dimension_k22};
+use crate::{
+    halo::{CDG2_DM_FRACTION_MIN, CDG2_STELLAR_MASS_SOLAR, PERSEUS_Z},
+    orthoplex_diffusion::{diffusion_time, spectral_dimension_k22},
+};
 
 /// Spectral dimension at CDG-2 redshift (z = 0.0179).
 ///

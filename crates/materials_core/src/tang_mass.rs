@@ -21,8 +21,7 @@
 //! - m_e / m_tau = 1/3477.3
 
 use algebra_core::cd_associator_norm;
-use rand::Rng;
-use rand::SeedableRng;
+use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 
 /// Physical lepton masses in MeV (PDG 2024).

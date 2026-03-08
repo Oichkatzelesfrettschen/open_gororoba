@@ -14,8 +14,10 @@
 //! - Orus (2014): A practical introduction to tensor networks
 
 use nalgebra::DMatrix;
-use rand::SeedableRng;
-use rand::distributions::{Distribution, Standard};
+use rand::{
+    SeedableRng,
+    distributions::{Distribution, Standard},
+};
 use rand_chacha::ChaCha8Rng;
 
 /// Classical tensor network state.

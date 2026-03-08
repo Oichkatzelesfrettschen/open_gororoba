@@ -1,6 +1,8 @@
 use lbm_3d_cuda::Precision;
-use std::error::Error;
-use std::path::{Path, PathBuf};
+use std::{
+    error::Error,
+    path::{Path, PathBuf},
+};
 
 use crate::warp_runner::{
     BackendKind, BenchCase, BenchCaseReport, TimingMode, gate_h5_outputs, print_case_report,
@@ -534,10 +536,19 @@ mod tests {
 
     #[test]
     fn parse_timing_mode_smoke() {
-        assert_eq!(parse_timing_mode("launch_only"), Some(TimingMode::LaunchOnly));
+        assert_eq!(
+            parse_timing_mode("launch_only"),
+            Some(TimingMode::LaunchOnly)
+        );
         assert_eq!(parse_timing_mode("launch"), Some(TimingMode::LaunchOnly));
-        assert_eq!(parse_timing_mode("stream_sync_each_step"), Some(TimingMode::StreamSyncEachStep));
-        assert_eq!(parse_timing_mode("cuda_events"), Some(TimingMode::CudaEvents));
+        assert_eq!(
+            parse_timing_mode("stream_sync_each_step"),
+            Some(TimingMode::StreamSyncEachStep)
+        );
+        assert_eq!(
+            parse_timing_mode("cuda_events"),
+            Some(TimingMode::CudaEvents)
+        );
         assert_eq!(parse_timing_mode("events"), Some(TimingMode::CudaEvents));
         assert_eq!(parse_timing_mode("invalid"), None);
     }

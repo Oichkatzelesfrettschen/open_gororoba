@@ -15,9 +15,7 @@
 
 use algebra_core::{MotifComponent, cross_assessors, motif_components_for_cross_assessors};
 use clap::Parser;
-use std::fs;
-use std::path::Path;
-use std::time::Instant;
+use std::{fs, path::Path, time::Instant};
 
 #[derive(Parser)]
 #[command(name = "motif-census")]

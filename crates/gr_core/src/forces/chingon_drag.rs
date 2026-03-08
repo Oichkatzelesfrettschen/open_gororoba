@@ -1,12 +1,12 @@
-use nalgebra::Vector3;
 use algebra_core::construction::chingon::AlternativityViolationTensor;
+use nalgebra::Vector3;
 
 /// Computes the Bivector-Embedded Chingon drag acceleration.
-/// 
-/// This model implements 'Angular Momentum Bleed' with sign-sensitivity 
+///
+/// This model implements 'Angular Momentum Bleed' with sign-sensitivity
 /// to the orbital plane orientation.
-/// 
-/// Bivector B = r ^ v represents the orbital plane. 
+///
+/// Bivector B = r ^ v represents the orbital plane.
 /// The drag force is modulated by the interaction of B with the AVT.
 pub fn compute_bivector_chingon_drag(
     pos: Vector3<f64>,
@@ -18,16 +18,22 @@ pub fn compute_bivector_chingon_drag(
 ) -> Vector3<f64> {
     let v_rel = vel - v_wind;
     let v_mag = v_rel.norm();
-    if v_mag < 1e-9 { return Vector3::<f64>::zeros(); }
+    if v_mag < 1e-9 {
+        return Vector3::<f64>::zeros();
+    }
 
     // 1. Compute the Orbital Bivector (Angular Momentum direction)
     let h = pos.cross(&vel); // L = r x p, direction of the bivector
-    let h_unit = if h.norm() > 1e-15 { h.normalize() } else { Vector3::z() };
+    let h_unit = if h.norm() > 1e-15 {
+        h.normalize()
+    } else {
+        Vector3::z()
+    };
 
     // 2. Embed the 3D velocity AND the 3D bivector into 64D
     let mut v_64d = [0.0f64; 64];
     let mut h_64d = [0.0f64; 64];
-    
+
     for i in 0..64 {
         let t = i as f64;
         let px = (t * 17.0).cos().abs();

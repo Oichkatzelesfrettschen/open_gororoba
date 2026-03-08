@@ -27,9 +27,7 @@
 //! - Li et al. (2025), arXiv:2506.15644 (CDG-2 discovery)
 
 use crate::{
-    bounce::hubble_e_lcdm,
-    gl_integrate,
-    observational::compute_growth_batch,
+    bounce::hubble_e_lcdm, gl_integrate, observational::compute_growth_batch,
     orthoplex_diffusion::hubble_e_orthoplex,
 };
 
@@ -94,11 +92,7 @@ pub fn bbks_transfer(k_mpc: f64, omega_m: f64) -> f64 {
     } else {
         (1.0 + q234).ln() / q234
     };
-    let poly = 1.0
-        + 3.89 * q
-        + (16.1 * q).powi(2)
-        + (5.46 * q).powi(3)
-        + (6.71 * q).powi(4);
+    let poly = 1.0 + 3.89 * q + (16.1 * q).powi(2) + (5.46 * q).powi(3) + (6.71 * q).powi(4);
     ln_term * poly.powf(-0.25)
 }
 
@@ -131,7 +125,7 @@ fn top_hat_window(x: f64) -> f64 {
 ///   I(R) = integral k^(ns+3) T^2(k) W^2(kR) du
 fn sigma_sq_integral(r_mpc: f64, omega_m: f64, ns: f64) -> f64 {
     let u_min = 1e-5_f64.ln(); // k_min = 10^-^5 Mpc^{-1}
-    let u_max = 1e5_f64.ln();  // k_max = 10^5 Mpc^{-1}
+    let u_max = 1e5_f64.ln(); // k_max = 10^5 Mpc^{-1}
     gl_integrate(
         |u| {
             let k = u.exp();
@@ -300,10 +294,8 @@ fn press_schechter_inner(
 
     // Central-difference derivative dsigma/dM (1% mass perturbation)
     let eps = 0.01;
-    let sigma_plus =
-        sigma_mass_inner(mass_solar * (1.0 + eps), omega_m, sigma8, ns, i_r8) * d_z;
-    let sigma_minus =
-        sigma_mass_inner(mass_solar * (1.0 - eps), omega_m, sigma8, ns, i_r8) * d_z;
+    let sigma_plus = sigma_mass_inner(mass_solar * (1.0 + eps), omega_m, sigma8, ns, i_r8) * d_z;
+    let sigma_minus = sigma_mass_inner(mass_solar * (1.0 - eps), omega_m, sigma8, ns, i_r8) * d_z;
     let dsigma_dm = (sigma_plus - sigma_minus) / (2.0 * eps * mass_solar);
 
     // Mean comoving matter density (Msun Mpc^{-3})
@@ -703,7 +695,10 @@ mod tests {
     fn test_press_schechter_mass_function_positive() {
         let e_lcdm = |z: f64| hubble_e_lcdm(z, OMEGA_M);
         let dn_dm = press_schechter_mass_function(1e12, 0.0, OMEGA_M, SIGMA8, NS, &e_lcdm);
-        assert!(dn_dm > 0.0, "PS mass function must be positive at 10^1^2 Msun");
+        assert!(
+            dn_dm > 0.0,
+            "PS mass function must be positive at 10^1^2 Msun"
+        );
         assert!(dn_dm.is_finite(), "PS mass function must be finite");
     }
 
@@ -720,9 +715,7 @@ mod tests {
     fn test_press_schechter_orthoplex_beta_zero_matches_lcdm() {
         // With beta = 0 the orthoplex model reduces to LambdaCDM
         let e_lcdm = |z: f64| hubble_e_lcdm(z, OMEGA_M);
-        let dn_lcdm = press_schechter_mass_function(
-            1e12, PERSEUS_Z, OMEGA_M, SIGMA8, NS, &e_lcdm,
-        );
+        let dn_lcdm = press_schechter_mass_function(1e12, PERSEUS_Z, OMEGA_M, SIGMA8, NS, &e_lcdm);
         let dn_ortho =
             press_schechter_orthoplex(1e12, PERSEUS_Z, OMEGA_M, SIGMA8, NS, 3, 1.0, 0.0, 1.0);
         assert_relative_eq!(dn_lcdm, dn_ortho, max_relative = 0.01);
@@ -731,9 +724,8 @@ mod tests {
     #[test]
     fn test_udg_abundance_ratio_beta_zero_near_unity() {
         // beta = 0 orthoplex = LambdaCDM, so ratio ~ 1
-        let ratio = udg_abundance_ratio(
-            PERSEUS_Z, OMEGA_M, SIGMA8, NS, 1e8, 1e10, 3, 1.0, 0.0, 1.0,
-        );
+        let ratio =
+            udg_abundance_ratio(PERSEUS_Z, OMEGA_M, SIGMA8, NS, 1e8, 1e10, 3, 1.0, 0.0, 1.0);
         assert_relative_eq!(ratio, 1.0, max_relative = 0.02);
     }
 

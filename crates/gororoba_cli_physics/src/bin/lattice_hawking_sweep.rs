@@ -156,17 +156,17 @@ fn main() {
 
         // Scale the effective lambda for Kubo/Exponential models
         let scaled_coupling = match args.coupling_model.as_str() {
-            "exponential" => ViscosityCouplingModel::Exponential { 
-                nu_base: args.nu * scale_factor.powi(2), 
-                lambda: args.coupling_strength * scale_factor.powi(2)
+            "exponential" => ViscosityCouplingModel::Exponential {
+                nu_base: args.nu * scale_factor.powi(2),
+                lambda: args.coupling_strength * scale_factor.powi(2),
             },
-            "linear" => ViscosityCouplingModel::Linear { 
-                nu_base: args.nu * scale_factor.powi(2), 
-                alpha: args.coupling_strength
+            "linear" => ViscosityCouplingModel::Linear {
+                nu_base: args.nu * scale_factor.powi(2),
+                alpha: args.coupling_strength,
             },
             "power_law" => ViscosityCouplingModel::PowerLaw {
                 nu_base: args.nu * scale_factor.powi(2),
-                n: 2.0
+                n: 2.0,
             },
             "kubo_response" => {
                 let mut kubo = ViscosityCouplingModel::kubo_default(args.nu * scale_factor.powi(2));
@@ -174,8 +174,10 @@ fn main() {
                     *f_cd *= 1.0 / scale_factor;
                 }
                 kubo
+            }
+            _ => ViscosityCouplingModel::Constant {
+                nu_base: args.nu * scale_factor.powi(2),
             },
-            _ => ViscosityCouplingModel::Constant { nu_base: args.nu * scale_factor.powi(2) },
         };
 
         let nu_array = bridge.imbalance_to_viscosity_model(&imbalance, &scaled_coupling);

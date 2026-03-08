@@ -26,8 +26,10 @@
 //! - Conway & Sloane (1998), "Sphere Packings, Lattices and Groups"
 
 use algebra_core::lie::e8_lattice::{E8Root, generate_e8_roots};
-use moyo::base::{Cell, Lattice, Position};
-use moyo::MoyoDataset;
+use moyo::{
+    MoyoDataset,
+    base::{Cell, Lattice, Position},
+};
 
 /// Result of classifying the E8 root system's 3D projected point group.
 #[derive(Debug, Clone)]
@@ -98,10 +100,7 @@ pub fn e8_point_group() -> Option<E8PointGroupResult> {
     }
 
     // Convert to moyo types using Into trait (resolves to moyo's nalgebra 0.34)
-    let positions: Vec<Position> = unique_frac
-        .iter()
-        .map(|&p| p.into())
-        .collect();
+    let positions: Vec<Position> = unique_frac.iter().map(|&p| p.into()).collect();
     let numbers: Vec<i32> = vec![0; unique_frac.len()];
 
     let cell = Cell::new(lattice, positions, numbers);
@@ -154,10 +153,7 @@ pub fn g2_subgroup_orbits(roots: &[E8Root]) -> G2OrbitResult {
         let mut sub_groups: std::collections::BTreeMap<usize, usize> =
             std::collections::BTreeMap::new();
         for &idx in indices {
-            let nonzero_count = projected[idx]
-                .iter()
-                .filter(|&&x| x.abs() > 1e-10)
-                .count();
+            let nonzero_count = projected[idx].iter().filter(|&&x| x.abs() > 1e-10).count();
             *sub_groups.entry(nonzero_count).or_insert(0) += 1;
         }
         for &count in sub_groups.values() {
@@ -491,14 +487,22 @@ fn zd_graph_topology_sign_table(dim: usize) -> (usize, Vec<usize>, usize) {
 /// Each term lands on basis e_{p^q} with coefficient sign_table[p*dim+q].
 /// We accumulate into a small array indexed by output basis element, then check
 /// if all coefficients are zero.
-fn is_zd_2blade(sign_table: &[i32], dim: usize, i: usize, j: usize, k: usize, l: usize, l_sign: i32) -> bool {
+fn is_zd_2blade(
+    sign_table: &[i32],
+    dim: usize,
+    i: usize,
+    j: usize,
+    k: usize,
+    l: usize,
+    l_sign: i32,
+) -> bool {
     // The 4 products land on at most 4 distinct basis elements.
     // Collect (output_index, coefficient) pairs.
     let terms = [
-        (i ^ k, sign_table[i * dim + k]),                     // e_i * e_k
-        (i ^ l, sign_table[i * dim + l] * l_sign),            // e_i * (l_sign * e_l)
-        (j ^ k, sign_table[j * dim + k]),                     // e_j * e_k
-        (j ^ l, sign_table[j * dim + l] * l_sign),            // e_j * (l_sign * e_l)
+        (i ^ k, sign_table[i * dim + k]),          // e_i * e_k
+        (i ^ l, sign_table[i * dim + l] * l_sign), // e_i * (l_sign * e_l)
+        (j ^ k, sign_table[j * dim + k]),          // e_j * e_k
+        (j ^ l, sign_table[j * dim + l] * l_sign), // e_j * (l_sign * e_l)
     ];
 
     // Accumulate coefficients. Use a small fixed-size approach:
@@ -524,7 +528,6 @@ fn is_zd_2blade(sign_table: &[i32], dim: usize, i: usize, j: usize, k: usize, l:
     // ZD iff all accumulated coefficients are zero
     accum[..n_distinct].iter().all(|&(_, c)| c == 0)
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -615,7 +618,11 @@ mod tests {
         assert_eq!(edges, 420, "Pathion ZD graph has 420 edges");
         assert_eq!(num_comp, 3, "3 components: [30, 1, 1]");
         assert_eq!(sizes[0], 30, "Largest component has 30 elements");
-        eprintln!("32D ZD graph: {} edges, elapsed={:.3}ms", edges, elapsed.as_secs_f64() * 1000.0);
+        eprintln!(
+            "32D ZD graph: {} edges, elapsed={:.3}ms",
+            edges,
+            elapsed.as_secs_f64() * 1000.0
+        );
     }
 
     #[test]
@@ -646,7 +653,12 @@ mod tests {
             assert_eq!(num_comp, 3);
             assert_eq!(sizes, vec![dim - 2, 1, 1]);
             assert_eq!(edges, (dim * dim - 6 * dim + 8) / 2);
-            eprintln!("dim={}: {} edges, elapsed={:.0}ns", dim, edges, elapsed.as_nanos());
+            eprintln!(
+                "dim={}: {} edges, elapsed={:.0}ns",
+                dim,
+                edges,
+                elapsed.as_nanos()
+            );
         }
     }
 
@@ -654,24 +666,33 @@ mod tests {
     fn test_zd_closed_form_matches_brute_force_16d() {
         let (nc_bf, sz_bf, e_bf) = zd_graph_topology_brute_force(16);
         let (nc_cf, sz_cf, e_cf) = zd_graph_topology_closed_form(16);
-        assert_eq!((nc_bf, &sz_bf, e_bf), (nc_cf, &sz_cf, e_cf),
-            "Closed-form must match brute-force at 16D");
+        assert_eq!(
+            (nc_bf, &sz_bf, e_bf),
+            (nc_cf, &sz_cf, e_cf),
+            "Closed-form must match brute-force at 16D"
+        );
     }
 
     #[test]
     fn test_zd_closed_form_matches_brute_force_32d() {
         let (nc_bf, sz_bf, e_bf) = zd_graph_topology_brute_force(32);
         let (nc_cf, sz_cf, e_cf) = zd_graph_topology_closed_form(32);
-        assert_eq!((nc_bf, &sz_bf, e_bf), (nc_cf, &sz_cf, e_cf),
-            "Closed-form must match brute-force at 32D");
+        assert_eq!(
+            (nc_bf, &sz_bf, e_bf),
+            (nc_cf, &sz_cf, e_cf),
+            "Closed-form must match brute-force at 32D"
+        );
     }
 
     #[test]
     fn test_zd_closed_form_matches_brute_force_64d() {
         let (nc_bf, sz_bf, e_bf) = zd_graph_topology_brute_force(64);
         let (nc_cf, sz_cf, e_cf) = zd_graph_topology_closed_form(64);
-        assert_eq!((nc_bf, &sz_bf, e_bf), (nc_cf, &sz_cf, e_cf),
-            "Closed-form must match brute-force at 64D");
+        assert_eq!(
+            (nc_bf, &sz_bf, e_bf),
+            (nc_cf, &sz_cf, e_cf),
+            "Closed-form must match brute-force at 64D"
+        );
     }
 
     #[test]
@@ -679,9 +700,17 @@ mod tests {
         let missing = zd_graph_missing_edges(16);
         assert_eq!(missing.len(), 7, "16D should have 7 missing edges");
         for &(i, j) in &missing {
-            assert_eq!(i ^ j, 8, "Missing edge ({},{}) should have XOR=dim/2=8", i, j);
-            assert!(i != 0 && j != 0 && i != 8 && j != 8,
-                "Missing edges should be in giant component (not singletons 0 or 8)");
+            assert_eq!(
+                i ^ j,
+                8,
+                "Missing edge ({},{}) should have XOR=dim/2=8",
+                i,
+                j
+            );
+            assert!(
+                i != 0 && j != 0 && i != 8 && j != 8,
+                "Missing edges should be in giant component (not singletons 0 or 8)"
+            );
         }
         // Verify: (1,9), (2,10), (3,11), (4,12), (5,13), (6,14), (7,15)
         let expected: Vec<(usize, usize)> = (1..8).map(|i| (i, i ^ 8)).collect();
@@ -702,8 +731,11 @@ mod tests {
         assert_eq!(edges.len(), 84, "16D should have 84 edges total");
 
         // Verify singletons: e_0 and e_{dim/2} have no edges
-        let deg_0 = edges.iter().filter(|&&(i,j)| i == 0 || j == 0).count();
-        let deg_half = edges.iter().filter(|&&(i,j)| i == half || j == half).count();
+        let deg_0 = edges.iter().filter(|&&(i, j)| i == 0 || j == 0).count();
+        let deg_half = edges
+            .iter()
+            .filter(|&&(i, j)| i == half || j == half)
+            .count();
         assert_eq!(deg_0, 0, "e_0 should be a singleton");
         assert_eq!(deg_half, 0, "e_{{dim/2}} should be a singleton");
 
@@ -722,12 +754,21 @@ mod tests {
 
         // Verify all missing edges have XOR = dim/2
         for &(i, j) in &actual_missing {
-            assert_eq!(i ^ j, half, "Missing ({},{}) should have XOR={}", i, j, half);
+            assert_eq!(
+                i ^ j,
+                half,
+                "Missing ({},{}) should have XOR={}",
+                i,
+                j,
+                half
+            );
         }
 
         let predicted = zd_graph_missing_edges(dim);
-        assert_eq!(actual_missing, predicted,
-            "Predicted missing edges must match brute-force at 16D");
+        assert_eq!(
+            actual_missing, predicted,
+            "Predicted missing edges must match brute-force at 16D"
+        );
     }
 
     #[test]
@@ -740,8 +781,11 @@ mod tests {
         assert_eq!(edges.len(), 420, "32D should have 420 edges total");
 
         // Verify singletons
-        let deg_0 = edges.iter().filter(|&&(i,j)| i == 0 || j == 0).count();
-        let deg_half = edges.iter().filter(|&&(i,j)| i == half || j == half).count();
+        let deg_0 = edges.iter().filter(|&&(i, j)| i == 0 || j == 0).count();
+        let deg_half = edges
+            .iter()
+            .filter(|&&(i, j)| i == half || j == half)
+            .count();
         assert_eq!(deg_0, 0, "e_0 should be a singleton");
         assert_eq!(deg_half, 0, "e_{{dim/2}} should be a singleton");
 
@@ -758,12 +802,21 @@ mod tests {
 
         assert_eq!(actual_missing.len(), 15, "32D should have 15 missing edges");
         for &(i, j) in &actual_missing {
-            assert_eq!(i ^ j, half, "Missing ({},{}) should have XOR={}", i, j, half);
+            assert_eq!(
+                i ^ j,
+                half,
+                "Missing ({},{}) should have XOR={}",
+                i,
+                j,
+                half
+            );
         }
 
         let predicted = zd_graph_missing_edges(dim);
-        assert_eq!(actual_missing, predicted,
-            "Predicted missing edges must match brute-force at 32D");
+        assert_eq!(
+            actual_missing, predicted,
+            "Predicted missing edges must match brute-force at 32D"
+        );
     }
 
     #[test]
@@ -779,26 +832,32 @@ mod tests {
             .flat_map(|i| ((i + 1)..dim).map(move |j| (i, j)))
             .filter(|&(i, j)| adj.contains(i * dim + j))
             .count();
-        assert_eq!(analytical_edge_count, 84, "16D analytical should have 84 edges");
+        assert_eq!(
+            analytical_edge_count, 84,
+            "16D analytical should have 84 edges"
+        );
         assert_eq!(bf_edges.len(), 84, "16D brute-force should have 84 edges");
 
         // Every brute-force edge must be in the analytical matrix
         for &(i, j) in &bf_edges {
             assert!(
                 adj.contains(i * dim + j),
-                "Brute-force edge ({},{}) missing from analytical", i, j
+                "Brute-force edge ({},{}) missing from analytical",
+                i,
+                j
             );
         }
 
         // Every analytical edge must be in the brute-force list
-        let bf_set: std::collections::HashSet<(usize, usize)> =
-            bf_edges.iter().copied().collect();
+        let bf_set: std::collections::HashSet<(usize, usize)> = bf_edges.iter().copied().collect();
         for i in 0..dim {
             for j in (i + 1)..dim {
                 if adj.contains(i * dim + j) {
                     assert!(
                         bf_set.contains(&(i, j)),
-                        "Analytical edge ({},{}) not in brute-force", i, j
+                        "Analytical edge ({},{}) not in brute-force",
+                        i,
+                        j
                     );
                 }
             }
@@ -811,17 +870,27 @@ mod tests {
         let t = std::time::Instant::now();
         let adj = zd_graph_adjacency_analytical(512);
         let elapsed = t.elapsed();
-        assert!(elapsed.as_secs() < 2, "512D analytical took too long: {:.1}s", elapsed.as_secs_f64());
+        assert!(
+            elapsed.as_secs() < 2,
+            "512D analytical took too long: {:.1}s",
+            elapsed.as_secs_f64()
+        );
 
         // Verify edge count matches closed-form
         let edge_count = (0..512usize)
             .flat_map(|i| ((i + 1)..512).map(move |j| (i, j)))
             .filter(|&(i, j)| adj.contains(i * 512 + j))
             .count();
-        assert_eq!(edge_count, (512 * 512 - 6 * 512 + 8) / 2,
-            "512D edge count mismatch");
-        eprintln!("512D analytical adjacency: {} edges, elapsed={:.3}ms",
-            edge_count, elapsed.as_secs_f64() * 1000.0);
+        assert_eq!(
+            edge_count,
+            (512 * 512 - 6 * 512 + 8) / 2,
+            "512D edge count mismatch"
+        );
+        eprintln!(
+            "512D analytical adjacency: {} edges, elapsed={:.3}ms",
+            edge_count,
+            elapsed.as_secs_f64() * 1000.0
+        );
     }
 
     #[test]
@@ -840,7 +909,10 @@ mod tests {
         assert_eq!(edges, (256 * 256 - 6 * 256 + 8) / 2);
         eprintln!(
             "256D ZD graph (brute-force): {} components, {} edges, largest={}, elapsed={:.1}s",
-            num_comp, edges, sizes[0], elapsed.as_secs_f64()
+            num_comp,
+            edges,
+            sizes[0],
+            elapsed.as_secs_f64()
         );
     }
 }

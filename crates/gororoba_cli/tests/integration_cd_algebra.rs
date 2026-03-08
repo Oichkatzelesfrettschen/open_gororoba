@@ -3,8 +3,10 @@
 //! Tests cross-crate workflows between algebra_core (CD multiplication, ZD search)
 //! and stats_core (statistical validation of algebraic properties).
 
-use algebra_core::construction::cayley_dickson::find_zero_divisors_general_form;
-use algebra_core::{cd_associator_norm, cd_conjugate, cd_multiply, cd_norm_sq, find_zero_divisors};
+use algebra_core::{
+    cd_associator_norm, cd_conjugate, cd_multiply, cd_norm_sq,
+    construction::cayley_dickson::find_zero_divisors_general_form, find_zero_divisors,
+};
 
 /// Test that quaternion multiplication is associative.
 #[test]

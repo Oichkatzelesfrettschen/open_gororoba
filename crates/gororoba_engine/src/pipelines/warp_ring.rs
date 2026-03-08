@@ -4,8 +4,10 @@
 //! to simulate the "Warp Ring" effect. This pipeline demonstrates the
 //! engine's capability to host multi-physics simulations.
 
-use crate::simulation::{SimulationConfig, SimulationState};
-use crate::traits::{ThesisEvidence, ThesisPipeline};
+use crate::{
+    simulation::{SimulationConfig, SimulationState},
+    traits::{ThesisEvidence, ThesisPipeline},
+};
 use algebra_core::physics::octonion_field::{FieldParams, oct_norm_sq};
 use optics_core::grin::{GrinMedium, Ray, Vec3};
 

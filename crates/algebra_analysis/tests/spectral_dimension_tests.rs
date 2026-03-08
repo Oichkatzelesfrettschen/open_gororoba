@@ -3,12 +3,14 @@
 //! These tests exercise the full pipeline from ZD graph construction through
 //! eigendecomposition, heat kernel computation, and plateau extraction.
 
-use algebra_analysis::spectral_dimension::{
-    DenseEigenSolver, EigenSolver, analyze_single_dimension, build_graph_laplacian,
-    build_laplacian_from_component, clamp_zero_eigenvalues, extract_plateau, geom_linspace,
-    graph_spectral_dimension, zd_laplacian_eigenvalues,
+use algebra_analysis::{
+    boxkites::motif_components_for_cross_assessors,
+    spectral_dimension::{
+        DenseEigenSolver, EigenSolver, analyze_single_dimension, build_graph_laplacian,
+        build_laplacian_from_component, clamp_zero_eigenvalues, extract_plateau, geom_linspace,
+        graph_spectral_dimension, zd_laplacian_eigenvalues,
+    },
 };
-use algebra_analysis::boxkites::motif_components_for_cross_assessors;
 use petgraph::graph::UnGraph;
 
 /// Build a 2D grid graph (lattice Z^2 of size m x m).
@@ -155,7 +157,8 @@ fn plateau_extraction_from_constant_region() {
     let p = plateau.unwrap();
     assert!(
         (p.d_s - 3.0).abs() < 0.1,
-        "plateau value should be near 3.0: {}", p.d_s
+        "plateau value should be near 3.0: {}",
+        p.d_s
     );
 }
 

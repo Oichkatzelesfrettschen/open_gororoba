@@ -15,8 +15,10 @@
 //! - PHENIX Au-Au 200 GeV pi0 R_AA (INSPIRE ins1127262)
 //! - ALICE dNch/deta Pb-Pb 5.02 TeV (INSPIRE ins1507090)
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use crate::parse::parse_f64_or_nan;
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    parse::parse_f64_or_nan,
+};
 use std::path::{Path, PathBuf};
 
 /// Parsed R_AA data point from HEPData CSV.
@@ -273,9 +275,7 @@ pub fn alice_xexe_5440_raa_tables() -> Vec<HepDataTable> {
         .map(|t| {
             let cent = ALICE_XEXE_RAA_CENTRALITIES[t - 1];
             HepDataTable {
-                name: Box::leak(
-                    format!("ALICE XeXe 5.44 TeV R_AA {}", cent).into_boxed_str(),
-                ),
+                name: Box::leak(format!("ALICE XeXe 5.44 TeV R_AA {}", cent).into_boxed_str()),
                 url_primary: Box::leak(
                     format!(
                         "https://www.hepdata.net/download/table/ins1672790/Table{}/csv",
@@ -345,14 +345,12 @@ impl RaaColumnLayout {
 /// R_{AA}/RAA/R_AA to determine which field index holds each quantity.
 /// Falls back to positional heuristics based on column count.
 fn detect_raa_layout(header: &str) -> RaaColumnLayout {
-    let cols: Vec<String> = header
-        .split(',')
-        .map(|s| s.trim().to_uppercase())
-        .collect();
+    let cols: Vec<String> = header.split(',').map(|s| s.trim().to_uppercase()).collect();
 
     // Try keyword-based detection
     let find_col = |keywords: &[&str]| -> Option<usize> {
-        cols.iter().position(|c| keywords.iter().any(|kw| c.contains(kw)))
+        cols.iter()
+            .position(|c| keywords.iter().any(|kw| c.contains(kw)))
     };
 
     let lo = find_col(&["LOW", "PT_LO", "PT_LOW"]);
@@ -362,8 +360,16 @@ fn detect_raa_layout(header: &str) -> RaaColumnLayout {
     if let (Some(lo_i), Some(hi_i), Some(raa_i)) = (lo, hi, raa) {
         // Find stat and syst columns relative to R_AA
         let stat_i = raa_i + 1;
-        let syst_up_i = if cols.len() > raa_i + 3 { raa_i + 3 } else { raa_i + 2 };
-        let syst_down_i = if cols.len() > syst_up_i + 1 { syst_up_i + 1 } else { syst_up_i };
+        let syst_up_i = if cols.len() > raa_i + 3 {
+            raa_i + 3
+        } else {
+            raa_i + 2
+        };
+        let syst_down_i = if cols.len() > syst_up_i + 1 {
+            syst_up_i + 1
+        } else {
+            syst_up_i
+        };
         return RaaColumnLayout {
             col_pt_lo: lo_i,
             col_pt_hi: hi_i,
@@ -481,13 +487,11 @@ struct V2ColumnLayout {
 
 /// Detect v2 column layout from a CSV header line.
 fn detect_v2_layout(header: &str) -> V2ColumnLayout {
-    let cols: Vec<String> = header
-        .split(',')
-        .map(|s| s.trim().to_uppercase())
-        .collect();
+    let cols: Vec<String> = header.split(',').map(|s| s.trim().to_uppercase()).collect();
 
     let find_col = |keywords: &[&str]| -> Option<usize> {
-        cols.iter().position(|c| keywords.iter().any(|kw| c.contains(kw)))
+        cols.iter()
+            .position(|c| keywords.iter().any(|kw| c.contains(kw)))
     };
 
     let lo = find_col(&["LOW", "PT_LO", "PT_LOW"]);
@@ -496,7 +500,11 @@ fn detect_v2_layout(header: &str) -> V2ColumnLayout {
 
     if let (Some(lo_i), Some(hi_i), Some(v2_i)) = (lo, hi, v2) {
         let stat_i = v2_i + 1;
-        let syst_i = if cols.len() > v2_i + 3 { v2_i + 3 } else { v2_i + 2 };
+        let syst_i = if cols.len() > v2_i + 3 {
+            v2_i + 3
+        } else {
+            v2_i + 2
+        };
         return V2ColumnLayout {
             col_pt_lo: lo_i,
             col_pt_hi: hi_i,
@@ -509,10 +517,22 @@ fn detect_v2_layout(header: &str) -> V2ColumnLayout {
     // Fallback: column-count heuristic
     if cols.len() >= 10 {
         // 10-col: center, LOW, HIGH, v2, stat+, stat-, syst+, syst-, ...
-        V2ColumnLayout { col_pt_lo: 1, col_pt_hi: 2, col_v2: 3, col_stat: 4, col_syst: 6 }
+        V2ColumnLayout {
+            col_pt_lo: 1,
+            col_pt_hi: 2,
+            col_v2: 3,
+            col_stat: 4,
+            col_syst: 6,
+        }
     } else {
         // Simple: pt_lo, pt_hi, v2, stat, syst
-        V2ColumnLayout { col_pt_lo: 0, col_pt_hi: 1, col_v2: 2, col_stat: 3, col_syst: 4 }
+        V2ColumnLayout {
+            col_pt_lo: 0,
+            col_pt_hi: 1,
+            col_v2: 2,
+            col_stat: 3,
+            col_syst: 4,
+        }
     }
 }
 
@@ -545,9 +565,21 @@ pub fn parse_v2_csv(path: &Path) -> Result<Vec<V2Point>, String> {
                 continue;
             }
             layout = Some(if fields.len() >= 10 {
-                V2ColumnLayout { col_pt_lo: 1, col_pt_hi: 2, col_v2: 3, col_stat: 4, col_syst: 6 }
+                V2ColumnLayout {
+                    col_pt_lo: 1,
+                    col_pt_hi: 2,
+                    col_v2: 3,
+                    col_stat: 4,
+                    col_syst: 6,
+                }
             } else {
-                V2ColumnLayout { col_pt_lo: 0, col_pt_hi: 1, col_v2: 2, col_stat: 3, col_syst: 4 }
+                V2ColumnLayout {
+                    col_pt_lo: 0,
+                    col_pt_hi: 1,
+                    col_v2: 2,
+                    col_stat: 3,
+                    col_syst: 4,
+                }
             });
         }
 

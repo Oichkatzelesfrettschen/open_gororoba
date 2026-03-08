@@ -4,8 +4,7 @@
 //! cross-reference graph, merge operations, conflict resolution, and full
 //! pipeline idempotence.
 
-use gororoba_cli::claims::consolidate::*;
-use gororoba_cli::claims::schema;
+use gororoba_cli::claims::{consolidate::*, schema};
 
 // ---------------------------------------------------------------------------
 // Helpers

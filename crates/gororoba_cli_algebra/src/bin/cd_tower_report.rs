@@ -14,14 +14,15 @@
 //! References claims: C-483, C-487, C-520, C-528, C-529, C-531, C-534,
 //! C-537, C-544, C-545..C-549.
 
-use std::collections::VecDeque;
-use std::time::Instant;
+use std::{collections::VecDeque, time::Instant};
 
-use algebra_core::analysis::boxkites::{
-    CrossPair, generic_face_sign_census, motif_components_for_cross_assessors,
-};
-use algebra_core::construction::cayley_dickson::{
-    CdSignature, cd_basis_mul_sign_iter, cd_norm_sq, find_zero_divisors,
+use algebra_core::{
+    analysis::boxkites::{
+        CrossPair, generic_face_sign_census, motif_components_for_cross_assessors,
+    },
+    construction::cayley_dickson::{
+        CdSignature, cd_basis_mul_sign_iter, cd_norm_sq, find_zero_divisors,
+    },
 };
 
 use clap::Parser;

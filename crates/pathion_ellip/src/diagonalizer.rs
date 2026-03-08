@@ -1,5 +1,5 @@
 /// Projects a 32D Pathion vector into 16 commuting complex planes.
-/// 
+///
 /// The 32D Pathion algebra has a zero-divisor interaction graph with 15 connected components,
 /// plus the identity direction. This structure allows us to diagonalize the non-associative
 /// algebra into 16 independent, commutative $\mathbb{C}$ planes, where complex analysis
@@ -16,10 +16,10 @@ impl PathionDiagonalizer {
         // commuting planes (e_0 paired with a basis element, and 15 other pairs).
         // For standard Pathions (dim=32), the simplest diagonalizing basis is
         // 16 disjoint pairs (e_i, e_{i+16}) which bridges the K_16 cliques.
-        
+
         let mut planes = Vec::with_capacity(16);
         let mut used = [false; 32];
-        
+
         // Plane 0: Identity and the principal imaginary (e0, e1)
         planes.push((0, 1));
         used[0] = true;

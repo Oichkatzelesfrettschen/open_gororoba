@@ -107,14 +107,30 @@ impl SimdCaps {
 impl std::fmt::Display for SimdCaps {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut features = Vec::new();
-        if self.sse2 { features.push("SSE2"); }
-        if self.sse4_1 { features.push("SSE4.1"); }
-        if self.avx { features.push("AVX"); }
-        if self.avx2 { features.push("AVX2"); }
-        if self.fma { features.push("FMA"); }
-        if self.avx512f { features.push("AVX-512F"); }
-        if self.neon { features.push("NEON"); }
-        if self.sve { features.push("SVE"); }
+        if self.sse2 {
+            features.push("SSE2");
+        }
+        if self.sse4_1 {
+            features.push("SSE4.1");
+        }
+        if self.avx {
+            features.push("AVX");
+        }
+        if self.avx2 {
+            features.push("AVX2");
+        }
+        if self.fma {
+            features.push("FMA");
+        }
+        if self.avx512f {
+            features.push("AVX-512F");
+        }
+        if self.neon {
+            features.push("NEON");
+        }
+        if self.sve {
+            features.push("SVE");
+        }
         if features.is_empty() {
             write!(f, "scalar (no SIMD)")
         } else {
@@ -209,7 +225,10 @@ mod tests {
 
     #[test]
     fn test_detect_best_backend_preference_order() {
-        let simd = SimdCaps { avx2: true, ..Default::default() };
+        let simd = SimdCaps {
+            avx2: true,
+            ..Default::default()
+        };
         let all_caps = HardwareCaps {
             cuda_available: true,
             vulkan_available: true,
@@ -223,7 +242,10 @@ mod tests {
             vulkan_available: true,
             simd,
         };
-        assert_eq!(detect_best_backend(&vulkan_only, 20_000), ComputeBackend::Vulkan);
+        assert_eq!(
+            detect_best_backend(&vulkan_only, 20_000),
+            ComputeBackend::Vulkan
+        );
 
         // Small problem -> CPU path even with GPU available
         assert_eq!(detect_best_backend(&all_caps, 500), ComputeBackend::CpuSimd);
@@ -233,10 +255,16 @@ mod tests {
             vulkan_available: false,
             simd,
         };
-        assert_eq!(detect_best_backend(&no_gpu, 20_000), ComputeBackend::CpuSimd);
+        assert_eq!(
+            detect_best_backend(&no_gpu, 20_000),
+            ComputeBackend::CpuSimd
+        );
 
         let nothing = HardwareCaps::default();
-        assert_eq!(detect_best_backend(&nothing, 20_000), ComputeBackend::CpuScalar);
+        assert_eq!(
+            detect_best_backend(&nothing, 20_000),
+            ComputeBackend::CpuScalar
+        );
     }
 
     #[test]
@@ -258,7 +286,12 @@ mod tests {
 
     #[test]
     fn test_simd_caps_display() {
-        let caps = SimdCaps { sse2: true, avx2: true, fma: true, ..Default::default() };
+        let caps = SimdCaps {
+            sse2: true,
+            avx2: true,
+            fma: true,
+            ..Default::default()
+        };
         let s = format!("{caps}");
         assert!(s.contains("SSE2"), "display should include SSE2");
         assert!(s.contains("AVX2"), "display should include AVX2");
@@ -268,10 +301,38 @@ mod tests {
     #[test]
     fn test_simd_caps_widest_bits() {
         assert_eq!(SimdCaps::default().widest_bits(), 0);
-        assert_eq!(SimdCaps { sse2: true, ..Default::default() }.widest_bits(), 128);
-        assert_eq!(SimdCaps { avx2: true, ..Default::default() }.widest_bits(), 256);
-        assert_eq!(SimdCaps { avx512f: true, ..Default::default() }.widest_bits(), 512);
-        assert_eq!(SimdCaps { neon: true, ..Default::default() }.widest_bits(), 128);
+        assert_eq!(
+            SimdCaps {
+                sse2: true,
+                ..Default::default()
+            }
+            .widest_bits(),
+            128
+        );
+        assert_eq!(
+            SimdCaps {
+                avx2: true,
+                ..Default::default()
+            }
+            .widest_bits(),
+            256
+        );
+        assert_eq!(
+            SimdCaps {
+                avx512f: true,
+                ..Default::default()
+            }
+            .widest_bits(),
+            512
+        );
+        assert_eq!(
+            SimdCaps {
+                neon: true,
+                ..Default::default()
+            }
+            .widest_bits(),
+            128
+        );
     }
 
     #[test]
@@ -299,7 +360,11 @@ mod tests {
     #[test]
     fn test_select_cores_with_limit() {
         let cores = select_cores(2);
-        assert!(cores.len() <= 2, "should not exceed limit of 2, got {}", cores.len());
+        assert!(
+            cores.len() <= 2,
+            "should not exceed limit of 2, got {}",
+            cores.len()
+        );
         assert!(!cores.is_empty(), "should have at least 1 core");
     }
 

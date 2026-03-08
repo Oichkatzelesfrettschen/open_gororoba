@@ -1,5 +1,4 @@
-use algebra_core::kron2;
-use algebra_core::physics::clifford::pauli_matrices;
+use algebra_core::{kron2, physics::clifford::pauli_matrices};
 use nalgebra::{Matrix3, Matrix4, OMatrix, U8, Vector3};
 use num_complex::Complex64;
 
@@ -165,8 +164,11 @@ mod tests {
         let mut t = Matrix3::<f64>::zeros();
         t[(2, 2)] = 1.0;
         let state = TwoQubitState::from_ab_t(&a, &b, &t);
-        assert!(!state.is_entangled(),
-            "Product state |00><00| should not be entangled, negativity={}", state.negativity());
+        assert!(
+            !state.is_entangled(),
+            "Product state |00><00| should not be entangled, negativity={}",
+            state.negativity()
+        );
     }
 
     #[test]
@@ -176,8 +178,11 @@ mod tests {
         let b = Vector3::zeros();
         let t = -Matrix3::<f64>::identity();
         let state = TwoQubitState::from_ab_t(&a, &b, &t);
-        assert!(state.is_entangled(),
-            "Singlet state should be entangled, negativity={}", state.negativity());
+        assert!(
+            state.is_entangled(),
+            "Singlet state should be entangled, negativity={}",
+            state.negativity()
+        );
     }
 
     #[test]
@@ -190,8 +195,10 @@ mod tests {
         for i in 0..4 {
             for j in 0..4 {
                 let diff = (state.rho[(i, j)] - double_pt.rho[(i, j)]).norm();
-                assert!(diff < 1e-14,
-                    "Double partial transpose should be identity: [{i},{j}] diff={diff}");
+                assert!(
+                    diff < 1e-14,
+                    "Double partial transpose should be identity: [{i},{j}] diff={diff}"
+                );
             }
         }
     }

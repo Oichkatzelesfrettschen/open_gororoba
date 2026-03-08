@@ -14,12 +14,13 @@
 //! 8. Simulate warp lensing (SHI Integration via Gororoba Engine)
 //! 9. Visualize the composite "Warp Ring" + GRIN lensed star field
 
-use algebra_core::lie::e7_geometry::{find_e7_triads, generate_e7_roots, project_to_plane};
-use algebra_core::physics::octonion_field::FieldParams;
+use algebra_core::{
+    lie::e7_geometry::{find_e7_triads, generate_e7_roots, project_to_plane},
+    physics::octonion_field::FieldParams,
+};
 // use gororoba_engine::simulation::AlgebraicField; // Unused import removed
 use gororoba_engine::{SimulationConfig, SimulationState};
-use gr_core::kerr::Kerr;
-use gr_core::sedenion_geodesic::sedenion_homotopy_step;
+use gr_core::{kerr::Kerr, sedenion_geodesic::sedenion_homotopy_step};
 use lbm_core::turbulence::{extract_dominant_triads, power_spectrum};
 use log::info;
 use materials_core::{
@@ -28,14 +29,17 @@ use materials_core::{
 };
 // use ndarray::Array2; // Unused import removed
 use num_complex::Complex64;
-use optics_core::grin::{GrinMedium, Ray, Vec3, trace_ray};
-use optics_core::tcmt::{InputField, KerrCavity, TcmtSolver};
-use plotters::prelude::*;
-use plotters::style::full_palette::GREY;
-use spectral_core::ndfft::{fft_2d, real_to_complex_2d};
-use spectral_core::warp_physics::{
-    WarpRingConfig, apply_neg_dim_kernel, extract_warp_triads, padic_power_spectrum,
-    warp_spectral_density,
+use optics_core::{
+    grin::{GrinMedium, Ray, Vec3, trace_ray},
+    tcmt::{InputField, KerrCavity, TcmtSolver},
+};
+use plotters::{prelude::*, style::full_palette::GREY};
+use spectral_core::{
+    ndfft::{fft_2d, real_to_complex_2d},
+    warp_physics::{
+        WarpRingConfig, apply_neg_dim_kernel, extract_warp_triads, padic_power_spectrum,
+        warp_spectral_density,
+    },
 };
 use stats_core::hypergraph::TriadHypergraph;
 use std::f64::consts::PI;

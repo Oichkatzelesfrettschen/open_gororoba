@@ -5,9 +5,11 @@
 //! (particle mass from filtration) to receive velocity data from
 //! Thesis 1 (imbalance-viscosity coupling via LBM).
 
-use crate::basis_index::project_to_lattice;
-use crate::patricia_trie::PatriciaIndex;
-use crate::survival_spectrum::{LatencyLaw, SpectrumBin, classify_latency_law, radial_bins};
+use crate::{
+    basis_index::project_to_lattice,
+    patricia_trie::PatriciaIndex,
+    survival_spectrum::{LatencyLaw, SpectrumBin, classify_latency_law, radial_bins},
+};
 
 /// Summary of a velocity-field-to-filtration conversion.
 #[derive(Debug, Clone)]

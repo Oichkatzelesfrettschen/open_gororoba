@@ -5,8 +5,10 @@
 //! Catalog 1: 536 events, Amiri+ (2021)
 //! Catalog 2: 4539 events, CHIME/FRB Collaboration (2025)
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use crate::parse::parse_f64_or_nan;
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    parse::parse_f64_or_nan,
+};
 use std::path::{Path, PathBuf};
 
 /// A single FRB event from the CHIME catalog.
@@ -216,8 +218,7 @@ impl DatasetProvider for ChimeCat2Provider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Write;
-    use std::path::Path;
+    use std::{io::Write, path::Path};
     use tempfile::NamedTempFile;
 
     fn write_temp_csv(content: &str) -> NamedTempFile {

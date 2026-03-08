@@ -1,11 +1,12 @@
-use gororoba_cli_warp::warp_runner;
-use gororoba_cli_warp::warp_telemetry;
+use gororoba_cli_warp::{warp_runner, warp_telemetry};
 
 use lbm_3d_cuda::Precision;
-use std::error::Error;
-use std::path::{Path, PathBuf};
-use std::sync::atomic::Ordering;
-use std::time::Duration;
+use std::{
+    error::Error,
+    path::{Path, PathBuf},
+    sync::atomic::Ordering,
+    time::Duration,
+};
 use warp_runner::{
     BackendKind, BenchCase, TimingMode, gate_h5_outputs, print_case_report, run_case,
     write_step_timing_report,

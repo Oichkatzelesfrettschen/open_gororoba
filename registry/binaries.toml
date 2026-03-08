@@ -944,3 +944,15 @@ name = "majorana-braid-crucible"
 crate = "gororoba_cli_algebra"
 description = "Majorana braiding operators mapped to the Cayley-Dickson tower. 6 subcommands: braid (Clifford vs CD), fusion (box-kite channels), protection (missing-edge associators), aligned-chsh (braid-aligned Bell test), complex-time (Wick rotation sweep), scaling (friction vs dimension)."
 status = "active"
+
+[[binary]]
+name = "tensor-avt-profile-suite"
+crate = "gororoba_cli_algebra"
+description = "Cargo-native TensorAVT profiling suite with iai-callgrind-compatible workloads and optional Tracy instrumentation."
+status = "active"
+
+[[binary]]
+name = "crate-inventory"
+crate = "gororoba_cli_data"
+description = "Validate registry/rust_crate_catalog.toml against cargo metadata and shared repo governance state."
+status = "active"

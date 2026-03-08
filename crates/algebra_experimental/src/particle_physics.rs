@@ -180,10 +180,7 @@ pub fn analyze_cross_sector_coupling(
 /// 4. Compute coupling ratios between SU(3), SU(2), U(1)
 ///
 /// Returns the sampled AVT, the SM mapping, and a list of cross-sector analyses.
-pub fn analyze_1024d_gauge_sectors(
-    n_samples: usize,
-    seed: u64,
-) -> GaugeSectorReport {
+pub fn analyze_1024d_gauge_sectors(n_samples: usize, seed: u64) -> GaugeSectorReport {
     let sampled = HigherAvt::sampled(1024, n_samples, seed);
     let sm = StandardModelMapping::new();
     let gut = ForceSectorMapping::new();
@@ -198,45 +195,15 @@ pub fn analyze_1024d_gauge_sectors(
             &sm.su2_axes,
         ),
         // SU(3) x U(1) coupling
-        analyze_cross_sector_coupling(
-            &sampled.avt,
-            "SU(3)_C",
-            &sm.su3_axes,
-            "U(1)_Y",
-            &sm.u1_axes,
-        ),
+        analyze_cross_sector_coupling(&sampled.avt, "SU(3)_C", &sm.su3_axes, "U(1)_Y", &sm.u1_axes),
         // SU(2) x U(1) coupling (electroweak unification)
-        analyze_cross_sector_coupling(
-            &sampled.avt,
-            "SU(2)_L",
-            &sm.su2_axes,
-            "U(1)_Y",
-            &sm.u1_axes,
-        ),
+        analyze_cross_sector_coupling(&sampled.avt, "SU(2)_L", &sm.su2_axes, "U(1)_Y", &sm.u1_axes),
         // E6 x E7 coupling (GUT cross-sector)
-        analyze_cross_sector_coupling(
-            &sampled.avt,
-            "E6",
-            &gut.e6_block,
-            "E7",
-            &gut.e7_block,
-        ),
+        analyze_cross_sector_coupling(&sampled.avt, "E6", &gut.e6_block, "E7", &gut.e7_block),
         // E6 x SO(10) coupling
-        analyze_cross_sector_coupling(
-            &sampled.avt,
-            "E6",
-            &gut.e6_block,
-            "SO(10)",
-            &gut.so10_block,
-        ),
+        analyze_cross_sector_coupling(&sampled.avt, "E6", &gut.e6_block, "SO(10)", &gut.so10_block),
         // E7 x SO(10) coupling
-        analyze_cross_sector_coupling(
-            &sampled.avt,
-            "E7",
-            &gut.e7_block,
-            "SO(10)",
-            &gut.so10_block,
-        ),
+        analyze_cross_sector_coupling(&sampled.avt, "E7", &gut.e7_block, "SO(10)", &gut.so10_block),
     ];
 
     GaugeSectorReport {
@@ -270,10 +237,7 @@ impl GaugeSectorReport {
             self.sm.su2_axes.len(),
             self.sm.u1_axes.len()
         );
-        println!(
-            "SM subset of E6: {}",
-            self.gut.sm_is_subset_of_e6(&self.sm)
-        );
+        println!("SM subset of E6: {}", self.gut.sm_is_subset_of_e6(&self.sm));
         println!();
         println!("Cross-sector coupling analysis:");
         for ca in &self.cross_analyses {
@@ -450,7 +414,11 @@ mod tests {
         assert!(sampled.n_tested > 0);
         assert!(sampled.hit_rate > 0.0);
         // At 1024D, most random triples should be non-alternative
-        assert!(sampled.hit_rate > 0.3, "hit_rate {} too low", sampled.hit_rate);
+        assert!(
+            sampled.hit_rate > 0.3,
+            "hit_rate {} too low",
+            sampled.hit_rate
+        );
     }
 
     #[test]
@@ -520,12 +488,14 @@ mod tests {
 
         // Higher DFT layers should generally have more violations
         // (non-associativity grows with dimension)
-        let layer3_avg: f64 = lattice.iter()
+        let layer3_avg: f64 = lattice
+            .iter()
             .filter(|p| p.dft_layer == 3)
             .map(|p| p.violation_count as f64)
             .sum::<f64>()
             / 4.0; // 4 octonion axes
-        let layer10_avg: f64 = lattice.iter()
+        let layer10_avg: f64 = lattice
+            .iter()
             .filter(|p| p.dft_layer == 10)
             .map(|p| p.violation_count as f64)
             .sum::<f64>()

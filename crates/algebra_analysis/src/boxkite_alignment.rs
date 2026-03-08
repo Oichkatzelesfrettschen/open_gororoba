@@ -6,7 +6,7 @@
 //!
 //! This is a *structural/exploratory* tool, not a physical prediction.
 
-use crate::boxkites::{cached_sedenion_boxkites, BoxKite};
+use crate::boxkites::{BoxKite, cached_sedenion_boxkites};
 use cd_kernel::cayley_dickson::cd_norm_sq;
 
 /// Alignment spectrum: projection weights onto each of the 7 box-kites.
@@ -138,6 +138,10 @@ mod tests {
     #[test]
     fn seven_boxkites_found() {
         let boxkites = cached_sedenion_boxkites();
-        assert_eq!(boxkites.len(), 7, "Sedenions should have exactly 7 box-kites");
+        assert_eq!(
+            boxkites.len(),
+            7,
+            "Sedenions should have exactly 7 box-kites"
+        );
     }
 }

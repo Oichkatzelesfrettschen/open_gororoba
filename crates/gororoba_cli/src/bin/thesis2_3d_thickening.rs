@@ -16,8 +16,8 @@
 
 use clap::Parser;
 use lbm_3d::solver::LbmSolver3D;
-use std::fmt::Write as _;
 use sign_imbalance::bridge::SedenionField;
+use std::fmt::Write as _;
 
 #[derive(Parser, Debug)]
 #[command(name = "thesis2-3d-thickening")]

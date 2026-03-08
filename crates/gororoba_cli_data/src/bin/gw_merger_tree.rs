@@ -22,8 +22,7 @@ use clap::Parser;
 use std::path::PathBuf;
 
 use data_core::catalogs::gwtc::{GwEvent, parse_gwtc3_csv};
-use stats_core::ultrametric;
-use stats_core::ultrametric::dendrogram;
+use stats_core::{ultrametric, ultrametric::dendrogram};
 
 #[derive(Parser)]
 #[command(name = "gw-merger-tree")]

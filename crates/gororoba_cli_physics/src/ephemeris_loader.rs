@@ -8,8 +8,10 @@
 //! Thread safety: all query methods take `&self`, safe inside rayon par_iter.
 //! anise Vector3 is nalgebra::Vector3<f64> -- no conversion needed.
 
-use anise::almanac::Almanac;
-use anise::prelude::{Epoch, Frame};
+use anise::{
+    almanac::Almanac,
+    prelude::{Epoch, Frame},
+};
 use nalgebra::Vector3;
 use std::path::Path;
 
@@ -88,8 +90,7 @@ impl EphemerisLoader {
         let epoch = Epoch::from_jde_tdb(jed);
         let moon_pos_km = self.query_body(NAIF_MOON, epoch);
         let sun_pos_km = self.query_body(NAIF_SUN, epoch);
-        let emb_offset_km =
-            moon_pos_km * (MOON_EARTH_MASS_RATIO / (1.0 + MOON_EARTH_MASS_RATIO));
+        let emb_offset_km = moon_pos_km * (MOON_EARTH_MASS_RATIO / (1.0 + MOON_EARTH_MASS_RATIO));
         ThreeBodyState {
             moon_pos_km,
             sun_pos_km,
@@ -121,7 +122,10 @@ impl EphemerisLoader {
     /// anise uses nalgebra 0.34 internally, but our workspace pins nalgebra 0.33
     /// (statrs 0.18 constraint). Extract x/y/z components to bridge the version gap.
     fn query_body(&self, naif_id: i32, epoch: Epoch) -> Vector3<f64> {
-        match self.almanac.state_of(naif_id, self.earth_j2000, epoch, None) {
+        match self
+            .almanac
+            .state_of(naif_id, self.earth_j2000, epoch, None)
+        {
             Ok(state) => {
                 // Bridge nalgebra 0.34 (anise) -> 0.33 (workspace) via component extraction.
                 let r = state.radius_km;

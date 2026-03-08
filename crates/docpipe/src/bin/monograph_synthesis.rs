@@ -3,8 +3,7 @@
 //! Flattens and unrolls the corpus of knowledge into an academic treatise.
 
 use anyhow::Result;
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 fn main() -> Result<()> {
     println!("--- Gororoba Monograph Synthesis ---");

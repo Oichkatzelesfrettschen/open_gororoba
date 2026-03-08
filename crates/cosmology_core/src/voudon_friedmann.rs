@@ -17,7 +17,11 @@ pub struct VoudonFriedmann {
 
 impl VoudonFriedmann {
     pub fn new(base: FlatLCDM, phi_voudon: f64, alpha_voudon: f64) -> Self {
-        Self { base, phi_voudon, alpha_voudon }
+        Self {
+            base,
+            phi_voudon,
+            alpha_voudon,
+        }
     }
 
     /// Modified dimensionless Hubble parameter E(z) including Voudon pressure.
@@ -27,11 +31,11 @@ impl VoudonFriedmann {
     /// representing the persistent algebraic vacuum energy.
     pub fn e_z(&self, z: f64) -> f64 {
         let lcdm_part = self.base.omega_m * (1.0 + z).powi(3) + self.base.omega_lambda();
-        
+
         // Voudon Pressure Term: alpha * Phi * (1+z)^n
         // For large scale homogeneity, n=0 (constant background pressure) or n=2.
         let voudon_part = self.alpha_voudon * self.phi_voudon;
-        
+
         (lcdm_part + voudon_part).sqrt()
     }
 

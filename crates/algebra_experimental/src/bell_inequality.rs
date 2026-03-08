@@ -92,19 +92,21 @@ pub fn lift_zd_to_dim(
     let (a1, a2) = alice_plane;
     let (b1, b2) = bob_plane;
 
-    let probes_a1_b1 = find_valid_probes_sparse(&a_sparse, &b_sparse, a1, b1, target_dim, sign_cache);
-    let probes_a1_b2 = find_valid_probes_sparse(&a_sparse, &b_sparse, a1, b2, target_dim, sign_cache);
-    let probes_a2_b1 = find_valid_probes_sparse(&a_sparse, &b_sparse, a2, b1, target_dim, sign_cache);
-    let probes_a2_b2 = find_valid_probes_sparse(&a_sparse, &b_sparse, a2, b2, target_dim, sign_cache);
+    let probes_a1_b1 =
+        find_valid_probes_sparse(&a_sparse, &b_sparse, a1, b1, target_dim, sign_cache);
+    let probes_a1_b2 =
+        find_valid_probes_sparse(&a_sparse, &b_sparse, a1, b2, target_dim, sign_cache);
+    let probes_a2_b1 =
+        find_valid_probes_sparse(&a_sparse, &b_sparse, a2, b1, target_dim, sign_cache);
+    let probes_a2_b2 =
+        find_valid_probes_sparse(&a_sparse, &b_sparse, a2, b2, target_dim, sign_cache);
 
     // X_optimal = intersection of all four sets
     let optimal_probes: Vec<usize> = probes_a1_b1
         .iter()
         .copied()
         .filter(|k| {
-            probes_a1_b2.contains(k)
-                && probes_a2_b1.contains(k)
-                && probes_a2_b2.contains(k)
+            probes_a1_b2.contains(k) && probes_a2_b1.contains(k) && probes_a2_b2.contains(k)
         })
         .collect();
 
@@ -284,7 +286,11 @@ impl SignTableCache {
             .filter_map(|idx| {
                 let v = accum[idx];
                 accum[idx] = 0.0; // Reset for reuse
-                if v.abs() > 1e-20 { Some((idx, v)) } else { None }
+                if v.abs() > 1e-20 {
+                    Some((idx, v))
+                } else {
+                    None
+                }
             })
             .collect();
 
@@ -336,8 +342,14 @@ pub fn rotate_sparse(
     let (c, s) = (theta.cos(), theta.sin());
 
     // Find current values at the rotation axes
-    let va = sparse.iter().find(|&&(i, _)| i == axis_a).map_or(0.0, |&(_, v)| v);
-    let vb = sparse.iter().find(|&&(i, _)| i == axis_b).map_or(0.0, |&(_, v)| v);
+    let va = sparse
+        .iter()
+        .find(|&&(i, _)| i == axis_a)
+        .map_or(0.0, |&(_, v)| v);
+    let vb = sparse
+        .iter()
+        .find(|&&(i, _)| i == axis_b)
+        .map_or(0.0, |&(_, v)| v);
 
     let new_a = va * c - vb * s;
     let new_b = va * s + vb * c;
@@ -383,7 +395,6 @@ pub fn associator_measurement_fast(
 
     if total >= 0.0 { 1.0 } else { -1.0 }
 }
-
 
 /// CHSH measurement configuration.
 struct ChshConfig {
@@ -521,7 +532,8 @@ pub fn chsh_violation_test(dim: usize, n_samples: usize, seed: u64) -> BellTestR
     let e_ab = compute_chsh_correlator(&channels, a, b, &cfg, &sign_cache, &mut rng);
     let e_ab_prime = compute_chsh_correlator(&channels, a, b_prime, &cfg, &sign_cache, &mut rng);
     let e_a_prime_b = compute_chsh_correlator(&channels, a_prime, b, &cfg, &sign_cache, &mut rng);
-    let e_a_prime_b_prime = compute_chsh_correlator(&channels, a_prime, b_prime, &cfg, &sign_cache, &mut rng);
+    let e_a_prime_b_prime =
+        compute_chsh_correlator(&channels, a_prime, b_prime, &cfg, &sign_cache, &mut rng);
 
     // Step 5: S-value
     let s_value = e_ab - e_ab_prime + e_a_prime_b + e_a_prime_b_prime;
@@ -658,7 +670,8 @@ mod tests {
             assert!(
                 norm < 1e-10,
                 "ZD pair {} has ||a*b|| = {}, expected ~0",
-                i, norm
+                i,
+                norm
             );
         }
     }
@@ -679,7 +692,8 @@ mod tests {
             assert!(
                 norm < 1e-10,
                 "Lifted ZD at dim={} has ||a*b|| = {}, expected ~0",
-                target_dim, norm
+                target_dim,
+                norm
             );
         }
     }
@@ -763,7 +777,10 @@ mod tests {
         for (dim, result) in &results {
             println!(
                 "dim={}: S = {:.4} +/- {:.4}, violates = {}, optimal_probes = {}",
-                dim, result.s_value, result.s_error, result.violates_classical,
+                dim,
+                result.s_value,
+                result.s_error,
+                result.violates_classical,
                 result.n_optimal_probes,
             );
         }

@@ -6,8 +6,10 @@
 //! Source: https://github.com/PantheonPlusSH0ES/DataRelease
 //! Reference: Scolnic et al. (2022), ApJ 938, 113; Brout et al. (2022), ApJ 938, 110
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use crate::parse::parse_f64_or_nan;
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    parse::parse_f64_or_nan,
+};
 use std::path::{Path, PathBuf};
 
 /// A Type Ia supernova from Pantheon+.
@@ -233,19 +235,26 @@ impl DatasetProvider for PantheonCovProvider {
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("Pantheon+SH0ES_STAT+SYS.cov");
-        download_with_fallbacks(self.name(), PANTHEON_COV_URLS, &output, config.skip_existing)
+        download_with_fallbacks(
+            self.name(),
+            PANTHEON_COV_URLS,
+            &output,
+            config.skip_existing,
+        )
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("Pantheon+SH0ES_STAT+SYS.cov").exists()
+        config
+            .output_dir
+            .join("Pantheon+SH0ES_STAT+SYS.cov")
+            .exists()
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Write;
-    use std::path::Path;
+    use std::{io::Write, path::Path};
     use tempfile::NamedTempFile;
 
     fn write_temp(content: &str) -> NamedTempFile {

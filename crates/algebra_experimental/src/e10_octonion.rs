@@ -30,8 +30,10 @@ use rand::SeedableRng;
 use crate::billiard_stats::{
     NullModel, PermutationTestResult, generate_null_sequence, summarize_permutation_test,
 };
-use algebra_core::lie::e8_lattice::{E8Root, e8_simple_roots, generate_e8_roots};
-use algebra_core::physics::octonion_field::{FANO_TRIPLES, Octonion, oct_multiply, oct_norm_sq};
+use algebra_core::{
+    lie::e8_lattice::{E8Root, e8_simple_roots, generate_e8_roots},
+    physics::octonion_field::{FANO_TRIPLES, Octonion, oct_multiply, oct_norm_sq},
+};
 
 /// Given two distinct imaginary octonion indices (1..=7), return the third
 /// index that completes their unique Fano line, or None if the input is

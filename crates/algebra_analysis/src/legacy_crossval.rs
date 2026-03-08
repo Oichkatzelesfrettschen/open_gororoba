@@ -1618,8 +1618,8 @@ mod tests {
     // ========================================================================
 
     use crate::codebook::{
-        enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
-        is_in_lambda_1024, is_in_lambda_2048,
+        enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512, is_in_lambda_1024,
+        is_in_lambda_2048,
     };
 
     #[test]
@@ -1669,5 +1669,4 @@ mod tests {
             p2048.len()
         );
     }
-
 }

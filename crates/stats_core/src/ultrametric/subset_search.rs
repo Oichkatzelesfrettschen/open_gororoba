@@ -7,10 +7,10 @@
 //! This extracts the combinatorial search logic from the CLI binary
 //! into a reusable library function.
 
-use super::baire::{
-    AttributeSpec, BaireEncoder, BaireTestResult, matrix_free_ultrametric_test_with_null,
+use super::{
+    baire::{AttributeSpec, BaireEncoder, BaireTestResult, matrix_free_ultrametric_test_with_null},
+    null_models::NullModel,
 };
-use super::null_models::NullModel;
 
 /// Result for a single attribute subset test.
 #[derive(Debug, Clone)]

@@ -86,7 +86,7 @@ pub fn compute_imbalance_energy(
     };
 
     // Number of unbalanced triangles
-    let n_unbalanced = ( imbalance * n_triangles as f64).round() as usize;
+    let n_unbalanced = (imbalance * n_triangles as f64).round() as usize;
 
     // Total imbalance energy
     let total_energy_j = imbalance * (n_triangles as f64) * e0_joules;

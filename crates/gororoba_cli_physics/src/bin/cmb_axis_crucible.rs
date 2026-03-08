@@ -3,8 +3,8 @@
 //! Validates whether the Voudon Global Bias vector aligns with the observed
 //! anomalous multipole alignment in the Cosmic Microwave Background.
 
-use cosmology_core::VoudonCmbAnalyzer;
 use algebra_core::construction::deep_space::compute_voudon_imbalance_density;
+use cosmology_core::VoudonCmbAnalyzer;
 use nalgebra::Vector3;
 
 fn main() -> anyhow::Result<()> {
@@ -25,7 +25,10 @@ fn main() -> anyhow::Result<()> {
     // The axis is roughly (l, b) = (260, 60) in galactic coordinates.
     // Projected to J2000 Cartesian unit vector:
     let axis_obs = Vector3::new(-0.15, 0.85, 0.50).normalize();
-    println!("  Observed CMB Axis (Planck): [{:.6}, {:.6}, {:.6}]", axis_obs.x, axis_obs.y, axis_obs.z);
+    println!(
+        "  Observed CMB Axis (Planck): [{:.6}, {:.6}, {:.6}]",
+        axis_obs.x, axis_obs.y, axis_obs.z
+    );
 
     // 4. Alignment Test
     let alignment = axis.dot(&axis_obs).abs();
@@ -36,11 +39,15 @@ fn main() -> anyhow::Result<()> {
     println!("  Angular Deviation: {:.2} degrees", angle_deg);
 
     if alignment > 0.9 {
-        println!("  VERDICT: PASS (Strong alignment detected. 256D Voudon bias explains Axis of Evil)");
+        println!(
+            "  VERDICT: PASS (Strong alignment detected. 256D Voudon bias explains Axis of Evil)"
+        );
     } else if alignment > 0.5 {
         println!("  VERDICT: TENTATIVE (Partial correlation. Refine Voudon-CMB coupling model)");
     } else {
-        println!("  VERDICT: FAIL (No significant alignment. Axis of Evil is likely non-algebraic)");
+        println!(
+            "  VERDICT: FAIL (No significant alignment. Axis of Evil is likely non-algebraic)"
+        );
     }
 
     Ok(())

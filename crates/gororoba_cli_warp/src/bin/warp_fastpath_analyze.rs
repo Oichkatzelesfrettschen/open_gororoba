@@ -8,8 +8,10 @@ use gororoba_cli::warp_gate_policy::load_warp_gate_policy;
 use stats_core::helpers::{mean, std_dev};
 #[cfg(feature = "hdf5-export")]
 use std::collections::BTreeMap;
-use std::error::Error;
-use std::path::{Path, PathBuf};
+use std::{
+    error::Error,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug, Clone)]
 struct CliArgs {

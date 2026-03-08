@@ -15,44 +15,28 @@ impl PathionCarlson {
     }
 
     /// Carlson $R_F(x, y, z)$ over 32D Pathion algebra.
-    pub fn rf_32d(
-        &self,
-        x: &[f64; 32],
-        y: &[f64; 32],
-        z: &[f64; 32],
-    ) -> anyhow::Result<[f64; 32]> {
+    pub fn rf_32d(&self, x: &[f64; 32], y: &[f64; 32], z: &[f64; 32]) -> anyhow::Result<[f64; 32]> {
         let x_planes = self.diagonalizer.project(x);
         let y_planes = self.diagonalizer.project(y);
         let z_planes = self.diagonalizer.project(z);
 
         let mut res_planes = [Complex64::new(0.0, 0.0); 16];
-        res_planes
-            .par_iter_mut()
-            .enumerate()
-            .for_each(|(i, res)| {
-                *res = carlson_rf_complex(x_planes[i], y_planes[i], z_planes[i]);
-            });
+        res_planes.par_iter_mut().enumerate().for_each(|(i, res)| {
+            *res = carlson_rf_complex(x_planes[i], y_planes[i], z_planes[i]);
+        });
         Ok(self.diagonalizer.recompose(&res_planes))
     }
 
     /// Carlson $R_D(x, y, z) = R_J(x,y,z,z)$ over 32D Pathion algebra.
-    pub fn rd_32d(
-        &self,
-        x: &[f64; 32],
-        y: &[f64; 32],
-        z: &[f64; 32],
-    ) -> anyhow::Result<[f64; 32]> {
+    pub fn rd_32d(&self, x: &[f64; 32], y: &[f64; 32], z: &[f64; 32]) -> anyhow::Result<[f64; 32]> {
         let x_planes = self.diagonalizer.project(x);
         let y_planes = self.diagonalizer.project(y);
         let z_planes = self.diagonalizer.project(z);
 
         let mut res_planes = [Complex64::new(0.0, 0.0); 16];
-        res_planes
-            .par_iter_mut()
-            .enumerate()
-            .for_each(|(i, res)| {
-                *res = carlson_rj_complex(x_planes[i], y_planes[i], z_planes[i], z_planes[i]);
-            });
+        res_planes.par_iter_mut().enumerate().for_each(|(i, res)| {
+            *res = carlson_rj_complex(x_planes[i], y_planes[i], z_planes[i], z_planes[i]);
+        });
         Ok(self.diagonalizer.recompose(&res_planes))
     }
 
@@ -70,17 +54,9 @@ impl PathionCarlson {
         let p_planes = self.diagonalizer.project(p);
 
         let mut res_planes = [Complex64::new(0.0, 0.0); 16];
-        res_planes
-            .par_iter_mut()
-            .enumerate()
-            .for_each(|(i, res)| {
-                *res = carlson_rj_complex(
-                    x_planes[i],
-                    y_planes[i],
-                    z_planes[i],
-                    p_planes[i],
-                );
-            });
+        res_planes.par_iter_mut().enumerate().for_each(|(i, res)| {
+            *res = carlson_rj_complex(x_planes[i], y_planes[i], z_planes[i], p_planes[i]);
+        });
         Ok(self.diagonalizer.recompose(&res_planes))
     }
 }
@@ -109,10 +85,7 @@ pub fn carlson_rf_complex(mut x: Complex64, mut y: Complex64, mut z: Complex64) 
         if max_err < err_tol {
             let e2 = dx * dy - dz * dz;
             let e3 = dx * dy * dz;
-            return (1.0
-                - (1.0 / 10.0) * e2
-                + (1.0 / 14.0) * e3
-                + (1.0 / 24.0) * e2 * e2
+            return (1.0 - (1.0 / 10.0) * e2 + (1.0 / 14.0) * e3 + (1.0 / 24.0) * e2 * e2
                 - (3.0 / 44.0) * e2 * e3)
                 / mu.sqrt();
         }
@@ -147,12 +120,7 @@ pub fn carlson_rc_complex(x: Complex64, y: Complex64) -> Complex64 {
 ///
 /// Adapted from the Boost Math / ellip crate algorithm (Carlson 1995).
 /// Uses delta-based RC accumulation with RC(1, 1+en) form.
-pub fn carlson_rj_complex(
-    x: Complex64,
-    y: Complex64,
-    z: Complex64,
-    p: Complex64,
-) -> Complex64 {
+pub fn carlson_rj_complex(x: Complex64, y: Complex64, z: Complex64, p: Complex64) -> Complex64 {
     let mut xn = x;
     let mut yn = y;
     let mut zn = z;
@@ -206,10 +174,7 @@ pub fn carlson_rj_complex(
             let e4 = (2.0 * xyz + e2 * pr + 3.0 * p3) * pr;
             let e5 = xyz * p2;
 
-            let series = 1.0
-                - 3.0 * e2 / 14.0
-                + e3 / 6.0
-                + 9.0 * e2 * e2 / 88.0
+            let series = 1.0 - 3.0 * e2 / 14.0 + e3 / 6.0 + 9.0 * e2 * e2 / 88.0
                 - 3.0 * e4 / 22.0
                 - 9.0 * e2 * e3 / 52.0
                 + 3.0 * e5 / 26.0;
@@ -243,7 +208,11 @@ fn complex_rc1p(y: Complex64) -> Complex64 {
     // RC(1, w) = atan(sqrt((w-1)/1)) / sqrt(w-1) when w > 0
     // More generally: RC(1, w) = (1/sqrt(w)) * atanh(sqrt(1 - 1/w)) for |w| > 1
     // Or simply: use RF(1, 1+y, 1+y) which is always correct.
-    carlson_rf_complex(Complex64::new(1.0, 0.0), Complex64::new(1.0, 0.0) + y, Complex64::new(1.0, 0.0) + y)
+    carlson_rf_complex(
+        Complex64::new(1.0, 0.0),
+        Complex64::new(1.0, 0.0) + y,
+        Complex64::new(1.0, 0.0) + y,
+    )
 }
 
 /// Carlson RD(x,y,z) = RJ(x,y,z,z).

@@ -4,9 +4,11 @@
 
 use anyhow::Result;
 use sha2::{Digest, Sha256};
-use std::fs::File;
-use std::io::{BufReader, Read, Write};
-use std::path::Path;
+use std::{
+    fs::File,
+    io::{BufReader, Read, Write},
+    path::Path,
+};
 
 pub struct ProvenanceRecorder;
 
@@ -21,7 +23,9 @@ impl ProvenanceRecorder {
 
         loop {
             let n = reader.read(&mut buffer)?;
-            if n == 0 { break; }
+            if n == 0 {
+                break;
+            }
             hasher.update(&buffer[..n]);
         }
 

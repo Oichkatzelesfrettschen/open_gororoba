@@ -3,8 +3,7 @@
 //! Compares ET skybox invariants and Coxeter-group-derived invariants across
 //! selected CD levels.
 
-use std::collections::BTreeSet;
-use std::path::PathBuf;
+use std::{collections::BTreeSet, path::PathBuf};
 
 use algebra_experimental::algebraic_dynamics::{CoxeterType, experiment_c_sky_limit_set};
 use clap::Parser;

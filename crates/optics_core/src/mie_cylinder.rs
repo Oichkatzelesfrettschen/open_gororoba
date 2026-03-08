@@ -15,8 +15,10 @@
 //! - Ruan & Fan, arXiv:0909.3323v2 (2009)
 //! - Bohren & Huffman, Absorption and Scattering of Light by Small Particles
 
-use crate::bessel::{bessel_j, bessel_j_prime, bessel_y, bessel_y_prime};
-use crate::fano_tcmt::{CrossSections, FanoChannel, FanoDrudeParams, drude_epsilon};
+use crate::{
+    bessel::{bessel_j, bessel_j_prime, bessel_y, bessel_y_prime},
+    fano_tcmt::{CrossSections, FanoChannel, FanoDrudeParams, drude_epsilon},
+};
 use num_complex::Complex64;
 use std::f64::consts::PI;
 

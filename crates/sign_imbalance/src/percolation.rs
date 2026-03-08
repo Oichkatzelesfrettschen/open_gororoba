@@ -334,8 +334,7 @@ pub fn correlate_with_imbalance(
 
     // Compute statistics
     let mean_ch = channel_imbalances.iter().sum::<f64>() / (channel_imbalances.len() as f64);
-    let mean_bg =
-        background_imbalances.iter().sum::<f64>() / (background_imbalances.len() as f64);
+    let mean_bg = background_imbalances.iter().sum::<f64>() / (background_imbalances.len() as f64);
 
     let var_ch = channel_imbalances
         .iter()

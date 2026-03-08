@@ -46,7 +46,11 @@ fn ferrari_depressed(p: Complex64, q: Complex64, r: Complex64) -> [Complex64; 4]
     // Pick the resolvent root with largest norm (best conditioning).
     let m = cubic_roots
         .iter()
-        .max_by(|a, b| a.norm().partial_cmp(&b.norm()).unwrap_or(std::cmp::Ordering::Equal))
+        .max_by(|a, b| {
+            a.norm()
+                .partial_cmp(&b.norm())
+                .unwrap_or(std::cmp::Ordering::Equal)
+        })
         .copied()
         .unwrap_or(cubic_roots[0]);
 
@@ -198,6 +202,9 @@ mod tests {
         let roots = solve_quartic(ca, cb, cc, cd);
 
         let min_norm = roots.iter().map(|r| r.norm()).fold(f64::INFINITY, f64::min);
-        assert!(min_norm < 1e-4, "Schwarzschild should have root near 0: {min_norm}");
+        assert!(
+            min_norm < 1e-4,
+            "Schwarzschild should have root near 0: {min_norm}"
+        );
     }
 }

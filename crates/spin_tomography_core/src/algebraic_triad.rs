@@ -94,8 +94,7 @@ mod tests {
             for i in 0..2 {
                 for j in 0..2 {
                     let diff = (p[(i, j)] - p[(j, i)].conj()).norm();
-                    assert!(diff < 1e-14,
-                        "Pauli {idx} not Hermitian at [{i},{j}]");
+                    assert!(diff < 1e-14, "Pauli {idx} not Hermitian at [{i},{j}]");
                 }
             }
         }

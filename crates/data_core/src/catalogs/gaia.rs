@@ -6,11 +6,15 @@
 //! Source: https://gea.esac.esa.int/archive/
 //! Reference: Gaia Collaboration, Vallenari et al. (2023), A&A 674, A1
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, validate_not_html};
-use crate::formats::tap;
-use crate::parse::parse_f64_or_nan;
-use std::fs;
-use std::path::{Path, PathBuf};
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, validate_not_html},
+    formats::tap,
+    parse::parse_f64_or_nan,
+};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 /// A stellar source from Gaia DR3.
 #[derive(Debug, Clone)]

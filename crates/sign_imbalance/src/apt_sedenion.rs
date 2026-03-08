@@ -111,8 +111,7 @@ impl AptSedenionField {
             return ImbalanceStats::default();
         }
 
-        let mean =
-            self.imbalance_cache.iter().sum::<f64>() / (self.imbalance_cache.len() as f64);
+        let mean = self.imbalance_cache.iter().sum::<f64>() / (self.imbalance_cache.len() as f64);
         let variance = self
             .imbalance_cache
             .iter()

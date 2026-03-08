@@ -14,8 +14,7 @@
 //! On Arch Linux / CachyOS: `pacman -S hdf5`
 //! On Ubuntu / Debian: `apt install libhdf5-dev`
 
-use std::collections::BTreeMap;
-use std::path::Path;
+use std::{collections::BTreeMap, path::Path};
 
 use crate::quality::{RhoQualityThresholds, RhoTraceQuality};
 use gororoba_contracts::WarpRingExperiment;

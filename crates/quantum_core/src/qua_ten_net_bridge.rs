@@ -11,9 +11,7 @@
 //! - Schollwoeck (2011): DMRG review with SVD-based truncation
 
 use ndarray::{Array2, ArrayD, s};
-use qua_ten_net::tencon::contract;
-use qua_ten_net::tendot::tensor_dot;
-use qua_ten_net::tensor::svd;
+use qua_ten_net::{tencon::contract, tendot::tensor_dot, tensor::svd};
 
 /// Result of an SVD truncation operation.
 #[derive(Debug, Clone)]

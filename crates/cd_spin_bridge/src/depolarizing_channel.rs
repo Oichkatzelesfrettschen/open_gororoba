@@ -56,7 +56,10 @@ mod tests {
         for i in 0..4 {
             for j in 0..4 {
                 let diff = (out.rho[(i, j)] - expected[(i, j)]).norm();
-                assert!(diff < 1e-10, "Large gamma should give I/4: [{i},{j}] diff={diff}");
+                assert!(
+                    diff < 1e-10,
+                    "Large gamma should give I/4: [{i},{j}] diff={diff}"
+                );
             }
         }
     }
@@ -66,8 +69,10 @@ mod tests {
         let state = bell_state();
         let out = apply_depolarizing_channel(&state, 0.5);
         let tr = out.rho.trace().re;
-        assert!((tr - 1.0).abs() < 1e-12,
-            "Depolarizing channel must preserve trace: got {tr}");
+        assert!(
+            (tr - 1.0).abs() < 1e-12,
+            "Depolarizing channel must preserve trace: got {tr}"
+        );
     }
 
     #[test]
@@ -76,7 +81,13 @@ mod tests {
         let neg_0 = state.negativity();
         let neg_half = apply_depolarizing_channel(&state, 0.5).negativity();
         let neg_large = apply_depolarizing_channel(&state, 5.0).negativity();
-        assert!(neg_0 > neg_half, "Entanglement should decrease: {neg_0} > {neg_half}");
-        assert!(neg_half > neg_large, "More decoherence = less entanglement: {neg_half} > {neg_large}");
+        assert!(
+            neg_0 > neg_half,
+            "Entanglement should decrease: {neg_0} > {neg_half}"
+        );
+        assert!(
+            neg_half > neg_large,
+            "More decoherence = less entanglement: {neg_half} > {neg_large}"
+        );
     }
 }

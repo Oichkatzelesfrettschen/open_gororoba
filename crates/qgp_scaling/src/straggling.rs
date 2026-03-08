@@ -307,7 +307,10 @@ fn interp_index(grid: &[f64], x: f64) -> (usize, usize, f64) {
     }
 
     // Binary search for the interval [grid[i], grid[i+1]] containing x
-    let i = grid.partition_point(|&v| v <= x).saturating_sub(1).min(n - 2);
+    let i = grid
+        .partition_point(|&v| v <= x)
+        .saturating_sub(1)
+        .min(n - 2);
 
     let lo = grid[i];
     let hi = grid[i + 1];
@@ -329,10 +332,16 @@ mod tests {
     fn test_straggling_sigma_basic() {
         // sigma = kappa * sqrtepsilon_bar
         let sigma = straggling_sigma(4.0, 0.5);
-        assert!((sigma - 1.0).abs() < 1e-12, "sigma = {sigma} (expected 1.0)");
+        assert!(
+            (sigma - 1.0).abs() < 1e-12,
+            "sigma = {sigma} (expected 1.0)"
+        );
 
         let sigma2 = straggling_sigma(9.0, 1.0);
-        assert!((sigma2 - 3.0).abs() < 1e-12, "sigma = {sigma2} (expected 3.0)");
+        assert!(
+            (sigma2 - 3.0).abs() < 1e-12,
+            "sigma = {sigma2} (expected 3.0)"
+        );
     }
 
     #[test]

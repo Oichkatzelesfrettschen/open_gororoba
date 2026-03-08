@@ -19,8 +19,8 @@ use lattice_filtration::{
     LatencyLawDetail, classify_latency_law_detailed, filtration_from_velocity_field,
 };
 use lbm_3d::solver::LbmSolver3D;
-use std::fmt::Write as _;
 use sign_imbalance::bridge::{ImbalanceViscosityBridge, SedenionField};
+use std::fmt::Write as _;
 
 #[derive(Parser, Debug)]
 #[command(name = "thesis-cross-tx2")]

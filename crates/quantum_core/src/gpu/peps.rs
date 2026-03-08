@@ -32,8 +32,10 @@
 //!
 //! If no CUDA device is available, automatically falls back to CPU implementation.
 
-use cudarc::driver::{CudaContext, CudaStream, LaunchConfig, PushKernelArg};
-use cudarc::nvrtc::compile_ptx;
+use cudarc::{
+    driver::{CudaContext, CudaStream, LaunchConfig, PushKernelArg},
+    nvrtc::compile_ptx,
+};
 use std::sync::Arc;
 
 use faer::complex_native::c64;

@@ -1,9 +1,11 @@
-use crate::eos::{EosComposition, WhiteDwarfEos};
-use crate::error::SniaError;
-use crate::hydro::{BoundaryCondition, HllcFlux1D, LimiterKind};
-use crate::reaction::CarbonBurnModel;
-use crate::types::{BurnState, HydroState1D};
-use crate::yield_model::NickelYieldModel;
+use crate::{
+    eos::{EosComposition, WhiteDwarfEos},
+    error::SniaError,
+    hydro::{BoundaryCondition, HllcFlux1D, LimiterKind},
+    reaction::CarbonBurnModel,
+    types::{BurnState, HydroState1D},
+    yield_model::NickelYieldModel,
+};
 use serde::{Deserialize, Serialize};
 
 const SOLAR_MASS_G: f64 = 1.988_47e33;

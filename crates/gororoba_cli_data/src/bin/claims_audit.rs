@@ -14,11 +14,9 @@
 //!   claims-audit --out reports/audit.md    # write to file
 
 use clap::Parser;
-use std::path::PathBuf;
-use std::process;
+use std::{path::PathBuf, process};
 
-use gororoba_cli::claims::audit;
-use gororoba_cli::claims::parser::parse_claim_rows;
+use gororoba_cli::claims::{audit, parser::parse_claim_rows};
 
 #[derive(Parser)]
 #[command(name = "claims-audit", about = "Generate claims audit reports")]

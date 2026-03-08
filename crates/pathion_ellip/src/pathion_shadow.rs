@@ -5,9 +5,11 @@
 //! 2. Solving the Kerr radial quartic R(r)=0 in each plane
 //! 3. Integrating the deflection via Carlson RF + RJ from the turning point
 
-use crate::carlson::{carlson_rf_complex, carlson_rj_complex};
-use crate::diagonalizer::PathionDiagonalizer;
-use crate::quartic::{kerr_radial_potential_coefficients, solve_quartic};
+use crate::{
+    carlson::{carlson_rf_complex, carlson_rj_complex},
+    diagonalizer::PathionDiagonalizer,
+    quartic::{kerr_radial_potential_coefficients, solve_quartic},
+};
 use num_complex::Complex64;
 
 /// Compute per-plane deflection using Carlson integrals.
@@ -128,7 +130,11 @@ mod tests {
 
         let defl = pathion_deflection(mass, &spin, &xi, &eta).unwrap();
         // The real component should be finite (not NaN)
-        assert!(defl[0].is_finite(), "deflection should be finite: {}", defl[0]);
+        assert!(
+            defl[0].is_finite(),
+            "deflection should be finite: {}",
+            defl[0]
+        );
     }
 
     #[test]

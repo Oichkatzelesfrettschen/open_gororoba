@@ -89,6 +89,8 @@ pub use sfwm::{
     SfwmDominanceResult,
     SfwmMaterialParams,
     SfwmRateResult,
+    SubstrateSfwmParams,
+    SubstrateSfwmResult,
     WavevectorMismatches,
     // Son & Chekhova (2026) full reproduction
     cascaded_amplitude_sq,
@@ -110,8 +112,6 @@ pub use sfwm::{
     rate_sweep_with_dk,
     sfwm_dominance_check,
     substrate_sfwm_contribution,
-    SubstrateSfwmParams,
-    SubstrateSfwmResult,
     thickness_sweep,
 };
 

@@ -7,8 +7,10 @@
 //! - Optional gravastar/TOV solve to probe "imbalance star" candidates
 
 use crate::balance::compute_imbalance_index;
-use cosmology_core::gravastar::{GravastarSolution, PolytropicEos};
-use cosmology_core::homotopy_bridge::solve_gravastar_homotopy;
+use cosmology_core::{
+    gravastar::{GravastarSolution, PolytropicEos},
+    homotopy_bridge::solve_gravastar_homotopy,
+};
 
 /// Cassini lower bound used as thesis falsifier.
 ///

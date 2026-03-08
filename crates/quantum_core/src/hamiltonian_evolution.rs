@@ -118,6 +118,13 @@ impl HamiltonianND {
         h
     }
 
+    /// Build a sparse Hamiltonian for larger spin systems when the pilot
+    /// sparse feature is enabled.
+    #[cfg(feature = "sparse-hamiltonians")]
+    pub fn build_sparse(&self) -> nalgebra_sparse::csr::CsrMatrix<Complex64> {
+        crate::hamiltonian_sparse::build_sparse_hamiltonian(&self.dims, self.alpha, self.g, self.j)
+    }
+
     /// Single-qubit Kronecker product (identity x ... x op_i x ... x identity)
     fn kron_single(&self, op: &Array2<Complex64>, target: usize) -> Array2<Complex64> {
         let mut result = Array2::from_diag(&Array1::from_vec(vec![

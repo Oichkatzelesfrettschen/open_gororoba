@@ -151,11 +151,7 @@ pub fn frank_energy_density(
     // Curl: curl(n) = ( dn_z/dy - dn_y/dz,
     //                    dn_x/dz - dn_z/dx,
     //                    dn_y/dx - dn_x/dy )
-    let curl_n = Vector3::new(
-        dn_dy.z - dn_dz.y,
-        dn_dz.x - dn_dx.z,
-        dn_dx.y - dn_dy.x,
-    );
+    let curl_n = Vector3::new(dn_dy.z - dn_dz.y, dn_dz.x - dn_dx.z, dn_dx.y - dn_dy.x);
 
     // n . curl(n) -- twist contribution
     let n_dot_curl = n.dot(&curl_n);

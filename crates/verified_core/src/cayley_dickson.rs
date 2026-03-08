@@ -4,8 +4,10 @@
 //! Includes associator, inverse, and property-tower witnesses.
 //! Kernel-checked in `proofs/theories/CayleyDicksonAlgebra.v`, CDAssociator.v, CDInverse.v.
 
-use crate::quaternion::{Quat, quat_mul, quat_conj, quat_norm_sq};
-use crate::axioms;
+use crate::{
+    axioms,
+    quaternion::{Quat, quat_conj, quat_mul, quat_norm_sq},
+};
 
 /// Complex number (a + bi).
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -24,7 +26,10 @@ pub fn complex_mul(z: &Complex, w: &Complex) -> Complex {
 
 /// Complex conjugate: (a+bi)* = (a-bi).
 pub fn complex_conj(z: &Complex) -> Complex {
-    Complex { re: z.re, im: -z.im }
+    Complex {
+        re: z.re,
+        im: -z.im,
+    }
 }
 
 /// Complex norm squared: |z|^2 = a^2 + b^2.
@@ -106,9 +111,24 @@ mod tests {
 
     #[test]
     fn quat_associator_zero() {
-        let a = Quat { qw: 1.0, qx: 2.0, qy: 3.0, qz: 4.0 };
-        let b = Quat { qw: 5.0, qx: 6.0, qy: 7.0, qz: 8.0 };
-        let c = Quat { qw: 9.0, qx: 10.0, qy: 11.0, qz: 12.0 };
+        let a = Quat {
+            qw: 1.0,
+            qx: 2.0,
+            qy: 3.0,
+            qz: 4.0,
+        };
+        let b = Quat {
+            qw: 5.0,
+            qx: 6.0,
+            qy: 7.0,
+            qz: 8.0,
+        };
+        let c = Quat {
+            qw: 9.0,
+            qx: 10.0,
+            qy: 11.0,
+            qz: 12.0,
+        };
         let assoc = quat_assoc(&a, &b, &c);
         assert!(assoc.qw.abs() < TOL, "assoc.w = {}", assoc.qw);
         assert!(assoc.qx.abs() < TOL, "assoc.x = {}", assoc.qx);
@@ -118,7 +138,12 @@ mod tests {
 
     #[test]
     fn quat_inverse_right() {
-        let q = Quat { qw: 1.0, qx: 2.0, qy: 3.0, qz: 4.0 };
+        let q = Quat {
+            qw: 1.0,
+            qx: 2.0,
+            qy: 3.0,
+            qz: 4.0,
+        };
         let q_inv = quat_inv(&q);
         let prod = quat_mul(&q, &q_inv);
         assert!((prod.qw - 1.0).abs() < TOL, "w = {}", prod.qw);
@@ -129,7 +154,12 @@ mod tests {
 
     #[test]
     fn quat_inverse_left() {
-        let q = Quat { qw: 1.0, qx: 2.0, qy: 3.0, qz: 4.0 };
+        let q = Quat {
+            qw: 1.0,
+            qx: 2.0,
+            qy: 3.0,
+            qz: 4.0,
+        };
         let q_inv = quat_inv(&q);
         let prod = quat_mul(&q_inv, &q);
         assert!((prod.qw - 1.0).abs() < TOL, "w = {}", prod.qw);
@@ -140,8 +170,18 @@ mod tests {
 
     #[test]
     fn quat_noncommutative() {
-        let i = Quat { qw: 0.0, qx: 1.0, qy: 0.0, qz: 0.0 };
-        let j = Quat { qw: 0.0, qx: 0.0, qy: 1.0, qz: 0.0 };
+        let i = Quat {
+            qw: 0.0,
+            qx: 1.0,
+            qy: 0.0,
+            qz: 0.0,
+        };
+        let j = Quat {
+            qw: 0.0,
+            qx: 0.0,
+            qy: 1.0,
+            qz: 0.0,
+        };
         let ij = quat_mul(&i, &j);
         let ji = quat_mul(&j, &i);
         // ij = k, ji = -k

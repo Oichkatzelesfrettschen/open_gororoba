@@ -1,8 +1,6 @@
 use clap::Parser;
-use gororoba_engine::thesis_pipelines::Thesis5Pipeline;
-use gororoba_engine::traits::ThesisPipeline;
-use std::fs;
-use std::path::Path;
+use gororoba_engine::{thesis_pipelines::Thesis5Pipeline, traits::ThesisPipeline};
+use std::{fs, path::Path};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]

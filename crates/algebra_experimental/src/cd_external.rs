@@ -2715,8 +2715,10 @@ mod tests {
     /// suite) to avoid O(n^3) spectrum computation at large dimensions.
     #[test]
     fn test_thesis_e_closed_form_theorem() {
-        use petgraph::algo::connected_components;
-        use petgraph::graph::{NodeIndex, UnGraph};
+        use petgraph::{
+            algo::connected_components,
+            graph::{NodeIndex, UnGraph},
+        };
 
         for dim in [64, 128, 256] {
             let xor_mask = dim / 16;

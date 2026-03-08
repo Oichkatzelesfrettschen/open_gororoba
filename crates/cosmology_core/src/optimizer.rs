@@ -193,15 +193,19 @@ mod tests {
             ..Default::default()
         };
 
-        let guesses = vec![
-            vec![0.0, 0.0],
-            vec![-1.0, 2.0],
-            vec![2.0, -1.0],
-        ];
+        let guesses = vec![vec![0.0, 0.0], vec![-1.0, 2.0], vec![2.0, -1.0]];
 
         let (best, fval) = bounded_nelder_mead(rosenbrock, &guesses, &config);
-        assert!((best[0] - 1.0).abs() < 0.01, "x = {}, expected ~1.0", best[0]);
-        assert!((best[1] - 1.0).abs() < 0.01, "y = {}, expected ~1.0", best[1]);
+        assert!(
+            (best[0] - 1.0).abs() < 0.01,
+            "x = {}, expected ~1.0",
+            best[0]
+        );
+        assert!(
+            (best[1] - 1.0).abs() < 0.01,
+            "y = {}, expected ~1.0",
+            best[1]
+        );
         assert!(fval < 1e-4, "fval = {fval}, expected ~0");
     }
 
@@ -219,6 +223,10 @@ mod tests {
 
         let guesses = vec![vec![0.5]];
         let (best, _fval) = bounded_nelder_mead(f, &guesses, &config);
-        assert!((best[0] - 2.0).abs() < 0.01, "x = {}, expected ~2.0", best[0]);
+        assert!(
+            (best[0] - 2.0).abs() < 0.01,
+            "x = {}, expected ~2.0",
+            best[0]
+        );
     }
 }

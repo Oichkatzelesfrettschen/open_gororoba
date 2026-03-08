@@ -6,8 +6,10 @@
 //! Source: LASP Interactive Solar Irradiance Datacenter (LISIRD)
 //! Reference: Kopp (2021), https://doi.org/10.1007/s11207-021-01853-x
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use crate::parse::parse_f64_or_nan;
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    parse::parse_f64_or_nan,
+};
 use std::path::{Path, PathBuf};
 
 /// A single TSI measurement from TSIS-1.

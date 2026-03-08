@@ -1,5 +1,4 @@
-use crate::algebraic_triad::AlgebraicTriad;
-use crate::spin_event::SpinEvent;
+use crate::{algebraic_triad::AlgebraicTriad, spin_event::SpinEvent};
 use nalgebra::{Matrix3, Vector3};
 
 /// Accumulator for spin tomography moments.

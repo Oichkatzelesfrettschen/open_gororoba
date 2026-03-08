@@ -9,8 +9,9 @@
 //!   thesis-synthesis-engine --thesis 2 --alpha 1.0 --power-index 2.0
 
 use clap::Parser;
-use gororoba_engine::traits::ThesisPipeline;
-use gororoba_engine::{Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline};
+use gororoba_engine::{
+    Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline, traits::ThesisPipeline,
+};
 use std::fmt::Write as _;
 
 #[derive(Parser, Debug)]

@@ -4,9 +4,11 @@
 //! to correction coefficients (16-dim output per pair). The full m_3
 //! correction tensor is assembled by querying the model for all 256 pairs.
 
-use burn::module::AutodiffModule;
-use burn::nn::{Linear, LinearConfig, Relu};
-use burn::prelude::*;
+use burn::{
+    module::AutodiffModule,
+    nn::{Linear, LinearConfig, Relu},
+    prelude::*,
+};
 
 use crate::training_data::SEDENION_DIM;
 
@@ -192,9 +194,10 @@ pub struct BurnTrainingResult {
 ///
 /// Returns the trained tensor plus training diagnostics.
 pub fn train_burn_correction(config: &CorrectionTensorModelConfig) -> BurnTrainingResult {
-    use burn::backend::Autodiff;
-    use burn::backend::NdArray;
-    use burn::optim::{AdamConfig, GradientsParams, Optimizer};
+    use burn::{
+        backend::{Autodiff, NdArray},
+        optim::{AdamConfig, GradientsParams, Optimizer},
+    };
 
     type InnerB = NdArray<f32>;
     type AutoB = Autodiff<InnerB>;

@@ -17,20 +17,8 @@ pub use error::{AlgebraError, AlgebraResult};
 pub use traits::Hypercomplex;
 
 pub use cayley_dickson::{
-    batch_associator_norms,
-    batch_associator_norms_parallel,
-    batch_associator_norms_sq,
-    cd_associator,
-    cd_associator_norm,
-    cd_basis_mul_sign,
-    cd_conjugate,
-    cd_multiply,
-    cd_multiply_simd,
-    cd_norm_sq,
-    cd_norm_sq_simd,
-    count_pathion_zero_divisors,
-    find_zero_divisors,
-    left_mult_operator,
-    measure_associator_density,
-    zd_spectrum_analysis,
+    batch_associator_norms, batch_associator_norms_parallel, batch_associator_norms_sq,
+    cd_associator, cd_associator_norm, cd_basis_mul_sign, cd_conjugate, cd_multiply,
+    cd_multiply_simd, cd_norm_sq, cd_norm_sq_simd, count_pathion_zero_divisors, find_zero_divisors,
+    left_mult_operator, measure_associator_density, zd_spectrum_analysis,
 };

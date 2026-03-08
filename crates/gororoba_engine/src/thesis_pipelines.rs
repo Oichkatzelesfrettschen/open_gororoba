@@ -514,8 +514,8 @@ impl ThesisPipeline for Thesis5Pipeline {
         use cd_spin_bridge::DecoherenceMap;
         use nalgebra::Matrix3;
         use rand::prelude::*;
-        use spin_tomography_core::{AlgebraicTriad, SpinEvent, TomographyMoments, TwoQubitState};
         use sign_imbalance::SedenionField;
+        use spin_tomography_core::{AlgebraicTriad, SpinEvent, TomographyMoments, TwoQubitState};
 
         // 1. Generate CD Medium
         let mut field = SedenionField::uniform(self.grid_size, self.grid_size, self.grid_size);

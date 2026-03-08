@@ -53,10 +53,7 @@ pub fn joint_pdf(
     v: &Vector3<f64>,
 ) -> f64 {
     let utv = u.dot(&(t * v));
-    let val = 1.0
-        + alpha1 * a.dot(u)
-        + alpha2 * b.dot(v)
-        + alpha1 * alpha2 * utv;
+    let val = 1.0 + alpha1 * a.dot(u) + alpha2 * b.dot(v) + alpha1 * alpha2 * utv;
     val.max(0.0)
 }
 
@@ -175,8 +172,16 @@ mod tests {
         let (a, b, t) = triplet_params();
         let events = generate_events(&a, &b, &t, 0.747, -0.757, 50, &mut rng);
         for ev in &events {
-            assert!((ev.n1.norm() - 1.0).abs() < 1e-12, "|n1| != 1: {}", ev.n1.norm());
-            assert!((ev.n2.norm() - 1.0).abs() < 1e-12, "|n2| != 1: {}", ev.n2.norm());
+            assert!(
+                (ev.n1.norm() - 1.0).abs() < 1e-12,
+                "|n1| != 1: {}",
+                ev.n1.norm()
+            );
+            assert!(
+                (ev.n2.norm() - 1.0).abs() < 1e-12,
+                "|n2| != 1: {}",
+                ev.n2.norm()
+            );
         }
     }
 

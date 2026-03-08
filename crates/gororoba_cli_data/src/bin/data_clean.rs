@@ -3,8 +3,10 @@ use clap::{Parser, ValueEnum};
 use gororoba_cli::data_governance::{
     DEFAULT_GOVERNANCE_PATH, collect_files_under, git_ignored_paths, load_data_governance,
 };
-use std::collections::BTreeSet;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::BTreeSet,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug, Clone, Copy, ValueEnum)]
 enum Scope {

@@ -109,8 +109,7 @@ impl DatasetProvider for LandsatStacProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Write;
-    use std::path::Path;
+    use std::{io::Write, path::Path};
 
     fn write_temp(content: &str) -> tempfile::NamedTempFile {
         let mut f = tempfile::NamedTempFile::new().unwrap();

@@ -43,8 +43,7 @@ pub const PG32_LABELS: [u32; 15] = [3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 
 /// true = heptacross (84 edges, poly evals to 1), false = mixed-degree (poly evals to 0).
 /// This is the polarity that matches the cubic witness output.
 pub const PG32_CLASSES: [bool; 15] = [
-    true, true, true, true, true, true, false, true, false, false, false, false, false, false,
-    true,
+    true, true, true, true, true, true, false, true, false, false, false, false, false, false, true,
 ];
 
 /// The cubic witness polynomial that separates the PG(3,2) partition.

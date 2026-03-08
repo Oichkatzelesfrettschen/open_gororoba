@@ -21,20 +21,23 @@
 //!   multi-dataset-ultrametric --json              # JSON output
 
 use clap::Parser;
-use rand::SeedableRng;
-use rand::prelude::*;
+use rand::{SeedableRng, prelude::*};
 use rayon::prelude::*;
-use std::path::{Path, PathBuf};
-use std::sync::Arc;
-
-use stats_core::ultrametric::baire::{
-    AttributeSpec, BaireEncoder, BaireTestResult, euclidean_distance_matrix,
-    euclidean_ultrametric_test, matrix_free_tolerance_curve, matrix_free_ultrametric_test,
-    normalize_data_column_major,
+use std::{
+    path::{Path, PathBuf},
+    sync::Arc,
 };
-use stats_core::ultrametric::benjamini_hochberg;
-use stats_core::ultrametric::dendrogram::multi_linkage_test;
-use stats_core::ultrametric::gpu::{GpuUltrametricEngine, to_f32_column_major};
+
+use stats_core::ultrametric::{
+    baire::{
+        AttributeSpec, BaireEncoder, BaireTestResult, euclidean_distance_matrix,
+        euclidean_ultrametric_test, matrix_free_tolerance_curve, matrix_free_ultrametric_test,
+        normalize_data_column_major,
+    },
+    benjamini_hochberg,
+    dendrogram::multi_linkage_test,
+    gpu::{GpuUltrametricEngine, to_f32_column_major},
+};
 
 #[derive(Parser)]
 #[command(name = "multi-dataset-ultrametric")]

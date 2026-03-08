@@ -16,9 +16,11 @@
 use crate::fetcher::{
     DatasetProvider, FetchConfig, FetchError, download_to_file, validate_not_html,
 };
-use std::fs;
-use std::io::Read as IoRead;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    io::Read as IoRead,
+    path::{Path, PathBuf},
+};
 
 /// A single frequency bin from the NANOGrav free spectrum.
 #[derive(Debug, Clone)]
@@ -535,11 +537,7 @@ impl DatasetProvider for NanoGrav15yrProvider {
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let csv_output = config.output_dir.join("nanograv_15yr_freespectrum.csv");
         if config.skip_existing && csv_output.exists() {
-            log::info!(
-                "{} already cached at {}",
-                self.name(),
-                csv_output.display()
-            );
+            log::info!("{} already cached at {}", self.name(), csv_output.display());
             return Ok(csv_output);
         }
 
@@ -561,11 +559,7 @@ impl DatasetProvider for NanoGrav15yrProvider {
                 // Fall back to hardcoded values
                 log::warn!("Using hardcoded bestfit values instead");
                 write_free_spectrum_csv(&bestfit::HD_FREE_SPECTRUM, &csv_output)?;
-                log::info!(
-                    "Wrote {} bins to {}",
-                    bestfit::N_BINS,
-                    csv_output.display()
-                );
+                log::info!("Wrote {} bins to {}", bestfit::N_BINS, csv_output.display());
                 return Ok(csv_output);
             }
         }
@@ -585,11 +579,7 @@ impl DatasetProvider for NanoGrav15yrProvider {
                 log::warn!("KDE extraction failed: {}", e);
                 log::warn!("Using hardcoded bestfit values instead");
                 write_free_spectrum_csv(&bestfit::HD_FREE_SPECTRUM, &csv_output)?;
-                log::info!(
-                    "Wrote {} bins to {}",
-                    bestfit::N_BINS,
-                    csv_output.display()
-                );
+                log::info!("Wrote {} bins to {}", bestfit::N_BINS, csv_output.display());
             }
         }
 

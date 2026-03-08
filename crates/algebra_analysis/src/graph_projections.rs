@@ -26,8 +26,10 @@
 //! into the invariant pipeline of this module.
 
 use nalgebra::DMatrix;
-use petgraph::algo::{connected_components, dijkstra};
-use petgraph::graph::{NodeIndex, UnGraph};
+use petgraph::{
+    algo::{connected_components, dijkstra},
+    graph::{NodeIndex, UnGraph},
+};
 use std::collections::{HashMap, HashSet, VecDeque};
 
 /// Comprehensive graph invariants for motif fingerprinting (A3).
@@ -75,9 +77,7 @@ pub fn compute_graph_invariants(graph: &UnGraph<(), ()>) -> GraphInvariants {
     // Spectrum via nalgebra (symmetric_eigen consumes adj, so compute after adj products)
     let eigen = adj.symmetric_eigen();
     let mut spectrum: Vec<f64> = eigen.eigenvalues.iter().cloned().collect();
-    spectrum.sort_by(|a: &f64, b: &f64| {
-        a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal)
-    });
+    spectrum.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
 
     // Diameter (BFS-based for unweighted)
     let mut max_diam = 0;

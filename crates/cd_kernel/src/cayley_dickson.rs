@@ -30,10 +30,7 @@ pub struct WowFilterResult {
 /// Uses the 1420.405751 MHz (21cm line) as a fundamental frequency scale
 /// to filter sedenionic zero-divisors. Validates the Topological
 /// Indistinguishability claim (p > 0.05).
-pub fn wow_signal_filter(
-    zds: &[(usize, usize, usize, usize, f64)],
-    alpha: f64,
-) -> WowFilterResult {
+pub fn wow_signal_filter(zds: &[(usize, usize, usize, usize, f64)], alpha: f64) -> WowFilterResult {
     let fundamental_freq = 1420.405751;
     let n_zds = zds.len();
 
@@ -589,8 +586,7 @@ pub fn find_zero_divisors_general_form(
     atol: f64,
     seed: u64,
 ) -> Vec<GeneralFormZD> {
-    use rand::prelude::*;
-    use rand::rngs::StdRng;
+    use rand::{prelude::*, rngs::StdRng};
 
     let mut rng = StdRng::seed_from_u64(seed);
     let mut results = Vec::new();
@@ -666,8 +662,7 @@ pub fn zd_spectrum_analysis(
     n_bins: usize,
     seed: u64,
 ) -> (f64, f64, f64, Vec<usize>) {
-    use rand::prelude::*;
-    use rand::rngs::StdRng;
+    use rand::{prelude::*, rngs::StdRng};
 
     let mut rng = StdRng::seed_from_u64(seed);
     let mut norms = Vec::with_capacity(n_samples);
@@ -829,6 +824,8 @@ pub fn find_zero_divisors_parallel(
     dim: usize,
     atol: f64,
 ) -> Vec<(usize, usize, usize, usize, f64)> {
+    let sign_table = SignTable::new(dim);
+
     // Generate all (i, j) pairs for outer loop
     let pairs: Vec<(usize, usize)> = (0..dim)
         .flat_map(|i| ((i + 1)..dim).map(move |j| (i, j)))
@@ -838,34 +835,86 @@ pub fn find_zero_divisors_parallel(
         .par_iter()
         .flat_map(|&(i, j)| {
             let mut results = Vec::new();
-            let mut a = vec![0.0; dim];
-            a[i] = 1.0;
-            a[j] = 1.0;
 
             for k in 0..dim {
                 for l in (k + 1)..dim {
-                    // Try b = e_k + e_l.
-                    let mut b = vec![0.0; dim];
-                    b[k] = 1.0;
-                    b[l] = 1.0;
-                    let ab = cd_multiply(&a, &b);
-                    let norm = cd_norm_sq(&ab).sqrt();
-                    if norm < atol {
-                        results.push((i, j, k, l, norm));
+                    if two_blade_product_is_zero(&sign_table, i, j, k, l, 1) && 0.0 < atol {
+                        results.push((i, j, k, l, 0.0));
                     }
 
-                    // Try b = e_k - e_l.
-                    b[l] = -1.0;
-                    let ab = cd_multiply(&a, &b);
-                    let norm = cd_norm_sq(&ab).sqrt();
-                    if norm < atol {
-                        results.push((i, j, k, l, norm));
+                    if two_blade_product_is_zero(&sign_table, i, j, k, l, -1) && 0.0 < atol {
+                        results.push((i, j, k, l, 0.0));
                     }
                 }
             }
             results
         })
         .collect()
+}
+
+#[inline(always)]
+fn two_blade_product_is_zero(
+    sign_table: &SignTable,
+    i: usize,
+    j: usize,
+    k: usize,
+    l: usize,
+    right_sign: i32,
+) -> bool {
+    let mut basis_terms = [usize::MAX; 4];
+    let mut coeffs = [0i32; 4];
+    let mut used = 0usize;
+
+    accumulate_sparse_basis_term(
+        &mut basis_terms,
+        &mut coeffs,
+        &mut used,
+        i ^ k,
+        sign_table.sign(i, k),
+    );
+    accumulate_sparse_basis_term(
+        &mut basis_terms,
+        &mut coeffs,
+        &mut used,
+        i ^ l,
+        right_sign * sign_table.sign(i, l),
+    );
+    accumulate_sparse_basis_term(
+        &mut basis_terms,
+        &mut coeffs,
+        &mut used,
+        j ^ k,
+        sign_table.sign(j, k),
+    );
+    accumulate_sparse_basis_term(
+        &mut basis_terms,
+        &mut coeffs,
+        &mut used,
+        j ^ l,
+        right_sign * sign_table.sign(j, l),
+    );
+
+    coeffs[..used].iter().all(|&coeff| coeff == 0)
+}
+
+#[inline(always)]
+fn accumulate_sparse_basis_term(
+    basis_terms: &mut [usize; 4],
+    coeffs: &mut [i32; 4],
+    used: &mut usize,
+    basis: usize,
+    coeff: i32,
+) {
+    for slot in 0..*used {
+        if basis_terms[slot] == basis {
+            coeffs[slot] += coeff;
+            return;
+        }
+    }
+
+    basis_terms[*used] = basis;
+    coeffs[*used] = coeff;
+    *used += 1;
 }
 
 /// Measure non-associativity density for dim-dimensional CD algebra.
@@ -875,8 +924,7 @@ pub fn find_zero_divisors_parallel(
 ///
 /// Seeded PRNG ensures reproducibility.
 pub fn measure_associator_density(dim: usize, trials: usize, seed: u64, atol: f64) -> (f64, usize) {
-    use rand::prelude::*;
-    use rand::rngs::StdRng;
+    use rand::{prelude::*, rngs::StdRng};
 
     let mut rng = StdRng::seed_from_u64(seed);
     let mut failures = 0;
@@ -1841,8 +1889,7 @@ mod tests {
         let mut c_flat = Vec::with_capacity(dim * n);
         let mut expected = Vec::with_capacity(n);
 
-        use rand::prelude::*;
-        use rand::rngs::StdRng;
+        use rand::{prelude::*, rngs::StdRng};
         let mut rng = StdRng::seed_from_u64(12345);
 
         for _ in 0..n {
@@ -1876,8 +1923,7 @@ mod tests {
         let dim = 16;
         let n = 10;
 
-        use rand::prelude::*;
-        use rand::rngs::StdRng;
+        use rand::{prelude::*, rngs::StdRng};
         let mut rng = StdRng::seed_from_u64(42);
 
         let a_flat: Vec<f64> = (0..dim * n).map(|_| rng.gen_range(-1.0..1.0)).collect();
@@ -1944,6 +1990,22 @@ mod tests {
         // 2-blade count should be consistent with direct parallel search.
         let direct = find_zero_divisors_parallel(32, 1e-10);
         assert_eq!(n_2blade, direct.len());
+    }
+
+    #[test]
+    fn test_find_zero_divisors_parallel_matches_dense_sedenion() {
+        let mut dense: Vec<_> = find_zero_divisors(16, 1e-10)
+            .into_iter()
+            .map(|(i, j, k, l, _)| (i, j, k, l))
+            .collect();
+        let mut parallel: Vec<_> = find_zero_divisors_parallel(16, 1e-10)
+            .into_iter()
+            .map(|(i, j, k, l, _)| (i, j, k, l))
+            .collect();
+
+        dense.sort_unstable();
+        parallel.sort_unstable();
+        assert_eq!(parallel, dense);
     }
 
     #[test]
@@ -3173,8 +3235,7 @@ mod tests {
     #[test]
     #[ignore] // Benchmark only: prints timing results, not a correctness test
     fn benchmark_sign_computation_paths() {
-        use std::hint::black_box;
-        use std::time::Instant;
+        use std::{hint::black_box, time::Instant};
 
         for &dim in &[64, 256, 512, 1024, 2048] {
             let pairs: usize = dim * dim;

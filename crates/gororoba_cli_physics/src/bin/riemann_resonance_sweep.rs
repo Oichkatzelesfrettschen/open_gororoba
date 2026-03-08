@@ -4,7 +4,7 @@
 //! Tests the Riemann Resonance conjecture: prime-indexed doublings produce
 //! qualitatively different spectral repulsion than composite-indexed doublings.
 
-use algebra_analysis::riemann_resonance::{riemann_resonance_sweep, DoublingClass};
+use algebra_analysis::riemann_resonance::{DoublingClass, riemann_resonance_sweep};
 
 fn main() {
     println!("=== Riemann Resonance Generator: Prime vs Composite CD Spectral Analysis ===");
@@ -23,7 +23,15 @@ fn main() {
     // CSV header
     println!(
         "{:>5},{:>4},{:>12},{:>12},{:>10},{:>12},{:>12},{:>12},{:>18}",
-        "dim", "exp", "class", "n_eigenvals", "brody_q", "ks_poisson", "ks_goe", "max_spacing", "verdict"
+        "dim",
+        "exp",
+        "class",
+        "n_eigenvals",
+        "brody_q",
+        "ks_poisson",
+        "ks_goe",
+        "max_spacing",
+        "verdict"
     );
 
     for r in &comparison.results {
@@ -75,8 +83,12 @@ fn main() {
     }
 
     match comparison.prime_higher_q {
-        Some(true) => println!("  Result: Prime-power dims show HIGHER mean Brody q (stronger repulsion)."),
-        Some(false) => println!("  Result: Composite-power dims show higher or equal mean Brody q."),
+        Some(true) => {
+            println!("  Result: Prime-power dims show HIGHER mean Brody q (stronger repulsion).")
+        }
+        Some(false) => {
+            println!("  Result: Composite-power dims show higher or equal mean Brody q.")
+        }
         None => println!("  Result: Insufficient data for comparison."),
     }
 

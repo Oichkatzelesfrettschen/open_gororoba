@@ -1,19 +1,21 @@
-use algebra_experimental::bell_inequality::{BellTestResult, chsh_violation_test};
-use algebra_experimental::higher_cd::HigherAvt;
-use algebra_experimental::particle_physics::{
-    GaugeSectorReport, analyze_1024d_gauge_sectors,
+use algebra_experimental::{
+    bell_inequality::{BellTestResult, chsh_violation_test},
+    higher_cd::HigherAvt,
+    particle_physics::{GaugeSectorReport, analyze_1024d_gauge_sectors},
 };
 use cosmology_core::{
-    CosmicWebGenerator, DekaVoudonCmbAnalyzer, MultipoleResult, VoudonFriedmann,
-    angular_separation_degrees, extract_multipoles, FlatLCDM,
+    CosmicWebGenerator, DekaVoudonCmbAnalyzer, FlatLCDM, MultipoleResult, VoudonFriedmann,
+    angular_separation_degrees, extract_multipoles,
 };
 use gr_core::{
-    AdaptiveWickResult, FractalFlybyResult, NBodySystem,
-    fractal_flyby_prediction, pioneer_anomaly_prediction,
+    AdaptiveWickResult, FractalFlybyResult, NBodySystem, fractal_flyby_prediction,
+    pioneer_anomaly_prediction,
 };
-use quantum_core::chrono_turbulence::ChronoTurbulenceSolver;
-use quantum_core::deka_voudon_qec::{DekaVoudonStabilizer, HolographicVacuumCode};
-use quantum_core::intention_operator::IntentionOperator;
+use quantum_core::{
+    chrono_turbulence::ChronoTurbulenceSolver,
+    deka_voudon_qec::{DekaVoudonStabilizer, HolographicVacuumCode},
+    intention_operator::IntentionOperator,
+};
 
 use nalgebra::Matrix3;
 use num_complex::Complex;
@@ -132,10 +134,18 @@ impl SingularitarianEngine {
     /// Count the number of active subsystems.
     pub fn active_subsystem_count(&self) -> usize {
         let mut count = 2; // IntentionOperator + FractalMetric always present
-        if self.vacuum_code.is_some() { count += 1; }
-        if self.chrono_solver.is_some() { count += 1; }
-        if self.cmb_analyzer.is_some() { count += 1; }
-        if self.voudon_friedmann.is_some() { count += 1; }
+        if self.vacuum_code.is_some() {
+            count += 1;
+        }
+        if self.chrono_solver.is_some() {
+            count += 1;
+        }
+        if self.cmb_analyzer.is_some() {
+            count += 1;
+        }
+        if self.voudon_friedmann.is_some() {
+            count += 1;
+        }
         count
     }
 
@@ -164,8 +174,8 @@ impl SingularitarianEngine {
         let mass_g = SGR_A_MASS_SOLAR * M_SUN_G;
 
         // Standard Hawking temperature
-        let t_hawking = HBAR_CGS * C_CGS.powi(3)
-            / (8.0 * std::f64::consts::PI * G_CGS * mass_g * K_B_CGS);
+        let t_hawking =
+            HBAR_CGS * C_CGS.powi(3) / (8.0 * std::f64::consts::PI * G_CGS * mass_g * K_B_CGS);
 
         // Fractal modification: D_f < 4 increases effective temperature
         let gamma = self.fractal_dim - 2.0;
@@ -262,11 +272,7 @@ impl SingularitarianEngine {
     }
 
     /// Predict fractal flyby anomaly for a given spacecraft geometry.
-    pub fn fractal_flyby(
-        &self,
-        perigee_km: f64,
-        v_inf_km_s: f64,
-    ) -> FractalFlybyResult {
+    pub fn fractal_flyby(&self, perigee_km: f64, v_inf_km_s: f64) -> FractalFlybyResult {
         fractal_flyby_prediction(self.fractal_dim, perigee_km, v_inf_km_s)
     }
 
@@ -458,7 +464,12 @@ impl SingularitarianEngine {
         // 7. Adaptive Wick evolution
         let mut system = NBodySystem::new(1e-5, Matrix3::identity());
         let adaptive_wick = Some(self.adaptive_wick_evolve(
-            &mut system, 4.1e6, 0.01, 10, std::f64::consts::FRAC_PI_4, 5.0,
+            &mut system,
+            4.1e6,
+            0.01,
+            10,
+            std::f64::consts::FRAC_PI_4,
+            5.0,
         ));
 
         // 8. Voudon H0
@@ -603,7 +614,11 @@ mod tests {
     #[test]
     fn test_evidence_matrix() {
         let matrix = SingularitarianEngine::evidence_matrix();
-        assert!(matrix.len() >= 17, "len={}, should have claims from Sprints 71-79", matrix.len());
+        assert!(
+            matrix.len() >= 17,
+            "len={}, should have claims from Sprints 71-79",
+            matrix.len()
+        );
         let verified_count = matrix
             .iter()
             .filter(|e| e.status == ClaimStatus::Verified)

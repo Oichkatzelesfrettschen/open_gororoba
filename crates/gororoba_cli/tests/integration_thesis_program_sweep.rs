@@ -1,7 +1,9 @@
-use std::fs;
-use std::path::PathBuf;
-use std::process::{Command, Output};
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::{
+    fs,
+    path::PathBuf,
+    process::{Command, Output},
+    time::{SystemTime, UNIX_EPOCH},
+};
 
 fn binary_path() -> PathBuf {
     if let Some(path) = option_env!("CARGO_BIN_EXE_thesis-program-sweep") {

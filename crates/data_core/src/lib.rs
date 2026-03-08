@@ -34,39 +34,49 @@ pub mod quality;
 pub mod registry;
 pub mod seti;
 pub mod spice;
+#[cfg(feature = "dataframe")]
+pub mod tabular;
 
-pub use fetcher::{DatasetProvider, FetchConfig, FetchError};
-pub use fetcher::{compute_sha256, download_to_file, download_to_string};
+pub use fetcher::{
+    DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,
+};
 pub use quality::{
     RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,
 };
+#[cfg(feature = "dataframe")]
+pub use tabular::{
+    TabularError, TabularOverview, csv_records_to_frame, frame_overview, json_records_to_frame,
+    provider_inventory_frame,
+};
 
-pub use catalogs::aflow::{
-    AflowMaterial, AflowProvider, fetch_aflow_dataset, parse_aflow_json, parse_aflow_records,
-};
-pub use catalogs::atnf::{Pulsar, parse_atnf_csv};
-pub use catalogs::chime::{FrbEvent, extract_repeaters, parse_chime_csv};
-pub use catalogs::desi_bao::{BaoMeasurement, desi_dr1_bao};
-pub use catalogs::fermi_gbm::{GrbEvent, parse_fermi_gbm_csv};
-pub use catalogs::gaia::{GaiaSource, parse_gaia_csv};
-pub use catalogs::gwtc::{GwEvent, parse_gwtc3_csv};
-pub use catalogs::hipparcos::hipparcos_row_count;
-pub use catalogs::jarvis::{
-    FigshareFile, JarvisMaterial, JarvisProvider, fetch_jarvis_json, list_figshare_files,
-    parse_jarvis_json, sample_materials,
-};
-pub use catalogs::landsat::looks_like_landsat_stac_json;
-pub use catalogs::mcgill::{Magnetar, parse_mcgill_csv};
-pub use catalogs::nanograv::{FreeSpectrumPoint, parse_nanograv_free_spectrum};
-pub use catalogs::pantheon::{PantheonCovProvider, Supernova, parse_pantheon_cov, parse_pantheon_dat};
-pub use catalogs::planck::bestfit as planck2018;
-pub use catalogs::sdss::{SdssQuasar, parse_sdss_quasar_csv};
-pub use catalogs::sorce::{SorceMeasurement, parse_sorce_csv};
-pub use catalogs::tsi::{TsiMeasurement, parse_tsi_csv};
-pub use catalogs::union3::parse_union3_chain;
-pub use catalogs::wow::{
-    Bl6equj5Bundle, Bl6equj5ManifestProvider, WowPrintoutProvider, WowPrintoutRow, abacad_filter,
-    parse_bl_manifest_csv, parse_wow_printout_csv, wow_char_to_intensity,
+pub use catalogs::{
+    aflow::{
+        AflowMaterial, AflowProvider, fetch_aflow_dataset, parse_aflow_json, parse_aflow_records,
+    },
+    atnf::{Pulsar, parse_atnf_csv},
+    chime::{FrbEvent, extract_repeaters, parse_chime_csv},
+    desi_bao::{BaoMeasurement, desi_dr1_bao},
+    fermi_gbm::{GrbEvent, parse_fermi_gbm_csv},
+    gaia::{GaiaSource, parse_gaia_csv},
+    gwtc::{GwEvent, parse_gwtc3_csv},
+    hipparcos::hipparcos_row_count,
+    jarvis::{
+        FigshareFile, JarvisMaterial, JarvisProvider, fetch_jarvis_json, list_figshare_files,
+        parse_jarvis_json, sample_materials,
+    },
+    landsat::looks_like_landsat_stac_json,
+    mcgill::{Magnetar, parse_mcgill_csv},
+    nanograv::{FreeSpectrumPoint, parse_nanograv_free_spectrum},
+    pantheon::{PantheonCovProvider, Supernova, parse_pantheon_cov, parse_pantheon_dat},
+    planck::bestfit as planck2018,
+    sdss::{SdssQuasar, parse_sdss_quasar_csv},
+    sorce::{SorceMeasurement, parse_sorce_csv},
+    tsi::{TsiMeasurement, parse_tsi_csv},
+    union3::parse_union3_chain,
+    wow::{
+        Bl6equj5Bundle, Bl6equj5ManifestProvider, WowPrintoutProvider, WowPrintoutRow,
+        abacad_filter, parse_bl_manifest_csv, parse_wow_printout_csv, wow_char_to_intensity,
+    },
 };
 
 /// All dataset provider names that should appear in the manifest.

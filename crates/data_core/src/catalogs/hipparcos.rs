@@ -10,8 +10,10 @@
 //! The `.gz` variant is no longer served; we download the uncompressed `.dat`.
 
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use std::io::{BufRead, BufReader};
-use std::path::{Path, PathBuf};
+use std::{
+    io::{BufRead, BufReader},
+    path::{Path, PathBuf},
+};
 
 /// Expected line width (characters, excluding newline) in hip_main.dat.
 pub const HIPPARCOS_LINE_WIDTH: usize = 450;
@@ -129,8 +131,7 @@ impl DatasetProvider for HipparcosProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Write;
-    use std::path::Path;
+    use std::{io::Write, path::Path};
 
     /// Build a synthetic Hipparcos line with the correct 450-char pipe-delimited format.
     /// Uses 78 fields separated by 77 pipes, starting with `H|`.

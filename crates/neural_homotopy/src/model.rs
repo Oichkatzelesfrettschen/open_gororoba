@@ -3,10 +3,13 @@
 //! This keeps a deterministic, pure-Rust training path for fast falsification
 //! loops while heavier Burn backends are optional.
 
-use crate::stasheff::mean_pentagon_residual;
-use crate::tensor_ops::alignment_score;
-use crate::training_data::{
-    MultiplicationSample, SEDENION_DIM, build_sedenion_table, encode_pair, multiplication_samples,
+use crate::{
+    stasheff::mean_pentagon_residual,
+    tensor_ops::alignment_score,
+    training_data::{
+        MultiplicationSample, SEDENION_DIM, build_sedenion_table, encode_pair,
+        multiplication_samples,
+    },
 };
 use cosmology_core::bounce::hubble_e_lcdm;
 

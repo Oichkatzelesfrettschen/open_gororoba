@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::albert_bridge::embed_to_albert;
-    use crate::state::TwoQubitState;
+    use crate::{albert_bridge::embed_to_albert, state::TwoQubitState};
     use nalgebra::{Matrix3, Vector3};
 
     #[test]

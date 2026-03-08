@@ -36,7 +36,10 @@ fn main() {
         .unwrap_or(50.0);
 
     eprintln!("=== Dark Matter Halo NFW Fitting Pipeline ===");
-    eprintln!("Grid: {}^3, true r_s = {}, true rho_s = {}", grid, r_s_true, rho_s_true);
+    eprintln!(
+        "Grid: {}^3, true r_s = {}, true rho_s = {}",
+        grid, r_s_true, rho_s_true
+    );
 
     // Generate synthetic NFW density field
     let n = grid;
@@ -81,10 +84,18 @@ fn main() {
     let fit = fit_nfw_profile(&profile);
 
     eprintln!("\n=== NFW Fit Results ===");
-    eprintln!("  r_s: {:.4} (true: {:.4}, error: {:.2}%)",
-        fit.r_s, r_s_true, 100.0 * (fit.r_s - r_s_true).abs() / r_s_true);
-    eprintln!("  rho_s: {:.4} (true: {:.4}, error: {:.2}%)",
-        fit.rho_s, rho_s_true, 100.0 * (fit.rho_s - rho_s_true).abs() / rho_s_true);
+    eprintln!(
+        "  r_s: {:.4} (true: {:.4}, error: {:.2}%)",
+        fit.r_s,
+        r_s_true,
+        100.0 * (fit.r_s - r_s_true).abs() / r_s_true
+    );
+    eprintln!(
+        "  rho_s: {:.4} (true: {:.4}, error: {:.2}%)",
+        fit.rho_s,
+        rho_s_true,
+        100.0 * (fit.rho_s - rho_s_true).abs() / rho_s_true
+    );
     eprintln!("  chi2: {:.6}", fit.chi2);
 
     // Compare with Dutton-Maccio c-M relation

@@ -68,8 +68,7 @@ fn detect_physical_core_ids() -> Vec<usize> {
 /// Linux-specific: read sysfs topology to find one logical CPU per physical core.
 #[cfg(target_os = "linux")]
 fn detect_physical_core_ids_sysfs() -> Option<Vec<usize>> {
-    use std::collections::BTreeMap;
-    use std::fs;
+    use std::{collections::BTreeMap, fs};
 
     let online = fs::read_to_string("/sys/devices/system/cpu/online").ok()?;
     let online_cpus = parse_cpu_range_list(online.trim());
@@ -81,12 +80,8 @@ fn detect_physical_core_ids_sysfs() -> Option<Vec<usize>> {
     let mut core_groups: BTreeMap<(usize, usize), Vec<usize>> = BTreeMap::new();
 
     for cpu_id in &online_cpus {
-        let pkg_path = format!(
-            "/sys/devices/system/cpu/cpu{cpu_id}/topology/physical_package_id",
-        );
-        let core_path = format!(
-            "/sys/devices/system/cpu/cpu{cpu_id}/topology/core_id",
-        );
+        let pkg_path = format!("/sys/devices/system/cpu/cpu{cpu_id}/topology/physical_package_id",);
+        let core_path = format!("/sys/devices/system/cpu/cpu{cpu_id}/topology/core_id",);
 
         let pkg_id = fs::read_to_string(&pkg_path)
             .ok()

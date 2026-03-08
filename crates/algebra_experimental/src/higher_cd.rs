@@ -224,7 +224,8 @@ mod tests {
             let t = Instant::now();
             let avt = HigherAvt::new(dim);
             let elapsed = t.elapsed();
-            let mem_bytes = avt.violations.len() * std::mem::size_of::<(usize, usize, usize, usize, i32)>();
+            let mem_bytes =
+                avt.violations.len() * std::mem::size_of::<(usize, usize, usize, usize, i32)>();
             eprintln!(
                 "HigherAvt::new({:>4}): {:>8} violations, {:>10.3}ms, {:.1} MB",
                 dim,

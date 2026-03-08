@@ -1,6 +1,5 @@
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
-use std::error::Error;
-use std::time::Instant;
+use std::{error::Error, time::Instant};
 
 fn main() -> Result<(), Box<dyn Error>> {
     tracing_subscriber::fmt::init();

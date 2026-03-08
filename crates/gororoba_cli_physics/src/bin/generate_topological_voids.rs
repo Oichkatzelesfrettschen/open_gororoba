@@ -10,8 +10,7 @@
 
 use clap::Parser;
 use sign_imbalance::bridge::{CdField, SedenionField};
-use std::fs::File;
-use std::io::Write;
+use std::{fs::File, io::Write};
 
 #[derive(Parser)]
 struct Args {
@@ -64,8 +63,7 @@ fn resolve_grid_dims(args: &Args) -> (usize, usize, usize) {
 fn pin_physical_cores() {
     #[cfg(target_os = "linux")]
     {
-        use std::collections::BTreeMap;
-        use std::fs;
+        use std::{collections::BTreeMap, fs};
 
         if let Ok(online) = fs::read_to_string("/sys/devices/system/cpu/online") {
             let mut core_groups: BTreeMap<(usize, usize), Vec<usize>> = BTreeMap::new();
@@ -176,8 +174,7 @@ fn main() -> anyhow::Result<()> {
     // For dim >= 32, also extract ZD graph topology
     if dim >= 32 {
         eprintln!("Extracting ZD graph topology (dim={})...", dim);
-        let (num_comp, sizes, edges) =
-            materials_core::e8_crystal_bridge::zd_graph_topology(dim);
+        let (num_comp, sizes, edges) = materials_core::e8_crystal_bridge::zd_graph_topology(dim);
         eprintln!(
             "  ZD graph: {} components, {} edges, largest component: {}",
             num_comp,

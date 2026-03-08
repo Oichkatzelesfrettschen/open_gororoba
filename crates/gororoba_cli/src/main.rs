@@ -479,8 +479,7 @@ fn handle_quantum(cmd: QuantumCmd) {
 fn handle_plot(cmd: PlotCmd) {
     use algebra_core::generate_e8_roots;
     use gr_core::shadow_boundary;
-    use std::f64::consts::FRAC_PI_2;
-    use std::io::BufRead;
+    use std::{f64::consts::FRAC_PI_2, io::BufRead};
     use viz::{Colormap, colors, heatmap_svg, line_plot_svg, scatter_plot_svg};
 
     match cmd {

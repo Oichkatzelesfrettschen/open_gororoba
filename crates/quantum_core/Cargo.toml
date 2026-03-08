@@ -21,10 +21,12 @@ lbm_core = { path = "../lbm_core" }
 
 # GPU acceleration (optional)
 cudarc = { workspace = true, optional = true }
+nalgebra-sparse = { workspace = true, optional = true }
 
 [features]
 default = []
 gpu = ["cudarc"]
+sparse-hamiltonians = ["dep:nalgebra-sparse"]
 
 [dev-dependencies]
 approx = { workspace = true }

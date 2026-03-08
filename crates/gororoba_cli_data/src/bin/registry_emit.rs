@@ -1,8 +1,10 @@
 use clap::{Parser, Subcommand};
 use regex::Regex;
 use serde::Deserialize;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 /// Emit non-canonical views from TOML registries (markdown, bibtex, tex, pgfplots, svg, mermaid).
 #[derive(Debug, Parser)]

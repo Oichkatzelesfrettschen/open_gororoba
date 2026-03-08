@@ -13,16 +13,18 @@
 //! 6. Compute spatial correlation between imbalance and viscosity persistence
 
 use clap::Parser;
+use sign_imbalance::{
+    bridge::{IMBALANCE_ATTRACTOR, SedenionField, ViscosityCouplingModel},
+    spatial_correlation::{
+        coefficient_of_variation, dynamic_range_ratio, grid_partition_3d, nonlinearity_index,
+        pearson_correlation, point_cloud_overlap, regional_means, spearman_correlation,
+    },
+    vietoris_rips::{
+        DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers_at_time,
+        compute_persistent_homology,
+    },
+};
 use std::fmt::Write as _;
-use sign_imbalance::bridge::{SedenionField, IMBALANCE_ATTRACTOR, ViscosityCouplingModel};
-use sign_imbalance::spatial_correlation::{
-    coefficient_of_variation, dynamic_range_ratio, grid_partition_3d, nonlinearity_index,
-    pearson_correlation, point_cloud_overlap, regional_means, spearman_correlation,
-};
-use sign_imbalance::vietoris_rips::{
-    DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers_at_time,
-    compute_persistent_homology,
-};
 
 #[derive(Parser, Debug)]
 #[command(name = "thesis-cross-tx3")]
@@ -246,8 +248,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Step 4: Compute VR topology on imbalance point cloud
     println!("[4/5] Computing topology...");
-    let (frust_d0, frust_d1, frust_b0, frust_b1) =
-        compute_topology(&imbalance_points, "Imbalance");
+    let (frust_d0, frust_d1, frust_b0, frust_b1) = compute_topology(&imbalance_points, "Imbalance");
 
     // Compute VR topology on each viscosity model's point cloud
     // Store point clouds for overlap analysis

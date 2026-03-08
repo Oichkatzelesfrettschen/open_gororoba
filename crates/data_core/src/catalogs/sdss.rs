@@ -6,13 +6,15 @@
 //! Source: https://skyserver.sdss.org/
 //! Reference: Almeida et al. (2023), ApJS 267, 44
 
-use crate::fetcher::{
-    DatasetProvider, FetchConfig, FetchError, download_to_string, validate_not_html,
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string, validate_not_html},
+    formats::tap::percent_encode_query,
+    parse::parse_f64_or_nan,
 };
-use crate::formats::tap::percent_encode_query;
-use crate::parse::parse_f64_or_nan;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 /// A quasar from SDSS DR18.
 #[derive(Debug, Clone)]

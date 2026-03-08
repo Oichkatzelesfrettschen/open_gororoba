@@ -8,12 +8,14 @@
 
 use std::sync::Arc;
 
-use cudarc::cublas::safe::{CudaBlas, Gemm, GemmConfig};
-use cudarc::cublas::sys::cublasOperation_t;
-use cudarc::cusolver::sys::{
-    self as cusolver_sys, cublasFillMode_t, cusolverEigMode_t, cusolverStatus_t,
+use cudarc::{
+    cublas::{
+        safe::{CudaBlas, Gemm, GemmConfig},
+        sys::cublasOperation_t,
+    },
+    cusolver::sys::{self as cusolver_sys, cublasFillMode_t, cusolverEigMode_t, cusolverStatus_t},
+    driver::{CudaContext, CudaStream, DevicePtr, DevicePtrMut},
 };
-use cudarc::driver::{CudaContext, CudaStream, DevicePtr, DevicePtrMut};
 
 use super::kubo_transport::{
     HeisenbergModel, KuboTransport, build_energy_current_operator, build_hamiltonian_matrix,

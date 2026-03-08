@@ -13,10 +13,13 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import multiprocessing as mp
+import os
 import re
 import shutil
 import subprocess
 import sys
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 # Try tomllib (3.11+), fall back to tomli
@@ -119,42 +122,92 @@ def load_banned_terms(toml_path: Path) -> list[dict[str, str]]:
     return banned
 
 
+def compile_banned_patterns(
+    banned: list[dict[str, str]],
+) -> list[tuple[re.Pattern[str], dict[str, str]]]:
+    """Compile banned patterns once for either rg validation or Python scanning."""
+    compiled = []
+    for entry in banned:
+        pat_str = entry["pattern"]
+        if pat_str == pat_str.upper() and "_" in pat_str:
+            compiled.append((re.compile(re.escape(pat_str)), entry))
+        else:
+            compiled.append((re.compile(re.escape(pat_str), re.IGNORECASE), entry))
+    return compiled
+
+
+def iter_file_batches(files: list[Path], batch_size: int) -> list[list[Path]]:
+    """Split scan files into deterministic batches for parallel processing."""
+    return [files[start:start + batch_size] for start in range(0, len(files), batch_size)]
+
+
+def scan_file_batch(
+    args: tuple[str, list[str], list[dict[str, str]]],
+) -> list[tuple[str, int, str, dict[str, str]]]:
+    """Scan one deterministic batch of files in a worker process."""
+    repo_str, rel_paths, banned = args
+    repo = Path(repo_str)
+    compiled = compile_banned_patterns(banned)
+    batch_violations: list[tuple[str, int, str, dict[str, str]]] = []
+
+    for rel_path_str in rel_paths:
+        rel_path = Path(rel_path_str)
+        full_path = repo / rel_path
+        if not full_path.is_file():
+            continue
+        try:
+            text = full_path.read_text(encoding="utf-8", errors="replace")
+        except (OSError, UnicodeDecodeError):
+            continue
+
+        for lineno, line in enumerate(text.splitlines(), start=1):
+            if is_allowlisted(line):
+                continue
+            for regex, entry in compiled:
+                if regex.search(line):
+                    batch_violations.append((rel_path_str, lineno, line.strip(), entry))
+
+    return batch_violations
+
+
 def build_candidate_lines_with_rg(
     repo: Path,
     files: list[Path],
     banned: list[dict[str, str]],
 ) -> list[tuple[Path, int, str]]:
     """Use ripgrep to prefilter candidate lines before Python validation."""
-    command = ["rg", "--line-number", "--with-filename", "--no-heading", "--color", "never"]
-    command.extend(["--fixed-strings", "--ignore-case", "--no-messages"])
-    for entry in banned:
-        command.extend(["-e", entry["pattern"]])
-    command.extend(str(path) for path in files)
-
-    result = subprocess.run(
-        command,
-        cwd=repo,
-        capture_output=True,
-        text=True,
-    )
-    if result.returncode not in {0, 1}:
-        print(f"ERROR: rg scan failed: {result.stderr}", file=sys.stderr)
-        sys.exit(2)
-
     candidates: list[tuple[Path, int, str]] = []
     seen: set[tuple[str, int, str]] = set()
-    for raw_line in result.stdout.splitlines():
-        parts = raw_line.split(":", 2)
-        if len(parts) != 3:
-            continue
-        rel_path, line_no, line_text = parts
-        if not line_no.isdigit():
-            continue
-        key = (rel_path, int(line_no), line_text)
-        if key in seen:
-            continue
-        seen.add(key)
-        candidates.append((Path(rel_path), int(line_no), line_text))
+    chunk_size = 256
+    for start in range(0, len(files), chunk_size):
+        command = ["rg", "--line-number", "--with-filename", "--no-heading", "--color", "never"]
+        command.extend(["--fixed-strings", "--ignore-case", "--no-messages"])
+        for entry in banned:
+            command.extend(["-e", entry["pattern"]])
+        command.append("--")
+        command.extend(str(path) for path in files[start:start + chunk_size])
+
+        result = subprocess.run(
+            command,
+            cwd=repo,
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode not in {0, 1}:
+            raise RuntimeError(result.stderr.strip())
+
+        for raw_line in result.stdout.splitlines():
+            parts = raw_line.split(":", 2)
+            if len(parts) != 3:
+                continue
+            rel_path, line_no, line_text = parts
+            if not line_no.isdigit():
+                continue
+            key = (rel_path, int(line_no), line_text)
+            if key in seen:
+                continue
+            seen.add(key)
+            candidates.append((Path(rel_path), int(line_no), line_text))
     return candidates
 
 
@@ -174,44 +227,60 @@ def main() -> int:
     if not banned:
         return 0
 
-    # Compile patterns (case-insensitive for prose terms, exact for identifiers)
-    compiled = []
-    for entry in banned:
-        pat_str = entry["pattern"]
-        # Use case-sensitive match for UPPER_CASE identifiers
-        if pat_str == pat_str.upper() and "_" in pat_str:
-            compiled.append((re.compile(re.escape(pat_str)), entry))
-        else:
-            compiled.append((re.compile(re.escape(pat_str), re.IGNORECASE), entry))
+    compiled = compile_banned_patterns(banned)
 
     files = git_tracked_files(repo)
-    scan_files = [rel_path for rel_path in files if not should_skip(rel_path)]
+    scan_files = [
+        rel_path
+        for rel_path in files
+        if not should_skip(rel_path) and (repo / rel_path).is_file()
+    ]
     violations: list[tuple[Path, int, str, dict[str, str]]] = []
 
+    engine = "python"
+    used_rg = False
     if shutil.which("rg") and scan_files:
-        candidates = build_candidate_lines_with_rg(repo, scan_files, banned)
-        for rel_path, lineno, line in candidates:
-            if is_allowlisted(line):
-                continue
-            for regex, entry in compiled:
-                if regex.search(line):
-                    violations.append((rel_path, lineno, line.strip(), entry))
-    else:
-        for rel_path in scan_files:
-            full_path = repo / rel_path
-            if not full_path.is_file():
-                continue
-            try:
-                text = full_path.read_text(encoding="utf-8", errors="replace")
-            except (OSError, UnicodeDecodeError):
-                continue
-
-            for lineno, line in enumerate(text.splitlines(), start=1):
+        try:
+            candidates = build_candidate_lines_with_rg(repo, scan_files, banned)
+            used_rg = True
+            engine = "ripgrep"
+            for rel_path, lineno, line in candidates:
                 if is_allowlisted(line):
                     continue
                 for regex, entry in compiled:
                     if regex.search(line):
                         violations.append((rel_path, lineno, line.strip(), entry))
+        except RuntimeError as exc:
+            print(
+                f"WARNING: rg prefilter failed ({exc or 'no stderr'}); falling back to python scan",
+                file=sys.stderr,
+            )
+
+    if not used_rg:
+        batch_size = 128
+        batches = iter_file_batches(scan_files, batch_size)
+        requested_jobs = os.environ.get("TERMINOLOGY_GATE_JOBS")
+        default_jobs = os.cpu_count() or 1
+        jobs = int(requested_jobs) if requested_jobs else default_jobs
+        jobs = max(1, min(jobs, len(batches) or 1))
+        batch_args = [
+            (str(repo), [str(path) for path in batch], banned)
+            for batch in batches
+        ]
+        if jobs == 1 or len(batch_args) <= 1:
+            batch_results = [scan_file_batch(args) for args in batch_args]
+        else:
+            with ProcessPoolExecutor(
+                max_workers=jobs,
+                mp_context=mp.get_context("fork"),
+            ) as executor:
+                batch_results = list(executor.map(scan_file_batch, batch_args))
+            engine = f"python-parallel({jobs})"
+        for batch_violations in batch_results:
+            violations.extend(
+                (Path(rel_path), lineno, line_text, entry)
+                for rel_path, lineno, line_text, entry in batch_violations
+            )
 
     if violations:
         if not args.quiet:
@@ -228,7 +297,6 @@ def main() -> int:
         return 1
     else:
         if not args.quiet:
-            engine = "ripgrep" if shutil.which("rg") else "python"
             print(
                 f"OK: terminology gate passed ({len(compiled)} banned patterns, "
                 f"{len(files)} files scanned, engine={engine})."

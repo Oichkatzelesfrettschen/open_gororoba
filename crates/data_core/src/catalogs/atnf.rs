@@ -6,8 +6,10 @@
 //! Source: https://www.atnf.csiro.au/research/pulsar/psrcat/
 //! HEASARC mirror: https://heasarc.gsfc.nasa.gov/xamin/
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use crate::parse::parse_f64_or_nan;
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    parse::parse_f64_or_nan,
+};
 use std::path::{Path, PathBuf};
 
 /// A pulsar from the ATNF catalogue.

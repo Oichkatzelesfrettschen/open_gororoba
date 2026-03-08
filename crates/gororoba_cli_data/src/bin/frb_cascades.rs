@@ -24,8 +24,7 @@ use clap::Parser;
 use std::path::PathBuf;
 
 use data_core::catalogs::chime::{extract_repeaters, parse_chime_csv};
-use stats_core::claims_gates::Verdict;
-use stats_core::ultrametric::temporal::analyze_temporal_cascade;
+use stats_core::{claims_gates::Verdict, ultrametric::temporal::analyze_temporal_cascade};
 
 #[derive(Parser)]
 #[command(name = "frb-cascades")]

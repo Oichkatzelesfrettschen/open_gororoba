@@ -69,7 +69,9 @@ impl GororobaGate {
         let mut sum_xy = 0.0;
 
         for (i, &v) in trace.iter().enumerate() {
-            if v <= 0.0 { continue; }
+            if v <= 0.0 {
+                continue;
+            }
             let x = ((i + 1) as f64).ln();
             let y = v.ln();
             sum_x += x;

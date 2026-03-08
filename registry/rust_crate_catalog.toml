@@ -1,0 +1,390 @@
+schema = "gororoba.rust.crate_catalog.v1"
+
+[meta]
+repo = "open_gororoba"
+source_of_truth = "cargo metadata + agents.toml"
+updated_on = "2026-03-07"
+
+[[workspace_crate]]
+name = "algebra_analysis"
+manifest_path = "crates/algebra_analysis/Cargo.toml"
+target_types = ["lib", "test"]
+domain = "algebra"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "algebra_core"
+manifest_path = "crates/algebra_core/Cargo.toml"
+target_types = ["bench", "example", "lib", "test"]
+domain = "algebra"
+backend_relevance = "cuda-policy"
+status = "active"
+
+[[workspace_crate]]
+name = "algebra_experimental"
+manifest_path = "crates/algebra_experimental/Cargo.toml"
+target_types = ["example", "lib"]
+domain = "algebra_experimental"
+backend_relevance = "cuda-experimental"
+status = "active"
+
+[[workspace_crate]]
+name = "casimir_core"
+manifest_path = "crates/casimir_core/Cargo.toml"
+target_types = ["lib"]
+domain = "physics"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "cd_kernel"
+manifest_path = "crates/cd_kernel/Cargo.toml"
+target_types = ["lib"]
+domain = "algebra_kernel"
+backend_relevance = "cpu-simd"
+status = "active"
+
+[[workspace_crate]]
+name = "cd_spin_bridge"
+manifest_path = "crates/cd_spin_bridge/Cargo.toml"
+target_types = ["lib"]
+domain = "bridge"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "control_core"
+manifest_path = "crates/control_core/Cargo.toml"
+target_types = ["lib"]
+domain = "control"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "cosmic_scheduler"
+manifest_path = "crates/cosmic_scheduler/Cargo.toml"
+target_types = ["lib", "test"]
+domain = "orchestration"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "cosmology_core"
+manifest_path = "crates/cosmology_core/Cargo.toml"
+target_types = ["lib"]
+domain = "cosmology"
+backend_relevance = "cpu-fit"
+status = "active"
+
+[[workspace_crate]]
+name = "data_core"
+manifest_path = "crates/data_core/Cargo.toml"
+target_types = ["lib"]
+domain = "data"
+backend_relevance = "cpu-columnar"
+status = "active"
+
+[[workspace_crate]]
+name = "docpipe"
+manifest_path = "crates/docpipe/Cargo.toml"
+target_types = ["bin", "lib", "test"]
+domain = "docs"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli"
+manifest_path = "crates/gororoba_cli/Cargo.toml"
+target_types = ["bin", "lib", "test"]
+domain = "cli"
+backend_relevance = "gpu-router"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_algebra"
+manifest_path = "crates/gororoba_cli_algebra/Cargo.toml"
+target_types = ["bin", "lib"]
+domain = "cli_algebra"
+backend_relevance = "tensor-avt-profiler"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_data"
+manifest_path = "crates/gororoba_cli_data/Cargo.toml"
+target_types = ["bin", "lib"]
+domain = "cli_data"
+backend_relevance = "inventory-governance"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_physics"
+manifest_path = "crates/gororoba_cli_physics/Cargo.toml"
+target_types = ["bin", "lib", "test"]
+domain = "cli_physics"
+backend_relevance = "cuda-vulkan-ops"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_quantum"
+manifest_path = "crates/gororoba_cli_quantum/Cargo.toml"
+target_types = ["bin"]
+domain = "cli_quantum"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_warp"
+manifest_path = "crates/gororoba_cli_warp/Cargo.toml"
+target_types = ["bin", "lib"]
+domain = "cli_warp"
+backend_relevance = "cuda-telemetry"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_contracts"
+manifest_path = "crates/gororoba_contracts/Cargo.toml"
+target_types = ["lib"]
+domain = "contracts"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_engine"
+manifest_path = "crates/gororoba_engine/Cargo.toml"
+target_types = ["bench", "example", "lib", "test"]
+domain = "engine"
+backend_relevance = "gpu-routing"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_gpu_bridge"
+manifest_path = "crates/gororoba_gpu_bridge/Cargo.toml"
+target_types = ["lib"]
+domain = "gpu_bridge"
+backend_relevance = "backend-vocabulary"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_pipeline"
+manifest_path = "crates/gororoba_pipeline/Cargo.toml"
+target_types = ["lib"]
+domain = "pipeline"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_py"
+manifest_path = "crates/gororoba_py/Cargo.toml"
+target_types = ["cdylib"]
+domain = "python_bindings"
+backend_relevance = "gpu-exposure"
+status = "active"
+
+[[workspace_crate]]
+name = "gr_core"
+manifest_path = "crates/gr_core/Cargo.toml"
+target_types = ["example", "lib", "test"]
+domain = "gr"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "lattice_filtration"
+manifest_path = "crates/lattice_filtration/Cargo.toml"
+target_types = ["bench", "lib", "test"]
+domain = "tda"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "lbm_3d"
+manifest_path = "crates/lbm_3d/Cargo.toml"
+target_types = ["bench", "lib", "test"]
+domain = "lbm"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "lbm_3d_cuda"
+manifest_path = "crates/lbm_3d_cuda/Cargo.toml"
+target_types = ["bench", "lib", "test"]
+domain = "lbm_cuda"
+backend_relevance = "cuda-execution"
+status = "active"
+
+[[workspace_crate]]
+name = "lbm_core"
+manifest_path = "crates/lbm_core/Cargo.toml"
+target_types = ["lib"]
+domain = "lbm"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "lbm_vulkan"
+manifest_path = "crates/lbm_vulkan/Cargo.toml"
+target_types = ["bin", "lib"]
+domain = "lbm_vulkan"
+backend_relevance = "vulkan-execution"
+status = "active"
+
+[[workspace_crate]]
+name = "materials_core"
+manifest_path = "crates/materials_core/Cargo.toml"
+target_types = ["lib"]
+domain = "materials"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "neural_homotopy"
+manifest_path = "crates/neural_homotopy/Cargo.toml"
+target_types = ["bench", "lib", "test"]
+domain = "neural_homotopy"
+backend_relevance = "wgpu-cuda-compiletime"
+status = "active"
+
+[[workspace_crate]]
+name = "optics_core"
+manifest_path = "crates/optics_core/Cargo.toml"
+target_types = ["lib", "test"]
+domain = "optics"
+backend_relevance = "cuda-bench"
+status = "active"
+
+[[workspace_crate]]
+name = "pathion_ellip"
+manifest_path = "crates/pathion_ellip/Cargo.toml"
+target_types = ["lib"]
+domain = "algebra"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "qgp_scaling"
+manifest_path = "crates/qgp_scaling/Cargo.toml"
+target_types = ["lib"]
+domain = "qgp"
+backend_relevance = "cpu-fit"
+status = "active"
+
+[[workspace_crate]]
+name = "quantum_core"
+manifest_path = "crates/quantum_core/Cargo.toml"
+target_types = ["bench", "lib"]
+domain = "quantum"
+backend_relevance = "cuda-sparse-candidate"
+status = "active"
+
+[[workspace_crate]]
+name = "scrolls_core"
+manifest_path = "crates/scrolls_core/Cargo.toml"
+target_types = ["lib"]
+domain = "registry"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "sign_imbalance"
+manifest_path = "crates/sign_imbalance/Cargo.toml"
+target_types = ["bench", "lib", "test"]
+domain = "signed_graphs"
+backend_relevance = "cuda-optional"
+status = "active"
+
+[[workspace_crate]]
+name = "snia_core"
+manifest_path = "crates/snia_core/Cargo.toml"
+target_types = ["bench", "example", "lib", "test"]
+domain = "snia"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "spectral_core"
+manifest_path = "crates/spectral_core/Cargo.toml"
+target_types = ["lib"]
+domain = "spectral"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "spin_tomography_core"
+manifest_path = "crates/spin_tomography_core/Cargo.toml"
+target_types = ["lib"]
+domain = "quantum"
+backend_relevance = "cpu"
+status = "active"
+
+[[workspace_crate]]
+name = "stats_core"
+manifest_path = "crates/stats_core/Cargo.toml"
+target_types = ["lib"]
+domain = "stats"
+backend_relevance = "cuda-optional"
+status = "active"
+
+[[workspace_crate]]
+name = "verified_core"
+manifest_path = "crates/verified_core/Cargo.toml"
+target_types = ["lib", "test"]
+domain = "verified"
+backend_relevance = "cpu"
+status = "active"
+
+[[candidate_crate]]
+name = "iai-callgrind"
+status = "pilot"
+landing_zone = "crates/algebra_core/benches/tensor_avt_iai.rs"
+docs_url = "https://docs.rs/iai-callgrind/0.16.1"
+source_url = "https://github.com/iai-callgrind/iai-callgrind"
+
+[[candidate_crate]]
+name = "tracing-tracy"
+status = "pilot"
+landing_zone = "crates/gororoba_cli_algebra/src/bin/tensor_avt_profile_suite.rs"
+docs_url = "https://docs.rs/tracing-tracy"
+source_url = "https://github.com/nagisa/rust_tracy_client"
+
+[[candidate_crate]]
+name = "argmin"
+status = "pilot"
+landing_zone = "crates/cosmology_core/src/optimizer_argmin.rs"
+docs_url = "https://docs.rs/argmin/"
+source_url = "https://github.com/argmin-rs/argmin"
+
+[[candidate_crate]]
+name = "nalgebra-sparse"
+status = "pilot"
+landing_zone = "crates/quantum_core/src/hamiltonian_sparse.rs"
+docs_url = "https://www.nalgebra.rs/docs"
+source_url = "https://github.com/dimforge/nalgebra"
+
+[[candidate_crate]]
+name = "sprs"
+status = "candidate"
+landing_zone = "deferred until nalgebra-sparse gaps are proven"
+docs_url = "https://docs.rs/sprs"
+source_url = "https://github.com/sparsemat/sprs"
+
+[[candidate_crate]]
+name = "polars"
+status = "pilot"
+landing_zone = "crates/data_core/src/tabular.rs"
+docs_url = "https://docs.rs/polars/0.53.0"
+source_url = "https://github.com/pola-rs/polars"
+
+[[candidate_crate]]
+name = "datafusion"
+status = "candidate"
+landing_zone = "crates/gororoba_cli_data future SQL/query surface"
+docs_url = "https://docs.rs/datafusion/52.2.0"
+source_url = "https://github.com/apache/datafusion"
+
+[[candidate_crate]]
+name = "cubecl"
+status = "deferred"
+landing_zone = "crates/algebra_experimental feature-gated proof of concept only"
+docs_url = "https://docs.rs/cubecl/0.4.0"
+source_url = "https://github.com/tracel-ai/cubecl"

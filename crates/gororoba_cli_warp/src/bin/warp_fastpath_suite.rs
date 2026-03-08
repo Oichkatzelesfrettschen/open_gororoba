@@ -1,18 +1,19 @@
-use gororoba_cli_warp::warp_runner;
-use gororoba_cli_warp::warp_telemetry;
+use gororoba_cli_warp::{warp_runner, warp_telemetry};
 
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::read_simulation_trace_component;
 use gororoba_cli::warp_forcing_policy::{apply_warp_forcing_env, load_warp_forcing_profile};
 use lbm_3d_cuda::Precision;
 use stats_core::helpers::{mean as arithmetic_mean, std_dev};
-use std::cmp::Reverse;
-use std::collections::BTreeMap;
-use std::error::Error;
-use std::path::{Path, PathBuf};
-use std::process::Command;
-use std::sync::atomic::Ordering;
-use std::time::Duration;
+use std::{
+    cmp::Reverse,
+    collections::BTreeMap,
+    error::Error,
+    path::{Path, PathBuf},
+    process::Command,
+    sync::atomic::Ordering,
+    time::Duration,
+};
 use warp_runner::{
     BackendKind, BenchCase, BenchCaseReport, GateProfile, TimingMode, gate_h5_outputs_with_profile,
     print_case_report, run_case, write_step_timing_report,

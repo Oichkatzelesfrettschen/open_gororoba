@@ -49,7 +49,10 @@ fn main() -> anyhow::Result<()> {
     }
 
     if dims.is_empty() {
-        eprintln!("No valid dimensions in range [{}, {}]", cli.min_dim, cli.max_dim);
+        eprintln!(
+            "No valid dimensions in range [{}, {}]",
+            cli.min_dim, cli.max_dim
+        );
         std::process::exit(1);
     }
 
@@ -69,8 +72,15 @@ fn main() -> anyhow::Result<()> {
     // Summary table to stderr
     eprintln!(
         "{:<8} {:>8} {:>12} {:>10} {:>10} {:>10} {:>10} {:>8} {:>12}",
-        "CD_dim", "n_eigs", "mean_spacing", "var", "SSE_pois", "SSE_goe",
-        "KS_pois", "KS_goe", "brody_q"
+        "CD_dim",
+        "n_eigs",
+        "mean_spacing",
+        "var",
+        "SSE_pois",
+        "SSE_goe",
+        "KS_pois",
+        "KS_goe",
+        "brody_q"
     );
     eprintln!("{}", "-".repeat(98));
 

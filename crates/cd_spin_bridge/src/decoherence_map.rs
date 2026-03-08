@@ -74,8 +74,10 @@ mod tests {
         // gamma = gamma_0 + c_f * 0^2 + c_a * A = gamma_0 + c_a * A
         let dm = DecoherenceMap::default();
         let gamma = dm.gamma_from_imbalance(IMBALANCE_ATTRACTOR, 0.0);
-        assert!((gamma - dm.gamma_0).abs() < 1e-14,
-            "At imbalance attractor with zero associator, gamma should equal gamma_0");
+        assert!(
+            (gamma - dm.gamma_0).abs() < 1e-14,
+            "At imbalance attractor with zero associator, gamma should equal gamma_0"
+        );
     }
 
     #[test]
@@ -84,8 +86,10 @@ mod tests {
         let dm = DecoherenceMap::default();
         let gamma_at_attractor = dm.gamma_from_imbalance(IMBALANCE_ATTRACTOR, 0.0);
         let gamma_deviated = dm.gamma_from_imbalance(0.5, 0.0);
-        assert!(gamma_deviated > gamma_at_attractor,
-            "Deviation from imbalance attractor should increase decoherence rate");
+        assert!(
+            gamma_deviated > gamma_at_attractor,
+            "Deviation from imbalance attractor should increase decoherence rate"
+        );
     }
 
     #[test]
@@ -93,8 +97,10 @@ mod tests {
         let dm = DecoherenceMap::default();
         let gamma_no_assoc = dm.gamma_from_imbalance(IMBALANCE_ATTRACTOR, 0.0);
         let gamma_with_assoc = dm.gamma_from_imbalance(IMBALANCE_ATTRACTOR, 1.0);
-        assert!((gamma_with_assoc - gamma_no_assoc - dm.c_a).abs() < 1e-14,
-            "Associator norm contribution should be c_a * A");
+        assert!(
+            (gamma_with_assoc - gamma_no_assoc - dm.c_a).abs() < 1e-14,
+            "Associator norm contribution should be c_a * A"
+        );
     }
 
     #[test]

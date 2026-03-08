@@ -15,11 +15,7 @@ use clap::Parser;
 use log::{info, warn};
 use ndarray::{Array3, Zip};
 use num_complex::Complex64;
-use std::error::Error;
-use std::f64::consts::PI;
-use std::fs::File;
-use std::io::Write;
-use std::path::Path;
+use std::{error::Error, f64::consts::PI, fs::File, io::Write, path::Path};
 
 // Import core modules
 use algebra_core::lie::e7_geometry::generate_e7_roots;

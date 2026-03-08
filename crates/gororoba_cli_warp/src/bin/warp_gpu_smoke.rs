@@ -1,8 +1,7 @@
 use gororoba_cli_warp::warp_runner;
 
 use lbm_3d_cuda::Precision;
-use std::error::Error;
-use std::path::PathBuf;
+use std::{error::Error, path::PathBuf};
 use warp_runner::{
     BackendKind, BenchCase, TimingMode, gate_h5_outputs, print_case_report, run_case,
     write_step_timing_report,

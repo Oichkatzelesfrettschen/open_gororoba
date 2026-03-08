@@ -104,8 +104,7 @@ pub enum ChiralityMode {
     /// Double-flip: tests if two inversions cancel.
     DoubleFlip,
 }
-use gr_core::kerr::Kerr;
-use gr_core::sedenion_geodesic::sedenion_homotopy_step;
+use gr_core::{kerr::Kerr, sedenion_geodesic::sedenion_homotopy_step};
 use lbm_core::D2Q9;
 use ndarray::Array2;
 use stats_core::hypergraph::TriadHypergraph;

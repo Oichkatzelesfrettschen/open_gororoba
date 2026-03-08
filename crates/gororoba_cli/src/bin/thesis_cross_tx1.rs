@@ -17,8 +17,8 @@ use lattice_filtration::{
     ImbalanceStormConfig, LatencyLawDetail, classify_latency_law_detailed,
     simulate_imbalance_modulated_storm, simulate_shell_return_storm,
 };
-use std::fmt::Write as _;
 use sign_imbalance::bridge::SedenionField;
+use std::fmt::Write as _;
 
 #[derive(Parser, Debug)]
 #[command(name = "thesis-cross-tx1")]
@@ -143,10 +143,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mean_f = imbalance.iter().sum::<f64>() / n_cells as f64;
     let f_min = imbalance.iter().cloned().fold(f64::INFINITY, f64::min);
-    let f_max = imbalance
-        .iter()
-        .cloned()
-        .fold(f64::NEG_INFINITY, f64::max);
+    let f_max = imbalance.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
     println!(
         "  Imbalance: mean={:.6}, min={:.6}, max={:.6}, range={:.6}",
         mean_f,

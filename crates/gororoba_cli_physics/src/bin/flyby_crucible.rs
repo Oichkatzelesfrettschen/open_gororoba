@@ -11,7 +11,7 @@ use algebra_core::construction::chingon::AlternativityViolationTensor;
 use clap::Parser;
 use gororoba_cli_physics::ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN};
 use gr_core::forces::chingon_bivector_drag::{
-    compute_chingon_bivector_drag_3body, ThreeBodyOrbitalParams,
+    ThreeBodyOrbitalParams, compute_chingon_bivector_drag_3body,
 };
 #[cfg(feature = "gpu")]
 use lbm_3d_cuda::chingon_gpu::ChingonGpuPipeline;
@@ -127,7 +127,12 @@ fn dm_density_factor(r_km: f64) -> f64 {
 /// gets depletion. This is physically correct because the gravitational
 /// focusing wake is asymmetric -- particles are focused INTO the wake
 /// downstream and DEPLETED upstream where the mass absorbs/deflects them.
-fn dm_wake_density_factor(r_km: f64, r_pos: &Vector3<f64>, v_wind: &Vector3<f64>, eta_wake: f64) -> f64 {
+fn dm_wake_density_factor(
+    r_km: f64,
+    r_pos: &Vector3<f64>,
+    v_wind: &Vector3<f64>,
+    eta_wake: f64,
+) -> f64 {
     let base = dm_density_factor(r_km);
     if eta_wake == 0.0 {
         return base;
@@ -537,9 +542,8 @@ fn run_flyby(
                     }
 
                     if use_chingon {
-                        let alpha_eff = ALPHA_CHINGON * dm_wake_density_factor(
-                            p_in.norm(), &p_in, v_wind, eta_wake,
-                        );
+                        let alpha_eff = ALPHA_CHINGON
+                            * dm_wake_density_factor(p_in.norm(), &p_in, v_wind, eta_wake);
 
                         #[cfg(feature = "gpu")]
                         let gpu_force = gpu_pipeline.and_then(|mtx| {
@@ -547,19 +551,21 @@ fn run_flyby(
                                 p_in, v_in, *v_wind, r_moon, r_sun,
                             )?;
                             let mut pipe = mtx.lock().ok()?;
-                            let f = pipe.compute_force_3body(
-                                &params.triad_earth,
-                                &params.triad_lunar,
-                                &params.triad_solar,
-                                &params.h_triad_earth,
-                                &params.vrel_triad_lunar,
-                                &params.h_triad_solar,
-                                &params.vhat_triad_solar,
-                                params.h_earth_norm,
-                                params.v_rel_norm,
-                                params.cross_sign,
-                                alpha_eff,
-                            ).ok()?;
+                            let f = pipe
+                                .compute_force_3body(
+                                    &params.triad_earth,
+                                    &params.triad_lunar,
+                                    &params.triad_solar,
+                                    &params.h_triad_earth,
+                                    &params.vrel_triad_lunar,
+                                    &params.h_triad_solar,
+                                    &params.vhat_triad_solar,
+                                    params.h_earth_norm,
+                                    params.v_rel_norm,
+                                    params.cross_sign,
+                                    alpha_eff,
+                                )
+                                .ok()?;
                             Some(Vector3::new(f[0], f[1], f[2]))
                         });
 
@@ -596,7 +602,8 @@ fn run_flyby(
                         let alpha_eff = ALPHA_CHINGON * dm_fac;
                         compute_chingon_bivector_drag_3body(
                             p, v, *v_wind, alpha_eff, avt, r_moon, r_sun,
-                        ).norm()
+                        )
+                        .norm()
                     } else {
                         0.0
                     };
@@ -615,9 +622,18 @@ fn run_flyby(
                         0.0
                     };
                     h_trace_out.push([
-                        t_sec, h.x, h.y, h.z, h_dot_vw, cross_sign,
-                        a_chingon_mag, dm_fac, a_moon_mag, a_sun_mag,
-                        h_lunar.norm(), h_solar.norm(),
+                        t_sec,
+                        h.x,
+                        h.y,
+                        h.z,
+                        h_dot_vw,
+                        cross_sign,
+                        a_chingon_mag,
+                        dm_fac,
+                        a_moon_mag,
+                        a_sun_mag,
+                        h_lunar.norm(),
+                        h_solar.norm(),
                     ]);
                 }
 
@@ -655,8 +671,7 @@ fn run_flyby(
 fn pin_physical_cores() {
     #[cfg(target_os = "linux")]
     {
-        use std::collections::BTreeMap;
-        use std::fs;
+        use std::{collections::BTreeMap, fs};
 
         if let Ok(online) = fs::read_to_string("/sys/devices/system/cpu/online") {
             let mut core_groups: BTreeMap<(usize, usize), Vec<usize>> = BTreeMap::new();
@@ -813,24 +828,45 @@ fn main() -> anyhow::Result<()> {
         v_wind.norm()
     );
     println!("  dt = {:.2} s", cli.dt);
-    println!("  SOI = {} R_earth = {:.0} km", SOI_R_EARTH, SOI_R_EARTH * R_EARTH);
+    println!(
+        "  SOI = {} R_earth = {:.0} km",
+        SOI_R_EARTH,
+        SOI_R_EARTH * R_EARTH
+    );
     println!();
 
     // Validate dimension
     let dim = cli.dim;
-    assert!(dim.is_power_of_two() && dim >= 16, "dim must be a power of 2 >= 16, got {}", dim);
+    assert!(
+        dim.is_power_of_two() && dim >= 16,
+        "dim must be a power of 2 >= 16, got {}",
+        dim
+    );
     let (block_size, n_phases, _b1_start, _b2_start, _b3_start, block3_size) =
         gr_core::forces::chingon_bivector_drag::block_layout(dim);
-    println!("  dim = {}D, blocks = {}/{}/{}, phases = {}/{}", dim,
-        block_size, block_size, block3_size, n_phases, block3_size.div_ceil(3));
+    println!(
+        "  dim = {}D, blocks = {}/{}/{}, phases = {}/{}",
+        dim,
+        block_size,
+        block_size,
+        block3_size,
+        n_phases,
+        block3_size.div_ceil(3)
+    );
 
     // Compute AVT once (expensive at high dims)
-    println!("Computing {}D Alternativity Violation Tensor (cap={})...", dim, cli.avt_cap);
+    println!(
+        "Computing {}D Alternativity Violation Tensor (cap={})...",
+        dim, cli.avt_cap
+    );
     let t0 = std::time::Instant::now();
     let avt = Arc::new(AlternativityViolationTensor::new_with_cap(dim, cli.avt_cap));
-    println!("  AVT: {} violations ({:.2}s, {:.1} MB)",
-        avt.violations.len(), t0.elapsed().as_secs_f64(),
-        avt.violations.len() as f64 * 40.0 / 1e6);
+    println!(
+        "  AVT: {} violations ({:.2}s, {:.1} MB)",
+        avt.violations.len(),
+        t0.elapsed().as_secs_f64(),
+        avt.violations.len() as f64 * 40.0 / 1e6
+    );
     println!();
 
     // Initialize GPU pipeline if requested
@@ -839,12 +875,19 @@ fn main() -> anyhow::Result<()> {
         {
             let packed = avt.pack_for_gpu();
             println!("Initializing CUDA pipeline...");
-            println!("  Packed AVT: {} violations, {} bits/index, {} bytes",
-                packed.violation_count, packed.index_bits, packed.data.len() * 4);
+            println!(
+                "  Packed AVT: {} violations, {} bits/index, {} bytes",
+                packed.violation_count,
+                packed.index_bits,
+                packed.data.len() * 4
+            );
             let t_gpu = std::time::Instant::now();
             match ChingonGpuPipeline::new(&packed) {
                 Ok(pipeline) => {
-                    println!("  GPU pipeline ready ({:.2}s)", t_gpu.elapsed().as_secs_f64());
+                    println!(
+                        "  GPU pipeline ready ({:.2}s)",
+                        t_gpu.elapsed().as_secs_f64()
+                    );
                     Some(Arc::new(Mutex::new(pipeline)))
                 }
                 Err(e) => {
@@ -891,7 +934,11 @@ fn main() -> anyhow::Result<()> {
         let outb = radec_to_unit(cfg.outbound_ra_deg, cfg.outbound_dec_deg);
         let h_orb = (-inb).cross(&outb);
         let h_n = h_orb.norm();
-        let h_hat = if h_n > 1e-10 { h_orb / h_n } else { Vector3::zeros() };
+        let h_hat = if h_n > 1e-10 {
+            h_orb / h_n
+        } else {
+            Vector3::zeros()
+        };
         let h_dot_vw = h_hat.dot(&v_wind);
         let turn_deg = (-inb).dot(&outb).acos().to_degrees();
         let h_dec = h_hat.z.asin().to_degrees();
@@ -930,8 +977,16 @@ fn main() -> anyhow::Result<()> {
             let stride = (total_steps / 500).max(1);
 
             let (v_ctrl, v_chingon, traj, h_trace_data) = run_flyby(
-                cfg, &avt, cli.dt, t_before, t_after, stride, &v_wind,
-                ephem.as_ref(), cli.trace_h, eta_wake,
+                cfg,
+                &avt,
+                cli.dt,
+                t_before,
+                t_after,
+                stride,
+                &v_wind,
+                ephem.as_ref(),
+                cli.trace_h,
+                eta_wake,
                 gpu_pipeline.as_deref(),
             );
 
@@ -942,7 +997,14 @@ fn main() -> anyhow::Result<()> {
                 f64::NAN
             };
 
-            (*cfg, delta_v_mm_s, ratio, t_before + t_after, traj, h_trace_data)
+            (
+                *cfg,
+                delta_v_mm_s,
+                ratio,
+                t_before + t_after,
+                traj,
+                h_trace_data,
+            )
         })
         .collect();
     let sim_elapsed = t1.elapsed().as_secs_f64();
@@ -968,7 +1030,9 @@ fn main() -> anyhow::Result<()> {
                 .collect();
             let path = format!("{}_{}.csv", prefix, safe_name);
             let mut wtr = csv::Writer::from_path(&path)?;
-            wtr.write_record(["t_s", "x_km", "y_km", "z_km", "vx_km_s", "vy_km_s", "vz_km_s"])?;
+            wtr.write_record([
+                "t_s", "x_km", "y_km", "z_km", "vx_km_s", "vy_km_s", "vz_km_s",
+            ])?;
             for row in traj {
                 wtr.write_record(row.iter().map(|v| format!("{:.6}", v)))?;
             }
@@ -986,9 +1050,18 @@ fn main() -> anyhow::Result<()> {
             let path = format!("h_trace_{}.csv", safe_name);
             let mut wtr = csv::Writer::from_path(&path)?;
             wtr.write_record([
-                "t_s", "h_x", "h_y", "h_z", "h_dot_vwind", "cross_sign",
-                "a_chingon_mag", "dm_factor", "a_moon_mag", "a_sun_mag",
-                "h_lunar_norm", "h_solar_norm",
+                "t_s",
+                "h_x",
+                "h_y",
+                "h_z",
+                "h_dot_vwind",
+                "cross_sign",
+                "a_chingon_mag",
+                "dm_factor",
+                "a_moon_mag",
+                "a_sun_mag",
+                "h_lunar_norm",
+                "h_solar_norm",
             ])?;
             for row in h_trace_data {
                 wtr.write_record(row.iter().map(|v| format!("{:.8e}", v)))?;
@@ -999,7 +1072,11 @@ fn main() -> anyhow::Result<()> {
     }
 
     println!();
-    println!("=== Universality Verdict ({:.2}s, {} physical cores) ===", sim_elapsed, rayon::current_num_threads());
+    println!(
+        "=== Universality Verdict ({:.2}s, {} physical cores) ===",
+        sim_elapsed,
+        rayon::current_num_threads()
+    );
     println!("  If pred/obs ratio is consistent across all spacecraft,");
     println!("  the coupling constant is universal.");
     println!("  Tolerance: |pred/obs - 1| < 0.25 for each flyby.");

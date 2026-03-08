@@ -170,8 +170,7 @@ pub fn permutation_test_generic<C: ConstraintSystem + ?Sized>(
     n_permutations: usize,
     seed: u64,
 ) -> f64 {
-    use rand::SeedableRng;
-    use rand::seq::SliceRandom;
+    use rand::{SeedableRng, seq::SliceRandom};
     use rand_chacha::ChaCha8Rng;
 
     let observed = compute_generic_locality(system, sequence);

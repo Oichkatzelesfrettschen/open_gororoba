@@ -17,16 +17,16 @@ pub mod gate;
 pub mod pipeline;
 pub mod pipelines;
 pub mod provenance;
-pub mod singularitarian;
 pub mod simulation;
+pub mod singularitarian;
 pub mod thesis_pipelines;
 pub mod verification_layer;
 
 // Re-export pipeline infrastructure from gororoba_pipeline
 pub use gororoba_pipeline::{
-    AntiDiagonalParityFilter, BitSourceLayer, CorrectionLayer, DynamicsLayer,
-    FibonacciBitSource, ParityLayer, PipelineState, SlidingTriadTopology, ThesisEvidence,
-    ThesisPipeline, TopologyLayer, VerificationLayer, VerificationReport,
+    AntiDiagonalParityFilter, BitSourceLayer, CorrectionLayer, DynamicsLayer, FibonacciBitSource,
+    ParityLayer, PipelineState, SlidingTriadTopology, ThesisEvidence, ThesisPipeline,
+    TopologyLayer, VerificationLayer, VerificationReport,
 };
 
 // Re-export pipeline sub-modules for crate::traits paths used by local modules

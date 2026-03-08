@@ -98,12 +98,20 @@ fn chingon_bivector_drag_core(
     let e_h = h_hat;
     let e_n = e_v.cross(&e_h);
     let e_n_norm = e_n.norm();
-    let e_n = if e_n_norm > 1e-30 { e_n / e_n_norm } else { Vector3::zeros() };
+    let e_n = if e_n_norm > 1e-30 {
+        e_n / e_n_norm
+    } else {
+        Vector3::zeros()
+    };
 
     // Project physical vectors into the orbital triad
     let h_triad = [h.dot(&e_v), h.dot(&e_h), h.dot(&e_n)];
     let vrel_triad = [v_rel.dot(&e_v), v_rel.dot(&e_h), v_rel.dot(&e_n)];
-    let vrel_hat_triad = [v_rel_hat.dot(&e_v), v_rel_hat.dot(&e_h), v_rel_hat.dot(&e_n)];
+    let vrel_hat_triad = [
+        v_rel_hat.dot(&e_v),
+        v_rel_hat.dot(&e_h),
+        v_rel_hat.dot(&e_n),
+    ];
 
     // Precompute trig table: only 7 distinct phases (TAU * k / 7, k=0..6).
     // Each RK4 step calls this function, so eliminating 42 trig calls per
@@ -255,14 +263,22 @@ impl ThreeBodyOrbitalParams {
                 let e_v = v_rel / v_rel_norm;
                 let e_n_raw = e_v.cross(&e_h);
                 let e_n_n = e_n_raw.norm();
-                let e_n = if e_n_n > 1e-30 { e_n_raw / e_n_n } else { Vector3::zeros() };
+                let e_n = if e_n_n > 1e-30 {
+                    e_n_raw / e_n_n
+                } else {
+                    Vector3::zeros()
+                };
                 return (e_v, e_h, e_n);
             }
             let e_h = *h / hn;
             let e_v = v_rel / v_rel_norm;
             let e_n_raw = e_v.cross(&e_h);
             let e_n_n = e_n_raw.norm();
-            let e_n = if e_n_n > 1e-30 { e_n_raw / e_n_n } else { Vector3::zeros() };
+            let e_n = if e_n_n > 1e-30 {
+                e_n_raw / e_n_n
+            } else {
+                Vector3::zeros()
+            };
             (e_v, e_h, e_n)
         };
 
@@ -272,17 +288,47 @@ impl ThreeBodyOrbitalParams {
 
         let v_hat = v_rel / v_rel_norm;
 
-        let h_triad_earth = [h_earth.dot(&e_v_earth), h_earth.dot(&e_h_earth), h_earth.dot(&e_n_earth)];
-        let vrel_triad_lunar = [v_rel.dot(&e_v_lunar), v_rel.dot(&e_h_lunar), v_rel.dot(&e_n_lunar)];
-        let h_triad_solar = [h_earth.dot(&e_v_solar), h_earth.dot(&e_h_solar), h_earth.dot(&e_n_solar)];
-        let vhat_triad_solar = [v_hat.dot(&e_v_solar), v_hat.dot(&e_h_solar), v_hat.dot(&e_n_solar)];
+        let h_triad_earth = [
+            h_earth.dot(&e_v_earth),
+            h_earth.dot(&e_h_earth),
+            h_earth.dot(&e_n_earth),
+        ];
+        let vrel_triad_lunar = [
+            v_rel.dot(&e_v_lunar),
+            v_rel.dot(&e_h_lunar),
+            v_rel.dot(&e_n_lunar),
+        ];
+        let h_triad_solar = [
+            h_earth.dot(&e_v_solar),
+            h_earth.dot(&e_h_solar),
+            h_earth.dot(&e_n_solar),
+        ];
+        let vhat_triad_solar = [
+            v_hat.dot(&e_v_solar),
+            v_hat.dot(&e_h_solar),
+            v_hat.dot(&e_n_solar),
+        ];
 
-        fn v3_to_arr(v: Vector3<f64>) -> [f64; 3] { [v.x, v.y, v.z] }
+        fn v3_to_arr(v: Vector3<f64>) -> [f64; 3] {
+            [v.x, v.y, v.z]
+        }
 
         Some(Self {
-            triad_earth: [v3_to_arr(e_v_earth), v3_to_arr(e_h_earth), v3_to_arr(e_n_earth)],
-            triad_lunar: [v3_to_arr(e_v_lunar), v3_to_arr(e_h_lunar), v3_to_arr(e_n_lunar)],
-            triad_solar: [v3_to_arr(e_v_solar), v3_to_arr(e_h_solar), v3_to_arr(e_n_solar)],
+            triad_earth: [
+                v3_to_arr(e_v_earth),
+                v3_to_arr(e_h_earth),
+                v3_to_arr(e_n_earth),
+            ],
+            triad_lunar: [
+                v3_to_arr(e_v_lunar),
+                v3_to_arr(e_h_lunar),
+                v3_to_arr(e_n_lunar),
+            ],
+            triad_solar: [
+                v3_to_arr(e_v_solar),
+                v3_to_arr(e_h_solar),
+                v3_to_arr(e_n_solar),
+            ],
             h_triad_earth,
             vrel_triad_lunar,
             h_triad_solar,
@@ -352,7 +398,14 @@ pub fn block_layout(dim: usize) -> (usize, usize, usize, usize, usize, usize) {
     let block2_start = block1_start + block1_size;
     let block3_start = block2_start + block2_size;
     let n_phases = block1_size.div_ceil(3); // ceil(block_size / 3) for trig LUT
-    (block1_size, n_phases, block1_start, block2_start, block3_start, block3_size)
+    (
+        block1_size,
+        n_phases,
+        block1_start,
+        block2_start,
+        block3_start,
+        block3_size,
+    )
 }
 
 /// Three-body N-dimensional embedding: body-specific triads for each sub-block.
@@ -394,7 +447,9 @@ pub fn compute_chingon_bivector_drag_3body(
     let h_earth_norm = params.h_earth_norm;
     let cross_sign = params.cross_sign;
 
-    fn arr_to_v3(a: [f64; 3]) -> Vector3<f64> { Vector3::new(a[0], a[1], a[2]) }
+    fn arr_to_v3(a: [f64; 3]) -> Vector3<f64> {
+        Vector3::new(a[0], a[1], a[2])
+    }
 
     let e_v_solar = arr_to_v3(params.triad_solar[0]);
     let e_h_solar = arr_to_v3(params.triad_solar[1]);
@@ -502,13 +557,11 @@ mod tests {
         let v_south = Vector3::new(0.0, 7.0, -3.0); // southward approach
         let v_wind = Vector3::new(0.0, 200.0, 50.0);
 
-        let f_south =
-            compute_chingon_bivector_drag(r, v_south, v_wind, 1e-10, &avt);
+        let f_south = compute_chingon_bivector_drag(r, v_south, v_wind, 1e-10, &avt);
 
         // Mirror: northern approach (flip v_z)
         let v_north = Vector3::new(0.0, 7.0, 3.0);
-        let f_north =
-            compute_chingon_bivector_drag(r, v_north, v_wind, 1e-10, &avt);
+        let f_north = compute_chingon_bivector_drag(r, v_north, v_wind, 1e-10, &avt);
 
         // Forces should differ in sign for at least one component
         let dot = f_south.dot(&f_north);
@@ -570,11 +623,7 @@ mod tests {
         // Inbound direction
         let dec = (-20.8_f64).to_radians();
         let ra = 280.0_f64.to_radians();
-        let inbound = Vector3::new(
-            dec.cos() * ra.cos(),
-            dec.cos() * ra.sin(),
-            dec.sin(),
-        );
+        let inbound = Vector3::new(dec.cos() * ra.cos(), dec.cos() * ra.sin(), dec.sin());
 
         let r_perigee = 6371.0 + 539.0;
         let r = inbound * (-r_perigee); // position opposite to inbound
@@ -606,11 +655,7 @@ mod tests {
         // and high v_inf flip the effective coupling sign.
         let dec = (-12.9_f64).to_radians();
         let ra = 257.0_f64.to_radians();
-        let inbound = Vector3::new(
-            dec.cos() * ra.cos(),
-            dec.cos() * ra.sin(),
-            dec.sin(),
-        );
+        let inbound = Vector3::new(dec.cos() * ra.cos(), dec.cos() * ra.sin(), dec.sin());
 
         let r_perigee = 6371.0 + 1175.0;
         let r = inbound * (-r_perigee);
@@ -645,9 +690,7 @@ mod tests {
         let r_moon = Vector3::new(384400.0, 0.0, 0.0);
         let r_sun = Vector3::new(1.496e8, 0.0, 0.0);
 
-        let f = compute_chingon_bivector_drag_3body(
-            r, v, v_wind, 0.0, &avt, r_moon, r_sun,
-        );
+        let f = compute_chingon_bivector_drag_3body(r, v, v_wind, 0.0, &avt, r_moon, r_sun);
         assert_eq!(f, Vector3::zeros());
     }
 
@@ -663,15 +706,11 @@ mod tests {
 
         // Moon along +x (aligned with r)
         let r_moon_x = Vector3::new(384400.0, 0.0, 0.0);
-        let f_x = compute_chingon_bivector_drag_3body(
-            r, v, v_wind, alpha, &avt, r_moon_x, r_sun,
-        );
+        let f_x = compute_chingon_bivector_drag_3body(r, v, v_wind, alpha, &avt, r_moon_x, r_sun);
 
         // Moon along +y (perpendicular to r, different triad rotation)
         let r_moon_y = Vector3::new(0.0, 384400.0, 0.0);
-        let f_y = compute_chingon_bivector_drag_3body(
-            r, v, v_wind, alpha, &avt, r_moon_y, r_sun,
-        );
+        let f_y = compute_chingon_bivector_drag_3body(r, v, v_wind, alpha, &avt, r_moon_y, r_sun);
 
         // Different Moon positions should produce different forces
         // because the Lunar triad (Block 2) rotates, changing AVT couplings
@@ -680,7 +719,8 @@ mod tests {
             diff > 0.0,
             "Moon at different positions should change force via triad rotation: \
              f_x={:?}, f_y={:?}",
-            f_x, f_y
+            f_x,
+            f_y
         );
     }
 
@@ -695,15 +735,13 @@ mod tests {
 
         // Southward approach
         let v_south = Vector3::new(0.0, 7.0, -3.0);
-        let f_south = compute_chingon_bivector_drag_3body(
-            r, v_south, v_wind, alpha, &avt, r_moon, r_sun,
-        );
+        let f_south =
+            compute_chingon_bivector_drag_3body(r, v_south, v_wind, alpha, &avt, r_moon, r_sun);
 
         // Northward approach (flip v_z)
         let v_north = Vector3::new(0.0, 7.0, 3.0);
-        let f_north = compute_chingon_bivector_drag_3body(
-            r, v_north, v_wind, alpha, &avt, r_moon, r_sun,
-        );
+        let f_north =
+            compute_chingon_bivector_drag_3body(r, v_north, v_wind, alpha, &avt, r_moon, r_sun);
 
         // Forces should differ in sign for at least one component
         let dot = f_south.dot(&f_north);
@@ -725,12 +763,13 @@ mod tests {
         let r_moon = Vector3::new(300000.0, 200000.0, 50000.0);
         let r_sun = Vector3::new(1.0e8, 0.5e8, 0.0);
 
-        let f = compute_chingon_bivector_drag_3body(
-            r, v, v_wind, 8e-14, &avt, r_moon, r_sun,
-        );
+        let f = compute_chingon_bivector_drag_3body(r, v, v_wind, 8e-14, &avt, r_moon, r_sun);
         assert!(f.x.is_finite(), "Force x not finite");
         assert!(f.y.is_finite(), "Force y not finite");
         assert!(f.z.is_finite(), "Force z not finite");
-        assert!(f.norm() > 0.0, "Force should be nonzero for non-degenerate geometry");
+        assert!(
+            f.norm() > 0.0,
+            "Force should be nonzero for non-degenerate geometry"
+        );
     }
 }

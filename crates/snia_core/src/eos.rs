@@ -1,5 +1,4 @@
-use crate::error::SniaError;
-use crate::types::ThermoState;
+use crate::{error::SniaError, types::ThermoState};
 
 /// Composition hooks for EOS terms.
 #[derive(Debug, Clone, Copy)]

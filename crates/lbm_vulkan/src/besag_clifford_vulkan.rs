@@ -14,12 +14,16 @@
 //! 6. Dispatch `count_extreme` (compare to observed statistic)
 //! 7. Read extreme_count -> CPU, check adaptive stopping
 
-use crate::VulkanContext;
-use crate::compute::{BufferSet, GororobaEngine, VulkanEngineError, compile_wgsl};
+use crate::{
+    VulkanContext,
+    compute::{BufferSet, GororobaEngine, VulkanEngineError, compile_wgsl},
+};
 use ash::{Device, vk};
 use gpu_allocator::{MemoryLocation, vulkan::*};
-use std::ffi::CString;
-use std::sync::{Arc, Mutex};
+use std::{
+    ffi::CString,
+    sync::{Arc, Mutex},
+};
 
 type Result<T> = std::result::Result<T, VulkanEngineError>;
 
@@ -97,9 +101,7 @@ impl BcResult {
 /// Returns (bc_bytes, total_bytes) where bc_bytes is the additional VRAM
 /// needed for BC buffers beyond the LBM engine's own allocation.
 pub fn vram_budget(config: &BesagCliffordVulkanConfig) -> (u64, u64) {
-    let n_cells = config.grid_dim.0 as u64
-        * config.grid_dim.1 as u64
-        * config.grid_dim.2 as u64;
+    let n_cells = config.grid_dim.0 as u64 * config.grid_dim.1 as u64 * config.grid_dim.2 as u64;
     let n_sub_total = config.n_sub as u64 * config.n_sub as u64 * config.n_sub as u64;
 
     // BC-specific buffers (all f32 = 4 bytes):
@@ -107,18 +109,13 @@ pub fn vram_budget(config: &BesagCliffordVulkanConfig) -> (u64, u64) {
     // regional_means, regional_vel: 2 * n_sub^3 * 512 * 4 (workgroup partials)
     // extreme_count: 4 bytes
     // uniform: 48 bytes (BesagConstants)
-    let bc_bytes = 3 * n_cells * 4
-        + 2 * n_sub_total * 512 * 4
-        + 4
-        + 48;
+    let bc_bytes = 3 * n_cells * 4 + 2 * n_sub_total * 512 * 4 + 4 + 48;
 
     // LBM buffers:
     // f_a + f_b: 2 * n_cells * 19 * 4
     // rho, tau, entropy: 3 * n_cells * 4
     // u, force: 2 * n_cells * 3 * 4
-    let lbm_bytes = 2 * n_cells * 19 * 4
-        + 3 * n_cells * 4
-        + 2 * n_cells * 3 * 4;
+    let lbm_bytes = 2 * n_cells * 19 * 4 + 3 * n_cells * 4 + 2 * n_cells * 3 * 4;
 
     (bc_bytes, bc_bytes + lbm_bytes)
 }
@@ -265,8 +262,8 @@ fn create_compute_pipeline(
     layout: vk::PipelineLayout,
     entry: &str,
 ) -> Result<vk::Pipeline> {
-    let entry_name = CString::new(entry)
-        .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
+    let entry_name =
+        CString::new(entry).map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
     let pipeline = unsafe {
         device.create_compute_pipelines(
             vk::PipelineCache::null(),
@@ -380,11 +377,11 @@ impl BesagCliffordVulkanEngine {
 
     /// Initialize GPU pipelines and buffers. Must be called before
     /// `run_permutation_test`. Requires a live VulkanContext.
-    pub fn init_pipelines(
-        &mut self,
-        lbm: &GororobaEngine,
-    ) -> std::result::Result<(), String> {
-        let ctx = self.ctx.as_ref().ok_or("No VulkanContext for pipeline init")?;
+    pub fn init_pipelines(&mut self, lbm: &GororobaEngine) -> std::result::Result<(), String> {
+        let ctx = self
+            .ctx
+            .as_ref()
+            .ok_or("No VulkanContext for pipeline init")?;
         let device = ctx.device.clone();
         let allocator_arc = ctx.allocator.clone();
 
@@ -410,8 +407,8 @@ impl BesagCliffordVulkanEngine {
         .map_err(|e| format!("BC shader module: {e}"))?;
 
         // Descriptor set layout: 7 bindings (6 storage + 1 uniform)
-        let bindings: [vk::DescriptorSetLayoutBinding; 7] = core::array::from_fn(|i| {
-            vk::DescriptorSetLayoutBinding {
+        let bindings: [vk::DescriptorSetLayoutBinding; 7] =
+            core::array::from_fn(|i| vk::DescriptorSetLayoutBinding {
                 binding: i as u32,
                 descriptor_type: if i == 6 {
                     vk::DescriptorType::UNIFORM_BUFFER
@@ -421,8 +418,7 @@ impl BesagCliffordVulkanEngine {
                 descriptor_count: 1,
                 stage_flags: vk::ShaderStageFlags::COMPUTE,
                 ..Default::default()
-            }
-        });
+            });
         let dsl = unsafe {
             device.create_descriptor_set_layout(
                 &vk::DescriptorSetLayoutCreateInfo {
@@ -472,8 +468,7 @@ impl BesagCliffordVulkanEngine {
             .lock()
             .map_err(|_| "Failed to lock allocator")?;
 
-        let storage_rw =
-            vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_DST;
+        let storage_rw = vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_DST;
         let storage_ro = vk::BufferUsageFlags::STORAGE_BUFFER
             | vk::BufferUsageFlags::TRANSFER_SRC
             | vk::BufferUsageFlags::TRANSFER_DST;
@@ -563,8 +558,8 @@ impl BesagCliffordVulkanEngine {
         }
         .map_err(|e| format!("Halo shader module: {e}"))?;
 
-        let halo_bindings: [vk::DescriptorSetLayoutBinding; 5] = core::array::from_fn(|i| {
-            vk::DescriptorSetLayoutBinding {
+        let halo_bindings: [vk::DescriptorSetLayoutBinding; 5] =
+            core::array::from_fn(|i| vk::DescriptorSetLayoutBinding {
                 binding: i as u32,
                 descriptor_type: if i == 4 {
                     vk::DescriptorType::UNIFORM_BUFFER
@@ -574,8 +569,7 @@ impl BesagCliffordVulkanEngine {
                 descriptor_count: 1,
                 stage_flags: vk::ShaderStageFlags::COMPUTE,
                 ..Default::default()
-            }
-        });
+            });
         let halo_dsl = unsafe {
             device.create_descriptor_set_layout(
                 &vk::DescriptorSetLayoutCreateInfo {
@@ -866,13 +860,9 @@ impl BesagCliffordVulkanEngine {
             observed_stat,
             _pad: 0,
         };
-        let mapped_ptr = pl
-            .uniform_buffer
-            .allocation
-            .mapped_ptr()
-            .ok_or_else(|| {
-                VulkanEngineError::MappingError("Failed to map BC uniform buffer".into())
-            })?;
+        let mapped_ptr = pl.uniform_buffer.allocation.mapped_ptr().ok_or_else(|| {
+            VulkanEngineError::MappingError("Failed to map BC uniform buffer".into())
+        })?;
         unsafe { std::ptr::write(mapped_ptr.as_ptr() as *mut BesagConstants, constants) };
 
         let wg_cells = n_cells.div_ceil(256);
@@ -931,11 +921,7 @@ impl BesagCliffordVulkanEngine {
 
         // 5. Compute regional correlation
         unsafe {
-            device.cmd_bind_pipeline(
-                cmd,
-                vk::PipelineBindPoint::COMPUTE,
-                pl.correlation_pipeline,
-            );
+            device.cmd_bind_pipeline(cmd, vk::PipelineBindPoint::COMPUTE, pl.correlation_pipeline);
             device.cmd_bind_descriptor_sets(
                 cmd,
                 vk::PipelineBindPoint::COMPUTE,
@@ -996,10 +982,8 @@ impl BesagCliffordVulkanEngine {
         }
         .map_err(|e| format!("Command buffer: {e}"))?[0];
 
-        let fence = unsafe {
-            device.create_fence(&vk::FenceCreateInfo::default(), None)
-        }
-        .map_err(|e| format!("Fence: {e}"))?;
+        let fence = unsafe { device.create_fence(&vk::FenceCreateInfo::default(), None) }
+            .map_err(|e| format!("Fence: {e}"))?;
 
         // Zero out extreme_count before starting
         self.zero_extreme_count(ctx)
@@ -1036,8 +1020,7 @@ impl BesagCliffordVulkanEngine {
             self.record_permutation(cmd, lbm, batch, observed_stat)
                 .map_err(|e| format!("Record permutation {batch}: {e}"))?;
 
-            unsafe { device.end_command_buffer(cmd) }
-                .map_err(|e| format!("End cmd: {e}"))?;
+            unsafe { device.end_command_buffer(cmd) }.map_err(|e| format!("End cmd: {e}"))?;
 
             // Submit and wait
             unsafe {
@@ -1055,8 +1038,7 @@ impl BesagCliffordVulkanEngine {
 
             unsafe { device.wait_for_fences(&[fence], true, u64::MAX) }
                 .map_err(|e| format!("Wait: {e}"))?;
-            unsafe { device.reset_fences(&[fence]) }
-                .map_err(|e| format!("Reset fence: {e}"))?;
+            unsafe { device.reset_fences(&[fence]) }.map_err(|e| format!("Reset fence: {e}"))?;
 
             // Read back extreme_count
             let batch_extreme = self
@@ -1136,10 +1118,8 @@ impl BesagCliffordVulkanEngine {
         }
         .map_err(|e| format!("Halo cmd buf: {e}"))?[0];
 
-        let fence = unsafe {
-            device.create_fence(&vk::FenceCreateInfo::default(), None)
-        }
-        .map_err(|e| format!("Halo fence: {e}"))?;
+        let fence = unsafe { device.create_fence(&vk::FenceCreateInfo::default(), None) }
+            .map_err(|e| format!("Halo fence: {e}"))?;
 
         // Record dispatch
         unsafe {
@@ -1167,8 +1147,7 @@ impl BesagCliffordVulkanEngine {
         }
         compute_to_host_barrier(device, cmd);
 
-        unsafe { device.end_command_buffer(cmd) }
-            .map_err(|e| format!("Halo end cmd: {e}"))?;
+        unsafe { device.end_command_buffer(cmd) }.map_err(|e| format!("Halo end cmd: {e}"))?;
 
         // Submit and wait
         unsafe {
@@ -1224,15 +1203,17 @@ impl BesagCliffordVulkanEngine {
             )
         }?;
         let cmd = unsafe {
-            pl.device.allocate_command_buffers(&vk::CommandBufferAllocateInfo {
-                command_pool: cmd_pool,
-                level: vk::CommandBufferLevel::PRIMARY,
-                command_buffer_count: 1,
-                ..Default::default()
-            })
+            pl.device
+                .allocate_command_buffers(&vk::CommandBufferAllocateInfo {
+                    command_pool: cmd_pool,
+                    level: vk::CommandBufferLevel::PRIMARY,
+                    command_buffer_count: 1,
+                    ..Default::default()
+                })
         }?[0];
         let fence = unsafe {
-            pl.device.create_fence(&vk::FenceCreateInfo::default(), None)
+            pl.device
+                .create_fence(&vk::FenceCreateInfo::default(), None)
         }?;
 
         unsafe {
@@ -1243,7 +1224,8 @@ impl BesagCliffordVulkanEngine {
                     ..Default::default()
                 },
             )?;
-            pl.device.cmd_fill_buffer(cmd, pl.extreme_count_buffer.buffer, 0, 4, 0);
+            pl.device
+                .cmd_fill_buffer(cmd, pl.extreme_count_buffer.buffer, 0, 4, 0);
             pl.device.end_command_buffer(cmd)?;
             pl.device.queue_submit(
                 ctx.queue,
@@ -1293,7 +1275,10 @@ mod tests {
 
         // BC: 3 * 256^3 * 4 = 201326592 + small overhead
         let n_cells = 256u64 * 256 * 256;
-        assert!(bc_bytes >= 3 * n_cells * 4, "BC bytes too small: {bc_bytes}");
+        assert!(
+            bc_bytes >= 3 * n_cells * 4,
+            "BC bytes too small: {bc_bytes}"
+        );
 
         // Total should include LBM: 2 * 256^3 * 19 * 4 = ~5 GB
         let lbm_min = 2 * n_cells * 19 * 4;

@@ -157,13 +157,21 @@ impl VulkanContext {
         // 16BitStorage enables f16 in storage buffers (SPIR-V StorageBuffer16BitAccess).
         let mut storage16_features = vk::PhysicalDevice16BitStorageFeaturesKHR {
             s_type: vk::StructureType::PHYSICAL_DEVICE_16BIT_STORAGE_FEATURES_KHR,
-            storage_buffer16_bit_access: if caps.supports_fp16 { vk::TRUE } else { vk::FALSE },
+            storage_buffer16_bit_access: if caps.supports_fp16 {
+                vk::TRUE
+            } else {
+                vk::FALSE
+            },
             ..Default::default()
         };
 
         let mut float16_features = vk::PhysicalDeviceFloat16Int8FeaturesKHR {
             s_type: vk::StructureType::PHYSICAL_DEVICE_FLOAT16_INT8_FEATURES_KHR,
-            shader_float16: if caps.supports_fp16 { vk::TRUE } else { vk::FALSE },
+            shader_float16: if caps.supports_fp16 {
+                vk::TRUE
+            } else {
+                vk::FALSE
+            },
             p_next: &mut storage16_features as *mut _ as *mut std::ffi::c_void,
             ..Default::default()
         };
@@ -375,8 +383,13 @@ mod tests {
             vram_mb: 3072,
             ..caps.clone()
         };
-        let ctx_std_fp16 = VulkanContextStub { caps: caps_std_fp16 };
-        assert_eq!(ctx_std_fp16.get_scaling_parameters().precision, Precision::FP16);
+        let ctx_std_fp16 = VulkanContextStub {
+            caps: caps_std_fp16,
+        };
+        assert_eq!(
+            ctx_std_fp16.get_scaling_parameters().precision,
+            Precision::FP16
+        );
 
         // Ultra -> full complexity, stays FP32 even with FP16 support
         let caps_ultra = HardwareCapabilities {

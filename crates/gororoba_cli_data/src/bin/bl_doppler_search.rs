@@ -11,16 +11,21 @@
 //! - `export`:  Export compact results to repo (CSV + TOML)
 
 use clap::{Parser, Subcommand};
-use data_core::catalogs::bl_filterbank::BlObservation;
-use data_core::catalogs::bl_filterbank::bl_6equj5_observations;
 #[cfg(feature = "hdf5-export")]
 use data_core::catalogs::bl_filterbank::observation_file_path;
-use data_core::seti::cadence::{CadenceEvent, ObservationHits, abacad_event_filter};
-use data_core::seti::doppler::DopplerHit;
 #[cfg(feature = "hdf5-export")]
 use data_core::seti::doppler::DopplerSearchParams;
-use std::fs;
-use std::path::{Path, PathBuf};
+use data_core::{
+    catalogs::bl_filterbank::{BlObservation, bl_6equj5_observations},
+    seti::{
+        cadence::{CadenceEvent, ObservationHits, abacad_event_filter},
+        doppler::DopplerHit,
+    },
+};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser)]
 #[command(
