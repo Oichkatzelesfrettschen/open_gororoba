@@ -4,6 +4,7 @@
 //! 7 $K_{2,2,2}$ box-kite topologies found in Sedenion zero-divisors,
 //! representing a non-associative topological stabilizer code.
 
+use crate::stabilizer_like::{CompositeCode, StabilizerLikeCode};
 use std::collections::HashSet;
 
 /// Represents a topological stabilizer built from a Sedenion Box-Kite.
@@ -35,14 +36,36 @@ impl BoxKiteStabilizer {
     /// Simulates syndrome detection.
     /// In standard QEC, [S_i, S_j] = 0. Here, alternativity failure acts as a trap.
     pub fn check_syndrome(&self, error_mask: &HashSet<usize>) -> bool {
-        let mut syndrome_triggered = false;
-        for (u, v) in &self.parity_edges {
-            // A syndrome is triggered if one of the non-associative zero-divisor pairs is hit.
-            if error_mask.contains(u) || error_mask.contains(v) {
-                syndrome_triggered = true;
-            }
+        self.parity_edges
+            .iter()
+            .any(|(u, v)| error_mask.contains(u) || error_mask.contains(v))
+    }
+}
+
+impl StabilizerLikeCode for BoxKiteStabilizer {
+    fn covered_indices(&self) -> &[usize] {
+        &self.nodes
+    }
+
+    fn syndrome_strength(&self, error_mask: &HashSet<usize>) -> f64 {
+        if self.check_syndrome(error_mask) {
+            1.0
+        } else {
+            0.0
         }
-        syndrome_triggered
+    }
+
+    fn code_distance(&self) -> usize {
+        // K_{2,2,2} box-kites have distance 3 (minimum weight to flip syndrome)
+        3
+    }
+
+    fn num_checks(&self) -> usize {
+        self.parity_edges.len()
+    }
+
+    fn algebra_dimension(&self) -> usize {
+        16 // Sedenion
     }
 }
 
@@ -59,9 +82,32 @@ impl SedenionQecCode {
 
     /// Calculate distance metric for the non-associative code.
     pub fn compute_distance(&self) -> usize {
-        // Distance is defined by the minimum overlap to flip a syndrome trap.
-        // For K_{2,2,2} box-kites, distance threshold corresponds to the
-        // non-associative failure bounds.
-        3 // Baseline for 7-kite configuration
+        self.effective_distance()
+    }
+}
+
+impl CompositeCode for SedenionQecCode {
+    fn num_stabilizers(&self) -> usize {
+        self.stabilizers.len()
+    }
+
+    fn global_stability(&self, error_mask: &HashSet<usize>) -> f64 {
+        if self.stabilizers.is_empty() {
+            return 1.0;
+        }
+        let triggered: usize = self
+            .stabilizers
+            .iter()
+            .filter(|s| s.syndrome_strength(error_mask) > 0.0)
+            .count();
+        1.0 - (triggered as f64 / self.stabilizers.len() as f64)
+    }
+
+    fn effective_distance(&self) -> usize {
+        self.stabilizers
+            .iter()
+            .map(|s| s.code_distance())
+            .min()
+            .unwrap_or(0)
     }
 }

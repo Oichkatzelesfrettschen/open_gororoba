@@ -6,14 +6,14 @@ authoritative = true
 updated = "2026-03-08"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
-section_count = 43
-entry_count = 296
+section_count = 47
+entry_count = 316
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
-section_count = 43
-entry_count = 296
+section_count = 47
+entry_count = 316
 
 [[section]]
 id = "BSEC-001"
@@ -3445,3 +3445,241 @@ citation_markdown = "**The Guardian.** (2025). *Scientists hail avalanche of dis
 notes = ["*News coverage of Euclid mission early science discoveries.*"]
 urls = ["https://www.theguardian.com/science/2025/mar/19/scientists-hail-avalanche-discoveries-euclid-space-telescope"]
 dois = []
+
+# ============================================================================
+# Flyby Anomaly, DM-Plasma Coupling, CD Algebra, and QEC/Moonshine Literature
+# Added during E-111/E-112 sprint (Phase 0 of DM/Solar Wind integration plan)
+# BIB-0297..BIB-0316, BSEC-044..BSEC-047
+# ============================================================================
+
+[[section]]
+id = "BSEC-044"
+name = "Flyby Anomaly & Astrodynamics"
+groups = ["Primary Research & Data Sources"]
+entry_count = 5
+
+[[section]]
+id = "BSEC-045"
+name = "Dark Matter-Plasma Coupling & MHD"
+groups = ["Primary Research & Data Sources"]
+entry_count = 5
+
+[[section]]
+id = "BSEC-046"
+name = "Cayley-Dickson Algebras & Zero Divisors"
+groups = ["Primary Research & Data Sources"]
+entry_count = 5
+
+[[section]]
+id = "BSEC-047"
+name = "Monstrous Moonshine, QEC & Holographic Codes"
+groups = ["Primary Research & Data Sources"]
+entry_count = 5
+
+# --- BSEC-044: Flyby Anomaly & Astrodynamics (5) ---
+
+[[entry]]
+id = "BIB-0297"
+order_index = 297
+group = "Primary Research & Data Sources"
+section = "Flyby Anomaly & Astrodynamics"
+citation_markdown = "**Anderson, J. D., et al.** (2008). *Anomalous Orbital-Energy Changes Observed during Spacecraft Flybys of Earth*. Phys. Rev. Lett. 100, 091102."
+notes = ["*Foundational paper quantifying anomalous delta-V in 6 Earth flybys. Empirical formula: delta-v/v ~ 2*omega_E*R_E*(cos(delta_i) - cos(delta_o))/c. Baseline for all flyby anomaly work.*"]
+urls = ["https://arxiv.org/abs/0712.1053"]
+dois = ["10.1103/PhysRevLett.100.091102"]
+
+[[entry]]
+id = "BIB-0298"
+order_index = 298
+group = "Primary Research & Data Sources"
+section = "Flyby Anomaly & Astrodynamics"
+citation_markdown = "**Lammerzahl, C., Preuss, O., & Dittus, H.** (2008). *Is the Physics Within the Solar System Really Understood?*. Astrophys. Space Sci. Libr. 349, 75."
+notes = ["*Comprehensive review of anomalous accelerations in the solar system: Pioneer, flyby, secular AU increase. Reference frame and ephemeris considerations.*"]
+urls = ["https://arxiv.org/abs/gr-qc/0604052"]
+dois = ["10.1007/978-3-540-34377-6_3"]
+
+[[entry]]
+id = "BIB-0299"
+order_index = 299
+group = "Primary Research & Data Sources"
+section = "Flyby Anomaly & Astrodynamics"
+citation_markdown = "**Iorio, L.** (2015). *A flyby anomaly for Juno? Not from standard physics*. Adv. Space Res. 54, 2174."
+notes = ["*Analysis showing Juno flyby null result is consistent with Anderson formula. Constrains new physics explanations.*"]
+urls = ["https://arxiv.org/abs/1311.4218"]
+dois = ["10.1016/j.asr.2014.08.014"]
+
+[[entry]]
+id = "BIB-0300"
+order_index = 300
+group = "Primary Research & Data Sources"
+section = "Flyby Anomaly & Astrodynamics"
+citation_markdown = "**Acedo, L.** (2017). *Anomalous accelerations in spacecraft flybys of the Earth*. Astrophys. Space Sci. 362, 42."
+notes = ["*Alternative thermal/anisotropic radiation analysis for flyby anomalies. Important negative-result baseline for non-gravitational explanations.*"]
+urls = ["https://arxiv.org/abs/1505.06884"]
+dois = ["10.1007/s10509-017-3025-z"]
+
+[[entry]]
+id = "BIB-0301"
+order_index = 301
+group = "Primary Research & Data Sources"
+section = "Flyby Anomaly & Astrodynamics"
+citation_markdown = "**Pinheiro, M. J.** (2016). *The flyby anomaly and the gravitational-loss effect*. Phys. Lett. A 378, 3007."
+notes = ["*Gravitational-loss hypothesis for flyby anomaly: energy exchange with local gravitational field. Provides testable velocity-dependent predictions.*"]
+urls = ["https://arxiv.org/abs/1404.1101"]
+dois = ["10.1016/j.physleta.2014.08.030"]
+
+# --- BSEC-045: Dark Matter-Plasma Coupling & MHD (5) ---
+
+[[entry]]
+id = "BIB-0302"
+order_index = 302
+group = "Primary Research & Data Sources"
+section = "Dark Matter-Plasma Coupling & MHD"
+citation_markdown = "**Navarro, J. F., Frenk, C. S., & White, S. D. M.** (1996). *The Structure of Cold Dark Matter Halos*. Astrophys. J. 462, 563."
+notes = ["*Foundational NFW profile paper. rho(r) = rho_s / ((r/r_s)(1+r/r_s)^2). Basis for dm_force.rs and halo_profile.rs implementations.*"]
+urls = ["https://arxiv.org/abs/astro-ph/9508025"]
+dois = ["10.1086/177173"]
+
+[[entry]]
+id = "BIB-0303"
+order_index = 303
+group = "Primary Research & Data Sources"
+section = "Dark Matter-Plasma Coupling & MHD"
+citation_markdown = "**Lundberg, J. & Edsjo, J.** (2004). *Weakly interacting massive particle diffusion in the solar system including solar depletion and its effect on Earth capture rates*. Phys. Rev. D 69, 123505."
+notes = ["*Gravitational focusing of DM by the Sun and Earth: 10-20% density enhancement downstream. Referenced in flyby_crucible.rs ETA_WAKE.*"]
+urls = ["https://arxiv.org/abs/astro-ph/0401113"]
+dois = ["10.1103/PhysRevD.69.123505"]
+
+[[entry]]
+id = "BIB-0304"
+order_index = 304
+group = "Primary Research & Data Sources"
+section = "Dark Matter-Plasma Coupling & MHD"
+citation_markdown = "**Lee, B. J., Lisanti, M., & Safdi, B. R.** (2021). *Dark-Matter Wind Complementarity*. [arXiv:2112.05718](https://arxiv.org/abs/2112.05718)."
+notes = ["*Angular dependence of DM wind from gravitational lensing. Directional enhancement near Earth. Referenced in flyby_crucible.rs line 67.*"]
+urls = ["https://arxiv.org/abs/2112.05718"]
+dois = []
+
+[[entry]]
+id = "BIB-0305"
+order_index = 305
+group = "Primary Research & Data Sources"
+section = "Dark Matter-Plasma Coupling & MHD"
+citation_markdown = "**Xu, X. & Siegel, E. R.** (2008). *Dark Matter Heating and Cooling of the Interstellar Medium*. [arXiv:0806.3767](https://arxiv.org/abs/0806.3767)."
+notes = ["*DM-baryon energy exchange in ISM plasma. Heating/cooling rates from DM scattering. Relevant to solar wind-DM coupling models.*"]
+urls = ["https://arxiv.org/abs/0806.3767"]
+dois = []
+
+[[entry]]
+id = "BIB-0306"
+order_index = 306
+group = "Primary Research & Data Sources"
+section = "Dark Matter-Plasma Coupling & MHD"
+citation_markdown = "**Dvorkin, C., Blum, K., & Kamionkowski, M.** (2014). *Constraining Dark Matter-Baryon Scattering with Linear Cosmology*. Phys. Rev. D 89, 023519."
+notes = ["*Cross-section bounds on DM-baryon interactions from CMB + large-scale structure. Provides upper limits constraining solar-system DM-plasma coupling strength.*"]
+urls = ["https://arxiv.org/abs/1311.2937"]
+dois = ["10.1103/PhysRevD.89.023519"]
+
+# --- BSEC-046: Cayley-Dickson Algebras & Zero Divisors (5) ---
+
+[[entry]]
+id = "BIB-0307"
+order_index = 307
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Algebras & Zero Divisors"
+citation_markdown = "**Moreno, G.** (1998). *The zero divisors of the Cayley-Dickson algebras over the real numbers*. Bol. Soc. Mat. Mexicana 4, 13."
+notes = ["*Classification of zero divisors in sedenions and higher CD algebras. Foundation for BoxKiteStabilizer topology.*"]
+urls = ["https://arxiv.org/abs/q-alg/9710013"]
+dois = []
+
+[[entry]]
+id = "BIB-0308"
+order_index = 308
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Algebras & Zero Divisors"
+citation_markdown = "**Cawagas, R. E.** (2004). *On the Structure and Zero Divisors of the Cayley-Dickson Sedenion Algebra*. Discuss. Math. Gen. Algebra Appl. 24, 251."
+notes = ["*Systematic enumeration of sedenion zero-divisor structure. K_{2,2,2} graph topology. Basis for qec_boxkite.rs 6-node stabilizer.*"]
+urls = []
+dois = ["10.7151/dmgaa.1088"]
+
+[[entry]]
+id = "BIB-0309"
+order_index = 309
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Algebras & Zero Divisors"
+citation_markdown = "**De Marrais, R. P.** (2006). *The 42 Assessors and the Box-Kites they fly: Diagonal Axis-Pair Systems of Zero-Divisors in the Sedenions' 16 Dimensions*. [arXiv:math/0604092](https://arxiv.org/abs/math/0604092)."
+notes = ["*Box-kite geometry of sedenion ZDs: 7 box-kites, 42 assessors, diagonal axis pairs. Core reference for BoxKiteStabilizer and DekaVoudonStabilizer.*"]
+urls = ["https://arxiv.org/abs/math/0604092"]
+dois = []
+
+[[entry]]
+id = "BIB-0310"
+order_index = 310
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Algebras & Zero Divisors"
+citation_markdown = "**Brown, R. B. & Loeb, A. L.** (1997). *Nonassociative algebras and the Cayley-Dickson construction*. Exposition. Math. 15, 229."
+notes = ["*Mathematical properties of iterated Cayley-Dickson construction. Alternativity failure above dim 8, zero divisors above dim 16.*"]
+urls = []
+dois = []
+
+[[entry]]
+id = "BIB-0311"
+order_index = 311
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Algebras & Zero Divisors"
+citation_markdown = "**Gillard, A. & Gresnigt, N.** (2019). *Three fermion generations with two unbroken gauge symmetries from the complex sedenions*. Eur. Phys. J. C 79, 446."
+notes = ["*Sedenion algebraic structure maps to three fermion generations. Connects CD algebra to particle physics representation theory.*"]
+urls = ["https://arxiv.org/abs/1904.03186"]
+dois = ["10.1140/epjc/s10052-019-6967-1"]
+
+# --- BSEC-047: Monstrous Moonshine, QEC & Holographic Codes (5) ---
+
+[[entry]]
+id = "BIB-0312"
+order_index = 312
+group = "Primary Research & Data Sources"
+section = "Monstrous Moonshine, QEC & Holographic Codes"
+citation_markdown = "**Conway, J. H. & Norton, S. P.** (1979). *Monstrous Moonshine*. Bull. London Math. Soc. 11, 308."
+notes = ["*Original conjecture connecting Monster group representations to j-function coefficients. Foundational for moonshine.rs.*"]
+urls = []
+dois = ["10.1112/blms/11.3.308"]
+
+[[entry]]
+id = "BIB-0313"
+order_index = 313
+group = "Primary Research & Data Sources"
+section = "Monstrous Moonshine, QEC & Holographic Codes"
+citation_markdown = "**Borcherds, R. E.** (1992). *Monstrous moonshine and monstrous Lie superalgebras*. Invent. Math. 109, 405."
+notes = ["*Proof of the Monstrous Moonshine conjecture via vertex algebras and the Monster Lie algebra. Fields Medal work.*"]
+urls = []
+dois = ["10.1007/BF01232032"]
+
+[[entry]]
+id = "BIB-0314"
+order_index = 314
+group = "Primary Research & Data Sources"
+section = "Monstrous Moonshine, QEC & Holographic Codes"
+citation_markdown = "**Kitaev, A. Y.** (2003). *Fault-tolerant quantum computation by anyons*. Ann. Phys. 303, 2."
+notes = ["*Topological quantum error correction via anyonic excitations. Foundation for stabilizer code theory used in qec_boxkite.rs.*"]
+urls = ["https://arxiv.org/abs/quant-ph/9707021"]
+dois = ["10.1016/S0003-4916(02)00018-0"]
+
+[[entry]]
+id = "BIB-0315"
+order_index = 315
+group = "Primary Research & Data Sources"
+section = "Monstrous Moonshine, QEC & Holographic Codes"
+citation_markdown = "**Pastawski, F., Yoshida, B., Harlow, D., & Preskill, J.** (2015). *Holographic quantum error-correcting codes: Toy models for the bulk/boundary correspondence*. JHEP 2015, 149."
+notes = ["*HaPPY code: holographic perfect tensor codes. Connects AdS/CFT to quantum error correction. Foundation for HolographicVacuumCode in deka_voudon_qec.rs.*"]
+urls = ["https://arxiv.org/abs/1503.06237"]
+dois = ["10.1007/JHEP06(2015)149"]
+
+[[entry]]
+id = "BIB-0316"
+order_index = 316
+group = "Primary Research & Data Sources"
+section = "Monstrous Moonshine, QEC & Holographic Codes"
+citation_markdown = "**Conway, J. H.** (1968). *A characterisation of Leech's lattice*. Invent. Math. 7, 137."
+notes = ["*Original characterization of the Leech lattice in 24 dimensions. Unique even unimodular lattice with no roots. Connects to Monster group via automorphism tower.*"]
+urls = []
+dois = ["10.1007/BF01389796"]

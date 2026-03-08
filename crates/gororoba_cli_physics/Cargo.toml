@@ -29,6 +29,10 @@ name = "flyby-crucible"
 path = "src/bin/flyby_crucible.rs"
 
 [[bin]]
+name = "flyby-residual-audit"
+path = "src/bin/flyby_residual_audit.rs"
+
+[[bin]]
 name = "voudon-friedmann-sweep"
 path = "src/bin/voudon_friedmann_sweep.rs"
 
@@ -221,6 +225,14 @@ name = "solar-wind-dm-mhd"
 path = "src/bin/solar_wind_dm_mhd.rs"
 
 [[bin]]
+name = "solar-wind-ic"
+path = "src/bin/solar_wind_ic.rs"
+
+[[bin]]
+name = "chrono-flyby-probe"
+path = "src/bin/chrono_flyby_probe.rs"
+
+[[bin]]
 name = "chsh-betti-sweep"
 path = "src/bin/chsh_betti_sweep.rs"
 
@@ -377,6 +389,7 @@ gr_core = { path = "../gr_core" }
 materials_core = { path = "../materials_core" }
 optics_core = { path = "../optics_core" }
 quantum_core = { path = "../quantum_core" }
+algebra_experimental = { workspace = true }
 spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
 lbm_3d = { path = "../lbm_3d" }

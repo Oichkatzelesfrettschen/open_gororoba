@@ -15813,3 +15813,15 @@ what_would_verify_refute = "Run E-112 with default parameters. The printed max|F
 confidence = "high"
 phase = "fluids"
 sprint = 76
+
+[[claim]]
+id = "C-1146"
+statement = "Complete exhaustive enumeration of CD tower alternator violations from 16D to 16384D: 16D=336, 32D=5040, 64D=52080, 128D=468720, 256D=3968496, 512D=32644080, 1024D=264779760, 2048D=2132832240, 4096D=17121206256, 8192D=137204187120, 16384D=1098572333040. The doubling ratio V(2N)/V(N) converges monotonically toward 8.0: 15.00, 10.33, 9.00, 8.47, 8.23, 8.11, 8.05, 8.03, 8.01, 8.01. This extends C-1107 (which covered dims 8-256) to the full 11-level tower using both scalar and u64-chunk bitwise enumeration algorithms."
+where_stated = "crates/algebra_experimental/src/cd_tower_violations.rs (EXACT_ALTERNATOR_COUNTS, enumerate_violation_count, enumerate_violation_count_fast, enumerate_violation_count_tiled)"
+status = "Verified"
+last_verified = "2026-03-08"
+what_would_verify_refute = "VERIFIED: All 11 counts exhaustively enumerated and cross-validated between scalar and u64-chunk algorithms at dims 16-4096. 8192D and 16384D enumerated via u64-chunk with tiled cache optimization. Doubling ratio converges to 8.0 within 0.02 at dim=16384. REFUTE if any count changes on re-enumeration or if ratio diverges from 8.0."
+confidence = "high"
+phase = "algebra"
+sprint = 76
+dependencies = ["C-1107"]

@@ -4,3 +4,4 @@
 //! quantum mechanics, spectral analysis, fluids, HEP/QGP, and vacuum physics.
 
 pub mod ephemeris_loader;
+pub mod flyby;

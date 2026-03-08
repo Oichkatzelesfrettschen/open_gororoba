@@ -15,6 +15,7 @@ num-complex = { workspace = true }
 wide = { workspace = true }
 nalgebra = { workspace = true }
 rand = { workspace = true }
+rayon = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
 num-bigint = { workspace = true }

@@ -168,4 +168,6 @@ pub use hardware::{
 pub use hamiltonian_evolution::HamiltonianND;
 #[cfg(feature = "sparse-hamiltonians")]
 pub use hamiltonian_sparse::{build_sparse_hamiltonian, build_sparse_hamiltonian_coo};
+pub mod lattice_qec_bridge;
 pub mod qec_boxkite;
+pub mod stabilizer_like;

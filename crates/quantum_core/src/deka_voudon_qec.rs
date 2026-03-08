@@ -1,3 +1,4 @@
+use crate::stabilizer_like::{CompositeCode, StabilizerLikeCode};
 use algebra_experimental::higher_cd::HigherAvt;
 use std::collections::HashSet;
 
@@ -64,6 +65,30 @@ impl DekaVoudonStabilizer {
     }
 }
 
+impl StabilizerLikeCode for DekaVoudonStabilizer {
+    fn covered_indices(&self) -> &[usize] {
+        &self.nodes
+    }
+
+    fn syndrome_strength(&self, error_mask: &HashSet<usize>) -> f64 {
+        self.detect_syndrome(error_mask)
+    }
+
+    fn code_distance(&self) -> usize {
+        // Recursive chain depth: distance grows with level
+        // Each level doubles the parity-check span
+        self.level.max(1)
+    }
+
+    fn num_checks(&self) -> usize {
+        self.parity_paths.iter().map(|p| p.len()).sum()
+    }
+
+    fn algebra_dimension(&self) -> usize {
+        1024 // DekaVoudon
+    }
+}
+
 /// The Macroscopic Stabilizer Code representing the Vacuum Parity-Check Matrix.
 pub struct HolographicVacuumCode {
     pub stabilizers: Vec<DekaVoudonStabilizer>,
@@ -86,12 +111,32 @@ impl HolographicVacuumCode {
 
     /// Returns the global vacuum stability metric.
     pub fn evaluate_stability(&self, active_violations: &HashSet<usize>) -> f64 {
+        self.global_stability(active_violations)
+    }
+}
+
+impl CompositeCode for HolographicVacuumCode {
+    fn num_stabilizers(&self) -> usize {
+        self.stabilizers.len()
+    }
+
+    fn global_stability(&self, error_mask: &HashSet<usize>) -> f64 {
+        if self.stabilizers.is_empty() {
+            return 1.0;
+        }
         let sum: f64 = self
             .stabilizers
             .iter()
-            .map(|s| s.detect_syndrome(active_violations))
+            .map(|s| s.syndrome_strength(error_mask))
             .sum();
-
         1.0 - (sum / self.stabilizers.len() as f64)
+    }
+
+    fn effective_distance(&self) -> usize {
+        self.stabilizers
+            .iter()
+            .map(|s| s.code_distance())
+            .min()
+            .unwrap_or(0)
     }
 }
