@@ -69,8 +69,7 @@ struct TensorAvtGpuRuntime {
 #[cfg(feature = "gpu")]
 impl TensorAvtGpuRuntime {
     fn initialize() -> Result<Arc<Self>, String> {
-        let ctx =
-            Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
+        let ctx = CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?;
         let ptx = compile_ptx_with_opts(TENSOR_AVT_KERNEL_SRC, tensor_compile_opts())
             .map_err(|e| format!("NVRTC compile: {}", e))?;
         let module = ctx
