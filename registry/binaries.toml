@@ -970,6 +970,30 @@ description = "D3Q19 LBM + MHD + NFW dark matter gravitational coupling. Extends
 status = "active"
 
 [[binary]]
+name = "solar-wind-ic"
+crate = "gororoba_cli_physics"
+description = "Generate solar wind initial conditions from real spacecraft data (NASA OMNI2 preferred, ACE SWEPAM fallback). Maps hourly proton density, bulk speed, ion temperature, and Bx/By/Bz (GSE) to 3D LBM grid via Taylor frozen-in hypothesis. Output as CSV volume for ingestion by solar-wind-mhd-sim and solar-wind-dm-mhd."
+status = "active"
+
+[[binary]]
+name = "flyby-residual-audit"
+crate = "gororoba_cli_physics"
+description = "Quantify classical (Newtonian + DM density) residual delta-V for all 6 Anderson et al. spacecraft flybys. Establishes baseline that the non-associative model must explain."
+status = "active"
+
+[[binary]]
+name = "chrono-flyby-probe"
+crate = "gororoba_cli_physics"
+description = "Temporal-fluid / flyby trajectory coupling with QEC syndrome detection. Co-evolves spacecraft RK4 trajectory and 3D LBM fluid with chrono-complex viscosity modulation."
+status = "active"
+
+[[binary]]
+name = "moonshine-closure-test"
+crate = "gororoba_cli_algebra"
+description = "Moonshine closure analysis: representation closure of j-coefficients into Monster irreps, superpartner pairing with Witten index, and CD tower embedding divisibility."
+status = "active"
+
+[[binary]]
 name = "crate-inventory"
 crate = "gororoba_cli_data"
 description = "Validate registry/rust_crate_catalog.toml against cargo metadata and shared repo governance state."

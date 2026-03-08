@@ -409,4 +409,160 @@ mod tests {
             "force should be well above f64 noise: {max_f:.3e}"
         );
     }
+
+    // ---- MHD-DM coupling integration tests (P3.3c) ----
+
+    #[test]
+    fn test_combine_forces_identity() {
+        // Combining any force field with zeros returns the original
+        let a = vec![[1.5, -2.3, 0.7], [3.14, 0.0, -1.0]];
+        let zero = vec![[0.0; 3]; 2];
+        let result = combine_forces(&a, &zero);
+        for (r, orig) in result.iter().zip(a.iter()) {
+            assert!((r[0] - orig[0]).abs() < 1e-15);
+            assert!((r[1] - orig[1]).abs() < 1e-15);
+            assert!((r[2] - orig[2]).abs() < 1e-15);
+        }
+    }
+
+    #[test]
+    fn test_combine_forces_commutativity() {
+        let a = vec![[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [-1.0, 0.5, -0.3]];
+        let b = vec![[0.1, -0.2, 0.3], [10.0, -5.0, 2.5], [0.0, 0.0, 1.0]];
+        let ab = combine_forces(&a, &b);
+        let ba = combine_forces(&b, &a);
+        for (r_ab, r_ba) in ab.iter().zip(ba.iter()) {
+            assert!((r_ab[0] - r_ba[0]).abs() < 1e-15);
+            assert!((r_ab[1] - r_ba[1]).abs() < 1e-15);
+            assert!((r_ab[2] - r_ba[2]).abs() < 1e-15);
+        }
+    }
+
+    #[test]
+    fn test_dm_force_null_ratio() {
+        // Verify DM gravity is negligible vs Lorentz force on a well-resolved grid.
+        // Uses a synthetic non-uniform B-field (sinusoidal gradient) rather than
+        // Parker spiral, which requires large grids to resolve properly.
+        use crate::mhd::{MhdConfig, MhdField};
+
+        let (nx, ny, nz) = (32, 16, 16);
+
+        // Set up non-uniform B-field with gradient -> nonzero curl -> nonzero Lorentz
+        let mut mhd = MhdField::new(nx, ny, nz, MhdConfig::default());
+        let n = nx * ny * nz;
+        for idx in 0..n {
+            let x = idx % nx;
+            let phase = 2.0 * std::f64::consts::PI * x as f64 / nx as f64;
+            mhd.bx[idx] = 0.0;
+            mhd.by[idx] = phase.sin() * 0.01; // sinusoidal By(x) -> dBy/dx != 0
+            mhd.bz[idx] = 0.0;
+        }
+        let lorentz = mhd.lorentz_force();
+        let max_lorentz = lorentz
+            .iter()
+            .map(|v| (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt())
+            .fold(0.0_f64, f64::max);
+
+        // DM: canonical NFW
+        let dm = DmForceField::new(nx, ny, nz, DmForceConfig::default());
+        let max_dm = dm.max_force_magnitude();
+
+        assert!(max_lorentz > 1e-6, "Lorentz force should be nonzero: {max_lorentz:.3e}");
+        assert!(max_dm > 0.0, "DM force should be nonzero");
+
+        let ratio = max_dm / max_lorentz;
+        assert!(
+            ratio < 1e-6,
+            "DM/Lorentz ratio should be negligible: {ratio:.3e} (max_dm={max_dm:.3e}, max_lorentz={max_lorentz:.3e})"
+        );
+    }
+
+    #[test]
+    fn test_dm_mass_conservation() {
+        // DM force is a body force, not a source/sink.
+        // Total mass must be conserved. Use uniform B-field (zero Lorentz) so
+        // the only force is the tiny DM gravity -- stable on any grid.
+        use crate::solver::LbmSolver3D;
+
+        let (nx, ny, nz) = (16, 8, 8);
+        let tau = 0.8; // higher tau = more viscous = more stable
+
+        let mut solver = LbmSolver3D::new(nx, ny, nz, tau);
+        solver.initialize_uniform(1.0, [0.0, 0.0, 0.0]); // quiescent
+        let mass_initial = solver.total_mass();
+
+        // DM force field only (no MHD -- pure body force test)
+        let dm = DmForceField::new(nx, ny, nz, DmForceConfig::default());
+
+        for _ in 0..50 {
+            solver
+                .set_force_field(dm.force.clone())
+                .expect("force field set");
+            solver.evolve_one_step();
+        }
+
+        let mass_final = solver.total_mass();
+        let rel_err = (mass_final - mass_initial).abs() / mass_initial;
+        assert!(
+            rel_err < 1e-10,
+            "mass conservation violated: initial={mass_initial:.8}, final={mass_final:.8}, rel_err={rel_err:.3e}"
+        );
+    }
+
+    #[test]
+    fn test_zero_dm_matches_pure_mhd() {
+        // Evolving with an explicit zero force field should produce identical
+        // results to evolving without any forcing.
+        use crate::solver::LbmSolver3D;
+
+        let (nx, ny, nz) = (16, 8, 8);
+        let n = nx * ny * nz;
+        let tau = 0.8;
+
+        // Run A: no forcing
+        let mut solver_a = LbmSolver3D::new(nx, ny, nz, tau);
+        solver_a.initialize_uniform(1.0, [0.01, 0.0, 0.0]);
+
+        for _ in 0..10 {
+            solver_a.evolve_one_step();
+        }
+
+        // Run B: explicit zero force via combine_forces
+        let mut solver_b = LbmSolver3D::new(nx, ny, nz, tau);
+        solver_b.initialize_uniform(1.0, [0.01, 0.0, 0.0]);
+
+        let zero_a = vec![[0.0; 3]; n];
+        let zero_b = vec![[0.0; 3]; n];
+        let combined = combine_forces(&zero_a, &zero_b);
+        // Verify all zeros
+        assert!(combined.iter().all(|f| f[0] == 0.0 && f[1] == 0.0 && f[2] == 0.0));
+
+        for _ in 0..10 {
+            solver_b
+                .set_force_field(combined.clone())
+                .expect("set");
+            solver_b.evolve_one_step();
+        }
+
+        // Compare final fields: should be identical
+        let mass_a = solver_a.total_mass();
+        let mass_b = solver_b.total_mass();
+        assert!(
+            (mass_a - mass_b).abs() < 1e-12,
+            "mass mismatch: unforced={mass_a:.8}, zero_forced={mass_b:.8}"
+        );
+
+        // Compare velocity fields
+        for idx in 0..solver_a.u.len() {
+            for d in 0..3 {
+                let diff = (solver_a.u[idx][d] - solver_b.u[idx][d]).abs();
+                assert!(
+                    diff < 1e-12,
+                    "velocity mismatch at idx={idx} dim={d}: unforced={:.8e}, zero_forced={:.8e}",
+                    solver_a.u[idx][d],
+                    solver_b.u[idx][d]
+                );
+            }
+        }
+    }
 }

@@ -21,6 +21,7 @@ pub mod jarvis;
 pub mod landsat;
 pub mod mcgill;
 pub mod nanograv;
+pub mod omni;
 pub mod pantheon;
 pub mod planck;
 pub mod sdss;

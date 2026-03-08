@@ -148,6 +148,7 @@ dependencies = [
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
+ "rayon",
  "wide",
 ]
 
@@ -3828,6 +3829,7 @@ version = "0.1.0"
 dependencies = [
  "algebra_analysis",
  "algebra_core",
+ "algebra_experimental",
  "anise",
  "anyhow",
  "ash",

@@ -687,4 +687,82 @@ mod tests {
             field.bx[idx_far]
         );
     }
+
+    #[test]
+    fn test_projection_idempotent() {
+        // Applying projection twice: the second pass should find div(B) already
+        // near zero and make negligible further changes.
+        let mut field = MhdField::new(16, 8, 8, MhdConfig {
+            b0_nt: 5.0,
+            omega: 2.662e-6,
+            ..MhdConfig::default()
+        });
+        field.parker_spiral_init(0.1);
+
+        // First projection
+        let (_, div_after_1) = field.project_divergence_free(5000, 1e-12);
+        let energy_after_1 = field.magnetic_energy();
+
+        // Second projection
+        let (div_before_2, div_after_2) = field.project_divergence_free(5000, 1e-12);
+        let energy_after_2 = field.magnetic_energy();
+
+        // div_before_2 should equal div_after_1 (same field)
+        assert!(
+            (div_before_2 - div_after_1).abs() < 1e-14,
+            "second pass initial div should match first pass final: {div_before_2:.3e} vs {div_after_1:.3e}"
+        );
+
+        // Second projection should not change energy
+        let rel_energy = (energy_after_2 - energy_after_1).abs() / energy_after_1;
+        assert!(
+            rel_energy < 1e-10,
+            "idempotent projection should preserve energy: rel_change={rel_energy:.3e}"
+        );
+
+        // div_after_2 should be same or smaller
+        assert!(
+            div_after_2 <= div_after_1 * 1.01,
+            "second projection should not increase div: {div_after_1:.3e} -> {div_after_2:.3e}"
+        );
+    }
+
+    #[test]
+    fn test_lorentz_force_scales_with_b0() {
+        // F_Lorentz = J x B where J = curl(B)/mu_0.
+        // For Parker spiral, B ~ b0, J ~ b0, so F ~ b0^2.
+        // Doubling b0 should quadruple the max Lorentz force.
+        let (nx, ny, nz) = (16, 8, 8);
+
+        let mut field_lo = MhdField::new(nx, ny, nz, MhdConfig {
+            b0_nt: 5.0,
+            omega: 2.662e-6,
+            ..MhdConfig::default()
+        });
+        field_lo.parker_spiral_init(0.05);
+        let lorentz_lo = field_lo.lorentz_force();
+        let max_lo = lorentz_lo
+            .iter()
+            .map(|v| (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt())
+            .fold(0.0_f64, f64::max);
+
+        let mut field_hi = MhdField::new(nx, ny, nz, MhdConfig {
+            b0_nt: 10.0,
+            omega: 2.662e-6,
+            ..MhdConfig::default()
+        });
+        field_hi.parker_spiral_init(0.05);
+        let lorentz_hi = field_hi.lorentz_force();
+        let max_hi = lorentz_hi
+            .iter()
+            .map(|v| (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt())
+            .fold(0.0_f64, f64::max);
+
+        // b0 ratio = 10/5 = 2, so force ratio should be ~4 (quadratic)
+        let ratio = max_hi / max_lo;
+        assert!(
+            (ratio - 4.0).abs() < 0.5,
+            "Lorentz force should scale as B^2: max_lo={max_lo:.3e}, max_hi={max_hi:.3e}, ratio={ratio:.2}"
+        );
+    }
 }

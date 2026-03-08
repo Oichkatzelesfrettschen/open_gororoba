@@ -63,6 +63,10 @@ name = "modular-chaos"
 path = "src/bin/modular_chaos.rs"
 
 [[bin]]
+name = "moonshine-closure-test"
+path = "src/bin/moonshine_closure_test.rs"
+
+[[bin]]
 name = "moonshine-filterbank"
 path = "src/bin/moonshine_filterbank.rs"
 

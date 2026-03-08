@@ -1013,6 +1013,7 @@ pub fn cd_basis_mul_sign(dim: usize, p: usize, q: usize) -> i32 {
 ///
 /// # Panics
 /// Debug-panics if `dim` is not a power of two, or if `p >= dim` or `q >= dim`.
+#[inline(always)]
 pub fn cd_basis_mul_sign_iter(dim: usize, mut p: usize, mut q: usize) -> i32 {
     debug_assert!(dim.is_power_of_two() && dim >= 1);
     debug_assert!(p < dim && q < dim);
@@ -1121,6 +1122,19 @@ impl SignTable {
     /// Memory usage in bytes.
     pub fn size_bytes(&self) -> usize {
         self.bits.len() * 8
+    }
+
+    /// Access the raw bit-packed storage for row `p`.
+    ///
+    /// Returns a slice of u64 words covering columns 0..dim for row `p`.
+    /// Each bit in a word is 1 if sign(p, q) = -1, 0 if +1.
+    /// Word `w` covers columns `w*64 .. (w+1)*64`.
+    #[inline(always)]
+    pub fn row_words(&self, p: usize) -> &[u64] {
+        debug_assert!(p < self.dim);
+        let words_per_row = self.dim.div_ceil(64);
+        let start = p * words_per_row;
+        &self.bits[start..start + words_per_row]
     }
 }
 

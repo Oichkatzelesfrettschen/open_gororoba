@@ -24,11 +24,11 @@ id = "SIG-0002"
 path = "registry/bibliography.toml"
 top_level_keys = ["bibliography", "entry", "group", "section"]
 schema_version = "v1"
-schema_sha256 = "359883020d8343fc0f8d3ae3fd7b05ec8162931957c31d81a0e0802377dbfd1f"
-content_sha256 = "1bf4bc51c10c189e33477db6546da83f3d0ff98390ee273d09c11b5e18f68411"
+schema_sha256 = "1aaf7d33d25e9b452e0dba9d15866fa9e769fec548ea30c4c09ca19b55c2fa85"
+content_sha256 = "fbcf5641c9ae3c6a946382549680e51c09b89aee3ffa0897b0913255294d12e8"
 array_table_count = 3
 table_count = 1
-shape_json = "{\"path\":\"registry/bibliography.toml\",\"shapes\":{\"bibliography\":{\"keys\":[\"authoritative\",\"entry_count\",\"group_count\",\"section_count\",\"source_markdown\",\"updated\"],\"type\":\"table\"},\"entry\":{\"entry_kind\":\"table\",\"required_keys\":[\"citation_markdown\",\"dois\",\"group\",\"id\",\"notes\",\"order_index\",\"section\",\"urls\"],\"row_count\":296,\"type\":\"array\",\"union_keys\":[\"citation_markdown\",\"dois\",\"group\",\"id\",\"notes\",\"order_index\",\"section\",\"source_line\",\"urls\"]},\"group\":{\"entry_kind\":\"table\",\"required_keys\":[\"entry_count\",\"id\",\"name\",\"section_count\"],\"row_count\":1,\"type\":\"array\",\"union_keys\":[\"entry_count\",\"id\",\"name\",\"section_count\"]},\"section\":{\"entry_kind\":\"table\",\"required_keys\":[\"entry_count\",\"groups\",\"id\",\"name\"],\"row_count\":43,\"type\":\"array\",\"union_keys\":[\"entry_count\",\"groups\",\"id\",\"name\"]}},\"top_level_keys\":[\"bibliography\",\"entry\",\"group\",\"section\"]}"
+shape_json = "{\"path\":\"registry/bibliography.toml\",\"shapes\":{\"bibliography\":{\"keys\":[\"authoritative\",\"entry_count\",\"group_count\",\"section_count\",\"source_markdown\",\"updated\"],\"type\":\"table\"},\"entry\":{\"entry_kind\":\"table\",\"required_keys\":[\"citation_markdown\",\"dois\",\"group\",\"id\",\"notes\",\"order_index\",\"section\",\"urls\"],\"row_count\":316,\"type\":\"array\",\"union_keys\":[\"citation_markdown\",\"dois\",\"group\",\"id\",\"notes\",\"order_index\",\"section\",\"source_line\",\"urls\"]},\"group\":{\"entry_kind\":\"table\",\"required_keys\":[\"entry_count\",\"id\",\"name\",\"section_count\"],\"row_count\":1,\"type\":\"array\",\"union_keys\":[\"entry_count\",\"id\",\"name\",\"section_count\"]},\"section\":{\"entry_kind\":\"table\",\"required_keys\":[\"entry_count\",\"groups\",\"id\",\"name\"],\"row_count\":47,\"type\":\"array\",\"union_keys\":[\"entry_count\",\"groups\",\"id\",\"name\"]}},\"top_level_keys\":[\"bibliography\",\"entry\",\"group\",\"section\"]}"
 
 [[signature]]
 id = "SIG-0003"
@@ -46,11 +46,11 @@ id = "SIG-0004"
 path = "registry/claims.toml"
 top_level_keys = ["claim"]
 schema_version = "v1"
-schema_sha256 = "bb4dca58b09a263901662867fabd826d9f2193b277f72fc651d04aea49ef81a4"
-content_sha256 = "3d094e1bb996fff71e0d1ec7cbc19082f2da653993101af4298a77eba7395224"
+schema_sha256 = "99e33a3aa72ab70bfc9dfe3e1eff80f95c3f909217157acc06653a8de11b744d"
+content_sha256 = "711773585e850e8ffa1ed195c5c55c7aceaeb283e8e62febbf38f842a50a0072"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"confidence\",\"id\",\"status\"],\"row_count\":1008,\"type\":\"array\",\"union_keys\":[\"claims\",\"confidence\",\"dependencies\",\"description\",\"id\",\"insights\",\"last_verified\",\"phase\",\"reformulated_as\",\"sprint\",\"statement\",\"status\",\"status_note\",\"supporting_evidence\",\"verification_method\",\"what_would_verify_refute\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
+shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"confidence\",\"id\",\"status\"],\"row_count\":1009,\"type\":\"array\",\"union_keys\":[\"claims\",\"confidence\",\"dependencies\",\"description\",\"id\",\"insights\",\"last_verified\",\"phase\",\"reformulated_as\",\"sprint\",\"statement\",\"status\",\"status_note\",\"supporting_evidence\",\"verification_method\",\"what_would_verify_refute\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
 
 [[signature]]
 id = "SIG-0005"
