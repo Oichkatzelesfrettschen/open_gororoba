@@ -18,7 +18,7 @@
 #[cfg(feature = "gpu")]
 use cudarc::driver::{CudaContext, CudaFunction, LaunchConfig, PushKernelArg};
 #[cfg(feature = "gpu")]
-use cudarc::nvrtc::{compile_ptx_with_opts, CompileOptions};
+use cudarc::nvrtc::{CompileOptions, compile_ptx_with_opts};
 #[cfg(feature = "gpu")]
 use std::sync::{Arc, OnceLock};
 
@@ -133,8 +133,10 @@ impl TensorAVT {
     /// # Panics
     /// Panics if dim is not a power of 2 or is less than 16.
     pub fn new(dim: usize) -> Self {
-        assert!(dim >= 16 && dim.is_power_of_two(),
-            "TensorAVT requires dim >= 16 and power of 2, got {dim}");
+        assert!(
+            dim >= 16 && dim.is_power_of_two(),
+            "TensorAVT requires dim >= 16 and power of 2, got {dim}"
+        );
         Self {
             dim,
             tile_count: dim / 16,
@@ -142,11 +144,7 @@ impl TensorAVT {
     }
 
     #[cfg(any(not(feature = "gpu"), test))]
-    fn compute_cd_mul_cpu(
-        &self,
-        a: &[f32],
-        x: &[f32],
-    ) -> Result<Vec<f32>, String> {
+    fn compute_cd_mul_cpu(&self, a: &[f32], x: &[f32]) -> Result<Vec<f32>, String> {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
         assert_eq!(a.len(), self.dim, "a must have dim elements");
         assert_eq!(x.len(), self.dim, "x must have dim elements");
@@ -179,7 +177,10 @@ impl TensorAVT {
         for b in 0..batch_size {
             let x_offset = b * self.dim;
             let y_offset = b * self.dim;
-            for (i, yi) in y_batch[y_offset..y_offset + self.dim].iter_mut().enumerate() {
+            for (i, yi) in y_batch[y_offset..y_offset + self.dim]
+                .iter_mut()
+                .enumerate()
+            {
                 for j in 0..self.dim {
                     let src = i ^ j;
                     let sign = cd_basis_mul_sign(self.dim, src, j);
@@ -236,7 +237,8 @@ impl TensorAVT {
         let stream = runtime.ctx.default_stream();
 
         let n_cells = nx * ny * nz;
-        let mut d_field = stream.alloc_zeros::<f32>(n_cells)
+        let mut d_field = stream
+            .alloc_zeros::<f32>(n_cells)
             .map_err(|e| format!("Alloc: {}", e))?;
 
         let block_size = 256u32;
@@ -265,7 +267,8 @@ impl TensorAVT {
             builder.launch(cfg).map_err(|e| format!("Launch: {}", e))?;
         }
 
-        let host_field: Vec<f32> = stream.clone_dtoh(&d_field)
+        let host_field: Vec<f32> = stream
+            .clone_dtoh(&d_field)
             .map_err(|e| format!("Copy back: {}", e))?;
 
         Ok(host_field)
@@ -294,7 +297,8 @@ impl TensorAVT {
         let stream = runtime.ctx.default_stream();
 
         let n_cells = nx * ny * nz;
-        let mut d_field = stream.alloc_zeros::<f32>(n_cells)
+        let mut d_field = stream
+            .alloc_zeros::<f32>(n_cells)
             .map_err(|e| format!("Alloc: {}", e))?;
 
         let block_size = 256u32;
@@ -324,7 +328,8 @@ impl TensorAVT {
             builder.launch(cfg).map_err(|e| format!("Launch: {}", e))?;
         }
 
-        let host_field: Vec<f32> = stream.clone_dtoh(&d_field)
+        let host_field: Vec<f32> = stream
+            .clone_dtoh(&d_field)
             .map_err(|e| format!("Copy back: {}", e))?;
 
         Ok(host_field)
@@ -351,22 +356,21 @@ impl TensorAVT {
     ///
     /// Works at dim=256, 512, 1024 or any dim that is a multiple of 16.
     #[cfg(feature = "gpu")]
-    pub fn compute_cd_mul(
-        &self,
-        a: &[f32],
-        x: &[f32],
-    ) -> Result<Vec<f32>, String> {
+    pub fn compute_cd_mul(&self, a: &[f32], x: &[f32]) -> Result<Vec<f32>, String> {
         assert_eq!(a.len(), self.dim, "a must have dim elements");
         assert_eq!(x.len(), self.dim, "x must have dim elements");
 
         let runtime = tensor_avt_gpu_runtime()?;
         let stream = runtime.ctx.default_stream();
 
-        let d_a = stream.clone_htod(a)
+        let d_a = stream
+            .clone_htod(a)
             .map_err(|e| format!("Upload a: {}", e))?;
-        let d_x = stream.clone_htod(x)
+        let d_x = stream
+            .clone_htod(x)
             .map_err(|e| format!("Upload x: {}", e))?;
-        let mut d_y = stream.alloc_zeros::<f32>(self.dim)
+        let mut d_y = stream
+            .alloc_zeros::<f32>(self.dim)
             .map_err(|e| format!("Alloc y: {}", e))?;
 
         let n_row_blocks = self.tile_count as u32;
@@ -388,18 +392,15 @@ impl TensorAVT {
             builder.launch(cfg).map_err(|e| format!("Launch: {}", e))?;
         }
 
-        let y: Vec<f32> = stream.clone_dtoh(&d_y)
+        let y: Vec<f32> = stream
+            .clone_dtoh(&d_y)
             .map_err(|e| format!("Copy y: {}", e))?;
         Ok(y)
     }
 
     /// CPU fallback for CD multiplication via Left-Multiplication Matrix.
     #[cfg(not(feature = "gpu"))]
-    pub fn compute_cd_mul(
-        &self,
-        a: &[f32],
-        x: &[f32],
-    ) -> Result<Vec<f32>, String> {
+    pub fn compute_cd_mul(&self, a: &[f32], x: &[f32]) -> Result<Vec<f32>, String> {
         self.compute_cd_mul_cpu(a, x)
     }
 
@@ -424,17 +425,23 @@ impl TensorAVT {
         batch_size: usize,
     ) -> Result<Vec<f32>, String> {
         assert_eq!(a.len(), self.dim, "a must have dim elements");
-        assert_eq!(x_batch.len(), batch_size * self.dim,
-            "x_batch must have batch_size * dim elements");
+        assert_eq!(
+            x_batch.len(),
+            batch_size * self.dim,
+            "x_batch must have batch_size * dim elements"
+        );
 
         let runtime = tensor_avt_gpu_runtime()?;
         let stream = runtime.ctx.default_stream();
 
-        let d_a = stream.clone_htod(a)
+        let d_a = stream
+            .clone_htod(a)
             .map_err(|e| format!("Upload a: {}", e))?;
-        let d_x = stream.clone_htod(x_batch)
+        let d_x = stream
+            .clone_htod(x_batch)
             .map_err(|e| format!("Upload x_batch: {}", e))?;
-        let mut d_y = stream.alloc_zeros::<f32>(batch_size * self.dim)
+        let mut d_y = stream
+            .alloc_zeros::<f32>(batch_size * self.dim)
             .map_err(|e| format!("Alloc y_batch: {}", e))?;
 
         // Grid: (ceil(batch/16), ceil(dim/64)) -- each block has 4 warps covering 64 rows
@@ -442,7 +449,7 @@ impl TensorAVT {
         let grid_y = (self.dim as u32).div_ceil(64); // 4 warps * 16 rows = 64 rows per block
         let cfg = LaunchConfig {
             grid_dim: (grid_x, grid_y, 1),
-            block_dim: (128, 1, 1),  // 4 warps
+            block_dim: (128, 1, 1), // 4 warps
             shared_mem_bytes: 0,
         };
 
@@ -460,7 +467,8 @@ impl TensorAVT {
             builder.launch(cfg).map_err(|e| format!("Launch: {}", e))?;
         }
 
-        let y: Vec<f32> = stream.clone_dtoh(&d_y)
+        let y: Vec<f32> = stream
+            .clone_dtoh(&d_y)
             .map_err(|e| format!("Copy y_batch: {}", e))?;
         Ok(y)
     }
@@ -498,15 +506,20 @@ impl TensorAVT {
         vectors: &[f32],
         n_vectors: usize,
     ) -> Result<Vec<f32>, String> {
-        assert_eq!(vectors.len(), n_vectors * self.dim,
-            "vectors length must be n_vectors * dim");
+        assert_eq!(
+            vectors.len(),
+            n_vectors * self.dim,
+            "vectors length must be n_vectors * dim"
+        );
 
         let runtime = tensor_avt_gpu_runtime()?;
         let stream = runtime.ctx.default_stream();
 
-        let d_vectors = stream.clone_htod(vectors)
+        let d_vectors = stream
+            .clone_htod(vectors)
             .map_err(|e| format!("Upload vectors: {}", e))?;
-        let mut d_norms = stream.alloc_zeros::<f32>(n_vectors)
+        let mut d_norms = stream
+            .alloc_zeros::<f32>(n_vectors)
             .map_err(|e| format!("Alloc norms: {}", e))?;
 
         let block_size = 256u32.min(self.dim as u32);
@@ -528,7 +541,8 @@ impl TensorAVT {
             builder.launch(cfg).map_err(|e| format!("Launch: {}", e))?;
         }
 
-        let norms: Vec<f32> = stream.clone_dtoh(&d_norms)
+        let norms: Vec<f32> = stream
+            .clone_dtoh(&d_norms)
             .map_err(|e| format!("Copy norms: {}", e))?;
         Ok(norms)
     }
@@ -600,8 +614,12 @@ mod tests {
         use crate::construction::cayley_dickson::cd_multiply;
         let avt = TensorAVT::new(16);
         // Random-ish vectors
-        let a: Vec<f32> = (0..16).map(|i| ((i * 7 + 3) % 11) as f32 * 0.2 - 1.0).collect();
-        let x: Vec<f32> = (0..16).map(|i| ((i * 13 + 5) % 11) as f32 * 0.15 - 0.8).collect();
+        let a: Vec<f32> = (0..16)
+            .map(|i| ((i * 7 + 3) % 11) as f32 * 0.2 - 1.0)
+            .collect();
+        let x: Vec<f32> = (0..16)
+            .map(|i| ((i * 13 + 5) % 11) as f32 * 0.15 - 0.8)
+            .collect();
         let y_gpu_cpu = avt.compute_cd_mul_cpu(&a, &x).unwrap();
 
         // Reference via cd_multiply (f64)
@@ -657,7 +675,9 @@ mod tests {
         let avt = TensorAVT::new(512);
         let mut e0 = vec![0.0f32; 512];
         e0[0] = 1.0;
-        let x: Vec<f32> = (0..512).map(|i| ((i * 37 + 11) % 97) as f32 * 0.01).collect();
+        let x: Vec<f32> = (0..512)
+            .map(|i| ((i * 37 + 11) % 97) as f32 * 0.01)
+            .collect();
         let y = avt.compute_cd_mul_cpu(&e0, &x).unwrap();
         for (i, (got, expected)) in y.iter().zip(x.iter()).enumerate() {
             assert!(
@@ -674,7 +694,9 @@ mod tests {
         let avt = TensorAVT::new(1024);
         let mut e0 = vec![0.0f32; 1024];
         e0[0] = 1.0;
-        let x: Vec<f32> = (0..1024).map(|i| ((i * 41 + 7) % 101) as f32 * 0.01).collect();
+        let x: Vec<f32> = (0..1024)
+            .map(|i| ((i * 41 + 7) % 101) as f32 * 0.01)
+            .collect();
         let y = avt.compute_cd_mul_cpu(&e0, &x).unwrap();
         for (i, (got, expected)) in y.iter().zip(x.iter()).enumerate() {
             assert!(
@@ -824,7 +846,8 @@ mod tests {
             assert!(
                 (y[i] - x[i]).abs() < 1e-2,
                 "GPU e_0 * x != x at index {i}: got {}, expected {}",
-                y[i], x[i]
+                y[i],
+                x[i]
             );
         }
     }
@@ -848,7 +871,9 @@ mod tests {
             }
         }
 
-        let y_batch = avt.compute_cd_mul_batch_cpu(&a, &x_batch, batch_size).unwrap();
+        let y_batch = avt
+            .compute_cd_mul_batch_cpu(&a, &x_batch, batch_size)
+            .unwrap();
 
         // Verify each batch element matches individual compute_cd_mul
         for b in 0..batch_size {
@@ -871,7 +896,7 @@ mod tests {
     #[test]
     fn test_cd_mul_batch_cpu_dim256() {
         let dim = 256;
-        let batch_size = 16;  // Full 16-column batch
+        let batch_size = 16; // Full 16-column batch
         let avt = TensorAVT::new(dim);
 
         let a: Vec<f32> = (0..dim).map(|i| (i as f32 * 0.1).sin()).collect();
@@ -883,7 +908,9 @@ mod tests {
             }
         }
 
-        let y_batch = avt.compute_cd_mul_batch_cpu(&a, &x_batch, batch_size).unwrap();
+        let y_batch = avt
+            .compute_cd_mul_batch_cpu(&a, &x_batch, batch_size)
+            .unwrap();
 
         // Spot-check first and last batch elements
         for b in [0, batch_size - 1] {

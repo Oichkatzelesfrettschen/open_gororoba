@@ -65,6 +65,10 @@ harness = false
 name = "dimensional_bench"
 harness = false
 
+[[bench]]
+name = "tensor_avt_bench"
+harness = false
+
 [[example]]
 name = "m3_e8_bridge"
 required-features = ["lie", "physics"]
