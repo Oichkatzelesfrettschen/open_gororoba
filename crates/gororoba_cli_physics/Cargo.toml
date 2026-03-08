@@ -217,6 +217,10 @@ name = "solar-wind-mhd-sim"
 path = "src/bin/solar_wind_mhd_sim.rs"
 
 [[bin]]
+name = "solar-wind-dm-mhd"
+path = "src/bin/solar_wind_dm_mhd.rs"
+
+[[bin]]
 name = "chsh-betti-sweep"
 path = "src/bin/chsh_betti_sweep.rs"
 

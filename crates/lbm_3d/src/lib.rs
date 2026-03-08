@@ -11,3 +11,4 @@ pub mod mhd;
 pub mod solver;
 pub mod viscosity_field;
 pub mod zpe_injection;
+pub mod dm_force;

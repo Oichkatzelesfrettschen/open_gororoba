@@ -4,7 +4,7 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 110
+experiment_count = 111
 deterministic_count = 65
 gpu_count = 13
 seeded_count = 46
@@ -2581,6 +2581,29 @@ gpu = false
 status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-110"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = ["ACE SWEPAM"]
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-112"
+title = "Solar wind MHD + dark matter halo gravitational coupling"
+binary = "solar-wind-dm-mhd"
+binary_registered = true
+binary_experiment_declared = ""
+method = "lbm_dm_mhd: D3Q19 LBM + MHD (E-111 base) coupled with static NFW DM halo gravitational force field. DM force precomputed from NFW enclosed mass M(<r), combined with Lorentz force via Guo scheme. Quantifies max|F_DM|/max|F_Lorentz| ratio as null test."
+input = "nx=128, ny=32, nz=32, steps=5000, tau=0.6, b0=5.0 nT, v_sw=0.05, dm_density=0.3 GeV/cm^3, dm_m200=1e12 Msun, dm_c200=10"
+output = ["csv_snapshots"]
+run = "cargo run --release --bin solar-wind-dm-mhd -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500 --out data/experiments/e112_solar_wind_dm"
+run_command_sha256 = ""
+claims = ["C-1143", "C-1144", "C-1145"]
+claim_refs = ["C-1143", "C-1144", "C-1145"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-111"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = ["ACE SWEPAM"]
