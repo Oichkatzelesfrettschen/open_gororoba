@@ -16,12 +16,12 @@
 //! - verify_algebra.py (algebraic verification delegated to cargo test)
 
 use regex::Regex;
-use std::collections::BTreeSet;
-use std::path::Path;
-use std::sync::LazyLock;
+use std::{collections::BTreeSet, path::Path, sync::LazyLock};
 
-use super::parser::{extract_backtick_paths, iter_table_rows, parse_claim_rows, parse_table_line};
-use super::schema::{is_canonical_domain, is_canonical_status, is_canonical_task_status};
+use super::{
+    parser::{extract_backtick_paths, iter_table_rows, parse_claim_rows, parse_table_line},
+    schema::{is_canonical_domain, is_canonical_status, is_canonical_task_status},
+};
 
 /// Verify claims matrix metadata hygiene.
 ///

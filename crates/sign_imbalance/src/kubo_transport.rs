@@ -275,7 +275,10 @@ pub fn exact_diagonalize(model: &HeisenbergModel) -> Result<ExactDiagResult> {
 // ---------------------------------------------------------------------------
 
 /// Compute thermodynamic quantities from the exact spectrum.
-pub fn thermodynamic_quantities(ed: &ExactDiagResult, temperature: f64) -> Result<ThermoQuantities> {
+pub fn thermodynamic_quantities(
+    ed: &ExactDiagResult,
+    temperature: f64,
+) -> Result<ThermoQuantities> {
     if temperature <= 0.0 {
         return Err(TransportError::InvalidTemperature(temperature));
     }

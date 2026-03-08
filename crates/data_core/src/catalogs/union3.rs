@@ -6,8 +6,10 @@
 //! Source: DESI Y3 BAO cosmology data release
 //! https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use crate::parse::parse_f64_or_nan;
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    parse::parse_f64_or_nan,
+};
 use std::path::{Path, PathBuf};
 
 /// One row from a whitespace-delimited chain file.
@@ -67,8 +69,7 @@ impl DatasetProvider for Union3Provider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Write;
-    use std::path::Path;
+    use std::{io::Write, path::Path};
 
     #[test]
     fn test_parse_union3_synthetic() {

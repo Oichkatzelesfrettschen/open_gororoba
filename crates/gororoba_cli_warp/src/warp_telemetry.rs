@@ -1,12 +1,14 @@
-use std::io::Write;
-use std::path::PathBuf;
-use std::process::Command;
-use std::sync::{
-    Arc,
-    atomic::{AtomicBool, Ordering},
+use std::{
+    io::Write,
+    path::PathBuf,
+    process::Command,
+    sync::{
+        Arc,
+        atomic::{AtomicBool, Ordering},
+    },
+    thread,
+    time::{Duration, Instant},
 };
-use std::thread;
-use std::time::{Duration, Instant};
 
 fn spawn_gpu_telemetry_sampler_nvidia_smi(
     out_path: PathBuf,
@@ -109,8 +111,10 @@ fn spawn_gpu_telemetry_sampler_nvml(
     out_path: PathBuf,
     interval: Duration,
 ) -> Option<(Arc<AtomicBool>, thread::JoinHandle<()>)> {
-    use nvml_wrapper::Nvml;
-    use nvml_wrapper::enum_wrappers::device::{Clock, TemperatureSensor};
+    use nvml_wrapper::{
+        Nvml,
+        enum_wrappers::device::{Clock, TemperatureSensor},
+    };
 
     // Validate NVML availability up front so callers can fall back cleanly.
     let nvml = Nvml::init().ok()?;

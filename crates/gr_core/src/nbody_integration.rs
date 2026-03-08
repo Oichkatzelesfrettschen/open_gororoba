@@ -5,7 +5,7 @@ use num_complex::Complex;
 #[derive(Debug, Clone)]
 pub struct BodyState {
     pub id: i32,
-    pub mass: f64, // GM in km^3/s^2
+    pub mass: f64,                  // GM in km^3/s^2
     pub pos: Vector3<Complex<f64>>, // km
     pub vel: Vector3<Complex<f64>>, // km/s
 }
@@ -39,10 +39,12 @@ impl NBodySystem {
             let mut a_i = Vector3::zeros();
 
             for (j, body_j) in self.bodies.iter().enumerate() {
-                if i == j { continue; }
+                if i == j {
+                    continue;
+                }
                 let r_ji = body_j.pos - p_i;
                 // Complex norm squared: ||r||^2 = r_x^2 + r_y^2 + r_z^2 (holomorphic)
-                let dist_sq = r_ji.dot(&r_ji); 
+                let dist_sq = r_ji.dot(&r_ji);
                 let dist = dist_sq.sqrt();
 
                 // Newtonian part (complexified)
@@ -54,7 +56,9 @@ impl NBodySystem {
                 let v_j_sq = body_j.vel.dot(&body_j.vel);
                 let vi_dot_vj = v_i.dot(&body_j.vel);
 
-                let gr_corr = (Complex::from(1.0 / c2)) * (Complex::from(4.0) * phi_i - v_i_sq - Complex::from(2.0) * v_j_sq + Complex::from(4.0) * vi_dot_vj);
+                let gr_corr = (Complex::from(1.0 / c2))
+                    * (Complex::from(4.0) * phi_i - v_i_sq - Complex::from(2.0) * v_j_sq
+                        + Complex::from(4.0) * vi_dot_vj);
                 let a_gr = a_newton * gr_corr;
 
                 a_i += a_newton + a_gr;
@@ -64,7 +68,8 @@ impl NBodySystem {
             let mut a_pathion = Vector3::zeros();
             for r_idx in 0..3 {
                 for c_idx in 0..3 {
-                    a_pathion[r_idx] += Complex::from(self.pathion_variance[(r_idx, c_idx)]) * p_i[c_idx];
+                    a_pathion[r_idx] +=
+                        Complex::from(self.pathion_variance[(r_idx, c_idx)]) * p_i[c_idx];
                 }
             }
             a_pathion *= Complex::from(self.alpha_pathion);
@@ -110,8 +115,10 @@ impl NBodySystem {
         // Combine
         let two = Complex::from(2.0);
         for i in 0..self.bodies.len() {
-            self.bodies[i].pos = initial_bodies[i].pos + (k1_p[i] + k2_p[i] * two + k3_p[i] * two + k4_p[i]) * (d_tau / 6.0);
-            self.bodies[i].vel = initial_bodies[i].vel + (k1_v[i] + k2_v[i] * two + k3_v[i] * two + k4_v[i]) * (d_tau / 6.0);
+            self.bodies[i].pos = initial_bodies[i].pos
+                + (k1_p[i] + k2_p[i] * two + k3_p[i] * two + k4_p[i]) * (d_tau / 6.0);
+            self.bodies[i].vel = initial_bodies[i].vel
+                + (k1_v[i] + k2_v[i] * two + k3_v[i] * two + k4_v[i]) * (d_tau / 6.0);
         }
     }
 
@@ -127,12 +134,7 @@ impl NBodySystem {
     /// - `d_tau.im = dt * sin(theta)` (imaginary component)
     ///
     /// Returns a `WickEvolutionResult` with the trajectory and energy diagnostics.
-    pub fn wick_evolve(
-        &mut self,
-        dt: f64,
-        theta: f64,
-        n_steps: usize,
-    ) -> WickEvolutionResult {
+    pub fn wick_evolve(&mut self, dt: f64, theta: f64, n_steps: usize) -> WickEvolutionResult {
         let d_tau = Complex::new(dt * theta.cos(), dt * theta.sin());
         let mut trajectory = Vec::with_capacity(n_steps + 1);
         let mut energies = Vec::with_capacity(n_steps + 1);
@@ -222,8 +224,16 @@ impl NBodySystem {
         system.bodies.push(BodyState {
             id: 1,
             mass: 1.0, // test particle
-            pos: Vector3::new(Complex::from(initial_r), Complex::from(0.0), Complex::from(0.0)),
-            vel: Vector3::new(Complex::from(initial_v_radial), Complex::from(0.0), Complex::from(0.0)),
+            pos: Vector3::new(
+                Complex::from(initial_r),
+                Complex::from(0.0),
+                Complex::from(0.0),
+            ),
+            vel: Vector3::new(
+                Complex::from(initial_v_radial),
+                Complex::from(0.0),
+                Complex::from(0.0),
+            ),
         });
 
         let result = system.wick_evolve(dt, theta, n_steps);
@@ -642,9 +652,7 @@ mod tests {
         let v0 = 10.0;
         let a = 1.0;
         let b = 2.0;
-        let potential = |r: f64| -> f64 {
-            if r >= a && r <= b { v0 } else { 0.0 }
-        };
+        let potential = |r: f64| -> f64 { if r >= a && r <= b { v0 } else { 0.0 } };
         let energy = 5.0;
         let mass = 1.0;
         let result = wkb_tunneling_amplitude(&potential, energy, mass, 0.0, 3.0, 1000);
@@ -743,11 +751,11 @@ mod tests {
         });
 
         let result = system.adaptive_wick_evolve(
-            3600.0,       // dt
-            PI / 2.0,     // theta_max
-            50,           // n_steps
-            1.327e11,     // central_mass
-            5.0,          // steepness
+            3600.0,   // dt
+            PI / 2.0, // theta_max
+            50,       // n_steps
+            1.327e11, // central_mass
+            5.0,      // steepness
         );
 
         assert_eq!(result.trajectory.len(), 51);
@@ -756,7 +764,10 @@ mod tests {
         // All thetas should be finite and in [0, theta_max]
         for &t in &result.thetas {
             assert!(t.is_finite());
-            assert!((0.0..=PI / 2.0 + 1e-10).contains(&t), "theta={t} out of range");
+            assert!(
+                (0.0..=PI / 2.0 + 1e-10).contains(&t),
+                "theta={t} out of range"
+            );
         }
     }
 
@@ -764,6 +775,9 @@ mod tests {
     fn test_pathion_variance_max_eigenvalue() {
         let m = Matrix3::from_diagonal(&Vector3::new(3.0, 1.0, 2.0));
         let ev = pathion_variance_max_eigenvalue(&m);
-        assert!((ev - 3.0).abs() < 1e-10, "max eigenvalue should be 3.0, got {ev}");
+        assert!(
+            (ev - 3.0).abs() < 1e-10,
+            "max eigenvalue should be 3.0, got {ev}"
+        );
     }
 }

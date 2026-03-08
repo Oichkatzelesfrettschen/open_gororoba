@@ -5,9 +5,11 @@
 //! Summary Records that point to Name Records and the actual Double Precision (f64) arrays.
 
 use memmap2::Mmap;
-use std::fs::File;
-use std::path::Path;
-use std::io::{Error, ErrorKind, Result};
+use std::{
+    fs::File,
+    io::{Error, ErrorKind, Result},
+    path::Path,
+};
 
 /// A zero-copy reader for DAF files (like JPL .bsp ephemerides).
 pub struct DafReader {
@@ -24,14 +26,20 @@ impl DafReader {
         let mmap = unsafe { Mmap::map(&file)? };
 
         if mmap.len() < 1024 {
-            return Err(Error::new(ErrorKind::InvalidData, "File too short to be DAF"));
+            return Err(Error::new(
+                ErrorKind::InvalidData,
+                "File too short to be DAF",
+            ));
         }
 
         // Validate the DAF magic string "DAF/SPK" or "NAIF/DAF" (bytes 0..8)
         let magic = &mmap[0..8];
         let magic_str = std::str::from_utf8(magic).unwrap_or("");
         if !magic_str.starts_with("DAF/") && !magic_str.starts_with("NAIF/") {
-            return Err(Error::new(ErrorKind::InvalidData, format!("Invalid DAF magic: {}", magic_str)));
+            return Err(Error::new(
+                ErrorKind::InvalidData,
+                format!("Invalid DAF magic: {}", magic_str),
+            ));
         }
 
         // Endianness detection
@@ -63,19 +71,30 @@ impl DafReader {
         } else {
             u32::from_be_bytes(mmap[8..12].try_into().unwrap()) as usize
         };
-        
+
         let ni = if is_le {
             u32::from_le_bytes(mmap[12..16].try_into().unwrap()) as usize
         } else {
             u32::from_be_bytes(mmap[12..16].try_into().unwrap()) as usize
         };
 
-        Ok(Self { mmap, nd, ni, is_le })
+        Ok(Self {
+            mmap,
+            nd,
+            ni,
+            is_le,
+        })
     }
 
-    pub fn nd(&self) -> usize { self.nd }
-    pub fn ni(&self) -> usize { self.ni }
-    pub fn is_little_endian(&self) -> bool { self.is_le }
+    pub fn nd(&self) -> usize {
+        self.nd
+    }
+    pub fn ni(&self) -> usize {
+        self.ni
+    }
+    pub fn is_little_endian(&self) -> bool {
+        self.is_le
+    }
 
     /// Iterates over all summary arrays in the DAF file.
     pub fn arrays(&self) -> DafArrayIter<'_> {
@@ -85,7 +104,7 @@ impl DafReader {
         } else {
             u32::from_be_bytes(self.mmap[76..80].try_into().unwrap()) as usize
         };
-        
+
         DafArrayIter {
             reader: self,
             current_record_block: fward,
@@ -98,15 +117,18 @@ impl DafReader {
     pub fn read_f64_slice(&self, start_word: usize, end_word: usize) -> Result<&[f64]> {
         let start_byte = (start_word - 1) * 8;
         let end_byte = end_word * 8;
-        
+
         if end_byte > self.mmap.len() || start_byte >= end_byte {
-            return Err(Error::new(ErrorKind::InvalidData, format!("Array bounds out of range: {}..{}", start_byte, end_byte)));
+            return Err(Error::new(
+                ErrorKind::InvalidData,
+                format!("Array bounds out of range: {}..{}", start_byte, end_byte),
+            ));
         }
 
         let byte_slice = &self.mmap[start_byte..end_byte];
         let ptr = byte_slice.as_ptr() as *const f64;
         let len = byte_slice.len() / 8;
-        
+
         Ok(unsafe { std::slice::from_raw_parts(ptr, len) })
     }
 }
@@ -128,16 +150,20 @@ impl<'a> Iterator for DafArrayIter<'a> {
     type Item = DafArray;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.current_record_block == 0 { return None; }
+        if self.current_record_block == 0 {
+            return None;
+        }
 
         let block_start = (self.current_record_block - 1) * 1024;
         let le = self.reader.is_le;
-        
+
         if self.current_array_index == 0 {
             self.arrays_in_block = self.read_f64_as_usize(block_start + 16, le);
             if self.arrays_in_block == 0 {
                 self.current_record_block = self.read_f64_as_usize(block_start, le);
-                if self.current_record_block == 0 { return None; }
+                if self.current_record_block == 0 {
+                    return None;
+                }
                 return self.next();
             }
         }
@@ -150,18 +176,26 @@ impl<'a> Iterator for DafArrayIter<'a> {
 
         let summary_size = (self.reader.nd + self.reader.ni.div_ceil(2)) * 8;
         let sum_start = block_start + 24 + self.current_array_index * summary_size;
-        
+
         let mut doubles = Vec::with_capacity(self.reader.nd);
         for i in 0..self.reader.nd {
-            let b = &self.reader.mmap[(sum_start + i*8)..(sum_start + i*8 + 8)];
-            doubles.push(if le { f64::from_le_bytes(b.try_into().unwrap()) } else { f64::from_be_bytes(b.try_into().unwrap()) });
+            let b = &self.reader.mmap[(sum_start + i * 8)..(sum_start + i * 8 + 8)];
+            doubles.push(if le {
+                f64::from_le_bytes(b.try_into().unwrap())
+            } else {
+                f64::from_be_bytes(b.try_into().unwrap())
+            });
         }
 
         let int_start = sum_start + self.reader.nd * 8;
         let mut integers = Vec::with_capacity(self.reader.ni);
         for i in 0..self.reader.ni {
-            let b = &self.reader.mmap[(int_start + i*4)..(int_start + i*4 + 4)];
-            integers.push(if le { i32::from_le_bytes(b.try_into().unwrap()) } else { i32::from_be_bytes(b.try_into().unwrap()) });
+            let b = &self.reader.mmap[(int_start + i * 4)..(int_start + i * 4 + 4)];
+            integers.push(if le {
+                i32::from_le_bytes(b.try_into().unwrap())
+            } else {
+                i32::from_be_bytes(b.try_into().unwrap())
+            });
         }
 
         self.current_array_index += 1;

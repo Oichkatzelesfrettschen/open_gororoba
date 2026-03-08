@@ -810,11 +810,17 @@ impl SedenionAInfinity {
         }
 
         if !converged {
-            return Err(AlgebraError::NumericalError("Jacobi iteration did not converge".to_string()));
+            return Err(AlgebraError::NumericalError(
+                "Jacobi iteration did not converge".to_string(),
+            ));
         }
 
         let mut eigenvalues: Vec<f64> = (0..n).map(|i| a[i][i]).collect();
-        eigenvalues.sort_by(|a, b| b.abs().partial_cmp(&a.abs()).unwrap_or(std::cmp::Ordering::Equal));
+        eigenvalues.sort_by(|a, b| {
+            b.abs()
+                .partial_cmp(&a.abs())
+                .unwrap_or(std::cmp::Ordering::Equal)
+        });
         Ok(eigenvalues)
     }
 

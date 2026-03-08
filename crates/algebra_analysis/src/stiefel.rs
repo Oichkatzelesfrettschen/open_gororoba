@@ -96,8 +96,7 @@ fn vec_norm(v: &[f64]) -> f64 {
 /// 2. Check <a, b> = 0 (orthogonality)
 /// 3. After rescaling, (a/|a|, b/|b|) is in V_{8,2}
 pub fn verify_stiefel_condition(n_samples: usize, seed: u64) -> StiefelVerification {
-    use rand::Rng;
-    use rand::SeedableRng;
+    use rand::{Rng, SeedableRng};
     use rand_chacha::ChaCha8Rng;
 
     let mut rng = ChaCha8Rng::seed_from_u64(seed);

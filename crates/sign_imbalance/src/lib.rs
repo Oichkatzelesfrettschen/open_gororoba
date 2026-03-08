@@ -32,13 +32,12 @@ pub mod kubo_transport_gpu;
 pub use apt_sedenion::{AptSedenionField, ImbalanceStats};
 pub use balance::{ImbalanceResult, SolverMethod, compute_imbalance_index};
 pub use bridge::{
-    ImbalanceViscosityBridge, SedenionField, SedenionField4D, IMBALANCE_ATTRACTOR,
+    IMBALANCE_ATTRACTOR, ImbalanceViscosityBridge, SedenionField, SedenionField4D,
     ViscosityCouplingModel,
 };
 pub use imbalance::{
-    CASSINI_OMEGA_BD_LOWER_BOUND, ImbalanceStarConfig, ImbalanceStarResult,
-    ScalarImbalanceMap, evaluate_imbalance_star, imbalance_density_from_edges,
-    omega_eff_from_phi, violates_cassini,
+    CASSINI_OMEGA_BD_LOWER_BOUND, ImbalanceStarConfig, ImbalanceStarResult, ScalarImbalanceMap,
+    evaluate_imbalance_star, imbalance_density_from_edges, omega_eff_from_phi, violates_cassini,
 };
 pub use imbalance_energy::{
     ImbalanceEnergy, compute_imbalance_energy, compute_lambda, estimate_e0_from_associators,
@@ -50,8 +49,8 @@ pub use immirzi_bridge::{
     binary_entropy, binary_entropy_deriv, cd_imbalance_density, entropy_bridge,
     evaluate_all_mappings, imbalance_density_census, imbalance_entropy_bridge,
     invert_entropy_bridge, invert_entropy_bridge_bg, invert_entropy_bridge_newton,
-    invert_entropy_bridge_nzj, invert_entropy_bridge_nzj_newton, linear_bridge_bg,
-    log_bridge_bg, phi_in_achievable_range, power_bridge_bg, selectivity_analysis,
+    invert_entropy_bridge_nzj, invert_entropy_bridge_nzj_newton, linear_bridge_bg, log_bridge_bg,
+    phi_in_achievable_range, power_bridge_bg, selectivity_analysis,
 };
 pub use percolation::{
     CorrelationResult, PercolationChannel, PercolationDetector, auto_velocity_threshold,

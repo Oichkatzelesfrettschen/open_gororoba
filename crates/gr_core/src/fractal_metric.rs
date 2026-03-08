@@ -1,4 +1,4 @@
-use crate::metric::{SpacetimeMetric, MetricComponents, DIM, R, THETA};
+use crate::metric::{DIM, MetricComponents, R, SpacetimeMetric, THETA};
 
 /// A scale-invariant fractal spacetime metric wrapper.
 ///
@@ -14,7 +14,11 @@ pub struct FractalMetric<M: SpacetimeMetric> {
 
 impl<M: SpacetimeMetric> FractalMetric<M> {
     pub fn new(base_metric: M, d_f: f64, r_0: f64) -> Self {
-        Self { base_metric, d_f, r_0 }
+        Self {
+            base_metric,
+            d_f,
+            r_0,
+        }
     }
 
     /// Compute the fractal scaling factor at radius r.
@@ -294,7 +298,10 @@ mod tests {
         // D_f < 4 => exponent negative => scaling decreases with r
         let s_near = fm.scaling_factor(0.5);
         let s_far = fm.scaling_factor(2.0);
-        assert!(s_near > s_far, "D_f<4: near {s_near} should be > far {s_far}");
+        assert!(
+            s_near > s_far,
+            "D_f<4: near {s_near} should be > far {s_far}"
+        );
     }
 
     #[test]
@@ -303,7 +310,10 @@ mod tests {
         let fm = FractalMetric::new(schw, 2.7, 1.0);
         let a = fm.anomalous_acceleration(1e8, 10.0);
         // D_f = 2.7 < 4 => -(2.7 - 4) = +1.3 => positive (outward)
-        assert!(a > 0.0, "D_f<4 should give positive anomalous acceleration: {a}");
+        assert!(
+            a > 0.0,
+            "D_f<4 should give positive anomalous acceleration: {a}"
+        );
     }
 
     #[test]
@@ -327,9 +337,15 @@ mod tests {
         let qt = QtensorFractalMetric::new(schw, 2.7, 1.0, 100.0, 0.5);
         // Far outside: S ~ 0.5, q_r = 1 + 2*0.5/3 = 1.333
         let q_r = qt.qtensor_radial_factor(1e6);
-        assert!(q_r > 1.3 && q_r < 1.35, "radial factor should be ~1.33: {q_r}");
+        assert!(
+            q_r > 1.3 && q_r < 1.35,
+            "radial factor should be ~1.33: {q_r}"
+        );
         let q_a = qt.qtensor_angular_factor(1e6);
-        assert!(q_a > 0.83 && q_a < 0.84, "angular factor should be ~0.833: {q_a}");
+        assert!(
+            q_a > 0.83 && q_a < 0.84,
+            "angular factor should be ~0.833: {q_a}"
+        );
     }
 
     #[test]
@@ -339,7 +355,10 @@ mod tests {
         let v = 10.0;
         let a_at_rd = qt.disclination_acceleration(100.0, v).abs();
         let a_far = qt.disclination_acceleration(1e6, v).abs();
-        assert!(a_at_rd > a_far, "acceleration should peak at r_d: {a_at_rd} > {a_far}");
+        assert!(
+            a_at_rd > a_far,
+            "acceleration should peak at r_d: {a_at_rd} > {a_far}"
+        );
     }
 
     #[test]
@@ -353,7 +372,11 @@ mod tests {
         assert!(g[0][0] < 0.0, "g_tt should be negative: {}", g[0][0]);
         // Space-like components should be positive
         assert!(g[1][1] > 0.0, "g_rr should be positive: {}", g[1][1]);
-        assert!(g[2][2] > 0.0, "g_theta_theta should be positive: {}", g[2][2]);
+        assert!(
+            g[2][2] > 0.0,
+            "g_theta_theta should be positive: {}",
+            g[2][2]
+        );
         assert!(g[3][3] > 0.0, "g_phi_phi should be positive: {}", g[3][3]);
     }
 

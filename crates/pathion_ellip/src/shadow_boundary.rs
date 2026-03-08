@@ -32,11 +32,7 @@ pub struct ShadowPoint {
 /// * `mass` - Black hole mass
 /// * `spin_0` - Real component of the spin (a/M)
 /// * `n_points` - Number of points on the boundary
-pub fn pathion_shadow_boundary(
-    mass: f64,
-    spin_0: f64,
-    n_points: usize,
-) -> Vec<ShadowPoint> {
+pub fn pathion_shadow_boundary(mass: f64, spin_0: f64, n_points: usize) -> Vec<ShadowPoint> {
     let a = spin_0 * mass;
 
     // Photon orbit radius range: from r_pro (prograde) to r_retro (retrograde)
@@ -104,7 +100,9 @@ pub fn pathion_shadow_boundary(
     boundary.sort_by(|a, b| {
         let angle_a = a.beta.atan2(a.alpha);
         let angle_b = b.beta.atan2(b.alpha);
-        angle_a.partial_cmp(&angle_b).unwrap_or(std::cmp::Ordering::Equal)
+        angle_a
+            .partial_cmp(&angle_b)
+            .unwrap_or(std::cmp::Ordering::Equal)
     });
 
     boundary

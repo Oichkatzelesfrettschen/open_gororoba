@@ -1753,8 +1753,7 @@ mod tests {
     #[test]
     fn test_c074_integration_with_real_associator_data() {
         use algebra_core::{cd_associator, cd_norm_sq};
-        use rand::prelude::*;
-        use rand::rngs::StdRng;
+        use rand::{prelude::*, rngs::StdRng};
 
         // Dimensions to test: 8 (octonions), 16 (sedenions), 32 (pathions), 64
         // Note: quaternions (dim=4) are associative, so skip them.
@@ -1863,8 +1862,7 @@ mod tests {
     #[test]
     fn test_c074_quaternion_associativity() {
         use algebra_core::{cd_associator, cd_norm_sq};
-        use rand::prelude::*;
-        use rand::rngs::StdRng;
+        use rand::{prelude::*, rngs::StdRng};
 
         // Quaternions (dim=4) should be associative: ||A(a,b,c)|| = 0
         let mut rng = StdRng::seed_from_u64(42);
@@ -1889,8 +1887,7 @@ mod tests {
     #[test]
     fn test_c074_octonion_nonassociativity() {
         use algebra_core::{cd_associator, cd_norm_sq};
-        use rand::prelude::*;
-        use rand::rngs::StdRng;
+        use rand::{prelude::*, rngs::StdRng};
 
         // Octonions (dim=8) are non-associative: most triples have ||A(a,b,c)|| > 0
         let mut rng = StdRng::seed_from_u64(42);

@@ -21,8 +21,10 @@ use lbm_core::turbulence::{extract_dominant_triads, power_spectrum, triad_cluste
 use ndarray::Array2;
 #[cfg(feature = "hdf5-export")]
 use std::collections::BTreeMap;
-use std::error::Error;
-use std::path::{Path, PathBuf};
+use std::{
+    error::Error,
+    path::{Path, PathBuf},
+};
 
 const LBM_TAU_BENCH: f64 = 0.6;
 
@@ -1676,7 +1678,10 @@ mod tests {
     fn gate_profile_as_str() {
         assert_eq!(GateProfile::Research.as_str(), "research");
         assert_eq!(GateProfile::Canonical300s.as_str(), "canonical_300s");
-        assert_eq!(GateProfile::Canonical300sMeasured.as_str(), "canonical_300s_measured");
+        assert_eq!(
+            GateProfile::Canonical300sMeasured.as_str(),
+            "canonical_300s_measured"
+        );
     }
 
     #[test]
@@ -1690,7 +1695,10 @@ mod tests {
     #[test]
     fn timing_mode_debug() {
         assert_eq!(format!("{:?}", TimingMode::LaunchOnly), "LaunchOnly");
-        assert_eq!(format!("{:?}", TimingMode::StreamSyncEachStep), "StreamSyncEachStep");
+        assert_eq!(
+            format!("{:?}", TimingMode::StreamSyncEachStep),
+            "StreamSyncEachStep"
+        );
         assert_eq!(format!("{:?}", TimingMode::CudaEvents), "CudaEvents");
     }
 }

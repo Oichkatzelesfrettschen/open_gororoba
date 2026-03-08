@@ -10,8 +10,10 @@
 //! (Level 3 suffix). The most stable URL is the direct file link at
 //! `/data/sorce/tsi_data/daily/`.
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use crate::parse::parse_f64_or_nan;
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    parse::parse_f64_or_nan,
+};
 use std::path::{Path, PathBuf};
 
 /// One SORCE TSI record.

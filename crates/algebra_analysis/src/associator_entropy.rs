@@ -240,11 +240,7 @@ fn pearson_correlation(xs: &[f64], ys: &[f64]) -> f64 {
         var_y += dy * dy;
     }
     let denom = (var_x * var_y).sqrt();
-    if denom < 1e-30 {
-        0.0
-    } else {
-        cov / denom
-    }
+    if denom < 1e-30 { 0.0 } else { cov / denom }
 }
 
 /// Run cross-dimensional entropy decomposition.
@@ -261,12 +257,21 @@ pub fn cross_dimensional_analysis(
     let dimensions: Vec<EntropyDecomposition> = dims
         .iter()
         .map(|&dim| {
-            decompose_entropy(dim, n_samples, n_bins, seed.wrapping_add(dim as u64), proximity_threshold)
+            decompose_entropy(
+                dim,
+                n_samples,
+                n_bins,
+                seed.wrapping_add(dim as u64),
+                proximity_threshold,
+            )
         })
         .collect();
 
     // Correlate ZD count with entropy reduction
-    let zd_counts: Vec<f64> = dimensions.iter().map(|d| d.n_zd_components as f64).collect();
+    let zd_counts: Vec<f64> = dimensions
+        .iter()
+        .map(|d| d.n_zd_components as f64)
+        .collect();
     let reductions: Vec<f64> = dimensions.iter().map(|d| d.zd_entropy_reduction).collect();
     let zd_entropy_correlation = pearson_correlation(&zd_counts, &reductions);
 
@@ -282,11 +287,7 @@ pub fn cross_dimensional_analysis(
 ///
 /// where k is estimated empirically from the dim=16 data point.
 /// Returns (k, bound_at_dim) pair.
-pub fn entropy_upper_bound(
-    h_8: f64,
-    h_dim: f64,
-    n_zd_components: usize,
-) -> (f64, f64) {
+pub fn entropy_upper_bound(h_8: f64, h_dim: f64, n_zd_components: usize) -> (f64, f64) {
     if n_zd_components == 0 {
         return (0.0, h_8);
     }
@@ -341,7 +342,10 @@ pub fn cross_dimensional_analysis_adaptive(
         })
         .collect();
 
-    let zd_counts: Vec<f64> = dimensions.iter().map(|d| d.n_zd_components as f64).collect();
+    let zd_counts: Vec<f64> = dimensions
+        .iter()
+        .map(|d| d.n_zd_components as f64)
+        .collect();
     let reductions: Vec<f64> = dimensions.iter().map(|d| d.zd_entropy_reduction).collect();
     let zd_entropy_correlation = pearson_correlation(&zd_counts, &reductions);
 
@@ -428,10 +432,7 @@ mod tests {
         v[1] = 1.0;
         let prox = zd_proximity(&v, dim);
         // e_1 lies in multiple cross-assessor 2-planes (1, j) for j in 8..16
-        assert!(
-            prox < 0.01,
-            "e_1 should be close to ZD planes: {prox}"
-        );
+        assert!(prox < 0.01, "e_1 should be close to ZD planes: {prox}");
     }
 
     #[test]
@@ -449,15 +450,32 @@ mod tests {
         for d in &cross.dimensions {
             eprintln!(
                 "dim={:3}: H_total={:.4}, near_frac={:.3}, reduction={:.4}, n_zd={}",
-                d.dim, d.total_entropy, d.near_zd_fraction, d.zd_entropy_reduction, d.n_zd_components
+                d.dim,
+                d.total_entropy,
+                d.near_zd_fraction,
+                d.zd_entropy_reduction,
+                d.n_zd_components
             );
         }
 
         // Key claim: H(8) > H(16) (entropy decreases despite more dimensions)
-        let h8 = cross.dimensions.iter().find(|d| d.dim == 8).unwrap().total_entropy;
-        let h16 = cross.dimensions.iter().find(|d| d.dim == 16).unwrap().total_entropy;
+        let h8 = cross
+            .dimensions
+            .iter()
+            .find(|d| d.dim == 8)
+            .unwrap()
+            .total_entropy;
+        let h16 = cross
+            .dimensions
+            .iter()
+            .find(|d| d.dim == 16)
+            .unwrap()
+            .total_entropy;
         eprintln!("H(8)={:.4}, H(16)={:.4}, H(8)>H(16): {}", h8, h16, h8 > h16);
-        eprintln!("ZD-entropy correlation: {:.4}", cross.zd_entropy_correlation);
+        eprintln!(
+            "ZD-entropy correlation: {:.4}",
+            cross.zd_entropy_correlation
+        );
 
         // Structural assertions
         assert!(h8 > 0.0, "octonion entropy should be positive");
@@ -471,10 +489,7 @@ mod tests {
         let t16 = adaptive_proximity_threshold(16);
         let t32 = adaptive_proximity_threshold(32);
         let t64 = adaptive_proximity_threshold(64);
-        assert!(
-            (t16 - 1.3).abs() < 1e-14,
-            "dim=16 should give 1.3: {t16}"
-        );
+        assert!((t16 - 1.3).abs() < 1e-14, "dim=16 should give 1.3: {t16}");
         assert!(
             (t32 - 1.3 * (0.5_f64).sqrt()).abs() < 1e-14,
             "dim=32 should give 1.3*sqrt(0.5): {t32}"
@@ -488,12 +503,16 @@ mod tests {
     #[test]
     fn adaptive_threshold_monotone_decreasing() {
         let dims = [16, 32, 64, 128, 256];
-        let thresholds: Vec<f64> = dims.iter().map(|&d| adaptive_proximity_threshold(d)).collect();
+        let thresholds: Vec<f64> = dims
+            .iter()
+            .map(|&d| adaptive_proximity_threshold(d))
+            .collect();
         for w in thresholds.windows(2) {
             assert!(
                 w[0] > w[1],
                 "threshold should decrease: {} > {} violated",
-                w[0], w[1]
+                w[0],
+                w[1]
             );
         }
     }
@@ -521,8 +540,12 @@ mod tests {
         for d in &cross.dimensions {
             eprintln!(
                 "adaptive dim={:3}: H_total={:.4}, near_frac={:.3}, reduction={:.4}, n_zd={}, threshold={:.3}",
-                d.dim, d.total_entropy, d.near_zd_fraction, d.zd_entropy_reduction,
-                d.n_zd_components, adaptive_proximity_threshold(d.dim)
+                d.dim,
+                d.total_entropy,
+                d.near_zd_fraction,
+                d.zd_entropy_reduction,
+                d.n_zd_components,
+                adaptive_proximity_threshold(d.dim)
             );
         }
         assert_eq!(cross.dimensions.len(), 4);

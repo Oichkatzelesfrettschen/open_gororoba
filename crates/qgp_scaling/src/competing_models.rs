@@ -94,10 +94,7 @@ pub struct BicResult {
 /// Only uses measured points where the theoretical curve covers the pT range.
 /// Points outside the theoretical curve's pT range are excluded and counted
 /// in `n_excluded`.
-pub fn compute_bic(
-    theory: &TheoreticalRaaCurve,
-    data: &[MeasuredRaaPoint],
-) -> BicResult {
+pub fn compute_bic(theory: &TheoreticalRaaCurve, data: &[MeasuredRaaPoint]) -> BicResult {
     let (pt_lo, pt_hi) = theory.pt_range();
     let mut chi2 = 0.0;
     let mut n_used = 0usize;
@@ -273,10 +270,7 @@ pub fn all_cujet3_curves() -> Vec<TheoreticalRaaCurve> {
 
 /// Collect all available fractional Langevin curves.
 pub fn all_langevin_curves() -> Vec<TheoreticalRaaCurve> {
-    vec![
-        langevin_pbpb_5020_0_10(),
-        langevin_pbpb_5020_30_50(),
-    ]
+    vec![langevin_pbpb_5020_0_10(), langevin_pbpb_5020_30_50()]
 }
 
 #[cfg(test)]
@@ -350,9 +344,21 @@ mod tests {
             raa: vec![0.3, 0.5],
         };
         let data = vec![
-            MeasuredRaaPoint { pt: 5.0, raa: 0.2, total_err: 0.01 }, // below range
-            MeasuredRaaPoint { pt: 15.0, raa: 0.4, total_err: 0.01 }, // in range
-            MeasuredRaaPoint { pt: 30.0, raa: 0.6, total_err: 0.01 }, // above range
+            MeasuredRaaPoint {
+                pt: 5.0,
+                raa: 0.2,
+                total_err: 0.01,
+            }, // below range
+            MeasuredRaaPoint {
+                pt: 15.0,
+                raa: 0.4,
+                total_err: 0.01,
+            }, // in range
+            MeasuredRaaPoint {
+                pt: 30.0,
+                raa: 0.6,
+                total_err: 0.01,
+            }, // above range
         ];
 
         let result = compute_bic(&theory, &data);
@@ -403,7 +409,9 @@ mod tests {
             assert!(
                 (curve.raa[i] - expected).abs() < 1e-12,
                 "Mismatch at pT={}: {} vs {}",
-                pt, curve.raa[i], expected
+                pt,
+                curve.raa[i],
+                expected
             );
         }
     }
@@ -425,9 +433,21 @@ mod tests {
         };
 
         let data = vec![
-            MeasuredRaaPoint { pt: 5.0, raa: 0.2, total_err: 0.01 },
-            MeasuredRaaPoint { pt: 10.0, raa: 0.3, total_err: 0.01 },
-            MeasuredRaaPoint { pt: 20.0, raa: 0.5, total_err: 0.01 },
+            MeasuredRaaPoint {
+                pt: 5.0,
+                raa: 0.2,
+                total_err: 0.01,
+            },
+            MeasuredRaaPoint {
+                pt: 10.0,
+                raa: 0.3,
+                total_err: 0.01,
+            },
+            MeasuredRaaPoint {
+                pt: 20.0,
+                raa: 0.5,
+                total_err: 0.01,
+            },
         ];
 
         let results = compare_models(&[good_model, bad_model], &data);

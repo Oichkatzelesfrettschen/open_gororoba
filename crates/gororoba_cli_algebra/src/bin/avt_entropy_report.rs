@@ -8,20 +8,26 @@ use algebra_analysis::avt_entropy::avt_axis_entropy;
 
 fn main() -> anyhow::Result<()> {
     println!("=== Phase 5: Shannon Entropy of AVT Violations ===");
-    println!("{:<10} | {:<15} | {:<15} | {:<10}", "Dim", "Violations", "Entropy (H)", "Ratio (H/Hmax)");
+    println!(
+        "{:<10} | {:<15} | {:<15} | {:<10}",
+        "Dim", "Violations", "Entropy (H)", "Ratio (H/Hmax)"
+    );
     println!("{:-<10}-|-{:-<15}-|-{:-<15}-|-{:-<10}", "", "", "", "");
 
     let dimensions = vec![16, 32, 64, 128, 256];
 
     for dim in dimensions {
         let result = avt_axis_entropy(dim);
-        let ratio = if result.max_entropy > 0.0 { result.shannon_entropy / result.max_entropy } else { 0.0 };
-        
-        println!("{:<10} | {:<15} | {:<15.6} | {:<10.4}", 
-                 dim, 
-                 result.total_violations, 
-                 result.shannon_entropy,
-                 ratio);
+        let ratio = if result.max_entropy > 0.0 {
+            result.shannon_entropy / result.max_entropy
+        } else {
+            0.0
+        };
+
+        println!(
+            "{:<10} | {:<15} | {:<15.6} | {:<10.4}",
+            dim, result.total_violations, result.shannon_entropy, ratio
+        );
     }
 
     println!("\n=== Interpretation ===");

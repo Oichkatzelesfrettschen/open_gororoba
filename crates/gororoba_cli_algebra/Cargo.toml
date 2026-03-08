@@ -110,6 +110,10 @@ path = "src/bin/majorana_braid_crucible.rs"
 name = "phase-transition-crucible"
 path = "src/bin/phase_transition_crucible.rs"
 
+[[bin]]
+name = "tensor-avt-profile-suite"
+path = "src/bin/tensor_avt_profile_suite.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 algebra_core = { path = "../algebra_core", features = ["lie"] }
@@ -120,10 +124,18 @@ stats_core = { path = "../stats_core" }
 clap = { workspace = true }
 csv = { workspace = true }
 env_logger = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+tracing-tracy = { workspace = true, optional = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rustfft = { workspace = true }
 anyhow.workspace = true
+
+[features]
+default = []
+gpu = ["algebra_core/gpu"]
+tracy-profile = ["dep:tracing-tracy"]
 
 [lints]
 workspace = true

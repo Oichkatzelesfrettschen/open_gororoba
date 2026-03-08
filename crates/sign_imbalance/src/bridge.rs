@@ -343,10 +343,7 @@ impl ImbalanceViscosityBridge {
         imbalance_field: &[f64],
         model: &ViscosityCouplingModel,
     ) -> Vec<f64> {
-        imbalance_field
-            .iter()
-            .map(|&f| model.compute(f))
-            .collect()
+        imbalance_field.iter().map(|&f| model.compute(f)).collect()
     }
 }
 
@@ -791,7 +788,13 @@ impl CdField {
         let mut zero = vec![0.0; dim];
         zero[0] = 1.0;
         let data = vec![zero; nx * ny * nz];
-        Self { nx, ny, nz, dim, data }
+        Self {
+            nx,
+            ny,
+            nz,
+            dim,
+            data,
+        }
     }
 
     /// Linear index from (x, y, z) coordinates.
@@ -836,9 +839,7 @@ impl CdField {
                     for j in (i + 1)..dim {
                         for k in (j + 1)..dim {
                             let w = weights[i] * weights[j] * weights[k];
-                            let cycle_sign = psi[i * dim + j]
-                                * psi[j * dim + k]
-                                * psi[i * dim + k];
+                            let cycle_sign = psi[i * dim + j] * psi[j * dim + k] * psi[i * dim + k];
                             total_weight += w;
                             if cycle_sign < 0 {
                                 frustrated_sum += w;
@@ -881,9 +882,7 @@ impl CdField {
                     for j in (i + 1)..dim {
                         for k in (j + 1)..dim {
                             let w = weights[i] * weights[j] * weights[k];
-                            let cycle_sign = psi[i * dim + j]
-                                * psi[j * dim + k]
-                                * psi[i * dim + k];
+                            let cycle_sign = psi[i * dim + j] * psi[j * dim + k] * psi[i * dim + k];
                             total_weight += w;
                             if cycle_sign < 0 {
                                 frustrated_sum += w;

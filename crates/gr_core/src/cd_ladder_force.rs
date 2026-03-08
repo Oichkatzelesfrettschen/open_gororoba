@@ -27,7 +27,10 @@ impl CdLadderForce {
     ///
     /// Panics if `dim` is not a power of two or is less than 4.
     pub fn new(dim: usize, alpha: f64) -> Self {
-        assert!(dim >= 4 && dim.is_power_of_two(), "dim must be power-of-two >= 4");
+        assert!(
+            dim >= 4 && dim.is_power_of_two(),
+            "dim must be power-of-two >= 4"
+        );
         let avt = AlternativityViolationTensor::new(dim);
         Self { dim, alpha, avt }
     }

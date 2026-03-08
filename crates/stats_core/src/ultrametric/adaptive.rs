@@ -334,8 +334,7 @@ mod tests {
     /// where the adaptive p-value < alpha should not exceed alpha + margin.
     #[test]
     fn test_type_i_error_rate_preserved() {
-        use rand::rngs::StdRng;
-        use rand::{Rng, SeedableRng};
+        use rand::{Rng, SeedableRng, rngs::StdRng};
 
         let n_trials = 2000;
         let alpha = 0.05;
@@ -390,8 +389,7 @@ mod tests {
     /// clearly non-significant tests should use far fewer than max_permutations.
     #[test]
     fn test_efficiency_clearly_nonsignificant() {
-        use rand::rngs::StdRng;
-        use rand::{Rng, SeedableRng};
+        use rand::{Rng, SeedableRng, rngs::StdRng};
 
         let n_trials = 500;
         let config = AdaptiveConfig {

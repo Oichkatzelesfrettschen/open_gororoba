@@ -80,10 +80,8 @@ pub fn orthoplex_spectral_dimension(k: usize, t: f64) -> f64 {
     let mu1 = 2.0 * (k as f64 - 1.0);
     let mu2 = 2.0 * k as f64;
 
-    let numerator =
-        k as f64 * mu1 * (-mu1 * t).exp() + (k as f64 - 1.0) * mu2 * (-mu2 * t).exp();
-    let denominator =
-        1.0 + k as f64 * (-mu1 * t).exp() + (k as f64 - 1.0) * (-mu2 * t).exp();
+    let numerator = k as f64 * mu1 * (-mu1 * t).exp() + (k as f64 - 1.0) * mu2 * (-mu2 * t).exp();
+    let denominator = 1.0 + k as f64 * (-mu1 * t).exp() + (k as f64 - 1.0) * (-mu2 * t).exp();
 
     if denominator.abs() < 1e-300 {
         return 0.0;
@@ -137,7 +135,10 @@ mod tests {
         assert!((pa.mu_highest - 126.0).abs() < 1e-10);
         // Band ratio approaches 1 for large k
         assert!((pa.band_ratio - 63.0 / 62.0).abs() < 1e-10);
-        assert!(pa.band_ratio < 1.02, "Band ratio should be near 1 for large k");
+        assert!(
+            pa.band_ratio < 1.02,
+            "Band ratio should be near 1 for large k"
+        );
     }
 
     #[test]

@@ -24,7 +24,7 @@ pub mod fano_resonance;
 pub mod gf2;
 pub mod neg_dim;
 pub mod parity_clique;
-pub mod quaternion;
 pub mod pathion_entropy;
+pub mod quaternion;
 pub mod s3_mixing;
 pub mod spectral_dim;

@@ -114,7 +114,10 @@ pub fn nfw_density(r: f64, r_s: f64, rho_s: f64) -> f64 {
 ///
 /// Returns the best-fit (r_s, rho_s) and chi-squared.
 pub fn fit_nfw_profile(profile: &[RadialBin]) -> NfwFitResult {
-    let valid_bins: Vec<&RadialBin> = profile.iter().filter(|b| b.count > 0 && b.r > 0.0).collect();
+    let valid_bins: Vec<&RadialBin> = profile
+        .iter()
+        .filter(|b| b.count > 0 && b.r > 0.0)
+        .collect();
 
     if valid_bins.len() < 2 {
         return NfwFitResult {
@@ -133,7 +136,7 @@ pub fn fit_nfw_profile(profile: &[RadialBin]) -> NfwFitResult {
     let config = NelderMeadConfig {
         bounds: vec![
             (r_min_data * 0.1, r_max_data * 2.0), // r_s range
-            (rho_max * 0.001, rho_max * 1000.0),   // rho_s range
+            (rho_max * 0.001, rho_max * 1000.0),  // rho_s range
         ],
         max_iter: 5000,
         tol: 1e-14,
@@ -245,7 +248,11 @@ mod tests {
 
         // Cluster ~ 1e15 Msun: c ~ 5
         let c_cluster = dutton_maccio_concentration(1e15);
-        assert!(c_cluster > 2.0 && c_cluster < 10.0, "cluster c = {}", c_cluster);
+        assert!(
+            c_cluster > 2.0 && c_cluster < 10.0,
+            "cluster c = {}",
+            c_cluster
+        );
 
         // c decreases with mass
         assert!(c_mw > c_cluster);

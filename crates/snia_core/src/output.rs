@@ -1,8 +1,6 @@
-use crate::error::SniaError;
-use crate::solver::SimulationResult;
+use crate::{error::SniaError, solver::SimulationResult};
 use serde::{Deserialize, Serialize};
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SimulationSnapshot {

@@ -13,8 +13,7 @@
 //!   claims-verify --check providers         # dataset manifest vs source
 
 use clap::Parser;
-use std::path::PathBuf;
-use std::process;
+use std::{path::PathBuf, process};
 
 use gororoba_cli::claims::verify;
 

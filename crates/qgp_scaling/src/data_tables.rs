@@ -185,8 +185,7 @@ pub fn alice_pbpb_5020_mc_glauber() -> Vec<crate::glauber::CentralityBinGeometry
             // A_perp = sigma_NN * Npart^2 / (4 * Ncoll) [fm^2]
             let a_perp = sigma_nn_fm2 * npart * npart / (4.0 * ncoll);
             // L_avg = (4/pi) * sqrt(A_perp / pi) [fm] -- mean chord through equivalent disc
-            let l_avg = (4.0 / std::f64::consts::PI)
-                * (a_perp / std::f64::consts::PI).sqrt();
+            let l_avg = (4.0 / std::f64::consts::PI) * (a_perp / std::f64::consts::PI).sqrt();
             crate::glauber::CentralityBinGeometry {
                 cent_lo: c_lo,
                 cent_hi: c_hi,
@@ -228,8 +227,7 @@ pub fn alice_pbpb_5360_mc_glauber() -> Vec<crate::glauber::CentralityBinGeometry
     bins.iter()
         .map(|&(c_lo, c_hi, npart, ncoll, b_avg, ecc)| {
             let a_perp = sigma_nn_fm2 * npart * npart / (4.0 * ncoll);
-            let l_avg = (4.0 / std::f64::consts::PI)
-                * (a_perp / std::f64::consts::PI).sqrt();
+            let l_avg = (4.0 / std::f64::consts::PI) * (a_perp / std::f64::consts::PI).sqrt();
             crate::glauber::CentralityBinGeometry {
                 cent_lo: c_lo,
                 cent_hi: c_hi,
@@ -269,8 +267,7 @@ pub fn alice_xexe_5440_mc_glauber() -> Vec<crate::glauber::CentralityBinGeometry
     bins.iter()
         .map(|&(c_lo, c_hi, npart, ncoll, b_avg, ecc)| {
             let a_perp = sigma_nn_fm2 * npart * npart / (4.0 * ncoll);
-            let l_avg = (4.0 / std::f64::consts::PI)
-                * (a_perp / std::f64::consts::PI).sqrt();
+            let l_avg = (4.0 / std::f64::consts::PI) * (a_perp / std::f64::consts::PI).sqrt();
             crate::glauber::CentralityBinGeometry {
                 cent_lo: c_lo,
                 cent_hi: c_hi,

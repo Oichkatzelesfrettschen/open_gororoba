@@ -14,7 +14,7 @@
 use clap::{Parser, Subcommand};
 use data_core::{catalogs::hic_raa, fetcher::FetchConfig};
 use qgp_scaling::{
-    competing_models::{self, MeasuredRaaPoint, compare_models, arleo_falmagne_raa},
+    competing_models::{self, MeasuredRaaPoint, arleo_falmagne_raa, compare_models},
     data_tables::{self, eccentricity_event_by_event},
     density_scaling::{DensityScalingPoint, fit_density_scaling, fit_density_scaling_multi_k},
     epsilon_fit::{RaaDataPoint, extract_epsilon, extract_epsilon_straggling},
@@ -590,68 +590,74 @@ fn run_ecc_compare(data_dir: &str, pt_min: f64, n_gl: usize) {
     ];
 
     // Helper: build v2 slope data for a given eccentricity source
-    let build_v2_data = |ecc_source: &str, get_ecc: &dyn Fn(f64, f64) -> f64| -> Vec<V2SlopePoint> {
-        let mut v2_slope_data = Vec::new();
+    let build_v2_data =
+        |ecc_source: &str, get_ecc: &dyn Fn(f64, f64) -> f64| -> Vec<V2SlopePoint> {
+            let mut v2_slope_data = Vec::new();
 
-        for &(c_lo, c_hi, v2_table_idx) in &v2_cents {
-            if v2_table_idx > cms_v2_tables.len() {
-                continue;
-            }
-            let v2_path = v2_dir.join(cms_v2_tables[v2_table_idx - 1].filename);
-            let v2_data = match hic_raa::parse_v2_csv(&v2_path) {
-                Ok(d) => d,
-                Err(_) => continue,
-            };
-
-            let raa_table = (c_lo * 20.0) as usize + 1;
-            let raa_path = alice_dir.join(format!("table_{}.csv", raa_table));
-            let raa_pts = match hic_raa::parse_raa_csv(&raa_path) {
-                Ok(d) => d,
-                Err(_) => continue,
-            };
-
-            let raa_filtered: Vec<_> = raa_pts.iter().filter(|p| p.pt >= pt_min).collect();
-            if raa_filtered.len() < 3 {
-                continue;
-            }
-
-            let raa_pt: Vec<f64> = raa_filtered.iter().map(|p| p.pt).collect();
-            let raa_vals: Vec<f64> = raa_filtered.iter().map(|p| p.raa).collect();
-            let slopes = log_derivative_raa(&raa_pt, &raa_vals);
-
-            let ecc = get_ecc(c_lo, c_hi);
-            if ecc < 0.01 {
-                continue;
-            }
-
-            for (i, slope) in slopes.iter().enumerate() {
-                if slope.is_nan() || i >= raa_pt.len() {
+            for &(c_lo, c_hi, v2_table_idx) in &v2_cents {
+                if v2_table_idx > cms_v2_tables.len() {
                     continue;
                 }
-                let target_pt = raa_pt[i];
-                if let Some(v2p) = v2_data
-                    .iter()
-                    .min_by(|a, b| {
-                        (a.pt - target_pt)
-                            .abs()
-                            .partial_cmp(&(b.pt - target_pt).abs())
-                            .unwrap()
-                    })
-                    .filter(|v2p| (v2p.pt - target_pt).abs() < 2.0)
-                {
-                    v2_slope_data.push(V2SlopePoint {
-                        pt: target_pt,
-                        v2_over_ecc: v2p.v2 / ecc,
-                        v2_over_ecc_err: v2p.stat_err / ecc,
-                        dln_raa_dln_pt: *slope,
-                        slope_err: 0.01,
-                        centrality: format!("{} {:.0}-{:.0}%", ecc_source, c_lo * 100.0, c_hi * 100.0),
-                    });
+                let v2_path = v2_dir.join(cms_v2_tables[v2_table_idx - 1].filename);
+                let v2_data = match hic_raa::parse_v2_csv(&v2_path) {
+                    Ok(d) => d,
+                    Err(_) => continue,
+                };
+
+                let raa_table = (c_lo * 20.0) as usize + 1;
+                let raa_path = alice_dir.join(format!("table_{}.csv", raa_table));
+                let raa_pts = match hic_raa::parse_raa_csv(&raa_path) {
+                    Ok(d) => d,
+                    Err(_) => continue,
+                };
+
+                let raa_filtered: Vec<_> = raa_pts.iter().filter(|p| p.pt >= pt_min).collect();
+                if raa_filtered.len() < 3 {
+                    continue;
+                }
+
+                let raa_pt: Vec<f64> = raa_filtered.iter().map(|p| p.pt).collect();
+                let raa_vals: Vec<f64> = raa_filtered.iter().map(|p| p.raa).collect();
+                let slopes = log_derivative_raa(&raa_pt, &raa_vals);
+
+                let ecc = get_ecc(c_lo, c_hi);
+                if ecc < 0.01 {
+                    continue;
+                }
+
+                for (i, slope) in slopes.iter().enumerate() {
+                    if slope.is_nan() || i >= raa_pt.len() {
+                        continue;
+                    }
+                    let target_pt = raa_pt[i];
+                    if let Some(v2p) = v2_data
+                        .iter()
+                        .min_by(|a, b| {
+                            (a.pt - target_pt)
+                                .abs()
+                                .partial_cmp(&(b.pt - target_pt).abs())
+                                .unwrap()
+                        })
+                        .filter(|v2p| (v2p.pt - target_pt).abs() < 2.0)
+                    {
+                        v2_slope_data.push(V2SlopePoint {
+                            pt: target_pt,
+                            v2_over_ecc: v2p.v2 / ecc,
+                            v2_over_ecc_err: v2p.stat_err / ecc,
+                            dln_raa_dln_pt: *slope,
+                            slope_err: 0.01,
+                            centrality: format!(
+                                "{} {:.0}-{:.0}%",
+                                ecc_source,
+                                c_lo * 100.0,
+                                c_hi * 100.0
+                            ),
+                        });
+                    }
                 }
             }
-        }
-        v2_slope_data
-    };
+            v2_slope_data
+        };
 
     // Model 1: Optical Glauber eccentricity (computed from thickness functions)
     eprintln!("[1/2] Fitting with optical Glauber eccentricity...");
@@ -670,8 +676,15 @@ fn run_ecc_compare(data_dir: &str, pt_min: f64, n_gl: usize) {
     });
 
     if data_optical.len() < 3 || data_mc.len() < 3 {
-        eprintln!("  ERROR: insufficient data for comparison ({} optical, {} MC)", data_optical.len(), data_mc.len());
-        eprintln!("  Make sure ALICE R_AA + CMS v2 data is downloaded to {}", data_dir);
+        eprintln!(
+            "  ERROR: insufficient data for comparison ({} optical, {} MC)",
+            data_optical.len(),
+            data_mc.len()
+        );
+        eprintln!(
+            "  Make sure ALICE R_AA + CMS v2 data is downloaded to {}",
+            data_dir
+        );
         return;
     }
 
@@ -679,7 +692,11 @@ fn run_ecc_compare(data_dir: &str, pt_min: f64, n_gl: usize) {
     let result_mc = fit_v2_relation(&data_mc, true);
 
     let delta_beta = (result_optical.beta - result_mc.beta).abs();
-    let verdict = if delta_beta < 0.2 { "ROBUST" } else { "SENSITIVE" };
+    let verdict = if delta_beta < 0.2 {
+        "ROBUST"
+    } else {
+        "SENSITIVE"
+    };
 
     eprintln!();
     eprintln!("  +----------------------------------------------------------+");
@@ -707,9 +724,14 @@ fn run_ecc_compare(data_dir: &str, pt_min: f64, n_gl: usize) {
     // Also check with 5.36 TeV MC Glauber if available
     let bins_536 = data_tables::alice_pbpb_5360_mc_glauber();
     if !bins_536.is_empty() {
-        eprintln!("  [info] Pb-Pb 5.36 TeV MC Glauber table loaded ({} bins)", bins_536.len());
-        eprintln!("  [info] 0-5%: Npart={:.1}, A_perp={:.1} fm^2, ecc={:.3}",
-            bins_536[0].n_part, bins_536[0].a_perp, bins_536[0].eccentricity);
+        eprintln!(
+            "  [info] Pb-Pb 5.36 TeV MC Glauber table loaded ({} bins)",
+            bins_536.len()
+        );
+        eprintln!(
+            "  [info] 0-5%: Npart={:.1}, A_perp={:.1} fm^2, ecc={:.3}",
+            bins_536[0].n_part, bins_536[0].a_perp, bins_536[0].eccentricity
+        );
         eprintln!("  [info] R_AA at 5.36 TeV not yet published -- comparison deferred.");
     }
 }
@@ -844,7 +866,10 @@ fn run_cross_validate(data_dir: &str, pt_min: f64, n_gl: usize) {
     }
 
     if multi_system_data.len() < 4 {
-        eprintln!("  ERROR: insufficient multi-system data ({} points, need >= 4)", multi_system_data.len());
+        eprintln!(
+            "  ERROR: insufficient multi-system data ({} points, need >= 4)",
+            multi_system_data.len()
+        );
         eprintln!("  Make sure ALICE R_AA data is downloaded to {}", data_dir);
         return;
     }
@@ -854,7 +879,9 @@ fn run_cross_validate(data_dir: &str, pt_min: f64, n_gl: usize) {
     let beta_density_err = (density_result.beta_err_up + density_result.beta_err_down) / 2.0;
     eprintln!(
         "  beta_density = {:.4} +{:.4} -{:.4} (chi2/ndf = {:.3})",
-        beta_density, density_result.beta_err_up, density_result.beta_err_down,
+        beta_density,
+        density_result.beta_err_up,
+        density_result.beta_err_down,
         density_result.chi2_per_ndf,
     );
 
@@ -948,7 +975,9 @@ fn run_cross_validate(data_dir: &str, pt_min: f64, n_gl: usize) {
     let beta_azimuthal_err = v2_result.beta_err;
     eprintln!(
         "  beta_azimuthal = {:.4} +/- {:.4} (R^2 = {:.4}, chi2/ndf = {:.3})",
-        beta_azimuthal, beta_azimuthal_err, v2_result.r_squared,
+        beta_azimuthal,
+        beta_azimuthal_err,
+        v2_result.r_squared,
         v2_result.chi2 / v2_result.ndf as f64,
     );
 
@@ -958,9 +987,8 @@ fn run_cross_validate(data_dir: &str, pt_min: f64, n_gl: usize) {
     eprintln!();
 
     let delta_beta = (beta_density - beta_azimuthal).abs();
-    let combined_err = (beta_density_err * beta_density_err
-        + beta_azimuthal_err * beta_azimuthal_err)
-        .sqrt();
+    let combined_err =
+        (beta_density_err * beta_density_err + beta_azimuthal_err * beta_azimuthal_err).sqrt();
     let z_score = if combined_err > 0.0 {
         delta_beta / combined_err
     } else {
@@ -1428,7 +1456,13 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
         };
         eprintln!(
             "  {:>30} {:>5} {:>8.1} {:>6} {:>10.3} {:>8} {:>10.1}  (dBIC={:.1})",
-            r.model_name, r.n_params, r.chi2, r.n_points, chi2_per_n, r.n_excluded, r.bic,
+            r.model_name,
+            r.n_params,
+            r.chi2,
+            r.n_points,
+            chi2_per_n,
+            r.n_excluded,
+            r.bic,
             delta_bic
         );
     }
@@ -1448,10 +1482,7 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
         } else {
             "WEAK"
         };
-        eprintln!(
-            "  Best model: {} (BIC = {:.1})",
-            best.model_name, best.bic
-        );
+        eprintln!("  Best model: {} (BIC = {:.1})", best.model_name, best.bic);
         eprintln!(
             "  Evidence strength vs second-best: {} (delta-BIC = {:.1})",
             strength, delta

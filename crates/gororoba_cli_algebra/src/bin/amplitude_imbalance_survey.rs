@@ -72,10 +72,7 @@ fn main() {
     let all_zero_frust_nonzero = zero_frust_chambers.iter().all(|s| s.amplitude != 0);
 
     println!("\nHypothesis Test: 'Nonzero region R1 corresponds to imbalance minima'");
-    println!(
-        " - Zero imbalance chambers: {}",
-        zero_frust_chambers.len()
-    );
+    println!(" - Zero imbalance chambers: {}", zero_frust_chambers.len());
     println!(
         " - All zero-imbalance chambers are non-zero amplitude: {}",
         all_zero_frust_nonzero

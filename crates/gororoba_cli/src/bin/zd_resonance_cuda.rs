@@ -19,16 +19,12 @@
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
+use sign_imbalance::bridge::{ImbalanceViscosityBridge, SedenionField, ViscosityCouplingModel};
 use spectral_core::ghost_spectral::{
     ALIASED_GHOST_FREQ, check_ghost, compute_power_spectrum, find_peaks, noise_floor, peak_fwhm,
     peak_snr,
 };
-use std::io::Write;
-use std::path::PathBuf;
-use std::time::Instant;
-use sign_imbalance::bridge::{
-    ImbalanceViscosityBridge, SedenionField, ViscosityCouplingModel,
-};
+use std::{io::Write, path::PathBuf, time::Instant};
 
 /// CUDA BF16 ZD Resonance Experiments
 #[derive(Parser, Debug)]

@@ -11,8 +11,7 @@ use gororoba_cli::data_governance::{
     load_external_sources, load_generated_origin_patterns, load_semantic_validators,
     missing_semantic_lane_validators, source_rule_for_path,
 };
-use std::collections::BTreeSet;
-use std::path::PathBuf;
+use std::{collections::BTreeSet, path::PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(

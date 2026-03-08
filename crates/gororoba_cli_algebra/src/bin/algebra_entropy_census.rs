@@ -13,8 +13,7 @@ use algebra_core::analysis::entropy_census::{
     associator_entropy, phase_transition_analysis, zero_divisor_density,
 };
 use clap::Parser;
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 #[derive(Parser, Debug)]
 #[command(

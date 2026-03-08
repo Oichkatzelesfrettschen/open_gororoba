@@ -2,8 +2,10 @@ use anyhow::{Context, Result};
 use clap::{ArgAction, Parser};
 use data_core::fetcher::download_to_string;
 use serde_json::Value;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser, Debug)]
 #[command(

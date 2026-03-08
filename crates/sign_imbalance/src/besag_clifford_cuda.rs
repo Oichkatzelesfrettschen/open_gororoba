@@ -23,10 +23,10 @@
 //! - stats_core::ultrametric::adaptive for CPU baseline
 
 use anyhow::{Context, Result};
-use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
+use cudarc::{
+    driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg},
+    nvrtc::compile_ptx,
 };
-use cudarc::nvrtc::compile_ptx;
 use std::sync::Arc;
 
 /// GPU Besag-Clifford configuration
@@ -69,7 +69,7 @@ pub struct GpuBesagCliffordTester {
     stream: Arc<CudaStream>,
 
     // Device buffers (persistent across batches)
-    d_imbalance: CudaSlice<f64>,     // Original imbalance field
+    d_imbalance: CudaSlice<f64>,       // Original imbalance field
     d_shuffled_batch: CudaSlice<f64>,  // Batch of shuffled fields
     d_viscosity_batch: CudaSlice<f64>, // Batch of viscosity fields
     d_t_statistics: CudaSlice<f64>,    // Batch of t-statistics
@@ -162,10 +162,7 @@ impl GpuBesagCliffordTester {
                 (config.max_permutations - n_permutations).min(self.batch_size);
 
             // Step 1: Generate shuffled imbalance fields (GPU kernel)
-            self.shuffle_imbalance_batch(
-                current_batch_size,
-                config.seed + n_permutations as u64,
-            )?;
+            self.shuffle_imbalance_batch(current_batch_size, config.seed + n_permutations as u64)?;
 
             // Step 2: Transform to viscosity batch (GPU kernel)
             self.transform_to_viscosity_batch(current_batch_size, nu_base, lambda)?;

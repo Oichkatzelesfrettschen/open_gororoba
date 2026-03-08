@@ -1,7 +1,9 @@
-use super::daf::DafReader;
-use super::chebyshev::{evaluate_chebyshev_position, evaluate_chebyshev_velocity};
-use wide::f64x4;
+use super::{
+    chebyshev::{evaluate_chebyshev_position, evaluate_chebyshev_velocity},
+    daf::DafReader,
+};
 use std::collections::HashMap;
+use wide::f64x4;
 
 /// Ephemeris evaluation result containing 3D position and velocity.
 #[derive(Debug, Clone, Copy)]
@@ -18,7 +20,7 @@ pub struct SpkSegment {
     pub spk_type: i32,
     pub start_jed: f64,
     pub end_jed: f64,
-    
+
     // Extracted from the f64 slice
     pub data: Vec<f64>,
 }
@@ -67,7 +69,11 @@ impl SpkReader {
             graph.entry(target).or_default().push((center, idx, false));
         }
 
-        Ok(Self { daf, segments, graph })
+        Ok(Self {
+            daf,
+            segments,
+            graph,
+        })
     }
 
     pub fn segments(&self) -> &[SpkSegment] {
@@ -87,7 +93,9 @@ impl SpkReader {
             // [ MID, RADIUS, X_coeffs..., Y_coeffs..., Z_coeffs... ] x N records
             // Followed by metadata: [INIT, INTVL, RSIZE, N_RECORDS]
             let n = seg.data.len();
-            if n < 4 { return None; }
+            if n < 4 {
+                return None;
+            }
             let rsize = seg.data[n - 2] as usize;
             let n_records = seg.data[n - 1] as usize;
             let intvl = seg.data[n - 3];
@@ -135,7 +143,7 @@ impl SpkReader {
             // Wait, DE440 is actually in seconds, not days.
             let _sec_per_day = 86400.0;
             // Radius in type 2 is half the interval in SECONDS.
-            
+
             return Some(StateVector {
                 position: [pos[0], pos[1], pos[2]],
                 velocity: [
@@ -145,7 +153,7 @@ impl SpkReader {
                 ],
             });
         }
-        
+
         None
     }
 
@@ -153,12 +161,15 @@ impl SpkReader {
     /// Uses BFS to find the shortest path in the coordinate graph.
     pub fn compute_state(&self, center: i32, target: i32, jed: f64) -> Option<StateVector> {
         if center == target {
-            return Some(StateVector { position: [0.0; 3], velocity: [0.0; 3] });
+            return Some(StateVector {
+                position: [0.0; 3],
+                velocity: [0.0; 3],
+            });
         }
 
         let mut queue = std::collections::VecDeque::new();
         let mut visited = HashMap::new();
-        
+
         queue.push_back(center);
         visited.insert(center, None);
 
@@ -192,7 +203,7 @@ impl SpkReader {
         // Traverse backwards from target to center
         while curr != center {
             let (prev, seg_idx, is_fwd) = visited[&curr].unwrap();
-            
+
             if let Some(state) = self.evaluate_segment(seg_idx, jed) {
                 let sign = if is_fwd { 1.0 } else { -1.0 };
                 pos[0] += sign * state.position[0];
@@ -204,10 +215,13 @@ impl SpkReader {
             } else {
                 return None;
             }
-            
+
             curr = prev;
         }
 
-        Some(StateVector { position: pos, velocity: vel })
+        Some(StateVector {
+            position: pos,
+            velocity: vel,
+        })
     }
 }

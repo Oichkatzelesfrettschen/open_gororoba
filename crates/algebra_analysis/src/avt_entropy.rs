@@ -138,8 +138,14 @@ mod tests {
     fn test_octonion_zero_entropy() {
         // dim=8: octonions are alternative, so ZERO violations, entropy = 0.
         let result = avt_axis_entropy(8);
-        assert_eq!(result.total_violations, 0, "octonions must have zero AVT violations");
-        assert_eq!(result.shannon_entropy, 0.0, "zero violations => zero entropy");
+        assert_eq!(
+            result.total_violations, 0,
+            "octonions must have zero AVT violations"
+        );
+        assert_eq!(
+            result.shannon_entropy, 0.0,
+            "zero violations => zero entropy"
+        );
         assert!(
             result.axis_counts.iter().all(|&c| c == 0),
             "all axis counts must be zero for octonions"

@@ -210,11 +210,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if args.verbose {
         eprintln!("[6/10] Detecting percolation channels...");
     }
-    let mut detector = sign_imbalance::PercolationDetector::new(
-        args.grid_size,
-        args.grid_size,
-        args.grid_size,
-    );
+    let mut detector =
+        sign_imbalance::PercolationDetector::new(args.grid_size, args.grid_size, args.grid_size);
     let threshold = sign_imbalance::auto_velocity_threshold(&velocity_field);
     let above_threshold = u_magnitudes.iter().filter(|&&u| u > threshold).count();
 
@@ -539,8 +536,7 @@ struct BesagCliffordParams<'a> {
 fn run_besag_clifford_null(
     params: BesagCliffordParams,
 ) -> Result<NullModelResult, Box<dyn std::error::Error>> {
-    use rand::SeedableRng;
-    use rand::seq::SliceRandom;
+    use rand::{SeedableRng, seq::SliceRandom};
 
     let mut rng = rand::rngs::StdRng::seed_from_u64(params.seed);
 
@@ -590,10 +586,8 @@ fn run_besag_clifford_null(
                 let channels_null = detector.detect_channels(&solver_null.u, threshold);
 
                 // Compute null correlation
-                let corr_null = sign_imbalance::correlate_with_imbalance(
-                    &channels_null,
-                    &shuffled_imbalance,
-                );
+                let corr_null =
+                    sign_imbalance::correlate_with_imbalance(&channels_null, &shuffled_imbalance);
 
                 // Count if |t_null| >= |t_observed| (two-sided test)
                 if corr_null.t_statistic.abs() >= params.observed_t.abs() {

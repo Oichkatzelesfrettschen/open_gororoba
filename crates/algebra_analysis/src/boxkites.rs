@@ -6758,14 +6758,8 @@ mod tests {
         for &(dim, _, b1, frustrated) in &dim_data {
             if dim > 16 {
                 let ratio = frustrated as f64 / b1 as f64;
-                assert!(
-                    ratio > 0.25,
-                    "dim={dim}: imbalance ratio suspiciously low"
-                );
-                assert!(
-                    ratio < 0.50,
-                    "dim={dim}: imbalance ratio suspiciously high"
-                );
+                assert!(ratio > 0.25, "dim={dim}: imbalance ratio suspiciously low");
+                assert!(ratio < 0.50, "dim={dim}: imbalance ratio suspiciously high");
             }
         }
 

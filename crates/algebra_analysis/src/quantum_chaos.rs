@@ -17,12 +17,13 @@
 //! in ZD graph Laplacian spectra (near-complete multipartite structure) without
 //! the Runge oscillations of polynomial staircase methods.
 
-use crate::boxkites::{motif_components_for_cross_assessors, MotifComponent};
-use crate::spectral_dimension::{
-    build_laplacian_from_component, clamp_zero_eigenvalues, DenseEigenSolver, EigenSolver,
+use crate::{
+    boxkites::{MotifComponent, motif_components_for_cross_assessors},
+    spectral_dimension::{
+        DenseEigenSolver, EigenSolver, build_laplacian_from_component, clamp_zero_eigenvalues,
+    },
 };
-use std::collections::BTreeMap;
-use std::f64::consts::PI;
+use std::{collections::BTreeMap, f64::consts::PI};
 
 /// Minimum number of eigenvalues required for meaningful NNSD analysis.
 const MIN_EIGENVALUES: usize = 30;
@@ -121,8 +122,7 @@ pub fn erf(x: f64) -> f64 {
     let t = 1.0 / (1.0 + 0.3275911 * x);
     let poly = t
         * (0.254829592
-            + t * (-0.284496736
-                + t * (1.421413741 + t * (-1.453152027 + t * 1.061405429))));
+            + t * (-0.284496736 + t * (1.421413741 + t * (-1.453152027 + t * 1.061405429))));
     sign * (1.0 - poly * (-x * x).exp())
 }
 
@@ -251,19 +251,13 @@ pub fn build_spacing_histogram(spacings: &[f64], n_bins: usize) -> (Vec<f64>, Ve
     }
 
     let norm = spacings.len() as f64 * bin_width;
-    let centers: Vec<f64> = (0..n_bins)
-        .map(|i| (i as f64 + 0.5) * bin_width)
-        .collect();
+    let centers: Vec<f64> = (0..n_bins).map(|i| (i as f64 + 0.5) * bin_width).collect();
     let density: Vec<f64> = counts.iter().map(|&c| c as f64 / norm).collect();
     (centers, density)
 }
 
 /// Sum of squared errors between a histogram and a reference distribution.
-pub fn histogram_sse(
-    centers: &[f64],
-    histogram: &[f64],
-    reference_fn: impl Fn(f64) -> f64,
-) -> f64 {
+pub fn histogram_sse(centers: &[f64], histogram: &[f64], reference_fn: impl Fn(f64) -> f64) -> f64 {
     centers
         .iter()
         .zip(histogram.iter())
@@ -549,8 +543,8 @@ pub struct MotifInvariants {
 /// Compute graph-theoretic invariants for a motif component.
 pub fn motif_invariants(comp: &MotifComponent, n_components_in_class: usize) -> MotifInvariants {
     let degree_sequence = comp.degree_sequence();
-    let is_regular = !degree_sequence.is_empty()
-        && degree_sequence.first() == degree_sequence.last();
+    let is_regular =
+        !degree_sequence.is_empty() && degree_sequence.first() == degree_sequence.last();
     let regularity_degree = if is_regular {
         degree_sequence.first().copied().unwrap_or(0)
     } else {
@@ -593,14 +587,22 @@ pub fn export_motif_graphviz(comp: &MotifComponent, inv: &MotifInvariants) -> St
     ));
     dot.push_str(&format!(
         "  // vertices={}, diameter={}, girth={}, triangles={}\n",
-        inv.n_vertices, inv.diameter,
-        if inv.girth == usize::MAX { "inf".to_string() } else { inv.girth.to_string() },
+        inv.n_vertices,
+        inv.diameter,
+        if inv.girth == usize::MAX {
+            "inf".to_string()
+        } else {
+            inv.girth.to_string()
+        },
         inv.triangle_count
     ));
     if inv.is_regular {
         dot.push_str(&format!("  // regular: degree={}\n", inv.regularity_degree));
     } else {
-        dot.push_str(&format!("  // degree_sequence: {:?}\n", inv.degree_sequence));
+        dot.push_str(&format!(
+            "  // degree_sequence: {:?}\n",
+            inv.degree_sequence
+        ));
     }
     if inv.k2_parts > 0 {
         dot.push_str(&format!(
@@ -611,15 +613,29 @@ pub fn export_motif_graphviz(comp: &MotifComponent, inv: &MotifInvariants) -> St
 
     // Spectrum as comment (truncated to 3 decimal places)
     let spec_str: Vec<String> = inv.spectrum.iter().map(|&v| format!("{v:.3}")).collect();
-    dot.push_str(&format!("  // adjacency_spectrum: [{}]\n", spec_str.join(", ")));
+    dot.push_str(&format!(
+        "  // adjacency_spectrum: [{}]\n",
+        spec_str.join(", ")
+    ));
 
     // Graph label with key invariants
     dot.push_str(&format!(
         "  label=\"dim={} edges={} V={} diam={} girth={} tri={}{}\"\n",
-        inv.cd_dim, inv.n_edges, inv.n_vertices, inv.diameter,
-        if inv.girth == usize::MAX { "inf".to_string() } else { inv.girth.to_string() },
+        inv.cd_dim,
+        inv.n_edges,
+        inv.n_vertices,
+        inv.diameter,
+        if inv.girth == usize::MAX {
+            "inf".to_string()
+        } else {
+            inv.girth.to_string()
+        },
         inv.triangle_count,
-        if inv.k2_parts > 0 { format!(" K_{{2x{}}}", inv.k2_parts) } else { String::new() },
+        if inv.k2_parts > 0 {
+            format!(" K_{{2x{}}}", inv.k2_parts)
+        } else {
+            String::new()
+        },
     ));
     dot.push_str("  labelloc=t\n");
     dot.push_str("  node [shape=circle, width=0.3, fixedsize=true]\n");
@@ -806,11 +822,7 @@ mod tests {
             erf(-1.0)
         );
         // erf(3) = 0.99998 (not exactly 1.0)
-        assert!(
-            erf(3.0) > 0.9999,
-            "erf(3) should be > 0.9999: {}",
-            erf(3.0)
-        );
+        assert!(erf(3.0) > 0.9999, "erf(3) should be > 0.9999: {}", erf(3.0));
     }
 
     #[test]
@@ -844,10 +856,7 @@ mod tests {
         let spacings: Vec<f64> = unfolded.windows(2).map(|w| w[1] - w[0]).collect();
         for &s in &spacings {
             assert!(!s.is_nan(), "degenerate spacings should not be NaN");
-            assert!(
-                s.abs() < 1e-10,
-                "degenerate spacings should be ~0: {s}"
-            );
+            assert!(s.abs() < 1e-10, "degenerate spacings should be ~0: {s}");
         }
     }
 
@@ -864,10 +873,7 @@ mod tests {
             .collect();
 
         let q = fit_brody_parameter(&spacings);
-        assert!(
-            q < 0.15,
-            "Poisson sample should give q < 0.15, got {q}"
-        );
+        assert!(q < 0.15, "Poisson sample should give q < 0.15, got {q}");
     }
 
     #[test]
@@ -883,9 +889,6 @@ mod tests {
             .collect();
 
         let q = fit_brody_parameter(&spacings);
-        assert!(
-            q > 0.85,
-            "GOE sample should give q > 0.85, got {q}"
-        );
+        assert!(q > 0.85, "GOE sample should give q > 0.85, got {q}");
     }
 }

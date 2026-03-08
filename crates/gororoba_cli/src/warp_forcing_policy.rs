@@ -1,7 +1,9 @@
 use serde::Deserialize;
-use std::collections::BTreeMap;
-use std::error::Error;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::BTreeMap,
+    error::Error,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug, Clone, Copy)]
 pub struct WarpForcingProfile {

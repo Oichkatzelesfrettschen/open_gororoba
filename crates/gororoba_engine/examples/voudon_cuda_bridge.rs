@@ -1,6 +1,6 @@
 use algebra_core::gpu::voudon::VoudonFrustrationGpu;
-use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use cudarc::driver::CudaContext;
+use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use std::sync::Arc;
 
 fn main() -> anyhow::Result<()> {
@@ -8,7 +8,7 @@ fn main() -> anyhow::Result<()> {
 
     if !algebra_core::gpu::is_gpu_available() {
         println!("GPU not available. This example requires CUDA.");
-        return Ok(())
+        return Ok(());
     }
 
     let nx = 128;
@@ -17,9 +17,12 @@ fn main() -> anyhow::Result<()> {
     let n_cells = nx * ny * nz;
 
     // 1. Compute Voudon (256D) Frustration Field on GPU
-    println!("Computing 256D Voudon frustration field ({} cells)...", n_cells);
-    let frustration_host = VoudonFrustrationGpu::compute_field(nx, ny, nz, 42)
-        .map_err(|e| anyhow::anyhow!(e))?;
+    println!(
+        "Computing 256D Voudon frustration field ({} cells)...",
+        n_cells
+    );
+    let frustration_host =
+        VoudonFrustrationGpu::compute_field(nx, ny, nz, 42).map_err(|e| anyhow::anyhow!(e))?;
 
     // 2. Initialize CUDA LBM Solver
     println!("Initializing CUDA LBM solver (FP32)...");
@@ -33,7 +36,10 @@ fn main() -> anyhow::Result<()> {
     // 4. Modulate Viscosity via Voudon Frustration
     let alpha_voudon = 0.5; // Coupling strength
     let tau_base = 0.8;
-    println!("Applying Voudon-driven viscosity modulation (alpha = {})...", alpha_voudon);
+    println!(
+        "Applying Voudon-driven viscosity modulation (alpha = {})...",
+        alpha_voudon
+    );
     solver.update_tau_from_voudon(&d_frustration, tau_base as f32, alpha_voudon as f32)?;
 
     // 5. Run Simulation Steps
@@ -48,6 +54,6 @@ fn main() -> anyhow::Result<()> {
 
     println!("\n--- Simulation Complete ---");
     println!("Voudon-coupled turbulence successfully simulated on GPU.");
-    
+
     Ok(())
 }

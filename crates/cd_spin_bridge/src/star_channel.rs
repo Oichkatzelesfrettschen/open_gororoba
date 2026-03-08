@@ -61,8 +61,7 @@ mod tests {
     #[test]
     fn test_gamma_zero_at_dr0() {
         let ch = StarChannel::default();
-        assert!(ch.gamma_from_dr(0.0).abs() < 1e-14,
-            "gamma(0) must be 0");
+        assert!(ch.gamma_from_dr(0.0).abs() < 1e-14, "gamma(0) must be 0");
     }
 
     #[test]
@@ -76,8 +75,11 @@ mod tests {
         // At large dR, gamma -> gamma_0
         let ch = StarChannel::default();
         let gamma_large = ch.gamma_from_dr(1000.0);
-        assert!((gamma_large - ch.gamma_0).abs() < 1e-9,
-            "gamma must saturate at gamma_0={}: got {gamma_large}", ch.gamma_0);
+        assert!(
+            (gamma_large - ch.gamma_0).abs() < 1e-9,
+            "gamma must saturate at gamma_0={}: got {gamma_large}",
+            ch.gamma_0
+        );
     }
 
     #[test]
@@ -86,8 +88,10 @@ mod tests {
         // At large dR: P_sat = exp(-gamma_0) / 3 = exp(-0.611) / 3.
         let ch = StarChannel::default();
         let p_sat = ch.p_scalar_from_dr(1000.0);
-        assert!((p_sat - 0.181).abs() < 0.035,
-            "Saturated P must match STAR measurement: P_sat={p_sat:.4}");
+        assert!(
+            (p_sat - 0.181).abs() < 0.035,
+            "Saturated P must match STAR measurement: P_sat={p_sat:.4}"
+        );
     }
 
     #[test]
@@ -95,8 +99,10 @@ mod tests {
         // At dR=0: no decoherence, P = 1/3 (physical triplet baseline).
         let ch = StarChannel::default();
         let p = ch.p_scalar_from_dr(0.0);
-        assert!((p - 1.0 / 3.0).abs() < 1e-12,
-            "P(dR=0) must be 1/3: got {p}");
+        assert!(
+            (p - 1.0 / 3.0).abs() < 1e-12,
+            "P(dR=0) must be 1/3: got {p}"
+        );
     }
 
     #[test]
@@ -105,8 +111,10 @@ mod tests {
         let p0 = ch.p_scalar_from_dr(0.0);
         let p1 = ch.p_scalar_from_dr(1.0);
         let p5 = ch.p_scalar_from_dr(5.0);
-        assert!(p0 > p1 && p1 > p5,
-            "P must decrease with dR: {p0:.4} > {p1:.4} > {p5:.4}");
+        assert!(
+            p0 > p1 && p1 > p5,
+            "P must decrease with dR: {p0:.4} > {p1:.4} > {p5:.4}"
+        );
     }
 
     #[test]

@@ -12,8 +12,7 @@
 use clap::Parser;
 use lbm_core::{CX, W, equilibrium, macroscopic, stream, viscosity_with_power_law_associator};
 use ndarray::Array2;
-use std::f64::consts::PI;
-use std::fmt::Write as _;
+use std::{f64::consts::PI, fmt::Write as _};
 
 #[derive(Parser, Debug)]
 #[command(name = "thesis2-kolmogorov-2d")]

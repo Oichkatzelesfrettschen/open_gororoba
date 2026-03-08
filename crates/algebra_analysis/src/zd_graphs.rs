@@ -13,11 +13,11 @@
 //! 2. **Basis Participation Graph**: Nodes are basis indices, edges weighted by ZD involvement
 //! 3. **Associator Triad Graph**: Nodes are basis elements, edges are non-zero associators
 
-use cd_kernel::cayley_dickson::{
-    cd_associator_norm, cd_basis_mul_sign, find_zero_divisors,
+use cd_kernel::cayley_dickson::{cd_associator_norm, cd_basis_mul_sign, find_zero_divisors};
+use petgraph::{
+    algo::{connected_components, dijkstra, tarjan_scc},
+    graph::{DiGraph, UnGraph},
 };
-use petgraph::algo::{connected_components, dijkstra, tarjan_scc};
-use petgraph::graph::{DiGraph, UnGraph};
 use std::collections::{HashMap, HashSet};
 
 /// A zero-divisor pair: indices (i, j, k, l) where (e_i + e_j) * (e_k +/- e_l) ~ 0.

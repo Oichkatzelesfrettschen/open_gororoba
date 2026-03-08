@@ -52,8 +52,18 @@ fn cross_validate_complex_mul() {
 fn cross_validate_quat_mul() {
     use verified_core::quaternion::{Quat, quat_mul};
 
-    let p = Quat { qw: 1.0, qx: 2.0, qy: 3.0, qz: 4.0 };
-    let q = Quat { qw: 5.0, qx: 6.0, qy: 7.0, qz: 8.0 };
+    let p = Quat {
+        qw: 1.0,
+        qx: 2.0,
+        qy: 3.0,
+        qz: 4.0,
+    };
+    let q = Quat {
+        qw: 5.0,
+        qx: 6.0,
+        qy: 7.0,
+        qz: 8.0,
+    };
     let vc = quat_mul(&p, &q);
 
     let ac = algebra_core::construction::cayley_dickson::cd_multiply(
@@ -70,8 +80,18 @@ fn cross_validate_quat_mul() {
 fn cross_validate_quat_norm_multiplicative() {
     use verified_core::quaternion::{Quat, quat_mul, quat_norm_sq};
 
-    let p = Quat { qw: 1.0, qx: 2.0, qy: 3.0, qz: 4.0 };
-    let q = Quat { qw: 5.0, qx: 6.0, qy: 7.0, qz: 8.0 };
+    let p = Quat {
+        qw: 1.0,
+        qx: 2.0,
+        qy: 3.0,
+        qz: 4.0,
+    };
+    let q = Quat {
+        qw: 5.0,
+        qx: 6.0,
+        qy: 7.0,
+        qz: 8.0,
+    };
 
     let prod_norm = quat_norm_sq(&quat_mul(&p, &q));
     let norm_prod = quat_norm_sq(&p) * quat_norm_sq(&q);
@@ -85,10 +105,17 @@ fn cross_validate_quat_norm_multiplicative() {
 
 #[test]
 fn cross_validate_quat_inverse() {
-    use verified_core::cayley_dickson::quat_inv;
-    use verified_core::quaternion::{Quat, quat_mul};
+    use verified_core::{
+        cayley_dickson::quat_inv,
+        quaternion::{Quat, quat_mul},
+    };
 
-    let q = Quat { qw: 0.5, qx: 0.5, qy: 0.5, qz: 0.5 };
+    let q = Quat {
+        qw: 0.5,
+        qx: 0.5,
+        qy: 0.5,
+        qz: 0.5,
+    };
     let qi = quat_inv(&q);
     let prod = quat_mul(&q, &qi);
     assert!((prod.qw - 1.0).abs() < TOL, "w = {}", prod.qw);
@@ -137,7 +164,7 @@ fn cross_validate_tcmt_antiresonance() {
 
 #[test]
 fn cross_validate_tcmt_unitarity() {
-    use verified_core::fano_resonance::{tcmt_transmission_coeff, tcmt_reflection_coeff};
+    use verified_core::fano_resonance::{tcmt_reflection_coeff, tcmt_transmission_coeff};
 
     for &delta in &[0.0, 0.5, 1.0, 2.0, 10.0] {
         let gamma_e = 1.5;

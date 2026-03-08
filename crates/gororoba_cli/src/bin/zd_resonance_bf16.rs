@@ -1,14 +1,11 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
+use sign_imbalance::bridge::{ImbalanceViscosityBridge, SedenionField, ViscosityCouplingModel};
 use spectral_core::ghost_spectral::{
     GHOST_FREQ, check_ghost, compute_power_spectrum, find_peaks, peak_snr,
 };
-use std::path::PathBuf;
-use std::time::Instant;
-use sign_imbalance::bridge::{
-    ImbalanceViscosityBridge, SedenionField, ViscosityCouplingModel,
-};
+use std::{path::PathBuf, time::Instant};
 
 /// Zero-Divisor Resonance Sweep (BF16)
 ///

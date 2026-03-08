@@ -200,7 +200,8 @@ impl LbmSolver3DCuda {
             Precision::FP64 => "convert_complex_f32_to_real_fp64_kernel",
             Precision::FP32 => "convert_complex_to_real_kernel",
         })?;
-        let update_tau_from_voudon_kernel = module.load_function("update_tau_from_voudon_frustration_kernel")?;
+        let update_tau_from_voudon_kernel =
+            module.load_function("update_tau_from_voudon_frustration_kernel")?;
 
         let es = match precision {
             Precision::FP32 => 4,
@@ -512,7 +513,9 @@ impl LbmSolver3DCuda {
     ) -> Result<()> {
         let n_cells = self.n_cells as u32;
         let n_cells_i = n_cells as i32;
-        let mut b = self.stream.launch_builder(&self.update_tau_from_voudon_kernel);
+        let mut b = self
+            .stream
+            .launch_builder(&self.update_tau_from_voudon_kernel);
         b.arg(&mut self.d_tau)
             .arg(frustration)
             .arg(&tau_base)
@@ -1027,8 +1030,8 @@ pub struct DarkHaloCudaSolver {
     d_f_tmp: CudaSlice<f32>,
     // Macroscopic fields
     d_rho: CudaSlice<f32>,
-    d_rho_prev: CudaSlice<f32>,  // for convergence check
-    d_u: CudaSlice<f32>,          // [3 * N] SoA: ux[N], uy[N], uz[N]
+    d_rho_prev: CudaSlice<f32>, // for convergence check
+    d_u: CudaSlice<f32>,        // [3 * N] SoA: ux[N], uy[N], uz[N]
     d_tau: CudaSlice<f32>,
     // Atomic counter for halo detection
     d_halo_count: CudaSlice<u32>,
@@ -1053,15 +1056,14 @@ impl DarkHaloCudaSolver {
     /// - 384^3: ~9.5 GB (fits 12 GB cards)
     /// - 512^3: ~23.6 GB (REQUIRES f16 + A-A streaming, or >24 GB card)
     pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self> {
-        let ctx = cudarc::driver::CudaContext::new(0)
-            .context("CUDA context creation")?;
+        let ctx = cudarc::driver::CudaContext::new(0).context("CUDA context creation")?;
         // Check VRAM budget before allocating
         let n_cells = nx * ny * nz;
         let required_bytes = (19 * n_cells * 4 * 2) // f, f_tmp (ping-pong)
             + (n_cells * 4 * 2)                      // rho, rho_prev
             + (3 * n_cells * 4)                       // u (SoA)
             + (n_cells * 4)                            // tau
-            + 8;                                       // counters
+            + 8; // counters
         let total_mem = {
             let mut free: usize = 0;
             let mut total: usize = 0;
@@ -1089,9 +1091,7 @@ impl DarkHaloCudaSolver {
         // TODO: Add -arch=sm_89 --use_fast_math for production
         let ptx = cudarc::nvrtc::compile_ptx(KERNEL_DARK_HALO_SRC)
             .context("NVRTC compilation of dark halo kernels")?;
-        let module = ctx
-            .load_module(ptx)
-            .context("Load dark halo CUDA module")?;
+        let module = ctx.load_module(ptx).context("Load dark halo CUDA module")?;
 
         let lbm_step_kernel = module
             .load_function("lbm_step_soa_fused")
@@ -1107,37 +1107,53 @@ impl DarkHaloCudaSolver {
             .context("Load convergence_check")?;
 
         // Allocate SoA buffers (cudarc 0.19: allocations go through CudaStream)
-        let d_f = stream.alloc_zeros::<f32>(19 * n_cells)
+        let d_f = stream
+            .alloc_zeros::<f32>(19 * n_cells)
             .context("Alloc d_f")?;
-        let d_f_tmp = stream.alloc_zeros::<f32>(19 * n_cells)
+        let d_f_tmp = stream
+            .alloc_zeros::<f32>(19 * n_cells)
             .context("Alloc d_f_tmp")?;
-        let d_rho = stream.alloc_zeros::<f32>(n_cells)
-            .context("Alloc d_rho")?;
-        let d_rho_prev = stream.alloc_zeros::<f32>(n_cells)
+        let d_rho = stream.alloc_zeros::<f32>(n_cells).context("Alloc d_rho")?;
+        let d_rho_prev = stream
+            .alloc_zeros::<f32>(n_cells)
             .context("Alloc d_rho_prev")?;
-        let d_u = stream.alloc_zeros::<f32>(3 * n_cells)
+        let d_u = stream
+            .alloc_zeros::<f32>(3 * n_cells)
             .context("Alloc d_u")?;
-        let d_tau = stream.alloc_zeros::<f32>(n_cells)
-            .context("Alloc d_tau")?;
-        let d_halo_count = stream.alloc_zeros::<u32>(1)
-            .context("Alloc d_halo_count")?;
-        let d_delta_sum = stream.alloc_zeros::<f32>(1)
-            .context("Alloc d_delta_sum")?;
+        let d_tau = stream.alloc_zeros::<f32>(n_cells).context("Alloc d_tau")?;
+        let d_halo_count = stream.alloc_zeros::<u32>(1).context("Alloc d_halo_count")?;
+        let d_delta_sum = stream.alloc_zeros::<f32>(1).context("Alloc d_delta_sum")?;
 
-        let vram_mb = (19 * n_cells * 4 * 2 // f, f_tmp
+        let vram_mb = (
+            19 * n_cells * 4 * 2 // f, f_tmp
             + n_cells * 4 * 2               // rho, rho_prev
             + 3 * n_cells * 4               // u
-            + n_cells * 4                    // tau
+            + n_cells * 4
+            // tau
         ) / (1024 * 1024);
-        eprintln!("    CUDA dark halo solver: {}x{}x{} = {} cells, {} MB VRAM (SoA)",
-            nx, ny, nz, n_cells, vram_mb);
+        eprintln!(
+            "    CUDA dark halo solver: {}x{}x{} = {} cells, {} MB VRAM (SoA)",
+            nx, ny, nz, n_cells, vram_mb
+        );
 
         Ok(Self {
-            nx, ny, nz, n_cells,
+            nx,
+            ny,
+            nz,
+            n_cells,
             stream,
-            d_f, d_f_tmp, d_rho, d_rho_prev, d_u, d_tau,
-            d_halo_count, d_delta_sum,
-            lbm_step_kernel, halo_detector_kernel, zd_viscosity_kernel, convergence_kernel,
+            d_f,
+            d_f_tmp,
+            d_rho,
+            d_rho_prev,
+            d_u,
+            d_tau,
+            d_halo_count,
+            d_delta_sum,
+            lbm_step_kernel,
+            halo_detector_kernel,
+            zd_viscosity_kernel,
+            convergence_kernel,
         })
     }
 
@@ -1159,8 +1175,8 @@ impl DarkHaloCudaSolver {
     /// Only effective on SM 8.0+ (Ampere/Ada Lovelace). No-op on older GPUs.
     pub fn pin_rho_in_l2(&self) -> Result<()> {
         use cudarc::driver::sys::{
-            CUaccessPolicyWindow_st, CUaccessProperty_enum, CUstreamAttrID,
-            CUstreamAttrValue, cuStreamSetAttribute,
+            CUaccessPolicyWindow_st, CUaccessProperty_enum, CUstreamAttrID, CUstreamAttrValue,
+            cuStreamSetAttribute,
         };
 
         let rho_bytes = self.n_cells * std::mem::size_of::<f32>();
@@ -1192,8 +1208,10 @@ impl DarkHaloCudaSolver {
             anyhow::bail!("cuStreamSetAttribute failed: {:?}", result);
         }
 
-        eprintln!("    L2 residency: pinned {} KB rho field (hitRatio=1.0, PERSISTING)",
-            rho_bytes / 1024);
+        eprintln!(
+            "    L2 residency: pinned {} KB rho field (hitRatio=1.0, PERSISTING)",
+            rho_bytes / 1024
+        );
         Ok(())
     }
 
@@ -1215,15 +1233,18 @@ impl DarkHaloCudaSolver {
         velocity_epsilon: f32,
     ) -> Result<(u32, u32)> {
         use rayon::prelude::*;
-        use wide::{f32x8, CmpGt};
+        use wide::{CmpGt, f32x8};
 
         // Readback rho to pinned memory
         let pinned_rho = self.readback_rho_pinned()?;
-        let rho_slice = pinned_rho.as_slice()
+        let rho_slice = pinned_rho
+            .as_slice()
             .map_err(|e| anyhow::anyhow!("Pinned slice sync: {e}"))?;
 
         // Also readback velocity for the velocity threshold check
-        let u_host = self.stream.clone_dtoh(&self.d_u)
+        let u_host = self
+            .stream
+            .clone_dtoh(&self.d_u)
             .map_err(|e| anyhow::anyhow!("Clone u dtoh: {e}"))?;
         let n = self.n_cells;
 
@@ -1306,7 +1327,8 @@ impl DarkHaloCudaSolver {
             ctx.alloc_pinned::<f32>(self.n_cells)
                 .map_err(|e| anyhow::anyhow!("Pinned alloc failed: {e}"))?
         };
-        self.stream.memcpy_dtoh(&self.d_rho, &mut pinned)
+        self.stream
+            .memcpy_dtoh(&self.d_rho, &mut pinned)
             .map_err(|e| anyhow::anyhow!("DMA dtoh failed: {e}"))?;
         Ok(pinned)
     }
@@ -1358,9 +1380,14 @@ impl DarkHaloCudaSolver {
         unsafe {
             let mut b = self.stream.launch_builder(&self.zd_viscosity_kernel);
             b.arg(&mut self.d_tau)
-                .arg(&nx).arg(&ny).arg(&nz)
-                .arg(&tau_base).arg(&tau_amp).arg(&lambda)
-                .arg(&seed).arg(&k_dim);
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&nz)
+                .arg(&tau_base)
+                .arg(&tau_amp)
+                .arg(&lambda)
+                .arg(&seed)
+                .arg(&k_dim);
             b.launch(cfg).context("ZD viscosity modulation")?;
         }
 
@@ -1376,9 +1403,13 @@ impl DarkHaloCudaSolver {
                 std::iter::repeat_n(w, n)
             })
             .collect();
-        self.d_f = self.stream.clone_htod(&equilibrium)
+        self.d_f = self
+            .stream
+            .clone_htod(&equilibrium)
             .context("Init f equilibrium")?;
-        self.d_f_tmp = self.stream.clone_htod(&equilibrium)
+        self.d_f_tmp = self
+            .stream
+            .clone_htod(&equilibrium)
             .context("Init f_tmp equilibrium")?;
 
         // Step 2b: Pin rho in L2 cache (Ada Lovelace, best-effort)
@@ -1401,14 +1432,17 @@ impl DarkHaloCudaSolver {
                     .arg(&mut self.d_u)
                     .arg(&self.d_tau)
                     .arg(&null_force)
-                    .arg(&nx).arg(&ny).arg(&nz);
+                    .arg(&nx)
+                    .arg(&ny)
+                    .arg(&nz);
                 b.launch(cfg).context("LBM step")?;
             }
             std::mem::swap(&mut self.d_f, &mut self.d_f_tmp);
             steps_run += 1;
 
             // Convergence check every check_interval steps
-            if convergence_tol > 0.0 && check_interval > 0 && step > 0 && step % check_interval == 0 {
+            if convergence_tol > 0.0 && check_interval > 0 && step > 0 && step % check_interval == 0
+            {
                 // TODO: implement delta-rho convergence via convergence_check kernel
                 // For now, just run all steps (stub)
                 let _ = &self.d_rho_prev;
@@ -1422,14 +1456,18 @@ impl DarkHaloCudaSolver {
         // dark_halo_detector.wgsl criterion 3). We compute the actual mean
         // density and set threshold = density_factor * rho_mean so that
         // density_factor=1.5 finds cells at >= 150% of mean density.
-        let rho_host = self.stream.clone_dtoh(&self.d_rho)
+        let rho_host = self
+            .stream
+            .clone_dtoh(&self.d_rho)
             .context("Readback rho for mean")?;
         let rho_sum: f64 = rho_host.iter().map(|&r| r as f64).sum();
         let rho_mean = (rho_sum / n as f64) as f32;
         let effective_threshold = rho_threshold * rho_mean;
 
         let zero_count = vec![0u32; 1];
-        self.d_halo_count = self.stream.clone_htod(&zero_count)
+        self.d_halo_count = self
+            .stream
+            .clone_htod(&zero_count)
             .context("Zero halo count")?;
 
         let n_i32 = n as i32;
@@ -1445,7 +1483,9 @@ impl DarkHaloCudaSolver {
         }
 
         // Read back result
-        let halo_count = self.stream.clone_dtoh(&self.d_halo_count)
+        let halo_count = self
+            .stream
+            .clone_dtoh(&self.d_halo_count)
             .context("Read halo count")?;
 
         let count = halo_count[0];

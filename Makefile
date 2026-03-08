@@ -67,6 +67,7 @@ NEXTEST_TEST_THREADS ?= $(WORKER_BUDGET)
 RUST_TEST_THREADS ?= $(WORKER_BUDGET)
 RAYON_THREADS ?= $(WORKER_BUDGET)
 RUST_SCOPED_CLIPPY_TARGETS ?= --lib --tests
+LOCAL_NEXTEST_TIMING_JSON ?=
 RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(algebra_core) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
 REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
 REPO_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/gate-target
@@ -206,6 +207,7 @@ gate-local:
 	if [ "$$run_rust" = "true" ]; then \
 	    if [ -z "$$scope" ]; then scope="--workspace"; fi; \
 	    echo "[gate-local] rust scope: $$scope"; \
+	    if [ -n "$(LOCAL_NEXTEST_TIMING_JSON)" ]; then echo "[gate-local] local nextest timing: $(LOCAL_NEXTEST_TIMING_JSON)"; fi; \
 	    $(MAKE) rust-regression-scoped RUST_SCOPE="$$scope" RUST_RUN_HEAVY=0; \
 	else \
 	    echo "[gate-local] SKIP: no Rust-relevant changes detected."; \
@@ -381,9 +383,9 @@ rust-regression-scoped:
 	    elif [ -n "$$local_light_packages" ]; then \
 	        if [ -n "$$filterset" ]; then \
 	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) python3 scripts/run_local_nextest_plan.py --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --filterset "$$filterset" $$local_light_packages; \
+	            $(CARGO_ENV) python3 scripts/run_local_nextest_plan.py --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
 	        else \
-	            $(CARGO_ENV) python3 scripts/run_local_nextest_plan.py --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $$local_light_packages; \
+	            $(CARGO_ENV) python3 scripts/run_local_nextest_plan.py --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
 	        fi; \
 	    fi; \
 	    if [ -n "$$heavy_scope" ] && [ "$(RUST_RUN_HEAVY)" = "1" ]; then \

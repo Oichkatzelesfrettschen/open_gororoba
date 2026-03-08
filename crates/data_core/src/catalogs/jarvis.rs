@@ -7,8 +7,10 @@
 //! https://figshare.com/articles/dataset/jdft_3d-7-7-2018_json/6815699
 
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file};
-use std::collections::{BTreeMap, BTreeSet};
-use std::path::{Path, PathBuf};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    path::{Path, PathBuf},
+};
 
 /// Figshare article ID for JARVIS-DFT 3D dataset.
 pub const FIGSHARE_ARTICLE_ID: u64 = 6815699;

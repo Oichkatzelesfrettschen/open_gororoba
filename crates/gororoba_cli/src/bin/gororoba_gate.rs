@@ -6,10 +6,10 @@
 //! 3. Compares simulation metrics against claim thresholds.
 //! 4. Reports status and suggests registry updates.
 
-use gororoba_engine::thesis_pipelines::{
-    Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline,
+use gororoba_engine::{
+    thesis_pipelines::{Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline},
+    traits::ThesisPipeline,
 };
-use gororoba_engine::traits::ThesisPipeline;
 use log::{error, info, warn};
 use std::error::Error;
 

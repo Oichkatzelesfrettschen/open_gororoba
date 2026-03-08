@@ -6,7 +6,7 @@
 //! at 2^p (p prime: 2,3,5,7) exhibit qualitatively different spectral statistics
 //! from 2^q (q composite: 4,6,8).
 
-use crate::quantum_chaos::{nnsd_census, NnsdResult, SpacingVerdict};
+use crate::quantum_chaos::{NnsdResult, SpacingVerdict, nnsd_census};
 
 /// Classification of a CD dimension by the primality of its doubling exponent.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -93,10 +93,7 @@ fn classify_dim(dim: usize) -> Option<(u32, DoublingClass)> {
 
 /// Compute the largest eigenvalue gap from an NNSD result's spacings.
 fn largest_spacing(nnsd: &NnsdResult) -> f64 {
-    nnsd.spacings
-        .iter()
-        .copied()
-        .fold(0.0_f64, f64::max)
+    nnsd.spacings.iter().copied().fold(0.0_f64, f64::max)
 }
 
 /// Run the Riemann Resonance analysis across the standard CD dimensions.
@@ -232,7 +229,10 @@ mod tests {
         let comp = riemann_resonance_sweep(&[16, 32]);
         assert_eq!(comp.results.len(), 2);
         assert_eq!(comp.results[0].dim, 16);
-        assert_eq!(comp.results[0].doubling_class, DoublingClass::CompositePower);
+        assert_eq!(
+            comp.results[0].doubling_class,
+            DoublingClass::CompositePower
+        );
         assert_eq!(comp.results[1].dim, 32);
         assert_eq!(comp.results[1].doubling_class, DoublingClass::PrimePower);
     }

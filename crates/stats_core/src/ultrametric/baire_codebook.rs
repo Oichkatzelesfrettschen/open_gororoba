@@ -572,8 +572,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: exhaustive filtration study"]
     fn test_euclidean_ultrametricity_across_filtration_levels() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_512, is_in_lambda_1024, is_in_lambda_2048,
         };
@@ -710,8 +712,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: exhaustive filtration gradient"]
     fn test_intermediate_filtration_gradient() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_1024_minus_k,
         };
@@ -921,11 +925,12 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: random removal control sweep"]
     fn test_random_removal_control() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_1024};
-        use rand::SeedableRng;
-        use rand::prelude::*;
+        use rand::{SeedableRng, prelude::*};
         use rand_chacha::ChaCha8Rng;
 
         let all_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
@@ -1094,8 +1099,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: exhaustive filtration gradient"]
     fn test_lambda512_to_256_intermediate_gradient() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_512_minus_k,
         };
@@ -1218,11 +1225,12 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: random removal control sweep"]
     fn test_lambda512_to_256_random_removal_control() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_512};
-        use rand::SeedableRng;
-        use rand::prelude::*;
+        use rand::{SeedableRng, prelude::*};
         use rand_chacha::ChaCha8Rng;
 
         let all_512 = enumerate_lattice_by_predicate(is_in_lambda_512);
@@ -1401,8 +1409,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: exhaustive filtration gradient"]
     fn test_sbase_to_lambda2048_gradient() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_sbase_minus_k,
         };
@@ -1530,8 +1540,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: stratified null-distribution study"]
     fn test_l0_subpopulation_ultrametricity() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -1625,8 +1637,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: exhaustive filtration gradient"]
     fn test_lambda2048_to_1024_intermediate_gradient() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_2048_minus_k,
         };
@@ -1773,8 +1787,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: stratified null-distribution study"]
     fn test_l1_filter_on_l0_neg1_subset() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -1884,8 +1900,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: recursive Simpson study"]
     fn test_recursive_simpsons_paradox_l2() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -2023,8 +2041,7 @@ mod tests {
     #[ignore = "heavy research lane: high-sample triple decomposition"]
     fn test_cross_stratum_triple_decomposition() {
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
-        use rand::SeedableRng;
-        use rand::seq::SliceRandom;
+        use rand::{SeedableRng, seq::SliceRandom};
         use rand_chacha::ChaCha8Rng;
 
         let n_triples = 200_000;
@@ -2150,8 +2167,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: stratified null-distribution study"]
     fn test_l0_zero_simpsons_paradox() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -2263,8 +2282,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: cross-dimensional null-distribution study"]
     fn test_dimensional_universality_simpsons_paradox() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
         };
@@ -2420,8 +2441,10 @@ mod tests {
     #[test]
     #[ignore = "heavy research lane: full stratum summary sweep"]
     fn test_lambda1024_stratum_paradox_and_summary() {
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{NullModel, apply_null_column_major};
+        use super::super::{
+            baire::matrix_free_fraction,
+            null_models::{NullModel, apply_null_column_major},
+        };
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512, is_in_lambda_1024,
             is_in_lambda_2048,

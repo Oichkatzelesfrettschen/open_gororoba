@@ -6,7 +6,7 @@
 //! - order-param: Order parameter vs dimension with derived critical density
 
 use algebra_analysis::phase_transition::{
-    PhaseTransitionAnalyzer, defect_saturation, zd_edge_density, missing_edge_fraction,
+    PhaseTransitionAnalyzer, defect_saturation, missing_edge_fraction, zd_edge_density,
 };
 use algebra_experimental::majorana_braiding;
 use clap::{Parser, Subcommand};
@@ -63,9 +63,16 @@ fn main() {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::DensityScan { dim_min, dim_max, n_samples, seed } => {
+        Commands::DensityScan {
+            dim_min,
+            dim_max,
+            n_samples,
+            seed,
+        } => {
             println!("# Phase Transition Density Scan");
-            println!("# dim, defect_density, theoretical_saturation, edge_density, missing_fraction");
+            println!(
+                "# dim, defect_density, theoretical_saturation, edge_density, missing_fraction"
+            );
 
             let mut dim = dim_min.max(4).next_power_of_two();
             while dim <= dim_max {
@@ -92,7 +99,12 @@ fn main() {
                 println!("{dim}, {friction:.6}, {max_norm:.6}");
             }
         }
-        Commands::OrderParam { dim_min, dim_max, n_samples, seed } => {
+        Commands::OrderParam {
+            dim_min,
+            dim_max,
+            n_samples,
+            seed,
+        } => {
             println!("# Order Parameter vs Dimension");
             println!("# dim, defect_density, order_parameter, phase, critical_density");
 

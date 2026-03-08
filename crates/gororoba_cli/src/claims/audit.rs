@@ -10,12 +10,16 @@
 //! - claims_batch_backlog.py
 
 use regex::Regex;
-use std::collections::{BTreeMap, BTreeSet, HashMap};
-use std::path::Path;
-use std::sync::LazyLock;
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap},
+    path::Path,
+    sync::LazyLock,
+};
 
-use super::parser::{ClaimRow, parse_claim_rows, shorten};
-use super::schema::{CANONICAL_CLAIMS_STATUS_TOKENS, is_canonical_status, is_open_status};
+use super::{
+    parser::{ClaimRow, parse_claim_rows, shorten},
+    schema::{CANONICAL_CLAIMS_STATUS_TOKENS, is_canonical_status, is_open_status},
+};
 
 // --- ID Inventory Report ---
 

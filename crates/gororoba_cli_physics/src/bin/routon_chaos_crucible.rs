@@ -4,7 +4,7 @@
 //! Tests the Poisson -> Wigner-Dyson (quantum chaos) transition as CD dimension
 //! increases. Uses the proven quantum_chaos::nnsd_census pipeline.
 
-use algebra_analysis::quantum_chaos::{nnsd_census, SpacingVerdict};
+use algebra_analysis::quantum_chaos::{SpacingVerdict, nnsd_census};
 
 fn main() {
     println!("=== Routon 128D Wigner-Dyson Quantum Chaos Crucible ===");
@@ -31,12 +31,7 @@ fn main() {
     for r in &results {
         println!(
             "{:>5},{:>12},{:>10.4},{:>12.4},{:>12.4},{:>18}",
-            r.cd_dim,
-            r.n_eigenvalues,
-            r.brody_q,
-            r.ks_poisson,
-            r.ks_goe,
-            r.verdict,
+            r.cd_dim, r.n_eigenvalues, r.brody_q, r.ks_poisson, r.ks_goe, r.verdict,
         );
 
         if r.brody_q < prev_q {
@@ -52,13 +47,22 @@ fn main() {
     if let Some(routon_result) = results.iter().find(|r| r.cd_dim == 128) {
         match routon_result.verdict {
             SpacingVerdict::GoeWigner => {
-                println!("  dim=128: GOE Wigner-Dyson (q={:.3}). Full quantum chaos.", routon_result.brody_q);
+                println!(
+                    "  dim=128: GOE Wigner-Dyson (q={:.3}). Full quantum chaos.",
+                    routon_result.brody_q
+                );
             }
             SpacingVerdict::Intermediate => {
-                println!("  dim=128: Intermediate (q={:.3}). Partial level repulsion.", routon_result.brody_q);
+                println!(
+                    "  dim=128: Intermediate (q={:.3}). Partial level repulsion.",
+                    routon_result.brody_q
+                );
             }
             SpacingVerdict::Poisson => {
-                println!("  dim=128: Poisson (q={:.3}). Integrable -- no chaos onset.", routon_result.brody_q);
+                println!(
+                    "  dim=128: Poisson (q={:.3}). Integrable -- no chaos onset.",
+                    routon_result.brody_q
+                );
             }
             SpacingVerdict::DegenerateIntegrable => {
                 println!("  dim=128: DegenerateIntegrable. Massive degeneracies dominate.");

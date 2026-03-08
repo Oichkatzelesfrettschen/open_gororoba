@@ -5,8 +5,7 @@ use gororoba_cli::data_governance::{
     load_external_hashes, load_external_sources, parse_deadline_utc, source_rule_for_path,
 };
 use serde::Serialize;
-use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::{collections::BTreeMap, path::PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(

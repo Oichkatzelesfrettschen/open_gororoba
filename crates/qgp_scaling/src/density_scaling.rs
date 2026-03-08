@@ -299,8 +299,7 @@ pub fn fit_density_scaling_multi_k(
     let k_per_system: Vec<(String, f64, f64)> = systems
         .iter()
         .map(|sys| {
-            let sub: Vec<&DensityScalingPoint> =
-                data.iter().filter(|d| &d.system == sys).collect();
+            let sub: Vec<&DensityScalingPoint> = data.iter().filter(|d| &d.system == sys).collect();
             let (k, _) = chi2_at_beta(&sub_to_owned(&sub), best_beta);
             let ke = k_error(&sub_to_owned(&sub), best_beta);
             (sys.clone(), k, ke)
@@ -333,11 +332,8 @@ fn chi2_at_beta_multi_k(data: &[DensityScalingPoint], systems: &[String], beta: 
     systems
         .iter()
         .map(|sys| {
-            let sub: Vec<DensityScalingPoint> = data
-                .iter()
-                .filter(|d| &d.system == sys)
-                .cloned()
-                .collect();
+            let sub: Vec<DensityScalingPoint> =
+                data.iter().filter(|d| &d.system == sys).cloned().collect();
             if sub.is_empty() {
                 return 0.0;
             }
@@ -449,19 +445,34 @@ mod tests {
         assert!(
             (result.beta - beta_true).abs() < 0.05,
             "multi-K beta = {} (expected {})",
-            result.beta, beta_true
+            result.beta,
+            beta_true
         );
         assert_eq!(result.k_per_system.len(), 2, "should have 2 systems");
 
-        let k_pb_fit = result.k_per_system.iter().find(|k| k.0.contains("Pb")).unwrap().1;
-        let k_xe_fit = result.k_per_system.iter().find(|k| k.0.contains("Xe")).unwrap().1;
+        let k_pb_fit = result
+            .k_per_system
+            .iter()
+            .find(|k| k.0.contains("Pb"))
+            .unwrap()
+            .1;
+        let k_xe_fit = result
+            .k_per_system
+            .iter()
+            .find(|k| k.0.contains("Xe"))
+            .unwrap()
+            .1;
         assert!(
             (k_pb_fit - k_pb).abs() < 0.05,
-            "K_Pb = {} (expected {})", k_pb_fit, k_pb
+            "K_Pb = {} (expected {})",
+            k_pb_fit,
+            k_pb
         );
         assert!(
             (k_xe_fit - k_xe).abs() < 0.05,
-            "K_Xe = {} (expected {})", k_xe_fit, k_xe
+            "K_Xe = {} (expected {})",
+            k_xe_fit,
+            k_xe
         );
     }
 

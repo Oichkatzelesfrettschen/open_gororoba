@@ -218,7 +218,11 @@ pub fn savitzky_golay_smooth(data: &[(f64, f64)], window: usize, order: usize) -
     if n < window || window < 3 || order >= window {
         return data.to_vec();
     }
-    let w = if window.is_multiple_of(2) { window + 1 } else { window };
+    let w = if window.is_multiple_of(2) {
+        window + 1
+    } else {
+        window
+    };
     let half = w / 2;
 
     // Precompute convolution coefficients for the center point.
@@ -600,8 +604,8 @@ pub fn spectral_gap_census(dims: &[usize]) -> Vec<SpectralGapResult> {
                 0.0
             };
             // Conservative Alon-Milman threshold for expander test
-            let is_expander = nodes_per_component > 0
-                && gap_ratio > 1.0 / (2.0 * nodes_per_component as f64);
+            let is_expander =
+                nodes_per_component > 0 && gap_ratio > 1.0 / (2.0 * nodes_per_component as f64);
 
             SpectralGapResult {
                 cd_dim: dim,
@@ -701,10 +705,7 @@ mod tests {
         // P(0) should be 1.0 (all exp(-0) = 1)
         let eigs = vec![0.0, 1.0, 2.0, 3.0];
         let p = heat_kernel_return_probability(&eigs, 0.0);
-        assert!(
-            (p - 1.0).abs() < 1e-14,
-            "P(0) should be 1.0, got {p}"
-        );
+        assert!((p - 1.0).abs() < 1e-14, "P(0) should be 1.0, got {p}");
     }
 
     #[test]
@@ -808,8 +809,7 @@ mod tests {
             .collect();
 
         if !large_t_values.is_empty() {
-            let mean_ds =
-                large_t_values.iter().sum::<f64>() / large_t_values.len() as f64;
+            let mean_ds = large_t_values.iter().sum::<f64>() / large_t_values.len() as f64;
             // For a cycle, d_s should approach 1 at large t
             // Allow generous tolerance for finite-size effects
             assert!(
@@ -912,8 +912,13 @@ mod tests {
         for r in &results {
             eprintln!(
                 "dim={:3}: comps={:2}, nodes={:3}, lambda_2={:.4}, lambda_max={:.4}, gap_ratio={:.4}, expander={}",
-                r.cd_dim, r.n_components, r.nodes_per_component,
-                r.lambda_2, r.lambda_max, r.gap_ratio, r.is_expander
+                r.cd_dim,
+                r.n_components,
+                r.nodes_per_component,
+                r.lambda_2,
+                r.lambda_max,
+                r.gap_ratio,
+                r.is_expander
             );
         }
 
@@ -922,17 +927,21 @@ mod tests {
             assert!(
                 r.lambda_2 > 0.0,
                 "dim={}: lambda_2 should be positive: {}",
-                r.cd_dim, r.lambda_2
+                r.cd_dim,
+                r.lambda_2
             );
             assert!(
                 r.gap_ratio > 0.0 && r.gap_ratio <= 1.0,
                 "dim={}: gap_ratio should be in (0,1]: {}",
-                r.cd_dim, r.gap_ratio
+                r.cd_dim,
+                r.gap_ratio
             );
             assert!(
                 r.is_expander,
                 "dim={}: should be an expander (gap_ratio={:.4} > 1/(2*{})={:.4})",
-                r.cd_dim, r.gap_ratio, r.nodes_per_component,
+                r.cd_dim,
+                r.gap_ratio,
+                r.nodes_per_component,
                 1.0 / (2.0 * r.nodes_per_component as f64)
             );
         }

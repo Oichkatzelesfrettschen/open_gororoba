@@ -2866,10 +2866,7 @@ mod tests {
 
     /// Helper: build a dim=16 dictionary from the first 16 Lambda_256 vectors
     /// and the corresponding multiplication table.
-    fn sedenion_coupling_setup() -> (
-        EncodingDictionary,
-        cd_kernel::mult_table::CdMultTable,
-    ) {
+    fn sedenion_coupling_setup() -> (EncodingDictionary, cd_kernel::mult_table::CdMultTable) {
         let lambda = enumerate_lambda_256();
         assert!(lambda.len() >= 16);
         let pairs: Vec<(usize, LatticeVector)> = lambda[..16]

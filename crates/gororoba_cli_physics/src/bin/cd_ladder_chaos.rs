@@ -6,8 +6,10 @@
 //!
 //! Output: CSV with columns dim, alpha, lambda_max, regime, d_ky, violations
 
-use gr_core::cd_ladder_force::CdLadderForce;
-use gr_core::lyapunov::{LyapunovState, classify_regime, kaplan_yorke_dimension};
+use gr_core::{
+    cd_ladder_force::CdLadderForce,
+    lyapunov::{LyapunovState, classify_regime, kaplan_yorke_dimension},
+};
 use nalgebra::Vector3;
 
 /// Simple RK4 step for position + velocity under Kepler + CD drag.

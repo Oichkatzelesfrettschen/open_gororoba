@@ -14,13 +14,15 @@
 
 use std::f64::consts::PI;
 
-use cosmology_core::gravastar::{GravastarConfig, PolytropicEos, AnisotropicParams, solve_gravastar};
-use cosmology_core::gravastar_potential::GravastarPotential;
-use gr_core::forces::abm8_integrator::{Abm8Integrator, Abm8BodyState};
+use cosmology_core::{
+    gravastar::{AnisotropicParams, GravastarConfig, PolytropicEos, solve_gravastar},
+    gravastar_potential::GravastarPotential,
+};
+use gr_core::forces::abm8_integrator::{Abm8BodyState, Abm8Integrator};
 use nalgebra::Vector3;
-use pathion_ellip::pathion_eigenvalues::PathionEigenvalueSpectrum;
-use pathion_ellip::pathion_resonance::{
-    ResonanceConfig, total_resonance_coupling,
+use pathion_ellip::{
+    pathion_eigenvalues::PathionEigenvalueSpectrum,
+    pathion_resonance::{ResonanceConfig, total_resonance_coupling},
 };
 
 /// Solar GM in km^3/s^2.
@@ -65,7 +67,7 @@ fn main() {
     // Build gravastar solution
     let config = GravastarConfig {
         r1: 3.0 * GM_OVER_C2_SUN, // Interior radius ~ 3 Schwarzschild radii
-        m_target: GM_OVER_C2_SUN,  // 1 solar mass in geometrized units
+        m_target: GM_OVER_C2_SUN, // 1 solar mass in geometrized units
         compactness_target: 0.7,
         eos: PolytropicEos::stiff(),
         aniso: AnisotropicParams::isotropic(),
@@ -76,7 +78,9 @@ fn main() {
     let gravastar_sol = solve_gravastar(&config);
     let has_gravastar = gravastar_sol.is_some();
 
-    let potential = gravastar_sol.as_ref().map(GravastarPotential::from_solution);
+    let potential = gravastar_sol
+        .as_ref()
+        .map(GravastarPotential::from_solution);
 
     if let Some(ref pot) = potential {
         eprintln!(
@@ -118,14 +122,8 @@ fn main() {
         let angle = (i as f64) * PI / 2.0; // Spread 90 degrees apart
         let pos = Vector3::new(a_km * angle.cos(), a_km * angle.sin(), 0.0);
         let vel = Vector3::new(-v_km_s * angle.sin(), v_km_s * angle.cos(), 0.0);
-        states_grav.push(Abm8BodyState {
-            pos,
-            vel,
-        });
-        states_ctrl.push(Abm8BodyState {
-            pos,
-            vel,
-        });
+        states_grav.push(Abm8BodyState { pos, vel });
+        states_ctrl.push(Abm8BodyState { pos, vel });
     }
 
     // Acceleration function: Schwarzschild control (point mass)
@@ -209,10 +207,7 @@ fn main() {
         "step,time_years,planet,r_ctrl_au,r_grav_au,delta_r_km,energy_drift_ctrl,energy_drift_grav,resonance_coupling"
     );
 
-    eprintln!(
-        "Integrating {} steps ({:.1} years)...",
-        n_steps, years
-    );
+    eprintln!("Integrating {} steps ({:.1} years)...", n_steps, years);
 
     for step in 0..n_steps {
         integrator_ctrl.step(&mut states_ctrl, &accel_schwarzschild);
@@ -241,11 +236,8 @@ fn main() {
 
                 let v = states_grav[body_idx].vel.norm();
                 let orbital_freq = v / (2.0 * PI * r_grav);
-                let coupling = total_resonance_coupling(
-                    &pathion_spectrum,
-                    orbital_freq,
-                    &resonance_config,
-                );
+                let coupling =
+                    total_resonance_coupling(&pathion_spectrum, orbital_freq, &resonance_config);
 
                 println!(
                     "{},{:.6},{},{:.8},{:.8},{:.6e},{:.6e},{:.6e},{:.6e}",

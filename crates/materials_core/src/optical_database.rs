@@ -9726,8 +9726,16 @@ mod tests {
         let gold = gold_drude_lorentz();
         let (x, y, cap_y) = gold.color_coordinates_cie(200);
         // CIE coordinates should be in valid range
-        assert!((0.0..=1.0).contains(&x), "x should be in [0,1], got {:.4}", x);
-        assert!((0.0..=1.0).contains(&y), "y should be in [0,1], got {:.4}", y);
+        assert!(
+            (0.0..=1.0).contains(&x),
+            "x should be in [0,1], got {:.4}",
+            x
+        );
+        assert!(
+            (0.0..=1.0).contains(&y),
+            "y should be in [0,1], got {:.4}",
+            y
+        );
         assert!(
             cap_y >= 0.0,
             "Y luminance should be non-negative, got {:.4e}",

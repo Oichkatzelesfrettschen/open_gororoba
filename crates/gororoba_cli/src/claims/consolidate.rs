@@ -11,8 +11,10 @@
 //! - Deduplication engine (merge redundant claims)
 //! - Conflict marker resolution
 
-use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
-use std::path::Path;
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
+    path::Path,
+};
 
 use regex::Regex;
 use serde::{Deserialize, Serialize};

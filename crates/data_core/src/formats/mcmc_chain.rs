@@ -168,8 +168,7 @@ impl McmcChain {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Write;
-    use std::path::PathBuf;
+    use std::{io::Write, path::PathBuf};
 
     fn make_test_files(dir: &Path) -> (PathBuf, PathBuf) {
         let paramnames = dir.join("test.paramnames");

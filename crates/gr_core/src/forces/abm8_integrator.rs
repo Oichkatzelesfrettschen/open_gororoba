@@ -85,11 +85,8 @@ impl Abm8Integrator {
     ///
     /// During the startup phase (first 8 steps), uses RK4.
     /// After that, uses the ABM-8 predictor-corrector.
-    pub fn step<F>(
-        &mut self,
-        states: &mut [Abm8BodyState],
-        accel_fn: &F,
-    ) where
+    pub fn step<F>(&mut self, states: &mut [Abm8BodyState], accel_fn: &F)
+    where
         F: Fn(&[Abm8BodyState]) -> Vec<Vector3<f64>>,
     {
         if self.step_count < 8 {
@@ -104,11 +101,8 @@ impl Abm8Integrator {
     }
 
     /// RK4 startup step. Also records history for the ABM phase.
-    fn rk4_step<F>(
-        &mut self,
-        states: &mut [Abm8BodyState],
-        accel_fn: &F,
-    ) where
+    fn rk4_step<F>(&mut self, states: &mut [Abm8BodyState], accel_fn: &F)
+    where
         F: Fn(&[Abm8BodyState]) -> Vec<Vector3<f64>>,
     {
         let n = states.len();
@@ -147,10 +141,10 @@ impl Abm8Integrator {
 
         // Combine
         for i in 0..n {
-            states[i].pos = initial[i].pos
-                + (k1_v[i] + k2_v[i] * 2.0 + k3_v[i] * 2.0 + k4_v[i]) * (dt / 6.0);
-            states[i].vel = initial[i].vel
-                + (k1_a[i] + k2_a[i] * 2.0 + k3_a[i] * 2.0 + k4_a[i]) * (dt / 6.0);
+            states[i].pos =
+                initial[i].pos + (k1_v[i] + k2_v[i] * 2.0 + k3_v[i] * 2.0 + k4_v[i]) * (dt / 6.0);
+            states[i].vel =
+                initial[i].vel + (k1_a[i] + k2_a[i] * 2.0 + k3_a[i] * 2.0 + k4_a[i]) * (dt / 6.0);
         }
 
         // Record the acceleration at the START of this step into history
@@ -163,11 +157,8 @@ impl Abm8Integrator {
     }
 
     /// ABM-8 predictor-corrector step.
-    fn abm8_step<F>(
-        &mut self,
-        states: &mut [Abm8BodyState],
-        accel_fn: &F,
-    ) where
+    fn abm8_step<F>(&mut self, states: &mut [Abm8BodyState], accel_fn: &F)
+    where
         F: Fn(&[Abm8BodyState]) -> Vec<Vector3<f64>>,
     {
         let n = states.len();
@@ -342,9 +333,7 @@ mod tests {
             vel: Vector3::new(0.0, 1.0, 0.0),
         }];
 
-        let accel_fn = |_: &[Abm8BodyState]| -> Vec<Vector3<f64>> {
-            vec![Vector3::zeros()]
-        };
+        let accel_fn = |_: &[Abm8BodyState]| -> Vec<Vector3<f64>> { vec![Vector3::zeros()] };
 
         // First 8 steps should be RK4 startup
         for i in 0..8 {

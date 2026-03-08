@@ -10,12 +10,13 @@
 //! - Quantum hardware profiles
 
 use numpy::{IntoPyArray, PyArray1};
-use pyo3::exceptions::PyValueError;
-use pyo3::prelude::*;
+use pyo3::{exceptions::PyValueError, prelude::*};
 use sha2::{Digest, Sha256};
-use std::fs::File;
-use std::io::{BufReader, Read};
-use std::path::Path;
+use std::{
+    fs::File,
+    io::{BufReader, Read},
+    path::Path,
+};
 
 // Re-export core crates
 use algebra_core::{
@@ -39,10 +40,9 @@ use quantum_core::{
 use spectral_core::fractional_laplacian_periodic_1d;
 use stats_core::frechet_distance;
 
-use gororoba_engine::gate::GororobaGate;
-use gororoba_engine::{SimulationConfig3D, SimulationState3D};
-use lbm_3d_cuda::Precision;
 use algebra_core::physics::octonion_field::FieldParams;
+use gororoba_engine::{SimulationConfig3D, SimulationState3D, gate::GororobaGate};
+use lbm_3d_cuda::Precision;
 
 // ============================================================================
 // Engine Module
@@ -59,7 +59,14 @@ pub struct PySimulationConfig3D {
 impl PySimulationConfig3D {
     #[new]
     #[pyo3(signature = (nx, ny, nz, tau, use_gpu = false, precision = "fp32"))]
-    fn new(nx: usize, ny: usize, nz: usize, tau: f64, use_gpu: bool, precision: &str) -> PyResult<Self> {
+    fn new(
+        nx: usize,
+        ny: usize,
+        nz: usize,
+        tau: f64,
+        use_gpu: bool,
+        precision: &str,
+    ) -> PyResult<Self> {
         let p = match precision {
             "fp32" => Precision::FP32,
             "fp64" => Precision::FP64,
@@ -98,7 +105,8 @@ impl PySimulationState3D {
 
     /// Advance the simulation by one step.
     fn step(&mut self) -> PyResult<()> {
-        self.inner.step()
+        self.inner
+            .step()
             .map_err(|e| PyValueError::new_err(format!("Simulation step failed: {e}")))?;
         Ok(())
     }
@@ -111,7 +119,9 @@ impl PySimulationState3D {
 
     /// Get velocity RMS.
     fn velocity_rms(&mut self) -> PyResult<f64> {
-        self.inner.fluid.try_velocity_rms(self.inner.nx, self.inner.ny, self.inner.nz)
+        self.inner
+            .fluid
+            .try_velocity_rms(self.inner.nx, self.inner.ny, self.inner.nz)
             .map_err(|e| PyValueError::new_err(format!("Failed to compute RMS: {e}")))
     }
 
@@ -136,7 +146,10 @@ fn py_gororoba_gate(
         let dict = pyo3::types::PyDict::new(py);
         dict.set_item("betti_numbers", report.betti_numbers)?;
         dict.set_item("decay_exponent", report.decay_exponent)?;
-        dict.set_item("reynolds_independence_pass", report.reynolds_independence_pass)?;
+        dict.set_item(
+            "reynolds_independence_pass",
+            report.reynolds_independence_pass,
+        )?;
         dict.set_item("mass_conservation_pass", report.mass_conservation_pass)?;
         dict.set_item("overall_pass", report.overall_pass)?;
         Ok(dict.into())

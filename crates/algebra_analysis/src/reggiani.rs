@@ -8,11 +8,13 @@
 //! # Literature
 //! - Reggiani (2024): Geometry of sedenion zero divisors, Table 1
 
-use crate::annihilator::{
-    annihilator_info, is_reggiani_zd, left_multiplication_matrix, nullspace_basis,
-    right_multiplication_matrix,
+use crate::{
+    annihilator::{
+        annihilator_info, is_reggiani_zd, left_multiplication_matrix, nullspace_basis,
+        right_multiplication_matrix,
+    },
+    boxkites::{diagonal_zero_products_exact, primitive_assessors},
 };
-use crate::boxkites::{diagonal_zero_products_exact, primitive_assessors};
 use cd_kernel::cayley_dickson::cd_multiply;
 
 /// A standard zero-divisor: a diagonal of a primitive assessor.

@@ -16,9 +16,11 @@ use algebra_core::construction::cayley_dickson::cd_multiply;
 use clap::Parser;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
-use stats_core::ultrametric::baire_codebook::codebook_baire_ultrametric_test_nd;
-use stats_core::ultrametric::local::{euclidean_distance_matrix_nd, local_ultrametricity_test_nd};
-use stats_core::ultrametric::ultrametric_fraction_from_matrix;
+use stats_core::ultrametric::{
+    baire_codebook::codebook_baire_ultrametric_test_nd,
+    local::{euclidean_distance_matrix_nd, local_ultrametricity_test_nd},
+    ultrametric_fraction_from_matrix,
+};
 
 #[derive(Parser)]
 #[command(

@@ -3,11 +3,13 @@
 //! This binary computes imbalance ratios for selected CD dimensions and writes
 //! deterministic CSV rows with per-dimension runtime.
 
-use std::collections::HashSet;
-use std::fs::{self, OpenOptions};
-use std::io::Write;
-use std::path::PathBuf;
-use std::time::{Instant, SystemTime, UNIX_EPOCH};
+use std::{
+    collections::HashSet,
+    fs::{self, OpenOptions},
+    io::Write,
+    path::PathBuf,
+    time::{Instant, SystemTime, UNIX_EPOCH},
+};
 
 use algebra_core::analysis::boxkites::compute_imbalance_ratio;
 use clap::Parser;
@@ -74,13 +76,7 @@ fn build_csv(profile_tag: &str, dims: &[usize], run_unix_seconds: u64) -> String
 
         csv.push_str(&format!(
             "{},{},{},{:.12},{:.12},{:.6},{}\n",
-            SCHEMA_VERSION,
-            profile_tag,
-            dim,
-            res.imbalance_ratio,
-            delta,
-            elapsed,
-            run_unix_seconds
+            SCHEMA_VERSION, profile_tag, dim, res.imbalance_ratio, delta, elapsed, run_unix_seconds
         ));
     }
     csv

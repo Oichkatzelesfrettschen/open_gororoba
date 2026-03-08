@@ -118,7 +118,7 @@ mod tests {
 
     fn default_qgp_state() -> QGPState {
         QGPState {
-            temperature: 0.2,      // 200 MeV in GeV
+            temperature: 0.2, // 200 MeV in GeV
             vorticity: Vector3::new(0.0, 0.0, 0.01),
             energy_density: 1.0,
         }
@@ -149,8 +149,10 @@ mod tests {
             energy_density: 1.0,
         };
         let (f, _a) = bridge.predict_imbalance(&hot);
-        assert!((f - 0.375).abs() < 1e-6,
-            "High-T imbalance should converge to 3/8: got {f}");
+        assert!(
+            (f - 0.375).abs() < 1e-6,
+            "High-T imbalance should converge to 3/8: got {f}"
+        );
     }
 
     #[test]
@@ -163,8 +165,14 @@ mod tests {
         };
         let (f, a) = bridge.predict_imbalance(&cold);
         // Low T: residual is 0.1 * exp(-0.01) ~ 0.099, so F ~ 0.474
-        assert!(f > 0.375, "Low-T imbalance should exceed imbalance attractor");
-        assert!((a - 0.25).abs() < 1e-14, "Associator = 0.5 * energy_density");
+        assert!(
+            f > 0.375,
+            "Low-T imbalance should exceed imbalance attractor"
+        );
+        assert!(
+            (a - 0.25).abs() < 1e-14,
+            "Associator = 0.5 * energy_density"
+        );
     }
 
     #[test]
@@ -174,8 +182,10 @@ mod tests {
         let state = bell_state();
         let out = bridge.apply_qgp_decoherence(&state, &qgp);
         let tr = out.rho.trace().re;
-        assert!((tr - 1.0).abs() < 1e-10,
-            "QGP decoherence must preserve trace: got {tr}");
+        assert!(
+            (tr - 1.0).abs() < 1e-10,
+            "QGP decoherence must preserve trace: got {tr}"
+        );
     }
 
     #[test]
@@ -201,7 +211,10 @@ mod tests {
         for i in 0..4 {
             for j in 0..4 {
                 let diff = (result[(i, j)] - expected[(i, j)]).norm();
-                assert!(diff < 1e-14, "kron2(I,I) should be I_4: [{i},{j}] diff={diff}");
+                assert!(
+                    diff < 1e-14,
+                    "kron2(I,I) should be I_4: [{i},{j}] diff={diff}"
+                );
             }
         }
     }

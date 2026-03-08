@@ -44,8 +44,14 @@ fn cross_validate_identity() {
     let v = [1.0, 2.0, 3.0];
 
     let result_ac = quat_rotate_vector(&q_ac, &v);
-    let result_vc =
-        quaternion::quat_rotate(&to_verified_quat(&q_ac), &Vec3 { vx: v[0], vy: v[1], vz: v[2] });
+    let result_vc = quaternion::quat_rotate(
+        &to_verified_quat(&q_ac),
+        &Vec3 {
+            vx: v[0],
+            vy: v[1],
+            vz: v[2],
+        },
+    );
 
     assert_vec3_eq(&result_vc, &result_ac, "identity");
 }
@@ -56,8 +62,14 @@ fn cross_validate_90_degree_z() {
     let v = [1.0, 0.0, 0.0];
 
     let result_ac = quat_rotate_vector(&q_ac, &v);
-    let result_vc =
-        quaternion::quat_rotate(&to_verified_quat(&q_ac), &Vec3 { vx: v[0], vy: v[1], vz: v[2] });
+    let result_vc = quaternion::quat_rotate(
+        &to_verified_quat(&q_ac),
+        &Vec3 {
+            vx: v[0],
+            vy: v[1],
+            vz: v[2],
+        },
+    );
 
     assert_vec3_eq(&result_vc, &result_ac, "90-deg-z");
 }
@@ -68,8 +80,14 @@ fn cross_validate_arbitrary_rotation() {
     let v = [4.0, 5.0, 6.0];
 
     let result_ac = quat_rotate_vector(&q_ac, &v);
-    let result_vc =
-        quaternion::quat_rotate(&to_verified_quat(&q_ac), &Vec3 { vx: v[0], vy: v[1], vz: v[2] });
+    let result_vc = quaternion::quat_rotate(
+        &to_verified_quat(&q_ac),
+        &Vec3 {
+            vx: v[0],
+            vy: v[1],
+            vz: v[2],
+        },
+    );
 
     assert_vec3_eq(&result_vc, &result_ac, "arbitrary");
 }
@@ -94,7 +112,11 @@ fn cross_validate_multiple_axes() {
             let result_ac = quat_rotate_vector(&q_ac, &v);
             let result_vc = quaternion::quat_rotate(
                 &to_verified_quat(&q_ac),
-                &Vec3 { vx: v[0], vy: v[1], vz: v[2] },
+                &Vec3 {
+                    vx: v[0],
+                    vy: v[1],
+                    vz: v[2],
+                },
             );
             assert_vec3_eq(&result_vc, &result_ac, &format!("axis[{i}]-angle[{j}]"));
         }

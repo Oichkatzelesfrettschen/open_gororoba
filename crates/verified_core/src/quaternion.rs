@@ -37,40 +37,28 @@ pub fn quat_mul(p: &Quat, q: &Quat) -> Quat {
     Quat {
         qw: axioms::sub(
             axioms::sub(
-                axioms::sub(
-                    axioms::mul(p.qw, q.qw),
-                    axioms::mul(p.qx, q.qx),
-                ),
+                axioms::sub(axioms::mul(p.qw, q.qw), axioms::mul(p.qx, q.qx)),
                 axioms::mul(p.qy, q.qy),
             ),
             axioms::mul(p.qz, q.qz),
         ),
         qx: axioms::add(
             axioms::add(
-                axioms::add(
-                    axioms::mul(p.qw, q.qx),
-                    axioms::mul(p.qx, q.qw),
-                ),
+                axioms::add(axioms::mul(p.qw, q.qx), axioms::mul(p.qx, q.qw)),
                 axioms::mul(p.qy, q.qz),
             ),
             axioms::opp(axioms::mul(p.qz, q.qy)),
         ),
         qy: axioms::add(
             axioms::add(
-                axioms::sub(
-                    axioms::mul(p.qw, q.qy),
-                    axioms::mul(p.qx, q.qz),
-                ),
+                axioms::sub(axioms::mul(p.qw, q.qy), axioms::mul(p.qx, q.qz)),
                 axioms::mul(p.qy, q.qw),
             ),
             axioms::mul(p.qz, q.qx),
         ),
         qz: axioms::add(
             axioms::add(
-                axioms::add(
-                    axioms::mul(p.qw, q.qz),
-                    axioms::mul(p.qx, q.qy),
-                ),
+                axioms::add(axioms::mul(p.qw, q.qz), axioms::mul(p.qx, q.qy)),
                 axioms::opp(axioms::mul(p.qy, q.qx)),
             ),
             axioms::mul(p.qz, q.qw),
@@ -129,10 +117,7 @@ pub fn quat_rotate(q: &Quat, v: &Vec3) -> Vec3 {
 pub fn quat_norm_sq(q: &Quat) -> T {
     axioms::add(
         axioms::add(
-            axioms::add(
-                axioms::mul(q.qw, q.qw),
-                axioms::mul(q.qx, q.qx),
-            ),
+            axioms::add(axioms::mul(q.qw, q.qw), axioms::mul(q.qx, q.qx)),
             axioms::mul(q.qy, q.qy),
         ),
         axioms::mul(q.qz, q.qz),
@@ -147,8 +132,17 @@ mod tests {
 
     #[test]
     fn identity_rotation() {
-        let q = Quat { qw: 1.0, qx: 0.0, qy: 0.0, qz: 0.0 };
-        let v = Vec3 { vx: 1.0, vy: 2.0, vz: 3.0 };
+        let q = Quat {
+            qw: 1.0,
+            qx: 0.0,
+            qy: 0.0,
+            qz: 0.0,
+        };
+        let v = Vec3 {
+            vx: 1.0,
+            vy: 2.0,
+            vz: 3.0,
+        };
         let r = quat_rotate(&q, &v);
         assert!((r.vx - v.vx).abs() < TOL);
         assert!((r.vy - v.vy).abs() < TOL);
@@ -157,7 +151,12 @@ mod tests {
 
     #[test]
     fn conjugate_involution() {
-        let q = Quat { qw: 0.5, qx: 0.5, qy: 0.5, qz: 0.5 };
+        let q = Quat {
+            qw: 0.5,
+            qx: 0.5,
+            qy: 0.5,
+            qz: 0.5,
+        };
         let qq = quat_conj(&quat_conj(&q));
         assert!((qq.qw - q.qw).abs() < TOL);
         assert!((qq.qx - q.qx).abs() < TOL);
@@ -167,7 +166,12 @@ mod tests {
 
     #[test]
     fn unit_quaternion_norm() {
-        let q = Quat { qw: 0.5, qx: 0.5, qy: 0.5, qz: 0.5 };
+        let q = Quat {
+            qw: 0.5,
+            qx: 0.5,
+            qy: 0.5,
+            qz: 0.5,
+        };
         assert!((quat_norm_sq(&q) - 1.0).abs() < TOL);
     }
 
@@ -176,12 +180,24 @@ mod tests {
         let half = std::f64::consts::FRAC_PI_4;
         let s = half.sin();
         let c = half.cos();
-        let q = Quat { qw: c, qx: 0.0, qy: 0.0, qz: s };
-        let v = Vec3 { vx: 3.0, vy: 4.0, vz: 5.0 };
+        let q = Quat {
+            qw: c,
+            qx: 0.0,
+            qy: 0.0,
+            qz: s,
+        };
+        let v = Vec3 {
+            vx: 3.0,
+            vy: 4.0,
+            vz: 5.0,
+        };
         let r = quat_rotate(&q, &v);
         let norm_v = v.vx * v.vx + v.vy * v.vy + v.vz * v.vz;
         let norm_r = r.vx * r.vx + r.vy * r.vy + r.vz * r.vz;
-        assert!((norm_v - norm_r).abs() < TOL, "norm changed: {norm_v} -> {norm_r}");
+        assert!(
+            (norm_v - norm_r).abs() < TOL,
+            "norm changed: {norm_v} -> {norm_r}"
+        );
     }
 
     #[test]
@@ -190,8 +206,17 @@ mod tests {
         let s = half.sin();
         let c = half.cos();
         // 90-degree rotation about z-axis
-        let q = Quat { qw: c, qx: 0.0, qy: 0.0, qz: s };
-        let v = Vec3 { vx: 1.0, vy: 0.0, vz: 0.0 };
+        let q = Quat {
+            qw: c,
+            qx: 0.0,
+            qy: 0.0,
+            qz: s,
+        };
+        let v = Vec3 {
+            vx: 1.0,
+            vy: 0.0,
+            vz: 0.0,
+        };
         let r = quat_rotate(&q, &v);
         assert!(r.vx.abs() < TOL, "x should be ~0: {}", r.vx);
         assert!((r.vy - 1.0).abs() < TOL, "y should be ~1: {}", r.vy);

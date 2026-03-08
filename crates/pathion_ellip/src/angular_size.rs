@@ -75,11 +75,7 @@ mod tests {
     fn test_m87_shadow_size() {
         let uas = m87_star_shadow_uas();
         // EHT measured ~42 uas; Schwarzschild prediction ~39.8 uas
-        assert!(
-            uas > 35.0 && uas < 45.0,
-            "M87* shadow = {:.1} uas",
-            uas
-        );
+        assert!(uas > 35.0 && uas < 45.0, "M87* shadow = {:.1} uas", uas);
     }
 
     #[test]

@@ -12,7 +12,9 @@
 
 use algebra_core::construction::chingon::PackedAvt;
 use anyhow::{Context, Result};
-use cudarc::driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg};
+use cudarc::driver::{
+    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
+};
 use gr_core::forces::chingon_bivector_drag::block_layout;
 use std::sync::Arc;
 
@@ -82,15 +84,19 @@ impl ChingonGpuPipeline {
         let n_phases_b3 = b3sz.div_ceil(3);
 
         // Upload packed AVT (read-only for entire simulation)
-        let d_packed_avt = stream.clone_htod(&packed.data)
+        let d_packed_avt = stream
+            .clone_htod(&packed.data)
             .context("Upload packed AVT to GPU")?;
 
         // Allocate working buffers
-        let d_v_nd = stream.alloc_zeros::<f32>(dim)
+        let d_v_nd = stream
+            .alloc_zeros::<f32>(dim)
             .context("Alloc v_Nd buffer")?;
-        let d_force_nd = stream.alloc_zeros::<f32>(dim)
+        let d_force_nd = stream
+            .alloc_zeros::<f32>(dim)
             .context("Alloc force_Nd buffer")?;
-        let d_force_3d = stream.alloc_zeros::<f32>(3)
+        let d_force_3d = stream
+            .alloc_zeros::<f32>(3)
             .context("Alloc force_3d buffer")?;
 
         let n_violations = packed.violation_count;
@@ -142,15 +148,26 @@ impl ChingonGpuPipeline {
         alpha: f64,
     ) -> Result<[f64; 3]> {
         // Step 1: Zero the force buffers
-        zero_device_buffer(&self.stream, &self.zero_kernel, &mut self.d_force_nd, self.dim as usize)?;
+        zero_device_buffer(
+            &self.stream,
+            &self.zero_kernel,
+            &mut self.d_force_nd,
+            self.dim as usize,
+        )?;
         zero_device_buffer(&self.stream, &self.zero_kernel, &mut self.d_force_3d, 3)?;
 
         // Step 2: Build the N-D state vector
         self.build_state(
-            triad_earth, triad_lunar, triad_solar,
-            h_triad_earth, vrel_triad_lunar,
-            h_triad_solar, vhat_triad_solar,
-            h_earth_norm, v_rel_norm, cross_sign,
+            triad_earth,
+            triad_lunar,
+            triad_solar,
+            h_triad_earth,
+            vrel_triad_lunar,
+            h_triad_solar,
+            vhat_triad_solar,
+            h_earth_norm,
+            v_rel_norm,
+            cross_sign,
         )?;
 
         // Step 3: AVT tensor contraction
@@ -159,12 +176,16 @@ impl ChingonGpuPipeline {
         // Step 4: Project N-D force to 3D
         self.run_projection(
             triad_solar,
-            h_triad_solar, vhat_triad_solar,
-            h_earth_norm, cross_sign,
+            h_triad_solar,
+            vhat_triad_solar,
+            h_earth_norm,
+            cross_sign,
         )?;
 
         // Step 5: Read back 3D force
-        let force: Vec<f32> = self.stream.clone_dtoh(&self.d_force_3d)
+        let force: Vec<f32> = self
+            .stream
+            .clone_dtoh(&self.d_force_3d)
             .context("Read back force_3d")?;
 
         Ok([force[0] as f64, force[1] as f64, force[2] as f64])
@@ -252,24 +273,52 @@ impl ChingonGpuPipeline {
         builder.arg(&self.n_phases);
         builder.arg(&self.n_phases_b3);
         // Earth triad
-        builder.arg(&e_v_earth_x); builder.arg(&e_v_earth_y); builder.arg(&e_v_earth_z);
-        builder.arg(&e_h_earth_x); builder.arg(&e_h_earth_y); builder.arg(&e_h_earth_z);
-        builder.arg(&e_n_earth_x); builder.arg(&e_n_earth_y); builder.arg(&e_n_earth_z);
+        builder.arg(&e_v_earth_x);
+        builder.arg(&e_v_earth_y);
+        builder.arg(&e_v_earth_z);
+        builder.arg(&e_h_earth_x);
+        builder.arg(&e_h_earth_y);
+        builder.arg(&e_h_earth_z);
+        builder.arg(&e_n_earth_x);
+        builder.arg(&e_n_earth_y);
+        builder.arg(&e_n_earth_z);
         // Lunar triad
-        builder.arg(&e_v_lunar_x); builder.arg(&e_v_lunar_y); builder.arg(&e_v_lunar_z);
-        builder.arg(&e_h_lunar_x); builder.arg(&e_h_lunar_y); builder.arg(&e_h_lunar_z);
-        builder.arg(&e_n_lunar_x); builder.arg(&e_n_lunar_y); builder.arg(&e_n_lunar_z);
+        builder.arg(&e_v_lunar_x);
+        builder.arg(&e_v_lunar_y);
+        builder.arg(&e_v_lunar_z);
+        builder.arg(&e_h_lunar_x);
+        builder.arg(&e_h_lunar_y);
+        builder.arg(&e_h_lunar_z);
+        builder.arg(&e_n_lunar_x);
+        builder.arg(&e_n_lunar_y);
+        builder.arg(&e_n_lunar_z);
         // Solar triad
-        builder.arg(&e_v_solar_x); builder.arg(&e_v_solar_y); builder.arg(&e_v_solar_z);
-        builder.arg(&e_h_solar_x); builder.arg(&e_h_solar_y); builder.arg(&e_h_solar_z);
-        builder.arg(&e_n_solar_x); builder.arg(&e_n_solar_y); builder.arg(&e_n_solar_z);
+        builder.arg(&e_v_solar_x);
+        builder.arg(&e_v_solar_y);
+        builder.arg(&e_v_solar_z);
+        builder.arg(&e_h_solar_x);
+        builder.arg(&e_h_solar_y);
+        builder.arg(&e_h_solar_z);
+        builder.arg(&e_n_solar_x);
+        builder.arg(&e_n_solar_y);
+        builder.arg(&e_n_solar_z);
         // Triad projections
-        builder.arg(&ht_e0); builder.arg(&ht_e1); builder.arg(&ht_e2);
-        builder.arg(&vr_l0); builder.arg(&vr_l1); builder.arg(&vr_l2);
-        builder.arg(&ht_s0); builder.arg(&ht_s1); builder.arg(&ht_s2);
-        builder.arg(&vh_s0); builder.arg(&vh_s1); builder.arg(&vh_s2);
+        builder.arg(&ht_e0);
+        builder.arg(&ht_e1);
+        builder.arg(&ht_e2);
+        builder.arg(&vr_l0);
+        builder.arg(&vr_l1);
+        builder.arg(&vr_l2);
+        builder.arg(&ht_s0);
+        builder.arg(&ht_s1);
+        builder.arg(&ht_s2);
+        builder.arg(&vh_s0);
+        builder.arg(&vh_s1);
+        builder.arg(&vh_s2);
         // Scalars
-        builder.arg(&h_norm); builder.arg(&v_norm); builder.arg(&cs);
+        builder.arg(&h_norm);
+        builder.arg(&v_norm);
+        builder.arg(&cs);
 
         unsafe { builder.launch(cfg).context("Launch build_state_3body")? };
         Ok(())
@@ -344,12 +393,23 @@ impl ChingonGpuPipeline {
         builder.arg(&self.block3_size);
         builder.arg(&self.n_phases_b3);
         // Solar triad
-        builder.arg(&e_v_solar_x); builder.arg(&e_v_solar_y); builder.arg(&e_v_solar_z);
-        builder.arg(&e_h_solar_x); builder.arg(&e_h_solar_y); builder.arg(&e_h_solar_z);
-        builder.arg(&e_n_solar_x); builder.arg(&e_n_solar_y); builder.arg(&e_n_solar_z);
-        builder.arg(&ht_s0); builder.arg(&ht_s1); builder.arg(&ht_s2);
-        builder.arg(&vh_s0); builder.arg(&vh_s1); builder.arg(&vh_s2);
-        builder.arg(&h_norm); builder.arg(&cs);
+        builder.arg(&e_v_solar_x);
+        builder.arg(&e_v_solar_y);
+        builder.arg(&e_v_solar_z);
+        builder.arg(&e_h_solar_x);
+        builder.arg(&e_h_solar_y);
+        builder.arg(&e_h_solar_z);
+        builder.arg(&e_n_solar_x);
+        builder.arg(&e_n_solar_y);
+        builder.arg(&e_n_solar_z);
+        builder.arg(&ht_s0);
+        builder.arg(&ht_s1);
+        builder.arg(&ht_s2);
+        builder.arg(&vh_s0);
+        builder.arg(&vh_s1);
+        builder.arg(&vh_s2);
+        builder.arg(&h_norm);
+        builder.arg(&cs);
 
         unsafe { builder.launch(cfg).context("Launch project_3body")? };
         Ok(())
@@ -357,14 +417,14 @@ impl ChingonGpuPipeline {
 
     /// Read the raw N-D force vector from GPU (for debugging/validation).
     pub fn read_force_nd(&self) -> Result<Vec<f32>> {
-        self.stream.clone_dtoh(&self.d_force_nd)
+        self.stream
+            .clone_dtoh(&self.d_force_nd)
             .context("Read force_Nd")
     }
 
     /// Read the N-D state vector from GPU (for debugging/validation).
     pub fn read_state_nd(&self) -> Result<Vec<f32>> {
-        self.stream.clone_dtoh(&self.d_v_nd)
-            .context("Read v_Nd")
+        self.stream.clone_dtoh(&self.d_v_nd).context("Read v_Nd")
     }
 }
 

@@ -10,10 +10,8 @@
 //! - Ivanov, Phys. Rev. Lett. 86, 268 (2001): Non-Abelian statistics of vortices
 //! - Kitaev, Phys.-Usp. 44, 131 (2001): Unpaired Majorana fermions
 
-use crate::bell_inequality::{
-    SignTableCache, known_sedenion_zd_pairs, rotate_sparse,
-};
-use algebra_core::physics::clifford::{gamma_matrices_cl8, GammaMatrix};
+use crate::bell_inequality::{SignTableCache, known_sedenion_zd_pairs, rotate_sparse};
+use algebra_core::physics::clifford::{GammaMatrix, gamma_matrices_cl8};
 use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
 use num_complex::Complex64;
 
@@ -103,11 +101,7 @@ pub fn check_braid_preserves_parity(i: usize, j: usize) -> f64 {
     let commutator = &p * &u - &u * &p;
 
     // Return Frobenius norm of commutator
-    commutator
-        .iter()
-        .map(|c| c.norm_sqr())
-        .sum::<f64>()
-        .sqrt()
+    commutator.iter().map(|c| c.norm_sqr()).sum::<f64>().sqrt()
 }
 
 /// Check that U is unitary: U * U^dag = I.
@@ -173,8 +167,7 @@ pub fn cd_braid(
             continue;
         }
         let x_sparse = [(k, 1.0)];
-        let assoc_sum =
-            sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+        let assoc_sum = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
         let norm = assoc_sum.abs();
         total_friction += norm;
         if norm > max_norm {
@@ -213,11 +206,11 @@ pub fn measure_topological_friction(
 /// evaluated via the sign table. In associative algebras this matches
 /// the Clifford parity; in non-associative algebras it depends on
 /// association order.
-pub fn parity_observable_cd(
-    modes: &[MajoranaMode],
-    sign_table: &SignTableCache,
-) -> f64 {
-    assert!(modes.len() >= 4, "Need at least 4 Majorana modes for parity");
+pub fn parity_observable_cd(modes: &[MajoranaMode], sign_table: &SignTableCache) -> f64 {
+    assert!(
+        modes.len() >= 4,
+        "Need at least 4 Majorana modes for parity"
+    );
 
     // Left-associated product: ((e_i0 * e_i1) * e_i2) * e_i3
     let a = vec![(modes[0].cd_basis_index, 1.0)];
@@ -350,9 +343,7 @@ pub fn braiding_experiment(
     let total_friction: f64 = friction_per_braid.iter().sum();
 
     // Fidelity: 1.0 if parities match AND friction is zero
-    let fidelity = if (clifford_parity - cd_parity).abs() < 1e-10
-        && total_friction < 1e-10
-    {
+    let fidelity = if (clifford_parity - cd_parity).abs() < 1e-10 && total_friction < 1e-10 {
         1.0
     } else {
         0.0
@@ -385,8 +376,7 @@ pub fn complex_time_braid(
     // Wick rotation damping factor
     // gap ~ edge_density ~ (dim^2 - 6*dim + 8) / (2 * (dim-2)*(dim-3)/2)
     let dim = mode_i.cd_dim as f64;
-    let edge_density = (dim * dim - 6.0 * dim + 8.0)
-        / ((dim - 2.0) * (dim - 3.0));
+    let edge_density = (dim * dim - 6.0 * dim + 8.0) / ((dim - 2.0) * (dim - 3.0));
     let damping = (-edge_density * theta.sin()).exp();
 
     result.topological_friction *= damping;
@@ -436,14 +426,12 @@ pub fn chsh_braid_aligned(
     // Use box-kite strut directions as measurement planes
     // Kite 1: assessors (1,14), (2,13), ... -> use (1,14) for Alice, (2,13) for Bob
     // This aligns measurements with the topological structure
-    use crate::bell_inequality::{
-        lift_zd_to_dim,
-    };
+    use crate::bell_inequality::lift_zd_to_dim;
     use rand::prelude::*;
     use rand_chacha::ChaCha8Rng;
 
     let alice_plane = (1, 14); // First assessor pair of boxkite_1
-    let bob_plane = (2, 13);   // Second assessor pair of boxkite_1
+    let bob_plane = (2, 13); // Second assessor pair of boxkite_1
 
     let sign_cache = SignTableCache::new(dim);
 
@@ -487,10 +475,20 @@ pub fn chsh_braid_aligned(
             let probe = probes[rng.gen_range(0..probes.len())];
 
             let outcome_a = crate::bell_inequality::associator_measurement_fast(
-                &ch.a_sparse, &ch.b_sparse, theta_a, alice_plane, probe, &sign_cache,
+                &ch.a_sparse,
+                &ch.b_sparse,
+                theta_a,
+                alice_plane,
+                probe,
+                &sign_cache,
             );
             let outcome_b = crate::bell_inequality::associator_measurement_fast(
-                &ch.b_sparse, &ch.a_sparse, theta_b, bob_plane, probe, &sign_cache,
+                &ch.b_sparse,
+                &ch.a_sparse,
+                theta_b,
+                bob_plane,
+                probe,
+                &sign_cache,
             );
             total += outcome_a * outcome_b;
         }
@@ -508,8 +506,7 @@ pub fn chsh_braid_aligned(
     // Count shared paths
     let mut n_shared_paths = 0;
     for (idx_i, ch_i) in channels.iter().enumerate() {
-        let set_i: std::collections::HashSet<usize> =
-            ch_i.basis_indices.iter().copied().collect();
+        let set_i: std::collections::HashSet<usize> = ch_i.basis_indices.iter().copied().collect();
         for ch_j in channels.iter().skip(idx_i + 1) {
             let set_j: std::collections::HashSet<usize> =
                 ch_j.basis_indices.iter().copied().collect();
@@ -638,9 +635,7 @@ mod tests {
         // associator [e_i, e_k, e_{i XOR 8}] is generally non-zero.
         // Record the actual values for analysis.
         for (i, j, max_assoc) in &results {
-            println!(
-                "Missing edge ({i}, {j}): max |associator| = {max_assoc:.6}"
-            );
+            println!("Missing edge ({i}, {j}): max |associator| = {max_assoc:.6}");
         }
 
         // Verify the test ran correctly: all missing pairs have i XOR 8 = j
@@ -673,8 +668,12 @@ mod tests {
         let sign_table = SignTableCache::new(16);
 
         let real_braid = cd_braid(&modes[0], &modes[1], &sign_table);
-        let wick_braid =
-            complex_time_braid(&modes[0], &modes[1], std::f64::consts::FRAC_PI_4, &sign_table);
+        let wick_braid = complex_time_braid(
+            &modes[0],
+            &modes[1],
+            std::f64::consts::FRAC_PI_4,
+            &sign_table,
+        );
 
         assert!(
             wick_braid.topological_friction < real_braid.topological_friction,

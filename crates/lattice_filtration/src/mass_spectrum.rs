@@ -5,8 +5,7 @@
 //! hierarchy. Deeper survival implies greater structural stability under
 //! filtration, which we interpret as higher effective mass.
 
-use crate::basis_index::BasisIndexCodec;
-use crate::patricia_trie::PatriciaIndex;
+use crate::{basis_index::BasisIndexCodec, patricia_trie::PatriciaIndex};
 use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
 use std::collections::HashMap;
 

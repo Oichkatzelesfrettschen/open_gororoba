@@ -1,8 +1,6 @@
-use gororoba_cli_warp::warp_precision_suite_ops;
-use gororoba_cli_warp::warp_runner;
+use gororoba_cli_warp::{warp_precision_suite_ops, warp_runner};
 
-use std::error::Error;
-use std::path::PathBuf;
+use std::{error::Error, path::PathBuf};
 use warp_precision_suite_ops::{
     PrecisionSuiteConfig, default_timing_mode_for_backend, parse_backend, parse_bool01, parse_csv,
     parse_precision, parse_timing_mode, run_precision_suite,

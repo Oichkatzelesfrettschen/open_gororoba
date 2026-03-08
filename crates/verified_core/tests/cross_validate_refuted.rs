@@ -45,10 +45,10 @@ fn cross_validate_calcagni_spectral_dimension() {
 
 #[test]
 fn cross_validate_gf2_separation() {
-    use algebra_core::analysis::projective_geometry::{
-        component_xor_label, find_boolean_class_predicate,
+    use algebra_core::analysis::{
+        boxkites::motif_components_for_cross_assessors,
+        projective_geometry::{component_xor_label, find_boolean_class_predicate},
     };
-    use algebra_core::analysis::boxkites::motif_components_for_cross_assessors;
 
     // Get production PG(3,2) data
     let comps = motif_components_for_cross_assessors(32);
@@ -83,7 +83,10 @@ fn cross_validate_gf2_separation() {
     // Verify cubic witness separates in both implementations
     let n_bits = 4;
     let prod_result = find_boolean_class_predicate(&labels, &classes, n_bits, 3);
-    assert!(prod_result.is_some(), "production should find cubic separator");
+    assert!(
+        prod_result.is_some(),
+        "production should find cubic separator"
+    );
 
     assert!(
         verified_core::gf2::separates(&vc_labels, &vc_classes, &verified_core::gf2::CUBIC_WITNESS),
@@ -108,12 +111,7 @@ fn cross_validate_neg_dim_degeneracy() {
     use verified_core::neg_dim::{neg_dim_product, neg_dim_w_eff};
 
     // Same product => same w_eff (the formal theorem)
-    let pairs: &[(f64, f64)] = &[
-        (0.0, 1.0),
-        (1.0, 0.6),
-        (2.0, 3.0 / 7.0),
-        (-0.5, 1.5),
-    ];
+    let pairs: &[(f64, f64)] = &[(0.0, 1.0), (1.0, 0.6), (2.0, 3.0 / 7.0), (-0.5, 1.5)];
 
     let target_product = neg_dim_product(0.0, 1.0); // = 1.5
     let target_w = neg_dim_w_eff(0.0, 1.0);

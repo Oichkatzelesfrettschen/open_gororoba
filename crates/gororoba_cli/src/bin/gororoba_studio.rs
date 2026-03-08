@@ -1,8 +1,10 @@
-use axum::extract::{Path as AxumPath, State};
-use axum::http::StatusCode;
-use axum::response::{Html, IntoResponse};
-use axum::routing::{get, post};
-use axum::{Json, Router};
+use axum::{
+    Json, Router,
+    extract::{Path as AxumPath, State},
+    http::StatusCode,
+    response::{Html, IntoResponse},
+    routing::{get, post},
+};
 use clap::Parser;
 use gororoba_engine::{
     Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline, ThesisEvidence,
@@ -11,14 +13,20 @@ use gororoba_engine::{
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use stats_core::helpers::{mean, median, std_dev};
-use std::collections::{BTreeMap, BTreeSet};
-use std::fs;
-use std::path::{Path, PathBuf};
-use std::sync::Arc;
-use std::sync::atomic::{AtomicU64, Ordering};
-use std::time::{Instant, SystemTime, UNIX_EPOCH};
-use tokio::sync::Mutex;
-use tokio::time::{Duration, timeout};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fs,
+    path::{Path, PathBuf},
+    sync::{
+        Arc,
+        atomic::{AtomicU64, Ordering},
+    },
+    time::{Instant, SystemTime, UNIX_EPOCH},
+};
+use tokio::{
+    sync::Mutex,
+    time::{Duration, timeout},
+};
 
 const INDEX_HTML: &str = include_str!("../../../../apps/gororoba_studio/ui/index.html");
 const APP_JS: &str = include_str!("../../../../apps/gororoba_studio/ui/app.js");
@@ -1804,8 +1812,7 @@ async fn main() -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use axum::body::to_bytes;
-    use axum::response::Response;
+    use axum::{body::to_bytes, response::Response};
     use serde_json::Value as JsonValue;
     use std::path::Path;
     fn write_temp_catalog(contents: &str) -> PathBuf {

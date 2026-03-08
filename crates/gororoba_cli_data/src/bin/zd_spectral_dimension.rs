@@ -56,19 +56,28 @@ fn main() -> anyhow::Result<()> {
     }
 
     if dims.is_empty() {
-        eprintln!("No valid dimensions in range [{}, {}]", cli.min_dim, cli.max_dim);
+        eprintln!(
+            "No valid dimensions in range [{}, {}]",
+            cli.min_dim, cli.max_dim
+        );
         std::process::exit(1);
     }
 
     eprintln!("ZD Spectral Dimension Census");
     eprintln!("Dimensions: {:?}", dims);
-    eprintln!("t range: [{}, {}], {} points", cli.t_min, cli.t_max, cli.t_points);
+    eprintln!(
+        "t range: [{}, {}], {} points",
+        cli.t_min, cli.t_max, cli.t_points
+    );
     eprintln!();
 
     let result = dimensional_flow_analysis(&dims, cli.t_min, cli.t_max, cli.t_points);
 
     // Print summary table
-    eprintln!("{:<8} {:>6} {:>8} {:>12} {:>10}", "CD_dim", "comps", "nodes", "d_s_plateau", "R^2");
+    eprintln!(
+        "{:<8} {:>6} {:>8} {:>12} {:>10}",
+        "CD_dim", "comps", "nodes", "d_s_plateau", "R^2"
+    );
     eprintln!("{}", "-".repeat(50));
 
     for dim_result in &result.dimensions {
@@ -111,7 +120,15 @@ fn main() -> anyhow::Result<()> {
     // Write plateau summary CSV
     let plateau_path = cli.output_dir.join("zd_spectral_dimension_plateaus.csv");
     let mut wtr = csv::Writer::from_path(&plateau_path)?;
-    wtr.write_record(["cd_dim", "n_components", "nodes_per_component", "d_s_plateau", "ln_t_min", "ln_t_max", "r_squared"])?;
+    wtr.write_record([
+        "cd_dim",
+        "n_components",
+        "nodes_per_component",
+        "d_s_plateau",
+        "ln_t_min",
+        "ln_t_max",
+        "r_squared",
+    ])?;
     for dim_result in &result.dimensions {
         if let Some(p) = &dim_result.plateau {
             wtr.write_record([
@@ -147,24 +164,37 @@ fn main() -> anyhow::Result<()> {
     // Spectral gap census
     eprintln!();
     eprintln!("Spectral Gap Census");
-    eprintln!("{:<8} {:>6} {:>8} {:>10} {:>10} {:>10} {:>9}",
-        "CD_dim", "comps", "nodes", "lambda_2", "lambda_max", "gap_ratio", "expander");
+    eprintln!(
+        "{:<8} {:>6} {:>8} {:>10} {:>10} {:>10} {:>9}",
+        "CD_dim", "comps", "nodes", "lambda_2", "lambda_max", "gap_ratio", "expander"
+    );
     eprintln!("{}", "-".repeat(67));
 
     let gap_results = spectral_gap_census(&dims);
     for r in &gap_results {
         eprintln!(
             "{:<8} {:>6} {:>8} {:>10.4} {:>10.4} {:>10.4} {:>9}",
-            r.cd_dim, r.n_components, r.nodes_per_component,
-            r.lambda_2, r.lambda_max, r.gap_ratio,
+            r.cd_dim,
+            r.n_components,
+            r.nodes_per_component,
+            r.lambda_2,
+            r.lambda_max,
+            r.gap_ratio,
             if r.is_expander { "YES" } else { "NO" }
         );
     }
 
     let gap_path = cli.output_dir.join("zd_spectral_gap.csv");
     let mut wtr = csv::Writer::from_path(&gap_path)?;
-    wtr.write_record(["cd_dim", "n_components", "nodes_per_component",
-        "lambda_2", "lambda_max", "gap_ratio", "is_expander"])?;
+    wtr.write_record([
+        "cd_dim",
+        "n_components",
+        "nodes_per_component",
+        "lambda_2",
+        "lambda_max",
+        "gap_ratio",
+        "is_expander",
+    ])?;
     for r in &gap_results {
         wtr.write_record([
             r.cd_dim.to_string(),

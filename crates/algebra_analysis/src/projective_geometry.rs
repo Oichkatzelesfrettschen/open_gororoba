@@ -147,8 +147,10 @@ pub fn incidence_matrix(geom: &ProjectiveGeometry) -> Vec<Vec<u8>> {
 // PG-to-motif bijection (A2)
 // ============================================================================
 
-use crate::boxkites::{CrossPair, MotifComponent};
-use crate::zd_graphs::xor_key;
+use crate::{
+    boxkites::{CrossPair, MotifComponent},
+    zd_graphs::xor_key,
+};
 
 /// Extract the XOR-key label for a motif component, mapped to PG(n-2,2) space.
 ///

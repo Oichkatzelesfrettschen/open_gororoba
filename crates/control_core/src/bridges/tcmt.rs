@@ -373,8 +373,10 @@ impl Plant for TcmtThermalPlant {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::feedback::{FeedbackLoop, ProportionalController, ReferenceSignal};
-    use crate::pid::PidController;
+    use crate::{
+        feedback::{FeedbackLoop, ProportionalController, ReferenceSignal},
+        pid::PidController,
+    };
     use approx::assert_relative_eq;
 
     #[test]

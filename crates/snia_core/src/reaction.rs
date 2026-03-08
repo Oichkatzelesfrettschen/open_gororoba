@@ -1,5 +1,7 @@
-use crate::error::SniaError;
-use crate::types::{BurnState, ThermoState};
+use crate::{
+    error::SniaError,
+    types::{BurnState, ThermoState},
+};
 
 /// Reduced C12 burning model with screening and subcycling.
 #[derive(Debug, Clone, Copy)]

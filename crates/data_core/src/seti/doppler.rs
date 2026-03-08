@@ -313,8 +313,7 @@ pub fn inject_signal(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rand::SeedableRng;
-    use rand::rngs::StdRng;
+    use rand::{SeedableRng, rngs::StdRng};
     use rand_distr::{Distribution, Normal};
 
     fn make_test_freqs(n_fine: usize, fch1_mhz: f64, foff_mhz: f64) -> Vec<f64> {

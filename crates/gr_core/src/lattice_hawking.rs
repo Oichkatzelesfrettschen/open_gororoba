@@ -122,17 +122,17 @@ pub fn effective_temperature(omegas: &[f64], spectrum: &[f64]) -> f64 {
     }
 
     sum_xx / sum_xy
-    }
+}
 
-    /// Full spectrum computation at a given grid resolution.
-    ///
-    /// Returns (omegas, ideal, lattice, viscous) arrays.
-    pub fn compute_spectra(
+/// Full spectrum computation at a given grid resolution.
+///
+/// Returns (omegas, ideal, lattice, viscous) arrays.
+pub fn compute_spectra(
     t_h: f64,
     n_grid: usize,
     nu: f64,
     n_omega: usize,
-    ) -> (Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>) {
+) -> (Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>) {
     let dx = 1.0 / n_grid as f64;
     let omega_max = 2.0 / dx; // Nyquist
     let omega_min = t_h * 0.01; // Capture the very low frequency tail
@@ -159,11 +159,11 @@ pub fn effective_temperature(omegas: &[f64], spectrum: &[f64]) -> f64 {
         .collect();
 
     (omegas, ideal, lattice, viscous)
-    }
+}
 
-    /// Compute spectra with spatially varying viscosity using a WKB approximation
-    /// for the cumulative viscous damping from the horizon to the boundary.
-    pub fn compute_spectra_variable_nu(
+/// Compute spectra with spatially varying viscosity using a WKB approximation
+/// for the cumulative viscous damping from the horizon to the boundary.
+pub fn compute_spectra_variable_nu(
     t_h: f64,
     n_grid: usize,
     dx: f64,
@@ -171,7 +171,7 @@ pub fn effective_temperature(omegas: &[f64], spectrum: &[f64]) -> f64 {
     velocity_mag: &[f64],
     h_pos: usize,
     n_omega: usize,
-    ) -> (Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>) {
+) -> (Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>) {
     let omega_max = 2.0 / dx; // Nyquist
     let omega_min = t_h * 0.01;
 
@@ -220,7 +220,7 @@ pub fn effective_temperature(omegas: &[f64], spectrum: &[f64]) -> f64 {
     }
 
     (omegas, ideal, lattice, viscous)
-    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;

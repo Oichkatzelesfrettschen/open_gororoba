@@ -13,13 +13,15 @@
 //! - `clean`:    Delete raw HDF5 files after analysis
 
 use clap::{Parser, Subcommand};
-use data_core::catalogs::bl_filterbank::{
-    BlObservation, bl_6equj5_observations, observation_file_path,
+use data_core::{
+    catalogs::bl_filterbank::{BlObservation, bl_6equj5_observations, observation_file_path},
+    fetcher::{FetchError, compute_sha256},
 };
-use data_core::fetcher::{FetchError, compute_sha256};
-use std::fs;
-use std::io::{self, Read, Write};
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    io::{self, Read, Write},
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser)]
 #[command(name = "bl-data-fetch", about = "BL 6EQUJ5 data download orchestrator")]

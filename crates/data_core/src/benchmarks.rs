@@ -13,8 +13,7 @@
 //! datasets are available, `*_if_available` tests additionally exercise
 //! the pipeline against production data.
 
-use std::path::Path;
-use std::time::Instant;
+use std::{path::Path, time::Instant};
 
 use crate::fetcher::FetchError;
 

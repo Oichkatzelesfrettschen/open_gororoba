@@ -33,7 +33,7 @@ fn tensor_compile_opts() -> CompileOptions {
 }
 
 #[cfg(feature = "gpu")]
-const TENSOR_AVT_KERNEL_SRC: &str = include_str!("kernels_tensor_avt.cu");
+const TENSOR_AVT_KERNEL_SRC: &str = include_str!("kernels.cu");
 
 #[cfg(feature = "gpu")]
 fn tensor_ptx_cache_dir() -> PathBuf {

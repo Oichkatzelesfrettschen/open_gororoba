@@ -226,7 +226,8 @@ impl GororobaEngine {
             &device, ctx, &f_a, &f_b, &rho, &u, &tau, &force, &entropy, precision,
         )?;
         let zd_pipeline = Self::create_zd_pipeline(&device, ctx, &tau)?;
-        let pathion_sink_pipeline = Self::create_pathion_sink_pipeline(&device, ctx, &tau, &force, &accum_buffer)?;
+        let pathion_sink_pipeline =
+            Self::create_pathion_sink_pipeline(&device, ctx, &tau, &force, &accum_buffer)?;
         let render_pipeline =
             Self::create_render_pipeline(&device, ctx, &entropy, &tau, render_view, screen_dim)?;
 
@@ -274,8 +275,8 @@ impl GororobaEngine {
             Precision::FP16 => include_str!("../shaders/lbm_f16.wgsl"),
             _ => include_str!("../shaders/lbm.wgsl"),
         };
-        let code = compile_wgsl(lbm_src)
-            .map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
+        let code =
+            compile_wgsl(lbm_src).map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
         let module = unsafe {
             device.create_shader_module(
                 &vk::ShaderModuleCreateInfo {
@@ -1703,7 +1704,9 @@ impl GororobaEngine {
             .allocation
             .mapped_ptr()
             .ok_or_else(|| {
-                VulkanEngineError::MappingError("Failed to map accum buffer for reading".to_string())
+                VulkanEngineError::MappingError(
+                    "Failed to map accum buffer for reading".to_string(),
+                )
             })?
             .as_ptr() as *const f32;
         let n = (self.grid_dim.0 * self.grid_dim.1 * self.grid_dim.2) as usize;

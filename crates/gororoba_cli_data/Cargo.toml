@@ -200,6 +200,10 @@ path = "src/bin/baire_compact.rs"
 name = "test-inventory"
 path = "src/bin/test_inventory.rs"
 
+[[bin]]
+name = "crate-inventory"
+path = "src/bin/crate_inventory.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 gororoba_cli = { path = "../gororoba_cli" }

@@ -110,10 +110,8 @@ fn main() {
         Commands::Protection { dim } => {
             println!("=== Missing-Edge Associator Analysis (dim={dim}) ===\n");
 
-            let sign_table =
-                algebra_experimental::bell_inequality::SignTableCache::new(dim);
-            let results =
-                majorana_braiding::test_missing_edge_protection(dim, &sign_table);
+            let sign_table = algebra_experimental::bell_inequality::SignTableCache::new(dim);
+            let results = majorana_braiding::test_missing_edge_protection(dim, &sign_table);
 
             for (i, j, max_assoc) in &results {
                 let status = if *max_assoc < 1e-12 {
@@ -134,10 +132,12 @@ fn main() {
                 results.len()
             );
         }
-        Commands::AlignedChsh { dim, n_samples, seed } => {
-            println!(
-                "=== Braid-Aligned CHSH Test (dim={dim}, n={n_samples}) ===\n"
-            );
+        Commands::AlignedChsh {
+            dim,
+            n_samples,
+            seed,
+        } => {
+            println!("=== Braid-Aligned CHSH Test (dim={dim}, n={n_samples}) ===\n");
 
             let result = majorana_braiding::chsh_braid_aligned(dim, n_samples, seed);
 
@@ -149,24 +149,16 @@ fn main() {
             println!("Optimal probes: {}", result.n_optimal_probes);
         }
         Commands::ComplexTime { dim, theta_steps } => {
-            println!(
-                "=== Complex-Time Braid Sweep (dim={dim}, steps={theta_steps}) ===\n"
-            );
+            println!("=== Complex-Time Braid Sweep (dim={dim}, steps={theta_steps}) ===\n");
 
             let modes = majorana_braiding::map_majoranas_to_cd(4, dim);
-            let sign_table =
-                algebra_experimental::bell_inequality::SignTableCache::new(dim);
+            let sign_table = algebra_experimental::bell_inequality::SignTableCache::new(dim);
 
             println!("{:>8} {:>12} {:>12}", "theta", "friction", "max_assoc");
             for step in 0..=theta_steps {
-                let theta =
-                    std::f64::consts::FRAC_PI_2 * step as f64 / theta_steps as f64;
-                let result = majorana_braiding::complex_time_braid(
-                    &modes[0],
-                    &modes[1],
-                    theta,
-                    &sign_table,
-                );
+                let theta = std::f64::consts::FRAC_PI_2 * step as f64 / theta_steps as f64;
+                let result =
+                    majorana_braiding::complex_time_braid(&modes[0], &modes[1], theta, &sign_table);
                 println!(
                     "{:8.4} {:12.6} {:12.6}",
                     theta, result.topological_friction, result.max_associator_norm

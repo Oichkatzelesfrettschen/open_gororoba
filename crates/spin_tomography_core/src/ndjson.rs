@@ -10,8 +10,10 @@
 //!
 //! The file is produced by: `stack exec spin-tomography-exe` in the QCD repo.
 
-use std::io::{BufRead, BufReader};
-use std::path::Path;
+use std::{
+    io::{BufRead, BufReader},
+    path::Path,
+};
 
 use nalgebra::Vector3;
 use serde_json::Value;
@@ -135,10 +137,16 @@ mod tests {
         // Unit test that does not require the QCD repo to be present.
         use std::io::Write;
         let mut tmp = tempfile::NamedTempFile::new().unwrap();
-        writeln!(tmp, r#"{{"u":[1.0,0.0,0.0],"v":[0.0,1.0,0.0],"weight":1.0,"dR":0.0}}"#)
-            .unwrap();
-        writeln!(tmp, r#"{{"u":[0.0,0.0,1.0],"v":[1.0,0.0,0.0],"weight":2.0,"dR":0.0}}"#)
-            .unwrap();
+        writeln!(
+            tmp,
+            r#"{{"u":[1.0,0.0,0.0],"v":[0.0,1.0,0.0],"weight":1.0,"dR":0.0}}"#
+        )
+        .unwrap();
+        writeln!(
+            tmp,
+            r#"{{"u":[0.0,0.0,1.0],"v":[1.0,0.0,0.0],"weight":2.0,"dR":0.0}}"#
+        )
+        .unwrap();
 
         let events = read_events_ndjson(tmp.path()).unwrap();
         assert_eq!(events.len(), 2);

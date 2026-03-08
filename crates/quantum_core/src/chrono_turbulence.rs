@@ -1,6 +1,6 @@
 use lbm_core::{D2Q9, viscosity_with_chrono_complex};
-use num_complex::Complex;
 use ndarray::Array2;
+use num_complex::Complex;
 
 /// Chrono-Turbulence Solver: Hydrodynamics of the Complex Temporal Manifold.
 pub struct ChronoTurbulenceSolver {
@@ -20,14 +20,14 @@ impl ChronoTurbulenceSolver {
     pub fn step(&mut self, d_tau: Complex<f64>) {
         // Imaginary component of complex time acts as temporal flux pressure
         let epsilon = d_tau.im;
-        
+
         // Modulate viscosity based on temporal flux
         let nu_base = self.sim.viscosity();
         let nu_eff = viscosity_with_chrono_complex(nu_base, self.alpha_chrono, epsilon);
-        
+
         // Update simulation relaxation time
         self.sim.tau = 3.0 * nu_eff + 0.5;
-        
+
         // Execute LBM cycle for the temporal manifold
         self.sim.collide(0, self.sim.ny);
         self.sim.stream();
@@ -38,7 +38,7 @@ impl ChronoTurbulenceSolver {
         let (_, ux, uy) = self.sim.macroscopic();
         let (nx, ny) = ux.dim();
         let mut vorticity = Array2::zeros((nx, ny));
-        
+
         for x in 0..nx {
             for y in 0..ny {
                 let xp = (x + 1) % nx;

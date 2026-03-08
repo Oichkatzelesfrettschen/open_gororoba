@@ -1,9 +1,10 @@
 //! pathion-shadow-cli: Compute 32D Pathion-modulated Kerr shadow boundaries
 //! and deflection angles via exact Carlson RF+RJ integrals and quartic root-finding.
 
-use pathion_ellip::diagonalizer::PathionDiagonalizer;
-use pathion_ellip::pathion_shadow::pathion_deflection;
-use pathion_ellip::shadow_boundary::pathion_shadow_boundary;
+use pathion_ellip::{
+    diagonalizer::PathionDiagonalizer, pathion_shadow::pathion_deflection,
+    shadow_boundary::pathion_shadow_boundary,
+};
 
 fn main() -> anyhow::Result<()> {
     println!("=== Pathion Shadow: 32D Carlson RF+RJ Deflection + Shadow Boundary ===");
@@ -23,14 +24,20 @@ fn main() -> anyhow::Result<()> {
     let mut eta = [0.0; 32];
     eta[0] = 20.0;
 
-    println!("Point deflection: mass={mass}, a={}, xi={}, eta={}", spin[0], xi[0], eta[0]);
+    println!(
+        "Point deflection: mass={mass}, a={}, xi={}, eta={}",
+        spin[0], xi[0], eta[0]
+    );
     let result = pathion_deflection(mass, &spin, &xi, &eta)?;
 
     let diag = PathionDiagonalizer::new();
     let planes = diag.project(&result);
 
     println!();
-    println!("{:<8},{:<20},{:<20}", "plane", "real_deflection", "imag_rotation");
+    println!(
+        "{:<8},{:<20},{:<20}",
+        "plane", "real_deflection", "imag_rotation"
+    );
     for (i, p) in planes.iter().enumerate() {
         println!("{:<8},{:<20.8},{:<20.8}", i, p.re, p.im);
     }
@@ -53,7 +60,10 @@ fn main() -> anyhow::Result<()> {
     let boundary = pathion_shadow_boundary(mass, spin[0], 100);
     println!("alpha,beta,xi,eta");
     for pt in &boundary {
-        println!("{:.6},{:.6},{:.6},{:.6}", pt.alpha, pt.beta, pt.xi_0, pt.eta_0);
+        println!(
+            "{:.6},{:.6},{:.6},{:.6}",
+            pt.alpha, pt.beta, pt.xi_0, pt.eta_0
+        );
     }
 
     println!();

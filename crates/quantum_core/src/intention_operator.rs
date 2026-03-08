@@ -1,5 +1,4 @@
-use algebra_experimental::higher_cd::Routon;
-use algebra_experimental::higher_cd::HigherAvt;
+use algebra_experimental::higher_cd::{HigherAvt, Routon};
 use lbm_core::D2Q9;
 use ndarray::Array2;
 
@@ -26,7 +25,10 @@ pub struct EntropyFilterResult {
 
 impl IntentionOperator {
     pub fn new(strength: f64, target_coherence: f64) -> Self {
-        Self { strength, target_coherence }
+        Self {
+            strength,
+            target_coherence,
+        }
     }
 
     /// Apply the Intention Operator to an LBM fluid grid.
@@ -84,14 +86,12 @@ impl IntentionOperator {
     }
 
     /// Compute the grid-averaged Shannon entropy of a Routon field.
-    pub fn grid_average_entropy(
-        &self,
-        routon_field: &Array2<Routon>,
-        avt: &HigherAvt,
-    ) -> f64 {
+    pub fn grid_average_entropy(&self, routon_field: &Array2<Routon>, avt: &HigherAvt) -> f64 {
         let (nx, ny) = routon_field.dim();
         let n = (nx * ny) as f64;
-        if n < 1.0 { return 0.0; }
+        if n < 1.0 {
+            return 0.0;
+        }
 
         let mut total_entropy = 0.0;
         for x in 0..nx {
@@ -135,7 +135,9 @@ impl IntentionOperator {
         let mut converged = initial_entropy <= self.target_coherence;
 
         for step in 0..max_steps {
-            if converged { break; }
+            if converged {
+                break;
+            }
 
             // 1. Compute bias field from current Routon entropy
             let bias = self.apply_to_lbm(nx, ny, routon_field, avt);
@@ -228,7 +230,10 @@ mod tests {
         let op = IntentionOperator::new(1.0, 2.0);
         let r = make_uniform_routon();
         let entropy = op.measure_routon_chaos(&r, &avt);
-        assert!(entropy > 0.0, "uniform routon should have nonzero entropy, got {entropy}");
+        assert!(
+            entropy > 0.0,
+            "uniform routon should have nonzero entropy, got {entropy}"
+        );
         assert!(entropy.is_finite(), "entropy should be finite");
     }
 
@@ -259,7 +264,10 @@ mod tests {
         // Sparse cell should have lower bias than uniform cells
         let b00 = bias[[0, 0]];
         let b11 = bias[[1, 1]];
-        assert!(b00 <= b11, "sparse cell bias ({b00}) should be <= uniform ({b11})");
+        assert!(
+            b00 <= b11,
+            "sparse cell bias ({b00}) should be <= uniform ({b11})"
+        );
     }
 
     #[test]
@@ -293,7 +301,8 @@ mod tests {
         assert!(
             result.final_entropy <= result.initial_entropy,
             "entropy should decrease: initial={}, final={}",
-            result.initial_entropy, result.final_entropy
+            result.initial_entropy,
+            result.final_entropy
         );
         assert!(result.entropy_history.len() > 1);
     }
@@ -338,7 +347,10 @@ mod tests {
         let h_routon = op.measure_routon_chaos(&make_uniform_routon(), &avt);
 
         // Both entropies should be positive and finite
-        assert!(avt_entropy > 0.0, "AVT baseline entropy should be > 0: {avt_entropy}");
+        assert!(
+            avt_entropy > 0.0,
+            "AVT baseline entropy should be > 0: {avt_entropy}"
+        );
         assert!(h_routon > 0.0, "Routon entropy should be > 0: {h_routon}");
         assert!(avt_entropy.is_finite());
         assert!(h_routon.is_finite());

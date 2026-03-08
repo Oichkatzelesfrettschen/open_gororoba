@@ -274,10 +274,7 @@ fn validate_heavy_packages(
     registry.rust_heavy_package.len()
 }
 
-fn extract_runtime_seconds(
-    runtime_regex: &Regex,
-    text: &str,
-) -> Result<Option<u64>, String> {
+fn extract_runtime_seconds(runtime_regex: &Regex, text: &str) -> Result<Option<u64>, String> {
     let Some(captures) = runtime_regex.captures(text) else {
         return Ok(None);
     };
@@ -455,9 +452,9 @@ fn validate_rust_runtime_policy(
                 .name_hints_require_ignore
                 .iter()
                 .any(|hint| test.name.contains(hint));
-            let runtime_requires_ignore = test
-                .runtime_seconds
-                .is_some_and(|seconds| seconds >= registry.rust_runtime_policy.require_ignore_runtime_seconds);
+            let runtime_requires_ignore = test.runtime_seconds.is_some_and(|seconds| {
+                seconds >= registry.rust_runtime_policy.require_ignore_runtime_seconds
+            });
 
             if (name_requires_ignore || runtime_requires_ignore) && !test.has_ignore {
                 let reason = if let Some(seconds) = test.runtime_seconds {

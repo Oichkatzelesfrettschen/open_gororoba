@@ -1,15 +1,17 @@
 //! End-to-end engine orchestration.
 
-use crate::bit_source::FibonacciBitSource;
-use crate::correction_layer::HomotopyCorrectionLayer;
-use crate::dynamics_field::VacuumDynamicsLayer;
-use crate::parity_filter::AntiDiagonalParityFilter;
-use crate::topology_geometry::SlidingTriadTopology;
-use crate::traits::{
-    BitSourceLayer, CorrectionLayer, DynamicsLayer, ParityLayer, PipelineState, TopologyLayer,
-    VerificationLayer, VerificationReport,
+use crate::{
+    bit_source::FibonacciBitSource,
+    correction_layer::HomotopyCorrectionLayer,
+    dynamics_field::VacuumDynamicsLayer,
+    parity_filter::AntiDiagonalParityFilter,
+    topology_geometry::SlidingTriadTopology,
+    traits::{
+        BitSourceLayer, CorrectionLayer, DynamicsLayer, ParityLayer, PipelineState, TopologyLayer,
+        VerificationLayer, VerificationReport,
+    },
+    verification_layer::ThesisVerifier,
 };
-use crate::verification_layer::ThesisVerifier;
 
 /// Concrete engine with default layer implementations.
 #[derive(Debug, Clone)]

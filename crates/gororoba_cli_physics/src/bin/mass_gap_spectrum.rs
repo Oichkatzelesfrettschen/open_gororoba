@@ -71,7 +71,10 @@ fn main() {
             let mass = eigenvalue_to_mass_solar(ev, gamma);
             let omega = qnm_frequency_kerr(mass, 0.7);
             let residual = (omega - omega_qnm) / omega_qnm;
-            println!("{:.6},{:.6e},{:.3},{:.4e},{:.6}", ev, mass, gamma, omega, residual);
+            println!(
+                "{:.6},{:.6e},{:.3},{:.4e},{:.6}",
+                ev, mass, gamma, omega, residual
+            );
         }
     }
 }

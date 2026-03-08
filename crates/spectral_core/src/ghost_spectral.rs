@@ -21,11 +21,8 @@
 //! folding maps this to 1 - phi^{-1/2} ~ 0.214 for unit-rate sampled data.
 
 use adjustp::{Procedure, adjust};
-use rand::SeedableRng;
-use rand::rngs::StdRng;
-use rand::seq::SliceRandom;
-use rustfft::FftPlanner;
-use rustfft::num_complex::Complex;
+use rand::{SeedableRng, rngs::StdRng, seq::SliceRandom};
+use rustfft::{FftPlanner, num_complex::Complex};
 use statrs::distribution::{ChiSquared, ContinuousCDF};
 
 /// Golden ratio.
@@ -1181,8 +1178,7 @@ mod tests {
         let n = 512;
         let signal: Vec<f64> = (0..n)
             .map(|i| {
-                ((i as u64).wrapping_mul(2654435761).wrapping_add(12345) >> 16) as f64
-                    / 65536.0
+                ((i as u64).wrapping_mul(2654435761).wrapping_add(12345) >> 16) as f64 / 65536.0
                     - 0.5
             })
             .collect();

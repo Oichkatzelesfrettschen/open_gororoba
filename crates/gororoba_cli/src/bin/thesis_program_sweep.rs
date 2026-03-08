@@ -5,14 +5,10 @@ use lattice_filtration::{
 };
 use lbm_core::viscosity_with_power_law_associator;
 use neural_homotopy::{HomotopyTrainingConfig, reference_hubble_curve, train_homotopy_surrogate};
-use std::error::Error;
-use std::fmt::Write as _;
-use std::fs;
-use std::path::PathBuf;
 use sign_imbalance::{
-    CASSINI_OMEGA_BD_LOWER_BOUND, ImbalanceStarConfig, ScalarImbalanceMap,
-    evaluate_imbalance_star,
+    CASSINI_OMEGA_BD_LOWER_BOUND, ImbalanceStarConfig, ScalarImbalanceMap, evaluate_imbalance_star,
 };
+use std::{error::Error, fmt::Write as _, fs, path::PathBuf};
 
 #[derive(Debug, Parser)]
 #[command(name = "thesis-program-sweep")]
@@ -496,4 +492,3 @@ fn join_f64(values: &[f64]) -> String {
     }
     out
 }
-

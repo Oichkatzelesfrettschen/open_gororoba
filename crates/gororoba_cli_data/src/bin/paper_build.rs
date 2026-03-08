@@ -9,8 +9,10 @@
 //   cargo run --bin paper-build -- build     # compile PDF
 //   cargo run --bin paper-build -- arxiv     # create submission tarball
 
-use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::{
+    path::{Path, PathBuf},
+    process::Command,
+};
 
 fn project_root() -> PathBuf {
     let manifest = std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".to_string());

@@ -23,8 +23,10 @@
 //! - de Marrais (2000): Sedenion zero-divisor structure
 
 use crate::bridge::SedenionField;
-use gr_core::adm::{AdmDecomposition, ExtrinsicCurvatureData};
-use gr_core::spatial::trace_symmetric;
+use gr_core::{
+    adm::{AdmDecomposition, ExtrinsicCurvatureData},
+    spatial::trace_symmetric,
+};
 
 /// Imbalance attractor value (3/8).
 ///
@@ -163,9 +165,7 @@ pub fn evolve_imbalance_adm(
                 let z_src = z as f64 - adm.shift[2] * advection_factor;
 
                 // Trilinear interpolation of imbalance at source point
-                let f_src = trilinear_interp_periodic(
-                    &imbalance, nx, ny, nz, x_src, y_src, z_src,
-                );
+                let f_src = trilinear_interp_periodic(&imbalance, nx, ny, nz, x_src, y_src, z_src);
 
                 // Source term: drives toward imbalance attractor
                 let source = -kappa * (f_src - IMBALANCE_ATTRACTOR) * k_trace;
@@ -182,7 +182,8 @@ pub fn evolve_imbalance_adm(
                 // to others to shift the triangle-weight balance.
                 let f_current = imbalance[idx];
                 if (f_current - IMBALANCE_ATTRACTOR).abs() > 1e-15 {
-                    let ratio = (f_clamped - IMBALANCE_ATTRACTOR) / (f_current - IMBALANCE_ATTRACTOR);
+                    let ratio =
+                        (f_clamped - IMBALANCE_ATTRACTOR) / (f_current - IMBALANCE_ATTRACTOR);
                     // Scale non-scalar components by ratio to modulate imbalance
                     let scale = 1.0 + 0.1 * (ratio - 1.0);
                     for val in &mut new_data[idx][1..16] {
@@ -438,10 +439,7 @@ mod tests {
         assert_eq!(pairs.len(), 4 * 4 * 4);
         for &(theta, f) in &pairs {
             assert!((theta - 1.5).abs() < TOL, "theta = {theta}");
-            assert!(
-                (f - IMBALANCE_ATTRACTOR).abs() < 0.01,
-                "imbalance = {f}"
-            );
+            assert!((f - IMBALANCE_ATTRACTOR).abs() < 0.01, "imbalance = {f}");
         }
     }
 
@@ -454,10 +452,7 @@ mod tests {
         let pairs = york_time_imbalance_map_spatial(&fol, 0, &york_times);
         assert_eq!(pairs.len(), n);
         for (i, &(theta, _f)) in pairs.iter().enumerate() {
-            assert!(
-                (theta - i as f64 * 0.1).abs() < TOL,
-                "theta[{i}] = {theta}"
-            );
+            assert!((theta - i as f64 * 0.1).abs() < TOL, "theta[{i}] = {theta}");
         }
     }
 

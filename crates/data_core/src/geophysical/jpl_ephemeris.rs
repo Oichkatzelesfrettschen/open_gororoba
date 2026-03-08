@@ -7,8 +7,10 @@
 //! Reference: Giorgini et al. (1996), Bull. AAS 28, 1158
 
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 /// A single ephemeris point from JPL Horizons.
 #[derive(Debug, Clone)]
@@ -155,10 +157,7 @@ impl DatasetProvider for JplEphemerisProvider {
             return Ok(output);
         }
 
-        log::info!(
-            "Fetching {} from JPL Horizons (8 planets)...",
-            self.name()
-        );
+        log::info!("Fetching {} from JPL Horizons (8 planets)...", self.name());
         let mut all_lines = vec!["body,jd,date,ra,dec,delta".to_string()];
 
         for (body_id, body_name) in PLANET_IDS {

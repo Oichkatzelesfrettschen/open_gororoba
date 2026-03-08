@@ -9,8 +9,10 @@
 //! - Binary registry matches actual [[bin]] sections in Cargo.toml
 //! - Experiment->binary cross-references resolve
 
-use std::collections::{BTreeSet, HashSet};
-use std::path::{Path, PathBuf};
+use std::{
+    collections::{BTreeSet, HashSet},
+    path::{Path, PathBuf},
+};
 
 use clap::{Parser, ValueEnum};
 use data_core::registry::{ArtifactRegistry, LacunaeRegistry, MonographRegistry};

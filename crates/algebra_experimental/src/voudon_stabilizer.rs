@@ -71,12 +71,21 @@ impl VoudonStabilizerGpu {
         let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
         let stream = ctx.default_stream();
 
-        let ptx = compile_ptx(STABILIZER_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
-        let module = ctx.load_module(ptx).map_err(|e| format!("Module load: {}", e))?;
-        let kernel = module.load_function("find_stable_cycles_kernel").map_err(|e| format!("Kernel load: {}", e))?;
+        let ptx =
+            compile_ptx(STABILIZER_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
+        let module = ctx
+            .load_module(ptx)
+            .map_err(|e| format!("Module load: {}", e))?;
+        let kernel = module
+            .load_function("find_stable_cycles_kernel")
+            .map_err(|e| format!("Kernel load: {}", e))?;
 
-        let mut d_triples = stream.alloc_zeros::<u32>(max_triples * 3).map_err(|e| format!("Alloc: {}", e))?;
-        let mut d_count = stream.alloc_zeros::<u32>(1).map_err(|e| format!("Alloc: {}", e))?;
+        let mut d_triples = stream
+            .alloc_zeros::<u32>(max_triples * 3)
+            .map_err(|e| format!("Alloc: {}", e))?;
+        let mut d_count = stream
+            .alloc_zeros::<u32>(1)
+            .map_err(|e| format!("Alloc: {}", e))?;
 
         let cfg = LaunchConfig {
             grid_dim: (1, 1, 1),
@@ -94,10 +103,14 @@ impl VoudonStabilizerGpu {
             builder.launch(cfg).map_err(|e| format!("Launch: {}", e))?;
         }
 
-        let count_vec = stream.clone_dtoh(&d_count).map_err(|e| format!("Copy count: {}", e))?;
+        let count_vec = stream
+            .clone_dtoh(&d_count)
+            .map_err(|e| format!("Copy count: {}", e))?;
         let count = (count_vec[0] as usize).min(max_triples);
 
-        let triples_vec = stream.clone_dtoh(&d_triples).map_err(|e| format!("Copy triples: {}", e))?;
+        let triples_vec = stream
+            .clone_dtoh(&d_triples)
+            .map_err(|e| format!("Copy triples: {}", e))?;
         let mut result = Vec::new();
         for i in 0..count {
             result.push((

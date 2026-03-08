@@ -129,8 +129,7 @@ impl GravastarPotential {
         // Find bracketing interval
         if r <= self.shell_r[0] {
             // Clamp to first point
-            let dm = (self.shell_m[1] - self.shell_m[0])
-                / (self.shell_r[1] - self.shell_r[0]);
+            let dm = (self.shell_m[1] - self.shell_m[0]) / (self.shell_r[1] - self.shell_r[0]);
             return (self.shell_m[0], dm);
         }
         if r >= self.shell_r[n - 1] {
@@ -141,7 +140,10 @@ impl GravastarPotential {
         }
 
         // Binary search for the interval
-        let idx = match self.shell_r.binary_search_by(|x| x.partial_cmp(&r).unwrap()) {
+        let idx = match self
+            .shell_r
+            .binary_search_by(|x| x.partial_cmp(&r).unwrap())
+        {
             Ok(i) => i.min(n - 2),
             Err(i) => (i.saturating_sub(1)).min(n - 2),
         };
@@ -167,7 +169,7 @@ impl GravastarPotential {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gravastar::{GravastarConfig, PolytropicEos, AnisotropicParams, solve_gravastar};
+    use crate::gravastar::{AnisotropicParams, GravastarConfig, PolytropicEos, solve_gravastar};
 
     fn test_solution() -> GravastarSolution {
         let config = GravastarConfig {
@@ -187,9 +189,22 @@ mod tests {
         let sol = test_solution();
         let pot = GravastarPotential::from_solution(&sol);
 
-        for &r in &[1.0, 3.0, pot.r1, (pot.r1 + pot.r2) / 2.0, pot.r2, 100.0, 1000.0] {
+        for &r in &[
+            1.0,
+            3.0,
+            pot.r1,
+            (pot.r1 + pot.r2) / 2.0,
+            pot.r2,
+            100.0,
+            1000.0,
+        ] {
             let (phi, _) = pot.potential_and_gradient(r);
-            assert!(phi < 0.0, "Potential should be negative at r={}, got {}", r, phi);
+            assert!(
+                phi < 0.0,
+                "Potential should be negative at r={}, got {}",
+                r,
+                phi
+            );
         }
     }
 
@@ -270,6 +285,10 @@ mod tests {
 
         // Outside the gravastar, acceleration should be inward (negative)
         let a_r = pot.radial_acceleration(100.0);
-        assert!(a_r < 0.0, "Exterior acceleration should be inward, got {}", a_r);
+        assert!(
+            a_r < 0.0,
+            "Exterior acceleration should be inward, got {}",
+            a_r
+        );
     }
 }

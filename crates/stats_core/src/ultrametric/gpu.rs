@@ -13,8 +13,10 @@
 //! cores, FP32). A full ultrametric test with 10M triples x 200 permutations
 //! x 20 epsilons completes in ~0.2 seconds per attribute subset.
 
-use cudarc::driver::{CudaContext, CudaFunction, CudaStream, LaunchConfig, PushKernelArg};
-use cudarc::nvrtc::compile_ptx;
+use cudarc::{
+    driver::{CudaContext, CudaFunction, CudaStream, LaunchConfig, PushKernelArg},
+    nvrtc::compile_ptx,
+};
 use std::sync::Arc;
 
 use rand::prelude::*;

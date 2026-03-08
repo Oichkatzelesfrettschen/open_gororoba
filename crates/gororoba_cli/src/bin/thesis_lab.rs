@@ -13,13 +13,15 @@
 
 use clap::Parser;
 use lbm_3d::solver::LbmSolver3D;
-use std::fmt::Write as _;
-use sign_imbalance::bridge::{SedenionField, IMBALANCE_ATTRACTOR, ViscosityCouplingModel};
-use sign_imbalance::spatial_correlation::{SpatialCorrelationResult, spatial_correlation};
-use sign_imbalance::vietoris_rips::{
-    DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers_at_time,
-    compute_persistent_homology,
+use sign_imbalance::{
+    bridge::{IMBALANCE_ATTRACTOR, SedenionField, ViscosityCouplingModel},
+    spatial_correlation::{SpatialCorrelationResult, spatial_correlation},
+    vietoris_rips::{
+        DistanceMatrix, PersistenceDiagram, VietorisRipsComplex, compute_betti_numbers_at_time,
+        compute_persistent_homology,
+    },
 };
+use std::fmt::Write as _;
 
 #[derive(Parser, Debug)]
 #[command(name = "thesis-lab")]

@@ -23,12 +23,13 @@
 //! - Monograph Layer 5: NullModel abstraction with adaptive sequential testing
 //! - Uses Besag & Clifford (1991) adaptive stopping via `run_adaptive_null_test`
 
-use super::adaptive::{AdaptiveConfig, AdaptiveResult};
-use super::null_models::{
-    NullModelStrategy, NullTestConfig, RowPermutationNull, run_adaptive_null_test,
+use super::{
+    adaptive::{AdaptiveConfig, AdaptiveResult},
+    null_models::{NullModelStrategy, NullTestConfig, RowPermutationNull, run_adaptive_null_test},
 };
-use algebra_core::analysis::codebook::EncodingDictionary;
-use algebra_core::construction::cayley_dickson::find_zero_divisors;
+use algebra_core::{
+    analysis::codebook::EncodingDictionary, construction::cayley_dickson::find_zero_divisors,
+};
 use std::collections::HashSet;
 
 /// Result of a codebook null test.
@@ -203,9 +204,10 @@ pub fn codebook_null_test_from_dim(
 
 #[cfg(test)]
 mod tests {
-    use super::super::adaptive::StopReason;
-    use super::super::null_models::ColumnIndependentNull;
-    use super::*;
+    use super::{
+        super::{adaptive::StopReason, null_models::ColumnIndependentNull},
+        *,
+    };
     use algebra_core::analysis::codebook::{LatticeVector, enumerate_lambda_256};
 
     /// Build a small (dim=4) dictionary with known lattice vectors.

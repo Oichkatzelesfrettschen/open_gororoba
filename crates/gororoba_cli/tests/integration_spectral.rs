@@ -3,10 +3,10 @@
 //! Tests cross-crate integration between spectral_core (fractional Laplacian,
 //! negative dimension PDE) and cosmology_core (bounce cosmology).
 
-use spectral_core::neg_dim::{caffarelli_silvestre_eigenvalues, eigenvalues_imaginary_time};
 use spectral_core::{
     fractional_laplacian_dirichlet_1d, fractional_laplacian_periodic_1d,
     fractional_laplacian_periodic_2d,
+    neg_dim::{caffarelli_silvestre_eigenvalues, eigenvalues_imaginary_time},
 };
 
 /// Test 1D periodic fractional Laplacian on a Fourier mode.

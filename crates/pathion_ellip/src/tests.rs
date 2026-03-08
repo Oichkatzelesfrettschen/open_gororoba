@@ -1,7 +1,7 @@
 #[cfg(test)]
-use crate::diagonalizer::PathionDiagonalizer;
-#[cfg(test)]
 use crate::carlson::PathionCarlson;
+#[cfg(test)]
+use crate::diagonalizer::PathionDiagonalizer;
 #[cfg(test)]
 use approx::assert_relative_eq;
 
@@ -13,7 +13,7 @@ fn test_diagonalizer_roundtrip() {
     for (i, o) in original.iter_mut().enumerate() {
         *o = i as f64 * 0.1;
     }
-        
+
     let projected = diag.project(&original);
     let recomposed = diag.recompose(&projected);
 

@@ -28,15 +28,15 @@ fn generate_kerr_field(n: usize, mass: f32) -> (Vec<f32>, Vec<f32>) {
                 let dz = z as f32 - center;
                 let r_sq = dx * dx + dy * dy + dz * dz;
                 let r = r_sq.sqrt().max(0.1);
-                
+
                 // Extremely strong inward acceleration to simulate Kerr near-singularity
                 // Normal LBM solvers crash when u > c_s (0.577).
                 let mag = (50.0 * mass) / r_sq;
-                
+
                 force[idx] = -mag * dx / r;
                 force[total + idx] = -mag * dy / r;
                 force[2 * total + idx] = -mag * dz / r;
-                
+
                 for (q, &w) in wf.iter().enumerate() {
                     f_init[q * total + idx] = w;
                 }
@@ -69,7 +69,7 @@ fn run_simulation(
             },
             None,
         )
-    } ?;
+    }?;
     let cmd = unsafe {
         ctx.device
             .allocate_command_buffers(&vk::CommandBufferAllocateInfo {
@@ -78,7 +78,7 @@ fn run_simulation(
                 command_buffer_count: 1,
                 ..Default::default()
             })
-    } ?[0];
+    }?[0];
     let fence = unsafe {
         ctx.device.create_fence(
             &vk::FenceCreateInfo {
@@ -87,7 +87,7 @@ fn run_simulation(
             },
             None,
         )
-    } ?;
+    }?;
 
     println!("    Running {} steps...", steps);
     let start = Instant::now();
@@ -128,12 +128,15 @@ fn run_simulation(
             max_rho_final = max_rho;
         }
     }
-    
+
     unsafe { ctx.device.wait_for_fences(&[fence], true, u64::MAX)? };
     let total_accum = engine.read_accumulated_energy()?;
     let elapsed = start.elapsed();
-    
-    println!("    Finished in {:.2?} (max_rho={:.4}, accum={:.4e})", elapsed, max_rho_final, total_accum);
+
+    println!(
+        "    Finished in {:.2?} (max_rho={:.4}, accum={:.4e})",
+        elapsed, max_rho_final, total_accum
+    );
 
     unsafe {
         ctx.device.destroy_fence(fence, None);
@@ -155,7 +158,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n[1] Control Run: NO Pathion Sink (damping=0.0)");
     let (rho_ctrl, _accum_ctrl) = run_simulation(&ctx, grid, mass, spin, 0.0, 0.0, steps)?;
-    
+
     println!("\n[2] Stabilized Run: WITH Pathion Sink (coupling=1.0, damping=50.0)");
     let (rho_sink, accum_sink) = run_simulation(&ctx, grid, mass, spin, 1.0, 50.0, steps)?;
 

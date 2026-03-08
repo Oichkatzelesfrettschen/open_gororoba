@@ -49,7 +49,10 @@ mod tests {
     fn off_resonance() {
         // Far off resonance: T -> 1
         let t = tcmt_transmission_coeff(1e6, 1.0, 0.0);
-        assert!((t - 1.0).abs() < 1e-6, "T far off resonance should be ~1, got {t}");
+        assert!(
+            (t - 1.0).abs() < 1e-6,
+            "T far off resonance should be ~1, got {t}"
+        );
     }
 
     #[test]

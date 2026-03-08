@@ -7,7 +7,7 @@
 use pathion_ellip::pathion_shadow::pathion_deflection;
 
 const G: f64 = 6.67430e-20; // km^3 kg^-1 s^-2
-const C: f64 = 299792.458;  // km s^-1
+const C: f64 = 299792.458; // km s^-1
 const M_SUN: f64 = 1.98847e30; // kg
 const MPC_TO_KM: f64 = 3.08567758e19;
 const KPC_TO_KM: f64 = 3.08567758e16;
@@ -38,7 +38,7 @@ fn main() -> anyhow::Result<()> {
     for bh in targets {
         let rs = (G * bh.mass_solar * M_SUN) / (C * C);
         let scale_uas = (rs / bh.dist_km) * RAD_TO_UAS;
-        
+
         println!("\nTarget: {}", bh.name);
         println!("  Schwarzschild Radius: {:.2} km", rs);
         println!("  Angular Scale (Rs/D): {:.2} uas", scale_uas);
@@ -46,20 +46,24 @@ fn main() -> anyhow::Result<()> {
         // Pathion Deflection Calculation
         let mut spin = [0.0; 32];
         spin[0] = 0.94; // Extreme Kerr a=0.94
-        for (i, s) in spin.iter_mut().enumerate().skip(1) { *s = 0.05 * (i as f64).cos(); }
-        
-        let mut xi = [0.0; 32]; xi[0] = 2.0;
-        let mut eta = [0.0; 32]; eta[0] = 5.0;
+        for (i, s) in spin.iter_mut().enumerate().skip(1) {
+            *s = 0.05 * (i as f64).cos();
+        }
+
+        let mut xi = [0.0; 32];
+        xi[0] = 2.0;
+        let mut eta = [0.0; 32];
+        eta[0] = 5.0;
 
         let result = pathion_deflection(1.0, &spin, &xi, &eta)?;
-        
+
         // Calculate the angular variance in uas
         let mean_defl = result.iter().sum::<f64>() / 32.0;
         let p_variations: Vec<f64> = result.iter().map(|&x| (x - mean_defl).abs()).collect();
         let max_separation = p_variations.iter().cloned().fold(f64::NAN, f64::max) * scale_uas;
 
         println!("  Max Sub-ring Separation: {:.4} uas", max_separation);
-        
+
         if max_separation > 1.0 {
             println!("  [OBSERVABLE] Separation exceeds EHT resolution floor (1 uas).");
         } else {

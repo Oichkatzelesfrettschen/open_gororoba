@@ -4,10 +4,12 @@ use csv::StringRecord;
 use glob::Pattern;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::collections::{BTreeMap, BTreeSet, HashMap};
-use std::io::Write;
-use std::path::{Path, PathBuf};
-use std::process::{Command, Stdio};
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap},
+    io::Write,
+    path::{Path, PathBuf},
+    process::{Command, Stdio},
+};
 use walkdir::WalkDir;
 
 pub const DEFAULT_GOVERNANCE_PATH: &str = "registry/data_governance.toml";

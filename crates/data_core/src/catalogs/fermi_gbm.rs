@@ -5,8 +5,10 @@
 //!
 //! Source: https://heasarc.gsfc.nasa.gov/W3Browse/fermi/fermigbrst.html
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_heasarc_csv};
-use crate::parse::parse_f64_or_nan;
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_heasarc_csv},
+    parse::parse_f64_or_nan,
+};
 use std::path::{Path, PathBuf};
 
 /// A gamma-ray burst from the Fermi GBM catalog.
@@ -176,8 +178,7 @@ impl DatasetProvider for FermiGbmProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Write;
-    use std::path::Path;
+    use std::{io::Write, path::Path};
     use tempfile::NamedTempFile;
 
     fn write_temp_csv(content: &str) -> NamedTempFile {

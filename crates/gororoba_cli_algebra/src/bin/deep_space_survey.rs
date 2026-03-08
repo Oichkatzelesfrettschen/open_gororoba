@@ -17,10 +17,10 @@ fn main() -> anyhow::Result<()> {
     let start_128 = Instant::now();
     let adj_matrix = compute_routon_spectral_spacing();
     let duration_128 = start_128.elapsed();
-    
+
     let edge_count = adj_matrix.iter().filter(|&&x| x > 0.5).count();
     let density = edge_count as f64 / (128.0 * 128.0);
-    
+
     println!("  Routon Adjacency Matrix Computed in {:.2?}", duration_128);
     println!("  ZD Graph Edges: {}", edge_count);
     println!("  Graph Density:  {:.6}", density);
@@ -31,16 +31,19 @@ fn main() -> anyhow::Result<()> {
     let start_256 = Instant::now();
     let pressure = compute_voudon_imbalance_density();
     let duration_256 = start_256.elapsed();
-    
+
     println!("  Voudon Pressure Computed in {:.2?}", duration_256);
     println!("  Global Mean Imbalance Density (Phi): {:.8}", pressure);
-    
+
     // Physical mapping
     let convergence_target = 0.395;
     let deviation = (pressure - convergence_target).abs();
-    
+
     println!("\n=== Statistical Verdict ===");
-    println!("  Voudon Pressure Stability: {:.4e} deviation from target", deviation);
+    println!(
+        "  Voudon Pressure Stability: {:.4e} deviation from target",
+        deviation
+    );
     if deviation < 1e-3 {
         println!("  VERDICT: PASS (Algebraic Pressure is scale-stable and homogeneous)");
     } else {

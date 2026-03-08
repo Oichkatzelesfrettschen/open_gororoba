@@ -3,10 +3,12 @@ use clap::{ArgAction, Parser};
 use gororoba_cli::data_governance::{
     DEFAULT_EXTERNAL_SOURCES_PATH, ExternalSourceRule, load_external_sources,
 };
-use std::collections::{BTreeMap, BTreeSet};
-use std::fs::{self, OpenOptions};
-use std::io::Write;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fs::{self, OpenOptions},
+    io::Write,
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser, Debug)]
 #[command(

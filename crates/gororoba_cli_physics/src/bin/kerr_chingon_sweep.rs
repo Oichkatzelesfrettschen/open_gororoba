@@ -8,8 +8,10 @@
 
 use std::f64::consts::FRAC_PI_2;
 
-use gr_core::chingon_frame_dragging::{ChingonAvtSpectrum, sweep_frame_dragging};
-use gr_core::kerr_newman;
+use gr_core::{
+    chingon_frame_dragging::{ChingonAvtSpectrum, sweep_frame_dragging},
+    kerr_newman,
+};
 
 fn main() {
     let alpha_chingon: f64 = std::env::args()
@@ -40,7 +42,13 @@ fn main() {
 
     // Print top 5 eigenvalues
     let top_n = spectrum.eigenvalues.len().min(5);
-    let top_evs: Vec<f64> = spectrum.eigenvalues.iter().rev().take(top_n).copied().collect();
+    let top_evs: Vec<f64> = spectrum
+        .eigenvalues
+        .iter()
+        .rev()
+        .take(top_n)
+        .copied()
+        .collect();
     eprintln!("  Top {} eigenvalues: {:?}", top_n, top_evs);
 
     let m = 1.0; // Mass in geometrized units

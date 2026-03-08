@@ -3,9 +3,11 @@ use glob::glob;
 use scrolls_core::{
     ConvertSpec, ScrollIndexEntry, convert_csv_to_scroll, render_scroll_index, slugify,
 };
-use std::collections::BTreeSet;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::BTreeSet,
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug, Clone, Copy, ValueEnum)]
 enum DatasetClassArg {

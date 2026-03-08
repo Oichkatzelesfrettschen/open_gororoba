@@ -25,11 +25,13 @@ pub mod fractional_schrodinger;
 pub mod gross_pitaevskii;
 pub mod grover;
 pub mod hamiltonian_evolution;
-pub mod intention_operator;
+#[cfg(feature = "sparse-hamiltonians")]
+pub mod hamiltonian_sparse;
 pub mod hardware;
 pub mod harper_chern;
 pub mod holographic;
 pub mod hypothesis_search;
+pub mod intention_operator;
 pub mod mera;
 pub mod mps;
 pub mod peps;
@@ -164,4 +166,6 @@ pub use hardware::{
 };
 
 pub use hamiltonian_evolution::HamiltonianND;
+#[cfg(feature = "sparse-hamiltonians")]
+pub use hamiltonian_sparse::{build_sparse_hamiltonian, build_sparse_hamiltonian_coo};
 pub mod qec_boxkite;

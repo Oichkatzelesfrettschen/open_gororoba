@@ -14,8 +14,7 @@
 //!   sterile-neutrino-audit
 //!   sterile-neutrino-audit --output reports/sterile_neutrino_audit.toml
 
-use std::fmt;
-use std::path::PathBuf;
+use std::{fmt, path::PathBuf};
 
 use clap::Parser;
 
@@ -153,10 +152,7 @@ fn render_toml(streams: &[Stream], verdict: AuditVerdict) -> String {
     }
 
     out.push_str(&format!("verdict = \"{verdict}\"\n"));
-    out.push_str(&format!(
-        "streams_total = {}\n",
-        streams.len()
-    ));
+    out.push_str(&format!("streams_total = {}\n", streams.len()));
     out.push_str(&format!(
         "streams_null_confirmed = {}\n",
         streams
@@ -233,7 +229,9 @@ mod tests {
         let ids: Vec<&str> = STREAMS.iter().map(|s| s.claim_id).collect();
         assert_eq!(
             ids,
-            ["C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709"],
+            [
+                "C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709"
+            ],
             "streams must cover C-703 through C-709 in order"
         );
     }
@@ -290,7 +288,9 @@ mod tests {
         let streams = STREAMS.to_vec();
         let verdict = compute_verdict(&streams);
         let toml = render_toml(&streams, verdict);
-        for id in &["C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709"] {
+        for id in &[
+            "C-703", "C-704", "C-705", "C-706", "C-707", "C-708", "C-709",
+        ] {
             assert!(toml.contains(id), "TOML report must reference {id}");
         }
         assert!(toml.contains("null_confirmed"));

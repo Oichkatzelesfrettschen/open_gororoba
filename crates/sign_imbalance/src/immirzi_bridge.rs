@@ -641,19 +641,13 @@ mod tests {
     fn binary_entropy_at_half() {
         let h = binary_entropy(0.5);
         let expected = 2.0_f64.ln(); // ln(2) in nats
-        assert!(
-            (h - expected).abs() < 1e-14,
-            "H(0.5) should be ln(2): {h}"
-        );
+        assert!((h - expected).abs() < 1e-14, "H(0.5) should be ln(2): {h}");
     }
 
     #[test]
     fn binary_entropy_deriv_at_half() {
         let hp = binary_entropy_deriv(0.5);
-        assert!(
-            hp.abs() < 1e-14,
-            "H'(0.5) should be 0 (maximum): {hp}"
-        );
+        assert!(hp.abs() < 1e-14, "H'(0.5) should be 0 (maximum): {hp}");
     }
 
     #[test]
@@ -709,7 +703,8 @@ mod tests {
         assert!(
             (GAMMA_MAX - BRIDGE_MAX).abs() < 1e-15,
             "GAMMA_MAX and BRIDGE_MAX must be identical: {} vs {}",
-            GAMMA_MAX, BRIDGE_MAX
+            GAMMA_MAX,
+            BRIDGE_MAX
         );
     }
 
@@ -719,7 +714,8 @@ mod tests {
         assert!(
             (gamma_at_half - GAMMA_MAX).abs() < 1e-12,
             "gamma(0.5) should equal GAMMA_MAX: {} vs {}",
-            gamma_at_half, GAMMA_MAX
+            gamma_at_half,
+            GAMMA_MAX
         );
     }
 
@@ -731,7 +727,8 @@ mod tests {
             let gamma = imbalance_entropy_bridge(phi);
             assert!(
                 gamma <= GAMMA_MAX + 1e-14,
-                "gamma({phi}) = {gamma} exceeds ceiling {}", GAMMA_MAX
+                "gamma({phi}) = {gamma} exceeds ceiling {}",
+                GAMMA_MAX
             );
         }
     }
@@ -743,12 +740,14 @@ mod tests {
         assert!(
             GAMMA_NZJ < result.gamma_max,
             "gamma_NZJ ({}) should be below gamma_max ({})",
-            GAMMA_NZJ, result.gamma_max
+            GAMMA_NZJ,
+            result.gamma_max
         );
         assert!(
             result.gamma_max < GAMMA_BG,
             "gamma_max ({}) should be below gamma_BG ({})",
-            result.gamma_max, GAMMA_BG
+            result.gamma_max,
+            GAMMA_BG
         );
     }
 }

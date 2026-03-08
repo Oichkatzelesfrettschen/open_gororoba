@@ -19,7 +19,9 @@
 //! - Conley et al. (2011), ApJS 192, 1 [analytic marginalization]
 
 use crate::{
-    bounce::{C_KM_S, Z_STAR, bao_sound_horizon, cmb_shift_parameter, hubble_e_bounce, hubble_e_lcdm},
+    bounce::{
+        C_KM_S, Z_STAR, bao_sound_horizon, cmb_shift_parameter, hubble_e_bounce, hubble_e_lcdm,
+    },
     gl_integrate,
 };
 use rayon::prelude::*;
@@ -325,19 +327,18 @@ impl LcdmComovingGrid {
 
             if i > 0 {
                 let z_prev = z_grid[i - 1];
-                let segment = gl_integrate(
-                    |zp| 1.0 / hubble_e_lcdm(zp, omega_m),
-                    z_prev,
-                    z,
-                    20,
-                );
+                let segment = gl_integrate(|zp| 1.0 / hubble_e_lcdm(zp, omega_m), z_prev, z, 20);
                 cumulative_dc += c_over_h0 * segment;
             }
 
             dc_grid.push(cumulative_dc);
         }
 
-        Self { z_grid, dc_grid, dz }
+        Self {
+            z_grid,
+            dc_grid,
+            dz,
+        }
     }
 
     /// Interpolate comoving distance at arbitrary z.
@@ -379,12 +380,7 @@ fn chi2_sn_real_grid(grid: &LcdmComovingGrid, sn: &RealSnData) -> f64 {
 }
 
 /// Grid-accelerated BAO chi2 for LCDM.
-fn chi2_bao_real_grid(
-    grid: &LcdmComovingGrid,
-    omega_m: f64,
-    h0: f64,
-    bao: &RealBaoData,
-) -> f64 {
+fn chi2_bao_real_grid(grid: &LcdmComovingGrid, omega_m: f64, h0: f64, bao: &RealBaoData) -> f64 {
     let r_d = bao_sound_horizon(omega_m, h0);
     let mut chi2 = 0.0;
 
@@ -468,37 +464,37 @@ pub fn chi2_cmb_shift(omega_m: f64, q_corr: f64) -> f64 {
 pub fn cosmic_chronometer_data() -> Vec<CcMeasurement> {
     // (z, H_obs, H_err) -- 31 measurements spanning z = 0.07 to 1.965
     let data: &[(f64, f64, f64)] = &[
-        (0.07,   69.0,   19.6),
-        (0.09,   69.0,   12.0),
-        (0.12,   68.6,   26.2),
-        (0.17,   83.0,   8.0),
-        (0.179,  75.0,   4.0),
-        (0.199,  75.0,   5.0),
-        (0.20,   72.9,   29.6),
-        (0.27,   77.0,   14.0),
-        (0.28,   88.8,   36.6),
-        (0.352,  83.0,   14.0),
-        (0.3802, 83.0,   13.5),
-        (0.4,    95.0,   17.0),
-        (0.4004, 77.0,   10.2),
-        (0.4247, 87.1,   11.2),
-        (0.4497, 92.8,   12.9),
-        (0.47,   89.0,   49.6),
-        (0.4783, 80.9,   9.0),
-        (0.48,   97.0,   62.0),
-        (0.593,  104.0,  13.0),
-        (0.68,   92.0,   8.0),
-        (0.781,  105.0,  12.0),
-        (0.875,  125.0,  17.0),
-        (0.88,   90.0,   40.0),
-        (0.9,    117.0,  23.0),
-        (1.037,  154.0,  20.0),
-        (1.3,    168.0,  17.0),
-        (1.363,  160.0,  33.6),
-        (1.43,   177.0,  18.0),
-        (1.53,   140.0,  14.0),
-        (1.75,   202.0,  40.0),
-        (1.965,  186.5,  50.4),
+        (0.07, 69.0, 19.6),
+        (0.09, 69.0, 12.0),
+        (0.12, 68.6, 26.2),
+        (0.17, 83.0, 8.0),
+        (0.179, 75.0, 4.0),
+        (0.199, 75.0, 5.0),
+        (0.20, 72.9, 29.6),
+        (0.27, 77.0, 14.0),
+        (0.28, 88.8, 36.6),
+        (0.352, 83.0, 14.0),
+        (0.3802, 83.0, 13.5),
+        (0.4, 95.0, 17.0),
+        (0.4004, 77.0, 10.2),
+        (0.4247, 87.1, 11.2),
+        (0.4497, 92.8, 12.9),
+        (0.47, 89.0, 49.6),
+        (0.4783, 80.9, 9.0),
+        (0.48, 97.0, 62.0),
+        (0.593, 104.0, 13.0),
+        (0.68, 92.0, 8.0),
+        (0.781, 105.0, 12.0),
+        (0.875, 125.0, 17.0),
+        (0.88, 90.0, 40.0),
+        (0.9, 117.0, 23.0),
+        (1.037, 154.0, 20.0),
+        (1.3, 168.0, 17.0),
+        (1.363, 160.0, 33.6),
+        (1.43, 177.0, 18.0),
+        (1.53, 140.0, 14.0),
+        (1.75, 202.0, 40.0),
+        (1.965, 186.5, 50.4),
     ];
 
     data.iter()
@@ -543,22 +539,22 @@ pub const SIGMA8_PLANCK: f64 = 0.811;
 /// FastSound (Okumura+ 2016), DESI DR1 (2024).
 pub fn growth_rate_data() -> Vec<FsigMeasurement> {
     let data: &[(&str, f64, f64, f64)] = &[
-        ("6dFGS",       0.067,  0.423,  0.055),
-        ("SDSS MGS",    0.15,   0.49,   0.15),
-        ("BOSS DR12",   0.38,   0.497,  0.045),
-        ("BOSS DR12",   0.51,   0.458,  0.038),
-        ("BOSS DR12",   0.61,   0.436,  0.034),
-        ("WiggleZ",     0.44,   0.413,  0.080),
-        ("WiggleZ",     0.60,   0.390,  0.063),
-        ("WiggleZ",     0.73,   0.437,  0.072),
-        ("VIPERS",      0.60,   0.550,  0.120),
-        ("VIPERS",      0.86,   0.400,  0.110),
-        ("FastSound",   1.40,   0.482,  0.116),
-        ("DESI DR1",    0.295,  0.408,  0.040),
-        ("DESI DR1",    0.51,   0.452,  0.032),
-        ("DESI DR1",    0.706,  0.447,  0.028),
-        ("DESI DR1",    0.93,   0.444,  0.037),
-        ("DESI DR1",    1.317,  0.370,  0.050),
+        ("6dFGS", 0.067, 0.423, 0.055),
+        ("SDSS MGS", 0.15, 0.49, 0.15),
+        ("BOSS DR12", 0.38, 0.497, 0.045),
+        ("BOSS DR12", 0.51, 0.458, 0.038),
+        ("BOSS DR12", 0.61, 0.436, 0.034),
+        ("WiggleZ", 0.44, 0.413, 0.080),
+        ("WiggleZ", 0.60, 0.390, 0.063),
+        ("WiggleZ", 0.73, 0.437, 0.072),
+        ("VIPERS", 0.60, 0.550, 0.120),
+        ("VIPERS", 0.86, 0.400, 0.110),
+        ("FastSound", 1.40, 0.482, 0.116),
+        ("DESI DR1", 0.295, 0.408, 0.040),
+        ("DESI DR1", 0.51, 0.452, 0.032),
+        ("DESI DR1", 0.706, 0.447, 0.028),
+        ("DESI DR1", 0.93, 0.444, 0.037),
+        ("DESI DR1", 1.317, 0.370, 0.050),
     ];
 
     data.iter()
@@ -685,7 +681,11 @@ pub fn compute_growth_batch<F: Fn(f64) -> f64>(
         let d_z = d_vals[i];
         let dd_z = dd_vals[i];
 
-        let f_z = if d_z.abs() > 1e-30 { (a_t / d_z) * dd_z } else { 0.0 };
+        let f_z = if d_z.abs() > 1e-30 {
+            (a_t / d_z) * dd_z
+        } else {
+            0.0
+        };
         let fsig8 = sigma8_0 * f_z * d_z / d_0;
 
         results.push((d_z / d_0, fsig8));
@@ -695,10 +695,7 @@ pub fn compute_growth_batch<F: Fn(f64) -> f64>(
 }
 
 /// Chi-square for f*sigma8 growth rate data (LCDM).
-pub fn chi2_fsig8(
-    omega_m: f64,
-    fsig: &[FsigMeasurement],
-) -> f64 {
+pub fn chi2_fsig8(omega_m: f64, fsig: &[FsigMeasurement]) -> f64 {
     if fsig.is_empty() {
         return 0.0;
     }
@@ -1426,9 +1423,8 @@ mod tests {
         let mu_err = vec![0.1, 0.2, 0.1, 0.15, 0.12];
         let is_cal = vec![false, false, false, false, true];
 
-        let (data, kept) = filter_pantheon_data_with_indices(
-            &z, &mu, &mu_err, &is_cal, 0.01, false,
-        );
+        let (data, kept) =
+            filter_pantheon_data_with_indices(&z, &mu, &mu_err, &is_cal, 0.01, false);
 
         // z[0]=0.001 < z_min, z[2]=NaN, z[4] is calibrator -> kept = [1, 3]
         assert_eq!(data.n_sne, 2);
@@ -1440,12 +1436,13 @@ mod tests {
     #[test]
     fn test_extract_cov_submatrix() {
         // 4x4 matrix, select indices [0, 2]
-        let full = nalgebra::DMatrix::from_row_slice(4, 4, &[
-            1.0, 0.1, 0.2, 0.3,
-            0.1, 2.0, 0.4, 0.5,
-            0.2, 0.4, 3.0, 0.6,
-            0.3, 0.5, 0.6, 4.0,
-        ]);
+        let full = nalgebra::DMatrix::from_row_slice(
+            4,
+            4,
+            &[
+                1.0, 0.1, 0.2, 0.3, 0.1, 2.0, 0.4, 0.5, 0.2, 0.4, 3.0, 0.6, 0.3, 0.5, 0.6, 4.0,
+            ],
+        );
         let kept = vec![0, 2];
         let sub = extract_cov_submatrix(&full, &kept);
         assert_eq!(sub.nrows(), 2);

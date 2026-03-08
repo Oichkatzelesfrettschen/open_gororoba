@@ -29,8 +29,7 @@ enum Cmd {
 }
 
 fn all_providers() -> Vec<Box<dyn DatasetProvider>> {
-    use data_core::catalogs::*;
-    use data_core::geophysical::*;
+    use data_core::{catalogs::*, geophysical::*};
 
     vec![
         // Astrophysical catalogs

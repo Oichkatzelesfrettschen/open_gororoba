@@ -8,10 +8,12 @@
 //! - parity and gap report modeling
 //! - historical CSV conversion and TOML writing
 
-use std::collections::{BTreeMap, BTreeSet, HashMap};
-use std::fs;
-use std::io::Read;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap},
+    fs,
+    io::Read,
+    path::{Path, PathBuf},
+};
 
 use serde::{Deserialize, Serialize};
 

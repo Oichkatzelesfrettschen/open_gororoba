@@ -340,7 +340,12 @@ impl ComovingGrid {
             e_grid.push(hubble_e_orthoplex(z, omega_m, k, alpha, beta, t_0));
         }
 
-        Self { z_grid, dc_grid, e_grid, dz }
+        Self {
+            z_grid,
+            dc_grid,
+            e_grid,
+            dz,
+        }
     }
 
     /// Interpolate comoving distance at arbitrary z via linear interpolation.
@@ -539,13 +544,7 @@ pub fn cmb_shift_parameter_orthoplex(
 }
 
 /// Chi-square from the CMB shift parameter for orthoplex dark energy.
-pub fn chi2_cmb_shift_orthoplex(
-    omega_m: f64,
-    k: usize,
-    alpha: f64,
-    beta: f64,
-    t_0: f64,
-) -> f64 {
+pub fn chi2_cmb_shift_orthoplex(omega_m: f64, k: usize, alpha: f64, beta: f64, t_0: f64) -> f64 {
     let r_model = cmb_shift_parameter_orthoplex(omega_m, k, alpha, beta, t_0);
     let residual = (r_model - CMB_SHIFT_R_OBS) / CMB_SHIFT_R_ERR;
     residual * residual
@@ -634,11 +633,11 @@ pub fn fit_orthoplex_model(
     let n_data = sn.z.len() + n_bao_data + n_cmb + n_cc + fsig.len();
 
     let bounds = [
-        (0.1, 0.5),    // omega_m
-        (60.0, 80.0),  // h0
-        (0.1, 25.0),   // alpha  (uncaged from 5.0)
-        (-0.5, 1.0),   // beta   (negative allows phantom)
-        (1e-5, 10.0),  // t_0    (uncaged from 0.01)
+        (0.1, 0.5),   // omega_m
+        (60.0, 80.0), // h0
+        (0.1, 25.0),  // alpha  (uncaged from 5.0)
+        (-0.5, 1.0),  // beta   (negative allows phantom)
+        (1e-5, 10.0), // t_0    (uncaged from 0.01)
     ];
 
     let obj = |p: &[f64]| {
@@ -661,15 +660,15 @@ pub fn fit_orthoplex_model(
     // Parallelized via rayon to use all CPU cores concurrently.
     let initial_guesses: Vec<Vec<f64>> = vec![
         // [omega_m, h0, alpha, beta, t_0]
-        vec![0.3,  70.0, 1.0,  0.0,   1.0  ],  // baseline (near LCDM)
-        vec![0.3,  70.0, 5.0,  0.05,  0.01 ],  // previous boundary hit
-        vec![0.3,  70.0, 8.0,  0.1,   0.005],  // deeper alpha, sharper t_0
-        vec![0.3,  70.0, 12.0, 0.05,  0.001],  // high alpha, very sharp onset
-        vec![0.3,  70.0, 20.0, 0.02,  1e-4 ],  // extreme alpha frontier
-        vec![0.28, 68.0, 3.0,  0.15,  0.5  ],  // lower H0, moderate alpha
-        vec![0.32, 72.0, 6.0, -0.1,   0.1  ],  // phantom regime (beta < 0)
-        vec![0.3,  70.0, 10.0, 0.03,  0.003],  // mid-range exploration
-        vec![0.3,  70.0, 15.0, 0.08,  5e-4 ],  // high-alpha sharp-onset
+        vec![0.3, 70.0, 1.0, 0.0, 1.0],     // baseline (near LCDM)
+        vec![0.3, 70.0, 5.0, 0.05, 0.01],   // previous boundary hit
+        vec![0.3, 70.0, 8.0, 0.1, 0.005],   // deeper alpha, sharper t_0
+        vec![0.3, 70.0, 12.0, 0.05, 0.001], // high alpha, very sharp onset
+        vec![0.3, 70.0, 20.0, 0.02, 1e-4],  // extreme alpha frontier
+        vec![0.28, 68.0, 3.0, 0.15, 0.5],   // lower H0, moderate alpha
+        vec![0.32, 72.0, 6.0, -0.1, 0.1],   // phantom regime (beta < 0)
+        vec![0.3, 70.0, 10.0, 0.03, 0.003], // mid-range exploration
+        vec![0.3, 70.0, 15.0, 0.08, 5e-4],  // high-alpha sharp-onset
     ];
 
     let nm_config = NelderMeadConfig {
@@ -768,10 +767,10 @@ pub fn fit_orthoplex_model_fixed_beta(
     let n_data = sn.z.len() + n_bao_data + n_cmb + n_cc + fsig.len();
 
     let bounds = [
-        (0.1, 0.5),    // omega_m
-        (60.0, 80.0),  // h0
-        (0.1, 25.0),   // alpha
-        (1e-5, 10.0),  // t_0
+        (0.1, 0.5),   // omega_m
+        (60.0, 80.0), // h0
+        (0.1, 25.0),  // alpha
+        (1e-5, 10.0), // t_0
     ];
 
     let obj = |p: &[f64]| {
@@ -793,15 +792,15 @@ pub fn fit_orthoplex_model_fixed_beta(
     // Parallelized via rayon to use all CPU cores concurrently.
     let initial_guesses: Vec<Vec<f64>> = vec![
         // [omega_m, h0, alpha, t_0]
-        vec![0.3,  70.0, 1.0,   1.0  ],
-        vec![0.3,  70.0, 5.0,   0.01 ],
-        vec![0.3,  70.0, 8.0,   0.005],
-        vec![0.3,  70.0, 12.0,  0.001],
-        vec![0.3,  70.0, 20.0,  1e-4 ],
-        vec![0.28, 68.0, 3.0,   0.5  ],
-        vec![0.32, 72.0, 6.0,   0.1  ],
-        vec![0.3,  70.0, 10.0,  0.003],
-        vec![0.3,  70.0, 15.0,  5e-4 ],
+        vec![0.3, 70.0, 1.0, 1.0],
+        vec![0.3, 70.0, 5.0, 0.01],
+        vec![0.3, 70.0, 8.0, 0.005],
+        vec![0.3, 70.0, 12.0, 0.001],
+        vec![0.3, 70.0, 20.0, 1e-4],
+        vec![0.28, 68.0, 3.0, 0.5],
+        vec![0.32, 72.0, 6.0, 0.1],
+        vec![0.3, 70.0, 10.0, 0.003],
+        vec![0.3, 70.0, 15.0, 5e-4],
     ];
 
     let nm_config = NelderMeadConfig {

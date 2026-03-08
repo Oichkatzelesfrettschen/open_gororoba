@@ -220,6 +220,7 @@ log = "0.4"
 env_logger = "0.11"
 tracing = "0.1"
 tracing-subscriber = "0.3"
+tracing-tracy = "0.11.4"
 
 # Python bindings
 pyo3 = { version = "0.25", features = ["extension-module"] }
@@ -232,6 +233,11 @@ proptest = "1.6"
 # TRACKING: criterion 0.8.2 available (currently 0.5); upgrade requires API audit
 # across 9 consuming crates (T-042). Evaluate when benchmark infrastructure is next touched.
 criterion = { version = "0.5", features = ["html_reports"] }
+iai-callgrind = "0.16.1"
+argmin = "0.11.0"
+argmin-math = { version = "0.5.1", default-features = false, features = ["vec"] }
+nalgebra-sparse = "0.11.0"
+polars = { version = "0.53.0", default-features = false, features = ["csv", "fmt", "temporal", "dtype-slim"] }
 
 [workspace.lints.clippy]
 all = { level = "warn", priority = -1 }

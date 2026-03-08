@@ -5,8 +5,10 @@
 //! Group symmetry axes, and deep hole fractions differ between ON-source and
 //! OFF-source pointings.
 
-use algebra_experimental::golay_code::{golay_codewords, weight_enumerator};
-use algebra_experimental::leech_lattice::{HoleStatistics, LeechBasis, project_signal_chunk};
+use algebra_experimental::{
+    golay_code::{golay_codewords, weight_enumerator},
+    leech_lattice::{HoleStatistics, LeechBasis, project_signal_chunk},
+};
 use clap::{Parser, Subcommand};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;

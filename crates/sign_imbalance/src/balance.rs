@@ -36,10 +36,7 @@ pub enum SolverMethod {
 ///
 /// # Returns
 /// ImbalanceResult containing minimum flips and method used
-pub fn compute_imbalance_index(
-    edges: &[(usize, usize, i32)],
-    num_nodes: usize,
-) -> ImbalanceResult {
+pub fn compute_imbalance_index(edges: &[(usize, usize, i32)], num_nodes: usize) -> ImbalanceResult {
     if edges.is_empty() {
         return ImbalanceResult {
             min_flips: 0,
@@ -117,10 +114,7 @@ fn brute_force_imbalance(edges: &[(usize, usize, i32)], num_nodes: usize) -> Imb
 }
 
 /// Greedy imbalance solver using local search.
-fn greedy_imbalance_solver(
-    edges: &[(usize, usize, i32)],
-    _num_nodes: usize,
-) -> ImbalanceResult {
+fn greedy_imbalance_solver(edges: &[(usize, usize, i32)], _num_nodes: usize) -> ImbalanceResult {
     let total_edges = edges.len();
 
     // Start with all positive signs

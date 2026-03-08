@@ -7,8 +7,7 @@
 //!
 //! Reference: Arleo & Falmagne arXiv:2411.13258, Sec. III.
 
-use crate::quenching::r_aa_model;
-use crate::straggling::StragglingGrid;
+use crate::{quenching::r_aa_model, straggling::StragglingGrid};
 
 /// Result of epsilon_bar extraction for a single centrality bin.
 #[derive(Debug, Clone)]
@@ -408,8 +407,7 @@ mod tests {
         pt_max: f64,
         n_pts: usize,
     ) -> Vec<RaaDataPoint> {
-        use crate::straggling::straggling_sigma;
-        use crate::straggling::r_aa_straggling;
+        use crate::straggling::{r_aa_straggling, straggling_sigma};
         let dpt = (pt_max - pt_min) / (n_pts - 1) as f64;
         (0..n_pts)
             .map(|i| {

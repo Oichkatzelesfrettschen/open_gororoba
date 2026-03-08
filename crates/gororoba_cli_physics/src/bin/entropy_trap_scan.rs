@@ -15,10 +15,10 @@
 //! cargo run --bin entropy-trap-scan -- --years 10 --output scan.csv
 //! ```
 
-use algebra_analysis::boxkite_alignment::{alignment_spectrum, AlignmentScanPoint};
-use algebra_analysis::boxkites::find_box_kites;
-use algebra_analysis::sedenion_lifting::{
-    compute_triple_associator, lift_positions_to_sedenion,
+use algebra_analysis::{
+    boxkite_alignment::{AlignmentScanPoint, alignment_spectrum},
+    boxkites::find_box_kites,
+    sedenion_lifting::{compute_triple_associator, lift_positions_to_sedenion},
 };
 use clap::Parser;
 use std::path::PathBuf;
@@ -92,7 +92,8 @@ fn keplerian_planets() -> [KeplerianPlanet; 4] {
 }
 
 fn keplerian_position(planet: &KeplerianPlanet, days_from_j2000: f64) -> [f64; 3] {
-    let mean_anomaly = planet.phase_rad + 2.0 * std::f64::consts::PI * days_from_j2000 / planet.period_days;
+    let mean_anomaly =
+        planet.phase_rad + 2.0 * std::f64::consts::PI * days_from_j2000 / planet.period_days;
     let r = planet.semi_major_au;
     let x = r * mean_anomaly.cos();
     let y = r * mean_anomaly.sin() * planet.inclination_rad.cos();
@@ -155,12 +156,18 @@ fn main() {
                     EphemerisSource::Spk(spk)
                 }
                 Err(e) => {
-                    eprintln!("WARNING: Failed to parse SPK: {}. Using Keplerian fallback.", e);
+                    eprintln!(
+                        "WARNING: Failed to parse SPK: {}. Using Keplerian fallback.",
+                        e
+                    );
                     EphemerisSource::Keplerian(keplerian_planets())
                 }
             },
             Err(e) => {
-                eprintln!("WARNING: Failed to open DAF: {}. Using Keplerian fallback.", e);
+                eprintln!(
+                    "WARNING: Failed to open DAF: {}. Using Keplerian fallback.",
+                    e
+                );
                 EphemerisSource::Keplerian(keplerian_planets())
             }
         }
@@ -174,7 +181,10 @@ fn main() {
 
     eprintln!("=== Entropy Trap Scan ===");
     eprintln!("Source: {}", source.label());
-    eprintln!("Duration: {:.1} years, step: {:.1} days", args.years, args.step_days);
+    eprintln!(
+        "Duration: {:.1} years, step: {:.1} days",
+        args.years, args.step_days
+    );
     eprintln!("Planets: {}", PLANET_NAMES.join(", "));
 
     // Precompute box-kites (only once -- they're structural constants of the sedenion algebra)
@@ -239,7 +249,12 @@ fn main() {
         });
 
         if step % 10000 == 0 && step > 0 {
-            eprintln!("  ... step {}/{} ({:.1} years)", step, n_steps, days / 365.25);
+            eprintln!(
+                "  ... step {}/{} ({:.1} years)",
+                step,
+                n_steps,
+                days / 365.25
+            );
         }
     }
 
@@ -278,6 +293,9 @@ fn main() {
     );
 
     eprintln!("\n=== Verdict ===");
-    eprintln!("Structural scan complete. {} data points generated.", scan_points.len());
+    eprintln!(
+        "Structural scan complete. {} data points generated.",
+        scan_points.len()
+    );
     eprintln!("NOTE: This is exploratory analysis, not a physical prediction.");
 }

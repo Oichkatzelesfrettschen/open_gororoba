@@ -241,8 +241,10 @@ pub fn absorption_spectrum(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::multi_resonator::{MultiResonatorSystem, ResonatorChannel};
-    use crate::tcmt::{InputField, KerrCavity};
+    use crate::{
+        multi_resonator::{MultiResonatorSystem, ResonatorChannel},
+        tcmt::{InputField, KerrCavity},
+    };
     use num_complex::Complex64;
 
     /// Build a 7-channel system with normalized cavities.

@@ -1,5 +1,4 @@
-use crate::error::SniaError;
-use crate::types::HydroState1D;
+use crate::{error::SniaError, types::HydroState1D};
 
 #[derive(Debug, Clone, Copy)]
 pub enum LimiterKind {

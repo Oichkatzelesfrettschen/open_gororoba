@@ -70,22 +70,22 @@ pub mod acoustic_metric;
 pub mod adm;
 pub mod adm_algebra_bridge;
 pub mod area_quantization;
+pub mod cd_ladder_force;
+pub mod chingon_frame_dragging;
 pub mod constants;
 pub mod coordinates;
 pub mod cosmology_algebra_bridge;
 pub mod doppler;
 pub mod energy_conserving;
-pub mod cd_ladder_force;
-pub mod chingon_frame_dragging;
 pub mod forces;
 pub mod fractal_metric;
 pub mod gravitational_waves;
-pub mod lyapunov;
 pub mod hawking;
 pub mod kerr;
 pub mod kerr_de_sitter;
 pub mod kerr_newman;
 pub mod lattice_hawking;
+pub mod lyapunov;
 pub mod metric;
 pub mod nbody_integration;
 pub mod novikov_thorne;
@@ -163,13 +163,13 @@ pub use quantum_inequalities::{
 
 pub use adm::{AdmConstraints, AdmDecomposition, ExtrinsicCurvatureData, decompose_metric};
 
-pub use warp_metric::{NacelleWarpBubble, NacelleWarpParams};
 pub use fractal_metric::{
-    FractalMetric, QtensorFractalMetric, FractalFlybyResult,
-    fractal_flyby_prediction, pioneer_anomaly_prediction,
+    FractalFlybyResult, FractalMetric, QtensorFractalMetric, fractal_flyby_prediction,
+    pioneer_anomaly_prediction,
 };
+pub use warp_metric::{NacelleWarpBubble, NacelleWarpParams};
 
 pub use nbody_integration::{
-    BodyState, NBodySystem, WickEvolutionResult, AdaptiveWickResult,
-    SingularityAvoidanceResult, WkbResult, wkb_tunneling_amplitude,
+    AdaptiveWickResult, BodyState, NBodySystem, SingularityAvoidanceResult, WickEvolutionResult,
+    WkbResult, wkb_tunneling_amplitude,
 };

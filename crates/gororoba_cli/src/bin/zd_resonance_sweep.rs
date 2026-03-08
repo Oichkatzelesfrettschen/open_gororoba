@@ -11,8 +11,7 @@
 
 use ash::vk;
 use clap::{Parser, Subcommand};
-use lbm_vulkan::{Precision, VulkanContext};
-use lbm_vulkan::compute::GororobaEngine;
+use lbm_vulkan::{Precision, VulkanContext, compute::GororobaEngine};
 use spectral_core::ghost_spectral::{
     GHOST_FREQ, check_ghost, compute_power_spectrum, find_peaks, peak_fwhm,
 };

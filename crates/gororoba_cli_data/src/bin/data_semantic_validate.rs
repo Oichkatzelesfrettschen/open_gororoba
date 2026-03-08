@@ -12,8 +12,7 @@ use gororoba_cli::data_governance::{
     validators_for_lane,
 };
 use serde::Serialize;
-use std::collections::BTreeSet;
-use std::path::PathBuf;
+use std::{collections::BTreeSet, path::PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(

@@ -1,8 +1,10 @@
 use clap::Parser;
 use serde::Deserialize;
-use std::collections::BTreeSet;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::BTreeSet,
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug, Parser)]
 #[command(about = "Verify project_csv split policy and TOML scroll coverage")]

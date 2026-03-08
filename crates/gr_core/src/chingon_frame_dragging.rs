@@ -14,8 +14,8 @@
 //! - Newman et al. (1965): Kerr-Newman metric
 //! - Moreno (1998): CD zero-divisor structure
 
-use algebra_core::construction::chingon::AlternativityViolationTensor;
 use crate::kerr_newman;
+use algebra_core::construction::chingon::AlternativityViolationTensor;
 
 /// Precomputed AVT spectral data for the 64D Chingon algebra.
 pub struct ChingonAvtSpectrum {
@@ -207,7 +207,11 @@ mod tests {
         let a = 0.5;
         let q = 0.0;
         let tau = avt_correction_factor(&spec, 1000.0 * m, FRAC_PI_2, m, a, q);
-        assert!(tau < 1e-80, "Correction should vanish far from BH, got {}", tau);
+        assert!(
+            tau < 1e-80,
+            "Correction should vanish far from BH, got {}",
+            tau
+        );
     }
 
     #[test]

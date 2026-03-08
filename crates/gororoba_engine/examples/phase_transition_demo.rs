@@ -1,7 +1,7 @@
+use algebra_analysis::phase_transition::{AlgebraicPhase, PhaseTransitionAnalyzer};
 use algebra_core::gpu::voudon::VoudonFrustrationGpu;
-use algebra_analysis::phase_transition::{PhaseTransitionAnalyzer, AlgebraicPhase};
-use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use cudarc::driver::CudaContext;
+use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use std::sync::Arc;
 
 fn main() -> anyhow::Result<()> {
@@ -23,8 +23,8 @@ fn main() -> anyhow::Result<()> {
 
     // 2. Compute 256D Non-Associativity Density Field on GPU
     println!("Computing 256D non-associativity density (frustration) field...");
-    let frustration_host = VoudonFrustrationGpu::compute_field(nx, ny, nz, 42)
-        .map_err(|e| anyhow::anyhow!(e))?;
+    let frustration_host =
+        VoudonFrustrationGpu::compute_field(nx, ny, nz, 42).map_err(|e| anyhow::anyhow!(e))?;
 
     // 3. Statistical Analysis of Phases
     let mut coherent_cells = 0;
@@ -44,12 +44,19 @@ fn main() -> anyhow::Result<()> {
     println!("\nStatistical Summary:");
     println!("  Coherent fraction: {:.2}%", coherence_fraction * 100.0);
     println!("  Mean order parameter: {:.4}", mean_order_param);
-    println!("  Dominant phase: {}", if coherence_fraction > 0.5 { "Coherent (Superfluid-like)" } else { "Dissipative" });
+    println!(
+        "  Dominant phase: {}",
+        if coherence_fraction > 0.5 {
+            "Coherent (Superfluid-like)"
+        } else {
+            "Dissipative"
+        }
+    );
 
     // 4. LBM Modulation Demo
     println!("\nInitializing CUDA LBM for phase-modulated flow...");
     let mut solver = LbmSolver3DCuda::new(nx, ny, nz, 0.8, Precision::FP32)?;
-    
+
     let ctx = Arc::new(CudaContext::new(0)?);
     let stream = ctx.default_stream();
     let d_frustration = stream.clone_htod(&frustration_host)?;

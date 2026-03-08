@@ -24,6 +24,12 @@ nalgebra = { workspace = true }
 rayon = { workspace = true }
 algebra_experimental = { path = "../algebra_experimental" }
 quantum_core = { path = "../quantum_core" }
+argmin = { workspace = true, optional = true }
+argmin-math = { workspace = true, optional = true }
+
+[features]
+default = []
+argmin-optimizers = ["dep:argmin", "dep:argmin-math"]
 
 [dev-dependencies]
 approx = { workspace = true }

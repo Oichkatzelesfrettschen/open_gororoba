@@ -4,9 +4,10 @@
 //! that all catalog modules share.
 
 use sha2::{Digest, Sha256};
-use std::fs;
-use std::io;
-use std::path::{Path, PathBuf};
+use std::{
+    fs, io,
+    path::{Path, PathBuf},
+};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -74,9 +75,7 @@ fn download_via_wget(url: &str, path: &Path) -> Result<u64, FetchError> {
         });
     }
 
-    let bytes = fs::metadata(path)
-        .map(|m| m.len())
-        .unwrap_or(0);
+    let bytes = fs::metadata(path).map(|m| m.len()).unwrap_or(0);
     Ok(bytes)
 }
 
@@ -112,9 +111,7 @@ fn download_via_curl(url: &str, path: &Path) -> Result<u64, FetchError> {
         });
     }
 
-    let bytes = fs::metadata(path)
-        .map(|m| m.len())
-        .unwrap_or(0);
+    let bytes = fs::metadata(path).map(|m| m.len()).unwrap_or(0);
     Ok(bytes)
 }
 

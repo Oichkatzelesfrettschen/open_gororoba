@@ -1,9 +1,11 @@
 use csv::ReaderBuilder;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::collections::{BTreeSet, HashMap};
-use std::fs;
-use std::path::Path;
+use std::{
+    collections::{BTreeSet, HashMap},
+    fs,
+    path::Path,
+};
 use thiserror::Error;
 
 const UPDATED_STAMP: &str = "2026-02-09";
@@ -784,18 +786,12 @@ mod tests {
     #[test]
     fn infer_type_all_categories() {
         assert_eq!(infer_type(&[]), "empty");
-        assert_eq!(
-            infer_type(&["".to_string(), "".to_string()]),
-            "empty"
-        );
+        assert_eq!(infer_type(&["".to_string(), "".to_string()]), "empty");
         assert_eq!(
             infer_type(&["true".to_string(), "false".to_string()]),
             "bool"
         );
-        assert_eq!(
-            infer_type(&["yes".to_string(), "NO".to_string()]),
-            "bool"
-        );
+        assert_eq!(infer_type(&["yes".to_string(), "NO".to_string()]), "bool");
         assert_eq!(
             infer_type(&["42".to_string(), "-7".to_string(), "+0".to_string()]),
             "int"

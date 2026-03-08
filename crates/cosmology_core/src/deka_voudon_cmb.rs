@@ -1,5 +1,5 @@
-use quantum_core::deka_voudon_qec::DekaVoudonStabilizer;
 use nalgebra::Vector3;
+use quantum_core::deka_voudon_qec::DekaVoudonStabilizer;
 
 /// Analyzes 1024D DekaVoudon Global Bias vs CMB Axis of Evil alignment.
 pub struct DekaVoudonCmbAnalyzer {
@@ -48,7 +48,7 @@ impl DekaVoudonCmbAnalyzer {
 
 /// Cosmic Web Generator using Kite-Chain Middens and Anisotropic Seeding.
 pub struct CosmicWebGenerator {
-    pub d_f: f64, // Fractal dimension
+    pub d_f: f64,        // Fractal dimension
     pub alpha_1024: f64, // 1024D coupling strength
 }
 
@@ -74,11 +74,8 @@ impl CosmicWebGenerator {
                 let theta = (node as f64 / 1024.0) * std::f64::consts::TAU;
                 let phi = (node as f64 / 1024.0) * std::f64::consts::PI;
 
-                let mut pos = Vector3::new(
-                    phi.sin() * theta.cos(),
-                    phi.sin() * theta.sin(),
-                    phi.cos(),
-                );
+                let mut pos =
+                    Vector3::new(phi.sin() * theta.cos(), phi.sin() * theta.sin(), phi.cos());
 
                 let torque = cmb_axis.cross(&pos) * self.alpha_1024;
                 pos += torque;
@@ -191,9 +188,7 @@ pub fn extract_multipoles(points: &[Vector3<f64>], max_l: usize) -> MultipoleRes
     // Quadrupole axis: eigenvector of Q with largest eigenvalue
     // Use power iteration for the 3x3 symmetric matrix
     let q_mat = nalgebra::Matrix3::new(
-        q[0][0], q[0][1], q[0][2],
-        q[1][0], q[1][1], q[1][2],
-        q[2][0], q[2][1], q[2][2],
+        q[0][0], q[0][1], q[0][2], q[1][0], q[1][1], q[1][2], q[2][0], q[2][1], q[2][2],
     );
     let eigenvalues = q_mat.symmetric_eigenvalues();
     let _max_eval_idx = eigenvalues
@@ -214,7 +209,11 @@ pub fn extract_multipoles(points: &[Vector3<f64>], max_l: usize) -> MultipoleRes
     }
     let q_axis_b = v.z.asin().to_degrees();
     let q_axis_l = v.y.atan2(v.x).to_degrees();
-    let q_axis_l_pos = if q_axis_l < 0.0 { q_axis_l + 360.0 } else { q_axis_l };
+    let q_axis_l_pos = if q_axis_l < 0.0 {
+        q_axis_l + 360.0
+    } else {
+        q_axis_l
+    };
 
     // l=3: octupole from third-order tensor
     // Simplified: sum of Y_3m contributions
@@ -350,7 +349,8 @@ mod tests {
         assert!(
             mp_aniso.quadrupole > mp_iso.quadrupole * 0.5,
             "aniso quadrupole {} should exceed iso {} * 0.5",
-            mp_aniso.quadrupole, mp_iso.quadrupole
+            mp_aniso.quadrupole,
+            mp_iso.quadrupole
         );
     }
 
