@@ -198,3 +198,171 @@ arxiv = "2512.22134"
 local_pdf = "papers/pdf/tower_2025_251222134_cd_mnemonic.pdf"
 status = "extracted"
 topics = ["cayley-dickson", "tower", "mnemonic"]
+
+# --- Photon-graviton mixing series (Bastianelli et al.) (3) ---
+
+[[paper]]
+id = "bastianelli-2004-grqc0412095"
+title = "One loop photon-graviton mixing in an electromagnetic field: Part 1"
+authors = ["Fiorenzo Bastianelli", "Christian Schubert"]
+year = 2004
+arxiv = "gr-qc/0412095"
+local_pdf = "papers/pdf/bastianelli_2004_worldline_qft.pdf"
+status = "filed"
+topics = ["photon-graviton", "worldline-formalism", "one-loop"]
+
+[[paper]]
+id = "bastianelli-2007-07105572"
+title = "One loop photon-graviton mixing in an electromagnetic field: Part 2"
+authors = ["Fiorenzo Bastianelli", "Ulises Nucamendi", "Christian Schubert", "Victor M. Villanueva"]
+year = 2007
+arxiv = "0710.5572"
+local_pdf = "papers/pdf/bastianelli_2007_one_loop.pdf"
+status = "filed"
+topics = ["photon-graviton", "one-loop", "polarization"]
+
+[[paper]]
+id = "ahmadiniaz-2026-26012327"
+title = "One loop photon-graviton mixing in an electromagnetic field: Part 3"
+authors = ["Naser Ahmadiniaz", "Fiorenzo Bastianelli", "Felix Karbstein", "Christian Schubert"]
+year = 2026
+arxiv = "2601.23279"
+local_pdf = "papers/pdf/ahmadiniaz_2026_photon_graviton_mixing.pdf"
+status = "filed"
+topics = ["photon-graviton", "one-loop", "tadpole", "magnetic-dichroism"]
+
+# --- Graviton-photon scattering and cosmology (3) ---
+
+[[paper]]
+id = "anninos-2024-24010834"
+title = "Graviton-Photon Oscillations in an Expanding Universe"
+authors = ["Peter Anninos", "Tony Rothman", "Andrea Palessandro"]
+year = 2024
+arxiv = "2401.08346"
+local_pdf = "papers/pdf/anninos_2024_graviton_photon_expanding.pdf"
+status = "filed"
+topics = ["graviton-photon", "Gertsenshtein", "cosmology", "FLRW"]
+
+[[paper]]
+id = "bjerrum-bohr-2014-14104148"
+title = "Graviton-Photon Scattering"
+authors = ["N. E. J. Bjerrum-Bohr", "Barry R. Holstein", "Ludovic Plante", "Pierre Vanhove"]
+year = 2014
+arxiv = "1410.4148"
+local_pdf = "papers/pdf/bjerrum_bohr_2014_graviton_photon_scattering.pdf"
+status = "filed"
+topics = ["graviton-photon", "Compton-scattering", "helicity-amplitudes"]
+
+[[paper]]
+id = "white-2021-epjc81677"
+title = "Worldline numerics applied to custom Casimir geometry generates unanticipated intersection with Alcubierre warp metric"
+authors = ["Harold White", "Jerry Vera", "Arum Han", "Alexander R. Bruccoleri", "Jonathan MacArthur"]
+year = 2021
+arxiv = ""
+local_pdf = "papers/pdf/white_2021_casimir_alcubierre.pdf"
+status = "filed"
+topics = ["Casimir", "Alcubierre", "warp-drive", "worldline-numerics"]
+
+# --- Fano resonance / BIC / TCMT (7) ---
+
+[[paper]]
+id = "ruan-2009-09093323"
+title = "Temporal coupled-mode theory for Fano resonance in light scattering by a single obstacle"
+authors = ["Zhichao Ruan", "Shanhui Fan"]
+year = 2009
+arxiv = "0909.3323"
+local_pdf = "papers/pdf/ruan_fan_2009_tcmt_fano.pdf"
+status = "filed"
+topics = ["TCMT", "Fano-resonance", "scattering"]
+
+[[paper]]
+id = "gallinet-2011-11052503"
+title = "Ab initio theory of Fano resonances in plasmonic nanostructures and metamaterials"
+authors = ["Benjamin Gallinet", "Olivier J. F. Martin"]
+year = 2011
+arxiv = "1105.2503"
+local_pdf = "papers/pdf/gallinet_2011_fano_plasmonic.pdf"
+status = "filed"
+topics = ["Fano-resonance", "plasmonic", "metamaterials", "Feshbach"]
+
+[[paper]]
+id = "kristensen-2017-17010292"
+title = "On the theory of coupled modes in optical cavity-waveguide structures"
+authors = ["Philip Trost Kristensen", "Jakob Rosenkrantz de Lasson", "Mikkel Heuck", "Niels Gregersen", "Jesper Mork"]
+year = 2017
+arxiv = "1701.02929"
+local_pdf = "papers/pdf/kristensen_2017_coupled_modes_cavity.pdf"
+status = "filed"
+topics = ["TCMT", "coupled-modes", "cavity-waveguide", "photonic-crystal"]
+
+[[paper]]
+id = "gao-2018-fano-optical-force"
+title = "Fano-enhanced pulling and pushing optical force on active plasmonic nanoparticles"
+authors = ["D. L. Gao", "R. Shi", "Y. Huang", "W. H. Ni", "L. Gao"]
+year = 2018
+arxiv = ""
+local_pdf = "papers/pdf/gao_2018_fano_optical_force.pdf"
+status = "filed"
+topics = ["Fano-resonance", "optical-force", "plasmonic", "nanoparticles"]
+
+[[paper]]
+id = "bogdanov-2018-18050926"
+title = "Bound states in the continuum and Fano resonances in the strong mode coupling regime"
+authors = ["Andrey A. Bogdanov", "Kirill L. Koshelev", "Polina V. Kapitanova", "Mikhail V. Rybin", "Sergey A. Gladyshev", "Zarina F. Sadrieva", "Kirill B. Samusev", "Yuri S. Kivshar", "Mikhail F. Limonov"]
+year = 2018
+arxiv = "1805.09265"
+local_pdf = "papers/pdf/bogdanov_2018_bic_fano_strong_coupling.pdf"
+status = "filed"
+topics = ["BIC", "Fano-resonance", "strong-coupling", "dielectric-resonator"]
+
+[[paper]]
+id = "abujetas-2019-19010312"
+title = "From Fano resonances to bound states in the continuum in dipole arrays at THz frequencies"
+authors = ["Diego R. Abujetas", "Niels van Hoof", "Stan ter Huurne", "Jaime Gomez Rivas", "Jose A. Sanchez-Gil"]
+year = 2019
+arxiv = "1901.03122"
+local_pdf = "papers/pdf/abujetas_2019_fano_bic_dipole_thz.pdf"
+status = "filed"
+topics = ["BIC", "Fano-resonance", "THz", "dipole-arrays"]
+
+[[paper]]
+id = "overvig-2023-stcmt"
+title = "Spatio-Temporal Coupled Mode Theory for Nonlocal Metasurfaces"
+authors = ["Adam Overvig", "Sander A. Mann", "Andrea Alu"]
+year = 2023
+arxiv = ""
+local_pdf = "papers/pdf/overvig_2023_stcmt_nonlocal.pdf"
+status = "filed"
+topics = ["TCMT", "nonlocal", "metasurfaces", "wavefront-shaping"]
+
+# --- Nonlocal optics and hybrid metasurfaces (3) ---
+
+[[paper]]
+id = "fan-2023-hybrid-bic-thz"
+title = "Hybrid bound states in the continuum in terahertz metasurfaces"
+authors = ["Junxing Fan", "Zhanqiang Xue", "Hongyang Xing", "Dan Lu", "Guizhen Xu", "Jianqiang Gu", "Jiaguang Han", "Longqing Cong"]
+year = 2023
+arxiv = ""
+local_pdf = "papers/pdf/fan_2023_hybrid_bic_thz.pdf"
+status = "filed"
+topics = ["BIC", "THz", "metasurfaces", "hybrid-lattice"]
+
+[[paper]]
+id = "ge-2025-nonlocal-fano-thz"
+title = "Nonlocal Generation of Fano Resonance with No Symmetry Breaking in THz Hybrid Metasurfaces"
+authors = ["Boyuan Ge", "Jiayu Fan", "Ken Qin", "Xiexuan Zhang", "Haitao Li", "Fang Ling", "Xiaoxiao Wu"]
+year = 2025
+arxiv = ""
+local_pdf = "papers/pdf/ge_2025_nonlocal_fano_thz.pdf"
+status = "filed"
+topics = ["Fano-resonance", "nonlocal", "THz", "metasurfaces"]
+
+[[paper]]
+id = "maksimov-2025-25050039"
+title = "Temporal coupled mode theory: from bound states in the continuum to uniguided resonances"
+authors = ["Dmitrii N. Maksimov", "Pavel S. Pankin", "Dong-Wook Kim", "Mingzhao Song", "Chao Peng", "Andrey A. Bogdanov"]
+year = 2025
+arxiv = "2505.00396"
+local_pdf = "papers/pdf/maksimov_2025_latest.pdf"
+status = "filed"
+topics = ["TCMT", "BIC", "uniguided-resonances", "metasurfaces"]

@@ -1,0 +1,195 @@
+FILE: /home/eirikr/Github/open_gororoba/crates/materials_core/src/optical_database.rs
+================================================================================
+TOTAL LINES: 8133
+TOTAL PUBLIC METHODS (impl DrudeLorentzParams): 121
+TOTAL TEST FUNCTIONS: 290
+LAST MATERIAL IN DATABASE: "Lead Tungstate (PbWO4)"
+
+================================================================================
+CATEGORIZED METHOD INVENTORY
+================================================================================
+
+DOMAIN 1: FUNDAMENTAL DIELECTRIC RESPONSE (Core optical properties)
+-----------------------------------------------------------------------
+pub fn epsilon(&self, omega: f64) -> Complex64
+pub fn epsilon_imaginary(&self, xi: f64) -> f64
+pub fn refractive_index(&self, omega: f64) -> Complex64
+pub fn epsilon_at_matsubara(&self, temperature_k: f64, n_terms: usize) -> Vec<f64>
+pub fn static_dielectric(&self) -> Option<f64>
+
+DOMAIN 2: REFLECTANCE AND ABSORPTANCE (Macroscopic optics)
+-----------------------------------------------------------------------
+pub fn reflectivity_normal(&self, omega: f64) -> f64
+pub fn loss_function(&self, omega: f64) -> f64
+pub fn absorption_coefficient(&self, omega: f64) -> f64
+pub fn emissivity(&self, omega: f64) -> f64
+pub fn hagen_rubens_reflectivity(&self, omega: f64) -> Option<f64>
+pub fn brewster_angle(&self, omega: f64, n_incident: f64) -> Option<f64>
+pub fn fresnel_rs(&self, omega: f64, theta_i: f64, n_incident: f64) -> Complex64
+pub fn fresnel_rp(&self, omega: f64, theta_i: f64, n_incident: f64) -> Complex64
+pub fn reflectance_angular(&self, omega: f64, theta_i: f64, n_incident: f64) -> (f64, f64)
+pub fn psi_delta(&self, omega: f64, theta_i: f64) -> (f64, f64)
+pub fn impedance_mismatch(&self, omega: f64) -> f64
+
+DOMAIN 3: CONDUCTIVITY AND TRANSPORT (Drude and extended Drude)
+-----------------------------------------------------------------------
+pub fn optical_conductivity_re(&self, omega: f64) -> f64
+pub fn optical_conductivity_im(&self, omega: f64) -> f64
+pub fn dc_conductivity(&self) -> Option<f64>
+pub fn dc_resistivity(&self) -> Option<f64>
+pub fn scattering_time(&self) -> Option<f64>
+pub fn carrier_density(&self, m_star_ratio: f64) -> Option<f64>
+pub fn carrier_mobility(&self, carrier_density: f64) -> Option<f64>
+pub fn drude_weight(&self) -> Option<f64>
+pub fn drude_quality(&self, omega: f64) -> Option<f64>
+pub fn drude_smith_mobility(&self, c_parameter: f64, carrier_density: f64) -> Option<f64>
+
+DOMAIN 4: PLASMA AND EDGE PHENOMENA (Plasma resonances)
+-----------------------------------------------------------------------
+pub fn plasma_edge_ev(&self) -> Option<f64>
+pub fn plasma_frequency_from_density(carrier_density: f64, m_star_ratio: f64) -> f64
+pub fn drude_spectral_weight(&self) -> Option<f64>
+pub fn intraband_weight(&self) -> Option<f64>
+pub fn interband_weight(&self) -> f64
+pub fn plasmon_energy_ev(&self, scan_min_ev: f64, scan_max_ev: f64) -> f64
+pub fn screened_plasma_ev(&self, scan_min_ev: f64, scan_max_ev: f64) -> Option<f64>
+pub fn plasma_screening_ratio(&self) -> Option<f64>
+pub fn lspr_frequency(&self, eps_dielectric: f64) -> Option<f64>
+pub fn plasma_frequency_shift(&self, delta_n: f64, m_star_ratio: f64) -> Option<f64>
+
+DOMAIN 5: ABSORPTION AND GAPS (Absorption mechanisms and band structure)
+-----------------------------------------------------------------------
+pub fn skin_depth(&self, omega: f64) -> Option<f64>
+pub fn absorption_per_pass(&self, omega: f64, thickness_m: f64) -> f64
+pub fn optimal_absorber_thickness(&self, omega: f64) -> Option<f64>
+pub fn optical_gap_ev(&self, threshold_per_m: f64) -> Option<f64>
+pub fn tauc_gap_ev(&self, exponent: f64) -> Option<f64>
+pub fn urbach_energy_ev(&self) -> Option<f64>
+pub fn penn_gap_ev(&self) -> Option<f64>
+pub fn absorption_onset_ev(&self, threshold_fraction: f64) -> Option<f64>
+
+DOMAIN 6: DISPERSION (Frequency dependence and waveguide properties)
+-----------------------------------------------------------------------
+pub fn group_refractive_index(&self, omega: f64) -> f64
+pub fn gvd_beta2(&self, omega: f64) -> f64
+pub fn gvd_fs2_per_mm(&self, omega: f64) -> f64
+pub fn dispersion_regime(&self, omega: f64) -> i32
+pub fn zero_dispersion_omega(&self, omega_min: f64, omega_max: f64) -> Option<f64>
+pub fn chromatic_dispersion_ps_nm_km(&self, omega: f64) -> f64
+pub fn modal_birefringence(&self, omega: f64) -> f64
+
+DOMAIN 7: NONLINEAR OPTICS (Nonlinear susceptibilities and effects)
+-----------------------------------------------------------------------
+pub fn chi3_miller_estimate(&self, omega: f64) -> f64
+pub fn kerr_n2_estimate(&self, omega: f64) -> f64
+pub fn beta_tpa_estimate(&self, omega: f64) -> Option<f64>
+pub fn field_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64
+pub fn sers_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64
+
+DOMAIN 8: SURFACE PLASMON POLARITONS (SPP and surface waves)
+-----------------------------------------------------------------------
+pub fn spp_wavevector(&self, omega: f64, eps_dielectric: f64) -> Complex64
+pub fn spp_propagation_length(&self, omega: f64, eps_dielectric: f64) -> Option<f64>
+pub fn evanescent_decay_length(&self, omega: f64) -> Option<f64>
+pub fn surface_impedance(&self, omega: f64) -> Complex64
+pub fn surface_loss_function(&self, omega: f64) -> f64
+pub fn surface_phonon_polariton_frequency(&self, eps_dielectric: f64) -> Option<f64>
+pub fn phonon_polariton_wavevector(&self, omega: f64, eps_dielectric: f64) -> Complex64
+pub fn figure_of_merit_spp(&self, omega: f64, eps_dielectric: f64) -> Option<f64>
+
+DOMAIN 9: PHOTOPHYSICS AND QUANTUM (Quantum and radiative effects)
+-----------------------------------------------------------------------
+pub fn joint_density_of_states(&self, omega: f64) -> f64
+pub fn electron_mean_free_path(&self, v_fermi: f64) -> Option<f64>
+pub fn purcell_factor(&self, omega: f64, distance_m: f64) -> f64
+pub fn lamb_shift_fractional(&self, omega: f64, distance_m: f64) -> f64
+pub fn decay_rate_enhancement(&self, omega: f64, distance_m: f64) -> f64
+pub fn quantum_efficiency_near_surface(&self, omega: f64, distance_m: f64, qy_free: f64) -> f64
+pub fn hot_electron_generation_proxy(&self, omega: f64) -> f64
+
+DOMAIN 10: THERMAL EFFECTS AND TEMPERATURE (Temperature-dependent properties)
+-----------------------------------------------------------------------
+pub fn at_temperature(&self, temperature_k: f64, debye_t_k: Option<f64>) -> Self
+pub fn spectral_emittance(&self, omega: f64, temperature_k: f64) -> f64
+pub fn integrated_emissivity(&self, temperature_k: f64, omega_min: f64, omega_max: f64, n_steps: usize) -> f64
+pub fn wien_peak_ev(temperature_k: f64) -> f64
+pub fn wien_peak_omega(temperature_k: f64) -> f64
+pub fn bose_einstein_occupation(omega: f64, temperature_k: f64) -> f64
+
+DOMAIN 11: SPECTRAL ANALYSIS (Spectral integrals and sum rules)
+-----------------------------------------------------------------------
+pub fn matsubara_frequencies(temperature_k: f64, n_terms: usize) -> Vec<f64>
+pub fn n_eff(&self, cutoff_ev: f64, n_steps: usize) -> f64
+pub fn f_sum_ratio(&self, cutoff_ev: f64, n_steps: usize) -> Option<(f64, f64)>
+pub fn loss_spectral_weight(&self, cutoff_ev: f64, n_steps: usize) -> f64
+pub fn kramers_kronig_error(&self, cutoff_ev: f64, n_steps: usize) -> f64
+pub fn oscillator_quality_factor(&self) -> Option<f64>
+pub fn spectral_weight_window(&self, omega_min: f64, omega_max: f64, n_steps: usize) -> f64
+
+DOMAIN 12: COMPOSITE AND MIXTURE PROPERTIES (Effective medium theories)
+-----------------------------------------------------------------------
+pub fn maxwell_garnett_mix(&self, inclusion: &DrudeLorentzParams, fill_fraction: f64, omega: f64) -> Complex64
+pub fn bruggeman_mix(&self, other: &DrudeLorentzParams, fill_fraction: f64, omega: f64) -> Complex64
+pub fn dielectric_contrast(&self, other: &DrudeLorentzParams, omega: f64) -> Complex64
+
+DOMAIN 13: THIN FILM OPTICS (Interference and coating optics)
+-----------------------------------------------------------------------
+pub fn thin_film_reflectance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64
+pub fn thin_film_transmittance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64
+pub fn thin_film_phase_shift(&self, omega: f64, thickness_m: f64) -> f64
+pub fn constructive_interference_orders(&self, omega: f64, thickness_m: f64) -> Vec<u32>
+pub fn antireflection_thickness(&self, omega: f64) -> f64
+pub fn optical_path_length(&self, omega: f64, thickness_m: f64) -> (f64, f64)
+
+DOMAIN 14: OPTICAL FIBER PROPERTIES (Guided wave and fiber optics)
+-----------------------------------------------------------------------
+pub fn numerical_aperture(&self, omega: f64, n_cladding: f64) -> Option<f64>
+pub fn v_parameter(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64>
+pub fn confinement_factor(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64>
+pub fn effective_mode_area(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64>
+pub fn bend_loss_critical_radius(&self, omega: f64, n_cladding: f64) -> Option<f64>
+
+DOMAIN 15: RESONANCE AND CAVITY (Resonances and cavity effects)
+-----------------------------------------------------------------------
+pub fn fabry_perot_finesse(&self, omega: f64) -> f64
+pub fn reststrahlen_band(&self) -> Option<(f64, f64)>
+pub fn enz_frequency(&self, scan_min: f64, scan_max: f64) -> Option<f64>
+pub fn enz_group_velocity(&self, scan_min: f64, scan_max: f64) -> Option<f64>
+
+DOMAIN 16: OPTICAL EFFECTIVE PARAMETERS (Computed effective properties)
+-----------------------------------------------------------------------
+pub fn optical_effective_mass(&self, carrier_density: f64) -> Option<f64>
+pub fn volume_loss_weighted(&self, omega: f64) -> f64
+pub fn coherence_length(&self, omega: f64, bandwidth_rad_s: f64) -> f64
+pub fn penetration_depth_ratio(&self, omega: f64) -> f64
+
+DOMAIN 17: SOLAR AND THERMAL ENGINEERING (Solar and thermal applications)
+-----------------------------------------------------------------------
+pub fn solar_absorptance(&self, n_steps: usize) -> f64
+pub fn solar_reflectance(&self, n_steps: usize) -> f64
+pub fn luminous_reflectance(&self, n_steps: usize) -> f64
+pub fn selective_emitter_efficiency(&self, temperature_k: f64, omega_gap: f64, omega_min: f64, omega_max: f64, n_steps: usize) -> f64
+
+DOMAIN 18: SENSING AND METROLOGY (Sensor and measurement applications)
+-----------------------------------------------------------------------
+pub fn refractive_index_sensitivity(&self, eps_dielectric: f64) -> Option<f64>
+pub fn figure_of_merit_sensor(&self, eps_dielectric: f64) -> Option<f64>
+pub fn ir_activity_proxy(&self, oscillator_index: usize) -> Option<f64>
+
+DOMAIN 19: MAGNETOOPTICAL EFFECTS (Magnetic field coupling)
+-----------------------------------------------------------------------
+pub fn voigt_eps_xy(&self, omega: f64, b_field: f64, carrier_density: f64) -> Option<Complex64>
+pub fn faraday_rotation(&self, omega: f64, b_field: f64, carrier_density: f64) -> Option<f64>
+
+DOMAIN 20: PHOTOINDUCED AND TRANSIENT (Transient and photo-excited states)
+-----------------------------------------------------------------------
+pub fn photo_induced_absorption(&self, omega: f64, delta_n: f64, m_star_ratio: f64) -> Option<f64>
+pub fn transient_reflectivity_change(&self, omega: f64, delta_n: f64, m_star_ratio: f64) -> Option<f64>
+
+DOMAIN 21: MISCELLANEOUS (Utility and special applications)
+-----------------------------------------------------------------------
+pub fn color_coordinates_cie(&self, n_steps: usize) -> (f64, f64, f64)
+pub fn polariton_group_velocity(&self, omega: f64, eps_dielectric: f64) -> f64
+pub fn isotope_shift_estimate(mass_ratio: f64) -> f64
+pub fn carrier_recombination_time(delta_n: f64, generation_rate: f64) -> f64
+
