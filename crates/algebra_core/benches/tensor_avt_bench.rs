@@ -5,6 +5,29 @@ use algebra_core::gpu::TensorAVT;
 use algebra_core::gpu::is_gpu_available;
 use criterion::{BenchmarkId, Criterion, black_box, criterion_group, criterion_main};
 
+fn bench_large_enabled() -> bool {
+    matches!(
+        std::env::var("TENSOR_AVT_BENCH_LARGE").as_deref(),
+        Ok("1") | Ok("true") | Ok("TRUE") | Ok("yes") | Ok("YES")
+    )
+}
+
+fn single_dims() -> Vec<usize> {
+    let mut dims = vec![16usize, 256, 512, 1024];
+    if bench_large_enabled() {
+        dims.extend([2048, 4096]);
+    }
+    dims
+}
+
+fn batch_shapes() -> Vec<(usize, usize)> {
+    let mut shapes = vec![(16usize, 1usize), (256, 16), (512, 16), (1024, 64)];
+    if bench_large_enabled() {
+        shapes.extend([(2048, 16), (4096, 8)]);
+    }
+    shapes
+}
+
 fn values(len: usize, seed: u64) -> Vec<f32> {
     let mut state = seed;
     (0..len)
@@ -20,7 +43,7 @@ fn values(len: usize, seed: u64) -> Vec<f32> {
 
 fn bench_tensor_avt_single(c: &mut Criterion) {
     let mut group = c.benchmark_group("tensor_avt_single");
-    for dim in [16usize, 256, 512, 1024] {
+    for dim in single_dims() {
         let avt = TensorAVT::new(dim);
         let a = values(dim, 0xA11CE + dim as u64);
         let x = values(dim, 0xBADC0DE + dim as u64);
@@ -33,7 +56,7 @@ fn bench_tensor_avt_single(c: &mut Criterion) {
 
 fn bench_tensor_avt_batch(c: &mut Criterion) {
     let mut group = c.benchmark_group("tensor_avt_batch");
-    for (dim, batch_size) in [(16usize, 1usize), (256, 16), (512, 16), (1024, 64)] {
+    for (dim, batch_size) in batch_shapes() {
         let avt = TensorAVT::new(dim);
         let a = values(dim, 0xCAFE + dim as u64);
         let x_batch = values(dim * batch_size, 0xFACEFEED + batch_size as u64);
@@ -50,7 +73,7 @@ fn bench_tensor_avt_batch(c: &mut Criterion) {
 
 fn bench_tensor_avt_norm(c: &mut Criterion) {
     let mut group = c.benchmark_group("tensor_avt_norm_sq");
-    for (dim, batch_size) in [(16usize, 1usize), (256, 16), (512, 16), (1024, 64)] {
+    for (dim, batch_size) in batch_shapes() {
         let avt = TensorAVT::new(dim);
         let vectors = values(dim * batch_size, 0xDEADBEEF + batch_size as u64);
         let label = format!("cpu-dim{dim}-batch{batch_size}");
@@ -70,7 +93,7 @@ fn bench_tensor_avt_single_gpu(c: &mut Criterion) {
         return;
     }
     let mut group = c.benchmark_group("tensor_avt_single_gpu");
-    for dim in [16usize, 256, 512, 1024] {
+    for dim in single_dims() {
         let avt = TensorAVT::new(dim);
         let a = values(dim, 0x5151 + dim as u64);
         let x = values(dim, 0x6161 + dim as u64);
@@ -87,7 +110,7 @@ fn bench_tensor_avt_batch_gpu(c: &mut Criterion) {
         return;
     }
     let mut group = c.benchmark_group("tensor_avt_batch_gpu");
-    for (dim, batch_size) in [(16usize, 1usize), (256, 16), (512, 16), (1024, 64)] {
+    for (dim, batch_size) in batch_shapes() {
         let avt = TensorAVT::new(dim);
         let a = values(dim, 0x7171 + dim as u64);
         let x_batch = values(dim * batch_size, 0x8181 + batch_size as u64);
@@ -108,7 +131,7 @@ fn bench_tensor_avt_norm_gpu(c: &mut Criterion) {
         return;
     }
     let mut group = c.benchmark_group("tensor_avt_norm_sq_gpu");
-    for (dim, batch_size) in [(16usize, 1usize), (256, 16), (512, 16), (1024, 64)] {
+    for (dim, batch_size) in batch_shapes() {
         let avt = TensorAVT::new(dim);
         let vectors = values(dim * batch_size, 0x9191 + batch_size as u64);
         let label = format!("gpu-dim{dim}-batch{batch_size}");
