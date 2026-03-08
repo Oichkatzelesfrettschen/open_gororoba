@@ -89,21 +89,22 @@ pub struct VoudonFrustrationGpu;
 
 impl VoudonFrustrationGpu {
     #[cfg(feature = "gpu")]
-    pub fn compute_field(
-        nx: usize,
-        ny: usize,
-        nz: usize,
-        seed: u32,
-    ) -> Result<Vec<f32>, String> {
+    pub fn compute_field(nx: usize, ny: usize, nz: usize, seed: u32) -> Result<Vec<f32>, String> {
         let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
         let stream = ctx.default_stream();
 
         let ptx = compile_ptx(VOUDON_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
-        let module = ctx.load_module(ptx).map_err(|e| format!("Module load: {}", e))?;
-        let kernel = module.load_function("voudon_frustration_kernel").map_err(|e| format!("Kernel load: {}", e))?;
+        let module = ctx
+            .load_module(ptx)
+            .map_err(|e| format!("Module load: {}", e))?;
+        let kernel = module
+            .load_function("voudon_frustration_kernel")
+            .map_err(|e| format!("Kernel load: {}", e))?;
 
         let n_cells = nx * ny * nz;
-        let mut d_field = stream.alloc_zeros::<f32>(n_cells).map_err(|e| format!("Alloc: {}", e))?;
+        let mut d_field = stream
+            .alloc_zeros::<f32>(n_cells)
+            .map_err(|e| format!("Alloc: {}", e))?;
 
         let block_size = 256u32;
         let grid_size = (n_cells as u32).div_ceil(block_size);
@@ -127,7 +128,9 @@ impl VoudonFrustrationGpu {
             builder.launch(cfg).map_err(|e| format!("Launch: {}", e))?;
         }
 
-        let host_field: Vec<f32> = stream.clone_dtoh(&d_field).map_err(|e| format!("Copy back: {}", e))?;
+        let host_field: Vec<f32> = stream
+            .clone_dtoh(&d_field)
+            .map_err(|e| format!("Copy back: {}", e))?;
 
         Ok(host_field)
     }

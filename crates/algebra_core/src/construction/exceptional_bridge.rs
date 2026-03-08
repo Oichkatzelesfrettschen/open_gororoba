@@ -27,9 +27,10 @@
 //!   Der(J3(H)) = sp(6) = 21 (C3)
 //!   Der(J3(O)) = F4 = 52
 
-use crate::construction::g2_automorphisms::compute_g2_basis;
-use crate::construction::octonion::Octonion;
-use crate::lie::e8_lattice::{DivisionAlgebra, FreudenthalTitsMagicSquare, MagicSquareLieAlgebra};
+use crate::{
+    construction::{g2_automorphisms::compute_g2_basis, octonion::Octonion},
+    lie::e8_lattice::{DivisionAlgebra, FreudenthalTitsMagicSquare, MagicSquareLieAlgebra},
+};
 
 // ============================================================================
 // Tits Construction: Correct Dimension Formula

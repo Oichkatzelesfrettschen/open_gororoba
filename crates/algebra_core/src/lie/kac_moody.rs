@@ -471,9 +471,7 @@ impl GeneralizedCartanMatrix {
                     return Some(LieAlgebraType::G2);
                 }
             }
-            KacMoodyType::Affine
-                if det == 0 && self.rank == 9 && self.is_simply_laced() =>
-            {
+            KacMoodyType::Affine if det == 0 && self.rank == 9 && self.is_simply_laced() => {
                 return Some(LieAlgebraType::E9);
             }
             KacMoodyType::Hyperbolic | KacMoodyType::Lorentzian => {

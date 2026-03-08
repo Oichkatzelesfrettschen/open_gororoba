@@ -30,25 +30,28 @@
 //! - Tang & Tang (2023): Sedenion SU(5) mass predictions
 
 // TEST COMMENT
-use crate::analysis::boxkites::{
-    BoxKite, BoxKiteSymmetryResult, analyze_box_kite_symmetry, find_box_kites,
+use crate::{
+    analysis::{
+        boxkites::{BoxKite, BoxKiteSymmetryResult, analyze_box_kite_symmetry, find_box_kites},
+        zd_graphs::{
+            AssociatorGraphResult, BasisParticipationResult, ZdGraphAnalysis,
+            analyze_associator_graph, analyze_basis_participation, analyze_zd_graph,
+        },
+    },
+    construction::cayley_dickson::{
+        GeneralFormZD, batch_associator_norms_parallel, cd_associator, cd_associator_norm,
+        cd_conjugate, cd_multiply, cd_norm_sq, count_pathion_zero_divisors, find_zero_divisors,
+        find_zero_divisors_3blade, find_zero_divisors_general_form, find_zero_divisors_parallel,
+        measure_associator_density, zd_spectrum_analysis,
+    },
+    physics::octonion_field::{
+        DispersionResult, EvolutionResult, FANO_TRIPLES, FieldParams, Octonion,
+        build_structure_constants, evolve, force, gaussian_wave_packet, hamiltonian,
+        measure_dispersion, noether_charges, oct_conjugate, oct_multiply, oct_norm_sq,
+        standing_wave,
+    },
+    traits::Hypercomplex,
 };
-use crate::analysis::zd_graphs::{
-    AssociatorGraphResult, BasisParticipationResult, ZdGraphAnalysis, analyze_associator_graph,
-    analyze_basis_participation, analyze_zd_graph,
-};
-use crate::construction::cayley_dickson::{
-    GeneralFormZD, batch_associator_norms_parallel, cd_associator, cd_associator_norm,
-    cd_conjugate, cd_multiply, cd_norm_sq, count_pathion_zero_divisors, find_zero_divisors,
-    find_zero_divisors_3blade, find_zero_divisors_general_form, find_zero_divisors_parallel,
-    measure_associator_density, zd_spectrum_analysis,
-};
-use crate::physics::octonion_field::{
-    DispersionResult, EvolutionResult, FANO_TRIPLES, FieldParams, Octonion,
-    build_structure_constants, evolve, force, gaussian_wave_packet, hamiltonian,
-    measure_dispersion, noether_charges, oct_conjugate, oct_multiply, oct_norm_sq, standing_wave,
-};
-use crate::traits::Hypercomplex;
 
 /// Known algebra dimensions in the Cayley-Dickson tower.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

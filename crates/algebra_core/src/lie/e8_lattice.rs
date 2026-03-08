@@ -267,8 +267,7 @@ pub struct AtlasE8CrossValidation {
 /// The atlas-embeddings crate uses exact arithmetic (HalfInteger), while we use f64.
 /// This function verifies consistency between the two approaches.
 pub fn cross_validate_with_atlas() -> AtlasE8CrossValidation {
-    use atlas_embeddings::atlas::Atlas;
-    use atlas_embeddings::e8::E8RootSystem;
+    use atlas_embeddings::{atlas::Atlas, e8::E8RootSystem};
 
     // Get atlas-embeddings E8 root system
     let atlas_e8 = E8RootSystem::new();
@@ -307,8 +306,7 @@ pub fn cross_validate_with_atlas() -> AtlasE8CrossValidation {
 ///
 /// Returns the certified embedding map from 96 Atlas vertices to E8 roots.
 pub fn get_atlas_embedding_info() -> AtlasEmbeddingInfo {
-    use atlas_embeddings::atlas::Atlas;
-    use atlas_embeddings::embedding::AtlasE8Embedding;
+    use atlas_embeddings::{atlas::Atlas, embedding::AtlasE8Embedding};
 
     let atlas = Atlas::new();
     let embedding = AtlasE8Embedding::new();

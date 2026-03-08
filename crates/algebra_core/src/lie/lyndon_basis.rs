@@ -22,8 +22,10 @@
 
 use std::collections::{HashMap, HashSet};
 
-use super::e7_geometry::{E7Root, generate_e7_roots};
-use super::e8_lattice::E8Root;
+use super::{
+    e7_geometry::{E7Root, generate_e7_roots},
+    e8_lattice::E8Root,
+};
 
 /// Discretize coordinates to integer keys for hash-based lookup.
 /// Multiplying by 2 converts half-integers to integers.

@@ -138,11 +138,11 @@ pub fn compute_voudon_imbalance_density() -> f64 {
                 let ij_idx = i ^ j;
                 let ij_sign = cd_basis_mul_sign_iter(dim, i, j);
                 let ijk_sign1 = ij_sign * cd_basis_mul_sign_iter(dim, ij_idx, k);
-                
+
                 let jk_idx = j ^ k;
                 let jk_sign = cd_basis_mul_sign_iter(dim, j, k);
                 let ijk_sign2 = jk_sign * cd_basis_mul_sign_iter(dim, i, jk_idx);
-                
+
                 if ijk_sign1 != ijk_sign2 {
                     non_zero_count += 1;
                 }
@@ -163,7 +163,7 @@ pub fn compute_routon_spectral_spacing() -> Vec<f64> {
     // For this breakthrough, we define adjacency if [e_i, e_j, e_k] != 0 for any k.
     let dim = 128;
     let mut adj = vec![0.0; dim * dim];
-    
+
     for i in 0..dim {
         for j in 0..dim {
             let mut is_connected = false;
@@ -171,11 +171,11 @@ pub fn compute_routon_spectral_spacing() -> Vec<f64> {
                 let ij_idx = i ^ j;
                 let ij_sign = cd_basis_mul_sign_iter(dim, i, j);
                 let ijk_sign1 = ij_sign * cd_basis_mul_sign_iter(dim, ij_idx, k);
-                
+
                 let jk_idx = j ^ k;
                 let jk_sign = cd_basis_mul_sign_iter(dim, j, k);
                 let ijk_sign2 = jk_sign * cd_basis_mul_sign_iter(dim, i, jk_idx);
-                
+
                 if ijk_sign1 != ijk_sign2 {
                     is_connected = true;
                     break;
@@ -186,7 +186,7 @@ pub fn compute_routon_spectral_spacing() -> Vec<f64> {
             }
         }
     }
-    
+
     adj
 }
 

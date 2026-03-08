@@ -8,8 +8,10 @@
 //! Run with: cargo bench --bench dimensional_bench -p algebra_core
 //! GPU benchmarks: cargo bench --bench dimensional_bench -p algebra_core --features gpu
 
-use algebra_core::analysis::boxkites::{cross_assessors, motif_components_for_cross_assessors};
-use algebra_core::cd_basis_mul_sign;
+use algebra_core::{
+    analysis::boxkites::{cross_assessors, motif_components_for_cross_assessors},
+    cd_basis_mul_sign,
+};
 use criterion::{BenchmarkId, Criterion, black_box, criterion_group, criterion_main};
 use std::time::Duration;
 

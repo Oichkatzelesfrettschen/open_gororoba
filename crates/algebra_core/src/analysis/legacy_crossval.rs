@@ -1614,5 +1614,4 @@ mod tests {
 
     // Lattice filtration nesting test moved to algebra_analysis::legacy_crossval
     // (depends only on codebook predicates, which live in algebra_analysis).
-
 }

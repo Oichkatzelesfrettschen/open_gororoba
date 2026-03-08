@@ -152,8 +152,8 @@ pub fn quat_slerp(q1: &Quaternion, q2: &Quaternion, t: f64) -> Quaternion {
             result[i] = q1[i] + t * (q2_adj[i] - q1[i]);
         }
         // Normalize
-        let norm = (result[0].powi(2) + result[1].powi(2) + result[2].powi(2) + result[3].powi(2))
-            .sqrt();
+        let norm =
+            (result[0].powi(2) + result[1].powi(2) + result[2].powi(2) + result[3].powi(2)).sqrt();
         for r in &mut result {
             *r /= norm;
         }
@@ -235,11 +235,7 @@ mod tests {
         let v_rot = quat_rotate_vector(&q, &v);
         // Should rotate to y-axis: [0, 1, 0]
         assert!((v_rot[0]).abs() < TOL, "x should be ~0: {}", v_rot[0]);
-        assert!(
-            (v_rot[1] - 1.0).abs() < TOL,
-            "y should be ~1: {}",
-            v_rot[1]
-        );
+        assert!((v_rot[1] - 1.0).abs() < TOL, "y should be ~1: {}", v_rot[1]);
         assert!((v_rot[2]).abs() < TOL, "z should be ~0: {}", v_rot[2]);
     }
 
@@ -249,11 +245,7 @@ mod tests {
         let v = [1.0, 0.0, 0.0];
         let v_rot = quat_rotate_vector(&q, &v);
         // Should rotate to [-1, 0, 0]
-        assert!(
-            (v_rot[0] - (-1.0)).abs() < TOL,
-            "180-deg: x = {}",
-            v_rot[0]
-        );
+        assert!((v_rot[0] - (-1.0)).abs() < TOL, "180-deg: x = {}", v_rot[0]);
         assert!((v_rot[1]).abs() < TOL, "180-deg: y = {}", v_rot[1]);
     }
 
@@ -263,8 +255,7 @@ mod tests {
         let v = [3.0, 4.0, 5.0];
         let v_rot = quat_rotate_vector(&q, &v);
         let norm_orig = (v[0].powi(2) + v[1].powi(2) + v[2].powi(2)).sqrt();
-        let norm_rot =
-            (v_rot[0].powi(2) + v_rot[1].powi(2) + v_rot[2].powi(2)).sqrt();
+        let norm_rot = (v_rot[0].powi(2) + v_rot[1].powi(2) + v_rot[2].powi(2)).sqrt();
         assert!(
             (norm_orig - norm_rot).abs() < TOL,
             "norm changed: {norm_orig} -> {norm_rot}"
@@ -343,14 +334,8 @@ mod tests {
         let s1 = quat_slerp(&q1, &q2, 1.0);
 
         for i in 0..4 {
-            assert!(
-                (s0[i] - q1[i]).abs() < TOL,
-                "slerp(0) should be q1: {i}"
-            );
-            assert!(
-                (s1[i] - q2[i]).abs() < TOL,
-                "slerp(1) should be q2: {i}"
-            );
+            assert!((s0[i] - q1[i]).abs() < TOL, "slerp(0) should be q1: {i}");
+            assert!((s1[i] - q2[i]).abs() < TOL, "slerp(1) should be q2: {i}");
         }
     }
 

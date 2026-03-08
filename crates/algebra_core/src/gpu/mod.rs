@@ -13,23 +13,23 @@
 
 // dimensional module is always available (has CPU fallback + wide-index API)
 pub mod dimensional;
-pub mod tensor_avt;
-pub mod voudon;
 #[cfg(feature = "gpu")]
 mod eta_matrix;
 #[cfg(feature = "gpu")]
-mod imbalance;
-#[cfg(feature = "gpu")]
 mod graph_construction;
+#[cfg(feature = "gpu")]
+mod imbalance;
+pub mod tensor_avt;
+pub mod voudon;
 
 pub use dimensional::{GpuAptResult, GpuAptResultWide, GpuDimensionalEngine};
-pub use tensor_avt::TensorAVT;
 #[cfg(feature = "gpu")]
 pub use eta_matrix::EtaMatrixGpu;
 #[cfg(feature = "gpu")]
-pub use imbalance::ImbalanceGpu;
-#[cfg(feature = "gpu")]
 pub use graph_construction::GraphConstructorGpu;
+#[cfg(feature = "gpu")]
+pub use imbalance::ImbalanceGpu;
+pub use tensor_avt::TensorAVT;
 
 /// GPU device initialization and error handling.
 #[cfg(feature = "gpu")]
