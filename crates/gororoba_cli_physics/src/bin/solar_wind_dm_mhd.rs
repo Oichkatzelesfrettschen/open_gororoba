@@ -95,6 +95,21 @@ struct Cli {
     #[arg(long, default_value_t = 0.0)]
     dm_wind_z: f64,
 
+    /// DM-baryon scattering cross-section (cm^2). 0 = pure gravity.
+    /// Nonzero values enable dynamic drag force recomputed each timestep.
+    #[arg(long, default_value_t = 0.0)]
+    dm_sigma: f64,
+
+    /// Reference proton density (cm^-3) for drag unit conversion.
+    /// Typically the median solar wind density (~5.9 cm^-3 from OMNI2).
+    #[arg(long, default_value_t = 5.9)]
+    dm_n_ref: f64,
+
+    /// Reference bulk speed (km/s) for drag unit conversion.
+    /// Typically the median solar wind speed (~393 km/s from OMNI2).
+    #[arg(long, default_value_t = 393.0)]
+    dm_v_ref: f64,
+
     /// Disable DM coupling (pure MHD baseline for A/B comparison)
     #[arg(long, default_value_t = false)]
     no_dm: bool,
@@ -277,10 +292,17 @@ fn main() -> anyhow::Result<()> {
             c200: cli.dm_c200,
             v_dm_wind: [cli.dm_wind_x, cli.dm_wind_y, cli.dm_wind_z],
             eta_wake: cli.dm_wake,
+            sigma_chi_b: cli.dm_sigma,
             ..DmForceConfig::default()
         };
         let field = DmForceField::new(cli.nx, cli.ny, cli.nz, dm_config);
         eprintln!("DM max |F_grav|: {:.6e} (lattice units)", field.max_force_magnitude());
+        if cli.dm_sigma > 0.0 {
+            eprintln!(
+                "DM drag: sigma={:.3e} cm^2, n_ref={:.1} cm^-3, v_ref={:.0} km/s",
+                cli.dm_sigma, cli.dm_n_ref, cli.dm_v_ref,
+            );
+        }
         Some(field)
     } else {
         None
@@ -304,7 +326,21 @@ fn main() -> anyhow::Result<()> {
 
         // 3. Combine with DM gravitational force (if enabled)
         let combined = match &dm_field {
-            Some(dm) => combine_forces(&lorentz, &dm.force),
+            Some(dm) => {
+                let grav_combined = combine_forces(&lorentz, &dm.force);
+                // Add dynamic drag force when sigma_chi_b > 0
+                if dm.config.sigma_chi_b > 0.0 {
+                    let drag = dm.drag_force(
+                        &solver.rho,
+                        &solver.u,
+                        cli.dm_n_ref,
+                        cli.dm_v_ref,
+                    );
+                    combine_forces(&grav_combined, &drag)
+                } else {
+                    grav_combined
+                }
+            }
             None => lorentz,
         };
 
@@ -333,8 +369,26 @@ fn main() -> anyhow::Result<()> {
                 0.0
             };
 
+            // Report drag force magnitude when sigma > 0
+            let drag_info = if let Some(dm) = dm_field.as_ref() {
+                if dm.config.sigma_chi_b > 0.0 {
+                    let drag = dm.drag_force(
+                        &solver.rho,
+                        &solver.u,
+                        cli.dm_n_ref,
+                        cli.dm_v_ref,
+                    );
+                    let max_drag = max_force_mag(&drag);
+                    format!("  |F_drag|={max_drag:.3e}")
+                } else {
+                    String::new()
+                }
+            } else {
+                String::new()
+            };
+
             eprintln!(
-                "step={:>6}  mass={mass:.6}  B_energy={energy:.6e}  max|divB|={div:.6e}  |F_DM|/|F_L|={ratio:.3e}",
+                "step={:>6}  mass={mass:.6}  B_energy={energy:.6e}  max|divB|={div:.6e}  |F_DM|/|F_L|={ratio:.3e}{drag_info}",
                 step + 1,
             );
 

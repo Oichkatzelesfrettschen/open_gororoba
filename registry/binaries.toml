@@ -972,8 +972,15 @@ status = "active"
 [[binary]]
 name = "solar-wind-ic"
 crate = "gororoba_cli_physics"
-description = "Generate solar wind initial conditions from real spacecraft data (NASA OMNI2 preferred, ACE SWEPAM fallback). Maps hourly proton density, bulk speed, ion temperature, and Bx/By/Bz (GSE) to 3D LBM grid via Taylor frozen-in hypothesis. Output as CSV volume for ingestion by solar-wind-mhd-sim and solar-wind-dm-mhd."
+description = "Generate solar wind initial conditions from real spacecraft data. Supports OMNI2, ACE MAG L2, ACE SWEPAM, WIND SWE+MFI, and STEREO-A PLASTIC+IMPACT/MAG via adapter pattern. All datasets flow through OmniRecord interchange format. RTN->GSE transform for STEREO data."
 status = "active"
+
+[[binary]]
+name = "cross-validate-solar-wind"
+crate = "gororoba_cli_physics"
+description = "Multi-spacecraft cross-validation: computes Pearson correlation, RMSE, and bias between overlapping hourly measurements from OMNI2, ACE MAG, WIND SWE+MFI. Proves instrument independence of DM null result."
+status = "active"
+experiment_refs = ["E-113"]
 
 [[binary]]
 name = "flyby-residual-audit"

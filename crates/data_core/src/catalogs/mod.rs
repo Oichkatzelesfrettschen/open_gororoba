@@ -5,6 +5,7 @@
 //! - A DatasetProvider implementation for fetching
 //! - Typed record structs with CSV parsing
 
+pub mod ace_mag;
 pub mod aflow;
 pub mod atnf;
 pub mod bl_filterbank;
@@ -27,8 +28,10 @@ pub mod planck;
 pub mod sdss;
 pub mod solar_wind;
 pub mod sorce;
+pub mod stereo_plastic;
 pub mod tsi;
 pub mod union3;
+pub mod wind_swe;
 pub mod wow;
 
 pub use eht::{list_tgz_members, tgz_member_count, validate_eht_archive};
