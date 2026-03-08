@@ -20,6 +20,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CRATES_DIR = REPO_ROOT / "crates"
+INLINE_TEST_MARKERS = ("#[test]", "#[cfg(test)]", "mod tests")
 
 
 def parse_args() -> argparse.Namespace:
@@ -53,8 +54,12 @@ def has_inline_tests(package: str) -> bool:
         if bin_root in path.parents:
             continue
         text = path.read_text(encoding="utf-8")
-        if "#[test]" in text or "#[cfg(test)]" in text or "mod tests" in text:
-            return True
+        for raw_line in text.splitlines():
+            line = raw_line.strip()
+            if line.startswith("//") or line.startswith("/*") or line.startswith("*"):
+                continue
+            if any(line.startswith(marker) for marker in INLINE_TEST_MARKERS):
+                return True
     return False
 
 
