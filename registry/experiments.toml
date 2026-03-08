@@ -4,7 +4,7 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 108
+experiment_count = 110
 deterministic_count = 65
 gpu_count = 13
 seeded_count = 46
@@ -2539,3 +2539,49 @@ input_path_refs = []
 output_path_refs = []
 dataset_refs = []
 reproducibility_class = "non_deterministic"
+
+[[experiment]]
+id = "E-110"
+title = "High-dimensional Cayley-Dickson algebra analysis (dim 16..4096)"
+binary = "dm-cd-4096-analysis"
+binary_registered = true
+binary_experiment_declared = ""
+method = "cd_tower_sweep: Random element sampling for associator norms, zero-divisor density, and norm multiplicativity deviation across CD dims 16..4096. AVT timing via TensorAVT auto-backend."
+input = "dims=16,32,64,128,256,512,1024,2048,4096, samples=1000, seed=42"
+output = ["stdout", "csv"]
+run = "cargo run --release --bin dm-cd-4096-analysis -- --dims 16,32,64,128,256,512,1024,2048,4096 --samples 1000 --seed 42"
+run_command_sha256 = ""
+claims = []
+claim_refs = []
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-109"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-111"
+title = "Solar wind MHD simulation with Parker spiral B-field"
+binary = "solar-wind-mhd-sim"
+binary_registered = true
+binary_experiment_declared = ""
+method = "lbm_mhd: D3Q19 LBM coupled with induction equation B-field evolution. Parker spiral initialization, Zou-He velocity inlet, Guo forcing from Lorentz force J x B."
+input = "nx=128, ny=32, nz=32, steps=5000, tau=0.6, b0=5.0 nT, v_sw=0.05"
+output = ["csv_snapshots"]
+run = "cargo run --release --bin solar-wind-mhd-sim -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --snap-interval 500 --out data/experiments/e111_solar_wind"
+run_command_sha256 = ""
+claims = []
+claim_refs = []
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-110"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = ["ACE SWEPAM"]
+reproducibility_class = "deterministic"

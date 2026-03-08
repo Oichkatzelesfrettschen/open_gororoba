@@ -3,17 +3,17 @@
 
 [bibliography]
 authoritative = true
-updated = "2026-02-25"
+updated = "2026-03-08"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
-section_count = 34
-entry_count = 220
+section_count = 43
+entry_count = 296
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
-section_count = 34
-entry_count = 220
+section_count = 43
+entry_count = 296
 
 [[section]]
 id = "BSEC-001"
@@ -2608,3 +2608,840 @@ citation_markdown = "**Edelsbrunner, H. & Harer, J. L.** (2010). *Computational 
 notes = ["*Standard reference for persistent homology and computational topology.*"]
 urls = []
 dois = ["10.1090/mbk/069"]
+
+# ============================================================================
+# Dark Matter Papers (76 entries, BIB-0221..BIB-0296)
+# Ingested from papers/MANIFEST.toml, 2026-03-08
+# ============================================================================
+
+[[section]]
+id = "BSEC-035"
+name = "Dark Matter Reviews"
+groups = ["Primary Research & Data Sources"]
+entry_count = 5
+
+[[section]]
+id = "BSEC-036"
+name = "Dark Matter Collider Searches"
+groups = ["Primary Research & Data Sources"]
+entry_count = 13
+
+[[section]]
+id = "BSEC-037"
+name = "Dark Matter Higgs & Scalar Portals"
+groups = ["Primary Research & Data Sources"]
+entry_count = 16
+
+[[section]]
+id = "BSEC-038"
+name = "Dark Matter Vector Portals"
+groups = ["Primary Research & Data Sources"]
+entry_count = 7
+
+[[section]]
+id = "BSEC-039"
+name = "Dark Matter Cosmology & Surveys"
+groups = ["Primary Research & Data Sources"]
+entry_count = 14
+
+[[section]]
+id = "BSEC-040"
+name = "Dark Matter Local & Solar-System Probes"
+groups = ["Primary Research & Data Sources"]
+entry_count = 9
+
+[[section]]
+id = "BSEC-041"
+name = "Dark Matter Direct Detection"
+groups = ["Primary Research & Data Sources"]
+entry_count = 2
+
+[[section]]
+id = "BSEC-042"
+name = "Dark Matter Asymmetric & Co-genesis"
+groups = ["Primary Research & Data Sources"]
+entry_count = 7
+
+[[section]]
+id = "BSEC-043"
+name = "Dark Matter Secondary Reporting"
+groups = ["Primary Research & Data Sources"]
+entry_count = 3
+
+# --- BSEC-035: Dark Matter Reviews (5) ---
+
+[[entry]]
+id = "BIB-0221"
+order_index = 221
+group = "Primary Research & Data Sources"
+section = "Dark Matter Reviews"
+citation_markdown = "**Brax, P., et al.** (2026). *Illuminating the dark universe in the multi-messenger era*. [arXiv:2603.03446](https://arxiv.org/abs/2603.03446)."
+notes = ["*Cross-cutting review of dark matter and dark energy in the multi-messenger era.*"]
+urls = ["https://arxiv.org/abs/2603.03446"]
+dois = []
+
+[[entry]]
+id = "BIB-0222"
+order_index = 222
+group = "Primary Research & Data Sources"
+section = "Dark Matter Reviews"
+citation_markdown = "**Abdullahi, A., et al.** (2025). *From oversimplified to overlooked: the case for exploring Rich Dark Sectors*. [arXiv:2505.05663](https://arxiv.org/abs/2505.05663)."
+notes = ["*Argues for rich dark sector models beyond minimal WIMP paradigm.*"]
+urls = ["https://arxiv.org/abs/2505.05663"]
+dois = []
+
+[[entry]]
+id = "BIB-0223"
+order_index = 223
+group = "Primary Research & Data Sources"
+section = "Dark Matter Reviews"
+citation_markdown = "**Crnogorcev, M.** (2025). *The Dark Matters at ICRC 2025*. [arXiv:2510.17473](https://arxiv.org/abs/2510.17473)."
+notes = ["*Summary of dark matter results presented at ICRC 2025.*"]
+urls = ["https://arxiv.org/abs/2510.17473"]
+dois = []
+
+[[entry]]
+id = "BIB-0224"
+order_index = 224
+group = "Primary Research & Data Sources"
+section = "Dark Matter Reviews"
+citation_markdown = "**Bramante, J.** (2026). *Very Heavy and Composite Dark Matter: Theory and Experimental Searches*. [arXiv:2602.23708](https://arxiv.org/abs/2602.23708)."
+notes = ["*Review of composite and very heavy dark matter candidates and search strategies.*"]
+urls = ["https://arxiv.org/abs/2602.23708"]
+dois = []
+
+[[entry]]
+id = "BIB-0225"
+order_index = 225
+group = "Primary Research & Data Sources"
+section = "Dark Matter Reviews"
+citation_markdown = "**Bodas, A., Buen-Abad, M. A., Hook, A., & Sundrum, R.** (2024). *A Closer Look in the Mirror: Reflections on the Matter/Dark Matter Coincidence*. [arXiv:2401.12286](https://arxiv.org/abs/2401.12286)."
+notes = ["*Analysis of the matter--dark matter cosmological abundance coincidence via mirror models.*"]
+urls = ["https://arxiv.org/abs/2401.12286"]
+dois = []
+
+# --- BSEC-036: Dark Matter Collider Searches (13) ---
+
+[[entry]]
+id = "BIB-0226"
+order_index = 226
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**ATLAS Collaboration.** (2025). *Shedding light with jets from the dark side*. ATLAS Physics Briefing."
+notes = ["*ATLAS briefing on semi-visible jet searches for dark sector showers.*"]
+urls = ["https://atlas.cern/Updates/Briefing/Shedding-Light-Dark-Sector"]
+dois = []
+
+[[entry]]
+id = "BIB-0227"
+order_index = 227
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**ATLAS Collaboration.** (2025). *Search for new physics in final states with semi-visible jets using the ATLAS detector*. [arXiv:2505.01634](https://arxiv.org/abs/2505.01634)."
+notes = ["*Full ATLAS semi-visible jet analysis for dark shower signatures at the LHC.*"]
+urls = ["https://arxiv.org/abs/2505.01634"]
+dois = []
+
+[[entry]]
+id = "BIB-0228"
+order_index = 228
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**Wilson-Edwards, D.** (2026). *Searches for unusual signatures from dark sectors with the ATLAS Experiment*. [arXiv:2601.13033](https://arxiv.org/abs/2601.13033)."
+notes = ["*Overview of ATLAS dark sector and long-lived particle searches.*"]
+urls = ["https://arxiv.org/abs/2601.13033"]
+dois = []
+
+[[entry]]
+id = "BIB-0229"
+order_index = 229
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**ATLAS Collaboration.** (2023). *Not a jet all the way: is dark matter hiding in plain sight?* ATLAS Physics Briefing."
+notes = ["*Earlier ATLAS briefing on semi-visible jet phenomenology.*"]
+urls = ["https://atlas.cern/Updates/Briefing/Semi-Visible-Jets"]
+dois = []
+
+[[entry]]
+id = "BIB-0230"
+order_index = 230
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**ATLAS Collaboration.** (2023). *When jets go dark: identifying elusive dark jets at ATLAS*. ATLAS Physics Briefing."
+notes = ["*ATLAS briefing on dark jet identification techniques.*"]
+urls = ["https://atlas.cern/Updates/Briefing/Dark-Jets"]
+dois = []
+
+[[entry]]
+id = "BIB-0231"
+order_index = 231
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**CMS Collaboration.** (2025). *Search for low-mass hidden valley dark showers with displaced dimuons*. CMS EXO-24-008."
+notes = ["*CMS search for displaced dimuon signatures from hidden valley dark showers.*"]
+urls = ["https://cms-results.web.cern.ch/cms-results/public-results/publications/EXO-24-008"]
+dois = []
+
+[[entry]]
+id = "BIB-0232"
+order_index = 232
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**CMS Collaboration.** (2025). *Search for long-lived particles decaying into muons using CMS scouting data*. CMS EXO-24-016."
+notes = ["*CMS scouting-based long-lived particle search via displaced dimuons.*"]
+urls = ["https://cms-results.web.cern.ch/cms-results/public-results/preliminary-results/EXO-24-016/index.html"]
+dois = []
+
+[[entry]]
+id = "BIB-0233"
+order_index = 233
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**CMS Collaboration.** (2024). *Search for long-lived particles decaying to a pair of muons at sqrt(s)=13.6 TeV*. [arXiv:2402.14491](https://arxiv.org/abs/2402.14491)."
+notes = ["*Run 3 CMS search for long-lived particles decaying to muon pairs.*"]
+urls = ["https://arxiv.org/abs/2402.14491"]
+dois = []
+
+[[entry]]
+id = "BIB-0234"
+order_index = 234
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**Ilten, P. J.** (2025). *Dark Sector Searches at LHCb*. CERN-CDS-2951492."
+notes = ["*Review of LHCb dark photon and dark sector search programme.*"]
+urls = ["https://cds.cern.ch/record/2951492/files/ilten.pdf"]
+dois = []
+
+[[entry]]
+id = "BIB-0235"
+order_index = 235
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**Fantini, L.** (2026). *How LHCb is shedding light on the existence of dark sector mediators*. CERN-CDS-2953685."
+notes = ["*Latest LHCb results on dark sector mediator searches.*"]
+urls = ["https://cds.cern.ch/record/2953685"]
+dois = []
+
+[[entry]]
+id = "BIB-0236"
+order_index = 236
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**Cid Vidal, X.** (2021). *Searches for Dark Photons at LHCb*. CERN-CDS-2788424."
+notes = ["*LHCb dark photon search results and projections.*"]
+urls = ["https://cds.cern.ch/record/2788424"]
+dois = []
+
+[[entry]]
+id = "BIB-0237"
+order_index = 237
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**CMS Collaboration.** (2025). *Search for soft unclustered energy patterns in association with a Z boson*. CMS EXO-23-003."
+notes = ["*CMS SUEP search in Z+jets final state for dark shower signatures.*"]
+urls = ["https://cms-results.web.cern.ch/cms-results/public-results/preliminary-results/EXO-23-003/index.html"]
+dois = []
+
+[[entry]]
+id = "BIB-0238"
+order_index = 238
+group = "Primary Research & Data Sources"
+section = "Dark Matter Collider Searches"
+citation_markdown = "**CMS Collaboration.** (2025). *Search for soft unclustered energy patterns in association with a W boson*. CMS EXO-24-030."
+notes = ["*CMS SUEP search in W+jets final state for dark shower signatures.*"]
+urls = ["https://cms-results.web.cern.ch/cms-results/public-results/preliminary-results/EXO-24-030/index.html"]
+dois = []
+
+# --- BSEC-037: Dark Matter Higgs & Scalar Portals (16) ---
+
+[[entry]]
+id = "BIB-0239"
+order_index = 239
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Lomte, S.** (2026). *Shedding Light on Dark Matter via the Higgs Portal*. [arXiv:2601.06284](https://arxiv.org/abs/2601.06284)."
+notes = ["*Higgs portal dark matter review covering invisible Higgs decays and direct detection.*"]
+urls = ["https://arxiv.org/abs/2601.06284"]
+dois = []
+
+[[entry]]
+id = "BIB-0240"
+order_index = 240
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**CMS Collaboration.** (2025). *Search for light scalar particles from Higgs boson decays with two muons and two hadrons*. CMS EXO-24-034."
+notes = ["*CMS exotic Higgs decay search via light scalar pair production.*"]
+urls = ["https://cms-results.web.cern.ch/cms-results/public-results/preliminary-results/EXO-24-034/index.html"]
+dois = []
+
+[[entry]]
+id = "BIB-0241"
+order_index = 241
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**CMS Collaboration.** (2025). *Search for exotic Higgs boson decays H->AA with A->gamma gamma*. CMS EXO-24-025."
+notes = ["*CMS diphoton search for exotic Higgs decays via pseudoscalar pairs.*"]
+urls = ["https://cms-results.web.cern.ch/cms-results/public-results/publications/EXO-24-025"]
+dois = []
+
+[[entry]]
+id = "BIB-0242"
+order_index = 242
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**CMS Collaboration.** (2025). *Search for light pseudoscalar a bosons in H->aa->4e decays*. CMS EXO-24-031."
+notes = ["*CMS search for light pseudoscalar bosons in 4-electron final states.*"]
+urls = ["https://cms-results.web.cern.ch/cms-results/public-results/publications/EXO-24-031"]
+dois = []
+
+[[entry]]
+id = "BIB-0243"
+order_index = 243
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**CMS Collaboration.** (2022). *Search for long-lived particles decaying into muon pairs at sqrt(s)=13 TeV*. [arXiv:2205.08582](https://arxiv.org/abs/2205.08582)."
+notes = ["*Run 2 CMS long-lived particle search in muon pair final states.*"]
+urls = ["https://arxiv.org/abs/2205.08582"]
+dois = []
+
+[[entry]]
+id = "BIB-0244"
+order_index = 244
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Huang, P., Medina, A. D., & Wagner, C. E. M.** (2026). *Rescuing Overabundant Dark Matter with a Strongly First Order Phase Transition*. [arXiv:2602.16822](https://arxiv.org/abs/2602.16822)."
+notes = ["*Mechanism to dilute overabundant dark matter via first-order electroweak phase transition.*"]
+urls = ["https://arxiv.org/abs/2602.16822"]
+dois = []
+
+[[entry]]
+id = "BIB-0245"
+order_index = 245
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Feng, W.-Z. & Zhang, Z.-H.** (2026). *Gauge-independent gravitational waves from a minimal dark U(1) sector*. [arXiv:2602.14866](https://arxiv.org/abs/2602.14866)."
+notes = ["*Gravitational wave production from a minimal dark U(1) phase transition.*"]
+urls = ["https://arxiv.org/abs/2602.14866"]
+dois = []
+
+[[entry]]
+id = "BIB-0246"
+order_index = 246
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Carvalho-Correa, J. P., Couto e Silva, B. A., & Sanchez-Vega, B. L.** (2026). *Mixed Freeze-In and Freeze-Out Histories in a Z4 Two-Scalar Model*. [arXiv:2602.18564](https://arxiv.org/abs/2602.18564)."
+notes = ["*Z4-symmetric two-scalar model with mixed freeze-in/freeze-out dark matter production.*"]
+urls = ["https://arxiv.org/abs/2602.18564"]
+dois = []
+
+[[entry]]
+id = "BIB-0247"
+order_index = 247
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Feiteira, D., Lebedev, O., & Oliveira, V.** (2026). *Warm dark matter from freeze-in at stronger coupling*. [arXiv:2602.20242](https://arxiv.org/abs/2602.20242)."
+notes = ["*Warm dark matter production via freeze-in mechanism at stronger-than-typical couplings.*"]
+urls = ["https://arxiv.org/abs/2602.20242"]
+dois = []
+
+[[entry]]
+id = "BIB-0248"
+order_index = 248
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Das, J., Niyogi, S., & Srivastava, T.** (2026). *Revisiting Singlet Fermion Dark Matter with a Scalar Portal*. [arXiv:2601.13147](https://arxiv.org/abs/2601.13147)."
+notes = ["*Updated analysis of singlet fermion dark matter with scalar portal and EWPT constraints.*"]
+urls = ["https://arxiv.org/abs/2601.13147"]
+dois = []
+
+[[entry]]
+id = "BIB-0249"
+order_index = 249
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Yamashita, K.** (2025). *Gravitational Positivity Bounds on Higgs-Portal Light Dark Matter*. [arXiv:2504.16525](https://arxiv.org/abs/2504.16525)."
+notes = ["*Gravitational positivity bounds constraining Higgs-portal light dark matter parameter space.*"]
+urls = ["https://arxiv.org/abs/2504.16525"]
+dois = []
+
+[[entry]]
+id = "BIB-0250"
+order_index = 250
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Chaudhuri, A.** (2026). *Dark Temperature Hierarchies and Gravitational Waves from the Electroweak Phase Transition*. [arXiv:2602.20760](https://arxiv.org/abs/2602.20760)."
+notes = ["*Dark sector temperature hierarchies and their gravitational wave signatures from EWPT.*"]
+urls = ["https://arxiv.org/abs/2602.20760"]
+dois = []
+
+[[entry]]
+id = "BIB-0251"
+order_index = 251
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Elgammal, S. & De Filippis, N.** (2026). *Search for dark Higgs in the Mono-Z-prime portal at FCC-ee*. [arXiv:2602.03235](https://arxiv.org/abs/2602.03235)."
+notes = ["*Projected FCC-ee sensitivity to dark Higgs boson via mono-Z-prime portal.*"]
+urls = ["https://arxiv.org/abs/2602.03235"]
+dois = []
+
+[[entry]]
+id = "BIB-0252"
+order_index = 252
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**Abed, F., AlMellah, A., & Faisel, G.** (2025). *Dark Higgs in Hidden Sector as a Probe for Dark Matter*. [arXiv:2512.21457](https://arxiv.org/abs/2512.21457)."
+notes = ["*Hidden sector dark Higgs as mediator between SM and dark matter.*"]
+urls = ["https://arxiv.org/abs/2512.21457"]
+dois = []
+
+[[entry]]
+id = "BIB-0253"
+order_index = 253
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**CMS Collaboration.** (2025). *Improved results on Higgs boson pair production in the 4b final state*. CMS HIG-24-010."
+notes = ["*Updated CMS di-Higgs search in the bbbb channel with Run 3 data.*"]
+urls = ["https://cms-results.web.cern.ch/cms-results/public-results/preliminary-results/HIG-24-010/index.html"]
+dois = []
+
+[[entry]]
+id = "BIB-0254"
+order_index = 254
+group = "Primary Research & Data Sources"
+section = "Dark Matter Higgs & Scalar Portals"
+citation_markdown = "**ATLAS Collaboration.** (2024). *Combination of Searches for Higgs Boson Pair Production at sqrt(s)=13 TeV*. [arXiv:2406.09971](https://arxiv.org/abs/2406.09971)."
+notes = ["*ATLAS Run 2 combination of di-Higgs searches across multiple decay channels.*"]
+urls = ["https://arxiv.org/abs/2406.09971"]
+dois = []
+
+# --- BSEC-038: Dark Matter Vector Portals (7) ---
+
+[[entry]]
+id = "BIB-0255"
+order_index = 255
+group = "Primary Research & Data Sources"
+section = "Dark Matter Vector Portals"
+citation_markdown = "**Angel, L., et al.** (2026). *Search for Light Dark Sectors Using Electron-Photon Collisions*. [arXiv:2603.00247](https://arxiv.org/abs/2603.00247)."
+notes = ["*Proposed electron-photon collision mode for light dark sector searches.*"]
+urls = ["https://arxiv.org/abs/2603.00247"]
+dois = []
+
+[[entry]]
+id = "BIB-0256"
+order_index = 256
+group = "Primary Research & Data Sources"
+section = "Dark Matter Vector Portals"
+citation_markdown = "**Gninenko, S. N., et al.** (2026). *Constraints on dark axion portal: missing energy and fermion EDMs*. [arXiv:2602.11405](https://arxiv.org/abs/2602.11405)."
+notes = ["*Dark axion portal constraints from missing-energy experiments and fermion EDMs.*"]
+urls = ["https://arxiv.org/abs/2602.11405"]
+dois = []
+
+[[entry]]
+id = "BIB-0257"
+order_index = 257
+group = "Primary Research & Data Sources"
+section = "Dark Matter Vector Portals"
+citation_markdown = "**Arza, A., et al.** (2026). *The COSMIC WISPers White Paper*. [arXiv:2603.03433](https://arxiv.org/abs/2603.03433)."
+notes = ["*Community white paper on cosmic searches for WISPs: axions, dark photons, and ALPs.*"]
+urls = ["https://arxiv.org/abs/2603.03433"]
+dois = []
+
+[[entry]]
+id = "BIB-0258"
+order_index = 258
+group = "Primary Research & Data Sources"
+section = "Dark Matter Vector Portals"
+citation_markdown = "**Ivanov, A., et al.** (2026). *Sensitivity of a closed dielectric haloscope to axion dark matter*. [arXiv:2603.05006](https://arxiv.org/abs/2603.05006)."
+notes = ["*Projected sensitivity of closed dielectric haloscope for axion dark matter detection.*"]
+urls = ["https://arxiv.org/abs/2603.05006"]
+dois = []
+
+[[entry]]
+id = "BIB-0259"
+order_index = 259
+group = "Primary Research & Data Sources"
+section = "Dark Matter Vector Portals"
+citation_markdown = "**De Romeri, V., et al.** (2026). *Testing light and heavy vector mediators with solar CEvNS measurements*. [arXiv:2603.00554](https://arxiv.org/abs/2603.00554)."
+notes = ["*Solar coherent neutrino scattering as probe for light and heavy vector mediators.*"]
+urls = ["https://arxiv.org/abs/2603.00554"]
+dois = []
+
+[[entry]]
+id = "BIB-0260"
+order_index = 260
+group = "Primary Research & Data Sources"
+section = "Dark Matter Vector Portals"
+citation_markdown = "**Barir, J., et al.** (2026). *NASDUCK-prime: Laboratory Limits on Ultralight Dark-Photon Dark Matter*. [arXiv:2602.22308](https://arxiv.org/abs/2602.22308)."
+notes = ["*NASDUCK-prime magnetometry limits on ultralight dark photon dark matter.*"]
+urls = ["https://arxiv.org/abs/2602.22308"]
+dois = []
+
+[[entry]]
+id = "BIB-0261"
+order_index = 261
+group = "Primary Research & Data Sources"
+section = "Dark Matter Vector Portals"
+citation_markdown = "**Berger, J., et al.** (2025). *Galactic magnetic fields seeded by ultralight dark photons*. [arXiv:2511.07508](https://arxiv.org/abs/2511.07508)."
+notes = ["*Ultralight dark photon mechanism for seeding galactic-scale magnetic fields.*"]
+urls = ["https://arxiv.org/abs/2511.07508"]
+dois = []
+
+# --- BSEC-039: Dark Matter Cosmology & Surveys (14) ---
+
+[[entry]]
+id = "BIB-0262"
+order_index = 262
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**DESI Collaboration.** (2025). *More Than a Hint of Evolving Dark Energy -- New Results and Data from DESI*. DESI News."
+notes = ["*DESI DR2 announcement of strengthened evidence for evolving dark energy.*"]
+urls = ["https://www.desi.lbl.gov/2025/03/19/more-than-a-hint-of-evolving-dark-energy-new-results-and-data-from-desi/"]
+dois = []
+
+[[entry]]
+id = "BIB-0263"
+order_index = 263
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**Abdul Karim, M., et al. (DESI).** (2025). *DESI DR2 Results II: Measurements of Baryon Acoustic Oscillations and Cosmological Constraints*. [arXiv:2503.14738](https://arxiv.org/abs/2503.14738)."
+notes = ["*DESI DR2 BAO measurements with strengthened dark energy evolution signal.*"]
+urls = ["https://arxiv.org/abs/2503.14738"]
+dois = []
+
+[[entry]]
+id = "BIB-0264"
+order_index = 264
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**ESA Euclid Mission.** (2025). *Euclid opens data treasure trove, offers glimpse of deep fields*. ESA News."
+notes = ["*Euclid Q1 data release announcement with first deep field results.*"]
+urls = ["https://www.esa.int/Science_Exploration/Space_Science/Euclid/Euclid_opens_data_treasure_trove_offers_glimpse_of_deep_fields"]
+dois = []
+
+[[entry]]
+id = "BIB-0265"
+order_index = 265
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**ESA Euclid Mission.** (2024). *Ready, set, go! Euclid begins its dark Universe survey*. ESA News."
+notes = ["*Euclid survey start announcement.*"]
+urls = ["https://www.esa.int/Science_Exploration/Space_Science/Euclid/Ready_set_go_Euclid_begins_its_dark_Universe_survey"]
+dois = []
+
+[[entry]]
+id = "BIB-0266"
+order_index = 266
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**NASA Roman Mission.** (2026). *Core Survey by NASA Roman Mission Will Unveil Universe Dark Side*. NASA News."
+notes = ["*Nancy Grace Roman Space Telescope core survey plans for dark matter and dark energy.*"]
+urls = ["https://www.nasa.gov/missions/roman-space-telescope/core-survey-by-nasas-roman-mission-will-unveil-universes-dark-side/"]
+dois = []
+
+[[entry]]
+id = "BIB-0267"
+order_index = 267
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**NASA Roman Mission.** (2026). *Cosmology with the Roman High Latitude Imaging Survey*. NASA Science."
+notes = ["*Roman HLIS cosmology programme: weak lensing, galaxy clustering, SNe Ia.*"]
+urls = ["https://science.nasa.gov/mission/roman-space-telescope/cosmology-with-the-roman-high-latitude-imaging-survey/"]
+dois = []
+
+[[entry]]
+id = "BIB-0268"
+order_index = 268
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**NASA Roman Mission.** (2026). *Precursor Strong Lensing Science with Roman towards Precision Cosmology*. NASA Science."
+notes = ["*Roman strong lensing precursor science for cosmological parameter estimation.*"]
+urls = ["https://science.nasa.gov/mission/roman-space-telescope/preparing-for-a-leap-precursor-strong-lensing-science-with-roman-towards-precision-cosmology/"]
+dois = []
+
+[[entry]]
+id = "BIB-0269"
+order_index = 269
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**Pantos, I. & Perivolaropoulos, L.** (2026). *Status of the S8 Tension: A 2026 Review of Probe Discrepancies*. [arXiv:2602.12238](https://arxiv.org/abs/2602.12238)."
+notes = ["*Comprehensive 2026 review of the S8 structure-growth tension across probes.*"]
+urls = ["https://arxiv.org/abs/2602.12238"]
+dois = []
+
+[[entry]]
+id = "BIB-0270"
+order_index = 270
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**DES Collaboration.** (2026). *Dark Energy Survey Year 6 Results: Cosmological Constraints from Galaxy Clustering and Weak Lensing*. [arXiv:2601.14559](https://arxiv.org/abs/2601.14559)."
+notes = ["*DES Y6 3x2pt analysis: galaxy clustering + weak lensing cosmological constraints.*"]
+urls = ["https://arxiv.org/abs/2601.14559"]
+dois = []
+
+[[entry]]
+id = "BIB-0271"
+order_index = 271
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**Fermilab / DES.** (2026). *Dark Energy Survey scientists release new analysis of how the universe expands*. Fermilab News."
+notes = ["*Fermilab announcement of DES Y6 results on cosmic expansion.*"]
+urls = ["https://news.fnal.gov/2026/01/dark-energy-survey-scientists-release-new-analysis-of-how-the-universe-expands/"]
+dois = []
+
+[[entry]]
+id = "BIB-0272"
+order_index = 272
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**Escobal, A. A., et al.** (2026). *Linear Growth of Matter Perturbations in an Interacting Dark Sector*. [arXiv:2602.11310](https://arxiv.org/abs/2602.11310)."
+notes = ["*Matter perturbation growth in interacting dark energy--dark matter models.*"]
+urls = ["https://arxiv.org/abs/2602.11310"]
+dois = []
+
+[[entry]]
+id = "BIB-0273"
+order_index = 273
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**Yildiz, L., et al.** (2026). *Linear Perturbations and Multi-Probe Diagnostics in Dark-Sector Selective f(R,T_chi) Gravity*. [arXiv:2602.21774](https://arxiv.org/abs/2602.21774)."
+notes = ["*Modified gravity model with dark-sector selective f(R,T) coupling.*"]
+urls = ["https://arxiv.org/abs/2602.21774"]
+dois = []
+
+[[entry]]
+id = "BIB-0274"
+order_index = 274
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**Pardo, L. & Castaneda, L.** (2026). *Cosmological constraints on viable f(R) models using weak lensing*. [arXiv:2601.04048](https://arxiv.org/abs/2601.04048)."
+notes = ["*Weak lensing constraints on f(R) modified gravity models.*"]
+urls = ["https://arxiv.org/abs/2601.04048"]
+dois = []
+
+[[entry]]
+id = "BIB-0275"
+order_index = 275
+group = "Primary Research & Data Sources"
+section = "Dark Matter Cosmology & Surveys"
+citation_markdown = "**London, A. S., et al.** (2026). *Cosmic voids as a probe of the nature of dark matter*. [arXiv:2602.22990](https://arxiv.org/abs/2602.22990)."
+notes = ["*Cosmic void statistics as discriminating probe for dark matter models.*"]
+urls = ["https://arxiv.org/abs/2602.22990"]
+dois = []
+
+# --- BSEC-040: Dark Matter Local & Solar-System Probes (9) ---
+
+[[entry]]
+id = "BIB-0276"
+order_index = 276
+group = "Primary Research & Data Sources"
+section = "Dark Matter Local & Solar-System Probes"
+citation_markdown = "**NASA Webb Team.** (2026). *NASA Reveals New Details About Dark Matter Influence on Universe*. NASA News."
+notes = ["*JWST observations revealing dark matter structure at high redshift.*"]
+urls = ["https://www.nasa.gov/missions/webb/nasa-reveals-new-details-about-dark-matters-influence-on-universe/"]
+dois = []
+
+[[entry]]
+id = "BIB-0277"
+order_index = 277
+group = "Primary Research & Data Sources"
+section = "Dark Matter Local & Solar-System Probes"
+citation_markdown = "**Barranco, J., et al.** (2026). *Probing a minimal dark gauge sector via microlensing of compact dark objects*. [arXiv:2512.00701](https://arxiv.org/abs/2512.00701)."
+notes = ["*Microlensing signatures of compact dark objects from minimal dark gauge sectors.*"]
+urls = ["https://arxiv.org/abs/2512.00701"]
+dois = []
+
+[[entry]]
+id = "BIB-0278"
+order_index = 278
+group = "Primary Research & Data Sources"
+section = "Dark Matter Local & Solar-System Probes"
+citation_markdown = "**Green, A. M.** (2026). *Stellar microlensing as a probe of Primordial Black Holes*. [arXiv:2602.15974](https://arxiv.org/abs/2602.15974)."
+notes = ["*Review of stellar microlensing constraints on primordial black hole dark matter.*"]
+urls = ["https://arxiv.org/abs/2602.15974"]
+dois = []
+
+[[entry]]
+id = "BIB-0279"
+order_index = 279
+group = "Primary Research & Data Sources"
+section = "Dark Matter Local & Solar-System Probes"
+citation_markdown = "**Mroz, P., et al.** (2025). *Microlensing optical depth and limits on compact objects from 20 yr OGLE SMC observations*. [arXiv:2507.13794](https://arxiv.org/abs/2507.13794)."
+notes = ["*20-year OGLE SMC microlensing survey: optical depth and compact object limits.*"]
+urls = ["https://arxiv.org/abs/2507.13794"]
+dois = []
+
+[[entry]]
+id = "BIB-0280"
+order_index = 280
+group = "Primary Research & Data Sources"
+section = "Dark Matter Local & Solar-System Probes"
+citation_markdown = "**Turyshev, S. G.** (2025). *Solar-System Experiments in the Search for Dark Energy and Dark Matter*. [arXiv:2509.05910](https://arxiv.org/abs/2509.05910)."
+notes = ["*Review of solar-system precision tests constraining dark energy and dark matter.*"]
+urls = ["https://arxiv.org/abs/2509.05910"]
+dois = []
+
+[[entry]]
+id = "BIB-0281"
+order_index = 281
+group = "Primary Research & Data Sources"
+section = "Dark Matter Local & Solar-System Probes"
+citation_markdown = "**Thoss, V. & Loeb, A.** (2025). *Detecting dark objects in the Solar System with gravitational wave observatories*. [arXiv:2507.19577](https://arxiv.org/abs/2507.19577)."
+notes = ["*Gravitational wave detection prospects for dark objects in the Solar System.*"]
+urls = ["https://arxiv.org/abs/2507.19577"]
+dois = []
+
+[[entry]]
+id = "BIB-0282"
+order_index = 282
+group = "Primary Research & Data Sources"
+section = "Dark Matter Local & Solar-System Probes"
+citation_markdown = "**Gurrola, A., Scherrer, R. J., & Trivedi, O.** (2026). *Probing Dark Energy on the Moon*. [arXiv:2603.04841](https://arxiv.org/abs/2603.04841)."
+notes = ["*Proposed lunar fifth-force experiment to probe dark energy models.*"]
+urls = ["https://arxiv.org/abs/2603.04841"]
+dois = []
+
+[[entry]]
+id = "BIB-0283"
+order_index = 283
+group = "Primary Research & Data Sources"
+section = "Dark Matter Local & Solar-System Probes"
+citation_markdown = "**Maity, T. N., et al.** (2023). *Neutrinos from the Sun can discover dark matter-electron scattering*. [arXiv:2308.12336](https://arxiv.org/abs/2308.12336)."
+notes = ["*Solar neutrino detection as probe for dark matter-electron scattering interactions.*"]
+urls = ["https://arxiv.org/abs/2308.12336"]
+dois = []
+
+[[entry]]
+id = "BIB-0284"
+order_index = 284
+group = "Primary Research & Data Sources"
+section = "Dark Matter Local & Solar-System Probes"
+citation_markdown = "**Couture, G.** (2022). *Solar wind bremsstrahlung off dark matter in our Solar System*. Phys. Rev. D 105, 055003."
+notes = ["*Solar wind bremsstrahlung from dark matter scattering in the heliosphere.*"]
+urls = ["https://link.aps.org/doi/10.1103/PhysRevD.105.055003"]
+dois = ["10.1103/PhysRevD.105.055003"]
+
+# --- BSEC-041: Dark Matter Direct Detection (2) ---
+
+[[entry]]
+id = "BIB-0285"
+order_index = 285
+group = "Primary Research & Data Sources"
+section = "Dark Matter Direct Detection"
+citation_markdown = "**LUX-ZEPLIN Collaboration.** (2025). *Searches for Light Dark Matter and CEvNS of Solar Neutrinos with LZ*. [arXiv:2512.08065](https://arxiv.org/abs/2512.08065)."
+notes = ["*LZ experiment: light dark matter and coherent elastic neutrino-nucleus scattering results.*"]
+urls = ["https://arxiv.org/abs/2512.08065"]
+dois = []
+
+[[entry]]
+id = "BIB-0286"
+order_index = 286
+group = "Primary Research & Data Sources"
+section = "Dark Matter Direct Detection"
+citation_markdown = "**XENON Collaboration.** (2026). *Light Dark Matter Search with 7.8 Tonne-Year Ionization-Only Data in XENONnT*. [arXiv:2601.11296](https://arxiv.org/abs/2601.11296)."
+notes = ["*XENONnT ionization-only analysis: world-leading limits on light dark matter.*"]
+urls = ["https://arxiv.org/abs/2601.11296"]
+dois = []
+
+# --- BSEC-042: Dark Matter Asymmetric & Co-genesis (7) ---
+
+[[entry]]
+id = "BIB-0287"
+order_index = 287
+group = "Primary Research & Data Sources"
+section = "Dark Matter Asymmetric & Co-genesis"
+citation_markdown = "**Asadi, P., Moore, M., Morrissey, D. E., & Shamma, M.** (2025). *Genesis of Baryon and Dark Matter Asymmetries through Ultraviolet Scattering Freeze-in*. [arXiv:2505.22710](https://arxiv.org/abs/2505.22710)."
+notes = ["*UV freeze-in co-genesis mechanism for simultaneous baryon and dark matter asymmetry production.*"]
+urls = ["https://arxiv.org/abs/2505.22710"]
+dois = []
+
+[[entry]]
+id = "BIB-0288"
+order_index = 288
+group = "Primary Research & Data Sources"
+section = "Dark Matter Asymmetric & Co-genesis"
+citation_markdown = "**McKenna, H. G. F., Smirnov, J., & Gorbahn, M.** (2026). *Linking Leptogenesis and Asymmetric Dark Matter*. [arXiv:2602.20237](https://arxiv.org/abs/2602.20237)."
+notes = ["*Model linking leptogenesis to asymmetric dark matter via shared seesaw mechanism.*"]
+urls = ["https://arxiv.org/abs/2602.20237"]
+dois = []
+
+[[entry]]
+id = "BIB-0289"
+order_index = 289
+group = "Primary Research & Data Sources"
+section = "Dark Matter Asymmetric & Co-genesis"
+citation_markdown = "**Takahashi, H. & Wada, J.** (2026). *Asymmetric Dark Matter from Low-Scale Spontaneous Leptogenesis*. [arXiv:2601.01849](https://arxiv.org/abs/2601.01849)."
+notes = ["*Low-scale spontaneous leptogenesis producing asymmetric dark matter.*"]
+urls = ["https://arxiv.org/abs/2601.01849"]
+dois = []
+
+[[entry]]
+id = "BIB-0290"
+order_index = 290
+group = "Primary Research & Data Sources"
+section = "Dark Matter Asymmetric & Co-genesis"
+citation_markdown = "**Abhishek & Mummidi, V. S.** (2026). *Asymmetric dark matter from leptogenesis in type-III seesaw with modular S4 symmetry*. [arXiv:2602.03384](https://arxiv.org/abs/2602.03384)."
+notes = ["*Type-III seesaw leptogenesis with modular S4 symmetry producing asymmetric dark matter.*"]
+urls = ["https://arxiv.org/abs/2602.03384"]
+dois = []
+
+[[entry]]
+id = "BIB-0291"
+order_index = 291
+group = "Primary Research & Data Sources"
+section = "Dark Matter Asymmetric & Co-genesis"
+citation_markdown = "**Mojahed, M. A. & Weber, S.** (2025). *Asymgenesis*. [arXiv:2507.10655](https://arxiv.org/abs/2507.10655)."
+notes = ["*Asymgenesis framework for simultaneous matter and dark matter asymmetry generation.*"]
+urls = ["https://arxiv.org/abs/2507.10655"]
+dois = []
+
+[[entry]]
+id = "BIB-0292"
+order_index = 292
+group = "Primary Research & Data Sources"
+section = "Dark Matter Asymmetric & Co-genesis"
+citation_markdown = "**Kanemura, S., Li, S.-P., & Xie, K.-P.** (2025). *Asteroid-mass soliton as the dark matter-baryon coincidence solution*. [arXiv:2504.08304](https://arxiv.org/abs/2504.08304)."
+notes = ["*Asteroid-mass solitonic dark matter as explanation for the DM-baryon abundance coincidence.*"]
+urls = ["https://arxiv.org/abs/2504.08304"]
+dois = []
+
+[[entry]]
+id = "BIB-0293"
+order_index = 293
+group = "Primary Research & Data Sources"
+section = "Dark Matter Asymmetric & Co-genesis"
+citation_markdown = "**Di Mauro, M., et al.** (2026). *Enhanced Cosmic-Ray Antinuclei Fluxes with Dark Matter Annihilation into SUEPs*. [arXiv:2602.15132](https://arxiv.org/abs/2602.15132)."
+notes = ["*Dark matter annihilation into SUEPs enhancing cosmic-ray antinuclei fluxes.*"]
+urls = ["https://arxiv.org/abs/2602.15132"]
+dois = []
+
+# --- BSEC-043: Dark Matter Secondary Reporting (3) ---
+
+[[entry]]
+id = "BIB-0294"
+order_index = 294
+group = "Primary Research & Data Sources"
+section = "Dark Matter Secondary Reporting"
+citation_markdown = "**Reuters.** (2025). *Evidence mounts that universe dark energy is changing over time*. Reuters Science."
+notes = ["*News coverage of DESI DR2 dark energy evolution results.*"]
+urls = ["https://www.reuters.com/science/evidence-mounts-that-universes-dark-energy-is-changing-over-time-2025-03-19/"]
+dois = []
+
+[[entry]]
+id = "BIB-0295"
+order_index = 295
+group = "Primary Research & Data Sources"
+section = "Dark Matter Secondary Reporting"
+citation_markdown = "**Reuters.** (2025). *Euclid mission data release is step toward grand atlas of the cosmos*. Reuters Science."
+notes = ["*News coverage of Euclid Q1 data release and cosmic atlas programme.*"]
+urls = ["https://www.reuters.com/science/euclid-mission-data-release-is-step-toward-grand-atlas-cosmos-2025-03-19/"]
+dois = []
+
+[[entry]]
+id = "BIB-0296"
+order_index = 296
+group = "Primary Research & Data Sources"
+section = "Dark Matter Secondary Reporting"
+citation_markdown = "**The Guardian.** (2025). *Scientists hail avalanche of discoveries from Euclid space telescope*. The Guardian."
+notes = ["*News coverage of Euclid mission early science discoveries.*"]
+urls = ["https://www.theguardian.com/science/2025/mar/19/scientists-hail-avalanche-discoveries-euclid-space-telescope"]
+dois = []

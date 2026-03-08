@@ -232,6 +232,99 @@ impl Default for BounceBackBoundary {
     }
 }
 
+/// Zou-He velocity inlet boundary condition for D3Q19.
+///
+/// Prescribes velocity (ux, uy, uz) at a boundary face and reconstructs
+/// the unknown distribution functions using the non-equilibrium bounce-back
+/// method of Zou & He (1997).
+///
+/// At each inlet node, 5 of the 19 populations are unknown (those pointing
+/// inward from the boundary). Density is computed from the known populations
+/// and prescribed velocity, then the unknowns are reconstructed.
+pub struct ZouHeBoundary {
+    pub lattice: D3Q19Lattice,
+}
+
+impl ZouHeBoundary {
+    pub fn new() -> Self {
+        Self {
+            lattice: D3Q19Lattice::new(),
+        }
+    }
+
+    /// Apply Zou-He velocity inlet at the MinX (x=0) face.
+    ///
+    /// Prescribes velocity `u_inlet = [ux, uy, uz]` at all x=0 nodes.
+    /// Unknown populations: those with c_x = +1 (indices 1, 7, 9, 11, 13
+    /// in D3Q19 standard ordering).
+    ///
+    /// Uses the non-equilibrium extrapolation method of Zou & He (1997),
+    /// extended to D3Q19. The density is determined from the known pops
+    /// and prescribed velocity; the 5 unknowns are then reconstructed
+    /// to satisfy both mass and momentum constraints.
+    ///
+    /// The D3Q19 velocity ordering is:
+    ///   0: [0,0,0]
+    ///   1: [1,0,0]   2: [-1,0,0]
+    ///   3: [0,1,0]   4: [0,-1,0]
+    ///   5: [0,0,1]   6: [0,0,-1]
+    ///   7: [1,1,0]   8: [-1,-1,0]
+    ///   9: [1,-1,0]  10: [-1,1,0]
+    ///   11: [1,0,1]  12: [-1,0,-1]
+    ///   13: [1,0,-1]  14: [-1,0,1]
+    ///   15: [0,1,1]  16: [0,-1,-1]
+    ///   17: [0,1,-1]  18: [0,-1,1]
+    pub fn apply_velocity_inlet_min_x(
+        &self,
+        f_grid: &mut [f64],
+        nx: usize,
+        ny: usize,
+        nz: usize,
+        u_inlet: [f64; 3],
+    ) {
+        let lattice = &self.lattice;
+
+        for y in 0..ny {
+            for z in 0..nz {
+                let idx = GridIndex::new(0, y, z).linearize(nx, ny) * 19;
+                let f = &mut f_grid[idx..idx + 19];
+
+                // cx=0 populations: 0, 3, 4, 5, 6, 15, 16, 17, 18
+                // cx=-1 populations: 2, 8, 10, 12, 14
+                // cx=+1 populations (unknown): 1, 7, 9, 11, 13
+
+                let sum_cx0 = f[0] + f[3] + f[4] + f[5] + f[6]
+                    + f[15] + f[16] + f[17] + f[18];
+                let sum_cx_neg = f[2] + f[8] + f[10] + f[12] + f[14];
+
+                // rho from momentum balance:
+                // rho*(1 - ux) = sum_cx0 + 2*sum_cx_neg
+                let rho = (sum_cx0 + 2.0 * sum_cx_neg) / (1.0 - u_inlet[0]);
+
+                // Non-equilibrium bounce-back: for each unknown direction i,
+                //   f_i = f_opp(i) + f_eq_i(rho, u) - f_eq_opp(i)(rho, u)
+                //
+                // The equilibrium difference encodes the velocity information:
+                // it vanishes at u=0 (bounce-back limit) and correctly
+                // imposes the prescribed velocity profile.
+                let unknowns: [usize; 5] = [1, 7, 9, 11, 13];
+                for &i in &unknowns {
+                    let opp = lattice.opposite_direction(i);
+                    let f_eq_i = lattice.equilibrium(rho, u_inlet, i);
+                    let f_eq_opp = lattice.equilibrium(rho, u_inlet, opp);
+                    f[i] = f[opp] + f_eq_i - f_eq_opp;
+                }
+            }
+        }
+    }
+}
+
+impl Default for ZouHeBoundary {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// Periodic boundary condition.
 /// Particles wrap around from one side of domain to the other.
 pub struct PeriodicBoundary;
@@ -494,5 +587,74 @@ mod tests {
         let mut f_grid = vec![0.0; 10]; // wrong size
         let voxels = vec![false; 4 * 4 * 4];
         bb.inject_boundary_from_voxels(&mut f_grid, &voxels, 4, 4, 4);
+    }
+
+    #[test]
+    fn test_zou_he_mass_conservation() {
+        let zh = ZouHeBoundary::new();
+        let lattice = D3Q19Lattice::new();
+        let (nx, ny, nz) = (8, 4, 4);
+        let n_cells = nx * ny * nz;
+
+        // Initialize at rest
+        let f_eq = BgkCollision::initialize_with_velocity(1.0, [0.0, 0.0, 0.0], &lattice);
+        let mut f_grid = Vec::with_capacity(n_cells * 19);
+        for _ in 0..n_cells {
+            f_grid.extend_from_slice(&f_eq);
+        }
+
+        let u_inlet = [0.05, 0.0, 0.0];
+        zh.apply_velocity_inlet_min_x(&mut f_grid, nx, ny, nz, u_inlet);
+
+        // Check that every x=0 node has correct density and velocity
+        for y in 0..ny {
+            for z in 0..nz {
+                let idx = GridIndex::new(0, y, z).linearize(nx, ny) * 19;
+                let f_local = &f_grid[idx..idx + 19];
+                let rho: f64 = f_local.iter().sum();
+                // Density should be positive and close to 1.0
+                assert!(rho > 0.9 && rho < 1.1, "rho={rho} at y={y}, z={z}");
+
+                // Recovered x-velocity should match inlet
+                let mut ux = 0.0;
+                for (i, &fi) in f_local.iter().enumerate() {
+                    ux += fi * lattice.velocities[i][0] as f64;
+                }
+                ux /= rho;
+                assert!(
+                    (ux - u_inlet[0]).abs() < 1e-12,
+                    "ux={ux}, expected={} at y={y}, z={z}",
+                    u_inlet[0]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_zou_he_stability() {
+        let zh = ZouHeBoundary::new();
+        let lattice = D3Q19Lattice::new();
+        let (nx, ny, nz) = (8, 4, 4);
+        let n_cells = nx * ny * nz;
+
+        let f_eq = BgkCollision::initialize_with_velocity(1.0, [0.0, 0.0, 0.0], &lattice);
+        let mut f_grid = Vec::with_capacity(n_cells * 19);
+        for _ in 0..n_cells {
+            f_grid.extend_from_slice(&f_eq);
+        }
+
+        zh.apply_velocity_inlet_min_x(&mut f_grid, nx, ny, nz, [0.05, 0.01, -0.01]);
+
+        // All distributions at x=0 should be non-negative
+        for y in 0..ny {
+            for z in 0..nz {
+                let idx = GridIndex::new(0, y, z).linearize(nx, ny) * 19;
+                let f_local = &f_grid[idx..idx + 19];
+                assert!(
+                    BgkCollision::is_stable(f_local.try_into().unwrap()),
+                    "unstable at y={y}, z={z}: {f_local:?}"
+                );
+            }
+        }
     }
 }

@@ -952,6 +952,18 @@ description = "Cargo-native TensorAVT profiling suite with iai-callgrind-compati
 status = "active"
 
 [[binary]]
+name = "dm-cd-4096-analysis"
+crate = "gororoba_cli_algebra"
+description = "Sweep Cayley-Dickson dims 16..4096 measuring associator norms, zero-divisor density, norm multiplicativity deviation, and AVT computation time via TensorAVT."
+status = "active"
+
+[[binary]]
+name = "solar-wind-mhd-sim"
+crate = "gororoba_cli_physics"
+description = "D3Q19 LBM + MHD simulation of magnetized solar wind. Parker spiral B-field initialization, Zou-He velocity inlet, Lorentz force coupling via Guo scheme."
+status = "active"
+
+[[binary]]
 name = "crate-inventory"
 crate = "gororoba_cli_data"
 description = "Validate registry/rust_crate_catalog.toml against cargo metadata and shared repo governance state."
