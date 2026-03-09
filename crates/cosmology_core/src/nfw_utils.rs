@@ -287,7 +287,7 @@ mod tests {
     fn test_cmr_mw_mass_z0_near_eight() {
         // Dutton & Maccio (2014) + Prada (2012): MW-mass halo at z=0 has c200 ~ 7-10.
         let c = concentration_mass_relation(1.0e12, 0.0);
-        assert!(c >= 7.0 && c <= 11.0, "c(MW, z=0) = {c:.2}, expected 7-11");
+        assert!((7.0..=11.0).contains(&c), "c(MW, z=0) = {c:.2}, expected 7-11");
     }
 
     #[test]
@@ -384,7 +384,7 @@ mod tests {
     fn test_params_mw_z0() {
         let p = nfw_params_from_mass(1.0e12, 0.0);
         // c200 ~ 7-11, r200 ~ 200 kpc, r_s ~ 200/c ~ 20-28 kpc
-        assert!(p.c200 >= 7.0 && p.c200 <= 11.0, "c200 = {:.2}", p.c200);
+        assert!((7.0..=11.0).contains(&p.c200), "c200 = {:.2}", p.c200);
         assert!(p.r200_kpc > 150.0 && p.r200_kpc < 280.0, "r200 = {:.1} kpc", p.r200_kpc);
         assert!(p.r_s_kpc > 0.0, "r_s must be positive");
         assert!(p.rho_s_solar_per_kpc3 > 0.0, "rho_s must be positive");
