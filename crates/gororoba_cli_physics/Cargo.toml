@@ -245,6 +245,10 @@ name = "he4-superfluid"
 path = "src/bin/he4_superfluid.rs"
 
 [[bin]]
+name = "cr-modulation-sweep"
+path = "src/bin/cr_modulation_sweep.rs"
+
+[[bin]]
 name = "entropy-pde"
 path = "src/bin/entropy_pde.rs"
 
@@ -428,6 +432,7 @@ glob = { workspace = true }
 mimalloc = { workspace = true }
 pathion_ellip = { version = "0.1.0", path = "../pathion_ellip" }
 anise = { workspace = true }
+cr_transport = { path = "../cr_transport" }
 
 [features]
 default = ["gpu"]

@@ -1795,6 +1795,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "cr_transport"
+version = "0.1.0"
+dependencies = [
+ "gauss-quad",
+]
+
+[[package]]
 name = "crc"
 version = "3.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3838,6 +3845,7 @@ dependencies = [
  "clap",
  "core_affinity",
  "cosmology_core",
+ "cr_transport",
  "csv",
  "data_core",
  "env_logger",

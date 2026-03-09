@@ -36,6 +36,7 @@ pub mod sorce;
 pub mod spdf_merged;
 pub mod stereo_plastic;
 pub mod voyager;
+pub mod voyager_crs;
 pub mod tsi;
 pub mod ulysses;
 pub mod union3;

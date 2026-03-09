@@ -54,9 +54,9 @@ reason = "Prevents SMT V-Cache thrashing on AMD Zen 3D and similar architectures
 [shared.project]
 name = "open_gororoba"
 kind = "computational_physics_research_platform"
-summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, cosmological observables, and multi-spacecraft heliospheric tomography (1-157 AU)."
-workspace_crates = 41
-cli_binaries = 176
+summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, cosmological observables, multi-spacecraft heliospheric tomography (1-157 AU), and Parker Transport Equation (GCR modulation + DM anomaly detection)."
+workspace_crates = 42
+cli_binaries = 177
 registry_model = "toml_first"
 
 [[shared.path]]
@@ -491,6 +491,24 @@ id = "PIT-011"
 issue = "boxkites.rs heavy tests cause 30+ min workspace test runs"
 impact = "cargo test --workspace blocked on O(dim^3+) exhaustive graph enumeration in debug mode"
 mitigation = "26 heavy tests gated with #[ignore]; run via cargo test -p algebra_analysis -- --ignored for research lane"
+
+[[shared.pitfall]]
+id = "PIT-012"
+issue = "ADI stability for PTE: CFL in (r, ln p) space"
+impact = "PteSolver momentum upwind step becomes unstable if (1/3)*|div(u)|*dt/d_ln_r >= 1"
+mitigation = "With v_sw ~ 0.05 LBM and d_ln_r ~ 0.23, CFL ~ 0.001 -- safe. Binding constraint is spatial advection: u_sw (lattice) < 1 (LBM stability). Monitor if dt_s is increased beyond 1e5 s."
+
+[[shared.pitfall]]
+id = "PIT-013"
+issue = "Voyager CRS data is at a different SPDF path from merged plasma files"
+impact = "CRS data (particle counts) lives under voyager/voyager{1,2}/particle/crs/, NOT the merged/ directory used by SpdfColumnLayout parsers"
+mitigation = "Use fetch_crs.py (bin/fetch_crs.py) and voyager_crs.rs parser (separate struct, NOT SpdfColumnLayout). File naming: vy{N}crs_{YEAR}.asc."
+
+[[shared.pitfall]]
+id = "PIT-014"
+issue = "LbmSolver3D::new takes tau: f64 directly, not BgkCollision struct"
+impact = "BgkCollision struct has tau_field: Vec<f64>, not nu: f64. Using BgkCollision {} literal in ::new() call causes E0560/E0308 errors."
+mitigation = "Use LbmSolver3D::new(nx, ny, nz, tau) directly. BgkCollision::new(tau) exists but is not the solver constructor argument."
 
 [[shared.reference]]
 path = "registry/engineering_standards.toml"
