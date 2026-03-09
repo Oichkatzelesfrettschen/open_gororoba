@@ -220,14 +220,14 @@ mod tests {
     #[test]
     fn test_pioneer10_layout_validity() {
         assert_eq!(PIONEER10_LAYOUT.min_columns, 13);
-        assert!(PIONEER10_LAYOUT.b_is_se);
+        const { assert!(PIONEER10_LAYOUT.b_is_se) };
         assert_eq!(PIONEER10_LAYOUT.col_distance_au, Some(3));
     }
 
     #[test]
     fn test_pioneer11_layout_validity() {
         assert_eq!(PIONEER11_LAYOUT.min_columns, 13);
-        assert!(PIONEER11_LAYOUT.b_is_se);
+        const { assert!(PIONEER11_LAYOUT.b_is_se) };
     }
 
     #[test]
