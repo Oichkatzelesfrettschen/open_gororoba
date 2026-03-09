@@ -9,6 +9,14 @@
 //!
 //! where dN/dp_kin is the spectrum per annihilation event for the chosen channel.
 //! For a monochromatic approximation, dN/dp ~ delta(E_kin - m_DM/2).
+//!
+//! # References
+//! - Di Mauro et al. (2026), arXiv:2602.15132: Enhanced cosmic-ray antinuclei fluxes
+//!   from DM annihilation into SUEPs -- provides updated channel branching ratios and
+//!   spectral shapes for the PositronAntiproton and hadronic channels implemented here.
+//! - Couture (2022), Phys.Rev.D 105, 055003: Solar wind bremsstrahlung off DM in the
+//!   Solar System -- motivates the spatial_profile NFW^2 weighting and solar-system-scale
+//!   DM density normalization used in inject().
 
 use crate::grid::RigidityGrid;
 

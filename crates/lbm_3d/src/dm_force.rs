@@ -9,6 +9,11 @@
 //! MW virial mass (1e12 Msun), the DM gravitational perturbation on solar
 //! wind is delta_rho/rho < 10^-15 -- a rigorous null result confirming
 //! the 15-order-of-magnitude gap between DM gravity and Lorentz forces.
+//!
+//! # References
+//! - Couture (2022), Phys.Rev.D 105, 055003: Solar wind bremsstrahlung off DM in the
+//!   Solar System -- the physical motivation for DM-baryon coupling in this module,
+//!   and for the sigma_chi_b cross-section and drag kappa_field fields.
 
 use crate::boundary::GridIndex;
 

@@ -44,6 +44,7 @@ pub mod halo;
 pub mod halo_profile;
 pub mod homotopy_bridge;
 pub mod observational;
+pub mod nfw_utils;
 pub mod optimizer;
 #[cfg(feature = "argmin-optimizers")]
 pub mod optimizer_argmin;
@@ -128,6 +129,11 @@ pub use halo::{
     CDG2_DM_FRACTION_MIN, CDG2_STELLAR_MASS_SOLAR, DELTA_C, PERSEUS_Z, bbks_transfer,
     linear_growth_factor, nfw_density, nfw_enclosed_mass, nfw_velocity_dispersion,
     press_schechter_mass_function, press_schechter_orthoplex, sigma_mass, udg_abundance_ratio,
+};
+
+pub use nfw_utils::{
+    NfwParams, concentration_mass_relation, nfw_density_from_params,
+    nfw_enclosed_mass_from_params, nfw_params_from_mass, nfw_r200_kpc, nfw_rho_s_from_c,
 };
 
 pub use flrw::{
