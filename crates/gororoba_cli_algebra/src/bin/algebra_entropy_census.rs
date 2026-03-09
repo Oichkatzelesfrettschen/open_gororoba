@@ -9,10 +9,10 @@
 //! PASS: H(16) > 0 with delta_H(8->16) > 10% of H_max.
 //! FAIL: H is smooth across dim=16 or jump < 10%.
 
-use algebra_core::analysis::entropy_census::{
+use clap::Parser;
+use gororoba_algebra::analysis::entropy_census::{
     associator_entropy, phase_transition_analysis, zero_divisor_density,
 };
-use clap::Parser;
 use std::{fs, path::Path};
 
 #[derive(Parser, Debug)]

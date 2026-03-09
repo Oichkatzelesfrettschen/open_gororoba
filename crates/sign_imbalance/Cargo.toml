@@ -6,7 +6,7 @@ license = "GPL-2.0-only"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
-algebra_core = { path = "../algebra_core", version = "0.1" }
+gororoba_algebra = { path = "../gororoba_algebra", version = "0.1" }
 cosmology_core = { path = "../cosmology_core", version = "0.1" }
 gr_core = { path = "../gr_core", version = "0.1" }
 nalgebra = { workspace = true }

@@ -359,7 +359,7 @@ const PHASE_CRATE_MAP: &[(&str, &str)] = &[
     ("neural_homotopy", "Phase 3"),
     ("gororoba_engine", "Phase 4"),
     ("cosmic_scheduler", "Phase 0"),
-    ("algebra_core", "algebra"),
+    ("gororoba_algebra", "algebra"),
     ("cosmology_core", "cosmology"),
     ("gr_core", "general-relativity"),
     ("materials_core", "materials"),
@@ -1172,7 +1172,7 @@ mod tests {
     #[test]
     fn test_derive_confidence_verified_with_test() {
         let mut claim = make_claim("C-001", "Test", "Verified");
-        claim.where_stated = Some("crates/algebra_core/src/test_foo.rs".to_string());
+        claim.where_stated = Some("crates/gororoba_algebra/src/test_foo.rs".to_string());
         assert_eq!(derive_confidence(&claim), "high");
     }
 

@@ -5108,13 +5108,13 @@ paragraph_index = 89
 line_start = 354
 line_end = 357
 paragraph_kind = "prose"
-text = "**Total Workspace Tests**: 2315 passing (last run 2026-02-11) - algebra_core: 1210 tests - Phase 1 crates: ~140 tests (see breakdown below) - Other workspace crates: ~965 tests"
+text = "**Total Workspace Tests**: 2315 passing (last run 2026-02-11) - CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core): 1210 tests - Phase 1 crates: ~140 tests (see breakdown below) - Other workspace crates: ~965 tests"
 text_sha256 = "81985318193b91459573c279ed651910f585b35d736f0ac97ebcb79b13fcf2fd"
 claim_refs = ["C-001", "C-632", "C-657", "C-658", "C-659", "C-660", "C-664", "C-670"]
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["02", "1", "11", "1210", "140", "2026", "2315", "965"]
-key_tokens = ["Other", "Phase", "Tests", "Total", "Workspace", "algebra_core", "below", "breakdown", "crates", "last", "passing", "run", "see", "tests", "workspace"]
+key_tokens = ["Other", "Phase", "Tests", "Total", "Workspace", "CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)", "below", "breakdown", "crates", "last", "passing", "run", "see", "tests", "workspace"]
 
 [[paragraph]]
 id = "NPA-000301"
@@ -8695,13 +8695,13 @@ paragraph_index = 37
 line_start = 118
 line_end = 124
 paragraph_kind = "prose"
-text = "**Code references:** - `crates/algebra_core/src/gpu/kernels_tensor_avt.cu` -- WMMA MMA kernel, L_a tile builder, batched kernel, warp/block reduction - `crates/algebra_core/src/gpu/tensor_avt.rs` -- host-side Tensor Core AVT orchestration, `tensor_compile_opts()`, CPU fallback - `crates/algebra_core/src/gpu/voudon.rs` -- FP32 ALU baseline (256D frustration) - `crates/algebra_core/src/gpu/dimensional.rs` -- Monte Carlo triangle sampling - `crates/lbm_3d_cuda/src/kernels_dark_halo.cu` -- warp-level reduction pattern - `proofs/verified/C1142_XORScatterGatherDuality.v` -- 11 Rocq theorems proving XOR involution guarantees collision-free gather"
+text = "**Code references:** - `CURRENT::PATH crates/gororoba_algebra/src/gpu/kernels_tensor_avt.cu (LEGACY::PATH crates/algebra_core/src/gpu/kernels_tensor_avt.cu)` -- WMMA MMA kernel, L_a tile builder, batched kernel, warp/block reduction - `CURRENT::PATH crates/gororoba_algebra/src/gpu/tensor_avt.rs (LEGACY::PATH crates/algebra_core/src/gpu/tensor_avt.rs)` -- host-side Tensor Core AVT orchestration, `tensor_compile_opts()`, CPU fallback - `CURRENT::PATH crates/gororoba_algebra/src/gpu/voudon.rs (LEGACY::PATH crates/algebra_core/src/gpu/voudon.rs)` -- FP32 ALU baseline (256D frustration) - `CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)` -- Monte Carlo triangle sampling - `crates/lbm_3d_cuda/src/kernels_dark_halo.cu` -- warp-level reduction pattern - `proofs/verified/C1142_XORScatterGatherDuality.v` -- 11 Rocq theorems proving XOR involution guarantees collision-free gather"
 text_sha256 = "d7ab768ac6d8fb7ebfdaf4a124d5efc20ba4d2c552cd88752666e0503281d799"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["11"]
-key_tokens = ["ALU", "AVT", "C1142_XORScatterGatherDuality", "CPU", "Carlo", "Code", "Core", "FP32", "L_a", "MMA", "Monte", "Rocq", "Tensor", "WMMA", "XOR", "algebra_core", "baseline", "batched", "block", "builder", "collision", "crates", "cu", "dimensional"]
+key_tokens = ["ALU", "AVT", "C1142_XORScatterGatherDuality", "CPU", "Carlo", "Code", "Core", "FP32", "L_a", "MMA", "Monte", "Rocq", "Tensor", "WMMA", "XOR", "CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)", "baseline", "batched", "block", "builder", "collision", "crates", "cu", "dimensional"]
 
 [[paragraph]]
 id = "NPA-000512"
@@ -9035,13 +9035,13 @@ paragraph_index = 57
 line_start = 167
 line_end = 170
 paragraph_kind = "prose"
-text = "**Code references:** - `crates/algebra_core/src/gpu/kernels_tensor_avt.cu` -- WMMA MMA kernel, L_a tile builder, batched kernel - `crates/algebra_core/src/gpu/tensor_avt.rs` -- host-side orchestration, `tensor_compile_opts()`, CPU fallback - `proofs/verified/C1142_XORScatterGatherDuality.v` -- 11 Rocq theorems proving XOR involution guarantees collision-free gather"
+text = "**Code references:** - `CURRENT::PATH crates/gororoba_algebra/src/gpu/kernels_tensor_avt.cu (LEGACY::PATH crates/algebra_core/src/gpu/kernels_tensor_avt.cu)` -- WMMA MMA kernel, L_a tile builder, batched kernel - `CURRENT::PATH crates/gororoba_algebra/src/gpu/tensor_avt.rs (LEGACY::PATH crates/algebra_core/src/gpu/tensor_avt.rs)` -- host-side orchestration, `tensor_compile_opts()`, CPU fallback - `proofs/verified/C1142_XORScatterGatherDuality.v` -- 11 Rocq theorems proving XOR involution guarantees collision-free gather"
 text_sha256 = "df002ba4a0ed22d83d916173e37d40f04773ac6bc91c28f1a583aef821cbdf90"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["11"]
-key_tokens = ["C1142_XORScatterGatherDuality", "CPU", "Code", "L_a", "MMA", "Rocq", "WMMA", "XOR", "algebra_core", "batched", "builder", "collision", "crates", "cu", "fallback", "free", "gather", "gpu", "guarantees", "host", "involution", "kernel", "kernels_tensor_avt", "orchestration"]
+key_tokens = ["C1142_XORScatterGatherDuality", "CPU", "Code", "L_a", "MMA", "Rocq", "WMMA", "XOR", "CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)", "batched", "builder", "collision", "crates", "cu", "fallback", "free", "gather", "gpu", "guarantees", "host", "involution", "kernel", "kernels_tensor_avt", "orchestration"]
 
 [[paragraph]]
 id = "NPA-000532"
@@ -13404,13 +13404,13 @@ paragraph_index = 4
 line_start = 10
 line_end = 13
 paragraph_kind = "prose"
-text = "The conversation uses \"wheel algebra\" to denote a family of NON-ASSOCIATIVE, NON-COMMUTATIVE algebras with cyclic multiplication structure. This is COMPLETELY DIFFERENT from the Carlstrom/Setzer \"wheel\" that totalizes division (implemented in crates/algebra_core/src/wheels.rs as WheelQ)."
+text = "The conversation uses \"wheel algebra\" to denote a family of NON-ASSOCIATIVE, NON-COMMUTATIVE algebras with cyclic multiplication structure. This is COMPLETELY DIFFERENT from the Carlstrom/Setzer \"wheel\" that totalizes division (implemented in CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs) as WheelQ)."
 text_sha256 = "f1f6b32a9a913c8fcf1a3cc4d322dccedf7577187c8d7b52e8324188001bfcf4"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["ASSOCIATIVE", "COMMUTATIVE", "COMPLETELY", "Carlstrom", "DIFFERENT", "NON", "Setzer", "WheelQ", "algebra", "algebra_core", "algebras", "conversation", "crates", "cyclic", "denote", "division", "family", "implemented", "multiplication", "rs", "src", "structure", "totalizes", "uses"]
+key_tokens = ["ASSOCIATIVE", "COMMUTATIVE", "COMPLETELY", "Carlstrom", "DIFFERENT", "NON", "Setzer", "WheelQ", "algebra", "CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)", "algebras", "conversation", "crates", "cyclic", "denote", "division", "family", "implemented", "multiplication", "rs", "src", "structure", "totalizes", "uses"]
 
 [[paragraph]]
 id = "NPA-000789"

@@ -24,9 +24,13 @@
 //!
 //! Source: <https://spdf.gsfc.nasa.gov/pub/data/juno/>
 
-use crate::catalogs::omni::OmniRecord;
-use crate::catalogs::spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni};
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use crate::{
+    catalogs::{
+        omni::OmniRecord,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+    },
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
+};
 use std::path::PathBuf;
 
 /// SPDF column layout for Juno cruise merged hourly data.
@@ -59,9 +63,7 @@ pub fn parse_juno_cruise(content: &str) -> Vec<SpdfMergedRecord> {
 }
 
 /// Parse Juno cruise merged hourly data from a file.
-pub fn parse_juno_cruise_file(
-    path: &std::path::Path,
-) -> Result<Vec<SpdfMergedRecord>, FetchError> {
+pub fn parse_juno_cruise_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
     Ok(parse_juno_cruise(&content))
@@ -72,8 +74,7 @@ pub fn juno_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
     spdf_to_omni(records, true) // SE coordinates
 }
 
-const JUNO_CRUISE_BASE: &str =
-    "https://spdf.gsfc.nasa.gov/pub/data/juno/merged/";
+const JUNO_CRUISE_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/juno/merged/";
 
 /// NASA SPDF Juno cruise dataset provider.
 pub struct JunoCruiseProvider {

@@ -1,5 +1,5 @@
-use algebra_core::physics::amplitudes::enumerate_chambers;
 use clap::Parser;
+use gororoba_algebra::physics::amplitudes::enumerate_chambers;
 use std::collections::HashMap;
 
 #[derive(Parser, Debug)]

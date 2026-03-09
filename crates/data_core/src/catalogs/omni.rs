@@ -30,7 +30,6 @@ pub struct OmniRecord {
     pub hour: u8,
 
     // -- IMF parameters (GSE coordinates) --
-
     /// Scalar magnetic field magnitude (nT). Fill: 999.9
     pub b_magnitude: f64,
     /// IMF Bx in GSE coordinates (nT). Fill: 999.9
@@ -41,7 +40,6 @@ pub struct OmniRecord {
     pub bz_gse: f64,
 
     // -- Plasma parameters --
-
     /// Proton temperature (K). Fill: 9999999.
     pub proton_temperature: f64,
     /// Proton number density (cm^-3). Fill: 999.9
@@ -56,7 +54,6 @@ pub struct OmniRecord {
     pub alfven_mach: f64,
 
     // -- Geomagnetic indices --
-
     /// Dst index (nT). Fill: 99999
     pub dst_index: f64,
     /// AE index (nT). Fill: 9999
@@ -65,7 +62,6 @@ pub struct OmniRecord {
     pub kp_times_10: u8,
 
     // -- Heliocentric position --
-
     /// Heliocentric distance (AU). 1.0 for L1 spacecraft.
     pub r_au: f64,
     /// Heliographic latitude (deg). NaN for ecliptic-only spacecraft.

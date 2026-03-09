@@ -71,10 +71,7 @@ fn parse_rate(s: &str) -> f64 {
 /// Parse Voyager CRS ASCII data from a string.
 ///
 /// Returns a Vec of records and the number of skipped lines.
-pub fn parse_voyager_crs(
-    data: &str,
-    spacecraft: u8,
-) -> (Vec<VoyagerCrsRecord>, usize) {
+pub fn parse_voyager_crs(data: &str, spacecraft: u8) -> (Vec<VoyagerCrsRecord>, usize) {
     let mut records = Vec::new();
     let mut skipped = 0_usize;
 
@@ -162,7 +159,10 @@ mod tests {
         let (records, _) = parse_voyager_crs(SAMPLE_CRS, 1);
         // Second row has 999.9 in first proton channel
         assert!(records[1].fill_flag, "fill_flag should be set for row 2");
-        assert!(records[1].proton_rates[0].is_nan(), "999.9 should parse as NaN");
+        assert!(
+            records[1].proton_rates[0].is_nan(),
+            "999.9 should parse as NaN"
+        );
     }
 
     #[test]

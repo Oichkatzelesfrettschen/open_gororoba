@@ -1,8 +1,8 @@
 use crate::simulation::state_3d::{ImbalanceField3D, LbmBackend3D};
-use algebra_core::lie::e7_geometry::generate_e7_roots;
 #[cfg(feature = "gpu")]
 use anyhow::Context;
 use anyhow::Result;
+use gororoba_algebra::lie::e7_geometry::generate_e7_roots;
 use ndarray::{Array3, Zip};
 use spectral_core::ndfft::{fft_3d, ifft_3d, real_to_complex_3d};
 

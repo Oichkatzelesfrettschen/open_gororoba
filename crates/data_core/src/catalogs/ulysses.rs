@@ -36,11 +36,14 @@
 //!
 //! Source: <https://spdf.gsfc.nasa.gov/pub/data/ulysses/>
 
-use crate::catalogs::omni::OmniRecord;
-use crate::catalogs::spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni};
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
-use std::collections::BTreeMap;
-use std::path::PathBuf;
+use crate::{
+    catalogs::{
+        omni::OmniRecord,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+    },
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
+};
+use std::{collections::BTreeMap, path::PathBuf};
 
 /// SPDF column layout for Ulysses merged hourly data.
 ///
@@ -159,11 +162,8 @@ pub fn merge_ulysses_swoops_mag(
     }
 
     // Union of all time keys (sorted by BTreeMap iteration order)
-    let mut all_keys: Vec<(u16, u16, u8)> = swoops_map
-        .keys()
-        .chain(mag_map.keys())
-        .copied()
-        .collect();
+    let mut all_keys: Vec<(u16, u16, u8)> =
+        swoops_map.keys().chain(mag_map.keys()).copied().collect();
     all_keys.sort();
     all_keys.dedup();
 
@@ -172,7 +172,16 @@ pub fn merge_ulysses_swoops_mag(
         .map(|&(year, doy, hour)| {
             let (distance_au, lat_deg, lon_deg, density, speed, temperature) = swoops_map
                 .get(&(year, doy, hour))
-                .map(|s| (s.r_au, s.lat_deg, s.lon_deg, s.density, s.speed, s.temperature))
+                .map(|s| {
+                    (
+                        s.r_au,
+                        s.lat_deg,
+                        s.lon_deg,
+                        s.density,
+                        s.speed,
+                        s.temperature,
+                    )
+                })
                 .unwrap_or((f64::NAN, f64::NAN, f64::NAN, f64::NAN, f64::NAN, f64::NAN));
 
             let (br, bt, bn, b_magnitude) = mag_map
@@ -200,8 +209,7 @@ pub fn merge_ulysses_swoops_mag(
 }
 
 /// Base URL for Ulysses merged hourly data at SPDF.
-const ULYSSES_MERGED_BASE: &str =
-    "https://spdf.gsfc.nasa.gov/pub/data/ulysses/merged/";
+const ULYSSES_MERGED_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/ulysses/merged/";
 
 /// NASA SPDF Ulysses dataset provider.
 pub struct UlyssesProvider {
@@ -360,24 +368,46 @@ mod tests {
     fn test_merge_swoops_mag_full_overlap() {
         let swoops = vec![
             UlyssesSwoopsRecord {
-                year: 1994, doy: 250, hour: 12,
-                r_au: 2.0, lat_deg: -75.0, lon_deg: 180.0,
-                density: 3.0, speed: 750.0, temperature: 200000.0,
+                year: 1994,
+                doy: 250,
+                hour: 12,
+                r_au: 2.0,
+                lat_deg: -75.0,
+                lon_deg: 180.0,
+                density: 3.0,
+                speed: 750.0,
+                temperature: 200000.0,
             },
             UlyssesSwoopsRecord {
-                year: 1994, doy: 250, hour: 13,
-                r_au: 2.0, lat_deg: -74.8, lon_deg: 180.5,
-                density: 3.1, speed: 745.0, temperature: 195000.0,
+                year: 1994,
+                doy: 250,
+                hour: 13,
+                r_au: 2.0,
+                lat_deg: -74.8,
+                lon_deg: 180.5,
+                density: 3.1,
+                speed: 745.0,
+                temperature: 195000.0,
             },
         ];
         let mag = vec![
             UlyssesMagRecord {
-                year: 1994, doy: 250, hour: 12,
-                br: 1.5, bt: -0.3, bn: 0.1, b_mag: 1.55,
+                year: 1994,
+                doy: 250,
+                hour: 12,
+                br: 1.5,
+                bt: -0.3,
+                bn: 0.1,
+                b_mag: 1.55,
             },
             UlyssesMagRecord {
-                year: 1994, doy: 250, hour: 13,
-                br: 1.4, bt: -0.2, bn: 0.15, b_mag: 1.43,
+                year: 1994,
+                doy: 250,
+                hour: 13,
+                br: 1.4,
+                bt: -0.2,
+                bn: 0.15,
+                b_mag: 1.43,
             },
         ];
 
@@ -394,18 +424,34 @@ mod tests {
     fn test_merge_swoops_mag_partial_overlap() {
         // SWOOPS has hour 12, MAG has hours 12 and 13
         let swoops = vec![UlyssesSwoopsRecord {
-            year: 1994, doy: 250, hour: 12,
-            r_au: 2.0, lat_deg: -75.0, lon_deg: 180.0,
-            density: 3.0, speed: 750.0, temperature: 200000.0,
+            year: 1994,
+            doy: 250,
+            hour: 12,
+            r_au: 2.0,
+            lat_deg: -75.0,
+            lon_deg: 180.0,
+            density: 3.0,
+            speed: 750.0,
+            temperature: 200000.0,
         }];
         let mag = vec![
             UlyssesMagRecord {
-                year: 1994, doy: 250, hour: 12,
-                br: 1.5, bt: -0.3, bn: 0.1, b_mag: 1.55,
+                year: 1994,
+                doy: 250,
+                hour: 12,
+                br: 1.5,
+                bt: -0.3,
+                bn: 0.1,
+                b_mag: 1.55,
             },
             UlyssesMagRecord {
-                year: 1994, doy: 250, hour: 13,
-                br: 1.4, bt: -0.2, bn: 0.15, b_mag: 1.43,
+                year: 1994,
+                doy: 250,
+                hour: 13,
+                br: 1.4,
+                bt: -0.2,
+                bn: 0.15,
+                b_mag: 1.43,
             },
         ];
 

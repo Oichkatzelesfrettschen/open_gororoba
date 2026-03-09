@@ -11,10 +11,14 @@
 //! Fill value: -999.9 for all magnetic field parameters.
 //! Additional bad-data indicator: B = (0, 0, 0) with |B| = 0.
 
-use crate::catalogs::omni::OmniRecord;
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file};
-use std::collections::HashMap;
-use std::path::{Path, PathBuf};
+use crate::{
+    catalogs::omni::OmniRecord,
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file},
+};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 
 /// A single 16-second ACE MAG measurement.
 #[derive(Debug, Clone)]
@@ -257,8 +261,7 @@ pub fn ace_mag_to_omni(records: &[AceMagHourly]) -> Vec<OmniRecord> {
 }
 
 /// Base URL for ACE MAG browse data (16-sec, daily ASCII).
-const ACE_MAG_BROWSE_BASE: &str =
-    "https://izw1.caltech.edu/ACE/ASC/DATA/mag16_browse/";
+const ACE_MAG_BROWSE_BASE: &str = "https://izw1.caltech.edu/ACE/ASC/DATA/mag16_browse/";
 
 /// ACE MAG dataset provider.
 ///
@@ -293,7 +296,9 @@ impl DatasetProvider for AceMagProvider {
         std::fs::create_dir_all(&dir)?;
 
         for year in self.year_start..=self.year_end {
-            let days_in_year = if year.is_multiple_of(4) && (!year.is_multiple_of(100) || year.is_multiple_of(400)) {
+            let days_in_year = if year.is_multiple_of(4)
+                && (!year.is_multiple_of(100) || year.is_multiple_of(400))
+            {
                 366
             } else {
                 365
@@ -456,11 +461,7 @@ mod tests {
                 );
             }
             if !r.bx_gse.is_nan() {
-                assert!(
-                    r.bx_gse.abs() < 100.0,
-                    "Bx out of range: {}",
-                    r.bx_gse,
-                );
+                assert!(r.bx_gse.abs() < 100.0, "Bx out of range: {}", r.bx_gse,);
             }
         }
     }

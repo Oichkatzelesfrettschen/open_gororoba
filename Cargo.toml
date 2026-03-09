@@ -16,7 +16,7 @@ members = [
     "crates/cd_kernel",
     "crates/algebra_analysis",
     "crates/algebra_experimental",
-    "crates/algebra_core",
+    "crates/gororoba_algebra",
     "crates/control_core",
     "crates/cosmology_core",
     "crates/data_core",
@@ -72,7 +72,7 @@ ndarray_duplication_note = "burn pulls its own ndarray version; accept transitiv
 
 # Shared dependencies across workspace
 [workspace.dependencies]
-# Workspace-internal crates (extracted from algebra_core)
+# Workspace-internal crates (extracted from gororoba_algebra)
 cd_kernel = { path = "crates/cd_kernel" }
 algebra_analysis = { path = "crates/algebra_analysis" }
 algebra_experimental = { path = "crates/algebra_experimental" }

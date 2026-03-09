@@ -63,12 +63,11 @@ mod tests {
 
     #[test]
     fn test_extract_backtick_paths_basic() {
-        let line =
-            "| C-001 | text | `crates/algebra_core/src/foo.rs` (test_bar), `docs/STUFF.md` | ok |";
+        let line = "| C-001 | text | `crates/gororoba_algebra/src/foo.rs` (test_bar), `docs/STUFF.md` | ok |";
         let paths = extract_backtick_paths(line);
         assert_eq!(
             paths,
-            vec!["crates/algebra_core/src/foo.rs", "docs/STUFF.md",]
+            vec!["crates/gororoba_algebra/src/foo.rs", "docs/STUFF.md",]
         );
     }
 

@@ -16,7 +16,7 @@ source_repositories = [
   "~/Github/lambda-research"
 ]
 workspace_crates = [
-  "crates/algebra_core",
+  "CURRENT::PATH crates/gororoba_algebra (LEGACY::PATH crates/algebra_core)",
   "crates/sign_imbalance",
   "crates/lbm_core",
   "crates/neural_homotopy",

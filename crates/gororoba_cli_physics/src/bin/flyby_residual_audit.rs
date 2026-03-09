@@ -9,28 +9,19 @@
 //! The answer should be ~0 (classical gravity is conservative), confirming
 //! that the anomalous delta-V is genuinely non-Newtonian.
 
-use gororoba_cli_physics::flyby::config::{
-    self, FlybyConfig, ALPHA_CHINGON, ETA_WAKE, GM_EARTH, R_EARTH, V_WIND_GALACTIC,
+use gororoba_cli_physics::flyby::{
+    config::{self, ALPHA_CHINGON, ETA_WAKE, FlybyConfig, GM_EARTH, R_EARTH, V_WIND_GALACTIC},
+    environment::{EarthOnlyNfwLike, EarthWakeModel, EnvironmentModel, State},
+    geometry::{compute_soi_window, dm_wind_j2000, hyperbolic_initial_state},
+    integrator::rk4_step,
+    report::{FlybyResult, print_comparison_table},
 };
-use gororoba_cli_physics::flyby::environment::{
-    EarthOnlyNfwLike, EarthWakeModel, EnvironmentModel, State,
-};
-use gororoba_cli_physics::flyby::geometry::{
-    compute_soi_window, dm_wind_j2000, hyperbolic_initial_state,
-};
-use gororoba_cli_physics::flyby::integrator::rk4_step;
-use gororoba_cli_physics::flyby::report::{print_comparison_table, FlybyResult};
 
 /// Run a flyby through the generic EnvironmentModel pipeline.
 ///
 /// Returns the outbound velocity magnitude after RK4 integration
 /// through the SOI window with the given environmental model.
-fn run_generic_flyby<E: EnvironmentModel>(
-    cfg: &FlybyConfig,
-    env: &E,
-    dt: f64,
-    alpha: f64,
-) -> f64 {
+fn run_generic_flyby<E: EnvironmentModel>(cfg: &FlybyConfig, env: &E, dt: f64, alpha: f64) -> f64 {
     let t_window = compute_soi_window(cfg);
     let (pos_init, vel_init) = hyperbolic_initial_state(cfg, t_window);
 
@@ -136,13 +127,7 @@ fn main() {
 
         println!(
             "{:<28} {:>10.3} {:>10.0} {:>12.6} {:>12.6} {:>12.6} {:>10.2}",
-            cfg.name,
-            cfg.v_inf,
-            cfg.perigee_alt_km,
-            v_kepler,
-            v_nfw,
-            v_wake,
-            cfg.observed_dv_mm_s,
+            cfg.name, cfg.v_inf, cfg.perigee_alt_km, v_kepler, v_nfw, v_wake, cfg.observed_dv_mm_s,
         );
 
         results.push(FlybyResult {

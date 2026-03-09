@@ -1,7 +1,7 @@
 #![allow(unused_imports, clippy::needless_borrow)]
 
 use super::*;
-use algebra_core::analysis::codebook::{enumerate_lambda_256, is_in_lambda_256};
+use gororoba_algebra::analysis::codebook::{enumerate_lambda_256, is_in_lambda_256};
 use std::sync::OnceLock;
 
 fn lambda_256_vectors() -> &'static [LatticeVector] {
@@ -12,8 +12,8 @@ fn lambda_256_vectors() -> &'static [LatticeVector] {
 fn lambda_512_vectors() -> &'static [LatticeVector] {
     static CELL: OnceLock<Vec<LatticeVector>> = OnceLock::new();
     CELL.get_or_init(|| {
-        algebra_core::analysis::codebook::enumerate_lattice_by_predicate(
-            algebra_core::analysis::codebook::is_in_lambda_512,
+        gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate(
+            gororoba_algebra::analysis::codebook::is_in_lambda_512,
         )
     })
     .as_slice()
@@ -22,8 +22,8 @@ fn lambda_512_vectors() -> &'static [LatticeVector] {
 fn lambda_1024_vectors() -> &'static [LatticeVector] {
     static CELL: OnceLock<Vec<LatticeVector>> = OnceLock::new();
     CELL.get_or_init(|| {
-        algebra_core::analysis::codebook::enumerate_lattice_by_predicate(
-            algebra_core::analysis::codebook::is_in_lambda_1024,
+        gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate(
+            gororoba_algebra::analysis::codebook::is_in_lambda_1024,
         )
     })
     .as_slice()
@@ -32,8 +32,8 @@ fn lambda_1024_vectors() -> &'static [LatticeVector] {
 fn lambda_2048_vectors() -> &'static [LatticeVector] {
     static CELL: OnceLock<Vec<LatticeVector>> = OnceLock::new();
     CELL.get_or_init(|| {
-        algebra_core::analysis::codebook::enumerate_lattice_by_predicate(
-            algebra_core::analysis::codebook::is_in_lambda_2048,
+        gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate(
+            gororoba_algebra::analysis::codebook::is_in_lambda_2048,
         )
     })
     .as_slice()
@@ -253,7 +253,7 @@ fn test_euclidean_ultrametricity_across_filtration_levels() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
 
@@ -381,7 +381,7 @@ fn test_intermediate_filtration_gradient() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::{
+    use gororoba_algebra::analysis::codebook::{
         enumerate_lattice_by_predicate, is_in_lambda_1024_minus_k,
     };
     use rand::SeedableRng;
@@ -501,7 +501,7 @@ fn test_intermediate_filtration_gradient() {
 /// and is_in_lambda_1024_minus_k(v, 6) == is_in_lambda_512(v).
 #[test]
 fn test_intermediate_filtration_consistency() {
-    use algebra_core::analysis::codebook::{
+    use gororoba_algebra::analysis::codebook::{
         enumerate_lattice_by_predicate, is_in_lambda_1024_minus_k,
     };
 
@@ -544,7 +544,7 @@ fn test_intermediate_filtration_consistency() {
 /// step sizes match the trie structure.
 #[test]
 fn test_intermediate_filtration_step_sizes() {
-    use algebra_core::analysis::codebook::{
+    use gororoba_algebra::analysis::codebook::{
         enumerate_lattice_by_predicate, is_in_lambda_1024_minus_k,
     };
 
@@ -587,7 +587,7 @@ fn test_random_removal_control() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
     use rand::{SeedableRng, prelude::*};
     use rand_chacha::ChaCha8Rng;
 
@@ -761,7 +761,7 @@ fn test_lambda512_to_256_intermediate_gradient() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::{
+    use gororoba_algebra::analysis::codebook::{
         enumerate_lattice_by_predicate, is_in_lambda_512_minus_k,
     };
     use rand::SeedableRng;
@@ -881,7 +881,7 @@ fn test_lambda512_to_256_random_removal_control() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
     use rand::{SeedableRng, prelude::*};
     use rand_chacha::ChaCha8Rng;
 
@@ -1027,7 +1027,7 @@ fn test_lambda512_to_256_random_removal_control() {
 /// Consistency test for is_in_lambda_512_minus_k boundaries.
 #[test]
 fn test_lambda512_minus_k_consistency() {
-    use algebra_core::analysis::codebook::{
+    use gororoba_algebra::analysis::codebook::{
         enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512_minus_k,
     };
 
@@ -1064,7 +1064,9 @@ fn test_sbase_to_lambda2048_gradient() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_sbase_minus_k};
+    use gororoba_algebra::analysis::codebook::{
+        enumerate_lattice_by_predicate, is_in_sbase_minus_k,
+    };
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
 
@@ -1142,14 +1144,14 @@ fn test_sbase_to_lambda2048_gradient() {
     // Verify boundary: k=3 should match Lambda_2048
     let k3_set = enumerate_lattice_by_predicate(|v| is_in_sbase_minus_k(v, 3));
     let l2048_set =
-        enumerate_lattice_by_predicate(algebra_core::analysis::codebook::is_in_lambda_2048);
+        enumerate_lattice_by_predicate(gororoba_algebra::analysis::codebook::is_in_lambda_2048);
     assert_eq!(k3_set.len(), l2048_set.len(), "k=3 must equal Lambda_2048");
 }
 
 /// Boundary consistency for is_in_sbase_minus_k.
 #[test]
 fn test_sbase_minus_k_consistency() {
-    use algebra_core::analysis::codebook::{
+    use gororoba_algebra::analysis::codebook::{
         enumerate_lattice_by_predicate, is_in_base_universe, is_in_sbase_minus_k,
     };
 
@@ -1186,7 +1188,7 @@ fn test_l0_subpopulation_ultrametricity() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
 
@@ -1277,7 +1279,7 @@ fn test_lambda2048_to_1024_intermediate_gradient() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::{
+    use gororoba_algebra::analysis::codebook::{
         enumerate_lattice_by_predicate, is_in_lambda_2048_minus_k,
     };
     use rand::SeedableRng;
@@ -1367,14 +1369,14 @@ fn test_lambda2048_to_1024_intermediate_gradient() {
     // Verify boundary: k=5 should match Lambda_1024 (all 5 rules applied)
     let k5_set = enumerate_lattice_by_predicate(|v| is_in_lambda_2048_minus_k(v, 5));
     let l1024_set =
-        enumerate_lattice_by_predicate(algebra_core::analysis::codebook::is_in_lambda_1024);
+        enumerate_lattice_by_predicate(gororoba_algebra::analysis::codebook::is_in_lambda_1024);
     assert_eq!(k5_set.len(), l1024_set.len(), "k=5 must equal Lambda_1024");
 }
 
 /// Boundary consistency for is_in_lambda_2048_minus_k.
 #[test]
 fn test_lambda2048_minus_k_consistency() {
-    use algebra_core::analysis::codebook::{
+    use gororoba_algebra::analysis::codebook::{
         enumerate_lattice_by_predicate, is_in_lambda_2048_minus_k,
     };
 
@@ -1420,7 +1422,7 @@ fn test_l1_filter_on_l0_neg1_subset() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
 
@@ -1527,7 +1529,7 @@ fn test_recursive_simpsons_paradox_l2() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
 
@@ -1657,7 +1659,7 @@ fn test_recursive_simpsons_paradox_l2() {
 #[test]
 #[ignore = "heavy research lane: high-sample triple decomposition"]
 fn test_cross_stratum_triple_decomposition() {
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
     use rand::{SeedableRng, seq::SliceRandom};
     use rand_chacha::ChaCha8Rng;
 
@@ -1788,7 +1790,7 @@ fn test_l0_zero_simpsons_paradox() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
+    use gororoba_algebra::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
 
@@ -1897,7 +1899,7 @@ fn test_dimensional_universality_simpsons_paradox() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
 
@@ -2048,7 +2050,7 @@ fn test_lambda1024_stratum_paradox_and_summary() {
         baire::matrix_free_fraction,
         null_models::{NullModel, apply_null_column_major},
     };
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
 
@@ -2258,7 +2260,7 @@ fn test_lambda1024_stratum_paradox_and_summary() {
 /// equal-size assumption.
 #[test]
 fn test_stratum_count_analytical_model() {
-    use algebra_core::analysis::codebook::enumerate_lattice_by_predicate;
+    use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
 
     // For each filtration level, compute actual stratum sizes and Herfindahl index
     // H = sum(n_i/N)^3 = probability that a random triple is same-stratum

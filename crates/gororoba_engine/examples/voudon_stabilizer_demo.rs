@@ -6,7 +6,7 @@ use std::sync::Arc;
 fn main() -> anyhow::Result<()> {
     println!("--- Voudon Stabilizer Demo: GPU-Accelerated Topological Search ---");
 
-    if !algebra_core::gpu::is_gpu_available() {
+    if !gororoba_algebra::gpu::is_gpu_available() {
         println!("GPU not available. This example requires CUDA.");
         return Ok(());
     }

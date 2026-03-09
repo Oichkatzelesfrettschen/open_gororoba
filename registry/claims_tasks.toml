@@ -393,8 +393,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "PSL(2,7) action: construct explicit 168-element action and show it permutes the 7 box-kites as subgraphs."
-output_artifacts = ["docs/external_sources/PSL_2_7_SOURCES.md", "crates/algebra_core/src/group_theory.rs", "crates/algebra_analysis/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py"]
-output_artifacts_raw = "`docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/group_theory.rs`, `crates/algebra_analysis/src/boxkites.rs`, `tests/test_psl_2_7_action.py`, `tests/test_boxkite_symmetry_action.py`"
+output_artifacts = ["docs/external_sources/PSL_2_7_SOURCES.md", "CURRENT::PATH crates/gororoba_algebra/src/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "crates/algebra_analysis/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py"]
+output_artifacts_raw = "`docs/external_sources/PSL_2_7_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)`, `crates/algebra_analysis/src/boxkites.rs`, `tests/test_psl_2_7_action.py`, `tests/test_boxkite_symmetry_action.py`"
 source_line = 38
 
 [[task]]
@@ -423,8 +423,8 @@ status_token = "PARTIAL"
 status_raw = "PARTIAL"
 status_canonical = true
 task = "Wheels->Cayley-Dickson mapping: exploratory totalized-division interpretation created (Phase 3.1.1)."
-output_artifacts = ["docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md", "crates/algebra_core/src/wheels.rs"]
-output_artifacts_raw = "`docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `crates/algebra_core/src/wheels.rs`"
+output_artifacts = ["docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md", "CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)"]
+output_artifacts_raw = "`docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)`"
 source_line = 40
 
 [[task]]
@@ -2943,8 +2943,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Octonionic (8D) field Hamiltonian formulation: Fano-plane multiplication, Stormer-Verlet symplectic integrator, 7 Noether charges, free-field dispersion omega^2=k^2+m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction. Phase 6 task A10."
-output_artifacts = ["crates/algebra_core/src/octonion_field.rs", "tests/test_octonion_field.py"]
-output_artifacts_raw = "`crates/algebra_core/src/octonion_field.rs`, `tests/test_octonion_field.py`"
+output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/octonion_field.rs)", "tests/test_octonion_field.py"]
+output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/octonion_field.rs)`, `tests/test_octonion_field.py`"
 source_line = 213
 
 [[task]]
@@ -2973,8 +2973,8 @@ status_token = "TODO"
 status_raw = "TODO"
 status_canonical = true
 task = "Add a preregistered fit protocol (null + trial-factor ledger) for mapping ZD eigenvalues to particle masses; keep as toy until it passes robust controls."
-output_artifacts = ["crates/algebra_core/src/hypercomplex.rs", "src/scripts/analysis/pathion_particle_fit.py", "tests/test_pathion_zd_diagonalization.py"]
-output_artifacts_raw = "`crates/algebra_core/src/hypercomplex.rs`, `src/scripts/analysis/pathion_particle_fit.py`, `tests/test_pathion_zd_diagonalization.py`"
+output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)", "src/scripts/analysis/pathion_particle_fit.py", "tests/test_pathion_zd_diagonalization.py"]
+output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`, `src/scripts/analysis/pathion_particle_fit.py`, `tests/test_pathion_zd_diagonalization.py`"
 source_line = 215
 
 [[task]]
@@ -3003,8 +3003,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Aut(S) = G2 x S3 verification (Phase 6A)."
-output_artifacts = ["crates/algebra_core/src/hypercomplex.rs", "tests/test_sedenion_automorphism.py"]
-output_artifacts_raw = "`crates/algebra_core/src/hypercomplex.rs`, `tests/test_sedenion_automorphism.py`"
+output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)", "tests/test_sedenion_automorphism.py"]
+output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`, `tests/test_sedenion_automorphism.py`"
 source_line = 222
 
 [[task]]
@@ -3018,8 +3018,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Three-generation literature review (Phase 6B)."
-output_artifacts = ["crates/algebra_core/src/clifford.rs", "tests/test_sedenion_generations.py"]
-output_artifacts_raw = "`crates/algebra_core/src/clifford.rs`, `tests/test_sedenion_generations.py`"
+output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/clifford.rs (LEGACY::PATH crates/algebra_core/src/clifford.rs)", "tests/test_sedenion_generations.py"]
+output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/clifford.rs (LEGACY::PATH crates/algebra_core/src/clifford.rs)`, `tests/test_sedenion_generations.py`"
 source_line = 223
 
 [[task]]
@@ -3093,8 +3093,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "SU(5) generator basis verification complete; source does not specify a unique coefficient mapping from sedenion basis to a normalized SU(5) basis (claim demoted accordingly)."
-output_artifacts = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "crates/algebra_core/src/group_theory.rs", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
-output_artifacts_raw = "`data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
+output_artifacts = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "CURRENT::PATH crates/gororoba_algebra/src/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
+output_artifacts_raw = "`data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `CURRENT::PATH crates/gororoba_algebra/src/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
 source_line = 228
 
 [[task]]
@@ -3243,8 +3243,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Kozyrev p-adic wavelets: implement eigenbasis for Vladimirov operator + offline tests."
-output_artifacts = ["docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md", "crates/algebra_core/src/padic.rs", "tests/test_padic_wavelets.py"]
-output_artifacts_raw = "`docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `crates/algebra_core/src/padic.rs`, `tests/test_padic_wavelets.py`"
+output_artifacts = ["docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md", "CURRENT::PATH crates/gororoba_algebra/src/padic.rs (LEGACY::PATH crates/algebra_core/src/padic.rs)", "tests/test_padic_wavelets.py"]
+output_artifacts_raw = "`docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `CURRENT::PATH crates/gororoba_algebra/src/padic.rs (LEGACY::PATH crates/algebra_core/src/padic.rs)`, `tests/test_padic_wavelets.py`"
 source_line = 238
 
 [[task]]

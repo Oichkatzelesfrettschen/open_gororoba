@@ -8,14 +8,14 @@
 //!
 //! Outputs CSV with one row per dimension.
 
-use algebra_core::construction::cayley_dickson::{cd_multiply, cd_norm_sq};
-use algebra_core::gpu::TensorAVT;
 use clap::Parser;
+use gororoba_algebra::{
+    construction::cayley_dickson::{cd_multiply, cd_norm_sq},
+    gpu::TensorAVT,
+};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
-use std::io::Write;
-use std::path::PathBuf;
-use std::time::Instant;
+use std::{io::Write, path::PathBuf, time::Instant};
 
 /// Sweep Cayley-Dickson dims measuring associator norms, zero-divisor density,
 /// and norm multiplicativity via tensor_avt CUDA Tensor Core pipeline.
@@ -77,10 +77,7 @@ fn analyze_dimension(dim: usize, samples: usize, seed: u64) -> DimResult {
         assoc_norms.push(cd_norm_sq(&assoc).sqrt());
     }
     let associator_norm_mean = assoc_norms.iter().sum::<f64>() / samples as f64;
-    let associator_norm_max = assoc_norms
-        .iter()
-        .copied()
-        .fold(0.0_f64, f64::max);
+    let associator_norm_max = assoc_norms.iter().copied().fold(0.0_f64, f64::max);
 
     // --- Zero-divisor density ---
     let mut zd_count = 0usize;
@@ -165,8 +162,14 @@ fn main() -> anyhow::Result<()> {
         .dims
         .split(',')
         .map(|s| {
-            let d: usize = s.trim().parse().expect("dims must be comma-separated integers");
-            assert!(d >= 16 && d.is_power_of_two(), "each dim must be power of 2, >= 16");
+            let d: usize = s
+                .trim()
+                .parse()
+                .expect("dims must be comma-separated integers");
+            assert!(
+                d >= 16 && d.is_power_of_two(),
+                "each dim must be power of 2, >= 16"
+            );
             d
         })
         .collect();
@@ -185,9 +188,7 @@ fn main() -> anyhow::Result<()> {
             (base_samples >> doublings).max(16)
         };
 
-        eprintln!(
-            "dim={dim:>5}  samples={effective_samples:>6}  ...",
-        );
+        eprintln!("dim={dim:>5}  samples={effective_samples:>6}  ...",);
         let t0 = Instant::now();
         let r = analyze_dimension(dim, effective_samples, cli.seed);
         let wall_s = t0.elapsed().as_secs_f64();
@@ -204,7 +205,8 @@ fn main() -> anyhow::Result<()> {
     }
 
     // Write CSV
-    let header = "dim,associator_norm_mean,associator_norm_max,zd_density,norm_mul_deviation,avt_time_ms\n";
+    let header =
+        "dim,associator_norm_mean,associator_norm_max,zd_density,norm_mul_deviation,avt_time_ms\n";
     let mut csv_data = String::from(header);
     for r in &results {
         csv_data.push_str(&format!(

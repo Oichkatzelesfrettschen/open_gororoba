@@ -68,7 +68,7 @@ RUST_TEST_THREADS ?= $(WORKER_BUDGET)
 RAYON_THREADS ?= $(WORKER_BUDGET)
 RUST_SCOPED_CLIPPY_TARGETS ?= --lib --tests
 LOCAL_NEXTEST_TIMING_JSON ?=
-RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(algebra_core) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
+RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
 REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
 REPO_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/gate-target
 CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
@@ -324,7 +324,7 @@ rust-clippy:
 	$(CARGO_ENV) cargo clippy --workspace -- -D warnings
 
 rust-smoke:
-	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) -P smoke -p algebra_core --test smoke_algebra_core -p lbm_3d --test smoke_lbm_3d -p gororoba_engine --test smoke_gororoba_engine
+	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) -P smoke -p gororoba_algebra --test smoke_gororoba_algebra -p lbm_3d --test smoke_lbm_3d -p gororoba_engine --test smoke_gororoba_engine
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P smoke -p gr_core --test smoke_gr_core
 	@echo "OK: Rust smoke lane passed."
 
@@ -335,7 +335,7 @@ rust-regression: rust-clippy
 
 # Scoped Rust regression gate: only affected crates (via ci_affected_crates.py).
 # Usage: make rust-regression-scoped  (auto-detects changes vs origin/main)
-#        make rust-regression-scoped RUST_SCOPE="-p algebra_core -p gr_core"
+#        make rust-regression-scoped RUST_SCOPE="-p gororoba_algebra -p gr_core"
 rust-regression-scoped:
 	$(eval RUST_SCOPE ?= $(shell python3 scripts/ci_affected_crates.py --local 2>/dev/null || echo "--workspace"))
 	$(eval RUST_RUN_HEAVY ?= 1)

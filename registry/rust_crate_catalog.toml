@@ -14,8 +14,8 @@ backend_relevance = "cpu"
 status = "active"
 
 [[workspace_crate]]
-name = "algebra_core"
-manifest_path = "crates/algebra_core/Cargo.toml"
+name = "gororoba_algebra"
+manifest_path = "crates/gororoba_algebra/Cargo.toml"
 target_types = ["bench", "example", "lib", "test"]
 domain = "algebra"
 backend_relevance = "cuda-policy"
@@ -336,7 +336,7 @@ status = "active"
 [[candidate_crate]]
 name = "iai-callgrind"
 status = "pilot"
-landing_zone = "crates/algebra_core/benches/tensor_avt_iai.rs"
+landing_zone = "crates/gororoba_algebra/benches/tensor_avt_iai.rs"
 docs_url = "https://docs.rs/iai-callgrind/0.16.1"
 source_url = "https://github.com/iai-callgrind/iai-callgrind"
 

@@ -1,7 +1,7 @@
 //! Cross-validation: verified_core refuted-claims modules vs production crates.
 //!
 //! Confirms that the Rocq-verified arithmetic produces identical results
-//! to the corresponding production implementations in algebra_core and
+//! to the corresponding production implementations in gororoba_algebra and
 //! cosmology_core.
 
 const TOL: f64 = 1e-12;
@@ -45,7 +45,7 @@ fn cross_validate_calcagni_spectral_dimension() {
 
 #[test]
 fn cross_validate_gf2_separation() {
-    use algebra_core::analysis::{
+    use gororoba_algebra::analysis::{
         boxkites::motif_components_for_cross_assessors,
         projective_geometry::{component_xor_label, find_boolean_class_predicate},
     };

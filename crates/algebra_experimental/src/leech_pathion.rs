@@ -396,29 +396,39 @@ mod tests {
         assert!(emb.norm_preserved(&v));
 
         // Arbitrary non-trivial vector
-        let v2 = [1.0, 2.0, 3.0, 0.0, -1.0, 0.5, 0.0, 0.0,
-                   0.0, 0.0, 0.0, 0.0, 4.0, 0.0, 0.0, 0.0,
-                   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -7.0];
+        let v2 = [
+            1.0, 2.0, 3.0, 0.0, -1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 0.0, 0.0, 0.0, 0.0,
+            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -7.0,
+        ];
         assert!(emb.norm_preserved(&v2));
     }
 
     #[test]
     fn test_leech_pathion_roundtrip() {
         let emb = LeechPathionEmbedding::canonical();
-        let v = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0,
-                 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
-                 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0];
+        let v = [
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0,
+        ];
         let embedded = emb.embed(&v);
         let projected = emb.project_leech(&embedded);
         for i in 0..LEECH_DIM {
-            assert!((projected[i] - v[i]).abs() < 1e-12,
-                    "roundtrip mismatch at axis {i}: {} vs {}", projected[i], v[i]);
+            assert!(
+                (projected[i] - v[i]).abs() < 1e-12,
+                "roundtrip mismatch at axis {i}: {} vs {}",
+                projected[i],
+                v[i]
+            );
         }
         // Dark sector should be zero
         let dark = emb.project_dark(&embedded);
         for (i, &d) in dark.iter().enumerate().take(DARK_SECTOR_DIM) {
-            assert!(d.abs() < 1e-12,
-                    "dark sector should be zero, got {} at axis {}", d, i);
+            assert!(
+                d.abs() < 1e-12,
+                "dark sector should be zero, got {} at axis {}",
+                d,
+                i
+            );
         }
     }
 
@@ -435,7 +445,9 @@ mod tests {
                 assert!(
                     product_idx < LEECH_DIM,
                     "dark x dark product should land in Leech: {} XOR {} = {}",
-                    i, j, product_idx
+                    i,
+                    j,
+                    product_idx
                 );
             }
         }
@@ -447,15 +459,22 @@ mod tests {
         let result = emb.cross_sector_analysis();
 
         // All dark x dark products land in Leech (XOR clears bit 4)
-        assert_eq!(result.dark_dark_to_dark, 0,
-            "dark x dark cannot stay in dark: i XOR j clears bit 4");
-        assert!(result.dark_dark_to_leech > 0,
-            "dark x dark must produce Leech-sector products");
+        assert_eq!(
+            result.dark_dark_to_dark, 0,
+            "dark x dark cannot stay in dark: i XOR j clears bit 4"
+        );
+        assert!(
+            result.dark_dark_to_leech > 0,
+            "dark x dark must produce Leech-sector products"
+        );
 
         // Total Leech x Dark pairs = 24 * 8 = 192
         let total_ld = result.leech_dark_to_leech + result.leech_dark_to_dark;
-        assert_eq!(total_ld, LEECH_DIM * DARK_SECTOR_DIM,
-            "should cover all Leech x Dark pairs");
+        assert_eq!(
+            total_ld,
+            LEECH_DIM * DARK_SECTOR_DIM,
+            "should cover all Leech x Dark pairs"
+        );
     }
 
     #[test]
@@ -481,7 +500,10 @@ mod tests {
         let general = LeechCdEmbedding::new(32);
         let general_cs = general.cross_sector_analysis();
 
-        assert_eq!(pathion_cs.leech_dark_to_leech, general_cs.leech_dark_to_leech);
+        assert_eq!(
+            pathion_cs.leech_dark_to_leech,
+            general_cs.leech_dark_to_leech
+        );
         assert_eq!(pathion_cs.leech_dark_to_dark, general_cs.leech_dark_to_dark);
         assert_eq!(pathion_cs.dark_dark_to_leech, general_cs.dark_dark_to_leech);
         assert_eq!(pathion_cs.dark_dark_to_dark, general_cs.dark_dark_to_dark);
@@ -521,11 +543,16 @@ mod tests {
         // because the dark sector is large enough to contain XOR products.
         // e.g., 24 XOR 25 = 1 (Leech), but 32 XOR 33 = 1 (also Leech),
         //       while 24 XOR 32 = 56 (dark).
-        assert!(cs.dark_dark_to_leech > 0, "some dark products should land in Leech");
+        assert!(
+            cs.dark_dark_to_leech > 0,
+            "some dark products should land in Leech"
+        );
         // At dim=64, dark sector has 40 axes, so some dark x dark products
         // can stay in dark: e.g., 24 XOR 48 = 40 (still dark at dim=64).
-        assert!(cs.dark_dark_to_dark > 0,
-            "at dim=64, some dark x dark products stay in dark");
+        assert!(
+            cs.dark_dark_to_dark > 0,
+            "at dim=64, some dark x dark products stay in dark"
+        );
 
         // Total dark pairs = C(40, 2) = 780
         let dd_total = cs.dark_dark_to_leech + cs.dark_dark_to_dark;
@@ -543,7 +570,10 @@ mod tests {
 
         // Entanglement fraction should be well-defined
         let ef = cs.entanglement_fraction();
-        assert!(ef > 0.0 && ef < 1.0, "entanglement fraction {ef} should be in (0,1)");
+        assert!(
+            ef > 0.0 && ef < 1.0,
+            "entanglement fraction {ef} should be in (0,1)"
+        );
     }
 
     #[test]
@@ -553,26 +583,34 @@ mod tests {
         assert_eq!(summaries.len(), 5);
 
         // Verify dark dims
-        assert_eq!(summaries[0].dark_dim, 8);   // Pathion
-        assert_eq!(summaries[1].dark_dim, 40);  // Chingon
+        assert_eq!(summaries[0].dark_dim, 8); // Pathion
+        assert_eq!(summaries[1].dark_dim, 40); // Chingon
         assert_eq!(summaries[2].dark_dim, 104); // Routon
         assert_eq!(summaries[3].dark_dim, 232); // Voudon
         assert_eq!(summaries[4].dark_dim, 488); // Eriston
 
         // All should have non-zero entanglement
         for s in &summaries {
-            assert!(s.entanglement_fraction > 0.0,
-                "dim={} should have non-zero entanglement", s.cd_dim);
+            assert!(
+                s.entanglement_fraction > 0.0,
+                "dim={} should have non-zero entanglement",
+                s.cd_dim
+            );
         }
 
         // Pathion: dark_dark_retention should be 0 (all escape to Leech)
-        assert!((summaries[0].dark_dark_retention).abs() < 1e-12,
-            "Pathion dark x dark should have 0% retention");
+        assert!(
+            (summaries[0].dark_dark_retention).abs() < 1e-12,
+            "Pathion dark x dark should have 0% retention"
+        );
 
         // Higher dims: dark_dark_retention should be > 0
         for s in &summaries[1..] {
-            assert!(s.dark_dark_retention > 0.0,
-                "dim={} should have positive dark retention", s.cd_dim);
+            assert!(
+                s.dark_dark_retention > 0.0,
+                "dim={} should have positive dark retention",
+                s.cd_dim
+            );
         }
     }
 
@@ -585,10 +623,14 @@ mod tests {
             // Entanglement fraction should generally decrease with dimension
             // (more dark axes means fewer XOR products land in 0..23)
             // This is a structural property of XOR topology.
-            assert!(summaries[i].entanglement_fraction <= summaries[i - 1].entanglement_fraction + 0.01,
+            assert!(
+                summaries[i].entanglement_fraction <= summaries[i - 1].entanglement_fraction + 0.01,
                 "entanglement should not increase significantly: dim={} ({:.4}) vs dim={} ({:.4})",
-                summaries[i].cd_dim, summaries[i].entanglement_fraction,
-                summaries[i - 1].cd_dim, summaries[i - 1].entanglement_fraction);
+                summaries[i].cd_dim,
+                summaries[i].entanglement_fraction,
+                summaries[i - 1].cd_dim,
+                summaries[i - 1].entanglement_fraction
+            );
         }
     }
 
@@ -597,10 +639,14 @@ mod tests {
         // As CD dimension grows, the dark sector retains more of its own products.
         let summaries = sweep_leech_tower(512);
         for i in 1..summaries.len() {
-            assert!(summaries[i].dark_dark_retention >= summaries[i - 1].dark_dark_retention,
+            assert!(
+                summaries[i].dark_dark_retention >= summaries[i - 1].dark_dark_retention,
                 "dark retention should increase: dim={} ({:.4}) vs dim={} ({:.4})",
-                summaries[i].cd_dim, summaries[i].dark_dark_retention,
-                summaries[i - 1].cd_dim, summaries[i - 1].dark_dark_retention);
+                summaries[i].cd_dim,
+                summaries[i].dark_dark_retention,
+                summaries[i - 1].cd_dim,
+                summaries[i - 1].dark_dark_retention
+            );
         }
     }
 }

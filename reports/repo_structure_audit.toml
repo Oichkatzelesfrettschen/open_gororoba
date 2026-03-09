@@ -182,7 +182,7 @@ value = 73129769
 key = "data/external/hip_main.dat"
 value = 53316318
 [[section.item]]
-key = "target_codex_hve/debug/incremental/algebra_core-1avvw742ei2ur/s-hfpm8niu4c-1guek00-a63oxkly6adlrazk161k6r18r/4lyghe8w4b43vgcgdyd0342rt.o"
+key = "target_codex_hve/debug/incremental/CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)-1avvw742ei2ur/s-hfpm8niu4c-1guek00-a63oxkly6adlrazk161k6r18r/4lyghe8w4b43vgcgdyd0342rt.o"
 value = 43331712
 [[section.item]]
 key = "target_codex_hve/debug/build/zstd-sys-f8afeb2b4790a37f/out/libzstd.a"

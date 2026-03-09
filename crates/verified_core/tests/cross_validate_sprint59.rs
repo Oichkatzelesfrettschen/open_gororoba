@@ -1,7 +1,7 @@
 //! Cross-validation: verified_core Sprint 59 modules vs production crates.
 //!
 //! Confirms that the Rocq-verified arithmetic produces identical results
-//! to the corresponding production implementations in gr_core, algebra_core,
+//! to the corresponding production implementations in gr_core, gororoba_algebra,
 //! and optics_core.
 
 const TOL: f64 = 1e-12;
@@ -32,7 +32,7 @@ fn cross_validate_nordtvedt_bd() {
     }
 }
 
-// --- C-893..C-899: CD complex/quaternion vs algebra_core ---
+// --- C-893..C-899: CD complex/quaternion vs gororoba_algebra ---
 
 #[test]
 fn cross_validate_complex_mul() {
@@ -42,8 +42,8 @@ fn cross_validate_complex_mul() {
     let w = Complex { re: 1.0, im: -2.0 };
     let vc = complex_mul(&z, &w);
 
-    // algebra_core uses Vec<f64> Cayley-Dickson
-    let ac = algebra_core::construction::cayley_dickson::cd_multiply(&[3.0, 4.0], &[1.0, -2.0]);
+    // gororoba_algebra uses Vec<f64> Cayley-Dickson
+    let ac = gororoba_algebra::construction::cayley_dickson::cd_multiply(&[3.0, 4.0], &[1.0, -2.0]);
     assert!((vc.re - ac[0]).abs() < TOL, "re: {} vs {}", vc.re, ac[0]);
     assert!((vc.im - ac[1]).abs() < TOL, "im: {} vs {}", vc.im, ac[1]);
 }
@@ -66,7 +66,7 @@ fn cross_validate_quat_mul() {
     };
     let vc = quat_mul(&p, &q);
 
-    let ac = algebra_core::construction::cayley_dickson::cd_multiply(
+    let ac = gororoba_algebra::construction::cayley_dickson::cd_multiply(
         &[1.0, 2.0, 3.0, 4.0],
         &[5.0, 6.0, 7.0, 8.0],
     );

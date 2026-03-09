@@ -19,8 +19,8 @@ name_hints_require_ignore = [
 ]
 
 [[rust_smoke_target]]
-package = "algebra_core"
-target = "smoke_algebra_core"
+package = "gororoba_algebra"
+target = "smoke_gororoba_algebra"
 kind = "integration"
 description = "Fast algebra invariants for the default smoke lane."
 

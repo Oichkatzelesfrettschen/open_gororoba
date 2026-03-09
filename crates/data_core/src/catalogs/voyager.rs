@@ -22,9 +22,13 @@
 //!
 //! Source: <https://spdf.gsfc.nasa.gov/pub/data/voyager/>
 
-use crate::catalogs::omni::OmniRecord;
-use crate::catalogs::spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni};
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use crate::{
+    catalogs::{
+        omni::OmniRecord,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+    },
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
+};
 use std::path::PathBuf;
 
 /// SPDF column layout for Voyager 1 merged hourly data.
@@ -171,7 +175,8 @@ impl DatasetProvider for VoyagerProvider {
         };
 
         for year in self.year_start..=self.year_end {
-            let fname = format!("vy{}_{}_{}.asc",
+            let fname = format!(
+                "vy{}_{}_{}.asc",
                 match self.spacecraft {
                     VoyagerSpacecraft::V1 => "1",
                     VoyagerSpacecraft::V2 => "2",
@@ -279,8 +284,14 @@ mod tests {
         let spdf = parse_voyager_merged(data, VoyagerSpacecraft::V1);
         let omni = voyager_to_omni(&spdf);
         assert_eq!(omni.len(), 1);
-        assert!((omni[0].r_au - 94.0).abs() < 0.1, "r_au should be populated");
-        assert!((omni[0].lat_deg - 34.5).abs() < 0.1, "lat_deg should be populated");
+        assert!(
+            (omni[0].r_au - 94.0).abs() < 0.1,
+            "r_au should be populated"
+        );
+        assert!(
+            (omni[0].lat_deg - 34.5).abs() < 0.1,
+            "lat_deg should be populated"
+        );
     }
 
     #[test]

@@ -58,7 +58,7 @@ The migration followed four conceptual phases:
 **Phase A: Extract Core Algebra to Pure Rust Library**
 Split the monolithic gororoba_kernels into domain-specific crates with no
 Python dependency.  Cayley-Dickson, associators, and zero-divisor search
-became `algebra_core`; Clifford algebra became a separate module.
+became `CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)`; Clifford algebra became a separate module.
 
 **Phase B: Python Bindings as Thin Wrapper**
 Created `gororoba_py` as a thin PyO3 bridge that delegates to domain crates
@@ -93,7 +93,7 @@ gororoba_kernels removed (2026-02-06).
 open_gororoba/
   Cargo.toml                  # Workspace root (23 members)
   crates/
-    algebra_core/             # Cayley-Dickson, Clifford, E8, box-kites, Reggiani, annihilator, M3
+    CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)/             # Cayley-Dickson, Clifford, E8, box-kites, Reggiani, annihilator, M3
     cosmology_core/           # TOV, spectral dimensions, bounce, dimensional geometry, observational
     materials_core/           # Metamaterials, absorbers, refractive index, optical database
     optics_core/              # GRIN solver, ray tracing, warp metrics, benchmarks
@@ -425,7 +425,7 @@ Layer 0 (Foundation):
 Layer 1 (Core GR):
   #37  Port connection.h (generic Christoffel computation)    [needs #48]
   #28  Port Schwarzschild Christoffel symbols                  [needs #48, #37]
-  #30  Port Carlson elliptic integrals to algebra_core         [needs #48]
+  #30  Port Carlson elliptic integrals to CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)         [needs #48]
 
 Layer 2 (Kerr Family):
   #29  Port Kerr Christoffel symbols + full metric             [needs #48, #37, #28]
@@ -736,7 +736,7 @@ investigate the relationship between filtration depth and ultrametric structure.
 | ~~Near~~ | ~~Cross-domain ultrametric analysis (9 catalogs)~~ | ~~Dataset providers~~ | **DONE** (I-011, 82/472 sig) |
 | ~~Near~~ | ~~GPU acceleration (CUDA ultrametric kernel)~~ | ~~cudarc 0.19.1~~ | **DONE** (RTX 4070 Ti) |
 | ~~Near~~ | ~~Schema checks for all 18 dataset providers~~ | ~~Parser code in data_core~~ | **DONE** (broad parser verification coverage, 3 URL fixes) |
-| ~~Near~~ | ~~Extend motif census to 64D/128D/256D exact~~ | ~~algebra_core~~ | **DONE** (regression lane coverage, 5 scaling laws) |
+| ~~Near~~ | ~~Extend motif census to 64D/128D/256D exact~~ | ~~CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)~~ | **DONE** (regression lane coverage, 5 scaling laws) |
 | Medium | WASM target for browser visualization | Crate compatibility audit | Future |
 | Medium | Hardware quantum circuit run (IBM Eagle 127q) | F4 circuit design | Future |
 | Medium | Publication pipeline (LaTeX from verified results) | Source-first research | Future |

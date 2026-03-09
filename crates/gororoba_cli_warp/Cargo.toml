@@ -64,7 +64,7 @@ path = "src/bin/warp_lbm_step_test.rs"
 
 [dependencies]
 gororoba_cli = { path = "../gororoba_cli" }
-algebra_core = { path = "../algebra_core", features = ["lie"] }
+gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
 gororoba_engine = { path = "../gororoba_engine" }
 gororoba_contracts = { path = "../gororoba_contracts" }
 data_core = { path = "../data_core" }
@@ -97,7 +97,7 @@ gpu = [
     "lbm_3d_cuda/cufft",
     "dep:cudarc",
     "dep:nvml-wrapper",
-    "algebra_core/gpu",
+    "gororoba_algebra/gpu",
     "gororoba_engine/gpu",
 ]
 hdf5-export = ["data_core/hdf5-export"]

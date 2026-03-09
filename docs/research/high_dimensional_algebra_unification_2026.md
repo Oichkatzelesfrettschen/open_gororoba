@@ -119,10 +119,10 @@ The 256D cross-validation tests passed against three independent CPU reference p
 - Khattak & Mikaitis (2025, arXiv:2512.07004): Accurate models of NVIDIA Tensor Cores.
 
 **Code references:**
-- `crates/algebra_core/src/gpu/kernels_tensor_avt.cu` -- WMMA MMA kernel, L_a tile builder, batched kernel, warp/block reduction
-- `crates/algebra_core/src/gpu/tensor_avt.rs` -- host-side Tensor Core AVT orchestration, `tensor_compile_opts()`, CPU fallback
-- `crates/algebra_core/src/gpu/voudon.rs` -- FP32 ALU baseline (256D frustration)
-- `crates/algebra_core/src/gpu/dimensional.rs` -- Monte Carlo triangle sampling
+- `CURRENT::PATH crates/gororoba_algebra/src/gpu/kernels_tensor_avt.cu (LEGACY::PATH crates/algebra_core/src/gpu/kernels_tensor_avt.cu)` -- WMMA MMA kernel, L_a tile builder, batched kernel, warp/block reduction
+- `CURRENT::PATH crates/gororoba_algebra/src/gpu/tensor_avt.rs (LEGACY::PATH crates/algebra_core/src/gpu/tensor_avt.rs)` -- host-side Tensor Core AVT orchestration, `tensor_compile_opts()`, CPU fallback
+- `CURRENT::PATH crates/gororoba_algebra/src/gpu/voudon.rs (LEGACY::PATH crates/algebra_core/src/gpu/voudon.rs)` -- FP32 ALU baseline (256D frustration)
+- `CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)` -- Monte Carlo triangle sampling
 - `crates/lbm_3d_cuda/src/kernels_dark_halo.cu` -- warp-level reduction pattern
 - `proofs/verified/C1142_XORScatterGatherDuality.v` -- 11 Rocq theorems proving XOR involution guarantees collision-free gather
 
@@ -168,6 +168,6 @@ All three agree with GPU Tensor Core output within FP16 tolerance. Basis element
 NVRTC requires explicit `--include-path` for `mma.h` and `cuda_fp16.h` (not auto-discovered like nvcc). Compile options: `-arch=sm_89 -I/opt/cuda/include -std=c++14`. The `-O3` flag is NOT valid for NVRTC (it has its own internal optimizer).
 
 **Code references:**
-- `crates/algebra_core/src/gpu/kernels_tensor_avt.cu` -- WMMA MMA kernel, L_a tile builder, batched kernel
-- `crates/algebra_core/src/gpu/tensor_avt.rs` -- host-side orchestration, `tensor_compile_opts()`, CPU fallback
+- `CURRENT::PATH crates/gororoba_algebra/src/gpu/kernels_tensor_avt.cu (LEGACY::PATH crates/algebra_core/src/gpu/kernels_tensor_avt.cu)` -- WMMA MMA kernel, L_a tile builder, batched kernel
+- `CURRENT::PATH crates/gororoba_algebra/src/gpu/tensor_avt.rs (LEGACY::PATH crates/algebra_core/src/gpu/tensor_avt.rs)` -- host-side orchestration, `tensor_compile_opts()`, CPU fallback
 - `proofs/verified/C1142_XORScatterGatherDuality.v` -- 11 Rocq theorems proving XOR involution guarantees collision-free gather

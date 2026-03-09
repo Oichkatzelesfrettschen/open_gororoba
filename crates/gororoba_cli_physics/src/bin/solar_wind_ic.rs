@@ -22,26 +22,26 @@
 //! snapshot format used by solar-wind-mhd-sim and solar-wind-dm-mhd.
 
 use clap::Parser;
-use data_core::catalogs::ace_mag::{ace_mag_to_omni, average_to_hourly, parse_ace_mag_file};
-use data_core::catalogs::cassini::{cassini_to_omni, parse_cassini_cruise_file};
-use data_core::catalogs::juno::{juno_to_omni, parse_juno_cruise_file};
-use data_core::catalogs::new_horizons::{nh_swap_to_omni, parse_nh_swap_file};
-use data_core::catalogs::omni::{OmniRecord, parse_omni_file, parse_omni_hourly};
-use data_core::catalogs::pioneer::{parse_pioneer_file, pioneer_to_omni, PioneerSpacecraft};
-use data_core::catalogs::solar_wind::parse_swepam_file;
-use data_core::catalogs::stereo_plastic::{
-    average_stereo_mag_hourly, parse_stereo_magplasma_file, parse_stereo_plastic_file,
-    stereo_to_omni,
+use data_core::catalogs::{
+    ace_mag::{ace_mag_to_omni, average_to_hourly, parse_ace_mag_file},
+    cassini::{cassini_to_omni, parse_cassini_cruise_file},
+    juno::{juno_to_omni, parse_juno_cruise_file},
+    new_horizons::{nh_swap_to_omni, parse_nh_swap_file},
+    omni::{OmniRecord, parse_omni_file, parse_omni_hourly},
+    pioneer::{PioneerSpacecraft, parse_pioneer_file, pioneer_to_omni},
+    solar_wind::parse_swepam_file,
+    stereo_plastic::{
+        average_stereo_mag_hourly, parse_stereo_magplasma_file, parse_stereo_plastic_file,
+        stereo_to_omni,
+    },
+    ulysses::{parse_ulysses_file, ulysses_to_omni},
+    voyager::{VoyagerSpacecraft, parse_voyager_file, voyager_to_omni},
+    wind_swe::{
+        KnudsenRegime, classify_knudsen, knudsen_number, merge_wind_swe_mfi, parse_wind_mfi_file,
+        parse_wind_swe_file, wind_mfi_to_omni,
+    },
 };
-use data_core::catalogs::ulysses::{parse_ulysses_file, ulysses_to_omni};
-use data_core::catalogs::voyager::{parse_voyager_file, voyager_to_omni, VoyagerSpacecraft};
-use data_core::catalogs::wind_swe::{
-    classify_knudsen, knudsen_number, merge_wind_swe_mfi, parse_wind_mfi_file,
-    parse_wind_swe_file, wind_mfi_to_omni, KnudsenRegime,
-};
-use std::fs;
-use std::io::Write;
-use std::path::PathBuf;
+use std::{fs, io::Write, path::PathBuf};
 
 /// Generate solar wind initial conditions from real spacecraft data.
 ///
@@ -424,10 +424,7 @@ fn generate_ic_from_omni(
                 // Use real B-field from OMNI (GSE coordinates map directly
                 // to LBM axes: Bx=radial, By=ecliptic transverse, Bz=north).
                 // If any component is NaN, fall back to Parker spiral.
-                let b = if !rec.bx_gse.is_nan()
-                    && !rec.by_gse.is_nan()
-                    && !rec.bz_gse.is_nan()
-                {
+                let b = if !rec.bx_gse.is_nan() && !rec.by_gse.is_nan() && !rec.bz_gse.is_nan() {
                     [
                         rec.bx_gse * cli.b_scale,
                         rec.by_gse * cli.b_scale,
@@ -507,9 +504,7 @@ fn filter_valid_omni(records: &[OmniRecord]) -> Vec<OmniRecord> {
 
 /// SWEPAM-to-OMNI adapter: convert SWEPAM records to OmniRecord with
 /// NaN for B-field (triggers Parker spiral fallback).
-fn swepam_to_omni(
-    records: &[data_core::catalogs::solar_wind::SwepamRecord],
-) -> Vec<OmniRecord> {
+fn swepam_to_omni(records: &[data_core::catalogs::solar_wind::SwepamRecord]) -> Vec<OmniRecord> {
     records
         .iter()
         .filter(|r| !r.proton_density.is_nan() || !r.bulk_speed.is_nan())
@@ -616,7 +611,11 @@ fn load_stereo_data(cli: &Cli) -> anyhow::Result<Vec<OmniRecord>> {
         eprintln!("loading STEREO-A IMPACT/MAG from: {}", path.display());
         let raw = parse_stereo_magplasma_file(path)?;
         let hourly = average_stereo_mag_hourly(&raw);
-        eprintln!("  {} MAG records -> {} hourly averages", raw.len(), hourly.len());
+        eprintln!(
+            "  {} MAG records -> {} hourly averages",
+            raw.len(),
+            hourly.len()
+        );
         Some(hourly)
     } else {
         None
@@ -1117,7 +1116,11 @@ fn interp_log_signed(a: f64, b: f64, t: f64) -> f64 {
 /// At large heliocentric distances, n_ref and v_ref must adapt to avoid
 /// LBM Mach number violations (Ma must stay < 0.3). Each x-slice gets
 /// its own effective n_ref based on the local density from the profile.
-fn radial_unit_conversion(profile: &[RadialProfilePoint], r_min: f64, r_max: f64) -> UnitConversion {
+fn radial_unit_conversion(
+    profile: &[RadialProfilePoint],
+    r_min: f64,
+    r_max: f64,
+) -> UnitConversion {
     // Use median density and speed across the full radial range.
     // The per-cell density mapping (density_to_lbm) normalizes by n_ref,
     // so n_ref should represent the "typical" density in the domain.
@@ -1185,7 +1188,11 @@ fn generate_radial_ic(
 
         for y in 0..ny {
             for x in 0..nx {
-                let frac = if nx > 1 { x as f64 / (nx - 1) as f64 } else { 0.5 };
+                let frac = if nx > 1 {
+                    x as f64 / (nx - 1) as f64
+                } else {
+                    0.5
+                };
                 let r_au = r_min * (frac * ln_ratio).exp();
 
                 let point = interpolate_radial(profile, r_au);
@@ -1198,9 +1205,21 @@ fn generate_radial_ic(
                 // distance). If all B components are NaN, fall back to
                 // Parker spiral model.
                 let b = if point.br_nt.is_finite() || point.bt_nt.is_finite() {
-                    let br = if point.br_nt.is_finite() { point.br_nt } else { 0.0 };
-                    let bt = if point.bt_nt.is_finite() { point.bt_nt } else { 0.0 };
-                    let bn = if point.bn_nt.is_finite() { point.bn_nt } else { 0.0 };
+                    let br = if point.br_nt.is_finite() {
+                        point.br_nt
+                    } else {
+                        0.0
+                    };
+                    let bt = if point.bt_nt.is_finite() {
+                        point.bt_nt
+                    } else {
+                        0.0
+                    };
+                    let bn = if point.bn_nt.is_finite() {
+                        point.bn_nt
+                    } else {
+                        0.0
+                    };
                     [br * cli.b_scale, bt * cli.b_scale, bn * cli.b_scale]
                 } else {
                     // Parker spiral fallback at this heliocentric distance
@@ -1390,7 +1409,8 @@ fn ulysses_latitudinal_fit(records: &[OmniRecord]) -> LatitudinalProfile {
     );
     eprintln!(
         "  latitude data: {} polar (|lat|>40), {} equatorial (|lat|<20)",
-        polar.len(), equatorial.len(),
+        polar.len(),
+        equatorial.len(),
     );
 
     LatitudinalProfile {
@@ -1432,13 +1452,13 @@ fn latitude_modulation(
 
     // Density: equatorial is DENSER, polar is LESS dense
     // density_factor = slow_n * (1-f) + fast_n * f, normalized to equatorial
-    let density_factor = (1.0 - f_polar)
-        + f_polar * (profile.fast_density_cm3 / profile.slow_density_cm3);
+    let density_factor =
+        (1.0 - f_polar) + f_polar * (profile.fast_density_cm3 / profile.slow_density_cm3);
 
     // Speed: polar is FASTER, equatorial is SLOWER
     // speed_factor = slow_v * (1-f) + fast_v * f, normalized to equatorial
-    let speed_factor = (1.0 - f_polar)
-        + f_polar * (profile.fast_speed_kms / profile.slow_speed_kms);
+    let speed_factor =
+        (1.0 - f_polar) + f_polar * (profile.fast_speed_kms / profile.slow_speed_kms);
 
     (density_factor, speed_factor)
 }
@@ -1464,13 +1484,20 @@ fn main() -> anyhow::Result<()> {
         eprintln!("loading ACE MAG L2 from: {} (B-field only)", path.display());
         let raw = parse_ace_mag_file(path)?;
         let hourly = average_to_hourly(&raw);
-        eprintln!("  {} 16-sec samples -> {} hourly averages", raw.len(), hourly.len());
+        eprintln!(
+            "  {} 16-sec samples -> {} hourly averages",
+            raw.len(),
+            hourly.len()
+        );
         let omni = ace_mag_to_omni(&hourly);
         filter_valid_omni(&omni)
     } else if cli.stereo_file.is_some() || cli.stereo_mag_file.is_some() {
         load_stereo_data(&cli)?
     } else if let Some(ref path) = cli.swepam_file {
-        eprintln!("loading ACE SWEPAM from: {} (no real B-field)", path.display());
+        eprintln!(
+            "loading ACE SWEPAM from: {} (no real B-field)",
+            path.display()
+        );
         let raw = parse_swepam_file(path)?;
         swepam_to_omni(&raw)
     } else {
@@ -1496,7 +1523,12 @@ fn main() -> anyhow::Result<()> {
 
     eprintln!(
         "using {} hours (indices {}..{}) for {}x{}x{} grid",
-        window.len(), start, end, cli.nx, cli.ny, cli.nz,
+        window.len(),
+        start,
+        end,
+        cli.nx,
+        cli.ny,
+        cli.nz,
     );
 
     // Unit conversion from the selected window
@@ -1519,8 +1551,7 @@ fn main() -> anyhow::Result<()> {
     );
     eprintln!(
         "clamp: density=[{:.4}, {:.4}], speed=[{:.5}, {:.4}]",
-        units.density_clamp[0], units.density_clamp[1],
-        units.speed_clamp[0], units.speed_clamp[1],
+        units.density_clamp[0], units.density_clamp[1], units.speed_clamp[0], units.speed_clamp[1],
     );
 
     // Report physical ranges
@@ -1605,7 +1636,11 @@ fn run_radial_mode(cli: &Cli) -> anyhow::Result<()> {
     );
 
     if cli.r_min_au >= cli.r_max_au {
-        anyhow::bail!("--r-min-au ({}) must be less than --r-max-au ({})", cli.r_min_au, cli.r_max_au);
+        anyhow::bail!(
+            "--r-min-au ({}) must be less than --r-max-au ({})",
+            cli.r_min_au,
+            cli.r_max_au
+        );
     }
 
     // Load L1 data (1 AU anchor) if available
@@ -1646,7 +1681,9 @@ fn run_radial_mode(cli: &Cli) -> anyhow::Result<()> {
     if let (Some(first), Some(last)) = (profile.first(), profile.last()) {
         eprintln!(
             "  data coverage: {:.1}-{:.1} AU ({} bins)",
-            first.r_au, last.r_au, profile.len(),
+            first.r_au,
+            last.r_au,
+            profile.len(),
         );
         // Report a few representative points
         for p in &profile {
@@ -1669,8 +1706,7 @@ fn run_radial_mode(cli: &Cli) -> anyhow::Result<()> {
     );
     eprintln!(
         "clamp: density=[{:.6}, {:.2}], speed=[{:.5}, {:.4}]",
-        units.density_clamp[0], units.density_clamp[1],
-        units.speed_clamp[0], units.speed_clamp[1],
+        units.density_clamp[0], units.density_clamp[1], units.speed_clamp[0], units.speed_clamp[1],
     );
 
     // Latitudinal profile for radial mode (if --latitudinal enabled)
@@ -1912,7 +1948,10 @@ mod tests {
 
         // Median of 5.0 and 6.0 at 1 AU
         let n_1au = profile[0].density_cm3;
-        assert!((5.0..=6.0).contains(&n_1au), "median density at 1 AU: {n_1au}");
+        assert!(
+            (5.0..=6.0).contains(&n_1au),
+            "median density at 1 AU: {n_1au}"
+        );
     }
 
     #[test]
@@ -1997,7 +2036,11 @@ mod tests {
         assert!(p10.density_cm3 > 0.0005, "density above 100 AU value");
         assert!(p10.density_cm3 < 5.0, "density below 1 AU value");
         // Speed should interpolate linearly
-        assert!(p10.speed_kms > 399.0 && p10.speed_kms < 411.0, "speed: {}", p10.speed_kms);
+        assert!(
+            p10.speed_kms > 399.0 && p10.speed_kms < 411.0,
+            "speed: {}",
+            p10.speed_kms
+        );
     }
 
     #[test]
@@ -2015,18 +2058,16 @@ mod tests {
 
     #[test]
     fn test_radial_unit_conversion_adapts_to_range() {
-        let profile = vec![
-            RadialProfilePoint {
-                r_au: 1.0,
-                density_cm3: 5.0,
-                speed_kms: 400.0,
-                temp_k: 1e5,
-                br_nt: 5.0,
-                bt_nt: -3.0,
-                bn_nt: 0.0,
-                b_mag_nt: 5.83,
-            },
-        ];
+        let profile = vec![RadialProfilePoint {
+            r_au: 1.0,
+            density_cm3: 5.0,
+            speed_kms: 400.0,
+            temp_k: 1e5,
+            br_nt: 5.0,
+            bt_nt: -3.0,
+            bn_nt: 0.0,
+            b_mag_nt: 5.83,
+        }];
 
         let units_narrow = radial_unit_conversion(&profile, 0.5, 1.5);
         let units_wide = radial_unit_conversion(&profile, 1.0, 100.0);
@@ -2060,11 +2101,16 @@ mod tests {
         let cli = Cli::parse_from([
             "solar-wind-ic",
             "--radial-mode",
-            "--nx", "16",
-            "--ny", "8",
-            "--nz", "8",
-            "--r-min-au", "1.0",
-            "--r-max-au", "100.0",
+            "--nx",
+            "16",
+            "--ny",
+            "8",
+            "--nz",
+            "8",
+            "--r-min-au",
+            "1.0",
+            "--r-max-au",
+            "100.0",
         ]);
 
         let units = radial_unit_conversion(&profile, cli.r_min_au, cli.r_max_au);
@@ -2090,19 +2136,32 @@ mod tests {
         let cli = Cli::parse_from([
             "solar-wind-ic",
             "--radial-mode",
-            "--nx", "32",
-            "--ny", "4",
-            "--nz", "4",
-            "--r-min-au", "1.0",
-            "--r-max-au", "100.0",
+            "--nx",
+            "32",
+            "--ny",
+            "4",
+            "--nz",
+            "4",
+            "--r-min-au",
+            "1.0",
+            "--r-max-au",
+            "100.0",
         ]);
 
         let units = radial_unit_conversion(&profile, cli.r_min_au, cli.r_max_au);
         let data = generate_radial_ic(&profile, &cli, &units, None);
 
         // Compare density at x=0 (1 AU) vs x=31 (100 AU), y=0, z=0
-        let rho_inner = data.iter().find(|c| c.x == 0 && c.y == 0 && c.z == 0).unwrap().rho;
-        let rho_outer = data.iter().find(|c| c.x == 31 && c.y == 0 && c.z == 0).unwrap().rho;
+        let rho_inner = data
+            .iter()
+            .find(|c| c.x == 0 && c.y == 0 && c.z == 0)
+            .unwrap()
+            .rho;
+        let rho_outer = data
+            .iter()
+            .find(|c| c.x == 31 && c.y == 0 && c.z == 0)
+            .unwrap()
+            .rho;
 
         assert!(
             rho_inner > rho_outer,
@@ -2253,12 +2312,18 @@ mod tests {
             "solar-wind-ic",
             "--radial-mode",
             "--latitudinal",
-            "--lat-max-deg", "60",
-            "--nx", "8",
-            "--ny", "4",
-            "--nz", "16",
-            "--r-min-au", "1.0",
-            "--r-max-au", "10.0",
+            "--lat-max-deg",
+            "60",
+            "--nx",
+            "8",
+            "--ny",
+            "4",
+            "--nz",
+            "16",
+            "--r-min-au",
+            "1.0",
+            "--r-max-au",
+            "10.0",
         ]);
 
         let units = radial_unit_conversion(&profile, cli.r_min_au, cli.r_max_au);
@@ -2268,12 +2333,16 @@ mod tests {
         assert_eq!(data.len(), 8 * 4 * 16, "total cell count");
 
         // At x=0 (1 AU), compare equatorial z=8 vs polar z=0/z=15
-        let rho_equator = data.iter()
+        let rho_equator = data
+            .iter()
             .find(|c| c.x == 0 && c.y == 0 && c.z == 8)
-            .unwrap().rho;
-        let rho_pole = data.iter()
+            .unwrap()
+            .rho;
+        let rho_pole = data
+            .iter()
             .find(|c| c.x == 0 && c.y == 0 && c.z == 0)
-            .unwrap().rho;
+            .unwrap()
+            .rho;
 
         // Polar wind is less dense than equatorial (fast_n < slow_n)
         assert!(

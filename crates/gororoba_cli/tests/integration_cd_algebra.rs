@@ -1,9 +1,9 @@
 //! Integration tests for Cayley-Dickson algebra operations.
 //!
-//! Tests cross-crate workflows between algebra_core (CD multiplication, ZD search)
+//! Tests cross-crate workflows between gororoba_algebra (CD multiplication, ZD search)
 //! and stats_core (statistical validation of algebraic properties).
 
-use algebra_core::{
+use gororoba_algebra::{
     cd_associator_norm, cd_conjugate, cd_multiply, cd_norm_sq,
     construction::cayley_dickson::find_zero_divisors_general_form, find_zero_divisors,
 };

@@ -17,7 +17,7 @@ pub use state_3d::{
     AlgebraicField3D, ImbalanceField3D, LbmBackend3D, SimulationConfig3D, SimulationState3D,
 };
 
-use algebra_core::physics::octonion_field::{FieldParams, Octonion, Pathion, Sedenion};
+use gororoba_algebra::physics::octonion_field::{FieldParams, Octonion, Pathion, Sedenion};
 
 /// Pathionic heat sink for absorbing energy from truncated dimensions.
 ///

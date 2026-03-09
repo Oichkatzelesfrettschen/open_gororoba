@@ -245,7 +245,7 @@ purpose = "checkpoint push for high-frequency iteration after focused crate gate
 order = 1
 name = "foundation"
 description = "Core numerical and algorithmic crates with no internal tier dependency requirements."
-crates = ["algebra_core", "stats_core", "spectral_core", "lbm_core", "data_core", "control_core", "optics_core", "scrolls_core", "docpipe"]
+crates = ["gororoba_algebra", "stats_core", "spectral_core", "lbm_core", "data_core", "control_core", "optics_core", "scrolls_core", "docpipe"]
 
 [[shared.architecture_tier]]
 order = 2
@@ -340,10 +340,10 @@ Key properties:
   build_left_mul_tile(). Working set: ~2 KB per row-block.
 
 Files:
-- crates/algebra_core/src/gpu/kernels_tensor_avt.cu  (CUDA kernel: build_left_mul_tile + tensor_cd_mul_kernel)
-- crates/algebra_core/src/gpu/tensor_avt.rs          (host orchestration: TensorAVT, compute_cd_mul, compute_dense_avt_field)
-- crates/cd_kernel/src/cayley_dickson.rs:467          (CPU reference: left_mult_operator f64)
-- crates/algebra_core/src/construction/cayley_dickson  (re-export: cd_basis_mul_sign, cd_multiply)
+- crates/gororoba_algebra/src/gpu/kernels_tensor_avt.cu  (CUDA kernel: build_left_mul_tile + tensor_cd_mul_kernel)
+- crates/gororoba_algebra/src/gpu/tensor_avt.rs          (host orchestration: TensorAVT, compute_cd_mul, compute_dense_avt_field)
+- crates/cd_kernel/src/cayley_dickson/mod.rs             (CPU reference module: left_mult_operator f64)
+- crates/gororoba_algebra/src/construction/cayley_dickson  (re-export: cd_basis_mul_sign, cd_multiply)
 
 Verification: 3 independent paths must agree:
 1. compute_cd_mul (L_a row-scan)

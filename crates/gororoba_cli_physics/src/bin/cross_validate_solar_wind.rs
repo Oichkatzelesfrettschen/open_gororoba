@@ -5,14 +5,12 @@
 //! instrument independence of the DM null result.
 
 use clap::{Parser, Subcommand};
-use data_core::catalogs::ace_mag::{ace_mag_to_omni, average_to_hourly, parse_ace_mag_file};
-use data_core::catalogs::omni::{OmniRecord, parse_omni_file};
-use data_core::catalogs::wind_swe::{
-    merge_wind_swe_mfi, parse_wind_mfi_file, parse_wind_swe_file,
+use data_core::catalogs::{
+    ace_mag::{ace_mag_to_omni, average_to_hourly, parse_ace_mag_file},
+    omni::{OmniRecord, parse_omni_file},
+    wind_swe::{merge_wind_swe_mfi, parse_wind_mfi_file, parse_wind_swe_file},
 };
-use std::fs;
-use std::io::Write;
-use std::path::PathBuf;
+use std::{fs, io::Write, path::PathBuf};
 
 #[derive(Parser)]
 #[command(name = "cross-validate-solar-wind")]
@@ -147,7 +145,10 @@ fn build_hourly_map(records: &[OmniRecord]) -> std::collections::HashMap<(u16, u
 }
 
 fn print_stats(stats: &[PairedStats]) {
-    eprintln!("{:<12} {:>6} {:>10} {:>10} {:>10}", "Variable", "N", "Pearson_r", "RMSE", "Bias");
+    eprintln!(
+        "{:<12} {:>6} {:>10} {:>10} {:>10}",
+        "Variable", "N", "Pearson_r", "RMSE", "Bias"
+    );
     eprintln!("{}", "-".repeat(54));
     for s in stats {
         eprintln!(
@@ -193,7 +194,11 @@ fn write_paired_csv(
     Ok(())
 }
 
-fn run_omni_vs_ace_mag(omni_path: &std::path::Path, ace_path: &std::path::Path, out: Option<&PathBuf>) -> anyhow::Result<()> {
+fn run_omni_vs_ace_mag(
+    omni_path: &std::path::Path,
+    ace_path: &std::path::Path,
+    out: Option<&PathBuf>,
+) -> anyhow::Result<()> {
     eprintln!("loading OMNI2: {}", omni_path.display());
     let omni = parse_omni_file(omni_path)?;
     eprintln!("  {} records", omni.len());
@@ -202,7 +207,12 @@ fn run_omni_vs_ace_mag(omni_path: &std::path::Path, ace_path: &std::path::Path, 
     let raw = parse_ace_mag_file(ace_path)?;
     let hourly = average_to_hourly(&raw);
     let ace_omni = ace_mag_to_omni(&hourly);
-    eprintln!("  {} 16-sec -> {} hourly -> {} OmniRecords", raw.len(), hourly.len(), ace_omni.len());
+    eprintln!(
+        "  {} 16-sec -> {} hourly -> {} OmniRecords",
+        raw.len(),
+        hourly.len(),
+        ace_omni.len()
+    );
 
     // Time-align by (doy, hour)
     let map_b = build_hourly_map(&ace_omni);
@@ -295,7 +305,12 @@ fn run_omni_vs_wind(
     print_stats(&stats);
 
     if let Some(path) = out {
-        write_paired_csv(path, &omni, &wind_omni, &["bx", "by", "bz", "density", "speed"])?;
+        write_paired_csv(
+            path,
+            &omni,
+            &wind_omni,
+            &["bx", "by", "bz", "density", "speed"],
+        )?;
         eprintln!("wrote per-hour CSV: {}", path.display());
     }
 
@@ -309,10 +324,20 @@ fn main() -> anyhow::Result<()> {
         Cmd::OmniVsAceMag { omni, ace_mag, out } => {
             run_omni_vs_ace_mag(&omni, &ace_mag, out.as_ref())?;
         }
-        Cmd::OmniVsWind { omni, wind_swe, wind_mfi, out } => {
+        Cmd::OmniVsWind {
+            omni,
+            wind_swe,
+            wind_mfi,
+            out,
+        } => {
             run_omni_vs_wind(&omni, &wind_swe, &wind_mfi, out.as_ref())?;
         }
-        Cmd::AceVsWind { wind_swe, wind_mfi, omni, out } => {
+        Cmd::AceVsWind {
+            wind_swe,
+            wind_mfi,
+            omni,
+            out,
+        } => {
             // Use OMNI as ACE proxy (OMNI2 is dominated by ACE data)
             run_omni_vs_wind(&omni, &wind_swe, &wind_mfi, out.as_ref())?;
         }

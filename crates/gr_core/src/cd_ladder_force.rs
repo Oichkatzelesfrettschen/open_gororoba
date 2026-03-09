@@ -9,7 +9,7 @@
 //! - Schafer (1966): On the algebras formed by the Cayley-Dickson process
 //! - Moreno (1998): The zero divisors of the Cayley-Dickson algebras over the real numbers
 
-use algebra_core::construction::chingon::AlternativityViolationTensor;
+use gororoba_algebra::construction::chingon::AlternativityViolationTensor;
 use nalgebra::Vector3;
 
 /// Configuration for a CD-ladder drag force at a specific algebra dimension.

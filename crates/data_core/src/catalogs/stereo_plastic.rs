@@ -17,10 +17,14 @@
 //!
 //! RTN -> GSE coordinate transform requires Earth-STEREO separation angle.
 
-use crate::catalogs::omni::OmniRecord;
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file};
-use std::collections::HashMap;
-use std::path::{Path, PathBuf};
+use crate::{
+    catalogs::omni::OmniRecord,
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file},
+};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 
 // ---------------------------------------------------------------------------
 // STEREO PLASTIC (plasma)
@@ -164,9 +168,18 @@ pub fn parse_stereo_plastic(content: &str) -> Vec<StereoPlasticRecord> {
                 Ok(v) => v,
                 Err(_) => continue,
             };
-            let np: f64 = fields.get(4).and_then(|s| s.parse().ok()).unwrap_or(FILL_STEREO);
-            let speed: f64 = fields.get(5).and_then(|s| s.parse().ok()).unwrap_or(FILL_STEREO);
-            let tkin: f64 = fields.get(6).and_then(|s| s.parse().ok()).unwrap_or(FILL_STEREO);
+            let np: f64 = fields
+                .get(4)
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(FILL_STEREO);
+            let speed: f64 = fields
+                .get(5)
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(FILL_STEREO);
+            let tkin: f64 = fields
+                .get(6)
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(FILL_STEREO);
 
             records.push(StereoPlasticRecord {
                 year,
@@ -202,9 +215,18 @@ pub fn parse_stereo_plastic(content: &str) -> Vec<StereoPlasticRecord> {
         let tkin: f64 = fields[6].trim().parse().unwrap_or(FILL_STEREO);
 
         // RTN velocity: cols 14-16 (may be fill from 2020-03 onward)
-        let vr: f64 = fields.get(14).and_then(|s| s.trim().parse().ok()).unwrap_or(FILL_STEREO);
-        let vt: f64 = fields.get(15).and_then(|s| s.trim().parse().ok()).unwrap_or(FILL_STEREO);
-        let vn: f64 = fields.get(16).and_then(|s| s.trim().parse().ok()).unwrap_or(FILL_STEREO);
+        let vr: f64 = fields
+            .get(14)
+            .and_then(|s| s.trim().parse().ok())
+            .unwrap_or(FILL_STEREO);
+        let vt: f64 = fields
+            .get(15)
+            .and_then(|s| s.trim().parse().ok())
+            .unwrap_or(FILL_STEREO);
+        let vn: f64 = fields
+            .get(16)
+            .and_then(|s| s.trim().parse().ok())
+            .unwrap_or(FILL_STEREO);
 
         records.push(StereoPlasticRecord {
             year,
@@ -402,9 +424,7 @@ pub fn average_stereo_mag_hourly(records: &[StereoMagRecord]) -> Vec<StereoMagHo
         })
         .collect();
 
-    hourly.sort_by(|a, b| {
-        (a.year, a.doy, a.hour).cmp(&(b.year, b.doy, b.hour))
-    });
+    hourly.sort_by_key(|a| (a.year, a.doy, a.hour));
     hourly
 }
 
@@ -525,7 +545,9 @@ impl DatasetProvider for StereoPlasticProvider {
         std::fs::create_dir_all(&dir)?;
 
         for year in self.year_start..=self.year_end {
-            let n_days = if year.is_multiple_of(4) && (!year.is_multiple_of(100) || year.is_multiple_of(400)) {
+            let n_days = if year.is_multiple_of(4)
+                && (!year.is_multiple_of(100) || year.is_multiple_of(400))
+            {
                 366
             } else {
                 365
@@ -535,7 +557,8 @@ impl DatasetProvider for StereoPlasticProvider {
                     "STA_L2_PLA_1DMax_1hr_{}{:03}_{:03}_V10.txt",
                     year,
                     // Convert DOY to MMDD for filename
-                    doy, doy,
+                    doy,
+                    doy,
                 );
                 let output = dir.join(&fname);
                 if config.skip_existing && output.exists() {
@@ -590,9 +613,7 @@ impl DatasetProvider for StereoMagProvider {
         std::fs::create_dir_all(&dir)?;
         // MAGPLASMA CDF files at SPDF are yearly (~75 MB).
         // For now, create directory and rely on CDAWeb REST API for text export.
-        log::info!(
-            "STEREO MAGPLASMA: use CDAWeb REST API or bin/fetch_stereo.py for text export"
-        );
+        log::info!("STEREO MAGPLASMA: use CDAWeb REST API or bin/fetch_stereo.py for text export");
         Ok(dir)
     }
 
@@ -685,8 +706,14 @@ YEAR\tDOY\thour\tdatetime\tNp\tBulk_Speed\tTkin\tv_th\tflow_ang_inst\tflow_ang_h
         assert!((bx - 5.0).abs() < 1e-10, "Bx should equal Br at sep=0");
         let by_expected = -3.0 * tilt.cos() - 2.0 * tilt.sin();
         let bz_expected = -3.0 * tilt.sin() + 2.0 * tilt.cos();
-        assert!((by - by_expected).abs() < 1e-10, "By with tilt: got {by}, expected {by_expected}");
-        assert!((bz - bz_expected).abs() < 1e-10, "Bz with tilt: got {bz}, expected {bz_expected}");
+        assert!(
+            (by - by_expected).abs() < 1e-10,
+            "By with tilt: got {by}, expected {by_expected}"
+        );
+        assert!(
+            (bz - bz_expected).abs() < 1e-10,
+            "Bz with tilt: got {bz}, expected {bz_expected}"
+        );
     }
 
     #[test]
@@ -699,8 +726,14 @@ YEAR\tDOY\thour\tdatetime\tNp\tBulk_Speed\tTkin\tv_th\tflow_ang_inst\tflow_ang_h
         assert!((bx - 3.0).abs() < 1e-10, "Bx = -Bt at 90 deg: got {bx}");
         let by_expected = 5.0 * tilt.cos() - 2.0 * tilt.sin();
         let bz_expected = 5.0 * tilt.sin() + 2.0 * tilt.cos();
-        assert!((by - by_expected).abs() < 1e-10, "By with tilt at 90 deg: got {by}, expected {by_expected}");
-        assert!((bz - bz_expected).abs() < 1e-10, "Bz with tilt at 90 deg: got {bz}, expected {bz_expected}");
+        assert!(
+            (by - by_expected).abs() < 1e-10,
+            "By with tilt at 90 deg: got {by}, expected {by_expected}"
+        );
+        assert!(
+            (bz - bz_expected).abs() < 1e-10,
+            "Bz with tilt at 90 deg: got {bz}, expected {bz_expected}"
+        );
     }
 
     #[test]
@@ -710,10 +743,14 @@ YEAR\tDOY\thour\tdatetime\tNp\tBulk_Speed\tTkin\tv_th\tflow_ang_inst\tflow_ang_h
         let (bx, by, bz) = rtn_to_gse(0.0, 0.0, 10.0, 0.0);
         let tilt = 7.25_f64.to_radians();
         assert!(bx.abs() < 1e-14, "Bx should be zero for pure Bn");
-        assert!((by - (-10.0 * tilt.sin())).abs() < 1e-10,
-            "Pure Bn should leak into By via tilt: got {by}");
-        assert!((bz - (10.0 * tilt.cos())).abs() < 1e-10,
-            "Pure Bn should project onto Bz via tilt: got {bz}");
+        assert!(
+            (by - (-10.0 * tilt.sin())).abs() < 1e-10,
+            "Pure Bn should leak into By via tilt: got {by}"
+        );
+        assert!(
+            (bz - (10.0 * tilt.cos())).abs() < 1e-10,
+            "Pure Bn should project onto Bz via tilt: got {bz}"
+        );
         // Verify the leak is ~12.6% of Bn
         assert!(by.abs() > 1.2, "Tilt leak should be ~1.26 nT for 10 nT Bn");
     }
@@ -724,8 +761,10 @@ YEAR\tDOY\thour\tdatetime\tNp\tBulk_Speed\tTkin\tv_th\tflow_ang_inst\tflow_ang_h
         let (bx, by, bz) = rtn_to_gse(5.0, -3.0, 2.0, 42.7);
         let mag_rtn = (5.0_f64.powi(2) + 3.0_f64.powi(2) + 2.0_f64.powi(2)).sqrt();
         let mag_gse = (bx.powi(2) + by.powi(2) + bz.powi(2)).sqrt();
-        assert!((mag_rtn - mag_gse).abs() < 1e-10,
-            "|B| must be preserved: RTN={mag_rtn:.6}, GSE={mag_gse:.6}");
+        assert!(
+            (mag_rtn - mag_gse).abs() < 1e-10,
+            "|B| must be preserved: RTN={mag_rtn:.6}, GSE={mag_gse:.6}"
+        );
     }
 
     #[test]

@@ -10,7 +10,7 @@
 //! Reference: Stolpp et al., arXiv:1809.08429 (2018) -- Eqs. 10-23.
 //! The thermal Drude weight K_th = D_E - beta * D_ES^2 / D_S (Eq. 15).
 
-use algebra_core::construction::cayley_dickson::SignTable;
+use gororoba_algebra::construction::cayley_dickson::SignTable;
 use thiserror::Error;
 
 #[derive(Error, Debug)]

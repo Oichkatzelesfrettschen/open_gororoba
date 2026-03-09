@@ -259,8 +259,8 @@ impl CouplingTopology {
     /// Create a topology from an explicit adjacency matrix.
     ///
     /// Allows external construction of arbitrary graph topologies
-    /// (e.g., from algebra_core ZD incidence graphs) without circular
-    /// dependency on algebra_core.
+    /// (e.g., from gororoba_algebra ZD incidence graphs) without circular
+    /// dependency on gororoba_algebra.
     pub fn from_adjacency_matrix(name: &str, n: usize, adjacency: Vec<Vec<f64>>) -> Self {
         assert_eq!(adjacency.len(), n, "adjacency rows must match n");
         for row in &adjacency {

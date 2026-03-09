@@ -2651,7 +2651,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/82::ASOT-0098", "reports/pure_rust_port_boundaries_2026_02_14.toml::boundary/2::PB-003"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
+canonical_download_path = "crates/cd_kernel/src/cayley_dickson/mod.rs"
+legacy_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -2666,7 +2667,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/Cargo.toml"]
+downloaded_paths = ["CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)", "CURRENT::PATH crates/gororoba_algebra/Cargo.toml (LEGACY::PATH crates/algebra_core/Cargo.toml)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -5270,7 +5271,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/insights.toml::insight/45::I-053", "registry/source_lanes/web_references.toml::artifact_ref/158::ASOT-0195"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_exotic_octonions.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_exotic_octonions.rs"
+legacy_download_path = "crates/algebra_core/tests/test_exotic_octonions.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -5285,7 +5287,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/algebra_core/tests/test_exotic_octonions.rs"]
+downloaded_paths = ["CURRENT::PATH crates/gororoba_algebra/tests/test_exotic_octonions.rs (LEGACY::PATH crates/algebra_core/tests/test_exotic_octonions.rs)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -5756,7 +5758,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/insights.toml::insight/42::I-043", "registry/source_lanes/web_references.toml::artifact_ref/175::ASOT-0213"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_split_octonion_geometry.rs"
+legacy_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -5771,7 +5774,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/algebra_core/tests/test_split_octonion_geometry.rs"]
+downloaded_paths = ["CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -6215,7 +6218,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/insights.toml::insight/43::I-051", "registry/source_lanes/web_references.toml::artifact_ref/190::ASOT-0230"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_split_octonion_geometry.rs"
+legacy_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -6230,7 +6234,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/algebra_core/tests/test_split_octonion_geometry.rs"]
+downloaded_paths = ["CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -6689,7 +6693,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["reports/handoff_algebra_fluid_duality.md", "crates/algebra_core", "crates/lbm_core", "Cargo.toml", "crates/stats_core", "crates/gororoba_cli", "warp_ring_integration.png", "docs/monograph", "registry/entrypoint_docs.toml", "registry/data_artifact_narratives.toml"]
+downloaded_paths = ["reports/handoff_algebra_fluid_duality.md", "CURRENT::PATH crates/gororoba_algebra (LEGACY::PATH crates/algebra_core)", "crates/lbm_core", "Cargo.toml", "crates/stats_core", "crates/gororoba_cli", "warp_ring_integration.png", "docs/monograph", "registry/entrypoint_docs.toml", "registry/data_artifact_narratives.toml"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -155579,7 +155583,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/pantheon_physicsforge_migration_matrix.toml::overlap_coverage/3::OG-COVER-004", "registry/source_lanes/web_references.toml::artifact_ref/4730::ASOT-5762"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
+canonical_download_path = "crates/cd_kernel/src/cayley_dickson/mod.rs"
+legacy_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -155594,7 +155599,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/cd_kernel/src/cayley_dickson.rs", "crates/algebra_core/src/physics/octonion_field.rs", "crates/algebra_analysis/src/boxkites.rs"]
+downloaded_paths = ["CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)", "CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/physics/octonion_field.rs)", "crates/algebra_analysis/src/boxkites.rs"]
 notes = ["Do not port PhysicsForge octonion scripts as canonical compute code.", "downloaded"]
 
 [[artifact]]
@@ -156038,7 +156043,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/phase8_documentation.toml::phase8/implementation", "registry/source_lanes/web_references.toml::artifact_ref/4747::ASOT-5779"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_low_dimensional_survey.rs"
+legacy_download_path = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -156053,7 +156059,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/algebra_core/tests/test_low_dimensional_survey.rs"]
+downloaded_paths = ["CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -158657,7 +158663,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/publication_evidence.toml::section/1/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4755::ASOT-5876"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/src/construction/tessarines.rs"
+canonical_download_path = "crates/gororoba_algebra/src/construction/tessarines.rs"
+legacy_download_path = "crates/algebra_core/src/construction/tessarines.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -158672,7 +158679,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/src/construction/composition_algebra_census.rs", "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs", "crates/algebra_core/tests/test_tessarines_census.rs", "crates/algebra_core/tests/test_low_dimensional_survey.rs"]
+downloaded_paths = ["CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)", "CURRENT::PATH crates/gororoba_algebra/src/construction/composition_algebra_census.rs (LEGACY::PATH crates/algebra_core/src/construction/composition_algebra_census.rs)", "CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)", "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)", "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -184496,7 +184503,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/5708::ASOT-6833", "registry/toml_inventory.toml::document/2::TOML-0003"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/Cargo.toml"
+canonical_download_path = "crates/gororoba_algebra/Cargo.toml"
+legacy_download_path = "crates/algebra_core/Cargo.toml"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -184511,7 +184519,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/algebra_core/Cargo.toml"]
+downloaded_paths = ["CURRENT::PATH crates/gororoba_algebra/Cargo.toml (LEGACY::PATH crates/algebra_core/Cargo.toml)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -217436,7 +217444,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6738::ASOT-8053", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/10"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/Cargo.toml"
+canonical_download_path = "crates/gororoba_algebra/Cargo.toml"
+legacy_download_path = "crates/algebra_core/Cargo.toml"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -217451,7 +217460,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/algebra_core/Cargo.toml"]
+downloaded_paths = ["CURRENT::PATH crates/gororoba_algebra/Cargo.toml (LEGACY::PATH crates/algebra_core/Cargo.toml)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -218003,7 +218012,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6759::ASOT-8074", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/9"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
+canonical_download_path = "crates/cd_kernel/src/cayley_dickson/mod.rs"
+legacy_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -218018,7 +218028,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/cd_kernel/src/cayley_dickson.rs"]
+downloaded_paths = ["CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -220286,7 +220296,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["Cargo.toml", "crates/algebra_core", "crates/sign_imbalance", "crates/gororoba_cli", "crates/lbm_3d_cuda"]
+downloaded_paths = ["Cargo.toml", "CURRENT::PATH crates/gororoba_algebra (LEGACY::PATH crates/algebra_core)", "crates/sign_imbalance", "crates/gororoba_cli", "crates/lbm_3d_cuda"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -220811,7 +220821,8 @@ source_kinds = ["toml_source"]
 source_refs = ["registry/insights.toml::insight/44::I-052", "registry/source_lanes/web_references.toml::artifact_ref/6852::ASOT-8178"]
 doi_list = []
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_split_octonion_geometry.rs"
+legacy_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 status = "downloaded"
 minimum_requirement_met = true
 manual_intervention_required = false
@@ -220826,7 +220837,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["crates/algebra_core/tests/test_split_octonion_geometry.rs"]
+downloaded_paths = ["CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)"]
 notes = ["downloaded"]
 
 [[artifact]]
@@ -220907,7 +220918,7 @@ working_mirrors = []
 working_pdf_mirrors = []
 nonworking_mirrors = []
 unverified_mirrors = []
-downloaded_paths = ["docs/research/SPLIT_OCTONION_ATTractor.md", "crates/algebra_core/tests/test_split_octonion_geometry.rs", "crates/algebra_core/tests/test_split_octonion_attractor.rs"]
+downloaded_paths = ["docs/research/SPLIT_OCTONION_ATTractor.md", "CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)", "CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_attractor.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_attractor.rs)"]
 notes = ["downloaded"]
 
 [[artifact]]

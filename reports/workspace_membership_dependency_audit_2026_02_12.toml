@@ -24,8 +24,10 @@ result = "pass"
 summary = "advisories/bans/licenses/sources checks pass with duplicate warnings."
 
 [[workspace_member]]
-name = "algebra_core"
-manifest = "crates/algebra_core/Cargo.toml"
+name = "gororoba_algebra"
+name_legacy = "algebra_core"
+manifest = "crates/gororoba_algebra/Cargo.toml"
+manifest_legacy = "crates/algebra_core/Cargo.toml"
 [[workspace_member]]
 name = "control_core"
 manifest = "crates/control_core/Cargo.toml"

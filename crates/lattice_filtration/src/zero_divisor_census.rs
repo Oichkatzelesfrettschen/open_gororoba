@@ -14,7 +14,7 @@
 //! If rho < threshold, the particle "collapses" (its state is annihilated).
 //! The set of all collapse points forms the "Singular Manifold" of the vacuum.
 
-use algebra_core::{cd_multiply, cd_norm_sq};
+use gororoba_algebra::{cd_multiply, cd_norm_sq};
 use sign_imbalance::AptSedenionField;
 
 /// Represents a continuous Sedenion field interpolated from discrete grid data.

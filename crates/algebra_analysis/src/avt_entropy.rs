@@ -12,7 +12,7 @@
 //! - dim=64 (chingons): more violations, 0 < H < ln(64).
 //!
 //! The AVT construction uses only `cd_kernel::cayley_dickson::cd_basis_mul_sign_iter`,
-//! avoiding a circular dependency on `algebra_core`.
+//! avoiding a circular dependency on `gororoba_algebra`.
 
 use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
 

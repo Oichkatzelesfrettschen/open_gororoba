@@ -3,8 +3,8 @@
 //! Evaluates the 'Smoothing Effect' of 256D algebraic pressure on the
 //! expansion of the universe and calculates the Voudon Smoothing Scale.
 
-use algebra_core::construction::deep_space::compute_voudon_imbalance_density;
 use cosmology_core::{FlatLCDM, VoudonFriedmann};
+use gororoba_algebra::construction::deep_space::compute_voudon_imbalance_density;
 
 fn main() -> anyhow::Result<()> {
     println!("=== Phase 2: Voudon-Friedmann Cosmological Integration ===");

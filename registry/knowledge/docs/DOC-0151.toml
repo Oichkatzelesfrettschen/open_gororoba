@@ -29,7 +29,7 @@ conversation with the user. Mathematical claims are UNVERIFIED.
 The conversation uses \"wheel algebra\" to denote a family of NON-ASSOCIATIVE,
 NON-COMMUTATIVE algebras with cyclic multiplication structure. This is
 COMPLETELY DIFFERENT from the Carlstrom/Setzer \"wheel\" that totalizes
-division (implemented in crates/algebra_core/src/wheels.rs as WheelQ).
+division (implemented in CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs) as WheelQ).
 
 The two concepts share only a name. Do not conflate them.
 

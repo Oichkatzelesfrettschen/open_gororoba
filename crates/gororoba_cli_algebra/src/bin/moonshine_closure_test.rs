@@ -13,11 +13,11 @@ use algebra_experimental::{
         verify_moonshine_c2,
     },
     moonshine_embedding::{
-        analyze_embeddings, divisibility_census, violation_count_best,
-        CD_TOWER, CD_VIOLATION_COUNTS,
+        CD_TOWER, CD_VIOLATION_COUNTS, analyze_embeddings, divisibility_census,
+        violation_count_best,
     },
     representation_closure::{analyze_closure, verify_known_decompositions},
-    superpartner_pairing::{analyze_pairing, assign_parity, witten_index_partial, RepParity},
+    superpartner_pairing::{RepParity, analyze_pairing, assign_parity, witten_index_partial},
 };
 
 fn main() {
@@ -27,8 +27,14 @@ fn main() {
     println!("--- Phase 1: Moonshine Verification ---");
     let c1_ok = verify_moonshine_c1();
     let c2_ok = verify_moonshine_c2();
-    println!("  c_1 = 196884 = 1 + 196883: {}", if c1_ok { "OK" } else { "FAIL" });
-    println!("  c_2 = 21493760 = 1 + 196883 + 21296876: {}", if c2_ok { "OK" } else { "FAIL" });
+    println!(
+        "  c_1 = 196884 = 1 + 196883: {}",
+        if c1_ok { "OK" } else { "FAIL" }
+    );
+    println!(
+        "  c_2 = 21493760 = 1 + 196883 + 21296876: {}",
+        if c2_ok { "OK" } else { "FAIL" }
+    );
 
     let (j744, e8_dim, factor) = j_constant_term_e8_relation();
     println!("  j-constant = {j744} = {factor} * {e8_dim}  (E8 relation)");
@@ -53,10 +59,16 @@ fn main() {
     }
 
     let greedy_ok = verify_known_decompositions();
-    println!("\n  Greedy decomposition verification: {}", if greedy_ok { "OK" } else { "FAIL" });
+    println!(
+        "\n  Greedy decomposition verification: {}",
+        if greedy_ok { "OK" } else { "FAIL" }
+    );
 
     let closure = analyze_closure(J_COEFFICIENTS_VALID);
-    println!("  Closure analysis ({} coefficients):", closure.coefficients_analyzed);
+    println!(
+        "  Closure analysis ({} coefficients):",
+        closure.coefficients_analyzed
+    );
     println!("    Used irreps: {:?}", closure.used_rep_indices);
     println!("    Appears closed: {}", closure.appears_closed);
 
@@ -83,7 +95,10 @@ fn main() {
     println!("--- Phase 3: Superpartner Pairing ---");
     let pairing = analyze_pairing();
     println!("  Representations analyzed: {}", pairing.num_reps);
-    println!("  Bosonic: {}, Fermionic: {}", pairing.num_bosonic, pairing.num_fermionic);
+    println!(
+        "  Bosonic: {}, Fermionic: {}",
+        pairing.num_bosonic, pairing.num_fermionic
+    );
     println!("  Parity balanced: {}", pairing.parity_balanced);
     println!("  Superpartner pairs found: {}", pairing.pairs.len());
     for pair in &pairing.pairs {

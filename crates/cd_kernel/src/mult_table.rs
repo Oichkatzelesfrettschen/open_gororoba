@@ -156,7 +156,7 @@ impl CdMultTable {
 mod tests {
     use super::*;
 
-    // NOTE: test_dim8_matches_octonion_table lives in algebra_core's
+    // NOTE: test_dim8_matches_octonion_table lives in gororoba_algebra's
     // construction/mult_table.rs (needs physics::m3::OctonionTable).
 
     #[test]

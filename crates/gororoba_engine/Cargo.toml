@@ -17,7 +17,7 @@ neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
 spin_tomography_core = { path = "../spin_tomography_core" }
 cd_spin_bridge = { path = "../cd_spin_bridge" }
-algebra_core = { path = "../algebra_core", features = ["lie"] }
+gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
 algebra_experimental = { path = "../algebra_experimental" }
 algebra_analysis = { path = "../algebra_analysis", optional = true }
 stats_core = { path = "../stats_core" }
@@ -48,7 +48,7 @@ name = "pipeline_bench"
 harness = false
 
 [features]
-gpu = ["lbm_3d_cuda/cufft", "algebra_core/gpu", "algebra_experimental/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
+gpu = ["lbm_3d_cuda/cufft", "gororoba_algebra/gpu", "algebra_experimental/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
 cufft = []
 analysis-examples = ["dep:algebra_analysis"]
 

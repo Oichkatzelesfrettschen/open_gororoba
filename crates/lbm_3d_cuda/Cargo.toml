@@ -8,7 +8,7 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 lbm_3d = { path = "../lbm_3d" }
-algebra_core = { path = "../algebra_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 gr_core = { path = "../gr_core" }
 cudarc = { workspace = true }
 half = { workspace = true }

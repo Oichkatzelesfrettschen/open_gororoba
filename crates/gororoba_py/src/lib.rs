@@ -19,12 +19,12 @@ use std::{
 };
 
 // Re-export core crates
-use algebra_core::{
-    analyze_box_kite_symmetry, cd_associator_norm, cd_conjugate, cd_multiply, cd_norm_sq,
-    e8_cartan_matrix, e8_weyl_group_order, find_box_kites, find_zero_divisors, generate_e8_roots,
-};
 use cosmology_core::bounce::{
     BounceParams, chi2_distance_modulus, luminosity_distance, simulate_bounce,
+};
+use gororoba_algebra::{
+    analyze_box_kite_symmetry, cd_associator_norm, cd_conjugate, cd_multiply, cd_norm_sq,
+    e8_cartan_matrix, e8_weyl_group_order, find_box_kites, find_zero_divisors, generate_e8_roots,
 };
 use gr_core::{
     impact_parameters, kerr_metric_quantities, photon_orbit_radius, shadow_boundary,
@@ -40,7 +40,7 @@ use quantum_core::{
 use spectral_core::fractional_laplacian_periodic_1d;
 use stats_core::frechet_distance;
 
-use algebra_core::physics::octonion_field::FieldParams;
+use gororoba_algebra::physics::octonion_field::FieldParams;
 use gororoba_engine::{SimulationConfig3D, SimulationState3D, gate::GororobaGate};
 use lbm_3d_cuda::Precision;
 

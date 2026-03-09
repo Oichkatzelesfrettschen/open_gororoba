@@ -15,21 +15,20 @@
 //! BIB-0314 (Pastawski et al. 2015) for holographic code analogies,
 //! and BIB-0297 (Anderson et al. 2008) for flyby anomaly data.
 
-use clap::Parser;
-use gororoba_cli_physics::flyby::config::{all_flybys, GM_EARTH, R_EARTH};
-use gororoba_cli_physics::flyby::environment::{EarthOnlyNfwLike, State};
-use gororoba_cli_physics::flyby::geometry::{compute_soi_window, hyperbolic_initial_state};
-use gororoba_cli_physics::flyby::integrator::run_trajectory;
-use lbm_3d::boundary::GridIndex;
-use lbm_3d::dm_force::combine_forces;
-use lbm_3d::solver::LbmSolver3D;
-use lbm_core::viscosity_with_chrono_complex;
 use algebra_experimental::moonshine_embedding::LEECH_DIM;
-use quantum_core::lattice_qec_bridge::{
-    build_error_mask, LatticeQecSnapshot, LatticeSiteState, VoidCodeAdapter,
+use clap::Parser;
+use gororoba_cli_physics::flyby::{
+    config::{GM_EARTH, R_EARTH, all_flybys},
+    environment::{EarthOnlyNfwLike, State},
+    geometry::{compute_soi_window, hyperbolic_initial_state},
+    integrator::run_trajectory,
 };
-use std::fs;
-use std::path::PathBuf;
+use lbm_3d::{boundary::GridIndex, dm_force::combine_forces, solver::LbmSolver3D};
+use lbm_core::viscosity_with_chrono_complex;
+use quantum_core::lattice_qec_bridge::{
+    LatticeQecSnapshot, LatticeSiteState, VoidCodeAdapter, build_error_mask,
+};
+use std::{fs, path::PathBuf};
 
 /// Chrono-flyby probe: temporal-fluid coupling with QEC syndrome detection.
 ///
@@ -137,10 +136,7 @@ fn morton_z_order(x: usize, y: usize, z: usize) -> usize {
 ///
 /// Returns (site_index, deviation_norm, rho, ux, uy, uz) for sites where
 /// |rho - 1.0| > threshold.
-fn extract_anomalies(
-    solver: &LbmSolver3D,
-    threshold: f64,
-) -> Vec<(usize, f64, f64, [f64; 3])> {
+fn extract_anomalies(solver: &LbmSolver3D, threshold: f64) -> Vec<(usize, f64, f64, [f64; 3])> {
     let mut anomalies = Vec::new();
     for z in 0..solver.nz {
         for y in 0..solver.ny {
@@ -257,13 +253,7 @@ fn gravity_wake_field(
 /// Scale factor: dx_km = 2 * soi_radius / max(nx, ny, nz), so the SOI
 /// window fits within the grid. The mass position in km is divided by
 /// dx_km and offset to grid center.
-fn physical_to_lattice(
-    pos_km: [f64; 3],
-    nx: usize,
-    ny: usize,
-    nz: usize,
-    dx_km: f64,
-) -> [f64; 3] {
+fn physical_to_lattice(pos_km: [f64; 3], nx: usize, ny: usize, nz: usize, dx_km: f64) -> [f64; 3] {
     [
         pos_km[0] / dx_km + nx as f64 / 2.0,
         pos_km[1] / dx_km + ny as f64 / 2.0,
@@ -285,12 +275,7 @@ fn physical_to_lattice(
 /// where r_perigee_lattice = r_perigee_km / dx_km (perigee distance in grid cells).
 /// Setting g_peak_lattice = target_peak and solving for GM_lattice:
 ///   GM_lattice = target_peak * (r_perigee_lattice^2 + eps^2)
-fn compute_gm_lattice(
-    r_perigee_km: f64,
-    dx_km: f64,
-    softening: f64,
-    target_peak: f64,
-) -> f64 {
+fn compute_gm_lattice(r_perigee_km: f64, dx_km: f64, softening: f64, target_peak: f64) -> f64 {
     let r_perigee_lattice = r_perigee_km / dx_km;
     let r2_eps2 = r_perigee_lattice * r_perigee_lattice + softening * softening;
     target_peak * r2_eps2
@@ -315,7 +300,9 @@ fn apply_chrono_viscosity(solver: &mut LbmSolver3D, alpha: f64, epsilon: f64) {
     let n_nodes = solver.nx * solver.ny * solver.nz;
     let tau_field = vec![tau_clamped; n_nodes];
     // Infallible: length matches, values are finite and >= 0.501
-    solver.set_viscosity_field(tau_field).expect("tau field set");
+    solver
+        .set_viscosity_field(tau_field)
+        .expect("tau field set");
 }
 
 /// Topological friction report row.
@@ -443,7 +430,18 @@ fn main() -> anyhow::Result<()> {
     // Header
     eprintln!(
         "{:>5} {:>10} {:>10} {:>8} {:>6} {:>5}/{:>5} {:>8} {:>5} {:>6} {:>5} {:>8}",
-        "snap", "t_s", "r_km", "v_km/s", "anom", "act", "tot", "strength", "mask", "leech", "dark", "mass"
+        "snap",
+        "t_s",
+        "r_km",
+        "v_km/s",
+        "anom",
+        "act",
+        "tot",
+        "strength",
+        "mask",
+        "leech",
+        "dark",
+        "mass"
     );
 
     // Main loop: interleave trajectory steps with LBM evolution
@@ -484,13 +482,8 @@ fn main() -> anyhow::Result<()> {
         //      Newtonian acceleration at every grid node, and sets via Guo forcing.
         //      See BIB-0297 (Anderson 2008) for flyby anomaly empirical context.
         if !cli.no_gravity_wake {
-            let mass_lattice = physical_to_lattice(
-                traj_state.position,
-                cli.nx,
-                cli.ny,
-                cli.nz,
-                dx_km,
-            );
+            let mass_lattice =
+                physical_to_lattice(traj_state.position, cli.nx, cli.ny, cli.nz, dx_km);
             let grav_field = gravity_wake_field(
                 cli.nx,
                 cli.ny,
@@ -519,8 +512,7 @@ fn main() -> anyhow::Result<()> {
         let anomalies = extract_anomalies(&solver, cli.anomaly_threshold);
 
         // 6. Map anomalies to LatticeSiteState via Morton Z-order
-        let lattice_states =
-            anomalies_to_lattice_states(&anomalies, cli.nx, cli.ny, cli.cd_dim);
+        let lattice_states = anomalies_to_lattice_states(&anomalies, cli.nx, cli.ny, cli.cd_dim);
 
         // 7. Build error mask and syndrome snapshot
         let error_mask = build_error_mask(&lattice_states, cli.anomaly_threshold);

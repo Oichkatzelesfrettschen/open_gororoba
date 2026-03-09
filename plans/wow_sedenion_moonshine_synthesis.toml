@@ -19,7 +19,7 @@ pipeline = "Rust-Native Sedenion Filterbank"
 
 [algebraic_filters]
 filter_1 = { name = "Moonshine Lattice Projection", source = "crates/algebra_experimental/src/moonshine.rs" }
-filter_2 = { name = "Sedenion Zero-Divisor Resonance", source = "crates/cd_kernel/src/cayley_dickson.rs" }
+filter_2 = { name = "Sedenion Zero-Divisor Resonance", source = "crates/cd_kernel/src/cayley_dickson/mod.rs" }
 filter_3 = { name = "Vietoris-Rips Topology", source = "crates/gororoba_cli/src/bin/wow_topology.rs" }
 
 [comparison]

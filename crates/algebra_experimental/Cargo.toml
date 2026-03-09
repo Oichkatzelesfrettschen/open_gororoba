@@ -9,8 +9,8 @@ license = "GPL-2.0-only"
 cd_kernel = { workspace = true }
 algebra_analysis = { workspace = true }
 # Needed for e10_octonion (lie::e8_lattice, physics::octonion_field)
-# and billiard_stats (SedenionZdSystem uses algebra_core types).
-algebra_core = { path = "../algebra_core", features = ["lie", "physics"] }
+# and billiard_stats (SedenionZdSystem uses gororoba_algebra types).
+gororoba_algebra = { path = "../gororoba_algebra", features = ["lie", "physics"] }
 num-complex = { workspace = true }
 wide = { workspace = true }
 nalgebra = { workspace = true }
@@ -23,7 +23,7 @@ petgraph = { workspace = true }
 cudarc = { workspace = true, optional = true }
 
 [features]
-gpu = ["algebra_core/gpu", "dep:cudarc"]
+gpu = ["gororoba_algebra/gpu", "dep:cudarc"]
 
 [dev-dependencies]
 approx = { workspace = true }

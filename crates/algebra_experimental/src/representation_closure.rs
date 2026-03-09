@@ -9,7 +9,7 @@
 //! See BIB-0311 (Conway & Norton 1979) for the Moonshine conjecture
 //! and BIB-0312 (Borcherds 1992) for the proof.
 
-use super::moonshine::{MONSTER_REP_DIMENSIONS, J_COEFFICIENTS};
+use super::moonshine::{J_COEFFICIENTS, MONSTER_REP_DIMENSIONS};
 
 /// Result of a representation closure analysis.
 #[derive(Debug, Clone)]
@@ -69,7 +69,11 @@ pub fn greedy_decompose(value: u64, reps: &[u64]) -> Vec<(usize, u64)> {
 /// Returns which Monster irreps are needed and whether the set saturates.
 pub fn analyze_closure(n: usize) -> ClosureResult {
     let max_n = n.min(J_COEFFICIENTS.len());
-    let reps: Vec<u64> = MONSTER_REP_DIMENSIONS.iter().copied().filter(|&d| d > 0).collect();
+    let reps: Vec<u64> = MONSTER_REP_DIMENSIONS
+        .iter()
+        .copied()
+        .filter(|&d| d > 0)
+        .collect();
 
     let mut all_used: Vec<bool> = vec![false; reps.len()];
     let mut decompositions = Vec::new();
@@ -113,7 +117,11 @@ pub fn analyze_closure(n: usize) -> ClosureResult {
 /// c_1 = 196884 = 1 + 196883
 /// c_2 = 21493760 = 1 + 196883 + 21296876
 pub fn verify_known_decompositions() -> bool {
-    let reps: Vec<u64> = MONSTER_REP_DIMENSIONS.iter().copied().filter(|&d| d > 0).collect();
+    let reps: Vec<u64> = MONSTER_REP_DIMENSIONS
+        .iter()
+        .copied()
+        .filter(|&d| d > 0)
+        .collect();
 
     // c_1 = 196884
     let d1 = greedy_decompose(196884, &reps);

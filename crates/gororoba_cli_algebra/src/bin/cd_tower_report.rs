@@ -16,7 +16,7 @@
 
 use std::{collections::VecDeque, time::Instant};
 
-use algebra_core::{
+use gororoba_algebra::{
     analysis::boxkites::{
         CrossPair, generic_face_sign_census, motif_components_for_cross_assessors,
     },
@@ -212,8 +212,9 @@ fn count_split_zd_pairs(dim: usize) -> usize {
                     let mut b = vec![0.0; dim];
                     b[k] = 1.0;
                     b[l] = 1.0;
-                    let ab =
-                        algebra_core::construction::cayley_dickson::cd_multiply_split(&a, &b, &sig);
+                    let ab = gororoba_algebra::construction::cayley_dickson::cd_multiply_split(
+                        &a, &b, &sig,
+                    );
                     let norm = cd_norm_sq(&ab).sqrt();
                     if norm < 1e-10 {
                         count += 1;
@@ -221,8 +222,9 @@ fn count_split_zd_pairs(dim: usize) -> usize {
 
                     // (e_i + e_j)(e_k - e_l)
                     b[l] = -1.0;
-                    let ab =
-                        algebra_core::construction::cayley_dickson::cd_multiply_split(&a, &b, &sig);
+                    let ab = gororoba_algebra::construction::cayley_dickson::cd_multiply_split(
+                        &a, &b, &sig,
+                    );
                     let norm = cd_norm_sq(&ab).sqrt();
                     if norm < 1e-10 {
                         count += 1;

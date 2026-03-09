@@ -90,7 +90,7 @@ path = "src/bin/test_tda_api.rs"
 
 [dependencies]
 # Workspace domain crates (used by dispatcher + thesis + orchestration bins)
-algebra_core = { path = "../algebra_core", features = ["lie"] }
+gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
 optics_core = { path = "../optics_core" }
@@ -141,7 +141,7 @@ gpu = [
     "lbm_3d_cuda/cufft",
 
 
-    "algebra_core/gpu",
+    "gororoba_algebra/gpu",
     "quantum_core/gpu",
     "sign_imbalance/gpu",
     "gororoba_engine/gpu",

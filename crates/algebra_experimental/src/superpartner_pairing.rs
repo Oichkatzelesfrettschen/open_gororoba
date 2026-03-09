@@ -11,7 +11,7 @@
 //!
 //! See BIB-0311 (Conway & Norton 1979), BIB-0316 (Conway 1968, Atlas).
 
-use super::moonshine::{MONSTER_REP_DIMENSIONS, J_COEFFICIENTS};
+use super::moonshine::{J_COEFFICIENTS, MONSTER_REP_DIMENSIONS};
 
 /// Parity assignment for a Monster representation.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -154,8 +154,14 @@ pub fn analyze_pairing() -> PairingResult {
         .collect();
     let parities: Vec<RepParity> = reps.iter().map(|&d| assign_parity(d)).collect();
 
-    let num_bosonic = parities.iter().filter(|&&p| p == RepParity::Bosonic).count();
-    let num_fermionic = parities.iter().filter(|&&p| p == RepParity::Fermionic).count();
+    let num_bosonic = parities
+        .iter()
+        .filter(|&&p| p == RepParity::Bosonic)
+        .count();
+    let num_fermionic = parities
+        .iter()
+        .filter(|&&p| p == RepParity::Fermionic)
+        .count();
 
     let pairs = find_pairs(&reps, 0.3);
     let parity_balanced = (num_bosonic as i64 - num_fermionic as i64).unsigned_abs() <= 1;

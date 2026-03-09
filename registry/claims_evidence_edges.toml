@@ -31,14 +31,14 @@ target_kind = "rust_source_path"
 id = "CED-00004"
 claim_id = "C-001"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-00005"
 claim_id = "C-001"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -185,7 +185,7 @@ target_kind = "rust_source_path"
 id = "CED-00026"
 claim_id = "C-004"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/lie/group_theory.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/lie/group_theory.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -2061,7 +2061,7 @@ target_kind = "markdown_path"
 id = "CED-00294"
 claim_id = "C-016"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/physics/m3.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/physics/m3.rs (LEGACY::PATH crates/algebra_core/src/physics/m3.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -2124,7 +2124,7 @@ target_kind = "markdown_path"
 id = "CED-00303"
 claim_id = "C-018"
 edge_role = "verification_rule"
-target_ref = "crates/algebra_core/src/construction/wheels.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -2208,7 +2208,7 @@ target_kind = "csv_artifact_path"
 id = "CED-00315"
 claim_id = "C-019"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/wheels.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -2810,7 +2810,7 @@ target_kind = "python_source_path"
 id = "CED-00401"
 claim_id = "C-028"
 edge_role = "verification_rule"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -2866,7 +2866,7 @@ target_kind = "markdown_path"
 id = "CED-00409"
 claim_id = "C-029"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -3405,7 +3405,7 @@ target_kind = "python_source_path"
 id = "CED-00486"
 claim_id = "C-033"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/lie/group_theory.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/lie/group_theory.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -4301,7 +4301,7 @@ target_kind = "markdown_path"
 id = "CED-00614"
 claim_id = "C-042"
 edge_role = "verification_rule"
-target_ref = "crates/algebra_core/src/construction/padic.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/construction/padic.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -4336,7 +4336,7 @@ target_kind = "markdown_path"
 id = "CED-00619"
 claim_id = "C-042"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/padic.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/construction/padic.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -5071,7 +5071,7 @@ target_kind = "generic_reference"
 id = "CED-00724"
 claim_id = "C-054"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/wheels.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -5113,14 +5113,14 @@ target_kind = "rust_source_path"
 id = "CED-00730"
 claim_id = "C-055"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-00731"
 claim_id = "C-055"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -7248,7 +7248,7 @@ target_kind = "python_source_path"
 id = "CED-01035"
 claim_id = "C-1010"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/deep_space.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/deep_space.rs (LEGACY::PATH crates/algebra_core/src/construction/deep_space.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8102,14 +8102,14 @@ target_kind = "rust_source_path"
 id = "CED-01157"
 claim_id = "C-1107"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/chingon.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/chingon.rs (LEGACY::PATH crates/algebra_core/src/construction/chingon.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01158"
 claim_id = "C-1107"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/chingon_tests.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/chingon_tests.rs (LEGACY::PATH crates/algebra_core/src/construction/chingon_tests.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -24405,7 +24405,7 @@ target_kind = "python_source_path"
 id = "CED-03486"
 claim_id = "C-425"
 edge_role = "verification_rule"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -24419,7 +24419,7 @@ target_kind = "rust_source_path"
 id = "CED-03488"
 claim_id = "C-425"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/physics/octonion_field.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/physics/octonion_field.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -24454,7 +24454,7 @@ target_kind = "markdown_path"
 id = "CED-03493"
 claim_id = "C-426"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27401,7 +27401,7 @@ target_kind = "rust_source_path"
 id = "CED-03914"
 claim_id = "C-545"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27450,14 +27450,14 @@ target_kind = "rust_source_path"
 id = "CED-03921"
 claim_id = "C-546"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-03922"
 claim_id = "C-547"
 edge_role = "verification_rule"
-target_ref = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27485,7 +27485,7 @@ target_kind = "rust_source_path"
 id = "CED-03926"
 claim_id = "C-547"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27499,7 +27499,7 @@ target_kind = "rust_source_path"
 id = "CED-03928"
 claim_id = "C-548"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27520,7 +27520,7 @@ target_kind = "rust_source_path"
 id = "CED-03931"
 claim_id = "C-549"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27541,7 +27541,7 @@ target_kind = "rust_source_path"
 id = "CED-03934"
 claim_id = "C-550"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27555,7 +27555,7 @@ target_kind = "rust_source_path"
 id = "CED-03936"
 claim_id = "C-551"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27611,7 +27611,7 @@ target_kind = "rust_source_path"
 id = "CED-03944"
 claim_id = "C-553"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27625,7 +27625,7 @@ target_kind = "rust_source_path"
 id = "CED-03946"
 claim_id = "C-554"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27660,7 +27660,7 @@ target_kind = "rust_source_path"
 id = "CED-03951"
 claim_id = "C-555"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27674,7 +27674,7 @@ target_kind = "rust_source_path"
 id = "CED-03953"
 claim_id = "C-556"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27765,7 +27765,7 @@ target_kind = "rust_source_path"
 id = "CED-03966"
 claim_id = "C-560"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/clifford.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/clifford.rs (LEGACY::PATH crates/algebra_core/src/construction/clifford.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27779,7 +27779,7 @@ target_kind = "rust_source_path"
 id = "CED-03968"
 claim_id = "C-561"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/clifford.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/clifford.rs (LEGACY::PATH crates/algebra_core/src/construction/clifford.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27828,7 +27828,7 @@ target_kind = "markdown_path"
 id = "CED-03975"
 claim_id = "C-563"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/jordan.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/jordan.rs (LEGACY::PATH crates/algebra_core/src/construction/jordan.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27849,7 +27849,7 @@ target_kind = "generic_reference"
 id = "CED-03978"
 claim_id = "C-564"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/jordan.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/jordan.rs (LEGACY::PATH crates/algebra_core/src/construction/jordan.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -27863,7 +27863,7 @@ target_kind = "rust_source_path"
 id = "CED-03980"
 claim_id = "C-565"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/jordan.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/jordan.rs (LEGACY::PATH crates/algebra_core/src/construction/jordan.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28031,28 +28031,28 @@ target_kind = "rust_source_path"
 id = "CED-04004"
 claim_id = "C-573"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/dimensional.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04005"
 claim_id = "C-573"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/eta_matrix.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/gpu/eta_matrix.rs (LEGACY::PATH crates/algebra_core/src/gpu/eta_matrix.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04006"
 claim_id = "C-573"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/graph_construction.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/gpu/graph_construction.rs (LEGACY::PATH crates/algebra_core/src/gpu/graph_construction.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04007"
 claim_id = "C-573"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/imbalance.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/gpu/imbalance.rs (LEGACY::PATH crates/algebra_core/src/gpu/imbalance.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28087,7 +28087,7 @@ target_kind = "rust_source_path"
 id = "CED-04012"
 claim_id = "C-574"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/benches/dimensional_bench.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/benches/dimensional_bench.rs (LEGACY::PATH crates/algebra_core/benches/dimensional_bench.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28115,7 +28115,7 @@ target_kind = "generic_reference"
 id = "CED-04016"
 claim_id = "C-575"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/octonion.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/octonion.rs (LEGACY::PATH crates/algebra_core/src/construction/octonion.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28129,7 +28129,7 @@ target_kind = "rust_source_path"
 id = "CED-04018"
 claim_id = "C-576"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/g2_automorphisms.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/g2_automorphisms.rs (LEGACY::PATH crates/algebra_core/src/construction/g2_automorphisms.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28143,7 +28143,7 @@ target_kind = "rust_source_path"
 id = "CED-04020"
 claim_id = "C-577"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/octonion_geometry.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/octonion_geometry.rs (LEGACY::PATH crates/algebra_core/src/construction/octonion_geometry.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28157,14 +28157,14 @@ target_kind = "rust_source_path"
 id = "CED-04022"
 claim_id = "C-578"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/octonion.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/octonion.rs (LEGACY::PATH crates/algebra_core/src/construction/octonion.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04023"
 claim_id = "C-578"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/octonion_geometry.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/octonion_geometry.rs (LEGACY::PATH crates/algebra_core/src/construction/octonion_geometry.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28199,7 +28199,7 @@ target_kind = "generic_reference"
 id = "CED-04028"
 claim_id = "C-579"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/exceptional_bridge.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/exceptional_bridge.rs (LEGACY::PATH crates/algebra_core/src/construction/exceptional_bridge.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28213,7 +28213,7 @@ target_kind = "rust_source_path"
 id = "CED-04030"
 claim_id = "C-580"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/exceptional_bridge.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/exceptional_bridge.rs (LEGACY::PATH crates/algebra_core/src/construction/exceptional_bridge.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28276,7 +28276,7 @@ target_kind = "rust_source_path"
 id = "CED-04039"
 claim_id = "C-584"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/albert.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/albert.rs (LEGACY::PATH crates/algebra_core/src/construction/albert.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28297,7 +28297,7 @@ target_kind = "rust_source_path"
 id = "CED-04042"
 claim_id = "C-585"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/albert.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/albert.rs (LEGACY::PATH crates/algebra_core/src/construction/albert.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28500,7 +28500,7 @@ target_kind = "rust_source_path"
 id = "CED-04071"
 claim_id = "C-590"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_split_octonion_attractor.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_attractor.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_attractor.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28584,7 +28584,7 @@ target_kind = "rust_source_path"
 id = "CED-04083"
 claim_id = "C-591"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28598,7 +28598,7 @@ target_kind = "claim_ref"
 id = "CED-04085"
 claim_id = "C-593"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28626,7 +28626,7 @@ target_kind = "rust_source_path"
 id = "CED-04089"
 claim_id = "C-594"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28661,7 +28661,7 @@ target_kind = "claim_ref"
 id = "CED-04094"
 claim_id = "C-595"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28703,7 +28703,7 @@ target_kind = "generic_reference"
 id = "CED-04100"
 claim_id = "C-596"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28738,7 +28738,7 @@ target_kind = "claim_ref"
 id = "CED-04105"
 claim_id = "C-597"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28773,7 +28773,7 @@ target_kind = "generic_reference"
 id = "CED-04110"
 claim_id = "C-598"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28829,7 +28829,7 @@ target_kind = "rust_source_path"
 id = "CED-04118"
 claim_id = "C-601"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/dimensional.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28850,7 +28850,7 @@ target_kind = "claim_ref"
 id = "CED-04121"
 claim_id = "C-602"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/dimensional.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28892,7 +28892,7 @@ target_kind = "rust_source_path"
 id = "CED-04127"
 claim_id = "C-605"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/gpu/dimensional.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28906,14 +28906,14 @@ target_kind = "rust_source_path"
 id = "CED-04129"
 claim_id = "C-606"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04130"
 claim_id = "C-606"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28934,14 +28934,14 @@ target_kind = "rust_source_path"
 id = "CED-04133"
 claim_id = "C-607"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04134"
 claim_id = "C-607"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28962,14 +28962,14 @@ target_kind = "rust_source_path"
 id = "CED-04137"
 claim_id = "C-608"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04138"
 claim_id = "C-608"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -28990,14 +28990,14 @@ target_kind = "rust_source_path"
 id = "CED-04141"
 claim_id = "C-609"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04142"
 claim_id = "C-609"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29018,7 +29018,7 @@ target_kind = "rust_source_path"
 id = "CED-04145"
 claim_id = "C-610"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29354,7 +29354,7 @@ target_kind = "claim_ref"
 id = "CED-04193"
 claim_id = "C-631"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29375,14 +29375,14 @@ target_kind = "generic_reference"
 id = "CED-04196"
 claim_id = "C-632"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_split_octonion_attractor.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_attractor.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_attractor.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04197"
 claim_id = "C-632"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29424,14 +29424,14 @@ target_kind = "markdown_path"
 id = "CED-04203"
 claim_id = "C-633"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04204"
 claim_id = "C-633"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29466,7 +29466,7 @@ target_kind = "markdown_path"
 id = "CED-04209"
 claim_id = "C-634"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29487,14 +29487,14 @@ target_kind = "rust_source_path"
 id = "CED-04212"
 claim_id = "C-635"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04213"
 claim_id = "C-635"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29522,7 +29522,7 @@ target_kind = "markdown_path"
 id = "CED-04217"
 claim_id = "C-636"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_tessarines_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29557,7 +29557,7 @@ target_kind = "markdown_path"
 id = "CED-04222"
 claim_id = "C-637"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_exotic_octonions.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_exotic_octonions.rs (LEGACY::PATH crates/algebra_core/tests/test_exotic_octonions.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29599,14 +29599,14 @@ target_kind = "markdown_path"
 id = "CED-04228"
 claim_id = "C-638"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_exotic_octonions.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_exotic_octonions.rs (LEGACY::PATH crates/algebra_core/tests/test_exotic_octonions.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04229"
 claim_id = "C-638"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29641,7 +29641,7 @@ target_kind = "markdown_path"
 id = "CED-04234"
 claim_id = "C-639"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_exotic_octonions.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_exotic_octonions.rs (LEGACY::PATH crates/algebra_core/tests/test_exotic_octonions.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29676,14 +29676,14 @@ target_kind = "rust_source_path"
 id = "CED-04239"
 claim_id = "C-640"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/tessarines.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04240"
 claim_id = "C-640"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29718,14 +29718,14 @@ target_kind = "rust_source_path"
 id = "CED-04245"
 claim_id = "C-641"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/albert.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/albert.rs (LEGACY::PATH crates/algebra_core/src/construction/albert.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04246"
 claim_id = "C-641"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29753,7 +29753,7 @@ target_kind = "markdown_path"
 id = "CED-04250"
 claim_id = "C-642"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29781,7 +29781,7 @@ target_kind = "generic_reference"
 id = "CED-04254"
 claim_id = "C-643"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29795,7 +29795,7 @@ target_kind = "rust_source_path"
 id = "CED-04256"
 claim_id = "C-644"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29816,14 +29816,14 @@ target_kind = "rust_source_path"
 id = "CED-04259"
 claim_id = "C-645"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/albert.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/albert.rs (LEGACY::PATH crates/algebra_core/src/construction/albert.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04260"
 claim_id = "C-645"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_albert_algebra.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29844,14 +29844,14 @@ target_kind = "rust_source_path"
 id = "CED-04263"
 claim_id = "C-646"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/composition_algebra_census.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/composition_algebra_census.rs (LEGACY::PATH crates/algebra_core/src/construction/composition_algebra_census.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04264"
 claim_id = "C-646"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29865,7 +29865,7 @@ target_kind = "rust_source_path"
 id = "CED-04266"
 claim_id = "C-647"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29879,7 +29879,7 @@ target_kind = "rust_source_path"
 id = "CED-04268"
 claim_id = "C-648"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29893,7 +29893,7 @@ target_kind = "rust_source_path"
 id = "CED-04270"
 claim_id = "C-649"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -29907,7 +29907,7 @@ target_kind = "rust_source_path"
 id = "CED-04272"
 claim_id = "C-650"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -31076,7 +31076,7 @@ target_kind = "toml_registry_path"
 id = "CED-04439"
 claim_id = "C-695"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/lie/lyndon_basis.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/lie/lyndon_basis.rs (LEGACY::PATH crates/algebra_core/src/lie/lyndon_basis.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -33057,7 +33057,7 @@ target_kind = "rust_source_path"
 id = "CED-04722"
 claim_id = "C-795"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -33379,7 +33379,7 @@ target_kind = "rust_source_path"
 id = "CED-04768"
 claim_id = "C-808"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -33435,14 +33435,14 @@ target_kind = "rust_source_path"
 id = "CED-04776"
 claim_id = "C-811"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/physics/octonion_field.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/physics/octonion_field.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04777"
 claim_id = "C-811"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -33477,7 +33477,7 @@ target_kind = "rust_source_path"
 id = "CED-04782"
 claim_id = "C-812"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -33561,14 +33561,14 @@ target_kind = "rust_source_path"
 id = "CED-04794"
 claim_id = "C-815"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04795"
 claim_id = "C-815"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -33617,14 +33617,14 @@ target_kind = "rust_source_path"
 id = "CED-04802"
 claim_id = "C-817"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/construction/hypercomplex.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04803"
 claim_id = "C-817"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -33673,14 +33673,14 @@ target_kind = "rust_source_path"
 id = "CED-04810"
 claim_id = "C-818"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-04811"
 claim_id = "C-818"
 edge_role = "where_stated"
-target_ref = "crates/cd_kernel/src/cayley_dickson.rs"
+target_ref = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -34800,7 +34800,7 @@ target_kind = "rust_source_path"
 id = "CED-04971"
 claim_id = "C-876"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/physics/quat_rotation.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/physics/quat_rotation.rs (LEGACY::PATH crates/algebra_core/src/physics/quat_rotation.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -34947,7 +34947,7 @@ target_kind = "rust_source_path"
 id = "CED-04992"
 claim_id = "C-885"
 edge_role = "where_stated"
-target_ref = "crates/algebra_core/src/physics/quat_rotation.rs"
+target_ref = "CURRENT::PATH crates/gororoba_algebra/src/physics/quat_rotation.rs (LEGACY::PATH crates/algebra_core/src/physics/quat_rotation.rs)"
 target_kind = "rust_source_path"
 
 [[edge]]

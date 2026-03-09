@@ -389,7 +389,7 @@ name = "eht-pathion-separation"
 path = "src/bin/eht_pathion_separation.rs"
 
 [dependencies]
-algebra_core = { path = "../algebra_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 algebra_analysis = { path = "../algebra_analysis" }
 casimir_core = { path = "../casimir_core" }
 cosmology_core = { path = "../cosmology_core" }

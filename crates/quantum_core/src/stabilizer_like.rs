@@ -116,7 +116,11 @@ mod tests {
         errors.insert(2);
         errors.insert(4);
         let strength = stab.syndrome_strength(&errors);
-        assert!((strength - 0.5).abs() < 1e-10, "Expected 0.5, got {}", strength);
+        assert!(
+            (strength - 0.5).abs() < 1e-10,
+            "Expected 0.5, got {}",
+            strength
+        );
     }
 
     #[test]

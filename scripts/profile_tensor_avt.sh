@@ -90,7 +90,7 @@ run_backend() {
   fi
 
   env CARGO_HOME="$CARGO_HOME" CARGO_TARGET_DIR="$target_dir" \
-    cargo build --profile bench -p algebra_core "${cargo_args[@]}" --example tensor_avt_profile
+    cargo build --profile bench -p gororoba_algebra "${cargo_args[@]}" --example tensor_avt_profile
 
   if [[ "$backend" == "gpu" ]]; then
     nvidia_pid="$(capture_nvidia "$nvidia_log")"
@@ -112,7 +112,7 @@ run_backend() {
 
   if [[ "$WITH_FLAMEGRAPH" == "1" ]]; then
     env CARGO_HOME="$CARGO_HOME" CARGO_TARGET_DIR="$target_dir" \
-      cargo flamegraph --profile bench -p algebra_core "${cargo_args[@]}" \
+      cargo flamegraph --profile bench -p gororoba_algebra "${cargo_args[@]}" \
       --example tensor_avt_profile -o "$flamegraph_svg" -- \
       "${run_args[@]}" >"$out_dir/flamegraph.stdout" 2>"$out_dir/flamegraph.stderr"
   fi

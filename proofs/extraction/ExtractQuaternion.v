@@ -13,7 +13,7 @@
     operations is NOT verified by the kernel. It is the single assumption
     bridging formal proofs to executable code.
 
-    Mirrors: algebra_core/src/physics/quat_rotation.rs *)
+    Mirrors: CURRENT::PATH crates/gororoba_algebra/src/physics/quat_rotation.rs (LEGACY::PATH crates/algebra_core/src/physics/quat_rotation.rs) *)
 
 From OpenGororoba Require Import FloatAxioms FloatQuaternion.
 

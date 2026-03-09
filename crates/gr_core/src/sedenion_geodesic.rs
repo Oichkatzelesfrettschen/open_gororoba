@@ -8,7 +8,7 @@
 //! non-associative sedenion algebras.
 
 use crate::kerr::{Kerr, kerr_metric_quantities};
-use algebra_core::physics::m3::{
+use gororoba_algebra::physics::m3::{
     M3Classification, OctonionTable, classify_m3, compute_m3_octonion_basis,
 };
 

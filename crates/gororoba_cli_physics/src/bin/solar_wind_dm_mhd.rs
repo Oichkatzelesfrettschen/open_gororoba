@@ -10,13 +10,17 @@
 //! alone cannot produce observable solar wind perturbations at 1 AU.
 
 use clap::Parser;
-use lbm_3d::boundary::ZouHeBoundary;
-use lbm_3d::dm_force::{combine_forces, DmForceConfig, DmForceField};
-use lbm_3d::mhd::{MhdConfig, MhdField};
-use lbm_3d::solver::{BgkCollision, LbmSolver3D};
-use std::fs;
-use std::io::{BufRead, Write};
-use std::path::PathBuf;
+use lbm_3d::{
+    boundary::ZouHeBoundary,
+    dm_force::{DmForceConfig, DmForceField, combine_forces},
+    mhd::{MhdConfig, MhdField},
+    solver::{BgkCollision, LbmSolver3D},
+};
+use std::{
+    fs,
+    io::{BufRead, Write},
+    path::PathBuf,
+};
 
 /// D3Q19 LBM + MHD + NFW dark matter gravitational coupling.
 ///
@@ -145,10 +149,7 @@ fn write_snapshot(
 
     let filename = path.join(format!("snapshot_{step:06}.csv"));
     let mut file = fs::File::create(&filename)?;
-    writeln!(
-        file,
-        "x,y,rho,ux,uy,uz,bx,by,bz,dm_fx,dm_fy,dm_fz,dm_rho"
-    )?;
+    writeln!(file, "x,y,rho,ux,uy,uz,bx,by,bz,dm_fx,dm_fy,dm_fz,dm_rho")?;
 
     for y in 0..ny {
         for x in 0..nx {
@@ -166,9 +167,16 @@ fn write_snapshot(
             writeln!(
                 file,
                 "{x},{y},{rho:.8},{:.8},{:.8},{:.8},{:.8e},{:.8e},{:.8e},{:.8e},{:.8e},{:.8e},{:.8e}",
-                u[0], u[1], u[2],
-                mhd.bx[idx], mhd.by[idx], mhd.bz[idx],
-                dm_fx, dm_fy, dm_fz, dm_rho,
+                u[0],
+                u[1],
+                u[2],
+                mhd.bx[idx],
+                mhd.by[idx],
+                mhd.bz[idx],
+                dm_fx,
+                dm_fy,
+                dm_fz,
+                dm_rho,
             )?;
         }
     }
@@ -299,7 +307,11 @@ fn main() -> anyhow::Result<()> {
     // Initialize state: real data from IC file, or synthetic uniform+Parker
     let (u_sw, ic_meta) = if let Some(ref ic_path) = cli.ic_file {
         let (loaded, ic_meta) = load_ic_file(ic_path, &mut solver, &mut mhd)?;
-        eprintln!("loaded {} cells from IC file: {}", loaded, ic_path.display());
+        eprintln!(
+            "loaded {} cells from IC file: {}",
+            loaded,
+            ic_path.display()
+        );
         // Report IC metadata when present
         if let Some(n) = ic_meta.n_ref_cm3 {
             eprintln!("  IC metadata: n_ref={n:.2} cm^-3");
@@ -350,7 +362,10 @@ fn main() -> anyhow::Result<()> {
             ..DmForceConfig::default()
         };
         let field = DmForceField::new(cli.nx, cli.ny, cli.nz, dm_config);
-        eprintln!("DM max |F_grav|: {:.6e} (lattice units)", field.max_force_magnitude());
+        eprintln!(
+            "DM max |F_grav|: {:.6e} (lattice units)",
+            field.max_force_magnitude()
+        );
         if cli.dm_sigma > 0.0 {
             eprintln!(
                 "DM drag: sigma={:.3e} cm^2, kappa={:.6e}, n_ref={:.1} cm^-3, v_ref={:.0} km/s",

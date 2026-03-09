@@ -22,7 +22,7 @@
 //! - Zaslavsky (1982): Signed graphs (Discrete Applied Mathematics)
 //! - Tang & Tang (2023): Sedenion-SU(5) unification
 
-use algebra_core::construction::cayley_dickson::cd_associator_norm;
+use gororoba_algebra::construction::cayley_dickson::cd_associator_norm;
 
 /// Imbalance energy result with breakdown by energy scales.
 #[derive(Debug, Clone)]

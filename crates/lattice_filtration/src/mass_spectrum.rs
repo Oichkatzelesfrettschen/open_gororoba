@@ -6,7 +6,7 @@
 //! filtration, which we interpret as higher effective mass.
 
 use crate::{basis_index::BasisIndexCodec, patricia_trie::PatriciaIndex};
-use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
+use gororoba_algebra::construction::cayley_dickson::cd_basis_mul_sign;
 use std::collections::HashMap;
 
 /// Dimension of sedenion algebra.

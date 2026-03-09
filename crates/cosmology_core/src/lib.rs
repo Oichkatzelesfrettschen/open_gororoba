@@ -43,8 +43,8 @@ pub mod gravastar_potential;
 pub mod halo;
 pub mod halo_profile;
 pub mod homotopy_bridge;
-pub mod observational;
 pub mod nfw_utils;
+pub mod observational;
 pub mod optimizer;
 #[cfg(feature = "argmin-optimizers")]
 pub mod optimizer_argmin;
@@ -132,8 +132,8 @@ pub use halo::{
 };
 
 pub use nfw_utils::{
-    NfwParams, concentration_mass_relation, nfw_density_from_params,
-    nfw_enclosed_mass_from_params, nfw_params_from_mass, nfw_r200_kpc, nfw_rho_s_from_c,
+    NfwParams, concentration_mass_relation, nfw_density_from_params, nfw_enclosed_mass_from_params,
+    nfw_params_from_mass, nfw_r200_kpc, nfw_rho_s_from_c,
 };
 
 pub use flrw::{

@@ -6,7 +6,7 @@ description = "General relativity: Kerr geodesics, black hole shadows, Boyer-Lin
 license = "MIT"
 
 [dependencies]
-algebra_core = { path = "../algebra_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 rayon = { workspace = true }
 nalgebra = { workspace = true }
 ode_solvers = { workspace = true }

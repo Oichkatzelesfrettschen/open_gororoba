@@ -1,4 +1,4 @@
-use algebra_core::analysis::boxkites::primitive_assessors;
+use gororoba_algebra::analysis::boxkites::primitive_assessors;
 
 fn main() {
     let assessors = primitive_assessors();

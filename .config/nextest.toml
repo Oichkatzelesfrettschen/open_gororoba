@@ -56,7 +56,7 @@ test-group = "heavy-research"
 slow-timeout = { period = "600s", terminate-after = 2 }
 
 [[profile.heavy.overrides]]
-filter = 'package(algebra_core) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)'
+filter = 'package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)'
 test-group = "heavy-research"
 slow-timeout = { period = "600s", terminate-after = 2 }
 

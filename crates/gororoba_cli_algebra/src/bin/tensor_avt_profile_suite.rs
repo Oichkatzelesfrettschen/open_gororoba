@@ -1,6 +1,6 @@
 #[cfg(feature = "gpu")]
-use algebra_core::gpu::{ComputeBackend, TensorAvtMulSession, TensorAvtNormSession};
-use algebra_core::gpu::{TensorAVT, is_gpu_available};
+use gororoba_algebra::gpu::{ComputeBackend, TensorAvtMulSession, TensorAvtNormSession};
+use gororoba_algebra::gpu::{TensorAVT, is_gpu_available};
 use std::{env, fs, hint::black_box, path::PathBuf, process, time::Instant};
 use tracing::info_span;
 #[cfg(feature = "tracy-profile")]

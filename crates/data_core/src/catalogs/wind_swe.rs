@@ -15,10 +15,14 @@
 //!   Format: 12 whitespace-delimited columns, NO header lines.
 //!   Fill: varies per column (see constants below).
 
-use crate::catalogs::omni::OmniRecord;
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file};
-use std::collections::HashMap;
-use std::path::{Path, PathBuf};
+use crate::{
+    catalogs::omni::OmniRecord,
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file},
+};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 
 // ---------------------------------------------------------------------------
 // WIND MFI (magnetic field)
@@ -266,9 +270,7 @@ fn month_day_to_doy(year: u16, month: u8, day: u8) -> u16 {
 }
 
 /// Average SWE records into hourly bins keyed by (year, doy, hour).
-fn average_swe_hourly(
-    records: &[WindSweRecord],
-) -> HashMap<(u16, u16, u8), (f64, f64, f64)> {
+fn average_swe_hourly(records: &[WindSweRecord]) -> HashMap<(u16, u16, u8), (f64, f64, f64)> {
     // Key: (year, doy, hour) -> (sum_density, sum_speed, sum_temp, count)
     #[allow(clippy::type_complexity)]
     let mut bins: HashMap<(u16, u16, u8), (f64, f64, f64, f64)> = HashMap::new();
@@ -278,7 +280,9 @@ fn average_swe_hourly(
         let frac = r.decimal_doy - doy as f64;
         let hour = (frac * 24.0).floor() as u8;
 
-        let entry = bins.entry((r.year, doy, hour)).or_insert((0.0, 0.0, 0.0, 0.0));
+        let entry = bins
+            .entry((r.year, doy, hour))
+            .or_insert((0.0, 0.0, 0.0, 0.0));
         let mut count_inc = 0.0;
         if !r.proton_density.is_nan() {
             entry.0 += r.proton_density;
@@ -313,10 +317,7 @@ fn average_swe_hourly(
 /// Time-aligns by (year, doy, hour). MFI provides B-field, SWE provides
 /// plasma. If only one source has data for a given hour, the other fields
 /// are NaN (triggering fallback defaults in UnitConversion).
-pub fn merge_wind_swe_mfi(
-    swe: &[WindSweRecord],
-    mfi: &[WindMfiRecord],
-) -> Vec<OmniRecord> {
+pub fn merge_wind_swe_mfi(swe: &[WindSweRecord], mfi: &[WindMfiRecord]) -> Vec<OmniRecord> {
     let swe_hourly = average_swe_hourly(swe);
 
     // Build MFI lookup: (year, doy, hour) -> WindMfiRecord
@@ -327,21 +328,19 @@ pub fn merge_wind_swe_mfi(
     }
 
     // Collect all unique time keys from both sources.
-    let mut all_keys: Vec<(u16, u16, u8)> = swe_hourly
-        .keys()
-        .chain(mfi_map.keys())
-        .copied()
-        .collect();
+    let mut all_keys: Vec<(u16, u16, u8)> =
+        swe_hourly.keys().chain(mfi_map.keys()).copied().collect();
     all_keys.sort();
     all_keys.dedup();
 
     all_keys
         .iter()
         .map(|&(year, doy, hour)| {
-            let (density, speed, temp) = swe_hourly
-                .get(&(year, doy, hour))
-                .copied()
-                .unwrap_or((f64::NAN, f64::NAN, f64::NAN));
+            let (density, speed, temp) = swe_hourly.get(&(year, doy, hour)).copied().unwrap_or((
+                f64::NAN,
+                f64::NAN,
+                f64::NAN,
+            ));
 
             let (bx, by, bz, bmag) = mfi_map
                 .get(&(year, doy, hour))
@@ -409,8 +408,7 @@ pub fn wind_mfi_to_omni(records: &[WindMfiRecord]) -> Vec<OmniRecord> {
 // ---------------------------------------------------------------------------
 
 /// Base URL for WIND MFI 1-hour ASCII (monthly files).
-const WIND_MFI_BASE: &str =
-    "https://spdf.gsfc.nasa.gov/pub/data/wind/mfi/ascii/1hour_ascii/";
+const WIND_MFI_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/wind/mfi/ascii/1hour_ascii/";
 
 /// WIND MFI dataset provider (1-hour magnetic field).
 pub struct WindMfiProvider {
@@ -790,7 +788,9 @@ mod tests {
         // Higher T -> longer mean free path -> higher Kn
         let kn_low = knudsen_number(5.0, 5.0e4);
         let kn_high = knudsen_number(5.0, 2.0e5);
-        assert!(kn_high > kn_low,
-            "Kn should increase with T: low={kn_low:.1}, high={kn_high:.1}");
+        assert!(
+            kn_high > kn_low,
+            "Kn should increase with T: low={kn_low:.1}, high={kn_high:.1}"
+        );
     }
 }

@@ -29,9 +29,13 @@
 //!
 //! Source: <https://spdf.gsfc.nasa.gov/pub/data/pioneer/>
 
-use crate::catalogs::omni::OmniRecord;
-use crate::catalogs::spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni};
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use crate::{
+    catalogs::{
+        omni::OmniRecord,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+    },
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
+};
 use std::path::PathBuf;
 
 /// SPDF column layout for Pioneer 10 merged hourly data.
@@ -177,7 +181,8 @@ impl DatasetProvider for PioneerProvider {
         };
 
         for year in self.year_start..=self.year_end {
-            let fname = format!("p{}_{}_{}.asc",
+            let fname = format!(
+                "p{}_{}_{}.asc",
                 match self.spacecraft {
                     PioneerSpacecraft::P10 => "10",
                     PioneerSpacecraft::P11 => "11",
@@ -287,7 +292,10 @@ mod tests {
         let spdf = parse_pioneer_merged(data, PioneerSpacecraft::P10);
         let omni = pioneer_to_omni(&spdf);
         assert_eq!(omni.len(), 1);
-        assert!((omni[0].r_au - 10.0).abs() < 0.1, "r_au should be populated");
+        assert!(
+            (omni[0].r_au - 10.0).abs() < 0.1,
+            "r_au should be populated"
+        );
     }
 
     #[test]

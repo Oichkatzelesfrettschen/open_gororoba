@@ -4,7 +4,7 @@
 //! 1. Level Spacing of the 128D ZD Graph (Quantum Chaos)
 //! 2. Convergence of the 256D Global Imbalance Density (Algebraic Pressure)
 
-use algebra_core::construction::deep_space::{
+use gororoba_algebra::construction::deep_space::{
     compute_routon_spectral_spacing, compute_voudon_imbalance_density,
 };
 use std::time::Instant;

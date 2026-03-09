@@ -840,7 +840,8 @@ title = "Cayley-Dickson algebra kernel boundary"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
+canonical_download_path = "crates/cd_kernel/src/cayley_dickson/mod.rs"
+legacy_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/82::ASOT-0098", "reports/pure_rust_port_boundaries_2026_02_14.toml::boundary/2::PB-003"]
 
 [[artifact_ref]]
@@ -1600,7 +1601,8 @@ title = "Dual-Octonion Phase Boundary"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_exotic_octonions.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_exotic_octonions.rs"
+legacy_download_path = "crates/algebra_core/tests/test_exotic_octonions.rs"
 source_refs = ["registry/insights.toml::insight/45::I-053", "registry/source_lanes/web_references.toml::artifact_ref/158::ASOT-0195"]
 
 [[artifact_ref]]
@@ -1770,7 +1772,8 @@ title = "Exact 3/8 Sign Balance"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_split_octonion_geometry.rs"
+legacy_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 source_refs = ["registry/insights.toml::insight/42::I-043", "registry/source_lanes/web_references.toml::artifact_ref/175::ASOT-0213"]
 
 [[artifact_ref]]
@@ -1920,7 +1923,8 @@ title = "G2 Root-Unit Correspondence"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_split_octonion_geometry.rs"
+legacy_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 source_refs = ["registry/insights.toml::insight/43::I-051", "registry/source_lanes/web_references.toml::artifact_ref/190::ASOT-0230"]
 
 [[artifact_ref]]
@@ -47320,7 +47324,8 @@ title = "registry/pantheon_physicsforge_migration_matrix.toml::overlap_coverage/
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
+canonical_download_path = "crates/cd_kernel/src/cayley_dickson/mod.rs"
+legacy_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
 source_refs = ["registry/pantheon_physicsforge_migration_matrix.toml::overlap_coverage/3::OG-COVER-004", "registry/source_lanes/web_references.toml::artifact_ref/4730::ASOT-5762"]
 
 [[artifact_ref]]
@@ -47490,7 +47495,8 @@ title = "registry/phase8_documentation.toml::phase8/implementation"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_low_dimensional_survey.rs"
+legacy_download_path = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
 source_refs = ["registry/phase8_documentation.toml::phase8/implementation", "registry/source_lanes/web_references.toml::artifact_ref/4747::ASOT-5779"]
 
 [[artifact_ref]]
@@ -47570,7 +47576,8 @@ title = "registry/publication_evidence.toml::section/1/evidence"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/src/construction/tessarines.rs"
+canonical_download_path = "crates/gororoba_algebra/src/construction/tessarines.rs"
+legacy_download_path = "crates/algebra_core/src/construction/tessarines.rs"
 source_refs = ["registry/publication_evidence.toml::section/1/evidence", "registry/source_lanes/web_references.toml::artifact_ref/4755::ASOT-5876"]
 
 [[artifact_ref]]
@@ -57100,7 +57107,8 @@ title = "registry/toml_inventory.toml::document/2::TOML-0003"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/Cargo.toml"
+canonical_download_path = "crates/gororoba_algebra/Cargo.toml"
+legacy_download_path = "crates/algebra_core/Cargo.toml"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/5708::ASOT-6833", "registry/toml_inventory.toml::document/2::TOML-0003"]
 
 [[artifact_ref]]
@@ -67400,7 +67408,8 @@ title = "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/10"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/Cargo.toml"
+canonical_download_path = "crates/gororoba_algebra/Cargo.toml"
+legacy_download_path = "crates/algebra_core/Cargo.toml"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6738::ASOT-8053", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/10"]
 
 [[artifact_ref]]
@@ -67610,7 +67619,8 @@ title = "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/9"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
+canonical_download_path = "crates/cd_kernel/src/cayley_dickson/mod.rs"
+legacy_download_path = "crates/cd_kernel/src/cayley_dickson.rs"
 source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6759::ASOT-8074", "reports/pure_rust_port_boundaries_2026_02_14.toml::path_check/9"]
 
 [[artifact_ref]]
@@ -68540,7 +68550,8 @@ title = "Surface Tension of Imbalance"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
-canonical_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
+canonical_download_path = "crates/gororoba_algebra/tests/test_split_octonion_geometry.rs"
+legacy_download_path = "crates/algebra_core/tests/test_split_octonion_geometry.rs"
 source_refs = ["registry/insights.toml::insight/44::I-052", "registry/source_lanes/web_references.toml::artifact_ref/6852::ASOT-8178"]
 
 [[artifact_ref]]

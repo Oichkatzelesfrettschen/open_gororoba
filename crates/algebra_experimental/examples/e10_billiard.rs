@@ -4,8 +4,8 @@
 //! bouncing inside the fundamental Weyl chamber of the E10 Kac-Moody algebra.
 //! Uses the library's HyperbolicBilliard with proper geodesic flow on H^9.
 
-use algebra_core::{lie::kac_moody::E10RootSystem, physics::billiard_sim::HyperbolicBilliard};
 use algebra_experimental::billiard_stats;
+use gororoba_algebra::{lie::kac_moody::E10RootSystem, physics::billiard_sim::HyperbolicBilliard};
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();

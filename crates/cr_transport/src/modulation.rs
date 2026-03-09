@@ -25,7 +25,10 @@ pub struct ForceFieldProxy {
 impl ForceFieldProxy {
     /// Create a new force-field proxy.
     pub fn new(r_boundary_au: f64, particle_mass_gev: f64) -> Self {
-        Self { r_boundary_au, particle_mass_gev }
+        Self {
+            r_boundary_au,
+            particle_mass_gev,
+        }
     }
 
     /// Compute the modulation potential phi (GV) at heliocentric radius r_au.
@@ -84,7 +87,10 @@ mod tests {
         let kappa_rr = |r: f64| 4.5e-5 * r; // AU^2/s, grows with r
         let phi_inner = proxy.modulation_potential(1.0, &v_sw, &kappa_rr);
         let phi_outer = proxy.modulation_potential(50.0, &v_sw, &kappa_rr);
-        assert!(phi_inner > phi_outer, "phi should decrease with radius: phi_inner={phi_inner:.4}, phi_outer={phi_outer:.4}");
+        assert!(
+            phi_inner > phi_outer,
+            "phi should decrease with radius: phi_inner={phi_inner:.4}, phi_outer={phi_outer:.4}"
+        );
     }
 
     #[test]
@@ -93,7 +99,10 @@ mod tests {
         let j_ism = 1.23_f64;
         let result = proxy.modulate_spectrum(0.0, 1.0, j_ism);
         // At phi=0: J = j_ism * (E^2 + 2mE) / (E^2 + 2mE) = j_ism
-        assert!((result - j_ism).abs() < 1e-10, "FGA should recover LIS at phi=0");
+        assert!(
+            (result - j_ism).abs() < 1e-10,
+            "FGA should recover LIS at phi=0"
+        );
     }
 
     #[test]

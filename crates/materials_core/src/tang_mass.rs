@@ -20,7 +20,7 @@
 //! - m_mu / m_tau = 1/16.82
 //! - m_e / m_tau = 1/3477.3
 
-use algebra_core::cd_associator_norm;
+use gororoba_algebra::cd_associator_norm;
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 

@@ -11,8 +11,8 @@
 //!   oct-field dispersion --n 128 --n-modes 5 --mass 1.0
 //!   oct-field sweep --n-min 32 --n-max 256 --mass 1.0
 
-use algebra_core::{FieldParams, evolve, gaussian_wave_packet, measure_dispersion};
 use clap::{Parser, Subcommand};
+use gororoba_algebra::{FieldParams, evolve, gaussian_wave_packet, measure_dispersion};
 use std::f64::consts::PI;
 
 #[derive(Parser)]

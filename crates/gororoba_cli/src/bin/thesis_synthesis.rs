@@ -5,8 +5,8 @@
 //! 1. HDF5 for claim synchronization.
 //! 2. TikZ/PGFPlots for LaTeX-native visualization.
 
-use algebra_core::physics::octonion_field::FieldParams;
 use clap::{Parser, Subcommand};
+use gororoba_algebra::physics::octonion_field::FieldParams;
 use gororoba_engine::{SimulationConfig3D, SimulationState3D};
 use lbm_3d_cuda::Precision;
 use log::info;

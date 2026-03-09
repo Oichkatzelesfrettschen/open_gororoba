@@ -4468,7 +4468,7 @@ slug = "handoff_algebra_fluid_duality"
 title = "Handoff Report: Algebra-Fluid Duality Implementation"
 category = "report"
 claim_refs = []
-path_refs = ["crates/algebra_core", "src/lie/e7_geometry.rs", "src/lie/e7_structure.rs", "crates/lbm_core", "src/turbulence.rs", "Cargo.toml", "crates/stats_core", "src/hypergraph.rs", "crates/gororoba_cli", "src/bin/warp_ring_integration.rs", "warp_ring_integration.png", "docs/monograph/", "01_foundations.md", "02_turbulence.md", "03_synthesis.md", "registry/entrypoint_docs.toml", "registry/data_artifact_narratives.toml", "lbm_core/turbulence.rs", "turbulence.rs", "warp_ring_integration.rs", ".gif"]
+path_refs = ["CURRENT::PATH crates/gororoba_algebra (LEGACY::PATH crates/algebra_core)", "src/lie/e7_geometry.rs", "src/lie/e7_structure.rs", "crates/lbm_core", "src/turbulence.rs", "Cargo.toml", "crates/stats_core", "src/hypergraph.rs", "crates/gororoba_cli", "src/bin/warp_ring_integration.rs", "warp_ring_integration.png", "docs/monograph/", "01_foundations.md", "02_turbulence.md", "03_synthesis.md", "registry/entrypoint_docs.toml", "registry/data_artifact_narratives.toml", "lbm_core/turbulence.rs", "turbulence.rs", "warp_ring_integration.rs", ".gif"]
 line_count = 57
 body_markdown = '''
 # Handoff Report: Algebra-Fluid Duality Implementation
@@ -4481,7 +4481,7 @@ We have successfully synthesized the **Algebra-Fluid Duality** framework, integr
 
 ## 2. Implemented Changes
 
-### A. Core Algebra (`crates/algebra_core`)
+### A. Core Algebra (`CURRENT::PATH crates/gororoba_algebra (LEGACY::PATH crates/algebra_core)`)
 *   **New Module:** `src/lie/e7_geometry.rs`
     *   Generates the 126 roots of E7 as a subsystem of E8.
     *   Implements `find_e7_triads` to identify resonant triplets ($k+p+q=0$).

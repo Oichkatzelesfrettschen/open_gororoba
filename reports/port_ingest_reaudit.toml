@@ -65,7 +65,8 @@ blockers = ["GPL-2.0 compatibility decision required"]
 [[port_candidate]]
 priority = 3
 source_path = "MathScienceCompendium/src/mathphysics/algebras/cayley_dickson.py"
-target_crate = "crates/algebra_core"
+target_crate = "crates/gororoba_algebra"
+target_crate_legacy = "crates/algebra_core"
 port_rationale = "Useful for deterministic algebraic regression vectors against existing Rust logic."
 estimated_effort = "M"
 blockers = ["GPL-3.0 compatibility decision required"]
@@ -73,7 +74,8 @@ blockers = ["GPL-3.0 compatibility decision required"]
 [[port_candidate]]
 priority = 4
 source_path = "MathScienceCompendium/src/mathphysics/algebras/roots.py"
-target_crate = "crates/algebra_core"
+target_crate = "crates/gororoba_algebra"
+target_crate_legacy = "crates/algebra_core"
 port_rationale = "Can provide additional lattice/root-system test fixtures for filtration checks."
 estimated_effort = "M"
 blockers = ["GPL-3.0 compatibility decision required"]
@@ -97,7 +99,8 @@ blockers = ["No explicit license found; blocked pending clarification"]
 [[documents_shortlist]]
 priority = 1
 path = "data/external/papers/arxiv_math0105155_baez_2002_octonions.pdf"
-lane = "algebra_core"
+lane = "gororoba_algebra"
+lane_legacy = "algebra_core"
 note = "Primary octonions reference for algebraic background and terminology normalization."
 
 [[documents_shortlist]]

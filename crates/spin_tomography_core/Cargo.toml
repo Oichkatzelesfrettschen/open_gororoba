@@ -7,7 +7,7 @@ license = { workspace = true }
 [dependencies]
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
-algebra_core = { path = "../algebra_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }

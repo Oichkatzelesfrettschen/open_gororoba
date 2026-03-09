@@ -2,8 +2,8 @@
 //!
 //! Usage: zd-search --dim 16 --output zd_pairs.csv
 
-use algebra_core::{analyze_box_kite_symmetry, find_box_kites, find_zero_divisors};
 use clap::Parser;
+use gororoba_algebra::{analyze_box_kite_symmetry, find_box_kites, find_zero_divisors};
 
 #[derive(Parser)]
 #[command(name = "zd-search")]

@@ -1,4 +1,4 @@
-use algebra_core::kron2;
+use gororoba_algebra::kron2;
 use nalgebra::{Matrix4, Vector3};
 use num_complex::Complex64;
 use spin_tomography_core::TwoQubitState;
@@ -77,9 +77,9 @@ impl QGPImbalanceBridge {
         // Or directly modifying the density matrix.
 
         // Simplification: add a term proportional to omega . sigma x I + I x omega . sigma
-        let (d1, d2, d3) = algebra_core::physics::clifford::pauli_matrices();
+        let (d1, d2, d3) = gororoba_algebra::physics::clifford::pauli_matrices();
         let to_m2 =
-            |m: algebra_core::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
+            |m: gororoba_algebra::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
                 nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
             };
         let sigmas = [to_m2(d1), to_m2(d2), to_m2(d3)];

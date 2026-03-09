@@ -416,7 +416,7 @@ the language evaluation results, the following code was built or refactored:
 | Gravastar TOV | `gravastar_tov.py` | Complete rewrite: eigenvalue R2, Brent root-finding, subcritical compactness guard |
 | Cosmology ODE | `cosmology.py` | Added -H^2 Hubble friction, seeded RNG, documented WDW quantum potential derivation |
 | Warp animation v9 | `animate_warp_v9_sapphire.py` | Replaced CAPTURE_PROB proxy with Beer-Lambert complex-n solver; MaterialDatabase integration |
-| **Rust PyO3 crate** | `gororoba_kernels/` (now `algebra_core` + `gororoba_py`) | Cayley-Dickson multiply/conjugate/norm in Rust; 3.5x faster than Numba for sedenions |
+| **Rust PyO3 crate** | `gororoba_kernels/` (now `CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)` + `gororoba_py`) | Cayley-Dickson multiply/conjugate/norm in Rust; 3.5x faster than Numba for sedenions |
 
 **Rust PyO3 benchmarks** (dim=16 sedenion, release build, Python 3.14):
 
@@ -576,7 +576,7 @@ The Rust workspace under `crates/` now contains 14 crates:
 
 | Crate | Domain | Key Modules |
 |-------|--------|-------------|
-| `algebra_core` | CD algebras, wheels, p-adic | `cayley_dickson`, `wheels`, `padic`, `fractal_analysis` |
+| `CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)` | CD algebras, wheels, p-adic | `cayley_dickson`, `wheels`, `padic`, `fractal_analysis` |
 | `spectral_core` | Fractional Laplacian, neg-dim PDE | `neg_dim`, periodic/Dirichlet operators |
 | `cosmology_core` | TOV, gravastar, bounce cosmology | `gravastar`, `bounce_cosmology` |
 | `optics_core` | GRIN, TCMT, WGS | `grin_solver`, `tcmt`, `wgs` |

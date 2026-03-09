@@ -11,8 +11,8 @@
 //! - Kitaev, Phys.-Usp. 44, 131 (2001): Unpaired Majorana fermions
 
 use crate::bell_inequality::{SignTableCache, known_sedenion_zd_pairs, rotate_sparse};
-use algebra_core::physics::clifford::{GammaMatrix, gamma_matrices_cl8};
 use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
+use gororoba_algebra::physics::clifford::{GammaMatrix, gamma_matrices_cl8};
 use num_complex::Complex64;
 
 /// A Majorana mode mapped to a CD basis element.
