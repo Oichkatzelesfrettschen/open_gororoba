@@ -1,0 +1,89 @@
+# Recursive scoping roadmap for tech debt around mining equations from papers.
+
+[roadmap]
+id = "RM-2026-03-09-tech-debt-equation-mining"
+created = "2026-03-09"
+updated = "2026-03-09"
+status = "active"
+task_count = 16
+scope = "recursive tech-debt scoping across paper intake, extraction, equation catalogs, atom normalization, derivation linkage, and verification"
+
+[[task]]
+id = "RM-001"
+status = "done"
+title = "Inventory authoritative paper, extraction, and equation surfaces"
+
+[[task]]
+id = "RM-002"
+status = "done"
+title = "Identify recursive debt layers from filed PDFs through equation atoms"
+
+[[task]]
+id = "RM-003"
+status = "done"
+title = "Register the debt in authoritative roadmap, todo, next-action, and lacuna registries"
+
+[[task]]
+id = "RM-004"
+status = "pending"
+title = "Build a corpus coverage table from papers/MANIFEST statuses"
+
+[[task]]
+id = "RM-005"
+status = "pending"
+title = "Compare extracted paper equations against equation catalog rows"
+
+[[task]]
+id = "RM-006"
+status = "pending"
+title = "Compare equation catalog coverage against registry/knowledge/equation_atoms.toml"
+
+[[task]]
+id = "RM-007"
+status = "pending"
+title = "Classify debt by corpus, extraction, normalization, and linkage buckets"
+
+[[task]]
+id = "RM-008"
+status = "pending"
+title = "Identify which filed papers need extraction before equation mining can begin"
+
+[[task]]
+id = "RM-009"
+status = "pending"
+title = "Identify which extracted papers still need normalized equation atoms"
+
+[[task]]
+id = "RM-010"
+status = "pending"
+title = "Identify which normalized equations still lack derivation or proof linkage"
+
+[[task]]
+id = "RM-011"
+status = "pending"
+title = "Identify which equation modules need parity checks against extracted equations.tex outputs"
+
+[[task]]
+id = "RM-012"
+status = "pending"
+title = "Prioritize debt buckets by claim relevance and tractability"
+
+[[task]]
+id = "RM-013"
+status = "pending"
+title = "Split the backlog into a first tranche for corpus and extraction closure"
+
+[[task]]
+id = "RM-014"
+status = "pending"
+title = "Split the backlog into a second tranche for normalization and equation-atom closure"
+
+[[task]]
+id = "RM-015"
+status = "pending"
+title = "Split the backlog into a third tranche for proof, claim, and mirror linkage"
+
+[[task]]
+id = "RM-016"
+status = "pending"
+title = "Validate the scoped backlog with registry and semantic-atom gates after each tranche"

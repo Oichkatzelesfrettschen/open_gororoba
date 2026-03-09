@@ -9,7 +9,7 @@ companion_docs = ["docs/TODO.md", "docs/NEXT_ACTIONS.md"]
 status = "active"
 status_token = "ACTIVE"
 authoritative = true
-workstream_count = 13
+workstream_count = 14
 status_allowlist = ["planned", "active", "in_progress", "done", "paused", "blocked"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -194,3 +194,15 @@ claims = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 dependencies = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/algebra_experimental/src/cd_external.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
+
+[[workstream]]
+id = "WS-PAPERS-001"
+name = "Recursive Paper Equation Debt Scoping"
+priority = "high"
+status = "planned"
+status_token = "PLANNED"
+description = "Recursively scope the debt between paper intake, docpipe extraction, equation catalog generation, equation atoms, and downstream proof/claim linkage so equation mining from papers can be built out stepwise rather than handled as one opaque backlog item."
+primary_outputs = ["plans/recursive_tech_debt_equation_scope_2026_03_09.toml", "papers/MANIFEST.toml", "crates/gororoba_cli_data/src/bin/extract_papers.rs", "crates/docpipe/src/toml_out.rs", "registry/knowledge/equation_atoms.toml", "registry/lacunae.toml", "registry/next_actions.toml", "registry/todo.toml"]
+dependencies = ["WS-REGISTRY-002"]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "A maintained recursive plan decomposes paper-to-equation debt into corpus, extraction, normalization, and linkage buckets.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["plans/recursive_tech_debt_equation_scope_2026_03_09.toml", "papers/MANIFEST.toml", "crates/gororoba_cli_data/src/bin/extract_papers.rs", "crates/docpipe/src/toml_out.rs", "registry/knowledge/equation_atoms.toml"]
