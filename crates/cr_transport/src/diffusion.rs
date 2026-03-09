@@ -132,10 +132,11 @@ mod tests {
         let b = [3.0_f64, 4.0, 0.0];
         let k = diffusion_tensor(b, 5.0, 1.0, &cfg);
         // Diagonal entries should all be positive
-        for i in 0..3 {
-            assert!(k[i][i] > 0.0, "non-positive diagonal at [{i}][{i}]");
+        for (i, row) in k.iter().enumerate() {
+            assert!(row[i] > 0.0, "non-positive diagonal at [{i}][{i}]");
         }
         // Symmetric part should be symmetric
+        #[allow(clippy::needless_range_loop)]
         for i in 0..3 {
             for j in 0..3 {
                 let sym = (k[i][j] + k[j][i]) / 2.0;

@@ -416,9 +416,9 @@ mod tests {
         }
         // Dark sector should be zero
         let dark = emb.project_dark(&embedded);
-        for i in 0..DARK_SECTOR_DIM {
-            assert!((dark[i]).abs() < 1e-12,
-                    "dark sector should be zero, got {} at axis {}", dark[i], i);
+        for (i, &d) in dark.iter().enumerate().take(DARK_SECTOR_DIM) {
+            assert!(d.abs() < 1e-12,
+                    "dark sector should be zero, got {} at axis {}", d, i);
         }
     }
 
