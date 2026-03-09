@@ -1912,7 +1912,7 @@ mod tests {
 
         // Median of 5.0 and 6.0 at 1 AU
         let n_1au = profile[0].density_cm3;
-        assert!(n_1au >= 5.0 && n_1au <= 6.0, "median density at 1 AU: {n_1au}");
+        assert!((5.0..=6.0).contains(&n_1au), "median density at 1 AU: {n_1au}");
     }
 
     #[test]
