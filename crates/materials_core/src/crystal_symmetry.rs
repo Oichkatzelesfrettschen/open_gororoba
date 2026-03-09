@@ -2958,11 +2958,8 @@ pub fn is_allowed_transition(
             a_re * fo_re - a_im * fo_im,
             a_re * fo_im + a_im * fo_re,
         );
-        // b * χ_i
-        let (c_re, _c_im) = (
-            b_re * fi_re - b_im * fi_im,
-            b_re * fi_im + b_im * fi_re,
-        );
+        // b * χ_i  (only the real part contributes to the sum)
+        let c_re = b_re * fi_re - b_im * fi_im;
 
         sum_re += n_k * c_re;
     }
