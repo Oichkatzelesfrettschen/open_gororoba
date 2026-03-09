@@ -305,7 +305,7 @@ evidence_refs = []
 id = "T-025"
 area = "governance"
 title = "Verify C-807..C-818 HCTP Taxonomy Claims"
-description = "Cross-reference 12 hypercomplex taxonomy property claims against algebra_core test files. All verified against existing tests: cayley_dickson.rs, boxkites.rs, annihilator.rs, hypercomplex.rs, octonion_field.rs, composition_algebra_taxonomy.rs. where_stated fields enhanced with specific test references. DONE: Sprint 55."
+description = "Cross-reference 12 hypercomplex taxonomy property claims against CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core) test files. All verified against existing tests: cayley_dickson.rs, boxkites.rs, annihilator.rs, hypercomplex.rs, octonion_field.rs, composition_algebra_taxonomy.rs. where_stated fields enhanced with specific test references. DONE: Sprint 55."
 priority = "high"
 status = "done"
 status_token = "DONE"
@@ -587,7 +587,7 @@ status = "in_progress"
 status_token = "IN_PROGRESS"
 dependencies = []
 acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "The guarded attractor regression passes under the documented worker-budget policy or is explicitly rerouted out of the default gate."]
-evidence_refs = ["crates/algebra_core/tests/test_split_octonion_attractor.rs", "scripts/detect_worker_budget.sh"]
+evidence_refs = ["CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_attractor.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_attractor.rs)", "scripts/detect_worker_budget.sh"]
 
 [[item]]
 id = "T-049"

@@ -1,5 +1,5 @@
 use crate::state::TwoQubitState;
-use algebra_core::construction::albert::AlbertElement;
+use gororoba_algebra::construction::albert::AlbertElement;
 use nalgebra::{Matrix3, Vector3};
 
 /// Maps a two-qubit state into the Albert algebra J_3(O) for spectral analysis.

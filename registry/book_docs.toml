@@ -15,8 +15,11 @@ slug = "docs_book_src_SUMMARY"
 title = "Summary"
 claim_refs = []
 path_refs = []
-line_count = 40
+line_count = 43
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Summary
 
 [Introduction](./introduction.md)
@@ -67,8 +70,11 @@ slug = "docs_book_src_algebra_box-kites"
 title = "Box-Kite Structure"
 claim_refs = ["C-050", "C-060", "C-454", "C-468", "C-475"]
 path_refs = ["crates/algebra_experimental/src/emanation.rs"]
-line_count = 40
+line_count = 43
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Box-Kite Structure
 
 The 42 zero-divisor cross-assessors of the sedenion algebra organize into
@@ -119,8 +125,11 @@ slug = "docs_book_src_algebra_emanation"
 title = "Emanation Architecture"
 claim_refs = ["C-468", "C-469", "C-470", "C-471", "C-475"]
 path_refs = ["crates/algebra_experimental/src/emanation.rs"]
-line_count = 39
+line_count = 42
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Emanation Architecture
 
 The de Marrais emanation construction builds 18 layers (L1-L18) from the
@@ -170,8 +179,11 @@ slug = "docs_book_src_algebra_motif-scaling"
 title = "Motif Scaling Laws"
 claim_refs = ["C-126", "C-130", "C-445", "C-448"]
 path_refs = ["crates/algebra_analysis/src/boxkites.rs"]
-line_count = 47
+line_count = 50
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Motif Scaling Laws
 
 Exact enumeration of the zero-product graph's connected components across
@@ -229,8 +241,11 @@ slug = "docs_book_src_algebra_zero-divisors"
 title = "Zero-Divisor Census"
 claim_refs = ["C-050", "C-060", "C-445", "C-448"]
 path_refs = ["crates/algebra_analysis/src/boxkites.rs"]
-line_count = 34
+line_count = 37
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Zero-Divisor Census
 
 At dimension 16 (sedenions) and beyond, Cayley-Dickson algebras contain
@@ -275,8 +290,11 @@ slug = "docs_book_src_architecture_crates"
 title = "Crate Ecosystem"
 claim_refs = []
 path_refs = []
-line_count = 52
+line_count = 55
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Crate Ecosystem
 
 The workspace uses 30+ external crates for numerical computation, data formats,
@@ -339,8 +357,11 @@ slug = "docs_book_src_architecture_layout"
 title = "Project Layout"
 claim_refs = ["C-001", "C-475"]
 path_refs = ["crates/", "registry/", "papers/", "Cargo.toml", "[workspace.dependencies]"]
-line_count = 71
+line_count = 75
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Project Layout
 
 open\_gororoba is organized as a Rust workspace with 15 member crates under
@@ -351,7 +372,8 @@ under `papers/`.
 
 ```
 crates/
-  algebra_core/       Cayley-Dickson, Clifford, wheels, p-adic, groups, box-kites
+  gororoba_algebra/   Algebra facade: Cayley-Dickson, Clifford, wheels, p-adic, groups, box-kites
+  cd_kernel/          Pure Cayley-Dickson arithmetic kernel
   cosmology_core/     FLRW, bouncing models, dark energy
   gr_core/            Schwarzschild, Kerr, Novikov-Thorne, spectral bands
   materials_core/     Periodic table, metamaterial models
@@ -422,8 +444,11 @@ slug = "docs_book_src_architecture_verification"
 title = "Verification Ladder"
 claim_refs = ["C-001", "C-006", "C-050", "C-060", "C-126", "C-130", "C-200", "C-210", "C-400", "C-410", "C-420", "C-425", "C-438", "C-445", "C-448", "C-454", "C-455", "C-458", "C-467", "C-468", "C-475"]
 path_refs = ["registry/claims.toml", "claims.toml"]
-line_count = 61
+line_count = 64
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Verification Ladder
 
 Every result in open\_gororoba is classified on a four-tier verification ladder.
@@ -495,8 +520,11 @@ slug = "docs_book_src_cli_catalog"
 title = "Binary Catalog"
 claim_refs = []
 path_refs = ["registry/binaries.toml"]
-line_count = 61
+line_count = 64
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Binary Catalog
 
 The `gororoba_cli` crate provides 40 binaries.  Each binary is
@@ -568,8 +596,11 @@ slug = "docs_book_src_experiments_e001"
 title = "E-001: Cayley-Dickson Motif Census"
 claim_refs = ["C-100", "C-110", "C-126", "C-130"]
 path_refs = ["data/csv/motif_census_dim{N}.csv", "data/csv/motif_census_summary.csv"]
-line_count = 38
+line_count = 41
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # E-001: Cayley-Dickson Motif Census
 
 **Binary:** `motif-census`
@@ -618,8 +649,11 @@ slug = "docs_book_src_experiments_e002"
 title = "E-002: Multi-Dataset GPU Ultrametric Sweep"
 claim_refs = ["C-071", "C-436", "C-440", "C-441", "C-444", "C-449"]
 path_refs = []
-line_count = 45
+line_count = 48
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # E-002: Multi-Dataset GPU Ultrametric Sweep
 
 **Binary:** `multi-dataset-ultrametric`
@@ -675,8 +709,11 @@ slug = "docs_book_src_experiments_e003"
 title = "E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)"
 claim_refs = ["C-200", "C-210"]
 path_refs = ["data/external/Pantheon+SH0ES.dat"]
-line_count = 33
+line_count = 36
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)
 
 **Binary:** `real-cosmo-fit`
@@ -720,8 +757,11 @@ slug = "docs_book_src_glossary"
 title = "Glossary"
 claim_refs = ["C-442"]
 path_refs = ["Phi_n: {e_0, ..., e_{n-1}} -> Lambda_n", "kac_moody.rs", "e8_lattice.rs"]
-line_count = 181
+line_count = 184
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Glossary
 
 Terminology used throughout the open_gororoba codebase, organized by domain.
@@ -913,8 +953,11 @@ slug = "docs_book_src_introduction"
 title = "open_gororoba"
 claim_refs = ["C-001", "C-475"]
 path_refs = []
-line_count = 57
+line_count = 61
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # open_gororoba
 
 A research workbench exploring whether algebraic structure in Cayley-Dickson
@@ -954,7 +997,8 @@ cargo run --release --bin extract-papers -- --only demarrais-2000-math0011260
 
 ```
 crates/
-  algebra_core/     Cayley-Dickson, Clifford, wheels, p-adic, groups
+  gororoba_algebra/ Cayley-Dickson facade, Clifford, wheels, p-adic, groups
+  cd_kernel/        Pure Cayley-Dickson arithmetic kernel
   cosmology_core/   FLRW, bouncing models, dark energy
   gr_core/          Schwarzschild, Kerr, Novikov-Thorne, spectral bands
   materials_core/   Periodic table, metamaterial models
@@ -982,8 +1026,11 @@ slug = "docs_book_src_papers_collection"
 title = "Paper Collection"
 claim_refs = []
 path_refs = ["papers/pdf/", "papers/extracted/"]
-line_count = 61
+line_count = 64
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Paper Collection
 
 The project maintains a curated collection of 19 research papers relevant to
@@ -1055,8 +1102,11 @@ slug = "docs_book_src_registry_claims"
 title = "Claims Evidence Matrix"
 claim_refs = ["C-001", "C-455", "C-494"]
 path_refs = ["registry/claims.toml", "docs/latex/claims_appendix.tex", "docs/CLAIMS_EVIDENCE_MATRIX.md"]
-line_count = 49
+line_count = 52
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Claims Evidence Matrix
 
 The claims evidence matrix tracks 494 claims (C-001 through C-494) in
@@ -1116,8 +1166,11 @@ slug = "docs_book_src_registry_experiments"
 title = "Experiments Portfolio"
 claim_refs = []
 path_refs = ["registry/experiments.toml"]
-line_count = 41
+line_count = 44
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Experiments Portfolio
 
 The experiments registry tracks 10 reproducible experiments (E-001 through E-010)
@@ -1169,8 +1222,11 @@ slug = "docs_book_src_registry_insights"
 title = "Insights"
 claim_refs = []
 path_refs = ["registry/insights.toml", "docs/latex/insights_appendix.tex"]
-line_count = 37
+line_count = 40
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Insights
 
 The insights registry tracks 16 discoveries (I-001 through I-016) in

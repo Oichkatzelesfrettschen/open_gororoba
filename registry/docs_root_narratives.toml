@@ -1246,7 +1246,7 @@ p_value = 0.900990099009901  # FAILED (>> 0.05)
 ## Test Coverage Summary
 
 **Total Workspace Tests**: 2315 passing (last run 2026-02-11)
-- algebra_core: 1210 tests
+- CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core): 1210 tests
 - Phase 1 crates: ~140 tests (see breakdown below)
 - Other workspace crates: ~965 tests
 

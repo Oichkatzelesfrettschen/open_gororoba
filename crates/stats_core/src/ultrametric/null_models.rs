@@ -309,7 +309,7 @@ pub enum NullModel {
 /// Polymorphic interface for null model strategies.
 ///
 /// Implementing this trait allows external crates to define custom null models
-/// (e.g., codebook-specific nulls in algebra_core) that integrate with the
+/// (e.g., codebook-specific nulls in gororoba_algebra) that integrate with the
 /// adaptive permutation testing framework without modifying stats_core.
 ///
 /// # Required methods

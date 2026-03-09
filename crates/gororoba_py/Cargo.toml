@@ -9,7 +9,7 @@ license = "MIT"
 crate-type = ["cdylib"]
 
 [dependencies]
-algebra_core = { path = "../algebra_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 cosmology_core = { path = "../cosmology_core" }
 lbm_core = { path = "../lbm_core" }
 materials_core = { path = "../materials_core" }

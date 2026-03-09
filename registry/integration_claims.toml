@@ -68,7 +68,8 @@ evidence = [
   "lbm_3d integration: uses imbalance field to set per-cell viscosity"
 ]
 repositories = ["open_gororoba"]
-domains = ["algebra_core", "sign_imbalance", "lbm_3d"]
+domains = ["gororoba_algebra", "sign_imbalance", "lbm_3d"]
+legacy_domains = ["algebra_core"]
 status = "active"
 last_verified = "2026-02-11"
 sprint = 36

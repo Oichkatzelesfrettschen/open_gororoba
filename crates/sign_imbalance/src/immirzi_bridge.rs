@@ -352,7 +352,7 @@ pub fn selectivity_analysis() -> SelectivityResult {
 ///
 /// Returns the imbalance density phi for the standard CD multiplication table.
 pub fn cd_imbalance_density(dim: usize) -> f64 {
-    use algebra_core::cd_basis_mul_sign;
+    use gororoba_algebra::cd_basis_mul_sign;
 
     assert!(dim >= 4 && dim.is_power_of_two());
 

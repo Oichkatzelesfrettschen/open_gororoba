@@ -124,7 +124,7 @@ path = "src/bin/dm_cd_4096_analysis.rs"
 
 [dependencies]
 algebra_analysis = { workspace = true }
-algebra_core = { path = "../algebra_core", features = ["lie"] }
+gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
 algebra_experimental = { workspace = true }
 gororoba_engine = { path = "../gororoba_engine" }
 spectral_core = { path = "../spectral_core" }
@@ -142,7 +142,7 @@ anyhow.workspace = true
 
 [features]
 default = []
-gpu = ["algebra_core/gpu"]
+gpu = ["gororoba_algebra/gpu"]
 tracy-profile = ["dep:tracing-tracy"]
 
 [lints]

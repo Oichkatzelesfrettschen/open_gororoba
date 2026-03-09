@@ -14,7 +14,7 @@ struct TriangleSignCache {
 }
 
 fn build_triangle_sign_cache(dim: usize) -> TriangleSignCache {
-    use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
+    use gororoba_algebra::construction::cayley_dickson::cd_basis_mul_sign;
 
     let mut psi_flat = vec![0i32; dim * dim];
     for i in 0..dim {
@@ -164,9 +164,9 @@ impl SedenionField {
     /// For sedenions (dim=16), the associator is generically nonzero. The norm
     /// `||[a,b,c]||` measures the local non-associativity strength.
     ///
-    /// Uses CD basis multiplication from `algebra_core` for genuine associators.
+    /// Uses CD basis multiplication from `gororoba_algebra` for genuine associators.
     pub fn local_associator_norm_field(&self, dim: usize) -> Vec<f64> {
-        use algebra_core::construction::cayley_dickson::cd_multiply;
+        use gororoba_algebra::construction::cayley_dickson::cd_multiply;
 
         let nx = self.nx;
         let ny = self.ny;
@@ -246,7 +246,7 @@ pub struct ImbalanceViscosityBridge {
 impl ImbalanceViscosityBridge {
     /// Create bridge from Cayley-Dickson dimension.
     pub fn new(dim: usize) -> Self {
-        use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
+        use gororoba_algebra::construction::cayley_dickson::cd_basis_mul_sign;
 
         let signed_graph = SignedGraph::from_psi_matrix(dim, |i, j| cd_basis_mul_sign(dim, i, j));
 

@@ -11258,7 +11258,7 @@ kind = "list_item"
 line_start = 355
 line_end = 355
 heading_level = 0
-text_ascii = "algebra_core: 1210 tests"
+text_ascii = "CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core): 1210 tests"
 text_sha256 = "08fed91fe94b1af26284822309c20717eff315ee573fb16a5271311ae175013f"
 
 [[chunk]]
@@ -15944,7 +15944,7 @@ kind = "code_block"
 line_start = 9
 line_end = 45
 heading_level = 0
-text_ascii = "crates/\n  algebra_core/       Cayley-Dickson, Clifford, wheels, p-adic, groups, box-kites\n  cosmology_core/     FLRW, bouncing models, dark energy\n  gr_core/            Schwarzschild, Kerr, Novikov-Thorne, spectral bands\n  materials_core/     Periodic table, metamaterial models\n  optics_core/        GRIN lenses, ray tracing\n  quantum_core/       Casimir, tensor networks, Grover\n  stats_core/         Ultrametric, dip test, bootstrap, GPU (cudarc)\n  spectral_core/      Fractional PDE, negative dimensions\n  lbm_core/           Lattice Boltzmann\n  control_core/       Control theory\n  data_core/          Data loading, benchmarks, HDF5 export\n  docpipe/            PDF extraction (pdfium-render)\n  gororoba_py/        PyO3 bindings (thin wrappers)\n  gororoba_cli/       37 analysis binaries\n\nregistry/\n  claims.toml         475 tracked claims (C-001..C-475)\n  insights.toml       16 insights (I-001..I-016)\n  experiments.toml    10 reproducible experiments (E-001..E-010)\n  binaries.toml       37 CLI binaries\n  project.toml        Version, counts, sprint history\n\npapers/\n  pdf/                19 research PDFs\n  bib/                BibTeX database (cayley_dickson.bib)\n  extracted/          Structured TOML extractions per paper\n  MANIFEST.toml       Paper metadata registry\n\ndocs/\n  latex/              MASTER_SYNTHESIS.tex, MATHEMATICAL_FORMALISM.tex\n  book/               This mdbook\n  CLAIMS_EVIDENCE_MATRIX.md   Markdown mirror of claims.toml\n  INSIGHTS.md                 Markdown mirror of insights.toml\n  MATH_CONVENTIONS.md         9 mathematical conventions"
+text_ascii = "crates/\n  CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)/       Cayley-Dickson, Clifford, wheels, p-adic, groups, box-kites\n  cosmology_core/     FLRW, bouncing models, dark energy\n  gr_core/            Schwarzschild, Kerr, Novikov-Thorne, spectral bands\n  materials_core/     Periodic table, metamaterial models\n  optics_core/        GRIN lenses, ray tracing\n  quantum_core/       Casimir, tensor networks, Grover\n  stats_core/         Ultrametric, dip test, bootstrap, GPU (cudarc)\n  spectral_core/      Fractional PDE, negative dimensions\n  lbm_core/           Lattice Boltzmann\n  control_core/       Control theory\n  data_core/          Data loading, benchmarks, HDF5 export\n  docpipe/            PDF extraction (pdfium-render)\n  gororoba_py/        PyO3 bindings (thin wrappers)\n  gororoba_cli/       37 analysis binaries\n\nregistry/\n  claims.toml         475 tracked claims (C-001..C-475)\n  insights.toml       16 insights (I-001..I-016)\n  experiments.toml    10 reproducible experiments (E-001..E-010)\n  binaries.toml       37 CLI binaries\n  project.toml        Version, counts, sprint history\n\npapers/\n  pdf/                19 research PDFs\n  bib/                BibTeX database (cayley_dickson.bib)\n  extracted/          Structured TOML extractions per paper\n  MANIFEST.toml       Paper metadata registry\n\ndocs/\n  latex/              MASTER_SYNTHESIS.tex, MATHEMATICAL_FORMALISM.tex\n  book/               This mdbook\n  CLAIMS_EVIDENCE_MATRIX.md   Markdown mirror of claims.toml\n  INSIGHTS.md                 Markdown mirror of insights.toml\n  MATH_CONVENTIONS.md         9 mathematical conventions"
 text_sha256 = "4cd1e34c40d8d22ada7393851276d1a246350b241a26bf14015a466d09231a3d"
 
 [[chunk]]
@@ -18496,7 +18496,7 @@ kind = "code_block"
 line_start = 38
 line_end = 57
 heading_level = 0
-text_ascii = "crates/\n  algebra_core/     Cayley-Dickson, Clifford, wheels, p-adic, groups\n  cosmology_core/   FLRW, bouncing models, dark energy\n  gr_core/          Schwarzschild, Kerr, Novikov-Thorne, spectral bands\n  materials_core/   Periodic table, metamaterial models\n  optics_core/      GRIN lenses, ray tracing\n  quantum_core/     Casimir, tensor networks, Grover\n  stats_core/       Ultrametric, dip test, bootstrap, GPU\n  spectral_core/    Fractional PDE, negative dimensions\n  lbm_core/         Lattice Boltzmann\n  control_core/     Control theory\n  data_core/        Data loading, benchmarks\n  docpipe/          PDF extraction (pdfium-render primary)\n  gororoba_py/      PyO3 bindings (thin wrappers)\n  gororoba_cli/     37 analysis binaries\nregistry/           TOML registry (claims, insights, experiments)\npapers/             PDF collection + TOML extractions\ndocs/               Documentation and tracking"
+text_ascii = "crates/\n  CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)/     Cayley-Dickson, Clifford, wheels, p-adic, groups\n  cosmology_core/   FLRW, bouncing models, dark energy\n  gr_core/          Schwarzschild, Kerr, Novikov-Thorne, spectral bands\n  materials_core/   Periodic table, metamaterial models\n  optics_core/      GRIN lenses, ray tracing\n  quantum_core/     Casimir, tensor networks, Grover\n  stats_core/       Ultrametric, dip test, bootstrap, GPU\n  spectral_core/    Fractional PDE, negative dimensions\n  lbm_core/         Lattice Boltzmann\n  control_core/     Control theory\n  data_core/        Data loading, benchmarks\n  docpipe/          PDF extraction (pdfium-render primary)\n  gororoba_py/      PyO3 bindings (thin wrappers)\n  gororoba_cli/     37 analysis binaries\nregistry/           TOML registry (claims, insights, experiments)\npapers/             PDF collection + TOML extractions\ndocs/               Documentation and tracking"
 text_sha256 = "a0393668a4a7d018827bee9175e165c388418bafad13e2285975228bf342dcdc"
 
 [[chunk]]
@@ -40111,7 +40111,7 @@ kind = "paragraph"
 line_start = 12
 line_end = 15
 heading_level = 0
-text_ascii = "The conversation uses \"wheel algebra\" to denote a family of NON-ASSOCIATIVE, NON-COMMUTATIVE algebras with cyclic multiplication structure. This is COMPLETELY DIFFERENT from the Carlstrom/Setzer \"wheel\" that totalizes division (implemented in crates/algebra_core/src/wheels.rs as WheelQ)."
+text_ascii = "The conversation uses \"wheel algebra\" to denote a family of NON-ASSOCIATIVE, NON-COMMUTATIVE algebras with cyclic multiplication structure. This is COMPLETELY DIFFERENT from the Carlstrom/Setzer \"wheel\" that totalizes division (implemented in CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs) as WheelQ)."
 text_sha256 = "f1f6b32a9a913c8fcf1a3cc4d322dccedf7577187c8d7b52e8324188001bfcf4"
 
 [[chunk]]
@@ -41849,7 +41849,7 @@ kind = "paragraph"
 line_start = 3
 line_end = 4
 heading_level = 0
-text_ascii = "These components primarily live in Rust crates under `crates/algebra_core/` and are exercised by Rust unit and integration tests."
+text_ascii = "These components primarily live in Rust crates under `CURRENT::PATH crates/gororoba_algebra/ (LEGACY::PATH crates/algebra_core/)` and are exercised by Rust unit and integration tests."
 text_sha256 = "90705cd7bda4c9ddca961eb5f39fd89d59cd0f1b6436f68125c4e93c90ea3ecc"
 
 [[chunk]]
@@ -82153,7 +82153,7 @@ kind = "heading"
 line_start = 11
 line_end = 11
 heading_level = 3
-text_ascii = "A. Core Algebra (`crates/algebra_core`)"
+text_ascii = "A. Core Algebra (`CURRENT::PATH crates/gororoba_algebra (LEGACY::PATH crates/algebra_core)`)"
 text_sha256 = "e3fd5ce2861085a7647d2d2d1626c1c3a7819a72dcef5d17f302f77fe0e53497"
 
 [[chunk]]

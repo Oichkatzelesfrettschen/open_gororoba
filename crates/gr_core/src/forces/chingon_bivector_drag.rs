@@ -1,4 +1,4 @@
-use algebra_core::construction::chingon::AlternativityViolationTensor;
+use gororoba_algebra::construction::chingon::AlternativityViolationTensor;
 use nalgebra::Vector3;
 
 /// Bivector-embedded Chingon drag: sign-sensitive to orbital plane orientation.

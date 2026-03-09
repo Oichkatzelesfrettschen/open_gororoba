@@ -1,4 +1,4 @@
-use algebra_core::physics::octonion_field::FieldParams;
+use gororoba_algebra::physics::octonion_field::FieldParams;
 use gororoba_engine::simulation::state_3d::{SimulationConfig3D, SimulationState3D};
 use lbm_3d_cuda::Precision;
 use std::error::Error;

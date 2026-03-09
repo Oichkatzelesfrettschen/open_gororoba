@@ -32,7 +32,7 @@
 //! more "exotic" ZD pairs (higher index contrast) create stronger
 //! warp distortions in the projected E7 structure.
 
-use algebra_core::construction::padic::vp_int;
+use gororoba_algebra::construction::padic::vp_int;
 use ndarray::Array2;
 use num_complex::Complex64;
 use std::f64::consts::PI;

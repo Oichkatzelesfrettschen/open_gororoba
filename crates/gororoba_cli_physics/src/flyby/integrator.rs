@@ -103,11 +103,7 @@ pub fn rk4_step<E: EnvironmentModel, F>(
         p0[1] + dt * v_half2[1],
         p0[2] + dt * v_half2[2],
     ];
-    let v_full = [
-        v0[0] + dt * a3[0],
-        v0[1] + dt * a3[1],
-        v0[2] + dt * a3[2],
-    ];
+    let v_full = [v0[0] + dt * a3[0], v0[1] + dt * a3[1], v0[2] + dt * a3[2]];
     let state_k4 = State {
         position: p_full,
         velocity: v_full,
@@ -118,8 +114,7 @@ pub fn rk4_step<E: EnvironmentModel, F>(
 
     // Weighted average
     for i in 0..3 {
-        state.position[i] +=
-            (dt / 6.0) * (v0[i] + 2.0 * v_half[i] + 2.0 * v_half2[i] + v_full[i]);
+        state.position[i] += (dt / 6.0) * (v0[i] + 2.0 * v_half[i] + 2.0 * v_half2[i] + v_full[i]);
         state.velocity[i] += (dt / 6.0) * (a1[i] + 2.0 * a2[i] + 2.0 * a3[i] + a4[i]);
     }
 }
@@ -127,9 +122,11 @@ pub fn rk4_step<E: EnvironmentModel, F>(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::flyby::config::{GM_EARTH, R_EARTH};
-    use crate::flyby::environment::{EarthOnlyNfwLike, EarthWakeModel};
-    use crate::flyby::geometry::{compute_soi_window, hyperbolic_initial_state};
+    use crate::flyby::{
+        config::{GM_EARTH, R_EARTH},
+        environment::{EarthOnlyNfwLike, EarthWakeModel},
+        geometry::{compute_soi_window, hyperbolic_initial_state},
+    };
 
     /// Pure Keplerian acceleration (no anomalous force).
     fn keplerian_accel(state: &State, _t: f64, _rho: f64, _tensor: &[[f64; 3]; 3]) -> [f64; 3] {
@@ -264,8 +261,14 @@ mod tests {
 
         // NFW-only
         let env_nfw = EarthOnlyNfwLike::default();
-        let (state_nfw, _) =
-            run_trajectory(&initial, -t_window, t_window, 10.0, &env_nfw, &keplerian_accel);
+        let (state_nfw, _) = run_trajectory(
+            &initial,
+            -t_window,
+            t_window,
+            10.0,
+            &env_nfw,
+            &keplerian_accel,
+        );
 
         // Wake model (same base density, adds wake anisotropy)
         let env_wake = EarthWakeModel {
@@ -274,8 +277,14 @@ mod tests {
             wind_direction: [1.0, 0.0, 0.0],
             eta_wake: 0.10,
         };
-        let (state_wake, _) =
-            run_trajectory(&initial, -t_window, t_window, 10.0, &env_wake, &keplerian_accel);
+        let (state_wake, _) = run_trajectory(
+            &initial,
+            -t_window,
+            t_window,
+            10.0,
+            &env_wake,
+            &keplerian_accel,
+        );
 
         // With pure Keplerian accel (ignoring rho), results are identical.
         // This test verifies the environment model is being called (even if

@@ -7,7 +7,7 @@ license = { workspace = true }
 [dependencies]
 spin_tomography_core = { path = "../spin_tomography_core" }
 sign_imbalance = { path = "../sign_imbalance" }
-algebra_core = { path = "../algebra_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
 

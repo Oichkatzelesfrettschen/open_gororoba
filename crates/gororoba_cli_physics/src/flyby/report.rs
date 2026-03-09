@@ -37,7 +37,10 @@ impl FlybyResult {
 
 /// Print a formatted comparison table of flyby results.
 pub fn print_comparison_table(results: &[FlybyResult]) {
-    println!("{:<28} {:>10} {:>10} {:>10} {:>6}", "Spacecraft", "Obs (mm/s)", "Pred (mm/s)", "Ratio", "Sign");
+    println!(
+        "{:<28} {:>10} {:>10} {:>10} {:>6}",
+        "Spacecraft", "Obs (mm/s)", "Pred (mm/s)", "Ratio", "Sign"
+    );
     println!("{}", "-".repeat(70));
     for r in results {
         let sign = if r.sign_match() { "OK" } else { "FAIL" };

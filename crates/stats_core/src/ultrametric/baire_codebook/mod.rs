@@ -22,7 +22,7 @@
 //! k is the 1-indexed position of the first differing digit.
 
 use super::baire::AttributeSpec;
-use algebra_core::analysis::codebook::LatticeVector;
+use gororoba_algebra::analysis::codebook::LatticeVector;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 

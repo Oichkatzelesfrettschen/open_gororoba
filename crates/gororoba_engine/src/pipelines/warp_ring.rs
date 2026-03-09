@@ -8,7 +8,7 @@ use crate::{
     simulation::{SimulationConfig, SimulationState},
     traits::{ThesisEvidence, ThesisPipeline},
 };
-use algebra_core::physics::octonion_field::{FieldParams, oct_norm_sq};
+use gororoba_algebra::physics::octonion_field::{FieldParams, oct_norm_sq};
 use optics_core::grin::{GrinMedium, Ray, Vec3};
 
 /// GRIN medium derived from algebra field energy density.

@@ -75,7 +75,7 @@ test_count = 4690
 claim_count = 885
 kernel_checked_claims = 26
 proof_files = 47
-summary = "Refuted Claims -> Formal Proofs Sprint. 5 refuted claims reformulated as positive theorems and kernel-checked via Rocq 9.1: C-881 (GF2 cubic min degree in PG(3,2), from C-445), C-882 (parity-clique exact at dims 16/32, from C-463), C-883 (Calcagni d_S range and monotonicity, from C-040), C-884 (neg-dim parameter degeneracy, from C-012), C-885 (S3-invariant democratic mixing, from C-076/C-077). 4 new theory files (GF2Algebra, SpectralDimension, ParityClique, SymmetricGroup3), 5 new verified claim files. Verified Rust modules with cross-validation against algebra_core and cosmology_core."
+summary = "Refuted Claims -> Formal Proofs Sprint. 5 refuted claims reformulated as positive theorems and kernel-checked via Rocq 9.1: C-881 (GF2 cubic min degree in PG(3,2), from C-445), C-882 (parity-clique exact at dims 16/32, from C-463), C-883 (Calcagni d_S range and monotonicity, from C-040), C-884 (neg-dim parameter degeneracy, from C-012), C-885 (S3-invariant democratic mixing, from C-076/C-077). 4 new theory files (GF2Algebra, SpectralDimension, ParityClique, SymmetricGroup3), 5 new verified claim files. Verified Rust modules with cross-validation against CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core) and cosmology_core."
 
 [sprints.s57]
 number = 57
@@ -326,7 +326,7 @@ number = 12
 date = "2026-02-08"
 test_count = 2063
 claim_count = 475
-summary = "Registry integrity, LaTeX superstructure, HDF5 export (hdf5-metno), algebra_core reorg, mdbook chapters, 2063 tests"
+summary = "Registry integrity, LaTeX superstructure, HDF5 export (hdf5-metno), CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core) reorg, mdbook chapters, 2063 tests"
 
 [sprints.s11]
 number = 11

@@ -443,7 +443,7 @@ fn test_phi_i_momentum_injection_precision() {
 ///   3. NFW gravitational force is also momentum-only
 #[test]
 fn test_dynamic_drag_phi_i_mass_conservation() {
-    use lbm_3d::dm_force::{combine_forces, DmForceConfig, DmForceField};
+    use lbm_3d::dm_force::{DmForceConfig, DmForceField, combine_forces};
 
     let (nx, ny, nz) = (16, 8, 8);
     let tau = 0.8;
@@ -483,9 +483,7 @@ fn test_dynamic_drag_phi_i_mass_conservation() {
         let drag = dm.drag_force_lattice(&solver.u);
         let combined = combine_forces(&dm.force, &drag);
 
-        solver
-            .set_force_field(combined)
-            .expect("force field set");
+        solver.set_force_field(combined).expect("force field set");
         let _ = solver.phase1_collision();
     }
 

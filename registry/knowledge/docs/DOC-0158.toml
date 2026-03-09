@@ -384,7 +384,7 @@ PSL(2,7) action: construct explicit 168-element action and show it permutes the 
 
 Output artifacts:
 - `docs/external_sources/PSL_2_7_SOURCES.md`
-- `crates/algebra_core/src/group_theory.rs`
+- `CURRENT::PATH crates/gororoba_algebra/src/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)`
 - `crates/algebra_analysis/src/boxkites.rs`
 - `tests/test_psl_2_7_action.py`
 - `tests/test_boxkite_symmetry_action.py`
@@ -412,7 +412,7 @@ Wheels->Cayley-Dickson mapping: exploratory totalized-division interpretation cr
 
 Output artifacts:
 - `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`
-- `crates/algebra_core/src/wheels.rs`
+- `CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)`
 
 ### CTASK-0022 (C-007, DONE)
 
@@ -2537,7 +2537,7 @@ Output artifacts:
 Octonionic (8D) field Hamiltonian formulation: Fano-plane multiplication, Stormer-Verlet symplectic integrator, 7 Noether charges, free-field dispersion omega^2=k^2+m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction. Phase 6 task A10.
 
 Output artifacts:
-- `crates/algebra_core/src/octonion_field.rs`
+- `CURRENT::PATH crates/gororoba_algebra/src/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/octonion_field.rs)`
 - `tests/test_octonion_field.py`
 
 ### CTASK-0190 (C-428, PARTIAL)
@@ -2563,7 +2563,7 @@ Output artifacts:
 Add a preregistered fit protocol (null + trial-factor ledger) for mapping ZD eigenvalues to particle masses; keep as toy until it passes robust controls.
 
 Output artifacts:
-- `crates/algebra_core/src/hypercomplex.rs`
+- `CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`
 - `src/scripts/analysis/pathion_particle_fit.py`
 - `tests/test_pathion_zd_diagonalization.py`
 
@@ -2590,7 +2590,7 @@ Output artifacts:
 Aut(S) = G2 x S3 verification (Phase 6A).
 
 Output artifacts:
-- `crates/algebra_core/src/hypercomplex.rs`
+- `CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`
 - `tests/test_sedenion_automorphism.py`
 
 ### CTASK-0194 (C-029, DONE)
@@ -2603,7 +2603,7 @@ Output artifacts:
 Three-generation literature review (Phase 6B).
 
 Output artifacts:
-- `crates/algebra_core/src/clifford.rs`
+- `CURRENT::PATH crates/gororoba_algebra/src/clifford.rs (LEGACY::PATH crates/algebra_core/src/clifford.rs)`
 - `tests/test_sedenion_generations.py`
 
 ### CTASK-0195 (C-030, DONE)
@@ -2682,7 +2682,7 @@ Output artifacts:
 - `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`
 - `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`
 - `docs/C033_SU5_MAPPING_CLOSURE.md`
-- `crates/algebra_core/src/group_theory.rs`
+- `CURRENT::PATH crates/gororoba_algebra/src/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)`
 - `src/scripts/analysis/c033_su5_generator_summary.py`
 - `data/csv/c033_su5_generator_summary.csv`
 - `tests/test_su5_generators.py`
@@ -2825,7 +2825,7 @@ Kozyrev p-adic wavelets: implement eigenbasis for Vladimirov operator + offline 
 
 Output artifacts:
 - `docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`
-- `crates/algebra_core/src/padic.rs`
+- `CURRENT::PATH crates/gororoba_algebra/src/padic.rs (LEGACY::PATH crates/algebra_core/src/padic.rs)`
 - `tests/test_padic_wavelets.py`
 
 ### CTASK-0210 (C-043, DONE)

@@ -30,7 +30,7 @@ relevance = "Proves sedenion zero-divisor pair space is isometric to exceptional
 methods = "Riemannian submersion theory over the exceptional symmetric space of quaternion subalgebras; constructs new Einstein metrics on zero-divisor manifold."
 assumptions = "Restricts to normalized zero-divisor pairs in the 16-dimensional sedenion algebra from Cayley-Dickson construction."
 limits = "Analysis confined to sedenions (dim 16); does not extend to 32-ions or higher Cayley-Dickson levels."
-project_link = "Directly validates C-908 (sedenion ZD geometry) and informs box-kite topology in algebra_core."
+project_link = "Directly validates C-908 (sedenion ZD geometry) and informs box-kite topology in CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)."
 
 [[papers]]
 id = "2512.13002"
@@ -56,7 +56,7 @@ relevance = "Shows zero divisors in Cayley-Dickson algebras occur in multiples o
 methods = "Graded construction defining associativity in 3 classes and non-associative components in 4 types; split sedenion analysis."
 assumptions = "Power-associativity as the mechanism introducing zero divisors."
 limits = "Primarily structural/combinatorial; does not address metric or topological properties of ZD sets."
-project_link = "Confirms 84-fold ZD multiplicity pattern relevant to box-kite counting in algebra_core."
+project_link = "Confirms 84-fold ZD multiplicity pattern relevant to box-kite counting in CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)."
 
 [[papers]]
 id = "math/0207003"
@@ -82,7 +82,7 @@ relevance = "Definitive survey connecting octonions to Clifford algebras, spinor
 methods = "Expository review synthesizing algebraic, geometric, and physical perspectives on normed division algebras."
 assumptions = "Standard Cayley-Dickson construction; octonions as the largest normed division algebra."
 limits = "Survey paper; does not develop new theorems but provides essential context for all CD algebra work."
-project_link = "Reference foundation for the entire algebra_core crate; Bott periodicity connection relevant to Domain 4."
+project_link = "Reference foundation for the entire CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core) crate; Bott periodicity connection relevant to Domain 4."
 
 # =============================================================================
 # DOMAIN 2: Wick Rotation and Complex-Time Quantum Gravity

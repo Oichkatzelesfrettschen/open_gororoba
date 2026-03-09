@@ -46,7 +46,7 @@ purpose = "Current URL intake, fetched artifacts, and final retrieval status."
 id = "CTX-06"
 name = "Rust Workspace Topology"
 priority = "high"
-paths = ["Cargo.toml", "crates/algebra_core/", "crates/sign_imbalance/", "crates/gororoba_cli/", "crates/lbm_3d_cuda/"]
+paths = ["Cargo.toml", "CURRENT::PATH crates/gororoba_algebra/ (LEGACY::PATH crates/algebra_core/)", "crates/sign_imbalance/", "crates/gororoba_cli/", "crates/lbm_3d_cuda/"]
 purpose = "Primary Rust crates relevant to algebra, experiments, and GPU lanes."
 
 [[chunk]]

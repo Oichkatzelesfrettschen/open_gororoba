@@ -1,6 +1,6 @@
 //! Training data generation for sedenion multiplication synthesis.
 
-use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
+use gororoba_algebra::construction::cayley_dickson::cd_basis_mul_sign;
 
 pub const SEDENION_DIM: usize = 16;
 

@@ -14,21 +14,19 @@
 //! See BIB-0307 (Moreno 1998), BIB-0308 (Cawagas 2004) for CD structure
 //! and BIB-0311 (Conway & Norton 1979), BIB-0312 (Borcherds 1992) for Moonshine.
 
-pub use super::cd_tower_violations::{
-    CD_TOWER, CD_VIOLATION_COUNTS, EXACT_ALTERNATOR_COUNTS,
-    BOX_KITE_VIOLATION_COUNTS,
-    exact_violation_count, box_kite_violation_count,
-    enumerate_violation_count, enumerate_violation_count_fast,
-    enumerate_violation_count_tiled,
-    estimate_violation_count, violation_count_best,
+use super::moonshine::{J_COEFFICIENTS, MONSTER_REP_DIMENSIONS};
+pub use super::{
+    cd_tower_violations::{
+        BOX_KITE_VIOLATION_COUNTS, CD_TOWER, CD_VIOLATION_COUNTS, EXACT_ALTERNATOR_COUNTS,
+        box_kite_violation_count, enumerate_violation_count, enumerate_violation_count_fast,
+        enumerate_violation_count_tiled, estimate_violation_count, exact_violation_count,
+        violation_count_best,
+    },
+    leech_pathion::{
+        CrossSectorResult, DARK_SECTOR_DIM, DarkSectorSummary, LEECH_DIM, LeechCdEmbedding,
+        LeechPathionEmbedding, PATHION_DIM, sweep_leech_tower,
+    },
 };
-pub use super::leech_pathion::{
-    LEECH_DIM, PATHION_DIM, DARK_SECTOR_DIM,
-    LeechPathionEmbedding, LeechCdEmbedding,
-    CrossSectorResult, DarkSectorSummary,
-    sweep_leech_tower,
-};
-use super::moonshine::{MONSTER_REP_DIMENSIONS, J_COEFFICIENTS};
 
 /// Result of embedding a single Monster irrep into a CD dimension.
 #[derive(Debug, Clone)]
@@ -161,7 +159,6 @@ pub fn divisibility_census() -> Vec<(usize, &'static str, usize, usize)> {
         .collect()
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -217,5 +214,4 @@ mod tests {
             assert!(div_count <= total);
         }
     }
-
 }

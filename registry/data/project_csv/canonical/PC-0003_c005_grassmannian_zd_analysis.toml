@@ -24,7 +24,7 @@ header = [
 original_header = ["# C-005 Grassmannian ZD Annihilator Analysis"]
 rows = [
     [
-    "# Generated: 2026-02-06 via algebra_core Rust integration tests",
+    "# Generated: 2026-02-06 via CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core) Rust integration tests",
     "",
     "",
     "",

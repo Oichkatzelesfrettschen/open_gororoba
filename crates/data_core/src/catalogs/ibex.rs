@@ -117,7 +117,9 @@ pub fn parse_ibex_ena_file(
 ) -> Result<IbexEnaMap, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
-    Ok(parse_ibex_ena_map(&content, energy_kev, orbit, year_start, instrument))
+    Ok(parse_ibex_ena_map(
+        &content, energy_kev, orbit, year_start, instrument,
+    ))
 }
 
 const IBEX_BASE: &str = "https://ibex.princeton.edu/DataAction";

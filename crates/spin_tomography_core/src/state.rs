@@ -1,4 +1,4 @@
-use algebra_core::{kron2, physics::clifford::pauli_matrices};
+use gororoba_algebra::{kron2, physics::clifford::pauli_matrices};
 use nalgebra::{Matrix3, Matrix4, OMatrix, U8, Vector3};
 use num_complex::Complex64;
 
@@ -21,7 +21,7 @@ impl TwoQubitState {
         let (d1, d2, d3) = pauli_matrices();
 
         let to_m2 =
-            |m: algebra_core::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
+            |m: gororoba_algebra::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
                 nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
             };
 

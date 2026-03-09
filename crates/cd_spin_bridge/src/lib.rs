@@ -6,7 +6,7 @@
 //!
 //! - `sign_imbalance`: provides the 3/8 imbalance attractor and imbalance metrics
 //! - `spin_tomography_core`: provides `TwoQubitState` density matrix representation
-//! - `algebra_core`: provides Pauli matrices and Clifford algebra primitives
+//! - `gororoba_algebra`: provides Pauli matrices and Clifford algebra primitives
 //!
 //! The bridge models how Cayley-Dickson algebraic structure induces
 //! decoherence in spin-correlated particle pairs, with applications

@@ -1,7 +1,7 @@
 # Phase 8: Low-Dimensional Cayley-Dickson Algebra Census
 # Dimension: 1, 2, 4, 8
 # Total algebras: 15 (1 reals + 1 complex + 2 quaternions + 4 split-quaternions + 8 octonion-variants)
-# Generated from crates/algebra_core/tests/test_low_dimensional_survey.rs
+# Generated from CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)
 
 [[algebra]]
 dimension = 1

@@ -150,7 +150,7 @@ number = 16
 phase = 2
 phase_name = "Discovery and architecture mapping"
 status = "done"
-title = "Identify overlap already covered in `algebra_core` to avoid redundant octonion ports (`mcp-ripgrep`)."
+title = "Identify overlap already covered in `CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)` to avoid redundant octonion ports (`mcp-ripgrep`)."
 evidence_refs = ["archive/registry/pantheon_physicsforge/pantheon_physicsforge_migration_matrix.toml"]
 
 [[task]]

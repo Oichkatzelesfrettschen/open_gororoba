@@ -31,11 +31,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 description = "Synthesize E7 Lie Algebra roots and Navier-Stokes turbulence triads (k+p+q=0) into a unified visual and mathematical framework. Includes spectral analysis, hypergraph metrics (Clustering, Betti), and Kerr-optics lensing."
-primary_outputs = ["crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "crates/algebra_core/src/lie/e7_geometry.rs", "crates/lbm_core/src/turbulence.rs", "registry/monograph.toml", "registry/lacunae.toml"]
+primary_outputs = ["crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "CURRENT::PATH crates/gororoba_algebra/src/lie/e7_geometry.rs (LEGACY::PATH crates/algebra_core/src/lie/e7_geometry.rs)", "crates/lbm_core/src/turbulence.rs", "registry/monograph.toml", "registry/lacunae.toml"]
 lacunae = ["L-001", "L-002", "L-003", "L-004", "L-005"]
 dependencies = []
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
-evidence_refs = ["crates/algebra_core/src/lie/e7_geometry.rs", "crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "crates/lbm_core/src/turbulence.rs", "registry/lacunae.toml", "registry/monograph.toml"]
+evidence_refs = ["CURRENT::PATH crates/gororoba_algebra/src/lie/e7_geometry.rs (LEGACY::PATH crates/algebra_core/src/lie/e7_geometry.rs)", "crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "crates/lbm_core/src/turbulence.rs", "registry/lacunae.toml", "registry/monograph.toml"]
 
 [[workstream]]
 id = "WS-CLAIMS-001"
@@ -57,12 +57,12 @@ status = "done"
 status_token = "DONE"
 description = "Phase 6 verified that CD non-commutativity at dim>=4 is universal across the standard parameter space. Literature search across 7 mathematical domains (20+ papers) found zero counterexamples. Exhaustive computational verification across all 28 standard gamma signatures (dim=4: 4, dim=8: 8, dim=16: 16, dim=32: 8 sampled) found 0 commuting pairs in ~1200 basis element pairs. Combined confidence: 99%. This cross-validates C-589 (octonion-driven lattice) and strengthens C-546 (universal non-commutativity) by establishing it as a STRUCTURAL property of the CD doubling formula's conjugation asymmetry."
 sprint = "S30"
-primary_outputs = ["crates/cd_kernel/src/cayley_dickson.rs", "registry/claims.toml", "registry/insights.toml", "docs/PHASE_5_6_CONSOLIDATION.md"]
+primary_outputs = ["CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)", "registry/claims.toml", "registry/insights.toml", "docs/PHASE_5_6_CONSOLIDATION.md"]
 claims = ["C-591", "C-546", "C-550", "C-552"]
 insight = "I-042"
 dependencies = ["C-546", "C-550", "C-552", "C-589", "C-591", "I-042"]
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
-evidence_refs = ["crates/cd_kernel/src/cayley_dickson.rs", "docs/PHASE_5_6_CONSOLIDATION.md", "registry/claims.toml", "registry/insights.toml"]
+evidence_refs = ["CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)", "docs/PHASE_5_6_CONSOLIDATION.md", "registry/claims.toml", "registry/insights.toml"]
 
 [[workstream]]
 id = "WS-FACESIGN-001"

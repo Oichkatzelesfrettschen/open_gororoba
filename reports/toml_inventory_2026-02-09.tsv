@@ -1,7 +1,7 @@
 path	role
 .cargo/config.toml	rust_build
 Cargo.toml	rust_build
-crates/algebra_core/Cargo.toml	rust_build
+CURRENT::PATH crates/gororoba_algebra/Cargo.toml (LEGACY::PATH crates/algebra_core/Cargo.toml)	rust_build
 crates/control_core/Cargo.toml	rust_build
 crates/cosmology_core/Cargo.toml	rust_build
 crates/data_core/Cargo.toml	rust_build

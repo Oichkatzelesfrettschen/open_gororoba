@@ -8,7 +8,7 @@
 //!   cargo run --release --bin prefix-chain-theorem -- --skeleton
 //!   cargo run --release --bin prefix-chain-theorem -- --forbidden
 
-use algebra_core::analysis::prefix_chain_theorem::{
+use gororoba_algebra::analysis::prefix_chain_theorem::{
     OctonionSkeletonMap, count_forbidden_by_family, format_theorem_summary,
     verify_prefix_chain_theorem,
 };
@@ -49,7 +49,7 @@ fn main() {
 
         println!("\nImaginary octonion unit directions:");
         for (i, dir) in skeleton.imaginary_directions.iter().enumerate() {
-            let in_sbase = algebra_core::analysis::codebook::is_in_base_universe(dir);
+            let in_sbase = gororoba_algebra::analysis::codebook::is_in_base_universe(dir);
             println!("  e_{}: {:?}  [in S_base: {}]", i + 1, dir, in_sbase);
         }
 

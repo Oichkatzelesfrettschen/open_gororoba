@@ -28,7 +28,7 @@ under `papers/`.
 
 ```
 crates/
-  algebra_core/       Cayley-Dickson, Clifford, wheels, p-adic, groups, box-kites
+  CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)/       Cayley-Dickson, Clifford, wheels, p-adic, groups, box-kites
   cosmology_core/     FLRW, bouncing models, dark energy
   gr_core/            Schwarzschild, Kerr, Novikov-Thorne, spectral bands
   materials_core/     Periodic table, metamaterial models

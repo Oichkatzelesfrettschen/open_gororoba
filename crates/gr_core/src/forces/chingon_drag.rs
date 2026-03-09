@@ -1,4 +1,4 @@
-use algebra_core::construction::chingon::AlternativityViolationTensor;
+use gororoba_algebra::construction::chingon::AlternativityViolationTensor;
 use nalgebra::Vector3;
 
 /// Computes the Bivector-Embedded Chingon drag acceleration.

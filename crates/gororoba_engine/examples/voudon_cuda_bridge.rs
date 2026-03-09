@@ -1,12 +1,12 @@
-use algebra_core::gpu::voudon::VoudonFrustrationGpu;
 use cudarc::driver::CudaContext;
+use gororoba_algebra::gpu::voudon::VoudonFrustrationGpu;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use std::sync::Arc;
 
 fn main() -> anyhow::Result<()> {
     println!("--- Voudon-LBM Bridge: CUDA-Accelerated 256D Turbulence ---");
 
-    if !algebra_core::gpu::is_gpu_available() {
+    if !gororoba_algebra::gpu::is_gpu_available() {
         println!("GPU not available. This example requires CUDA.");
         return Ok(());
     }

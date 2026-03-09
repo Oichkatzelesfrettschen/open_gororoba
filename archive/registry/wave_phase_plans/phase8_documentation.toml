@@ -17,12 +17,12 @@ secondary = "Cross-validate Phase 5-6 results at low dimensions; verify Hurwitz 
 tertiary = "Identify parametric vs structural properties; establish algebraic landscape map"
 
 [phase8.implementation]
-test_file = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+test_file = "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"
 test_lines = 460
 registry_entries = 15
 new_claims = 7
 new_insights = 2
-crate_modification = "crates/cd_kernel/src/cayley_dickson.rs"
+crate_modification = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 modification_type = "Added public gammas() accessor to CdSignature"
 
 [phase8.metrics]
@@ -280,7 +280,7 @@ level = [
 ]
 
 [phase8.publication_artifacts]
-test_implementation = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+test_implementation = "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)"
 test_lines = 460
 test_functions = [
   "test_low_dimensional_algebra_census",

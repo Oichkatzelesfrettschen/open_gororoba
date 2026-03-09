@@ -17,7 +17,7 @@
 
     Uses: N.lxor from Stdlib.NArith.BinNat (binary natural XOR).
 
-    Mirrors: crates/algebra_core/src/gpu/tensor_avt.rs
+    Mirrors: CURRENT::PATH crates/gororoba_algebra/src/gpu/tensor_avt.rs (LEGACY::PATH crates/algebra_core/src/gpu/tensor_avt.rs)
              (compute_cd_mul vs reference_cd_multiply) *)
 
 From Stdlib Require Import NArith.BinNat.

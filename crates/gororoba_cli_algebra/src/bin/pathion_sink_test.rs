@@ -7,8 +7,8 @@
 //! Energy that would propagate into dimensions 16..31 is modeled as a scalar
 //! damping term proportional to the local associator norm squared.
 
-use algebra_core::construction::cayley_dickson::cd_multiply;
 use clap::{Parser, Subcommand};
+use gororoba_algebra::construction::cayley_dickson::cd_multiply;
 use gororoba_engine::simulation::PathionSink;
 use std::io::Write;
 

@@ -230,13 +230,15 @@ experiment_id = "E-015"
 binary = "dimensional-census"
 deterministic = true
 gpu = false
-run_command = "cargo test -p algebra_core --release --lib -- test_separating_degree_formula_universality --nocapture"
+run_command = "cargo test -p gororoba_algebra --release --lib -- test_separating_degree_formula_universality --nocapture"
+run_command_legacy_note = "Before the 2026-03-09 facade rename, this lineage replay command targeted package algebra_core."
 run_command_sha256 = "14fdeb04854fd5796e3e9e39d81ec504b61eb83076dad30cc7813352db6c7dd0"
 claim_refs = ["C-599", "C-600"]
 input_path_refs = []
 output_path_refs = ["data/csv/separating_degree_formula_sweep.csv"]
 dataset_refs = []
-replay_steps = ["Confirm required input paths are available.", "cargo test -p algebra_core --release --lib -- test_separating_degree_formula_universality --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo test -p gororoba_algebra --release --lib -- test_separating_degree_formula_universality --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps_legacy_note = "Historical replay notes used cargo test -p algebra_core before the facade crate rename."
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]

@@ -10,8 +10,8 @@
 //! | C      | Conjugate | Standard  | Does algebra alone flip ring?   |
 //! | D      | Conjugate | Flipped   | Do two inversions cancel?       |
 
-use algebra_core::construction::cayley_dickson::{cd_multiply, cd_multiply_conjugated};
 use clap::{Parser, Subcommand};
+use gororoba_algebra::construction::cayley_dickson::{cd_multiply, cd_multiply_conjugated};
 use gororoba_engine::simulation::ChiralityMode;
 use std::io::Write;
 

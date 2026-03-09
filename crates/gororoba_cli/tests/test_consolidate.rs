@@ -213,7 +213,7 @@ fn test_enrich_phase_from_where_stated() {
 #[test]
 fn test_enrich_confidence_verified_with_test() {
     let mut claims = vec![make_claim("C-001", "Test claim", "Verified")];
-    claims[0].where_stated = Some("crates/algebra_core/src/test_boxkites.rs".to_string());
+    claims[0].where_stated = Some("crates/gororoba_algebra/src/test_boxkites.rs".to_string());
     enrich_metadata(&mut claims, &[], &[]);
     assert_eq!(claims[0].confidence.as_deref(), Some("high"));
 }

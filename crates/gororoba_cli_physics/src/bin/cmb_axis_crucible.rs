@@ -3,8 +3,8 @@
 //! Validates whether the Voudon Global Bias vector aligns with the observed
 //! anomalous multipole alignment in the Cosmic Microwave Background.
 
-use algebra_core::construction::deep_space::compute_voudon_imbalance_density;
 use cosmology_core::VoudonCmbAnalyzer;
+use gororoba_algebra::construction::deep_space::compute_voudon_imbalance_density;
 use nalgebra::Vector3;
 
 fn main() -> anyhow::Result<()> {

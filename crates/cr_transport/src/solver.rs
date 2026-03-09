@@ -14,9 +14,11 @@
 //! Each spatial sweep solves a tridiagonal system with the Thomas algorithm.
 //! Periodic boundary conditions match the LBM solver convention.
 
-use crate::diffusion::{DiffusionConfig, diffusion_tensor};
-use crate::grid::RigidityGrid;
-use crate::source::DmSource;
+use crate::{
+    diffusion::{DiffusionConfig, diffusion_tensor},
+    grid::RigidityGrid,
+    source::DmSource,
+};
 
 /// Parker Transport Equation solver.
 pub struct PteSolver {
@@ -99,9 +101,12 @@ impl PteSolver {
                     let ym = if y == 0 { ny - 1 } else { y - 1 };
                     let zp = (z + 1) % nz;
                     let zm = if z == 0 { nz - 1 } else { z - 1 };
-                    let du_dx = (u_sw[self.idx(xp, y, z)][0] - u_sw[self.idx(xm, y, z)][0]) / (2.0 * dx);
-                    let du_dy = (u_sw[self.idx(x, yp, z)][1] - u_sw[self.idx(x, ym, z)][1]) / (2.0 * dx);
-                    let du_dz = (u_sw[self.idx(x, y, zp)][2] - u_sw[self.idx(x, y, zm)][2]) / (2.0 * dx);
+                    let du_dx =
+                        (u_sw[self.idx(xp, y, z)][0] - u_sw[self.idx(xm, y, z)][0]) / (2.0 * dx);
+                    let du_dy =
+                        (u_sw[self.idx(x, yp, z)][1] - u_sw[self.idx(x, ym, z)][1]) / (2.0 * dx);
+                    let du_dz =
+                        (u_sw[self.idx(x, y, zp)][2] - u_sw[self.idx(x, y, zm)][2]) / (2.0 * dx);
                     div_u[self.idx(x, y, z)] = du_dx + du_dy + du_dz;
                 }
             }
@@ -115,10 +120,10 @@ impl PteSolver {
     ///
     /// Returns solution vector of length n.
     fn thomas_solve(
-        a: &[f64],  // sub-diagonal (length n, a[0] unused)
-        b: &[f64],  // main diagonal
-        c: &[f64],  // super-diagonal (length n, c[n-1] unused)
-        d: &[f64],  // right-hand side
+        a: &[f64], // sub-diagonal (length n, a[0] unused)
+        b: &[f64], // main diagonal
+        c: &[f64], // super-diagonal (length n, c[n-1] unused)
+        d: &[f64], // right-hand side
     ) -> Vec<f64> {
         let n = d.len();
         let mut cp = vec![0.0; n];
@@ -177,7 +182,9 @@ impl PteSolver {
                 for x in 0..nx {
                     let fi = self.idx(x, y, z);
                     let b_vec = [b_field.0[fi], b_field.1[fi], b_field.2[fi]];
-                    let b_mag = (b_vec[0] * b_vec[0] + b_vec[1] * b_vec[1] + b_vec[2] * b_vec[2]).sqrt().max(1e-10);
+                    let b_mag = (b_vec[0] * b_vec[0] + b_vec[1] * b_vec[1] + b_vec[2] * b_vec[2])
+                        .sqrt()
+                        .max(1e-10);
                     let k = diffusion_tensor(b_vec, b_mag, rigidity_gv, &self.config);
                     let kxx = k[0][0];
                     let mu = kxx * dt / (dx * dx);
@@ -252,8 +259,7 @@ impl PteSolver {
                         } else {
                             u[2] * (f_old[self.idx(x, y, zp) * n_p + p] - f_c) / dx
                         };
-                        self.f[idx * n_p + p] =
-                            (f_c - dt * (adv_x + adv_y + adv_z)).max(0.0);
+                        self.f[idx * n_p + p] = (f_c - dt * (adv_x + adv_y + adv_z)).max(0.0);
                     }
                 }
             }
@@ -344,14 +350,16 @@ impl PteSolver {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::diffusion::DiffusionConfig;
-    use crate::grid::RigidityGrid;
+    use crate::{diffusion::DiffusionConfig, grid::RigidityGrid};
 
     #[test]
     fn test_adiabatic_deceleration_shifts_peak() {
         // Pure deceleration with div(u) = const > 0 should shift f peak to lower p
         let grid = RigidityGrid::new(20, 0.1, 100.0);
-        let cfg = DiffusionConfig { kappa_0_au2_per_s: 0.0, ..Default::default() };
+        let cfg = DiffusionConfig {
+            kappa_0_au2_per_s: 0.0,
+            ..Default::default()
+        };
         let nx = 4;
         let mut solver = PteSolver::new(nx, 1, 1, grid.clone(), cfg, 1e4, 1.0);
 

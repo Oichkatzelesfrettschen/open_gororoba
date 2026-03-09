@@ -419,7 +419,7 @@ status = "in_progress"
 status_token = "IN_PROGRESS"
 dependencies = ["T-046", "T-047", "T-048", "T-049"]
 acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "gate-ci-rust passes or the remaining frontier is reduced to explicitly tracked buckets."]
-evidence_refs = [".config/nextest.toml", "crates/algebra_core/tests/test_split_octonion_attractor.rs", "crates/algebra_experimental/src/cd_external.rs", "crates/gororoba_cli/tests/integration_thesis_program_sweep.rs", "crates/gororoba_cli_physics/tests/integration_snia_ddt.rs"]
+evidence_refs = [".config/nextest.toml", "CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_attractor.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_attractor.rs)", "crates/algebra_experimental/src/cd_external.rs", "crates/gororoba_cli/tests/integration_thesis_program_sweep.rs", "crates/gororoba_cli_physics/tests/integration_snia_ddt.rs"]
 
 [[action]]
 id = "NA-035"

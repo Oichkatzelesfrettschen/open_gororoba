@@ -16,8 +16,10 @@
 //!   dimensional-census --all                         # all CPU-feasible (dims 4-512)
 //!   dimensional-census --dims 128 --monte-carlo 100000  # Monte Carlo at dim 128
 
-use algebra_core::{analysis::boxkites::motif_components_for_cross_assessors, cd_basis_mul_sign};
 use clap::Parser;
+use gororoba_algebra::{
+    analysis::boxkites::motif_components_for_cross_assessors, cd_basis_mul_sign,
+};
 use std::{collections::HashSet, fs, io::Write, path::Path, time::Instant};
 
 type Node = (usize, usize);

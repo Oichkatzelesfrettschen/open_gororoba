@@ -13,8 +13,8 @@
 //!   motif-census --dims 256 --max-nodes 5000  # sampled
 //!   motif-census --dims 16,32 --details        # emit node/edge CSVs
 
-use algebra_core::{MotifComponent, cross_assessors, motif_components_for_cross_assessors};
 use clap::Parser;
+use gororoba_algebra::{MotifComponent, cross_assessors, motif_components_for_cross_assessors};
 use std::{fs, path::Path, time::Instant};
 
 #[derive(Parser)]

@@ -32,7 +32,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: Cayley-Dickson algebras become non-associative at 8D and beyond.
-- Where stated: `crates/cd_kernel/src/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/construction/hypercomplex.rs` (test_non_associativity_scaling), `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
+- Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_sedenion_non_associative), `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)` (test_non_associativity_scaling), `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
 - What would verify/refute it: Rust tests verify associativity at dims 1/2/4 and find non-associative triples at dim >= 8; cite Baez (2002) for background.
 
 ## C-002
@@ -56,7 +56,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-01-28
 - Statement: The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs.
-- Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/lie/group_theory.rs`, `crates/algebra_analysis/src/boxkites.rs` (Rust tests: test_sedenion_boxkite_structure, test_coassessor_symmetry)
+- Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/lie/group_theory.rs)`, `crates/algebra_analysis/src/boxkites.rs` (Rust tests: test_sedenion_boxkite_structure, test_coassessor_symmetry)
 - What would verify/refute it: Verified: GL(3,2) (order 168, isomorphic to PSL(2,7)) acts on Fano-plane points and induces a deterministic permutation of CD indices that maps each computed box-kite to another computed box-kite, preserving assessor sets and edge sets. This validates a concrete \"governs\" meaning: it acts by symmetries on the box-kite family produced by this repo's CD convention.
 
 ## C-005
@@ -152,7 +152,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: The repo's `m3` trilinear operation on distinct octonion basis triples produces exactly 42 scalar outputs and 168 pure-imaginary outputs, and the scalar cases correspond exactly to the 7 Fano-plane lines (with parity sign flips).
-- Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `crates/algebra_core/src/m3.rs` (test_m3_distinct_triples_split_42_scalar_168_vector, test_m3_scalar_outputs_are_exactly_fano_lines, test_m3_scalar_sign_flips_with_permutation_parity), `docs/BIBLIOGRAPHY.md`
+- Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `CURRENT::PATH crates/gororoba_algebra/src/m3.rs (LEGACY::PATH crates/algebra_core/src/m3.rs)` (test_m3_distinct_triples_split_42_scalar_168_vector, test_m3_scalar_outputs_are_exactly_fano_lines, test_m3_scalar_sign_flips_with_permutation_parity), `docs/BIBLIOGRAPHY.md`
 - What would verify/refute it: Rust tests validate the 42/168 split and the Fano-line criterion. Terminology: Stasheff, J. (1963) \"Homotopy Associativity of H-Spaces\" Trans. AMS 108(2); Baez, J.C. (2002) \"The Octonions\" Bull. AMS 39(2) for Fano plane structure.
 
 ## C-017
@@ -169,14 +169,14 @@ Total claims: 521
 - Last verified: 2026-01-28
 - Statement: \"Wheels\" (Carlstrom) are commutative monoid-based structures <H,0,1,+,*,/> with a total reciprocal operation and defining axioms (1)-(8) (Carlstrom 2001, Definition 1.1) that provide division-by-zero semantics without partiality.
 - Where stated: `docs/WHEELS_DIVISION_BY_ZERO.md`, convos \"wheel\" mentions
-- What would verify/refute it: `docs/WHEELS_DIVISION_BY_ZERO.md` is source-aligned; `crates/algebra_core/src/construction/wheels.rs` implements a concrete model with 11 tests (test_carlstrom_axioms, test_division_by_zero, test_reciprocal_involution, etc.) checking all 8 Carlstrom axioms on a deterministic finite set.
+- What would verify/refute it: `docs/WHEELS_DIVISION_BY_ZERO.md` is source-aligned; `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)` implements a concrete model with 11 tests (test_carlstrom_axioms, test_division_by_zero, test_reciprocal_involution, etc.) checking all 8 Carlstrom axioms on a deterministic finite set.
 
 ## C-019
 
 - Status: `Refuted`
 - Last verified: 2026-01-30
 - Statement: Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson zero-divisor phenomena at higher dimensions.
-- Where stated: convos narrative, `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `crates/algebra_core/src/construction/wheels.rs`, `data/csv/cd_wheel_roundtrip_results.csv`, `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`
+- Where stated: convos narrative, `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)`, `data/csv/cd_wheel_roundtrip_results.csv`, `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`
 - What would verify/refute it: Phase 2C structural test: all 84 diagonal-form ZDs tested with their 336 annihilating-partner pairs. ZD detection rate 100%, but round-trip (u/v)*v recovers u in 0/336 cases (residual = sqrt(2) uniformly). The wheel framework correctly tags information loss but adds no algebraic content beyond what direct ZD detection provides. No first-party source connecting wheels to CD zero divisors has been found. H0 NOT REJECTED: the connection is notational, not mathematical. See `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`.
 
 ## C-020
@@ -249,14 +249,14 @@ Total claims: 521
 - Last verified: 2026-01-31
 - Statement: Aut(S) = G2 x S3; no continuous symmetry beyond G2 emerges from sedenions. The S3 factor permutes three octonionic subalgebras.
 - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/SEDENION_FIELD_THEORY.md`
-- What would verify/refute it: `crates/algebra_core/src/construction/hypercomplex.rs` verifies three closed octonionic subalgebras, S3 permutation validity, and G2-consistent Fano triple counts.
+- What would verify/refute it: `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)` verifies three closed octonionic subalgebras, S3 permutation validity, and G2-consistent Fano triple counts.
 
 ## C-029
 
 - Status: `Verified`
 - Last verified: 2026-01-30
 - Statement: Three fermion generations arise from the C tensor S decomposition into three C tensor O subalgebras (Gillard & Gresnigt 2019, Gresnigt 2023).
-- Where stated: `docs/BIBLIOGRAPHY.md` (Gillard & Gresnigt 2019; Gresnigt 2023), `docs/SEDENION_FIELD_THEORY.md`, `crates/algebra_core/src/construction/hypercomplex.rs` (test_sedenion_box_kites, test_octonion_field_fano)
+- Where stated: `docs/BIBLIOGRAPHY.md` (Gillard & Gresnigt 2019; Gresnigt 2023), `docs/SEDENION_FIELD_THEORY.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)` (test_sedenion_box_kites, test_octonion_field_fano)
 - What would verify/refute it: Subalgebras match Phase 6A identification. S3 generation permutations valid. PSL(2,7) is internal to each sub, not cross-generation.
 
 ## C-030
@@ -288,7 +288,7 @@ Total claims: 521
 - Status: `Closed/Source-Insufficient`
 - Last verified: 2026-02-06
 - Statement: Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023).
-- Where stated: `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)
+- Where stated: `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/lie/group_theory.rs)`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)
 - What would verify/refute it: CLOSED (Phase 7 Batch B): Repo verifies a canonical SU(5) generator basis in the 5D defining rep: traceless/Hermitian/normalized and Lie bracket closed (summary: `data/csv/c033_su5_generator_summary.csv`). Tang & Tang (2023, Sec. 2.6) describe a construction of 24 generalized lambda matrices via five creation/annihilation operators, but do NOT enumerate a unique coefficient mapping from sedenion basis elements to a normalized SU(5) generator basis. The source provides the algebraic framework but not the explicit mapping table (basis conventions + normalization) needed for verification. Closed as source-insufficient.
 
 ## C-034
@@ -360,8 +360,8 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-01-31
 - Statement: Kozyrev p-adic wavelets form an explicitly computable eigenbasis for the Vladimirov operator.
-- Where stated: `docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `crates/algebra_core/src/construction/padic.rs`
-- What would verify/refute it: `crates/algebra_core/src/construction/padic.rs` implements wavelet evaluation and orthogonality checks. `src/scripts/analysis/verify_kozyrev_wavelets.py` verifies correct values, orthogonality (modulo domain choices), and approximate eigenvalue action.
+- Where stated: `docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/construction/padic.rs)`
+- What would verify/refute it: `CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/construction/padic.rs)` implements wavelet evaluation and orthogonality checks. `src/scripts/analysis/verify_kozyrev_wavelets.py` verifies correct values, orthogonality (modulo domain choices), and approximate eigenvalue action.
 
 ## C-043
 
@@ -456,7 +456,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-01-31
 - Statement: Carlstrom's Wheel Algebra formally models information loss in non-associative CD algebras.
-- Where stated: `crates/algebra_core/src/construction/wheels.rs`
+- Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)`
 - What would verify/refute it: Implementation of Wheel axioms over CD algebras verifies that the \"Nullity\" element ($0/0$) and metadata tagging correctly capture the irreversibility of multiplication in 16D/32D.
 
 ## C-055
@@ -464,7 +464,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: Non-associativity is the generic (bulk) state of 16D/32D CD algebras (100% prevalence).
-- Where stated: `crates/cd_kernel/src/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/construction/hypercomplex.rs` (test_non_associativity_scaling)
+- Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_sedenion_non_associative), `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)` (test_non_associativity_scaling)
 - What would verify/refute it: Rust tests verify non-associativity at dim=16 (cayley_dickson.rs) and scaling with dimension (hypercomplex.rs). Original Monte Carlo ($N=100,000$) in 16D/32D showed 100% of pairs have non-zero round-trip residual.
 
 ## C-056
@@ -3424,15 +3424,15 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-04
 - Statement: Octonion-valued (8D) scalar field Hamiltonian with Stormer-Verlet symplectic integrator, 7 Noether charges from octonionic U(1) rotations, and free-field dispersion relation omega^2 = k^2 + m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction.
-- Where stated: `crates/algebra_core/src/physics/octonion_field.rs`, `tests/test_octonion_field.py`
-- What would verify/refute it: Phase 6 task A10. Fano-plane structure constants for multiplication. Tests: energy conservation < 0.1% (free + quartic), dispersion within 1%, Noether charge Q_1 drift < 0.1%, non-associativity confirmed, alternativity verified, composition property ||a*b|| = ||a||*||b|| to 1e-12. Original 16D transport kernel in `crates/algebra_core/src/construction/hypercomplex.rs` remains as Modeled.
+- Where stated: `CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/physics/octonion_field.rs)`, `tests/test_octonion_field.py`
+- What would verify/refute it: Phase 6 task A10. Fano-plane structure constants for multiplication. Tests: energy conservation < 0.1% (free + quartic), dispersion within 1%, Noether charge Q_1 drift < 0.1%, non-associativity confirmed, alternativity verified, composition property ||a*b|| = ||a||*||b|| to 1e-12. Original 16D transport kernel in `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)` remains as Modeled.
 
 ## C-426
 
 - Status: `Refuted`
 - Last verified: 2026-02-02
 - Statement: Pathion (32D) Zero-Divisor interaction matrix diagonalization provides a testbed for algebraic mass spectrum hypotheses (logarithmic scaling).
-- Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/algebra_core/src/construction/hypercomplex.rs`
+- Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)`
 - What would verify/refute it: `build_zd_interaction_matrix` and `diagonalize_zd_matrix` implement the machinery to test if ZD interaction eigenvalues map to particle masses. Current status is \"Toy Model\" for synthesis testing.
 
 ## C-427

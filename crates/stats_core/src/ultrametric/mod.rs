@@ -54,7 +54,7 @@ pub mod null_models;
 pub mod subset_search;
 pub mod temporal;
 
-use algebra_core::{Rational, padic_distance};
+use gororoba_algebra::{Rational, padic_distance};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 

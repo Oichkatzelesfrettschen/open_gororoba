@@ -111,7 +111,7 @@ pub fn quaternion_frame_from_spatial_metric(gamma: &SpatialMetric) -> [f64; 4] {
         }
     }
 
-    algebra_core::physics::quat_rotation::quat_from_rotation_matrix(&m)
+    gororoba_algebra::physics::quat_rotation::quat_from_rotation_matrix(&m)
 }
 
 // ============================================================================

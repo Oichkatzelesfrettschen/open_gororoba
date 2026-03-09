@@ -480,9 +480,8 @@ impl LbmSolver3D {
                         let ei_minus_u_dot_f = (ei_f64[0] - u_star[0]) * force[0]
                             + (ei_f64[1] - u_star[1]) * force[1]
                             + (ei_f64[2] - u_star[2]) * force[2];
-                        let ei_dot_u = ei_f64[0] * u_star[0]
-                            + ei_f64[1] * u_star[1]
-                            + ei_f64[2] * u_star[2];
+                        let ei_dot_u =
+                            ei_f64[0] * u_star[0] + ei_f64[1] * u_star[1] + ei_f64[2] * u_star[2];
                         let ei_dot_f =
                             ei_f64[0] * force[0] + ei_f64[1] * force[1] + ei_f64[2] * force[2];
                         // Phi_i = (e_i - u*)*F / c_s^2 + (e_i*u*)(e_i*F) / c_s^4

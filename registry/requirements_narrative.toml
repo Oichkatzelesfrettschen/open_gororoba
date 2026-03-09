@@ -246,7 +246,8 @@ title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
 body_markdown = """
 # Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)
 
-These components primarily live in Rust crates under `crates/algebra_core/` and are
+These components primarily live in Rust crates under `crates/gororoba_algebra/`,
+`crates/cd_kernel/`, and related sibling algebra crates, and are
 exercised by Rust unit and integration tests.
 
 Install:

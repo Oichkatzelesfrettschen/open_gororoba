@@ -103,7 +103,8 @@ dependency_policy = "no_git_deps_in_release"
 gororoba_engine = "orchestration_config_traits"
 lbm_core = "pure_cpu_kernels"
 lbm_3d_cuda = "gpu_ffi_nvrtc"
-algebra_core = "abstract_math_types"
+gororoba_algebra = "algebra_facade_and_abstract_math_types"
+cd_kernel = "pure_cayley_dickson_kernel"
 gororoba_cli = "binary_entry_points"
 
 [engineering_standards.warp_gate_profiles]

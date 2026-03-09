@@ -28,7 +28,13 @@ impl RigidityGrid {
         let ln_max = r_max_gv.ln();
         let d_ln_r = (ln_max - ln_min) / (n_p - 1) as f64;
         let ln_r = (0..n_p).map(|i| ln_min + i as f64 * d_ln_r).collect();
-        Self { n_p, r_min_gv, r_max_gv, ln_r, d_ln_r }
+        Self {
+            n_p,
+            r_min_gv,
+            r_max_gv,
+            ln_r,
+            d_ln_r,
+        }
     }
 
     /// Rigidity in GV at bin index `i`.
@@ -83,7 +89,10 @@ mod tests {
         let e_kin = grid.kinetic_energy_gev(0, m_p);
         assert!(e_kin > 0.0);
         // E_kin < rest mass at R=1 GV (below relativistic threshold)
-        assert!(e_kin < m_p, "E_kin at 1 GV should be sub-rest-mass for proton");
+        assert!(
+            e_kin < m_p,
+            "E_kin at 1 GV should be sub-rest-mass for proton"
+        );
         // Verify monotonically increasing with rigidity
         for i in 1..grid.n_p {
             let e_prev = grid.kinetic_energy_gev(i - 1, m_p);

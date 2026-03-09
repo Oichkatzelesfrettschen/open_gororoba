@@ -1744,7 +1744,7 @@ mod tests {
     // C-074 Integration Test with Actual Associator Data
     // ========================================================================
     //
-    // This test generates actual Cayley-Dickson associator data using algebra_core
+    // This test generates actual Cayley-Dickson associator data using gororoba_algebra
     // and verifies the C-074 claim: E[||A(a,b,c)||^2] = 2.00 * (1 - 14.6 * d^{-1.80})
     //
     // The test samples random unit vectors at each dimension, computes mean
@@ -1752,7 +1752,7 @@ mod tests {
 
     #[test]
     fn test_c074_integration_with_real_associator_data() {
-        use algebra_core::{cd_associator, cd_norm_sq};
+        use gororoba_algebra::{cd_associator, cd_norm_sq};
         use rand::{prelude::*, rngs::StdRng};
 
         // Dimensions to test: 8 (octonions), 16 (sedenions), 32 (pathions), 64
@@ -1861,7 +1861,7 @@ mod tests {
 
     #[test]
     fn test_c074_quaternion_associativity() {
-        use algebra_core::{cd_associator, cd_norm_sq};
+        use gororoba_algebra::{cd_associator, cd_norm_sq};
         use rand::{prelude::*, rngs::StdRng};
 
         // Quaternions (dim=4) should be associative: ||A(a,b,c)|| = 0
@@ -1886,7 +1886,7 @@ mod tests {
 
     #[test]
     fn test_c074_octonion_nonassociativity() {
-        use algebra_core::{cd_associator, cd_norm_sq};
+        use gororoba_algebra::{cd_associator, cd_norm_sq};
         use rand::{prelude::*, rngs::StdRng};
 
         // Octonions (dim=8) are non-associative: most triples have ||A(a,b,c)|| > 0

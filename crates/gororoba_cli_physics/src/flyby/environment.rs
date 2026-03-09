@@ -116,9 +116,21 @@ impl EnvironmentModel for EarthWakeModel {
         ];
         // Identity + eta * (w_i * w_j) wake tensor
         [
-            [1.0 + self.eta_wake * w[0] * w[0], self.eta_wake * w[0] * w[1], self.eta_wake * w[0] * w[2]],
-            [self.eta_wake * w[1] * w[0], 1.0 + self.eta_wake * w[1] * w[1], self.eta_wake * w[1] * w[2]],
-            [self.eta_wake * w[2] * w[0], self.eta_wake * w[2] * w[1], 1.0 + self.eta_wake * w[2] * w[2]],
+            [
+                1.0 + self.eta_wake * w[0] * w[0],
+                self.eta_wake * w[0] * w[1],
+                self.eta_wake * w[0] * w[2],
+            ],
+            [
+                self.eta_wake * w[1] * w[0],
+                1.0 + self.eta_wake * w[1] * w[1],
+                self.eta_wake * w[1] * w[2],
+            ],
+            [
+                self.eta_wake * w[2] * w[0],
+                self.eta_wake * w[2] * w[1],
+                1.0 + self.eta_wake * w[2] * w[2],
+            ],
         ]
     }
 }
@@ -178,10 +190,8 @@ impl EnvironmentModel for SolarWindHeliosphericTensorModel {
         // In this frame, x points away from galactic center, so the galactic
         // center is at x = -R_SUN_GC_KM. The particle's galactocentric
         // distance is |r + R_sun_gc|.
-        let r_gc_km = ((r[0] + R_SUN_GC_KM) * (r[0] + R_SUN_GC_KM)
-            + r[1] * r[1]
-            + r[2] * r[2])
-            .sqrt();
+        let r_gc_km =
+            ((r[0] + R_SUN_GC_KM) * (r[0] + R_SUN_GC_KM) + r[1] * r[1] + r[2] * r[2]).sqrt();
 
         // NFW density: rho(r) = rho_s / [(r/r_s)(1 + r/r_s)^2]
         // We normalize so that rho(R_sun_gc) = rho_dm_local.
@@ -250,9 +260,21 @@ impl EnvironmentModel for SolarWindHeliosphericTensorModel {
         // epsilon scales with cross-section (small perturbation)
         let epsilon = self.dark_matter_cross_section * 1e45; // normalize to O(1) for 1e-45 cm^2
         [
-            [1.0 + epsilon * b_hat[0] * b_hat[0], epsilon * b_hat[0] * b_hat[1], epsilon * b_hat[0] * b_hat[2]],
-            [epsilon * b_hat[1] * b_hat[0], 1.0 + epsilon * b_hat[1] * b_hat[1], epsilon * b_hat[1] * b_hat[2]],
-            [epsilon * b_hat[2] * b_hat[0], epsilon * b_hat[2] * b_hat[1], 1.0 + epsilon * b_hat[2] * b_hat[2]],
+            [
+                1.0 + epsilon * b_hat[0] * b_hat[0],
+                epsilon * b_hat[0] * b_hat[1],
+                epsilon * b_hat[0] * b_hat[2],
+            ],
+            [
+                epsilon * b_hat[1] * b_hat[0],
+                1.0 + epsilon * b_hat[1] * b_hat[1],
+                epsilon * b_hat[1] * b_hat[2],
+            ],
+            [
+                epsilon * b_hat[2] * b_hat[0],
+                epsilon * b_hat[2] * b_hat[1],
+                1.0 + epsilon * b_hat[2] * b_hat[2],
+            ],
         ]
     }
 }
@@ -333,7 +355,10 @@ mod tests {
         let rho_down = model.density_scalar(&[10000.0, 0.0, 0.0], 0.0, &state);
         // Upstream (negative x = against wind)
         let rho_up = model.density_scalar(&[-10000.0, 0.0, 0.0], 0.0, &state);
-        assert!(rho_down > rho_up, "Downstream density should exceed upstream");
+        assert!(
+            rho_down > rho_up,
+            "Downstream density should exceed upstream"
+        );
     }
 
     #[test]
@@ -448,7 +473,10 @@ mod tests {
 
         // Helio tensor with sigma=0 should be identity (isotropic)
         let t = helio.anisotropy_tensor(&r, 0.0, &state);
-        assert!((t[0][0] - 1.0).abs() < 1e-10, "sigma=0 should give identity tensor");
+        assert!(
+            (t[0][0] - 1.0).abs() < 1e-10,
+            "sigma=0 should give identity tensor"
+        );
         assert!(t[0][1].abs() < 1e-10);
         assert!(t[1][0].abs() < 1e-10);
     }

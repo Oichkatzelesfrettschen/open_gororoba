@@ -64,13 +64,13 @@ phase = "PH-SHORT"
 title = "Targeted acceptance harness activation for algebra and fluid kernels"
 boundaries = ["PB-001", "PB-002", "PB-003"]
 outputs = [
-  "crate-scoped test command set for lbm_core, sign_imbalance, and algebra_core",
+  "crate-scoped test command set for lbm_core, sign_imbalance, and gororoba_algebra",
   "recorded pass/fail hook status in NA-023 execution notes",
 ]
 acceptance_hooks = [
   "cargo test -p lbm_core test_mass_conservation",
   "cargo test -p sign_imbalance test_scalar_imbalance_bridge_integration",
-  "cargo test -p algebra_core test_all_signatures_dim16_commutativity",
+  "cargo test -p gororoba_algebra test_all_signatures_dim16_commutativity",
 ]
 dependencies = ["NA023-D001"]
 risk_controls = [
@@ -130,7 +130,7 @@ outputs = [
   "private-internal helper split where forbidden coupling risk is currently high",
 ]
 acceptance_hooks = [
-  "cargo clippy -p lbm_core -p sign_imbalance -p algebra_core -p docpipe -p neural_homotopy -p quantum_core -- -D warnings",
+  "cargo clippy -p lbm_core -p sign_imbalance -p gororoba_algebra -p docpipe -p neural_homotopy -p quantum_core -- -D warnings",
 ]
 dependencies = ["NA023-D002", "NA023-D003", "NA023-D004"]
 risk_controls = [
@@ -170,7 +170,7 @@ outputs = [
 acceptance_hooks = [
   "cargo test -p lbm_core test_poiseuille_accuracy",
   "cargo test -p sign_imbalance test_imbalance_density_par_matches_sequential",
-  "cargo test -p algebra_core test_find_zero_divisors_sedenion",
+  "cargo test -p gororoba_algebra test_find_zero_divisors_sedenion",
   "cargo test -p quantum_core test_peps_entropy_boundary_cases",
 ]
 dependencies = ["NA023-D005"]
@@ -279,7 +279,7 @@ path = "crates/sign_imbalance/src/bridge.rs"
 exists = true
 
 [[path_check]]
-path = "crates/cd_kernel/src/cayley_dickson.rs"
+path = "crates/cd_kernel/src/cayley_dickson/mod.rs"
 exists = true
 
 [[path_check]]

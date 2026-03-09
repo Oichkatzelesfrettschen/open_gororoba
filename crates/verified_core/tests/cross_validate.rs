@@ -1,9 +1,9 @@
-//! Cross-validation: verified_core vs algebra_core quaternion operations.
+//! Cross-validation: verified_core vs gororoba_algebra quaternion operations.
 //!
 //! Confirms that the Rocq-extracted quaternion rotation produces identical
-//! results to the Cayley-Dickson-based implementation in algebra_core.
+//! results to the Cayley-Dickson-based implementation in gororoba_algebra.
 
-use algebra_core::physics::quat_rotation::{quat_from_axis_angle, quat_rotate_vector};
+use gororoba_algebra::physics::quat_rotation::{quat_from_axis_angle, quat_rotate_vector};
 use verified_core::quaternion::{self, Quat, Vec3};
 
 const TOL: f64 = 1e-12;

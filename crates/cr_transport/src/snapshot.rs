@@ -22,7 +22,11 @@ pub fn write_snapshot_csv(solver: &PteSolver, phi_map: &[f64], step: usize) -> S
         let flux = solver.flux_at(x, y_mid, z_mid);
         for (p, &j) in flux.iter().enumerate() {
             let r_gv = solver.grid.rigidity(p);
-            writeln!(out, "{step},{x},{y_mid},{z_mid},{r_gv:.6e},{j:.6e},{phi:.6e}").unwrap();
+            writeln!(
+                out,
+                "{step},{x},{y_mid},{z_mid},{r_gv:.6e},{j:.6e},{phi:.6e}"
+            )
+            .unwrap();
         }
     }
     out

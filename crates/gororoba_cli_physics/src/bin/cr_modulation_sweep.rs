@@ -13,17 +13,19 @@
 //! law at the outer boundary: J_LIS(R) = J_0 * (R/1 GV)^{-gamma}.
 
 use clap::Parser;
-use cr_transport::diffusion::DiffusionConfig;
-use cr_transport::grid::RigidityGrid;
-use cr_transport::modulation::ForceFieldProxy;
-use cr_transport::snapshot::write_snapshot_csv;
-use cr_transport::solver::PteSolver;
-use cr_transport::source::{DmChannel, DmSource};
-use lbm_3d::mhd::{MhdConfig, MhdField};
-use lbm_3d::solver::LbmSolver3D;
-use std::fs;
-use std::io::Write as IoWrite;
-use std::path::PathBuf;
+use cr_transport::{
+    diffusion::DiffusionConfig,
+    grid::RigidityGrid,
+    modulation::ForceFieldProxy,
+    snapshot::write_snapshot_csv,
+    solver::PteSolver,
+    source::{DmChannel, DmSource},
+};
+use lbm_3d::{
+    mhd::{MhdConfig, MhdField},
+    solver::LbmSolver3D,
+};
+use std::{fs, io::Write as IoWrite, path::PathBuf};
 
 /// Cosmic ray modulation sweep: LBM solar wind + Parker Transport Equation.
 ///
@@ -230,15 +232,7 @@ fn main() {
     let au_m = 1.496e11_f64;
     let dt_s = dx_au * au_m / v_sw_ms;
 
-    let mut pte = PteSolver::new(
-        cli.nx,
-        cli.ny,
-        cli.nz,
-        grid,
-        diff_cfg.clone(),
-        dt_s,
-        dx_au,
-    );
+    let mut pte = PteSolver::new(cli.nx, cli.ny, cli.nz, grid, diff_cfg.clone(), dt_s, dx_au);
     pte.set_boundary_ism(&lis_proton);
 
     // --- Force-field proxy ---
@@ -281,7 +275,8 @@ fn main() {
         }
         lbm.compute_macroscopic();
         let lorentz = mhd.lorentz_force();
-        lbm.set_force_field(lorentz).expect("set_force_field failed");
+        lbm.set_force_field(lorentz)
+            .expect("set_force_field failed");
         lbm.phase1_collision().expect("phase1_collision failed");
         mhd.evolve_b_field(&lbm.u);
 
@@ -304,7 +299,9 @@ fn main() {
     // Final snapshot
     let phi_map = compute_phi_map(&lbm, &proxy, &diff_cfg, cli.r_min_au, cli.r_max_au);
     let csv = write_snapshot_csv(&pte, &phi_map, cli.steps);
-    let fname = cli.out_dir.join(format!("cr_snapshot_{:06}.csv", cli.steps));
+    let fname = cli
+        .out_dir
+        .join(format!("cr_snapshot_{:06}.csv", cli.steps));
     fs::write(&fname, csv).expect("failed to write final snapshot");
 
     // Summary phi at 1 AU (x=0)

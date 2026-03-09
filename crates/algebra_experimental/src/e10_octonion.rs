@@ -30,7 +30,7 @@ use rand::SeedableRng;
 use crate::billiard_stats::{
     NullModel, PermutationTestResult, generate_null_sequence, summarize_permutation_test,
 };
-use algebra_core::{
+use gororoba_algebra::{
     lie::e8_lattice::{E8Root, e8_simple_roots, generate_e8_roots},
     physics::octonion_field::{FANO_TRIPLES, Octonion, oct_multiply, oct_norm_sq},
 };

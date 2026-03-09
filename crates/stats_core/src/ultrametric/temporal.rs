@@ -16,7 +16,7 @@
 //!
 //! 1. Extract waiting times dt_i = t_{i+1} - t_i from burst timestamps
 //! 2. Compute waiting-time statistics (mean, median, coefficient of variation)
-//! 3. Estimate Hurst exponent via R/S analysis (log-scaling method from `algebra_core`)
+//! 3. Estimate Hurst exponent via R/S analysis (log-scaling method from `gororoba_algebra`)
 //! 4. Build distance matrix in (log_dt, log_energy) space
 //! 5. Run ultrametric fraction test on the distance matrix
 //! 6. Run dendrogram analysis on the distance matrix
@@ -127,7 +127,7 @@ pub fn waiting_time_statistics(timestamps: &[f64]) -> WaitingTimeStats {
 
 /// Estimate the Hurst exponent from a time series using R/S analysis.
 ///
-/// Uses `algebra_core::hurst_rs_analysis` (log-scaling R/S method).
+/// Uses `gororoba_algebra::hurst_rs_analysis` (log-scaling R/S method).
 /// Returns H in [0, 1]. H > 0.5 indicates persistence (long memory).
 ///
 /// Falls back to 0.5 (null hypothesis) if:
@@ -139,7 +139,7 @@ pub fn estimate_hurst(series: &[f64]) -> f64 {
         return 0.5; // Not enough data; return null hypothesis
     }
 
-    match algebra_core::hurst_rs_analysis(series, 10, series.len() / 2) {
+    match gororoba_algebra::hurst_rs_analysis(series, 10, series.len() / 2) {
         Some(r) if r.hurst.is_finite() => r.hurst.clamp(0.0, 1.0),
         _ => 0.5, // Fallback to null if regression fails
     }

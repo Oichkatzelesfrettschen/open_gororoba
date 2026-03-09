@@ -10,7 +10,7 @@ license = "GPL-2.0-only"
 # mapping in axioms.rs.
 
 [dev-dependencies]
-algebra_core = { path = "../algebra_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
 optics_core = { path = "../optics_core" }

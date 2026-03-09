@@ -56,7 +56,8 @@ key_metrics = [
     { name = "components_at_dim16", value = "7", structure = "box-kites" },
     { name = "zero_mismatches_APT", value = "0", scope = "all dims" },
 ]
-crates = ["algebra_core"]
+crates = ["gororoba_algebra"]
+legacy_crates = ["algebra_core"]
 files = [
     "crates/algebra_analysis/src/boxkites.rs",
     "crates/algebra_analysis/src/zd_graphs.rs",
@@ -121,13 +122,14 @@ key_metrics = [
     { name = "commutativity_tensor", value = "100%", note = "all families" },
     { name = "exotic_imbalance_range", value = "0.4375-0.6562", note = "Dual/Bi/Para octonions" },
 ]
-crates = ["algebra_core"]
+crates = ["gororoba_algebra"]
+legacy_crates = ["algebra_core"]
 files = [
-    "crates/algebra_core/src/construction/tessarines.rs",
-    "crates/algebra_core/src/construction/composition_algebra_census.rs",
-    "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs",
-    "crates/algebra_core/tests/test_tessarines_census.rs",
-    "crates/algebra_core/tests/test_low_dimensional_survey.rs",
+    "CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)",
+    "CURRENT::PATH crates/gororoba_algebra/src/construction/composition_algebra_census.rs (LEGACY::PATH crates/algebra_core/src/construction/composition_algebra_census.rs)",
+    "CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)",
+    "CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)",
+    "CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)",
 ]
 
 [section.discussion]
@@ -748,7 +750,8 @@ key_metrics = [
     { name = "l0_0_l1_plus1_z", value = "+23.63", note = "highest ever" },
     { name = "stratum_chain", value = "6->3->2->1", note = "progressive simplification" },
 ]
-crates = ["algebra_core", "stats_core"]
+crates = ["gororoba_algebra", "stats_core"]
+legacy_crates = ["algebra_core"]
 files = [
     "crates/algebra_analysis/src/codebook.rs",
     "crates/algebra_analysis/src/graph_projections.rs",

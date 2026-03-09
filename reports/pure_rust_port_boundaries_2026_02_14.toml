@@ -81,7 +81,7 @@ value_case = "Directly supports Thesis 1 scalar bridge behavior with existing in
 in_contract = [
   "Accept only typed scalar field tensors and deterministic configuration structs.",
   "Require explicit run flags for optional heavy checks.",
-  "Use algebra_core only through public APIs.",
+  "Use CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core) only through public APIs.",
 ]
 out_contract = [
   "Emit scalar imbalance maps and viscosity vectors with deterministic ordering.",
@@ -115,8 +115,9 @@ priority = 3
 title = "Cayley-Dickson algebra kernel boundary"
 external_candidate = "MathScienceCompendium/src/mathphysics/algebras/cayley_dickson.py"
 external_repo = "external_ref:MathScienceCompendium"
-ownership_crate = "crates/algebra_core"
-ownership_module = "crates/cd_kernel/src/cayley_dickson.rs"
+ownership_crate = "crates/gororoba_algebra"
+ownership_crate_legacy = "crates/algebra_core"
+ownership_module = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 value_case = "Core algebra correctness anchor used by multiple downstream crates."
 in_contract = [
   "Accept basis vectors, signatures, and dimensions as explicit typed parameters.",
@@ -126,7 +127,7 @@ in_contract = [
 out_contract = [
   "Return basis-product signs and products without hidden mutable global state.",
   "Emit zero-divisor and associator metrics in reproducible ordering.",
-  "Preserve public API compatibility for downstream crates using algebra_core.",
+  "Preserve public API compatibility for downstream crates using CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core).",
 ]
 forbidden_coupling = [
   "No coupling to physics-specific crates inside construction layer.",
@@ -134,18 +135,19 @@ forbidden_coupling = [
   "No runtime external source loading from data/external during kernel calls.",
 ]
 acceptance_test_hooks = [
-  "crates/cd_kernel/src/cayley_dickson.rs::test_sedenion_non_associative",
-  "crates/cd_kernel/src/cayley_dickson.rs::test_find_zero_divisors_sedenion",
-  "crates/cd_kernel/src/cayley_dickson.rs::test_all_signatures_dim16_commutativity",
+  "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)::test_sedenion_non_associative",
+  "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)::test_find_zero_divisors_sedenion",
+  "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)::test_all_signatures_dim16_commutativity",
 ]
 acceptance_commands = [
-  "cargo test -p algebra_core test_sedenion_non_associative",
-  "cargo test -p algebra_core test_find_zero_divisors_sedenion",
-  "cargo test -p algebra_core test_all_signatures_dim16_commutativity",
+  "cargo test -p gororoba_algebra test_sedenion_non_associative",
+  "cargo test -p gororoba_algebra test_find_zero_divisors_sedenion",
+  "cargo test -p gororoba_algebra test_all_signatures_dim16_commutativity",
 ]
+acceptance_commands_legacy_note = "Before the 2026-03-09 facade rename, these acceptance commands targeted package algebra_core."
 path_refs = [
-  "crates/cd_kernel/src/cayley_dickson.rs",
-  "crates/algebra_core/Cargo.toml",
+  "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)",
+  "CURRENT::PATH crates/gororoba_algebra/Cargo.toml (LEGACY::PATH crates/algebra_core/Cargo.toml)",
 ]
 
 [[boundary]]
@@ -327,12 +329,12 @@ exists = true
 used_by = ["PB-002"]
 
 [[path_check]]
-path = "crates/cd_kernel/src/cayley_dickson.rs"
+path = "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)"
 exists = true
 used_by = ["PB-003"]
 
 [[path_check]]
-path = "crates/algebra_core/Cargo.toml"
+path = "CURRENT::PATH crates/gororoba_algebra/Cargo.toml (LEGACY::PATH crates/algebra_core/Cargo.toml)"
 exists = true
 used_by = ["PB-003"]
 

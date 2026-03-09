@@ -6,9 +6,9 @@
 //! - ZPE field coupling via relaxation time modulation
 
 pub mod boundary;
+pub mod dm_force;
 pub mod lattice;
 pub mod mhd;
 pub mod solver;
 pub mod viscosity_field;
 pub mod zpe_injection;
-pub mod dm_force;

@@ -1,5 +1,5 @@
-use algebra_core::physics::octonion_field::FieldParams;
 use anyhow::Result;
+use gororoba_algebra::physics::octonion_field::FieldParams;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 
 /// Configuration for 4D simulation.

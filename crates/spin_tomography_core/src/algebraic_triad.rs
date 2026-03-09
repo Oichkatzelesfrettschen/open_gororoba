@@ -1,4 +1,4 @@
-use algebra_core::physics::clifford::pauli_matrices;
+use gororoba_algebra::physics::clifford::pauli_matrices;
 use nalgebra::Vector3;
 use num_complex::Complex64;
 
@@ -28,7 +28,7 @@ impl AlgebraicTriad {
         let (s1, s2, s3) = pauli_matrices();
 
         let to_m2 =
-            |m: algebra_core::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
+            |m: gororoba_algebra::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
                 nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
             };
 

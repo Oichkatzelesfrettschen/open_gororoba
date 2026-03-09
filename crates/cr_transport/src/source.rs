@@ -79,13 +79,7 @@ impl DmSource {
     /// proportional to spatial_profile[idx] (NFW^2 weight) and dm_density[idx].
     ///
     /// f has layout f[grid_idx * n_p + p_idx].
-    pub fn inject(
-        &self,
-        f: &mut [f64],
-        grid: &RigidityGrid,
-        dm_density: &[f64],
-        dt: f64,
-    ) {
+    pub fn inject(&self, f: &mut [f64], grid: &RigidityGrid, dm_density: &[f64], dt: f64) {
         let p_idx = grid.momentum_index(self.peak_rigidity_gv());
         let n_cells = self.spatial_profile.len();
 

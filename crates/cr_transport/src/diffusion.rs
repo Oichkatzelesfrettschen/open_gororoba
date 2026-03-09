@@ -44,9 +44,7 @@ const B_REF_NT: f64 = 5.0;
 /// kappa_par(R, B) = kappa_0 * (R/R_0)^alpha * (B_0/B)
 pub fn kappa_parallel(rigidity_gv: f64, b_magnitude_nt: f64, config: &DiffusionConfig) -> f64 {
     let b = b_magnitude_nt.max(0.01); // guard against zero B
-    config.kappa_0_au2_per_s
-        * (rigidity_gv / config.r_ref_gv).powf(config.alpha)
-        * (B_REF_NT / b)
+    config.kappa_0_au2_per_s * (rigidity_gv / config.r_ref_gv).powf(config.alpha) * (B_REF_NT / b)
 }
 
 /// Compute the full 3x3 diffusion tensor K in the LBM lattice frame.
@@ -111,7 +109,10 @@ mod tests {
         let k2 = kappa_parallel(1.0, 10.0, &cfg);
         // kappa_par ~ 1/B: doubling B should halve kappa
         let ratio = k1 / k2;
-        assert!((ratio - 2.0).abs() < 1e-10, "kappa_par ~ 1/B failed: ratio={ratio}");
+        assert!(
+            (ratio - 2.0).abs() < 1e-10,
+            "kappa_par ~ 1/B failed: ratio={ratio}"
+        );
     }
 
     #[test]
@@ -128,7 +129,10 @@ mod tests {
     #[test]
     fn test_tensor_symmetric_part_positive_definite() {
         // Symmetric part of K should have positive diagonal
-        let cfg = DiffusionConfig { solar_epoch_a: 0.0, ..Default::default() };
+        let cfg = DiffusionConfig {
+            solar_epoch_a: 0.0,
+            ..Default::default()
+        };
         let b = [3.0_f64, 4.0, 0.0];
         let k = diffusion_tensor(b, 5.0, 1.0, &cfg);
         // Diagonal entries should all be positive

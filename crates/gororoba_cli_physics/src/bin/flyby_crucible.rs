@@ -7,8 +7,8 @@
 //! Spacecraft database: Galileo (1990), NEAR (1998), MESSENGER (2005),
 //! Cassini (1999), Juno (2013), Rosetta-I (2005).
 
-use algebra_core::construction::chingon::AlternativityViolationTensor;
 use clap::Parser;
+use gororoba_algebra::construction::chingon::AlternativityViolationTensor;
 use gororoba_cli_physics::ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN};
 use gr_core::forces::chingon_bivector_drag::{
     ThreeBodyOrbitalParams, compute_chingon_bivector_drag_3body,

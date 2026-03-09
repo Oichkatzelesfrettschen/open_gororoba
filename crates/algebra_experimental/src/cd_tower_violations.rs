@@ -52,10 +52,10 @@ pub const CD_TOWER: [(usize, &str); 9] = [
 /// See BIB-0307 (Moreno 1998) for zero-divisor classification,
 /// BIB-0084 for box-kite sub-graph structure.
 pub const BOX_KITE_VIOLATION_COUNTS: [(usize, u64); 5] = [
-    (16, 2_688),    // 7 box-kites x 384 permutations
-    (32, 26_880),   // 31 box-kites x ... (Pathion)
-    (64, 52_224),   // Chingon (coincidentally close to alternator count 52080)
-    (128, 469_504), // Routon
+    (16, 2_688),      // 7 box-kites x 384 permutations
+    (32, 26_880),     // 31 box-kites x ... (Pathion)
+    (64, 52_224),     // Chingon (coincidentally close to alternator count 52080)
+    (128, 469_504),   // Routon
     (256, 3_973_120), // Voudon
 ];
 
@@ -467,7 +467,11 @@ pub fn enumerate_violation_count_tiled(dim: usize) -> u64 {
                     let row_i = table_ref.row_words(i);
 
                     // j range: must satisfy j > i and j in [j_tile_start..j_tile_end)
-                    let j_lo_bound = if tile_a == tile_b { i + 1 } else { j_tile_start };
+                    let j_lo_bound = if tile_a == tile_b {
+                        i + 1
+                    } else {
+                        j_tile_start
+                    };
                     let j_hi_bound = j_tile_end;
 
                     for j in j_lo_bound..j_hi_bound {
@@ -588,7 +592,10 @@ mod tests {
             assert!(
                 w[1].1 > w[0].1,
                 "Violation count should increase: dim {} has {} but dim {} has {}",
-                w[0].0, w[0].1, w[1].0, w[1].1
+                w[0].0,
+                w[0].1,
+                w[1].0,
+                w[1].1
             );
         }
     }
@@ -743,8 +750,11 @@ mod tests {
         for perm in 0..64 {
             let word = 1u64;
             let result = xor_bit_permute(word, perm);
-            assert_eq!(result, 1u64 << perm,
-                "perm={perm}: bit 0 should move to position {perm}, got {result:#018x}");
+            assert_eq!(
+                result,
+                1u64 << perm,
+                "perm={perm}: bit 0 should move to position {perm}, got {result:#018x}"
+            );
         }
     }
 
@@ -759,7 +769,10 @@ mod tests {
             elapsed.as_secs_f64()
         );
         assert!(count > 100_000_000_000, "8192D must have > 100B violations");
-        assert!(count < 200_000_000_000, "8192D should have < 200B violations");
+        assert!(
+            count < 200_000_000_000,
+            "8192D should have < 200B violations"
+        );
     }
 
     #[test]
@@ -847,7 +860,8 @@ mod tests {
                     full.sign(p, q),
                     comp.sign(p, q),
                     "dim=32: sign({p},{q}) mismatch: full={}, compressed={}",
-                    full.sign(p, q), comp.sign(p, q)
+                    full.sign(p, q),
+                    comp.sign(p, q)
                 );
             }
         }
@@ -863,7 +877,8 @@ mod tests {
                     full.sign(p, q),
                     comp.sign(p, q),
                     "dim=64: sign({p},{q}) mismatch: full={}, compressed={}",
-                    full.sign(p, q), comp.sign(p, q)
+                    full.sign(p, q),
+                    comp.sign(p, q)
                 );
             }
         }
@@ -879,7 +894,8 @@ mod tests {
                     full.sign(p, q),
                     comp.sign(p, q),
                     "dim=128: sign({p},{q}) mismatch: full={}, compressed={}",
-                    full.sign(p, q), comp.sign(p, q)
+                    full.sign(p, q),
+                    comp.sign(p, q)
                 );
             }
         }
@@ -928,7 +944,10 @@ mod tests {
         let alt = exact_violation_count(16).unwrap();
         assert_eq!(bk, 2688);
         assert_eq!(alt, 336);
-        assert_ne!(bk, alt, "box-kite and alternator must be different invariants");
+        assert_ne!(
+            bk, alt,
+            "box-kite and alternator must be different invariants"
+        );
         assert!(box_kite_violation_count(512).is_none());
         assert!(exact_violation_count(4096).is_some());
     }
@@ -937,11 +956,22 @@ mod tests {
     fn test_violation_ratio_convergence() {
         for w in EXACT_ALTERNATOR_COUNTS.windows(2) {
             let ratio = w[1].1 as f64 / w[0].1 as f64;
-            assert!(ratio > 7.5, "ratio {ratio} should be > 7.5 for dim {}", w[1].0);
-            assert!(ratio < 16.0, "ratio {ratio} should be < 16 for dim {}", w[1].0);
+            assert!(
+                ratio > 7.5,
+                "ratio {ratio} should be > 7.5 for dim {}",
+                w[1].0
+            );
+            assert!(
+                ratio < 16.0,
+                "ratio {ratio} should be < 16 for dim {}",
+                w[1].0
+            );
         }
         // Final ratio (16384/8192) should be very close to 8.0
         let last_ratio: f64 = 1_098_572_333_040.0 / 137_204_187_120.0;
-        assert!((last_ratio - 8.0).abs() < 0.02, "final ratio {last_ratio} should be ~8.0");
+        assert!(
+            (last_ratio - 8.0).abs() < 0.02,
+            "final ratio {last_ratio} should be ~8.0"
+        );
     }
 }

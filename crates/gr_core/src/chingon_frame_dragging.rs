@@ -15,7 +15,7 @@
 //! - Moreno (1998): CD zero-divisor structure
 
 use crate::kerr_newman;
-use algebra_core::construction::chingon::AlternativityViolationTensor;
+use gororoba_algebra::construction::chingon::AlternativityViolationTensor;
 
 /// Precomputed AVT spectral data for the 64D Chingon algebra.
 pub struct ChingonAvtSpectrum {

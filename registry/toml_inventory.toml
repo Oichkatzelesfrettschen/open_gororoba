@@ -484,7 +484,8 @@ sha256 = "62113116305d42ba70df1df0e73747239372f3480c7b7f5d2af3dd8aecfbc365"
 
 [[document]]
 id = "TOML-0033"
-path = "crates/algebra_core/Cargo.toml"
+path = "crates/gororoba_algebra/Cargo.toml"
+legacy_path = "crates/algebra_core/Cargo.toml"
 git_status = "tracked"
 role = "cargo_crate_manifest"
 zone = "crate_manifest"

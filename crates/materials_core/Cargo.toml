@@ -6,7 +6,7 @@ description = "Materials science: metamaterial absorbers, Tang mass predictions,
 license = "MIT"
 
 [dependencies]
-algebra_core = { path = "../algebra_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 cd_kernel = { workspace = true }
 gauss-quad = { workspace = true }
 moyo = { workspace = true }

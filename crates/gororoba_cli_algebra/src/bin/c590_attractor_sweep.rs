@@ -11,8 +11,8 @@ use std::{
     time::{Instant, SystemTime, UNIX_EPOCH},
 };
 
-use algebra_core::analysis::boxkites::compute_imbalance_ratio;
 use clap::Parser;
+use gororoba_algebra::analysis::boxkites::compute_imbalance_ratio;
 
 const SCHEMA_VERSION: &str = "c590_attractor_sweep_v1";
 const CSV_HEADER: &str = "schema_version,profile_tag,dim,imbalance_ratio,delta_to_three_eighths,elapsed_seconds,run_unix_seconds\n";

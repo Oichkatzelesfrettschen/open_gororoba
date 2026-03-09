@@ -26,9 +26,13 @@
 //!
 //! Source: <https://spdf.gsfc.nasa.gov/pub/data/new-horizons/swap/>
 
-use crate::catalogs::omni::OmniRecord;
-use crate::catalogs::spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni};
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use crate::{
+    catalogs::{
+        omni::OmniRecord,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+    },
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
+};
 use std::path::PathBuf;
 
 /// SPDF column layout for New Horizons SWAP hourly data.
@@ -83,8 +87,7 @@ pub fn nh_swap_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
     spdf_to_omni(records, true)
 }
 
-const NH_SWAP_BASE: &str =
-    "https://spdf.gsfc.nasa.gov/pub/data/new-horizons/swap/merged/";
+const NH_SWAP_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/new-horizons/swap/merged/";
 
 /// NASA SPDF New Horizons SWAP dataset provider.
 pub struct NhSwapProvider {

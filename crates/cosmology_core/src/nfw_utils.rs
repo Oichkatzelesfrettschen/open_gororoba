@@ -287,7 +287,10 @@ mod tests {
     fn test_cmr_mw_mass_z0_near_eight() {
         // Dutton & Maccio (2014) + Prada (2012): MW-mass halo at z=0 has c200 ~ 7-10.
         let c = concentration_mass_relation(1.0e12, 0.0);
-        assert!((7.0..=11.0).contains(&c), "c(MW, z=0) = {c:.2}, expected 7-11");
+        assert!(
+            (7.0..=11.0).contains(&c),
+            "c(MW, z=0) = {c:.2}, expected 7-11"
+        );
     }
 
     #[test]
@@ -295,7 +298,10 @@ mod tests {
         // Low-mass halos collapse earlier -> higher concentration.
         let c_udg = concentration_mass_relation(1.0e9, 0.0);
         let c_mw = concentration_mass_relation(1.0e12, 0.0);
-        assert!(c_udg > c_mw, "c(10^9) = {c_udg:.2} should be > c(MW) = {c_mw:.2}");
+        assert!(
+            c_udg > c_mw,
+            "c(10^9) = {c_udg:.2} should be > c(MW) = {c_mw:.2}"
+        );
     }
 
     #[test]
@@ -344,7 +350,10 @@ mod tests {
     fn test_r200_mw_near_200_kpc() {
         // MW-mass (1e12 Msun) virial radius ~ 200-250 kpc.
         let r = nfw_r200_kpc(1.0e12);
-        assert!(r > 150.0 && r < 280.0, "r200(MW) = {r:.1} kpc, expected 150-280");
+        assert!(
+            r > 150.0 && r < 280.0,
+            "r200(MW) = {r:.1} kpc, expected 150-280"
+        );
     }
 
     #[test]
@@ -353,7 +362,10 @@ mod tests {
         let r1 = nfw_r200_kpc(1.0e11);
         let r2 = nfw_r200_kpc(2.0e11);
         let ratio = r2 / r1;
-        assert!(reltol(ratio, 2.0_f64.cbrt(), 1e-6), "r200 ~ M^{{1/3}} scaling failed: ratio = {ratio:.6}");
+        assert!(
+            reltol(ratio, 2.0_f64.cbrt(), 1e-6),
+            "r200 ~ M^{{1/3}} scaling failed: ratio = {ratio:.6}"
+        );
     }
 
     // --- nfw_rho_s_from_c ---
@@ -361,7 +373,10 @@ mod tests {
     #[test]
     fn test_rho_s_positive_for_typical_c() {
         let rho = nfw_rho_s_from_c(10.0);
-        assert!(rho > 0.0 && rho.is_finite(), "rho_s(c=10) = {rho:.2e} must be positive and finite");
+        assert!(
+            rho > 0.0 && rho.is_finite(),
+            "rho_s(c=10) = {rho:.2e} must be positive and finite"
+        );
     }
 
     #[test]
@@ -375,7 +390,10 @@ mod tests {
         // Higher-c halos are denser: rho_s(c=20) > rho_s(c=10).
         let rho10 = nfw_rho_s_from_c(10.0);
         let rho20 = nfw_rho_s_from_c(20.0);
-        assert!(rho20 > rho10, "rho_s(c=20) = {rho20:.2e} must be > rho_s(c=10) = {rho10:.2e}");
+        assert!(
+            rho20 > rho10,
+            "rho_s(c=20) = {rho20:.2e} must be > rho_s(c=10) = {rho10:.2e}"
+        );
     }
 
     // --- nfw_params_from_mass ---
@@ -385,7 +403,11 @@ mod tests {
         let p = nfw_params_from_mass(1.0e12, 0.0);
         // c200 ~ 7-11, r200 ~ 200 kpc, r_s ~ 200/c ~ 20-28 kpc
         assert!((7.0..=11.0).contains(&p.c200), "c200 = {:.2}", p.c200);
-        assert!(p.r200_kpc > 150.0 && p.r200_kpc < 280.0, "r200 = {:.1} kpc", p.r200_kpc);
+        assert!(
+            p.r200_kpc > 150.0 && p.r200_kpc < 280.0,
+            "r200 = {:.1} kpc",
+            p.r200_kpc
+        );
         assert!(p.r_s_kpc > 0.0, "r_s must be positive");
         assert!(p.rho_s_solar_per_kpc3 > 0.0, "rho_s must be positive");
     }
@@ -406,11 +428,20 @@ mod tests {
     fn test_params_udg_halo_at_perseus_z() {
         // CDG-2 is at Perseus z = 0.0179 with M ~ 1e9-1e10 Msun.
         let p = nfw_params_from_mass(1.0e9, 0.0179);
-        assert!(p.c200.is_finite() && p.c200 > 0.0, "UDG c200 must be positive finite");
-        assert!(p.r200_kpc.is_finite() && p.r200_kpc > 0.0, "UDG r200 must be positive finite");
+        assert!(
+            p.c200.is_finite() && p.c200 > 0.0,
+            "UDG c200 must be positive finite"
+        );
+        assert!(
+            p.r200_kpc.is_finite() && p.r200_kpc > 0.0,
+            "UDG r200 must be positive finite"
+        );
         // UDG halos are more concentrated than MW-mass halos.
         let p_mw = nfw_params_from_mass(1.0e12, 0.0179);
-        assert!(p.c200 >= p_mw.c200, "UDG c200 should be >= MW c200 for lower mass");
+        assert!(
+            p.c200 >= p_mw.c200,
+            "UDG c200 should be >= MW c200 for lower mass"
+        );
     }
 
     #[test]
@@ -473,6 +504,9 @@ mod tests {
         let p = nfw_params_from_mass(1.0e12, 0.0);
         let r_au = 4.84e-9; // 1 AU in kpc
         let m = nfw_enclosed_mass_from_params(r_au, &p);
-        assert!(m.is_finite() && m >= 0.0, "M(1 AU) must be finite and >= 0: {m:.4e}");
+        assert!(
+            m.is_finite() && m >= 0.0,
+            "M(1 AU) must be finite and >= 0: {m:.4e}"
+        );
     }
 }

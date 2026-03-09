@@ -330,7 +330,7 @@ kind = "list_item"
 line_start = 30
 line_end = 30
 heading_level = 0
-text_ascii = "Identify overlap already covered in `algebra_core` to avoid redundant octonion ports (`mcp-ripgrep`)."
+text_ascii = "Identify overlap already covered in `CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)` to avoid redundant octonion ports (`mcp-ripgrep`)."
 text_sha256 = "5886ae9046c07924c4625f59d247a64d1d1a4e22e40a2ab94de1f7b21d580f20"
 
 [[unit]]
@@ -3310,7 +3310,7 @@ kind = "list_item"
 line_start = 269
 line_end = 269
 heading_level = 0
-text_ascii = "`crates/algebra_core/src/construction/composition_algebra_census.rs` (200+ lines)"
+text_ascii = "`CURRENT::PATH crates/gororoba_algebra/src/construction/composition_algebra_census.rs (LEGACY::PATH crates/algebra_core/src/construction/composition_algebra_census.rs)` (200+ lines)"
 text_sha256 = "b6ccfa70cd3da5854b1036fc2bbcb304ca6604e8c1f10720de2d9897f63e280e"
 
 [[unit]]
@@ -3320,7 +3320,7 @@ kind = "list_item"
 line_start = 270
 line_end = 270
 heading_level = 0
-text_ascii = "`crates/algebra_core/tests/test_composition_algebra_taxonomy.rs` (300+ lines)"
+text_ascii = "`CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)` (300+ lines)"
 text_sha256 = "8980cbe428f4bdec5a8c9ba7f7bd5f685c6d4e6f9aec6d98d8f9020dd15203c9"
 
 [[unit]]
@@ -3850,7 +3850,7 @@ kind = "table_row"
 line_start = 39
 line_end = 39
 heading_level = 0
-text_ascii = "`nonlocal_long_range_ZZ.py` | np.kron, np.polyfit | Matrix ops | algebra_core::tensor"
+text_ascii = "`nonlocal_long_range_ZZ.py` | np.kron, np.polyfit | Matrix ops | CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)::tensor"
 text_sha256 = "b59732f86c9310e6a0be2ab305b2ab652b6d3bb6aa6007ed724346ba255ee90f"
 
 [[unit]]
@@ -5100,7 +5100,7 @@ kind = "table_row"
 line_start = 250
 line_end = 250
 heading_level = 0
-text_ascii = "vis_box_kites.py | Critical | QUEUED | algebra_core | 1.5d | P0"
+text_ascii = "vis_box_kites.py | Critical | QUEUED | CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core) | 1.5d | P0"
 text_sha256 = "9b15ee91bda56ac438369ba8edc4b6ab34b8ea9a9f145cb5bf91dd95e82dbb26"
 
 [[unit]]
@@ -8320,7 +8320,7 @@ kind = "paragraph"
 line_start = 66
 line_end = 66
 heading_level = 0
-text_ascii = "**Purpose**: Placeholder for algebra_core integration (Phase 1 Week 3)"
+text_ascii = "**Purpose**: Placeholder for CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core) integration (Phase 1 Week 3)"
 text_sha256 = "0ab77e9a3aac5487dcea23d1ace99196129677607a5521b7c89f01dfa3ac36b9"
 
 [[unit]]
@@ -8880,7 +8880,7 @@ kind = "list_item"
 line_start = 146
 line_end = 146
 heading_level = 0
-text_ascii = "Bridge to algebra_core's psi matrix"
+text_ascii = "Bridge to CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core)'s psi matrix"
 text_sha256 = "556ed98a1c3a731f152bb36e65e50f6ab25ab0521a611f74aa1d1e4ad22c3d07"
 
 [[unit]]
@@ -9170,7 +9170,7 @@ kind = "list_item"
 line_start = 183
 line_end = 183
 heading_level = 0
-text_ascii = "Integration tests bridging algebra_core -> sign_imbalance -> lbm_3d"
+text_ascii = "Integration tests bridging CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core) -> sign_imbalance -> lbm_3d"
 text_sha256 = "bcdda02b852100834fdb26bb637cc968fed4e34f35ca335a64aad2ed5d739070"
 
 [[unit]]

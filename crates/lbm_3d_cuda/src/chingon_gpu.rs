@@ -10,11 +10,11 @@
 //   GPU:        build_state (O(dim)) -> contraction (O(violations)) -> project (O(block3))
 //   GPU -> CPU: 3D force vector (12 bytes)
 
-use algebra_core::construction::chingon::PackedAvt;
 use anyhow::{Context, Result};
 use cudarc::driver::{
     CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
 };
+use gororoba_algebra::construction::chingon::PackedAvt;
 use gr_core::forces::chingon_bivector_drag::block_layout;
 use std::sync::Arc;
 

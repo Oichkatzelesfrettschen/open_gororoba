@@ -9,7 +9,7 @@
 //! - quat_rotate computes q * embed(v) * conj(q) correctly
 //! - The Hamilton product follows the standard sign convention
 //!
-//! Mirrors: algebra_core/src/physics/quat_rotation.rs lines 40-61, 69-86
+//! Mirrors: gororoba_algebra/src/physics/quat_rotation.rs lines 40-61, 69-86
 
 use crate::axioms::{self, T};
 

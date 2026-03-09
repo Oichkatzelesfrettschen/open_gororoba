@@ -1,7 +1,7 @@
-use algebra_core::physics::octonion_field::FieldParams;
 #[cfg(feature = "gpu")]
 use anyhow::Context;
 use anyhow::Result;
+use gororoba_algebra::physics::octonion_field::FieldParams;
 use lbm_3d::solver::LbmSolver3D;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use ndarray::Array3;

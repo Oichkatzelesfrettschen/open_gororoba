@@ -179,12 +179,9 @@ impl MhdField {
                     // curl(F)_x = dFz/dy - dFy/dz
                     // curl(F)_y = dFx/dz - dFz/dx
                     // curl(F)_z = dFy/dx - dFx/dy
-                    let curl_vxb_x =
-                        0.5 * (vxb_z[yp] - vxb_z[ym]) - 0.5 * (vxb_y[zp] - vxb_y[zm]);
-                    let curl_vxb_y =
-                        0.5 * (vxb_x[zp] - vxb_x[zm]) - 0.5 * (vxb_z[xp] - vxb_z[xm]);
-                    let curl_vxb_z =
-                        0.5 * (vxb_y[xp] - vxb_y[xm]) - 0.5 * (vxb_x[yp] - vxb_x[ym]);
+                    let curl_vxb_x = 0.5 * (vxb_z[yp] - vxb_z[ym]) - 0.5 * (vxb_y[zp] - vxb_y[zm]);
+                    let curl_vxb_y = 0.5 * (vxb_x[zp] - vxb_x[zm]) - 0.5 * (vxb_z[xp] - vxb_z[xm]);
+                    let curl_vxb_z = 0.5 * (vxb_y[xp] - vxb_y[xm]) - 0.5 * (vxb_x[yp] - vxb_x[ym]);
 
                     dbx[idx] = curl_vxb_x;
                     dby[idx] = curl_vxb_y;
@@ -194,14 +191,26 @@ impl MhdField {
                     // (using vector identity: curl(curl(B)) = grad(div B) - Lap(B),
                     //  and div B = 0 ideally)
                     if eta > 0.0 {
-                        let lap_bx = self.bx[xp] + self.bx[xm] + self.bx[yp] + self.bx[ym]
-                            + self.bx[zp] + self.bx[zm]
+                        let lap_bx = self.bx[xp]
+                            + self.bx[xm]
+                            + self.bx[yp]
+                            + self.bx[ym]
+                            + self.bx[zp]
+                            + self.bx[zm]
                             - 6.0 * self.bx[idx];
-                        let lap_by = self.by[xp] + self.by[xm] + self.by[yp] + self.by[ym]
-                            + self.by[zp] + self.by[zm]
+                        let lap_by = self.by[xp]
+                            + self.by[xm]
+                            + self.by[yp]
+                            + self.by[ym]
+                            + self.by[zp]
+                            + self.by[zm]
                             - 6.0 * self.by[idx];
-                        let lap_bz = self.bz[xp] + self.bz[xm] + self.bz[yp] + self.bz[ym]
-                            + self.bz[zp] + self.bz[zm]
+                        let lap_bz = self.bz[xp]
+                            + self.bz[xm]
+                            + self.bz[yp]
+                            + self.bz[ym]
+                            + self.bz[zp]
+                            + self.bz[zm]
                             - 6.0 * self.bz[idx];
                         dbx[idx] += eta * lap_bx;
                         dby[idx] += eta * lap_by;
@@ -433,8 +442,7 @@ impl MhdField {
                         phi_new[idx] = (sum_wide - 4.0 * rhs[idx]) / 6.0;
 
                         // Residual check
-                        let lap_wide =
-                            0.25 * (sum_wide - 6.0 * phi[idx]);
+                        let lap_wide = 0.25 * (sum_wide - 6.0 * phi[idx]);
                         let residual = (lap_wide - rhs[idx]).abs();
                         max_residual = max_residual.max(residual);
                     }
@@ -501,11 +509,16 @@ mod tests {
 
     #[test]
     fn test_parker_spiral_init() {
-        let mut field = MhdField::new(16, 8, 8, MhdConfig {
-            b0_nt: 5.0,
-            omega: 2.662e-6,
-            ..MhdConfig::default()
-        });
+        let mut field = MhdField::new(
+            16,
+            8,
+            8,
+            MhdConfig {
+                b0_nt: 5.0,
+                omega: 2.662e-6,
+                ..MhdConfig::default()
+            },
+        );
         field.parker_spiral_init(0.1);
 
         // B_r should be positive everywhere (radial outward)
@@ -553,10 +566,15 @@ mod tests {
 
     #[test]
     fn test_magnetic_energy() {
-        let mut field = MhdField::new(4, 4, 4, MhdConfig {
-            mu_0: 1.0,
-            ..MhdConfig::default()
-        });
+        let mut field = MhdField::new(
+            4,
+            4,
+            4,
+            MhdConfig {
+                mu_0: 1.0,
+                ..MhdConfig::default()
+            },
+        );
         let n = 4 * 4 * 4;
         for idx in 0..n {
             field.bx[idx] = 1.0;
@@ -568,10 +586,15 @@ mod tests {
     #[test]
     fn test_evolve_frozen_in() {
         // Ideal MHD (eta=0) with zero velocity: B should not change
-        let mut field = MhdField::new(8, 8, 8, MhdConfig {
-            eta: 0.0,
-            ..MhdConfig::default()
-        });
+        let mut field = MhdField::new(
+            8,
+            8,
+            8,
+            MhdConfig {
+                eta: 0.0,
+                ..MhdConfig::default()
+            },
+        );
         let n = 8 * 8 * 8;
         // Set uniform B
         for idx in 0..n {
@@ -603,8 +626,14 @@ mod tests {
         let energy_before = field.magnetic_energy();
         let (init_div, final_div) = field.project_divergence_free(1000, 1e-12);
 
-        assert!(init_div < 1e-14, "uniform field should have zero div: {init_div}");
-        assert!(final_div < 1e-14, "projection should preserve zero div: {final_div}");
+        assert!(
+            init_div < 1e-14,
+            "uniform field should have zero div: {init_div}"
+        );
+        assert!(
+            final_div < 1e-14,
+            "projection should preserve zero div: {final_div}"
+        );
 
         let energy_after = field.magnetic_energy();
         let rel_change = (energy_after - energy_before).abs() / energy_before;
@@ -618,11 +647,16 @@ mod tests {
     fn test_projection_parker_reduces_div() {
         // Parker spiral on Cartesian grid has large div(B).
         // Projection should reduce it by several orders of magnitude.
-        let mut field = MhdField::new(16, 8, 8, MhdConfig {
-            b0_nt: 5.0,
-            omega: 2.662e-6,
-            ..MhdConfig::default()
-        });
+        let mut field = MhdField::new(
+            16,
+            8,
+            8,
+            MhdConfig {
+                b0_nt: 5.0,
+                omega: 2.662e-6,
+                ..MhdConfig::default()
+            },
+        );
         field.parker_spiral_init(0.1);
 
         let (init_div, final_div) = field.project_divergence_free(5000, 1e-10);
@@ -642,11 +676,16 @@ mod tests {
         // Projection removes the irrotational (gradient) component.
         // For a Parker spiral, the solenoidal component carries most of the energy.
         // Energy should remain within the same order of magnitude.
-        let mut field = MhdField::new(16, 8, 8, MhdConfig {
-            b0_nt: 5.0,
-            omega: 2.662e-6,
-            ..MhdConfig::default()
-        });
+        let mut field = MhdField::new(
+            16,
+            8,
+            8,
+            MhdConfig {
+                b0_nt: 5.0,
+                omega: 2.662e-6,
+                ..MhdConfig::default()
+            },
+        );
         field.parker_spiral_init(0.1);
         let energy_before = field.magnetic_energy();
 
@@ -669,11 +708,16 @@ mod tests {
     fn test_projection_preserves_br_monotonicity() {
         // After projection, B_r should still decrease with x (radial distance)
         // along the midline, though values will be modified.
-        let mut field = MhdField::new(16, 8, 8, MhdConfig {
-            b0_nt: 5.0,
-            omega: 2.662e-6,
-            ..MhdConfig::default()
-        });
+        let mut field = MhdField::new(
+            16,
+            8,
+            8,
+            MhdConfig {
+                b0_nt: 5.0,
+                omega: 2.662e-6,
+                ..MhdConfig::default()
+            },
+        );
         field.parker_spiral_init(0.1);
         field.project_divergence_free(5000, 1e-10);
 
@@ -692,11 +736,16 @@ mod tests {
     fn test_projection_idempotent() {
         // Applying projection twice: the second pass should find div(B) already
         // near zero and make negligible further changes.
-        let mut field = MhdField::new(16, 8, 8, MhdConfig {
-            b0_nt: 5.0,
-            omega: 2.662e-6,
-            ..MhdConfig::default()
-        });
+        let mut field = MhdField::new(
+            16,
+            8,
+            8,
+            MhdConfig {
+                b0_nt: 5.0,
+                omega: 2.662e-6,
+                ..MhdConfig::default()
+            },
+        );
         field.parker_spiral_init(0.1);
 
         // First projection
@@ -734,11 +783,16 @@ mod tests {
         // Doubling b0 should quadruple the max Lorentz force.
         let (nx, ny, nz) = (16, 8, 8);
 
-        let mut field_lo = MhdField::new(nx, ny, nz, MhdConfig {
-            b0_nt: 5.0,
-            omega: 2.662e-6,
-            ..MhdConfig::default()
-        });
+        let mut field_lo = MhdField::new(
+            nx,
+            ny,
+            nz,
+            MhdConfig {
+                b0_nt: 5.0,
+                omega: 2.662e-6,
+                ..MhdConfig::default()
+            },
+        );
         field_lo.parker_spiral_init(0.05);
         let lorentz_lo = field_lo.lorentz_force();
         let max_lo = lorentz_lo
@@ -746,11 +800,16 @@ mod tests {
             .map(|v| (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt())
             .fold(0.0_f64, f64::max);
 
-        let mut field_hi = MhdField::new(nx, ny, nz, MhdConfig {
-            b0_nt: 10.0,
-            omega: 2.662e-6,
-            ..MhdConfig::default()
-        });
+        let mut field_hi = MhdField::new(
+            nx,
+            ny,
+            nz,
+            MhdConfig {
+                b0_nt: 10.0,
+                omega: 2.662e-6,
+                ..MhdConfig::default()
+            },
+        );
         field_hi.parker_spiral_init(0.05);
         let lorentz_hi = field_hi.lorentz_force();
         let max_hi = lorentz_hi

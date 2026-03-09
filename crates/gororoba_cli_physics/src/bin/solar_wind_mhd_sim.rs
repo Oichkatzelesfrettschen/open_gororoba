@@ -8,12 +8,16 @@
 //! containing real spacecraft data (NASA OMNI2 or ACE SWEPAM).
 
 use clap::Parser;
-use lbm_3d::boundary::ZouHeBoundary;
-use lbm_3d::mhd::{MhdConfig, MhdField};
-use lbm_3d::solver::{BgkCollision, LbmSolver3D};
-use std::fs;
-use std::io::{BufRead, Write};
-use std::path::PathBuf;
+use lbm_3d::{
+    boundary::ZouHeBoundary,
+    mhd::{MhdConfig, MhdField},
+    solver::{BgkCollision, LbmSolver3D},
+};
+use std::{
+    fs,
+    io::{BufRead, Write},
+    path::PathBuf,
+};
 
 /// D3Q19 LBM + MHD simulation of magnetized solar wind with Parker
 /// spiral B-field and Zou-He velocity inlet.
@@ -182,7 +186,11 @@ fn main() -> anyhow::Result<()> {
     // Initialize state: real data from IC file, or synthetic uniform+Parker
     let u_sw = if let Some(ref ic_path) = cli.ic_file {
         let loaded = load_ic_file(ic_path, &mut solver, &mut mhd)?;
-        eprintln!("loaded {} cells from IC file: {}", loaded, ic_path.display());
+        eprintln!(
+            "loaded {} cells from IC file: {}",
+            loaded,
+            ic_path.display()
+        );
 
         let mut ux_vals: Vec<f64> = solver.u.iter().map(|u| u[0]).collect();
         ux_vals.sort_by(|a, b| a.partial_cmp(b).unwrap());
@@ -212,13 +220,7 @@ fn main() -> anyhow::Result<()> {
     // Time loop
     for step in 0..cli.steps {
         // 1. Apply Zou-He velocity inlet at x=0
-        zou_he.apply_velocity_inlet_min_x(
-            &mut solver.f,
-            cli.nx,
-            cli.ny,
-            cli.nz,
-            u_sw,
-        );
+        zou_he.apply_velocity_inlet_min_x(&mut solver.f, cli.nx, cli.ny, cli.nz, u_sw);
 
         // 2. Compute Lorentz force from current B-field
         let lorentz = mhd.lorentz_force();

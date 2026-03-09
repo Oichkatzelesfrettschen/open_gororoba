@@ -2,7 +2,7 @@
 //!
 //! Connects three previously isolated symmetry systems:
 //! 1. `crystal_symmetry.rs` (32 point groups, 230 space groups)
-//! 2. `algebra_core::lie::e8_lattice` (240 E8 roots, Freudenthal-Tits magic square)
+//! 2. `gororoba_algebra::lie::e8_lattice` (240 E8 roots, Freudenthal-Tits magic square)
 //! 3. ZD graph structures (box-kites, kite-chain middens)
 //!
 //! The bridge: E8 contains G2 as a subgroup. G2 = Aut(O) preserves octonion
@@ -25,7 +25,7 @@
 //! - Baez (2002), "The Octonions", Bull. AMS
 //! - Conway & Sloane (1998), "Sphere Packings, Lattices and Groups"
 
-use algebra_core::lie::e8_lattice::{E8Root, generate_e8_roots};
+use gororoba_algebra::lie::e8_lattice::{E8Root, generate_e8_roots};
 use moyo::{
     MoyoDataset,
     base::{Cell, Lattice, Position},

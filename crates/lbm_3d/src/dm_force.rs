@@ -212,7 +212,9 @@ impl DmForceField {
 
                     // Physical radius from galactic center (Sun at ~8 kpc, perturbation is local)
                     // For NFW force: use heliocentric r as proxy (r << r_s ~ 20 kpc)
-                    let r_total_au = (r_au * r_au + dy_au * dy_au + dz_au * dz_au).sqrt().max(0.01);
+                    let r_total_au = (r_au * r_au + dy_au * dy_au + dz_au * dz_au)
+                        .sqrt()
+                        .max(0.01);
                     let r_phys = r_total_au * AU_M;
 
                     // NFW enclosed mass at this radius
@@ -231,7 +233,7 @@ impl DmForceField {
                         let wind_mag = (config.v_dm_wind[0] * config.v_dm_wind[0]
                             + config.v_dm_wind[1] * config.v_dm_wind[1]
                             + config.v_dm_wind[2] * config.v_dm_wind[2])
-                        .sqrt();
+                            .sqrt();
                         let cos_angle = (rhat[0] * config.v_dm_wind[0]
                             + rhat[1] * config.v_dm_wind[1]
                             + rhat[2] * config.v_dm_wind[2])
@@ -323,10 +325,7 @@ impl DmForceField {
     /// Inner loop: drag[idx] = kappa * |v_rel| * v_rel_hat (all in lattice units).
     ///
     /// Returns zero-filled vec when sigma_chi_b <= 0.
-    pub fn drag_force_lattice(
-        &self,
-        baryon_velocity: &[[f64; 3]],
-    ) -> Vec<[f64; 3]> {
+    pub fn drag_force_lattice(&self, baryon_velocity: &[[f64; 3]]) -> Vec<[f64; 3]> {
         let n = self.force.len();
         if self.kappa_drag <= 0.0 {
             return vec![[0.0; 3]; n];
@@ -420,7 +419,8 @@ impl DmForceField {
 
             // Relative velocity
             let v_rel = [v_dm[0] - v_b[0], v_dm[1] - v_b[1], v_dm[2] - v_b[2]];
-            let v_rel_mag = (v_rel[0] * v_rel[0] + v_rel[1] * v_rel[1] + v_rel[2] * v_rel[2]).sqrt();
+            let v_rel_mag =
+                (v_rel[0] * v_rel[0] + v_rel[1] * v_rel[1] + v_rel[2] * v_rel[2]).sqrt();
 
             if v_rel_mag < 1e-30 {
                 continue;
@@ -697,7 +697,10 @@ mod tests {
         let dm = DmForceField::new(nx, ny, nz, DmForceConfig::default());
         let max_dm = dm.max_force_magnitude();
 
-        assert!(max_lorentz > 1e-6, "Lorentz force should be nonzero: {max_lorentz:.3e}");
+        assert!(
+            max_lorentz > 1e-6,
+            "Lorentz force should be nonzero: {max_lorentz:.3e}"
+        );
         assert!(max_dm > 0.0, "DM force should be nonzero");
 
         let ratio = max_dm / max_lorentz;
@@ -765,12 +768,14 @@ mod tests {
         let zero_b = vec![[0.0; 3]; n];
         let combined = combine_forces(&zero_a, &zero_b);
         // Verify all zeros
-        assert!(combined.iter().all(|f| f[0] == 0.0 && f[1] == 0.0 && f[2] == 0.0));
+        assert!(
+            combined
+                .iter()
+                .all(|f| f[0] == 0.0 && f[1] == 0.0 && f[2] == 0.0)
+        );
 
         for _ in 0..10 {
-            solver_b
-                .set_force_field(combined.clone())
-                .expect("set");
+            solver_b.set_force_field(combined.clone()).expect("set");
             solver_b.evolve_one_step();
         }
 
@@ -802,7 +807,10 @@ mod tests {
         let rho = vec![1.0; 8 * 4 * 4];
         let u = vec![[0.05, 0.0, 0.0]; 8 * 4 * 4];
         let drag = field.drag_force(&rho, &u, 5.0, 400.0);
-        assert!(drag.iter().all(|f| f[0] == 0.0 && f[1] == 0.0 && f[2] == 0.0));
+        assert!(
+            drag.iter()
+                .all(|f| f[0] == 0.0 && f[1] == 0.0 && f[2] == 0.0)
+        );
     }
 
     #[test]
@@ -816,7 +824,9 @@ mod tests {
         let u = vec![[0.05, 0.0, 0.0]; 8 * 4 * 4];
         let drag = field.drag_force(&rho, &u, 5.0, 400.0);
         // At least some cells should have nonzero drag
-        let has_nonzero = drag.iter().any(|f| f[0].abs() > 0.0 || f[1].abs() > 0.0 || f[2].abs() > 0.0);
+        let has_nonzero = drag
+            .iter()
+            .any(|f| f[0].abs() > 0.0 || f[1].abs() > 0.0 || f[2].abs() > 0.0);
         assert!(has_nonzero, "drag should be nonzero at sigma=1e-40");
         // All drag should be finite
         for f in &drag {
@@ -846,11 +856,13 @@ mod tests {
         let drag_low = field_low.drag_force(&rho, &u, 5.0, 400.0);
         let drag_high = field_high.drag_force(&rho, &u, 5.0, 400.0);
 
-        let max_low: f64 = drag_low.iter()
-            .map(|f| (f[0]*f[0] + f[1]*f[1] + f[2]*f[2]).sqrt())
+        let max_low: f64 = drag_low
+            .iter()
+            .map(|f| (f[0] * f[0] + f[1] * f[1] + f[2] * f[2]).sqrt())
             .fold(0.0, f64::max);
-        let max_high: f64 = drag_high.iter()
-            .map(|f| (f[0]*f[0] + f[1]*f[1] + f[2]*f[2]).sqrt())
+        let max_high: f64 = drag_high
+            .iter()
+            .map(|f| (f[0] * f[0] + f[1] * f[1] + f[2] * f[2]).sqrt())
             .fold(0.0, f64::max);
 
         assert!(
@@ -933,7 +945,10 @@ mod tests {
         let field = default_field(8, 4, 4);
         let u = vec![[0.05, 0.0, 0.0]; 8 * 4 * 4];
         let drag = field.drag_force_lattice(&u);
-        assert!(drag.iter().all(|f| f[0] == 0.0 && f[1] == 0.0 && f[2] == 0.0));
+        assert!(
+            drag.iter()
+                .all(|f| f[0] == 0.0 && f[1] == 0.0 && f[2] == 0.0)
+        );
     }
 
     #[test]

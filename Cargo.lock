@@ -101,46 +101,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "algebra_core"
-version = "0.1.0"
-dependencies = [
- "algebra_analysis",
- "approx",
- "atlas-embeddings",
- "cd_kernel",
- "criterion",
- "csv",
- "cudarc 0.19.3",
- "diffusionx",
- "gororoba_gpu_bridge",
- "iai-callgrind",
- "nalgebra 0.33.2",
- "num-bigint",
- "num-complex",
- "num-traits",
- "padic",
- "petgraph 0.7.1",
- "rand 0.8.5",
- "rand_chacha 0.3.1",
- "rand_distr 0.4.3",
- "rayon",
- "rustfft",
- "serde",
- "sha2",
- "thiserror 2.0.18",
- "wheel",
- "wide",
-]
-
-[[package]]
 name = "algebra_experimental"
 version = "0.1.0"
 dependencies = [
  "algebra_analysis",
- "algebra_core",
  "approx",
  "cd_kernel",
  "cudarc 0.19.3",
+ "gororoba_algebra",
  "nalgebra 0.33.2",
  "num-bigint",
  "num-complex",
@@ -1338,7 +1306,7 @@ dependencies = [
 name = "cd_spin_bridge"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
+ "gororoba_algebra",
  "nalgebra 0.33.2",
  "num-complex",
  "sign_imbalance",
@@ -3734,10 +3702,41 @@ dependencies = [
 ]
 
 [[package]]
+name = "gororoba_algebra"
+version = "0.1.0"
+dependencies = [
+ "algebra_analysis",
+ "approx",
+ "atlas-embeddings",
+ "cd_kernel",
+ "criterion",
+ "csv",
+ "cudarc 0.19.3",
+ "diffusionx",
+ "gororoba_gpu_bridge",
+ "iai-callgrind",
+ "nalgebra 0.33.2",
+ "num-bigint",
+ "num-complex",
+ "num-traits",
+ "padic",
+ "petgraph 0.7.1",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_distr 0.4.3",
+ "rayon",
+ "rustfft",
+ "serde",
+ "sha2",
+ "thiserror 2.0.18",
+ "wheel",
+ "wide",
+]
+
+[[package]]
 name = "gororoba_cli"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "anyhow",
  "ash",
  "axum",
@@ -3748,6 +3747,7 @@ dependencies = [
  "data_core",
  "env_logger",
  "glob",
+ "gororoba_algebra",
  "gororoba_engine",
  "gr_core",
  "lattice_filtration",
@@ -3784,12 +3784,12 @@ name = "gororoba_cli_algebra"
 version = "0.1.0"
 dependencies = [
  "algebra_analysis",
- "algebra_core",
  "algebra_experimental",
  "anyhow",
  "clap",
  "csv",
  "env_logger",
+ "gororoba_algebra",
  "gororoba_engine",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
@@ -3835,7 +3835,6 @@ name = "gororoba_cli_physics"
 version = "0.1.0"
 dependencies = [
  "algebra_analysis",
- "algebra_core",
  "algebra_experimental",
  "anise",
  "anyhow",
@@ -3850,6 +3849,7 @@ dependencies = [
  "data_core",
  "env_logger",
  "glob",
+ "gororoba_algebra",
  "gr_core",
  "lbm_3d",
  "lbm_3d_cuda",
@@ -3896,13 +3896,13 @@ dependencies = [
 name = "gororoba_cli_warp"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "chrono",
  "clap",
  "cudarc 0.19.3",
  "data_core",
  "env_logger",
  "glob",
+ "gororoba_algebra",
  "gororoba_cli",
  "gororoba_contracts",
  "gororoba_engine",
@@ -3938,7 +3938,6 @@ name = "gororoba_engine"
 version = "0.1.0"
 dependencies = [
  "algebra_analysis",
- "algebra_core",
  "algebra_experimental",
  "anyhow",
  "cd_spin_bridge",
@@ -3946,6 +3945,7 @@ dependencies = [
  "cosmology_core",
  "criterion",
  "cudarc 0.19.3",
+ "gororoba_algebra",
  "gororoba_gpu_bridge",
  "gororoba_pipeline",
  "gr_core",
@@ -3988,8 +3988,8 @@ dependencies = [
 name = "gororoba_py"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "cosmology_core",
+ "gororoba_algebra",
  "gororoba_engine",
  "gr_core",
  "lbm_3d_cuda",
@@ -4074,9 +4074,9 @@ dependencies = [
 name = "gr_core"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "approx",
  "gauss-quad",
+ "gororoba_algebra",
  "nalgebra 0.33.2",
  "num-complex",
  "ode_solvers",
@@ -4922,8 +4922,8 @@ dependencies = [
 name = "lattice_filtration"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "criterion",
+ "gororoba_algebra",
  "proptest",
  "rand 0.8.5",
  "sign_imbalance",
@@ -4964,10 +4964,10 @@ dependencies = [
 name = "lbm_3d_cuda"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "anyhow",
  "approx",
  "cudarc 0.19.3",
+ "gororoba_algebra",
  "gr_core",
  "half",
  "lbm_3d",
@@ -5327,11 +5327,11 @@ checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
 name = "materials_core"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "approx",
  "cd_kernel",
  "fixedbitset 0.5.7",
  "gauss-quad",
+ "gororoba_algebra",
  "moyo",
  "nalgebra 0.33.2",
  "num-complex",
@@ -5856,11 +5856,11 @@ dependencies = [
 name = "neural_homotopy"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "approx",
  "burn",
  "cosmology_core",
  "criterion",
+ "gororoba_algebra",
  "proptest",
 ]
 
@@ -6666,11 +6666,11 @@ dependencies = [
 name = "pathion_ellip"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "anyhow",
  "approx",
  "cd_kernel",
  "ellip",
+ "gororoba_algebra",
  "nalgebra 0.33.2",
  "num-complex",
  "rayon",
@@ -8940,11 +8940,11 @@ checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 name = "sign_imbalance"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "anyhow",
  "cosmology_core",
  "criterion",
  "cudarc 0.19.3",
+ "gororoba_algebra",
  "gr_core",
  "nalgebra 0.33.2",
  "petgraph 0.7.1",
@@ -9149,8 +9149,8 @@ name = "spectral_core"
 version = "0.1.0"
 dependencies = [
  "adjustp",
- "algebra_core",
  "approx",
+ "gororoba_algebra",
  "ndarray 0.16.1",
  "ndrustfft",
  "num-complex",
@@ -9175,7 +9175,7 @@ dependencies = [
 name = "spin_tomography_core"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
+ "gororoba_algebra",
  "nalgebra 0.33.2",
  "num-complex",
  "rand 0.8.5",
@@ -9257,9 +9257,9 @@ dependencies = [
 name = "stats_core"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "approx",
  "cudarc 0.19.3",
+ "gororoba_algebra",
  "kiddo",
  "kodama",
  "nalgebra 0.33.2",
@@ -10344,8 +10344,8 @@ dependencies = [
 name = "verified_core"
 version = "0.1.0"
 dependencies = [
- "algebra_core",
  "cosmology_core",
+ "gororoba_algebra",
  "gr_core",
  "optics_core",
 ]

@@ -67,10 +67,10 @@ pyo3_binding_plan = "Add `py_materials_embedding_experiments(...)` wrapper in cr
 [[mapping]]
 id = "PYALG-0006"
 python_path = "src/modular_classical_sim.py"
-rust_crate = "algebra_core"
+rust_crate = "gororoba_algebra"
 rust_module = "modular_classical_sim"
 binding_status = "planned"
-pyo3_binding_plan = "Expose `py_modular_classical_sim(...)` from gororoba_py with algebra_core as canonical compute path."
+pyo3_binding_plan = "Expose `py_modular_classical_sim(...)` from gororoba_py with gororoba_algebra as the facade compute path over cd_kernel/algebra_analysis."
 
 [[mapping]]
 id = "PYALG-0007"
@@ -131,10 +131,10 @@ pyo3_binding_plan = "Add `py_pseudospectrum_slice(...)` bridge in gororoba_py an
 [[mapping]]
 id = "PYALG-0014"
 python_path = "src/quantum/box_kite_symmetry.py"
-rust_crate = "algebra_core"
+rust_crate = "gororoba_algebra"
 rust_module = "boxkites"
 binding_status = "planned"
-pyo3_binding_plan = "Use algebra_core symmetry APIs through gororoba_py wrapper for Python-facing workflows."
+pyo3_binding_plan = "Use gororoba_algebra symmetry APIs through gororoba_py wrapper for Python-facing workflows."
 
 [[mapping]]
 id = "PYALG-0015"
@@ -195,10 +195,10 @@ pyo3_binding_plan = "Define gororoba_py bridge surface for runtime payload prepa
 [[mapping]]
 id = "PYALG-0022"
 python_path = "src/sedenion_field_sim.py"
-rust_crate = "algebra_core"
+rust_crate = "gororoba_algebra"
 rust_module = "sedenion_field"
 binding_status = "planned"
-pyo3_binding_plan = "Expose sedenion field simulation kernels via gororoba_py for Python-side workflow control."
+pyo3_binding_plan = "Expose sedenion field simulation kernels via gororoba_py with gororoba_algebra as facade ownership."
 
 [[mapping]]
 id = "PYALG-0023"
@@ -211,7 +211,7 @@ pyo3_binding_plan = "Add `py_spectral_flow_sim(...)` wrapper in gororoba_py over
 [[mapping]]
 id = "PYALG-0024"
 python_path = "src/topology_analysis.py"
-rust_crate = "algebra_core"
+rust_crate = "gororoba_algebra"
 rust_module = "topology_analysis"
 binding_status = "planned"
-pyo3_binding_plan = "Expose topology analysis kernel APIs in gororoba_py and keep Python report assembly thin."
+pyo3_binding_plan = "Expose topology analysis kernel APIs in gororoba_py via gororoba_algebra and keep Python report assembly thin."

@@ -381,6 +381,6 @@ Input: None (Cayley-Dickson structure tables computed on the fly)
 Output: data/csv/separating_degree_formula_sweep.csv
 Run:
 ```bash
-cargo test -p algebra_core --release --lib -- test_separating_degree_formula_universality --nocapture
+cargo test -p gororoba_algebra --release --lib -- test_separating_degree_formula_universality --nocapture
 ```
 """

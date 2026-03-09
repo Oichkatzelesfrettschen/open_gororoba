@@ -135,7 +135,7 @@ pub fn simulate_sedenion_collision_storm(
     dim: usize,
     seed: u64,
 ) -> (CollisionStormStats, Vec<CollisionObservation>) {
-    use algebra_core::construction::cayley_dickson::cd_multiply;
+    use gororoba_algebra::construction::cayley_dickson::cd_multiply;
 
     assert!(n_steps > 0, "n_steps must be > 0");
     assert!(dim == 16, "Only dim=16 (sedenions) supported");
@@ -292,7 +292,7 @@ pub fn simulate_shell_return_storm(
     seed: u64,
     n_shells: usize,
 ) -> (ShellReturnStats, Vec<ShellReturnBin>) {
-    use algebra_core::construction::cayley_dickson::cd_multiply;
+    use gororoba_algebra::construction::cayley_dickson::cd_multiply;
 
     assert!(n_steps > 0, "n_steps must be > 0");
     assert!(dim == 16, "Only dim=16 (sedenions) supported");
@@ -484,7 +484,7 @@ pub fn simulate_imbalance_modulated_storm(
         field_nz,
         alpha,
     } = *cfg;
-    use algebra_core::construction::cayley_dickson::cd_multiply;
+    use gororoba_algebra::construction::cayley_dickson::cd_multiply;
 
     assert!(n_steps > 0, "n_steps must be > 0");
     assert!(n_shells > 0, "n_shells must be > 0");

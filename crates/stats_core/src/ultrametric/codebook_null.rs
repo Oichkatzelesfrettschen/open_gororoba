@@ -27,7 +27,7 @@ use super::{
     adaptive::{AdaptiveConfig, AdaptiveResult},
     null_models::{NullModelStrategy, NullTestConfig, RowPermutationNull, run_adaptive_null_test},
 };
-use algebra_core::{
+use gororoba_algebra::{
     analysis::codebook::EncodingDictionary, construction::cayley_dickson::find_zero_divisors,
 };
 use std::collections::HashSet;
@@ -208,7 +208,7 @@ mod tests {
         super::{adaptive::StopReason, null_models::ColumnIndependentNull},
         *,
     };
-    use algebra_core::analysis::codebook::{LatticeVector, enumerate_lambda_256};
+    use gororoba_algebra::analysis::codebook::{LatticeVector, enumerate_lambda_256};
 
     /// Build a small (dim=4) dictionary with known lattice vectors.
     fn sample_dictionary_4() -> EncodingDictionary {

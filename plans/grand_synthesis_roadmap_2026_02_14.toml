@@ -14,7 +14,7 @@ scope = "full_modelling_distillation_infusion_synchronicity"
 phases = 4
 
 # Phase 1: Engine Activation & Integration
-# Goal: Make `gororoba_engine` the central orchestrator, consuming `algebra_core`, `gr_core`, and `lbm_core`.
+# Goal: Make `gororoba_engine` the central orchestrator, consuming `gororoba_algebra`, `gr_core`, and `lbm_core`.
 [[phase]]
 id = "PH-01"
 title = "Engine Activation"
@@ -57,7 +57,7 @@ description = "Formalize hypercomplex taxonomy into executable Rust traits."
 id = "GSR-004"
 phase = "PH-02"
 title = "Define `Hypercomplex` Trait"
-description = "Create `algebra_core::traits::Hypercomplex` enabling generic algorithms over Quaternions, Octonions, and Sedenions. DONE: Implemented in `algebra_core`."
+description = "Create `gororoba_algebra::traits::Hypercomplex` enabling generic algorithms over Quaternions, Octonions, and Sedenions. DONE: Implemented in the facade crate now named `gororoba_algebra`."
 status = "done"
 owner = "codex"
 
@@ -159,7 +159,7 @@ description = "Replace toy rotations with rigorous algebraic field evolution."
 id = "GSR-013"
 phase = "PH-06"
 title = "3D Sedenion Field Evolution"
-description = "Implement a 3D field solver in `algebra_core` that evolves Sedenion values with non-associative imbalance terms. DONE: Implemented semi-Lagrangian advection in `algebra_evolution.rs`."
+description = "Implement a 3D field solver in `gororoba_algebra` that evolves Sedenion values with non-associative imbalance terms. DONE: Implemented semi-Lagrangian advection in `algebra_evolution.rs`."
 status = "done"
 owner = "codex"
 

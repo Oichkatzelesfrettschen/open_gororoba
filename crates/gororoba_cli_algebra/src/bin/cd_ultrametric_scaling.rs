@@ -12,8 +12,8 @@
 //! increasing ultrametric structure due to the recursive doubling
 //! creating nested hierarchical relationships between basis elements.
 
-use algebra_core::construction::cayley_dickson::cd_multiply;
 use clap::Parser;
+use gororoba_algebra::construction::cayley_dickson::cd_multiply;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use stats_core::ultrametric::{

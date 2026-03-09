@@ -123,11 +123,7 @@ impl StabilizerLikeCode for VoidCodeAdapter {
     fn num_checks(&self) -> usize {
         // Each pair of covered axes is a parity check
         let n = self.covered.len();
-        if n < 2 {
-            0
-        } else {
-            n * (n - 1) / 2
-        }
+        if n < 2 { 0 } else { n * (n - 1) / 2 }
     }
 
     fn algebra_dimension(&self) -> usize {
@@ -162,10 +158,7 @@ impl LatticeQecSnapshot {
     /// Detect which stabilizers are triggered by the current lattice state.
     ///
     /// Returns (num_triggered, total_stabilizers, mean_syndrome_strength).
-    pub fn detect_active_syndromes(
-        &self,
-        error_mask: &HashSet<usize>,
-    ) -> (usize, usize, f64) {
+    pub fn detect_active_syndromes(&self, error_mask: &HashSet<usize>) -> (usize, usize, f64) {
         let total = self.stabilizers.len();
         if total == 0 {
             return (0, 0, 0.0);
@@ -251,7 +244,10 @@ mod tests {
         let adapter = VoidCodeAdapter::new(vec![0, 3, 7, 12], 16, 2);
         let errors: HashSet<usize> = [3, 12].into_iter().collect();
         let strength = adapter.syndrome_strength(&errors);
-        assert!((strength - 0.5).abs() < 1e-10, "Expected 0.5, got {strength}");
+        assert!(
+            (strength - 0.5).abs() < 1e-10,
+            "Expected 0.5, got {strength}"
+        );
     }
 
     #[test]
@@ -273,21 +269,13 @@ mod tests {
     #[test]
     fn test_build_error_mask() {
         let sites = vec![
-            LatticeSiteState::new(
-                0,
-                make_sparse(16, &[(1, 0.5), (4, 0.3)]),
-                0.8,
-            ),
+            LatticeSiteState::new(0, make_sparse(16, &[(1, 0.5), (4, 0.3)]), 0.8),
             LatticeSiteState::new(
                 1,
                 make_sparse(16, &[(2, 0.9)]),
                 0.05, // below threshold, should be skipped
             ),
-            LatticeSiteState::new(
-                2,
-                make_sparse(16, &[(4, 0.7), (9, 0.6)]),
-                1.2,
-            ),
+            LatticeSiteState::new(2, make_sparse(16, &[(4, 0.7), (9, 0.6)]), 1.2),
         ];
         let mask = build_error_mask(&sites, 0.1);
         // Site 0: deviation 0.8 > 0.1, axes [1, 4] both > 0.1
@@ -302,11 +290,7 @@ mod tests {
 
     #[test]
     fn test_snapshot_composite_code() {
-        let violations = vec![
-            (0, 3, 7, 12, 1),
-            (1, 5, 9, 14, -1),
-            (2, 6, 10, 13, 1),
-        ];
+        let violations = vec![(0, 3, 7, 12, 1), (1, 5, 9, 14, -1), (2, 6, 10, 13, 1)];
         let snapshot = LatticeQecSnapshot::from_violations(&violations, 16);
         assert_eq!(snapshot.num_stabilizers(), 3);
         assert_eq!(snapshot.effective_distance(), 2);
@@ -327,10 +311,7 @@ mod tests {
 
     #[test]
     fn test_detect_active_syndromes() {
-        let violations = vec![
-            (0, 3, 7, 12, 1),
-            (1, 5, 9, 14, -1),
-        ];
+        let violations = vec![(0, 3, 7, 12, 1), (1, 5, 9, 14, -1)];
         let snapshot = LatticeQecSnapshot::from_violations(&violations, 16);
 
         // Trigger axis 3 (first violation) and axis 5 (second violation)
