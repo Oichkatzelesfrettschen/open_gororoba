@@ -174,17 +174,16 @@ fn test_mass_conservation() {
     );
 }
 
-/// Momentum growth with Guo forcing scheme.
+/// Momentum growth with exact Phi_i Guo forcing scheme.
 ///
 /// With uniform body force F_x in a periodic domain starting from rest,
-/// the LBM distribution momentum (from moments of f_i) grows as:
+/// the stored velocity u* = u + F/(2*rho) includes the full force
+/// contribution. Total x-momentum grows as:
 ///
-///   P_x(t) = (1 - 1/(2*tau)) * F_x * M * t
+///   P_x(t) = F_x * M * t
 ///
-/// The (1-1/(2*tau)) factor is intrinsic to the Guo scheme: it splits
-/// the forcing between the distribution function and a velocity correction
-/// term. The physical velocity is u = u_LBM + F/(2*rho), but
-/// compute_macroscopic() returns u_LBM only.
+/// The exact Phi_i scheme uses u* in the equilibrium computation,
+/// so get_macroscopic() returns the force-corrected velocity directly.
 #[test]
 fn test_momentum_with_guo_forcing() {
     let n = 16;
@@ -222,19 +221,18 @@ fn test_momentum_with_guo_forcing() {
         }
     }
 
-    // Guo scheme: distribution momentum grows as (1-1/(2tau)) * F * M * t
-    let guo_factor = 1.0 - 1.0 / (2.0 * tau);
-    let px_expected = guo_factor * f_x * mass * n_steps as f64;
+    // Exact Phi_i scheme: stored u* includes full force contribution
+    // so total momentum grows as F_x * M * t (no guo_factor reduction)
+    let px_expected = f_x * mass * n_steps as f64;
 
     // Allow 5% relative error
     let relative_error = (px_total - px_expected).abs() / px_expected.abs().max(1e-15);
     assert!(
         relative_error < 0.05,
-        "Guo momentum mismatch: measured px={:.6e}, expected={:.6e}, rel_err={:.4}, guo_factor={:.4}",
+        "Phi_i momentum mismatch: measured px={:.6e}, expected={:.6e}, rel_err={:.4}",
         px_total,
         px_expected,
         relative_error,
-        guo_factor,
     );
 }
 

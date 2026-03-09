@@ -430,7 +430,12 @@ impl LbmSolver3D {
         let u = &self.u;
         let force_field = &self.force_field;
 
-        // Apply BGK collision at each grid point (parallel over cells)
+        // Apply BGK collision with exact Guo forcing (Phi_i source term).
+        //
+        // Key: use force-corrected velocity u* = u + F/(2*rho) in both
+        // equilibrium and source term. This recovers the exact Navier-Stokes
+        // momentum equation at second order in dt (Guo et al. 2002, Phys.
+        // Rev. E 65, 046308, Eq. 6) and preserves mass to machine precision.
         self.f
             .par_chunks_mut(19)
             .enumerate()
@@ -444,33 +449,60 @@ impl LbmSolver3D {
                 let rho_local = rho[idx];
                 let u_local = u[idx];
 
-                // Compute equilibrium and apply BGK collision inline
+                // Force-corrected velocity: u* = u + F * dt / (2 * rho)
+                // In lattice units dt = 1, so u* = u + F / (2 * rho).
+                let u_star = if let Some(ff) = force_field {
+                    let force = ff[idx];
+                    let inv_2rho = 0.5 / rho_local.max(1e-30);
+                    [
+                        u_local[0] + force[0] * inv_2rho,
+                        u_local[1] + force[1] * inv_2rho,
+                        u_local[2] + force[2] * inv_2rho,
+                    ]
+                } else {
+                    u_local
+                };
+
+                // BGK collision using force-corrected velocity u*
                 for (i, fi) in f_chunk.iter_mut().enumerate() {
-                    let f_eq_i = lattice.equilibrium(rho_local, u_local, i);
+                    let f_eq_i = lattice.equilibrium(rho_local, u_star, i);
                     *fi -= (*fi - f_eq_i) / tau;
                 }
 
-                // Apply Guo forcing if enabled
+                // Exact source term Phi_i using u* (not bare u)
                 if let Some(ff) = force_field {
                     let force = ff[idx];
                     let prefactor = 1.0 - 1.0 / (2.0 * tau);
                     for (i, fi) in f_chunk.iter_mut().enumerate() {
                         let ei = lattice.velocities[i];
                         let ei_f64 = [ei[0] as f64, ei[1] as f64, ei[2] as f64];
-                        let ei_minus_u_dot_f = (ei_f64[0] - u_local[0]) * force[0]
-                            + (ei_f64[1] - u_local[1]) * force[1]
-                            + (ei_f64[2] - u_local[2]) * force[2];
-                        let ei_dot_u = ei_f64[0] * u_local[0]
-                            + ei_f64[1] * u_local[1]
-                            + ei_f64[2] * u_local[2];
+                        // Use u* in the source term
+                        let ei_minus_u_dot_f = (ei_f64[0] - u_star[0]) * force[0]
+                            + (ei_f64[1] - u_star[1]) * force[1]
+                            + (ei_f64[2] - u_star[2]) * force[2];
+                        let ei_dot_u = ei_f64[0] * u_star[0]
+                            + ei_f64[1] * u_star[1]
+                            + ei_f64[2] * u_star[2];
                         let ei_dot_f =
                             ei_f64[0] * force[0] + ei_f64[1] * force[1] + ei_f64[2] * force[2];
-                        // S_i = (e_i - u)*F / c_s^2 + (e_i*u)*(e_i*F) / c_s^4
-                        let s_i = ei_minus_u_dot_f * 3.0 + (ei_dot_u * ei_dot_f) * 9.0;
-                        *fi += prefactor * lattice.weights[i] * s_i;
+                        // Phi_i = (e_i - u*)*F / c_s^2 + (e_i*u*)(e_i*F) / c_s^4
+                        let phi_i = ei_minus_u_dot_f * 3.0 + (ei_dot_u * ei_dot_f) * 9.0;
+                        *fi += prefactor * lattice.weights[i] * phi_i;
                     }
                 }
             });
+
+        // Post-collision: update stored velocity to force-corrected u*
+        // so downstream consumers (MHD, diagnostics, drag force) use
+        // the physical velocity, not the bare streaming velocity.
+        if let Some(ref ff) = self.force_field {
+            for ((u, &rho), f) in self.u.iter_mut().zip(&self.rho).zip(ff) {
+                let inv_2rho = 0.5 / rho.max(1e-30);
+                u[0] += f[0] * inv_2rho;
+                u[1] += f[1] * inv_2rho;
+                u[2] += f[2] * inv_2rho;
+            }
+        }
 
         Ok(())
     }

@@ -61,6 +61,21 @@ pub struct DmForceConfig {
     pub force_scale: f64,
     /// DM-baryon scattering cross-section (cm^2). Default 0 = pure gravity.
     pub sigma_chi_b: f64,
+    /// Reference proton density (cm^-3) for drag unit conversion.
+    /// Used to precompute kappa_drag. Default: 5.9 (OMNI2 median).
+    pub n_ref_cm3: f64,
+    /// Reference bulk speed (km/s) for drag unit conversion.
+    /// Used to precompute kappa_drag. Default: 393.0 (OMNI2 median).
+    pub v_ref_kms: f64,
+    /// LBM velocity scale: physical speed maps to this lattice speed.
+    /// Default: 0.05 (Ma ~ 0.09 at cs = 1/sqrt(3)).
+    pub u_scale: f64,
+    /// Minimum heliocentric distance (AU) for radial grid mapping.
+    /// x=0 maps to r_min_au. Default: 0.5 (centered-on-1-AU behavior).
+    pub r_min_au: f64,
+    /// Maximum heliocentric distance (AU) for radial grid mapping.
+    /// x=nx-1 maps to r_max_au. Default: 1.5 (centered-on-1-AU behavior).
+    pub r_max_au: f64,
 }
 
 impl Default for DmForceConfig {
@@ -84,6 +99,11 @@ impl Default for DmForceConfig {
             eta_wake: 0.0,
             force_scale,
             sigma_chi_b: 0.0,
+            n_ref_cm3: 5.9,
+            v_ref_kms: 393.0,
+            u_scale: 0.05,
+            r_min_au: 0.5,
+            r_max_au: 1.5,
         }
     }
 }
@@ -121,16 +141,26 @@ pub struct DmForceField {
     pub dm_density: Vec<f64>,
     /// Configuration used to generate this field.
     pub config: DmForceConfig,
+    /// Per-cell lattice-native drag coefficient (dimensionless).
+    ///
+    /// kappa(r) = n_chi(r) * sigma * (m_reduced / m_proton) * (v_ref / u_scale) * force_scale
+    /// At solar system scales n_chi is approximately constant (NFW ~ uniform),
+    /// but this field enables spatial variation for extended radial domains.
+    pub kappa_field: Vec<f64>,
+    /// Scalar diagnostic: max of kappa_field. Used for backward-compatible
+    /// reporting in solar_wind_dm_mhd diagnostics.
+    pub kappa_drag: f64,
+    /// DM wind velocity in lattice units, precomputed from config.v_dm_wind
+    /// or from the halo dispersion velocity if no wind specified.
+    pub v_dm_lattice: [f64; 3],
 }
 
 impl DmForceField {
     /// Create and precompute the static DM gravitational force field.
     ///
-    /// Grid mapping follows the MHD Parker spiral convention:
-    /// - x is the radial direction (Sun -> outward)
-    /// - y, z are transverse
-    /// - r_0 = nx/2 corresponds to 1 AU
-    /// - Physical radius: r_phys = (x / r0) * 1 AU
+    /// Grid mapping: x-axis spans r_min_au to r_max_au (heliocentric distance).
+    /// y, z are transverse. Physical radius at each cell is computed from
+    /// the grid position using linear interpolation between r_min and r_max.
     pub fn new(nx: usize, ny: usize, nz: usize, config: DmForceConfig) -> Self {
         let n = nx * ny * nz;
         let mut force = vec![[0.0; 3]; n];
@@ -147,8 +177,9 @@ impl DmForceField {
         // Local DM density in SI
         let rho_dm_si = config.rho_dm_local_gev_cm3 * GEV_CM3_TO_KG_M3;
 
-        // Grid reference point: x = nx/2 corresponds to 1 AU
-        let r0 = nx as f64 / 2.0;
+        // Grid mapping: x-axis linearly spans r_min_au to r_max_au
+        let r_min = config.r_min_au;
+        let r_max = config.r_max_au;
         let y_center = ny as f64 / 2.0;
         let z_center = nz as f64 / 2.0;
 
@@ -157,13 +188,27 @@ impl DmForceField {
                 for x in 0..nx {
                     let idx = GridIndex::new(x, y, z).linearize(nx, ny);
 
-                    // Map grid to physical coordinates
-                    // Radial distance from Sun (along x)
-                    let dx = x as f64 - 0.0; // Sun is at x=0
-                    let dy = y as f64 - y_center;
-                    let dz = z as f64 - z_center;
-                    let r_grid = (dx * dx + dy * dy + dz * dz).sqrt().max(0.5);
-                    let r_phys = (r_grid / r0) * AU_M;
+                    // Heliocentric distance at this x-cell (AU)
+                    let r_au = if nx > 1 {
+                        r_min + (r_max - r_min) * x as f64 / (nx - 1) as f64
+                    } else {
+                        (r_min + r_max) * 0.5
+                    };
+
+                    // Transverse displacement in grid units, scaled by cell size
+                    // Cell size in AU: (r_max - r_min) / (nx - 1)
+                    let cell_au = if nx > 1 {
+                        (r_max - r_min) / (nx - 1) as f64
+                    } else {
+                        r_max - r_min
+                    };
+                    let dy_au = (y as f64 - y_center) * cell_au;
+                    let dz_au = (z as f64 - z_center) * cell_au;
+
+                    // Physical radius from galactic center (Sun at ~8 kpc, perturbation is local)
+                    // For NFW force: use heliocentric r as proxy (r << r_s ~ 20 kpc)
+                    let r_total_au = (r_au * r_au + dy_au * dy_au + dz_au * dz_au).sqrt().max(0.01);
+                    let r_phys = r_total_au * AU_M;
 
                     // NFW enclosed mass at this radius
                     let m_enc = nfw_enclosed_mass(r_phys, m200_kg, r_200, config.c200);
@@ -171,8 +216,8 @@ impl DmForceField {
                     // Gravitational acceleration: a = -G M(<r) / r^2
                     let a_phys = G_SI * m_enc / (r_phys * r_phys);
 
-                    // Radial unit vector (pointing away from Sun at x=0)
-                    let rhat = [dx / r_grid, dy / r_grid, dz / r_grid];
+                    // Radial unit vector (pointing away from Sun)
+                    let rhat = [r_au / r_total_au, dy_au / r_total_au, dz_au / r_total_au];
 
                     // Wake modulation: 1 + eta * cos(angle to DM wind direction)
                     let wake_factor = if config.eta_wake > 0.0
@@ -205,6 +250,37 @@ impl DmForceField {
             }
         }
 
+        // Precompute per-cell lattice-native drag coefficient kappa.
+        //
+        // kappa(r) = n_chi(r) * sigma * (m_reduced / m_proton) * (v_ref / u_scale) * force_scale
+        // where n_chi(r) = dm_density[idx] / (M_CHI_GEV * GEV_TO_KG).
+        // At solar system scales, dm_density is approximately constant (rho_dm_local).
+        let sigma_m2 = config.sigma_chi_b * 1.0e-4; // cm^2 -> m^2
+        let mass_ratio = M_REDUCED_GEV / M_PROTON_GEV; // dimensionless
+        let v_ref_ms = config.v_ref_kms * KMS_TO_MS;
+        let vel_conversion = v_ref_ms / config.u_scale;
+        let kappa_base = sigma_m2 * mass_ratio * vel_conversion * config.force_scale;
+        let m_chi_kg = M_CHI_GEV * GEV_TO_KG;
+
+        let mut kappa_field = vec![0.0; n];
+        for idx in 0..n {
+            // n_chi at this cell: number density from local DM mass density
+            let n_chi_m3 = dm_density[idx] / m_chi_kg;
+            kappa_field[idx] = n_chi_m3 * kappa_base;
+        }
+        let kappa_drag = kappa_field.iter().cloned().fold(0.0_f64, f64::max);
+
+        // Precompute DM wind velocity in lattice units.
+        // If v_dm_wind is set (nonzero), it is already in lattice units.
+        // Otherwise, default to halo dispersion along +x converted to lattice.
+        let v_dm_lattice = if config.v_dm_wind.iter().any(|&v| v.abs() > 1e-30) {
+            config.v_dm_wind
+        } else {
+            // Convert 220 km/s dispersion to lattice: v_lbm = v_phys * u_scale / v_ref
+            let v_disp_lattice = V_CHI_DISPERSION_KMS * config.u_scale / config.v_ref_kms;
+            [v_disp_lattice, 0.0, 0.0]
+        };
+
         Self {
             nx,
             ny,
@@ -212,6 +288,9 @@ impl DmForceField {
             force,
             dm_density,
             config,
+            kappa_field,
+            kappa_drag,
+            v_dm_lattice,
         }
     }
 
@@ -233,7 +312,50 @@ impl DmForceField {
             .fold(0.0_f64, f64::max)
     }
 
+    /// Compute drag force using precomputed kappa (lattice-native, no per-cell conversion).
+    ///
+    /// Uses kappa_drag and v_dm_lattice precomputed at construction time.
+    /// Inner loop: drag[idx] = kappa * |v_rel| * v_rel_hat (all in lattice units).
+    ///
+    /// Returns zero-filled vec when sigma_chi_b <= 0.
+    pub fn drag_force_lattice(
+        &self,
+        baryon_velocity: &[[f64; 3]],
+    ) -> Vec<[f64; 3]> {
+        let n = self.force.len();
+        if self.kappa_drag <= 0.0 {
+            return vec![[0.0; 3]; n];
+        }
+
+        let mut drag = vec![[0.0; 3]; n];
+        let v_dm = self.v_dm_lattice;
+
+        for (idx, (d, v_b)) in drag.iter_mut().zip(baryon_velocity).enumerate() {
+            let kappa = self.kappa_field[idx];
+            if kappa <= 0.0 {
+                continue;
+            }
+            let vr = [v_dm[0] - v_b[0], v_dm[1] - v_b[1], v_dm[2] - v_b[2]];
+            let vr_mag = (vr[0] * vr[0] + vr[1] * vr[1] + vr[2] * vr[2]).sqrt();
+            if vr_mag < 1e-30 {
+                continue;
+            }
+            let scale = kappa * vr_mag;
+            *d = [
+                scale * vr[0] / vr_mag,
+                scale * vr[1] / vr_mag,
+                scale * vr[2] / vr_mag,
+            ];
+        }
+
+        drag
+    }
+
     /// Compute dynamic DM-baryon drag force from scattering cross-section.
+    ///
+    /// **Deprecated**: prefer `drag_force_lattice()` which uses precomputed kappa
+    /// and avoids per-cell unit conversion. This method is kept for backward
+    /// compatibility and validation.
     ///
     /// F_drag = n_chi * n_b * sigma_chi_b * m_reduced * |v_rel| * v_rel_hat
     /// per unit volume, converted to lattice acceleration.
@@ -729,6 +851,253 @@ mod tests {
         assert!(
             max_high > max_low,
             "higher sigma should produce larger drag: low={max_low:.3e}, high={max_high:.3e}"
+        );
+    }
+
+    #[test]
+    fn test_kappa_zero_when_no_sigma() {
+        let field = default_field(8, 4, 4);
+        assert_eq!(field.kappa_drag, 0.0, "kappa should be zero when sigma=0");
+    }
+
+    #[test]
+    fn test_kappa_positive_when_sigma_set() {
+        let config = DmForceConfig {
+            sigma_chi_b: 1e-40,
+            ..DmForceConfig::default()
+        };
+        let field = DmForceField::new(8, 4, 4, config);
+        assert!(
+            field.kappa_drag > 0.0,
+            "kappa should be positive: {}",
+            field.kappa_drag
+        );
+        assert!(field.kappa_drag.is_finite(), "kappa must be finite");
+    }
+
+    #[test]
+    fn test_kappa_scales_with_sigma() {
+        let config_lo = DmForceConfig {
+            sigma_chi_b: 1e-45,
+            ..DmForceConfig::default()
+        };
+        let config_hi = DmForceConfig {
+            sigma_chi_b: 1e-40,
+            ..DmForceConfig::default()
+        };
+        let field_lo = DmForceField::new(4, 4, 4, config_lo);
+        let field_hi = DmForceField::new(4, 4, 4, config_hi);
+
+        // kappa should scale linearly with sigma
+        let ratio = field_hi.kappa_drag / field_lo.kappa_drag;
+        assert!(
+            (ratio - 1e5).abs() / 1e5 < 1e-10,
+            "kappa should scale linearly: ratio={ratio:.6e}, expected=1e5"
+        );
+    }
+
+    #[test]
+    fn test_v_dm_lattice_default_dispersion() {
+        let field = default_field(8, 4, 4);
+        // Default: v_dm_wind = [0,0,0], so fallback to dispersion
+        // v_disp_lattice = 220 * 0.05 / 393 ~ 0.02799
+        let expected = 220.0 * 0.05 / 393.0;
+        assert!(
+            (field.v_dm_lattice[0] - expected).abs() < 1e-6,
+            "v_dm_lattice[0] = {}, expected {}",
+            field.v_dm_lattice[0],
+            expected,
+        );
+        assert_eq!(field.v_dm_lattice[1], 0.0);
+        assert_eq!(field.v_dm_lattice[2], 0.0);
+    }
+
+    #[test]
+    fn test_v_dm_lattice_explicit_wind() {
+        let config = DmForceConfig {
+            v_dm_wind: [0.03, 0.01, -0.005],
+            ..DmForceConfig::default()
+        };
+        let field = DmForceField::new(4, 4, 4, config);
+        // When v_dm_wind is set, v_dm_lattice should equal it
+        assert_eq!(field.v_dm_lattice, [0.03, 0.01, -0.005]);
+    }
+
+    #[test]
+    fn test_drag_force_lattice_zero_sigma() {
+        let field = default_field(8, 4, 4);
+        let u = vec![[0.05, 0.0, 0.0]; 8 * 4 * 4];
+        let drag = field.drag_force_lattice(&u);
+        assert!(drag.iter().all(|f| f[0] == 0.0 && f[1] == 0.0 && f[2] == 0.0));
+    }
+
+    #[test]
+    fn test_drag_force_lattice_nonzero() {
+        let config = DmForceConfig {
+            sigma_chi_b: 1e-40,
+            ..DmForceConfig::default()
+        };
+        let field = DmForceField::new(8, 4, 4, config);
+        let u = vec![[0.05, 0.0, 0.0]; 8 * 4 * 4];
+        let drag = field.drag_force_lattice(&u);
+        let has_nonzero = drag.iter().any(|f| f[0].abs() > 0.0);
+        assert!(has_nonzero, "lattice drag should be nonzero");
+        for f in &drag {
+            assert!(f[0].is_finite());
+            assert!(f[1].is_finite());
+            assert!(f[2].is_finite());
+        }
+    }
+
+    #[test]
+    fn test_drag_lattice_vs_legacy_equivalence() {
+        // The lattice-native kappa method and the legacy per-cell method
+        // should produce the same result (within f64 tolerance) when
+        // given equivalent parameters.
+        let config = DmForceConfig {
+            sigma_chi_b: 1e-42,
+            n_ref_cm3: 5.9,
+            v_ref_kms: 393.0,
+            u_scale: 0.05,
+            ..DmForceConfig::default()
+        };
+        let field = DmForceField::new(8, 4, 4, config);
+        let n = 8 * 4 * 4;
+        let rho = vec![1.0; n];
+        let u = vec![[0.04, 0.01, -0.005]; n];
+
+        let drag_legacy = field.drag_force(&rho, &u, 5.9, 393.0);
+        let drag_kappa = field.drag_force_lattice(&u);
+
+        // Compare magnitudes. The legacy method uses baryon_density in its
+        // calculation but it cancels out (n_b in numerator and denominator).
+        // With rho=1.0 and n_ref=5.9, the legacy and kappa methods should agree.
+        for idx in 0..n {
+            for d in 0..3 {
+                let diff = (drag_legacy[idx][d] - drag_kappa[idx][d]).abs();
+                let scale = drag_legacy[idx][d].abs().max(1e-30);
+                assert!(
+                    diff / scale < 1e-6,
+                    "legacy vs kappa mismatch at idx={idx} d={d}: legacy={:.6e}, kappa={:.6e}",
+                    drag_legacy[idx][d],
+                    drag_kappa[idx][d],
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_nfw_force_at_outer_heliosphere() {
+        // At 100 AU, NFW enclosed mass is larger -> force magnitude increases
+        // relative to 1 AU (at solar system scales, M(r) ~ r^2 so F ~ const,
+        // but with extended range the force should remain finite and nonzero).
+        let config = DmForceConfig {
+            r_min_au: 1.0,
+            r_max_au: 100.0,
+            ..DmForceConfig::default()
+        };
+        let field = DmForceField::new(32, 4, 4, config);
+
+        // Force at inner edge (x=0, r=1 AU) and outer edge (x=31, r=100 AU)
+        let idx_inner = GridIndex::new(0, 2, 2).linearize(32, 4);
+        let idx_outer = GridIndex::new(31, 2, 2).linearize(32, 4);
+
+        let mag_inner = (field.force[idx_inner][0].powi(2)
+            + field.force[idx_inner][1].powi(2)
+            + field.force[idx_inner][2].powi(2))
+        .sqrt();
+        let mag_outer = (field.force[idx_outer][0].powi(2)
+            + field.force[idx_outer][1].powi(2)
+            + field.force[idx_outer][2].powi(2))
+        .sqrt();
+
+        assert!(mag_inner > 0.0, "force at 1 AU should be nonzero");
+        assert!(mag_outer > 0.0, "force at 100 AU should be nonzero");
+        assert!(mag_inner.is_finite(), "force at 1 AU should be finite");
+        assert!(mag_outer.is_finite(), "force at 100 AU should be finite");
+
+        // At solar system scales, NFW force is approximately constant
+        // (M(r) ~ r^2 for r << r_s, so g = GM/r^2 ~ const)
+        let ratio = mag_inner / mag_outer;
+        assert!(
+            ratio > 0.1 && ratio < 10.0,
+            "NFW force roughly constant at sub-kpc: inner={mag_inner:.3e}, outer={mag_outer:.3e}, ratio={ratio:.2}",
+        );
+    }
+
+    #[test]
+    fn test_force_continuity_across_grid() {
+        // Force should vary smoothly -- no discontinuities at cell boundaries
+        let config = DmForceConfig {
+            r_min_au: 1.0,
+            r_max_au: 50.0,
+            ..DmForceConfig::default()
+        };
+        let field = DmForceField::new(64, 4, 4, config);
+
+        let y_mid = 2;
+        let z_mid = 2;
+        let mut max_jump = 0.0_f64;
+
+        for x in 1..64 {
+            let idx_prev = GridIndex::new(x - 1, y_mid, z_mid).linearize(64, 4);
+            let idx_curr = GridIndex::new(x, y_mid, z_mid).linearize(64, 4);
+
+            let mag_prev = (field.force[idx_prev][0].powi(2)
+                + field.force[idx_prev][1].powi(2)
+                + field.force[idx_prev][2].powi(2))
+            .sqrt();
+            let mag_curr = (field.force[idx_curr][0].powi(2)
+                + field.force[idx_curr][1].powi(2)
+                + field.force[idx_curr][2].powi(2))
+            .sqrt();
+
+            let jump = if mag_prev > 1e-30 {
+                (mag_curr - mag_prev).abs() / mag_prev
+            } else {
+                0.0
+            };
+            max_jump = max_jump.max(jump);
+        }
+
+        // Smooth force field: relative jump between adjacent cells < 10%
+        assert!(
+            max_jump < 0.10,
+            "force field should be smooth (max relative jump < 10%): {max_jump:.4}",
+        );
+    }
+
+    #[test]
+    fn test_mass_conservation_extended_radial() {
+        // Mass conservation with DM force over r=[1,100] AU domain
+        use crate::solver::LbmSolver3D;
+
+        let (nx, ny, nz) = (16, 8, 8);
+        let tau = 0.8;
+
+        let mut solver = LbmSolver3D::new(nx, ny, nz, tau);
+        solver.initialize_uniform(1.0, [0.0, 0.0, 0.0]);
+        let mass_initial = solver.total_mass();
+
+        let config = DmForceConfig {
+            r_min_au: 1.0,
+            r_max_au: 100.0,
+            ..DmForceConfig::default()
+        };
+        let dm = DmForceField::new(nx, ny, nz, config);
+
+        for _ in 0..50 {
+            solver
+                .set_force_field(dm.force.clone())
+                .expect("force field set");
+            solver.evolve_one_step();
+        }
+
+        let mass_final = solver.total_mass();
+        let rel_err = (mass_final - mass_initial).abs() / mass_initial;
+        assert!(
+            rel_err < 1e-10,
+            "mass conservation at extended domain: rel_err={rel_err:.3e}",
         );
     }
 }

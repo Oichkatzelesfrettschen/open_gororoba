@@ -2461,6 +2461,7 @@ mod tests {
     // ---------------------------------------------------------------
 
     #[test]
+    #[ignore = "heavy research lane: multi-dim scaling law verification"]
     fn test_motif_scaling_laws() {
         // Verify the scaling patterns hold across all computed dimensions.
         // These are empirical laws discovered from the exact census.
@@ -2501,6 +2502,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: multi-dim scaling law verification"]
     fn test_motif_class_count_scaling() {
         // The number of distinct motif classes = dim/16.
         // This doubles with each Cayley-Dickson doubling.
@@ -2518,6 +2520,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: multi-dim scaling law verification"]
     fn test_k2_component_count_scaling() {
         // The number of K_{2,...,2} components = 3 + log2(dim).
         for &(dim, expected_k2) in &[(16, 7), (32, 8), (64, 9), (128, 10)] {
@@ -3196,6 +3199,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: deep algebraic proof across dims"]
     fn test_three_to_one_ratio_antibalanced() {
         // The 3:1 ratio follows from three properties:
         //
@@ -3536,6 +3540,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: multi-dim regularity analysis"]
     fn test_parity_edge_regularity_breakdown() {
         // Discovery: parity-specific edge-regularity is VIOLATED in non-pure
         // regimes. Even-parity triangle counts per edge vary (e.g., 4 to 8 at
@@ -3618,6 +3623,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: multi-dim GF(2) class verification"]
     fn test_regime_gf2_class_correspondence() {
         // The GF(2) separating classes (C-480) correspond exactly to edge-count
         // groups. Face sign regimes = GF(2) classes + 1 for dim >= 32, because
@@ -3696,6 +3702,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: multi-dim regime/edge scaling"]
     fn test_regime_and_edge_scaling_laws() {
         // Cross-dimension verification of the regime count and edge formulas.
         //
@@ -3800,6 +3807,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: multi-dim 3:1 theorem verification"]
     fn test_universal_double_three_to_one_law() {
         // Universal 3:1 Theorem (C-487):
         //
@@ -3870,6 +3878,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "heavy research lane: dim32 heptacross XOR label analysis"]
     fn test_special_heptacross_identity_dim32() {
         // Identify which component is the "special" pure heptacross at dim=32.
         // Uses XOR labels from projective_geometry to characterize each component.
@@ -3955,6 +3964,7 @@ mod tests {
     /// (3) class total is divisible by 4 and pure = total/4 (the 3:1 law)
     /// (4) fraction of Same edges per component (diagnostic)
     #[test]
+    #[ignore = "heavy research lane: multi-dim algebraic mechanism proof"]
     fn test_double_three_to_one_algebraic_mechanism() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -4131,6 +4141,7 @@ mod tests {
     /// the 3:1 Theorem. Verified at dims 16, 32, 64 in the mechanism test;
     /// this test extends to dim=128.
     #[test]
+    #[ignore = "heavy research lane: dim128 half-half edge law"]
     fn test_half_half_edge_law_dim128() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -4294,6 +4305,7 @@ mod tests {
     /// Then check whether these projections cluster into Fano-related
     /// subsets, or whether the structure fully scrambles at dim=32+.
     #[test]
+    #[ignore = "heavy research lane: multi-dim Fano projection analysis"]
     fn test_octonion_subalgebra_fano_projection() {
         // Phase 1: Verify the known dim=16 Fano correspondence
         let comps_16 = motif_components_for_cross_assessors(16);
@@ -4530,6 +4542,7 @@ mod tests {
     /// Additionally tests the Parity Product Theorem:
     /// product(sigma) over triangle edges determines face sign class.
     #[test]
+    #[ignore = "heavy research lane: multi-dim sigma/parity product proof"]
     fn test_sigma_correspondence_and_parity_product() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -4701,6 +4714,7 @@ mod tests {
     /// Also verifies C-517: Half-Half Edge Law = Delta_k psi is balanced
     /// (exactly half of edges have Delta_k psi = 0, half have 1).
     #[test]
+    #[ignore = "heavy research lane: multi-dim translation derivative analysis"]
     fn test_translation_derivative_and_half_half() {
         use crate::zd_graphs::xor_key;
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
@@ -4822,6 +4836,7 @@ mod tests {
     /// If this fails, we also test variant constructions involving the
     /// component key k.
     #[test]
+    #[ignore = "heavy research lane: multi-dim associator obstruction search"]
     fn test_associator_obstruction_candidate_b() {
         use crate::zd_graphs::xor_key;
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
@@ -5036,6 +5051,7 @@ mod tests {
     /// check if combining them with the sigma gives a 4-state invariant
     /// where "pure = zero state".
     #[test]
+    #[ignore = "heavy research lane: multi-dim psi matrix obstruction search"]
     fn test_psi_matrix_obstruction_search() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -5305,6 +5321,7 @@ mod tests {
     ///
     /// Alternative approach: per-component search for universal invariant.
     #[test]
+    #[ignore = "heavy research lane: multi-dim separator generalization"]
     fn test_separator_generalization() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -5497,6 +5514,7 @@ mod tests {
     ///
     /// We verify this at dim=128 per-component for full confidence.
     #[test]
+    #[ignore = "heavy research lane: dim128 antidiagonal parity theorem"]
     fn test_antidiagonal_parity_theorem_dim128() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -5802,6 +5820,7 @@ mod tests {
     /// non-tree edges: if delta(u) XOR delta(v) != eta(u,v), that edge
     /// witnesses a frustrated cycle.
     #[test]
+    #[ignore = "heavy research lane: multi-dim eta cohomology + Klein-four fibers"]
     fn test_eta_cohomology_and_klein_four_fibers() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::collections::VecDeque;
@@ -6012,6 +6031,7 @@ mod tests {
     /// half-dimension indices, and whether the conjugation asymmetry
     /// in case 3 is the sole source of eta != 0.
     #[test]
+    #[ignore = "heavy research lane: multi-dim eta doubling decomposition"]
     fn test_eta_doubling_decomposition() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -6111,6 +6131,7 @@ mod tests {
     /// This tests whether the mechanism (eta constancy) behaves uniformly
     /// across all regimes or has regime-dependent structure.
     #[test]
+    #[ignore = "heavy research lane: multi-dim eta regime distribution"]
     fn test_eta_regime_distribution() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::collections::{BTreeMap, VecDeque};
@@ -6304,6 +6325,7 @@ mod tests {
     /// lower than psi's since eta involves a specific linear combination
     /// of psi evaluations.
     #[test]
+    #[ignore = "heavy research lane: multi-dim GF(2) polynomial degree analysis"]
     fn test_psi_gf2_polynomial_degree() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -6465,6 +6487,7 @@ mod tests {
     /// (C-529): Asymptotic imbalance ratio convergence
     /// (C-530): Klein-four fiber symmetry -- structural proof via eta-swap
     #[test]
+    #[ignore = "heavy research lane: multi-dim mechanism depth analysis"]
     fn test_mechanism_depth_analysis() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
         use std::collections::VecDeque;
@@ -6893,6 +6916,7 @@ mod tests {
     /// as the LOWER endpoint is odd, equals the number where j is
     /// the UPPER endpoint. This is a "vertex-median symmetry".
     #[test]
+    #[ignore = "heavy research lane: multi-dim vertex median symmetry"]
     fn test_vertex_median_symmetry() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -7112,6 +7136,7 @@ mod tests {
     /// At dim=4: psi has 3 imaginary elements (i,j,k), 3x3 matrix, quaternion signs
     /// At dim=8: psi has 7 imaginary elements, 7x7 matrix, Fano plane structure
     #[test]
+    #[ignore = "heavy research lane: CD tower psi/eta foundation analysis"]
     fn test_psi_eta_tower_dim2_dim4_dim8() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
@@ -8199,6 +8224,7 @@ mod tests {
     /// Validates C-559: APT mechanism verified at dim=256 with zero mismatches.
     /// Runtime: ~7 sec (full triangle enumeration and Klein-four fiber analysis).
     #[test]
+    #[ignore = "heavy research lane: dim256 APT mechanism regression (13.3M triangles)"]
     fn test_pathion_apt_mechanism_dim256_regression() {
         use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 

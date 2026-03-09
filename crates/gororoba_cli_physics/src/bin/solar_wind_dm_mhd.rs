@@ -110,6 +110,16 @@ struct Cli {
     #[arg(long, default_value_t = 393.0)]
     dm_v_ref: f64,
 
+    /// Minimum heliocentric distance (AU) for DM force grid mapping.
+    /// x=0 maps to this distance. Default 0.5 (centered-on-1-AU slab).
+    #[arg(long, default_value_t = 0.5)]
+    dm_r_min: f64,
+
+    /// Maximum heliocentric distance (AU) for DM force grid mapping.
+    /// x=nx-1 maps to this distance. Default 1.5 (centered-on-1-AU slab).
+    #[arg(long, default_value_t = 1.5)]
+    dm_r_max: f64,
+
     /// Disable DM coupling (pure MHD baseline for A/B comparison)
     #[arg(long, default_value_t = false)]
     no_dm: bool,
@@ -177,11 +187,19 @@ fn max_force_mag(f: &[[f64; 3]]) -> f64 {
 /// Format: x,y,z,rho,ux,uy,uz,bx,by,bz (header row skipped).
 /// Populates solver (rho, u, f) and mhd (bx, by, bz) fields directly
 /// from real spacecraft data.
+/// IC metadata parsed from comment header lines (# key=value).
+#[derive(Debug, Default)]
+struct IcMetadata {
+    n_ref_cm3: Option<f64>,
+    v_ref_kms: Option<f64>,
+    u_scale: Option<f64>,
+}
+
 fn load_ic_file(
     path: &std::path::Path,
     solver: &mut LbmSolver3D,
     mhd: &mut MhdField,
-) -> anyhow::Result<usize> {
+) -> anyhow::Result<(usize, IcMetadata)> {
     let file = fs::File::open(path)?;
     let reader = std::io::BufReader::new(file);
     let lattice = &solver.collider.lattice;
@@ -189,10 +207,27 @@ fn load_ic_file(
     let ny = solver.ny;
 
     let mut loaded = 0usize;
+    let mut meta = IcMetadata::default();
+
     for line in reader.lines() {
         let line = line?;
         let line = line.trim();
-        if line.is_empty() || line.starts_with('x') || line.starts_with('#') {
+        if line.is_empty() || line.starts_with('x') {
+            continue;
+        }
+        // Parse metadata from comment header
+        if let Some(rest) = line.strip_prefix("# ") {
+            if let Some((key, val)) = rest.split_once('=') {
+                match key.trim() {
+                    "n_ref_cm3" => meta.n_ref_cm3 = val.trim().parse().ok(),
+                    "v_ref_kms" => meta.v_ref_kms = val.trim().parse().ok(),
+                    "u_scale" => meta.u_scale = val.trim().parse().ok(),
+                    _ => {}
+                }
+            }
+            continue;
+        }
+        if line.starts_with('#') {
             continue;
         }
         let fields: Vec<&str> = line.split(',').collect();
@@ -230,7 +265,7 @@ fn load_ic_file(
 
         loaded += 1;
     }
-    Ok(loaded)
+    Ok((loaded, meta))
 }
 
 fn main() -> anyhow::Result<()> {
@@ -262,20 +297,30 @@ fn main() -> anyhow::Result<()> {
     let mut mhd = MhdField::new(cli.nx, cli.ny, cli.nz, mhd_config);
 
     // Initialize state: real data from IC file, or synthetic uniform+Parker
-    let u_sw = if let Some(ref ic_path) = cli.ic_file {
-        let loaded = load_ic_file(ic_path, &mut solver, &mut mhd)?;
+    let (u_sw, ic_meta) = if let Some(ref ic_path) = cli.ic_file {
+        let (loaded, ic_meta) = load_ic_file(ic_path, &mut solver, &mut mhd)?;
         eprintln!("loaded {} cells from IC file: {}", loaded, ic_path.display());
+        // Report IC metadata when present
+        if let Some(n) = ic_meta.n_ref_cm3 {
+            eprintln!("  IC metadata: n_ref={n:.2} cm^-3");
+        }
+        if let Some(v) = ic_meta.v_ref_kms {
+            eprintln!("  IC metadata: v_ref={v:.1} km/s");
+        }
+        if let Some(u) = ic_meta.u_scale {
+            eprintln!("  IC metadata: u_scale={u:.4}");
+        }
 
         // Compute median u_x for inlet boundary (needed for Zou-He)
         let mut ux_vals: Vec<f64> = solver.u.iter().map(|u| u[0]).collect();
         ux_vals.sort_by(|a, b| a.partial_cmp(b).unwrap());
         let median_ux = ux_vals[ux_vals.len() / 2];
-        [median_ux, 0.0, 0.0]
+        ([median_ux, 0.0, 0.0], ic_meta)
     } else {
         let u_init = [cli.v_sw, 0.0, 0.0];
         solver.initialize_uniform(1.0, u_init);
         mhd.parker_spiral_init(cli.v_sw);
-        u_init
+        (u_init, IcMetadata::default())
     };
 
     // Helmholtz projection: remove magnetic monopoles from Cartesian discretization
@@ -286,6 +331,10 @@ fn main() -> anyhow::Result<()> {
 
     // Initialize DM force field (if enabled)
     let dm_field = if !cli.no_dm {
+        // Use IC metadata for unit conversion when available (overrides CLI defaults)
+        let n_ref = ic_meta.n_ref_cm3.unwrap_or(cli.dm_n_ref);
+        let v_ref = ic_meta.v_ref_kms.unwrap_or(cli.dm_v_ref);
+        let u_sc = ic_meta.u_scale.unwrap_or(0.05);
         let dm_config = DmForceConfig {
             rho_dm_local_gev_cm3: cli.dm_density,
             m200_solar: cli.dm_m200,
@@ -293,14 +342,19 @@ fn main() -> anyhow::Result<()> {
             v_dm_wind: [cli.dm_wind_x, cli.dm_wind_y, cli.dm_wind_z],
             eta_wake: cli.dm_wake,
             sigma_chi_b: cli.dm_sigma,
+            n_ref_cm3: n_ref,
+            v_ref_kms: v_ref,
+            u_scale: u_sc,
+            r_min_au: cli.dm_r_min,
+            r_max_au: cli.dm_r_max,
             ..DmForceConfig::default()
         };
         let field = DmForceField::new(cli.nx, cli.ny, cli.nz, dm_config);
         eprintln!("DM max |F_grav|: {:.6e} (lattice units)", field.max_force_magnitude());
         if cli.dm_sigma > 0.0 {
             eprintln!(
-                "DM drag: sigma={:.3e} cm^2, n_ref={:.1} cm^-3, v_ref={:.0} km/s",
-                cli.dm_sigma, cli.dm_n_ref, cli.dm_v_ref,
+                "DM drag: sigma={:.3e} cm^2, kappa={:.6e}, n_ref={:.1} cm^-3, v_ref={:.0} km/s",
+                cli.dm_sigma, field.kappa_drag, cli.dm_n_ref, cli.dm_v_ref,
             );
         }
         Some(field)
@@ -316,26 +370,38 @@ fn main() -> anyhow::Result<()> {
         fs::create_dir_all(dir)?;
     }
 
-    // Time loop
+    // Time loop (stream-collide ordering)
+    //
+    // Correct LBM cycle for forced MHD:
+    //   stream -> BC -> macroscopic -> force -> collision -> B-field
+    //
+    // This ensures forces are computed from the post-streaming velocity,
+    // making the force field and collision velocity temporally consistent.
+    // On step 0 we skip streaming since initial conditions are set directly.
     for step in 0..cli.steps {
-        // 1. Apply Zou-He velocity inlet at x=0
+        // 1. Stream (propagate f_i along lattice velocities)
+        //    Skipped on step 0: initial f_i from initialize_from_ic() is
+        //    already the "post-collision" state ready for first streaming.
+        if step > 0 {
+            let _ = solver.phase2_streaming();
+        }
+
+        // 2. Apply Zou-He velocity inlet BC at x=0
         zou_he.apply_velocity_inlet_min_x(&mut solver.f, cli.nx, cli.ny, cli.nz, u_sw);
 
-        // 2. Compute Lorentz force from current B-field
+        // 3. Recompute macroscopic from BC-modified post-stream distributions
+        solver.compute_macroscopic();
+
+        // 4. Compute Lorentz force from current B-field
         let lorentz = mhd.lorentz_force();
 
-        // 3. Combine with DM gravitational force (if enabled)
+        // 5. Combine with DM gravitational force (if enabled)
         let combined = match &dm_field {
             Some(dm) => {
                 let grav_combined = combine_forces(&lorentz, &dm.force);
-                // Add dynamic drag force when sigma_chi_b > 0
+                // Add dynamic drag force when sigma_chi_b > 0 (kappa-based)
                 if dm.config.sigma_chi_b > 0.0 {
-                    let drag = dm.drag_force(
-                        &solver.rho,
-                        &solver.u,
-                        cli.dm_n_ref,
-                        cli.dm_v_ref,
-                    );
+                    let drag = dm.drag_force_lattice(&solver.u);
                     combine_forces(&grav_combined, &drag)
                 } else {
                     grav_combined
@@ -344,16 +410,16 @@ fn main() -> anyhow::Result<()> {
             None => lorentz,
         };
 
-        // 4. Set combined force field for Guo scheme
+        // 6. Set combined force field for Guo scheme
         solver.set_force_field(combined).expect("force field set");
 
-        // 5. LBM collision + streaming step
-        solver.evolve_one_step();
+        // 7. Collision (BGK + Phi_i source term with consistent u and F)
+        let _ = solver.phase1_collision();
 
-        // 6. Evolve B-field using updated velocity
+        // 8. Evolve B-field using force-corrected velocity u*
         mhd.evolve_b_field(&solver.u);
 
-        // 7. Periodic output
+        // 9. Periodic output
         if (step + 1) % cli.snap_interval == 0 || step == 0 {
             let energy = mhd.magnetic_energy();
             let div = mhd.max_div_b();
@@ -369,15 +435,10 @@ fn main() -> anyhow::Result<()> {
                 0.0
             };
 
-            // Report drag force magnitude when sigma > 0
+            // Report drag force magnitude when sigma > 0 (kappa-based)
             let drag_info = if let Some(dm) = dm_field.as_ref() {
                 if dm.config.sigma_chi_b > 0.0 {
-                    let drag = dm.drag_force(
-                        &solver.rho,
-                        &solver.u,
-                        cli.dm_n_ref,
-                        cli.dm_v_ref,
-                    );
+                    let drag = dm.drag_force_lattice(&solver.u);
                     let max_drag = max_force_mag(&drag);
                     format!("  |F_drag|={max_drag:.3e}")
                 } else {

@@ -63,6 +63,15 @@ pub struct OmniRecord {
     pub ae_index: f64,
     /// Kp index (times 10, e.g. 30 = Kp 3.0). Fill: 99
     pub kp_times_10: u8,
+
+    // -- Heliocentric position --
+
+    /// Heliocentric distance (AU). 1.0 for L1 spacecraft.
+    pub r_au: f64,
+    /// Heliographic latitude (deg). NaN for ecliptic-only spacecraft.
+    pub lat_deg: f64,
+    /// Heliographic longitude (deg). NaN when unknown.
+    pub lon_deg: f64,
 }
 
 // Fill values from the OMNI2 format specification.
@@ -116,6 +125,34 @@ fn parse_or_nan_fill_only(s: &str, fill: f64) -> f64 {
         Ok(v) => v,
         Err(_) => f64::NAN,
     }
+}
+
+/// Distance-scaled physical ceilings for outer heliosphere spacecraft.
+///
+/// At heliocentric distance `r_au`, the solar wind parameters scale as:
+/// - Density: n ~ r^-2 (continuity equation for spherical expansion)
+/// - B-field: B_r ~ r^-2, B_phi ~ r^-1 (flux conservation + Parker spiral)
+/// - Temperature: T ~ r^(-2/3) (adiabatic expansion, gamma=5/3)
+/// - Speed: approximately constant (super-Alfvenic flow)
+///
+/// Returns (ceil_b, ceil_temp, ceil_density, ceil_speed).
+/// At r=1.0 AU, returns the same values as the 1 AU constants.
+pub fn distance_scaled_ceilings(r_au: f64) -> (f64, f64, f64, f64) {
+    let r = if r_au > 0.0 { r_au } else { 1.0 };
+    let ceil_b = CEIL_B / (r * r);
+    let ceil_temp = CEIL_TEMP / r.powf(2.0 / 3.0);
+    let ceil_density = CEIL_DENSITY / (r * r);
+    let ceil_speed = CEIL_SPEED; // constant (super-Alfvenic)
+    (ceil_b, ceil_temp, ceil_density, ceil_speed)
+}
+
+/// Two-stage filter using distance-scaled ceilings.
+///
+/// Same logic as `parse_or_nan` but uses ceilings appropriate for
+/// heliocentric distance `r_au`. For L1 spacecraft (r_au=1.0), behavior
+/// is identical to `parse_or_nan` with the 1 AU constants.
+pub fn parse_or_nan_at_distance(s: &str, fill: f64, ceiling_at_r: f64) -> f64 {
+    parse_or_nan(s, fill, ceiling_at_r)
 }
 
 /// Parse NASA OMNI2 hourly ASCII data.
@@ -201,6 +238,9 @@ pub fn parse_omni_hourly(content: &str) -> Vec<OmniRecord> {
             dst_index,
             ae_index,
             kp_times_10,
+            r_au: 1.0,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
         });
     }
     records

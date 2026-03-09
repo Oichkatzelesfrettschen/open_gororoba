@@ -23,14 +23,21 @@
 
 use clap::Parser;
 use data_core::catalogs::ace_mag::{ace_mag_to_omni, average_to_hourly, parse_ace_mag_file};
+use data_core::catalogs::cassini::{cassini_to_omni, parse_cassini_cruise_file};
+use data_core::catalogs::juno::{juno_to_omni, parse_juno_cruise_file};
+use data_core::catalogs::new_horizons::{nh_swap_to_omni, parse_nh_swap_file};
 use data_core::catalogs::omni::{OmniRecord, parse_omni_file, parse_omni_hourly};
+use data_core::catalogs::pioneer::{parse_pioneer_file, pioneer_to_omni, PioneerSpacecraft};
 use data_core::catalogs::solar_wind::parse_swepam_file;
 use data_core::catalogs::stereo_plastic::{
     average_stereo_mag_hourly, parse_stereo_magplasma_file, parse_stereo_plastic_file,
     stereo_to_omni,
 };
+use data_core::catalogs::ulysses::{parse_ulysses_file, ulysses_to_omni};
+use data_core::catalogs::voyager::{parse_voyager_file, voyager_to_omni, VoyagerSpacecraft};
 use data_core::catalogs::wind_swe::{
-    merge_wind_swe_mfi, parse_wind_mfi_file, parse_wind_swe_file, wind_mfi_to_omni,
+    classify_knudsen, knudsen_number, merge_wind_swe_mfi, parse_wind_mfi_file,
+    parse_wind_swe_file, wind_mfi_to_omni, KnudsenRegime,
 };
 use std::fs;
 use std::io::Write;
@@ -88,6 +95,56 @@ struct Cli {
     #[arg(long, default_value_t = false)]
     triangulate: bool,
 
+    /// Enable radial profile IC mode: x-axis spans r_min..r_max AU
+    /// using multi-spacecraft data at different heliocentric distances.
+    /// Requires at least 2 spacecraft files at different distances.
+    #[arg(long, default_value_t = false)]
+    radial_mode: bool,
+
+    /// Minimum heliocentric distance for radial mode (AU).
+    #[arg(long, default_value_t = 1.0)]
+    r_min_au: f64,
+
+    /// Maximum heliocentric distance for radial mode (AU).
+    #[arg(long, default_value_t = 100.0)]
+    r_max_au: f64,
+
+    /// Path to Voyager 1 SPDF merged hourly file.
+    #[arg(long)]
+    voyager1_file: Option<PathBuf>,
+
+    /// Path to Voyager 2 SPDF merged hourly file.
+    #[arg(long)]
+    voyager2_file: Option<PathBuf>,
+
+    /// Path to Pioneer 10 SPDF merged hourly file.
+    #[arg(long)]
+    pioneer10_file: Option<PathBuf>,
+
+    /// Path to Pioneer 11 SPDF merged hourly file.
+    #[arg(long)]
+    pioneer11_file: Option<PathBuf>,
+
+    /// Path to New Horizons SWAP hourly file (no magnetometer).
+    #[arg(long)]
+    nh_swap_file: Option<PathBuf>,
+
+    /// Path to Juno cruise SPDF merged hourly file.
+    #[arg(long)]
+    juno_file: Option<PathBuf>,
+
+    /// Path to Cassini cruise SPDF merged hourly file.
+    #[arg(long)]
+    cassini_file: Option<PathBuf>,
+
+    /// Path to Ulysses SWOOPS plasma file (has heliographic latitude).
+    #[arg(long)]
+    ulysses_swoops_file: Option<PathBuf>,
+
+    /// Path to Ulysses VHM/FGM magnetic field file (RTN coordinates).
+    #[arg(long)]
+    ulysses_mag_file: Option<PathBuf>,
+
     /// Time resolution per x-slice in seconds (default: 3600 = hourly).
     /// For WIND MFI 3-second data, use --time-resolution 3 to resolve
     /// CME shock ramps (nx=128 at 3s covers 384s = 6.4 min of shock transit).
@@ -142,6 +199,18 @@ struct Cli {
     /// Output path (file for volume, directory for slices)
     #[arg(long, default_value = "solar_wind_ic.csv")]
     out: PathBuf,
+
+    /// Enable latitudinal Z-axis gradient modulation.
+    /// Z-axis maps to heliographic latitude: z=0 is -lat_max,
+    /// z=nz/2 is equator, z=nz-1 is +lat_max. Fast polar wind
+    /// (750 km/s, 3 cm^-3) transitions to slow equatorial wind
+    /// (400 km/s, 7 cm^-3) via tanh profile based on Ulysses data.
+    #[arg(long, default_value_t = false)]
+    latitudinal: bool,
+
+    /// Maximum heliographic latitude for latitudinal mode (degrees).
+    #[arg(long, default_value_t = 30.0)]
+    lat_max_deg: f64,
 }
 
 /// Built-in OMNI2 sample: real data from 2024 DOY 1, hours 0-23.
@@ -318,10 +387,12 @@ fn parker_spiral_b(
 /// Maps hourly OMNI measurements to x-slices via Taylor's hypothesis.
 /// Uses real Bx/By/Bz (GSE) directly when available, falling back to
 /// Parker spiral when individual B components have fill values.
+/// If `lat_profile` is Some, applies latitude modulation along z-axis.
 fn generate_ic_from_omni(
     records: &[OmniRecord],
     cli: &Cli,
     units: &UnitConversion,
+    lat_profile: Option<&LatitudinalProfile>,
 ) -> Vec<CellIc> {
     let nx = cli.nx;
     let ny = cli.ny;
@@ -332,6 +403,11 @@ fn generate_ic_from_omni(
     let mut data = Vec::with_capacity(nx * ny * nz);
 
     for z in 0..nz {
+        // Latitude modulation: adjust density and speed based on z-position
+        let (lat_n_factor, lat_v_factor) = lat_profile
+            .map(|p| latitude_modulation(z, nz, cli.lat_max_deg, p))
+            .unwrap_or((1.0, 1.0));
+
         for y in 0..ny {
             for x in 0..nx {
                 let hour_idx = x
@@ -339,8 +415,10 @@ fn generate_ic_from_omni(
                     .map_or_else(|| x * n_hours / nx, |q| q.min(n_hours - 1));
 
                 let rec = &records[hour_idx];
-                let rho = units.density_to_lbm(rec.proton_density);
-                let v_lbm = units.speed_to_lbm(rec.bulk_speed);
+                let n_phys = rec.proton_density * lat_n_factor;
+                let v_phys = rec.bulk_speed * lat_v_factor;
+                let rho = units.density_to_lbm(n_phys);
+                let v_lbm = units.speed_to_lbm(v_phys);
                 let u = [v_lbm, 0.0, 0.0];
 
                 // Use real B-field from OMNI (GSE coordinates map directly
@@ -368,11 +446,24 @@ fn generate_ic_from_omni(
 }
 
 /// Write the IC as a single 3D volume CSV.
-fn write_volume(path: &std::path::Path, data: &[CellIc]) -> std::io::Result<()> {
+fn write_volume(
+    path: &std::path::Path,
+    data: &[CellIc],
+    units: &UnitConversion,
+    kn_regime: KnudsenRegime,
+    kn_max: f64,
+) -> std::io::Result<()> {
     if let Some(parent) = path.parent().filter(|p| !p.as_os_str().is_empty()) {
         fs::create_dir_all(parent)?;
     }
     let mut file = fs::File::create(path)?;
+    // Metadata header: unit conversion parameters for downstream consumers.
+    // Lines starting with '#' are skipped by load_ic_file() in solar-wind-dm-mhd.
+    writeln!(file, "# n_ref_cm3={:.6}", units.n_ref)?;
+    writeln!(file, "# v_ref_kms={:.6}", units.v_ref)?;
+    writeln!(file, "# u_scale={:.6}", units.u_scale)?;
+    writeln!(file, "# kn_regime={kn_regime:?}")?;
+    writeln!(file, "# kn_max={kn_max:.2}")?;
     writeln!(file, "x,y,z,rho,ux,uy,uz,bx,by,bz")?;
     for c in data {
         writeln!(
@@ -439,6 +530,9 @@ fn swepam_to_omni(
             dst_index: f64::NAN,
             ae_index: f64::NAN,
             kp_times_10: 0,
+            r_au: 1.0,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
         })
         .collect()
 }
@@ -494,6 +588,9 @@ fn load_wind_data(cli: &Cli) -> anyhow::Result<Vec<OmniRecord>> {
                     dst_index: f64::NAN,
                     ae_index: f64::NAN,
                     kp_times_10: 0,
+                    r_au: 1.0,
+                    lat_deg: f64::NAN,
+                    lon_deg: f64::NAN,
                 })
                 .collect()
         }
@@ -536,11 +633,76 @@ fn load_stereo_data(cli: &Cli) -> anyhow::Result<Vec<OmniRecord>> {
     Ok(filter_valid_omni(&omni))
 }
 
+/// Compute an ordinal time key for temporal alignment.
+///
+/// Returns (year * 366 + doy) * 24 + hour, giving a monotonic integer
+/// suitable for set intersection and binary search.
+fn time_key(r: &OmniRecord) -> u32 {
+    (r.year as u32 * 366 + r.doy as u32) * 24 + r.hour as u32
+}
+
+/// Compute the temporal intersection of two OmniRecord slices.
+///
+/// Returns `(l1_aligned, stereo_aligned)` where both slices cover the
+/// same time window. Records are matched by (year, doy, hour) keys.
+/// Records present in one dataset but not the other are dropped.
+///
+/// Panics if the intersection is empty.
+fn time_aligned_intersection<'a>(
+    l1: &'a [OmniRecord],
+    stereo: &'a [OmniRecord],
+) -> (Vec<&'a OmniRecord>, Vec<&'a OmniRecord>) {
+    use std::collections::BTreeMap;
+
+    // Index both datasets by time key
+    let mut l1_by_key: BTreeMap<u32, &OmniRecord> = BTreeMap::new();
+    for r in l1 {
+        l1_by_key.insert(time_key(r), r);
+    }
+
+    let mut stereo_by_key: BTreeMap<u32, &OmniRecord> = BTreeMap::new();
+    for r in stereo {
+        stereo_by_key.insert(time_key(r), r);
+    }
+
+    // Intersect: only keep keys present in both
+    let mut l1_aligned = Vec::new();
+    let mut st_aligned = Vec::new();
+    for (&key, &l1_rec) in &l1_by_key {
+        if let Some(&st_rec) = stereo_by_key.get(&key) {
+            l1_aligned.push(l1_rec);
+            st_aligned.push(st_rec);
+        }
+    }
+
+    assert!(
+        !l1_aligned.is_empty(),
+        "No overlapping timestamps between L1 and STEREO datasets. \
+         L1 range: {}-{}, STEREO range: {}-{}",
+        l1.first().map_or(0, time_key),
+        l1.last().map_or(0, time_key),
+        stereo.first().map_or(0, time_key),
+        stereo.last().map_or(0, time_key),
+    );
+
+    eprintln!(
+        "  time-aligned intersection: {} hours (L1: {}, STEREO: {})",
+        l1_aligned.len(),
+        l1.len(),
+        stereo.len(),
+    );
+
+    (l1_aligned, st_aligned)
+}
+
 /// Generate 3D IC with L1+STEREO-A longitudinal triangulation.
 ///
 /// Y-axis maps to heliocentric longitude offset between L1 and STEREO-A:
 ///   y=0: pure L1 data, y=ny-1: pure STEREO-A data, intermediate: lerp.
 /// Z-axis remains uniform (no out-of-ecliptic spacecraft available).
+///
+/// Time-aligned: only the temporal intersection of L1 and STEREO is used,
+/// ensuring both datasets map the same physical time window to x-slices.
 fn triangulate_ic_from_multi_spacecraft(
     l1_records: &[OmniRecord],
     stereo_records: &[OmniRecord],
@@ -550,34 +712,72 @@ fn triangulate_ic_from_multi_spacecraft(
     let nx = cli.nx;
     let ny = cli.ny;
     let nz = cli.nz;
-    let l1_count = l1_records.len().max(1);
-    let stereo_count = stereo_records.len().max(1);
-    let cells_per_hour_l1 = nx / l1_count;
-    let cells_per_hour_st = nx / stereo_count;
+
+    // Align datasets to their temporal intersection
+    let (l1_aligned, st_aligned) = time_aligned_intersection(l1_records, stereo_records);
+    let n_records = l1_aligned.len();
+
+    // Parker spiral longitude weighting.
+    //
+    // At a fixed heliocentric radius (1 AU), the Parker spiral arc
+    // length between two longitudes is proportional to the angular
+    // separation: s(phi) = phi * r * sqrt(1 + (omega*r/v_sw)^2).
+    // The sqrt factor is constant at fixed r, so it cancels in the
+    // ratio s(phi)/s(sep), giving alpha = phi/sep = y/(ny-1).
+    //
+    // This means linear interpolation in y IS the physically correct
+    // Parker spiral weighting at 1 AU. The spiral angle affects the
+    // B-field direction (handled by RTN->GSE in stereo_plastic.rs),
+    // not the interpolation weight between spacecraft.
+    //
+    // The separation angle determines the physical longitude span:
+    //   phi(y) = (y / (ny-1)) * sep_deg
+    // This is used for diagnostic output only; the weight is y/(ny-1).
+    let sep_rad = cli.stereo_sep_deg.to_radians();
+    let v_sw_phys = units.v_ref * 1.0e3; // km/s -> m/s
+    let psi_spiral = cli.omega * 1.496e11 / v_sw_phys; // spiral angle at 1 AU (rad)
+    eprintln!(
+        "  Parker spiral angle at 1 AU: {:.1} deg (omega={:.3e} rad/s, v_sw={:.0} km/s)",
+        psi_spiral.to_degrees(),
+        cli.omega,
+        units.v_ref,
+    );
+    eprintln!(
+        "  longitude span: {:.1} deg, {ny} y-slices ({:.2} deg/slice)",
+        cli.stereo_sep_deg,
+        cli.stereo_sep_deg / ny.max(1) as f64,
+    );
+    // sep_rad is used in the B-field rotation below
 
     let mut data = Vec::with_capacity(nx * ny * nz);
 
     for z in 0..nz {
         for y in 0..ny {
-            // Interpolation weight: 0.0 at y=0 (pure L1), 1.0 at y=ny-1 (pure STEREO)
-            let alpha = if ny > 1 {
+            // Parker-weighted longitude interpolation.
+            //
+            // At fixed heliocentric radius (1 AU), the Parker spiral
+            // winding angle psi = atan(omega * R / v_sw) is constant
+            // across the grid, so the weight simplifies to y/(ny-1).
+            //
+            // For radial mode (Phase 10), each x-slice maps to a
+            // different heliocentric distance R(x), making psi vary
+            // with x. The generalized weight becomes:
+            //   alpha(y,x) = y/(ny-1) * psi(R(x)) / psi_max
+            // This hook is ready for Phase 10 integration.
+            let alpha_base = if ny > 1 {
                 y as f64 / (ny - 1) as f64
             } else {
                 0.0
             };
+            // At 1 AU fixed-r, psi_ratio = 1.0 (no radial variation).
+            // Phase 10 will compute psi_ratio per x-slice.
+            let alpha = alpha_base;
 
             for x in 0..nx {
-                // L1 record for this x-slice
-                let l1_idx = x
-                    .checked_div(cells_per_hour_l1)
-                    .map_or_else(|| x * l1_count / nx, |q| q.min(l1_count - 1));
-                let l1 = &l1_records[l1_idx];
-
-                // STEREO record for this x-slice
-                let st_idx = x
-                    .checked_div(cells_per_hour_st)
-                    .map_or_else(|| x * stereo_count / nx, |q| q.min(stereo_count - 1));
-                let st = &stereo_records[st_idx];
+                // Map x-slice to aligned record index (same for both datasets)
+                let rec_idx = (x * n_records / nx).min(n_records - 1);
+                let l1 = l1_aligned[rec_idx];
+                let st = st_aligned[rec_idx];
 
                 // Interpolate density (physical, then convert)
                 let n_l1 = if l1.proton_density.is_nan() {
@@ -608,17 +808,43 @@ fn triangulate_ic_from_multi_spacecraft(
                 let v_lbm = units.speed_to_lbm(v_interp);
                 let u = [v_lbm, 0.0, 0.0];
 
-                // Interpolate B-field components
-                let lerp_b = |b_l1: f64, b_st: f64| -> f64 {
-                    let a = if b_l1.is_nan() { 0.0 } else { b_l1 };
-                    let b = if b_st.is_nan() { 0.0 } else { b_st };
-                    a * (1.0 - alpha) + b * alpha
-                };
+                // Interpolate B-field with Parker spiral direction rotation.
+                //
+                // Instead of LERP'ing raw GSE components (which mixes
+                // radial and tangential directions incorrectly), we:
+                // 1. Compute Parker spiral angle at each spacecraft longitude
+                // 2. Rotate STEREO B-field by the longitude difference
+                // 3. LERP the rotated components
+                //
+                // At 1 AU: psi = atan(omega * R / v_sw) is the same for both
+                // spacecraft (same R). The rotation accounts for the
+                // longitude offset between L1 (phi=0) and STEREO (phi=sep).
                 let b = if !l1.bx_gse.is_nan() || !st.bx_gse.is_nan() {
+                    let bx_l1 = if l1.bx_gse.is_nan() { 0.0 } else { l1.bx_gse };
+                    let by_l1 = if l1.by_gse.is_nan() { 0.0 } else { l1.by_gse };
+                    let bz_l1 = if l1.bz_gse.is_nan() { 0.0 } else { l1.bz_gse };
+
+                    let bx_st = if st.bx_gse.is_nan() { 0.0 } else { st.bx_gse };
+                    let by_st = if st.by_gse.is_nan() { 0.0 } else { st.by_gse };
+                    let bz_st = if st.bz_gse.is_nan() { 0.0 } else { st.bz_gse };
+
+                    // Rotation angle: STEREO B-field measured at longitude
+                    // offset = sep * alpha (interpolated position). Rotate
+                    // by delta_phi = sep * alpha in the ecliptic (xy) plane
+                    // to project STEREO's B into the interpolated frame.
+                    let delta_phi = sep_rad * alpha;
+                    let cos_dp = delta_phi.cos();
+                    let sin_dp = delta_phi.sin();
+
+                    // Rotate STEREO B into the interpolated longitude frame
+                    let bx_st_rot = bx_st * cos_dp - by_st * sin_dp;
+                    let by_st_rot = bx_st * sin_dp + by_st * cos_dp;
+                    // Bz unchanged (ecliptic rotation)
+
                     [
-                        lerp_b(l1.bx_gse, st.bx_gse) * cli.b_scale,
-                        lerp_b(l1.by_gse, st.by_gse) * cli.b_scale,
-                        lerp_b(l1.bz_gse, st.bz_gse) * cli.b_scale,
+                        (bx_l1 * (1.0 - alpha) + bx_st_rot * alpha) * cli.b_scale,
+                        (by_l1 * (1.0 - alpha) + by_st_rot * alpha) * cli.b_scale,
+                        (bz_l1 * (1.0 - alpha) + bz_st * alpha) * cli.b_scale,
                     ]
                 } else {
                     parker_spiral_b(x, y, nx, ny, cli.b_scale * 5.0, cli.omega, v_lbm)
@@ -632,9 +858,600 @@ fn triangulate_ic_from_multi_spacecraft(
     data
 }
 
+/// A single spacecraft measurement at a known heliocentric distance,
+/// used for building radial profiles across the heliosphere.
+#[derive(Clone, Debug)]
+struct RadialProfilePoint {
+    /// Heliocentric distance (AU).
+    r_au: f64,
+    /// Proton number density (cm^-3).
+    density_cm3: f64,
+    /// Bulk flow speed (km/s).
+    speed_kms: f64,
+    /// Proton temperature (K).
+    temp_k: f64,
+    /// Radial B-field component (nT, GSE X).
+    br_nt: f64,
+    /// Tangential B-field component (nT, GSE Y).
+    bt_nt: f64,
+    /// Normal B-field component (nT, GSE Z).
+    bn_nt: f64,
+    /// Total B-field magnitude (nT).
+    b_mag_nt: f64,
+}
+
+/// Build a radial profile from multi-spacecraft OmniRecords.
+///
+/// Groups records by heliocentric distance (r_au), computes the median
+/// plasma parameters at each distance bin, and returns sorted points.
+/// Records without a valid r_au (NaN) are skipped.
+fn build_radial_profile(records: &[OmniRecord]) -> Vec<RadialProfilePoint> {
+    use std::collections::BTreeMap;
+
+    // Bin records by distance: round to 0.1 AU granularity to avoid
+    // excessive fragmentation from orbital variation within a dataset.
+    let mut bins: BTreeMap<i32, Vec<&OmniRecord>> = BTreeMap::new();
+    for r in records {
+        if r.r_au.is_nan() || r.r_au <= 0.0 {
+            continue;
+        }
+        // Key: distance in units of 0.1 AU (e.g., 1.0 AU -> 10, 84.5 AU -> 845)
+        let key = (r.r_au * 10.0).round() as i32;
+        bins.entry(key).or_default().push(r);
+    }
+
+    bins.into_iter()
+        .map(|(key, recs)| {
+            let r_au = key as f64 / 10.0;
+            RadialProfilePoint {
+                r_au,
+                density_cm3: median_finite(recs.iter().map(|r| r.proton_density)),
+                speed_kms: median_finite(recs.iter().map(|r| r.bulk_speed)),
+                temp_k: median_finite(recs.iter().map(|r| r.proton_temperature)),
+                br_nt: median_finite(recs.iter().map(|r| r.bx_gse)),
+                bt_nt: median_finite(recs.iter().map(|r| r.by_gse)),
+                bn_nt: median_finite(recs.iter().map(|r| r.bz_gse)),
+                b_mag_nt: median_finite(recs.iter().map(|r| r.b_magnitude)),
+            }
+        })
+        .collect()
+}
+
+/// Compute median of finite (non-NaN) values. Returns NaN if empty.
+fn median_finite(iter: impl Iterator<Item = f64>) -> f64 {
+    let mut vals: Vec<f64> = iter.filter(|v| v.is_finite()).collect();
+    if vals.is_empty() {
+        return f64::NAN;
+    }
+    vals.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    vals[vals.len() / 2]
+}
+
+/// Interpolate radial profile to an arbitrary heliocentric distance.
+///
+/// Uses log-linear interpolation for density and B-field (which scale as
+/// power laws in r), and linear interpolation for speed (approximately
+/// constant). Extrapolation beyond the data range uses scaling laws:
+///   n(r) ~ r^-2, B_r ~ r^-2, B_phi ~ r^-1, T ~ r^(-2/3), V ~ const.
+fn interpolate_radial(profile: &[RadialProfilePoint], r_au: f64) -> RadialProfilePoint {
+    if profile.is_empty() {
+        return RadialProfilePoint {
+            r_au,
+            density_cm3: 5.0 / (r_au * r_au),
+            speed_kms: 400.0,
+            temp_k: 1e5 / r_au.powf(2.0 / 3.0),
+            br_nt: 5.0 / (r_au * r_au),
+            bt_nt: -3.0 / r_au,
+            bn_nt: 0.0,
+            b_mag_nt: (25.0 / (r_au * r_au * r_au * r_au) + 9.0 / (r_au * r_au)).sqrt(),
+        };
+    }
+
+    if profile.len() == 1 {
+        let p = &profile[0];
+        let ratio = p.r_au / r_au;
+        return RadialProfilePoint {
+            r_au,
+            density_cm3: scale_r2(p.density_cm3, ratio),
+            speed_kms: p.speed_kms,
+            temp_k: scale_temp(p.temp_k, ratio),
+            br_nt: scale_r2(p.br_nt, ratio),
+            bt_nt: scale_r1(p.bt_nt, ratio),
+            bn_nt: scale_r1(p.bn_nt, ratio),
+            b_mag_nt: (scale_r2(p.br_nt, ratio).powi(2)
+                + scale_r1(p.bt_nt, ratio).powi(2)
+                + scale_r1(p.bn_nt, ratio).powi(2))
+            .sqrt(),
+        };
+    }
+
+    // Find bracketing points for log-linear interpolation
+    let ln_r = r_au.ln();
+
+    // Extrapolate below minimum distance
+    if r_au <= profile[0].r_au {
+        let p = &profile[0];
+        let ratio = p.r_au / r_au;
+        return RadialProfilePoint {
+            r_au,
+            density_cm3: scale_r2(p.density_cm3, ratio),
+            speed_kms: p.speed_kms,
+            temp_k: scale_temp(p.temp_k, ratio),
+            br_nt: scale_r2(p.br_nt, ratio),
+            bt_nt: scale_r1(p.bt_nt, ratio),
+            bn_nt: scale_r1(p.bn_nt, ratio),
+            b_mag_nt: (scale_r2(p.br_nt, ratio).powi(2)
+                + scale_r1(p.bt_nt, ratio).powi(2)
+                + scale_r1(p.bn_nt, ratio).powi(2))
+            .sqrt(),
+        };
+    }
+
+    // Extrapolate above maximum distance
+    if r_au >= profile[profile.len() - 1].r_au {
+        let p = &profile[profile.len() - 1];
+        let ratio = p.r_au / r_au;
+        return RadialProfilePoint {
+            r_au,
+            density_cm3: scale_r2(p.density_cm3, ratio),
+            speed_kms: p.speed_kms,
+            temp_k: scale_temp(p.temp_k, ratio),
+            br_nt: scale_r2(p.br_nt, ratio),
+            bt_nt: scale_r1(p.bt_nt, ratio),
+            bn_nt: scale_r1(p.bn_nt, ratio),
+            b_mag_nt: (scale_r2(p.br_nt, ratio).powi(2)
+                + scale_r1(p.bt_nt, ratio).powi(2)
+                + scale_r1(p.bn_nt, ratio).powi(2))
+            .sqrt(),
+        };
+    }
+
+    // Find bracket: profile[i].r_au <= r_au < profile[i+1].r_au
+    let i = profile
+        .iter()
+        .position(|p| p.r_au > r_au)
+        .unwrap_or(profile.len() - 1)
+        .saturating_sub(1);
+    let p0 = &profile[i];
+    let p1 = &profile[i + 1];
+
+    // Log-linear weight: t in [0, 1] based on log(r)
+    let ln_r0 = p0.r_au.ln();
+    let ln_r1 = p1.r_au.ln();
+    let t = if (ln_r1 - ln_r0).abs() < 1e-30 {
+        0.5
+    } else {
+        (ln_r - ln_r0) / (ln_r1 - ln_r0)
+    };
+
+    // Density: interpolate log(n) vs log(r) (power law n ~ r^alpha)
+    let density = interp_log(p0.density_cm3, p1.density_cm3, t);
+    // Speed: linear interpolation (approximately constant)
+    let speed = lerp(p0.speed_kms, p1.speed_kms, t);
+    // Temperature: interpolate log(T) vs log(r) (power law T ~ r^beta)
+    let temp = interp_log(p0.temp_k, p1.temp_k, t);
+    // B_r: interpolate log(|B_r|) vs log(r) preserving sign
+    let br = interp_log_signed(p0.br_nt, p1.br_nt, t);
+    // B_t, B_n: log-linear with sign preservation
+    let bt = interp_log_signed(p0.bt_nt, p1.bt_nt, t);
+    let bn = interp_log_signed(p0.bn_nt, p1.bn_nt, t);
+
+    RadialProfilePoint {
+        r_au,
+        density_cm3: density,
+        speed_kms: speed,
+        temp_k: temp,
+        br_nt: br,
+        bt_nt: bt,
+        bn_nt: bn,
+        b_mag_nt: (br * br + bt * bt + bn * bn).sqrt(),
+    }
+}
+
+/// Scale a quantity that follows r^-2 law (density, B_r).
+/// ratio = r_ref / r_target.
+fn scale_r2(val: f64, ratio: f64) -> f64 {
+    if val.is_nan() {
+        return f64::NAN;
+    }
+    val * ratio * ratio
+}
+
+/// Scale a quantity that follows r^-1 law (B_phi, B_n).
+fn scale_r1(val: f64, ratio: f64) -> f64 {
+    if val.is_nan() {
+        return f64::NAN;
+    }
+    val * ratio
+}
+
+/// Scale temperature: T ~ r^(-2/3) for adiabatic expansion (gamma=5/3).
+fn scale_temp(val: f64, ratio: f64) -> f64 {
+    if val.is_nan() {
+        return f64::NAN;
+    }
+    val * ratio.powf(2.0 / 3.0)
+}
+
+/// Linear interpolation.
+fn lerp(a: f64, b: f64, t: f64) -> f64 {
+    if a.is_nan() {
+        return b;
+    }
+    if b.is_nan() {
+        return a;
+    }
+    a * (1.0 - t) + b * t
+}
+
+/// Interpolate in log space (for power-law quantities like density).
+fn interp_log(a: f64, b: f64, t: f64) -> f64 {
+    if a.is_nan() || a <= 0.0 {
+        return b;
+    }
+    if b.is_nan() || b <= 0.0 {
+        return a;
+    }
+    (a.ln() * (1.0 - t) + b.ln() * t).exp()
+}
+
+/// Interpolate in log space with sign preservation (for signed B-field).
+fn interp_log_signed(a: f64, b: f64, t: f64) -> f64 {
+    if a.is_nan() {
+        return b;
+    }
+    if b.is_nan() {
+        return a;
+    }
+    // If both have the same sign, interpolate magnitudes in log space
+    if a.signum() == b.signum() && a.abs() > 1e-30 && b.abs() > 1e-30 {
+        a.signum() * interp_log(a.abs(), b.abs(), t)
+    } else {
+        // Mixed signs or near-zero: fall back to linear
+        lerp(a, b, t)
+    }
+}
+
+/// Distance-adaptive UnitConversion for radial IC generation.
+///
+/// At large heliocentric distances, n_ref and v_ref must adapt to avoid
+/// LBM Mach number violations (Ma must stay < 0.3). Each x-slice gets
+/// its own effective n_ref based on the local density from the profile.
+fn radial_unit_conversion(profile: &[RadialProfilePoint], r_min: f64, r_max: f64) -> UnitConversion {
+    // Use median density and speed across the full radial range.
+    // The per-cell density mapping (density_to_lbm) normalizes by n_ref,
+    // so n_ref should represent the "typical" density in the domain.
+    // For a radial profile spanning 1-100 AU, the geometric mean
+    // (log-midpoint) gives a balanced normalization.
+    let r_mid = (r_min * r_max).sqrt();
+    let mid_point = interpolate_radial(profile, r_mid);
+
+    let n_ref = if mid_point.density_cm3.is_finite() && mid_point.density_cm3 > 0.0 {
+        mid_point.density_cm3
+    } else {
+        5.0 / (r_mid * r_mid) // fallback: 5 cm^-3 at 1 AU, scaled
+    };
+
+    let v_ref = if mid_point.speed_kms.is_finite() && mid_point.speed_kms > 0.0 {
+        mid_point.speed_kms
+    } else {
+        400.0
+    };
+
+    // Widen density clamps for the large dynamic range across the heliosphere.
+    // At 100 AU, density is ~10000x smaller than at 1 AU.
+    let density_ratio = (r_max / r_min).powi(2);
+    let clamp_hi = (density_ratio * 2.0).min(1e6);
+
+    UnitConversion {
+        n_ref,
+        v_ref,
+        u_scale: 0.05,
+        density_clamp: [1.0 / clamp_hi, clamp_hi],
+        speed_clamp: [0.001, 0.25],
+    }
+}
+
+/// Generate 3D IC from a radial profile spanning r_min to r_max AU.
+///
+/// X-axis maps to log-spaced heliocentric distance:
+///   x=0 -> r_min AU, x=nx-1 -> r_max AU.
+/// Y and Z axes are uniform (no longitudinal or latitudinal variation
+/// in this mode; Phase 11 adds latitude via --latitudinal).
+///
+/// Each x-slice gets plasma parameters interpolated from the radial
+/// profile, with proper Parker spiral B-field scaling.
+fn generate_radial_ic(
+    profile: &[RadialProfilePoint],
+    cli: &Cli,
+    units: &UnitConversion,
+    lat_profile: Option<&LatitudinalProfile>,
+) -> Vec<CellIc> {
+    let nx = cli.nx;
+    let ny = cli.ny;
+    let nz = cli.nz;
+    let r_min = cli.r_min_au;
+    let r_max = cli.r_max_au;
+
+    // Log-spaced distance grid: r(x) = r_min * (r_max/r_min)^(x/(nx-1))
+    let ln_ratio = (r_max / r_min).ln();
+
+    let mut data = Vec::with_capacity(nx * ny * nz);
+
+    for z in 0..nz {
+        let (lat_n_factor, lat_v_factor) = lat_profile
+            .map(|p| latitude_modulation(z, nz, cli.lat_max_deg, p))
+            .unwrap_or((1.0, 1.0));
+
+        for y in 0..ny {
+            for x in 0..nx {
+                let frac = if nx > 1 { x as f64 / (nx - 1) as f64 } else { 0.5 };
+                let r_au = r_min * (frac * ln_ratio).exp();
+
+                let point = interpolate_radial(profile, r_au);
+
+                let rho = units.density_to_lbm(point.density_cm3 * lat_n_factor);
+                let v_lbm = units.speed_to_lbm(point.speed_kms * lat_v_factor);
+                let u = [v_lbm, 0.0, 0.0];
+
+                // B-field from interpolated profile (already scaled by
+                // distance). If all B components are NaN, fall back to
+                // Parker spiral model.
+                let b = if point.br_nt.is_finite() || point.bt_nt.is_finite() {
+                    let br = if point.br_nt.is_finite() { point.br_nt } else { 0.0 };
+                    let bt = if point.bt_nt.is_finite() { point.bt_nt } else { 0.0 };
+                    let bn = if point.bn_nt.is_finite() { point.bn_nt } else { 0.0 };
+                    [br * cli.b_scale, bt * cli.b_scale, bn * cli.b_scale]
+                } else {
+                    // Parker spiral fallback at this heliocentric distance
+                    let b0 = 5.0 / (r_au * r_au); // B_r ~ r^-2
+                    parker_spiral_b(x, y, nx, ny, b0 * cli.b_scale, cli.omega, v_lbm)
+                };
+
+                data.push(CellIc { x, y, z, rho, u, b });
+            }
+        }
+    }
+
+    data
+}
+
+/// Load outer heliosphere spacecraft data and merge into a single
+/// Vec<OmniRecord> for radial profile construction.
+fn load_outer_heliosphere(cli: &Cli) -> anyhow::Result<Vec<OmniRecord>> {
+    let mut all_records: Vec<OmniRecord> = Vec::new();
+
+    if let Some(ref path) = cli.voyager1_file {
+        eprintln!("loading Voyager 1 from: {}", path.display());
+        let raw = parse_voyager_file(path, VoyagerSpacecraft::V1)?;
+        let omni = voyager_to_omni(&raw);
+        eprintln!("  {} Voyager 1 records", omni.len());
+        all_records.extend(omni);
+    }
+
+    if let Some(ref path) = cli.voyager2_file {
+        eprintln!("loading Voyager 2 from: {}", path.display());
+        let raw = parse_voyager_file(path, VoyagerSpacecraft::V2)?;
+        let omni = voyager_to_omni(&raw);
+        eprintln!("  {} Voyager 2 records", omni.len());
+        all_records.extend(omni);
+    }
+
+    if let Some(ref path) = cli.pioneer10_file {
+        eprintln!("loading Pioneer 10 from: {}", path.display());
+        let raw = parse_pioneer_file(path, PioneerSpacecraft::P10)?;
+        let omni = pioneer_to_omni(&raw);
+        eprintln!("  {} Pioneer 10 records", omni.len());
+        all_records.extend(omni);
+    }
+
+    if let Some(ref path) = cli.pioneer11_file {
+        eprintln!("loading Pioneer 11 from: {}", path.display());
+        let raw = parse_pioneer_file(path, PioneerSpacecraft::P11)?;
+        let omni = pioneer_to_omni(&raw);
+        eprintln!("  {} Pioneer 11 records", omni.len());
+        all_records.extend(omni);
+    }
+
+    if let Some(ref path) = cli.nh_swap_file {
+        eprintln!("loading NH SWAP from: {} (no magnetometer)", path.display());
+        let raw = parse_nh_swap_file(path)?;
+        let omni = nh_swap_to_omni(&raw);
+        eprintln!("  {} NH SWAP records (B-field = NaN)", omni.len());
+        all_records.extend(omni);
+    }
+
+    if let Some(ref path) = cli.juno_file {
+        eprintln!("loading Juno cruise from: {}", path.display());
+        let raw = parse_juno_cruise_file(path)?;
+        let omni = juno_to_omni(&raw);
+        eprintln!("  {} Juno cruise records", omni.len());
+        all_records.extend(omni);
+    }
+
+    if let Some(ref path) = cli.cassini_file {
+        eprintln!("loading Cassini cruise from: {}", path.display());
+        let raw = parse_cassini_cruise_file(path)?;
+        let omni = cassini_to_omni(&raw);
+        eprintln!("  {} Cassini cruise records", omni.len());
+        all_records.extend(omni);
+    }
+
+    // Ulysses: merged format (single file with plasma + MAG)
+    if let Some(ref path) = cli.ulysses_swoops_file {
+        eprintln!("loading Ulysses from: {}", path.display());
+        let raw = parse_ulysses_file(path)?;
+        // If separate MAG file provided, use merge; otherwise treat as merged
+        if let Some(ref _mag_path) = cli.ulysses_mag_file {
+            // The merged SPDF file already contains both plasma and MAG.
+            // Separate SWOOPS+MAG files would need the raw parsers, but
+            // SPDF provides merged hourly. Use merged data directly.
+            eprintln!("  (MAG file ignored: SPDF merged already contains B-field)");
+        }
+        let omni = ulysses_to_omni(&raw);
+        eprintln!("  {} Ulysses records (lat range available)", omni.len());
+        all_records.extend(omni);
+    }
+
+    Ok(all_records)
+}
+
+/// Latitudinal profile parameters for fast/slow solar wind transition.
+///
+/// Ulysses uniquely constrains the heliographic latitude dependence:
+/// fast polar wind (~750 km/s, ~3 cm^-3) transitions to slow equatorial
+/// wind (~400 km/s, ~7 cm^-3) over a ~10-20 degree latitude band.
+/// The transition is modeled by a tanh profile.
+struct LatitudinalProfile {
+    /// Fast polar wind speed (km/s). Default: 750.
+    fast_speed_kms: f64,
+    /// Slow equatorial wind speed (km/s). Default: 400.
+    slow_speed_kms: f64,
+    /// Fast polar wind density (cm^-3). Default: 3.0.
+    fast_density_cm3: f64,
+    /// Slow equatorial wind density (cm^-3). Default: 7.0.
+    slow_density_cm3: f64,
+    /// Transition latitude (degrees from equator). Default: 30.
+    transition_lat_deg: f64,
+    /// Width of the transition band (degrees). Default: 10.
+    transition_width_deg: f64,
+}
+
+impl Default for LatitudinalProfile {
+    fn default() -> Self {
+        Self {
+            fast_speed_kms: 750.0,
+            slow_speed_kms: 400.0,
+            fast_density_cm3: 3.0,
+            slow_density_cm3: 7.0,
+            transition_lat_deg: 30.0,
+            transition_width_deg: 10.0,
+        }
+    }
+}
+
+/// Fit a latitudinal profile from Ulysses data (OmniRecords with lat_deg).
+///
+/// Groups records by latitude bin, computes median speed and density at
+/// each latitude, and fits tanh transition parameters. If insufficient
+/// data, returns defaults from McComas et al. (2000).
+fn ulysses_latitudinal_fit(records: &[OmniRecord]) -> LatitudinalProfile {
+    // Filter records that have valid latitude data
+    let lat_records: Vec<&OmniRecord> = records
+        .iter()
+        .filter(|r| r.lat_deg.is_finite() && r.bulk_speed.is_finite())
+        .collect();
+
+    if lat_records.len() < 10 {
+        eprintln!(
+            "  insufficient Ulysses latitude data ({} records), using defaults",
+            lat_records.len(),
+        );
+        return LatitudinalProfile::default();
+    }
+
+    // Separate polar (|lat| > 40) and equatorial (|lat| < 20) records
+    let polar: Vec<&&OmniRecord> = lat_records
+        .iter()
+        .filter(|r| r.lat_deg.abs() > 40.0)
+        .collect();
+    let equatorial: Vec<&&OmniRecord> = lat_records
+        .iter()
+        .filter(|r| r.lat_deg.abs() < 20.0)
+        .collect();
+
+    let fast_speed = if polar.len() >= 3 {
+        median_finite(polar.iter().map(|r| r.bulk_speed))
+    } else {
+        750.0
+    };
+
+    let slow_speed = if equatorial.len() >= 3 {
+        median_finite(equatorial.iter().map(|r| r.bulk_speed))
+    } else {
+        400.0
+    };
+
+    let fast_density = if polar.len() >= 3 {
+        median_finite(polar.iter().map(|r| r.proton_density))
+    } else {
+        3.0
+    };
+
+    let slow_density = if equatorial.len() >= 3 {
+        median_finite(equatorial.iter().map(|r| r.proton_density))
+    } else {
+        7.0
+    };
+
+    eprintln!(
+        "  Ulysses fit: fast={:.0} km/s ({:.1} cm^-3), slow={:.0} km/s ({:.1} cm^-3)",
+        fast_speed, fast_density, slow_speed, slow_density,
+    );
+    eprintln!(
+        "  latitude data: {} polar (|lat|>40), {} equatorial (|lat|<20)",
+        polar.len(), equatorial.len(),
+    );
+
+    LatitudinalProfile {
+        fast_speed_kms: fast_speed,
+        slow_speed_kms: slow_speed,
+        fast_density_cm3: fast_density,
+        slow_density_cm3: slow_density,
+        transition_lat_deg: 30.0,
+        transition_width_deg: 10.0,
+    }
+}
+
+/// Compute latitude modulation factors for density and speed at a given z-cell.
+///
+/// Returns `(density_factor, speed_factor)` as multiplicative modulations
+/// relative to the equatorial values. The z-axis maps to heliographic
+/// latitude: z=0 -> -lat_max, z=nz/2 -> equator, z=nz-1 -> +lat_max.
+///
+/// Uses a tanh transition profile:
+///   f(lat) = 0.5 * (1 + tanh((|lat| - lat_transition) / width))
+/// At the equator (lat=0): f -> 0 (slow wind)
+/// At poles (|lat|>transition): f -> 1 (fast wind)
+fn latitude_modulation(
+    z: usize,
+    nz: usize,
+    lat_max_deg: f64,
+    profile: &LatitudinalProfile,
+) -> (f64, f64) {
+    // Map z to latitude: z=0 -> -lat_max, z=nz/2 -> 0, z=nz-1 -> +lat_max
+    let lat_deg = if nz > 1 {
+        -lat_max_deg + 2.0 * lat_max_deg * z as f64 / (nz - 1) as f64
+    } else {
+        0.0
+    };
+
+    // Tanh transition: smooth step from equatorial to polar
+    let arg = (lat_deg.abs() - profile.transition_lat_deg) / profile.transition_width_deg;
+    let f_polar = 0.5 * (1.0 + arg.tanh());
+
+    // Density: equatorial is DENSER, polar is LESS dense
+    // density_factor = slow_n * (1-f) + fast_n * f, normalized to equatorial
+    let density_factor = (1.0 - f_polar)
+        + f_polar * (profile.fast_density_cm3 / profile.slow_density_cm3);
+
+    // Speed: polar is FASTER, equatorial is SLOWER
+    // speed_factor = slow_v * (1-f) + fast_v * f, normalized to equatorial
+    let speed_factor = (1.0 - f_polar)
+        + f_polar * (profile.fast_speed_kms / profile.slow_speed_kms);
+
+    (density_factor, speed_factor)
+}
+
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
+    // Radial mode: multi-distance heliospheric profile
+    if cli.radial_mode {
+        return run_radial_mode(&cli);
+    }
+
+    // Standard mode: L1 time-series IC generation
     // Load data via adapter pattern.
     // Priority: OMNI > WIND SWE+MFI > ACE MAG > STEREO > SWEPAM > builtin
     let records: Vec<OmniRecord> = if let Some(ref path) = cli.omni_file {
@@ -714,9 +1531,44 @@ fn main() -> anyhow::Result<()> {
         window.len(),
     );
 
+    // Latitudinal profile (if --latitudinal enabled)
+    let lat_profile = if cli.latitudinal {
+        eprintln!(
+            "latitudinal mode: lat_max={:.0} deg, tanh transition",
+            cli.lat_max_deg,
+        );
+        // Use Ulysses data if loaded, otherwise defaults from McComas et al.
+        if let Some(ref path) = cli.ulysses_swoops_file {
+            eprintln!("  fitting latitudinal profile from: {}", path.display());
+            let uly_records = parse_ulysses_file(path)?;
+            let uly_omni = ulysses_to_omni(&uly_records);
+            Some(ulysses_latitudinal_fit(&uly_omni))
+        } else {
+            eprintln!("  no Ulysses data; using McComas et al. (2000) defaults");
+            Some(LatitudinalProfile::default())
+        }
+    } else {
+        None
+    };
+
     // Generate IC
     let data = if cli.triangulate {
-        // Triangulation mode: interpolate between L1 and STEREO along Y
+        // Triangulation mode: interpolate between L1 and STEREO along Y.
+        // Requires an L1 anchor (OMNI, WIND, or ACE) as the primary source.
+        // STEREO alone cannot serve as both primary and secondary -- you
+        // cannot triangulate a point against itself.
+        let has_l1_primary = cli.omni_file.is_some()
+            || cli.wind_swe_file.is_some()
+            || cli.wind_mfi_file.is_some()
+            || cli.ace_mag_file.is_some()
+            || cli.swepam_file.is_some();
+        if !has_l1_primary {
+            anyhow::bail!(
+                "--triangulate requires an L1 anchor (--omni-file, --wind-swe-file, \
+                 --wind-mfi-file, --ace-mag-file, or --swepam-file). \
+                 STEREO cannot be both the primary and secondary source."
+            );
+        }
         if cli.stereo_file.is_none() && cli.stereo_mag_file.is_none() {
             anyhow::bail!("--triangulate requires --stereo-file and/or --stereo-mag-file");
         }
@@ -735,10 +1587,162 @@ fn main() -> anyhow::Result<()> {
         );
         triangulate_ic_from_multi_spacecraft(window, stereo_window, &cli, &units)
     } else {
-        generate_ic_from_omni(window, &cli, &units)
+        generate_ic_from_omni(window, &cli, &units, lat_profile.as_ref())
     };
 
-    // Diagnostics
+    // Knudsen diagnostic from L1 records
+    let (kn_regime, kn_max) = compute_knudsen_diagnostic(window);
+
+    output_diagnostics_and_write(&data, &units, kn_regime, kn_max, &cli)
+}
+
+/// Radial mode: build heliospheric profile from multi-spacecraft data
+/// and generate IC with x-axis spanning r_min to r_max AU.
+fn run_radial_mode(cli: &Cli) -> anyhow::Result<()> {
+    eprintln!(
+        "radial mode: {:.1}-{:.1} AU, {}x{}x{} grid",
+        cli.r_min_au, cli.r_max_au, cli.nx, cli.ny, cli.nz,
+    );
+
+    if cli.r_min_au >= cli.r_max_au {
+        anyhow::bail!("--r-min-au ({}) must be less than --r-max-au ({})", cli.r_min_au, cli.r_max_au);
+    }
+
+    // Load L1 data (1 AU anchor) if available
+    let mut all_records: Vec<OmniRecord> = Vec::new();
+
+    if let Some(ref path) = cli.omni_file {
+        eprintln!("loading L1 anchor (OMNI) from: {}", path.display());
+        let raw = parse_omni_file(path)?;
+        let valid = filter_valid_omni(&raw);
+        eprintln!("  {} L1 records at 1 AU", valid.len());
+        all_records.extend(valid);
+    }
+
+    // Load outer heliosphere spacecraft
+    let outer = load_outer_heliosphere(cli)?;
+    eprintln!("{} outer heliosphere records loaded", outer.len());
+    all_records.extend(outer);
+
+    if all_records.is_empty() {
+        anyhow::bail!(
+            "--radial-mode requires spacecraft data. Provide at least 2 files \
+             at different heliocentric distances (e.g., --omni-file + --voyager1-file)"
+        );
+    }
+
+    // Build radial profile from all spacecraft
+    let profile = build_radial_profile(&all_records);
+    eprintln!("radial profile: {} distance bins", profile.len());
+    if profile.len() < 2 {
+        eprintln!(
+            "WARNING: only {} distance bin(s). Radial IC will rely heavily \
+             on scaling laws rather than measured data.",
+            profile.len(),
+        );
+    }
+
+    // Report distance coverage
+    if let (Some(first), Some(last)) = (profile.first(), profile.last()) {
+        eprintln!(
+            "  data coverage: {:.1}-{:.1} AU ({} bins)",
+            first.r_au, last.r_au, profile.len(),
+        );
+        // Report a few representative points
+        for p in &profile {
+            if p.density_cm3.is_finite() {
+                eprintln!(
+                    "  r={:.1} AU: n={:.4} cm^-3, v={:.0} km/s, |B|={:.2} nT",
+                    p.r_au, p.density_cm3, p.speed_kms, p.b_mag_nt,
+                );
+            }
+        }
+    }
+
+    // Compute distance-adaptive unit conversion
+    let mut units = radial_unit_conversion(&profile, cli.r_min_au, cli.r_max_au);
+    units.density_clamp = parse_clamp_range(&cli.clamp_density_range);
+    units.speed_clamp = parse_clamp_range(&cli.clamp_speed_range);
+    eprintln!(
+        "units (radial): n_ref={:.4} cm^-3, v_ref={:.1} km/s, u_scale={:.4}",
+        units.n_ref, units.v_ref, units.u_scale,
+    );
+    eprintln!(
+        "clamp: density=[{:.6}, {:.2}], speed=[{:.5}, {:.4}]",
+        units.density_clamp[0], units.density_clamp[1],
+        units.speed_clamp[0], units.speed_clamp[1],
+    );
+
+    // Latitudinal profile for radial mode (if --latitudinal enabled)
+    let lat_profile = if cli.latitudinal {
+        eprintln!(
+            "latitudinal mode: lat_max={:.0} deg, tanh transition",
+            cli.lat_max_deg,
+        );
+        // Ulysses data is already in all_records via load_outer_heliosphere
+        let profile_fit = ulysses_latitudinal_fit(&all_records);
+        Some(profile_fit)
+    } else {
+        None
+    };
+
+    // Generate radial IC
+    let data = generate_radial_ic(&profile, cli, &units, lat_profile.as_ref());
+
+    // Knudsen diagnostic from all records
+    let (kn_regime, kn_max) = compute_knudsen_diagnostic(&all_records);
+
+    output_diagnostics_and_write(&data, &units, kn_regime, kn_max, cli)
+}
+
+/// Compute Knudsen number statistics from a set of OmniRecords.
+fn compute_knudsen_diagnostic(records: &[OmniRecord]) -> (KnudsenRegime, f64) {
+    let mut kinetic_count = 0usize;
+    let mut transitional_count = 0usize;
+    let mut kn_max = 0.0_f64;
+    for r in records {
+        if !r.proton_density.is_nan() && !r.proton_temperature.is_nan() {
+            let kn = knudsen_number(r.proton_density, r.proton_temperature);
+            if kn.is_finite() {
+                kn_max = kn_max.max(kn);
+                match classify_knudsen(kn) {
+                    KnudsenRegime::Kinetic => kinetic_count += 1,
+                    KnudsenRegime::Transitional => transitional_count += 1,
+                    KnudsenRegime::Fluid => {}
+                }
+            }
+        }
+    }
+    let kn_regime = if kinetic_count > 0 {
+        KnudsenRegime::Kinetic
+    } else if transitional_count > 0 {
+        KnudsenRegime::Transitional
+    } else {
+        KnudsenRegime::Fluid
+    };
+    eprintln!(
+        "Kn diagnostic: max={kn_max:.1}, regime={kn_regime:?}, \
+         kinetic={kinetic_count}, transitional={transitional_count}/{} records",
+        records.len(),
+    );
+    if kinetic_count > 0 {
+        eprintln!(
+            "WARNING: {kinetic_count} records in kinetic regime (Kn > 100). \
+             LBM fluid approximation may not be valid. Results should be \
+             interpreted as effective-viscosity averages, not kinetic physics."
+        );
+    }
+    (kn_regime, kn_max)
+}
+
+/// Print IC diagnostics and write output file(s).
+fn output_diagnostics_and_write(
+    data: &[CellIc],
+    units: &UnitConversion,
+    kn_regime: KnudsenRegime,
+    kn_max: f64,
+    cli: &Cli,
+) -> anyhow::Result<()> {
     let (rho_min, rho_max) = data.iter().fold((f64::MAX, f64::MIN), |(lo, hi), c| {
         (lo.min(c.rho), hi.max(c.rho))
     });
@@ -756,11 +1760,11 @@ fn main() -> anyhow::Result<()> {
     // Write output
     match cli.format.as_str() {
         "volume" => {
-            write_volume(&cli.out, &data)?;
+            write_volume(&cli.out, data, units, kn_regime, kn_max)?;
             eprintln!("wrote volume: {}", cli.out.display());
         }
         "slices" => {
-            write_slices(&cli.out, &data, cli.nz)?;
+            write_slices(&cli.out, data, cli.nz)?;
             eprintln!("wrote {} slices to: {}", cli.nz, cli.out.display());
         }
         other => {
@@ -770,4 +1774,511 @@ fn main() -> anyhow::Result<()> {
 
     eprintln!("done.");
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Helper: create an OmniRecord with given time and plasma values.
+    fn make_record(year: u16, doy: u16, hour: u8, density: f64, speed: f64) -> OmniRecord {
+        OmniRecord {
+            year,
+            doy,
+            hour,
+            b_magnitude: 5.0,
+            bx_gse: 3.0,
+            by_gse: -2.0,
+            bz_gse: 1.0,
+            proton_temperature: 1e5,
+            proton_density: density,
+            bulk_speed: speed,
+            flow_pressure: f64::NAN,
+            plasma_beta: f64::NAN,
+            alfven_mach: f64::NAN,
+            dst_index: f64::NAN,
+            ae_index: f64::NAN,
+            kp_times_10: 0,
+            r_au: 1.0,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+        }
+    }
+
+    #[test]
+    fn test_time_aligned_intersection_partial_overlap() {
+        // L1: hours 0-4, STEREO: hours 2-6 -> intersection = hours 2-4
+        let l1: Vec<OmniRecord> = (0..5)
+            .map(|h| make_record(2024, 1, h, 5.0 + h as f64, 400.0))
+            .collect();
+        let stereo: Vec<OmniRecord> = (2..7)
+            .map(|h| make_record(2024, 1, h, 7.0 + h as f64, 350.0))
+            .collect();
+
+        let (l1_a, st_a) = time_aligned_intersection(&l1, &stereo);
+
+        // Intersection should have 3 records (hours 2, 3, 4)
+        assert_eq!(l1_a.len(), 3, "intersection should have 3 records");
+        assert_eq!(st_a.len(), 3, "stereo should match L1 length");
+
+        // Verify the correct records were selected
+        assert_eq!(l1_a[0].hour, 2);
+        assert_eq!(l1_a[1].hour, 3);
+        assert_eq!(l1_a[2].hour, 4);
+
+        // Verify L1 and STEREO records differ (different density)
+        assert!((l1_a[0].proton_density - 7.0).abs() < 0.01); // 5.0 + 2
+        assert!((st_a[0].proton_density - 9.0).abs() < 0.01); // 7.0 + 2
+    }
+
+    #[test]
+    fn test_time_aligned_intersection_different_telemetry_rates() {
+        // Simulate different drop rates: L1 has all 10 hours,
+        // STEREO has only odd hours (5 records vs 10)
+        let l1: Vec<OmniRecord> = (0..10)
+            .map(|h| make_record(2024, 1, h, 5.0, 400.0))
+            .collect();
+        let stereo: Vec<OmniRecord> = (0..10)
+            .filter(|h| h % 2 == 1)
+            .map(|h| make_record(2024, 1, h as u8, 7.0, 350.0))
+            .collect();
+
+        let (l1_a, st_a) = time_aligned_intersection(&l1, &stereo);
+
+        // Only odd hours overlap: 1, 3, 5, 7, 9
+        assert_eq!(l1_a.len(), 5, "intersection with different rates");
+        assert_eq!(st_a.len(), 5);
+        assert_eq!(l1_a[0].hour, 1);
+        assert_eq!(l1_a[4].hour, 9);
+    }
+
+    #[test]
+    #[should_panic(expected = "No overlapping timestamps")]
+    fn test_time_aligned_intersection_no_overlap_panics() {
+        // L1: DOY 1, STEREO: DOY 2 -> no overlap
+        let l1 = vec![make_record(2024, 1, 0, 5.0, 400.0)];
+        let stereo = vec![make_record(2024, 2, 0, 7.0, 350.0)];
+        let _ = time_aligned_intersection(&l1, &stereo);
+    }
+
+    /// Helper: create an OmniRecord at a specific heliocentric distance.
+    fn make_record_at_r(
+        r_au: f64,
+        density: f64,
+        speed: f64,
+        temp: f64,
+        bx: f64,
+        by: f64,
+        bz: f64,
+    ) -> OmniRecord {
+        OmniRecord {
+            year: 2024,
+            doy: 1,
+            hour: 0,
+            b_magnitude: (bx * bx + by * by + bz * bz).sqrt(),
+            bx_gse: bx,
+            by_gse: by,
+            bz_gse: bz,
+            proton_temperature: temp,
+            proton_density: density,
+            bulk_speed: speed,
+            flow_pressure: f64::NAN,
+            plasma_beta: f64::NAN,
+            alfven_mach: f64::NAN,
+            dst_index: f64::NAN,
+            ae_index: f64::NAN,
+            kp_times_10: 0,
+            r_au,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+        }
+    }
+
+    #[test]
+    fn test_build_radial_profile_groups_by_distance() {
+        // Create records at 1, 5, and 100 AU
+        let records = vec![
+            make_record_at_r(1.0, 5.0, 400.0, 1e5, 3.0, -2.0, 1.0),
+            make_record_at_r(1.0, 6.0, 380.0, 1.1e5, 2.5, -1.5, 0.8),
+            make_record_at_r(5.0, 0.2, 420.0, 2e4, 0.12, -0.08, 0.03),
+            make_record_at_r(100.0, 0.0005, 410.0, 1500.0, 0.0003, -0.00015, 0.0),
+        ];
+
+        let profile = build_radial_profile(&records);
+        assert_eq!(profile.len(), 3, "3 distinct distance bins");
+        assert!((profile[0].r_au - 1.0).abs() < 0.1);
+        assert!((profile[1].r_au - 5.0).abs() < 0.1);
+        assert!((profile[2].r_au - 100.0).abs() < 0.1);
+
+        // Median of 5.0 and 6.0 at 1 AU
+        let n_1au = profile[0].density_cm3;
+        assert!(n_1au >= 5.0 && n_1au <= 6.0, "median density at 1 AU: {n_1au}");
+    }
+
+    #[test]
+    fn test_build_radial_profile_skips_nan_distance() {
+        let records = vec![
+            make_record_at_r(f64::NAN, 5.0, 400.0, 1e5, 3.0, -2.0, 1.0),
+            make_record_at_r(1.0, 5.0, 400.0, 1e5, 3.0, -2.0, 1.0),
+        ];
+        let profile = build_radial_profile(&records);
+        assert_eq!(profile.len(), 1, "NaN distance record should be skipped");
+    }
+
+    #[test]
+    fn test_interpolate_radial_r_squared_density() {
+        // n(r) should scale as r^-2 for a single data point at 1 AU
+        let profile = vec![RadialProfilePoint {
+            r_au: 1.0,
+            density_cm3: 5.0,
+            speed_kms: 400.0,
+            temp_k: 1e5,
+            br_nt: 5.0,
+            bt_nt: -3.0,
+            bn_nt: 0.0,
+            b_mag_nt: 5.83,
+        }];
+
+        // At 10 AU, density should be 5.0 / 100 = 0.05
+        let p10 = interpolate_radial(&profile, 10.0);
+        let expected = 5.0 / 100.0;
+        let rel_err = (p10.density_cm3 - expected).abs() / expected;
+        assert!(
+            rel_err < 0.01,
+            "density at 10 AU: {:.6} (expected {expected:.6}, err={rel_err:.4})",
+            p10.density_cm3,
+        );
+
+        // Speed should be constant
+        assert!(
+            (p10.speed_kms - 400.0).abs() < 1.0,
+            "speed should be ~constant: {}",
+            p10.speed_kms,
+        );
+
+        // B_r should scale as r^-2
+        let br_10 = p10.br_nt;
+        let br_expected = 5.0 / 100.0;
+        assert!(
+            (br_10 - br_expected).abs() / br_expected < 0.01,
+            "B_r at 10 AU: {br_10:.6} (expected {br_expected:.6})",
+        );
+    }
+
+    #[test]
+    fn test_interpolate_radial_between_two_points() {
+        let profile = vec![
+            RadialProfilePoint {
+                r_au: 1.0,
+                density_cm3: 5.0,
+                speed_kms: 400.0,
+                temp_k: 1e5,
+                br_nt: 5.0,
+                bt_nt: -3.0,
+                bn_nt: 0.0,
+                b_mag_nt: 5.83,
+            },
+            RadialProfilePoint {
+                r_au: 100.0,
+                density_cm3: 0.0005,
+                speed_kms: 410.0,
+                temp_k: 1500.0,
+                br_nt: 0.0005,
+                bt_nt: -0.03,
+                bn_nt: 0.0,
+                b_mag_nt: 0.03,
+            },
+        ];
+
+        // Interpolate at 10 AU (log-midpoint between 1 and 100)
+        let p10 = interpolate_radial(&profile, 10.0);
+
+        // Density should be between the two values (log-linear interpolation)
+        assert!(p10.density_cm3 > 0.0005, "density above 100 AU value");
+        assert!(p10.density_cm3 < 5.0, "density below 1 AU value");
+        // Speed should interpolate linearly
+        assert!(p10.speed_kms > 399.0 && p10.speed_kms < 411.0, "speed: {}", p10.speed_kms);
+    }
+
+    #[test]
+    fn test_interpolate_radial_empty_profile() {
+        let profile: Vec<RadialProfilePoint> = vec![];
+        let p = interpolate_radial(&profile, 10.0);
+        // Should use scaling laws from defaults
+        let expected_n = 5.0 / 100.0; // 5.0 / (10^2)
+        assert!(
+            (p.density_cm3 - expected_n).abs() / expected_n < 0.01,
+            "fallback density: {}",
+            p.density_cm3,
+        );
+    }
+
+    #[test]
+    fn test_radial_unit_conversion_adapts_to_range() {
+        let profile = vec![
+            RadialProfilePoint {
+                r_au: 1.0,
+                density_cm3: 5.0,
+                speed_kms: 400.0,
+                temp_k: 1e5,
+                br_nt: 5.0,
+                bt_nt: -3.0,
+                bn_nt: 0.0,
+                b_mag_nt: 5.83,
+            },
+        ];
+
+        let units_narrow = radial_unit_conversion(&profile, 0.5, 1.5);
+        let units_wide = radial_unit_conversion(&profile, 1.0, 100.0);
+
+        // Wide range should have wider density clamps
+        assert!(
+            units_wide.density_clamp[1] > units_narrow.density_clamp[1],
+            "wider range needs wider clamps: narrow={}, wide={}",
+            units_narrow.density_clamp[1],
+            units_wide.density_clamp[1],
+        );
+
+        // Both should have valid u_scale
+        assert_eq!(units_narrow.u_scale, 0.05);
+        assert_eq!(units_wide.u_scale, 0.05);
+    }
+
+    #[test]
+    fn test_generate_radial_ic_cell_count() {
+        let profile = vec![RadialProfilePoint {
+            r_au: 1.0,
+            density_cm3: 5.0,
+            speed_kms: 400.0,
+            temp_k: 1e5,
+            br_nt: 5.0,
+            bt_nt: -3.0,
+            bn_nt: 0.0,
+            b_mag_nt: 5.83,
+        }];
+
+        let cli = Cli::parse_from([
+            "solar-wind-ic",
+            "--radial-mode",
+            "--nx", "16",
+            "--ny", "8",
+            "--nz", "8",
+            "--r-min-au", "1.0",
+            "--r-max-au", "100.0",
+        ]);
+
+        let units = radial_unit_conversion(&profile, cli.r_min_au, cli.r_max_au);
+        let data = generate_radial_ic(&profile, &cli, &units, None);
+
+        assert_eq!(data.len(), 16 * 8 * 8, "total cell count");
+    }
+
+    #[test]
+    fn test_generate_radial_ic_density_decreases_with_x() {
+        // Density should decrease along x-axis (increasing distance)
+        let profile = vec![RadialProfilePoint {
+            r_au: 1.0,
+            density_cm3: 5.0,
+            speed_kms: 400.0,
+            temp_k: 1e5,
+            br_nt: 5.0,
+            bt_nt: -3.0,
+            bn_nt: 0.0,
+            b_mag_nt: 5.83,
+        }];
+
+        let cli = Cli::parse_from([
+            "solar-wind-ic",
+            "--radial-mode",
+            "--nx", "32",
+            "--ny", "4",
+            "--nz", "4",
+            "--r-min-au", "1.0",
+            "--r-max-au", "100.0",
+        ]);
+
+        let units = radial_unit_conversion(&profile, cli.r_min_au, cli.r_max_au);
+        let data = generate_radial_ic(&profile, &cli, &units, None);
+
+        // Compare density at x=0 (1 AU) vs x=31 (100 AU), y=0, z=0
+        let rho_inner = data.iter().find(|c| c.x == 0 && c.y == 0 && c.z == 0).unwrap().rho;
+        let rho_outer = data.iter().find(|c| c.x == 31 && c.y == 0 && c.z == 0).unwrap().rho;
+
+        assert!(
+            rho_inner > rho_outer,
+            "density should decrease with distance: inner={rho_inner}, outer={rho_outer}",
+        );
+
+        // The ratio should be ~10000x (100^2), subject to clamping
+        let ratio = rho_inner / rho_outer;
+        assert!(ratio > 10.0, "density ratio should be large: {ratio}");
+    }
+
+    #[test]
+    fn test_median_finite() {
+        assert!((median_finite([1.0, 2.0, 3.0].iter().copied()) - 2.0).abs() < 1e-10);
+        assert!((median_finite([f64::NAN, 5.0, 3.0].iter().copied()) - 5.0).abs() < 1e-10);
+        assert!(median_finite([f64::NAN, f64::NAN].iter().copied()).is_nan());
+        assert!((median_finite([7.0].iter().copied()) - 7.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_interp_log() {
+        // interp_log(1.0, 100.0, 0.5) = exp(0.5 * ln(1) + 0.5 * ln(100)) = 10.0
+        let val = interp_log(1.0, 100.0, 0.5);
+        assert!((val - 10.0).abs() < 0.01, "interp_log midpoint: {val}");
+
+        // Endpoints
+        let v0 = interp_log(1.0, 100.0, 0.0);
+        assert!((v0 - 1.0).abs() < 0.01, "interp_log t=0: {v0}");
+        let v1 = interp_log(1.0, 100.0, 1.0);
+        assert!((v1 - 100.0).abs() < 0.01, "interp_log t=1: {v1}");
+    }
+
+    #[test]
+    fn test_scale_r2() {
+        // ratio = r_ref/r_target = 1/10 = 0.1 => val * 0.01
+        assert!((scale_r2(5.0, 0.1) - 0.05).abs() < 1e-10);
+        // ratio = 2.0 => val * 4.0
+        assert!((scale_r2(5.0, 2.0) - 20.0).abs() < 1e-10);
+        assert!(scale_r2(f64::NAN, 2.0).is_nan());
+    }
+
+    #[test]
+    fn test_latitude_modulation_equator() {
+        let profile = LatitudinalProfile::default();
+        let nz = 64;
+        let z_equator = nz / 2;
+        let (n_factor, v_factor) = latitude_modulation(z_equator, nz, 60.0, &profile);
+
+        // At equator (lat=0): tanh((-30)/10) ~ -0.995 => f_polar ~ 0.0025
+        // density_factor ~ 1.0 (equatorial reference)
+        // speed_factor ~ 1.0 (equatorial reference)
+        assert!(
+            (n_factor - 1.0).abs() < 0.05,
+            "equatorial density factor should be ~1.0: {n_factor}",
+        );
+        assert!(
+            (v_factor - 1.0).abs() < 0.05,
+            "equatorial speed factor should be ~1.0: {v_factor}",
+        );
+    }
+
+    #[test]
+    fn test_latitude_modulation_pole() {
+        let profile = LatitudinalProfile::default();
+        let nz = 64;
+        // z=63 maps to lat_max = +60 deg (well into polar regime)
+        let z_pole = nz - 1;
+        let (n_factor, v_factor) = latitude_modulation(z_pole, nz, 60.0, &profile);
+
+        // At |lat|=60 > transition(30): f_polar ~ 1.0
+        // density_factor ~ fast_n/slow_n = 3/7 ~ 0.43
+        assert!(
+            n_factor < 0.8,
+            "polar density factor should be < 0.8 (fast wind less dense): {n_factor}",
+        );
+
+        // speed_factor ~ fast_v/slow_v = 750/400 = 1.875
+        assert!(
+            v_factor > 1.5,
+            "polar speed factor should be > 1.5 (fast wind faster): {v_factor}",
+        );
+    }
+
+    #[test]
+    fn test_latitude_modulation_symmetric() {
+        let profile = LatitudinalProfile::default();
+        let nz = 64;
+        // South pole (z=0) and north pole (z=63) should have the same factors
+        let (n_south, v_south) = latitude_modulation(0, nz, 60.0, &profile);
+        let (n_north, v_north) = latitude_modulation(nz - 1, nz, 60.0, &profile);
+
+        assert!(
+            (n_south - n_north).abs() < 1e-10,
+            "density modulation should be symmetric: south={n_south}, north={n_north}",
+        );
+        assert!(
+            (v_south - v_north).abs() < 1e-10,
+            "speed modulation should be symmetric: south={v_south}, north={v_north}",
+        );
+    }
+
+    #[test]
+    fn test_latitude_modulation_smooth_transition() {
+        let profile = LatitudinalProfile::default();
+        let nz = 128;
+        // Modulation factors should change smoothly (no jumps)
+        let mut prev_n = f64::NAN;
+        let mut max_jump = 0.0_f64;
+        for z in 0..nz {
+            let (n_factor, _) = latitude_modulation(z, nz, 60.0, &profile);
+            if prev_n.is_finite() {
+                max_jump = max_jump.max((n_factor - prev_n).abs());
+            }
+            prev_n = n_factor;
+        }
+        // Smooth tanh: max jump between adjacent cells should be small
+        assert!(
+            max_jump < 0.05,
+            "transition should be smooth (max jump < 0.05): {max_jump}",
+        );
+    }
+
+    #[test]
+    fn test_ulysses_latitudinal_fit_defaults() {
+        // With no data, should return defaults
+        let profile = ulysses_latitudinal_fit(&[]);
+        assert!((profile.fast_speed_kms - 750.0).abs() < 1e-10);
+        assert!((profile.slow_speed_kms - 400.0).abs() < 1e-10);
+        assert!((profile.fast_density_cm3 - 3.0).abs() < 1e-10);
+        assert!((profile.slow_density_cm3 - 7.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_generate_radial_ic_with_latitude() {
+        // Radial IC with latitudinal modulation: poles should be faster/less dense
+        let profile = vec![RadialProfilePoint {
+            r_au: 1.0,
+            density_cm3: 5.0,
+            speed_kms: 400.0,
+            temp_k: 1e5,
+            br_nt: 5.0,
+            bt_nt: -3.0,
+            bn_nt: 0.0,
+            b_mag_nt: 5.83,
+        }];
+
+        let cli = Cli::parse_from([
+            "solar-wind-ic",
+            "--radial-mode",
+            "--latitudinal",
+            "--lat-max-deg", "60",
+            "--nx", "8",
+            "--ny", "4",
+            "--nz", "16",
+            "--r-min-au", "1.0",
+            "--r-max-au", "10.0",
+        ]);
+
+        let units = radial_unit_conversion(&profile, cli.r_min_au, cli.r_max_au);
+        let lat_profile = LatitudinalProfile::default();
+        let data = generate_radial_ic(&profile, &cli, &units, Some(&lat_profile));
+
+        assert_eq!(data.len(), 8 * 4 * 16, "total cell count");
+
+        // At x=0 (1 AU), compare equatorial z=8 vs polar z=0/z=15
+        let rho_equator = data.iter()
+            .find(|c| c.x == 0 && c.y == 0 && c.z == 8)
+            .unwrap().rho;
+        let rho_pole = data.iter()
+            .find(|c| c.x == 0 && c.y == 0 && c.z == 0)
+            .unwrap().rho;
+
+        // Polar wind is less dense than equatorial (fast_n < slow_n)
+        assert!(
+            rho_pole < rho_equator,
+            "polar density should be < equatorial: pole={rho_pole}, equator={rho_equator}",
+        );
+    }
 }
