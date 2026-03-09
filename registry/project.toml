@@ -5,9 +5,9 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 5116
-claim_count = 1038
-insight_count = 118
+test_count = 5136
+claim_count = 1039
+insight_count = 119
 experiment_count = 126
 complete_experiment_count = 88
 paper_count = 111
@@ -19,11 +19,11 @@ scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 [sprints.s77]
 number = 77
 date = "2026-03-08"
-test_count = 5116
-claim_count = 1038
+test_count = 5136
+claim_count = 1039
 kernel_checked_claims = 122
 proof_files = 181
-summary = "S77: Parker Transport Engine (Phase 17). New crate cr_transport: RigidityGrid (logarithmic momentum bins), DiffusionTensor (Jokipii/Bieber kappa_par ~ R^alpha/B), ForceFieldProxy (Gleeson-Axford FGA via 32-pt Gauss-Legendre), PteSolver (Strang-split ADI+upwind+momentum deceleration), DmSource (Q_DM injection at peak rigidity). New data_core parser voyager_crs (8 proton + 4 He + 4 e- channels, fill detection). CLI binary cr-modulation-sweep (one-way LBM->PTE coupling loop, FGA phi(r), snapshot CSV). fetch_crs.py SPDF fetch script. 5 new claims (C-1171..C-1175), 7 experiments (E-121..E-127), 5 insights (I-117..I-121), 13 new tests. 177 binaries."
+summary = "S77: Parker Transport Engine (Phase 17) + UDG NFW Concentration-Mass Relation (Phase 18). Phase 17: New crate cr_transport (RigidityGrid, DiffusionTensor, ForceFieldProxy, PteSolver, DmSource), voyager_crs parser, cr-modulation-sweep binary, 5 claims (C-1171..C-1175), 7 experiments (E-121..E-127), 5 insights (I-117..I-121). Phase 18: nfw_utils.rs module in cosmology_core -- concentration_mass_relation(M_vir, z) using Dutton & Maccio (2014) + Prada (2012) calibration, NfwParams struct, nfw_params_from_mass(), nfw_density_from_params(), nfw_enclosed_mass_from_params(). 20 new tests, 1 new claim (C-1176), 1 new insight (I-122). Di Mauro (2026) + Couture (2022) cited in source.rs and dm_force.rs. 5136 tests total."
 
 [sprints.s70]
 number = 70

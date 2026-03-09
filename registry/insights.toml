@@ -1370,3 +1370,12 @@ claims = ["C-1175"]
 confidence = "high"
 phase = "fluids"
 sprint = 77
+
+[[insight]]
+id = "I-122"
+title = "Concentration-mass anti-correlation: UDG halos are denser than MW halos"
+description = "The Dutton & Maccio (2014) + Prada (2012) c(M,z) fit reveals the fundamental anti-correlation between halo mass and NFW concentration: a 1e9 Msun UDG halo (c ~ 16) has ~70% more concentrated DM than a MW-scale 1e12 Msun halo (c ~ 8). This means UDG halos have smaller r_s (scale radius) and higher rho_s (central density), producing steeper inner DM density gradients that require sub-kpc spatial resolution in the LBM grid when r < r_s. The ln_1p(x) stability guard is critical at solar-system scales (x = 1 AU / r_s ~ 2e-10) where plain ln(1+x) catastrophically cancels. This is now implemented in nfw_utils.rs as nfw_enclosed_mass_from_params."
+claims = ["C-1176"]
+confidence = "high"
+phase = "fluids"
+sprint = 77
