@@ -2891,17 +2891,86 @@ pub fn allowed_reflection(space_group_number: u16, h: i32, k: i32, l: i32) -> bo
 
 /// Selection rule for transitions: check if transition is allowed.
 ///
-/// A transition is allowed if the product of initial irrep, final irrep, and operator
-/// irrep contains the totally symmetric representation.
+/// A transition is allowed if the triple product of the initial irrep,
+/// operator irrep, and final irrep contains the totally symmetric
+/// representation (A1, A1g, etc.).
+///
+/// Uses the character orthogonality relation:
+/// ```text
+///   n(A₁ in Γ_f* ⊗ Γ_op ⊗ Γ_i) =
+///       (1/|G|) Σ_k  n_k · χ_f*(C_k) · χ_op(C_k) · χ_i(C_k)
+/// ```
+/// where n_k is the number of operations in conjugacy class C_k and
+/// |G| = Σ n_k is the order of the group.  The transition is allowed
+/// when this multiplicity is non-zero.
+///
+/// Falls back to `true` (allowed) when the character table for the
+/// given point group is not available or when an irrep label is not
+/// found in the table, so the function is a strict *refinement* of
+/// the former placeholder.
 pub fn is_allowed_transition(
-    _point_group: PointGroup,
-    _initial_irrep: &str,
-    _final_irrep: &str,
-    _operator_irrep: &str,
+    point_group: PointGroup,
+    initial_irrep: &str,
+    final_irrep: &str,
+    operator_irrep: &str,
 ) -> bool {
-    // Simplified: in full implementation, use character table multiplication rules
-    // For now, return true for all transitions (placeholder)
-    true
+    let table = match CharacterTable::for_point_group(point_group) {
+        Some(t) => t,
+        None => return true, // unsupported group: conservatively allow
+    };
+
+    let find_row = |label: &str| -> Option<usize> {
+        table.irreps.iter().position(|ir| ir.label == label)
+    };
+
+    let row_i = match find_row(initial_irrep) {
+        Some(r) => r,
+        None => return true, // unknown irrep: allow
+    };
+    let row_f = match find_row(final_irrep) {
+        Some(r) => r,
+        None => return true,
+    };
+    let row_op = match find_row(operator_irrep) {
+        Some(r) => r,
+        None => return true,
+    };
+
+    // Group order |G| = Σ n_k
+    let group_order: f64 = table.classes.iter().map(|c| c.count as f64).sum();
+    if group_order < 1.0 {
+        return true;
+    }
+
+    // n(A1) = (1/|G|) Σ_k n_k · χ_f*(C_k) · χ_op(C_k) · χ_i(C_k)
+    let mut sum_re = 0.0_f64;
+    for (j, class) in table.classes.iter().enumerate() {
+        let n_k = class.count as f64;
+        let (fi_re, fi_im) = table.characters[row_i][j];
+        let (ff_re, ff_im) = table.characters[row_f][j];
+        let (fo_re, fo_im) = table.characters[row_op][j];
+
+        // conj(χ_f) = (ff_re, -ff_im)
+        // product of three complex numbers: conj(χ_f) · χ_op · χ_i
+        let (a_re, a_im) = (ff_re, -ff_im); // conj(χ_f)
+        // a * χ_op
+        let (b_re, b_im) = (
+            a_re * fo_re - a_im * fo_im,
+            a_re * fo_im + a_im * fo_re,
+        );
+        // b * χ_i
+        let (c_re, _c_im) = (
+            b_re * fi_re - b_im * fi_im,
+            b_re * fi_im + b_im * fi_re,
+        );
+
+        sum_re += n_k * c_re;
+    }
+
+    let multiplicity = sum_re / group_order;
+
+    // A non-zero (positive) multiplicity means the transition is allowed.
+    multiplicity > 0.5 - 1e-6
 }
 
 /// Phonon mode analysis by symmetry.
@@ -3815,10 +3884,36 @@ mod tests {
 
     #[test]
     fn test_is_allowed_transition() {
-        // Test basic transition selection rules (placeholder implementation)
-        let result = is_allowed_transition(PointGroup::Oh, "A1g", "T2g", "T1u");
-        // Placeholder returns true
-        assert!(result);
+        // Oh point group: selection rules from character table
+
+        // Electric dipole transitions are mediated by T1u operator irrep.
+        // A1g -> T1u via T1u: product A1g ⊗ T1u ⊗ T1u contains A1g
+        assert!(is_allowed_transition(PointGroup::Oh, "A1g", "T1u", "T1u"));
+
+        // A1g -> T2g via T1u: product A1g ⊗ T1u ⊗ T2g does NOT contain A1g
+        assert!(!is_allowed_transition(PointGroup::Oh, "A1g", "T2g", "T1u"));
+
+        // T1u -> A1g via T1u: same as A1g -> T1u (symmetric)
+        assert!(is_allowed_transition(PointGroup::Oh, "T1u", "A1g", "T1u"));
+
+        // T2g -> T1u via T1u: product T2g ⊗ T1u ⊗ T1u should contain A1g
+        // (T1u ⊗ T1u = A1g + Eg + T1g + T2g, which contains T2g)
+        assert!(is_allowed_transition(PointGroup::Oh, "T2g", "T1u", "T1u"));
+
+        // Self-transition A1g -> A1g via A1g: always allowed (identity)
+        assert!(is_allowed_transition(PointGroup::Oh, "A1g", "A1g", "A1g"));
+
+        // A2g -> A2g via A1g: A2g ⊗ A1g ⊗ A2g = A2g ⊗ A2g = A1g -> allowed
+        assert!(is_allowed_transition(PointGroup::Oh, "A2g", "A2g", "A1g"));
+
+        // A1g -> A2g via A1g: A1g ⊗ A1g ⊗ A2g = A2g ≠ A1g -> forbidden
+        assert!(!is_allowed_transition(PointGroup::Oh, "A1g", "A2g", "A1g"));
+
+        // Falls back to true for unsupported group
+        assert!(is_allowed_transition(PointGroup::C3i, "A", "B", "C"));
+
+        // Falls back to true for unknown irrep label
+        assert!(is_allowed_transition(PointGroup::Oh, "UNKNOWN", "A1g", "A1g"));
     }
 
     #[test]

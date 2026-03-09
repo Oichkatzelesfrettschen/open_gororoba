@@ -285,6 +285,203 @@ pub fn verify_stiefel_algebraic() -> StiefelVerification {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Holonomy angle on V_{8,2} and G₂ orbit invariants
+// ---------------------------------------------------------------------------
+
+/// Result of a parallel-transport holonomy computation on V_{8,2}.
+///
+/// Given two zero-divisors z₁ = (u₁, v₁) and z₂ = (u₂, v₂) in the
+/// Stiefel manifold V_{8,2} (orthonormal 2-frames in R⁸), the
+/// holonomy angle θ measures the rotation of the second frame vector
+/// when parallel-transported along the geodesic on S⁷ connecting u₁
+/// to u₂.
+///
+/// # Literature
+/// - Reggiani (2024): Geometry of sedenion zero divisors
+/// - Koebisu (arXiv:2512.13002): ZD set ≅ V_{8,2}
+#[derive(Debug, Clone, Copy)]
+pub struct HolonomyResult {
+    /// Geodesic distance on S⁷ between u₁ and u₂ (in radians).
+    pub geodesic_distance: f64,
+    /// Holonomy angle: rotation of the v-frame under parallel transport
+    /// along the u-geodesic (in radians, range [0, π]).
+    pub holonomy_angle: f64,
+    /// Inner product ⟨v₁, v₂⟩ projected orthogonal to the transport plane.
+    pub projected_inner_product: f64,
+}
+
+/// Compute the parallel-transport holonomy angle between two V_{8,2} frames.
+///
+/// Each frame is given as a sedenion z = (a, b) with a, b ∈ R⁸.
+/// After normalising to unit vectors u = a/|a|, v = b/|b|, we compute:
+///
+/// 1. Geodesic distance d = arccos(⟨u₁, u₂⟩) on S⁷.
+/// 2. Parallel-transport v₁ along the great circle from u₁ to u₂.
+/// 3. Holonomy angle = arccos(⟨v₁_transported, v₂⟩).
+///
+/// For non-associative algebras the holonomy is generically non-trivial,
+/// reflecting the curvature of V_{8,2} ≅ SO(8)/SO(6).
+pub fn holonomy_between(z1: &[f64], z2: &[f64]) -> Option<HolonomyResult> {
+    if z1.len() != 16 || z2.len() != 16 {
+        return None;
+    }
+    let (a1, b1) = (&z1[..8], &z1[8..]);
+    let (a2, b2) = (&z2[..8], &z2[8..]);
+
+    let norm_a1 = vec_norm(a1);
+    let norm_b1 = vec_norm(b1);
+    let norm_a2 = vec_norm(a2);
+    let norm_b2 = vec_norm(b2);
+
+    if norm_a1 < 1e-14 || norm_b1 < 1e-14 || norm_a2 < 1e-14 || norm_b2 < 1e-14 {
+        return None;
+    }
+
+    // Unit vectors
+    let u1: Vec<f64> = a1.iter().map(|&x| x / norm_a1).collect();
+    let v1: Vec<f64> = b1.iter().map(|&x| x / norm_b1).collect();
+    let u2: Vec<f64> = a2.iter().map(|&x| x / norm_a2).collect();
+    let v2: Vec<f64> = b2.iter().map(|&x| x / norm_b2).collect();
+
+    let cos_d = inner_product(&u1, &u2).clamp(-1.0, 1.0);
+    let geodesic_distance = cos_d.acos();
+
+    // Parallel transport v1 along the geodesic from u1 to u2 on S^7.
+    // For a great circle parameterised by γ(t) = cos(t)·u1 + sin(t)·e,
+    // where e = (u2 - cos_d·u1) / sin_d  is the unit tangent,
+    // the parallel transport of v along γ is:
+    //   v(t) = v - ⟨v,u1⟩·u1 - ⟨v,e⟩·e
+    //        + [⟨v,u1⟩·cos(t) - ⟨v,e⟩·sin(t)] · γ(t)/|γ|
+    //        + [⟨v,u1⟩·sin(t) + ⟨v,e⟩·cos(t)] · γ'(t)/|γ'|
+    //
+    // Simplified Schild's ladder approach for the sphere:
+    //   P_transport(v1) = v1 - (⟨v1,u1⟩ + ⟨v1,u2⟩)/(1 + cos_d) · (u1 + u2)
+    //                      + 2·⟨v1,u1⟩ · u2
+    // (valid when cos_d > -1, i.e. u1 ≠ -u2)
+
+    let sin_d = (1.0 - cos_d * cos_d).sqrt();
+    let v1_transported = if sin_d < 1e-12 {
+        // u1 ≈ u2: parallel transport is identity
+        v1.clone()
+    } else {
+        // Rodrigues-type parallel transport formula on S^n:
+        // PT(v) = v - (⟨v,u1⟩+⟨v,u2⟩)/(1+cos_d) · (u1+u2) + 2⟨v,u1⟩·u2
+        let vu1 = inner_product(&v1, &u1);
+        let vu2 = inner_product(&v1, &u2);
+        let coeff = (vu1 + vu2) / (1.0 + cos_d);
+        let mut pt = vec![0.0_f64; 8];
+        for k in 0..8 {
+            pt[k] = v1[k] - coeff * (u1[k] + u2[k]) + 2.0 * vu1 * u2[k];
+        }
+        // Project out u2 component to stay in tangent space at u2
+        let pt_u2 = inner_product(&pt, &u2);
+        for k in 0..8 {
+            pt[k] -= pt_u2 * u2[k];
+        }
+        // Re-normalise
+        let pt_norm = vec_norm(&pt);
+        if pt_norm > 1e-14 {
+            for x in &mut pt {
+                *x /= pt_norm;
+            }
+        }
+        pt
+    };
+
+    // Project v2 orthogonal to u2 (it should already be, but ensure numerical cleanliness)
+    let v2u2 = inner_product(&v2, &u2);
+    let mut v2_orth: Vec<f64> = v2.iter().zip(u2.iter()).map(|(&vi, &ui)| vi - v2u2 * ui).collect();
+    let v2_orth_norm = vec_norm(&v2_orth);
+    if v2_orth_norm > 1e-14 {
+        for x in &mut v2_orth {
+            *x /= v2_orth_norm;
+        }
+    }
+
+    let proj_ip = inner_product(&v1_transported, &v2_orth).clamp(-1.0, 1.0);
+    let holonomy_angle = proj_ip.acos();
+
+    Some(HolonomyResult {
+        geodesic_distance,
+        holonomy_angle,
+        projected_inner_product: proj_ip,
+    })
+}
+
+/// G₂-orbit invariant: the octonion triple cross-product of three
+/// unit vectors in R⁷ (imaginary octonions).
+///
+/// For u, v, w ∈ Im(O) ≅ R⁷, the G₂-invariant quantity
+///   φ(u,v,w) = ⟨u, v × w⟩_O
+/// where × is the octonion cross product, is the calibration 3-form
+/// of G₂.  This is invariant under the G₂ automorphism group of the
+/// octonions.
+///
+/// # Literature
+/// - Harvey & Lawson (1982): Calibrated geometries
+/// - Bryant (1987): Metrics with holonomy G₂
+/// - Reggiani (2024): Z(S) ≅ G₂ context
+pub fn g2_calibration_form(u: &[f64; 7], v: &[f64; 7], w: &[f64; 7]) -> f64 {
+    // Octonion multiplication table for imaginary units e₁..e₇:
+    // We embed u,v as imaginary octonions (0, u₁..u₇) and compute
+    // the imaginary part of the product, then take the inner product.
+    //
+    // The calibration form φ(u,v,w) = ⟨u, v×w⟩ where
+    //   (v×w)_i = ε_{ijk} v_j w_k
+    // with ε_{ijk} the octonion structure constants.
+    //
+    // Standard octonion Fano-plane structure constants:
+    // Positive triples (i,j,k) with e_i·e_j = e_k:
+    //   (1,2,3), (1,4,5), (1,7,6), (2,4,6), (2,5,7), (3,4,7), (3,6,5)
+    // Using 0-indexed: subtract 1 from each index above.
+    let triples: [(usize, usize, usize); 7] = [
+        (0, 1, 2), // e1·e2 = e3
+        (0, 3, 4), // e1·e4 = e5
+        (0, 6, 5), // e1·e7 = e6
+        (1, 3, 5), // e2·e4 = e6
+        (1, 4, 6), // e2·e5 = e7
+        (2, 3, 6), // e3·e4 = e7
+        (2, 5, 4), // e3·e6 = e5
+    ];
+
+    // φ(u,v,w) = Σ_{(i,j,k)} [u_i (v_j w_k - v_k w_j)
+    //                          + u_j (v_k w_i - v_i w_k)
+    //                          + u_k (v_i w_j - v_j w_i)]
+    let mut phi = 0.0_f64;
+    for &(i, j, k) in &triples {
+        phi += u[i] * (v[j] * w[k] - v[k] * w[j]);
+        phi += u[j] * (v[k] * w[i] - v[i] * w[k]);
+        phi += u[k] * (v[i] * w[j] - v[j] * w[i]);
+    }
+    phi
+}
+
+/// Compute the G₂ calibration form for a triple of standard zero-divisors.
+///
+/// Each ZD is projected to its imaginary-octonion lower half (indices 1..7
+/// of the first 8 components), normalised, and then the G₂ 3-form is
+/// evaluated.  Returns `None` if any ZD has a vanishing imaginary part.
+pub fn g2_calibration_from_zds(z1: &[f64], z2: &[f64], z3: &[f64]) -> Option<f64> {
+    let extract_im = |z: &[f64]| -> Option<[f64; 7]> {
+        if z.len() < 8 {
+            return None;
+        }
+        let im: [f64; 7] = [z[1], z[2], z[3], z[4], z[5], z[6], z[7]];
+        let norm = im.iter().map(|x| x * x).sum::<f64>().sqrt();
+        if norm < 1e-14 {
+            return None;
+        }
+        Some(im.map(|x| x / norm))
+    };
+
+    let u = extract_im(z1)?;
+    let v = extract_im(z2)?;
+    let w = extract_im(z3)?;
+
+    Some(g2_calibration_form(&u, &v, &w))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -461,5 +658,105 @@ mod tests {
         // All confirmed ZDs from distinct cross-assessor pairs should have
         // lo != hi-8, so orthogonality should hold for diagonal ZDs.
         assert!(n_zd > 0, "must find at least one ZD");
+    }
+
+    #[test]
+    fn test_holonomy_self_is_zero() {
+        // Holonomy of a ZD with itself should be zero distance and zero angle.
+        // Use e_1 + e_9: a = e_1 in R^8, b = e_1 in R^8(shifted).
+        // We need a ⊥ b in R^8, so use e_1 + e_10 instead:
+        //   a = (0,1,0,0,0,0,0,0), b = (0,0,1,0,0,0,0,0)
+        let mut z = [0.0f64; 16];
+        z[1] = 1.0;   // e_1 in lower half
+        z[10] = 1.0;  // e_2 in upper half (different R^8 component)
+        let result = holonomy_between(&z, &z).expect("should compute holonomy");
+        assert!(
+            result.geodesic_distance.abs() < 1e-10,
+            "self-distance should be 0, got {}",
+            result.geodesic_distance
+        );
+        assert!(
+            result.holonomy_angle.abs() < 1e-10,
+            "self-holonomy should be 0, got {}",
+            result.holonomy_angle
+        );
+    }
+
+    #[test]
+    fn test_holonomy_between_distinct_zds() {
+        // Two V_{8,2} frames with orthogonal u,v components:
+        // z1: a=(e_1), b=(e_2) => u1=e_1, v1=e_2 (orthogonal ✓)
+        // z2: a=(e_3), b=(e_4) => u2=e_3, v2=e_4 (orthogonal ✓)
+        let mut z1 = [0.0f64; 16];
+        z1[1] = 1.0;   // a = e_1
+        z1[10] = 1.0;  // b = e_2 (in upper half)
+        let mut z2 = [0.0f64; 16];
+        z2[3] = 1.0;   // a = e_3
+        z2[12] = 1.0;  // b = e_4 (in upper half)
+        let result = holonomy_between(&z1, &z2).expect("should compute holonomy");
+        // u1 = e_1, u2 = e_3 in R^8 => ⟨u1,u2⟩ = 0 => geodesic distance = pi/2
+        assert!(
+            (result.geodesic_distance - std::f64::consts::FRAC_PI_2).abs() < 1e-10,
+            "expected pi/2 geodesic distance, got {}",
+            result.geodesic_distance
+        );
+        // The holonomy angle should be well-defined and finite
+        assert!(result.holonomy_angle.is_finite());
+    }
+
+    #[test]
+    fn test_g2_calibration_antisymmetric() {
+        // The G₂ 3-form is totally antisymmetric
+        let u = [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+        let v = [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+        let w = [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0];
+
+        let phi_uvw = g2_calibration_form(&u, &v, &w);
+        let phi_vuw = g2_calibration_form(&v, &u, &w);
+        let phi_uwv = g2_calibration_form(&u, &w, &v);
+
+        assert!(
+            (phi_uvw + phi_vuw).abs() < 1e-12,
+            "φ(u,v,w) should be -φ(v,u,w)"
+        );
+        assert!(
+            (phi_uvw + phi_uwv).abs() < 1e-12,
+            "φ(u,v,w) should be -φ(u,w,v)"
+        );
+    }
+
+    #[test]
+    fn test_g2_calibration_nonzero_for_fano_triple() {
+        // (e₁, e₂, e₃) is a Fano-plane triple => φ should be ±1
+        let u = [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]; // e₁
+        let v = [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]; // e₂
+        let w = [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0]; // e₃
+
+        let phi = g2_calibration_form(&u, &v, &w);
+        // For (0,1,2) triple: contribution is u[0]*(v[1]*w[2] - v[2]*w[1])
+        // = 1*(1*1 - 0*0) = 1
+        assert!(
+            (phi.abs() - 1.0).abs() < 1e-12,
+            "φ(e₁,e₂,e₃) should be ±1 for Fano triple, got {}",
+            phi
+        );
+    }
+
+    #[test]
+    fn test_g2_calibration_from_zds_works() {
+        // Use three distinct standard ZDs
+        let mut z1 = vec![0.0; 16];
+        z1[1] = 1.0;
+        z1[8] = 1.0;
+        let mut z2 = vec![0.0; 16];
+        z2[2] = 1.0;
+        z2[9] = 1.0;
+        let mut z3 = vec![0.0; 16];
+        z3[3] = 1.0;
+        z3[10] = 1.0;
+
+        let result = g2_calibration_from_zds(&z1, &z2, &z3);
+        assert!(result.is_some(), "should compute G₂ calibration for ZDs");
+        assert!(result.unwrap().is_finite());
     }
 }
