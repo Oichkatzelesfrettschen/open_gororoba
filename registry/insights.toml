@@ -1260,3 +1260,58 @@ claims = ["C-1153"]
 confidence = "low"
 phase = "algebra"
 sprint = 76
+
+[[insight]]
+id = "I-112"
+title = "Adapter Pattern Scales to 10+ Spacecraft with Minimal Code Duplication"
+date = "2026-03-08"
+status = "Active"
+description = "The *_to_omni() adapter pattern (ACE, WIND, STEREO, Voyager 1/2, Pioneer 10/11, Ulysses, NH, Juno, Cassini) scales linearly: each new spacecraft requires only a column layout struct and a ~50-line adapter function. The shared SpdfColumnLayout + parse_spdf_merged() infrastructure handles format differences declaratively. The key design decision: OmniRecord as the universal interchange format with r_au/lat_deg/lon_deg extensions for multi-distance support."
+claims = []
+confidence = "high"
+phase = "fluids"
+sprint = 76
+
+[[insight]]
+id = "I-113"
+title = "Distance-Scaled Ceilings Prevent Unphysical Values at Outer Heliosphere"
+date = "2026-03-08"
+status = "Active"
+description = "Physical ceilings must scale with heliocentric distance: n_ceil(r) = 500/r^2 cm^-3, B_ceil(r) = 200/r^2 nT, T_ceil(r) = 1e8/r^(2/3) K, V_ceil(r) = 3000 km/s (constant). At 100 AU, n_ceil drops from 500 to 0.05 cm^-3, preventing fill values (999.9) from being accepted as physical data. Without this, outer heliosphere parsers silently ingest fill values that are within the fixed L1 ceiling range."
+claims = ["C-1157"]
+confidence = "high"
+phase = "fluids"
+sprint = 76
+
+[[insight]]
+id = "I-114"
+title = "Spatial kappa(R) Enables Per-Cell Drag Coefficient Without Inner Loop Changes"
+date = "2026-03-08"
+status = "Active"
+description = "Replacing scalar kappa_drag with kappa_field[idx] requires zero changes to the drag force inner loop structure. The precomputation absorbs all spatial variation (NFW density, distance-scaled n_ref, v_ref) into the per-cell kappa. At solar system scales, kappa is approximately uniform (NFW ~ constant over 200 AU), but the infrastructure correctly handles the full variation for radial domains spanning 1-157 AU."
+claims = ["C-1161"]
+confidence = "high"
+phase = "fluids"
+sprint = 76
+
+[[insight]]
+id = "I-115"
+title = "Ulysses Latitudinal Gradient Is the Only Source for Z-Axis IC Modulation"
+date = "2026-03-08"
+status = "Active"
+description = "Without Ulysses data, the LBM z-axis is entirely unconstrained -- uniform extrapolation of ecliptic-plane measurements. Ulysses (1994-1995 fast scan) uniquely provides -80 to +80 deg heliographic coverage showing the fast/slow wind bimodality. The tanh transition profile (width ~10-20 deg) maps directly to the z-axis via latitude_modulation(z, nz, profile). No other spacecraft has explored high heliographic latitudes."
+claims = ["C-1163"]
+confidence = "high"
+phase = "fluids"
+sprint = 76
+
+[[insight]]
+id = "I-116"
+title = "Toroidal B-Field Shift at Outer Heliosphere Changes DM-Baryon Coupling Geometry"
+date = "2026-03-08"
+status = "Active"
+description = "The Parker spiral angle psi = atan(omega*r/v_sw) transitions from ~45 deg at 1 AU to ~84 deg at 10 AU to ~89 deg at 100 AU. This means B-field rotates from mixed radial-toroidal to nearly pure toroidal. Since the DM-baryon drag force acts along the relative velocity (radial for cold DM wind), the angle between drag and Lorentz force changes with distance. At 1 AU they are at 45 deg; at 100 AU they are nearly perpendicular. This geometry change is captured by the SolarWindHeliosphericTensorModel anisotropy tensor."
+claims = ["C-1162"]
+confidence = "medium"
+phase = "fluids"
+sprint = 76

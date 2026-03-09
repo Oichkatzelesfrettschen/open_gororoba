@@ -1,6 +1,6 @@
 schema = "open_gororoba.agents.v2"
 source_of_truth = true
-updated_on = "2026-02-25"
+updated_on = "2026-03-08"
 
 [rust_native_policy_top]
 enforced = true
@@ -54,7 +54,7 @@ reason = "Prevents SMT V-Cache thrashing on AMD Zen 3D and similar architectures
 [shared.project]
 name = "open_gororoba"
 kind = "computational_physics_research_platform"
-summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, and cosmological observables."
+summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, cosmological observables, and multi-spacecraft heliospheric tomography (1-157 AU)."
 workspace_crates = 41
 cli_binaries = 176
 registry_model = "toml_first"
@@ -485,6 +485,12 @@ id = "PIT-010"
 issue = "ndarray transitive duplication via burn"
 impact = "two ndarray versions in dependency tree, inflated compile time"
 mitigation = "accept until burn aligns; documented in workspace.metadata.feature_policy"
+
+[[shared.pitfall]]
+id = "PIT-011"
+issue = "boxkites.rs heavy tests cause 30+ min workspace test runs"
+impact = "cargo test --workspace blocked on O(dim^3+) exhaustive graph enumeration in debug mode"
+mitigation = "26 heavy tests gated with #[ignore]; run via cargo test -p algebra_analysis -- --ignored for research lane"
 
 [[shared.reference]]
 path = "registry/engineering_standards.toml"

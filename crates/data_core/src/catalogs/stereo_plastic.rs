@@ -315,31 +315,52 @@ pub fn parse_stereo_magplasma_file(path: &Path) -> Result<Vec<StereoMagRecord>, 
 // RTN -> GSE coordinate transform
 // ---------------------------------------------------------------------------
 
+/// Solar rotation axis tilt from ecliptic north (degrees).
+/// The Sun's spin axis is inclined 7.25 deg to the ecliptic pole,
+/// causing the heliospheric current sheet to wobble and making the
+/// RTN N-axis differ from ecliptic Z by this angle.
+const SOLAR_TILT_DEG: f64 = 7.25;
+
 /// Transform RTN (Radial-Tangential-Normal) to GSE using Earth-STEREO
-/// separation angle.
+/// separation angle, including the 7.25 deg solar tilt correction.
 ///
 /// RTN at STEREO-A:
 ///   R = radially outward from Sun through spacecraft
 ///   T = tangential (in ecliptic plane, prograde)
-///   N = northward (ecliptic north)
+///   N = northward along Sun's rotation axis (NOT ecliptic north)
 ///
 /// GSE:
 ///   X = Sun-Earth line (toward Sun)
 ///   Y = ecliptic plane, dawn side
 ///   Z = ecliptic north
 ///
-/// The rotation by separation angle `sep` (positive = STEREO ahead of Earth):
-///   Bx_GSE = Br * cos(sep) - Bt * sin(sep)
-///   By_GSE = Br * sin(sep) + Bt * cos(sep)
-///   Bz_GSE = Bn
+/// Two-stage rotation:
+///   Stage 1 -- ecliptic plane rotation by separation angle `sep`:
+///     Bx' = Br * cos(sep) - Bt * sin(sep)
+///     By' = Br * sin(sep) + Bt * cos(sep)
+///     Bz' = Bn
+///   Stage 2 -- tilt correction Rx(7.25 deg) about the GSE X-axis:
+///     Bx_GSE = Bx'
+///     By_GSE = By' * cos(tilt) - Bz' * sin(tilt)
+///     Bz_GSE = By' * sin(tilt) + Bz' * cos(tilt)
 pub fn rtn_to_gse(br: f64, bt: f64, bn: f64, separation_angle_deg: f64) -> (f64, f64, f64) {
+    // Stage 1: ecliptic plane rotation by separation angle
     let sep = separation_angle_deg.to_radians();
     let cos_sep = sep.cos();
     let sin_sep = sep.sin();
 
-    let bx_gse = br * cos_sep - bt * sin_sep;
-    let by_gse = br * sin_sep + bt * cos_sep;
-    let bz_gse = bn;
+    let bx_prime = br * cos_sep - bt * sin_sep;
+    let by_prime = br * sin_sep + bt * cos_sep;
+    let bz_prime = bn;
+
+    // Stage 2: solar tilt correction (Rx rotation about X-axis)
+    let tilt = SOLAR_TILT_DEG.to_radians();
+    let cos_tilt = tilt.cos();
+    let sin_tilt = tilt.sin();
+
+    let bx_gse = bx_prime;
+    let by_gse = by_prime * cos_tilt - bz_prime * sin_tilt;
+    let bz_gse = by_prime * sin_tilt + bz_prime * cos_tilt;
 
     (bx_gse, by_gse, bz_gse)
 }
@@ -451,6 +472,9 @@ pub fn stereo_to_omni(
                 dst_index: f64::NAN,
                 ae_index: f64::NAN,
                 kp_times_10: 0,
+                r_au: 1.0,
+                lat_deg: f64::NAN,
+                lon_deg: f64::NAN,
             }
         })
         .collect()
@@ -653,20 +677,55 @@ YEAR\tDOY\thour\tdatetime\tNp\tBulk_Speed\tTkin\tv_th\tflow_ang_inst\tflow_ang_h
 
     #[test]
     fn test_rtn_to_gse_zero_separation() {
-        // At 0 degree separation, RTN = GSE (STEREO at Earth position)
+        // At 0 degree separation, ecliptic rotation is identity.
+        // Solar tilt (7.25 deg) still mixes By and Bz:
+        //   Bx = Br, By = Bt*cos(7.25) - Bn*sin(7.25), Bz = Bt*sin(7.25) + Bn*cos(7.25)
         let (bx, by, bz) = rtn_to_gse(5.0, -3.0, 2.0, 0.0);
+        let tilt = 7.25_f64.to_radians();
         assert!((bx - 5.0).abs() < 1e-10, "Bx should equal Br at sep=0");
-        assert!((by - (-3.0)).abs() < 1e-10, "By should equal Bt at sep=0");
-        assert!((bz - 2.0).abs() < 1e-10, "Bz should equal Bn at sep=0");
+        let by_expected = -3.0 * tilt.cos() - 2.0 * tilt.sin();
+        let bz_expected = -3.0 * tilt.sin() + 2.0 * tilt.cos();
+        assert!((by - by_expected).abs() < 1e-10, "By with tilt: got {by}, expected {by_expected}");
+        assert!((bz - bz_expected).abs() < 1e-10, "Bz with tilt: got {bz}, expected {bz_expected}");
     }
 
     #[test]
     fn test_rtn_to_gse_90_degrees() {
-        // At 90 degrees: Bx = -Bt, By = Br
+        // At 90 degrees ecliptic: Bx' = -Bt, By' = Br, Bz' = Bn
+        // Then tilt: Bx = -Bt, By = Br*cos(tilt) - Bn*sin(tilt),
+        //            Bz = Br*sin(tilt) + Bn*cos(tilt)
         let (bx, by, bz) = rtn_to_gse(5.0, -3.0, 2.0, 90.0);
-        assert!((bx - 3.0).abs() < 1e-10, "Bx = -Bt at 90 deg: got {}", bx);
-        assert!((by - 5.0).abs() < 1e-10, "By = Br at 90 deg: got {}", by);
-        assert!((bz - 2.0).abs() < 1e-10, "Bz = Bn always");
+        let tilt = 7.25_f64.to_radians();
+        assert!((bx - 3.0).abs() < 1e-10, "Bx = -Bt at 90 deg: got {bx}");
+        let by_expected = 5.0 * tilt.cos() - 2.0 * tilt.sin();
+        let bz_expected = 5.0 * tilt.sin() + 2.0 * tilt.cos();
+        assert!((by - by_expected).abs() < 1e-10, "By with tilt at 90 deg: got {by}, expected {by_expected}");
+        assert!((bz - bz_expected).abs() < 1e-10, "Bz with tilt at 90 deg: got {bz}, expected {bz_expected}");
+    }
+
+    #[test]
+    fn test_rtn_to_gse_tilt_correction_nonzero() {
+        // With a pure N-component (Bn=10, Br=Bt=0), the tilt should mix
+        // into By_GSE: By = -Bn*sin(7.25deg), Bz = Bn*cos(7.25deg)
+        let (bx, by, bz) = rtn_to_gse(0.0, 0.0, 10.0, 0.0);
+        let tilt = 7.25_f64.to_radians();
+        assert!(bx.abs() < 1e-14, "Bx should be zero for pure Bn");
+        assert!((by - (-10.0 * tilt.sin())).abs() < 1e-10,
+            "Pure Bn should leak into By via tilt: got {by}");
+        assert!((bz - (10.0 * tilt.cos())).abs() < 1e-10,
+            "Pure Bn should project onto Bz via tilt: got {bz}");
+        // Verify the leak is ~12.6% of Bn
+        assert!(by.abs() > 1.2, "Tilt leak should be ~1.26 nT for 10 nT Bn");
+    }
+
+    #[test]
+    fn test_rtn_to_gse_preserves_magnitude() {
+        // RTN -> GSE is an orthogonal rotation: |B|^2 must be invariant
+        let (bx, by, bz) = rtn_to_gse(5.0, -3.0, 2.0, 42.7);
+        let mag_rtn = (5.0_f64.powi(2) + 3.0_f64.powi(2) + 2.0_f64.powi(2)).sqrt();
+        let mag_gse = (bx.powi(2) + by.powi(2) + bz.powi(2)).sqrt();
+        assert!((mag_rtn - mag_gse).abs() < 1e-10,
+            "|B| must be preserved: RTN={mag_rtn:.6}, GSE={mag_gse:.6}");
     }
 
     #[test]

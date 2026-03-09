@@ -365,6 +365,9 @@ pub fn merge_wind_swe_mfi(
                 dst_index: f64::NAN,
                 ae_index: f64::NAN,
                 kp_times_10: 0,
+                r_au: 1.0,
+                lat_deg: f64::NAN,
+                lon_deg: f64::NAN,
             }
         })
         .collect()
@@ -393,6 +396,9 @@ pub fn wind_mfi_to_omni(records: &[WindMfiRecord]) -> Vec<OmniRecord> {
                 dst_index: f64::NAN,
                 ae_index: f64::NAN,
                 kp_times_10: 0,
+                r_au: 1.0,
+                lat_deg: f64::NAN,
+                lon_deg: f64::NAN,
             }
         })
         .collect()
@@ -507,6 +513,69 @@ impl DatasetProvider for WindSweProvider {
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("wind_swe").exists()
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Knudsen number diagnostics
+// ---------------------------------------------------------------------------
+
+/// Collisionality regime classification based on Knudsen number.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum KnudsenRegime {
+    /// Kn < 10: fluid approximation valid (LBM safe).
+    Fluid,
+    /// 10 <= Kn < 100: transitional (LBM results should be interpreted with caution).
+    Transitional,
+    /// Kn >= 100: kinetic regime (LBM not valid, PIC/Vlasov required).
+    Kinetic,
+}
+
+/// Compute the Knudsen number for solar wind protons at 1 AU.
+///
+/// Kn = lambda_mfp / L_gradient where:
+///   lambda_mfp = proton Coulomb mean free path
+///   L_gradient = ion inertial length d_i = c / omega_pi
+///
+/// The proton mean free path in the solar wind is dominated by Coulomb
+/// collisions. At 1 AU with T ~ 10^5 K and n ~ 5 cm^-3:
+///   lambda_mfp ~ 2.4e11 * T^2 / (n * ln(Lambda)) meters
+///   where ln(Lambda) ~ 20 is the Coulomb logarithm.
+///
+/// The ion inertial length (gradient scale):
+///   d_i = c / omega_pi = 228 / sqrt(n_p) km
+///   where n_p is in cm^-3.
+///
+/// Returns NaN if any input is NaN or non-physical (n <= 0, T <= 0).
+pub fn knudsen_number(n_p_cm3: f64, t_p_k: f64) -> f64 {
+    if n_p_cm3.is_nan() || t_p_k.is_nan() || n_p_cm3 <= 0.0 || t_p_k <= 0.0 {
+        return f64::NAN;
+    }
+
+    // Coulomb logarithm (weakly dependent on n, T; ~20 for solar wind)
+    let ln_lambda = 20.0;
+
+    // Proton mean free path (m): lambda = 2.4e11 * T^2 / (n * ln_lambda)
+    // From Spitzer (1962), scaled for proton-proton collisions.
+    // n in m^-3 = n_cm3 * 1e6
+    let n_m3 = n_p_cm3 * 1.0e6;
+    let lambda_mfp = 2.4e11 * t_p_k * t_p_k / (n_m3 * ln_lambda);
+
+    // Ion inertial length (m): d_i = c / omega_pi = 228 / sqrt(n_cm3) * 1e3
+    // where omega_pi = sqrt(n * e^2 / (m_p * epsilon_0))
+    let d_i = 228.0e3 / n_p_cm3.sqrt();
+
+    lambda_mfp / d_i
+}
+
+/// Classify the Knudsen number into a collisionality regime.
+pub fn classify_knudsen(kn: f64) -> KnudsenRegime {
+    if kn.is_nan() || kn < 10.0 {
+        KnudsenRegime::Fluid
+    } else if kn < 100.0 {
+        KnudsenRegime::Transitional
+    } else {
+        KnudsenRegime::Kinetic
     }
 }
 
@@ -676,5 +745,52 @@ mod tests {
         // Leap year
         assert_eq!(month_day_to_doy(2024, 3, 1), 61);
         assert_eq!(month_day_to_doy(2024, 12, 31), 366);
+    }
+
+    // ---- Knudsen number tests ----
+
+    #[test]
+    fn test_knudsen_quiet_solar_wind() {
+        // Quiet solar wind: n ~ 5 cm^-3, T ~ 1e5 K
+        // Expected Kn >> 100 (collisionless plasma)
+        let kn = knudsen_number(5.0, 1.0e5);
+        assert!(kn.is_finite(), "Kn should be finite");
+        assert!(kn > 100.0, "quiet SW should be kinetic regime: Kn={kn:.1}");
+        assert_eq!(classify_knudsen(kn), KnudsenRegime::Kinetic);
+    }
+
+    #[test]
+    fn test_knudsen_dense_cool_plasma() {
+        // Dense cool plasma: n ~ 100 cm^-3, T ~ 1e4 K
+        // Higher density + lower T -> shorter mean free path, possibly transitional
+        let kn = knudsen_number(100.0, 1.0e4);
+        assert!(kn.is_finite(), "Kn should be finite");
+        // Even dense solar wind is kinetic at 1 AU
+        assert!(kn > 1.0, "dense plasma still has Kn > 1: Kn={kn:.1}");
+    }
+
+    #[test]
+    fn test_knudsen_nan_inputs() {
+        assert!(knudsen_number(f64::NAN, 1e5).is_nan());
+        assert!(knudsen_number(5.0, f64::NAN).is_nan());
+        assert!(knudsen_number(-1.0, 1e5).is_nan());
+        assert!(knudsen_number(5.0, 0.0).is_nan());
+    }
+
+    #[test]
+    fn test_knudsen_regime_classification() {
+        assert_eq!(classify_knudsen(5.0), KnudsenRegime::Fluid);
+        assert_eq!(classify_knudsen(50.0), KnudsenRegime::Transitional);
+        assert_eq!(classify_knudsen(500.0), KnudsenRegime::Kinetic);
+        assert_eq!(classify_knudsen(f64::NAN), KnudsenRegime::Fluid); // NaN -> Fluid (safe default)
+    }
+
+    #[test]
+    fn test_knudsen_monotonic_with_temperature() {
+        // Higher T -> longer mean free path -> higher Kn
+        let kn_low = knudsen_number(5.0, 5.0e4);
+        let kn_high = knudsen_number(5.0, 2.0e5);
+        assert!(kn_high > kn_low,
+            "Kn should increase with T: low={kn_low:.1}, high={kn_high:.1}");
     }
 }

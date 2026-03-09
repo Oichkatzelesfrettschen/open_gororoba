@@ -249,6 +249,9 @@ pub fn ace_mag_to_omni(records: &[AceMagHourly]) -> Vec<OmniRecord> {
             dst_index: f64::NAN,
             ae_index: f64::NAN,
             kp_times_10: 0,
+            r_au: 1.0,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
         })
         .collect()
 }
