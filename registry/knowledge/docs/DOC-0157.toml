@@ -152,7 +152,7 @@ Total claims: 521
 - Status: `Verified`
 - Last verified: 2026-02-06
 - Statement: The repo's `m3` trilinear operation on distinct octonion basis triples produces exactly 42 scalar outputs and 168 pure-imaginary outputs, and the scalar cases correspond exactly to the 7 Fano-plane lines (with parity sign flips).
-- Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `CURRENT::PATH crates/gororoba_algebra/src/m3.rs (LEGACY::PATH crates/algebra_core/src/m3.rs)` (test_m3_distinct_triples_split_42_scalar_168_vector, test_m3_scalar_outputs_are_exactly_fano_lines, test_m3_scalar_sign_flips_with_permutation_parity), `docs/BIBLIOGRAPHY.md`
+- Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `CURRENT::PATH crates/gororoba_algebra/src/physics/m3.rs (LEGACY::PATH crates/algebra_core/src/m3.rs)` (test_m3_distinct_triples_split_42_scalar_168_vector, test_m3_scalar_outputs_are_exactly_fano_lines, test_m3_scalar_sign_flips_with_permutation_parity), `docs/BIBLIOGRAPHY.md`
 - What would verify/refute it: Rust tests validate the 42/168 split and the Fano-line criterion. Terminology: Stasheff, J. (1963) \"Homotopy Associativity of H-Spaces\" Trans. AMS 108(2); Baez, J.C. (2002) \"The Octonions\" Bull. AMS 39(2) for Fano plane structure.
 
 ## C-017
