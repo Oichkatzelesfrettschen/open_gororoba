@@ -360,7 +360,8 @@ pub fn holonomy_between(z1: &[f64], z2: &[f64]) -> Option<HolonomyResult> {
     //                      + 2·⟨v1,u1⟩ · u2
     // (valid when cos_d > -1, i.e. u1 ≠ -u2)
 
-    let sin_d = (1.0 - cos_d * cos_d).sqrt();
+    // Use sin(acos(cos_d)) for better numerical stability near cos_d ≈ ±1
+    let sin_d = geodesic_distance.sin();
     let v1_transported = if sin_d < 1e-12 {
         // u1 ≈ u2: parallel transport is identity
         v1.clone()
@@ -445,6 +446,9 @@ pub fn g2_calibration_form(u: &[f64; 7], v: &[f64; 7], w: &[f64; 7]) -> f64 {
         (2, 5, 4), // e3·e6 = e5
     ];
 
+    // Iterate over the 7 Fano-plane triples and for each accumulate
+    // the three cyclic permutations (i,j,k), (j,k,i), (k,i,j) of
+    // the totally-antisymmetric 3-form:
     // φ(u,v,w) = Σ_{(i,j,k)} [u_i (v_j w_k - v_k w_j)
     //                          + u_j (v_k w_i - v_i w_k)
     //                          + u_k (v_i w_j - v_j w_i)]
