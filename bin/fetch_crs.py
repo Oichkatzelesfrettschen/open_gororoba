@@ -17,8 +17,8 @@ Output:
 import argparse
 import os
 import sys
-import urllib.request
 import urllib.error
+import urllib.request
 
 BASE_URLS = {
     1: "https://spdf.gsfc.nasa.gov/pub/data/voyager/voyager1/particle/crs/",
