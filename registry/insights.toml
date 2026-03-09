@@ -1315,3 +1315,58 @@ claims = ["C-1162"]
 confidence = "medium"
 phase = "fluids"
 sprint = 76
+
+[[insight]]
+id = "I-117"
+title = "One-Way Coupling Validity Range for LBM->PTE Pipeline"
+date = "2026-03-08"
+status = "Active"
+description = "The one-way coupling (LBM fluid -> PTE) is valid when the cosmic ray pressure P_CR << solar wind thermal pressure P_sw. At 1 AU: P_CR ~ 1 eV/cm^3, P_sw ~ 1 nPa ~ 6 eV/cm^3. P_CR/P_sw ~ 0.17 at 1 AU. At 100 AU: P_sw ~ 0.01 nPa, P_CR/P_sw may exceed 1 in the heliosheath. One-way coupling breaks down near and beyond the termination shock where CRs can back-react on the solar wind structure. The PteSolver is only accurate inside ~80 AU."
+claims = []
+confidence = "medium"
+phase = "fluids"
+sprint = 77
+
+[[insight]]
+id = "I-118"
+title = "ADI Stability Criterion for PTE in (r, ln p) Space"
+date = "2026-03-08"
+status = "Active"
+description = "The ADI Crank-Nicolson diffusion step is unconditionally stable in 1D. The momentum upwind step requires CFL: (1/3)*|div(u)|*dt/d_ln_r < 1. With div(u) ~ 2*v_sw/r ~ 0.01 AU^-1 at 1 AU, dt = dx/v_sw ~ 50 s per LBM step, and d_ln_r ~ 0.23: CFL ~ 0.001 -- far from instability. The binding constraint is the spatial advection CFL: u_sw*dt/dx < 1, which requires u_sw (lattice) < 1 (always satisfied by LBM stability requirement Ma < 0.3)."
+claims = ["C-1173"]
+confidence = "high"
+phase = "fluids"
+sprint = 77
+
+[[insight]]
+id = "I-119"
+title = "Antisymmetric Drift Sign Reversal Between A>0 and A<0 Solar Epochs"
+date = "2026-03-08"
+status = "Active"
+description = "The antisymmetric drift term kappa_A in the diffusion tensor changes sign with the solar magnetic polarity epoch A. In A>0 epochs (e.g., 1970s, 2000s), positively charged particles drift inward along polar field lines and outward in the heliospheric current sheet plane -- leading to lower modulation for high-rigidity protons. In A<0 epochs (1980s, 2010s), the drift reverses, increasing modulation. This 22-year cycle modulates the CR intensity at Earth by ~20% at 1 GV, independent of the 11-year sunspot cycle."
+claims = []
+confidence = "medium"
+phase = "fluids"
+sprint = 77
+
+[[insight]]
+id = "I-120"
+title = "Voyager CRS Fill Rate Degrades Beyond Termination Shock"
+date = "2026-03-08"
+status = "Active"
+description = "The Voyager CRS instrument fill rate (fraction of data points flagged as fill/gap) increases dramatically after the termination shock crossing: V1 at 94 AU (2004) and V2 at 84 AU (2007). In the heliosheath and VLISM, instrument aging, reduced telemetry rates, and spacecraft power constraints (RTG decay) increase data gaps. The voyager_crs parser propagates fill_flag and stores NaN for fill channels. Any modulation potential fit using CRS data must account for this degraded coverage."
+claims = []
+confidence = "medium"
+phase = "fluids"
+sprint = 77
+
+[[insight]]
+id = "I-121"
+title = "DM Source Term Scale Relative to Solar Modulation Amplitude"
+date = "2026-03-08"
+status = "Active"
+description = "For canonical WIMP parameters (m_chi=100 GeV, <sv>=3e-26 cm^3/s, rho_DM=0.3 GeV/cm^3), the DM annihilation rate inside 1 AU^3 is Q_DM ~ rho^2*<sv>/(2*m^2) ~ 4e-36 cm^-3 s^-1 GeV^-1. The solar modulation amplitude at 1 GV is Delta_J/J_ISM ~ phi/E_kin ~ 0.5 GV / 1 GV ~ 50%. Q_DM produces a flux excess at the injection bin of order 10^-10 * J_ISM -- 10 orders of magnitude below the modulation uncertainty. A null result is therefore guaranteed for any reasonable WIMP cross section, consistent with C-1175."
+claims = ["C-1175"]
+confidence = "high"
+phase = "fluids"
+sprint = 77

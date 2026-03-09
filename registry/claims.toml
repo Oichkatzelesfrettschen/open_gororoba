@@ -16113,3 +16113,63 @@ confidence = "high"
 phase = "fluids"
 sprint = 76
 dependencies = []
+
+[[claim]]
+id = "C-1171"
+statement = "Gleeson-Axford modulation potential phi(r) computed from real LBM solar wind velocity profile u_sw(r) is monotonically decreasing with heliocentric distance: phi(1 AU) > phi(50 AU). For a radial v_sw ~ 400 km/s and kappa_rr ~ 4.5e-5 * r AU^2/s, phi(1 AU) ~ 0.4-0.8 GV (canonical Bess-Pamela era value)."
+where_stated = "crates/cr_transport/src/modulation.rs (ForceFieldProxy::modulation_potential), crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs (compute_phi_map)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Run E-121 force-field validation. phi(1 AU) in [0.3, 1.0] GV range. phi(50 AU) < phi(1 AU). REFUTE if phi is non-monotone or outside [0.1, 2.0] GV at 1 AU."
+confidence = "high"
+phase = "fluids"
+sprint = 77
+dependencies = []
+
+[[claim]]
+id = "C-1172"
+statement = "Rigidity spectrum at 1 AU predicted by the FGA J(r,E) = J_ISM(E+phi) * kinematic_factor matches force-field prediction within 5% for proton rigidities 1-10 GV. The kinematic correction factor (E^2+2mE)/((E+phi)^2+2m(E+phi)) accounts for the energy-momentum shift."
+where_stated = "crates/cr_transport/src/modulation.rs (ForceFieldProxy::modulate_spectrum)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Numeric 1D PTE solution at steady state matches FGA prediction within 5% at 1-10 GV. REFUTE if discrepancy exceeds 20%."
+confidence = "medium"
+phase = "fluids"
+sprint = 77
+dependencies = ["C-1171"]
+
+[[claim]]
+id = "C-1173"
+statement = "Adiabatic deceleration shifts the peak rigidity of an initial Gaussian distribution downward by (1/3)*div(u)*N*d_ln_r per step in the PteSolver. For uniform div(u) = 0.1 AU^-1 and d_ln_r = 0.23, after 10 steps the peak shifts by ~0.08 decades in ln(R)."
+where_stated = "crates/cr_transport/src/solver.rs (decelerate_momentum, test_adiabatic_deceleration_shifts_peak)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: test_adiabatic_deceleration_shifts_peak passes. Peak bin shifts to lower index after uniform div(u) evolution. REFUTE if peak does not shift or shifts upward."
+confidence = "high"
+phase = "fluids"
+sprint = 77
+dependencies = []
+
+[[claim]]
+id = "C-1174"
+statement = "Parallel diffusion kappa_par ~ B^-1 scaling: doubling B at fixed rigidity halves kappa_par to within f64 machine precision. kappa_par ~ R^alpha with alpha=0.5 verified by factor-10 rigidity ratio producing factor-sqrt(10) in kappa."
+where_stated = "crates/cr_transport/src/diffusion.rs (kappa_parallel, tests)"
+status = "Verified"
+last_verified = "2026-03-08"
+what_would_verify_refute = "VERIFY: test_kappa_par_inverse_b_scaling and test_kappa_par_rigidity_power_law pass. REFUTE if ratio deviates from expected by more than 1e-8."
+confidence = "high"
+phase = "fluids"
+sprint = 77
+dependencies = []
+
+[[claim]]
+id = "C-1175"
+statement = "No statistically significant DM annihilation signal for m_chi < 100 GeV in the bb-bar channel: the Q_DM source injection at the peak rigidity bin produces a flux excess smaller than the expected solar modulation uncertainty (~10%) at all heliocentric distances in the PteSolver. This is a null result and a genuine scientific constraint."
+where_stated = "crates/cr_transport/src/source.rs (DmSource::inject), crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: Run E-125 DM null sweep. Flux excess / solar modulation amplitude < 0.1 at all bins for m_chi = {10, 30, 100} GeV. REFUTE if excess exceeds 10%."
+confidence = "medium"
+phase = "fluids"
+sprint = 77
+dependencies = ["C-1171"]

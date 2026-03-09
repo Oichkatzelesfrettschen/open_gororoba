@@ -2792,3 +2792,164 @@ input_path_refs = []
 output_path_refs = []
 dataset_refs = ["Voyager 1 SPDF", "Voyager 2 SPDF"]
 reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-121"
+title = "Force-field phi validation: FGA vs 1D numerical PTE"
+binary = "cr-modulation-sweep"
+binary_registered = true
+binary_experiment_declared = "E-121"
+method = "Run cr-modulation-sweep with nx=64 ny=1 nz=1 (1D radial), steps=5000 to reach quasi-steady state. Compare PteSolver flux at 1 AU to ForceFieldProxy FGA prediction. Also validate phi(r) is monotonically decreasing. Uses Bess-Pamela LIS power law as outer boundary condition."
+input = "LBM solar wind IC (nx=64, tau=0.6, v_sw=0.05), RigidityGrid (n_p=40, 0.1-1000 GV)"
+output = ["data/output/cr/cr_snapshot_005000.csv", "data/output/cr/cr_summary.csv"]
+run = "cargo run --release --bin cr-modulation-sweep -- --nx 64 --ny 4 --nz 4 --steps 5000 --n-p 40 --r-min-gv 0.1 --r-max-gv 1000 --r-min-au 1.0 --r-max-au 157.0"
+run_command_sha256 = ""
+claims = ["C-1171", "C-1172"]
+claim_refs = ["C-1171", "C-1172"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+lineage_id = "XL-120"
+input_path_refs = []
+output_path_refs = ["data/output/cr/cr_summary.csv"]
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-122"
+title = "Proton spectrum modulation: 1 AU vs 50 AU vs 100 AU"
+binary = "cr-modulation-sweep"
+binary_registered = true
+binary_experiment_declared = "E-122"
+method = "Run cr-modulation-sweep with r_min=1 AU, r_max=157 AU. Extract differential flux J(R) from PTE snapshots at x-cells corresponding to 1, 50, 100 AU. Compare suppression ratios J(50)/J(1) and J(100)/J(1) vs FGA prediction. Validates spatial modulation gradient across heliosphere."
+input = "LBM solar wind (nx=128, tau=0.6), RigidityGrid (n_p=40)"
+output = ["data/output/cr/cr_snapshot_010000.csv"]
+run = "cargo run --release --bin cr-modulation-sweep -- --nx 128 --ny 8 --nz 8 --steps 10000 --n-p 40 --r-min-au 1.0 --r-max-au 157.0 --snapshot-interval 2000"
+run_command_sha256 = ""
+claims = ["C-1171", "C-1172"]
+claim_refs = ["C-1171", "C-1172"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+lineage_id = "XL-121"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-123"
+title = "Adiabatic deceleration rate vs solar wind divergence"
+binary = "cr-modulation-sweep"
+binary_registered = true
+binary_experiment_declared = "E-123"
+method = "Initialize PteSolver with Gaussian f centered at 10 GV. Run with purely radial expanding solar wind (div(u) = const = 2*v_sw/r). Measure peak rigidity bin shift per 100 steps. Compare to analytic prediction: delta(ln R) = (1/3)*div(u)*dt*N_steps. Tests C-1173."
+input = "Synthetic radial wind (nx=64, v_sw=0.05 lattice units, div(u)~0.1 AU^-1)"
+output = ["data/output/cr/cr_snapshot_001000.csv"]
+run = "cargo run --release --bin cr-modulation-sweep -- --nx 64 --ny 4 --nz 4 --steps 1000 --n-p 40 --r-min-gv 1.0 --r-max-gv 100.0 --r-min-au 1.0 --r-max-au 157.0 --snapshot-interval 100"
+run_command_sha256 = ""
+claims = ["C-1173"]
+claim_refs = ["C-1173"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+lineage_id = "XL-122"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-124"
+title = "Voyager CRS cross-calibration: V1 vs V2 spatial gradient"
+binary = "cr-modulation-sweep"
+binary_registered = true
+binary_experiment_declared = "E-124"
+method = "Load Voyager CRS ASCII files for both spacecraft. Compare proton count rates at overlapping heliocentric distances (80-100 AU). Compute intensity gradient dJ/dr and compare to PteSolver modulation gradient. This validates the PTE prediction against in-situ cosmic ray data at the termination shock."
+input = "Voyager 1/2 CRS data from data/external/voyager/voyager{1,2}/crs/"
+output = ["data/output/cr/crs_cross_calibration.csv"]
+run = "cargo run --release --bin cr-modulation-sweep -- --nx 128 --ny 4 --nz 4 --steps 5000 --n-p 40 --r-min-au 80.0 --r-max-au 157.0"
+run_command_sha256 = ""
+claims = ["C-1174"]
+claim_refs = ["C-1174"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+lineage_id = "XL-123"
+input_path_refs = ["data/external/voyager/voyager1/crs/", "data/external/voyager/voyager2/crs/"]
+output_path_refs = []
+dataset_refs = ["Voyager 1 CRS (SPDF)", "Voyager 2 CRS (SPDF)"]
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-125"
+title = "DM null sweep: m_chi in {10, 30, 100, 300} GeV, bb-bar channel"
+binary = "cr-modulation-sweep"
+binary_registered = true
+binary_experiment_declared = "E-125"
+method = "For each DM mass, run cr-modulation-sweep with DM source injection enabled at bb-bar channel peak rigidity. Compare the injected flux excess at the source bin vs. the solar modulation amplitude. A null result (excess < 10% of modulation amplitude) constrains the annihilation cross section for that mass. Four independent runs."
+input = "Solar wind IC (nx=64, tau=0.6), DM masses {10, 30, 100, 300} GeV"
+output = ["data/output/cr/cr_dm_{mass}gev.csv"]
+run = "cargo run --release --bin cr-modulation-sweep -- --nx 64 --ny 4 --nz 4 --steps 5000 --n-p 40 --dm-mass-gev 100 --dm-channel bb --dm-sigma-v 3e-26"
+run_command_sha256 = ""
+claims = ["C-1175"]
+claim_refs = ["C-1175"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+lineage_id = "XL-124"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-126"
+title = "DM injection at termination shock: Q_DM profile sensitivity"
+binary = "cr-modulation-sweep"
+binary_registered = true
+binary_experiment_declared = "E-126"
+method = "Inject DM source at the termination shock boundary (r ~ 90 AU, x ~ 0.57*nx for r_max=157 AU). Compare uniform vs NFW^2-weighted spatial profiles. Measure how the injected flux propagates inward from 90 AU to 1 AU under solar modulation. Sensitivity to Q_DM amplitude and spatial extent."
+input = "Solar wind IC (nx=128, r_min=1, r_max=157 AU), DM mass 100 GeV, bb-bar channel"
+output = ["data/output/cr/cr_dm_ts_injection.csv"]
+run = "cargo run --release --bin cr-modulation-sweep -- --nx 128 --ny 4 --nz 4 --steps 10000 --n-p 40 --dm-mass-gev 100 --dm-channel bb --r-min-au 1.0 --r-max-au 157.0"
+run_command_sha256 = ""
+claims = ["C-1175"]
+claim_refs = ["C-1175"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+lineage_id = "XL-125"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "deterministic"
+
+[[experiment]]
+id = "E-127"
+title = "Full end-to-end: real IC + CRS data -> modulation potential chi^2"
+binary = "cr-modulation-sweep"
+binary_registered = true
+binary_experiment_declared = "E-127"
+method = "Full pipeline: load solar wind IC from E-119 (multi-spacecraft radial profile), run LBM+MHD+PTE coupled simulation for 10000 steps, extract phi(r) at 1/50/100/157 AU, compare to Voyager CRS-derived modulation potential. Compute chi^2 goodness of fit. Tests the full Phase 17 one-way coupling pipeline end-to-end."
+input = "Radial IC from E-119, Voyager CRS data (data/external/voyager/)"
+output = ["data/output/cr/cr_e2e_phi.csv", "data/output/cr/cr_e2e_chi2.csv"]
+run = "cargo run --release --bin cr-modulation-sweep -- --nx 256 --ny 8 --nz 8 --steps 10000 --n-p 40 --r-min-au 1.0 --r-max-au 157.0 --snapshot-interval 2000"
+run_command_sha256 = ""
+claims = ["C-1171", "C-1172", "C-1173", "C-1174", "C-1175"]
+claim_refs = ["C-1171", "C-1172", "C-1173", "C-1174", "C-1175"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+lineage_id = "XL-126"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = ["Voyager 1 CRS (SPDF)", "Voyager 2 CRS (SPDF)"]
+reproducibility_class = "deterministic"

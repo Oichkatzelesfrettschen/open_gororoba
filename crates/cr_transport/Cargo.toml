@@ -1,0 +1,13 @@
+[package]
+name = "cr_transport"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+gauss-quad = { workspace = true }
+
+[dev-dependencies]
+
+[lints]
+workspace = true
