@@ -73,7 +73,7 @@ The algebra tower, from `hypercomplex.rs`:
 
 ## 3. Fano Plane Triples (Octonion Multiplication)
 
-**File:** `CURRENT::PATH crates/gororoba_algebra/src/octonion_field.rs:23-31 (LEGACY::PATH crates/algebra_core/src/octonion_field.rs:23-31)`
+**File:** `CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs:23-31 (LEGACY::PATH crates/algebra_core/src/octonion_field.rs:23-31)`
 
 The 7 oriented Fano triples define the octonion multiplication table:
 

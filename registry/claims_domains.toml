@@ -2884,7 +2884,7 @@ status_token = "VERIFIED"
 status_text = "Verified (count + in-repo action on box-kites)"
 status_date = "2026-01-28"
 summary = "The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs."
-where_stated = ["docs/SEDENION_ATLAS.md", "docs/external_sources/PSL_2_7_SOURCES.md", "CURRENT::PATH crates/gororoba_algebra/src/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "crates/algebra_analysis/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py"]
+where_stated = ["docs/SEDENION_ATLAS.md", "docs/external_sources/PSL_2_7_SOURCES.md", "CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "crates/algebra_analysis/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 17
 
@@ -2950,7 +2950,7 @@ status_token = "VERIFIED"
 status_text = "Verified (math)"
 status_date = "2026-01-28"
 summary = "The repo's `m3` trilinear operation on distinct octonion basis triples produces exactly 42 scalar outputs and 168 pure-imaginary outputs, and the scalar cases correspond exactly to the 7 Fano-plane lines (with parity sign flips)."
-where_stated = ["docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "CURRENT::PATH crates/gororoba_algebra/src/m3.rs (LEGACY::PATH crates/algebra_core/src/m3.rs)"]
+where_stated = ["docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "CURRENT::PATH crates/gororoba_algebra/src/physics/m3.rs (LEGACY::PATH crates/algebra_core/src/m3.rs)"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 35
 
@@ -2972,7 +2972,7 @@ status_token = "NOT_SUPPORTED"
 status_text = "Not supported (rejected (rejected (Phase 2C round-trip test complete)))"
 status_date = "2026-01-30"
 summary = "Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson zero-divisor phenomena at higher dimensions."
-where_stated = ["docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md", "CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)", "src/scripts/analysis/cd_wheel_roundtrip_test.py", "data/csv/cd_wheel_roundtrip_results.csv", "docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md"]
+where_stated = ["docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md", "CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)", "src/scripts/analysis/cd_wheel_roundtrip_test.py", "data/csv/cd_wheel_roundtrip_results.csv", "docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 41
 
@@ -3071,7 +3071,7 @@ status_token = "NOT_SUPPORTED"
 status_text = "Not supported (mapping under-specified in source)"
 status_date = "2026-02-04"
 summary = "Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023)."
-where_stated = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "CURRENT::PATH crates/gororoba_algebra/src/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
+where_stated = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 68
 
@@ -3104,7 +3104,7 @@ status_token = "VERIFIED"
 status_text = "Verified (Math/Code)"
 status_date = "2026-01-31"
 summary = "Carlstrom's Wheel Algebra formally models information loss in non-associative CD algebras."
-where_stated = ["CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)"]
+where_stated = ["CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 77
 
@@ -3544,7 +3544,7 @@ status_token = "MODELED"
 status_text = "Modeled (Math)"
 status_date = "2026-02-02"
 summary = "Sedenion Transport Kernel generates explicit 16x16 basis multiplication matrices for modeling non-associative quantum evolution via Strang splitting."
-where_stated = ["CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)"]
+where_stated = ["CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)"]
 source_markdown = "docs/claims/by_domain/algebra.md"
 source_line = 197
 
@@ -3797,7 +3797,7 @@ status_token = "NOT_SUPPORTED"
 status_text = "Not supported (mapping under-specified in source)"
 status_date = "2026-02-04"
 summary = "Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023)."
-where_stated = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "CURRENT::PATH crates/gororoba_algebra/src/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
+where_stated = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt", "docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_FIELD_THEORY.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
 source_markdown = "docs/claims/by_domain/datasets.md"
 source_line = 17
 
@@ -5612,7 +5612,7 @@ status_token = "MODELED"
 status_text = "Modeled (Math)"
 status_date = "2026-02-02"
 summary = "Sedenion Transport Kernel generates explicit 16x16 basis multiplication matrices for modeling non-associative quantum evolution via Strang splitting."
-where_stated = ["CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)"]
+where_stated = ["CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)"]
 source_markdown = "docs/claims/by_domain/holography.md"
 source_line = 386
 
@@ -5623,7 +5623,7 @@ status_token = "SPECULATIVE"
 status_text = "Speculative (Toy Model)"
 status_date = "2026-02-02"
 summary = "Pathion (32D) Zero-Divisor interaction matrix diagonalization provides a testbed for algebraic mass spectrum hypotheses (logarithmic scaling)."
-where_stated = ["docs/external_sources/OPEN_CLAIMS_SOURCES.md", "CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)"]
+where_stated = ["docs/external_sources/OPEN_CLAIMS_SOURCES.md", "CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)"]
 source_markdown = "docs/claims/by_domain/holography.md"
 source_line = 389
 
@@ -5997,7 +5997,7 @@ status_token = "VERIFIED"
 status_text = "Verified (code)"
 status_date = "2026-01-31"
 summary = "Kozyrev p-adic wavelets form an explicitly computable eigenbasis for the Vladimirov operator."
-where_stated = ["docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md", "CURRENT::PATH crates/gororoba_algebra/src/padic.rs (LEGACY::PATH crates/algebra_core/src/padic.rs)"]
+where_stated = ["docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md", "CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/padic.rs)"]
 source_markdown = "docs/claims/by_domain/meta.md"
 source_line = 11
 

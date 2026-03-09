@@ -429,14 +429,14 @@ line_start = 434
 line_end = 443
 step_count = 7
 supports_claim = false
-assumption_lines = ["- **H0**: The finite model in `CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)` violates one or", "- **H1**: All 8 axioms hold on the concrete finite model."]
+assumption_lines = ["- **H0**: The finite model in `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)` violates one or", "- **H1**: All 8 axioms hold on the concrete finite model."]
 decision_lines = ["- **Decision rule**: Exhaustive check of all axioms on all elements; proof"]
 conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
 inference_markers = []
-assumption_text = "- **H0**: The finite model in `CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)` violates one or | - **H1**: All 8 axioms hold on the concrete finite model."
+assumption_text = "- **H0**: The finite model in `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)` violates one or | - **H1**: All 8 axioms hold on the concrete finite model."
 decision_rule_text = "- **Decision rule**: Exhaustive check of all axioms on all elements; proof"
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
-excerpt = "- **H0**: The finite model in `CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)` violates one or || more of Carlstrom's axioms (1)-(8). || - **H1**: All 8 axioms hold on the concrete finite model. || - **Decision rule**: Exhaustive check of all axioms on all elements; proof || obligation. || - **Required evidence**: `tests/test_wheels.py`. Cite Carlstrom (2001)."
+excerpt = "- **H0**: The finite model in `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs)` violates one or || more of Carlstrom's axioms (1)-(8). || - **H1**: All 8 axioms hold on the concrete finite model. || - **Decision rule**: Exhaustive check of all axioms on all elements; proof || obligation. || - **Required evidence**: `tests/test_wheels.py`. Cite Carlstrom (2001)."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -666,7 +666,7 @@ inference_markers = []
 assumption_text = "- **H0**: Sedenions have continuous automorphisms beyond G2 (e.g., larger Lie group). | - **H1**: Aut(S) = G2 x S3 exactly; S3 permutes three octonionic subalgebras."
 decision_rule_text = "- **Decision rule**: Computational verification: enumerate G2 generators acting on"
 conclusion_text = "- **Status**: PENDING VERIFICATION."
-excerpt = "- **H0**: Sedenions have continuous automorphisms beyond G2 (e.g., larger Lie group). || - **H1**: Aut(S) = G2 x S3 exactly; S3 permutes three octonionic subalgebras. || - **Decision rule**: Computational verification: enumerate G2 generators acting on || each subalgebra, verify S3 permutation, check no additional continuous generators. || - **Required evidence**: `CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`, || `tests/test_sedenion_automorphism.py`."
+excerpt = "- **H0**: Sedenions have continuous automorphisms beyond G2 (e.g., larger Lie group). || - **H1**: Aut(S) = G2 x S3 exactly; S3 permutes three octonionic subalgebras. || - **Decision rule**: Computational verification: enumerate G2 generators acting on || each subalgebra, verify S3 permutation, check no additional continuous generators. || - **Required evidence**: `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`, || `tests/test_sedenion_automorphism.py`."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -689,7 +689,7 @@ inference_markers = []
 assumption_text = "- **H0**: The sedenion algebra does not decompose into three octonionic subalgebras. | - **H1**: C tensor S ~ 3 x (C tensor O), yielding three-generation structure."
 decision_rule_text = "- **Decision rule**: Computational: identify three disjoint octonionic subalgebras"
 conclusion_text = "- **Status**: VERIFIED (structural). 23 tests passing."
-excerpt = "- **H0**: The sedenion algebra does not decompose into three octonionic subalgebras. || - **H1**: C tensor S ~ 3 x (C tensor O), yielding three-generation structure. || - **Decision rule**: Computational: identify three disjoint octonionic subalgebras || in S; verify each is closed under multiplication (modulo associator). || - **Required evidence**: Literature (Gillard & Gresnigt 2019; Gresnigt 2023). || Computational confirmation via `CURRENT::PATH crates/gororoba_algebra/src/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`"
+excerpt = "- **H0**: The sedenion algebra does not decompose into three octonionic subalgebras. || - **H1**: C tensor S ~ 3 x (C tensor O), yielding three-generation structure. || - **Decision rule**: Computational: identify three disjoint octonionic subalgebras || in S; verify each is closed under multiplication (modulo associator). || - **Required evidence**: Literature (Gillard & Gresnigt 2019; Gresnigt 2023). || Computational confirmation via `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`"
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"

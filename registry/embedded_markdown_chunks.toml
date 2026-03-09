@@ -40111,7 +40111,7 @@ kind = "paragraph"
 line_start = 12
 line_end = 15
 heading_level = 0
-text_ascii = "The conversation uses \"wheel algebra\" to denote a family of NON-ASSOCIATIVE, NON-COMMUTATIVE algebras with cyclic multiplication structure. This is COMPLETELY DIFFERENT from the Carlstrom/Setzer \"wheel\" that totalizes division (implemented in CURRENT::PATH crates/gororoba_algebra/src/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs) as WheelQ)."
+text_ascii = "The conversation uses \"wheel algebra\" to denote a family of NON-ASSOCIATIVE, NON-COMMUTATIVE algebras with cyclic multiplication structure. This is COMPLETELY DIFFERENT from the Carlstrom/Setzer \"wheel\" that totalizes division (implemented in CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/wheels.rs) as WheelQ)."
 text_sha256 = "f1f6b32a9a913c8fcf1a3cc4d322dccedf7577187c8d7b52e8324188001bfcf4"
 
 [[chunk]]
