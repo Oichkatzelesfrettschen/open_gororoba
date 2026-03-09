@@ -173,6 +173,142 @@ pub fn assert_standard_zero_divisor_annihilators(zd: &StandardZeroDivisor) -> Re
     Ok(())
 }
 
+// ---------------------------------------------------------------------------
+// Partner graph adjacency matrix and orbit analysis
+// ---------------------------------------------------------------------------
+
+/// 84×84 adjacency matrix of the standard zero-divisor partner graph.
+///
+/// Entry `(i, j)` is `true` when ZD `j` annihilates ZD `i` (i.e. ZD `j`
+/// is among the 4 standard partners of ZD `i`).
+///
+/// # Reggiani (2024) §3
+///
+/// Every standard zero-divisor has exactly 4 partners.  The resulting
+/// graph is therefore 4-regular on 84 vertices.
+pub fn partner_adjacency_matrix() -> Vec<Vec<bool>> {
+    let zds = standard_zero_divisors();
+    let n = zds.len(); // 84
+    let mut adj = vec![vec![false; n]; n];
+
+    for (i, zd) in zds.iter().enumerate() {
+        let partners = standard_zero_divisor_partners(zd);
+        for p in &partners {
+            if let Some(j) = zds.iter().position(|z| z.key() == p.key()) {
+                adj[i][j] = true;
+            }
+        }
+    }
+    adj
+}
+
+/// Gram matrix of inner products between all 84 standard ZDs.
+///
+/// Entry `(i, j)` = ⟨v_i , v_j⟩ (standard R^16 dot product).
+/// Diagonal entries equal 2 (squared norm of each standard ZD).
+///
+/// The Gram matrix encodes the geometry of the zero-divisor set
+/// inside R^16 and is a key invariant discussed in Reggiani (2024).
+pub fn gram_matrix() -> Vec<Vec<f64>> {
+    let zds = standard_zero_divisors();
+    let n = zds.len();
+    let mut g = vec![vec![0.0_f64; n]; n];
+    for i in 0..n {
+        for j in i..n {
+            let dot: f64 = zds[i]
+                .vector
+                .iter()
+                .zip(zds[j].vector.iter())
+                .map(|(a, b)| a * b)
+                .sum();
+            g[i][j] = dot;
+            g[j][i] = dot;
+        }
+    }
+    g
+}
+
+/// Count the number of connected components (orbits) in the partner graph.
+///
+/// Each orbit is a maximal set of standard ZDs reachable from one
+/// another via the partner relation.  For sedenions (dim 16) the
+/// partner graph has a characteristic orbit structure that reflects
+/// the box-kite topology of de Marrais (2000).
+pub fn partner_graph_orbits() -> Vec<Vec<usize>> {
+    let adj = partner_adjacency_matrix();
+    let n = adj.len(); // 84
+    let mut visited = vec![false; n];
+    let mut orbits = Vec::new();
+
+    for start in 0..n {
+        if visited[start] {
+            continue;
+        }
+        // BFS
+        let mut queue = std::collections::VecDeque::new();
+        queue.push_back(start);
+        visited[start] = true;
+        let mut component = Vec::new();
+        while let Some(v) = queue.pop_front() {
+            component.push(v);
+            for (u, &connected) in adj[v].iter().enumerate() {
+                if connected && !visited[u] {
+                    visited[u] = true;
+                    queue.push_back(u);
+                }
+            }
+        }
+        component.sort();
+        orbits.push(component);
+    }
+    orbits
+}
+
+/// Summary statistics for the partner graph.
+#[derive(Debug, Clone)]
+pub struct PartnerGraphStats {
+    /// Number of vertices (84 for sedenions).
+    pub n_vertices: usize,
+    /// Number of directed edges (each ZD has 4 partners).
+    pub n_directed_edges: usize,
+    /// Whether the partner relation is symmetric (undirected).
+    pub is_symmetric: bool,
+    /// Number of connected components (orbits).
+    pub n_orbits: usize,
+    /// Sizes of each orbit.
+    pub orbit_sizes: Vec<usize>,
+}
+
+/// Compute summary statistics for the 84-vertex partner graph.
+pub fn partner_graph_stats() -> PartnerGraphStats {
+    let adj = partner_adjacency_matrix();
+    let n = adj.len();
+
+    let mut n_edges = 0;
+    let mut symmetric = true;
+    for i in 0..n {
+        for j in 0..n {
+            if adj[i][j] {
+                n_edges += 1;
+            }
+            if adj[i][j] != adj[j][i] {
+                symmetric = false;
+            }
+        }
+    }
+
+    let orbits = partner_graph_orbits();
+    let orbit_sizes: Vec<usize> = orbits.iter().map(|o| o.len()).collect();
+
+    PartnerGraphStats {
+        n_vertices: n,
+        n_directed_edges: n_edges,
+        is_symmetric: symmetric,
+        n_orbits: orbits.len(),
+        orbit_sizes,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -229,5 +365,59 @@ mod tests {
                 );
             });
         }
+    }
+
+    #[test]
+    fn test_partner_adjacency_is_4_regular() {
+        let adj = partner_adjacency_matrix();
+        assert_eq!(adj.len(), 84);
+        for (i, row) in adj.iter().enumerate() {
+            let degree: usize = row.iter().filter(|&&x| x).count();
+            assert_eq!(
+                degree, 4,
+                "ZD {i} has partner degree {degree}, expected 4"
+            );
+        }
+    }
+
+    #[test]
+    fn test_gram_matrix_diagonal_is_2() {
+        let g = gram_matrix();
+        assert_eq!(g.len(), 84);
+        for i in 0..84 {
+            assert!(
+                (g[i][i] - 2.0).abs() < 1e-12,
+                "Gram diagonal [{i}][{i}] = {}, expected 2.0",
+                g[i][i]
+            );
+        }
+    }
+
+    #[test]
+    fn test_gram_matrix_is_symmetric() {
+        let g = gram_matrix();
+        for i in 0..84 {
+            for j in (i + 1)..84 {
+                assert!(
+                    (g[i][j] - g[j][i]).abs() < 1e-14,
+                    "Gram[{i}][{j}] = {} != Gram[{j}][{i}] = {}",
+                    g[i][j],
+                    g[j][i]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_partner_graph_orbit_structure() {
+        let stats = partner_graph_stats();
+        assert_eq!(stats.n_vertices, 84);
+        // Each ZD has exactly 4 partners (directed)
+        assert_eq!(stats.n_directed_edges, 84 * 4);
+        // Orbit sizes must sum to 84
+        let total: usize = stats.orbit_sizes.iter().sum();
+        assert_eq!(total, 84, "orbit sizes must sum to 84");
+        // At least 1 orbit
+        assert!(stats.n_orbits >= 1);
     }
 }
