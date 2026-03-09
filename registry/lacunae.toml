@@ -16,7 +16,6 @@ origin_kind_count = 1
 id = "L-001"
 origin = "legacy_manual"
 area = "gororoba_algebra"
-area_legacy = "algebra_core"
 title = "E7 Structure Constant Sign Fix"
 description = "RESOLVED: Lyndon basis implementation completed in Sprint 42 (CURRENT::PATH crates/gororoba_algebra/src/lie/lyndon_basis.rs (LEGACY::PATH crates/algebra_core/src/lie/lyndon_basis.rs)). Extraspecial 2-cocycle on E7 root system satisfies Jacobi identity for all non-degenerate triples (C-695). 5 tests pass."
 priority = "high"
