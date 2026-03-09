@@ -645,7 +645,7 @@ mod tests {
     #[test]
     fn test_combine_forces_identity() {
         // Combining any force field with zeros returns the original
-        let a = vec![[1.5, -2.3, 0.7], [3.14, 0.0, -1.0]];
+        let a = vec![[1.5, -2.3, 0.7], [3.15, 0.0, -1.0]];
         let zero = vec![[0.0; 3]; 2];
         let result = combine_forces(&a, &zero);
         for (r, orig) in result.iter().zip(a.iter()) {

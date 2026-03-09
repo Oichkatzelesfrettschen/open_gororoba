@@ -131,7 +131,7 @@ mod tests {
     #[test]
     fn test_juno_cruise_layout_validity() {
         assert_eq!(JUNO_CRUISE_LAYOUT.min_columns, 13);
-        assert!(JUNO_CRUISE_LAYOUT.b_is_se);
+        const { assert!(JUNO_CRUISE_LAYOUT.b_is_se) };
     }
 
     #[test]

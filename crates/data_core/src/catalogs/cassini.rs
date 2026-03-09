@@ -138,7 +138,7 @@ mod tests {
     #[test]
     fn test_cassini_cruise_layout_validity() {
         assert_eq!(CASSINI_CRUISE_LAYOUT.min_columns, 13);
-        assert!(!CASSINI_CRUISE_LAYOUT.b_is_se, "Cassini uses RTN");
+        const { assert!(!CASSINI_CRUISE_LAYOUT.b_is_se, "Cassini uses RTN") };
     }
 
     #[test]

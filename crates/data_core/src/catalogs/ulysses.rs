@@ -262,7 +262,7 @@ mod tests {
     #[test]
     fn test_ulysses_layout_validity() {
         assert_eq!(ULYSSES_LAYOUT.min_columns, 13);
-        assert!(!ULYSSES_LAYOUT.b_is_se, "Ulysses uses RTN, not SE");
+        const { assert!(!ULYSSES_LAYOUT.b_is_se, "Ulysses uses RTN, not SE") };
         assert_eq!(ULYSSES_LAYOUT.col_lat_deg, Some(4));
         assert_eq!(ULYSSES_LAYOUT.col_b_mag, Some(9));
         assert_eq!(ULYSSES_LAYOUT.col_br, Some(6));

@@ -214,7 +214,7 @@ mod tests {
     #[test]
     fn test_voyager1_layout_validity() {
         assert_eq!(VOYAGER1_LAYOUT.min_columns, 13);
-        assert!(VOYAGER1_LAYOUT.b_is_se);
+        const { assert!(VOYAGER1_LAYOUT.b_is_se) };
         assert_eq!(VOYAGER1_LAYOUT.col_distance_au, Some(3));
     }
 
