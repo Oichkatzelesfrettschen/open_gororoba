@@ -31,6 +31,7 @@ pub mod pantheon;
 pub mod pioneer;
 pub mod planck;
 pub mod sdss;
+pub mod soho_celias;
 pub mod solar_wind;
 pub mod sorce;
 pub mod spdf_merged;
@@ -40,6 +41,7 @@ pub mod ulysses;
 pub mod union3;
 pub mod voyager;
 pub mod voyager_crs;
+pub mod voyager_crs_flux;
 pub mod wind_swe;
 pub mod wow;
 

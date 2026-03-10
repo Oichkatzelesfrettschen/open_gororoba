@@ -5,9 +5,9 @@
 updated = "2026-02-10"
 authoritative = true
 source_registries = ["registry/requirements.toml", "pyproject.toml", "Cargo.toml"]
-module_count = 13
+module_count = 14
 package_count = 102
-command_count = 38
+command_count = 40
 python_package_count = 22
 rust_package_count = 80
 
@@ -152,6 +152,17 @@ status_token = "ACTIVE"
 source_markdown = "apps/gororoba_studio/README.md"
 requires_modules = ["REQ-CORE"]
 command_refs = ["CMD-0037", "CMD-0038"]
+package_refs = []
+
+[[module]]
+id = "REQ-HELIOSPHERE"
+name = "heliosphere"
+runtime_stack = "mixed"
+status = "active"
+status_token = "ACTIVE"
+source_markdown = "docs/requirements/heliosphere.md"
+requires_modules = ["REQ-CORE", "REQ-ASTRO"]
+command_refs = ["CMD-0039", "CMD-0040"]
 package_refs = []
 
 [[command]]
@@ -381,6 +392,18 @@ id = "CMD-0038"
 module_id = "REQ-STUDIO"
 kind = "verify"
 command = "make studio-run"
+
+[[command]]
+id = "CMD-0039"
+module_id = "REQ-HELIOSPHERE"
+kind = "install"
+command = "make install-astro"
+
+[[command]]
+id = "CMD-0040"
+module_id = "REQ-HELIOSPHERE"
+kind = "verify"
+command = "cargo check -p data_core -p cr_transport -p gororoba_cli_data -p gororoba_cli_physics --all-targets"
 
 [[package]]
 id = "PKG-00001"
@@ -1503,4 +1526,3 @@ spec = "criterion {\"features\": [\"html_reports\"], \"version\": \"0.5\"}"
 group = "workspace.dependencies"
 optional = false
 source = "Cargo.toml"
-

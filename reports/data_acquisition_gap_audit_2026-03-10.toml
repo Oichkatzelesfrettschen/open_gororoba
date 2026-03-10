@@ -1,0 +1,39 @@
+# Data Continuity and Acquisition Gap Audit (2026-03-10)
+
+[meta]
+generated_at_utc = "2026-03-10T09:00:00Z"
+audit_type = "continuity_gap"
+scope = "OMNI, Pioneer, Voyager, CRS"
+
+[gaps]
+
+[[gap]]
+id = "GAP-PIONEER-ANNUAL-MERGED"
+spacecraft = ["Pioneer 10", "Pioneer 11"]
+product = "merged_hourly_ascii"
+status = "blocked"
+contract_status = "unmet"
+note = "Direct GSFC ASCII byte access is blocked from this host. Provider contract is technically unmet until manual 'Sneakernet' drop is performed and verified against heliophysics_merged_hourly_invariants."
+mitigation = "Manual sneakernet drop of p10_1979_merged_hourly.asc and p11_1979_merged_hourly.asc."
+
+[[gap]]
+id = "GAP-VOYAGER-MERGED-CANONICAL"
+spacecraft = ["Voyager 1", "Voyager 2"]
+product = "merged_hourly_ascii"
+status = "active_fallback"
+note = "Lanes are currently governed via local translations of AMDA HAPI feeds rather than canonical GSFC bytes. While numerically consistent for degree-scale outputs, they do not satisfy the strict 'canonical byte' requirement for mission-long provenance."
+mitigation = "Continue using AMDA fallback; prioritize canonical GSFC byte acquisition if/when network block is lifted."
+
+[[gap]]
+id = "GAP-VOYAGER-CRS-DAILY-FLUX"
+spacecraft = ["Voyager 1", "Voyager 2"]
+product = "calibrated_crs_daily_flux"
+status = "out_of_scope_unmet"
+note = "The problem of live-acquisition for calibrated CRS daily-flux remains separate from the current OMNI continuity work and is currently unaddressed by existing fetchers."
+mitigation = "Define separate recovery lane for calibrated CRS daily-flux data."
+
+[summary]
+status = "DEGRADED"
+total_gaps = 3
+actionable_now = 1
+priority_recovery = "Pioneer 1979 Sneakernet Drop"

@@ -9,7 +9,7 @@ updated = "2026-02-10"
 python_recommended = "3.11-3.12"
 python_allowed = "3.13+ (with optional extras caveats)"
 primary_markdown = "docs/REQUIREMENTS.md"
-module_count = 13
+module_count = 14
 coverage_gap_count = 2
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
 runtime_stack_allowlist = ["mixed", "rust", "python", "docker_python", "coq", "latex", "cpp"]
@@ -103,6 +103,26 @@ verify_targets = ["cargo run -p gororoba_cli_data --bin data-governance-gate --"
 acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
 
 [[module]]
+id = "REQ-HELIOSPHERE"
+name = "heliosphere"
+markdown = "docs/requirements/heliosphere.md"
+status = "active"
+status_token = "ACTIVE"
+runtime_stack = "mixed"
+requires_modules = ["REQ-CORE", "REQ-ASTRO"]
+install_targets = [
+  "python3 bin/fetch_voyager.py --spacecraft v1 --start 1979 --end 1979 --source amda --skip-existing",
+  "python3 bin/fetch_crs.py --spacecraft 1 --years 1979-1979 --product jupiter_encounter --source pds_ppi --skip-existing",
+  "python3 bin/fetch_omni.py --start 2017 --end 2018 --source amda --skip-existing",
+  "python3 bin/fetch_soho.py --product celias_pm_5min_bundle --skip-existing",
+]
+verify_targets = [
+  "cargo run -p gororoba_cli_data --bin heliosphere-catalog-audit",
+  "cargo run -p gororoba_cli_physics --bin solar-wind-ic -- --soho-celias-file data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz --time-resolution 300 --soho-celias-cadence auto --start-hour 0 --num-hours 24 --nx 24 --ny 2 --nz 2 --out data/output/heliosphere/soho/solar_wind_ic_soho_native.csv",
+]
+acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+
+[[module]]
 id = "REQ-LATEX"
 name = "latex"
 markdown = "docs/requirements/latex.md"
@@ -191,4 +211,3 @@ status_token = "OPEN"
 description = "Requirements markdown export is implemented via export_registry_markdown_mirrors.py and wired through Makefile registry-export-markdown."
 proposed_resolution = "Keep mirror freshness verifiers active in docs publish and governance lanes."
 related_module_ids = []
-

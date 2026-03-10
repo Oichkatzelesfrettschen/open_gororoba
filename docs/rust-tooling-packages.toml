@@ -1,7 +1,6 @@
 schema = "gororoba.rust.tooling.v1"
 generated_on = "2026-02-14"
 source = "paru pacman"
-
 [[pkg]]
 name = "rustup"
 version = "1.28.2-4.1"
@@ -190,4 +189,102 @@ version = "0.10.0-1.1"
 track = "extra"
 desc = "TOML formatter and linter toolkit"
 why = "keep toml clean and consistent"
+
+[[pkg]]
+name = "ast-grep"
+version = "latest"
+track = "requested"
+desc = "Structural search and clone hunting tool."
+why = "AST-based structural search and linting."
+
+[[pkg]]
+name = "cargo-geiger"
+version = "latest"
+track = "requested"
+desc = "Unsafe-code auditing tool."
+why = "Reports unsafe usage in a crate and its dependencies."
+
+[[pkg]]
+name = "cargo-llvm-lines"
+version = "latest"
+track = "requested"
+desc = "Compile-time and code-size analysis tool."
+why = "Counts LLVM IR lines per monomorphized function."
+
+[[pkg]]
+name = "clippy"
+version = "latest"
+track = "requested"
+desc = "Idiomatic linting tool."
+why = "Rust's default lint layer."
+
+[[pkg]]
+name = "grype"
+version = "latest"
+track = "requested"
+desc = "Vulnerability scanning tool."
+why = "Scan for package/filesystem vulnerabilities."
+
+[[pkg]]
+name = "jscpd"
+version = "latest"
+track = "requested"
+desc = "Duplicate-code detection tool."
+why = "Cross-language copy/paste detector."
+
+[[pkg]]
+name = "syft"
+version = "latest"
+track = "requested"
+desc = "SBOM generation tool."
+why = "Generate SBOMs for projects and images."
+
+[[pkg]]
+name = "trufflehog"
+version = "latest"
+track = "requested"
+desc = "Secret scanning tool."
+why = "Detect hardcoded secrets."
+
+[[pkg]]
+name = "twiggy"
+version = "latest"
+track = "requested"
+desc = "Wasm size profiling tool."
+why = "Code-size profiler for Wasm."
+
+[[pkg]]
+name = "valgrind"
+version = "latest"
+track = "requested"
+desc = "Dynamic memory diagnostics tool."
+why = "Runtime memory debugging and leak detection."
+
+[[pkg]]
+name = "maturin"
+version = "latest"
+track = "requested"
+desc = "Python packaging for Rust extensions tool."
+why = "Build path for PyO3 extensions."
+
+[[pkg]]
+name = "Duplo"
+version = "latest"
+track = "requested"
+desc = "Duplicate-code detection tool."
+why = "Fast duplicate source block finder."
+
+[[pkg]]
+name = "kani"
+version = "latest"
+track = "requested"
+desc = "Bit-precise formal model checker."
+why = "Formally prove absence of overflows and logic errors."
+
+[[pkg]]
+name = "cargo-tarpaulin"
+version = "latest"
+track = "requested"
+desc = "Code coverage tool for Rust projects."
+why = "Measurement of test suite thoroughness."
 

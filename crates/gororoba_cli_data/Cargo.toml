@@ -79,6 +79,22 @@ name = "fetch-datasets"
 path = "src/bin/fetch_datasets.rs"
 
 [[bin]]
+name = "heliosphere-stage"
+path = "src/bin/heliosphere_stage.rs"
+
+[[bin]]
+name = "ingest-pds-crs"
+path = "src/bin/ingest_pds_crs.rs"
+
+[[bin]]
+name = "soho-celias-stage"
+path = "src/bin/soho_celias_stage.rs"
+
+[[bin]]
+name = "heliosphere-catalog-audit"
+path = "src/bin/heliosphere_catalog_audit.rs"
+
+[[bin]]
 name = "fetch-chime-frb"
 path = "src/bin/fetch_chime_frb.rs"
 
@@ -221,6 +237,7 @@ sha2 = { workspace = true }
 walkdir = { workspace = true }
 glob = { workspace = true }
 chrono = { workspace = true }
+hifitime = { workspace = true }
 ureq = { workspace = true }
 env_logger = { workspace = true }
 anyhow = { workspace = true }
@@ -228,6 +245,9 @@ rayon = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 tracing-subscriber = { workspace = true }
+arrow-array = "58.0.0"
+arrow-ipc = "58.0.0"
+arrow-schema = "58.0.0"
 
 [features]
 hdf5-export = ["data_core/hdf5-export"]

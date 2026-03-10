@@ -1,0 +1,16 @@
+{
+  "input_bundle": "data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz",
+  "input_bundle_size_bytes": 37024528,
+  "native_out": "data/output/heliosphere/soho/celias_pm_native_5min.csv",
+  "native_rows": 2650532,
+  "native_size_bytes": 269096953,
+  "hourly_out": "data/output/heliosphere/soho/celias_pm_hourly.csv",
+  "hourly_rows": 224740,
+  "hourly_size_bytes": 21662042,
+  "native_to_hourly_row_ratio": 11.793770579336122,
+  "native_to_hourly_size_ratio": 12.422510906404852,
+  "year_start": 1996,
+  "year_end": 2023,
+  "timestamp_start": "1996-01-20T20:18:00Z",
+  "timestamp_end": "2023-07-06T23:57:16Z"
+}

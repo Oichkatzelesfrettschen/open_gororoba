@@ -1,0 +1,18 @@
+{
+  "manifest": "/tmp/gororoba_pds_v2/voyager2/crs_jupiter_encounter_one_day_1979_1979_manifest.json",
+  "spacecraft": 2,
+  "dataset_id": "VG2-J-CRS-5-SUMM-FLUX-V1.0",
+  "verified_files": 21,
+  "export_format": "arrow",
+  "products": [
+    "LD1_RATE.TAB",
+    "BS2E_RATE.TAB",
+    "FPHA_RATE.TAB",
+    "LDTRP_RATE.TAB",
+    "BS3E_RATE.TAB",
+    "LD2_RATE.TAB",
+    "BS4E_RATE.TAB",
+    "D4L_RATE.TAB",
+    "LD_RATE.TAB"
+  ]
+}

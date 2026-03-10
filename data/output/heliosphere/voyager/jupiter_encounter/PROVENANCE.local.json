@@ -1,0 +1,227 @@
+{
+  "generated_at_utc": "2026-03-10T03:21:26.859Z",
+  "root": "data/output/heliosphere/voyager/jupiter_encounter",
+  "hash_backend": "rust",
+  "hashes": [
+    {
+      "path": "voyager1/VG1-J-CRS-5-SUMM-FLUX-V1.0_bs2e_rate.arrow",
+      "size_bytes": 50850,
+      "mtime_utc": "2026-03-10T03:03:39.764Z",
+      "sha256": "821476bd672c30a033b6a8ed5ee4f121ef4b29dfdd7605a6514fb46b57bb0e88",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager1/VG1-J-CRS-5-SUMM-FLUX-V1.0_bs3e_rate.arrow",
+      "size_bytes": 50850,
+      "mtime_utc": "2026-03-10T03:03:39.777Z",
+      "sha256": "e8c75b01a72c381e66d0f3957e2a15dbfff72bf7ad3c429d66586462045030f9",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager1/VG1-J-CRS-5-SUMM-FLUX-V1.0_bs4e_rate.arrow",
+      "size_bytes": 50850,
+      "mtime_utc": "2026-03-10T03:03:39.790Z",
+      "sha256": "1bc485ee49a7bc32b3392d35c8d7a4ee7ee431ba9415a2dcee43a7874b20e229",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager1/VG1-J-CRS-5-SUMM-FLUX-V1.0_d4l_rate.arrow",
+      "size_bytes": 16818,
+      "mtime_utc": "2026-03-10T03:03:39.796Z",
+      "sha256": "d2383627db3df300f3f4295e7284afd6fac51549472d10a41e8f86119b1a2591",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager1/VG1-J-CRS-5-SUMM-FLUX-V1.0_fpha_rate.arrow",
+      "size_bytes": 36642,
+      "mtime_utc": "2026-03-10T03:03:39.804Z",
+      "sha256": "7e19d4fe209900bda29f610338d75fd5e416d4aa8c47f0726b929971f31dad22",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager1/VG1-J-CRS-5-SUMM-FLUX-V1.0_ld1_rate.arrow",
+      "size_bytes": 36586,
+      "mtime_utc": "2026-03-10T03:03:39.816Z",
+      "sha256": "7b9f6d06db6b1471f0caaf9689ef48c13b9ef85a43c190fe27f5837d3064f16f",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager1/VG1-J-CRS-5-SUMM-FLUX-V1.0_ld2_rate.arrow",
+      "size_bytes": 23146,
+      "mtime_utc": "2026-03-10T03:03:39.823Z",
+      "sha256": "72919caf6fe3d26f63e9b8718b32f1c196c9b31ce965d4e005fe1c0326193704",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager1/VG1-J-CRS-5-SUMM-FLUX-V1.0_ld_rate.arrow",
+      "size_bytes": 31786,
+      "mtime_utc": "2026-03-10T03:03:39.843Z",
+      "sha256": "1e78e75d1aa9ede356813b86963964b0c44ad6a1d6cfe172c0d6cc67a262f842",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager1/VG1-J-CRS-5-SUMM-FLUX-V1.0_ldtrp_rate.arrow",
+      "size_bytes": 31786,
+      "mtime_utc": "2026-03-10T03:03:39.833Z",
+      "sha256": "e2be47d9a756651bd1f5314378a82a8f6f59e71e0af641062019bb5de753bcc2",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager1/ingest_summary.json",
+      "size_bytes": 389,
+      "mtime_utc": "2026-03-10T03:03:39.844Z",
+      "sha256": "68f2432595a8e7c0d5a4e7d493a0fe22f40e9ca68709390a01a0b8564872673a",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_bs2e_rate.tab.arrow",
+      "size_bytes": 99906,
+      "mtime_utc": "2026-03-10T03:03:39.860Z",
+      "sha256": "0baf5bba836fbed4206d41999adc896494e3214f5de02ad4512b29e219a2cdf0",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_bs3e_rate.tab.arrow",
+      "size_bytes": 99906,
+      "mtime_utc": "2026-03-10T03:03:39.920Z",
+      "sha256": "f382119e420ccd47e59b97dd048c0c5d79988bc6941698383aaa49e6f6f49f38",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_bs4e_rate.tab.arrow",
+      "size_bytes": 99906,
+      "mtime_utc": "2026-03-10T03:03:39.954Z",
+      "sha256": "de9c5330a6ac97cddb76a33d118120f2e3a50b39a28c8eeea522128ce84e41d7",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_d4l_rate.tab.arrow",
+      "size_bytes": 67962,
+      "mtime_utc": "2026-03-10T03:03:39.975Z",
+      "sha256": "e3f3c6f9043ac420f4f7d3e023b27af9b09b1204d2fc9ba5bc2fe3696f42701f",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_fpha_rate.tab.arrow",
+      "size_bytes": 70442,
+      "mtime_utc": "2026-03-10T03:03:39.875Z",
+      "sha256": "ba3c6b65dd5553f6c8ba8087ae16e240164a56a52e5b71ec66c22133fcaa2df9",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_ld1_rate.tab.arrow",
+      "size_bytes": 67962,
+      "mtime_utc": "2026-03-10T03:03:39.834Z",
+      "sha256": "adc15c0ef712d64c7b897e44712499e1b635f79ee8f43af31b996f040db8d98f",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_ld2_rate.tab.arrow",
+      "size_bytes": 26874,
+      "mtime_utc": "2026-03-10T03:03:39.929Z",
+      "sha256": "4e9473b0582a0a9523a1b0cca1fa60658d227c20fa8b67ed43d8630edafb171d",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_ld_rate.tab.arrow",
+      "size_bytes": 62522,
+      "mtime_utc": "2026-03-10T03:03:39.995Z",
+      "sha256": "20b7f634215b29bf6020a0de585e70223f7780ef9b324c115c6176a023a4ad67",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_ldtrp_rate.tab.arrow",
+      "size_bytes": 62402,
+      "mtime_utc": "2026-03-10T03:03:39.895Z",
+      "sha256": "d06d23b5626fd16c7ff128e99220184e60f6236bb18d92410d9d867fac1b4eb3",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "voyager2/ingest_summary.json",
+      "size_bytes": 425,
+      "mtime_utc": "2026-03-10T03:03:39.996Z",
+      "sha256": "61ba5572c869cadb155731e7fcc3bebb26d9a69c71ecc03f92eae8a7e4f5971d",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    }
+  ]
+}

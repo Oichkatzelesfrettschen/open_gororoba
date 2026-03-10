@@ -135,11 +135,11 @@ fn compute_paired_stats(name: &str, a: &[f64], b: &[f64]) -> PairedStats {
     }
 }
 
-/// Build an hourly lookup map from OmniRecords keyed by (doy, hour).
-fn build_hourly_map(records: &[OmniRecord]) -> std::collections::HashMap<(u16, u8), usize> {
+/// Build an hourly lookup map from OmniRecords keyed by (year, doy, hour).
+fn build_hourly_map(records: &[OmniRecord]) -> std::collections::HashMap<(u16, u16, u8), usize> {
     let mut map = std::collections::HashMap::new();
     for (i, r) in records.iter().enumerate() {
-        map.entry((r.doy, r.hour)).or_insert(i);
+        map.entry((r.year, r.doy, r.hour)).or_insert(i);
     }
     map
 }
@@ -166,16 +166,16 @@ fn write_paired_csv(
 ) -> std::io::Result<()> {
     let map_b = build_hourly_map(other);
     let mut file = fs::File::create(path)?;
-    write!(file, "doy,hour")?;
+    write!(file, "year,doy,hour")?;
     for f in fields {
         write!(file, ",omni_{f},other_{f}")?;
     }
     writeln!(file)?;
 
     for r_a in omni {
-        if let Some(&idx_b) = map_b.get(&(r_a.doy, r_a.hour)) {
+        if let Some(&idx_b) = map_b.get(&(r_a.year, r_a.doy, r_a.hour)) {
             let r_b = &other[idx_b];
-            write!(file, "{},{}", r_a.doy, r_a.hour)?;
+            write!(file, "{},{},{}", r_a.year, r_a.doy, r_a.hour)?;
             for f in fields {
                 let (va, vb) = match *f {
                     "bx" => (r_a.bx_gse, r_b.bx_gse),
@@ -214,7 +214,7 @@ fn run_omni_vs_ace_mag(
         ace_omni.len()
     );
 
-    // Time-align by (doy, hour)
+    // Time-align by (year, doy, hour)
     let map_b = build_hourly_map(&ace_omni);
     let mut omni_bx = Vec::new();
     let mut ace_bx = Vec::new();
@@ -224,7 +224,7 @@ fn run_omni_vs_ace_mag(
     let mut ace_bz = Vec::new();
 
     for r_a in &omni {
-        if let Some(&idx_b) = map_b.get(&(r_a.doy, r_a.hour)) {
+        if let Some(&idx_b) = map_b.get(&(r_a.year, r_a.doy, r_a.hour)) {
             let r_b = &ace_omni[idx_b];
             omni_bx.push(r_a.bx_gse);
             ace_bx.push(r_b.bx_gse);
@@ -283,7 +283,7 @@ fn run_omni_vs_wind(
     let mut wind_speed = Vec::new();
 
     for r_a in &omni {
-        if let Some(&idx_b) = map_b.get(&(r_a.doy, r_a.hour)) {
+        if let Some(&idx_b) = map_b.get(&(r_a.year, r_a.doy, r_a.hour)) {
             let r_b = &wind_omni[idx_b];
             omni_bx.push(r_a.bx_gse);
             wind_bx.push(r_b.bx_gse);

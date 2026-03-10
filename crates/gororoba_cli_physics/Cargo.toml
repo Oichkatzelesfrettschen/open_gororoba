@@ -249,6 +249,18 @@ name = "cr-modulation-sweep"
 path = "src/bin/cr_modulation_sweep.rs"
 
 [[bin]]
+name = "voyager-crs-compare"
+path = "src/bin/voyager_crs_compare.rs"
+
+[[bin]]
+name = "voyager-arrow-probe"
+path = "src/bin/voyager_arrow_probe.rs"
+
+[[bin]]
+name = "voyager-encounter-track"
+path = "src/bin/voyager_encounter_track.rs"
+
+[[bin]]
 name = "entropy-pde"
 path = "src/bin/entropy_pde.rs"
 
@@ -430,9 +442,16 @@ toml = { workspace = true }
 sha2 = { workspace = true }
 glob = { workspace = true }
 mimalloc = { workspace = true }
+zip = { workspace = true }
+chrono = { workspace = true }
+hifitime = { workspace = true }
 pathion_ellip = { version = "0.1.0", path = "../pathion_ellip" }
 anise = { workspace = true }
 cr_transport = { path = "../cr_transport" }
+memmap2 = "0.9.10"
+arrow-array = "58.0.0"
+arrow-ipc = "58.0.0"
+arrow-schema = "58.0.0"
 
 [features]
 default = ["gpu"]

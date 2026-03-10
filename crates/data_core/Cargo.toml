@@ -18,6 +18,8 @@ tar = { workspace = true }
 rand = { workspace = true }
 nalgebra = { workspace = true }
 log = { workspace = true }
+chrono = { workspace = true }
+hifitime = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
 hdf5 = { workspace = true, optional = true }
 polars = { workspace = true, optional = true }

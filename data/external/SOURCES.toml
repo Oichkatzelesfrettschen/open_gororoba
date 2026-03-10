@@ -780,3 +780,296 @@ resolution_deadline_utc = ""
 blocker_note = "76 dark matter bibliography items; 50 downloadable PDFs (48 arXiv + 1 CDS + 1 APS)."
 evidence_refs = ["papers/MANIFEST.toml"]
 scientific_validator_refs = ["dm_bibliography_coverage"]
+
+[[source]]
+id = "SRC-VOYAGER1-JUPITER-CRS-PDS"
+path_glob = "data/external/heliosphere/voyager/jupiter_encounter/voyager1/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/"
+mirror_urls = [
+  "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
+  "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/INDEX/INDEX.LBL",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_crs.py --spacecraft 1 --years 1979-1979 --product jupiter_encounter --source pds_ppi --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "data/external/heliosphere/voyager/jupiter_encounter/voyager1/crs_jupiter_encounter_one_day_1979_1979_manifest.json",
+  "data/external/heliosphere/voyager/jupiter_encounter/voyager1/ingest_json/ingest_summary.json",
+]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-VOYAGER2-JUPITER-CRS-PDS"
+path_glob = "data/external/heliosphere/voyager/jupiter_encounter/voyager2/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/"
+mirror_urls = [
+  "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
+  "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/INDEX/INDEX.LBL",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_crs.py --spacecraft 2 --years 1979-1979 --product jupiter_encounter --source pds_ppi --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "data/external/heliosphere/voyager/jupiter_encounter/voyager2/crs_jupiter_encounter_one_day_1979_1979_manifest.json",
+  "data/external/heliosphere/voyager/jupiter_encounter/voyager2/ingest_json/ingest_summary.json",
+]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-VOYAGER1-MERGED-SPASE-METADATA"
+path_glob = "data/external/voyager/voyager1/metadata/**"
+canonical_url = "https://doi.org/10.48322/041p-cv36"
+mirror_urls = [
+  "https://spase-metadata.org/NASA/NumericalData/Voyager1/MAGandPLS/PT1H.html",
+  "https://spase-metadata.org/NASA/NumericalData/Voyager1/MAGandPLS/PT1H.xml",
+  "https://catalog.data.gov/dataset/voyager-1-hourly-merged-magnetic-field-and-plasma-data",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v1 --start 1979 --end 1979 --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail."
+evidence_refs = ["data/external/voyager/v1_1979_1979_manifest.json"]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-VOYAGER2-MERGED-SPASE-METADATA"
+path_glob = "data/external/voyager/voyager2/metadata/**"
+canonical_url = "https://doi.org/10.48322/ve5t-hf15"
+mirror_urls = [
+  "https://spase-metadata.org/NASA/NumericalData/Voyager2/MAGandPLS/PT1H.html",
+  "https://spase-metadata.org/NASA/NumericalData/Voyager2/MAGandPLS/PT1H.xml",
+  "https://catalog.data.gov/dataset/voyager-2-hourly-merged-magnetic-field-and-plasma-data",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --start 1979 --end 1979 --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail."
+evidence_refs = ["data/external/voyager/v2_1979_1979_manifest.json"]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-VOYAGER1-MERGED-AMDA-DERIVED"
+path_glob = "data/external/voyager/voyager1/vy1_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+mirror_urls = [
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo1-pls-full",
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo1-mag-full",
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo1-ephem-all",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v1 --start 1979 --end 1979 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "This is a local translation of AMDA HAPI cruise plasma, magnetic-field, and ephemeris feeds into the repo's SPDF-style merged-hourly ASCII layout. AMDA `vo*_sol_lon` and `vo*_sol_lat` metadata currently advertise `rad` units, but sampled values align with degree-scale outputs; the translation preserves the raw numeric values and the manifest records the source datasets."
+evidence_refs = ["data/external/voyager/v1_1979_1979_manifest.json"]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-VOYAGER2-MERGED-AMDA-DERIVED"
+path_glob = "data/external/voyager/voyager2/vy2_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+mirror_urls = [
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo2-pls-full",
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo2-mag-full",
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo2-ephem-all",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --start 1979 --end 1979 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "This is a local translation of AMDA HAPI cruise plasma, magnetic-field, and ephemeris feeds into the repo's SPDF-style merged-hourly ASCII layout. AMDA `vo*_sol_lon` and `vo*_sol_lat` metadata currently advertise `rad` units, but sampled values align with degree-scale outputs; the translation preserves the raw numeric values and the manifest records the source datasets."
+evidence_refs = ["data/external/voyager/v2_1979_1979_manifest.json"]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-OMNI2-HOURLY-SPDF-CANONICAL"
+path_glob = "data/external/omni2/omni2_20*.dat"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/"
+mirror_urls = [
+  "https://omniweb.gsfc.nasa.gov/",
+  "https://omniweb.gsfc.nasa.gov/form/dx1.html",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_omni.py --start 2020 --end 2025 --source spdf --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Canonical OMNI2 fixed-width yearly ASCII files staged successfully for 2020-2025. Earlier chronology-critical windows are currently governed through the AMDA fallback lane from this host."
+evidence_refs = []
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-OMNI-HOURLY-AMDA-FALLBACK"
+path_glob = "data/external/omni2/omni2_*_amda_hourly.csv"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=omni-hour-all"
+mirror_urls = [
+  "https://amda.irap.omp.eu/service/hapi/catalog",
+  "https://omniweb.gsfc.nasa.gov/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_omni.py --start 2017 --end 2018 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "This is a governed fallback for OMNI hourly solar-wind and IMF data when direct GSFC/SPDF byte access is blocked from the current host. The staged files preserve the AMDA HAPI CSV format rather than pretending to be canonical OMNI2 fixed-width ASCII; the Rust OMNI parser accepts both formats explicitly. The fallback now covers 1997-2019 continuously."
+evidence_refs = [
+  "data/external/omni2/omni_1997_1998_manifest.json",
+  "data/external/omni2/omni_1999_2004_manifest.json",
+  "data/external/omni2/omni_2005_2016_manifest.json",
+  "data/external/omni2/omni_2017_2017_manifest.json",
+  "data/external/omni2/omni_2017_2018_manifest.json",
+  "data/external/omni2/omni_2018_2018_manifest.json",
+  "data/external/omni2/omni_2019_2019_manifest.json",
+]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-OMNI-HOURLY-GOVERNED-MANIFESTS"
+path_glob = "data/external/omni2/omni_*_manifest.json"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
+mirror_urls = [
+  "https://amda.irap.omp.eu/service/hapi/info?id=omni-hour-all",
+  "https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_omni.py --start <year> --end <year> --source auto --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "These manifests encode the mixed-lineage governed OMNI lane: canonical SPDF OMNI2 yearly ASCII where reachable, and AMDA HAPI CSV fallback for chronology-critical years blocked on the current host."
+evidence_refs = [
+  "data/external/omni2/omni_1997_1998_manifest.json",
+  "data/external/omni2/omni_1999_2004_manifest.json",
+  "data/external/omni2/omni_2005_2016_manifest.json",
+  "data/external/omni2/omni_2017_2017_manifest.json",
+  "data/external/omni2/omni_2017_2018_manifest.json",
+  "data/external/omni2/omni_2018_2018_manifest.json",
+  "data/external/omni2/omni_2019_2019_manifest.json",
+  "data/external/omni2/omni_2020_2025_manifest.json",
+]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-CASSINI-CRUISE-AMDA-HYBRID"
+path_glob = "data/external/cassini/cassini_*_amda_cruise_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+mirror_urls = [
+  "https://amda.irap.omp.eu/service/hapi/info?id=cass-orb-cruise",
+  "https://amda.irap.omp.eu/service/hapi/info?id=cass-mag-rtn60",
+  "https://amda.irap.omp.eu/service/hapi/info?id=tao-cass-sw",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_cassini.py --start 1998 --end 2004 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "This is a governed hybrid Cassini cruise lane assembled locally from AMDA HAPI sources. Trajectory comes from `cass-orb-cruise`, magnetic field from measured `cass-mag-rtn60`, and plasma from modeled `tao-cass-sw`. It is suitable for late-cruise chronology packs and long-baseline heliosphere trend work, but it should not be mislabeled as a fully measured SPDF merged cruise product. For the full `CRUISE_1997_2004` pack it must be treated as gap-tolerant before 1998-12-30T12:00:00Z, propagating missing values rather than fabricated outer-boundary samples."
+evidence_refs = [
+  "data/external/cassini/cassini_1998_2004_manifest.json",
+]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-SOHO-CELIAS-PM-5MIN-BUNDLE"
+path_glob = "data/external/soho/celias/**"
+canonical_url = "https://soho.nascom.nasa.gov/data/EntireMissionBundles/CELIAS_Proton_Monitor_5min.tar.gz"
+mirror_urls = [
+  "https://soho.nascom.nasa.gov/data/archive.html",
+  "https://www.cosmos.esa.int/web/soho/mission-long-files",
+  "https://www.cosmos.esa.int/web/soho/command-line",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_soho.py --product celias_pm_5min_bundle --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "This governs the SOHO CELIAS Proton Monitor 5-minute mission-long bundle and its staged metadata sidecars. The bundle is directly reachable from the current GSFC SOHO archive, while live ESAC archive endpoints are documented but connection-reset from this host."
+evidence_refs = ["data/external/soho/celias_pm_5min_bundle_manifest.json", "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-SOHO-LASCO-LZ-DAY-SAMPLE"
+path_glob = "data/external/soho/lasco/level05/**"
+canonical_url = "https://lasco-www.nrl.navy.mil/index.php?p=get_data"
+mirror_urls = [
+  "https://umbra.nascom.nasa.gov/pub/lasco_level05/",
+  "https://soho.nascom.nasa.gov/data/archive.html",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_soho.py --product lasco_lz_day --date 2024-01-01 --camera all --max-files 1 --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "This governs a bounded SOHO LASCO level-0.5 day sample, including directory indices, `img_hdr.txt`, and a small number of FITS files per camera. NRL documents wget-friendly bulk retrieval, while the NASA GSFC mirror remains available for per-file access but not wget-style mirroring."
+evidence_refs = ["data/external/soho/lasco_lz_day_20240101_manifest.json", "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"]
+scientific_validator_refs = ["static_archive_https"]
+
+[[source]]
+id = "SRC-PIONEER10-1979-MERGED-HOURLY"
+path_glob = "data/external/pioneer/pioneer10/p10_1979_merged_hourly.asc"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer10/merged/p10_1979_merged_hourly.asc"
+access_class = "public"
+status = "blocked"
+retrieval_method = "manual sneakernet drop"
+blocker_note = "Direct GSFC ASCII byte access blocked from current network; unblocks JUPITER_1979 sibling lane."
+evidence_refs = ["bin/fetch_pioneer.py network traces"]
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PIONEER11-1979-MERGED-HOURLY"
+path_glob = "data/external/pioneer/pioneer11/p11_1979_merged_hourly.asc"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer11/merged/p11_1979_merged_hourly.asc"
+access_class = "public"
+status = "blocked"
+retrieval_method = "manual sneakernet drop"
+blocker_note = "Direct GSFC ASCII byte access blocked from current network; unblocks JUPITER_1979 sibling lane."
+evidence_refs = ["bin/fetch_pioneer.py network traces"]
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PIONEER10-JUPITER-PPI-ENCOUNTER-1HR"
+path_glob = "data/external/pioneer/pioneer10/jupiter_encounter_ppi/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/P10-J-HVM_PA-4-SUMM-MERGED-1HR-V1.0/"
+mirror_urls = ["https://pds-ppi.igpp.ucla.edu/mission/Pioneer10"]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p10_jupiter --source pds_ppi --skip-existing"
+blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 10 Jupiter. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
+evidence_refs = ["data/external/pioneer/pioneer10/jupiter_encounter_ppi/p10_jupiter_manifest.json"]
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PIONEER11-JUPITER-PPI-ENCOUNTER-1HR"
+path_glob = "data/external/pioneer/pioneer11/jupiter_encounter_ppi/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/P11-J-HVM-PA-4-SUMM-MERGED-1HR-V1.0/"
+mirror_urls = ["https://pds-ppi.igpp.ucla.edu/mission/Pioneer11"]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p11_jupiter --source pds_ppi --skip-existing"
+blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 11 Jupiter. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
+evidence_refs = ["data/external/pioneer/pioneer11/jupiter_encounter_ppi/p11_jupiter_manifest.json"]
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PIONEER11-SATURN-PPI-ENCOUNTER-1HR"
+path_glob = "data/external/pioneer/pioneer11/saturn_encounter_ppi/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/P11-S-HVM-PA-4-MERGED-ENC-1HR-V1.0/"
+mirror_urls = ["https://pds-ppi.igpp.ucla.edu/mission/Pioneer11"]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p11_saturn --source pds_ppi --skip-existing"
+blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 11 Saturn. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
+evidence_refs = ["data/external/pioneer/pioneer11/saturn_encounter_ppi/p11_saturn_manifest.json"]
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]

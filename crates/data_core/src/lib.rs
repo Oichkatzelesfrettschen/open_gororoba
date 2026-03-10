@@ -34,6 +34,7 @@ pub mod quality;
 pub mod registry;
 pub mod seti;
 pub mod spice;
+pub mod time_bounds;
 #[cfg(feature = "dataframe")]
 pub mod tabular;
 

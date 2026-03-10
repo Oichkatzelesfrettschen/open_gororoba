@@ -1,0 +1,2 @@
+spacecraft,mission_phase,product_id,value_column,input,rows_total,window_start,window_end,window_start_index,window_end_index,window_row_count,valid_fraction,mean_value,median_value,min_value,max_value
+2,jupiter_encounter,LD1_RATE,LD1 RATE,/home/eirikr/Github/open_gororoba/data/output/heliosphere/voyager/jupiter_encounter/voyager2/VG2-J-CRS-5-SUMM-FLUX-V1.0_ld1_rate.tab.arrow,2744,1979-07-03T00:00:00+00:00,1979-07-06T00:00:00+00:00,0,288,289,0.9965397923875432,56.71349118055556,2.98597,1.99065,1824.3

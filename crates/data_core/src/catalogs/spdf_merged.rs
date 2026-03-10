@@ -126,6 +126,24 @@ fn parse_field_fill_only(s: &str, fill: f64) -> f64 {
     }
 }
 
+fn parse_lat_field(s: &str) -> f64 {
+    match s.trim().parse::<f64>() {
+        Ok(v) if v.abs() > 90.0 => f64::NAN,
+        Ok(v) if (v - 999.99).abs() < 0.5 || (v - 9999.9).abs() < 0.5 => f64::NAN,
+        Ok(v) => v,
+        Err(_) => f64::NAN,
+    }
+}
+
+fn parse_lon_field(s: &str) -> f64 {
+    match s.trim().parse::<f64>() {
+        Ok(v) if !(0.0..=360.0).contains(&v) => f64::NAN,
+        Ok(v) if (v - 999.99).abs() < 0.5 || (v - 9999.9).abs() < 0.5 => f64::NAN,
+        Ok(v) => v,
+        Err(_) => f64::NAN,
+    }
+}
+
 /// Extract a column value, returning None if the column index is None
 /// or out of bounds.
 fn col_val<'a>(fields: &[&'a str], col: Option<usize>) -> Option<&'a str> {
@@ -167,10 +185,10 @@ pub fn parse_spdf_merged(content: &str, layout: &SpdfColumnLayout) -> Vec<SpdfMe
             .map(|s| parse_field_fill_only(s, layout.fill_distance))
             .unwrap_or(f64::NAN);
         let lat_deg = col_val(&fields, layout.col_lat_deg)
-            .map(|s| parse_field_fill_only(s, 999.99))
+            .map(parse_lat_field)
             .unwrap_or(f64::NAN);
         let lon_deg = col_val(&fields, layout.col_lon_deg)
-            .map(|s| parse_field_fill_only(s, 999.99))
+            .map(parse_lon_field)
             .unwrap_or(f64::NAN);
 
         // Distance-scaled ceilings for physics validation

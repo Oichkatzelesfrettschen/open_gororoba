@@ -1,15 +1,21 @@
-//! NASA OMNI2 hourly solar wind and IMF data provider.
+//! Hourly OMNI solar wind and IMF data provider.
 //!
-//! The OMNI dataset merges solar wind and interplanetary magnetic field
-//! measurements from multiple spacecraft (ACE, WIND, IMP-8) into a single,
-//! time-aligned hourly dataset, propagated to the Earth's bow shock nose.
+//! The OMNI lane in this repo has two governed input families:
+//! - canonical NASA OMNI2 fixed-width yearly ASCII from SPDF/OMNIWeb;
+//! - AMDA/CDPP `omni-hour-all` HAPI CSV slices used as a governed fallback
+//!   when direct GSFC byte retrieval is blocked from the current host.
 //!
-//! Source: <https://omniweb.gsfc.nasa.gov/>
-//! FTP: <https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/>
-//! Format: OMNI2 fixed-width ASCII, 57 columns per row.
+//! Both formats describe bow-shock-propagated L1 hourly solar wind and IMF
+//! context assembled from upstream spacecraft such as ACE, WIND, and IMP-8.
+//! This module parses both explicitly into one compatibility struct.
+//!
+//! Canonical source: <https://omniweb.gsfc.nasa.gov/>
+//! Canonical bytes: <https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/>
+//! AMDA fallback: <https://amda.irap.omp.eu/service/hapi/info?id=omni-hour-all>
 //! Reference: King & Papitashvili (2005), J. Geophys. Res., 110, A02104.
 
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use chrono::{Datelike, Timelike, Utc};
 use std::path::{Path, PathBuf};
 
 /// A single hourly OMNI2 solar wind + IMF record.
@@ -123,6 +129,23 @@ fn parse_or_nan_fill_only(s: &str, fill: f64) -> f64 {
     }
 }
 
+fn parse_hapi_or_nan(s: &str, ceiling: f64) -> f64 {
+    match s.trim().parse::<f64>() {
+        Ok(v) if v <= -1.0e30 => f64::NAN,
+        Ok(v) if v.abs() > ceiling => f64::NAN,
+        Ok(v) => v,
+        Err(_) => f64::NAN,
+    }
+}
+
+fn parse_hapi_or_nan_fill_only(s: &str) -> f64 {
+    match s.trim().parse::<f64>() {
+        Ok(v) if v <= -1.0e30 => f64::NAN,
+        Ok(v) => v,
+        Err(_) => f64::NAN,
+    }
+}
+
 /// Distance-scaled physical ceilings for outer heliosphere spacecraft.
 ///
 /// At heliocentric distance `r_au`, the solar wind parameters scale as:
@@ -151,9 +174,18 @@ pub fn parse_or_nan_at_distance(s: &str, fill: f64, ceiling_at_r: f64) -> f64 {
     parse_or_nan(s, fill, ceiling_at_r)
 }
 
-/// Parse NASA OMNI2 hourly ASCII data.
+/// Parse governed hourly OMNI data.
 ///
-/// Format: 57 fixed-width columns per row, space-separated.
+/// Auto-detects either:
+/// - canonical OMNI2 fixed-width ASCII rows (space-separated, 57 columns); or
+/// - governed AMDA HAPI CSV fallback rows (comma-separated, 27 columns).
+///
+/// The AMDA fallback carries additional trailing fields such as sunspots,
+/// F10.7, and proton-flux channels. Those are intentionally ignored here
+/// because `OmniRecord` models the plasma+IMF subset consumed by the current
+/// heliosphere boundary and validation code.
+///
+/// Fixed-width format: 57 columns per row, space-separated.
 /// First 3 fields: Year (I4), DOY (I4), Hour (I3).
 ///
 /// Key column indices (0-based after split_whitespace):
@@ -171,6 +203,15 @@ pub fn parse_or_nan_at_distance(s: &str, fill: f64, ceiling_at_r: f64) -> f64 {
 ///  40  = Dst index
 ///  41  = AE index
 pub fn parse_omni_hourly(content: &str) -> Vec<OmniRecord> {
+    if let Some(first_data_line) = content
+        .lines()
+        .map(str::trim)
+        .find(|line| !line.is_empty() && !line.starts_with('#'))
+        && first_data_line.contains(',')
+    {
+        return parse_omni_hapi_csv(content);
+    }
+
     let mut records = Vec::new();
     for line in content.lines() {
         let line = line.trim();
@@ -233,6 +274,77 @@ pub fn parse_omni_hourly(content: &str) -> Vec<OmniRecord> {
             alfven_mach,
             dst_index,
             ae_index,
+            kp_times_10,
+            r_au: 1.0,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+        });
+    }
+    records
+}
+
+/// Parse AMDA HAPI CSV for the `omni-hour-all` dataset.
+///
+/// Field layout used here:
+///   0  = time (RFC3339)
+///   1  = |B|
+///   3  = Bx GSE
+///   4  = By GSE
+///   5  = Bz GSE
+///   6  = proton density
+///   7  = proton temperature
+///   8  = bulk speed
+///  12  = flow pressure
+///  14  = plasma beta
+///  15  = Alfven Mach number
+///  16  = Kp
+///  17  = AE
+///  18  = Dst
+///
+/// The trailing AMDA columns (sunspots, F10.7, proton-flux channels) are
+/// preserved in the staged CSVs but not projected into `OmniRecord`.
+pub fn parse_omni_hapi_csv(content: &str) -> Vec<OmniRecord> {
+    let mut records = Vec::new();
+    for line in content.lines() {
+        let line = line.trim();
+        if line.is_empty() || line.starts_with('#') {
+            continue;
+        }
+        let fields: Vec<&str> = line.split(',').map(str::trim).collect();
+        if fields.is_empty() || fields[0].eq_ignore_ascii_case("time") {
+            continue;
+        }
+        if fields.len() < 21 {
+            continue;
+        }
+
+        let timestamp = match chrono::DateTime::parse_from_rfc3339(fields[0]) {
+            Ok(ts) => ts.with_timezone(&Utc),
+            Err(_) => continue,
+        };
+
+        let kp_times_10 = match fields[16].parse::<f64>() {
+            Ok(v) if v <= -1.0e30 || !v.is_finite() || v < 0.0 => 99,
+            Ok(v) => v.round().clamp(0.0, 255.0) as u8,
+            Err(_) => 99,
+        };
+
+        records.push(OmniRecord {
+            year: timestamp.year() as u16,
+            doy: timestamp.ordinal() as u16,
+            hour: timestamp.hour() as u8,
+            b_magnitude: parse_hapi_or_nan(fields[1], CEIL_B),
+            bx_gse: parse_hapi_or_nan(fields[3], CEIL_B),
+            by_gse: parse_hapi_or_nan(fields[4], CEIL_B),
+            bz_gse: parse_hapi_or_nan(fields[5], CEIL_B),
+            proton_temperature: parse_hapi_or_nan(fields[7], CEIL_TEMP),
+            proton_density: parse_hapi_or_nan(fields[6], CEIL_DENSITY),
+            bulk_speed: parse_hapi_or_nan(fields[8], CEIL_SPEED),
+            flow_pressure: parse_hapi_or_nan(fields[12], CEIL_PRESSURE),
+            plasma_beta: parse_hapi_or_nan(fields[14], CEIL_BETA),
+            alfven_mach: parse_hapi_or_nan(fields[15], CEIL_MACH),
+            dst_index: parse_hapi_or_nan_fill_only(fields[18]),
+            ae_index: parse_hapi_or_nan_fill_only(fields[17]),
             kp_times_10,
             r_au: 1.0,
             lat_deg: f64::NAN,
@@ -412,6 +524,29 @@ mod tests {
     fn test_omni_empty() {
         let records = parse_omni_hourly("# comment only\n");
         assert!(records.is_empty());
+    }
+
+    #[test]
+    fn test_parse_amda_hapi_csv() {
+        let data = "\
+2017-01-01T00:00:00.000Z,7.1,6.4,-5.8,-1.1,-2.3,7.1,1.8496e+05,552,4,-2.3,0.044,4.25,1.38,1.84,10.4,33,132,-12,12,70.1,-1e31,-1e31,-1e31,0.17,0.09,0.06
+2017-01-01T01:00:00.000Z,6.5,5.8,-4.6,-1.4,-3.3,6.8,1.8256e+05,556,4.3,-1,0.048,4.18,1.95,2.08,11.2,33,329,-12,12,70.1,-1e31,-1e31,-1e31,0.18,0.09,0.07
+";
+        let records = parse_omni_hourly(data);
+        assert_eq!(records.len(), 2);
+        let r = &records[0];
+        assert_eq!(r.year, 2017);
+        assert_eq!(r.doy, 1);
+        assert_eq!(r.hour, 0);
+        assert!((r.b_magnitude - 7.1).abs() < 1.0e-9);
+        assert!((r.bx_gse + 5.8).abs() < 1.0e-9);
+        assert!((r.by_gse + 1.1).abs() < 1.0e-9);
+        assert!((r.bz_gse + 2.3).abs() < 1.0e-9);
+        assert!((r.proton_density - 7.1).abs() < 1.0e-9);
+        assert!((r.bulk_speed - 552.0).abs() < 1.0e-9);
+        assert_eq!(r.kp_times_10, 33);
+        assert!((r.ae_index - 132.0).abs() < 1.0e-9);
+        assert!((r.dst_index + 12.0).abs() < 1.0e-9);
     }
 
     #[test]

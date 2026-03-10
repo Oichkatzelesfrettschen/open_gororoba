@@ -215,6 +215,7 @@ pgfplots = "0.5.1"                   # PGFPlots (LaTeX-quality figures)
 
 # LaTeX generation
 chrono = "0.4"
+hifitime = "4.2.4"
 
 # Logging and Config
 log = "0.4"
