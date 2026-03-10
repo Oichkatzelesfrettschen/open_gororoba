@@ -239,6 +239,11 @@ crate = "gororoba_cli"
 description = "Convert CSV corpora to TOML scroll datasets and canonical index manifests"
 
 [[binary]]
+name = "heliosphere-catalog-audit"
+crate = "gororoba_cli_data"
+description = "Audit staged heliosphere datasets, source families, and valid chronology-pack overlap windows"
+
+[[binary]]
 name = "verify-project-csv-split"
 crate = "gororoba_cli"
 description = "Verify project_csv split policy parity across inventory, manifests, and TOML scroll indexes"
@@ -972,7 +977,51 @@ status = "active"
 [[binary]]
 name = "solar-wind-ic"
 crate = "gororoba_cli_physics"
-description = "Generate solar wind initial conditions from real spacecraft data. Supports OMNI2, ACE MAG L2, ACE SWEPAM, WIND SWE+MFI, and STEREO-A PLASTIC+IMPACT/MAG via adapter pattern. All datasets flow through OmniRecord interchange format. RTN->GSE transform for STEREO data."
+description = "Generate solar wind initial conditions from real spacecraft data. Supports OMNI2, ACE MAG L2, ACE SWEPAM, SOHO CELIAS Proton Monitor, WIND SWE+MFI, and STEREO-A PLASTIC+IMPACT/MAG via adapter pattern. All datasets flow through OmniRecord interchange format, with SOHO available both at native 5-minute cadence and hourly median-normalized boundary form."
+status = "active"
+
+[[binary]]
+name = "heliosphere-stage"
+crate = "gororoba_cli_data"
+description = "Parser-aware staging and audit pass for local Voyager merged, CRS rate, and calibrated CRS flux datasets. Emits CSV/TOML coverage reports plus a normalized observed-flux table, and fails if known fill sentinels survive as finite values."
+status = "active"
+
+[[binary]]
+name = "ingest-pds-crs"
+crate = "gororoba_cli_data"
+description = "Rust-side ingestion boundary for fetched Voyager PDS/PPI Jupiter encounter CRS bundles. Verifies manifest hashes and sizes, parses PDS3 labels plus indexed data tables, normalizes missing sentinels, and emits typed JSON artifacts for downstream analysis."
+status = "active"
+
+[[binary]]
+name = "soho-celias-stage"
+crate = "gororoba_cli_data"
+description = "Stage the SOHO CELIAS Proton Monitor mission-long bundle into both native cadence and hourly median-normalized CSV artifacts, then emit a JSON summary with row counts, byte sizes, and coverage so inner-boundary runs can preserve hypergranularity without losing cross-source alignment."
+status = "active"
+
+[[binary]]
+name = "cr-modulation-sweep"
+crate = "gororoba_cli_physics"
+description = "Parker Transport Equation sweep for heliospheric cosmic-ray modulation. Supports force-field diagnostics, profile-driven static baseline runs, modeled flux export, and tabulated DM source experiments across 1-157 AU."
+status = "active"
+experiment_refs = ["E-121", "E-122", "E-123", "E-124", "E-125", "E-126", "E-127"]
+
+[[binary]]
+name = "voyager-crs-compare"
+crate = "gororoba_cli_physics"
+description = "Voyager CRS comparison lane with legacy shape mode, promoted Arrow encounter-window shape mode, and calibrated absolute-flux mode. Aligns staged or promoted spectra with modeled heliosphere outputs and emits reproducible comparison tables plus one-parameter upper-limit summaries when a DM template is supplied."
+status = "active"
+experiment_refs = ["E-124", "E-127"]
+
+[[binary]]
+name = "voyager-arrow-probe"
+crate = "gororoba_cli_physics"
+description = "Consumer-side Arrow loader probe for Voyager encounter artifacts. Memory-maps Arrow IPC files, asserts the required schema, verifies monotonic time ordering, and reports O(log n) timestamp bounds plus validity flags for a requested telemetry column."
+status = "active"
+
+[[binary]]
+name = "voyager-encounter-track"
+crate = "gororoba_cli_physics"
+description = "Fused Voyager encounter tracker that joins promoted Arrow telemetry to merged Voyager spatial coordinates, interpolates r/lat/lon in time, and maps the resulting heliocentric position into lattice indices for solver-side validation loops."
 status = "active"
 
 [[binary]]

@@ -1,4 +1,4 @@
-//! Cassini CAPS/MAG cruise and Saturn orbit data parser.
+//! Cassini cruise and Saturn-orbit plasma / magnetic-field parser.
 //!
 //! Cassini provides plasma and magnetic field measurements during:
 //!   Cruise phase (1997-2004): 1-9.5 AU, en route to Saturn
@@ -15,7 +15,7 @@
 //!   MAG: Dual Technique Magnetometer
 //!         Dougherty et al. (2004), Space Sci. Rev. 114, 331
 //!
-//! SPDF merged hourly format.
+//! Canonical SPDF merged hourly format.
 //!   0: Year, 1: DOY, 2: Hour
 //!   3: Heliocentric distance (AU)
 //!   4: Heliographic latitude (deg)
@@ -26,6 +26,13 @@
 //!   12: Proton temperature (K)
 //!
 //! Coordinate system: RTN for B-field.
+//!
+//! Governed local note:
+//!   The repo may also stage a hybrid AMDA-derived hourly lane in the same
+//!   column layout. In that hybrid, trajectory comes from `cass-orb-cruise`,
+//!   magnetic field from measured `cass-mag-rtn60`, and plasma from modeled
+//!   `tao-cass-sw`. The parser intentionally accepts the shared SPDF-style
+//!   layout, while provenance is carried separately by manifests and audits.
 //!
 //! Source: <https://spdf.gsfc.nasa.gov/pub/data/cassini/>
 

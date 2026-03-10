@@ -2642,7 +2642,7 @@ binary_experiment_declared = ""
 method = "Multi-spacecraft radial profile reconstruction using Voyager 1/2, Pioneer 10/11, Ulysses, New Horizons, Juno, Cassini, and L1 (OMNI2) data. Each spacecraft's parser feeds through *_to_omni() adapter with heliocentric coordinates (r_au, lat_deg, lon_deg). build_radial_profile() groups records by distance, computes median plasma parameters per distance bin. interpolate_radial() uses log-linear interpolation for density (r^-2 scaling) and log-spaced x-grid for distance mapping. Validates Parker spiral B-field scaling: B_r ~ r^-2, B_phi ~ r^-1."
 input = "Voyager 1/2 SPDF merged hourly, Pioneer 10/11 SPDF merged hourly, OMNI2 hourly. nx=128, ny=32, nz=32"
 output = ["radial_ic_csv"]
-run = "cargo run --release --bin solar-wind-ic -- --omni-file data/external/omni/omni2_all_years.dat --voyager1-file data/external/voyager/v1_merged.asc --radial-mode --nx 128 --ny 32 --nz 32"
+run = "cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --voyager1-file <staged_voyager_merged_file> --radial-mode --nx 128 --ny 32 --nz 32"
 run_command_sha256 = ""
 claims = ["C-1157", "C-1162", "C-1165"]
 claim_refs = ["C-1157", "C-1162", "C-1165"]
@@ -2665,7 +2665,7 @@ binary_experiment_declared = ""
 method = "Ulysses SWOOPS + VHM/FGM data from the 1994-1995 fast latitude scan (1.3-5.4 AU, -80 to +80 deg heliographic latitude). ulysses_latitudinal_fit() extracts tanh transition parameters (fast_speed, slow_speed, transition_lat, width). latitude_modulation() applies the fitted profile to the LBM z-axis. Validates McComas et al. (2000) fast/slow bimodality: v_polar > 1.5 * v_equatorial."
 input = "Ulysses SWOOPS hourly, VHM/FGM hourly. nx=128, ny=32, nz=64"
 output = ["latitudinal_ic_csv"]
-run = "cargo run --release --bin solar-wind-ic -- --omni-file data/external/omni/omni2_all_years.dat --ulysses-swoops-file data/external/ulysses/swoops_hourly.asc --latitudinal --lat-max-deg 80 --nx 128 --ny 32 --nz 64"
+run = "cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --ulysses-swoops-file data/external/ulysses/swoops_hourly.asc --latitudinal --lat-max-deg 80 --nx 128 --ny 32 --nz 64"
 run_command_sha256 = ""
 claims = ["C-1163"]
 claim_refs = ["C-1163"]

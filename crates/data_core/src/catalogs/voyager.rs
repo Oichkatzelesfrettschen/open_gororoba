@@ -176,13 +176,12 @@ impl DatasetProvider for VoyagerProvider {
 
         for year in self.year_start..=self.year_end {
             let fname = format!(
-                "vy{}_{}_{}.asc",
+                "vy{}_{}.asc",
                 match self.spacecraft {
                     VoyagerSpacecraft::V1 => "1",
                     VoyagerSpacecraft::V2 => "2",
                 },
                 year,
-                "merged_hourly",
             );
             let output = dir.join(&fname);
             if config.skip_existing && output.exists() {

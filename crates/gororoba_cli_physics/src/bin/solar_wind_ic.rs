@@ -7,6 +7,7 @@
 //! Supports multiple spacecraft data sources via the adapter pattern:
 //!   - NASA OMNI2 (preferred: merged multi-source, includes B-field)
 //!   - ACE SWEPAM (plasma only, Parker spiral B-field fallback)
+//!   - SOHO CELIAS Proton Monitor mission-long bundle (5-min -> hourly medians)
 //!   - ACE MAG L2 (B-field only, 16-sec -> hourly averaged)
 //!   - WIND SWE + MFI (independent L1 spacecraft, plasma + B-field)
 //!   - STEREO-A PLASTIC + IMPACT/MAG (different heliocentric longitude)
@@ -29,6 +30,7 @@ use data_core::catalogs::{
     new_horizons::{nh_swap_to_omni, parse_nh_swap_file},
     omni::{OmniRecord, parse_omni_file, parse_omni_hourly},
     pioneer::{PioneerSpacecraft, parse_pioneer_file, pioneer_to_omni},
+    soho_celias::{parse_soho_celias_bundle_file, soho_to_hourly_omni, soho_to_native_omni},
     solar_wind::parse_swepam_file,
     stereo_plastic::{
         average_stereo_mag_hourly, parse_stereo_magplasma_file, parse_stereo_plastic_file,
@@ -65,6 +67,18 @@ struct Cli {
     /// Provides independent B-field measurements; plasma uses defaults.
     #[arg(long)]
     ace_mag_file: Option<PathBuf>,
+
+    /// Path to SOHO CELIAS Proton Monitor mission-long tar.gz bundle.
+    /// Uses either native cadence or hourly median downsampling plus Parker
+    /// spiral B-field fallback.
+    #[arg(long)]
+    soho_celias_file: Option<PathBuf>,
+
+    /// SOHO CELIAS cadence selection.
+    /// `auto` uses native cadence when the requested time resolution is
+    /// 15 minutes or finer, and hourly medians otherwise.
+    #[arg(long, default_value = "auto")]
+    soho_celias_cadence: String,
 
     /// Path to WIND SWE key-parameter file (plasma: density, speed, temp).
     #[arg(long)]
@@ -200,6 +214,18 @@ struct Cli {
     #[arg(long, default_value = "solar_wind_ic.csv")]
     out: PathBuf,
 
+    /// Optional CSV output for measured radial profile bins.
+    #[arg(long)]
+    radial_profile_out: Option<PathBuf>,
+
+    /// Optional CSV output for interpolated radial profile samples.
+    #[arg(long)]
+    radial_sample_out: Option<PathBuf>,
+
+    /// Optional CSV output for radial scaling fit diagnostics.
+    #[arg(long)]
+    radial_fit_out: Option<PathBuf>,
+
     /// Enable latitudinal Z-axis gradient modulation.
     /// Z-axis maps to heliographic latitude: z=0 is -lat_max,
     /// z=nz/2 is equator, z=nz-1 is +lat_max. Fast polar wind
@@ -266,6 +292,24 @@ const BUILTIN_OMNI_SAMPLE: &str = "\
 2024   2 22 2596 51 52  59  38   2.8   2.3 -30.6 250.7   0.8  -0.4  -1.1  -0.2  -1.2   0.4   1.7   0.4   0.3   0.6  116879.   2.3  427.  -0.9   0.9 0.010  0.38    5665.   0.1    3.   0.1   0.3 0.001   0.12   0.34  15.8  3  55     0   10 999999.99 99999.99 99999.99 99999.99 99999.99 99999.99  0   2 131.2   0.3     2     8  6.0
 2024   2 23 2596 51 52  61  38   3.1   2.4  27.2 272.2   0.3  -0.3   1.1  -0.4   1.0   0.7   2.3   0.5   0.5   0.7  119261.   2.4  425.  -1.3   0.5 0.012  0.41    6893.   0.1    2.   0.2   0.3 0.000   0.03   0.38  15.5  3  55    -1   14 999999.99 99999.99 99999.99 99999.99 99999.99 99999.99  0   2 131.2   0.3     2    10  5.9
 ";
+
+fn select_soho_cadence(cli: &Cli) -> anyhow::Result<&'static str> {
+    match cli.soho_celias_cadence.as_str() {
+        "auto" => {
+            if cli.time_resolution <= 900 {
+                Ok("native")
+            } else {
+                Ok("hourly")
+            }
+        }
+        "hourly" => Ok("hourly"),
+        "native" => Ok("native"),
+        other => anyhow::bail!(
+            "invalid --soho-celias-cadence '{}'; expected auto, hourly, or native",
+            other
+        ),
+    }
+}
 
 /// Physical-to-LBM unit conversion parameters.
 struct UnitConversion {
@@ -879,6 +923,13 @@ struct RadialProfilePoint {
     b_mag_nt: f64,
 }
 
+struct RadialFitRow {
+    quantity: &'static str,
+    expected_slope: f64,
+    fitted_slope: f64,
+    sample_count: usize,
+}
+
 /// Build a radial profile from multi-spacecraft OmniRecords.
 ///
 /// Groups records by heliocentric distance (r_au), computes the median
@@ -914,6 +965,145 @@ fn build_radial_profile(records: &[OmniRecord]) -> Vec<RadialProfilePoint> {
             }
         })
         .collect()
+}
+
+fn sample_radial_profile(
+    profile: &[RadialProfilePoint],
+    r_min: f64,
+    r_max: f64,
+    sample_count: usize,
+) -> Vec<RadialProfilePoint> {
+    if sample_count <= 1 {
+        return vec![interpolate_radial(profile, r_min)];
+    }
+
+    let ln_ratio = (r_max / r_min).ln();
+    (0..sample_count)
+        .map(|i| {
+            let t = i as f64 / (sample_count - 1) as f64;
+            let r_au = r_min * (t * ln_ratio).exp();
+            interpolate_radial(profile, r_au)
+        })
+        .collect()
+}
+
+fn fit_power_law(
+    rows: &[RadialProfilePoint],
+    quantity: impl Fn(&RadialProfilePoint) -> f64,
+) -> Option<(f64, usize)> {
+    let samples: Vec<(f64, f64)> = rows
+        .iter()
+        .filter_map(|row| {
+            let value = quantity(row);
+            if row.r_au.is_finite() && row.r_au > 0.0 && value.is_finite() && value.abs() > 1e-30 {
+                Some((row.r_au.ln(), value.abs().ln()))
+            } else {
+                None
+            }
+        })
+        .collect();
+    let n = samples.len();
+    if n < 2 {
+        return None;
+    }
+    let mean_x = samples.iter().map(|(x, _)| x).sum::<f64>() / n as f64;
+    let mean_y = samples.iter().map(|(_, y)| y).sum::<f64>() / n as f64;
+    let cov_xy = samples
+        .iter()
+        .map(|(x, y)| (x - mean_x) * (y - mean_y))
+        .sum::<f64>();
+    let var_x = samples
+        .iter()
+        .map(|(x, _)| (x - mean_x).powi(2))
+        .sum::<f64>();
+    if var_x.abs() < 1e-30 {
+        return None;
+    }
+    Some((cov_xy / var_x, n))
+}
+
+fn write_radial_profile_csv(path: &PathBuf, rows: &[RadialProfilePoint]) -> anyhow::Result<()> {
+    let mut out = String::from("r_au,density_cm3,speed_kms,temp_k,br_nt,bt_nt,bn_nt,b_mag_nt\n");
+    for row in rows {
+        out.push_str(&format!(
+            "{:.6},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e},{:.6e}\n",
+            row.r_au,
+            row.density_cm3,
+            row.speed_kms,
+            row.temp_k,
+            row.br_nt,
+            row.bt_nt,
+            row.bn_nt,
+            row.b_mag_nt
+        ));
+    }
+    fs::write(path, out)?;
+    Ok(())
+}
+
+fn write_radial_fit_csv(path: &PathBuf, rows: &[RadialFitRow]) -> anyhow::Result<()> {
+    let mut out = String::from("quantity,expected_slope,fitted_slope,sample_count\n");
+    for row in rows {
+        out.push_str(&format!(
+            "{},{:.6},{:.6},{}\n",
+            row.quantity, row.expected_slope, row.fitted_slope, row.sample_count
+        ));
+    }
+    fs::write(path, out)?;
+    Ok(())
+}
+
+fn write_radial_artifacts(
+    cli: &Cli,
+    measured: &[RadialProfilePoint],
+    sampled: &[RadialProfilePoint],
+) -> anyhow::Result<()> {
+    if let Some(ref path) = cli.radial_profile_out {
+        write_radial_profile_csv(path, measured)?;
+        eprintln!("wrote radial profile bins: {}", path.display());
+    }
+    if let Some(ref path) = cli.radial_sample_out {
+        write_radial_profile_csv(path, sampled)?;
+        eprintln!("wrote radial profile samples: {}", path.display());
+    }
+    if let Some(ref path) = cli.radial_fit_out {
+        let mut fits = Vec::new();
+        if let Some((slope, n)) = fit_power_law(sampled, |row| row.density_cm3) {
+            fits.push(RadialFitRow {
+                quantity: "density_cm3",
+                expected_slope: -2.0,
+                fitted_slope: slope,
+                sample_count: n,
+            });
+        }
+        if let Some((slope, n)) = fit_power_law(sampled, |row| row.br_nt) {
+            fits.push(RadialFitRow {
+                quantity: "br_nt",
+                expected_slope: -2.0,
+                fitted_slope: slope,
+                sample_count: n,
+            });
+        }
+        if let Some((slope, n)) = fit_power_law(sampled, |row| row.bt_nt) {
+            fits.push(RadialFitRow {
+                quantity: "bt_nt",
+                expected_slope: -1.0,
+                fitted_slope: slope,
+                sample_count: n,
+            });
+        }
+        if let Some((slope, n)) = fit_power_law(sampled, |row| row.speed_kms) {
+            fits.push(RadialFitRow {
+                quantity: "speed_kms",
+                expected_slope: 0.0,
+                fitted_slope: slope,
+                sample_count: n,
+            });
+        }
+        write_radial_fit_csv(path, &fits)?;
+        eprintln!("wrote radial fit diagnostics: {}", path.display());
+    }
+    Ok(())
 }
 
 /// Compute median of finite (non-NaN) values. Returns NaN if empty.
@@ -1473,7 +1663,7 @@ fn main() -> anyhow::Result<()> {
 
     // Standard mode: L1 time-series IC generation
     // Load data via adapter pattern.
-    // Priority: OMNI > WIND SWE+MFI > ACE MAG > STEREO > SWEPAM > builtin
+    // Priority: OMNI > WIND SWE+MFI > ACE MAG > STEREO > SOHO CELIAS > SWEPAM > Cassini > builtin
     let records: Vec<OmniRecord> = if let Some(ref path) = cli.omni_file {
         eprintln!("loading NASA OMNI2 from: {}", path.display());
         let raw = parse_omni_file(path)?;
@@ -1493,6 +1683,29 @@ fn main() -> anyhow::Result<()> {
         filter_valid_omni(&omni)
     } else if cli.stereo_file.is_some() || cli.stereo_mag_file.is_some() {
         load_stereo_data(&cli)?
+    } else if let Some(ref path) = cli.soho_celias_file {
+        let cadence = select_soho_cadence(&cli)?;
+        eprintln!("loading SOHO CELIAS PM bundle from: {}", path.display());
+        let raw = parse_soho_celias_bundle_file(path)?;
+        let omni = if cadence == "native" {
+            eprintln!(
+                "  cadence route: native CELIAS samples (time_resolution={} s <= 900 s, no real B-field)",
+                cli.time_resolution
+            );
+            soho_to_native_omni(&raw)
+        } else {
+            eprintln!(
+                "  cadence route: hourly median-normalized CELIAS boundary (time_resolution={} s, no real B-field)",
+                cli.time_resolution
+            );
+            soho_to_hourly_omni(&raw)
+        };
+        eprintln!(
+            "  {} raw CELIAS records -> {} boundary records",
+            raw.len(),
+            omni.len()
+        );
+        filter_valid_omni(&omni)
     } else if let Some(ref path) = cli.swepam_file {
         eprintln!(
             "loading ACE SWEPAM from: {} (no real B-field)",
@@ -1500,6 +1713,12 @@ fn main() -> anyhow::Result<()> {
         );
         let raw = parse_swepam_file(path)?;
         swepam_to_omni(&raw)
+    } else if let Some(ref path) = cli.cassini_file {
+        eprintln!("loading Cassini cruise hourly from: {}", path.display());
+        let raw = parse_cassini_cruise_file(path)?;
+        let omni = cassini_to_omni(&raw);
+        eprintln!("  {} Cassini cruise records", omni.len());
+        filter_valid_omni(&omni)
     } else {
         eprintln!("using built-in OMNI2 sample (2024 DOY 1-2, 48 hours, real B-field)");
         let raw = parse_omni_hourly(BUILTIN_OMNI_SAMPLE);
@@ -1592,11 +1811,12 @@ fn main() -> anyhow::Result<()> {
             || cli.wind_swe_file.is_some()
             || cli.wind_mfi_file.is_some()
             || cli.ace_mag_file.is_some()
+            || cli.soho_celias_file.is_some()
             || cli.swepam_file.is_some();
         if !has_l1_primary {
             anyhow::bail!(
                 "--triangulate requires an L1 anchor (--omni-file, --wind-swe-file, \
-                 --wind-mfi-file, --ace-mag-file, or --swepam-file). \
+                 --wind-mfi-file, --ace-mag-file, --soho-celias-file, or --swepam-file). \
                  STEREO cannot be both the primary and secondary source."
             );
         }
@@ -1695,6 +1915,10 @@ fn run_radial_mode(cli: &Cli) -> anyhow::Result<()> {
             }
         }
     }
+
+    let sampled_profile =
+        sample_radial_profile(&profile, cli.r_min_au, cli.r_max_au, cli.nx.max(2));
+    write_radial_artifacts(cli, &profile, &sampled_profile)?;
 
     // Compute distance-adaptive unit conversion
     let mut units = radial_unit_conversion(&profile, cli.r_min_au, cli.r_max_au);
@@ -1962,6 +2186,48 @@ mod tests {
         ];
         let profile = build_radial_profile(&records);
         assert_eq!(profile.len(), 1, "NaN distance record should be skipped");
+    }
+
+    #[test]
+    fn test_fit_power_law_recovers_inverse_square_density() {
+        let sampled = vec![
+            RadialProfilePoint {
+                r_au: 1.0,
+                density_cm3: 5.0,
+                speed_kms: 400.0,
+                temp_k: 1.0e5,
+                br_nt: 5.0,
+                bt_nt: -3.0,
+                bn_nt: 0.0,
+                b_mag_nt: 5.83,
+            },
+            RadialProfilePoint {
+                r_au: 10.0,
+                density_cm3: 0.05,
+                speed_kms: 400.0,
+                temp_k: 2.15e4,
+                br_nt: 0.05,
+                bt_nt: -0.3,
+                bn_nt: 0.0,
+                b_mag_nt: 0.304,
+            },
+            RadialProfilePoint {
+                r_au: 100.0,
+                density_cm3: 0.0005,
+                speed_kms: 400.0,
+                temp_k: 4.64e3,
+                br_nt: 0.0005,
+                bt_nt: -0.03,
+                bn_nt: 0.0,
+                b_mag_nt: 0.03,
+            },
+        ];
+        let (slope, n) = fit_power_law(&sampled, |row| row.density_cm3).unwrap();
+        assert_eq!(n, 3);
+        assert!(
+            (slope + 2.0).abs() < 0.05,
+            "unexpected fitted slope {slope}"
+        );
     }
 
     #[test]

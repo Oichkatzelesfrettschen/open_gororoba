@@ -10,6 +10,7 @@ use crate::{
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
     parse::parse_f64_or_nan,
 };
+use hifitime::Epoch;
 use std::path::{Path, PathBuf};
 
 /// A single TSI measurement from TSIS-1.
@@ -29,44 +30,74 @@ pub struct TsiMeasurement {
 pub fn parse_tsi_csv(path: &Path) -> Result<Vec<TsiMeasurement>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;
+    let filtered: String = content
+        .lines()
+        .filter(|line| {
+            let trimmed = line.trim();
+            !(trimmed.is_empty() || trimmed.starts_with(';'))
+        })
+        .collect::<Vec<_>>()
+        .join("\n");
+
+    let mut reader = csv::ReaderBuilder::new()
+        .flexible(true)
+        .has_headers(true)
+        .comment(Some(b'#'))
+        .from_reader(filtered.as_bytes());
+
+    let headers = reader
+        .headers()
+        .map_err(|e| FetchError::Validation(format!("Header read error: {}", e)))?
+        .clone();
+
+    let col_exact = |name: &str| -> Option<usize> {
+        headers
+            .iter()
+            .position(|header| header.trim().eq_ignore_ascii_case(name))
+    };
+
+    let idx_jd = col_exact("jd").or_else(|| col_exact("time (Julian Date)"));
+    let idx_date = col_exact("date");
+    let idx_tsi = col_exact("TSI").or_else(|| col_exact("tsi_1au (W/m^2)"));
+    let idx_unc = col_exact("uncertainty")
+        .or_else(|| col_exact("measurement_uncertainty_1au (W/m^2)"))
+        .or_else(|| col_exact("instrument_accuracy_1au (W/m^2)"));
 
     let mut measurements = Vec::new();
-    let mut header_seen = false;
 
-    for line in content.lines() {
-        let trimmed = line.trim();
-        if trimmed.is_empty() || trimmed.starts_with('#') || trimmed.starts_with(';') {
+    for result in reader.records() {
+        let record =
+            result.map_err(|e| FetchError::Validation(format!("Record parse error: {}", e)))?;
+        let jd = idx_jd
+            .and_then(|idx| record.get(idx))
+            .map(parse_f64_or_nan)
+            .unwrap_or(f64::NAN);
+        let tsi = idx_tsi
+            .and_then(|idx| record.get(idx))
+            .map(parse_f64_or_nan)
+            .unwrap_or(f64::NAN);
+        let unc = idx_unc
+            .and_then(|idx| record.get(idx))
+            .map(parse_f64_or_nan)
+            .unwrap_or(f64::NAN);
+
+        if tsi.is_nan() || tsi <= 0.0 || !jd.is_finite() {
             continue;
         }
 
-        // Skip header line(s)
-        if !header_seen
-            && (trimmed.contains("jd")
-                || trimmed.contains("date")
-                || trimmed.contains("TSI")
-                || trimmed.contains("irradiance"))
-        {
-            header_seen = true;
-            continue;
-        }
-        if !header_seen {
-            // First non-comment, non-header line -- try parsing
-            header_seen = true;
-        }
-
-        let fields: Vec<&str> = trimmed.split(',').collect();
-        if fields.len() < 3 {
-            continue;
-        }
-
-        let jd = parse_f64_or_nan(fields[0]);
-        let date = fields.get(1).unwrap_or(&"").trim().to_string();
-        let tsi = parse_f64_or_nan(fields.get(2).unwrap_or(&""));
-        let unc = parse_f64_or_nan(fields.get(3).unwrap_or(&""));
-
-        if tsi.is_nan() {
-            continue;
-        }
+        let date = idx_date
+            .and_then(|idx| record.get(idx))
+            .map(str::trim)
+            .filter(|text| !text.is_empty())
+            .map(str::to_string)
+            .unwrap_or_else(|| {
+                Epoch::from_jde_utc(jd)
+                    .to_rfc3339()
+                    .split('T')
+                    .next()
+                    .unwrap_or("")
+                    .to_string()
+            });
 
         measurements.push(TsiMeasurement {
             jd,
@@ -203,6 +234,23 @@ jd,date,TSI,uncertainty
         assert_eq!(m1.date, "2021-01-01");
         assert!((m1.tsi - 1360.52).abs() < 0.01);
         assert!((m1.tsi_uncertainty - 0.14).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_parse_real_lisird_header_shape() {
+        let csv = "\
+time (Julian Date),tsi_1au (W/m^2),instrument_accuracy_1au (W/m^2),instrument_precision_1au (W/m^2),solar_standard_deviation_1au (W/m^2),measurement_uncertainty_1au (W/m^2),tsi_true_earth (W/m^2),instrument_accuracy_true_earth (W/m^2),instrument_precision_true_earth (W/m^2),solar_standard_deviation_true_earth (W/m^2),measurement_uncertainty_true_earth (W/m^2),avg_measurement_date (Julian Date),std_dev_measurement_date (days),provisional_flag
+2458129.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2458129.0,0.0,0
+2458130.0,1361.6251,0.1684,0.0068,0.04423,0.1741,1407.7673,0.1741,0.0068,0.04577,0.1801,2458129.716197,0.0064,0
+";
+        let f = write_temp_csv(csv);
+        let measurements = parse_tsi_csv(f.path()).unwrap();
+        assert_eq!(measurements.len(), 1, "zero-valued rows should be skipped");
+        let m1 = &measurements[0];
+        assert!((m1.jd - 2458130.0).abs() < 0.01);
+        assert_eq!(m1.date, "2018-01-11");
+        assert!((m1.tsi - 1361.6251).abs() < 0.001);
+        assert!((m1.tsi_uncertainty - 0.1741).abs() < 0.001);
     }
 
     #[test]

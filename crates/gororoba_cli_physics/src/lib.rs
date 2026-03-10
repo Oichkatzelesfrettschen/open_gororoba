@@ -5,3 +5,6 @@
 
 pub mod ephemeris_loader;
 pub mod flyby;
+pub mod heliosphere_boundary;
+pub mod voyager_arrow;
+pub mod voyager_encounter;
