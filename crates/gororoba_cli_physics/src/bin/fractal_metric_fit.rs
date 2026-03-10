@@ -44,8 +44,12 @@ fn sign_match(predicted: f64, observed: f64) -> bool {
 }
 
 fn relative_error(predicted: f64, observed: f64) -> f64 {
-    let denom = observed.abs().max(1.0e-12);
-    (predicted - observed).abs() / denom
+    // For zero-observed benchmarks (e.g. Juno flyby), use absolute error
+    // directly rather than dividing by near-zero and producing 1e17 scores.
+    if observed.abs() < 1.0e-6 {
+        return (predicted - observed).abs();
+    }
+    (predicted - observed).abs() / observed.abs()
 }
 
 fn qtensor_pioneer_prediction(params: FitParams, r_km: f64, v_km_s: f64) -> f64 {
@@ -138,9 +142,24 @@ fn main() -> Result<()> {
                 }
 
                 for row in &pioneers {
-                    let (Some(r_au), Some(v_km_s)) = (row.sampled_r_au, row.sampled_speed_km_s) else {
+                    let Some(r_au) = row.sampled_r_au else {
+                        eprintln!(
+                            "WARN: skipping {} (no sampled_r_au in benchmark)",
+                            row.spacecraft
+                        );
                         continue;
                     };
+                    // When plasma speed is missing (e.g. Pioneer 10 MAG-only
+                    // lane), use Anderson et al. 2002 Table II cruise velocity.
+                    // Pioneer 10: ~12.24 km/s at 40-70 AU; Pioneer 11: ~11.3 km/s.
+                    let v_km_s = row.sampled_speed_km_s.unwrap_or_else(|| {
+                        let fallback = if row.spacecraft.contains("10") { 12.24 } else { 11.3 };
+                        eprintln!(
+                            "WARN: {} missing sampled_speed_km_s, using Anderson et al. cruise velocity {:.2} km/s",
+                            row.spacecraft, fallback
+                        );
+                        fallback
+                    });
                     let predicted = if s_bulk == 0.0 {
                         pioneer_anomaly_prediction(params.d_f, r_au * AU_KM, v_km_s) * 1.0e3
                     } else {
