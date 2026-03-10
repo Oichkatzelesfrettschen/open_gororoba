@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
-"""Fetch Voyager 1 & 2 merged hourly data from NASA SPDF.
+"""Fetch Voyager 1 & 2 merged hourly data from NASA SPDF / Bartol / AMDA.
 
 Voyager spacecraft provide the deepest heliospheric penetration:
   V1: launched 1977, 157 AU (2024), crossed termination shock 94 AU (2004)
   V2: launched 1977, 134 AU (2024), crossed termination shock 84 AU (2007)
 
-SPDF merged hourly format: Year, DOY, Hour, Distance(AU), Lat, Lon,
-|B|, Bx/By/Bz (SE), density, speed, temperature.
-
-Source: https://spdf.gsfc.nasa.gov/pub/data/voyager/
+Sources (auto fallback chain):
+  1. SPDF merged hourly (13-col SE): https://spdf.gsfc.nasa.gov/pub/data/voyager/
+  2. Bartol Research Institute (V2 only, 16-col RTN, 1977-1997):
+     https://ftp.bartol.udel.edu/whm/Voyager/
+  3. AMDA HAPI translation (plasma + MAG + ephemeris -> 13-col merged)
 
 Usage:
     python3 bin/fetch_voyager.py                              # fetch V1 2020
     python3 bin/fetch_voyager.py --spacecraft both --start 2000 --end 2024
-    python3 bin/fetch_voyager.py --spacecraft v2 --start 2007 --end 2010
+    python3 bin/fetch_voyager.py --spacecraft v2 --source bartol --start 1977 --end 1995
     python3 bin/fetch_voyager.py --skip-existing
 """
 
@@ -23,6 +24,7 @@ import hashlib
 import json
 import math
 import re
+import ssl
 import sys
 from pathlib import Path
 from urllib.error import URLError
@@ -59,6 +61,106 @@ AMDA_DATASETS = {
     "v1": {"pls": "vo1-pls-full", "mag": "vo1-mag-full", "ephem": "vo1-ephem-all"},
     "v2": {"pls": "vo2-pls-full", "mag": "vo2-mag-full", "ephem": "vo2-ephem-all"},
 }
+
+# Bartol Research Institute legacy archive (Voyager 2 only, 1977-1995).
+# 16-column NSSDC/COHO format with 2-digit years and RTN B-field.
+# Self-signed TLS certificate requires unverified context.
+BARTOL_V2_BASE = "https://ftp.bartol.udel.edu/whm/Voyager/"
+BARTOL_YEARS = range(77, 98)  # vy2_77.dat through vy2_97.dat
+
+
+def _bartol_ssl_context() -> ssl.SSLContext:
+    """Create an unverified SSL context for Bartol FTP (self-signed cert)."""
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    return ctx
+
+
+def fetch_bartol_file(url: str, out: Path, *, skip_existing: bool) -> dict[str, object]:
+    """Fetch a single Bartol .dat file with TLS workaround."""
+    if skip_existing and out.exists():
+        return build_file_entry(url, out, "skipped")
+
+    req = Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urlopen(req, timeout=60, context=_bartol_ssl_context()) as resp:  # noqa: S310
+            data = resp.read()
+    except (URLError, OSError) as exc:
+        return {"url": url, "path": str(out), "status": "failed", "reason": str(exc)}
+
+    if len(data) < 100:
+        return {"url": url, "path": str(out), "status": "failed", "bytes": len(data)}
+
+    out.write_bytes(data)
+    lines = sum(1 for _ in out.open())
+    size = out.stat().st_size
+    print(f"  {out.name}: Bartol OK ({lines} lines, {size} bytes)")
+    entry = build_file_entry(url, out, "fetched")
+    entry["lines"] = lines
+    entry["source"] = "bartol"
+    return entry
+
+
+def fetch_voyager_bartol(
+    years: range, *, skip_existing: bool, metadata: dict[str, object]
+) -> dict[str, object]:
+    """Fetch Voyager 2 hourly merged data from Bartol Research Institute archive.
+
+    Bartol covers Voyager 2 only, 1977-1997 (2-digit year files vy2_77.dat..vy2_97.dat).
+    16-column NSSDC/COHO format with RTN B-field.
+    """
+    subdir = OUTPUT_DIR / "voyager2" / "bartol"
+    subdir.mkdir(parents=True, exist_ok=True)
+    counts: dict[str, int] = {"fetched": 0, "skipped": 0, "failed": 0}
+    files: list[dict[str, object]] = []
+
+    for year in years:
+        yy = year % 100
+        if yy not in BARTOL_YEARS:
+            files.append(
+                {
+                    "url": BARTOL_V2_BASE,
+                    "path": str(subdir / f"vy2_{yy:02d}.dat"),
+                    "status": "failed",
+                    "year": year,
+                    "reason": "year_outside_bartol_range",
+                    "source": "bartol",
+                }
+            )
+            counts["failed"] += 1
+            continue
+
+        fname = f"vy2_{yy:02d}.dat"
+        url = f"{BARTOL_V2_BASE}{fname}"
+        out = subdir / fname
+        entry = fetch_bartol_file(url, out, skip_existing=skip_existing)
+        entry["year"] = year
+        entry["source"] = "bartol"
+        files.append(entry)
+        counts[entry["status"]] += 1
+        if entry["status"] == "failed":
+            print(f"  Voyager 2 {year} (Bartol): FAILED")
+
+    # Fetch the format documentation if present.
+    doc_url = f"{BARTOL_V2_BASE}vy2mgd.txt"
+    doc_out = subdir / "vy2mgd.txt"
+    doc_entry = fetch_bartol_file(doc_url, doc_out, skip_existing=skip_existing)
+    doc_entry["source"] = "bartol"
+    doc_entry["type"] = "documentation"
+    files.append(doc_entry)
+    counts[doc_entry["status"]] += 1
+
+    metadata = dict(metadata)
+    metadata["bartol"] = {
+        "base_url": BARTOL_V2_BASE,
+        "format": "16-column NSSDC/COHO RTN, 2-digit year",
+        "spacecraft": "voyager2",
+        "coverage": "1977-1997",
+        "tls_note": "self-signed cert, unverified context",
+    }
+    status = "ready" if counts["fetched"] > 0 or counts["skipped"] > 0 else "metadata_only"
+    return {"counts": counts, "files": files, "metadata": metadata, "status": status}
 
 
 def fetch_file(url: str, out: Path, *, skip_existing: bool) -> dict[str, object]:
@@ -487,11 +589,36 @@ def fetch_voyager(
     if source == "amda":
         return fetch_voyager_amda(spacecraft, years, skip_existing=skip_existing, metadata=metadata)
 
+    if source == "bartol":
+        if spacecraft != "v2":
+            print("  Bartol archive covers Voyager 2 only, skipping V1")
+            return {
+                "counts": {"fetched": 0, "skipped": 0, "failed": 0},
+                "files": [],
+                "metadata": metadata,
+                "status": "metadata_only",
+                "reason": "bartol_v2_only",
+            }
+        return fetch_voyager_bartol(years, skip_existing=skip_existing, metadata=metadata)
+
     try:
         discovered = discover_year_map(base, label)
     except (URLError, OSError) as exc:
         print(f"  failed to read index {base}: {exc}")
         if source == "auto":
+            # Auto fallback chain: SPDF -> Bartol (V2, 1977-1997) -> AMDA
+            if spacecraft == "v2":
+                bartol_years = range(
+                    max(years.start, 1977), min(years.stop, 1998)
+                )
+                if bartol_years:
+                    print("  trying Bartol Research Institute archive (V2 1977-1997)...")
+                    bartol_result = fetch_voyager_bartol(
+                        bartol_years, skip_existing=skip_existing, metadata=metadata
+                    )
+                    if bartol_result["counts"]["fetched"] > 0:
+                        return bartol_result
+                    print("  Bartol also failed, falling back to AMDA HAPI...")
             print("  falling back to AMDA HAPI translation...")
             return fetch_voyager_amda(
                 spacecraft,
@@ -585,9 +712,9 @@ def main() -> int:
     )
     parser.add_argument(
         "--source",
-        choices=["auto", "spdf", "amda"],
+        choices=["auto", "spdf", "amda", "bartol"],
         default="auto",
-        help="Acquisition source: SPDF index, AMDA HAPI translation, or auto fallback",
+        help="Acquisition source: SPDF, Bartol (V2 1977-1997), AMDA HAPI, or auto fallback",
     )
     args = parser.parse_args()
 

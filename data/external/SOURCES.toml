@@ -835,7 +835,7 @@ status = "active"
 retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v1 --start 1979 --end 1979 --skip-existing"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail."
+blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail. Bartol archive does NOT cover V1. AMDA HAPI translation available via --source amda."
 evidence_refs = ["data/external/voyager/v1_1979_1979_manifest.json"]
 scientific_validator_refs = ["static_archive_https"]
 
@@ -853,7 +853,7 @@ status = "active"
 retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --start 1979 --end 1979 --skip-existing"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail."
+blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail. Bartol legacy archive available for V2 1977-1997 (16-col RTN format). AMDA HAPI translation available via --source amda."
 evidence_refs = ["data/external/voyager/v2_1979_1979_manifest.json"]
 scientific_validator_refs = ["static_archive_https"]
 
@@ -1023,7 +1023,7 @@ canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer10/merged/p1
 access_class = "public"
 status = "blocked"
 retrieval_method = "manual sneakernet drop"
-blocker_note = "Direct GSFC ASCII byte access blocked from current network; unblocks JUPITER_1979 sibling lane."
+blocker_note = "Direct GSFC ASCII byte access blocked from current network (ERR_CONNECTION_REFUSED confirmed via Playwright 2026-03-10); unblocks JUPITER_1979 sibling lane. AMDA provides MAG-only alternative (p10-mag-full, RTN) via --source amda, but NO plasma data."
 evidence_refs = ["bin/fetch_pioneer.py network traces"]
 scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
 
@@ -1034,7 +1034,7 @@ canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer11/merged/p1
 access_class = "public"
 status = "blocked"
 retrieval_method = "manual sneakernet drop"
-blocker_note = "Direct GSFC ASCII byte access blocked from current network; unblocks JUPITER_1979 sibling lane."
+blocker_note = "Direct GSFC ASCII byte access blocked from current network (ERR_CONNECTION_REFUSED confirmed via Playwright 2026-03-10); unblocks JUPITER_1979 sibling lane. AMDA provides MAG-only alternative (p11-mag-full, RTN) via --source amda, but NO plasma data."
 evidence_refs = ["bin/fetch_pioneer.py network traces"]
 scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
 
@@ -1073,3 +1073,598 @@ retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi 
 blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 11 Saturn. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
 evidence_refs = ["data/external/pioneer/pioneer11/saturn_encounter_ppi/p11_saturn_manifest.json"]
 scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# =============================================================================
+# Bartol Research Institute legacy archive (Voyager 2, 1977-1997)
+# =============================================================================
+
+[[source]]
+id = "SRC-VOYAGER2-BARTOL-LEGACY-COHO"
+path_glob = "data/external/voyager/voyager2/bartol/vy2_*.dat"
+canonical_url = "https://ftp.bartol.udel.edu/whm/Voyager/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --source bartol --start 1977 --end 1997"
+blocker_note = "Bartol Research Institute (U. Delaware) legacy NSSDC/COHO archive. Voyager 2 only, 1977-1997 coverage. 16-column RTN format (differs from current SPDF 13-column SE format). Self-signed TLS cert requires unverified SSL context. Verified reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# =============================================================================
+# Parker Solar Probe AMDA-derived merged hourly (0.05-1.0 AU)
+# =============================================================================
+
+[[source]]
+id = "SRC-PSP-AMDA-SPC-MOMENTS"
+path_glob = "data/external/psp/psp_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/data?id=psp-spc-mom"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_psp.py --source amda"
+blocker_note = "AMDA HAPI-derived lane. Combines psp-spc-mom (SWEAP/SPC proton moments), psp-mag-1min (FIELDS MAG), and psp-orb-all (orbit) into 13-column SPDF-style merged hourly. Thermal speed converted to temperature via T = m_p * v_th^2 / (2 * k_B). SPDF primary source blocked from this host."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PSP-AMDA-MAG-1MIN"
+path_glob = "data/external/psp/psp_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=psp-mag-1min"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_psp.py --source amda"
+blocker_note = "FIELDS/MAG 1-minute cadence in RTN. Aggregated to hourly medians in the derived merged product."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PSP-AMDA-ORBIT"
+path_glob = "data/external/psp/psp_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=psp-orb-all"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_psp.py --source amda"
+blocker_note = "PSP full mission orbit in HCI coordinates (r_au, lat, lon). Used for position columns in merged hourly output."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PSP-SPDF-BLOCKED"
+path_glob = "data/external/psp/**"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/psp/"
+mirror_urls = ["https://cdaweb.gsfc.nasa.gov/"]
+access_class = "public"
+status = "blocked"
+retrieval_method = "N/A (connection refused from this host)"
+blocker_note = "Primary SPDF source for PSP SWEAP and FIELDS data. ERR_CONNECTION_REFUSED confirmed via Playwright browser probe 2026-03-10 (TCP-level block, not browser-specific). Use AMDA lane or PSP Gateway (JHU/APL) instead."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PSP-GATEWAY-JHUAPL"
+path_glob = "data/external/psp/**"
+canonical_url = "https://sppgway.jhuapl.edu/"
+mirror_urls = ["https://psp-gateway.jhuapl.edu/"]
+access_class = "public"
+status = "reachable"
+retrieval_method = "Playwright browser automation (Vue.js SPA, redirects to psp-gateway.jhuapl.edu)"
+blocker_note = "PSP Science Gateway at JHU/APL. REACHABLE and confirmed via Playwright 2026-03-10. Redirects sppgway -> psp-gateway.jhuapl.edu. Data releases through Orbit 25 (2026-03-02). FIELDS, ISOIS, WISPR, SWEAP instrument links accessible. Orbit 26+27 planned 2026-08-24. Requires Playwright for download URL extraction."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# =============================================================================
+# Helios 1/2 AMDA-derived merged hourly (0.29-0.98 AU, 1974-1985)
+# =============================================================================
+
+[[source]]
+id = "SRC-HELIOS1-AMDA-COREFIT"
+path_glob = "data/external/helios/helios1/helios1_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios1-e1-all"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios1 --source amda"
+blocker_note = "AMDA HAPI-derived lane for Helios 1. Combines helios1-e1-all (proton corefit), helios1-e3-all (MAG 6-sec), helios1-orb-all (orbit) into 13-column SPDF-style merged hourly. Coverage 1974-12 to 1985-09."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-HELIOS1-AMDA-MAG"
+path_glob = "data/external/helios/helios1/helios1_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios1-e3-all"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios1 --source amda"
+blocker_note = "Helios 1 MAG E3 6-second cadence. Aggregated to hourly medians in the derived merged product."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-HELIOS2-AMDA-COREFIT"
+path_glob = "data/external/helios/helios2/helios2_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios2-e1-all"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios2 --source amda"
+blocker_note = "AMDA HAPI-derived lane for Helios 2. Combines helios2-e1-all (proton corefit), helios2-e3-all (MAG 6-sec), helios2-orb-all (orbit) into 13-column SPDF-style merged hourly. Coverage 1976-01 to 1980-03."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-HELIOS2-AMDA-MAG"
+path_glob = "data/external/helios/helios2/helios2_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios2-e3-all"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios2 --source amda"
+blocker_note = "Helios 2 MAG E3 6-second cadence. Aggregated to hourly medians in the derived merged product."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-HELIOS-SPDF-BLOCKED"
+path_glob = "data/external/helios/**"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/helios/"
+mirror_urls = []
+access_class = "public"
+status = "blocked"
+retrieval_method = "N/A (connection refused from this host)"
+blocker_note = "Primary SPDF source for Helios 1/2 merged magnetic field and plasma data. ERR_CONNECTION_REFUSED confirmed via Playwright browser probe 2026-03-10. Use AMDA lane instead."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# =============================================================================
+# Solar Orbiter AMDA partial lane (MAG + RPW electron density)
+# =============================================================================
+
+[[source]]
+id = "SRC-SOLO-AMDA-MAG"
+path_glob = "data/external/solo/solo_*_amda_mag_density.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=solo-mag-8s"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_solo.py --source amda"
+blocker_note = "PARTIAL: Solar Orbiter MAG LL 8-second cadence in RTN. Aggregated to hourly medians. No SWA proton plasma moments available in AMDA as of 2026-03."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-SOLO-AMDA-RPW-DENSITY"
+path_glob = "data/external/solo/solo_*_amda_mag_density.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=solo-rpw-density10s"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_solo.py --source amda"
+blocker_note = "PARTIAL: RPW electron density 10-second cadence used as quasi-neutrality proxy for proton density. Speed and temperature columns are NaN fill."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-SOLO-SOAR-ESA"
+path_glob = "data/external/solo/**"
+canonical_url = "https://soar.esac.esa.int/"
+mirror_urls = []
+access_class = "public"
+status = "reachable"
+retrieval_method = "Playwright browser automation (Vue.js search interface at soar.esac.esa.int/soar/)"
+blocker_note = "ESA Solar Orbiter Archive v1.23.0. REACHABLE from this host (Playwright-confirmed 2026-03-10). Corrected URL: esac not esoc. May have SWA-PAS proton data not yet in AMDA. Requires Playwright for data discovery and download URL extraction."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# =============================================================================
+# Pioneer 10/11 AMDA MAG-only lanes (no plasma in AMDA)
+# =============================================================================
+
+[[source]]
+id = "SRC-PIONEER10-AMDA-MAG-ONLY"
+path_glob = "data/external/pioneer/pioneer10/p10_*_amda_mag_only.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=p10-mag-full"
+mirror_urls = []
+access_class = "public"
+status = "planned"
+retrieval_method = "python3 bin/fetch_pioneer.py --spacecraft p10 --source amda"
+blocker_note = "AMDA provides Pioneer 10 MAG-only hourly data (p10-mag-full, RTN, 1972-1995). NO plasma parameters available via AMDA for Pioneer. Output OmniRecord has valid B-field but NaN for density/speed/temperature."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PIONEER11-AMDA-MAG-ONLY"
+path_glob = "data/external/pioneer/pioneer11/p11_*_amda_mag_only.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=p11-mag-full"
+mirror_urls = []
+access_class = "public"
+status = "planned"
+retrieval_method = "python3 bin/fetch_pioneer.py --spacecraft p11 --source amda"
+blocker_note = "AMDA provides Pioneer 11 MAG-only hourly data (p11-mag-full, RTN, 1973-1992). NO plasma parameters available via AMDA for Pioneer. Output OmniRecord has valid B-field but NaN for density/speed/temperature."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-NH-SINGLE-SOURCE-FRAGILE"
+path_glob = "data/external/new_horizons/**"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/new_horizons/"
+mirror_urls = []
+access_class = "public"
+status = "blocked"
+retrieval_method = "python3 bin/fetch_new_horizons.py"
+blocker_note = "New Horizons is the ONLY spacecraft in the pipeline with NO alternate data provider. AMDA catalog (1065 datasets, queried 2026-03-10) contains ZERO NH entries. SPDF is connection-refused from this host. NH carries SWAP plasma but NO magnetometer, so only partial plasma data exists. PDS-SBN (Small Bodies Node) is a potential but unverified alternative. Single-source-fragile: total data loss if SPDF remains blocked."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-WIND-AMDA-DERIVED"
+path_glob = "data/external/wind/wind_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_wind.py --source amda"
+blocker_note = "SWE KP (plasma) + MFI KP (MAG GSE) via AMDA HAPI. Wind at L1: position hardcoded at r=1.0 AU, lat=0.0 deg. Output is 13-col merged format in data/external/wind/ (separate from split wind_swe/ and wind_mfi/ used by SPDF lane). B-field in GSE. Verified 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-JUNO-AMDA-CRUISE-DERIVED"
+path_glob = "data/external/juno/juno_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_juno.py --source amda"
+blocker_note = "JADE-L5 proton moments + FGM 1-min MAG + cruise ephemeris via AMDA HAPI. Cruise phase 2011-2016 only (1-5 AU). SE coordinate system for B-field. Verified 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-ULYSSES-AMDA-DERIVED"
+path_glob = "data/external/ulysses/uly_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_ulysses.py --source amda"
+blocker_note = "Full plasma+MAG via ulys-bai-mom (SWOOPS proton moments) + ulys-fgm-rtn (VHM/FGM RTN) + ulys-orb-all (orbit). Coverage 1990-2009. 13-column SPDF-style output matching ULYSSES_LAYOUT. Only spacecraft with polar solar wind measurements (-80 to +80 deg latitude). Verified 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# =============================================================================
+# Mission metadata (blocked/planned, registered for completeness)
+# =============================================================================
+
+[[source]]
+id = "SRC-IMAP-PLANNED"
+path_glob = "data/external/imap/**"
+canonical_url = "https://imap.princeton.edu/"
+mirror_urls = []
+access_class = "public"
+status = "planned"
+retrieval_method = "N/A (merged hourly products not yet published)"
+blocker_note = "IMAP (Interstellar Mapping and Acceleration Probe) launched Sept 2025. L1 heliosphere boundary mapping. Merged hourly products not yet available."
+evidence_refs = []
+scientific_validator_refs = []
+
+# =============================================================================
+# Phase I Extended: Playwright-Discovered Non-GSFC Data Sources (2026-03-10)
+# =============================================================================
+
+# --- GSFC Migration Context ---
+# All GSFC endpoints (SPDF, CDAWeb, COHOWeb, OMNIWeb) are offline for server
+# migration starting ~2026-03-09. ERR_CONNECTION_REFUSED is TEMPORARY, not a
+# permanent block. Endpoints will resume after migration completes. All AMDA
+# and non-GSFC lanes remain operational as fallbacks during the outage.
+
+# --- MIT Voyager Plasma (FTP, non-GSFC) ---
+
+[[source]]
+id = "SRC-VOYAGER-MIT-PLS-FTP"
+path_glob = "data/external/voyager/voyager*/mit_pls/**"
+canonical_url = "ftp://space.mit.edu/pub/plasma/vgr/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "curl/lftp FTP download (no auth, anonymous FTP)"
+blocker_note = "MIT Space Plasma Group (John Richardson). Voyager PLS key parameters: V1 1977-1980, V2 1977-2018+ (including heliosheath). Fine-res (~192s): speed, density, thermal_speed, VR/VT/VN (RTN) with 1-sigma errors. Hourly and daily averages also available. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# --- Berkeley PSP FIELDS (HTTP, non-GSFC) ---
+
+[[source]]
+id = "SRC-PSP-BERKELEY-FIELDS-MAG"
+path_glob = "data/external/psp/berkeley_fields/**"
+canonical_url = "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/"
+mirror_urls = ["http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN/"]
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP directory listing + CDF download (no auth)"
+blocker_note = "UC Berkeley SSL FIELDS instrument team public archive. PSP MAG L2 RTN 1-min and full cadence. 2018-2026. CDF format. No authentication required. Confirmed reachable 2026-03-10. SWEAP/SPC data at same server requires auth (HTTP 401)."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# --- ESA SOAR SWA-PAS Proton Moments (TAP API, non-GSFC) ---
+
+[[source]]
+id = "SRC-SOLO-SOAR-SWA-PAS-GRND-MOM"
+path_glob = "data/external/solo/soar_swa_pas/**"
+canonical_url = "https://soar.esac.esa.int/soar-sl-tap/tap/sync"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "SOAR TAP API + CDF download (no auth, no registration for <50 GB)"
+blocker_note = "ESA SOAR SWA-PAS L2 ground-computed proton moments (density, velocity RTN, temperature). 1624 daily CDF files, 2020-07 to 2025-11. Download URL pattern: https://soar.esac.esa.int/soar-sl-tap/data?product_type=SCIENCE&RETRIEVAL_TYPE=PRODUCT&data_item_id=solo_L2_swa-pas-grnd-mom_YYYYMMDD. FILLS Solar Orbiter partial lane gap. Confirmed 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# --- PDS-PPI Voyager MAG+PLS Hourly (UCLA, non-GSFC) ---
+
+[[source]]
+id = "SRC-VOYAGER1-PDS-PPI-MAG-HOURLY"
+path_glob = "data/external/voyager/voyager1/pds_ppi_mag/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-SW-MAG-4-SUMM-HGCOORDS-1HR-V1.0/DATA/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP directory listing + .TAB download from UCLA PDS-PPI"
+blocker_note = "PDS-PPI at UCLA. VG1 solar wind MAG hourly averages, HG coords. Two .TAB files: VG1MAG_1HR_1977_1989.TAB and VG1MAG_1HR_1990_2004.TAB. Separate from PLS (must be merged by user). Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-VOYAGER1-PDS-PPI-PLS-HOURLY"
+path_glob = "data/external/voyager/voyager1/pds_ppi_pls/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-SS-PLS-4-SUMM-1HR-AVG-V1.0/DATA/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP directory listing + .TAB download from UCLA PDS-PPI"
+blocker_note = "PDS-PPI at UCLA. VG1 solar system PLS hourly averages 1977-1980. Separate from MAG (must be merged by user). Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# --- PDS-PPI Pioneer Plasma Hourly (UCLA, non-GSFC) ---
+
+[[source]]
+id = "SRC-PIONEER10-PDS-PPI-PLASMA-HOURLY"
+path_glob = "data/external/pioneer/pioneer10/pds_ppi_plasma/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/p10-pa/data-avg-1hr/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP directory listing + .TAB download from UCLA PDS-PPI"
+blocker_note = "PDS-PPI at UCLA. Pioneer 10 PA (plasma analyzer) hourly averages. .TAB format. UPGRADES Pioneer from WEAK (MAG-only via AMDA) to having a PLASMA lane. Must be merged with AMDA MAG. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# --- GSFC Migration Notice ---
+
+[[source]]
+id = "SRC-GSFC-MIGRATION-2026-03"
+path_glob = "data/external/.gsfc_migration_notice"
+canonical_url = "https://helio.data.nasa.gov/"
+mirror_urls = []
+access_class = "public"
+status = "blocked"
+retrieval_method = "N/A (temporary outage)"
+blocker_note = "ALL GSFC endpoints (SPDF, CDAWeb, COHOWeb, OMNIWeb, NSSDC) offline for server migration starting ~2026-03-09. ERR_CONNECTION_REFUSED on ports 21, 22, 443, 990 confirmed via Playwright + curl + lftp 2026-03-10. Expected to resume after migration. HelioData portal banner: 'services will be offline in March while primary servers are moved.' This is a TEMPORARY outage, not a permanent block."
+evidence_refs = []
+scientific_validator_refs = []
+
+# --- University mirrors (supplementary instrument data) ---
+
+[[source]]
+id = "SRC-VOYAGER-UMD-LECP"
+path_glob = "data/external/voyager/lecp/**"
+canonical_url = "https://voyager-mac.umd.edu/"
+mirror_urls = ["https://voyager.ftecs.com/"]
+access_class = "public"
+status = "active"
+retrieval_method = "wget HTTP download (vmaster_26day.txt.gz, vmaster_52day.txt.gz, vmaster_year.txt.gz)"
+blocker_note = "University of Maryland LECP master databases. Voyager 1+2 energetic particle data at 26-day, 52-day, and annual resolution. Supplementary -- not core plasma/MAG. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-VOYAGER-IOWA-PWS"
+path_glob = "data/external/voyager/pws/**"
+canonical_url = "https://space.physics.uiowa.edu/plasma-wave/voyager/home.html"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget HTTP download from Iowa PWS data directory"
+blocker_note = "University of Iowa Plasma Wave Subsystem data. Voyager 1+2 PWS spectra and electron density. VLISM electron density 2012-2025 available via PDS-PPI. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+# --- PDS-PPI UCLA Pioneer MERGED hourly (MAG+plasma+CRS, non-GSFC) ---
+
+[[source]]
+id = "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY"
+path_glob = "data/external/pioneer/pioneer10/pds_ppi_merged/p10_*.TAB"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/"
+mirror_urls = [
+  "https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/pioneer10/merged/coho1hr_magplasma_cdaweb/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+blocker_note = "PDS-PPI at UCLA. Pioneer 10 MERGED hourly (HVM+PA+CRT calibrated). 17 columns: year, DOY, hour, r_AU, lat, lon, BR, BT, BN, |B|, speed, flow_elev, flow_azim, density, temp, CRS proton fluxes (3 channels). PDS3 .TAB fixed-width ASCII. Fill: B=999.9999, speed=9999.9, density=999.9999, temp=9999999. HDRL S3 bucket has CDF mirror. This is the FULL merged product equivalent to blocked SPDF source. UPGRADES Pioneer 10 from WEAK to GOOD. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY"
+path_glob = "data/external/pioneer/pioneer11/pds_ppi_merged/p11_*.TAB"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/"
+mirror_urls = [
+  "https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/pioneer11/merged/coho1hr_magplasma_cdaweb/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+blocker_note = "PDS-PPI at UCLA. Pioneer 11 MERGED hourly (HVM+PA+CRT calibrated). Same 17-column format as Pioneer 10 merged. PDS3 .TAB fixed-width ASCII. HDRL S3 bucket has CDF mirror. UPGRADES Pioneer 11 from WEAK to GOOD. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+[[source]]
+id = "SRC-HDRL-S3-PIONEER-CDF-MIRROR"
+path_glob = "data/external/pioneer/hdrl_s3/**"
+canonical_url = "https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "aws s3 ls/cp or curl direct download of CDF files from HDRL S3 bucket (no auth required)"
+blocker_note = "NASA HDRL (Heliophysics Data Resource Library) S3 bucket. CDF mirror of CDAWeb Pioneer merged hourly data. pioneer10/merged/coho1hr_magplasma_cdaweb/ and pioneer11/merged/coho1hr_magplasma_cdaweb/. Annual CDF files. Alternative to PDS-PPI .TAB format. Confirmed via helio.data.nasa.gov Playwright probe 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+
+# --- NAIF/SPICE spacecraft ephemeris kernels (JPL, non-GSFC) ---
+
+[[source]]
+id = "SRC-NAIF-PIONEER10-SPICE-BSP"
+path_glob = "data/external/pioneer/spice/p10-a.bsp"
+canonical_url = "https://naif.jpl.nasa.gov/pub/naif/PIONEER10/kernels/spk/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl direct download of p10-a.bsp from NAIF/JPL"
+blocker_note = "JPL NAIF SPICE kernel for Pioneer 10 heliocentric ephemeris (1972-1995). DE-118 reference frame. Use spiceypy to extract (r_AU, lat, lon) at hourly timestamps. Solves position-column problem for PDS-PPI merged data. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-NAIF-PIONEER11-SPICE-BSP"
+path_glob = "data/external/pioneer/spice/p11-a.bsp"
+canonical_url = "https://naif.jpl.nasa.gov/pub/naif/PIONEER11/kernels/spk/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl direct download of p11-a.bsp from NAIF/JPL"
+blocker_note = "JPL NAIF SPICE kernel for Pioneer 11 heliocentric ephemeris (1973-1990). DE-118 reference frame. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-NAIF-VOYAGER1-SPICE-BSP"
+path_glob = "data/external/voyager/spice/Voyager_1.a54206u_V0.2_merged.bsp"
+canonical_url = "https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl direct download of Voyager_1.a54206u_V0.2_merged.bsp from NAIF/JPL"
+blocker_note = "JPL NAIF SPICE kernel for Voyager 1 heliocentric ephemeris (1977-2031). J2000 reference frame. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-NAIF-VOYAGER2-SPICE-BSP"
+path_glob = "data/external/voyager/spice/Voyager_2.m05016u.merged.bsp"
+canonical_url = "https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl direct download of Voyager_2.m05016u.merged.bsp from NAIF/JPL"
+blocker_note = "JPL NAIF SPICE kernel for Voyager 2 heliocentric ephemeris (1977-2031). J2000 reference frame. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+# --- SOHO CELIAS/MTOF PM solar wind (University of Maryland, non-GSFC) ---
+
+[[source]]
+id = "SRC-SOHO-CELIAS-MTOF-PM-UMD"
+path_glob = "data/external/soho/celias_pm/**"
+canonical_url = "https://space.umd.edu/pm/"
+mirror_urls = ["https://l1.umd.edu/"]
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP download of ASCII data files from UMD PM site"
+blocker_note = "University of Maryland CELIAS/MTOF Proton Monitor. L1 solar wind proton density, speed, thermal speed at 30s and 5-min cadence. Independent of GSFC. Continuous L1 coverage complementing ACE/Wind. Confirmed reachable 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+# --- Euclid Quick Release 1 supplementary catalogs (Zenodo) ---
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY"
+path_glob = "data/external/euclid/zenodo/15106473/*.parquet"
+canonical_url = "https://zenodo.org/records/15106473"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_euclid_zenodo.py --catalog morphology"
+blocker_note = "Euclid Q1 Visual Morphology Classification Catalogue. DOI: 10.5281/zenodo.15106473. CC BY 4.0. morphology_catalogue.parquet (97.3 MB) + useful_physical_measurements.parquet (67.7 MB). Galaxy visual morphology (Hubble type, bulge/disk/irregular, bar, merger flags) for Q1 survey fields. Fetched and MD5-verified 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-STRONG-LENSING"
+path_glob = "data/external/euclid/zenodo/15025832/*.csv"
+canonical_url = "https://zenodo.org/records/15025832"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_euclid_zenodo.py --catalog strong_lensing"
+blocker_note = "Euclid Q1 Strong Lensing Discovery Engine Candidates. DOI: 10.5281/zenodo.15025832. CC BY 4.0. q1_discovery_engine_lens_catalog.csv (422 KB). Strong gravitational lens candidates from Q1 survey. Fetched and MD5-verified 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-MERGERS"
+path_glob = "data/external/euclid/zenodo/17087034/*.csv"
+canonical_url = "https://zenodo.org/records/17087034"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_euclid_zenodo.py --catalog mergers"
+blocker_note = "Euclid Q1 Galaxy Merger Classification. DOI: 10.5281/zenodo.17087034. CC BY 4.0. Q1_merger_classification.csv (39.7 MB). Galaxy merger probability classifications from Q1 survey. Fetched and MD5-verified 2026-03-10."
+evidence_refs = []
+scientific_validator_refs = []
+
+# --- Euclid Q1 primary survey catalogs (TAP/ADQL, multi-TB) ---
+
+[[source]]
+id = "SRC-EUCLID-Q1-ESA-TAP"
+path_glob = "data/external/euclid/tap/**"
+canonical_url = "https://eas.esac.esa.int/sas/"
+mirror_urls = [
+  "https://irsa.ipac.caltech.edu/Euclid/",
+  "s3://nasa-irsa-euclid-q1",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_euclid.py (ADQL client, TAP protocol)"
+blocker_note = "Euclid Q1 primary survey catalogs via TAP/ADQL. 21 catalog tables totaling 637M rows across MER (photometry/morphology, 30M objects), PHZ (photo-z, 7 tables, 29.6M objects), SPE (spectroscopy, 11 tables, 29.2M spec-z). SHE (shear) absent from Q1. ESA SAS (primary), IRSA (US mirror, TAP + Gator + IBE bulk), AWS S3 (no-auth, us-east-1). ~35 TB total (imaging+catalogs), 63.1 sq deg across 4 fields (EDF-N/S/Fornax, LDN1641). CC BY-NC 3.0 IGO. Catalog registry at data/external/euclid_q1_catalogs.toml. fetch_euclid.py NOT YET IMPLEMENTED -- see registry/todo.toml."
+evidence_refs = []
+scientific_validator_refs = []
+
+# --- Governed anomaly benchmark artifacts ---
+
+[[source]]
+id = "SRC-FLYBY-ANOMALY-ANDERSON-2008-BENCHMARK"
+path_glob = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv"
+canonical_url = "https://arxiv.org/abs/0712.1053"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "Repo-governed benchmark CSV transcribed from Anderson et al. 2008 with bibliography and DOI linkage"
+blocker_note = "Governed flyby anomaly benchmark table for the six canonical Earth flybys. Observation artifact only; not a raw telemetry dump. Used by flyby-residual-audit as the source-of-truth observation table."
+evidence_refs = ["docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"]
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-PIONEER-ANOMALY-ANDERSON-2002-BENCHMARK"
+path_glob = "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"
+canonical_url = "https://arxiv.org/abs/gr-qc/0104064"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "Repo-governed benchmark CSV transcribed from Anderson et al. 2002 with interval bounds and benchmark metadata"
+blocker_note = "Governed Pioneer anomaly benchmark rows for batch-1 fitting. This is a published benchmark table, not a time-resolved Doppler residual series. Used by pioneer-residual-audit and fractal-metric-fit."
+evidence_refs = ["docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"]
+scientific_validator_refs = []

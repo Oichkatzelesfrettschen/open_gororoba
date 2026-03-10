@@ -15257,11 +15257,11 @@ dependencies = ["C-945", "C-1010"]
 
 [[claim]]
 id = "C-1080"
-statement = "A scale-invariant fractal spacetime metric with Df ~ 2.7 provides a unified explanation for both the Pioneer and Flyby anomalies as non-Euclidean scaling effects."
+statement = "A scale-invariant fractal spacetime metric with Df ~ 2.7 provides a unified analytic explanation for the signs of both the Pioneer and Flyby anomalies, subject to explicit verification against governed observational benchmark artifacts."
 where_stated = "crates/gr_core/src/fractal_metric.rs"
 status = "Pending"
 last_verified = "2026-03-06"
-what_would_verify_refute = "VERIFY: Fractal metric integration replicates observed anomalous accelerations for both Galileo and Pioneer 10/11. REFUTE: Different Df values are required for each anomaly, or scaling produces unphysical orbital drift."
+what_would_verify_refute = "VERIFY: Governed flyby and Pioneer benchmark artifacts plus the fractal-metric fit harness show one parameter regime matching sign and magnitude without chronology/provenance violations. REFUTE: The bridge artifacts show incompatible sign or magnitude behavior across Pioneer and flyby data, or require mutually inconsistent parameter regimes."
 confidence = "medium"
 phase = "physics"
 sprint = 78
@@ -16185,3 +16185,375 @@ confidence = "high"
 phase = "fluids"
 sprint = 77
 dependencies = []
+
+[[claim]]
+id = "C-1177"
+statement = "Bartol Research Institute FTP archive serves Voyager 2 hourly merged data in legacy NSSDC/COHO 16-column RTN format (1977-1997). The BARTOL_V2_LAYOUT in voyager.rs correctly parses this format including 2-digit year correction, 16-column RTN B-field, and F9.5 density fill detection."
+where_stated = "crates/data_core/src/catalogs/voyager.rs (BARTOL_V2_LAYOUT, parse_bartol_v2), bin/fetch_voyager.py (fetch_voyager_bartol)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: cargo test -p data_core -- bartol (7 tests pass). REFUTE if Bartol B-field values differ from AMDA-derived records for the same hours by more than 10%."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1178"
+statement = "AMDA HAPI provides Pioneer 10/11 MAG-only hourly data (RTN) without plasma parameters. Coverage: P10 1972-1995 (p10-mag-full), P11 1973-1992 (p11-mag-full). No proton density, speed, or temperature data exists for Pioneer in AMDA."
+where_stated = "bin/fetch_pioneer.py (fetch_pioneer_amda_mag, AMDA_PIONEER_DATASETS), data/external/SOURCES.toml (SRC-PIONEER10-AMDA-MAG-ONLY, SRC-PIONEER11-AMDA-MAG-ONLY)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: query AMDA info endpoint for p10-mag-full and p11-mag-full, confirm dataset bounds. Fetch one year and verify B-field values are physically reasonable (0.1-10 nT at 5-50 AU). REFUTE if plasma parameters are found in AMDA Pioneer datasets."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1179"
+statement = "AMDA HAPI provides PSP SPC moments + MAG 1-min + orbit data, enabling full inner heliosphere (0.05-1.0 AU) merged hourly products without GSFC dependency. The PSP_LAYOUT in psp.rs correctly parses the AMDA-derived 13-column output."
+where_stated = "crates/data_core/src/catalogs/psp.rs (PSP_LAYOUT, parse_psp_merged), bin/fetch_psp.py (fetch_psp_amda)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: cargo test -p data_core -- psp (4 tests pass). python3 bin/fetch_psp.py --source amda --start 2022 --end 2022 fetches data. REFUTE if PSP B-field magnitudes at 0.1 AU are outside [10, 500] nT."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1180"
+statement = "AMDA HAPI provides Helios 1/2 proton corefit + MAG data, enabling inner heliosphere (0.29-0.98 AU) merged hourly products for the historical 1974-1985 period. The HELIOS1_LAYOUT and HELIOS2_LAYOUT in helios.rs correctly parse the AMDA-derived 13-column output."
+where_stated = "crates/data_core/src/catalogs/helios.rs (HELIOS1_LAYOUT, HELIOS2_LAYOUT), bin/fetch_helios.py (fetch_helios_amda)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: cargo test -p data_core -- helios (6 tests pass). REFUTE if Helios distance values outside [0.28, 1.0] AU."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1181"
+statement = "Multi-provider fallback chain for Voyager 2 (SPDF -> Bartol -> AMDA) provides data continuity when the primary GSFC source is unreachable. The Python fetcher auto mode attempts SPDF first, falls back to Bartol for V2 1977-1997 years, then AMDA if both fail."
+where_stated = "bin/fetch_voyager.py (fetch_voyager, auto fallback chain), crates/data_core/src/catalogs/voyager.rs (VoyagerProvider::fetch Bartol fallback)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: python3 bin/fetch_voyager.py --spacecraft v2 --start 1990 --end 1990 with SPDF blocked triggers Bartol fallback. Cargo test bartol_url_construction passes. REFUTE if auto mode skips Bartol and goes directly to AMDA for V2 1977-1997."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = ["C-1177"]
+
+[[claim]]
+id = "C-1182"
+statement = "Solar Orbiter AMDA lane provides MAG + RPW electron density only (PARTIAL). SWA proton plasma moments (speed, temperature, proton density) are NOT available in AMDA as of 2026-03. RPW electron density used as quasi-neutrality proxy for proton density."
+where_stated = "bin/fetch_solo.py (BLOCKER_NOTE, fetch_solo_amda), data/external/SOURCES.toml (SRC-SOLO-AMDA-MAG, SRC-SOLO-AMDA-RPW-DENSITY)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: query AMDA info for solo-mag-8s and solo-rpw-density10s, confirm no SWA proton dataset IDs. REFUTE if SWA-PAS proton moments appear in AMDA catalog."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1183"
+statement = "New Horizons SWAP data has no known alternate provider besides SPDF. AMDA catalog (1065 datasets, queried 2026-03-10) contains zero NH entries. NH carries SWAP plasma but no magnetometer. PDS-SBN is a potential but unverified alternative source."
+where_stated = "data/external/SOURCES.toml (SRC-NH-SINGLE-SOURCE-FRAGILE)"
+status = "Pending"
+last_verified = ""
+what_would_verify_refute = "VERIFY: query AMDA HAPI catalog for 'new-horizons' or 'nh-' prefix, confirm zero results. Check PDS-SBN for NH SWAP ASCII products. REFUTE if any non-SPDF source provides NH SWAP hourly data."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1184"
+statement = "AMDA HAPI provides Ulysses full plasma+MAG data via ulys-bai-mom (SWOOPS proton moments) + ulys-fgm-rtn (VHM/FGM RTN) + ulys-orb-all (orbit). Coverage 1990-2009. Output matches ULYSSES_LAYOUT 13-column RTN format."
+where_stated = "bin/fetch_ulysses.py (fetch_ulysses_amda), data/external/SOURCES.toml (SRC-ULYSSES-AMDA-DERIVED)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: python3 bin/fetch_ulysses.py --source amda --start 1994 --end 1995 produces uly_*_amda_merged_hourly.asc with 13 columns. REFUTE if AMDA ulys-bai-mom lacks density/speed/temperature fields."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1185"
+statement = "AMDA HAPI provides Juno cruise phase plasma+MAG via juno-jadel5-protmom (JADE-L5 proton moments) + juno-fgm-cruise60 (FGM 1-min MAG) + juno-cruise-all (ephemeris). Coverage 2011-2016 cruise only. SE coordinate system for B-field."
+where_stated = "bin/fetch_juno.py (fetch_juno_amda), data/external/SOURCES.toml (SRC-JUNO-AMDA-CRUISE-DERIVED)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: python3 bin/fetch_juno.py --source amda --start 2013 --end 2015 produces juno_*_amda_merged_hourly.asc. REFUTE if AMDA juno-jadel5-protmom lacks proton moments for cruise phase."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1186"
+statement = "AMDA HAPI provides Wind SWE+MFI merged data via wnd-swe-kp (plasma) + wnd-mfi-kp (MAG GSE). Wind at L1 with position hardcoded at r=1.0 AU, lat=0.0 deg. AMDA output is 13-col merged format in data/external/wind/ separate from SPDF split lanes."
+where_stated = "bin/fetch_wind.py (fetch_wind_amda), data/external/SOURCES.toml (SRC-WIND-AMDA-DERIVED)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: python3 bin/fetch_wind.py --source amda --start 2024 --end 2024 produces wind_*_amda_merged_hourly.asc. Compare AMDA-derived B-field with OMNI2 for same period. REFUTE if AMDA wnd-mfi-kp returns empty data."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1187"
+statement = "All four GSFC endpoints (SPDF, CDAWeb, COHOWeb, OMNIWeb) return ERR_CONNECTION_REFUSED at the TCP level from this host, confirmed via Playwright Chromium browser probe 2026-03-10. This is a firewall or server-side block, not a DNS, TLS, or browser-specific issue."
+where_stated = "data/external/SOURCES.toml (blocker_notes on SRC-PSP-SPDF-BLOCKED, SRC-HELIOS-SPDF-BLOCKED, SRC-PIONEER10-1979-MERGED-HOURLY, SRC-PIONEER11-1979-MERGED-HOURLY)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: Playwright navigate to spdf.gsfc.nasa.gov, cdaweb.gsfc.nasa.gov, omniweb.gsfc.nasa.gov returns ERR_CONNECTION_REFUSED. REFUTE if any GSFC endpoint loads content in browser."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1188"
+statement = "PSP Science Gateway at JHU/APL (sppgway.jhuapl.edu -> psp-gateway.jhuapl.edu redirect) is browser-accessible from this host. Data releases through Orbit 25 (2026-03-02) with FIELDS, ISOIS, WISPR, SWEAP instrument links. Vue.js SPA requiring Playwright for data download URL extraction."
+where_stated = "data/external/SOURCES.toml (SRC-PSP-GATEWAY-JHUAPL)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: Playwright navigate to sppgway.jhuapl.edu loads PSP Gateway portal with instrument data links. REFUTE if site returns connection error or no data links visible."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1189"
+statement = "ESA Solar Orbiter Archive (SOAR) is at soar.esac.esa.int (NOT esoc). Version 1.23.0 confirmed reachable via Playwright 2026-03-10. Provides search interface for SWA, MAG, RPW, and other Solo instrument data."
+where_stated = "data/external/SOURCES.toml (SRC-SOLO-SOAR-ESA)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: Playwright navigate to soar.esac.esa.int loads SOAR archive interface. REFUTE if soar.esac.esa.int returns DNS or connection error."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1190"
+statement = "GSFC SPDF/CDAWeb/COHOWeb outage starting 2026-03-09 is a TEMPORARY server migration, not a permanent block. HelioData portal banner confirms: 'services will be offline in March while primary servers are moved.' All GSFC endpoints will resume after migration. ERR_CONNECTION_REFUSED confirmed on ports 21 (FTP), 22 (SFTP), 443 (HTTPS), 990 (FTPS) via Playwright + curl + lftp 2026-03-10."
+where_stated = "data/external/SOURCES.toml (SRC-GSFC-MIGRATION-2026-03), helio.data.nasa.gov banner"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: Check helio.data.nasa.gov for migration status banner. REFUTE if GSFC endpoints resume service and confirm permanent access policy change."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1191"
+statement = "MIT Space Plasma Group FTP server (space.mit.edu) provides Voyager PLS fine-resolution key parameters: V1 (1977-1980, 4 annual files), V2 (1977-2018+ including heliosheath, 40+ files). Columns: year, DOY, hour, speed, density, thermal_speed, VR, VT, VN (RTN). Sub-minute cadence (~192s). Independent non-GSFC source. Anonymous FTP, no auth."
+where_stated = "ftp://space.mit.edu/pub/plasma/vgr/ (README + data files), data/external/SOURCES.toml (SRC-VOYAGER-MIT-PLS-FTP)"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl --list-only ftp://space.mit.edu/pub/plasma/vgr/v2/key/ returns 40+ files. Fetch v2_keys_2007.241-now and verify RTN velocity components. REFUTE if MIT FTP becomes unreachable or files removed."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1192"
+statement = "UC Berkeley SSL serves PSP FIELDS MAG L2 RTN data publicly at research.ssl.berkeley.edu without authentication. Full cadence (6-hr CDF files) and 1-minute averages (daily CDF files). Coverage 2018-2026. URL pattern: http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/{YYYY}/{MM}/psp_fld_l2_mag_RTN_1min_{YYYYMMDD}_v{VV}.cdf. SWEAP/SPC at same server requires auth (HTTP 401)."
+where_stated = "data/external/SOURCES.toml (SRC-PSP-BERKELEY-FIELDS-MAG), PSP Gateway Playwright probe"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl -sI http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/2024/01/ returns HTTP 200 with directory listing. REFUTE if Berkeley requires authentication for FIELDS data."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1193"
+statement = "ESA SOAR SWA-PAS L2 ground-computed proton moments (swa-pas-grnd-mom) are freely downloadable: 1624 daily CDF files, 2020-07 to 2025-11. Contains proton density, velocity (RTN), temperature. TAP API at soar.esac.esa.int/soar-sl-tap/tap/sync. No authentication required for sync downloads <50 GB. This FILLS the Solar Orbiter partial lane gap."
+where_stated = "data/external/SOURCES.toml (SRC-SOLO-SOAR-SWA-PAS-GRND-MOM), ESA SOAR Playwright deep-discovery probe"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl download of https://soar.esac.esa.int/soar-sl-tap/data?product_type=SCIENCE&RETRIEVAL_TYPE=PRODUCT&data_item_id=solo_L2_swa-pas-grnd-mom_20240101 returns CDF file (~5 MB). REFUTE if SWA-PAS data requires ESA registration or is embargo-restricted."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1194"
+statement = "PDS-PPI at UCLA (pds-ppi.igpp.ucla.edu) hosts 289 Voyager data collections (103 VG1, 186 VG2) including VG1 MAG hourly (VG1-SW-MAG-4-SUMM-HGCOORDS-1HR-V1.0), VG1 PLS hourly (VG1-SS-PLS-4-SUMM-1HR-AVG-V1.0), and Pioneer 10 plasma hourly (p10-pa/data-avg-1hr). All served from UCLA, NOT GSFC. PDS3 .TAB format. Confirmed reachable 2026-03-10."
+where_stated = "data/external/SOURCES.toml (SRC-VOYAGER1-PDS-PPI-MAG-HOURLY, SRC-VOYAGER1-PDS-PPI-PLS-HOURLY, SRC-PIONEER10-PDS-PPI-PLASMA-HOURLY), PSI arcnav + PDS-PPI Playwright probes"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl -sI https://pds-ppi.igpp.ucla.edu/data/VG1-SW-MAG-4-SUMM-HGCOORDS-1HR-V1.0/DATA/ returns HTTP 200 with directory listing. REFUTE if PDS-PPI redirects to GSFC for Voyager data."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1195"
+statement = "Pioneer 10 MERGED hourly data (MAG+plasma+CRS) available at PDS-PPI UCLA (p10-hvm-pa-crt-cal/data-merged-1hour), providing full merged product equivalent to blocked SPDF source. 17 columns: year, DOY, hour, r_AU, lat, lon, BR, BT, BN, |B|, speed, flow_elev, flow_azim, density, temp, CRS fluxes (3 channels). Annual .TAB files 1972-1995. HDRL S3 bucket has CDF mirror. UPGRADES Pioneer 10 from WEAK to GOOD."
+where_stated = "data/external/SOURCES.toml (SRC-PIONEER10-PDS-PPI-MERGED-HOURLY), helio.data.nasa.gov Playwright deep-discovery probe"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl -sI https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/ returns HTTP 200. Download p10_1979.TAB and verify 17 whitespace-delimited columns with density, speed, temperature. REFUTE if merged directory empty or redirects to GSFC."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1196"
+statement = "Pioneer 11 MERGED hourly data (MAG+plasma+CRS) available at PDS-PPI UCLA (p11-hvm-pa-crt-cal/data-merged-1hour), same 17-column format as Pioneer 10. Annual .TAB files 1973-1994. HDRL S3 bucket has CDF mirror. UPGRADES Pioneer 11 from WEAK to GOOD."
+where_stated = "data/external/SOURCES.toml (SRC-PIONEER11-PDS-PPI-MERGED-HOURLY), helio.data.nasa.gov Playwright deep-discovery probe"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl -sI https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/ returns HTTP 200. Download p11_1975.TAB and verify 17 columns. REFUTE if p11 merged directory absent."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1197"
+statement = "NASA HDRL S3 bucket (gov-nasa-hdrl-data1.s3.amazonaws.com) mirrors CDAWeb Pioneer merged hourly data as CDF files, providing a third independent source (alongside PDS-PPI .TAB and blocked SPDF). No AWS authentication required for read access. Pioneer 10 and 11 annual CDF files available under spdf/cdaweb/data/pioneer/."
+where_stated = "data/external/SOURCES.toml (SRC-HDRL-S3-PIONEER-CDF-MIRROR), helio.data.nasa.gov Playwright deep-discovery probe"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl -sI https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/pioneer10/merged/coho1hr_magplasma_cdaweb/ returns HTTP 200 XML listing. REFUTE if bucket requires auth or pioneer paths absent."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1198"
+statement = "JPL NAIF/SPICE kernels provide heliocentric ephemeris for Pioneer 10 (p10-a.bsp, 1972-1995), Pioneer 11 (p11-a.bsp, 1973-1990), Voyager 1 (Voyager_1.a54206u_V0.2_merged.bsp, 1977-2031), and Voyager 2 (Voyager_2.m05016u.merged.bsp, 1977-2031). Hosted at naif.jpl.nasa.gov, independent of GSFC. Solves the position-column problem for multi-source data merging by providing (r_AU, lat, lon) via spiceypy at any timestamp."
+where_stated = "data/external/SOURCES.toml (SRC-NAIF-PIONEER10-SPICE-BSP, SRC-NAIF-VOYAGER1-SPICE-BSP), NAIF/SPICE Playwright probe"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl -sI https://naif.jpl.nasa.gov/pub/naif/PIONEER10/kernels/spk/ returns HTTP 200 directory listing with p10-a.bsp. REFUTE if NAIF removes Pioneer/Voyager kernels."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1199"
+statement = "SOHO CELIAS/MTOF Proton Monitor data at University of Maryland (space.umd.edu/pm/, l1.umd.edu/) provides L1 solar wind proton density, speed, and thermal speed at 30s and 5-min cadence. Independent of GSFC. Complements ACE/Wind for L1 coverage continuity."
+where_stated = "data/external/SOURCES.toml (SRC-SOHO-CELIAS-MTOF-PM-UMD), NASCOM Playwright probe"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl -sI https://space.umd.edu/pm/ returns HTTP 200 with CELIAS/MTOF data links. REFUTE if UMD site goes offline or redirects to GSFC."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1200"
+statement = "ALL official NASA data discovery systems (catalog.data.gov CKAN, SPASE metadata, PDS Atmospheres NMSU) point exclusively to GSFC endpoints for Voyager and Pioneer merged hourly data. Zero non-GSFC providers are registered in formal metadata. The alternative sources found (PDS-PPI UCLA, AMDA, Bartol, NAIF/JPL, HDRL S3, Iowa PWS, UMD CELIAS) are undocumented in official NASA discovery infrastructure."
+where_stated = "Playwright probes of catalog.data.gov (4 URLs), SPASE metadata (3 URLs), PDS Atmospheres NMSU (2 URLs) -- all confirmed 2026-03-10"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: Query SPASE for Voyager merged hourly AccessURLs -- all point to spdf.gsfc.nasa.gov or cdaweb.gsfc.nasa.gov. REFUTE if SPASE adds PDS-PPI or AMDA AccessURL entries."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1201"
+statement = "Euclid Quick Release 1 (Q1) supplementary catalogs are freely available from Zenodo under CC BY 4.0: Visual Morphology (DOI 10.5281/zenodo.15106473, morphology_catalogue.parquet 97.3 MB), Strong Lensing (DOI 10.5281/zenodo.15025832, q1_discovery_engine_lens_catalog.csv 422 KB), Galaxy Mergers (DOI 10.5281/zenodo.17087034, Q1_merger_classification.csv 39.7 MB). All files downloaded and MD5-verified via Zenodo REST API."
+where_stated = "data/external/SOURCES.toml (SRC-EUCLID-Q1-ZENODO-*), data/external/euclid/zenodo/euclid_zenodo_manifest.json"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: python3 bin/fetch_euclid_zenodo.py --skip-existing returns 0 skipped with MD5 matches. REFUTE if Zenodo records are retracted or DOIs resolve to different content."
+confidence = "high"
+phase = "cosmology"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1202"
+statement = "Euclid Q1 primary survey catalogs (~35 TB, 26M detections) are accessible via TAP/ADQL from 3 independent providers: ESA SAS (eas.esac.esa.int/sas/), IRSA (irsa.ipac.caltech.edu/Euclid/), and AWS S3 (s3://nasa-irsa-euclid-q1, no auth required, us-east-1). 6 catalog types organized by Tile ID. License CC BY-NC 3.0 IGO. Requires ADQL client for targeted subset queries, not bulk download."
+where_stated = "data/external/SOURCES.toml (SRC-EUCLID-Q1-ESA-TAP), AWS S3 ListBucket XML response"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: aws s3 ls s3://nasa-irsa-euclid-q1/ --no-sign-request returns PRE MER_FINAL_CATALOG/. REFUTE if S3 bucket requires auth or catalogs are removed."
+confidence = "high"
+phase = "cosmology"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1203"
+statement = "Iowa PWS (University of Iowa Plasma Wave Subsystem) provides Voyager 1 and 2 plasma wave spectra and VLISM electron density as PDS4 CDF files, updated daily through 2026-03-10. File pattern: vg{1,2}pws_lr_YYYYMMDD_v5.30.cdf. Hosted at space.physics.uiowa.edu, independent of GSFC."
+where_stated = "data/external/SOURCES.toml (SRC-VOYAGER-IOWA-PWS), Iowa PWS Playwright probe"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: curl -sI https://space.physics.uiowa.edu/plasma-wave/voyager/data/ returns HTTP 200 directory. REFUTE if Iowa PWS site goes offline."
+confidence = "high"
+phase = "data_resilience"
+sprint = 78
+dependencies = []
+
+[[claim]]
+id = "C-1204"
+statement = "Governed external benchmark artifacts preserve the Anderson 2008 Earth-flyby anomaly event table and the Anderson 2002 Pioneer anomaly benchmark values with explicit source provenance under data/external."
+where_stated = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv, data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv, docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: staged CSV schemas parse offline and match the expected Anderson-derived values plus bibliography/source references. REFUTE: artifact rows drift from governed source values or lack provenance registration."
+confidence = "medium"
+phase = "claims_bridge"
+sprint = 78
+dependencies = ["C-1080", "C-1120"]
+
+[[claim]]
+id = "C-1205"
+statement = "A conventional heliosphere-environment context can be sampled at Pioneer anomaly benchmark intervals using governed plasma boundary providers and explicit provenance flags."
+where_stated = "crates/gororoba_cli_physics/src/heliosphere_boundary.rs, crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: pioneer-residual-audit emits benchmark-vs-environment rows with sampled r_AU, speed, density, and source labels for staged Pioneer annual data. REFUTE: chronology gaps or provider failures prevent reproducible epoch sampling."
+confidence = "medium"
+phase = "claims_bridge"
+sprint = 78
+dependencies = ["C-1204"]
+
+[[claim]]
+id = "C-1206"
+statement = "Governed observed-vs-modeled anomaly comparison artifacts can be generated for the Anderson flyby catalog and the staged Pioneer benchmark lane without chronology or provenance violations."
+where_stated = "crates/gororoba_cli_physics/src/bin/flyby_residual_audit.rs, crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: flyby-residual-audit and pioneer-residual-audit emit reproducible CSV artifacts from staged governed inputs. REFUTE: either binary requires ad hoc hardcoded observations or fails offline schema/provenance checks."
+confidence = "medium"
+phase = "claims_bridge"
+sprint = 78
+dependencies = ["C-1204", "C-1205"]
+
+[[claim]]
+id = "C-1207"
+statement = "The fractal-metric fit harness can evaluate plain and Q-tensor anomaly predictions against governed Pioneer and flyby benchmark artifacts and emit an explicit support-or-refute verdict."
+where_stated = "crates/gororoba_cli_physics/src/bin/fractal_metric_fit.rs, data/output/anomaly/fractal_metric/best_fit.json"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: fractal-metric-fit emits fit_grid.csv and best_fit.json with explicit verdicts for the plain and Q-tensor lanes. REFUTE: the harness cannot consume governed artifacts or fails to produce a deterministic verdict summary."
+confidence = "medium"
+phase = "claims_bridge"
+sprint = 78
+dependencies = ["C-1080", "C-1120", "C-1204", "C-1206"]

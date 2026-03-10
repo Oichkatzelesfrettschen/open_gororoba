@@ -33,6 +33,14 @@ name = "flyby-residual-audit"
 path = "src/bin/flyby_residual_audit.rs"
 
 [[bin]]
+name = "pioneer-residual-audit"
+path = "src/bin/pioneer_residual_audit.rs"
+
+[[bin]]
+name = "fractal-metric-fit"
+path = "src/bin/fractal_metric_fit.rs"
+
+[[bin]]
 name = "voudon-friedmann-sweep"
 path = "src/bin/voudon_friedmann_sweep.rs"
 

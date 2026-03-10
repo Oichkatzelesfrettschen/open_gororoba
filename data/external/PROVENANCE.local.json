@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-10T16:28:02.572Z",
+  "generated_at_utc": "2026-03-10T19:47:58.002Z",
   "root": "data/external",
   "hash_backend": "rust",
   "hashes": [
@@ -38,9 +38,9 @@
     },
     {
       "path": "PROVENANCE.local.json",
-      "size_bytes": 176720,
-      "mtime_utc": "2026-03-10T16:23:29.456Z",
-      "sha256": "a7dbaa4ac6aa84bf0d14e48dd65bdd89717e2f596d01b158f59ff3838f247cd7",
+      "size_bytes": 184937,
+      "mtime_utc": "2026-03-10T16:28:02.575Z",
+      "sha256": "8ad0b1f2e4b0a480228ebccc6c2c557e7a745312d991354f0bb502704bb6227b",
       "source_id": "SRC-EXTERNAL-FETCH-ROOT",
       "source_status": "active",
       "source_access_class": "public",
@@ -82,9 +82,9 @@
     },
     {
       "path": "SOURCES.toml",
-      "size_bytes": 54360,
-      "mtime_utc": "2026-03-10T16:26:11.698Z",
-      "sha256": "40058a3fb0cd6e8bacf28f319d3b33b279bf2a71269bdc3dde42bebf1830bb44",
+      "size_bytes": 85977,
+      "mtime_utc": "2026-03-10T19:44:23.142Z",
+      "sha256": "d0f022ae27614bd00bb379f8b06ebf0948fc76f8c0cecf5b6a62cc6db7238118",
       "source_id": "SRC-EXTERNAL-FETCH-ROOT",
       "source_status": "active",
       "source_access_class": "public",
@@ -1104,6 +1104,105 @@
       "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
     },
     {
+      "path": "euclid/tap/euclid_tap_manifest.json",
+      "size_bytes": 1124,
+      "mtime_utc": "2026-03-10T19:38:36.678Z",
+      "sha256": "b06794f77798dcc0101e77d3f61d476668b1a383bc71d0e733ee945b70772b16",
+      "source_id": "SRC-EUCLID-Q1-ESA-TAP",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://eas.esac.esa.int/sas/",
+      "source_retrieval_method": "python3 bin/fetch_euclid.py (ADQL client, TAP protocol)"
+    },
+    {
+      "path": "euclid/tap/mer/mer_cone_269.7300_66.0200_r0.0500.csv",
+      "size_bytes": 18748,
+      "mtime_utc": "2026-03-10T19:36:30.282Z",
+      "sha256": "c7a3f57f7f927bb4e8bc7f1a4a6cf2a0b26574ccd5499ede5e6e419f826612b6",
+      "source_id": "SRC-EUCLID-Q1-ESA-TAP",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://eas.esac.esa.int/sas/",
+      "source_retrieval_method": "python3 bin/fetch_euclid.py (ADQL client, TAP protocol)"
+    },
+    {
+      "path": "euclid/tap/phz/phz_cone_269.7300_66.0200_r0.0200.csv",
+      "size_bytes": 8323,
+      "mtime_utc": "2026-03-10T19:38:36.678Z",
+      "sha256": "523cd32b3dc29659e65f2520a0c42f45a542211740137dbfc075239c703e0a01",
+      "source_id": "SRC-EUCLID-Q1-ESA-TAP",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://eas.esac.esa.int/sas/",
+      "source_retrieval_method": "python3 bin/fetch_euclid.py (ADQL client, TAP protocol)"
+    },
+    {
+      "path": "euclid/zenodo/15025832/q1_discovery_engine_lens_catalog.csv",
+      "size_bytes": 422423,
+      "mtime_utc": "2026-03-10T19:14:20.173Z",
+      "sha256": "ee5e60cd507413eabf3da8ffa37a3c527212da00feb29083cf516a86d6f26877",
+      "source_id": "SRC-EUCLID-Q1-ZENODO-STRONG-LENSING",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://zenodo.org/records/15025832",
+      "source_retrieval_method": "python3 bin/fetch_euclid_zenodo.py --catalog strong_lensing"
+    },
+    {
+      "path": "euclid/zenodo/15106473/morphology_catalogue.parquet",
+      "size_bytes": 97299702,
+      "mtime_utc": "2026-03-10T19:14:11.603Z",
+      "sha256": "b325012a112df9d20d153934a8b6ceec085768261d5b334b6a9b61879b8b19c6",
+      "source_id": "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://zenodo.org/records/15106473",
+      "source_retrieval_method": "python3 bin/fetch_euclid_zenodo.py --catalog morphology"
+    },
+    {
+      "path": "euclid/zenodo/15106473/useful_physical_measurements.parquet",
+      "size_bytes": 67720067,
+      "mtime_utc": "2026-03-10T19:14:17.403Z",
+      "sha256": "4ab4ab1b363871c7bbbba6a9ec55e889732e3ce1629843c31ce2561a6f29c474",
+      "source_id": "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://zenodo.org/records/15106473",
+      "source_retrieval_method": "python3 bin/fetch_euclid_zenodo.py --catalog morphology"
+    },
+    {
+      "path": "euclid/zenodo/17087034/Q1_merger_classification.csv",
+      "size_bytes": 39687557,
+      "mtime_utc": "2026-03-10T19:14:24.554Z",
+      "sha256": "ab0b14fa921e5211f119806064267abd3d8c3af440904e597d53b864e1b780bc",
+      "source_id": "SRC-EUCLID-Q1-ZENODO-MERGERS",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://zenodo.org/records/17087034",
+      "source_retrieval_method": "python3 bin/fetch_euclid_zenodo.py --catalog mergers"
+    },
+    {
+      "path": "euclid/zenodo/euclid_zenodo_manifest.json",
+      "size_bytes": 4576,
+      "mtime_utc": "2026-03-10T19:14:24.642Z",
+      "sha256": "612d11b0768d0053af35ddcf83b97a15e417531e9a1f0ffaad3360156675005d",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "euclid_q1_catalogs.toml",
+      "size_bytes": 17379,
+      "mtime_utc": "2026-03-10T19:14:35.161Z",
+      "sha256": "0e23298c44f8e3c00ec7eb292929eae68714962453803188ac43305a2721817e",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
       "path": "fermi_gbm_grbs.csv",
       "size_bytes": 1317466,
       "mtime_utc": "2026-02-24T08:43:46.018Z",
@@ -1113,6 +1212,17 @@
       "source_access_class": "public",
       "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
       "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "flyby_anomaly/anderson_2008_flyby_catalog.csv",
+      "size_bytes": 1273,
+      "mtime_utc": "2026-03-10T19:40:28.254Z",
+      "sha256": "0976d39a8de9f3830761fbe0210975b2bb919ca5337524aec51ecbe18d9c900b",
+      "source_id": "SRC-FLYBY-ANOMALY-ANDERSON-2008-BENCHMARK",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://arxiv.org/abs/0712.1053",
+      "source_retrieval_method": "Repo-governed benchmark CSV transcribed from Anderson et al. 2008 with bibliography and DOI linkage"
     },
     {
       "path": "gaia_dr3_nearby.csv",
@@ -2666,6 +2776,72 @@
       "source_retrieval_method": "python3 bin/fetch_omni.py --start <year> --end <year> --source auto --skip-existing"
     },
     {
+      "path": "pds_atm_homepage.png",
+      "size_bytes": 308405,
+      "mtime_utc": "2026-03-10T18:39:25.984Z",
+      "sha256": "7f743f625be91b7efc9584d6fbe6ed933b24f7899ecbd198f3f4f2d824663a4c",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pds_atm_venus_viewport.png",
+      "size_bytes": 276208,
+      "mtime_utc": "2026-03-10T18:39:06.882Z",
+      "sha256": "8b9dc02f1a3d199ec3c6e9b53dfe9fa2bc4c2067e0ad43fefce38e81567ab31f",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pds_ppi_homepage.png",
+      "size_bytes": 273836,
+      "mtime_utc": "2026-03-10T18:40:41.226Z",
+      "sha256": "6e9141abb09e2de4c26358ab46ea16624aa83ba7a8f3630e5f2b83252df2dd57",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pds_ppi_missions.png",
+      "size_bytes": 252070,
+      "mtime_utc": "2026-03-10T18:41:03.551Z",
+      "sha256": "e5d653f0e22e837fdf0abc75796120a8efec994f293be6e1d5f295341a9a90e1",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pds_ppi_missions_bottom.png",
+      "size_bytes": 817528,
+      "mtime_utc": "2026-03-10T18:41:58.744Z",
+      "sha256": "c590edea718d1bf74d2e32857a039842f3b46d1d850803b6aba954edd8a6376c",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pds_ppi_missions_top.png",
+      "size_bytes": 263651,
+      "mtime_utc": "2026-03-10T18:43:08.183Z",
+      "sha256": "42afd3eeda9dd3b12907766db0755663e1596861c2e2ec4780d0c6b61c80ba6d",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
       "path": "pioneer/p10_1979_1979_manifest.json",
       "size_bytes": 9867,
       "mtime_utc": "2026-03-10T08:49:06.580Z",
@@ -2677,10 +2853,32 @@
       "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
     },
     {
+      "path": "pioneer/p10_1987_1995_manifest.json",
+      "size_bytes": 9027,
+      "mtime_utc": "2026-03-10T19:44:43.168Z",
+      "sha256": "769117adaaa0ff4216a8f0811549150aad7b7a77060e69ac46da4341fdbb8743",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
       "path": "pioneer/p11_1979_1979_manifest.json",
       "size_bytes": 9867,
       "mtime_utc": "2026-03-10T08:49:45.046Z",
       "sha256": "62553001a12b506b4760533a2109d1b5d3c24f9ba9556894993a5cc0a76e6acf",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/p11_1987_1995_manifest.json",
+      "size_bytes": 8767,
+      "mtime_utc": "2026-03-10T19:44:46.417Z",
+      "sha256": "19fee91ab411b70e5bcc220265d2929d13575dd03f7cb361bc27ebcd039f6cd6",
       "source_id": "SRC-EXTERNAL-FETCH-ROOT",
       "source_status": "active",
       "source_access_class": "public",
@@ -2809,6 +3007,226 @@
       "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
     },
     {
+      "path": "pioneer/pioneer10/pds_ppi_merged/collection-data-hvm-pa-crt-1hour-1.0.csv",
+      "size_bytes": 1608,
+      "mtime_utc": "2026-03-10T19:44:39.789Z",
+      "sha256": "da51a440b45e9198f2ccac8716d593fb372015059568b13869ea647e1ec36fe1",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/collection-data-hvm-pa-crt-1hour-1.0.xml",
+      "size_bytes": 10745,
+      "mtime_utc": "2026-03-10T19:44:39.869Z",
+      "sha256": "d7374410c54ff433e88ca246e8c6757423f8772aad2ef8f21f01f8eae2f41789",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1987.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:40.193Z",
+      "sha256": "0c1bd22524f26dc9908c22744dd927ea3804ca032821dea12b3e5ae6fa504a20",
+      "source_id": "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1987.xml",
+      "size_bytes": 22371,
+      "mtime_utc": "2026-03-10T19:44:40.271Z",
+      "sha256": "e84c1bc5973cf692a027dbd4e09fafbcac9756584465794233853e69ba643407",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1988.TAB",
+      "size_bytes": 1300032,
+      "mtime_utc": "2026-03-10T19:44:40.454Z",
+      "sha256": "dc71c9ff95e8fc7550059e0e551de20a7ba46fa6a352d34d0d5f6b6d7c74dd62",
+      "source_id": "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1988.xml",
+      "size_bytes": 22371,
+      "mtime_utc": "2026-03-10T19:44:40.524Z",
+      "sha256": "331ace35202a8bb09d745203911a4f953885c522cc07f6595368e9d9d25162e1",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1989.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:40.724Z",
+      "sha256": "57a77415393e4b4b15c6ebc0ca3af1fa8aa5611825520571a7190fb16488e0de",
+      "source_id": "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1989.xml",
+      "size_bytes": 22371,
+      "mtime_utc": "2026-03-10T19:44:40.807Z",
+      "sha256": "4419afb7ae4c20de02e8787b8788e0061a27ea40da0609ecc101e663272b36f0",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1990.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:41.015Z",
+      "sha256": "1620080ded5205a59a6a10bb50e4b26ee138cff372db8d2c18769c822a5c8978",
+      "source_id": "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1990.xml",
+      "size_bytes": 22371,
+      "mtime_utc": "2026-03-10T19:44:41.097Z",
+      "sha256": "93df3d510d6c7893daa369126a4a0df616d2f48b7d169b1df3734f298683875e",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1991.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:41.441Z",
+      "sha256": "43149da99c4252aa476b94d3c228327530a8e01a9e4bbea4de2005ab895c221c",
+      "source_id": "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1991.xml",
+      "size_bytes": 22371,
+      "mtime_utc": "2026-03-10T19:44:41.525Z",
+      "sha256": "75ad5d6920ce0b675225e9076198001486551dc07ef6da1e616a1d5e25ba51f6",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1992.TAB",
+      "size_bytes": 1300032,
+      "mtime_utc": "2026-03-10T19:44:41.711Z",
+      "sha256": "92397786cab313b9232e298b728f6e37a1171e12aaf723208dbdfdb20edf0ba6",
+      "source_id": "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1992.xml",
+      "size_bytes": 22371,
+      "mtime_utc": "2026-03-10T19:44:41.809Z",
+      "sha256": "62a35779bf68d7c321d69951bfead813c8b09520f7fd346c0a82cce44090724d",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1993.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:42.156Z",
+      "sha256": "7bbf5efbc9eed873d8440c084bb40e39e1bcda0ec2ce53d7d57be302275de097",
+      "source_id": "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1993.xml",
+      "size_bytes": 22371,
+      "mtime_utc": "2026-03-10T19:44:42.231Z",
+      "sha256": "ebd959cfe0cefc9c292427f73dfae2e86ad0ec9b26c45d296406432e656fdf41",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1994.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:42.470Z",
+      "sha256": "3712c04872d47f4357ed2ac5d8899446fb0412210300523c4a54ddee5902a920",
+      "source_id": "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1994.xml",
+      "size_bytes": 22371,
+      "mtime_utc": "2026-03-10T19:44:42.739Z",
+      "sha256": "46d134eb02c30b88822313fc82005d20ec3300f83cd4ccd1ff2d4fc3dfbbcfa2",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1995.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:43.074Z",
+      "sha256": "cb2d3bcfc742d7982a54548e19759d67a0e434a270dc60f3130a50f8393eced8",
+      "source_id": "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+    },
+    {
+      "path": "pioneer/pioneer10/pds_ppi_merged/p10_1995.xml",
+      "size_bytes": 22371,
+      "mtime_utc": "2026-03-10T19:44:43.168Z",
+      "sha256": "8b7ec5a0e47c2161f62bf39cd75c2bfa7b83a3c24e78ce23b87beec8bc5ab9de",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
       "path": "pioneer/pioneer11/jupiter_encounter_ppi/AAREADME.TXT",
       "size_bytes": 5609,
       "mtime_utc": "2026-03-10T09:00:45.418Z",
@@ -2930,6 +3348,204 @@
       "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
     },
     {
+      "path": "pioneer/pioneer11/pds_ppi_merged/collection-data-hvm-pa-crt-1hour-1.0.csv",
+      "size_bytes": 1474,
+      "mtime_utc": "2026-03-10T19:44:43.269Z",
+      "sha256": "b12ac7b8cabad3baa1bcaa70ded283461bca71b32e7bc106c5350b82292a10e5",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/collection-data-hvm-pa-crt-1hour-1.0.xml",
+      "size_bytes": 11882,
+      "mtime_utc": "2026-03-10T19:44:43.340Z",
+      "sha256": "9dfd05c43a69b16862f48f4500d20e6f6af752c0b05a2da7ee6e727baa7b33a1",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1987.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:43.624Z",
+      "sha256": "952f08a276d6490fc4cd3fe4f08bbc730545821ab8f6a8a1c4f82800de04a7e2",
+      "source_id": "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1987.xml",
+      "size_bytes": 22457,
+      "mtime_utc": "2026-03-10T19:44:43.738Z",
+      "sha256": "345e4b697336072146374ced5a3e4f91dec9b3c715a8b7b1a689577b584603f9",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1988.TAB",
+      "size_bytes": 1300032,
+      "mtime_utc": "2026-03-10T19:44:44.036Z",
+      "sha256": "a09a9a8e084f96431ef58a86ecbff996c1e351aac8552e6cdd6eb667d6eb460a",
+      "source_id": "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1988.xml",
+      "size_bytes": 22457,
+      "mtime_utc": "2026-03-10T19:44:44.106Z",
+      "sha256": "3b65ac6b3d95312e48b14414384229f815332024bd78b6653a89535eb5394b14",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1989.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:44.374Z",
+      "sha256": "b86a9b7bb3de2b89cb21f6a70a2f69133d284463d617e1674abe84b7ebd1616d",
+      "source_id": "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1989.xml",
+      "size_bytes": 22457,
+      "mtime_utc": "2026-03-10T19:44:44.485Z",
+      "sha256": "4f289ce9a925df7b3d41c3b1d1d1cdc756499aadd5e8d731ae263139001d84a4",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1990.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:44.744Z",
+      "sha256": "6255e57bbca28feac9425a5b6b377248d73651b9ccd017433c1736afc9df92f4",
+      "source_id": "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1990.xml",
+      "size_bytes": 22457,
+      "mtime_utc": "2026-03-10T19:44:44.886Z",
+      "sha256": "6e51d6291fe8c60f250139ab741398c94577a3e35eec68e8146ee207bf5311f4",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1991.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:45.098Z",
+      "sha256": "e628ed5af83c89e6dc460e003fd746e3fea8ad70b1f891566bf36a9cb5b934cf",
+      "source_id": "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1991.xml",
+      "size_bytes": 22457,
+      "mtime_utc": "2026-03-10T19:44:45.180Z",
+      "sha256": "a9517dd1a6fc11cb12ccdfa11c877527aacce84e1e00359720c8994ba69893fd",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1992.TAB",
+      "size_bytes": 1300032,
+      "mtime_utc": "2026-03-10T19:44:45.442Z",
+      "sha256": "166b6f564ceb37e1687c0a4c638d9bdfe915d82efd1bb0815066ea19c869b21f",
+      "source_id": "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1992.xml",
+      "size_bytes": 22457,
+      "mtime_utc": "2026-03-10T19:44:45.588Z",
+      "sha256": "b1b1d2030929c9994941a91d1fdaefc85f80c0e5bfd89bc8674de6c00959957b",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1993.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:45.816Z",
+      "sha256": "65522820eec241aad58b46f61714c4b718c11d27fd9846d5daecd450d3701035",
+      "source_id": "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1993.xml",
+      "size_bytes": 22457,
+      "mtime_utc": "2026-03-10T19:44:45.900Z",
+      "sha256": "b8df3a814f6583bfc22ff6b53b0f37a48ba67c95a4517bfd3d91f851816c804f",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1994.TAB",
+      "size_bytes": 1296480,
+      "mtime_utc": "2026-03-10T19:44:46.207Z",
+      "sha256": "18396ba0fbb9f34db59aea0415f26046e3c97b31776ffe711346452d48617216",
+      "source_id": "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/",
+      "source_retrieval_method": "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+    },
+    {
+      "path": "pioneer/pioneer11/pds_ppi_merged/p11_1994.xml",
+      "size_bytes": 22457,
+      "mtime_utc": "2026-03-10T19:44:46.283Z",
+      "sha256": "7173eb45a2d1b7c3a530f1643d3185c52be076b9e1fef4889f7577ece410a60d",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
       "path": "pioneer/pioneer11/saturn_encounter_ppi/AAREADME.TXT",
       "size_bytes": 5530,
       "mtime_utc": "2026-03-10T09:00:46.147Z",
@@ -3016,6 +3632,17 @@
       "source_access_class": "public",
       "source_canonical_url": "https://pds-ppi.igpp.ucla.edu/data/P11-S-HVM-PA-4-MERGED-ENC-1HR-V1.0/",
       "source_retrieval_method": "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p11_saturn --source pds_ppi --skip-existing"
+    },
+    {
+      "path": "pioneer_anomaly/pioneer_anomaly_benchmark.csv",
+      "size_bytes": 636,
+      "mtime_utc": "2026-03-10T19:40:28.254Z",
+      "sha256": "59f9ab45b175fdd8c8a69edd22837daa1c33e63a38f0f1a54a173fe2d1b94238",
+      "source_id": "SRC-PIONEER-ANOMALY-ANDERSON-2002-BENCHMARK",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://arxiv.org/abs/gr-qc/0104064",
+      "source_retrieval_method": "Repo-governed benchmark CSV transcribed from Anderson et al. 2002 with interval bounds and benchmark metadata"
     },
     {
       "path": "planck2018_base_params.txt",
@@ -3467,6 +4094,17 @@
       "source_access_class": "public",
       "source_canonical_url": "https://amda.irap.omp.eu/service/hapi/catalog",
       "source_retrieval_method": "python3 bin/fetch_voyager.py --spacecraft v2 --start 1979 --end 1979 --source amda"
+    },
+    {
+      "path": "voyager_data_access_snapshot.md",
+      "size_bytes": 4634,
+      "mtime_utc": "2026-03-10T18:34:42.259Z",
+      "sha256": "5d5b4bca66ce9e185790d1ac526de593dd59cc942e7d546e0bcc1bb9359847e6",
+      "source_id": "SRC-EXTERNAL-FETCH-ROOT",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+      "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
     },
     {
       "path": "wmap9_chains.tar.gz",

@@ -582,26 +582,70 @@ fn audit_placeholder(key: &str, label: &str, root: &Path, notes: &str) -> Datase
     })
 }
 
-fn audit_pioneer_blocked_annual(repo_root: &Path) -> DatasetAuditEntry {
-    let coverage = PioneerCoverage::AnnualMerged;
-    let notes = match coverage {
-        PioneerCoverage::AnnualMerged => {
-            "Canonical COHO/NSSDC annual Pioneer merged hourly lane is still blocked from this host; only metadata and DOI traces are staged locally."
+fn audit_pioneer_annual(repo_root: &Path) -> Result<DatasetAuditEntry> {
+    let _coverage = PioneerCoverage::AnnualMerged;
+    let mut paths: Vec<PathBuf> = Vec::new();
+    for pattern in [
+        "data/external/pioneer/pioneer10/pds_ppi_merged/p10_*.TAB",
+        "data/external/pioneer/pioneer11/pds_ppi_merged/p11_*.TAB",
+    ] {
+        let matches = glob::glob(&repo_root.join(pattern).display().to_string())
+            .with_context(|| format!("expanding glob {}", pattern))?
+            .collect::<std::result::Result<Vec<_>, _>>()
+            .with_context(|| format!("collecting glob matches for {}", pattern))?;
+        paths.extend(matches);
+    }
+    if paths.is_empty() {
+        let mut entry = audit_placeholder(
+            "pioneer_annual_merged",
+            "Pioneer annual merged hourly",
+            &repo_root.join("data/external/pioneer"),
+            "Canonical annual Pioneer merged hourly lane is known, but no annual merged science bytes are staged locally.",
+        );
+        entry.staged = false;
+        entry.catalog_status = "known".to_string();
+        entry.acquisition_status = "partial".to_string();
+        entry.contract_status = "blocked_host_unreachable".to_string();
+        entry.satisfies_provider_contract = false;
+        return Ok(entry);
+    }
+    paths.sort();
+
+    let mut bounds = Vec::new();
+    let mut row_count = 0usize;
+    for path in &paths {
+        let spacecraft = if path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .is_some_and(|name| name.starts_with("p10_"))
+        {
+            PioneerSpacecraft::P10
+        } else {
+            PioneerSpacecraft::P11
+        };
+        let raw = parse_pioneer_file(path, spacecraft)?;
+        let omni = pioneer_to_omni(&raw);
+        row_count += omni.len();
+        if let Some(dataset_bounds) = bounds_from_omni(&omni) {
+            bounds.push(dataset_bounds);
         }
-        PioneerCoverage::Encounter(_) => unreachable!(),
-    };
-    let mut entry = audit_placeholder(
-        "pioneer_annual_merged",
-        "Pioneer annual merged hourly",
-        &repo_root.join("data/external/pioneer"),
-        notes,
-    );
-    entry.staged = false;
-    entry.catalog_status = "known".to_string();
+    }
+    let mut entry = entry_from_bounds(DatasetAuditSpec {
+        key: "pioneer_annual_merged",
+        label: "Pioneer annual merged hourly",
+        family: "adjacent_heliosphere",
+        role: "optional_secondary",
+        cadence: "hourly",
+        authority: "PDS/PPI governed local",
+        local_path: &repo_root.join("data/external/pioneer"),
+        row_count: Some(row_count),
+        bounds: union_bounds(&bounds),
+        notes: "Reachable UCLA PDS/PPI annual merged Pioneer lane is now partially staged locally. This improves scientific coverage beyond metadata-only state, but the local staging is still a subset of the full annual source family and does not yet satisfy the full annual provider contract.".to_string(),
+    });
     entry.acquisition_status = "partial".to_string();
-    entry.contract_status = "blocked_host_unreachable".to_string();
+    entry.contract_status = "ready_governed_partial_annual_lane".to_string();
     entry.satisfies_provider_contract = false;
-    entry
+    Ok(entry)
 }
 
 fn audit_pioneer_encounter(
@@ -1023,7 +1067,7 @@ fn main() -> Result<()> {
         audit_gwosc(&repo_root)?,
         audit_fermi(&repo_root)?,
         audit_wow(&repo_root),
-        audit_pioneer_blocked_annual(&repo_root),
+        audit_pioneer_annual(&repo_root)?,
         audit_pioneer_encounter(
             "pioneer10_jupiter_1973_encounter",
             "Pioneer 10 Jupiter encounter 1973",
