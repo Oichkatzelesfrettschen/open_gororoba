@@ -4,7 +4,7 @@ source = "paru pacman"
 [[pkg]]
 name = "rustup"
 version = "1.28.2-4.1"
-track = "requested"
+track = "active"
 desc = "Rust toolchain installer and multi-toolchain switcher"
 why = "pin stable beta nightly and cross targets"
 
@@ -46,7 +46,7 @@ why = "single command entrypoints for team workflows"
 [[pkg]]
 name = "cargo-nextest"
 version = "0.9.127-1.1"
-track = "requested"
+track = "active"
 desc = "Fast modern test runner for large Rust suites"
 why = "parallel tests with richer output"
 
@@ -60,14 +60,14 @@ why = "coverage gates for CI and local QA"
 [[pkg]]
 name = "cargo-audit"
 version = "0.22.1-1.1"
-track = "requested"
+track = "active"
 desc = "RustSec vulnerability scanner for Cargo.lock"
 why = "security checks before release"
 
 [[pkg]]
 name = "cargo-deny"
 version = "0.19.0-1.1"
-track = "requested"
+track = "active"
 desc = "Dependency policy checker for licenses bans advisories"
 why = "enforce dependency and license policy"
 
@@ -214,7 +214,7 @@ why = "Counts LLVM IR lines per monomorphized function."
 [[pkg]]
 name = "clippy"
 version = "latest"
-track = "requested"
+track = "active"
 desc = "Idiomatic linting tool."
 why = "Rust's default lint layer."
 
