@@ -424,6 +424,7 @@ def fetch_tile(
 def fetch_count(catalog: str) -> dict[str, object]:
     """Query row count for a catalog across endpoints."""
     results: dict[str, object] = {"catalog": catalog}
+    any_success = False
     for ep_name in TAP_ENDPOINTS:
         table = TABLE_NAMES[ep_name].get(catalog)
         if not table:
@@ -438,11 +439,14 @@ def fetch_count(catalog: str) -> dict[str, object]:
                 count = lines[1].strip()
                 results[ep_name] = {"table": table, "row_count": count}
                 print(f"  {ep_name} ({table}): {count} rows")
+                any_success = True
             else:
                 results[ep_name] = {"table": table, "error": "unexpected_format"}
         except (URLError, HTTPError, OSError, TimeoutError, RuntimeError) as exc:
             results[ep_name] = {"table": table, "error": str(exc)}
             print(f"  {ep_name} ({table}): FAILED ({exc})")
+    if not any_success:
+        results["status"] = "failed"
     return results
 
 
