@@ -1,0 +1,12 @@
+{
+  "verdict": "refuted_current_form",
+  "best_lane": "qtensor",
+  "best_d_f": 2.9,
+  "best_r_disclination_km": 100000.0,
+  "best_s_bulk": 0.5,
+  "flyby_sign_matches": 5,
+  "flyby_total": 7,
+  "mean_relative_error": 7.624097969645656e+17,
+  "max_relative_error": 5.336868578609926e+18,
+  "notes": "Batch-1 benchmark fit: no thermal recoil or full engineering-force model"
+}

@@ -1034,7 +1034,19 @@ experiment_refs = ["E-113"]
 [[binary]]
 name = "flyby-residual-audit"
 crate = "gororoba_cli_physics"
-description = "Quantify classical (Newtonian + DM density) residual delta-V for all 6 Anderson et al. spacecraft flybys. Establishes baseline that the non-associative model must explain."
+description = "Quantify classical (Newtonian + DM density) residual delta-V for the governed Anderson et al. flyby catalog, validate the staged external observation table against internal config values, and emit a reproducible observed-vs-modeled CSV artifact."
+status = "active"
+
+[[binary]]
+name = "pioneer-residual-audit"
+crate = "gororoba_cli_physics"
+description = "Sample governed Pioneer annual merged environment context against staged Pioneer anomaly benchmark intervals, emitting a benchmark-vs-environment CSV with explicit provider-contract coverage flags."
+status = "active"
+
+[[binary]]
+name = "fractal-metric-fit"
+crate = "gororoba_cli_physics"
+description = "Fit plain and Q-tensor fractal-metric anomaly predictions against the governed flyby and Pioneer benchmark artifacts, emitting a parameter grid CSV and explicit best-fit verdict JSON."
 status = "active"
 
 [[binary]]

@@ -3456,7 +3456,7 @@ dois = []
 id = "BSEC-044"
 name = "Flyby Anomaly & Astrodynamics"
 groups = ["Primary Research & Data Sources"]
-entry_count = 5
+entry_count = 6
 
 [[section]]
 id = "BSEC-045"
@@ -3527,6 +3527,16 @@ citation_markdown = "**Pinheiro, M. J.** (2016). *The flyby anomaly and the grav
 notes = ["*Gravitational-loss hypothesis for flyby anomaly: energy exchange with local gravitational field. Provides testable velocity-dependent predictions.*"]
 urls = ["https://arxiv.org/abs/1404.1101"]
 dois = ["10.1016/j.physleta.2014.08.030"]
+
+[[entry]]
+id = "BIB-0317"
+order_index = 317
+group = "Primary Research & Data Sources"
+section = "Flyby Anomaly & Astrodynamics"
+citation_markdown = "**Anderson, J. D., et al.** (2002). *Study of the anomalous acceleration of Pioneer 10 and 11*. Phys. Rev. D 65, 082004."
+notes = ["*Primary Pioneer anomaly benchmark paper. Reports the canonical anomalous acceleration scale used as the batch-1 governed benchmark input for the Pioneer fit lane.*"]
+urls = ["https://arxiv.org/abs/gr-qc/0104064"]
+dois = ["10.1103/PhysRevD.65.082004"]
 
 # --- BSEC-045: Dark Matter-Plasma Coupling & MHD (5) ---
 

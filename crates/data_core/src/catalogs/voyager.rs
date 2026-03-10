@@ -95,6 +95,75 @@ pub const VOYAGER_FILL_TEMP: f64 = 999999.0;
 /// Distance fill (AU).
 pub const VOYAGER_FILL_DISTANCE: f64 = 999.999;
 
+// -- Bartol Research Institute legacy archive (Voyager 2 only, 1977-1995) --
+//
+// The Bartol FTP server at the University of Delaware hosts a legacy
+// NSSDC/COHO format with 16 columns, 2-digit years, and RTN B-field
+// coordinates. This is a distinct format from the current SPDF 13-column
+// SE format but provides the only non-GSFC byte source for Voyager 2
+// plasma+MAG data reachable from hosts where SPDF is blocked.
+//
+// Format documentation: vy2mgd.txt at ftp.bartol.udel.edu/whm/Voyager/
+//
+//  Col  Format  Field
+//   0   I2      Year (2-digit: 77-97)
+//   1   I3      DOY (1-366)
+//   2   I2      Hour (0-23)
+//   3   F7.2    Distance (AU) HGI
+//   4   F7.1    HGI Latitude (deg)
+//   5   F7.1    HGI Longitude (deg)
+//   6   F7.2    Average |B| (nT) -- 1/N SUM |B|
+//   7   F7.2    Magnitude of average B (nT) -- sqrt(Br^2+Bt^2+Bn^2)
+//   8   F7.2    BR RTN (nT)
+//   9   F7.2    BT RTN (nT)
+//  10   F7.2    BN RTN (nT)
+//  11   F7.1    Bulk flow speed (km/s)
+//  12   F7.1    Flow theta (deg)
+//  13   F7.1    Flow phi (deg)
+//  14   F9.5    Proton density (cm^-3)
+//  15   F9.0    Temperature (K) -- T=60.5*Vth^2
+
+/// Column layout for Bartol legacy Voyager 2 data (16-col RTN, 2-digit year).
+///
+/// Uses magnitude-of-average-field (col 7) as B magnitude, which is closer
+/// to the SPDF convention than the average-of-magnitudes (col 6).
+pub const BARTOL_V2_LAYOUT: SpdfColumnLayout = SpdfColumnLayout {
+    min_columns: 16,
+    col_year: 0,
+    col_doy: 1,
+    col_hour: 2,
+    col_distance_au: Some(3),
+    col_lat_deg: Some(4),
+    col_lon_deg: Some(5),
+    col_b_mag: Some(7),
+    col_br: Some(8),
+    col_bt: Some(9),
+    col_bn: Some(10),
+    col_density: Some(14),
+    col_speed: Some(11),
+    col_temperature: Some(15),
+    fill_b: 999.99,
+    fill_density: 99.99999,
+    fill_speed: 9999.9,
+    fill_temperature: 9999999.0,
+    fill_distance: 999.99,
+    b_is_se: false,
+};
+
+/// Bartol B fill value (nT) -- F7.2 width.
+pub const BARTOL_FILL_B: f64 = 999.99;
+/// Bartol density fill (cm^-3) -- F9.5 width.
+pub const BARTOL_FILL_DENSITY: f64 = 99.99999;
+/// Bartol speed fill (km/s) -- F7.1 width.
+pub const BARTOL_FILL_SPEED: f64 = 9999.9;
+/// Bartol temperature fill (K) -- F9.0 width.
+pub const BARTOL_FILL_TEMP: f64 = 9999999.0;
+/// Bartol distance fill (AU) -- F7.2 width.
+pub const BARTOL_FILL_DISTANCE: f64 = 999.99;
+
+/// Base URL for Bartol Research Institute Voyager 2 archive.
+pub const VOYAGER2_BARTOL_BASE: &str = "https://ftp.bartol.udel.edu/whm/Voyager/";
+
 /// Which Voyager spacecraft.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum VoyagerSpacecraft {
@@ -127,6 +196,48 @@ pub fn parse_voyager_file(
 /// B-field is in SE coordinates (close to GSE for near-ecliptic trajectory).
 pub fn voyager_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
     spdf_to_omni(records, true) // SE coordinates
+}
+
+/// Parse Bartol-format Voyager 2 data (16 cols, 2-digit year, RTN B-field).
+///
+/// Pre-processes 2-digit years to 4-digit before delegating to the shared
+/// `parse_spdf_merged()` infrastructure. Covers 1977-1997 (files vy2_77.dat
+/// through vy2_97.dat).
+pub fn parse_bartol_v2(content: &str) -> Vec<SpdfMergedRecord> {
+    let fixed: String = content
+        .lines()
+        .filter(|l| {
+            let t = l.trim();
+            !t.is_empty() && !t.starts_with('#')
+        })
+        .filter_map(|line| {
+            let fields: Vec<&str> = line.split_whitespace().collect();
+            if fields.len() < 16 {
+                return None;
+            }
+            let yr2: u16 = fields[0].parse().ok()?;
+            let year = if yr2 >= 70 { 1900 + yr2 } else { 2000 + yr2 };
+            Some(format!("{} {}", year, fields[1..].join(" ")))
+        })
+        .collect::<Vec<_>>()
+        .join("\n");
+    parse_spdf_merged(&fixed, &BARTOL_V2_LAYOUT)
+}
+
+/// Parse Bartol-format Voyager 2 data from a file.
+pub fn parse_bartol_file(
+    path: &std::path::Path,
+) -> Result<Vec<SpdfMergedRecord>, FetchError> {
+    let content = std::fs::read_to_string(path)
+        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
+    Ok(parse_bartol_v2(&content))
+}
+
+/// Convert Bartol Voyager 2 records to OmniRecord format.
+///
+/// Bartol data uses RTN coordinates, so the sign flip on Bt applies.
+pub fn bartol_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
+    spdf_to_omni(records, false) // RTN coordinates
 }
 
 /// Base URLs for Voyager merged hourly data at SPDF.
@@ -194,7 +305,34 @@ impl DatasetProvider for VoyagerProvider {
                     log::info!("saved {}", fname);
                 }
                 Err(e) => {
-                    log::warn!("failed to download Voyager {}: {}", year, e);
+                    log::warn!("SPDF failed for Voyager {}: {}", year, e);
+                    // Bartol fallback: Voyager 2 only, 1977-1997
+                    if matches!(self.spacecraft, VoyagerSpacecraft::V2)
+                        && (1977..=1997).contains(&year)
+                    {
+                        let bartol_fname = format!("vy2_{}.dat", year % 100);
+                        let bartol_url =
+                            format!("{}{}", VOYAGER2_BARTOL_BASE, bartol_fname);
+                        match download_to_string(&bartol_url) {
+                            Ok(data) => {
+                                let bartol_dir = dir.join("bartol");
+                                std::fs::create_dir_all(&bartol_dir)?;
+                                let bartol_out = bartol_dir.join(&bartol_fname);
+                                std::fs::write(&bartol_out, &data)?;
+                                log::info!(
+                                    "Bartol fallback saved {}",
+                                    bartol_fname,
+                                );
+                            }
+                            Err(e2) => {
+                                log::warn!(
+                                    "Bartol fallback also failed for {}: {}",
+                                    year,
+                                    e2,
+                                );
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -316,5 +454,109 @@ mod tests {
         assert!((omni[0].bx_gse - 0.01).abs() < 1e-6);
         assert!((omni[0].by_gse - (-0.005)).abs() < 1e-6);
         assert!((omni[0].bz_gse - 0.003).abs() < 1e-6);
+    }
+
+    // -- Bartol legacy archive tests --
+
+    #[test]
+    fn test_bartol_v2_layout_validity() {
+        assert_eq!(BARTOL_V2_LAYOUT.min_columns, 16);
+        const { assert!(!BARTOL_V2_LAYOUT.b_is_se) };
+        assert_eq!(BARTOL_V2_LAYOUT.col_distance_au, Some(3));
+        assert_eq!(BARTOL_V2_LAYOUT.col_b_mag, Some(7));
+        assert_eq!(BARTOL_V2_LAYOUT.col_density, Some(14));
+        assert_eq!(BARTOL_V2_LAYOUT.col_temperature, Some(15));
+    }
+
+    #[test]
+    fn test_parse_bartol_v2_year_correction() {
+        // 2-digit year 90 -> 1990, year 77 -> 1977
+        // Synthetic 16-column Bartol line (V2 at ~30 AU in 1990)
+        let data = "90 100 12 30.00  -1.0 200.0  0.50  0.45  0.20 -0.10  0.05 400.0  5.0 180.0  0.01000 50000.\n";
+        let records = parse_bartol_v2(data);
+        assert_eq!(records.len(), 1);
+        assert_eq!(records[0].year, 1990);
+
+        let data77 = "77 200  6  6.00   1.0 150.0  1.00  0.90  0.40 -0.20  0.10 450.0  2.0 175.0  0.50000 80000.\n";
+        let records77 = parse_bartol_v2(data77);
+        assert_eq!(records77.len(), 1);
+        assert_eq!(records77[0].year, 1977);
+    }
+
+    #[test]
+    fn test_parse_bartol_v2_16col_rtn_parsing() {
+        // Full 16-column Bartol format: V2 at 30 AU
+        // Col: yr doy hr r_au lat lon avg|B| mag_avg Br Bt Bn speed theta phi density temp
+        // B ceiling at 30 AU: 200/900 = 0.222. Use 0.20 nT (below ceiling).
+        // Density ceiling at 30 AU: 500/900 = 0.556. Use 0.010 (below ceiling).
+        let data = "90 100 12 30.00  -1.0 200.0  0.22  0.20  0.10 -0.05  0.03 400.0  5.0 180.0  0.01000 50000.\n";
+        let records = parse_bartol_v2(data);
+        assert_eq!(records.len(), 1);
+        let r = &records[0];
+        assert_eq!(r.year, 1990);
+        assert_eq!(r.doy, 100);
+        assert_eq!(r.hour, 12);
+        assert!((r.distance_au - 30.0).abs() < 0.01);
+        assert!((r.lat_deg - (-1.0)).abs() < 0.1);
+        assert!((r.lon_deg - 200.0).abs() < 0.1);
+        // col_b_mag=7 (magnitude-of-average, 0.20)
+        assert!((r.b_magnitude - 0.20).abs() < 0.01);
+        // col_br=8, col_bt=9, col_bn=10
+        assert!((r.br - 0.10).abs() < 0.01);
+        assert!((r.bt - (-0.05)).abs() < 0.01);
+        assert!((r.bn - 0.03).abs() < 0.01);
+        // col_density=14 (F9.5: 0.01000)
+        assert!((r.proton_density - 0.01).abs() < 1e-5);
+        // col_speed=11 (400.0)
+        assert!((r.bulk_speed - 400.0).abs() < 0.1);
+        // col_temperature=15 (50000.)
+        assert!((r.proton_temperature - 50000.0).abs() < 1.0);
+    }
+
+    #[test]
+    fn test_parse_bartol_v2_fill_values() {
+        // All measurements at fill values per Bartol FORTRAN widths
+        let data = "90 100 12 999.99 9999.9 9999.9 999.99 999.99 999.99 999.99 999.99 9999.9 9999.9 9999.9 99.99999 9999999.\n";
+        let records = parse_bartol_v2(data);
+        assert_eq!(records.len(), 1);
+        let r = &records[0];
+        assert!(r.distance_au.is_nan(), "distance fill not detected");
+        assert!(r.b_magnitude.is_nan(), "B fill not detected");
+        assert!(r.br.is_nan(), "Br fill not detected");
+        assert!(r.proton_density.is_nan(), "density fill not detected");
+        assert!(r.bulk_speed.is_nan(), "speed fill not detected");
+        assert!(r.proton_temperature.is_nan(), "temp fill not detected");
+    }
+
+    #[test]
+    fn test_bartol_to_omni_rtn_conversion() {
+        // Bartol uses RTN: Br -> Bx, -Bt -> By, Bn -> Bz
+        let data = "90 100 12 30.00  -1.0 200.0  0.22  0.20  0.10 -0.05  0.03 400.0  5.0 180.0  0.01000 50000.\n";
+        let spdf = parse_bartol_v2(data);
+        let omni = bartol_to_omni(&spdf);
+        assert_eq!(omni.len(), 1);
+        let o = &omni[0];
+        // RTN -> GSE: Br -> Bx, -Bt -> By, Bn -> Bz
+        assert!((o.bx_gse - 0.10).abs() < 0.01, "Br -> Bx");
+        assert!((o.by_gse - 0.05).abs() < 0.01, "-Bt -> By (0.05 = -(-0.05))");
+        assert!((o.bz_gse - 0.03).abs() < 0.01, "Bn -> Bz");
+        assert!((o.r_au - 30.0).abs() < 0.1);
+    }
+
+    #[test]
+    fn test_bartol_skips_short_lines_and_comments() {
+        let data = "# Bartol header comment\n\
+                     90 100\n\
+                     90 100 12 30.00  -1.0 200.0  0.22  0.20  0.10 -0.05  0.03 400.0  5.0 180.0  0.01000 50000.\n";
+        let records = parse_bartol_v2(data);
+        assert_eq!(records.len(), 1, "should skip comment and short line");
+    }
+
+    #[test]
+    fn test_bartol_url_construction() {
+        let year: u16 = 1990;
+        let bartol_fname = format!("vy2_{}.dat", year % 100);
+        let url = format!("{}{}", VOYAGER2_BARTOL_BASE, bartol_fname);
+        assert_eq!(url, "https://ftp.bartol.udel.edu/whm/Voyager/vy2_90.dat");
     }
 }

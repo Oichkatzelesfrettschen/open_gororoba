@@ -13,14 +13,24 @@ Reachable non-GSFC byte lanes:
     UCLA PDS/PPI serves several Pioneer encounter subsets over HTTPS. These are
     not interchangeable with the full annual merged hourly COHO/NSSDC products,
     so they are exposed as a separate `encounter_hourly_ppi` product family.
+
+    AMDA HAPI provides MAG-only hourly data (p10-mag-full, p11-mag-full) in RTN.
+    NO plasma data exists for Pioneer in AMDA. Output has valid B-field but
+    NaN fill for density, speed, temperature.
+
+Auto fallback chain: SPDF -> AMDA MAG-only -> metadata
 """
 
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import hashlib
 import json
+import math
+import statistics
 import sys
+from collections import defaultdict
 from pathlib import Path
 from urllib.error import URLError
 from urllib.parse import urlencode
@@ -105,6 +115,45 @@ PIONEER_PPI_PRODUCTS = {
         ],
     },
 }
+
+PIONEER_PPI_MERGED = {
+    "p10": {
+        "root": "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/",
+        "subdir": OUTPUT_DIR / "pioneer10" / "pds_ppi_merged",
+        "prefix": "p10",
+        "metadata_files": [
+            "collection-data-hvm-pa-crt-1hour-1.0.csv",
+            "collection-data-hvm-pa-crt-1hour-1.0.xml",
+        ],
+    },
+    "p11": {
+        "root": "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/",
+        "subdir": OUTPUT_DIR / "pioneer11" / "pds_ppi_merged",
+        "prefix": "p11",
+        "metadata_files": [
+            "collection-data-hvm-pa-crt-1hour-1.0.csv",
+            "collection-data-hvm-pa-crt-1hour-1.0.xml",
+        ],
+    },
+}
+
+
+AMDA_HAPI = "https://amda.irap.omp.eu/service/hapi"
+
+# AMDA Pioneer MAG-only datasets. NO plasma data exists for Pioneer in AMDA.
+# Orbit data limited to Jupiter encounters (p10-orb-jup, p11-orb-jup).
+AMDA_PIONEER_DATASETS = {
+    "p10": {"mag": "p10-mag-full"},
+    "p11": {"mag": "p11-mag-full"},
+}
+
+# Fill values for Pioneer MAG-only output (matching pioneer.rs constants).
+PIONEER_FILL_B = 9999.99
+PIONEER_FILL_DENSITY = 999.9
+PIONEER_FILL_SPEED = 9999.9
+PIONEER_FILL_TEMP = 999999.0
+PIONEER_FILL_DISTANCE = 999.999
+PIONEER_FILL_LATLON = 999.99
 
 
 def build_file_entry(url: str, path: Path, status: str, *, source: str) -> dict[str, object]:
@@ -232,6 +281,310 @@ def write_manifest(
     return manifest_path
 
 
+def fetch_amda_info(dataset_id: str) -> dict[str, object]:
+    url = f"{AMDA_HAPI}/info?id={dataset_id}"
+    return json.loads(fetch_text(url, timeout=60))
+
+
+def fetch_amda_csv(dataset_id: str, start: str, end: str, *, timeout: int = 120) -> str:
+    url = f"{AMDA_HAPI}/data?id={dataset_id}&time.min={start}&time.max={end}&format=csv"
+    return fetch_text(url, timeout=timeout)
+
+
+def parse_hapi_time(text: str) -> dt.datetime:
+    return dt.datetime.fromisoformat(text.replace("Z", "+00:00")).astimezone(dt.timezone.utc)
+
+
+def format_hapi_time(timestamp: dt.datetime) -> str:
+    return timestamp.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def parse_float(text: str) -> float:
+    try:
+        value = float(text)
+    except ValueError:
+        return float("nan")
+    if value <= -1.0e30:
+        return float("nan")
+    return value
+
+
+def floor_to_hour(timestamp: dt.datetime) -> dt.datetime:
+    return timestamp.replace(minute=0, second=0, microsecond=0)
+
+
+def fmt_or_fill(value: float, fill: float, decimals: int) -> str:
+    if not math.isfinite(value):
+        return f"{fill:.{decimals}f}"
+    return f"{value:.{decimals}f}"
+
+
+def median_or_nan(values: list[float]) -> float:
+    valid = [v for v in values if math.isfinite(v)]
+    if not valid:
+        return float("nan")
+    return float(statistics.median(valid))
+
+
+def parse_pioneer_mag_rows(text: str) -> dict[dt.datetime, dict[str, float]]:
+    """Parse AMDA p10-mag-full or p11-mag-full CSV.
+
+    Expected columns: timestamp, Br, Bt, Bn, |B| (RTN, hourly).
+    Pioneer MAG data in AMDA is already hourly, but we aggregate to be safe.
+    """
+    by_hour: dict[dt.datetime, dict[str, list[float]]] = defaultdict(
+        lambda: {"br": [], "bt": [], "bn": [], "bmag": []}
+    )
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        fields = [f.strip() for f in line.split(",")]
+        if len(fields) < 5:
+            continue
+        bucket = floor_to_hour(parse_hapi_time(fields[0]))
+        by_hour[bucket]["br"].append(parse_float(fields[1]))
+        by_hour[bucket]["bt"].append(parse_float(fields[2]))
+        by_hour[bucket]["bn"].append(parse_float(fields[3]))
+        by_hour[bucket]["bmag"].append(parse_float(fields[4]))
+
+    out: dict[dt.datetime, dict[str, float]] = {}
+    for bucket, accum in by_hour.items():
+        br = median_or_nan(accum["br"])
+        bt = median_or_nan(accum["bt"])
+        bn = median_or_nan(accum["bn"])
+        bmag = median_or_nan(accum["bmag"])
+        if not math.isfinite(bmag) and all(math.isfinite(v) for v in (br, bt, bn)):
+            bmag = math.sqrt(br * br + bt * bt + bn * bn)
+        out[bucket] = {"br": br, "bt": bt, "bn": bn, "bmag": bmag}
+    return out
+
+
+def fetch_pioneer_amda_mag(
+    spacecraft: str, years: range, *, skip_existing: bool
+) -> dict[str, object]:
+    """Fetch Pioneer MAG-only data from AMDA HAPI.
+
+    AMDA has MAG but NO plasma for Pioneer. Output is 13-column SPDF-style
+    with NaN fill for density, speed, temperature, and position columns.
+    """
+    datasets = AMDA_PIONEER_DATASETS[spacecraft]
+    label = PIONEER_METADATA[spacecraft]["label"]
+    subdir = OUTPUT_DIR / f"pioneer{label}"
+    subdir.mkdir(parents=True, exist_ok=True)
+
+    counts = {"fetched": 0, "skipped": 0, "failed": 0}
+    files: list[dict[str, object]] = []
+
+    try:
+        mag_info = fetch_amda_info(datasets["mag"])
+    except (URLError, OSError, TimeoutError, json.JSONDecodeError) as exc:
+        for year in years:
+            out = subdir / f"p{label}_{year}_amda_mag_only.asc"
+            files.append(
+                {
+                    "url": AMDA_HAPI,
+                    "path": str(out),
+                    "status": "failed",
+                    "source": "amda",
+                    "year": year,
+                    "reason": f"amda_info_unreachable:{exc}",
+                }
+            )
+            counts["failed"] += 1
+        return {
+            "status": "metadata_only",
+            "reason": "amda_info_unreachable",
+            "counts": counts,
+            "files": files,
+            "metadata": {"amda": {"datasets": datasets, "info_error": str(exc)}},
+        }
+
+    mag_start = parse_hapi_time(str(mag_info["startDate"]))
+    mag_stop = parse_hapi_time(str(mag_info["stopDate"]))
+
+    for year in years:
+        out = subdir / f"p{label}_{year}_amda_mag_only.asc"
+        if skip_existing and out.exists():
+            entry = build_file_entry("amda://derived", out, "skipped", source="amda")
+            entry["year"] = year
+            files.append(entry)
+            counts["skipped"] += 1
+            continue
+
+        requested_start = dt.datetime(year, 1, 1, 0, 0, 0, tzinfo=dt.timezone.utc)
+        requested_end = dt.datetime(year, 12, 31, 23, 0, 0, tzinfo=dt.timezone.utc)
+        start_dt = max(requested_start, mag_start)
+        end_dt = min(requested_end, mag_stop)
+        if start_dt > end_dt:
+            files.append(
+                {
+                    "url": AMDA_HAPI,
+                    "path": str(out),
+                    "status": "failed",
+                    "source": "amda",
+                    "year": year,
+                    "reason": "amda_year_outside_dataset_range",
+                }
+            )
+            counts["failed"] += 1
+            continue
+
+        start = format_hapi_time(start_dt)
+        end = format_hapi_time(end_dt)
+        try:
+            mag_rows = parse_pioneer_mag_rows(
+                fetch_amda_csv(datasets["mag"], start, end, timeout=120)
+            )
+        except (URLError, OSError, TimeoutError) as exc:
+            files.append(
+                {
+                    "url": AMDA_HAPI,
+                    "path": str(out),
+                    "status": "failed",
+                    "source": "amda",
+                    "year": year,
+                    "reason": f"amda_unreachable:{exc}",
+                }
+            )
+            counts["failed"] += 1
+            continue
+
+        lines: list[str] = []
+        for bucket in sorted(mag_rows):
+            if bucket.year != year:
+                continue
+            mag = mag_rows[bucket]
+            # MAG-only output: position and plasma columns are NaN fill.
+            line = " ".join(
+                [
+                    f"{bucket.year:04d}",
+                    f"{bucket.timetuple().tm_yday:03d}",
+                    f"{bucket.hour:02d}",
+                    fmt_or_fill(float("nan"), PIONEER_FILL_DISTANCE, 3),
+                    fmt_or_fill(float("nan"), PIONEER_FILL_LATLON, 2),
+                    fmt_or_fill(float("nan"), PIONEER_FILL_LATLON, 2),
+                    fmt_or_fill(mag["bmag"], PIONEER_FILL_B, 2),
+                    fmt_or_fill(mag["br"], PIONEER_FILL_B, 2),
+                    fmt_or_fill(mag["bt"], PIONEER_FILL_B, 2),
+                    fmt_or_fill(mag["bn"], PIONEER_FILL_B, 2),
+                    fmt_or_fill(float("nan"), PIONEER_FILL_DENSITY, 1),
+                    fmt_or_fill(float("nan"), PIONEER_FILL_SPEED, 1),
+                    fmt_or_fill(float("nan"), PIONEER_FILL_TEMP, 1),
+                ]
+            )
+            lines.append(line)
+
+        if not lines:
+            files.append(
+                {
+                    "url": AMDA_HAPI,
+                    "path": str(out),
+                    "status": "failed",
+                    "source": "amda",
+                    "year": year,
+                    "reason": "empty_amda_translation",
+                }
+            )
+            counts["failed"] += 1
+            continue
+
+        out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        entry = build_file_entry("amda://derived", out, "fetched", source="amda")
+        entry["year"] = year
+        entry["records"] = len(lines)
+        entry["mag_provenance"] = "measured_amda_mag_full_rtn"
+        entry["plasma_provenance"] = "unavailable_no_amda_pioneer_plasma"
+        entry["position_provenance"] = "unavailable_no_cruise_orbit"
+        entry["blocker_note"] = (
+            "MAG-ONLY: AMDA has no Pioneer plasma datasets. "
+            "Density, speed, temperature are NaN fill. "
+            "Position unavailable (AMDA orbit limited to Jupiter encounter)."
+        )
+        files.append(entry)
+        counts["fetched"] += 1
+        print(f"  {out.name}: AMDA MAG-only OK ({len(lines)} rows)")
+
+    status = "ready" if counts["fetched"] > 0 or counts["skipped"] > 0 else "metadata_only"
+    return {
+        "status": status,
+        "counts": counts,
+        "files": files,
+        "metadata": {
+            "amda": {
+                "hapi_base": AMDA_HAPI,
+                "datasets": datasets,
+                "dataset_bounds": {
+                    "mag": {
+                        "start": str(mag_info["startDate"]),
+                        "stop": str(mag_info["stopDate"]),
+                    }
+                },
+                "derived_lane": {
+                    "magnetic_field": "measured_mag_full_rtn",
+                    "plasma": "unavailable",
+                    "trajectory": "unavailable_cruise",
+                },
+            }
+        },
+    }
+
+
+def fetch_pioneer_ppi_merged(
+    spacecraft: str, years: range, *, skip_existing: bool
+) -> dict[str, object]:
+    product = PIONEER_PPI_MERGED[spacecraft]
+    subdir = product["subdir"]
+    subdir.mkdir(parents=True, exist_ok=True)
+
+    counts = {"fetched": 0, "skipped": 0, "failed": 0}
+    files: list[dict[str, object]] = []
+
+    for rel_path in product["metadata_files"]:
+        url = f"{product['root']}{rel_path}"
+        out = subdir / rel_path
+        entry = fetch_file(url, out, skip_existing=skip_existing)
+        if entry["status"] in {"fetched", "skipped"}:
+            entry["source"] = "pds_ppi"
+        counts[str(entry["status"])] += 1
+        files.append(entry)
+
+    for year in years:
+        for suffix in [".TAB", ".xml"]:
+            fname = f"{product['prefix']}_{year}{suffix}"
+            url = f"{product['root']}{fname}"
+            out = subdir / fname
+            entry = fetch_file(url, out, skip_existing=skip_existing)
+            if entry["status"] in {"fetched", "skipped"}:
+                entry["source"] = "pds_ppi"
+                entry["year"] = year
+            counts[str(entry["status"])] += 1
+            files.append(entry)
+
+    staged_bytes = counts["fetched"] > 0 or counts["skipped"] > 0
+    manifest_path = write_manifest(
+        spacecraft,
+        years.start,
+        years.stop - 1,
+        {
+            "status": "ready" if staged_bytes else "metadata_only",
+            "counts": counts,
+            "files": files,
+            "metadata": {
+                "annual_source_root": product["root"],
+                "annual_source_kind": "pds_ppi_merged_hourly",
+            },
+            "notes": (
+                "UCLA PDS/PPI annual merged hourly Pioneer lane. These annual "
+                "TAB files are governed alternate science bytes for the merged "
+                "hourly product family and are distinct from the narrower "
+                "encounter bundles."
+            ),
+        },
+    )
+    return {"counts": counts, "status": "ready" if staged_bytes else "metadata_only", "manifest": str(manifest_path)}
+
+
 def fetch_spacecraft(
     spacecraft: str, years: range, *, source: str, skip_existing: bool
 ) -> dict[str, object]:
@@ -241,6 +594,11 @@ def fetch_spacecraft(
 
     counts = {"fetched": 0, "skipped": 0, "failed": 0}
     files: list[dict[str, object]] = []
+
+    if source == "amda":
+        return fetch_pioneer_amda_mag(spacecraft, years, skip_existing=skip_existing)
+    if source == "pds_ppi":
+        return fetch_pioneer_ppi_merged(spacecraft, years, skip_existing=skip_existing)
 
     if source in {"auto", "spdf"}:
         for year in years:
@@ -252,6 +610,16 @@ def fetch_spacecraft(
             files.append(entry)
 
     staged_bytes = counts["fetched"] > 0 or counts["skipped"] > 0
+
+    # Auto fallback: if SPDF failed, try AMDA MAG-only
+    if not staged_bytes and source == "auto":
+        print(f"  SPDF failed for Pioneer {spacecraft}, trying UCLA PDS/PPI annual merged...")
+        ppi_result = fetch_pioneer_ppi_merged(spacecraft, years, skip_existing=skip_existing)
+        if ppi_result["status"] == "ready":
+            return ppi_result
+        print(f"  SPDF failed for Pioneer {spacecraft}, trying AMDA MAG-only...")
+        return fetch_pioneer_amda_mag(spacecraft, years, skip_existing=skip_existing)
+
     metadata = fetch_metadata_trace(spacecraft, subdir)
     status = "ready" if staged_bytes else "metadata_only"
     if not staged_bytes and source == "spdf":
@@ -332,9 +700,9 @@ def main() -> int:
     )
     parser.add_argument(
         "--source",
-        choices=["auto", "spdf", "metadata", "pds_ppi"],
+        choices=["auto", "spdf", "amda", "metadata", "pds_ppi"],
         default="auto",
-        help="Preferred source ladder (default: auto)",
+        help="Preferred source ladder (default: auto). AMDA provides MAG-only data.",
     )
     parser.add_argument(
         "--product",

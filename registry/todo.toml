@@ -624,3 +624,147 @@ status_token = "OPEN"
 dependencies = ["T-045", "T-049", "T-050"]
 acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "gate-audit emits a current summary under reports/gates/ that matches the final gate state."]
 evidence_refs = ["reports/gates/", "scripts/gate_audit.py"]
+
+[[item]]
+id = "T-052"
+area = "data"
+title = "Implement Bartol V2 legacy parser and Python fetcher"
+description = "DONE: BARTOL_V2_LAYOUT (16-col RTN, 2-digit year) in voyager.rs, parse_bartol_v2() with year correction, fetch_voyager_bartol() in fetch_voyager.py with TLS workaround, 7 Rust tests, SOURCES.toml entry."
+priority = "high"
+status = "done"
+status_token = "DONE"
+dependencies = []
+acceptance_criteria = ["cargo test -p data_core -- bartol passes (7 tests)", "python3 bin/fetch_voyager.py --source bartol --start 1990 --end 1995 fetches .dat files"]
+evidence_refs = ["crates/data_core/src/catalogs/voyager.rs", "bin/fetch_voyager.py"]
+
+[[item]]
+id = "T-053"
+area = "data"
+title = "Add AMDA MAG-only lane to fetch_pioneer.py"
+description = "DONE: AMDA_PIONEER_DATASETS, parse_pioneer_mag_rows(), fetch_pioneer_amda_mag() in fetch_pioneer.py. --source amda option. Auto fallback: SPDF -> AMDA MAG-only. SOURCES.toml entries for P10/P11 AMDA MAG-only."
+priority = "high"
+status = "done"
+status_token = "DONE"
+dependencies = []
+acceptance_criteria = ["python3 bin/fetch_pioneer.py --spacecraft p10 --source amda fetches MAG-only data", "Output has NaN fill for density/speed/temperature"]
+evidence_refs = ["bin/fetch_pioneer.py"]
+
+[[item]]
+id = "T-054"
+area = "data"
+title = "Implement PSP AMDA fetcher and Rust parser"
+description = "DONE: bin/fetch_psp.py with SPC+MAG+orbit AMDA translation, crates/data_core/src/catalogs/psp.rs with PSP_LAYOUT and PspProvider, 4 Rust tests, SOURCES.toml entries."
+priority = "high"
+status = "done"
+status_token = "DONE"
+dependencies = []
+acceptance_criteria = ["cargo test -p data_core -- psp passes (4 tests)", "python3 bin/fetch_psp.py --source amda --start 2022 --end 2023 fetches data"]
+evidence_refs = ["crates/data_core/src/catalogs/psp.rs", "bin/fetch_psp.py"]
+
+[[item]]
+id = "T-055"
+area = "data"
+title = "Implement Helios AMDA fetcher and Rust parser"
+description = "DONE: bin/fetch_helios.py with E1-corefit+E3-MAG+orbit AMDA translation, crates/data_core/src/catalogs/helios.rs with HELIOS1/2_LAYOUT and HeliosProvider, 6 Rust tests, SOURCES.toml entries."
+priority = "high"
+status = "done"
+status_token = "DONE"
+dependencies = []
+acceptance_criteria = ["cargo test -p data_core -- helios passes (6 tests)", "python3 bin/fetch_helios.py --spacecraft helios1 --source amda --start 1976 --end 1980 fetches data"]
+evidence_refs = ["crates/data_core/src/catalogs/helios.rs", "bin/fetch_helios.py"]
+
+[[item]]
+id = "T-056"
+area = "data"
+title = "Implement Solar Orbiter partial AMDA fetcher"
+description = "DONE: bin/fetch_solo.py with MAG+RPW electron density AMDA translation. PARTIAL lane: no SWA proton plasma. SOURCES.toml entries."
+priority = "medium"
+status = "done"
+status_token = "DONE"
+dependencies = []
+acceptance_criteria = ["python3 bin/fetch_solo.py --source amda --start 2021 --end 2023 fetches data", "Speed/temperature columns are NaN fill"]
+evidence_refs = ["bin/fetch_solo.py"]
+
+[[item]]
+id = "T-057"
+area = "data"
+title = "Register all new spacecraft sources in SOURCES.toml"
+description = "DONE: Bartol V2, PSP AMDA (3 entries), Helios AMDA (4 entries), Solo AMDA (2 entries), Pioneer AMDA MAG-only (2 entries), PSP Gateway, ESA SOAR, Helios/PSP SPDF blocked, IMAP planned. Updated Pioneer and Voyager blocked entries with AMDA availability notes."
+priority = "high"
+status = "done"
+status_token = "DONE"
+dependencies = ["T-052", "T-053", "T-054", "T-055", "T-056"]
+acceptance_criteria = ["All new entries have valid TOML syntax", "Status reflects actual reachability"]
+evidence_refs = ["data/external/SOURCES.toml"]
+
+[[item]]
+id = "T-058"
+area = "data"
+title = "Cross-validate Bartol vs AMDA B-field for Voyager 2 overlap"
+description = "E-128: Compare Bartol 16-col RTN B-field against AMDA-derived Voyager 2 for 1990-1995 overlap."
+priority = "medium"
+status = "open"
+status_token = "OPEN"
+dependencies = ["T-052"]
+acceptance_criteria = ["Pearson correlation > 0.9 for each B-component", "Systematic offset < 1 nT"]
+evidence_refs = []
+
+[[item]]
+id = "T-059"
+area = "data"
+title = "Add AMDA fallback to bin/fetch_ulysses.py"
+description = "AMDA provides ulys-bai-mom (SW ion moments) + ulys-fgm-rtn (MAG RTN) + ulys-orb-all (orbit). Full plasma+MAG for 1.0-5.4 AU out-of-ecliptic."
+priority = "medium"
+status = "open"
+status_token = "OPEN"
+dependencies = []
+acceptance_criteria = ["--source amda option works", "Output matches SPDF merged format"]
+evidence_refs = []
+
+[[item]]
+id = "T-060"
+area = "data"
+title = "Add AMDA fallback to bin/fetch_juno.py (cruise phase)"
+description = "AMDA provides juno-jadel5-protmom (protons) + juno-fgm-cruise60 (MAG) + juno-cruise-all (ephemeris). Full plasma+MAG for cruise 1-5 AU."
+priority = "medium"
+status = "open"
+status_token = "OPEN"
+dependencies = []
+acceptance_criteria = ["--source amda option works for cruise phase", "Output matches SPDF merged format"]
+evidence_refs = []
+
+[[item]]
+id = "T-061"
+area = "data"
+title = "Add AMDA fallback to bin/fetch_wind.py"
+description = "AMDA provides wnd-swe-kp (SWE) + wnd-mfi-kp (MFI). Full plasma+MAG for L1."
+priority = "medium"
+status = "open"
+status_token = "OPEN"
+dependencies = []
+acceptance_criteria = ["--source amda option works", "Output matches existing Wind format"]
+evidence_refs = []
+
+[[item]]
+id = "T-062"
+area = "data"
+title = "Investigate PDS-SBN for New Horizons SWAP data"
+description = "New Horizons is the only spacecraft with NO AMDA fallback. Check PDS Small Bodies Node for NH SWAP plasma data."
+priority = "low"
+status = "open"
+status_token = "OPEN"
+dependencies = []
+acceptance_criteria = ["Document whether PDS-SBN has NH SWAP data", "Update SOURCES.toml with findings"]
+evidence_refs = []
+
+[[item]]
+id = "T-063"
+area = "qa"
+title = "Playwright browser probing of GSFC endpoints"
+description = "Test SPDF, CDAWeb, COHOWeb, PSP Gateway, ESA SOAR via Playwright browser automation to check if browser access bypasses connection-refused blocks."
+priority = "low"
+status = "open"
+status_token = "OPEN"
+dependencies = []
+acceptance_criteria = ["Each endpoint tested and results documented", "SOURCES.toml updated with probe results"]
+evidence_refs = []
