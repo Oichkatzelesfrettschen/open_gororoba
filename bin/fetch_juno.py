@@ -64,6 +64,7 @@ FILL_LATLON = 999.99
 # Generic helpers
 # ---------------------------------------------------------------------------
 
+
 def build_file_entry(
     url: str, path: Path, status: str, *, source: str, reason: str | None = None
 ) -> dict[str, object]:
@@ -99,6 +100,7 @@ def fetch_text(url: str, *, timeout: int = 60) -> str:
 # ---------------------------------------------------------------------------
 # AMDA HAPI helpers
 # ---------------------------------------------------------------------------
+
 
 def fetch_amda_info(dataset_id: str) -> dict[str, object]:
     return json.loads(fetch_text(f"{AMDA_HAPI}/info?id={dataset_id}", timeout=60))
@@ -153,6 +155,7 @@ def median_or_nan(values: list[float]) -> float:
 # ---------------------------------------------------------------------------
 # AMDA row parsers (sub-hourly -> hourly median buckets)
 # ---------------------------------------------------------------------------
+
 
 def parse_orbit_rows(text: str) -> dict[dt.datetime, dict[str, float]]:
     """Parse juno-cruise-all CSV -> hourly-median orbit dict.
@@ -264,6 +267,7 @@ def parse_plasma_rows(text: str) -> dict[dt.datetime, dict[str, float]]:
 # SPDF fetcher (original path)
 # ---------------------------------------------------------------------------
 
+
 def fetch_spdf_file(url: str, out: Path, *, skip_existing: bool) -> str:
     """Fetch a single SPDF file. Returns status string."""
     if skip_existing and out.exists():
@@ -286,9 +290,7 @@ def fetch_spdf_file(url: str, out: Path, *, skip_existing: bool) -> str:
     return "fetched"
 
 
-def fetch_juno_spdf(
-    years: range, *, skip_existing: bool
-) -> dict[str, object]:
+def fetch_juno_spdf(years: range, *, skip_existing: bool) -> dict[str, object]:
     """Fetch Juno cruise merged hourly from SPDF."""
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     counts: dict[str, int] = {"fetched": 0, "skipped": 0, "failed": 0}
@@ -317,9 +319,8 @@ def fetch_juno_spdf(
 # AMDA fetcher
 # ---------------------------------------------------------------------------
 
-def fetch_juno_amda(
-    years: range, *, skip_existing: bool
-) -> dict[str, object]:
+
+def fetch_juno_amda(years: range, *, skip_existing: bool) -> dict[str, object]:
     """Fetch Juno cruise merged hourly from AMDA HAPI.
 
     Combines juno-jadel5-protmom + juno-fgm-cruise60 + juno-cruise-all.
@@ -388,9 +389,7 @@ def fetch_juno_amda(
             orbit_rows = parse_orbit_rows(
                 fetch_amda_csv(AMDA_DATASETS["orbit"], start, end, timeout=120)
             )
-            mag_rows = parse_mag_rows(
-                fetch_amda_csv(AMDA_DATASETS["mag"], start, end, timeout=300)
-            )
+            mag_rows = parse_mag_rows(fetch_amda_csv(AMDA_DATASETS["mag"], start, end, timeout=300))
             plasma_rows = parse_plasma_rows(
                 fetch_amda_csv(AMDA_DATASETS["plasma"], start, end, timeout=120)
             )
@@ -465,9 +464,7 @@ def fetch_juno_amda(
         entry["effective_start"] = (
             format_hapi_time(first_bucket) if first_bucket is not None else start
         )
-        entry["effective_end"] = (
-            format_hapi_time(last_bucket) if last_bucket is not None else end
-        )
+        entry["effective_end"] = format_hapi_time(last_bucket) if last_bucket is not None else end
         entry["plasma_provenance"] = "measured_jade_l5_proton"
         entry["mag_provenance"] = "measured_fgm_cruise"
         entry["orbit_provenance"] = "measured_amda_cruise_orb"
@@ -494,6 +491,7 @@ def fetch_juno_amda(
 # Main entry point
 # ---------------------------------------------------------------------------
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Fetch Juno cruise merged hourly data from NASA SPDF or AMDA HAPI."
@@ -501,9 +499,7 @@ def main() -> int:
     parser.add_argument(
         "--start", type=int, default=2011, help="Start year (inclusive, default 2011)"
     )
-    parser.add_argument(
-        "--end", type=int, default=2016, help="End year (inclusive, default 2016)"
-    )
+    parser.add_argument("--end", type=int, default=2016, help="End year (inclusive, default 2016)")
     parser.add_argument(
         "--source",
         choices=["auto", "spdf", "amda"],
@@ -529,7 +525,11 @@ def main() -> int:
         # Auto: SPDF -> AMDA fallback.
         result = fetch_juno_spdf(years, skip_existing=args.skip_existing)
         counts = result.get("counts", {})
-        if isinstance(counts, dict) and counts.get("fetched", 0) == 0 and counts.get("skipped", 0) == 0:
+        if (
+            isinstance(counts, dict)
+            and counts.get("fetched", 0) == 0
+            and counts.get("skipped", 0) == 0
+        ):
             print("  SPDF failed, falling back to AMDA...")
             result = fetch_juno_amda(years, skip_existing=args.skip_existing)
 

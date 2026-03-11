@@ -53,8 +53,7 @@ SOURCE_META = {
         "authority_level": "primary_cached_paper",
         "verification_level": "source_capture",
         "notes": (
-            "Cached transcript mirror for source auditability; "
-            "not itself a verification result."
+            "Cached transcript mirror for source auditability; not itself a verification result."
         ),
     },
     "DE_MARRAIS_CATAMARAN.md": {
@@ -106,7 +105,10 @@ SOURCE_META = {
         "verification_level": "workflow_control",
         "operational_role": "chronology_pack_status",
         "truth_surfaces": ["chronology_control"],
-        "notes": "Operational heliosphere chronology and staged-lane status note for experiment scoping.",
+        "notes": (
+            "Operational heliosphere chronology and"
+            " staged-lane status note for experiment scoping."
+        ),
     },
     "INDEX.md": {
         "status_token": "ACTIVE",
@@ -114,7 +116,10 @@ SOURCE_META = {
         "authority_level": "auto_generated",
         "verification_level": "operational",
         "operational_role": "generated_index",
-        "notes": "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml.",
+        "notes": (
+            "Auto-generated index of external source dossiers;"
+            " source of truth is registry/external_sources.toml."
+        ),
     },
     "INVERSE_CD_FORMALISM.md": {
         "status_token": "UNVERIFIED",
@@ -161,7 +166,10 @@ SOURCE_META = {
             "crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs",
             "crates/gororoba_cli_physics/src/bin/fractal_metric_fit.rs",
         ],
-        "notes": "Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs.",
+        "notes": (
+            "Primary-source and benchmark index for"
+            " Pioneer anomaly and Earth-flyby audit inputs."
+        ),
     },
     "REGGIANI_MANIFOLD_CLAIMS.md": {
         "status_token": "PARTIALLY_VERIFIED",
@@ -184,7 +192,10 @@ SOURCE_META = {
         "authority_level": "primary_dataset_index",
         "verification_level": "source_capture",
         "operational_role": "mirror_audit",
-        "notes": "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior.",
+        "notes": (
+            "Endpoint audit for SOHO archive retrieval"
+            " surfaces and host-dependent mirror behavior."
+        ),
     },
     "WHEEL_ALGEBRA_TAXONOMY.md": {
         "status_token": "UNVERIFIED",
@@ -206,7 +217,10 @@ SOURCE_META = {
         "authority_level": "external_codebase_reference",
         "verification_level": "source_capture",
         "operational_role": "claim_bridge",
-        "notes": "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work.",
+        "notes": (
+            "Technique-reference capture mapping external"
+            " GPU optimization patterns onto local CUDA/LBM work."
+        ),
     },
 }
 
@@ -395,7 +409,7 @@ def _render_toml(records: list[SourceDoc]) -> str:
     lines.append("")
     lines.append("[external_sources]")
     lines.append('updated = "2026-02-09"')
-    lines.append('authoritative = true')
+    lines.append("authoritative = true")
     lines.append('source_markdown_glob = "docs/external_sources/*.md"')
     lines.append(f"document_count = {len(records)}")
     lines.append("")
@@ -412,9 +426,7 @@ def _render_toml(records: list[SourceDoc]) -> str:
         lines.append(f"operational_role = {_escape(rec.operational_role)}")
         lines.append(f"source_lineage_summary = {_escape(rec.source_lineage_summary)}")
         lines.append(f"truth_surfaces = {_render_list(rec.truth_surfaces)}")
-        lines.append(
-            f"artifact_contract_paths = {_render_list(rec.artifact_contract_paths)}"
-        )
+        lines.append(f"artifact_contract_paths = {_render_list(rec.artifact_contract_paths)}")
         lines.append(f"has_full_transcript = {'true' if rec.has_full_transcript else 'false'}")
         lines.append(f"claim_refs = {_render_list(rec.claim_refs)}")
         lines.append(f"url_refs = {_render_list(rec.url_refs)}")

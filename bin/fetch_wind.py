@@ -76,6 +76,7 @@ WIND_LAT_DEG = 0.0
 # Generic helpers
 # ---------------------------------------------------------------------------
 
+
 def build_file_entry(
     url: str, path: Path, status: str, *, source: str, reason: str | None = None
 ) -> dict[str, object]:
@@ -111,6 +112,7 @@ def fetch_text(url: str, *, timeout: int = 60) -> str:
 # ---------------------------------------------------------------------------
 # AMDA HAPI helpers
 # ---------------------------------------------------------------------------
+
 
 def fetch_amda_info(dataset_id: str) -> dict[str, object]:
     return json.loads(fetch_text(f"{AMDA_HAPI}/info?id={dataset_id}", timeout=60))
@@ -159,6 +161,7 @@ def median_or_nan(values: list[float]) -> float:
 # ---------------------------------------------------------------------------
 # AMDA row parsers
 # ---------------------------------------------------------------------------
+
 
 def parse_mag_rows(text: str) -> dict[dt.datetime, dict[str, float]]:
     """Parse wnd-mfi-kp CSV -> hourly-median MAG dict.
@@ -236,6 +239,7 @@ def parse_plasma_rows(text: str) -> dict[dt.datetime, dict[str, float]]:
 # SPDF fetcher (original paths)
 # ---------------------------------------------------------------------------
 
+
 def fetch_spdf_file(url: str, out: Path, *, skip_existing: bool) -> str:
     """Fetch a single file from SPDF. Returns status string."""
     if skip_existing and out.exists():
@@ -302,13 +306,13 @@ def fetch_wind_spdf(
     do_mfi = not swe_only
 
     if do_swe:
-        print(f"  Fetching WIND SWE (SPDF)...")
+        print("  Fetching WIND SWE (SPDF)...")
         swe = fetch_swe(years, skip_existing=skip_existing)
         for k in total:
             total[k] += swe[k]
 
     if do_mfi:
-        print(f"  Fetching WIND MFI (SPDF)...")
+        print("  Fetching WIND MFI (SPDF)...")
         mfi = fetch_mfi(years, skip_existing=skip_existing)
         for k in total:
             total[k] += mfi[k]
@@ -323,9 +327,8 @@ def fetch_wind_spdf(
 # AMDA fetcher (merged SWE+MFI lane)
 # ---------------------------------------------------------------------------
 
-def fetch_wind_amda(
-    years: range, *, skip_existing: bool
-) -> dict[str, object]:
+
+def fetch_wind_amda(years: range, *, skip_existing: bool) -> dict[str, object]:
     """Fetch Wind merged hourly from AMDA HAPI.
 
     Combines wnd-swe-kp (plasma) + wnd-mfi-kp (MAG).
@@ -392,9 +395,7 @@ def fetch_wind_amda(
         start = format_hapi_time(start_dt)
         end = format_hapi_time(end_dt)
         try:
-            mag_rows = parse_mag_rows(
-                fetch_amda_csv(AMDA_DATASETS["mfi"], start, end, timeout=300)
-            )
+            mag_rows = parse_mag_rows(fetch_amda_csv(AMDA_DATASETS["mfi"], start, end, timeout=300))
             plasma_rows = parse_plasma_rows(
                 fetch_amda_csv(AMDA_DATASETS["swe"], start, end, timeout=300)
             )
@@ -475,9 +476,7 @@ def fetch_wind_amda(
         entry["effective_start"] = (
             format_hapi_time(first_bucket) if first_bucket is not None else start
         )
-        entry["effective_end"] = (
-            format_hapi_time(last_bucket) if last_bucket is not None else end
-        )
+        entry["effective_end"] = format_hapi_time(last_bucket) if last_bucket is not None else end
         entry["plasma_provenance"] = "measured_swe_kp"
         entry["mag_provenance"] = "measured_mfi_kp"
         entry["orbit_provenance"] = "hardcoded_l1_position"
@@ -504,6 +503,7 @@ def fetch_wind_amda(
 # Main entry point
 # ---------------------------------------------------------------------------
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Fetch WIND SWE + MFI data from NASA SPDF or AMDA HAPI."
@@ -511,9 +511,7 @@ def main() -> int:
     parser.add_argument(
         "--start", type=int, default=2024, help="Start year (inclusive, default 2024)"
     )
-    parser.add_argument(
-        "--end", type=int, default=2024, help="End year (inclusive, default 2024)"
-    )
+    parser.add_argument("--end", type=int, default=2024, help="End year (inclusive, default 2024)")
     parser.add_argument(
         "--source",
         choices=["auto", "spdf", "amda"],
@@ -555,7 +553,11 @@ def main() -> int:
             mfi_only=args.mfi_only,
         )
         counts = result.get("counts", {})
-        if isinstance(counts, dict) and counts.get("fetched", 0) == 0 and counts.get("skipped", 0) == 0:
+        if (
+            isinstance(counts, dict)
+            and counts.get("fetched", 0) == 0
+            and counts.get("skipped", 0) == 0
+        ):
             print("  SPDF failed, falling back to AMDA...")
             result = fetch_wind_amda(years, skip_existing=args.skip_existing)
 

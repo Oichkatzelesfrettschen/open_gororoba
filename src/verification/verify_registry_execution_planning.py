@@ -197,7 +197,7 @@ def main() -> int:
     actions_raw = _load(root / "registry/next_actions.toml")
     requirements_raw = _load(root / "registry/requirements.toml")
     module_requirements_raw = _load(root / "registry/module_requirements.toml")
-    external_sources_raw = _load(root / "registry/external_sources.toml")
+    _load(root / "registry/external_sources.toml")  # validate parse
     dataset_label_aliases_raw = _load(root / "registry/dataset_label_aliases.toml")
 
     claim_ids = {str(row.get("id", "")) for row in claims}
@@ -321,9 +321,7 @@ def main() -> int:
                 failures.append(f"experiment[{eid}] unknown external source ref: {source_id}")
         for surface in row.get("truth_surface_consumption", []):
             if str(surface) not in TRUTH_SURFACE_ALLOWLIST:
-                failures.append(
-                    f"experiment[{eid}] invalid truth_surface_consumption: {surface}"
-                )
+                failures.append(f"experiment[{eid}] invalid truth_surface_consumption: {surface}")
 
     # Execution-planning lane: W5-016 legacy row (experiment lineage).
     if int(lineages_meta.get("lineage_count", -1)) != len(lineages):
@@ -388,9 +386,7 @@ def main() -> int:
             failures.append(f"lineage[{lid}] truth_surface_consumption mismatch")
         for surface in row.get("truth_surface_consumption", []):
             if str(surface) not in TRUTH_SURFACE_ALLOWLIST:
-                failures.append(
-                    f"lineage[{lid}] invalid truth_surface_consumption: {surface}"
-                )
+                failures.append(f"lineage[{lid}] invalid truth_surface_consumption: {surface}")
 
     edge_id_seen: set[str] = set()
     edge_kinds = {
@@ -456,9 +452,7 @@ def main() -> int:
             source_edge_refs.setdefault(lid, set()).add(to_ref)
         elif to_kind == "truth_surface":
             if to_ref not in TRUTH_SURFACE_ALLOWLIST:
-                failures.append(
-                    f"lineage edge[{edge_id}] invalid truth surface ref: {to_ref}"
-                )
+                failures.append(f"lineage edge[{edge_id}] invalid truth surface ref: {to_ref}")
             truth_surface_edge_refs.setdefault(lid, set()).add(to_ref)
     for lid in seen_lineage_ids:
         exp_binary = ""
@@ -468,17 +462,13 @@ def main() -> int:
             exp_row = exp_by_id[lineage_to_experiment[lid]]
             exp_binary = str(exp_row.get("binary", ""))
             exp_sources = [str(v) for v in exp_row.get("external_source_refs", [])]
-            exp_truth_surfaces = [
-                str(v) for v in exp_row.get("truth_surface_consumption", [])
-            ]
+            exp_truth_surfaces = [str(v) for v in exp_row.get("truth_surface_consumption", [])]
         if exp_binary and lid not in binary_edge_lineages:
             failures.append(f"lineage[{lid}] missing binary edge")
         if set(exp_sources) != source_edge_refs.get(lid, set()):
             failures.append(f"lineage[{lid}] source edges do not match experiment refs")
         if set(exp_truth_surfaces) != truth_surface_edge_refs.get(lid, set()):
-            failures.append(
-                f"lineage[{lid}] truth-surface edges do not match experiment refs"
-            )
+            failures.append(f"lineage[{lid}] truth-surface edges do not match experiment refs")
 
     # Execution-planning lane: W5-021 legacy row (roadmap/todo/next-actions schema hardening).
     roadmap_meta = roadmap_raw.get("roadmap", {})

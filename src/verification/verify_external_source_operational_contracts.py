@@ -10,7 +10,6 @@ import argparse
 import tomllib
 from pathlib import Path
 
-
 ROLE_ALLOWLIST = {
     "reference_capture",
     "provider_manifest",
@@ -111,9 +110,7 @@ def main() -> int:
             )
         for rel in contract_paths:
             if not (root / rel).exists():
-                failures.append(
-                    f"external_sources[{doc_id}] missing artifact_contract_path: {rel}"
-                )
+                failures.append(f"external_sources[{doc_id}] missing artifact_contract_path: {rel}")
 
         lineage = str(row.get("source_lineage_summary", "")).strip()
         if role == "dataset_lineage_audit" and not lineage:
@@ -122,7 +119,9 @@ def main() -> int:
             )
         if role == "falsification_contract" and "observation_benchmark" not in truth_surfaces:
             failures.append(
-                f"external_sources[{doc_id}] falsification_contract must expose observation_benchmark"
+                f"external_sources[{doc_id}]"
+                " falsification_contract must expose"
+                " observation_benchmark"
             )
 
     for row in experiments:
@@ -134,19 +133,25 @@ def main() -> int:
         truth_consumption = _string_list(row, "truth_surface_consumption")
         if not source_refs:
             failures.append(
-                f"experiments[{experiment_id}] anomaly surface experiment missing external_source_refs"
+                f"experiments[{experiment_id}]"
+                " anomaly surface experiment"
+                " missing external_source_refs"
             )
             continue
         if not truth_consumption:
             failures.append(
-                f"experiments[{experiment_id}] anomaly surface experiment missing truth_surface_consumption"
+                f"experiments[{experiment_id}]"
+                " anomaly surface experiment"
+                " missing truth_surface_consumption"
             )
             continue
 
         unknown_sources = [ref for ref in source_refs if ref not in docs_by_id]
         if unknown_sources:
             failures.append(
-                f"experiments[{experiment_id}] unknown external_source_refs: {', '.join(unknown_sources)}"
+                f"experiments[{experiment_id}]"
+                " unknown external_source_refs:"
+                f" {', '.join(unknown_sources)}"
             )
             continue
 
@@ -161,7 +166,9 @@ def main() -> int:
         offered_surfaces: set[str] = set()
         for ref in source_refs:
             offered_surfaces.update(_string_list(docs_by_id[ref], "truth_surfaces"))
-        missing_surfaces = [surface for surface in truth_consumption if surface not in offered_surfaces]
+        missing_surfaces = [
+            surface for surface in truth_consumption if surface not in offered_surfaces
+        ]
         if missing_surfaces:
             failures.append(
                 f"experiments[{experiment_id}] truth surfaces not offered by external_source_refs: "
