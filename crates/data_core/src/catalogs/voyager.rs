@@ -222,7 +222,9 @@ pub fn parse_voyager_file(
 ///
 /// Sets r_au, lat_deg, lon_deg from parsed position columns.
 /// B-field is in SE coordinates (close to GSE for near-ecliptic trajectory).
+/// Both V1 and V2 use SE coordinates, so no spacecraft dispatch is needed here.
 pub fn voyager_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
+    // Both VOYAGER1_MISSION and VOYAGER2_MISSION have b_is_se=true; same result.
     VOYAGER1_MISSION.to_omni(records)
 }
 
