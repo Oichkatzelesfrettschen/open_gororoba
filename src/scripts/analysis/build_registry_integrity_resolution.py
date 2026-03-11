@@ -176,15 +176,6 @@ def _extract_claim_refs(text: str) -> list[str]:
     return sorted(set(CLAIM_ID_RE.findall(text)))
 
 
-def _extract_id_refs(text: str) -> dict[str, list[str]]:
-    return {
-        "claim_refs": sorted(set(CLAIM_ID_RE.findall(text))),
-        "insight_refs": sorted(set(I_ID_RE.findall(text))),
-        "experiment_refs": sorted(set(E_ID_RE.findall(text))),
-        "source_refs": sorted(set(XS_ID_RE.findall(text))),
-        "dataset_refs": sorted(set(PC_ID_RE.findall(text))),
-    }
-
 
 def _token_set(text: str) -> set[str]:
     return {
