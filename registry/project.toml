@@ -5,16 +5,25 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 5153
-claim_count = 1070
-insight_count = 119
-experiment_count = 136
+test_count = 5392
+claim_count = 1093
+insight_count = 121
+experiment_count = 139
 complete_experiment_count = 88
 paper_count = 111
 binary_count = 177
 kernel_checked_claims = 122
 proof_files = 181
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s79]
+number = 79
+date = "2026-03-10"
+test_count = 5392
+claim_count = 1093
+kernel_checked_claims = 122
+proof_files = 181
+summary = "S79: Physics Correctness & Data Integrity Audit (37 bug fixes, 7 batches). Batch 1: DESI DR2 BAO Table 1 values, DES Y6 LCDM row. Batch 2: Parker B-field ceiling 1/r (not 1/r^2), RTN-to-GSE rotation via spacecraft longitude, ACE MAG year/doy preservation. Batch 3: MAG-only record acceptance (near-Earth only), proportional x-column mapping, B interpolation skip-zero fix, Parker fallback guard. Batch 4: x=0 inflow face u_sw extraction, IC coordinate bounds check. Batch 5: radial divergence replacing periodic x-wrap in PTE, LIS boundary reapplication, DmYieldSpectrum endpoint fix, LBM-to-AU/s velocity conversion, phi integral km/s->AU/s (10^8 fix), CFL stability check. Batch 6: c(M,z) z-clamp at 10.0, rho_crit(z) threading, c200 from CMR (not hardcoded 10.0), galactocentric NFW centering (r_sun=8.3 kpc), DM density normalization, force_scale from actual nx/v_sw. Batch 7: attractive gravity wake (sign fix), wake accumulation -> background clone, chi2_best=chi2_null for clamped amplitude, flyby residual audit doc, crate_inventory repo_root(), tensor_avt CPU backend routing, callgrind CPU-only config. 23 new claims (C-1208..C-1230), 1 experiment (E-138), 2 insights (I-123..I-124). 5392 tests, 0 failures, clippy clean, governance gate green."
 
 [sprints.s77]
 number = 77

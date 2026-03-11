@@ -4,9 +4,9 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 112
-deterministic_count = 65
-gpu_count = 13
+experiment_count = 139
+deterministic_count = 96
+gpu_count = 14
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
 
@@ -31,6 +31,9 @@ lineage_id = "XL-001"
 input_path_refs = []
 output_path_refs = ["data/csv/motif_census_dim{N}.csv", "data/csv/motif_census_summary.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -55,6 +58,9 @@ lineage_id = "XL-002"
 input_path_refs = ["data/external/"]
 output_path_refs = ["data/csv/c071g_multi_dataset_ultrametric.csv"]
 dataset_refs = ["PC-0017"]
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -78,6 +84,9 @@ lineage_id = "XL-003"
 input_path_refs = ["data/external/Pantheon+SH0ES.dat"]
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -101,6 +110,9 @@ lineage_id = "XL-004"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -124,6 +136,9 @@ lineage_id = "XL-005"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -131,7 +146,7 @@ id = "E-006"
 title = "Gravastar TOV Parameter Sweep"
 binary = "gravastar-sweep"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-006"
 method = "Solve TOV for three-layer gravastar across polytropic indices and target masses."
 input = "None (parametric sweep)"
 output = ["data/csv/gravastar_sweep.csv"]
@@ -147,6 +162,9 @@ lineage_id = "XL-006"
 input_path_refs = []
 output_path_refs = ["data/csv/gravastar_sweep.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -171,6 +189,9 @@ lineage_id = "XL-007"
 input_path_refs = []
 output_path_refs = ["data/csv/entropy_scaling.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -195,6 +216,9 @@ lineage_id = "XL-008"
 input_path_refs = ["data/external/gwosc_all_events.csv"]
 output_path_refs = ["data/csv/gwtc3_mass_clumping_dip.csv"]
 dataset_refs = ["PC-0044"]
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -218,6 +242,9 @@ lineage_id = "XL-009"
 input_path_refs = []
 output_path_refs = ["data/csv/neg_dim_convergence.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -242,6 +269,9 @@ lineage_id = "XL-010"
 input_path_refs = ["data/external/"]
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -266,6 +296,9 @@ lineage_id = "XL-011"
 input_path_refs = []
 output_path_refs = ["data/csv/cross_stack_locality_comparison.csv"]
 dataset_refs = ["PC-0033"]
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -290,6 +323,9 @@ lineage_id = "XL-012"
 input_path_refs = []
 output_path_refs = ["data/csv/et_billiard_phase_structure.csv"]
 dataset_refs = ["PC-0034"]
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -313,6 +349,9 @@ lineage_id = "XL-013"
 input_path_refs = []
 output_path_refs = ["data/csv/sky_limit_set_comparison.csv"]
 dataset_refs = ["PC-0058"]
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -320,7 +359,7 @@ id = "E-014"
 title = "Dimensional Ladder APT Census (4D-4096D)"
 binary = "dimensional-census"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-014"
 method = "Exhaustive and Monte Carlo Anti-Diagonal Parity Theorem verification across the full Cayley-Dickson dimensional ladder from dim=4 to dim=4096. Exhaustive mode: Enumerate ALL graph triangles in each zero-divisor component. For each triangle (a,b,c), compute eta via anti-diagonal parity formula: eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b). Classify as pure (eta constant across 3 edges) or mixed (eta non-constant). Verify 1:3 pure:mixed ratio (Quarter Rule: pure*4 = total exactly). Verify Klein-four fiber symmetry: F(0,0) = F(0,1) = F(1,0) = F(1,1). Monte Carlo mode: Rejection-sample random node triples within components, accept only graph triangles (all 3 edges present), classify via APT. Deterministic with seed=42. Tier classification: dims 4-32 (TIER 0-1, <15s), dims 64-256 (TIER 2, ~5s release), dims 512-1024 (TIER 3, minutes-hours CPU), dims 2048-4096 (TIER 4, GPU Monte Carlo)."
 input = "None (Cayley-Dickson structure tables computed on the fly)"
 output = ["data/csv/apt_dimensional_census_summary.csv", "data/csv/apt_dimensional_census_details.csv"]
@@ -334,8 +373,11 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-014"
 input_path_refs = []
-output_path_refs = ["data/csv/apt_dimensional_census_summary.csv", "data/csv/apt_dimensional_census_details.csv"]
+output_path_refs = ["data/csv/apt_dimensional_census_details.csv", "data/csv/apt_dimensional_census_summary.csv"]
 dataset_refs = ["PC-0002"]
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -343,13 +385,12 @@ id = "E-015"
 title = "GF(2) Separating Degree Formula Verification (dim 32-256)"
 binary = "dimensional-census"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-015"
 method = "For each Cayley-Dickson dimension d in {32, 64, 128, 256}, compute the minimum-degree GF(2) polynomial that separates all motif classes in PG(log2(d)-2, 2). Uses greedy partition refinement for d=256 where brute-force is infeasible (16 classes, C(127,6) candidate tuples). Verifies the formula min_degree = log2(d) - 2 at each step."
 input = "None (Cayley-Dickson structure tables computed on the fly)"
 output = ["data/csv/separating_degree_formula_sweep.csv"]
 run = "cargo test -p gororoba_algebra --release --lib -- test_separating_degree_formula_universality --nocapture"
-run_legacy_note = "Before the 2026-03-09 facade rename, this command targeted package algebra_core."
-run_command_sha256 = "14fdeb04854fd5796e3e9e39d81ec504b61eb83076dad30cc7813352db6c7dd0"
+run_command_sha256 = "f4bbcee91912c16f43c97762273f51c4ee88937f535b963f6c805452b2e6093a"
 claims = ["C-599", "C-600"]
 claim_refs = ["C-599", "C-600"]
 deterministic = true
@@ -360,6 +401,9 @@ lineage_id = "XL-015"
 input_path_refs = []
 output_path_refs = ["data/csv/separating_degree_formula_sweep.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -367,7 +411,7 @@ id = "E-016"
 title = "A-infinity Homotopy Gravastar Obstruction Sweep"
 binary = "gravastar-sweep"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-016"
 method = "Construct a SedenionAInfinity algebra (m_2=CD product, m_3=associator) and compute the obstruction norm (Frobenius / dim^{3/2}). Map obstruction to Bowers-Liang anisotropy parameter lambda via linear coupling. Sweep coupling from 0 to 0.5 and solve the anisotropic gravastar TOV equation at each point to find the stability window."
 input = "None (sedenion structure table + polytropic EOS computed on the fly)"
 output = ["data/csv/gravastar_homotopy_obstruction_sweep.csv"]
@@ -383,6 +427,9 @@ lineage_id = "XL-016"
 input_path_refs = []
 output_path_refs = ["data/csv/gravastar_homotopy_obstruction_sweep.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -406,6 +453,9 @@ lineage_id = "XL-017"
 input_path_refs = []
 output_path_refs = ["data/csv/entropy_trap_7clique_absorption.csv", "data/csv/entropy_trap_7clique_summary.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -413,7 +463,7 @@ id = "E-018"
 title = "He-4 BEC Thermodynamics and Two-Fluid Dynamics"
 binary = "he4-superfluid"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-018"
 method = "Compute ideal BEC critical temperature via zeta(3/2) formula, verify condensate fraction law 1-(T/T_c)^(3/2), validate Landau superfluid density fraction with exponent 5.6, and simulate 0D two-fluid relaxation dynamics using RK4 with relaxation timescales tau_rho = 1 us, tau_t = 100 us. Verify mass conservation, equilibrium relaxation, and thermal relaxation through the lambda transition."
 input = "None (physical constants for He-4 at SVP)"
 output = ["data/csv/he4_bec_condensate_fraction.csv", "data/csv/he4_two_fluid_evolution.csv"]
@@ -429,6 +479,9 @@ lineage_id = "XL-018"
 input_path_refs = []
 output_path_refs = ["data/csv/he4_bec_condensate_fraction.csv", "data/csv/he4_two_fluid_evolution.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -436,7 +489,7 @@ id = "E-019"
 title = "Gross-Pitaevskii Ground State and Vortex Calculation"
 binary = "he4-superfluid"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-019"
 method = "Solve the Gross-Pitaevskii equation using Strang split-operator method with FFT-based kinetic evolution. Compute ground states via imaginary-time propagation in a harmonic trap (omega=1), verifying energy recovery E=omega/2 for the linear case (g=0). Test that repulsive interactions (g=50) raise the energy above the linear value. Verify norm preservation during real-time evolution and density centering on the trap."
 input = "None (harmonic trap potential, interaction parameter g)"
 output = ["data/csv/he4_gpe_ground_state.csv"]
@@ -452,6 +505,9 @@ lineage_id = "XL-019"
 input_path_refs = []
 output_path_refs = ["data/csv/he4_gpe_ground_state.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -475,6 +531,9 @@ lineage_id = "XL-020"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -498,6 +557,9 @@ lineage_id = "XL-021"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -521,6 +583,9 @@ lineage_id = "XL-022"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -544,6 +609,9 @@ lineage_id = "XL-023"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -567,6 +635,9 @@ lineage_id = "XL-024"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -574,7 +645,7 @@ id = "E-027"
 title = "Topology-Imbalance Correlation via Persistent Homology (Thesis 1)"
 binary = "e027-topology-analyzer"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-027"
 method = "VR persistent homology on velocity point cloud, CD psi-weighted triangle imbalance, Pearson correlation + Fisher-Yates permutation test"
 input = "Synthetic Poiseuille+vortex velocity field, SedenionField with random perturbation"
 output = ["data/e027/e027_topology_NNNcubed.toml", "data/e027/betti_timeseries_NNNcubed.csv"]
@@ -589,8 +660,11 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-025"
 input_path_refs = []
-output_path_refs = ["data/e027/e027_topology_NNNcubed.toml", "data/e027/betti_timeseries_NNNcubed.csv"]
+output_path_refs = ["data/e027/betti_timeseries_NNNcubed.csv", "data/e027/e027_topology_NNNcubed.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -615,6 +689,9 @@ lineage_id = "XL-026"
 input_path_refs = []
 output_path_refs = ["data/evidence/e028_filtration_analysis.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -637,8 +714,11 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-027"
 input_path_refs = []
-output_path_refs = ["data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml"]
+output_path_refs = ["data/evidence/e029_algebraic/e029_neural_homotopy.toml", "data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -646,7 +726,7 @@ id = "E-030"
 title = "TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)"
 binary = "thesis-cross-tx1"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-030"
 method = "3D toroidal random walk with CD product noise, imbalance density modulates local noise amplitude via alpha parameter, return-time shell binning, power-law gamma fitting"
 input = "SedenionField spatial variation (dim=16), deterministic xorshift seed"
 output = ["data/thesis_lab/tx1/tx1_report.toml"]
@@ -663,6 +743,9 @@ lineage_id = "XL-028"
 input_path_refs = []
 output_path_refs = ["data/thesis_lab/tx1/tx1_report.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -670,7 +753,7 @@ id = "E-031"
 title = "TX-2: Viscosity-to-Filtration Loop (T2 x T4)"
 binary = "thesis-cross-tx2"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-031"
 method = "Imbalance -> viscosity -> LBM evolution -> velocity field -> lattice filtration -> latency law classification, lambda sweep for coupling strength"
 input = "SedenionField spatial variation (dim=16), Kolmogorov shear forcing"
 output = ["data/thesis_lab/tx2/tx2_report.toml"]
@@ -687,6 +770,9 @@ lineage_id = "XL-029"
 input_path_refs = []
 output_path_refs = ["data/thesis_lab/tx2/tx2_report.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -694,7 +780,7 @@ id = "E-032"
 title = "Thesis 2: 3D Associator-Coupled Shear Thickening"
 binary = "thesis2-3d-thickening"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-032"
 method = "SedenionField local associator norm -> coupling field, LBM evolve_non_newtonian with Kolmogorov forcing, sweep over alpha and power-law index, compare Newtonian vs non-Newtonian max velocity"
 input = "SedenionField spatial variation (dim=16), Kolmogorov shear forcing"
 output = ["data/thesis_lab/thesis2_3d/thesis2_3d.toml"]
@@ -711,6 +797,9 @@ lineage_id = "XL-030"
 input_path_refs = []
 output_path_refs = ["data/thesis_lab/thesis2_3d/thesis2_3d.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -718,7 +807,7 @@ id = "E-033"
 title = "Grand Synthesis: All Four Theses Pass Gate Simultaneously"
 binary = "thesis-synthesis-engine"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-033"
 method = "Orchestrated execution of T1 (spatial correlation), T2 (power-law viscosity), T3 (plateau detection + pentagon optimization), T4 (shell return-time power law). Each thesis evaluated independently with falsification gate."
 input = "Sedenion algebra (CD basis), LBM viscosity model, neural homotopy model, shell return-time storm"
 output = ["data/evidence/synthesis_final/synthesis_summary.toml", "data/evidence/synthesis_final/thesis1_evidence.toml", "data/evidence/synthesis_final/thesis2_evidence.toml", "data/evidence/synthesis_final/thesis3_evidence.toml", "data/evidence/synthesis_final/thesis4_evidence.toml"]
@@ -735,6 +824,9 @@ lineage_id = "XL-031"
 input_path_refs = []
 output_path_refs = ["data/evidence/synthesis_final/synthesis_summary.toml", "data/evidence/synthesis_final/thesis1_evidence.toml", "data/evidence/synthesis_final/thesis2_evidence.toml", "data/evidence/synthesis_final/thesis3_evidence.toml", "data/evidence/synthesis_final/thesis4_evidence.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -759,6 +851,9 @@ lineage_id = "XL-032"
 input_path_refs = []
 output_path_refs = ["data/kubo_transport/coupling_analysis.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -766,7 +861,7 @@ id = "E-035"
 title = "Reynolds Independence: Decaying Turbulence Scaling (Experiment C)"
 binary = "warp-gpu-experiment"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-035"
 method = "Direct Numerical Simulation of decaying turbulence on cubic grids (8^3, 16^3, 32^3, 64^3) using GPU LBM (D3Q19). Measures enstrophy decay exponent alpha and Betti-1 topological persistence. Compares decay normalized by initial enstrophy and eddy turnover time to establish resolution-independence threshold."
 input = "Randomly perturbed 3D shear velocity field."
 output = ["data/csv/warp_experiment_c_topology_{N}.csv", "reports/reynolds_scaling_analysis.md"]
@@ -783,6 +878,9 @@ lineage_id = "XL-033"
 input_path_refs = []
 output_path_refs = ["data/csv/warp_experiment_c_topology_{N}.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -807,6 +905,9 @@ lineage_id = "XL-034"
 input_path_refs = ["data/external/lhc_2025/"]
 output_path_refs = ["data/evidence/spin_decoherence.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -831,6 +932,9 @@ lineage_id = "XL-035"
 input_path_refs = []
 output_path_refs = ["data/evidence/amplitude_imbalance.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -855,6 +959,9 @@ lineage_id = "XL-036"
 input_path_refs = ["data/external/lhc_2025/"]
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -879,6 +986,9 @@ lineage_id = "XL-037"
 input_path_refs = []
 output_path_refs = ["data/wavelet_bridging/results.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -903,6 +1013,9 @@ lineage_id = "XL-038"
 input_path_refs = []
 output_path_refs = ["data/meltdown_gating/results.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -927,6 +1040,9 @@ lineage_id = "XL-039"
 input_path_refs = []
 output_path_refs = ["data/wavelet_acf/results.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -951,6 +1067,9 @@ lineage_id = "XL-040"
 input_path_refs = []
 output_path_refs = ["data/chsh_wavelet/results.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -975,6 +1094,9 @@ lineage_id = "XL-041"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -999,6 +1121,9 @@ lineage_id = "XL-042"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1023,6 +1148,9 @@ lineage_id = "XL-043"
 input_path_refs = ["data/csv/wow1977_transcription.csv"]
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1047,6 +1175,9 @@ lineage_id = "XL-044"
 input_path_refs = []
 output_path_refs = ["data/csv/wow_drift_rate_bounds.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1071,6 +1202,9 @@ lineage_id = "XL-045"
 input_path_refs = ["data/csv/bl_6equj5_gbt_manifest.csv"]
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1095,6 +1229,9 @@ lineage_id = "XL-046"
 input_path_refs = ["data/csv/bl_6equj5_gbt_manifest.csv"]
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1119,6 +1256,9 @@ lineage_id = "XL-047"
 input_path_refs = ["data/csv/bl_6equj5_gbt_manifest.csv"]
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1140,8 +1280,11 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-048"
 input_path_refs = ["data/bl_6equj5_gbt/"]
-output_path_refs = ["data/csv/bl_6equj5_doppler_results.csv", "data/csv/bl_6equj5_cadence_events.csv", "registry/bl_6equj5_analysis.toml"]
+output_path_refs = ["data/csv/bl_6equj5_cadence_events.csv", "data/csv/bl_6equj5_doppler_results.csv", "registry/bl_6equj5_analysis.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -1163,8 +1306,11 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-049"
 input_path_refs = []
-output_path_refs = ["data/csv/zd_resonance_sweep.csv", "data/csv/zd_resonance_control.csv"]
+output_path_refs = ["data/csv/zd_resonance_control.csv", "data/csv/zd_resonance_sweep.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -1186,8 +1332,11 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-050"
 input_path_refs = []
-output_path_refs = ["data/csv/pathion_sink_compare.csv", "data/csv/pathion_coupling_sweep.csv"]
+output_path_refs = ["data/csv/pathion_coupling_sweep.csv", "data/csv/pathion_sink_compare.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1211,6 +1360,9 @@ lineage_id = "XL-051"
 input_path_refs = []
 output_path_refs = ["data/csv/chirality_matrix.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1234,6 +1386,9 @@ lineage_id = "XL-052"
 input_path_refs = []
 output_path_refs = ["data/csv/moonshine_synth.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1257,6 +1412,9 @@ lineage_id = "XL-053"
 input_path_refs = []
 output_path_refs = ["data/csv/wow_sedenion_report.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1264,7 +1422,7 @@ id = "E-056"
 title = "Lattice-Hawking Spectrum Sweep"
 binary = "lattice-hawking-sweep"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-056"
 method = "Sweep grid resolutions N=16,32,64,128 with radial inflow analog black hole. For each N: find acoustic horizon, compute surface gravity and Hawking temperature, compare ideal/lattice-cutoff/viscosity-cutoff spectra, fit effective temperatures."
 input = "Parametric sweep (no external data)"
 output = ["data/lattice_hawking/results.toml"]
@@ -1280,6 +1438,9 @@ lineage_id = "XL-054"
 input_path_refs = []
 output_path_refs = ["data/lattice_hawking/results.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1287,7 +1448,7 @@ id = "E-057"
 title = "CD Associator Entropy Phase Census"
 binary = "algebra-entropy-census"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-057"
 method = "Sweep Cayley-Dickson dimensions 2,4,8,16,32,64,128,256. For each: sample 10000 random unit triples, compute associator norms, histogram into 100 bins, compute Shannon entropy H. Report delta_H at each transition, zero divisor density."
 input = "Parametric sweep (no external data)"
 output = ["data/algebra_entropy/results.toml"]
@@ -1303,6 +1464,9 @@ lineage_id = "XL-055"
 input_path_refs = []
 output_path_refs = ["data/algebra_entropy/results.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1310,7 +1474,7 @@ id = "E-058"
 title = "CHSH-Betti Correlation Sweep"
 binary = "chsh-betti-sweep"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-058"
 method = "Run GPU FP64 LBM at 4 configurations (varying tau and forcing amplitude). For each: 500 steps at 32^3, snapshot every 10 steps. Extract y-profile (flow variation direction) for CHSH wavelet S. Adaptive p75 threshold for VR Betti-1. Spearman correlation between S and B1 across snapshots."
 input = "Parametric sweep (no external data)"
 output = ["data/chsh_betti/results.toml"]
@@ -1326,6 +1490,9 @@ lineage_id = "XL-056"
 input_path_refs = []
 output_path_refs = ["data/chsh_betti/results.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1333,7 +1500,7 @@ id = "E-059"
 title = "Pulsed vs Steady Entropy Injection"
 binary = "meltdown-pulsed-gate"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-059"
 method = "Compare 3 protocols at equal total forcing energy: (A) steady rho=5.0, (B) pulsed 50% duty cycle (rho=10.0), (C) pulsed 25% duty cycle (rho=20.0). Measure p95 wavelet concurrency AND Shannon entropy at each level after 1000 steps with nu=0.001, dt=1e-3, Haar hard-threshold gating at eps=0.01,0.1,1.0."
 input = "Parametric sweep (no external data)"
 output = ["data/meltdown_pulsed/results.toml"]
@@ -1349,6 +1516,9 @@ lineage_id = "XL-057"
 input_path_refs = []
 output_path_refs = ["data/meltdown_pulsed/results.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1356,7 +1526,7 @@ id = "E-060"
 title = "Cross-Catalog rho-ghost-fft Spectral Analysis"
 binary = "rho-ghost-fft"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-060"
 method = "Apply rho-ghost-fft power spectrum analysis to 10+ catalogs across 5 messengers (FRB, pulsar, SNIa, SETI, null controls). Detect phi^{-1/2} ghost frequency at 0.2138 normalized. Compare peak frequency, SNR, and FWHM across catalog sizes and wavebands."
 input = "data/external/ (CHIME Cat1/Cat2, ATNF, Pantheon+, SDSS, Gaia, ALICE, Swarm, SORCE, Wow GBT)"
 output = ["data/csv/zd_resonance_real_distribution.csv"]
@@ -1372,6 +1542,9 @@ lineage_id = "XL-058"
 input_path_refs = ["data/external/"]
 output_path_refs = ["data/csv/zd_resonance_real_distribution.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1379,7 +1552,7 @@ id = "E-061"
 title = "Wow! GBT S-Band Deep Spectral Stack"
 binary = "rho-ghost-fft"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-061"
 method = "Deep spectral analysis of 12 Breakthrough Listen GBT S-band (2.25 GHz) filterbank files from 6EQUJ5 follow-up observations. Stacked power spectrum after Doppler correction. Test for phi^{-1/2} ghost at S-band frequencies."
 input = "data/external/bl_6equj5/ (12 filterbank files, 288 GB total)"
 output = ["data/csv/wow_followup_snr.csv"]
@@ -1395,6 +1568,9 @@ lineage_id = "XL-059"
 input_path_refs = ["data/external/bl_6equj5/"]
 output_path_refs = ["data/csv/wow_followup_snr.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1402,7 +1578,7 @@ id = "E-062"
 title = "Multiscale CWT Ricker Wavelet Ghost Analysis"
 binary = "rho-ghost-fft"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-062"
 method = "Apply Continuous Wavelet Transform with Ricker wavelet to null-control datasets (Wow! S-band stacked, Swarm magnetic field). Test whether phi^{-1/2} ghost is a delocalized scale-invariant feature hidden from standard FFT. Compute ghost-band power fraction at width~24 (f~0.214)."
 input = "data/csv/wow_followup_snr.csv, data/external/swarm/"
 output = ["data/csv/cwt_ghost_validation.csv"]
@@ -1418,6 +1594,9 @@ lineage_id = "XL-060"
 input_path_refs = ["data/csv/wow_followup_snr.csv", "data/external/swarm/"]
 output_path_refs = ["data/csv/cwt_ghost_validation.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1425,7 +1604,7 @@ id = "E-063"
 title = "CUDA BF16 ZD Resonance 128^3 Tau Sweep"
 binary = "zd-resonance-cuda"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-063"
 method = "D3Q19 LBM at 128^3 with BF16 precision and per-cell Sedenion imbalance viscosity (Exponential model, lambda=3.0). Sweep tau from 0.55 to 1.00 (10 values). For each tau: nu_base=(tau-0.5)/3.0, compute per-cell viscosity field, 1000 steps, extract KE every 10 steps, FFT + ghost peak detection. Control run at matching resolution with constant tau (no ZD modulation). Tests C-792 (frequency locking: |slope| < 0.01 in peak_freq vs tau) and C-793 (production ghost detection: SNR > 3 at phi^{-1/2})."
 input = "None (synthetic Sedenion field initialization)"
 output = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
@@ -1441,6 +1620,9 @@ lineage_id = "XL-061"
 input_path_refs = []
 output_path_refs = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -1448,7 +1630,7 @@ id = "E-064"
 title = "CUDA BF16 ZD Resonance 256^3 Tau Sweep"
 binary = "zd-resonance-cuda"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-064"
 method = "D3Q19 LBM at 256^3 with BF16 precision. Same tau sweep protocol as E-063 but at 4x higher resolution (16.7M cells). Tests whether ghost peak narrows and converges toward 0.2138 with increasing resolution, paralleling real-data Cat1->Cat2 convergence (C-789)."
 input = "None (synthetic Sedenion field initialization)"
 output = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
@@ -1464,6 +1646,9 @@ lineage_id = "XL-062"
 input_path_refs = []
 output_path_refs = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -1471,7 +1656,7 @@ id = "E-065"
 title = "CUDA BF16 Reynolds Number Threshold Sweep 128^3"
 binary = "zd-resonance-cuda"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-065"
 method = "Fix Sedenion coupling, sweep Reynolds number from laminar to turbulent by varying both tau (0.501-0.70) and forcing amplitude (0.001-0.5). Kolmogorov sinusoidal forcing F_x = A*sin(2*pi*k*z/N). Motivated by real-data finding: Re_eff=0.16 (laminar) did not produce sharp Ghost resonance. Tests whether Ghost onset requires specific turbulence intensity (L-787)."
 input = "None (synthetic forcing + Sedenion field)"
 output = ["data/csv/zd_resonance_cuda_reynolds_128.csv"]
@@ -1487,6 +1672,9 @@ lineage_id = "XL-063"
 input_path_refs = []
 output_path_refs = ["data/csv/zd_resonance_cuda_reynolds_128.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -1494,7 +1682,7 @@ id = "E-066"
 title = "4D ZD Resonance 32^3 x 32 Batch Sweep"
 binary = "zd-resonance-4d"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-066"
 method = "D3Q19 batch LBM at 32^3 x 32 (1.05M cells) with BF16 precision. 4th dimension (w) parametrizes Sedenion field phase offsets. Tests whether 4D spatial embedding (16 = 4^2) reveals coupling symmetries invisible in 3D. Control run with constant tau for null hypothesis."
 input = "None (synthetic 4D Sedenion field)"
 output = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
@@ -1510,6 +1698,9 @@ lineage_id = "XL-064"
 input_path_refs = []
 output_path_refs = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -1517,7 +1708,7 @@ id = "E-067"
 title = "4D ZD Resonance 64^3 x 16 Batch Sweep"
 binary = "zd-resonance-4d"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-067"
 method = "D3Q19 batch LBM at 64^3 x 16 (4.2M cells, ~1.4 GB GPU) with BF16 precision. Higher per-slice resolution than E-066, fewer w-slices. Tests resolution dependence of 4D ghost signatures."
 input = "None (synthetic 4D Sedenion field)"
 output = ["data/csv/zd_resonance_4d_64x16.csv"]
@@ -1533,6 +1724,9 @@ lineage_id = "XL-065"
 input_path_refs = []
 output_path_refs = ["data/csv/zd_resonance_4d_64x16.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -1556,6 +1750,9 @@ lineage_id = "XL-066"
 input_path_refs = ["data/csv/ghost_audit/"]
 output_path_refs = ["data/csv/ghost_audit/batch_results.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -1579,6 +1776,9 @@ lineage_id = "XL-067"
 input_path_refs = []
 output_path_refs = ["data/csv/precision_combined_16.csv", "data/csv/precision_combined_32.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1602,6 +1802,9 @@ lineage_id = "XL-068"
 input_path_refs = ["data/evidence/"]
 output_path_refs = ["data/evidence/MANIFEST.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1622,9 +1825,12 @@ gpu = false
 status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-069"
-input_path_refs = ["data/external/chime_frb_cat2.csv", "data/external/atnf_pulsars.csv", "data/external/PantheonPlusSH0ES.dat"]
-output_path_refs = ["data/csv/ghost_audit/real_chime_dm.csv", "data/csv/ghost_audit/real_atnf_dm.csv", "data/csv/ghost_audit/real_atnf_period.csv", "data/csv/ghost_audit/real_pantheon_mu.csv"]
+input_path_refs = ["data/external/PantheonPlusSH0ES.dat", "data/external/atnf_pulsars.csv", "data/external/chime_frb_cat2.csv"]
+output_path_refs = ["data/csv/ghost_audit/real_atnf_dm.csv", "data/csv/ghost_audit/real_atnf_period.csv", "data/csv/ghost_audit/real_chime_dm.csv", "data/csv/ghost_audit/real_pantheon_mu.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1632,7 +1838,7 @@ id = "E-072"
 title = "TX-2 Viscosity-to-Filtration Loop at 128^3 CPU FP64 (C-669 Refutation)"
 binary = "thesis-cross-tx2"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-072"
 method = "TX-2 cross-experiment at 128^3 (2M cells) CPU FP64, 500 LBM steps, lambda sweep [0.5, 1.0, 2.0, 5.0, 10.0]. Tests whether turbulent regime at higher resolution resolves Undetermined classification from original 16^3 (E-031)."
 input = "None (synthetic SedenionField initialization)"
 output = ["data/thesis_lab/tx2_128/tx2_report.toml"]
@@ -1648,6 +1854,9 @@ lineage_id = "XL-070"
 input_path_refs = []
 output_path_refs = ["data/thesis_lab/tx2_128/tx2_report.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1671,6 +1880,9 @@ lineage_id = "XL-071"
 input_path_refs = []
 output_path_refs = ["crates/gr_core/src/photon_graviton/"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1694,6 +1906,9 @@ lineage_id = "XL-072"
 input_path_refs = []
 output_path_refs = ["data/sfwm_repro/fig2a.csv", "data/sfwm_repro/fig2b.csv", "data/sfwm_repro/fig2c.csv", "data/sfwm_repro/fig2d.csv", "data/sfwm_repro/fig3a.csv", "data/sfwm_repro/fig3b.csv", "data/sfwm_repro/fig4a.csv", "data/sfwm_repro/fig4b.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1701,7 +1916,7 @@ id = "E-075"
 title = "Arleo-Falmagne QGP Path-Length Scaling Reproduction"
 binary = "arleo-falmagne-scaling"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-075"
 method = "Reproduce Arleo & Falmagne (arXiv:2411.13258) QGP parton energy-loss scaling analysis. Optical Glauber model (hard-sphere nuclear density, Gauss-Legendre 2D quadrature) for Pb-Pb/Au-Au/Xe-Xe geometry. R_AA fitting via Brent minimization to extract epsilon_bar per centrality. Multi-system density scaling fit: epsilon_bar = K * (dNch/dy / A_perp) * L^beta with grid search over beta. v2/eccentricity vs d(ln R_AA)/d(ln pT) linear relation for independent beta extraction."
 input = "ALICE Pb-Pb 5.02 TeV R_AA (HEPData 89396), CMS Pb-Pb 5.02 TeV R_AA (ins1496050), CMS Pb-Pb 5.02 TeV v2 (ins1511868), ATLAS jet R_AA (ins1673184), PHENIX Au-Au 200 GeV (ins1127262)"
 output = []
@@ -1717,6 +1932,9 @@ lineage_id = "XL-073"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1740,6 +1958,9 @@ lineage_id = "XL-074"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1763,6 +1984,9 @@ lineage_id = "XL-075"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1786,6 +2010,9 @@ lineage_id = "XL-076"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1810,30 +2037,9 @@ lineage_id = "XL-077"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
-reproducibility_class = "deterministic_replay"
-
-[[experiment]]
-id = "E-110"
-title = "ADM decomposition verification against exact solutions"
-binary = "adm-decompose"
-binary_registered = true
-binary_experiment_declared = ""
-method = "Numerical ADM decomposition with finite-difference extrinsic curvature. Compare against PG exact: alpha=1, beta^r=sqrt(2M/r), gamma=delta. Hamiltonian constraint residual for vacuum."
-input = "None (analytical spacetimes)"
-output = ["stdout CSV"]
-run = "cargo run --release --bin adm-decompose -- --spacetime schwarzschild --mass 1.0 --radius 10.0 --n-points 20"
-run_command_sha256 = "7cbcb0d1022195d0f6640fb7284910cf9d1c3b51016cf4b1d421dcd5d28957f1"
-claims = ["C-868", "C-875"]
-claim_refs = ["C-868", "C-875"]
-deterministic = true
-seed = 0
-gpu = false
-status = "active"
-status_token = "ACTIVE"
-lineage_id = "XL-078"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1841,7 +2047,7 @@ id = "E-080"
 title = "Nacelle warp bubble parameter sweep (n=1..16)"
 binary = "nacelle-warp-sweep"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-080"
 method = "2D energy density integration on y-z cross-section at x=0 for each nacelle count. Paper mode restricts to n=2,3,4 matching White 2025."
 input = "None (parametric sweep)"
 output = ["stdout CSV"]
@@ -1858,6 +2064,9 @@ lineage_id = "XL-079"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1865,7 +2074,7 @@ id = "E-081"
 title = "Worldline Casimir numerics: parallel plate validation"
 binary = "worldline-casimir"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-081"
 method = "Monte Carlo worldline path integral with Gauss-Legendre quadrature for proper-time integration. 10k loops per T-sample, 500 points per loop."
 input = "None (analytical geometry)"
 output = ["stdout CSV"]
@@ -1882,6 +2091,9 @@ lineage_id = "XL-080"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1889,7 +2101,7 @@ id = "E-082"
 title = "Algebraic warp sweep: CD tower vs standard GR energy comparison"
 binary = "algebraic-warp-sweep"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-082"
 method = "2D energy integration with algebraic York time correction and sedenion stress-energy source. Coupling alpha=0.01, imbalance at imbalance attractor 3/8."
 input = "None (parametric sweep)"
 output = ["stdout CSV"]
@@ -1906,6 +2118,9 @@ lineage_id = "XL-081"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1913,7 +2128,7 @@ id = "E-083"
 title = "Sedenion foliation imbalance-York time correlation analysis"
 binary = "algebraic-warp-sweep"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-083"
 method = "Construct SedenionFoliation on ADM hypersurfaces, compute imbalance at each grid point, pair with York time from extrinsic curvature. Pearson correlation analysis."
 input = "None (computational)"
 output = ["stdout CSV"]
@@ -1930,6 +2145,9 @@ lineage_id = "XL-082"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1937,7 +2155,7 @@ id = "E-084"
 title = "ZD graph spectral dimension census"
 binary = "zd-spectral-dimension"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-084"
 method = "For each CD dim: build cross-assessor ZD graph, compute Laplacian, eigendecompose, compute P(t) on geometric t-grid, SG-smooth ln P vs ln t, extract d_s plateau via central differences."
 input = "None (computational)"
 output = ["data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_gap.csv"]
@@ -1952,8 +2170,11 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-083"
 input_path_refs = []
-output_path_refs = ["data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_gap.csv"]
+output_path_refs = ["data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_spectral_gap.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1978,6 +2199,9 @@ lineage_id = "XL-084"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -1985,7 +2209,7 @@ id = "E-086"
 title = "ZD Quantum Chaos NNSD Census"
 binary = "zd-quantum-chaos"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-086"
 method = "Compute Laplacian eigenvalues per ZD graph component, Gaussian KDE unfold (sigma = 0.1*range), build normalized spacing histogram, fit Brody parameter via method-of-moments bisection, compute KS statistics vs Poisson and GOE CDFs."
 input = "None (computational)"
 output = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
@@ -2002,6 +2226,9 @@ lineage_id = "XL-085"
 input_path_refs = []
 output_path_refs = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -2009,7 +2236,7 @@ id = "E-087"
 title = "Orthoplex Diffusion Dark Energy Fit"
 binary = "orthoplex-cosmo-fit"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-087"
 method = "Bounded Nelder-Mead optimization over 5 parameters (omega_m, h0, alpha, beta, t_0) with k=63 fixed. Joint chi2 = chi2_SN (full 1578x1578 STAT+SYS precision matrix via Cholesky, analytic M_B marginalization) + chi2_BAO (mixed isotropic + 2x2 anisotropic covariance) + chi2_CC + chi2_fsig8 + chi2_CMB."
 input = "data/external/PantheonPlusSH0ES.dat, data/external/Pantheon+SH0ES_STAT+SYS.cov, DESI DR1 BAO (hardcoded)"
 output = ["data/csv/orthoplex_w_of_z.csv"]
@@ -2023,9 +2250,12 @@ gpu = false
 status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-086"
-input_path_refs = ["data/external/PantheonPlusSH0ES.dat", "data/external/Pantheon+SH0ES_STAT+SYS.cov"]
+input_path_refs = ["data/external/Pantheon+SH0ES_STAT+SYS.cov", "data/external/PantheonPlusSH0ES.dat"]
 output_path_refs = ["data/csv/orthoplex_w_of_z.csv"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -2033,7 +2263,7 @@ id = "E-088"
 title = "Besag-Clifford Clustering Test at 256^3"
 binary = "clustering-256"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-088"
 method = "Besag-Clifford permutation test for ZD-imbalance clustering at 256^3 grid resolution. GPU-accelerated via Vulkan compute (besag_clifford.wgsl). Adaptive stopping with Wilson CI."
 input = "LBM simulation (generated internally)"
 output = ["data/evidence/clustering_256.toml"]
@@ -2050,6 +2280,9 @@ lineage_id = "XL-087"
 input_path_refs = []
 output_path_refs = ["data/evidence/clustering_256.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -2057,7 +2290,7 @@ id = "E-089"
 title = "Dark Halo Hunt: CDG-2 Consistency Across k Values"
 binary = "dark-halo-hunt"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-089"
 method = "Sweep k values [4,8,16,32,63], run LBM + dark halo detector at each k. CUDA path: SoA layout, L2 pinning, fused collision+streaming. Detect overdense low-velocity cells as halo candidates. Threshold: rho > density_factor * rho_mean AND |u| < velocity_epsilon."
 input = "LBM simulation (generated internally)"
 output = ["data/evidence/dark_halo_hunt_cuda.toml"]
@@ -2074,6 +2307,9 @@ lineage_id = "XL-088"
 input_path_refs = []
 output_path_refs = ["data/evidence/dark_halo_hunt_cuda.toml"]
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -2081,7 +2317,7 @@ id = "E-090"
 title = "BIC Model Comparison: Arleo-Falmagne vs CUJET3.0 vs Fractional Langevin"
 binary = "arleo-falmagne-scaling"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-090"
 method = "Compare R_AA predictions from three QGP energy-loss models via Bayesian Information Criterion. Arleo-Falmagne (2 params: beta, K) vs CUJET3.0 (5 params: alpha_s, mu_M/T, c_M, f_E, f_M) vs fractional Langevin (3 params: alpha, D_s, T_c). BIC = chi2 + k*ln(n). CUJET3.0 digitized from JHEP02(2016)169 Fig. 4. Langevin digitized from arXiv:2401.03757 Fig. 3. Evaluated against ALICE Pb-Pb 5.02 TeV 0-5% R_AA."
 input = "ALICE Pb-Pb 5.02 TeV R_AA (HEPData record 89396)"
 output = ["stdout"]
@@ -2098,6 +2334,9 @@ lineage_id = "XL-089"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -2105,7 +2344,7 @@ id = "E-091"
 title = "Flyby Crucible with Bivector-Embedded Chingon Drag"
 binary = "flyby-crucible"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-091"
 method = "Integrate 6 spacecraft trajectories through Earth SOI with bivector-embedded 64D Chingon drag force. Unit-norm embedding with 3 blocks: angular momentum (axes 1-21), velocity (axes 22-42), cross-coupling (axes 43-63). Sign sensitivity via sign(h . v_wind) where h = r x v. Compare predicted delta-V signs with observed flyby anomaly (Anderson 2008)."
 input = "Flyby orbital elements from Anderson et al. (2008) PRL 100 091102"
 output = ["stdout"]
@@ -2122,6 +2361,9 @@ lineage_id = "XL-090"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -2129,7 +2371,7 @@ id = "E-092"
 title = "EHT Pathion Shadow Angular Size for M87*"
 binary = "pathion-shadow-cli"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-092"
 method = "Compute Schwarzschild photon sphere shadow angular size and sub-ring demagnification for M87* (mass 6.5e9 M_sun, distance 16.8 Mpc). Shadow radius = 3*sqrt(3)/2 * r_s. Sub-ring separation via exp(-pi) demagnification factor. Compare with EHT 2019 observation of ~42 uas."
 input = "M87* mass and distance from EHT Collaboration (2019)"
 output = ["stdout"]
@@ -2146,6 +2388,9 @@ lineage_id = "XL-091"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -2153,7 +2398,7 @@ id = "E-093"
 title = "Riemann Resonance Sweep: Brody Parameter for Orthoplex Laplacians"
 binary = "riemann-resonance-sweep"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-093"
 method = "Compute Laplacian eigenvalue spacing statistics for orthoplex K_{2,...,2} graphs at CD dimensions 4,8,16,32,64,128,256. Classify via Brody parameter q (q=0 Poisson/integrable, q=1 GOE/chaotic). All orthoplex Laplacians have only 3 distinct eigenvalues (0, 2(k-1), 2k) so spacing statistics are degenerate."
 input = "Analytically computed eigenvalues"
 output = ["stdout"]
@@ -2170,6 +2415,9 @@ lineage_id = "XL-092"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -2194,6 +2442,9 @@ lineage_id = "XL-093"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -2201,7 +2452,7 @@ id = "E-095"
 title = "Three-body 64D flyby integration with body-specific triads"
 binary = "flyby-crucible"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-091"
 method = "RK4 integration of 6 spacecraft flybys with 3-body (Earth/Moon/Sun) 64D Chingon bivector drag. Body-specific triads: Earth triad for angular momentum block, Lunar triad for velocity block, Solar triad for cross-coupling block. JPL DE440 ephemeris for Moon/Sun positions."
 input = "Anderson et al. (2008) PRL 100, 091102 flyby parameters, JPL DE440 ephemeris"
 output = ["run"]
@@ -2217,6 +2468,9 @@ lineage_id = "XL-094"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2224,7 +2478,7 @@ id = "E-096"
 title = "ETA_WAKE gravitational focusing wake parameter sweep"
 binary = "flyby-crucible"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-091"
 method = "Sweep ETA_WAKE=[0.0,0.05,0.10,0.15,0.20] with 3-body 64D Chingon drag. Measures effect of asymmetric (cos theta_wind) density modulation on 6 flyby delta-V predictions. Tests whether gravitational focusing wake can flip Rosetta-I sign."
 input = "Anderson et al. (2008) flyby parameters, arXiv:2112.05718 + arXiv:2502.04456 + arXiv:1409.2858 (gravitational focusing literature)"
 output = ["run"]
@@ -2240,6 +2494,9 @@ lineage_id = "XL-095"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2247,7 +2504,7 @@ id = "E-097"
 title = "CUDA GPU vs CPU validation at 64D for flyby crucible"
 binary = "flyby-crucible"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-091"
 method = "Run flyby crucible with --gpu flag vs without. Compare all 6 flyby delta-V values. Tolerance: f32 precision (~1e-4 relative error)."
 input = "64D AVT (52080 violations), 6 flyby configs from Anderson et al. (2008)"
 output = ["run"]
@@ -2263,6 +2520,9 @@ lineage_id = "XL-096"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2270,7 +2530,7 @@ id = "E-098"
 title = "Dimensional scaling: 128D + 256D GPU flyby crucible"
 binary = "flyby-crucible"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-091"
 method = "Run flyby crucible with --dim 128 --gpu and --dim 256 --gpu. Compare sign patterns and magnitudes against 64D CPU baseline."
 input = "AVT at dims 128 (468720 violations) and 256 (3968496 violations), 6 flyby configs"
 output = ["run"]
@@ -2286,6 +2546,9 @@ lineage_id = "XL-097"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2309,6 +2572,9 @@ lineage_id = "XL-098"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2332,6 +2598,9 @@ lineage_id = "XL-099"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2355,6 +2624,9 @@ lineage_id = "XL-100"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2378,6 +2650,9 @@ lineage_id = "XL-101"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2401,6 +2676,9 @@ lineage_id = "XL-102"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2424,6 +2702,9 @@ lineage_id = "XL-103"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2447,6 +2728,9 @@ lineage_id = "XL-104"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2454,7 +2738,7 @@ id = "E-106"
 title = "Majorana braid through CD tower at dims 16-128"
 binary = "majorana-braid-crucible"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-106"
 method = "Clifford braid via gamma_matrices_cl8(), CD braid via SignTableCache + rotate_sparse(), friction = cumulative associator norm."
 input = "circuit=[(0,1),(1,2),(2,3),(0,1)], dims=[16,32,64,128], seed=42"
 output = ["stdout"]
@@ -2470,6 +2754,9 @@ lineage_id = "XL-105"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2477,7 +2764,7 @@ id = "E-107"
 title = "Box-kite fusion statistics at dim=16"
 binary = "majorana-braid-crucible"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-107"
 method = "cd_basis_mul_sign_iter(dim, lo, hi) for each assessor pair. Partition by sign, count distinct values."
 input = "dim=16, 7 box-kites x 6 pairs = 42 products"
 output = ["stdout"]
@@ -2493,6 +2780,9 @@ lineage_id = "XL-106"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2500,7 +2790,7 @@ id = "E-108"
 title = "Braid-aligned CHSH test at dim=16"
 binary = "majorana-braid-crucible"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-108"
 method = "chsh_braid_aligned: rotate in ZD subplanes, measure correlators via associator_measurement_fast."
 input = "dim=16, n_samples=10000, seed=42"
 output = ["stdout"]
@@ -2516,6 +2806,9 @@ lineage_id = "XL-107"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
@@ -2523,7 +2816,7 @@ id = "E-109"
 title = "Complex-time Majorana braid Wick rotation sweep"
 binary = "majorana-braid-crucible"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-109"
 method = "complex_time_braid: SO(2) rotation with damping factor cos(theta)*sin(theta)."
 input = "dim=16, theta_steps=10"
 output = ["stdout"]
@@ -2539,42 +2832,49 @@ lineage_id = "XL-108"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "non_deterministic"
 
 [[experiment]]
 id = "E-110"
-title = "High-dimensional Cayley-Dickson algebra analysis (dim 16..4096)"
-binary = "dm-cd-4096-analysis"
+title = "ADM decomposition verification against exact solutions"
+binary = "adm-decompose"
 binary_registered = true
-binary_experiment_declared = ""
-method = "cd_tower_sweep: Random element sampling for associator norms, zero-divisor density, and norm multiplicativity deviation across CD dims 16..4096. AVT timing via TensorAVT auto-backend."
-input = "dims=16,32,64,128,256,512,1024,2048,4096, samples=1000, seed=42"
-output = ["stdout", "csv"]
-run = "cargo run --release --bin dm-cd-4096-analysis -- --dims 16,32,64,128,256,512,1024,2048,4096 --samples 1000 --seed 42"
-run_command_sha256 = ""
-claims = []
-claim_refs = []
+binary_experiment_declared = "E-110"
+method = "Numerical ADM decomposition with finite-difference extrinsic curvature. Compare against PG exact: alpha=1, beta^r=sqrt(2M/r), gamma=delta. Hamiltonian constraint residual for vacuum."
+input = "None (analytical spacetimes)"
+output = ["stdout CSV"]
+run = "cargo run --release --bin adm-decompose -- --spacetime schwarzschild --mass 1.0 --radius 10.0 --n-points 20"
+run_command_sha256 = "7cbcb0d1022195d0f6640fb7284910cf9d1c3b51016cf4b1d421dcd5d28957f1"
+claims = ["C-868", "C-875"]
+claim_refs = ["C-868", "C-875"]
 deterministic = true
+seed = 0
 gpu = false
 status = "active"
 status_token = "ACTIVE"
-lineage_id = "XL-109"
+lineage_id = "XL-078"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
-reproducibility_class = "deterministic"
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-111"
 title = "Solar wind MHD simulation with Parker spiral B-field"
 binary = "solar-wind-mhd-sim"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-111"
 method = "lbm_mhd: D3Q19 LBM coupled with induction equation B-field evolution. Parker spiral initialization, Zou-He velocity inlet, Guo forcing from Lorentz force J x B."
 input = "nx=128, ny=32, nz=32, steps=5000, tau=0.6, b0=5.0 nT, v_sw=0.05"
 output = ["csv_snapshots"]
 run = "cargo run --release --bin solar-wind-mhd-sim -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --snap-interval 500 --out data/experiments/e111_solar_wind"
-run_command_sha256 = ""
+run_command_sha256 = "da7b6835d0a29c21f89a39d0fbaf154e353d232c58d7a9d71b6e7c0c789fd8d4"
 claims = []
 claim_refs = []
 deterministic = true
@@ -2584,20 +2884,23 @@ status_token = "ACTIVE"
 lineage_id = "XL-110"
 input_path_refs = []
 output_path_refs = []
-dataset_refs = ["ACE SWEPAM"]
-reproducibility_class = "deterministic"
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-112"
 title = "Solar wind MHD + dark matter halo gravitational coupling"
 binary = "solar-wind-dm-mhd"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-112"
 method = "lbm_dm_mhd: D3Q19 LBM + MHD (E-111 base) coupled with static NFW DM halo gravitational force field. DM force precomputed from NFW enclosed mass M(<r), combined with Lorentz force via Guo scheme. Quantifies max|F_DM|/max|F_Lorentz| ratio as null test."
 input = "nx=128, ny=32, nz=32, steps=5000, tau=0.6, b0=5.0 nT, v_sw=0.05, dm_density=0.3 GeV/cm^3, dm_m200=1e12 Msun, dm_c200=10"
 output = ["csv_snapshots"]
 run = "cargo run --release --bin solar-wind-dm-mhd -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500 --out data/experiments/e112_solar_wind_dm"
-run_command_sha256 = ""
+run_command_sha256 = "fc07055a76232b8cd2d66b0d1ea43a177c992fd86a0888825c0d2b88304addbe"
 claims = ["C-1143", "C-1144", "C-1145"]
 claim_refs = ["C-1143", "C-1144", "C-1145"]
 deterministic = true
@@ -2607,20 +2910,23 @@ status_token = "ACTIVE"
 lineage_id = "XL-111"
 input_path_refs = []
 output_path_refs = []
-dataset_refs = ["ACE SWEPAM"]
-reproducibility_class = "deterministic"
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-113"
 title = "Multi-spacecraft solar wind MHD + DM null test replication"
 binary = "solar-wind-dm-mhd"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-113"
 method = "Multi-spacecraft replication of E-112 DM null test using independent data sources (ACE MAG L2, WIND SWE+MFI, STEREO-A PLASTIC+IMPACT/MAG). Each dataset flows through spacecraft-specific parser -> *_to_omni() adapter -> OmniRecord -> generate_ic_from_omni() -> LBM/MHD grid. RTN->GSE coordinate transform applied to STEREO-A data. Cross-validation via Pearson correlation, RMSE, and bias between overlapping hourly measurements. Confirms instrument independence of |F_DM|/|F_Lorentz| ~ O(10^-12) null result. DM-baryon drag force (sigma_chi_b) sweep identifies detection threshold."
 input = "ACE MAG L2 16-sec, WIND SWE 92-sec + MFI 1-hour, STEREO-A PLASTIC 1-min + IMPACT/MAG 8-sec, OMNI2 1-hour. nx=128, ny=32, nz=32, steps=5000, tau=0.7, eta=0.01"
 output = ["csv_snapshots", "cross_validation_csv"]
 run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file <wind_ic.csv> --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --eta 0.01 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500"
-run_command_sha256 = ""
+run_command_sha256 = "4c0e87b259e5d70cbf4ad782d95b67d0078b8ed6a61164bb7956e06cb04f047f"
 claims = ["C-1147", "C-1148", "C-1149", "C-1150", "C-1151", "C-1152", "C-1153", "C-1154", "C-1155"]
 claim_refs = ["C-1147", "C-1148", "C-1149", "C-1150", "C-1151", "C-1152", "C-1153", "C-1154", "C-1155"]
 deterministic = true
@@ -2630,20 +2936,23 @@ status_token = "ACTIVE"
 lineage_id = "XL-112"
 input_path_refs = []
 output_path_refs = []
-dataset_refs = ["ACE MAG L2", "WIND SWE", "WIND MFI", "STEREO-A PLASTIC", "STEREO-A IMPACT/MAG", "OMNI2"]
-reproducibility_class = "deterministic"
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-114"
 title = "Voyager radial profile reconstruction (1-157 AU)"
 binary = "solar-wind-ic"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-114"
 method = "Multi-spacecraft radial profile reconstruction using Voyager 1/2, Pioneer 10/11, Ulysses, New Horizons, Juno, Cassini, and L1 (OMNI2) data. Each spacecraft's parser feeds through *_to_omni() adapter with heliocentric coordinates (r_au, lat_deg, lon_deg). build_radial_profile() groups records by distance, computes median plasma parameters per distance bin. interpolate_radial() uses log-linear interpolation for density (r^-2 scaling) and log-spaced x-grid for distance mapping. Validates Parker spiral B-field scaling: B_r ~ r^-2, B_phi ~ r^-1."
 input = "Voyager 1/2 SPDF merged hourly, Pioneer 10/11 SPDF merged hourly, OMNI2 hourly. nx=128, ny=32, nz=32"
 output = ["radial_ic_csv"]
 run = "cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --voyager1-file <staged_voyager_merged_file> --radial-mode --nx 128 --ny 32 --nz 32"
-run_command_sha256 = ""
+run_command_sha256 = "f2c4f7f4a72464c0ee0361fdff1ffe4e5f0bb97a538388114340d219724ec5f9"
 claims = ["C-1157", "C-1162", "C-1165"]
 claim_refs = ["C-1157", "C-1162", "C-1165"]
 deterministic = true
@@ -2653,20 +2962,23 @@ status_token = "PLANNED"
 lineage_id = "XL-113"
 input_path_refs = []
 output_path_refs = []
-dataset_refs = ["Voyager 1 SPDF", "Voyager 2 SPDF", "Pioneer 10 SPDF", "Pioneer 11 SPDF", "OMNI2"]
-reproducibility_class = "deterministic"
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-115"
 title = "Ulysses latitudinal gradient characterization"
 binary = "solar-wind-ic"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-115"
 method = "Ulysses SWOOPS + VHM/FGM data from the 1994-1995 fast latitude scan (1.3-5.4 AU, -80 to +80 deg heliographic latitude). ulysses_latitudinal_fit() extracts tanh transition parameters (fast_speed, slow_speed, transition_lat, width). latitude_modulation() applies the fitted profile to the LBM z-axis. Validates McComas et al. (2000) fast/slow bimodality: v_polar > 1.5 * v_equatorial."
 input = "Ulysses SWOOPS hourly, VHM/FGM hourly. nx=128, ny=32, nz=64"
 output = ["latitudinal_ic_csv"]
 run = "cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --ulysses-swoops-file data/external/ulysses/swoops_hourly.asc --latitudinal --lat-max-deg 80 --nx 128 --ny 32 --nz 64"
-run_command_sha256 = ""
+run_command_sha256 = "03a1b5dc623acc4c03a10fe833373d5dfed76bd17813eedd715dcfe614b4e251"
 claims = ["C-1163"]
 claim_refs = ["C-1163"]
 deterministic = true
@@ -2676,20 +2988,23 @@ status_token = "PLANNED"
 lineage_id = "XL-114"
 input_path_refs = []
 output_path_refs = []
-dataset_refs = ["Ulysses SWOOPS", "Ulysses VHM/FGM"]
-reproducibility_class = "deterministic"
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-116"
 title = "Multi-distance DM null sweep: r = {1, 5, 10, 50, 100} AU"
 binary = "solar-wind-dm-mhd"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-116"
 method = "Radial IC generated by E-114 passed to solar-wind-dm-mhd with per-cell kappa(R) spatial drag coefficient. For each distance bin [r-dr, r+dr], extract the force ratio |F_DM|/|F_Lorentz| and report max. kappa_field varies with NFW enclosed mass M(<r) and local DM number density n_chi(r). Validates C-1156 (DM null invariance across full heliosphere)."
 input = "Radial IC from E-114, nx=128, ny=32, nz=32, steps=5000, tau=0.7"
 output = ["force_ratio_csv", "csv_snapshots"]
 run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/radial_ic.csv --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --dm-r-min 1 --dm-r-max 100 --snap-interval 500"
-run_command_sha256 = ""
+run_command_sha256 = "f43b93b7e5f939492f159a38ca57e9c8c276459a65c7c31e4a0a1d70b7069081"
 claims = ["C-1156", "C-1167", "C-1168"]
 claim_refs = ["C-1156", "C-1167", "C-1168"]
 deterministic = true
@@ -2700,19 +3015,22 @@ lineage_id = "XL-115"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
-reproducibility_class = "deterministic"
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-117"
 title = "Pioneer-Voyager radial cross-validation"
 binary = "solar-wind-ic"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-117"
 method = "Cross-validate proton density, speed, and B-field between Pioneer 10/11 and Voyager 1/2 at overlapping heliocentric distances (5-80 AU). Group by distance bins (5 AU width), compute median and IQR for each spacecraft pair. Report Pearson correlation and RMSE. Solar cycle correction via OMNI2 sunspot number proxy."
 input = "Pioneer 10/11 SPDF merged hourly, Voyager 1/2 SPDF merged hourly"
 output = ["cross_validation_csv"]
 run = "cargo run --release --bin solar-wind-ic -- --voyager1-file <v1> --voyager2-file <v2> --pioneer10-file <p10> --pioneer11-file <p11> --radial-mode --nx 128"
-run_command_sha256 = ""
+run_command_sha256 = "f2816dcb4923ea9a8c20f7f0f0a7e52a2d6371cfe9e0748ae541ea0db0afc6e4"
 claims = ["C-1165", "C-1169"]
 claim_refs = ["C-1165", "C-1169"]
 deterministic = true
@@ -2722,20 +3040,23 @@ status_token = "PLANNED"
 lineage_id = "XL-116"
 input_path_refs = []
 output_path_refs = []
-dataset_refs = ["Pioneer 10 SPDF", "Pioneer 11 SPDF", "Voyager 1 SPDF", "Voyager 2 SPDF"]
-reproducibility_class = "deterministic"
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-118"
 title = "Outer heliosphere LBM validity assessment (Kn regime mapping)"
 binary = "solar-wind-ic"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-118"
 method = "Compute Knudsen number Kn = lambda_mfp / L_cell at each radial distance from 1 to 157 AU using multi-spacecraft density and temperature profiles. Identify the Kn=1 transition radius (LBM -> kinetic boundary). Map Kn regime (Fluid/Transitional/Kinetic) across the heliosphere using classify_knudsen()."
 input = "Radial profile from E-114, sigma_pp from PDG"
 output = ["kn_profile_csv"]
 run = "cargo run --release --bin solar-wind-ic -- --radial-mode --voyager1-file <v1> --nx 256 --ny 32 --nz 32"
-run_command_sha256 = ""
+run_command_sha256 = "1a897d9d02fa32937e128c03a73358c066bd00cd029ff23a0867f038b1bf65f8"
 claims = ["C-1159", "C-1166"]
 claim_refs = ["C-1159", "C-1166"]
 deterministic = true
@@ -2745,20 +3066,23 @@ status_token = "PLANNED"
 lineage_id = "XL-117"
 input_path_refs = []
 output_path_refs = []
-dataset_refs = ["Voyager 1 SPDF", "Voyager 2 SPDF"]
-reproducibility_class = "deterministic"
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-119"
 title = "Full heliosphere radial IC -> MHD+DM end-to-end pipeline"
 binary = "solar-wind-dm-mhd"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-119"
 method = "End-to-end pipeline: multi-spacecraft data -> radial IC (E-114) -> MHD+DM simulation with distance-parametrized NFW and spatial kappa(R). Validates the complete tomography engine from 1 to 100 AU. Reports force ratios, mass conservation, and stability diagnostics at each distance."
 input = "Radial IC from E-114, nx=256, ny=32, nz=32, steps=10000, tau=0.7, eta=0.01"
 output = ["csv_snapshots", "force_ratio_csv", "mass_conservation_csv"]
 run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/radial_ic.csv --nx 256 --ny 32 --nz 32 --steps 10000 --tau 0.7 --eta 0.01 --dm-r-min 1 --dm-r-max 100"
-run_command_sha256 = ""
+run_command_sha256 = "3d3cee5192f64b515fb90a94c877720a4ce4ebf83b2839be7665135fbfd4b3b3"
 claims = ["C-1156", "C-1157", "C-1160", "C-1168"]
 claim_refs = ["C-1156", "C-1157", "C-1160", "C-1168"]
 deterministic = true
@@ -2769,19 +3093,22 @@ lineage_id = "XL-118"
 input_path_refs = []
 output_path_refs = []
 dataset_refs = []
-reproducibility_class = "deterministic"
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-120"
 title = "Termination shock MHD simulation with Voyager IC"
 binary = "solar-wind-dm-mhd"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-120"
 method = "MHD simulation of the solar wind at the termination shock region (80-100 AU) using Voyager 1/2 pre-shock data as IC. Radial IC with fine resolution around the shock region. Look for density jump (compression ratio 2-4x), deceleration, and magnetic field amplification consistent with Voyager 1 (2004) and Voyager 2 (2007) observations."
 input = "Voyager 1/2 IC at 80-100 AU, nx=256, ny=64, nz=64, steps=20000"
 output = ["csv_snapshots", "shock_profile_csv"]
 run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/ts_ic.csv --nx 256 --ny 64 --nz 64 --steps 20000 --tau 0.7 --eta 0.01 --dm-r-min 80 --dm-r-max 100"
-run_command_sha256 = ""
+run_command_sha256 = "0935fdb424ff07597dd2b737a7f1a26bf562969e6380c95cff589674b6b22bb6"
 claims = ["C-1164"]
 claim_refs = ["C-1164"]
 deterministic = true
@@ -2791,8 +3118,11 @@ status_token = "PLANNED"
 lineage_id = "XL-119"
 input_path_refs = []
 output_path_refs = []
-dataset_refs = ["Voyager 1 SPDF", "Voyager 2 SPDF"]
-reproducibility_class = "deterministic"
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-121"
@@ -2804,7 +3134,7 @@ method = "Run cr-modulation-sweep with nx=64 ny=1 nz=1 (1D radial), steps=5000 t
 input = "LBM solar wind IC (nx=64, tau=0.6, v_sw=0.05), RigidityGrid (n_p=40, 0.1-1000 GV)"
 output = ["data/output/cr/cr_snapshot_005000.csv", "data/output/cr/cr_summary.csv"]
 run = "cargo run --release --bin cr-modulation-sweep -- --nx 64 --ny 4 --nz 4 --steps 5000 --n-p 40 --r-min-gv 0.1 --r-max-gv 1000 --r-min-au 1.0 --r-max-au 157.0"
-run_command_sha256 = ""
+run_command_sha256 = "7b12a668368820d3173cb71634c2e89e3cf3610489fb1a58e09730d4827fca41"
 claims = ["C-1171", "C-1172"]
 claim_refs = ["C-1171", "C-1172"]
 deterministic = true
@@ -2813,9 +3143,12 @@ status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-120"
 input_path_refs = []
-output_path_refs = ["data/output/cr/cr_summary.csv"]
+output_path_refs = ["data/output/cr/cr_snapshot_005000.csv", "data/output/cr/cr_summary.csv"]
 dataset_refs = []
-reproducibility_class = "deterministic"
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-122"
@@ -2827,7 +3160,7 @@ method = "Run cr-modulation-sweep with r_min=1 AU, r_max=157 AU. Extract differe
 input = "LBM solar wind (nx=128, tau=0.6), RigidityGrid (n_p=40)"
 output = ["data/output/cr/cr_snapshot_010000.csv"]
 run = "cargo run --release --bin cr-modulation-sweep -- --nx 128 --ny 8 --nz 8 --steps 10000 --n-p 40 --r-min-au 1.0 --r-max-au 157.0 --snapshot-interval 2000"
-run_command_sha256 = ""
+run_command_sha256 = "831367e59278d84bc2ef5bbfc7e74fbcd48a6bcd6fc8ab8ef9432e9985ad032a"
 claims = ["C-1171", "C-1172"]
 claim_refs = ["C-1171", "C-1172"]
 deterministic = true
@@ -2836,9 +3169,12 @@ status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-121"
 input_path_refs = []
-output_path_refs = []
+output_path_refs = ["data/output/cr/cr_snapshot_010000.csv"]
 dataset_refs = []
-reproducibility_class = "deterministic"
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-123"
@@ -2850,7 +3186,7 @@ method = "Initialize PteSolver with Gaussian f centered at 10 GV. Run with purel
 input = "Synthetic radial wind (nx=64, v_sw=0.05 lattice units, div(u)~0.1 AU^-1)"
 output = ["data/output/cr/cr_snapshot_001000.csv"]
 run = "cargo run --release --bin cr-modulation-sweep -- --nx 64 --ny 4 --nz 4 --steps 1000 --n-p 40 --r-min-gv 1.0 --r-max-gv 100.0 --r-min-au 1.0 --r-max-au 157.0 --snapshot-interval 100"
-run_command_sha256 = ""
+run_command_sha256 = "f788975849bbd736b262916c18687f6d2bbb0aadbe90a58a0a3689a5af140d1f"
 claims = ["C-1173"]
 claim_refs = ["C-1173"]
 deterministic = true
@@ -2859,9 +3195,12 @@ status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-122"
 input_path_refs = []
-output_path_refs = []
+output_path_refs = ["data/output/cr/cr_snapshot_001000.csv"]
 dataset_refs = []
-reproducibility_class = "deterministic"
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-124"
@@ -2873,7 +3212,7 @@ method = "Load Voyager CRS ASCII files for both spacecraft. Compare proton count
 input = "Voyager 1/2 CRS data from data/external/voyager/voyager{1,2}/crs/"
 output = ["data/output/cr/crs_cross_calibration.csv"]
 run = "cargo run --release --bin cr-modulation-sweep -- --nx 128 --ny 4 --nz 4 --steps 5000 --n-p 40 --r-min-au 80.0 --r-max-au 157.0"
-run_command_sha256 = ""
+run_command_sha256 = "b670330465973553b7c61a2b5b534cc8436ce2f8aae3fa7b79bde2e91e8e7708"
 claims = ["C-1174"]
 claim_refs = ["C-1174"]
 deterministic = true
@@ -2881,10 +3220,13 @@ gpu = false
 status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-123"
-input_path_refs = ["data/external/voyager/voyager1/crs/", "data/external/voyager/voyager2/crs/"]
-output_path_refs = []
-dataset_refs = ["Voyager 1 CRS (SPDF)", "Voyager 2 CRS (SPDF)"]
-reproducibility_class = "deterministic"
+input_path_refs = ["data/external/voyager/voyager1/crs/", "data/external/voyager/voyager2/crs/", "data/external/voyager/voyager{1"]
+output_path_refs = ["data/output/cr/crs_cross_calibration.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-125"
@@ -2896,7 +3238,7 @@ method = "For each DM mass, run cr-modulation-sweep with DM source injection ena
 input = "Solar wind IC (nx=64, tau=0.6), DM masses {10, 30, 100, 300} GeV"
 output = ["data/output/cr/cr_dm_{mass}gev.csv"]
 run = "cargo run --release --bin cr-modulation-sweep -- --nx 64 --ny 4 --nz 4 --steps 5000 --n-p 40 --dm-mass-gev 100 --dm-channel bb --dm-sigma-v 3e-26"
-run_command_sha256 = ""
+run_command_sha256 = "0417a46a67d11ad705d8763ed84e8693eab17b607e89bca6518b3de951ad7a7c"
 claims = ["C-1175"]
 claim_refs = ["C-1175"]
 deterministic = true
@@ -2905,9 +3247,12 @@ status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-124"
 input_path_refs = []
-output_path_refs = []
+output_path_refs = ["data/output/cr/cr_dm_{mass}gev.csv"]
 dataset_refs = []
-reproducibility_class = "deterministic"
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-126"
@@ -2919,7 +3264,7 @@ method = "Inject DM source at the termination shock boundary (r ~ 90 AU, x ~ 0.5
 input = "Solar wind IC (nx=128, r_min=1, r_max=157 AU), DM mass 100 GeV, bb-bar channel"
 output = ["data/output/cr/cr_dm_ts_injection.csv"]
 run = "cargo run --release --bin cr-modulation-sweep -- --nx 128 --ny 4 --nz 4 --steps 10000 --n-p 40 --dm-mass-gev 100 --dm-channel bb --r-min-au 1.0 --r-max-au 157.0"
-run_command_sha256 = ""
+run_command_sha256 = "ea07aba85c9f6d3407dd4713ecaa6b6848343aa77216c384022ea91018eedcdf"
 claims = ["C-1175"]
 claim_refs = ["C-1175"]
 deterministic = true
@@ -2928,9 +3273,12 @@ status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-125"
 input_path_refs = []
-output_path_refs = []
+output_path_refs = ["data/output/cr/cr_dm_ts_injection.csv"]
 dataset_refs = []
-reproducibility_class = "deterministic"
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-127"
@@ -2942,7 +3290,7 @@ method = "Full pipeline: load solar wind IC from E-119 (multi-spacecraft radial 
 input = "Radial IC from E-119, Voyager CRS data (data/external/voyager/)"
 output = ["data/output/cr/cr_e2e_phi.csv", "data/output/cr/cr_e2e_chi2.csv"]
 run = "cargo run --release --bin cr-modulation-sweep -- --nx 256 --ny 8 --nz 8 --steps 10000 --n-p 40 --r-min-au 1.0 --r-max-au 157.0 --snapshot-interval 2000"
-run_command_sha256 = ""
+run_command_sha256 = "7b79aa35acd2611a4806c8bceeea51a8458b27dc1171aa667c6af3e11c4462f2"
 claims = ["C-1171", "C-1172", "C-1173", "C-1174", "C-1175"]
 claim_refs = ["C-1171", "C-1172", "C-1173", "C-1174", "C-1175"]
 deterministic = true
@@ -2950,22 +3298,25 @@ gpu = false
 status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-126"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = ["Voyager 1 CRS (SPDF)", "Voyager 2 CRS (SPDF)"]
-reproducibility_class = "deterministic"
+input_path_refs = ["data/external/voyager/"]
+output_path_refs = ["data/output/cr/cr_e2e_chi2.csv", "data/output/cr/cr_e2e_phi.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-128"
 title = "Bartol vs AMDA cross-validation for Voyager 2 B-field (1990-1995)"
-binary = "N/A"
+binary = ""
 binary_registered = false
 binary_experiment_declared = "E-128"
 method = "Compare hourly BR/BT/BN from Bartol 16-col RTN format against AMDA-derived Voyager 2 B-field for the 1990-1995 overlap window. Normalize coordinates (both are RTN). Compute Pearson correlation, RMSE, and systematic offset per component."
 input = "data/external/voyager/voyager2/bartol/vy2_90.dat through vy2_95.dat, data/external/voyager/voyager2/vy2_*_amda_merged_hourly.asc for 1990-1995"
 output = ["data/output/bartol_vs_amda_v2_bfield_correlation.csv"]
 run = "python3 scripts/cross_validate_bartol_amda.py --start 1990 --end 1995"
-run_command_sha256 = ""
+run_command_sha256 = "6a5839d1ebe7a1d5f48b8649ea7a4a0d339d1028ca8545137b3522b6f52fd35f"
 claims = ["C-1177", "C-1181"]
 claim_refs = ["C-1177", "C-1181"]
 deterministic = true
@@ -2973,22 +3324,25 @@ gpu = false
 status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-127"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = ["Bartol V2 legacy archive", "AMDA Voyager 2 derived"]
-reproducibility_class = "deterministic"
+input_path_refs = ["data/external/voyager/voyager2/bartol/vy2_90.dat", "data/external/voyager/voyager2/vy2_"]
+output_path_refs = ["data/output/bartol_vs_amda_v2_bfield_correlation.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-129"
 title = "Pioneer AMDA MAG-only radial B-field profile (5-80 AU)"
-binary = "N/A"
+binary = ""
 binary_registered = false
 binary_experiment_declared = "E-129"
 method = "Fetch Pioneer 10 MAG-only data from AMDA for 1972-1995. Compute annual median |B| per year. Compare against Parker spiral 1/r^2 scaling using Pioneer trajectory positions. Verify consistency without plasma contamination."
 input = "data/external/pioneer/pioneer10/p10_*_amda_mag_only.asc"
 output = ["data/output/pioneer_amda_mag_radial_profile.csv"]
 run = "python3 bin/fetch_pioneer.py --spacecraft p10 --source amda --start 1972 --end 1995"
-run_command_sha256 = ""
+run_command_sha256 = "829a7cedcb4700b144e2af5214ebe667b31d9e46356441cb46753b9a60c3f247"
 claims = ["C-1178"]
 claim_refs = ["C-1178"]
 deterministic = true
@@ -2996,22 +3350,25 @@ gpu = false
 status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-128"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = ["AMDA Pioneer 10 MAG (p10-mag-full)"]
-reproducibility_class = "deterministic"
+input_path_refs = ["data/external/pioneer/pioneer10/p10_"]
+output_path_refs = ["data/output/pioneer_amda_mag_radial_profile.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-130"
 title = "PSP AMDA inner heliosphere perihelion pass validation"
-binary = "N/A"
+binary = ""
 binary_registered = false
 binary_experiment_declared = "E-130"
 method = "Fetch PSP AMDA data for 2022. Identify perihelion passes (r_au < 0.15). Verify B-field magnitude follows r^-2 scaling between perihelion and 0.5 AU. Validate density scaling n ~ r^-2. Compare against published PSP encounter papers."
 input = "data/external/psp/psp_2022_amda_merged.asc"
 output = ["data/output/psp_perihelion_scaling.csv"]
 run = "python3 bin/fetch_psp.py --source amda --start 2022 --end 2022"
-run_command_sha256 = ""
+run_command_sha256 = "f6ca790c011992255d93c53ebd978d022e94cc9dcc3625260d3c1b7cb9bf6339"
 claims = ["C-1179"]
 claim_refs = ["C-1179"]
 deterministic = true
@@ -3019,22 +3376,25 @@ gpu = false
 status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-129"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = ["AMDA PSP SPC (psp-spc-mom)", "AMDA PSP MAG (psp-mag-1min)"]
-reproducibility_class = "deterministic"
+input_path_refs = ["data/external/psp/psp_2022_amda_merged.asc"]
+output_path_refs = ["data/output/psp_perihelion_scaling.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-131"
 title = "Helios corefit radial gradient (0.3-1.0 AU) vs Voyager at matched distances"
-binary = "N/A"
+binary = ""
 binary_registered = false
 binary_experiment_declared = "E-131"
 method = "Fetch Helios 1 AMDA data for 1976-1980. Bin by distance (0.3-1.0 AU in 0.1 AU bins). Compute median B, n, V per bin. Compare against Voyager 2 data at matched distances (1977-1978, ~1 AU). Verify B ~ 1/r^2 and n ~ 1/r^2 scaling consistency."
 input = "data/external/helios/helios1/helios1_*_amda_merged.asc, data/external/voyager/voyager2/vy2_*_amda_merged_hourly.asc"
 output = ["data/output/helios_voyager_radial_comparison.csv"]
 run = "python3 bin/fetch_helios.py --spacecraft helios1 --source amda --start 1976 --end 1980"
-run_command_sha256 = ""
+run_command_sha256 = "fe9d78c8980f3cf264694f1cc6b2941adb51522132ab7d899a87e5838151f4fb"
 claims = ["C-1180"]
 claim_refs = ["C-1180"]
 deterministic = true
@@ -3042,22 +3402,25 @@ gpu = false
 status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-130"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = ["AMDA Helios 1 corefit (helios1-e1-all)", "AMDA Helios 1 MAG (helios1-e3-all)"]
-reproducibility_class = "deterministic"
+input_path_refs = ["data/external/helios/helios1/helios1_", "data/external/voyager/voyager2/vy2_"]
+output_path_refs = ["data/output/helios_voyager_radial_comparison.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-132"
 title = "Ulysses AMDA vs SPDF cross-validation for polar wind data"
-binary = "N/A"
+binary = ""
 binary_registered = false
 binary_experiment_declared = "E-132"
 method = "Fetch Ulysses AMDA data for 1994-1995 (first fast latitude scan). When SPDF becomes available, compare hourly B-field, density, speed between AMDA-derived and SPDF-original files. Verify agreement within measurement uncertainty."
 input = "data/external/ulysses/uly_1994_amda_merged_hourly.asc, data/external/ulysses/uly_1994_merged_hourly.asc"
 output = ["data/output/ulysses_amda_spdf_crossval.csv"]
 run = "python3 bin/fetch_ulysses.py --source amda --start 1994 --end 1995"
-run_command_sha256 = ""
+run_command_sha256 = "b2745269dd727f07b6760cfefc7fa312efd7705bc4010daae370a6ac91ebdadc"
 claims = ["C-1184"]
 claim_refs = ["C-1184"]
 deterministic = true
@@ -3065,22 +3428,25 @@ gpu = false
 status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-131"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = ["AMDA Ulysses SWOOPS (ulys-bai-mom)", "AMDA Ulysses FGM (ulys-fgm-rtn)"]
-reproducibility_class = "deterministic"
+input_path_refs = ["data/external/ulysses/uly_1994_amda_merged_hourly.asc", "data/external/ulysses/uly_1994_merged_hourly.asc"]
+output_path_refs = ["data/output/ulysses_amda_spdf_crossval.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-133"
 title = "Juno cruise AMDA B-field validation against Connerney et al. published values"
-binary = "N/A"
+binary = ""
 binary_registered = false
 binary_experiment_declared = "E-133"
 method = "Fetch Juno cruise AMDA data for 2013-2015. Compare mean B-field magnitude at 2-4 AU against published Connerney et al. (2017) FGM calibration values. Verify Parker spiral r^-2 scaling between 2 AU and Jupiter approach."
 input = "data/external/juno/juno_2013_amda_merged_hourly.asc"
 output = ["data/output/juno_cruise_bfield_validation.csv"]
 run = "python3 bin/fetch_juno.py --source amda --start 2013 --end 2015"
-run_command_sha256 = ""
+run_command_sha256 = "6801dc1f594786c388d0f84b7c84ef38a5f9b8f5cc96542fe832d478fbef18cd"
 claims = ["C-1185"]
 claim_refs = ["C-1185"]
 deterministic = true
@@ -3088,22 +3454,25 @@ gpu = false
 status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-132"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = ["AMDA Juno FGM cruise (juno-fgm-cruise60)", "AMDA Juno JADE-L5 (juno-jadel5-protmom)"]
-reproducibility_class = "deterministic"
+input_path_refs = ["data/external/juno/juno_2013_amda_merged_hourly.asc"]
+output_path_refs = ["data/output/juno_cruise_bfield_validation.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-134"
 title = "Wind AMDA vs OMNI2 L1 cross-check for 2024"
-binary = "N/A"
+binary = ""
 binary_registered = false
 binary_experiment_declared = "E-134"
 method = "Fetch Wind AMDA merged data for 2024. Compare hourly B-field and plasma against OMNI2 hourly dataset for the same period (OMNI2 uses Wind as primary L1 source). Agreement should be within resampling noise."
 input = "data/external/wind/wind_2024_amda_merged_hourly.asc, data/external/omni2/omni2_2024.dat"
 output = ["data/output/wind_amda_omni2_crosscheck.csv"]
 run = "python3 bin/fetch_wind.py --source amda --start 2024 --end 2024"
-run_command_sha256 = ""
+run_command_sha256 = "cf0f8df3ae1c2e7317fbee06dedfe8041806ef885b4a0d45f74f2b62641ac888"
 claims = ["C-1186"]
 claim_refs = ["C-1186"]
 deterministic = true
@@ -3111,22 +3480,25 @@ gpu = false
 status = "planned"
 status_token = "PLANNED"
 lineage_id = "XL-133"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = ["AMDA Wind SWE KP (wnd-swe-kp)", "AMDA Wind MFI KP (wnd-mfi-kp)"]
-reproducibility_class = "deterministic"
+input_path_refs = ["data/external/omni2/omni2_2024.dat", "data/external/wind/wind_2024_amda_merged_hourly.asc"]
+output_path_refs = ["data/output/wind_amda_omni2_crosscheck.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
 
 [[experiment]]
 id = "E-135"
 title = "Pioneer/Flyby governed benchmark staging and verification"
-binary = "N/A"
+binary = ""
 binary_registered = false
 binary_experiment_declared = "E-135"
 method = "Stage Anderson 2008 flyby anomaly events and Anderson 2002 Pioneer anomaly benchmark values as governed external CSV artifacts with explicit bibliography and source contracts. This experiment verifies artifact schema, value drift, and provenance registration only."
 input = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv, data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"
 output = []
 run = "cargo run --release --bin registry-check"
-run_command_sha256 = ""
+run_command_sha256 = "2eec9e7c48f34ccd8576a18dcb090bda75d7d50c6bbb6d5c2c523a0ddfe59939"
 claims = ["C-1204"]
 claim_refs = ["C-1204"]
 deterministic = true
@@ -3134,9 +3506,12 @@ gpu = false
 status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-134"
-input_path_refs = []
+input_path_refs = ["data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv", "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"]
 output_path_refs = []
-dataset_refs = ["Anderson et al. 2008 flyby anomaly benchmark", "Anderson et al. 2002 Pioneer anomaly benchmark"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["XS-015"]
+truth_surface_consumption = ["observation_benchmark"]
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -3149,7 +3524,7 @@ method = "Generate governed anomaly comparison artifacts from staged observation
 input = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv, data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv, data/external/pioneer/pioneer10/pds_ppi_merged/p10_*.TAB, data/external/pioneer/pioneer11/pds_ppi_merged/p11_*.TAB"
 output = ["data/output/anomaly/flyby/flyby_observed_vs_modeled.csv", "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"]
 run = "cargo run --release -p gororoba_cli_physics --bin flyby-residual-audit && cargo run --release -p gororoba_cli_physics --bin pioneer-residual-audit"
-run_command_sha256 = ""
+run_command_sha256 = "0d234a04f02d31366e935f1a67adc75e3f3ea2cbb01c86ade9519be41fec336e"
 claims = ["C-1205", "C-1206"]
 claim_refs = ["C-1205", "C-1206"]
 deterministic = true
@@ -3157,9 +3532,12 @@ gpu = false
 status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-135"
-input_path_refs = []
-output_path_refs = []
-dataset_refs = ["Anderson flyby event catalog", "Pioneer anomaly benchmark", "Pioneer annual merged PDS/PPI"]
+input_path_refs = ["data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv", "data/external/pioneer/pioneer10/pds_ppi_merged/p10_", "data/external/pioneer/pioneer11/pds_ppi_merged/p11_", "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"]
+output_path_refs = ["data/output/anomaly/flyby/flyby_observed_vs_modeled.csv", "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["XS-015"]
+truth_surface_consumption = ["observation_benchmark", "environment_context"]
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -3172,7 +3550,7 @@ method = "Sweep plain and Q-tensor fractal-metric parameter grids against the go
 input = "data/output/anomaly/flyby/flyby_observed_vs_modeled.csv, data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"
 output = ["data/output/anomaly/fractal_metric/fit_grid.csv", "data/output/anomaly/fractal_metric/best_fit.json"]
 run = "cargo run --release -p gororoba_cli_physics --bin fractal-metric-fit"
-run_command_sha256 = ""
+run_command_sha256 = "57c5a9d50e05471efd52e4c35ec32ac047ad67e71267e9ef16e1927e56073a0d"
 claims = ["C-1207"]
 claim_refs = ["C-1207"]
 deterministic = true
@@ -3180,7 +3558,115 @@ gpu = false
 status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-136"
+input_path_refs = ["data/output/anomaly/flyby/flyby_observed_vs_modeled.csv", "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"]
+output_path_refs = ["data/output/anomaly/fractal_metric/best_fit.json", "data/output/anomaly/fractal_metric/fit_grid.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["XS-015"]
+truth_surface_consumption = ["observation_benchmark", "environment_context"]
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-138"
+title = "Sprint 79 physics correctness verification gate"
+binary = "cr-modulation-sweep"
+binary_registered = true
+binary_experiment_declared = "E-138"
+method = "Full workspace verification of 37 physics bug fixes across 7 batches: (1) data catalog value corrections (DESI DR2, DES Y6), (2) data_core structural fixes (B-field ceiling 1/r, RTN rotation, ACE timestamps), (3) solar wind IC fixes (MAG-only, x-column mapping, B interpolation, Parker fallback), (4) MHD IC loading (x=0 inflow, bounds check), (5) CR transport physics (radial div_u, LIS boundary, DmYieldSpectrum endpoints, LBM-to-AU/s, phi units, CFL check), (6) NFW/DM force path (z-clamp, rho_crit(z), c(M,z) wiring, galactocentric centering, density scaling, force_scale), (7) flyby/misc (gravity sign, wake accumulation, chi2 clamping). Verification: clippy clean, 5392 tests pass, governance gate green."
+input = "None (workspace-wide test suite)"
+output = []
+run = "cargo clippy --workspace -- -D warnings && cargo test --workspace && make governance-gate"
+run_command_sha256 = "ccb52ae5743254c915429228af5ee75570c9a92fcfaf6c1c2a18478eab37dfdb"
+claims = ["C-1208", "C-1209", "C-1210", "C-1211", "C-1212", "C-1213", "C-1214", "C-1215", "C-1216", "C-1217", "C-1218", "C-1219", "C-1220", "C-1221", "C-1222", "C-1223", "C-1224", "C-1225", "C-1226", "C-1227", "C-1228", "C-1229", "C-1230"]
+claim_refs = ["C-1208", "C-1209", "C-1210", "C-1211", "C-1212", "C-1213", "C-1214", "C-1215", "C-1216", "C-1217", "C-1218", "C-1219", "C-1220", "C-1221", "C-1222", "C-1223", "C-1224", "C-1225", "C-1226", "C-1227", "C-1228", "C-1229", "C-1230"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-137"
 input_path_refs = []
 output_path_refs = []
-dataset_refs = ["Governed flyby observed-vs-modeled artifact", "Governed Pioneer benchmark-vs-environment artifact"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-139"
+title = "High-dimensional Cayley-Dickson algebra analysis (dim 16..4096)"
+binary = "dm-cd-4096-analysis"
+binary_registered = true
+binary_experiment_declared = "E-139"
+method = "cd_tower_sweep: Random element sampling for associator norms, zero-divisor density, and norm multiplicativity deviation across CD dims 16..4096. AVT timing via TensorAVT auto-backend."
+input = "dims=16,32,64,128,256,512,1024,2048,4096, samples=1000, seed=42"
+output = ["stdout", "csv"]
+run = "cargo run --release --bin dm-cd-4096-analysis -- --dims 16,32,64,128,256,512,1024,2048,4096 --samples 1000 --seed 42"
+run_command_sha256 = "d70d4019ee82c77b9c77bfe43f8a88138352bdeffa227ac8e739c606629a707b"
+claims = []
+claim_refs = []
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-138"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-140"
+title = "Euclid Q1 Zenodo catalog discovery and ingestion"
+binary = ""
+binary_registered = false
+binary_experiment_declared = "E-140"
+method = "Query Zenodo REST API for all Euclid Q1 supplementary science records. Discover, classify (catalog vs image, size thresholds), and ingest parquet/CSV catalogs for morphology, strong lensing, mergers, photo-z, clustering, compact groups, and globular clusters. MD5 verification against Zenodo checksums. Total footprint capped at 200 GB."
+input = "Zenodo REST API (https://zenodo.org/api/records)"
+output = ["data/external/euclid/zenodo/euclid_zenodo_manifest.json", "data/external/euclid/zenodo/euclid_zenodo_discovery.json"]
+run = "python3 bin/fetch_euclid_zenodo.py --discover && python3 bin/fetch_euclid_zenodo.py --skip-existing"
+run_command_sha256 = "7b4ece72092ef446a71eb867923ade5fe6a9c8e69a06b311b235a0e533ad36f2"
+claims = []
+claim_refs = []
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-139"
+input_path_refs = []
+output_path_refs = ["data/external/euclid/zenodo/euclid_zenodo_discovery.json", "data/external/euclid/zenodo/euclid_zenodo_manifest.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["SRC-EUCLID-Q1-ZENODO-MORPHOLOGY", "SRC-EUCLID-Q1-ZENODO-STRONG-LENSING", "SRC-EUCLID-Q1-ZENODO-MERGERS", "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY-SUPP", "SRC-EUCLID-Q1-ZENODO-PHOTOZ", "SRC-EUCLID-Q1-ZENODO-CLUSTERING", "SRC-EUCLID-Q1-ZENODO-COMPACT-GROUPS", "SRC-EUCLID-Q1-ZENODO-GC"]
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-141"
+title = "YSU-engine GPU technique distillation into lbm_3d_cuda"
+binary = ""
+binary_registered = false
+binary_experiment_declared = "E-141"
+method = "Extract transferable GPU optimization patterns from YSU-engine (C11/Vulkan renderer, MIT license) and apply to lbm_3d_cuda D3Q19 kernels. Changes: (1) FMA chain optimization in compute_equilibrium_f/d using Horner evaluation (2 FMA ops vs 6 separate ops), (2) __ldg() cached reads for read-only fields (tau, force, f_in), (3) #pragma unroll on all 19-direction loops, (4) occupancy culling via force-magnitude early-exit in Guo forcing kernels (skip cells with |F|^2 < 1e-40), (5) gororoba_gpu_bridge wiring with detect_and_select() runtime CUDA probe."
+input = "YSU-engine source (https://github.com/ismail0098-lang/YSU-engine, external)"
+output = []
+run = "cargo clippy -p lbm_3d_cuda -- -D warnings && cargo test -p lbm_3d_cuda"
+run_command_sha256 = "b2c51d34c9bfc823b0a22a6cdd9b8e4d3f14774e5ccee1f710f6e586d542994c"
+claims = []
+claim_refs = []
+deterministic = true
+gpu = true
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-140"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
