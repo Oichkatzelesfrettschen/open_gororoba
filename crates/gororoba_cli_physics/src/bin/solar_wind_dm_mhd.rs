@@ -10,6 +10,7 @@
 //! alone cannot produce observable solar wind perturbations at 1 AU.
 
 use clap::Parser;
+use cosmology_core::concentration_mass_relation;
 use lbm_3d::{
     boundary::ZouHeBoundary,
     dm_force::{DmForceConfig, DmForceField, combine_forces},
@@ -79,9 +80,10 @@ struct Cli {
     #[arg(long, default_value_t = 1.0e12)]
     dm_m200: f64,
 
-    /// NFW concentration parameter
-    #[arg(long, default_value_t = 10.0)]
-    dm_c200: f64,
+    /// NFW concentration parameter. If not set, derived from --dm-m200
+    /// via the Dutton & Maccio (2014) concentration-mass relation.
+    #[arg(long)]
+    dm_c200: Option<f64>,
 
     /// Gravitational focusing wake amplitude (0 = isotropic)
     #[arg(long, default_value_t = 0.0)]
@@ -253,10 +255,10 @@ fn load_ic_file(
         let by: f64 = fields[8].trim().parse()?;
         let bz: f64 = fields[9].trim().parse()?;
 
-        let idx = z * (nx * ny) + y * nx + x;
-        if idx >= solver.rho.len() {
+        if x >= nx || y >= ny || z >= solver.nz {
             continue;
         }
+        let idx = z * (nx * ny) + y * nx + x;
 
         solver.rho[idx] = rho;
         solver.u[idx] = [ux, uy, uz];
@@ -323,8 +325,16 @@ fn main() -> anyhow::Result<()> {
             eprintln!("  IC metadata: u_scale={u:.4}");
         }
 
-        // Compute median u_x for inlet boundary (needed for Zou-He)
-        let mut ux_vals: Vec<f64> = solver.u.iter().map(|u| u[0]).collect();
+        // Extract u_x from x=0 face only (the inflow boundary).
+        // Using the global median would mix interior conditions that
+        // may differ due to DM drag or magnetic pressure gradients.
+        let mut ux_vals: Vec<f64> = Vec::new();
+        for z in 0..cli.nz {
+            for y in 0..cli.ny {
+                let idx = z * (cli.nx * cli.ny) + y * cli.nx; // x=0
+                ux_vals.push(solver.u[idx][0]);
+            }
+        }
         ux_vals.sort_by(|a, b| a.partial_cmp(b).unwrap());
         let median_ux = ux_vals[ux_vals.len() / 2];
         ([median_ux, 0.0, 0.0], ic_meta)
@@ -346,13 +356,31 @@ fn main() -> anyhow::Result<()> {
         // Use IC metadata for unit conversion when available (overrides CLI defaults)
         let n_ref = ic_meta.n_ref_cm3.unwrap_or(cli.dm_n_ref);
         let v_ref = ic_meta.v_ref_kms.unwrap_or(cli.dm_v_ref);
-        let u_sc = ic_meta.u_scale.unwrap_or(0.05);
+        let u_sc = ic_meta.u_scale.unwrap_or(cli.v_sw);
+
+        // Derive c200 from m200 via concentration-mass relation unless
+        // the user explicitly set --dm-c200 on the command line.
+        let c200 = cli
+            .dm_c200
+            .unwrap_or_else(|| concentration_mass_relation(cli.dm_m200, 0.0));
+
+        // Derive force_scale from actual CLI nx and v_sw, not from the
+        // DmForceConfig default (which assumes nx=128, v_sw=400 km/s).
+        // delta_x = 1 AU / nx, delta_t = delta_x * (v_sw_lattice / v_sw_phys),
+        // force_scale = delta_t^2 / delta_x.
+        let au_m = 1.496e11;
+        let delta_x = au_m / cli.nx as f64;
+        let v_sw_phys = v_ref * 1.0e3; // km/s -> m/s
+        let delta_t = delta_x * (u_sc / v_sw_phys);
+        let force_scale = delta_t * delta_t / delta_x;
+
         let dm_config = DmForceConfig {
             rho_dm_local_gev_cm3: cli.dm_density,
             m200_solar: cli.dm_m200,
-            c200: cli.dm_c200,
+            c200,
             v_dm_wind: [cli.dm_wind_x, cli.dm_wind_y, cli.dm_wind_z],
             eta_wake: cli.dm_wake,
+            force_scale,
             sigma_chi_b: cli.dm_sigma,
             n_ref_cm3: n_ref,
             v_ref_kms: v_ref,

@@ -1,10 +1,22 @@
 //! Deterministic callgrind benches for tensor_avt host-side costs.
 
-use gororoba_algebra::gpu::TensorAVT;
+use gororoba_algebra::gpu::{
+    TensorAVT, TensorAvtAutoConfig, TensorAvtCalibrationMode,
+};
 #[cfg(feature = "gpu")]
 use gororoba_algebra::gpu::is_gpu_available;
 use iai_callgrind::{library_benchmark, library_benchmark_group, main};
 use std::hint::black_box;
+
+/// CPU-only auto config that forces CpuScalar regardless of gpu feature.
+fn cpu_only_config() -> TensorAvtAutoConfig {
+    use gororoba_algebra::gpu::ComputeBackend as CB;
+    TensorAvtAutoConfig {
+        backend_order: [CB::CpuScalar, CB::CpuSimd, CB::CpuScalar, CB::CpuScalar],
+        calibration: TensorAvtCalibrationMode::Disabled,
+        threshold_overrides: Default::default(),
+    }
+}
 
 fn values(len: usize, seed: u64) -> Vec<f32> {
     let mut state = seed;
@@ -25,8 +37,10 @@ fn cd_mul_cpu_256() -> Vec<f32> {
     let avt = TensorAVT::new(dim);
     let a = values(dim, 0xA11CE);
     let x = values(dim, 0xBADC0DE);
-    avt.compute_cd_mul(black_box(&a), black_box(&x))
+    let cfg = cpu_only_config();
+    avt.compute_cd_mul_auto_with_config(black_box(&a), black_box(&x), &cfg)
         .expect("single")
+        .value
 }
 
 #[library_benchmark]
@@ -35,8 +49,10 @@ fn cd_mul_cpu_1024() -> Vec<f32> {
     let avt = TensorAVT::new(dim);
     let a = values(dim, 0xA11CE + dim as u64);
     let x = values(dim, 0xBADC0DE + dim as u64);
-    avt.compute_cd_mul(black_box(&a), black_box(&x))
+    let cfg = cpu_only_config();
+    avt.compute_cd_mul_auto_with_config(black_box(&a), black_box(&x), &cfg)
         .expect("single")
+        .value
 }
 
 #[library_benchmark]
@@ -46,8 +62,12 @@ fn cd_mul_batch_cpu_256x64() -> Vec<f32> {
     let avt = TensorAVT::new(dim);
     let a = values(dim, 0xCAFE);
     let x_batch = values(dim * batch_size, 0xFACEFEED);
-    avt.compute_cd_mul_batch(black_box(&a), black_box(&x_batch), black_box(batch_size))
-        .expect("batch")
+    let cfg = cpu_only_config();
+    avt.compute_cd_mul_batch_auto_with_config(
+        black_box(&a), black_box(&x_batch), black_box(batch_size), &cfg,
+    )
+    .expect("batch")
+    .value
 }
 
 #[library_benchmark]
@@ -57,8 +77,12 @@ fn cd_mul_batch_cpu_4096x8() -> Vec<f32> {
     let avt = TensorAVT::new(dim);
     let a = values(dim, 0xCAFE + dim as u64);
     let x_batch = values(dim * batch_size, 0xFACEFEED + batch_size as u64);
-    avt.compute_cd_mul_batch(black_box(&a), black_box(&x_batch), black_box(batch_size))
-        .expect("batch")
+    let cfg = cpu_only_config();
+    avt.compute_cd_mul_batch_auto_with_config(
+        black_box(&a), black_box(&x_batch), black_box(batch_size), &cfg,
+    )
+    .expect("batch")
+    .value
 }
 
 #[library_benchmark]
@@ -67,8 +91,12 @@ fn norm_sq_batch_cpu_256x64() -> Vec<f32> {
     let batch_size = 64;
     let avt = TensorAVT::new(dim);
     let vectors = values(dim * batch_size, 0xDEADBEEF);
-    avt.compute_norm_sq_batch(black_box(&vectors), black_box(batch_size))
-        .expect("norms")
+    let cfg = cpu_only_config();
+    avt.compute_norm_sq_batch_auto_with_config(
+        black_box(&vectors), black_box(batch_size), &cfg,
+    )
+    .expect("norms")
+    .value
 }
 
 #[library_benchmark]
@@ -77,8 +105,12 @@ fn norm_sq_batch_cpu_4096x8() -> Vec<f32> {
     let batch_size = 8;
     let avt = TensorAVT::new(dim);
     let vectors = values(dim * batch_size, 0xDEADBEEF + dim as u64);
-    avt.compute_norm_sq_batch(black_box(&vectors), black_box(batch_size))
-        .expect("norms")
+    let cfg = cpu_only_config();
+    avt.compute_norm_sq_batch_auto_with_config(
+        black_box(&vectors), black_box(batch_size), &cfg,
+    )
+    .expect("norms")
+    .value
 }
 
 library_benchmark_group!(

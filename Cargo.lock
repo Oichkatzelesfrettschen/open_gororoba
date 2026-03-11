@@ -5080,6 +5080,7 @@ version = "0.1.0"
 dependencies = [
  "approx",
  "cosmic_scheduler",
+ "cosmology_core",
  "criterion",
  "rayon",
  "thiserror 2.0.18",
@@ -5093,6 +5094,7 @@ dependencies = [
  "approx",
  "cudarc 0.19.3",
  "gororoba_algebra",
+ "gororoba_gpu_bridge",
  "gr_core",
  "half",
  "lbm_3d",

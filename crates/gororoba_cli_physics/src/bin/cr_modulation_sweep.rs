@@ -497,8 +497,10 @@ fn compute_phi_map(
         let mid_u: Vec<f64> = (0..nx)
             .map(|x| {
                 let u = solver.u[z_mid * nx * ny + y_mid * nx + x];
-                // convert LBM lattice speed to km/s using u_scale ~ 400 km/s / 0.05
-                u[0].abs() * 400.0 / 0.05
+                // Convert LBM lattice speed to AU/s:
+                // u_phys_ms = u_lattice * (400 km/s / 0.05)
+                // u_phys_au_s = u_phys_ms * 1e3 / 1.496e11
+                u[0].abs() * 400.0 / 0.05 * 1e3 / 1.496e11
             })
             .collect();
         move |r: f64| {
@@ -665,12 +667,13 @@ fn main() {
 
     // Physical dt: LBM timestep in seconds
     // Assume LBM dx = 1 AU / nx, dt = dx / v_sw_physical (400 km/s)
-    let dx_au = (cli.r_max_au - cli.r_min_au) / cli.nx as f64;
+    let dx_au = (cli.r_max_au - cli.r_min_au) / (cli.nx as f64 - 1.0).max(1.0);
     let v_sw_ms = 400.0e3_f64; // m/s
     let au_m = 1.496e11_f64;
     let dt_s = dx_au * au_m / v_sw_ms;
 
     let mut pte = PteSolver::new(cli.nx, cli.ny, cli.nz, grid, diff_cfg.clone(), dt_s, dx_au);
+    pte.r_min_au = cli.r_min_au;
     pte.set_boundary_ism(&lis_proton);
 
     // --- Force-field proxy ---
@@ -727,11 +730,22 @@ fn main() {
             mhd.evolve_b_field(&lbm.u);
         }
 
+        // Convert LBM lattice velocities to physical AU/s for PTE.
+        // u_phys = u_lattice * (v_sw_ms / u_lbm_ref) / AU_m
+        let u_phys: Vec<[f64; 3]> = lbm
+            .u
+            .iter()
+            .map(|u| {
+                let scale = v_sw_ms / (cli.v_sw * au_m);
+                [u[0] * scale, u[1] * scale, u[2] * scale]
+            })
+            .collect();
+
         // PTE one step
         let bx = &mhd.bx;
         let by = &mhd.by;
         let bz = &mhd.bz;
-        pte.evolve_one_step(&lbm.u, (bx, by, bz), dm_source.as_ref(), &dm_density);
+        pte.evolve_one_step(&u_phys, (bx, by, bz), dm_source.as_ref(), &dm_density, Some(&lis_proton));
 
         // Snapshot output
         if step % cli.snapshot_interval == 0 {

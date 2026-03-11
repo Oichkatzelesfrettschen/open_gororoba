@@ -470,12 +470,16 @@ fn fit_upper_limit(rows: &[AbsoluteCompareRow], sigma_v_reference: f64) -> Absol
         weighted_signal_residual += row.dm_template_flux * residual * weight;
     }
 
-    let amplitude_hat = if weighted_signal_sq > 0.0 {
-        (weighted_signal_residual / weighted_signal_sq).max(0.0)
+    let amplitude_unclamped = if weighted_signal_sq > 0.0 {
+        weighted_signal_residual / weighted_signal_sq
     } else {
         0.0
     };
-    let chi2_best = if weighted_signal_sq > 0.0 {
+    let amplitude_hat = amplitude_unclamped.max(0.0);
+    // When amplitude was negative and clamped to 0, the best-fit chi2 at
+    // amplitude=0 equals chi2_null.  Only use the analytic minimum when the
+    // unclamped optimum is non-negative.
+    let chi2_best = if weighted_signal_sq > 0.0 && amplitude_unclamped >= 0.0 {
         chi2_null - weighted_signal_residual * weighted_signal_residual / weighted_signal_sq
     } else {
         chi2_null

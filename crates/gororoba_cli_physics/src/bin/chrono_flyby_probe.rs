@@ -222,10 +222,11 @@ fn gravity_wake_field(
             for x in 0..nx {
                 let idx = GridIndex::new(x, y, z).linearize(nx, ny);
 
-                // Displacement from grid node to flyby mass
-                let dx = x as f64 - mass_lattice_pos[0];
-                let dy = y as f64 - mass_lattice_pos[1];
-                let dz = z as f64 - mass_lattice_pos[2];
+                // Displacement from grid node to flyby mass (mass - node)
+                // so force points FROM node TOWARD mass (attractive gravity).
+                let dx = mass_lattice_pos[0] - x as f64;
+                let dy = mass_lattice_pos[1] - y as f64;
+                let dz = mass_lattice_pos[2] - z as f64;
 
                 let r2 = dx * dx + dy * dy + dz * dz;
                 // Plummer softening: a = -GM * r / (r^2 + eps^2)^(3/2)
@@ -393,6 +394,10 @@ fn main() -> anyhow::Result<()> {
         );
     }
 
+    // Capture background force field before time loop so each snapshot
+    // combines gravity with the pristine background, not the accumulated field.
+    let background = solver.force_field.clone();
+
     // Time bookkeeping
     let dt_snap = cli.dt_trajectory * cli.lbm_steps_per_snap as f64;
     let mut t_current = -t_window;
@@ -492,11 +497,11 @@ fn main() -> anyhow::Result<()> {
                 gm_lattice,
                 cli.softening,
             );
-            // If there's an existing force field (e.g., background solar wind),
-            // superimpose gravitational wake via element-wise addition.
-            // Otherwise, set the gravity field directly.
-            let combined = if let Some(existing) = solver.force_field.as_ref() {
-                combine_forces(existing, &grav_field)
+            // Superimpose gravitational wake on the pristine background
+            // (captured before the time loop) to avoid accumulating gravity
+            // across successive snapshots.
+            let combined = if let Some(bg) = background.as_ref() {
+                combine_forces(bg, &grav_field)
             } else {
                 grav_field
             };

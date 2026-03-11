@@ -32,24 +32,25 @@ __device__ __forceinline__ bool finite_f64(double x) {
     return (x == x) && (x <= 1.7976931348623157e308) && (x >= -1.7976931348623157e308);
 }
 
-// Compute equilibrium distribution (double)
+// Compute equilibrium distribution (double) -- FMA-optimized Horner form.
+// Algebraic identity: f_eq = w*rho * (4.5*eu^2 + 3*eu + 1 - 1.5*usq)
+// Horner: (4.5*eu + 3)*eu + base, where base = 1 - 1.5*usq
 __device__ void compute_equilibrium_d(
     double* f_eq,
     double rho,
     const double* u
 ) {
     double u_sq = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
+    double base = fma(-1.5, u_sq, 1.0);  // 1 - 1.5*usq
 
+    #pragma unroll
     for (int i = 0; i < 19; i++) {
-        double c_dot_u = D3Q19_CX_D[i]*u[0] + D3Q19_CY_D[i]*u[1] + D3Q19_CZ_D[i]*u[2];
-        double c_dot_u_sq = c_dot_u * c_dot_u;
-
-        f_eq[i] = D3Q19_WD[i] * rho * (
-            1.0 +
-            c_dot_u / CS_SQ_D +
-            c_dot_u_sq / (2.0 * CS_SQ_D * CS_SQ_D) -
-            u_sq / (2.0 * CS_SQ_D)
-        );
+        double eu = (double)(D3Q19_CX_D[i])*u[0]
+                  + (double)(D3Q19_CY_D[i])*u[1]
+                  + (double)(D3Q19_CZ_D[i])*u[2];
+        double w_rho = D3Q19_WD[i] * rho;
+        // Horner evaluation: (4.5*eu + 3)*eu + base
+        f_eq[i] = w_rho * fma(fma(eu, 4.5, 3.0), eu, base);
     }
 }
 
@@ -70,13 +71,14 @@ extern "C" __global__ void lbm_step_fused_fp64_kernel(
 
     int idx = x + nx * (y + ny * z);
 
-    // 1. Gather macroscopic
+    // 1. Gather macroscopic (use __ldg for read-only f_in)
     double rho_local = 0.0;
     double mx = 0.0, my = 0.0, mz = 0.0;
     double f_local[19];
 
+    #pragma unroll
     for (int i = 0; i < 19; i++) {
-        double val = f_in[idx * 19 + i];
+        double val = __ldg(&f_in[idx * 19 + i]);
         if (!finite_f64(val)) {
             val = 0.0;
         }
@@ -109,30 +111,35 @@ extern "C" __global__ void lbm_step_fused_fp64_kernel(
     double u_vec[3] = {ux, uy, uz};
     compute_equilibrium_d(f_eq, rho_local, u_vec);
 
-    double tau_local = tau[idx];
+    double tau_local = __ldg(&tau[idx]);
     double inv_tau = 1.0 / tau_local;
+
+    double fx = __ldg(&force[idx * 3 + 0]);
+    double fy = __ldg(&force[idx * 3 + 1]);
+    double fz = __ldg(&force[idx * 3 + 2]);
+
+    // Occupancy culling: check if Guo forcing is needed.
+    double force_mag_sq = fx * fx + fy * fy + fz * fz;
     double prefactor = 1.0 - 0.5 * inv_tau;
 
-    double fx = force[idx * 3 + 0];
-    double fy = force[idx * 3 + 1];
-    double fz = force[idx * 3 + 2];
-
+    #pragma unroll
     for (int i = 0; i < 19; i++) {
-        // BGK
+        // BGK collision
         double fi = f_local[i] - (f_local[i] - f_eq[i]) * inv_tau;
 
-        // Guo Forcing
-        double eix = (double)D3Q19_CX_D[i];
-        double eiy = (double)D3Q19_CY_D[i];
-        double eiz = (double)D3Q19_CZ_D[i];
-        double ei_minus_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-        double ei_dot_u = eix * ux + eiy * uy + eiz * uz;
-        double ei_dot_f = eix * fx + eiy * fy + eiz * fz;
-        double s_i = ei_minus_u_dot_f * 3.0 + ei_dot_u * ei_dot_f * 9.0;
+        // Guo Forcing (skip for cells with negligible force)
+        if (force_mag_sq >= 1e-40) {
+            double eix = (double)D3Q19_CX_D[i];
+            double eiy = (double)D3Q19_CY_D[i];
+            double eiz = (double)D3Q19_CZ_D[i];
+            double ei_minus_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+            double ei_dot_u = eix * ux + eiy * uy + eiz * uz;
+            double ei_dot_f = eix * fx + eiy * fy + eiz * fz;
+            double s_i = ei_minus_u_dot_f * 3.0 + ei_dot_u * ei_dot_f * 9.0;
+            fi += prefactor * D3Q19_WD[i] * s_i;
+        }
 
-        fi += prefactor * D3Q19_WD[i] * s_i;
-
-        // 3. Streaming (Write to neighbor)
+        // 3. Streaming (Write to neighbor -- always executes)
         int x_next = (x + D3Q19_CX_D[i] + nx) % nx;
         int y_next = (y + D3Q19_CY_D[i] + ny) % ny;
         int z_next = (z + D3Q19_CZ_D[i] + nz) % nz;

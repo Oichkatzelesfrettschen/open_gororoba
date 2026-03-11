@@ -442,7 +442,6 @@ fn generate_ic_from_omni(
     let ny = cli.ny;
     let nz = cli.nz;
     let n_hours = records.len().max(1);
-    let cells_per_hour = nx / n_hours;
 
     let mut data = Vec::with_capacity(nx * ny * nz);
 
@@ -454,9 +453,9 @@ fn generate_ic_from_omni(
 
         for y in 0..ny {
             for x in 0..nx {
-                let hour_idx = x
-                    .checked_div(cells_per_hour)
-                    .map_or_else(|| x * n_hours / nx, |q| q.min(n_hours - 1));
+                // Proportional mapping: distribute hours uniformly across x-cells.
+                // Avoids tail bias from integer division (old: cells_per_hour = nx / n_hours).
+                let hour_idx = (x * n_hours / nx).min(n_hours - 1);
 
                 let rec = &records[hour_idx];
                 let n_phys = rec.proton_density * lat_n_factor;
@@ -467,13 +466,18 @@ fn generate_ic_from_omni(
 
                 // Use real B-field from OMNI (GSE coordinates map directly
                 // to LBM axes: Bx=radial, By=ecliptic transverse, Bz=north).
-                // If any component is NaN, fall back to Parker spiral.
-                let b = if !rec.bx_gse.is_nan() && !rec.by_gse.is_nan() && !rec.bz_gse.is_nan() {
-                    [
-                        rec.bx_gse * cli.b_scale,
-                        rec.by_gse * cli.b_scale,
-                        rec.bz_gse * cli.b_scale,
-                    ]
+                // Only fall back to Parker spiral when ALL three B
+                // components are NaN. Preserve partial measurements
+                // (e.g., Bn-only from a MAG-only record) by zeroing
+                // only the missing components.
+                let b = if !rec.bx_gse.is_nan()
+                    || !rec.by_gse.is_nan()
+                    || !rec.bz_gse.is_nan()
+                {
+                    let bx = if rec.bx_gse.is_nan() { 0.0 } else { rec.bx_gse };
+                    let by = if rec.by_gse.is_nan() { 0.0 } else { rec.by_gse };
+                    let bz = if rec.bz_gse.is_nan() { 0.0 } else { rec.bz_gse };
+                    [bx * cli.b_scale, by * cli.b_scale, bz * cli.b_scale]
                 } else {
                     parker_spiral_b(x, y, nx, ny, cli.b_scale * 5.0, cli.omega, v_lbm)
                 };
@@ -542,6 +546,25 @@ fn filter_valid_omni(records: &[OmniRecord]) -> Vec<OmniRecord> {
     records
         .iter()
         .filter(|r| !r.proton_density.is_nan() || !r.bulk_speed.is_nan())
+        .cloned()
+        .collect()
+}
+
+/// Filter OMNI records for MAG-only near-Earth sources (ACE MAG, WIND MFI,
+/// STEREO MAG). Accepts rows where at least one B-field component is valid,
+/// even when plasma fields (density, speed) are NaN. This is a legacy path
+/// for the OmniRecord adapter; new spacecraft integrations should implement
+/// PlasmaBoundaryProvider where Option<f64> naturally expresses partial data.
+fn filter_valid_omni_mag(records: &[OmniRecord]) -> Vec<OmniRecord> {
+    records
+        .iter()
+        .filter(|r| {
+            !r.proton_density.is_nan()
+                || !r.bulk_speed.is_nan()
+                || !r.bx_gse.is_nan()
+                || !r.by_gse.is_nan()
+                || !r.bz_gse.is_nan()
+        })
         .cloned()
         .collect()
 }
@@ -862,7 +885,18 @@ fn triangulate_ic_from_multi_spacecraft(
                 // At 1 AU: psi = atan(omega * R / v_sw) is the same for both
                 // spacecraft (same R). The rotation accounts for the
                 // longitude offset between L1 (phi=0) and STEREO (phi=sep).
-                let b = if !l1.bx_gse.is_nan() || !st.bx_gse.is_nan() {
+                //
+                // When only one side has B data, use it directly (no
+                // interpolation against zero which would dilute the field).
+                let l1_has_b = !l1.bx_gse.is_nan()
+                    || !l1.by_gse.is_nan()
+                    || !l1.bz_gse.is_nan();
+                let st_has_b = !st.bx_gse.is_nan()
+                    || !st.by_gse.is_nan()
+                    || !st.bz_gse.is_nan();
+
+                let b = if l1_has_b && st_has_b {
+                    // Both sides have B: interpolate with rotation
                     let bx_l1 = if l1.bx_gse.is_nan() { 0.0 } else { l1.bx_gse };
                     let by_l1 = if l1.by_gse.is_nan() { 0.0 } else { l1.by_gse };
                     let bz_l1 = if l1.bz_gse.is_nan() { 0.0 } else { l1.bz_gse };
@@ -871,24 +905,37 @@ fn triangulate_ic_from_multi_spacecraft(
                     let by_st = if st.by_gse.is_nan() { 0.0 } else { st.by_gse };
                     let bz_st = if st.bz_gse.is_nan() { 0.0 } else { st.bz_gse };
 
-                    // Rotation angle: STEREO B-field measured at longitude
-                    // offset = sep * alpha (interpolated position). Rotate
-                    // by delta_phi = sep * alpha in the ecliptic (xy) plane
-                    // to project STEREO's B into the interpolated frame.
                     let delta_phi = sep_rad * alpha;
                     let cos_dp = delta_phi.cos();
                     let sin_dp = delta_phi.sin();
 
-                    // Rotate STEREO B into the interpolated longitude frame
                     let bx_st_rot = bx_st * cos_dp - by_st * sin_dp;
                     let by_st_rot = bx_st * sin_dp + by_st * cos_dp;
-                    // Bz unchanged (ecliptic rotation)
 
                     [
                         (bx_l1 * (1.0 - alpha) + bx_st_rot * alpha) * cli.b_scale,
                         (by_l1 * (1.0 - alpha) + by_st_rot * alpha) * cli.b_scale,
                         (bz_l1 * (1.0 - alpha) + bz_st * alpha) * cli.b_scale,
                     ]
+                } else if l1_has_b {
+                    // Only L1 has B: use directly without dilution
+                    let bx = if l1.bx_gse.is_nan() { 0.0 } else { l1.bx_gse };
+                    let by = if l1.by_gse.is_nan() { 0.0 } else { l1.by_gse };
+                    let bz = if l1.bz_gse.is_nan() { 0.0 } else { l1.bz_gse };
+                    [bx * cli.b_scale, by * cli.b_scale, bz * cli.b_scale]
+                } else if st_has_b {
+                    // Only STEREO has B: rotate to interpolated frame, use directly
+                    let bx_st = if st.bx_gse.is_nan() { 0.0 } else { st.bx_gse };
+                    let by_st = if st.by_gse.is_nan() { 0.0 } else { st.by_gse };
+                    let bz_st = if st.bz_gse.is_nan() { 0.0 } else { st.bz_gse };
+
+                    let delta_phi = sep_rad * alpha;
+                    let cos_dp = delta_phi.cos();
+                    let sin_dp = delta_phi.sin();
+
+                    let bx_rot = bx_st * cos_dp - by_st * sin_dp;
+                    let by_rot = bx_st * sin_dp + by_st * cos_dp;
+                    [bx_rot * cli.b_scale, by_rot * cli.b_scale, bz_st * cli.b_scale]
                 } else {
                     parker_spiral_b(x, y, nx, ny, cli.b_scale * 5.0, cli.omega, v_lbm)
                 };
@@ -1394,7 +1441,10 @@ fn generate_radial_ic(
                 // B-field from interpolated profile (already scaled by
                 // distance). If all B components are NaN, fall back to
                 // Parker spiral model.
-                let b = if point.br_nt.is_finite() || point.bt_nt.is_finite() {
+                let b = if point.br_nt.is_finite()
+                    || point.bt_nt.is_finite()
+                    || point.bn_nt.is_finite()
+                {
                     let br = if point.br_nt.is_finite() {
                         point.br_nt
                     } else {
@@ -1680,7 +1730,7 @@ fn main() -> anyhow::Result<()> {
             hourly.len()
         );
         let omni = ace_mag_to_omni(&hourly);
-        filter_valid_omni(&omni)
+        filter_valid_omni_mag(&omni)
     } else if cli.stereo_file.is_some() || cli.stereo_mag_file.is_some() {
         load_stereo_data(&cli)?
     } else if let Some(ref path) = cli.soho_celias_file {

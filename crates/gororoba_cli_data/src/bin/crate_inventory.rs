@@ -200,9 +200,12 @@ fn validate_catalog(catalog: &Catalog, metadata: &MetadataRoot) -> Result<()> {
 }
 
 fn strip_repo_prefix(path: &str) -> String {
-    path.strip_prefix("/home/eirikr/Github/open_gororoba/")
-        .unwrap_or(path)
-        .to_string()
+    let root = repo_root();
+    let mut prefix = root.to_string_lossy().into_owned();
+    if !prefix.ends_with('/') {
+        prefix.push('/');
+    }
+    path.strip_prefix(&prefix).unwrap_or(path).to_string()
 }
 
 fn main() -> Result<()> {

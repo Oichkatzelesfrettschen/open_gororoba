@@ -114,10 +114,14 @@ extern "C" __global__ void lbm_step_soa_fused(
     }
 
     // Phase 2b: Guo forcing (if force buffer provided)
+    // Occupancy culling: skip Guo source term for cells with negligible
+    // force (sparse DM regions at outer heliosphere radii).
     if (force != NULL) {
-        float fx = force[idx];
-        float fy = force[N + idx];
-        float fz = force[2 * N + idx];
+        float fx = __ldg(&force[idx]);
+        float fy = __ldg(&force[N + idx]);
+        float fz = __ldg(&force[2 * N + idx]);
+        float force_mag_sq = fx * fx + fy * fy + fz * fz;
+        if (force_mag_sq < 1e-40f) goto streaming;  // skip to streaming
         float prefactor = 1.0f - 0.5f * inv_tau;
 
         #pragma unroll
@@ -131,6 +135,7 @@ extern "C" __global__ void lbm_step_soa_fused(
     }
 
     // Phase 3: Streaming (push scheme with periodic BC)
+    streaming:
     #pragma unroll
     for (int i = 0; i < 19; i++) {
         int xn = (x + CX[i] + nx) % nx;

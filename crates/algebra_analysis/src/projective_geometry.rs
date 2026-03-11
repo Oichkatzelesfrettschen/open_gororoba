@@ -1937,6 +1937,7 @@ mod tests {
     // ====================================================================
 
     #[test]
+    #[ignore] // O(256^3): 30-60s under Cranelift. Use --profile test-heavy for dim256+.
     fn test_separating_degree_dim256() {
         // T1 prediction: min_degree = log2(dim) - 2 = 6 at dim=256.
         // PG(6,2): 127 points, 16 motif classes.
@@ -1972,6 +1973,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore] // O(256^3): 15-30s under Cranelift. Use --profile test-heavy for dim256+.
     fn test_separating_degree_dim256_diagnostic() {
         // Full diagnostic: show class sizes and edge count distribution at dim=256
         use crate::boxkites::motif_components_for_cross_assessors;
@@ -2011,6 +2013,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore] // Iterates dim=2..256: 2-3 min under Cranelift. Use --profile test-heavy.
     fn test_separating_degree_formula_universality() {
         // C-593: Verify min_degree = log2(dim) - 2 universally across
         // dims 32, 64, 128, 256. Writes CSV output for archival.

@@ -133,7 +133,7 @@ pub use halo::{
 
 pub use nfw_utils::{
     NfwParams, concentration_mass_relation, nfw_density_from_params, nfw_enclosed_mass_from_params,
-    nfw_params_from_mass, nfw_r200_kpc, nfw_rho_s_from_c,
+    nfw_params_from_mass, nfw_r200_kpc, nfw_rho_s_from_c, rho_crit_kpc_at_z,
 };
 
 pub use flrw::{
