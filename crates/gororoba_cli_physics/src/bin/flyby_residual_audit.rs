@@ -124,6 +124,13 @@ fn main() -> Result<()> {
     };
 
     // Model 2: NFW 1/r^3 density (no wake)
+    //
+    // Design intent: NFW and wake models are classical (Newtonian) baselines.
+    // They are NOT anomalous -- they represent conservative density-coupled
+    // drag that should produce ~zero net delta-V over a symmetric trajectory.
+    // The audit confirms that the observed flyby anomaly cannot arise from
+    // classical density coupling alone, establishing the baseline that the
+    // Chingon non-associative tensor contraction must explain.
     let nfw_env = EarthOnlyNfwLike::default();
 
     // Model 3: NFW + gravitational focusing wake

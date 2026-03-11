@@ -87,12 +87,13 @@ impl DmYieldSpectrum {
 
     fn value_at_logk(&self, logk: f64) -> f64 {
         let logk_values = self.logk_values();
-        if logk <= logk_values[0] || logk >= logk_values[logk_values.len() - 1] {
+        if logk < logk_values[0] || logk > logk_values[logk_values.len() - 1] {
             return 0.0;
         }
         let idx = logk_values
             .partition_point(|value| *value <= logk)
-            .saturating_sub(1);
+            .saturating_sub(1)
+            .min(logk_values.len() - 2);
         let left = logk_values[idx];
         let right = logk_values[idx + 1];
         let span = (right - left).max(1e-12);

@@ -9,6 +9,17 @@ use cudarc::driver::{
 };
 use std::sync::Arc;
 
+// Re-export GPU backend selection types for downstream consumers.
+pub use gororoba_gpu_bridge::{ComputeBackend, HardwareCaps};
+
+/// Probe whether CUDA is available on this machine.
+///
+/// Attempts to create a CUDA context on device 0. Returns true on
+/// success, false on any error (no driver, no device, incompatible).
+pub fn probe_cuda_available() -> bool {
+    CudaContext::new(0).is_ok()
+}
+
 /// Bit-compatible wrapper for Complex32 to satisfy CUDA traits.
 #[derive(Clone, Copy, Debug, Default)]
 #[repr(C)]
@@ -115,6 +126,39 @@ impl LbmSolver3DCuda {
             block_dim: (threads, 1, 1),
             shared_mem_bytes: 0,
         }
+    }
+
+    /// Probe hardware and construct a CUDA solver only if the backend
+    /// is available and the problem size warrants GPU dispatch.
+    ///
+    /// Uses `gororoba_gpu_bridge` for runtime detection: probes CUDA
+    /// availability, SIMD capabilities, and problem size threshold.
+    /// Returns `Err` if CUDA is not the best backend (caller can fall
+    /// back to the CPU solver).
+    pub fn detect_and_select(
+        nx: usize,
+        ny: usize,
+        nz: usize,
+        tau: f64,
+        precision: Precision,
+    ) -> Result<Self> {
+        let problem_size = nx * ny * nz;
+        let simd = gororoba_gpu_bridge::probe_simd();
+        let caps = HardwareCaps {
+            cuda_available: probe_cuda_available(),
+            vulkan_available: false,
+            simd,
+        };
+        let backend = gororoba_gpu_bridge::detect_best_backend(&caps, problem_size);
+
+        ensure!(
+            backend == ComputeBackend::Cuda,
+            "CUDA not selected: detected backend = {backend:?} \
+             (cuda_available={}, problem_size={problem_size}, simd={simd})",
+            caps.cuda_available,
+        );
+
+        Self::new(nx, ny, nz, tau, precision)
     }
 
     pub fn new(nx: usize, ny: usize, nz: usize, tau: f64, precision: Precision) -> Result<Self> {

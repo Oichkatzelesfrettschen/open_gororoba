@@ -16,6 +16,7 @@
 //!   and for the sigma_chi_b cross-section and drag kappa_field fields.
 
 use crate::boundary::GridIndex;
+use cosmology_core::concentration_mass_relation;
 
 /// Gravitational constant in SI (m^3 kg^-1 s^-2).
 const G_SI: f64 = 6.674e-11;
@@ -25,6 +26,9 @@ const M_SUN_KG: f64 = 1.989e30;
 
 /// 1 AU in meters.
 const AU_M: f64 = 1.496e11;
+
+/// 1 kpc in meters.
+const KPC_M: f64 = 3.086e19;
 
 /// GeV/cm^3 to kg/m^3 conversion: 1 GeV/c^2 = 1.783e-27 kg, 1 cm^3 = 1e-6 m^3.
 const GEV_CM3_TO_KG_M3: f64 = 1.783e-21;
@@ -81,6 +85,13 @@ pub struct DmForceConfig {
     /// Maximum heliocentric distance (AU) for radial grid mapping.
     /// x=nx-1 maps to r_max_au. Default: 1.5 (centered-on-1-AU behavior).
     pub r_max_au: f64,
+    /// Galactocentric distance of the Sun (kpc). Default: 8.3.
+    ///
+    /// Used to center the NFW profile on the galactic center rather than
+    /// the heliocentric origin. The galactocentric radius for each grid cell
+    /// is computed as sqrt((r_sun_kpc + r_helio)^2 + dy^2 + dz^2), placing
+    /// the simulation slab at the correct position within the halo.
+    pub r_sun_kpc: f64,
 }
 
 impl Default for DmForceConfig {
@@ -96,10 +107,16 @@ impl Default for DmForceConfig {
         let delta_t = delta_x * (v_sw_lattice / v_sw_phys);
         let force_scale = delta_t * delta_t / delta_x;
 
+        let m200_solar = 1.0e12;
+        // Derive c200 from the concentration-mass relation instead of
+        // a hardcoded value, so that changing m200 automatically gives
+        // a physically consistent concentration.
+        let c200 = concentration_mass_relation(m200_solar, 0.0);
+
         Self {
             rho_dm_local_gev_cm3: 0.3,
-            m200_solar: 1.0e12,
-            c200: 10.0,
+            m200_solar,
+            c200,
             v_dm_wind: [0.0, 0.0, 0.0],
             eta_wake: 0.0,
             force_scale,
@@ -109,6 +126,7 @@ impl Default for DmForceConfig {
             u_scale: 0.05,
             r_min_au: 0.5,
             r_max_au: 1.5,
+            r_sun_kpc: 8.3,
         }
     }
 }
@@ -182,11 +200,42 @@ impl DmForceField {
         // Local DM density in SI
         let rho_dm_si = config.rho_dm_local_gev_cm3 * GEV_CM3_TO_KG_M3;
 
+        // Compute NFW density at the Sun's galactocentric radius for normalization.
+        // The NFW profile predicts a density at r_sun; we scale the gravitational
+        // force by (rho_dm_local / rho_nfw_at_sun) so that --dm-density directly
+        // controls the force amplitude.
+        let r_sun_phys = config.r_sun_kpc * KPC_M;
+        // NFW density at r_sun from the analytical profile:
+        // rho(r) = rho_s / [(r/r_s)(1+r/r_s)^2]
+        let r_s = r_200 / config.c200;
+        let x_sun = r_sun_phys / r_s;
+        let rho_nfw_at_sun_si = if x_sun > 1e-30 && r_s > 0.0 {
+            let gc = config.c200.ln_1p() - config.c200 / (1.0 + config.c200);
+            let rho_s_si = if gc.abs() > 1e-30 {
+                200.0 * rho_crit * config.c200.powi(3) / (3.0 * gc)
+            } else {
+                0.0
+            };
+            rho_s_si / (x_sun * (1.0 + x_sun) * (1.0 + x_sun))
+        } else {
+            rho_dm_si // fallback: no scaling
+        };
+        // Density normalization: scale force so that the effective local density
+        // matches the user-specified rho_dm_local rather than the raw NFW prediction.
+        let density_scale = if rho_nfw_at_sun_si > 1e-60 {
+            rho_dm_si / rho_nfw_at_sun_si
+        } else {
+            1.0
+        };
+
         // Grid mapping: x-axis linearly spans r_min_au to r_max_au
         let r_min = config.r_min_au;
         let r_max = config.r_max_au;
         let y_center = ny as f64 / 2.0;
         let z_center = nz as f64 / 2.0;
+
+        // Precompute the Sun's galactocentric position in meters (along x).
+        let r_sun_m = config.r_sun_kpc * KPC_M;
 
         for z in 0..nz {
             for y in 0..ny {
@@ -210,20 +259,29 @@ impl DmForceField {
                     let dy_au = (y as f64 - y_center) * cell_au;
                     let dz_au = (z as f64 - z_center) * cell_au;
 
-                    // Physical radius from galactic center (Sun at ~8 kpc, perturbation is local)
-                    // For NFW force: use heliocentric r as proxy (r << r_s ~ 20 kpc)
+                    // Galactocentric radius: the simulation slab sits at r_sun
+                    // from the galactic center, with the heliocentric x-offset
+                    // adding to that baseline.
+                    let gal_x_m = r_sun_m + r_au * AU_M;
+                    let gal_y_m = dy_au * AU_M;
+                    let gal_z_m = dz_au * AU_M;
+                    let r_gal = (gal_x_m * gal_x_m + gal_y_m * gal_y_m + gal_z_m * gal_z_m)
+                        .sqrt()
+                        .max(1.0); // floor at 1 m to avoid division by zero
+
+                    // NFW enclosed mass at galactocentric radius
+                    let m_enc = nfw_enclosed_mass(r_gal, m200_kg, r_200, config.c200);
+
+                    // Gravitational acceleration: a = -G M(<r_gal) / r_gal^2
+                    // Scaled by density_scale to match user-specified local DM density.
+                    let a_phys = G_SI * m_enc / (r_gal * r_gal) * density_scale;
+
+                    // Heliocentric radial unit vector (for force direction in the slab).
+                    // The force direction relevant to the solar wind is the
+                    // heliocentric radial vector, not the galactocentric one.
                     let r_total_au = (r_au * r_au + dy_au * dy_au + dz_au * dz_au)
                         .sqrt()
                         .max(0.01);
-                    let r_phys = r_total_au * AU_M;
-
-                    // NFW enclosed mass at this radius
-                    let m_enc = nfw_enclosed_mass(r_phys, m200_kg, r_200, config.c200);
-
-                    // Gravitational acceleration: a = -G M(<r) / r^2
-                    let a_phys = G_SI * m_enc / (r_phys * r_phys);
-
-                    // Radial unit vector (pointing away from Sun)
                     let rhat = [r_au / r_total_au, dy_au / r_total_au, dz_au / r_total_au];
 
                     // Wake modulation: 1 + eta * cos(angle to DM wind direction)
@@ -251,7 +309,7 @@ impl DmForceField {
                         -a_lattice * rhat[2],
                     ];
 
-                    // Store DM density (uniform in NFW at solar system scales)
+                    // Store DM density (scaled to match local value)
                     dm_density[idx] = rho_dm_si;
                 }
             }
@@ -1118,6 +1176,141 @@ mod tests {
         assert!(
             rel_err < 1e-10,
             "mass conservation at extended domain: rel_err={rel_err:.3e}",
+        );
+    }
+
+    // --- 6.3: Changing m200 changes c200 in default config ---
+
+    #[test]
+    fn test_c200_derived_from_m200() {
+        let config_mw = DmForceConfig::default();
+        let config_udg = DmForceConfig {
+            m200_solar: 1.0e9,
+            c200: concentration_mass_relation(1.0e9, 0.0),
+            ..DmForceConfig::default()
+        };
+        // Lower mass -> higher concentration in the c-M relation
+        assert!(
+            config_udg.c200 > config_mw.c200,
+            "c200 for 1e9 Msun = {:.2} should be > c200 for 1e12 Msun = {:.2}",
+            config_udg.c200,
+            config_mw.c200,
+        );
+        // Default c200 should match the CMR prediction for default m200
+        let expected = concentration_mass_relation(config_mw.m200_solar, 0.0);
+        assert!(
+            (config_mw.c200 - expected).abs() < 1e-12,
+            "default c200 = {:.4} should equal CMR prediction = {:.4}",
+            config_mw.c200,
+            expected,
+        );
+    }
+
+    // --- 6.4: Force nearly uniform across 1 AU slab ---
+
+    #[test]
+    fn test_force_uniform_across_1au_slab() {
+        // At r_sun = 8.3 kpc from the galactic center, a 1 AU slab is
+        // negligibly small compared to r_s ~ 20 kpc. The NFW force should
+        // be nearly uniform across the slab (ratio < 1.001).
+        let config = DmForceConfig {
+            r_min_au: 0.5,
+            r_max_au: 1.5,
+            ..DmForceConfig::default()
+        };
+        let field = DmForceField::new(32, 4, 4, config);
+
+        let y_mid = 2;
+        let z_mid = 2;
+        let idx_near = GridIndex::new(0, y_mid, z_mid).linearize(32, 4);
+        let idx_far = GridIndex::new(31, y_mid, z_mid).linearize(32, 4);
+
+        let mag_near = (field.force[idx_near][0].powi(2)
+            + field.force[idx_near][1].powi(2)
+            + field.force[idx_near][2].powi(2))
+        .sqrt();
+        let mag_far = (field.force[idx_far][0].powi(2)
+            + field.force[idx_far][1].powi(2)
+            + field.force[idx_far][2].powi(2))
+        .sqrt();
+
+        assert!(mag_near > 0.0 && mag_far > 0.0);
+        let ratio = mag_near / mag_far;
+        assert!(
+            (1.0 - ratio).abs() < 0.001,
+            "force should be nearly uniform across 1 AU slab: ratio={ratio:.6}"
+        );
+    }
+
+    // --- 6.5: dm-density 0 gives zero force; dm-density 0.6 doubles force vs 0.3 ---
+
+    #[test]
+    fn test_dm_density_zero_gives_zero_force() {
+        let config = DmForceConfig {
+            rho_dm_local_gev_cm3: 0.0,
+            ..DmForceConfig::default()
+        };
+        let field = DmForceField::new(8, 4, 4, config);
+        assert!(
+            field.max_force_magnitude() < 1e-60,
+            "zero DM density should produce zero force: max={}",
+            field.max_force_magnitude()
+        );
+    }
+
+    #[test]
+    fn test_dm_density_scales_linearly() {
+        let config_lo = DmForceConfig {
+            rho_dm_local_gev_cm3: 0.3,
+            ..DmForceConfig::default()
+        };
+        let config_hi = DmForceConfig {
+            rho_dm_local_gev_cm3: 0.6,
+            ..DmForceConfig::default()
+        };
+        let field_lo = DmForceField::new(8, 4, 4, config_lo);
+        let field_hi = DmForceField::new(8, 4, 4, config_hi);
+
+        let max_lo = field_lo.max_force_magnitude();
+        let max_hi = field_hi.max_force_magnitude();
+
+        assert!(max_lo > 0.0 && max_hi > 0.0);
+        let ratio = max_hi / max_lo;
+        assert!(
+            (ratio - 2.0).abs() < 0.01,
+            "doubling dm-density should double force: ratio={ratio:.4}"
+        );
+    }
+
+    // --- 6.6: nx=64 gives different force_scale than nx=128 ---
+
+    #[test]
+    fn test_force_scale_depends_on_nx() {
+        // force_scale = delta_t^2 / delta_x = (delta_x * v_sw_lattice / v_sw_phys)^2 / delta_x
+        //             = delta_x * (v_sw_lattice / v_sw_phys)^2
+        // Since delta_x = AU / nx, changing nx should change force_scale.
+        let v_sw_phys = 400.0e3_f64; // m/s
+        let v_sw_lattice = 0.05_f64;
+
+        let delta_x_64 = AU_M / 64.0;
+        let delta_t_64 = delta_x_64 * (v_sw_lattice / v_sw_phys);
+        let fs_64 = delta_t_64 * delta_t_64 / delta_x_64;
+
+        let delta_x_128 = AU_M / 128.0;
+        let delta_t_128 = delta_x_128 * (v_sw_lattice / v_sw_phys);
+        let fs_128 = delta_t_128 * delta_t_128 / delta_x_128;
+
+        // force_scale ~ delta_x ~ 1/nx, so fs_64 = 2 * fs_128
+        assert!(
+            (fs_64 / fs_128 - 2.0).abs() < 1e-10,
+            "force_scale(nx=64) / force_scale(nx=128) = {:.4}, expected 2.0",
+            fs_64 / fs_128,
+        );
+        // Default uses nx=128
+        let default_fs = DmForceConfig::default().force_scale;
+        assert!(
+            (default_fs - fs_128).abs() / fs_128 < 1e-10,
+            "default force_scale = {default_fs:.6e} should match nx=128 = {fs_128:.6e}"
         );
     }
 }

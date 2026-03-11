@@ -30,24 +30,26 @@ __device__ __forceinline__ bool finite_f32(float x) {
     return (x == x) && (x <= 3.402823466e38f) && (x >= -3.402823466e38f);
 }
 
-// Compute equilibrium distribution (float)
+// Compute equilibrium distribution (float) -- FMA-optimized Horner form.
+// Algebraic identity: f_eq = w*rho * (4.5*eu^2 + 3*eu + 1 - 1.5*usq)
+// Horner: (4.5*eu + 3)*eu + base, where base = 1 - 1.5*usq
+// Two FMA ops via fmaf() instead of separate mul+add+div.
 __device__ void compute_equilibrium_f(
     float* f_eq,
     float rho,
     const float* u
 ) {
     float u_sq = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
+    float base = fmaf(-1.5f, u_sq, 1.0f);  // 1 - 1.5*usq
 
+    #pragma unroll
     for (int i = 0; i < 19; i++) {
-        float c_dot_u = D3Q19_CX[i]*u[0] + D3Q19_CY[i]*u[1] + D3Q19_CZ[i]*u[2];
-        float c_dot_u_sq = c_dot_u * c_dot_u;
-
-        f_eq[i] = D3Q19_WF[i] * rho * (
-            1.0f +
-            c_dot_u / CS_SQ_F +
-            c_dot_u_sq / (2.0f * CS_SQ_F * CS_SQ_F) -
-            u_sq / (2.0f * CS_SQ_F)
-        );
+        float eu = (float)(D3Q19_CX[i])*u[0]
+                 + (float)(D3Q19_CY[i])*u[1]
+                 + (float)(D3Q19_CZ[i])*u[2];
+        float w_rho = D3Q19_WF[i] * rho;
+        // Horner evaluation: (4.5*eu + 3)*eu + base
+        f_eq[i] = w_rho * fmaf(fmaf(eu, 4.5f, 3.0f), eu, base);
     }
 }
 
@@ -63,11 +65,13 @@ extern "C" __global__ void compute_macroscopic_kernel(
     if (idx >= n_cells) return;
 
     float rho_local = 0.0f;
-    for (int i = 0; i < 19; i++) rho_local += f[idx * 19 + i];
+    #pragma unroll
+    for (int i = 0; i < 19; i++) rho_local += __ldg(&f[idx * 19 + i]);
 
     float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+    #pragma unroll
     for (int i = 0; i < 19; i++) {
-        float fi = f[idx * 19 + i];
+        float fi = __ldg(&f[idx * 19 + i]);
         ux += D3Q19_CX[i] * fi;
         uy += D3Q19_CY[i] * fi;
         uz += D3Q19_CZ[i] * fi;
@@ -108,6 +112,7 @@ extern "C" __global__ void bgk_collision_kernel(
     compute_equilibrium_f(f_eq, rho_local, u_local);
 
     float inv_tau = 1.0f / tau_local;
+    #pragma unroll
     for (int i = 0; i < 19; i++) {
         int f_idx = idx * 19 + i;
         f[f_idx] -= (f[f_idx] - f_eq[i]) * inv_tau;
@@ -149,9 +154,14 @@ extern "C" __global__ void guo_forcing_kernel(
 
     float ux = u[idx * 3 + 0]; float uy = u[idx * 3 + 1]; float uz = u[idx * 3 + 2];
     float fx = force[idx * 3 + 0]; float fy = force[idx * 3 + 1]; float fz = force[idx * 3 + 2];
+
+    // Occupancy culling: skip cells with negligible force (sparse DM regions).
+    if (fx * fx + fy * fy + fz * fz < 1e-40f) return;
+
     float tau_local = tau[idx];
     float prefactor = 1.0f - 1.0f / (2.0f * tau_local);
 
+    #pragma unroll
     for (int i = 0; i < 19; i++) {
         float eix = (float)D3Q19_CX[i]; float eiy = (float)D3Q19_CY[i]; float eiz = (float)D3Q19_CZ[i];
         float ei_minus_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
@@ -341,13 +351,14 @@ extern "C" __global__ void lbm_step_fused_kernel(
 
     int idx = x + nx * (y + ny * z);
 
-    // 1. Gather macroscopic
+    // 1. Gather macroscopic (use __ldg for read-only f_in)
     float rho_local = 0.0f;
     float mx = 0.0f, my = 0.0f, mz = 0.0f;
     float f_local[19];
 
+    #pragma unroll
     for (int i = 0; i < 19; i++) {
-        float val = f_in[idx * 19 + i];
+        float val = __ldg(&f_in[idx * 19 + i]);
         if (!finite_f32(val)) {
             val = 0.0f;
         }
@@ -380,35 +391,40 @@ extern "C" __global__ void lbm_step_fused_kernel(
     float u_vec[3] = {ux, uy, uz};
     compute_equilibrium_f(f_eq, rho_local, u_vec);
 
-    float tau_local = tau[idx];
+    float tau_local = __ldg(&tau[idx]);
     float inv_tau = 1.0f / tau_local;
+
+    float fx = __ldg(&force[idx * 3 + 0]);
+    float fy = __ldg(&force[idx * 3 + 1]);
+    float fz = __ldg(&force[idx * 3 + 2]);
+
+    // Occupancy culling: check if Guo forcing is needed.
+    float force_mag_sq = fx * fx + fy * fy + fz * fz;
     float prefactor = 1.0f - 0.5f * inv_tau;
 
-    float fx = force[idx * 3 + 0];
-    float fy = force[idx * 3 + 1];
-    float fz = force[idx * 3 + 2];
-
+    #pragma unroll
     for (int i = 0; i < 19; i++) {
-        // BGK
+        // BGK collision
         float fi = f_local[i] - (f_local[i] - f_eq[i]) * inv_tau;
 
-        // Guo Forcing
-        float eix = (float)D3Q19_CX[i];
-        float eiy = (float)D3Q19_CY[i];
-        float eiz = (float)D3Q19_CZ[i];
-        float ei_minus_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-        float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
-        float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
-        float s_i = ei_minus_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f;
-        
-        fi += prefactor * D3Q19_WF[i] * s_i;
+        // Guo Forcing (skip for cells with negligible force)
+        if (force_mag_sq >= 1e-40f) {
+            float eix = (float)D3Q19_CX[i];
+            float eiy = (float)D3Q19_CY[i];
+            float eiz = (float)D3Q19_CZ[i];
+            float ei_minus_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+            float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
+            float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
+            float s_i = ei_minus_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f;
+            fi += prefactor * D3Q19_WF[i] * s_i;
+        }
 
-        // 3. Streaming (Write to neighbor)
+        // 3. Streaming (Write to neighbor -- always executes)
         int x_next = (x + D3Q19_CX[i] + nx) % nx;
         int y_next = (y + D3Q19_CY[i] + ny) % ny;
         int z_next = (z + D3Q19_CZ[i] + nz) % nz;
         int idx_next = x_next + nx * (y_next + ny * z_next);
-        
+
         f_out[idx_next * 19 + i] = fi;
     }
 }

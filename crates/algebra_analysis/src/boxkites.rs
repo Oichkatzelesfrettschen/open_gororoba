@@ -1195,7 +1195,7 @@ pub fn motif_components_for_cross_assessors(dim: usize) -> Vec<MotifComponent> {
     let bucket_list: Vec<Vec<CrossPair>> = buckets.into_values().collect();
     let all_edges: Vec<(CrossPair, CrossPair)> = bucket_list
         .par_iter()
-        .flat_map_iter(|bucket_nodes| {
+        .flat_map(|bucket_nodes| {
             let mut sorted_bucket = bucket_nodes.clone();
             sorted_bucket.sort();
             let mut local_edges = Vec::new();

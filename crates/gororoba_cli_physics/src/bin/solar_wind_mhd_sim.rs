@@ -134,10 +134,10 @@ fn load_ic_file(
         let by: f64 = fields[8].trim().parse()?;
         let bz: f64 = fields[9].trim().parse()?;
 
-        let idx = z * (nx * ny) + y * nx + x;
-        if idx >= solver.rho.len() {
+        if x >= nx || y >= ny || z >= solver.nz {
             continue;
         }
+        let idx = z * (nx * ny) + y * nx + x;
 
         solver.rho[idx] = rho;
         solver.u[idx] = [ux, uy, uz];
@@ -192,7 +192,16 @@ fn main() -> anyhow::Result<()> {
             ic_path.display()
         );
 
-        let mut ux_vals: Vec<f64> = solver.u.iter().map(|u| u[0]).collect();
+        // Extract u_x from x=0 face only (the inflow boundary).
+        // Using the global median would mix interior conditions that
+        // may differ due to DM drag or magnetic pressure gradients.
+        let mut ux_vals: Vec<f64> = Vec::new();
+        for z in 0..cli.nz {
+            for y in 0..cli.ny {
+                let idx = z * (cli.nx * cli.ny) + y * cli.nx; // x=0
+                ux_vals.push(solver.u[idx][0]);
+            }
+        }
         ux_vals.sort_by(|a, b| a.partial_cmp(b).unwrap());
         let median_ux = ux_vals[ux_vals.len() / 2];
         [median_ux, 0.0, 0.0]

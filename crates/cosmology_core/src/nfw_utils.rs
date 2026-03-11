@@ -50,11 +50,39 @@ use std::f64::consts::PI;
 /// rho_crit,0 = 3H_0^2/(8piG) at H_0 = 100 km/s/Mpc.
 const RHO_CRIT_KPC: f64 = 277.5;
 
+/// Cosmological matter density parameter (Planck 2018).
+const OMEGA_M: f64 = 0.315;
+
+/// Cosmological vacuum energy density parameter (Planck 2018).
+const OMEGA_LAMBDA: f64 = 0.685;
+
+/// Critical density at redshift z in Msun kpc^{-3}.
+///
+/// rho_crit(z) = rho_crit,0 * E(z)^2, where
+/// E(z)^2 = Omega_m * (1+z)^3 + Omega_Lambda (flat Lambda-CDM).
+///
+/// At z = 0, returns RHO_CRIT_KPC exactly.
+#[inline]
+pub fn rho_crit_kpc_at_z(z: f64) -> f64 {
+    let z_safe = if z < 0.0 || !z.is_finite() { 0.0 } else { z };
+    let one_plus_z = 1.0 + z_safe;
+    let e_sq = OMEGA_M * one_plus_z * one_plus_z * one_plus_z + OMEGA_LAMBDA;
+    RHO_CRIT_KPC * e_sq
+}
+
 /// Minimum allowed concentration (below this the N-body calibration breaks down).
 const C_MIN: f64 = 1.0;
 
 /// Maximum allowed concentration (extremely peaked cusp; beyond calibration range).
 const C_MAX: f64 = 100.0;
+
+/// Maximum redshift for the concentration-mass relation calibration.
+///
+/// The Dutton & Maccio (2014) + Prada (2012) power-law fit was calibrated on
+/// N-body simulations at z <= 5 (with some extrapolation tested to z ~ 8).
+/// Beyond z ~ 10 the linear coefficients produce unphysical concentrations,
+/// so we clamp the effective redshift to this ceiling.
+const Z_MAX_CMR: f64 = 10.0;
 
 /// Characteristic rho_s threshold above which inner cusp gradients become pathologically steep.
 ///
@@ -87,21 +115,32 @@ pub struct NfwParams {
 
 /// NFW virial radius r_200 (kpc) from M_200 (Msun) at the critical overdensity delta = 200.
 ///
-/// r_200 = (3 M_200 / (4pi * 200 * rho_crit))^{1/3}
+/// r_200 = (3 M_200 / (4pi * 200 * rho_crit(z)))^{1/3}
 ///
-/// Uses h = 1 convention with rho_crit = 277.5 Msun kpc^{-3}.
+/// Uses h = 1 convention. At z = 0, rho_crit = 277.5 Msun kpc^{-3}.
+/// At higher z, rho_crit(z) increases, shrinking r_200 as expected for
+/// halos embedded in a denser universe.
+///
+/// # Parameters
+/// - `m200_solar`: Virial mass M_200 in Msun
+/// - `z`: Redshift (>= 0)
 #[inline]
-pub fn nfw_r200_kpc(m200_solar: f64) -> f64 {
-    (3.0 * m200_solar / (4.0 * PI * 200.0 * RHO_CRIT_KPC)).cbrt()
+pub fn nfw_r200_kpc(m200_solar: f64, z: f64) -> f64 {
+    let rho_c = rho_crit_kpc_at_z(z);
+    (3.0 * m200_solar / (4.0 * PI * 200.0 * rho_c)).cbrt()
 }
 
 /// NFW characteristic density rho_s (Msun kpc^{-3}) from concentration c_200.
 ///
-/// rho_s = 200 rho_crit c^3 / [3 (ln(1+c) - c/(1+c))]
+/// rho_s = 200 rho_crit(z) c^3 / [3 (ln(1+c) - c/(1+c))]
 ///
 /// Returns 0.0 for pathological inputs (c <= 0, gc < 1e-12).
+///
+/// # Parameters
+/// - `c200`: NFW concentration parameter
+/// - `z`: Redshift (>= 0)
 #[inline]
-pub fn nfw_rho_s_from_c(c200: f64) -> f64 {
+pub fn nfw_rho_s_from_c(c200: f64, z: f64) -> f64 {
     if c200 <= 0.0 {
         return 0.0;
     }
@@ -109,7 +148,8 @@ pub fn nfw_rho_s_from_c(c200: f64) -> f64 {
     if !gc.is_finite() || gc.abs() < 1.0e-12 {
         return 0.0;
     }
-    200.0 * RHO_CRIT_KPC * c200 * c200 * c200 / (3.0 * gc)
+    let rho_c = rho_crit_kpc_at_z(z);
+    200.0 * rho_c * c200 * c200 * c200 / (3.0 * gc)
 }
 
 /// NFW concentration-mass relation c_200(M_200, z).
@@ -141,6 +181,9 @@ pub fn concentration_mass_relation(m_vir_solar: f64, z: f64) -> f64 {
     if m_vir_solar <= 0.0 || !m_vir_solar.is_finite() || z < 0.0 || !z.is_finite() {
         return C_MIN;
     }
+
+    // Clamp effective redshift to calibration range.
+    let z_eff = z.min(Z_MAX_CMR);
 
     // Pivot mass: 10^12 Msun at h = 1 (Dutton & Maccio convention)
     const M_PIVOT: f64 = 1.0e12;
@@ -180,8 +223,8 @@ pub fn concentration_mass_relation(m_vir_solar: f64, z: f64) -> f64 {
     //   log10(c200) = (0.905 + delta_a * z) - (0.101 - delta_b * z) * log10(M200/1e12)
     // where delta_a = -0.038, delta_b = 0.006. This gives mild z-evolution consistent
     // with N-body simulations.
-    let a = 0.905 - 0.038 * z;
-    let b = -0.101 + 0.006 * z;
+    let a = 0.905 - 0.038 * z_eff;
+    let b = -0.101 + 0.006 * z_eff;
 
     let log_m_ratio = (m_vir_solar / M_PIVOT).log10();
     let log_c = a + b * log_m_ratio;
@@ -195,8 +238,8 @@ pub fn concentration_mass_relation(m_vir_solar: f64, z: f64) -> f64 {
 /// This is the primary entry point for setting `DmForceConfig.c200` (and
 /// derived r_s, rho_s) for non-Milky-Way halos. Chains:
 ///   1. `concentration_mass_relation(M_200, z)` -> c_200
-///   2. `nfw_r200_kpc(M_200)` -> r_200
-///   3. `nfw_rho_s_from_c(c_200)` -> rho_s
+///   2. `nfw_r200_kpc(M_200, z)` -> r_200
+///   3. `nfw_rho_s_from_c(c_200, z)` -> rho_s
 ///   4. r_s = r_200 / c_200
 ///   5. Sets `inner_gradient_warning` if rho_s exceeds the cusp threshold.
 ///
@@ -222,9 +265,10 @@ pub fn concentration_mass_relation(m_vir_solar: f64, z: f64) -> f64 {
 /// assert!(p_udg.c200 > p.c200);
 /// ```
 pub fn nfw_params_from_mass(m_vir_solar: f64, z: f64) -> NfwParams {
-    let c200 = concentration_mass_relation(m_vir_solar, z);
-    let r200_kpc = nfw_r200_kpc(m_vir_solar.max(0.0));
-    let rho_s = nfw_rho_s_from_c(c200);
+    let z_safe = if z < 0.0 || !z.is_finite() { 0.0 } else { z };
+    let c200 = concentration_mass_relation(m_vir_solar, z_safe);
+    let r200_kpc = nfw_r200_kpc(m_vir_solar.max(0.0), z_safe);
+    let rho_s = nfw_rho_s_from_c(c200, z_safe);
     let r_s_kpc = if c200 > 0.0 { r200_kpc / c200 } else { 0.0 };
     let inner_gradient_warning = rho_s > RHO_S_CUSP_THRESHOLD;
 
@@ -348,8 +392,8 @@ mod tests {
 
     #[test]
     fn test_r200_mw_near_200_kpc() {
-        // MW-mass (1e12 Msun) virial radius ~ 200-250 kpc.
-        let r = nfw_r200_kpc(1.0e12);
+        // MW-mass (1e12 Msun) virial radius ~ 200-250 kpc at z=0.
+        let r = nfw_r200_kpc(1.0e12, 0.0);
         assert!(
             r > 150.0 && r < 280.0,
             "r200(MW) = {r:.1} kpc, expected 150-280"
@@ -359,8 +403,8 @@ mod tests {
     #[test]
     fn test_r200_scales_as_cube_root() {
         // r200 ~ M^{1/3}: doubling M -> r200 increases by 2^{1/3} ~ 1.26.
-        let r1 = nfw_r200_kpc(1.0e11);
-        let r2 = nfw_r200_kpc(2.0e11);
+        let r1 = nfw_r200_kpc(1.0e11, 0.0);
+        let r2 = nfw_r200_kpc(2.0e11, 0.0);
         let ratio = r2 / r1;
         assert!(
             reltol(ratio, 2.0_f64.cbrt(), 1e-6),
@@ -368,11 +412,22 @@ mod tests {
         );
     }
 
+    #[test]
+    fn test_r200_shrinks_at_higher_z() {
+        // At higher z, rho_crit increases -> r200 shrinks for same mass.
+        let r_z0 = nfw_r200_kpc(1.0e12, 0.0);
+        let r_z2 = nfw_r200_kpc(1.0e12, 2.0);
+        assert!(
+            r_z2 < r_z0,
+            "r200(z=2) = {r_z2:.1} should be < r200(z=0) = {r_z0:.1}"
+        );
+    }
+
     // --- nfw_rho_s_from_c ---
 
     #[test]
     fn test_rho_s_positive_for_typical_c() {
-        let rho = nfw_rho_s_from_c(10.0);
+        let rho = nfw_rho_s_from_c(10.0, 0.0);
         assert!(
             rho > 0.0 && rho.is_finite(),
             "rho_s(c=10) = {rho:.2e} must be positive and finite"
@@ -381,15 +436,15 @@ mod tests {
 
     #[test]
     fn test_rho_s_zero_for_pathological_c() {
-        assert_eq!(nfw_rho_s_from_c(0.0), 0.0);
-        assert_eq!(nfw_rho_s_from_c(-1.0), 0.0);
+        assert_eq!(nfw_rho_s_from_c(0.0, 0.0), 0.0);
+        assert_eq!(nfw_rho_s_from_c(-1.0, 0.0), 0.0);
     }
 
     #[test]
     fn test_rho_s_increases_with_c() {
         // Higher-c halos are denser: rho_s(c=20) > rho_s(c=10).
-        let rho10 = nfw_rho_s_from_c(10.0);
-        let rho20 = nfw_rho_s_from_c(20.0);
+        let rho10 = nfw_rho_s_from_c(10.0, 0.0);
+        let rho20 = nfw_rho_s_from_c(20.0, 0.0);
         assert!(
             rho20 > rho10,
             "rho_s(c=20) = {rho20:.2e} must be > rho_s(c=10) = {rho10:.2e}"
@@ -507,6 +562,78 @@ mod tests {
         assert!(
             m.is_finite() && m >= 0.0,
             "M(1 AU) must be finite and >= 0: {m:.4e}"
+        );
+    }
+
+    // --- 6.1: Z_MAX_CMR clamp ---
+
+    #[test]
+    fn test_cmr_z_clamp_above_z_max() {
+        // c(M, z=20) should equal c(M, z=10) because z is clamped to Z_MAX_CMR.
+        let c_z20 = concentration_mass_relation(1.0e12, 20.0);
+        let c_z10 = concentration_mass_relation(1.0e12, 10.0);
+        assert!(
+            (c_z20 - c_z10).abs() < 1e-12,
+            "c(1e12, z=20) = {c_z20:.6} should equal c(1e12, z=10) = {c_z10:.6}"
+        );
+    }
+
+    // --- 6.2: rho_crit(z) scaling ---
+
+    #[test]
+    fn test_rho_crit_kpc_at_z_recovers_z0() {
+        let rho_z0 = rho_crit_kpc_at_z(0.0);
+        // At z=0: E^2 = Omega_m + Omega_Lambda = 1.0 (flat)
+        assert!(
+            reltol(rho_z0, RHO_CRIT_KPC, 1e-10),
+            "rho_crit(z=0) = {rho_z0:.4} should equal {RHO_CRIT_KPC}"
+        );
+    }
+
+    #[test]
+    fn test_rho_crit_increases_with_z() {
+        let rho_z0 = rho_crit_kpc_at_z(0.0);
+        let rho_z2 = rho_crit_kpc_at_z(2.0);
+        assert!(
+            rho_z2 > rho_z0,
+            "rho_crit(z=2) = {rho_z2:.1} should be > rho_crit(z=0) = {rho_z0:.1}"
+        );
+    }
+
+    // --- B.2: z-validation in nfw_params_from_mass ---
+
+    #[test]
+    fn test_nfw_params_nan_z_returns_finite() {
+        let p = nfw_params_from_mass(1.0e12, f64::NAN);
+        assert!(p.r200_kpc.is_finite(), "r200 must be finite for NaN z");
+        assert!(p.rho_s_solar_per_kpc3.is_finite(), "rho_s must be finite for NaN z");
+        assert!(p.c200.is_finite(), "c200 must be finite for NaN z");
+        assert!(p.r200_kpc > 0.0, "r200 must be positive");
+    }
+
+    #[test]
+    fn test_nfw_params_negative_z_returns_finite() {
+        let p = nfw_params_from_mass(1.0e12, -1.0);
+        assert!(p.r200_kpc.is_finite(), "r200 must be finite for z=-1");
+        assert!(p.rho_s_solar_per_kpc3.is_finite(), "rho_s must be finite for z=-1");
+        assert!(p.r200_kpc > 0.0, "r200 must be positive for z=-1");
+    }
+
+    #[test]
+    fn test_nfw_params_z0_unchanged() {
+        // Regression guard: z=0 behavior must not change.
+        let p = nfw_params_from_mass(1.0e12, 0.0);
+        assert!((7.0..=11.0).contains(&p.c200), "c200(z=0) = {:.2}", p.c200);
+        assert!(p.r200_kpc > 150.0 && p.r200_kpc < 280.0, "r200(z=0) = {:.1}", p.r200_kpc);
+    }
+
+    #[test]
+    fn test_rho_crit_nan_z_returns_z0() {
+        let rho_nan = rho_crit_kpc_at_z(f64::NAN);
+        let rho_z0 = rho_crit_kpc_at_z(0.0);
+        assert!(
+            (rho_nan - rho_z0).abs() < 1e-10,
+            "rho_crit(NaN) = {rho_nan:.4} should equal rho_crit(0) = {rho_z0:.4}"
         );
     }
 }

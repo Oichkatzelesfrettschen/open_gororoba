@@ -1,6 +1,8 @@
 #[cfg(feature = "gpu")]
 use gororoba_algebra::gpu::{ComputeBackend, TensorAvtMulSession, TensorAvtNormSession};
-use gororoba_algebra::gpu::{TensorAVT, is_gpu_available};
+use gororoba_algebra::gpu::{
+    TensorAVT, TensorAvtAutoConfig, TensorAvtCalibrationMode, is_gpu_available,
+};
 use std::{env, fs, hint::black_box, path::PathBuf, process, time::Instant};
 use tracing::info_span;
 #[cfg(feature = "tracy-profile")]
@@ -171,30 +173,51 @@ fn gpu_mode_name(mode: GpuMode) -> &'static str {
     }
 }
 
+/// CPU-only auto config that forces TensorAVT to use CpuScalar regardless
+/// of whether the gpu feature is compiled in or a CUDA device is visible.
+fn cpu_only_auto_config() -> TensorAvtAutoConfig {
+    use gororoba_algebra::gpu::ComputeBackend as CB;
+    TensorAvtAutoConfig {
+        backend_order: [CB::CpuScalar, CB::CpuSimd, CB::CpuScalar, CB::CpuScalar],
+        calibration: TensorAvtCalibrationMode::Disabled,
+        threshold_overrides: Default::default(),
+    }
+}
+
 fn run_once_cpu(config: &Config, avt: &TensorAVT, inputs: &Inputs) -> f32 {
     let _span = info_span!("tensor_avt.iteration", backend = "cpu").entered();
+    let cpu_cfg = cpu_only_auto_config();
     match config.path {
         PathKind::Single => {
-            let out = avt
-                .compute_cd_mul(black_box(&inputs.a), black_box(&inputs.x))
+            let result = avt
+                .compute_cd_mul_auto_with_config(
+                    black_box(&inputs.a),
+                    black_box(&inputs.x),
+                    &cpu_cfg,
+                )
                 .unwrap();
-            black_box(out.iter().copied().sum::<f32>())
+            black_box(result.value.iter().copied().sum::<f32>())
         }
         PathKind::Batch => {
-            let out = avt
-                .compute_cd_mul_batch(
+            let result = avt
+                .compute_cd_mul_batch_auto_with_config(
                     black_box(&inputs.a),
                     black_box(&inputs.x_batch),
                     black_box(config.batch_size),
+                    &cpu_cfg,
                 )
                 .unwrap();
-            black_box(out.iter().copied().sum::<f32>())
+            black_box(result.value.iter().copied().sum::<f32>())
         }
         PathKind::Norm => {
-            let out = avt
-                .compute_norm_sq_batch(black_box(&inputs.vectors), black_box(config.batch_size))
+            let result = avt
+                .compute_norm_sq_batch_auto_with_config(
+                    black_box(&inputs.vectors),
+                    black_box(config.batch_size),
+                    &cpu_cfg,
+                )
                 .unwrap();
-            black_box(out.iter().copied().sum::<f32>())
+            black_box(result.value.iter().copied().sum::<f32>())
         }
     }
 }
