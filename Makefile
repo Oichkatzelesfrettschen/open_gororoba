@@ -40,6 +40,7 @@
 .PHONY: registry-strict-toml-batch4-build registry-verify-strict-toml-batch4 registry-strict-toml-batch4 registry-wave5-batch4-build registry-verify-wave5-batch4 registry-wave5-batch4
 .PHONY: registry-verify-schema-signatures registry-verify-crossrefs
 .PHONY: registry-verify-typed-policy-error
+.PHONY: registry-verify-dataset-label-aliases
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
 .PHONY: registry-project-csv-split registry-csv-holdings
@@ -53,7 +54,7 @@
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run coq latex
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
-.PHONY: clean clean-artifacts clean-all
+.PHONY: clean clean-builds clean-artifacts clean-all
 
 .NOTPARALLEL: install bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-python gate-ci-python-compat gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 
@@ -163,6 +164,8 @@ governance-gate-readonly:
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_owner_map.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_schema_signatures.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_crossrefs.py
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_dataset_label_aliases.py
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_external_source_operational_contracts.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
 	@echo ""
 	@echo "=========================================="
@@ -172,6 +175,8 @@ governance-gate-readonly:
 	@echo "[done] Markdown owner map verified"
 	@echo "[done] Registry schema signatures checked"
 	@echo "[done] Cross-reference integrity verified"
+	@echo "[done] Dataset label aliases verified"
+	@echo "[done] External-source operational contracts verified"
 	@echo "[done] Markdown governance removal policy checked"
 	@echo ""
 	@echo "TOML-first governance checks are operational."
@@ -700,10 +705,18 @@ registry-verify-schema-signatures:
 registry-verify-crossrefs:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
 
+registry-verify-dataset-label-aliases:
+	PYTHONWARNINGS=error python3 src/verification/verify_dataset_label_aliases.py
+
+registry-verify-external-source-operational-contracts:
+	PYTHONWARNINGS=error python3 src/verification/verify_external_source_operational_contracts.py
+
 registry-verify-strict-toml-batch3:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_integrity_resolution.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
+	PYTHONWARNINGS=error python3 src/verification/verify_dataset_label_aliases.py
+	PYTHONWARNINGS=error python3 src/verification/verify_external_source_operational_contracts.py
 
 registry-strict-toml-batch3: registry-verify-strict-toml-batch3
 	@echo "OK: integrity-resolution registry lane complete (legacy wave5-batch3 compatibility)."
@@ -729,6 +742,7 @@ registry-strict-toml-batch4-build:
 registry-verify-strict-toml-batch4:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_execution_planning.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
+	PYTHONWARNINGS=error python3 src/verification/verify_dataset_label_aliases.py
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
 
@@ -1100,10 +1114,16 @@ clean:
 	rm -rf src/*.egg-info
 	rm -rf $(REPO_CARGO_TARGET_DIR)
 
-clean-all: clean clean-artifacts
+clean-builds:
+	rm -rf target/
+	rm -rf .cache/cargo-default-target/
+	rm -rf .cache/gate-target/
+	rm -rf /tmp/open_gororoba_*_target 2>/dev/null || true
+	@echo "Removed all Rust build artifacts. Run 'cargo build' to rebuild."
+
+clean-all: clean clean-builds clean-artifacts
 	@rm -rf $(REPO_CARGO_HOME)
 	@command -v cargo-sweep >/dev/null 2>&1 && cargo sweep --time 14 || true
-	@rm -rf /tmp/open_gororoba_*_target 2>/dev/null || true
 	@echo "Full cleanup complete. Run 'make install && make artifacts' to rebuild."
 
 # ---- Help ----
@@ -1221,8 +1241,9 @@ help:
 	@echo ""
 	@echo "  Cleanup:"
 	@echo "    make clean                Remove venv, caches, bytecode"
+	@echo "    make clean-builds         Remove all Rust build artifacts (target/, .cache/*-target/)"
 	@echo "    make clean-artifacts      Remove generated CSV/images/HDF5 (keep source data)"
-	@echo "    make clean-all            clean + clean-artifacts"
+	@echo "    make clean-all            clean + clean-builds + clean-artifacts"
 	@echo ""
 	@echo "  Other:"
 	@echo "    make run                  Run simulations (sedenion, modular, entropy)"
