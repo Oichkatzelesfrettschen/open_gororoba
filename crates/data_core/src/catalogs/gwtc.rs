@@ -7,10 +7,10 @@
 //! Reference: Abbott et al. (2023), PRX 13, 041039
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    fetcher::FetchError,
     parse::parse_f64_or_zero,
 };
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// A gravitational wave event from GWTC-3.
 #[derive(Debug, Clone)]
@@ -150,22 +150,12 @@ pub fn parse_gwtc3_csv(path: &Path) -> Result<Vec<GwEvent>, FetchError> {
 
 const GWTC3_URLS: &[&str] = &["https://gwosc.org/eventapi/csv/GWTC-3-confident/"];
 
-/// GWTC-3 dataset provider (35 confident O3b events only).
-pub struct Gwtc3Provider;
-
-impl DatasetProvider for Gwtc3Provider {
-    fn name(&self) -> &str {
-        "GWTC-3 confident events"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("GWTC-3_confident.csv");
-        download_with_fallbacks(self.name(), GWTC3_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("GWTC-3_confident.csv").exists()
-    }
+simple_provider! {
+    /// GWTC-3 dataset provider (35 confident O3b events only).
+    pub struct Gwtc3Provider;
+    name = "GWTC-3 confident events";
+    output = "GWTC-3_confident.csv";
+    urls = GWTC3_URLS;
 }
 
 /// Combined GWTC catalog URLs (all O1-O4a events, 219 unique).
@@ -178,27 +168,12 @@ const GWOSC_COMBINED_URLS: &[&str] = &[
     "https://gwosc.org/api/v2/catalogs/GWTC/events?include-default-parameters=true&format=csv&pagesize=500",
 ];
 
-/// Combined GWTC dataset provider (all O1 through O4a events).
-pub struct GwoscCombinedProvider;
-
-impl DatasetProvider for GwoscCombinedProvider {
-    fn name(&self) -> &str {
-        "GWOSC combined GWTC (O1-O4a)"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("gwosc_all_events.csv");
-        download_with_fallbacks(
-            self.name(),
-            GWOSC_COMBINED_URLS,
-            &output,
-            config.skip_existing,
-        )
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("gwosc_all_events.csv").exists()
-    }
+simple_provider! {
+    /// Combined GWTC dataset provider (all O1 through O4a events).
+    pub struct GwoscCombinedProvider;
+    name = "GWOSC combined GWTC (O1-O4a)";
+    output = "gwosc_all_events.csv";
+    urls = GWOSC_COMBINED_URLS;
 }
 
 #[cfg(test)]

@@ -7,11 +7,11 @@
 //! Reference: Kopp (2021), https://doi.org/10.1007/s11207-021-01853-x
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    fetcher::FetchError,
     parse::parse_f64_or_nan,
 };
 use hifitime::Epoch;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// A single TSI measurement from TSIS-1.
 #[derive(Debug, Clone)]
@@ -187,22 +187,12 @@ pub fn compare_tsis_sorce(
 /// LASP LISIRD TSIS-1 daily TSI data URL.
 const TSIS_URLS: &[&str] = &["https://lasp.colorado.edu/lisird/latis/dap/tsis_tsi_24hr.csv"];
 
-/// TSIS-1 Total Solar Irradiance dataset provider.
-pub struct TsisTsiProvider;
-
-impl DatasetProvider for TsisTsiProvider {
-    fn name(&self) -> &str {
-        "TSIS-1 TSI Daily"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("tsis1_tsi_daily.csv");
-        download_with_fallbacks(self.name(), TSIS_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("tsis1_tsi_daily.csv").exists()
-    }
+simple_provider! {
+    /// TSIS-1 Total Solar Irradiance dataset provider.
+    pub struct TsisTsiProvider;
+    name = "TSIS-1 TSI Daily";
+    output = "tsis1_tsi_daily.csv";
+    urls = TSIS_URLS;
 }
 
 #[cfg(test)]

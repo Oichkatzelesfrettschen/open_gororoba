@@ -5,8 +5,8 @@
 //!
 //! Source: https://landsatlook.usgs.gov/stac-server
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use std::path::{Path, PathBuf};
+use crate::fetcher::FetchError;
+use std::path::Path;
 
 const LANDSAT_URLS: &[&str] = &[
     "https://landsatlook.usgs.gov/stac-server/collections/landsat-c2l2-sr/items/LC09_L2SP_009024_20211205_20230505_02_T1_SR",
@@ -85,25 +85,12 @@ pub fn count_stac_assets(path: &Path) -> Result<usize, FetchError> {
     Ok(content.matches("\"href\"").count())
 }
 
-/// Landsat provider.
-pub struct LandsatStacProvider;
-
-impl DatasetProvider for LandsatStacProvider {
-    fn name(&self) -> &str {
-        "Landsat C2 L2 STAC Metadata"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("landsat_c2l2_sr_sample.json");
-        download_with_fallbacks(self.name(), LANDSAT_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config
-            .output_dir
-            .join("landsat_c2l2_sr_sample.json")
-            .exists()
-    }
+simple_provider! {
+    /// Landsat provider.
+    pub struct LandsatStacProvider;
+    name = "Landsat C2 L2 STAC Metadata";
+    output = "landsat_c2l2_sr_sample.json";
+    urls = LANDSAT_URLS;
 }
 
 #[cfg(test)]

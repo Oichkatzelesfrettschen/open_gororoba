@@ -20,6 +20,9 @@
 //! let path = provider.fetch(&config).unwrap();
 //! ```
 
+#[macro_use]
+mod macros;
+
 pub mod benchmarks;
 pub mod catalogs;
 pub mod doc_links;
