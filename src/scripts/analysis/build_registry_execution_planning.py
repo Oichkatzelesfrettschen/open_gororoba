@@ -256,7 +256,7 @@ def _normalize_dataset_links(
     return dataset_ids, dataset_labels
 
 
-def _choose_lineage_id(eid: str, existing: str, used: set[str], sequence: int) -> str:
+def _choose_lineage_id(existing: str, used: set[str], sequence: int) -> str:
     if LINEAGE_ID_RE.fullmatch(existing) and existing not in used:
         used.add(existing)
         return existing
@@ -296,7 +296,6 @@ def _build_experiment_rows(
             status = "active"
         run_cmd = _collapse(str(row.get("run", "")))
         lineage_id = _choose_lineage_id(
-            eid,
             _collapse(str(row.get("lineage_id", ""))),
             used_lineage_ids,
             next_lineage_seq,
