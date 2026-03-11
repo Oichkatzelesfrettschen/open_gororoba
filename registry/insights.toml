@@ -1379,3 +1379,25 @@ claims = ["C-1176"]
 confidence = "high"
 phase = "fluids"
 sprint = 77
+
+[[insight]]
+id = "I-123"
+title = "Unit Conversion Isolation at Solver Boundaries Prevents Strang Splitting Corruption"
+date = "2026-03-10"
+status = "Active"
+description = "The Sprint 79 audit revealed a consistent failure mode: unit conversions performed at different points within a Strang-split operator sequence break second-order temporal accuracy. The PTE solver uses (diffuse_x/2) -> advect -> decelerate -> inject -> (diffuse_x/2) splitting, and the velocity field feeds BOTH advection and deceleration operators. Converting LBM lattice velocities to physical AU/s ONCE before evolve_one_step() -- outside the splitting -- ensures all internal operators see consistent units. Similarly, the modulation potential integral phi = integral(v/(3k) dr) requires AU/s (not km/s) because the diffusion coefficient k has AU^2/s units. The 10^8 inflation in phi was caused by omitting the km/s-to-AU/s factor 1e3/1.496e11. General principle: unit conversions belong at solver boundaries (input/output), never inside operator splitting loops."
+claims = ["C-1218", "C-1219"]
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[insight]]
+id = "I-124"
+title = "Galactocentric NFW Centering Decouples DM Density From Heliocentric Anomaly Radius"
+date = "2026-03-10"
+status = "Active"
+description = "The NFW dark matter halo must be evaluated at galactocentric radius r_gal = sqrt((r_sun_kpc + r_AU)^2 + dy^2 + dz^2) for the gravitational force computation, because the halo is centered on the Milky Way -- not the Sun. However, the anomalous acceleration equation a = (4-D_f)*v^2/(2r) uses heliocentric r_AU because the anomaly is measured relative to spacecraft-Sun geometry. At r_sun=8.3 kpc, a 1 AU slab produces < 0.1% variation in NFW force, confirming the solar system samples an essentially uniform DM density field. The force DIRECTION, however, remains heliocentric (radial from Sun) because we are computing the differential DM drag on the solar wind, not the absolute NFW gravitational pull."
+claims = ["C-1224", "C-1225"]
+confidence = "high"
+phase = "fluids"
+sprint = 79

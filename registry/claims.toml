@@ -16557,3 +16557,268 @@ confidence = "medium"
 phase = "claims_bridge"
 sprint = 78
 dependencies = ["C-1080", "C-1120", "C-1204", "C-1206"]
+
+# --- Sprint 79: Physics Correctness & Data Integrity Audit (37 bug fixes) ---
+
+[[claim]]
+id = "C-1208"
+statement = "DESI DR2 BAO catalog uses exact arXiv:2503.14738 Table 1 values for all redshift bins, replacing draft placeholder entries."
+where_stated = "crates/data_core/src/catalogs/desi_bao.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: cargo test -p data_core -- desi passes and bin values match Table 1 of arXiv:2503.14738. REFUTE: any bin entry differs from the published table."
+confidence = "high"
+phase = "data"
+sprint = 79
+
+[[claim]]
+id = "C-1209"
+statement = "DES Y6 3x2pt catalog uses LCDM row S8=0.789+-0.012, Omega_m and sigma_8 consistent with LCDM (not wCDM) fit."
+where_stated = "crates/data_core/src/catalogs/des_y6.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: cargo test -p data_core -- des_y6 passes with S8=0.789. REFUTE: S8 value does not match DES Y6 LCDM published result."
+confidence = "high"
+phase = "data"
+sprint = 79
+
+[[claim]]
+id = "C-1210"
+statement = "Parker tangential B-field ceiling in distance_scaled_ceilings() scales as 1/r (not 1/r^2), allowing valid Voyager/Pioneer B_t at r>30 AU."
+where_stated = "crates/data_core/src/catalogs/omni.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: ceil_b(50.0) allows 0.1 nT (realistic tangential field). REFUTE: outer heliosphere B_t records are rejected by overly aggressive ceiling."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1211"
+statement = "RTN-to-GSE magnetic field rotation in spdf_to_omni() uses spacecraft heliographic longitude for proper coordinate transformation, falling back to identity when longitude is NaN."
+where_stated = "crates/data_core/src/catalogs/spdf_merged.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: rotation at lon=0 matches identity; lon=90 swaps Br/Bt. REFUTE: GSE B components are inconsistent with known spacecraft positions."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1212"
+statement = "ACE MAG hourly averages preserve year and day-of-year derived from epoch_start, ensuring nonzero timestamps in OmniRecord output."
+where_stated = "crates/data_core/src/catalogs/ace_mag.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: ace_mag_to_omni() output has nonzero year/doy for known ACE epoch values. REFUTE: OmniRecord year=0 or doy=0 for valid ACE data."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1213"
+statement = "Solar wind IC generation accepts magnetometer-only records (valid B, NaN plasma) for near-Earth supplements (ACE MAG, WIND MFI, STEREO MAG) without discarding valid magnetic field data."
+where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: filter_valid_omni_mag() accepts records with valid B and NaN density/speed. REFUTE: MAG-only records are silently dropped. NOTE: Pioneer 10/11 are NOT MAG-only (PDS-PPI provides full plasma+MAG)."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+dependencies = ["C-1170"]
+
+[[claim]]
+id = "C-1214"
+statement = "IC x-column mapping distributes OMNI hours proportionally across grid cells using hour_idx = (x * n_hours / nx), eliminating tail bias from integer division truncation."
+where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: nx=100, n_hours=48 maps uniformly with no tail bias. REFUTE: last grid cells receive disproportionate data."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1215"
+statement = "PTE compute_div_u() uses radial divergence (1/r^2)d(r^2 u_r)/dr with one-sided differences at x boundaries, replacing periodic x-wrap that produced ~0 divergence for uniform radial flow."
+where_stated = "crates/cr_transport/src/solver.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: uniform radial u=const on 8 cells gives div_u ~ 2u/r, not ~0. REFUTE: div_u is zero for constant radial flow."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+dependencies = ["C-1171"]
+
+[[claim]]
+id = "C-1216"
+statement = "LIS boundary is reapplied at the outer x-face after each PTE transport step, preventing erosion of the interstellar spectrum boundary condition across Strang-split half-steps."
+where_stated = "crates/cr_transport/src/solver.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: 10-step solve, x=nx-1 face == LIS at every step. REFUTE: LIS boundary erodes over multiple steps."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+dependencies = ["C-1171"]
+
+[[claim]]
+id = "C-1217"
+statement = "DmYieldSpectrum returns interpolated values (not zero) at exact endpoint logk values, using strict inequality and index clamping to prevent off-by-one errors."
+where_stated = "crates/cr_transport/src/source.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: value_at_logk(logk_values[0]) returns dndlog10k[0], not 0.0. REFUTE: exact endpoints return zero."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+dependencies = ["C-1174"]
+
+[[claim]]
+id = "C-1218"
+statement = "LBM lattice velocities are converted to physical AU/s units before PTE step using u_phys = u_lattice * (v_sw_ms / u_lbm_ref) / AU_m, ensuring consistent units across the Strang splitting."
+where_stated = "crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: u_lattice=0.05 -> ~2.67e-6 AU/s (= 400 km/s). REFUTE: PTE receives dimensionless lattice velocities."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+dependencies = ["C-1171", "C-1172"]
+
+[[claim]]
+id = "C-1219"
+statement = "Gleeson-Axford modulation potential integral uses AU/s velocity units (km/s * 1e3 / 1.496e11), producing phi(1 AU) ~ 0.1-1.0 GV for standard solar wind parameters instead of O(10^7) GV."
+where_stated = "crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: phi(1 AU) is O(0.1-1.0 GV) for 400 km/s solar wind. REFUTE: phi is many orders of magnitude too large."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+dependencies = ["C-1173"]
+
+[[claim]]
+id = "C-1220"
+statement = "PteSolver emits CFL stability warning (eprintln) when max(|u| * dt / dx) > 0.5, without hard-aborting, to protect against silent instability from sub-hourly data cadences."
+where_stated = "crates/cr_transport/src/solver.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: constructed solver with known u matches manual CFL calculation; CFL>0.5 triggers warning. REFUTE: no warning emitted for unstable CFL."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1221"
+statement = "NFW concentration-mass relation c(M,z) clamps effective redshift at Z_MAX_CMR=10.0, preventing extrapolation beyond the Dutton & Maccio (2014) calibration range."
+where_stated = "crates/cosmology_core/src/nfw_utils.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: c(1e12, z=20) == c(1e12, z=10). REFUTE: concentration diverges or produces unphysical values at z>10."
+confidence = "high"
+phase = "cosmology"
+sprint = 79
+dependencies = ["C-1176"]
+
+[[claim]]
+id = "C-1222"
+statement = "NFW r200 and rho_s scale with rho_crit(z) via E(z)^2 = Omega_m*(1+z)^3 + Omega_Lambda, producing r200(z=2) < r200(z=0) as expected from the denser early universe."
+where_stated = "crates/cosmology_core/src/nfw_utils.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: r200(1e12, z=2) < r200(1e12, z=0); rho_crit(z=0) recovers 3H^2/(8piG). REFUTE: r200 increases with z."
+confidence = "high"
+phase = "cosmology"
+sprint = 79
+dependencies = ["C-1176"]
+
+[[claim]]
+id = "C-1223"
+statement = "DmForceConfig derives c200 from concentration_mass_relation(m200, 0.0) by default instead of hardcoded 10.0, so changing m200 changes c200 in the default configuration."
+where_stated = "crates/lbm_3d/src/dm_force.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: default c200 matches CMR prediction; m200=1e9 gives higher c200 than m200=1e12. REFUTE: c200 is invariant under m200 changes."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+dependencies = ["C-1176"]
+
+[[claim]]
+id = "C-1224"
+statement = "NFW gravitational force is centered on galactocentric radius r_sun_kpc=8.3 (not x=0), producing nearly uniform force across a 1 AU slab (ratio < 1.001) consistent with the solar system being negligibly small compared to the NFW scale radius."
+where_stated = "crates/lbm_3d/src/dm_force.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: force magnitude ratio across 1 AU slab < 1.001. Force direction uses heliocentric rhat (not galactocentric). REFUTE: force varies significantly across solar system scales."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1225"
+statement = "DM density normalization scales NFW force by rho_dm_local / rho_nfw_at_sun, so --dm-density 0 gives zero force and --dm-density 0.6 doubles force relative to 0.3."
+where_stated = "crates/lbm_3d/src/dm_force.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: zero DM density produces zero force; force scales linearly with rho_dm_local. REFUTE: force is independent of --dm-density parameter."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1226"
+statement = "LBM force_scale is computed from actual CLI nx and v_sw (not DmForceConfig::default()), with force_scale ~ 1/nx confirmed: nx=64 gives 2x the force_scale of nx=128."
+where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/lbm_3d/src/dm_force.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: force_scale(nx=64) / force_scale(nx=128) = 2.0 to machine precision. REFUTE: force_scale is invariant under nx changes."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1227"
+statement = "Gravity wake vector in chrono_flyby_probe is attractive: dx = mass - node produces force toward the mass (negative-x for node at higher x than mass), reversing the previous repulsive bug."
+where_stated = "crates/gororoba_cli_physics/src/bin/chrono_flyby_probe.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: mass at (50,50,50), node at (60,50,50) -> force is negative-x (toward mass). Wake decelerates outbound spacecraft. REFUTE: force points away from mass."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1228"
+statement = "Wake field is recomputed from a captured background force field each snapshot, preventing spurious accumulation of gravity contributions across the time loop."
+where_stated = "crates/gororoba_cli_physics/src/bin/chrono_flyby_probe.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: background field is cloned before time loop; each snapshot combines background + gravity (not solver.force_field + gravity). REFUTE: force field grows monotonically with snapshot count."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+
+[[claim]]
+id = "C-1229"
+statement = "Voyager CRS compare sets chi2_best = chi2_null when amplitude_hat is clamped from negative to zero, preventing the optimizer from reporting a spurious improvement."
+where_stated = "crates/gororoba_cli_physics/src/bin/voyager_crs_compare.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: when amplitude_unclamped < 0, chi2_best equals chi2_null. REFUTE: chi2_best < chi2_null despite zero amplitude."
+confidence = "high"
+phase = "fluids"
+sprint = 79
+dependencies = ["C-1175"]
+
+[[claim]]
+id = "C-1230"
+statement = "MHD simulation IC loading extracts u_sw from the x=0 inflow face (median of cells where x==0) instead of the global median, preserving the physically meaningful inflow boundary condition."
+where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/gororoba_cli_physics/src/bin/solar_wind_mhd_sim.rs"
+status = "Verified"
+last_verified = "2026-03-10"
+what_would_verify_refute = "VERIFY: u_sw reflects x=0 face velocity, not domain-averaged velocity. IC coordinate bounds are validated before linear index computation. REFUTE: u_sw is taken from arbitrary grid locations."
+confidence = "high"
+phase = "fluids"
+sprint = 79

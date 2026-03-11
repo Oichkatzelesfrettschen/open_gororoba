@@ -150,6 +150,10 @@ data/external/**
 !data/external/README.md
 !data/external/PROVENANCE.local.json
 !data/external/SOURCES.toml
+!data/external/flyby_anomaly/
+!data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv
+!data/external/pioneer_anomaly/
+!data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv
 
 # Archived non-replayable payloads (track only retirement manifests)
 archive/external_legacy_placeholders/**
@@ -185,6 +189,8 @@ credentials.*
 !**/[Rr][Ee][Aa][Dd][Mm][Ee].md
 !proofs/EPISTEMIC_BOUNDARIES.md
 !docs/research/high_dimensional_algebra_unification_2026.md
+!docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md
+!docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)
