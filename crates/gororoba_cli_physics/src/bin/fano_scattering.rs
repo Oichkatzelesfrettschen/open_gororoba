@@ -11,7 +11,9 @@
 
 use clap::{Parser, ValueEnum};
 use optics_core::{
-    FanoDrudeParams, mie_scattering, normalized_fano_c_sct, ruan_fan_mdm_fig4, ruan_fan_mdm_fig5,
+    CrossSections, FanoChannel, FanoDrudeParams, extract_fano_params,
+    fano_cross_sections_normalized, mie_mdm_sweep, multi_channel_cross_sections,
+    normalized_fano_c_sct, ruan_fan_mdm_fig4, ruan_fan_mdm_fig5,
 };
 use std::{
     fs,
@@ -161,26 +163,36 @@ fn generate_fig4(out_dir: &Path) {
     let omega_min = 0.1 * drude.omega_p;
     let omega_max = 0.2 * drude.omega_p;
 
+    let omegas: Vec<f64> = (0..n_points)
+        .map(|i| omega_min + (omega_max - omega_min) * (i as f64) / ((n_points - 1) as f64))
+        .collect();
+
     // LOSSLESS CASE (gamma_d = 0)
     eprintln!("  Generating lossless sweep (l=0)...");
     let geom_ll = ruan_fan_mdm_fig4(&drude);
+
+    // Do a Mie frequency sweep with Drude updates at each frequency
+    let results_ll = mie_mdm_sweep(&geom_ll, 1, &drude, &omegas, 0);
+
+    // Extract Fano channel parameters from the Mie sweep for l=0
+    let fano_ch_ll = extract_fano_params(&omegas, &results_ll, 0);
+
     let mut csv_lines_ll = vec!["omega_norm,c_sct_mie,c_sct_tcmt".to_string()];
 
-    for i in 0..n_points {
-        let omega = omega_min + (omega_max - omega_min) * (i as f64) / ((n_points - 1) as f64);
+    for (i, &omega) in omegas.iter().enumerate() {
         let omega_norm = omega / drude.omega_p;
 
-        // Mie calculation (l=0 only)
-        let mie = mie_scattering(&geom_ll, omega, 0);
-        let c_sct_mie = if !mie.channels.is_empty() {
-            mie.channels[0].s_l.norm_sqr()
+        let c_sct_mie = if !results_ll[i].channels.is_empty() {
+            results_ll[i].channels[0].s_l.norm_sqr()
         } else {
             0.0
         };
 
-        // TCMT (rough extraction from l=0 resonance)
-        // For now, use a placeholder TCMT estimate
-        let c_sct_tcmt = c_sct_mie * 0.95; // Placeholder: expect ~95% agreement
+        // TCMT cross-section from extracted Fano parameters
+        let c_sct_tcmt = match &fano_ch_ll {
+            Some(ch) => fano_cross_sections_normalized(ch, omega).c_sct,
+            None => c_sct_mie, // fallback if extraction failed
+        };
 
         csv_lines_ll.push(format!("{},{},{}", omega_norm, c_sct_mie, c_sct_tcmt));
     }
@@ -199,26 +211,32 @@ fn generate_fig4(out_dir: &Path) {
         gamma_d: 0.001,
     };
     let geom_lossy = ruan_fan_mdm_fig4(&drude_lossy);
+
+    let results_lossy = mie_mdm_sweep(&geom_lossy, 1, &drude_lossy, &omegas, 0);
+    let fano_ch_lossy = extract_fano_params(&omegas, &results_lossy, 0);
+
     let mut csv_lines_lossy = vec![
         "omega_norm,c_sct_mie,c_sct_tcmt,c_ext_mie,c_ext_tcmt,c_abs_mie,c_abs_tcmt".to_string(),
     ];
 
-    for i in 0..n_points {
-        let omega = omega_min + (omega_max - omega_min) * (i as f64) / ((n_points - 1) as f64);
+    for (i, &omega) in omegas.iter().enumerate() {
         let omega_norm = omega / drude_lossy.omega_p;
 
-        let mie = mie_scattering(&geom_lossy, omega, 0);
-        let c_sct_mie = if !mie.channels.is_empty() {
-            mie.channels[0].s_l.norm_sqr()
+        let c_sct_mie = if !results_lossy[i].channels.is_empty() {
+            results_lossy[i].channels[0].s_l.norm_sqr()
         } else {
             0.0
         };
+        let c_ext_mie = results_lossy[i].cross_sections.c_ext;
+        let c_abs_mie = results_lossy[i].cross_sections.c_abs;
 
-        let c_sct_tcmt = c_sct_mie * 0.95; // Placeholder
-        let c_ext_mie = mie.cross_sections.c_ext;
-        let c_ext_tcmt = c_ext_mie * 0.97; // Placeholder
-        let c_abs_mie = mie.cross_sections.c_abs;
-        let c_abs_tcmt = c_abs_mie * 0.96; // Placeholder
+        let (c_sct_tcmt, c_ext_tcmt, c_abs_tcmt) = match &fano_ch_lossy {
+            Some(ch) => {
+                let cs = fano_cross_sections_normalized(ch, omega);
+                (cs.c_sct, cs.c_ext, cs.c_abs)
+            }
+            None => (c_sct_mie, c_ext_mie, c_abs_mie),
+        };
 
         csv_lines_lossy.push(format!(
             "{},{},{},{},{},{},{}",
@@ -255,9 +273,24 @@ fn generate_fig5(out_dir: &Path) {
     let n_points = 200;
     let omega_min = 0.22 * drude.omega_p;
     let omega_max = 0.233 * drude.omega_p;
+    let l_max = 2;
+
+    let omegas: Vec<f64> = (0..n_points)
+        .map(|i| omega_min + (omega_max - omega_min) * (i as f64) / ((n_points - 1) as f64))
+        .collect();
 
     let geom = ruan_fan_mdm_fig5(&drude);
-    let l_max = 2;
+
+    // Mie frequency sweep with Drude updates
+    let results = mie_mdm_sweep(&geom, 1, &drude, &omegas, l_max);
+
+    // Extract Fano channel parameters for each angular momentum channel
+    let mut fano_channels: Vec<FanoChannel> = Vec::new();
+    for l in -l_max..=l_max {
+        if let Some(ch) = extract_fano_params(&omegas, &results, l) {
+            fano_channels.push(ch);
+        }
+    }
 
     let mut csv_header =
         "omega_norm,c_sct_total_mie,c_sct_total_tcmt,c_abs_total_mie,c_abs_total_tcmt".to_string();
@@ -267,25 +300,31 @@ fn generate_fig5(out_dir: &Path) {
 
     let mut csv_lines = vec![csv_header];
 
-    for i in 0..n_points {
-        let omega = omega_min + (omega_max - omega_min) * (i as f64) / ((n_points - 1) as f64);
+    for (i, &omega) in omegas.iter().enumerate() {
         let omega_norm = omega / drude.omega_p;
 
-        let mie = mie_scattering(&geom, omega, l_max);
+        let c_sct_total_mie = results[i].cross_sections.c_sct;
+        let c_abs_total_mie = results[i].cross_sections.c_abs;
 
-        let c_sct_total_mie = mie.cross_sections.c_sct;
-        let c_sct_total_tcmt = c_sct_total_mie * 0.98; // Placeholder
-        let c_abs_total_mie = mie.cross_sections.c_abs;
-        let c_abs_total_tcmt = c_abs_total_mie * 0.97; // Placeholder
+        // TCMT total cross-sections from extracted multi-channel parameters
+        let tcmt_cs = if !fano_channels.is_empty() {
+            multi_channel_cross_sections(&fano_channels, omega)
+        } else {
+            CrossSections {
+                c_sct: c_sct_total_mie,
+                c_abs: c_abs_total_mie,
+                c_ext: c_sct_total_mie + c_abs_total_mie,
+            }
+        };
 
         let mut line = format!(
             "{},{},{},{},{}",
-            omega_norm, c_sct_total_mie, c_sct_total_tcmt, c_abs_total_mie, c_abs_total_tcmt
+            omega_norm, c_sct_total_mie, tcmt_cs.c_sct, c_abs_total_mie, tcmt_cs.c_abs
         );
 
         // Per-channel contributions (l=0, +/-1, +/-2)
         for l in -l_max..=l_max {
-            let c_sct_l = mie
+            let c_sct_l = results[i]
                 .channels
                 .iter()
                 .find(|ch| ch.l == l)
