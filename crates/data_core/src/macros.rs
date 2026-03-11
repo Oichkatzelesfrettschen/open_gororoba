@@ -17,7 +17,6 @@
 ///     urls = CATALOG1_URLS;
 /// }
 /// ```
-#[macro_export]
 macro_rules! simple_provider {
     (
         $(#[$attr:meta])*
