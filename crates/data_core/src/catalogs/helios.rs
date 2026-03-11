@@ -135,7 +135,6 @@ pub fn parse_helios_file(
 }
 
 /// Convert Helios records to OmniRecord format.
-/// Convert Helios records to OmniRecord format.
 ///
 /// B-field is in RTN coordinates (sign flip on Bt for GSE conversion).
 /// Both H1 and H2 use RTN coordinates, so no spacecraft dispatch is needed here.
