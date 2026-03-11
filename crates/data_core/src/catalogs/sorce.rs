@@ -11,10 +11,10 @@
 //! `/data/sorce/tsi_data/daily/`.
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    fetcher::FetchError,
     parse::parse_f64_or_nan,
 };
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// One SORCE TSI record.
 #[derive(Debug, Clone)]
@@ -98,22 +98,12 @@ const SORCE_URLS: &[&str] = &[
     "https://lasp.colorado.edu/lisird/latis/dap/sorce_tsi_24hr_l3.csv",
 ];
 
-/// SORCE TSI dataset provider.
-pub struct SorceTsiProvider;
-
-impl DatasetProvider for SorceTsiProvider {
-    fn name(&self) -> &str {
-        "SORCE TSI Daily"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("sorce_tsi_daily.csv");
-        download_with_fallbacks(self.name(), SORCE_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("sorce_tsi_daily.csv").exists()
-    }
+simple_provider! {
+    /// SORCE TSI dataset provider.
+    pub struct SorceTsiProvider;
+    name = "SORCE TSI Daily";
+    output = "sorce_tsi_daily.csv";
+    urls = SORCE_URLS;
 }
 
 #[cfg(test)]

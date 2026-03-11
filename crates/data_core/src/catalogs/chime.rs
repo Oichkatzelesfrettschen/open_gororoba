@@ -6,10 +6,10 @@
 //! Catalog 2: 4539 events, CHIME/FRB Collaboration (2025)
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    fetcher::FetchError,
     parse::parse_f64_or_nan,
 };
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// A single FRB event from the CHIME catalog.
 #[derive(Debug, Clone)]
@@ -179,40 +179,20 @@ const CATALOG1_URLS: &[&str] =
 const CATALOG2_URLS: &[&str] =
     &["https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog2/chimefrbcat2.csv"];
 
-/// CHIME Catalog 1 dataset provider.
-pub struct ChimeCat1Provider;
-
-impl DatasetProvider for ChimeCat1Provider {
-    fn name(&self) -> &str {
-        "CHIME/FRB Catalog 1"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("chime_frb_cat1.csv");
-        download_with_fallbacks(self.name(), CATALOG1_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("chime_frb_cat1.csv").exists()
-    }
+simple_provider! {
+    /// CHIME Catalog 1 dataset provider.
+    pub struct ChimeCat1Provider;
+    name = "CHIME/FRB Catalog 1";
+    output = "chime_frb_cat1.csv";
+    urls = CATALOG1_URLS;
 }
 
-/// CHIME Catalog 2 dataset provider.
-pub struct ChimeCat2Provider;
-
-impl DatasetProvider for ChimeCat2Provider {
-    fn name(&self) -> &str {
-        "CHIME/FRB Catalog 2"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("chime_frb_cat2.csv");
-        download_with_fallbacks(self.name(), CATALOG2_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("chime_frb_cat2.csv").exists()
-    }
+simple_provider! {
+    /// CHIME Catalog 2 dataset provider.
+    pub struct ChimeCat2Provider;
+    name = "CHIME/FRB Catalog 2";
+    output = "chime_frb_cat2.csv";
+    urls = CATALOG2_URLS;
 }
 
 #[cfg(test)]

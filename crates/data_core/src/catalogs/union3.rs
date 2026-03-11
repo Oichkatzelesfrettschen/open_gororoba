@@ -7,10 +7,10 @@
 //! https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    fetcher::FetchError,
     parse::parse_f64_or_nan,
 };
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// One row from a whitespace-delimited chain file.
 #[derive(Debug, Clone)]
@@ -48,22 +48,12 @@ const UNION3_URLS: &[&str] = &[
     "https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/cobaya/base/union3/chain.updated.yaml",
 ];
 
-/// Union3 dataset provider.
-pub struct Union3Provider;
-
-impl DatasetProvider for Union3Provider {
-    fn name(&self) -> &str {
-        "Union3 Legacy SN Ia"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("union3_chain_1.txt");
-        download_with_fallbacks(self.name(), UNION3_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("union3_chain_1.txt").exists()
-    }
+simple_provider! {
+    /// Union3 dataset provider.
+    pub struct Union3Provider;
+    name = "Union3 Legacy SN Ia";
+    output = "union3_chain_1.txt";
+    urls = UNION3_URLS;
 }
 
 #[cfg(test)]

@@ -7,10 +7,10 @@
 //! Reference: Scolnic et al. (2022), ApJ 938, 113; Brout et al. (2022), ApJ 938, 110
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    fetcher::FetchError,
     parse::parse_f64_or_nan,
 };
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// A Type Ia supernova from Pantheon+.
 #[derive(Debug, Clone)]
@@ -203,57 +203,30 @@ const PANTHEON_COV_URLS: &[&str] = &[
     "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES_STAT%2BSYS.cov",
 ];
 
-/// Pantheon+ SH0ES dataset provider.
-pub struct PantheonProvider;
-
-impl DatasetProvider for PantheonProvider {
-    fn name(&self) -> &str {
-        "Pantheon+ SH0ES"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("PantheonPlusSH0ES.dat");
-        download_with_fallbacks(self.name(), PANTHEON_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("PantheonPlusSH0ES.dat").exists()
-    }
+simple_provider! {
+    /// Pantheon+ SH0ES dataset provider.
+    pub struct PantheonProvider;
+    name = "Pantheon+ SH0ES";
+    output = "PantheonPlusSH0ES.dat";
+    urls = PANTHEON_URLS;
 }
 
-/// Pantheon+ STAT+SYS covariance matrix provider (~22 MB).
-///
-/// Downloads the full 1701x1701 STAT+SYS covariance matrix from the
-/// PantheonPlusSH0ES DataRelease repository. This enables full off-diagonal
-/// covariance in the SN chi-square, replacing the diagonal fallback.
-pub struct PantheonCovProvider;
-
-impl DatasetProvider for PantheonCovProvider {
-    fn name(&self) -> &str {
-        "Pantheon+ SH0ES STAT+SYS Covariance"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("Pantheon+SH0ES_STAT+SYS.cov");
-        download_with_fallbacks(
-            self.name(),
-            PANTHEON_COV_URLS,
-            &output,
-            config.skip_existing,
-        )
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config
-            .output_dir
-            .join("Pantheon+SH0ES_STAT+SYS.cov")
-            .exists()
-    }
+simple_provider! {
+    /// Pantheon+ STAT+SYS covariance matrix provider (~22 MB).
+    ///
+    /// Downloads the full 1701x1701 STAT+SYS covariance matrix from the
+    /// PantheonPlusSH0ES DataRelease repository. This enables full off-diagonal
+    /// covariance in the SN chi-square, replacing the diagonal fallback.
+    pub struct PantheonCovProvider;
+    name = "Pantheon+ SH0ES STAT+SYS Covariance";
+    output = "Pantheon+SH0ES_STAT+SYS.cov";
+    urls = PANTHEON_COV_URLS;
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::fetcher::DatasetProvider;
     use std::{io::Write, path::Path};
     use tempfile::NamedTempFile;
 

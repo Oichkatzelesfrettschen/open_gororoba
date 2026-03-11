@@ -38,7 +38,8 @@
 use crate::{
     catalogs::{
         omni::OmniRecord,
-        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+        spdf_fleet::SpdfMission,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
 };
@@ -114,21 +115,34 @@ pub enum PioneerSpacecraft {
     P11,
 }
 
+/// Post-parse year fixup for Pioneer: 2-digit year (e.g. 72) → 4-digit (1972).
+fn pioneer_year_fixup(r: &mut SpdfMergedRecord) {
+    if r.year < 100 {
+        r.year += 1900;
+    }
+}
+
+/// `SpdfMission` config for Pioneer 10 merged hourly data.
+pub static PIONEER10_MISSION: SpdfMission = SpdfMission {
+    layout: &PIONEER10_LAYOUT,
+    b_is_se: false,
+    year_fixup: Some(pioneer_year_fixup),
+};
+
+/// `SpdfMission` config for Pioneer 11 merged hourly data.
+pub static PIONEER11_MISSION: SpdfMission = SpdfMission {
+    layout: &PIONEER11_LAYOUT,
+    b_is_se: false,
+    year_fixup: Some(pioneer_year_fixup),
+};
+
 /// Parse Pioneer merged hourly data from a string.
 pub fn parse_pioneer_merged(content: &str, spacecraft: PioneerSpacecraft) -> Vec<SpdfMergedRecord> {
-    let layout = match spacecraft {
-        PioneerSpacecraft::P10 => &PIONEER10_LAYOUT,
-        PioneerSpacecraft::P11 => &PIONEER11_LAYOUT,
+    let mission = match spacecraft {
+        PioneerSpacecraft::P10 => &PIONEER10_MISSION,
+        PioneerSpacecraft::P11 => &PIONEER11_MISSION,
     };
-    parse_spdf_merged(content, layout)
-        .into_iter()
-        .map(|mut record| {
-            if record.year < 100 {
-                record.year += 1900;
-            }
-            record
-        })
-        .collect()
+    mission.parse_merged(content)
 }
 
 /// Parse Pioneer merged hourly data from a file.
@@ -136,9 +150,11 @@ pub fn parse_pioneer_file(
     path: &std::path::Path,
     spacecraft: PioneerSpacecraft,
 ) -> Result<Vec<SpdfMergedRecord>, FetchError> {
-    let content = std::fs::read_to_string(path)
-        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
-    Ok(parse_pioneer_merged(&content, spacecraft))
+    let mission = match spacecraft {
+        PioneerSpacecraft::P10 => &PIONEER10_MISSION,
+        PioneerSpacecraft::P11 => &PIONEER11_MISSION,
+    };
+    mission.parse_file(path)
 }
 
 /// Convert Pioneer records to OmniRecord format.
@@ -147,7 +163,7 @@ pub fn parse_pioneer_file(
 /// B-field is in RTN coordinates and is mapped through the shared RTN->GSE
 /// adapter path used by other radially-outbound deep-space spacecraft.
 pub fn pioneer_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
-    spdf_to_omni(records, false) // RTN coordinates
+    PIONEER10_MISSION.to_omni(records)
 }
 
 /// Base URLs for Pioneer merged hourly data at SPDF.

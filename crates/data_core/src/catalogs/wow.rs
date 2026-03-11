@@ -16,7 +16,7 @@
 //! - Gray & Ellingsen (2002) ApJ 578 967
 //! - Perez et al. (2022) RNAAS 6 197 (BL 6EQUJ5 follow-up)
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
 
 /// IIIF image endpoint for the 1977 Wow! signal printout scan.
@@ -126,29 +126,14 @@ pub fn parse_wow_printout_csv(path: &Path) -> Result<Vec<WowPrintoutRow>, FetchE
     Ok(rows)
 }
 
-/// Dataset provider for the 1977 Wow! signal archival printout scan.
-///
-/// Downloads the full-resolution IIIF JPEG from the Ohio History Connection.
-pub struct WowPrintoutProvider;
-
-impl DatasetProvider for WowPrintoutProvider {
-    fn name(&self) -> &str {
-        "Wow! Signal 1977 Printout Scan"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("wow_1977_printout.jpg");
-        download_with_fallbacks(
-            self.name(),
-            &[WOW_PRINTOUT_IIIF_URL],
-            &output,
-            config.skip_existing,
-        )
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("wow_1977_printout.jpg").exists()
-    }
+simple_provider! {
+    /// Dataset provider for the 1977 Wow! signal archival printout scan.
+    ///
+    /// Downloads the full-resolution IIIF JPEG from the Ohio History Connection.
+    pub struct WowPrintoutProvider;
+    name = "Wow! Signal 1977 Printout Scan";
+    output = "wow_1977_printout.jpg";
+    urls = &[WOW_PRINTOUT_IIIF_URL];
 }
 
 /// A bundle entry from the Breakthrough Listen 6EQUJ5 GBT manifest.
