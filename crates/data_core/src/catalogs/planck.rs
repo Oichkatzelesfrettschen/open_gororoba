@@ -80,27 +80,12 @@ const PLANCK_CHAIN_URLS: &[&str] = &[
 const WMAP9_CHAIN_URLS: &[&str] =
     &["https://lambda.gsfc.nasa.gov/data/map/dr5/dcp/chains/wmap_lcdm_wmap9_chains_v5.tar.gz"];
 
-/// Planck full MCMC chains dataset provider.
-pub struct PlanckChainsProvider;
-
-impl DatasetProvider for PlanckChainsProvider {
-    fn name(&self) -> &str {
-        "Planck 2018 MCMC Chains"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("planck2018_chains.zip");
-        download_with_fallbacks(
-            self.name(),
-            PLANCK_CHAIN_URLS,
-            &output,
-            config.skip_existing,
-        )
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("planck2018_chains.zip").exists()
-    }
+simple_provider! {
+    /// Planck full MCMC chains dataset provider.
+    pub struct PlanckChainsProvider;
+    name = "Planck 2018 MCMC Chains";
+    output = "planck2018_chains.zip";
+    urls = PLANCK_CHAIN_URLS;
 }
 
 /// WMAP 9-year full MCMC chains dataset provider.
@@ -139,30 +124,12 @@ const PLANCK_SUMMARY_URLS: &[&str] = &[
     "https://irsa.ipac.caltech.edu/data/Planck/release_3/ancillary-data/cosmoparams/COM_PowerSpect_CMB-base-plikHM-TTTEEE-lowl-lowE-lensing-minimum_R3.01.txt",
 ];
 
-/// Planck 2018 base parameter constraints (best-fit TXT from IRSA).
-pub struct PlanckSummaryProvider;
-
-impl DatasetProvider for PlanckSummaryProvider {
-    fn name(&self) -> &str {
-        "Planck 2018 Summary"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("planck2018_base_params.txt");
-        download_with_fallbacks(
-            self.name(),
-            PLANCK_SUMMARY_URLS,
-            &output,
-            config.skip_existing,
-        )
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config
-            .output_dir
-            .join("planck2018_base_params.txt")
-            .exists()
-    }
+simple_provider! {
+    /// Planck 2018 base parameter constraints (best-fit TXT from IRSA).
+    pub struct PlanckSummaryProvider;
+    name = "Planck 2018 Summary";
+    output = "planck2018_base_params.txt";
+    urls = PLANCK_SUMMARY_URLS;
 }
 
 /// Parse a getdist .margestats file into a map of parameter name -> (mean, std).

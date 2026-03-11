@@ -7,10 +7,10 @@
 //! HEASARC mirror: https://heasarc.gsfc.nasa.gov/xamin/
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    fetcher::FetchError,
     parse::parse_f64_or_nan,
 };
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// A pulsar from the ATNF catalogue.
 #[derive(Debug, Clone)]
@@ -160,22 +160,12 @@ const ATNF_URLS: &[&str] = &[
     "https://heasarc.gsfc.nasa.gov/xamin/QueryServlet?table=atnfpulsar&format=csv&resultmax=0&fields=name,lii,bii,period,period_dot,dm,s1400,dist",
 ];
 
-/// ATNF pulsar catalog dataset provider.
-pub struct AtnfProvider;
-
-impl DatasetProvider for AtnfProvider {
-    fn name(&self) -> &str {
-        "ATNF Pulsar Catalogue"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("atnf_pulsars.csv");
-        download_with_fallbacks(self.name(), ATNF_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("atnf_pulsars.csv").exists()
-    }
+simple_provider! {
+    /// ATNF pulsar catalog dataset provider.
+    pub struct AtnfProvider;
+    name = "ATNF Pulsar Catalogue";
+    output = "atnf_pulsars.csv";
+    urls = ATNF_URLS;
 }
 
 #[cfg(test)]

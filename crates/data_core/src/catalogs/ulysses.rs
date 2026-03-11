@@ -39,7 +39,8 @@
 use crate::{
     catalogs::{
         omni::OmniRecord,
-        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+        spdf_fleet::SpdfMission,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
 };
@@ -120,16 +121,21 @@ pub struct UlyssesMagRecord {
     pub b_mag: f64,
 }
 
+/// `SpdfMission` config for Ulysses merged hourly data.
+pub static ULYSSES_MISSION: SpdfMission = SpdfMission {
+    layout: &ULYSSES_LAYOUT,
+    b_is_se: false,
+    year_fixup: None,
+};
+
 /// Parse Ulysses merged hourly data from a string.
 pub fn parse_ulysses_merged(content: &str) -> Vec<SpdfMergedRecord> {
-    parse_spdf_merged(content, &ULYSSES_LAYOUT)
+    ULYSSES_MISSION.parse_merged(content)
 }
 
 /// Parse Ulysses merged hourly data from a file.
 pub fn parse_ulysses_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
-    let content = std::fs::read_to_string(path)
-        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
-    Ok(parse_ulysses_merged(&content))
+    ULYSSES_MISSION.parse_file(path)
 }
 
 /// Convert Ulysses records to OmniRecord format.
@@ -138,7 +144,7 @@ pub fn parse_ulysses_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord
 /// B-field is in RTN coordinates; converted to GSE with separation_angle=0
 /// (radially outward spacecraft approximation).
 pub fn ulysses_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
-    spdf_to_omni(records, false) // RTN coordinates (b_is_se=false)
+    ULYSSES_MISSION.to_omni(records)
 }
 
 /// Merge separate SWOOPS and VHM/FGM records by time key.

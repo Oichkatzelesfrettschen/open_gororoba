@@ -9,10 +9,10 @@
 //! The CDS FTP layout changed (2025): `/ftp/cats/I/239/` -> `/ftp/I/239/`.
 //! The `.gz` variant is no longer served; we download the uncompressed `.dat`.
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::FetchError;
 use std::{
     io::{BufRead, BufReader},
-    path::{Path, PathBuf},
+    path::Path,
 };
 
 /// Expected line width (characters, excluding newline) in hip_main.dat.
@@ -110,22 +110,12 @@ pub fn parse_hip_number(line: &str) -> Option<u32> {
     line.split('|').nth(1)?.trim().parse::<u32>().ok()
 }
 
-/// Hipparcos catalog provider.
-pub struct HipparcosProvider;
-
-impl DatasetProvider for HipparcosProvider {
-    fn name(&self) -> &str {
-        "Hipparcos Legacy Catalog"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("hip_main.dat");
-        download_with_fallbacks(self.name(), HIPPARCOS_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("hip_main.dat").exists()
-    }
+simple_provider! {
+    /// Hipparcos catalog provider.
+    pub struct HipparcosProvider;
+    name = "Hipparcos Legacy Catalog";
+    output = "hip_main.dat";
+    urls = HIPPARCOS_URLS;
 }
 
 #[cfg(test)]

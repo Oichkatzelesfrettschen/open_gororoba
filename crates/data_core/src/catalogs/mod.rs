@@ -36,6 +36,7 @@ pub mod sdss;
 pub mod soho_celias;
 pub mod solar_wind;
 pub mod sorce;
+pub mod spdf_fleet;
 pub mod spdf_merged;
 pub mod stereo_plastic;
 pub mod tsi;
