@@ -2943,7 +2943,10 @@ pub fn is_allowed_transition(
     }
 
     // n(A1) = (1/|G|) Σ_k n_k · χ_f*(C_k) · χ_op(C_k) · χ_i(C_k)
+    // Accumulate the full complex triple product; the result must be real
+    // (imaginary part cancels for well-formed character tables).
     let mut sum_re = 0.0_f64;
+    let mut sum_im = 0.0_f64;
     for (j, class) in table.classes.iter().enumerate() {
         let n_k = class.count as f64;
         let (fi_re, fi_im) = table.characters[row_i][j];
@@ -2958,11 +2961,20 @@ pub fn is_allowed_transition(
             a_re * fo_re - a_im * fo_im,
             a_re * fo_im + a_im * fo_re,
         );
-        // b * χ_i  (only the real part contributes to the sum)
+        // b * χ_i
         let c_re = b_re * fi_re - b_im * fi_im;
+        let c_im = b_re * fi_im + b_im * fi_re;
 
         sum_re += n_k * c_re;
+        sum_im += n_k * c_im;
     }
+
+    // The imaginary part should vanish for a valid multiplicity computation.
+    debug_assert!(
+        (sum_im / group_order).abs() < 1e-6,
+        "imaginary part of multiplicity should be ~0, got {}",
+        sum_im / group_order
+    );
 
     let multiplicity = sum_re / group_order;
 

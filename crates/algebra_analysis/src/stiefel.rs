@@ -360,11 +360,19 @@ pub fn holonomy_between(z1: &[f64], z2: &[f64]) -> Option<HolonomyResult> {
     //                      + 2·⟨v1,u1⟩ · u2
     // (valid when cos_d > -1, i.e. u1 ≠ -u2)
 
-    // Use sin(acos(cos_d)) for better numerical stability near cos_d ≈ ±1
-    let sin_d = geodesic_distance.sin();
-    let v1_transported = if sin_d < 1e-12 {
+    // Distinguish near-identical (d ≈ 0) from near-antipodal (d ≈ π).
+    // sin(0) = sin(π) = 0, so we must check geodesic_distance directly.
+    let near_zero_tol = 1e-12;
+    let near_pi_tol = 1e-12;
+
+    let v1_transported = if geodesic_distance < near_zero_tol {
         // u1 ≈ u2: parallel transport is identity
         v1.clone()
+    } else if (std::f64::consts::PI - geodesic_distance) < near_pi_tol {
+        // u1 ≈ -u2 (antipodal): geodesic is non-unique and parallel
+        // transport is path-dependent.  No single deterministic holonomy
+        // angle exists, so we return None.
+        return None;
     } else {
         // Rodrigues-type parallel transport formula on S^n:
         // PT(v) = v - (⟨v,u1⟩+⟨v,u2⟩)/(1+cos_d) · (u1+u2) + 2⟨v,u1⟩·u2
@@ -706,6 +714,24 @@ mod tests {
         );
         // The holonomy angle should be well-defined and finite
         assert!(result.holonomy_angle.is_finite());
+    }
+
+    #[test]
+    fn test_holonomy_antipodal_returns_none() {
+        // u1 ≈ -u2 (antipodal on S^7): geodesic is non-unique,
+        // parallel transport is path-dependent => returns None.
+        let mut z1 = [0.0f64; 16];
+        z1[1] = 1.0;    // a = +e_1
+        z1[10] = 1.0;   // b = e_2 (in upper half)
+        let mut z2 = [0.0f64; 16];
+        z2[1] = -1.0;   // a = -e_1  (antipodal to z1's a-half)
+        z2[10] = 1.0;   // b = e_2
+        let result = holonomy_between(&z1, &z2);
+        assert!(
+            result.is_none(),
+            "antipodal u-vectors should return None, got {:?}",
+            result
+        );
     }
 
     #[test]

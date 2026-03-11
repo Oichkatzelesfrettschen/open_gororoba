@@ -228,12 +228,14 @@ pub fn gram_matrix() -> Vec<Vec<f64>> {
     g
 }
 
-/// Count the number of connected components (orbits) in the partner graph.
+/// Count the number of undirected connected components (orbits) in the
+/// partner graph.
 ///
 /// Each orbit is a maximal set of standard ZDs reachable from one
-/// another via the partner relation.  For sedenions (dim 16) the
-/// partner graph has a characteristic orbit structure that reflects
-/// the box-kite topology of de Marrais (2000).
+/// another via the partner relation (treated as undirected: an edge
+/// exists between i and j when `adj[i][j] || adj[j][i]`).  For
+/// sedenions (dim 16) the partner graph has a characteristic orbit
+/// structure that reflects the box-kite topology of de Marrais (2000).
 pub fn partner_graph_orbits() -> Vec<Vec<usize>> {
     let adj = partner_adjacency_matrix();
     let n = adj.len(); // 84
@@ -244,15 +246,15 @@ pub fn partner_graph_orbits() -> Vec<Vec<usize>> {
         if visited[start] {
             continue;
         }
-        // BFS
+        // BFS using undirected reachability (follow edges in both directions)
         let mut queue = std::collections::VecDeque::new();
         queue.push_back(start);
         visited[start] = true;
         let mut component = Vec::new();
         while let Some(v) = queue.pop_front() {
             component.push(v);
-            for (u, &connected) in adj[v].iter().enumerate() {
-                if connected && !visited[u] {
+            for u in 0..n {
+                if !visited[u] && (adj[v][u] || adj[u][v]) {
                     visited[u] = true;
                     queue.push_back(u);
                 }
