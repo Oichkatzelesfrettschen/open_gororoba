@@ -162,7 +162,9 @@ pub fn parse_pioneer_file(
 /// Sets r_au, lat_deg, lon_deg from parsed position columns.
 /// B-field is in RTN coordinates and is mapped through the shared RTN->GSE
 /// adapter path used by other radially-outbound deep-space spacecraft.
+/// Both P10 and P11 use RTN coordinates, so no spacecraft dispatch is needed here.
 pub fn pioneer_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
+    // Both PIONEER10_MISSION and PIONEER11_MISSION have b_is_se=false; same result.
     PIONEER10_MISSION.to_omni(records)
 }
 

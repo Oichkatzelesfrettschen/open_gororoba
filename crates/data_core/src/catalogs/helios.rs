@@ -135,9 +135,12 @@ pub fn parse_helios_file(
 }
 
 /// Convert Helios records to OmniRecord format.
+/// Convert Helios records to OmniRecord format.
 ///
 /// B-field is in RTN coordinates (sign flip on Bt for GSE conversion).
+/// Both H1 and H2 use RTN coordinates, so no spacecraft dispatch is needed here.
 pub fn helios_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
+    // Both HELIOS1_MISSION and HELIOS2_MISSION have b_is_se=false; same result.
     HELIOS1_MISSION.to_omni(records)
 }
 
