@@ -122,21 +122,23 @@ pub fn desi_dr1_bao() -> Vec<BaoMeasurement> {
     ]
 }
 
-/// Hardcoded DESI DR2 BAO results from DESI Collaboration (2025) Table 1.
+/// Hardcoded DESI DR2 BAO results from DESI Collaboration (2025) Table IV.
 ///
 /// DR2 uses updated tracers and tighter error bars compared to DR1.
-/// BGS (z=0.295) and QSO (z=1.491) remain isotropic (DV/rd only).
+/// BGS (z=0.295) remains isotropic (DV/rd only). QSO is now anisotropic
+/// in DR2 (upgraded from DR1 where it was isotropic).
 /// All other bins provide anisotropic DM/rd + DH/rd.
 ///
-/// Source: arXiv:2503.14738, Table 1
+/// Source: arXiv:2503.14738, Table IV (distance ratios with systematic errors)
+#[allow(clippy::approx_constant)] // 0.318 is a measurement error, not 1/pi
 pub fn desi_dr2_bao() -> Vec<BaoMeasurement> {
     vec![
-        // Isotropic: DV/rd only
+        // Isotropic: DV/rd only (BGS low S/N)
         BaoMeasurement {
             z_eff: 0.295,
             is_isotropic: true,
-            dm_over_rd: 7.94,
-            dm_over_rd_err: 0.13,
+            dm_over_rd: 7.942,  // DV/rd from Table IV
+            dm_over_rd_err: 0.075,
             dh_over_rd: 0.0,
             dh_over_rd_err: 0.0,
             rho: 0.0,
@@ -146,63 +148,63 @@ pub fn desi_dr2_bao() -> Vec<BaoMeasurement> {
         BaoMeasurement {
             z_eff: 0.510,
             is_isotropic: false,
-            dm_over_rd: 13.62,
-            dm_over_rd_err: 0.19,
-            dh_over_rd: 20.93,
-            dh_over_rd_err: 0.49,
-            rho: -0.432,
+            dm_over_rd: 13.588,
+            dm_over_rd_err: 0.167,
+            dh_over_rd: 21.863,
+            dh_over_rd_err: 0.425,
+            rho: -0.459,
             tracer: "LRG1".to_string(),
         },
         BaoMeasurement {
             z_eff: 0.706,
             is_isotropic: false,
-            dm_over_rd: 16.86,
-            dm_over_rd_err: 0.24,
-            dh_over_rd: 20.07,
-            dh_over_rd_err: 0.46,
-            rho: -0.400,
+            dm_over_rd: 17.351,
+            dm_over_rd_err: 0.177,
+            dh_over_rd: 19.455,
+            dh_over_rd_err: 0.330,
+            rho: -0.404,
             tracer: "LRG2".to_string(),
         },
         BaoMeasurement {
             z_eff: 0.934,
             is_isotropic: false,
-            dm_over_rd: 21.65,
-            dm_over_rd_err: 0.22,
-            dh_over_rd: 17.86,
-            dh_over_rd_err: 0.28,
-            rho: -0.376,
+            dm_over_rd: 21.576,
+            dm_over_rd_err: 0.152,
+            dh_over_rd: 17.641,
+            dh_over_rd_err: 0.193,
+            rho: -0.416,
             tracer: "LRG3+ELG1".to_string(),
         },
         BaoMeasurement {
             z_eff: 1.321,
             is_isotropic: false,
-            dm_over_rd: 27.80,
-            dm_over_rd_err: 0.52,
-            dh_over_rd: 13.85,
-            dh_over_rd_err: 0.33,
-            rho: -0.420,
+            dm_over_rd: 27.601,
+            dm_over_rd_err: 0.318,
+            dh_over_rd: 14.176,
+            dh_over_rd_err: 0.221,
+            rho: -0.434,
             tracer: "ELG2".to_string(),
         },
-        // Isotropic: DV/rd only
+        // Anisotropic in DR2 (was isotropic in DR1)
         BaoMeasurement {
             z_eff: 1.484,
-            is_isotropic: true,
-            dm_over_rd: 26.08,
-            dm_over_rd_err: 0.55,
-            dh_over_rd: 0.0,
-            dh_over_rd_err: 0.0,
-            rho: 0.0,
+            is_isotropic: false,
+            dm_over_rd: 30.512,
+            dm_over_rd_err: 0.760,
+            dh_over_rd: 12.817,
+            dh_over_rd_err: 0.516,
+            rho: -0.500,
             tracer: "QSO".to_string(),
         },
         // Anisotropic: DM/rd + DH/rd
         BaoMeasurement {
             z_eff: 2.330,
             is_isotropic: false,
-            dm_over_rd: 39.74,
-            dm_over_rd_err: 0.80,
-            dh_over_rd: 8.53,
-            dh_over_rd_err: 0.14,
-            rho: -0.467,
+            dm_over_rd: 38.988,
+            dm_over_rd_err: 0.531,
+            dh_over_rd: 8.632,
+            dh_over_rd_err: 0.101,
+            rho: -0.431,
             tracer: "Lya".to_string(),
         },
     ]

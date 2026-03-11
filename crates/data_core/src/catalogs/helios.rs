@@ -260,9 +260,9 @@ mod tests {
         let omni = helios_to_omni(&spdf);
         assert_eq!(omni.len(), 1);
         let o = &omni[0];
-        // RTN -> GSE: Br -> Bx, -Bt -> By, Bn -> Bz
-        assert!((o.bx_gse - 20.0).abs() < 0.1);
-        assert!((o.by_gse - 15.0).abs() < 0.1); // -(-15.0)
+        // RTN -> GSE via rotation by spacecraft longitude (150 deg)
+        assert!((o.bx_gse - (-9.8205)).abs() < 0.01);
+        assert!((o.by_gse - 22.9904).abs() < 0.01);
         assert!((o.bz_gse - 8.0).abs() < 0.1);
         assert!((o.r_au - 0.31).abs() < 0.01);
     }

@@ -48,6 +48,12 @@ pub struct AceMagRecord {
 pub struct AceMagHourly {
     /// Hour index (sequential from start of data).
     pub hour_index: usize,
+    /// Calendar year derived from ACE epoch.
+    pub year: u16,
+    /// Day of year (1-366) derived from ACE epoch.
+    pub doy: u16,
+    /// Hour of day (0-23) derived from ACE epoch.
+    pub hour: u8,
     /// Mean Bx GSE (nT).
     pub bx_gse: f64,
     /// Mean By GSE (nT).
@@ -69,6 +75,38 @@ const CEIL_B: f64 = 200.0;
 
 /// Seconds per hour (for grouping 16-sec samples).
 const SECS_PER_HOUR: f64 = 3600.0;
+
+/// ACE epoch base: 1996-01-01 00:00:00 UT as Unix timestamp.
+/// Unix epoch for 1996-01-01 = 820454400 seconds.
+const ACE_EPOCH_UNIX: f64 = 820_454_400.0;
+
+/// Convert ACE epoch seconds to (year, doy, hour).
+fn ace_epoch_to_ymd(epoch_secs: f64) -> (u16, u16, u8) {
+    let unix_secs = ACE_EPOCH_UNIX + epoch_secs;
+    // Days since 1970-01-01
+    let days_since_epoch = (unix_secs / 86400.0).floor() as i64;
+    let secs_in_day = unix_secs - (days_since_epoch as f64 * 86400.0);
+    let hour = (secs_in_day / 3600.0).floor() as u8;
+
+    // Convert days since 1970-01-01 to year/doy
+    let mut year = 1970i32;
+    let mut remaining = days_since_epoch;
+    loop {
+        let days_in_year = if is_leap(year) { 366 } else { 365 };
+        if remaining < days_in_year {
+            break;
+        }
+        remaining -= days_in_year;
+        year += 1;
+    }
+    let doy = remaining as u16 + 1; // 1-based
+
+    (year as u16, doy, hour)
+}
+
+fn is_leap(y: i32) -> bool {
+    y % 4 == 0 && (y % 100 != 0 || y % 400 == 0)
+}
 
 /// Two-stage filter: reject fill values and unphysical magnitudes.
 fn parse_or_nan_mag(v: f64) -> f64 {
@@ -212,8 +250,15 @@ pub fn average_to_hourly(records: &[AceMagRecord]) -> Vec<AceMagHourly> {
             let bz = valid.iter().map(|s| s.bz_gse).sum::<f64>() / n;
             let bmag = valid.iter().map(|s| s.b_magnitude).sum::<f64>() / n;
 
+            // Derive calendar date from the first valid sample's epoch
+            let mid_epoch = valid[0].epoch_start;
+            let (y, d, h) = ace_epoch_to_ymd(mid_epoch);
+
             Some(AceMagHourly {
                 hour_index,
+                year: y,
+                doy: d,
+                hour: h,
                 bx_gse: bx,
                 by_gse: by,
                 bz_gse: bz,
@@ -235,11 +280,10 @@ pub fn average_to_hourly(records: &[AceMagRecord]) -> Vec<AceMagHourly> {
 pub fn ace_mag_to_omni(records: &[AceMagHourly]) -> Vec<OmniRecord> {
     records
         .iter()
-        .enumerate()
-        .map(|(i, r)| OmniRecord {
-            year: 0,
-            doy: 0,
-            hour: (i % 24) as u8,
+        .map(|r| OmniRecord {
+            year: r.year,
+            doy: r.doy,
+            hour: r.hour,
             b_magnitude: r.b_magnitude,
             bx_gse: r.bx_gse,
             by_gse: r.by_gse,
@@ -464,5 +508,24 @@ mod tests {
                 assert!(r.bx_gse.abs() < 100.0, "Bx out of range: {}", r.bx_gse,);
             }
         }
+    }
+
+    #[test]
+    fn test_ace_mag_hourly_preserves_timestamps() {
+        let records = parse_ace_mag_16sec(SAMPLE_ACE_MAG);
+        let hourly = average_to_hourly(&records);
+        assert_eq!(hourly.len(), 1);
+        let h = &hourly[0];
+        // epoch_start = 820540804.95 seconds since 1996-01-01
+        // Should resolve to a valid year > 1996 and doy > 0
+        assert!(h.year >= 1996, "year should be >= 1996, got {}", h.year);
+        assert!(h.doy >= 1 && h.doy <= 366, "doy out of range: {}", h.doy);
+        assert!(h.hour < 24, "hour out of range: {}", h.hour);
+
+        // Verify it flows through to OmniRecord
+        let omni = ace_mag_to_omni(&hourly);
+        let o = &omni[0];
+        assert!(o.year > 0, "OmniRecord year should be non-zero, got {}", o.year);
+        assert!(o.doy > 0, "OmniRecord doy should be non-zero, got {}", o.doy);
     }
 }

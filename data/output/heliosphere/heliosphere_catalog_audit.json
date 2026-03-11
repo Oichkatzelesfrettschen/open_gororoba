@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-10T19:47:57.195610420+00:00",
+  "generated_at": "2026-03-10T19:50:56.729459655+00:00",
   "datasets": [
     {
       "key": "soho_celias_bundle",
@@ -310,19 +310,19 @@
       "label": "Pioneer annual merged hourly",
       "family": "adjacent_heliosphere",
       "role": "optional_secondary",
-      "cadence": "unknown_or_not_staged",
-      "authority": "cataloged_not_staged",
+      "cadence": "hourly",
+      "authority": "PDS/PPI governed local",
       "local_path": "./data/external/pioneer",
-      "staged": false,
+      "staged": true,
       "catalog_status": "known",
       "acquisition_status": "partial",
-      "contract_status": "blocked_host_unreachable",
+      "contract_status": "ready_governed_partial_annual_lane",
       "satisfies_provider_contract": false,
-      "row_count": null,
-      "start_rfc3339": null,
-      "end_rfc3339": null,
-      "cadence_seconds": null,
-      "notes": "Canonical COHO/NSSDC annual Pioneer merged hourly lane is still blocked from this host; only metadata and DOI traces are staged locally."
+      "row_count": 149016,
+      "start_rfc3339": "1987-01-01T00:00:00+00:00",
+      "end_rfc3339": "1995-12-31T23:00:00+00:00",
+      "cadence_seconds": 3600.0,
+      "notes": "Reachable UCLA PDS/PPI annual merged Pioneer lane is now partially staged locally. This improves scientific coverage beyond metadata-only state, but the local staging is still a subset of the full annual source family and does not yet satisfy the full annual provider contract."
     },
     {
       "key": "pioneer10_jupiter_1973_encounter",

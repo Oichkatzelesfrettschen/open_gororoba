@@ -262,11 +262,19 @@ pub fn spdf_to_omni(records: &[SpdfMergedRecord], b_is_se: bool) -> Vec<OmniReco
                 // Solar Ecliptic: Bx ~ radial, By ~ ecliptic transverse,
                 // Bz ~ ecliptic north. Close to GSE for near-ecliptic S/C.
                 (r.br, r.bt, r.bn)
+            } else if r.lon_deg.is_finite() {
+                // RTN -> approximate GSE using spacecraft heliographic longitude.
+                // R_hat = [cos(phi), sin(phi), 0], T_hat = [-sin(phi), cos(phi), 0]
+                // in heliocentric coordinates, so:
+                //   Bx = Br*cos(phi) - Bt*sin(phi)
+                //   By = Br*sin(phi) + Bt*cos(phi)
+                //   Bz = Bn
+                let phi = r.lon_deg.to_radians();
+                let (sp, cp) = (phi.sin(), phi.cos());
+                (r.br * cp - r.bt * sp, r.br * sp + r.bt * cp, r.bn)
             } else {
-                // RTN with separation_angle=0 (radially outward spacecraft):
+                // Fallback: separation_angle=0 (radially outward spacecraft)
                 // Br -> Bx (radial), Bt -> -By (tangential), Bn -> Bz (north)
-                // The sign flip on Bt accounts for the right-handed RTN
-                // convention vs left-handed GSE-Y.
                 (r.br, -r.bt, r.bn)
             };
 
@@ -376,10 +384,10 @@ mod tests {
             r.proton_density.is_nan(),
             "density 0.1 at 100 AU should exceed ceiling (0.05)"
         );
-        // B=0.01 at 100 AU: ceiling = 200/(100^2) = 0.02. 0.01 < 0.02 -> valid
+        // B=0.01 at 100 AU: ceiling = 200/100 = 2.0 nT. 0.01 < 2.0 -> valid
         assert!(
             !r.b_magnitude.is_nan(),
-            "B=0.01 at 100 AU should be below ceiling (0.02)"
+            "B=0.01 at 100 AU should be below ceiling (2.0)"
         );
     }
 
@@ -412,7 +420,7 @@ mod tests {
     }
 
     #[test]
-    fn test_spdf_to_omni_rtn_coords() {
+    fn test_spdf_to_omni_rtn_rotation_lon45() {
         let rec = SpdfMergedRecord {
             year: 2020,
             doy: 100,
@@ -432,12 +440,64 @@ mod tests {
         let omni = spdf_to_omni(&[rec], false);
         assert_eq!(omni.len(), 1);
         let o = &omni[0];
-        // RTN: br -> bx, -bt -> by, bn -> bz
-        assert!((o.bx_gse - 0.5).abs() < 1e-6);
-        assert!((o.by_gse - (-0.3)).abs() < 1e-6);
+        // RTN rotated by lon=45 deg:
+        // bx = br*cos(45) - bt*sin(45) = 0.5*0.7071 - 0.3*0.7071 = 0.1414
+        // by = br*sin(45) + bt*cos(45) = 0.5*0.7071 + 0.3*0.7071 = 0.5657
+        // bz = bn = 0.1
+        let c45 = std::f64::consts::FRAC_1_SQRT_2;
+        assert!((o.bx_gse - (0.5 * c45 - 0.3 * c45)).abs() < 1e-6);
+        assert!((o.by_gse - (0.5 * c45 + 0.3 * c45)).abs() < 1e-6);
         assert!((o.bz_gse - 0.1).abs() < 1e-6);
         assert!((o.lat_deg - 30.0).abs() < 0.01);
         assert!((o.lon_deg - 45.0).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_spdf_to_omni_rtn_rotation_lon0() {
+        // At lon=0, rotation is identity: bx=br, by=bt, bz=bn
+        let rec = SpdfMergedRecord {
+            year: 2020, doy: 100, hour: 6, distance_au: 5.0,
+            lat_deg: 0.0, lon_deg: 0.0,
+            b_magnitude: 1.0, br: 0.5, bt: 0.3, bn: 0.1,
+            proton_density: 0.5, bulk_speed: 700.0, proton_temperature: 200000.0,
+        };
+        let omni = spdf_to_omni(&[rec], false);
+        let o = &omni[0];
+        assert!((o.bx_gse - 0.5).abs() < 1e-6);
+        assert!((o.by_gse - 0.3).abs() < 1e-6);
+        assert!((o.bz_gse - 0.1).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_spdf_to_omni_rtn_rotation_lon90() {
+        // At lon=90, cos=0 sin=1: bx=-bt, by=br, bz=bn
+        let rec = SpdfMergedRecord {
+            year: 2020, doy: 100, hour: 6, distance_au: 5.0,
+            lat_deg: 0.0, lon_deg: 90.0,
+            b_magnitude: 1.0, br: 0.5, bt: 0.3, bn: 0.1,
+            proton_density: 0.5, bulk_speed: 700.0, proton_temperature: 200000.0,
+        };
+        let omni = spdf_to_omni(&[rec], false);
+        let o = &omni[0];
+        assert!((o.bx_gse - (-0.3)).abs() < 1e-6);
+        assert!((o.by_gse - 0.5).abs() < 1e-6);
+        assert!((o.bz_gse - 0.1).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_spdf_to_omni_rtn_nan_lon_fallback() {
+        // NaN longitude falls back to separation_angle=0: (br, -bt, bn)
+        let rec = SpdfMergedRecord {
+            year: 2020, doy: 100, hour: 6, distance_au: 5.0,
+            lat_deg: f64::NAN, lon_deg: f64::NAN,
+            b_magnitude: 1.0, br: 0.5, bt: 0.3, bn: 0.1,
+            proton_density: 0.5, bulk_speed: 700.0, proton_temperature: 200000.0,
+        };
+        let omni = spdf_to_omni(&[rec], false);
+        let o = &omni[0];
+        assert!((o.bx_gse - 0.5).abs() < 1e-6);
+        assert!((o.by_gse - (-0.3)).abs() < 1e-6);
+        assert!((o.bz_gse - 0.1).abs() < 1e-6);
     }
 
     #[test]
