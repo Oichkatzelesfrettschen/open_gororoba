@@ -16,6 +16,7 @@ CLAIM_RE = re.compile(r"\bC-\d{3}\b")
 INSIGHT_RE = re.compile(r"\bI-\d{3}\b")
 EXPERIMENT_RE = re.compile(r"\bE-\d{3}\b")
 SOURCE_RE = re.compile(r"\bXS-\d{3}\b")
+SOURCE_CONTRACT_RE = re.compile(r"\bSRC-[A-Z0-9-]+\b")
 DATASET_RE = re.compile(r"\b(?:PC|PG|EX|AR|CU)-\d{4}\b")
 WORKSTREAM_RE = re.compile(r"\bWS-[A-Z0-9-]+\b")
 TODO_RE = re.compile(r"\bT-\d{3}\b")
@@ -27,12 +28,18 @@ def _load(path: Path) -> dict:
     return tomllib.loads(path.read_text(encoding="utf-8"))
 
 
+def _normalize_dataset_label(value: str) -> str:
+    return " ".join(value.strip().split()).lower()
+
+
 def _extract_refs(text: str) -> dict[str, list[str]]:
+    source_refs = set(SOURCE_RE.findall(text)) | set(SOURCE_CONTRACT_RE.findall(text))
+    source_refs = {ref for ref in source_refs if f"{ref}-*" not in text}
     return {
         "claims": sorted(set(CLAIM_RE.findall(text))),
         "insights": sorted(set(INSIGHT_RE.findall(text))),
         "experiments": sorted(set(EXPERIMENT_RE.findall(text))),
-        "sources": sorted(set(SOURCE_RE.findall(text))),
+        "sources": sorted(source_refs),
         "datasets": sorted(set(DATASET_RE.findall(text))),
     }
 
@@ -60,6 +67,17 @@ def _collect_dataset_ids(root: Path) -> set[str]:
     return out
 
 
+def _collect_source_ids(root: Path) -> set[str]:
+    out: set[str] = set()
+    external_sources = _load(root / "registry/external_sources.toml").get("document", [])
+    out.update(str(row.get("id", "")) for row in external_sources)
+    source_contract_path = root / "data/external/SOURCES.toml"
+    if source_contract_path.exists():
+        source_contracts = _load(source_contract_path).get("source", [])
+        out.update(str(row.get("id", "")) for row in source_contracts)
+    return {value for value in out if value}
+
+
 def _record_fail(failures: list[str], label: str, value: str) -> None:
     failures.append(f"{label}: {value}")
 
@@ -85,6 +103,8 @@ def main() -> int:
         "registry/requirements.toml",
         "registry/module_requirements.toml",
         "registry/external_sources.toml",
+        "registry/dataset_label_aliases.toml",
+        "data/external/SOURCES.toml",
         "registry/claims_atoms.toml",
         "registry/claims_evidence_edges.toml",
         "registry/provenance_sources.toml",
@@ -107,6 +127,7 @@ def main() -> int:
     module_requirements_packages = _load(root / "registry/module_requirements.toml").get("package", [])
     module_requirements_commands = _load(root / "registry/module_requirements.toml").get("command", [])
     sources = _load(root / "registry/external_sources.toml").get("document", [])
+    dataset_label_alias_rows = _load(root / "registry/dataset_label_aliases.toml").get("alias", [])
     claim_atoms = _load(root / "registry/claims_atoms.toml").get("atom", [])
     claim_edges = _load(root / "registry/claims_evidence_edges.toml").get("edge", [])
     provenance_rows = _load(root / "registry/provenance_sources.toml").get("record", [])
@@ -127,8 +148,14 @@ def main() -> int:
     action_ids = {str(row.get("id", "")) for row in action_rows}
     req_ids = {str(row.get("id", "")) for row in requirements_rows}
     module_req_ids = {str(row.get("id", "")) for row in module_requirements_rows}
-    source_ids = {str(row.get("id", "")) for row in sources}
+    source_ids = _collect_source_ids(root)
     dataset_ids = _collect_dataset_ids(root)
+    dataset_label_aliases = {
+        _normalize_dataset_label(
+            str(row.get("label_normalized", "")) or str(row.get("label", ""))
+        )
+        for row in dataset_label_alias_rows
+    }
     marker_ids = {str(row.get("id", "")) for row in conflict_rows}
     lineage_ids = {str(row.get("id", "")) for row in lineage_rows}
 
@@ -197,6 +224,16 @@ def main() -> int:
         eid = str(row.get("id", ""))
         for cid in row.get("claims", []):
             check_id("claims", str(cid), f"experiments[{eid}].claims")
+        for xid in row.get("external_source_refs", []):
+            check_id("sources", str(xid), f"experiments[{eid}].external_source_refs")
+        for label in row.get("dataset_label_refs", []):
+            normalized = _normalize_dataset_label(str(label))
+            if normalized not in dataset_label_aliases:
+                _record_fail(
+                    failures,
+                    f"experiments[{eid}].dataset_label_refs",
+                    f"unknown dataset label alias {label}",
+                )
 
     for row in sources:
         xid = str(row.get("id", ""))
@@ -278,6 +315,14 @@ def main() -> int:
             check_id("claims", str(cid), f"experiment_lineage[{lid}].claim_refs")
         for did in row.get("dataset_refs", []):
             check_id("datasets", str(did), f"experiment_lineage[{lid}].dataset_refs")
+        for label in row.get("dataset_label_refs", []):
+            normalized = _normalize_dataset_label(str(label))
+            if normalized not in dataset_label_aliases:
+                _record_fail(
+                    failures,
+                    f"experiment_lineage[{lid}].dataset_label_refs",
+                    f"unknown dataset label alias {label}",
+                )
 
     for row in lineage_edges:
         eid = str(row.get("id", ""))

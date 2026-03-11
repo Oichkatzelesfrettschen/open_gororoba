@@ -770,6 +770,7 @@ def main() -> int:
         "registry/experiments.toml",
         "registry/external_sources.toml",
         "registry/project_csv_canonical_datasets.toml",
+        "registry/dataset_label_aliases.toml",
         "registry/project_csv_canonical.toml",
         "registry/claims_atoms.toml",
         "registry/claims_evidence_edges.toml",

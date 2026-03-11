@@ -32,6 +32,14 @@ TODO_RE = re.compile(r"^T-\d{3}$")
 ACTION_RE = re.compile(r"^NA-\d{3}$")
 REQ_RE = re.compile(r"^REQ-[A-Z0-9-]+$")
 DATASET_RE = re.compile(r"^(?:PC|PG|EX|AR|CU)-\d{4}$")
+SOURCE_RE = re.compile(r"^XS-\d{3}$")
+SOURCE_CONTRACT_RE = re.compile(r"^SRC-[A-Z0-9-]+$")
+TRUTH_SURFACE_ALLOWLIST = {
+    "chronology_control",
+    "environment_context",
+    "lineage_transition",
+    "observation_benchmark",
+}
 
 
 def _assert_ascii(path: Path) -> None:
@@ -44,6 +52,10 @@ def _assert_ascii(path: Path) -> None:
 
 def _load(path: Path) -> dict:
     return tomllib.loads(path.read_text(encoding="utf-8"))
+
+
+def _normalize_dataset_label(value: str) -> str:
+    return " ".join(value.strip().split()).lower()
 
 
 def _collect_dataset_ids(root: Path) -> set[str]:
@@ -71,6 +83,19 @@ def _collect_dataset_ids(root: Path) -> set[str]:
                 if DATASET_RE.fullmatch(rid):
                     out.add(rid)
     return out
+
+
+def _collect_source_ids(root: Path) -> set[str]:
+    out: set[str] = set()
+    external_sources_path = root / "registry/external_sources.toml"
+    if external_sources_path.exists():
+        raw = _load(external_sources_path)
+        out.update(str(row.get("id", "")) for row in raw.get("document", []))
+    source_contract_path = root / "data/external/SOURCES.toml"
+    if source_contract_path.exists():
+        raw = _load(source_contract_path)
+        out.update(str(row.get("id", "")) for row in raw.get("source", []))
+    return {value for value in out if value}
 
 
 def _status_token(value: str) -> str:
@@ -150,6 +175,9 @@ def main() -> int:
         "registry/next_actions.toml",
         "registry/requirements.toml",
         "registry/module_requirements.toml",
+        "registry/external_sources.toml",
+        "registry/dataset_label_aliases.toml",
+        "data/external/SOURCES.toml",
     ]
     for rel in required:
         path = root / rel
@@ -169,10 +197,20 @@ def main() -> int:
     actions_raw = _load(root / "registry/next_actions.toml")
     requirements_raw = _load(root / "registry/requirements.toml")
     module_requirements_raw = _load(root / "registry/module_requirements.toml")
+    external_sources_raw = _load(root / "registry/external_sources.toml")
+    dataset_label_aliases_raw = _load(root / "registry/dataset_label_aliases.toml")
 
     claim_ids = {str(row.get("id", "")) for row in claims}
     insight_ids = {str(row.get("id", "")) for row in insights}
     dataset_ids = _collect_dataset_ids(root)
+    source_ids = _collect_source_ids(root)
+    dataset_label_aliases = {
+        _normalize_dataset_label(
+            str(row.get("label_normalized", "")) or str(row.get("label", ""))
+        ): str(row.get("canonical_dataset_id", ""))
+        for row in dataset_label_aliases_raw.get("alias", [])
+        if str(row.get("canonical_dataset_id", "")).strip()
+    }
 
     binary_names = {str(row.get("name", "")) for row in binaries}
     binary_experiment = {
@@ -274,6 +312,18 @@ def main() -> int:
             dataset_id = str(did)
             if dataset_id and dataset_id not in dataset_ids:
                 failures.append(f"experiment[{eid}] unknown dataset ref: {dataset_id}")
+        for label in row.get("dataset_label_refs", []):
+            if _normalize_dataset_label(str(label)) not in dataset_label_aliases:
+                failures.append(f"experiment[{eid}] unknown dataset label ref: {label}")
+        for xid in row.get("external_source_refs", []):
+            source_id = str(xid)
+            if source_id and source_id not in source_ids:
+                failures.append(f"experiment[{eid}] unknown external source ref: {source_id}")
+        for surface in row.get("truth_surface_consumption", []):
+            if str(surface) not in TRUTH_SURFACE_ALLOWLIST:
+                failures.append(
+                    f"experiment[{eid}] invalid truth_surface_consumption: {surface}"
+                )
 
     # Execution-planning lane: W5-016 legacy row (experiment lineage).
     if int(lineages_meta.get("lineage_count", -1)) != len(lineages):
@@ -318,6 +368,29 @@ def main() -> int:
         for did in row.get("dataset_refs", []):
             if str(did) not in dataset_ids:
                 failures.append(f"lineage[{lid}] unknown dataset ref: {did}")
+        if [str(v) for v in row.get("dataset_label_refs", [])] != [
+            str(v) for v in exp_row.get("dataset_label_refs", [])
+        ]:
+            failures.append(f"lineage[{lid}] dataset_label_refs mismatch")
+        for label in row.get("dataset_label_refs", []):
+            if _normalize_dataset_label(str(label)) not in dataset_label_aliases:
+                failures.append(f"lineage[{lid}] unknown dataset label ref: {label}")
+        if [str(v) for v in row.get("external_source_refs", [])] != [
+            str(v) for v in exp_row.get("external_source_refs", [])
+        ]:
+            failures.append(f"lineage[{lid}] external_source_refs mismatch")
+        for xid in row.get("external_source_refs", []):
+            if str(xid) not in source_ids:
+                failures.append(f"lineage[{lid}] unknown external source ref: {xid}")
+        if [str(v) for v in row.get("truth_surface_consumption", [])] != [
+            str(v) for v in exp_row.get("truth_surface_consumption", [])
+        ]:
+            failures.append(f"lineage[{lid}] truth_surface_consumption mismatch")
+        for surface in row.get("truth_surface_consumption", []):
+            if str(surface) not in TRUTH_SURFACE_ALLOWLIST:
+                failures.append(
+                    f"lineage[{lid}] invalid truth_surface_consumption: {surface}"
+                )
 
     edge_id_seen: set[str] = set()
     edge_kinds = {
@@ -326,9 +399,13 @@ def main() -> int:
         "touches_dataset",
         "consumes_path",
         "produces_path",
+        "consumes_source",
+        "consumes_truth_surface",
     }
-    to_kinds = {"binary", "claim", "dataset", "path"}
+    to_kinds = {"binary", "claim", "dataset", "path", "source", "truth_surface"}
     binary_edge_lineages: set[str] = set()
+    source_edge_refs: dict[str, set[str]] = {}
+    truth_surface_edge_refs: dict[str, set[str]] = {}
     for row in edges:
         edge_id = str(row.get("id", ""))
         if edge_id in edge_id_seen:
@@ -373,12 +450,35 @@ def main() -> int:
             failures.append(f"lineage edge[{edge_id}] unknown dataset ref: {to_ref}")
         elif to_kind == "path" and not to_ref:
             failures.append(f"lineage edge[{edge_id}] empty path ref")
+        elif to_kind == "source":
+            if to_ref not in source_ids:
+                failures.append(f"lineage edge[{edge_id}] unknown source ref: {to_ref}")
+            source_edge_refs.setdefault(lid, set()).add(to_ref)
+        elif to_kind == "truth_surface":
+            if to_ref not in TRUTH_SURFACE_ALLOWLIST:
+                failures.append(
+                    f"lineage edge[{edge_id}] invalid truth surface ref: {to_ref}"
+                )
+            truth_surface_edge_refs.setdefault(lid, set()).add(to_ref)
     for lid in seen_lineage_ids:
         exp_binary = ""
+        exp_sources: list[str] = []
+        exp_truth_surfaces: list[str] = []
         if lid in lineage_to_experiment and lineage_to_experiment[lid] in exp_by_id:
-            exp_binary = str(exp_by_id[lineage_to_experiment[lid]].get("binary", ""))
+            exp_row = exp_by_id[lineage_to_experiment[lid]]
+            exp_binary = str(exp_row.get("binary", ""))
+            exp_sources = [str(v) for v in exp_row.get("external_source_refs", [])]
+            exp_truth_surfaces = [
+                str(v) for v in exp_row.get("truth_surface_consumption", [])
+            ]
         if exp_binary and lid not in binary_edge_lineages:
             failures.append(f"lineage[{lid}] missing binary edge")
+        if set(exp_sources) != source_edge_refs.get(lid, set()):
+            failures.append(f"lineage[{lid}] source edges do not match experiment refs")
+        if set(exp_truth_surfaces) != truth_surface_edge_refs.get(lid, set()):
+            failures.append(
+                f"lineage[{lid}] truth-surface edges do not match experiment refs"
+            )
 
     # Execution-planning lane: W5-021 legacy row (roadmap/todo/next-actions schema hardening).
     roadmap_meta = roadmap_raw.get("roadmap", {})

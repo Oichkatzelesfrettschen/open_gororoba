@@ -31,6 +31,7 @@ ID_REF_RE = re.compile(r"\b(?:WS-[A-Z0-9-]+|T-\d{3}|NA-\d{3}|C-\d{3}|I-\d{3}|E-\
 PATH_RE = re.compile(r"(?:data|registry|docs|crates|src|tests)/[A-Za-z0-9_./{}:+-]+")
 DATASET_ID_RE = re.compile(r"\b(?:PC|PG|EX|AR|CU)-\d{4}\b")
 DEP_SPEC_RE = re.compile(r"^\s*([A-Za-z0-9_.-]+)\s*(.*)$")
+LINEAGE_ID_RE = re.compile(r"^XL-\d{3}$")
 
 
 ROADMAP_STATUS_ALLOWLIST = ["planned", "active", "in_progress", "done", "paused", "blocked"]
@@ -166,15 +167,118 @@ def _load_dataset_path_index(root: Path) -> dict[str, str]:
     return out
 
 
+def _normalize_string_list(values: object) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    out: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        item = _collapse(str(value))
+        if not item or item in seen:
+            continue
+        seen.add(item)
+        out.append(item)
+    return out
+
+
+def _normalize_binary_name(value: str) -> str:
+    binary = _collapse(value)
+    if binary.upper() in {"N/A", "NA", "NONE"}:
+        return ""
+    if "/" in binary or binary.endswith((".py", ".sh", ".bash")):
+        return ""
+    return binary
+
+
+def _normalize_dataset_label(value: str) -> str:
+    return _collapse(value).lower()
+
+
+def _load_dataset_label_aliases(root: Path) -> dict[str, str]:
+    path = root / "registry/dataset_label_aliases.toml"
+    if not path.exists():
+        return {}
+    raw = _load(path)
+    aliases: dict[str, str] = {}
+    for row in raw.get("alias", []):
+        label_normalized = _normalize_dataset_label(str(row.get("label_normalized", "")))
+        if not label_normalized:
+            label_normalized = _normalize_dataset_label(str(row.get("label", "")))
+        canonical_dataset_id = _collapse(str(row.get("canonical_dataset_id", "")))
+        if label_normalized and canonical_dataset_id:
+            aliases[label_normalized] = canonical_dataset_id
+    return aliases
+
+
+def _normalize_dataset_links(
+    explicit_dataset_refs: list[str],
+    input_path_refs: list[str],
+    output_path_refs: list[str],
+    dataset_path_index: dict[str, str],
+    dataset_label_aliases: dict[str, str],
+) -> tuple[list[str], list[str]]:
+    dataset_ids: list[str] = []
+    dataset_labels: list[str] = []
+    seen_ids: set[str] = set()
+    seen_labels: set[str] = set()
+
+    def add_dataset_id(value: str) -> None:
+        if value and value not in seen_ids:
+            seen_ids.add(value)
+            dataset_ids.append(value)
+
+    def add_dataset_label(value: str) -> None:
+        if value and value not in seen_labels:
+            seen_labels.add(value)
+            dataset_labels.append(value)
+
+    for path in [*input_path_refs, *output_path_refs]:
+        add_dataset_id(dataset_path_index.get(path, ""))
+
+    for dataset_id in DATASET_ID_RE.findall(" ".join([*input_path_refs, *output_path_refs])):
+        add_dataset_id(dataset_id)
+
+    for ref in explicit_dataset_refs:
+        if DATASET_ID_RE.fullmatch(ref):
+            add_dataset_id(ref)
+            continue
+        if ref in dataset_path_index:
+            add_dataset_id(dataset_path_index[ref])
+            continue
+        alias_dataset_id = dataset_label_aliases.get(_normalize_dataset_label(ref), "")
+        if alias_dataset_id:
+            add_dataset_id(alias_dataset_id)
+            add_dataset_label(ref)
+            continue
+        add_dataset_label(ref)
+
+    return dataset_ids, dataset_labels
+
+
+def _choose_lineage_id(eid: str, existing: str, used: set[str], sequence: int) -> str:
+    if LINEAGE_ID_RE.fullmatch(existing) and existing not in used:
+        used.add(existing)
+        return existing
+    while True:
+        candidate = f"XL-{sequence:03d}"
+        sequence += 1
+        if candidate not in used:
+            used.add(candidate)
+            return candidate
+
+
 def _build_experiment_rows(
     experiments: list[dict[str, Any]],
     binaries: dict[str, dict[str, Any]],
     dataset_path_index: dict[str, str],
+    dataset_label_aliases: dict[str, str],
 ) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
-    for idx, row in enumerate(sorted(experiments, key=lambda item: str(item.get("id", ""))), start=1):
+    used_lineage_ids: set[str] = set()
+    next_lineage_seq = 1
+    for row in sorted(experiments, key=lambda item: str(item.get("id", ""))):
         eid = _collapse(str(row.get("id", "")))
-        binary = _collapse(str(row.get("binary", "")))
+        binary = _normalize_binary_name(str(row.get("binary", "")))
         if not binary:
             binary = EXPERIMENT_BINARY_OVERRIDES.get(eid, "")
         method = _collapse(str(row.get("method", "")))
@@ -190,18 +294,32 @@ def _build_experiment_rows(
         if status not in {"active", "deprecated", "planned", "blocked"}:
             status = "active"
         run_cmd = _collapse(str(row.get("run", "")))
-        lineage_id = f"XL-{idx:03d}"
-        input_path_refs = _extract_paths(input_text)
-        output_path_refs = _extract_paths(output_text)
-        dataset_refs = sorted(
+        lineage_id = _choose_lineage_id(
+            eid,
+            _collapse(str(row.get("lineage_id", ""))),
+            used_lineage_ids,
+            next_lineage_seq,
+        )
+        while f"XL-{next_lineage_seq:03d}" in used_lineage_ids:
+            next_lineage_seq += 1
+        input_path_refs = sorted(
             set(
-                [
-                    *(dataset_path_index.get(path, "") for path in input_path_refs),
-                    *(dataset_path_index.get(path, "") for path in output_path_refs),
-                    *DATASET_ID_RE.findall(input_text + " " + output_text),
-                ]
+                _extract_paths(input_text)
+                + _normalize_string_list(row.get("input_path_refs", []))
             )
-            - {""}
+        )
+        output_path_refs = sorted(
+            set(
+                _extract_paths(output_text)
+                + _normalize_string_list(row.get("output_path_refs", []))
+            )
+        )
+        dataset_refs, dataset_label_refs = _normalize_dataset_links(
+            explicit_dataset_refs=_normalize_string_list(row.get("dataset_refs", [])),
+            input_path_refs=input_path_refs,
+            output_path_refs=output_path_refs,
+            dataset_path_index=dataset_path_index,
+            dataset_label_aliases=dataset_label_aliases,
         )
         reproducibility_class = (
             "deterministic_replay"
@@ -210,7 +328,15 @@ def _build_experiment_rows(
         )
         binary_row = binaries.get(binary, {})
         binary_registered = binary in binaries
-        binary_experiment_declared = _collapse(str(binary_row.get("experiment", "")))
+        binary_experiment_declared = (
+            _collapse(str(binary_row.get("experiment", "")))
+            or _collapse(str(row.get("binary_experiment_declared", "")))
+            or (eid if binary else "")
+        )
+        external_source_refs = _normalize_string_list(row.get("external_source_refs", []))
+        truth_surface_consumption = _normalize_string_list(
+            row.get("truth_surface_consumption", [])
+        )
         out.append(
             {
                 "id": eid,
@@ -234,6 +360,9 @@ def _build_experiment_rows(
                 "input_path_refs": input_path_refs,
                 "output_path_refs": output_path_refs,
                 "dataset_refs": dataset_refs,
+                "dataset_label_refs": dataset_label_refs,
+                "external_source_refs": external_source_refs,
+                "truth_surface_consumption": truth_surface_consumption,
                 "reproducibility_class": reproducibility_class,
             }
         )
@@ -262,6 +391,9 @@ def _build_experiment_lineage(
             "input_path_refs": row["input_path_refs"],
             "output_path_refs": row["output_path_refs"],
             "dataset_refs": row["dataset_refs"],
+            "dataset_label_refs": row["dataset_label_refs"],
+            "external_source_refs": row["external_source_refs"],
+            "truth_surface_consumption": row["truth_surface_consumption"],
             "replay_steps": [
                 "Confirm required input paths are available.",
                 row["run"],
@@ -269,24 +401,29 @@ def _build_experiment_lineage(
             ],
             "acceptance_criteria": [
                 "Claim references resolve in registry/claims.toml.",
-                "Binary is registered in registry/binaries.toml.",
+                (
+                    "Binary is registered in registry/binaries.toml."
+                    if row["binary"]
+                    else "Execution command is explicitly declared."
+                ),
                 "Reproducibility class is explicitly declared.",
             ],
         }
         lineages.append(lineage)
 
-        edge_seq += 1
-        edges.append(
-            {
-                "id": f"XLE-{edge_seq:05d}",
-                "lineage_id": lineage["id"],
-                "from_id": row["id"],
-                "to_ref": row["binary"],
-                "to_kind": "binary",
-                "edge_kind": "implemented_by_binary",
-                "verified": bool(row["binary_registered"]),
-            }
-        )
+        if row["binary"]:
+            edge_seq += 1
+            edges.append(
+                {
+                    "id": f"XLE-{edge_seq:05d}",
+                    "lineage_id": lineage["id"],
+                    "from_id": row["id"],
+                    "to_ref": row["binary"],
+                    "to_kind": "binary",
+                    "edge_kind": "implemented_by_binary",
+                    "verified": bool(row["binary_registered"]),
+                }
+            )
         for cid in row["claim_refs"]:
             edge_seq += 1
             edges.append(
@@ -337,6 +474,32 @@ def _build_experiment_lineage(
                     "to_kind": "dataset",
                     "edge_kind": "touches_dataset",
                     "verified": did in dataset_ids,
+                }
+            )
+        for xid in row["external_source_refs"]:
+            edge_seq += 1
+            edges.append(
+                {
+                    "id": f"XLE-{edge_seq:05d}",
+                    "lineage_id": lineage["id"],
+                    "from_id": row["id"],
+                    "to_ref": xid,
+                    "to_kind": "source",
+                    "edge_kind": "consumes_source",
+                    "verified": True,
+                }
+            )
+        for surface in row["truth_surface_consumption"]:
+            edge_seq += 1
+            edges.append(
+                {
+                    "id": f"XLE-{edge_seq:05d}",
+                    "lineage_id": lineage["id"],
+                    "from_id": row["id"],
+                    "to_ref": surface,
+                    "to_kind": "truth_surface",
+                    "edge_kind": "consumes_truth_surface",
+                    "verified": True,
                 }
             )
     return lineages, edges
@@ -620,6 +783,11 @@ def _render_experiments(rows: list[dict[str, Any]]) -> str:
         lines.append(f"input_path_refs = {_render_list(row['input_path_refs'])}")
         lines.append(f"output_path_refs = {_render_list(row['output_path_refs'])}")
         lines.append(f"dataset_refs = {_render_list(row['dataset_refs'])}")
+        lines.append(f"dataset_label_refs = {_render_list(row['dataset_label_refs'])}")
+        lines.append(f"external_source_refs = {_render_list(row['external_source_refs'])}")
+        lines.append(
+            f"truth_surface_consumption = {_render_list(row['truth_surface_consumption'])}"
+        )
         lines.append(f"reproducibility_class = {_q(row['reproducibility_class'])}")
         lines.append("")
     return "\n".join(lines)
@@ -652,6 +820,11 @@ def _render_experiment_lineage(lineages: list[dict[str, Any]], edges: list[dict[
         lines.append(f"input_path_refs = {_render_list(row['input_path_refs'])}")
         lines.append(f"output_path_refs = {_render_list(row['output_path_refs'])}")
         lines.append(f"dataset_refs = {_render_list(row['dataset_refs'])}")
+        lines.append(f"dataset_label_refs = {_render_list(row['dataset_label_refs'])}")
+        lines.append(f"external_source_refs = {_render_list(row['external_source_refs'])}")
+        lines.append(
+            f"truth_surface_consumption = {_render_list(row['truth_surface_consumption'])}"
+        )
         lines.append(f"replay_steps = {_render_list(row['replay_steps'])}")
         lines.append(f"acceptance_criteria = {_render_list(row['acceptance_criteria'])}")
         lines.append("")
@@ -898,10 +1071,16 @@ def main() -> int:
     binaries_rows = _load(root / "registry/binaries.toml").get("binary", [])
     binaries = {str(row.get("name", "")): row for row in binaries_rows}
     dataset_path_index = _load_dataset_path_index(root)
+    dataset_label_aliases = _load_dataset_label_aliases(root)
     dataset_ids = set(dataset_path_index.values())
     experiments_input = _load(root / "registry/experiments.toml").get("experiment", [])
 
-    experiment_rows = _build_experiment_rows(experiments_input, binaries, dataset_path_index)
+    experiment_rows = _build_experiment_rows(
+        experiments_input,
+        binaries,
+        dataset_path_index,
+        dataset_label_aliases,
+    )
     lineage_rows, lineage_edges = _build_experiment_lineage(experiment_rows, claim_ids, dataset_ids)
 
     roadmap_raw = _load(root / "registry/roadmap.toml")
