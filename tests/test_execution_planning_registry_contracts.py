@@ -7,7 +7,6 @@ from __future__ import annotations
 import tomllib
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPERIMENTS_PATH = REPO_ROOT / "registry/experiments.toml"
 LINEAGE_PATH = REPO_ROOT / "registry/experiment_lineage.toml"

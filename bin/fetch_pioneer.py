@@ -40,9 +40,7 @@ PIONEER10_BASE = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer10/merged/"
 PIONEER11_BASE = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer11/merged/"
 CATALOG_SEARCH = "https://catalog.data.gov/api/3/action/package_search"
 OUTPUT_DIR = Path("data/external/pioneer")
-USER_AGENT = (
-    "Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0"
-)
+USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0"
 
 PIONEER_METADATA = {
     "p10": {
@@ -171,9 +169,7 @@ def build_file_entry(url: str, path: Path, status: str, *, source: str) -> dict[
     entry["bytes"] = len(data)
     entry["sha256"] = hashlib.sha256(data).hexdigest()
     if path.suffix.lower() in {".asc", ".txt", ".html", ".xml", ".json"}:
-        entry["lines"] = sum(
-            1 for _ in path.open("r", encoding="utf-8", errors="replace")
-        )
+        entry["lines"] = sum(1 for _ in path.open("r", encoding="utf-8", errors="replace"))
     return entry
 
 
@@ -218,7 +214,7 @@ def fetch_file(url: str, out: Path, *, skip_existing: bool) -> dict[str, object]
 
 
 def fetch_catalog_package(title: str) -> dict[str, object] | None:
-    query = urlencode({"q": f"\"{title}\""})
+    query = urlencode({"q": f'"{title}"'})
     url = f"{CATALOG_SEARCH}?{query}"
     try:
         payload = json.loads(fetch_text(url, timeout=30))
@@ -582,7 +578,11 @@ def fetch_pioneer_ppi_merged(
             ),
         },
     )
-    return {"counts": counts, "status": "ready" if staged_bytes else "metadata_only", "manifest": str(manifest_path)}
+    return {
+        "counts": counts,
+        "status": "ready" if staged_bytes else "metadata_only",
+        "manifest": str(manifest_path),
+    }
 
 
 def fetch_spacecraft(
@@ -695,9 +695,7 @@ def main() -> int:
     parser.add_argument(
         "--start", type=int, default=1979, help="Start year (inclusive, default 1979)"
     )
-    parser.add_argument(
-        "--end", type=int, default=1979, help="End year (inclusive, default 1979)"
-    )
+    parser.add_argument("--end", type=int, default=1979, help="End year (inclusive, default 1979)")
     parser.add_argument(
         "--source",
         choices=["auto", "spdf", "amda", "metadata", "pds_ppi"],
@@ -745,11 +743,7 @@ def main() -> int:
                 totals[key] += result["counts"][key]
             statuses.append(result["status"])
     else:
-        targets = (
-            list(PIONEER_PPI_PRODUCTS.keys())
-            if args.encounter == "all"
-            else [args.encounter]
-        )
+        targets = list(PIONEER_PPI_PRODUCTS.keys()) if args.encounter == "all" else [args.encounter]
         for product_key in targets:
             print(f"Fetching Pioneer encounter {product_key}...")
             result = fetch_ppi_product(product_key, skip_existing=args.skip_existing)

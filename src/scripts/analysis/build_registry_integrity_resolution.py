@@ -22,7 +22,6 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-
 CLAIM_ID_RE = re.compile(r"\bC-\d{3}\b")
 I_ID_RE = re.compile(r"\bI-\d{3}\b")
 E_ID_RE = re.compile(r"\bE-\d{3}\b")
@@ -285,7 +284,10 @@ def build_conflict_markers(
                     "positive_evidence": [statement],
                     "negative_evidence": [status_token],
                     "jaccard_overlap": 0.0,
-                    "notes": "Refuted/negative status conflicts with positive language in statement.",
+                    "notes": (
+                        "Refuted/negative status conflicts"
+                        " with positive language in statement."
+                    ),
                 }
             )
         if status_token in VERIFIED_STATUS_TOKENS and has_negative:
@@ -321,9 +323,9 @@ def build_conflict_markers(
             b_status = b["status_token"]
             if b_status not in VERIFIED_STATUS_TOKENS.union(REFUTED_STATUS_TOKENS):
                 continue
-            opposite = (a_status in VERIFIED_STATUS_TOKENS and b_status in REFUTED_STATUS_TOKENS) or (
-                a_status in REFUTED_STATUS_TOKENS and b_status in VERIFIED_STATUS_TOKENS
-            )
+            opposite = (
+                a_status in VERIFIED_STATUS_TOKENS and b_status in REFUTED_STATUS_TOKENS
+            ) or (a_status in REFUTED_STATUS_TOKENS and b_status in VERIFIED_STATUS_TOKENS)
             if not opposite:
                 continue
             score = _jaccard(statement_tokens[a_id], statement_tokens[b_id])
@@ -443,7 +445,7 @@ def build_lacunae(
         status = _status_token(str(row.get("status", "")))
         if status not in UNRESOLVED_STATUS_TOKENS:
             continue
-        lid = f"L-{cid[2:]}" if cid.startswith("C-") else f"L-AUTO-{len(rows)+1:04d}"
+        lid = f"L-{cid[2:]}" if cid.startswith("C-") else f"L-AUTO-{len(rows) + 1:04d}"
         if lid in seen_ids:
             continue
         seen_ids.add(lid)
@@ -479,11 +481,15 @@ def build_lacunae(
                 "origin": "conflict_marker_scan",
                 "area": "consistency",
                 "title": f"Resolve conflict marker {mid}",
-                "description": _collapse(str(marker.get("notes", ""))) or "Unresolved contradiction marker.",
+                "description": _collapse(str(marker.get("notes", "")))
+                or "Unresolved contradiction marker.",
                 "priority": "high" if str(marker.get("severity", "")) == "high" else "medium",
                 "status": "open",
                 "claim_refs": sorted(set(claim_refs)),
-                "source_refs": [str(marker.get("source_registry", "")), str(marker.get("source_document", ""))],
+                "source_refs": [
+                    str(marker.get("source_registry", "")),
+                    str(marker.get("source_document", "")),
+                ],
                 "related_marker_ids": [mid],
             }
         )
@@ -565,7 +571,9 @@ def _shape_summary(value: Any) -> dict[str, Any]:
     return {"type": type(value).__name__}
 
 
-def build_schema_signatures(root: Path, registry_paths: list[str]) -> tuple[list[dict[str, Any]], dict[str, int]]:
+def build_schema_signatures(
+    root: Path, registry_paths: list[str]
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
     rows: list[dict[str, Any]] = []
     seq = 0
     for rel in registry_paths:
@@ -581,7 +589,9 @@ def build_schema_signatures(root: Path, registry_paths: list[str]) -> tuple[list
             "top_level_keys": top_level,
             "shapes": shapes,
         }
-        normalized = json.dumps(schema_payload, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+        normalized = json.dumps(
+            schema_payload, ensure_ascii=True, sort_keys=True, separators=(",", ":")
+        )
         schema_sha256 = hashlib.sha256(normalized.encode("utf-8")).hexdigest()
         content_sha256 = hashlib.sha256(text.encode("utf-8")).hexdigest()
         seq += 1
@@ -596,7 +606,8 @@ def build_schema_signatures(root: Path, registry_paths: list[str]) -> tuple[list
                 "array_table_count": sum(
                     1
                     for key in top_level
-                    if isinstance(data[key], list) and all(isinstance(item, dict) for item in data[key])
+                    if isinstance(data[key], list)
+                    and all(isinstance(item, dict) for item in data[key])
                 ),
                 "table_count": sum(1 for key in top_level if isinstance(data[key], dict)),
                 "shape_json": normalized,
@@ -614,7 +625,11 @@ def build_schema_signatures(root: Path, registry_paths: list[str]) -> tuple[list
 
 def _render_conflict_markers(rows: list[dict[str, Any]], meta: dict[str, int]) -> str:
     lines: list[str] = []
-    lines.append("# Conflict marker registry (integrity-resolution lane strict schema; legacy Wave 5 Batch 3 compatibility).")
+    lines.append(
+        "# Conflict marker registry"
+        " (integrity-resolution lane strict schema;"
+        " legacy Wave 5 Batch 3 compatibility)."
+    )
     lines.append("# Generated by src/scripts/analysis/build_wave5_batch3_registries.py.")
     lines.append("")
     lines.append("[conflict_markers]")
@@ -648,7 +663,11 @@ def _render_conflict_markers(rows: list[dict[str, Any]], meta: dict[str, int]) -
 
 def _render_lacunae(rows: list[dict[str, Any]], meta: dict[str, int]) -> str:
     lines: list[str] = []
-    lines.append("# Lacunae registry (integrity-resolution lane strict schema; legacy Wave 5 Batch 3 compatibility).")
+    lines.append(
+        "# Lacunae registry"
+        " (integrity-resolution lane strict schema;"
+        " legacy Wave 5 Batch 3 compatibility)."
+    )
     lines.append("# Generated by src/scripts/analysis/build_wave5_batch3_registries.py.")
     lines.append("")
     lines.append("[lacunae]")
@@ -678,9 +697,15 @@ def _render_lacunae(rows: list[dict[str, Any]], meta: dict[str, int]) -> str:
     return "\n".join(lines)
 
 
-def _render_schema_signatures(rows: list[dict[str, Any]], meta: dict[str, int], registry_paths: list[str]) -> str:
+def _render_schema_signatures(
+    rows: list[dict[str, Any]], meta: dict[str, int], registry_paths: list[str]
+) -> str:
     lines: list[str] = []
-    lines.append("# Registry schema signatures (integrity-resolution lane strict schema; legacy Wave 5 Batch 3 compatibility).")
+    lines.append(
+        "# Registry schema signatures"
+        " (integrity-resolution lane strict schema;"
+        " legacy Wave 5 Batch 3 compatibility)."
+    )
     lines.append("# Generated by src/scripts/analysis/build_wave5_batch3_registries.py.")
     lines.append("")
     lines.append("[schema_signatures]")
@@ -795,12 +820,15 @@ def main() -> int:
 
     # Build signatures after writing conflict/lacuna registries so checksums reflect
     # the newly materialized canonical state.
-    signature_rows, signature_meta = build_schema_signatures(root=root, registry_paths=registry_paths)
+    signature_rows, signature_meta = build_schema_signatures(
+        root=root, registry_paths=registry_paths
+    )
     schema_text = _render_schema_signatures(signature_rows, signature_meta, registry_paths)
     _write(root / args.schema_out, schema_text)
 
     print(
-        "Wrote integrity-resolution registry lane artifacts (canonical registry-integrity-resolution script): "
+        "Wrote integrity-resolution registry lane artifacts"
+        " (canonical registry-integrity-resolution script): "
         f"conflict_markers={len(conflict_rows)} "
         f"lacunae={len(lacunae_rows)} "
         f"schema_signatures={len(signature_rows)}"

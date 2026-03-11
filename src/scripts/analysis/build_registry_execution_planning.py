@@ -26,8 +26,9 @@ import tomllib
 from pathlib import Path
 from typing import Any
 
-
-ID_REF_RE = re.compile(r"\b(?:WS-[A-Z0-9-]+|T-\d{3}|NA-\d{3}|C-\d{3}|I-\d{3}|E-\d{3}|REQ-[A-Z0-9-]+)\b")
+ID_REF_RE = re.compile(
+    r"\b(?:WS-[A-Z0-9-]+|T-\d{3}|NA-\d{3}|C-\d{3}|I-\d{3}|E-\d{3}|REQ-[A-Z0-9-]+)\b"
+)
 PATH_RE = re.compile(r"(?:data|registry|docs|crates|src|tests)/[A-Za-z0-9_./{}:+-]+")
 DATASET_ID_RE = re.compile(r"\b(?:PC|PG|EX|AR|CU)-\d{4}\b")
 DEP_SPEC_RE = re.compile(r"^\s*([A-Za-z0-9_.-]+)\s*(.*)$")
@@ -303,10 +304,7 @@ def _build_experiment_rows(
         while f"XL-{next_lineage_seq:03d}" in used_lineage_ids:
             next_lineage_seq += 1
         input_path_refs = sorted(
-            set(
-                _extract_paths(input_text)
-                + _normalize_string_list(row.get("input_path_refs", []))
-            )
+            set(_extract_paths(input_text) + _normalize_string_list(row.get("input_path_refs", [])))
         )
         output_path_refs = sorted(
             set(
@@ -334,9 +332,7 @@ def _build_experiment_rows(
             or (eid if binary else "")
         )
         external_source_refs = _normalize_string_list(row.get("external_source_refs", []))
-        truth_surface_consumption = _normalize_string_list(
-            row.get("truth_surface_consumption", [])
-        )
+        truth_surface_consumption = _normalize_string_list(row.get("truth_surface_consumption", []))
         out.append(
             {
                 "id": eid,
@@ -531,10 +527,21 @@ def _build_hardened_planning_rows(
             ]
         )
         refs = [ref for ref in _extract_id_refs(text_blob) if ref != rid]
-        deps = sorted(set(ref for ref in refs if ref in known_ids or ref.startswith(("C-", "I-", "E-", "REQ-"))))
+        deps = sorted(
+            set(
+                ref
+                for ref in refs
+                if ref in known_ids or ref.startswith(("C-", "I-", "E-", "REQ-"))
+            )
+        )
         evidence_refs = sorted(set(_extract_paths(text_blob)))
         if "primary_outputs" in row and isinstance(row.get("primary_outputs"), list):
-            evidence_refs = sorted(set(evidence_refs + [_collapse(str(v)) for v in row["primary_outputs"] if _collapse(str(v))]))
+            evidence_refs = sorted(
+                set(
+                    evidence_refs
+                    + [_collapse(str(v)) for v in row["primary_outputs"] if _collapse(str(v))]
+                )
+            )
         acceptance = [
             f"{row_kind} status is constrained to declared enum values.",
             f"{row_kind} dependencies are explicit and machine-parseable.",
@@ -580,7 +587,9 @@ def _module_dependency_defaults(module_id: str) -> list[str]:
     return ["REQ-CORE"]
 
 
-def _build_requirements_hardened(rows: list[dict[str, Any]], gaps: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def _build_requirements_hardened(
+    rows: list[dict[str, Any]], gaps: list[dict[str, Any]]
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     modules: list[dict[str, Any]] = []
     known_module_ids = {str(row.get("id", "")) for row in rows}
     for row in sorted(rows, key=lambda item: str(item.get("id", ""))):
@@ -588,10 +597,14 @@ def _build_requirements_hardened(rows: list[dict[str, Any]], gaps: list[dict[str
         status = _collapse(str(row.get("status", "active"))).lower()
         if status not in REQUIREMENT_STATUS_ALLOWLIST:
             status = "active"
-        install_targets = [_collapse(str(v)) for v in row.get("install_targets", []) if _collapse(str(v))]
+        install_targets = [
+            _collapse(str(v)) for v in row.get("install_targets", []) if _collapse(str(v))
+        ]
         verify_targets = sorted(set(install_targets))
         runtime_stack = _infer_runtime_stack(_collapse(str(row.get("name", ""))))
-        requires_modules = [dep for dep in _module_dependency_defaults(mid) if dep in known_module_ids]
+        requires_modules = [
+            dep for dep in _module_dependency_defaults(mid) if dep in known_module_ids
+        ]
         acceptance = [
             "Runtime stack classification is explicit.",
             "Install and verify commands are reproducible.",
@@ -619,7 +632,9 @@ def _build_requirements_hardened(rows: list[dict[str, Any]], gaps: list[dict[str
             set(
                 ref
                 for ref in _extract_id_refs(
-                    _collapse(str(row.get("description", ""))) + " " + _collapse(str(row.get("proposed_resolution", "")))
+                    _collapse(str(row.get("description", "")))
+                    + " "
+                    + _collapse(str(row.get("proposed_resolution", "")))
                 )
                 if ref.startswith("REQ-")
             )
@@ -640,11 +655,15 @@ def _build_module_requirements(
     module_ids = {str(row.get("id", "")) for row in requirements_modules}
     for row in requirements_modules:
         mid = _collapse(str(row.get("id", "")))
-        install_targets = [_collapse(str(v)) for v in row.get("install_targets", []) if _collapse(str(v))]
-        verify_targets = [_collapse(str(v)) for v in row.get("verify_targets", []) if _collapse(str(v))]
+        install_targets = [
+            _collapse(str(v)) for v in row.get("install_targets", []) if _collapse(str(v))
+        ]
+        verify_targets = [
+            _collapse(str(v)) for v in row.get("verify_targets", []) if _collapse(str(v))
+        ]
         command_refs: list[str] = []
         for cmd in install_targets:
-            cid = f"CMD-{len(commands)+1:04d}"
+            cid = f"CMD-{len(commands) + 1:04d}"
             commands.append(
                 {
                     "id": cid,
@@ -655,7 +674,7 @@ def _build_module_requirements(
             )
             command_refs.append(cid)
         for cmd in verify_targets:
-            cid = f"CMD-{len(commands)+1:04d}"
+            cid = f"CMD-{len(commands) + 1:04d}"
             commands.append(
                 {
                     "id": cid,
@@ -673,7 +692,9 @@ def _build_module_requirements(
                 "status": _collapse(str(row.get("status", ""))),
                 "status_token": _collapse(str(row.get("status_token", ""))),
                 "source_markdown": _collapse(str(row.get("markdown", ""))),
-                "requires_modules": [dep for dep in row.get("requires_modules", []) if dep in module_ids],
+                "requires_modules": [
+                    dep for dep in row.get("requires_modules", []) if dep in module_ids
+                ],
                 "command_refs": command_refs,
                 "package_refs": [],
             }
@@ -693,11 +714,13 @@ def _build_module_requirements(
         "dev": "REQ-CORE",
     }
 
-    def add_package(module_id: str, manager: str, spec: str, source: str, group: str, optional_flag: bool) -> None:
+    def add_package(
+        module_id: str, manager: str, spec: str, source: str, group: str, optional_flag: bool
+    ) -> None:
         if module_id not in module_index:
             module_id = "REQ-CORE"
         name, constraint = _parse_dependency_spec(spec)
-        pid = f"PKG-{len(packages)+1:05d}"
+        pid = f"PKG-{len(packages) + 1:05d}"
         packages.append(
             {
                 "id": pid,
@@ -747,7 +770,11 @@ def _build_module_requirements(
 
 def _render_experiments(rows: list[dict[str, Any]]) -> str:
     lines: list[str] = []
-    lines.append("# Experiments registry (execution-planning lane strict schema; legacy Wave 5 Batch 4 compatibility).")
+    lines.append(
+        "# Experiments registry (execution-planning lane"
+        " strict schema; legacy Wave 5 Batch 4"
+        " compatibility)."
+    )
     lines.append("# Generated by src/scripts/analysis/build_wave5_batch4_registries.py.")
     lines.append("")
     lines.append("[experiments]")
@@ -795,7 +822,11 @@ def _render_experiments(rows: list[dict[str, Any]]) -> str:
 
 def _render_experiment_lineage(lineages: list[dict[str, Any]], edges: list[dict[str, Any]]) -> str:
     lines: list[str] = []
-    lines.append("# Experiment lineage registry (execution-planning lane strict schema; legacy Wave 5 Batch 4 compatibility).")
+    lines.append(
+        "# Experiment lineage registry"
+        " (execution-planning lane strict schema;"
+        " legacy Wave 5 Batch 4 compatibility)."
+    )
     lines.append("# Generated by src/scripts/analysis/build_wave5_batch4_registries.py.")
     lines.append("")
     lines.append("[experiment_lineage]")
@@ -847,22 +878,34 @@ def _render_roadmap(raw_meta: dict[str, Any], rows: list[dict[str, Any]]) -> str
     lines.append("# Generated by src/scripts/analysis/build_wave5_batch4_registries.py.")
     lines.append("")
     lines.append("[roadmap]")
-    lines.append(f"source_markdown = {_q(_collapse(str(raw_meta.get('source_markdown', 'docs/ROADMAP.md'))))}")
+    src_md = _q(_collapse(str(
+        raw_meta.get('source_markdown', 'docs/ROADMAP.md')
+    )))
+    lines.append(f"source_markdown = {src_md}")
     lines.append('consolidated_date = "2026-02-10"')
     supersedes = [_collapse(str(v)) for v in raw_meta.get("supersedes", []) if _collapse(str(v))]
-    companion_docs = [_collapse(str(v)) for v in raw_meta.get("companion_docs", []) if _collapse(str(v))]
+    companion_docs = [
+        _collapse(str(v)) for v in raw_meta.get("companion_docs", []) if _collapse(str(v))
+    ]
     lines.append(f"supersedes = {_render_list(supersedes)}")
     lines.append(f"companion_docs = {_render_list(companion_docs)}")
-    lines.append("status = \"active\"")
-    lines.append("status_token = \"ACTIVE\"")
+    lines.append('status = "active"')
+    lines.append('status_token = "ACTIVE"')
     lines.append("authoritative = true")
     lines.append(f"workstream_count = {len(rows)}")
     lines.append(f"status_allowlist = {_render_list(ROADMAP_STATUS_ALLOWLIST)}")
     lines.append(f"priority_allowlist = {_render_list(PLANNING_PRIORITY_ALLOWLIST)}")
     lines.append("")
     lines.append("[roadmap.schema]")
-    lines.append("required_fields = [\"id\", \"name\", \"priority\", \"status\", \"status_token\", \"description\", \"dependencies\", \"acceptance_criteria\"]")
-    lines.append("dependency_id_pattern = \"WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*\"")
+    lines.append(
+        'required_fields = ["id", "name", "priority",'
+        ' "status", "status_token", "description",'
+        ' "dependencies", "acceptance_criteria"]'
+    )
+    lines.append(
+        'dependency_id_pattern = '
+        '"WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*"'
+    )
     lines.append("")
     if "sections" in raw_meta and isinstance(raw_meta["sections"], dict):
         lines.append("[roadmap.sections]")
@@ -883,16 +926,61 @@ def _render_roadmap(raw_meta: dict[str, Any], rows: list[dict[str, Any]]) -> str
         if "sprint" in row and _collapse(str(row.get("sprint", ""))):
             lines.append(f"sprint = {_q(_collapse(str(row.get('sprint', ''))))}")
         if row.get("primary_outputs"):
-            lines.append(f"primary_outputs = {_render_list([_collapse(str(v)) for v in row['primary_outputs'] if _collapse(str(v))])}")
+            vals = [
+                _collapse(str(v))
+                for v in row['primary_outputs']
+                if _collapse(str(v))
+            ]
+            lines.append(
+                f"primary_outputs = {_render_list(vals)}"
+            )
         if row.get("claims"):
-            lines.append(f"claims = {_render_list([_collapse(str(v)) for v in row['claims'] if _collapse(str(v))])}")
+            vals = [
+                _collapse(str(v))
+                for v in row['claims']
+                if _collapse(str(v))
+            ]
+            lines.append(
+                f"claims = {_render_list(vals)}"
+            )
         if _collapse(str(row.get("insight", ""))):
-            lines.append(f"insight = {_q(_collapse(str(row.get('insight', ''))))}")
+            lines.append(
+                "insight = "
+                f"{_q(_collapse(str(row.get('insight', ''))))}"
+            )
         if row.get("lacunae"):
-            lines.append(f"lacunae = {_render_list([_collapse(str(v)) for v in row['lacunae'] if _collapse(str(v))])}")
-        lines.append(f"dependencies = {_render_list([_collapse(str(v)) for v in row.get('dependencies', []) if _collapse(str(v))])}")
-        lines.append(f"acceptance_criteria = {_render_list([_collapse(str(v)) for v in row.get('acceptance_criteria', []) if _collapse(str(v))])}")
-        lines.append(f"evidence_refs = {_render_list([_collapse(str(v)) for v in row.get('evidence_refs', []) if _collapse(str(v))])}")
+            vals = [
+                _collapse(str(v))
+                for v in row['lacunae']
+                if _collapse(str(v))
+            ]
+            lines.append(
+                f"lacunae = {_render_list(vals)}"
+            )
+        deps = [
+            _collapse(str(v))
+            for v in row.get('dependencies', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"dependencies = {_render_list(deps)}"
+        )
+        ac = [
+            _collapse(str(v))
+            for v in row.get('acceptance_criteria', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"acceptance_criteria = {_render_list(ac)}"
+        )
+        er = [
+            _collapse(str(v))
+            for v in row.get('evidence_refs', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"evidence_refs = {_render_list(er)}"
+        )
         lines.append("")
     return "\n".join(lines)
 
@@ -905,22 +993,57 @@ def _render_todo(rows: list[dict[str, Any]]) -> str:
     lines.append("[todo]")
     lines.append('updated = "2026-02-10"')
     lines.append('status = "active"')
-    lines.append("status_token = \"ACTIVE\"")
+    lines.append('status_token = "ACTIVE"')
     lines.append(f"item_count = {len(rows)}")
     lines.append(f"status_allowlist = {_render_list(TODO_STATUS_ALLOWLIST)}")
     lines.append(f"priority_allowlist = {_render_list(PLANNING_PRIORITY_ALLOWLIST)}")
     lines.append("")
     lines.append("[todo.schema]")
-    lines.append("required_fields = [\"id\", \"area\", \"title\", \"description\", \"priority\", \"status\", \"status_token\", \"dependencies\", \"acceptance_criteria\"]")
-    lines.append("dependency_id_pattern = \"WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*\"")
+    lines.append(
+        'required_fields = ["id", "area", "title",'
+        ' "description", "priority", "status",'
+        ' "status_token", "dependencies",'
+        ' "acceptance_criteria"]'
+    )
+    lines.append(
+        'dependency_id_pattern = '
+        '"WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*"'
+    )
     lines.append("")
     for row in rows:
         lines.append("[[item]]")
-        for key in ("id", "area", "title", "description", "priority", "status", "status_token"):
-            lines.append(f"{key} = {_q(_collapse(str(row.get(key, ''))))}")
-        lines.append(f"dependencies = {_render_list([_collapse(str(v)) for v in row.get('dependencies', []) if _collapse(str(v))])}")
-        lines.append(f"acceptance_criteria = {_render_list([_collapse(str(v)) for v in row.get('acceptance_criteria', []) if _collapse(str(v))])}")
-        lines.append(f"evidence_refs = {_render_list([_collapse(str(v)) for v in row.get('evidence_refs', []) if _collapse(str(v))])}")
+        for key in (
+            "id", "area", "title", "description",
+            "priority", "status", "status_token",
+        ):
+            lines.append(
+                f"{key} = "
+                f"{_q(_collapse(str(row.get(key, ''))))}"
+            )
+        deps = [
+            _collapse(str(v))
+            for v in row.get('dependencies', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"dependencies = {_render_list(deps)}"
+        )
+        ac = [
+            _collapse(str(v))
+            for v in row.get('acceptance_criteria', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"acceptance_criteria = {_render_list(ac)}"
+        )
+        er = [
+            _collapse(str(v))
+            for v in row.get('evidence_refs', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"evidence_refs = {_render_list(er)}"
+        )
         lines.append("")
     return "\n".join(lines)
 
@@ -939,21 +1062,58 @@ def _render_next_actions(rows: list[dict[str, Any]]) -> str:
     lines.append(f"priority_allowlist = {_render_list(PLANNING_PRIORITY_ALLOWLIST)}")
     lines.append("")
     lines.append("[next_actions.schema]")
-    lines.append("required_fields = [\"id\", \"area\", \"title\", \"description\", \"priority\", \"status\", \"status_token\", \"dependencies\", \"acceptance_criteria\"]")
-    lines.append("dependency_id_pattern = \"WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*\"")
+    lines.append(
+        'required_fields = ["id", "area", "title",'
+        ' "description", "priority", "status",'
+        ' "status_token", "dependencies",'
+        ' "acceptance_criteria"]'
+    )
+    lines.append(
+        'dependency_id_pattern = '
+        '"WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*"'
+    )
     lines.append("")
     for row in rows:
         lines.append("[[action]]")
-        for key in ("id", "area", "title", "description", "priority", "status", "status_token"):
-            lines.append(f"{key} = {_q(_collapse(str(row.get(key, ''))))}")
-        lines.append(f"dependencies = {_render_list([_collapse(str(v)) for v in row.get('dependencies', []) if _collapse(str(v))])}")
-        lines.append(f"acceptance_criteria = {_render_list([_collapse(str(v)) for v in row.get('acceptance_criteria', []) if _collapse(str(v))])}")
-        lines.append(f"evidence_refs = {_render_list([_collapse(str(v)) for v in row.get('evidence_refs', []) if _collapse(str(v))])}")
+        for key in (
+            "id", "area", "title", "description",
+            "priority", "status", "status_token",
+        ):
+            lines.append(
+                f"{key} = "
+                f"{_q(_collapse(str(row.get(key, ''))))}"
+            )
+        deps = [
+            _collapse(str(v))
+            for v in row.get('dependencies', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"dependencies = {_render_list(deps)}"
+        )
+        ac = [
+            _collapse(str(v))
+            for v in row.get('acceptance_criteria', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"acceptance_criteria = {_render_list(ac)}"
+        )
+        er = [
+            _collapse(str(v))
+            for v in row.get('evidence_refs', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"evidence_refs = {_render_list(er)}"
+        )
         lines.append("")
     return "\n".join(lines)
 
 
-def _render_requirements(modules: list[dict[str, Any]], gaps: list[dict[str, Any]], meta: dict[str, Any]) -> str:
+def _render_requirements(
+    modules: list[dict[str, Any]], gaps: list[dict[str, Any]], meta: dict[str, Any]
+) -> str:
     lines: list[str] = []
     lines.append("# Requirements registry (TOML-first, schema-hardened).")
     lines.append("# Generated by src/scripts/analysis/build_wave5_batch4_registries.py.")
@@ -963,17 +1123,40 @@ def _render_requirements(modules: list[dict[str, Any]], gaps: list[dict[str, Any
     lines.append('status = "active"')
     lines.append('status_token = "ACTIVE"')
     lines.append('updated = "2026-02-10"')
-    lines.append(f"python_recommended = {_q(_collapse(str(meta.get('python_recommended', '3.11-3.12'))))}")
-    lines.append(f"python_allowed = {_q(_collapse(str(meta.get('python_allowed', '3.13+ (with optional extras caveats)'))))}")
-    lines.append(f"primary_markdown = {_q(_collapse(str(meta.get('primary_markdown', 'docs/REQUIREMENTS.md'))))}")
+    py_rec = _q(_collapse(str(
+        meta.get('python_recommended', '3.11-3.12')
+    )))
+    lines.append(f"python_recommended = {py_rec}")
+    py_allowed = _q(_collapse(str(
+        meta.get(
+            'python_allowed',
+            '3.13+ (with optional extras caveats)',
+        )
+    )))
+    lines.append(f"python_allowed = {py_allowed}")
+    pri_md = _q(_collapse(str(
+        meta.get('primary_markdown', 'docs/REQUIREMENTS.md')
+    )))
+    lines.append(f"primary_markdown = {pri_md}")
     lines.append(f"module_count = {len(modules)}")
     lines.append(f"coverage_gap_count = {len(gaps)}")
     lines.append(f"status_allowlist = {_render_list(REQUIREMENT_STATUS_ALLOWLIST)}")
     lines.append(f"runtime_stack_allowlist = {_render_list(RUNTIME_STACK_ALLOWLIST)}")
     lines.append("")
     lines.append("[requirements.schema]")
-    lines.append("required_module_fields = [\"id\", \"name\", \"status\", \"status_token\", \"runtime_stack\", \"requires_modules\", \"install_targets\", \"verify_targets\", \"acceptance_criteria\"]")
-    lines.append("required_gap_fields = [\"id\", \"area\", \"status\", \"status_token\", \"description\", \"proposed_resolution\", \"related_module_ids\"]")
+    lines.append(
+        'required_module_fields = ["id", "name",'
+        ' "status", "status_token",'
+        ' "runtime_stack", "requires_modules",'
+        ' "install_targets", "verify_targets",'
+        ' "acceptance_criteria"]'
+    )
+    lines.append(
+        'required_gap_fields = ["id", "area",'
+        ' "status", "status_token", "description",'
+        ' "proposed_resolution",'
+        ' "related_module_ids"]'
+    )
     lines.append("")
     for row in modules:
         lines.append("[[module]]")
@@ -983,10 +1166,38 @@ def _render_requirements(modules: list[dict[str, Any]], gaps: list[dict[str, Any
         lines.append(f"status = {_q(_collapse(str(row.get('status', ''))))}")
         lines.append(f"status_token = {_q(_collapse(str(row.get('status_token', ''))))}")
         lines.append(f"runtime_stack = {_q(_collapse(str(row.get('runtime_stack', ''))))}")
-        lines.append(f"requires_modules = {_render_list([_collapse(str(v)) for v in row.get('requires_modules', []) if _collapse(str(v))])}")
-        lines.append(f"install_targets = {_render_list([_collapse(str(v)) for v in row.get('install_targets', []) if _collapse(str(v))])}")
-        lines.append(f"verify_targets = {_render_list([_collapse(str(v)) for v in row.get('verify_targets', []) if _collapse(str(v))])}")
-        lines.append(f"acceptance_criteria = {_render_list([_collapse(str(v)) for v in row.get('acceptance_criteria', []) if _collapse(str(v))])}")
+        rm = [
+            _collapse(str(v))
+            for v in row.get('requires_modules', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"requires_modules = {_render_list(rm)}"
+        )
+        it = [
+            _collapse(str(v))
+            for v in row.get('install_targets', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"install_targets = {_render_list(it)}"
+        )
+        vt = [
+            _collapse(str(v))
+            for v in row.get('verify_targets', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"verify_targets = {_render_list(vt)}"
+        )
+        ac = [
+            _collapse(str(v))
+            for v in row.get('acceptance_criteria', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"acceptance_criteria = {_render_list(ac)}"
+        )
         lines.append("")
     for row in gaps:
         lines.append("[[coverage_gap]]")
@@ -995,21 +1206,41 @@ def _render_requirements(modules: list[dict[str, Any]], gaps: list[dict[str, Any
         lines.append(f"status = {_q(_collapse(str(row.get('status', ''))))}")
         lines.append(f"status_token = {_q(_collapse(str(row.get('status_token', ''))))}")
         lines.append(f"description = {_q(_collapse(str(row.get('description', ''))))}")
-        lines.append(f"proposed_resolution = {_q(_collapse(str(row.get('proposed_resolution', ''))))}")
-        lines.append(f"related_module_ids = {_render_list([_collapse(str(v)) for v in row.get('related_module_ids', []) if _collapse(str(v))])}")
+        pr_val = _q(_collapse(str(
+            row.get('proposed_resolution', '')
+        )))
+        lines.append(f"proposed_resolution = {pr_val}")
+        rmi = [
+            _collapse(str(v))
+            for v in row.get('related_module_ids', [])
+            if _collapse(str(v))
+        ]
+        lines.append(
+            f"related_module_ids = {_render_list(rmi)}"
+        )
         lines.append("")
     return "\n".join(lines)
 
 
-def _render_module_requirements(modules: list[dict[str, Any]], packages: list[dict[str, Any]], commands: list[dict[str, Any]]) -> str:
+def _render_module_requirements(
+    modules: list[dict[str, Any]],
+    packages: list[dict[str, Any]],
+    commands: list[dict[str, Any]],
+) -> str:
     lines: list[str] = []
-    lines.append("# Module requirements decomposition registry (execution-planning lane strict schema; legacy Wave 5 Batch 4 compatibility).")
+    lines.append(
+        "# Module requirements decomposition registry"
+        " (execution-planning lane strict schema;"
+        " legacy Wave 5 Batch 4 compatibility)."
+    )
     lines.append("# Generated by src/scripts/analysis/build_wave5_batch4_registries.py.")
     lines.append("")
     lines.append("[module_requirements]")
     lines.append('updated = "2026-02-10"')
     lines.append("authoritative = true")
-    lines.append('source_registries = ["registry/requirements.toml", "pyproject.toml", "Cargo.toml"]')
+    lines.append(
+        'source_registries = ["registry/requirements.toml", "pyproject.toml", "Cargo.toml"]'
+    )
     lines.append(f"module_count = {len(modules)}")
     lines.append(f"package_count = {len(packages)}")
     lines.append(f"command_count = {len(commands)}")
@@ -1085,7 +1316,11 @@ def main() -> int:
 
     roadmap_raw = _load(root / "registry/roadmap.toml")
     roadmap_meta = roadmap_raw.get("roadmap", {})
-    roadmap_meta["sections"] = roadmap_raw.get("roadmap", {}).get("sections", {}) if isinstance(roadmap_raw.get("roadmap", {}), dict) else {}
+    roadmap_meta["sections"] = (
+        roadmap_raw.get("roadmap", {}).get("sections", {})
+        if isinstance(roadmap_raw.get("roadmap", {}), dict)
+        else {}
+    )
     if not roadmap_meta.get("sections") and "sections" in roadmap_raw:
         roadmap_meta["sections"] = roadmap_raw.get("sections", {})
     roadmap_rows = _build_hardened_planning_rows(
@@ -1145,7 +1380,9 @@ def main() -> int:
     _write(root / "registry/module_requirements.toml", module_requirements_text)
 
     print(
-        "Wrote execution-planning registry lane artifacts (canonical build_registry_execution_planning.py): "
+        "Wrote execution-planning registry lane"
+        " artifacts (canonical"
+        " build_registry_execution_planning.py): "
         f"experiments={len(experiment_rows)} "
         f"lineages={len(lineage_rows)} "
         f"lineage_edges={len(lineage_edges)} "

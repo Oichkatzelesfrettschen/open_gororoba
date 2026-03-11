@@ -8,7 +8,6 @@ import importlib.util
 import sys
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_PATH = REPO_ROOT / "src/scripts/analysis/normalize_external_sources_registry.py"
 
@@ -64,4 +63,7 @@ def test_parse_doc_ignores_generated_header_when_deriving_title_and_body() -> No
 
     assert record.title == "Flying Higher Than A Box-Kite"
     assert record.has_full_transcript is True
-    assert record.body_markdown == "# Flying Higher Than A Box-Kite\n\n## Full Transcript\n\nBody line."
+    assert (
+        record.body_markdown
+        == "# Flying Higher Than A Box-Kite\n\n## Full Transcript\n\nBody line."
+    )

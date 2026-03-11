@@ -13,7 +13,6 @@ from pathlib import Path
 
 import pytest
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPERIMENTS_PATH = REPO_ROOT / "registry/experiments.toml"
 EXTERNAL_SOURCES_PATH = REPO_ROOT / "registry/external_sources.toml"

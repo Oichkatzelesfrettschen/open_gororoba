@@ -11,7 +11,6 @@ import re
 import tomllib
 from pathlib import Path
 
-
 CLAIM_RE = re.compile(r"\bC-\d{3}\b")
 INSIGHT_RE = re.compile(r"\bI-\d{3}\b")
 EXPERIMENT_RE = re.compile(r"\bE-\d{3}\b")
@@ -124,8 +123,12 @@ def main() -> int:
     action_rows = _load(root / "registry/next_actions.toml").get("action", [])
     requirements_rows = _load(root / "registry/requirements.toml").get("module", [])
     module_requirements_rows = _load(root / "registry/module_requirements.toml").get("module", [])
-    module_requirements_packages = _load(root / "registry/module_requirements.toml").get("package", [])
-    module_requirements_commands = _load(root / "registry/module_requirements.toml").get("command", [])
+    module_requirements_packages = _load(root / "registry/module_requirements.toml").get(
+        "package", []
+    )
+    module_requirements_commands = _load(root / "registry/module_requirements.toml").get(
+        "command", []
+    )
     sources = _load(root / "registry/external_sources.toml").get("document", [])
     dataset_label_alias_rows = _load(root / "registry/dataset_label_aliases.toml").get("alias", [])
     claim_atoms = _load(root / "registry/claims_atoms.toml").get("atom", [])
@@ -151,9 +154,7 @@ def main() -> int:
     source_ids = _collect_source_ids(root)
     dataset_ids = _collect_dataset_ids(root)
     dataset_label_aliases = {
-        _normalize_dataset_label(
-            str(row.get("label_normalized", "")) or str(row.get("label", ""))
-        )
+        _normalize_dataset_label(str(row.get("label_normalized", "")) or str(row.get("label", "")))
         for row in dataset_label_alias_rows
     }
     marker_ids = {str(row.get("id", "")) for row in conflict_rows}
@@ -310,7 +311,11 @@ def main() -> int:
     # experiment lineage
     for row in lineage_rows:
         lid = str(row.get("id", ""))
-        check_id("experiments", str(row.get("experiment_id", "")), f"experiment_lineage[{lid}].experiment_id")
+        check_id(
+            "experiments",
+            str(row.get("experiment_id", "")),
+            f"experiment_lineage[{lid}].experiment_id",
+        )
         for cid in row.get("claim_refs", []):
             check_id("claims", str(cid), f"experiment_lineage[{lid}].claim_refs")
         for did in row.get("dataset_refs", []):
@@ -328,8 +333,12 @@ def main() -> int:
         eid = str(row.get("id", ""))
         lid = str(row.get("lineage_id", ""))
         if lid not in lineage_ids:
-            _record_fail(failures, f"experiment_lineage.edge[{eid}].lineage_id", f"unknown lineage {lid}")
-        check_id("experiments", str(row.get("from_id", "")), f"experiment_lineage.edge[{eid}].from_id")
+            _record_fail(
+                failures, f"experiment_lineage.edge[{eid}].lineage_id", f"unknown lineage {lid}"
+            )
+        check_id(
+            "experiments", str(row.get("from_id", "")), f"experiment_lineage.edge[{eid}].from_id"
+        )
         to_ref = str(row.get("to_ref", ""))
         to_kind = str(row.get("to_kind", ""))
         if to_kind == "claim":
@@ -397,7 +406,9 @@ def main() -> int:
     for row in module_requirements_rows:
         rid = str(row.get("id", ""))
         if rid not in req_ids:
-            _record_fail(failures, "module_requirements.module", f"missing requirements module {rid}")
+            _record_fail(
+                failures, "module_requirements.module", f"missing requirements module {rid}"
+            )
         for mid in row.get("requires_modules", []):
             module_id = str(mid)
             if module_id not in module_req_ids:
@@ -460,7 +471,9 @@ def main() -> int:
             check_id("claims", str(cid), f"lacunae[{lid}].claim_refs")
         for mid in row.get("related_marker_ids", []):
             if str(mid) not in marker_ids:
-                _record_fail(failures, f"lacunae[{lid}].related_marker_ids", f"unknown marker {mid}")
+                _record_fail(
+                    failures, f"lacunae[{lid}].related_marker_ids", f"unknown marker {mid}"
+                )
 
     if failures:
         print("ERROR: cross-registry reference verification failed.")

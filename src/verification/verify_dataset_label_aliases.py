@@ -10,7 +10,6 @@ import re
 import tomllib
 from pathlib import Path
 
-
 DATASET_RE = re.compile(r"^(?:PC|PG|EX|AR|CU)-\d{4}$")
 
 
@@ -87,9 +86,7 @@ def main() -> int:
     for row in rows:
         alias_id = str(row.get("id", ""))
         label = str(row.get("label", "")).strip()
-        label_normalized = _normalize_dataset_label(
-            str(row.get("label_normalized", "")) or label
-        )
+        label_normalized = _normalize_dataset_label(str(row.get("label_normalized", "")) or label)
         canonical_dataset_id = str(row.get("canonical_dataset_id", "")).strip()
         if not alias_id:
             failures.append("dataset_label_aliases alias row missing id")
@@ -99,11 +96,13 @@ def main() -> int:
             failures.append(f"dataset_label_aliases[{alias_id}] missing label_normalized")
         if not DATASET_RE.fullmatch(canonical_dataset_id):
             failures.append(
-                f"dataset_label_aliases[{alias_id}] invalid canonical_dataset_id: {canonical_dataset_id}"
+                f"dataset_label_aliases[{alias_id}]"
+                f" invalid canonical_dataset_id: {canonical_dataset_id}"
             )
         elif canonical_dataset_id not in dataset_ids:
             failures.append(
-                f"dataset_label_aliases[{alias_id}] unknown canonical_dataset_id: {canonical_dataset_id}"
+                f"dataset_label_aliases[{alias_id}]"
+                f" unknown canonical_dataset_id: {canonical_dataset_id}"
             )
         if label_normalized in normalized_seen:
             failures.append(
@@ -119,9 +118,7 @@ def main() -> int:
         for label in row.get("dataset_label_refs", []):
             normalized = _normalize_dataset_label(str(label))
             if normalized not in alias_labels:
-                failures.append(
-                    f"experiments[{experiment_id}] unknown dataset_label_ref: {label}"
-                )
+                failures.append(f"experiments[{experiment_id}] unknown dataset_label_ref: {label}")
 
     for row in lineages:
         lineage_id = str(row.get("id", ""))
