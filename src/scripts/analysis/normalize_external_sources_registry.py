@@ -20,6 +20,16 @@ CLAIM_RE = re.compile(r"\bC-\d{3}\b")
 URL_RE = re.compile(r"https?://[^\s)>\"]+")
 BACKTICK_RE = re.compile(r"`([^`\n]+)`")
 HEADING_RE = re.compile(r"^#\s+(.+?)\s*$", flags=re.M)
+GENERATED_HEADER_PREFIX = (
+    "<!-- AUTO-GENERATED: DO NOT EDIT -->\n"
+    "<!-- Source of truth: registry/external_sources.toml -->\n"
+)
+DEFAULT_META = {
+    "operational_role": "reference_capture",
+    "source_lineage_summary": "",
+    "truth_surfaces": [],
+    "artifact_contract_paths": [],
+}
 
 SOURCE_META = {
     "C071_FRB_ULTRAMETRIC_SOURCES.md": {
@@ -34,6 +44,7 @@ SOURCE_META = {
         "content_kind": "dataset_manifest",
         "authority_level": "provider_manifest",
         "verification_level": "operational",
+        "operational_role": "provider_manifest",
         "notes": "Operational provider and source manifest for fetch-datasets registry alignment.",
     },
     "DE_MARRAIS_BOXKITES_III.md": {
@@ -88,11 +99,21 @@ SOURCE_META = {
         "verification_level": "source_capture",
         "notes": "Slide transcript capture; interpretation remains separate from source capture.",
     },
+    "HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md": {
+        "status_token": "ACTIVE",
+        "content_kind": "claims_inbox_index",
+        "authority_level": "project_tracking_index",
+        "verification_level": "workflow_control",
+        "operational_role": "chronology_pack_status",
+        "truth_surfaces": ["chronology_control"],
+        "notes": "Operational heliosphere chronology and staged-lane status note for experiment scoping.",
+    },
     "INDEX.md": {
         "status_token": "ACTIVE",
         "content_kind": "generated_index",
         "authority_level": "auto_generated",
         "verification_level": "operational",
+        "operational_role": "generated_index",
         "notes": "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml.",
     },
     "INVERSE_CD_FORMALISM.md": {
@@ -102,18 +123,52 @@ SOURCE_META = {
         "verification_level": "unverified_hypothesis",
         "notes": "Conversation-derived formalism notes flagged as unverified in-file.",
     },
+    "OMNI_DATA_AUDIT_2026-03-10.md": {
+        "status_token": "ACTIVE",
+        "content_kind": "claim_dataset_provenance",
+        "authority_level": "primary_dataset_index",
+        "verification_level": "source_capture",
+        "operational_role": "dataset_lineage_audit",
+        "source_lineage_summary": (
+            "Mixed lineage: governed AMDA omni-hour-all fallback for 1997-2019; "
+            "canonical SPDF OMNI2 yearly ASCII for 2020-2025."
+        ),
+        "truth_surfaces": ["environment_context", "lineage_transition"],
+        "artifact_contract_paths": [
+            "crates/data_core/src/catalogs/omni.rs",
+            "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs",
+        ],
+        "notes": "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage.",
+    },
     "OPEN_CLAIMS_SOURCES.md": {
         "status_token": "ACTIVE",
         "content_kind": "claims_inbox_index",
         "authority_level": "project_tracking_index",
         "verification_level": "workflow_control",
+        "operational_role": "claims_inbox",
         "notes": "Inbox index for open claims pending dedicated source dossiers.",
+    },
+    "PIONEER_FLYBY_ANOMALY_SOURCES.md": {
+        "status_token": "ACTIVE",
+        "content_kind": "claim_dataset_provenance",
+        "authority_level": "primary_dataset_index",
+        "verification_level": "source_capture",
+        "operational_role": "falsification_contract",
+        "truth_surfaces": ["observation_benchmark", "environment_context"],
+        "artifact_contract_paths": [
+            "crates/gororoba_cli_physics/src/anomaly_residual.rs",
+            "crates/gororoba_cli_physics/src/bin/flyby_residual_audit.rs",
+            "crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs",
+            "crates/gororoba_cli_physics/src/bin/fractal_metric_fit.rs",
+        ],
+        "notes": "Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs.",
     },
     "REGGIANI_MANIFOLD_CLAIMS.md": {
         "status_token": "PARTIALLY_VERIFIED",
         "content_kind": "paper_claim_bridge",
         "authority_level": "primary_paper_bridge",
         "verification_level": "partial_replication",
+        "operational_role": "claim_bridge",
         "notes": "Distinguishes paper-asserted manifold claims from replicated algebraic checks.",
     },
     "SEDENION_ZD_EXPERIMENTAL.md": {
@@ -122,6 +177,14 @@ SOURCE_META = {
         "authority_level": "mixed_primary_and_conversation",
         "verification_level": "mixed",
         "notes": "Combines primary-source statements with codebase verification references.",
+    },
+    "SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md": {
+        "status_token": "ACTIVE",
+        "content_kind": "claim_dataset_provenance",
+        "authority_level": "primary_dataset_index",
+        "verification_level": "source_capture",
+        "operational_role": "mirror_audit",
+        "notes": "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior.",
     },
     "WHEEL_ALGEBRA_TAXONOMY.md": {
         "status_token": "UNVERIFIED",
@@ -137,6 +200,14 @@ SOURCE_META = {
         "verification_level": "source_capture",
         "notes": "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up.",
     },
+    "ysu_engine_gpu_patterns.md": {
+        "status_token": "REFERENCE",
+        "content_kind": "technical_reference",
+        "authority_level": "external_codebase_reference",
+        "verification_level": "source_capture",
+        "operational_role": "claim_bridge",
+        "notes": "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work.",
+    },
 }
 
 
@@ -150,6 +221,10 @@ class SourceDoc:
     content_kind: str
     authority_level: str
     verification_level: str
+    operational_role: str
+    source_lineage_summary: str
+    truth_surfaces: list[str]
+    artifact_contract_paths: list[str]
     has_full_transcript: bool
     claim_refs: list[str]
     url_refs: list[str]
@@ -210,6 +285,15 @@ def _render_list(values: list[str]) -> str:
     return "[" + ", ".join(_escape(value) for value in values) + "]"
 
 
+def _meta_list(meta: dict[str, object], key: str) -> list[str]:
+    raw = meta.get(key, [])
+    if raw in ("", None):
+        return []
+    if not isinstance(raw, list):
+        raise SystemExit(f"ERROR: {key} must be a list in SOURCE_META")
+    return [str(item) for item in raw if str(item).strip()]
+
+
 def _render_multiline(text: str) -> str:
     if "'''" not in text:
         return "'''\n" + text + "\n'''"
@@ -260,16 +344,25 @@ def _title_from_text(text: str, fallback: str) -> str:
     return fallback
 
 
+def _strip_generated_header(text: str) -> str:
+    stripped = text.lstrip()
+    while stripped.startswith(GENERATED_HEADER_PREFIX):
+        stripped = stripped[len(GENERATED_HEADER_PREFIX) :].lstrip("\n")
+    return stripped
+
+
 def _to_slug(filename: str) -> str:
     return filename.replace(".md", "").lower()
 
 
 def _parse_doc(index: int, path: Path, text: str) -> SourceDoc:
     name = path.name
-    meta = SOURCE_META.get(name)
-    if meta is None:
+    meta_row = SOURCE_META.get(name)
+    if meta_row is None:
         raise SystemExit(f"ERROR: Missing SOURCE_META entry for {name}")
-    sanitized = _ascii_sanitize(text)
+    meta = dict(DEFAULT_META)
+    meta.update(meta_row)
+    sanitized = _strip_generated_header(_ascii_sanitize(text))
     claim_refs = sorted(set(CLAIM_RE.findall(sanitized)))
     title = _title_from_text(sanitized, path.stem)
     return SourceDoc(
@@ -281,6 +374,10 @@ def _parse_doc(index: int, path: Path, text: str) -> SourceDoc:
         content_kind=str(meta["content_kind"]),
         authority_level=str(meta["authority_level"]),
         verification_level=str(meta["verification_level"]),
+        operational_role=str(meta["operational_role"]),
+        source_lineage_summary=str(meta["source_lineage_summary"]),
+        truth_surfaces=_meta_list(meta, "truth_surfaces"),
+        artifact_contract_paths=_meta_list(meta, "artifact_contract_paths"),
         has_full_transcript=("## Full Transcript" in sanitized),
         claim_refs=claim_refs,
         url_refs=_extract_urls(sanitized),
@@ -312,6 +409,12 @@ def _render_toml(records: list[SourceDoc]) -> str:
         lines.append(f"content_kind = {_escape(rec.content_kind)}")
         lines.append(f"authority_level = {_escape(rec.authority_level)}")
         lines.append(f"verification_level = {_escape(rec.verification_level)}")
+        lines.append(f"operational_role = {_escape(rec.operational_role)}")
+        lines.append(f"source_lineage_summary = {_escape(rec.source_lineage_summary)}")
+        lines.append(f"truth_surfaces = {_render_list(rec.truth_surfaces)}")
+        lines.append(
+            f"artifact_contract_paths = {_render_list(rec.artifact_contract_paths)}"
+        )
         lines.append(f"has_full_transcript = {'true' if rec.has_full_transcript else 'false'}")
         lines.append(f"claim_refs = {_render_list(rec.claim_refs)}")
         lines.append(f"url_refs = {_render_list(rec.url_refs)}")

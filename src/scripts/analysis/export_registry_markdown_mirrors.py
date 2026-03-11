@@ -1273,6 +1273,18 @@ def export_external_sources(repo_root: Path, out_path: Path) -> None:
         lines.append(f"- Content kind: `{row.get('content_kind', '')}`")
         lines.append(f"- Authority level: `{row.get('authority_level', '')}`")
         lines.append(f"- Verification level: `{row.get('verification_level', '')}`")
+        lines.append(f"- Operational role: `{row.get('operational_role', '')}`")
+        lineage = str(row.get("source_lineage_summary", "")).strip()
+        if lineage:
+            lines.append(f"- Source lineage summary: {lineage}")
+        truth_surfaces = row.get("truth_surfaces", [])
+        if truth_surfaces:
+            lines.append(f"- Truth surfaces: {', '.join(str(v) for v in truth_surfaces)}")
+        contract_paths = row.get("artifact_contract_paths", [])
+        if contract_paths:
+            lines.append(f"- Artifact contract paths ({len(contract_paths)}):")
+            for contract_path in contract_paths:
+                lines.append(f"  - `{contract_path}`")
         lines.append(f"- Has full transcript: `{row.get('has_full_transcript', False)}`")
         lines.append(f"- Line count: {row.get('line_count', 0)}")
         claims = row.get("claim_refs", [])

@@ -1,0 +1,11 @@
+# Dataset label alias registry (execution-planning and governance support).
+
+[dataset_label_aliases]
+updated = "2026-03-10"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+alias_count = 0
+
+[dataset_label_aliases.schema]
+required_alias_fields = ["id", "label", "label_normalized", "canonical_dataset_id", "status", "status_token", "notes"]
