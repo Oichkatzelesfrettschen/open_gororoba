@@ -8,10 +8,10 @@
 //! HAPI CSV format: ISO 8601 timestamp, then parameter columns.
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
+    fetcher::FetchError,
     parse::parse_f64_or_nan,
 };
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 const SWARM_URLS: &[&str] = &[
     "https://vires.services/hapi/data?dataset=SW_OPER_MAGA_LR_1B&parameters=Latitude,Longitude,Radius,F,B_NEC&start=2014-01-01T00:00:00Z&stop=2014-01-01T00:30:00Z&format=csv&include=header",
@@ -149,22 +149,12 @@ pub fn check_timestamp_monotonicity(records: &[SwarmRecord]) -> Result<(), Fetch
     Ok(())
 }
 
-/// Swarm provider.
-pub struct SwarmMagAProvider;
-
-impl DatasetProvider for SwarmMagAProvider {
-    fn name(&self) -> &str {
-        "Swarm L1B Magnetic Sample"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("swarm_magnetic_sample.csv");
-        download_with_fallbacks(self.name(), SWARM_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("swarm_magnetic_sample.csv").exists()
-    }
+simple_provider! {
+    /// Swarm provider.
+    pub struct SwarmMagAProvider;
+    name = "Swarm L1B Magnetic Sample";
+    output = "swarm_magnetic_sample.csv";
+    urls = SWARM_URLS;
 }
 
 #[cfg(test)]

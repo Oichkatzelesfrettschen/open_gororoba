@@ -22,7 +22,8 @@
 use crate::{
     catalogs::{
         omni::OmniRecord,
-        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+        spdf_fleet::SpdfMission,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
     fetcher::{DatasetProvider, FetchConfig, FetchError},
 };
@@ -95,16 +96,30 @@ pub enum HeliosSpacecraft {
     H2,
 }
 
+/// `SpdfMission` config for Helios 1 merged hourly data.
+pub static HELIOS1_MISSION: SpdfMission = SpdfMission {
+    layout: &HELIOS1_LAYOUT,
+    b_is_se: false,
+    year_fixup: None,
+};
+
+/// `SpdfMission` config for Helios 2 merged hourly data.
+pub static HELIOS2_MISSION: SpdfMission = SpdfMission {
+    layout: &HELIOS2_LAYOUT,
+    b_is_se: false,
+    year_fixup: None,
+};
+
 /// Parse Helios merged hourly data from a string.
 pub fn parse_helios_merged(
     content: &str,
     spacecraft: HeliosSpacecraft,
 ) -> Vec<SpdfMergedRecord> {
-    let layout = match spacecraft {
-        HeliosSpacecraft::H1 => &HELIOS1_LAYOUT,
-        HeliosSpacecraft::H2 => &HELIOS2_LAYOUT,
+    let mission = match spacecraft {
+        HeliosSpacecraft::H1 => &HELIOS1_MISSION,
+        HeliosSpacecraft::H2 => &HELIOS2_MISSION,
     };
-    parse_spdf_merged(content, layout)
+    mission.parse_merged(content)
 }
 
 /// Parse Helios merged hourly data from a file.
@@ -112,16 +127,20 @@ pub fn parse_helios_file(
     path: &std::path::Path,
     spacecraft: HeliosSpacecraft,
 ) -> Result<Vec<SpdfMergedRecord>, FetchError> {
-    let content = std::fs::read_to_string(path)
-        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
-    Ok(parse_helios_merged(&content, spacecraft))
+    let mission = match spacecraft {
+        HeliosSpacecraft::H1 => &HELIOS1_MISSION,
+        HeliosSpacecraft::H2 => &HELIOS2_MISSION,
+    };
+    mission.parse_file(path)
 }
 
 /// Convert Helios records to OmniRecord format.
 ///
 /// B-field is in RTN coordinates (sign flip on Bt for GSE conversion).
+/// Both H1 and H2 use RTN coordinates, so no spacecraft dispatch is needed here.
 pub fn helios_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
-    spdf_to_omni(records, false) // RTN coordinates
+    // Both HELIOS1_MISSION and HELIOS2_MISSION have b_is_se=false; same result.
+    HELIOS1_MISSION.to_omni(records)
 }
 
 /// Base URL for Helios merged hourly data at SPDF (blocked from this host).

@@ -25,7 +25,8 @@
 use crate::{
     catalogs::{
         omni::OmniRecord,
-        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+        spdf_fleet::SpdfMission,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged},
     },
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
 };
@@ -171,13 +172,38 @@ pub enum VoyagerSpacecraft {
     V2,
 }
 
+/// `SpdfMission` config for Voyager 1 merged hourly data (SE coordinates).
+pub static VOYAGER1_MISSION: SpdfMission = SpdfMission {
+    layout: &VOYAGER1_LAYOUT,
+    b_is_se: true,
+    year_fixup: None,
+};
+
+/// `SpdfMission` config for Voyager 2 merged hourly data (SE coordinates).
+pub static VOYAGER2_MISSION: SpdfMission = SpdfMission {
+    layout: &VOYAGER2_LAYOUT,
+    b_is_se: true,
+    year_fixup: None,
+};
+
+/// `SpdfMission` config for Bartol legacy Voyager 2 data (RTN coordinates).
+///
+/// Note: the 2-digit year conversion is handled as a pre-parse step in
+/// `parse_bartol_v2`, not via `year_fixup`, because it must reformat the
+/// raw ASCII line before `parse_spdf_merged` runs.
+pub static BARTOL_V2_MISSION: SpdfMission = SpdfMission {
+    layout: &BARTOL_V2_LAYOUT,
+    b_is_se: false,
+    year_fixup: None,
+};
+
 /// Parse Voyager merged hourly data from a string.
 pub fn parse_voyager_merged(content: &str, spacecraft: VoyagerSpacecraft) -> Vec<SpdfMergedRecord> {
-    let layout = match spacecraft {
-        VoyagerSpacecraft::V1 => &VOYAGER1_LAYOUT,
-        VoyagerSpacecraft::V2 => &VOYAGER2_LAYOUT,
+    let mission = match spacecraft {
+        VoyagerSpacecraft::V1 => &VOYAGER1_MISSION,
+        VoyagerSpacecraft::V2 => &VOYAGER2_MISSION,
     };
-    parse_spdf_merged(content, layout)
+    mission.parse_merged(content)
 }
 
 /// Parse Voyager merged hourly data from a file.
@@ -185,17 +211,21 @@ pub fn parse_voyager_file(
     path: &std::path::Path,
     spacecraft: VoyagerSpacecraft,
 ) -> Result<Vec<SpdfMergedRecord>, FetchError> {
-    let content = std::fs::read_to_string(path)
-        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
-    Ok(parse_voyager_merged(&content, spacecraft))
+    let mission = match spacecraft {
+        VoyagerSpacecraft::V1 => &VOYAGER1_MISSION,
+        VoyagerSpacecraft::V2 => &VOYAGER2_MISSION,
+    };
+    mission.parse_file(path)
 }
 
 /// Convert Voyager records to OmniRecord format.
 ///
 /// Sets r_au, lat_deg, lon_deg from parsed position columns.
 /// B-field is in SE coordinates (close to GSE for near-ecliptic trajectory).
+/// Both V1 and V2 use SE coordinates, so no spacecraft dispatch is needed here.
 pub fn voyager_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
-    spdf_to_omni(records, true) // SE coordinates
+    // Both VOYAGER1_MISSION and VOYAGER2_MISSION have b_is_se=true; same result.
+    VOYAGER1_MISSION.to_omni(records)
 }
 
 /// Parse Bartol-format Voyager 2 data (16 cols, 2-digit year, RTN B-field).
@@ -237,7 +267,7 @@ pub fn parse_bartol_file(
 ///
 /// Bartol data uses RTN coordinates, so the sign flip on Bt applies.
 pub fn bartol_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
-    spdf_to_omni(records, false) // RTN coordinates
+    BARTOL_V2_MISSION.to_omni(records)
 }
 
 /// Base URLs for Voyager merged hourly data at SPDF.

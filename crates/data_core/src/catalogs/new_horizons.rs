@@ -29,7 +29,8 @@
 use crate::{
     catalogs::{
         omni::OmniRecord,
-        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+        spdf_fleet::SpdfMission,
+        spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
 };
@@ -67,16 +68,21 @@ pub const NH_FILL_SPEED: f64 = 9999.9;
 pub const NH_FILL_TEMP: f64 = 9999999.0;
 pub const NH_FILL_DISTANCE: f64 = 999.999;
 
+/// `SpdfMission` config for New Horizons SWAP merged hourly data.
+pub static NH_SWAP_MISSION: SpdfMission = SpdfMission {
+    layout: &NH_SWAP_LAYOUT,
+    b_is_se: true, // irrelevant since no B columns
+    year_fixup: None,
+};
+
 /// Parse New Horizons SWAP hourly data from a string.
 pub fn parse_nh_swap(content: &str) -> Vec<SpdfMergedRecord> {
-    parse_spdf_merged(content, &NH_SWAP_LAYOUT)
+    NH_SWAP_MISSION.parse_merged(content)
 }
 
 /// Parse New Horizons SWAP hourly data from a file.
 pub fn parse_nh_swap_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
-    let content = std::fs::read_to_string(path)
-        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
-    Ok(parse_nh_swap(&content))
+    NH_SWAP_MISSION.parse_file(path)
 }
 
 /// Convert NH SWAP records to OmniRecord format.
@@ -84,7 +90,7 @@ pub fn parse_nh_swap_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord
 /// B-field will be NaN (no magnetometer). Position (r_au, lat, lon)
 /// populated from SWAP data.
 pub fn nh_swap_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
-    spdf_to_omni(records, true)
+    NH_SWAP_MISSION.to_omni(records)
 }
 
 const NH_SWAP_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/new-horizons/swap/merged/";

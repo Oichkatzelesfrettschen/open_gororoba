@@ -7,8 +7,8 @@
 //! Source: http://www.physics.mcgill.ca/~pulsar/magnetar/main.html
 //! Reference: Olausen & Kaspi (2014), ApJS 212, 6
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
-use std::path::{Path, PathBuf};
+use crate::fetcher::FetchError;
+use std::path::Path;
 
 /// A magnetar from the McGill catalog.
 #[derive(Debug, Clone)]
@@ -143,22 +143,12 @@ pub const MAGNETAR_FIELD_COUNT: usize = 13;
 
 const MCGILL_URLS: &[&str] = &["http://www.physics.mcgill.ca/~pulsar/magnetar/TabO1.csv"];
 
-/// McGill magnetar catalog dataset provider.
-pub struct McgillProvider;
-
-impl DatasetProvider for McgillProvider {
-    fn name(&self) -> &str {
-        "McGill Magnetar Catalog"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("mcgill_magnetars.csv");
-        download_with_fallbacks(self.name(), MCGILL_URLS, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("mcgill_magnetars.csv").exists()
-    }
+simple_provider! {
+    /// McGill magnetar catalog dataset provider.
+    pub struct McgillProvider;
+    name = "McGill Magnetar Catalog";
+    output = "mcgill_magnetars.csv";
+    urls = MCGILL_URLS;
 }
 
 #[cfg(test)]
