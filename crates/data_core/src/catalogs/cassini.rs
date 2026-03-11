@@ -176,13 +176,14 @@ mod tests {
 
     #[test]
     fn test_cassini_to_omni_rtn_conversion() {
-        // RTN: Br -> Bx, -Bt -> By, Bn -> Bz
+        // RTN -> GSE via rotation by spacecraft longitude (120 deg)
+        // bx = br*cos(lon) - bt*sin(lon), by = br*sin(lon) + bt*cos(lon), bz = bn
         let data = "2000 200 12 3.0 1.0 120.0 1.5 1.0 -0.5 0.2 1.0 400.0 50000.0\n";
         let spdf = parse_cassini_cruise(data);
         let omni = cassini_to_omni(&spdf);
         assert_eq!(omni.len(), 1);
-        assert!((omni[0].bx_gse - 1.0).abs() < 1e-6, "Br -> Bx");
-        assert!((omni[0].by_gse - 0.5).abs() < 1e-6, "-Bt -> By");
+        assert!((omni[0].bx_gse - (-0.066987)).abs() < 1e-4, "RTN rotated Bx");
+        assert!((omni[0].by_gse - 1.116025).abs() < 1e-4, "RTN rotated By");
         assert!((omni[0].bz_gse - 0.2).abs() < 1e-6, "Bn -> Bz");
         assert!((omni[0].r_au - 3.0).abs() < 0.01);
     }

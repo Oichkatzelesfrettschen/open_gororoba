@@ -30,23 +30,23 @@ pub fn des_y6_3x2pt_constraints() -> Vec<DesY6Constraint> {
     vec![
         DesY6Constraint {
             parameter: "S8".to_string(),
-            value: 0.782,
-            err_lo: 0.015,
-            err_hi: 0.015,
+            value: 0.789,
+            err_lo: 0.012,
+            err_hi: 0.012,
             analysis: "3x2pt-LCDM".to_string(),
         },
         DesY6Constraint {
             parameter: "Omega_m".to_string(),
-            value: 0.292,
-            err_lo: 0.020,
-            err_hi: 0.020,
+            value: 0.333,
+            err_lo: 0.028,
+            err_hi: 0.023,
             analysis: "3x2pt-LCDM".to_string(),
         },
         DesY6Constraint {
             parameter: "sigma_8".to_string(),
-            value: 0.812,
-            err_lo: 0.031,
-            err_hi: 0.031,
+            value: 0.751,
+            err_lo: 0.036,
+            err_hi: 0.034,
             analysis: "3x2pt-LCDM".to_string(),
         },
     ]
@@ -58,9 +58,9 @@ pub fn des_y6_3x2pt_constraints() -> Vec<DesY6Constraint> {
 pub fn des_y6_cosmic_shear_constraints() -> Vec<DesY6Constraint> {
     vec![DesY6Constraint {
         parameter: "S8".to_string(),
-        value: 0.784,
-        err_lo: 0.020,
-        err_hi: 0.020,
+        value: 0.783,
+        err_lo: 0.015,
+        err_hi: 0.019,
         analysis: "cosmic-shear-LCDM".to_string(),
     }]
 }

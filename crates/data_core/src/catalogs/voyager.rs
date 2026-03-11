@@ -530,15 +530,15 @@ mod tests {
 
     #[test]
     fn test_bartol_to_omni_rtn_conversion() {
-        // Bartol uses RTN: Br -> Bx, -Bt -> By, Bn -> Bz
+        // Bartol uses RTN -> GSE via rotation by spacecraft longitude (200 deg)
         let data = "90 100 12 30.00  -1.0 200.0  0.22  0.20  0.10 -0.05  0.03 400.0  5.0 180.0  0.01000 50000.\n";
         let spdf = parse_bartol_v2(data);
         let omni = bartol_to_omni(&spdf);
         assert_eq!(omni.len(), 1);
         let o = &omni[0];
-        // RTN -> GSE: Br -> Bx, -Bt -> By, Bn -> Bz
-        assert!((o.bx_gse - 0.10).abs() < 0.01, "Br -> Bx");
-        assert!((o.by_gse - 0.05).abs() < 0.01, "-Bt -> By (0.05 = -(-0.05))");
+        // bx = br*cos(lon) - bt*sin(lon), by = br*sin(lon) + bt*cos(lon), bz = bn
+        assert!((o.bx_gse - (-0.11107)).abs() < 0.001, "RTN rotated Bx");
+        assert!((o.by_gse - 0.01278).abs() < 0.001, "RTN rotated By");
         assert!((o.bz_gse - 0.03).abs() < 0.01, "Bn -> Bz");
         assert!((o.r_au - 30.0).abs() < 0.1);
     }

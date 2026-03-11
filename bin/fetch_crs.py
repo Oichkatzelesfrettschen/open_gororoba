@@ -274,7 +274,14 @@ def discover_daily_flux_package(spacecraft: int, source: str) -> dict[str, objec
     }
 
 
-def fetch_hapi_csv(spacecraft: int, start_year: int, end_year: int, dest: str) -> dict[str, object]:
+def fetch_hapi_csv(
+    spacecraft: int,
+    start_year: int,
+    end_year: int,
+    dest: str,
+    *,
+    skip_existing: bool = False,
+) -> dict[str, object]:
     """Attempt a calibrated daily-flux export from CDAWeb HAPI."""
     query = urllib.parse.urlencode(
         {
@@ -285,7 +292,7 @@ def fetch_hapi_csv(spacecraft: int, start_year: int, end_year: int, dest: str) -
         }
     )
     url = f"{HAPI_URLS[spacecraft]}?{query}"
-    return fetch_crs_file(url, dest, skip_existing=False)
+    return fetch_crs_file(url, dest, skip_existing=skip_existing)
 
 
 def parse_pds_index_tab(text: str) -> list[dict[str, str]]:
@@ -345,6 +352,8 @@ def fetch_pds_bundle(
     with open(index_tab_path, encoding="utf-8") as fh:
         index_rows = parse_pds_index_tab(fh.read())
 
+    bundle_abs = os.path.realpath(bundle_dir)
+
     for row in index_rows:
         label_rel = row.get("FILE_SPECIFICATION_NAME", "").strip()
         if not label_rel:
@@ -353,8 +362,17 @@ def fetch_pds_bundle(
         data_rel = label_rel[:-4] + ".TAB" if label_rel.endswith(".LBL") else label_rel
         label_url = f"{dataset_root}/{label_rel}"
         data_url = f"{dataset_root}/{data_rel}"
-        label_dest = os.path.join(bundle_dir, *label_rel.split("/"))
-        data_dest = os.path.join(bundle_dir, *data_rel.split("/"))
+        label_dest = os.path.realpath(os.path.join(bundle_dir, *label_rel.split("/")))
+        data_dest = os.path.realpath(os.path.join(bundle_dir, *data_rel.split("/")))
+
+        # Reject paths that escape the bundle directory (defense against
+        # compromised upstream INDEX.TAB with ".." components).
+        if not label_dest.startswith(bundle_abs + os.sep):
+            print(f"  [SKIP-TRAVERSAL] {label_rel}", file=sys.stderr)
+            continue
+        if not data_dest.startswith(bundle_abs + os.sep):
+            print(f"  [SKIP-TRAVERSAL] {data_rel}", file=sys.stderr)
+            continue
 
         label_entry = fetch_crs_file(label_url, label_dest, skip_existing=skip_existing)
         label_entry["source_kind"] = "pds_ppi"
@@ -552,7 +570,10 @@ def main() -> int:
             }
 
             if cda_probe.get("reachable"):
-                entry = fetch_hapi_csv(sc, start_year, end_year, output_path)
+                entry = fetch_hapi_csv(
+                    sc, start_year, end_year, output_path,
+                    skip_existing=args.skip_existing,
+                )
                 entry.update(metadata_entry)
                 entry["status"] = entry.get("status", "fetched")
                 files.append(entry)

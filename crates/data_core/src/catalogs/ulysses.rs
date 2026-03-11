@@ -350,15 +350,15 @@ mod tests {
 
     #[test]
     fn test_ulysses_to_omni_rtn_conversion() {
-        // RTN: Br -> Bx, Bt -> -By, Bn -> Bz
+        // RTN -> GSE via rotation by spacecraft longitude (180 deg)
         let data = "1994 250 12 2.0 -75.0 180.0 1.5 -0.3 0.1 1.55 3.0 750.0 200000.0\n";
         let spdf = parse_ulysses_merged(data);
         let omni = ulysses_to_omni(&spdf);
         assert_eq!(omni.len(), 1);
         let o = &omni[0];
-        // RTN->GSE: br -> bx, -bt -> by, bn -> bz
-        assert!((o.bx_gse - 1.5).abs() < 1e-6, "Br -> Bx");
-        assert!((o.by_gse - 0.3).abs() < 1e-6, "-Bt -> By (sign flip)");
+        // bx = br*cos(180) - bt*sin(180) = -br, by = br*sin(180) + bt*cos(180) = -bt
+        assert!((o.bx_gse - (-1.5)).abs() < 1e-4, "RTN rotated Bx");
+        assert!((o.by_gse - 0.3).abs() < 1e-4, "RTN rotated By");
         assert!((o.bz_gse - 0.1).abs() < 1e-6, "Bn -> Bz");
         assert!((o.r_au - 2.0).abs() < 0.01, "r_au populated");
         assert!((o.lat_deg - (-75.0)).abs() < 0.1, "lat_deg populated");

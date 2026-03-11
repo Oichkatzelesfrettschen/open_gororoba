@@ -187,9 +187,9 @@ mod tests {
         let omni = psp_to_omni(&spdf);
         assert_eq!(omni.len(), 1);
         let o = &omni[0];
-        // RTN -> GSE: Br -> Bx, -Bt -> By, Bn -> Bz
-        assert!((o.bx_gse - 80.0).abs() < 0.1);
-        assert!((o.by_gse - 40.0).abs() < 0.1); // -(-40.0) = 40.0
+        // RTN -> GSE via rotation by spacecraft longitude (120 deg)
+        assert!((o.bx_gse - (-5.359)).abs() < 0.01);
+        assert!((o.by_gse - 89.282).abs() < 0.01);
         assert!((o.bz_gse - 20.0).abs() < 0.1);
         assert!((o.r_au - 0.1).abs() < 0.001);
     }

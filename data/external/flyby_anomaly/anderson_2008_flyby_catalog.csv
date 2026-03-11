@@ -1,0 +1,7 @@
+name,perigee_date_utc,perigee_jed,perigee_alt_km,v_inf_km_s,inbound_dec_deg,inbound_ra_deg,outbound_dec_deg,outbound_ra_deg,observed_dv_mm_s,source_bib,source_doi,notes
+Galileo-I (1990-12-08),1990-12-08T08:34:05Z,2448233.357,960.0,8.949,-12.5,263.0,-4.9,223.0,3.92,BIB-0297,10.1103/PhysRevLett.100.091102,Canonical Anderson et al. 2008 event table value
+NEAR (1998-01-23),1998-01-23T07:23:31Z,2450836.808,539.0,6.851,-20.8,280.0,72.0,89.0,13.46,BIB-0297,10.1103/PhysRevLett.100.091102,Canonical Anderson et al. 2008 event table value
+Cassini (1999-08-18),1999-08-18T03:28:48Z,2451409.645,1175.0,16.01,-12.9,257.0,-5.0,344.0,-2.0,BIB-0297,10.1103/PhysRevLett.100.091102,Canonical Anderson et al. 2008 event table value
+Rosetta-I (2005-03-04),2005-03-04T22:10:34Z,2453434.424,1956.0,3.863,-34.3,247.0,-20.6,116.0,1.80,BIB-0297,10.1103/PhysRevLett.100.091102,Canonical Anderson et al. 2008 event table value
+MESSENGER (2005-08-02),2005-08-02T19:13:26Z,2453585.301,2347.0,4.056,31.4,232.0,75.4,174.0,0.02,BIB-0297,10.1103/PhysRevLett.100.091102,Canonical Anderson et al. 2008 event table value
+Juno (2013-10-09),2013-10-09T19:20:38Z,2456574.306,559.0,9.897,-13.6,0.0,-5.3,345.0,0.0,BIB-0299,10.1016/j.asr.2014.08.014,Null-result per Iorio 2015 analysis; consistent with Anderson formula prediction dv~0

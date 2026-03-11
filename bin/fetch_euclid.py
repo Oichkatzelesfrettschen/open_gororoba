@@ -31,12 +31,18 @@ import csv
 import hashlib
 import io
 import json
+import re
 import sys
 import time
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+
+# Tile IDs are alphanumeric with optional hyphens/underscores.
+_TILE_ID_RE = re.compile(r"^[A-Za-z0-9_\-]{1,128}$")
+# Output filenames: bare name, no directory separators.
+_OUTPUT_FILENAME_RE = re.compile(r"^[\w\-]{1,128}\.csv$")
 
 BASE_OUT_DIR = Path("data/external/euclid/tap")
 USER_AGENT = "gororoba-fetch/0.1 (research; ADQL client)"
@@ -174,7 +180,8 @@ def tap_sync_query(
         except (URLError, HTTPError, OSError, TimeoutError) as exc:
             if attempt < MAX_RETRIES:
                 wait = RETRY_BACKOFF_S * attempt
-                print(f"    TAP attempt {attempt}/{MAX_RETRIES} failed: {exc}, retrying in {wait:.0f}s")
+                msg = f"TAP attempt {attempt}/{MAX_RETRIES} failed: {exc}"
+                print(f"    {msg}, retrying in {wait:.0f}s")
                 time.sleep(wait)
             else:
                 raise
@@ -239,10 +246,12 @@ def build_tile_adql(
 ) -> str:
     """Build an ADQL query constrained to a specific Tile ID."""
     col_list = ", ".join(columns)
+    # Escape single quotes in tile_id (ADQL SQL-92 escaping: ' -> '').
+    safe_tile = tile_id.replace("'", "''")
     return (
         f"SELECT TOP {maxrec} {col_list} "
         f"FROM {table} "
-        f"WHERE tile_index = '{tile_id}'"
+        f"WHERE tile_index = '{safe_tile}'"
     )
 
 
@@ -336,7 +345,9 @@ def try_endpoints(
             entry = save_csv_result(
                 text, dest, adql=adql, endpoint=ep_url, catalog=catalog
             )
-            print(f"    {ep_name}: OK ({entry.get('rows', '?')} rows, {entry.get('columns', '?')} cols)")
+            rows = entry.get("rows", "?")
+            cols = entry.get("columns", "?")
+            print(f"    {ep_name}: OK ({rows} rows, {cols} cols)")
             return entry
         except (URLError, HTTPError, OSError, TimeoutError, RuntimeError) as exc:
             print(f"    {ep_name}: FAILED ({exc})")
@@ -434,7 +445,8 @@ def fetch_count(catalog: str) -> dict[str, object]:
         try:
             text = tap_sync_query(ep_url, adql, maxrec=10, timeout=120)
             # Parse CSV count result.
-            lines = [line for line in text.strip().splitlines() if line.strip() and not line.startswith("#")]
+            raw_lines = text.strip().splitlines()
+            lines = [ln for ln in raw_lines if ln.strip() and not ln.startswith("#")]
             if len(lines) >= 2:
                 count = lines[1].strip()
                 results[ep_name] = {"table": table, "row_count": count}
@@ -486,7 +498,9 @@ def main() -> int:
     cone_p.add_argument("--catalog", choices=["mer", "phz", "spe_redshift"], default="mer")
     cone_p.add_argument("--ra", type=float, help="RA center (deg)")
     cone_p.add_argument("--dec", type=float, help="DEC center (deg)")
-    cone_p.add_argument("--radius", type=float, default=0.1, help="Search radius (deg, default 0.1)")
+    cone_p.add_argument(
+        "--radius", type=float, default=0.1, help="Search radius (deg, default 0.1)",
+    )
     cone_p.add_argument("--field", choices=list(FIELD_CENTERS.keys()),
                         help="Use a known field center instead of --ra/--dec")
     cone_p.add_argument("--maxrec", type=int, default=SYNC_MAX_ROWS)
@@ -527,6 +541,9 @@ def main() -> int:
         results.append(result)
 
     elif args.command == "tile":
+        if not _TILE_ID_RE.match(args.tile_id):
+            print(f"ERROR: invalid tile_id format: {args.tile_id!r}", file=sys.stderr)
+            return 2
         print(f"Euclid Q1 tile query: {args.catalog} tile={args.tile_id}")
         result = fetch_tile(args.catalog, args.tile_id, maxrec=args.maxrec)
         results.append(result)
@@ -539,8 +556,14 @@ def main() -> int:
             results.append(result)
 
     elif args.command == "raw":
+        if not _OUTPUT_FILENAME_RE.match(args.output):
+            print(
+                f"ERROR: --output must be a bare filename (e.g. result.csv): {args.output!r}",
+                file=sys.stderr,
+            )
+            return 2
         ep_url = TAP_ENDPOINTS[args.endpoint]
-        dest = BASE_OUT_DIR / args.output
+        dest = BASE_OUT_DIR / Path(args.output).name
         print(f"Euclid Q1 raw ADQL query via {args.endpoint}:")
         print(f"  {args.adql}")
         try:

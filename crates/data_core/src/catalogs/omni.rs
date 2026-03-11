@@ -156,9 +156,13 @@ fn parse_hapi_or_nan_fill_only(s: &str) -> f64 {
 ///
 /// Returns (ceil_b, ceil_temp, ceil_density, ceil_speed).
 /// At r=1.0 AU, returns the same values as the 1 AU constants.
+///
+/// B-field ceiling uses 1/r (Parker tangential B_phi dominates at large r
+/// and scales as 1/r; the previous 1/r^2 rejected valid Voyager/Pioneer
+/// tangential fields at r > 30 AU).
 pub fn distance_scaled_ceilings(r_au: f64) -> (f64, f64, f64, f64) {
     let r = if r_au > 0.0 { r_au } else { 1.0 };
-    let ceil_b = CEIL_B / (r * r);
+    let ceil_b = CEIL_B / r;
     let ceil_temp = CEIL_TEMP / r.powf(2.0 / 3.0);
     let ceil_density = CEIL_DENSITY / (r * r);
     let ceil_speed = CEIL_SPEED; // constant (super-Alfvenic)
@@ -620,5 +624,26 @@ mod tests {
         // Negative Bx (sunward B in GSE) is physical and common
         let r = parse_or_nan("-30.0", FILL_B, CEIL_B);
         assert!(!r.is_nan() && (r - (-30.0)).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_distance_scaled_ceilings_b_field_1_over_r() {
+        // At 1 AU, ceilings should match base constants
+        let (cb, _ct, _cd, _cs) = distance_scaled_ceilings(1.0);
+        assert!((cb - CEIL_B).abs() < 1e-10);
+
+        // At 50 AU, B ceiling should allow 0.1 nT (realistic tangential field).
+        // ceil_b(50) = 200/50 = 4.0 nT -- comfortably above 0.1 nT.
+        let (cb50, _, _, _) = distance_scaled_ceilings(50.0);
+        assert!(
+            cb50 > 0.1,
+            "B ceiling at 50 AU should allow 0.1 nT tangential field, got {}",
+            cb50
+        );
+        assert!(
+            (cb50 - CEIL_B / 50.0).abs() < 1e-10,
+            "B ceiling should scale as 1/r, got {}",
+            cb50
+        );
     }
 }

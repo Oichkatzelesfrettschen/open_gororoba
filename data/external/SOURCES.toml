@@ -1626,6 +1626,66 @@ blocker_note = "Euclid Q1 Galaxy Merger Classification. DOI: 10.5281/zenodo.1708
 evidence_refs = []
 scientific_validator_refs = []
 
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY-SUPP"
+path_glob = "data/external/euclid/zenodo/15027787/*.parquet"
+canonical_url = "https://zenodo.org/records/15027787"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_euclid_zenodo.py --catalog morphology_supplementary"
+blocker_note = "Euclid Q1 Galaxy Morphology Supplementary Release. DOI: 10.5281/zenodo.15027787. CC BY 4.0. Additional morphology data from Q1 survey fields."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-PHOTOZ"
+path_glob = "data/external/euclid/zenodo/14935225/*.parquet"
+canonical_url = "https://zenodo.org/records/14935225"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_euclid_zenodo.py --catalog photo_z"
+blocker_note = "Euclid Q1 Photometric Redshift PDFs. DOI: 10.5281/zenodo.14935225. CC BY 4.0. Posterior probability distributions for photometric redshifts from Q1 survey."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-CLUSTERING"
+path_glob = "data/external/euclid/zenodo/15025557/*.parquet"
+canonical_url = "https://zenodo.org/records/15025557"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_euclid_zenodo.py --catalog galaxy_clustering"
+blocker_note = "Euclid Q1 Galaxy Clustering Catalog. DOI: 10.5281/zenodo.15025557. CC BY 4.0. Angular correlation function measurements and galaxy pair catalogs from Q1."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-COMPACT-GROUPS"
+path_glob = "data/external/euclid/zenodo/15108017/*.csv"
+canonical_url = "https://zenodo.org/records/15108017"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_euclid_zenodo.py --catalog compact_groups"
+blocker_note = "Euclid Q1 Compact Galaxy Groups. DOI: 10.5281/zenodo.15108017. CC BY 4.0. Group membership catalog for compact galaxy groups identified in Q1 survey fields."
+evidence_refs = []
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-GC"
+path_glob = "data/external/euclid/zenodo/14951889/*.csv"
+canonical_url = "https://zenodo.org/records/14951889"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_euclid_zenodo.py --catalog globular_clusters"
+blocker_note = "Euclid Q1 Globular Cluster Candidates. DOI: 10.5281/zenodo.14951889. CC BY 4.0. Point-source catalog of globular cluster candidates from Q1 survey."
+evidence_refs = []
+scientific_validator_refs = []
+
 # --- Euclid Q1 primary survey catalogs (TAP/ADQL, multi-TB) ---
 
 [[source]]

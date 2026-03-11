@@ -337,8 +337,8 @@ mod tests {
             proton_temperature: 50000.0,
         };
         let omni = pioneer_to_omni(&[rec]);
-        // RTN: br -> bx, bt -> -by, bn -> bz
-        assert!((omni[0].bx_gse - 0.3).abs() < 1e-6);
+        // RTN -> GSE via rotation by spacecraft longitude (180 deg)
+        assert!((omni[0].bx_gse - (-0.3)).abs() < 1e-6);
         assert!((omni[0].by_gse - 0.1).abs() < 1e-6);
         assert!((omni[0].bz_gse - 0.05).abs() < 1e-6);
     }
