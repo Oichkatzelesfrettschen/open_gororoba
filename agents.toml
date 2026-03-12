@@ -1,6 +1,19 @@
 schema = "open_gororoba.agents.v2"
 source_of_truth = true
-updated_on = "2026-03-08"
+updated_on = "2026-03-12"
+
+[agents_md_render]
+title = "Agent and Contributor Operating Manual"
+source_comment = "agents.toml"
+rust_first_heading = "Rust First"
+rust_first_intro = "This repository is a pure Rust codebase first and foremost."
+rust_first_rules = [
+  "All new automation, analysis, verification, ingestion, artifact generation, and claim-support implementations MUST be written in Rust crates, Rust binaries, or Rust tests.",
+  "Python, notebooks, and ad hoc scripting are migration debt, not acceptable end states for new work.",
+  "If a workflow currently exists only in a non-Rust form, the required action is to migrate it to Rust rather than add another non-Rust layer beside it.",
+]
+policy_link_heading = "Policy Link"
+policy_link_body = "`agents.toml` is the canonical machine-readable policy file for this repo.\nRead it with this file, keep the two in sync, and follow the stricter Rust-first interpretation if they ever drift."
 
 [rust_native_policy_top]
 enforced = true
@@ -65,15 +78,15 @@ purpose = "Rust workspace crates for core math, physics domains, orchestration, 
 
 [[shared.path]]
 path = "src/"
-purpose = "Python package code, verification scripts, and analysis helpers."
+purpose = "Rust-adjacent verification and migration-support code. New primary workflow drivers must move into Rust crates and binaries."
 
 [[shared.path]]
 path = "tests/"
-purpose = "Python pytest suites and integration checks."
+purpose = "Integration and regression coverage. Existing non-Rust tests are migration debt; new primary checks must be Rust-first when feasible."
 
 [[shared.path]]
 path = "bin/"
-purpose = "Utility scripts (Python .py only). Data fetchers, gates, and tooling. No .sh scripts."
+purpose = "Legacy utility lane. Do not add new shell or Python workflow drivers here for Rust-native tasks."
 
 [[shared.path]]
 path = "registry/"
@@ -110,6 +123,16 @@ purpose = "run a focused Rust test loop via nextest"
 id = "rust.check.focused"
 cmd = "WORKER_BUDGET=$$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$$WORKER_BUDGET cargo check -p <crate> --all-targets"
 purpose = "fast crate-scoped compile loop for iterative edits"
+
+[[shared.command]]
+id = "rust.agents.render"
+cmd = "cargo run -p gororoba_cli_data --bin agents-render --"
+purpose = "render AGENTS.md deterministically from agents.toml"
+
+[[shared.command]]
+id = "rust.agents.render.check"
+cmd = "cargo run -p gororoba_cli_data --bin agents-render -- --check"
+purpose = "fail if AGENTS.md has drifted from agents.toml"
 
 [[shared.command]]
 id = "rust.clippy.focused"
@@ -409,6 +432,23 @@ error_handling_binaries = "anyhow"
 panics_in_library_code = "forbidden"
 autobins_policy = "explicit_only"
 conventional_commit_required = true
+synthetic_data_forbidden = true
+synthetic_data_policy = """
+All experiment binaries, density initializations, parameter defaults, calibration tables, \
+and published results MUST trace to real observational data, measured materials tables, \
+published theoretical models, or governed catalog entries. Arbitrary synthetic defaults \
+(for example --sersic-n 4 or --m200 1e12) are FORBIDDEN as hard-coded primary settings. \
+Primary claim evidence MUST come from cited real or published inputs; surrogate, normalized, \
+or synthetic generators are allowed only as explicitly labeled secondary fallbacks that are \
+fit against cited real data or published response classes and can never be the sole basis for \
+a primary claim. Binaries must either: (1) require mandatory arguments with no defaults for \
+physics parameters, (2) load from a real catalog file (parquet, FITS, CSV), or (3) reference \
+a specific published object, measurement, or material calibration with a citation. If a binary \
+needs a quick-test mode, gate it behind an explicit --synthetic flag that prints a warning: \
+'WARNING: using synthetic parameters, not real data'. Any fallback output must carry an in-band \
+warning and a provenance note marking it as secondary/scoping-only. Rationale: this is a research \
+platform; every numerical result must have traceable provenance, and primary conclusions must \
+remain anchored to real evidence."""
 
 [shared.quality_gate_cadence]
 mode = "two_speed"

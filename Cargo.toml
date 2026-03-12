@@ -16,6 +16,8 @@ members = [
     "crates/cd_kernel",
     "crates/algebra_analysis",
     "crates/algebra_experimental",
+    "crates/provenance_core",
+    "crates/provenance_store",
     "crates/gororoba_algebra",
     "crates/control_core",
     "crates/cosmology_core",
@@ -172,7 +174,7 @@ nvml-wrapper = "0.10"
 # Note: burn backends are optional at crate level, not workspace level.
 # Native BLAS backends remain crate-local opt-ins so default workspace builds stay
 # offline-friendly and do not assume OpenBLAS/BLIS/Accelerate availability.
-burn = { version = "0.16", features = ["train", "autodiff"] }
+burn = { version = "0.16", default-features = false, features = ["std", "autodiff"] }
 
 # Error handling
 thiserror = "2.0"
@@ -187,7 +189,17 @@ tokio = { version = "1.48", features = ["rt-multi-thread", "macros"] }
 csv = "1.3"
 regex = "1.12"                # Claims matrix parsing, pattern matching
 walkdir = "2.5"               # Recursive directory traversal for evidence link checks
+ignore = "0.4"                # Gitignore-aware repo traversal for provenance indexing
+globset = "0.4"               # Compiled glob rules for provenance source selection
 glob = "0.3"                  # Unix shell pattern matching for artifact paths
+pulldown-cmark = "0.13"       # Markdown parser for provenance extraction
+linkify = "0.10"              # URL extraction from prose without ad hoc regex-only parsing
+url = "2.5"                   # URL parsing for provenance and artifact reconciliation
+rusqlite = { version = "0.38", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
+rusqlite_migration = "2.4"    # SQLite schema migrations for provenance_store
+chardetng = "0.1"             # Charset detection for non-UTF8 intake text
+encoding_rs = "0.8"           # Decoding support for lossy/non-UTF8 source ingest
+blake3 = "1.8"                # Fast content hashing for ingest fingerprints
 sha2 = "0.10"                 # SHA-256 checksums for data provenance
 ureq = "3"                    # Minimal sync HTTP client for data fetching
 flate2 = "1.1"                # Gzip compression/decompression
@@ -200,6 +212,8 @@ image = "0.25"                   # Image encoding/decoding (used by pdfium-rende
 lopdf = "0.39"                   # Pure Rust PDF parser (fallback, object-level access)
 pdf-extract = "0.10"             # Pure Rust PDF text extraction (fallback, wraps lopdf)
 toml = "0.8"                     # TOML serialization/deserialization
+toml_edit = "0.23"               # Deterministic TOML emission/editing for compatibility exports
+camino = "1.2"                   # UTF-8 canonical repo-relative paths in provenance layers
 strsim = "0.11"                  # String similarity (Jaro-Winkler, Levenshtein)
 
 # HDF5 data export (requires system libhdf5)
@@ -291,6 +305,14 @@ codegen-units = 4
 codegen-backend = "llvm"
 
 [profile.test.package.gororoba_py]
+codegen-backend = "llvm"
+
+# lbm_3d uses wide::f64x4 for AVX2 SIMD collision; Cranelift does not support
+# _mm256_max_pd and related SSE2/AVX2 intrinsics. Revert to LLVM for this crate.
+[profile.dev.package.lbm_3d]
+codegen-backend = "llvm"
+
+[profile.test.package.lbm_3d]
 codegen-backend = "llvm"
 
 # Release: maximum optimization, no debug data, stripped for distribution.

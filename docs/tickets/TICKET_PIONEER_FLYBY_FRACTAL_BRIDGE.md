@@ -1,7 +1,7 @@
-# Ticket: Pioneer/Flyby Fractal Bridge
-
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/claim_tickets.toml -->
+
+# Ticket: Pioneer/Flyby Fractal Bridge
 
 Owner: 
 Created: 
@@ -28,7 +28,7 @@ Status:
 
 ## Acceptance checks
 
-- (none recorded)
+- `(none recorded)`
 
 ## Progress snapshot
 
