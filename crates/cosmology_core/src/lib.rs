@@ -36,7 +36,10 @@ pub mod cmb_axis;
 pub mod deka_voudon_cmb;
 pub mod dimensional_geometry;
 pub mod distances;
+#[cfg(feature = "euclid-catalog")]
+pub mod euclid_morphology;
 pub mod eos;
+pub mod galaxy_pipeline;
 pub mod flrw;
 pub mod gravastar;
 pub mod gravastar_potential;
@@ -46,6 +49,7 @@ pub mod homotopy_bridge;
 pub mod nfw_utils;
 pub mod observational;
 pub mod optimizer;
+pub mod sersic;
 #[cfg(feature = "argmin-optimizers")]
 pub mod optimizer_argmin;
 pub mod orthoplex_crystal;
@@ -149,6 +153,12 @@ pub use deka_voudon_cmb::{
     extract_multipoles,
 };
 pub use voudon_friedmann::VoudonFriedmann;
+
+pub use sersic::{
+    SersicLbmConfig, box_counting_fractal_dim, box_counting_fractal_dim_f32,
+    otsu_threshold, otsu_threshold_f32, sersic_bn, sersic_deprojected_density,
+    sersic_profile_2d, sersic_to_lbm_density, sersic_total_luminosity,
+};
 
 pub use cdg2_mapping::{
     DarkHaloFalsificationResult, evaluate_cdg2_consistency, spectral_dim_at_cdg2,
