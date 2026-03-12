@@ -191,7 +191,8 @@ def _load_primary_claim_source(repo_root: Path) -> SourceDoc:
         )
 
     raise SystemExit(
-        "ERROR: missing both docs/CLAIMS_EVIDENCE_MATRIX.md and registry/knowledge/docs/DOC-0023.toml"
+        "ERROR: missing both docs/CLAIMS_EVIDENCE_MATRIX.md"
+        " and registry/knowledge/docs/DOC-0023.toml"
     )
 
 
@@ -604,7 +605,10 @@ def _build_fallback_proof_atom(doc: SourceDoc) -> dict[str, object] | None:
             for line in non_empty_lines
             if any(
                 token in line.lower()
-                for token in ("status", "therefore", "hence", "result", "conclusion", "verified", "refuted")
+                for token in (
+                    "status", "therefore", "hence", "result",
+                    "conclusion", "verified", "refuted",
+                )
             )
         ][:2]
         if not decision_lines:
