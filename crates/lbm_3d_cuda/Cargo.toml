@@ -19,6 +19,7 @@ wide = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }
+cosmology_core = { path = "../cosmology_core" }
 
 [features]
 default = []
