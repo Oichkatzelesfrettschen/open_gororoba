@@ -431,11 +431,11 @@ mod tests {
     fn test_gram_matrix_diagonal_is_2() {
         let g = gram_matrix();
         assert_eq!(g.len(), 84);
-        for i in 0..84 {
+        for (i, row) in g.iter().enumerate() {
             assert!(
-                (g[i][i] - 2.0).abs() < 1e-12,
+                (row[i] - 2.0).abs() < 1e-12,
                 "Gram diagonal [{i}][{i}] = {}, expected 2.0",
-                g[i][i]
+                row[i]
             );
         }
     }
@@ -443,12 +443,12 @@ mod tests {
     #[test]
     fn test_gram_matrix_is_symmetric() {
         let g = gram_matrix();
-        for i in 0..84 {
-            for j in (i + 1)..84 {
+        for (i, row_i) in g.iter().enumerate() {
+            for (j, &val_ij) in row_i.iter().enumerate().skip(i + 1) {
                 assert!(
-                    (g[i][j] - g[j][i]).abs() < 1e-14,
+                    (val_ij - g[j][i]).abs() < 1e-14,
                     "Gram[{i}][{j}] = {} != Gram[{j}][{i}] = {}",
-                    g[i][j],
+                    val_ij,
                     g[j][i]
                 );
             }
