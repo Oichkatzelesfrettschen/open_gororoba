@@ -7,10 +7,13 @@ license = "MIT"
 
 [dependencies]
 gororoba_algebra = { path = "../gororoba_algebra" }
+algebra_analysis = { workspace = true }
 cd_kernel = { workspace = true }
+csv = { workspace = true }
 gauss-quad = { workspace = true }
 moyo = { workspace = true }
 nalgebra = { workspace = true }
+optics_core = { path = "../optics_core" }
 petgraph = { workspace = true }
 fixedbitset = { workspace = true }
 rayon = { workspace = true }

@@ -288,12 +288,12 @@ pub fn partner_graph_stats() -> PartnerGraphStats {
 
     let mut n_edges = 0;
     let mut symmetric = true;
-    for i in 0..n {
-        for j in 0..n {
-            if adj[i][j] {
+    for (i, row) in adj.iter().enumerate().take(n) {
+        for (j, &val) in row.iter().enumerate().take(n) {
+            if val {
                 n_edges += 1;
             }
-            if adj[i][j] != adj[j][i] {
+            if val != adj[j][i] {
                 symmetric = false;
             }
         }
@@ -309,6 +309,51 @@ pub fn partner_graph_stats() -> PartnerGraphStats {
         n_orbits: orbits.len(),
         orbit_sizes,
     }
+}
+
+/// Eigenvalue spectrum of the 84x84 partner adjacency matrix.
+///
+/// Interprets the partner graph as a "Hamiltonian" and diagonalises it.
+/// The resulting spectrum is the "band structure" of the zero-divisor
+/// crystal -- analogous to tight-binding band energies in condensed matter.
+///
+/// # Cross-domain connection (Insight I-126)
+///
+/// If the spectrum contains highly degenerate eigenvalues ("flat bands"),
+/// this proves that zero-divisor frustration on box-kite triangles produces
+/// the same algebraic localization mechanism as kagome frustrated hopping.
+pub fn partner_graph_spectrum() -> Vec<f64> {
+    let adj = partner_adjacency_matrix();
+    let n = adj.len();
+    let mut mat = nalgebra::DMatrix::zeros(n, n);
+    for i in 0..n {
+        for j in 0..n {
+            if adj[i][j] {
+                mat[(i, j)] = 1.0;
+            }
+        }
+    }
+    let eig = mat.symmetric_eigenvalues();
+    let mut spectrum: Vec<f64> = eig.iter().copied().collect();
+    spectrum.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    spectrum
+}
+
+/// Spectrum analysis: degeneracy count at each distinct eigenvalue.
+///
+/// Returns sorted (eigenvalue, degeneracy) pairs. Eigenvalues within
+/// `tol` of each other are considered degenerate.
+pub fn partner_graph_degeneracies(tol: f64) -> Vec<(f64, usize)> {
+    let spectrum = partner_graph_spectrum();
+    let mut groups: Vec<(f64, usize)> = Vec::new();
+    for &ev in &spectrum {
+        if let Some(last) = groups.last_mut().filter(|(v, _)| (ev - v).abs() < tol) {
+            last.1 += 1;
+            continue;
+        }
+        groups.push((ev, 1));
+    }
+    groups
 }
 
 #[cfg(test)]
@@ -421,5 +466,36 @@ mod tests {
         assert_eq!(total, 84, "orbit sizes must sum to 84");
         // At least 1 orbit
         assert!(stats.n_orbits >= 1);
+    }
+
+    #[test]
+    fn test_partner_graph_spectrum_has_84_eigenvalues() {
+        let spectrum = partner_graph_spectrum();
+        assert_eq!(spectrum.len(), 84);
+        // 4-regular graph: largest eigenvalue = 4 (all-ones eigenvector for
+        // each connected component, scaled by vertex degree)
+        let max_ev = spectrum.last().unwrap();
+        assert!(
+            (*max_ev - 4.0).abs() < 0.01,
+            "Max eigenvalue {max_ev}, expected 4.0 for 4-regular graph"
+        );
+    }
+
+    #[test]
+    fn test_partner_graph_has_degenerate_eigenvalues() {
+        let degs = partner_graph_degeneracies(0.01);
+        // Print spectrum for analysis
+        for (ev, deg) in &degs {
+            if *deg > 1 {
+                eprintln!("  eigenvalue {ev:.4}: degeneracy {deg}");
+            }
+        }
+        // A 4-regular graph on 84 vertices with nontrivial symmetry must have
+        // at least some degenerate eigenvalues (orbit structure forces this).
+        let max_deg = degs.iter().map(|(_, d)| *d).max().unwrap();
+        assert!(
+            max_deg > 1,
+            "Expected degenerate eigenvalues in partner graph spectrum"
+        );
     }
 }

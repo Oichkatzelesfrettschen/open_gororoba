@@ -2919,9 +2919,8 @@ pub fn is_allowed_transition(
         None => return true, // unsupported group: conservatively allow
     };
 
-    let find_row = |label: &str| -> Option<usize> {
-        table.irreps.iter().position(|ir| ir.label == label)
-    };
+    let find_row =
+        |label: &str| -> Option<usize> { table.irreps.iter().position(|ir| ir.label == label) };
 
     let row_i = match find_row(initial_irrep) {
         Some(r) => r,
@@ -2957,10 +2956,7 @@ pub fn is_allowed_transition(
         // product of three complex numbers: conj(χ_f) · χ_op · χ_i
         let (a_re, a_im) = (ff_re, -ff_im); // conj(χ_f)
         // a * χ_op
-        let (b_re, b_im) = (
-            a_re * fo_re - a_im * fo_im,
-            a_re * fo_im + a_im * fo_re,
-        );
+        let (b_re, b_im) = (a_re * fo_re - a_im * fo_im, a_re * fo_im + a_im * fo_re);
         // b * χ_i
         let c_re = b_re * fi_re - b_im * fi_im;
         let c_im = b_re * fi_im + b_im * fi_re;
@@ -3922,7 +3918,12 @@ mod tests {
         assert!(is_allowed_transition(PointGroup::C3i, "A", "B", "C"));
 
         // Falls back to true for unknown irrep label
-        assert!(is_allowed_transition(PointGroup::Oh, "UNKNOWN", "A1g", "A1g"));
+        assert!(is_allowed_transition(
+            PointGroup::Oh,
+            "UNKNOWN",
+            "A1g",
+            "A1g"
+        ));
     }
 
     #[test]

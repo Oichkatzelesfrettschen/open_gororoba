@@ -40,6 +40,9 @@ pub mod spinor_mechanics;
 pub mod superfluid;
 pub mod tensor_network_classical;
 pub mod tensor_networks;
+pub mod tight_binding;
+pub mod magnonic;
+pub mod magnonic_crystal;
 pub mod two_fluid;
 
 #[cfg(feature = "gpu")]
@@ -71,6 +74,22 @@ pub use tensor_network_classical::{
 pub use harper_chern::{
     ButterflyResult, ChernResult, fhs_chern_numbers, harper_hamiltonian, hofstadter_chern_map,
     reduced_fractions, verify_chern_sum_zero, verify_diophantine,
+};
+
+pub use tight_binding::{
+    BravaisLattice2D, FlatBandInfo, Hopping, OrbitalSite, TightBindingModel, Valley, Vec2,
+    band_chern_number, detect_flat_bands, fhs_berry_curvature, hexagonal_high_symmetry_path,
+    hexagonal_symmetry_labels, valley_chern_number,
+};
+
+pub use magnonic::{
+    MagnonicCrystalGeometry, YigParams, ghz_to_rad_per_s, hp_validity_bound,
+    magnon_frequency_homogeneous, rad_per_s_to_ghz, yig_effective_spin,
+};
+
+pub use magnonic_crystal::{
+    InversionBreakingParams, MagnonicBandResult, MagnonicTBParams, build_domain_wall_supercell,
+    build_magnonic_9band, compute_magnonic_bands, point_defect_modes,
 };
 
 pub use mps::{MatrixProductState, MpsTensor};

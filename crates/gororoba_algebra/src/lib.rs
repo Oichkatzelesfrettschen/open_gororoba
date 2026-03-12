@@ -175,8 +175,9 @@ pub use analysis::annihilator::{
 
 #[cfg(feature = "analysis")]
 pub use analysis::reggiani::{
-    StandardZeroDivisor, assert_standard_zero_divisor_annihilators, standard_zero_divisor_partners,
-    standard_zero_divisors,
+    PartnerGraphStats, StandardZeroDivisor, assert_standard_zero_divisor_annihilators,
+    partner_adjacency_matrix, partner_graph_degeneracies, partner_graph_spectrum,
+    partner_graph_stats, standard_zero_divisor_partners, standard_zero_divisors,
 };
 
 #[cfg(feature = "analysis")]

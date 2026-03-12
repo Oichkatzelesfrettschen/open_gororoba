@@ -122,6 +122,10 @@ path = "src/bin/tensor_avt_profile_suite.rs"
 name = "dm-cd-4096-analysis"
 path = "src/bin/dm_cd_4096_analysis.rs"
 
+[[bin]]
+name = "zd-crystal-bands"
+path = "src/bin/zd_crystal_bands.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
