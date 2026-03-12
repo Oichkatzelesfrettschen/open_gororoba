@@ -10,6 +10,15 @@ use cudarc::driver::{
 };
 use std::sync::Arc;
 
+// CudaGraph contains raw *mut pointers that are !Send+!Sync.
+// CUDA graph operations are internally synchronized by the runtime
+// when invoked from the owning device context, so this is safe.
+struct SendSyncGraph(CudaGraph);
+// SAFETY: CudaGraph is only used from a single device context and
+// the CUDA runtime serializes all graph operations on that context.
+unsafe impl Send for SendSyncGraph {}
+unsafe impl Sync for SendSyncGraph {}
+
 // Re-export GPU backend selection types for downstream consumers.
 pub use gororoba_gpu_bridge::{ComputeBackend, HardwareCaps};
 
@@ -125,7 +134,7 @@ pub struct LbmSolver3DCuda {
     /// Captured CUDA graph for 2-step pair (A->B->A). Created lazily on
     /// first `step_graph_pair()` call. Amortizes launch overhead for bulk
     /// stepping via `step_n()`.
-    step_graph_cache: Option<CudaGraph>,
+    step_graph_cache: Option<SendSyncGraph>,
 }
 
 impl LbmSolver3DCuda {
@@ -1133,12 +1142,12 @@ impl LbmSolver3DCuda {
                     sys::CUgraphInstantiate_flags::CUDA_GRAPH_INSTANTIATE_FLAG_AUTO_FREE_ON_LAUNCH,
                 )?
                 .context("Failed to capture 2-step kernel pair into CUDA graph")?;
-            self.step_graph_cache = Some(graph);
+            self.step_graph_cache = Some(SendSyncGraph(graph));
         }
 
         let graph = self.step_graph_cache.as_ref()
             .context("step_graph_cache unexpectedly empty after capture")?;
-        graph.launch()?;
+        graph.0.launch()?;
         Ok(())
     }
 
