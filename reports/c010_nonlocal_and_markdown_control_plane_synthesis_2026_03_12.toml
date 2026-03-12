@@ -1,0 +1,250 @@
+[report]
+id = "RPT-C010-MDCTRL-2026-03-12"
+title = "C-010 Non-Local Metamaterial Synthesis and Markdown Control-Plane Consolidation"
+date = "2026-03-12"
+status = "active"
+authoring_mode = "repo_manual_structured"
+scope = "Non-local algebraic metamaterial lane, repo control-plane migration, remaining markdown lacunae, and falsifiable next-phase theses."
+
+[executive_summary]
+resolved = [
+  "The provenance/control-plane seam is now Rust-first for artifact-source, source-infrastructure, recovery-plan, doctor, and Pantheon SQLite seeding.",
+  "The markdown owner-map, inventory TOML-first verifier, origin-audit builder, and payload-registry builder now have Rust-native command surfaces under gororoba_cli_data::markdown-registry.",
+  "The workspace SQLite conflict was resolved by removing Burn default/train feature pull-through at the workspace boundary and unifying on rusqlite 0.38 + rusqlite_migration 2.4 for the provenance lane.",
+  "The regenerated markdown payload registries no longer advertise the deleted provenance/markdown Python commands in the live repo surface.",
+]
+open_lacunae = [
+  "The markdown origin audit still reports 19 manual markdown files that are mapped to canonical TOML destinations but have not yet been regenerated with AUTO-GENERATED and Source-of-truth headers.",
+  "The markdown inventory, markdown corpus, TOML inventory, and embedded-markdown builder/verifier lanes still retain live Python implementations.",
+  "The C-010 non-local design lane is source-backed and implemented at the design/benchmark level, but it is not yet elevated into a fully citation-saturated monograph-grade theory document or fabrication dossier.",
+]
+
+[dependency_resolution]
+problem = "libsqlite3-sys link conflict between provenance_store and the workspace Burn stack."
+root_cause = "The workspace Burn dependency enabled default/train behavior that pulled burn-dataset, r2d2_sqlite, serde_rusqlite, and rusqlite 0.32.1 into the graph."
+resolution = [
+  "Set workspace Burn to default-features = false and features = ['std', 'autodiff'].",
+  "Upgrade the provenance SQLite lane to rusqlite 0.38 and rusqlite_migration 2.4.",
+  "Re-check the workspace until cargo tree -i libsqlite3-sys shows a single lineage under provenance_store.",
+]
+result = "Single SQLite ABI lineage under provenance_store verified."
+
+[[manual_markdown_backlog]]
+group = "docs_root_narratives"
+destination = "registry/docs_root_narratives.toml"
+paths = [
+  "docs/ARTIFACT_SOURCE_OF_TRUTH.md",
+  "docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md",
+  "docs/E027_PHASE2_EXECUTION_PLAN.md",
+  "docs/MCP_SERVERS.md",
+  "docs/SCOPE_GUARDRAILS.md",
+  "docs/SOURCE_INFRASTRUCTURE_BEST_PRACTICES_2026_02_15.md",
+  "docs/TCMT_PHOTON_GRAVITON_SYNTHESIS.md",
+  "docs/TCMT_QUICK_REFERENCE.md",
+  "docs/TCMT_SYNTHESIS_INDEX.md",
+  "docs/engine_optimizations.md",
+]
+recommended_action = "Lift these markdown bodies into canonical TOML narrative fields, then regenerate published mirrors with explicit source headers."
+
+[[manual_markdown_backlog]]
+group = "research_narratives"
+destination = "registry/research_narratives.toml"
+paths = [
+  "docs/engineering/RUST_STYLE_GUIDE.md",
+  "docs/engineering/SCOPE_ULTRA_THROUGHPUT.md",
+  "docs/engineering/WARP_RING_SPECIFICATION.md",
+  "docs/research/THESIS_2_3_4_NARRATIVE_PACK.md",
+  "docs/theory/OPTIMIZATION_BREAKTHROUGHS.md",
+  "docs/theory/THEORY_PHASE_3_HOLO_ALGEBRAIC_VACUUM.md",
+  "docs/theory/WARP_COMPRESSIBILITY_DERIVATION.md",
+  "docs/theory/WARP_RING_PHYSICS.md",
+  "docs/theory/cayley_dickson_integrable_expanders.md",
+]
+recommended_action = "Split each document into canonical narrative paragraphs, theorem/derivation blocks, and cross-linked evidence references in research_narratives.toml plus downstream generated mirrors."
+
+[[claim]]
+id = "TH-C010-001"
+title = "Assessor-topology thesis"
+statement = "The relevant algebraic target for C-010 is the 42-assessor graph partitioned into seven disconnected K6 cliques."
+current_support = [
+  "de Marrais box-kite partition of the 42 assessors.",
+  "Repo-local assessor and box-kite machinery in algebra_analysis.",
+]
+falsifiable_test = "Recompute the assessor adjacency from the algebra realization and verify exact seven-component K6 structure with zero inter-component edges."
+required_repo_artifacts = [
+  "crates/algebra_analysis/src/boxkites.rs",
+  "crates/materials_core/src/nonlocal_metamaterial.rs",
+]
+
+[[claim]]
+id = "TH-C010-002"
+title = "Local-impossibility thesis"
+statement = "A strictly local 3D nearest-neighbor metamaterial embedding cannot natively realize the disconnected 7 x K6 assessor topology without synthetic or active non-local coupling."
+current_support = [
+  "Closed local negative-result lane preserved in C-010 design history.",
+  "Need for non-local or synthetic coupling explicitly encoded in replacement design doc.",
+]
+falsifiable_test = "Exhaustively test local graph-embedding families used by the benchmark gate and verify that none reproduce the exact assessor topology while meeting the gate thresholds."
+required_repo_artifacts = [
+  "docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md",
+  "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs",
+]
+
+[[claim]]
+id = "TH-C010-003"
+title = "Synthetic-coupling thesis"
+statement = "The lifted m3 obstruction tensor can be projected into a masked assessor weight matrix and then realized by either an LC/topolectrical admittance network or a Floquet-effective synthetic permittivity/permeability tensor."
+current_support = [
+  "materials_core::nonlocal_metamaterial implements the lift, normalization, floor, and topology mask.",
+  "The CLI exposes build-matrix, benchmark, and candidate-scan surfaces.",
+]
+falsifiable_test = "Compare the LC and Floquet reductions and verify that both preserve the exact masked topology and the same dominant coupling ordering."
+required_repo_artifacts = [
+  "crates/materials_core/src/nonlocal_metamaterial.rs",
+  "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs",
+]
+
+[[claim]]
+id = "TH-C010-004"
+title = "Benchmark-acceptance thesis"
+statement = "The Floquet-reduced non-local design must beat the connected local baselines under ProjectionGate::c010_default()."
+current_support = [
+  "Acceptance thresholds are recorded in the C-010 design doc.",
+  "Benchmark sidecars already report gate verdict plus comparison diagnostics.",
+]
+falsifiable_test = "Run the benchmark command on the calibrated candidate set and require isolation >= 0.95, crosstalk <= -20 dB, and dominance margin >= 0.02."
+required_repo_artifacts = [
+  "docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md",
+  "data/csv/c010_nonlocal_material_calibrations.csv",
+]
+
+[[claim]]
+id = "TH-C010-005"
+title = "Comparison-surface thesis"
+statement = "Reggiani partner-graph degeneracies, ZD-crystal flat-band summaries, graphene-like synthetic-space comparators, and magnonic flat-band diagnostics provide structurally relevant comparison surfaces but do not replace the main benchmark gate."
+current_support = [
+  "algebra_analysis provides Reggiani and ZD-crystal summaries.",
+  "quantum_core provides graphene-like and magnonic comparison helpers.",
+  "cosmology_core::sersic is used only as a non-gating radial sensitivity study.",
+]
+falsifiable_test = "Emit all comparison metrics in the benchmark sidecar and verify they are computed from current Rust providers rather than duplicated constants."
+required_repo_artifacts = [
+  "crates/algebra_analysis/src/reggiani.rs",
+  "crates/algebra_analysis/src/crystal_bands.rs",
+  "crates/quantum_core/src/tight_binding.rs",
+  "crates/quantum_core/src/magnonic_crystal.rs",
+  "crates/cosmology_core/src/sersic.rs",
+]
+
+[[source]]
+id = "SRC-C010-001"
+class = "primary_arxiv"
+title = "The 42 Assessors and the Box-Kites they Fly"
+url = "https://arxiv.org/abs/math/0011260"
+supports = ["TH-C010-001"]
+notes = "Primary assessor/box-kite topology anchor."
+
+[[source]]
+id = "SRC-C010-002"
+class = "primary_arxiv"
+title = "The geometry of sedenion zero divisors"
+url = "https://arxiv.org/abs/2411.18881"
+supports = ["TH-C010-001", "TH-C010-005"]
+notes = "Modern geometric realization of the zero-divisor set; useful for partner-graph and manifold-level comparison framing."
+
+[[source]]
+id = "SRC-C010-003"
+class = "primary_publisher"
+title = "Circuit implementation of a four-dimensional topological insulator"
+url = "https://www.nature.com/articles/s41467-020-15940-3"
+supports = ["TH-C010-002", "TH-C010-003"]
+notes = "Direct evidence that topolectrical circuits transcend ordinary spatial locality and realize higher-dimensional/topologically nontrivial couplings."
+
+[[source]]
+id = "SRC-C010-004"
+class = "primary_arxiv"
+title = "Synthetic space with arbitrary dimensions in a few rings undergoing dynamic modulation"
+url = "https://arxiv.org/abs/1710.01373"
+supports = ["TH-C010-003"]
+notes = "Foundational synthetic-frequency/Floquet construction for dynamically modulated rings."
+
+[[source]]
+id = "SRC-C010-005"
+class = "primary_publisher"
+title = "Creating boundaries along a synthetic frequency dimension"
+url = "https://www.nature.com/articles/s41467-022-31140-7"
+supports = ["TH-C010-003", "TH-C010-005"]
+notes = "Boundary engineering in synthetic frequency space, relevant to enforcing disconnected algebraic sectors."
+
+[[source]]
+id = "SRC-C010-006"
+class = "primary_publisher"
+title = "Simulating graphene dynamics in synthetic space with photonic rings"
+url = "https://www.nature.com/articles/s42005-021-00719-9"
+supports = ["TH-C010-005"]
+notes = "Official graphene-like synthetic-space comparator."
+
+[[source]]
+id = "SRC-C010-007"
+class = "primary_publisher"
+title = "Nonlocal Cable-Network Metamaterials"
+url = "https://pubmed.ncbi.nlm.nih.gov/36655553/"
+supports = ["TH-C010-002", "TH-C010-003"]
+notes = "Network-mediated nonlocality rather than purely resonant local inclusion physics."
+
+[[source]]
+id = "SRC-C010-008"
+class = "primary_publisher"
+title = "Nonlocal Mechano-Optical Metasurfaces"
+url = "https://pubs.acs.org/doi/10.1021/acsphotonics.5c01385"
+supports = ["TH-C010-003"]
+notes = "Optical nonlocal metasurface comparator with active tuning and downloadable ACS figures/slides."
+
+[[source]]
+id = "SRC-C010-009"
+class = "primary_publisher"
+title = "Nonreciprocal metasurface with space-time phase modulation"
+url = "https://www.nature.com/articles/s41377-019-0225-z"
+supports = ["TH-C010-003"]
+notes = "Spatiotemporal modulation precedent for synthetic nonlocal coupling and nonreciprocity."
+
+[[source]]
+id = "SRC-C010-010"
+class = "primary_publisher"
+title = "Surface-wave-assisted nonreciprocity in spatio-temporally modulated metasurfaces"
+url = "https://www.nature.com/articles/s41467-020-15273-1"
+supports = ["TH-C010-003"]
+notes = "Official metasurface route to spatiotemporal nonreciprocal mode conversion."
+
+[[source]]
+id = "SRC-C010-011"
+class = "primary_publisher"
+title = "Synchronized conductivity modulation to realize broadband lossless magnetic-free non-reciprocity"
+url = "https://www.nature.com/articles/s41467-017-00798-9"
+supports = ["TH-C010-003", "TH-C010-005"]
+notes = "Graphene/semiconductor conductivity modulation precedent for active synthetic coupling."
+
+[[source]]
+id = "SRC-C010-012"
+class = "primary_arxiv"
+title = "Tutorial: synthetic frequency dimensions in dynamically modulated ring resonators"
+url = "https://arxiv.org/abs/2105.04069"
+supports = ["TH-C010-003", "TH-C010-005"]
+notes = "Useful monograph-grade tutorial source for the Floquet/synthetic-frequency lane."
+
+[next_phase]
+phase_1 = "Port the remaining live markdown inventory/corpus/TOML-inventory and embedded-markdown Python builders/verifiers into Rust so the markdown control plane is fully repo-owned."
+phase_2 = "For each of the 19 manual markdown backlog files, move the canonical content into the mapped TOML registry and regenerate the published markdown mirror with source headers."
+phase_3 = "Elevate C-010 from design note to evidence dossier: ingest the first-party source pack into the canonical source registries, tighten citation granularity, and attach falsifiable benchmark outputs for each candidate calibration row."
+phase_4 = "Create a monograph-grade generated synthesis from the canonical TOML narrative bodies, not from free-floating markdown, so the final treatise is produced by the repo instead of merely stored inside it."
+
+[operator_commands]
+markdown_build = "cargo run -p gororoba_cli_data --bin markdown-registry -- build-origin-audit && cargo run -p gororoba_cli_data --bin markdown-registry -- build-owner-map && cargo run -p gororoba_cli_data --bin markdown-registry -- build-payloads"
+markdown_verify = "cargo run -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first && cargo run -p gororoba_cli_data --bin markdown-registry -- verify-owner-map"
+provenance_verify = "cargo run -p gororoba_cli_data --bin provenance -- verify"
+
+[known_blocker]
+id = "BLK-MD-ORIGIN-001"
+statement = "verify-origin-audit remains red until the 19 manual markdown documents are converted into generated mirrors or formally reclassified."
+owner = "markdown-control-plane"
+severity = "medium"

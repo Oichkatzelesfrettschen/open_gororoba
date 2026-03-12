@@ -2,23 +2,23 @@
 
 [report]
 id = "SINFRA-RECON-2026-02-15"
-generated_at = "2026-02-15"
+generated_at = "2026-03-12"
 authoritative = true
-total_artifact_count = 8409
-lane_total_count = 8409
+total_artifact_count = 213853
+lane_total_count = 213853
 
 [[lane_summary]]
 name = "datasets"
-artifact_count = 1128
+artifact_count = 23410
 
 [[lane_summary]]
 name = "slides_artifacts"
-artifact_count = 0
+artifact_count = 167
 
 [[lane_summary]]
 name = "papers_pdf"
-artifact_count = 259
+artifact_count = 4417
 
 [[lane_summary]]
 name = "web_references"
-artifact_count = 7022
+artifact_count = 185859

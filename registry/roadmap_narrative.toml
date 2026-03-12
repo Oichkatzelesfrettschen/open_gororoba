@@ -130,7 +130,7 @@ These measurements were taken during the migration (gororoba_kernels era):
 The repository now maintains a central markdown knowledge index:
 
 - `registry/knowledge_sources.toml` (generated, deterministic index of all tracked markdown files)
-- Generator: `src/scripts/analysis/build_knowledge_sources_registry.py`
+- Generator: `cargo run -p gororoba_cli_data --bin markdown-registry -- build-knowledge-sources`
 - Central corpus migration: `registry/knowledge/docs/*.toml` with manifest at
   `registry/knowledge/documents.toml`
 - Build hook: `make registry` now runs markdown indexing, TOML corpus capture,

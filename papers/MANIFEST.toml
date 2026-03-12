@@ -263,6 +263,58 @@ local_pdf = "papers/pdf/white_2021_casimir_alcubierre.pdf"
 status = "filed"
 topics = ["Casimir", "Alcubierre", "warp-drive", "worldline-numerics"]
 
+# --- Non-local / Floquet metamaterial pack (5) ---
+
+[[paper]]
+id = "wang-2020-s41467020159403"
+title = "Circuit implementation of a four-dimensional topological insulator"
+authors = ["You Wang", "Hannah M. Price", "Baile Zhang", "Y. D. Chong"]
+year = 2020
+arxiv = ""
+local_pdf = "data/papers/corpus/wang_2020_4d_topological_insulator.pdf"
+status = "filed"
+topics = ["topolectrical-circuits", "4d-topology", "nonlocal-coupling"]
+
+[[paper]]
+id = "yuan-2017-171001373"
+title = "Synthetic space with arbitrary dimensions in a few rings undergoing dynamic modulation"
+authors = ["Luqi Yuan", "Meng Xiao", "Qian Lin", "Shanhui Fan"]
+year = 2017
+arxiv = "1710.01373"
+local_pdf = "data/papers/corpus/yuan_2017_synthetic_space_arbitrary_dimensions.pdf"
+status = "filed"
+topics = ["floquet", "synthetic-space", "ring-resonators"]
+
+[[paper]]
+id = "dutt-2022-s41467022311407"
+title = "Creating boundaries along a synthetic frequency dimension"
+authors = ["Avik Dutt", "Luqi Yuan", "Ki Youl Yang", "Kai Wang", "Siddharth Buddhiraju", "Jelena Vuckovic", "Shanhui Fan"]
+year = 2022
+arxiv = ""
+local_pdf = "data/papers/corpus/dutt_2022_synthetic_frequency_boundaries.pdf"
+status = "filed"
+topics = ["synthetic-frequency", "floquet", "topological-boundaries"]
+
+[[paper]]
+id = "yu-2021-s42005021007199"
+title = "Simulating graphene dynamics in synthetic space with photonic rings"
+authors = ["Danying Yu", "Guangzhen Li", "Meng Xiao", "Da-Wei Wang", "Yong Wan", "Luqi Yuan", "Xianfeng Chen"]
+year = 2021
+arxiv = ""
+local_pdf = "data/papers/corpus/yu_2021_graphene_synthetic_photonic_rings.pdf"
+status = "filed"
+topics = ["graphene", "synthetic-space", "photonic-rings"]
+
+[[paper]]
+id = "vangorp-2025-acsphotonics5c01385"
+title = "Nonlocal Mechano-Optical Metasurfaces"
+authors = ["Freek van Gorp", "Wenfeng Liu", "Corentin Coulais", "Jorik van de Groep"]
+year = 2025
+arxiv = ""
+local_pdf = "data/papers/corpus/vangorp_2025_nonlocal_mechano_optical_metasurfaces.pdf"
+status = "filed"
+topics = ["metasurfaces", "nonlocality", "mechanical-tuning"]
+
 # --- Fano resonance / BIC / TCMT (7) ---
 
 [[paper]]

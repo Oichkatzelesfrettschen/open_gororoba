@@ -2,6 +2,7 @@
 .PHONY: help install install-analysis install-astro install-particle install-quantum bootstrap-dev
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe lint-advisory check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict terminology-gate doctor doctor-blas provenance patch-pyfilesystem2
+.PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: python-smoke python-regression heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt
@@ -82,7 +83,7 @@ PIP := $(VENV)/bin/pip
 DEV_STAMP := $(VENV)/.installed-dev
 HOOKS_DIR ?= .githooks
 MARKDOWN_EXPORT ?= 0
-MARKDOWN_EXPORT_OUT_DIR ?= build/docs/generated
+MARKDOWN_EXPORT_OUT_DIR ?= docs/generated
 MARKDOWN_EXPORT_EMIT_LEGACY ?= 0
 MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC ?= 1
 PGO_DIR ?= /tmp/pgo-data
@@ -160,8 +161,8 @@ registry-verify-markdown-governance:
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
 
 governance-gate-readonly:
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_inventory_toml_first.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_owner_map.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_schema_signatures.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_crossrefs.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_dataset_label_aliases.py
@@ -251,14 +252,14 @@ gate-audit: install
 
 profile-python-toml-inventory: install
 	@mkdir -p "$(PROFILE_ROOT)"
-	@if command -v py-spy >/dev/null 2>&1; then \
-		echo "[profile] using py-spy"; \
-		py-spy record --format speedscope -o "$(PROFILE_ROOT)/toml_inventory.speedscope.json" -- $(PYTHON) src/scripts/analysis/build_toml_inventory_registry.py; \
+	@if command -v /usr/bin/time >/dev/null 2>&1; then \
+		echo "[profile] timing Rust TOML inventory builder"; \
+		/usr/bin/time -v -o "$(PROFILE_ROOT)/toml_inventory.time.txt" $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory; \
 	else \
-		echo "[profile] py-spy not found; falling back to cProfile"; \
-		PYTHONWARNINGS=error $(PYTHON) -m cProfile -o "$(PROFILE_ROOT)/toml_inventory.cprofile" src/scripts/analysis/build_toml_inventory_registry.py; \
+		echo "[profile] running Rust TOML inventory builder without /usr/bin/time"; \
+		$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory; \
 	fi
-	@echo "OK: Python TOML inventory profile written under $(PROFILE_ROOT)"
+	@echo "OK: Rust TOML inventory profile written under $(PROFILE_ROOT)"
 
 pre-push-gate-strict: gate-audit
 	@echo "OK: pre-push-gate-strict is a compatibility alias for gate-audit."
@@ -294,8 +295,8 @@ smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
 
 registry-control-plane-gate-readonly: install
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_corpus_registry.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_toml_inventory_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-corpus
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-toml-inventory
 	@echo "OK: read-only registry control-plane gate passed."
 
 integrity: install
@@ -306,8 +307,8 @@ integrity: install
 	$(MAKE) verify-pantheon-physicsforge-mapping
 	$(MAKE) verify-pantheon-physicsforge-license-headers
 	$(MAKE) verify-pantheon-physicsforge-overflow
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_embedded_markdown_structured_registry.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_mirror_freshness.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-embedded
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin verify-registry-mirror-freshness -- --out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" --emit-legacy --legacy-claims-sync true
 	@echo "OK: integrity lane passed."
 
 integrity-rust:
@@ -510,16 +511,16 @@ verify-pantheon-physicsforge-overflow:
 	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_overflow_tracker.py
 
 seed-pantheon-physicsforge-sqlite:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py
+	cargo run --release -p gororoba_cli_data --bin provenance -- --db build/pantheon_physicsforge_migration.db pantheon-seed
 
 registry-knowledge:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_knowledge_sources_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-knowledge-sources
 
 registry-governance: registry-knowledge
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_governance_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-governance
 
 registry-migrate-corpus: registry-knowledge
-	PYTHONWARNINGS=error python3 src/scripts/analysis/migrate_markdown_corpus_to_toml.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- migrate-corpus --prune-stale
 
 registry-normalize-claims:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown
@@ -540,7 +541,7 @@ registry-bootstrap-external-sources: registry-normalize-external-sources
 	@echo "External sources markdown->TOML bootstrap completed."
 
 registry-normalize-research-narratives:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py --bootstrap-from-markdown
+	cargo run -q -p gororoba_cli_data --bin markdown-registry -- promote-research-narratives
 
 registry-bootstrap-research-narratives: registry-normalize-research-narratives
 	@echo "Research narratives markdown->TOML bootstrap completed."
@@ -552,7 +553,7 @@ registry-bootstrap-book-docs: registry-normalize-book-docs
 	@echo "mdBook markdown->TOML bootstrap completed."
 
 registry-normalize-docs-root-narratives:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown
+	cargo run -q -p gororoba_cli_data --bin markdown-registry -- promote-docs-root-narratives
 
 registry-bootstrap-docs-root-narratives: registry-normalize-docs-root-narratives
 	@echo "Root docs markdown->TOML bootstrap completed."
@@ -582,10 +583,10 @@ registry-bootstrap-entrypoint-docs: registry-normalize-entrypoint-docs
 	@echo "Entrypoint markdown bootstrap into registry/entrypoint_docs.toml completed."
 
 registry-normalize-narratives:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_narrative_overlays.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-narrative-overlays
 
 registry-normalize-operational-narratives:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_operational_narrative_overlays.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-operational-narratives
 
 registry-ingest-legacy: registry-normalize-narratives registry-normalize-operational-narratives
 	@echo "Legacy markdown -> TOML ingest completed."
@@ -605,38 +606,41 @@ registry-verify-artifact-scrolls:
 	PYTHONWARNINGS=error python3 src/verification/verify_artifact_scrolls_registry.py
 
 registry-markdown-inventory:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-inventory
 
 registry-markdown-corpus: registry-markdown-inventory
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_corpus_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-corpus
 
 registry-toml-inventory: registry-markdown-corpus
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_toml_inventory_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory
 
 registry-markdown-origin-audit: registry-markdown-inventory
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_origin_audit.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-origin-audit
+
+registry-markdown-owner-map: registry-markdown-origin-audit
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-owner-map
 
 registry-embedded-markdown:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_embedded_markdown_structured_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-embedded
 
 registry-verify-embedded-markdown:
-	PYTHONWARNINGS=error python3 src/verification/verify_embedded_markdown_structured_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-embedded
 
 registry-verify-markdown-inventory:
-	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
 
 registry-verify-markdown-origin:
-	PYTHONWARNINGS=error python3 src/verification/verify_markdown_origin_audit.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-origin-audit
 
 registry-verify-markdown-owner:
-	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
 
 registry-verify-markdown-toml-first: registry-verify-markdown-inventory registry-verify-markdown-owner
 	@echo "OK: markdown TOML-first owner/inventory gates verified."
 
 registry-verify-control-plane: registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms registry-verify-artifact-scrolls
-	PYTHONWARNINGS=error python3 src/verification/verify_markdown_corpus_registry.py
-	PYTHONWARNINGS=error python3 src/verification/verify_toml_inventory_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-corpus
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-toml-inventory
 
 registry-control-plane-gate: registry-verify-control-plane
 	@echo "OK: control-plane registry lane complete."
@@ -647,9 +651,9 @@ registry-verify-wave4: registry-verify-control-plane
 registry-wave4: registry-control-plane-gate
 	@echo "DEPRECATED: make registry-wave4 is a legacy alias. Use make registry-control-plane-gate."
 
-registry-strict-toml-batch1-build:
+registry-strict-toml-batch1-build: registry-markdown-owner-map
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_semantic_atoms.py
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_payload_registries.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-payloads
 
 registry-verify-strict-toml-batch1:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_semantic_atoms.py
@@ -743,8 +747,8 @@ registry-verify-strict-toml-batch4:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_execution_planning.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
 	PYTHONWARNINGS=error python3 src/verification/verify_dataset_label_aliases.py
-	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
-	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
 
 registry-strict-toml-batch4: registry-verify-strict-toml-batch4
 	@echo "OK: execution-planning registry lane complete (legacy wave5-batch4 compatibility)."
@@ -892,18 +896,90 @@ registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry
 	@echo "OK: CSV data registry lane complete."
 
 registry-export-markdown: registry-refresh
-	@legacy_flag="--no-emit-legacy"; \
-	if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then legacy_flag="--emit-legacy"; fi; \
-	claims_flag="--legacy-claims-sync"; \
-	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then claims_flag="--no-legacy-claims-sync"; fi; \
-	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py \
-		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag $$claims_flag
+	@legacy_claims_sync=1; \
+	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then legacy_claims_sync=0; fi; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- insights-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/INSIGHTS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/CLAIMS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- bibliography-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/BIBLIOGRAPHY_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- experiments-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/EXPERIMENTS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- roadmap-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/ROADMAP_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- todo-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/TODO_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- next-actions-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/NEXT_ACTIONS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- navigator-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/NAVIGATOR_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- entrypoint-docs-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- requirements-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/REQUIREMENTS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- knowledge-migration-plan-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- markdown-governance-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-tasks-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/CLAIMS_TASKS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-domains-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- claim-tickets-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/CLAIM_TICKETS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- external-sources-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- book-docs-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/BOOK_DOCS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- data-artifact-narratives-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- reports-narratives-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- docs-convos-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/DOCS_CONVOS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- docs-root-narratives-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- research-narratives-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"; \
+	if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- insights-legacy; \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- experiments-legacy; \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- roadmap-legacy; \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- todo-legacy; \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- next-actions-legacy; \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- bibliography-legacy; \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- navigator-legacy; \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- entrypoint-docs-legacy; \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- requirements-legacy; \
+		if [ "$$legacy_claims_sync" = "1" ]; then \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-matrix-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-tasks-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-domains-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- claim-tickets-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- external-sources-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- book-docs-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- data-artifact-narratives-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- reports-narratives-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- docs-convos-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- monograph-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- docs-root-narratives-legacy; \
+			cargo run -q -p gororoba_cli_data --bin registry-emit -- research-narratives-legacy; \
+		fi; \
+	fi; \
+	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-inventory; \
+	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-corpus; \
+	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-origin-audit; \
+	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-owner-map; \
+	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-payloads
 
 registry-verify-mirrors:
-	MARKDOWN_EXPORT_OUT_DIR="$(MARKDOWN_EXPORT_OUT_DIR)" \
-	MARKDOWN_EXPORT_EMIT_LEGACY="$(MARKDOWN_EXPORT_EMIT_LEGACY)" \
-	MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC="$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" \
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_mirror_freshness.py
+	legacy_flag=""; \
+	if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then legacy_flag="--emit-legacy"; fi; \
+	claims_value="true"; \
+	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then claims_value="false"; fi; \
+	cargo run -q -p gororoba_cli_data --bin verify-registry-mirror-freshness -- \
+		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag --legacy-claims-sync $$claims_value
 	PYTHONWARNINGS=error $(MAKE) registry-verify-markdown-toml-first
 	@if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then \
 		PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_headers.py; \
@@ -966,6 +1042,24 @@ provenance: install
 
 provenance-audit: install
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true
+
+provenance-registry-index:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- index
+
+provenance-registry-export:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- export
+
+provenance-registry-verify:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- verify
+
+provenance-registry-doctor:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- doctor
+
+provenance-registry-link-audit:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- link-audit
+
+provenance-registry-recover:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- recover
 
 external-redownload-audit: install
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_$$(date +%F).toml --backend-order wget,curl,fetch
