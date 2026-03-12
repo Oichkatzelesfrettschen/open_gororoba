@@ -6,15 +6,51 @@ version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
 test_count = 5392
-claim_count = 1093
-insight_count = 121
-experiment_count = 139
-complete_experiment_count = 88
+claim_count = 1155
+insight_count = 149
+experiment_count = 166
+complete_experiment_count = 94
 paper_count = 111
-binary_count = 177
-kernel_checked_claims = 122
-proof_files = 181
+binary_count = 184
+kernel_checked_claims = 125
+proof_files = 187
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
+
+[sprints.s83]
+number = 83
+date = "2026-03-12"
+test_count = 5392
+claim_count = 1155
+kernel_checked_claims = 125
+proof_files = 187
+summary = "S83: CUDA Performance Frontier + CPU AoSoA Vectorization + Null Hypothesis Validation + YSU-Inspired CUDA Optimization Suite. DEFINITIVE E-166 RESULT: 100-galaxy 128^3 GPU MRT D_f = 2.732 +/- 0.034, CI [2.725, 2.739], brackets CD D=16 prediction 2.7268 at 31st percentile. Phase 8: GPU thread coarsening (1T=2C) with __launch_bounds__(128, 9) for ILP doubling (1444 FMAs). Phase 10: mrt-stability-audit rewrite with LbmBackend dispatcher (CPU/GPU unified f64 interface). Phase 11: D=64 flat band fraction test (31 motif components). Phase 12: GPU-side max-Mach-number reduction (compute_speed_magnitude + reduce_max_f32, <10us vs 2ms readback). Phase 14: null hypothesis control experiment (6 conditions C0-C5, code complete, pending execution). Phase 15: CPU AoSoA + wide::f64x4 SIMD collision, UnsafeAoSoAPtr newtype, 608-byte chunk fits L1D. LbmBackend enum: runtime-dispatched CPU(AVX2/AoSoA f64) and GPU(CUDA/SoA f32) behind unified interface. YSU-Inspired CUDA Optimization Suite (E-177): MRT ILP restructure (balanced fmaf trees), CUDA Graph 2-step capture (double-buffer bug fix + step_n), shared-memory tiled pull-scheme (8x8x4 tile, 45.6KB shared), multi-stream galaxy pipeline (2-stream event-based overlap). 16 claims (C-1290..C-1307, gaps at C-1293..C-1294), 8 experiments (E-167..E-177, gaps at E-170..E-171,E-173), 12 insights (I-145..I-156)."
+
+[sprints.s82]
+number = 82
+date = "2026-03-11"
+test_count = 5402
+claim_count = 1131
+kernel_checked_claims = 125
+proof_files = 187
+summary = "S82: GPU-Accelerated Multi-Galaxy D_f Sweep. E-152 COMPLETED: 100 Euclid Q1 galaxies at 64^3/200 steps on RTX 4070 Ti in ~8 seconds. D_f = 2.814 +/- 0.022 (CI_95: [2.810, 2.818]). Disk D_f=2.816 (N=56), Elliptical D_f=2.811 (N=44) -- no morphological dependence. E-154 COMPLETED (partial pass): box-counting validated (df_initial 10/10 exact CPU/GPU match), but LBM evolution diverges for concentrated galaxies (4/10 show CPU D_f=3.0 vs GPU D_f~2.83 due to f64 homogenization at tau=1.5, I-137). Infrastructure: extracted box_counting_fractal_dim (f64+f32), morphological M/L, galaxy_pipeline.rs (prepare_galaxy + analyze_df_sweep), GPU box-counting kernel (warp-level ballot reduction), euclid-df-sweep binary with GPU/CPU fallback. Density floor 0.01 in prepare_galaxy ensures identical CPU/GPU initialization. 7 claims (C-1262..C-1268), 5 experiments (E-152..E-156, 2 completed), 5 insights (I-134..I-138), 1 new binary, 4 retroactive binary registrations."
+
+[sprints.s81]
+number = 81
+date = "2026-03-11"
+test_count = 5392
+claim_count = 1124
+kernel_checked_claims = 125
+proof_files = 187
+summary = "S81: ZD Crystal Bands + Euclid Morphology. ZD motif graph adjacency spectra via block-diagonal component eigendecomposition (crystal_bands.rs): D=16 flat band fraction exactly 0.5 (21/42 zero eigenvalues), D=32 integer spectrum with 15 components and 210 total eigenvalues, dimension-independent localization at 0.5. Reggiani factorization verified: degeneracies {7,14,42,14,7} = 7 * {1,2,6,2,1}. Flat band scaling analysis (flat_band_localization.rs): constant fit at 0.5 with zero residual across D=16,32. Euclid morphology pipeline: Sersic profile module (sersic.rs) with Ciotti-Bertin b_n approximation, Abel deprojection via cosh-substituted GL quadrature (positive definite for all r>0), Sersic-to-LBM density mapping with ellipticity support. euclid-dm-coupling binary for NFW+Sersic combined density fields. 7 new claims (C-1255..C-1261), 5 experiments (E-147..E-151), 3 insights (I-131..I-133), 2 new binaries (zd-crystal-bands, euclid-dm-coupling), 6 new source files."
+
+[sprints.s80]
+number = 80
+date = "2026-03-11"
+test_count = 5392
+claim_count = 1117
+kernel_checked_claims = 125
+proof_files = 187
+summary = "S80: Magnonic Band Topology (Sprint 80). New generic tight-binding engine (tight_binding.rs ~450 lines) with FHS Berry curvature generalized from square to hexagonal BZ. 9-band magnonic crystal model (magnonic_crystal.rs ~550 lines) reproducing Kaman et al. (2026) arXiv:2601.03210v2: graphene Dirac cones at K/K', kagome flat bands, valley Chern numbers, domain wall edge modes, point defect modes. magnonic-band-structure binary with 6 subcommands (bands/chern/flat-band/sweep/domain-wall/defect). 3 Rocq formal proofs: TRS Chern sum = 0 (C-1233), valley Chern antisymmetry (C-1234), flat band velocity bound (C-1236). Cross-domain discovery: sedenion partner graph spectrum {-4,-2,0,+2,+4} with degeneracies {7,14,42,14,7} -- 42-fold zero eigenvalue as algebraic flat band analog (C-1251/C-1252, I-130). FHS single-band limitation at degeneracies documented (C-1254). 24 claims (C-1231..C-1254), 5 experiments (E-142..E-146), 6 insights (I-125..I-130), 1 bibliography entry (BIB-0317). 4 new Rocq .v files."
 
 [sprints.s79]
 number = 79

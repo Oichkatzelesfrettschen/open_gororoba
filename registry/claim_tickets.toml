@@ -5,7 +5,7 @@
 authoritative = true
 updated = "2026-03-11"
 source_markdown_glob = "docs/tickets/*.md"
-ticket_count = 11
+ticket_count = 12
 
 [[ticket]]
 id = "TICKET-C001-C050"
@@ -23,8 +23,8 @@ backlog_reports = ["reports/claims_batch_backlog_C001_C050.md"]
 deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C001_C050.md", "docs/C026_MASS_GAP_MECHANISM.md", "docs/C027_DEFF_HORIZON_TEST.md", "data/csv/deff_horizon_mass_scaling*.csv", "tests/test_c027_deff_horizon_mass_scaling.py", "src/scripts/analysis/c032_tang_2025_min_reproduction.py", "docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/papers/corpus/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf", "data/papers/corpus/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf", "docs/C033_SU5_MAPPING_CLOSURE.md", "data/papers/intake/traces/chanyal_2014_academia_requires_login.txt", "docs/C030_SEDENION_LAGRANGIAN_BYPASS.md", "data/csv/c030_sedenion_lagrangian_bypass_checks.csv", "data/csv/c031_hurwitz_norm_composition_checks.csv", "src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py", "data/csv/c039_spectral_dimension_bigraph_*.csv", "src/scripts/analysis/c040_primordial_tilt_deff_sweep.py", "data/csv/c040_primordial_tilt_*.csv", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "data/csv/compact_objects_catalog.csv", "docs/C047_E_SERIES_KAC_MOODY_AUDIT.md", "docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md", "tests/test_c047_e_series_cartan_signature.py", "docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md", "data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf", "docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md", "src/scripts/analysis/c050_spaceplate_flow_isomorphism_toy.py", "data/csv/c050_spaceplate_flow_isomorphism_toy.csv", "tests/test_c050_spaceplate_flow_isomorphism_toy.py"]
 acceptance_checks = ["PYTHONWARNINGS=error make check-parallel", "PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
 goal_summary = "Make the C-001..C-050 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` mechanically tractable for claim-by-claim auditing: - each open claim has (1) a clear scope boundary, (2) primary sources indexed and cached when possible, and (3) an offline check hook (unit test, verifier, or deterministic artifact pipeline) where feasible. This ticket does not attempt to \"prove the theory\". It upgrades traceability and falsifiability."
-done_checkboxes = 16
-open_checkboxes = 1
+done_checkboxes = 0
+open_checkboxes = 0
 
 [[ticket]]
 id = "TICKET-C051-C100"
@@ -61,7 +61,7 @@ backlog_reports = ["reports/claims_batch_backlog_C101_C150.md"]
 deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C101_C150.md"]
 acceptance_checks = ["PYTHONWARNINGS=error make check-parallel", "PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
 goal_summary = "Make the C-101..C-150 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` mechanically tractable for claim-by-claim auditing: - each open claim has (1) a clear scope boundary, (2) primary sources indexed and cached when possible, and (3) an offline check hook (unit test, verifier, or deterministic artifact pipeline) where feasible. This batch is dominated by legacy high-dimension Cayley-Dickson experiment summaries. The critical work is to separate: - the computable/mathematical invariants (often already reproducible), from - physics-facing interpretations (which must remain explicitly speculative unless source-backed)."
-done_checkboxes = 11
+done_checkboxes = 0
 open_checkboxes = 0
 
 [[ticket]]
@@ -175,7 +175,45 @@ backlog_reports = ["reports/claims_batch_backlog_C401_C427.md", "reports/convos_
 deliverable_links = ["docs/external_sources/*.md", "src/verification/"]
 acceptance_checks = ["PYTHONWARNINGS=error make check-parallel", "PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
 goal_summary = "Make the C-401..C-427 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` mechanically tractable for claim-by-claim auditing: - each open claim has (1) a clear scope boundary, (2) primary sources indexed and cached when possible, and (3) an offline check hook (unit test, verifier, or deterministic artifact pipeline) where feasible. This batch contains: - method-level claims (C-406..C-408) that must be enforced by verifiers, - emergence-layer claims (C-403..C-405) that should remain programmatic unless backed by sources, - and a large \"materials/simulation\" cluster (C-409..C-427) that must be kept explicit about toy-vs-validated."
-done_checkboxes = 5
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-INDEX"
+title = "Claim Audit Tickets"
+source_markdown = "docs/tickets/INDEX.md"
+ticket_kind = "GENERAL"
+owner = ""
+created = ""
+status_raw = ""
+status_token = ""
+claim_range_start = 0
+claim_range_end = 0
+claims_referenced = []
+backlog_reports = []
+deliverable_links = ["docs/tickets/*.md", "docs/tickets/C001_C050_claims_audit.md", "docs/tickets/C051_C100_claims_audit.md", "docs/tickets/C101_C150_claims_audit.md", "docs/tickets/C151_C200_claims_audit.md", "docs/tickets/C201_C250_claims_audit.md", "docs/tickets/C251_C300_claims_audit.md", "docs/tickets/C301_C350_claims_audit.md", "docs/tickets/C351_C400_claims_audit.md", "docs/tickets/C401_C427_claims_audit.md", "docs/tickets/INDEX.md", "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"]
+acceptance_checks = []
+goal_summary = ""
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-TICKET-PIONEER-FLYBY-FRACTAL-BRIDGE"
+title = "Ticket: Pioneer/Flyby Fractal Bridge"
+source_markdown = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
+ticket_kind = "GENERAL"
+owner = ""
+created = ""
+status_raw = ""
+status_token = ""
+claim_range_start = 0
+claim_range_end = 0
+claims_referenced = []
+backlog_reports = []
+deliverable_links = ["crates/gr_core/src/fractal_metric.rs", "nbody_integration.rs", "fit_grid.csv", "best_fit.json"]
+acceptance_checks = ["(none recorded)"]
+goal_summary = "(not specified)"
+done_checkboxes = 0
 open_checkboxes = 0
 
 [[ticket]]
@@ -192,26 +230,7 @@ claim_range_end = 0
 claims_referenced = ["C-409", "C-412"]
 backlog_reports = []
 deliverable_links = ["data/papers/corpus/", "references/", "src/gemini_physics/optics/grin_solver.py", "src/scripts/visualization/animate_warp_v8_rigorous.py"]
-acceptance_checks = []
+acceptance_checks = ["(none recorded)"]
 goal_summary = "Elevate the \"Silicon-Gold-Ice VIII\" Warp Ring simulation from cinematic pseudo-physics to a rigorously defended Analogue Optics experiment (Phase 6.5 -> Phase 7.0)."
 done_checkboxes = 0
-open_checkboxes = 8
-
-[[ticket]]
-id = "TICKET-RI-2026-02-14-TRIAGE"
-title = "Ticket: RI-2026-02-14 intake provenance triage"
-source_markdown = "docs/tickets/INDEX.md"
-ticket_kind = "GENERAL"
-owner = "agent"
-created = "2026-02-14"
-status_raw = "TODO"
-status_token = "TODO"
-claim_range_start = 0
-claim_range_end = 0
-claims_referenced = ["C-691", "C-692", "C-693", "C-694"]
-backlog_reports = ["reports/intake_promotion_to_canonical_2026_02_14.toml"]
-deliverable_links = ["registry/research_intake_2026_02_14.toml", "registry/hypercomplex_taxonomy_promotion.toml", "registry/todo.toml", "reports/intake_promotion_to_canonical_2026_02_14.toml"]
-acceptance_checks = []
-goal_summary = "VERIFY intent: close or upgrade unresolved/high-risk mappings from RI-2026-02-14 by replaying source chains and requiring direct primary-source anchors. REFUTE intent: if source-chain closure fails for a candidate mapping, keep or move it to unresolved/high-risk state with explicit rationale instead of promoting it as established."
-done_checkboxes = 0
-open_checkboxes = 4
+open_checkboxes = 0

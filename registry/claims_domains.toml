@@ -3,7 +3,7 @@
 
 [claims_domains]
 authoritative = true
-updated = "2026-02-09"
+updated = "2026-03-11"
 source_csv = "docs/claims/CLAIMS_DOMAIN_MAP.csv"
 source_markdown_glob = "docs/claims/by_domain/*.md"
 domain_file_count = 16
@@ -4255,11 +4255,11 @@ source_line = 14
 [[domain_entry]]
 domain = "holography"
 claim_id = "C-010"
-status_token = "SPECULATIVE"
-status_text = "Speculative (spectral comparison negative; Phase 3C)"
-status_date = "2026-02-02"
-summary = "Hypothesis: Cayley-Dickson (sedenion) zero-divisor motifs can be mapped to physically realizable absorber networks (e.g., TCMT/RLC/CPA), potentially approaching critical coupling; no \"perfect absorption\" mapping is validated yet."
-where_stated = ["docs/MATERIALS_APPLICATIONS.md", "docs/THE_GEMINI_PROTOCOL.md", "docs/external_sources/METAMATERIAL_ABSORBER_SOURCES.md", "docs/C010_ABSORBER_TCMT_MAPPING.md", "docs/C010_ABSORBER_SALISBURY.md", "docs/C010_ABSORBER_RLC.md", "docs/C010_ABSORBER_CPA.md", "src/scripts/analysis/materials_absorber_tcmt.py", "src/scripts/analysis/materials_absorber_salisbury.py", "src/scripts/analysis/materials_absorber_rlc.py", "src/scripts/analysis/materials_absorber_cpa_twoport.py", "src/scripts/analysis/materials_absorber_cpa_input_sweep.py", "data/csv/c010_truncated_icosahedron_graph.csv", "data/csv/c010_tcmt_truncated_icosahedron.csv", "data/csv/c010_tcmt_truncated_icosahedron_minima.csv", "data/csv/c010_salisbury_screen.csv", "data/csv/c010_salisbury_screen_minima.csv", "data/csv/c010_rlc_surface_impedance.csv", "data/csv/c010_rlc_surface_impedance_minima.csv", "data/csv/c010_rlc_fit_summary.csv", "data/csv/c010_cpa_twoport_scan.csv", "data/csv/c010_cpa_twoport_minima.csv", "data/csv/c010_cpa_input_sweep.csv", "data/csv/c010_cpa_input_sweep_minima.csv", "data/csv/c010_zd_tcmt_spectral_comparison.csv", "data/csv/materials_baseline_metrics.csv", "data/csv/materials_embedding_benchmarks.csv"]
+status_token = "CLOSED"
+status_text = "Closed/Negative-Result (local obstruction; non-local design lane modeled)"
+status_date = "2026-03-11"
+summary = "The local absorber thesis is closed negatively: the assessor graph is 7 disconnected K6 cliques, so connected local lattices fail. A literature-calibrated non-local LC/Floquet design lane now reproduces the masked topology and clears the in-repo projection gate at design stage."
+where_stated = ["docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md", "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md", "crates/materials_core/src/nonlocal_metamaterial.rs", "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs", "crates/algebra_analysis/src/boxkites.rs", "crates/algebra_analysis/src/reggiani.rs", "crates/algebra_analysis/src/crystal_bands.rs", "crates/algebra_analysis/src/homotopy_algebra.rs", "crates/optics_core/src/absorber_benchmark.rs", "crates/quantum_core/src/magnonic_crystal.rs", "crates/quantum_core/src/tight_binding.rs", "crates/cosmology_core/src/sersic.rs", "data/csv/c010_nonlocal_material_calibrations.csv", "data/csv/sedenion_box_kites_clustered.csv", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c010_c011_verifier_script.py", "src/verification/verify_c010_c011_theses.py", "papers/MANIFEST.toml"]
 source_markdown = "docs/claims/by_domain/holography.md"
 source_line = 17
 
@@ -5797,9 +5797,9 @@ domain = "legacy"
 claim_id = "C-053"
 status_token = "VERIFIED"
 status_text = "Verified (Toy model; degeneracy explicit)"
-status_date = "2026-02-04"
-summary = "Toy mapping: Pathion (32D) tensor diagonal -> dielectric stack (TMM retrieval)."
-where_stated = ["src/scripts/analysis/c053_pathion_metamaterial_mapping.py", "data/csv/c053_pathion_tmm_summary.csv", "tests/test_c053_pathion_metamaterial_mapping.py", "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md", "src/scripts/analysis/unified_spacetime_synthesis.py"]
+status_date = "2026-03-11"
+summary = "Toy mapping: Pathion (32D) tensor diagonal -> uniform dielectric stack (TMM retrieval), with the diagonal-only degeneracy made explicit."
+where_stated = ["crates/materials_core/src/pathion_toy_mapping.rs", "crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs", "data/csv/c053_pathion_tmm_summary.csv", "crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs", "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"]
 source_markdown = "docs/claims/by_domain/legacy.md"
 source_line = 32
 
@@ -5850,11 +5850,11 @@ source_line = 44
 [[domain_entry]]
 domain = "materials"
 claim_id = "C-010"
-status_token = "SPECULATIVE"
-status_text = "Speculative (spectral comparison negative; Phase 3C)"
-status_date = "2026-02-02"
-summary = "Hypothesis: Cayley-Dickson (sedenion) zero-divisor motifs can be mapped to physically realizable absorber networks (e.g., TCMT/RLC/CPA), potentially approaching critical coupling; no \"perfect absorption\" mapping is validated yet."
-where_stated = ["docs/MATERIALS_APPLICATIONS.md", "docs/THE_GEMINI_PROTOCOL.md", "docs/external_sources/METAMATERIAL_ABSORBER_SOURCES.md", "docs/C010_ABSORBER_TCMT_MAPPING.md", "docs/C010_ABSORBER_SALISBURY.md", "docs/C010_ABSORBER_RLC.md", "docs/C010_ABSORBER_CPA.md", "src/scripts/analysis/materials_absorber_tcmt.py", "src/scripts/analysis/materials_absorber_salisbury.py", "src/scripts/analysis/materials_absorber_rlc.py", "src/scripts/analysis/materials_absorber_cpa_twoport.py", "src/scripts/analysis/materials_absorber_cpa_input_sweep.py", "data/csv/c010_truncated_icosahedron_graph.csv", "data/csv/c010_tcmt_truncated_icosahedron.csv", "data/csv/c010_tcmt_truncated_icosahedron_minima.csv", "data/csv/c010_salisbury_screen.csv", "data/csv/c010_salisbury_screen_minima.csv", "data/csv/c010_rlc_surface_impedance.csv", "data/csv/c010_rlc_surface_impedance_minima.csv", "data/csv/c010_rlc_fit_summary.csv", "data/csv/c010_cpa_twoport_scan.csv", "data/csv/c010_cpa_twoport_minima.csv", "data/csv/c010_cpa_input_sweep.csv", "data/csv/c010_cpa_input_sweep_minima.csv", "data/csv/c010_zd_tcmt_spectral_comparison.csv", "data/csv/materials_baseline_metrics.csv", "data/csv/materials_embedding_benchmarks.csv"]
+status_token = "CLOSED"
+status_text = "Closed/Negative-Result (local obstruction; non-local design lane modeled)"
+status_date = "2026-03-11"
+summary = "The local absorber thesis is closed negatively: the assessor graph is 7 disconnected K6 cliques, so connected local lattices fail. A literature-calibrated non-local LC/Floquet design lane now reproduces the masked topology and clears the in-repo projection gate at design stage."
+where_stated = ["docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md", "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md", "crates/materials_core/src/nonlocal_metamaterial.rs", "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs", "crates/algebra_analysis/src/boxkites.rs", "crates/algebra_analysis/src/reggiani.rs", "crates/algebra_analysis/src/crystal_bands.rs", "crates/algebra_analysis/src/homotopy_algebra.rs", "crates/optics_core/src/absorber_benchmark.rs", "crates/quantum_core/src/magnonic_crystal.rs", "crates/quantum_core/src/tight_binding.rs", "crates/cosmology_core/src/sersic.rs", "data/csv/c010_nonlocal_material_calibrations.csv", "data/csv/sedenion_box_kites_clustered.csv", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c010_c011_verifier_script.py", "src/verification/verify_c010_c011_theses.py", "papers/MANIFEST.toml"]
 source_markdown = "docs/claims/by_domain/materials.md"
 source_line = 8
 
@@ -5863,9 +5863,9 @@ domain = "materials"
 claim_id = "C-053"
 status_token = "VERIFIED"
 status_text = "Verified (Toy model; degeneracy explicit)"
-status_date = "2026-02-04"
-summary = "Toy mapping: Pathion (32D) tensor diagonal -> dielectric stack (TMM retrieval)."
-where_stated = ["src/scripts/analysis/c053_pathion_metamaterial_mapping.py", "data/csv/c053_pathion_tmm_summary.csv", "tests/test_c053_pathion_metamaterial_mapping.py", "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md", "src/scripts/analysis/unified_spacetime_synthesis.py"]
+status_date = "2026-03-11"
+summary = "Toy mapping: Pathion (32D) tensor diagonal -> uniform dielectric stack (TMM retrieval), with the diagonal-only degeneracy made explicit."
+where_stated = ["crates/materials_core/src/pathion_toy_mapping.rs", "crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs", "data/csv/c053_pathion_tmm_summary.csv", "crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs", "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"]
 source_markdown = "docs/claims/by_domain/materials.md"
 source_line = 11
 
@@ -8358,11 +8358,11 @@ source_line = 8
 [[domain_entry]]
 domain = "spectral"
 claim_id = "C-010"
-status_token = "SPECULATIVE"
-status_text = "Speculative (spectral comparison negative; Phase 3C)"
-status_date = "2026-02-02"
-summary = "Hypothesis: Cayley-Dickson (sedenion) zero-divisor motifs can be mapped to physically realizable absorber networks (e.g., TCMT/RLC/CPA), potentially approaching critical coupling; no \"perfect absorption\" mapping is validated yet."
-where_stated = ["docs/MATERIALS_APPLICATIONS.md", "docs/THE_GEMINI_PROTOCOL.md", "docs/external_sources/METAMATERIAL_ABSORBER_SOURCES.md", "docs/C010_ABSORBER_TCMT_MAPPING.md", "docs/C010_ABSORBER_SALISBURY.md", "docs/C010_ABSORBER_RLC.md", "docs/C010_ABSORBER_CPA.md", "src/scripts/analysis/materials_absorber_tcmt.py", "src/scripts/analysis/materials_absorber_salisbury.py", "src/scripts/analysis/materials_absorber_rlc.py", "src/scripts/analysis/materials_absorber_cpa_twoport.py", "src/scripts/analysis/materials_absorber_cpa_input_sweep.py", "data/csv/c010_truncated_icosahedron_graph.csv", "data/csv/c010_tcmt_truncated_icosahedron.csv", "data/csv/c010_tcmt_truncated_icosahedron_minima.csv", "data/csv/c010_salisbury_screen.csv", "data/csv/c010_salisbury_screen_minima.csv", "data/csv/c010_rlc_surface_impedance.csv", "data/csv/c010_rlc_surface_impedance_minima.csv", "data/csv/c010_rlc_fit_summary.csv", "data/csv/c010_cpa_twoport_scan.csv", "data/csv/c010_cpa_twoport_minima.csv", "data/csv/c010_cpa_input_sweep.csv", "data/csv/c010_cpa_input_sweep_minima.csv", "data/csv/c010_zd_tcmt_spectral_comparison.csv", "data/csv/materials_baseline_metrics.csv", "data/csv/materials_embedding_benchmarks.csv"]
+status_token = "CLOSED"
+status_text = "Closed/Negative-Result (local obstruction; non-local design lane modeled)"
+status_date = "2026-03-11"
+summary = "The local absorber thesis is closed negatively: the assessor graph is 7 disconnected K6 cliques, so connected local lattices fail. A literature-calibrated non-local LC/Floquet design lane now reproduces the masked topology and clears the in-repo projection gate at design stage."
+where_stated = ["docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md", "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md", "crates/materials_core/src/nonlocal_metamaterial.rs", "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs", "crates/algebra_analysis/src/boxkites.rs", "crates/algebra_analysis/src/reggiani.rs", "crates/algebra_analysis/src/crystal_bands.rs", "crates/algebra_analysis/src/homotopy_algebra.rs", "crates/optics_core/src/absorber_benchmark.rs", "crates/quantum_core/src/magnonic_crystal.rs", "crates/quantum_core/src/tight_binding.rs", "crates/cosmology_core/src/sersic.rs", "data/csv/c010_nonlocal_material_calibrations.csv", "data/csv/sedenion_box_kites_clustered.csv", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c010_c011_verifier_script.py", "src/verification/verify_c010_c011_theses.py", "papers/MANIFEST.toml"]
 source_markdown = "docs/claims/by_domain/spectral.md"
 source_line = 11
 

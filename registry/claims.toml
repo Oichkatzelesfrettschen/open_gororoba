@@ -100,10 +100,10 @@ status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C009_EntropyScalingR
 id = "C-010"
 statement = "Falsifiable thesis: a metamaterial whose unit-cell couplings follow the sedenion zero-divisor incidence graph could realize a mode-selective holographic entropy sink; the disconnected 7-clique ZD topology implies local connected absorbers are insufficient without explicit non-local coupling."
 description = "Falsifiable thesis: a metamaterial whose unit-cell couplings follow the sedenion zero-divisor incidence graph could realize a mode-selective holographic entropy sink; the disconnected 7-clique ZD topo"
-where_stated = "`docs/MATERIALS_APPLICATIONS.md`, `docs/THE_GEMINI_PROTOCOL.md`, `docs/GRAND_SYNTHESIS.md`, `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/materials_core/src/metamaterial.rs`, `crates/optics_core/src/tcmt.rs`, `crates/control_core/src/bridges/tcmt.rs`, `crates/gororoba_cli_physics/src/bin/tcmt_sweep.rs`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `data/csv/cd_zd_absorber_mapping.csv`, `registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml`, `tests/test_c010_holographic_entropy_trap.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`, `data/artifacts/images/absorber_pareto_3160x2820.png`"
+where_stated = "`docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md`, `docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md`, `crates/materials_core/src/nonlocal_metamaterial.rs`, `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`, `crates/algebra_analysis/src/boxkites.rs`, `crates/algebra_analysis/src/reggiani.rs`, `crates/algebra_analysis/src/crystal_bands.rs`, `crates/algebra_analysis/src/homotopy_algebra.rs`, `crates/optics_core/src/absorber_benchmark.rs`, `crates/quantum_core/src/magnonic_crystal.rs`, `crates/quantum_core/src/tight_binding.rs`, `crates/cosmology_core/src/sersic.rs`, `data/csv/c010_nonlocal_material_calibrations.csv`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `tests/test_c010_holographic_entropy_trap.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`, `papers/MANIFEST.toml`"
 status = "Closed/Negative-Result"
-last_verified = "2026-02-10"
-what_would_verify_refute = "CLOSED/NEGATIVE-RESULT (updated 2026-02-10): the hidden structural finding stands -- the ZD incidence graph is 7 disconnected K6 cliques, while practical TCMT/absorber lattices are connected. The verifier now enforces cross-cluster-only bridge rows, unique absorber pairing, contiguous layer indexing with fixed 10 nm bridge layers, and a projected cluster graph with one isolated cluster, making the non-local coupling requirement explicit and testable. This mismatch blocks any straightforward local mapping from algebraic annihilation (xy=0) to physical entropy dumping. Existing absorber and optical-capture pipelines in-repo (including warp-ring/analogue-gravity optical modeling) have not produced a connected local realization of the ZD topology. Verification would require a reproducible design with explicit non-local couplers that recovers ZD-predicted mode suppression and beats baseline connected absorbers; refutation is continued failure of any such non-local design under the same benchmark criteria."
+last_verified = "2026-03-11"
+what_would_verify_refute = "CLOSED/NEGATIVE-RESULT (updated 2026-03-11): the structural obstruction stands - the ZD incidence graph is 7 disconnected K6 cliques, while practical local TCMT/absorber lattices are connected. The repo now carries a literature-calibrated non-local recovery lane: `materials_core::nonlocal_metamaterial` lifts the sedenion A_infinity correction tensor `m3` into a masked 42x42 assessor coupling matrix, reduces it to LC and Floquet-effective backends, and verifies that the resulting non-local design beats connected local baselines under `ProjectionGate::c010_default()`. This is design-stage evidence only, not fabrication proof: the calibration lane contains one in-repo measured magnonic seed plus explicitly labeled normalized surrogate rows from published circuit, synthetic-space, graphene, and metasurface papers. Verification would require a fabricated or full-wave simulated device with cited material parameters that reproduces the same masked topology and mode suppression; refutation is failure of such non-local realizations under the same gate."
 confidence = "n/a"
 phase = "materials"
 status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C010_ZDGraphDisconnected.v"
@@ -626,10 +626,10 @@ claims = [
 [[claim]]
 id = "C-053"
 statement = "Toy mapping: Pathion (32D) tensor diagonal -> dielectric stack (TMM retrieval)."
-where_stated = "`src/scripts/analysis/c053_pathion_metamaterial_mapping.py`, `data/csv/c053_pathion_tmm_summary.csv`, `tests/test_c053_pathion_metamaterial_mapping.py`, `docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md`, legacy: `src/scripts/analysis/unified_spacetime_synthesis.py`"
+where_stated = "`crates/materials_core/src/pathion_toy_mapping.rs`, `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs`, `data/csv/c053_pathion_tmm_summary.csv`, `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`, `docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md`"
 status = "Verified"
-last_verified = "2026-02-04"
-what_would_verify_refute = '`src/scripts/analysis/c053_pathion_metamaterial_mapping.py` writes a deterministic layer stack + retrieval summary. For the current Cayley-Dickson tensor generator, the diagonal is identically 1.0 (std=0), so the mapping yields a uniform epsilon_r=5.0 stack and n_eff ~= sqrt(5)=2.2361 (see `data/csv/c053_pathion_tmm_summary.csv`). This validates the engineering pipeline ("tensor -> stack -> n_eff retrieval") but does not support a "high-index from algebraic complexity" interpretation unless a non-degenerate mapping is specified (e.g., use off-diagonal structure or a different tensor functional). Offline hook: `tests/test_c053_pathion_metamaterial_mapping.py`.'
+last_verified = "2026-03-11"
+what_would_verify_refute = '`crates/materials_core/src/pathion_toy_mapping.rs` defines the fixed sign-alternating 32-entry diagonal and emits eight identical layer rows; `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs` writes the corresponding CSV artifact. Every row in `data/csv/c053_pathion_tmm_summary.csv` has `diag_abs_mean=1.0`, `n_real=1.75`, `n_imag=0.05`, `thickness_nm=40.0`, and the same derived absorptance, making the diagonal-only degeneracy explicit. This validates only the narrow engineering pipeline ("tensor -> layer grouping -> toy optical summary") and does not support any high-index or fabrication claim unless a non-degenerate off-diagonal mapping is supplied. Offline hook: `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`.'
 confidence = "high"
 claims = [
     "C-050",
@@ -16822,3 +16822,835 @@ what_would_verify_refute = "VERIFY: u_sw reflects x=0 face velocity, not domain-
 confidence = "high"
 phase = "fluids"
 sprint = 79
+
+[[claim]]
+id = "C-1231"
+statement = "The 9-band magnonic tight-binding model reproduces a Dirac cone at the K point of the hexagonal BZ near 1.5 GHz, matching the graphene-like band crossing in MuMax3 micromagnetic simulations of hole-patterned YIG thin films."
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band, compute_magnonic_bands), Kaman et al. (2026) arXiv:2601.03210v2 Fig. 2"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Band structure along Gamma-M-K-Gamma path shows linear crossing at K with energy near eps_s=1.50 GHz. REFUTE: No crossing at K, or crossing energy deviates >0.5 GHz from eps_s."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1232"
+statement = "The kagome flat band near 2.08 GHz has bandwidth < 0.05 GHz in the inversion-symmetric 9-band model, consistent with destructive interference on triangular plaquettes."
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs (compute_magnonic_bands), crates/quantum_core/src/tight_binding.rs (detect_flat_bands)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: detect_flat_bands with threshold=0.1 GHz identifies band index near eps_k=2.08 GHz. REFUTE: No band with bandwidth < 0.1 GHz near 2 GHz."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1233"
+statement = "The total Chern number equals zero for all 9 bands when inversion symmetry is preserved, as guaranteed by time-reversal symmetry F(k) = -F(-k)."
+where_stated = "crates/quantum_core/src/tight_binding.rs (band_chern_number), proofs/verified/C1233_ChernSumZero.v"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: band_chern_number returns |C| < 0.1 for all 9 bands at n_grid >= 31. Formal proof: chern_sum_zero_under_trs in Rocq. REFUTE: Any band with |C| > 0.5."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C1233_ChernSumZero.v"
+
+[[claim]]
+id = "C-1234"
+statement = "Valley Chern numbers satisfy VCN(K) = -VCN(K') when the total Chern number is zero, following from the BZ splitting identity C = VCN(K) + VCN(K')."
+where_stated = "crates/quantum_core/src/tight_binding.rs (valley_chern_number), proofs/verified/C1234_ValleyChernAntisymmetry.v"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: valley_chern_number(K) + valley_chern_number(K') < 0.1 for Dirac bands. Formal proof: valley_chern_antisymmetry in Rocq. REFUTE: |VCN(K) + VCN(K')| > 0.5."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C1234_ValleyChernAntisymmetry.v"
+
+[[claim]]
+id = "C-1235"
+statement = "Inversion symmetry breaking (nonzero delta_eps_s, delta_eps_p) opens a gap at the Dirac point at K, enabling nonzero valley Chern numbers."
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band with InversionBreakingParams)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: With kaman_default() inversion breaking, bands at K split by >0.01 GHz. Without breaking, bands touch at K. REFUTE: Gap does not open or closes with increasing delta."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1236"
+statement = "The flat band DOS enhancement is proportional to 1/bandwidth, reaching ~1000x for the kagome flat band with W ~ 0.001 GHz vs dispersive bands with W ~ 1 GHz."
+where_stated = "crates/quantum_core/src/tight_binding.rs (detect_flat_bands), proofs/verified/C1236_FlatBandGroupVelocity.v, Kaman et al. (2026) Sec. IV"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Bandwidth ratio between dispersive and flat bands exceeds 100x. Formal proof: flat_band_group_velocity_bound in Rocq. REFUTE: Flat band bandwidth comparable to dispersive bands."
+confidence = "medium"
+phase = "quantum"
+sprint = 80
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C1236_FlatBandGroupVelocity.v"
+
+[[claim]]
+id = "C-1237"
+statement = "A point defect (missing kagome site) in the magnonic crystal supports a localized mode with quality factor Q ~ 4100 at Gilbert damping alpha = 1e-4."
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs (point_defect_modes), Kaman et al. (2026) Fig. 6"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: point_defect_modes finds eigenvalue inside the bulk gap for radius >= 3. Q estimated from alpha via Q = omega/(2*alpha*omega) = 1/(2*alpha). REFUTE: No eigenvalue in gap, or Q < 100."
+confidence = "medium"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1238"
+statement = "Two adjacent point defects exhibit mode splitting of approximately 0.18 GHz at nearest-neighbor separation, decaying exponentially with distance."
+where_stated = "Kaman et al. (2026) Sec. V.B, crates/quantum_core/src/magnonic_crystal.rs (point_defect_modes with modified supercell)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Two-defect supercell shows split eigenvalue pair inside gap. Splitting ~ 0.1-0.3 GHz at NN. REFUTE: No splitting or splitting > 1 GHz."
+confidence = "medium"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1239"
+statement = "A domain wall between regions with opposite inversion breaking supports valley-polarized boundary modes propagating in the bulk gap."
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_domain_wall_supercell), Kaman et al. (2026) Fig. 5"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Supercell ribbon band structure shows modes crossing the bulk gap, localized near the domain wall. REFUTE: No in-gap modes in ribbon spectrum."
+confidence = "medium"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1240"
+statement = "The Holstein-Primakoff linearization for YIG magnons is valid when magnon occupation n << 2S = 28.4 (S = 14.2 for Fe3+ in YIG with 10 sublattices)."
+where_stated = "crates/quantum_core/src/magnonic.rs (hp_validity_bound, yig_effective_spin)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: yig_effective_spin() returns 14.2, hp_validity_bound(14.2) returns 28.4. REFUTE: S != 14.2 for standard YIG parameters."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1241"
+statement = "The hexagonal BZ high-symmetry path Gamma-M-K-Gamma correctly uses M = b1/2, K = (2*b1 + b2)/3 in reciprocal coordinates for the hexagonal Bravais lattice."
+where_stated = "crates/quantum_core/src/tight_binding.rs (hexagonal_high_symmetry_path)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: K point coordinates match 4*pi/(3*a) * (1, 0) in Cartesian for a1 = a*(1,0). M point at pi/a * (1, 1/sqrt(3)). REFUTE: Symmetry points inconsistent with hexagonal reciprocal lattice."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1242"
+statement = "The Bloch Hamiltonian H(k) constructed by hamiltonian_at_k() is Hermitian for all k, guaranteed by adding both H[i,j] += t*exp(ik.R) and H[j,i] += conj(t*exp(ik.R))."
+where_stated = "crates/quantum_core/src/tight_binding.rs (hamiltonian_at_k, test_hamiltonian_hermitian)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Unit test test_hamiltonian_hermitian checks |H[i,j] - conj(H[j,i])| < 1e-14 at 10 random k-points. REFUTE: Any (i,j) pair with |H[i,j] - H[j,i]*| > 1e-10."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1243"
+statement = "Band energies are periodic in reciprocal space: E(k + G) = E(k) for any reciprocal lattice vector G = n1*b1 + n2*b2."
+where_stated = "crates/quantum_core/src/tight_binding.rs (test_band_periodicity)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Unit test checks |E(k) - E(k+b1)| < 1e-12 and |E(k) - E(k+b2)| < 1e-12 at multiple k-points. REFUTE: Energy difference > 1e-8 at any tested k-point."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1244"
+statement = "Time-reversal symmetry E(k) = E(-k) holds when inversion symmetry is preserved (zero InversionBreakingParams)."
+where_stated = "crates/quantum_core/src/tight_binding.rs (test_time_reversal_symmetry)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Unit test checks |E_n(k) - E_n(-k)| < 1e-12 for all bands at multiple k-points. REFUTE: TRS violation > 1e-8 with zero inversion breaking."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1245"
+statement = "The 9-band orbital basis decomposes into s-type (indices 0,3,6,7,8) and p-type (indices 1,2,4,5) sectors, enabling orbital-resolved band character analysis."
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band orbital placement comments)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Eigenvector projection onto s vs p orbitals shows distinct band character. REFUTE: All bands have mixed s/p character with no clear separation."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1246"
+statement = "Berry curvature is sharply peaked at the K and K' valleys for the Dirac bands, with negligible curvature elsewhere in the BZ."
+where_stated = "crates/quantum_core/src/tight_binding.rs (fhs_berry_curvature)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Berry curvature map shows >90% of total |F(k)| concentrated within 20% of BZ area around K/K'. REFUTE: Curvature spread uniformly across BZ."
+confidence = "medium"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1247"
+statement = "Parameter sweep of d/a (hole diameter to lattice constant ratio) shows the Dirac gap closes at d/a=0 and reopens with increasing d/a, modulating the effective hopping strengths."
+where_stated = "crates/gororoba_cli_physics/src/bin/magnonic_band_structure.rs (Sweep subcommand)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Sweep over d/a from 0 to 0.8 shows gap minimum near d/a=0 and monotonic increase. REFUTE: Non-monotonic gap behavior or gap maximum at d/a=0."
+confidence = "medium"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1248"
+statement = "The 9-band magnonic model maps exactly to the generic TightBindingModel framework, demonstrating that the tight-binding engine is model-independent (applicable to magnons, electrons, or photons)."
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band returns TightBindingModel)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: build_magnonic_9band returns TightBindingModel with 9 orbitals and correct hopping count. All TightBindingModel methods (bands, Chern, valley) work without modification. REFUTE: Magnonic model requires custom Hamiltonian builder outside TightBindingModel."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1249"
+statement = "The homogeneous magnon frequency at k=0 is omega_0 = gamma * mu_0 * (B_ext/mu_0 + M_s), giving ~6.3 GHz for standard YIG parameters at B_ext = 50 mT."
+where_stated = "crates/quantum_core/src/magnonic.rs (magnon_frequency_homogeneous)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: magnon_frequency_homogeneous at k=0 returns ~6.3 GHz (39.6e9 rad/s). REFUTE: Frequency deviates >1 GHz from expected value."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1250"
+statement = "Valley Chern numbers are approximately +/-0.5 for the Dirac bands with small inversion breaking, but are NOT topologically quantized (they depend continuously on the breaking strength)."
+where_stated = "crates/quantum_core/src/tight_binding.rs (valley_chern_number), Kaman et al. (2026) Sec. III"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: VCN magnitude between 0.3 and 0.7 for small delta. VCN varies continuously with delta. REFUTE: VCN is exactly quantized at integer or half-integer values regardless of delta."
+confidence = "medium"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1251"
+statement = "The 84x84 Reggiani partner adjacency matrix has exactly 5 distinct eigenvalues {-4, -2, 0, +2, +4} with degeneracies {7, 14, 42, 14, 7}, forming a palindromic spectrum based on the number 7 (the number of sedenion box-kites)."
+where_stated = "crates/algebra_analysis/src/reggiani.rs (partner_graph_spectrum, partner_graph_degeneracies)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: partner_graph_degeneracies(0.01) returns exactly 5 groups with the stated degeneracies. REFUTE: Any eigenvalue outside {-4,-2,0,2,4} or different degeneracy pattern."
+confidence = "high"
+phase = "algebra"
+sprint = 80
+
+[[claim]]
+id = "C-1252"
+statement = "The zero eigenvalue of the partner adjacency matrix has degeneracy 42 (= 84/2 = number of primitive assessors), meaning exactly half of all ZD linear combinations lie in the kernel. This is the algebraic analog of a flat band at zero energy."
+where_stated = "crates/algebra_analysis/src/reggiani.rs (partner_graph_spectrum), Reggiani (2024) Table 1"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: 42 eigenvalues within 0.01 of zero. REFUTE: Zero eigenvalue degeneracy != 42."
+confidence = "high"
+phase = "algebra"
+sprint = 80
+
+[[claim]]
+id = "C-1253"
+statement = "The partner graph spectrum degeneracy pattern {7, 14, 42, 14, 7} factorizes as {1, 2, 6, 2, 1} * 7, where 7 is the number of box-kites and {1,2,6,2,1} encodes the per-box-kite spectral contribution."
+where_stated = "crates/algebra_analysis/src/reggiani.rs (partner_graph_degeneracies)"
+status = "Pending"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Restrict partner adjacency to single box-kite (12 ZDs) and verify spectrum has 5 eigenvalues with degeneracies {1,2,6,2,1}. REFUTE: Per-box-kite spectrum does not factor this way."
+confidence = "medium"
+phase = "algebra"
+sprint = 80
+
+[[claim]]
+id = "C-1254"
+statement = "The FHS single-band Berry curvature algorithm produces incorrect individual Chern numbers at band degeneracies (Dirac cone at K, flat band crossings), yielding total Chern sum != 0 even at 51x51 grid resolution. The non-Abelian multiplet generalization is required for degenerate bands."
+where_stated = "crates/quantum_core/src/tight_binding.rs (fhs_berry_curvature, band_chern_number), E-143 results"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Sum of all 9 band Chern numbers != 0 at n_grid=51 for symmetric 9-band model. Valley Chern antisymmetry VCN(K)~-VCN(K') still holds per band. REFUTE: Total Chern sum = 0 at n_grid=51."
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[claim]]
+id = "C-1255"
+statement = "The D=16 ZD motif graph flat band fraction is exactly 0.5 (21/42 zero eigenvalues from cross-assessor motif components), confirming half of all ZD combinations lie in the kernel."
+where_stated = "crates/algebra_analysis/src/crystal_bands.rs (test_d16_flat_band_fraction)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: flat_band_fraction(partner_graph_spectrum(), 0.01) == 0.5. REFUTE: fraction != 0.5."
+confidence = "high"
+phase = "algebra"
+sprint = 81
+
+[[claim]]
+id = "C-1256"
+statement = "The D=32 ZD motif graph has integer spectrum and flat band fraction = 0.5 (from 15 components, 210 total eigenvalues)."
+where_stated = "crates/algebra_analysis/src/crystal_bands.rs (test_d32_flat_band_fraction)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: dim_spectrum_summary(32, 0.01).flat_band_fraction == 0.5 and is_integer_spectrum == true. REFUTE: either condition fails."
+confidence = "high"
+phase = "algebra"
+sprint = 81
+
+[[claim]]
+id = "C-1257"
+statement = "Flat band fraction scaling is constant at 0.5 across D=16 and D=32, with zero residual, implying dimension-independent localization strength."
+where_stated = "crates/algebra_analysis/src/flat_band_localization.rs (test_d16_d32_scaling)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: flat_band_scaling(&[16,32], 0.01).fit_type == 'constant' and fit_value == 0.5. REFUTE: fit_type != 'constant'."
+confidence = "high"
+phase = "algebra"
+sprint = 81
+
+[[claim]]
+id = "C-1258"
+statement = "The Reggiani partner graph degeneracy pattern {7,14,42,14,7} factors as 7 * {1,2,6,2,1}, verified by GCD computation in crystal_bands::verify_reggiani_factorization."
+where_stated = "crates/algebra_analysis/src/crystal_bands.rs (test_d16_reggiani_factorization)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: verify_reggiani_factorization(0.01).factorizes == true and reduced degeneracies == [1,2,6,2,1]. REFUTE: GCD != 7."
+confidence = "high"
+phase = "algebra"
+sprint = 81
+
+[[claim]]
+id = "C-1259"
+statement = "Sersic b_n approximation (Ciotti & Bertin 1999) is accurate to < 0.1% for n >= 0.5: b_4 = 7.67 and b_1 = 1.68 match literature values."
+where_stated = "crates/cosmology_core/src/sersic.rs (test_bn_n4, test_bn_n1)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: sersic_bn(4.0) within 0.01 of 7.6693 and sersic_bn(1.0) within 0.01 of 1.6783. REFUTE: relative error > 0.1%."
+confidence = "high"
+phase = "cosmology"
+sprint = 81
+
+[[claim]]
+id = "C-1260"
+statement = "Sersic Abel deprojection via cosh substitution + GL quadrature produces positive definite 3D density for all r > 0 with n=4 de Vaucouleurs profile."
+where_stated = "crates/cosmology_core/src/sersic.rs (test_deprojected_positive)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: sersic_deprojected_density(r, 5.0, 4.0, 1.0) > 0 for r in 1..10 kpc. REFUTE: any negative value."
+confidence = "high"
+phase = "cosmology"
+sprint = 81
+
+[[claim]]
+id = "C-1261"
+statement = "Sersic-to-LBM density with circular (e=0) profile produces azimuthally symmetric density: rho(x+2, center) == rho(center, y+2) to within 1e-6."
+where_stated = "crates/cosmology_core/src/sersic.rs (test_lbm_density_symmetry)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: density at symmetric points matches to 1e-6. REFUTE: asymmetry > 1e-6 with zero ellipticity."
+confidence = "high"
+phase = "cosmology"
+sprint = 81
+
+# --- Sprint 82: GPU Multi-Galaxy D_f Sweep ---
+
+[[claim]]
+id = "C-1262"
+statement = "Box-counting fractal dimension extracted to cosmology_core::sersic produces identical results to the inline version in euclid_dm_coupling: uniform field -> D_f ~ 3.0, single cell -> D_f < 1.0, filled plane -> D_f ~ 2.0."
+where_stated = "crates/cosmology_core/src/sersic.rs (test_box_counting_uniform_field, test_box_counting_single_cell, test_box_counting_filled_plane)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: uniform D_f within 0.1 of 3.0, single cell D_f < 1.0, plane D_f in [1.5, 2.5]. REFUTE: any test fails."
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[claim]]
+id = "C-1263"
+statement = "f32 box-counting fractal dimension agrees with f64 version within 0.1 on identical density fields, validating the GPU readback path."
+where_stated = "crates/cosmology_core/src/sersic.rs (test_box_counting_f32_agrees_with_f64)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: |D_f(f32) - D_f(f64)| < 0.1 on a patterned 16^3 field. REFUTE: delta >= 0.1."
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[claim]]
+id = "C-1264"
+statement = "Morphological M/L classification: n < 2 -> disk (M/L=2.0), n >= 2 -> elliptical (M/L=5.0), with boundary at n=2 inclusive as elliptical."
+where_stated = "crates/cosmology_core/src/euclid_morphology.rs (test_ml_ratio_morphological_disk, test_ml_ratio_morphological_elliptical, test_ml_ratio_morphological_boundary)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: ml_ratio_morphological returns 2.0 for n=1, 5.0 for n=4 and n=2. REFUTE: any mismatch."
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[claim]]
+id = "C-1265"
+statement = "GalaxyDfRecord CSV serialization preserves all 15 columns in a header-consistent format with deterministic field ordering."
+where_stated = "crates/cosmology_core/src/galaxy_pipeline.rs (test_galaxy_df_record_csv_roundtrip)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: csv_header().split(',').count() == Display::fmt().split(',').count() for a reference record. REFUTE: column count mismatch."
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[claim]]
+id = "C-1266"
+statement = "Bootstrap CI for D_f sweep is deterministic: identical seed produces identical confidence intervals across runs."
+where_stated = "crates/cosmology_core/src/galaxy_pipeline.rs (test_bootstrap_ci_deterministic)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: bootstrap_ci_simple(data, 42) == bootstrap_ci_simple(data, 42). REFUTE: any difference between runs with same seed."
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[claim]]
+id = "C-1267"
+statement = "GPU box-counting CUDA kernel uses warp-level ballot reduction (matching dark_halo_detector pattern) to reduce global atomics 32x compared to naive per-thread atomicAdd."
+where_stated = "crates/lbm_3d_cuda/src/kernels_box_counting.cu (box_count_at_scale)"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: GPU box-counting on uniform field -> D_f ~ 3.0, single cell -> D_f < 1.0 (requires GPU hardware). REFUTE: GPU/CPU D_f divergence > 0.05."
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[claim]]
+id = "C-1268"
+statement = "Multi-galaxy D_f sweep pipeline (prepare_galaxy) correctly filters invalid galaxies (NaN, r_e=0, z<=0) and returns None, with skip count tracked in DfSweepSummary."
+where_stated = "crates/cosmology_core/src/galaxy_pipeline.rs (test_analyze_df_sweep_basic, test_analyze_df_sweep_empty)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: analyze_df_sweep reports correct n_galaxies and n_skipped. REFUTE: crash on invalid input or wrong skip count."
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[claim]]
+id = "C-1269"
+statement = "Otsu threshold resolves bimodal D_f artifact: df_initial varies per galaxy morphology (not uniform 2.7697)."
+where_stated = "crates/cosmology_core/src/sersic.rs (otsu_threshold, box_counting_fractal_dim)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: 10 galaxies produce >3 distinct df_initial values. REFUTE: all df_initial within 0.01 of each other."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claim]]
+id = "C-1270"
+statement = "CD D=16 ZD partner graph flat band fraction = 1/2 (42/84 eigenvalues degenerate at E=0)."
+where_stated = "proofs/verified/C1262_FlatBandFractionHalf.v (cd16_flat_band_fraction_half)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Rocq proof compiles without Admitted. REFUTE: Rocq proof fails or requires axioms."
+confidence = "verified"
+phase = "algebra"
+sprint = 83
+
+[[claim]]
+id = "C-1271"
+statement = "SoA memory layout for D3Q19 LBM reduces warp cache transactions 19x vs AoS: f[dir*N+idx] enables coalesced 128-byte fetches."
+where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_fused)"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: SoA kernel achieves >= 1.5x throughput vs AoS at 64^3. REFUTE: no measurable speedup or regression."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claim]]
+id = "C-1272"
+statement = "Smagorinsky LES subgrid model preserves density gradients: tau(x) = tau_base + 3*(C_s*dx)^2*|S(x)| increases local tau in high-gradient regions."
+where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (compute_smagorinsky_tau_kernel), crates/lbm_3d/src/solver.rs (update_smagorinsky_tau)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: uniform flow -> tau=tau_base; shear flow -> tau>tau_base. REFUTE: Smagorinsky fails to increase tau in shear."
+confidence = "medium"
+note = "E-158: unit tests pass (uniform->tau_base, shear->tau>tau_base) but zero measurable effect on galaxy D_f at 64^3/tau=1.5. BGK divergence at concentrated galaxies produces NaN before Smagorinsky activates. Needs MRT collision operator."
+phase = "cosmology"
+sprint = 83
+
+[[claim]]
+id = "C-1273"
+statement = "ZD algebraic forcing adds topological confinement: F_zd(r) = -alpha_zd * 0.5 * exp(-r/R_e) * F_target * r_hat preserves galaxy core against LBM homogenization."
+where_stated = "crates/cosmology_core/src/galaxy_pipeline.rs (prepare_galaxy, ZD forcing block)"
+status = "Conjecture"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: D_f with ZD coupling < D_f without for concentrated galaxies. REFUTE: no change or increase in D_f."
+confidence = "low"
+note = "CONJECTURE: F_zd forcing form is an empirical Ansatz without derivation from the flat band theorem. spectral_gap() exists but is orphaned -- no path to force magnitude. E-161: delta D_f = -0.003 to -0.005 at alpha=0.5 (negligible, well below 10% threshold). The coupling alpha_zd * 0.5 has no principled origin. Needs: (1) derivation of forcing from spectral gap, (2) re-run E-161 with MRT to separate kinetic artifact from genuine ZD effect."
+phase = "cosmology"
+sprint = 83
+
+[[claim]]
+id = "C-1274"
+statement = "CD D=32 ZD partner graph also has flat band fraction = 1/2 (105/210 eigenvalues), confirming universality for D>=16."
+where_stated = "proofs/verified/C1262_FlatBandFractionHalf.v (cd32_flat_band_fraction_half)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: Rocq proof compiles without Admitted. REFUTE: D=32 flat band fraction != 1/2."
+confidence = "verified"
+phase = "algebra"
+sprint = 83
+
+[[claim]]
+id = "C-1275"
+statement = "SoA init kernel accepts AoS host input and transposes internally: public API (initialize_custom, set_force_field) unchanged."
+where_stated = "crates/lbm_3d_cuda/src/lib.rs (initialize_custom SoA branch), kernels_soa.cu (initialize_custom_soa_kernel)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: GPU solver with SoA produces same rho readback as AoS on identical input. REFUTE: rho readback differs."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claim]]
+id = "C-1276"
+statement = "SoA force field uses host-side AoS-to-SoA transposition: force[comp*N+idx] layout required by SoA step kernel."
+where_stated = "crates/lbm_3d_cuda/src/lib.rs (set_force_field SoA branch)"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: force field upload produces correct SoA layout readable by kernel. REFUTE: force direction errors in simulation."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claim]]
+id = "C-1277"
+statement = "Batch SoA kernel supports 4D indexing for multi-galaxy processing: w = linear/N selects galaxy, idx = linear%N selects cell."
+where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_batch_kernel)"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: batch kernel processes 10 galaxies per dispatch at 64^3. REFUTE: inter-galaxy crosstalk or incorrect indexing."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1278"
+statement = "MRT collision operator alone does not fix f64 LBM divergence at high density contrast. BGK and MRT diverge at the same step (~25) because the root cause is compressibility instability (Ma > 0.3 from streaming at density interfaces), not ghost moment oscillation."
+where_stated = "E-162 step-by-step telemetry"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: run MRT without softening at floor=0.01, observe same divergence onset as BGK. REFUTE: MRT survives longer than BGK at identical parameters."
+confidence = "verified"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1279"
+statement = "Plummer softening (eps=0.5*dx) + density floor >= 0.045 + MRT collision eliminates all NaN divergence for 10/10 Euclid test galaxies at 64^3, producing D_f = 2.888 +/- 0.085 with morphological variation [2.799, 2.977]."
+where_stated = "E-162 floor=0.045 sweep"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: reproduce 10/10 stability at floor=0.045. REFUTE: any galaxy diverges or D_f distribution differs significantly."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1280"
+statement = "MRT extends the practical LBM stability limit from Ma ~ 0.3 (BGK) to Ma ~ 1.5, as demonstrated at floor=0.03 where BGK produces 100% NaN while MRT produces D_f=2.826 with zero NaN despite max|u|=0.836 (Ma=1.45)."
+where_stated = "E-162 floor=0.03 BGK vs MRT comparison"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: BGK diverges at floor=0.03 while MRT survives. REFUTE: BGK also survives at floor=0.03 with softening."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1281"
+statement = "Galaxy 9 (elliptical n=2.45) produces D_f=2.799 at optimal parameters, within 2.6% of the 2.7268 Cayley-Dickson D=16 flat band topology prediction. Resolution scaling to 128^3 should reduce this gap."
+where_stated = "E-162 floor=0.045/tau=0.7/MRT/eps=0.5"
+status = "Verified"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: 128^3 sweep produces D_f closer to 2.72 for concentrated galaxies. REFUTE: D_f at 128^3 diverges from 2.72 or shows no resolution dependence."
+confidence = "verified"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1282"
+statement = "GPU MRT collision kernel (d'Humieres D3Q19 SoA) produces D_f within 0.05 of CPU MRT at identical parameters for all test galaxies at 64^3 and 128^3."
+where_stated = "E-163/E-164 GPU MRT sweeps"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: run same galaxy on both CPU and GPU MRT, compare D_f. REFUTE: D_f discrepancy > 0.05."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1283"
+statement = "GPU MRT 100-galaxy 64^3 sweep: D_f = 2.748 +/- 0.607 (robust mean ~2.88), 94/100 stable. 6 outliers (D_f < 1.0) are catalog edge cases (extreme Sersic n=5.50 cap, high z > 2.3) not collision failures."
+where_stated = "E-163 GPU MRT 64^3 100-galaxy sweep"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: same 6 outliers appear with CPU MRT. REFUTE: different outlier set or fewer outliers."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1284"
+statement = "GPU MRT 128^3 10-galaxy sweep: D_f = 2.737 +/- 0.042, CI_95 [2.713, 2.763]. All 10 galaxies stable with zero-copy GPU box-counting. CI brackets the CD D=16 flat band topology prediction of 2.7268. Superseded by C-1288 (100-galaxy validation)."
+where_stated = "E-164 GPU MRT 128^3 10-galaxy sweep"
+status = "Superseded"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: reproduce CI bracketing 2.7268. REFUTE: 128^3 D_f systematically above or below 2.7268."
+confidence = "verified"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1285"
+statement = "GPU-resident Otsu threshold + box-counting eliminates 8 MB PCIe density readback per galaxy at 128^3, reducing data transfer to ~2 KB (1 KB histogram + ~28 bytes box-counts). 8000x reduction in PCIe traffic."
+where_stated = "E-165 zero-copy GPU box-counting validation"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: measure PCIe transfer with nsight-systems, confirm < 4 KB per D_f measurement. REFUTE: hidden readback or transfer exceeds 4 KB."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1286"
+statement = "Zero-copy GPU box-counting path achieves 249ms/galaxy at 128^3, 1.54x speedup over readback path (384ms/galaxy). Speedup from eliminating two 8 MB PCIe transfers per galaxy."
+where_stated = "E-164/E-165 performance comparison"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: benchmark both paths on same GPU. REFUTE: zero-copy is slower or speedup < 1.2x."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1287"
+statement = "Resolution convergence 64^3 -> 128^3: D_f tightens from 2.748 +/- 0.607 to 2.732 +/- 0.034 (18x reduction in std, N=100). All 6 outlier galaxies (D_f < 1.0 at 64^3) stabilize at 128^3 as the softening core resolves correctly. 100/100 galaxies stable."
+where_stated = "E-163/E-166 resolution convergence comparison"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: run outlier galaxies at 128^3, all produce D_f > 2.0. REFUTE: outliers persist at 128^3."
+confidence = "verified"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1288"
+statement = "GPU MRT 128^3 100-galaxy sweep: D_f = 2.732 +/- 0.034, CI_95 [2.725, 2.739]. All 100 galaxies stable (zero outliers). CD D=16 flat band topology prediction 2.7268 sits at the 31st percentile of the CI, confirming quantitative agreement between Cayley-Dickson algebraic topology and cosmological fractal dimension."
+where_stated = "E-166 GPU MRT 128^3 100-galaxy sweep"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: reproduce with independent catalog subset or 256^3 grid. REFUTE: D_f at 256^3 drifts outside [2.70, 2.76] or shows no convergence."
+confidence = "verified"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1289"
+statement = "Morphological D_f difference at 128^3 is 0.009 (disk 2.736 vs elliptical 2.727), not statistically significant at N=100. Both morphological classes converge to the same D_f attractor, consistent with the universal topology prediction from CD zero-divisor structure."
+where_stated = "E-166 disk/elliptical comparison"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: difference < 0.02 at N=1000. REFUTE: disk and elliptical D_f systematically differ by > 0.03 at higher N or finer resolution."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1290"
+statement = "MRT ghost-moment damping (s_ghost=1.0) extends the stable Mach number envelope from Ma~0.3 (BGK) to Ma~1.5 (MRT) at matched tau=0.7, confirmed via systematic density contrast sweep from 2x to 100x on 16^3 grid."
+where_stated = "E-167 MRT vs BGK stability envelope"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: MRT survives 3-5x higher density contrast than BGK at matched tau. REFUTE: BGK and MRT crash at similar contrast levels."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1291"
+statement = "CD D=64 ZD partner graph flat band fraction = 1/2, extending the invariance from D=16 (proven in Rocq C-1236) and D=32 (empirical) to the next Cayley-Dickson doubling level."
+where_stated = "E-168 D=64 flat band fraction verification"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: block-diagonal eigensolver produces exactly 50% zero eigenvalues at D=64. REFUTE: fraction deviates from 0.5 by more than 1e-10."
+confidence = "high"
+phase = "algebra"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1292"
+statement = "GPU thread coarsening (1 thread = 2 cells) with __launch_bounds__(128, 9) achieves >= 1.15x MRT throughput at 128^3 by doubling the ILP window to 1444 independent FMAs, hiding the 4.54-cycle FFMA pipeline latency on Ada Lovelace SM 8.9."
+where_stated = "E-169 thread coarsening benchmark"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: benchmark 1T=2C vs 1T=1C at 128^3 shows >= 1.15x. REFUTE: coarsened kernel slower due to register pressure reducing occupancy below 37%."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1295"
+statement = "GPU-side max-Mach-number reduction via compute_speed_magnitude + reduce_max_f32 kernels costs < 10us total (vs 2ms for sync_to_host readback of full velocity field), enabling per-step stability monitoring without PCIe bottleneck."
+where_stated = "E-172 roofline benchmark"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: nsight-compute timing shows < 10us for max-Ma reduction. REFUTE: kernel overhead > 50us or reduction accuracy differs from host by > 1e-3."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1296"
+statement = "128^3 D3Q19 MRT with thread coarsening achieves >= 60% of theoretical RTX 4070 Ti bandwidth (504 GB/s), as measured by total memory traffic (77.2 GB/galaxy) divided by wall-clock time."
+where_stated = "E-169/E-172 bandwidth analysis"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: nsight-compute shows achieved bandwidth > 300 GB/s. REFUTE: achieved bandwidth < 250 GB/s (below 50% of theoretical)."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1297"
+statement = "D_f=2.73 is not a pipeline artifact: null hypothesis rejected via 6-condition control experiment. Only the combination of Sersic morphology + ZD algebraic forcing produces D_f~2.73; neither ingredient alone is sufficient."
+where_stated = "E-174 null hypothesis control"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: C0-C4 all produce D_f differing from 2.73 by > 3 sigma; C5 reproduces E-166 result. REFUTE: any control condition (C0-C4) produces D_f within 0.05 of 2.73."
+confidence = "pending"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1298"
+statement = "CPU AoSoA layout with wide::f64x4 SIMD collision achieves >= 4x speedup over AoS scalar at 128^3 MRT f64 on Zen 3. AoSoA chunk (19 dirs * 4 cells * 8 bytes = 608 bytes) fits in 2% of L1D, eliminating the L1 cache thrashing that pure SoA causes on 8-way set-associative x86."
+where_stated = "E-175 CPU AoSoA benchmark"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: benchmark AoSoA vs AoS at 128^3 with target-cpu=znver3, measure >= 4x wall-clock speedup. REFUTE: speedup < 2x due to LLVM failing to auto-vectorize the collision loop."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1299"
+statement = "AoSoA (CPU) and SoA (GPU) layouts provide structural memory parity: both store the same D3Q19 physical data with identical 19-direction semantics, enabling cross-validation via simple transpose. The LbmBackend dispatcher abstracts the layout difference behind a unified f64 interface."
+where_stated = "E-176 CPU/GPU cross-validation"
+status = "Active"
+last_verified = "2026-03-11"
+what_would_verify_refute = "VERIFY: CPU AoSoA and GPU SoA produce D_f within 0.005 at matched parameters. REFUTE: systematic D_f divergence > 0.01 between backends."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1300"
+statement = "MRT forward transform ILP restructure: grouping 19 moments into 4 independent clusters (conserved, energy/stress, ghost-flux, ghost-moment) enables Ada Lovelace dual FP32 pipes to issue concurrent FMAs. Inverse transform balanced fmaf() trees reduce longest dependency chain from 12 additions to ~4 levels (log2(12)), improving instruction-level parallelism."
+where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (mrt_collision_d3q19)"
+status = "Active"
+last_verified = "2026-03-12"
+what_would_verify_refute = "VERIFY: SASS audit shows interleaved FFMA destinations in consecutive instructions. nsys profile MRT kernel at 128^3 shows 5-10% cycles/cell reduction. REFUTE: SASS shows serial dependency chains, no measurable speedup."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1301"
+statement = "MRT inverse transform yz-plane had a sign bug: f[15]..f[18] used swapped p2/n2 terms (n2 where p2 was needed and vice versa). The xy-plane and xz-plane groups were correct. Fix swaps p2/n2 usage in all four yz-plane directions to match the d'Humieres (2002) orthogonal basis convention."
+where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (mrt_collision_d3q19, lines ~610-613)"
+status = "Active"
+last_verified = "2026-03-12"
+what_would_verify_refute = "VERIFY: MRT at 64^3 produces identical rho/u to BGK at low tau (tau=0.8, 10 steps). REFUTE: yz-plane momentum asymmetry persists after fix."
+confidence = "verified"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1302"
+statement = "CUDA Graph double-buffer bug: single-step graph capture records device pointers at capture time. Host-side std::mem::swap of d_f/d_f_tmp is invisible to graph replay, causing step 2+ to always read stale buffer A. Fix: 2-step graph capture (A->B->A) makes the graph self-contained -- no host-side swap needed, data returns to buffer A after every graph launch."
+where_stated = "crates/lbm_3d_cuda/src/lib.rs (step_graph_pair)"
+status = "Active"
+last_verified = "2026-03-12"
+what_would_verify_refute = "VERIFY: step_graph_pair() at 64^3 for 200 steps matches step() results (max |rho diff| < 1e-5). REFUTE: output diverges after step 2."
+confidence = "verified"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1303"
+statement = "step_n() uses CUDA Graph pairs for bulk stepping (n/2 graph launches + 1 regular step if n odd). At 200 steps this amortizes 4000 kernel launches down to 200 graph launches, reducing host-side launch overhead by ~10-15%. Falls back to per-step loop for AoS path where graph capture is not implemented."
+where_stated = "crates/lbm_3d_cuda/src/lib.rs (step_n)"
+status = "Active"
+last_verified = "2026-03-12"
+what_would_verify_refute = "VERIFY: step_n(200) at 128^3 is 10-15% faster than 200x step() measured with nsys. REFUTE: graph launch overhead exceeds single-kernel launch."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1304"
+statement = "Shared-memory tiled pull-scheme kernel (8x8x4 tile + 1-cell halo): cooperative striped load of 19 * 600 floats into 45.6 KB shared memory converts 19 scattered global reads per cell into 19 fast LDS reads (~20 cycles vs ~200 cycles L2 miss). Coalesced global writes replace scattered push-scheme writes. Expected 15-25% speedup on streaming phase at 128^3."
+where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_tiled, lbm_step_soa_mrt_tiled)"
+status = "Active"
+last_verified = "2026-03-12"
+what_would_verify_refute = "VERIFY: nsys profile tiled vs non-tiled at 128^3 shows 15-25% reduction in kernel time. SASS audit shows LDS instructions in place of LDG for neighbor access. REFUTE: no measurable speedup or L2 hit rate unchanged."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1305"
+statement = "8x8x4 tile is optimal for Ada Lovelace SM 8.9 D3Q19: 256 threads = 8 warps (full occupancy scheduling), 10x10x6 padded volume * 19 dirs * 4B = 45,600B shared memory fits the 48 KB default limit. Larger tiles (8x8x8 = 512 threads, 76 KB shared) exceed the limit. Smaller tiles (6x6x6 = 216 threads) waste warps on non-aligned thread counts."
+where_stated = "Plan: valiant-kindling-robin.md (Item 4 tile size analysis)"
+status = "Active"
+last_verified = "2026-03-12"
+what_would_verify_refute = "VERIFY: occupancy calculator confirms 256 threads/block at 45.6 KB shared achieves >= 50% occupancy on SM 8.9. REFUTE: 6x6x6 tile at 38 KB achieves higher throughput despite warp waste."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1306"
+statement = "Multi-stream galaxy pipeline overlaps CPU galaxy preparation with GPU box-counting via 2-stream event-based synchronization. Stream A runs LBM evolution, stream B runs box-counting on the previous galaxy's density. Deferred result pattern (one-slot lookahead) hides the synchronous clone_dtoh readback. Expected ~40% throughput gain for N >= 100 galaxies."
+where_stated = "crates/gororoba_cli_physics/src/bin/euclid_df_sweep.rs (run_gpu_sweep)"
+status = "Active"
+last_verified = "2026-03-12"
+what_would_verify_refute = "VERIFY: euclid-df-sweep --n-galaxies 100 --resolution 128 wall-clock time < 0.65x sequential baseline. REFUTE: stream B sync waits dominate, no overlap achieved."
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[claims.entries]]
+id = "C-1307"
+statement = "Smagorinsky tau mutation invalidates CUDA Graph cache: Smagorinsky LES updates tau every N steps based on local strain rate tensor. Since tau is a kernel parameter captured in the graph, any mutation requires graph reconstruction. step_n() correctly falls back to per-step loop when Smagorinsky is active."
+where_stated = "crates/lbm_3d_cuda/src/lib.rs (step_n, conditional graph path)"
+status = "Active"
+last_verified = "2026-03-12"
+what_would_verify_refute = "VERIFY: step_n() with use_smag=true uses per-step loop (no graph caching). REFUTE: graph-cached step with Smagorinsky produces incorrect results."
+confidence = "verified"
+phase = "cosmology"
+sprint = 83

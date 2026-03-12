@@ -3,7 +3,7 @@
 
 [claims_tasks]
 authoritative = true
-updated = "2026-02-10"
+updated = "2026-03-11"
 source_markdown = "docs/CLAIMS_TASKS.md"
 table_count = 3
 task_count = 213
@@ -348,8 +348,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "CLOSED/NEGATIVE-RESULT: lock C-010 to reproducible topology evidence and an explicit non-local coupling requirement."
-output_artifacts = ["docs/external_sources/OPEN_CLAIMS_SOURCES.md", "docs/GRAND_SYNTHESIS.md", "data/csv/sedenion_box_kites_clustered.csv", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "data/csv/cd_zd_absorber_mapping.csv", "registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c010_c011_verifier_script.py", "src/verification/verify_c010_c011_theses.py", "data/artifacts/images/absorber_pareto_3160x2820.png"]
-output_artifacts_raw = "`docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `docs/GRAND_SYNTHESIS.md`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `data/csv/cd_zd_absorber_mapping.csv`, `registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml`, `tests/test_c010_holographic_entropy_trap.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`, `data/artifacts/images/absorber_pareto_3160x2820.png`"
+output_artifacts = ["docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md", "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md", "crates/materials_core/src/nonlocal_metamaterial.rs", "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs", "data/csv/c010_nonlocal_material_calibrations.csv", "data/csv/sedenion_box_kites_clustered.csv", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c010_c011_verifier_script.py", "src/verification/verify_c010_c011_theses.py"]
+output_artifacts_raw = "`docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md`, `docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md`, `crates/materials_core/src/nonlocal_metamaterial.rs`, `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`, `data/csv/c010_nonlocal_material_calibrations.csv`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `tests/test_c010_holographic_entropy_trap.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`"
 source_line = 35
 
 [[task]]
@@ -579,97 +579,97 @@ source_line = 50
 
 [[task]]
 id = "CTASK-0032"
+claim_id = "C-453"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 32
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Ingest hypercomplex species taxonomy and derived claim candidates into canonical claim/ticket lanes with verify-refute hooks."
+output_artifacts = ["reports/hypercomplex_species_taxonomy_2026_02_14.toml", "reports/hypercomplex_taxonomy_claims_2026_02_14.toml", "reports/sensational_primary_source_mapping_2026_02_14.toml"]
+output_artifacts_raw = "`reports/hypercomplex_species_taxonomy_2026_02_14.toml`, `reports/hypercomplex_taxonomy_claims_2026_02_14.toml`, `reports/sensational_primary_source_mapping_2026_02_14.toml`"
+source_line = 51
+
+[[task]]
+id = "CTASK-0033"
 claim_id = "C-053"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
-order_index = 32
+order_index = 33
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Add dedicated sources index + deterministic toy artifact + offline unit test (diagonal-only degeneracy made explicit)."
-output_artifacts = ["docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md", "src/scripts/analysis/c053_pathion_metamaterial_mapping.py", "data/csv/c053_pathion_tmm_summary.csv", "tests/test_c053_pathion_metamaterial_mapping.py"]
-output_artifacts_raw = "`docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md`, `src/scripts/analysis/c053_pathion_metamaterial_mapping.py`, `data/csv/c053_pathion_tmm_summary.csv`, `tests/test_c053_pathion_metamaterial_mapping.py`"
-source_line = 56
+output_artifacts = ["docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md", "crates/materials_core/src/pathion_toy_mapping.rs", "crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs", "data/csv/c053_pathion_tmm_summary.csv", "crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs"]
+output_artifacts_raw = "`docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md`, `crates/materials_core/src/pathion_toy_mapping.rs`, `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs`, `data/csv/c053_pathion_tmm_summary.csv`, `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`"
+source_line = 57
 
 [[task]]
-id = "CTASK-0033"
+id = "CTASK-0034"
 claim_id = "C-068"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
-order_index = 33
+order_index = 34
 status_token = "REFUTED"
 status_raw = "REFUTED"
 status_canonical = true
 task = "Add deterministic spectrum-degeneracy reproduction (84 diagonal ZDs) + unit test; mark PDG-spectrum-match claim refuted for the standard set."
 output_artifacts = ["docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md", "src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py", "data/csv/c068_zd_interaction_eigen_summary.csv", "tests/test_c068_zd_interaction_spectrum_degeneracy.py"]
 output_artifacts_raw = "`docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`"
-source_line = 57
+source_line = 58
 
 [[task]]
-id = "CTASK-0034"
+id = "CTASK-0035"
 claim_id = "C-070"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
-order_index = 34
+order_index = 35
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Audit legacy Spearman-based \"shape match\" and encode decision rule as offline artifacts + test."
 output_artifacts = ["docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md", "src/scripts/analysis/c070_nanograv_shape_match_audit.py", "data/csv/c070_nanograv_shape_match_summary.csv", "tests/test_c070_nanograv_shape_match_audit.py"]
 output_artifacts_raw = "`docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c070_nanograv_shape_match_audit.py`, `data/csv/c070_nanograv_shape_match_summary.csv`, `tests/test_c070_nanograv_shape_match_audit.py`"
-source_line = 58
+source_line = 59
 
 [[task]]
-id = "CTASK-0035"
+id = "CTASK-0036"
 claim_id = "C-074"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
-order_index = 35
+order_index = 36
 status_token = "PARTIAL"
 status_raw = "PARTIAL"
 status_canonical = true
 task = "Anchor associator growth fit (v3 exp2) with sources index + offline fit-sanity test; leave uncertainty estimation as follow-up."
 output_artifacts = ["docs/external_sources/C074_ASSOCIATOR_GROWTH_LAW_SOURCES.md", "data/csv/cd_algebraic_experiments_v3.json", "tests/test_claim_c074_associator_growth.py"]
 output_artifacts_raw = "`docs/external_sources/C074_ASSOCIATOR_GROWTH_LAW_SOURCES.md`, `data/csv/cd_algebraic_experiments_v3.json`, `tests/test_claim_c074_associator_growth.py`"
-source_line = 59
+source_line = 60
 
 [[task]]
-id = "CTASK-0036"
+id = "CTASK-0037"
 claim_id = "C-075"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
-order_index = 36
+order_index = 37
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Reproduce legacy v3 exp3 pathion interaction spectrum (distinct eigenvalues + log-span) with deterministic artifacts + unit test."
 output_artifacts = ["src/scripts/analysis/c075_pathion_zd_interaction_spectrum.py", "data/csv/c075_pathion_interaction_summary.csv", "tests/test_c075_pathion_zd_interaction_spectrum.py"]
 output_artifacts_raw = "`src/scripts/analysis/c075_pathion_zd_interaction_spectrum.py`, `data/csv/c075_pathion_interaction_summary.csv`, `tests/test_c075_pathion_zd_interaction_spectrum.py`"
-source_line = 60
-
-[[task]]
-id = "CTASK-0037"
-claim_id = "C-077"
-section = "Backfill (triage) tasks (auto-generated)"
-section_index = 4
-table_index = 2
-order_index = 37
-status_token = "REFUTED"
-status_raw = "REFUTED"
-status_canonical = true
-task = "REFUTED: Associator mixing matrix is near-democratic (Frobenius distance 0.611 from PMNS; mean diagonal 0.314 vs PMNS 0.54). No symmetry-breaking mechanism to generate PMNS structure."
-output_artifacts = ["src/scripts/analysis/c077_associator_mixing_pmns_audit.py", "data/csv/c077_associator_mixing_summary.csv", "tests/test_c077_associator_mixing_pmns_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c077_associator_mixing_pmns_audit.py`, `data/csv/c077_associator_mixing_summary.csv`, `tests/test_c077_associator_mixing_pmns_audit.py`"
 source_line = 61
 
 [[task]]
 id = "CTASK-0038"
-claim_id = "C-078"
+claim_id = "C-077"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -677,29 +677,29 @@ order_index = 38
 status_token = "REFUTED"
 status_raw = "REFUTED"
 status_canonical = true
-task = "REFUTED: 32D/64D diagonal-form ZDs yield identical spectrum diversity to 16D (66 distinct eigenvalues, 2.83-decade span). General-form ZD search required."
-output_artifacts = ["src/scripts/analysis/c078_higher_dim_zd_coverage_audit.py", "data/csv/c078_higher_dim_zd_coverage_summary.csv", "tests/test_c078_higher_dim_zd_coverage_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c078_higher_dim_zd_coverage_audit.py`, `data/csv/c078_higher_dim_zd_coverage_summary.csv`, `tests/test_c078_higher_dim_zd_coverage_audit.py`"
+task = "REFUTED: Associator mixing matrix is near-democratic (Frobenius distance 0.611 from PMNS; mean diagonal 0.314 vs PMNS 0.54). No symmetry-breaking mechanism to generate PMNS structure."
+output_artifacts = ["src/scripts/analysis/c077_associator_mixing_pmns_audit.py", "data/csv/c077_associator_mixing_summary.csv", "tests/test_c077_associator_mixing_pmns_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c077_associator_mixing_pmns_audit.py`, `data/csv/c077_associator_mixing_summary.csv`, `tests/test_c077_associator_mixing_pmns_audit.py`"
 source_line = 62
 
 [[task]]
 id = "CTASK-0039"
-claim_id = "C-082"
+claim_id = "C-078"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
 order_index = 39
-status_token = "DONE"
-status_raw = "DONE"
+status_token = "REFUTED"
+status_raw = "REFUTED"
 status_canonical = true
-task = "Extract cached v4 expE associator-saturation fit into deterministic CSV artifacts + offline unit test."
-output_artifacts = ["src/scripts/analysis/c082_associator_saturation_extended_audit.py", "data/csv/c082_associator_saturation_summary.csv", "data/csv/c082_associator_saturation_by_dim.csv", "tests/test_c082_associator_saturation_extended_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c082_associator_saturation_extended_audit.py`, `data/csv/c082_associator_saturation_summary.csv`, `data/csv/c082_associator_saturation_by_dim.csv`, `tests/test_c082_associator_saturation_extended_audit.py`"
+task = "REFUTED: 32D/64D diagonal-form ZDs yield identical spectrum diversity to 16D (66 distinct eigenvalues, 2.83-decade span). General-form ZD search required."
+output_artifacts = ["src/scripts/analysis/c078_higher_dim_zd_coverage_audit.py", "data/csv/c078_higher_dim_zd_coverage_summary.csv", "tests/test_c078_higher_dim_zd_coverage_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c078_higher_dim_zd_coverage_audit.py`, `data/csv/c078_higher_dim_zd_coverage_summary.csv`, `tests/test_c078_higher_dim_zd_coverage_audit.py`"
 source_line = 63
 
 [[task]]
 id = "CTASK-0040"
-claim_id = "C-087"
+claim_id = "C-082"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -707,14 +707,14 @@ order_index = 40
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract v5 cross-term/independence metrics into CSV artifacts and add a unit test that enforces vanishing correlation at high dimension."
-output_artifacts = ["src/scripts/analysis/c087_associator_independence_audit.py", "data/csv/c087_associator_independence_summary.csv", "tests/test_c087_associator_independence_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c087_associator_independence_audit.py`, `data/csv/c087_associator_independence_summary.csv`, `tests/test_c087_associator_independence_audit.py`"
+task = "Extract cached v4 expE associator-saturation fit into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c082_associator_saturation_extended_audit.py", "data/csv/c082_associator_saturation_summary.csv", "data/csv/c082_associator_saturation_by_dim.csv", "tests/test_c082_associator_saturation_extended_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c082_associator_saturation_extended_audit.py`, `data/csv/c082_associator_saturation_summary.csv`, `data/csv/c082_associator_saturation_by_dim.csv`, `tests/test_c082_associator_saturation_extended_audit.py`"
 source_line = 64
 
 [[task]]
 id = "CTASK-0041"
-claim_id = "C-094"
+claim_id = "C-087"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -722,14 +722,14 @@ order_index = 41
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v6 mixed-dimension fit degradation and record it as a guardrail against non-2^n extrapolation artifacts."
-output_artifacts = ["src/scripts/analysis/c094_non_power_two_dims_fit_audit.py", "data/csv/c094_non_power_two_dims_summary.csv", "tests/test_c094_non_power_two_dims_fit_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c094_non_power_two_dims_fit_audit.py`, `data/csv/c094_non_power_two_dims_summary.csv`, `tests/test_c094_non_power_two_dims_fit_audit.py`"
+task = "Extract v5 cross-term/independence metrics into CSV artifacts and add a unit test that enforces vanishing correlation at high dimension."
+output_artifacts = ["src/scripts/analysis/c087_associator_independence_audit.py", "data/csv/c087_associator_independence_summary.csv", "tests/test_c087_associator_independence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c087_associator_independence_audit.py`, `data/csv/c087_associator_independence_summary.csv`, `tests/test_c087_associator_independence_audit.py`"
 source_line = 65
 
 [[task]]
 id = "CTASK-0042"
-claim_id = "C-129"
+claim_id = "C-094"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -737,14 +737,14 @@ order_index = 42
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v13 associator-norm distribution stats into deterministic CSV artifacts + offline unit test."
-output_artifacts = ["src/scripts/analysis/c129_associator_distribution_concentration_audit.py", "data/csv/c129_assoc_norm_dist_summary.csv", "data/csv/c129_assoc_norm_dist_by_dim.csv", "tests/test_c129_associator_distribution_concentration_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c129_associator_distribution_concentration_audit.py`, `data/csv/c129_assoc_norm_dist_summary.csv`, `data/csv/c129_assoc_norm_dist_by_dim.csv`, `tests/test_c129_associator_distribution_concentration_audit.py`"
+task = "Extract cached v6 mixed-dimension fit degradation and record it as a guardrail against non-2^n extrapolation artifacts."
+output_artifacts = ["src/scripts/analysis/c094_non_power_two_dims_fit_audit.py", "data/csv/c094_non_power_two_dims_summary.csv", "tests/test_c094_non_power_two_dims_fit_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c094_non_power_two_dims_fit_audit.py`, `data/csv/c094_non_power_two_dims_summary.csv`, `tests/test_c094_non_power_two_dims_fit_audit.py`"
 source_line = 66
 
 [[task]]
 id = "CTASK-0043"
-claim_id = "C-087"
+claim_id = "C-129"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -752,14 +752,14 @@ order_index = 43
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Associator norm independence: E[\\\\\\\\|\\\\\\\\|A\\\\\\\\|\\\\\\\\|^2] -> 2 as d -> inf, confirmed by Monte Carlo (cross-term correlation decays monotonically). Phase 6 B3."
-output_artifacts = ["src/scripts/analysis/c087_associator_independence_audit.py", "data/csv/c087_associator_independence_summary.csv", "tests/test_c087_associator_independence_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c087_associator_independence_audit.py`, `data/csv/c087_associator_independence_summary.csv`, `tests/test_c087_associator_independence_audit.py`"
+task = "Extract cached v13 associator-norm distribution stats into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c129_associator_distribution_concentration_audit.py", "data/csv/c129_assoc_norm_dist_summary.csv", "data/csv/c129_assoc_norm_dist_by_dim.csv", "tests/test_c129_associator_distribution_concentration_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c129_associator_distribution_concentration_audit.py`, `data/csv/c129_assoc_norm_dist_summary.csv`, `data/csv/c129_assoc_norm_dist_by_dim.csv`, `tests/test_c129_associator_distribution_concentration_audit.py`"
 source_line = 67
 
 [[task]]
 id = "CTASK-0044"
-claim_id = "C-090"
+claim_id = "C-087"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -767,14 +767,14 @@ order_index = 44
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "SO(7) rotation drift: ZD condition broken by all non-trivial SO(7) rotations, drift grows with angle. Phase 6 B3."
-output_artifacts = ["src/scripts/analysis/c090_so7_rotation_drift_audit.py", "data/csv/c090_so7_rotation_drift_summary.csv", "tests/test_c090_so7_rotation_drift.py"]
-output_artifacts_raw = "`src/scripts/analysis/c090_so7_rotation_drift_audit.py`, `data/csv/c090_so7_rotation_drift_summary.csv`, `tests/test_c090_so7_rotation_drift.py`"
+task = "Associator norm independence: E[\\\\\\\\\\|\\\\\\\\\\|A\\\\\\\\\\|\\\\\\\\\\|^2] -> 2 as d -> inf, confirmed by Monte Carlo (cross-term correlation decays monotonically). Phase 6 B3."
+output_artifacts = ["src/scripts/analysis/c087_associator_independence_audit.py", "data/csv/c087_associator_independence_summary.csv", "tests/test_c087_associator_independence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c087_associator_independence_audit.py`, `data/csv/c087_associator_independence_summary.csv`, `tests/test_c087_associator_independence_audit.py`"
 source_line = 68
 
 [[task]]
 id = "CTASK-0045"
-claim_id = "C-092"
+claim_id = "C-090"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -782,14 +782,14 @@ order_index = 45
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v6 orbit-classification summary and record that a \"continuous orbit\" claim is not supported under the current diagnostic."
-output_artifacts = ["src/scripts/analysis/c092_so7_orbit_structure_audit.py", "data/csv/c092_so7_orbit_structure_summary.csv", "tests/test_c092_so7_orbit_structure_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c092_so7_orbit_structure_audit.py`, `data/csv/c092_so7_orbit_structure_summary.csv`, `tests/test_c092_so7_orbit_structure_audit.py`"
+task = "SO(7) rotation drift: ZD condition broken by all non-trivial SO(7) rotations, drift grows with angle. Phase 6 B3."
+output_artifacts = ["src/scripts/analysis/c090_so7_rotation_drift_audit.py", "data/csv/c090_so7_rotation_drift_summary.csv", "tests/test_c090_so7_rotation_drift.py"]
+output_artifacts_raw = "`src/scripts/analysis/c090_so7_rotation_drift_audit.py`, `data/csv/c090_so7_rotation_drift_summary.csv`, `tests/test_c090_so7_rotation_drift.py`"
 source_line = 69
 
 [[task]]
 id = "CTASK-0046"
-claim_id = "C-096"
+claim_id = "C-092"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -797,14 +797,14 @@ order_index = 46
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v8 associator-tensor symmetry diagnostics (dims 4/8/16) into deterministic CSV artifacts + offline unit test."
-output_artifacts = ["src/scripts/analysis/c096_associator_tensor_transitions_audit.py", "data/csv/c096_associator_tensor_summary.csv", "tests/test_c096_associator_tensor_transitions_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c096_associator_tensor_transitions_audit.py`, `data/csv/c096_associator_tensor_summary.csv`, `tests/test_c096_associator_tensor_transitions_audit.py`"
+task = "Extract cached v6 orbit-classification summary and record that a \"continuous orbit\" claim is not supported under the current diagnostic."
+output_artifacts = ["src/scripts/analysis/c092_so7_orbit_structure_audit.py", "data/csv/c092_so7_orbit_structure_summary.csv", "tests/test_c092_so7_orbit_structure_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c092_so7_orbit_structure_audit.py`, `data/csv/c092_so7_orbit_structure_summary.csv`, `tests/test_c092_so7_orbit_structure_audit.py`"
 source_line = 70
 
 [[task]]
 id = "CTASK-0047"
-claim_id = "C-097"
+claim_id = "C-096"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -812,14 +812,14 @@ order_index = 47
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Compute diagonal ZD interaction graph invariants (weights + components at threshold > 1) with deterministic artifacts and a unit test."
-output_artifacts = ["src/scripts/analysis/c097_zd_interaction_graph_audit.py", "data/csv/c097_zd_interaction_graph_summary.csv", "tests/test_c097_zd_interaction_graph_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c097_zd_interaction_graph_audit.py`, `data/csv/c097_zd_interaction_graph_summary.csv`, `tests/test_c097_zd_interaction_graph_audit.py`"
+task = "Extract cached v8 associator-tensor symmetry diagnostics (dims 4/8/16) into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c096_associator_tensor_transitions_audit.py", "data/csv/c096_associator_tensor_summary.csv", "tests/test_c096_associator_tensor_transitions_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c096_associator_tensor_transitions_audit.py`, `data/csv/c096_associator_tensor_summary.csv`, `tests/test_c096_associator_tensor_transitions_audit.py`"
 source_line = 71
 
 [[task]]
 id = "CTASK-0048"
-claim_id = "C-099"
+claim_id = "C-097"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -827,14 +827,14 @@ order_index = 48
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v8 non-diagonal ZD geometry summary (PCA dims, kernel, sparsity, angles) into a deterministic CSV artifact + offline unit test."
-output_artifacts = ["src/scripts/analysis/c099_nondiag_zd_geometry_audit.py", "data/csv/c099_nondiag_zd_geometry_summary.csv", "tests/test_c099_nondiag_zd_geometry_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c099_nondiag_zd_geometry_audit.py`, `data/csv/c099_nondiag_zd_geometry_summary.csv`, `tests/test_c099_nondiag_zd_geometry_audit.py`"
+task = "Compute diagonal ZD interaction graph invariants (weights + components at threshold > 1) with deterministic artifacts and a unit test."
+output_artifacts = ["src/scripts/analysis/c097_zd_interaction_graph_audit.py", "data/csv/c097_zd_interaction_graph_summary.csv", "tests/test_c097_zd_interaction_graph_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c097_zd_interaction_graph_audit.py`, `data/csv/c097_zd_interaction_graph_summary.csv`, `tests/test_c097_zd_interaction_graph_audit.py`"
 source_line = 72
 
 [[task]]
 id = "CTASK-0049"
-claim_id = "C-100"
+claim_id = "C-099"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -842,14 +842,14 @@ order_index = 49
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
-output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
-output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
+task = "Extract cached v8 non-diagonal ZD geometry summary (PCA dims, kernel, sparsity, angles) into a deterministic CSV artifact + offline unit test."
+output_artifacts = ["src/scripts/analysis/c099_nondiag_zd_geometry_audit.py", "data/csv/c099_nondiag_zd_geometry_summary.csv", "tests/test_c099_nondiag_zd_geometry_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c099_nondiag_zd_geometry_audit.py`, `data/csv/c099_nondiag_zd_geometry_summary.csv`, `tests/test_c099_nondiag_zd_geometry_audit.py`"
 source_line = 73
 
 [[task]]
 id = "CTASK-0050"
-claim_id = "C-102"
+claim_id = "C-100"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -857,14 +857,14 @@ order_index = 50
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Reproduce legacy expZ alternativity-ratio convergence into deterministic CSV artifacts + offline unit test."
-output_artifacts = ["src/scripts/analysis/c102_alt_ratio_convergence_audit.py", "data/csv/c102_alt_ratio_summary.csv", "data/csv/c102_alt_ratio_by_dim.csv", "tests/test_c102_alt_ratio_convergence_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c102_alt_ratio_convergence_audit.py`, `data/csv/c102_alt_ratio_summary.csv`, `data/csv/c102_alt_ratio_by_dim.csv`, `tests/test_c102_alt_ratio_convergence_audit.py`"
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
 source_line = 74
 
 [[task]]
 id = "CTASK-0051"
-claim_id = "C-103"
+claim_id = "C-102"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -872,14 +872,14 @@ order_index = 51
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Reproduce expAA percolation-style ZD connectivity transition into deterministic CSV artifacts + offline unit test."
-output_artifacts = ["src/scripts/analysis/c103_zd_topology_percolation_audit.py", "data/csv/c103_zd_topology_by_eps.csv", "data/csv/c103_zd_topology_summary.csv", "tests/test_c103_zd_topology_percolation_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c103_zd_topology_percolation_audit.py`, `data/csv/c103_zd_topology_by_eps.csv`, `data/csv/c103_zd_topology_summary.csv`, `tests/test_c103_zd_topology_percolation_audit.py`"
+task = "Reproduce legacy expZ alternativity-ratio convergence into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c102_alt_ratio_convergence_audit.py", "data/csv/c102_alt_ratio_summary.csv", "data/csv/c102_alt_ratio_by_dim.csv", "tests/test_c102_alt_ratio_convergence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c102_alt_ratio_convergence_audit.py`, `data/csv/c102_alt_ratio_summary.csv`, `data/csv/c102_alt_ratio_by_dim.csv`, `tests/test_c102_alt_ratio_convergence_audit.py`"
 source_line = 75
 
 [[task]]
 id = "CTASK-0052"
-claim_id = "C-108"
+claim_id = "C-103"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -887,14 +887,14 @@ order_index = 52
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v10 alternativity-ratio fit into deterministic CSV artifacts and add an offline unit test."
-output_artifacts = ["src/scripts/analysis/c108_alt_ratio_convergence_audit.py", "data/csv/c108_alt_ratio_summary.csv", "data/csv/c108_alt_ratio_by_dim.csv", "tests/test_c108_alt_ratio_convergence_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c108_alt_ratio_convergence_audit.py`, `data/csv/c108_alt_ratio_summary.csv`, `data/csv/c108_alt_ratio_by_dim.csv`, `tests/test_c108_alt_ratio_convergence_audit.py`"
+task = "Reproduce expAA percolation-style ZD connectivity transition into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c103_zd_topology_percolation_audit.py", "data/csv/c103_zd_topology_by_eps.csv", "data/csv/c103_zd_topology_summary.csv", "tests/test_c103_zd_topology_percolation_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c103_zd_topology_percolation_audit.py`, `data/csv/c103_zd_topology_by_eps.csv`, `data/csv/c103_zd_topology_summary.csv`, `tests/test_c103_zd_topology_percolation_audit.py`"
 source_line = 76
 
 [[task]]
 id = "CTASK-0053"
-claim_id = "C-109"
+claim_id = "C-108"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -902,14 +902,14 @@ order_index = 53
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v10 probing + reproduce lifted-diagonal kernel doubling into deterministic CSV artifacts + offline unit test."
-output_artifacts = ["src/scripts/analysis/c109_zd_construction_audit.py", "data/csv/c109_zd_construction_by_dim.csv", "data/csv/c109_zd_construction_summary.csv", "tests/test_c109_zd_construction_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c109_zd_construction_audit.py`, `data/csv/c109_zd_construction_by_dim.csv`, `data/csv/c109_zd_construction_summary.csv`, `tests/test_c109_zd_construction_audit.py`"
+task = "Extract cached v10 alternativity-ratio fit into deterministic CSV artifacts and add an offline unit test."
+output_artifacts = ["src/scripts/analysis/c108_alt_ratio_convergence_audit.py", "data/csv/c108_alt_ratio_summary.csv", "data/csv/c108_alt_ratio_by_dim.csv", "tests/test_c108_alt_ratio_convergence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c108_alt_ratio_convergence_audit.py`, `data/csv/c108_alt_ratio_summary.csv`, `data/csv/c108_alt_ratio_by_dim.csv`, `tests/test_c108_alt_ratio_convergence_audit.py`"
 source_line = 77
 
 [[task]]
 id = "CTASK-0054"
-claim_id = "C-113"
+claim_id = "C-109"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -917,14 +917,14 @@ order_index = 54
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
-output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
-output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
+task = "Extract cached v10 probing + reproduce lifted-diagonal kernel doubling into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c109_zd_construction_audit.py", "data/csv/c109_zd_construction_by_dim.csv", "data/csv/c109_zd_construction_summary.csv", "tests/test_c109_zd_construction_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c109_zd_construction_audit.py`, `data/csv/c109_zd_construction_by_dim.csv`, `data/csv/c109_zd_construction_summary.csv`, `tests/test_c109_zd_construction_audit.py`"
 source_line = 78
 
 [[task]]
 id = "CTASK-0055"
-claim_id = "C-115"
+claim_id = "C-113"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -939,7 +939,7 @@ source_line = 79
 
 [[task]]
 id = "CTASK-0056"
-claim_id = "C-120"
+claim_id = "C-115"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -947,14 +947,14 @@ order_index = 56
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v12 ZD kernel scaling into deterministic CSV artifacts and add an offline unit test."
-output_artifacts = ["src/scripts/analysis/c120_zd_kernel_scaling_audit.py", "data/csv/c120_zd_kernel_scaling_summary.csv", "data/csv/c120_zd_kernel_scaling_by_dim.csv", "tests/test_c120_zd_kernel_scaling_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c120_zd_kernel_scaling_audit.py`, `data/csv/c120_zd_kernel_scaling_summary.csv`, `data/csv/c120_zd_kernel_scaling_by_dim.csv`, `tests/test_c120_zd_kernel_scaling_audit.py`"
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
 source_line = 80
 
 [[task]]
 id = "CTASK-0057"
-claim_id = "C-123"
+claim_id = "C-120"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -962,14 +962,14 @@ order_index = 57
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v12 associator Lie bracket metrics into deterministic CSV artifacts and add an offline unit test."
-output_artifacts = ["src/scripts/analysis/c123_associator_lie_bracket_audit.py", "data/csv/c123_assoc_lie_bracket_summary.csv", "data/csv/c123_assoc_lie_bracket_by_dim.csv", "tests/test_c123_associator_lie_bracket_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c123_associator_lie_bracket_audit.py`, `data/csv/c123_assoc_lie_bracket_summary.csv`, `data/csv/c123_assoc_lie_bracket_by_dim.csv`, `tests/test_c123_associator_lie_bracket_audit.py`"
+task = "Extract cached v12 ZD kernel scaling into deterministic CSV artifacts and add an offline unit test."
+output_artifacts = ["src/scripts/analysis/c120_zd_kernel_scaling_audit.py", "data/csv/c120_zd_kernel_scaling_summary.csv", "data/csv/c120_zd_kernel_scaling_by_dim.csv", "tests/test_c120_zd_kernel_scaling_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c120_zd_kernel_scaling_audit.py`, `data/csv/c120_zd_kernel_scaling_summary.csv`, `data/csv/c120_zd_kernel_scaling_by_dim.csv`, `tests/test_c120_zd_kernel_scaling_audit.py`"
 source_line = 81
 
 [[task]]
 id = "CTASK-0058"
-claim_id = "C-126"
+claim_id = "C-123"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -977,14 +977,14 @@ order_index = 58
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
-output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
-output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
+task = "Extract cached v12 associator Lie bracket metrics into deterministic CSV artifacts and add an offline unit test."
+output_artifacts = ["src/scripts/analysis/c123_associator_lie_bracket_audit.py", "data/csv/c123_assoc_lie_bracket_summary.csv", "data/csv/c123_assoc_lie_bracket_by_dim.csv", "tests/test_c123_associator_lie_bracket_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c123_associator_lie_bracket_audit.py`, `data/csv/c123_assoc_lie_bracket_summary.csv`, `data/csv/c123_assoc_lie_bracket_by_dim.csv`, `tests/test_c123_associator_lie_bracket_audit.py`"
 source_line = 82
 
 [[task]]
 id = "CTASK-0059"
-claim_id = "C-128"
+claim_id = "C-126"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -992,14 +992,14 @@ order_index = 59
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v13 conjugate-inverse errors into deterministic CSV artifacts + offline unit test."
-output_artifacts = ["src/scripts/analysis/c128_conjugate_inverse_audit.py", "data/csv/c128_conjugate_inverse_summary.csv", "data/csv/c128_conjugate_inverse_by_dim.csv", "tests/test_c128_conjugate_inverse_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c128_conjugate_inverse_audit.py`, `data/csv/c128_conjugate_inverse_summary.csv`, `data/csv/c128_conjugate_inverse_by_dim.csv`, `tests/test_c128_conjugate_inverse_audit.py`"
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
 source_line = 83
 
 [[task]]
 id = "CTASK-0060"
-claim_id = "C-130"
+claim_id = "C-128"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1007,14 +1007,14 @@ order_index = 60
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v14 associator norm sqrt(2) metrics into deterministic CSV artifacts and add an offline unit test."
-output_artifacts = ["src/scripts/analysis/c130_associator_norm_sqrt2_audit.py", "data/csv/c130_associator_norm_sqrt2_summary.csv", "data/csv/c130_associator_norm_sqrt2_by_dim.csv", "tests/test_c130_associator_norm_sqrt2_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c130_associator_norm_sqrt2_audit.py`, `data/csv/c130_associator_norm_sqrt2_summary.csv`, `data/csv/c130_associator_norm_sqrt2_by_dim.csv`, `tests/test_c130_associator_norm_sqrt2_audit.py`"
+task = "Extract cached v13 conjugate-inverse errors into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c128_conjugate_inverse_audit.py", "data/csv/c128_conjugate_inverse_summary.csv", "data/csv/c128_conjugate_inverse_by_dim.csv", "tests/test_c128_conjugate_inverse_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c128_conjugate_inverse_audit.py`, `data/csv/c128_conjugate_inverse_summary.csv`, `data/csv/c128_conjugate_inverse_by_dim.csv`, `tests/test_c128_conjugate_inverse_audit.py`"
 source_line = 84
 
 [[task]]
 id = "CTASK-0061"
-claim_id = "C-131"
+claim_id = "C-130"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1022,14 +1022,14 @@ order_index = 61
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
-output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
-output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
+task = "Extract cached v14 associator norm sqrt(2) metrics into deterministic CSV artifacts and add an offline unit test."
+output_artifacts = ["src/scripts/analysis/c130_associator_norm_sqrt2_audit.py", "data/csv/c130_associator_norm_sqrt2_summary.csv", "data/csv/c130_associator_norm_sqrt2_by_dim.csv", "tests/test_c130_associator_norm_sqrt2_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c130_associator_norm_sqrt2_audit.py`, `data/csv/c130_associator_norm_sqrt2_summary.csv`, `data/csv/c130_associator_norm_sqrt2_by_dim.csv`, `tests/test_c130_associator_norm_sqrt2_audit.py`"
 source_line = 85
 
 [[task]]
 id = "CTASK-0062"
-claim_id = "C-132"
+claim_id = "C-131"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1037,14 +1037,14 @@ order_index = 62
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v14 commutator-norm convergence into deterministic CSV artifacts + offline unit test."
-output_artifacts = ["src/scripts/analysis/c132_commutator_norm_convergence_audit.py", "data/csv/c132_commutator_norm_summary.csv", "data/csv/c132_commutator_norm_by_dim.csv", "tests/test_c132_commutator_norm_convergence_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c132_commutator_norm_convergence_audit.py`, `data/csv/c132_commutator_norm_summary.csv`, `data/csv/c132_commutator_norm_by_dim.csv`, `tests/test_c132_commutator_norm_convergence_audit.py`"
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
 source_line = 86
 
 [[task]]
 id = "CTASK-0063"
-claim_id = "C-135"
+claim_id = "C-132"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1052,14 +1052,14 @@ order_index = 63
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v14 power-norm scaling into deterministic CSV artifacts + offline unit test."
-output_artifacts = ["src/scripts/analysis/c135_power_norm_scaling_audit.py", "data/csv/c135_power_norm_summary.csv", "data/csv/c135_power_norm_by_dim_power.csv", "tests/test_c135_power_norm_scaling_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c135_power_norm_scaling_audit.py`, `data/csv/c135_power_norm_summary.csv`, `data/csv/c135_power_norm_by_dim_power.csv`, `tests/test_c135_power_norm_scaling_audit.py`"
+task = "Extract cached v14 commutator-norm convergence into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c132_commutator_norm_convergence_audit.py", "data/csv/c132_commutator_norm_summary.csv", "data/csv/c132_commutator_norm_by_dim.csv", "tests/test_c132_commutator_norm_convergence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c132_commutator_norm_convergence_audit.py`, `data/csv/c132_commutator_norm_summary.csv`, `data/csv/c132_commutator_norm_by_dim.csv`, `tests/test_c132_commutator_norm_convergence_audit.py`"
 source_line = 87
 
 [[task]]
 id = "CTASK-0064"
-claim_id = "C-136"
+claim_id = "C-135"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1067,14 +1067,14 @@ order_index = 64
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
-output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
-output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
+task = "Extract cached v14 power-norm scaling into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c135_power_norm_scaling_audit.py", "data/csv/c135_power_norm_summary.csv", "data/csv/c135_power_norm_by_dim_power.csv", "tests/test_c135_power_norm_scaling_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c135_power_norm_scaling_audit.py`, `data/csv/c135_power_norm_summary.csv`, `data/csv/c135_power_norm_by_dim_power.csv`, `tests/test_c135_power_norm_scaling_audit.py`"
 source_line = 88
 
 [[task]]
 id = "CTASK-0065"
-claim_id = "C-139"
+claim_id = "C-136"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1089,7 +1089,7 @@ source_line = 89
 
 [[task]]
 id = "CTASK-0066"
-claim_id = "C-141"
+claim_id = "C-139"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1104,7 +1104,7 @@ source_line = 90
 
 [[task]]
 id = "CTASK-0067"
-claim_id = "C-143"
+claim_id = "C-141"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1119,7 +1119,7 @@ source_line = 91
 
 [[task]]
 id = "CTASK-0068"
-claim_id = "C-149"
+claim_id = "C-143"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1134,7 +1134,7 @@ source_line = 92
 
 [[task]]
 id = "CTASK-0069"
-claim_id = "C-150"
+claim_id = "C-149"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1149,7 +1149,7 @@ source_line = 93
 
 [[task]]
 id = "CTASK-0070"
-claim_id = "C-163"
+claim_id = "C-150"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1164,7 +1164,7 @@ source_line = 94
 
 [[task]]
 id = "CTASK-0071"
-claim_id = "C-164"
+claim_id = "C-163"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1179,7 +1179,7 @@ source_line = 95
 
 [[task]]
 id = "CTASK-0072"
-claim_id = "C-165"
+claim_id = "C-164"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1194,7 +1194,7 @@ source_line = 96
 
 [[task]]
 id = "CTASK-0073"
-claim_id = "C-169"
+claim_id = "C-165"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1209,7 +1209,7 @@ source_line = 97
 
 [[task]]
 id = "CTASK-0074"
-claim_id = "C-170"
+claim_id = "C-169"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1224,7 +1224,7 @@ source_line = 98
 
 [[task]]
 id = "CTASK-0075"
-claim_id = "C-171"
+claim_id = "C-170"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1239,7 +1239,7 @@ source_line = 99
 
 [[task]]
 id = "CTASK-0076"
-claim_id = "C-173"
+claim_id = "C-171"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1254,7 +1254,7 @@ source_line = 100
 
 [[task]]
 id = "CTASK-0077"
-claim_id = "C-174"
+claim_id = "C-173"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1269,7 +1269,7 @@ source_line = 101
 
 [[task]]
 id = "CTASK-0078"
-claim_id = "C-176"
+claim_id = "C-174"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1284,7 +1284,7 @@ source_line = 102
 
 [[task]]
 id = "CTASK-0079"
-claim_id = "C-179"
+claim_id = "C-176"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1299,7 +1299,7 @@ source_line = 103
 
 [[task]]
 id = "CTASK-0080"
-claim_id = "C-180"
+claim_id = "C-179"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1314,7 +1314,7 @@ source_line = 104
 
 [[task]]
 id = "CTASK-0081"
-claim_id = "C-183"
+claim_id = "C-180"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1329,7 +1329,7 @@ source_line = 105
 
 [[task]]
 id = "CTASK-0082"
-claim_id = "C-185"
+claim_id = "C-183"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1344,7 +1344,7 @@ source_line = 106
 
 [[task]]
 id = "CTASK-0083"
-claim_id = "C-186"
+claim_id = "C-185"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1359,7 +1359,7 @@ source_line = 107
 
 [[task]]
 id = "CTASK-0084"
-claim_id = "C-187"
+claim_id = "C-186"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1374,7 +1374,7 @@ source_line = 108
 
 [[task]]
 id = "CTASK-0085"
-claim_id = "C-191"
+claim_id = "C-187"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1389,7 +1389,7 @@ source_line = 109
 
 [[task]]
 id = "CTASK-0086"
-claim_id = "C-195"
+claim_id = "C-191"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1404,7 +1404,7 @@ source_line = 110
 
 [[task]]
 id = "CTASK-0087"
-claim_id = "C-197"
+claim_id = "C-195"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1419,7 +1419,7 @@ source_line = 111
 
 [[task]]
 id = "CTASK-0088"
-claim_id = "C-201"
+claim_id = "C-197"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1434,7 +1434,7 @@ source_line = 112
 
 [[task]]
 id = "CTASK-0089"
-claim_id = "C-206"
+claim_id = "C-201"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1449,7 +1449,7 @@ source_line = 113
 
 [[task]]
 id = "CTASK-0090"
-claim_id = "C-207"
+claim_id = "C-206"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1464,7 +1464,7 @@ source_line = 114
 
 [[task]]
 id = "CTASK-0091"
-claim_id = "C-212"
+claim_id = "C-207"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1479,7 +1479,7 @@ source_line = 115
 
 [[task]]
 id = "CTASK-0092"
-claim_id = "C-217"
+claim_id = "C-212"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1494,7 +1494,7 @@ source_line = 116
 
 [[task]]
 id = "CTASK-0093"
-claim_id = "C-218"
+claim_id = "C-217"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1509,7 +1509,7 @@ source_line = 117
 
 [[task]]
 id = "CTASK-0094"
-claim_id = "C-219"
+claim_id = "C-218"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1524,7 +1524,7 @@ source_line = 118
 
 [[task]]
 id = "CTASK-0095"
-claim_id = "C-220"
+claim_id = "C-219"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1539,7 +1539,7 @@ source_line = 119
 
 [[task]]
 id = "CTASK-0096"
-claim_id = "C-221"
+claim_id = "C-220"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1554,7 +1554,7 @@ source_line = 120
 
 [[task]]
 id = "CTASK-0097"
-claim_id = "C-223"
+claim_id = "C-221"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1569,7 +1569,7 @@ source_line = 121
 
 [[task]]
 id = "CTASK-0098"
-claim_id = "C-228"
+claim_id = "C-223"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1584,7 +1584,7 @@ source_line = 122
 
 [[task]]
 id = "CTASK-0099"
-claim_id = "C-231"
+claim_id = "C-228"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1599,7 +1599,7 @@ source_line = 123
 
 [[task]]
 id = "CTASK-0100"
-claim_id = "C-234"
+claim_id = "C-231"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1614,7 +1614,7 @@ source_line = 124
 
 [[task]]
 id = "CTASK-0101"
-claim_id = "C-235"
+claim_id = "C-234"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1629,7 +1629,7 @@ source_line = 125
 
 [[task]]
 id = "CTASK-0102"
-claim_id = "C-239"
+claim_id = "C-235"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1644,7 +1644,7 @@ source_line = 126
 
 [[task]]
 id = "CTASK-0103"
-claim_id = "C-240"
+claim_id = "C-239"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1659,7 +1659,7 @@ source_line = 127
 
 [[task]]
 id = "CTASK-0104"
-claim_id = "C-241"
+claim_id = "C-240"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1674,7 +1674,7 @@ source_line = 128
 
 [[task]]
 id = "CTASK-0105"
-claim_id = "C-243"
+claim_id = "C-241"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1689,7 +1689,7 @@ source_line = 129
 
 [[task]]
 id = "CTASK-0106"
-claim_id = "C-244"
+claim_id = "C-243"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1704,7 +1704,7 @@ source_line = 130
 
 [[task]]
 id = "CTASK-0107"
-claim_id = "C-247"
+claim_id = "C-244"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1719,7 +1719,7 @@ source_line = 131
 
 [[task]]
 id = "CTASK-0108"
-claim_id = "C-248"
+claim_id = "C-247"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1734,7 +1734,7 @@ source_line = 132
 
 [[task]]
 id = "CTASK-0109"
-claim_id = "C-251"
+claim_id = "C-248"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1749,7 +1749,7 @@ source_line = 133
 
 [[task]]
 id = "CTASK-0110"
-claim_id = "C-253"
+claim_id = "C-251"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1764,7 +1764,7 @@ source_line = 134
 
 [[task]]
 id = "CTASK-0111"
-claim_id = "C-256"
+claim_id = "C-253"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1779,7 +1779,7 @@ source_line = 135
 
 [[task]]
 id = "CTASK-0112"
-claim_id = "C-257"
+claim_id = "C-256"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1794,7 +1794,7 @@ source_line = 136
 
 [[task]]
 id = "CTASK-0113"
-claim_id = "C-258"
+claim_id = "C-257"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1809,7 +1809,7 @@ source_line = 137
 
 [[task]]
 id = "CTASK-0114"
-claim_id = "C-259"
+claim_id = "C-258"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1824,7 +1824,7 @@ source_line = 138
 
 [[task]]
 id = "CTASK-0115"
-claim_id = "C-264"
+claim_id = "C-259"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1839,7 +1839,7 @@ source_line = 139
 
 [[task]]
 id = "CTASK-0116"
-claim_id = "C-268"
+claim_id = "C-264"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1854,7 +1854,7 @@ source_line = 140
 
 [[task]]
 id = "CTASK-0117"
-claim_id = "C-269"
+claim_id = "C-268"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1869,7 +1869,7 @@ source_line = 141
 
 [[task]]
 id = "CTASK-0118"
-claim_id = "C-271"
+claim_id = "C-269"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1884,7 +1884,7 @@ source_line = 142
 
 [[task]]
 id = "CTASK-0119"
-claim_id = "C-274"
+claim_id = "C-271"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1899,7 +1899,7 @@ source_line = 143
 
 [[task]]
 id = "CTASK-0120"
-claim_id = "C-278"
+claim_id = "C-274"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1914,7 +1914,7 @@ source_line = 144
 
 [[task]]
 id = "CTASK-0121"
-claim_id = "C-280"
+claim_id = "C-278"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1929,7 +1929,7 @@ source_line = 145
 
 [[task]]
 id = "CTASK-0122"
-claim_id = "C-281"
+claim_id = "C-280"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1944,7 +1944,7 @@ source_line = 146
 
 [[task]]
 id = "CTASK-0123"
-claim_id = "C-283"
+claim_id = "C-281"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1959,7 +1959,7 @@ source_line = 147
 
 [[task]]
 id = "CTASK-0124"
-claim_id = "C-284"
+claim_id = "C-283"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1974,7 +1974,7 @@ source_line = 148
 
 [[task]]
 id = "CTASK-0125"
-claim_id = "C-285"
+claim_id = "C-284"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -1989,7 +1989,7 @@ source_line = 149
 
 [[task]]
 id = "CTASK-0126"
-claim_id = "C-286"
+claim_id = "C-285"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2004,7 +2004,7 @@ source_line = 150
 
 [[task]]
 id = "CTASK-0127"
-claim_id = "C-287"
+claim_id = "C-286"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2019,7 +2019,7 @@ source_line = 151
 
 [[task]]
 id = "CTASK-0128"
-claim_id = "C-288"
+claim_id = "C-287"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2034,7 +2034,7 @@ source_line = 152
 
 [[task]]
 id = "CTASK-0129"
-claim_id = "C-289"
+claim_id = "C-288"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2049,7 +2049,7 @@ source_line = 153
 
 [[task]]
 id = "CTASK-0130"
-claim_id = "C-290"
+claim_id = "C-289"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2064,7 +2064,7 @@ source_line = 154
 
 [[task]]
 id = "CTASK-0131"
-claim_id = "C-291"
+claim_id = "C-290"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2079,7 +2079,7 @@ source_line = 155
 
 [[task]]
 id = "CTASK-0132"
-claim_id = "C-300"
+claim_id = "C-291"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2094,7 +2094,7 @@ source_line = 156
 
 [[task]]
 id = "CTASK-0133"
-claim_id = "C-304"
+claim_id = "C-300"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2109,7 +2109,7 @@ source_line = 157
 
 [[task]]
 id = "CTASK-0134"
-claim_id = "C-306"
+claim_id = "C-304"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2124,7 +2124,7 @@ source_line = 158
 
 [[task]]
 id = "CTASK-0135"
-claim_id = "C-309"
+claim_id = "C-306"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2139,7 +2139,7 @@ source_line = 159
 
 [[task]]
 id = "CTASK-0136"
-claim_id = "C-314"
+claim_id = "C-309"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2154,7 +2154,7 @@ source_line = 160
 
 [[task]]
 id = "CTASK-0137"
-claim_id = "C-315"
+claim_id = "C-314"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2169,7 +2169,7 @@ source_line = 161
 
 [[task]]
 id = "CTASK-0138"
-claim_id = "C-316"
+claim_id = "C-315"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2184,7 +2184,7 @@ source_line = 162
 
 [[task]]
 id = "CTASK-0139"
-claim_id = "C-317"
+claim_id = "C-316"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2199,7 +2199,7 @@ source_line = 163
 
 [[task]]
 id = "CTASK-0140"
-claim_id = "C-318"
+claim_id = "C-317"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2214,7 +2214,7 @@ source_line = 164
 
 [[task]]
 id = "CTASK-0141"
-claim_id = "C-321"
+claim_id = "C-318"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2229,7 +2229,7 @@ source_line = 165
 
 [[task]]
 id = "CTASK-0142"
-claim_id = "C-324"
+claim_id = "C-321"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2244,7 +2244,7 @@ source_line = 166
 
 [[task]]
 id = "CTASK-0143"
-claim_id = "C-326"
+claim_id = "C-324"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2259,7 +2259,7 @@ source_line = 167
 
 [[task]]
 id = "CTASK-0144"
-claim_id = "C-329"
+claim_id = "C-326"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2274,7 +2274,7 @@ source_line = 168
 
 [[task]]
 id = "CTASK-0145"
-claim_id = "C-330"
+claim_id = "C-329"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2289,7 +2289,7 @@ source_line = 169
 
 [[task]]
 id = "CTASK-0146"
-claim_id = "C-333"
+claim_id = "C-330"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2304,7 +2304,7 @@ source_line = 170
 
 [[task]]
 id = "CTASK-0147"
-claim_id = "C-334"
+claim_id = "C-333"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2319,7 +2319,7 @@ source_line = 171
 
 [[task]]
 id = "CTASK-0148"
-claim_id = "C-335"
+claim_id = "C-334"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2334,7 +2334,7 @@ source_line = 172
 
 [[task]]
 id = "CTASK-0149"
-claim_id = "C-338"
+claim_id = "C-335"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2349,7 +2349,7 @@ source_line = 173
 
 [[task]]
 id = "CTASK-0150"
-claim_id = "C-339"
+claim_id = "C-338"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2364,7 +2364,7 @@ source_line = 174
 
 [[task]]
 id = "CTASK-0151"
-claim_id = "C-340"
+claim_id = "C-339"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2379,7 +2379,7 @@ source_line = 175
 
 [[task]]
 id = "CTASK-0152"
-claim_id = "C-341"
+claim_id = "C-340"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2394,7 +2394,7 @@ source_line = 176
 
 [[task]]
 id = "CTASK-0153"
-claim_id = "C-342"
+claim_id = "C-341"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2409,7 +2409,7 @@ source_line = 177
 
 [[task]]
 id = "CTASK-0154"
-claim_id = "C-343"
+claim_id = "C-342"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2424,7 +2424,7 @@ source_line = 178
 
 [[task]]
 id = "CTASK-0155"
-claim_id = "C-346"
+claim_id = "C-343"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2439,7 +2439,7 @@ source_line = 179
 
 [[task]]
 id = "CTASK-0156"
-claim_id = "C-349"
+claim_id = "C-346"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2454,7 +2454,7 @@ source_line = 180
 
 [[task]]
 id = "CTASK-0157"
-claim_id = "C-354"
+claim_id = "C-349"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2469,7 +2469,7 @@ source_line = 181
 
 [[task]]
 id = "CTASK-0158"
-claim_id = "C-355"
+claim_id = "C-354"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2484,7 +2484,7 @@ source_line = 182
 
 [[task]]
 id = "CTASK-0159"
-claim_id = "C-358"
+claim_id = "C-355"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2499,7 +2499,7 @@ source_line = 183
 
 [[task]]
 id = "CTASK-0160"
-claim_id = "C-362"
+claim_id = "C-358"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2514,7 +2514,7 @@ source_line = 184
 
 [[task]]
 id = "CTASK-0161"
-claim_id = "C-363"
+claim_id = "C-362"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2529,7 +2529,7 @@ source_line = 185
 
 [[task]]
 id = "CTASK-0162"
-claim_id = "C-366"
+claim_id = "C-363"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2544,7 +2544,7 @@ source_line = 186
 
 [[task]]
 id = "CTASK-0163"
-claim_id = "C-374"
+claim_id = "C-366"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2559,7 +2559,7 @@ source_line = 187
 
 [[task]]
 id = "CTASK-0164"
-claim_id = "C-375"
+claim_id = "C-374"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2574,7 +2574,7 @@ source_line = 188
 
 [[task]]
 id = "CTASK-0165"
-claim_id = "C-378"
+claim_id = "C-375"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2589,7 +2589,7 @@ source_line = 189
 
 [[task]]
 id = "CTASK-0166"
-claim_id = "C-379"
+claim_id = "C-378"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2604,7 +2604,7 @@ source_line = 190
 
 [[task]]
 id = "CTASK-0167"
-claim_id = "C-380"
+claim_id = "C-379"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2619,7 +2619,7 @@ source_line = 191
 
 [[task]]
 id = "CTASK-0168"
-claim_id = "C-381"
+claim_id = "C-380"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2634,7 +2634,7 @@ source_line = 192
 
 [[task]]
 id = "CTASK-0169"
-claim_id = "C-385"
+claim_id = "C-381"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2649,7 +2649,7 @@ source_line = 193
 
 [[task]]
 id = "CTASK-0170"
-claim_id = "C-386"
+claim_id = "C-385"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2664,7 +2664,7 @@ source_line = 194
 
 [[task]]
 id = "CTASK-0171"
-claim_id = "C-387"
+claim_id = "C-386"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2679,7 +2679,7 @@ source_line = 195
 
 [[task]]
 id = "CTASK-0172"
-claim_id = "C-390"
+claim_id = "C-387"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2694,7 +2694,7 @@ source_line = 196
 
 [[task]]
 id = "CTASK-0173"
-claim_id = "C-391"
+claim_id = "C-390"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2709,7 +2709,7 @@ source_line = 197
 
 [[task]]
 id = "CTASK-0174"
-claim_id = "C-394"
+claim_id = "C-391"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2724,7 +2724,7 @@ source_line = 198
 
 [[task]]
 id = "CTASK-0175"
-claim_id = "C-396"
+claim_id = "C-394"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2739,7 +2739,7 @@ source_line = 199
 
 [[task]]
 id = "CTASK-0176"
-claim_id = "C-399"
+claim_id = "C-396"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2754,37 +2754,37 @@ source_line = 200
 
 [[task]]
 id = "CTASK-0177"
-claim_id = "C-401"
+claim_id = "C-399"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
 order_index = 177
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "`docs/CLAIMS_EVIDENCE_MATRIX.md`"
+source_line = 201
+
+[[task]]
+id = "CTASK-0178"
+claim_id = "C-401"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 178
 status_token = "PARTIAL"
 status_raw = "PARTIAL"
 status_canonical = true
 task = "Triage: primary sources cached; still needs a concrete, offline validation check (or keep as blueprint-only)."
 output_artifacts = ["docs/external_sources/WARP_DRIVE_SOURCES.md", "data/papers/corpus/White_2021_Casimir_Warp.pdf"]
 output_artifacts_raw = "`docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`"
-source_line = 201
-
-[[task]]
-id = "CTASK-0178"
-claim_id = "C-403"
-section = "Backfill (triage) tasks (auto-generated)"
-section_index = 4
-table_index = 2
-order_index = 178
-status_token = "DONE"
-status_raw = "DONE"
-status_canonical = true
-task = "Source-index + define offline check for spectral-triple-strength \"geometry from spectrum\" program claims."
-output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/spectral/demo_pairs.py", "tests/test_isospectral_nonisomorphic_pair.py", "src/spectral_triple_toy.py", "tests/test_spectral_triple_toy.py"]
-output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/spectral/demo_pairs.py`, `tests/test_isospectral_nonisomorphic_pair.py`, `src/spectral_triple_toy.py`, `tests/test_spectral_triple_toy.py`"
 source_line = 202
 
 [[task]]
 id = "CTASK-0179"
-claim_id = "C-404"
+claim_id = "C-403"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2792,14 +2792,14 @@ order_index = 179
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Source-index + define offline check for modular-data/entanglement-wedge program claims."
-output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/scripts/data/fetch_emergence_layers_sources.py", "data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf", "data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf", "data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf", "data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf", "src/holography/maxflow.py", "tests/test_holography_bit_threads.py"]
-output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/scripts/data/fetch_emergence_layers_sources.py`, `data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`, `data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`, `data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`, `data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py`"
+task = "Source-index + define offline check for spectral-triple-strength \"geometry from spectrum\" program claims."
+output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/spectral/demo_pairs.py", "tests/test_isospectral_nonisomorphic_pair.py", "src/spectral_triple_toy.py", "tests/test_spectral_triple_toy.py"]
+output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/spectral/demo_pairs.py`, `tests/test_isospectral_nonisomorphic_pair.py`, `src/spectral_triple_toy.py`, `tests/test_spectral_triple_toy.py`"
 source_line = 203
 
 [[task]]
 id = "CTASK-0180"
-claim_id = "C-405"
+claim_id = "C-404"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2807,29 +2807,29 @@ order_index = 180
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Source-index + define offline check for open-systems/QEC observer program claims."
-output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/quantum/open_systems/lindblad.py", "tests/test_open_systems_lindblad.py", "src/quantum/open_systems/redundancy.py", "tests/test_open_systems_redundancy.py"]
-output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/quantum/open_systems/lindblad.py`, `tests/test_open_systems_lindblad.py`, `src/quantum/open_systems/redundancy.py`, `tests/test_open_systems_redundancy.py`"
+task = "Source-index + define offline check for modular-data/entanglement-wedge program claims."
+output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/scripts/data/fetch_emergence_layers_sources.py", "data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf", "data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf", "data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf", "data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf", "src/holography/maxflow.py", "tests/test_holography_bit_threads.py"]
+output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/scripts/data/fetch_emergence_layers_sources.py`, `data/papers/corpus/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`, `data/papers/corpus/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`, `data/papers/corpus/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`, `data/papers/corpus/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py`"
 source_line = 204
 
 [[task]]
 id = "CTASK-0181"
-claim_id = "C-406"
+claim_id = "C-405"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
 order_index = 181
-status_token = "PARTIAL"
-status_raw = "PARTIAL"
+status_token = "DONE"
+status_raw = "DONE"
 status_canonical = true
-task = "Enumerate embedding choices (symmetry proxy) and quantify invariance/trial factors for TSCP alignment."
-output_artifacts = ["docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_embedding_sweep.py", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
-output_artifacts_raw = "`docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_embedding_sweep.py`, `docs/external_sources/TSCP_METHOD_SOURCES.md`"
+task = "Source-index + define offline check for open-systems/QEC observer program claims."
+output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/quantum/open_systems/lindblad.py", "tests/test_open_systems_lindblad.py", "src/quantum/open_systems/redundancy.py", "tests/test_open_systems_redundancy.py"]
+output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/quantum/open_systems/lindblad.py`, `tests/test_open_systems_lindblad.py`, `src/quantum/open_systems/redundancy.py`, `tests/test_open_systems_redundancy.py`"
 source_line = 205
 
 [[task]]
 id = "CTASK-0182"
-claim_id = "C-407"
+claim_id = "C-406"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2837,14 +2837,14 @@ order_index = 182
 status_token = "PARTIAL"
 status_raw = "PARTIAL"
 status_canonical = true
-task = "Maintain a look-elsewhere parameter ledger + global correction bounds (Bonferroni/Holm) for TSCP-style searches."
-output_artifacts = ["reports/tscp_trial_factor_ledger.md", "tests/test_tscp_embedding_sweep.py", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
-output_artifacts_raw = "`reports/tscp_trial_factor_ledger.md`, `tests/test_tscp_embedding_sweep.py`, `docs/external_sources/TSCP_METHOD_SOURCES.md`"
+task = "Enumerate embedding choices (symmetry proxy) and quantify invariance/trial factors for TSCP alignment."
+output_artifacts = ["docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_embedding_sweep.py", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
+output_artifacts_raw = "`docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_embedding_sweep.py`, `docs/external_sources/TSCP_METHOD_SOURCES.md`"
 source_line = 206
 
 [[task]]
 id = "CTASK-0183"
-claim_id = "C-408"
+claim_id = "C-407"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2852,29 +2852,29 @@ order_index = 183
 status_token = "PARTIAL"
 status_raw = "PARTIAL"
 status_canonical = true
-task = "Add symmetric falsification thresholds (N_min + alpha/effect-size) for selected claims; enforce via tests/verifiers."
-output_artifacts = ["docs/preregistered/TSCP_SKY_ALIGNMENT.md", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
-output_artifacts_raw = "`docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`"
+task = "Maintain a look-elsewhere parameter ledger + global correction bounds (Bonferroni/Holm) for TSCP-style searches."
+output_artifacts = ["reports/tscp_trial_factor_ledger.md", "tests/test_tscp_embedding_sweep.py", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
+output_artifacts_raw = "`reports/tscp_trial_factor_ledger.md`, `tests/test_tscp_embedding_sweep.py`, `docs/external_sources/TSCP_METHOD_SOURCES.md`"
 source_line = 207
 
 [[task]]
 id = "CTASK-0184"
-claim_id = "C-410"
+claim_id = "C-408"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
 order_index = 184
-status_token = "DONE"
-status_raw = "DONE"
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
 status_canonical = true
-task = "Photon-graviton mixing scope: Schwinger B_cr=4.41e9 T verified; mixing amplitude negligible for lab fields; C-402 NOT overturned. Phase 6 task B6."
-output_artifacts = ["src/scripts/analysis/c410_photon_graviton_scope.py", "tests/test_c410_photon_graviton_scope.py", "docs/BIBLIOGRAPHY.md"]
-output_artifacts_raw = "`src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py`, `docs/BIBLIOGRAPHY.md`"
+task = "Add symmetric falsification thresholds (N_min + alpha/effect-size) for selected claims; enforce via tests/verifiers."
+output_artifacts = ["docs/preregistered/TSCP_SKY_ALIGNMENT.md", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
+output_artifacts_raw = "`docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`"
 source_line = 208
 
 [[task]]
 id = "CTASK-0185"
-claim_id = "C-411"
+claim_id = "C-410"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2882,44 +2882,44 @@ order_index = 185
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "SFWM thin-layer scaling: direct SFWM dominates 5.8x (phase-matching); coherence lengths match paper (33.3/3.1/3.4 um). Phase 6 task B6."
-output_artifacts = ["src/scripts/analysis/c411_sfwm_thin_layer_check.py", "tests/test_c411_sfwm_thin_layer.py", "docs/BIBLIOGRAPHY.md"]
-output_artifacts_raw = "`src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`, `docs/BIBLIOGRAPHY.md`"
+task = "Photon-graviton mixing scope: Schwinger B_cr=4.41e9 T verified; mixing amplitude negligible for lab fields; C-402 NOT overturned. Phase 6 task B6."
+output_artifacts = ["src/scripts/analysis/c410_photon_graviton_scope.py", "tests/test_c410_photon_graviton_scope.py", "docs/BIBLIOGRAPHY.md"]
+output_artifacts_raw = "`src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py`, `docs/BIBLIOGRAPHY.md`"
 source_line = 209
 
 [[task]]
 id = "CTASK-0186"
-claim_id = "C-417"
+claim_id = "C-411"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
 order_index = 186
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "SFWM thin-layer scaling: direct SFWM dominates 5.8x (phase-matching); coherence lengths match paper (33.3/3.1/3.4 um). Phase 6 task B6."
+output_artifacts = ["src/scripts/analysis/c411_sfwm_thin_layer_check.py", "tests/test_c411_sfwm_thin_layer.py", "docs/BIBLIOGRAPHY.md"]
+output_artifacts_raw = "`src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`, `docs/BIBLIOGRAPHY.md`"
+source_line = 210
+
+[[task]]
+id = "CTASK-0187"
+claim_id = "C-417"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 187
 status_token = "TODO"
 status_raw = "TODO"
 status_canonical = true
 task = "Turn \"Holographic Entropy Trap\" into a falsifiable metric + null; keep speculative until tied to optical-capture baselines and uncertainty."
 output_artifacts = ["src/scripts/analysis/sedenion_warp_synthesis.py", "data/artifacts/images/sedenion_capture_scaling.png"]
 output_artifacts_raw = "`src/scripts/analysis/sedenion_warp_synthesis.py`, `data/artifacts/images/sedenion_capture_scaling.png`"
-source_line = 210
-
-[[task]]
-id = "CTASK-0187"
-claim_id = "C-432"
-section = "Backfill (triage) tasks (auto-generated)"
-section_index = 4
-table_index = 2
-order_index = 187
-status_token = "DONE"
-status_raw = "DONE"
-status_canonical = true
-task = "Kerr geodesic solver + Bardeen analytic shadow boundary validated: Schwarzschild a=0 shadow radius sqrt(27) within 0.1%, photon orbit radii exact, impact parameters xi^2+eta=27, high-spin D-shape asymmetry, null geodesic escape/capture. Phase 6 task A9."
-output_artifacts = ["src/gemini_physics/gr/kerr_geodesic.py", "tests/test_kerr_shadow.py"]
-output_artifacts_raw = "`src/gemini_physics/gr/kerr_geodesic.py`, `tests/test_kerr_shadow.py`"
 source_line = 211
 
 [[task]]
 id = "CTASK-0188"
-claim_id = "C-429"
+claim_id = "C-432"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2927,14 +2927,14 @@ order_index = 188
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Kerr shadow asymmetry (a=0.99) validated: D-shape center offset > 0.1 from Schwarzschild symmetric limit. Phase 6 task A9."
-output_artifacts = ["src/gemini_physics/gr/kerr_geodesic.py", "tests/test_kerr_shadow.py::test_high_spin_shadow_asymmetric"]
-output_artifacts_raw = "`src/gemini_physics/gr/kerr_geodesic.py`, `tests/test_kerr_shadow.py::test_high_spin_shadow_asymmetric`"
+task = "Kerr geodesic solver + Bardeen analytic shadow boundary validated: Schwarzschild a=0 shadow radius sqrt(27) within 0.1%, photon orbit radii exact, impact parameters xi^2+eta=27, high-spin D-shape asymmetry, null geodesic escape/capture. Phase 6 task A9."
+output_artifacts = ["src/gemini_physics/gr/kerr_geodesic.py", "tests/test_kerr_shadow.py"]
+output_artifacts_raw = "`src/gemini_physics/gr/kerr_geodesic.py`, `tests/test_kerr_shadow.py`"
 source_line = 212
 
 [[task]]
 id = "CTASK-0189"
-claim_id = "C-425"
+claim_id = "C-429"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2942,44 +2942,44 @@ order_index = 189
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Octonionic (8D) field Hamiltonian formulation: Fano-plane multiplication, Stormer-Verlet symplectic integrator, 7 Noether charges, free-field dispersion omega^2=k^2+m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction. Phase 6 task A10."
-output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/octonion_field.rs)", "tests/test_octonion_field.py"]
-output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/octonion_field.rs)`, `tests/test_octonion_field.py`"
+task = "Kerr shadow asymmetry (a=0.99) validated: D-shape center offset > 0.1 from Schwarzschild symmetric limit. Phase 6 task A9."
+output_artifacts = ["src/gemini_physics/gr/kerr_geodesic.py", "tests/test_kerr_shadow.py::test_high_spin_shadow_asymmetric"]
+output_artifacts_raw = "`src/gemini_physics/gr/kerr_geodesic.py`, `tests/test_kerr_shadow.py::test_high_spin_shadow_asymmetric`"
 source_line = 213
 
 [[task]]
 id = "CTASK-0190"
-claim_id = "C-428"
+claim_id = "C-425"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
 order_index = 190
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Octonionic (8D) field Hamiltonian formulation: Fano-plane multiplication, Stormer-Verlet symplectic integrator, 7 Noether charges, free-field dispersion omega^2=k^2+m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction. Phase 6 task A10."
+output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/octonion_field.rs)", "tests/test_octonion_field.py"]
+output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/octonion_field.rs)`, `tests/test_octonion_field.py`"
+source_line = 214
+
+[[task]]
+id = "CTASK-0191"
+claim_id = "C-428"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 191
 status_token = "PARTIAL"
 status_raw = "PARTIAL"
 status_canonical = true
 task = "Kerr geodesic infrastructure from A9 provides Boyer-Lindquist integrator + Mino-time second-order Hamiltonian form. NegDimCosmology coupling still needs validation."
 output_artifacts = ["src/gemini_physics/gr/kerr_geodesic.py", "tests/test_kerr_shadow.py"]
 output_artifacts_raw = "`src/gemini_physics/gr/kerr_geodesic.py`, `tests/test_kerr_shadow.py`"
-source_line = 214
-
-[[task]]
-id = "CTASK-0191"
-claim_id = "C-426"
-section = "Backfill (triage) tasks (auto-generated)"
-section_index = 4
-table_index = 2
-order_index = 191
-status_token = "TODO"
-status_raw = "TODO"
-status_canonical = true
-task = "Add a preregistered fit protocol (null + trial-factor ledger) for mapping ZD eigenvalues to particle masses; keep as toy until it passes robust controls."
-output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)", "src/scripts/analysis/pathion_particle_fit.py", "tests/test_pathion_zd_diagonalization.py"]
-output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`, `src/scripts/analysis/pathion_particle_fit.py`, `tests/test_pathion_zd_diagonalization.py`"
 source_line = 215
 
 [[task]]
 id = "CTASK-0192"
-claim_id = "C-427"
+claim_id = "C-426"
 section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
@@ -2987,29 +2987,29 @@ order_index = 192
 status_token = "TODO"
 status_raw = "TODO"
 status_canonical = true
-task = "Add unit tests for algebraic-media tensor construction invariants (symmetry/normalization bounds) and define a minimal physical decision rule for the mapping."
-output_artifacts = ["src/gemini_physics/metamaterial.py", "src/scripts/analysis/unified_spacetime_synthesis.py"]
-output_artifacts_raw = "`src/gemini_physics/metamaterial.py`, `src/scripts/analysis/unified_spacetime_synthesis.py`"
+task = "Add a preregistered fit protocol (null + trial-factor ledger) for mapping ZD eigenvalues to particle masses; keep as toy until it passes robust controls."
+output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)", "src/scripts/analysis/pathion_particle_fit.py", "tests/test_pathion_zd_diagonalization.py"]
+output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`, `src/scripts/analysis/pathion_particle_fit.py`, `tests/test_pathion_zd_diagonalization.py`"
 source_line = 216
 
 [[task]]
 id = "CTASK-0193"
-claim_id = "C-028"
-section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
-section_index = 5
-table_index = 3
+claim_id = "C-427"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
 order_index = 193
-status_token = "DONE"
-status_raw = "DONE"
+status_token = "TODO"
+status_raw = "TODO"
 status_canonical = true
-task = "Aut(S) = G2 x S3 verification (Phase 6A)."
-output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)", "tests/test_sedenion_automorphism.py"]
-output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`, `tests/test_sedenion_automorphism.py`"
-source_line = 222
+task = "Add unit tests for algebraic-media tensor construction invariants (symmetry/normalization bounds) and define a minimal physical decision rule for the mapping."
+output_artifacts = ["src/gemini_physics/metamaterial.py", "src/scripts/analysis/unified_spacetime_synthesis.py"]
+output_artifacts_raw = "`src/gemini_physics/metamaterial.py`, `src/scripts/analysis/unified_spacetime_synthesis.py`"
+source_line = 217
 
 [[task]]
 id = "CTASK-0194"
-claim_id = "C-029"
+claim_id = "C-028"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3017,14 +3017,14 @@ order_index = 194
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Three-generation literature review (Phase 6B)."
-output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/physics/clifford.rs (LEGACY::PATH crates/algebra_core/src/clifford.rs)", "tests/test_sedenion_generations.py"]
-output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/physics/clifford.rs (LEGACY::PATH crates/algebra_core/src/clifford.rs)`, `tests/test_sedenion_generations.py`"
+task = "Aut(S) = G2 x S3 verification (Phase 6A)."
+output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)", "tests/test_sedenion_automorphism.py"]
+output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/hypercomplex.rs)`, `tests/test_sedenion_automorphism.py`"
 source_line = 223
 
 [[task]]
 id = "CTASK-0195"
-claim_id = "C-030"
+claim_id = "C-029"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3032,14 +3032,14 @@ order_index = 195
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Decision rule + offline bypass checks (associator + alternativity) for sedenion-valued actions."
-output_artifacts = ["docs/C030_SEDENION_LAGRANGIAN_BYPASS.md", "src/scripts/analysis/c030_sedenion_lagrangian_bypass_checks.py", "data/csv/c030_sedenion_lagrangian_bypass_checks.csv", "tests/test_c030_sedenion_lagrangian_bypass_checks.py"]
-output_artifacts_raw = "`docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`, `src/scripts/analysis/c030_sedenion_lagrangian_bypass_checks.py`, `data/csv/c030_sedenion_lagrangian_bypass_checks.csv`, `tests/test_c030_sedenion_lagrangian_bypass_checks.py`"
+task = "Three-generation literature review (Phase 6B)."
+output_artifacts = ["CURRENT::PATH crates/gororoba_algebra/src/physics/clifford.rs (LEGACY::PATH crates/algebra_core/src/clifford.rs)", "tests/test_sedenion_generations.py"]
+output_artifacts_raw = "`CURRENT::PATH crates/gororoba_algebra/src/physics/clifford.rs (LEGACY::PATH crates/algebra_core/src/clifford.rs)`, `tests/test_sedenion_generations.py`"
 source_line = 224
 
 [[task]]
 id = "CTASK-0196"
-claim_id = "C-031"
+claim_id = "C-030"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3047,14 +3047,14 @@ order_index = 196
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Hurwitz/norm-composition transition (1,2,4,8 vs 16) + zero-divisor example artifact + test."
-output_artifacts = ["docs/external_sources/C031_HURWITZ_QUANTIZATION_SOURCES.md", "src/scripts/analysis/c031_hurwitz_norm_composition_checks.py", "data/csv/c031_hurwitz_norm_composition_checks.csv", "tests/test_c031_hurwitz_norm_composition_checks.py", "docs/C030_SEDENION_LAGRANGIAN_BYPASS.md"]
-output_artifacts_raw = "`docs/external_sources/C031_HURWITZ_QUANTIZATION_SOURCES.md`, `src/scripts/analysis/c031_hurwitz_norm_composition_checks.py`, `data/csv/c031_hurwitz_norm_composition_checks.csv`, `tests/test_c031_hurwitz_norm_composition_checks.py`, `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`"
+task = "Decision rule + offline bypass checks (associator + alternativity) for sedenion-valued actions."
+output_artifacts = ["docs/C030_SEDENION_LAGRANGIAN_BYPASS.md", "src/scripts/analysis/c030_sedenion_lagrangian_bypass_checks.py", "data/csv/c030_sedenion_lagrangian_bypass_checks.csv", "tests/test_c030_sedenion_lagrangian_bypass_checks.py"]
+output_artifacts_raw = "`docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`, `src/scripts/analysis/c030_sedenion_lagrangian_bypass_checks.py`, `data/csv/c030_sedenion_lagrangian_bypass_checks.csv`, `tests/test_c030_sedenion_lagrangian_bypass_checks.py`"
 source_line = 225
 
 [[task]]
 id = "CTASK-0197"
-claim_id = "C-032"
+claim_id = "C-031"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3062,9 +3062,9 @@ order_index = 197
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Tang (2025) non-associative QED: minimal offline reproduction (Table 2 extraction + subalgebra associator stats)."
-output_artifacts = ["docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "data/papers/intake/traces/tang_2025_preprints_org_landing.txt", "data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt", "src/scripts/analysis/c032_tang_2025_min_reproduction.py", "data/csv/c032_tang_2025_table2_lepton_masses.csv", "data/csv/c032_tang_2025_associator_subalgebra_summary.csv", "data/csv/c032_tang_2025_associator_basis_triples.csv", "tests/test_c032_tang_2025_min_reproduction.py"]
-output_artifacts_raw = "`docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/papers/intake/traces/tang_2025_preprints_org_landing.txt`, `data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py`"
+task = "Hurwitz/norm-composition transition (1,2,4,8 vs 16) + zero-divisor example artifact + test."
+output_artifacts = ["docs/external_sources/C031_HURWITZ_QUANTIZATION_SOURCES.md", "src/scripts/analysis/c031_hurwitz_norm_composition_checks.py", "data/csv/c031_hurwitz_norm_composition_checks.csv", "tests/test_c031_hurwitz_norm_composition_checks.py", "docs/C030_SEDENION_LAGRANGIAN_BYPASS.md"]
+output_artifacts_raw = "`docs/external_sources/C031_HURWITZ_QUANTIZATION_SOURCES.md`, `src/scripts/analysis/c031_hurwitz_norm_composition_checks.py`, `data/csv/c031_hurwitz_norm_composition_checks.csv`, `tests/test_c031_hurwitz_norm_composition_checks.py`, `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`"
 source_line = 226
 
 [[task]]
@@ -3074,32 +3074,32 @@ section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
 order_index = 198
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Tang (2025) non-associative QED: minimal offline reproduction (Table 2 extraction + subalgebra associator stats)."
+output_artifacts = ["docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "data/papers/intake/traces/tang_2025_preprints_org_landing.txt", "data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt", "src/scripts/analysis/c032_tang_2025_min_reproduction.py", "data/csv/c032_tang_2025_table2_lepton_masses.csv", "data/csv/c032_tang_2025_associator_subalgebra_summary.csv", "data/csv/c032_tang_2025_associator_basis_triples.csv", "tests/test_c032_tang_2025_min_reproduction.py"]
+output_artifacts_raw = "`docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/papers/intake/traces/tang_2025_preprints_org_landing.txt`, `data/papers/corpus/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py`"
+source_line = 227
+
+[[task]]
+id = "CTASK-0199"
+claim_id = "C-032"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 199
 status_token = "BLOCKED"
 status_raw = "BLOCKED"
 status_canonical = true
 task = "Tang (2025) non-associative QED: mechanize the associator->mass mapping (BLOCKED until the source provides a complete, convention-fixed mapping and scale choice)."
 output_artifacts = ["docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "data/papers/intake/traces/tang_2025_preprints_org_landing.txt"]
 output_artifacts_raw = "`docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/papers/intake/traces/tang_2025_preprints_org_landing.txt`"
-source_line = 227
-
-[[task]]
-id = "CTASK-0199"
-claim_id = "C-033"
-section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
-section_index = 5
-table_index = 3
-order_index = 199
-status_token = "DONE"
-status_raw = "DONE"
-status_canonical = true
-task = "SU(5) generator basis verification complete; source does not specify a unique coefficient mapping from sedenion basis to a normalized SU(5) basis (claim demoted accordingly)."
-output_artifacts = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
-output_artifacts_raw = "`data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
 source_line = 228
 
 [[task]]
 id = "CTASK-0200"
-claim_id = "C-034"
+claim_id = "C-033"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3107,9 +3107,9 @@ order_index = 200
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Chanyal (2014) sedenion gravi-electromagnetism: minimal structural reproduction (two 8D sectors via CD doubling)."
-output_artifacts = ["docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/papers/intake/traces/chanyal_2014_springer_landing.txt", "data/papers/intake/traces/chanyal_2014_springer_abstract.txt", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py"]
-output_artifacts_raw = "`docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/papers/intake/traces/chanyal_2014_springer_landing.txt`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`"
+task = "SU(5) generator basis verification complete; source does not specify a unique coefficient mapping from sedenion basis to a normalized SU(5) basis (claim demoted accordingly)."
+output_artifacts = ["data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
+output_artifacts_raw = "`data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/group_theory.rs)`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
 source_line = 229
 
 [[task]]
@@ -3119,32 +3119,32 @@ section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
 order_index = 201
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Chanyal (2014) sedenion gravi-electromagnetism: minimal structural reproduction (two 8D sectors via CD doubling)."
+output_artifacts = ["docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/papers/intake/traces/chanyal_2014_springer_landing.txt", "data/papers/intake/traces/chanyal_2014_springer_abstract.txt", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py"]
+output_artifacts_raw = "`docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/papers/intake/traces/chanyal_2014_springer_landing.txt`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`"
+source_line = 230
+
+[[task]]
+id = "CTASK-0202"
+claim_id = "C-034"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 202
 status_token = "BLOCKED"
 status_raw = "BLOCKED"
 status_canonical = true
 task = "Chanyal (2014) sedenion gravi-electromagnetism: equation-level reproduction checks (BLOCKED until a legal full-text source is cached)."
 output_artifacts = ["docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/papers/intake/traces/chanyal_2014_springer_landing.txt", "data/papers/intake/traces/chanyal_2014_springer_abstract.txt"]
 output_artifacts_raw = "`docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/papers/intake/traces/chanyal_2014_springer_landing.txt`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`"
-source_line = 230
-
-[[task]]
-id = "CTASK-0202"
-claim_id = "C-035"
-section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
-section_index = 5
-table_index = 3
-order_index = 202
-status_token = "DONE"
-status_raw = "DONE"
-status_canonical = true
-task = "F4 Casimir epsilon = 1/4 (Phase 7A)."
-output_artifacts = ["crates/quantum_core/src/casimir.rs", "tests/test_f4_casimir.py"]
-output_artifacts_raw = "`crates/quantum_core/src/casimir.rs`, `tests/test_f4_casimir.py`"
 source_line = 231
 
 [[task]]
 id = "CTASK-0203"
-claim_id = "C-036"
+claim_id = "C-035"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3152,14 +3152,14 @@ order_index = 203
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Bigraph cosmogenesis simulation (Phase 7B)."
-output_artifacts = ["crates/cosmology_core/src/spectral.rs", "tests/test_bigraph_cosmogenesis.py"]
-output_artifacts_raw = "`crates/cosmology_core/src/spectral.rs`, `tests/test_bigraph_cosmogenesis.py`"
+task = "F4 Casimir epsilon = 1/4 (Phase 7A)."
+output_artifacts = ["crates/quantum_core/src/casimir.rs", "tests/test_f4_casimir.py"]
+output_artifacts_raw = "`crates/quantum_core/src/casimir.rs`, `tests/test_f4_casimir.py`"
 source_line = 232
 
 [[task]]
 id = "CTASK-0204"
-claim_id = "C-037"
+claim_id = "C-036"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3167,14 +3167,14 @@ order_index = 204
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Demoted coincidence claim to Not supported; audit note defines mechanism gap and falsification requirements."
-output_artifacts = ["docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md"]
-output_artifacts_raw = "`docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+task = "Bigraph cosmogenesis simulation (Phase 7B)."
+output_artifacts = ["crates/cosmology_core/src/spectral.rs", "tests/test_bigraph_cosmogenesis.py"]
+output_artifacts_raw = "`crates/cosmology_core/src/spectral.rs`, `tests/test_bigraph_cosmogenesis.py`"
 source_line = 233
 
 [[task]]
 id = "CTASK-0205"
-claim_id = "C-038"
+claim_id = "C-037"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3182,14 +3182,14 @@ order_index = 205
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "w0=-5/6 observational test (Phase 7C). DISFAVORED."
-output_artifacts = ["crates/cosmology_core/src/bounce.rs", "tests/test_exceptional_w0.py"]
-output_artifacts_raw = "`crates/cosmology_core/src/bounce.rs`, `tests/test_exceptional_w0.py`"
+task = "Demoted coincidence claim to Not supported; audit note defines mechanism gap and falsification requirements."
+output_artifacts = ["docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md"]
+output_artifacts_raw = "`docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
 source_line = 234
 
 [[task]]
 id = "CTASK-0206"
-claim_id = "C-039"
+claim_id = "C-038"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3197,14 +3197,14 @@ order_index = 206
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Spectral dimension running on bigraph (Phase 7D). Qualitative consistency with CDT."
-output_artifacts = ["crates/cosmology_core/src/spectral.rs", "src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py", "data/csv/c039_spectral_dimension_bigraph_curve.csv", "data/csv/c039_spectral_dimension_bigraph_summary.csv", "tests/test_spectral_dimension.py", "tests/test_c039_spectral_dimension_bigraph_artifacts.py"]
-output_artifacts_raw = "`crates/cosmology_core/src/spectral.rs`, `src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py`, `data/csv/c039_spectral_dimension_bigraph_curve.csv`, `data/csv/c039_spectral_dimension_bigraph_summary.csv`, `tests/test_spectral_dimension.py`, `tests/test_c039_spectral_dimension_bigraph_artifacts.py`"
+task = "w0=-5/6 observational test (Phase 7C). DISFAVORED."
+output_artifacts = ["crates/cosmology_core/src/bounce.rs", "tests/test_exceptional_w0.py"]
+output_artifacts_raw = "`crates/cosmology_core/src/bounce.rs`, `tests/test_exceptional_w0.py`"
 source_line = 235
 
 [[task]]
 id = "CTASK-0207"
-claim_id = "C-040"
+claim_id = "C-039"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3212,14 +3212,14 @@ order_index = 207
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Primordial tilt n_s comparison (Phase 7E). Post-hoc; D_eff=2.8-3.0 inconsistent with Planck via Calcagni formula."
-output_artifacts = ["crates/cosmology_core/src/spectral.rs", "tests/test_primordial_tilt.py"]
-output_artifacts_raw = "`crates/cosmology_core/src/spectral.rs`, `tests/test_primordial_tilt.py`"
+task = "Spectral dimension running on bigraph (Phase 7D). Qualitative consistency with CDT."
+output_artifacts = ["crates/cosmology_core/src/spectral.rs", "src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py", "data/csv/c039_spectral_dimension_bigraph_curve.csv", "data/csv/c039_spectral_dimension_bigraph_summary.csv", "tests/test_spectral_dimension.py", "tests/test_c039_spectral_dimension_bigraph_artifacts.py"]
+output_artifacts_raw = "`crates/cosmology_core/src/spectral.rs`, `src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py`, `data/csv/c039_spectral_dimension_bigraph_curve.csv`, `data/csv/c039_spectral_dimension_bigraph_summary.csv`, `tests/test_spectral_dimension.py`, `tests/test_c039_spectral_dimension_bigraph_artifacts.py`"
 source_line = 236
 
 [[task]]
 id = "CTASK-0208"
-claim_id = "C-041"
+claim_id = "C-040"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3227,14 +3227,14 @@ order_index = 208
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Demote dimensional coincidence claim; record mechanism gap and decision rule."
-output_artifacts = ["docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md"]
-output_artifacts_raw = "`docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+task = "Primordial tilt n_s comparison (Phase 7E). Post-hoc; D_eff=2.8-3.0 inconsistent with Planck via Calcagni formula."
+output_artifacts = ["crates/cosmology_core/src/spectral.rs", "tests/test_primordial_tilt.py"]
+output_artifacts_raw = "`crates/cosmology_core/src/spectral.rs`, `tests/test_primordial_tilt.py`"
 source_line = 237
 
 [[task]]
 id = "CTASK-0209"
-claim_id = "C-042"
+claim_id = "C-041"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3242,14 +3242,14 @@ order_index = 209
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Kozyrev p-adic wavelets: implement eigenbasis for Vladimirov operator + offline tests."
-output_artifacts = ["docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md", "CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/padic.rs)", "tests/test_padic_wavelets.py"]
-output_artifacts_raw = "`docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/padic.rs)`, `tests/test_padic_wavelets.py`"
+task = "Demote dimensional coincidence claim; record mechanism gap and decision rule."
+output_artifacts = ["docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md"]
+output_artifacts_raw = "`docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
 source_line = 238
 
 [[task]]
 id = "CTASK-0210"
-claim_id = "C-043"
+claim_id = "C-042"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
@@ -3257,52 +3257,52 @@ order_index = 210
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Compact object integration pipeline + unified catalog artifact + offline schema test."
-output_artifacts = ["docs/external_sources/C043_COMPACT_OBJECT_CATALOG_SOURCES.md", "src/scripts/data/fetch_compact_objects.py", "data/csv/compact_objects_catalog.csv", "data/csv/compact_objects_catalog.PROVENANCE.json", "tests/test_c043_compact_objects_catalog_artifact.py"]
-output_artifacts_raw = "`docs/external_sources/C043_COMPACT_OBJECT_CATALOG_SOURCES.md`, `src/scripts/data/fetch_compact_objects.py`, `data/csv/compact_objects_catalog.csv`, `data/csv/compact_objects_catalog.PROVENANCE.json`, `tests/test_c043_compact_objects_catalog_artifact.py`"
+task = "Kozyrev p-adic wavelets: implement eigenbasis for Vladimirov operator + offline tests."
+output_artifacts = ["docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md", "CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/padic.rs)", "tests/test_padic_wavelets.py"]
+output_artifacts_raw = "`docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/padic.rs)`, `tests/test_padic_wavelets.py`"
 source_line = 239
 
 [[task]]
 id = "CTASK-0211"
-claim_id = "C-044"
+claim_id = "C-043"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
 order_index = 211
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Compact object integration pipeline + unified catalog artifact + offline schema test."
+output_artifacts = ["docs/external_sources/C043_COMPACT_OBJECT_CATALOG_SOURCES.md", "src/scripts/data/fetch_compact_objects.py", "data/csv/compact_objects_catalog.csv", "data/csv/compact_objects_catalog.PROVENANCE.json", "tests/test_c043_compact_objects_catalog_artifact.py"]
+output_artifacts_raw = "`docs/external_sources/C043_COMPACT_OBJECT_CATALOG_SOURCES.md`, `src/scripts/data/fetch_compact_objects.py`, `data/csv/compact_objects_catalog.csv`, `data/csv/compact_objects_catalog.PROVENANCE.json`, `tests/test_c043_compact_objects_catalog_artifact.py`"
+source_line = 240
+
+[[task]]
+id = "CTASK-0212"
+claim_id = "C-044"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 212
 status_token = "REFUTED"
 status_raw = "REFUTED"
 status_canonical = true
 task = "Legacy zero-divisor adjacency matrices refuted; keep reproduction script as guard."
 output_artifacts = ["data/csv/legacy/", "src/scripts/reproduction/reproduce_zd_adjacency.py", "docs/LEGACY_ARTIFACT_AUDIT.md"]
 output_artifacts_raw = "`data/csv/legacy/`, `src/scripts/reproduction/reproduce_zd_adjacency.py`, `docs/LEGACY_ARTIFACT_AUDIT.md`"
-source_line = 240
+source_line = 241
 
 [[task]]
-id = "CTASK-0212"
+id = "CTASK-0213"
 claim_id = "C-045"
 section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
 section_index = 5
 table_index = 3
-order_index = 212
+order_index = 213
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "Strang splitting convergence demo + validation smoke check."
 output_artifacts = ["examples/strang_splitting_demo.py", "src/scripts/validation/validate_strang_splitting_convergence.py", "tests/test_strang_splitting_demo.py"]
 output_artifacts_raw = "`examples/strang_splitting_demo.py`, `src/scripts/validation/validate_strang_splitting_convergence.py`, `tests/test_strang_splitting_demo.py`"
-source_line = 241
-
-[[task]]
-id = "CTASK-0213"
-claim_id = "C-453"
-section = "Active tasks (start here)"
-section_index = 3
-table_index = 1
-order_index = 213
-status_token = "TODO"
-status_raw = "TODO"
-status_canonical = true
-task = "Ingest hypercomplex species taxonomy and derived claim candidates into canonical claim/ticket lanes with verify-refute hooks."
-output_artifacts = ["reports/hypercomplex_species_taxonomy_2026_02_14.toml", "reports/hypercomplex_taxonomy_claims_2026_02_14.toml", "reports/sensational_primary_source_mapping_2026_02_14.toml"]
-output_artifacts_raw = "`reports/hypercomplex_species_taxonomy_2026_02_14.toml`, `reports/hypercomplex_taxonomy_claims_2026_02_14.toml`, `reports/sensational_primary_source_mapping_2026_02_14.toml`"
-source_line = 999
+source_line = 242

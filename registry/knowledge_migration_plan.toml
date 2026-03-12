@@ -246,7 +246,6 @@ notes = "Selected high-information artifact narratives are TOML-first; README re
 id = "KM-019"
 name = "entrypoint_docs"
 source_markdown = [
-  "AGENTS.md",
   "CLAUDE.md",
   "GEMINI.md",
   "README.md",
@@ -257,7 +256,6 @@ source_markdown = [
 ]
 authoritative_toml = ["registry/entrypoint_docs.toml"]
 generated_mirror = [
-  "AGENTS.md",
   "README.md",
   "curated/README.md",
   "curated/01_theory_frameworks/README_COQ.md",
@@ -267,7 +265,7 @@ generated_mirror = [
 ]
 strategy = "toml_primary_generated_mirror_with_manual_overlay_exceptions"
 status = "complete"
-notes = "Entrypoint markdown is TOML-first except CLAUDE.md and GEMINI.md, which are immutable manual stubs that must not be rewritten by export pipelines."
+notes = "Entrypoint markdown is TOML-first except CLAUDE.md and GEMINI.md, which are immutable manual stubs that must not be rewritten by export pipelines. AGENTS.md is governed separately by agents.toml."
 
 [[domain]]
 id = "KM-020"
@@ -335,7 +333,7 @@ id = "KMP-P7"
 name = "markdown_governance_registry"
 status = "complete"
 deliverables = [
-  "src/scripts/analysis/build_markdown_governance_registry.py",
+  "crates/gororoba_cli_data/src/bin/markdown_registry.rs",
   "registry/markdown_governance.toml",
   "src/verification/verify_markdown_governance_headers.py",
   "src/verification/verify_markdown_governance_parity.py",
@@ -359,9 +357,11 @@ id = "KMP-P9"
 name = "theory_engineering_registry_normalization"
 status = "complete"
 deliverables = [
-  "src/scripts/analysis/normalize_research_narratives_registry.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- promote-research-narratives",
   "registry/research_narratives.toml",
+  "cargo run -p gororoba_cli_data --bin registry-emit -- research-narratives-mirror",
   "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md",
+  "cargo run -p gororoba_cli_data --bin registry-emit -- research-narratives-legacy",
   "docs/theory/*.md",
   "docs/theory/INDEX.md",
   "docs/engineering/*.md",
@@ -373,7 +373,7 @@ id = "KMP-P10"
 name = "global_markdown_inventory_and_entrypoint_conversion"
 status = "complete"
 deliverables = [
-  "src/scripts/analysis/build_markdown_inventory_registry.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- build-inventory",
   "registry/markdown_inventory.toml",
   "src/scripts/analysis/normalize_entrypoint_docs_registry.py",
   "registry/entrypoint_docs.toml",
@@ -396,9 +396,11 @@ id = "KMP-P11"
 name = "docs_root_narratives_registry_normalization"
 status = "complete"
 deliverables = [
-  "src/scripts/analysis/normalize_docs_root_narratives_registry.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- promote-docs-root-narratives",
   "registry/docs_root_narratives.toml",
+  "cargo run -p gororoba_cli_data --bin registry-emit -- docs-root-narratives-mirror",
   "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md",
+  "cargo run -p gororoba_cli_data --bin registry-emit -- docs-root-narratives-legacy",
   "docs/*.md",
 ]
 

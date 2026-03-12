@@ -1401,3 +1401,357 @@ claims = ["C-1224", "C-1225"]
 confidence = "high"
 phase = "fluids"
 sprint = 79
+
+[[insight]]
+id = "I-125"
+title = "FHS Berry Curvature Generalizes from Square to Hexagonal BZ"
+date = "2026-03-11"
+status = "Active"
+description = "The Fukui-Hatsugai-Suzuki (FHS) U(1) link variable algorithm for lattice Berry curvature, originally implemented for the square Harper-Hofstadter BZ in harper_chern.rs, generalizes to ANY parallelogram BZ defined by reciprocal vectors b1, b2. The key insight: the plaquette structure (4 corner k-points, 4 link variables) is topologically identical for square and hexagonal BZs -- only the coordinate mapping changes. The hexagonal BZ is a parallelogram in (b1, b2) fractional coordinates, sampled on a uniform (n_grid x n_grid) grid. Each plaquette contributes Berry phase F = -Im(ln(U_12 * U_23 * U_34 * U_41)), and the Chern number is the sum over all plaquettes divided by 2*pi. This universality is why tight_binding.rs works for graphene, kagome, and magnonic models without modification."
+claims = ["C-1233", "C-1234"]
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[insight]]
+id = "I-126"
+title = "Kagome Flat Band Localization Mirrors CD Box-Kite Zero-Divisor Cancellation"
+date = "2026-03-11"
+status = "Active"
+description = "Both phenomena are localization via algebraic cancellation on frustrated loops. In the kagome lattice, hopping amplitudes around a triangular plaquette sum to zero (destructive interference), producing a perfectly flat band with zero group velocity -- wavefunctions are caged on hexagonal loops. In the Cayley-Dickson box-kite structure, sign patterns in the multiplication table cause products to cancel exactly, producing zero divisors. The common mathematical structure is a frustrated graph where signed edge weights sum to zero around minimal cycles. This is NOT a coincidence but a manifestation of the same linear-algebraic obstruction: both are null eigenvectors of cycle-signed adjacency matrices. The kagome flat band eigenvalue E = -2t arises from the circulant matrix of the triangle; the CD zero divisor arises from the circulant structure of the doubling formula."
+claims = ["C-1232", "C-1236"]
+confidence = "medium"
+phase = "quantum"
+sprint = 80
+
+[[insight]]
+id = "I-127"
+title = "Tight-Binding Framework is Model-Independent: Magnons, Electrons, Photons"
+date = "2026-03-11"
+status = "Active"
+description = "The generic TightBindingModel in tight_binding.rs accepts arbitrary Bravais lattices, orbital bases, and hopping matrices, making it applicable to ANY 2D band-structure problem: electronic (graphene, transition metal dichalcogenides), magnonic (YIG crystals), photonic (waveguide arrays), and acoustic (phononic crystals). The 9-band magnonic model was implemented entirely by specifying parameters to the generic framework -- no magnon-specific Hamiltonian code was needed. This confirms the design decision to separate lattice geometry (BravaisLattice2D), orbital content (OrbitalSite), and coupling (Hopping) into independent concerns. Future lattice models (e.g., Haldane, Kane-Mele, Lieb) require only parameter specification, not new solver code."
+claims = ["C-1248"]
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[insight]]
+id = "I-128"
+title = "Valley Chern Numbers are NOT Topologically Quantized"
+date = "2026-03-11"
+status = "Active"
+description = "Unlike the total Chern number (which is an integer topological invariant), valley Chern numbers (VCN) are NOT quantized. They are defined as integrals of Berry curvature over a HALF Brillouin zone, and the half-BZ boundary is arbitrary (there is no topological obstruction fixing it). The VCN depends continuously on the strength of inversion breaking and on the choice of valley boundary. For small inversion breaking in the magnonic model, VCN ~ +/-0.5, but this is an approximation, not a quantized value. Physical observables (valley Hall conductivity) depend on the VCN through sigma_xy^valley = (e^2/h) * Delta_VCN, which IS robust when the valley separation in k-space is large compared to the inverse system size. This subtlety is often glossed over in the literature."
+claims = ["C-1250"]
+confidence = "high"
+phase = "quantum"
+sprint = 80
+
+[[insight]]
+id = "I-129"
+title = "Hexagonal BZ Vectors Coincide with D2Q7 LBM Velocity Set Geometry"
+date = "2026-03-11"
+status = "Active"
+description = "The hexagonal Bravais vectors a1 = a*(1,0), a2 = a*(1/2, sqrt(3)/2) generate the same point lattice as the D2Q7 lattice Boltzmann velocity stencil e_1..e_6 (the 6 nearest neighbors of a hexagonal lattice). The reciprocal vectors b1, b2 are related by a 90-degree rotation and scaling, identical to the D2Q7 momentum-space structure. This mathematical equivalence means the BZ discretization in tight_binding.rs and the velocity-space discretization in lbm_core share the same underlying geometry. No code sharing is warranted (different domains, different crate dependencies), but the coincidence is recorded as it may inform future work on hexagonal LBM schemes or phononic crystal band structure using the same lattice."
+claims = []
+confidence = "medium"
+phase = "quantum"
+sprint = 80
+
+[[insight]]
+id = "I-130"
+title = "Sedenion Partner Graph Spectrum Is Exactly 5-Level with Degeneracies {7,14,42,14,7}"
+date = "2026-03-11"
+status = "Verified"
+description = "Diagonalizing the 84x84 adjacency matrix of the sedenion Reggiani partner graph (zero-divisor pairs connected by edges) yields EXACTLY 5 distinct eigenvalues: {-4, -2, 0, +2, +4} with degeneracies {7, 14, 42, 14, 7}. The 42-fold degenerate zero eigenvalue means half of all zero-divisor linear combinations lie in the graph kernel -- the algebraic analog of a flat band with zero group velocity. The outer degeneracies factor as {1,2,6,2,1}*7, suggesting each of the 7 box-kite subgraphs contributes a rank-1 extremal eigenspace (C-1253, pending per-box-kite verification). This 5-level structure parallels the 5-band structure seen in strongly correlated flat-band lattices (Lieb, kagome), establishing a concrete spectral bridge between Cayley-Dickson algebra and condensed matter band topology."
+claims = ["C-1251", "C-1252", "C-1253"]
+confidence = "high"
+phase = "algebra"
+sprint = 80
+
+[[insight]]
+id = "I-131"
+title = "ZD adjacency as tight-binding Hamiltonian: flat band fraction = localization strength"
+date = "2026-03-11"
+status = "Active"
+description = "Interpreting the ZD motif adjacency matrix as a tight-binding Hamiltonian reveals that the flat band fraction (fraction of zero eigenvalues) is dimension-independent at 0.5 for D=16 and D=32. This means half of all ZD combinations are localized (zero group velocity), providing algebraic justification for why CD dark matter clumps rather than disperses. The internal algebraic structure IS a frustrated lattice."
+claims = ["C-1255", "C-1256", "C-1257"]
+confidence = "high"
+phase = "algebra"
+sprint = 81
+
+[[insight]]
+id = "I-132"
+title = "Abel deprojection via cosh-substituted GL quadrature avoids R=r singularity"
+date = "2026-03-11"
+status = "Active"
+description = "The Abel transform j(r) = -(1/pi) * int_r^inf dI/dR * dR/sqrt(R^2-r^2) has a square-root singularity at R=r. The cosh substitution R=r*cosh(u) transforms the integrand to a smooth function of u on [0, U_max], where the sinh factors cancel perfectly. This makes 64-point Gauss-Legendre quadrature sufficient for sub-percent accuracy on Sersic profiles n=1..8. The same trick applies to any Abel-type integral with 1/sqrt singularity."
+claims = ["C-1260"]
+confidence = "high"
+phase = "cosmology"
+sprint = 81
+
+[[insight]]
+id = "I-133"
+title = "Block-diagonal spectrum assembly: component-wise eigendecomposition scales to D=256 without full matrix"
+date = "2026-03-11"
+status = "Active"
+description = "The full ZD adjacency graph at D=256 would be 16256x16256, but it is block-diagonal because motif components are disconnected. By diagonalizing each component independently (max ~128 nodes each) and taking the multiset-union of eigenvalues, we get the exact aggregate spectrum without ever building the full matrix. At D=32 this gives 15 components with 210 total eigenvalues. The approach parallelizes trivially since components are independent."
+claims = ["C-1256"]
+confidence = "high"
+phase = "algebra"
+sprint = 81
+
+# --- Sprint 82: GPU Multi-Galaxy D_f Sweep ---
+
+[[insight]]
+id = "I-134"
+title = "GPU box-counting: warp-level ballot reduction dispatches 5-7 kernels per galaxy at 64^3"
+date = "2026-03-11"
+status = "Active"
+description = "Box-counting at 64^3 uses box sizes {1,2,4,8,16,32} = 6 kernel dispatches per galaxy. Each dispatch launches ceil(total_boxes/256) blocks with warp-level __ballot_sync + __popc + lane-0 atomicAdd (matching the dark_halo_detector pattern). At box_size=1, total_boxes=262144 (1024 blocks); at box_size=32, total_boxes=8 (1 block). The early-exit inner loop (break on first occupied cell) makes large-box-size kernels trivially fast."
+claims = ["C-1267"]
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[insight]]
+id = "I-135"
+title = "Morphological M/L bypasses log_luminosity anomaly: Euclid Q1 column produces M/L ~ 8.4e9"
+date = "2026-03-11"
+status = "Active"
+description = "The Euclid Q1 phz_pp_median_luminosity column has a unit or convention mismatch that produces M/L ratios of order 10^9 (physically nonsensical). The morphological M/L (2.0 for n<2 disks, 5.0 for n>=2 ellipticals, following Bell+2003 and Into+2013) provides a physically motivated workaround. The original ml_ratio() method is preserved for future audit when the column convention is resolved. The systematic uncertainty from morphological M/L on D_f is estimated < 0.1."
+claims = ["C-1264"]
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[insight]]
+id = "I-136"
+title = "prepare_galaxy factors 6 repeated subsystems into a single reusable pipeline step"
+date = "2026-03-11"
+status = "Active"
+description = "The galaxy preparation pipeline (Sersic deprojection, NFW halo params, density combination, force field normalization, threshold computation) was previously monolithic in euclid_dm_coupling.rs. Factoring into prepare_galaxy() in cosmology_core enables both the CPU and GPU sweep paths to share identical setup logic. This guarantees that any GPU/CPU D_f divergence comes solely from LBM floating-point differences, not from setup differences."
+claims = ["C-1268"]
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[insight]]
+id = "I-137"
+title = "LBM precision sensitivity: f64 homogenizes concentrated galaxies to D_f=3.0, f32 retains structure"
+date = "2026-03-11"
+status = "Active"
+description = "E-154 cross-validation reveals a precision-dependent D_f divergence in D3Q19 BGK-LBM at tau=1.5 (nu=1/3). For concentrated density profiles (df_initial < 2.52, M200 < 3e11 solar), 200 steps at f64 precision completely homogenizes the field (D_f=3.0), while f32 rounding errors inject enough structure to sustain D_f~2.83. For extended profiles (df_initial >= 2.77), CPU/GPU agreement is excellent (delta < 0.002). The diffusion length sqrt(2*nu*t) = 11.5 cells is 18% of the 64-cell grid, explaining why compact galaxies lose structure. Box-counting itself is validated: df_initial agrees perfectly across both precisions when measured on identical density fields. The 0.01 density floor in prepare_galaxy ensures both paths start from identical fields."
+claims = ["C-1263"]
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[insight]]
+id = "I-138"
+title = "100-galaxy GPU sweep: D_f = 2.814 +/- 0.022, no morphological dependence"
+date = "2026-03-11"
+status = "Active"
+description = "E-152 production run on RTX 4070 Ti processes 100 Euclid Q1 galaxies (398826 catalog, zero skipped) at 64^3 grid, 200 LBM steps in ~8 seconds total (70-110ms per galaxy after NVRTC warmup). Overall D_f = 2.814 +/- 0.022 (CI_95: [2.810, 2.818]). Disk (n<2, N=56): D_f = 2.816 +/- 0.022. Elliptical (n>=2, N=44): D_f = 2.811 +/- 0.023. The CI ranges overlap completely, indicating no statistically significant morphological dependence at current resolution. All D_f values in [2.79, 2.84], well within the physical range [1.0, 3.0]. The mean D_f = 2.81 is consistent with near-space-filling 3D density structures after LBM diffusive evolution."
+claims = ["C-1262", "C-1264", "C-1265", "C-1266", "C-1268"]
+confidence = "high"
+phase = "cosmology"
+sprint = 82
+
+[[insight]]
+id = "I-139"
+title = "SoA memory layout eliminates stride-19 warp access pattern in D3Q19 LBM"
+date = "2026-03-11"
+status = "Active"
+description = "AoS layout f[idx*19+dir] causes 32 threads in a warp to read addresses 76 bytes apart (stride-19 * 4 bytes), requiring 19 separate 128-byte cache line fetches per direction. SoA layout f[dir*N+idx] gives contiguous 128-byte access per warp (1 fetch instead of 19). This is the single largest GPU memory bandwidth optimization possible for D3Q19 LBM on Ada Lovelace (SM 8.9). The kernels_soa.cu implementation adapts the proven lbm_step_soa_fused pattern from kernels_dark_halo.cu with Horner FMA equilibrium computation and unconditional Guo forcing."
+claims = ["C-1271"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insight]]
+id = "I-140"
+title = "Smagorinsky LES addresses LBM homogenization: tau(x) feedback preserves density structure"
+date = "2026-03-11"
+status = "Active"
+description = "At tau=1.5 (nu=1/3), diffusion length after 200 steps is sqrt(2*nu*T) = 11.5 cells = 18% of 64-cell grid. Concentrated galaxies (R_e < 5 cells) are fully smoothed by f64 LBM. Smagorinsky replaces scalar tau with spatially varying tau(x) = tau_base + 3*(C_s*dx)^2*|S(x)| where |S| is the Frobenius norm of the strain rate tensor. High-gradient regions (galaxy core boundaries) get higher tau, reducing local dissipation. The GPU kernel (compute_smagorinsky_tau_kernel) reads SoA velocity and writes per-cell tau, called every 10 LBM steps for acceptable overhead (~3% of step cost at 64^3)."
+claims = ["C-1272"]
+confidence = "medium"
+phase = "cosmology"
+sprint = 83
+
+[[insight]]
+id = "I-141"
+title = "BGK single-relaxation-time divergence at high density contrast: root cause is compressibility, not ghost moments"
+date = "2026-03-11"
+status = "Active"
+description = """E-158/E-161 experiments reveal that BGK collision fails for concentrated galaxies (rho_max/rho_min ~ 200:1) at f64 precision. Root cause: BGK forces all 19 kinetic moments (physical + ghost) to relax at the same rate tau. At steep density gradients, the polynomial f_eq expansion breaks down and ghost moments oscillate, pushing f_i negative. At f64, the solver faithfully diverges (D_f -> 3.0 then NaN). At f32, truncation noise accidentally damps these oscillations (D_f ~ 0.5-1.1, unphysical fragmentation). Smagorinsky LES has zero measurable effect at 64^3/tau=1.5: non-divergent galaxies have |S|~0, divergent ones hit NaN before Smagorinsky activates. ZD algebraic forcing shows tiny delta D_f = -0.003 to -0.005, confirming topological rigidity exists but cannot override kinetic catastrophe. Three paths: (1) MRT collision (gold standard) -- decouple ghost moment relaxation to s=1.0, keep physical s_nu=1/tau. Cost: 2x 19x19 matrix-vector ops per cell but memory-bound GPU absorbs this. (2) Stochastic LBM -- formalize f32 noise as Langevin term with fluctuation-dissipation constraint. (3) Already done: Guo forcing is implemented. NaN divergence telemetry counter added to CPU Smagorinsky for diagnostic triage."""
+claims = ["C-1272", "C-1273", "C-1278"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-142"
+title = "Three-parameter LBM stability envelope: softening (eps), density floor (rho_0), and MRT collision"
+date = "2026-03-11"
+status = "Active"
+description = """E-162 reveals three independent stability controls for high-contrast LBM cosmology: (1) Plummer softening eps controls core acceleration by replacing 1/r^2 with 1/(r^2+eps^2). (2) Density floor rho_0 controls outer-halo acceleration (a=F/rho, low rho -> high a). Critical threshold at 64^3 is floor=0.045 (35:1 contrast). (3) MRT ghost damping (s_ghost=1.0) extends practical Ma limit from ~0.3 to ~1.5 by decoupling ghost mode relaxation. The optimal 64^3 production configuration is MRT + eps=0.5*dx + floor=0.045 + tau=0.7, yielding D_f=2.888+/-0.085 with morphological signal: concentrated ellipticals (n>2) reach D_f=2.799 (2.6% from the 2.7268 CD topology prediction) while diffuse disks (n<1) approach 2.977. Resolution scaling to 128^3 should tighten the D_f spread as the softening core shrinks proportionally."""
+claims = ["C-1278", "C-1279", "C-1280", "C-1281"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-143"
+title = "PCIe bottleneck elimination via GPU-resident Otsu threshold and box-counting"
+date = "2026-03-11"
+status = "Active"
+description = """At 128^3, the LBM density field is 8 MB (128^3 * 4 bytes FP32). The pre-S83 pipeline called sync_to_host() twice per galaxy (initial + final D_f), transferring 16 MB over PCIe per galaxy. For 1000 galaxies this is 16 GB of PCIe traffic -- a significant bottleneck. The zero-copy path moves all D_f computation to GPU: (1) reduce_minmax_f32: shared memory tree reduction across blocks finds density range. CPU reduces <= 1024 block results (8 KB readback, negligible). (2) build_histogram_f32: atomic 256-bin histogram on GPU. (3) 1 KB histogram readback -> CPU Otsu O(256) computation. (4) GPU box_count_at_scale with warp-level ballot reduction. Total PCIe: ~2 KB vs 16 MB = 8000x reduction. Result: 1.54x speedup at 128^3 (249ms vs 384ms per galaxy). D_f values differ slightly from readback path (2.737 vs 2.727) because GPU Otsu threshold optimally segments the bimodal density whereas the old readback path used median (which falls on the density floor for 99.94% background cells)."""
+claims = ["C-1285", "C-1286"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-144"
+title = "Resolution convergence validates CD D=16 topological prediction: 128^3 CI brackets 2.7268"
+date = "2026-03-11"
+status = "Active"
+description = """E-163/E-164 demonstrate clear resolution convergence from 64^3 to 128^3: (1) Mean D_f shifts from 2.748 to 2.737, moving toward the CD D=16 flat band prediction of 2.7268. (2) Std drops 15x from 0.607 to 0.042. (3) All 6 outlier galaxies (D_f < 1.0 at 64^3) stabilize at 128^3. (4) The 128^3 95% CI [2.713, 2.763] brackets 2.7268 with the prediction at the 43rd percentile of the CI -- almost centered. Physical interpretation: at 64^3 the Plummer softening core (0.5*dx = 0.5 kpc) occupies a significant fraction of compact galaxies (R_e ~ 3-5 cells). At 128^3, dx halves to 0.5 kpc so the softening core is 0.25 kpc -- well below most R_e values, allowing the true Sersic profile to develop. The outlier galaxies at 64^3 are those where the softening core exceeds R_e, producing a flat density blob that box-counting fragments into noise. At 128^3, even these galaxies resolve correctly."""
+claims = ["C-1284", "C-1287"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-145"
+title = "Roofline: 128^3 D3Q19 at 504 GB/s = 153ms absolute wall"
+date = "2026-03-11"
+status = "Active"
+description = "RTX 4070 Ti (AD104, SM 8.9 Ada Lovelace): 504 GB/s peak memory bandwidth. 128^3 D3Q19 SoA per LBM step reads 92 B/cell (19 f_in + tau + 3 force) and writes 92 B/cell (19 f_out + rho + 3 u), totaling 184 B/cell. For 200 steps * 2,097,152 cells: 77.2 GB/galaxy. At 504 GB/s theoretical: 153ms is the absolute hardware wall. At 300 GB/s sustained: 257ms. Current E-166 result (249ms) already operates at 51% of theoretical, 97% of achievable bandwidth -- near the roofline. Further gains require reducing total memory traffic (tiling, thread coarsening to improve ILP) rather than increasing raw bandwidth utilization."
+claims = ["C-1296"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-146"
+title = "Ghost moment annihilation = mathematical heat sink for supersonic expansion errors"
+date = "2026-03-11"
+status = "Active"
+description = "In the d'Humieres MRT collision operator, the 19 kinetic moments decompose into 5 conserved (rho, jx, jy, jz, e), 5 physical (stress tensor components relaxed at rate s_nu = 1/tau), and 9 ghost modes (higher-order non-physical moments). BGK forces all 19 to relax at the same rate tau, so ghost moment oscillations from steep density gradients corrupt the conserved moments. MRT with s_ghost = 1.0 annihilates ghost modes in a single collision step -- they never accumulate across time steps. This acts as a mathematical heat sink: supersonic expansion errors are absorbed by the ghost relaxation channel before they corrupt macroscopic density and momentum. The practical result is extending the stable Mach number from ~0.3 (BGK) to ~1.5 (MRT)."
+claims = ["C-1290"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-147"
+title = "Shared memory full-tile at (10,10,6) = 44.5 KB -> 12% occupancy (unacceptable)"
+date = "2026-03-11"
+status = "Active"
+description = "Phase 5 investigated shared memory tiling for the D3Q19 streaming step. A (8,8,4) block of 256 threads with (10,10,6) halo tile loading all 19 directions requires 600 * 19 * 4 = 45,600 bytes = 44.5 KB of shared memory. With 48 KB/SM on Ada Lovelace, this allows only 1 block/SM = 256 threads = 12% occupancy. The current no-shared-memory approach (128 threads/block) achieves 12 blocks/SM = 75% occupancy. The 6x occupancy regression would negate the streaming benefit. Lightweight alternatives: 1D halo exchange (~2 KB shared, unlimited occupancy) or pull streaming (zero shared memory, coalesced writes instead of coalesced reads)."
+claims = []
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-148"
+title = "cudarc 0.19.1 supports new_stream() and fork() -- CUDA streams not blocked"
+date = "2026-03-11"
+status = "Active"
+description = "cudarc 0.19.1 exposes CudaContext::new_stream() -> Result<Arc<CudaStream>>, CudaStream::fork() -> Result<Arc<Self>>, and CudaStream::synchronize() -> Result<()>. All memory transfers (clone_htod, clone_dtoh, memcpy_htod) are methods on CudaStream, making them stream-ordered. Kernel launches via stream.launch_builder() are also stream-ordered. This means full dual-stream galaxy pipelining (overlap Galaxy N compute with Galaxy N+1 upload) is achievable within the existing cudarc API, requiring only ~80 lines of wrapper code and ~33.5 MB additional VRAM for double-buffered upload arrays at 128^3."
+claims = []
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-149"
+title = "ZD force is topology-dependent (grid position), not density-dependent"
+date = "2026-03-11"
+status = "Active"
+description = "The ZD algebraic forcing in galaxy_pipeline.rs (lines 326-354) computes a radially inward confining force that depends on: (1) grid position relative to center (r/R_e), (2) the Sersic effective radius R_e (geometric scale), (3) the alpha_zd coupling constant, and (4) the flat band fraction (always 0.5 for D>=16). The force is INDEPENDENT of the density field -- it is a purely topological/geometric constraint from the Cayley-Dickson zero-divisor structure. This clean separation of morphological input (density) from topological constraint (force) enables the null hypothesis experiment: we can independently vary density (uniform, noise, Sersic) and forcing (zero, ZD) to isolate their individual contributions to D_f."
+claims = ["C-1297"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-150"
+title = "AoSoA bridges GPU SoA coalescence and x86 L1 associativity (608 B/chunk)"
+date = "2026-03-11"
+status = "Active"
+description = "The AoSoA (Array of Structures of Arrays) memory layout groups cells into CHUNK=4 width packets matching the f64 AVX2 register width (256-bit YMM). Memory: f[chunk * 19 * CHUNK + dir * CHUNK + lane]. One chunk's full footprint is 19 * 4 * 8 = 608 bytes, fitting in a single 4 KB page (1 TLB entry) and occupying < 2% of the 32 KB L1D. All 19 directions for the current chunk are L1-hot simultaneously -- no thrashing, no TLB misses. Sequential chunk access is strictly linear, enabling the Zen 3 stride prefetcher. The wide::f64x4 type maps directly to YMM registers, giving the compiler freedom to emit VFMADD231PD instructions for the MRT collision."
+claims = ["C-1298", "C-1299"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-151"
+title = "AVX2 gather/scatter is hardware illusion: N independent scalar micro-ops on Zen 3"
+date = "2026-03-11"
+status = "Active"
+description = "On AMD Zen 3, VPGATHERQD/VPSCATTERQD decompose into N independent scalar load/store micro-ops -- there is no true hardware gather. A 4-wide f64 gather takes 4 scalar loads, each with independent address calculation and cache lookup. For LBM streaming where source addresses are known at compile time (constant lattice velocity offsets), explicit scalar loads into a wide::f64x4 via f64x4::new(f[a], f[b], f[c], f[d]) compile to the same micro-ops as a gather but with better scheduling flexibility. The AoSoA layout avoids gathers entirely for collision (contiguous chunk access) and minimizes them for streaming (only needed at chunk boundaries for cx=+/-1 directions)."
+claims = ["C-1298"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-152"
+title = "64^3 D3Q19 f64 double-buffered = 80 MB fits in 96 MB V-Cache (L3 SRAM speed)"
+date = "2026-03-11"
+status = "Active"
+description = "On the AMD 5600X3D with 96 MB 3D V-Cache, a 64^3 D3Q19 double-buffered f64 simulation requires 64^3 * 19 * 8 * 2 = ~80 MB, which fits entirely in L3. Once the initial density is loaded, the CPU never touches DDR4 during the 200-step evolution, operating at L3 SRAM bandwidth (~600+ GB/s) which rivals the RTX 4070 Ti's 504 GB/s GDDR6X. At 128^3 the working set is 640 MB, far exceeding V-Cache, falling back to DDR4 (~50 GB/s). This makes 64^3 the CPU sweet spot where the 5600X3D can genuinely compete with GPU throughput per cell."
+claims = ["C-1298"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-153"
+title = "Pure SoA on x86: 19 streams exceed 8-way L1D associativity (10x penalty)"
+date = "2026-03-11"
+status = "Active"
+description = "With pure SoA layout f[dir * N + cell], reading all 19 velocities for a single collision requires 19 memory addresses separated by N * 8 bytes (2 MB apart at 64^3). The Zen 3 L1D cache is 8-way set associative: 19 concurrent streams from 19 2 MB-separated addresses exceed the 8-way limit, forcing evictions on every access. Direction 0's cache line is evicted to load direction 9, then direction 1 for direction 10, etc. Every direction access becomes an L1 miss (served from L3 at ~40 cycles instead of ~4 cycles). The hardware stride prefetcher, designed for linear sequential access, is confused by the 19-way interleaved pattern. Result: pure SoA on x86 forces all access from L3 -- a 10x latency penalty that negates SIMD throughput gains. AoSoA eliminates this by keeping all 19 directions for a chunk contiguous in 608 bytes."
+claims = ["C-1298"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-154"
+title = "CUDA Graph double-buffer requires 2-step capture (canonical HPC pattern)"
+date = "2026-03-12"
+status = "Active"
+description = "CUDA Graphs capture device pointer values at capture time. Host-side std::mem::swap of double-buffers is invisible to graph replay. The canonical fix in HPC codes is to capture a 2-step graph (A->B then B->A) so one graph launch advances by 2 timesteps with data returning to buffer A. This eliminates the need for host-side buffer management entirely. For odd step counts, do n/2 graph pairs + 1 regular step(). The 2-step pattern also benefits from L2 cache locality between the back-to-back kernels within the graph."
+claims = ["C-1302", "C-1303"]
+confidence = "verified"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-155"
+title = "D3Q19 shared memory tile: 8x8x4 is the unique Ada Lovelace optimum"
+date = "2026-03-12"
+status = "Active"
+description = "For D3Q19 pull-scheme tiling on Ada Lovelace (48 KB default shared memory), the tile geometry is uniquely constrained: 19 directions * (tile+2)^3 * 4 bytes must fit in 48 KB, and threads must be a multiple of 32 (warp size). 8x8x4 = 256 threads, padded 10x10x6 = 600 cells, 19 * 600 * 4 = 45,600 bytes (94.8% utilization). The 57% halo overhead (344 halo cells / 600 total) is the fundamental thermodynamic cost -- but converting 19 scattered L2-miss global reads (~200 cycles each) to 19 fast LDS reads (~20 cycles each) per cell makes the tradeoff favorable. Larger tiles (8x8x8 = 76 KB) exceed the limit; smaller tiles (6x6x6 = 216 threads) waste warps."
+claims = ["C-1304", "C-1305"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83
+
+[[insights.entries]]
+id = "I-156"
+title = "Multi-stream GPU pipeline: deferred readback hides synchronous clone_dtoh"
+date = "2026-03-12"
+status = "Active"
+description = "GpuBoxCounter::fractal_dimension_device_auto() calls clone_dtoh which implicitly synchronizes the host thread. In a naive pipeline, this blocks CPU preparation of the next galaxy. The deferred result pattern (one-slot lookahead) restructures the loop: flush the PREVIOUS galaxy's D_f result at the START of the current iteration, after CPU prep is already done. This means the synchronous readback overlaps with nothing in the current iteration, but the CPU prep for galaxy K+1 overlapped with the box-counting of galaxy K-1 in the previous iteration. For true zero-copy async, fractal_dimension_device_auto would need an async API returning a CudaEvent + device buffer, deferring the readback to a separate call."
+claims = ["C-1306"]
+confidence = "high"
+phase = "cosmology"
+sprint = 83

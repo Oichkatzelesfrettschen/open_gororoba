@@ -5,10 +5,226 @@
 updated = "2026-02-09"
 authoritative = true
 source_markdown_glob = "docs/external_sources/*.md"
-document_count = 21
+document_count = 23
 
 [[document]]
 id = "XS-001"
+source_markdown = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
+slug = "c010_nonlocal_algebraic_metamaterials_sources"
+title = "C-010 Non-Local Algebraic Metamaterials Sources"
+status_token = "ACTIVE"
+content_kind = "claim_dataset_provenance"
+authority_level = "primary_paper_bridge"
+verification_level = "design_stage_replication"
+operational_role = "claim_bridge"
+source_lineage_summary = ""
+truth_surfaces = ["algebra_topology", "design_stage_benchmark"]
+artifact_contract_paths = ["crates/materials_core/src/nonlocal_metamaterial.rs", "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs", "data/csv/c010_nonlocal_material_calibrations.csv"]
+has_full_transcript = false
+claim_refs = ["C-010"]
+url_refs = ["https://doi.org/10.1038/s41467-020-15940-3", "https://arxiv.org/abs/1710.01373", "https://doi.org/10.1038/s41467-022-31140-7", "https://doi.org/10.1038/s42005-021-00719-9", "https://doi.org/10.1021/acsphotonics.5c01385", "https://doi.org/10.1002/adma.202209988", "https://pubmed.ncbi.nlm.nih.gov/36655553/", "https://www.aph.kit.edu/wegener/english/21_1085.php"]
+path_refs = ["papers/MANIFEST.toml", "crates/algebra_analysis/src/boxkites.rs", "crates/algebra_analysis/src/reggiani.rs", "crates/algebra_analysis/src/crystal_bands.rs", "crates/algebra_analysis/src/homotopy_algebra.rs", "data/papers/corpus/wang_2020_4d_topological_insulator.pdf", "data/papers/corpus/yuan_2017_synthetic_space_arbitrary_dimensions.pdf", "data/papers/corpus/dutt_2022_synthetic_frequency_boundaries.pdf", "data/papers/corpus/yu_2021_graphene_synthetic_photonic_rings.pdf", "data/papers/corpus/vangorp_2025_nonlocal_mechano_optical_metasurfaces.pdf", "registry/bibliography.toml", "crates/quantum_core/src/magnonic_crystal.rs", "crates/cosmology_core/src/sersic.rs", "data/csv/c010_nonlocal_material_calibrations.csv"]
+line_count = 125
+notes = "Sources pack for the non-local C-010 recovery lane with explicit literature-backed LC, Floquet, graphene, and magnonic calibration anchors."
+body_markdown = '''
+# C-010 Non-Local Algebraic Metamaterials Sources
+
+## Scope
+
+This dossier replaces the old local-absorber source lane for C-010.
+The claim is now explicitly about non-local or active coupling media that
+can realize the disconnected 42-assessor / 7 x K6 topology after the local
+3D route was closed as a negative result.
+
+## Primary algebra / topology anchors
+
+- de Marrais (2000), "The 42 Assessors and the Box-Kites they Fly".
+  Local manifest entry: `papers/MANIFEST.toml` (`demarrais-2000-math0011260`).
+- Reggiani (2024), "The Geometry of Sedenion Zero Divisors".
+  Local manifest entry: `papers/MANIFEST.toml` (`reggiani-2024-241118881`).
+- Repo-local algebra realization:
+  `crates/algebra_analysis/src/boxkites.rs`,
+  `crates/algebra_analysis/src/reggiani.rs`,
+  `crates/algebra_analysis/src/crystal_bands.rs`,
+  `crates/algebra_analysis/src/homotopy_algebra.rs`.
+
+## Non-local implementation pack
+
+### 1. Electric-circuit non-local connectivity
+
+- Wang, Y., Price, H. M., Zhang, B., Chong, Y. D. (2020).
+  "Circuit implementation of a four-dimensional topological insulator."
+  Nature Communications 11, 2356.
+  DOI: https://doi.org/10.1038/s41467-020-15940-3
+- Local PDF: `data/papers/corpus/wang_2020_4d_topological_insulator.pdf`
+- SHA256:
+  `5efd4e5ab05ca6bf9773459b11fbb0a429f48c6a22fcd54f1f9dec72180039c0`
+- Why used here:
+  explicit circuit wiring realizes topology that is not constrained by the
+  dimensionality of local Euclidean embedding, which is the exact design gap
+  exposed by the closed local C-010 lane.
+
+### 2. Synthetic-frequency Floquet dimension
+
+- Yuan, L., Xiao, M., Lin, Q., Fan, S. (2017).
+  "Synthetic space with arbitrary dimensions in a few rings undergoing dynamic modulation."
+  arXiv:1710.01373.
+  URL: https://arxiv.org/abs/1710.01373
+- Local PDF: `data/papers/corpus/yuan_2017_synthetic_space_arbitrary_dimensions.pdf`
+- SHA256:
+  `a990c804071fe12f28478f6117a95b49091d9dc7ff53df14b94ba8af9ebe3766`
+- Why used here:
+  establishes the synthetic-dimension route in which modulation phases act as
+  gauge potentials, giving a direct template for a Floquet backend.
+
+### 3. Synthetic-frequency boundaries and chiral transport
+
+- Dutt, A., Yuan, L., Yang, K. Y., Wang, K., Buddhiraju, S., Vuckovic, J., Fan, S. (2022).
+  "Creating boundaries along a synthetic frequency dimension."
+  Nature Communications 13, 3377.
+  DOI: https://doi.org/10.1038/s41467-022-31140-7
+- Local PDF: `data/papers/corpus/dutt_2022_synthetic_frequency_boundaries.pdf`
+- SHA256:
+  `fc7d9c1ebf588e5a9b00e003af4d73836f86d18f1da918710f0acd80018b1fc8`
+- Why used here:
+  shows how to terminate and route synthetic-frequency transport, which is
+  important for enforcing disconnected algebraic sectors without relying on
+  physical distance alone.
+
+### 4. Graphene-like dynamics in synthetic space
+
+- Yu, D., Li, G., Xiao, M., Wang, D.-W., Wan, Y., Yuan, L., Chen, X. (2021).
+  "Simulating graphene dynamics in synthetic space with photonic rings."
+  Communications Physics 4, 219.
+  DOI: https://doi.org/10.1038/s42005-021-00719-9
+- Local PDF: `data/papers/corpus/yu_2021_graphene_synthetic_photonic_rings.pdf`
+- SHA256:
+  `4594a252613b9e9a879c1568459fb8d850c2df798c8cf7bf3274de9109c6d4ec`
+- Why used here:
+  supplies the graphene / Dirac / valley comparison lane requested for this
+  tranche, but inside a reconfigurable synthetic-space ring platform.
+
+### 5. Nonlocal optical metasurface tuning
+
+- van Gorp, F., Liu, W., Coulais, C., van de Groep, J. (2025).
+  "Nonlocal Mechano-Optical Metasurfaces."
+  ACS Photonics 12(11), 5978-5984.
+  DOI: https://doi.org/10.1021/acsphotonics.5c01385
+- Local PDF: `data/papers/corpus/vangorp_2025_nonlocal_mechano_optical_metasurfaces.pdf`
+- SHA256:
+  `fa3db13186e1d18ea08bbf76c2fc96567010e5144ff658467d73a0516753eedd`
+- Why used here:
+  demonstrates an optical route where nonlocal resonances are tuned through
+  inter-particle spacing, useful as a metasurface-side comparison against the
+  LC/topolectrical backend.
+
+### 6. Cable-network non-locality
+
+- Chen, Y., Abouelatta, M. A. A., Wang, K., Kadic, M., Wegener, M. (2023).
+  "Nonlocal Cable-Network Metamaterials."
+  Advanced Materials 35(15), e2209988.
+  DOI: https://doi.org/10.1002/adma.202209988
+- Abstract mirror:
+  https://pubmed.ncbi.nlm.nih.gov/36655553/
+- KIT project page:
+  https://www.aph.kit.edu/wegener/english/21_1085.php
+- Why used here:
+  explicit example where dispersion is dominated by network-mediated non-local
+  interactions instead of resonant inclusions, closely matching the C-010 need.
+
+## Comparison lane
+
+- Repo-local magnonic reference:
+  `registry/bibliography.toml` entry for Kaman et al. (2026),
+  `crates/quantum_core/src/magnonic_crystal.rs`.
+  This gives the graphene-like Dirac / kagome flat-band comparison surface.
+- Repo-local Sersic layout tool:
+  `crates/cosmology_core/src/sersic.rs`.
+  This is used only for non-gating radial weighting diagnostics.
+
+## Calibration lane
+
+- Calibration CSV:
+  `data/csv/c010_nonlocal_material_calibrations.csv`
+- The CSV intentionally mixes two provenance classes:
+  - `measured_table`: direct numerical values from a cited table already encoded in-repo.
+  - `published_*_normalized`: normalized surrogate coefficients fitted to
+    published response classes or model Hamiltonians.
+- These normalized rows are design-ranking aids only. They are not treated as
+  primary experimental confirmation of the C-010 thesis.
+'''
+
+[[document]]
+id = "XS-002"
+source_markdown = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
+slug = "c053_pathion_metamaterial_mapping_sources"
+title = "C-053 Pathion Metamaterial Mapping Sources"
+status_token = "REFERENCE"
+content_kind = "claim_dataset_provenance"
+authority_level = "project_claim_repair"
+verification_level = "deterministic_toy_reproduction"
+operational_role = "claim_bridge"
+source_lineage_summary = ""
+truth_surfaces = ["toy_mapping", "degeneracy_disclosure"]
+artifact_contract_paths = ["crates/materials_core/src/pathion_toy_mapping.rs", "crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs", "data/csv/c053_pathion_tmm_summary.csv", "crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs"]
+has_full_transcript = false
+claim_refs = ["C-053"]
+url_refs = []
+path_refs = ["Pathion (32D) tensor diagonal -> dielectric stack (TMM retrieval).", "crates/materials_core/src/pathion_toy_mapping.rs", "crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs", "data/csv/c053_pathion_tmm_summary.csv", "crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs"]
+line_count = 47
+notes = "Repair dossier for the narrow C-053 toy lane. Keeps the pathion-to-TMM mapping reproducible while making its diagonal-only degeneracy explicit."
+body_markdown = '''
+# C-053 Pathion Metamaterial Mapping Sources
+
+## Claim scope
+
+C-053 is retained only as a toy model:
+
+`Pathion (32D) tensor diagonal -> dielectric stack (TMM retrieval).`
+
+The purpose of this repair is to restore the missing deterministic artifact and
+make the diagonal-only degeneracy explicit. It is not a claim of physical
+realizability.
+
+## Artifact lane
+
+- Core mapping:
+  `crates/materials_core/src/pathion_toy_mapping.rs`
+- CLI binary:
+  `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs`
+- CSV:
+  `data/csv/c053_pathion_tmm_summary.csv`
+- Rust test:
+  `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`
+
+## Source logic
+
+- Pathion context is taken only from the repo's existing Cayley-Dickson stack
+  and legacy claim lineage.
+- Optics / TMM interpretation is deliberately minimal and pedagogical:
+  diagonal-only algebraic data is grouped into dielectric layers with a single
+  deterministic surrogate absorptance value.
+- Because only diagonal entries are used, every layer inherits the same
+  magnitude class and the resulting optical summary is intentionally degenerate.
+
+## Interpretation boundary
+
+- What is shown:
+  a deterministic, reproducible toy mapping from a 32-entry diagonal into an
+  8-layer dielectric summary.
+- What is not shown:
+  any non-local coupling, off-diagonal tensor physics, fabrication design, or
+  experimentally grounded absorber claim.
+
+## Repair note
+
+The old claim lane pointed at missing files. This repaired dossier exists so
+the claim remains reproducible and explicitly narrow rather than silently
+relying on absent legacy artifacts or Python-side stopgaps.
+'''
+
+[[document]]
+id = "XS-003"
 source_markdown = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 slug = "c071_frb_ultrametric_sources"
 title = "C-071: FRB Ultrametric Structure -- Data Provenance"
@@ -103,7 +319,7 @@ Bonferroni threshold: 0.05 / 8 = 0.00625
 '''
 
 [[document]]
-id = "XS-002"
+id = "XS-004"
 source_markdown = "docs/external_sources/DATASET_MANIFEST.md"
 slug = "dataset_manifest"
 title = "Dataset Manifest"
@@ -219,7 +435,7 @@ cargo run --bin fetch-datasets -- --all --skip-existing
 '''
 
 [[document]]
-id = "XS-003"
+id = "XS-005"
 source_markdown = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 slug = "de_marrais_boxkites_iii"
 title = "2004 Math0403113 Boxkites Iii"
@@ -816,7 +1032,7 @@ Base-Line Box-Kite:            (2, 27) (8, 17) (10,19) (3, 26) (1, 24) (11, 18)
 '''
 
 [[document]]
-id = "XS-004"
+id = "XS-006"
 source_markdown = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 slug = "de_marrais_catamaran"
 title = "Voyage by Catamaran"
@@ -913,7 +1129,7 @@ ensembles as enriched network-theory nodules for modeling semantic propagation.
 '''
 
 [[document]]
-id = "XS-005"
+id = "XS-007"
 source_markdown = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 slug = "de_marrais_flying_higher"
 title = "Flying Higher Than A Box-Kite"
@@ -2021,7 +2237,7 @@ Sci., 504, 1986, 241-259; "Predictive Models in Psychoanalysis," Behavioral Scie
 '''
 
 [[document]]
-id = "XS-006"
+id = "XS-008"
 source_markdown = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 slug = "de_marrais_placeholder_i"
 title = "Placeholder Substructures I"
@@ -2712,7 +2928,7 @@ arXiv:0704.0112 [math.RA]
 '''
 
 [[document]]
-id = "XS-007"
+id = "XS-009"
 source_markdown = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 slug = "de_marrais_placeholder_iii"
 title = "Placeholder Substructures III"
@@ -2770,7 +2986,7 @@ doublings.
 '''
 
 [[document]]
-id = "XS-008"
+id = "XS-010"
 source_markdown = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 slug = "de_marrais_presto_digitization"
 title = "Presto! Digitization: Part I"
@@ -4546,7 +4762,7 @@ R. de Marrais                           Page 27               "Presto! Digitizat
 '''
 
 [[document]]
-id = "XS-009"
+id = "XS-011"
 source_markdown = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 slug = "de_marrais_wolfram_slides"
 title = "2004 Wolfram Science Slides"
@@ -5452,7 +5668,7 @@ R. de Marrais                              Page 18                "Something Fro
 '''
 
 [[document]]
-id = "XS-010"
+id = "XS-012"
 source_markdown = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
 slug = "heliosphere_dataset_progress_2026-03-09"
 title = "Heliosphere Dataset Progress 2026-03-09"
@@ -5722,7 +5938,7 @@ phase gaps without depending on blocked GSFC hosts.
 '''
 
 [[document]]
-id = "XS-011"
+id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 slug = "index"
 title = "External Sources"
@@ -5737,8 +5953,8 @@ artifact_contract_paths = []
 has_full_transcript = false
 claim_refs = []
 url_refs = []
-path_refs = ["docs/external_sources/*.md", "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md", "docs/external_sources/DATASET_MANIFEST.md", "docs/external_sources/DE_MARRAIS_BOXKITES_III.md", "docs/external_sources/DE_MARRAIS_CATAMARAN.md", "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md", "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md", "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md", "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md", "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md", "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md", "docs/external_sources/INDEX.md", "docs/external_sources/INVERSE_CD_FORMALISM.md", "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md", "docs/external_sources/OPEN_CLAIMS_SOURCES.md", "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md", "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md", "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md", "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md", "docs/external_sources/WOW_SIGNAL_SOURCES.md"]
-line_count = 27
+path_refs = ["docs/external_sources/*.md", "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md", "docs/external_sources/DATASET_MANIFEST.md", "docs/external_sources/DE_MARRAIS_BOXKITES_III.md", "docs/external_sources/DE_MARRAIS_CATAMARAN.md", "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md", "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md", "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md", "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md", "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md", "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md", "docs/external_sources/INDEX.md", "docs/external_sources/INVERSE_CD_FORMALISM.md", "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md", "docs/external_sources/OPEN_CLAIMS_SOURCES.md", "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md", "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md", "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md", "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md", "docs/external_sources/WOW_SIGNAL_SOURCES.md", "docs/external_sources/ysu_engine_gpu_patterns.md"]
+line_count = 28
 notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
 body_markdown = '''
 # External Sources
@@ -5768,10 +5984,11 @@ This index and all files under `docs/external_sources/*.md` are generated from T
 - `XS-018` `ACTIVE`: `docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md`
 - `XS-019` `UNVERIFIED`: `docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md`
 - `XS-020` `ACTIVE`: `docs/external_sources/WOW_SIGNAL_SOURCES.md`
+- `XS-021` `REFERENCE`: `docs/external_sources/ysu_engine_gpu_patterns.md`
 '''
 
 [[document]]
-id = "XS-012"
+id = "XS-014"
 source_markdown = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 slug = "inverse_cd_formalism"
 title = "Inverse Cayley-Dickson Formalism"
@@ -5949,7 +6166,7 @@ reference; not endorsed as rigorous mathematics.
 '''
 
 [[document]]
-id = "XS-013"
+id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 slug = "omni_data_audit_2026-03-10"
 title = "OMNI Data Audit (2026-03-10)"
@@ -6061,7 +6278,7 @@ byte-for-byte equivalent to canonical OMNI2. The repo should say that plainly.
 '''
 
 [[document]]
-id = "XS-014"
+id = "XS-016"
 source_markdown = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 slug = "open_claims_sources"
 title = "Open Claims Sources (Inbox)"
@@ -6117,7 +6334,7 @@ Claims currently routed here (2026-02-03):
 '''
 
 [[document]]
-id = "XS-015"
+id = "XS-017"
 source_markdown = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 slug = "pioneer_flyby_anomaly_sources"
 title = "Pioneer and Flyby Anomaly Primary Sources"
@@ -6203,7 +6420,7 @@ not proofs of any proposed explanation.
 '''
 
 [[document]]
-id = "XS-016"
+id = "XS-018"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 slug = "reggiani_manifold_claims"
 title = "Reggiani 2024 manifold identifications (C-005)"
@@ -6263,7 +6480,7 @@ The paper states (paraphrase, see PDF for full proofs):
 '''
 
 [[document]]
-id = "XS-017"
+id = "XS-019"
 source_markdown = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 slug = "sedenion_zd_experimental"
 title = "Sedenion Zero-Divisor Experimental Connections"
@@ -6384,7 +6601,7 @@ against primary papers and Rust implementations.
 '''
 
 [[document]]
-id = "XS-018"
+id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 slug = "soho_archive_mirror_audit_2026-03-09"
 title = "SOHO Archive Mirror Audit (2026-03-09)"
@@ -6534,7 +6751,7 @@ session or alternate route is demonstrated.
 '''
 
 [[document]]
-id = "XS-019"
+id = "XS-021"
 source_markdown = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 slug = "wheel_algebra_taxonomy"
 title = "Wheel Algebra Taxonomy"
@@ -6680,7 +6897,7 @@ Generated by ChatGPT. Extracted for reference; not endorsed as rigorous.
 '''
 
 [[document]]
-id = "XS-020"
+id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 slug = "wow_signal_sources"
 title = "Wow! Signal Source Dossier"
@@ -6784,7 +7001,7 @@ claims C-769 through C-773 in the open_gororoba registry.
 '''
 
 [[document]]
-id = "XS-021"
+id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 slug = "ysu_engine_gpu_patterns"
 title = "YSU-engine GPU Optimization Patterns: Technique Reference"

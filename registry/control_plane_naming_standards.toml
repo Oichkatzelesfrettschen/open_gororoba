@@ -89,9 +89,9 @@ legacy_alias_removal_criteria = [
 scope = "Markdown/TOML control-plane inventory, ownership, origin audit, and atom-scroll verification."
 evidence_refs = [
   "Makefile",
-  "src/verification/verify_markdown_corpus_registry.py",
-  "src/verification/verify_toml_inventory_registry.py",
-  "src/verification/verify_markdown_origin_audit.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- verify-corpus",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- verify-toml-inventory",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- verify-origin-audit",
 ]
 rationale = "Stabilizes naming around registry role: control-plane integrity."
 

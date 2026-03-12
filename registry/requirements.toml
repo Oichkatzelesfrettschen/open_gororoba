@@ -200,7 +200,6 @@ id = "REQ-GAP-002"
 area = "operational_sync"
 status = "open"
 status_token = "OPEN"
-description = "Requirements markdown export is implemented via export_registry_markdown_mirrors.py and wired through Makefile registry-export-markdown."
-proposed_resolution = "Keep mirror freshness verifiers active in docs publish and governance lanes."
+description = "Requirements markdown export is in a mixed compatibility state: Rust registry emitters now own several mirror lanes, while the remaining legacy markdown compatibility export still flows through Makefile registry-export-markdown."
+proposed_resolution = "Continue porting the remaining legacy markdown export and freshness-verification seams into Rust. Roadmap, next-actions, navigator, entrypoint-docs, requirements, docs-root narratives, and research narratives are already Rust-emitted; the remaining compatibility export should be reduced until Makefile registry-export-markdown no longer depends on Python."
 related_module_ids = []
-
