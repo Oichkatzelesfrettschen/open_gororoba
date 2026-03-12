@@ -1591,7 +1591,7 @@ what it explicitly does not claim.
 
 `crates/sign_imbalance/src/bridge.rs:357`:
 ```rust
-pub const VACUUM_ATTRACTOR: f64 = 3.0 / 8.0;
+pub const IMBALANCE_ATTRACTOR: f64 = 3.0 / 8.0;
 ```
 
 Six coupling models map frustration -> kinematic viscosity (m^2/s):
