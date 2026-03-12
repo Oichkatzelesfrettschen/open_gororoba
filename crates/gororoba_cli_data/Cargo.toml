@@ -41,12 +41,44 @@ path = "src/bin/project_counter_sync.rs"
 # ---- Governance (8) ----
 
 [[bin]]
+name = "agents-render"
+path = "src/bin/agents_render.rs"
+
+[[bin]]
+name = "artifact-source-of-truth"
+path = "src/bin/artifact_source_of_truth.rs"
+
+[[bin]]
+name = "verify-artifact-source-of-truth"
+path = "src/bin/verify_artifact_source_of_truth.rs"
+
+[[bin]]
+name = "source-truth-infrastructure"
+path = "src/bin/source_truth_infrastructure.rs"
+
+[[bin]]
+name = "verify-source-infrastructure"
+path = "src/bin/verify_source_infrastructure.rs"
+
+[[bin]]
+name = "provenance"
+path = "src/bin/provenance.rs"
+
+[[bin]]
+name = "markdown-registry"
+path = "src/bin/markdown_registry.rs"
+
+[[bin]]
 name = "data-governance-gate"
 path = "src/bin/data_governance_gate.rs"
 
 [[bin]]
 name = "data-origin-audit"
 path = "src/bin/data_origin_audit.rs"
+
+[[bin]]
+name = "verify-registry-mirror-freshness"
+path = "src/bin/verify_registry_mirror_freshness.rs"
 
 [[bin]]
 name = "data-clean"
@@ -222,6 +254,8 @@ path = "src/bin/crate_inventory.rs"
 
 [dependencies]
 algebra_analysis = { workspace = true }
+provenance_core = { path = "../provenance_core" }
+provenance_store = { path = "../provenance_store" }
 gororoba_cli = { path = "../gororoba_cli" }
 docpipe = { path = "../docpipe", features = ["fallback"] }
 data_core = { path = "../data_core" }
@@ -233,6 +267,7 @@ serde_json = { workspace = true }
 csv = { workspace = true }
 toml = { workspace = true }
 regex = { workspace = true }
+url = { workspace = true }
 sha2 = { workspace = true }
 walkdir = { workspace = true }
 glob = { workspace = true }
@@ -248,6 +283,7 @@ tracing-subscriber = { workspace = true }
 arrow-array = "58.0.0"
 arrow-ipc = "58.0.0"
 arrow-schema = "58.0.0"
+tempfile = { workspace = true }
 
 [features]
 hdf5-export = ["data_core/hdf5-export"]
