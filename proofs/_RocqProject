@@ -183,3 +183,8 @@ verified/C1140c_PathionGap_11_15.v
 verified/C1140_PathionQuantizedGap.v
 verified/C1141_ZDGraphGeneralStructure.v
 verified/C1142_XORScatterGatherDuality.v
+theories/TightBindingTopology.v
+verified/C1233_ChernSumZero.v
+verified/C1234_ValleyChernAntisymmetry.v
+verified/C1236_FlatBandGroupVelocity.v
+verified/C1262_FlatBandFractionHalf.v
