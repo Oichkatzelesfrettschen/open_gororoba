@@ -303,27 +303,14 @@ impl DatasetProvider for EhtCenAProvider {
     }
 }
 
-/// EHT M87* 2011-2013 legacy monitoring data.
-/// Pre-full-array observations, amplitude-only visibility data.
-/// Single .tgz containing all epochs (24 KB).
-pub struct EhtM87LegacyProvider;
-
-impl DatasetProvider for EhtM87LegacyProvider {
-    fn name(&self) -> &str {
-        "EHT M87 2011-2013 Legacy"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("eht_m87_legacy_2011_2013.tgz");
-        download_with_fallbacks(self.name(), EHT_M87_LEGACY, &output, config.skip_existing)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config
-            .output_dir
-            .join("eht_m87_legacy_2011_2013.tgz")
-            .exists()
-    }
+simple_provider! {
+    /// EHT M87* 2011-2013 legacy monitoring data.
+    /// Pre-full-array observations, amplitude-only visibility data.
+    /// Single .tgz containing all epochs (24 KB).
+    pub struct EhtM87LegacyProvider;
+    name = "EHT M87 2011-2013 Legacy";
+    output = "eht_m87_legacy_2011_2013.tgz";
+    urls = EHT_M87_LEGACY;
 }
 
 // ---------------------------------------------------------------------------

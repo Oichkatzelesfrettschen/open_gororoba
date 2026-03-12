@@ -1,4 +1,5 @@
 use anyhow::{Context, Result};
+use chrono::TimeZone;
 use clap::Parser;
 use data_core::{
     catalogs::{
@@ -6,8 +7,8 @@ use data_core::{
         fermi_gbm::parse_fermi_gbm_csv,
         omni::parse_omni_file,
         pioneer::{PioneerSpacecraft, parse_pioneer_file, pioneer_to_omni},
-        sorce::parse_sorce_csv,
         soho_celias::parse_soho_celias_bundle_file,
+        sorce::parse_sorce_csv,
         tsi::parse_tsi_csv,
         voyager::{VoyagerSpacecraft, parse_voyager_file, voyager_to_omni},
     },
@@ -21,7 +22,6 @@ use std::{
     path::{Path, PathBuf},
     str::FromStr,
 };
-use chrono::TimeZone;
 
 #[derive(Parser, Debug)]
 #[command(
@@ -153,7 +153,11 @@ fn entry_from_bounds(spec: DatasetAuditSpec<'_>) -> DatasetAuditEntry {
     } else {
         "not_staged"
     };
-    let contract_status = if has_science_rows { "satisfied" } else { "blocked" };
+    let contract_status = if has_science_rows {
+        "satisfied"
+    } else {
+        "blocked"
+    };
     DatasetAuditEntry {
         key: spec.key.to_string(),
         label: spec.label.to_string(),
@@ -189,25 +193,7 @@ fn override_contract_status(
 fn audit_soho_celias(repo_root: &Path) -> Result<DatasetAuditEntry> {
     let path = repo_root.join("data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz");
     if !path.exists() {
-        return Ok(entry_from_bounds(
-            DatasetAuditSpec {
-                key: "soho_celias_bundle",
-                label: "SOHO CELIAS Proton Monitor bundle",
-                family: "heliosphere",
-                role: "inner_boundary_primary",
-                cadence: "native_5min_bundle",
-                authority: "GSFC mission bundle / governed local",
-                local_path: &path,
-                row_count: None,
-                bounds: None,
-                notes: "Bundle not staged locally.".to_string(),
-            },
-        ));
-    }
-    let records = parse_soho_celias_bundle_file(&path)?;
-    let bounds = bounds_from_soho_celias(&records);
-    Ok(entry_from_bounds(
-        DatasetAuditSpec {
+        return Ok(entry_from_bounds(DatasetAuditSpec {
             key: "soho_celias_bundle",
             label: "SOHO CELIAS Proton Monitor bundle",
             family: "heliosphere",
@@ -215,39 +201,32 @@ fn audit_soho_celias(repo_root: &Path) -> Result<DatasetAuditEntry> {
             cadence: "native_5min_bundle",
             authority: "GSFC mission bundle / governed local",
             local_path: &path,
-            row_count: Some(records.len()),
-            bounds,
-            notes:
-                "Native 5-minute inner-boundary lane; hourly normalization is derived downstream."
-                    .to_string(),
-        },
-    ))
+            row_count: None,
+            bounds: None,
+            notes: "Bundle not staged locally.".to_string(),
+        }));
+    }
+    let records = parse_soho_celias_bundle_file(&path)?;
+    let bounds = bounds_from_soho_celias(&records);
+    Ok(entry_from_bounds(DatasetAuditSpec {
+        key: "soho_celias_bundle",
+        label: "SOHO CELIAS Proton Monitor bundle",
+        family: "heliosphere",
+        role: "inner_boundary_primary",
+        cadence: "native_5min_bundle",
+        authority: "GSFC mission bundle / governed local",
+        local_path: &path,
+        row_count: Some(records.len()),
+        bounds,
+        notes: "Native 5-minute inner-boundary lane; hourly normalization is derived downstream."
+            .to_string(),
+    }))
 }
 
 fn audit_tsis(repo_root: &Path) -> Result<DatasetAuditEntry> {
     let path = repo_root.join("data/external/tsis1_tsi_daily.csv");
     if !path.exists() {
-        return Ok(entry_from_bounds(
-            DatasetAuditSpec {
-                key: "tsis1_daily",
-                label: "TSIS-1 TSI Daily",
-                family: "solar_context",
-                role: "optional_secondary",
-                cadence: "daily",
-                authority: "LASP LISIRD",
-                local_path: &path,
-                row_count: None,
-                bounds: None,
-                notes: "TSIS file not staged locally.".to_string(),
-            },
-        ));
-    }
-    let rows = parse_tsi_csv(&path)?;
-    let bounds = TimeBounds::from_sorted_epochs(
-        &rows.iter().map(|row| Epoch::from_jde_utc(row.jd)).collect::<Vec<_>>(),
-    );
-    Ok(entry_from_bounds(
-        DatasetAuditSpec {
+        return Ok(entry_from_bounds(DatasetAuditSpec {
             key: "tsis1_daily",
             label: "TSIS-1 TSI Daily",
             family: "solar_context",
@@ -255,11 +234,30 @@ fn audit_tsis(repo_root: &Path) -> Result<DatasetAuditEntry> {
             cadence: "daily",
             authority: "LASP LISIRD",
             local_path: &path,
-            row_count: Some(rows.len()),
-            bounds,
-            notes: "Daily thermodynamic context layer for 2018+ packs.".to_string(),
-        },
-    ))
+            row_count: None,
+            bounds: None,
+            notes: "TSIS file not staged locally.".to_string(),
+        }));
+    }
+    let rows = parse_tsi_csv(&path)?;
+    let bounds = TimeBounds::from_sorted_epochs(
+        &rows
+            .iter()
+            .map(|row| Epoch::from_jde_utc(row.jd))
+            .collect::<Vec<_>>(),
+    );
+    Ok(entry_from_bounds(DatasetAuditSpec {
+        key: "tsis1_daily",
+        label: "TSIS-1 TSI Daily",
+        family: "solar_context",
+        role: "optional_secondary",
+        cadence: "daily",
+        authority: "LASP LISIRD",
+        local_path: &path,
+        row_count: Some(rows.len()),
+        bounds,
+        notes: "Daily thermodynamic context layer for 2018+ packs.".to_string(),
+    }))
 }
 
 fn audit_sorce(repo_root: &Path) -> Result<DatasetAuditEntry> {
@@ -280,7 +278,10 @@ fn audit_sorce(repo_root: &Path) -> Result<DatasetAuditEntry> {
     }
     let rows = parse_sorce_csv(&path)?;
     let bounds = TimeBounds::from_sorted_epochs(
-        &rows.iter().map(|row| Epoch::from_jde_utc(row.jd)).collect::<Vec<_>>(),
+        &rows
+            .iter()
+            .map(|row| Epoch::from_jde_utc(row.jd))
+            .collect::<Vec<_>>(),
     );
     Ok(entry_from_bounds(DatasetAuditSpec {
         key: "sorce_daily",
@@ -306,26 +307,7 @@ fn audit_voyager_merged_file(
     role: &str,
 ) -> Result<DatasetAuditEntry> {
     if !path.exists() {
-        return Ok(entry_from_bounds(
-            DatasetAuditSpec {
-                key,
-                label,
-                family: "heliosphere",
-                role,
-                cadence: "hourly",
-                authority: "AMDA governed fallback",
-                local_path: path,
-                row_count: None,
-                bounds: None,
-                notes: "Merged file not staged locally.".to_string(),
-            },
-        ));
-    }
-    let raw = parse_voyager_file(path, spacecraft)?;
-    let omni = voyager_to_omni(&raw);
-    let bounds = bounds_from_omni(&omni);
-    Ok(entry_from_bounds(
-        DatasetAuditSpec {
+        return Ok(entry_from_bounds(DatasetAuditSpec {
             key,
             label,
             family: "heliosphere",
@@ -333,11 +315,26 @@ fn audit_voyager_merged_file(
             cadence: "hourly",
             authority: "AMDA governed fallback",
             local_path: path,
-            row_count: Some(omni.len()),
-            bounds,
-            notes: "Merged plasma/magnetic/trajectory lane.".to_string(),
-        },
-    ))
+            row_count: None,
+            bounds: None,
+            notes: "Merged file not staged locally.".to_string(),
+        }));
+    }
+    let raw = parse_voyager_file(path, spacecraft)?;
+    let omni = voyager_to_omni(&raw);
+    let bounds = bounds_from_omni(&omni);
+    Ok(entry_from_bounds(DatasetAuditSpec {
+        key,
+        label,
+        family: "heliosphere",
+        role,
+        cadence: "hourly",
+        authority: "AMDA governed fallback",
+        local_path: path,
+        row_count: Some(omni.len()),
+        bounds,
+        notes: "Merged plasma/magnetic/trajectory lane.".to_string(),
+    }))
 }
 
 fn audit_voyager_2017_2018(repo_root: &Path) -> Result<DatasetAuditEntry> {
@@ -359,21 +356,18 @@ fn audit_voyager_2017_2018(repo_root: &Path) -> Result<DatasetAuditEntry> {
             bounds.push(bound);
         }
     }
-    Ok(entry_from_bounds(
-        DatasetAuditSpec {
-            key: "voyager2_2017_2018_merged",
-            label: "Voyager 2 merged 2017-2018",
-            family: "heliosphere",
-            role: "outer_boundary_primary",
-            cadence: "hourly",
-            authority: "AMDA governed fallback",
-            local_path: &root,
-            row_count: if row_count > 0 { Some(row_count) } else { None },
-            bounds: union_bounds(&bounds),
-            notes: "Deep heliosheath / heliopause-era merged plasma and trajectory lane."
-                .to_string(),
-        },
-    ))
+    Ok(entry_from_bounds(DatasetAuditSpec {
+        key: "voyager2_2017_2018_merged",
+        label: "Voyager 2 merged 2017-2018",
+        family: "heliosphere",
+        role: "outer_boundary_primary",
+        cadence: "hourly",
+        authority: "AMDA governed fallback",
+        local_path: &root,
+        row_count: if row_count > 0 { Some(row_count) } else { None },
+        bounds: union_bounds(&bounds),
+        notes: "Deep heliosheath / heliopause-era merged plasma and trajectory lane.".to_string(),
+    }))
 }
 
 fn audit_omni_2017_2018(repo_root: &Path) -> Result<DatasetAuditEntry> {
@@ -453,20 +447,18 @@ fn audit_omni_range(
 fn audit_gwosc(repo_root: &Path) -> Result<DatasetAuditEntry> {
     let path = repo_root.join("data/external/gwosc_all_events.csv");
     if !path.exists() {
-        return Ok(entry_from_bounds(
-            DatasetAuditSpec {
-                key: "gwosc_all_events",
-                label: "GWOSC combined GWTC",
-                family: "multi_messenger",
-                role: "optional_secondary",
-                cadence: "event_catalog",
-                authority: "GWOSC",
-                local_path: &path,
-                row_count: None,
-                bounds: None,
-                notes: "Combined GW catalog not staged locally.".to_string(),
-            },
-        ));
+        return Ok(entry_from_bounds(DatasetAuditSpec {
+            key: "gwosc_all_events",
+            label: "GWOSC combined GWTC",
+            family: "multi_messenger",
+            role: "optional_secondary",
+            cadence: "event_catalog",
+            authority: "GWOSC",
+            local_path: &path,
+            row_count: None,
+            bounds: None,
+            notes: "Combined GW catalog not staged locally.".to_string(),
+        }));
     }
     let mut reader = csv::Reader::from_path(&path)?;
     let headers = reader.headers()?.clone();
@@ -486,21 +478,18 @@ fn audit_gwosc(repo_root: &Path) -> Result<DatasetAuditEntry> {
             rows += 1;
         }
     }
-    Ok(entry_from_bounds(
-        DatasetAuditSpec {
-            key: "gwosc_all_events",
-            label: "GWOSC combined GWTC",
-            family: "multi_messenger",
-            role: "optional_secondary",
-            cadence: "event_catalog",
-            authority: "GWOSC",
-            local_path: &path,
-            row_count: Some(rows),
-            bounds: bounds_from_unsorted_epochs(&epochs),
-            notes: "Use this broader catalog for 2017 overlap, not GWTC-3 confident only."
-                .to_string(),
-        },
-    ))
+    Ok(entry_from_bounds(DatasetAuditSpec {
+        key: "gwosc_all_events",
+        label: "GWOSC combined GWTC",
+        family: "multi_messenger",
+        role: "optional_secondary",
+        cadence: "event_catalog",
+        authority: "GWOSC",
+        local_path: &path,
+        row_count: Some(rows),
+        bounds: bounds_from_unsorted_epochs(&epochs),
+        notes: "Use this broader catalog for 2017 overlap, not GWTC-3 confident only.".to_string(),
+    }))
 }
 
 fn parse_fermi_trigger_epoch(text: &str) -> Option<Epoch> {
@@ -513,28 +502,7 @@ fn parse_fermi_trigger_epoch(text: &str) -> Option<Epoch> {
 fn audit_fermi(repo_root: &Path) -> Result<DatasetAuditEntry> {
     let path = repo_root.join("data/external/fermi_gbm_grbs.csv");
     if !path.exists() {
-        return Ok(entry_from_bounds(
-            DatasetAuditSpec {
-                key: "fermi_gbm",
-                label: "Fermi GBM Burst Catalog",
-                family: "multi_messenger",
-                role: "optional_secondary",
-                cadence: "event_catalog",
-                authority: "HEASARC",
-                local_path: &path,
-                row_count: None,
-                bounds: None,
-                notes: "Fermi GBM catalog not staged locally.".to_string(),
-            },
-        ));
-    }
-    let rows = parse_fermi_gbm_csv(&path)?;
-    let epochs: Vec<Epoch> = rows
-        .iter()
-        .filter_map(|row| parse_fermi_trigger_epoch(&row.trigger_time))
-        .collect();
-    Ok(entry_from_bounds(
-        DatasetAuditSpec {
+        return Ok(entry_from_bounds(DatasetAuditSpec {
             key: "fermi_gbm",
             label: "Fermi GBM Burst Catalog",
             family: "multi_messenger",
@@ -542,11 +510,28 @@ fn audit_fermi(repo_root: &Path) -> Result<DatasetAuditEntry> {
             cadence: "event_catalog",
             authority: "HEASARC",
             local_path: &path,
-            row_count: Some(rows.len()),
-            bounds: bounds_from_unsorted_epochs(&epochs),
-            notes: "Gamma-ray transient context layer for 2012+ windows.".to_string(),
-        },
-    ))
+            row_count: None,
+            bounds: None,
+            notes: "Fermi GBM catalog not staged locally.".to_string(),
+        }));
+    }
+    let rows = parse_fermi_gbm_csv(&path)?;
+    let epochs: Vec<Epoch> = rows
+        .iter()
+        .filter_map(|row| parse_fermi_trigger_epoch(&row.trigger_time))
+        .collect();
+    Ok(entry_from_bounds(DatasetAuditSpec {
+        key: "fermi_gbm",
+        label: "Fermi GBM Burst Catalog",
+        family: "multi_messenger",
+        role: "optional_secondary",
+        cadence: "event_catalog",
+        authority: "HEASARC",
+        local_path: &path,
+        row_count: Some(rows.len()),
+        bounds: bounds_from_unsorted_epochs(&epochs),
+        notes: "Gamma-ray transient context layer for 2012+ windows.".to_string(),
+    }))
 }
 
 fn audit_wow(repo_root: &Path) -> DatasetAuditEntry {
@@ -703,20 +688,18 @@ fn audit_pioneer_encounter(
 fn audit_encounter_track(repo_root: &Path) -> Result<DatasetAuditEntry> {
     let path = repo_root.join("data/output/heliosphere/limits/voyager_encounter_track.csv");
     if !path.exists() {
-        return Ok(entry_from_bounds(
-            DatasetAuditSpec {
-                key: "voyager2_jupiter_track",
-                label: "Voyager 2 Jupiter encounter fused track",
-                family: "heliosphere_operational",
-                role: "operational_validation",
-                cadence: "hourly_track",
-                authority: "governed local output",
-                local_path: &path,
-                row_count: None,
-                bounds: None,
-                notes: "Operational fused artifact not present.".to_string(),
-            },
-        ));
+        return Ok(entry_from_bounds(DatasetAuditSpec {
+            key: "voyager2_jupiter_track",
+            label: "Voyager 2 Jupiter encounter fused track",
+            family: "heliosphere_operational",
+            role: "operational_validation",
+            cadence: "hourly_track",
+            authority: "governed local output",
+            local_path: &path,
+            row_count: None,
+            bounds: None,
+            notes: "Operational fused artifact not present.".to_string(),
+        }));
     }
     let mut reader = csv::Reader::from_path(&path)?;
     let headers = reader.headers()?.clone();
@@ -786,12 +769,7 @@ fn audit_cassini_cruise(repo_root: &Path) -> Result<DatasetAuditEntry> {
         notes: "Governed Cassini cruise hourly lane derived from AMDA `cass-orb-cruise` (measured trajectory), `cass-mag-rtn60` (measured magnetic field), and `tao-cass-sw` (modeled solar-wind plasma). Full overlap begins in late 1998, so this supports a fully aligned late-cruise pack from 1999 onward rather than the full 1997 mission launch interval.".to_string(),
     });
     if entry.staged {
-        override_contract_status(
-            &mut entry,
-            "staged",
-            "ready_governed_hybrid_lane",
-            false,
-        );
+        override_contract_status(&mut entry, "staged", "ready_governed_hybrid_lane", false);
     }
     Ok(entry)
 }
@@ -815,14 +793,16 @@ fn build_pack(
         .iter()
         .filter_map(|key| datasets.get(*key))
         .filter(|dataset| dataset.staged)
-        .filter_map(|dataset| match (&dataset.start_rfc3339, &dataset.end_rfc3339) {
-            (Some(start), Some(end)) => {
-                let start_epoch = Epoch::from_str(start).ok()?;
-                let end_epoch = Epoch::from_str(end).ok()?;
-                Some(TimeBounds::from_sorted_epochs(&[start_epoch, end_epoch])?)
-            }
-            _ => None,
-        })
+        .filter_map(
+            |dataset| match (&dataset.start_rfc3339, &dataset.end_rfc3339) {
+                (Some(start), Some(end)) => {
+                    let start_epoch = Epoch::from_str(start).ok()?;
+                    let end_epoch = Epoch::from_str(end).ok()?;
+                    Some(TimeBounds::from_sorted_epochs(&[start_epoch, end_epoch])?)
+                }
+                _ => None,
+            },
+        )
         .collect();
 
     let strict_required_bounds: Vec<TimeBounds> = required_keys
@@ -830,14 +810,16 @@ fn build_pack(
         .filter(|key| !gap_tolerant_keys.contains(key))
         .filter_map(|key| datasets.get(*key))
         .filter(|dataset| dataset.staged)
-        .filter_map(|dataset| match (&dataset.start_rfc3339, &dataset.end_rfc3339) {
-            (Some(start), Some(end)) => {
-                let start_epoch = Epoch::from_str(start).ok()?;
-                let end_epoch = Epoch::from_str(end).ok()?;
-                Some(TimeBounds::from_sorted_epochs(&[start_epoch, end_epoch])?)
-            }
-            _ => None,
-        })
+        .filter_map(
+            |dataset| match (&dataset.start_rfc3339, &dataset.end_rfc3339) {
+                (Some(start), Some(end)) => {
+                    let start_epoch = Epoch::from_str(start).ok()?;
+                    let end_epoch = Epoch::from_str(end).ok()?;
+                    Some(TimeBounds::from_sorted_epochs(&[start_epoch, end_epoch])?)
+                }
+                _ => None,
+            },
+        )
         .collect();
 
     let overlap = if missing_required.is_empty() {
@@ -870,11 +852,17 @@ fn build_pack(
 
     let gap_bounds: Vec<String> = gap_tolerant_keys
         .iter()
-        .filter_map(|key| datasets.get(*key).map(|dataset| ((*key).to_string(), dataset)))
-        .filter_map(|(key, dataset)| match (&dataset.start_rfc3339, &dataset.end_rfc3339) {
-            (Some(start), Some(end)) => Some(format!("{key}=[{start}, {end}]")),
-            _ => None,
+        .filter_map(|key| {
+            datasets
+                .get(*key)
+                .map(|dataset| ((*key).to_string(), dataset))
         })
+        .filter_map(
+            |(key, dataset)| match (&dataset.start_rfc3339, &dataset.end_rfc3339) {
+                (Some(start), Some(end)) => Some(format!("{key}=[{start}, {end}]")),
+                _ => None,
+            },
+        )
         .collect();
 
     let (status, notes) = if !missing_required.is_empty() {
@@ -895,9 +883,9 @@ fn build_pack(
     {
         if !bounds.contains_epoch_window(*target_start_epoch, *target_end_epoch) {
             if !gap_tolerant_keys.is_empty()
-                && strict_overlap
-                    .as_ref()
-                    .is_some_and(|strict| strict.contains_epoch_window(*target_start_epoch, *target_end_epoch))
+                && strict_overlap.as_ref().is_some_and(|strict| {
+                    strict.contains_epoch_window(*target_start_epoch, *target_end_epoch)
+                })
             {
                 (
                     "ready_gap_tolerant".to_string(),
@@ -935,7 +923,10 @@ fn build_pack(
         name: name.to_string(),
         required_keys: required_keys.iter().map(|key| (*key).to_string()).collect(),
         optional_keys: optional_keys.iter().map(|key| (*key).to_string()).collect(),
-        gap_tolerant_keys: gap_tolerant_keys.iter().map(|key| (*key).to_string()).collect(),
+        gap_tolerant_keys: gap_tolerant_keys
+            .iter()
+            .map(|key| (*key).to_string())
+            .collect(),
         missing_required,
         target_start_rfc3339: target_bounds.as_ref().map(|(start, _, _, _)| start.clone()),
         target_end_rfc3339: target_bounds.as_ref().map(|(_, end, _, _)| end.clone()),
@@ -965,7 +956,11 @@ fn write_markdown(path: &Path, report: &AuditReport) -> Result<()> {
             dataset.catalog_status,
             dataset.acquisition_status,
             dataset.contract_status,
-            if dataset.satisfies_provider_contract { "yes" } else { "no" },
+            if dataset.satisfies_provider_contract {
+                "yes"
+            } else {
+                "no"
+            },
             dataset.cadence,
             dataset.start_rfc3339.as_deref().unwrap_or("-"),
             dataset.end_rfc3339.as_deref().unwrap_or("-"),
@@ -1148,8 +1143,17 @@ fn main() -> Result<()> {
         ),
         build_pack(
             "HELIOPAUSE_2017_2018",
-            &["soho_celias_bundle", "omni_2017_2018", "voyager2_2017_2018_merged"],
-            &["tsis1_daily", "sorce_daily", "gwosc_all_events", "fermi_gbm"],
+            &[
+                "soho_celias_bundle",
+                "omni_2017_2018",
+                "voyager2_2017_2018_merged",
+            ],
+            &[
+                "tsis1_daily",
+                "sorce_daily",
+                "gwosc_all_events",
+                "fermi_gbm",
+            ],
             &[],
             &dataset_map,
             Some("2017-01-01T00:00:00Z"),
@@ -1157,7 +1161,11 @@ fn main() -> Result<()> {
         ),
         build_pack(
             "CRUISE_1997_2004",
-            &["soho_celias_bundle", "omni_1997_2004", "cassini_cruise_1998_2004"],
+            &[
+                "soho_celias_bundle",
+                "omni_1997_2004",
+                "cassini_cruise_1998_2004",
+            ],
             &["sorce_daily"],
             &["cassini_cruise_1998_2004"],
             &dataset_map,
@@ -1166,7 +1174,11 @@ fn main() -> Result<()> {
         ),
         build_pack(
             "CRUISE_1999_2004",
-            &["soho_celias_bundle", "omni_1999_2004", "cassini_cruise_1998_2004"],
+            &[
+                "soho_celias_bundle",
+                "omni_1999_2004",
+                "cassini_cruise_1998_2004",
+            ],
             &["sorce_daily"],
             &[],
             &dataset_map,
@@ -1193,7 +1205,12 @@ fn main() -> Result<()> {
         ),
         build_pack(
             "TSI_CROSSCAL_2018_2020",
-            &["soho_celias_bundle", "omni_1997_2025", "sorce_daily", "tsis1_daily"],
+            &[
+                "soho_celias_bundle",
+                "omni_1997_2025",
+                "sorce_daily",
+                "tsis1_daily",
+            ],
             &["fermi_gbm", "gwosc_all_events"],
             &[],
             &dataset_map,
