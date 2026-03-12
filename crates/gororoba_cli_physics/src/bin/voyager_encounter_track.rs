@@ -175,8 +175,8 @@ fn main() -> Result<()> {
                 .context("Voyager spatial feeder had no temporal bounds")?,
         },
     ])?;
-    let window_end_ms = window_start.timestamp_millis()
-        + (cli.window_hours * 3600.0 * 1000.0).round() as i64;
+    let window_end_ms =
+        window_start.timestamp_millis() + (cli.window_hours * 3600.0 * 1000.0).round() as i64;
     chronology.require_window(window_start.timestamp_millis(), window_end_ms)?;
     let fused = FusedEncounterFeeder::new(telemetry, spatial);
 

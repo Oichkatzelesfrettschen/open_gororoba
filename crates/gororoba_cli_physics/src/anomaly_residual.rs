@@ -2,8 +2,7 @@ use crate::flyby::config::FlybyConfig;
 use anyhow::{Context, Result, bail};
 use csv::{ReaderBuilder, WriterBuilder};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
-use std::collections::BTreeMap;
-use std::path::Path;
+use std::{collections::BTreeMap, path::Path};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct FlybyObservedRecord {
@@ -146,13 +145,20 @@ pub fn validate_flyby_catalog(
             expected.len()
         );
     }
-    let observed_by_name: BTreeMap<&str, &FlybyObservedRecord> =
-        observed.iter().map(|row| (row.name.as_str(), row)).collect();
+    let observed_by_name: BTreeMap<&str, &FlybyObservedRecord> = observed
+        .iter()
+        .map(|row| (row.name.as_str(), row))
+        .collect();
     for cfg in expected {
         let Some(row) = observed_by_name.get(cfg.name) else {
             bail!("flyby catalog missing {}", cfg.name);
         };
-        compare_float("perigee_alt_km", row.perigee_alt_km, cfg.perigee_alt_km, 1e-6)?;
+        compare_float(
+            "perigee_alt_km",
+            row.perigee_alt_km,
+            cfg.perigee_alt_km,
+            1e-6,
+        )?;
         compare_float("v_inf_km_s", row.v_inf_km_s, cfg.v_inf, 1e-6)?;
         compare_float(
             "inbound_dec_deg",

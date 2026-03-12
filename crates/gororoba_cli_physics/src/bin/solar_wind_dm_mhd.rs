@@ -266,7 +266,7 @@ fn load_ic_file(
         // Re-initialize distribution function to equilibrium at (rho, u)
         let f_eq = BgkCollision::initialize_with_velocity(rho, [ux, uy, uz], lattice);
         for (i, &fi) in f_eq.iter().enumerate() {
-            solver.f[idx * 19 + i] = fi;
+            solver.f[lbm_3d::solver::aosoa_idx(idx, i)] = fi;
         }
 
         mhd.bx[idx] = bx;

@@ -90,10 +90,16 @@ impl PlasmaBoundaryProvider for GapTolerantBoundaryProvider {
     }
 
     fn sample_at_epoch(&self, target_epoch: Epoch) -> Result<Option<HeliosphericPlasmaState>> {
-        if !self.declared_bounds.contains_epoch_window(target_epoch, target_epoch) {
+        if !self
+            .declared_bounds
+            .contains_epoch_window(target_epoch, target_epoch)
+        {
             return Ok(None);
         }
-        if !self.native_bounds.contains_epoch_window(target_epoch, target_epoch) {
+        if !self
+            .native_bounds
+            .contains_epoch_window(target_epoch, target_epoch)
+        {
             return Ok(Some(missing_plasma_state(target_epoch, self.label.clone())));
         }
         match self.inner.sample_at_epoch(target_epoch)? {
@@ -133,7 +139,10 @@ impl ChronologyGate {
         if datasets.is_empty() {
             bail!("ChronologyGate requires at least one dataset");
         }
-        let bounds: Vec<TimeBounds> = datasets.iter().map(|dataset| dataset.bounds.clone()).collect();
+        let bounds: Vec<TimeBounds> = datasets
+            .iter()
+            .map(|dataset| dataset.bounds.clone())
+            .collect();
         let overlap = TimeBounds::intersect_all(&bounds).ok_or_else(|| {
             anyhow::anyhow!(
                 "ChronologyViolation: datasets have no overlapping window: {}",
@@ -327,7 +336,10 @@ pub struct SohoCeliasBoundaryProvider {
 impl SohoCeliasBoundaryProvider {
     pub fn new(label: impl Into<String>, records: Vec<SohoCeliasRecord>) -> Result<Self> {
         let label = label.into();
-        let timestamps_ms: Vec<i64> = records.iter().filter_map(soho_celias_timestamp_ms).collect();
+        let timestamps_ms: Vec<i64> = records
+            .iter()
+            .filter_map(soho_celias_timestamp_ms)
+            .collect();
         let bounds = bounds_from_soho_celias(&records)
             .ok_or_else(|| anyhow::anyhow!("{label} had no valid temporal bounds"))?;
         Ok(Self {
@@ -570,7 +582,10 @@ mod tests {
             .sample_at_unix_milliseconds(omni_timestamp_ms(&make_omni(2024, 1, 0, 5.0)).unwrap())
             .expect("sample")
             .expect("state");
-        assert_eq!(sample.timestamp_ms, epoch_to_unix_milliseconds(sample.epoch));
+        assert_eq!(
+            sample.timestamp_ms,
+            epoch_to_unix_milliseconds(sample.epoch)
+        );
         assert!(sample.epoch_seconds_j2000_et.is_finite());
     }
 

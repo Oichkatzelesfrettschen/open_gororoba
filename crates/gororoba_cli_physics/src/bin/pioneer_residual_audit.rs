@@ -1,14 +1,12 @@
 use anyhow::{Context, Result, bail};
-use clap::Parser;
 use chrono::{DateTime, Utc};
-use data_core::catalogs::pioneer::{
-    PioneerSpacecraft, parse_pioneer_file, pioneer_to_omni,
-};
-use gororoba_cli_physics::anomaly_residual::{
-    PioneerBenchmarkContextRecord, PioneerBenchmarkRecord, read_csv_records, write_csv_records,
-};
-use gororoba_cli_physics::heliosphere_boundary::{
-    OmniBoundaryProvider, PlasmaBoundaryProvider,
+use clap::Parser;
+use data_core::catalogs::pioneer::{PioneerSpacecraft, parse_pioneer_file, pioneer_to_omni};
+use gororoba_cli_physics::{
+    anomaly_residual::{
+        PioneerBenchmarkContextRecord, PioneerBenchmarkRecord, read_csv_records, write_csv_records,
+    },
+    heliosphere_boundary::{OmniBoundaryProvider, PlasmaBoundaryProvider},
 };
 use std::path::PathBuf;
 

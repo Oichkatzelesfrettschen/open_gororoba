@@ -158,7 +158,19 @@ path = "src/bin/materials_baseline.rs"
 name = "compute-all-lambdas"
 path = "src/bin/compute-all-lambdas.rs"
 
-# ---- Quantum (4) ----
+[[bin]]
+name = "nonlocal-algebraic-metamaterial"
+path = "src/bin/nonlocal_algebraic_metamaterial.rs"
+
+[[bin]]
+name = "c053-pathion-metamaterial-mapping"
+path = "src/bin/c053_pathion_metamaterial_mapping.rs"
+
+# ---- Quantum (5) ----
+
+[[bin]]
+name = "magnonic-band-structure"
+path = "src/bin/magnonic_band_structure.rs"
 
 [[bin]]
 name = "mera-entropy"
@@ -223,6 +235,10 @@ path = "src/bin/lbm_poiseuille.rs"
 [[bin]]
 name = "lbm-precision-sampler"
 path = "src/bin/lbm_precision_sampler.rs"
+
+[[bin]]
+name = "mrt-stability-audit"
+path = "src/bin/mrt_stability_audit.rs"
 
 [[bin]]
 name = "solar-wind-mhd-sim"
@@ -366,6 +382,16 @@ path = "src/bin/kerr_chingon_sweep.rs"
 name = "dark-halo-nfw-fit"
 path = "src/bin/dark_halo_nfw_fit.rs"
 
+# ---- Euclid / Morphology (2) ----
+
+[[bin]]
+name = "euclid-dm-coupling"
+path = "src/bin/euclid_dm_coupling.rs"
+
+[[bin]]
+name = "euclid-df-sweep"
+path = "src/bin/euclid_df_sweep.rs"
+
 # ---- Chaos / Spectral Crucibles (4) ----
 
 [[bin]]
@@ -460,11 +486,13 @@ memmap2 = "0.9.10"
 arrow-array = "58.0.0"
 arrow-ipc = "58.0.0"
 arrow-schema = "58.0.0"
+faer = { workspace = true }
 
 [features]
 default = ["gpu"]
 gpu = ["lbm_3d_cuda", "sign_imbalance/gpu"]
 hdf5-export = ["data_core/hdf5-export"]
+euclid-catalog = ["cosmology_core/euclid-catalog"]
 
 [lints]
 workspace = true
