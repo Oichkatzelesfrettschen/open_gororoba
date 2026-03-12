@@ -470,10 +470,7 @@ fn generate_ic_from_omni(
                 // components are NaN. Preserve partial measurements
                 // (e.g., Bn-only from a MAG-only record) by zeroing
                 // only the missing components.
-                let b = if !rec.bx_gse.is_nan()
-                    || !rec.by_gse.is_nan()
-                    || !rec.bz_gse.is_nan()
-                {
+                let b = if !rec.bx_gse.is_nan() || !rec.by_gse.is_nan() || !rec.bz_gse.is_nan() {
                     let bx = if rec.bx_gse.is_nan() { 0.0 } else { rec.bx_gse };
                     let by = if rec.by_gse.is_nan() { 0.0 } else { rec.by_gse };
                     let bz = if rec.bz_gse.is_nan() { 0.0 } else { rec.bz_gse };
@@ -888,12 +885,8 @@ fn triangulate_ic_from_multi_spacecraft(
                 //
                 // When only one side has B data, use it directly (no
                 // interpolation against zero which would dilute the field).
-                let l1_has_b = !l1.bx_gse.is_nan()
-                    || !l1.by_gse.is_nan()
-                    || !l1.bz_gse.is_nan();
-                let st_has_b = !st.bx_gse.is_nan()
-                    || !st.by_gse.is_nan()
-                    || !st.bz_gse.is_nan();
+                let l1_has_b = !l1.bx_gse.is_nan() || !l1.by_gse.is_nan() || !l1.bz_gse.is_nan();
+                let st_has_b = !st.bx_gse.is_nan() || !st.by_gse.is_nan() || !st.bz_gse.is_nan();
 
                 let b = if l1_has_b && st_has_b {
                     // Both sides have B: interpolate with rotation
@@ -935,7 +928,11 @@ fn triangulate_ic_from_multi_spacecraft(
 
                     let bx_rot = bx_st * cos_dp - by_st * sin_dp;
                     let by_rot = bx_st * sin_dp + by_st * cos_dp;
-                    [bx_rot * cli.b_scale, by_rot * cli.b_scale, bz_st * cli.b_scale]
+                    [
+                        bx_rot * cli.b_scale,
+                        by_rot * cli.b_scale,
+                        bz_st * cli.b_scale,
+                    ]
                 } else {
                     parker_spiral_b(x, y, nx, ny, cli.b_scale * 5.0, cli.omega, v_lbm)
                 };

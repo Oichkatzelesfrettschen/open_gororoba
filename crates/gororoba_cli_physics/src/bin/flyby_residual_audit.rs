@@ -11,16 +11,18 @@
 
 use anyhow::Result;
 use clap::Parser;
-use gororoba_cli_physics::flyby::{
-    config::{self, ALPHA_CHINGON, ETA_WAKE, FlybyConfig, GM_EARTH, R_EARTH, V_WIND_GALACTIC},
-    environment::{EarthOnlyNfwLike, EarthWakeModel, EnvironmentModel, State},
-    geometry::{compute_soi_window, dm_wind_j2000, hyperbolic_initial_state},
-    integrator::rk4_step,
-    report::{FlybyResult, print_comparison_table},
-};
-use gororoba_cli_physics::anomaly_residual::{
-    FlybyObservedRecord, FlybyResidualRecord, read_csv_records, validate_flyby_catalog,
-    write_csv_records,
+use gororoba_cli_physics::{
+    anomaly_residual::{
+        FlybyObservedRecord, FlybyResidualRecord, read_csv_records, validate_flyby_catalog,
+        write_csv_records,
+    },
+    flyby::{
+        config::{self, ALPHA_CHINGON, ETA_WAKE, FlybyConfig, GM_EARTH, R_EARTH, V_WIND_GALACTIC},
+        environment::{EarthOnlyNfwLike, EarthWakeModel, EnvironmentModel, State},
+        geometry::{compute_soi_window, dm_wind_j2000, hyperbolic_initial_state},
+        integrator::rk4_step,
+        report::{FlybyResult, print_comparison_table},
+    },
 };
 use std::path::PathBuf;
 
@@ -101,8 +103,10 @@ fn main() -> Result<()> {
     let observed_rows = read_csv_records::<FlybyObservedRecord>(&args.input)?;
     let flybys = config::all_flybys();
     validate_flyby_catalog(&observed_rows, &flybys)?;
-    let observed_by_name: std::collections::BTreeMap<&str, &FlybyObservedRecord> =
-        observed_rows.iter().map(|row| (row.name.as_str(), row)).collect();
+    let observed_by_name: std::collections::BTreeMap<&str, &FlybyObservedRecord> = observed_rows
+        .iter()
+        .map(|row| (row.name.as_str(), row))
+        .collect();
     let dt = args.dt;
 
     let v_wind = dm_wind_j2000(&V_WIND_GALACTIC);

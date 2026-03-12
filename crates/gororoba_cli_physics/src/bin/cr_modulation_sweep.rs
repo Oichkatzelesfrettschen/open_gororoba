@@ -745,7 +745,13 @@ fn main() {
         let bx = &mhd.bx;
         let by = &mhd.by;
         let bz = &mhd.bz;
-        pte.evolve_one_step(&u_phys, (bx, by, bz), dm_source.as_ref(), &dm_density, Some(&lis_proton));
+        pte.evolve_one_step(
+            &u_phys,
+            (bx, by, bz),
+            dm_source.as_ref(),
+            &dm_density,
+            Some(&lis_proton),
+        );
 
         // Snapshot output
         if step % cli.snapshot_interval == 0 {

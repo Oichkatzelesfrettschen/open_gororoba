@@ -4,7 +4,10 @@ use gororoba_cli_physics::anomaly_residual::{
     BestFitSummary, FitGridRecord, FlybyResidualRecord, PioneerBenchmarkContextRecord,
     ensure_parent_dir, read_csv_records, write_csv_records,
 };
-use gr_core::{Schwarzschild, fractal_metric::{QtensorFractalMetric, fractal_flyby_prediction, pioneer_anomaly_prediction}};
+use gr_core::{
+    Schwarzschild,
+    fractal_metric::{QtensorFractalMetric, fractal_flyby_prediction, pioneer_anomaly_prediction},
+};
 use serde_json::to_string_pretty;
 use std::path::PathBuf;
 
@@ -73,8 +76,9 @@ fn qtensor_flyby_prediction(params: FitParams, perigee_km: f64, v_inf_km_s: f64)
         params.r_disclination_km,
         params.s_bulk,
     );
-    let delta_v_q_mm_s =
-        qtensor.disclination_acceleration(perigee_km, v_inf_km_s) * (perigee_km / v_inf_km_s) * 1.0e6;
+    let delta_v_q_mm_s = qtensor.disclination_acceleration(perigee_km, v_inf_km_s)
+        * (perigee_km / v_inf_km_s)
+        * 1.0e6;
     base + delta_v_q_mm_s
 }
 
@@ -188,8 +192,7 @@ fn main() -> Result<()> {
                 if total == 0 {
                     continue;
                 }
-                let mean_relative_error =
-                    rel_errors.iter().sum::<f64>() / rel_errors.len() as f64;
+                let mean_relative_error = rel_errors.iter().sum::<f64>() / rel_errors.len() as f64;
                 let verdict = if sign_matches == total && max_relative_error <= 0.5 {
                     "candidate_support"
                 } else {
@@ -205,7 +208,9 @@ fn main() -> Result<()> {
                     flyby_total: total,
                     mean_relative_error,
                     max_relative_error,
-                    notes: "Batch-1 benchmark fit: no thermal recoil or full engineering-force model".to_string(),
+                    notes:
+                        "Batch-1 benchmark fit: no thermal recoil or full engineering-force model"
+                            .to_string(),
                 };
                 let score = mean_relative_error + (total - sign_matches) as f64;
                 match &best {

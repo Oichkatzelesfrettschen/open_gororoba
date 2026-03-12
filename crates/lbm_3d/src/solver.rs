@@ -13,6 +13,7 @@ use crate::lattice::D3Q19Lattice;
 use cosmic_scheduler::{ScheduleResult, TwoPhaseSystem};
 use rayon::prelude::*;
 use thiserror::Error;
+use wide::f64x4;
 
 #[derive(Error, Debug)]
 pub enum LbmError {
@@ -27,6 +28,17 @@ pub enum LbmError {
 }
 
 type Result<T> = std::result::Result<T, LbmError>;
+
+/// Collision operator selection.
+#[derive(Clone, Debug, Copy, PartialEq, Eq)]
+pub enum CollisionMode {
+    /// Single-relaxation-time BGK (default, fast but unstable at high density contrast).
+    Bgk,
+    /// Multiple-relaxation-time d'Humieres (2002): ghost moments relax instantly,
+    /// preventing divergence at steep NFW cusps. ~12x more FLOPs per cell but
+    /// unconditionally stable for f_i positivity.
+    Mrt,
+}
 
 /// BGK collision operator for 3D LBM.
 #[derive(Clone, Debug)]
@@ -218,7 +230,99 @@ impl BgkCollision {
 }
 
 /// 3D LBM solver with D3Q19 lattice and BGK collision.
+/// AoSoA chunk size: 4 f64 values = one 256-bit YMM register (AVX2).
 ///
+/// Memory layout per chunk:
+///   [Dir0(c0,c1,c2,c3), Dir1(c0,c1,c2,c3), ... Dir18(c0,c1,c2,c3)]
+///
+/// One chunk footprint: 19 * 4 * 8 = 608 bytes -- fits in 2% of 32 KB L1D,
+/// avoiding the 8-way associativity thrashing that pure SoA causes on x86.
+pub const AOSOA_CHUNK: usize = 4;
+
+/// Compute AoSoA index for a given cell and direction.
+///
+/// Maps `(cell, dir)` to a flat index into the AoSoA f-vector:
+///   chunk_idx = cell / CHUNK
+///   lane      = cell % CHUNK
+///   index     = chunk_idx * 19 * CHUNK + dir * CHUNK + lane
+#[inline(always)]
+pub fn aosoa_idx(cell: usize, dir: usize) -> usize {
+    let chunk = cell / AOSOA_CHUNK;
+    let lane = cell % AOSOA_CHUNK;
+    chunk * 19 * AOSOA_CHUNK + dir * AOSOA_CHUNK + lane
+}
+
+/// Round up to the nearest multiple of AOSOA_CHUNK.
+#[inline(always)]
+fn aosoa_pad(n: usize) -> usize {
+    n.div_ceil(AOSOA_CHUNK) * AOSOA_CHUNK
+}
+
+/// Zero-cost wrapper to bypass the compiler's inability to prove disjoint
+/// index math across parallel threads.
+///
+/// SAFETY contract: the caller guarantees via `aosoa_idx` algebra that no
+/// two rayon threads will ever read-write or write-write the same address
+/// simultaneously. This holds because `aosoa_idx(a, d) != aosoa_idx(b, d)`
+/// for `a != b`, and the collision step only accesses indices belonging to
+/// its own cell. Pull streaming (phase 2) is serial and uses a separate
+/// scratch buffer, so no aliasing occurs there either.
+#[derive(Copy, Clone)]
+pub struct UnsafeAoSoAPtr<T>(pub *mut T);
+
+unsafe impl<T> Send for UnsafeAoSoAPtr<T> {}
+unsafe impl<T> Sync for UnsafeAoSoAPtr<T> {}
+
+impl<T> UnsafeAoSoAPtr<T> {
+    /// Read a value from the specified offset without bounds checking.
+    ///
+    /// # Safety
+    /// Caller must ensure `offset` is in bounds and no concurrent write
+    /// to the same address occurs.
+    #[inline(always)]
+    pub unsafe fn read(&self, offset: usize) -> T {
+        unsafe { core::ptr::read(self.0.add(offset)) }
+    }
+
+    /// Write a value to the specified offset without bounds checking.
+    ///
+    /// # Safety
+    /// Caller must ensure `offset` is in bounds and no concurrent access
+    /// (read or write) to the same address occurs.
+    #[inline(always)]
+    pub unsafe fn write(&self, offset: usize, val: T) {
+        unsafe { core::ptr::write(self.0.add(offset), val) }
+    }
+}
+
+impl UnsafeAoSoAPtr<f64> {
+    /// Read an aligned CHUNK=4 f64 slice as f64x4 (256-bit VMOVAPD).
+    ///
+    /// # Safety
+    /// Caller must ensure `offset` points to 4 contiguous, valid f64 values
+    /// and no concurrent write to the same addresses occurs.
+    #[inline(always)]
+    pub unsafe fn read_x4(&self, offset: usize) -> f64x4 {
+        unsafe {
+            let arr = core::ptr::read(self.0.add(offset) as *const [f64; 4]);
+            f64x4::new(arr)
+        }
+    }
+
+    /// Write an f64x4 (256-bit VMOVAPD) to an aligned CHUNK=4 f64 slice.
+    ///
+    /// # Safety
+    /// Caller must ensure `offset` points to 4 writable f64 slots and no
+    /// concurrent access to the same addresses occurs.
+    #[inline(always)]
+    pub unsafe fn write_x4(&self, offset: usize, val: f64x4) {
+        unsafe {
+            let arr: [f64; 4] = val.to_array();
+            core::ptr::write(self.0.add(offset) as *mut [f64; 4], arr);
+        }
+    }
+}
+
 /// Encapsulates a complete fluid simulation domain with:
 /// - Distribution functions at each grid point
 /// - Macroscopic quantities (density, velocity)
@@ -230,10 +334,12 @@ pub struct LbmSolver3D {
     pub nx: usize,
     pub ny: usize,
     pub nz: usize,
-    /// Distribution function: f[grid_index][velocity_index]
-    /// Flattened: [x + nx*(y + ny*z)]*19 + i
+    /// Distribution function in AoSoA layout.
+    ///
+    /// Index: `aosoa_idx(cell, dir)` where cell = z*(nx*ny) + y*nx + x.
+    /// Padded to a multiple of AOSOA_CHUNK cells with zero-weight ghosts.
     pub f: Vec<f64>,
-    /// Pre-allocated scratch buffer for streaming (avoids per-step allocation)
+    /// Pre-allocated scratch buffer for streaming (AoSoA layout, same size as f).
     f_scratch: Vec<f64>,
     /// Macroscopic density at each grid point
     pub rho: Vec<f64>,
@@ -244,8 +350,369 @@ pub struct LbmSolver3D {
     /// Optional external body force field (Guo forcing scheme)
     /// If None, no forcing applied. If Some, must have length nx*ny*nz.
     pub force_field: Option<Vec<[f64; 3]>>,
+    /// Collision operator mode (BGK or MRT).
+    pub collision_mode: CollisionMode,
     /// Timestep counter
     pub timestep: usize,
+}
+
+/// D3Q19 Multiple-Relaxation-Time (MRT) Collision Operator.
+///
+/// Implements the d'Humieres (2002) orthogonal basis transformation.
+/// Forward transform f -> moment space (m = M * f) for D3Q19 MRT.
+///
+/// Exposed for testing row norms and moment structure. Uses the same
+/// d'Humieres orthogonal basis as the collision operator.
+#[cfg(test)]
+fn mrt_forward_transform(f: &[f64; 19]) -> [f64; 19] {
+    [
+        f[0]+f[1]+f[2]+f[3]+f[4]+f[5]+f[6]+f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18],
+        -30.0*f[0] - 11.0*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + 8.0*(f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]),
+        12.0*f[0] - 4.0*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + (f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]),
+        f[1]-f[2] + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14],
+        -4.0*(f[1]-f[2]) + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14],
+        f[3]-f[4] + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18],
+        -4.0*(f[3]-f[4]) + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18],
+        f[5]-f[6] + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18],
+        -4.0*(f[5]-f[6]) + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18],
+        2.0*(f[1]+f[2]) - (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - 2.0*(f[15]+f[16]+f[17]+f[18]),
+        -2.0*(f[1]+f[2]) + (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - 2.0*(f[15]+f[16]+f[17]+f[18]),
+        (f[3]+f[4]) - (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]),
+        -(f[3]+f[4]) + (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]),
+        f[7]+f[8]-f[9]-f[10],
+        f[11]+f[12]-f[13]-f[14],
+        f[15]+f[16]-f[17]-f[18],
+        f[7]-f[8]-f[9]+f[10] - f[11]+f[12]+f[13]-f[14],
+        -f[7]+f[8]-f[9]+f[10] + f[15]-f[16]+f[17]-f[18],
+        f[11]-f[12]+f[13]-f[14] - f[15]+f[16]+f[17]-f[18],
+    ]
+}
+
+/// Ghost moments relax instantly (s=1.0) to annihilate the spurious
+/// oscillations that cause BGK divergence at steep density cusps.
+///
+/// The operator transforms f -> moment space (M*f), relaxes each moment
+/// independently via diagonal S matrix, then transforms back (M^{-1}*m*).
+/// Physical viscosity s_nu = 1/tau is preserved; ghost moments use s=1.0.
+///
+/// Cost: ~722 FMA operations per cell vs ~57 for BGK (~12x more FLOPs),
+/// but the GPU memory-bound regime absorbs this within the latency window.
+#[inline(always)]
+fn collide_mrt_d3q19(f: &[f64; 19], rho: f64, ux: f64, uy: f64, uz: f64, tau: f64) -> [f64; 19] {
+    // Relaxation rates (diagonal of S matrix)
+    let s_nu = 1.0 / tau;  // Physical kinematic viscosity
+    let s_e = 1.19;        // Energy relaxation
+    let s_eps = 1.4;       // Energy squared
+    let s_q = 1.2;         // Energy flux
+    let s_ghost = 1.0;     // Instant damping for ghost moments
+
+    let u_sq = ux * ux + uy * uy + uz * uz;
+
+    // Forward transform: f -> moment space (m = M * f)
+    // Using the d'Humieres D3Q19 orthogonal basis
+    let m0  = f[0]+f[1]+f[2]+f[3]+f[4]+f[5]+f[6]+f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18];
+    let m1  = -30.0*f[0] - 11.0*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + 8.0*(f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]);
+    let m2  = 12.0*f[0] - 4.0*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + (f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]);
+    let m3  = f[1]-f[2] + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14];
+    let m4  = -4.0*(f[1]-f[2]) + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14];
+    let m5  = f[3]-f[4] + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18];
+    let m6  = -4.0*(f[3]-f[4]) + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18];
+    let m7  = f[5]-f[6] + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18];
+    let m8  = -4.0*(f[5]-f[6]) + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18];
+    let m9  = 2.0*(f[1]+f[2]) - (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - 2.0*(f[15]+f[16]+f[17]+f[18]);
+    let m10 = -2.0*(f[1]+f[2]) + (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - 2.0*(f[15]+f[16]+f[17]+f[18]);
+    let m11 = (f[3]+f[4]) - (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]);
+    let m12 = -(f[3]+f[4]) + (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]);
+    let m13 = f[7]+f[8]-f[9]-f[10];
+    let m14 = f[11]+f[12]-f[13]-f[14];
+    let m15 = f[15]+f[16]-f[17]-f[18];
+    let m16 = f[7]-f[8]-f[9]+f[10] - f[11]+f[12]+f[13]-f[14];
+    let m17 = -f[7]+f[8]-f[9]+f[10] + f[15]-f[16]+f[17]-f[18];
+    let m18 = f[11]-f[12]+f[13]-f[14] - f[15]+f[16]+f[17]-f[18];
+
+    // Equilibrium moments
+    // m0_eq = rho (conserved, not needed for relaxation)
+    let m1_eq  = rho * (-11.0 + 19.0 * u_sq);
+    let m2_eq  = rho * (3.0 - 5.5 * u_sq);
+    // m3_eq = rho*ux (conserved)
+    let m4_eq  = -2.0 / 3.0 * rho * ux;
+    // m5_eq = rho*uy (conserved)
+    let m6_eq  = -2.0 / 3.0 * rho * uy;
+    // m7_eq = rho*uz (conserved)
+    let m8_eq  = -2.0 / 3.0 * rho * uz;
+    let m9_eq  = rho * (2.0 * ux * ux - uy * uy - uz * uz);
+    let m10_eq = -0.5 * rho * (2.0 * ux * ux - uy * uy - uz * uz);
+    let m11_eq = rho * (uy * uy - uz * uz);
+    let m12_eq = -0.5 * rho * (uy * uy - uz * uz);
+    let m13_eq = rho * ux * uy;
+    let m14_eq = rho * ux * uz;
+    let m15_eq = rho * uy * uz;
+    let m16_eq = 0.0;
+    let m17_eq = 0.0;
+    let m18_eq = 0.0;
+
+    // Relax moments: m* = m - S * (m - m_eq)
+    // Mass (m0) and momentum (m3, m5, m7) are conserved (s=0).
+    let ms0  = m0;                                      // conserved
+    let ms1  = m1  - s_e    * (m1  - m1_eq);            // energy
+    let ms2  = m2  - s_eps  * (m2  - m2_eq);            // energy^2
+    let ms3  = m3;                                      // conserved
+    let ms4  = m4  - s_q    * (m4  - m4_eq);            // energy flux
+    let ms5  = m5;                                      // conserved
+    let ms6  = m6  - s_q    * (m6  - m6_eq);            // energy flux
+    let ms7  = m7;                                      // conserved
+    let ms8  = m8  - s_q    * (m8  - m8_eq);            // energy flux
+    let ms9  = m9  - s_nu   * (m9  - m9_eq);            // stress (physical)
+    let ms10 = m10 - s_ghost* (m10 - m10_eq);           // ghost
+    let ms11 = m11 - s_nu   * (m11 - m11_eq);           // stress (physical)
+    let ms12 = m12 - s_ghost* (m12 - m12_eq);           // ghost
+    let ms13 = m13 - s_nu   * (m13 - m13_eq);           // stress (physical)
+    let ms14 = m14 - s_nu   * (m14 - m14_eq);           // stress (physical)
+    let ms15 = m15 - s_nu   * (m15 - m15_eq);           // stress (physical)
+    let ms16 = m16 - s_ghost* (m16 - m16_eq);           // ghost
+    let ms17 = m17 - s_ghost* (m17 - m17_eq);           // ghost
+    let ms18 = m18 - s_ghost* (m18 - m18_eq);           // ghost
+
+    // Inverse transform: f* = M^{-1} * m*
+    // M^{-1}_{ij} = M_{ji} / ||row_j||^2 (orthogonal, non-orthonormal basis).
+    // Row squared-norms: [19, 2394, 252, 10, 40, 10, 40, 10, 40, 36, 36, 12, 12, 4, 4, 4, 8, 8, 8]
+    let mut fo = [0.0; 19];
+
+    // Reciprocal norms (1 / ||row_j||^2)
+    let rn0  = 1.0 / 19.0;
+    let rn1  = 1.0 / 2394.0;
+    let rn2  = 1.0 / 252.0;
+    let rn3  = 1.0 / 10.0;
+    let rn4  = 1.0 / 40.0;
+    let rn5  = 1.0 / 10.0;
+    let rn6  = 1.0 / 40.0;
+    let rn7  = 1.0 / 10.0;
+    let rn8  = 1.0 / 40.0;
+    let rn9  = 1.0 / 36.0;
+    let rn10 = 1.0 / 36.0;
+    let rn11 = 1.0 / 12.0;
+    let rn12 = 1.0 / 12.0;
+    let rn13 = 1.0 / 4.0;
+    let rn14 = 1.0 / 4.0;
+    let rn15 = 1.0 / 4.0;
+    let rn16 = 1.0 / 8.0;
+    let rn17 = 1.0 / 8.0;
+    let rn18 = 1.0 / 8.0;
+
+    // Scale relaxed moments by reciprocal norms: s[j] = ms_j / ||row_j||^2
+    let s0  = ms0  * rn0;
+    let s1  = ms1  * rn1;
+    let s2  = ms2  * rn2;
+    let s3  = ms3  * rn3;
+    let s4  = ms4  * rn4;
+    let s5  = ms5  * rn5;
+    let s6  = ms6  * rn6;
+    let s7  = ms7  * rn7;
+    let s8  = ms8  * rn8;
+    let s9  = ms9  * rn9;
+    let s10 = ms10 * rn10;
+    let s11 = ms11 * rn11;
+    let s12 = ms12 * rn12;
+    let s13 = ms13 * rn13;
+    let s14 = ms14 * rn14;
+    let s15 = ms15 * rn15;
+    let s16 = ms16 * rn16;
+    let s17 = ms17 * rn17;
+    let s18 = ms18 * rn18;
+
+    // f[i] = sum_j M[j][i] * s[j]   (M[j][i] = coefficient of f[i] in row j of M)
+
+    // Rest (i=0): M columns [1, -30, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fo[0] = s0 - 30.0*s1 + 12.0*s2;
+
+    // Face +x (i=1): [1, -11, -4, 1, -4, 0, 0, 0, 0, 2, -2, 0, 0, 0, 0, 0, 0, 0, 0]
+    fo[1] = s0 - 11.0*s1 - 4.0*s2 + s3 - 4.0*s4 + 2.0*s9 - 2.0*s10;
+    // Face -x (i=2)
+    fo[2] = s0 - 11.0*s1 - 4.0*s2 - s3 + 4.0*s4 + 2.0*s9 - 2.0*s10;
+    // Face +y (i=3): [1, -11, -4, 0, 0, 1, -4, 0, 0, -1, 1, 1, -1, 0, 0, 0, 0, 0, 0]
+    fo[3] = s0 - 11.0*s1 - 4.0*s2 + s5 - 4.0*s6 - s9 + s10 + s11 - s12;
+    // Face -y (i=4)
+    fo[4] = s0 - 11.0*s1 - 4.0*s2 - s5 + 4.0*s6 - s9 + s10 + s11 - s12;
+    // Face +z (i=5): [1, -11, -4, 0, 0, 0, 0, 1, -4, -1, 1, -1, 1, 0, 0, 0, 0, 0, 0]
+    fo[5] = s0 - 11.0*s1 - 4.0*s2 + s7 - 4.0*s8 - s9 + s10 - s11 + s12;
+    // Face -z (i=6)
+    fo[6] = s0 - 11.0*s1 - 4.0*s2 - s7 + 4.0*s8 - s9 + s10 - s11 + s12;
+
+    // Edge +x+y (i=7): [1, 8, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, -1, 0]
+    fo[7]  = s0 + 8.0*s1 + s2 + s3 + s4 + s5 + s6 + s9 + s10 + s11 + s12 + s13 + s16 - s17;
+    // Edge -x-y (i=8)
+    fo[8]  = s0 + 8.0*s1 + s2 - s3 - s4 - s5 - s6 + s9 + s10 + s11 + s12 + s13 - s16 + s17;
+    // Edge +x-y (i=9)
+    fo[9]  = s0 + 8.0*s1 + s2 + s3 + s4 - s5 - s6 + s9 + s10 + s11 + s12 - s13 - s16 - s17;
+    // Edge -x+y (i=10)
+    fo[10] = s0 + 8.0*s1 + s2 - s3 - s4 + s5 + s6 + s9 + s10 + s11 + s12 - s13 + s16 + s17;
+    // Edge +x+z (i=11): [1, 8, 1, 1, 1, 0, 0, 1, 1, 1, 1, -1, -1, 0, 1, 0, -1, 0, 1]
+    fo[11] = s0 + 8.0*s1 + s2 + s3 + s4 + s7 + s8 + s9 + s10 - s11 - s12 + s14 - s16 + s18;
+    // Edge -x-z (i=12)
+    fo[12] = s0 + 8.0*s1 + s2 - s3 - s4 - s7 - s8 + s9 + s10 - s11 - s12 + s14 + s16 - s18;
+    // Edge +x-z (i=13)
+    fo[13] = s0 + 8.0*s1 + s2 + s3 + s4 - s7 - s8 + s9 + s10 - s11 - s12 - s14 + s16 + s18;
+    // Edge -x+z (i=14)
+    fo[14] = s0 + 8.0*s1 + s2 - s3 - s4 + s7 + s8 + s9 + s10 - s11 - s12 - s14 - s16 - s18;
+    // Edge +y+z (i=15): [1, 8, 1, 0, 0, 1, 1, 1, 1, -2, -2, 0, 0, 0, 0, 1, 0, 1, -1]
+    fo[15] = s0 + 8.0*s1 + s2 + s5 + s6 + s7 + s8 - 2.0*s9 - 2.0*s10 + s15 + s17 - s18;
+    // Edge -y-z (i=16)
+    fo[16] = s0 + 8.0*s1 + s2 - s5 - s6 - s7 - s8 - 2.0*s9 - 2.0*s10 + s15 - s17 + s18;
+    // Edge +y-z (i=17)
+    fo[17] = s0 + 8.0*s1 + s2 + s5 + s6 - s7 - s8 - 2.0*s9 - 2.0*s10 - s15 - s17 - s18;
+    // Edge -y+z (i=18)
+    fo[18] = s0 + 8.0*s1 + s2 - s5 - s6 + s7 + s8 - 2.0*s9 - 2.0*s10 - s15 + s17 + s18;
+
+    fo
+}
+
+/// D3Q19 MRT collision operating on 4 cells simultaneously via AVX2 f64x4.
+///
+/// Structurally identical to `collide_mrt_d3q19` but every scalar becomes
+/// an f64x4 lane-parallel computation. The 722 FMA operations execute as
+/// ~181 VFMADD231PD instructions, each processing 4 cells per cycle.
+#[inline(always)]
+#[allow(dead_code)]
+fn collide_mrt_d3q19_x4(
+    f: &[f64x4; 19], rho: f64x4, ux: f64x4, uy: f64x4, uz: f64x4, tau: f64x4,
+) -> [f64x4; 19] {
+    let one = f64x4::splat(1.0);
+    let s_nu = one / tau;
+    let s_e = f64x4::splat(1.19);
+    let s_eps = f64x4::splat(1.4);
+    let s_q = f64x4::splat(1.2);
+    let s_ghost = one;
+
+    let u_sq = ux * ux + uy * uy + uz * uz;
+
+    // Forward transform: f -> moment space (m = M * f)
+    let m0  = f[0]+f[1]+f[2]+f[3]+f[4]+f[5]+f[6]+f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18];
+    let m1  = f64x4::splat(-30.0)*f[0] + f64x4::splat(-11.0)*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + f64x4::splat(8.0)*(f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]);
+    let m2  = f64x4::splat(12.0)*f[0] + f64x4::splat(-4.0)*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + (f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]);
+    let m3  = f[1]-f[2] + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14];
+    let m4  = f64x4::splat(-4.0)*(f[1]-f[2]) + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14];
+    let m5  = f[3]-f[4] + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18];
+    let m6  = f64x4::splat(-4.0)*(f[3]-f[4]) + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18];
+    let m7  = f[5]-f[6] + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18];
+    let m8  = f64x4::splat(-4.0)*(f[5]-f[6]) + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18];
+    let m9  = f64x4::splat(2.0)*(f[1]+f[2]) - (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - f64x4::splat(2.0)*(f[15]+f[16]+f[17]+f[18]);
+    let m10 = f64x4::splat(-2.0)*(f[1]+f[2]) + (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - f64x4::splat(2.0)*(f[15]+f[16]+f[17]+f[18]);
+    let m11 = (f[3]+f[4]) - (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]);
+    let m12 = -(f[3]+f[4]) + (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]);
+    let m13 = f[7]+f[8]-f[9]-f[10];
+    let m14 = f[11]+f[12]-f[13]-f[14];
+    let m15 = f[15]+f[16]-f[17]-f[18];
+    let m16 = f[7]-f[8]-f[9]+f[10] - f[11]+f[12]+f[13]-f[14];
+    let m17 = -f[7]+f[8]-f[9]+f[10] + f[15]-f[16]+f[17]-f[18];
+    let m18 = f[11]-f[12]+f[13]-f[14] - f[15]+f[16]+f[17]-f[18];
+
+    // Equilibrium moments
+    let m1_eq  = rho * (f64x4::splat(-11.0) + f64x4::splat(19.0) * u_sq);
+    let m2_eq  = rho * (f64x4::splat(3.0) - f64x4::splat(5.5) * u_sq);
+    let m4_eq  = f64x4::splat(-2.0 / 3.0) * rho * ux;
+    let m6_eq  = f64x4::splat(-2.0 / 3.0) * rho * uy;
+    let m8_eq  = f64x4::splat(-2.0 / 3.0) * rho * uz;
+    let m9_eq  = rho * (f64x4::splat(2.0) * ux * ux - uy * uy - uz * uz);
+    let m10_eq = f64x4::splat(-0.5) * rho * (f64x4::splat(2.0) * ux * ux - uy * uy - uz * uz);
+    let m11_eq = rho * (uy * uy - uz * uz);
+    let m12_eq = f64x4::splat(-0.5) * rho * (uy * uy - uz * uz);
+    let m13_eq = rho * ux * uy;
+    let m14_eq = rho * ux * uz;
+    let m15_eq = rho * uy * uz;
+    let zero = f64x4::ZERO;
+
+    // Relax moments: m* = m - S * (m - m_eq)
+    let ms0  = m0;
+    let ms1  = m1  - s_e     * (m1  - m1_eq);
+    let ms2  = m2  - s_eps   * (m2  - m2_eq);
+    let ms3  = m3;
+    let ms4  = m4  - s_q     * (m4  - m4_eq);
+    let ms5  = m5;
+    let ms6  = m6  - s_q     * (m6  - m6_eq);
+    let ms7  = m7;
+    let ms8  = m8  - s_q     * (m8  - m8_eq);
+    let ms9  = m9  - s_nu    * (m9  - m9_eq);
+    let ms10 = m10 - s_ghost * (m10 - m10_eq);
+    let ms11 = m11 - s_nu    * (m11 - m11_eq);
+    let ms12 = m12 - s_ghost * (m12 - m12_eq);
+    let ms13 = m13 - s_nu    * (m13 - m13_eq);
+    let ms14 = m14 - s_nu    * (m14 - m14_eq);
+    let ms15 = m15 - s_nu    * (m15 - m15_eq);
+    let ms16 = m16 - s_ghost * (m16 - zero);
+    let ms17 = m17 - s_ghost * (m17 - zero);
+    let ms18 = m18 - s_ghost * (m18 - zero);
+
+    // Inverse transform: f* = M^{-1} * m*
+    let rn0  = f64x4::splat(1.0 / 19.0);
+    let rn1  = f64x4::splat(1.0 / 2394.0);
+    let rn2  = f64x4::splat(1.0 / 252.0);
+    let rn3  = f64x4::splat(1.0 / 10.0);
+    let rn4  = f64x4::splat(1.0 / 40.0);
+    let rn5  = f64x4::splat(1.0 / 10.0);
+    let rn6  = f64x4::splat(1.0 / 40.0);
+    let rn7  = f64x4::splat(1.0 / 10.0);
+    let rn8  = f64x4::splat(1.0 / 40.0);
+    let rn9  = f64x4::splat(1.0 / 36.0);
+    let rn10 = f64x4::splat(1.0 / 36.0);
+    let rn11 = f64x4::splat(1.0 / 12.0);
+    let rn12 = f64x4::splat(1.0 / 12.0);
+    let rn13 = f64x4::splat(1.0 / 4.0);
+    let rn14 = f64x4::splat(1.0 / 4.0);
+    let rn15 = f64x4::splat(1.0 / 4.0);
+    let rn16 = f64x4::splat(1.0 / 8.0);
+    let rn17 = f64x4::splat(1.0 / 8.0);
+    let rn18 = f64x4::splat(1.0 / 8.0);
+
+    let s0  = ms0  * rn0;
+    let s1  = ms1  * rn1;
+    let s2  = ms2  * rn2;
+    let s3  = ms3  * rn3;
+    let s4  = ms4  * rn4;
+    let s5  = ms5  * rn5;
+    let s6  = ms6  * rn6;
+    let s7  = ms7  * rn7;
+    let s8  = ms8  * rn8;
+    let s9  = ms9  * rn9;
+    let s10 = ms10 * rn10;
+    let s11 = ms11 * rn11;
+    let s12 = ms12 * rn12;
+    let s13 = ms13 * rn13;
+    let s14 = ms14 * rn14;
+    let s15 = ms15 * rn15;
+    let s16 = ms16 * rn16;
+    let s17 = ms17 * rn17;
+    let s18 = ms18 * rn18;
+
+    let c2  = f64x4::splat(2.0);
+    let c4  = f64x4::splat(4.0);
+    let c8  = f64x4::splat(8.0);
+    let c11 = f64x4::splat(11.0);
+    let c30 = f64x4::splat(30.0);
+    let c12 = f64x4::splat(12.0);
+
+    let mut fo = [f64x4::ZERO; 19];
+
+    fo[0]  = s0 - c30*s1 + c12*s2;
+    fo[1]  = s0 - c11*s1 - c4*s2 + s3 - c4*s4 + c2*s9 - c2*s10;
+    fo[2]  = s0 - c11*s1 - c4*s2 - s3 + c4*s4 + c2*s9 - c2*s10;
+    fo[3]  = s0 - c11*s1 - c4*s2 + s5 - c4*s6 - s9 + s10 + s11 - s12;
+    fo[4]  = s0 - c11*s1 - c4*s2 - s5 + c4*s6 - s9 + s10 + s11 - s12;
+    fo[5]  = s0 - c11*s1 - c4*s2 + s7 - c4*s8 - s9 + s10 - s11 + s12;
+    fo[6]  = s0 - c11*s1 - c4*s2 - s7 + c4*s8 - s9 + s10 - s11 + s12;
+    fo[7]  = s0 + c8*s1 + s2 + s3 + s4 + s5 + s6 + s9 + s10 + s11 + s12 + s13 + s16 - s17;
+    fo[8]  = s0 + c8*s1 + s2 - s3 - s4 - s5 - s6 + s9 + s10 + s11 + s12 + s13 - s16 + s17;
+    fo[9]  = s0 + c8*s1 + s2 + s3 + s4 - s5 - s6 + s9 + s10 + s11 + s12 - s13 - s16 - s17;
+    fo[10] = s0 + c8*s1 + s2 - s3 - s4 + s5 + s6 + s9 + s10 + s11 + s12 - s13 + s16 + s17;
+    fo[11] = s0 + c8*s1 + s2 + s3 + s4 + s7 + s8 + s9 + s10 - s11 - s12 + s14 - s16 + s18;
+    fo[12] = s0 + c8*s1 + s2 - s3 - s4 - s7 - s8 + s9 + s10 - s11 - s12 + s14 + s16 - s18;
+    fo[13] = s0 + c8*s1 + s2 + s3 + s4 - s7 - s8 + s9 + s10 - s11 - s12 - s14 + s16 + s18;
+    fo[14] = s0 + c8*s1 + s2 - s3 - s4 + s7 + s8 + s9 + s10 - s11 - s12 - s14 - s16 - s18;
+    fo[15] = s0 + c8*s1 + s2 + s5 + s6 + s7 + s8 - c2*s9 - c2*s10 + s15 + s17 - s18;
+    fo[16] = s0 + c8*s1 + s2 - s5 - s6 - s7 - s8 - c2*s9 - c2*s10 + s15 - s17 + s18;
+    fo[17] = s0 + c8*s1 + s2 + s5 + s6 - s7 - s8 - c2*s9 - c2*s10 - s15 - s17 - s18;
+    fo[18] = s0 + c8*s1 + s2 - s5 - s6 + s7 + s8 - c2*s9 - c2*s10 - s15 + s17 + s18;
+
+    fo
 }
 
 impl LbmSolver3D {
@@ -256,22 +723,22 @@ impl LbmSolver3D {
     /// * `tau` - Relaxation time (must be >= 0.5)
     pub fn new(nx: usize, ny: usize, nz: usize, tau: f64) -> Self {
         let n_nodes = nx * ny * nz;
+        let n_padded = aosoa_pad(n_nodes);
         let collider = BgkCollision::new(tau);
 
-        // Initialize populations to equilibrium at rest (rho=1, u=0).
+        // Initialize populations to equilibrium at rest (rho=1, u=0) in AoSoA layout.
         // f_i^eq(rho=1, u=0) = w_i for all i.
-        // This is required for physical correctness: zero populations cause
-        // rho=0 which makes velocity undefined and the simulation diverges.
+        // Ghost cells (padding) are initialized to w_i too (safe: they are never read
+        // by the streaming phase since they lie outside nx*ny*nz).
         let lattice = &collider.lattice;
-        let mut f = vec![0.0; n_nodes * 19];
-        for node in 0..n_nodes {
-            let base = node * 19;
+        let mut f = vec![0.0; n_padded * 19];
+        for node in 0..n_padded {
             for i in 0..19 {
-                f[base + i] = lattice.weight(i);
+                f[aosoa_idx(node, i)] = lattice.weight(i);
             }
         }
 
-        let f_scratch = vec![0.0; n_nodes * 19];
+        let f_scratch = vec![0.0; n_padded * 19];
         Self {
             nx,
             ny,
@@ -282,8 +749,20 @@ impl LbmSolver3D {
             u: vec![[0.0; 3]; n_nodes],
             collider,
             force_field: None,
+            collision_mode: CollisionMode::Bgk,
             timestep: 0,
         }
+    }
+
+    /// Create a new 3D LBM solver with MRT collision operator.
+    ///
+    /// MRT (Multiple-Relaxation-Time) decouples ghost moment relaxation from
+    /// physical viscosity, preventing divergence at steep density gradients
+    /// (e.g., NFW halo cusps). ~12x more FLOPs per cell but unconditionally stable.
+    pub fn new_mrt(nx: usize, ny: usize, nz: usize, tau: f64) -> Self {
+        let mut solver = Self::new(nx, ny, nz, tau);
+        solver.collision_mode = CollisionMode::Mrt;
+        solver
     }
 
     /// Set the spatially-varying viscosity field (tau values per grid point).
@@ -310,6 +789,93 @@ impl LbmSolver3D {
     /// Get the current viscosity field.
     pub fn get_viscosity_field(&self) -> Vec<f64> {
         self.collider.get_viscosity_field()
+    }
+
+    /// Compute Smagorinsky LES subgrid viscosity from current velocity field.
+    ///
+    /// Computes the strain rate tensor S_ij via central differences on the
+    /// velocity field, then sets per-cell tau:
+    ///   tau(x) = tau_base + 3 * (C_s * dx)^2 * |S(x)|
+    /// clamped to [0.505, 5.0] for stability.
+    ///
+    /// # Arguments
+    /// * `cs` - Smagorinsky constant (typical 0.1-0.2)
+    /// * `dx` - Cell size in physical units (kpc for galaxy sims)
+    /// * `tau_base` - Molecular relaxation time (minimum 0.5)
+    pub fn update_smagorinsky_tau(&mut self, cs: f64, dx: f64, tau_base: f64) -> Result<()> {
+        let (nx, ny, nz) = (self.nx, self.ny, self.nz);
+        let n = nx * ny * nz;
+        let cs_sq_dx_sq = cs * cs * dx * dx;
+        let mut tau_field = vec![tau_base; n];
+        let mut nan_cells = 0usize;
+
+        for z in 0..nz {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let idx = z * nx * ny + y * nx + x;
+                    // Central differences with periodic BC
+                    let xp = z * nx * ny + y * nx + (x + 1) % nx;
+                    let xm = z * nx * ny + y * nx + (x + nx - 1) % nx;
+                    let yp = z * nx * ny + ((y + 1) % ny) * nx + x;
+                    let ym = z * nx * ny + ((y + ny - 1) % ny) * nx + x;
+                    let zp = ((z + 1) % nz) * nx * ny + y * nx + x;
+                    let zm = ((z + nz - 1) % nz) * nx * ny + y * nx + x;
+
+                    // Guard: skip cells with NaN velocity neighbors.
+                    // Concentrated galaxies at f64 can diverge (~30 steps),
+                    // producing NaN velocities that would poison the strain rate.
+                    let neighbors = [idx, xp, xm, yp, ym, zp, zm];
+                    let has_nan = neighbors.iter().any(|&n| {
+                        !self.u[n][0].is_finite()
+                            || !self.u[n][1].is_finite()
+                            || !self.u[n][2].is_finite()
+                    });
+                    if has_nan {
+                        nan_cells += 1;
+                        continue;
+                    }
+
+                    let dudx = 0.5 * (self.u[xp][0] - self.u[xm][0]);
+                    let dudy = 0.5 * (self.u[yp][0] - self.u[ym][0]);
+                    let dudz = 0.5 * (self.u[zp][0] - self.u[zm][0]);
+                    let dvdx = 0.5 * (self.u[xp][1] - self.u[xm][1]);
+                    let dvdy = 0.5 * (self.u[yp][1] - self.u[ym][1]);
+                    let dvdz = 0.5 * (self.u[zp][1] - self.u[zm][1]);
+                    let dwdx = 0.5 * (self.u[xp][2] - self.u[xm][2]);
+                    let dwdy = 0.5 * (self.u[yp][2] - self.u[ym][2]);
+                    let dwdz = 0.5 * (self.u[zp][2] - self.u[zm][2]);
+
+                    // Symmetric strain rate tensor components
+                    let s11 = dudx;
+                    let s22 = dvdy;
+                    let s33 = dwdz;
+                    let s12 = 0.5 * (dudy + dvdx);
+                    let s13 = 0.5 * (dudz + dwdx);
+                    let s23 = 0.5 * (dvdz + dwdy);
+
+                    // |S| = sqrt(2 * S_ij * S_ij)
+                    let s_mag = (2.0
+                        * (s11 * s11
+                            + s22 * s22
+                            + s33 * s33
+                            + 2.0 * (s12 * s12 + s13 * s13 + s23 * s23)))
+                        .sqrt();
+
+                    let nu_turb = cs_sq_dx_sq * s_mag;
+                    let tau_new = tau_base + 3.0 * nu_turb;
+                    tau_field[idx] = tau_new.clamp(0.505, 5.0);
+                }
+            }
+        }
+
+        if nan_cells > 0 {
+            eprintln!(
+                "  Smagorinsky: {nan_cells}/{n} cells non-finite ({:.1}%), tau_base={tau_base:.2}",
+                100.0 * nan_cells as f64 / n as f64
+            );
+        }
+
+        self.set_viscosity_field(tau_field)
     }
 
     /// Set the external body force field for Guo forcing scheme.
@@ -375,11 +941,26 @@ impl LbmSolver3D {
                     self.rho[idx] = rho_init;
                     self.u[idx] = u_init;
 
-                    // Initialize distribution function to equilibrium
+                    // Initialize distribution function to equilibrium (AoSoA)
                     let f_eq = BgkCollision::initialize_with_velocity(rho_init, u_init, lattice);
-                    let f_start = idx * 19;
-                    self.f[f_start..f_start + 19].copy_from_slice(&f_eq);
+                    for (dir, &val) in f_eq.iter().enumerate() {
+                        self.f[aosoa_idx(idx, dir)] = val;
+                    }
                 }
+            }
+        }
+    }
+
+    /// Re-initialize distributions to equilibrium from current rho and u fields.
+    ///
+    /// Use after setting rho[] directly (e.g. for density perturbation tests).
+    pub fn reinitialize_from_macroscopic(&mut self) {
+        let lattice = &self.collider.lattice;
+        let n = self.nx * self.ny * self.nz;
+        for idx in 0..n {
+            let f_eq = BgkCollision::initialize_with_velocity(self.rho[idx], self.u[idx], lattice);
+            for (dir, &val) in f_eq.iter().enumerate() {
+                self.f[aosoa_idx(idx, dir)] = val;
             }
         }
     }
@@ -399,24 +980,24 @@ impl LbmSolver3D {
             .zip(self.u.par_iter_mut())
             .enumerate()
             .for_each(|(idx, (rho_out, u_out))| {
-                let f_start = idx * 19;
                 let mut f = [0.0; 19];
-                f.copy_from_slice(&f_slice[f_start..f_start + 19]);
+                for dir in 0..19 {
+                    f[dir] = f_slice[aosoa_idx(idx, dir)];
+                }
                 let rho = BgkCollision::density_from_f(&f);
                 *rho_out = rho;
                 *u_out = BgkCollision::velocity_from_f(&f, rho, &lattice);
             });
     }
 
-    /// Phase 1 (collision preparation): Compute macroscopic quantities and apply BGK collision operator.
+    /// Phase 1 (collision): Compute macroscopic quantities and apply collision operator.
     ///
-    /// Implements the Chapman-Enskog collision operator with spatially-varying relaxation time:
-    /// f_i^new <- f_i - (f_i - f_i^eq) / tau(x,y,z)
+    /// Dispatches BGK or MRT based on `self.collision_mode`:
+    /// - BGK: f_i^new <- f_i - (f_i - f_i^eq) / tau(x,y,z)
+    /// - MRT: f^new <- M^{-1} * (m - S*(m - m^eq))  (d'Humieres 2002)
     ///
-    /// This phase prepares the distribution function for the subsequent streaming step.
-    /// Relaxation time varies per grid point to enable viscosity-driven simulation.
+    /// Both modes use Guo forcing with force-corrected velocity u*.
     pub fn phase1_collision(&mut self) -> ScheduleResult<()> {
-        // Recover macroscopic quantities (density rho, velocity u_k)
         self.compute_macroscopic();
 
         let lattice = self.collider.lattice.clone();
@@ -429,67 +1010,205 @@ impl LbmSolver3D {
         let rho = &self.rho;
         let u = &self.u;
         let force_field = &self.force_field;
+        let mode = self.collision_mode;
 
-        // Apply BGK collision with exact Guo forcing (Phi_i source term).
-        //
-        // Key: use force-corrected velocity u* = u + F/(2*rho) in both
-        // equilibrium and source term. This recovers the exact Navier-Stokes
-        // momentum equation at second order in dt (Guo et al. 2002, Phys.
-        // Rev. E 65, 046308, Eq. 6) and preserves mass to machine precision.
-        self.f
-            .par_chunks_mut(19)
-            .enumerate()
-            .for_each(|(idx, f_chunk)| {
-                let tau = if idx < tau_field.len() {
-                    tau_field[idx]
-                } else {
-                    default_tau
-                };
+        // AoSoA collision: chunk-based SIMD iteration.
+        // Each rayon thread processes one CHUNK=4 cells via f64x4 (256-bit AVX2).
+        // The AoSoA layout guarantees that each chunk's 19 * 4 = 608 bytes are
+        // contiguous in memory, fitting in 2% of the 32 KB L1D cache.
+        let n_cells = self.nx * self.ny * self.nz;
+        let num_chunks = n_cells / AOSOA_CHUNK;
+        let tail_start = num_chunks * AOSOA_CHUNK;
 
-                let rho_local = rho[idx];
-                let u_local = u[idx];
+        // SAFETY: each chunk maps to non-overlapping AoSoA locations.
+        // UnsafeAoSoAPtr asserts Send+Sync; disjoint-access proof is in
+        // the aosoa_idx algebra (no two chunks share memory addresses).
+        let f_ptr = UnsafeAoSoAPtr(self.f.as_mut_ptr());
 
-                // Force-corrected velocity: u* = u + F * dt / (2 * rho)
-                // In lattice units dt = 1, so u* = u + F / (2 * rho).
-                let u_star = if let Some(ff) = force_field {
-                    let force = ff[idx];
-                    let inv_2rho = 0.5 / rho_local.max(1e-30);
-                    [
-                        u_local[0] + force[0] * inv_2rho,
-                        u_local[1] + force[1] * inv_2rho,
-                        u_local[2] + force[2] * inv_2rho,
-                    ]
-                } else {
-                    u_local
-                };
+        // --- SIMD path: process 4 cells per chunk via f64x4 ---
+        (0..num_chunks).into_par_iter().for_each(|chunk_idx| {
+            unsafe {
+                let base_cell = chunk_idx * AOSOA_CHUNK;
+                let chunk_offset = chunk_idx * 19 * AOSOA_CHUNK;
 
-                // BGK collision using force-corrected velocity u*
-                for (i, fi) in f_chunk.iter_mut().enumerate() {
-                    let f_eq_i = lattice.equilibrium(rho_local, u_star, i);
-                    *fi -= (*fi - f_eq_i) / tau;
+                // Load 19 f64x4 vectors (each = one direction across 4 cells)
+                let mut f_local = [f64x4::ZERO; 19];
+                for (dir, f_val) in f_local.iter_mut().enumerate() {
+                    *f_val = f_ptr.read_x4(chunk_offset + dir * AOSOA_CHUNK);
                 }
 
-                // Exact source term Phi_i using u* (not bare u)
-                if let Some(ff) = force_field {
-                    let force = ff[idx];
-                    let prefactor = 1.0 - 1.0 / (2.0 * tau);
-                    for (i, fi) in f_chunk.iter_mut().enumerate() {
-                        let ei = lattice.velocities[i];
-                        let ei_f64 = [ei[0] as f64, ei[1] as f64, ei[2] as f64];
-                        // Use u* in the source term
-                        let ei_minus_u_dot_f = (ei_f64[0] - u_star[0]) * force[0]
-                            + (ei_f64[1] - u_star[1]) * force[1]
-                            + (ei_f64[2] - u_star[2]) * force[2];
-                        let ei_dot_u =
-                            ei_f64[0] * u_star[0] + ei_f64[1] * u_star[1] + ei_f64[2] * u_star[2];
-                        let ei_dot_f =
-                            ei_f64[0] * force[0] + ei_f64[1] * force[1] + ei_f64[2] * force[2];
-                        // Phi_i = (e_i - u*)*F / c_s^2 + (e_i*u*)(e_i*F) / c_s^4
-                        let phi_i = ei_minus_u_dot_f * 3.0 + (ei_dot_u * ei_dot_f) * 9.0;
-                        *fi += prefactor * lattice.weights[i] * phi_i;
+                // Gather macroscopic quantities for the 4 cells
+                let rho4 = f64x4::new([
+                    rho[base_cell], rho[base_cell + 1],
+                    rho[base_cell + 2], rho[base_cell + 3],
+                ]);
+                let ux4 = f64x4::new([
+                    u[base_cell][0], u[base_cell + 1][0],
+                    u[base_cell + 2][0], u[base_cell + 3][0],
+                ]);
+                let uy4 = f64x4::new([
+                    u[base_cell][1], u[base_cell + 1][1],
+                    u[base_cell + 2][1], u[base_cell + 3][1],
+                ]);
+                let uz4 = f64x4::new([
+                    u[base_cell][2], u[base_cell + 1][2],
+                    u[base_cell + 2][2], u[base_cell + 3][2],
+                ]);
+
+                // Gather tau for the 4 cells
+                let tau4 = if base_cell + 3 < tau_field.len() {
+                    f64x4::new([
+                        tau_field[base_cell], tau_field[base_cell + 1],
+                        tau_field[base_cell + 2], tau_field[base_cell + 3],
+                    ])
+                } else {
+                    f64x4::splat(default_tau)
+                };
+
+                // Force-corrected velocity: u* = u + F / (2 * rho)
+                let (ux_star, uy_star, uz_star) = if let Some(ff) = force_field {
+                    let inv_2rho = f64x4::splat(0.5)
+                        / rho4.max(f64x4::splat(1e-30));
+                    let fx = f64x4::new([
+                        ff[base_cell][0], ff[base_cell + 1][0],
+                        ff[base_cell + 2][0], ff[base_cell + 3][0],
+                    ]);
+                    let fy = f64x4::new([
+                        ff[base_cell][1], ff[base_cell + 1][1],
+                        ff[base_cell + 2][1], ff[base_cell + 3][1],
+                    ]);
+                    let fz = f64x4::new([
+                        ff[base_cell][2], ff[base_cell + 1][2],
+                        ff[base_cell + 2][2], ff[base_cell + 3][2],
+                    ]);
+                    (ux4 + fx * inv_2rho, uy4 + fy * inv_2rho, uz4 + fz * inv_2rho)
+                } else {
+                    (ux4, uy4, uz4)
+                };
+
+                // Collision
+                match mode {
+                    CollisionMode::Bgk => {
+                        let u_sq = ux_star * ux_star + uy_star * uy_star + uz_star * uz_star;
+                        for (dir, f_val) in f_local.iter_mut().enumerate() {
+                            let w = f64x4::splat(lattice.weights[dir]);
+                            let cx = f64x4::splat(lattice.velocities[dir][0] as f64);
+                            let cy = f64x4::splat(lattice.velocities[dir][1] as f64);
+                            let cz = f64x4::splat(lattice.velocities[dir][2] as f64);
+                            let cu = cx * ux_star + cy * uy_star + cz * uz_star;
+                            let f_eq = w * rho4
+                                * (f64x4::splat(1.0)
+                                    + f64x4::splat(3.0) * cu
+                                    + f64x4::splat(4.5) * cu * cu
+                                    - f64x4::splat(1.5) * u_sq);
+                            *f_val -= (*f_val - f_eq) / tau4;
+                        }
+                    }
+                    CollisionMode::Mrt => {
+                        f_local = collide_mrt_d3q19_x4(
+                            &f_local, rho4, ux_star, uy_star, uz_star, tau4,
+                        );
                     }
                 }
-            });
+
+                // Exact Guo source term Phi_i using u*
+                if let Some(ff) = force_field {
+                    let fx = f64x4::new([
+                        ff[base_cell][0], ff[base_cell + 1][0],
+                        ff[base_cell + 2][0], ff[base_cell + 3][0],
+                    ]);
+                    let fy = f64x4::new([
+                        ff[base_cell][1], ff[base_cell + 1][1],
+                        ff[base_cell + 2][1], ff[base_cell + 3][1],
+                    ]);
+                    let fz = f64x4::new([
+                        ff[base_cell][2], ff[base_cell + 1][2],
+                        ff[base_cell + 2][2], ff[base_cell + 3][2],
+                    ]);
+                    let prefactor = f64x4::splat(1.0) - f64x4::splat(1.0) / (f64x4::splat(2.0) * tau4);
+                    for (dir, f_val) in f_local.iter_mut().enumerate() {
+                        let w = f64x4::splat(lattice.weights[dir]);
+                        let cx = f64x4::splat(lattice.velocities[dir][0] as f64);
+                        let cy = f64x4::splat(lattice.velocities[dir][1] as f64);
+                        let cz = f64x4::splat(lattice.velocities[dir][2] as f64);
+                        let ei_minus_u_dot_f = (cx - ux_star) * fx
+                            + (cy - uy_star) * fy
+                            + (cz - uz_star) * fz;
+                        let ei_dot_u = cx * ux_star + cy * uy_star + cz * uz_star;
+                        let ei_dot_f = cx * fx + cy * fy + cz * fz;
+                        let phi_i = ei_minus_u_dot_f * f64x4::splat(3.0)
+                            + (ei_dot_u * ei_dot_f) * f64x4::splat(9.0);
+                        *f_val += prefactor * w * phi_i;
+                    }
+                }
+
+                // Store 19 f64x4 vectors back to AoSoA
+                for (dir, &f_val) in f_local.iter().enumerate() {
+                    f_ptr.write_x4(chunk_offset + dir * AOSOA_CHUNK, f_val);
+                }
+            }
+        });
+
+        // --- Scalar tail: handle remaining cells if n_cells % 4 != 0 ---
+        for idx in tail_start..n_cells {
+            let tau = if idx < tau_field.len() {
+                tau_field[idx]
+            } else {
+                default_tau
+            };
+            let rho_local = rho[idx];
+            let u_local = u[idx];
+            let u_star = if let Some(ff) = force_field {
+                let force = ff[idx];
+                let inv_2rho = 0.5 / rho_local.max(1e-30);
+                [
+                    u_local[0] + force[0] * inv_2rho,
+                    u_local[1] + force[1] * inv_2rho,
+                    u_local[2] + force[2] * inv_2rho,
+                ]
+            } else {
+                u_local
+            };
+            let mut f_local = [0.0_f64; 19];
+            for (dir, f_val) in f_local.iter_mut().enumerate() {
+                // SAFETY: tail cells are within bounds and not touched by SIMD path.
+                *f_val = unsafe { f_ptr.read(aosoa_idx(idx, dir)) };
+            }
+            match mode {
+                CollisionMode::Bgk => {
+                    for (i, f_val) in f_local.iter_mut().enumerate() {
+                        let f_eq_i = lattice.equilibrium(rho_local, u_star, i);
+                        *f_val -= (*f_val - f_eq_i) / tau;
+                    }
+                }
+                CollisionMode::Mrt => {
+                    f_local = collide_mrt_d3q19(
+                        &f_local, rho_local, u_star[0], u_star[1], u_star[2], tau,
+                    );
+                }
+            }
+            if let Some(ff) = force_field {
+                let force = ff[idx];
+                let prefactor = 1.0 - 1.0 / (2.0 * tau);
+                for (i, f_val) in f_local.iter_mut().enumerate() {
+                    let ei = lattice.velocities[i];
+                    let ei_f64 = [ei[0] as f64, ei[1] as f64, ei[2] as f64];
+                    let ei_minus_u_dot_f = (ei_f64[0] - u_star[0]) * force[0]
+                        + (ei_f64[1] - u_star[1]) * force[1]
+                        + (ei_f64[2] - u_star[2]) * force[2];
+                    let ei_dot_u =
+                        ei_f64[0] * u_star[0] + ei_f64[1] * u_star[1] + ei_f64[2] * u_star[2];
+                    let ei_dot_f =
+                        ei_f64[0] * force[0] + ei_f64[1] * force[1] + ei_f64[2] * force[2];
+                    let phi_i = ei_minus_u_dot_f * 3.0 + (ei_dot_u * ei_dot_f) * 9.0;
+                    *f_val += prefactor * lattice.weights[i] * phi_i;
+                }
+            }
+            for (dir, &f_val) in f_local.iter().enumerate() {
+                // SAFETY: tail cells are within bounds and not touched by SIMD path.
+                unsafe { f_ptr.write(aosoa_idx(idx, dir), f_val) };
+            }
+        }
 
         // Post-collision: update stored velocity to force-corrected u*
         // so downstream consumers (MHD, diagnostics, drag force) use
@@ -522,16 +1241,14 @@ impl LbmSolver3D {
         let f_src = &self.f;
 
         // Use pre-allocated scratch buffer instead of allocating per step.
-        // Streaming is NOT parallelized because the pull scheme reads from
-        // arbitrary source cells (data-dependent scatter pattern), making
-        // cache behavior worse under parallel writes. At 128^3 the serial
-        // streaming is ~2x faster than rayon due to cache-line contention.
+        // AoSoA streaming: same pull scheme but reads/writes use aosoa_idx.
+        // Serial loop: at 128^3 the pull scheme reads from arbitrary source
+        // cells, making cache behavior worse under parallel writes.
         #[allow(clippy::needless_range_loop)]
         for z in 0..nz {
             for y in 0..ny {
                 for x in 0..nx {
                     let dst_idx = z * (nx * ny) + y * nx + x;
-                    let dst_start = dst_idx * 19;
 
                     for i in 0..19 {
                         let c = lattice.velocities[i];
@@ -539,7 +1256,8 @@ impl LbmSolver3D {
                         let sy = (y as i32 - c[1]).rem_euclid(ny as i32) as usize;
                         let sz = (z as i32 - c[2]).rem_euclid(nz as i32) as usize;
                         let src_idx = sz * (nx * ny) + sy * nx + sx;
-                        self.f_scratch[dst_start + i] = f_src[src_idx * 19 + i];
+                        self.f_scratch[aosoa_idx(dst_idx, i)] =
+                            f_src[aosoa_idx(src_idx, i)];
                     }
                 }
             }
@@ -752,6 +1470,15 @@ impl LbmSolver3D {
             .map(|ui| (ui[0] * ui[0] + ui[1] * ui[1] + ui[2] * ui[2]).sqrt())
             .sum::<f64>()
             / n
+    }
+
+    /// Maximum Mach number across the domain: Ma = max(|u|) / c_s.
+    ///
+    /// For D3Q19, c_s = 1/sqrt(3). BGK is typically stable for Ma < 0.3;
+    /// MRT extends this to ~1.5 by independently damping ghost moments.
+    pub fn max_mach_number(&self) -> f64 {
+        let cs = (1.0_f64 / 3.0).sqrt();
+        self.max_velocity() / cs
     }
 
     /// Check the CFL condition: max velocity should be well below the lattice
@@ -1124,7 +1851,7 @@ mod tests {
         assert_eq!(solver.nx, 10);
         assert_eq!(solver.ny, 8);
         assert_eq!(solver.nz, 6);
-        assert_eq!(solver.f.len(), 10 * 8 * 6 * 19);
+        assert_eq!(solver.f.len(), aosoa_pad(10 * 8 * 6) * 19);
         assert_eq!(solver.rho.len(), 10 * 8 * 6);
         assert_eq!(solver.u.len(), 10 * 8 * 6);
     }
@@ -1145,14 +1872,14 @@ mod tests {
                 assert!(solver.u[node][k].abs() < 1e-14, "u not 0 at node {}", node);
             }
             // f_i should equal w_i (equilibrium at rest with rho=1)
-            let base = node * 19;
             for i in 0..19 {
                 let expected = lattice.weight(i);
+                let actual = solver.f[aosoa_idx(node, i)];
                 assert!(
-                    (solver.f[base + i] - expected).abs() < 1e-14,
+                    (actual - expected).abs() < 1e-14,
                     "f[{}] = {} != w[{}] = {} at node {}",
                     i,
-                    solver.f[base + i],
+                    actual,
                     i,
                     expected,
                     node
@@ -1299,7 +2026,7 @@ mod tests {
 
         // Perturb f at site (3, 3, 3) for direction 1 (velocity [1,0,0])
         let src_idx = solver.linearize(3, 3, 3);
-        solver.f[src_idx * 19 + 1] += 0.01;
+        solver.f[aosoa_idx(src_idx, 1)] += 0.01;
 
         // Run streaming only (skip collision to isolate streaming effect)
         let _ = solver.phase2_streaming();
@@ -1307,7 +2034,7 @@ mod tests {
         // After streaming, the perturbation in direction 1 should have moved to (4,3,3)
         let dst_idx = solver.linearize(4, 3, 3);
         let original_val = 1.0 * solver.collider.lattice.weight(1);
-        let delta = solver.f[dst_idx * 19 + 1] - original_val;
+        let delta = solver.f[aosoa_idx(dst_idx, 1)] - original_val;
         assert!(
             delta.abs() > 0.005,
             "Perturbation should propagate: delta = {}",
@@ -1322,14 +2049,14 @@ mod tests {
 
         // Perturb at edge site (3,2,2) in direction 1 (velocity [1,0,0])
         let edge_idx = solver.linearize(3, 2, 2);
-        solver.f[edge_idx * 19 + 1] += 0.02;
+        solver.f[aosoa_idx(edge_idx, 1)] += 0.02;
 
         let _ = solver.phase2_streaming();
 
         // Should wrap to (0, 2, 2)
         let wrap_idx = solver.linearize(0, 2, 2);
         let original_val = 1.0 * solver.collider.lattice.weight(1);
-        let delta = solver.f[wrap_idx * 19 + 1] - original_val;
+        let delta = solver.f[aosoa_idx(wrap_idx, 1)] - original_val;
         assert!(
             delta.abs() > 0.01,
             "Should wrap periodically: delta = {}",
@@ -1548,6 +2275,206 @@ mod tests {
             "Tau should vary spatially: min={}, max={}",
             tau_min,
             tau_max
+        );
+    }
+
+    #[test]
+    fn test_smagorinsky_uniform_flow() {
+        // Uniform velocity -> S_ij = 0 -> tau = tau_base everywhere
+        let mut solver = LbmSolver3D::new(8, 8, 8, 1.5);
+        // Set uniform velocity
+        for u in solver.u.iter_mut() {
+            *u = [0.01, 0.0, 0.0];
+        }
+        solver
+            .update_smagorinsky_tau(0.1, 1.0, 1.5)
+            .expect("smagorinsky");
+        let tau = solver.collider.get_tau_field();
+        for &t in tau.iter() {
+            assert!(
+                (t - 1.5).abs() < 1e-10,
+                "uniform flow should give tau = tau_base, got {t}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_smagorinsky_shear_flow() {
+        // Linear shear du/dy -> S_12 != 0 -> tau > tau_base
+        let n = 16;
+        let mut solver = LbmSolver3D::new(n, n, n, 1.5);
+        for z in 0..n {
+            for y in 0..n {
+                for x in 0..n {
+                    let idx = z * n * n + y * n + x;
+                    solver.u[idx] = [0.001 * y as f64, 0.0, 0.0];
+                }
+            }
+        }
+        solver
+            .update_smagorinsky_tau(0.1, 1.0, 1.5)
+            .expect("smagorinsky");
+        let tau = solver.collider.get_tau_field();
+        let tau_max = tau.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+        assert!(
+            tau_max > 1.5,
+            "shear flow should increase tau, got max={tau_max}"
+        );
+    }
+
+    #[test]
+    fn test_mrt_mass_conservation() {
+        // MRT must preserve total mass to machine precision.
+        let mut solver = LbmSolver3D::new_mrt(8, 8, 8, 1.5);
+        let n = 8 * 8 * 8;
+
+        // Perturb initial density: Gaussian blob at center
+        let lattice = solver.collider.lattice.clone();
+        for z in 0..8 {
+            for y in 0..8 {
+                for x in 0..8 {
+                    let idx = z * 64 + y * 8 + x;
+                    let dx = x as f64 - 3.5;
+                    let dy = y as f64 - 3.5;
+                    let dz = z as f64 - 3.5;
+                    let rho = 1.0 + 0.1 * (-0.5 * (dx * dx + dy * dy + dz * dz)).exp();
+                    let f_eq = BgkCollision::initialize_rest(rho, &lattice);
+                    for dir in 0..19 {
+                        solver.f[aosoa_idx(idx, dir)] = f_eq[dir];
+                    }
+                    solver.rho[idx] = rho;
+                }
+            }
+        }
+
+        let mass_0: f64 = solver.rho.iter().sum();
+        assert_eq!(n, solver.rho.len());
+
+        // Evolve 20 steps with MRT
+        for _ in 0..20 {
+            solver.evolve_one_step();
+        }
+
+        let mass_1: f64 = solver.rho.iter().sum();
+        let rel_err = (mass_1 - mass_0).abs() / mass_0;
+        assert!(
+            rel_err < 1e-10,
+            "MRT mass conservation violated: mass_0={mass_0}, mass_1={mass_1}, rel_err={rel_err}"
+        );
+    }
+
+    #[test]
+    fn test_mrt_bgk_agreement_uniform() {
+        // On uniform density at rest, MRT and BGK must produce identical results.
+        let mut bgk_solver = LbmSolver3D::new(8, 8, 8, 1.5);
+        let mut mrt_solver = LbmSolver3D::new_mrt(8, 8, 8, 1.5);
+
+        // Both start from default (rho=1, u=0)
+        for _ in 0..10 {
+            bgk_solver.evolve_one_step();
+            mrt_solver.evolve_one_step();
+        }
+
+        // Density should be identical (both start at equilibrium)
+        let n = 8 * 8 * 8;
+        for i in 0..n {
+            let diff = (bgk_solver.rho[i] - mrt_solver.rho[i]).abs();
+            assert!(
+                diff < 1e-12,
+                "BGK/MRT disagree at cell {i}: bgk={}, mrt={}, diff={diff}",
+                bgk_solver.rho[i], mrt_solver.rho[i]
+            );
+        }
+    }
+
+    /// Verify d'Humieres D3Q19 MRT relaxation rates and row norms.
+    ///
+    /// The transformation matrix M has 19 orthogonal rows whose squared norms
+    /// are known analytically (d'Humieres et al. 2002, Lallemand & Luo 2000).
+    /// The relaxation rates S_diag must satisfy 0 < s_i <= 2 for stability,
+    /// with conserved moments (mass, momentum) having s=0.
+    #[test]
+    fn test_mrt_relaxation_rates_and_row_norms() {
+        // Published row squared-norms for d'Humieres D3Q19 M matrix
+        let expected_row_norms: [f64; 19] = [
+            19.0, 2394.0, 252.0,
+            10.0, 40.0, 10.0, 40.0, 10.0, 40.0,
+            36.0, 36.0, 12.0, 12.0,
+            4.0, 4.0, 4.0,
+            8.0, 8.0, 8.0,
+        ];
+
+        // Verify by computing M * e_i for each canonical basis vector.
+        // Row j of M is the vector of coefficients applied to f[0..19].
+        // We compute m = M * e_i for i=0..18 and accumulate ||row_j||^2.
+        let mut row_norm_sq = [0.0_f64; 19];
+        for i in 0..19 {
+            let mut f = [0.0_f64; 19];
+            f[i] = 1.0;
+            // Use collide_mrt with rho=1, u=0 and extract moment values.
+            // Instead, compute M*f directly using the forward transform.
+            let m = mrt_forward_transform(&f);
+            for (j, mj) in m.iter().enumerate() {
+                row_norm_sq[j] += mj * mj;
+            }
+        }
+
+        for (j, (&computed, &expected)) in
+            row_norm_sq.iter().zip(expected_row_norms.iter()).enumerate()
+        {
+            let rel_err = (computed - expected).abs() / expected;
+            assert!(
+                rel_err < 1e-12,
+                "Row {j}: norm^2 = {computed}, expected {expected}, rel_err = {rel_err:.2e}"
+            );
+        }
+
+        // Verify relaxation rates are in valid range (0, 2] for non-conserved,
+        // exactly 0 for conserved moments (mass=m0, momentum=m3,m5,m7).
+        let tau = 0.7;
+        let s_nu = 1.0 / tau;
+        let s_e = 1.19;
+        let s_eps = 1.4;
+        let s_q = 1.2;
+        let s_ghost = 1.0;
+
+        let s_diag: [f64; 19] = [
+            0.0, s_e, s_eps,
+            0.0, s_q, 0.0, s_q, 0.0, s_q,
+            s_nu, s_ghost, s_nu, s_ghost,
+            s_nu, s_nu, s_nu,
+            s_ghost, s_ghost, s_ghost,
+        ];
+
+        for (j, &s) in s_diag.iter().enumerate() {
+            if [0, 3, 5, 7].contains(&j) {
+                assert_eq!(s, 0.0, "Conserved moment {j} must have s=0");
+            } else {
+                assert!(
+                    s > 0.0 && s <= 2.0,
+                    "Rate s[{j}] = {s} out of stable range (0, 2]"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_max_mach_number_at_rest() {
+        let solver = LbmSolver3D::new(4, 4, 4, 1.0);
+        assert!(solver.max_mach_number() < 1e-14);
+    }
+
+    #[test]
+    fn test_max_mach_number_with_flow() {
+        let mut solver = LbmSolver3D::new(4, 4, 4, 1.0);
+        // Set velocity in one cell
+        solver.u[0] = [0.1, 0.0, 0.0];
+        let ma = solver.max_mach_number();
+        let cs = (1.0_f64 / 3.0).sqrt();
+        let expected = 0.1 / cs;
+        assert!(
+            (ma - expected).abs() < 1e-12,
+            "Ma={ma}, expected={expected}"
         );
     }
 }

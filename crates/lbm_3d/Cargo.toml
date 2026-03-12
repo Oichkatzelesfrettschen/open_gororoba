@@ -10,6 +10,7 @@ cosmic_scheduler = { path = "../cosmic_scheduler" }
 cosmology_core = { path = "../cosmology_core" }
 rayon = { workspace = true }
 thiserror.workspace = true
+wide = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

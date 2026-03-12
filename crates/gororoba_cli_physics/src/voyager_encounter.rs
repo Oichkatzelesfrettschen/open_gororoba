@@ -1,7 +1,10 @@
 use anyhow::{Context, Result, bail};
 use chrono::{NaiveDate, TimeZone, Utc};
 use data_core::{
-    catalogs::{omni::OmniRecord, voyager::{VoyagerSpacecraft, parse_voyager_file, voyager_to_omni}},
+    catalogs::{
+        omni::OmniRecord,
+        voyager::{VoyagerSpacecraft, parse_voyager_file, voyager_to_omni},
+    },
     time_bounds::TimeBounds,
 };
 use std::path::Path;

@@ -57,10 +57,11 @@ fn initialize_taylor_green(solver: &mut LbmSolver3D, u0: f64) {
                 solver.rho[idx] = 1.0;
                 solver.u[idx] = u;
 
-                // Set distribution function to equilibrium at this velocity
+                // Set distribution function to equilibrium at this velocity (AoSoA layout)
                 let f_eq = lbm_3d::solver::BgkCollision::initialize_with_velocity(1.0, u, &lattice);
-                let f_start = idx * 19;
-                solver.f[f_start..f_start + 19].copy_from_slice(&f_eq);
+                for dir in 0..19 {
+                    solver.f[lbm_3d::solver::aosoa_idx(idx, dir)] = f_eq[dir];
+                }
             }
         }
     }
