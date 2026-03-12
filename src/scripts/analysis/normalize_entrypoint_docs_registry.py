@@ -3,7 +3,6 @@
 Bootstrap tracked entrypoint markdown files into TOML-first registry.
 
 Inputs:
-- AGENTS.md
 - CLAUDE.md
 - GEMINI.md
 - README.md
@@ -22,7 +21,6 @@ import argparse
 from pathlib import Path
 
 ENTRYPOINT_FILES = [
-    "AGENTS.md",
     "CLAUDE.md",
     "GEMINI.md",
     "README.md",

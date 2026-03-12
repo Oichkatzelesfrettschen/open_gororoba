@@ -3,7 +3,7 @@
 Build stricter structured TOML registries for high-information knowledge corpora.
 
 Selected corpora for this wave:
-- registry/knowledge/docs/DOC-0023.toml (claims-heavy notes corpus)
+- docs/CLAIMS_EVIDENCE_MATRIX.md (live claims matrix, with raw-capture fallback)
 - registry/research_narratives.toml (proof/derivation-heavy corpus)
 - registry/data_artifact_narratives.toml (equation-heavy corpus)
 
@@ -152,24 +152,53 @@ def _split_sections(body: str) -> list[Section]:
     return sections
 
 
-def _load_sources(repo_root: Path) -> list[SourceDoc]:
-    sources: list[SourceDoc] = []
+def _title_from_markdown(path: str, body: str) -> str:
+    for line in body.splitlines():
+        if line.startswith("# "):
+            return _collapse_ws(line[2:])
+    return Path(path).name
 
-    doc_0023_path = repo_root / "registry/knowledge/docs/DOC-0023.toml"
-    doc_0023 = tomllib.loads(doc_0023_path.read_text(encoding="utf-8"))
-    payload = doc_0023.get("document", {})
-    sources.append(
-        SourceDoc(
+
+def _load_primary_claim_source(repo_root: Path) -> SourceDoc:
+    live_matrix_path = repo_root / "docs/CLAIMS_EVIDENCE_MATRIX.md"
+    if live_matrix_path.exists():
+        body = live_matrix_path.read_text(encoding="utf-8", errors="ignore")
+        return SourceDoc(
+            source_uid="CLAIMS_EVIDENCE_MATRIX",
+            source_group="doc_claim_matrix",
+            source_registry="docs/CLAIMS_EVIDENCE_MATRIX.md",
+            source_path="docs/CLAIMS_EVIDENCE_MATRIX.md",
+            title=_title_from_markdown("docs/CLAIMS_EVIDENCE_MATRIX.md", body),
+            line_count=body.count("\n") + (1 if body else 0),
+            claim_refs=sorted(set(CLAIM_ID_RE.findall(body))),
+            body=body,
+        )
+
+    fallback_path = repo_root / "registry/knowledge/docs/DOC-0023.toml"
+    if fallback_path.exists():
+        doc_0023 = tomllib.loads(fallback_path.read_text(encoding="utf-8"))
+        payload = doc_0023.get("document", {})
+        body = str(payload.get("content_markdown", ""))
+        return SourceDoc(
             source_uid="DOC-0023",
             source_group="doc_claim_matrix",
             source_registry="registry/knowledge/docs/DOC-0023.toml",
             source_path=str(payload.get("source_path", "")),
             title=_collapse_ws(str(payload.get("title", "DOC-0023"))),
             line_count=int(payload.get("source_line_count", 0)),
-            claim_refs=sorted(set(CLAIM_ID_RE.findall(str(payload.get("content_markdown", ""))))),
-            body=str(payload.get("content_markdown", "")),
+            claim_refs=sorted(set(CLAIM_ID_RE.findall(body))),
+            body=body,
         )
+
+    raise SystemExit(
+        "ERROR: missing both docs/CLAIMS_EVIDENCE_MATRIX.md and registry/knowledge/docs/DOC-0023.toml"
     )
+
+
+def _load_sources(repo_root: Path) -> list[SourceDoc]:
+    sources: list[SourceDoc] = []
+
+    sources.append(_load_primary_claim_source(repo_root))
 
     for registry_path, source_group in (
         ("registry/research_narratives.toml", "research_narrative"),
@@ -818,8 +847,8 @@ def main() -> int:
 
     repo_root = Path(args.repo_root).resolve()
     sources = _load_sources(repo_root)
-    doc_0023 = next(item for item in sources if item.source_uid == "DOC-0023")
-    claim_atoms = _parse_claim_rows(doc_0023)
+    claim_source = next(item for item in sources if item.source_group == "doc_claim_matrix")
+    claim_atoms = _parse_claim_rows(claim_source)
 
     equation_atoms: list[dict[str, object]] = []
     proof_atoms: list[dict[str, object]] = []

@@ -32,6 +32,41 @@ DEFAULT_META = {
 }
 
 SOURCE_META = {
+    "C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md": {
+        "status_token": "ACTIVE",
+        "content_kind": "claim_dataset_provenance",
+        "authority_level": "primary_paper_bridge",
+        "verification_level": "design_stage_replication",
+        "operational_role": "claim_bridge",
+        "truth_surfaces": ["algebra_topology", "design_stage_benchmark"],
+        "artifact_contract_paths": [
+            "crates/materials_core/src/nonlocal_metamaterial.rs",
+            "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs",
+            "data/csv/c010_nonlocal_material_calibrations.csv",
+        ],
+        "notes": (
+            "Sources pack for the non-local C-010 recovery lane with explicit "
+            "literature-backed LC, Floquet, graphene, and magnonic calibration anchors."
+        ),
+    },
+    "C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md": {
+        "status_token": "REFERENCE",
+        "content_kind": "claim_dataset_provenance",
+        "authority_level": "project_claim_repair",
+        "verification_level": "deterministic_toy_reproduction",
+        "operational_role": "claim_bridge",
+        "truth_surfaces": ["toy_mapping", "degeneracy_disclosure"],
+        "artifact_contract_paths": [
+            "crates/materials_core/src/pathion_toy_mapping.rs",
+            "crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs",
+            "data/csv/c053_pathion_tmm_summary.csv",
+            "crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs",
+        ],
+        "notes": (
+            "Repair dossier for the narrow C-053 toy lane. Keeps the pathion-to-TMM "
+            "mapping reproducible while making its diagonal-only degeneracy explicit."
+        ),
+    },
     "C071_FRB_ULTRAMETRIC_SOURCES.md": {
         "status_token": "REFUTED",
         "content_kind": "claim_dataset_provenance",
