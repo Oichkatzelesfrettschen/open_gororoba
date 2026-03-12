@@ -137,7 +137,7 @@ toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "registry/artifact_scrolls.toml"
 source_of_truth_paths = ["registry/artifact_scrolls.toml"]
 consolidation_action = "none"
-line_count = 41
+line_count = 44
 
 [[document]]
 path = "data/artifacts/WARP_RING_REPORT.md"
@@ -249,7 +249,7 @@ toml_destination = "registry/claims.toml"
 source_of_truth_raw = "registry/claims.toml"
 source_of_truth_paths = ["registry/claims.toml"]
 consolidation_action = "none"
-line_count = 1149
+line_count = 1177
 
 [[document]]
 path = "docs/CLAIMS_TASKS.md"
@@ -313,7 +313,7 @@ toml_destination = "registry/experiments.toml"
 source_of_truth_raw = "registry/experiments.toml, registry/experiments_narrative.toml"
 source_of_truth_paths = ["registry/experiments.toml", "registry/experiments_narrative.toml"]
 consolidation_action = "none"
-line_count = 2092
+line_count = 2236
 
 [[document]]
 path = "docs/INSIGHTS.md"
@@ -617,7 +617,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 46
+line_count = 49
 
 [[document]]
 path = "docs/book/src/algebra/box-kites.md"
@@ -633,7 +633,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 46
+line_count = 49
 
 [[document]]
 path = "docs/book/src/algebra/emanation.md"
@@ -649,7 +649,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 45
+line_count = 48
 
 [[document]]
 path = "docs/book/src/algebra/motif-scaling.md"
@@ -665,7 +665,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 53
+line_count = 56
 
 [[document]]
 path = "docs/book/src/algebra/zero-divisors.md"
@@ -681,7 +681,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 40
+line_count = 43
 
 [[document]]
 path = "docs/book/src/architecture/crates.md"
@@ -697,7 +697,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 58
+line_count = 61
 
 [[document]]
 path = "docs/book/src/architecture/layout.md"
@@ -713,7 +713,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 78
+line_count = 81
 
 [[document]]
 path = "docs/book/src/architecture/verification.md"
@@ -729,7 +729,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 67
+line_count = 70
 
 [[document]]
 path = "docs/book/src/cli/catalog.md"
@@ -745,7 +745,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 67
+line_count = 70
 
 [[document]]
 path = "docs/book/src/experiments/e001.md"
@@ -761,7 +761,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 44
+line_count = 47
 
 [[document]]
 path = "docs/book/src/experiments/e002.md"
@@ -777,7 +777,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 51
+line_count = 54
 
 [[document]]
 path = "docs/book/src/experiments/e003.md"
@@ -793,7 +793,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 39
+line_count = 42
 
 [[document]]
 path = "docs/book/src/glossary.md"
@@ -809,7 +809,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 187
+line_count = 190
 
 [[document]]
 path = "docs/book/src/introduction.md"
@@ -825,7 +825,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 64
+line_count = 67
 
 [[document]]
 path = "docs/book/src/papers/collection.md"
@@ -841,7 +841,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 67
+line_count = 70
 
 [[document]]
 path = "docs/book/src/registry/claims.md"
@@ -857,7 +857,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 55
+line_count = 58
 
 [[document]]
 path = "docs/book/src/registry/experiments.md"
@@ -873,7 +873,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 47
+line_count = 50
 
 [[document]]
 path = "docs/book/src/registry/insights.md"
@@ -889,7 +889,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 43
+line_count = 46
 
 [[document]]
 path = "docs/claims/INDEX.md"
@@ -1177,7 +1177,7 @@ toml_destination = "registry/docs_convos.toml"
 source_of_truth_raw = "registry/docs_convos.toml"
 source_of_truth_paths = ["registry/docs_convos.toml"]
 consolidation_action = "none"
-line_count = 142
+line_count = 145
 
 [[document]]
 path = "docs/convos/README.md"
@@ -1193,7 +1193,7 @@ toml_destination = "registry/docs_convos.toml"
 source_of_truth_raw = "registry/docs_convos.toml"
 source_of_truth_paths = ["registry/docs_convos.toml"]
 consolidation_action = "none"
-line_count = 43
+line_count = 46
 
 [[document]]
 path = "docs/convos/audit_1_read_nonuser_lines_cont.md"
@@ -1209,7 +1209,7 @@ toml_destination = "registry/docs_convos.toml"
 source_of_truth_raw = "registry/docs_convos.toml"
 source_of_truth_paths = ["registry/docs_convos.toml"]
 consolidation_action = "none"
-line_count = 1108
+line_count = 1111
 
 [[document]]
 path = "docs/convos/implement_next_from_1_read_nonuser_lines_cont.md"
@@ -1225,7 +1225,7 @@ toml_destination = "registry/docs_convos.toml"
 source_of_truth_raw = "registry/docs_convos.toml"
 source_of_truth_paths = ["registry/docs_convos.toml"]
 consolidation_action = "none"
-line_count = 58
+line_count = 61
 
 [[document]]
 path = "docs/convos/keywords_1_read_nonuser_lines_cont.md"
@@ -1241,7 +1241,7 @@ toml_destination = "registry/docs_convos.toml"
 source_of_truth_raw = "registry/docs_convos.toml"
 source_of_truth_paths = ["registry/docs_convos.toml"]
 consolidation_action = "none"
-line_count = 130
+line_count = 133
 
 [[document]]
 path = "docs/engine_optimizations.md"
@@ -1753,7 +1753,7 @@ toml_destination = "registry/claims.toml"
 source_of_truth_raw = "TOML registry files under registry/"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 9128
+line_count = 9352
 
 [[document]]
 path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
@@ -1801,7 +1801,7 @@ toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "TOML registry files under registry/"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 69
+line_count = 68
 
 [[document]]
 path = "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md"
@@ -1865,7 +1865,7 @@ toml_destination = "registry/experiments.toml"
 source_of_truth_raw = "TOML registry files under registry/"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 2757
+line_count = 2961
 
 [[document]]
 path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
@@ -1929,7 +1929,7 @@ toml_destination = "registry/markdown_governance.toml"
 source_of_truth_raw = "TOML registry files under registry/"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 6297
+line_count = 6244
 
 [[document]]
 path = "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md"
@@ -2601,7 +2601,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 42
+line_count = 45
 
 [[document]]
 path = "reports/PHASE2_STATUS.md"
@@ -2617,7 +2617,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 23
+line_count = 26
 
 [[document]]
 path = "reports/artifacts_phase0_dryrun.md"
@@ -2633,7 +2633,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 64
+line_count = 67
 
 [[document]]
 path = "reports/artifacts_reorg_plan.md"
@@ -2649,7 +2649,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 84
+line_count = 87
 
 [[document]]
 path = "reports/audit_network_gating.md"
@@ -2665,7 +2665,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 56
+line_count = 59
 
 [[document]]
 path = "reports/audit_nonpython_toolchains.md"
@@ -2681,7 +2681,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 53
+line_count = 56
 
 [[document]]
 path = "reports/audit_provenance.md"
@@ -2697,7 +2697,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 41
+line_count = 44
 
 [[document]]
 path = "reports/audit_pythonpath.md"
@@ -2713,7 +2713,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 126
+line_count = 129
 
 [[document]]
 path = "reports/breakthrough_shi_geodesics_2026_02_14.md"
@@ -2729,7 +2729,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 41
+line_count = 44
 
 [[document]]
 path = "reports/claims_batch_backlog_C001_C050.md"
@@ -2745,7 +2745,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 111
+line_count = 114
 
 [[document]]
 path = "reports/claims_batch_backlog_C001_C200.md"
@@ -2761,7 +2761,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 264
+line_count = 267
 
 [[document]]
 path = "reports/claims_batch_backlog_C011_C025.md"
@@ -2777,7 +2777,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 64
+line_count = 67
 
 [[document]]
 path = "reports/claims_batch_backlog_C027_C045.md"
@@ -2793,7 +2793,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 66
+line_count = 69
 
 [[document]]
 path = "reports/claims_batch_backlog_C046_C060.md"
@@ -2809,7 +2809,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 64
+line_count = 67
 
 [[document]]
 path = "reports/claims_batch_backlog_C046_C066.md"
@@ -2825,7 +2825,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 68
+line_count = 71
 
 [[document]]
 path = "reports/claims_batch_backlog_C051_C100.md"
@@ -2841,7 +2841,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 98
+line_count = 101
 
 [[document]]
 path = "reports/claims_batch_backlog_C101_C150.md"
@@ -2857,7 +2857,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 96
+line_count = 99
 
 [[document]]
 path = "reports/claims_batch_backlog_C151_C200.md"
@@ -2873,7 +2873,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 97
+line_count = 100
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C250.md"
@@ -2889,7 +2889,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 97
+line_count = 100
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C408.md"
@@ -2905,7 +2905,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 261
+line_count = 264
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C427.md"
@@ -2921,7 +2921,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 295
+line_count = 298
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C430.md"
@@ -2937,7 +2937,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 301
+line_count = 304
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C432.md"
@@ -2953,7 +2953,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 305
+line_count = 308
 
 [[document]]
 path = "reports/claims_batch_backlog_C251_C300.md"
@@ -2969,7 +2969,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 97
+line_count = 100
 
 [[document]]
 path = "reports/claims_batch_backlog_C301_C350.md"
@@ -2985,7 +2985,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 97
+line_count = 100
 
 [[document]]
 path = "reports/claims_batch_backlog_C351_C400.md"
@@ -3001,7 +3001,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 97
+line_count = 100
 
 [[document]]
 path = "reports/claims_batch_backlog_C401_C427.md"
@@ -3017,7 +3017,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 95
+line_count = 98
 
 [[document]]
 path = "reports/claims_bold_tokens_inventory.md"
@@ -3033,7 +3033,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 49
+line_count = 52
 
 [[document]]
 path = "reports/claims_id_inventory.md"
@@ -3049,7 +3049,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 47
+line_count = 50
 
 [[document]]
 path = "reports/claims_priority_ranking.md"
@@ -3065,7 +3065,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 126
+line_count = 129
 
 [[document]]
 path = "reports/claims_staleness_report.md"
@@ -3081,7 +3081,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 47
+line_count = 50
 
 [[document]]
 path = "reports/claims_status_contradictions.md"
@@ -3097,7 +3097,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 38
+line_count = 41
 
 [[document]]
 path = "reports/claims_status_inventory.md"
@@ -3113,7 +3113,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 110
+line_count = 113
 
 [[document]]
 path = "reports/config_audit.md"
@@ -3129,7 +3129,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 51
+line_count = 54
 
 [[document]]
 path = "reports/convos_claim_candidates.md"
@@ -3145,7 +3145,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 859
+line_count = 862
 
 [[document]]
 path = "reports/convos_claim_candidates_prioritized.md"
@@ -3161,7 +3161,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 74
+line_count = 77
 
 [[document]]
 path = "reports/convos_pdf_inventory.md"
@@ -3177,7 +3177,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 50
+line_count = 53
 
 [[document]]
 path = "reports/gates/2026-03-07/155836/summary.md"
@@ -3208,7 +3208,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 69
+line_count = 72
 
 [[document]]
 path = "reports/manual_override_fetch_summary_2026_02_15.md"
@@ -3224,7 +3224,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 44
+line_count = 47
 
 [[document]]
 path = "reports/non_iso_dates_inventory.md"
@@ -3240,7 +3240,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 37
+line_count = 40
 
 [[document]]
 path = "reports/open_claims_missing_dedicated_sources.md"
@@ -3256,7 +3256,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 86
+line_count = 89
 
 [[document]]
 path = "reports/open_claims_missing_test_hooks.md"
@@ -3272,7 +3272,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 97
+line_count = 100
 
 [[document]]
 path = "reports/package_index.md"
@@ -3288,7 +3288,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 69
+line_count = 72
 
 [[document]]
 path = "reports/pdf_inventory.md"
@@ -3304,7 +3304,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 250
+line_count = 253
 
 [[document]]
 path = "reports/pythonpath_refactor_plan.md"
@@ -3320,7 +3320,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 118
+line_count = 121
 
 [[document]]
 path = "reports/repo_inventory.md"
@@ -3336,7 +3336,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 73
+line_count = 76
 
 [[document]]
 path = "reports/repo_structure_audit.md"
@@ -3352,7 +3352,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 89
+line_count = 92
 
 [[document]]
 path = "reports/reynolds_scaling_analysis.md"
@@ -3368,7 +3368,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 27
+line_count = 30
 
 [[document]]
 path = "reports/script_contracts_inventory.md"
@@ -3384,7 +3384,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 71
+line_count = 74
 
 [[document]]
 path = "reports/tickets_inventory.md"
@@ -3400,7 +3400,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 66
+line_count = 69
 
 [[document]]
 path = "reports/todo_fixme_scan.md"
@@ -3416,7 +3416,7 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 52
+line_count = 55
 
 [[document]]
 path = "reports/tscp_trial_factor_ledger.md"
@@ -3432,4 +3432,4 @@ toml_destination = "registry/reports_narratives.toml"
 source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
-line_count = 62
+line_count = 65

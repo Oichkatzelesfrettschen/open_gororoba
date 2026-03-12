@@ -21,10 +21,10 @@ Status:
 
 ## Deliverables
 
-- `crates/gr_core/src/fractal_metric.rs`
-- `nbody_integration.rs`
-- `fit_grid.csv`
 - `best_fit.json`
+- `crates/gr_core/src/fractal_metric.rs`
+- `fit_grid.csv`
+- `nbody_integration.rs`
 
 ## Acceptance checks
 

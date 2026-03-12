@@ -17347,7 +17347,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1278"
 statement = "MRT collision operator alone does not fix f64 LBM divergence at high density contrast. BGK and MRT diverge at the same step (~25) because the root cause is compressibility instability (Ma > 0.3 from streaming at density interfaces), not ghost moment oscillation."
 where_stated = "E-162 step-by-step telemetry"
@@ -17358,7 +17358,7 @@ confidence = "verified"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1279"
 statement = "Plummer softening (eps=0.5*dx) + density floor >= 0.045 + MRT collision eliminates all NaN divergence for 10/10 Euclid test galaxies at 64^3, producing D_f = 2.888 +/- 0.085 with morphological variation [2.799, 2.977]."
 where_stated = "E-162 floor=0.045 sweep"
@@ -17369,7 +17369,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1280"
 statement = "MRT extends the practical LBM stability limit from Ma ~ 0.3 (BGK) to Ma ~ 1.5, as demonstrated at floor=0.03 where BGK produces 100% NaN while MRT produces D_f=2.826 with zero NaN despite max|u|=0.836 (Ma=1.45)."
 where_stated = "E-162 floor=0.03 BGK vs MRT comparison"
@@ -17380,7 +17380,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1281"
 statement = "Galaxy 9 (elliptical n=2.45) produces D_f=2.799 at optimal parameters, within 2.6% of the 2.7268 Cayley-Dickson D=16 flat band topology prediction. Resolution scaling to 128^3 should reduce this gap."
 where_stated = "E-162 floor=0.045/tau=0.7/MRT/eps=0.5"
@@ -17391,7 +17391,7 @@ confidence = "verified"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1282"
 statement = "GPU MRT collision kernel (d'Humieres D3Q19 SoA) produces D_f within 0.05 of CPU MRT at identical parameters for all test galaxies at 64^3 and 128^3."
 where_stated = "E-163/E-164 GPU MRT sweeps"
@@ -17402,7 +17402,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1283"
 statement = "GPU MRT 100-galaxy 64^3 sweep: D_f = 2.748 +/- 0.607 (robust mean ~2.88), 94/100 stable. 6 outliers (D_f < 1.0) are catalog edge cases (extreme Sersic n=5.50 cap, high z > 2.3) not collision failures."
 where_stated = "E-163 GPU MRT 64^3 100-galaxy sweep"
@@ -17413,7 +17413,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1284"
 statement = "GPU MRT 128^3 10-galaxy sweep: D_f = 2.737 +/- 0.042, CI_95 [2.713, 2.763]. All 10 galaxies stable with zero-copy GPU box-counting. CI brackets the CD D=16 flat band topology prediction of 2.7268. Superseded by C-1288 (100-galaxy validation)."
 where_stated = "E-164 GPU MRT 128^3 10-galaxy sweep"
@@ -17424,7 +17424,7 @@ confidence = "verified"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1285"
 statement = "GPU-resident Otsu threshold + box-counting eliminates 8 MB PCIe density readback per galaxy at 128^3, reducing data transfer to ~2 KB (1 KB histogram + ~28 bytes box-counts). 8000x reduction in PCIe traffic."
 where_stated = "E-165 zero-copy GPU box-counting validation"
@@ -17435,7 +17435,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1286"
 statement = "Zero-copy GPU box-counting path achieves 249ms/galaxy at 128^3, 1.54x speedup over readback path (384ms/galaxy). Speedup from eliminating two 8 MB PCIe transfers per galaxy."
 where_stated = "E-164/E-165 performance comparison"
@@ -17446,7 +17446,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1287"
 statement = "Resolution convergence 64^3 -> 128^3: D_f tightens from 2.748 +/- 0.607 to 2.732 +/- 0.034 (18x reduction in std, N=100). All 6 outlier galaxies (D_f < 1.0 at 64^3) stabilize at 128^3 as the softening core resolves correctly. 100/100 galaxies stable."
 where_stated = "E-163/E-166 resolution convergence comparison"
@@ -17457,7 +17457,7 @@ confidence = "verified"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1288"
 statement = "GPU MRT 128^3 100-galaxy sweep: D_f = 2.732 +/- 0.034, CI_95 [2.725, 2.739]. All 100 galaxies stable (zero outliers). CD D=16 flat band topology prediction 2.7268 sits at the 31st percentile of the CI, confirming quantitative agreement between Cayley-Dickson algebraic topology and cosmological fractal dimension."
 where_stated = "E-166 GPU MRT 128^3 100-galaxy sweep"
@@ -17468,7 +17468,7 @@ confidence = "verified"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1289"
 statement = "Morphological D_f difference at 128^3 is 0.009 (disk 2.736 vs elliptical 2.727), not statistically significant at N=100. Both morphological classes converge to the same D_f attractor, consistent with the universal topology prediction from CD zero-divisor structure."
 where_stated = "E-166 disk/elliptical comparison"
@@ -17479,7 +17479,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1290"
 statement = "MRT ghost-moment damping (s_ghost=1.0) extends the stable Mach number envelope from Ma~0.3 (BGK) to Ma~1.5 (MRT) at matched tau=0.7, confirmed via systematic density contrast sweep from 2x to 100x on 16^3 grid."
 where_stated = "E-167 MRT vs BGK stability envelope"
@@ -17490,7 +17490,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1291"
 statement = "CD D=64 ZD partner graph flat band fraction = 1/2, extending the invariance from D=16 (proven in Rocq C-1236) and D=32 (empirical) to the next Cayley-Dickson doubling level."
 where_stated = "E-168 D=64 flat band fraction verification"
@@ -17501,7 +17501,7 @@ confidence = "high"
 phase = "algebra"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1292"
 statement = "GPU thread coarsening (1 thread = 2 cells) with __launch_bounds__(128, 9) achieves >= 1.15x MRT throughput at 128^3 by doubling the ILP window to 1444 independent FMAs, hiding the 4.54-cycle FFMA pipeline latency on Ada Lovelace SM 8.9."
 where_stated = "E-169 thread coarsening benchmark"
@@ -17512,7 +17512,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1295"
 statement = "GPU-side max-Mach-number reduction via compute_speed_magnitude + reduce_max_f32 kernels costs < 10us total (vs 2ms for sync_to_host readback of full velocity field), enabling per-step stability monitoring without PCIe bottleneck."
 where_stated = "E-172 roofline benchmark"
@@ -17523,7 +17523,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1296"
 statement = "128^3 D3Q19 MRT with thread coarsening achieves >= 60% of theoretical RTX 4070 Ti bandwidth (504 GB/s), as measured by total memory traffic (77.2 GB/galaxy) divided by wall-clock time."
 where_stated = "E-169/E-172 bandwidth analysis"
@@ -17534,7 +17534,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1297"
 statement = "D_f=2.73 is not a pipeline artifact: null hypothesis rejected via 6-condition control experiment. Only the combination of Sersic morphology + ZD algebraic forcing produces D_f~2.73; neither ingredient alone is sufficient."
 where_stated = "E-174 null hypothesis control"
@@ -17545,7 +17545,7 @@ confidence = "pending"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1298"
 statement = "CPU AoSoA layout with wide::f64x4 SIMD collision achieves >= 4x speedup over AoS scalar at 128^3 MRT f64 on Zen 3. AoSoA chunk (19 dirs * 4 cells * 8 bytes = 608 bytes) fits in 2% of L1D, eliminating the L1 cache thrashing that pure SoA causes on 8-way set-associative x86."
 where_stated = "E-175 CPU AoSoA benchmark"
@@ -17556,7 +17556,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1299"
 statement = "AoSoA (CPU) and SoA (GPU) layouts provide structural memory parity: both store the same D3Q19 physical data with identical 19-direction semantics, enabling cross-validation via simple transpose. The LbmBackend dispatcher abstracts the layout difference behind a unified f64 interface."
 where_stated = "E-176 CPU/GPU cross-validation"
@@ -17567,7 +17567,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1300"
 statement = "MRT forward transform ILP restructure: grouping 19 moments into 4 independent clusters (conserved, energy/stress, ghost-flux, ghost-moment) enables Ada Lovelace dual FP32 pipes to issue concurrent FMAs. Inverse transform balanced fmaf() trees reduce longest dependency chain from 12 additions to ~4 levels (log2(12)), improving instruction-level parallelism."
 where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (mrt_collision_d3q19)"
@@ -17578,7 +17578,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1301"
 statement = "MRT inverse transform yz-plane had a sign bug: f[15]..f[18] used swapped p2/n2 terms (n2 where p2 was needed and vice versa). The xy-plane and xz-plane groups were correct. Fix swaps p2/n2 usage in all four yz-plane directions to match the d'Humieres (2002) orthogonal basis convention."
 where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (mrt_collision_d3q19, lines ~610-613)"
@@ -17589,7 +17589,7 @@ confidence = "verified"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1302"
 statement = "CUDA Graph double-buffer bug: single-step graph capture records device pointers at capture time. Host-side std::mem::swap of d_f/d_f_tmp is invisible to graph replay, causing step 2+ to always read stale buffer A. Fix: 2-step graph capture (A->B->A) makes the graph self-contained -- no host-side swap needed, data returns to buffer A after every graph launch."
 where_stated = "crates/lbm_3d_cuda/src/lib.rs (step_graph_pair)"
@@ -17600,7 +17600,7 @@ confidence = "verified"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1303"
 statement = "step_n() uses CUDA Graph pairs for bulk stepping (n/2 graph launches + 1 regular step if n odd). At 200 steps this amortizes 4000 kernel launches down to 200 graph launches, reducing host-side launch overhead by ~10-15%. Falls back to per-step loop for AoS path where graph capture is not implemented."
 where_stated = "crates/lbm_3d_cuda/src/lib.rs (step_n)"
@@ -17611,7 +17611,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1304"
 statement = "Shared-memory tiled pull-scheme kernel (8x8x4 tile + 1-cell halo): cooperative striped load of 19 * 600 floats into 45.6 KB shared memory converts 19 scattered global reads per cell into 19 fast LDS reads (~20 cycles vs ~200 cycles L2 miss). Coalesced global writes replace scattered push-scheme writes. Expected 15-25% speedup on streaming phase at 128^3."
 where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_tiled, lbm_step_soa_mrt_tiled)"
@@ -17622,7 +17622,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1305"
 statement = "8x8x4 tile is optimal for Ada Lovelace SM 8.9 D3Q19: 256 threads = 8 warps (full occupancy scheduling), 10x10x6 padded volume * 19 dirs * 4B = 45,600B shared memory fits the 48 KB default limit. Larger tiles (8x8x8 = 512 threads, 76 KB shared) exceed the limit. Smaller tiles (6x6x6 = 216 threads) waste warps on non-aligned thread counts."
 where_stated = "Plan: valiant-kindling-robin.md (Item 4 tile size analysis)"
@@ -17633,7 +17633,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1306"
 statement = "Multi-stream galaxy pipeline overlaps CPU galaxy preparation with GPU box-counting via 2-stream event-based synchronization. Stream A runs LBM evolution, stream B runs box-counting on the previous galaxy's density. Deferred result pattern (one-slot lookahead) hides the synchronous clone_dtoh readback. Expected ~40% throughput gain for N >= 100 galaxies."
 where_stated = "crates/gororoba_cli_physics/src/bin/euclid_df_sweep.rs (run_gpu_sweep)"
@@ -17644,7 +17644,7 @@ confidence = "high"
 phase = "cosmology"
 sprint = 83
 
-[[claims.entries]]
+[[claim]]
 id = "C-1307"
 statement = "Smagorinsky tau mutation invalidates CUDA Graph cache: Smagorinsky LES updates tau every N steps based on local strain rate tensor. Since tau is a kernel parameter captured in the graph, any mutation requires graph reconstruction. step_n() correctly falls back to per-step loop when Smagorinsky is active."
 where_stated = "crates/lbm_3d_cuda/src/lib.rs (step_n, conditional graph path)"

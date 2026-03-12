@@ -345,7 +345,7 @@ id = "KMP-P8"
 name = "external_sources_registry_normalization"
 status = "complete"
 deliverables = [
-  "src/scripts/analysis/normalize_external_sources_registry.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- normalize-external-sources --bootstrap-from-markdown",
   "registry/external_sources.toml",
   "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md",
   "docs/external_sources/*.md",
@@ -375,7 +375,7 @@ status = "complete"
 deliverables = [
   "cargo run -p gororoba_cli_data --bin markdown-registry -- build-inventory",
   "registry/markdown_inventory.toml",
-  "src/scripts/analysis/normalize_entrypoint_docs_registry.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- normalize-entrypoint-docs --bootstrap-from-markdown",
   "registry/entrypoint_docs.toml",
   "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md",
 ]
@@ -385,7 +385,7 @@ id = "KMP-P10B"
 name = "book_docs_registry_normalization"
 status = "complete"
 deliverables = [
-  "src/scripts/analysis/normalize_book_docs_registry.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- normalize-book-docs --bootstrap-from-markdown",
   "registry/book_docs.toml",
   "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md",
   "docs/book/src/**/*.md",
@@ -409,11 +409,11 @@ id = "KMP-P12"
 name = "reports_and_docs_convos_registry_normalization"
 status = "complete"
 deliverables = [
-  "src/scripts/analysis/normalize_reports_narratives_registry.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- normalize-reports-narratives --bootstrap-from-markdown",
   "registry/reports_narratives.toml",
   "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md",
   "reports/*.md",
-  "src/scripts/analysis/normalize_docs_convos_registry.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- normalize-docs-convos --bootstrap-from-markdown",
   "registry/docs_convos.toml",
   "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md",
   "docs/convos/*.md",
@@ -424,7 +424,7 @@ id = "KMP-P13"
 name = "data_artifact_narratives_registry_normalization"
 status = "complete"
 deliverables = [
-  "src/scripts/analysis/normalize_data_artifact_narratives_registry.py",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- normalize-data-artifact-narratives --bootstrap-from-markdown",
   "registry/data_artifact_narratives.toml",
   "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md",
   "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
@@ -502,7 +502,7 @@ name = "bootstrap_vs_operational_authoring"
 status = "active"
 statement = "Markdown->TOML normalization for claims-support registries is bootstrap-only. Operational authoring is TOML-first with generated markdown mirrors."
 enforcement = [
-  "normalize_claims_support_registries.py requires --bootstrap-from-markdown",
+  "cargo run -p gororoba_cli_data --bin markdown-registry -- normalize-claims-support --bootstrap-from-markdown",
   "make registry excludes registry-normalize-claims from default ingest flow",
   "mirror freshness and governance verifiers run in make registry",
 ]

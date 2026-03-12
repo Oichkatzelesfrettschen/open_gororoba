@@ -197,6 +197,42 @@ impl LbmBackend {
         }
     }
 
+    /// Enable/disable shared-memory tiled GPU kernels (no-op on CPU).
+    ///
+    /// Tiling uses an 8x8x4 tile with 1-cell halo loaded cooperatively
+    /// into shared memory. Pull-scheme streaming reads neighbors from
+    /// shared (fast LDS) and writes coalesced to global. Highest priority
+    /// dispatch: tiling > pull > coarsening > standard.
+    ///
+    /// Enabling tiling invalidates any cached CUDA graph.
+    pub fn set_tiling(&mut self, enabled: bool) {
+        match self {
+            Self::Avx2(_) => {
+                let _ = enabled;
+            }
+            #[cfg(feature = "gpu")]
+            Self::Cuda(s) => s.set_tiling(enabled),
+        }
+    }
+
+    /// Run `n` LBM timesteps with graph-pair acceleration when available.
+    ///
+    /// GPU SoA path captures a 2-step graph-pair (A->B->A) lazily and
+    /// replays it for each pair of steps, eliminating kernel launch
+    /// overhead. The CPU path loops `evolve_one_step()` directly.
+    pub fn step_n(&mut self, n: usize) -> Result<()> {
+        match self {
+            Self::Avx2(s) => {
+                for _ in 0..n {
+                    s.evolve_one_step();
+                }
+                Ok(())
+            }
+            #[cfg(feature = "gpu")]
+            Self::Cuda(s) => s.step_n(n),
+        }
+    }
+
     /// Human-readable backend identifier for logging.
     pub fn backend_name(&self) -> &'static str {
         match self {
