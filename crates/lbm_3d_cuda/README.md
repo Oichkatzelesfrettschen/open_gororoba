@@ -1,7 +1,7 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+<!-- Source of truth: registry/requirements.toml; registry/requirements_narrative.toml -->
 
-# Readme
+# README
 
 This file is generated from `registry/requirements.toml` and `registry/requirements_narrative.toml`.
 
