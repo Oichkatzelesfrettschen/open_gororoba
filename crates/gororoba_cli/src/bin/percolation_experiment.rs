@@ -455,8 +455,9 @@ fn initialize_lbm_solver(
                     [u_x, u_y, u_z],
                     &solver.collider.lattice,
                 );
-                let f_start = idx * 19;
-                solver.f[f_start..f_start + 19].copy_from_slice(&f_eq);
+                for dir in 0..19 {
+                    solver.f[lbm_3d::solver::aosoa_idx(idx, dir)] = f_eq[dir];
+                }
             }
         }
     }

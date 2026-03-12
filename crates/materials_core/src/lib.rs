@@ -26,7 +26,9 @@ pub mod featurizer;
 pub mod landy_absorber;
 pub mod liquid_crystal;
 pub mod metamaterial;
+pub mod nonlocal_metamaterial;
 pub mod optical_database;
+pub mod pathion_toy_mapping;
 pub mod periodic_table;
 pub mod tabulated_nk;
 pub mod tang_mass;
@@ -36,6 +38,17 @@ pub use metamaterial::{
     MaterialType, MetamaterialLayer, VerificationResult, ZdToLayerMapping, build_absorber_stack,
     canonical_sedenion_zd_pairs, classify_material_type, map_zd_norm_to_thickness,
     map_zd_pair_to_layer, map_zd_to_refractive_index, verify_physical_realizability,
+};
+
+pub use nonlocal_metamaterial::{
+    AssessorNode, AssessorTopology, FloquetEffectiveModel, LcAdmittanceModel, M3ProjectionConfig,
+    MaterialCalibrationRecord, SyntheticCouplingModel, find_calibration_record,
+    load_calibration_records,
+};
+
+pub use pathion_toy_mapping::{
+    PathionToyLayer, build_pathion_diagonal, default_c053_layers, diagonal_to_layers,
+    write_c053_summary,
 };
 
 pub use tang_mass::{
