@@ -184,7 +184,7 @@ mod tests {
 
     #[test]
     fn test_unit_converter_roundtrip() {
-        let f = 3.14;
+        let f = 3.25;
         let omega = ghz_to_rad_per_s(f);
         let f_back = rad_per_s_to_ghz(omega);
         assert!((f - f_back).abs() < 1e-12, "Roundtrip failed");
