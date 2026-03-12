@@ -5,15 +5,14 @@
 updated = "deterministic"
 authoritative = true
 document_count = 1867
-tracked_count = 1459
-untracked_count = 4
+tracked_count = 1463
+untracked_count = 0
 ignored_count = 404
 parse_error_count = 0
 
 [git_status_counts]
 ignored = 404
-tracked = 1459
-untracked = 4
+tracked = 1463
 
 [role_counts]
 cargo_crate_manifest = 48
@@ -73,9 +72,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 3
 markdown_ref_count = 0
-size_bytes = 14313
-line_count = 339
-sha256 = "73304e89ce9f08ed8c7ae747dc81b8e8ee9051bf14f6c08cf9f1488939374cc5"
+size_bytes = 14583
+line_count = 347
+sha256 = "78e9df96ea96ab5a05291d54f678a55fd4454d3ac85c971e619546a99755d0bf"
 
 [[document]]
 id = "TOML-0004"
@@ -675,9 +674,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 5
 markdown_ref_count = 0
-size_bytes = 5764
-line_count = 287
-sha256 = "482af7f9f9b0781cab6dc7d568e8742e08d4823f67c8297d2b196ca6a79ae395"
+size_bytes = 5900
+line_count = 292
+sha256 = "f7e0980f4a8968befebdb4b31b95a4404d3c4231fbf184ff1b93868616215f78"
 
 [[document]]
 id = "TOML-0047"
@@ -829,9 +828,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 5
 markdown_ref_count = 0
-size_bytes = 501
-line_count = 23
-sha256 = "899e628bb11ee0b694b457b7bb89905d81fa56c66054b8da52ec484787c70e18"
+size_bytes = 529
+line_count = 24
+sha256 = "7d3fdb0ea2a6ca56c16790087047c9dc19790af5315a3c6a928e58f812566141"
 
 [[document]]
 id = "TOML-0058"
@@ -843,9 +842,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 6
 markdown_ref_count = 0
-size_bytes = 777
-line_count = 36
-sha256 = "f8ca4cebe98a9a0d5072b09a8c00a4a29b9a88f4b2b0a4dd581826a767dc6d16"
+size_bytes = 825
+line_count = 37
+sha256 = "96e2ad11c0d9a08e5304ae09041cedb3b7d241cc1be7130784624805a0d175e3"
 
 [[document]]
 id = "TOML-0059"
@@ -948,7 +947,7 @@ sha256 = "be3aa3908bf1002d1912527090da071966ebed9d388fae02bd1dbfd399d2808b"
 [[document]]
 id = "TOML-0066"
 path = "crates/provenance_core/Cargo.toml"
-git_status = "untracked"
+git_status = "tracked"
 role = "cargo_crate_manifest"
 zone = "crate_manifest"
 parse_ok = true
@@ -962,7 +961,7 @@ sha256 = "3269b05822eedf49c10d0d4d3f15dcca1b5922e7008efcfb98a31ee2020f8b37"
 [[document]]
 id = "TOML-0067"
 path = "crates/provenance_store/Cargo.toml"
-git_status = "untracked"
+git_status = "tracked"
 role = "cargo_crate_manifest"
 zone = "crate_manifest"
 parse_ok = true
@@ -7465,9 +7464,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 4
 markdown_ref_count = 1
-size_bytes = 158282
-line_count = 3705
-sha256 = "6a50a159408b4f182611323aa83594102c0c881e405ecb8b1a9903168811a09f"
+size_bytes = 156398
+line_count = 3850
+sha256 = "9ccad882922e7952b9e28096e31a3a39dfc751d786f8ab45abacbbd8b2375f11"
 
 [[document]]
 id = "TOML-0532"
@@ -7493,9 +7492,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 41490
-line_count = 1114
-sha256 = "f93e7001b245f1914c37db6e69aeb8996d983e8b0e23903c655b3963205487e3"
+size_bytes = 41773
+line_count = 1121
+sha256 = "24df0eefb47d27dd13d72127f6dcbead9eec178b4b70a5354269e2cc0e58d28d"
 
 [[document]]
 id = "TOML-0534"
@@ -7507,9 +7506,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 19
-size_bytes = 42617
-line_count = 1267
-sha256 = "ffc2e670982779738b9b72ff241be603365c3895a4f8edee666dc8ae9cb193be"
+size_bytes = 44202
+line_count = 1321
+sha256 = "6f610801bb0fbb841a1dbd7540cd7f7b2e3e3859f5510ed40fcf0c4416f12429"
 
 [[document]]
 id = "TOML-0535"
@@ -7535,9 +7534,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 13
-size_bytes = 14607
+size_bytes = 14662
 line_count = 236
-sha256 = "35e1d61bc664518836aaa80175307ac2600f2f04fdd915f3f40ea63baf643d4c"
+sha256 = "97db8042c6583c2d8f6fe4309b25e8d6778e4c2616f7639cf859dfc0e96fd733"
 
 [[document]]
 id = "TOML-0537"
@@ -7547,11 +7546,11 @@ role = "registry_control_plane"
 zone = "registry_control"
 parse_ok = true
 has_authoritative = false
-table_count = 2
+table_count = 1
 markdown_ref_count = 0
-size_bytes = 1094341
-line_count = 17480
-sha256 = "a1829a62520e700f12584257943ef9672adc2ae67185eccace345c8852562b99"
+size_bytes = 1104940
+line_count = 17656
+sha256 = "af2276e17ee0b65a07eb38106f29dabbb043b476ebf2674f44ff16699d93fbf9"
 
 [[document]]
 id = "TOML-0538"
@@ -7577,9 +7576,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 4
 markdown_ref_count = 556
-size_bytes = 401861
+size_bytes = 401864
 line_count = 8774
-sha256 = "53147bd37f703c000d3cd7a56467a78ed6ef01bd41eaf86b290c312886a6d72a"
+sha256 = "a9a7f42571a21703962cf22361880d4e69ff3d342b17d22e6422000ff0d4615a"
 
 [[document]]
 id = "TOML-0540"
@@ -7605,9 +7604,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 3
 markdown_ref_count = 1
-size_bytes = 133437
+size_bytes = 133445
 line_count = 3308
-sha256 = "78189512b7a1d7aa8ba2ebc55b796e4a8a555617ee2677ec659374ab4f1d3111"
+sha256 = "718a76365996b888c8dc0ffa5a0f9bf8fa2081689e240e46b41f5d1db4dd544f"
 
 [[document]]
 id = "TOML-0542"
@@ -21297,9 +21296,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 18
-size_bytes = 30339
-line_count = 517
-sha256 = "df9d47815e68280a9a95fc5f4f60f96e0a38d476d6e4cf3bcbca2fb950c397ff"
+size_bytes = 31029
+line_count = 580
+sha256 = "b914ec6391bfca90069ec5b091db255c0c21dc7a6ae695cb38682ed322f22a90"
 
 [[document]]
 id = "TOML-1520"
@@ -21367,9 +21366,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 6
-size_bytes = 88784
-line_count = 1534
-sha256 = "d063b3b14f4ce84a2ec3b0ed09c1a8a6610803257b9d167854bfdeca300278fc"
+size_bytes = 89229
+line_count = 1549
+sha256 = "839f9898368850363551657141b936c74caee8792787bd3ef3d5e58494ad0109"
 
 [[document]]
 id = "TOML-1525"
@@ -21380,10 +21379,10 @@ zone = "registry_control"
 parse_ok = true
 has_authoritative = true
 table_count = 2
-markdown_ref_count = 5
-size_bytes = 57779
-line_count = 1769
-sha256 = "569d548753bde6e323670be6e0746f3c823e1976662e9b8431c66c55cd6ca58e"
+markdown_ref_count = 18
+size_bytes = 156942
+line_count = 4025
+sha256 = "a6a1331087f8ba3d7a09b0302811eef08b185e3f1a3772890fc949544c1585ac"
 
 [[document]]
 id = "TOML-1526"
@@ -21437,9 +21436,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 1984
-line_count = 86
-sha256 = "7a9701a288789acb8c2c5c2ab98e50fe301d2e70de5ccbfa6ff0746d870717c0"
+size_bytes = 1807
+line_count = 80
+sha256 = "30a7dfe6ac2c1e6bbc0f20416e18038af71aa63eea3aaef9a2ca4bd428631bb3"
 
 [[document]]
 id = "TOML-1530"
@@ -21451,9 +21450,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 3
 markdown_ref_count = 0
-size_bytes = 232216
-line_count = 8408
-sha256 = "a9eb8e09a5e82fbe4a031ceb01d51b2467192f686df2fc8a78fb67fb64652ef1"
+size_bytes = 288339
+line_count = 10128
+sha256 = "eb3ac69215841fd52bf0a8a9879c135b63df9b26be0ca0a15eed67bee602c627"
 
 [[document]]
 id = "TOML-1531"
@@ -21479,9 +21478,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 195559
-line_count = 4335
-sha256 = "05436fbb9bf607d40f3474ae3e49630c778419428422ecb30bab25606571751a"
+size_bytes = 206134
+line_count = 4552
+sha256 = "0bdacb1db3bafccbe4e8a4e3cc90fe26bf1fbe78e717fa8fa7b4e2c61e9bc81e"
 
 [[document]]
 id = "TOML-1533"
@@ -21549,9 +21548,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 24
-size_bytes = 485200
-line_count = 7263
-sha256 = "e3236a33357feee65b5ad452ef7e7e6c11fc0dd1f88d5d83be538b8a9e1bf8a6"
+size_bytes = 485391
+line_count = 7262
+sha256 = "b45e89a86c840176c202c492aec2a9df35d33ecdd71bb4f26f0faffb517f54cf"
 
 [[document]]
 id = "TOML-1538"
@@ -21675,9 +21674,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 152834
-line_count = 1625
-sha256 = "69cf3426257b6548b1e90e61ca36afb23172287e29085df7a130df1cc11849f0"
+size_bytes = 163688
+line_count = 1757
+sha256 = "fbbf4139eb202534c95a7b981d15d41fb90267444036a274d7975f83ac64a651"
 
 [[document]]
 id = "TOML-1547"
@@ -21857,9 +21856,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 913
+size_bytes = 950
 line_count = 33
-sha256 = "7c10bd966d0297327fb0c5c7ac4419a1fe688752df7a94f218583a10224a085c"
+sha256 = "38282cd9d60e86b19a8dc0e3ddc97f8eda6073e395cb59e4ac243c310309ba2b"
 
 [[document]]
 id = "TOML-1560"
@@ -21871,9 +21870,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 913
+size_bytes = 950
 line_count = 33
-sha256 = "51a833cd77092a120bd56e49c467954df9b4735bec7db2ef4c77950e84079bd1"
+sha256 = "02f1982485fa68a0d003423955e7002928f22fb3260e5feb4e6f0f6bacd70cad"
 
 [[document]]
 id = "TOML-1561"
@@ -21885,9 +21884,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 3939
+size_bytes = 3976
 line_count = 88
-sha256 = "4c2293fe7d1e61d71104c9f0acc4c478eb7468e94d6fe8ef48bb96e5b546c0e3"
+sha256 = "ae70efa84c6a0349bdff096f67a8ede716f5a13f80a9e6881bd0d84ff2e03f1d"
 
 [[document]]
 id = "TOML-1562"
@@ -21899,23 +21898,23 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 2119
-line_count = 65
-sha256 = "f02cdfb55e01133625b46462c305213ad8687360522d5383394ac1bde063fef1"
+size_bytes = 2246
+line_count = 68
+sha256 = "228d5f0af701423697e07e794daa0d9eb13e6fc88c66b99b90201bf1236e6032"
 
 [[document]]
 id = "TOML-1563"
 path = "registry/knowledge/docs/DOC-0015.toml"
-git_status = "untracked"
+git_status = "tracked"
 role = "registry_control_plane"
 zone = "registry_control"
 parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 3802
+size_bytes = 3839
 line_count = 87
-sha256 = "b488d1f8fff2facc74199a69e7f0142e64a1c9793a66797f8ce8716108057992"
+sha256 = "dc15e2dd3b1dfaf8bd1e4fa50affa47db4c1ddf555f6bea6e13f33f6cb40aed5"
 
 [[document]]
 id = "TOML-1564"
@@ -21927,9 +21926,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 5891
+size_bytes = 5928
 line_count = 157
-sha256 = "6cd6280ce80bb71d956323843e3d781712c7ab5254688cd679189f57f92f3762"
+sha256 = "6d5a61f0f91f6d4fd35689de6696b05b056654765c41232d94e18bd9b7cb059e"
 
 [[document]]
 id = "TOML-1565"
@@ -21941,9 +21940,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 4455
+size_bytes = 4492
 line_count = 166
-sha256 = "8938475c0f8a2ea68a4cb28fc92eac3c4ba99082fe28719929a291d2f0cb61ec"
+sha256 = "504c8d59924db97f2e4453156d4dc034c180c9445406ac4c5fd729ecdef36c35"
 
 [[document]]
 id = "TOML-1566"
@@ -22067,9 +22066,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 4
 markdown_ref_count = 94
-size_bytes = 18152
-line_count = 527
-sha256 = "94dc6b135b375c5ad5d3596a65d0cc4fc374ec375f11b26cc2822fa445a97bd0"
+size_bytes = 18880
+line_count = 531
+sha256 = "116d178f126d4dabd37f4a2a0c5f0811eb6db9803380ceb977c97e0cbf4c2afe"
 
 [[document]]
 id = "TOML-1575"
@@ -22081,9 +22080,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 10070
-line_count = 304
-sha256 = "50d3d1b808c4070d00399c8258875f59beb3face035e880d755dc2aa3613b9cc"
+size_bytes = 10197
+line_count = 309
+sha256 = "aa58b22cf4fc6c28770e0658489a2e1b5d0f5fd3251318266dcba039ff4aa39e"
 
 [[document]]
 id = "TOML-1576"
@@ -22107,11 +22106,11 @@ role = "registry_control_plane"
 zone = "registry_control"
 parse_ok = true
 has_authoritative = false
-table_count = 4
+table_count = 5
 markdown_ref_count = 0
-size_bytes = 3421
-line_count = 139
-sha256 = "e29e4be36ce2cbd1359ad7da4302277c6d6b460c549ba34c3b2c005136d57f80"
+size_bytes = 6158
+line_count = 193
+sha256 = "b129ff7bdde757d551f98637210b6b6f09f250a8626ec37c3f8c8ba4e44cccb6"
 
 [[document]]
 id = "TOML-1578"
@@ -22179,9 +22178,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 7
 markdown_ref_count = 0
-size_bytes = 405301
-line_count = 9469
-sha256 = "4a69e3b30399f3710c026fe918bd0b431122da1e759b2acd04ff55fee915f235"
+size_bytes = 407022
+line_count = 9509
+sha256 = "c135e446936eb6cbe6f4dbd17b6a5c8687e660f62bb5e3dfa5b3a392d8103898"
 
 [[document]]
 id = "TOML-1583"
@@ -22193,9 +22192,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 3
 markdown_ref_count = 0
-size_bytes = 258417
-line_count = 6205
-sha256 = "0a476a15f119482e32c8b4636c22fcafbab9b651ffa56238de219196706cd6b0"
+size_bytes = 255903
+line_count = 6187
+sha256 = "aa0bbb05c5eda1431e04d8b214e797e0681a263f7694bdddb725ebf01ffb9e15"
 
 [[document]]
 id = "TOML-1584"
@@ -22207,9 +22206,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 3
 markdown_ref_count = 0
-size_bytes = 438889
-line_count = 12357
-sha256 = "ae47c2cb5d8acc3dbfb9945c5c99d314e8597969e4f7fccb3a2c12b2d15975b3"
+size_bytes = 442678
+line_count = 12426
+sha256 = "06c536c1a7fca57bb9a87bd18ece7f45a86f817aeaf2c58f948639db7f9bd850"
 
 [[document]]
 id = "TOML-1585"
@@ -22221,9 +22220,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 5
 markdown_ref_count = 0
-size_bytes = 124346
-line_count = 3539
-sha256 = "f9da3802d8b773309a4b4a3088fdd7a6f67731da2d13c209467aa4d58b0949dc"
+size_bytes = 120464
+line_count = 3435
+sha256 = "18e69d03cc1d1e70ac6d8419dfd618bf7754dbd46d1a081b34115f982bf42e8e"
 
 [[document]]
 id = "TOML-1586"
@@ -22235,9 +22234,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 77575
-line_count = 1997
-sha256 = "bfd41c4ff34900d17cc76650b90000657d73892d1660cab89bc07bf278fa4632"
+size_bytes = 78676
+line_count = 2024
+sha256 = "4ea983daad35a31c9b0d3254d0c6fc583e959896e1edfac61f1d69b7ced605e8"
 
 [[document]]
 id = "TOML-1587"
@@ -22249,9 +22248,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 23460130
-line_count = 726812
-sha256 = "21fe28dc511071c9ee67252c84016c4536e2f3cca82f73f4fa4182bada8dfb11"
+size_bytes = 23751535
+line_count = 736151
+sha256 = "df7f878e297c948277740d86e6580618aba1a733047de44717c3e439479449e2"
 
 [[document]]
 id = "TOML-1588"
@@ -22263,9 +22262,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 1557003
-line_count = 10280
-sha256 = "d8e6e26241996863e7047232ae819db6a4d895ab2aa2d20ab2322a00d0bcb595"
+size_bytes = 1574768
+line_count = 10340
+sha256 = "7f72d096f3dfe5b5d1f60bca78a9406671b689c0fcdb1f71fbf765cdd9b9b942"
 
 [[document]]
 id = "TOML-1589"
@@ -22389,9 +22388,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 38845
-line_count = 394
-sha256 = "d1131f1ef1b7f6461d49b121c3dd2a34415755fec02ec678f583386792cc7138"
+size_bytes = 40345
+line_count = 403
+sha256 = "f3be98b4d876d3a2f3404819ee2970f335f226d21b43558e7b12ea96f20307eb"
 
 [[document]]
 id = "TOML-1598"
@@ -22543,9 +22542,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 53
-size_bytes = 871989
-line_count = 6240
-sha256 = "f85a58a08526a9432ad9e25a3e904274c51fc86155a25343c9e7d0cf08d19284"
+size_bytes = 877021
+line_count = 6396
+sha256 = "2266e07eb8fa08408eadd376814170ab26e5411066ac283ad953a0792f1fcf35"
 
 [[document]]
 id = "TOML-1609"
@@ -22557,9 +22556,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 3
 markdown_ref_count = 15
-size_bytes = 9629
-line_count = 206
-sha256 = "e846144cb9035a77feba13b4b7d2674eae1d2740878ffe8690eab84855149a63"
+size_bytes = 10000
+line_count = 205
+sha256 = "e87cee294ab832ea2d6434b33f0e0f92b5cfa179fadf81036f377d1a75f29e2a"
 
 [[document]]
 id = "TOML-1610"
@@ -22626,10 +22625,10 @@ zone = "registry_control"
 parse_ok = true
 has_authoritative = true
 table_count = 2
-markdown_ref_count = 5
-size_bytes = 19910
-line_count = 234
-sha256 = "76b6e22773ebb3733564b9085321170543b1facbdacdc0970cf889f663139782"
+markdown_ref_count = 14
+size_bytes = 70568
+line_count = 1238
+sha256 = "1cf538c81aa535285706f1a7379de0cafcdfd8ed91d02f8f8825da8329e3d669"
 
 [[document]]
 id = "TOML-1615"
@@ -22641,9 +22640,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 1
-size_bytes = 17952
-line_count = 197
-sha256 = "baf693a00a0cf2ff072425753b9a0891043286d3d5d906d4c03ca74b7b0ab9d1"
+size_bytes = 17983
+line_count = 196
+sha256 = "5cb1becd53f4f80602fb0a6f270e2e5835f537f38c3291dda9eda300ca703e20"
 
 [[document]]
 id = "TOML-1616"
@@ -22655,9 +22654,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 1
 markdown_ref_count = 1
-size_bytes = 37630
+size_bytes = 37655
 line_count = 773
-sha256 = "89c99054884d180585560bd6ec400a815bc3a21350fe2a1139474a1f0e802484"
+sha256 = "563caf6cde2f961c727f00bcc6f9edde87d4c5c1c194e760ad079ae03056031d"
 
 [[document]]
 id = "TOML-1617"
@@ -22893,9 +22892,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 5
 markdown_ref_count = 0
-size_bytes = 701028
+size_bytes = 701026
 line_count = 26174
-sha256 = "c7c0be9457678a0253eb3d7fc302ed5d604460915f0aaef0eb3bb9bc0fe232b5"
+sha256 = "6c8f31f2247b123a645418a22e9b5610cd78b6082c314202b597e3db59b669d7"
 
 [[document]]
 id = "TOML-1634"
@@ -23012,7 +23011,7 @@ sha256 = "ede50a39e6f147a87b9d0fcc6f202f4c731756c94133aae74ab668c4d679f53b"
 [[document]]
 id = "TOML-1642"
 path = "reports/c010_nonlocal_and_markdown_control_plane_synthesis_2026_03_12.toml"
-git_status = "untracked"
+git_status = "tracked"
 role = "toml_other"
 zone = "other"
 parse_ok = true
