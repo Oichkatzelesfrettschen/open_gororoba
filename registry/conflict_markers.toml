@@ -4,9 +4,9 @@
 [conflict_markers]
 updated = "2026-02-10"
 authoritative = true
-marker_count = 80
-high_severity_count = 73
-medium_severity_count = 7
+marker_count = 86
+high_severity_count = 74
+medium_severity_count = 12
 low_severity_count = 0
 kind_count = 2
 
@@ -1180,6 +1180,70 @@ notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
 id = "CM-0074"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-1268"]
+source_registry = "registry/claims.toml"
+source_document = "C-1268"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["VERIFIED"]
+negative_evidence = ["Multi-galaxy D_f sweep pipeline (prepare_galaxy) correctly filters invalid galaxies (NaN, r_e=0, z<=0) and returns None, with skip count tracked in DfSweepSummary."]
+jaccard_overlap = 0.000000
+notes = "Verified status conflicts with negative language in statement."
+
+[[marker]]
+id = "CM-0075"
+marker_kind = "section_polarity_conflict"
+severity = "medium"
+status = "open"
+claim_refs = []
+source_registry = "registry/docs_root_narratives.toml"
+source_document = "docs/E027_PHASE2_EXECUTION_PLAN.md"
+section_label = "Context"
+line_start = 3
+line_end = 17
+positive_evidence = ["valid"]
+negative_evidence = ["inconclusive"]
+jaccard_overlap = 0.000000
+notes = "Section contains both positive and negative validation language."
+
+[[marker]]
+id = "CM-0076"
+marker_kind = "section_polarity_conflict"
+severity = "medium"
+status = "open"
+claim_refs = ["C-657"]
+source_registry = "registry/docs_root_narratives.toml"
+source_document = "docs/E027_PHASE2_EXECUTION_PLAN.md"
+section_label = "Day 2: Analysis and Decision"
+line_start = 66
+line_end = 91
+positive_evidence = ["valid", "verified"]
+negative_evidence = ["insufficient"]
+jaccard_overlap = 0.000000
+notes = "Section contains both positive and negative validation language."
+
+[[marker]]
+id = "CM-0077"
+marker_kind = "section_polarity_conflict"
+severity = "medium"
+status = "open"
+claim_refs = []
+source_registry = "registry/docs_root_narratives.toml"
+source_document = "docs/E027_PHASE2_EXECUTION_PLAN.md"
+section_label = "Success Metrics"
+line_start = 147
+line_end = 158
+positive_evidence = ["valid"]
+negative_evidence = ["refuted"]
+jaccard_overlap = 0.000000
+notes = "Section contains both positive and negative validation language."
+
+[[marker]]
+id = "CM-0078"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1195,7 +1259,39 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0075"
+id = "CM-0079"
+marker_kind = "section_polarity_conflict"
+severity = "medium"
+status = "open"
+claim_refs = ["C-012", "C-430", "C-441"]
+source_registry = "registry/docs_root_narratives.toml"
+source_document = "docs/SCOPE_GUARDRAILS.md"
+section_label = "3. Dark Energy Models -- Tested and Refuted"
+line_start = 86
+line_end = 100
+positive_evidence = ["verified"]
+negative_evidence = ["refuted"]
+jaccard_overlap = 0.000000
+notes = "Section contains both positive and negative validation language."
+
+[[marker]]
+id = "CM-0080"
+marker_kind = "section_polarity_conflict"
+severity = "medium"
+status = "open"
+claim_refs = ["C-012", "C-679"]
+source_registry = "registry/docs_root_narratives.toml"
+source_document = "docs/SCOPE_GUARDRAILS.md"
+section_label = "6. Provenance Architecture"
+line_start = 154
+line_end = 174
+positive_evidence = ["established"]
+negative_evidence = ["refuted"]
+jaccard_overlap = 0.000000
+notes = "Section contains both positive and negative validation language."
+
+[[marker]]
+id = "CM-0081"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1211,7 +1307,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0076"
+id = "CM-0082"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1227,7 +1323,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0077"
+id = "CM-0083"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1243,7 +1339,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0078"
+id = "CM-0084"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1259,7 +1355,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0079"
+id = "CM-0085"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1275,7 +1371,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0080"
+id = "CM-0086"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"

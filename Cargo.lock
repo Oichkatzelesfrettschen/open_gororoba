@@ -4801,6 +4801,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "approx",
+ "cosmology_core",
  "cudarc 0.19.3",
  "gororoba_algebra",
  "gororoba_gpu_bridge",
