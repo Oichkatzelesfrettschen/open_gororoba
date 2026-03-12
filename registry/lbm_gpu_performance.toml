@@ -137,3 +137,57 @@ cpu_saturation = "17-18 Mcells/s throughput ceiling"
 gpu_throughput_scaling = "137 -> 276 Mcells/s as grid size increases"
 memory_bandwidth_limit = "Not reached at 128^3 (384 MB)"
 initialization_overhead = "~0.5-1s GPU initialization amortized at 2500+ steps"
+
+# Kernel-level optimizations (2026-03-12)
+[[optimization]]
+date = "2026-03-12"
+kernel = "mrt_collision_d3q19"
+location = "crates/lbm_3d_cuda/src/kernels_soa.cu:504-564"
+technique = "YSU-style ILP optimization"
+description = "Restructured inverse transform M^{-1}*m* into 4 groups of 4-5 independent fmaf() chains"
+details = """
+19 independent f[i] outputs split into balanced groups (35/60/56/62 FLOPs).
+Explicit #pragma unroll per group ensures compiler interleaves across Ada dual FP32 pipes.
+Pattern based on YSU mlp_forward.cu (8 independent accumulator chains saturating dual pipes).
+"""
+estimated_speedup_percent = "5-10"
+target_scenario = "MRT collision at 128^3 (where MRT's ~12x BGK FLOPs makes it the bottleneck)"
+status = "implemented"
+verification = "cargo build --release --lib (successful)"
+
+[[optimization]]
+date = "2026-03-12"
+kernel = "step() / step_graph()"
+location = "crates/lbm_3d_cuda/src/lib.rs:1017-1056"
+technique = "CUDA graph capture for launch overhead reduction"
+description = "Captured step kernel into replayable CUDA graph via CudaStream::begin_capture/end_capture"
+details = """
+New step_graph() method captures the kernel launch on first call, then replays the
+graph on subsequent calls. Eliminates ~50μs/launch overhead by batching GPU commands.
+For E-156 (N=20 galaxies × 200 steps = 4000 launches), saves ~200ms.
+Graph invalidation API provided for dynamic tau/force changes.
+SoA path only (use_soa=true required).
+"""
+estimated_speedup_percent = "10-15"
+target_scenario = "Short runs dominated by launch overhead (E-156: 4000 kernel launches)"
+status = "implemented"
+verification = "cargo build --release --lib (successful)"
+note = "Negligible speedup for long runs where kernel execution dominates"
+
+[[optimization]]
+date = "2026-03-12"
+kernel = "multi-stream pipeline"
+location = "crates/lbm_3d_cuda/src/lib.rs:1440-1466, crates/gororoba_cli_physics/src/bin/euclid_df_sweep.rs"
+technique = "Software pipelining with dual CUDA streams"
+description = "3-stage pipeline: CPU prepares galaxy K+1 || GPU LBM on K || GPU box-count on K-1"
+details = """
+Pattern based on YSU hashgrid_encode.cu (paired levels) and gpu_vulkan_demo.c (CPU/GPU overlap).
+Stream A runs LBM step for galaxy K, stream B runs box-counting for galaxy K-1, while CPU
+prepares Sersic density field for galaxy K+1. Events synchronize cross-stream dependencies.
+For euclid_df_sweep with N=1000 galaxies: CPU prep (~5ms) overlaps with GPU LBM (~10ms).
+"""
+estimated_speedup_percent = "40"
+target_scenario = "Multi-galaxy sweeps (N=1000) where CPU prep blocks GPU utilization"
+status = "documented_pattern"
+verification = "API documented in lib.rs stream() method"
+note = "Requires manual pipeline in application code; not automatic"

@@ -7,13 +7,13 @@ updated = "2026-03-08"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
 section_count = 47
-entry_count = 316
+entry_count = 317
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
 section_count = 47
-entry_count = 316
+entry_count = 317
 
 [[section]]
 id = "BSEC-001"
@@ -37,7 +37,7 @@ entry_count = 7
 id = "BSEC-004"
 name = "Topological Insulators & Quantum Hall Effect"
 groups = ["Primary Research & Data Sources"]
-entry_count = 6
+entry_count = 7
 
 [[section]]
 id = "BSEC-005"
@@ -3693,3 +3693,13 @@ citation_markdown = "**Conway, J. H.** (1968). *A characterisation of Leech's la
 notes = ["*Original characterization of the Leech lattice in 24 dimensions. Unique even unimodular lattice with no roots. Connects to Monster group via automorphism tower.*"]
 urls = []
 dois = ["10.1007/BF01389796"]
+
+[[entry]]
+id = "BIB-0317"
+order_index = 317
+group = "Primary Research & Data Sources"
+section = "Topological Insulators & Quantum Hall Effect"
+citation_markdown = "**Kaman, B., Lim, J., Liu, Y., & Hoffmann, A.** (2026). *Emulating 2D Materials with Magnons*. arXiv:2601.03210v2."
+notes = ["*9-band tight-binding model for magnonic crystals in YIG. Graphene-like Dirac cones, kagome flat bands, valley Chern numbers, topological boundary modes. Foundation for tight_binding.rs and magnonic_crystal.rs.*"]
+urls = ["https://arxiv.org/abs/2601.03210v2"]
+dois = ["10.1103/t7tm-nxyl"]

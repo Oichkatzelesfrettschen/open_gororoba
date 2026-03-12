@@ -4,11 +4,1681 @@
 id = "SLANE-SLIDES_ARTIFACTS-2026-02-15"
 name = "slides_artifacts"
 description = "Slides, decks, archives, notebooks, and non-dataset non-paper binary artifacts."
-generated_at = "2026-02-15"
-artifact_count = 0
-downloaded_count = 0
+generated_at = "2026-03-12"
+artifact_count = 167
+downloaded_count = 166
 downloadable_count = 0
 blocked_count = 0
 citation_only_no_link_count = 0
-unverified_count = 0
-missing_minimum_requirement_count = 0
+unverified_count = 1
+missing_minimum_requirement_count = 1
+
+[[artifact_ref]]
+id = "ASOT-102140"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_toml_records_359"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-102440"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_toml_records_387"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1.toml::records/387"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1.toml::records/387"]
+
+[[artifact_ref]]
+id = "ASOT-103026"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_toml_records_440"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1.toml::records/440"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1.toml::records/440"]
+
+[[artifact_ref]]
+id = "ASOT-103252"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_toml_records_461"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1.toml::records/461"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1.toml::records/461"]
+
+[[artifact_ref]]
+id = "ASOT-1076"
+key = "doi:10.5281/zenodo.17289540"
+title = "**UOR Foundation.** (2024). *Atlas of Resonance Classes: Exceptional Lie Groups from First Principles*. [DOI:10.5281/zenodo.17289540](https://doi.org/10.5281/zenodo.17289540)."
+status = "unverified"
+minimum_requirement_met = false
+canonical_functional_url = "https://doi.org/10.5281/zenodo.17289540"
+canonical_download_path = ""
+source_refs = ["BIB-0126", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.5281_zenodo.17289540.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.5281_zenodo.17289540.headers.txt:43", "docs/BIBLIOGRAPHY.md:279", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:243", "registry/bibliography.toml::entry/126::BIB-0126", "registry/bibliography_normalized.toml::entry/125::BIBN-0126"]
+
+[[artifact_ref]]
+id = "ASOT-11173"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_rerun2_toml_records_359"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-11387"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_rerun3_toml_records_21149"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/21149"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/21149"]
+
+[[artifact_ref]]
+id = "ASOT-11437"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_rerun3_toml_records_21202"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/21202"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/21202"]
+
+[[artifact_ref]]
+id = "ASOT-11451"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_rerun3_toml_records_21223"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/21223"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/21223"]
+
+[[artifact_ref]]
+id = "ASOT-126858"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_debug_toml_records_359"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_debug.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_debug.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-127088"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_debug_toml_records_380"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_debug.toml::records/380"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_debug.toml::records/380"]
+
+[[artifact_ref]]
+id = "ASOT-127643"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_debug_toml_records_430"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_debug.toml::records/430"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_debug.toml::records/430"]
+
+[[artifact_ref]]
+id = "ASOT-127807"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_debug_toml_records_445"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_debug.toml::records/445"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_debug.toml::records/445"]
+
+[[artifact_ref]]
+id = "ASOT-12854"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_rerun3_toml_records_359"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-13068"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_toml_records_21149"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae.toml::records/21149"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae.toml::records/21149"]
+
+[[artifact_ref]]
+id = "ASOT-13118"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_toml_records_21202"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae.toml::records/21202"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae.toml::records/21202"]
+
+[[artifact_ref]]
+id = "ASOT-13132"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_toml_records_21223"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae.toml::records/21223"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae.toml::records/21223"]
+
+[[artifact_ref]]
+id = "ASOT-14535"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_toml_records_359"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-14749"
+key = "title:reports_data_origin_audit_2026_02_24_continue_toml_records_21149"
+title = "reports/data_origin_audit_2026-02-24_continue.toml::records/21149"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue.toml::records/21149"]
+
+[[artifact_ref]]
+id = "ASOT-14799"
+key = "title:reports_data_origin_audit_2026_02_24_continue_toml_records_21202"
+title = "reports/data_origin_audit_2026-02-24_continue.toml::records/21202"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue.toml::records/21202"]
+
+[[artifact_ref]]
+id = "ASOT-14813"
+key = "title:reports_data_origin_audit_2026_02_24_continue_toml_records_21223"
+title = "reports/data_origin_audit_2026-02-24_continue.toml::records/21223"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue.toml::records/21223"]
+
+[[artifact_ref]]
+id = "ASOT-151912"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_final_toml_records_359"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_final.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_final.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-152131"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_final_toml_records_379"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_final.toml::records/379"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_final.toml::records/379"]
+
+[[artifact_ref]]
+id = "ASOT-152676"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_final_toml_records_428"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_final.toml::records/428"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_final.toml::records/428"]
+
+[[artifact_ref]]
+id = "ASOT-152821"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_final_toml_records_441"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_final.toml::records/441"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_final.toml::records/441"]
+
+[[artifact_ref]]
+id = "ASOT-16216"
+key = "title:reports_data_origin_audit_2026_02_24_continue_toml_records_360"
+title = "reports/data_origin_audit_2026-02-24_continue.toml::records/360"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue.toml::records/360"]
+
+[[artifact_ref]]
+id = "ASOT-16428"
+key = "title:reports_data_origin_audit_2026_02_24_contracts_final_rerun_toml_records_21148"
+title = "reports/data_origin_audit_2026-02-24_contracts_final_rerun.toml::records/21148"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_contracts_final_rerun.toml::records/21148"]
+
+[[artifact_ref]]
+id = "ASOT-16478"
+key = "title:reports_data_origin_audit_2026_02_24_contracts_final_rerun_toml_records_21201"
+title = "reports/data_origin_audit_2026-02-24_contracts_final_rerun.toml::records/21201"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_contracts_final_rerun.toml::records/21201"]
+
+[[artifact_ref]]
+id = "ASOT-16492"
+key = "title:reports_data_origin_audit_2026_02_24_contracts_final_rerun_toml_records_21222"
+title = "reports/data_origin_audit_2026-02-24_contracts_final_rerun.toml::records/21222"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_contracts_final_rerun.toml::records/21222"]
+
+[[artifact_ref]]
+id = "ASOT-176968"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_postretire_toml_records_359"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-177157"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_postretire_toml_records_376"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml::records/376"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml::records/376"]
+
+[[artifact_ref]]
+id = "ASOT-177691"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_postretire_toml_records_424"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml::records/424"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml::records/424"]
+
+[[artifact_ref]]
+id = "ASOT-177824"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step2_postretire_toml_records_436"
+title = "reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml::records/436"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml::records/436"]
+
+[[artifact_ref]]
+id = "ASOT-17894"
+key = "title:reports_data_origin_audit_2026_02_24_contracts_final_rerun_toml_records_359"
+title = "reports/data_origin_audit_2026-02-24_contracts_final_rerun.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_contracts_final_rerun.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-18107"
+key = "title:reports_data_origin_audit_2026_02_24_contracts_final_toml_records_21148"
+title = "reports/data_origin_audit_2026-02-24_contracts_final.toml::records/21148"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_contracts_final.toml::records/21148"]
+
+[[artifact_ref]]
+id = "ASOT-18157"
+key = "title:reports_data_origin_audit_2026_02_24_contracts_final_toml_records_21201"
+title = "reports/data_origin_audit_2026-02-24_contracts_final.toml::records/21201"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_contracts_final.toml::records/21201"]
+
+[[artifact_ref]]
+id = "ASOT-18171"
+key = "title:reports_data_origin_audit_2026_02_24_contracts_final_toml_records_21222"
+title = "reports/data_origin_audit_2026-02-24_contracts_final.toml::records/21222"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_contracts_final.toml::records/21222"]
+
+[[artifact_ref]]
+id = "ASOT-19573"
+key = "title:reports_data_origin_audit_2026_02_24_contracts_final_toml_records_359"
+title = "reports/data_origin_audit_2026-02-24_contracts_final.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_contracts_final.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-19786"
+key = "title:reports_data_origin_audit_2026_02_24_phase_next_rerun_toml_records_21148"
+title = "reports/data_origin_audit_2026-02-24_phase_next_rerun.toml::records/21148"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_phase_next_rerun.toml::records/21148"]
+
+[[artifact_ref]]
+id = "ASOT-19836"
+key = "title:reports_data_origin_audit_2026_02_24_phase_next_rerun_toml_records_21201"
+title = "reports/data_origin_audit_2026-02-24_phase_next_rerun.toml::records/21201"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_phase_next_rerun.toml::records/21201"]
+
+[[artifact_ref]]
+id = "ASOT-19850"
+key = "title:reports_data_origin_audit_2026_02_24_phase_next_rerun_toml_records_21222"
+title = "reports/data_origin_audit_2026-02-24_phase_next_rerun.toml::records/21222"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_phase_next_rerun.toml::records/21222"]
+
+[[artifact_ref]]
+id = "ASOT-202027"
+key = "title:reports_data_origin_audit_phase11_toml_records_359"
+title = "reports/data_origin_audit_phase11.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_phase11.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-202216"
+key = "title:reports_data_origin_audit_phase11_toml_records_376"
+title = "reports/data_origin_audit_phase11.toml::records/376"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_phase11.toml::records/376"]
+
+[[artifact_ref]]
+id = "ASOT-202750"
+key = "title:reports_data_origin_audit_phase11_toml_records_424"
+title = "reports/data_origin_audit_phase11.toml::records/424"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_phase11.toml::records/424"]
+
+[[artifact_ref]]
+id = "ASOT-202883"
+key = "title:reports_data_origin_audit_phase11_toml_records_436"
+title = "reports/data_origin_audit_phase11.toml::records/436"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_phase11.toml::records/436"]
+
+[[artifact_ref]]
+id = "ASOT-209291"
+key = "title:reports_data_origin_audit_pre_burndown_snapshot_toml_records_21149"
+title = "reports/data_origin_audit_pre_burndown_snapshot.toml::records/21149"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_pre_burndown_snapshot.toml::records/21149"]
+
+[[artifact_ref]]
+id = "ASOT-209341"
+key = "title:reports_data_origin_audit_pre_burndown_snapshot_toml_records_21202"
+title = "reports/data_origin_audit_pre_burndown_snapshot.toml::records/21202"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_pre_burndown_snapshot.toml::records/21202"]
+
+[[artifact_ref]]
+id = "ASOT-209355"
+key = "title:reports_data_origin_audit_pre_burndown_snapshot_toml_records_21223"
+title = "reports/data_origin_audit_pre_burndown_snapshot.toml::records/21223"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_pre_burndown_snapshot.toml::records/21223"]
+
+[[artifact_ref]]
+id = "ASOT-210758"
+key = "title:reports_data_origin_audit_pre_burndown_snapshot_toml_records_359"
+title = "reports/data_origin_audit_pre_burndown_snapshot.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_pre_burndown_snapshot.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-210881"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_after_policy_patch_toml_records_23183"
+title = "reports/external_redownload_audit_2026-02-24_continue_after_policy_patch.toml::records/23183"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_after_policy_patch.toml::records/23183"]
+
+[[artifact_ref]]
+id = "ASOT-210888"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_after_policy_patch_toml_records_23519"
+title = "reports/external_redownload_audit_2026-02-24_continue_after_policy_patch.toml::records/23519"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_after_policy_patch.toml::records/23519"]
+
+[[artifact_ref]]
+id = "ASOT-210897"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_after_policy_patch_toml_records_23534"
+title = "reports/external_redownload_audit_2026-02-24_continue_after_policy_patch.toml::records/23534"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_after_policy_patch.toml::records/23534"]
+
+[[artifact_ref]]
+id = "ASOT-210898"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_after_policy_patch_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_continue_after_policy_patch.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_after_policy_patch.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-210969"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_latest_execute_full_strict_toml_records_23183"
+title = "reports/external_redownload_audit_2026-02-24_continue_latest_execute_full_strict.toml::records/23183"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_latest_execute_full_strict.toml::records/23183"]
+
+[[artifact_ref]]
+id = "ASOT-210976"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_latest_execute_full_strict_toml_records_23519"
+title = "reports/external_redownload_audit_2026-02-24_continue_latest_execute_full_strict.toml::records/23519"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_latest_execute_full_strict.toml::records/23519"]
+
+[[artifact_ref]]
+id = "ASOT-210985"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_latest_execute_full_strict_toml_records_23534"
+title = "reports/external_redownload_audit_2026-02-24_continue_latest_execute_full_strict.toml::records/23534"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_latest_execute_full_strict.toml::records/23534"]
+
+[[artifact_ref]]
+id = "ASOT-210986"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_latest_execute_full_strict_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_continue_latest_execute_full_strict.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_latest_execute_full_strict.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-211057"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_latest_execute_full_toml_records_23183"
+title = "reports/external_redownload_audit_2026-02-24_continue_latest_execute_full.toml::records/23183"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_latest_execute_full.toml::records/23183"]
+
+[[artifact_ref]]
+id = "ASOT-211064"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_latest_execute_full_toml_records_23519"
+title = "reports/external_redownload_audit_2026-02-24_continue_latest_execute_full.toml::records/23519"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_latest_execute_full.toml::records/23519"]
+
+[[artifact_ref]]
+id = "ASOT-211073"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_latest_execute_full_toml_records_23534"
+title = "reports/external_redownload_audit_2026-02-24_continue_latest_execute_full.toml::records/23534"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_latest_execute_full.toml::records/23534"]
+
+[[artifact_ref]]
+id = "ASOT-211074"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_latest_execute_full_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_continue_latest_execute_full.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_latest_execute_full.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-211167"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_rerun2_toml_records_23184"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/23184"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/23184"]
+
+[[artifact_ref]]
+id = "ASOT-211174"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_rerun2_toml_records_23520"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/23520"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/23520"]
+
+[[artifact_ref]]
+id = "ASOT-211183"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_rerun2_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-211184"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_rerun2_toml_records_23536"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/23536"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/23536"]
+
+[[artifact_ref]]
+id = "ASOT-211257"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_rerun3_toml_records_23184"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/23184"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/23184"]
+
+[[artifact_ref]]
+id = "ASOT-211264"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_rerun3_toml_records_23520"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/23520"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/23520"]
+
+[[artifact_ref]]
+id = "ASOT-211273"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_rerun3_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-211274"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_rerun3_toml_records_23536"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/23536"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun3.toml::records/23536"]
+
+[[artifact_ref]]
+id = "ASOT-211347"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_strict_rerun_toml_records_23184"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_rerun.toml::records/23184"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_rerun.toml::records/23184"]
+
+[[artifact_ref]]
+id = "ASOT-211354"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_strict_rerun_toml_records_23520"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_rerun.toml::records/23520"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_rerun.toml::records/23520"]
+
+[[artifact_ref]]
+id = "ASOT-211363"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_strict_rerun_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_rerun.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_rerun.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-211364"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_strict_rerun_toml_records_23536"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_rerun.toml::records/23536"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_rerun.toml::records/23536"]
+
+[[artifact_ref]]
+id = "ASOT-211437"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_strict_timeout600_toml_records_23184"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml::records/23184"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml::records/23184"]
+
+[[artifact_ref]]
+id = "ASOT-211444"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_strict_timeout600_toml_records_23520"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml::records/23520"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml::records/23520"]
+
+[[artifact_ref]]
+id = "ASOT-211453"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_strict_timeout600_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-211454"
+key = "title:reports_external_redownload_audit_2026_02_24_continue_phase_lacunae_strict_timeout600_toml_records_23536"
+title = "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml::records/23536"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml::records/23536"]
+
+[[artifact_ref]]
+id = "ASOT-211522"
+key = "title:reports_external_redownload_audit_2026_02_24_execute_full_rerun2_toml_records_23167"
+title = "reports/external_redownload_audit_2026-02-24_execute_full_rerun2.toml::records/23167"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_execute_full_rerun2.toml::records/23167"]
+
+[[artifact_ref]]
+id = "ASOT-211603"
+key = "title:reports_external_redownload_audit_2026_02_24_execute_full_rerun3_toml_records_23183"
+title = "reports/external_redownload_audit_2026-02-24_execute_full_rerun3.toml::records/23183"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_execute_full_rerun3.toml::records/23183"]
+
+[[artifact_ref]]
+id = "ASOT-211610"
+key = "title:reports_external_redownload_audit_2026_02_24_execute_full_rerun3_toml_records_23519"
+title = "reports/external_redownload_audit_2026-02-24_execute_full_rerun3.toml::records/23519"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_execute_full_rerun3.toml::records/23519"]
+
+[[artifact_ref]]
+id = "ASOT-211619"
+key = "title:reports_external_redownload_audit_2026_02_24_execute_full_rerun3_toml_records_23534"
+title = "reports/external_redownload_audit_2026-02-24_execute_full_rerun3.toml::records/23534"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_execute_full_rerun3.toml::records/23534"]
+
+[[artifact_ref]]
+id = "ASOT-211620"
+key = "title:reports_external_redownload_audit_2026_02_24_execute_full_rerun3_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_execute_full_rerun3.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_execute_full_rerun3.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-211799"
+key = "title:reports_external_redownload_audit_2026_02_24_phase3_action_plan_execute_toml_records_23184"
+title = "reports/external_redownload_audit_2026-02-24_phase3_action_plan_execute.toml::records/23184"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase3_action_plan_execute.toml::records/23184"]
+
+[[artifact_ref]]
+id = "ASOT-211806"
+key = "title:reports_external_redownload_audit_2026_02_24_phase3_action_plan_execute_toml_records_23520"
+title = "reports/external_redownload_audit_2026-02-24_phase3_action_plan_execute.toml::records/23520"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase3_action_plan_execute.toml::records/23520"]
+
+[[artifact_ref]]
+id = "ASOT-211815"
+key = "title:reports_external_redownload_audit_2026_02_24_phase3_action_plan_execute_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_phase3_action_plan_execute.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase3_action_plan_execute.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-211816"
+key = "title:reports_external_redownload_audit_2026_02_24_phase3_action_plan_execute_toml_records_23536"
+title = "reports/external_redownload_audit_2026-02-24_phase3_action_plan_execute.toml::records/23536"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase3_action_plan_execute.toml::records/23536"]
+
+[[artifact_ref]]
+id = "ASOT-211889"
+key = "title:reports_external_redownload_audit_2026_02_24_phase3_action_plan_toml_records_23184"
+title = "reports/external_redownload_audit_2026-02-24_phase3_action_plan.toml::records/23184"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase3_action_plan.toml::records/23184"]
+
+[[artifact_ref]]
+id = "ASOT-211896"
+key = "title:reports_external_redownload_audit_2026_02_24_phase3_action_plan_toml_records_23520"
+title = "reports/external_redownload_audit_2026-02-24_phase3_action_plan.toml::records/23520"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase3_action_plan.toml::records/23520"]
+
+[[artifact_ref]]
+id = "ASOT-211905"
+key = "title:reports_external_redownload_audit_2026_02_24_phase3_action_plan_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_phase3_action_plan.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase3_action_plan.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-211906"
+key = "title:reports_external_redownload_audit_2026_02_24_phase3_action_plan_toml_records_23536"
+title = "reports/external_redownload_audit_2026-02-24_phase3_action_plan.toml::records/23536"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase3_action_plan.toml::records/23536"]
+
+[[artifact_ref]]
+id = "ASOT-211979"
+key = "title:reports_external_redownload_audit_2026_02_24_phase_next_coverage_toml_records_23183"
+title = "reports/external_redownload_audit_2026-02-24_phase_next_coverage.toml::records/23183"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase_next_coverage.toml::records/23183"]
+
+[[artifact_ref]]
+id = "ASOT-211986"
+key = "title:reports_external_redownload_audit_2026_02_24_phase_next_coverage_toml_records_23519"
+title = "reports/external_redownload_audit_2026-02-24_phase_next_coverage.toml::records/23519"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase_next_coverage.toml::records/23519"]
+
+[[artifact_ref]]
+id = "ASOT-211995"
+key = "title:reports_external_redownload_audit_2026_02_24_phase_next_coverage_toml_records_23534"
+title = "reports/external_redownload_audit_2026-02-24_phase_next_coverage.toml::records/23534"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase_next_coverage.toml::records/23534"]
+
+[[artifact_ref]]
+id = "ASOT-211996"
+key = "title:reports_external_redownload_audit_2026_02_24_phase_next_coverage_toml_records_23535"
+title = "reports/external_redownload_audit_2026-02-24_phase_next_coverage.toml::records/23535"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_phase_next_coverage.toml::records/23535"]
+
+[[artifact_ref]]
+id = "ASOT-212070"
+key = "title:reports_external_redownload_audit_2026_02_24_rerun2_toml_records_23167"
+title = "reports/external_redownload_audit_2026-02-24_rerun2.toml::records/23167"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_rerun2.toml::records/23167"]
+
+[[artifact_ref]]
+id = "ASOT-212146"
+key = "title:reports_external_redownload_audit_2026_02_24_rerun3_toml_records_23167"
+title = "reports/external_redownload_audit_2026-02-24_rerun3.toml::records/23167"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24_rerun3.toml::records/23167"]
+
+[[artifact_ref]]
+id = "ASOT-212222"
+key = "title:reports_external_redownload_audit_2026_02_24_toml_records_23167"
+title = "reports/external_redownload_audit_2026-02-24.toml::records/23167"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-24.toml::records/23167"]
+
+[[artifact_ref]]
+id = "ASOT-212310"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_execute_rerun_toml_records_427"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_execute_rerun.toml::records/427"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute_rerun.toml::records/427"]
+
+[[artifact_ref]]
+id = "ASOT-212321"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_execute_rerun_toml_records_442"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_execute_rerun.toml::records/442"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute_rerun.toml::records/442"]
+
+[[artifact_ref]]
+id = "ASOT-212322"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_execute_rerun_toml_records_443"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_execute_rerun.toml::records/443"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute_rerun.toml::records/443"]
+
+[[artifact_ref]]
+id = "ASOT-212360"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_execute_rerun_toml_records_91"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_execute_rerun.toml::records/91"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute_rerun.toml::records/91"]
+
+[[artifact_ref]]
+id = "ASOT-212400"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_execute_toml_records_427"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml::records/427"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml::records/427"]
+
+[[artifact_ref]]
+id = "ASOT-212411"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_execute_toml_records_442"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml::records/442"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml::records/442"]
+
+[[artifact_ref]]
+id = "ASOT-212412"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_execute_toml_records_443"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml::records/443"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml::records/443"]
+
+[[artifact_ref]]
+id = "ASOT-212450"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_execute_toml_records_91"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml::records/91"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml::records/91"]
+
+[[artifact_ref]]
+id = "ASOT-212490"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_final_toml_records_427"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_final.toml::records/427"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_final.toml::records/427"]
+
+[[artifact_ref]]
+id = "ASOT-212501"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_final_toml_records_442"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_final.toml::records/442"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_final.toml::records/442"]
+
+[[artifact_ref]]
+id = "ASOT-212502"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_final_toml_records_443"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_final.toml::records/443"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_final.toml::records/443"]
+
+[[artifact_ref]]
+id = "ASOT-21252"
+key = "title:reports_data_origin_audit_2026_02_24_phase_next_rerun_toml_records_359"
+title = "reports/data_origin_audit_2026-02-24_phase_next_rerun.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_phase_next_rerun.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-212540"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_final_toml_records_91"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1_final.toml::records/91"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_final.toml::records/91"]
+
+[[artifact_ref]]
+id = "ASOT-212580"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_toml_records_427"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1.toml::records/427"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1.toml::records/427"]
+
+[[artifact_ref]]
+id = "ASOT-212591"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_toml_records_442"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1.toml::records/442"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1.toml::records/442"]
+
+[[artifact_ref]]
+id = "ASOT-212592"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_toml_records_443"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1.toml::records/443"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1.toml::records/443"]
+
+[[artifact_ref]]
+id = "ASOT-212630"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step1_toml_records_91"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step1.toml::records/91"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1.toml::records/91"]
+
+[[artifact_ref]]
+id = "ASOT-212702"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_execute_toml_records_69"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_execute.toml::records/69"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_execute.toml::records/69"]
+
+[[artifact_ref]]
+id = "ASOT-212710"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_execute_toml_records_79"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_execute.toml::records/79"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_execute.toml::records/79"]
+
+[[artifact_ref]]
+id = "ASOT-212720"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_execute_toml_records_88"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_execute.toml::records/88"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_execute.toml::records/88"]
+
+[[artifact_ref]]
+id = "ASOT-212721"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_execute_toml_records_89"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_execute.toml::records/89"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_execute.toml::records/89"]
+
+[[artifact_ref]]
+id = "ASOT-212790"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_final_toml_records_69"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_final.toml::records/69"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_final.toml::records/69"]
+
+[[artifact_ref]]
+id = "ASOT-212798"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_final_toml_records_79"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_final.toml::records/79"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_final.toml::records/79"]
+
+[[artifact_ref]]
+id = "ASOT-212808"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_final_toml_records_88"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_final.toml::records/88"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_final.toml::records/88"]
+
+[[artifact_ref]]
+id = "ASOT-212809"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_final_toml_records_89"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_final.toml::records/89"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_final.toml::records/89"]
+
+[[artifact_ref]]
+id = "ASOT-212878"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_postretire_toml_records_69"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_postretire.toml::records/69"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_postretire.toml::records/69"]
+
+[[artifact_ref]]
+id = "ASOT-212886"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_postretire_toml_records_76"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_postretire.toml::records/76"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_postretire.toml::records/76"]
+
+[[artifact_ref]]
+id = "ASOT-212894"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_postretire_toml_records_83"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_postretire.toml::records/83"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_postretire.toml::records/83"]
+
+[[artifact_ref]]
+id = "ASOT-212895"
+key = "title:reports_external_redownload_audit_2026_02_25_burndown_step2_postretire_toml_records_84"
+title = "reports/external_redownload_audit_2026-02-25_burndown_step2_postretire.toml::records/84"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step2_postretire.toml::records/84"]
+
+[[artifact_ref]]
+id = "ASOT-21465"
+key = "title:reports_data_origin_audit_2026_02_24_phase_next_toml_records_21148"
+title = "reports/data_origin_audit_2026-02-24_phase_next.toml::records/21148"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_phase_next.toml::records/21148"]
+
+[[artifact_ref]]
+id = "ASOT-21515"
+key = "title:reports_data_origin_audit_2026_02_24_phase_next_toml_records_21201"
+title = "reports/data_origin_audit_2026-02-24_phase_next.toml::records/21201"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_phase_next.toml::records/21201"]
+
+[[artifact_ref]]
+id = "ASOT-21529"
+key = "title:reports_data_origin_audit_2026_02_24_phase_next_toml_records_21222"
+title = "reports/data_origin_audit_2026-02-24_phase_next.toml::records/21222"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_phase_next.toml::records/21222"]
+
+[[artifact_ref]]
+id = "ASOT-22931"
+key = "title:reports_data_origin_audit_2026_02_24_phase_next_toml_records_359"
+title = "reports/data_origin_audit_2026-02-24_phase_next.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_phase_next.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-23140"
+key = "title:reports_data_origin_audit_2026_02_24_rerun2_toml_records_21140"
+title = "reports/data_origin_audit_2026-02-24_rerun2.toml::records/21140"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_rerun2.toml::records/21140"]
+
+[[artifact_ref]]
+id = "ASOT-24808"
+key = "title:reports_data_origin_audit_2026_02_24_rerun3_toml_records_21140"
+title = "reports/data_origin_audit_2026-02-24_rerun3.toml::records/21140"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_rerun3.toml::records/21140"]
+
+[[artifact_ref]]
+id = "ASOT-26476"
+key = "title:reports_data_origin_audit_2026_02_24_rerun4_toml_records_21140"
+title = "reports/data_origin_audit_2026-02-24_rerun4.toml::records/21140"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_rerun4.toml::records/21140"]
+
+[[artifact_ref]]
+id = "ASOT-28144"
+key = "title:reports_data_origin_audit_2026_02_24_rerun5_toml_records_21140"
+title = "reports/data_origin_audit_2026-02-24_rerun5.toml::records/21140"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_rerun5.toml::records/21140"]
+
+[[artifact_ref]]
+id = "ASOT-29817"
+key = "title:reports_data_origin_audit_2026_02_24_rerun6_toml_records_21149"
+title = "reports/data_origin_audit_2026-02-24_rerun6.toml::records/21149"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_rerun6.toml::records/21149"]
+
+[[artifact_ref]]
+id = "ASOT-29867"
+key = "title:reports_data_origin_audit_2026_02_24_rerun6_toml_records_21202"
+title = "reports/data_origin_audit_2026-02-24_rerun6.toml::records/21202"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_rerun6.toml::records/21202"]
+
+[[artifact_ref]]
+id = "ASOT-2987"
+key = "title:reports_data_origin_audit_2026_02_24_continue_after_policy_patch_toml_records_21149"
+title = "reports/data_origin_audit_2026-02-24_continue_after_policy_patch.toml::records/21149"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_after_policy_patch.toml::records/21149"]
+
+[[artifact_ref]]
+id = "ASOT-29881"
+key = "title:reports_data_origin_audit_2026_02_24_rerun6_toml_records_21223"
+title = "reports/data_origin_audit_2026-02-24_rerun6.toml::records/21223"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_rerun6.toml::records/21223"]
+
+[[artifact_ref]]
+id = "ASOT-3037"
+key = "title:reports_data_origin_audit_2026_02_24_continue_after_policy_patch_toml_records_21202"
+title = "reports/data_origin_audit_2026-02-24_continue_after_policy_patch.toml::records/21202"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_after_policy_patch.toml::records/21202"]
+
+[[artifact_ref]]
+id = "ASOT-3051"
+key = "title:reports_data_origin_audit_2026_02_24_continue_after_policy_patch_toml_records_21223"
+title = "reports/data_origin_audit_2026-02-24_continue_after_policy_patch.toml::records/21223"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_after_policy_patch.toml::records/21223"]
+
+[[artifact_ref]]
+id = "ASOT-31284"
+key = "title:reports_data_origin_audit_2026_02_24_rerun6_toml_records_360"
+title = "reports/data_origin_audit_2026-02-24_rerun6.toml::records/360"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_rerun6.toml::records/360"]
+
+[[artifact_ref]]
+id = "ASOT-31492"
+key = "title:reports_data_origin_audit_2026_02_24_rerun_toml_records_21140"
+title = "reports/data_origin_audit_2026-02-24_rerun.toml::records/21140"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_rerun.toml::records/21140"]
+
+[[artifact_ref]]
+id = "ASOT-33160"
+key = "title:reports_data_origin_audit_2026_02_24_toml_records_21140"
+title = "reports/data_origin_audit_2026-02-24.toml::records/21140"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24.toml::records/21140"]
+
+[[artifact_ref]]
+id = "ASOT-4454"
+key = "title:reports_data_origin_audit_2026_02_24_continue_after_policy_patch_toml_records_360"
+title = "reports/data_origin_audit_2026-02-24_continue_after_policy_patch.toml::records/360"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_after_policy_patch.toml::records/360"]
+
+[[artifact_ref]]
+id = "ASOT-4667"
+key = "title:reports_data_origin_audit_2026_02_24_continue_after_redownload_toml_records_21149"
+title = "reports/data_origin_audit_2026-02-24_continue_after_redownload.toml::records/21149"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_after_redownload.toml::records/21149"]
+
+[[artifact_ref]]
+id = "ASOT-4717"
+key = "title:reports_data_origin_audit_2026_02_24_continue_after_redownload_toml_records_21202"
+title = "reports/data_origin_audit_2026-02-24_continue_after_redownload.toml::records/21202"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_after_redownload.toml::records/21202"]
+
+[[artifact_ref]]
+id = "ASOT-4731"
+key = "title:reports_data_origin_audit_2026_02_24_continue_after_redownload_toml_records_21223"
+title = "reports/data_origin_audit_2026-02-24_continue_after_redownload.toml::records/21223"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_after_redownload.toml::records/21223"]
+
+[[artifact_ref]]
+id = "ASOT-52662"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_final_toml_records_359"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1_final.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1_final.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-52962"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_final_toml_records_387"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1_final.toml::records/387"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1_final.toml::records/387"]
+
+[[artifact_ref]]
+id = "ASOT-53548"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_final_toml_records_440"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1_final.toml::records/440"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1_final.toml::records/440"]
+
+[[artifact_ref]]
+id = "ASOT-53774"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_final_toml_records_461"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1_final.toml::records/461"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1_final.toml::records/461"]
+
+[[artifact_ref]]
+id = "ASOT-6134"
+key = "title:reports_data_origin_audit_2026_02_24_continue_after_redownload_toml_records_360"
+title = "reports/data_origin_audit_2026-02-24_continue_after_redownload.toml::records/360"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_after_redownload.toml::records/360"]
+
+[[artifact_ref]]
+id = "ASOT-6347"
+key = "title:reports_data_origin_audit_2026_02_24_continue_final_toml_records_21149"
+title = "reports/data_origin_audit_2026-02-24_continue_final.toml::records/21149"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_final.toml::records/21149"]
+
+[[artifact_ref]]
+id = "ASOT-6397"
+key = "title:reports_data_origin_audit_2026_02_24_continue_final_toml_records_21202"
+title = "reports/data_origin_audit_2026-02-24_continue_final.toml::records/21202"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_final.toml::records/21202"]
+
+[[artifact_ref]]
+id = "ASOT-6411"
+key = "title:reports_data_origin_audit_2026_02_24_continue_final_toml_records_21223"
+title = "reports/data_origin_audit_2026-02-24_continue_final.toml::records/21223"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_final.toml::records/21223"]
+
+[[artifact_ref]]
+id = "ASOT-77401"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_rerun_toml_records_359"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1_rerun.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1_rerun.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-77701"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_rerun_toml_records_387"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1_rerun.toml::records/387"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1_rerun.toml::records/387"]
+
+[[artifact_ref]]
+id = "ASOT-7814"
+key = "title:reports_data_origin_audit_2026_02_24_continue_final_toml_records_360"
+title = "reports/data_origin_audit_2026-02-24_continue_final.toml::records/360"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_final.toml::records/360"]
+
+[[artifact_ref]]
+id = "ASOT-78287"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_rerun_toml_records_440"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1_rerun.toml::records/440"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1_rerun.toml::records/440"]
+
+[[artifact_ref]]
+id = "ASOT-78513"
+key = "title:reports_data_origin_audit_2026_02_25_burndown_step1_rerun_toml_records_461"
+title = "reports/data_origin_audit_2026-02-25_burndown_step1_rerun.toml::records/461"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-25_burndown_step1_rerun.toml::records/461"]
+
+[[artifact_ref]]
+id = "ASOT-8026"
+key = "title:reports_data_origin_audit_2026_02_24_continue_latest_toml_records_21148"
+title = "reports/data_origin_audit_2026-02-24_continue_latest.toml::records/21148"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_latest.toml::records/21148"]
+
+[[artifact_ref]]
+id = "ASOT-8076"
+key = "title:reports_data_origin_audit_2026_02_24_continue_latest_toml_records_21201"
+title = "reports/data_origin_audit_2026-02-24_continue_latest.toml::records/21201"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_latest.toml::records/21201"]
+
+[[artifact_ref]]
+id = "ASOT-8090"
+key = "title:reports_data_origin_audit_2026_02_24_continue_latest_toml_records_21222"
+title = "reports/data_origin_audit_2026-02-24_continue_latest.toml::records/21222"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_latest.toml::records/21222"]
+
+[[artifact_ref]]
+id = "ASOT-9492"
+key = "title:reports_data_origin_audit_2026_02_24_continue_latest_toml_records_359"
+title = "reports/data_origin_audit_2026-02-24_continue_latest.toml::records/359"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmap9_chains.tar.gz"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_latest.toml::records/359"]
+
+[[artifact_ref]]
+id = "ASOT-9706"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_rerun2_toml_records_21149"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/21149"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/21149"]
+
+[[artifact_ref]]
+id = "ASOT-9756"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_rerun2_toml_records_21202"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/21202"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/wmm2025.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/21202"]
+
+[[artifact_ref]]
+id = "ASOT-9770"
+key = "title:reports_data_origin_audit_2026_02_24_continue_phase_lacunae_rerun2_toml_records_21223"
+title = "reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/21223"
+status = "downloaded"
+minimum_requirement_met = true
+canonical_functional_url = ""
+canonical_download_path = "data/external/planck2018_chains.zip"
+source_refs = ["reports/data_origin_audit_2026-02-24_continue_phase_lacunae_rerun2.toml::records/21223"]

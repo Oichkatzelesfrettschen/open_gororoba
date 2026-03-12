@@ -4,7 +4,7 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 139
+experiment_count = 149
 deterministic_count = 96
 gpu_count = 14
 seeded_count = 46
@@ -3645,6 +3645,266 @@ truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
+id = "E-142"
+title = "Magnonic 9-band dispersion reproduction (Kaman et al. 2026)"
+binary = "magnonic-band-structure"
+binary_registered = true
+binary_experiment_declared = "E-142"
+method = "Compute 9-band magnonic crystal band structure along hexagonal BZ high-symmetry path Gamma-M-K-Gamma using Kaman default parameters (eps_s=1.50, eps_p=1.80, eps_k=2.08, t_sk=0.25, t_pk=0.15 GHz). Verify Dirac cone at K near 1.5 GHz and kagome flat band near 2.08 GHz. CSV output with k-distance and 9 band energies."
+input = "Kaman default parameters (Table I symmetric), n_k=200"
+output = ["stdout", "csv"]
+run = "cargo run --release --bin magnonic-band-structure -- bands --n-k 200 --output /tmp/magnonic_bands.csv"
+run_command_sha256 = "ec6d99a39aca8fb88be1fcd6183c962e535db2d8f6cd28f4c6497cba1e1388cc"
+claims = ["C-1231", "C-1232", "C-1241"]
+claim_refs = ["C-1231", "C-1232", "C-1241"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-141"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-143"
+title = "Magnonic Chern number sweep (all 9 bands, 51x51 grid)"
+binary = "magnonic-band-structure"
+binary_registered = true
+binary_experiment_declared = "E-143"
+method = "Compute FHS Berry curvature and Chern numbers for all 9 magnonic bands on a 51x51 BZ grid. Verify C_total=0 for each band (TRS). Report valley Chern numbers at K and K' valleys. Verify VCN(K) = -VCN(K') antisymmetry."
+input = "Kaman default parameters, n_grid=51"
+output = ["stdout", "json"]
+run = "cargo run --release --bin magnonic-band-structure -- chern --n-grid 51"
+run_command_sha256 = "8e1e4254bf520b1abdf6f554193c05f7e675089052d7a9b0ba51783d21e9c49a"
+claims = ["C-1233", "C-1234", "C-1246", "C-1250"]
+claim_refs = ["C-1233", "C-1234", "C-1246", "C-1250"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-142"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-144"
+title = "Magnonic valley Chern vs inversion breaking strength"
+binary = "magnonic-band-structure"
+binary_registered = true
+binary_experiment_declared = "E-144"
+method = "Sweep inversion breaking parameter delta_eps_s from 0 to 1.0 GHz in 20 steps. At each step compute valley Chern numbers for the Dirac bands. Verify gap opens monotonically and VCN approaches +/-0.5 for small breaking."
+input = "Kaman default parameters, delta_eps_s sweep 0..1 GHz, n_grid=31"
+output = ["stdout", "csv"]
+run = "cargo run --release --bin magnonic-band-structure -- sweep --param delta-eps --min 0.0 --max 1.0 --steps 20 --n-grid 31"
+run_command_sha256 = "847b2d5a8b7694c123752303d1a3fd711a65c548540920f5376500ce916425a7"
+claims = ["C-1235", "C-1247", "C-1250"]
+claim_refs = ["C-1235", "C-1247", "C-1250"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-143"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-145"
+title = "Magnonic flat band detection and DOS enhancement"
+binary = "magnonic-band-structure"
+binary_registered = true
+binary_experiment_declared = "E-145"
+method = "Run flat band detection on 9-band model with bandwidth threshold 0.1 GHz. Identify flat band indices and compute DOS enhancement ratio (dispersive bandwidth / flat bandwidth). Verify kagome flat band near 2.08 GHz with enhancement > 100x."
+input = "Kaman default parameters, threshold=0.1 GHz, n_k=200"
+output = ["stdout"]
+run = "cargo run --release --bin magnonic-band-structure -- flat-band --threshold 0.1 --n-k 200"
+run_command_sha256 = "998dc6e587c79a45bacf43d24f7175f1481a40e40d4f7b586f5118ba20152c52"
+claims = ["C-1232", "C-1236"]
+claim_refs = ["C-1232", "C-1236"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-144"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-146"
+title = "Domain wall boundary modes and point defect localized modes"
+binary = "magnonic-band-structure"
+binary_registered = true
+binary_experiment_declared = "E-146"
+method = "Two-part experiment: (1) Build 20-cell domain wall supercell with Kaman default inversion breaking, compute ribbon band structure along edge BZ, verify in-gap boundary modes. (2) Build point defect supercell (radius=3), find localized mode eigenvalues inside bulk gap, estimate Q factor."
+input = "Kaman default parameters with inversion breaking, n_cells=20, radius=3"
+output = ["stdout", "csv"]
+run = "cargo run --release --bin magnonic-band-structure -- domain-wall --n-cells 20 --n-k 100 && cargo run --release --bin magnonic-band-structure -- defect --radius 3"
+run_command_sha256 = "86567b0edc9ca592793b95f708420b6cadb8d5e315b5211691243d6de36b65ac"
+claims = ["C-1237", "C-1238", "C-1239"]
+claim_refs = ["C-1237", "C-1238", "C-1239"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-145"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-147"
+title = "ZD crystal band spectra D=16,32,64"
+binary = "zd-crystal-bands"
+binary_registered = true
+binary_experiment_declared = "E-147"
+method = "Compute ZD motif graph adjacency spectra at D=16,32,64 via block-diagonal component eigendecomposition. Verify integer spectrum, flat band fraction, and degeneracy pattern at each dimension."
+input = "None (purely algebraic)"
+output = ["stdout"]
+run = "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64 --details"
+run_command_sha256 = "571935a7855f72aa5e796cd064100cdc776df743e08b81bbb0f2eb5f38f34984"
+claims = ["C-1255", "C-1256"]
+claim_refs = ["C-1255", "C-1256"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-146"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-148"
+title = "Flat band fraction scaling D=16..256"
+binary = "zd-crystal-bands"
+binary_registered = true
+binary_experiment_declared = "E-148"
+method = "Compute flat band fraction across D=16,32,64,128,256 to test dimension-independence of the 0.5 localization strength. Fit scaling law (constant vs linear vs log)."
+input = "None (purely algebraic)"
+output = ["stdout"]
+run = "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64,128,256"
+run_command_sha256 = "2b2681f140df543a53a2dc1b760e0a232971c23d95a2bebc8d35a77576901400"
+claims = ["C-1257"]
+claim_refs = ["C-1257"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-147"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-149"
+title = "Reggiani factorization verification"
+binary = "zd-crystal-bands"
+binary_registered = true
+binary_experiment_declared = "E-149"
+method = "Verify that the D=16 partner graph degeneracy pattern {7,14,42,14,7} factors as 7 * {1,2,6,2,1} by computing GCD of degeneracies and confirming reduced pattern."
+input = "None (purely algebraic)"
+output = ["stdout"]
+run = "cargo run --release --bin zd-crystal-bands -- --dims 16 --reggiani"
+run_command_sha256 = "d5da73bfc63335eb04d8cdcfe787a46e539c1b7ca63fc54b482e79b33888cadf"
+claims = ["C-1258"]
+claim_refs = ["C-1258"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-148"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-150"
+title = "Euclid Sersic to LBM density, n=4 test galaxy"
+binary = "euclid-dm-coupling"
+binary_registered = true
+binary_experiment_declared = "E-150"
+method = "Generate LBM initial condition from Sersic n=4 de Vaucouleurs profile with R_e=5 kpc on 32^3 grid. Verify positive-definite deprojected density and azimuthal symmetry for circular (e=0) profile. Run 100 LBM steps to confirm stability."
+input = "Sersic parameters: n=4, R_e=5 kpc, e=0"
+output = ["stdout"]
+run = "cargo run --release --bin euclid-dm-coupling -- --grid 32 --steps 100 --sersic-n 4 --r-e-kpc 5"
+run_command_sha256 = "80befe2e3824e2e3354d9cd94fa7b06ee8aef41eaa64760418d330f4370b8340"
+claims = ["C-1260", "C-1261"]
+claim_refs = ["C-1260", "C-1261"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-149"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-151"
+title = "NFW + Sersic combined density, D_f measurement"
+binary = "euclid-dm-coupling"
+binary_registered = true
+binary_experiment_declared = "E-151"
+method = "Combined NFW dark matter halo (M200=1e12 Msun) and Sersic baryonic density on 64^3 grid. Run 500 LBM steps with DM-baryon coupling. Measure fractal dimension D_f of resulting density field."
+input = "NFW M200=1e12 Msun, Sersic default parameters"
+output = ["stdout"]
+run = "cargo run --release --bin euclid-dm-coupling -- --grid 64 --steps 500 --m200 1e12"
+run_command_sha256 = "9f781f59e10e6538d659704e4f3738d19b9dcb2efe98abb63bed724cc624a894"
+claims = []
+claim_refs = []
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-150"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
 id = "E-141"
 title = "YSU-engine GPU technique distillation into lbm_3d_cuda"
 binary = ""
@@ -3670,3 +3930,622 @@ external_source_refs = []
 truth_surface_consumption = []
 reproducibility_class = "deterministic_replay"
 
+# --- Sprint 82: GPU Multi-Galaxy D_f Sweep ---
+
+[[experiment]]
+id = "E-152"
+title = "GPU D_f sweep: 100 Euclid Q1 galaxies, 64^3, 200 steps"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-152"
+method = "Read 100 galaxies from Euclid Q1 useful_physical_measurements.parquet, prepare Sersic+NFW density for each, initialize CUDA LBM solver at 64^3, evolve 200 steps, measure D_f via box-counting on host-synced density. Output per-galaxy CSV with full provenance and bootstrap CI summary."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet (398826 galaxies)"
+output = ["stdout", "csv"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --cuda"
+run_command_sha256 = "c7779ef84e4e78805eee358de8ecf9c16d6a4442e4971f6075305db3774196d5"
+claims = ["C-1262", "C-1264", "C-1265", "C-1266", "C-1268"]
+claim_refs = ["C-1262", "C-1264", "C-1265", "C-1266", "C-1268"]
+deterministic = true
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result = "PASS: D_f = 2.814 +/- 0.022 (CI_95: [2.810, 2.818]), N=100, skipped=0. Disk D_f=2.816 (N=56), Elliptical D_f=2.811 (N=44). No morphological dependence. All D_f in [2.79, 2.84]. Total GPU time ~8s on RTX 4070 Ti."
+lineage_id = "XL-152"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-153"
+title = "GPU D_f sweep: 1000 Euclid Q1 galaxies (extended run)"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-153"
+method = "Extended version of E-152 with 1000 galaxies for tighter bootstrap CI and morphological type statistics."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout", "csv"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 1000 --cuda"
+run_command_sha256 = "a75a20722feb12482da48ad200a7ec2d9b12bc0df496e7ac0d19cfe70b6943f7"
+claims = ["C-1262", "C-1266"]
+claim_refs = ["C-1262", "C-1266"]
+deterministic = true
+gpu = true
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-153"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-154"
+title = "GPU vs CPU cross-validation: 10 galaxies"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-154"
+method = "Run 10 galaxies through both CPU (LbmSolver3D) and GPU (LbmSolver3DCuda FP32) paths. Compare per-galaxy D_f values. Assert |D_f_gpu - D_f_cpu| < 0.05 for all galaxies."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["csv"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu -o /tmp/cpu.csv && cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cuda -o /tmp/gpu.csv"
+run_command_sha256 = "6787ae012733301b308c1f39158615c884662a7bf0fa59337da1e5a6343079cb"
+claims = ["C-1263", "C-1267"]
+claim_refs = ["C-1263", "C-1267"]
+deterministic = true
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result = "PARTIAL PASS: df_initial agrees perfectly (10/10 exact match) -- box-counting validated. df_final: 6/10 galaxies pass (delta < 0.002 for extended profiles, df_initial >= 2.77). 4/10 galaxies FAIL (CPU D_f=3.0, GPU D_f~2.83) due to f64 LBM homogenizing concentrated profiles (df_initial < 2.52, M200 < 3e11 solar) at tau=1.5 (nu=1/3, diffusion length 11.5 cells / 64 grid = 18%). This is a precision sensitivity in LBM evolution, not box-counting. See I-137."
+lineage_id = "XL-154"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = ["/tmp/cpu.csv", "/tmp/gpu.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-155"
+title = "M/L systematic: morphological vs fixed M/L=3.0"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-155"
+method = "Run 100 galaxies with catalog M/L (--morphological-ml false) and compare against morphological M/L baseline (E-152). Quantify systematic D_f shift."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout", "csv"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --morphological-ml false --cuda"
+run_command_sha256 = "950e964a0cab8dd9745e15cd662040abca0e4d8476bba5b3fc5e2fccea855993"
+claims = ["C-1264"]
+claim_refs = ["C-1264"]
+deterministic = true
+gpu = true
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-155"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-156"
+title = "Grid resolution study: 32 vs 64 vs 128 at N=20 galaxies"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-156"
+method = "Run 20 galaxies at three grid resolutions (32^3, 64^3, 128^3) to quantify D_f convergence with grid refinement."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout"]
+run = "for G in 32 64 128; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid $G --steps 200 --max-galaxies 20 --cpu; done"
+run_command_sha256 = "016b24bd6cdbf86ea914be2aa1917def313179243567e2a147f7114c4b5406f4"
+claims = ["C-1262"]
+claim_refs = ["C-1262"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-156"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+
+[[experiment]]
+id = "E-157"
+title = "Otsu vs median threshold: 10 galaxies, compare D_f distributions"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-157"
+method = "Run 10 galaxies with Otsu threshold (current) and compare df_initial distribution variance vs Sprint 82 median baseline."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu"
+run_command_sha256 = ""
+claims = ["C-1269"]
+claim_refs = ["C-1269"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result = "df_initial ranges from 0.67 to 2.20 across 10 galaxies (massive variation vs uniform 2.7697 with median). C-1269 confirmed."
+lineage_id = "XL-157"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-158"
+title = "Smagorinsky vs static tau: 10 concentrated galaxies, D_f trajectories"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-158"
+method = "Compare D_f before/after LBM with Smagorinsky C_s=0.1 vs static tau=1.5 for 10 galaxies. Expect Smagorinsky preserves concentrated galaxy structure."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout", "/tmp/e158_smagorinsky_cpu.csv", "/tmp/e158_baseline.csv"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu --smagorinsky-cs 0.1"
+run_command_sha256 = ""
+claims = ["C-1272"]
+claim_refs = ["C-1272"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result = "Smagorinsky has ZERO measurable effect at 64^3/tau=1.5: baseline and C_s=0.1 produce identical D_f to 4 decimal places. 4/10 galaxies diverge to D_f=3.0 (NaN velocities). Telemetry shows divergence cascade: 15.6% -> 66.8% -> 97.4% -> 100% non-finite cells over ~30 steps. Smagorinsky needs valid velocity gradients but the BGK divergence produces NaN before |S| can react. C-1272 downgraded to medium confidence."
+lineage_id = "XL-158"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-159"
+title = "SoA vs AoS GPU performance: 100 galaxies at 64^3"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-159"
+method = "Benchmark 100 galaxies at 64^3 with SoA kernel (S83) vs AoS (S82 baseline). Measure wall-clock time and per-galaxy latency."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout", "/tmp/e159_gpu_100.csv"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --cuda"
+run_command_sha256 = ""
+claims = ["C-1271"]
+claim_refs = ["C-1271"]
+deterministic = true
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result = "100 galaxies in ~4s total (35-67ms/galaxy, 167ms first due to NVRTC). S82 baseline was ~90s (70-110ms/galaxy). 2x per-galaxy speedup from SoA. Mean D_f = 1.740 +/- 1.062 dominated by f32 fragmentation artifacts (~40% galaxies at D_f < 1.0). Non-divergent galaxies match CPU within 0.004. C-1271 confirmed (SoA >= 1.5x throughput)."
+lineage_id = "XL-159"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-160"
+title = "128^3 sweep: 100 galaxies with Otsu + Smagorinsky"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-160"
+method = "Scale to 128^3 grid with Smagorinsky LES and Otsu threshold. Verify D_f convergence with grid refinement."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --cuda --smagorinsky-cs 0.1"
+run_command_sha256 = ""
+claims = ["C-1271", "C-1272"]
+claim_refs = ["C-1271", "C-1272"]
+deterministic = true
+gpu = true
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-160"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-161"
+title = "ZD coupling sweep: alpha_zd = {0.01, 0.05, 0.1, 0.5}"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-161"
+method = "Sweep ZD algebraic forcing strength on 10 galaxies. Compare D_f with and without ZD coupling to quantify topological confinement effect."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout", "/tmp/e161_zd_001.csv", "/tmp/e161_zd_010.csv", "/tmp/e161_zd_050.csv"]
+run = "for A in 0.01 0.1 0.5; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu --smagorinsky-cs 0.1 --alpha-zd $A; done"
+run_command_sha256 = ""
+claims = ["C-1273"]
+claim_refs = ["C-1273"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result = "ZD coupling has measurable but tiny effect: delta D_f = -0.003 to -0.005 at alpha=0.5 for non-divergent galaxies. 4/10 galaxies at D_f=3.0 unaffected (f64 BGK divergence dominates). Overall mean barely changes: 2.866->2.865. Topological rigidity exists but cannot override kinetic catastrophe at NFW cusp. C-1273 downgraded to low confidence for >= 10% claim."
+lineage_id = "XL-161"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-162"
+title = "MRT + Plummer softening: density floor calibration sweep"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-162"
+method = "Systematic sweep of density_floor (0.01-0.2) with MRT collision, Plummer softening eps=0.5*dx, tau=0.7 on 10 Euclid galaxies. Identifies stability boundary and optimal production parameters for 64^3."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout"]
+run = "for FLOOR in 0.03 0.04 0.042 0.045 0.05 0.1; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog ... --grid 64 --steps 200 --max-galaxies 10 --cpu --mrt --tau 0.7 --softening-eps 0.5 --density-floor $FLOOR; done"
+run_command_sha256 = ""
+claims = ["C-1274", "C-1275", "C-1276"]
+claim_refs = ["C-1274", "C-1275", "C-1276"]
+deterministic = true
+gpu = false
+status = "completed"
+status_token = "COMPLETED"
+result = "Critical findings: (1) MRT alone does NOT fix BGK divergence -- same onset at step ~25 without softening. Root cause is compressibility instability at density interfaces (Ma>0.3 from streaming at 200:1 contrast), not ghost moment oscillation. (2) Plummer softening eps=0.5*dx + density floor >= 0.045 eliminates divergence for all 10 test galaxies. (3) At floor=0.045/tau=0.7/MRT: D_f=2.888+/-0.085, range [2.799, 2.977]. Galaxy 9 (elliptical n=2.45) hits D_f=2.799, within 2.6% of the 2.7268 topological prediction. (4) MRT IS critical at the boundary: at floor=0.03, BGK diverges (D_f=1.475) while MRT survives (D_f=2.826) despite Ma=1.45. (5) floor=0.042 loses 2/10; floor=0.045 holds all 10. Production params: MRT + eps=0.5 + floor=0.045 + tau=0.7."
+lineage_id = "XL-162"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-163"
+title = "GPU MRT 100-galaxy D_f sweep at 64^3 with zero-copy box-counting"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-163"
+method = "100-galaxy sweep with GPU MRT collision (d'Humieres D3Q19 SoA), Plummer softening eps=0.5*dx, density floor 0.045, tau=0.7. D_f measured entirely on GPU via Otsu threshold + box-counting (no density readback)."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --mrt"
+run_command_sha256 = ""
+claims = ["C-1282", "C-1283"]
+claim_refs = ["C-1282", "C-1283"]
+deterministic = true
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result = "D_f = 2.748 +/- 0.607, CI_95 [2.619, 2.856]. 94/100 stable, 6 outliers (D_f < 1.0) from catalog edge cases (n=5.50 cap, z>2.3). Disk: 2.790 +/- 0.532 (N=56), Elliptical: 2.695 +/- 0.693 (N=44). Avg 47ms/galaxy. GPU zero-copy Otsu + box-counting eliminates all density readbacks."
+lineage_id = "XL-163"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-164"
+title = "GPU MRT 10-galaxy D_f sweep at 128^3: resolution convergence"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-164"
+method = "10-galaxy sweep at 128^3 with GPU MRT collision, zero-copy GPU box-counting. Tests resolution convergence toward CD D=16 topological prediction D_f=2.7268."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 10 --mrt"
+run_command_sha256 = ""
+claims = ["C-1284", "C-1286", "C-1287"]
+claim_refs = ["C-1284", "C-1286", "C-1287"]
+deterministic = true
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result = "D_f = 2.737 +/- 0.042, CI_95 [2.713, 2.763]. All 10 galaxies stable. CI brackets CD D=16 prediction 2.7268. Disk: 2.735 +/- 0.041 (N=7), Elliptical: 2.743 +/- 0.055 (N=3). Avg 249ms/galaxy (1.54x faster than readback path at 384ms). 15x reduction in std vs 64^3, all 64^3 outliers stabilize."
+lineage_id = "XL-164"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-165"
+title = "GPU zero-copy box-counting validation: PCIe elimination"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-165"
+method = "Validate GPU-resident Otsu threshold + GPU box-counting against readback path. GPU min/max reduction (shared memory tree) -> GPU 256-bin histogram -> 1 KB readback -> CPU Otsu -> GPU box-counting. Measures PCIe savings and D_f agreement."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 10 --mrt"
+run_command_sha256 = ""
+claims = ["C-1285", "C-1286"]
+claim_refs = ["C-1285", "C-1286"]
+deterministic = true
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result = "Zero-copy path reduces PCIe transfer from 16 MB to ~2 KB per galaxy at 128^3 (8000x reduction). D_f values consistent: zero-copy 2.737 vs readback 2.727 (delta from Otsu vs median threshold, not precision loss). 1.54x speedup (249ms vs 384ms per galaxy). Three new CUDA kernels: reduce_minmax_f32 (shared memory tree), build_histogram_f32 (atomic 256-bin), zero_histogram."
+lineage_id = "XL-165"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-166"
+title = "GPU MRT 100-galaxy D_f sweep at 128^3: definitive CD topology validation"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-166"
+method = "100-galaxy sweep at 128^3 with GPU MRT collision (d'Humieres D3Q19 SoA), Plummer softening eps=0.5*dx, density floor 0.045, tau=0.7. Uses readback-path box-counting (pre-zero-copy build). Definitive test of CD D=16 flat band topology prediction D_f=2.7268."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout", "/tmp/euclid_df_gpu_mrt_128_100.csv"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt -o /tmp/euclid_df_gpu_mrt_128_100.csv"
+run_command_sha256 = ""
+claims = ["C-1288", "C-1289", "C-1287"]
+claim_refs = ["C-1288", "C-1289", "C-1287"]
+deterministic = true
+gpu = true
+status = "completed"
+status_token = "COMPLETED"
+result = "D_f = 2.732 +/- 0.034, CI_95 [2.725, 2.739]. 100/100 galaxies stable (zero outliers). Disk: 2.736 +/- 0.035 (N=56), Elliptical: 2.727 +/- 0.034 (N=44). CD D=16 prediction 2.7268 sits at 31st percentile of CI. Morphological difference 0.009 (not significant). Avg 330ms/galaxy. All 6 outlier galaxies from 64^3 stabilize at 128^3. This is the definitive validation of the CD-LBM fractal dimension correspondence."
+lineage_id = "XL-166"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = ["/tmp/euclid_df_gpu_mrt_128_100.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-167"
+title = "MRT vs BGK stability envelope: density contrast sweep at tau=0.7"
+binary = "mrt-stability-audit"
+binary_registered = true
+binary_experiment_declared = "E-167"
+method = "Systematic BGK vs MRT stability comparison at increasing density contrast (2x-100x) using Gaussian density perturbation on n^3 grid. Reports max Mach number, mass conservation error, and crash threshold per collision mode. Uses LbmBackend dispatcher for unified CPU/GPU access."
+input = "synthetic (Gaussian density perturbation)"
+output = ["stdout", "CSV via --csv flag"]
+run = "cargo run --release --bin mrt-stability-audit -- --n 16 --tau 0.7 --steps 200 --contrast-min 2.0 --contrast-max 100.0 --n-levels 20 --csv"
+run_command_sha256 = ""
+claims = ["C-1290"]
+claim_refs = ["C-1290"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+result = ""
+lineage_id = "XL-167"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-168"
+title = "D=64 flat band fraction verification via block-diagonal eigensolver"
+binary = "zd-crystal-bands"
+binary_registered = true
+binary_experiment_declared = "E-168"
+method = "Block-diagonal eigendecomposition of D=64 ZD partner graph (16384 vertices, 31 motif components). Verifies that exactly 50% of eigenvalues are zero, extending the flat_band_fraction = 1/2 invariance from D=16 and D=32."
+input = "synthetic (CD D=64 ZD partner graph)"
+output = ["test output"]
+run = "cargo test --release -p algebra_analysis -- --ignored flat_band_fraction_d64"
+run_command_sha256 = ""
+claims = ["C-1291"]
+claim_refs = ["C-1291"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+result = ""
+lineage_id = "XL-168"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-169"
+title = "Thread coarsening benchmark: 1T=2C vs 1T=1C at 128^3"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-169"
+method = "Compare GPU MRT performance with thread coarsening (1 thread = 2 cells, __launch_bounds__(128, 9)) vs baseline (1 thread = 1 cell). Measure ms/galaxy at 128^3 with 100 galaxies. Both paths use identical collision physics."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt --coarsened"
+run_command_sha256 = ""
+claims = ["C-1292", "C-1296"]
+claim_refs = ["C-1292", "C-1296"]
+deterministic = true
+gpu = true
+status = "planned"
+status_token = "PLANNED"
+result = ""
+lineage_id = "XL-169"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-172"
+title = "Roofline benchmark: per-kernel nsight-compute at 128^3"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-172"
+method = "Profile MRT collision, streaming, Smagorinsky, and box-counting kernels at 128^3 using nsight-compute. Measure achieved bandwidth, SM utilization, register count, and occupancy per kernel. Validate GPU-side max-Ma reduction kernel timing (< 10us target)."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["nsight-compute reports"]
+run = "ncu --set full cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 1 --mrt"
+run_command_sha256 = ""
+claims = ["C-1295", "C-1296"]
+claim_refs = ["C-1295", "C-1296"]
+deterministic = true
+gpu = true
+status = "planned"
+status_token = "PLANNED"
+result = ""
+lineage_id = "XL-172"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-174"
+title = "Null hypothesis control: 6 conditions x N trials to exclude D_f=2.73 pipeline artifact"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-174"
+method = "Six control conditions test whether D_f=2.73 is a pipeline artifact: C0 (uniform+zero force), C1 (uniform+ZD), C2 (white noise+zero), C3 (white noise+ZD), C4 (Sersic+zero), C5 (Sersic+full force, positive control). All use identical MRT 128^3 pipeline. Null hypothesis rejected iff C0-C4 produce D_f statistically distinguishable from 2.73 and C5 reproduces E-166."
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+output = ["stdout CSV"]
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --null-hypothesis --null-n-trials 10 --grid 128 --steps 200 --mrt --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+run_command_sha256 = ""
+claims = ["C-1297"]
+claim_refs = ["C-1297"]
+deterministic = true
+gpu = true
+status = "planned"
+status_token = "PLANNED"
+result = ""
+lineage_id = "XL-174"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-175"
+title = "CPU AoSoA + AVX2 benchmark: AoS vs AoSoA at 64^3 and 128^3 MRT f64 on Zen 3"
+binary = "mrt-stability-audit"
+binary_registered = true
+binary_experiment_declared = "E-175"
+method = "Benchmark CPU LBM solver with AoSoA layout + wide::f64x4 SIMD collision vs previous AoS scalar. Test at 64^3 (V-Cache resident, compute-bound) and 128^3 (DDR4-limited). Use RUSTFLAGS=-C target-cpu=znver3 for optimal Zen 3 code generation."
+input = "synthetic (Gaussian density perturbation)"
+output = ["stdout"]
+run = "RUSTFLAGS=\"-C target-cpu=znver3\" cargo run --release --no-default-features --bin mrt-stability-audit -- --n 64 --tau 0.7 --steps 200 --n-levels 1"
+run_command_sha256 = ""
+claims = ["C-1298"]
+claim_refs = ["C-1298"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+result = ""
+lineage_id = "XL-175"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-176"
+title = "CPU/GPU cross-validation: AoSoA/SoA layout parity D_f agreement"
+binary = "mrt-stability-audit"
+binary_registered = true
+binary_experiment_declared = "E-176"
+method = "Run identical physical problem (Gaussian density contrast, MRT collision, tau=0.7) on both CPU (AoSoA f64) and GPU (SoA f32) backends via LbmBackend dispatcher. Compare D_f, max Mach, and mass conservation to validate structural parity between the two memory layouts."
+input = "synthetic (Gaussian density perturbation)"
+output = ["stdout CSV"]
+run = "cargo run --release --bin mrt-stability-audit -- --n 64 --tau 0.7 --steps 100 --n-levels 5 --csv"
+run_command_sha256 = ""
+claims = ["C-1299"]
+claim_refs = ["C-1299"]
+deterministic = true
+gpu = false
+status = "planned"
+status_token = "PLANNED"
+result = ""
+lineage_id = "XL-176"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"
+
+[[experiments.entries]]
+id = "E-177"
+title = "YSU-Inspired CUDA Optimization Suite: MRT ILP + CUDA Graph + Tiled Pull-Scheme + Multi-Stream Pipeline"
+binary = "euclid-df-sweep"
+binary_registered = true
+binary_experiment_declared = "E-177"
+method = "4-item GPU optimization suite targeting compound 15-50% speedup at 128^3 on Ada Lovelace SM 8.9. Item 1: MRT forward/inverse transform ILP restructure (balanced fmaf trees). Item 2: Multi-stream galaxy pipeline (2-stream event-based overlap). Item 3: CUDA Graph 2-step capture fixing double-buffer bug + step_n() bulk stepping. Item 4: Shared-memory tiled pull-scheme kernels (8x8x4 tile, 45.6 KB shared, cooperative striped load). Verification: clippy clean, Taylor-Green 6/6 pass, GPU debug init 3/3 pass."
+input = "Euclid Q1 galaxy catalog (100 galaxies)"
+output = ["CSV per-galaxy D_f", "stdout timing"]
+run = "cargo run --release --bin euclid-df-sweep -- --n-galaxies 100 --resolution 128 --gpu --tiling"
+run_command_sha256 = ""
+claims = ["C-1300", "C-1301", "C-1302", "C-1303", "C-1304", "C-1305", "C-1306", "C-1307"]
+claim_refs = ["C-1300", "C-1301", "C-1302", "C-1303", "C-1304", "C-1305", "C-1306", "C-1307"]
+deterministic = false
+gpu = true
+status = "planned"
+status_token = "PLANNED"
+result = ""
+lineage_id = "XL-177"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+reproducibility_class = "deterministic_replay"

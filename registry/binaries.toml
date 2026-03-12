@@ -808,6 +808,18 @@ experiment = "E-077"
 status = "active"
 
 [[binary]]
+name = "nonlocal-algebraic-metamaterial"
+crate = "gororoba_cli_physics"
+description = "Build, benchmark, and rank literature-calibrated non-local algebraic metamaterial candidates by lifting the sedenion m3 obstruction tensor onto the 42-assessor 7 x K6 topology with LC and Floquet backends."
+status = "active"
+
+[[binary]]
+name = "c053-pathion-metamaterial-mapping"
+crate = "gororoba_cli_physics"
+description = "Write the deterministic C-053 diagonal-only pathion toy mapping CSV from the Rust-native materials_core generator."
+status = "active"
+
+[[binary]]
 name = "sterile-neutrino-audit"
 crate = "gororoba_cli"
 description = "Seven-stream sterile-neutrino null-result audit (experiment E-079, claims C-703..C-709). Emits null_confirmed only when all seven sensor streams carry a verified null result."
@@ -839,6 +851,12 @@ status = "active"
 name = "data-origin-audit"
 crate = "gororoba_cli"
 description = "Full data-origin audit for data/* lanes. Classifies files as generated/external/legacy/unknown, reports lacunae, and supports fail-on-strict-unknown mode."
+status = "active"
+
+[[binary]]
+name = "agents-render"
+crate = "gororoba_cli_data"
+description = "Render AGENTS.md deterministically from agents.toml and fail closed in --check mode when the markdown stub drifts."
 status = "active"
 
 [[binary]]
@@ -1065,4 +1083,39 @@ status = "active"
 name = "crate-inventory"
 crate = "gororoba_cli_data"
 description = "Validate registry/rust_crate_catalog.toml against cargo metadata and shared repo governance state."
+status = "active"
+
+[[binary]]
+name = "magnonic-band-structure"
+crate = "gororoba_cli_physics"
+description = "9-band magnonic crystal tight-binding engine. 6 subcommands: bands (dispersion plot), chern (valley Chern numbers), flat-band (flat band fraction), sweep (parameter space), domain-wall (edge mode spectrum), defect (point defect bound states)."
+experiment = "E-142"
+status = "active"
+
+[[binary]]
+name = "zd-crystal-bands"
+crate = "gororoba_cli_algebra"
+description = "ZD motif graph adjacency spectra via block-diagonal component eigendecomposition. Computes eigenvalues, flat band fraction, and Reggiani degeneracy verification for Cayley-Dickson dimensions 16 and 32."
+experiment = "E-147"
+status = "active"
+
+[[binary]]
+name = "euclid-dm-coupling"
+crate = "gororoba_cli_physics"
+description = "Single-galaxy NFW+Sersic dark matter density coupling via D3Q19 LBM. Reads Euclid Q1 Sersic parameters, constructs combined density and gravitational force fields, evolves LBM, measures box-counting fractal dimension D_f."
+experiment = "E-148"
+status = "active"
+
+[[binary]]
+name = "euclid-df-sweep"
+crate = "gororoba_cli_physics"
+description = "Multi-galaxy D_f sweep from Euclid Q1 catalog. Scales single-galaxy fractal dimension measurement to 100-1000+ galaxies using CUDA acceleration with CPU fallback. Outputs per-galaxy CSV with full provenance and bootstrap CI summary."
+experiment = "E-152"
+status = "active"
+
+[[binary]]
+name = "mrt-stability-audit"
+crate = "gororoba_cli_physics"
+description = "BGK vs MRT stability envelope: density contrast sweep with crash detection. Maps exact Mach failure threshold demonstrating ghost-moment damping advantage."
+experiment = "E-167"
 status = "active"

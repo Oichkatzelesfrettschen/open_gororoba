@@ -533,7 +533,7 @@ evidence_refs = []
 id = "T-044"
 area = "registry"
 title = "Keep control-plane TOML inventory authoritative and residue-free"
-description = "Current checkpoint: `verify_toml_inventory_registry.py` is green, the authoritative inventory excludes stale `.horusec` residue from the documented failure frontier, and the builder now scans with the shared worker-budget fast path. Keep the builder and committed inventory aligned so control-plane TOML scope remains truthful."
+description = "Current checkpoint: `cargo run -p gororoba_cli_data --bin markdown-registry -- verify-toml-inventory` is green, the authoritative inventory excludes stale `.horusec` residue from the documented failure frontier, and the Rust builder now scans with shared governance skip rules. Keep the builder and committed inventory aligned so control-plane TOML scope remains truthful."
 priority = "high"
 status = "done"
 status_token = "DONE"
@@ -768,4 +768,3 @@ status_token = "OPEN"
 dependencies = []
 acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
 evidence_refs = []
-
