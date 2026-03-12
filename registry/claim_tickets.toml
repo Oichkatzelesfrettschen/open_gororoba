@@ -3,7 +3,7 @@
 
 [claim_tickets]
 authoritative = true
-updated = "2026-03-11"
+updated = "2026-03-12"
 source_markdown_glob = "docs/tickets/*.md"
 ticket_count = 12
 
@@ -20,7 +20,7 @@ claim_range_start = 1
 claim_range_end = 50
 claims_referenced = ["C-001", "C-005", "C-007", "C-008", "C-010", "C-011", "C-022", "C-023", "C-026", "C-027", "C-030", "C-031", "C-032", "C-033", "C-034", "C-037", "C-039", "C-040", "C-041", "C-043", "C-047", "C-048", "C-050"]
 backlog_reports = ["reports/claims_batch_backlog_C001_C050.md"]
-deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C001_C050.md", "docs/C026_MASS_GAP_MECHANISM.md", "docs/C027_DEFF_HORIZON_TEST.md", "data/csv/deff_horizon_mass_scaling*.csv", "tests/test_c027_deff_horizon_mass_scaling.py", "src/scripts/analysis/c032_tang_2025_min_reproduction.py", "docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/papers/corpus/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf", "data/papers/corpus/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf", "docs/C033_SU5_MAPPING_CLOSURE.md", "data/papers/intake/traces/chanyal_2014_academia_requires_login.txt", "docs/C030_SEDENION_LAGRANGIAN_BYPASS.md", "data/csv/c030_sedenion_lagrangian_bypass_checks.csv", "data/csv/c031_hurwitz_norm_composition_checks.csv", "src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py", "data/csv/c039_spectral_dimension_bigraph_*.csv", "src/scripts/analysis/c040_primordial_tilt_deff_sweep.py", "data/csv/c040_primordial_tilt_*.csv", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "data/csv/compact_objects_catalog.csv", "docs/C047_E_SERIES_KAC_MOODY_AUDIT.md", "docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md", "tests/test_c047_e_series_cartan_signature.py", "docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md", "data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf", "docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md", "src/scripts/analysis/c050_spaceplate_flow_isomorphism_toy.py", "data/csv/c050_spaceplate_flow_isomorphism_toy.csv", "tests/test_c050_spaceplate_flow_isomorphism_toy.py"]
+deliverable_links = ["data/csv/c030_sedenion_lagrangian_bypass_checks.csv", "data/csv/c031_hurwitz_norm_composition_checks.csv", "data/csv/c039_spectral_dimension_bigraph_*.csv", "data/csv/c040_primordial_tilt_*.csv", "data/csv/c050_spaceplate_flow_isomorphism_toy.csv", "data/csv/compact_objects_catalog.csv", "data/csv/deff_horizon_mass_scaling*.csv", "data/papers/corpus/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf", "data/papers/corpus/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf", "data/papers/corpus/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf", "data/papers/intake/traces/chanyal_2014_academia_requires_login.txt", "docs/C026_MASS_GAP_MECHANISM.md", "docs/C027_DEFF_HORIZON_TEST.md", "docs/C030_SEDENION_LAGRANGIAN_BYPASS.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "docs/C047_E_SERIES_KAC_MOODY_AUDIT.md", "docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md", "docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md", "reports/claims_batch_backlog_C001_C050.md", "src/scripts/analysis/c032_tang_2025_min_reproduction.py", "src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py", "src/scripts/analysis/c040_primordial_tilt_deff_sweep.py", "src/scripts/analysis/c050_spaceplate_flow_isomorphism_toy.py", "tests/test_c027_deff_horizon_mass_scaling.py", "tests/test_c047_e_series_cartan_signature.py", "tests/test_c050_spaceplate_flow_isomorphism_toy.py"]
 acceptance_checks = ["PYTHONWARNINGS=error make check-parallel", "PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
 goal_summary = "Make the C-001..C-050 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` mechanically tractable for claim-by-claim auditing: - each open claim has (1) a clear scope boundary, (2) primary sources indexed and cached when possible, and (3) an offline check hook (unit test, verifier, or deterministic artifact pipeline) where feasible. This ticket does not attempt to \"prove the theory\". It upgrades traceability and falsifiability."
 done_checkboxes = 0
@@ -39,7 +39,7 @@ claim_range_start = 51
 claim_range_end = 100
 claims_referenced = ["C-051", "C-053", "C-068", "C-070", "C-074", "C-075", "C-077", "C-078", "C-082", "C-087", "C-090", "C-092", "C-094", "C-096", "C-097", "C-099", "C-100"]
 backlog_reports = ["reports/claims_batch_backlog_C051_C100.md"]
-deliverable_links = ["docs/external_sources/*.md", "data/external/"]
+deliverable_links = ["data/external/", "docs/external_sources/*.md"]
 acceptance_checks = ["PYTHONWARNINGS=error make check-parallel", "PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
 goal_summary = "Make the C-051..C-100 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` mechanically tractable for claim-by-claim auditing: - each open claim has (1) a clear scope boundary, (2) primary sources indexed and cached when possible, and (3) an offline check hook (unit test, verifier, or deterministic artifact pipeline) where feasible. This ticket is primarily about de-risking legacy/\"suggestive\" algebra-to-physics mappings by: - splitting observational vs interpretive statements, - keeping any physics links explicitly speculative unless supported by sources + robust statistics, - converting legacy experiment notes into reproducible scripts + tests where possible."
 done_checkboxes = 0
@@ -191,7 +191,7 @@ claim_range_start = 0
 claim_range_end = 0
 claims_referenced = []
 backlog_reports = []
-deliverable_links = ["docs/tickets/*.md", "docs/tickets/C001_C050_claims_audit.md", "docs/tickets/C051_C100_claims_audit.md", "docs/tickets/C101_C150_claims_audit.md", "docs/tickets/C151_C200_claims_audit.md", "docs/tickets/C201_C250_claims_audit.md", "docs/tickets/C251_C300_claims_audit.md", "docs/tickets/C301_C350_claims_audit.md", "docs/tickets/C351_C400_claims_audit.md", "docs/tickets/C401_C427_claims_audit.md", "docs/tickets/INDEX.md", "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"]
+deliverable_links = ["docs/tickets/*.md", "docs/tickets/C001_C050_claims_audit.md", "docs/tickets/C051_C100_claims_audit.md", "docs/tickets/C101_C150_claims_audit.md", "docs/tickets/C151_C200_claims_audit.md", "docs/tickets/C201_C250_claims_audit.md", "docs/tickets/C251_C300_claims_audit.md", "docs/tickets/C301_C350_claims_audit.md", "docs/tickets/C351_C400_claims_audit.md", "docs/tickets/C401_C427_claims_audit.md", "docs/tickets/INDEX.md", "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md", "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"]
 acceptance_checks = []
 goal_summary = ""
 done_checkboxes = 0
@@ -210,7 +210,7 @@ claim_range_start = 0
 claim_range_end = 0
 claims_referenced = []
 backlog_reports = []
-deliverable_links = ["crates/gr_core/src/fractal_metric.rs", "nbody_integration.rs", "fit_grid.csv", "best_fit.json"]
+deliverable_links = ["best_fit.json", "crates/gr_core/src/fractal_metric.rs", "fit_grid.csv", "nbody_integration.rs"]
 acceptance_checks = ["(none recorded)"]
 goal_summary = "(not specified)"
 done_checkboxes = 0

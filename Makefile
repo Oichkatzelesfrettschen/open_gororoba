@@ -523,19 +523,19 @@ registry-migrate-corpus: registry-knowledge
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- migrate-corpus --prune-stale
 
 registry-normalize-claims:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-claims-support --bootstrap-from-markdown
 
 registry-bootstrap-claims-support: registry-normalize-claims
 	@echo "Claims support markdown->TOML bootstrap completed."
 
 registry-normalize-bibliography:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_bibliography_registry.py --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-bibliography --bootstrap-from-markdown
 
 registry-bootstrap-bibliography: registry-normalize-bibliography
 	@echo "Bibliography markdown->TOML bootstrap completed."
 
 registry-normalize-external-sources:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-external-sources --bootstrap-from-markdown
 
 registry-bootstrap-external-sources: registry-normalize-external-sources
 	@echo "External sources markdown->TOML bootstrap completed."
@@ -547,7 +547,7 @@ registry-bootstrap-research-narratives: registry-normalize-research-narratives
 	@echo "Research narratives markdown->TOML bootstrap completed."
 
 registry-normalize-book-docs:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-book-docs --bootstrap-from-markdown
 
 registry-bootstrap-book-docs: registry-normalize-book-docs
 	@echo "mdBook markdown->TOML bootstrap completed."
@@ -559,25 +559,25 @@ registry-bootstrap-docs-root-narratives: registry-normalize-docs-root-narratives
 	@echo "Root docs markdown->TOML bootstrap completed."
 
 registry-normalize-reports-narratives:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-reports-narratives --bootstrap-from-markdown
 
 registry-bootstrap-reports-narratives: registry-normalize-reports-narratives
 	@echo "Reports markdown->TOML bootstrap completed."
 
 registry-normalize-docs-convos:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-docs-convos --bootstrap-from-markdown
 
 registry-bootstrap-docs-convos: registry-normalize-docs-convos
 	@echo "docs/convos markdown->TOML bootstrap completed."
 
 registry-normalize-data-artifact-narratives:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_data_artifact_narratives_registry.py --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-data-artifact-narratives --bootstrap-from-markdown
 
 registry-bootstrap-data-artifact-narratives: registry-normalize-data-artifact-narratives
 	@echo "data/artifacts narrative markdown->TOML bootstrap completed."
 
 registry-normalize-entrypoint-docs:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_entrypoint_docs_registry.py --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-entrypoint-docs --bootstrap-from-markdown
 
 registry-bootstrap-entrypoint-docs: registry-normalize-entrypoint-docs
 	@echo "Entrypoint markdown bootstrap into registry/entrypoint_docs.toml completed."

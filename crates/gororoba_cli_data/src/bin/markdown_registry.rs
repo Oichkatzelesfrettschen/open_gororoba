@@ -101,6 +101,14 @@ enum Commands {
     BuildKnowledgeSources(BuildKnowledgeSourcesArgs),
     BuildGovernance(BuildGovernanceArgs),
     MigrateCorpus(MigrateCorpusArgs),
+    NormalizeClaimsSupport(NormalizeClaimsSupportArgs),
+    NormalizeBibliography(NormalizeBibliographyArgs),
+    NormalizeExternalSources(NormalizeExternalSourcesArgs),
+    NormalizeBookDocs(NormalizeBookDocsArgs),
+    NormalizeReportsNarratives(NormalizeReportsNarrativesArgs),
+    NormalizeDocsConvos(NormalizeDocsConvosArgs),
+    NormalizeDataArtifactNarratives(NormalizeDataArtifactNarrativesArgs),
+    NormalizeEntrypointDocs(NormalizeEntrypointDocsArgs),
     BuildInventory(BuildInventoryArgs),
     BuildCorpus(BuildCorpusArgs),
     BuildTomlInventory(BuildTomlInventoryArgs),
@@ -151,6 +159,90 @@ struct MigrateCorpusArgs {
 
     #[arg(long, default_value_t = false)]
     prune_stale: bool,
+}
+
+#[derive(Parser, Debug)]
+struct NormalizeClaimsSupportArgs {
+    #[arg(long, default_value = "registry/claims_tasks.toml")]
+    claims_tasks_out: PathBuf,
+
+    #[arg(long, default_value = "registry/claims_domains.toml")]
+    claims_domains_out: PathBuf,
+
+    #[arg(long, default_value = "registry/claim_tickets.toml")]
+    claim_tickets_out: PathBuf,
+
+    #[arg(long, default_value_t = false)]
+    bootstrap_from_markdown: bool,
+}
+
+#[derive(Parser, Debug)]
+struct NormalizeBibliographyArgs {
+    #[arg(long, default_value = "docs/BIBLIOGRAPHY.md")]
+    source: PathBuf,
+
+    #[arg(long, default_value = "registry/bibliography.toml")]
+    out: PathBuf,
+
+    #[arg(long, default_value_t = false)]
+    bootstrap_from_markdown: bool,
+}
+
+#[derive(Parser, Debug)]
+struct NormalizeExternalSourcesArgs {
+    #[arg(long, default_value = "docs/external_sources/*.md")]
+    glob: String,
+
+    #[arg(long, default_value = "registry/external_sources.toml")]
+    out: PathBuf,
+
+    #[arg(long, default_value_t = false)]
+    bootstrap_from_markdown: bool,
+}
+
+#[derive(Parser, Debug)]
+struct NormalizeBookDocsArgs {
+    #[arg(long, default_value = "registry/book_docs.toml")]
+    out: PathBuf,
+
+    #[arg(long, default_value_t = false)]
+    bootstrap_from_markdown: bool,
+}
+
+#[derive(Parser, Debug)]
+struct NormalizeReportsNarrativesArgs {
+    #[arg(long, default_value = "registry/reports_narratives.toml")]
+    out: PathBuf,
+
+    #[arg(long, default_value_t = false)]
+    bootstrap_from_markdown: bool,
+}
+
+#[derive(Parser, Debug)]
+struct NormalizeDocsConvosArgs {
+    #[arg(long, default_value = "registry/docs_convos.toml")]
+    out: PathBuf,
+
+    #[arg(long, default_value_t = false)]
+    bootstrap_from_markdown: bool,
+}
+
+#[derive(Parser, Debug)]
+struct NormalizeDataArtifactNarrativesArgs {
+    #[arg(long, default_value = "registry/data_artifact_narratives.toml")]
+    out: PathBuf,
+
+    #[arg(long, default_value_t = false)]
+    bootstrap_from_markdown: bool,
+}
+
+#[derive(Parser, Debug)]
+struct NormalizeEntrypointDocsArgs {
+    #[arg(long, default_value = "registry/entrypoint_docs.toml")]
+    out: PathBuf,
+
+    #[arg(long, default_value_t = false)]
+    bootstrap_from_markdown: bool,
 }
 
 #[derive(Parser, Debug)]
@@ -524,6 +616,129 @@ struct NarrativeDocRow {
     body_markdown: String,
 }
 
+#[derive(Clone, Debug)]
+struct TaskRecord {
+    task_id: String,
+    claim_id: String,
+    section: String,
+    section_index: usize,
+    table_index: usize,
+    order_index: usize,
+    task_text: String,
+    output_artifacts: Vec<String>,
+    output_raw: String,
+    status_raw: String,
+    status_token: String,
+    status_canonical: bool,
+    source_line: usize,
+}
+
+#[derive(Clone, Debug)]
+struct DomainEntry {
+    domain: String,
+    claim_id: String,
+    status_text: String,
+    status_token: String,
+    status_date: String,
+    summary: String,
+    where_stated: Vec<String>,
+    source_markdown: String,
+    source_line: usize,
+}
+
+#[derive(Clone, Debug)]
+struct DomainRecord {
+    domain: String,
+    source_markdown: String,
+    declared_count: usize,
+    csv_claim_ids: Vec<String>,
+    markdown_claim_ids: Vec<String>,
+}
+
+#[derive(Clone, Debug)]
+struct TicketRecord {
+    ticket_id: String,
+    title: String,
+    source_markdown: String,
+    ticket_kind: String,
+    owner: String,
+    created: String,
+    status_raw: String,
+    status_token: String,
+    claim_range_start: usize,
+    claim_range_end: usize,
+    claims_referenced: Vec<String>,
+    backlog_reports: Vec<String>,
+    deliverable_links: Vec<String>,
+    acceptance_checks: Vec<String>,
+    goal_summary: String,
+    done_checkboxes: usize,
+    open_checkboxes: usize,
+}
+
+#[derive(Clone, Debug)]
+struct BibliographyEntry {
+    entry_id: String,
+    order_index: usize,
+    group: String,
+    section: String,
+    citation_markdown: String,
+    notes: Vec<String>,
+    urls: Vec<String>,
+    dois: Vec<String>,
+    source_line: usize,
+}
+
+#[derive(Clone, Debug)]
+struct SourceDoc {
+    doc_id: String,
+    source_markdown: String,
+    slug: String,
+    title: String,
+    status_token: String,
+    content_kind: String,
+    authority_level: String,
+    verification_level: String,
+    operational_role: String,
+    source_lineage_summary: String,
+    truth_surfaces: Vec<String>,
+    artifact_contract_paths: Vec<String>,
+    has_full_transcript: bool,
+    claim_refs: Vec<String>,
+    url_refs: Vec<String>,
+    path_refs: Vec<String>,
+    line_count: usize,
+    notes: String,
+    body_markdown: String,
+}
+
+#[derive(Clone, Debug)]
+struct SourceDocMeta {
+    status_token: &'static str,
+    content_kind: &'static str,
+    authority_level: &'static str,
+    verification_level: &'static str,
+    operational_role: &'static str,
+    source_lineage_summary: &'static str,
+    truth_surfaces: &'static [&'static str],
+    artifact_contract_paths: &'static [&'static str],
+    notes: &'static str,
+}
+
+#[derive(Clone, Debug)]
+struct SimpleMarkdownDoc {
+    id: String,
+    source_markdown: String,
+    section: String,
+    slug: String,
+    title: String,
+    content_kind: String,
+    claim_refs: Vec<String>,
+    path_refs: Vec<String>,
+    line_count: usize,
+    body_markdown: String,
+}
+
 fn main() -> Result<()> {
     let cli = Cli::parse();
     let repo_root = if cli.repo_root == Path::new(".") {
@@ -535,6 +750,18 @@ fn main() -> Result<()> {
         Commands::BuildKnowledgeSources(args) => build_knowledge_sources(&repo_root, &args),
         Commands::BuildGovernance(args) => build_governance(&repo_root, &args),
         Commands::MigrateCorpus(args) => migrate_corpus(&repo_root, &args),
+        Commands::NormalizeClaimsSupport(args) => normalize_claims_support(&repo_root, &args),
+        Commands::NormalizeBibliography(args) => normalize_bibliography(&repo_root, &args),
+        Commands::NormalizeExternalSources(args) => normalize_external_sources(&repo_root, &args),
+        Commands::NormalizeBookDocs(args) => normalize_book_docs(&repo_root, &args),
+        Commands::NormalizeReportsNarratives(args) => {
+            normalize_reports_narratives(&repo_root, &args)
+        }
+        Commands::NormalizeDocsConvos(args) => normalize_docs_convos(&repo_root, &args),
+        Commands::NormalizeDataArtifactNarratives(args) => {
+            normalize_data_artifact_narratives(&repo_root, &args)
+        }
+        Commands::NormalizeEntrypointDocs(args) => normalize_entrypoint_docs(&repo_root, &args),
         Commands::BuildInventory(args) => build_inventory(&repo_root, &args),
         Commands::BuildCorpus(args) => build_corpus(&repo_root, &args),
         Commands::BuildTomlInventory(args) => build_toml_inventory(&repo_root, &args),
@@ -919,6 +1146,1760 @@ fn migrate_corpus(repo_root: &Path, args: &MigrateCorpusArgs) -> Result<()> {
         stale_count
     );
     Ok(())
+}
+
+fn normalize_claims_support(repo_root: &Path, args: &NormalizeClaimsSupportArgs) -> Result<()> {
+    if !args.bootstrap_from_markdown {
+        println!(
+            "SKIP: markdown-registry normalize-claims-support is bootstrap-only. Use --bootstrap-from-markdown for explicit re-bootstrap operations."
+        );
+        return Ok(());
+    }
+    let claims_tasks_md = repo_root.join("docs/CLAIMS_TASKS.md");
+    let claims_domain_map_csv = repo_root.join("docs/claims/CLAIMS_DOMAIN_MAP.csv");
+    let claims_by_domain_dir = repo_root.join("docs/claims/by_domain");
+    let tickets_dir = repo_root.join("docs/tickets");
+
+    let (tasks, sections, table_count) = parse_claims_tasks(&claims_tasks_md)?;
+    let (domain_records, entries, csv_map) =
+        parse_domains(&claims_domain_map_csv, &claims_by_domain_dir, repo_root)?;
+    let tickets = parse_tickets(&tickets_dir, repo_root)?;
+    let now = Local::now().format("%Y-%m-%d").to_string();
+
+    write_ascii(
+        &repo_path(repo_root, &args.claims_tasks_out),
+        &render_claims_tasks_toml(&tasks, &sections, table_count, &now),
+    )?;
+    write_ascii(
+        &repo_path(repo_root, &args.claims_domains_out),
+        &render_claims_domains_toml(&domain_records, &entries, &csv_map, &now),
+    )?;
+    write_ascii(
+        &repo_path(repo_root, &args.claim_tickets_out),
+        &render_claim_tickets_toml(&tickets, &now),
+    )?;
+    println!(
+        "Wrote claims support registries: {}, {}, {}. Tasks={}, Domains={}, DomainEntries={}, Tickets={}.",
+        args.claims_tasks_out.display(),
+        args.claims_domains_out.display(),
+        args.claim_tickets_out.display(),
+        tasks.len(),
+        domain_records.len(),
+        entries.len(),
+        tickets.len()
+    );
+    Ok(())
+}
+
+fn normalize_bibliography(repo_root: &Path, args: &NormalizeBibliographyArgs) -> Result<()> {
+    if !args.bootstrap_from_markdown {
+        println!(
+            "SKIP: markdown-registry normalize-bibliography is bootstrap-only. Use --bootstrap-from-markdown for explicit re-bootstrap operations."
+        );
+        return Ok(());
+    }
+    let source = repo_path(repo_root, &args.source);
+    let (entries, groups, sections) = parse_bibliography(&source)?;
+    let now = Local::now().format("%Y-%m-%d").to_string();
+    write_ascii(
+        &repo_path(repo_root, &args.out),
+        &render_bibliography_registry(&entries, &groups, &sections, &now),
+    )?;
+    println!("Wrote {} from {}; entries={}.", args.out.display(), args.source.display(), entries.len());
+    Ok(())
+}
+
+fn normalize_external_sources(
+    repo_root: &Path,
+    args: &NormalizeExternalSourcesArgs,
+) -> Result<()> {
+    if !args.bootstrap_from_markdown {
+        bail!("ERROR: pass --bootstrap-from-markdown to ingest markdown sources");
+    }
+    let out_path = repo_path(repo_root, &args.out);
+    let existing_ids = load_existing_document_ids(&out_path)?;
+    let mut assigned = existing_ids.clone();
+    let mut next_id = next_id_seed(&existing_ids, "XS");
+    let pattern = repo_root.join(&args.glob).to_string_lossy().to_string();
+    let mut records = Vec::new();
+    for entry in glob::glob(&pattern).with_context(|| format!("glob {}", args.glob))? {
+        let path = entry?;
+        let rel = repo_rel(repo_root, &path);
+        let text = read_text_lossy(&path)?;
+        records.push(parse_external_source_doc(
+            &rel,
+            &text,
+            &mut assigned,
+            &mut next_id,
+        )?);
+    }
+    if records.is_empty() {
+        bail!("ERROR: no files matched {:?}", args.glob);
+    }
+    records.sort_by(|a, b| a.source_markdown.cmp(&b.source_markdown));
+    write_ascii(&out_path, &render_external_sources_registry(&records))?;
+    println!("Wrote {} with {} documents.", args.out.display(), records.len());
+    Ok(())
+}
+
+fn normalize_book_docs(repo_root: &Path, args: &NormalizeBookDocsArgs) -> Result<()> {
+    if !args.bootstrap_from_markdown {
+        bail!("ERROR: pass --bootstrap-from-markdown to ingest markdown sources");
+    }
+    let out_path = repo_path(repo_root, &args.out);
+    let existing_ids = load_existing_document_ids(&out_path)?;
+    let mut assigned = existing_ids.clone();
+    let mut next_id = next_id_seed(&existing_ids, "BOOK");
+    let mut docs = Vec::new();
+    for entry in glob::glob(&repo_root.join("docs/book/src/**/*.md").to_string_lossy())? {
+        let path = entry?;
+        let rel = repo_rel(repo_root, &path);
+        let text = read_text_lossy(&path)?;
+        docs.push(parse_book_doc(&rel, &text, &mut assigned, &mut next_id));
+    }
+    if docs.is_empty() {
+        bail!("ERROR: no docs/book/src markdown files found");
+    }
+    docs.sort_by(|a, b| a.source_markdown.cmp(&b.source_markdown));
+    write_ascii(&out_path, &render_book_docs_registry(&docs))?;
+    println!("Wrote {} with {} documents.", args.out.display(), docs.len());
+    Ok(())
+}
+
+fn normalize_reports_narratives(
+    repo_root: &Path,
+    args: &NormalizeReportsNarrativesArgs,
+) -> Result<()> {
+    if !args.bootstrap_from_markdown {
+        bail!("ERROR: pass --bootstrap-from-markdown to ingest markdown sources");
+    }
+    let out_path = repo_path(repo_root, &args.out);
+    let existing_ids = load_existing_document_ids(&out_path)?;
+    let mut assigned = existing_ids.clone();
+    let mut next_id = next_id_seed(&existing_ids, "RPT");
+    let mut docs = Vec::new();
+    for entry in glob::glob(&repo_root.join("reports/*.md").to_string_lossy())? {
+        let path = entry?;
+        let rel = repo_rel(repo_root, &path);
+        let text = read_text_lossy(&path)?;
+        docs.push(parse_reports_doc(&rel, &text, &mut assigned, &mut next_id));
+    }
+    if docs.is_empty() {
+        bail!("ERROR: no reports markdown files found");
+    }
+    docs.sort_by(|a, b| a.source_markdown.cmp(&b.source_markdown));
+    write_ascii(&out_path, &render_reports_registry(&docs))?;
+    println!("Wrote {} with {} documents.", args.out.display(), docs.len());
+    Ok(())
+}
+
+fn normalize_docs_convos(repo_root: &Path, args: &NormalizeDocsConvosArgs) -> Result<()> {
+    if !args.bootstrap_from_markdown {
+        bail!("ERROR: pass --bootstrap-from-markdown to ingest markdown sources");
+    }
+    let out_path = repo_path(repo_root, &args.out);
+    let existing_ids = load_existing_document_ids(&out_path)?;
+    let mut assigned = existing_ids.clone();
+    let mut next_id = next_id_seed(&existing_ids, "CVX");
+    let mut docs = Vec::new();
+    for entry in glob::glob(&repo_root.join("docs/convos/*.md").to_string_lossy())? {
+        let path = entry?;
+        let rel = repo_rel(repo_root, &path);
+        let text = read_text_lossy(&path)?;
+        docs.push(parse_docs_convo_doc(&rel, &text, &mut assigned, &mut next_id));
+    }
+    if docs.is_empty() {
+        bail!("ERROR: no docs/convos markdown files found");
+    }
+    docs.sort_by(|a, b| a.source_markdown.cmp(&b.source_markdown));
+    write_ascii(&out_path, &render_docs_convos_registry(&docs))?;
+    println!("Wrote {} with {} documents.", args.out.display(), docs.len());
+    Ok(())
+}
+
+fn normalize_data_artifact_narratives(
+    repo_root: &Path,
+    args: &NormalizeDataArtifactNarrativesArgs,
+) -> Result<()> {
+    if !args.bootstrap_from_markdown {
+        bail!("ERROR: pass --bootstrap-from-markdown to ingest markdown sources");
+    }
+    let out_path = repo_path(repo_root, &args.out);
+    let existing_ids = load_existing_document_ids(&out_path)?;
+    let mut assigned = existing_ids.clone();
+    let mut next_id = next_id_seed(&existing_ids, "ART");
+    let mut docs = Vec::new();
+    let targets = data_artifact_targets();
+    for rel in &targets {
+        let path = repo_root.join(rel);
+        if !path.exists() {
+            bail!("ERROR: missing expected markdown source: {rel}");
+        }
+        let text = read_text_lossy(&path)?;
+        docs.push(parse_data_artifact_doc(
+            rel,
+            &text,
+            &mut assigned,
+            &mut next_id,
+        ));
+    }
+    docs.sort_by(|a, b| a.id.cmp(&b.id).reverse());
+    write_ascii(&out_path, &render_data_artifact_registry(&docs, &targets))?;
+    println!("Wrote {} with {} documents.", args.out.display(), docs.len());
+    Ok(())
+}
+
+fn normalize_entrypoint_docs(
+    repo_root: &Path,
+    args: &NormalizeEntrypointDocsArgs,
+) -> Result<()> {
+    if !args.bootstrap_from_markdown {
+        bail!("ERROR: pass --bootstrap-from-markdown to ingest markdown sources");
+    }
+    let mut docs = Vec::<(String, String, String)>::new();
+    for rel in entrypoint_files() {
+        let path = repo_root.join(rel);
+        if !path.exists() {
+            bail!("ERROR: missing entrypoint markdown: {rel}");
+        }
+        let body = strip_generated_preamble(&read_text_lossy(&path)?);
+        docs.push((
+            rel.to_string(),
+            title_from_markdown(&path, body.trim()),
+            body.trim().to_string(),
+        ));
+    }
+    write_ascii(
+        &repo_path(repo_root, &args.out),
+        &render_entrypoint_docs_registry(&docs),
+    )?;
+    println!("Wrote {} with {} entrypoint docs.", args.out.display(), docs.len());
+    Ok(())
+}
+
+const CANONICAL_TASK_STATUS: &[&str] = &[
+    "TODO",
+    "IN_PROGRESS",
+    "PARTIAL",
+    "DONE",
+    "REFUTED",
+    "DEFERRED",
+    "BLOCKED",
+];
+
+fn parse_claims_tasks(source_path: &Path) -> Result<(Vec<TaskRecord>, Vec<String>, usize)> {
+    let lines = read_text_lossy(source_path)?
+        .lines()
+        .map(ToString::to_string)
+        .collect::<Vec<_>>();
+    let heading_re = Regex::new(r"^(#{2,4})\s+(.+?)\s*$")?;
+    let header_re = Regex::new(
+        r"^\|\s*Claim ID\s*\|\s*Task\s*\|\s*Output artifact\(s\)\s*\|\s*Status\s*\|\s*$",
+    )?;
+    let sep_re = Regex::new(r"^\|\s*[-:]+\s*\|\s*[-:]+\s*\|\s*[-:]+\s*\|\s*[-:]+\s*\|$")?;
+    let row_re = Regex::new(r"^C-\d{3}$")?;
+    let mut tasks = Vec::new();
+    let mut section_names = Vec::new();
+    let mut section_index_by_name = HashMap::<String, usize>::new();
+    let mut current_section = "unscoped".to_string();
+    let mut table_index = 0usize;
+    let mut order_index = 0usize;
+    let mut i = 0usize;
+    while i < lines.len() {
+        if let Some(caps) = heading_re.captures(&lines[i]) {
+            current_section = caps
+                .get(2)
+                .map(|m| m.as_str().trim().to_string())
+                .unwrap_or_else(|| "unscoped".to_string());
+            if !section_index_by_name.contains_key(&current_section) {
+                section_names.push(current_section.clone());
+                section_index_by_name.insert(current_section.clone(), section_names.len());
+            }
+            i += 1;
+            continue;
+        }
+        if header_re.is_match(&lines[i]) {
+            table_index += 1;
+            i += 1;
+            while i < lines.len() && lines[i].trim_start().starts_with('|') {
+                let row = lines[i].trim();
+                if sep_re.is_match(row) {
+                    i += 1;
+                    continue;
+                }
+                if let Some((claim_id, task_text, output_raw, status_raw)) =
+                    parse_task_table_row(row, &row_re)
+                {
+                    order_index += 1;
+                    let section = current_section.clone();
+                    if !section_index_by_name.contains_key(&section) {
+                        section_names.push(section.clone());
+                        section_index_by_name.insert(section.clone(), section_names.len());
+                    }
+                    let status_token = normalize_task_status(&status_raw);
+                    tasks.push(TaskRecord {
+                        task_id: format!("CTASK-{order_index:04}"),
+                        claim_id,
+                        section: section.clone(),
+                        section_index: *section_index_by_name.get(&section).unwrap_or(&0),
+                        table_index,
+                        order_index,
+                        task_text,
+                        output_artifacts: extract_output_artifacts(&output_raw),
+                        output_raw,
+                        status_raw: status_raw.clone(),
+                        status_token: status_token.clone(),
+                        status_canonical: CANONICAL_TASK_STATUS.contains(&status_token.as_str()),
+                        source_line: i + 1,
+                    });
+                }
+                i += 1;
+            }
+            continue;
+        }
+        i += 1;
+    }
+    Ok((tasks, section_names, table_index))
+}
+
+fn parse_task_table_row(
+    row: &str,
+    claim_id_re: &Regex,
+) -> Option<(String, String, String, String)> {
+    let stripped = row.trim();
+    if !stripped.starts_with('|') {
+        return None;
+    }
+    let inner = stripped.trim_matches('|');
+    let parts = inner.split('|').map(|part| part.trim()).collect::<Vec<_>>();
+    if parts.len() < 4 || !claim_id_re.is_match(parts[0]) {
+        return None;
+    }
+    let status_raw = parts.last()?.to_string();
+    let output_raw = parts.get(parts.len().saturating_sub(2))?.to_string();
+    let task_text = parts[1..parts.len().saturating_sub(2)].join("|").trim().to_string();
+    Some((parts[0].to_string(), task_text, output_raw, status_raw))
+}
+
+fn normalize_task_status(raw: &str) -> String {
+    let cleaned = raw.split_whitespace().collect::<Vec<_>>().join(" ").to_ascii_uppercase();
+    match cleaned.as_str() {
+        "IN PROGRESS" => "IN_PROGRESS".to_string(),
+        other => other.replace(' ', "_"),
+    }
+}
+
+fn extract_output_artifacts(text: &str) -> Vec<String> {
+    let mut links = extract_backtick_paths(text);
+    if text.contains("CLAIMS_EVIDENCE_MATRIX.md")
+        && !links.contains(&"docs/CLAIMS_EVIDENCE_MATRIX.md".to_string())
+    {
+        links.push("docs/CLAIMS_EVIDENCE_MATRIX.md".to_string());
+    }
+    links
+}
+
+fn parse_domains(
+    csv_path: &Path,
+    by_domain_dir: &Path,
+    repo_root: &Path,
+) -> Result<(Vec<DomainRecord>, Vec<DomainEntry>, BTreeMap<String, Vec<String>>)> {
+    let csv_map = parse_claims_domain_map(csv_path)?;
+    let mut domain_records = Vec::new();
+    let mut all_entries = Vec::new();
+    for entry in fs::read_dir(by_domain_dir).with_context(|| format!("read {}", by_domain_dir.display()))? {
+        let path = entry?.path();
+        if path.extension().and_then(|ext| ext.to_str()) != Some("md") {
+            continue;
+        }
+        let rel_markdown = repo_rel(repo_root, &path);
+        let (declared_count, entries) = parse_by_domain_markdown(&path, &rel_markdown)?;
+        all_entries.extend(entries.iter().cloned());
+        let domain = path.file_stem().and_then(|s| s.to_str()).unwrap_or_default().to_string();
+        let csv_claim_ids = csv_map
+            .iter()
+            .filter_map(|(claim_id, domains)| domains.contains(&domain).then_some(claim_id.clone()))
+            .collect::<Vec<_>>();
+        let mut markdown_claim_ids = entries
+            .iter()
+            .map(|item| item.claim_id.clone())
+            .collect::<BTreeSet<_>>()
+            .into_iter()
+            .collect::<Vec<_>>();
+        let mut csv_claim_ids = csv_claim_ids;
+        csv_claim_ids.sort_by(|a, b| claim_sort_key(a).cmp(&claim_sort_key(b)));
+        markdown_claim_ids.sort_by(|a, b| claim_sort_key(a).cmp(&claim_sort_key(b)));
+        domain_records.push(DomainRecord {
+            domain,
+            source_markdown: rel_markdown,
+            declared_count,
+            csv_claim_ids,
+            markdown_claim_ids,
+        });
+    }
+    domain_records.sort_by(|a, b| a.domain.cmp(&b.domain));
+    Ok((domain_records, all_entries, csv_map))
+}
+
+fn parse_claims_domain_map(csv_path: &Path) -> Result<BTreeMap<String, Vec<String>>> {
+    let mut reader = csv::ReaderBuilder::new()
+        .flexible(true)
+        .from_path(csv_path)
+        .with_context(|| format!("open {}", csv_path.display()))?;
+    let mut out = BTreeMap::new();
+    for row in reader.deserialize::<BTreeMap<String, String>>() {
+        let row = row?;
+        let claim_id = row.get("claim_id").map(|s| s.trim()).unwrap_or_default();
+        if claim_id.is_empty() {
+            continue;
+        }
+        let mut domains = row
+            .get("domains")
+            .map(|s| {
+                s.split(';')
+                    .map(|part| part.trim().to_string())
+                    .filter(|part| !part.is_empty())
+                    .collect::<Vec<_>>()
+            })
+            .unwrap_or_default();
+        domains.sort();
+        domains.dedup();
+        out.insert(claim_id.to_string(), domains);
+    }
+    Ok(out)
+}
+
+fn parse_by_domain_markdown(path: &Path, source_markdown: &str) -> Result<(usize, Vec<DomainEntry>)> {
+    let lines = read_text_lossy(path)?
+        .lines()
+        .map(ToString::to_string)
+        .collect::<Vec<_>>();
+    let domain = path.file_stem().and_then(|s| s.to_str()).unwrap_or_default().to_string();
+    let hypothesis_re = Regex::new(r"^-\s+Hypothesis\s+(C-\d{3})\s+\((.*?)\):\s+(.*)$")?;
+    let date_re = Regex::new(r",\s*([0-9]{4}-[0-9]{2}-[0-9]{2})\s*$")?;
+    let mut declared_count = 0usize;
+    let mut entries = Vec::new();
+    let mut i = 0usize;
+    while i < lines.len() {
+        let line = lines[i].trim().to_string();
+        if let Some(rest) = line.strip_prefix("Count:") {
+            declared_count = rest.trim().parse::<usize>().unwrap_or(0);
+        }
+        if let Some(caps) = hypothesis_re.captures(&line) {
+            let claim_id = caps.get(1).map(|m| m.as_str()).unwrap_or_default().to_string();
+            let status_blob = caps.get(2).map(|m| m.as_str()).unwrap_or_default().trim().to_string();
+            let summary = caps.get(3).map(|m| m.as_str()).unwrap_or_default().trim().to_string();
+            let (status_text, status_date) = if let Some(date_caps) = date_re.captures(&status_blob) {
+                let date = date_caps.get(1).map(|m| m.as_str()).unwrap_or_default().to_string();
+                let cut = status_blob[..date_caps.get(0).map(|m| m.start()).unwrap_or(status_blob.len())]
+                    .trim()
+                    .trim_end_matches(',')
+                    .replace("**", "");
+                (cut.trim().to_string(), date)
+            } else {
+                (status_blob.replace("**", "").trim().to_string(), String::new())
+            };
+            let mut where_lines = Vec::new();
+            let mut j = i + 1;
+            while j < lines.len() {
+                let stripped = lines[j].trim();
+                if stripped.starts_with("- Hypothesis ") || stripped.starts_with("## ") {
+                    break;
+                }
+                if stripped.starts_with("- Where stated:") || stripped.starts_with("Where stated:") {
+                    where_lines.push(stripped.to_string());
+                    j += 1;
+                    continue;
+                }
+                if !where_lines.is_empty() && (lines[j].starts_with("  ") || lines[j].starts_with('\t')) {
+                    where_lines.push(stripped.to_string());
+                    j += 1;
+                    continue;
+                }
+                if !where_lines.is_empty() {
+                    break;
+                }
+                j += 1;
+            }
+            entries.push(DomainEntry {
+                domain: domain.clone(),
+                claim_id,
+                status_text: status_text.clone(),
+                status_token: normalize_domain_status(&status_text),
+                status_date,
+                summary,
+                where_stated: extract_backtick_paths(&where_lines.join(" ")),
+                source_markdown: source_markdown.to_string(),
+                source_line: i + 1,
+            });
+            i = j.max(i + 1);
+            continue;
+        }
+        i += 1;
+    }
+    Ok((declared_count, entries))
+}
+
+fn normalize_domain_status(raw: &str) -> String {
+    let text = raw.trim().to_ascii_lowercase();
+    if text.contains("partially verified") {
+        "PARTIALLY_VERIFIED".to_string()
+    } else if text.contains("not supported") {
+        "NOT_SUPPORTED".to_string()
+    } else if text.contains("speculative") {
+        "SPECULATIVE".to_string()
+    } else if text.contains("refuted") {
+        "REFUTED".to_string()
+    } else if text.contains("verified") {
+        "VERIFIED".to_string()
+    } else if text.contains("modeled") {
+        "MODELED".to_string()
+    } else if text.contains("closed") {
+        "CLOSED".to_string()
+    } else if text.contains("blocked") {
+        "BLOCKED".to_string()
+    } else if text.contains("deferred") {
+        "DEFERRED".to_string()
+    } else {
+        "UNKNOWN".to_string()
+    }
+}
+
+fn parse_tickets(tickets_dir: &Path, repo_root: &Path) -> Result<Vec<TicketRecord>> {
+    let mut out = Vec::new();
+    for entry in fs::read_dir(tickets_dir).with_context(|| format!("read {}", tickets_dir.display()))? {
+        let path = entry?.path();
+        if path.extension().and_then(|ext| ext.to_str()) != Some("md") {
+            continue;
+        }
+        out.push(parse_ticket(&path, repo_root)?);
+    }
+    out.sort_by(|a, b| a.source_markdown.cmp(&b.source_markdown));
+    Ok(out)
+}
+
+fn parse_ticket(path: &Path, repo_root: &Path) -> Result<TicketRecord> {
+    let text = read_text_lossy(path)?;
+    let lines = text.lines().map(ToString::to_string).collect::<Vec<_>>();
+    let claim_re = Regex::new(r"\bC-\d{3}\b")?;
+    let ticket_range_re = Regex::new(r"^C(\d{3})_C(\d{3})_claims_audit\.md$")?;
+    let backlog_re = Regex::new(r"reports/[A-Za-z0-9_./-]+\.md")?;
+    let done_re = Regex::new(r"(?m)^\s*-\s+\[[xX]\]\s+")?;
+    let open_re = Regex::new(r"(?m)^\s*-\s+\[\s\]\s+")?;
+    let title = lines
+        .iter()
+        .find_map(|line| line.strip_prefix("# ").map(|value| value.trim().to_string()))
+        .unwrap_or_else(|| path.file_stem().and_then(|s| s.to_str()).unwrap_or_default().to_string());
+    let meta = extract_ticket_meta(&lines)?;
+    let stem = path.file_name().and_then(|s| s.to_str()).unwrap_or_default();
+    let (ticket_kind, claim_range_start, claim_range_end, ticket_id) =
+        if let Some(caps) = ticket_range_re.captures(stem) {
+            let start = caps.get(1).and_then(|m| m.as_str().parse::<usize>().ok()).unwrap_or(0);
+            let end = caps.get(2).and_then(|m| m.as_str().parse::<usize>().ok()).unwrap_or(0);
+            (
+                "CLAIMS_AUDIT_BATCH".to_string(),
+                start,
+                end,
+                format!("TICKET-C{start:03}-C{end:03}"),
+            )
+        } else {
+            let normalized = Regex::new(r"[^A-Za-z0-9]+")?
+                .replace_all(path.file_stem().and_then(|s| s.to_str()).unwrap_or_default(), "-")
+                .trim_matches('-')
+                .to_ascii_uppercase();
+            ("GENERAL".to_string(), 0, 0, format!("TICKET-{normalized}"))
+        };
+    let mut claims_referenced = claim_re
+        .find_iter(&text)
+        .map(|m| m.as_str().to_string())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>();
+    claims_referenced.sort_by(|a, b| claim_sort_key(a).cmp(&claim_sort_key(b)));
+    let backlog_reports = backlog_re
+        .find_iter(&text)
+        .map(|m| m.as_str().to_string())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>();
+    let deliverables_block = extract_ticket_section(&lines, "## Deliverables");
+    let mut deliverable_links = extract_backtick_paths(&deliverables_block.join("\n"))
+        .into_iter()
+        .filter(|item| is_path_like(item))
+        .collect::<Vec<_>>();
+    if deliverable_links.is_empty() {
+        deliverable_links = extract_backtick_paths(&text)
+            .into_iter()
+            .filter(|item| is_path_like(item))
+            .collect();
+    }
+    let acceptance_checks = parse_ticket_acceptance_checks(&extract_ticket_section(
+        &lines,
+        "## Acceptance checks",
+    ))?;
+    let goal_summary = extract_ticket_section(&lines, "## Goal")
+        .into_iter()
+        .map(|line| line.trim().to_string())
+        .filter(|line| !line.is_empty())
+        .collect::<Vec<_>>()
+        .join(" ");
+    Ok(TicketRecord {
+        ticket_id,
+        title,
+        source_markdown: repo_rel(repo_root, path),
+        ticket_kind,
+        owner: meta.get("Owner").cloned().unwrap_or_default(),
+        created: meta.get("Created").cloned().unwrap_or_default(),
+        status_raw: meta.get("Status").cloned().unwrap_or_default(),
+        status_token: normalize_ticket_status(meta.get("Status").map(String::as_str).unwrap_or("")),
+        claim_range_start,
+        claim_range_end,
+        claims_referenced,
+        backlog_reports,
+        deliverable_links,
+        acceptance_checks,
+        goal_summary,
+        done_checkboxes: done_re.find_iter(&text).count(),
+        open_checkboxes: open_re.find_iter(&text).count(),
+    })
+}
+
+fn extract_ticket_meta(lines: &[String]) -> Result<BTreeMap<String, String>> {
+    let meta_re = Regex::new(r"^(Owner|Created|Status):\s*(.+?)\s*$")?;
+    let mut meta = BTreeMap::from([
+        ("Owner".to_string(), String::new()),
+        ("Created".to_string(), String::new()),
+        ("Status".to_string(), String::new()),
+    ]);
+    for line in lines.iter().take(40) {
+        if let Some(caps) = meta_re.captures(line.trim()) {
+            meta.insert(
+                caps.get(1).map(|m| m.as_str()).unwrap_or_default().to_string(),
+                caps.get(2).map(|m| m.as_str()).unwrap_or_default().trim().to_string(),
+            );
+        }
+    }
+    Ok(meta)
+}
+
+fn extract_ticket_section(lines: &[String], heading: &str) -> Vec<String> {
+    let Some(start) = lines
+        .iter()
+        .position(|line| line.trim().eq_ignore_ascii_case(heading))
+    else {
+        return Vec::new();
+    };
+    let mut out = Vec::new();
+    for line in lines.iter().skip(start + 1) {
+        if !out.is_empty() && line.starts_with("## ") {
+            break;
+        }
+        out.push(line.clone());
+    }
+    out
+}
+
+fn parse_ticket_acceptance_checks(lines: &[String]) -> Result<Vec<String>> {
+    let backtick_re = Regex::new(r"`([^`\n]+)`")?;
+    let mut checks = BTreeSet::new();
+    for line in lines {
+        let stripped = line.trim();
+        if !stripped.starts_with("- ") {
+            continue;
+        }
+        let matches = backtick_re
+            .captures_iter(stripped)
+            .filter_map(|caps| caps.get(1).map(|m| m.as_str().trim().to_string()))
+            .filter(|item| !item.is_empty())
+            .collect::<Vec<_>>();
+        if matches.is_empty() {
+            checks.insert(stripped.trim_start_matches("- ").trim().to_string());
+        } else {
+            for item in matches {
+                checks.insert(item);
+            }
+        }
+    }
+    Ok(checks.into_iter().collect())
+}
+
+fn normalize_ticket_status(raw: &str) -> String {
+    let text = raw.trim().to_ascii_uppercase();
+    if text.contains("IN PROGRESS") {
+        "IN_PROGRESS".to_string()
+    } else if text.contains("DONE") {
+        "DONE".to_string()
+    } else if text.contains("TODO") {
+        "TODO".to_string()
+    } else if text.contains("BLOCKED") {
+        "BLOCKED".to_string()
+    } else if text.contains("DEFERRED") {
+        "DEFERRED".to_string()
+    } else {
+        text.replace(' ', "_")
+    }
+}
+
+fn parse_bibliography(source: &Path) -> Result<(Vec<BibliographyEntry>, Vec<String>, Vec<String>)> {
+    let lines = read_text_lossy(source)?
+        .lines()
+        .map(ToString::to_string)
+        .collect::<Vec<_>>();
+    let h2_re = Regex::new(r"^##\s+(.+?)\s*$")?;
+    let h3_re = Regex::new(r"^###\s+(.+?)\s*$")?;
+    let url_re = Regex::new(r"\((https?://[^)\s]+)\)")?;
+    let doi_re = Regex::new(r"\bDOI:\s*([0-9A-Za-z./()_-]+)")?;
+    let mut group = String::new();
+    let mut section = String::new();
+    let mut groups = Vec::new();
+    let mut sections = Vec::new();
+    let mut entries = Vec::new();
+    let mut order_index = 0usize;
+    let mut i = 0usize;
+    while i < lines.len() {
+        if let Some(caps) = h2_re.captures(&lines[i]) {
+            group = caps.get(1).map(|m| m.as_str()).unwrap_or_default().trim().to_string();
+            i += 1;
+            continue;
+        }
+        if let Some(caps) = h3_re.captures(&lines[i]) {
+            section = caps.get(1).map(|m| m.as_str()).unwrap_or_default().trim().to_string();
+            i += 1;
+            continue;
+        }
+        let stripped = lines[i].trim_start();
+        if !(stripped.starts_with('*') && stripped.contains("**")) {
+            i += 1;
+            continue;
+        }
+        if group.is_empty() {
+            group = "Primary Research & Data Sources".to_string();
+        }
+        if section.is_empty() {
+            section = "Unscoped".to_string();
+        }
+        if !groups.contains(&group) {
+            groups.push(group.clone());
+        }
+        if !sections.contains(&section) {
+            sections.push(section.clone());
+        }
+        order_index += 1;
+        let mut citation_chunks = vec![stripped.trim_start_matches('*').trim().to_string()];
+        let mut notes = Vec::new();
+        let mut j = i + 1;
+        while j < lines.len() {
+            if h2_re.is_match(&lines[j])
+                || h3_re.is_match(&lines[j])
+                || (lines[j].trim_start().starts_with('*') && lines[j].contains("**"))
+            {
+                break;
+            }
+            let next = lines[j].trim();
+            if next.starts_with('*') {
+                let note = next.trim_start_matches('*').trim();
+                if !note.is_empty() {
+                    notes.push(note.to_string());
+                }
+            } else if !next.is_empty() {
+                citation_chunks.push(next.to_string());
+            }
+            j += 1;
+        }
+        let citation = collapse(&citation_chunks.join(" "));
+        let corpus = format!("{citation} {}", notes.join(" "));
+        let urls = url_re
+            .captures_iter(&corpus)
+            .filter_map(|caps| caps.get(1).map(|m| m.as_str().to_string()))
+            .collect::<BTreeSet<_>>()
+            .into_iter()
+            .collect::<Vec<_>>();
+        let dois = doi_re
+            .captures_iter(&corpus)
+            .filter_map(|caps| caps.get(1).map(|m| m.as_str().to_string()))
+            .collect::<BTreeSet<_>>()
+            .into_iter()
+            .collect::<Vec<_>>();
+        entries.push(BibliographyEntry {
+            entry_id: format!("BIB-{order_index:04}"),
+            order_index,
+            group: group.clone(),
+            section: section.clone(),
+            citation_markdown: citation,
+            notes,
+            urls,
+            dois,
+            source_line: i + 1,
+        });
+        i = j;
+    }
+    Ok((entries, groups, sections))
+}
+
+fn parse_external_source_doc(
+    rel_path: &str,
+    text: &str,
+    assigned: &mut HashMap<String, String>,
+    next_id: &mut usize,
+) -> Result<SourceDoc> {
+    let filename = Path::new(rel_path)
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or(rel_path);
+    let meta = external_source_meta(filename)
+        .with_context(|| format!("ERROR: Missing SOURCE_META entry for {filename}"))?;
+    let body = strip_generated_preamble(&ascii_clean(text)).trim().to_string();
+    Ok(SourceDoc {
+        doc_id: narrative_id_for_path(rel_path, "XS", assigned, next_id),
+        source_markdown: rel_path.to_string(),
+        slug: filename.trim_end_matches(".md").to_ascii_lowercase(),
+        title: first_title(&body, Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        status_token: meta.status_token.to_string(),
+        content_kind: meta.content_kind.to_string(),
+        authority_level: meta.authority_level.to_string(),
+        verification_level: meta.verification_level.to_string(),
+        operational_role: meta.operational_role.to_string(),
+        source_lineage_summary: meta.source_lineage_summary.to_string(),
+        truth_surfaces: meta.truth_surfaces.iter().map(|s| (*s).to_string()).collect(),
+        artifact_contract_paths: meta
+            .artifact_contract_paths
+            .iter()
+            .map(|s| (*s).to_string())
+            .collect(),
+        has_full_transcript: body.contains("## Full Transcript"),
+        claim_refs: extract_refs_by_regex(&body, r"\bC-\d{3}\b")?,
+        url_refs: extract_urls(&body),
+        path_refs: extract_backtick_paths(&body),
+        line_count: count_lines(&body),
+        notes: meta.notes.to_string(),
+        body_markdown: body,
+    })
+}
+
+fn parse_book_doc(
+    rel_path: &str,
+    text: &str,
+    assigned: &mut HashMap<String, String>,
+    next_id: &mut usize,
+) -> SimpleMarkdownDoc {
+    let rel = Path::new(rel_path);
+    let body = ascii_clean(text).trim_end().to_string();
+    SimpleMarkdownDoc {
+        id: narrative_id_for_path(rel_path, "BOOK", assigned, next_id),
+        source_markdown: rel_path.to_string(),
+        section: rel
+            .components()
+            .nth(3)
+            .map(|part| part.as_os_str().to_string_lossy().to_string())
+            .unwrap_or_else(|| "root".to_string()),
+        slug: rel.with_extension("").to_string_lossy().replace('/', "_"),
+        title: first_title(&body, rel.file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        content_kind: String::new(),
+        claim_refs: extract_refs_by_regex(&body, r"\bC-\d{3}\b").unwrap_or_default(),
+        path_refs: extract_backtick_paths(&body),
+        line_count: count_lines(&body),
+        body_markdown: body,
+    }
+}
+
+fn parse_reports_doc(
+    rel_path: &str,
+    text: &str,
+    assigned: &mut HashMap<String, String>,
+    next_id: &mut usize,
+) -> SimpleMarkdownDoc {
+    let body = ascii_clean(text).trim_end().to_string();
+    let filename = Path::new(rel_path)
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or(rel_path);
+    SimpleMarkdownDoc {
+        id: narrative_id_for_path(rel_path, "RPT", assigned, next_id),
+        source_markdown: rel_path.to_string(),
+        section: String::new(),
+        slug: Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path).to_string(),
+        title: first_title(&body, Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        content_kind: report_category(filename),
+        claim_refs: extract_refs_by_regex(&body, r"\bC-\d{3}\b").unwrap_or_default(),
+        path_refs: extract_backtick_paths(&body),
+        line_count: count_lines(&body),
+        body_markdown: body,
+    }
+}
+
+fn parse_docs_convo_doc(
+    rel_path: &str,
+    text: &str,
+    assigned: &mut HashMap<String, String>,
+    next_id: &mut usize,
+) -> SimpleMarkdownDoc {
+    let body = ascii_clean(text).trim_end().to_string();
+    let filename = Path::new(rel_path)
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or(rel_path);
+    SimpleMarkdownDoc {
+        id: narrative_id_for_path(rel_path, "CVX", assigned, next_id),
+        source_markdown: rel_path.to_string(),
+        section: String::new(),
+        slug: Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path).to_string(),
+        title: first_title(&body, Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        content_kind: docs_convo_kind(filename),
+        claim_refs: extract_refs_by_regex(&body, r"\bC-\d{3}\b").unwrap_or_default(),
+        path_refs: extract_backtick_paths(&body),
+        line_count: count_lines(&body),
+        body_markdown: body,
+    }
+}
+
+fn parse_data_artifact_doc(
+    rel_path: &str,
+    text: &str,
+    assigned: &mut HashMap<String, String>,
+    next_id: &mut usize,
+) -> SimpleMarkdownDoc {
+    let body = ascii_clean(text).trim_end().to_string();
+    let filename = Path::new(rel_path)
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or(rel_path);
+    SimpleMarkdownDoc {
+        id: narrative_id_for_path(rel_path, "ART", assigned, next_id),
+        source_markdown: rel_path.to_string(),
+        section: String::new(),
+        slug: Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path).to_string(),
+        title: first_title(&body, Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        content_kind: data_artifact_kind(filename),
+        claim_refs: extract_refs_by_regex(&body, r"\bC-\d{3}\b").unwrap_or_default(),
+        path_refs: extract_backtick_paths(&body),
+        line_count: count_lines(&body),
+        body_markdown: body,
+    }
+}
+
+fn render_claims_tasks_toml(
+    tasks: &[TaskRecord],
+    sections: &[String],
+    table_count: usize,
+    now: &str,
+) -> String {
+    let canonical_count = tasks.iter().filter(|task| task.status_canonical).count();
+    let mut lines = vec![
+        "# Claims task registry (TOML-first).".to_string(),
+        "# Source markdown remains human-facing; this file is authoritative.".to_string(),
+        String::new(),
+        "[claims_tasks]".to_string(),
+        "authoritative = true".to_string(),
+        format!("updated = {}", q(now)),
+        r#"source_markdown = "docs/CLAIMS_TASKS.md""#.to_string(),
+        format!("table_count = {table_count}"),
+        format!("task_count = {}", tasks.len()),
+        format!("section_count = {}", sections.len()),
+        format!("canonical_status_task_count = {canonical_count}"),
+        format!("noncanonical_status_task_count = {}", tasks.len().saturating_sub(canonical_count)),
+        format!(
+            "canonical_status_tokens = {}",
+            q_list(&CANONICAL_TASK_STATUS.iter().map(|s| (*s).to_string()).collect::<Vec<_>>())
+        ),
+        String::new(),
+    ];
+    for (idx, section) in sections.iter().enumerate() {
+        let section_task_count = tasks.iter().filter(|task| &task.section == section).count();
+        lines.push("[[section]]".to_string());
+        lines.push(format!("id = {}", q(&format!("CTS-{:03}", idx + 1))));
+        lines.push(format!("name = {}", q(section)));
+        lines.push(format!("task_count = {section_task_count}"));
+        lines.push(String::new());
+    }
+    for task in tasks {
+        lines.push("[[task]]".to_string());
+        lines.push(format!("id = {}", q(&task.task_id)));
+        lines.push(format!("claim_id = {}", q(&task.claim_id)));
+        lines.push(format!("section = {}", q(&task.section)));
+        lines.push(format!("section_index = {}", task.section_index));
+        lines.push(format!("table_index = {}", task.table_index));
+        lines.push(format!("order_index = {}", task.order_index));
+        lines.push(format!("status_token = {}", q(&task.status_token)));
+        lines.push(format!("status_raw = {}", q(&task.status_raw)));
+        lines.push(format!("status_canonical = {}", bool_toml(task.status_canonical)));
+        lines.push(format!("task = {}", q(&task.task_text)));
+        lines.push(format!("output_artifacts = {}", q_list(&task.output_artifacts)));
+        lines.push(format!("output_artifacts_raw = {}", q(&task.output_raw)));
+        lines.push(format!("source_line = {}", task.source_line));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_claims_domains_toml(
+    domain_records: &[DomainRecord],
+    entries: &[DomainEntry],
+    csv_map: &BTreeMap<String, Vec<String>>,
+    now: &str,
+) -> String {
+    let mut markdown_claim_domains = BTreeMap::<String, BTreeSet<String>>::new();
+    for entry in entries {
+        markdown_claim_domains
+            .entry(entry.claim_id.clone())
+            .or_default()
+            .insert(entry.domain.clone());
+    }
+    let all_claim_ids = csv_map
+        .keys()
+        .cloned()
+        .chain(markdown_claim_domains.keys().cloned())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>();
+    let mut lines = vec![
+        "# Claims domain registry (TOML-first).".to_string(),
+        "# Reconciles CLAIMS_DOMAIN_MAP.csv and generated by-domain markdown files.".to_string(),
+        String::new(),
+        "[claims_domains]".to_string(),
+        "authoritative = true".to_string(),
+        format!("updated = {}", q(now)),
+        r#"source_csv = "docs/claims/CLAIMS_DOMAIN_MAP.csv""#.to_string(),
+        r#"source_markdown_glob = "docs/claims/by_domain/*.md""#.to_string(),
+        format!("domain_file_count = {}", domain_records.len()),
+        format!("claim_count = {}", all_claim_ids.len()),
+        format!("entry_count = {}", entries.len()),
+        String::new(),
+    ];
+    for record in domain_records {
+        lines.push("[[domain]]".to_string());
+        lines.push(format!("id = {}", q(&record.domain)));
+        lines.push(format!("source_markdown = {}", q(&record.source_markdown)));
+        lines.push(format!("declared_count = {}", record.declared_count));
+        lines.push(format!("csv_claim_count = {}", record.csv_claim_ids.len()));
+        lines.push(format!("markdown_claim_count = {}", record.markdown_claim_ids.len()));
+        lines.push(format!(
+            "count_match = {}",
+            bool_toml(record.declared_count == record.markdown_claim_ids.len())
+        ));
+        lines.push(format!(
+            "mapping_match = {}",
+            bool_toml(record.csv_claim_ids == record.markdown_claim_ids)
+        ));
+        lines.push(format!("csv_claim_ids = {}", q_list(&record.csv_claim_ids)));
+        lines.push(format!(
+            "markdown_claim_ids = {}",
+            q_list(&record.markdown_claim_ids)
+        ));
+        lines.push(String::new());
+    }
+    for claim_id in all_claim_ids {
+        let csv_domains = csv_map.get(&claim_id).cloned().unwrap_or_default();
+        let markdown_domains = markdown_claim_domains
+            .get(&claim_id)
+            .cloned()
+            .unwrap_or_default()
+            .into_iter()
+            .collect::<Vec<_>>();
+        lines.push("[[claim_domain]]".to_string());
+        lines.push(format!("claim_id = {}", q(&claim_id)));
+        lines.push(format!("domains_csv = {}", q_list(&csv_domains)));
+        lines.push(format!("domains_markdown = {}", q_list(&markdown_domains)));
+        lines.push(format!(
+            "domain_sets_match = {}",
+            bool_toml(csv_domains == markdown_domains)
+        ));
+        lines.push(String::new());
+    }
+    let mut sorted_entries = entries.to_vec();
+    sorted_entries.sort_by(|a, b| {
+        a.domain
+            .cmp(&b.domain)
+            .then_with(|| claim_sort_key(&a.claim_id).cmp(&claim_sort_key(&b.claim_id)))
+            .then_with(|| a.source_line.cmp(&b.source_line))
+    });
+    for entry in &sorted_entries {
+        lines.push("[[domain_entry]]".to_string());
+        lines.push(format!("domain = {}", q(&entry.domain)));
+        lines.push(format!("claim_id = {}", q(&entry.claim_id)));
+        lines.push(format!("status_token = {}", q(&entry.status_token)));
+        lines.push(format!("status_text = {}", q(&entry.status_text)));
+        lines.push(format!("status_date = {}", q(&entry.status_date)));
+        lines.push(format!("summary = {}", q(&entry.summary)));
+        lines.push(format!("where_stated = {}", q_list(&entry.where_stated)));
+        lines.push(format!("source_markdown = {}", q(&entry.source_markdown)));
+        lines.push(format!("source_line = {}", entry.source_line));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_claim_tickets_toml(tickets: &[TicketRecord], now: &str) -> String {
+    let mut lines = vec![
+        "# Claim-ticket registry (TOML-first).".to_string(),
+        "# Tracks claims audit batches and related planning tickets.".to_string(),
+        String::new(),
+        "[claim_tickets]".to_string(),
+        "authoritative = true".to_string(),
+        format!("updated = {}", q(now)),
+        r#"source_markdown_glob = "docs/tickets/*.md""#.to_string(),
+        format!("ticket_count = {}", tickets.len()),
+        String::new(),
+    ];
+    for ticket in tickets {
+        lines.push("[[ticket]]".to_string());
+        lines.push(format!("id = {}", q(&ticket.ticket_id)));
+        lines.push(format!("title = {}", q(&ticket.title)));
+        lines.push(format!("source_markdown = {}", q(&ticket.source_markdown)));
+        lines.push(format!("ticket_kind = {}", q(&ticket.ticket_kind)));
+        lines.push(format!("owner = {}", q(&ticket.owner)));
+        lines.push(format!("created = {}", q(&ticket.created)));
+        lines.push(format!("status_raw = {}", q(&ticket.status_raw)));
+        lines.push(format!("status_token = {}", q(&ticket.status_token)));
+        lines.push(format!("claim_range_start = {}", ticket.claim_range_start));
+        lines.push(format!("claim_range_end = {}", ticket.claim_range_end));
+        lines.push(format!(
+            "claims_referenced = {}",
+            q_list(&ticket.claims_referenced)
+        ));
+        lines.push(format!("backlog_reports = {}", q_list(&ticket.backlog_reports)));
+        lines.push(format!(
+            "deliverable_links = {}",
+            q_list(&ticket.deliverable_links)
+        ));
+        lines.push(format!(
+            "acceptance_checks = {}",
+            q_list(&ticket.acceptance_checks)
+        ));
+        lines.push(format!("goal_summary = {}", q(&ticket.goal_summary)));
+        lines.push(format!("done_checkboxes = {}", ticket.done_checkboxes));
+        lines.push(format!("open_checkboxes = {}", ticket.open_checkboxes));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_bibliography_registry(
+    entries: &[BibliographyEntry],
+    groups: &[String],
+    sections: &[String],
+    now: &str,
+) -> String {
+    let mut lines = vec![
+        "# Bibliography registry (TOML-first).".to_string(),
+        "# Bootstrap source markdown is docs/BIBLIOGRAPHY.md.".to_string(),
+        String::new(),
+        "[bibliography]".to_string(),
+        "authoritative = true".to_string(),
+        format!("updated = {}", q(now)),
+        r#"source_markdown = "docs/BIBLIOGRAPHY.md""#.to_string(),
+        format!("group_count = {}", groups.len()),
+        format!("section_count = {}", sections.len()),
+        format!("entry_count = {}", entries.len()),
+        String::new(),
+    ];
+    for (idx, name) in groups.iter().enumerate() {
+        let entry_count = entries.iter().filter(|entry| &entry.group == name).count();
+        let section_count = entries
+            .iter()
+            .filter(|entry| &entry.group == name)
+            .map(|entry| entry.section.clone())
+            .collect::<BTreeSet<_>>()
+            .len();
+        lines.push("[[group]]".to_string());
+        lines.push(format!("id = {}", q(&format!("BGR-{:03}", idx + 1))));
+        lines.push(format!("name = {}", q(name)));
+        lines.push(format!("section_count = {section_count}"));
+        lines.push(format!("entry_count = {entry_count}"));
+        lines.push(String::new());
+    }
+    for (idx, name) in sections.iter().enumerate() {
+        let entry_count = entries.iter().filter(|entry| &entry.section == name).count();
+        let group_names = entries
+            .iter()
+            .filter(|entry| &entry.section == name)
+            .map(|entry| entry.group.clone())
+            .collect::<BTreeSet<_>>()
+            .into_iter()
+            .collect::<Vec<_>>();
+        lines.push("[[section]]".to_string());
+        lines.push(format!("id = {}", q(&format!("BSEC-{:03}", idx + 1))));
+        lines.push(format!("name = {}", q(name)));
+        lines.push(format!("groups = {}", q_list(&group_names)));
+        lines.push(format!("entry_count = {entry_count}"));
+        lines.push(String::new());
+    }
+    for entry in entries {
+        lines.push("[[entry]]".to_string());
+        lines.push(format!("id = {}", q(&entry.entry_id)));
+        lines.push(format!("order_index = {}", entry.order_index));
+        lines.push(format!("group = {}", q(&entry.group)));
+        lines.push(format!("section = {}", q(&entry.section)));
+        lines.push(format!(
+            "citation_markdown = {}",
+            q(&entry.citation_markdown)
+        ));
+        lines.push(format!("notes = {}", q_list(&entry.notes)));
+        lines.push(format!("urls = {}", q_list(&entry.urls)));
+        lines.push(format!("dois = {}", q_list(&entry.dois)));
+        lines.push(format!("source_line = {}", entry.source_line));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_external_sources_registry(records: &[SourceDoc]) -> String {
+    let now = Local::now().format("%Y-%m-%d").to_string();
+    let mut lines = vec![
+        "# External source dossiers normalized into TOML-first registry.".to_string(),
+        "# Generated by crates/gororoba_cli_data/src/bin/markdown_registry.rs".to_string(),
+        String::new(),
+        "[external_sources]".to_string(),
+        format!("updated = {}", q(&now)),
+        "authoritative = true".to_string(),
+        r#"source_markdown_glob = "docs/external_sources/*.md""#.to_string(),
+        format!("document_count = {}", records.len()),
+        String::new(),
+    ];
+    for rec in records {
+        lines.push("[[document]]".to_string());
+        lines.push(format!("id = {}", q(&rec.doc_id)));
+        lines.push(format!("source_markdown = {}", q(&rec.source_markdown)));
+        lines.push(format!("slug = {}", q(&rec.slug)));
+        lines.push(format!("title = {}", q(&rec.title)));
+        lines.push(format!("status_token = {}", q(&rec.status_token)));
+        lines.push(format!("content_kind = {}", q(&rec.content_kind)));
+        lines.push(format!("authority_level = {}", q(&rec.authority_level)));
+        lines.push(format!(
+            "verification_level = {}",
+            q(&rec.verification_level)
+        ));
+        lines.push(format!("operational_role = {}", q(&rec.operational_role)));
+        lines.push(format!(
+            "source_lineage_summary = {}",
+            q(&rec.source_lineage_summary)
+        ));
+        lines.push(format!("truth_surfaces = {}", q_list(&rec.truth_surfaces)));
+        lines.push(format!(
+            "artifact_contract_paths = {}",
+            q_list(&rec.artifact_contract_paths)
+        ));
+        lines.push(format!(
+            "has_full_transcript = {}",
+            bool_toml(rec.has_full_transcript)
+        ));
+        lines.push(format!("claim_refs = {}", q_list(&rec.claim_refs)));
+        lines.push(format!("url_refs = {}", q_list(&rec.url_refs)));
+        lines.push(format!("path_refs = {}", q_list(&rec.path_refs)));
+        lines.push(format!("line_count = {}", rec.line_count));
+        lines.push(format!("notes = {}", q(&rec.notes)));
+        lines.push(format!("body_markdown = {}", toml_multiline(&rec.body_markdown)));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_book_docs_registry(docs: &[SimpleMarkdownDoc]) -> String {
+    let now = Local::now().format("%Y-%m-%d").to_string();
+    let mut lines = vec![
+        "# mdBook pages registry (TOML-first).".to_string(),
+        "# Generated by crates/gororoba_cli_data/src/bin/markdown_registry.rs".to_string(),
+        String::new(),
+        "[book_docs]".to_string(),
+        format!("updated = {}", q(&now)),
+        "authoritative = true".to_string(),
+        r#"source_markdown_glob = "docs/book/src/**/*.md""#.to_string(),
+        format!("document_count = {}", docs.len()),
+        String::new(),
+    ];
+    for doc in docs {
+        lines.push("[[document]]".to_string());
+        lines.push(format!("id = {}", q(&doc.id)));
+        lines.push(format!("source_markdown = {}", q(&doc.source_markdown)));
+        lines.push(format!("section = {}", q(&doc.section)));
+        lines.push(format!("slug = {}", q(&doc.slug)));
+        lines.push(format!("title = {}", q(&doc.title)));
+        lines.push(format!("claim_refs = {}", q_list(&doc.claim_refs)));
+        lines.push(format!("path_refs = {}", q_list(&doc.path_refs)));
+        lines.push(format!("line_count = {}", doc.line_count));
+        lines.push(format!("body_markdown = {}", toml_multiline(&doc.body_markdown)));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_reports_registry(docs: &[SimpleMarkdownDoc]) -> String {
+    let now = Local::now().format("%Y-%m-%d").to_string();
+    let mut lines = vec![
+        "# Reports narratives registry (TOML-first).".to_string(),
+        "# Generated by crates/gororoba_cli_data/src/bin/markdown_registry.rs".to_string(),
+        String::new(),
+        "[reports_narratives]".to_string(),
+        format!("updated = {}", q(&now)),
+        "authoritative = true".to_string(),
+        r#"source_markdown_glob = "reports/*.md""#.to_string(),
+        format!("document_count = {}", docs.len()),
+        String::new(),
+    ];
+    for doc in docs {
+        lines.push("[[document]]".to_string());
+        lines.push(format!("id = {}", q(&doc.id)));
+        lines.push(format!("source_markdown = {}", q(&doc.source_markdown)));
+        lines.push(format!("slug = {}", q(&doc.slug)));
+        lines.push(format!("title = {}", q(&doc.title)));
+        lines.push(format!("category = {}", q(&doc.content_kind)));
+        lines.push(format!("claim_refs = {}", q_list(&doc.claim_refs)));
+        lines.push(format!("path_refs = {}", q_list(&doc.path_refs)));
+        lines.push(format!("line_count = {}", doc.line_count));
+        lines.push(format!("body_markdown = {}", toml_multiline(&doc.body_markdown)));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_docs_convos_registry(docs: &[SimpleMarkdownDoc]) -> String {
+    let now = Local::now().format("%Y-%m-%d").to_string();
+    let mut lines = vec![
+        "# docs/convos narratives registry (TOML-first).".to_string(),
+        "# Generated by crates/gororoba_cli_data/src/bin/markdown_registry.rs".to_string(),
+        String::new(),
+        "[docs_convos]".to_string(),
+        format!("updated = {}", q(&now)),
+        "authoritative = true".to_string(),
+        r#"source_markdown_glob = "docs/convos/*.md""#.to_string(),
+        format!("document_count = {}", docs.len()),
+        String::new(),
+    ];
+    for doc in docs {
+        lines.push("[[document]]".to_string());
+        lines.push(format!("id = {}", q(&doc.id)));
+        lines.push(format!("source_markdown = {}", q(&doc.source_markdown)));
+        lines.push(format!("slug = {}", q(&doc.slug)));
+        lines.push(format!("title = {}", q(&doc.title)));
+        lines.push(format!("content_kind = {}", q(&doc.content_kind)));
+        lines.push(format!("claim_refs = {}", q_list(&doc.claim_refs)));
+        lines.push(format!("path_refs = {}", q_list(&doc.path_refs)));
+        lines.push(format!("line_count = {}", doc.line_count));
+        lines.push(format!("body_markdown = {}", toml_multiline(&doc.body_markdown)));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_data_artifact_registry(docs: &[SimpleMarkdownDoc], targets: &[String]) -> String {
+    let now = Local::now().format("%Y-%m-%d").to_string();
+    let mut lines = vec![
+        "# Data artifact narratives registry (TOML-first).".to_string(),
+        "# Generated by crates/gororoba_cli_data/src/bin/markdown_registry.rs".to_string(),
+        String::new(),
+        "[data_artifact_narratives]".to_string(),
+        format!("updated = {}", q(&now)),
+        "authoritative = true".to_string(),
+        format!("source_markdown_count = {}", targets.len()),
+        format!("document_count = {}", docs.len()),
+        String::new(),
+        "source_markdown = [".to_string(),
+    ];
+    for rel in targets {
+        lines.push(format!("  {},", q(rel)));
+    }
+    lines.push("]".to_string());
+    lines.push(String::new());
+    for doc in docs {
+        lines.push("[[document]]".to_string());
+        lines.push(format!("id = {}", q(&doc.id)));
+        lines.push(format!("source_markdown = {}", q(&doc.source_markdown)));
+        lines.push(format!("slug = {}", q(&doc.slug)));
+        lines.push(format!("title = {}", q(&doc.title)));
+        lines.push(format!("content_kind = {}", q(&doc.content_kind)));
+        lines.push(format!("claim_refs = {}", q_list(&doc.claim_refs)));
+        lines.push(format!("path_refs = {}", q_list(&doc.path_refs)));
+        lines.push(format!("line_count = {}", doc.line_count));
+        lines.push(format!("body_markdown = {}", toml_multiline(&doc.body_markdown)));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_entrypoint_docs_registry(docs: &[(String, String, String)]) -> String {
+    let now = Local::now().format("%Y-%m-%d").to_string();
+    let mut lines = vec![
+        "# Entrypoint markdown registry (TOML-first).".to_string(),
+        "# Generated by crates/gororoba_cli_data/src/bin/markdown_registry.rs".to_string(),
+        String::new(),
+        "[entrypoint_docs]".to_string(),
+        "authoritative = true".to_string(),
+        format!("updated = {}", q(&now)),
+        format!("document_count = {}", docs.len()),
+        String::new(),
+    ];
+    for (path, title, body) in docs {
+        lines.push("[[document]]".to_string());
+        lines.push(format!("path = {}", q(path)));
+        lines.push(format!("title = {}", q(title)));
+        lines.push(format!("body_markdown = {}", toml_multiline_ascii(body)));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn report_category(filename: &str) -> String {
+    let name = filename.to_ascii_lowercase();
+    if name.starts_with("claims_batch_backlog_") {
+        "claims_backlog".to_string()
+    } else if name.contains("audit") {
+        "audit".to_string()
+    } else if name.contains("inventory") {
+        "inventory".to_string()
+    } else if name.contains("plan") {
+        "plan".to_string()
+    } else if name.contains("status") {
+        "status".to_string()
+    } else {
+        "report".to_string()
+    }
+}
+
+fn docs_convo_kind(filename: &str) -> String {
+    let name = filename.to_ascii_lowercase();
+    if name.starts_with("audit_") {
+        "audit_extract".to_string()
+    } else if name.starts_with("keywords_") {
+        "keyword_extract".to_string()
+    } else if name.starts_with("implement_") {
+        "implementation_extract".to_string()
+    } else if name == "convos_claims_inbox.md" {
+        "claims_inbox".to_string()
+    } else {
+        "convo_note".to_string()
+    }
+}
+
+fn data_artifact_kind(filename: &str) -> String {
+    match filename {
+        "ALGEBRAIC_FOUNDATIONS.md" => "algebraic_foundations",
+        "BIBLIOGRAPHY.md" => "artifact_bibliography",
+        "FINAL_REPORT.md" => "final_report",
+        "QUANTUM_REPORT.md" => "quantum_report",
+        "SIMULATION_REPORT.md" => "simulation_report",
+        "WARP_RING_REPORT.md" => "simulation_report",
+        "THESIS_3D_SYNTHESIS.md" => "simulation_report",
+        "extracted_equations.md" => "equation_extract",
+        "reality_check_and_synthesis.md" => "reality_check_and_synthesis",
+        _ => "artifact_narrative",
+    }
+    .to_string()
+}
+
+fn data_artifact_targets() -> Vec<String> {
+    vec![
+        "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
+        "data/artifacts/BIBLIOGRAPHY.md",
+        "data/artifacts/FINAL_REPORT.md",
+        "data/artifacts/QUANTUM_REPORT.md",
+        "data/artifacts/SIMULATION_REPORT.md",
+        "data/artifacts/extracted_equations.md",
+        "data/artifacts/reality_check_and_synthesis.md",
+        "data/artifacts/WARP_RING_REPORT.md",
+        "data/artifacts/THESIS_3D_SYNTHESIS.md",
+    ]
+    .into_iter()
+    .map(ToString::to_string)
+    .collect()
+}
+
+fn entrypoint_files() -> Vec<&'static str> {
+    vec![
+        "CLAUDE.md",
+        "GEMINI.md",
+        "README.md",
+        "curated/README.md",
+        "curated/01_theory_frameworks/README_COQ.md",
+        "data/csv/README.md",
+        "data/artifacts/README.md",
+    ]
+}
+
+fn external_source_meta(filename: &str) -> Option<SourceDocMeta> {
+    let default = |status_token, content_kind, authority_level, verification_level, notes| {
+        Some(SourceDocMeta {
+            status_token,
+            content_kind,
+            authority_level,
+            verification_level,
+            operational_role: "reference_capture",
+            source_lineage_summary: "",
+            truth_surfaces: &[],
+            artifact_contract_paths: &[],
+            notes,
+        })
+    };
+    match filename {
+        "C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md" => Some(SourceDocMeta {
+            status_token: "ACTIVE",
+            content_kind: "claim_dataset_provenance",
+            authority_level: "primary_paper_bridge",
+            verification_level: "design_stage_replication",
+            operational_role: "claim_bridge",
+            source_lineage_summary: "",
+            truth_surfaces: &["algebra_topology", "design_stage_benchmark"],
+            artifact_contract_paths: &[
+                "crates/materials_core/src/nonlocal_metamaterial.rs",
+                "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs",
+                "data/csv/c010_nonlocal_material_calibrations.csv",
+            ],
+            notes: "Sources pack for the non-local C-010 recovery lane with explicit literature-backed LC, Floquet, graphene, and magnonic calibration anchors.",
+        }),
+        "C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md" => Some(SourceDocMeta {
+            status_token: "REFERENCE",
+            content_kind: "claim_dataset_provenance",
+            authority_level: "project_claim_repair",
+            verification_level: "deterministic_toy_reproduction",
+            operational_role: "claim_bridge",
+            source_lineage_summary: "",
+            truth_surfaces: &["toy_mapping", "degeneracy_disclosure"],
+            artifact_contract_paths: &[
+                "crates/materials_core/src/pathion_toy_mapping.rs",
+                "crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs",
+                "data/csv/c053_pathion_tmm_summary.csv",
+                "crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs",
+            ],
+            notes: "Repair dossier for the narrow C-053 toy lane. Keeps the pathion-to-TMM mapping reproducible while making its diagonal-only degeneracy explicit.",
+        }),
+        "C071_FRB_ULTRAMETRIC_SOURCES.md" => default(
+            "REFUTED",
+            "claim_dataset_provenance",
+            "primary_dataset_index",
+            "computed_refutation",
+            "Claim C-071 outcome is explicitly refuted with reproducible dataset hashes.",
+        ),
+        "DATASET_MANIFEST.md" => Some(SourceDocMeta {
+            status_token: "ACTIVE",
+            content_kind: "dataset_manifest",
+            authority_level: "provider_manifest",
+            verification_level: "operational",
+            operational_role: "provider_manifest",
+            source_lineage_summary: "",
+            truth_surfaces: &[],
+            artifact_contract_paths: &[],
+            notes: "Operational provider and source manifest for fetch-datasets registry alignment.",
+        }),
+        "DE_MARRAIS_BOXKITES_III.md" => default(
+            "REFERENCE",
+            "paper_transcript",
+            "primary_cached_paper",
+            "source_capture",
+            "Cached transcript mirror for source auditability; not itself a verification result.",
+        ),
+        "DE_MARRAIS_CATAMARAN.md" => default(
+            "REFERENCE",
+            "paper_summary",
+            "primary_paper_summary",
+            "source_capture",
+            "Structured summary of a primary paper with claims-supporting context.",
+        ),
+        "DE_MARRAIS_FLYING_HIGHER.md" => default(
+            "REFERENCE",
+            "paper_transcript",
+            "primary_cached_paper",
+            "source_capture",
+            "Contains large transcript and summary notes for downstream claims triage.",
+        ),
+        "DE_MARRAIS_PLACEHOLDER_I.md" => default(
+            "REFERENCE",
+            "paper_transcript",
+            "primary_cached_paper",
+            "source_capture",
+            "Revision-aware source capture for placeholder substructure literature.",
+        ),
+        "DE_MARRAIS_PLACEHOLDER_III.md" => default(
+            "REFERENCE",
+            "paper_summary",
+            "primary_paper_summary",
+            "source_capture",
+            "Short-form summary and key-result extraction from placeholder III source.",
+        ),
+        "DE_MARRAIS_PRESTO_DIGITIZATION.md" => default(
+            "REFERENCE",
+            "paper_transcript",
+            "primary_cached_paper",
+            "source_capture",
+            "Primary transcript with explicit rule extraction for Cayley-Dickson references.",
+        ),
+        "DE_MARRAIS_WOLFRAM_SLIDES.md" => default(
+            "REFERENCE",
+            "slides_transcript",
+            "primary_cached_slides",
+            "source_capture",
+            "Slide transcript capture; interpretation remains separate from source capture.",
+        ),
+        "HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md" => Some(SourceDocMeta {
+            status_token: "ACTIVE",
+            content_kind: "claims_inbox_index",
+            authority_level: "project_tracking_index",
+            verification_level: "workflow_control",
+            operational_role: "chronology_pack_status",
+            source_lineage_summary: "",
+            truth_surfaces: &["chronology_control"],
+            artifact_contract_paths: &[],
+            notes: "Operational heliosphere chronology and staged-lane status note for experiment scoping.",
+        }),
+        "INDEX.md" => Some(SourceDocMeta {
+            status_token: "ACTIVE",
+            content_kind: "generated_index",
+            authority_level: "auto_generated",
+            verification_level: "operational",
+            operational_role: "generated_index",
+            source_lineage_summary: "",
+            truth_surfaces: &[],
+            artifact_contract_paths: &[],
+            notes: "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml.",
+        }),
+        "INVERSE_CD_FORMALISM.md" => default(
+            "UNVERIFIED",
+            "conversation_extraction",
+            "derived_conversation_note",
+            "unverified_hypothesis",
+            "Conversation-derived formalism notes flagged as unverified in-file.",
+        ),
+        "OMNI_DATA_AUDIT_2026-03-10.md" => Some(SourceDocMeta {
+            status_token: "ACTIVE",
+            content_kind: "claim_dataset_provenance",
+            authority_level: "primary_dataset_index",
+            verification_level: "source_capture",
+            operational_role: "dataset_lineage_audit",
+            source_lineage_summary: "Mixed lineage: governed AMDA omni-hour-all fallback for 1997-2019; canonical SPDF OMNI2 yearly ASCII for 2020-2025.",
+            truth_surfaces: &["environment_context", "lineage_transition"],
+            artifact_contract_paths: &[
+                "crates/data_core/src/catalogs/omni.rs",
+                "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs",
+            ],
+            notes: "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage.",
+        }),
+        "OPEN_CLAIMS_SOURCES.md" => Some(SourceDocMeta {
+            status_token: "ACTIVE",
+            content_kind: "claims_inbox_index",
+            authority_level: "project_tracking_index",
+            verification_level: "workflow_control",
+            operational_role: "claims_inbox",
+            source_lineage_summary: "",
+            truth_surfaces: &[],
+            artifact_contract_paths: &[],
+            notes: "Inbox index for open claims pending dedicated source dossiers.",
+        }),
+        "PIONEER_FLYBY_ANOMALY_SOURCES.md" => Some(SourceDocMeta {
+            status_token: "ACTIVE",
+            content_kind: "claim_dataset_provenance",
+            authority_level: "primary_dataset_index",
+            verification_level: "source_capture",
+            operational_role: "falsification_contract",
+            source_lineage_summary: "",
+            truth_surfaces: &["observation_benchmark", "environment_context"],
+            artifact_contract_paths: &[
+                "crates/gororoba_cli_physics/src/anomaly_residual.rs",
+                "crates/gororoba_cli_physics/src/bin/flyby_residual_audit.rs",
+                "crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs",
+                "crates/gororoba_cli_physics/src/bin/fractal_metric_fit.rs",
+            ],
+            notes: "Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs.",
+        }),
+        "REGGIANI_MANIFOLD_CLAIMS.md" => Some(SourceDocMeta {
+            status_token: "PARTIALLY_VERIFIED",
+            content_kind: "paper_claim_bridge",
+            authority_level: "primary_paper_bridge",
+            verification_level: "partial_replication",
+            operational_role: "claim_bridge",
+            source_lineage_summary: "",
+            truth_surfaces: &[],
+            artifact_contract_paths: &[],
+            notes: "Distinguishes paper-asserted manifold claims from replicated algebraic checks.",
+        }),
+        "SEDENION_ZD_EXPERIMENTAL.md" => default(
+            "MIXED",
+            "evidence_synthesis",
+            "mixed_primary_and_conversation",
+            "mixed",
+            "Combines primary-source statements with codebase verification references.",
+        ),
+        "SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md" => Some(SourceDocMeta {
+            status_token: "ACTIVE",
+            content_kind: "claim_dataset_provenance",
+            authority_level: "primary_dataset_index",
+            verification_level: "source_capture",
+            operational_role: "mirror_audit",
+            source_lineage_summary: "",
+            truth_surfaces: &[],
+            artifact_contract_paths: &[],
+            notes: "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior.",
+        }),
+        "WHEEL_ALGEBRA_TAXONOMY.md" => default(
+            "UNVERIFIED",
+            "conversation_extraction",
+            "derived_conversation_note",
+            "unverified_hypothesis",
+            "Conversation-extracted taxonomy with explicit naming-collision warning.",
+        ),
+        "WOW_SIGNAL_SOURCES.md" => default(
+            "ACTIVE",
+            "claim_dataset_provenance",
+            "primary_dataset_index",
+            "source_capture",
+            "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up.",
+        ),
+        "ysu_engine_gpu_patterns.md" => Some(SourceDocMeta {
+            status_token: "REFERENCE",
+            content_kind: "technical_reference",
+            authority_level: "external_codebase_reference",
+            verification_level: "source_capture",
+            operational_role: "claim_bridge",
+            source_lineage_summary: "",
+            truth_surfaces: &[],
+            artifact_contract_paths: &[],
+            notes: "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work.",
+        }),
+        _ => None,
+    }
+}
+
+fn extract_refs_by_regex(text: &str, pattern: &str) -> Result<Vec<String>> {
+    let re = Regex::new(pattern)?;
+    Ok(re
+        .find_iter(text)
+        .map(|m| m.as_str().to_string())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect())
+}
+
+fn count_lines(text: &str) -> usize {
+    text.lines().count() + usize::from(!text.is_empty() && !text.ends_with('\n'))
+}
+
+fn read_text_lossy(path: &Path) -> Result<String> {
+    let raw = fs::read(path).with_context(|| format!("read {}", path.display()))?;
+    Ok(String::from_utf8_lossy(&raw).to_string())
+}
+
+fn claim_sort_key(claim_id: &str) -> (usize, String) {
+    let digits = claim_id
+        .split('-')
+        .nth(1)
+        .and_then(|suffix| suffix.parse::<usize>().ok())
+        .unwrap_or(usize::MAX);
+    (digits, claim_id.to_string())
+}
+
+fn is_path_like(token: &str) -> bool {
+    !token.is_empty()
+        && !token.contains(' ')
+        && (token.starts_with("http://")
+            || token.starts_with("https://")
+            || token.contains('/')
+            || token.ends_with(".md")
+            || token.ends_with(".toml")
+            || token.ends_with(".py")
+            || token.ends_with(".rs")
+            || token.ends_with(".csv")
+            || token.ends_with(".json")
+            || token.ends_with(".txt")
+            || token.ends_with(".pdf")
+            || token.ends_with(".yaml")
+            || token.ends_with(".yml")
+            || token.ends_with(".h5"))
 }
 
 fn normalize_narrative_overlays(

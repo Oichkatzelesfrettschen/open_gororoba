@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 139
-edge_count = 650
+lineage_count = 172
+edge_count = 775
 
 [[lineage]]
 id = "XL-001"
@@ -2443,7 +2443,7 @@ input_path_refs = ["data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv"
 output_path_refs = []
 dataset_refs = []
 dataset_label_refs = []
-external_source_refs = ["XS-015"]
+external_source_refs = ["XS-015", "XS-017"]
 truth_surface_consumption = ["observation_benchmark"]
 replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin registry-check", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
@@ -2461,7 +2461,7 @@ input_path_refs = ["data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv"
 output_path_refs = ["data/output/anomaly/flyby/flyby_observed_vs_modeled.csv", "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"]
 dataset_refs = []
 dataset_label_refs = []
-external_source_refs = ["XS-015"]
+external_source_refs = ["XS-015", "XS-017"]
 truth_surface_consumption = ["observation_benchmark", "environment_context"]
 replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin flyby-residual-audit && cargo run --release -p gororoba_cli_physics --bin pioneer-residual-audit", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
@@ -2479,7 +2479,7 @@ input_path_refs = ["data/output/anomaly/flyby/flyby_observed_vs_modeled.csv", "d
 output_path_refs = ["data/output/anomaly/fractal_metric/best_fit.json", "data/output/anomaly/fractal_metric/fit_grid.csv"]
 dataset_refs = []
 dataset_label_refs = []
-external_source_refs = ["XS-015"]
+external_source_refs = ["XS-015", "XS-017"]
 truth_surface_consumption = ["observation_benchmark", "environment_context"]
 replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin fractal-metric-fit", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
@@ -8406,3 +8406,1723 @@ to_kind = "source"
 edge_kind = "consumes_source"
 verified = true
 
+
+[[lineage]]
+id = "XL-141"
+experiment_id = "E-142"
+binary = "magnonic-band-structure"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin magnonic-band-structure -- bands --n-k 200 --output /tmp/magnonic_bands.csv"
+run_command_sha256 = "ec6d99a39aca8fb88be1fcd6183c962e535db2d8f6cd28f4c6497cba1e1388cc"
+claim_refs = ["C-1231", "C-1232", "C-1241"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin magnonic-band-structure -- bands --n-k 200 --output /tmp/magnonic_bands.csv", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-142"
+experiment_id = "E-143"
+binary = "magnonic-band-structure"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin magnonic-band-structure -- chern --n-grid 51"
+run_command_sha256 = "8e1e4254bf520b1abdf6f554193c05f7e675089052d7a9b0ba51783d21e9c49a"
+claim_refs = ["C-1233", "C-1234", "C-1246", "C-1250"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin magnonic-band-structure -- chern --n-grid 51", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-143"
+experiment_id = "E-144"
+binary = "magnonic-band-structure"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin magnonic-band-structure -- sweep --param delta-eps --min 0.0 --max 1.0 --steps 20 --n-grid 31"
+run_command_sha256 = "847b2d5a8b7694c123752303d1a3fd711a65c548540920f5376500ce916425a7"
+claim_refs = ["C-1235", "C-1247", "C-1250"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin magnonic-band-structure -- sweep --param delta-eps --min 0.0 --max 1.0 --steps 20 --n-grid 31", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-144"
+experiment_id = "E-145"
+binary = "magnonic-band-structure"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin magnonic-band-structure -- flat-band --threshold 0.1 --n-k 200"
+run_command_sha256 = "998dc6e587c79a45bacf43d24f7175f1481a40e40d4f7b586f5118ba20152c52"
+claim_refs = ["C-1232", "C-1236"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin magnonic-band-structure -- flat-band --threshold 0.1 --n-k 200", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-145"
+experiment_id = "E-146"
+binary = "magnonic-band-structure"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin magnonic-band-structure -- domain-wall --n-cells 20 --n-k 100 && cargo run --release --bin magnonic-band-structure -- defect --radius 3"
+run_command_sha256 = "86567b0edc9ca592793b95f708420b6cadb8d5e315b5211691243d6de36b65ac"
+claim_refs = ["C-1237", "C-1238", "C-1239"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin magnonic-band-structure -- domain-wall --n-cells 20 --n-k 100 && cargo run --release --bin magnonic-band-structure -- defect --radius 3", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-146"
+experiment_id = "E-147"
+binary = "zd-crystal-bands"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64 --details"
+run_command_sha256 = "571935a7855f72aa5e796cd064100cdc776df743e08b81bbb0f2eb5f38f34984"
+claim_refs = ["C-1255", "C-1256"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64 --details", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-147"
+experiment_id = "E-148"
+binary = "zd-crystal-bands"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64,128,256"
+run_command_sha256 = "2b2681f140df543a53a2dc1b760e0a232971c23d95a2bebc8d35a77576901400"
+claim_refs = ["C-1257"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64,128,256", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-148"
+experiment_id = "E-149"
+binary = "zd-crystal-bands"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin zd-crystal-bands -- --dims 16 --reggiani"
+run_command_sha256 = "d5da73bfc63335eb04d8cdcfe787a46e539c1b7ca63fc54b482e79b33888cadf"
+claim_refs = ["C-1258"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin zd-crystal-bands -- --dims 16 --reggiani", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-149"
+experiment_id = "E-150"
+binary = "euclid-dm-coupling"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin euclid-dm-coupling -- --grid 32 --steps 100 --sersic-n 4 --r-e-kpc 5"
+run_command_sha256 = "80befe2e3824e2e3354d9cd94fa7b06ee8aef41eaa64760418d330f4370b8340"
+claim_refs = ["C-1260", "C-1261"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-dm-coupling -- --grid 32 --steps 100 --sersic-n 4 --r-e-kpc 5", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-150"
+experiment_id = "E-151"
+binary = "euclid-dm-coupling"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin euclid-dm-coupling -- --grid 64 --steps 500 --m200 1e12"
+run_command_sha256 = "9f781f59e10e6538d659704e4f3738d19b9dcb2efe98abb63bed724cc624a894"
+claim_refs = []
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-dm-coupling -- --grid 64 --steps 500 --m200 1e12", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-152"
+experiment_id = "E-152"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --cuda"
+run_command_sha256 = "c7779ef84e4e78805eee358de8ecf9c16d6a4442e4971f6075305db3774196d5"
+claim_refs = ["C-1262", "C-1264", "C-1265", "C-1266", "C-1268"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --cuda", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-153"
+experiment_id = "E-153"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 1000 --cuda"
+run_command_sha256 = "a75a20722feb12482da48ad200a7ec2d9b12bc0df496e7ac0d19cfe70b6943f7"
+claim_refs = ["C-1262", "C-1266"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 1000 --cuda", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-154"
+experiment_id = "E-154"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu -o /tmp/cpu.csv && cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cuda -o /tmp/gpu.csv"
+run_command_sha256 = "6787ae012733301b308c1f39158615c884662a7bf0fa59337da1e5a6343079cb"
+claim_refs = ["C-1263", "C-1267"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = ["/tmp/cpu.csv", "/tmp/gpu.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu -o /tmp/cpu.csv && cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cuda -o /tmp/gpu.csv", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-155"
+experiment_id = "E-155"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --morphological-ml false --cuda"
+run_command_sha256 = "950e964a0cab8dd9745e15cd662040abca0e4d8476bba5b3fc5e2fccea855993"
+claim_refs = ["C-1264"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --morphological-ml false --cuda", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-156"
+experiment_id = "E-156"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = false
+run_command = "for G in 32 64 128; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid $G --steps 200 --max-galaxies 20 --cpu; done"
+run_command_sha256 = "016b24bd6cdbf86ea914be2aa1917def313179243567e2a147f7114c4b5406f4"
+claim_refs = ["C-1262"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "for G in 32 64 128; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid $G --steps 200 --max-galaxies 20 --cpu; done", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-157"
+experiment_id = "E-157"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu"
+run_command_sha256 = "b939e9b4e008c54cec4f9b8473859c507c0715907a64a1bec83add3fdfc3fc0b"
+claim_refs = ["C-1269"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-158"
+experiment_id = "E-158"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu --smagorinsky-cs 0.1"
+run_command_sha256 = "c05ee47e5a0ad6a80d83389621353ef401d6432983eff09c18da35625b3228a0"
+claim_refs = ["C-1272"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu --smagorinsky-cs 0.1", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-159"
+experiment_id = "E-159"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --cuda"
+run_command_sha256 = "4eaf473e9b00c0bc22049c4a79e0c0cc5bf3f9f2d322059fe81c13e2fbd37657"
+claim_refs = ["C-1271"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --cuda", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-160"
+experiment_id = "E-160"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --cuda --smagorinsky-cs 0.1"
+run_command_sha256 = "89c27297a562c065209a9c863be383b2730eedebad2b598db75adbe6b24264e7"
+claim_refs = ["C-1271", "C-1272"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --cuda --smagorinsky-cs 0.1", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-161"
+experiment_id = "E-161"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = false
+run_command = "for A in 0.01 0.1 0.5; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu --smagorinsky-cs 0.1 --alpha-zd $A; done"
+run_command_sha256 = "7207bce1a5bbdbe0db550d01eaa52711cfe7aceb052f2de2b1939280199dd636"
+claim_refs = ["C-1273"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "for A in 0.01 0.1 0.5; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu --smagorinsky-cs 0.1 --alpha-zd $A; done", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[edge]]
+id = "XLE-00651"
+lineage_id = "XL-141"
+from_id = "E-142"
+to_ref = "magnonic-band-structure"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00652"
+lineage_id = "XL-141"
+from_id = "E-142"
+to_ref = "C-1231"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00653"
+lineage_id = "XL-141"
+from_id = "E-142"
+to_ref = "C-1232"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00654"
+lineage_id = "XL-141"
+from_id = "E-142"
+to_ref = "C-1241"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00655"
+lineage_id = "XL-142"
+from_id = "E-143"
+to_ref = "magnonic-band-structure"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00656"
+lineage_id = "XL-142"
+from_id = "E-143"
+to_ref = "C-1233"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00657"
+lineage_id = "XL-142"
+from_id = "E-143"
+to_ref = "C-1234"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00658"
+lineage_id = "XL-142"
+from_id = "E-143"
+to_ref = "C-1246"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00659"
+lineage_id = "XL-142"
+from_id = "E-143"
+to_ref = "C-1250"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00660"
+lineage_id = "XL-143"
+from_id = "E-144"
+to_ref = "magnonic-band-structure"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00661"
+lineage_id = "XL-143"
+from_id = "E-144"
+to_ref = "C-1235"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00662"
+lineage_id = "XL-143"
+from_id = "E-144"
+to_ref = "C-1247"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00663"
+lineage_id = "XL-143"
+from_id = "E-144"
+to_ref = "C-1250"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00664"
+lineage_id = "XL-144"
+from_id = "E-145"
+to_ref = "magnonic-band-structure"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00665"
+lineage_id = "XL-144"
+from_id = "E-145"
+to_ref = "C-1232"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00666"
+lineage_id = "XL-144"
+from_id = "E-145"
+to_ref = "C-1236"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00667"
+lineage_id = "XL-145"
+from_id = "E-146"
+to_ref = "magnonic-band-structure"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00668"
+lineage_id = "XL-145"
+from_id = "E-146"
+to_ref = "C-1237"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00669"
+lineage_id = "XL-145"
+from_id = "E-146"
+to_ref = "C-1238"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00670"
+lineage_id = "XL-145"
+from_id = "E-146"
+to_ref = "C-1239"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00671"
+lineage_id = "XL-146"
+from_id = "E-147"
+to_ref = "zd-crystal-bands"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00672"
+lineage_id = "XL-146"
+from_id = "E-147"
+to_ref = "C-1255"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00673"
+lineage_id = "XL-146"
+from_id = "E-147"
+to_ref = "C-1256"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00674"
+lineage_id = "XL-147"
+from_id = "E-148"
+to_ref = "zd-crystal-bands"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00675"
+lineage_id = "XL-147"
+from_id = "E-148"
+to_ref = "C-1257"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00676"
+lineage_id = "XL-148"
+from_id = "E-149"
+to_ref = "zd-crystal-bands"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00677"
+lineage_id = "XL-148"
+from_id = "E-149"
+to_ref = "C-1258"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00678"
+lineage_id = "XL-149"
+from_id = "E-150"
+to_ref = "euclid-dm-coupling"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00679"
+lineage_id = "XL-149"
+from_id = "E-150"
+to_ref = "C-1260"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00680"
+lineage_id = "XL-149"
+from_id = "E-150"
+to_ref = "C-1261"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00681"
+lineage_id = "XL-150"
+from_id = "E-151"
+to_ref = "euclid-dm-coupling"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00682"
+lineage_id = "XL-152"
+from_id = "E-152"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00683"
+lineage_id = "XL-152"
+from_id = "E-152"
+to_ref = "C-1262"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00684"
+lineage_id = "XL-152"
+from_id = "E-152"
+to_ref = "C-1264"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00685"
+lineage_id = "XL-152"
+from_id = "E-152"
+to_ref = "C-1265"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00686"
+lineage_id = "XL-152"
+from_id = "E-152"
+to_ref = "C-1266"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00687"
+lineage_id = "XL-152"
+from_id = "E-152"
+to_ref = "C-1268"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00688"
+lineage_id = "XL-152"
+from_id = "E-152"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00689"
+lineage_id = "XL-153"
+from_id = "E-153"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00690"
+lineage_id = "XL-153"
+from_id = "E-153"
+to_ref = "C-1262"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00691"
+lineage_id = "XL-153"
+from_id = "E-153"
+to_ref = "C-1266"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00692"
+lineage_id = "XL-153"
+from_id = "E-153"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00693"
+lineage_id = "XL-154"
+from_id = "E-154"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00694"
+lineage_id = "XL-154"
+from_id = "E-154"
+to_ref = "C-1263"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00695"
+lineage_id = "XL-154"
+from_id = "E-154"
+to_ref = "C-1267"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00696"
+lineage_id = "XL-154"
+from_id = "E-154"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00697"
+lineage_id = "XL-154"
+from_id = "E-154"
+to_ref = "/tmp/cpu.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00698"
+lineage_id = "XL-154"
+from_id = "E-154"
+to_ref = "/tmp/gpu.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00699"
+lineage_id = "XL-155"
+from_id = "E-155"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00700"
+lineage_id = "XL-155"
+from_id = "E-155"
+to_ref = "C-1264"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00701"
+lineage_id = "XL-155"
+from_id = "E-155"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00702"
+lineage_id = "XL-156"
+from_id = "E-156"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00703"
+lineage_id = "XL-156"
+from_id = "E-156"
+to_ref = "C-1262"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00704"
+lineage_id = "XL-156"
+from_id = "E-156"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00705"
+lineage_id = "XL-157"
+from_id = "E-157"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00706"
+lineage_id = "XL-157"
+from_id = "E-157"
+to_ref = "C-1269"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00707"
+lineage_id = "XL-157"
+from_id = "E-157"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00708"
+lineage_id = "XL-158"
+from_id = "E-158"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00709"
+lineage_id = "XL-158"
+from_id = "E-158"
+to_ref = "C-1272"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00710"
+lineage_id = "XL-158"
+from_id = "E-158"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00711"
+lineage_id = "XL-159"
+from_id = "E-159"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00712"
+lineage_id = "XL-159"
+from_id = "E-159"
+to_ref = "C-1271"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00713"
+lineage_id = "XL-159"
+from_id = "E-159"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00714"
+lineage_id = "XL-160"
+from_id = "E-160"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00715"
+lineage_id = "XL-160"
+from_id = "E-160"
+to_ref = "C-1271"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00716"
+lineage_id = "XL-160"
+from_id = "E-160"
+to_ref = "C-1272"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00717"
+lineage_id = "XL-160"
+from_id = "E-160"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00718"
+lineage_id = "XL-161"
+from_id = "E-161"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00719"
+lineage_id = "XL-161"
+from_id = "E-161"
+to_ref = "C-1273"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00720"
+lineage_id = "XL-161"
+from_id = "E-161"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00721"
+lineage_id = "XL-134"
+from_id = "E-135"
+to_ref = "XS-017"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-00722"
+lineage_id = "XL-135"
+from_id = "E-136"
+to_ref = "XS-017"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-00723"
+lineage_id = "XL-136"
+from_id = "E-137"
+to_ref = "XS-017"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+
+[[lineage]]
+id = "XL-162"
+experiment_id = "E-162"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = false
+run_command = "for FLOOR in 0.03 0.04 0.042 0.045 0.05 0.1; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog ... --grid 64 --steps 200 --max-galaxies 10 --cpu --mrt --tau 0.7 --softening-eps 0.5 --density-floor $FLOOR; done"
+run_command_sha256 = "50ca97ad5fd6700a83ce5f202159631e3e9bfee6ce2905af2dec03f9ca37300a"
+claim_refs = ["C-1274", "C-1275", "C-1276"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "for FLOOR in 0.03 0.04 0.042 0.045 0.05 0.1; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog ... --grid 64 --steps 200 --max-galaxies 10 --cpu --mrt --tau 0.7 --softening-eps 0.5 --density-floor $FLOOR; done", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-163"
+experiment_id = "E-163"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --mrt"
+run_command_sha256 = "0cbf59c44d231141f36b0eb7e62e31bf8177c2b1de3830b59c7fe24be05777e8"
+claim_refs = ["C-1282", "C-1283"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --mrt", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-164"
+experiment_id = "E-164"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 10 --mrt"
+run_command_sha256 = "efec3d824c12aa0732b1d9352d3357170734aa8f261c3e17db2ce9a77670718b"
+claim_refs = ["C-1284", "C-1286", "C-1287"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 10 --mrt", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-165"
+experiment_id = "E-165"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 10 --mrt"
+run_command_sha256 = "efec3d824c12aa0732b1d9352d3357170734aa8f261c3e17db2ce9a77670718b"
+claim_refs = ["C-1285", "C-1286"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 10 --mrt", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-166"
+experiment_id = "E-166"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt -o /tmp/euclid_df_gpu_mrt_128_100.csv"
+run_command_sha256 = "0556ba2a3ccec3e2e876a3b096e015eefb18020c88c97c8ee43c3cfad616c96a"
+claim_refs = ["C-1288", "C-1289", "C-1287"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = ["/tmp/euclid_df_gpu_mrt_128_100.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt -o /tmp/euclid_df_gpu_mrt_128_100.csv", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-167"
+experiment_id = "E-167"
+binary = "mrt-stability-audit"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin mrt-stability-audit -- --n 16 --tau 0.7 --steps 200 --contrast-min 2.0 --contrast-max 100.0 --n-levels 20 --csv"
+run_command_sha256 = "3e39d8ed58eb2edf2e49641943bc21a7eae58475937c62bc1ae9361676f685d6"
+claim_refs = ["C-1290"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin mrt-stability-audit -- --n 16 --tau 0.7 --steps 200 --contrast-min 2.0 --contrast-max 100.0 --n-levels 20 --csv", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-168"
+experiment_id = "E-168"
+binary = "zd-crystal-bands"
+deterministic = true
+gpu = false
+run_command = "cargo test --release -p algebra_analysis -- --ignored flat_band_fraction_d64"
+run_command_sha256 = "77329473c415181c03272ffa0e5384b2c3bc8d879f4b27438494449b2ed8cfcb"
+claim_refs = ["C-1291"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test --release -p algebra_analysis -- --ignored flat_band_fraction_d64", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-169"
+experiment_id = "E-169"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt --coarsened"
+run_command_sha256 = "d7702384411bbd04a0ecb1e0fca4689b39bf3b7ecd405129e3d7b043fe6fc260"
+claim_refs = ["C-1292", "C-1296"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt --coarsened", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-172"
+experiment_id = "E-172"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "ncu --set full cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 1 --mrt"
+run_command_sha256 = "a5efdb167d204cce9297f96cc7ee139337f5d19de8ef56ec9ea5d77148aad4d2"
+claim_refs = ["C-1295", "C-1296"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "ncu --set full cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 1 --mrt", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-174"
+experiment_id = "E-174"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --null-hypothesis --null-n-trials 10 --grid 128 --steps 200 --mrt --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+run_command_sha256 = "8c44610884a2350f268e7044fd0058958bd643e077a90a0ed1b7f36b83f3e29c"
+claim_refs = ["C-1297"]
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --null-hypothesis --null-n-trials 10 --grid 128 --steps 200 --mrt --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-175"
+experiment_id = "E-175"
+binary = "mrt-stability-audit"
+deterministic = true
+gpu = false
+run_command = "RUSTFLAGS=\"-C target-cpu=znver3\" cargo run --release --no-default-features --bin mrt-stability-audit -- --n 64 --tau 0.7 --steps 200 --n-levels 1"
+run_command_sha256 = "183f22f9e72cedb882038ba03dc76521caaecaa6c3d0d0c8cf636725f81857e8"
+claim_refs = ["C-1298"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "RUSTFLAGS=\"-C target-cpu=znver3\" cargo run --release --no-default-features --bin mrt-stability-audit -- --n 64 --tau 0.7 --steps 200 --n-levels 1", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-176"
+experiment_id = "E-176"
+binary = "mrt-stability-audit"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin mrt-stability-audit -- --n 64 --tau 0.7 --steps 100 --n-levels 5 --csv"
+run_command_sha256 = "cf1030c2a4493839a66ba1baeac49327b68b88a1dd08a63d7eaa2850b278c052"
+claim_refs = ["C-1299"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin mrt-stability-audit -- --n 64 --tau 0.7 --steps 100 --n-levels 5 --csv", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-177"
+experiment_id = "E-177"
+binary = "euclid-df-sweep"
+deterministic = false
+gpu = true
+run_command = "cargo run --release --bin euclid-df-sweep -- --n-galaxies 100 --resolution 128 --gpu --tiling"
+run_command_sha256 = "f4b3741f03622049742a518e6f711358f2bce6809610da046059a1e57f445412"
+claim_refs = ["C-1300", "C-1301", "C-1302", "C-1303", "C-1304", "C-1305", "C-1306", "C-1307"]
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin euclid-df-sweep -- --n-galaxies 100 --resolution 128 --gpu --tiling", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[edge]]
+id = "XLE-00724"
+lineage_id = "XL-162"
+from_id = "E-162"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00725"
+lineage_id = "XL-162"
+from_id = "E-162"
+to_ref = "C-1274"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00726"
+lineage_id = "XL-162"
+from_id = "E-162"
+to_ref = "C-1275"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00727"
+lineage_id = "XL-162"
+from_id = "E-162"
+to_ref = "C-1276"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00728"
+lineage_id = "XL-162"
+from_id = "E-162"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00729"
+lineage_id = "XL-163"
+from_id = "E-163"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00730"
+lineage_id = "XL-163"
+from_id = "E-163"
+to_ref = "C-1282"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00731"
+lineage_id = "XL-163"
+from_id = "E-163"
+to_ref = "C-1283"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00732"
+lineage_id = "XL-163"
+from_id = "E-163"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00733"
+lineage_id = "XL-164"
+from_id = "E-164"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00734"
+lineage_id = "XL-164"
+from_id = "E-164"
+to_ref = "C-1284"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00735"
+lineage_id = "XL-164"
+from_id = "E-164"
+to_ref = "C-1286"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00736"
+lineage_id = "XL-164"
+from_id = "E-164"
+to_ref = "C-1287"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00737"
+lineage_id = "XL-164"
+from_id = "E-164"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00738"
+lineage_id = "XL-165"
+from_id = "E-165"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00739"
+lineage_id = "XL-165"
+from_id = "E-165"
+to_ref = "C-1285"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00740"
+lineage_id = "XL-165"
+from_id = "E-165"
+to_ref = "C-1286"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00741"
+lineage_id = "XL-165"
+from_id = "E-165"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00742"
+lineage_id = "XL-166"
+from_id = "E-166"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00743"
+lineage_id = "XL-166"
+from_id = "E-166"
+to_ref = "C-1288"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00744"
+lineage_id = "XL-166"
+from_id = "E-166"
+to_ref = "C-1289"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00745"
+lineage_id = "XL-166"
+from_id = "E-166"
+to_ref = "C-1287"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00746"
+lineage_id = "XL-166"
+from_id = "E-166"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00747"
+lineage_id = "XL-166"
+from_id = "E-166"
+to_ref = "/tmp/euclid_df_gpu_mrt_128_100.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00748"
+lineage_id = "XL-167"
+from_id = "E-167"
+to_ref = "mrt-stability-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00749"
+lineage_id = "XL-167"
+from_id = "E-167"
+to_ref = "C-1290"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00750"
+lineage_id = "XL-168"
+from_id = "E-168"
+to_ref = "zd-crystal-bands"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00751"
+lineage_id = "XL-168"
+from_id = "E-168"
+to_ref = "C-1291"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00752"
+lineage_id = "XL-169"
+from_id = "E-169"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00753"
+lineage_id = "XL-169"
+from_id = "E-169"
+to_ref = "C-1292"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00754"
+lineage_id = "XL-169"
+from_id = "E-169"
+to_ref = "C-1296"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00755"
+lineage_id = "XL-169"
+from_id = "E-169"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00756"
+lineage_id = "XL-172"
+from_id = "E-172"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00757"
+lineage_id = "XL-172"
+from_id = "E-172"
+to_ref = "C-1295"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00758"
+lineage_id = "XL-172"
+from_id = "E-172"
+to_ref = "C-1296"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00759"
+lineage_id = "XL-172"
+from_id = "E-172"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00760"
+lineage_id = "XL-174"
+from_id = "E-174"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00761"
+lineage_id = "XL-174"
+from_id = "E-174"
+to_ref = "C-1297"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00762"
+lineage_id = "XL-174"
+from_id = "E-174"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00763"
+lineage_id = "XL-175"
+from_id = "E-175"
+to_ref = "mrt-stability-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00764"
+lineage_id = "XL-175"
+from_id = "E-175"
+to_ref = "C-1298"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00765"
+lineage_id = "XL-176"
+from_id = "E-176"
+to_ref = "mrt-stability-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00766"
+lineage_id = "XL-176"
+from_id = "E-176"
+to_ref = "C-1299"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00767"
+lineage_id = "XL-177"
+from_id = "E-177"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00768"
+lineage_id = "XL-177"
+from_id = "E-177"
+to_ref = "C-1300"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00769"
+lineage_id = "XL-177"
+from_id = "E-177"
+to_ref = "C-1301"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00770"
+lineage_id = "XL-177"
+from_id = "E-177"
+to_ref = "C-1302"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00771"
+lineage_id = "XL-177"
+from_id = "E-177"
+to_ref = "C-1303"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00772"
+lineage_id = "XL-177"
+from_id = "E-177"
+to_ref = "C-1304"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00773"
+lineage_id = "XL-177"
+from_id = "E-177"
+to_ref = "C-1305"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00774"
+lineage_id = "XL-177"
+from_id = "E-177"
+to_ref = "C-1306"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00775"
+lineage_id = "XL-177"
+from_id = "E-177"
+to_ref = "C-1307"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true

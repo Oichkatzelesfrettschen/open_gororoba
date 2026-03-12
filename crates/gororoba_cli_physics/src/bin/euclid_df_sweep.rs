@@ -113,6 +113,12 @@ struct Args {
     /// Noise realizations per stochastic condition (C2, C3).
     #[arg(long, default_value = "10")]
     null_n_trials: usize,
+
+    /// Enable shared-memory tiled GPU kernels (8x8x4 tile + halo).
+    /// Highest priority dispatch: overrides coarsening and pull-streaming.
+    /// Pull-scheme streaming from shared memory gives 15-25% speedup.
+    #[arg(long)]
+    tiling: bool,
 }
 
 fn main() {
@@ -328,6 +334,10 @@ fn run_gpu_sweep(
         eprintln!("ERROR: CUDA solver init failed: {e}");
         std::process::exit(1);
     });
+
+    if args.tiling {
+        solver.set_tiling(true);
+    }
 
     // Stream A: solver's default stream (LBM evolution + initial D_f)
     // Stream B: forked stream for final box-counting (overlaps with CPU prep)
@@ -732,6 +742,10 @@ fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
         eprintln!("ERROR: CUDA solver init failed: {e}");
         std::process::exit(1);
     });
+
+    if args.tiling {
+        solver.set_tiling(true);
+    }
 
     let mut box_counter = GpuBoxCounter::new(solver.context()).unwrap_or_else(|e| {
         eprintln!("ERROR: GpuBoxCounter init failed: {e}");

@@ -51,6 +51,17 @@ struct Args {
     /// Enable thread-coarsened GPU kernels (1 thread = 2 cells)
     #[arg(long)]
     coarsened: bool,
+
+    /// Enable shared-memory tiled GPU kernels (8x8x4 tile + halo).
+    /// Highest priority dispatch: overrides coarsening and pull-streaming.
+    #[arg(long)]
+    tiling: bool,
+
+    /// Mach check interval: sample max Mach every N steps instead of
+    /// every step. Higher values use graph-pair acceleration for bulk
+    /// stepping between checks. Default 1 (check every step).
+    #[arg(long, default_value = "1")]
+    mach_interval: usize,
 }
 
 /// Result of one stability trial.
@@ -84,31 +95,27 @@ fn gaussian_density(n: usize, contrast: f64) -> Vec<f64> {
 }
 
 /// Run one stability trial using the unified LbmBackend dispatcher.
-fn run_trial(
-    n: usize,
-    tau: f64,
-    steps: usize,
-    contrast: f64,
-    mode: CollisionMode,
-    gpu: bool,
-    coarsened: bool,
-) -> TrialResult {
-    let mut backend = if gpu {
+fn run_trial(args: &Args, contrast: f64, mode: CollisionMode) -> TrialResult {
+    let n = args.n;
+    let mut backend = if args.gpu {
         #[cfg(feature = "gpu")]
         {
-            LbmBackend::cuda(n, n, n, tau, mode).expect("GPU solver init failed")
+            LbmBackend::cuda(n, n, n, args.tau, mode).expect("GPU solver init failed")
         }
         #[cfg(not(feature = "gpu"))]
         {
-            let _ = (n, tau, mode);
+            let _ = mode;
             unreachable!("--gpu check prevents reaching here without feature");
         }
     } else {
-        LbmBackend::cpu(n, n, n, tau, mode)
+        LbmBackend::cpu(n, n, n, args.tau, mode)
     };
 
-    if coarsened {
+    if args.coarsened {
         backend.set_coarsening(true);
+    }
+    if args.tiling {
+        backend.set_tiling(true);
     }
 
     let rho = gaussian_density(n, contrast);
@@ -120,9 +127,27 @@ fn run_trial(
     let initial_mass = backend.total_mass().expect("total_mass failed");
     let mut max_mach = 0.0_f64;
     let mut final_step = 0;
+    let interval = args.mach_interval.max(1);
 
-    for step in 0..steps {
-        if backend.step().is_err() {
+    // Bulk-step with periodic Mach monitoring.
+    // When interval > 1, step_n() uses graph-pair acceleration on GPU,
+    // amortizing kernel launch overhead across the interval.
+    let mut step = 0;
+    while step < args.steps {
+        let chunk = interval.min(args.steps - step);
+
+        if chunk > 1 {
+            if backend.step_n(chunk).is_err() {
+                return TrialResult {
+                    contrast,
+                    mode: mode_name(mode),
+                    survived: false,
+                    max_mach,
+                    mass_err: f64::NAN,
+                    final_step: step + chunk,
+                };
+            }
+        } else if backend.step().is_err() {
             return TrialResult {
                 contrast,
                 mode: mode_name(mode),
@@ -132,7 +157,9 @@ fn run_trial(
                 final_step: step + 1,
             };
         }
-        final_step = step + 1;
+
+        step += chunk;
+        final_step = step;
 
         let ma = backend.max_mach_number().unwrap_or(f64::NAN);
         if !ma.is_finite() {
@@ -209,14 +236,15 @@ fn main() {
         (0..args.n_levels)
             .map(|i| {
                 let t = i as f64 / (args.n_levels - 1) as f64;
-                // Log-spaced contrast levels
                 (args.contrast_min.ln() * (1.0 - t) + args.contrast_max.ln() * t).exp()
             })
             .collect()
     };
 
     let backend_name = if args.gpu { "GPU" } else { "CPU" };
-    let coarse_tag = if args.gpu && args.coarsened {
+    let kernel_tag = if args.tiling {
+        " (tiled)"
+    } else if args.coarsened {
         " (coarsened)"
     } else {
         ""
@@ -225,8 +253,8 @@ fn main() {
         println!("contrast,mode,survived,max_mach,mass_err,final_step");
     } else {
         eprintln!(
-            "MRT Stability Audit [{backend_name}{coarse_tag}]: {}^3 grid, tau={}, {} steps, {} contrast levels [{:.1}..{:.1}]",
-            args.n, args.tau, args.steps, args.n_levels, args.contrast_min, args.contrast_max
+            "MRT Stability Audit [{backend_name}{kernel_tag}]: {}^3 grid, tau={}, {} steps (Mach interval={}), {} levels [{:.1}..{:.1}]",
+            args.n, args.tau, args.steps, args.mach_interval, args.n_levels, args.contrast_min, args.contrast_max
         );
         println!(
             "{:>10} {:>5} {:>8} {:>10} {:>12} {:>10}",
@@ -237,15 +265,7 @@ fn main() {
 
     for &contrast in &contrasts {
         for mode in [CollisionMode::Bgk, CollisionMode::Mrt] {
-            let result = run_trial(
-                args.n,
-                args.tau,
-                args.steps,
-                contrast,
-                mode,
-                args.gpu,
-                args.coarsened,
-            );
+            let result = run_trial(&args, contrast, mode);
             print_result(&result, args.csv);
         }
     }

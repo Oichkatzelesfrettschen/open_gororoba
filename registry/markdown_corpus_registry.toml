@@ -2518,8 +2518,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2376
-line_count = 41
+size_bytes = 2471
+line_count = 44
 toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
@@ -6508,8 +6508,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 4
-size_bytes = 725430
-line_count = 1149
+size_bytes = 738929
+line_count = 1177
 toml_destination = "registry/claims.toml"
 
 [[document]]
@@ -6522,7 +6522,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 53644
+size_bytes = 53648
 line_count = 302
 toml_destination = "registry/claims_tasks.toml"
 
@@ -6564,8 +6564,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 8
-size_bytes = 92743
-line_count = 2092
+size_bytes = 96956
+line_count = 2236
 toml_destination = "registry/experiments.toml"
 
 [[document]]
@@ -6830,8 +6830,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1092
-line_count = 46
+size_bytes = 1180
+line_count = 49
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6844,8 +6844,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1593
-line_count = 46
+size_bytes = 1681
+line_count = 49
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6858,8 +6858,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1393
-line_count = 45
+size_bytes = 1481
+line_count = 48
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6872,8 +6872,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1617
-line_count = 53
+size_bytes = 1705
+line_count = 56
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6886,8 +6886,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1390
-line_count = 40
+size_bytes = 1478
+line_count = 43
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6900,8 +6900,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2271
-line_count = 58
+size_bytes = 2359
+line_count = 61
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6914,8 +6914,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2710
-line_count = 78
+size_bytes = 2798
+line_count = 81
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6928,8 +6928,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2412
-line_count = 67
+size_bytes = 2500
+line_count = 70
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6942,8 +6942,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2911
-line_count = 67
+size_bytes = 2999
+line_count = 70
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6956,8 +6956,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1079
-line_count = 44
+size_bytes = 1167
+line_count = 47
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6970,8 +6970,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1684
-line_count = 51
+size_bytes = 1772
+line_count = 54
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6984,8 +6984,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 978
-line_count = 39
+size_bytes = 1066
+line_count = 42
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -6998,8 +6998,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 6571
-line_count = 187
+size_bytes = 6659
+line_count = 190
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -7012,8 +7012,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2077
-line_count = 64
+size_bytes = 2165
+line_count = 67
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -7026,8 +7026,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2648
-line_count = 67
+size_bytes = 2736
+line_count = 70
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -7040,8 +7040,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1811
-line_count = 55
+size_bytes = 1899
+line_count = 58
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -7054,8 +7054,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2014
-line_count = 47
+size_bytes = 2102
+line_count = 50
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -7068,8 +7068,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2032
-line_count = 43
+size_bytes = 2120
+line_count = 46
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -7320,8 +7320,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 6385
-line_count = 142
+size_bytes = 6475
+line_count = 145
 toml_destination = "registry/docs_convos.toml"
 
 [[document]]
@@ -7334,8 +7334,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1452
-line_count = 43
+size_bytes = 1542
+line_count = 46
 toml_destination = "registry/docs_convos.toml"
 
 [[document]]
@@ -7348,8 +7348,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 4
-size_bytes = 72682
-line_count = 1108
+size_bytes = 72772
+line_count = 1111
 toml_destination = "registry/docs_convos.toml"
 
 [[document]]
@@ -7362,8 +7362,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2775
-line_count = 58
+size_bytes = 2865
+line_count = 61
 toml_destination = "registry/docs_convos.toml"
 
 [[document]]
@@ -7376,8 +7376,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2666
-line_count = 130
+size_bytes = 2756
+line_count = 133
 toml_destination = "registry/docs_convos.toml"
 
 [[document]]
@@ -7824,8 +7824,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 20
-size_bytes = 810410
-line_count = 9128
+size_bytes = 826033
+line_count = 9352
 toml_destination = "registry/claims.toml"
 
 [[document]]
@@ -7838,7 +7838,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 11
-size_bytes = 83685
+size_bytes = 83689
 line_count = 2854
 toml_destination = "registry/claims_tasks.toml"
 
@@ -7866,8 +7866,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2169
-line_count = 69
+size_bytes = 2117
+line_count = 68
 toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
@@ -7908,7 +7908,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 795
+size_bytes = 793
 line_count = 44
 toml_destination = "registry/entrypoint_docs.toml"
 
@@ -7922,8 +7922,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 11
-size_bytes = 105669
-line_count = 2757
+size_bytes = 111102
+line_count = 2961
 toml_destination = "registry/experiments.toml"
 
 [[document]]
@@ -7936,7 +7936,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 16048
+size_bytes = 15989
 line_count = 403
 toml_destination = "registry/external_sources.toml"
 
@@ -7978,8 +7978,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 20
-size_bytes = 247120
-line_count = 6297
+size_bytes = 244942
+line_count = 6244
 toml_destination = "registry/markdown_governance.toml"
 
 [[document]]
@@ -8594,8 +8594,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2628
-line_count = 42
+size_bytes = 2725
+line_count = 45
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8608,8 +8608,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1096
-line_count = 23
+size_bytes = 1193
+line_count = 26
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8622,8 +8622,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3284
-line_count = 64
+size_bytes = 3381
+line_count = 67
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8636,8 +8636,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4205
-line_count = 84
+size_bytes = 4302
+line_count = 87
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8650,8 +8650,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2016
-line_count = 56
+size_bytes = 2113
+line_count = 59
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8664,8 +8664,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1728
-line_count = 53
+size_bytes = 1825
+line_count = 56
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8678,8 +8678,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1231
-line_count = 41
+size_bytes = 1328
+line_count = 44
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8692,8 +8692,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 6103
-line_count = 126
+size_bytes = 6200
+line_count = 129
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8706,8 +8706,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2729
-line_count = 41
+size_bytes = 2826
+line_count = 44
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8720,8 +8720,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 19197
-line_count = 111
+size_bytes = 19294
+line_count = 114
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8734,8 +8734,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 63876
-line_count = 264
+size_bytes = 63973
+line_count = 267
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8748,8 +8748,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 6436
-line_count = 64
+size_bytes = 6533
+line_count = 67
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8762,8 +8762,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 7384
-line_count = 66
+size_bytes = 7481
+line_count = 69
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8776,8 +8776,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 6139
-line_count = 64
+size_bytes = 6236
+line_count = 67
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8790,8 +8790,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 7322
-line_count = 68
+size_bytes = 7419
+line_count = 71
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8804,8 +8804,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 16047
-line_count = 98
+size_bytes = 16144
+line_count = 101
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8818,8 +8818,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 16013
-line_count = 96
+size_bytes = 16110
+line_count = 99
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8832,8 +8832,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 16431
-line_count = 97
+size_bytes = 16528
+line_count = 100
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8846,8 +8846,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 16483
-line_count = 97
+size_bytes = 16580
+line_count = 100
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8860,8 +8860,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 65279
-line_count = 261
+size_bytes = 65376
+line_count = 264
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8874,8 +8874,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 74081
-line_count = 295
+size_bytes = 74178
+line_count = 298
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8888,8 +8888,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 75641
-line_count = 301
+size_bytes = 75738
+line_count = 304
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8902,8 +8902,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 76693
-line_count = 305
+size_bytes = 76790
+line_count = 308
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8916,8 +8916,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 16494
-line_count = 97
+size_bytes = 16591
+line_count = 100
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8930,8 +8930,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 16403
-line_count = 97
+size_bytes = 16500
+line_count = 100
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8944,8 +8944,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 16393
-line_count = 97
+size_bytes = 16490
+line_count = 100
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8958,8 +8958,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 14215
-line_count = 95
+size_bytes = 14312
+line_count = 98
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8972,8 +8972,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1426
-line_count = 49
+size_bytes = 1523
+line_count = 52
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -8986,8 +8986,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1238
-line_count = 47
+size_bytes = 1335
+line_count = 50
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9000,8 +9000,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 7344
-line_count = 126
+size_bytes = 7441
+line_count = 129
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9014,8 +9014,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1328
-line_count = 47
+size_bytes = 1425
+line_count = 50
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9028,8 +9028,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1179
-line_count = 38
+size_bytes = 1276
+line_count = 41
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9042,8 +9042,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 8727
-line_count = 110
+size_bytes = 8824
+line_count = 113
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9056,8 +9056,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1863
-line_count = 51
+size_bytes = 1960
+line_count = 54
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9070,8 +9070,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 3
-size_bytes = 163533
-line_count = 859
+size_bytes = 163630
+line_count = 862
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9084,8 +9084,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3150
-line_count = 74
+size_bytes = 3247
+line_count = 77
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9098,8 +9098,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4029
-line_count = 50
+size_bytes = 4126
+line_count = 53
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9126,8 +9126,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3767
-line_count = 69
+size_bytes = 3864
+line_count = 72
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9140,8 +9140,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 6196
-line_count = 44
+size_bytes = 6293
+line_count = 47
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9154,8 +9154,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1160
-line_count = 37
+size_bytes = 1257
+line_count = 40
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9168,8 +9168,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 6867
-line_count = 86
+size_bytes = 6964
+line_count = 89
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9182,8 +9182,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 8228
-line_count = 97
+size_bytes = 8325
+line_count = 100
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9196,8 +9196,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2282
-line_count = 69
+size_bytes = 2379
+line_count = 72
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9210,8 +9210,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 14857
-line_count = 250
+size_bytes = 14954
+line_count = 253
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9224,8 +9224,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 8213
-line_count = 118
+size_bytes = 8310
+line_count = 121
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9238,8 +9238,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2719
-line_count = 73
+size_bytes = 2816
+line_count = 76
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9252,8 +9252,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3425
-line_count = 89
+size_bytes = 3522
+line_count = 92
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9266,8 +9266,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1027
-line_count = 27
+size_bytes = 1124
+line_count = 30
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9280,8 +9280,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4183
-line_count = 71
+size_bytes = 4280
+line_count = 74
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9294,8 +9294,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2804
-line_count = 66
+size_bytes = 2901
+line_count = 69
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9308,8 +9308,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1741
-line_count = 52
+size_bytes = 1838
+line_count = 55
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
@@ -9322,8 +9322,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2403
-line_count = 62
+size_bytes = 2500
+line_count = 65
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
