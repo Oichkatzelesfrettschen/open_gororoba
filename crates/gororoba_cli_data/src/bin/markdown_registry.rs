@@ -15,6 +15,9 @@ use std::{
 use toml::Value;
 use walkdir::{DirEntry, WalkDir};
 
+type DomainParseResult = (Vec<DomainRecord>, Vec<DomainEntry>, BTreeMap<String, Vec<String>>);
+type OverlaySections = (String, Vec<(String, String, String)>);
+
 const DEFAULT_IGNORED_PREFIXES: &[&str] = &[
     ".cache/",
     ".pytest_cache/",
@@ -1503,7 +1506,7 @@ fn parse_domains(
     csv_path: &Path,
     by_domain_dir: &Path,
     repo_root: &Path,
-) -> Result<(Vec<DomainRecord>, Vec<DomainEntry>, BTreeMap<String, Vec<String>>)> {
+) -> Result<DomainParseResult> {
     let csv_map = parse_claims_domain_map(csv_path)?;
     let mut domain_records = Vec::new();
     let mut all_entries = Vec::new();
@@ -1527,8 +1530,8 @@ fn parse_domains(
             .into_iter()
             .collect::<Vec<_>>();
         let mut csv_claim_ids = csv_claim_ids;
-        csv_claim_ids.sort_by(|a, b| claim_sort_key(a).cmp(&claim_sort_key(b)));
-        markdown_claim_ids.sort_by(|a, b| claim_sort_key(a).cmp(&claim_sort_key(b)));
+        csv_claim_ids.sort_by_key(|a| claim_sort_key(a));
+        markdown_claim_ids.sort_by_key(|a| claim_sort_key(a));
         domain_records.push(DomainRecord {
             domain,
             source_markdown: rel_markdown,
@@ -1715,7 +1718,7 @@ fn parse_ticket(path: &Path, repo_root: &Path) -> Result<TicketRecord> {
         .collect::<BTreeSet<_>>()
         .into_iter()
         .collect::<Vec<_>>();
-    claims_referenced.sort_by(|a, b| claim_sort_key(a).cmp(&claim_sort_key(b)));
+    claims_referenced.sort_by_key(|a| claim_sort_key(a));
     let backlog_reports = backlog_re
         .find_iter(&text)
         .map(|m| m.as_str().to_string())
@@ -3038,8 +3041,7 @@ fn normalize_operational_narratives(
                 .filter_map(|entry| entry.ok())
                 .map(|entry| entry.path())
                 .filter(|path| path.extension().and_then(|s| s.to_str()) == Some("md"))
-                .collect::<Vec<_>>()
-                .into_iter(),
+                .collect::<Vec<_>>(),
         )
     {
         if !file.exists() {
@@ -3405,8 +3407,8 @@ fn build_corpus(repo_root: &Path, args: &BuildCorpusArgs) -> Result<()> {
         let lifecycle = lifecycle_for_path(&row.path, row);
         let destination_exists =
             !row.toml_destination.is_empty() && repo_root.join(&row.toml_destination).is_file();
-        let tracked_allowed = !(row.git_status == "tracked"
-            && !policy.tracked_allowed_paths.contains(&row.path));
+        let tracked_allowed = row.git_status != "tracked"
+            || policy.tracked_allowed_paths.contains(&row.path);
         lines.push("[[document]]".to_string());
         lines.push(format!("path = {}", q(&row.path)));
         lines.push(format!("git_status = {}", q(&row.git_status)));
@@ -3953,17 +3955,16 @@ fn build_owner_map(repo_root: &Path, args: &BuildOwnerMapArgs) -> Result<()> {
 
     for (idx, row) in scoped_docs.iter().enumerate() {
         let mut destination = row.toml_destination.clone();
-        if let Some(origin_row) = origin_by_path.get(&row.path) {
-            if let Some(first) = origin_row.source_of_truth_paths.first() {
-                destination = first.clone();
-            }
+        if let Some(origin_row) = origin_by_path.get(&row.path)
+            && let Some(first) = origin_row.source_of_truth_paths.first()
+        {
+            destination = first.clone();
         }
-        if destination.is_empty() {
-            if let Some(gov) = governance_by_path.get(&row.path) {
-                if let Some(first) = gov.source_toml_refs.first() {
-                    destination = first.clone();
-                }
-            }
+        if destination.is_empty()
+            && let Some(gov) = governance_by_path.get(&row.path)
+            && let Some(first) = gov.source_toml_refs.first()
+        {
+            destination = first.clone();
         }
         let gov_row = governance_by_path.get(&row.path);
         let requires_generated_header = gov_row.map(|row| row.header_required).unwrap_or(false);
@@ -6547,11 +6548,9 @@ fn knowledge_toml_backing_for_path(path: &str) -> String {
 fn knowledge_kind_for_path(path: &str, text: &str) -> (String, String, bool) {
     if IMMUTABLE_AGENT_OVERLAYS.contains(&path) {
         ("manual_source".to_string(), "manual".to_string(), false)
-    } else if knowledge_toml_backing_for_path(path) == "registry/data_artifact_narratives.toml"
-        && path.starts_with("data/artifacts/")
-    {
-        ("markdown_mirror".to_string(), "generated".to_string(), true)
-    } else if path.starts_with("reports/")
+    } else if (knowledge_toml_backing_for_path(path) == "registry/data_artifact_narratives.toml"
+        && path.starts_with("data/artifacts/"))
+        || path.starts_with("reports/")
         || path.starts_with("docs/convos/")
         || (path.starts_with("docs/") && path.matches('/').count() == 1)
         || path.starts_with("docs/book/src/")
@@ -6568,9 +6567,7 @@ fn knowledge_kind_for_path(path: &str, text: &str) -> (String, String, bool) {
     } else if path.starts_with("docs/claims/by_domain/")
         || (path.starts_with("docs/tickets/") && path.ends_with("_claims_audit.md"))
         || path.starts_with("docs/book/src/registry/")
-    {
-        ("generated_markdown".to_string(), "generated".to_string(), true)
-    } else if text.to_ascii_lowercase().contains("auto-generated")
+        || text.to_ascii_lowercase().contains("auto-generated")
         || text.to_ascii_lowercase().contains("do not edit")
     {
         ("generated_markdown".to_string(), "generated".to_string(), true)
@@ -6872,7 +6869,7 @@ fn render_raw_capture_manifest(
 fn parse_overlay_sections(
     source_path: &Path,
     heading_re: &Regex,
-) -> Result<(String, Vec<(String, String, String)>)> {
+) -> Result<OverlaySections> {
     let raw_lines = fs::read_to_string(source_path)
         .with_context(|| format!("read {}", source_path.display()))?
         .lines()
@@ -6999,7 +6996,7 @@ fn read_overlay_markdown(path: &Path) -> Result<String> {
 }
 
 fn render_single_overlay(title: &str, section: &str, source_markdown: &str, body: &str) -> String {
-    vec![
+    [
         format!("# {title}"),
         String::new(),
         format!("[{section}]"),

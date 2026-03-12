@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
 use gororoba_cli_data::source_provenance;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(
@@ -30,7 +30,7 @@ struct Cli {
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
-    let repo_root = if cli.repo_root == PathBuf::from(".") {
+    let repo_root = if cli.repo_root == Path::new(".") {
         source_provenance::default_repo_root()
     } else {
         cli.repo_root

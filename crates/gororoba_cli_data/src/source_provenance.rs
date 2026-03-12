@@ -370,7 +370,7 @@ fn normalize_doi(doi: &str) -> String {
     value
         .trim()
         .trim_start_matches('(')
-        .trim_end_matches(|ch: char| matches!(ch, '.' | ',' | ';' | ')'))
+        .trim_end_matches(['.', ',', ';', ')'])
         .to_string()
 }
 
@@ -442,17 +442,17 @@ fn is_artifact_local_path(path: &str) -> bool {
 fn extract_local_paths(value: &Value, repo_root: &Path) -> Vec<String> {
     let mut out = Vec::new();
     for text in extract_strings(value) {
-        if text.is_empty() || text.chars().any(|ch| !ch.is_ascii()) || url_re().is_match(&text) {
+        if text.is_empty() || !text.is_ascii() || url_re().is_match(&text) {
             continue;
         }
         let path = Path::new(&text);
         if path.is_absolute() {
-            if path.exists() {
-                if let Ok(relative) = path.strip_prefix(repo_root) {
-                    let rel = relative.to_string_lossy().replace('\\', "/");
-                    if is_artifact_local_path(&rel) {
-                        out.push(rel);
-                    }
+            if path.exists()
+                && let Ok(relative) = path.strip_prefix(repo_root)
+            {
+                let rel = relative.to_string_lossy().replace('\\', "/");
+                if is_artifact_local_path(&rel) {
+                    out.push(rel);
                 }
             }
             continue;
@@ -523,7 +523,8 @@ fn read_tsv_rows(path: &Path) -> Result<Vec<HashMap<String, String>>> {
     Ok(rows)
 }
 
-fn collect_link_observations(repo_root: &Path) -> Result<(HashMap<String, Vec<LinkObservation>>, Vec<String>)> {
+type LinkMap = (HashMap<String, Vec<LinkObservation>>, Vec<String>);
+fn collect_link_observations(repo_root: &Path) -> Result<LinkMap> {
     let intake_root = repo_root.join("data/external/intake");
     let mut table_paths = Vec::new();
     if intake_root.exists() {
@@ -2199,12 +2200,12 @@ pub fn verify_source_infrastructure(
                 failures.push(format!("{lane_rel}: unknown artifact id {aid}"));
                 continue;
             }
-            if let Some(existing) = lane_membership.insert(aid.clone(), lane_name.clone()) {
-                if existing != lane_name {
-                    failures.push(format!(
-                        "artifact {aid} appears in multiple lanes: {existing}, {lane_name}"
-                    ));
-                }
+            if let Some(existing) = lane_membership.insert(aid.clone(), lane_name.clone())
+                && existing != lane_name
+            {
+                failures.push(format!(
+                    "artifact {aid} appears in multiple lanes: {existing}, {lane_name}"
+                ));
             }
         }
     }
