@@ -321,7 +321,7 @@ fn run_gpu_sweep(
     //   Sync:     wait(event_box) before initialize K+1 (protects d_rho)
     //
     // CPU prep for K+1 overlaps with GPU LBM+box-count for K.
-    // Expected: max(10ms, 5ms) = ~10ms/galaxy vs 17ms sequential → ~40% gain.
+    // Expected: max(10ms, 5ms) = ~10ms/galaxy vs 17ms sequential -> ~40% gain.
 
     // Create GPU solver (compile kernels once, reuse across galaxies)
     // MRT extends Ma stability from ~0.3 to ~1.5 for high-contrast galaxies.

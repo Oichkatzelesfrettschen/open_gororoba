@@ -1,6 +1,6 @@
 /// Generate a [`DatasetProvider`](crate::fetcher::DatasetProvider) impl for
 /// providers that follow the common
-/// "download_with_fallbacks → single output file" pattern.
+/// "download_with_fallbacks -> single output file" pattern.
 ///
 /// Eliminates a latent bug class: it is impossible for `fetch()` and
 /// `is_cached()` to disagree on the output filename when both are

@@ -1608,7 +1608,7 @@ impl LbmSolver3DCuda {
     /// ```
     ///
     /// For euclid_df_sweep: CPU prep (~5ms) overlaps with GPU LBM (~10ms)
-    /// → ~40% throughput gain for N=1000 galaxies.
+    /// -> ~40% throughput gain for N=1000 galaxies.
     pub fn stream(&self) -> &Arc<CudaStream> {
         &self.stream
     }

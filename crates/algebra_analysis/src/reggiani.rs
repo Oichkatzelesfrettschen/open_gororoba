@@ -177,12 +177,12 @@ pub fn assert_standard_zero_divisor_annihilators(zd: &StandardZeroDivisor) -> Re
 // Partner graph adjacency matrix and orbit analysis
 // ---------------------------------------------------------------------------
 
-/// 84×84 adjacency matrix of the standard zero-divisor partner graph.
+/// 84x84 adjacency matrix of the standard zero-divisor partner graph.
 ///
 /// Entry `(i, j)` is `true` when ZD `j` annihilates ZD `i` (i.e. ZD `j`
 /// is among the 4 standard partners of ZD `i`).
 ///
-/// # Reggiani (2024) §3
+/// # Reggiani (2024) Sec.3
 ///
 /// Every standard zero-divisor has exactly 4 partners.  The resulting
 /// graph is therefore 4-regular on 84 vertices.
@@ -204,7 +204,7 @@ pub fn partner_adjacency_matrix() -> Vec<Vec<bool>> {
 
 /// Gram matrix of inner products between all 84 standard ZDs.
 ///
-/// Entry `(i, j)` = ⟨v_i , v_j⟩ (standard R^16 dot product).
+/// Entry `(i, j)` = <v_i , v_j> (standard R^16 dot product).
 /// Diagonal entries equal 2 (squared norm of each standard ZD).
 ///
 /// The Gram matrix encodes the geometry of the zero-divisor set

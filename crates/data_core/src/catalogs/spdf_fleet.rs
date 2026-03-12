@@ -2,7 +2,7 @@
 //!
 //! The SPDF merged hourly ASCII format is used by many spacecraft (Voyager,
 //! Pioneer, Ulysses, Juno, Cassini, New Horizons, Helios). Each spacecraft
-//! has the same parse → optional year fixup → to-OMNI pipeline, differing
+//! has the same parse -> optional year fixup -> to-OMNI pipeline, differing
 //! only in column layout, coordinate system, and 2-digit year correction.
 //!
 //! This module centralises that pipeline so individual spacecraft modules
@@ -24,7 +24,7 @@ pub struct SpdfMission {
     /// Whether the B-field is in Solar Ecliptic (SE) coordinates (`true`) or
     /// RTN (Radial-Tangential-Normal) coordinates (`false`).
     pub b_is_se: bool,
-    /// Optional post-parse record fixup (e.g., 2-digit → 4-digit year).
+    /// Optional post-parse record fixup (e.g., 2-digit -> 4-digit year).
     pub year_fixup: Option<fn(&mut SpdfMergedRecord)>,
 }
 
