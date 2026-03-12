@@ -115,7 +115,7 @@ pub enum PioneerSpacecraft {
     P11,
 }
 
-/// Post-parse year fixup for Pioneer: 2-digit year (e.g. 72) → 4-digit (1972).
+/// Post-parse year fixup for Pioneer: 2-digit year (e.g. 72) -> 4-digit (1972).
 fn pioneer_year_fixup(r: &mut SpdfMergedRecord) {
     if r.year < 100 {
         r.year += 1900;

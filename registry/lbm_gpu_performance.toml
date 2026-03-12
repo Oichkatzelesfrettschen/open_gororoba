@@ -163,8 +163,8 @@ technique = "CUDA graph capture for launch overhead reduction"
 description = "Captured step kernel into replayable CUDA graph via CudaStream::begin_capture/end_capture"
 details = """
 New step_graph() method captures the kernel launch on first call, then replays the
-graph on subsequent calls. Eliminates ~50μs/launch overhead by batching GPU commands.
-For E-156 (N=20 galaxies × 200 steps = 4000 launches), saves ~200ms.
+graph on subsequent calls. Eliminates ~50us/launch overhead by batching GPU commands.
+For E-156 (N=20 galaxies x 200 steps = 4000 launches), saves ~200ms.
 Graph invalidation API provided for dynamic tau/force changes.
 SoA path only (use_soa=true required).
 """

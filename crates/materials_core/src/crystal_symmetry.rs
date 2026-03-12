@@ -2897,11 +2897,11 @@ pub fn allowed_reflection(space_group_number: u16, h: i32, k: i32, l: i32) -> bo
 ///
 /// Uses the character orthogonality relation:
 /// ```text
-///   n(A₁ in Γ_f* ⊗ Γ_op ⊗ Γ_i) =
-///       (1/|G|) Σ_k  n_k · χ_f*(C_k) · χ_op(C_k) · χ_i(C_k)
+///   n(A_1 in Gamma_f* x Gamma_op x Gamma_i) =
+///       (1/|G|) Sum_k  n_k * chi_f*(C_k) * chi_op(C_k) * chi_i(C_k)
 /// ```
 /// where n_k is the number of operations in conjugacy class C_k and
-/// |G| = Σ n_k is the order of the group.  The transition is allowed
+/// |G| = Sum n_k is the order of the group.  The transition is allowed
 /// when this multiplicity is non-zero.
 ///
 /// Falls back to `true` (allowed) when the character table for the
@@ -2935,13 +2935,13 @@ pub fn is_allowed_transition(
         None => return true,
     };
 
-    // Group order |G| = Σ n_k
+    // Group order |G| = Sum n_k
     let group_order: f64 = table.classes.iter().map(|c| c.count as f64).sum();
     if group_order < 1.0 {
         return true;
     }
 
-    // n(A1) = (1/|G|) Σ_k n_k · χ_f*(C_k) · χ_op(C_k) · χ_i(C_k)
+    // n(A1) = (1/|G|) Sum_k n_k * chi_f*(C_k) * chi_op(C_k) * chi_i(C_k)
     // Accumulate the full complex triple product; the result must be real
     // (imaginary part cancels for well-formed character tables).
     let mut sum_re = 0.0_f64;
@@ -2952,12 +2952,12 @@ pub fn is_allowed_transition(
         let (ff_re, ff_im) = table.characters[row_f][j];
         let (fo_re, fo_im) = table.characters[row_op][j];
 
-        // conj(χ_f) = (ff_re, -ff_im)
-        // product of three complex numbers: conj(χ_f) · χ_op · χ_i
-        let (a_re, a_im) = (ff_re, -ff_im); // conj(χ_f)
-        // a * χ_op
+        // conj(chi_f) = (ff_re, -ff_im)
+        // product of three complex numbers: conj(chi_f) * chi_op * chi_i
+        let (a_re, a_im) = (ff_re, -ff_im); // conj(chi_f)
+        // a * chi_op
         let (b_re, b_im) = (a_re * fo_re - a_im * fo_im, a_re * fo_im + a_im * fo_re);
-        // b * χ_i
+        // b * chi_i
         let c_re = b_re * fi_re - b_im * fi_im;
         let c_im = b_re * fi_im + b_im * fi_re;
 
@@ -3892,26 +3892,26 @@ mod tests {
         // Oh point group: selection rules from character table
 
         // Electric dipole transitions are mediated by T1u operator irrep.
-        // A1g -> T1u via T1u: product A1g ⊗ T1u ⊗ T1u contains A1g
+        // A1g -> T1u via T1u: product A1g x T1u x T1u contains A1g
         assert!(is_allowed_transition(PointGroup::Oh, "A1g", "T1u", "T1u"));
 
-        // A1g -> T2g via T1u: product A1g ⊗ T1u ⊗ T2g does NOT contain A1g
+        // A1g -> T2g via T1u: product A1g x T1u x T2g does NOT contain A1g
         assert!(!is_allowed_transition(PointGroup::Oh, "A1g", "T2g", "T1u"));
 
         // T1u -> A1g via T1u: same as A1g -> T1u (symmetric)
         assert!(is_allowed_transition(PointGroup::Oh, "T1u", "A1g", "T1u"));
 
-        // T2g -> T1u via T1u: product T2g ⊗ T1u ⊗ T1u should contain A1g
-        // (T1u ⊗ T1u = A1g + Eg + T1g + T2g, which contains T2g)
+        // T2g -> T1u via T1u: product T2g x T1u x T1u should contain A1g
+        // (T1u x T1u = A1g + Eg + T1g + T2g, which contains T2g)
         assert!(is_allowed_transition(PointGroup::Oh, "T2g", "T1u", "T1u"));
 
         // Self-transition A1g -> A1g via A1g: always allowed (identity)
         assert!(is_allowed_transition(PointGroup::Oh, "A1g", "A1g", "A1g"));
 
-        // A2g -> A2g via A1g: A2g ⊗ A1g ⊗ A2g = A2g ⊗ A2g = A1g -> allowed
+        // A2g -> A2g via A1g: A2g x A1g x A2g = A2g x A2g = A1g -> allowed
         assert!(is_allowed_transition(PointGroup::Oh, "A2g", "A2g", "A1g"));
 
-        // A1g -> A2g via A1g: A1g ⊗ A1g ⊗ A2g = A2g ≠ A1g -> forbidden
+        // A1g -> A2g via A1g: A1g x A1g x A2g = A2g != A1g -> forbidden
         assert!(!is_allowed_transition(PointGroup::Oh, "A1g", "A2g", "A1g"));
 
         // Falls back to true for unsupported group
