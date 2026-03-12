@@ -981,8 +981,8 @@ impl LbmSolver3D {
             .enumerate()
             .for_each(|(idx, (rho_out, u_out))| {
                 let mut f = [0.0; 19];
-                for dir in 0..19 {
-                    f[dir] = f_slice[aosoa_idx(idx, dir)];
+                for (dir, fi) in f.iter_mut().enumerate() {
+                    *fi = f_slice[aosoa_idx(idx, dir)];
                 }
                 let rho = BgkCollision::density_from_f(&f);
                 *rho_out = rho;
@@ -2339,8 +2339,8 @@ mod tests {
                     let dz = z as f64 - 3.5;
                     let rho = 1.0 + 0.1 * (-0.5 * (dx * dx + dy * dy + dz * dz)).exp();
                     let f_eq = BgkCollision::initialize_rest(rho, &lattice);
-                    for dir in 0..19 {
-                        solver.f[aosoa_idx(idx, dir)] = f_eq[dir];
+                    for (dir, &feq) in f_eq.iter().enumerate() {
+                        solver.f[aosoa_idx(idx, dir)] = feq;
                     }
                     solver.rho[idx] = rho;
                 }
