@@ -4,8 +4,8 @@
 [conflict_markers]
 updated = "deterministic"
 authoritative = true
-marker_count = 90
-high_severity_count = 77
+marker_count = 96
+high_severity_count = 83
 medium_severity_count = 13
 low_severity_count = 0
 kind_count = 2
@@ -223,6 +223,38 @@ id = "CM-0014"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
+claim_refs = ["C-1357"]
+source_registry = "registry/claims.toml"
+source_document = "C-1357"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["The A-infinity obstruction norm 8.725 (C-612) mapped to Bowers-Liang anisotropy (C-613) produces a stable gravastar (C-614, C-615) for coupling in [0, 0.01]. However, the claim that this 'drives dark energy' is architecturally unsupported: (a) gravastar solver outputs (mass, compactness, c_s) at r~10 km scale with no cosmological observable; (b) actual dark energy EOS (orthoplex_diffusion.rs, C-931/C-932) uses orthoplex heat kernel spectral dimension, not gravastar anisotropy; (c) DarkEnergyEOS.v proves w(z) from diffusion_time(z, alpha, t_0) with no reference to obstruction_norm or homotopy_bridge; (d) no code bridges Chain A (gravastar TOV) to Chain B (orthoplex w(z)); (e) obstruction_norm normalization (frobenius / dim^1.5) has free choice of norm type, exponent, truncation order; (f) coupling parameter in [0, 0.01] is a free parameter."]
+negative_evidence = ["CLOSED_REFUTED"]
+jaccard_overlap = 0.000000
+notes = "Refuted/negative status conflicts with positive language in statement."
+
+[[marker]]
+id = "CM-0015"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-1358"]
+source_registry = "registry/claims.toml"
+source_document = "C-1358"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["FORMAL KILL SHOT: The A-infinity obstruction norm of 8.725 has no standing as a physical driver of dark energy. Measured normalization sensitivity at dim=16 (E-186, 2026-03-12): frobenius/dim^1.5=8.725 (current), frobenius/dim=34.900, frobenius/sqrt(d)=139.599, frobenius/dim^2=2.181, spectral_radius/dim^1.5=7.764. Relative spread = 98.4% (63x range, min 2.18 to max 139.6). A true physical constant driving a macroscopic observable (cosmological constant Lambda) must be invariant under change of basis and coordinate transformation. The 8.725 value is an artifact of choosing one of at least 5 valid matrix norm conventions; changing convention shifts the value by 2 orders of magnitude. This belongs in the same graveyard as the 0.1764 metamaterial grid artifact (C-1329). SECONDARY FINDING: spectral_radius/dim^1.5 = 7.764 is close to frobenius/dim^1.5 = 8.725, indicating the m_3 associator tensor at D=16 has energy concentrated in its dominant eigenmodes (low-rank-dominated operator), not diffusely distributed -- a genuine algebraic structural property of the sedenion m_3 operator, but not a cosmological observable."]
+negative_evidence = ["CLOSED_REFUTED"]
+jaccard_overlap = 0.000000
+notes = "Refuted/negative status conflicts with positive language in statement."
+
+[[marker]]
+id = "CM-0016"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
 claim_refs = ["C-1364"]
 source_registry = "registry/claims.toml"
 source_document = "C-1364"
@@ -235,7 +267,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0015"
+id = "CM-0017"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -251,7 +283,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0016"
+id = "CM-0018"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -267,7 +299,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0017"
+id = "CM-0019"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -283,7 +315,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0018"
+id = "CM-0020"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -299,7 +331,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0019"
+id = "CM-0021"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -315,7 +347,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0020"
+id = "CM-0022"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -331,7 +363,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0021"
+id = "CM-0023"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -347,7 +379,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0022"
+id = "CM-0024"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -363,7 +395,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0023"
+id = "CM-0025"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -379,7 +411,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0024"
+id = "CM-0026"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -395,7 +427,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0025"
+id = "CM-0027"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -411,7 +443,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0026"
+id = "CM-0028"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -427,7 +459,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0027"
+id = "CM-0029"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -443,7 +475,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0028"
+id = "CM-0030"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -459,7 +491,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0029"
+id = "CM-0031"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -475,7 +507,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0030"
+id = "CM-0032"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -491,7 +523,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0031"
+id = "CM-0033"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -507,7 +539,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0032"
+id = "CM-0034"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -523,7 +555,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0033"
+id = "CM-0035"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -539,7 +571,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0034"
+id = "CM-0036"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -555,7 +587,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0035"
+id = "CM-0037"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -571,7 +603,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0036"
+id = "CM-0038"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -587,7 +619,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0037"
+id = "CM-0039"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -603,7 +635,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0038"
+id = "CM-0040"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -619,7 +651,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0039"
+id = "CM-0041"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -635,7 +667,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0040"
+id = "CM-0042"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -651,7 +683,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0041"
+id = "CM-0043"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -667,7 +699,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0042"
+id = "CM-0044"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -683,7 +715,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0043"
+id = "CM-0045"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -699,7 +731,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0044"
+id = "CM-0046"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -715,7 +747,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0045"
+id = "CM-0047"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -731,7 +763,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0046"
+id = "CM-0048"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -747,7 +779,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0047"
+id = "CM-0049"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -763,7 +795,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0048"
+id = "CM-0050"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -779,7 +811,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0049"
+id = "CM-0051"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -795,7 +827,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0050"
+id = "CM-0052"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -811,7 +843,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0051"
+id = "CM-0053"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -827,7 +859,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0052"
+id = "CM-0054"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -843,7 +875,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0053"
+id = "CM-0055"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -859,7 +891,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0054"
+id = "CM-0056"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -875,7 +907,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0055"
+id = "CM-0057"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -891,7 +923,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0056"
+id = "CM-0058"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -907,7 +939,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0057"
+id = "CM-0059"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -923,7 +955,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0058"
+id = "CM-0060"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -939,7 +971,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0059"
+id = "CM-0061"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -955,7 +987,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0060"
+id = "CM-0062"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -971,7 +1003,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0061"
+id = "CM-0063"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -987,7 +1019,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0062"
+id = "CM-0064"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1003,7 +1035,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0063"
+id = "CM-0065"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1019,7 +1051,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0064"
+id = "CM-0066"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1035,7 +1067,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0065"
+id = "CM-0067"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1051,7 +1083,7 @@ jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
 
 [[marker]]
-id = "CM-0066"
+id = "CM-0068"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1067,7 +1099,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0067"
+id = "CM-0069"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1083,7 +1115,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0068"
+id = "CM-0070"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1099,7 +1131,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0069"
+id = "CM-0071"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1115,7 +1147,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0070"
+id = "CM-0072"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1131,7 +1163,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0071"
+id = "CM-0073"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1147,7 +1179,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0072"
+id = "CM-0074"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1163,7 +1195,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0073"
+id = "CM-0075"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1179,7 +1211,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0074"
+id = "CM-0076"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1195,7 +1227,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0075"
+id = "CM-0077"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1211,7 +1243,71 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0076"
+id = "CM-0078"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-785"]
+source_registry = "registry/claims.toml"
+source_document = "C-785"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["Ghost frequency phi^{-1/2} detected in ATNF Pulsar Catalog dispersion measures at f=0.206 normalized, SNR=5.93, and in pulsar periods at f=0.221, SNR=5.14. Two independent columns from the same catalog yield consistent detections."]
+negative_evidence = ["REFUTED"]
+jaccard_overlap = 0.000000
+notes = "Refuted/negative status conflicts with positive language in statement."
+
+[[marker]]
+id = "CM-0079"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-786"]
+source_registry = "registry/claims.toml"
+source_document = "C-786"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection."]
+negative_evidence = ["REFUTED"]
+jaccard_overlap = 0.000000
+notes = "Refuted/negative status conflicts with positive language in statement."
+
+[[marker]]
+id = "CM-0080"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-789"]
+source_registry = "registry/claims.toml"
+source_document = "C-789"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N. The claimed convergence (0.016 to 0.0008) represents interpolation precision, not physical sharpening. Detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) have std dev ~0.008, consistent with sampling variability, not convergence toward 0.2138."]
+negative_evidence = ["REFUTED"]
+jaccard_overlap = 0.000000
+notes = "Refuted/negative status conflicts with positive language in statement."
+
+[[marker]]
+id = "CM-0081"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-791"]
+source_registry = "registry/claims.toml"
+source_document = "C-791"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["ALICE Pb-Pb R_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed with higher statistics (LHC Run 3), this would indicate the Sedenion ZD lattice operates at the QGP deconfinement scale, not only at cosmological path lengths."]
+negative_evidence = ["REFUTED"]
+jaccard_overlap = 0.000000
+notes = "Refuted/negative status conflicts with positive language in statement."
+
+[[marker]]
+id = "CM-0082"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1227,7 +1323,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0077"
+id = "CM-0083"
 marker_kind = "claim_status_statement_tension"
 severity = "high"
 status = "open"
@@ -1243,7 +1339,7 @@ jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
-id = "CM-0078"
+id = "CM-0084"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1259,7 +1355,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0079"
+id = "CM-0085"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1275,7 +1371,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0080"
+id = "CM-0086"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1291,7 +1387,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0081"
+id = "CM-0087"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1307,7 +1403,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0082"
+id = "CM-0088"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1323,7 +1419,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0083"
+id = "CM-0089"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1339,7 +1435,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0084"
+id = "CM-0090"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1355,7 +1451,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0085"
+id = "CM-0091"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1371,7 +1467,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0086"
+id = "CM-0092"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1387,7 +1483,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0087"
+id = "CM-0093"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1403,7 +1499,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0088"
+id = "CM-0094"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1419,7 +1515,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0089"
+id = "CM-0095"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1435,7 +1531,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0090"
+id = "CM-0096"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
