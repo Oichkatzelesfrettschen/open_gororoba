@@ -218,33 +218,6 @@ pub fn x87_abm8_dot_product(f: &[f64; 8], c: &[f64; 8]) -> f64 {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_x87_cubic_roots_simple() {
-        // Equation: (x-1)(x-2)(x-3) = x^3 - 6x^2 + 11x - 6 = 0
-        // T = 6, S = 11, D = 6
-        let roots = x87_cubic_roots(6.0, 11.0, 6.0);
-        println!("Simple roots: {:?}", roots);
-        assert!((roots[0] - 1.0).abs() < 1e-15);
-        assert!((roots[1] - 2.0).abs() < 1e-15);
-        assert!((roots[2] - 3.0).abs() < 1e-15);
-    }
-
-    #[test]
-    fn test_x87_cubic_roots_degenerate() {
-        // Equation: (x-1)^2(x-2) = x^3 - 4x^2 + 5x - 2 = 0
-        // T = 4, S = 5, D = 2
-        let roots = x87_cubic_roots(4.0, 5.0, 2.0);
-        println!("Degenerate roots: {:?}", roots);
-        assert!((roots[0] - 1.0).abs() < 1e-14);
-        assert!((roots[1] - 1.0).abs() < 1e-14);
-        assert!((roots[2] - 2.0).abs() < 1e-14);
-    }
-}
-
 /// High-precision Cardano solver for the characteristic equation of the Albert Algebra
 /// using x87 80-bit extended precision.
 ///
@@ -416,5 +389,32 @@ pub fn x87_cubic_roots(tr: f64, s2: f64, det: f64) -> [f64; 3] {
         ];
         roots.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
         roots
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_x87_cubic_roots_simple() {
+        // Equation: (x-1)(x-2)(x-3) = x^3 - 6x^2 + 11x - 6 = 0
+        // T = 6, S = 11, D = 6
+        let roots = x87_cubic_roots(6.0, 11.0, 6.0);
+        println!("Simple roots: {:?}", roots);
+        assert!((roots[0] - 1.0).abs() < 1e-15);
+        assert!((roots[1] - 2.0).abs() < 1e-15);
+        assert!((roots[2] - 3.0).abs() < 1e-15);
+    }
+
+    #[test]
+    fn test_x87_cubic_roots_degenerate() {
+        // Equation: (x-1)^2(x-2) = x^3 - 4x^2 + 5x - 2 = 0
+        // T = 4, S = 5, D = 2
+        let roots = x87_cubic_roots(4.0, 5.0, 2.0);
+        println!("Degenerate roots: {:?}", roots);
+        assert!((roots[0] - 1.0).abs() < 1e-14);
+        assert!((roots[1] - 1.0).abs() < 1e-14);
+        assert!((roots[2] - 2.0).abs() < 1e-14);
     }
 }
