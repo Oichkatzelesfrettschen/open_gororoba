@@ -1,11 +1,11 @@
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand, ValueEnum};
-use provenance_ops::source_provenance;
 use provenance_core::{
     ArtifactQueryResult, BinaryRecord, ClaimRecord, ControlPlaneCounts, DoctorReport,
     DocumentQueryResult, DownloadCampaignQueryResult, DownloadQueryResult, ExperimentRecord,
     InsightRecord, PantheonSeedSummary, TheoremRecord,
 };
+use provenance_ops::source_provenance;
 use provenance_store::ProvenanceStore;
 use serde_json::json;
 use std::{

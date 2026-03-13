@@ -152,7 +152,10 @@ const ZENODO_TARGETS: &[EuclidZenodoTarget] = &[
         name: "morphology",
         record_id: 15_106_473,
         description: "Euclid Q1 Visual Morphology Classification Catalogue",
-        target_files: &["morphology_catalogue.parquet", "useful_physical_measurements.parquet"],
+        target_files: &[
+            "morphology_catalogue.parquet",
+            "useful_physical_measurements.parquet",
+        ],
     },
     EuclidZenodoTarget {
         name: "strong_lensing",
@@ -263,18 +266,30 @@ fn main() -> Result<()> {
             format,
             maxrec,
             output,
-        } => cmd_tap_query(
+        } => cmd_tap_query(TapQueryArgs {
             endpoint,
             catalog,
             ra_center,
             dec_center,
             radius_deg,
-            tile_id.as_deref(),
-            &format,
+            tile_id: tile_id.as_deref(),
+            format: &format,
             maxrec,
-            output.as_deref(),
-        ),
+            output: output.as_deref(),
+        }),
     }
+}
+
+struct TapQueryArgs<'a> {
+    endpoint: TapEndpointArg,
+    catalog: TapCatalogArg,
+    ra_center: Option<f64>,
+    dec_center: Option<f64>,
+    radius_deg: Option<f64>,
+    tile_id: Option<&'a str>,
+    format: &'a str,
+    maxrec: usize,
+    output: Option<&'a Path>,
 }
 
 fn cmd_zenodo_discover(max_pages: usize, page_size: usize, manifest: Option<&Path>) -> Result<()> {
@@ -364,7 +379,9 @@ fn cmd_zenodo_discover(max_pages: usize, page_size: usize, manifest: Option<&Pat
                 extensions: extensions_vec,
                 has_catalog,
                 image_only,
-                known: ZENODO_TARGETS.iter().any(|target| target.record_id == record_id),
+                known: ZENODO_TARGETS
+                    .iter()
+                    .any(|target| target.record_id == record_id),
                 large: total_size_bytes > 50 * 1024 * 1024 * 1024_u64,
                 license: metadata
                     .get("license")
@@ -516,21 +533,23 @@ fn cmd_tap_tables(endpoint: TapEndpointArg, output: Option<&Path>) -> Result<()>
     Ok(())
 }
 
-fn cmd_tap_query(
-    endpoint: TapEndpointArg,
-    catalog: TapCatalogArg,
-    ra_center: Option<f64>,
-    dec_center: Option<f64>,
-    radius_deg: Option<f64>,
-    tile_id: Option<&str>,
-    format: &str,
-    maxrec: usize,
-    output: Option<&Path>,
-) -> Result<()> {
+fn cmd_tap_query(args: TapQueryArgs<'_>) -> Result<()> {
+    let TapQueryArgs {
+        endpoint,
+        catalog,
+        ra_center,
+        dec_center,
+        radius_deg,
+        tile_id,
+        format,
+        maxrec,
+        output,
+    } = args;
     let adql = if let Some(tile_id) = tile_id {
         build_tile_adql(endpoint, catalog, tile_id, maxrec)?
     } else {
-        let ra_center = ra_center.ok_or_else(|| anyhow!("--ra-center is required without --tile-id"))?;
+        let ra_center =
+            ra_center.ok_or_else(|| anyhow!("--ra-center is required without --tile-id"))?;
         let dec_center =
             dec_center.ok_or_else(|| anyhow!("--dec-center is required without --tile-id"))?;
         let radius_deg =
@@ -641,7 +660,12 @@ fn build_tile_adql(
     ))
 }
 
-fn tap_sync_query(endpoint: TapEndpointArg, adql: &str, format: &str, maxrec: usize) -> Result<String> {
+fn tap_sync_query(
+    endpoint: TapEndpointArg,
+    adql: &str,
+    format: &str,
+    maxrec: usize,
+) -> Result<String> {
     let client = tap_client()?;
     let url = format!("{}/sync", tap_endpoint_url(endpoint));
     let response = client
@@ -708,7 +732,11 @@ fn default_zenodo_download_manifest_path() -> PathBuf {
     PathBuf::from(BASE_OUT_DIR).join("euclid_zenodo_manifest.json")
 }
 
-fn default_tap_query_path(endpoint: TapEndpointArg, catalog: TapCatalogArg, format: &str) -> PathBuf {
+fn default_tap_query_path(
+    endpoint: TapEndpointArg,
+    catalog: TapCatalogArg,
+    format: &str,
+) -> PathBuf {
     let endpoint_name = match endpoint {
         TapEndpointArg::Esa => "esa",
         TapEndpointArg::Irsa => "irsa",
@@ -719,10 +747,8 @@ fn default_tap_query_path(endpoint: TapEndpointArg, catalog: TapCatalogArg, form
         TapCatalogArg::SpeRedshift => "spe_redshift",
         TapCatalogArg::PhzClassification => "phz_classification",
     };
-    PathBuf::from("data/external/euclid/tap").join(format!(
-        "{}_{}.{}",
-        endpoint_name, catalog_name, format
-    ))
+    PathBuf::from("data/external/euclid/tap")
+        .join(format!("{}_{}.{}", endpoint_name, catalog_name, format))
 }
 
 fn escape_adql_string(value: &str) -> String {

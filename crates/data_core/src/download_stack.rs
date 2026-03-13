@@ -707,8 +707,14 @@ impl DownloadStack {
             });
         }
 
-        let mut note = compose_note(&request.note, DownloadBackend::Reqwest, TransferKind::Download);
-        let mut local_bytes = fs::metadata(&destination).map(|meta| meta.len()).unwrap_or(0);
+        let mut note = compose_note(
+            &request.note,
+            DownloadBackend::Reqwest,
+            TransferKind::Download,
+        );
+        let mut local_bytes = fs::metadata(&destination)
+            .map(|meta| meta.len())
+            .unwrap_or(0);
 
         if probe.supports_ranges
             && let Some(total_bytes) = probe.total_bytes
@@ -870,7 +876,9 @@ impl DownloadStack {
         total_bytes: u64,
         chunk_bytes: u64,
     ) -> Result<(), TransferError> {
-        let current_bytes = fs::metadata(destination).map(|meta| meta.len()).unwrap_or(0);
+        let current_bytes = fs::metadata(destination)
+            .map(|meta| meta.len())
+            .unwrap_or(0);
         if current_bytes >= total_bytes {
             return Ok(());
         }
@@ -1887,10 +1895,8 @@ mod tests {
     #[test]
     fn test_route_uses_rsync_backend_for_rsync_scheme() {
         let stack = DownloadStack::default();
-        let request = TransferRequest::download(
-            "rsync://example.com/module/path/data.bin",
-            "target/out.bin",
-        );
+        let request =
+            TransferRequest::download("rsync://example.com/module/path/data.bin", "target/out.bin");
         let route = stack.route(&request, TransferKind::Download);
         assert_eq!(route.backends, vec![DownloadBackend::RsyncCli]);
     }

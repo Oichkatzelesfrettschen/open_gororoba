@@ -43,7 +43,10 @@ struct Cli {
     #[arg(long, default_value = "data/external/manga/drpall-v3_1_1.fits")]
     manga_drpall: PathBuf,
 
-    #[arg(long, default_value = "data/external/euclid/euclid_manga_crossmatch.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/euclid/euclid_manga_crossmatch.csv"
+    )]
     output: PathBuf,
 
     #[arg(long)]

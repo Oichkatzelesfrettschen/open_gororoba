@@ -1139,9 +1139,7 @@ pub fn eigenmode_stack(
     } else {
         0.0
     };
-    let x_grid: Vec<f64> = (0..n_r)
-        .map(|i| config.x_min + i as f64 * dx)
-        .collect();
+    let x_grid: Vec<f64> = (0..n_r).map(|i| config.x_min + i as f64 * dx).collect();
 
     let empty = EigenmodeStackResult {
         x_grid: x_grid.clone(),
@@ -1227,8 +1225,7 @@ pub fn eigenmode_stack(
             let mat: Vec<Vec<f64>> = (0..n_r)
                 .map(|i| cov_flat[i * n_r..(i + 1) * n_r].to_vec())
                 .collect();
-            algebra_analysis::dd_jacobi::symmetric_eigensystem_dd(&mat)
-                .map_err(|e| e.to_string())
+            algebra_analysis::dd_jacobi::symmetric_eigensystem_dd(&mat).map_err(|e| e.to_string())
         }
     };
 
@@ -1254,7 +1251,11 @@ pub fn eigenmode_stack(
 
     let n_keep = n_modes.min(n_r);
     let lambda_sum: f64 = eigenvalues.iter().map(|e| e.abs()).sum();
-    let lambda_mean = if n_r > 0 { lambda_sum / n_r as f64 } else { 0.0 };
+    let lambda_mean = if n_r > 0 {
+        lambda_sum / n_r as f64
+    } else {
+        0.0
+    };
 
     let mut eigenmodes = Vec::with_capacity(n_keep);
     let mut zd_overlaps = Vec::with_capacity(n_keep);
@@ -1716,11 +1717,15 @@ mod tests {
         seed: u64,
     ) -> NormalizedResiduals {
         // Simple deterministic LCG for reproducible pseudo-random residuals
-        let mut s = seed.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+        let mut s = seed
+            .wrapping_mul(6364136223846793005)
+            .wrapping_add(1442695040888963407);
         let points: Vec<NormalizedPoint> = (0..n_pts)
             .map(|i| {
                 let x = 0.5 + (i as f64 / (n_pts - 1) as f64) * 9.5;
-                s = s.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+                s = s
+                    .wrapping_mul(6364136223846793005)
+                    .wrapping_add(1442695040888963407);
                 let noise = (s as i64 as f64 / i64::MAX as f64) * amplitude;
                 NormalizedPoint {
                     x,

@@ -15,8 +15,7 @@
 
 use clap::Parser;
 use cosmology_core::slit_projection::{compute_projection_matrix, deproject_rotation_curve};
-use std::collections::HashMap;
-use std::path::PathBuf;
+use std::{collections::HashMap, path::PathBuf};
 
 /// arcsec-to-kpc conversion factor: 1 arcsec at 1 Mpc = pi/(180*3600) Mpc = 4.8481e-6 Mpc = 4.8481e-3 kpc.
 const ARCSEC_TO_KPC_PER_MPC: f64 = 4.848_136_811e-3;
@@ -85,12 +84,10 @@ fn parse_meta_csv(path: &std::path::Path) -> anyhow::Result<HashMap<String, GalM
         }
 
         let hdr = header.as_ref().unwrap();
-        let get = |key: &str| -> Option<&str> {
-            hdr.get(key).and_then(|&i| fields.get(i)).copied()
-        };
-        let get_f64 = |key: &str| -> f64 {
-            get(key).and_then(|s| s.parse().ok()).unwrap_or(f64::NAN)
-        };
+        let get =
+            |key: &str| -> Option<&str> { hdr.get(key).and_then(|&i| fields.get(i)).copied() };
+        let get_f64 =
+            |key: &str| -> f64 { get(key).and_then(|s| s.parse().ok()).unwrap_or(f64::NAN) };
 
         // Detect name column: plateifu (DAPall) or name/object_name (HiCube)
         let name = get("plateifu")
@@ -120,8 +117,7 @@ fn parse_meta_csv(path: &std::path::Path) -> anyhow::Result<HashMap<String, GalM
         }
 
         // PSF FWHM: psf_fwhm_arcsec or beam_fwhm_arcsec
-        let psf_fwhm_arcsec = get_f64("psf_fwhm_arcsec")
-            .max(get_f64("beam_fwhm_arcsec"));
+        let psf_fwhm_arcsec = get_f64("psf_fwhm_arcsec").max(get_f64("beam_fwhm_arcsec"));
         if !psf_fwhm_arcsec.is_finite() || psf_fwhm_arcsec <= 0.0 {
             continue;
         }
@@ -197,7 +193,10 @@ fn main() -> anyhow::Result<()> {
     env_logger::init();
     let cli = Cli::parse();
 
-    eprintln!("Loading rotation curves from {}...", cli.rotcurves.display());
+    eprintln!(
+        "Loading rotation curves from {}...",
+        cli.rotcurves.display()
+    );
     let rotcurves = parse_rotcurves(&cli.rotcurves)?;
     eprintln!("  Loaded {} galaxies", rotcurves.len());
 
@@ -241,8 +240,7 @@ fn main() -> anyhow::Result<()> {
         let sigma_obs: Vec<f64> = pts.iter().map(|&(_, _, e)| e.max(0.1)).collect();
 
         let m = compute_projection_matrix(&r_kpc, psf_fwhm_kpc, meta.incl_deg, slit_hw_kpc);
-        let (v_circ, v_circ_err) =
-            deproject_rotation_curve(&v_obs, &sigma_obs, &m, cli.lambda);
+        let (v_circ, v_circ_err) = deproject_rotation_curve(&v_obs, &sigma_obs, &m, cli.lambda);
 
         for (i, &r) in r_kpc.iter().enumerate() {
             wtr.write_record([

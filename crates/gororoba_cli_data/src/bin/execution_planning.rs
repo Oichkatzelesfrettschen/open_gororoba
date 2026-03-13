@@ -2934,7 +2934,9 @@ deterministic = true
             &fixture.root.join("registry/experiments.toml"),
             &fixture.root.join("registry/binaries.toml"),
             &fixture.root.join("docs/THEOREMS.md"),
-            &fixture.root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md"),
+            &fixture
+                .root
+                .join("docs/generated/THEOREMS_REGISTRY_MIRROR.md"),
         )?;
         Ok(())
     }

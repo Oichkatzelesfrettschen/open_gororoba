@@ -371,9 +371,11 @@ pub fn read_euclid_visual_morphology(
     }
 
     result.sort_by(|a, b| {
-        a.object_id
-            .cmp(&b.object_id)
-            .then_with(|| a.ra_deg.partial_cmp(&b.ra_deg).unwrap_or(std::cmp::Ordering::Equal))
+        a.object_id.cmp(&b.object_id).then_with(|| {
+            a.ra_deg
+                .partial_cmp(&b.ra_deg)
+                .unwrap_or(std::cmp::Ordering::Equal)
+        })
     });
     Ok(result)
 }

@@ -20,9 +20,9 @@
 
 use clap::{Parser, Subcommand, ValueEnum};
 use data_core::{
-    catalogs::lotss::{load_from_votable, LoTSSRelease, LoTSSSource},
+    catalogs::lotss::{LoTSSRelease, LoTSSSource, load_from_votable},
     fetcher::{compute_sha256, download_to_file, validate_not_html},
-    formats::fits_table::{read_fits_table, FitsValue},
+    formats::fits_table::{FitsValue, read_fits_table},
 };
 use fitsio::{FitsFile, hdu::HduInfo};
 use serde::{Deserialize, Serialize};
@@ -210,7 +210,8 @@ impl InputFormatArg {
 // ---- Constants ---------------------------------------------------------------
 
 const DR1_URL: &str = "https://lofar-surveys.org/public/LoTSS_DR1_v1.1.srl.fits";
-const DR2_URL: &str = "https://lofar-surveys.org/public/DR2/catalogues/LoTSS_DR2_v110_masked.srl.fits";
+const DR2_URL: &str =
+    "https://lofar-surveys.org/public/DR2/catalogues/LoTSS_DR2_v110_masked.srl.fits";
 const DR3_URL: &str = "https://lofar-surveys.org/public/DR3/catalogues/LoTSS_DR3_v1.0.srl.fits";
 const DR3_CONE_BASE: &str = "https://vo.astron.nl/lotss_dr3/q/src_cone/scs.xml";
 
@@ -287,7 +288,7 @@ fn run(cli: Cli) -> Result<(), String> {
             allow_partial,
             workers,
             chunk_rows,
-        } => cmd_crossmatch_manga(
+        } => cmd_crossmatch_manga(CrossmatchMangaArgs {
             release,
             input_format,
             input,
@@ -300,7 +301,7 @@ fn run(cli: Cli) -> Result<(), String> {
             allow_partial,
             workers,
             chunk_rows,
-        ),
+        }),
     }
 }
 
@@ -312,6 +313,21 @@ struct DrpallTarget {
     mangaid: String,
     ra_deg: f64,
     dec_deg: f64,
+}
+
+struct CrossmatchMangaArgs {
+    release: ReleaseArg,
+    input_format: Option<InputFormatArg>,
+    input: Option<PathBuf>,
+    manga_selection: PathBuf,
+    manga_drpall: PathBuf,
+    radius_arcsec: f64,
+    output: Option<PathBuf>,
+    report: Option<PathBuf>,
+    summary: Option<PathBuf>,
+    allow_partial: bool,
+    workers: Option<usize>,
+    chunk_rows: Option<usize>,
 }
 
 #[derive(Debug, Clone)]
@@ -560,7 +576,10 @@ fn cmd_download(release: ReleaseArg, output: Option<PathBuf>) -> Result<(), Stri
         ReleaseArg::Dr3 => None,
     };
     if let Some(n) = expected {
-        println!("Expected ~{} sources. Run `verify` after download to confirm.", n);
+        println!(
+            "Expected ~{} sources. Run `verify` after download to confirm.",
+            n
+        );
     }
 
     println!("Done.");
@@ -571,7 +590,10 @@ fn cmd_download(release: ReleaseArg, output: Option<PathBuf>) -> Result<(), Stri
 
 /// Build a VO SCS query URL with RA, Dec, SR parameters.
 fn scs_url(base: &str, ra: f64, dec: f64, radius: f64) -> String {
-    format!("{}?RA={}&DEC={}&SR={}&FORMAT=votable/td", base, ra, dec, radius)
+    format!(
+        "{}?RA={}&DEC={}&SR={}&FORMAT=votable/td",
+        base, ra, dec, radius
+    )
 }
 
 fn cmd_cone_search(
@@ -583,15 +605,16 @@ fn cmd_cone_search(
 ) -> Result<(), String> {
     if release != ReleaseArg::Dr3 {
         return Err(
-            "Cone search is only available for DR3. Download DR1/DR2 with `download`."
-                .to_string(),
+            "Cone search is only available for DR3. Download DR1/DR2 with `download`.".to_string(),
         );
     }
 
     let url = scs_url(DR3_CONE_BASE, ra_center, dec_center, radius);
     let out_path = output.unwrap_or_else(|| {
-        PathBuf::from("data/external/radio_surveys")
-            .join(format!("lotss_dr3_tile_{:.2}_{:.2}.xml", ra_center, dec_center))
+        PathBuf::from("data/external/radio_surveys").join(format!(
+            "lotss_dr3_tile_{:.2}_{:.2}.xml",
+            ra_center, dec_center
+        ))
     });
 
     if let Some(parent) = out_path.parent() {
@@ -604,8 +627,8 @@ fn cmd_cone_search(
     );
     println!("URL: {}", url);
 
-    let bytes =
-        download_to_file(&url, &out_path).map_err(|e| format!("Cone search request failed: {}", e))?;
+    let bytes = download_to_file(&url, &out_path)
+        .map_err(|e| format!("Cone search request failed: {}", e))?;
     let data = fs::read(&out_path).map_err(|e| format!("Read back failed: {}", e))?;
     validate_not_html(&data).map_err(|e| format!("Validation failed: {}", e))?;
 
@@ -771,10 +794,22 @@ fn cmd_manga_preflight(
 
     write_toml_report(&report_path, &preflight_report)?;
 
-    println!("Selected MaNGA rows: {}", preflight_report.selection_row_count);
-    println!("Unique plateifus:    {}", preflight_report.unique_plateifu_count);
-    println!("Matched targets:     {}", preflight_report.matched_target_count);
-    println!("Missing plateifus:   {}", preflight_report.missing_plateifu_count);
+    println!(
+        "Selected MaNGA rows: {}",
+        preflight_report.selection_row_count
+    );
+    println!(
+        "Unique plateifus:    {}",
+        preflight_report.unique_plateifu_count
+    );
+    println!(
+        "Matched targets:     {}",
+        preflight_report.matched_target_count
+    );
+    println!(
+        "Missing plateifus:   {}",
+        preflight_report.missing_plateifu_count
+    );
     for band in &preflight_report.declination_bands {
         println!(
             "Dec band {:>5}: {:>5} ({:.2}%)",
@@ -798,20 +833,21 @@ fn cmd_manga_preflight(
 
 // ---- MaNGA crossmatch --------------------------------------------------------
 
-fn cmd_crossmatch_manga(
-    release: ReleaseArg,
-    input_format: Option<InputFormatArg>,
-    input: Option<PathBuf>,
-    manga_selection: PathBuf,
-    manga_drpall: PathBuf,
-    radius_arcsec: f64,
-    output: Option<PathBuf>,
-    report: Option<PathBuf>,
-    summary: Option<PathBuf>,
-    allow_partial: bool,
-    workers: Option<usize>,
-    chunk_rows: Option<usize>,
-) -> Result<(), String> {
+fn cmd_crossmatch_manga(args: CrossmatchMangaArgs) -> Result<(), String> {
+    let CrossmatchMangaArgs {
+        release,
+        input_format,
+        input,
+        manga_selection,
+        manga_drpall,
+        radius_arcsec,
+        output,
+        report,
+        summary,
+        allow_partial,
+        workers,
+        chunk_rows,
+    } = args;
     if radius_arcsec <= 0.0 {
         return Err("radius_arcsec must be positive".to_string());
     }
@@ -921,14 +957,10 @@ fn cmd_crossmatch_manga(
         execution_fma_detected: execution_plan.fma_detected,
         execution_x87_extended_precision_used: execution_plan.x87_extended_precision_used,
         execution_precision_strategy: execution_plan.precision_strategy.to_string(),
-        footprint_summary_path: summary_path
-            .as_ref()
-            .map(|path| path.display().to_string()),
+        footprint_summary_path: summary_path.as_ref().map(|path| path.display().to_string()),
         footprint_fail_count: footprint_report.as_ref().map(|r| r.fail_count),
         footprint_tile_count: footprint_report.as_ref().map(|r| r.tile_count),
-        footprint_downloaded_tile_count: footprint_report
-            .as_ref()
-            .map(|r| r.downloaded_tile_count),
+        footprint_downloaded_tile_count: footprint_report.as_ref().map(|r| r.downloaded_tile_count),
         lotss_source_count_raw: raw_source_count,
         lotss_source_count_effective: effective_source_count,
         dr3_tile_file_count: dr3_tile_count,
@@ -1011,7 +1043,10 @@ fn cmd_verify(release: ReleaseArg, input: Option<PathBuf>) -> Result<(), String>
     };
     if let Some(n) = expected {
         println!("Expected sources: ~{}", n);
-        println!("Run `lotss-fetch summary --input {}` for exact count.", path.display());
+        println!(
+            "Run `lotss-fetch summary --input {}` for exact count.",
+            path.display()
+        );
     }
 
     Ok(())
@@ -1137,7 +1172,8 @@ fn load_selected_manga_targets(
 ) -> Result<SelectedMangaSample, String> {
     let selection = load_selection_plateifus(selection_path)?;
     let drpall_by_plateifu = load_drpall_targets(drpall_path)?;
-    let (targets, missing_plateifus) = join_selected_targets(&selection.plateifus, &drpall_by_plateifu);
+    let (targets, missing_plateifus) =
+        join_selected_targets(&selection.plateifus, &drpall_by_plateifu);
 
     Ok(SelectedMangaSample {
         targets,
@@ -1352,10 +1388,7 @@ fn band_counts(targets: &[MangaTarget]) -> BTreeMap<DeclinationBand, usize> {
     counts
 }
 
-fn band_fractions(
-    total: usize,
-    counts: &BTreeMap<DeclinationBand, usize>,
-) -> Vec<BandFraction> {
+fn band_fractions(total: usize, counts: &BTreeMap<DeclinationBand, usize>) -> Vec<BandFraction> {
     DeclinationBand::ordered()
         .into_iter()
         .map(|band| {
@@ -1407,10 +1440,16 @@ struct LoadedSources {
 
 fn load_dr3_sources_from_tiles(tile_dir: &Path) -> Result<LoadedSources, String> {
     if !tile_dir.exists() {
-        return Err(format!("DR3 tile directory does not exist: {}", tile_dir.display()));
+        return Err(format!(
+            "DR3 tile directory does not exist: {}",
+            tile_dir.display()
+        ));
     }
     if !tile_dir.is_dir() {
-        return Err(format!("DR3 tile input is not a directory: {}", tile_dir.display()));
+        return Err(format!(
+            "DR3 tile input is not a directory: {}",
+            tile_dir.display()
+        ));
     }
 
     let mut tile_paths: Vec<PathBuf> = WalkDir::new(tile_dir)
@@ -1441,8 +1480,8 @@ fn load_dr3_sources_from_tiles(tile_dir: &Path) -> Result<LoadedSources, String>
                 e
             )
         })?;
-        let xml = String::from_utf8(data)
-            .map_err(|e| format!("utf8 {}: {}", tile_path.display(), e))?;
+        let xml =
+            String::from_utf8(data).map_err(|e| format!("utf8 {}: {}", tile_path.display(), e))?;
         let mut tile_sources = load_from_votable(&xml, LoTSSRelease::DR3)
             .map_err(|e| format!("parse {}: {}", tile_path.display(), e))?;
         raw_source_count += tile_sources.len();
@@ -1614,11 +1653,7 @@ fn detect_fma() -> bool {
 }
 
 fn preferred_f64_simd_lane(avx2_detected: bool) -> usize {
-    if avx2_detected {
-        4
-    } else {
-        1
-    }
+    if avx2_detected { 4 } else { 1 }
 }
 
 // ---- Crossmatch helpers ------------------------------------------------------
@@ -1650,6 +1685,17 @@ struct FitsCrossmatchColumns {
     dec: String,
     total_flux: String,
     spectral_index: Option<String>,
+}
+
+struct FitsScanTask<'a> {
+    path: &'a Path,
+    layout: &'a FitsCrossmatchLayout,
+    targets: &'a [MangaTarget],
+    grid: &'a TargetGrid,
+    radius_arcsec: f64,
+    worker_bounds: std::ops::Range<usize>,
+    chunk_rows: usize,
+    log_progress: bool,
 }
 
 fn crossmatch_targets_with_sources(
@@ -1709,7 +1755,11 @@ fn crossmatch_targets_with_sources_parallel(
 
         handles
             .into_iter()
-            .map(|handle| handle.join().expect("parallel source crossmatch worker panicked"))
+            .map(|handle| {
+                handle
+                    .join()
+                    .expect("parallel source crossmatch worker panicked")
+            })
             .collect::<Vec<_>>()
     });
 
@@ -1750,22 +1800,26 @@ fn crossmatch_targets_with_fits_catalog(
                 if pin_threads {
                     pin_current_thread_to_core(core_id);
                 }
-                scan_fits_pending_matches_range(
-                    path_ref,
-                    layout_ref,
-                    targets_ref,
-                    grid_ref,
+                scan_fits_pending_matches_range(FitsScanTask {
+                    path: path_ref,
+                    layout: layout_ref,
+                    targets: targets_ref,
+                    grid: grid_ref,
                     radius_arcsec,
-                    start..end,
+                    worker_bounds: start..end,
                     chunk_rows,
-                    execution_plan.worker_count == 1,
-                )
+                    log_progress: execution_plan.worker_count == 1,
+                })
             }));
         }
 
         handles
             .into_iter()
-            .map(|handle| handle.join().expect("parallel FITS crossmatch worker panicked"))
+            .map(|handle| {
+                handle
+                    .join()
+                    .expect("parallel FITS crossmatch worker panicked")
+            })
             .collect::<Vec<_>>()
     });
 
@@ -1799,8 +1853,7 @@ struct PendingScanSummary {
 }
 
 fn inspect_fits_crossmatch_layout(path: &Path) -> Result<FitsCrossmatchLayout, String> {
-    let mut fits =
-        FitsFile::open(path).map_err(|e| format!("open {}: {}", path.display(), e))?;
+    let mut fits = FitsFile::open(path).map_err(|e| format!("open {}: {}", path.display(), e))?;
     let num_hdus = {
         let mut count = 0usize;
         for _ in fits.iter() {
@@ -1849,18 +1902,18 @@ fn inspect_fits_crossmatch_layout(path: &Path) -> Result<FitsCrossmatchLayout, S
     })
 }
 
-fn scan_fits_pending_matches_range(
-    path: &Path,
-    layout: &FitsCrossmatchLayout,
-    targets: &[MangaTarget],
-    grid: &TargetGrid,
-    radius_arcsec: f64,
-    worker_bounds: std::ops::Range<usize>,
-    chunk_rows: usize,
-    log_progress: bool,
-) -> Result<PendingScanSummary, String> {
-    let mut fits =
-        FitsFile::open(path).map_err(|e| format!("open {}: {}", path.display(), e))?;
+fn scan_fits_pending_matches_range(task: FitsScanTask<'_>) -> Result<PendingScanSummary, String> {
+    let FitsScanTask {
+        path,
+        layout,
+        targets,
+        grid,
+        radius_arcsec,
+        worker_bounds,
+        chunk_rows,
+        log_progress,
+    } = task;
+    let mut fits = FitsFile::open(path).map_err(|e| format!("open {}: {}", path.display(), e))?;
     let table_hdu = fits
         .hdu(layout.table_idx)
         .map_err(|e| format!("hdu {}: {}", layout.table_idx, e))?;
@@ -1877,10 +1930,20 @@ fn scan_fits_pending_matches_range(
         let row_range = start..end;
         let ras: Vec<f64> = table_hdu
             .read_col_range(&mut fits, &layout.columns.ra, &row_range)
-            .map_err(|e| format!("Load FITS {} rows {}..{}: {}", layout.columns.ra, start, end, e))?;
+            .map_err(|e| {
+                format!(
+                    "Load FITS {} rows {}..{}: {}",
+                    layout.columns.ra, start, end, e
+                )
+            })?;
         let decs: Vec<f64> = table_hdu
             .read_col_range(&mut fits, &layout.columns.dec, &row_range)
-            .map_err(|e| format!("Load FITS {} rows {}..{}: {}", layout.columns.dec, start, end, e))?;
+            .map_err(|e| {
+                format!(
+                    "Load FITS {} rows {}..{}: {}",
+                    layout.columns.dec, start, end, e
+                )
+            })?;
         let fluxes: Vec<f32> = table_hdu
             .read_col_range(&mut fits, &layout.columns.total_flux, &row_range)
             .map_err(|e| {
@@ -1889,8 +1952,7 @@ fn scan_fits_pending_matches_range(
                     layout.columns.total_flux, start, end, e
                 )
             })?;
-        let spectral_indices: Vec<f32> = if let Some(col) = layout.columns.spectral_index.as_ref()
-        {
+        let spectral_indices: Vec<f32> = if let Some(col) = layout.columns.spectral_index.as_ref() {
             table_hdu
                 .read_col_range(&mut fits, col, &row_range)
                 .map_err(|e| format!("Load FITS {} rows {}..{}: {}", col, start, end, e))?
@@ -2133,12 +2195,10 @@ impl RawFitsStringLookup {
         let mut s_code = None;
 
         for idx in 1..=tfields {
-            let name = fits_header_value(&table_cards, &format!("TTYPE{idx}")).ok_or_else(|| {
-                format!("Missing TTYPE{idx} while scanning {}", path.display())
-            })?;
-            let form = fits_header_value(&table_cards, &format!("TFORM{idx}")).ok_or_else(|| {
-                format!("Missing TFORM{idx} while scanning {}", path.display())
-            })?;
+            let name = fits_header_value(&table_cards, &format!("TTYPE{idx}"))
+                .ok_or_else(|| format!("Missing TTYPE{idx} while scanning {}", path.display()))?;
+            let form = fits_header_value(&table_cards, &format!("TFORM{idx}"))
+                .ok_or_else(|| format!("Missing TFORM{idx} while scanning {}", path.display()))?;
             let width = fits_tform_width(&form)?;
             if name.eq_ignore_ascii_case("Source_Name") {
                 source_name = Some((cursor, width));
@@ -2149,11 +2209,13 @@ impl RawFitsStringLookup {
         }
 
         let (source_name_offset, source_name_width) = source_name.ok_or_else(|| {
-            format!("Source_Name column not found while scanning {}", path.display())
+            format!(
+                "Source_Name column not found while scanning {}",
+                path.display()
+            )
         })?;
-        let (s_code_offset, s_code_width) = s_code.ok_or_else(|| {
-            format!("S_Code column not found while scanning {}", path.display())
-        })?;
+        let (s_code_offset, s_code_width) = s_code
+            .ok_or_else(|| format!("S_Code column not found while scanning {}", path.display()))?;
 
         Ok(Self {
             file,
@@ -2174,7 +2236,8 @@ impl RawFitsStringLookup {
                 row_idx, self.row_count
             ));
         }
-        let source_name = self.read_ascii_cell(row_idx, self.source_name_offset, self.source_name_width)?;
+        let source_name =
+            self.read_ascii_cell(row_idx, self.source_name_offset, self.source_name_width)?;
         let s_code = self.read_ascii_cell(row_idx, self.s_code_offset, self.s_code_width)?;
         Ok((source_name, s_code.chars().next().unwrap_or('S')))
     }
@@ -2212,14 +2275,15 @@ fn finalize_pending_matches(
     for maybe_match in pending {
         match maybe_match {
             Some(pending_match) => {
-                let (source_name, structure_code) =
-                    if let Some(metadata) = metadata_cache.get(&pending_match.source_row_index) {
-                        metadata.clone()
-                    } else {
-                        let metadata = lookup.read_match_metadata(pending_match.source_row_index)?;
-                        metadata_cache.insert(pending_match.source_row_index, metadata.clone());
-                        metadata
-                    };
+                let (source_name, structure_code) = if let Some(metadata) =
+                    metadata_cache.get(&pending_match.source_row_index)
+                {
+                    metadata.clone()
+                } else {
+                    let metadata = lookup.read_match_metadata(pending_match.source_row_index)?;
+                    metadata_cache.insert(pending_match.source_row_index, metadata.clone());
+                    metadata
+                };
 
                 matches.push(Some(MatchRecord {
                     separation_arcsec: pending_match.separation_arcsec,
@@ -2238,12 +2302,7 @@ fn finalize_pending_matches(
     Ok(matches)
 }
 
-fn angular_separation_arcsec(
-    ra1_deg: f64,
-    dec1_deg: f64,
-    ra2_deg: f64,
-    dec2_deg: f64,
-) -> f64 {
+fn angular_separation_arcsec(ra1_deg: f64, dec1_deg: f64, ra2_deg: f64, dec2_deg: f64) -> f64 {
     let ra1 = ra1_deg.to_radians();
     let dec1 = dec1_deg.to_radians();
     let ra2 = ra2_deg.to_radians();
@@ -2304,7 +2363,11 @@ struct CrossmatchCsvRow {
 }
 
 impl CrossmatchCsvRow {
-    fn from_parts(target: &MangaTarget, matched: Option<&MatchRecord>, release: ReleaseArg) -> Self {
+    fn from_parts(
+        target: &MangaTarget,
+        matched: Option<&MatchRecord>,
+        release: ReleaseArg,
+    ) -> Self {
         Self {
             plateifu: target.plateifu.clone(),
             mangaid: target.mangaid.clone(),
@@ -2406,16 +2469,19 @@ fn resolve_input_format(
     release: ReleaseArg,
     input_format: Option<InputFormatArg>,
 ) -> Result<InputFormatArg, String> {
-    match (release, input_format.unwrap_or(default_input_format(release))) {
+    match (
+        release,
+        input_format.unwrap_or(default_input_format(release)),
+    ) {
         (ReleaseArg::Dr1, InputFormatArg::Fits) | (ReleaseArg::Dr2, InputFormatArg::Fits) => {
             Ok(InputFormatArg::Fits)
         }
         (ReleaseArg::Dr3, InputFormatArg::Fits) | (ReleaseArg::Dr3, InputFormatArg::Dr3Tiles) => {
             Ok(input_format.unwrap_or(InputFormatArg::Dr3Tiles))
         }
-        (_, InputFormatArg::Dr3Tiles) => Err(
-            "`--input-format dr3-tiles` is only valid with `--release dr3`.".to_string(),
-        ),
+        (_, InputFormatArg::Dr3Tiles) => {
+            Err("`--input-format dr3-tiles` is only valid with `--release dr3`.".to_string())
+        }
     }
 }
 
@@ -2427,10 +2493,7 @@ fn default_input_format(release: ReleaseArg) -> InputFormatArg {
 }
 
 fn default_preflight_report_path() -> PathBuf {
-    PathBuf::from("reports").join(format!(
-        "lotss_manga_preflight_{}.toml",
-        today_stamp()
-    ))
+    PathBuf::from("reports").join(format!("lotss_manga_preflight_{}.toml", today_stamp()))
 }
 
 fn default_crossmatch_output_path(release: ReleaseArg) -> PathBuf {
@@ -2452,8 +2515,8 @@ fn write_toml_report<T: Serialize>(path: &Path, value: &T) -> Result<(), String>
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent).map_err(|e| format!("mkdir {}: {}", parent.display(), e))?;
     }
-    let rendered =
-        toml::to_string_pretty(value).map_err(|e| format!("serialize {}: {}", path.display(), e))?;
+    let rendered = toml::to_string_pretty(value)
+        .map_err(|e| format!("serialize {}: {}", path.display(), e))?;
     fs::write(path, rendered).map_err(|e| format!("write {}: {}", path.display(), e))
 }
 
@@ -2621,7 +2684,12 @@ fn fits_tform_width(tform: &str) -> Result<usize, String> {
         'J' | 'E' => repeat * 4,
         'K' | 'D' | 'C' => repeat * 8,
         'M' => repeat * 16,
-        other => return Err(format!("Unsupported TFORM kind '{}' in '{}'", other, cleaned)),
+        other => {
+            return Err(format!(
+                "Unsupported TFORM kind '{}' in '{}'",
+                other, cleaned
+            ));
+        }
     };
     Ok(width)
 }
@@ -2783,10 +2851,7 @@ mod tests {
             .write_col(
                 &mut fits,
                 "Source_Name",
-                &vec![
-                    "ILTJ1500+3200".to_string(),
-                    "ILTJ1510+3500".to_string(),
-                ],
+                &vec!["ILTJ1500+3200".to_string(), "ILTJ1510+3500".to_string()],
             )
             .unwrap();
         table_hdu
@@ -2808,15 +2873,14 @@ mod tests {
             sample_target("10002-1902", 151.0, 35.0),
         ];
         let execution_plan = build_crossmatch_execution_plan(Some(1), Some(10_000));
-        let summary =
-            crossmatch_targets_with_fits_catalog(
-                &targets,
-                &path,
-                LoTSSRelease::DR2,
-                3.0,
-                &execution_plan,
-            )
-            .unwrap();
+        let summary = crossmatch_targets_with_fits_catalog(
+            &targets,
+            &path,
+            LoTSSRelease::DR2,
+            3.0,
+            &execution_plan,
+        )
+        .unwrap();
 
         assert_eq!(summary.raw_source_count, 2);
         assert_eq!(summary.effective_source_count, 2);

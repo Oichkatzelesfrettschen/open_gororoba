@@ -111,9 +111,7 @@ fn load_hi_cube(fits_path: &Path) -> Result<HiCube> {
     // Determine 3D shape from FITS NAXIS layout.
     // cfitsio reports shape as [NAXIS_N, ..., NAXIS_2, NAXIS_1].
     let (n_ch, ny, nx) = match &hdu.info {
-        HduInfo::ImageInfo { shape, .. } if shape.len() == 3 => {
-            (shape[0], shape[1], shape[2])
-        }
+        HduInfo::ImageInfo { shape, .. } if shape.len() == 3 => (shape[0], shape[1], shape[2]),
         HduInfo::ImageInfo { shape, .. } if shape.len() == 4 => {
             // [Stokes=1, n_ch, ny, nx]: single-Stokes wrapper
             (shape[1], shape[2], shape[3])
@@ -343,7 +341,11 @@ fn extract_rings(
         }
         let n = samples.len() as f64;
         let mean = samples.iter().copied().sum::<f64>() / n;
-        let var = samples.iter().map(|&v| (v - mean) * (v - mean)).sum::<f64>() / n;
+        let var = samples
+            .iter()
+            .map(|&v| (v - mean) * (v - mean))
+            .sum::<f64>()
+            / n;
         // Standard error of the mean; floor at 1 km/s to avoid division artifacts.
         let err = (var.sqrt() / n.sqrt()).max(1.0);
 

@@ -13,12 +13,14 @@
 use clap::Parser;
 use cosmology_core::{
     CdDimensionParams, EigenmodeStackResult, NormalizedPoint, NormalizedResiduals, StackingConfig,
-    detection_threshold, eigenmode_stack, nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
+    detection_threshold, eigenmode_stack,
+    nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
     stack_residuals,
 };
-use data_core::catalogs::hi_cube::{HiCubeMetadata, HiRotationCurve, parse_hi_cube_metadata, parse_hi_rotcurves};
-use std::collections::HashMap;
-use std::path::PathBuf;
+use data_core::catalogs::hi_cube::{
+    HiCubeMetadata, HiRotationCurve, parse_hi_cube_metadata, parse_hi_rotcurves,
+};
+use std::{collections::HashMap, path::PathBuf};
 
 /// Gravitational constant in kpc^3 Msun^{-1} (km/s)^2 units.
 const G_KPC_KMS2: f64 = 4.302e-6;
@@ -28,7 +30,9 @@ const FIDUCIAL_M_STAR_MSUN: f64 = 1.0e11;
 
 #[derive(Parser)]
 #[command(name = "harmonic-halo-stacking-hi")]
-#[command(about = "Stack HI rotation curve residuals for harmonic halo detection with PCA eigenmode analysis")]
+#[command(
+    about = "Stack HI rotation curve residuals for harmonic halo detection with PCA eigenmode analysis"
+)]
 struct Cli {
     /// HI rotation curves CSV (from hi-cube-rotcurve-extractor).
     #[arg(long, default_value = "data/external/things/things_rotcurves.csv")]
@@ -158,7 +162,10 @@ fn main() -> anyhow::Result<()> {
     env_logger::init();
     let cli = Cli::parse();
 
-    eprintln!("Loading HI rotation curves from {}...", cli.rotcurves.display());
+    eprintln!(
+        "Loading HI rotation curves from {}...",
+        cli.rotcurves.display()
+    );
     let rotcurves = parse_hi_rotcurves(&cli.rotcurves).map_err(|e| anyhow::anyhow!(e))?;
     eprintln!("  Loaded {} galaxies", rotcurves.len());
 
@@ -288,10 +295,7 @@ fn main() -> anyhow::Result<()> {
     );
 
     let thr = detection_threshold(normalized.len(), 0.05);
-    eprintln!(
-        "  Detection threshold (5% v_err): alpha_zd >= {:.6}",
-        thr
-    );
+    eprintln!("  Detection threshold (5% v_err): alpha_zd >= {:.6}", thr);
 
     // Write stack CSV
     let mut wtr_stack = csv::Writer::from_path(&cli.stack_csv)?;

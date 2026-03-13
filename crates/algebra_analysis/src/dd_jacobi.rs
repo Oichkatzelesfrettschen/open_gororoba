@@ -224,7 +224,13 @@ fn symmetric_eigensystem_dd_flat(
     let mut a: Vec<DD> = matrix.iter().copied().map(DD::from_f64).collect();
     // V starts as the identity in DD precision
     let mut v: Vec<DD> = (0..n * n)
-        .map(|idx| if idx / n == idx % n { DD::ONE } else { DD::ZERO })
+        .map(|idx| {
+            if idx / n == idx % n {
+                DD::ONE
+            } else {
+                DD::ZERO
+            }
+        })
         .collect();
     let mut converged = false;
 
@@ -468,7 +474,10 @@ mod tests {
         assert!((eigs[0] - 4.0).abs() < 1.0e-13, "lambda_0={}", eigs[0]);
         assert!((eigs[1] - 2.0).abs() < 1.0e-13, "lambda_1={}", eigs[1]);
 
-        assert!(max_off_diagonal_vtv(&v, 2) < 1.0e-13, "orthogonality violated");
+        assert!(
+            max_off_diagonal_vtv(&v, 2) < 1.0e-13,
+            "orthogonality violated"
+        );
 
         // Reconstruct
         let flat = [3.0_f64, 1.0, 1.0, 3.0];
@@ -476,7 +485,9 @@ mod tests {
             .map(|idx| {
                 let i = idx / 2;
                 let j = idx % 2;
-                (0..2).map(|k| v[i * 2 + k] * eigs[k] * v[j * 2 + k]).sum::<f64>()
+                (0..2)
+                    .map(|k| v[i * 2 + k] * eigs[k] * v[j * 2 + k])
+                    .sum::<f64>()
             })
             .collect();
         for (orig, rec) in flat.iter().zip(a_rec.iter()) {
@@ -511,7 +522,9 @@ mod tests {
             .map(|idx| {
                 let i = idx / n;
                 let j = idx % n;
-                (0..n).map(|k| v[i * n + k] * eigs[k] * v[j * n + k]).sum::<f64>()
+                (0..n)
+                    .map(|k| v[i * n + k] * eigs[k] * v[j * n + k])
+                    .sum::<f64>()
             })
             .collect();
         let max_err = flat
@@ -519,7 +532,10 @@ mod tests {
             .zip(a_rec.iter())
             .map(|(a, b)| (a - b).abs())
             .fold(0.0_f64, f64::max);
-        assert!(max_err < 1.0e-13, "Hilbert reconstruction error = {max_err}");
+        assert!(
+            max_err < 1.0e-13,
+            "Hilbert reconstruction error = {max_err}"
+        );
     }
 
     fn nalgebra_sorted_eigenvalues(matrix: &[Vec<f64>]) -> Vec<f64> {

@@ -156,18 +156,21 @@ pub fn deproject_rotation_curve(
         .collect();
 
     // Regularized inverse: skip near-zero eigenvalues
-    let lk_min = eigenvalues.iter().copied().fold(f64::INFINITY, f64::min).abs() * 1.0e-10;
+    let lk_min = eigenvalues
+        .iter()
+        .copied()
+        .fold(f64::INFINITY, f64::min)
+        .abs()
+        * 1.0e-10;
 
     let alpha: Vec<f64> = eigenvalues
         .iter()
         .zip(vt_b.iter())
-        .map(|(&lk, &vt_b_k)| {
-            if lk.abs() > lk_min {
-                vt_b_k / lk
-            } else {
-                0.0
-            }
-        })
+        .map(
+            |(&lk, &vt_b_k)| {
+                if lk.abs() > lk_min { vt_b_k / lk } else { 0.0 }
+            },
+        )
         .collect();
 
     let v_circ: Vec<f64> = (0..n)
@@ -256,12 +259,11 @@ mod tests {
         // A very narrow PSF (1 micro-kpc) should give M ~ I
         let r_kpc: Vec<f64> = (1..=5).map(|i| i as f64).collect();
         let m = compute_projection_matrix(&r_kpc, 1.0e-6, 60.0, 0.5);
-        let n = r_kpc.len();
-        for i in 0..n {
-            for j in 0..n {
+        for (i, row) in m.iter().enumerate() {
+            for (j, value) in row.iter().enumerate() {
                 let expected = if i == j { 1.0 } else { 0.0 };
-                let err = (m[i][j] - expected).abs();
-                assert!(err < 1.0e-5, "M[{i}][{j}] = {}, expected {expected}", m[i][j]);
+                let err = (*value - expected).abs();
+                assert!(err < 1.0e-5, "M[{i}][{j}] = {}, expected {expected}", value);
             }
         }
     }
