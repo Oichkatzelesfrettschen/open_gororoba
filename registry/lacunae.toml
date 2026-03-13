@@ -10,7 +10,7 @@ open_count = 5
 high_priority_count = 72
 medium_priority_count = 104
 low_priority_count = 6
-origin_kind_count = 3
+origin_kind_count = 1
 
 [[lacuna]]
 id = "L-001"
@@ -98,14 +98,14 @@ related_marker_ids = []
 
 [[lacuna]]
 id = "L-1273"
-origin = "claims_status_scan"
+origin = "legacy_manual"
 area = "claims"
 title = "Unresolved claim status for C-1273"
 description = "C-1273 remains unresolved with status token THEORETICAL: ZD algebraic forcing adds topological confinement: F_zd(r) = -alpha_zd * 0.5 * exp(-r/R_e) * F_target * r_hat preserves galaxy core against LBM homogenization."
 priority = "medium"
 status = "open"
-claim_refs = ["C-1273"]
-source_refs = ["registry/claims.toml"]
+claim_refs = []
+source_refs = []
 related_marker_ids = []
 
 [[lacuna]]
@@ -2150,48 +2150,48 @@ related_marker_ids = []
 
 [[lacuna]]
 id = "L-DANGLING-E-002"
-origin = "crossref_scan"
+origin = "legacy_manual"
 area = "experiments"
 title = "Dangling claim references in experiments entry E-194"
 description = "Entry E-194 references unknown claims: C-1376"
 priority = "high"
 status = "open"
 claim_refs = []
-source_refs = ["registry/experiments.toml"]
+source_refs = []
 related_marker_ids = []
 
 [[lacuna]]
 id = "L-DANGLING-E-003"
-origin = "crossref_scan"
+origin = "legacy_manual"
 area = "experiments"
 title = "Dangling claim references in experiments entry E-195"
 description = "Entry E-195 references unknown claims: C-1377"
 priority = "high"
 status = "open"
 claim_refs = []
-source_refs = ["registry/experiments.toml"]
+source_refs = []
 related_marker_ids = []
 
 [[lacuna]]
 id = "L-DANGLING-E-004"
-origin = "crossref_scan"
+origin = "legacy_manual"
 area = "experiments"
 title = "Dangling claim references in experiments entry E-196"
 description = "Entry E-196 references unknown claims: C-1378"
 priority = "high"
 status = "open"
 claim_refs = []
-source_refs = ["registry/experiments.toml"]
+source_refs = []
 related_marker_ids = []
 
 [[lacuna]]
 id = "L-DANGLING-E-005"
-origin = "crossref_scan"
+origin = "legacy_manual"
 area = "experiments"
 title = "Dangling claim references in experiments entry E-197"
 description = "Entry E-197 references unknown claims: C-1379"
 priority = "high"
 status = "open"
 claim_refs = []
-source_refs = ["registry/experiments.toml"]
+source_refs = []
 related_marker_ids = []
