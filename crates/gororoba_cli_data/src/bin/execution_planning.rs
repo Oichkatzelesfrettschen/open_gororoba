@@ -784,25 +784,20 @@ fn verify_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
                     binary_edge_lineages.insert(lid.clone());
                 }
             }
-            "claim" => {
-                if !claim_ids.contains(&to_ref) {
-                    failures.push(format!(
-                        "lineage edge[{edge_id}] unknown claim ref: {to_ref}"
-                    ));
-                }
+            "claim" if !claim_ids.contains(&to_ref) => {
+                failures.push(format!(
+                    "lineage edge[{edge_id}] unknown claim ref: {to_ref}"
+                ));
             }
-            "dataset" => {
-                if !dataset_ids.contains(&to_ref) {
-                    failures.push(format!(
-                        "lineage edge[{edge_id}] unknown dataset ref: {to_ref}"
-                    ));
-                }
+            "dataset" if !dataset_ids.contains(&to_ref) => {
+                failures.push(format!(
+                    "lineage edge[{edge_id}] unknown dataset ref: {to_ref}"
+                ));
             }
-            "path" => {
-                if to_ref.is_empty() {
-                    failures.push(format!("lineage edge[{edge_id}] empty path ref"));
-                }
+            "path" if to_ref.is_empty() => {
+                failures.push(format!("lineage edge[{edge_id}] empty path ref"));
             }
+            "claim" | "dataset" | "path" => {}
             "source" => {
                 if !source_ids.contains(&to_ref) {
                     failures.push(format!(
@@ -2024,14 +2019,14 @@ fn render_roadmap(meta: &Table, rows: &[PlanningRow]) -> Result<String> {
         "dependency_id_pattern = \"WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*\"".to_string(),
         String::new(),
     ];
-    if let Some(sections) = meta.get("sections").and_then(Value::as_table) {
-        if !sections.is_empty() {
-            lines.push("[roadmap.sections]".to_string());
-            for (key, value) in sections {
-                lines.push(format!("{key} = {}", q(&collapse(&value_to_string(value)))));
-            }
-            lines.push(String::new());
+    if let Some(sections) = meta.get("sections").and_then(Value::as_table)
+        && !sections.is_empty()
+    {
+        lines.push("[roadmap.sections]".to_string());
+        for (key, value) in sections {
+            lines.push(format!("{key} = {}", q(&collapse(&value_to_string(value)))));
         }
+        lines.push(String::new());
     }
     for row in rows {
         lines.push("[[workstream]]".to_string());
@@ -2560,6 +2555,7 @@ fn choose_lineage_id(existing: &str, used: &mut BTreeSet<String>, sequence: &mut
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn verify_dependencies(
     failures: &mut Vec<String>,
     deps: &[String],
@@ -2873,9 +2869,7 @@ fn collapse(text: &str) -> String {
 fn build_status_token(status: &str) -> String {
     let mut token = collapse(status)
         .to_uppercase()
-        .replace('/', "_")
-        .replace('-', "_")
-        .replace(' ', "_");
+        .replace(['/', '-', ' '], "_");
     token = token
         .chars()
         .map(|ch| {

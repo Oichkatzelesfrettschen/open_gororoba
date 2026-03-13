@@ -79,6 +79,14 @@ struct Cli {
     /// very few galaxies; use with Euclid DR2+ for statistical power.
     #[arg(long)]
     euclid_morphology_csv: Option<PathBuf>,
+
+    /// Exclude beam-smearing-affected inner bins (psf_flag = true) from stacking.
+    ///
+    /// Requires rotation curves produced by manga-maps-extractor, which writes
+    /// a psf_flag column. The flag is set for bins within 1 MaNGA PSF FWHM (~2.5 arcsec)
+    /// of the galaxy center. Reduces the +29% inner-halo projection spike (E-196).
+    #[arg(long, default_value_t = false)]
+    exclude_psf_flagged: bool,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -168,6 +176,10 @@ fn main() -> anyhow::Result<()> {
         // Normalize rotation curve
         let mut points = Vec::new();
         for pt in &galaxy.points {
+            // Skip beam-smearing-affected inner bins when requested (E-196).
+            if cli.exclude_psf_flagged && pt.psf_flag {
+                continue;
+            }
             let x = pt.r_kpc / nfw.r_s_kpc;
             if !(0.01..=20.0).contains(&x) {
                 continue;
@@ -219,7 +231,7 @@ fn main() -> anyhow::Result<()> {
         min_galaxies_per_bin: cli.min_per_bin,
         inverse_variance_weighting: true,
         cd_params: cd_params.clone(),
-        exclude_psf_flagged: false,
+        exclude_psf_flagged: cli.exclude_psf_flagged,
     };
 
     eprintln!(

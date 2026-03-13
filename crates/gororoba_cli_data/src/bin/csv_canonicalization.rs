@@ -433,16 +433,16 @@ fn run_migrate(repo_root: &Path, args: &MigrateArgs) -> Result<()> {
         let raw = fs::read(&source).with_context(|| format!("read {}", source.display()))?;
         let source_sha = sha256_hex(&raw);
         let existing_meta = existing.get(rel);
-        if let Some(meta) = existing_meta {
-            if meta.source_sha256 == source_sha {
-                let mut dataset = load_existing_dataset(repo_root, &meta.canonical_toml)?;
-                dataset.source_csv = rel.clone();
-                dataset.source_sha256 = source_sha;
-                dataset.source_size_bytes = raw.len();
-                dataset.canonical_toml = meta.canonical_toml.clone();
-                datasets.push(dataset);
-                continue;
-            }
+        if let Some(meta) = existing_meta
+            && meta.source_sha256 == source_sha
+        {
+            let mut dataset = load_existing_dataset(repo_root, &meta.canonical_toml)?;
+            dataset.source_csv = rel.clone();
+            dataset.source_sha256 = source_sha;
+            dataset.source_size_bytes = raw.len();
+            dataset.canonical_toml = meta.canonical_toml.clone();
+            datasets.push(dataset);
+            continue;
         }
         let (has_header, delimiter, quotechar, header, original_header, rows) =
             parse_csv_with_stability(&source, existing_meta)?;
@@ -1885,6 +1885,7 @@ fn render_scroll_pipeline(
     Ok(lines.join("\n"))
 }
 
+#[allow(clippy::too_many_arguments)]
 fn render_migration_scope(
     inventory_path: &str,
     document_count: usize,
@@ -2053,6 +2054,7 @@ fn wave_state(total: usize, done: usize, pending_label: &str, done_label: &str) 
     format!("in_progress: {done}/{total} done, {remaining} pending ({pending_label})")
 }
 
+#[allow(clippy::type_complexity)]
 fn parse_csv_with_stability(
     path: &Path,
     existing_meta: Option<&ExistingDatasetMeta>,
@@ -2081,6 +2083,7 @@ fn parse_csv_with_stability(
     ))
 }
 
+#[allow(clippy::type_complexity)]
 fn parse_source_for_verify(
     path: &Path,
     has_header: bool,
@@ -2489,7 +2492,7 @@ fn policy(_path: &str, zone: &str) -> (String, String, String) {
         _ => (
             "manual_triage".to_string(),
             "medium".to_string(),
-            format!("CSV outside expected zones; requires classification."),
+            "CSV outside expected zones; requires classification.".to_string(),
         ),
     }
 }

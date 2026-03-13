@@ -19,6 +19,7 @@ struct Cli {
     command: Commands,
 }
 
+#[allow(clippy::large_enum_variant)]
 #[derive(Debug, Subcommand)]
 enum Commands {
     /// Emit markdown files from artifact scroll TOML registry.
