@@ -63,24 +63,22 @@ pub fn parse_votable(
                     .unwrap_or("")
                     .to_uppercase();
                 match tag.as_str() {
-                    "FIELD" => {
-                        if !in_table_data {
-                            let field_name = e
-                                .attributes()
-                                .filter_map(|a| a.ok())
-                                .find(|a| {
-                                    std::str::from_utf8(a.key.as_ref())
-                                        .map(|k| k.eq_ignore_ascii_case("name"))
-                                        .unwrap_or(false)
-                                })
-                                .and_then(|a| {
-                                    a.unescape_value()
-                                        .ok()
-                                        .map(|v| v.trim().to_uppercase())
-                                })
-                                .unwrap_or_default();
-                            field_names.push(field_name);
-                        }
+                    "FIELD" if !in_table_data => {
+                        let field_name = e
+                            .attributes()
+                            .filter_map(|a| a.ok())
+                            .find(|a| {
+                                std::str::from_utf8(a.key.as_ref())
+                                    .map(|k| k.eq_ignore_ascii_case("name"))
+                                    .unwrap_or(false)
+                            })
+                            .and_then(|a| {
+                                a.unescape_value()
+                                    .ok()
+                                    .map(|v| v.trim().to_uppercase())
+                            })
+                            .unwrap_or_default();
+                        field_names.push(field_name);
                     }
                     "TABLEDATA" => {
                         in_table_data = true;
@@ -136,10 +134,10 @@ pub fn parse_votable(
                         if let Some(cells) = current_row.take() {
                             let mut record = HashMap::with_capacity(cells.len());
                             for (idx, cell) in cells.into_iter().enumerate() {
-                                if let Some(col) = field_names.get(idx) {
-                                    if want.is_empty() || want.contains(col) {
-                                        record.insert(col.clone(), cell);
-                                    }
+                                if let Some(col) = field_names.get(idx)
+                                    && (want.is_empty() || want.contains(col))
+                                {
+                                    record.insert(col.clone(), cell);
                                 }
                             }
                             rows.push(record);
@@ -152,17 +150,17 @@ pub fn parse_votable(
                 }
             }
             Ok(Event::Text(ref e)) if in_table_data && current_td.is_some() => {
-                if let Ok(text) = e.decode() {
-                    if let Some(td) = current_td.as_mut() {
-                        td.push_str(&text);
-                    }
+                if let Ok(text) = e.decode()
+                    && let Some(td) = current_td.as_mut()
+                {
+                    td.push_str(&text);
                 }
             }
             Ok(Event::CData(ref e)) if in_table_data && current_td.is_some() => {
-                if let Ok(text) = e.decode() {
-                    if let Some(td) = current_td.as_mut() {
-                        td.push_str(&text);
-                    }
+                if let Ok(text) = e.decode()
+                    && let Some(td) = current_td.as_mut()
+                {
+                    td.push_str(&text);
                 }
             }
             Ok(Event::Eof) => break,

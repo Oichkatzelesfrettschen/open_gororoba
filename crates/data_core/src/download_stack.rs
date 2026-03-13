@@ -710,52 +710,18 @@ impl DownloadStack {
         let mut note = compose_note(&request.note, DownloadBackend::Reqwest, TransferKind::Download);
         let mut local_bytes = fs::metadata(&destination).map(|meta| meta.len()).unwrap_or(0);
 
-        if probe.supports_ranges {
-            if let Some(total_bytes) = probe.total_bytes {
-                if local_bytes > total_bytes {
-                    fs::remove_file(&destination).ok();
-                    local_bytes = 0;
-                    note.push_str("; removed oversized local partial before range resume");
-                } else if local_bytes == total_bytes && total_bytes > 0 {
-                    let prefix = read_prefix(&destination, request.probe_bytes)?;
-                    let is_pdf = looks_like_pdf(probe.content_type.as_deref(), &prefix);
-                    let sha256 = Some(sha256_file(&destination)?);
-                    note.push_str("; local file already matched remote content-length");
-                    return Ok(TransferResult {
-                        backend: DownloadBackend::Reqwest,
-                        kind: TransferKind::Download,
-                        requested_url: request.url.clone(),
-                        final_url: Some(probe.final_url),
-                        http_code: Some(probe.status),
-                        content_type: probe.content_type,
-                        bytes: total_bytes,
-                        sha256,
-                        is_pdf,
-                        output_path: Some(destination),
-                        note,
-                    });
-                }
-
-                if local_bytes > 0 {
-                    note.push_str(&format!("; resumed from byte {}", local_bytes));
-                } else {
-                    note.push_str("; ranged download");
-                }
-
-                while local_bytes < total_bytes {
-                    self.download_reqwest_range_chunk(
-                        request,
-                        client,
-                        &destination,
-                        total_bytes,
-                        DEFAULT_RESUME_CHUNK_BYTES,
-                    )?;
-                    local_bytes = fs::metadata(&destination)?.len();
-                }
-
+        if probe.supports_ranges
+            && let Some(total_bytes) = probe.total_bytes
+        {
+            if local_bytes > total_bytes {
+                fs::remove_file(&destination).ok();
+                local_bytes = 0;
+                note.push_str("; removed oversized local partial before range resume");
+            } else if local_bytes == total_bytes && total_bytes > 0 {
                 let prefix = read_prefix(&destination, request.probe_bytes)?;
                 let is_pdf = looks_like_pdf(probe.content_type.as_deref(), &prefix);
                 let sha256 = Some(sha256_file(&destination)?);
+                note.push_str("; local file already matched remote content-length");
                 return Ok(TransferResult {
                     backend: DownloadBackend::Reqwest,
                     kind: TransferKind::Download,
@@ -763,13 +729,47 @@ impl DownloadStack {
                     final_url: Some(probe.final_url),
                     http_code: Some(probe.status),
                     content_type: probe.content_type,
-                    bytes: fs::metadata(&destination)?.len(),
+                    bytes: total_bytes,
                     sha256,
                     is_pdf,
                     output_path: Some(destination),
                     note,
                 });
             }
+
+            if local_bytes > 0 {
+                note.push_str(&format!("; resumed from byte {}", local_bytes));
+            } else {
+                note.push_str("; ranged download");
+            }
+
+            while local_bytes < total_bytes {
+                self.download_reqwest_range_chunk(
+                    request,
+                    client,
+                    &destination,
+                    total_bytes,
+                    DEFAULT_RESUME_CHUNK_BYTES,
+                )?;
+                local_bytes = fs::metadata(&destination)?.len();
+            }
+
+            let prefix = read_prefix(&destination, request.probe_bytes)?;
+            let is_pdf = looks_like_pdf(probe.content_type.as_deref(), &prefix);
+            let sha256 = Some(sha256_file(&destination)?);
+            return Ok(TransferResult {
+                backend: DownloadBackend::Reqwest,
+                kind: TransferKind::Download,
+                requested_url: request.url.clone(),
+                final_url: Some(probe.final_url),
+                http_code: Some(probe.status),
+                content_type: probe.content_type,
+                bytes: fs::metadata(&destination)?.len(),
+                sha256,
+                is_pdf,
+                output_path: Some(destination),
+                note,
+            });
         }
 
         if destination.exists() {
