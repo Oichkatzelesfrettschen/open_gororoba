@@ -204,7 +204,11 @@ artifact_key_hint = "url:https://agt2.cie.uma.es/~loos/jordan/archive/magic/magi
 title = "Elduque (2004/2005) The Magic Square and Symmetric Compositions"
 urls = [
   "https://agt2.cie.uma.es/~loos/jordan/archive/magic/magic.pdf",
+  "https://arxiv.org/abs/math/0507282",
+  "https://arxiv.org/pdf/math/0507282.pdf",
+  "https://ems.press/content/serial-article-files/45390?nt=1",
 ]
+notes = "Prefer the arXiv and EMS public mirrors over the older UMA archive host."
 
 [[mirror_override]]
 id = "ELDUQUE_OKUBO_UPPSALA_SLIDES"
@@ -261,7 +265,11 @@ artifact_key_hint = "url:https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/
 title = "Garibaldi-Petersson-Racine (2023) Albert algebras over Z and other rings"
 urls = [
   "https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/garibaldi-petersson-racine-albZ.pdf",
+  "https://arxiv.org/abs/2205.09896",
+  "https://arxiv.org/pdf/2205.09896.pdf",
+  "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/F910D4C14C89E9463896C134931477FA/S1474748022000247a.pdf/albert-algebras-over-z-and-other-rings.pdf",
 ]
+notes = "Prefer the arXiv and Cambridge public mirrors over the older UMA archive host."
 
 [[mirror_override]]
 id = "GPR_2023_ALBERT_ALG_Z_FERNI"
@@ -278,6 +286,16 @@ title = "Garibaldi-Petersson-Racine solutions/errata companion"
 urls = [
   "https://www.garibaldibros.com/linked-files/GPR-solns.pdf",
 ]
+
+[[mirror_override]]
+id = "PETERSSON_NON_ORTH_CD_FERNI"
+artifact_key_hint = "url:https://agt2.cie.uma.es/~loos/jordan/archive/non-orth-cd/non-orth-cd.pdf"
+title = "Petersson non-orthogonal Cayley-Dickson construction notes"
+urls = [
+  "https://agt2.cie.uma.es/~loos/jordan/archive/non-orth-cd/non-orth-cd.pdf",
+  "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/north-cd-e8.pdf",
+]
+notes = "Prefer the live FernUni mirror over the older UMA archive host."
 
 [[mirror_override]]
 id = "KOLLROSS_2018_F4_TRIALITY"
@@ -536,12 +554,15 @@ urls = [
 
 [[mirror_override]]
 id = "SADOC_E8_LATTICE_QUASICRYSTALS_RG"
-artifact_key_hint = "url:https://www.researchgate.net/profile/jean-francois-sadoc/publication/243298250_the_e8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/the-e8-lattice-and-quasicrystals.pdf"
-title = "Sadoc The E8 lattice and quasicrystals (ResearchGate mirror; may be blocked)"
+artifact_key_hint = "doi:10.1016/0022-3093(93)90351-W"
+title = "Sadoc (1993) The E8 lattice and quasicrystals"
+doi_list = ["10.1016/0022-3093(93)90351-W"]
 urls = [
   "https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf",
+  "https://doi.org/10.1016/0022-3093(93)90351-W",
+  "https://www.sciencedirect.com/science/article/pii/002230939390351W",
 ]
-notes = "If blocked, keep as manual-intervention mirror and seek alternate author/institutional host."
+notes = "Preserve the blocked ResearchGate PDF as evidence, but merge it onto the DOI/ScienceDirect citation identity rather than leaving it as a standalone blocked ghost."
 
 [[mirror_override]]
 id = "HUANG_2024_QUASICRYSTALS_DISSERTATION_DIVA"
@@ -653,4 +674,3 @@ title = "h5ebsd format paper landing (Springer)"
 urls = [
   "https://link.springer.com/article/10.1186/2193-9772-3-4",
 ]
-

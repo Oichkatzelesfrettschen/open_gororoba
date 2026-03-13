@@ -45,19 +45,19 @@ And a deterministic modular source infrastructure projected from that master:
 ## Rebuild commands
 
 ```bash
-cargo run -p gororoba_cli_data --bin provenance -- export
-cargo run -p gororoba_cli_data --bin provenance -- index
-cargo run -p gororoba_cli_data --bin provenance -- verify
+cargo run -p gororoba_cli_provenance --bin provenance -- export
+cargo run -p gororoba_cli_provenance --bin provenance -- index
+cargo run -p gororoba_cli_provenance --bin provenance -- verify
 ```
 
 ## Optional live link audit refresh
 
 ```bash
-cargo run -p gororoba_cli_data --bin provenance -- export
-cargo run -p gororoba_cli_data --bin provenance -- index
-cargo run -p gororoba_cli_data --bin provenance -- link-audit
-cargo run -p gororoba_cli_data --bin provenance -- recover
-cargo run -p gororoba_cli_data --bin provenance -- verify
+cargo run -p gororoba_cli_provenance --bin provenance -- export
+cargo run -p gororoba_cli_provenance --bin provenance -- index
+cargo run -p gororoba_cli_provenance --bin provenance -- link-audit
+cargo run -p gororoba_cli_provenance --bin provenance -- recover
+cargo run -p gororoba_cli_provenance --bin provenance -- verify
 ```
 
 ## Generated audit views
@@ -71,12 +71,12 @@ cargo run -p gororoba_cli_data --bin provenance -- verify
 
 Primary operator surface:
 
-- `cargo run -p gororoba_cli_data --bin provenance -- index`
-- `cargo run -p gororoba_cli_data --bin provenance -- export`
-- `cargo run -p gororoba_cli_data --bin provenance -- verify`
-- `cargo run -p gororoba_cli_data --bin provenance -- query artifact <needle>`
-- `cargo run -p gororoba_cli_data --bin provenance -- query document <needle>`
-- `cargo run -p gororoba_cli_data --bin provenance -- doctor`
+- `cargo run -p gororoba_cli_provenance --bin provenance -- index`
+- `cargo run -p gororoba_cli_provenance --bin provenance -- export`
+- `cargo run -p gororoba_cli_provenance --bin provenance -- verify`
+- `cargo run -p gororoba_cli_provenance --bin provenance -- query artifact <needle>`
+- `cargo run -p gororoba_cli_provenance --bin provenance -- query document <needle>`
+- `cargo run -p gororoba_cli_provenance --bin provenance -- doctor`
 
 - Source files are discovered repo-wide under:
   - `registry/`
@@ -1192,7 +1192,7 @@ Recommended virtual tables:
 
 The operator surface should converge on one Rust binary:
 
-`cargo run -p gororoba_cli_data --bin provenance -- <subcommand>`
+`cargo run -p gororoba_cli_provenance --bin provenance -- <subcommand>`
 
 Core subcommands:
 
@@ -1817,8 +1817,8 @@ All scoped lane files are generated projections and must be reproducible from th
 
 2. Deterministic projections.
 - Lanes: `registry/source_lanes/*.toml`
-- Generator: `cargo run -p gororoba_cli_data --bin provenance -- export`
-- Verifier: `cargo run -p gororoba_cli_data --bin provenance -- verify`
+- Generator: `cargo run -p gororoba_cli_provenance --bin provenance -- export`
+- Verifier: `cargo run -p gororoba_cli_provenance --bin provenance -- verify`
 
 3. Provenance retention.
 - Keep both working and non-working mirrors.
@@ -1845,11 +1845,11 @@ All scoped lane files are generated projections and must be reproducible from th
 ## Canonical workflow
 
 ```bash
-cargo run -p gororoba_cli_data --bin provenance -- export
-cargo run -p gororoba_cli_data --bin provenance -- index
-cargo run -p gororoba_cli_data --bin provenance -- link-audit
-cargo run -p gororoba_cli_data --bin provenance -- recover
-cargo run -p gororoba_cli_data --bin provenance -- verify
+cargo run -p gororoba_cli_provenance --bin provenance -- export
+cargo run -p gororoba_cli_provenance --bin provenance -- index
+cargo run -p gororoba_cli_provenance --bin provenance -- link-audit
+cargo run -p gororoba_cli_provenance --bin provenance -- recover
+cargo run -p gororoba_cli_provenance --bin provenance -- verify
 ```
 '''
 

@@ -423,6 +423,14 @@ path = "src/bin/harmonic_halo_visualize.rs"
 name = "hi-cube-rotcurve-extractor"
 path = "src/bin/hi_cube_rotcurve_extractor.rs"
 
+[[bin]]
+name = "slit-deproject"
+path = "src/bin/slit_deproject.rs"
+
+[[bin]]
+name = "harmonic-halo-stacking-hi"
+path = "src/bin/harmonic_halo_stacking_hi.rs"
+
 # ---- Euclid / Morphology (2) ----
 
 [[bin]]

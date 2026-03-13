@@ -6,7 +6,8 @@
 use crate::download_stack::{DownloadStack, TransferRequest};
 use sha2::{Digest, Sha256};
 use std::{
-    fs, io,
+    fs,
+    io::{self, Read},
     path::{Path, PathBuf},
 };
 use thiserror::Error;
@@ -78,9 +79,16 @@ pub fn download_to_string(url: &str) -> Result<String, FetchError> {
 
 /// Compute SHA-256 hash of a file, returning hex string.
 pub fn compute_sha256(path: &Path) -> Result<String, io::Error> {
-    let data = fs::read(path)?;
     let mut hasher = Sha256::new();
-    hasher.update(&data);
+    let mut file = fs::File::open(path)?;
+    let mut buffer = [0_u8; 64 * 1024];
+    loop {
+        let bytes = file.read(&mut buffer)?;
+        if bytes == 0 {
+            break;
+        }
+        hasher.update(&buffer[..bytes]);
+    }
     let hash = hasher.finalize();
     Ok(format!("{:x}", hash))
 }

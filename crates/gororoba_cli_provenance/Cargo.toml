@@ -1,0 +1,32 @@
+[package]
+name = "gororoba_cli_provenance"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Slim provenance and download recovery operator binaries for gororoba"
+license = "MIT"
+autobins = false
+
+[[bin]]
+name = "provenance"
+path = "../gororoba_cli_data/src/bin/provenance.rs"
+
+[[bin]]
+name = "download-recovery"
+path = "../gororoba_cli_data/src/bin/download_recovery.rs"
+
+[dependencies]
+anyhow = { workspace = true }
+chrono = { workspace = true }
+clap = { workspace = true }
+csv = { workspace = true }
+data_core = { path = "../data_core" }
+provenance_core = { path = "../provenance_core" }
+provenance_ops = { path = "../provenance_ops" }
+provenance_store = { path = "../provenance_store" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+toml = { workspace = true }
+url = { workspace = true }
+
+[lints]
+workspace = true

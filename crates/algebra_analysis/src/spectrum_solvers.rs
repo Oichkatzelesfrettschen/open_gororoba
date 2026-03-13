@@ -48,6 +48,19 @@ pub struct HistogramProjectedReduction {
     pub projected_matrix: Vec<Vec<f64>>,
 }
 
+/// Benchmark-only full partition-adapted basis transform and coupling analysis.
+#[derive(Debug, Clone)]
+pub struct HistogramAdaptedBasisReduction {
+    /// Partition cells used to build the adapted basis.
+    pub partition: Vec<Vec<usize>>,
+    /// Full symmetric matrix in the partition-adapted orthonormal basis.
+    pub transformed_matrix: Vec<Vec<f64>>,
+    /// Number of coarse cell-constant basis vectors.
+    pub coarse_dim: usize,
+    /// Frobenius-energy ratio of centered-vs-centered couplings across distinct cells.
+    pub centered_cross_cell_fro_ratio: f64,
+}
+
 /// Classify structural hints for a symmetric matrix.
 pub fn classify_symmetric_matrix(
     matrix: &[Vec<f64>],
@@ -204,6 +217,88 @@ pub fn histogram_projected_reduction(
         partition: partition.partition,
         projected_matrix: projected,
     }))
+}
+
+/// Build the full partition-adapted orthonormal basis and transformed matrix.
+pub fn histogram_adapted_basis_reduction(
+    matrix: &[Vec<f64>],
+    tolerance: f64,
+) -> AlgebraResult<Option<HistogramAdaptedBasisReduction>> {
+    let Some(partition) = exploratory_histogram_partition(matrix, tolerance)? else {
+        return Ok(None);
+    };
+
+    let total_dim = matrix.len();
+    let basis = build_partition_basis(&partition.partition, total_dim);
+    let basis_dim = basis.len();
+    let mut transformed = vec![vec![0.0; basis_dim]; basis_dim];
+    let mut total_fro_sq = 0.0_f64;
+    let mut centered_cross_cell_fro_sq = 0.0_f64;
+
+    for i in 0..basis_dim {
+        for j in i..basis_dim {
+            let value = bilinear_form(&basis[i].1, matrix, &basis[j].1);
+            transformed[i][j] = value;
+            transformed[j][i] = value;
+            let weight = if i == j { 1.0 } else { 2.0 };
+            let energy = weight * value * value;
+            total_fro_sq += energy;
+            if matches!(
+                (&basis[i].0, &basis[j].0),
+                (PartitionBasisRole::Centered(lhs), PartitionBasisRole::Centered(rhs)) if lhs != rhs
+            ) {
+                centered_cross_cell_fro_sq += energy;
+            }
+        }
+    }
+
+    Ok(Some(HistogramAdaptedBasisReduction {
+        partition: partition.partition.clone(),
+        transformed_matrix: transformed,
+        coarse_dim: partition.partition.len(),
+        centered_cross_cell_fro_ratio: if total_fro_sq > 0.0 {
+            centered_cross_cell_fro_sq / total_fro_sq
+        } else {
+            0.0
+        },
+    }))
+}
+
+/// Benchmark-only two-level lifted spectrum from histogram cells.
+pub fn histogram_two_level_spectrum(
+    matrix: &[Vec<f64>],
+    tolerance: f64,
+) -> AlgebraResult<Option<Vec<f64>>> {
+    let reduction = deflate_isolated_zero_modes(matrix, tolerance)?;
+    if reduction.reduced_matrix.is_empty() {
+        return Ok(Some(vec![0.0; reduction.deflated_zero_modes]));
+    }
+
+    let Some(projected) = histogram_projected_reduction(&reduction.reduced_matrix, tolerance)?
+    else {
+        return Ok(None);
+    };
+
+    let mut eigs = reference_jacobi::symmetric_eigenvalues_f64(&projected.projected_matrix)?;
+    for cell in &projected.partition {
+        if cell.len() <= 1 {
+            continue;
+        }
+        let centered_block = restrict_centered_cell_block(&reduction.reduced_matrix, cell);
+        if centered_block.is_empty() {
+            continue;
+        }
+        eigs.extend(reference_jacobi::symmetric_eigenvalues_f64(
+            &centered_block,
+        )?);
+    }
+    eigs.extend(std::iter::repeat_n(0.0, reduction.deflated_zero_modes));
+    eigs.sort_by(|lhs, rhs| {
+        rhs.abs()
+            .total_cmp(&lhs.abs())
+            .then_with(|| rhs.total_cmp(lhs))
+    });
+    Ok(Some(eigs))
 }
 
 /// Solve a symmetric spectrum request through the current solver-family layer.
@@ -384,11 +479,117 @@ fn partition_by_row_pattern(matrix: &[Vec<f64>], tolerance: f64) -> AlgebraResul
     Ok(groups.into_values().collect())
 }
 
+fn restrict_centered_cell_block(matrix: &[Vec<f64>], cell: &[usize]) -> Vec<Vec<f64>> {
+    let basis = centered_basis(cell.len());
+    if basis.is_empty() {
+        return Vec::new();
+    }
+
+    let mut restricted = vec![vec![0.0; basis.len()]; basis.len()];
+    for (i, lhs) in basis.iter().enumerate() {
+        for (j, rhs) in basis.iter().enumerate().skip(i) {
+            let mut value = 0.0_f64;
+            for (local_p, &global_p) in cell.iter().enumerate() {
+                for (local_q, &global_q) in cell.iter().enumerate() {
+                    value += lhs[local_p] * matrix[global_p][global_q] * rhs[local_q];
+                }
+            }
+            restricted[i][j] = value;
+            restricted[j][i] = value;
+        }
+    }
+    restricted
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum PartitionBasisRole {
+    Coarse(usize),
+    Centered(usize),
+}
+
+fn build_partition_basis(
+    partition: &[Vec<usize>],
+    total_dim: usize,
+) -> Vec<(PartitionBasisRole, Vec<f64>)> {
+    let mut basis = Vec::new();
+    for (cell_idx, cell) in partition.iter().enumerate() {
+        let scale = (cell.len() as f64).sqrt();
+        let mut coarse = vec![0.0_f64; total_dim];
+        for &global_idx in cell {
+            coarse[global_idx] = 1.0 / scale;
+        }
+        basis.push((PartitionBasisRole::Coarse(cell_idx), coarse));
+    }
+
+    for (cell_idx, cell) in partition.iter().enumerate() {
+        for local_basis in centered_basis(cell.len()) {
+            let mut embedded = vec![0.0_f64; total_dim];
+            for (local_idx, &global_idx) in cell.iter().enumerate() {
+                embedded[global_idx] = local_basis[local_idx];
+            }
+            basis.push((PartitionBasisRole::Centered(cell_idx), embedded));
+        }
+    }
+
+    basis
+}
+
+fn centered_basis(cell_size: usize) -> Vec<Vec<f64>> {
+    if cell_size <= 1 {
+        return Vec::new();
+    }
+
+    let mut basis: Vec<Vec<f64>> = Vec::with_capacity(cell_size - 1);
+    for axis in 0..(cell_size - 1) {
+        let mut vector = vec![0.0_f64; cell_size];
+        vector[axis] = 1.0;
+        vector[cell_size - 1] = -1.0;
+
+        for existing in &basis {
+            let dot = dot_product(&vector, existing);
+            for (value, &component) in vector.iter_mut().zip(existing.iter()) {
+                *value -= dot * component;
+            }
+        }
+
+        let norm = dot_product(&vector, &vector).sqrt();
+        if norm > 0.0 {
+            for value in &mut vector {
+                *value /= norm;
+            }
+            basis.push(vector);
+        }
+    }
+
+    basis
+}
+
+fn dot_product(lhs: &[f64], rhs: &[f64]) -> f64 {
+    lhs.iter().zip(rhs.iter()).map(|(a, b)| a * b).sum()
+}
+
+fn bilinear_form(lhs: &[f64], matrix: &[Vec<f64>], rhs: &[f64]) -> f64 {
+    lhs.iter()
+        .enumerate()
+        .map(|(i, &lhs_value)| {
+            if lhs_value == 0.0 {
+                0.0
+            } else {
+                rhs.iter()
+                    .enumerate()
+                    .map(|(j, &rhs_value)| lhs_value * matrix[i][j] * rhs_value)
+                    .sum::<f64>()
+            }
+        })
+        .sum()
+}
+
 #[cfg(test)]
 mod tests {
     use super::{
         classify_symmetric_matrix, deflate_isolated_zero_modes, exploratory_histogram_partition,
-        histogram_projected_reduction, validated_quotient_reduction,
+        histogram_adapted_basis_reduction, histogram_projected_reduction,
+        histogram_two_level_spectrum, validated_quotient_reduction,
     };
 
     #[test]
@@ -469,5 +670,37 @@ mod tests {
         assert!(
             (projected.projected_matrix[0][1] - projected.projected_matrix[1][0]).abs() <= 1.0e-12
         );
+    }
+
+    #[test]
+    fn histogram_two_level_spectrum_preserves_matrix_dimension() {
+        let matrix = vec![
+            vec![0.0, 1.0, 2.0, 2.0],
+            vec![1.0, 0.0, 2.0, 2.0],
+            vec![2.0, 2.0, 0.0, 3.0],
+            vec![2.0, 2.0, 3.0, 0.0],
+        ];
+
+        let eigs = histogram_two_level_spectrum(&matrix, 1.0e-12).unwrap();
+        assert!(eigs.is_some());
+        assert_eq!(eigs.unwrap().len(), matrix.len());
+    }
+
+    #[test]
+    fn histogram_adapted_basis_reduction_preserves_dimension_and_reports_coupling() {
+        let matrix = vec![
+            vec![0.0, 1.0, 2.0, 2.0],
+            vec![1.0, 0.0, 2.0, 2.0],
+            vec![2.0, 2.0, 0.0, 3.0],
+            vec![2.0, 2.0, 3.0, 0.0],
+        ];
+
+        let adapted = histogram_adapted_basis_reduction(&matrix, 1.0e-12).unwrap();
+        assert!(adapted.is_some());
+        let adapted = adapted.unwrap();
+        assert_eq!(adapted.partition.len(), 2);
+        assert_eq!(adapted.transformed_matrix.len(), matrix.len());
+        assert!(adapted.centered_cross_cell_fro_ratio >= 0.0);
+        assert!(adapted.centered_cross_cell_fro_ratio <= 1.0);
     }
 }

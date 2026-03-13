@@ -785,8 +785,8 @@ target_lane = "external_csv_holding"
 
 [[dataset]]
 path = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
-source_sha256 = "cbdd61d7adc9caff30b38e69a6a6180cf37f1ee05a60fa31ad6336c28ad04a81"
-size_bytes = 1221539
+source_sha256 = "45b0128b54debd08429ff8af4cf381646c835b740b19c1925f4d1fe1d5cd1be6"
+size_bytes = 1225258
 git_status = "ignored"
 hold_status = "queued_for_scroll_conversion"
 target_lane = "external_csv_holding"
@@ -1062,3 +1062,4 @@ size_bytes = 307801
 git_status = "ignored"
 hold_status = "queued_for_scroll_conversion"
 target_lane = "external_csv_holding"
+

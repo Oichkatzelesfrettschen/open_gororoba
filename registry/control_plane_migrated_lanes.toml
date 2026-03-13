@@ -1,0 +1,79 @@
+# Canonical migrated-lane inventory for the SQLite-first control plane.
+
+[migration]
+updated = "2026-03-13"
+authoritative = true
+canonical_db = "registry/canonical/control_plane.sqlite3"
+notes = "Tracks which structured registry lanes are SQLite-first, hybrid, or still outside the control-plane migration."
+
+[[lane]]
+id = "claims"
+status = "db_first"
+canonical_entity = "claims"
+db_table = "claims"
+compat_exports = ["registry/claims.toml", "docs/CLAIMS_EVIDENCE_MATRIX.md"]
+primary_commands = ["provenance import-legacy-control-plane", "provenance export-control-plane", "provenance query claim", "claims-verify --db"]
+notes = "Operational readers should prefer SQLite. Markdown matrix remains a generated compatibility mirror."
+
+[[lane]]
+id = "insights"
+status = "db_first"
+canonical_entity = "insights"
+db_table = "insights"
+compat_exports = ["registry/insights.toml", "docs/INSIGHTS.md"]
+primary_commands = ["provenance import-legacy-control-plane", "provenance export-control-plane", "provenance query insight"]
+notes = "INSIGHTS.md is a generated web view, not an operational source."
+
+[[lane]]
+id = "experiments"
+status = "db_first"
+canonical_entity = "experiments"
+db_table = "experiments_cp"
+compat_exports = ["registry/experiments.toml", "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"]
+primary_commands = ["provenance import-legacy-control-plane", "provenance export-control-plane", "provenance query experiment", "execution-planning"]
+notes = "execution-planning writes through the canonical DB when operating on the canonical registry path."
+
+[[lane]]
+id = "binaries"
+status = "db_first"
+canonical_entity = "binaries"
+db_table = "binaries_cp"
+compat_exports = ["registry/binaries.toml"]
+primary_commands = ["provenance import-legacy-control-plane", "provenance export-control-plane", "provenance query binary", "registry-check"]
+notes = "Authoritative binary inventory is DB-backed and enriched from Cargo target discovery plus registry metadata."
+
+[[lane]]
+id = "theorems"
+status = "db_first"
+canonical_entity = "theorems"
+db_table = "theorems"
+compat_exports = ["docs/THEOREMS.md", "docs/generated/THEOREMS_REGISTRY_MIRROR.md"]
+primary_commands = ["provenance import-legacy-control-plane", "provenance export-control-plane", "provenance verify-control-plane"]
+notes = "Theorem inventory is derived from proofs/_RocqProject and linked claim state in the canonical DB."
+
+[[lane]]
+id = "book_docs"
+status = "hybrid_authored"
+canonical_entity = "mdbook_pages"
+db_table = ""
+compat_exports = ["registry/book_docs.toml", "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md"]
+primary_commands = ["markdown-registry normalize-book-docs --bootstrap-from-markdown", "registry-emit book-docs-mirror", "mdbook build docs/book"]
+notes = "Authored mdBook prose remains outside the SQLite control plane by design."
+
+[[lane]]
+id = "roadmap_and_planning"
+status = "toml_first"
+canonical_entity = "planning_registries"
+db_table = ""
+compat_exports = ["registry/roadmap.toml", "registry/todo.toml", "registry/next_actions.toml", "registry/requirements.toml", "registry/module_requirements.toml"]
+primary_commands = ["execution-planning"]
+notes = "Planning lanes still export to TOML directly; only the experiments slice is synchronized back into the control plane."
+
+[[lane]]
+id = "external_sources_and_aliases"
+status = "toml_first"
+canonical_entity = "governance_support"
+db_table = ""
+compat_exports = ["registry/external_sources*.toml", "registry/dataset_label_aliases.toml", "registry/source_lanes/*.toml"]
+primary_commands = ["governance-verify", "integrity-resolution", "artifact-scrolls", "semantic-atoms"]
+notes = "These governance and provenance support lanes remain TOML-first pending a later migration tranche."

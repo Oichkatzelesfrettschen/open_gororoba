@@ -8,7 +8,8 @@ use algebra_analysis::{
     reference_jacobi,
     spectrum_solvers::{
         deflate_isolated_zero_modes, exploratory_histogram_partition,
-        histogram_projected_reduction, validated_quotient_reduction,
+        histogram_adapted_basis_reduction, histogram_projected_reduction,
+        histogram_two_level_spectrum, validated_quotient_reduction,
     },
 };
 use anyhow::{Context, Result, ensure};
@@ -51,6 +52,7 @@ enum SolverKind {
     ReferenceFull,
     StructuredDeflatedReference,
     HistogramProjectedReference,
+    HistogramLiftedReference,
 }
 
 impl SolverKind {
@@ -59,6 +61,7 @@ impl SolverKind {
             Self::ReferenceFull => "reference_full",
             Self::StructuredDeflatedReference => "structured_deflated_reference",
             Self::HistogramProjectedReference => "histogram_projected_reference",
+            Self::HistogramLiftedReference => "histogram_lifted_reference",
         }
     }
 
@@ -67,6 +70,7 @@ impl SolverKind {
             Self::ReferenceFull,
             Self::StructuredDeflatedReference,
             Self::HistogramProjectedReference,
+            Self::HistogramLiftedReference,
         ]
     }
 }
@@ -84,6 +88,7 @@ struct Row {
     validated_quotient_cells: usize,
     exploratory_histogram_cells: usize,
     projected_order: usize,
+    centered_cross_cell_fro_ratio: f64,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -93,6 +98,7 @@ struct ReductionMetrics {
     validated_quotient_cells: usize,
     exploratory_histogram_cells: usize,
     projected_order: usize,
+    centered_cross_cell_fro_ratio: f64,
 }
 
 fn main() -> Result<()> {
@@ -117,6 +123,7 @@ fn main() -> Result<()> {
                 Err(error) => return Err(error),
             };
             let reduction = deflate_isolated_zero_modes(&case.matrix, 1.0e-12)?;
+            let adapted = histogram_adapted_basis_reduction(&reduction.reduced_matrix, 1.0e-12)?;
             let metrics = ReductionMetrics {
                 reduced_order: reduction.reduced_matrix.len(),
                 deflated_zero_modes: reduction.deflated_zero_modes,
@@ -132,6 +139,10 @@ fn main() -> Result<()> {
                 projected_order: histogram_projected_reduction(&reduction.reduced_matrix, 1.0e-12)?
                     .map(|candidate| candidate.partition.len())
                     .unwrap_or(0),
+                centered_cross_cell_fro_ratio: adapted
+                    .as_ref()
+                    .map(|candidate| candidate.centered_cross_cell_fro_ratio)
+                    .unwrap_or(0.0),
             };
             for solver in &solvers {
                 rows.push(run_row(&case, metrics, *solver, args.repeats)?);
@@ -185,6 +196,7 @@ fn run_row(
         validated_quotient_cells: metrics.validated_quotient_cells,
         exploratory_histogram_cells: metrics.exploratory_histogram_cells,
         projected_order: metrics.projected_order,
+        centered_cross_cell_fro_ratio: metrics.centered_cross_cell_fro_ratio,
     })
 }
 
@@ -242,6 +254,25 @@ fn run_solver(matrix: &[Vec<f64>], solver: SolverKind) -> Result<Vec<f64>> {
             });
             Ok(eigs)
         }
+        SolverKind::HistogramLiftedReference => {
+            if let Some(eigs) = histogram_two_level_spectrum(matrix, 1.0e-12)? {
+                Ok(eigs)
+            } else {
+                let reduction = deflate_isolated_zero_modes(matrix, 1.0e-12)?;
+                let mut eigs = if reduction.reduced_matrix.is_empty() {
+                    Vec::new()
+                } else {
+                    reference_jacobi::symmetric_eigenvalues_f64(&reduction.reduced_matrix)?
+                };
+                eigs.extend(std::iter::repeat_n(0.0, reduction.deflated_zero_modes));
+                eigs.sort_by(|lhs, rhs| {
+                    rhs.abs()
+                        .total_cmp(&lhs.abs())
+                        .then_with(|| rhs.total_cmp(lhs))
+                });
+                Ok(eigs)
+            }
+        }
     }
 }
 
@@ -275,6 +306,7 @@ fn write_csv(path: &PathBuf, rows: &[Row]) -> Result<()> {
         "validated_quotient_cells",
         "exploratory_histogram_cells",
         "projected_order",
+        "centered_cross_cell_fro_ratio",
     ])?;
     for row in rows {
         writer.write_record([
@@ -289,6 +321,7 @@ fn write_csv(path: &PathBuf, rows: &[Row]) -> Result<()> {
             row.validated_quotient_cells.to_string(),
             row.exploratory_histogram_cells.to_string(),
             row.projected_order.to_string(),
+            row.centered_cross_cell_fro_ratio.to_string(),
         ])?;
     }
     writer.flush()?;
@@ -301,8 +334,8 @@ fn write_summary(path: &PathBuf, rows: &[Row]) -> Result<()> {
     }
     let mut out = String::new();
     out.push_str("# Structured Spectrum Bench\n\n");
-    out.push_str("| family | size | fastest solver | lowest max abs error | deflated zero modes | validated quotient cells | exploratory histogram cells | projected order |\n");
-    out.push_str("| --- | ---: | --- | --- | ---: | ---: | ---: | ---: |\n");
+    out.push_str("| family | size | fastest solver | lowest max abs error | deflated zero modes | validated quotient cells | exploratory histogram cells | projected order | centered cross-cell ratio |\n");
+    out.push_str("| --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |\n");
     let mut keys: Vec<(&str, usize)> = rows.iter().map(|row| (row.family, row.size)).collect();
     keys.sort_unstable();
     keys.dedup();
@@ -334,8 +367,12 @@ fn write_summary(path: &PathBuf, rows: &[Row]) -> Result<()> {
             .map(|row| row.exploratory_histogram_cells)
             .unwrap_or(0);
         let projected_order = group.first().map(|row| row.projected_order).unwrap_or(0);
+        let cross_cell_ratio = group
+            .first()
+            .map(|row| row.centered_cross_cell_fro_ratio)
+            .unwrap_or(0.0);
         out.push_str(&format!(
-            "| {family} | {size} | {fastest} | {lowest_error} | {deflated} | {validated} | {exploratory} | {projected_order} |\n"
+            "| {family} | {size} | {fastest} | {lowest_error} | {deflated} | {validated} | {exploratory} | {projected_order} | {cross_cell_ratio:.6} |\n"
         ));
     }
     fs::write(path, out).with_context(|| format!("writing {}", path.display()))?;

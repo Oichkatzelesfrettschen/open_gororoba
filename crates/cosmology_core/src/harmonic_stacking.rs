@@ -1085,6 +1085,227 @@ pub fn injection_recovery_sweep(
         .collect()
 }
 
+// ---------------------------------------------------------------------------
+// HI Eigenmode Stacking (Item 1: PCA via Jacobi eigensystem)
+// ---------------------------------------------------------------------------
+
+/// Result of an eigenmode decomposition of the galaxy covariance matrix.
+///
+/// Performs PCA on the N_gal x N_r residual matrix to extract the dominant
+/// modes of coherent variation. A ZD signal would appear as a leading eigenmode
+/// with high overlap onto the predicted ZD template.
+#[derive(Debug, Clone)]
+pub struct EigenmodeStackResult {
+    /// Common x = r/r_s grid (N_r points).
+    pub x_grid: Vec<f64>,
+    /// Eigenvalues sorted by descending |lambda| (N_r values).
+    pub eigenvalues: Vec<f64>,
+    /// Top n_modes_kept eigenvectors, each of length N_r.
+    pub eigenmodes: Vec<Vec<f64>>,
+    /// |dot(V_k, T)| / (||V_k|| * ||T||) for each retained mode.
+    pub zd_overlaps: Vec<f64>,
+    /// Cumulative fraction of total variance per mode (length n_modes_kept).
+    pub explained_variance: Vec<f64>,
+    /// max_k(zd_overlaps[k] * sqrt(lambda_k / lambda_mean)).
+    pub reconstruction_snr: f64,
+    /// Number of galaxies used.
+    pub n_galaxies: usize,
+    /// Number of eigenmodes retained.
+    pub n_modes_kept: usize,
+}
+
+/// PCA-based eigenmode stacking: decompose the galaxy covariance matrix.
+///
+/// # Algorithm
+/// 1. Interpolate all galaxy residuals onto the common x_grid; build binary mask.
+/// 2. Build the N_r x N_r covariance matrix C, weighted by per-galaxy coverage.
+/// 3. Eigendecompose C via x87 (x86_64) or DD (other) Jacobi solver.
+/// 4. Compute ZD template overlaps for each eigenmode.
+///
+/// The covariance matrix is constructed as a sum of outer products weighted by
+/// the binary coverage mask, so galaxies that do not cover a bin contribute zero
+/// to that bin's covariance. This avoids imputation bias from zero-filling.
+pub fn eigenmode_stack(
+    galaxies: &[NormalizedResiduals],
+    config: &StackingConfig,
+    n_modes: usize,
+) -> EigenmodeStackResult {
+    let n_r = config.n_grid;
+    let n_gal = galaxies.len();
+
+    // Build common x-grid
+    let dx = if n_r > 1 {
+        (config.x_max - config.x_min) / (n_r as f64 - 1.0)
+    } else {
+        0.0
+    };
+    let x_grid: Vec<f64> = (0..n_r)
+        .map(|i| config.x_min + i as f64 * dx)
+        .collect();
+
+    let empty = EigenmodeStackResult {
+        x_grid: x_grid.clone(),
+        eigenvalues: vec![0.0; n_r],
+        eigenmodes: vec![],
+        zd_overlaps: vec![],
+        explained_variance: vec![],
+        reconstruction_snr: 0.0,
+        n_galaxies: n_gal,
+        n_modes_kept: 0,
+    };
+
+    if n_gal == 0 || n_r == 0 {
+        return empty;
+    }
+
+    // Interpolate all galaxies and build X matrix [n_gal x n_r] with mask
+    let interp: Vec<Vec<Option<(f64, f64)>>> = galaxies
+        .iter()
+        .map(|g| interpolate_residuals(g, &x_grid))
+        .collect();
+
+    // Compute column means weighted by coverage count
+    let mut col_count = vec![0_usize; n_r];
+    let mut col_sum = vec![0.0_f64; n_r];
+    for g_interp in &interp {
+        for (j, pt) in g_interp.iter().enumerate() {
+            if let Some(&(dv, _)) = pt.as_ref() {
+                col_count[j] += 1;
+                col_sum[j] += dv;
+            }
+        }
+    }
+    let col_mean: Vec<f64> = col_count
+        .iter()
+        .zip(col_sum.iter())
+        .map(|(&cnt, &s)| if cnt > 0 { s / cnt as f64 } else { 0.0 })
+        .collect();
+
+    // Build X [n_gal x n_r] with mean-subtracted residuals (zero for missing)
+    let mut x_mat: Vec<Vec<f64>> = vec![vec![0.0; n_r]; n_gal];
+    let mut mask: Vec<Vec<f64>> = vec![vec![0.0; n_r]; n_gal];
+    for (g, g_interp) in interp.iter().enumerate() {
+        for (j, pt) in g_interp.iter().enumerate() {
+            if let Some(&(dv, _)) = pt.as_ref() {
+                x_mat[g][j] = dv - col_mean[j];
+                mask[g][j] = 1.0;
+            }
+        }
+    }
+
+    // Build covariance matrix C [n_r x n_r] = sum_g (x_g * mask_g) outer (x_g * mask_g)
+    let mut cov_flat: Vec<f64> = vec![0.0; n_r * n_r];
+    for g in 0..n_gal {
+        for i in 0..n_r {
+            if mask[g][i] < 0.5 {
+                continue;
+            }
+            let xi = x_mat[g][i];
+            for j in 0..n_r {
+                if mask[g][j] < 0.5 {
+                    continue;
+                }
+                cov_flat[i * n_r + j] += xi * x_mat[g][j];
+            }
+        }
+    }
+
+    // Eigendecompose C
+    let eigen_result: Result<(Vec<f64>, Vec<f64>), String> = {
+        #[cfg(target_arch = "x86_64")]
+        {
+            algebra_analysis::x87_jacobi::symmetric_eigensystem_x87(
+                &cov_flat,
+                n_r,
+                5 * n_r * n_r,
+                1.0e-12,
+            )
+            .map_err(|e| e.to_string())
+        }
+        #[cfg(not(target_arch = "x86_64"))]
+        {
+            let mat: Vec<Vec<f64>> = (0..n_r)
+                .map(|i| cov_flat[i * n_r..(i + 1) * n_r].to_vec())
+                .collect();
+            algebra_analysis::dd_jacobi::symmetric_eigensystem_dd(&mat)
+                .map_err(|e| e.to_string())
+        }
+    };
+
+    let (eigenvalues, v_flat) = match eigen_result {
+        Ok(r) => r,
+        Err(_) => return empty,
+    };
+
+    // ZD template: T[i] = sum_n (af/n) * cos(k_n * x[i]) * exp(-x[i])
+    let wavenumbers = config.cd_params.predicted_wavenumbers();
+    let af = config.cd_params.assessor_fraction;
+    let template: Vec<f64> = x_grid
+        .iter()
+        .map(|&x| {
+            wavenumbers
+                .iter()
+                .enumerate()
+                .map(|(n, &k)| (af / (n + 1) as f64) * (k * x).cos() * (-x).exp())
+                .sum::<f64>()
+        })
+        .collect();
+    let template_norm = template.iter().map(|t| t * t).sum::<f64>().sqrt();
+
+    let n_keep = n_modes.min(n_r);
+    let lambda_sum: f64 = eigenvalues.iter().map(|e| e.abs()).sum();
+    let lambda_mean = if n_r > 0 { lambda_sum / n_r as f64 } else { 0.0 };
+
+    let mut eigenmodes = Vec::with_capacity(n_keep);
+    let mut zd_overlaps = Vec::with_capacity(n_keep);
+    let mut explained_variance = Vec::with_capacity(n_keep);
+    let mut cumulative_var = 0.0_f64;
+
+    for k in 0..n_keep {
+        // Extract column k of V: V[i,k] = v_flat[i*n_r + k]
+        let mode: Vec<f64> = (0..n_r).map(|i| v_flat[i * n_r + k]).collect();
+        let mode_norm = mode.iter().map(|v| v * v).sum::<f64>().sqrt();
+
+        let overlap = if mode_norm > 0.0 && template_norm > 0.0 {
+            let dot: f64 = mode.iter().zip(template.iter()).map(|(v, t)| v * t).sum();
+            dot.abs() / (mode_norm * template_norm)
+        } else {
+            0.0
+        };
+
+        cumulative_var += eigenvalues[k].abs() / lambda_sum.max(1.0e-30);
+
+        eigenmodes.push(mode);
+        zd_overlaps.push(overlap);
+        explained_variance.push(cumulative_var);
+    }
+
+    // reconstruction_snr = max_k(zd_overlaps[k] * sqrt(|lambda_k| / lambda_mean))
+    let reconstruction_snr = zd_overlaps
+        .iter()
+        .enumerate()
+        .map(|(k, &ov)| {
+            let scale = if lambda_mean > 0.0 {
+                (eigenvalues[k].abs() / lambda_mean).sqrt()
+            } else {
+                0.0
+            };
+            ov * scale
+        })
+        .fold(0.0_f64, f64::max);
+
+    EigenmodeStackResult {
+        x_grid,
+        eigenvalues,
+        eigenmodes,
+        zd_overlaps,
+        explained_variance,
+        reconstruction_snr,
+        n_galaxies: n_gal,
+        n_modes_kept: n_keep,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1483,6 +1704,97 @@ mod tests {
         assert!(
             inner_count >= outer_count,
             "inner bins should have >= outer coverage"
+        );
+    }
+
+    // ── Eigenmode stacking tests ─────────────────────────────────────────────
+
+    fn make_random_galaxy_residuals(
+        name: &str,
+        n_pts: usize,
+        amplitude: f64,
+        seed: u64,
+    ) -> NormalizedResiduals {
+        // Simple deterministic LCG for reproducible pseudo-random residuals
+        let mut s = seed.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+        let points: Vec<NormalizedPoint> = (0..n_pts)
+            .map(|i| {
+                let x = 0.5 + (i as f64 / (n_pts - 1) as f64) * 9.5;
+                s = s.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+                let noise = (s as i64 as f64 / i64::MAX as f64) * amplitude;
+                NormalizedPoint {
+                    x,
+                    delta_v: noise,
+                    delta_v_err: amplitude.abs() * 0.1 + 0.001,
+                }
+            })
+            .collect();
+        NormalizedResiduals {
+            name: name.to_string(),
+            r_s_kpc: 10.0,
+            points,
+        }
+    }
+
+    #[test]
+    fn test_eigenmode_white_noise() {
+        // 50 galaxies with N(0,1)-scale residuals; all zd_overlaps should be small
+        let n_gal = 50_usize;
+        let galaxies: Vec<NormalizedResiduals> = (0..n_gal)
+            .map(|i| make_random_galaxy_residuals(&format!("G{i}"), 50, 0.05, i as u64 + 1))
+            .collect();
+
+        let config = StackingConfig {
+            x_min: 0.5,
+            x_max: 10.0,
+            n_grid: 50,
+            min_galaxies_per_bin: 2,
+            ..Default::default()
+        };
+
+        let result = eigenmode_stack(&galaxies, &config, 10);
+
+        // Under H0 (white noise), max overlap should be well below the signal threshold
+        let max_overlap = result.zd_overlaps.iter().copied().fold(0.0_f64, f64::max);
+        assert!(
+            max_overlap < 0.7,
+            "white noise max overlap = {max_overlap:.3}, expected < 0.7"
+        );
+        assert!(
+            result.reconstruction_snr < 3.0,
+            "white noise reconstruction_snr = {:.3}, expected < 3.0",
+            result.reconstruction_snr
+        );
+        assert_eq!(result.n_modes_kept, 10);
+        assert_eq!(result.n_galaxies, n_gal);
+    }
+
+    #[test]
+    fn test_eigenmode_injected_signal() {
+        // 30 galaxies with ZD signal at alpha_zd=0.01 injected
+        let n_gal = 30_usize;
+        let galaxies: Vec<NormalizedResiduals> = (0..n_gal)
+            .map(|i| make_random_galaxy_residuals(&format!("G{i}"), 50, 0.02, i as u64 + 100))
+            .collect();
+        let config = StackingConfig {
+            x_min: 0.5,
+            x_max: 10.0,
+            n_grid: 50,
+            min_galaxies_per_bin: 2,
+            cd_params: CdDimensionParams::sedenion(),
+            ..Default::default()
+        };
+
+        // Inject ZD signal into all galaxies
+        let injected = inject_zd_signal(&galaxies, 0.01, 16);
+        let result = eigenmode_stack(&injected, &config, 5);
+
+        // The leading mode should have a measurable ZD overlap
+        assert!(!result.zd_overlaps.is_empty(), "no eigenmodes computed");
+        let leading_overlap = result.zd_overlaps[0];
+        assert!(
+            leading_overlap > 0.1,
+            "injected leading overlap = {leading_overlap:.3}, expected > 0.1"
         );
     }
 }

@@ -472,6 +472,73 @@ evidence_refs = []
 scientific_validator_refs = ["radio_catalog_numeric_invariants"]
 
 [[source]]
+id = "SRC-MANGA-DR17-CATALOGS"
+path_glob = "data/external/manga/**"
+canonical_url = "https://www.sdss.org/dr17/manga/manga-data/data-access/"
+mirror_urls = ["https://data.sdss.org/sas/dr17/manga/spectro/redux/v3_1_1/"]
+access_class = "public"
+status = "active"
+retrieval_method = "Local cached MaNGA DR17 catalogs joined by `cargo run -p gororoba_cli_data --bin lotss-fetch -- manga-preflight --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits`"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "E-198 MaNGA sample contract: `dapall_selection.csv` defines the selected galaxies and `drpall-v3_1_1.fits` supplies `objra`/`objdec` for LoTSS overlap analysis."
+evidence_refs = [
+  "data/external/manga/dapall_selection.csv",
+  "data/external/manga/drpall-v3_1_1.fits",
+  "reports/lotss_manga_preflight_2026-03-13.toml",
+]
+scientific_validator_refs = []
+
+[[source]]
+id = "SRC-LOTSS-DR2-FITS"
+path_glob = "data/external/radio_surveys/lotss_dr2.fits"
+canonical_url = "https://lofar-surveys.org/public/DR2/catalogues/LoTSS_DR2_v110_masked.srl.fits"
+mirror_urls = ["https://lofar-surveys.org/public/DR2/catalogues/"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin lotss-fetch -- download --release dr2"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "LoTSS DR2 bulk source catalog used as the wide-area radio baseline for E-198 MaNGA overlap measurements."
+evidence_refs = [
+  "crates/gororoba_cli_data/src/bin/lotss_fetch.rs",
+  "reports/manga_lotss_xmatch_dr2.toml",
+]
+scientific_validator_refs = ["radio_catalog_numeric_invariants"]
+
+[[source]]
+id = "SRC-LOTSS-DR3-FITS"
+path_glob = "data/external/radio_surveys/lotss_dr3.fits"
+canonical_url = "https://lofar-surveys.org/public/DR3/catalogues/LoTSS_DR3_v1.0.srl.fits"
+mirror_urls = ["https://lofar-surveys.org/public/DR3/catalogues/"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin lotss-fetch -- download --release dr3"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Official LoTSS DR3 bulk source catalog is the preferred E-198 path because it avoids large MaNGA-footprint cone-search sweeps while preserving full-sky overlap statistics."
+evidence_refs = [
+  "crates/gororoba_cli_data/src/bin/lotss_fetch.rs",
+  "reports/lotss_lotss_dr3_summary.toml",
+  "reports/manga_lotss_xmatch_dr3.toml",
+]
+scientific_validator_refs = ["radio_catalog_numeric_invariants"]
+
+[[source]]
+id = "SRC-LOTSS-DR3-MANGA-TILES"
+path_glob = "data/external/radio_surveys/dr3_tiles/**"
+canonical_url = "https://vo.astron.nl/lotss_dr3/q/src_cone/scs.xml"
+mirror_urls = ["https://lofar-surveys.org/"]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin lotss-fetch -- manga-footprint --tile-dir data/external/radio_surveys/dr3_tiles --summary-out reports/lotss_dr3_manga_footprint_summary.toml"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "LoTSS DR3 cone-search tiles remain available as a bounded-footprint fallback and spot-check path when the bulk FITS path is unavailable or when partial-sky debugging is needed."
+evidence_refs = ["crates/gororoba_cli_data/src/bin/lotss_fetch.rs"]
+scientific_validator_refs = ["radio_catalog_numeric_invariants"]
+
+[[source]]
 id = "SRC-PAPERS-CORPUS"
 path_glob = "data/papers/corpus/**"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/external_papers_index.toml"
@@ -1699,7 +1766,7 @@ mirror_urls = [
 access_class = "public"
 status = "active"
 retrieval_method = "python3 bin/fetch_euclid.py (ADQL client, TAP protocol)"
-blocker_note = "Euclid Q1 primary survey catalogs via TAP/ADQL. 21 catalog tables totaling 637M rows across MER (photometry/morphology, 30M objects), PHZ (photo-z, 7 tables, 29.6M objects), SPE (spectroscopy, 11 tables, 29.2M spec-z). SHE (shear) absent from Q1. ESA SAS (primary), IRSA (US mirror, TAP + Gator + IBE bulk), AWS S3 (no-auth, us-east-1). ~35 TB total (imaging+catalogs), 63.1 sq deg across 4 fields (EDF-N/S/Fornax, LDN1641). CC BY-NC 3.0 IGO. Catalog registry at data/external/euclid_q1_catalogs.toml. fetch_euclid.py NOT YET IMPLEMENTED -- see registry/todo.toml."
+blocker_note = "Euclid Q1 primary survey catalogs via TAP/ADQL. 21 catalog tables totaling 637M rows across MER (photometry/morphology, 30M objects), PHZ (photo-z, 7 tables, 29.6M objects), SPE (spectroscopy, 11 tables, 29.2M spec-z). SHE (shear) absent from Q1. ESA SAS (primary), IRSA (US mirror, TAP + Gator + IBE bulk), AWS S3 (no-auth, us-east-1). ~35 TB total (imaging+catalogs), 63.1 sq deg across 4 fields (EDF-N/S/Fornax, LDN1641). CC BY-NC 3.0 IGO. Catalog registry at data/external/euclid_q1_catalogs.toml. Python bridge `bin/fetch_euclid.py` exists for TAP/IRSA/AWS enumeration and staged fetches; Rust-native migration remains pending."
 evidence_refs = []
 scientific_validator_refs = []
 

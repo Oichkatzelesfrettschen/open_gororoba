@@ -337,6 +337,16 @@ urls = [
 notes = "The blocked ResearchGate PDF corresponds to the public arXiv preprint 1107.1375."
 
 [[mirror_override]]
+id = "ASOT_3032_bales_rg_merge"
+artifact_key_hint = "url:https://www.researchgate.net/profile/john-bales/publication/51915595_cayley-dickson_and_clifford_algebras_as_twisted_group_algebras/links/0fcfd512d4ccc2eed9000000/cayley-dickson-and-clifford-algebras-as-twisted-group-algebras.pdf"
+urls = [
+  "https://www.researchgate.net/profile/John-Bales/publication/51915595_Cayley-Dickson_and_Clifford_Algebras_as_Twisted_Group_Algebras/links/0fcfd512d4ccc2eed9000000/Cayley-Dickson-and-Clifford-Algebras-as-Twisted-Group-Algebras.pdf",
+  "https://arxiv.org/abs/1107.1375",
+  "https://arxiv.org/pdf/1107.1375.pdf",
+]
+notes = "Merge the blocked ResearchGate PDF row onto the verified public arXiv mirror for the same Bales paper."
+
+[[mirror_override]]
 id = "ASOT_3021_lockyer_vixra_pdf"
 artifact_key_hint = "url:https://vixra.org/pdf/2010.0086v3.pdf"
 urls = [
@@ -345,6 +355,16 @@ urls = [
   "https://vixra.org/mathph/2010",
 ]
 notes = "The blocked ResearchGate PDF has a public viXra PDF mirror at 2010.0086v3."
+
+[[mirror_override]]
+id = "ASOT_3033_lockyer_rg_merge"
+artifact_key_hint = "url:https://www.researchgate.net/profile/richard-lockyer-2/publication/380847813_an_algebraic_proof_sedenions_are_not_a_division_algebra_and_other_consequences_of_cayley-dickson_algebra_definition_variation/links/6650b5fc0b0d284574580e1c/an-algebraic-proof-sedenions-are-not-a-division-algebra-and-other-consequences-of-cayley-dickson-algebra-definition-variation.pdf"
+urls = [
+  "https://www.researchgate.net/profile/Richard-Lockyer-2/publication/380847813_An_algebraic_proof_Sedenions_are_not_a_division_algebra_and_other_consequences_of_Cayley-Dickson_Algebra_definition_variation/links/6650b5fc0b0d284574580e1c/An-algebraic-proof-Sedenions-are-not-a-division-algebra-and-other-consequences-of-Cayley-Dickson-Algebra-definition-variation.pdf",
+  "https://vixra.org/pdf/2010.0086v3.pdf",
+  "https://vixra.org/mathph/2010",
+]
+notes = "Merge the blocked ResearchGate PDF row onto the verified public viXra mirror for the same Lockyer paper."
 
 [[mirror_override]]
 id = "ASOT_3014_mdpi_inspire_pdf"
@@ -356,3 +376,106 @@ urls = [
   "https://inspirehep.net/files/388fd0094ce3d24e532efc93a38e9912",
 ]
 notes = "MDPI publisher endpoints are bot-gated in this environment; verified Inspire-hosted PDF provides a public workaround for the Symmetry article."
+
+[[mirror_override]]
+id = "ASOT_2487_gpr_public_mirrors"
+artifact_key_hint = "url:https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/garibaldi-petersson-racine-albz.pdf"
+title = "Garibaldi-Petersson-Racine (2023) Albert algebras over Z and other rings"
+urls = [
+  "https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/garibaldi-petersson-racine-albZ.pdf",
+  "https://arxiv.org/abs/2205.09896",
+  "https://arxiv.org/pdf/2205.09896.pdf",
+]
+notes = "Prefer the arXiv mirror over the older UMA archive host."
+
+[[mirror_override]]
+id = "ASOT_2488_magic_square_public_mirrors"
+artifact_key_hint = "url:https://agt2.cie.uma.es/~loos/jordan/archive/magic/magic.pdf"
+title = "Elduque (2004/2005) The Magic Square and Symmetric Compositions"
+urls = [
+  "https://agt2.cie.uma.es/~loos/jordan/archive/magic/magic.pdf",
+  "https://arxiv.org/abs/math/0507282",
+  "https://arxiv.org/pdf/math/0507282.pdf",
+]
+notes = "Prefer the arXiv mirror over the older UMA archive host."
+
+[[mirror_override]]
+id = "ASOT_2489_non_orth_cd_public_mirrors"
+artifact_key_hint = "url:https://agt2.cie.uma.es/~loos/jordan/archive/non-orth-cd/non-orth-cd.pdf"
+title = "Petersson non-orthogonal Cayley-Dickson construction notes"
+urls = [
+  "https://agt2.cie.uma.es/~loos/jordan/archive/non-orth-cd/non-orth-cd.pdf",
+  "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/north-cd-e8.pdf",
+]
+notes = "Prefer the live FernUni mirror over the older UMA archive host."
+
+[[mirror_override]]
+id = "ASOT_2819_iucr_doi_surface"
+artifact_key_hint = "url:https://journals.iucr.org/j/issues/2007/03/00/ks5136/ks5136.pdf"
+title = "He & Jonas (2007) Representation of orientation relationships in Rodrigues-Frank space for any two classes of lattice"
+doi_list = ["10.1107/S0021889807012770"]
+urls = [
+  "https://journals.iucr.org/j/issues/2007/03/00/ks5136/ks5136.pdf",
+  "https://doi.org/10.1107/S0021889807012770",
+  "https://journals.iucr.org/j/issues/2007/03/00/ks5136/ks5136fig4.html",
+]
+notes = "The direct PDF is gated, but the DOI and public figure/article surfaces are stable citation mirrors."
+
+[[mirror_override]]
+id = "ASOT_2820_iucr_doi_surface"
+artifact_key_hint = "url:https://journals.iucr.org/j/issues/2018/04/00/ks5599/ks5599.pdf"
+title = "Quey-Villani-Maurice (2018) Nearly uniform sampling of crystal orientations"
+doi_list = ["10.1107/S1600576718009019"]
+urls = [
+  "https://journals.iucr.org/j/issues/2018/04/00/ks5599/ks5599.pdf",
+  "https://doi.org/10.1107/S1600576718009019",
+  "https://journals.iucr.org/paper?buy=yes&cnor=ks5599",
+]
+notes = "Treat the DOI and article surface as the stable public citation mirrors when the direct PDF is gated."
+
+[[mirror_override]]
+id = "ASOT_2821_iucr_pmc_surface"
+artifact_key_hint = "url:https://journals.iucr.org/j/issues/2024/03/00/iu5046/iu5046.pdf"
+title = "De Graef (2024) Applications of the Clifford torus to material textures"
+doi_list = ["10.1107/S160057672400219X"]
+urls = [
+  "https://journals.iucr.org/j/issues/2024/03/00/iu5046/iu5046.pdf",
+  "https://doi.org/10.1107/S160057672400219X",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC11151663/",
+  "https://par.nsf.gov/servlets/purl/10529570",
+]
+notes = "The open PMC and NSF PAR surfaces are public mirrors for the open-access Clifford torus paper."
+
+[[mirror_override]]
+id = "ASOT_3032_sadoc_public_citation_surfaces"
+artifact_key_hint = "url:https://www.researchgate.net/profile/jean-francois-sadoc/publication/243298250_the_e8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/the-e8-lattice-and-quasicrystals.pdf"
+title = "Sadoc (1993) The E8 lattice and quasicrystals"
+doi_list = ["10.1016/0022-3093(93)90351-W"]
+urls = [
+  "https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf",
+  "https://doi.org/10.1016/0022-3093(93)90351-W",
+  "https://www.sciencedirect.com/science/article/pii/002230939390351W",
+]
+notes = "Attach the blocked ResearchGate PDF to the stable DOI and ScienceDirect article surfaces instead of leaving it isolated."
+
+[[mirror_override]]
+id = "ASOT_3034_bales_twisted_group_public_surfaces"
+artifact_key_hint = "url:https://www.researchgate.net/profile/john-bales/publication/51915595_cayley-dickson_and_clifford_algebras_as_twisted_group_algebras/links/0fcfd512d4ccc2eed9000000/cayley-dickson-and-clifford-algebras-as-twisted-group-algebras.pdf"
+title = "Bales (2011) Cayley-Dickson and Clifford algebras as twisted group algebras"
+urls = [
+  "https://www.researchgate.net/profile/John-Bales/publication/51915595_Cayley-Dickson_and_Clifford_Algebras_as_Twisted_Group_Algebras/links/0fcfd512d4ccc2eed9000000/Cayley-Dickson-and-Clifford-Algebras-as-Twisted-Group-Algebras.pdf",
+  "https://arxiv.org/abs/1107.1375",
+  "https://arxiv.org/pdf/1107.1375.pdf",
+]
+notes = "Attach the ResearchGate PDF ghost to the public arXiv mirror."
+
+[[mirror_override]]
+id = "ASOT_3035_lockyer_public_surfaces"
+artifact_key_hint = "url:https://www.researchgate.net/profile/richard-lockyer-2/publication/380847813_an_algebraic_proof_sedenions_are_not_a_division_algebra_and_other_consequences_of_cayley-dickson_algebra_definition_variation/links/6650b5fc0b0d284574580e1c/an-algebraic-proof-sedenions-are-not-a-division-algebra-and-other-consequences-of-cayley-dickson-algebra-definition-variation.pdf"
+title = "Lockyer (2024) An algebraic proof sedenions are not a division algebra"
+urls = [
+  "https://www.researchgate.net/profile/Richard-Lockyer-2/publication/380847813_An_algebraic_proof_Sedenions_are_not_a_division_algebra_and_other_consequences_of_Cayley-Dickson_Algebra_definition_variation/links/6650b5fc0b0d284574580e1c/An-algebraic-proof-Sedenions-are-not-a-division-algebra-and-other-consequences-of-Cayley-Dickson-Algebra-definition-variation.pdf",
+  "https://vixra.org/abs/2010.0086",
+  "https://vixra.org/pdf/2010.0086v3.pdf",
+]
+notes = "Attach the ResearchGate PDF ghost to the public viXra mirror."

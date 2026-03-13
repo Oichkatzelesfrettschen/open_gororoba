@@ -17,6 +17,7 @@ members = [
     "crates/algebra_analysis",
     "crates/algebra_experimental",
     "crates/provenance_core",
+    "crates/provenance_ops",
     "crates/provenance_store",
     "crates/gororoba_algebra",
     "crates/control_core",
@@ -46,6 +47,7 @@ members = [
     "crates/gororoba_cli_algebra",
     "crates/gororoba_cli_physics",
     "crates/gororoba_cli_data",
+    "crates/gororoba_cli_provenance",
     "crates/gororoba_cli_warp",
     "crates/gororoba_cli_quantum",
     "crates/casimir_core",
@@ -197,6 +199,7 @@ pulldown-cmark = "0.13"       # Markdown parser for provenance extraction
 linkify = "0.10"              # URL extraction from prose without ad hoc regex-only parsing
 url = "2.5"                   # URL parsing for provenance and artifact reconciliation
 reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "gzip", "brotli", "deflate"] } # Standardized blocking HTTP transfer stack for universal recovery routing
+backon = "1.6"                # Exponential backoff helpers for resumable HTTP range downloads
 rusqlite = { version = "0.38", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
 rusqlite_migration = "2.4"    # SQLite schema migrations for provenance_store
 chardetng = "0.1"             # Charset detection for non-UTF8 intake text
@@ -205,6 +208,7 @@ blake3 = "1.8"                # Fast content hashing for ingest fingerprints
 sha2 = "0.10"                 # SHA-256 checksums for data provenance
 ureq = "3"                    # Minimal sync HTTP client for data fetching
 fitsio = { version = "0.21", features = ["default"] } # cfitsio bindings for FITS astronomy file I/O
+quick-xml = "0.38"            # SAX-style XML parser for VOTable and VO Cone Search responses
 flate2 = "1.1"                # Gzip compression/decompression
 zip = "2.2"                   # ZIP archive extraction
 tar = "0.4"                   # Tar archive reading (WMAP/Planck chain extraction)

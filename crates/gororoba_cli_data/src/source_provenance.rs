@@ -2,6 +2,7 @@ use anyhow::{Context, Result, bail};
 use chrono::Utc;
 use csv::ReaderBuilder;
 use regex::Regex;
+use rusqlite::Connection;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap, HashSet},
     fs,
@@ -382,6 +383,11 @@ fn normalize_url(url: &str) -> String {
         return trimmed.to_string();
     };
     let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
+    if host == "archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion"
+        && parsed.path().starts_with("/download/")
+    {
+        return normalize_url(&format!("https://archive.org{}", parsed.path()));
+    }
     if host == "idp.springer.com" {
         for (key, val) in parsed.query_pairs() {
             if key == "redirect_uri" {
@@ -397,9 +403,12 @@ fn normalize_url(url: &str) -> String {
     if parsed.scheme() == "http"
         && matches!(
             host.as_str(),
-            "www.mdpi.com"
+            "arxiv.org"
+                | "export.arxiv.org"
+                | "www.mdpi.com"
                 | "mdpi.com"
                 | "doi.org"
+                | "dx.doi.org"
                 | "www.doi.org"
                 | "www.cambridge.org"
                 | "cambridge.org"
@@ -410,6 +419,12 @@ fn normalize_url(url: &str) -> String {
         )
     {
         let _ = parsed.set_scheme("https");
+    }
+    if host == "dx.doi.org" || host == "www.doi.org" {
+        let _ = parsed.set_host(Some("doi.org"));
+    }
+    if host == "www2.math.ou.edu" {
+        let _ = parsed.set_scheme("http");
     }
     parsed.set_fragment(None);
     if is_non_reference_service_url(&parsed) {
@@ -715,8 +730,23 @@ fn is_citation_locator_url(url: &str) -> bool {
     if host == "core.ac.uk" {
         return path.starts_with("/reader/");
     }
+    if host == "www.numdam.org" || host == "numdam.org" {
+        return path.starts_with("/item/") && !path.ends_with(".pdf");
+    }
     if host == "www.sciencedirect.com" {
         return path.starts_with("/science/article/pii/") || path.starts_with("/journal/");
+    }
+    if host == "soho.nascom.nasa.gov" {
+        return path.starts_with("/data/archive") || path.starts_with("/data/.dash/");
+    }
+    if host == "soho.esac.esa.int" {
+        return path.starts_with("/data/archive/");
+    }
+    if host == "ssa.esac.esa.int" {
+        return path.starts_with("/ssa/") || path.starts_with("/ssa-sl-tap/");
+    }
+    if host == "www.cosmos.esa.int" {
+        return path.starts_with("/web/soho/");
     }
     if host == "journals.aps.org" {
         return path.contains("/abstract/");
@@ -903,7 +933,91 @@ fn collect_link_observations(repo_root: &Path) -> Result<LinkMap> {
             }
         }
     }
+    let sqlite_path = repo_root.join("registry/canonical/control_plane.sqlite3");
+    if sqlite_path.exists() {
+        source_tables.push("registry/canonical/control_plane.sqlite3::download_attempts".to_string());
+        merge_sqlite_download_observations(&sqlite_path, &mut observations)?;
+    }
     Ok((observations, source_tables))
+}
+
+fn merge_sqlite_download_observations(
+    sqlite_path: &Path,
+    observations: &mut HashMap<String, Vec<LinkObservation>>,
+) -> Result<()> {
+    let conn = Connection::open(sqlite_path)
+        .with_context(|| format!("open sqlite {}", sqlite_path.display()))?;
+    let mut stmt = conn.prepare(
+        "SELECT j.requested_url, j.final_url, a.http_code, a.is_pdf, a.succeeded, a.failure_class
+         FROM download_attempts a
+         JOIN download_jobs j ON j.id = a.job_id",
+    )?;
+    let rows = stmt.query_map([], |row| {
+        Ok((
+            row.get::<_, String>(0)?,
+            row.get::<_, Option<String>>(1)?,
+            row.get::<_, Option<i64>>(2)?,
+            row.get::<_, i64>(3)?,
+            row.get::<_, i64>(4)?,
+            row.get::<_, Option<String>>(5)?,
+        ))
+    })?;
+    for row in rows {
+        let (requested_url, final_url, http_code, is_pdf, succeeded, failure_class) = row?;
+        let status = derive_attempt_status(http_code, is_pdf != 0, succeeded != 0, failure_class);
+        let requested_url = normalize_url(&requested_url);
+        if url_re().is_match(&requested_url) {
+            observations
+                .entry(requested_url)
+                .or_default()
+                .push(LinkObservation {
+                    status: status.clone(),
+                });
+        }
+        if let Some(final_url) = final_url {
+            let final_url = normalize_url(&final_url);
+            if url_re().is_match(&final_url) {
+                observations
+                    .entry(final_url)
+                    .or_default()
+                    .push(LinkObservation {
+                        status: status.clone(),
+                    });
+            }
+        }
+    }
+    Ok(())
+}
+
+fn derive_attempt_status(
+    http_code: Option<i64>,
+    is_pdf: bool,
+    succeeded: bool,
+    failure_class: Option<String>,
+) -> String {
+    if let Some(code) = http_code {
+        let code_str = code.to_string();
+        if code_str.starts_with('2') && is_pdf {
+            return "pdf_ok".to_string();
+        }
+        if code_str.starts_with('2') {
+            return "ok_nonpdf".to_string();
+        }
+        return format!("http_{code}");
+    }
+    if succeeded {
+        return if is_pdf {
+            "pdf_ok".to_string()
+        } else {
+            "ok_nonpdf".to_string()
+        };
+    }
+    if let Some(failure_class) = failure_class
+        && !failure_class.trim().is_empty()
+    {
+        return "failed".to_string();
+    }
+    "unknown".to_string()
 }
 
 fn collect_download_map(repo_root: &Path) -> Result<HashMap<String, Vec<String>>> {
@@ -1251,6 +1365,32 @@ fn expand_reference_aliases(url: &str) -> Vec<String> {
                 )));
             }
         }
+        if host == "dr.lib.iastate.edu" {
+            let path = parsed.path().trim_matches('/');
+            let parts = path.split('/').collect::<Vec<_>>();
+            if parts.len() == 3
+                && parts[0] == "bitstreams"
+                && parts[2] == "download"
+            {
+                aliases.push(normalize_url(&format!(
+                    "https://{host}/server/api/core/bitstreams/{}/content",
+                    parts[1]
+                )));
+            }
+        }
+        if host == "www.actaphys.uj.edu.pl" || host == "actaphys.uj.edu.pl" {
+            let path = parsed.path().trim_matches('/');
+            let parts = path.split('/').collect::<Vec<_>>();
+            if parts.len() == 5
+                && parts[0].eq_ignore_ascii_case("R")
+                && parts[4].eq_ignore_ascii_case("pdf")
+            {
+                aliases.push(normalize_url(&format!(
+                    "https://{host}/fulltext?series=Reg&vol={}&page={}",
+                    parts[1], parts[3]
+                )));
+            }
+        }
     }
     dedupe(aliases)
 }
@@ -1586,6 +1726,9 @@ fn extract_candidates_from_text_file(
                 dois[0].clone()
             }
         };
+        if title.eq_ignore_ascii_case("onion-location:") {
+            continue;
+        }
         let mut links = urls.clone();
         links.extend(dois.iter().map(|doi| doi_to_url(doi)));
         out.push(CandidateRecord {
@@ -3233,6 +3376,32 @@ mod tests {
     }
 
     #[test]
+    fn normalize_url_upgrades_dx_doi_and_ou_http_fallbacks() {
+        assert_eq!(
+            normalize_url("http://dx.doi.org/10.1007/BF00653317"),
+            "https://doi.org/10.1007/BF00653317"
+        );
+        assert_eq!(
+            normalize_url("http://arxiv.org/abs/1009.1166"),
+            "https://arxiv.org/abs/1009.1166"
+        );
+        assert_eq!(
+            normalize_url("https://www2.math.ou.edu/~kmartin/quaint/ch3.pdf"),
+            "http://www2.math.ou.edu/~kmartin/quaint/ch3.pdf"
+        );
+    }
+
+    #[test]
+    fn normalize_url_rewrites_archive_onion_aliases_to_public_archive() {
+        assert_eq!(
+            normalize_url(
+                "https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/arxiv-1602.02317/1602.02317.pdf"
+            ),
+            "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
+        );
+    }
+
+    #[test]
     fn canonical_identity_prefers_mdpi_pdf_variant() {
         let urls = vec!["https://www.mdpi.com/2073-8994/16/5/626".to_string()];
         assert_eq!(
@@ -3291,6 +3460,47 @@ mod tests {
         ));
         assert!(is_citation_locator_url(
             "https://www.cambridge.org/core/tdm/tdm-policy.json"
+        ));
+    }
+
+    #[test]
+    fn numdam_item_pages_are_citation_locators_but_pdfs_are_not() {
+        assert!(is_citation_locator_url(
+            "https://www.numdam.org/item/AIHPA_1965__2_4_283_0/"
+        ));
+        assert!(!is_citation_locator_url(
+            "https://www.numdam.org/item/JMPA_1923_9_2__281_0.pdf"
+        ));
+    }
+
+    #[test]
+    fn soho_archive_portals_are_citation_locators() {
+        assert!(is_citation_locator_url(
+            "https://soho.nascom.nasa.gov/data/archive/"
+        ));
+        assert!(is_citation_locator_url(
+            "https://ssa.esac.esa.int/ssa-sl-tap/tap/capabilities"
+        ));
+        assert!(is_citation_locator_url(
+            "https://www.cosmos.esa.int/web/soho/mission-long-files"
+        ));
+    }
+
+    #[test]
+    fn actaphys_r_pdf_surface_expands_to_fulltext_alias() {
+        let aliases = expand_reference_aliases("https://www.actaphys.uj.edu.pl/R/27/8/1849/pdf");
+        assert!(aliases.contains(
+            &"https://www.actaphys.uj.edu.pl/fulltext?series=Reg&vol=27&page=1849".to_string()
+        ));
+    }
+
+    #[test]
+    fn iastate_download_surface_expands_to_api_content_alias() {
+        let aliases = expand_reference_aliases(
+            "https://dr.lib.iastate.edu/bitstreams/79b32677-687d-4469-979a-df3da9fcf6db/download",
+        );
+        assert!(aliases.contains(
+            &"https://dr.lib.iastate.edu/server/api/core/bitstreams/79b32677-687d-4469-979a-df3da9fcf6db/content".to_string()
         ));
     }
 }

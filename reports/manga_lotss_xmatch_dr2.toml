@@ -1,0 +1,47 @@
+generated_at_utc = "2026-03-13T18:42:17.268261220+00:00"
+release = "DR2"
+input_format = "fits"
+input_path = "data/external/radio_surveys/lotss_dr2.fits"
+manga_selection_path = "data/external/manga/dapall_selection.csv"
+manga_drpall_path = "data/external/manga/drpall-v3_1_1.fits"
+output_path = "data/external/manga/manga_lotss_xmatch_dr2.csv"
+report_path = "reports/manga_lotss_xmatch_dr2.toml"
+radius_arcsec = 3.0
+allow_partial = false
+lotss_source_count_raw = 4396228
+lotss_source_count_effective = 4396228
+manga_target_count = 10262
+detected_target_count = 2144
+quiet_target_count = 8118
+detection_fraction = 0.2089261352562853
+flux_min_mjy = 0.2996876537799835
+flux_median_mjy = 4.668616771697998
+flux_max_mjy = 3249.989990234375
+
+[[declination_bands]]
+band = "<27"
+total = 4220
+detected = 126
+quiet = 4094
+detection_fraction = 0.02985781990521327
+
+[[declination_bands]]
+band = "27-30"
+total = 1063
+detected = 222
+quiet = 841
+detection_fraction = 0.20884289746001883
+
+[[declination_bands]]
+band = "30-40"
+total = 1596
+detected = 610
+quiet = 986
+detection_fraction = 0.38220551378446116
+
+[[declination_bands]]
+band = ">=40"
+total = 3383
+detected = 1186
+quiet = 2197
+detection_fraction = 0.3505764114691103

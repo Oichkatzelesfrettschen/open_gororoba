@@ -1,0 +1,48 @@
+generated_at_utc = "2026-03-13T18:01:01.830735161+00:00"
+manga_selection_path = "data/external/manga/dapall_selection.csv"
+manga_drpall_path = "data/external/manga/drpall-v3_1_1.fits"
+selection_row_count = 10262
+unique_plateifu_count = 10262
+duplicate_plateifu_count = 0
+matched_target_count = 10262
+missing_plateifu_count = 0
+missing_plateifus = []
+ra_min_deg = 0.00880833846515
+ra_max_deg = 359.858576025
+dec_min_deg = -9.3024261469
+dec_max_deg = 65.2897352914
+
+[[declination_bands]]
+band = "<27"
+count = 4220
+fraction = 0.4112258818943676
+
+[[declination_bands]]
+band = "27-30"
+count = 1063
+fraction = 0.1035860456051452
+
+[[declination_bands]]
+band = "30-40"
+count = 1596
+fraction = 0.15552523874488403
+
+[[declination_bands]]
+band = ">=40"
+count = 3383
+fraction = 0.3296628337556032
+
+[[coverage_ceiling]]
+threshold = ">= 27"
+count = 6042
+fraction = 0.5887741181056324
+
+[[coverage_ceiling]]
+threshold = ">= 30"
+count = 4979
+fraction = 0.48518807250048723
+
+[[coverage_ceiling]]
+threshold = ">= 40"
+count = 3383
+fraction = 0.3296628337556032

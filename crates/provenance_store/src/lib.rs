@@ -3365,3 +3365,200 @@ fn write_text(path: &Path, body: &str) -> Result<()> {
     }
     fs::write(path, format!("{body}\n")).with_context(|| format!("write {}", path.display()))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    struct TestWorkspace {
+        root: PathBuf,
+        claims: PathBuf,
+        insights: PathBuf,
+        experiments: PathBuf,
+        binaries: PathBuf,
+        rocq_project: PathBuf,
+        db: PathBuf,
+    }
+
+    impl Drop for TestWorkspace {
+        fn drop(&mut self) {
+            let _ = fs::remove_dir_all(&self.root);
+        }
+    }
+
+    #[test]
+    fn control_plane_compat_text_renders_from_db_backed_rows() -> Result<()> {
+        let fixture = make_test_workspace("compat_text")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            &fixture.claims,
+            &fixture.insights,
+            &fixture.experiments,
+            &fixture.binaries,
+            &fixture.rocq_project,
+        )?;
+
+        let claims = store.control_plane_compat_text(ControlPlaneCompatKind::Claims)?;
+        let experiments = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        let binaries = store.control_plane_compat_text(ControlPlaneCompatKind::Binaries)?;
+
+        assert!(claims.contains("id = \"C-001\""));
+        assert!(experiments.contains("experiment_count = 1"));
+        assert!(experiments.contains("id = \"E-001\""));
+        assert!(binaries.contains("name = \"mini-bin\""));
+        Ok(())
+    }
+
+    #[test]
+    fn replace_control_plane_experiments_from_registry_text_replaces_rows() -> Result<()> {
+        let fixture = make_test_workspace("replace_experiments")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            &fixture.claims,
+            &fixture.insights,
+            &fixture.experiments,
+            &fixture.binaries,
+            &fixture.rocq_project,
+        )?;
+
+        let replacement = r#"
+[experiments]
+authoritative = true
+status_allowlist = ["active", "planned", "blocked", "deprecated"]
+
+[[experiment]]
+id = "E-002"
+title = "Replacement experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+"#;
+
+        let replaced = store.replace_control_plane_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            replacement,
+        )?;
+        assert_eq!(replaced, 1);
+
+        let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        assert!(rendered.contains("id = \"E-002\""));
+        assert!(!rendered.contains("id = \"E-001\""));
+        assert!(rendered.contains("experiment_count = 1"));
+        Ok(())
+    }
+
+    fn make_test_workspace(label: &str) -> Result<TestWorkspace> {
+        let unique = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("time")
+            .as_nanos();
+        let root = std::env::temp_dir().join(format!(
+            "gororoba_provenance_store_{label}_{}_{}",
+            std::process::id(),
+            unique
+        ));
+        fs::create_dir_all(&root)?;
+
+        write_text(
+            &root.join("Cargo.toml"),
+            r#"[workspace]
+resolver = "3"
+members = ["crates/test_cli"]
+"#,
+        )?;
+        write_text(
+            &root.join("crates/test_cli/Cargo.toml"),
+            r#"[package]
+name = "test_cli"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "mini-bin"
+path = "src/main.rs"
+
+[[bench]]
+name = "mini-bench"
+path = "benches/mini_bench.rs"
+"#,
+        )?;
+        write_text(
+            &root.join("crates/test_cli/src/main.rs"),
+            "fn main() { println!(\"mini-bin\"); }",
+        )?;
+        write_text(
+            &root.join("crates/test_cli/benches/mini_bench.rs"),
+            "fn main() {}",
+        )?;
+
+        let claims = root.join("registry/claims.toml");
+        let insights = root.join("registry/insights.toml");
+        let experiments = root.join("registry/experiments.toml");
+        let binaries = root.join("registry/binaries.toml");
+        let rocq_project = root.join("proofs/_RocqProject");
+        let proof_file = root.join("proofs/verified/C001_Test.v");
+        let db = root.join("registry/canonical/control_plane.sqlite3");
+
+        write_text(
+            &claims,
+            r#"[[claim]]
+id = "C-001"
+statement = "Mini claim"
+status = "Verified"
+where_stated = "`crates/test_cli/src/main.rs`"
+last_verified = "2026-03-13"
+formal_proof = "proofs/verified/C001_Test.v"
+status_note = "Mini proof"
+"#,
+        )?;
+        write_text(
+            &insights,
+            r#"[[insight]]
+id = "I-001"
+title = "Mini insight"
+status = "verified"
+claims = ["C-001"]
+"#,
+        )?;
+        write_text(
+            &experiments,
+            r#"[experiments]
+authoritative = true
+status_allowlist = ["active", "planned", "blocked", "deprecated"]
+
+[[experiment]]
+id = "E-001"
+title = "Mini experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+deterministic = true
+"#,
+        )?;
+        write_text(
+            &binaries,
+            r#"[[binary]]
+name = "mini-bin"
+crate = "test_cli"
+description = "Mini binary"
+experiment = "E-001"
+"#,
+        )?;
+        write_text(&rocq_project, "verified/C001_Test.v")?;
+        write_text(&proof_file, "(* mini proof placeholder *)")?;
+
+        Ok(TestWorkspace {
+            root,
+            claims,
+            insights,
+            experiments,
+            binaries,
+            rocq_project,
+            db,
+        })
+    }
+}

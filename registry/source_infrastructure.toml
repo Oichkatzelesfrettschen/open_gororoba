@@ -10,13 +10,13 @@ best_practice = "single authoritative master, deterministic generated lanes, exp
 best_practice_sources = ["https://www.w3.org/TR/prov-overview/", "https://www.nature.com/articles/sdata201618", "https://doi.org/10.25490/a97f-egyk", "https://schema.datacite.org/meta/kernel-4.5/", "https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files", "https://openlineage.io/docs/"]
 master_registry = "registry/artifact_source_of_truth.toml"
 lane_count = 4
-total_artifact_count = 3045
+total_artifact_count = 3042
 
 [[lane]]
 name = "datasets"
 description = "Numerical or tabular research datasets and machine-readable data artifacts."
 path = "registry/source_lanes/datasets.toml"
-artifact_count = 1224
+artifact_count = 1234
 
 [[lane]]
 name = "slides_artifacts"
@@ -28,10 +28,10 @@ artifact_count = 1
 name = "papers_pdf"
 description = "Paper-oriented references with PDF documents or PDF mirrors."
 path = "registry/source_lanes/papers_pdf.toml"
-artifact_count = 325
+artifact_count = 322
 
 [[lane]]
 name = "web_references"
 description = "Reference URLs without locally identified PDF/data/artifact files."
 path = "registry/source_lanes/web_references.toml"
-artifact_count = 1495
+artifact_count = 1485

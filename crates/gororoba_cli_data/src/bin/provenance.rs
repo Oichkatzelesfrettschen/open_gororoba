@@ -1,6 +1,6 @@
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand, ValueEnum};
-use gororoba_cli_data::source_provenance;
+use provenance_ops::source_provenance;
 use provenance_core::{
     ArtifactQueryResult, BinaryRecord, ClaimRecord, ControlPlaneCounts, DoctorReport,
     DocumentQueryResult, DownloadCampaignQueryResult, DownloadQueryResult, ExperimentRecord,
