@@ -1,23 +1,24 @@
-//! Migrate insights from INSIGHTS.md (markdown sections) to TOML.
+//! Legacy bootstrap: migrate insights from INSIGHTS.md (markdown sections) to TOML.
 //!
 //! Parses `## I-NNN: Title` sections from docs/INSIGHTS.md and generates
-//! `registry/insights.toml`.  Designed for one-shot conversion with future
-//! re-runs producing identical output.
+//! `registry/insights.toml`. This is a recovery/import utility only; the
+//! canonical operational source of truth for insights now lives in
+//! registry/canonical/control_plane.sqlite3.
 
 use std::path::PathBuf;
 
 use clap::Parser;
 use regex::Regex;
 
-/// Migrate insights from markdown INSIGHTS.md to TOML registry format.
+/// Legacy bootstrap utility for migrating INSIGHTS.md into TOML.
 #[derive(Parser)]
 #[command(name = "migrate-insights")]
 struct Args {
-    /// Path to INSIGHTS.md
+    /// Path to the legacy INSIGHTS.md compatibility mirror.
     #[arg(long, default_value = "docs/INSIGHTS.md")]
     input: PathBuf,
 
-    /// Output TOML file
+    /// Output TOML compatibility file.
     #[arg(long, default_value = "registry/insights.toml")]
     output: PathBuf,
 }

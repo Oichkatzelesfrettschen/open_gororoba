@@ -407,6 +407,22 @@ path = "src/bin/lie_jordan_halo_analysis.rs"
 name = "harmonic-halo-signal-analysis"
 path = "src/bin/harmonic_halo_signal_analysis.rs"
 
+[[bin]]
+name = "harmonic-halo-galaxy-phase"
+path = "src/bin/harmonic_halo_galaxy_phase.rs"
+
+[[bin]]
+name = "harmonic-halo-injection"
+path = "src/bin/harmonic_halo_injection.rs"
+
+[[bin]]
+name = "harmonic-halo-visualize"
+path = "src/bin/harmonic_halo_visualize.rs"
+
+[[bin]]
+name = "hi-cube-rotcurve-extractor"
+path = "src/bin/hi_cube_rotcurve_extractor.rs"
+
 # ---- Euclid / Morphology (2) ----
 
 [[bin]]

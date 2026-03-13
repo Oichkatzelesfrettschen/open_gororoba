@@ -483,6 +483,11 @@ crate = "gororoba_cli"
 description = "Rust-native web app control plane for thesis pipelines, live gates, and benchmark snapshots"
 
 [[binary]]
+name = "gororoba_cli_quantum"
+crate = "gororoba_cli_quantum"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_quantum; registry metadata pending."
+
+[[binary]]
 name = "governance-verify"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
@@ -515,14 +520,12 @@ description = "Gravitational wave merger tree dendrogram analysis"
 [[binary]]
 name = "harmonic-halo-galaxy-phase"
 crate = "gororoba_cli_physics"
-description = "Galaxy-ensemble Rayleigh phase coherence test. Computes per-galaxy DFT phases at CD-ZD wavenumbers across N=6992 MaNGA galaxies, tests Rayleigh R statistic. Fixes N=19 limitation of x-bin jackknife (E-192)."
-experiment = "E-194"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "harmonic-halo-injection"
 crate = "gororoba_cli_physics"
-description = "ZD signal injection-recovery sweep. Injects predicted CD-ZD modulation at alpha_zd in {0, 0.001, 0.002, 0.004, 0.008, 0.016} and measures recovery ratio. Validates pipeline sensitivity at SKA 2030 design floor."
-experiment = "E-197"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "harmonic-halo-mw"
@@ -556,8 +559,7 @@ description = "Workspace binary discovered from crates/gororoba_cli_physics/Carg
 [[binary]]
 name = "harmonic-halo-visualize"
 crate = "gororoba_cli_physics"
-description = "Publication-ready PGFPlots visualization of E-183/E-192 tripartite analysis: STFT spectrogram, AC-coupled derivative DFT, stacked profile with annotated baryonic systematics."
-experiment = "E-195"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "harper-chern"
@@ -592,8 +594,7 @@ description = "Re-download HEPData CSV tables for managed lanes by resolving per
 [[binary]]
 name = "hi-cube-rotcurve-extractor"
 crate = "gororoba_cli_physics"
-description = "THINGS HI 21cm FITS cube rotation curve extractor. Moment-1 velocity field, elliptical ring averaging, 3-sigma clipping. Reaches x > 10 r_s vs MaNGA optical truncation at x~1.36 r_s."
-experiment = "E-193"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "homotopy-viscosity-equivalence"
@@ -687,6 +688,11 @@ description = "Multi-precision LBM comparison (BF16/FP32/FP64-GPU/FP64-CPU): run
 experiment = "E-069"
 
 [[binary]]
+name = "lbm_vulkan"
+crate = "lbm_vulkan"
+description = "Workspace binary discovered from cargo metadata in crate lbm_vulkan; registry metadata pending."
+
+[[binary]]
 name = "lhc-2025-qgp-synthesis"
 crate = "gororoba_cli"
 description = "QGP imbalance bridge synthesis using LHC 2025 collision data with spin tomography cross-validation"
@@ -772,6 +778,11 @@ description = "Legacy/bootstrap import: migrate insights from markdown INSIGHTS.
 name = "modular-chaos"
 crate = "gororoba_cli"
 description = "Modular chaos simulation: discrete phase scrambling and Fourier resonance, ported from Python"
+
+[[binary]]
+name = "monograph_synthesis"
+crate = "docpipe"
+description = "Workspace binary discovered from cargo metadata in crate docpipe; registry metadata pending."
 
 [[binary]]
 name = "moonshine-closure-test"
@@ -1308,6 +1319,11 @@ description = "Workspace binary discovered from crates/gororoba_cli_algebra/Carg
 name = "x87-strategy-bench"
 crate = "gororoba_cli_algebra"
 description = "Pinned-physical-core benchmark lane for x87 FP80, AVX2/FMA, and AVX2-plus-x87 hybrid reductions over accumulation-heavy kernels."
+
+[[binary]]
+name = "x87_bench"
+crate = "algebra_analysis"
+description = "Workspace execution target reserved for the E-188/E-189 x87 benchmark lane. Use `cargo bench -p algebra_analysis --bench x87_bench` for the real Criterion runs."
 
 [[binary]]
 name = "zd-crystal-bands"

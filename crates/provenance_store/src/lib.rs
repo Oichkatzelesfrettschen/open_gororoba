@@ -17,6 +17,7 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
     path::{Path, PathBuf},
+    process::Command,
 };
 use toml::Value;
 
@@ -2611,9 +2612,9 @@ fn merge_workspace_binaries(
     }
 
     for binary in registry_binaries {
-        let entry = merged
-            .entry(binary.name.clone())
-            .or_insert_with(|| binary.clone());
+        let Some(entry) = merged.get_mut(&binary.name) else {
+            continue;
+        };
         if !binary.crate_name.trim().is_empty() {
             entry.crate_name = binary.crate_name.clone();
         }
@@ -2634,6 +2635,78 @@ fn merge_workspace_binaries(
 }
 
 fn load_workspace_binary_records(repo_root: &Path) -> Result<Vec<BinaryRecord>> {
+    match load_workspace_binary_records_via_cargo_metadata(repo_root) {
+        Ok(records) => return Ok(records),
+        Err(err) => {
+            eprintln!(
+                "WARNING: cargo metadata binary inventory failed (falling back to manifest walk): {err}"
+            );
+        }
+    }
+    load_workspace_binary_records_from_manifests(repo_root)
+}
+
+fn load_workspace_binary_records_via_cargo_metadata(repo_root: &Path) -> Result<Vec<BinaryRecord>> {
+    #[derive(Deserialize)]
+    struct MetadataTarget {
+        name: String,
+        #[serde(default)]
+        kind: Vec<String>,
+    }
+
+    #[derive(Deserialize)]
+    struct MetadataPackage {
+        name: String,
+        #[serde(default)]
+        targets: Vec<MetadataTarget>,
+    }
+
+    #[derive(Deserialize)]
+    struct MetadataRoot {
+        #[serde(default)]
+        packages: Vec<MetadataPackage>,
+    }
+
+    let output = Command::new("cargo")
+        .args(["metadata", "--no-deps", "--format-version", "1"])
+        .current_dir(repo_root)
+        .output()
+        .with_context(|| format!("run cargo metadata from {}", repo_root.display()))?;
+    if !output.status.success() {
+        bail!(
+            "cargo metadata failed with status {}: {}",
+            output.status,
+            String::from_utf8_lossy(&output.stderr).trim()
+        );
+    }
+    let metadata: MetadataRoot = serde_json::from_slice(&output.stdout)
+        .context("parse cargo metadata JSON for workspace binaries")?;
+    let mut out = BTreeMap::new();
+    for package in metadata.packages {
+        for target in package.targets {
+            if !target.kind.iter().any(|kind| kind == "bin") {
+                continue;
+            }
+            let bin_name = target.name.trim();
+            if bin_name.is_empty() {
+                continue;
+            }
+            out.entry(bin_name.to_string()).or_insert(BinaryRecord {
+                name: bin_name.to_string(),
+                crate_name: package.name.clone(),
+                description: format!(
+                    "Workspace binary discovered from cargo metadata in crate {}; registry metadata pending.",
+                    package.name
+                ),
+                experiment: None,
+                source: "cargo_metadata".to_string(),
+            });
+        }
+    }
+    Ok(out.into_values().collect())
+}
+
+fn load_workspace_binary_records_from_manifests(repo_root: &Path) -> Result<Vec<BinaryRecord>> {
     let root_manifest_path = repo_root.join("Cargo.toml");
     let root_manifest: WorkspaceManifest = toml::from_str(&load_toml_text(&root_manifest_path)?)
         .with_context(|| format!("parse {}", root_manifest_path.display()))?;
@@ -3111,10 +3184,10 @@ fn render_experiments_registry(header_toml: &str, experiments: &[ExperimentRecor
         "# Compatibility export lane: experiments".to_string(),
         String::new(),
     ];
-    let header = header_toml.trim();
-    if !header.is_empty() {
+    let header = rebuild_experiments_header_toml(header_toml, experiments);
+    if !header.trim().is_empty() {
         lines.push("[experiments]".to_string());
-        lines.push(header.to_string());
+        lines.push(header);
         lines.push(String::new());
     }
     for row in experiments {
@@ -3123,6 +3196,69 @@ fn render_experiments_registry(header_toml: &str, experiments: &[ExperimentRecor
         lines.push(String::new());
     }
     lines.join("\n")
+}
+
+fn rebuild_experiments_header_toml(header_toml: &str, experiments: &[ExperimentRecord]) -> String {
+    let mut table = header_toml
+        .trim()
+        .parse::<Value>()
+        .ok()
+        .and_then(|value| value.as_table().cloned())
+        .unwrap_or_default();
+    table.insert("authoritative".to_string(), Value::Boolean(true));
+    table.insert(
+        "experiment_count".to_string(),
+        Value::Integer(experiments.len() as i64),
+    );
+    table.insert(
+        "deterministic_count".to_string(),
+        Value::Integer(
+            experiments
+                .iter()
+                .filter(|row| experiment_row_flag(row, "deterministic").unwrap_or(false))
+                .count() as i64,
+        ),
+    );
+    table.insert(
+        "gpu_count".to_string(),
+        Value::Integer(
+            experiments
+                .iter()
+                .filter(|row| experiment_row_flag(row, "gpu").unwrap_or(false))
+                .count() as i64,
+        ),
+    );
+    table.insert(
+        "seeded_count".to_string(),
+        Value::Integer(
+            experiments
+                .iter()
+                .filter(|row| experiment_row_has_seed(row))
+                .count() as i64,
+        ),
+    );
+    toml::to_string(&table)
+        .unwrap_or_default()
+        .trim()
+        .to_string()
+}
+
+fn experiment_row_table(row: &ExperimentRecord) -> Option<toml::value::Table> {
+    row.compat_toml_text
+        .trim()
+        .parse::<Value>()
+        .ok()
+        .and_then(|value| value.as_table().cloned())
+}
+
+fn experiment_row_flag(row: &ExperimentRecord, key: &str) -> Option<bool> {
+    experiment_row_table(row).and_then(|table| table.get(key).and_then(Value::as_bool))
+}
+
+fn experiment_row_has_seed(row: &ExperimentRecord) -> bool {
+    experiment_row_table(row)
+        .and_then(|table| table.get("seed").cloned())
+        .is_some()
 }
 
 fn render_array_of_tables_registry(

@@ -301,6 +301,23 @@ struct ExperimentEntry {
     reproducibility_class: Option<String>,
 }
 
+impl ExperimentEntry {
+    fn execution_target_required(&self) -> bool {
+        let status = self
+            .status
+            .as_deref()
+            .or(self.status_token.as_deref())
+            .unwrap_or("")
+            .trim()
+            .to_ascii_lowercase();
+        !matches!(status.as_str(), "planned" | "blocked" | "deprecated")
+    }
+
+    fn claim_refs_required(&self) -> bool {
+        self.execution_target_required()
+    }
+}
+
 fn load_control_plane_registry<T>(
     store: &mut ProvenanceStore,
     kind: ControlPlaneCompatKind,
@@ -533,9 +550,73 @@ fn report_phase_timing(enabled: bool, label: &str, started_at: Instant) {
 fn load_workspace_execution_inventory(
     cargo_toml: &Path,
 ) -> Result<WorkspaceExecutionInventory, String> {
+    match load_workspace_execution_inventory_via_cargo_metadata(cargo_toml) {
+        Ok(inventory) => return Ok(inventory),
+        Err(err) => {
+            eprintln!(
+                "WARNING: cargo metadata execution inventory failed (falling back to manifest walk): {err}"
+            );
+        }
+    }
     let mut visited = HashSet::new();
     let mut inventory = WorkspaceExecutionInventory::default();
     load_workspace_execution_inventory_inner(cargo_toml, &mut visited, &mut inventory)?;
+    Ok(inventory)
+}
+
+fn load_workspace_execution_inventory_via_cargo_metadata(
+    cargo_toml: &Path,
+) -> Result<WorkspaceExecutionInventory, String> {
+    #[derive(serde::Deserialize)]
+    struct MetadataTarget {
+        name: String,
+        #[serde(default)]
+        kind: Vec<String>,
+    }
+
+    #[derive(serde::Deserialize)]
+    struct MetadataPackage {
+        #[serde(default)]
+        targets: Vec<MetadataTarget>,
+    }
+
+    #[derive(serde::Deserialize)]
+    struct MetadataRoot {
+        #[serde(default)]
+        packages: Vec<MetadataPackage>,
+    }
+
+    let manifest_path = cargo_toml
+        .canonicalize()
+        .map_err(|err| format!("{} canonicalize failure: {err}", cargo_toml.display()))?;
+    let repo_root = manifest_path
+        .parent()
+        .ok_or_else(|| format!("{} has no parent directory", manifest_path.display()))?;
+    let output = std::process::Command::new("cargo")
+        .args(["metadata", "--no-deps", "--format-version", "1"])
+        .current_dir(repo_root)
+        .output()
+        .map_err(|err| format!("run cargo metadata from {}: {err}", repo_root.display()))?;
+    if !output.status.success() {
+        return Err(format!(
+            "cargo metadata failed with status {}: {}",
+            output.status,
+            String::from_utf8_lossy(&output.stderr).trim()
+        ));
+    }
+    let metadata: MetadataRoot = serde_json::from_slice(&output.stdout)
+        .map_err(|err| format!("parse cargo metadata JSON: {err}"))?;
+    let mut inventory = WorkspaceExecutionInventory::default();
+    for package in metadata.packages {
+        for target in package.targets {
+            if target.kind.iter().any(|kind| kind == "bin") {
+                inventory.bins.insert(target.name.clone());
+            }
+            if target.kind.iter().any(|kind| kind == "bench") {
+                inventory.benches.insert(target.name.clone());
+            }
+        }
+    }
     Ok(inventory)
 }
 
@@ -1224,7 +1305,7 @@ fn main() {
     let experiment_ids: HashSet<String>;
     let experiment_count: usize;
     let complete_experiment_count: usize;
-    let binary_names_from_experiments: HashSet<String>;
+    let binary_names_from_experiments: Vec<(String, String)>;
 
     let experiments_started_at = Instant::now();
     let experiments_registry = if let Some(store) = canonical_store.as_mut() {
@@ -1273,21 +1354,28 @@ fn main() {
         binary_names_from_experiments = registry
             .experiment
             .iter()
-            .filter_map(|e| e.binary.as_deref())
-            .map(str::trim)
-            .filter(|name| !name.is_empty())
-            .map(str::to_string)
+            .filter(|entry| entry.execution_target_required())
+            .filter_map(|entry| {
+                let binary = entry.binary.as_deref()?.trim();
+                if binary.is_empty() {
+                    return None;
+                }
+                Some((entry.id.clone(), binary.to_string()))
+            })
             .collect();
 
         // Check cross-references
         for exp in &registry.experiment {
+            if !exp.claim_refs_required() {
+                continue;
+            }
             for claim_ref in &exp.claims {
                 if !claim_ids.contains(claim_ref) {
                     eprintln!(
-                        "WARNING: experiment {} references claim {} (may be range placeholder)",
+                        "ERROR: experiment {} references missing active claim {}",
                         exp.id, claim_ref
                     );
-                    warnings += 1;
+                    errors += 1;
                 }
             }
         }
@@ -1299,7 +1387,7 @@ fn main() {
         experiment_ids = HashSet::new();
         experiment_count = 0;
         complete_experiment_count = 0;
-        binary_names_from_experiments = HashSet::new();
+        binary_names_from_experiments = Vec::new();
     }
     report_phase_timing(args.timings, "experiments", experiments_started_at);
 
@@ -1378,13 +1466,13 @@ fn main() {
             .collect::<HashSet<_>>();
 
         // Check experiment->binary cross-references
-        for exp_binary in &binary_names_from_experiments {
+        for (experiment_id, exp_binary) in &binary_names_from_experiments {
             if !known_execution_targets.contains(exp_binary) {
                 eprintln!(
-                    "WARNING: experiment references execution target \"{}\" not in binaries.toml or workspace benches",
-                    exp_binary
+                    "ERROR: experiment {} references required execution target \"{}\" not in binaries.toml or workspace benches",
+                    experiment_id, exp_binary
                 );
-                warnings += 1;
+                errors += 1;
             }
         }
 
