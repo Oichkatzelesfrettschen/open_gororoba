@@ -245,19 +245,19 @@ conversion_hint = "Edit the canonical source (registry/docs_root_narratives.toml
 id = "MOWN-0027"
 path = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
 scope = "docs"
-canonical_toml = "registry/experiments_narrative.toml"
+canonical_toml = "registry/canonical/control_plane.sqlite3"
 owner_group = "general"
 requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/experiments_narrative.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+conversion_hint = "Edit the canonical source (registry/canonical/control_plane.sqlite3) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
 id = "MOWN-0028"
 path = "docs/INSIGHTS.md"
 scope = "docs"
-canonical_toml = "registry/insights_narrative.toml"
+canonical_toml = "registry/canonical/control_plane.sqlite3"
 owner_group = "general"
 requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/insights_narrative.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+conversion_hint = "Edit the canonical source (registry/canonical/control_plane.sqlite3) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
 id = "MOWN-0029"
