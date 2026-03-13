@@ -1,0 +1,50 @@
+[report]
+title = "Jacobi quantized_shell_permutation n=72 double-double samply dev noinline"
+date = "2026-03-12"
+status = "implemented"
+status_token = "IMPLEMENTED"
+summary = "A dedicated profiling-only DD mode now uses the algebra_analysis feature profile-dd-hotspots to apply inline(never) to the DD solver and core DD arithmetic helpers. The resulting dev-profile presymbolicated samply capture first broke the DD lane down below the solver entrypoint, then after an explicit phase split and a direct hi/lo pivot comparator, it showed that pivot scanning rather than rotation math is the first DD runtime target on quantized_shell_permutation n=72."
+
+[artifacts]
+profile = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_dev.json.gz"
+sidecar = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_dev.json.syms.json"
+compare_csv = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline.csv"
+compare_markdown = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline.md"
+
+[implementation]
+feature = "profile-dd-hotspots"
+touchpoints = [
+  "crates/algebra_analysis/Cargo.toml",
+  "crates/algebra_analysis/src/dd_jacobi.rs",
+  "crates/algebra_analysis/src/double_double.rs",
+  "crates/gororoba_cli_algebra/Cargo.toml",
+  "Makefile",
+]
+
+[findings]
+solver_entry = "algebra_analysis::dd_jacobi::symmetric_eigenvalues_dd"
+helper_hotspots = [
+  "algebra_analysis::dd_jacobi::dd_find_pivot",
+  "algebra_analysis::dd_jacobi::dd_apply_plane_rotation",
+  "algebra_analysis::double_double::two_sum",
+  "<algebra_analysis::double_double::DD>::abs",
+  "<algebra_analysis::double_double::DD>::add",
+  "<algebra_analysis::double_double::DD>::mul",
+  "algebra_analysis::dd_jacobi::dd_rotation",
+  "<algebra_analysis::double_double::DD>::sqrt",
+  "<algebra_analysis::double_double::DD>::div",
+  "algebra_analysis::double_double::two_product",
+  "algebra_analysis::dd_jacobi::dd_diagonal_update",
+]
+phase_takeaway = "The first phase-level split says the DD bottleneck is pivot scanning, not rotation math. In the current n=72 quantized_shell_permutation profiling capture, dd_find_pivot carries about 78.28% inclusive samples, while dd_apply_plane_rotation carries about 16.50% and dd_rotation itself about 4.23%."
+caveat = "One backend-core frame for symmetric_eigenvalues_dd_flat still carries a Rust core macro file path rather than a repo-local file path, so the comparer now trusts backend-specific function names as well as file paths."
+before_after_takeaway = "After replacing method-heavy pivot magnitude extraction with a direct hi/lo comparator, the profiled DD median for quantized_shell_permutation n=72 dropped from about 98.48 ms to about 46.59 ms with the same reported max_abs_err of 1.591616e-12. The refreshed profile then reduced dd_find_pivot from about 78.28% inclusive samples to about 50.96%, while dd_apply_plane_rotation rose to about 36.89%."
+
+[validated_command]
+name = "jacobi_shell_samply_dd_dev_noinline"
+status = "passed"
+command = "orig=$(cat /proc/sys/kernel/perf_event_paranoid); sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev FEATURES=profile-dd-hotspots PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=double_double SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 double_double samply dev noinline'; rc=$?; sudo -A sh -c \"echo $orig > /proc/sys/kernel/perf_event_paranoid\"; exit $rc"
+notes = "The original ad hoc shell wrapper used zsh's reserved status variable name; this recorded command uses rc instead and preserves/restores the previous perf_event_paranoid value explicitly."
+
+[next_decision]
+summary = "The less-inlined DD profiling build is now strong enough for helper-level hotspot attribution, and the first optimization decision has already been exercised successfully: pivot-scan work moved first, improved profiled runtime materially, and left the next DD runtime target as the plane-rotation/update phase."

@@ -1,0 +1,810 @@
+# AUTO-GENERATED EXECUTION BACKLOG SNAPSHOT
+# Context: SQLite-first control-plane migration after claims/insights/experiments/binaries/theorems cutover.
+
+[report]
+id = "sqlite-control-plane-next-100-2026-03-13"
+title = "SQLite Control Plane Next 100 Items"
+generated_on = "2026-03-13"
+scope = "Canonical SQLite control plane, generated compatibility exports, registry performance, docs surfaces, and legacy markdown/TOML residue cleanup."
+status = "active"
+source_of_truth = "registry/canonical/control_plane.sqlite3"
+
+[[item]]
+id = "N100-001"
+priority = "P0"
+status = "done"
+area = "control_plane"
+title = "Make generate-latex SQLite-first"
+notes = "Implemented via provenance_store compat-text accessor plus DB-first loading."
+
+[[item]]
+id = "N100-002"
+priority = "P0"
+status = "done"
+area = "control_plane"
+title = "Make execution-planning SQLite-first for migrated lanes"
+notes = "Claims, insights, experiments, and binaries now load from the canonical DB path first."
+
+[[item]]
+id = "N100-003"
+priority = "P0"
+status = "done"
+area = "control_plane"
+title = "Make integrity-resolution SQLite-first for migrated lanes"
+notes = "Claims, insights, and experiments now load from SQLite-first helpers."
+
+[[item]]
+id = "N100-004"
+priority = "P0"
+status = "done"
+area = "control_plane"
+title = "Make governance-verify crossrefs SQLite-first for migrated lanes"
+notes = "Crossrefs, dataset-label aliases, and external-source operational contracts now use DB-backed migrated-lane reads."
+
+[[item]]
+id = "N100-005"
+priority = "P0"
+status = "done"
+area = "control_plane"
+title = "Sync execution-planning experiments output back into the canonical DB"
+notes = "Prevents registry/experiments.toml from drifting stale relative to the control plane after planner regeneration."
+
+[[item]]
+id = "N100-006"
+priority = "P0"
+status = "done"
+area = "claims"
+title = "Restore proof-backed claims C-1363 and C-1364 into registry/claims.toml"
+notes = "Theorem exports now link to real claim IDs instead of dangling proof-only identifiers."
+
+[[item]]
+id = "N100-007"
+priority = "P0"
+status = "done"
+area = "planning"
+title = "Teach execution-planning to recognize workspace bench targets"
+notes = "x87_bench is now treated as a valid execution target rather than a missing CLI binary."
+
+[[item]]
+id = "N100-008"
+priority = "P0"
+status = "done"
+area = "registry_check"
+title = "Refactor registry-check to use SQLite counts before raw TOML counting"
+notes = "Registry-check now opens the canonical DB once, loads migrated lanes from DB-rendered compatibility text, and validates DB counts against the exported compatibility surface."
+
+[[item]]
+id = "N100-009"
+priority = "P0"
+status = "done"
+area = "registry_check"
+title = "Split registry-check into source invariants versus generated-export freshness"
+notes = "Added compat-export-policy on/off so registry-check can run source-invariants-only validation without requiring compatibility export freshness."
+
+[[item]]
+id = "N100-010"
+priority = "P0"
+status = "done"
+area = "registry_check"
+title = "Move registry-check claim/insight/experiment/binary parity checks to control-plane helpers"
+notes = "Claims, insights, experiments, and binaries now load from DB-rendered compatibility text first, with canonical count checks against the control plane."
+
+[[item]]
+id = "N100-011"
+priority = "P0"
+status = "done"
+area = "registry_check"
+title = "Replace workspace binary-only assumption with execution-target model"
+notes = "Registry-check now treats workspace bench targets as valid execution targets alongside registered binaries."
+
+[[item]]
+id = "N100-012"
+priority = "P0"
+status = "done"
+area = "registry_check"
+title = "Add timing instrumentation to registry-check"
+notes = "Added --timings output for parse sweep, canonical setup, and major lane phases."
+
+[[item]]
+id = "N100-013"
+priority = "P0"
+status = "done"
+area = "registry_check"
+title = "Cache Cargo workspace inventory during registry-check"
+notes = "Registry-check now walks workspace manifests once to build a shared bin/bench inventory for execution-target and Cargo parity checks."
+
+[[item]]
+id = "N100-014"
+priority = "P0"
+status = "done"
+area = "registry_check"
+title = "Make WalkDir scans in registry-check opt-in or incremental"
+notes = "Added explicit sweep scope with canonical default and deep legacy mode so whole-tree registry scans are no longer on the default path."
+
+[[item]]
+id = "N100-015"
+priority = "P0"
+status = "done"
+area = "registry_check"
+title = "Add a fast mode to registry-check for control-plane lanes only"
+notes = "Default sweep scope is now canonical, which keeps registry-check on the SQLite-first control-plane lanes unless deep legacy scanning is requested."
+
+[[item]]
+id = "N100-016"
+priority = "P1"
+status = "done"
+area = "registry_emit"
+title = "Make registry-emit claims mirror SQLite-first"
+notes = "Claims mirror and legacy claims matrix now load from DB-rendered control-plane compatibility text, with generated docs labeled against the canonical SQLite source."
+
+[[item]]
+id = "N100-017"
+priority = "P1"
+status = "done"
+area = "registry_emit"
+title = "Make registry-emit insights mirror SQLite-first"
+notes = "Insights mirror and legacy insights page now load from DB-rendered control-plane compatibility text; overlay wording updated to reflect SQLite canonicality."
+
+[[item]]
+id = "N100-018"
+priority = "P1"
+status = "done"
+area = "registry_emit"
+title = "Make registry-emit experiments mirror SQLite-first"
+notes = "Experiments mirror and legacy shortlist now load from DB-rendered control-plane compatibility text; overlay wording updated to reflect SQLite canonicality."
+
+[[item]]
+id = "N100-019"
+priority = "P1"
+status = "done"
+area = "registry_emit"
+title = "Add theorem mirror subcommands to registry-emit"
+notes = "Registry-emit now exposes theorem mirror and legacy theorem doc subcommands, both backed by the canonical SQLite control plane."
+
+[[item]]
+id = "N100-020"
+priority = "P1"
+status = "done"
+area = "registry_emit"
+title = "Rewrite registry-emit docs to say SQLite is canonical"
+notes = "Registry-emit headers, generated mirror wording, and book-facing docs now describe registry/*.toml as compatibility exports instead of canonical sources."
+
+[[item]]
+id = "N100-021"
+priority = "P1"
+status = "done"
+area = "markdown_registry"
+title = "Refactor markdown-registry provenance mapping to reference SQLite as source"
+notes = "Migrated root docs and generated mirrors now map to registry/canonical/control_plane.sqlite3 instead of registry/*.toml."
+
+[[item]]
+id = "N100-022"
+priority = "P1"
+status = "done"
+area = "markdown_registry"
+title = "Preserve bootstrap mode but isolate it as legacy import only"
+notes = "Claims verification now loads claims compatibility text from SQLite first and only falls back to the legacy markdown matrix when the DB is unavailable."
+
+[[item]]
+id = "N100-023"
+priority = "P1"
+status = "done"
+area = "markdown_registry"
+title = "Add theorem-aware mapping in markdown-registry"
+notes = "Theorem root docs and theorem registry mirror now participate in the canonical control-plane ownership mapping."
+
+[[item]]
+id = "N100-024"
+priority = "P1"
+status = "done"
+area = "markdown_registry"
+title = "Make book docs navigation generation DB-aware where applicable"
+notes = "Book source pages now describe the SQLite control plane as canonical while keeping registry/book_docs.toml as the mdBook authoring lane."
+
+[[item]]
+id = "N100-025"
+priority = "P1"
+status = "done"
+area = "markdown_registry"
+title = "Remove markdown_registry dependence on docs root mirrors for migrated-lane identity"
+notes = "Migrated lane identity for root docs and generated mirrors now resolves through the canonical control plane rather than root markdown mirror ownership."
+
+[[item]]
+id = "N100-026"
+priority = "P1"
+status = "done"
+area = "gororoba_cli"
+title = "Migrate gororoba_cli claims verifier away from docs/CLAIMS_EVIDENCE_MATRIX.md"
+notes = "Claims verification now reads claims compatibility text from the canonical DB first, with the markdown matrix retained only as a fallback compatibility surface."
+
+[[item]]
+id = "N100-027"
+priority = "P1"
+status = "done"
+area = "gororoba_cli"
+title = "Replace legacy claims parser dependence on six-column markdown matrix"
+notes = "Legacy parser and verification helpers are now documented as compatibility/bootstrap surfaces instead of operational truth."
+
+[[item]]
+id = "N100-028"
+priority = "P1"
+status = "done"
+area = "gororoba_cli"
+title = "Update gororoba_gate to load claims from SQLite-first sources"
+notes = "gororoba-gate now preflights the canonical control plane and reports live claim inventory from SQLite when available."
+
+[[item]]
+id = "N100-029"
+priority = "P1"
+status = "done"
+area = "gororoba_engine"
+title = "Stop gororoba_engine provenance helper from writing directly to registry/claims.toml"
+notes = "The engine provenance helper now explicitly records into an artifact-hash compatibility ledger instead of implying direct claims registry writes."
+
+[[item]]
+id = "N100-030"
+priority = "P1"
+status = "done"
+area = "docs_contract"
+title = "Update crate rustdoc in cosmology_core to describe registry/claims.toml as compatibility export"
+notes = "Rustdoc wording is patched and verified alongside the regenerated mdBook/book-docs surfaces."
+
+[[item]]
+id = "N100-031"
+priority = "P1"
+status = "done"
+area = "knowledge"
+title = "Make knowledge_atoms prefer SQLite-backed claims source metadata"
+notes = "knowledge-atoms now loads canonical claim metadata from SQLite first and verifies against the current curated proof-atom corpus."
+
+[[item]]
+id = "N100-032"
+priority = "P1"
+status = "done"
+area = "artifact_generation"
+title = "Migrate artifact_scrolls claim source metadata to SQLite-first"
+notes = "artifact-scrolls now renders claim source metadata from the canonical DB when available."
+
+[[item]]
+id = "N100-033"
+priority = "P1"
+status = "done"
+area = "artifact_generation"
+title = "Migrate semantic_atoms claim source metadata to SQLite-first"
+notes = "semantic-atoms now prefers SQLite-backed claim metadata and verifies against the same markdown payload universe as markdown-registry."
+
+[[item]]
+id = "N100-034"
+priority = "P1"
+status = "done"
+area = "provenance"
+title = "Migrate evidence_provenance claim registry reads to SQLite-first"
+notes = "evidence-provenance now reads claim IDs from SQLite first and its paragraph verifier matches the canonical builder payload model."
+
+[[item]]
+id = "N100-035"
+priority = "P1"
+status = "todo"
+area = "provenance"
+title = "Add DB-backed query subcommands for roadmap/todo/requirements once those lanes are migrated"
+notes = "Keeps operator ergonomics aligned as more lanes move."
+
+[[item]]
+id = "N100-036"
+priority = "P1"
+status = "done"
+area = "claims"
+title = "Audit theorem-to-claim linking for all proofs/verified entries"
+notes = "Normalized theorem-stem linking now backfills numeric-prefix matches and the residual 16 unlinked theorem rows are documented in reports/theorem_claim_link_audit_2026_03_13.md."
+
+[[item]]
+id = "N100-037"
+priority = "P1"
+status = "done"
+area = "claims"
+title = "Add verifier for theorem rows without linked claims"
+notes = "Control-plane invariants now fail new unlinked theorem rows unless they are explicitly allowlisted as justified proof artifacts."
+
+[[item]]
+id = "N100-038"
+priority = "P1"
+status = "done"
+area = "claims"
+title = "Normalize proof identifier conventions between C-XXXX and CXXXX_ProofName"
+notes = "Theorem stems now normalize through a shared claim-ID bridge, including suffix variants such as C1140b -> C-1140."
+
+[[item]]
+id = "N100-039"
+priority = "P1"
+status = "done"
+area = "claims"
+title = "Add claim-formal_proof backfill helper for proof-linked rows"
+notes = "Claims now backfill canonical formal_proof values from proof inventory and safe primary-proof selection rules."
+
+[[item]]
+id = "N100-040"
+priority = "P1"
+status = "done"
+area = "claims"
+title = "Audit kernel_checked_claims count against formal_proof and theorem data"
+notes = "kernel_checked_claims now derives from normalized formal_proof values and theorem-linked claim IDs, yielding a stable count of 126."
+
+[[item]]
+id = "N100-041"
+priority = "P1"
+status = "done"
+area = "docs"
+title = "Make docs/THEOREMS.md generation part of the standard docs emit path"
+notes = "Added registry-emit control-plane-docs bundle so theorem docs refresh alongside the other canonical web surfaces."
+
+[[item]]
+id = "N100-042"
+priority = "P1"
+status = "done"
+area = "docs"
+title = "Add theorem/proof navigation entry to mdBook summary if missing"
+notes = "Confirmed the mdBook summary already includes the proofs lane; proof inventory page now points to the standard docs bundle."
+
+[[item]]
+id = "N100-043"
+priority = "P1"
+status = "done"
+area = "docs"
+title = "Replace remaining 'registry/*.toml is authoritative' wording in book pages"
+notes = "Book workflow pages now point to the SQLite control plane plus registry-emit control-plane-docs as the standard theorem/docs refresh path."
+
+[[item]]
+id = "N100-044"
+priority = "P1"
+status = "done"
+area = "docs"
+title = "Update registry_emit generated headers to mention SQLite source of truth"
+notes = "Shared markdown headers now avoid implying registry/*.toml is inherently authoritative; control-plane headers continue to point directly at SQLite."
+
+[[item]]
+id = "N100-045"
+priority = "P1"
+status = "done"
+area = "docs"
+title = "Make verify_registry_mirror_freshness aware of DB-generated compatibility exports"
+notes = "Verifier now includes theorem surfaces, uses SQLite-backed migrated-lane emitters, and stops conflating authored mdBook pages with generated mirror freshness."
+
+[[item]]
+id = "N100-046"
+priority = "P1"
+status = "done"
+area = "book_docs"
+title = "Define a migration plan for registry/book_docs.toml"
+notes = "Decided to keep book_docs outside the SQLite control plane for now because it indexes authored mdBook pages rather than canonical structured claim/experiment state."
+
+[[item]]
+id = "N100-047"
+priority = "P1"
+status = "done"
+area = "book_docs"
+title = "Decide whether book_docs stays TOML-first or gets a DB-backed mirror table"
+notes = "Decision made: book_docs stays TOML-first as the mdBook catalog/normalization lane, with generated mirrors but no SQLite canonicalization yet."
+
+[[item]]
+id = "N100-048"
+priority = "P1"
+status = "done"
+area = "book_docs"
+title = "If book_docs remains separate, document that boundary explicitly"
+notes = "Documented the boundary in docs/book/src/architecture/canonical-sources.md and aligned the freshness verifier with that separation."
+
+[[item]]
+id = "N100-049"
+priority = "P1"
+status = "done"
+area = "performance"
+title = "Benchmark registry-check before and after SQLite-first refactors"
+notes = "Captured a clean post-cutover timing baseline in reports/registry_check_timing_baseline_2026_03_13.md for both source-only and full freshness modes."
+
+[[item]]
+id = "N100-050"
+priority = "P1"
+status = "done"
+area = "performance"
+title = "Add a low-noise timing report artifact for heavy governance binaries"
+notes = "Expanded the timing baseline report with registry-check plus warm-run timings for execution-planning, integrity-resolution, and governance-verify."
+
+[[item]]
+id = "N100-051"
+priority = "P2"
+status = "active"
+area = "migration"
+title = "Migrate claims_consolidate input path to SQLite-first"
+notes = "Registry TOML should be fallback/import only once the lane is fully cut over."
+
+[[item]]
+id = "N100-052"
+priority = "P2"
+status = "todo"
+area = "migration"
+title = "Migrate export-hdf5 claim reads to SQLite-first"
+notes = "Avoid direct operational claim parsing from compatibility exports."
+
+[[item]]
+id = "N100-053"
+priority = "P2"
+status = "todo"
+area = "migration"
+title = "Migrate artifact_scrolls CLI defaults and docs from TOML-first wording"
+notes = "Even if runtime support stays, the UX should not signal the wrong source of truth."
+
+[[item]]
+id = "N100-054"
+priority = "P2"
+status = "todo"
+area = "migration"
+title = "Migrate semantic_atoms CLI defaults and docs from TOML-first wording"
+notes = "Align user-facing defaults with the control-plane cutover."
+
+[[item]]
+id = "N100-055"
+priority = "P2"
+status = "todo"
+area = "migration"
+title = "Migrate claims_audit from markdown-matrix default assumptions"
+notes = "This binary still centers the old markdown matrix."
+
+[[item]]
+id = "N100-056"
+priority = "P2"
+status = "todo"
+area = "migration"
+title = "Migrate knowledge_atoms live-matrix fallback to control-plane-first lookup"
+notes = "Preserve fallback semantics but demote the markdown matrix."
+
+[[item]]
+id = "N100-057"
+priority = "P2"
+status = "todo"
+area = "migration"
+title = "Migrate data_core doc link helpers away from matrix primacy"
+notes = "Doc link extraction should not encode the old canonical assumption."
+
+[[item]]
+id = "N100-058"
+priority = "P2"
+status = "todo"
+area = "migration"
+title = "Update comments in data_governance.rs that imply experiments TOML canonicality"
+notes = "Small but important contract hygiene."
+
+[[item]]
+id = "N100-059"
+priority = "P2"
+status = "todo"
+area = "migration"
+title = "Retire or relabel migrate-claims as legacy bootstrap only"
+notes = "It should not look like a normal authoring workflow anymore."
+
+[[item]]
+id = "N100-060"
+priority = "P2"
+status = "todo"
+area = "migration"
+title = "Retire or relabel migrate-insights as legacy bootstrap only"
+notes = "Same cutover boundary as migrate-claims."
+
+[[item]]
+id = "N100-061"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add explicit test for execution-planning DB sync to experiments lane"
+notes = "Verify planner regeneration cannot stale the control-plane export again."
+
+[[item]]
+id = "N100-062"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add unit test for control_plane_compat_text accessor"
+notes = "Lock in the public seam used by downstream binaries."
+
+[[item]]
+id = "N100-063"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add unit test for replace_control_plane_experiments_from_registry_text"
+notes = "Protect the new planner-to-DB handoff."
+
+[[item]]
+id = "N100-064"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add integration test for theorem-linked claim propagation to THEOREMS.md"
+notes = "C-1363/C-1364 exposed the need for this."
+
+[[item]]
+id = "N100-065"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add integration test for bench target recognition in execution-planning"
+notes = "Protect x87_bench handling from future regressions."
+
+[[item]]
+id = "N100-066"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add regression test for governance-verify crossrefs with proof-backed claims"
+notes = "Ensure theorem-linked claims remain resolvable through the DB path."
+
+[[item]]
+id = "N100-067"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add smoke test for generate-latex using DB-rendered compat text"
+notes = "The sprint field type issue should stay fixed."
+
+[[item]]
+id = "N100-068"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add smoke test for provenance verify-control-plane after execution-planning regeneration"
+notes = "This is the exact repaired flow."
+
+[[item]]
+id = "N100-069"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add registry-check fast-mode test once implemented"
+notes = "Make the performance-oriented path a supported contract."
+
+[[item]]
+id = "N100-070"
+priority = "P2"
+status = "todo"
+area = "validation"
+title = "Add docs freshness test for THEOREMS.md and THEOREMS_REGISTRY_MIRROR.md"
+notes = "The theorem lane should have the same rigor as other mirrors."
+
+[[item]]
+id = "N100-071"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Inventory every remaining operational reader of docs/CLAIMS_EVIDENCE_MATRIX.md"
+notes = "This is one of the last major canonical-source confusions."
+
+[[item]]
+id = "N100-072"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Inventory every remaining operational reader of docs/INSIGHTS.md"
+notes = "Differentiate bootstrap, narrative, and operational use."
+
+[[item]]
+id = "N100-073"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Inventory every remaining operational reader of docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
+notes = "Same cleanup pattern as claims and insights."
+
+[[item]]
+id = "N100-074"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Inventory every remaining operational writer to registry/claims.toml"
+notes = "Writers are more dangerous than readers in the cutover phase."
+
+[[item]]
+id = "N100-075"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Inventory every remaining operational writer to registry/experiments.toml"
+notes = "The planner flow was one concrete example."
+
+[[item]]
+id = "N100-076"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Inventory every remaining operational writer to registry/insights.toml"
+notes = "Prevent silent bypasses of the canonical DB."
+
+[[item]]
+id = "N100-077"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Inventory every remaining operational writer to registry/binaries.toml"
+notes = "Binaries now derive from DB plus workspace inventory."
+
+[[item]]
+id = "N100-078"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Document residual non-migrated registry families explicitly"
+notes = "Examples: roadmap, todo, requirements, external_sources, dataset aliases, book_docs."
+
+[[item]]
+id = "N100-079"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Create a machine-readable migrated-lane inventory file"
+notes = "List which lanes are DB-first, hybrid, or still TOML-first."
+
+[[item]]
+id = "N100-080"
+priority = "P2"
+status = "todo"
+area = "cleanup"
+title = "Create a machine-readable generated-compatibility inventory file"
+notes = "Track which files must exactly mirror the DB."
+
+[[item]]
+id = "N100-081"
+priority = "P2"
+status = "todo"
+area = "docs"
+title = "Publish the migrated-lane inventory in mdBook"
+notes = "Users should not have to infer this from commit archaeology."
+
+[[item]]
+id = "N100-082"
+priority = "P2"
+status = "todo"
+area = "docs"
+title = "Publish a DB-authoring workflow page for contributors"
+notes = "Explain import/export/verify loops and legacy fallback boundaries."
+
+[[item]]
+id = "N100-083"
+priority = "P2"
+status = "todo"
+area = "docs"
+title = "Publish a compatibility-exports policy page"
+notes = "Clarify that exports are required outputs but not authoring sources."
+
+[[item]]
+id = "N100-084"
+priority = "P2"
+status = "todo"
+area = "docs"
+title = "Document execution target semantics: bins versus benches"
+notes = "Avoid another x87_bench-style mismatch."
+
+[[item]]
+id = "N100-085"
+priority = "P2"
+status = "todo"
+area = "docs"
+title = "Document theorem-linking rules for proof-backed claims"
+notes = "Claim IDs, theorem IDs, and proof paths need one coherent contract."
+
+[[item]]
+id = "N100-086"
+priority = "P2"
+status = "todo"
+area = "quality_gates"
+title = "Add a dedicated DB-to-compat export freshness gate"
+notes = "Make stale compatibility exports fail fast outside the heavy registry-check path."
+
+[[item]]
+id = "N100-087"
+priority = "P2"
+status = "todo"
+area = "quality_gates"
+title = "Add a dedicated proof-link integrity gate"
+notes = "Claims, theorems, and proof files should be checked together."
+
+[[item]]
+id = "N100-088"
+priority = "P2"
+status = "todo"
+area = "quality_gates"
+title = "Add a dedicated execution-target integrity gate"
+notes = "Check bins, benches, and experiment lineage consistently."
+
+[[item]]
+id = "N100-089"
+priority = "P2"
+status = "todo"
+area = "quality_gates"
+title = "Add a dedicated migrated-lane governance gate"
+notes = "Cover claims, insights, experiments, binaries, theorems via SQLite-first checks."
+
+[[item]]
+id = "N100-090"
+priority = "P2"
+status = "todo"
+area = "quality_gates"
+title = "Separate slow whole-tree narrative scans from control-plane acceptance gates"
+notes = "Keep expensive scans available without blocking core DB-first workflows."
+
+[[item]]
+id = "N100-091"
+priority = "P3"
+status = "todo"
+area = "legacy_retirement"
+title = "Plan removal of operational dependence on docs/CLAIMS_EVIDENCE_MATRIX.md"
+notes = "Do not delete yet; first ensure all consumers are migrated or explicitly legacy."
+
+[[item]]
+id = "N100-092"
+priority = "P3"
+status = "todo"
+area = "legacy_retirement"
+title = "Plan removal of operational dependence on docs/INSIGHTS.md"
+notes = "Same staged approach as claims matrix."
+
+[[item]]
+id = "N100-093"
+priority = "P3"
+status = "todo"
+area = "legacy_retirement"
+title = "Plan removal of operational dependence on docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
+notes = "Keep as generated web surface only."
+
+[[item]]
+id = "N100-094"
+priority = "P3"
+status = "todo"
+area = "legacy_retirement"
+title = "Plan removal of hand-maintained claim/insight/experiment TOML authoring"
+notes = "Move from 'generated compatibility' in practice to 'generated compatibility' in process."
+
+[[item]]
+id = "N100-095"
+priority = "P3"
+status = "todo"
+area = "legacy_retirement"
+title = "Plan retirement of redundant theorem mirror handoffs"
+notes = "Make theorem docs generation part of one canonical path."
+
+[[item]]
+id = "N100-096"
+priority = "P3"
+status = "todo"
+area = "legacy_retirement"
+title = "Plan deprecation of direct manual edits to migrated compatibility files"
+notes = "Introduce contributor guidance and tooling enforcement."
+
+[[item]]
+id = "N100-097"
+priority = "P3"
+status = "todo"
+area = "tooling"
+title = "Add a DB doctor command for migrated-lane drift summaries"
+notes = "Extend the operator ergonomics beyond raw query and verify."
+
+[[item]]
+id = "N100-098"
+priority = "P3"
+status = "todo"
+area = "tooling"
+title = "Add a targeted DB export command per migrated lane"
+notes = "Useful for partial regeneration in development workflows."
+
+[[item]]
+id = "N100-099"
+priority = "P3"
+status = "todo"
+area = "tooling"
+title = "Add a DB import command per migrated lane"
+notes = "Support careful staged migration of the remaining registry families."
+
+[[item]]
+id = "N100-100"
+priority = "P3"
+status = "todo"
+area = "program_management"
+title = "Roll backlog snapshot forward after each completed tranche"
+notes = "Keep the next-100 list live rather than letting it become stale documentation."

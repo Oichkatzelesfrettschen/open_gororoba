@@ -34,6 +34,13 @@ impl HardwareTopology {
         let topo = Self::current();
         let cores = topo.physical_core_ids.clone();
 
+        eprintln!(
+            "HardwareTopology: Detected {} physical cores. L3 Cache: {:.1} MB (Safe Working Set: {:.1} MB)", 
+            cores.len(), 
+            topo.l3_cache_bytes as f64 / 1024.0 / 1024.0,
+            topo.l3_safe_working_set_bytes as f64 / 1024.0 / 1024.0
+        );
+
         rayon::ThreadPoolBuilder::new()
             .num_threads(cores.len())
             .start_handler(move |idx| {
@@ -43,7 +50,6 @@ impl HardwareTopology {
             })
             .build_global()
     }
-
     fn detect() -> Self {
         let l3_cache_bytes = Self::detect_l3_cache().unwrap_or(16 * 1024 * 1024);
         let physical_core_ids = Self::detect_physical_cores();

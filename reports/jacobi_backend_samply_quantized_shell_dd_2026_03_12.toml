@@ -1,0 +1,30 @@
+title = "Samply attribution for quantized_shell_permutation double_double Jacobi backend"
+date = "2026-03-12"
+family = "quantized_shell_permutation"
+size = 72
+backend = "double_double"
+profile = "dev"
+repeats = 20
+
+[takeaway]
+summary = "The deeper attribution lane also works for the double_double backend, but at a coarser granularity than the x87 lane. A presymbolicated samply capture built with the dev profile resolves the DD solver entrypoints in dd_jacobi.rs, specifically symmetric_eigenvalues_dd and symmetric_eigenvalues_dd_flat. The smaller DD helper routines appear to have been inlined away in this profile, so the artifact is strong enough to prove that time is staying inside the dedicated DD solver path, but not yet strong enough to isolate dd_rotation or dd_diagonal_update as separate hotspots."
+
+[artifact]
+profile_json = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_dev.json.gz"
+symbol_sidecar = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_dev.json.syms.json"
+median_ms = 33.893
+max_abs_err = 1.591616e-12
+
+[[resolved_symbol]]
+name = "algebra_analysis::dd_jacobi::symmetric_eigenvalues_dd"
+source = "crates/algebra_analysis/src/dd_jacobi.rs"
+
+[[resolved_symbol]]
+name = "algebra_analysis::dd_jacobi::symmetric_eigenvalues_dd_flat"
+source = "crates/algebra_analysis/src/dd_jacobi.rs"
+
+[command]
+value = "sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=double_double SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 double_double samply dev'; sudo -A sh -c 'echo 2 > /proc/sys/kernel/perf_event_paranoid'"
+
+[limitation]
+summary = "The DD dev-profile presymbolicated samply capture resolves the main solver path but not the smaller helper functions such as dd_rotation or dd_diagonal_update. Those appear to be inlined in the current build, so a finer-grained DD hotspot breakdown would require either different compiler settings or line-level UI inspection rather than simple sidecar-string extraction."

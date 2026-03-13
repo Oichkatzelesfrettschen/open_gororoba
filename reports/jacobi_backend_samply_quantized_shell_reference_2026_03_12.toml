@@ -1,0 +1,42 @@
+title = "Samply attribution for quantized_shell_permutation reference_f64 Jacobi backend"
+date = "2026-03-12"
+family = "quantized_shell_permutation"
+size = 72
+backend = "reference_f64"
+profile = "dev"
+repeats = 20
+
+[takeaway]
+summary = "The deeper attribution lane now resolves the reference backend as well. A presymbolicated samply capture built with the dev profile shows the shared Jacobi scaffold, the reference_f64 backend entrypoint, and the expected libc/libm transcendental path. In practice this means the reference lane now has both the earlier flamegraph-level evidence and a sidecar-backed symbol path that explicitly names the scaffold/backend split."
+
+[artifact]
+profile_json = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_reference_dev.json.gz"
+symbol_sidecar = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_reference_dev.json.syms.json"
+median_ms = 23.050
+max_abs_err = 5.456968e-12
+
+[[resolved_symbol]]
+name = "algebra_analysis::jacobi_shared::symmetric_eigenvalues_with_backend::<algebra_analysis::reference_jacobi::f64_rotation, algebra_analysis::reference_jacobi::f64_diagonal_update>"
+source = "crates/algebra_analysis/src/jacobi_shared.rs"
+
+[[resolved_symbol]]
+name = "algebra_analysis::reference_jacobi::symmetric_eigenvalues_f64"
+source = "crates/algebra_analysis/src/reference_jacobi.rs"
+
+[[resolved_symbol]]
+name = "_atan2"
+source = "glibc"
+
+[[resolved_symbol]]
+name = "_ieee754_atan2_fma"
+source = "glibc"
+
+[[resolved_symbol]]
+name = "_sincos_fma"
+source = "glibc"
+
+[command]
+value = "sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=reference_f64 SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_reference_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 reference_f64 samply dev'; sudo -A sh -c 'echo 2 > /proc/sys/kernel/perf_event_paranoid'"
+
+[limitation]
+summary = "This artifact is strong enough to show the reference backend and the libc/libm path in one symbolized view, but it is still a dev-profile run rather than a release-parity build. The earlier perf and flamegraph artifacts remain the better release-like evidence for threshold decisions."

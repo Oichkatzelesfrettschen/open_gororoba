@@ -871,6 +871,212 @@ pub fn jackknife_phase_coherence(
     }
 }
 
+// ---------------------------------------------------------------------------
+// Galaxy-ensemble phase coherence (Item 2: N=6992 vs N=19 jackknife)
+// ---------------------------------------------------------------------------
+
+/// Per-galaxy complex DFT at each wavenumber.
+///
+/// For each galaxy with at least `min_points` valid data points,
+/// computes the normalized DFT at each wavenumber in x = r/r_s
+/// coordinates. Returns (power, phase) per galaxy per mode.
+///
+/// Unlike the x-bin jackknife (N_jackknife = 19), this operates on the
+/// galaxy ENSEMBLE (N_gal = 6992), giving ~sqrt(6992/19) ~ 19x more
+/// statistical power. Expected Rayleigh R under H0: 1/sqrt(N_gal) ~ 0.012.
+///
+/// Galaxies with fewer than `min_points` contribute zero (excluded).
+pub fn per_galaxy_dft(
+    galaxies: &[NormalizedResiduals],
+    wavenumbers: &[f64],
+    min_points: usize,
+) -> Vec<Vec<(f64, f64)>> {
+    let nk = wavenumbers.len();
+    galaxies
+        .iter()
+        .map(|g| {
+            if g.points.len() < min_points {
+                return vec![(0.0_f64, 0.0_f64); nk];
+            }
+            let n = g.points.len() as f64;
+            wavenumbers
+                .iter()
+                .map(|&k| {
+                    let re: f64 = g.points.iter().map(|p| p.delta_v * (k * p.x).cos()).sum::<f64>()
+                        / n;
+                    let im: f64 = g.points.iter().map(|p| p.delta_v * (k * p.x).sin()).sum::<f64>()
+                        / n;
+                    (re * re + im * im, im.atan2(re))
+                })
+                .collect()
+        })
+        .collect()
+}
+
+/// Galaxy-ensemble Rayleigh phase coherence test.
+///
+/// For each wavenumber, computes the per-galaxy DFT phase (using
+/// `per_galaxy_dft`) and applies the Rayleigh R statistic across all
+/// N_gal galaxies. This corrects the fundamental limitation of the
+/// x-bin jackknife (N=19 bins vs N=6992 galaxies).
+///
+/// Under H0 (incoherent phases), expected R ~ 1/sqrt(N_gal) ~ 0.012
+/// with p > 0.9. A signal at alpha_zd = 0.004 would produce R > 0.1.
+///
+/// Returns `PhaseCoherenceResult` with `n_jackknife` = N_gal.
+pub fn galaxy_ensemble_phase_coherence(
+    galaxies: &[NormalizedResiduals],
+    wavenumbers: &[f64],
+    min_points: usize,
+) -> PhaseCoherenceResult {
+    let per_gal = per_galaxy_dft(galaxies, wavenumbers, min_points);
+    let nk = wavenumbers.len();
+    let n_gal = galaxies.len();
+
+    let mut rayleigh_r = vec![0.0_f64; nk];
+    let mut rayleigh_p = vec![1.0_f64; nk];
+
+    for ki in 0..nk {
+        let mut sum_cos = 0.0_f64;
+        let mut sum_sin = 0.0_f64;
+        let mut n_valid = 0_usize;
+
+        for gal_dfts in &per_gal {
+            let (power, phase) = gal_dfts[ki];
+            if power > 0.0 {
+                sum_cos += phase.cos();
+                sum_sin += phase.sin();
+                n_valid += 1;
+            }
+        }
+
+        if n_valid < 2 {
+            continue;
+        }
+        let r = (sum_cos * sum_cos + sum_sin * sum_sin).sqrt() / n_valid as f64;
+        rayleigh_r[ki] = r;
+        // Rayleigh test: T = 2*n*R^2 ~ chi2(2) under H0 -> p = exp(-n*R^2)
+        rayleigh_p[ki] = (-(n_valid as f64) * r * r).exp();
+    }
+
+    PhaseCoherenceResult {
+        wavenumbers: wavenumbers.to_vec(),
+        rayleigh_r,
+        rayleigh_p,
+        n_jackknife: n_gal,
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Signal injection and recovery (Item 5: pipeline validation)
+// ---------------------------------------------------------------------------
+
+/// Result of a signal injection-recovery test.
+#[derive(Debug, Clone)]
+pub struct InjectionRecoveryPoint {
+    /// ZD forcing amplitude that was injected.
+    pub alpha_zd_injected: f64,
+    /// Detected SNR after injection and stacking.
+    pub detected_snr: f64,
+    /// Alpha_zd estimated from the stacked amplitude.
+    pub alpha_zd_recovered: f64,
+    /// Ratio: alpha_zd_recovered / alpha_zd_injected.
+    /// Near 1.0 for a linear, unbiased pipeline.
+    /// NaN when alpha_zd_injected = 0 (noise-only baseline).
+    pub recovery_ratio: f64,
+}
+
+/// Inject ZD harmonic modulation into normalized residuals.
+///
+/// Adds the predicted CD-ZD signal at amplitude `alpha_zd` to each
+/// galaxy's fractional velocity residuals:
+///
+///   delta_v_injected = delta_v + alpha_zd * sum_{n=1}^{N} (af/n) * cos(k_n * x) * exp(-x)
+///
+/// where k_n = 2*pi*n / N_modes (universal in x = r/r_s), af = 0.5
+/// (assessor fraction), and N_modes = cd_dim/2 - 1.
+///
+/// At alpha_zd = 0, returns a clone of the input unchanged.
+/// Uses the same amplitude formula as `harmonic_halos::harmonic_halo_modulation`.
+pub fn inject_zd_signal(
+    galaxies: &[NormalizedResiduals],
+    alpha_zd: f64,
+    cd_dim: usize,
+) -> Vec<NormalizedResiduals> {
+    if alpha_zd == 0.0 {
+        return galaxies.to_vec();
+    }
+    let params = CdDimensionParams::new(cd_dim);
+    let wavenumbers = params.predicted_wavenumbers();
+    let af = params.assessor_fraction;
+
+    galaxies
+        .iter()
+        .map(|g| {
+            let points = g
+                .points
+                .iter()
+                .map(|p| {
+                    let modulation: f64 = wavenumbers
+                        .iter()
+                        .enumerate()
+                        .map(|(n, &k)| {
+                            let a_n = af / (n + 1) as f64;
+                            a_n * (k * p.x).cos() * (-p.x).exp()
+                        })
+                        .sum();
+                    NormalizedPoint {
+                        x: p.x,
+                        delta_v: p.delta_v + alpha_zd * modulation,
+                        delta_v_err: p.delta_v_err,
+                    }
+                })
+                .collect();
+            NormalizedResiduals {
+                name: g.name.clone(),
+                r_s_kpc: g.r_s_kpc,
+                points,
+            }
+        })
+        .collect()
+}
+
+/// Sweep a range of injection amplitudes and measure pipeline recovery.
+///
+/// For each alpha_zd in `alpha_zd_values`:
+/// 1. Inject the ZD signal at that amplitude via `inject_zd_signal`.
+/// 2. Stack the injected residuals with `stack_residuals`.
+/// 3. Record detected SNR and recovered amplitude.
+///
+/// At alpha_zd = 0: result matches baseline E-183 SNR = 0.29.
+/// At alpha_zd = 0.004 (SKA floor): expected SNR > 3.0, recovery_ratio in [0.7, 1.3].
+/// At alpha_zd = 0.001 (below threshold): marginal detection ~ SNR 1.5.
+pub fn injection_recovery_sweep(
+    galaxies: &[NormalizedResiduals],
+    alpha_zd_values: &[f64],
+    cd_dim: usize,
+    config: &StackingConfig,
+) -> Vec<InjectionRecoveryPoint> {
+    alpha_zd_values
+        .iter()
+        .map(|&alpha| {
+            let injected = inject_zd_signal(galaxies, alpha, cd_dim);
+            let result = stack_residuals(&injected, config);
+            let recovery_ratio = if alpha > 0.0 {
+                result.alpha_zd_estimate / alpha
+            } else {
+                f64::NAN
+            };
+            InjectionRecoveryPoint {
+                alpha_zd_injected: alpha,
+                detected_snr: result.detection_snr,
+                alpha_zd_recovered: result.alpha_zd_estimate,
+                recovery_ratio,
+            }
+        })
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1110,6 +1316,112 @@ mod tests {
             result.fourier_power[0] > result.fourier_power[1] * 2.0,
             "mode 1 power should dominate"
         );
+    }
+
+    #[test]
+    fn test_per_galaxy_dft_zero_input() {
+        // A galaxy with all-zero residuals should have zero power at all modes.
+        let g = make_galaxy("Z", 10.0, 50, 0.0);
+        let wavenumbers = predicted_wavenumbers();
+        let result = per_galaxy_dft(&[g], &wavenumbers, 3);
+        assert_eq!(result.len(), 1);
+        for (power, _phase) in &result[0] {
+            assert!(power.abs() < 1e-15, "zero residuals -> zero power");
+        }
+    }
+
+    #[test]
+    fn test_per_galaxy_dft_below_min_points() {
+        // Galaxy with 2 points but min_points=3: should return zeros.
+        let pts: Vec<NormalizedPoint> = (0..2)
+            .map(|i| NormalizedPoint {
+                x: 0.5 + i as f64,
+                delta_v: 0.1,
+                delta_v_err: 0.01,
+            })
+            .collect();
+        let g = NormalizedResiduals {
+            name: "tiny".to_string(),
+            r_s_kpc: 10.0,
+            points: pts,
+        };
+        let wavenumbers = predicted_wavenumbers();
+        let result = per_galaxy_dft(&[g], &wavenumbers, 3);
+        for (power, _) in &result[0] {
+            assert_eq!(*power, 0.0);
+        }
+    }
+
+    #[test]
+    fn test_galaxy_ensemble_phase_coherence_noise() {
+        // 20 galaxies with random-ish residuals (no coherent phase).
+        // Rayleigh R should be small.
+        let galaxies: Vec<_> = (0..20)
+            .map(|i| make_galaxy(&format!("G{i}"), 10.0 + i as f64, 50, 0.02 * (i as f64 % 3.0 - 1.0)))
+            .collect();
+        let wavenumbers = predicted_wavenumbers();
+        let result = galaxy_ensemble_phase_coherence(&galaxies, &wavenumbers, 3);
+        assert_eq!(result.n_jackknife, 20);
+        // All Rayleigh R values should be finite
+        for &r in &result.rayleigh_r {
+            assert!(r.is_finite(), "Rayleigh R should be finite");
+        }
+    }
+
+    #[test]
+    fn test_inject_zd_signal_alpha_zero() {
+        // At alpha_zd=0, injection should return identical residuals.
+        let galaxies: Vec<_> = (0..5)
+            .map(|i| make_galaxy(&format!("G{i}"), 10.0, 30, 0.05))
+            .collect();
+        let injected = inject_zd_signal(&galaxies, 0.0, 16);
+        assert_eq!(injected.len(), galaxies.len());
+        for (g, inj) in galaxies.iter().zip(&injected) {
+            assert_eq!(g.points.len(), inj.points.len());
+            for (p, q) in g.points.iter().zip(&inj.points) {
+                assert!((p.delta_v - q.delta_v).abs() < 1e-15);
+            }
+        }
+    }
+
+    #[test]
+    fn test_inject_zd_signal_adds_modulation() {
+        // At alpha_zd > 0, injection should change residuals.
+        let galaxies: Vec<_> = (0..5)
+            .map(|i| make_galaxy(&format!("G{i}"), 10.0, 30, 0.0))
+            .collect();
+        let injected = inject_zd_signal(&galaxies, 0.01, 16);
+        // At least some points should differ from 0.0
+        let any_nonzero = injected[0]
+            .points
+            .iter()
+            .any(|p| p.delta_v.abs() > 1e-10);
+        assert!(any_nonzero, "injected signal should be non-zero");
+    }
+
+    #[test]
+    fn test_injection_recovery_at_alpha_zero() {
+        // At alpha_zd=0, recovery result should exist and have valid SNR.
+        let galaxies: Vec<_> = (0..10)
+            .map(|i| make_galaxy(&format!("G{i}"), 10.0, 50, 0.0))
+            .collect();
+        let results = injection_recovery_sweep(&galaxies, &[0.0], 16, &StackingConfig::default());
+        assert_eq!(results.len(), 1);
+        let r = &results[0];
+        assert_eq!(r.alpha_zd_injected, 0.0);
+        assert!(r.detected_snr.is_finite());
+        assert!(r.recovery_ratio.is_nan(), "ratio should be NaN at alpha=0");
+    }
+
+    #[test]
+    fn test_injection_recovery_sweep_length() {
+        let galaxies: Vec<_> = (0..10)
+            .map(|i| make_galaxy(&format!("G{i}"), 10.0, 50, 0.0))
+            .collect();
+        let alphas = [0.0, 0.001, 0.004, 0.008];
+        let results =
+            injection_recovery_sweep(&galaxies, &alphas, 16, &StackingConfig::default());
+        assert_eq!(results.len(), 4);
     }
 
     #[test]

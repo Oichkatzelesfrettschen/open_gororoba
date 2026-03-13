@@ -1,0 +1,4 @@
+case,kernel,iterations,repeats,checksum,median_ns,best_ns,worst_ns,ns_per_call
+obstruction_like,x87_atan2_sincos,50000,7,6.06339062590336471e4,5087560,5026980,5163629,101.751200
+obstruction_like,givens_sincos_ext80,50000,7,7.44055734540752292e8,5192690,5190390,5209600,103.853800
+obstruction_like,x87_givens_diagonal_update,50000,7,1.20000000000000000e7,291560,291490,292440,5.831200

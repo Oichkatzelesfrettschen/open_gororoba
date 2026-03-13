@@ -1,0 +1,348 @@
+[report]
+title = "Jacobi precision performance tooling scope"
+date = "2026-03-12"
+status = "implemented"
+status_token = "IMPLEMENTED"
+summary = "The local host already has the main CPU-edge measurement tools needed for the current algebra precision lane: perf, hyperfine, flamegraph, cargo-flamegraph, cargo-llvm-cov, llvm-cov, llvm-profdata, samply, valgrind, and cargo-fuzz. The immediate gap is not missing tooling; it is turning those tools into reproducible repo-native entry points and separating production policy from research evidence. That work now includes a refined offline Jacobi threshold table backed by six-family boundary artifacts."
+
+[host]
+hostname = "x570-5600X3D"
+cpu = "AMD Ryzen 5 5600X3D 6-Core Processor"
+
+[tooling]
+present = [
+  "perf",
+  "hyperfine",
+  "flamegraph",
+  "cargo-flamegraph",
+  "cargo-llvm-cov",
+  "llvm-cov",
+  "llvm-profdata",
+  "samply",
+  "valgrind",
+  "cargo-fuzz",
+]
+optional_missing = [
+  "rustfilt",
+]
+
+[repo_entrypoints]
+make_targets = [
+  "x87-strategy-bench",
+  "x87-strategy-perf",
+  "x87-strategy-hyperfine",
+  "x87-strategy-flamegraph",
+  "x87-givens-microbench",
+  "x87-givens-microbench-perf",
+  "jacobi-backend-sweep",
+  "block-jacobi-backend-sweep",
+  "partial-spectrum-bench",
+  "structured-spectrum-bench",
+  "jacobi-backend-samply-compare",
+]
+benchmark_binary = "crates/gororoba_cli_algebra/src/bin/x87_strategy_bench.rs"
+jacobi_binary = "crates/gororoba_cli_algebra/src/bin/jacobi_backend_sweep.rs"
+
+[[validated_command]]
+name = "perf_stat_probe"
+status = "passed"
+command = "make x87-strategy-perf LEN=8192 REPEATS=1 PERF_RUNS=1 WORKER_COUNTS=1 OUT=/tmp/x87_strategy_perf.csv SUMMARY=/tmp/x87_strategy_perf.md"
+notes = "The default event set is the conservative user-space tuple cycles:u,instructions:u,branches:u,branch-misses:u."
+
+[[validated_command]]
+name = "hyperfine_probe"
+status = "passed"
+command = "make x87-strategy-hyperfine LEN=8192 REPEATS=1 RUNS=1 WARMUP=0"
+notes = "The make target uses --shell=none to reduce shell-startup noise on very short runs."
+
+[[validated_command]]
+name = "jacobi_backend_smoke"
+status = "passed"
+command = "make jacobi-backend-sweep SIZES=4,8,16 REPEATS=2 OUT=reports/benchmarks/jacobi_backend_sweep_smoke.csv SUMMARY=reports/benchmarks/jacobi_backend_sweep_smoke.md"
+notes = "Adds solver-shaped evidence for the reference f64, double-double, and x87 lanes over deterministic matrix families."
+
+[[validated_command]]
+name = "jacobi_backend_metadata_smoke"
+status = "passed"
+command = "make jacobi-backend-sweep SIZES=8 REPEATS=1 FAMILIES=quantized_obstruction_graph OUT=reports/benchmarks/jacobi_backend_sweep_metadata_smoke.csv SUMMARY=reports/benchmarks/jacobi_backend_sweep_metadata_smoke.md"
+notes = "Confirms the upgraded sweep writes workload-class and structure-metadata columns while keeping the existing backend comparison surface."
+
+[[validated_command]]
+name = "block_jacobi_backend_smoke"
+status = "passed"
+command = "make block-jacobi-backend-sweep SIZES=8,16 REPEATS=1 OUT=reports/benchmarks/block_jacobi_backend_sweep_smoke.csv SUMMARY=reports/benchmarks/block_jacobi_backend_sweep_smoke.md"
+notes = "First smoke artifact for the block-Jacobi prototype with block sizes 2 and 4."
+
+[[validated_command]]
+name = "partial_spectrum_bench_smoke"
+status = "passed"
+command = "make partial-spectrum-bench SIZES=16,32 K_VALUES=1,2 REPEATS=1 FAMILIES=quantized_obstruction_graph,real_obstruction OBJECTIVES=largest_abs,smallest_abs OUT=reports/benchmarks/partial_spectrum_bench_smoke.csv SUMMARY=reports/benchmarks/partial_spectrum_bench_smoke.md"
+notes = "First smoke artifact for largest- and smallest-magnitude partial-spectrum benchmarking against full-spectrum Jacobi baselines."
+
+[[validated_command]]
+name = "structured_spectrum_bench_smoke"
+status = "passed"
+command = "make structured-spectrum-bench SIZES=16,32 REPEATS=1 FAMILIES=quantized_obstruction_graph,quantized_shell_permutation,real_obstruction OUT=reports/benchmarks/structured_spectrum_bench_smoke.csv SUMMARY=reports/benchmarks/structured_spectrum_bench_smoke.md"
+notes = "First smoke artifact for exact isolated-zero-mode deflation on quantized and real obstruction-like matrices."
+
+[[validated_command]]
+name = "block_jacobi_backend_focus"
+status = "passed"
+command = "make block-jacobi-backend-sweep FAMILIES=real_obstruction,quantized_obstruction_graph,quantized_shell_permutation SIZES=16,32,64 REPEATS=3 OUT=reports/benchmarks/block_jacobi_backend_sweep_focus.csv SUMMARY=reports/benchmarks/block_jacobi_backend_sweep_focus.md"
+notes = "Focused obstruction-family follow-up. The current evidence keeps block Jacobi benchmark-only: reference_f64 stayed fastest on the tested real and entrywise obstruction cases."
+
+[[validated_command]]
+name = "partial_spectrum_bench_focus"
+status = "passed"
+command = "make partial-spectrum-bench FAMILIES=real_obstruction,quantized_obstruction_graph OBJECTIVES=largest_abs,smallest_abs K_VALUES=1,2,4 SIZES=16,32,64 REPEATS=3 OUT=reports/benchmarks/partial_spectrum_bench_focus.csv SUMMARY=reports/benchmarks/partial_spectrum_bench_focus.md"
+notes = "Focused few-extremal follow-up. The current evidence supports keeping the partial-spectrum lane as the production default for few-extremal workloads, especially at sizes 32 and 64."
+
+[[validated_command]]
+name = "structured_spectrum_bench_focus"
+status = "passed"
+command = ".cache/gate-target/release/structured-spectrum-bench --sizes 16,32,64 --repeats 1 --families real_obstruction,quantized_obstruction_graph,quantized_shell_permutation --output reports/benchmarks/structured_spectrum_bench_focus.csv --summary reports/benchmarks/structured_spectrum_bench_focus.md"
+notes = "Focused structure-aware follow-up after splitting exact quotient validation from exploratory histogram partitions. Current obstruction families show useful coarse histogram structure but zero exact validated quotient cells."
+
+[[validated_command]]
+name = "structured_spectrum_bench_projected_focus"
+status = "passed"
+command = "make structured-spectrum-bench FAMILIES=real_obstruction,quantized_obstruction_graph,quantized_shell_permutation SIZES=16,32,64 REPEATS=1 OUT=reports/benchmarks/structured_spectrum_bench_projected_focus.csv SUMMARY=reports/benchmarks/structured_spectrum_bench_projected_focus.md"
+notes = "Adds the benchmark-only histogram-projected structure-aware prototype. It is dramatically faster on the tested obstruction families, but its spectral error is much too large for any production promotion."
+
+[[validated_command]]
+name = "jacobi_threshold_seed"
+status = "passed"
+command = "make jacobi-backend-sweep SIZES=4,8,16,24,32,48,64 REPEATS=3 OUT=reports/benchmarks/jacobi_backend_sweep_threshold_seed_2026_03_12.csv SUMMARY=reports/benchmarks/jacobi_backend_sweep_threshold_seed_2026_03_12.md"
+notes = "Authoritative combined sweep used to set the first offline obstruction-spectrum threshold table."
+
+[[validated_command]]
+name = "jacobi_threshold_obstruction_like_52_64"
+status = "passed"
+command = "make jacobi-backend-sweep SIZES=52,56,60,64 REPEATS=5 OUT=reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.csv SUMMARY=reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.md"
+notes = "First six-family boundary pass with two obstruction-like plateau spectra."
+
+[[validated_command]]
+name = "jacobi_threshold_obstruction_like_60_68"
+status = "passed"
+command = "make jacobi-backend-sweep SIZES=60,64,68 REPEATS=7 OUT=reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.csv SUMMARY=reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.md"
+notes = "Tighter confirmation pass around the 64/68 crossover after the obstruction-like family extension."
+
+[[validated_command]]
+name = "jacobi_threshold_entrywise_64_72"
+status = "passed"
+command = "make jacobi-backend-sweep SIZES=64,68,72 REPEATS=7 OUT=reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.csv SUMMARY=reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.md"
+notes = "Adds one entrywise zero-diagonal quantized obstruction family and re-checks the 64/68 boundary with an independent nalgebra spectrum oracle."
+
+[[validated_command]]
+name = "jacobi_threshold_entrywise_64_72_fixed_dd"
+status = "passed"
+command = "make jacobi-backend-sweep SIZES=64,68,72 REPEATS=7 OUT=reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.csv SUMMARY=reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.md"
+notes = "Re-runs the entrywise boundary after repairing the double-double Jacobi rotation path."
+
+[[validated_command]]
+name = "jacobi_entrywise_pair_64_72"
+status = "passed"
+command = "make jacobi-backend-sweep FAMILIES=quantized_obstruction_graph,quantized_shell_permutation SIZES=64,68,72 REPEATS=7 OUT=reports/benchmarks/jacobi_backend_entrywise_pair_64_72.csv SUMMARY=reports/benchmarks/jacobi_backend_entrywise_pair_64_72.md"
+notes = "Focused profiling pass on the two entrywise obstruction-like families after the DD repair."
+
+[[validated_command]]
+name = "jacobi_shell_perf_68_72"
+status = "passed"
+command = "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 68|72 --repeats 5 --families quantized_shell_permutation --backends reference_f64|x87|double_double"
+notes = "Backend-isolated perf pass on the strongest remaining entrywise edge case. Detailed per-backend commands and counters are recorded in reports/jacobi_backend_perf_quantized_shell_2026_03_12.toml."
+
+[[validated_command]]
+name = "jacobi_shell_flamegraph_72"
+status = "passed"
+command = "make jacobi-backend-flamegraph FAMILIES=quantized_shell_permutation BACKENDS=reference_f64|x87|double_double SIZES=72 REPEATS=30 OUT=reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_<backend>.svg"
+notes = "Captured one SVG per backend with release debuginfo enabled. The reference lane exposes a visible libm atan2 hotspot, but x87 and DD remain monolithic in the current flamegraph lane. See reports/jacobi_backend_flamegraph_quantized_shell_2026_03_12.toml."
+
+[[validated_command]]
+name = "jacobi_shell_samply_x87_dev"
+status = "passed"
+command = "sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=x87 SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_x87_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 x87 samply dev'; sudo -A sh -c 'echo 2 > /proc/sys/kernel/perf_event_paranoid'"
+notes = "Deeper attribution lane for x87. Unlike the release-style flamegraphs, the dev-profile presymbolicated samply sidecar resolves internal x87 Jacobi frames. See reports/jacobi_backend_samply_quantized_shell_2026_03_12.toml."
+
+[[validated_command]]
+name = "jacobi_shell_samply_dd_dev"
+status = "passed"
+command = "sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=double_double SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 double_double samply dev'; sudo -A sh -c 'echo 2 > /proc/sys/kernel/perf_event_paranoid'"
+notes = "Deeper attribution lane for DD. The dev-profile presymbolicated samply sidecar resolves the main dd_jacobi solver entrypoints, though the smaller helper functions still appear inlined. See reports/jacobi_backend_samply_quantized_shell_dd_2026_03_12.toml."
+
+[[validated_command]]
+name = "jacobi_shell_samply_dd_dev_noinline"
+status = "passed"
+command = "orig=$(cat /proc/sys/kernel/perf_event_paranoid); sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev FEATURES=profile-dd-hotspots PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=double_double SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 double_double samply dev noinline'; rc=$?; sudo -A sh -c \"echo $orig > /proc/sys/kernel/perf_event_paranoid\"; exit $rc"
+notes = "Profiling-only DD mode that applies inline(never) to the DD solver/helpers so samply can separate two_sum, two_product, DD arithmetic helpers, dd_rotation, and dd_diagonal_update. See reports/jacobi_backend_samply_quantized_shell_dd_noinline_2026_03_12.toml."
+
+[[validated_command]]
+name = "jacobi_shell_samply_reference_dev"
+status = "passed"
+command = "sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=reference_f64 SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_reference_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 reference_f64 samply dev'; sudo -A sh -c 'echo 2 > /proc/sys/kernel/perf_event_paranoid'"
+notes = "Deeper attribution lane for the reference backend. The dev-profile presymbolicated samply sidecar resolves the shared Jacobi scaffold, the reference_f64 backend entrypoint, and the expected libc/libm atan2/sincos path. See reports/jacobi_backend_samply_quantized_shell_reference_2026_03_12.toml."
+
+[[validated_command]]
+name = "jacobi_samply_compare"
+status = "passed"
+command = "make jacobi-backend-samply-compare TOP=8 OUT=reports/benchmarks/jacobi_backend_samply_compare.csv SUMMARY=reports/benchmarks/jacobi_backend_samply_compare.md"
+notes = "Rust-native line-level reconciliation across the three presymbolicated samply captures. Fixes the earlier DD misattribution caused by blindly taking the first inline frame."
+
+[[validated_command]]
+name = "x87_multicore_65536"
+status = "passed"
+command = "make x87-strategy-bench LEN=65536 REPEATS=5 WORKER_COUNTS=1,2,4,6 OUT=reports/benchmarks/x87_strategy_multicore_65536.csv SUMMARY=reports/benchmarks/x87_strategy_multicore_65536.md"
+notes = "Focused multicore FP80 reduction sweep across 1/2/4/6 pinned physical-core workers."
+
+[[validated_command]]
+name = "x87_multicore_perf_65536"
+status = "passed"
+command = "make x87-strategy-perf LEN=65536 REPEATS=3 PERF_RUNS=3 WORKER_COUNTS=1,2,4,6 OUT=reports/benchmarks/x87_strategy_perf_multicore_65536.csv SUMMARY=reports/benchmarks/x87_strategy_perf_multicore_65536.md"
+notes = "Aggregate perf-stat smoke over the multicore x87 strategy sweep. Useful for coverage and gross counter sanity, but not precise enough for per-worker thresholding because one invocation spans multiple workloads and strategies."
+
+[[validated_command]]
+name = "x87_givens_microbench_smoke"
+status = "passed"
+command = "make x87-givens-microbench ITERATIONS=50000 REPEATS=7 OUT=reports/benchmarks/x87_givens_microbench_smoke.csv SUMMARY=reports/benchmarks/x87_givens_microbench_smoke.md"
+notes = "Measures the actual composed x87 Givens/transcendental helper costs and replaces stale benchmark prose about one monolithic x87 chain."
+
+[[validated_command]]
+name = "x87_givens_microbench_perf_smoke"
+status = "passed"
+command = "make x87-givens-microbench-perf ITERATIONS=50000 REPEATS=7 PERF_RUNS=5 CASES=obstruction_like KERNELS=x87_atan2_sincos,givens_sincos_ext80,x87_givens_diagonal_update OUT=reports/benchmarks/x87_givens_microbench_perf_smoke.csv SUMMARY=reports/benchmarks/x87_givens_microbench_perf_smoke.md COUNTERS_OUT=reports/benchmarks/x87_givens_microbench_perf_smoke.stat"
+notes = "Focused perf-stat follow-up for the composed x87 Givens path using the new case/kernel filters."
+
+[[validated_command]]
+name = "policy_unit_tests"
+status = "passed"
+command = "cargo test -p algebra_analysis --lib precision_policy"
+notes = "Covers strict-ext80, portable, fallback, and reference-oracle selection."
+
+[[validated_command]]
+name = "policy_integration_tests"
+status = "passed"
+command = "cargo test -p algebra_analysis --test precision_tier_dispatch"
+notes = "Keeps the typed policy and crossover arithmetic explicit without benchmark noise."
+
+[perf_probe]
+len = 8192
+repeats = 1
+worker_counts = [1]
+events = [
+  "cycles:u",
+  "instructions:u",
+  "branches:u",
+  "branch-misses:u",
+]
+cycles = 2491515
+instructions = 3399076
+branches = 565274
+branch_misses = 15528
+elapsed_seconds = 0.0022287
+
+[scoping]
+current_goal = "Use deterministic policy for production dispatch, with the first offline threshold table seeded from Jacobi sweep artifacts, and use perf/hyperfine/flamegraph as the evidence lane for future refinements."
+next_measurements = [
+  "The focused perf pass on quantized_shell_permutation now says the 64 cutoff should stay put; the next refinement should be call-stack attribution, not threshold churn.",
+  "Use the new samply lane for x87 when internal hotspot decomposition matters; it resolves the Jacobi/x87 stack where the release-style flamegraph does not.",
+  "Use jacobi-backend-samply-compare before escalating to a less inlined build; it already resolves backend-core ownership at line level across reference_f64, x87, and DD.",
+  "The profiling-only FEATURES=profile-dd-hotspots DD build now gives helper-level DD attribution, and the first plane-rotation helper specialization via dd_mul_add_pair improved the profiled quantized_shell_permutation n=72 median from about 46.59 ms to about 45.18 ms.",
+  "If we pursue DD runtime work next, start with dd_rotation and its sqrt/div costs before opening a separate DD microbench lane.",
+  "Do not add a mirrored low-inlining reference_f64 lane yet; the current reference samply artifacts already resolve backend/scaffold/libm ownership clearly enough, while DD was the backend that needed extra decomposition.",
+  "Do not add a mirrored low-inlining x87 lane yet; the current x87 samply artifacts already resolve the composed kernel stack well enough, and the new x87-givens-microbench plus x87-givens-microbench-perf lanes are enough to say the transcendental half-angle path, not the diagonal update, remains the x87 optimization target.",
+  "Do not change the global cutoff at 64 from DD profiling evidence alone; the new DD work improves backend understanding and profiled runtime, but it does not change the current cross-family speed evidence that set the threshold.",
+  "The compare CSV/Markdown outputs are enough machine-readable hotspot surface for now; no extra hotspot artifact format is justified until a downstream consumer needs something beyond the existing CSV rows.",
+  "Record perf-stat rows for 1/2/4/6 worker sweeps at realistic sizes before introducing any size-based dispatch threshold.",
+  "Only add new tools if a concrete measurement gap remains after using perf, hyperfine, flamegraph, and samply.",
+]
+
+[jacobi_smoke_takeaway]
+summary = "The first solver-shaped smoke sweep on 4/8/16 matrices shows that the typed default policy remains conservative rather than speed-optimal: the plain reference f64 lane is still the fastest on these small deterministic families, while x87 slightly improves absolute error over double-double on the clustered-pairs family at n = 8 and n = 16."
+artifacts = [
+  "reports/benchmarks/jacobi_backend_sweep_smoke.csv",
+  "reports/benchmarks/jacobi_backend_sweep_smoke.md",
+]
+
+[jacobi_threshold_seed_takeaway]
+summary = "The first seed sweep was too conservative. After extending the boundary work to six spectral families, then adding one entrywise zero-diagonal quantized obstruction family, and finally repairing the double-double Jacobi rotation path, order 64 still remains the largest measured size where reference_f64 stays fastest across every tested family and backend. The backend repair improved DD correctness but did not move the cutoff, so the current offline obstruction-spectrum threshold table still keeps orders <= 64 on the reference lane and escalates larger sizes to x87 or DD."
+artifacts = [
+  "reports/benchmarks/jacobi_backend_boundary_24_40.csv",
+  "reports/benchmarks/jacobi_backend_boundary_24_40.md",
+  "reports/benchmarks/jacobi_backend_boundary_44_56.csv",
+  "reports/benchmarks/jacobi_backend_boundary_44_56.md",
+  "reports/benchmarks/jacobi_backend_boundary_60_68.csv",
+  "reports/benchmarks/jacobi_backend_boundary_60_68.md",
+  "reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.csv",
+  "reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.md",
+  "reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.csv",
+  "reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.md",
+  "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.csv",
+  "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.md",
+  "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.csv",
+  "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.md",
+  "reports/benchmarks/jacobi_backend_entrywise_pair_64_72.csv",
+  "reports/benchmarks/jacobi_backend_entrywise_pair_64_72.md",
+]
+
+[jacobi_threshold_caveat]
+summary = "Two caveats still matter. First, most of the obstruction-like sweep families are still spectral proxies realized through a dense Householder construction; only quantized_obstruction_graph and quantized_shell_permutation are entrywise-structured. Second, the DD lane is no longer catastrophically wrong on the obstruction-like families after the stable-rotation fix, but it still trails the reference lane on time in the current boundary region. The focused backend-isolated perf pass on quantized_shell_permutation did not confirm an x87 speed win at 68 or 72, so the current evidence supports keeping the global cutoff at 64."
+
+[jacobi_flamegraph_takeaway]
+summary = "The focused flamegraph pass on quantized_shell_permutation at n = 72 is useful but incomplete. The reference_f64 SVG resolves a visible libm atan2 hotspot, which fits the solver's rotation path. The x87 and double_double SVGs remain largely collapsed into the jacobi-backend-sweep wrapper even after enabling release debuginfo, so they do not yet provide a trustworthy internal hotspot breakdown."
+artifacts = [
+  "reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_reference.svg",
+  "reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_x87.svg",
+  "reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_dd.svg",
+  "reports/jacobi_backend_flamegraph_quantized_shell_2026_03_12.toml",
+]
+
+[jacobi_samply_takeaway]
+summary = "The deeper-attribution lane now works across all three current Jacobi backends through samply on the dev profile with presymbolication, and the new Rust-native compare step turns those raw captures into one line-level backend-core/shared/dependency/runtime view. The key reconciliation was frame selection: some DD inline stacks listed generic core iterator frames before the repo-local dd_jacobi frame, so a naive first-frame summary understated the DD backend. The compare artifact fixes that. The x87 path resolves through algebra_analysis::x87_jacobi, algebra_analysis::jacobi_shared, and cd_kernel::x87_jacobi_kernels plus Ext80 helpers. The plain DD dev artifact resolves dd_jacobi ownership cleanly, and the profiling-only FEATURES=profile-dd-hotspots build now breaks the DD lane down further into dd_find_pivot, dd_apply_plane_rotation, two_sum, two_product, DD add/mul/div/sqrt/abs, dd_rotation, and dd_diagonal_update. After the direct hi/lo pivot-comparator optimization, the profiled quantized_shell_permutation n=72 run dropped from about 98.48 ms to about 46.59 ms while keeping the same reported max_abs_err. The next helper-specialization step then added dd_mul_add_pair to the plane-rotation path and brought the same profiled lane down again to about 45.18 ms. In that newer capture, dd_apply_plane_rotation falls to about 32.42 percent inclusive samples, two_sum falls to about 14.90 percent, dd_mul_add_pair becomes a visible 19.91 percent helper, and the next DD runtime target shifts to dd_rotation plus its sqrt/div costs. The reference path resolves the shared scaffold, reference_jacobi, nalgebra dependency rows, and the expected libc/libm atan2 and sincos frames."
+artifacts = [
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_x87_dev.json.gz",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_x87_dev.json.syms.json",
+  "reports/jacobi_backend_samply_quantized_shell_2026_03_12.toml",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_dev.json.gz",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_dev.json.syms.json",
+  "reports/jacobi_backend_samply_quantized_shell_dd_2026_03_12.toml",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_dev.json.gz",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_dev.json.syms.json",
+  "reports/jacobi_backend_samply_quantized_shell_dd_noinline_2026_03_12.toml",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_reference_dev.json.gz",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_reference_dev.json.syms.json",
+  "reports/jacobi_backend_samply_quantized_shell_reference_2026_03_12.toml",
+  "reports/benchmarks/jacobi_backend_samply_compare.csv",
+  "reports/benchmarks/jacobi_backend_samply_compare.md",
+  "reports/jacobi_backend_samply_compare_2026_03_12.toml",
+  "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline.csv",
+  "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline.md",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_fused_opt_dev.json.gz",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_fused_opt_dev.json.syms.json",
+  "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_fused_opt.csv",
+  "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_fused_opt.md",
+  "reports/jacobi_backend_samply_quantized_shell_dd_plane_rotation_opt_2026_03_12.toml",
+]
+
+[x87_multicore_takeaway]
+summary = "The focused 1/2/4/6-worker sweep on the pinned multicore x87 lane confirms the earlier semantic split. x87_per_chunk remains exact on the hard dot workloads and exact at 1 worker for the cancellation sum, but the cancellation sum still drifts once chunk order changes, and the 6-worker x87 rows are visibly unstable on sum_positive and dot_random. The hybrid and AVX2 lanes remain the throughput leaders for the easy workloads. A follow-up perf smoke over the full worker sweep completed cleanly, but its elapsed variance is high enough that it should be treated as system-level coverage rather than as a per-worker tuning oracle."
+artifacts = [
+  "reports/benchmarks/x87_strategy_multicore_65536.csv",
+  "reports/benchmarks/x87_strategy_multicore_65536.md",
+  "reports/benchmarks/x87_strategy_perf_multicore_65536.csv",
+  "reports/benchmarks/x87_strategy_perf_multicore_65536.md",
+]
+
+[x87_givens_microbench_takeaway]
+summary = "The new x87 Givens microbench lane says the actual composed transcendental path is materially more expensive than the diagonal-update micro-kernel. In the first smoke run, the composed x87 Givens/transcendental helpers landed around 102-126 ns/call depending on case, while x87_givens_diagonal_update landed around 6-8 ns/call. The focused perf-stat follow-up on the obstruction_like case then showed x87_atan2_sincos at about 101.751 ns/call, givens_sincos_ext80 at about 103.854 ns/call, and x87_givens_diagonal_update at about 5.831 ns/call, with about 871901553 cycles and 170270428 instructions for the selected-kernel bundle. This replaces the older benchmark prose that talked about one monolithic chain, and it says the current x87 optimization target remains the transcendental half-angle path rather than the diagonal update."
+artifacts = [
+  "reports/benchmarks/x87_givens_microbench_smoke.csv",
+  "reports/benchmarks/x87_givens_microbench_smoke.md",
+  "reports/x87_givens_microbench_2026_03_12.toml",
+  "reports/benchmarks/x87_givens_microbench_perf_smoke.csv",
+  "reports/benchmarks/x87_givens_microbench_perf_smoke.md",
+  "reports/benchmarks/x87_givens_microbench_perf_smoke.stat",
+  "reports/x87_givens_microbench_perf_2026_03_12.toml",
+]
+
+[resolved_issue]
+issue = "perf stat -d reported unsupported events on this host."
+resolution = "The repo target now uses an explicit user-space event set instead of perf's broad derived bundle."

@@ -1,0 +1,88 @@
+title = "Focused perf profile for quantized_shell_permutation Jacobi backend boundary"
+date = "2026-03-12"
+family = "quantized_shell_permutation"
+sizes = [68, 72]
+perf_events = ["cycles:u", "instructions:u", "branches:u", "branch-misses:u"]
+perf_repetitions = 5
+solver_repeats = 5
+
+[takeaway]
+summary = "The focused perf pass does not support a threshold change. On quantized_shell_permutation at orders 68 and 72, reference_f64 remains ahead of x87 on cycles and median wall time, while double_double remains the accuracy-first but much heavier lane. The earlier sweep-level hint that x87 might edge out reference_f64 on this family did not survive backend-isolated perf measurement."
+
+[[measurement]]
+size = 68
+backend = "reference_f64"
+median_ms = 13.434
+max_abs_err = 1.000444e-11
+cycles = 289019592
+instructions = 1663865891
+branches = 281250414
+branch_misses = 1157199
+ipc = 5.757
+branch_miss_rate = 0.004115
+command = "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 68 --repeats 5 --families quantized_shell_permutation --backends reference_f64 --output reports/benchmarks/jacobi_backend_perf_quantized_shell_68_reference.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_68_reference.md"
+
+[[measurement]]
+size = 68
+backend = "x87"
+median_ms = 15.222
+max_abs_err = 4.547474e-12
+cycles = 329029168
+instructions = 1630442248
+branches = 296293581
+branch_misses = 1219107
+ipc = 4.955
+branch_miss_rate = 0.004114
+command = "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 68 --repeats 5 --families quantized_shell_permutation --backends x87 --output reports/benchmarks/jacobi_backend_perf_quantized_shell_68_x87.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_68_x87.md"
+
+[[measurement]]
+size = 68
+backend = "double_double"
+median_ms = 33.675
+max_abs_err = 2.501110e-12
+cycles = 734241872
+instructions = 3086589864
+branches = 288633443
+branch_misses = 1451384
+ipc = 4.204
+branch_miss_rate = 0.005028
+command = "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 68 --repeats 5 --families quantized_shell_permutation --backends double_double --output reports/benchmarks/jacobi_backend_perf_quantized_shell_68_dd.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_68_dd.md"
+
+[[measurement]]
+size = 72
+backend = "reference_f64"
+median_ms = 16.783
+max_abs_err = 5.456968e-12
+cycles = 361001545
+instructions = 2078490512
+branches = 349789955
+branch_misses = 1511323
+ipc = 5.757
+branch_miss_rate = 0.004321
+command = "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 72 --repeats 5 --families quantized_shell_permutation --backends reference_f64 --output reports/benchmarks/jacobi_backend_perf_quantized_shell_72_reference.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_72_reference.md"
+
+[[measurement]]
+size = 72
+backend = "x87"
+median_ms = 18.785
+max_abs_err = 4.774847e-12
+cycles = 411294391
+instructions = 2023781032
+branches = 366356092
+branch_misses = 1610792
+ipc = 4.920
+branch_miss_rate = 0.004397
+command = "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 72 --repeats 5 --families quantized_shell_permutation --backends x87 --output reports/benchmarks/jacobi_backend_perf_quantized_shell_72_x87.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_72_x87.md"
+
+[[measurement]]
+size = 72
+backend = "double_double"
+median_ms = 42.413
+max_abs_err = 1.591616e-12
+cycles = 921970043
+instructions = 3885254719
+branches = 363057703
+branch_misses = 1812818
+ipc = 4.214
+branch_miss_rate = 0.004993
+command = "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 72 --repeats 5 --families quantized_shell_permutation --backends double_double --output reports/benchmarks/jacobi_backend_perf_quantized_shell_72_dd.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_72_dd.md"

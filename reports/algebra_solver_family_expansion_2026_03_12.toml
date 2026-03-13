@@ -1,0 +1,121 @@
+[report]
+title = "Algebra solver-family expansion"
+date = "2026-03-12"
+status = "implemented"
+status_token = "IMPLEMENTED"
+summary = "The algebra precision lane now distinguishes solver family from numeric backend. The new production-facing surface adds matrix-structure metadata, exact isolated-zero-mode deflation for obstruction matrices, and partial-spectrum requests for largest- and smallest-magnitude eigenvalues. Focused follow-up sweeps kept partial spectrum promoted for few-extremal workloads, kept block Jacobi benchmark-only on current obstruction families, split exact quotient validation from exploratory histogram-partition structure signals, and added a benchmark-only histogram-projected structure-aware prototype that is fast but currently far too inaccurate to promote."
+
+[library]
+dispatch_types = [
+  "algebra_analysis::precision_policy::SpectrumObjective",
+  "algebra_analysis::precision_policy::MatrixWorkloadClass",
+  "algebra_analysis::precision_policy::MatrixStructureHints",
+  "algebra_analysis::precision_policy::SpectrumDispatchInput",
+  "algebra_analysis::precision_policy::SpectrumDispatchDecision",
+]
+solver_modules = [
+  "crates/algebra_analysis/src/partial_spectrum.rs",
+  "crates/algebra_analysis/src/block_jacobi.rs",
+  "crates/algebra_analysis/src/spectrum_solvers.rs",
+]
+homotopy_extensions = [
+  "SedenionAInfinity::obstruction_matrix",
+  "SedenionAInfinity::obstruction_matrix_metadata",
+  "SedenionAInfinity::obstruction_extremal_spectrum",
+]
+
+[production_behavior]
+full_spectrum_dense = "keeps the current Jacobi backend ladder"
+few_extremal = "auto-selects partial subspace iteration"
+obstruction_structured = "auto-applies exact isolated-zero-mode deflation before the Jacobi backend when present"
+block_jacobi = "prototype only; benchmarked but not a production default"
+
+[benchmark_binaries]
+shared_case_module = "crates/gororoba_cli_algebra/src/bin/jacobi_benchmark_cases.rs"
+binaries = [
+  "jacobi-backend-sweep",
+  "block-jacobi-backend-sweep",
+  "partial-spectrum-bench",
+  "structured-spectrum-bench",
+]
+
+[[artifact]]
+path = "reports/benchmarks/jacobi_backend_sweep_metadata_smoke.csv"
+purpose = "Smoke verification that the upgraded Jacobi sweep now records workload-class and structure metadata."
+
+[[artifact]]
+path = "reports/benchmarks/block_jacobi_backend_sweep_smoke.csv"
+purpose = "Smoke sweep for block Jacobi with block sizes 2 and 4."
+
+[[artifact]]
+path = "reports/benchmarks/partial_spectrum_bench_smoke.csv"
+purpose = "Smoke artifact for k=1,2 largest/smallest-magnitude partial-spectrum benchmarking."
+
+[[artifact]]
+path = "reports/benchmarks/structured_spectrum_bench_smoke.csv"
+purpose = "Smoke artifact for exact structured zero-mode deflation on quantized and real obstruction-like matrices."
+
+[[artifact]]
+path = "reports/benchmarks/block_jacobi_backend_sweep_focus.csv"
+purpose = "Focused block-Jacobi follow-up on real and entrywise obstruction families at sizes 16, 32, and 64."
+
+[[artifact]]
+path = "reports/benchmarks/partial_spectrum_bench_focus.csv"
+purpose = "Focused partial-spectrum follow-up on real and entrywise obstruction families for k=1,2,4 at sizes 16, 32, and 64."
+
+[[artifact]]
+path = "reports/benchmarks/structured_spectrum_bench_focus.csv"
+purpose = "Focused structured-spectrum follow-up that now records both exact validated quotient cells and exploratory histogram-partition cells."
+
+[[artifact]]
+path = "reports/benchmarks/structured_spectrum_bench_projected_focus.csv"
+purpose = "Focused structured-spectrum follow-up with the benchmark-only histogram-projected structure-aware prototype."
+
+[[validated_command]]
+name = "jacobi_backend_sweep_metadata_smoke"
+command = "make jacobi-backend-sweep SIZES=8 REPEATS=1 FAMILIES=quantized_obstruction_graph OUT=reports/benchmarks/jacobi_backend_sweep_metadata_smoke.csv SUMMARY=reports/benchmarks/jacobi_backend_sweep_metadata_smoke.md"
+status = "passed"
+
+[[validated_command]]
+name = "block_jacobi_backend_sweep_smoke"
+command = "make block-jacobi-backend-sweep SIZES=8,16 REPEATS=1 OUT=reports/benchmarks/block_jacobi_backend_sweep_smoke.csv SUMMARY=reports/benchmarks/block_jacobi_backend_sweep_smoke.md"
+status = "passed"
+
+[[validated_command]]
+name = "partial_spectrum_bench_smoke"
+command = "make partial-spectrum-bench SIZES=16,32 K_VALUES=1,2 REPEATS=1 FAMILIES=quantized_obstruction_graph,real_obstruction OBJECTIVES=largest_abs,smallest_abs OUT=reports/benchmarks/partial_spectrum_bench_smoke.csv SUMMARY=reports/benchmarks/partial_spectrum_bench_smoke.md"
+status = "passed"
+
+[[validated_command]]
+name = "structured_spectrum_bench_smoke"
+command = "make structured-spectrum-bench SIZES=16,32 REPEATS=1 FAMILIES=quantized_obstruction_graph,quantized_shell_permutation,real_obstruction OUT=reports/benchmarks/structured_spectrum_bench_smoke.csv SUMMARY=reports/benchmarks/structured_spectrum_bench_smoke.md"
+status = "passed"
+
+[[validated_command]]
+name = "block_jacobi_backend_focus"
+command = "make block-jacobi-backend-sweep FAMILIES=real_obstruction,quantized_obstruction_graph,quantized_shell_permutation SIZES=16,32,64 REPEATS=3 OUT=reports/benchmarks/block_jacobi_backend_sweep_focus.csv SUMMARY=reports/benchmarks/block_jacobi_backend_sweep_focus.md"
+status = "passed"
+
+[[validated_command]]
+name = "partial_spectrum_bench_focus"
+command = "make partial-spectrum-bench FAMILIES=real_obstruction,quantized_obstruction_graph OBJECTIVES=largest_abs,smallest_abs K_VALUES=1,2,4 SIZES=16,32,64 REPEATS=3 OUT=reports/benchmarks/partial_spectrum_bench_focus.csv SUMMARY=reports/benchmarks/partial_spectrum_bench_focus.md"
+status = "passed"
+
+[[validated_command]]
+name = "structured_spectrum_bench_focus"
+command = ".cache/gate-target/release/structured-spectrum-bench --sizes 16,32,64 --repeats 1 --families real_obstruction,quantized_obstruction_graph,quantized_shell_permutation --output reports/benchmarks/structured_spectrum_bench_focus.csv --summary reports/benchmarks/structured_spectrum_bench_focus.md"
+status = "passed"
+
+[[validated_command]]
+name = "structured_spectrum_bench_projected_focus"
+command = "make structured-spectrum-bench FAMILIES=real_obstruction,quantized_obstruction_graph,quantized_shell_permutation SIZES=16,32,64 REPEATS=1 OUT=reports/benchmarks/structured_spectrum_bench_projected_focus.csv SUMMARY=reports/benchmarks/structured_spectrum_bench_projected_focus.md"
+status = "passed"
+
+[takeaways]
+notes = [
+  "The current production-safe structure-aware path is exact isolated-zero-mode deflation. It already applies to the real obstruction matrix because the identity basis element produces a zero row/column.",
+  "The focused partial-spectrum follow-up supports the current production choice: few-extremal workloads should keep using the partial subspace lane, especially from size 32 upward and on the real obstruction family.",
+  "The focused block-Jacobi follow-up did not justify promotion on the current obstruction families: reference_f64 stayed fastest at sizes 16, 32, and 64, so block Jacobi remains benchmark-only.",
+  "The equitable-partition work is now split into an exact validated quotient path and a benchmark-only exploratory histogram-partition signal. The current obstruction families show nonzero exploratory structure, but zero exact validated quotient cells, so no quotient-based production compression is justified yet.",
+  "The new histogram-projected structure-aware prototype is much faster than the exact structured lanes on the tested obstruction families, but its spectrum error is orders of magnitude too large for production use. It remains an exploratory benchmark seed only.",
+]

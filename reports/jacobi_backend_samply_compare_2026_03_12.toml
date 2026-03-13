@@ -1,0 +1,29 @@
+[report]
+title = "Jacobi backend samply line-level comparison"
+date = "2026-03-12"
+status = "implemented"
+status_token = "IMPLEMENTED"
+summary = "A Rust-native comparer now reconciles the dev-profile presymbolicated samply captures for reference_f64, x87, and double_double into one repeatable line-level view. The key fix was frame selection: some inline stacks, especially on the DD lane, listed generic core iterator frames before the repo-local Jacobi frame, so a naive first-frame policy misattributed solver time. The comparer now prefers repo-local frames, separates backend-core from shared/support, dependency, and runtime/math buckets, and produces repository-tracked CSV and Markdown artifacts."
+
+[artifacts]
+csv = "reports/benchmarks/jacobi_backend_samply_compare.csv"
+markdown = "reports/benchmarks/jacobi_backend_samply_compare.md"
+binary = "crates/gororoba_cli_algebra/src/bin/jacobi_backend_samply_compare.rs"
+
+[resolved_conflict]
+issue = "The raw presymbolicated DD capture contained dd_jacobi frames, but the first inline frame often pointed at core::iter::Range::next, so earlier summaries understated the DD backend and overemphasized scaffolding."
+resolution = "Choose the best inline frame by priority rather than the first frame, preferring repo-local frames, then external dependency frames, then generic std/core frames. Reclassify hotspots into backend_core, repo_shared, repo_support, dependency, and runtime/math buckets."
+
+[findings]
+reference = "The reference lane now resolves cleanly into backend-core work in reference_jacobi.rs, shared scaffold work in jacobi_shared.rs and jacobi_backend_sweep.rs, nalgebra dependency work, and libm atan2/sincos hotspots."
+x87 = "The x87 lane now resolves cleanly into backend-core work in x87_jacobi.rs, x87_jacobi_kernels.rs, x87_transcendentals.rs, and x87_ext80.rs, plus a small set of inline-asm pseudo-symbols without file/line metadata."
+double_double = "The DD lane now resolves cleanly to dd_jacobi.rs at line level. Smaller DD helpers still remain inlined in this artifact, so the comparer proves solver ownership but not yet helper-level DD hotspot distribution."
+
+[validated_command]
+name = "jacobi_samply_compare"
+status = "passed"
+command = "make jacobi-backend-samply-compare TOP=8 OUT=reports/benchmarks/jacobi_backend_samply_compare.csv SUMMARY=reports/benchmarks/jacobi_backend_samply_compare.md"
+notes = "Builds the Rust-native comparer, joins the three presymbolicated samply captures with their sidecars, and emits a backend-core/shared/dependency/runtime line-level summary."
+
+[remaining_gap]
+summary = "If helper-level DD hotspot separation becomes necessary, the next stronger step is a less-inlined profiling build or interactive samply UI inspection. The current compare artifact is sufficient for backend ownership and line-level reconciliation."

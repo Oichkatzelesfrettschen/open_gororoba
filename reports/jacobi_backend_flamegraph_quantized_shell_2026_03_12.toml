@@ -1,0 +1,56 @@
+title = "Flamegraph attribution for quantized_shell_permutation Jacobi backend boundary"
+date = "2026-03-12"
+family = "quantized_shell_permutation"
+size = 72
+repeats = 30
+
+[takeaway]
+summary = "The flamegraph pass supports the policy conclusion but only partially answers the attribution question. The reference_f64 flamegraph exposes a visible libm atan2 hotspot, while the x87 and double_double flamegraphs remain almost completely collapsed into the jacobi-backend-sweep wrapper even after enabling release debuginfo. That means the current flamegraph lane is good enough to show that the reference path pays a transcendental-library cost, but not yet good enough to decompose the internal x87 or DD hotspots."
+
+[[artifact]]
+backend = "reference_f64"
+svg = "reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_reference.svg"
+median_ms = 20.051
+max_abs_err = 5.456968e-12
+notes = "The resolved non-wrapper frames are dominated by libm atan2 handling."
+
+[[artifact]]
+backend = "x87"
+svg = "reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_x87.svg"
+median_ms = 18.798
+max_abs_err = 4.774847e-12
+notes = "The flamegraph remains monolithic at the binary wrapper level; no resolved internal Rust or x87 helper frames appear in the SVG titles."
+
+[[artifact]]
+backend = "double_double"
+svg = "reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_dd.svg"
+median_ms = 42.298
+max_abs_err = 1.591616e-12
+notes = "The flamegraph remains monolithic at the binary wrapper level; no resolved internal DD helper frames appear in the SVG titles."
+
+[[resolved_frame]]
+backend = "reference_f64"
+function = "__ieee754_atan2_fma"
+samples = 7907191
+percent = 0.29
+
+[[resolved_frame]]
+backend = "reference_f64"
+function = "__atan2"
+samples = 4234146
+percent = 0.15
+
+[[command]]
+backend = "reference_f64"
+command = "make jacobi-backend-flamegraph FAMILIES=quantized_shell_permutation BACKENDS=reference_f64 SIZES=72 REPEATS=30 OUT=reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_reference.svg TITLE='Jacobi quantized_shell_permutation n=72 reference_f64'"
+
+[[command]]
+backend = "x87"
+command = "make jacobi-backend-flamegraph FAMILIES=quantized_shell_permutation BACKENDS=x87 SIZES=72 REPEATS=30 OUT=reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_x87.svg TITLE='Jacobi quantized_shell_permutation n=72 x87'"
+
+[[command]]
+backend = "double_double"
+command = "make jacobi-backend-flamegraph FAMILIES=quantized_shell_permutation BACKENDS=double_double SIZES=72 REPEATS=30 OUT=reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_dd.svg TITLE='Jacobi quantized_shell_permutation n=72 double_double'"
+
+[limitation]
+summary = "Even with release debuginfo enabled for the flamegraph target, the x87 and double_double SVGs did not resolve internal helper stacks. The next attribution step, if deeper decomposition is required, should use a frame-pointer-focused build or a different profiler such as samply rather than treating the current monolithic SVGs as complete explanations."

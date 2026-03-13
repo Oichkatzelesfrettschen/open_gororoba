@@ -18,9 +18,9 @@ result = "pass"
 notes = "Workspace unit/integration/doc tests completed; long quantum_core doctests passed."
 
 [[gate]]
-name = "make ascii-check"
+name = "make ansi-check"
 result = "pass"
-notes = "ASCII verifier passed."
+notes = "ANSI-safe UTF-8 verifier passed."
 
 [[gate]]
 name = "make governance-gate"

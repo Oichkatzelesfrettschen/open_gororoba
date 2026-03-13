@@ -52,7 +52,7 @@ cmd = "cargo test --workspace -j$(nproc)"
 result = "pass"
 
 [[validation_run.command]]
-cmd = "make ascii-check"
+cmd = "make ansi-check"
 result = "pass"
 
 [[validation_run.command]]
