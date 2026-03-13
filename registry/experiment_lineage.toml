@@ -5,8 +5,8 @@
 updated = "2026-03-13"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 192
-edge_count = 936
+lineage_count = 193
+edge_count = 950
 
 [[lineage]]
 id = "XL-001"
@@ -1300,7 +1300,7 @@ acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Exe
 [[lineage]]
 id = "XL-071"
 experiment_id = "E-073"
-binary = "euclid-fetch"
+binary = ""
 deterministic = true
 gpu = false
 run_command = "cargo test -p gr_core -- photon_graviton"
@@ -2554,6 +2554,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo clippy -p lbm_3d_cuda -- -D warnings && cargo test -p lbm_3d_cuda", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-198"
+experiment_id = "E-198"
+binary = "lotss-fetch"
+deterministic = true
+gpu = false
+run_command = "lotss-fetch manga-preflight --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --report reports/lotss_manga_preflight_2026-03-13.toml && lotss-fetch crossmatch-manga --release dr2 --input-format fits --input data/external/radio_surveys/lotss_dr2.fits --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --output data/external/manga/manga_lotss_xmatch_dr2.csv --report reports/manga_lotss_xmatch_dr2.toml && lotss-fetch crossmatch-manga --release dr3 --input-format fits --input data/external/radio_surveys/lotss_dr3.fits --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --output data/external/manga/manga_lotss_xmatch_dr3.csv --report reports/manga_lotss_xmatch_dr3.toml"
+run_command_sha256 = "232253d782d8fd2e8d8f601bdc5161cf1231da19aca1fbff112a15976696a990"
+claim_refs = []
+input_path_refs = ["data/external/manga/dapall_selection.csv", "data/external/manga/drpall-v3_1_1.fits", "data/external/radio_surveys/lotss_dr2.fits", "data/external/radio_surveys/lotss_dr3.fits"]
+output_path_refs = ["reports/lotss_manga_preflight_2026-03-13.toml", "data/external/manga/manga_lotss_xmatch_dr2.csv", "reports/manga_lotss_xmatch_dr2.toml", "data/external/manga/manga_lotss_xmatch_dr3.csv", "reports/manga_lotss_xmatch_dr3.toml", "reports/lotss_lotss_dr3_summary.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["SRC-MANGA-DR17-CATALOGS", "SRC-LOTSS-DR2-FITS", "SRC-LOTSS-DR3-FITS"]
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "lotss-fetch manga-preflight --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --report reports/lotss_manga_preflight_2026-03-13.toml && lotss-fetch crossmatch-manga --release dr2 --input-format fits --input data/external/radio_surveys/lotss_dr2.fits --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --output data/external/manga/manga_lotss_xmatch_dr2.csv --report reports/manga_lotss_xmatch_dr2.toml && lotss-fetch crossmatch-manga --release dr3 --input-format fits --input data/external/radio_surveys/lotss_dr3.fits --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --output data/external/manga/manga_lotss_xmatch_dr3.csv --report reports/manga_lotss_xmatch_dr3.toml", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
@@ -11932,4 +11950,130 @@ from_id = "E-197"
 to_ref = "data/external/manga/injection_recovery.csv"
 to_kind = "path"
 edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00942"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "lotss-fetch"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00943"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "data/external/manga/dapall_selection.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00944"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "data/external/manga/drpall-v3_1_1.fits"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00945"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "data/external/radio_surveys/lotss_dr2.fits"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00946"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "data/external/radio_surveys/lotss_dr3.fits"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00947"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "reports/lotss_manga_preflight_2026-03-13.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00948"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "data/external/manga/manga_lotss_xmatch_dr2.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00949"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "reports/manga_lotss_xmatch_dr2.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00950"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "data/external/manga/manga_lotss_xmatch_dr3.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00951"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "reports/manga_lotss_xmatch_dr3.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00952"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "reports/lotss_lotss_dr3_summary.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00953"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "SRC-MANGA-DR17-CATALOGS"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-00954"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "SRC-LOTSS-DR2-FITS"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-00955"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "SRC-LOTSS-DR3-FITS"
+to_kind = "source"
+edge_kind = "consumes_source"
 verified = true

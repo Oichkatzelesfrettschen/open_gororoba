@@ -4,8 +4,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 145
-experiment_count = 192
+deterministic_count = 146
+experiment_count = 193
 gpu_count = 28
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -1861,9 +1861,9 @@ title = "TX-2 Viscosity-to-Filtration Loop at 128^3 CPU FP64 (C-669 Refutation)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "euclid-fetch"
+binary = ""
 binary_experiment_declared = ""
-binary_registered = true
+binary_registered = false
 claim_refs = ["C-819", "C-820", "C-821", "C-822", "C-823"]
 claims = ["C-819", "C-820", "C-821", "C-822", "C-823"]
 dataset_label_refs = []
