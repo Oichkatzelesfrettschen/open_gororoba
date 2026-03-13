@@ -86,6 +86,13 @@ struct Args {
     /// Rayon thread count (0 = auto: logical CPUs)
     #[arg(long, default_value_t = 0)]
     threads: usize,
+
+    /// MaNGA PSF FWHM in arcsec for inner-bin beam-smearing flag.
+    ///
+    /// Bins with r_kpc < psf_fwhm_kpc are tagged psf_flag=true in the CSV.
+    /// Default 2.5 arcsec is the MaNGA survey median.
+    #[arg(long, default_value_t = 2.5)]
+    psf_fwhm: f64,
 }
 
 // ---- Galaxy record from selection CSV ----
@@ -107,6 +114,8 @@ struct RotCurvePoint {
     r_kpc: f64,
     v_obs: f64,
     v_err: f64,
+    /// True if r_kpc < 1 synthesized beam FWHM (beam-smearing affected).
+    psf_flag: bool,
 }
 
 // ---- Cosmology: angular diameter distance via 32-pt Gauss-Legendre ----
@@ -274,6 +283,7 @@ fn extract_pseudo_slit(
                 r_kpc,
                 v_obs: v_circ,
                 v_err,
+                psf_flag: false, // set after binning
             });
         }
     }

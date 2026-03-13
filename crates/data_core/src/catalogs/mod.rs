@@ -19,6 +19,7 @@ pub mod gaia;
 pub mod gaia_mw_rotation;
 pub mod gwtc;
 pub mod helios;
+pub mod hi_cube;
 pub mod hic_raa;
 pub mod hipparcos;
 pub mod ibex;
