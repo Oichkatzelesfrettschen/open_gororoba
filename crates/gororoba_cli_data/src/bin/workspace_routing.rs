@@ -143,16 +143,17 @@ fn detect_base_ref(root: &Path, explicit_base: Option<&str>) -> Result<String> {
         return Ok(base.to_string());
     }
 
-    if let Ok(base_ref) = env::var("GITHUB_BASE_REF") {
-        if !base_ref.trim().is_empty() {
-            return Ok(format!("origin/{base_ref}"));
-        }
+    if let Ok(base_ref) = env::var("GITHUB_BASE_REF")
+        && !base_ref.trim().is_empty()
+    {
+        return Ok(format!("origin/{base_ref}"));
     }
 
-    if let Ok(before) = env::var("GITHUB_EVENT_BEFORE") {
-        if before != "0".repeat(40) && !before.trim().is_empty() {
-            return Ok(before);
-        }
+    if let Ok(before) = env::var("GITHUB_EVENT_BEFORE")
+        && before != "0".repeat(40)
+        && !before.trim().is_empty()
+    {
+        return Ok(before);
     }
 
     for candidate in ["origin/main", "origin/master"] {
@@ -306,14 +307,15 @@ fn build_dependency_graph(root: &Path) -> Result<DependencyGraph> {
 
         for captures in workspace_dep_re.captures_iter(&text) {
             let dep_name = captures.get(1).map(|m| m.as_str()).unwrap_or_default();
-            if let Some(dep_dir) = ws_path_map.get(dep_name) {
-                if dep_dir != crate_name && graph.all_crates.contains(dep_dir) {
-                    graph
-                        .deps
-                        .entry(crate_name.clone())
-                        .or_default()
-                        .insert(dep_dir.clone());
-                }
+            if let Some(dep_dir) = ws_path_map.get(dep_name)
+                && dep_dir != crate_name
+                && graph.all_crates.contains(dep_dir)
+            {
+                graph
+                    .deps
+                    .entry(crate_name.clone())
+                    .or_default()
+                    .insert(dep_dir.clone());
             }
         }
     }
@@ -462,27 +464,27 @@ fn emit_github(scope: &str, run_rust: bool, run_governance: bool, verbose: bool)
         );
     }
 
-    if let Ok(output_path) = env::var("GITHUB_OUTPUT") {
-        if !output_path.trim().is_empty() {
-            let mut body = String::new();
-            body.push_str(&format!("rust_scope={scope}\n"));
-            body.push_str(&format!(
-                "run_rust={}\n",
-                if run_rust { "true" } else { "false" }
-            ));
-            body.push_str(&format!(
-                "run_governance={}\n",
-                if run_governance { "true" } else { "false" }
-            ));
-            fs::OpenOptions::new()
-                .create(true)
-                .append(true)
-                .open(&output_path)
-                .with_context(|| format!("open GITHUB_OUTPUT {}", output_path))?
-                .write_all(body.as_bytes())
-                .with_context(|| format!("write GITHUB_OUTPUT {}", output_path))?;
-            return Ok(());
-        }
+    if let Ok(output_path) = env::var("GITHUB_OUTPUT")
+        && !output_path.trim().is_empty()
+    {
+        let mut body = String::new();
+        body.push_str(&format!("rust_scope={scope}\n"));
+        body.push_str(&format!(
+            "run_rust={}\n",
+            if run_rust { "true" } else { "false" }
+        ));
+        body.push_str(&format!(
+            "run_governance={}\n",
+            if run_governance { "true" } else { "false" }
+        ));
+        fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(&output_path)
+            .with_context(|| format!("open GITHUB_OUTPUT {}", output_path))?
+            .write_all(body.as_bytes())
+            .with_context(|| format!("write GITHUB_OUTPUT {}", output_path))?;
+        return Ok(());
     }
 
     println!("::set-output name=rust_scope::{scope}");
