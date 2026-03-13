@@ -16,9 +16,8 @@ from __future__ import annotations
 
 import argparse
 import os
-from pathlib import Path
 import unicodedata
-
+from pathlib import Path
 
 REPLACEMENTS: dict[str, str] = {
     "\u2018": "'",

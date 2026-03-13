@@ -77,7 +77,7 @@ pub struct InsightEntry {
     #[serde(default)]
     pub claims: Vec<String>,
     #[serde(default)]
-    pub sprint: Option<u32>,
+    pub sprint: Option<toml::Value>,
     #[serde(default)]
     pub summary: Option<String>,
 }
@@ -975,7 +975,10 @@ pub fn load_insights(path: &Path) -> Result<Vec<InsightEntry>, String> {
 }
 
 /// Load insights registry from TOML text.
-pub fn load_insights_from_str(content: &str, source_label: &str) -> Result<Vec<InsightEntry>, String> {
+pub fn load_insights_from_str(
+    content: &str,
+    source_label: &str,
+) -> Result<Vec<InsightEntry>, String> {
     let file: InsightsFile =
         toml::from_str(content).map_err(|e| format!("Failed to parse {source_label}: {e}"))?;
     Ok(file.insight)

@@ -35,8 +35,8 @@ impl HardwareTopology {
         let cores = topo.physical_core_ids.clone();
 
         eprintln!(
-            "HardwareTopology: Detected {} physical cores. L3 Cache: {:.1} MB (Safe Working Set: {:.1} MB)", 
-            cores.len(), 
+            "HardwareTopology: Detected {} physical cores. L3 Cache: {:.1} MB (Safe Working Set: {:.1} MB)",
+            cores.len(),
             topo.l3_cache_bytes as f64 / 1024.0 / 1024.0,
             topo.l3_safe_working_set_bytes as f64 / 1024.0 / 1024.0
         );

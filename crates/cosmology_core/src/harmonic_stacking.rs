@@ -902,9 +902,17 @@ pub fn per_galaxy_dft(
             wavenumbers
                 .iter()
                 .map(|&k| {
-                    let re: f64 = g.points.iter().map(|p| p.delta_v * (k * p.x).cos()).sum::<f64>()
+                    let re: f64 = g
+                        .points
+                        .iter()
+                        .map(|p| p.delta_v * (k * p.x).cos())
+                        .sum::<f64>()
                         / n;
-                    let im: f64 = g.points.iter().map(|p| p.delta_v * (k * p.x).sin()).sum::<f64>()
+                    let im: f64 = g
+                        .points
+                        .iter()
+                        .map(|p| p.delta_v * (k * p.x).sin())
+                        .sum::<f64>()
                         / n;
                     (re * re + im * im, im.atan2(re))
                 })
@@ -1357,7 +1365,14 @@ mod tests {
         // 20 galaxies with random-ish residuals (no coherent phase).
         // Rayleigh R should be small.
         let galaxies: Vec<_> = (0..20)
-            .map(|i| make_galaxy(&format!("G{i}"), 10.0 + i as f64, 50, 0.02 * (i as f64 % 3.0 - 1.0)))
+            .map(|i| {
+                make_galaxy(
+                    &format!("G{i}"),
+                    10.0 + i as f64,
+                    50,
+                    0.02 * (i as f64 % 3.0 - 1.0),
+                )
+            })
             .collect();
         let wavenumbers = predicted_wavenumbers();
         let result = galaxy_ensemble_phase_coherence(&galaxies, &wavenumbers, 3);
@@ -1392,10 +1407,7 @@ mod tests {
             .collect();
         let injected = inject_zd_signal(&galaxies, 0.01, 16);
         // At least some points should differ from 0.0
-        let any_nonzero = injected[0]
-            .points
-            .iter()
-            .any(|p| p.delta_v.abs() > 1e-10);
+        let any_nonzero = injected[0].points.iter().any(|p| p.delta_v.abs() > 1e-10);
         assert!(any_nonzero, "injected signal should be non-zero");
     }
 
@@ -1419,8 +1431,7 @@ mod tests {
             .map(|i| make_galaxy(&format!("G{i}"), 10.0, 50, 0.0))
             .collect();
         let alphas = [0.0, 0.001, 0.004, 0.008];
-        let results =
-            injection_recovery_sweep(&galaxies, &alphas, 16, &StackingConfig::default());
+        let results = injection_recovery_sweep(&galaxies, &alphas, 16, &StackingConfig::default());
         assert_eq!(results.len(), 4);
     }
 

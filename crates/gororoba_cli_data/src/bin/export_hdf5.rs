@@ -1,6 +1,7 @@
 //! Export computed data to HDF5 format.
 //!
-//! Reads TOML registry data and writes a consolidated HDF5 file with groups:
+//! Reads canonical control-plane compatibility data and writes a consolidated
+//! HDF5 file with groups:
 //! - `/registry/claims` -- claims table (ID + status)
 //! - `/registry/insights` -- insights summary
 //!
@@ -30,6 +31,7 @@ fn main() {
 #[cfg(feature = "hdf5-export")]
 fn run_export() {
     use clap::Parser;
+    use provenance_store::{ControlPlaneCompatKind, ProvenanceStore};
     use std::path::PathBuf;
 
     #[derive(Parser)]
@@ -42,6 +44,11 @@ fn run_export() {
         /// Registry directory
         #[arg(long, default_value = "registry")]
         registry_dir: PathBuf,
+
+        /// Canonical control-plane database. When present, registry summaries
+        /// are loaded from SQLite-backed compatibility text first.
+        #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+        canonical_db: PathBuf,
     }
 
     let args = Args::parse();
@@ -58,7 +65,24 @@ fn run_export() {
 
     // --- Export claims ---
     let claims_path = args.registry_dir.join("claims.toml");
-    if claims_path.exists() {
+    let claims_text = if args.canonical_db.exists() {
+        let mut store = ProvenanceStore::open(&args.canonical_db).unwrap_or_else(|err| {
+            panic!("open canonical db {}: {err}", args.canonical_db.display())
+        });
+        store
+            .control_plane_compat_text(ControlPlaneCompatKind::Claims)
+            .unwrap_or_else(|err| {
+                panic!(
+                    "render claims compatibility text from canonical db {}: {err}",
+                    args.canonical_db.display()
+                )
+            })
+    } else if claims_path.exists() {
+        std::fs::read_to_string(&claims_path).unwrap()
+    } else {
+        String::new()
+    };
+    if !claims_text.is_empty() {
         #[derive(serde::Deserialize)]
         struct ClaimsRegistry {
             claim: Vec<ClaimEntry>,
@@ -69,8 +93,7 @@ fn run_export() {
             status: String,
         }
 
-        let content = std::fs::read_to_string(&claims_path).unwrap();
-        let registry: ClaimsRegistry = toml::from_str(&content).unwrap();
+        let registry: ClaimsRegistry = toml::from_str(&claims_text).unwrap();
 
         let ids: Vec<String> = registry.claim.iter().map(|c| c.id.clone()).collect();
         let statuses: Vec<String> = registry.claim.iter().map(|c| c.status.clone()).collect();
@@ -78,7 +101,11 @@ fn run_export() {
         data_core::hdf5_export::export_claims_summary(&args.output, &ids, &statuses).unwrap();
         println!("Exported {} claims to {}", ids.len(), args.output.display());
     } else {
-        eprintln!("WARNING: {} not found", claims_path.display());
+        eprintln!(
+            "WARNING: missing both canonical db {} and fallback {}",
+            args.canonical_db.display(),
+            claims_path.display()
+        );
     }
 
     println!("HDF5 export complete: {}", args.output.display());

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E501
 """
 Build a domain mapping for claims (C-001..C-427).
 

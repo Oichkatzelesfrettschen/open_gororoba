@@ -175,6 +175,7 @@ fn main() -> anyhow::Result<()> {
         min_galaxies_per_bin: 1, // Single galaxy
         inverse_variance_weighting: true,
         cd_params: cd_params.clone(),
+        exclude_psf_flagged: false,
     };
 
     let result = stack_residuals(&[norm], &config);

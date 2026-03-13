@@ -34,8 +34,8 @@ import sys
 from pathlib import Path
 
 try:
-    from astropy.io import fits
     import numpy as np
+    from astropy.io import fits
 except ImportError:
     print("ERROR: requires astropy and numpy", file=sys.stderr)
     print("  pip install astropy numpy", file=sys.stderr)
@@ -329,15 +329,21 @@ def main():
               and not np.isnan(r["stellar_sigma_1re"]) and r["stellar_sigma_1re"] > 0]
     zs = [r["z"] for r in rows]
 
-    print(f"\nSummary:")
+    print("\nSummary:")
     if zs:
         print(f"  Redshift: {np.median(zs):.4f} (median), [{min(zs):.4f}, {max(zs):.4f}]")
     if masses:
-        print(f"  log(M*/Msun): {np.median(masses):.2f} (median), [{min(masses):.2f}, {max(masses):.2f}]")
+        print(
+            "  log(M*/Msun): "
+            f"{np.median(masses):.2f} (median), [{min(masses):.2f}, {max(masses):.2f}]"
+        )
     else:
         print("  log(M*/Msun): NO VALID MASSES (DRPall missing or no cross-match)")
     if sigmas:
-        print(f"  sigma_* (km/s): {np.median(sigmas):.1f} (median), [{min(sigmas):.1f}, {max(sigmas):.1f}]")
+        print(
+            "  sigma_* (km/s): "
+            f"{np.median(sigmas):.1f} (median), [{min(sigmas):.1f}, {max(sigmas):.1f}]"
+        )
 
     # DRPall cross-match statistics
     n_with_mass = sum(1 for r in rows

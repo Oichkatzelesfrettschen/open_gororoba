@@ -36,7 +36,6 @@ import argparse
 import sys
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 MORPH_PARQUET = Path(
@@ -132,8 +131,8 @@ def crossmatch_sky(
     match within radius_arcsec, plus separation column sep_arcsec.
     """
     try:
-        from astropy.coordinates import SkyCoord
         import astropy.units as u
+        from astropy.coordinates import SkyCoord
     except ImportError:
         print("  ERROR: astropy not installed (pip install astropy)")
         sys.exit(1)

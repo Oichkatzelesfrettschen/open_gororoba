@@ -219,6 +219,7 @@ fn main() -> anyhow::Result<()> {
         min_galaxies_per_bin: cli.min_per_bin,
         inverse_variance_weighting: true,
         cd_params: cd_params.clone(),
+        exclude_psf_flagged: false,
     };
 
     eprintln!(
