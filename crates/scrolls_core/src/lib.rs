@@ -46,7 +46,22 @@ pub struct ScrollDatasetMeta {
     pub corpus_label: String,
     pub header: Vec<String>,
     pub original_header: Vec<String>,
-    pub rows: Vec<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rows: Option<Vec<Vec<String>>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rows_preview: Option<Vec<Vec<String>>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub row_payload: Option<ScrollRowPayloadRef>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ScrollRowPayloadRef {
+    pub backend: String,
+    pub sqlite_path: String,
+    pub sqlite_table: String,
+    pub dataset_id: String,
+    pub format: String,
+    pub lfs_tracked: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -75,6 +90,12 @@ pub struct ScrollIndexEntry {
     pub header_value_sha256: String,
     pub row_value_sha256: String,
     pub dataset_class: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub row_payload_backend: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub row_payload_sqlite: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub row_payload_table: Option<String>,
 }
 
 #[derive(Debug, Clone)]
@@ -93,6 +114,13 @@ pub struct ConvertSpec<'a> {
     pub dataset_class: &'a str,
     pub corpus_label: &'a str,
     pub migrated_by: &'a str,
+}
+
+pub fn render_scroll_dataset(dataset: &ScrollDataset) -> Result<String, ScrollError> {
+    let rendered_dataset_toml_raw = toml::to_string_pretty(dataset)?;
+    Ok(canonicalize_unicode_escape_literals(
+        &rendered_dataset_toml_raw,
+    ))
 }
 
 #[derive(Debug, Clone)]
@@ -542,13 +570,14 @@ pub fn convert_csv_to_scroll(
             corpus_label: spec.corpus_label.to_string(),
             header: parsed.header.clone(),
             original_header: parsed.original_header.clone(),
-            rows: parsed.rows.clone(),
+            rows: Some(parsed.rows.clone()),
+            rows_preview: None,
+            row_payload: None,
         },
         column: columns,
     };
 
-    let rendered_dataset_toml_raw = toml::to_string_pretty(&dataset)?;
-    let rendered_dataset_toml = canonicalize_unicode_escape_literals(&rendered_dataset_toml_raw);
+    let rendered_dataset_toml = render_scroll_dataset(&dataset)?;
 
     let index_entry = ScrollIndexEntry {
         id: spec.dataset_id.to_string(),
@@ -565,6 +594,9 @@ pub fn convert_csv_to_scroll(
         header_value_sha256,
         row_value_sha256,
         dataset_class: spec.dataset_class.to_string(),
+        row_payload_backend: None,
+        row_payload_sqlite: None,
+        row_payload_table: None,
     };
 
     Ok(ConversionOutput {
@@ -622,6 +654,15 @@ pub fn render_scroll_index(
         ));
         lines.push(format!("row_value_sha256 = {}", q(&entry.row_value_sha256)));
         lines.push(format!("dataset_class = {}", q(&entry.dataset_class)));
+        if let Some(value) = &entry.row_payload_backend {
+            lines.push(format!("row_payload_backend = {}", q(value)));
+        }
+        if let Some(value) = &entry.row_payload_sqlite {
+            lines.push(format!("row_payload_sqlite = {}", q(value)));
+        }
+        if let Some(value) = &entry.row_payload_table {
+            lines.push(format!("row_payload_table = {}", q(value)));
+        }
         lines.push(String::new());
     }
     lines.join("\n")
@@ -662,6 +703,18 @@ mod tests {
         assert_eq!(
             converted.dataset.dataset.header,
             vec!["a".to_string(), "b".to_string()]
+        );
+        assert_eq!(
+            converted
+                .dataset
+                .dataset
+                .rows
+                .as_ref()
+                .expect("inline rows"),
+            &vec![
+                vec!["1".to_string(), "2".to_string()],
+                vec!["3".to_string(), "4".to_string()]
+            ]
         );
         assert!(!converted.dataset.dataset.header_value_sha256.is_empty());
         assert!(!converted.dataset.dataset.row_value_sha256.is_empty());
@@ -751,6 +804,16 @@ mod tests {
         assert_eq!(converted.dataset.dataset.column_count, 1);
         assert_eq!(converted.dataset.dataset.row_count, 2);
         assert_eq!(converted.dataset.dataset.header, vec!["value"]);
+        assert_eq!(
+            converted
+                .dataset
+                .dataset
+                .rows
+                .as_ref()
+                .expect("inline rows")
+                .len(),
+            2
+        );
     }
 
     #[test]

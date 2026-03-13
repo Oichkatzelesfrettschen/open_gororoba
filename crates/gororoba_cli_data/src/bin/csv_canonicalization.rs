@@ -657,10 +657,14 @@ fn run_verify(repo_root: &Path, args: &VerifyArgs) -> Result<()> {
                 scrollify_source_for_verify(&source_path, &source_csv, &canonical_toml, &dataset)?;
             let converted_dataset = converted.dataset.dataset;
             let converted_columns = converted.dataset.column;
+            let converted_rows = converted_dataset
+                .rows
+                .clone()
+                .context("scrollify verify expected inline rows from source conversion")?;
             (
                 converted_dataset.header,
                 converted_dataset.original_header,
-                converted_dataset.rows,
+                converted_rows,
                 converted_columns
                     .iter()
                     .map(|column| column.inferred_type.clone())
