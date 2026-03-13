@@ -1707,3 +1707,4 @@ id = "I-183"
 sprint = "S83"
 summary = "The non-static signal analysis suite (harmonic-halo-signal-analysis binary) applies three complementary lenses to stacked rotation curve profiles: (1) STFT spectrogram with Gaussian window (sigma_x=1.5 r/r_s) -- reveals WHERE in x-space harmonic power is concentrated via power(x_center, k); (2) derivative stacking d(delta)/dx -- annihilates the DC baryonic baseline and amplifies oscillatory content (power at mode k scales as k^2 times original); (3) jackknife Rayleigh R test -- drops one x-bin at a time and measures phase clustering; R -> 1 (coherent signal), R -> 0 (noise), p-value under H0 is exp(-n*R^2). Expected result for baryonic noise: STFT power concentrated at x < 2, derivative DFT red-noise with no modal excess, Rayleigh R < 0.3 with p > 0.3 at all CD-ZD modes."
 title = "Non-static analysis toolkit: STFT spectrogram + derivative stacking + jackknife Rayleigh R test"
+

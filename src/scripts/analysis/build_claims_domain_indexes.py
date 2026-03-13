@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E501
 """
 Generate per-domain claim indexes under docs/claims/by_domain/.
 

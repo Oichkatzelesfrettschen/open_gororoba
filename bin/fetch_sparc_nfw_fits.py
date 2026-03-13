@@ -135,7 +135,7 @@ def fetch_from_wayback() -> bool:
     if dest.exists():
         return True
     url = f"{WAYBACK_BASE}/table2.dat"
-    print(f"  Trying Wayback for table2.dat...")
+    print("  Trying Wayback for table2.dat...")
     return download_url(url, dest)
 
 

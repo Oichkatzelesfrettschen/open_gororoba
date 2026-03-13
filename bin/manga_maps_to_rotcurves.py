@@ -46,9 +46,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 try:
-    from astropy.io import fits
-    from astropy.cosmology import FlatLambdaCDM
     import numpy as np
+    from astropy.cosmology import FlatLambdaCDM
+    from astropy.io import fits
 except ImportError:
     print("ERROR: requires astropy and numpy", file=sys.stderr)
     print("  pip install astropy numpy", file=sys.stderr)
@@ -207,7 +207,9 @@ def extract_pseudo_slit(maps_path: Path, pa_deg: float, incl_deg: float,
         v_err = v_err_los / sin_i
         r_kpc_arr = r_valid * spaxel_kpc
 
-        for r_kpc, v_c, v_e in zip(r_kpc_arr.tolist(), v_circ.tolist(), v_err.tolist()):
+        for r_kpc, v_c, v_e in zip(
+            r_kpc_arr.tolist(), v_circ.tolist(), v_err.tolist(), strict=True
+        ):
             points.append({"r_kpc": r_kpc, "v_obs_km_s": v_c, "v_err_km_s": v_e})
 
     if len(points) < 5:
@@ -245,7 +247,9 @@ def _bin_rotation_curve(points: list[dict], n_bins: int = 30) -> list[dict]:
         if w_sum <= 0:
             continue
 
-        v_mean = sum(w * p["v_obs_km_s"] for w, p in zip(weights, in_bin)) / w_sum
+        v_mean = sum(
+            w * p["v_obs_km_s"] for w, p in zip(weights, in_bin, strict=True)
+        ) / w_sum
         v_err = 1.0 / np.sqrt(w_sum)
 
         binned.append({
@@ -487,7 +491,7 @@ def main():
                     print(f"  [{n_done}/{total + len(completed_before)}] {pct:.1f}%"
                           f"  ok={s} dl_fail={df} ex_fail={ef}")
 
-    print(f"\n=== MaNGA Rotation Curve Extraction Complete ===")
+    print("\n=== MaNGA Rotation Curve Extraction Complete ===")
     n_total_success = counters["success"] + len(completed_before)
     print(f"  Total in CSV: {n_total_success}")
     print(f"  This run:  success={counters['success']}, "

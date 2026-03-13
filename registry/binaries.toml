@@ -513,6 +513,18 @@ crate = "gororoba_cli"
 description = "Gravitational wave merger tree dendrogram analysis"
 
 [[binary]]
+name = "harmonic-halo-galaxy-phase"
+crate = "gororoba_cli_physics"
+description = "Galaxy-ensemble Rayleigh phase coherence test. Computes per-galaxy DFT phases at CD-ZD wavenumbers across N=6992 MaNGA galaxies, tests Rayleigh R statistic. Fixes N=19 limitation of x-bin jackknife (E-192)."
+experiment = "E-194"
+
+[[binary]]
+name = "harmonic-halo-injection"
+crate = "gororoba_cli_physics"
+description = "ZD signal injection-recovery sweep. Injects predicted CD-ZD modulation at alpha_zd in {0, 0.001, 0.002, 0.004, 0.008, 0.016} and measures recovery ratio. Validates pipeline sensitivity at SKA 2030 design floor."
+experiment = "E-197"
+
+[[binary]]
 name = "harmonic-halo-mw"
 crate = "gororoba_cli_physics"
 description = "Analyze Gaia DR3 Milky Way rotation curve for harmonic halo modulation. Computes NFW residuals, tests multiple alpha_zd values, Fourier-analyzes single-galaxy residual at 7 predicted wavenumbers."
@@ -531,30 +543,6 @@ description = "Non-static signal analysis of stacked rotation curve profiles. Th
 experiment = "E-192"
 
 [[binary]]
-name = "harmonic-halo-galaxy-phase"
-crate = "gororoba_cli_physics"
-description = "Galaxy-ensemble Rayleigh phase coherence test. Computes per-galaxy DFT phases at CD-ZD wavenumbers across N=6992 MaNGA galaxies, tests Rayleigh R statistic. Fixes N=19 limitation of x-bin jackknife (E-192)."
-experiment = "E-194"
-
-[[binary]]
-name = "harmonic-halo-injection"
-crate = "gororoba_cli_physics"
-description = "ZD signal injection-recovery sweep. Injects predicted CD-ZD modulation at alpha_zd in {0, 0.001, 0.002, 0.004, 0.008, 0.016} and measures recovery ratio. Validates pipeline sensitivity at SKA 2030 design floor."
-experiment = "E-197"
-
-[[binary]]
-name = "harmonic-halo-visualize"
-crate = "gororoba_cli_physics"
-description = "Publication-ready PGFPlots visualization of E-183/E-192 tripartite analysis: STFT spectrogram, AC-coupled derivative DFT, stacked profile with annotated baryonic systematics."
-experiment = "E-195"
-
-[[binary]]
-name = "hi-cube-rotcurve-extractor"
-crate = "gororoba_cli_physics"
-description = "THINGS HI 21cm FITS cube rotation curve extractor. Moment-1 velocity field, elliptical ring averaging, 3-sigma clipping. Reaches x > 10 r_s vs MaNGA optical truncation at x~1.36 r_s."
-experiment = "E-193"
-
-[[binary]]
 name = "harmonic-halo-stacking"
 crate = "gororoba_cli_physics"
 description = "Stack SPARC rotation curve residuals in normalized r/r_s coordinates to detect 7-mode harmonic halo signature. Fourier analysis at predicted box-kite wavenumbers k_n' = 2*pi*n/7. Reports detection SNR and alpha_zd estimate/upper limit."
@@ -564,6 +552,12 @@ experiment = "E-180"
 name = "harmonic-halo-stacking-manga"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+
+[[binary]]
+name = "harmonic-halo-visualize"
+crate = "gororoba_cli_physics"
+description = "Publication-ready PGFPlots visualization of E-183/E-192 tripartite analysis: STFT spectrogram, AC-coupled derivative DFT, stacked profile with annotated baryonic systematics."
+experiment = "E-195"
 
 [[binary]]
 name = "harper-chern"
@@ -594,6 +588,12 @@ description = "Parser-aware staging and audit pass for local Voyager merged, CRS
 name = "hepdata-refresh"
 crate = "gororoba_cli"
 description = "Re-download HEPData CSV tables for managed lanes by resolving per-file table DOI metadata to canonical CSV content URLs."
+
+[[binary]]
+name = "hi-cube-rotcurve-extractor"
+crate = "gororoba_cli_physics"
+description = "THINGS HI 21cm FITS cube rotation curve extractor. Moment-1 velocity field, elliptical ring averaging, 3-sigma clipping. Reaches x > 10 r_s vs MaNGA optical truncation at x~1.36 r_s."
+experiment = "E-193"
 
 [[binary]]
 name = "homotopy-viscosity-equivalence"
@@ -1352,3 +1352,4 @@ name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
+

@@ -25,12 +25,12 @@ import math
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
-
 
 SIGMA_V_FRAC = 0.05    # 5% NFW velocity uncertainty (matches Rust binary)
 MIN_PER_BIN = 10       # same minimum as stacking run
