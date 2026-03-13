@@ -954,8 +954,16 @@ pub fn analyze(
 pub fn load_claims(path: &Path) -> Result<Vec<FullClaimEntry>, String> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| format!("Failed to read {}: {e}", path.display()))?;
+    load_claims_from_str(&content, &path.display().to_string())
+}
+
+/// Load claims registry from TOML text.
+pub fn load_claims_from_str(
+    content: &str,
+    source_label: &str,
+) -> Result<Vec<FullClaimEntry>, String> {
     let file: ClaimsFile =
-        toml::from_str(&content).map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
+        toml::from_str(content).map_err(|e| format!("Failed to parse {source_label}: {e}"))?;
     Ok(file.claim)
 }
 
@@ -963,8 +971,13 @@ pub fn load_claims(path: &Path) -> Result<Vec<FullClaimEntry>, String> {
 pub fn load_insights(path: &Path) -> Result<Vec<InsightEntry>, String> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| format!("Failed to read {}: {e}", path.display()))?;
+    load_insights_from_str(&content, &path.display().to_string())
+}
+
+/// Load insights registry from TOML text.
+pub fn load_insights_from_str(content: &str, source_label: &str) -> Result<Vec<InsightEntry>, String> {
     let file: InsightsFile =
-        toml::from_str(&content).map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
+        toml::from_str(content).map_err(|e| format!("Failed to parse {source_label}: {e}"))?;
     Ok(file.insight)
 }
 
@@ -972,8 +985,16 @@ pub fn load_insights(path: &Path) -> Result<Vec<InsightEntry>, String> {
 pub fn load_experiments(path: &Path) -> Result<Vec<ExperimentEntry>, String> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| format!("Failed to read {}: {e}", path.display()))?;
+    load_experiments_from_str(&content, &path.display().to_string())
+}
+
+/// Load experiments registry from TOML text.
+pub fn load_experiments_from_str(
+    content: &str,
+    source_label: &str,
+) -> Result<Vec<ExperimentEntry>, String> {
     let file: ExperimentsFile =
-        toml::from_str(&content).map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
+        toml::from_str(content).map_err(|e| format!("Failed to parse {source_label}: {e}"))?;
     Ok(file.experiment)
 }
 
