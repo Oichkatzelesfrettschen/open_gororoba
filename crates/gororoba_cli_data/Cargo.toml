@@ -318,6 +318,14 @@ path = "src/bin/download_recovery.rs"
 name = "lotss-fetch"
 path = "src/bin/lotss_fetch.rs"
 
+[[bin]]
+name = "lotss-analysis"
+path = "src/bin/lotss_analysis.rs"
+
+[[bin]]
+name = "euclid-fetch"
+path = "src/bin/euclid_fetch.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 provenance_core = { path = "../provenance_core" }
@@ -346,6 +354,9 @@ ureq = { workspace = true }
 core_affinity = { workspace = true }
 env_logger = { workspace = true }
 anyhow = { workspace = true }
+reqwest = { workspace = true }
+backon = { workspace = true }
+md5 = { workspace = true }
 rayon = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
@@ -353,9 +364,11 @@ tracing-subscriber = { workspace = true }
 anstyle = { workspace = true }
 unicode-normalization = { workspace = true }
 rusqlite = { workspace = true }
-arrow-array = "58.0.0"
-arrow-ipc = "58.0.0"
-arrow-schema = "58.0.0"
+parquet = { workspace = true }
+arrow-array = { workspace = true }
+arrow-ipc = { workspace = true }
+arrow-schema = { workspace = true }
+statrs = { workspace = true }
 tempfile = { workspace = true }
 
 [features]

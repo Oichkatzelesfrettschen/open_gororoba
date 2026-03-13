@@ -1112,7 +1112,7 @@
       "source_status": "active",
       "source_access_class": "public",
       "source_canonical_url": "https://eas.esac.esa.int/sas/",
-      "source_retrieval_method": "python3 bin/fetch_euclid.py (ADQL client, TAP protocol)"
+      "source_retrieval_method": "cargo run -p gororoba_cli_data --bin euclid-fetch -- tap-tables|tap-query"
     },
     {
       "path": "euclid/tap/mer/mer_cone_269.7300_66.0200_r0.0500.csv",
@@ -1123,7 +1123,7 @@
       "source_status": "active",
       "source_access_class": "public",
       "source_canonical_url": "https://eas.esac.esa.int/sas/",
-      "source_retrieval_method": "python3 bin/fetch_euclid.py (ADQL client, TAP protocol)"
+      "source_retrieval_method": "cargo run -p gororoba_cli_data --bin euclid-fetch -- tap-tables|tap-query"
     },
     {
       "path": "euclid/tap/phz/phz_cone_269.7300_66.0200_r0.0200.csv",
@@ -1134,7 +1134,7 @@
       "source_status": "active",
       "source_access_class": "public",
       "source_canonical_url": "https://eas.esac.esa.int/sas/",
-      "source_retrieval_method": "python3 bin/fetch_euclid.py (ADQL client, TAP protocol)"
+      "source_retrieval_method": "cargo run -p gororoba_cli_data --bin euclid-fetch -- tap-tables|tap-query"
     },
     {
       "path": "euclid/zenodo/15025832/q1_discovery_engine_lens_catalog.csv",
@@ -1145,7 +1145,7 @@
       "source_status": "active",
       "source_access_class": "public",
       "source_canonical_url": "https://zenodo.org/records/15025832",
-      "source_retrieval_method": "python3 bin/fetch_euclid_zenodo.py --catalog strong_lensing"
+      "source_retrieval_method": "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog strong_lensing"
     },
     {
       "path": "euclid/zenodo/15106473/morphology_catalogue.parquet",
@@ -1156,7 +1156,7 @@
       "source_status": "active",
       "source_access_class": "public",
       "source_canonical_url": "https://zenodo.org/records/15106473",
-      "source_retrieval_method": "python3 bin/fetch_euclid_zenodo.py --catalog morphology"
+      "source_retrieval_method": "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog morphology"
     },
     {
       "path": "euclid/zenodo/15106473/useful_physical_measurements.parquet",
@@ -1167,7 +1167,7 @@
       "source_status": "active",
       "source_access_class": "public",
       "source_canonical_url": "https://zenodo.org/records/15106473",
-      "source_retrieval_method": "python3 bin/fetch_euclid_zenodo.py --catalog morphology"
+      "source_retrieval_method": "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog morphology"
     },
     {
       "path": "euclid/zenodo/17087034/Q1_merger_classification.csv",
@@ -1178,7 +1178,7 @@
       "source_status": "active",
       "source_access_class": "public",
       "source_canonical_url": "https://zenodo.org/records/17087034",
-      "source_retrieval_method": "python3 bin/fetch_euclid_zenodo.py --catalog mergers"
+      "source_retrieval_method": "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog mergers"
     },
     {
       "path": "euclid/zenodo/euclid_zenodo_manifest.json",

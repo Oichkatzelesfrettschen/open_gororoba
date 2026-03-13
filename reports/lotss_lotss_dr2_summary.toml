@@ -1,0 +1,3 @@
+input = "data/external/radio_surveys/lotss_dr2.fits"
+size_bytes = 949599360
+naxis2 = 4396228

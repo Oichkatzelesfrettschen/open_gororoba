@@ -98081,7 +98081,7 @@ kind = "table_row"
 line_start = 1073
 line_end = 1073
 heading_level = 0
-text_ascii = "C-1201 | Euclid Quick Release 1 (Q1) supplementary catalogs are freely available from Zenodo under CC BY 4.0: Visual Morphology (DOI 10.5281/zenodo.15106473, morphology_catalogue.parquet 97.3 MB), Strong Lensing (DOI 10.5281/zenodo.15025832, q1_discovery_engine_lens_catalog.csv 422 KB), Galaxy Mergers (DOI 10.5281/zenodo.17087034, Q1_merger_classification.csv 39.7 MB). All files downloaded and MD5-verified via Zenodo REST API. | data/external/SOURCES.toml (SRC-EUCLID-Q1-ZENODO-*), data/external/euclid/zenodo/euclid_zenodo_manifest.json | **Verified** | 2026-03-10 | VERIFY: python3 bin/fetch_euclid_zenodo.py --skip-existing returns 0 skipped with MD5 matches. REFUTE if Zenodo records are retracted or DOIs resolve to different content."
+text_ascii = "C-1201 | Euclid Quick Release 1 (Q1) supplementary catalogs are freely available from Zenodo under CC BY 4.0: Visual Morphology (DOI 10.5281/zenodo.15106473, morphology_catalogue.parquet 97.3 MB), Strong Lensing (DOI 10.5281/zenodo.15025832, q1_discovery_engine_lens_catalog.csv 422 KB), Galaxy Mergers (DOI 10.5281/zenodo.17087034, Q1_merger_classification.csv 39.7 MB). All files downloaded and MD5-verified via Zenodo REST API. | data/external/SOURCES.toml (SRC-EUCLID-Q1-ZENODO-*), data/external/euclid/zenodo/euclid_zenodo_manifest.json | **Verified** | 2026-03-10 | VERIFY: cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog all --skip-existing returns 0 skipped with MD5 matches. REFUTE if Zenodo records are retracted or DOIs resolve to different content."
 text_sha256 = "4bd31b5cd3e583438c63208a7357f4233687db9ff09b0e82301defc16c4342c8"
 
 [[chunk]]
@@ -110907,7 +110907,7 @@ kind = "code_block"
 line_start = 1837
 line_end = 1839
 heading_level = 0
-text_ascii = "python3 bin/fetch_euclid_zenodo.py --discover && python3 bin/fetch_euclid_zenodo.py --skip-existing"
+text_ascii = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-discover && cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog all --skip-existing"
 text_sha256 = "7b4ece72092ef446a71eb867923ade5fe6a9c8e69a06b311b235a0e533ad36f2"
 
 [[chunk]]
@@ -288029,7 +288029,7 @@ kind = "list_item"
 line_start = 8520
 line_end = 8520
 heading_level = 0
-text_ascii = "What would verify/refute it: VERIFY: python3 bin/fetch_euclid_zenodo.py --skip-existing returns 0 skipped with MD5 matches. REFUTE if Zenodo records are retracted or DOIs resolve to different content."
+text_ascii = "What would verify/refute it: VERIFY: cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog all --skip-existing returns 0 skipped with MD5 matches. REFUTE if Zenodo records are retracted or DOIs resolve to different content."
 text_sha256 = "6b1631b2621fa9adb7b7ae4abfadd0f6eb3bcdc3a3b6efb6ce94bc65ce0ff83f"
 
 [[chunk]]
@@ -341533,7 +341533,7 @@ kind = "code_block"
 line_start = 2398
 line_end = 2400
 heading_level = 0
-text_ascii = "python3 bin/fetch_euclid_zenodo.py --discover && python3 bin/fetch_euclid_zenodo.py --skip-existing"
+text_ascii = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-discover && cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog all --skip-existing"
 text_sha256 = "7b4ece72092ef446a71eb867923ade5fe6a9c8e69a06b311b235a0e533ad36f2"
 
 [[chunk]]

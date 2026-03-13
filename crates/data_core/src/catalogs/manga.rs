@@ -1,7 +1,7 @@
 //! MaNGA DR17 rotation curve parser.
 //!
 //! Parses rotation curves extracted from MaNGA IFU MAPS files via the
-//! pseudo-slit method (bin/manga_maps_to_rotcurves.py). The master CSV
+//! pseudo-slit method. The master CSV
 //! format is SPARC-compatible: name, r_kpc, v_obs_km_s, v_err_km_s.
 //!
 //! Also parses the DAPall selection catalog CSV for galaxy metadata
@@ -9,8 +9,8 @@
 //! via the stellar-mass-to-halo-mass (SMHM) relation.
 //!
 //! Pipeline:
-//!   1. DAPall FITS -> manga_dapall_to_csv.py -> dapall_selection.csv
-//!   2. Selection cuts -> manga_maps_to_rotcurves.py -> manga_rotcurves_all.csv
+//!   1. Governed MaNGA selection tables -> dapall_selection.csv
+//!   2. Rust-native `manga-maps-extractor` -> manga_rotcurves_all.csv
 //!   3. This parser -> Rust NormalizedResiduals -> harmonic stacking
 //!
 //! Reference: Westfall et al., AJ 158 (2019) 231 (MaNGA DAP).

@@ -1861,9 +1861,9 @@ title = "TX-2 Viscosity-to-Filtration Loop at 128^3 CPU FP64 (C-669 Refutation)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = ""
+binary = "euclid-fetch"
 binary_experiment_declared = ""
-binary_registered = false
+binary_registered = true
 claim_refs = ["C-819", "C-820", "C-821", "C-822", "C-823"]
 claims = ["C-819", "C-820", "C-821", "C-822", "C-823"]
 dataset_label_refs = []
@@ -3638,8 +3638,8 @@ method = "Query Zenodo REST API for all Euclid Q1 supplementary science records.
 output = ["data/external/euclid/zenodo/euclid_zenodo_manifest.json", "data/external/euclid/zenodo/euclid_zenodo_discovery.json"]
 output_path_refs = ["data/external/euclid/zenodo/euclid_zenodo_discovery.json", "data/external/euclid/zenodo/euclid_zenodo_manifest.json"]
 reproducibility_class = "deterministic_replay"
-run = "python3 bin/fetch_euclid_zenodo.py --discover && python3 bin/fetch_euclid_zenodo.py --skip-existing"
-run_command_sha256 = "7b4ece72092ef446a71eb867923ade5fe6a9c8e69a06b311b235a0e533ad36f2"
+run = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-discover && cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog all --skip-existing"
+run_command_sha256 = "bd89d3acfda711765ffd964bf9ff5ad41a06dc74cc65b4186fd2c4332c32e4d5"
 status = "active"
 status_token = "ACTIVE"
 title = "Euclid Q1 Zenodo catalog discovery and ingestion"

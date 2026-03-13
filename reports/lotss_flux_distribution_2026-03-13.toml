@@ -1,0 +1,28 @@
+generated_at_utc = "2026-03-13T19:34:01.520400238+00:00"
+bins = 40
+
+[[releases]]
+release = "DR2"
+n_sources = 4396228
+area_sq_deg = 5720.0
+flux_min_mjy = 0.05190569907426834
+flux_max_mjy = 81275.5390625
+flux_median_mjy = 0.9609744250774384
+power_law_gamma = 0.999913294547725
+power_law_gamma_err = 0.13276757258021799
+fit_intercept = 4.847454518661021
+fit_intercept_err = 0.31888667862752956
+n_fit_bins = 37
+
+[[releases]]
+release = "DR3"
+n_sources = 13667877
+area_sq_deg = 36000.0
+flux_min_mjy = 0.00005303597936290316
+flux_max_mjy = 271121.1875
+flux_median_mjy = 0.9777510762214661
+power_law_gamma = 1.4576267259444897
+power_law_gamma_err = 0.17130417047937935
+fit_intercept = 3.1858669967683912
+fit_intercept_err = 0.42536223111874355
+n_fit_bins = 30

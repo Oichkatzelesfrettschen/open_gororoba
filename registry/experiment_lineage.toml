@@ -1300,7 +1300,7 @@ acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Exe
 [[lineage]]
 id = "XL-071"
 experiment_id = "E-073"
-binary = ""
+binary = "euclid-fetch"
 deterministic = true
 gpu = false
 run_command = "cargo test -p gr_core -- photon_graviton"
@@ -2526,8 +2526,8 @@ experiment_id = "E-140"
 binary = ""
 deterministic = true
 gpu = false
-run_command = "python3 bin/fetch_euclid_zenodo.py --discover && python3 bin/fetch_euclid_zenodo.py --skip-existing"
-run_command_sha256 = "7b4ece72092ef446a71eb867923ade5fe6a9c8e69a06b311b235a0e533ad36f2"
+run_command = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-discover && cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog all --skip-existing"
+run_command_sha256 = "bd89d3acfda711765ffd964bf9ff5ad41a06dc74cc65b4186fd2c4332c32e4d5"
 claim_refs = []
 input_path_refs = []
 output_path_refs = ["data/external/euclid/zenodo/euclid_zenodo_discovery.json", "data/external/euclid/zenodo/euclid_zenodo_manifest.json"]
@@ -2535,7 +2535,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = ["SRC-EUCLID-Q1-ZENODO-MORPHOLOGY", "SRC-EUCLID-Q1-ZENODO-STRONG-LENSING", "SRC-EUCLID-Q1-ZENODO-MERGERS", "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY-SUPP", "SRC-EUCLID-Q1-ZENODO-PHOTOZ", "SRC-EUCLID-Q1-ZENODO-CLUSTERING", "SRC-EUCLID-Q1-ZENODO-COMPACT-GROUPS", "SRC-EUCLID-Q1-ZENODO-GC"]
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "python3 bin/fetch_euclid_zenodo.py --discover && python3 bin/fetch_euclid_zenodo.py --skip-existing", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-discover && cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog all --skip-existing", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]

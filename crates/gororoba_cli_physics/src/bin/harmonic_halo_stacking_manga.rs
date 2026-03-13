@@ -71,7 +71,7 @@ struct Cli {
     #[arg(long, default_value_t = 8)]
     min_points: usize,
 
-    /// Optional: path to Euclid-MaNGA cross-match CSV from euclid_manga_crossmatch.py.
+    /// Optional: path to Euclid-MaNGA cross-match CSV from `euclid-manga-crossmatch`.
     ///
     /// When provided, only galaxies present in this CSV (which already has
     /// morphology cuts applied) are included in the stack. Produces a

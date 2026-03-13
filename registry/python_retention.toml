@@ -211,7 +211,6 @@ globs = [
   "bin/convos_chunker.py",
   "bin/coq_prepare_confine.py",
   "bin/doctor.py",
-  "bin/euclid_manga_crossmatch.py",
   "bin/manga_maps_to_rotcurves.py",
   "bin/patch_pyfilesystem_pkg_resources.py",
   "bin/terminology_gate.py",
