@@ -158,7 +158,7 @@ pub fn symmetric_eigensystem_x87(
 
 #[cfg(test)]
 mod tests {
-    use super::{symmetric_eigenvalues_x87, symmetric_eigensystem_x87};
+    use super::{symmetric_eigensystem_x87, symmetric_eigenvalues_x87};
 
     #[test]
     fn test_x87_jacobi_diagonal_matrix() {
@@ -219,21 +219,24 @@ mod tests {
         assert!((eigs[1] - 2.0).abs() < 1.0e-12, "lambda_1={}", eigs[1]);
 
         // V^T V = I
-        assert!(
-            max_off_diagonal_vtv(&v, 2) < 1.0e-12,
-            "orthogonality error"
-        );
+        assert!(max_off_diagonal_vtv(&v, 2) < 1.0e-12, "orthogonality error");
 
         // Reconstruct: V diag(lambda) V^T should equal original matrix
         let a_rec: Vec<f64> = (0..4)
             .map(|idx| {
                 let i = idx / 2;
                 let j = idx % 2;
-                (0..2).map(|k| v[i * 2 + k] * eigs[k] * v[j * 2 + k]).sum::<f64>()
+                (0..2)
+                    .map(|k| v[i * 2 + k] * eigs[k] * v[j * 2 + k])
+                    .sum::<f64>()
             })
             .collect();
         for (orig, rec) in matrix.iter().zip(a_rec.iter()) {
-            assert!((orig - rec).abs() < 1.0e-10, "reconstruct diff {}", (orig - rec).abs());
+            assert!(
+                (orig - rec).abs() < 1.0e-10,
+                "reconstruct diff {}",
+                (orig - rec).abs()
+            );
         }
     }
 
@@ -267,7 +270,9 @@ mod tests {
             .map(|idx| {
                 let i = idx / n;
                 let j = idx % n;
-                (0..n).map(|k| v[i * n + k] * eigs[k] * v[j * n + k]).sum::<f64>()
+                (0..n)
+                    .map(|k| v[i * n + k] * eigs[k] * v[j * n + k])
+                    .sum::<f64>()
             })
             .collect();
 
@@ -276,7 +281,10 @@ mod tests {
             .zip(a_rec.iter())
             .map(|(a, b)| (a - b).abs())
             .fold(0.0_f64, f64::max);
-        assert!(max_err < 1.0e-10, "Hilbert reconstruction error = {max_err}");
+        assert!(
+            max_err < 1.0e-10,
+            "Hilbert reconstruction error = {max_err}"
+        );
     }
 
     #[test]

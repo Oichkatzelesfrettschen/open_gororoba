@@ -105,9 +105,8 @@ pub fn read_fits_table(
         }
     }
 
-    let table_idx = table_hdu_idx.ok_or_else(|| {
-        FetchError::Validation("No BINTABLE HDU found in FITS file".to_string())
-    })?;
+    let table_idx = table_hdu_idx
+        .ok_or_else(|| FetchError::Validation("No BINTABLE HDU found in FITS file".to_string()))?;
 
     let table_hdu = fptr
         .hdu(table_idx)
@@ -186,23 +185,23 @@ pub fn read_fits_table(
             }
             // Bool (FITS TLOGICAL 'L') -- read as i32; cfitsio maps T->1, F->0.
             ColumnDataType::Bool => {
-                let v: Vec<i32> = hdu
-                    .read_col(&mut fptr, fits_name)
-                    .map_err(|e| FetchError::Validation(format!("col {} (bool as i32): {}", fits_name, e)))?;
+                let v: Vec<i32> = hdu.read_col(&mut fptr, fits_name).map_err(|e| {
+                    FetchError::Validation(format!("col {} (bool as i32): {}", fits_name, e))
+                })?;
                 v.into_iter().map(|x| FitsValue::Bool(x != 0)).collect()
             }
             // Short integer columns.
             ColumnDataType::Short => {
-                let v: Vec<i32> = hdu
-                    .read_col(&mut fptr, fits_name)
-                    .map_err(|e| FetchError::Validation(format!("col {} (short as i32): {}", fits_name, e)))?;
+                let v: Vec<i32> = hdu.read_col(&mut fptr, fits_name).map_err(|e| {
+                    FetchError::Validation(format!("col {} (short as i32): {}", fits_name, e))
+                })?;
                 v.into_iter().map(FitsValue::I32).collect()
             }
             // String, Text, and any other character-based columns.
             _ => {
-                let v: Vec<String> = hdu
-                    .read_col(&mut fptr, fits_name)
-                    .map_err(|e| FetchError::Validation(format!("col {} (str): {}", fits_name, e)))?;
+                let v: Vec<String> = hdu.read_col(&mut fptr, fits_name).map_err(|e| {
+                    FetchError::Validation(format!("col {} (str): {}", fits_name, e))
+                })?;
                 v.into_iter()
                     .map(|s| FitsValue::Str(s.trim().to_string()))
                     .collect()

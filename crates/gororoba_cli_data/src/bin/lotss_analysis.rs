@@ -9,7 +9,10 @@
 use anyhow::{Context, Result, anyhow, bail};
 use clap::{Parser, Subcommand};
 use data_core::catalogs::lotss::{LoTSSRelease, load_from_fits};
-use rand::{Rng, SeedableRng, seq::SliceRandom, seq::index::sample};
+use rand::{
+    Rng, SeedableRng,
+    seq::{SliceRandom, index::sample},
+};
 use rand_chacha::ChaCha8Rng;
 use serde::Serialize;
 use statrs::distribution::{ContinuousCDF, Normal, StudentsT};
@@ -206,13 +209,7 @@ fn main() -> Result<()> {
             n_bootstrap,
             n_triples,
             output,
-        } => cmd_ultrametric(
-            &lotss,
-            output.as_deref(),
-            n_sample,
-            n_bootstrap,
-            n_triples,
-        ),
+        } => cmd_ultrametric(&lotss, output.as_deref(), n_sample, n_bootstrap, n_triples),
     }
 }
 
@@ -225,7 +222,13 @@ fn cmd_flux_distribution(
 ) -> Result<()> {
     let mut releases = Vec::new();
     if let Some(path) = dr1 {
-        releases.push(build_flux_release_report("DR1", path, LoTSSRelease::DR1, 424.0, bins)?);
+        releases.push(build_flux_release_report(
+            "DR1",
+            path,
+            LoTSSRelease::DR1,
+            424.0,
+            bins,
+        )?);
     }
     if let Some(path) = dr2 {
         releases.push(build_flux_release_report(
@@ -305,7 +308,10 @@ fn differential_source_count(
     bins: usize,
 ) -> Result<(Vec<f64>, Vec<f64>)> {
     if flux_mjy.len() < 10 || bins < 4 {
-        bail!("Insufficient flux samples ({}) or bins ({bins})", flux_mjy.len());
+        bail!(
+            "Insufficient flux samples ({}) or bins ({bins})",
+            flux_mjy.len()
+        );
     }
     let omega_sr = area_sq_deg / ((180.0 / std::f64::consts::PI).powi(2));
     let log_min = flux_mjy
@@ -428,8 +434,7 @@ fn cmd_kinematic_bisection(
     } else {
         "loud <= quiet"
     };
-    let (ratio, ratio_lo, ratio_hi) =
-        bootstrap_rms_ratio(&loud_rms, &quiet_rms, n_bootstrap, 42);
+    let (ratio, ratio_lo, ratio_hi) = bootstrap_rms_ratio(&loud_rms, &quiet_rms, n_bootstrap, 42);
     let valid_pairs: Vec<(f64, f64)> = loud_flux
         .iter()
         .copied()
@@ -492,8 +497,8 @@ struct XmatchInfo {
 }
 
 fn load_xmatch(path: &Path) -> Result<HashMap<String, XmatchInfo>> {
-    let mut rdr = csv::Reader::from_path(path)
-        .with_context(|| format!("Cannot open {}", path.display()))?;
+    let mut rdr =
+        csv::Reader::from_path(path).with_context(|| format!("Cannot open {}", path.display()))?;
     let mut result = HashMap::new();
     for row in rdr.deserialize::<HashMap<String, String>>() {
         let row = row?;
@@ -516,8 +521,8 @@ fn load_xmatch(path: &Path) -> Result<HashMap<String, XmatchInfo>> {
 }
 
 fn load_inner_rms(path: &Path, inner_lo: f64, inner_hi: f64) -> Result<HashMap<String, f64>> {
-    let mut rdr = csv::Reader::from_path(path)
-        .with_context(|| format!("Cannot open {}", path.display()))?;
+    let mut rdr =
+        csv::Reader::from_path(path).with_context(|| format!("Cannot open {}", path.display()))?;
     let headers = rdr.headers()?.clone();
     let plateifu_idx = headers
         .iter()
@@ -571,7 +576,8 @@ fn load_inner_rms(path: &Path, inner_lo: f64, inner_hi: f64) -> Result<HashMap<S
             if values.len() < 3 {
                 return None;
             }
-            let mean_sq = values.iter().map(|value| value * value).sum::<f64>() / values.len() as f64;
+            let mean_sq =
+                values.iter().map(|value| value * value).sum::<f64>() / values.len() as f64;
             Some((plateifu, mean_sq.sqrt()))
         })
         .collect())
@@ -631,9 +637,9 @@ fn mann_whitney_u_test(sample_a: &[f64], sample_b: &[f64]) -> Result<(f64, f64)>
         while idx < combined.len() && combined[idx].0 == value {
             idx += 1;
         }
-        let rank = (start + 1 + idx) as f64 / 2.0;
-        for slot in start..idx {
-            ranks[slot] = rank;
+        let mean_rank = (start + 1 + idx) as f64 / 2.0;
+        for rank_slot in ranks.iter_mut().take(idx).skip(start) {
+            *rank_slot = mean_rank;
         }
         tie_counts.push(idx - start);
     }
@@ -653,8 +659,8 @@ fn mann_whitney_u_test(sample_a: &[f64], sample_b: &[f64]) -> Result<(f64, f64)>
         })
         .sum::<f64>();
     let total_f = total as f64;
-    let variance = (n1 * n2) as f64 / 12.0
-        * ((total + 1) as f64 - tie_term / (total_f * (total_f - 1.0)));
+    let variance =
+        (n1 * n2) as f64 / 12.0 * ((total + 1) as f64 - tie_term / (total_f * (total_f - 1.0)));
     let sigma = variance.sqrt();
     let normal = Normal::new(0.0, 1.0)?;
     let continuity = if u1 > mean_u {
@@ -789,11 +795,7 @@ fn projected_coords(ra_deg: f64, dec_deg: f64) -> (f64, f64) {
     (ra_deg * dec_deg.to_radians().cos(), dec_deg)
 }
 
-fn p_ultra_vectorized(
-    points: &[(f64, f64)],
-    n_triples: usize,
-    rng: &mut ChaCha8Rng,
-) -> f64 {
+fn p_ultra_vectorized(points: &[(f64, f64)], n_triples: usize, rng: &mut ChaCha8Rng) -> f64 {
     if points.len() < 3 {
         return f64::NAN;
     }
@@ -868,8 +870,7 @@ fn write_toml_report<T: Serialize>(path: &Path, value: &T) -> Result<()> {
 fn read_positive_total_flux_column(path: &Path) -> Result<Vec<f64>> {
     use fitsio::{FitsFile, hdu::HduInfo};
 
-    let mut fits = FitsFile::open(path)
-        .with_context(|| format!("FITS open {}", path.display()))?;
+    let mut fits = FitsFile::open(path).with_context(|| format!("FITS open {}", path.display()))?;
     let num_hdus = {
         let mut count = 0usize;
         for _ in fits.iter() {
@@ -882,7 +883,8 @@ fn read_positive_total_flux_column(path: &Path) -> Result<Vec<f64>> {
     for idx in 1..num_hdus {
         let hdu = fits.hdu(idx)?;
         if let HduInfo::TableInfo {
-            column_descriptions, ..
+            column_descriptions,
+            ..
         } = hdu.info
         {
             table_idx = Some(idx);
@@ -895,7 +897,8 @@ fn read_positive_total_flux_column(path: &Path) -> Result<Vec<f64>> {
             }
         }
     }
-    let table_idx = table_idx.ok_or_else(|| anyhow!("No BINTABLE HDU found in {}", path.display()))?;
+    let table_idx =
+        table_idx.ok_or_else(|| anyhow!("No BINTABLE HDU found in {}", path.display()))?;
     let total_flux_name = total_flux_name
         .ok_or_else(|| anyhow!("No Total_flux column found in {}", path.display()))?;
     let hdu = fits.hdu(table_idx)?;

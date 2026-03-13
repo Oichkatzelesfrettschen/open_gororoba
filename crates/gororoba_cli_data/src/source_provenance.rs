@@ -935,7 +935,8 @@ fn collect_link_observations(repo_root: &Path) -> Result<LinkMap> {
     }
     let sqlite_path = repo_root.join("registry/canonical/control_plane.sqlite3");
     if sqlite_path.exists() {
-        source_tables.push("registry/canonical/control_plane.sqlite3::download_attempts".to_string());
+        source_tables
+            .push("registry/canonical/control_plane.sqlite3::download_attempts".to_string());
         merge_sqlite_download_observations(&sqlite_path, &mut observations)?;
     }
     Ok((observations, source_tables))
@@ -1368,10 +1369,7 @@ fn expand_reference_aliases(url: &str) -> Vec<String> {
         if host == "dr.lib.iastate.edu" {
             let path = parsed.path().trim_matches('/');
             let parts = path.split('/').collect::<Vec<_>>();
-            if parts.len() == 3
-                && parts[0] == "bitstreams"
-                && parts[2] == "download"
-            {
+            if parts.len() == 3 && parts[0] == "bitstreams" && parts[2] == "download" {
                 aliases.push(normalize_url(&format!(
                     "https://{host}/server/api/core/bitstreams/{}/content",
                     parts[1]

@@ -145,7 +145,7 @@ pub fn symmetric_eigenvalues_f64(matrix: &[Vec<f64>]) -> AlgebraResult<Vec<f64>>
 
 #[cfg(test)]
 mod tests {
-    use super::{symmetric_eigenvalues_f64, symmetric_eigensystem_f64};
+    use super::{symmetric_eigensystem_f64, symmetric_eigenvalues_f64};
 
     #[test]
     fn test_reference_jacobi_diagonal_matrix() {
@@ -193,13 +193,18 @@ mod tests {
 
         assert!((eigs[0] - 4.0).abs() < 1.0e-11, "lambda_0={}", eigs[0]);
         assert!((eigs[1] - 2.0).abs() < 1.0e-11, "lambda_1={}", eigs[1]);
-        assert!(max_off_diagonal_vtv(&v, 2) < 1.0e-11, "orthogonality violated");
+        assert!(
+            max_off_diagonal_vtv(&v, 2) < 1.0e-11,
+            "orthogonality violated"
+        );
 
         let a_rec: Vec<f64> = (0..4)
             .map(|idx| {
                 let i = idx / 2;
                 let j = idx % 2;
-                (0..2).map(|k| v[i * 2 + k] * eigs[k] * v[j * 2 + k]).sum::<f64>()
+                (0..2)
+                    .map(|k| v[i * 2 + k] * eigs[k] * v[j * 2 + k])
+                    .sum::<f64>()
             })
             .collect();
         let orig = [3.0_f64, 1.0, 1.0, 3.0];
@@ -234,7 +239,9 @@ mod tests {
             .map(|idx| {
                 let i = idx / n;
                 let j = idx % n;
-                (0..n).map(|k| v[i * n + k] * eigs[k] * v[j * n + k]).sum::<f64>()
+                (0..n)
+                    .map(|k| v[i * n + k] * eigs[k] * v[j * n + k])
+                    .sum::<f64>()
             })
             .collect();
         let max_err = flat

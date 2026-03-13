@@ -102,10 +102,7 @@ const LOTSS_FITS_COLUMNS: &[&str] = &[
 /// The FITS file should be the `*.srl.fits` source-list file distributed by
 /// lofar-surveys.org.
 #[cfg(feature = "fits")]
-pub fn load_from_fits(
-    path: &Path,
-    release: LoTSSRelease,
-) -> Result<Vec<LoTSSSource>, FetchError> {
+pub fn load_from_fits(path: &Path, release: LoTSSRelease) -> Result<Vec<LoTSSSource>, FetchError> {
     let row_count = lotss_fits_row_count(path)?;
     load_from_fits_range(path, release, 0..row_count)
 }
@@ -147,9 +144,8 @@ pub fn lotss_fits_row_count(path: &Path) -> Result<usize, FetchError> {
         }
     }
 
-    let table_idx = table_idx.ok_or_else(|| {
-        FetchError::Validation("No BINTABLE HDU found in FITS file".to_string())
-    })?;
+    let table_idx = table_idx
+        .ok_or_else(|| FetchError::Validation("No BINTABLE HDU found in FITS file".to_string()))?;
 
     let _ = table_idx;
     let _ = column_names;
@@ -197,9 +193,8 @@ pub fn load_from_fits_range(
         }
     }
 
-    let table_idx = table_idx.ok_or_else(|| {
-        FetchError::Validation("No BINTABLE HDU found in FITS file".to_string())
-    })?;
+    let table_idx = table_idx
+        .ok_or_else(|| FetchError::Validation("No BINTABLE HDU found in FITS file".to_string()))?;
     let table_row_count = table_row_count.unwrap_or(0);
     if row_range.start > row_range.end {
         return Err(FetchError::Validation(format!(
@@ -318,10 +313,7 @@ pub fn load_from_fits_range(
             .get(idx)
             .and_then(|s| s.trim().chars().next())
             .unwrap_or('S');
-        let spectral = spectral_index
-            .get(idx)
-            .copied()
-            .filter(|v| v.is_finite());
+        let spectral = spectral_index.get(idx).copied().filter(|v| v.is_finite());
         let spectral_err = spectral_index_err
             .get(idx)
             .copied()
@@ -376,15 +368,9 @@ fn parse_row_from_votable(
     row: &HashMap<String, String>,
     release: LoTSSRelease,
 ) -> Option<LoTSSSource> {
-    let get = |key: &str| -> &str {
-        row.get(key).map(|s| s.as_str()).unwrap_or("")
-    };
-    let parse_f32 = |key: &str| -> f32 {
-        get(key).parse::<f32>().unwrap_or(f32::NAN)
-    };
-    let parse_f64 = |key: &str| -> f64 {
-        get(key).parse::<f64>().unwrap_or(f64::NAN)
-    };
+    let get = |key: &str| -> &str { row.get(key).map(|s| s.as_str()).unwrap_or("") };
+    let parse_f32 = |key: &str| -> f32 { get(key).parse::<f32>().unwrap_or(f32::NAN) };
+    let parse_f64 = |key: &str| -> f64 { get(key).parse::<f64>().unwrap_or(f64::NAN) };
     let parse_opt_f32 = |key: &str| -> Option<f32> {
         let v: f32 = get(key).parse().ok()?;
         if v.is_finite() { Some(v) } else { None }
@@ -397,7 +383,8 @@ fn parse_row_from_votable(
 
     let structure_code = get("S_CODE").chars().next().unwrap_or('S');
     let resolved_str = get("RESOLVED");
-    let resolved = resolved_str.eq_ignore_ascii_case("R") || resolved_str == "1" || resolved_str == "true";
+    let resolved =
+        resolved_str.eq_ignore_ascii_case("R") || resolved_str == "1" || resolved_str == "true";
 
     Some(LoTSSSource {
         source_name,

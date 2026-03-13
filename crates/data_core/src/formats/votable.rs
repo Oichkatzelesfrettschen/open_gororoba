@@ -16,10 +16,7 @@ use crate::fetcher::FetchError;
 use std::collections::HashMap;
 
 #[cfg(feature = "fits")]
-use quick_xml::{
-    Reader,
-    events::Event,
-};
+use quick_xml::{Reader, events::Event};
 
 /// Parse a VOTable XML document and extract selected columns.
 ///
@@ -39,10 +36,7 @@ pub fn parse_votable(
     xml: &str,
     columns: &[&str],
 ) -> Result<Vec<HashMap<String, String>>, FetchError> {
-    let want: Vec<String> = columns
-        .iter()
-        .map(|c| c.trim().to_uppercase())
-        .collect();
+    let want: Vec<String> = columns.iter().map(|c| c.trim().to_uppercase()).collect();
 
     let mut reader = Reader::from_str(xml);
     reader.config_mut().trim_text(true);
@@ -72,11 +66,7 @@ pub fn parse_votable(
                                     .map(|k| k.eq_ignore_ascii_case("name"))
                                     .unwrap_or(false)
                             })
-                            .and_then(|a| {
-                                a.unescape_value()
-                                    .ok()
-                                    .map(|v| v.trim().to_uppercase())
-                            })
+                            .and_then(|a| a.unescape_value().ok().map(|v| v.trim().to_uppercase()))
                             .unwrap_or_default();
                         field_names.push(field_name);
                     }
@@ -105,11 +95,7 @@ pub fn parse_votable(
                                 .map(|k| k.eq_ignore_ascii_case("name"))
                                 .unwrap_or(false)
                         })
-                        .and_then(|a| {
-                            a.unescape_value()
-                                .ok()
-                                .map(|v| v.trim().to_uppercase())
-                        })
+                        .and_then(|a| a.unescape_value().ok().map(|v| v.trim().to_uppercase()))
                         .unwrap_or_default();
                     field_names.push(field_name);
                 }
@@ -165,7 +151,10 @@ pub fn parse_votable(
             }
             Ok(Event::Eof) => break,
             Err(e) => {
-                return Err(FetchError::Validation(format!("VOTable XML parse error: {}", e)));
+                return Err(FetchError::Validation(format!(
+                    "VOTable XML parse error: {}",
+                    e
+                )));
             }
             _ => {}
         }
@@ -200,11 +189,7 @@ pub fn votable_field_names(xml: &str) -> Result<Vec<String>, FetchError> {
                                 .map(|k| k.eq_ignore_ascii_case("name"))
                                 .unwrap_or(false)
                         })
-                        .and_then(|a| {
-                            a.unescape_value()
-                                .ok()
-                                .map(|v| v.trim().to_uppercase())
-                        })
+                        .and_then(|a| a.unescape_value().ok().map(|v| v.trim().to_uppercase()))
                         .unwrap_or_default();
                     names.push(field_name);
                 }
@@ -214,7 +199,10 @@ pub fn votable_field_names(xml: &str) -> Result<Vec<String>, FetchError> {
             }
             Ok(Event::Eof) => break,
             Err(e) => {
-                return Err(FetchError::Validation(format!("VOTable XML parse error: {}", e)));
+                return Err(FetchError::Validation(format!(
+                    "VOTable XML parse error: {}",
+                    e
+                )));
             }
             _ => {}
         }

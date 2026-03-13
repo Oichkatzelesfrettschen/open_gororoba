@@ -207,8 +207,9 @@ fn spill_rows_to_sqlite(
             )
             .map_err(|err| format!("prepare sqlite row insert for {}: {}", dataset_id, err))?;
         for (row_index, row) in rows.iter().enumerate() {
-            let row_json = serde_json::to_string(row)
-                .map_err(|err| format!("serialize row {} for {}: {}", row_index, dataset_id, err))?;
+            let row_json = serde_json::to_string(row).map_err(|err| {
+                format!("serialize row {} for {}: {}", row_index, dataset_id, err)
+            })?;
             stmt.execute(params![dataset_id.as_str(), row_index as i64, row_json])
                 .map_err(|err| {
                     format!(
