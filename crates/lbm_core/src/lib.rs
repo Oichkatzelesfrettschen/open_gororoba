@@ -931,20 +931,34 @@ mod tests {
     // Therefore slope_ratio depends ONLY on (n, strain_rate_grid), NOT on ||m3||.
     // -----------------------------------------------------------------------
 
-    /// Helper: compute slope_ratio for given grid and parameters.
-    fn slope_ratio_for_grid(
-        strain_rates: &[f64],
+    #[derive(Clone, Copy)]
+    struct SlopeRatioParams {
         nu_base: f64,
         alpha: f64,
         beta: f64,
         norm: f64,
         n: f64,
+    }
+
+    /// Helper: compute slope_ratio for given grid and parameters.
+    fn slope_ratio_for_grid(
+        strain_rates: &[f64],
+        params: SlopeRatioParams,
         pre_idx: (usize, usize),
         post_idx: (usize, usize),
     ) -> f64 {
         let values: Vec<f64> = strain_rates
             .iter()
-            .map(|&gamma| viscosity_with_power_law_associator(nu_base, alpha, beta, norm, gamma, n))
+            .map(|&gamma| {
+                viscosity_with_power_law_associator(
+                    params.nu_base,
+                    params.alpha,
+                    params.beta,
+                    params.norm,
+                    gamma,
+                    params.n,
+                )
+            })
             .collect();
         let pre_slope = (values[pre_idx.1] - values[pre_idx.0])
             / (strain_rates[pre_idx.1] - strain_rates[pre_idx.0]);
@@ -965,10 +979,32 @@ mod tests {
         let norms = [0.1, 0.2, 0.5, 0.8, 1.0, 2.0, 10.0];
         let n = 1.5;
 
-        let reference = slope_ratio_for_grid(&grid, 0.05, 0.5, 1.0, norms[0], n, (0, 2), (4, 6));
+        let reference = slope_ratio_for_grid(
+            &grid,
+            SlopeRatioParams {
+                nu_base: 0.05,
+                alpha: 0.5,
+                beta: 1.0,
+                norm: norms[0],
+                n,
+            },
+            (0, 2),
+            (4, 6),
+        );
 
         for &norm in &norms[1..] {
-            let ratio = slope_ratio_for_grid(&grid, 0.05, 0.5, 1.0, norm, n, (0, 2), (4, 6));
+            let ratio = slope_ratio_for_grid(
+                &grid,
+                SlopeRatioParams {
+                    nu_base: 0.05,
+                    alpha: 0.5,
+                    beta: 1.0,
+                    norm,
+                    n,
+                },
+                (0, 2),
+                (4, 6),
+            );
             assert_relative_eq!(ratio, reference, epsilon = 1e-14, max_relative = 1e-14,);
         }
 
@@ -980,35 +1016,22 @@ mod tests {
     /// This proves the value is grid-dependent, not algebraically significant.
     #[test]
     fn test_c1329_slope_ratio_grid_dependence() {
-        let n = 1.5;
-        let params = (0.05, 0.5, 1.0, 0.5); // nu_base, alpha, beta, norm
+        let params = SlopeRatioParams {
+            nu_base: 0.05,
+            alpha: 0.5,
+            beta: 1.0,
+            norm: 0.5,
+            n: 1.5,
+        };
 
         // Original grid -> ~0.1764
         let grid_orig = [0.001, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0];
-        let r_orig = slope_ratio_for_grid(
-            &grid_orig,
-            params.0,
-            params.1,
-            params.2,
-            params.3,
-            n,
-            (0, 2),
-            (4, 6),
-        );
+        let r_orig = slope_ratio_for_grid(&grid_orig, params, (0, 2), (4, 6));
         assert_relative_eq!(r_orig, 0.176359, epsilon = 1e-4);
 
         // Sparser grid [0.001, 0.05, 1.0] -> very different ratio
         let grid_sparse = [0.001, 0.05, 1.0];
-        let r_sparse = slope_ratio_for_grid(
-            &grid_sparse,
-            params.0,
-            params.1,
-            params.2,
-            params.3,
-            n,
-            (0, 1),
-            (1, 2),
-        );
+        let r_sparse = slope_ratio_for_grid(&grid_sparse, params, (0, 1), (1, 2));
         // Must differ from 0.1764 by more than 10%
         assert!(
             (r_sparse - 0.1764).abs() > 0.01,
@@ -1018,16 +1041,7 @@ mod tests {
 
         // Different range [0.01, 0.1, 0.5, 2.0, 5.0, 10.0]
         let grid_wide = [0.01, 0.1, 0.5, 2.0, 5.0, 10.0];
-        let r_wide = slope_ratio_for_grid(
-            &grid_wide,
-            params.0,
-            params.1,
-            params.2,
-            params.3,
-            n,
-            (0, 1),
-            (3, 5),
-        );
+        let r_wide = slope_ratio_for_grid(&grid_wide, params, (0, 1), (3, 5));
         assert!(
             (r_wide - 0.1764).abs() > 0.01,
             "wide grid should produce different slope_ratio, got {}",
@@ -1041,12 +1055,34 @@ mod tests {
     fn test_c1329_slope_ratio_alpha_beta_invariance() {
         let grid = [0.001, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0];
         let n = 1.5;
-        let reference = slope_ratio_for_grid(&grid, 0.05, 0.1, 0.5, 0.5, n, (0, 2), (4, 6));
+        let reference = slope_ratio_for_grid(
+            &grid,
+            SlopeRatioParams {
+                nu_base: 0.05,
+                alpha: 0.1,
+                beta: 0.5,
+                norm: 0.5,
+                n,
+            },
+            (0, 2),
+            (4, 6),
+        );
 
         // Different alpha, beta combinations
         let combos: &[(f64, f64)] = &[(0.5, 1.0), (1.0, 2.0), (2.0, 0.5), (10.0, 3.0)];
         for &(alpha, beta) in combos {
-            let ratio = slope_ratio_for_grid(&grid, 0.05, alpha, beta, 0.5, n, (0, 2), (4, 6));
+            let ratio = slope_ratio_for_grid(
+                &grid,
+                SlopeRatioParams {
+                    nu_base: 0.05,
+                    alpha,
+                    beta,
+                    norm: 0.5,
+                    n,
+                },
+                (0, 2),
+                (4, 6),
+            );
             assert_relative_eq!(ratio, reference, epsilon = 1e-12, max_relative = 1e-12,);
         }
     }
