@@ -211,6 +211,7 @@ fn extract_pseudo_slit(
     pa_deg: f64,
     incl_deg: f64,
     z: f64,
+    psf_fwhm_arcsec: f64,
 ) -> Vec<RotCurvePoint> {
     let sin_i = incl_deg.to_radians().sin();
     if sin_i < 0.1 {
@@ -230,6 +231,7 @@ fn extract_pseudo_slit(
     // Precompute d_A once per galaxy
     let d_a_kpc = angular_diameter_distance_kpc(z);
     let spaxel_kpc = SPAXEL_SIZE_ARCSEC * d_a_kpc * std::f64::consts::PI / (180.0 * 3600.0);
+    let psf_fwhm_kpc = psf_fwhm_arcsec * d_a_kpc * std::f64::consts::PI / (180.0 * 3600.0);
 
     let w_range: Vec<i32> = (-SLIT_HALF_WIDTH..=SLIT_HALF_WIDTH).collect();
 
@@ -293,7 +295,11 @@ fn extract_pseudo_slit(
     }
 
     points.sort_by(|a, b| a.r_kpc.partial_cmp(&b.r_kpc).unwrap());
-    bin_rotation_curve(points, 30)
+    let mut binned = bin_rotation_curve(points, 30);
+    for pt in &mut binned {
+        pt.psf_flag = pt.r_kpc < psf_fwhm_kpc;
+    }
+    binned
 }
 
 // ---- Radial binning (inverse-variance weighted mean per bin) ----
@@ -350,6 +356,7 @@ fn bin_rotation_curve(points: Vec<RotCurvePoint>, n_bins: usize) -> Vec<RotCurve
             r_kpc: r_mean,
             v_obs: v_mean,
             v_err,
+            psf_flag: false, // set by caller after binning
         });
     }
     binned
@@ -514,7 +521,7 @@ fn main() -> Result<()> {
     let writer = Arc::new(Mutex::new(csv::Writer::from_writer(out_file)));
     if write_header {
         let mut w = writer.lock().unwrap();
-        w.write_record(["name", "r_kpc", "v_obs_km_s", "v_err_km_s"])
+        w.write_record(["name", "r_kpc", "v_obs_km_s", "v_err_km_s", "psf_flag"])
             .context("write header")?;
         w.flush().context("flush header")?;
     }
@@ -548,7 +555,7 @@ fn main() -> Result<()> {
         };
 
         let incl_deg = gal.ba.clamp(0.0, 1.0).acos().to_degrees();
-        let points = extract_pseudo_slit(&maps, gal.pa_deg, incl_deg, gal.z);
+        let points = extract_pseudo_slit(&maps, gal.pa_deg, incl_deg, gal.z, args.psf_fwhm);
 
         if points.is_empty() {
             n_ex_fail.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
@@ -563,6 +570,7 @@ fn main() -> Result<()> {
                     &format!("{:.4}", pt.r_kpc),
                     &format!("{:.2}", pt.v_obs),
                     &format!("{:.2}", pt.v_err),
+                    if pt.psf_flag { "true" } else { "false" },
                 ]);
             }
             let _ = w.flush();
@@ -617,7 +625,7 @@ mod tests {
             ny: 74,
             nx: 74,
         };
-        let pts = extract_pseudo_slit(&maps, 90.0, 5.0, 0.04);
+        let pts = extract_pseudo_slit(&maps, 90.0, 5.0, 0.04, 2.5);
         assert!(pts.is_empty());
     }
 }
